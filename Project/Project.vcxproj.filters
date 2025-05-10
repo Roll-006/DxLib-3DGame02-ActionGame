@@ -1,0 +1,283 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="source_code\Math\math.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="source_code\Manager\game_manager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="source_code\Manager\scene_obj_manager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="source_code\FPS\fps.cpp">
+      <Filter>FPS</Filter>
+    </ClCompile>
+    <ClCompile Include="source_code\Component\transform_component.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="source_code\main.cpp" />
+    <ClCompile Include="source_code\Base\game_obj.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="source_code\Base\scene_obj.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="source_code\Manager\input_checker.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="source_code\Window\window.cpp">
+      <Filter>Window</Filter>
+    </ClCompile>
+    <ClCompile Include="source_code\Vector\vector_2d_calculator.cpp">
+      <Filter>Vector</Filter>
+    </ClCompile>
+    <ClCompile Include="source_code\Vector\vector_3d_calculator.cpp">
+      <Filter>Vector</Filter>
+    </ClCompile>
+    <ClCompile Include="source_code\Quaternion\quaternion.cpp">
+      <Filter>Quaternion</Filter>
+    </ClCompile>
+    <ClCompile Include="source_code\Component\frustum_component.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="source_code\Component\Camera\camera_component.cpp">
+      <Filter>Component\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="source_code\Component\Camera\camera_controller_component.cpp">
+      <Filter>Component\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="source_code\Component\Model\animator_component.cpp">
+      <Filter>Component\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="source_code\Component\Model\modeler_component.cpp">
+      <Filter>Component\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="source_code\Manager\game_obj_manager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="source_code\Component\tracker_component.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="source_code\Component\third_person_controller_component.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="source_code\Vector\vector.hpp">
+      <Filter>Vector</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Vector\vector_2d.hpp">
+      <Filter>Vector</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Vector\vector_3d.hpp">
+      <Filter>Vector</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Math\math.hpp">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Manager\game_manager.hpp">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Manager\scene_obj_manager.hpp">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\FPS\fps.hpp">
+      <Filter>FPS</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Data\animator_data.hpp">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Component\transform_component.hpp">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Data\Tag\obj_tag.hpp">
+      <Filter>Data\Tag</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Data\Tag\animation_tag.hpp">
+      <Filter>Data\Tag</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Data\Name\game_obj_name.hpp">
+      <Filter>Data\Name</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Data\Name\scene_obj_name.hpp">
+      <Filter>Data\Name</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Base\component_base.hpp">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Base\game_obj.hpp">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Base\obj_base.hpp">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Base\scene_obj.hpp">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Object\Scene\game_clear_scene.hpp">
+      <Filter>Object\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Object\Scene\game_over_scene.hpp">
+      <Filter>Object\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Object\Scene\load_scene.hpp">
+      <Filter>Object\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Object\Scene\play_scene.hpp">
+      <Filter>Object\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Object\Scene\share_scene.hpp">
+      <Filter>Object\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Object\Scene\title_scene.hpp">
+      <Filter>Object\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Object\Chara\player.hpp">
+      <Filter>Object\Chara</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Object\Camera\camera.hpp">
+      <Filter>Object\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Concept\common_concepts.hpp">
+      <Filter>Concept</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Concept\component_concepts.hpp">
+      <Filter>Concept</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Data\CSV\csv.hpp">
+      <Filter>Data\CSV</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Manager\input_checker.hpp">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Data\input_data.hpp">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Concept\input_concepts.hpp">
+      <Filter>Concept</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Vector\vector_2d_calculator.hpp">
+      <Filter>Vector</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Vector\vector_3d_calculator.hpp">
+      <Filter>Vector</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Window\window.hpp">
+      <Filter>Window</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Quaternion\quaternion.hpp">
+      <Filter>Quaternion</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Component\frustum_component.hpp">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Component\Camera\camera_component.hpp">
+      <Filter>Component\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Component\Camera\camera_controller_component.hpp">
+      <Filter>Component\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Component\Model\animator_component.hpp">
+      <Filter>Component\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Component\Model\modeler_component.hpp">
+      <Filter>Component\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Manager\game_obj_manager.hpp">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Data\Path\animation_path.hpp">
+      <Filter>Data\Path</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Data\Path\model_path.hpp">
+      <Filter>Data\Path</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Data\Kind\input_kind.hpp">
+      <Filter>Data\Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Data\Kind\player_kind.hpp">
+      <Filter>Data\Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Component\tracker_component.hpp">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Component\third_person_controller_component.hpp">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Command\command.hpp">
+      <Filter>Command</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Vector">
+      <UniqueIdentifier>{c5f69510-fd45-4815-8e17-f8bee9a78e79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object">
+      <UniqueIdentifier>{12318b27-d5b3-41f7-b2c0-6e3e27ab8d35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{3983031e-056b-4d1a-a00f-c1acc90bf560}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager">
+      <UniqueIdentifier>{69894637-334e-46d6-be72-079330c80427}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FPS">
+      <UniqueIdentifier>{2e55dbb6-3445-4bc3-9190-942193ab83a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Data">
+      <UniqueIdentifier>{5a2c6f1c-a568-4987-8934-7f3f80ed2bd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component">
+      <UniqueIdentifier>{2b0c2940-de18-404c-9c40-21aa8cd1bf2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Data\Name">
+      <UniqueIdentifier>{c3148a31-6123-4086-b761-3edd4fe5f420}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Data\Tag">
+      <UniqueIdentifier>{cd4f92e3-b298-4e4a-9752-61379ba99845}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Base">
+      <UniqueIdentifier>{56ace882-0c19-4d74-887a-e7b8e785f829}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Chara">
+      <UniqueIdentifier>{bdbaa68e-013e-439a-b18a-b56fcd6c4400}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Scene">
+      <UniqueIdentifier>{5222e5cd-e1a1-4bb0-af8e-1e819e5c7615}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Concept">
+      <UniqueIdentifier>{a9c774d0-5df2-4b66-8aa2-945d950db781}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Camera">
+      <UniqueIdentifier>{a568481e-022e-41a0-ae0c-dd88e521f6bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Data\Json">
+      <UniqueIdentifier>{3eab40b7-60e6-487a-879b-9b1e3022aeb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Data\CSV">
+      <UniqueIdentifier>{aa18a683-8198-4225-be40-2831c615d11f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Window">
+      <UniqueIdentifier>{209348fb-11d3-4b60-abc5-489ba6ddecc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quaternion">
+      <UniqueIdentifier>{c5697236-e5d8-40ef-bfe8-15ff59eb8594}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Model">
+      <UniqueIdentifier>{b1fb7c79-f19b-4d57-8bce-87025ffeccc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Camera">
+      <UniqueIdentifier>{d6ec2d8e-0bb9-446d-b8cc-45c899bac61c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Data\Path">
+      <UniqueIdentifier>{ce592a38-5a0e-4681-97e6-ec115ff7e61a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Data\Kind">
+      <UniqueIdentifier>{72135338-3c4c-44c1-a81b-ef11a7ace830}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Command">
+      <UniqueIdentifier>{c15fa1e6-f8eb-4c6f-91c6-2afeff442fe5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

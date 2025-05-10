@@ -1,0 +1,46 @@
+#include "window.hpp"
+
+bool Window::m_instantiated = false;
+
+Window::Window():
+	m_change_window_count	(0),
+	m_is_full_screen		(false)
+{
+	assert(!m_instantiated);
+	m_instantiated = true;
+
+	ChangeWindowMode(m_is_full_screen ? FALSE : TRUE);	// DxLib既存の関数はFALSEがフルスクリーンであるためフラグを反転
+	if (m_is_full_screen) { ++m_change_window_count; }
+}
+
+Window::~Window()
+{
+	m_instantiated = false;
+}
+
+void Window::Update()
+{
+	SetWindowMode();
+}
+
+void Window::SetWindowMode()
+{
+	if (!CheckHitKey(KEY_INPUT_LALT)) { return; }
+
+	if (InputChecker::GetInstance()->GetKeyInputState(KEY_INPUT_RETURN) == InputState::kSingle)
+	{
+		++m_change_window_count;
+
+		m_is_full_screen = m_change_window_count % 2 ? true : false;
+		ChangeWindowMode(m_is_full_screen ? FALSE : TRUE);
+		InputChecker::GetInstance()->InitMouseCursor();
+	}
+}
+
+void Window::SetWindowMode(bool is_full_screen)
+{
+	m_is_full_screen	  = is_full_screen;
+	m_change_window_count = m_is_full_screen ? 1 : 0;
+
+	ChangeWindowMode(m_is_full_screen ? FALSE : TRUE);
+}
