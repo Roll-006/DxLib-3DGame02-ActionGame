@@ -1,15 +1,9 @@
 ﻿#pragma once
-//#include <algorithm>
-//#include <cmath>
-//#include <optional>
-//#include <numbers>
-//#include <utility>
 #include <array>
 #include <DxLib.h>
 
-#include "../Concept/common_concepts.hpp"
-#include "../Vector/vector.hpp"
-#include "../Quaternion/quaternion.hpp"
+#include "Vector/vector.hpp"
+#include "Quaternion/quaternion.hpp"
 
 //// TODO : 関数今後も増え続けると思われるため分離を検討中
 namespace math

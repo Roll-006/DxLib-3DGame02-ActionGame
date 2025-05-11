@@ -1,6 +1,6 @@
 #pragma once
 #include <unordered_map>
-#include "../Vector/vector.hpp"
+#include "../Math/Vector/vector.hpp"
 
 struct InputData
 {

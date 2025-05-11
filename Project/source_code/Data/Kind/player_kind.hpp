@@ -1,6 +1,6 @@
 #pragma once
 
-enum class PlayerAnimState
+enum class PlayerAnimKind
 {
 	kNone = -1,
 	kIdle,

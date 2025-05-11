@@ -1,4 +1,4 @@
-#include "scene_obj_manager.hpp"
+#include "scene_manager.hpp"
 
 bool SceneObjManager::m_instantiated = false;
 

@@ -1,10 +1,10 @@
 #pragma once
-#include "../Base/game_obj.hpp"
+#include "../Base/obj_base.hpp"
 
 class Command
 {
 public:
 	virtual ~Command() = default;
 
-	virtual void Execute(const GameObj* obj) = 0;
+	virtual void Execute(const ObjBase* obj) = 0;
 };
