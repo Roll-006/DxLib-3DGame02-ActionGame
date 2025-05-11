@@ -1,37 +1,16 @@
-#include "game_obj_manager.hpp"
+#include "obj_manager.hpp"
 
-GameObjManager* GameObjManager::m_instance = nullptr;
-
-void GameObjManager::Generate()
-{
-	if (!m_instance)
-	{
-		m_instance = new GameObjManager;
-	}
-}
-
-void GameObjManager::Delete()
-{
-	delete m_instance;
-	m_instance = nullptr;
-}
-
-GameObjManager* GameObjManager::GetInstance()
-{
-	return m_instance ? m_instance : nullptr;
-}
-
-GameObjManager::GameObjManager()
-{
-
-}
-
-GameObjManager::~GameObjManager()
+ObjManager::ObjManager()
 {
 	// èàóùÇ»Çµ
 }
 
-void GameObjManager::AddObj(const std::shared_ptr<GameObj> obj)
+ObjManager::~ObjManager()
+{
+	// èàóùÇ»Çµ
+}
+
+void ObjManager::AddObj(const std::shared_ptr<ObjBase> obj)
 {
 	// è„èëÇ´ïsâ¬
 	if (!m_objects.count(obj->GetName()))
@@ -40,12 +19,12 @@ void GameObjManager::AddObj(const std::shared_ptr<GameObj> obj)
 	}
 }
 
-void GameObjManager::RemoveObj(const std::string& obj_name)
+void ObjManager::RemoveObj(const std::string& obj_name)
 {
 	m_objects.erase(obj_name);
 }
 
-std::shared_ptr<GameObj> GameObjManager::GetObj(const std::string& obj_name)
+std::shared_ptr<ObjBase> ObjManager::GetObj(const std::string& obj_name)
 {
 	return m_objects.count(obj_name) ? m_objects.at(obj_name) : nullptr;
 }

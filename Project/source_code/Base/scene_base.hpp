@@ -1,25 +1,29 @@
 #pragma once
 #include <memory>
 #include <unordered_map>
-#include "obj_base.hpp"
+
+#include "../Data/Kind/scene_kind.hpp"
 
 class SceneBase
 {
 public:
+	SceneBase() : m_is_active(true){}
 	virtual ~SceneBase() = default;
 
-	virtual void Init()			= 0;
-	virtual void Update()		= 0;
-	virtual void Draw()const	= 0;
+	virtual void Init()		 = 0;
+	virtual void Update()	 = 0;
+	virtual void Draw()const = 0;
 
-	virtual void AttachObj(const std::shared_ptr<ObjBase> obj)	= 0;
-	virtual void DetachObj(const std::string& obj_name)			= 0;
+	/// @brief アクティブ化する
+	void Activate()   { m_is_active = true; }
 
-	virtual [[nodiscard]] std::shared_ptr<ObjBase> GetObj(const std::string& obj_name)
-	{
-		if (m_objects.count(obj_name)) { return m_objects.at(obj_name); }
-	}
+	/// @brief 非アクティブ化する
+	/// @brief オブジェクトを削除せずに処理を停止
+	/// @brief Init関数を通さずにシーンを再開したい場合に有効
+	void Deactivate() { m_is_active = false; }
+
+	[[nodiscard]] bool IsActive()const { return m_is_active; }
 
 private:
-	std::unordered_map<std::string, std::shared_ptr<ObjBase>> m_objects;	// Key : name, Value : obj
+	bool m_is_active;
 };

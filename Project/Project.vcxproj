@@ -150,8 +150,9 @@
     <ClCompile Include="source_code\Window\window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="source_code\Base\singleton_base.hpp" />
+    <ClInclude Include="source_code\Base\one_instance_singleton_base.hpp" />
     <ClInclude Include="source_code\Base\obj_base.hpp" />
-    <ClInclude Include="source_code\Base\scene_base.cpp" />
     <ClInclude Include="source_code\Base\scene_base.hpp" />
     <ClInclude Include="source_code\Command\command.hpp" />
     <ClInclude Include="source_code\Concept\common_concepts.hpp" />
@@ -161,8 +162,8 @@
     <ClInclude Include="source_code\Data\input_data.hpp" />
     <ClInclude Include="source_code\Data\Kind\input_kind.hpp" />
     <ClInclude Include="source_code\Data\Kind\player_kind.hpp" />
+    <ClInclude Include="source_code\Data\Kind\scene_kind.hpp" />
     <ClInclude Include="source_code\Data\Name\obj_name.hpp" />
-    <ClInclude Include="source_code\Data\Name\scene_name.hpp" />
     <ClInclude Include="source_code\Data\Path\model_path.hpp" />
     <ClInclude Include="source_code\Data\Path\animation_path.hpp" />
     <ClInclude Include="source_code\Data\Tag\obj_tag.hpp" />

@@ -1,9 +1,9 @@
 #pragma once
 #include <string>
 
-static struct GameObjName
+static struct ObjName
 {
 	std::string CAMERA = "camera";
 	std::string PLAYER = "player";
 
-}GameObjName;
+}ObjName;

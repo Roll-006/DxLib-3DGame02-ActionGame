@@ -1,24 +1,22 @@
 #pragma once
-#include "../Base/game_obj.hpp"
+#include <memory>
+#include <unordered_map>
 
-class GameObjManager
+#include "../Base/singleton_base.hpp"
+#include "../Base/obj_base.hpp"
+
+class ObjManager : public SingletonBase
 {
 public:
-	static void Generate();
-	static void Delete();
-	static GameObjManager* GetInstance();
-
-	void AddObj	  (const std::shared_ptr<GameObj> obj);
+	void AddObj	  (const std::shared_ptr<ObjBase> obj);
 	void RemoveObj(const std::string& obj_name);
 
-	[[nodiscard]] std::shared_ptr<GameObj> GetObj(const std::string& obj_name);
+	[[nodiscard]] std::shared_ptr<ObjBase> GetObj(const std::string& obj_name)noexcept;
 
 private:
-	GameObjManager();
-	~GameObjManager();
+	ObjManager();
+	~ObjManager()override;
 
 private:
-	std::unordered_map<std::string, std::shared_ptr<GameObj>> m_objects;
-
-	static GameObjManager* m_instance;
+	std::unordered_map<std::string, std::shared_ptr<ObjBase>> m_objects;
 };

@@ -1,17 +1,15 @@
 #pragma once
-#include <cassert>
-#include <string>
-#include <unordered_map>
+#include "../Base/one_instance_singleton_base.hpp"
 
-#include "../Object/Scene/title_scene.hpp"
-#include "../Object/Scene/play_scene.hpp"
-#include "../Object/Scene/game_clear_scene.hpp"
-#include "../Object/Scene/game_over_scene.hpp"
-#include "../Object/Scene/share_scene.hpp"
-#include "../Object/Scene/load_scene.hpp"
+#include "../Scene/title_scene.hpp"
+#include "../Scene/play_scene.hpp"
+#include "../Scene/game_clear_scene.hpp"
+#include "../Scene/game_over_scene.hpp"
+#include "../Scene/share_scene.hpp"
+#include "../Scene/load_scene.hpp"
 
 /// @brief Only one instance
-class SceneObjManager
+class SceneObjManager : public OneInstanceSingletonBase
 {
 public:
 	SceneObjManager();
@@ -21,15 +19,13 @@ public:
 	void Update();
 	void Draw()const;
 
-	[[nodiscard]] std::shared_ptr<SceneObj> GetScene(const std::string& scene_name);
+	[[nodiscard]] std::shared_ptr<SceneBase> GetScene(SceneKind scene_kind);
 
 private:
-	void AttachScene(const std::string& scene_name);
-	void DetachScene(const std::string& scene_name);
+	void AttachCurrentScene(SceneKind scene_kind);
+	void DetachCurrentScene(SceneKind scene_kind);
 
 private:
-	std::unordered_map<std::string, std::shared_ptr<SceneObj>> m_scene_list;
-	std::unordered_map<std::string, std::shared_ptr<SceneObj>> m_current_scene;
-
-	static bool m_instantiated;
+	std::unordered_map<SceneKind, std::shared_ptr<SceneBase>> m_scene_list;		// すべてのシーン
+	std::unordered_map<SceneKind, std::shared_ptr<SceneBase>> m_current_scene;	// 実行中のシーン
 };
