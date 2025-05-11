@@ -180,11 +180,17 @@
     <ClInclude Include="source_code\Math\Vector\vector_2d_calculator.hpp" />
     <ClInclude Include="source_code\Math\Vector\vector_3d.hpp" />
     <ClInclude Include="source_code\Math\Vector\vector_3d_calculator.hpp" />
+    <ClInclude Include="source_code\Scene\game_clear_scene.cpp" />
     <ClInclude Include="source_code\Scene\game_clear_scene.hpp" />
+    <ClInclude Include="source_code\Scene\game_over_scene.cpp" />
     <ClInclude Include="source_code\Scene\game_over_scene.hpp" />
+    <ClInclude Include="source_code\Scene\load_scene.cpp" />
     <ClInclude Include="source_code\Scene\load_scene.hpp" />
+    <ClInclude Include="source_code\Scene\play_scene.cpp" />
     <ClInclude Include="source_code\Scene\play_scene.hpp" />
+    <ClInclude Include="source_code\Scene\share_scene.cpp" />
     <ClInclude Include="source_code\Scene\share_scene.hpp" />
+    <ClInclude Include="source_code\Scene\title_scene.cpp" />
     <ClInclude Include="source_code\Scene\title_scene.hpp" />
     <ClInclude Include="source_code\Window\window.hpp" />
   </ItemGroup>

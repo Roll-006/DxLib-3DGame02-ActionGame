@@ -1,30 +1,37 @@
 #pragma once
 
+/// @brief シングルトン基底クラス
+/// @brief 派生クラスに「friend SingletonBase<派生クラス>;」を定義する必要あり
+template<typename T>
 class SingletonBase
 {
 public:
 	static void Generate()
 	{
-		if (!m_instance){ m_instance = new SingletonBase; }
+		if (!m_instance)
+		{
+			m_instance = new T;
+		}
 	}
 
 	static void Delete()
 	{
-		if (m_instance == nullptr)
+		if (m_instance != nullptr)
 		{
 			delete m_instance;
 			m_instance = nullptr;
 		}
 	}
 
-	static SingletonBase* GetInstance() { return m_instance ? m_instance : nullptr; }
+	[[nodiscard]] static T* GetInstance() { return m_instance ? m_instance : nullptr; }
 
-private:
-	SingletonBase(){}
+protected:
+	SingletonBase() = default;
 	virtual ~SingletonBase() = default;
 
 private:
-	static SingletonBase* m_instance;
+	static T* m_instance;
 };
 
-SingletonBase* SingletonBase::m_instance = nullptr;
+template<typename T>
+T* SingletonBase<T>::m_instance = nullptr;

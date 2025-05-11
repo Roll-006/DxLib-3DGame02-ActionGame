@@ -1,7 +1,6 @@
 #include "fps.hpp"
 
-bool  FPS::m_instantiated = false;
-float FPS::m_delta_time   = 0.0f;
+float FPS::m_delta_time = 0.0f;
 
 FPS::FPS() :
     m_fps           (kFPS),
@@ -11,15 +10,12 @@ FPS::FPS() :
     m_frame_count   (1),
     m_average_fps   (0.0f)
 {
-    assert(!m_instantiated);
-    m_instantiated = true;
-
     m_first_time = m_current_time = m_prev_time = GetNowHiPerformanceCount();
 }
 
 FPS::~FPS()
 {
-    m_instantiated = false;
+
 }
 
 void FPS::Update()

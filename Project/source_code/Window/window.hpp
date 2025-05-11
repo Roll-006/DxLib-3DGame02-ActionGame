@@ -2,11 +2,12 @@
 #include <cassert>
 #include <DxLib.h>
 
+#include "../Base/one_instance_singleton_base.hpp"
+
 #include "../FPS/fps.hpp"
 #include "../Manager/input_checker.hpp"
 
-/// @brief Only one instance
-class Window
+class Window : public OneInstanceSingletonBase<Window>
 {
 public:
 	Window();
@@ -27,6 +28,4 @@ public:
 private:
 	int  m_change_window_count;
 	bool m_is_full_screen;
-
-	static bool m_instantiated;
 };

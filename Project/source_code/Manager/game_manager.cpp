@@ -1,31 +1,24 @@
 #include "game_manager.hpp"
 
-bool GameManager::m_instantiated = false;
-
 GameManager::GameManager():
-	m_window			(nullptr),
-	m_fps				(nullptr),
-	m_scene_obj_manager	(nullptr)
+	m_window		(nullptr),
+	m_fps			(nullptr),
+	m_scene_manager	(nullptr)
 {
-	assert(!m_instantiated);
-	m_instantiated  = true;
-
 	SetUpGameSystem();
 
-	InputChecker  ::Generate();
-	GameObjManager::Generate();
+	InputChecker::Generate();
+	ObjManager	::Generate();
 
-	m_window			= std::make_unique<Window>();
-	m_fps				= std::make_unique<FPS>();
-	m_scene_obj_manager = std::make_unique<SceneObjManager>();
+	m_window		= std::make_unique<Window>();
+	m_fps			= std::make_unique<FPS>();
+	m_scene_manager = std::make_unique<SceneObjManager>();
 }
 
 GameManager::~GameManager()
 {
-	m_instantiated = false;
-
-	InputChecker  ::Delete();
-	GameObjManager::Delete();
+	InputChecker::Delete();
+	ObjManager	::Delete();
 	
 	Effkseer_End();
 	DxLib_End();
@@ -38,8 +31,8 @@ void GameManager::Run()
 		m_fps->Update();
 		m_window->Update();
 		InputChecker::GetInstance()->Update();
-		m_scene_obj_manager->Update();
-		m_scene_obj_manager->Draw();
+		m_scene_manager->Update();
+		m_scene_manager->Draw();
 		m_fps->Wait();
 
 		ScreenFlip();
@@ -49,6 +42,7 @@ void GameManager::Run()
 void GameManager::SetUpGameSystem()
 {
 	SetGraphMode(Window::kWidth, Window::kHeight, 32);
+	ChangeWindowMode(TRUE);
 	if (DxLib_Init() == -1){ exit(EXIT_FAILURE); }
 	SetDrawScreen(DX_SCREEN_BACK);
 	SetUseDirect3DVersion(DX_DIRECT3D_11);

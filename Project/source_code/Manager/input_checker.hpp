@@ -4,18 +4,22 @@
 #include <tuple>
 #include <DxLib.h>
 
+#include "../Base/singleton_base.hpp"
+
 #include "../FPS/fps.hpp"
 #include "../Window/window.hpp"
 #include "../Data/CSV/csv.hpp"
 #include "../Data/input_data.hpp"
 #include "../Data/Kind/input_kind.hpp"
 #include "../Concept/input_concepts.hpp"
-#include "../Vector/vector.hpp"
+#include "../Math/Vector/vector.hpp"
 
 /// @brief 役割 : 入力デバイスの検出, 入力状態の取得, 入力時間の計測
-class InputChecker
+class InputChecker : public SingletonBase<InputChecker>
 {
 public:
+	friend SingletonBase<InputChecker>;
+
 	enum class TimeState
 	{
 		kPrev,
@@ -23,10 +27,6 @@ public:
 	};
 
 public:
-	static void Generate();
-	static void Delete();
-	static InputChecker* GetInstance();
-
 	void Update();
 
 	void InitMousePos();
@@ -114,7 +114,7 @@ public:
 
 private:
 	InputChecker();
-	~InputChecker();
+	~InputChecker()override;
 
 	void AddInputData(InputKind kind, const int input_num);
 

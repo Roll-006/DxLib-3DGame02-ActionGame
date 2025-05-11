@@ -24,7 +24,7 @@ void ObjManager::RemoveObj(const std::string& obj_name)
 	m_objects.erase(obj_name);
 }
 
-std::shared_ptr<ObjBase> ObjManager::GetObj(const std::string& obj_name)
+std::shared_ptr<ObjBase> ObjManager::GetObj(const std::string& obj_name)noexcept
 {
 	return m_objects.count(obj_name) ? m_objects.at(obj_name) : nullptr;
 }

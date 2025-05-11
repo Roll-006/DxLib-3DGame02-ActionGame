@@ -3,12 +3,14 @@
 #include <unordered_map>
 #include <EffekseerForDXLib.h>
 
+#include "../Base/one_instance_singleton_base.hpp"
+
 #include "../Window/window.hpp"
 #include "../FPS/fps.hpp"
-#include "scene_obj_manager.hpp"
+#include "scene_manager.hpp"
+#include "obj_manager.hpp"
 
-/// @brief Only one instance
-class GameManager
+class GameManager : public OneInstanceSingletonBase<GameManager>
 {
 public:
 	GameManager();
@@ -25,7 +27,5 @@ private:
 private:
 	std::unique_ptr<Window>			 m_window;
 	std::unique_ptr<FPS>			 m_fps;
-	std::unique_ptr<SceneObjManager> m_scene_obj_manager;
-
-	static bool m_instantiated;
+	std::unique_ptr<SceneObjManager> m_scene_manager;
 };

@@ -5,9 +5,11 @@
 #include "../Base/singleton_base.hpp"
 #include "../Base/obj_base.hpp"
 
-class ObjManager : public SingletonBase
+class ObjManager : public SingletonBase<ObjManager>
 {
 public:
+	friend SingletonBase<ObjManager>;
+
 	void AddObj	  (const std::shared_ptr<ObjBase> obj);
 	void RemoveObj(const std::string& obj_name);
 

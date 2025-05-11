@@ -1,8 +1,8 @@
 #pragma once
-#include <cassert>
+#include "../Base/one_instance_singleton_base.hpp"
 #include <DxLib.h>
 
-class FPS
+class FPS : public OneInstanceSingletonBase<FPS>
 {
 public:
 	FPS();
@@ -27,5 +27,4 @@ private:
 	float    m_average_fps;
 
 	static float m_delta_time;
-	static bool  m_instantiated;
 };

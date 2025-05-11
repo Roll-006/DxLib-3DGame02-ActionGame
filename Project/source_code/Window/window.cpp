@@ -1,21 +1,16 @@
 #include "window.hpp"
 
-bool Window::m_instantiated = false;
-
 Window::Window():
 	m_change_window_count	(0),
 	m_is_full_screen		(false)
 {
-	assert(!m_instantiated);
-	m_instantiated = true;
-
 	ChangeWindowMode(m_is_full_screen ? FALSE : TRUE);	// DxLib既存の関数はFALSEがフルスクリーンであるためフラグを反転
 	if (m_is_full_screen) { ++m_change_window_count; }
 }
 
 Window::~Window()
 {
-	m_instantiated = false;
+
 }
 
 void Window::Update()

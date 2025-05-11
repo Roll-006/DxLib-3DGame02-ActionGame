@@ -1,26 +1,5 @@
 #include "input_checker.hpp"
 
-InputChecker* InputChecker::m_instance = nullptr;
-
-void InputChecker::Generate()
-{
-	if (!m_instance)
-	{
-		m_instance = new InputChecker;
-	}
-}
-
-void InputChecker::Delete()
-{
-	delete m_instance;
-	m_instance = nullptr;
-}
-
-InputChecker* InputChecker::GetInstance()
-{
-	return m_instance ? m_instance : nullptr;
-}
-
 InputChecker::InputChecker():
 	m_csv					(std::make_unique<CSV>()),
 	m_xinput				(-1),
