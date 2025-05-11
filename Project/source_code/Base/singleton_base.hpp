@@ -26,7 +26,7 @@ public:
 	[[nodiscard]] static T* GetInstance() { return m_instance ? m_instance : nullptr; }
 
 protected:
-	SingletonBase() = default;
+	SingletonBase(){}
 	virtual ~SingletonBase() = default;
 
 private:

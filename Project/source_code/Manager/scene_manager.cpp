@@ -2,12 +2,12 @@
 
 SceneObjManager::SceneObjManager()
 {
-	//m_scene_list[SceneKind::kTitle]		= std::make_shared<TitleScene>();
-	//m_scene_list[SceneKind::kPlay]		= std::make_shared<PlayScene>();
-	//m_scene_list[SceneKind::kGameClear]	= std::make_shared<GameClearScene>();
-	//m_scene_list[SceneKind::kGameOver]	= std::make_shared<GameOverScene>();
-	//m_scene_list[SceneKind::kLoad]		= std::make_shared<LoadScene>();
-	//m_scene_list[SceneKind::kShare]		= std::make_shared<ShareScene>();
+	m_scene_list[SceneKind::kTitle]		= std::make_shared<TitleScene>();
+	m_scene_list[SceneKind::kPlay]		= std::make_shared<PlayScene>();
+	m_scene_list[SceneKind::kGameClear]	= std::make_shared<GameClearScene>();
+	m_scene_list[SceneKind::kGameOver]	= std::make_shared<GameOverScene>();
+	m_scene_list[SceneKind::kLoad]		= std::make_shared<LoadScene>();
+	m_scene_list[SceneKind::kShare]		= std::make_shared<ShareScene>();
 
 	// ‹¤—LƒV[ƒ“‚Íí‚É—¬‚·
 	AttachCurrentScene(SceneKind::kShare);

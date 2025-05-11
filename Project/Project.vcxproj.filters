@@ -32,6 +32,24 @@
     <ClCompile Include="source_code\Manager\obj_manager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
+    <ClCompile Include="source_code\Scene\game_clear_scene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="source_code\Scene\game_over_scene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="source_code\Scene\load_scene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="source_code\Scene\play_scene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="source_code\Scene\share_scene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="source_code\Scene\title_scene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source_code\Math\math.hpp">
@@ -115,6 +133,18 @@
     <ClInclude Include="source_code\Math\Vector\vector_3d_calculator.hpp">
       <Filter>Math\Vector</Filter>
     </ClInclude>
+    <ClInclude Include="source_code\Manager\obj_manager.hpp">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Data\Kind\scene_kind.hpp">
+      <Filter>Data\Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Base\one_instance_singleton_base.hpp">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Base\singleton_base.hpp">
+      <Filter>Base</Filter>
+    </ClInclude>
     <ClInclude Include="source_code\Scene\game_clear_scene.hpp">
       <Filter>Scene</Filter>
     </ClInclude>
@@ -131,36 +161,6 @@
       <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="source_code\Scene\title_scene.hpp">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Manager\obj_manager.hpp">
-      <Filter>Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Data\Kind\scene_kind.hpp">
-      <Filter>Data\Kind</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Base\one_instance_singleton_base.hpp">
-      <Filter>Base</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Base\singleton_base.hpp">
-      <Filter>Base</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Scene\game_clear_scene.cpp">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Scene\game_over_scene.cpp">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Scene\load_scene.cpp">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Scene\play_scene.cpp">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Scene\share_scene.cpp">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Scene\title_scene.cpp">
       <Filter>Scene</Filter>
     </ClInclude>
   </ItemGroup>
