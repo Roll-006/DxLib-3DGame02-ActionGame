@@ -50,6 +50,21 @@
     <ClCompile Include="source_code\Scene\title_scene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
+    <ClCompile Include="source_code\Object\player.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="source_code\Support\animator.cpp">
+      <Filter>Support</Filter>
+    </ClCompile>
+    <ClCompile Include="source_code\Support\modeler.cpp">
+      <Filter>Support</Filter>
+    </ClCompile>
+    <ClCompile Include="source_code\Support\transform.cpp">
+      <Filter>Support</Filter>
+    </ClCompile>
+    <ClCompile Include="source_code\Object\camera.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source_code\Math\math.hpp">
@@ -163,6 +178,21 @@
     <ClInclude Include="source_code\Scene\title_scene.hpp">
       <Filter>Scene</Filter>
     </ClInclude>
+    <ClInclude Include="source_code\Object\player.hpp">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Support\animator.hpp">
+      <Filter>Support</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Support\modeler.hpp">
+      <Filter>Support</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Support\transform.hpp">
+      <Filter>Support</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Object\camera.hpp">
+      <Filter>Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Object">
@@ -221,6 +251,9 @@
     </Filter>
     <Filter Include="Math\Vector">
       <UniqueIdentifier>{c5f69510-fd45-4815-8e17-f8bee9a78e79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Support">
+      <UniqueIdentifier>{c6964f06-9b8c-446a-8f44-3299598a3b7f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -1,6 +1,5 @@
 ﻿#pragma once
 #include <array>
-#include <DxLib.h>
 
 #include "Vector/vector.hpp"
 #include "Quaternion/quaternion.hpp"
