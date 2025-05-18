@@ -1,6 +1,6 @@
 #pragma once
-#include <concepts>
-#include "../../Concept/common_concepts.hpp"
+#include <cmath>
+#include "../../Concept/vector_concepts.hpp"
 
 template<typename ElemT>
 struct Vector2D
@@ -21,26 +21,45 @@ struct Vector2D
     Vector2D& operator*=(ScaleT scale)      { return Vector2D(x * scale, y * scale); }
 };
 
-// å^êßå¿
-namespace v2d_concepts
-{
-    template<typename T>
-    concept ValidT = std::same_as<T, Vector2D<int>>
-                  || std::same_as<T, Vector2D<long>>
-                  || std::same_as<T, Vector2D<long long>>
-                  || std::same_as<T, Vector2D<float>>
-                  || std::same_as<T, Vector2D<double>>
-                  || std::same_as<T, Vector2D<long double>>;
-}
-
 inline auto operator+ (const v2d_concepts::ValidT auto& v1, const v2d_concepts::ValidT auto& v2)    { return Vector2D(v1.x + v2.x, v1.y + v2.y); }
 inline auto operator- (const v2d_concepts::ValidT auto& v1, const v2d_concepts::ValidT auto& v2)    { return Vector2D(v1.x - v2.x, v1.y - v2.y); }
 inline auto operator* (const v2d_concepts::ValidT auto& v1, const v2d_concepts::ValidT auto& v2)    { return Vector2D(v1.x * v2.x, v1.y * v2.y); }
 
 template<typename ScaleT>
-inline auto operator* (const v2d_concepts::ValidT auto& v,  const ScaleT scale)                     { return Vector2D(v.x * scale, v.y * scale); }
+inline auto operator* (const v2d_concepts::ValidT auto& v,  const ScaleT scale)                   { return Vector2D(v.x * scale, v.y * scale); }
 template<typename ScaleT>
-inline auto operator* (const ScaleT scale,                  const v2d_concepts::ValidT auto& v)     { return v * scale; }
+inline auto operator* (const ScaleT scale,                const v2d_concepts::ValidT auto& v)     { return v * scale; }
 
 inline bool operator==(const v2d_concepts::ValidT auto& v1, const v2d_concepts::ValidT auto& v2)    { return v1.x == v2.x && v1.y == v2.y; }
 inline bool operator!=(const v2d_concepts::ValidT auto& v1, const v2d_concepts::ValidT auto& v2)    { return !(v1 == v2); }
+
+namespace v2d
+{
+	template<typename CastT>
+	[[nodiscard]] inline Vector2D<CastT> ConvertVecType(const v2d_concepts::ValidT auto& v)
+	{
+		return Vector2D<CastT>(v.x, v.y);
+	}
+
+	[[nodiscard]] inline float GetSize(const v2d_concepts::ValidT auto& v)
+	{
+		return static_cast<float>(sqrt(v.x * v.x + v.y * v.y));
+	}
+	[[nodiscard]] inline float GetSquareSize(const v2d_concepts::ValidT auto& v)
+	{
+		return GetSize(v) * GetSize(v);
+	}
+
+	template<v2d_concepts::ValidT VecT>
+	[[nodiscard]] inline VecT GetZeroVector()
+	{
+		return VecT(0.0f, 0.0f);
+	}
+
+	template<v2d_concepts::ValidT VecT>
+	[[nodiscard]] inline VecT GetNormalizedVector(const VecT& v)
+	{
+		float size = GetSize(v);
+		return size != 0 ? VecT(v.x / size, v.y / size) : v;
+	}
+}

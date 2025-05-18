@@ -145,8 +145,6 @@
     <ClCompile Include="source_code\Manager\scene_manager.cpp" />
     <ClCompile Include="source_code\Math\math.cpp" />
     <ClCompile Include="source_code\Math\Quaternion\quaternion.cpp" />
-    <ClCompile Include="source_code\Math\Vector\vector_2d_calculator.cpp" />
-    <ClCompile Include="source_code\Math\Vector\vector_3d_calculator.cpp" />
     <ClCompile Include="source_code\Object\camera.cpp" />
     <ClCompile Include="source_code\Object\player.cpp" />
     <ClCompile Include="source_code\Scene\game_clear_scene.cpp" />
@@ -177,11 +175,14 @@
     <ClInclude Include="source_code\Base\obj_base.hpp" />
     <ClInclude Include="source_code\Base\scene_base.hpp" />
     <ClInclude Include="source_code\Command\command.hpp" />
+    <ClInclude Include="source_code\Concept\vector_concepts.hpp" />
     <ClInclude Include="source_code\Concept\obj_concepts.hpp" />
     <ClInclude Include="source_code\Concept\common_concepts.hpp" />
     <ClInclude Include="source_code\Concept\input_concepts.hpp" />
     <ClInclude Include="source_code\Data\animator_data.hpp" />
     <ClInclude Include="source_code\Data\CSV\csv.hpp" />
+    <ClInclude Include="source_code\Data\IncludeList\shape.hpp" />
+    <ClInclude Include="source_code\Data\IncludeList\vector.hpp" />
     <ClInclude Include="source_code\Data\input_data.hpp" />
     <ClInclude Include="source_code\Data\Kind\input_kind.hpp" />
     <ClInclude Include="source_code\Data\Kind\player_kind.hpp" />
@@ -199,11 +200,8 @@
     <ClInclude Include="source_code\Manager\scene_manager.hpp" />
     <ClInclude Include="source_code\Math\math.hpp" />
     <ClInclude Include="source_code\Math\Quaternion\quaternion.hpp" />
-    <ClInclude Include="source_code\Math\Vector\vector.hpp" />
     <ClInclude Include="source_code\Math\Vector\vector_2d.hpp" />
-    <ClInclude Include="source_code\Math\Vector\vector_2d_calculator.hpp" />
     <ClInclude Include="source_code\Math\Vector\vector_3d.hpp" />
-    <ClInclude Include="source_code\Math\Vector\vector_3d_calculator.hpp" />
     <ClInclude Include="source_code\Object\camera.hpp" />
     <ClInclude Include="source_code\Object\player.hpp" />
     <ClInclude Include="source_code\Scene\game_clear_scene.hpp" />

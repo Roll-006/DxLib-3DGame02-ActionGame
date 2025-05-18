@@ -23,12 +23,6 @@
     <ClCompile Include="source_code\Math\Quaternion\quaternion.cpp">
       <Filter>Math\Quaternion</Filter>
     </ClCompile>
-    <ClCompile Include="source_code\Math\Vector\vector_2d_calculator.cpp">
-      <Filter>Math\Vector</Filter>
-    </ClCompile>
-    <ClCompile Include="source_code\Math\Vector\vector_3d_calculator.cpp">
-      <Filter>Math\Vector</Filter>
-    </ClCompile>
     <ClCompile Include="source_code\Manager\obj_manager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
@@ -163,19 +157,10 @@
     <ClInclude Include="source_code\Math\Quaternion\quaternion.hpp">
       <Filter>Math\Quaternion</Filter>
     </ClInclude>
-    <ClInclude Include="source_code\Math\Vector\vector.hpp">
-      <Filter>Math\Vector</Filter>
-    </ClInclude>
     <ClInclude Include="source_code\Math\Vector\vector_2d.hpp">
       <Filter>Math\Vector</Filter>
     </ClInclude>
-    <ClInclude Include="source_code\Math\Vector\vector_2d_calculator.hpp">
-      <Filter>Math\Vector</Filter>
-    </ClInclude>
     <ClInclude Include="source_code\Math\Vector\vector_3d.hpp">
-      <Filter>Math\Vector</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Math\Vector\vector_3d_calculator.hpp">
       <Filter>Math\Vector</Filter>
     </ClInclude>
     <ClInclude Include="source_code\Manager\obj_manager.hpp">
@@ -262,6 +247,15 @@
     <ClInclude Include="source_code\Data\Kind\shape_kind.hpp">
       <Filter>Data\Kind</Filter>
     </ClInclude>
+    <ClInclude Include="source_code\Concept\vector_concepts.hpp">
+      <Filter>Concept</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Data\IncludeList\shape.hpp">
+      <Filter>Data\IncludeList</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Data\IncludeList\vector.hpp">
+      <Filter>Data\IncludeList</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Object">
@@ -335,6 +329,9 @@
     </Filter>
     <Filter Include="Shape\3DShape">
       <UniqueIdentifier>{ac75a37e-b63a-4367-aa7b-75ba0c9cc8f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Data\IncludeList">
+      <UniqueIdentifier>{a9b5adeb-15db-4ac4-822d-1b42782f9731}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

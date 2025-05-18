@@ -1,7 +1,7 @@
 #pragma once
 #include <cmath>
 #include <DxLib.h>
-#include "../Vector/vector_3d_calculator.hpp"
+#include "../Vector/vector_3d.hpp"
 
 struct Quaternion;
 

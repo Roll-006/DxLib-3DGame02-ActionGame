@@ -1,1 +1,0 @@
-#include "vector_2d_calculator.hpp"
