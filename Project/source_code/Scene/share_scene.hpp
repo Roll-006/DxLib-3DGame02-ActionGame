@@ -1,5 +1,7 @@
 #pragma once
 #include "../Base/scene_base.hpp"
+#include "../Object/camera.hpp"
+#include "../Object/player.hpp"
 
 class ShareScene : public SceneBase
 {
@@ -12,5 +14,6 @@ public:
 	void Draw()const override;
 
 private:
-
+	std::shared_ptr<Camera> m_camera;
+	std::shared_ptr<Player> m_player;
 };

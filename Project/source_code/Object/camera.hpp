@@ -1,8 +1,8 @@
 #pragma once
-#include "../Support/transform.hpp"
+#include "../Base/obj_base.hpp"
 #include "../Manager/obj_manager.hpp"
 
-class Camera
+class Camera : public ObjBase
 {
 public:
 	enum class TimeState
@@ -27,10 +27,9 @@ private:
 	static constexpr float kFar		= 2500.0f;
 	static constexpr float kFOV		= 60.0f;
 
-	std::shared_ptr<Transform>				m_transform;
 	std::shared_ptr<Transform>				m_target_transform;
 	std::unordered_map<TimeState, VECTOR>	m_target_pos;
 
-	float m_speed;
+	float m_move_speed;
 	float m_distance_to_target;
 };

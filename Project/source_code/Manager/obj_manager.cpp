@@ -1,3 +1,4 @@
+#include "../Base/obj_base.hpp"
 #include "obj_manager.hpp"
 
 ObjManager::ObjManager()
@@ -8,15 +9,6 @@ ObjManager::ObjManager()
 ObjManager::~ObjManager()
 {
 	// ˆ—‚È‚µ
-}
-
-void ObjManager::AddObj(const std::shared_ptr<ObjBase> obj)
-{
-	// ã‘‚«•s‰Â
-	if (!m_objects.count(obj->GetName()))
-	{
-		m_objects[obj->GetName()] = obj;
-	}
 }
 
 void ObjManager::RemoveObj(const std::string& obj_name)

@@ -193,6 +193,9 @@
     <ClInclude Include="source_code\Object\camera.hpp">
       <Filter>Object</Filter>
     </ClInclude>
+    <ClInclude Include="source_code\Concept\obj_concepts.hpp">
+      <Filter>Concept</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Object">

@@ -166,6 +166,7 @@
     <ClInclude Include="source_code\Base\obj_base.hpp" />
     <ClInclude Include="source_code\Base\scene_base.hpp" />
     <ClInclude Include="source_code\Command\command.hpp" />
+    <ClInclude Include="source_code\Concept\obj_concepts.hpp" />
     <ClInclude Include="source_code\Concept\common_concepts.hpp" />
     <ClInclude Include="source_code\Concept\input_concepts.hpp" />
     <ClInclude Include="source_code\Data\animator_data.hpp" />

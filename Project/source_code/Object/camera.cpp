@@ -1,8 +1,8 @@
 #include "camera.hpp"
 
 Camera::Camera() : 
-	m_transform			(std::make_shared<Transform>(VGet(0.0f, 0.0f, -500.0f))),
-	m_target_transform	()
+	ObjBase				(ObjName.CAMERA, ObjTag.CAMERA, VGet(0.0f, 0.0f, -500.0f)),
+	m_target_transform	(nullptr)
 {
 	SetCameraNearFar(kNear, kFar);
 	SetupCamera_Perspective(kFOV * math::kDegreesToRadian);
@@ -20,7 +20,7 @@ void Camera::Init()
 
 void Camera::Update()
 {
-	SetCameraPositionAndTarget_UpVecY(m_transform->GetPos(), m_target_transform->GetPos());
+	SetCameraPositionAndTarget_UpVecY(GetTransform()->GetPos(), m_target_transform->GetPos());
 }
 
 void Camera::Draw()const
@@ -32,16 +32,16 @@ void Camera::Draw()const
 
 void Camera::AttachTarget(const std::shared_ptr<ObjBase> obj)
 {
-	m_target_transform[TargetKind::kMain] = obj->GetComponent<TransformComponent>();
+	m_target_transform = obj->GetTransform();
 }
 
 void Camera::AttachTarget(std::string& obj_name)
 {
 	auto target_obj = ObjManager::GetInstance()->GetObj(obj_name);
-	m_target_transform[TargetKind::kMain] = target_obj->GetComponent<TransformComponent>();
+	m_target_transform = target_obj->GetTransform();
 }
 
 void Camera::DetachTarget()
 {
-	m_target_transform.erase(TargetKind::kMain);
+	m_target_transform = nullptr;
 }

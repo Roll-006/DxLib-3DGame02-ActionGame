@@ -16,6 +16,7 @@ SceneObjManager::SceneObjManager()
 SceneObjManager::~SceneObjManager()
 {
 	// ˆ—‚È‚µ
+	// FIXME : ‚±‚Ì’n“_‚ğ”²‚¯‚éÛ‚É—áŠO‚ª”­¶‚·‚é
 }
 
 void SceneObjManager::Update()

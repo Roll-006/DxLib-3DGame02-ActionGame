@@ -8,6 +8,11 @@ Transform::Transform(const VECTOR& pos) :
 	m_matrix.m[3][2] = pos.z;
 }
 
+Transform::~Transform()
+{
+
+}
+
 void Transform::Move(const VECTOR& velocity)
 {
 	m_matrix.m[3][0] += velocity.x;

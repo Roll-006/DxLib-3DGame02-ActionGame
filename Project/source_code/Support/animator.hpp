@@ -19,23 +19,26 @@ public:
 	};
 
 public:
-	Animator(std::shared_ptr<Modeler> modelr, float blend_speed);
+	Animator(std::shared_ptr<Modeler> modeler, float blend_speed);
 	~Animator();
 
 	void Init();
 	void Update();
 
+	/// @brief アニメーションをアタッチする
+	/// @brief デタッチ処理は自動的に実行
+	void AttachAnim(int next_kind);
+
 	void AddAnimHandle(int kind, std::string file_path, std::string tag, float play_speed, bool is_loop);
 
 private:
-	void AttachAnim(int next_kind);
 	void DetachAnim(TimeState time_state);
 
-	void SetAnimState();
+	/// @brief 再生開始地点を設定
 	void SetPlayStartTime();
 
-	void Play();
-	void Blend();
+	void PlayAnim();
+	void BlendAnim();
 
 private:
 	// TODO : 命名がややこしいため変更予定
@@ -47,5 +50,5 @@ private:
 	float m_blend_speed;
 	bool  m_is_first_frame_change_anim;		// アニメーションが変更されて最初のフレームであるかどうか
 
-	std::shared_ptr<Modeler> m_modelr;
+	std::shared_ptr<Modeler> m_modeler;
 };
