@@ -3,7 +3,6 @@
 
 class ObjBase;
 
-// Œ^§ŒÀ
 namespace obj_concepts
 {
 	/// @brief ObjBase‚Ì”h¶ƒNƒ‰ƒX‚Å‚ ‚é

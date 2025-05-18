@@ -2,7 +2,6 @@
 #include <concepts>
 #include "../Data/input_data.hpp"
 
-// 型制限
 namespace input_concepts
 {
 	/// @brief パッド入力用の型である
@@ -14,6 +13,6 @@ namespace input_concepts
 	/// @brief マウス入力用の型である
 	template<typename T>
 	concept MouseInputT = std::is_same_v<int,					  T>
-					   || std::is_same_v<MouseSlideDirectionKind, T>
+					   || std::is_same_v<MouseSlideDirKind, T>
 					   || std::is_same_v<MouseWheelKind,		  T>;
 }

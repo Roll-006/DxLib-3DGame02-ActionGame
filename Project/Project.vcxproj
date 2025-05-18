@@ -155,12 +155,23 @@
     <ClCompile Include="source_code\Scene\play_scene.cpp" />
     <ClCompile Include="source_code\Scene\share_scene.cpp" />
     <ClCompile Include="source_code\Scene\title_scene.cpp" />
+    <ClCompile Include="source_code\Shape\1DShape\line.cpp" />
+    <ClCompile Include="source_code\Shape\1DShape\segment.cpp" />
+    <ClCompile Include="source_code\Shape\2DShape\circle.cpp" />
+    <ClCompile Include="source_code\Shape\2DShape\plane.cpp" />
+    <ClCompile Include="source_code\Shape\2DShape\square.cpp" />
+    <ClCompile Include="source_code\Shape\2DShape\triangle.cpp" />
+    <ClCompile Include="source_code\Shape\3DShape\aabb.cpp" />
+    <ClCompile Include="source_code\Shape\3DShape\capsule.cpp" />
+    <ClCompile Include="source_code\Shape\3DShape\obb.cpp" />
+    <ClCompile Include="source_code\Shape\3DShape\sphere.cpp" />
     <ClCompile Include="source_code\Support\animator.cpp" />
     <ClCompile Include="source_code\Support\modeler.cpp" />
     <ClCompile Include="source_code\Support\transform.cpp" />
     <ClCompile Include="source_code\Window\window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="source_code\Base\shape_base.hpp" />
     <ClInclude Include="source_code\Base\singleton_base.hpp" />
     <ClInclude Include="source_code\Base\one_instance_singleton_base.hpp" />
     <ClInclude Include="source_code\Base\obj_base.hpp" />
@@ -175,6 +186,7 @@
     <ClInclude Include="source_code\Data\Kind\input_kind.hpp" />
     <ClInclude Include="source_code\Data\Kind\player_kind.hpp" />
     <ClInclude Include="source_code\Data\Kind\scene_kind.hpp" />
+    <ClInclude Include="source_code\Data\Kind\shape_kind.hpp" />
     <ClInclude Include="source_code\Data\Name\obj_name.hpp" />
     <ClInclude Include="source_code\Data\Path\model_path.hpp" />
     <ClInclude Include="source_code\Data\Path\animation_path.hpp" />
@@ -200,6 +212,16 @@
     <ClInclude Include="source_code\Scene\play_scene.hpp" />
     <ClInclude Include="source_code\Scene\share_scene.hpp" />
     <ClInclude Include="source_code\Scene\title_scene.hpp" />
+    <ClInclude Include="source_code\Shape\1DShape\line.hpp" />
+    <ClInclude Include="source_code\Shape\1DShape\segment.hpp" />
+    <ClInclude Include="source_code\Shape\2DShape\circle.hpp" />
+    <ClInclude Include="source_code\Shape\2DShape\plane.hpp" />
+    <ClInclude Include="source_code\Shape\2DShape\square.hpp" />
+    <ClInclude Include="source_code\Shape\2DShape\triangle.hpp" />
+    <ClInclude Include="source_code\Shape\3DShape\aabb.hpp" />
+    <ClInclude Include="source_code\Shape\3DShape\capsule.hpp" />
+    <ClInclude Include="source_code\Shape\3DShape\obb.hpp" />
+    <ClInclude Include="source_code\Shape\3DShape\sphere.hpp" />
     <ClInclude Include="source_code\Support\animator.hpp" />
     <ClInclude Include="source_code\Support\modeler.hpp" />
     <ClInclude Include="source_code\Support\transform.hpp" />

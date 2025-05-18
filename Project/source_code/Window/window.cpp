@@ -20,6 +20,8 @@ void Window::Update()
 
 void Window::SetWindowMode()
 {
+	// ALTを押しながらエンターでウィンドウモード変更
+
 	if (!CheckHitKey(KEY_INPUT_LALT)) { return; }
 
 	if (InputChecker::GetInstance()->GetKeyInputState(KEY_INPUT_RETURN) == InputState::kSingle)

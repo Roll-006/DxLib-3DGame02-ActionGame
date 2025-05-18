@@ -10,7 +10,7 @@ InputChecker::InputChecker():
 	SetUseDirectInputFlag(TRUE);
 
 	m_mouse_data[TimeState::kPrev].pos	     = m_mouse_data[TimeState::kCurrent].pos	   = Vector2D<int>(Window::kHalfWidth, Window::kHalfHeight);
-	m_mouse_data[TimeState::kPrev].direction = m_mouse_data[TimeState::kCurrent].direction = Vector2D<float>(0.0f, 0.0f);
+	m_mouse_data[TimeState::kPrev].dir = m_mouse_data[TimeState::kCurrent].dir = Vector2D<float>(0.0f, 0.0f);
 	m_mouse_data[TimeState::kPrev].velocity  = m_mouse_data[TimeState::kCurrent].velocity  = Vector2D<float>(0.0f, 0.0f);
 
 	InitMouseCursor();
@@ -43,7 +43,7 @@ void InputChecker::Update()
 	m_mouse_data.at(TimeState::kCurrent).wheel_rotation = GetMouseWheelRotVol();
 	if (m_is_init_mouse_pos) { InitMousePos(); }
 	CalcMouseVelocity();
-	CalcMouseDirection();
+	CalcMouseDir();
 
 	GetJoypadXInputState(DX_INPUT_PAD1, &m_xinput);
 
@@ -95,14 +95,14 @@ int InputChecker::GetMouseWheelParameter(MouseWheelKind input_num)const
 	return 0;
 }
 
-bool InputChecker::IsSlideMouse(MouseSlideDirectionKind input_num)const
+bool InputChecker::IsSlideMouse(MouseSlideDirKind input_num)const
 {
 	switch (input_num)
 	{
-	case MouseSlideDirectionKind::kLeft:  if (m_mouse_data.at(TimeState::kCurrent).pos.x < m_mouse_data.at(TimeState::kPrev).pos.x) { return true; } break;
-	case MouseSlideDirectionKind::kRight: if (m_mouse_data.at(TimeState::kCurrent).pos.x > m_mouse_data.at(TimeState::kPrev).pos.x) { return true; } break;
-	case MouseSlideDirectionKind::kDown:  if (m_mouse_data.at(TimeState::kCurrent).pos.y > m_mouse_data.at(TimeState::kPrev).pos.y) { return true; } break;
-	case MouseSlideDirectionKind::kUp:    if (m_mouse_data.at(TimeState::kCurrent).pos.y < m_mouse_data.at(TimeState::kPrev).pos.y) { return true; } break;
+	case MouseSlideDirKind::kLeft:  if (m_mouse_data.at(TimeState::kCurrent).pos.x < m_mouse_data.at(TimeState::kPrev).pos.x) { return true; } break;
+	case MouseSlideDirKind::kRight: if (m_mouse_data.at(TimeState::kCurrent).pos.x > m_mouse_data.at(TimeState::kPrev).pos.x) { return true; } break;
+	case MouseSlideDirKind::kDown:  if (m_mouse_data.at(TimeState::kCurrent).pos.y > m_mouse_data.at(TimeState::kPrev).pos.y) { return true; } break;
+	case MouseSlideDirKind::kUp:    if (m_mouse_data.at(TimeState::kCurrent).pos.y < m_mouse_data.at(TimeState::kPrev).pos.y) { return true; } break;
 	}
 	return false;
 }
@@ -152,9 +152,9 @@ void InputChecker::AddInputData(InputKind kind, const int input_num)
 	}
 }
 
-void InputChecker::CalcMouseDirection()
+void InputChecker::CalcMouseDir()
 {
-	m_mouse_data.at(TimeState::kCurrent).direction = v2d::GetNormalizedVector(m_mouse_data.at(TimeState::kCurrent).velocity);
+	m_mouse_data.at(TimeState::kCurrent).dir = v2d::GetNormalizedVector(m_mouse_data.at(TimeState::kCurrent).velocity);
 }
 
 void InputChecker::CalcMouseVelocity()
@@ -199,7 +199,7 @@ void InputChecker::CheckInputAll()
 			break;
 
 		case InputKind::kMouseSlide:
-			data.is_input = IsSlideMouse(static_cast<MouseSlideDirectionKind>(input_n)) ? true : false;
+			data.is_input = IsSlideMouse(static_cast<MouseSlideDirKind>(input_n)) ? true : false;
 			break;
 
 		case InputKind::kPadButton:

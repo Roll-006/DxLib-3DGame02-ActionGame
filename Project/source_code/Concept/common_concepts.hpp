@@ -1,7 +1,6 @@
 #pragma once
 #include <concepts>
 
-// Œ^§ŒÀ
 namespace common_concepts
 {
 	/// @brief ®”Œ^‚Å‚ ‚é

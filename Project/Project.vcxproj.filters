@@ -65,6 +65,36 @@
     <ClCompile Include="source_code\Object\camera.cpp">
       <Filter>Object</Filter>
     </ClCompile>
+    <ClCompile Include="source_code\Shape\1DShape\line.cpp">
+      <Filter>Shape\1DShape</Filter>
+    </ClCompile>
+    <ClCompile Include="source_code\Shape\1DShape\segment.cpp">
+      <Filter>Shape\1DShape</Filter>
+    </ClCompile>
+    <ClCompile Include="source_code\Shape\2DShape\circle.cpp">
+      <Filter>Shape\2DShape</Filter>
+    </ClCompile>
+    <ClCompile Include="source_code\Shape\2DShape\plane.cpp">
+      <Filter>Shape\2DShape</Filter>
+    </ClCompile>
+    <ClCompile Include="source_code\Shape\2DShape\square.cpp">
+      <Filter>Shape\2DShape</Filter>
+    </ClCompile>
+    <ClCompile Include="source_code\Shape\2DShape\triangle.cpp">
+      <Filter>Shape\2DShape</Filter>
+    </ClCompile>
+    <ClCompile Include="source_code\Shape\3DShape\aabb.cpp">
+      <Filter>Shape\3DShape</Filter>
+    </ClCompile>
+    <ClCompile Include="source_code\Shape\3DShape\capsule.cpp">
+      <Filter>Shape\3DShape</Filter>
+    </ClCompile>
+    <ClCompile Include="source_code\Shape\3DShape\obb.cpp">
+      <Filter>Shape\3DShape</Filter>
+    </ClCompile>
+    <ClCompile Include="source_code\Shape\3DShape\sphere.cpp">
+      <Filter>Shape\3DShape</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source_code\Math\math.hpp">
@@ -196,6 +226,42 @@
     <ClInclude Include="source_code\Concept\obj_concepts.hpp">
       <Filter>Concept</Filter>
     </ClInclude>
+    <ClInclude Include="source_code\Shape\1DShape\line.hpp">
+      <Filter>Shape\1DShape</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Shape\1DShape\segment.hpp">
+      <Filter>Shape\1DShape</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Shape\2DShape\circle.hpp">
+      <Filter>Shape\2DShape</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Shape\2DShape\plane.hpp">
+      <Filter>Shape\2DShape</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Shape\2DShape\square.hpp">
+      <Filter>Shape\2DShape</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Shape\2DShape\triangle.hpp">
+      <Filter>Shape\2DShape</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Shape\3DShape\aabb.hpp">
+      <Filter>Shape\3DShape</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Shape\3DShape\capsule.hpp">
+      <Filter>Shape\3DShape</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Shape\3DShape\obb.hpp">
+      <Filter>Shape\3DShape</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Shape\3DShape\sphere.hpp">
+      <Filter>Shape\3DShape</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Base\shape_base.hpp">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Data\Kind\shape_kind.hpp">
+      <Filter>Data\Kind</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Object">
@@ -257,6 +323,18 @@
     </Filter>
     <Filter Include="Support">
       <UniqueIdentifier>{c6964f06-9b8c-446a-8f44-3299598a3b7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shape">
+      <UniqueIdentifier>{2694cdd7-3230-4767-9c43-c6a55e47da5a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shape\1DShape">
+      <UniqueIdentifier>{56bc29da-2db5-4b2a-8e94-09d5fffb4bd1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shape\2DShape">
+      <UniqueIdentifier>{4b13d9b8-f21f-434a-aa12-561611daf8ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shape\3DShape">
+      <UniqueIdentifier>{ac75a37e-b63a-4367-aa7b-75ba0c9cc8f7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

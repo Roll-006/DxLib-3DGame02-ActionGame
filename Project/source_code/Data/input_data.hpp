@@ -11,7 +11,7 @@ struct InputData
 struct MouseData
 {
 	Vector2D<int>   pos;
-	Vector2D<float> direction;
+	Vector2D<float> dir;
 	Vector2D<float> velocity;
 	int wheel_rotation;
 };

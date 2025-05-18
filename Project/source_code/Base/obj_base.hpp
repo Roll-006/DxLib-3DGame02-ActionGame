@@ -27,8 +27,10 @@ public:
 	[[nodiscard]] std::string GetTag() const { return m_tag; }
 	[[nodiscard]] std::shared_ptr<Transform> GetTransform() { return m_transform; }
 
+protected:
+	std::shared_ptr<Transform> m_transform;
+
 private:
 	std::string m_name;	// オブジェクトの名前
 	std::string m_tag;	// オブジェクトの分類
-	std::shared_ptr<Transform> m_transform;
 };

@@ -25,7 +25,7 @@ enum class InputKind
 	kPadStick,
 };
 
-enum class MouseSlideDirectionKind
+enum class MouseSlideDirKind
 {
 	kLeft,
 	kRight,

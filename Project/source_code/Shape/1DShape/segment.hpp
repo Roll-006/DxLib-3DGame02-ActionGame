@@ -1,0 +1,38 @@
+#pragma once
+#include <DxLib.h>
+
+#include "../../Base/shape_base.hpp"
+#include "../../Math/Vector/vector_3d_calculator.hpp"
+
+class Segment : public ShapeBase
+{
+public:
+	Segment(const VECTOR& begin_pos, const VECTOR& end_pos);
+	Segment(const VECTOR& begin_pos, const VECTOR& dir, float length);
+	Segment();
+	~Segment();
+
+	void MakeSegment(const VECTOR& begin_pos, const VECTOR& end_pos);
+	void MakeSegment(const VECTOR& begin_pos, const VECTOR& dir, float length);
+
+	void Draw(int color)const;
+
+	void Move(const VECTOR& velocity);
+
+	void SetPos(const VECTOR& begin_pos);
+
+	/// @brief íºê¸è„ÇÃì_ÇéÊìæ
+	/// @param length énì_Ç©ÇÁÇÃí∑Ç≥
+	[[nodiscard]] VECTOR GetPoint(float length)const { return m_begin_pos + m_dir * length; }
+
+	[[nodiscard]] VECTOR GetBeginPos()const { return m_begin_pos; }
+	[[nodiscard]] VECTOR GetEndPos()  const { return m_end_pos; }
+	[[nodiscard]] VECTOR GetDir()	  const { return m_dir; }
+	[[nodiscard]] float  GetLength()  const { return m_length; }
+
+private:
+	VECTOR m_begin_pos;
+	VECTOR m_end_pos;
+	VECTOR m_dir;
+	float  m_length;
+};

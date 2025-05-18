@@ -37,7 +37,7 @@ public:
 
 	#pragma region ƒ}ƒEƒXî•ñ
 	[[nodiscard]] Vector2D<int>   GetMousePos	   (TimeState time_state)const { return m_mouse_data.at(time_state).pos; }
-	[[nodiscard]] Vector2D<float> GetMouseDirection(TimeState time_state)const { return m_mouse_data.at(time_state).direction; }
+	[[nodiscard]] Vector2D<float> GetMouseDir(TimeState time_state)const { return m_mouse_data.at(time_state).dir; }
 	[[nodiscard]] Vector2D<float> GetMouseVelocity (TimeState time_state)const { return m_mouse_data.at(time_state).velocity; }
 	#pragma endregion
 
@@ -45,7 +45,7 @@ public:
 	#pragma region “ü—Í”»’è
 	[[nodiscard]] bool IsInputMouseButton	 (const int				  input_num)const;
 	[[nodiscard]] int  GetMouseWheelParameter(MouseWheelKind		  input_num)const;
-	[[nodiscard]] bool IsSlideMouse			 (MouseSlideDirectionKind input_num)const;
+	[[nodiscard]] bool IsSlideMouse			 (MouseSlideDirKind input_num)const;
 	[[nodiscard]] bool IsInputPadButton		 (const int				  input_num)const { return m_xinput.Buttons[input_num]; }
 	[[nodiscard]] int  GetPadStickParameter	 (StickKind				  input_num)const;
 	[[nodiscard]] int  GetPadTriggerParameter(TriggerKind			  input_num)const;
@@ -61,7 +61,7 @@ public:
 		{
 			return SupportGetInputTime(InputKind::kMouseButton, input_num, time_state);
 		}
-		if (std::is_same_v<MouseT, MouseSlideDirectionKind>)
+		if (std::is_same_v<MouseT, MouseSlideDirKind>)
 		{
 			return SupportGetInputTime(InputKind::kMouseWheel, input_num, time_state);
 		}
@@ -90,7 +90,7 @@ public:
 	{
 		InputKind kind = InputKind::kMouseButton;
 
-		if (std::is_same_v<MouseT, MouseSlideDirectionKind>) { kind = InputKind::kMouseWheel; }
+		if (std::is_same_v<MouseT, MouseSlideDirKind>) { kind = InputKind::kMouseWheel; }
 		if (std::is_same_v<MouseT, MouseWheelKind>)			 { kind = InputKind::kMouseSlide; }
 
 		return SupportGetInputState(kind, input_num);
@@ -118,7 +118,7 @@ private:
 
 	void AddInputData(InputKind kind, const int input_num);
 
-	void CalcMouseDirection();
+	void CalcMouseDir();
 	void CalcMouseVelocity ();
 
 	void CountInputTimeAll();
