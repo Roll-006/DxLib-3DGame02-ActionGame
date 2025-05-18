@@ -1,8 +1,5 @@
 #pragma once
-#include <DxLib.h>
-
 #include "../../Base/shape_base.hpp"
-#include "../../Math/Vector/vector_3d_calculator.hpp"
 
 class Segment : public ShapeBase
 {
@@ -12,10 +9,7 @@ public:
 	Segment();
 	~Segment();
 
-	void MakeSegment(const VECTOR& begin_pos, const VECTOR& end_pos);
-	void MakeSegment(const VECTOR& begin_pos, const VECTOR& dir, float length);
-
-	void Draw(int color)const;
+	void Draw(unsigned int color)const;
 
 	void Move(const VECTOR& velocity);
 

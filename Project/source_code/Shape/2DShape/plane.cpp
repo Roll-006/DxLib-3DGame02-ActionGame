@@ -1,55 +1,46 @@
-#include "../../../Calculator/math.hpp"
-
 #include "plane.hpp"
 
-Plane::Plane(const VECTOR& normal_vec, float draw_edge_length):
-	ShapeBase	(ShapeKind::kPlane),
-	m_pos				(math::GetZeroVector()),
-	m_normal_vector		(normal_vec),
-	m_draw_edge_length	(draw_edge_length)
+Plane::Plane(const VECTOR& pos, const VECTOR& normal_vector):
+	ShapeBase		(ShapeKind::kPlane),
+	m_pos			(pos),
+	m_normal_vector	(v3d::GetNormalizedVector(normal_vector))
 {
-	m_square = new Square;
-	Init(m_normal_vector, m_draw_edge_length);
+	// ˆ—‚È‚µ
 }
 
 Plane::Plane() :
-	ShapeBase	(ShapeKind::kPlane),
-	m_pos			(math::GetZeroVector()),
-	m_normal_vector		(math::GetZeroVector()),
-	m_draw_edge_length	(0.0f)
+	ShapeBase		(ShapeKind::kPlane),
+	m_pos			(v3d::GetZeroVector()),
+	m_normal_vector	(v3d::GetZeroVector())
 {
-	m_square = new Square;
-	Init(m_normal_vector, m_draw_edge_length);
+	// ˆ—‚È‚µ
 }
 
 Plane::~Plane()
 {
-
+	// ˆ—‚È‚µ
 }
 
-void Plane::Init(const VECTOR& normal_vector, float draw_edge_length)
+void Plane::Draw(bool is_draw_normal_vector, bool is_draw_frame, float draw_edge_length, int alpha_blend_num, unsigned int frame_color)
 {
-	m_normal_vector		= math::GetNormalizedVector(normal_vector);
-	m_draw_edge_length	= draw_edge_length;
+	MakeDrawSquare(draw_edge_length).Draw(is_draw_normal_vector, is_draw_frame, alpha_blend_num, frame_color);
 }
 
-void Plane::Update(const VECTOR& pos)
+Square Plane::MakeDrawSquare(float edge_length)
 {
-	m_pos = pos;
-
 	VECTOR dir1 = math::GetNormalVector(m_normal_vector);
 	VECTOR dir2 = math::GetNormalVector(m_normal_vector, dir1);
 
-	VECTOR vertex1 = m_pos + dir1 * m_draw_edge_length * 0.5f;
-	vertex1 += dir2 * m_draw_edge_length * 0.5f;
-	VECTOR vertex2 = vertex1 - dir1 * m_draw_edge_length;
-	VECTOR vertex3 = vertex2 - dir2 * m_draw_edge_length;
-	VECTOR vertex4 = vertex3 + dir1 * m_draw_edge_length;
+	VECTOR vertex1 = m_pos + dir1 * edge_length * 0.5f;
+	vertex1 += dir2 * edge_length * 0.5f;
+	VECTOR vertex2 = vertex1 - dir1 * edge_length;
+	VECTOR vertex3 = vertex2 - dir2 * edge_length;
+	VECTOR vertex4 = vertex3 + dir1 * edge_length;
 
-	m_square->Init(vertex1, vertex2, vertex3, vertex4);
+	return Square(vertex1, vertex2, vertex3, vertex4);
 }
 
-void Plane::Draw(bool is_draw_normal_vector, bool is_draw_frame, int alpha_blend_num, float draw_edge_length)const
+void Plane::Move(const VECTOR& velocity)
 {
-	m_square->Draw(is_draw_normal_vector, is_draw_frame, alpha_blend_num);
+	m_pos += velocity;
 }

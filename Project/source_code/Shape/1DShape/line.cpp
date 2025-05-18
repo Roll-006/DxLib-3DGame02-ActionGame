@@ -2,18 +2,18 @@
 
 Line::Line(const VECTOR& pos, const VECTOR& dir):
 	ShapeBase(ShapeKind::kLine),
-	m_pos		(pos),
-	m_dir		(dir)
+	m_pos(pos),
+	m_dir(v3d::GetNormalizedVector(dir))
 {
-	MakeLine(m_pos, m_dir);
+	// èàóùÇ»Çµ
 }
 
 Line::Line() :
 	ShapeBase(ShapeKind::kLine),
-	m_pos		(v3d::GetZeroVector()),
-	m_dir		(v3d::GetZeroVector())
+	m_pos(v3d::GetZeroVector()),
+	m_dir(v3d::GetZeroVector())
 {
-	MakeLine(m_pos, m_dir);
+	// èàóùÇ»Çµ
 }
 
 Line::~Line()
@@ -21,13 +21,7 @@ Line::~Line()
 
 }
 
-void Line::MakeLine(const VECTOR& pos, const VECTOR& dir)
-{
-	m_pos  = pos;
-	m_dir = v3d::GetNormalizedVector(dir);
-}
-
-void Line::Draw(int color, int draw_length)
+void Line::Draw(int draw_length, unsigned int color)
 {
 	VECTOR begin = m_pos - m_dir * draw_length * 0.5f;
 	VECTOR end = begin + m_dir * draw_length;

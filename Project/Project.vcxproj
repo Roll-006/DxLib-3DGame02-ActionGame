@@ -156,6 +156,7 @@
     <ClCompile Include="source_code\Shape\1DShape\line.cpp" />
     <ClCompile Include="source_code\Shape\1DShape\segment.cpp" />
     <ClCompile Include="source_code\Shape\2DShape\circle.cpp" />
+    <ClCompile Include="source_code\Shape\2DShape\circumference.cpp" />
     <ClCompile Include="source_code\Shape\2DShape\plane.cpp" />
     <ClCompile Include="source_code\Shape\2DShape\square.cpp" />
     <ClCompile Include="source_code\Shape\2DShape\triangle.cpp" />
@@ -164,6 +165,7 @@
     <ClCompile Include="source_code\Shape\3DShape\obb.cpp" />
     <ClCompile Include="source_code\Shape\3DShape\sphere.cpp" />
     <ClCompile Include="source_code\Support\animator.cpp" />
+    <ClCompile Include="source_code\Support\modeler (2).cpp" />
     <ClCompile Include="source_code\Support\modeler.cpp" />
     <ClCompile Include="source_code\Support\transform.cpp" />
     <ClCompile Include="source_code\Window\window.cpp" />
@@ -180,14 +182,17 @@
     <ClInclude Include="source_code\Concept\common_concepts.hpp" />
     <ClInclude Include="source_code\Concept\input_concepts.hpp" />
     <ClInclude Include="source_code\Data\animator_data.hpp" />
+    <ClInclude Include="source_code\Data\box_data.hpp" />
     <ClInclude Include="source_code\Data\CSV\csv.hpp" />
     <ClInclude Include="source_code\Data\IncludeList\shape.hpp" />
     <ClInclude Include="source_code\Data\IncludeList\vector.hpp" />
     <ClInclude Include="source_code\Data\input_data.hpp" />
+    <ClInclude Include="source_code\Data\Kind\box_kind.hpp" />
     <ClInclude Include="source_code\Data\Kind\input_kind.hpp" />
     <ClInclude Include="source_code\Data\Kind\player_kind.hpp" />
     <ClInclude Include="source_code\Data\Kind\scene_kind.hpp" />
     <ClInclude Include="source_code\Data\Kind\shape_kind.hpp" />
+    <ClInclude Include="source_code\Data\Kind\texture_kind.hpp" />
     <ClInclude Include="source_code\Data\Name\obj_name.hpp" />
     <ClInclude Include="source_code\Data\Path\model_path.hpp" />
     <ClInclude Include="source_code\Data\Path\animation_path.hpp" />
@@ -213,6 +218,7 @@
     <ClInclude Include="source_code\Shape\1DShape\line.hpp" />
     <ClInclude Include="source_code\Shape\1DShape\segment.hpp" />
     <ClInclude Include="source_code\Shape\2DShape\circle.hpp" />
+    <ClInclude Include="source_code\Shape\2DShape\circumference.hpp" />
     <ClInclude Include="source_code\Shape\2DShape\plane.hpp" />
     <ClInclude Include="source_code\Shape\2DShape\square.hpp" />
     <ClInclude Include="source_code\Shape\2DShape\triangle.hpp" />
@@ -221,6 +227,7 @@
     <ClInclude Include="source_code\Shape\3DShape\obb.hpp" />
     <ClInclude Include="source_code\Shape\3DShape\sphere.hpp" />
     <ClInclude Include="source_code\Support\animator.hpp" />
+    <ClInclude Include="source_code\Support\modeler (2).hpp" />
     <ClInclude Include="source_code\Support\modeler.hpp" />
     <ClInclude Include="source_code\Support\transform.hpp" />
     <ClInclude Include="source_code\Window\window.hpp" />

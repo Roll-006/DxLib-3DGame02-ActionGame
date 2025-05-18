@@ -12,7 +12,7 @@
 #include "../Data/input_data.hpp"
 #include "../Data/Kind/input_kind.hpp"
 #include "../Concept/input_concepts.hpp"
-#include "../Math/Vector/vector.hpp"
+#include "../Data/IncludeList/vector.hpp"
 
 /// @brief 役割 : 入力デバイスの検出, 入力状態の取得, 入力時間の計測
 class InputChecker : public SingletonBase<InputChecker>

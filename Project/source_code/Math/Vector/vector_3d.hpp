@@ -29,12 +29,12 @@ inline bool operator!=(const v3d_concepts::ValidT auto& v1, const v3d_concepts::
 
 namespace v3d
 {
-    [[nodiscard]] inline VECTOR v3d::GetZeroVector()
+    [[nodiscard]] inline VECTOR GetZeroVector()
     {
         return VGet(0.0f, 0.0f, 0.0f);
     }
 
-    [[nodiscard]] inline VECTOR v3d::GetNormalizedVector(const VECTOR& v)
+    [[nodiscard]] inline VECTOR GetNormalizedVector(const VECTOR& v)
     {
         return VSize(v) != 0 ? VNorm(v) : v;
     }

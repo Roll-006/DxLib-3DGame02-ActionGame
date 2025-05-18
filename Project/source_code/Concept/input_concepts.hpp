@@ -12,7 +12,7 @@ namespace input_concepts
 
 	/// @brief マウス入力用の型である
 	template<typename T>
-	concept MouseInputT = std::is_same_v<int,					  T>
+	concept MouseInputT = std::is_same_v<int,				T>
 					   || std::is_same_v<MouseSlideDirKind, T>
-					   || std::is_same_v<MouseWheelKind,		  T>;
+					   || std::is_same_v<MouseWheelKind,	T>;
 }

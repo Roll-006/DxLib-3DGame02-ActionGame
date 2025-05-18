@@ -1,10 +1,9 @@
-//#include "../../../Calculator/math.hpp"
-//#include "circle.hpp"
+//#include "circumference.hpp"
 //
-//Circle::Circle(bool has_internal, const VECTOR& normal_vector, float radius):
-//	ShapeBase(has_internal ? ShapeKind::kCircle : ShapeKind::kCircumference),
-//	m_pos		(v3d::GetZeroVector()),
-//	m_normal_vector	(normal_vector),
+//Circumference::Circumference(const VECTOR& normal_vector, float radius):
+//	ShapeBase		(ShapeKind::kCircumference),
+//	m_pos			(v3d::GetZeroVector()),
+//	m_normal_vector	(v3d::GetNormalizedVector(normal_vector)),
 //	m_radius		(radius),
 //	m_interval_andle(0.0f)
 //{
@@ -18,7 +17,7 @@
 //	}
 //}
 //
-//Circle::Circle(bool has_internal) :
+//Circumference::Circumference() :
 //	ShapeBase(has_internal ? ShapeKind::kCircle : ShapeKind::kCircumference),
 //	m_pos		(v3d::GetZeroVector()),
 //	m_normal_vector	(v3d::GetZeroVector()),
@@ -35,7 +34,7 @@
 //	}
 //}
 //
-//Circle::~Circle()
+//Circumference::~Circumference()
 //{
 //	for (auto& triangle : m_triangle)
 //	{
@@ -43,13 +42,13 @@
 //	}
 //}
 //
-//void Circle::Init(const VECTOR& normal_vector, float radius)
+//void Circumference::Init(const VECTOR& normal_vector, float radius)
 //{
 //	m_normal_vector = math::GetNormalizedVector(normal_vector);
 //	m_radius        = radius;
 //}
 //
-//void Circle::SetPos(const VECTOR& pos)
+//void Circumference::Update(const VECTOR& pos)
 //{
 //	VECTOR dir1 = math::GetNormalVector(m_normal_vector);
 //	VECTOR dir2 = math::GetNormalVector(m_normal_vector, dir1);
@@ -60,11 +59,11 @@
 //		VECTOR pos1 = m_pos + m_radius * (cosf(m_interval_andle * i      ) * dir1 + sinf(m_interval_andle * i      ) * dir2);
 //		VECTOR pos2 = m_pos + m_radius * (cosf(m_interval_andle * (i + 1)) * dir1 + sinf(m_interval_andle * (i + 1)) * dir2);
 //
-//		m_triangle.at(i)->MakeTriangle(pos1, pos2, m_pos);
+//		m_triangle.at(i)->Init(pos1, pos2, m_pos);
 //	}
 //}
 //
-//void Circle::Draw(bool is_draw_normal_vector, bool is_draw_frame, int alpha_blend_num)const
+//void Circumference::Draw(bool is_draw_normal_vector, bool is_draw_frame, int vertex_num, int alpha_blend_num)const
 //{
 //	if (is_draw_normal_vector)
 //	{

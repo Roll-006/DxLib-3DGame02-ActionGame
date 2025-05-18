@@ -1,5 +1,4 @@
 #pragma once
-#include <DxLib.h>
 #include "../../Base/shape_base.hpp"
 
 class Line : public ShapeBase
@@ -9,11 +8,9 @@ public:
 	Line();
 	~Line();
 
-	void MakeLine(const VECTOR& pos, const VECTOR& dir);
-
 	/// @brief ï`âÊ
 	/// @param draw_length ï`âÊÇ∑ÇÈç€ÇÃí∑Ç≥
-	void Draw(int color, int draw_length);
+	void Draw(int draw_length, unsigned int color);
 
 	void Move(const VECTOR& velocity);
 
