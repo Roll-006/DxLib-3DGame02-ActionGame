@@ -12,7 +12,7 @@ Camera::Camera() :
 
 Camera::~Camera()
 {
-
+	// èàóùÇ»Çµ
 }
 
 void Camera::Init()
@@ -27,9 +27,9 @@ void Camera::Update()
 
 void Camera::Draw()const
 {
-	DrawLine3D(VGet(0, 0, 0), VGet(10000, 0, 0), 0xff0000);
-	DrawLine3D(VGet(0, 0, 0), VGet(0, 10000, 0), 0x00ff22);
-	DrawLine3D(VGet(0, 0, 0), VGet(0, 0, 10000), 0x0077ff);
+	DrawLine3D(VGet(0, 0, 0), VGet(10000,	  0,	 0), 0xff0000);
+	DrawLine3D(VGet(0, 0, 0), VGet(	   0, 10000,	 0), 0x00ff22);
+	DrawLine3D(VGet(0, 0, 0), VGet(    0,	  0, 10000), 0x0077ff);
 }
 
 void Camera::AttachTarget(const std::shared_ptr<ObjBase> obj)
@@ -37,7 +37,7 @@ void Camera::AttachTarget(const std::shared_ptr<ObjBase> obj)
 	m_target_transform = obj->GetTransform();
 }
 
-void Camera::AttachTarget(std::string& obj_name)
+void Camera::AttachTarget(std::string obj_name)
 {
 	auto target_obj = ObjManager::GetInstance()->GetObj(obj_name);
 	m_target_transform = target_obj->GetTransform();

@@ -38,7 +38,7 @@ private:
 
 private:
 	VECTOR  m_pos;		// 中心座標
-	VECTOR  m_dir;		// 向きベクトル
+	VECTOR  m_dir;
 	VECTOR  m_length;	// 各軸の長さ
 	BoxData m_box;
 };

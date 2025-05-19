@@ -19,7 +19,7 @@ public:
 	void Draw()const;
 
 	void AttachTarget(const std::shared_ptr<ObjBase> obj);
-	void AttachTarget(std::string& obj_name);
+	void AttachTarget(std::string obj_name);
 	void DetachTarget();
 
 private:

@@ -40,6 +40,6 @@ private:
 	VECTOR					m_normal_vector;	// 法線ベクトル
 	VECTOR					m_centroid;			// 重心
     VERTEX3D				m_vertexes[3];		// ポリゴンの各頂点
-	std::array<Segment, 3>	m_edges;				// 各辺
+	std::array<Segment, 3>	m_edges;			// 各辺
 	int						m_image_handle;		// 画像ハンドル
 };
