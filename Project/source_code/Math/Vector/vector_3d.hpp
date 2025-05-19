@@ -38,4 +38,6 @@ namespace v3d
     {
         return VSize(v) != 0 ? VNorm(v) : v;
     }
+
+
 }

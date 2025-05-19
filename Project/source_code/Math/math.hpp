@@ -63,7 +63,6 @@ namespace math
 	}
 
 	/// @brief クォータニオンから回転行列へ変換
-	/// @brief TODO : 検証が必要
 	MATRIX ConvertQuaternionToMatrix(const Quaternion& q);
 
 	/// @brief 回転行列からクォータニオンへ変換
@@ -74,7 +73,7 @@ namespace math
 
 	#pragma region 平均値
 	/// @brief 値の平均を取得
-	/// @brief 呼び出す際は「GetAverageValue<戻り値型>(値...);」とする
+	/// @brief 呼び出す際は「GetAverageValue<戻り値型>(値1, 値2...);」とする
 	template<common_concepts::FloatingPointT ReturnT, common_concepts::ArithmeticT T, common_concepts::ArithmeticT... Args>
 	[[nodiscard]] inline ReturnT GetAverageValue(T first, Args... args)
 	{

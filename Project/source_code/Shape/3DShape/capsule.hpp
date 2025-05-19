@@ -25,6 +25,6 @@ public:
 private:
     static constexpr int kPolygonDetailed = 16; // ƒ|ƒŠƒSƒ“‚Ì×‚©‚³
 
-    float    m_radius;
-    Segment  m_segment;
+    float   m_radius;
+    Segment m_segment;
 };

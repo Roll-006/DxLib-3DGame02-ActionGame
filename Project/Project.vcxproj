@@ -139,10 +139,12 @@
   <ItemGroup>
     <ClCompile Include="source_code\FPS\fps.cpp" />
     <ClCompile Include="source_code\main.cpp" />
+    <ClCompile Include="source_code\Manager\collision_manager.cpp" />
     <ClCompile Include="source_code\Manager\game_manager.cpp" />
     <ClCompile Include="source_code\Manager\input_checker.cpp" />
     <ClCompile Include="source_code\Manager\obj_manager.cpp" />
     <ClCompile Include="source_code\Manager\scene_manager.cpp" />
+    <ClCompile Include="source_code\Math\collision_calculator.cpp" />
     <ClCompile Include="source_code\Math\math.cpp" />
     <ClCompile Include="source_code\Math\Quaternion\quaternion.cpp" />
     <ClCompile Include="source_code\Object\camera.cpp" />
@@ -199,10 +201,14 @@
     <ClInclude Include="source_code\Data\Tag\obj_tag.hpp" />
     <ClInclude Include="source_code\Data\Tag\animation_tag.hpp" />
     <ClInclude Include="source_code\FPS\fps.hpp" />
+    <ClInclude Include="source_code\Interface\i_battler.hpp" />
+    <ClInclude Include="source_code\Interface\i_collide_obj.hpp" />
+    <ClInclude Include="source_code\Manager\collision_manager.hpp" />
     <ClInclude Include="source_code\Manager\game_manager.hpp" />
     <ClInclude Include="source_code\Manager\input_checker.hpp" />
     <ClInclude Include="source_code\Manager\obj_manager.hpp" />
     <ClInclude Include="source_code\Manager\scene_manager.hpp" />
+    <ClInclude Include="source_code\Math\collision_calculator.hpp" />
     <ClInclude Include="source_code\Math\math.hpp" />
     <ClInclude Include="source_code\Math\Quaternion\quaternion.hpp" />
     <ClInclude Include="source_code\Math\Vector\vector_2d.hpp" />
