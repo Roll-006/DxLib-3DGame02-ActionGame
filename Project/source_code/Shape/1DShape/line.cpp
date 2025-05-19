@@ -21,7 +21,7 @@ Line::~Line()
 
 }
 
-void Line::Draw(int draw_length, unsigned int color)
+void Line::Draw(const int draw_length, const unsigned int color)
 {
 	VECTOR begin = m_pos - m_dir * draw_length * 0.5f;
 	VECTOR end = begin + m_dir * draw_length;

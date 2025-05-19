@@ -1,7 +1,7 @@
 #pragma once
 #include "../Base/scene_base.hpp"
 
-class TitleScene : public SceneBase
+class TitleScene final : public SceneBase
 {
 public:
 	TitleScene();

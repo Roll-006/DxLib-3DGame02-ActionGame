@@ -6,7 +6,7 @@
 
 #include "../Data/Kind/player_kind.hpp"
 
-class Player : public ObjBase
+class Player final : public ObjBase
 {
 public:
 	Player(std::shared_ptr<Camera> camera);

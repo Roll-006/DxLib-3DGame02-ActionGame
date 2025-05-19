@@ -3,7 +3,7 @@
 #include "../Object/camera.hpp"
 #include "../Object/player.hpp"
 
-class ShareScene : public SceneBase
+class ShareScene final : public SceneBase
 {
 public:
 	ShareScene();

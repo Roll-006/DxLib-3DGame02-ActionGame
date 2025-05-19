@@ -2,7 +2,7 @@
 #include "../Base/one_instance_singleton_base.hpp"
 #include <DxLib.h>
 
-class FPS : public OneInstanceSingletonBase<FPS>
+class FPS final : public OneInstanceSingletonBase<FPS>
 {
 public:
 	FPS();

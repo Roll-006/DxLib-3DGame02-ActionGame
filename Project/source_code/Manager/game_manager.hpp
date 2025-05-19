@@ -10,7 +10,7 @@
 #include "scene_manager.hpp"
 #include "obj_manager.hpp"
 
-class GameManager : public OneInstanceSingletonBase<GameManager>
+class GameManager final : public OneInstanceSingletonBase<GameManager>
 {
 public:
 	GameManager();

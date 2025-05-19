@@ -1,7 +1,7 @@
 #pragma once
 #include "../Math/math.hpp"
 
-class Transform
+class Transform final
 {
 public:
 	Transform(const VECTOR& pos);

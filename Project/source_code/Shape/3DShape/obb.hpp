@@ -3,38 +3,38 @@
 #include "../../Data/box_data.hpp"
 #include "../../Data/Kind/box_kind.hpp"
 
-class OBB : public ShapeBase
+class OBB final : public ShapeBase
 {
 public:
 	OBB(const VECTOR& pos, const VECTOR& dir, const VECTOR& length);
 	OBB();
 	~OBB();
 
-	void Draw(bool is_draw_normal_vector, bool is_draw_frame, int alpha_blend_num, unsigned int frame_color)const;
+	void Draw(const bool is_draw_normal_vector, const bool is_draw_frame, const int alpha_blend_num, const unsigned int frame_color)const;
 
 	/// @brief テクスチャ読み込み
 	/// @brief この関数を使用しなかった場合、白い板が描画される
 	/// @param file_path 画像のファイルパス
 	/// @param paste_square テクスチャを張り付ける面
 	/// @param texture_dir テクスチャを張り付ける向き
-	void LoadTexture(std::string file_path, SquareKind paste_square, TextureDirKind texture_dir);
+	void LoadTexture(const std::string& file_path, const SquareKind paste_square, const TextureDirKind texture_dir);
 
 	/// @brief 移動
 	/// @param is_sync_dir 移動方向とOBBの向きを同期させるかどうか
-	void Move(const VECTOR& velocity, bool is_sync_dir);
+	void Move(const VECTOR& velocity, const bool is_sync_dir);
 
 	void SetPos(const VECTOR& pos);
 	void SetDir(const VECTOR& dir);
 
-	[[nodiscard]] VECTOR		 GetPos		()						const	{ return m_pos; }
-	[[nodiscard]] VECTOR		 GetDir		()						const	{ return m_dir; }
-	[[nodiscard]] VECTOR		 GetVertex	(VertexKind vertex_kind)const	{ return m_box.vertexes.at(static_cast<int>(vertex_kind)); }
-	[[nodiscard]] const Square*  GetPlane	(SquareKind square_kind)const	{ return &m_box.squares.at(static_cast<int>(square_kind)); }
-	[[nodiscard]] const Segment* GetEdge	(EdgeKind edge_kind)	const;
+	[[nodiscard]] VECTOR		 GetPos		()								const { return m_pos; }
+	[[nodiscard]] VECTOR		 GetDir		()								const { return m_dir; }
+	[[nodiscard]] VECTOR		 GetVertex	(const VertexKind vertex_kind)	const { return m_box.vertexes.at(static_cast<int>(vertex_kind)); }
+	[[nodiscard]] const Square&  GetSquare	(const SquareKind square_kind)	const { return m_box.squares.at(static_cast<int>(square_kind)); }
+	[[nodiscard]] const Segment& GetEdge	(const EdgeKind edge_kind)		const;
 
 private:
 	void CalcVertexPos();
-	void CalcPlanePos();
+	void CalcSquarePos();
 
 private:
 	VECTOR  m_pos;		// 中心座標

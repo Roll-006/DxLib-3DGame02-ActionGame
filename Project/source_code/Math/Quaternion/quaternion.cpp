@@ -15,7 +15,7 @@ Quaternion quat::GetZeroQuaternion()
 	return Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
 }
 
-Quaternion quat::GetQuaternion(const VECTOR& axis, float angle)
+Quaternion quat::GetQuaternion(const VECTOR& axis, const float angle)
 {
 	return ConvertFloat4ToQuaternion(QTRot(v3d::GetNormalizedVector(axis), angle));
 }
@@ -32,7 +32,7 @@ float quat::GetSquareSize(const Quaternion& q)
 
 Quaternion quat::GetNormalizedQuaternion(const Quaternion& q)
 {
-	float  size = GetSize(q);
+	const float size = GetSize(q);
 	return size != 0 ? Quaternion(q.x / size, q.y / size, q.z / size, q.w / size) : q;
 }
 

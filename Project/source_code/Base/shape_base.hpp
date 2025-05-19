@@ -8,7 +8,7 @@
 class ShapeBase
 {
 public:
-	ShapeBase(ShapeKind shape_kind) : 
+	ShapeBase(const ShapeKind shape_kind) :
 		m_shape_kind(shape_kind)
 	{ }
 

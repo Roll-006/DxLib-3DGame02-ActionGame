@@ -2,7 +2,7 @@
 #include "../Base/obj_base.hpp"
 #include "../Manager/obj_manager.hpp"
 
-class Camera : public ObjBase
+class Camera final : public ObjBase
 {
 public:
 	enum class TimeState
@@ -19,7 +19,7 @@ public:
 	void Draw()const;
 
 	void AttachTarget(const std::shared_ptr<ObjBase> obj);
-	void AttachTarget(std::string obj_name);
+	void AttachTarget(const std::string& obj_name);
 	void DetachTarget();
 
 private:

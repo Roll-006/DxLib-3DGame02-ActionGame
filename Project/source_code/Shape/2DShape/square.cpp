@@ -24,28 +24,28 @@ Square::~Square()
 
 }
 
-void Square::Draw(bool is_draw_normal_vector, bool is_draw_frame, int alpha_blend_num, unsigned int frame_color)
+void Square::Draw(const bool is_draw_normal_vector, const bool is_draw_frame, const int alpha_blend_num, const unsigned int frame_color)
 {
 	if (is_draw_normal_vector)
 	{
-		float length = math::GetAverageValue<float>(
-			m_triangles.at(0).GetEdge(0)->GetLength(), 
-			m_triangles.at(0).GetEdge(1)->GetLength(),
-			m_triangles.at(1).GetEdge(1)->GetLength(),
-			m_triangles.at(1).GetEdge(2)->GetLength());
+		const float length = math::GetAverageValue<float>(
+			m_triangles.at(0).GetEdge(0).GetLength(), 
+			m_triangles.at(0).GetEdge(1).GetLength(),
+			m_triangles.at(1).GetEdge(1).GetLength(),
+			m_triangles.at(1).GetEdge(2).GetLength());
 
 		DrawLine3D(m_centroid, m_centroid + GetNormalVector() * length, 0xffffff);
 	}
 
 	if (is_draw_frame)
 	{
-		m_triangles.at(0).GetEdge(0)->Draw(frame_color);
-		m_triangles.at(0).GetEdge(1)->Draw(frame_color);
-		m_triangles.at(1).GetEdge(1)->Draw(frame_color);
-		m_triangles.at(1).GetEdge(2)->Draw(frame_color);
+		m_triangles.at(0).GetEdge(0).Draw(frame_color);
+		m_triangles.at(0).GetEdge(1).Draw(frame_color);
+		m_triangles.at(1).GetEdge(1).Draw(frame_color);
+		m_triangles.at(1).GetEdge(2).Draw(frame_color);
 	}
 
-	for (auto& triangle : m_triangles)
+	for (const auto& triangle : m_triangles)
 	{
 		triangle.Draw(false, false, alpha_blend_num, 0xffffff);
 	}
@@ -65,13 +65,17 @@ void Square::Move(const VECTOR& velocity)
 		m_triangles.at(1).GetPos(2));
 }
 
-void Square::LoadTexture(std::string file_path, float u1, float v1, float u2, float v2, float u3, float v3, float u4, float v4)
+void Square::LoadTexture(const std::string& file_path,
+	const float u1, const float v1, 
+	const float u2, const float v2, 
+	const float u3, const float v3, 
+	const float u4, const float v4)
 {
 	m_triangles.at(0).LoadTexture(file_path, u1, v1, u2, v2, u3, v3);
 	m_triangles.at(1).LoadTexture(file_path, u1, v1, u3, v3, u4, v4);
 }
 
-void Square::LoadTexture(std::string file_path, TextureDirKind texture_dir)
+void Square::LoadTexture(const std::string& file_path, const TextureDirKind texture_dir)
 {
 	// ³–Ê‚ÉŒü‚©‚Á‚Ä’£‚è•t‚¯‚éê‡‚ğ‰Šú’l‚Æ‚·‚é
 	std::array<float, 8> texture_pos{
@@ -125,7 +129,7 @@ VECTOR Square::GetPos(const int index)const
 	return v3d::GetZeroVector();
 }
 
-const Segment* Square::GetEdge(const int index)const
+const Segment& Square::GetEdge(const int index)const
 {
 	switch (index)
 	{
@@ -137,5 +141,5 @@ const Segment* Square::GetEdge(const int index)const
 	default:
 		break;
 	}
-	return nullptr;
+	return Segment();
 }

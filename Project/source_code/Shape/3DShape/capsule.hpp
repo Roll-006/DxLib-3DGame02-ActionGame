@@ -1,25 +1,25 @@
 #pragma once
 #include "../1DShape/segment.hpp"
 
-class Capsule : public ShapeBase
+class Capsule final : public ShapeBase
 {
 public:
-    Capsule(const Segment* segment, float radius);
-    Capsule(const VECTOR& segment_begin_pos, const VECTOR& segment_end_pos, float radius);
-    Capsule(const VECTOR& segment_begin_pos, const VECTOR& dir, float length, float radius);
+    Capsule(const Segment& segment, const float radius);
+    Capsule(const VECTOR& segment_begin_pos, const VECTOR& segment_end_pos, const float radius);
+    Capsule(const VECTOR& segment_begin_pos, const VECTOR& dir, const float length, const float radius);
     Capsule();
     ~Capsule();
 
     /// @brief ï`âÊ
     /// @param is_draw_frame ògÇï`âÊÇ≥ÇπÇÈÇ©Ç«Ç§Ç©
     /// @param alpha_blend_num ìßâﬂíl (0Å`255 : 0Ç≈äÆëSìßâﬂ)
-    void Draw(bool is_draw_frame, int alpha_blend_num, unsigned int frame_color)const;
+    void Draw(const bool is_draw_frame, const int alpha_blend_num, const unsigned int frame_color)const;
 
     void Move(const VECTOR& velocity);
 
     void SetPos(const VECTOR& segment_begin_pos) { m_segment.SetPos(segment_begin_pos); }
 
-    [[nodiscard]] const Segment* GetSegment()const { return &m_segment; }
+    [[nodiscard]] const Segment& GetSegment()const { return m_segment; }
     [[nodiscard]] float          GetRadius() const { return m_radius; }
 
 private:

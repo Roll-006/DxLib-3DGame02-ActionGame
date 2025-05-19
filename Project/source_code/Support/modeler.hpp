@@ -5,11 +5,11 @@
 #include "../Data/Path/model_path.hpp"
 #include "transform.hpp"
 
-class Modeler
+class Modeler final
 {
 public:
-	Modeler(std::shared_ptr<Transform> transform, std::string file_path);
-	Modeler(std::shared_ptr<Transform> transform, int model_handle);
+	Modeler(std::shared_ptr<Transform> transform, const std::string& file_path);
+	Modeler(std::shared_ptr<Transform> transform, const int model_handle);
 	~Modeler();
 
 	void Draw();

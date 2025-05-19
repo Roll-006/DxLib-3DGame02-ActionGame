@@ -4,7 +4,7 @@
 #include "square.hpp"
 
 /// @brief –³ŒÀ‚É‘±‚­•½–Ê
-class Plane : public ShapeBase
+class Plane final : public ShapeBase
 {
 public:
 	Plane(const VECTOR& pos, const VECTOR& normal_vector);
@@ -16,10 +16,11 @@ public:
 	/// @param is_draw_frame ˜g‚ğ•`‰æ‚³‚¹‚é‚©‚Ç‚¤‚©
 	/// @param draw_edge_length •`‰æ‚Ì’¼ü‚Ì’·‚³(ÀÛ‚É‚Í–³ŒÀ‚É‘±‚­)
 	/// @param alpha_blend_num “§‰ß’l (0`255 : 0‚ÅŠ®‘S“§‰ß)
-	void Draw(bool is_draw_normal_vector, bool is_draw_frame, float draw_edge_length, int alpha_blend_num, unsigned int frame_color);
+	void Draw(const bool is_draw_normal_vector, const bool is_draw_frame, 
+		const float draw_edge_length, const int alpha_blend_num, const unsigned int frame_color);
 
 	/// @brief •`‰æ—p‚ÌlŠpŒ`‚ğì¬
-	[[nodiscard]] Square MakeDrawSquare(float edge_length);
+	[[nodiscard]] Square&& MakeDrawSquare(const float edge_length);
 
 	void Move(const VECTOR& velocity);
 

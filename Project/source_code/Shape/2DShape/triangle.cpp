@@ -48,17 +48,17 @@ Triangle::~Triangle()
 	// èàóùÇ»Çµ
 }
 
-void Triangle::Draw(bool is_draw_normal_vector, bool is_draw_frame, int alpha_blend_num, unsigned int frame_color)const
+void Triangle::Draw(const bool is_draw_normal_vector, const bool is_draw_frame, const int alpha_blend_num, const unsigned int frame_color)const
 {
 	if (is_draw_normal_vector)
 	{
-		float length = math::GetAverageValue<float>(m_edges.at(0).GetLength(), m_edges.at(1).GetLength(), m_edges.at(2).GetLength());
+		const float length = math::GetAverageValue<float>(m_edges.at(0).GetLength(), m_edges.at(1).GetLength(), m_edges.at(2).GetLength());
 		DrawLine3D(m_centroid, m_centroid + m_normal_vector * length, 0xffffff);
 	}
 
 	if (is_draw_frame)
 	{
-		for (auto edge : m_edges)
+		for (const auto edge : m_edges)
 		{
 			edge.Draw(frame_color);
 		}
@@ -91,7 +91,7 @@ void Triangle::Move(const VECTOR& velocity)
 	m_centroid		= math::GetCentroidOfATriangle(m_vertexes[0].pos, m_vertexes[1].pos, m_vertexes[2].pos);
 }
 
-void Triangle::LoadTexture(std::string file_path, float u1, float v1, float u2, float v2, float u3, float v3)
+void Triangle::LoadTexture(const std::string& file_path, const float u1, const float v1, const float u2, const float v2, const float u3, const float v3)
 {
 	m_image_handle = LoadGraph(file_path.c_str(), TRUE);
 

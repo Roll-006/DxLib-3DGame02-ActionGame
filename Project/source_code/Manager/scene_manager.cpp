@@ -21,7 +21,7 @@ SceneObjManager::~SceneObjManager()
 
 void SceneObjManager::Update()
 {
-	for (auto& scene : m_current_scene)
+	for (const auto& scene : m_current_scene)
 	{
 		scene.second->Update();
 	}
@@ -29,20 +29,20 @@ void SceneObjManager::Update()
 
 void SceneObjManager::Draw()const
 {
-	for (auto& scene : m_current_scene)
+	for (const auto& scene : m_current_scene)
 	{
 		scene.second->Draw();
 	}
 }
 
-void SceneObjManager::AttachCurrentScene(SceneKind scene_kind)
+void SceneObjManager::AttachCurrentScene(const SceneKind scene_kind)
 {
 	m_current_scene[scene_kind] = m_scene_list.at(scene_kind);
 
 	m_current_scene.at(scene_kind)->Init();
 }
 
-void SceneObjManager::DetachCurrentScene(SceneKind scene_kind)
+void SceneObjManager::DetachCurrentScene(const SceneKind scene_kind)
 {
 	m_current_scene.erase(scene_kind);
 }

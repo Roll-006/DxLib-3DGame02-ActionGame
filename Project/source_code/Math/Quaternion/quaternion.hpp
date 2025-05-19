@@ -12,7 +12,7 @@ namespace quat
 	[[nodiscard]] FLOAT4	 ConvertQuaternionToFloat4(const Quaternion& q);
 
 	[[nodiscard]] Quaternion GetZeroQuaternion();
-	[[nodiscard]] Quaternion GetQuaternion			(const VECTOR& axis, float angle);
+	[[nodiscard]] Quaternion GetQuaternion			(const VECTOR& axis, const float angle);
 
 	[[nodiscard]] float		 GetSize				(const Quaternion& q);
 	[[nodiscard]] float		 GetSquareSize			(const Quaternion& q);
@@ -43,7 +43,7 @@ struct Quaternion
 	}
 
 	template<typename ScaleT>
-	Quaternion& operator*=(ScaleT scale) { return Quaternion(x * scale, y * scale, z * scale, w * scale); }
+	Quaternion& operator*=(const ScaleT scale) { return Quaternion(x * scale, y * scale, z * scale, w * scale); }
 };
 
 inline Quaternion operator*(const Quaternion& q1, const Quaternion& q2)

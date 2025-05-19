@@ -1,7 +1,7 @@
 #pragma once
 #include "../Base/scene_base.hpp"
 
-class GameClearScene : public SceneBase
+class GameClearScene final : public SceneBase
 {
 public:
 	GameClearScene();

@@ -6,7 +6,7 @@
 #include "../Base/obj_base.hpp"
 #include "../Concept/obj_concepts.hpp"
 
-class ObjManager : public SingletonBase<ObjManager>
+class ObjManager final : public SingletonBase<ObjManager>
 {
 public:
 	friend SingletonBase<ObjManager>;
@@ -23,7 +23,10 @@ public:
 
 	void RemoveObj(const std::string& obj_name);
 
-	[[nodiscard]] std::shared_ptr<ObjBase> GetObj(const std::string& obj_name)noexcept;
+	/// @brief オブジェクトが存在しているかを判定
+	[[nodiscard]] bool IsExist(const std::string& obj_name) { return m_objects.count(obj_name); }
+
+	[[nodiscard]] std::shared_ptr<ObjBase> GetObj(const std::string& obj_name);
 
 private:
 	ObjManager();

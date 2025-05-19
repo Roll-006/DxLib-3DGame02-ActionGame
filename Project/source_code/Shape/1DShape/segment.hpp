@@ -1,15 +1,15 @@
 #pragma once
 #include "../../Base/shape_base.hpp"
 
-class Segment : public ShapeBase
+class Segment final : public ShapeBase
 {
 public:
 	Segment(const VECTOR& begin_pos, const VECTOR& end_pos);
-	Segment(const VECTOR& begin_pos, const VECTOR& dir, float length);
+	Segment(const VECTOR& begin_pos, const VECTOR& dir, const float length);
 	Segment();
 	~Segment();
 
-	void Draw(unsigned int color)const;
+	void Draw(const unsigned int color)const;
 
 	void Move(const VECTOR& velocity);
 
@@ -17,7 +17,7 @@ public:
 
 	/// @brief íºê¸è„ÇÃì_ÇéÊìæ
 	/// @param length énì_Ç©ÇÁÇÃí∑Ç≥
-	[[nodiscard]] VECTOR GetPoint(float length)const { return m_begin_pos + m_dir * length; }
+	[[nodiscard]] VECTOR GetPoint(const float length)const { return m_begin_pos + m_dir * length; }
 
 	[[nodiscard]] VECTOR GetBeginPos()const { return m_begin_pos; }
 	[[nodiscard]] VECTOR GetEndPos()  const { return m_end_pos; }

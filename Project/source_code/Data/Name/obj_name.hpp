@@ -3,7 +3,7 @@
 
 static struct ObjName
 {
-	std::string CAMERA = "camera";
-	std::string PLAYER = "player";
+	const std::string CAMERA = "camera";
+	const std::string PLAYER = "player";
 
 }ObjName;

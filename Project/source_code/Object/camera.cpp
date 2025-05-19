@@ -37,7 +37,7 @@ void Camera::AttachTarget(const std::shared_ptr<ObjBase> obj)
 	m_target_transform = obj->GetTransform();
 }
 
-void Camera::AttachTarget(std::string obj_name)
+void Camera::AttachTarget(const std::string& obj_name)
 {
 	auto target_obj = ObjManager::GetInstance()->GetObj(obj_name);
 	m_target_transform = target_obj->GetTransform();

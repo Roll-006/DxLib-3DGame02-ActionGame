@@ -7,7 +7,7 @@
 #include "../FPS/fps.hpp"
 #include "../Manager/input_checker.hpp"
 
-class Window : public OneInstanceSingletonBase<Window>
+class Window final : public OneInstanceSingletonBase<Window>
 {
 public:
 	Window();
@@ -17,7 +17,7 @@ public:
 
 private:
 	void SetWindowMode();
-	void SetWindowMode(bool is_full_screen);
+	void SetWindowMode(const bool is_full_screen);
 
 public:
 	static constexpr int kWidth		 = 800;

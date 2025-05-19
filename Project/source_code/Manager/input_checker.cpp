@@ -10,7 +10,7 @@ InputChecker::InputChecker():
 	SetUseDirectInputFlag(TRUE);
 
 	m_mouse_data[TimeState::kPrev].pos	     = m_mouse_data[TimeState::kCurrent].pos	   = Vector2D<int>(Window::kHalfWidth, Window::kHalfHeight);
-	m_mouse_data[TimeState::kPrev].dir = m_mouse_data[TimeState::kCurrent].dir = Vector2D<float>(0.0f, 0.0f);
+	m_mouse_data[TimeState::kPrev].dir		 = m_mouse_data[TimeState::kCurrent].dir	   = Vector2D<float>(0.0f, 0.0f);
 	m_mouse_data[TimeState::kPrev].velocity  = m_mouse_data[TimeState::kCurrent].velocity  = Vector2D<float>(0.0f, 0.0f);
 
 	InitMouseCursor();
@@ -83,9 +83,9 @@ bool InputChecker::IsInputMouseButton(const int input_num)const
 	return (GetMouseInput() & input_num) != 0;
 }
 
-int InputChecker::GetMouseWheelParameter(MouseWheelKind input_num)const
+int InputChecker::GetMouseWheelParameter(const MouseWheelKind input_num)const
 {
-	int rota = m_mouse_data.at(TimeState::kCurrent).wheel_rotation;
+	const int rota = m_mouse_data.at(TimeState::kCurrent).wheel_rotation;
 
 	switch (input_num)
 	{
@@ -95,7 +95,7 @@ int InputChecker::GetMouseWheelParameter(MouseWheelKind input_num)const
 	return 0;
 }
 
-bool InputChecker::IsSlideMouse(MouseSlideDirKind input_num)const
+bool InputChecker::IsSlideMouse(const MouseSlideDirKind input_num)const
 {
 	switch (input_num)
 	{
@@ -107,7 +107,7 @@ bool InputChecker::IsSlideMouse(MouseSlideDirKind input_num)const
 	return false;
 }
 
-int InputChecker::GetPadStickParameter(StickKind input_num)const
+int InputChecker::GetPadStickParameter(const StickKind input_num)const
 {
 	switch (input_num)
 	{
@@ -123,7 +123,7 @@ int InputChecker::GetPadStickParameter(StickKind input_num)const
 	return 0;
 }
 
-int InputChecker::GetPadTriggerParameter(TriggerKind input_num)const
+int InputChecker::GetPadTriggerParameter(const TriggerKind input_num)const
 {
 	switch (input_num)
 	{
@@ -133,7 +133,7 @@ int InputChecker::GetPadTriggerParameter(TriggerKind input_num)const
 	return 0;
 }
 
-float InputChecker::GetKeyInputTime(const int input_num, TimeState time_state)
+float InputChecker::GetKeyInputTime(const int input_num, const TimeState time_state)
 {
 	return SupportGetInputTime(InputKind::kKey, input_num, time_state);
 }
@@ -143,7 +143,7 @@ InputState InputChecker::GetKeyInputState(const int input_num)
 	return SupportGetInputState(InputKind::kKey, input_num);
 }
 
-void InputChecker::AddInputData(InputKind kind, const int input_num)
+void InputChecker::AddInputData(const InputKind kind, const int input_num)
 {
 	for (int i = 0; i < input_num; ++i)
 	{
@@ -159,7 +159,7 @@ void InputChecker::CalcMouseDir()
 
 void InputChecker::CalcMouseVelocity()
 {
-	Vector2D<int> distance = m_mouse_data.at(TimeState::kCurrent).pos - m_mouse_data.at(TimeState::kPrev).pos;
+	const Vector2D<int> distance = m_mouse_data.at(TimeState::kCurrent).pos - m_mouse_data.at(TimeState::kPrev).pos;
 	m_mouse_data.at(TimeState::kCurrent).velocity = v2d::ConvertVecType<float>(distance);
 }
 
@@ -258,7 +258,7 @@ void InputChecker::DetectCurrentInputDevice()
 	}
 }
 
-float InputChecker::SupportGetInputTime(InputKind input_kind, const int input_num, TimeState time_state)
+float InputChecker::SupportGetInputTime(InputKind const input_kind, const int input_num, const TimeState time_state)
 {
 	for (const auto& [input_k, input_n, state_t, data] : m_input_data)
 	{
@@ -270,7 +270,7 @@ float InputChecker::SupportGetInputTime(InputKind input_kind, const int input_nu
 	return 0.0f;
 }
 
-InputState InputChecker::SupportGetInputState(InputKind input_kind, const int input_num)
+InputState InputChecker::SupportGetInputState(const InputKind input_kind, const int input_num)
 {
 	bool prev_is_input	  = false;
 	bool current_is_input = false;

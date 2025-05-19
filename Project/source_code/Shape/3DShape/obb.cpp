@@ -7,7 +7,7 @@ OBB::OBB(const VECTOR& pos, const VECTOR& dir, const VECTOR& length):
 	m_length	(length)
 {
 	CalcVertexPos();
-	CalcPlanePos();
+	CalcSquarePos();
 }
 
 OBB::OBB() :
@@ -24,7 +24,7 @@ OBB::~OBB()
 	// 処理なし
 }
 
-void OBB::Draw(bool is_draw_normal_vector, bool is_draw_frame, int alpha_blend_num, unsigned int frame_color)const
+void OBB::Draw(const bool is_draw_normal_vector, const bool is_draw_frame, const int alpha_blend_num, const unsigned int frame_color)const
 {
 	for (auto square : m_box.squares)
 	{
@@ -35,24 +35,24 @@ void OBB::Draw(bool is_draw_normal_vector, bool is_draw_frame, int alpha_blend_n
 	{
 		for (int i = 0; i < BoxData::kEdgeNum; ++i)
 		{
-			GetEdge(static_cast<EdgeKind>(i))->Draw(frame_color);
+			GetEdge(static_cast<EdgeKind>(i)).Draw(frame_color);
 		}
 	}
 }
 
-void OBB::LoadTexture(std::string file_path, SquareKind paste_square, TextureDirKind texture_dir)
+void OBB::LoadTexture(const std::string& file_path, const SquareKind paste_square, const TextureDirKind texture_dir)
 {
 	m_box.squares.at(static_cast<int>(paste_square)).LoadTexture(file_path, texture_dir);
 }
 
-void OBB::Move(const VECTOR& velocity, bool is_sync_dir)
+void OBB::Move(const VECTOR& velocity, const bool is_sync_dir)
 {
 	m_pos += velocity;
 
 	if (is_sync_dir) { m_dir = v3d::GetNormalizedVector(velocity); }
 
 	CalcVertexPos();
-	CalcPlanePos();
+	CalcSquarePos();
 }
 
 void OBB::SetPos(const VECTOR& pos)
@@ -60,7 +60,7 @@ void OBB::SetPos(const VECTOR& pos)
 	m_pos = pos;
 
 	CalcVertexPos();
-	CalcPlanePos();
+	CalcSquarePos();
 }
 
 void OBB::SetDir(const VECTOR& dir)
@@ -68,10 +68,10 @@ void OBB::SetDir(const VECTOR& dir)
 	m_dir = dir;
 
 	CalcVertexPos();
-	CalcPlanePos();
+	CalcSquarePos();
 }
 
-const Segment* OBB::GetEdge(EdgeKind edge_kind)const
+const Segment& OBB::GetEdge(const EdgeKind edge_kind)const
 {
 	switch (edge_kind)
 	{
@@ -114,15 +114,15 @@ const Segment* OBB::GetEdge(EdgeKind edge_kind)const
 	default:
 		break;
 	}
-	return nullptr;
+	return Segment();
 }
 
 void OBB::CalcVertexPos()
 {
 	// 自身を基準とした各軸の向きを取得
-	VECTOR dir_z =  m_dir;
-	VECTOR dir_y =  math::GetNormalVector(dir_z);
-	VECTOR dir_x = -math::GetNormalVector(dir_z, dir_y);
+	const VECTOR dir_z =  m_dir;
+	const VECTOR dir_y =  math::GetNormalVector(dir_z);
+	const VECTOR dir_x = -math::GetNormalVector(dir_z, dir_y);
 
 	// 各頂点の座標を取得
 	m_box.vertexes.at(static_cast<int>(VertexKind::kBottomRightBack))  = m_pos - dir_z	* m_length.z * 0.5f;
@@ -137,7 +137,7 @@ void OBB::CalcVertexPos()
 	m_box.vertexes.at(static_cast<int>(VertexKind::kTopLeftBack))      = m_box.vertexes.at(static_cast<int>(VertexKind::kBottomLeftBack))   + dir_y * m_length.y;
 }
 
-void OBB::CalcPlanePos()
+void OBB::CalcSquarePos()
 {
 	// 各面の座標を取得
 	m_box.squares.at(static_cast<int>(SquareKind::kFront)) = Square(

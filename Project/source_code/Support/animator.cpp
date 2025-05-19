@@ -1,6 +1,6 @@
 ﻿#include "animator.hpp"
 
-Animator::Animator(std::shared_ptr<Modeler> modeler, float blend_speed) : 
+Animator::Animator(std::shared_ptr<Modeler> modeler, const float blend_speed) :
 	m_prev_anim_play_rate		(0.0f),
 	m_blend_rate				(0.0f),
 	m_blend_speed				(blend_speed),
@@ -33,7 +33,7 @@ void Animator::Update()
 	PlayAnim();
 }
 
-void Animator::AddAnimHandle(int kind, std::string file_path, std::string tag, float play_speed, bool is_loop)
+void Animator::AddAnimHandle(const int kind, const std::string& file_path, const std::string& tag, const float play_speed, const bool is_loop)
 {
 	// 上書き不可
 	if (m_kind_data.count(kind)) { return; }
@@ -41,7 +41,7 @@ void Animator::AddAnimHandle(int kind, std::string file_path, std::string tag, f
 	m_kind_data[kind] = AnimKindData(MV1LoadModel(file_path.c_str()), tag, play_speed, is_loop);
 }
 
-void Animator::AttachAnim(int next_kind)
+void Animator::AttachAnim(const int next_kind)
 {
 	// 現在のアニメーションと同じであった場合は変更しない
 	if (m_time_state_data.at(TimeState::kCurrent).kind == next_kind) { return; }
@@ -60,7 +60,7 @@ void Animator::AttachAnim(int next_kind)
 	m_blend_rate = m_time_state_data.at(TimeState::kPrev).attach_index > -1 ? 0.0f : 1.0f;
 }
 
-void Animator::DetachAnim(TimeState time_state)
+void Animator::DetachAnim(const TimeState time_state)
 {
 	if (m_time_state_data.at(time_state).attach_index > -1)
 	{

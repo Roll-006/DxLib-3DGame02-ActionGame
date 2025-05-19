@@ -10,7 +10,7 @@
 #include "../Scene/share_scene.hpp"
 #include "../Scene/load_scene.hpp"
 
-class SceneObjManager : public OneInstanceSingletonBase<SceneObjManager>
+class SceneObjManager final : public OneInstanceSingletonBase<SceneObjManager>
 {
 public:
 	SceneObjManager();
@@ -20,8 +20,8 @@ public:
 	void Draw()const;
 
 private:
-	void AttachCurrentScene(SceneKind scene_kind);
-	void DetachCurrentScene(SceneKind scene_kind);
+	void AttachCurrentScene(const SceneKind scene_kind);
+	void DetachCurrentScene(const SceneKind scene_kind);
 
 private:
 	std::unordered_map<SceneKind, std::shared_ptr<SceneBase>> m_scene_list;		// ‚·‚×‚Ä‚ÌƒV[ƒ“

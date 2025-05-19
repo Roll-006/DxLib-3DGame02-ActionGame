@@ -1,14 +1,14 @@
 #include "capsule.hpp"
 
-Capsule::Capsule(const Segment* segment, float radius):
+Capsule::Capsule(const Segment& segment, const float radius):
     ShapeBase   (ShapeKind::kCapsule),
     m_radius    (radius),
-    m_segment   (*segment)
+    m_segment   (segment)
 {
     // ˆ—‚È‚µ
 }
 
-Capsule::Capsule(const VECTOR& segment_begin_pos, const VECTOR& segment_end_pos, float radius) :
+Capsule::Capsule(const VECTOR& segment_begin_pos, const VECTOR& segment_end_pos, const float radius) :
     ShapeBase   (ShapeKind::kCapsule),
     m_radius    (radius),
     m_segment   (Segment(segment_begin_pos, segment_end_pos))
@@ -16,7 +16,7 @@ Capsule::Capsule(const VECTOR& segment_begin_pos, const VECTOR& segment_end_pos,
     // ˆ—‚È‚µ
 }
 
-Capsule::Capsule(const VECTOR& segment_begin_pos, const VECTOR& dir, float length, float radius) :
+Capsule::Capsule(const VECTOR& segment_begin_pos, const VECTOR& dir, const float length, const float radius) :
     ShapeBase   (ShapeKind::kCapsule),
     m_radius    (radius),
     m_segment   (Segment(segment_begin_pos, dir, length))
@@ -37,7 +37,7 @@ Capsule::~Capsule()
     // ˆ—‚È‚µ
 }
 
-void Capsule::Draw(bool is_draw_frame, int alpha_blend_num, unsigned int frame_color)const
+void Capsule::Draw(const bool is_draw_frame, const int alpha_blend_num, const unsigned int frame_color)const
 {
     if (alpha_blend_num > 0)
     {

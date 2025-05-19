@@ -9,7 +9,7 @@
 
 #include "modeler.hpp"
 
-class Animator
+class Animator final
 {
 public:
 	enum class TimeState
@@ -19,7 +19,7 @@ public:
 	};
 
 public:
-	Animator(std::shared_ptr<Modeler> modeler, float blend_speed);
+	Animator(std::shared_ptr<Modeler> modeler, const float blend_speed);
 	~Animator();
 
 	void Init();
@@ -27,12 +27,12 @@ public:
 
 	/// @brief アニメーションをアタッチする
 	/// @brief デタッチ処理は自動的に実行
-	void AttachAnim(int next_kind);
+	void AttachAnim(const int next_kind);
 
-	void AddAnimHandle(int kind, std::string file_path, std::string tag, float play_speed, bool is_loop);
+	void AddAnimHandle(const int kind, const std::string& file_path, const std::string& tag, const float play_speed, const bool is_loop);
 
 private:
-	void DetachAnim(TimeState time_state);
+	void DetachAnim(const TimeState time_state);
 
 	/// @brief 再生開始地点を設定
 	void SetPlayStartTime();

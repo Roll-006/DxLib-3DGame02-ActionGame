@@ -15,7 +15,7 @@
 #include "../Data/IncludeList/vector.hpp"
 
 /// @brief 役割 : 入力デバイスの検出, 入力状態の取得, 入力時間の計測
-class InputChecker : public SingletonBase<InputChecker>
+class InputChecker final : public SingletonBase<InputChecker>
 {
 public:
 	friend SingletonBase<InputChecker>;
@@ -36,26 +36,26 @@ public:
 
 
 	#pragma region マウス情報
-	[[nodiscard]] Vector2D<int>   GetMousePos	   (TimeState time_state)const { return m_mouse_data.at(time_state).pos; }
-	[[nodiscard]] Vector2D<float> GetMouseDir(TimeState time_state)const { return m_mouse_data.at(time_state).dir; }
-	[[nodiscard]] Vector2D<float> GetMouseVelocity (TimeState time_state)const { return m_mouse_data.at(time_state).velocity; }
+	[[nodiscard]] Vector2D<int>   GetMousePos	   (const TimeState time_state)const { return m_mouse_data.at(time_state).pos; }
+	[[nodiscard]] Vector2D<float> GetMouseDir	   (const TimeState time_state)const { return m_mouse_data.at(time_state).dir; }
+	[[nodiscard]] Vector2D<float> GetMouseVelocity (const TimeState time_state)const { return m_mouse_data.at(time_state).velocity; }
 	#pragma endregion
 
 
 	#pragma region 入力判定
 	[[nodiscard]] bool IsInputMouseButton	 (const int				  input_num)const;
-	[[nodiscard]] int  GetMouseWheelParameter(MouseWheelKind		  input_num)const;
-	[[nodiscard]] bool IsSlideMouse			 (MouseSlideDirKind input_num)const;
+	[[nodiscard]] int  GetMouseWheelParameter(const MouseWheelKind	  input_num)const;
+	[[nodiscard]] bool IsSlideMouse			 (const MouseSlideDirKind input_num)const;
 	[[nodiscard]] bool IsInputPadButton		 (const int				  input_num)const { return m_xinput.Buttons[input_num]; }
-	[[nodiscard]] int  GetPadStickParameter	 (StickKind				  input_num)const;
-	[[nodiscard]] int  GetPadTriggerParameter(TriggerKind			  input_num)const;
+	[[nodiscard]] int  GetPadStickParameter	 (const StickKind		  input_num)const;
+	[[nodiscard]] int  GetPadTriggerParameter(const TriggerKind		  input_num)const;
 	#pragma endregion
 
 
 	#pragma region 入力時間
-	[[nodiscard]] float GetKeyInputTime  (const int     input_num, TimeState time_state);
+	[[nodiscard]] float GetKeyInputTime  (const int     input_num, const TimeState time_state);
 	template<input_concepts::MouseInputT MouseT>
-	[[nodiscard]] float GetMouseInputTime(const MouseT& input_num, TimeState time_state)const
+	[[nodiscard]] float GetMouseInputTime(const MouseT& input_num, const TimeState time_state)const
 	{
 		if (std::is_same_v<MouseT, int>)
 		{
@@ -68,7 +68,7 @@ public:
 		return SupportGetInputTime(InputKind::kMouseSlide, input_num, time_state);
 	}
 	template<input_concepts::PadInputT   PadT>
-	[[nodiscard]] float GetPadInputTime  (const PadT&   input_num, TimeState time_state)const
+	[[nodiscard]] float GetPadInputTime  (const PadT&   input_num, const TimeState time_state)const
 	{
 		if (std::is_same_v<PadT, int>)
 		{
@@ -91,7 +91,7 @@ public:
 		InputKind kind = InputKind::kMouseButton;
 
 		if (std::is_same_v<MouseT, MouseSlideDirKind>) { kind = InputKind::kMouseWheel; }
-		if (std::is_same_v<MouseT, MouseWheelKind>)			 { kind = InputKind::kMouseSlide; }
+		if (std::is_same_v<MouseT, MouseWheelKind>)	   { kind = InputKind::kMouseSlide; }
 
 		return SupportGetInputState(kind, input_num);
 	}
@@ -116,7 +116,7 @@ private:
 	InputChecker();
 	~InputChecker()override;
 
-	void AddInputData(InputKind kind, const int input_num);
+	void AddInputData(const InputKind kind, const int input_num);
 
 	void CalcMouseDir();
 	void CalcMouseVelocity ();
@@ -131,9 +131,9 @@ private:
 	void DetectCurrentInputDevice();
 
 	/// @brief 入力時間の取得を援助する
-	[[nodiscard]] float		 SupportGetInputTime (InputKind input_kind, const int input_num, TimeState time_state);
+	[[nodiscard]] float		 SupportGetInputTime (const InputKind input_kind, const int input_num, const TimeState time_state);
 	/// @brief 入力状態の取得を援助する
-	[[nodiscard]] InputState SupportGetInputState(InputKind input_kind, const int input_num);
+	[[nodiscard]] InputState SupportGetInputState(const InputKind input_kind, const int input_num);
 
 public:
 	static constexpr short			kStickMaxTilt		= SHRT_MAX;		// 傾きの最大値

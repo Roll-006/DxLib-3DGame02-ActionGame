@@ -1,6 +1,6 @@
 #include "sphere.hpp"
 
-Sphere::Sphere(const VECTOR& pos, float radius):
+Sphere::Sphere(const VECTOR& pos, const float radius):
     ShapeBase   (ShapeKind::kSphere),
     m_pos       (pos),
     m_radius    (radius)
@@ -21,7 +21,7 @@ Sphere::~Sphere()
     // ˆ—‚È‚µ
 }
 
-void Sphere::Draw(bool is_draw_frame, int alpha_blend_num, unsigned int frame_color)const
+void Sphere::Draw(const bool is_draw_frame, const int alpha_blend_num, const unsigned int frame_color)const
 {
     if (alpha_blend_num > 0)
     {

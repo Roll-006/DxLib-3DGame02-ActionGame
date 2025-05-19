@@ -34,7 +34,7 @@ void Window::SetWindowMode()
 	}
 }
 
-void Window::SetWindowMode(bool is_full_screen)
+void Window::SetWindowMode(const bool is_full_screen)
 {
 	m_is_full_screen	  = is_full_screen;
 	m_change_window_count = m_is_full_screen ? 1 : 0;
