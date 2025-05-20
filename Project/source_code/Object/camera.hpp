@@ -1,8 +1,8 @@
 #pragma once
-#include "../Base/obj_base.hpp"
+#include "../Base/collide_obj_base.hpp"
 #include "../Manager/obj_manager.hpp"
 
-class Camera final : public ObjBase
+class Camera final : public CollideObjBase
 {
 public:
 	enum class TimeState

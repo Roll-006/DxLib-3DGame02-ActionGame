@@ -137,6 +137,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="source_code\Calculation\collision_calculator.cpp" />
+    <ClCompile Include="source_code\Calculation\math.cpp" />
+    <ClCompile Include="source_code\Calculation\quaternion.cpp" />
     <ClCompile Include="source_code\FPS\fps.cpp" />
     <ClCompile Include="source_code\main.cpp" />
     <ClCompile Include="source_code\Manager\collision_manager.cpp" />
@@ -144,9 +147,6 @@
     <ClCompile Include="source_code\Manager\input_checker.cpp" />
     <ClCompile Include="source_code\Manager\obj_manager.cpp" />
     <ClCompile Include="source_code\Manager\scene_manager.cpp" />
-    <ClCompile Include="source_code\Math\collision_calculator.cpp" />
-    <ClCompile Include="source_code\Math\math.cpp" />
-    <ClCompile Include="source_code\Math\Quaternion\quaternion.cpp" />
     <ClCompile Include="source_code\Object\camera.cpp" />
     <ClCompile Include="source_code\Object\player.cpp" />
     <ClCompile Include="source_code\Scene\game_clear_scene.cpp" />
@@ -173,28 +173,37 @@
     <ClCompile Include="source_code\Window\window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="source_code\Base\collide_obj_base.hpp" />
     <ClInclude Include="source_code\Base\shape_base.hpp" />
     <ClInclude Include="source_code\Base\singleton_base.hpp" />
     <ClInclude Include="source_code\Base\one_instance_singleton_base.hpp" />
     <ClInclude Include="source_code\Base\obj_base.hpp" />
     <ClInclude Include="source_code\Base\scene_base.hpp" />
+    <ClInclude Include="source_code\Calculation\collision_calculator.hpp" />
+    <ClInclude Include="source_code\Calculation\math.hpp" />
+    <ClInclude Include="source_code\Calculation\quaternion.hpp" />
+    <ClInclude Include="source_code\Calculation\vector_2d.hpp" />
+    <ClInclude Include="source_code\Calculation\vector_3d.hpp" />
     <ClInclude Include="source_code\Command\command.hpp" />
     <ClInclude Include="source_code\Concept\vector_concepts.hpp" />
     <ClInclude Include="source_code\Concept\obj_concepts.hpp" />
     <ClInclude Include="source_code\Concept\common_concepts.hpp" />
     <ClInclude Include="source_code\Concept\input_concepts.hpp" />
+    <ClInclude Include="source_code\Data\collide_obj_pair_data.hpp" />
     <ClInclude Include="source_code\Data\animator_data.hpp" />
     <ClInclude Include="source_code\Data\box_data.hpp" />
     <ClInclude Include="source_code\Data\CSV\csv.hpp" />
     <ClInclude Include="source_code\Data\IncludeList\shape.hpp" />
     <ClInclude Include="source_code\Data\IncludeList\vector.hpp" />
     <ClInclude Include="source_code\Data\input_data.hpp" />
+    <ClInclude Include="source_code\Data\Kind\sort_kind.hpp" />
     <ClInclude Include="source_code\Data\Kind\box_kind.hpp" />
     <ClInclude Include="source_code\Data\Kind\input_kind.hpp" />
     <ClInclude Include="source_code\Data\Kind\player_kind.hpp" />
     <ClInclude Include="source_code\Data\Kind\scene_kind.hpp" />
     <ClInclude Include="source_code\Data\Kind\shape_kind.hpp" />
     <ClInclude Include="source_code\Data\Kind\texture_kind.hpp" />
+    <ClInclude Include="source_code\Data\Kind\trigger_kind.hpp" />
     <ClInclude Include="source_code\Data\Name\obj_name.hpp" />
     <ClInclude Include="source_code\Data\Path\model_path.hpp" />
     <ClInclude Include="source_code\Data\Path\animation_path.hpp" />
@@ -202,17 +211,11 @@
     <ClInclude Include="source_code\Data\Tag\animation_tag.hpp" />
     <ClInclude Include="source_code\FPS\fps.hpp" />
     <ClInclude Include="source_code\Interface\i_battler.hpp" />
-    <ClInclude Include="source_code\Interface\i_collide_obj.hpp" />
     <ClInclude Include="source_code\Manager\collision_manager.hpp" />
     <ClInclude Include="source_code\Manager\game_manager.hpp" />
     <ClInclude Include="source_code\Manager\input_checker.hpp" />
     <ClInclude Include="source_code\Manager\obj_manager.hpp" />
     <ClInclude Include="source_code\Manager\scene_manager.hpp" />
-    <ClInclude Include="source_code\Math\collision_calculator.hpp" />
-    <ClInclude Include="source_code\Math\math.hpp" />
-    <ClInclude Include="source_code\Math\Quaternion\quaternion.hpp" />
-    <ClInclude Include="source_code\Math\Vector\vector_2d.hpp" />
-    <ClInclude Include="source_code\Math\Vector\vector_3d.hpp" />
     <ClInclude Include="source_code\Object\camera.hpp" />
     <ClInclude Include="source_code\Object\player.hpp" />
     <ClInclude Include="source_code\Scene\game_clear_scene.hpp" />

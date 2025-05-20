@@ -11,10 +11,10 @@ class ObjManager;
 class ObjBase
 {
 public:
-	ObjBase(const std::string& name, const std::string& tag, const VECTOR& pos) : 
+	ObjBase(const std::string& name, const std::string& tag) : 
 		m_name		(name), 
 		m_tag		(tag), 
-		m_transform	(std::make_shared<Transform>(pos))
+		m_transform	(std::make_shared<Transform>())
 	{ }
 
 	virtual ~ObjBase() = default;
@@ -29,8 +29,6 @@ public:
 
 protected:
 	std::shared_ptr<Transform> m_transform;
-
-private:
 	std::string m_name;	// オブジェクトの名前
 	std::string m_tag;	// オブジェクトの分類
 };

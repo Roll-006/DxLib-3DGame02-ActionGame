@@ -1,6 +1,6 @@
 #pragma once
 #include <cmath>
-#include "../../Concept/vector_concepts.hpp"
+#include "../Concept/vector_concepts.hpp"
 
 template<typename ElemT>
 struct Vector2D

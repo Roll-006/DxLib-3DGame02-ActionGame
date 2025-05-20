@@ -6,7 +6,7 @@
 
 #include "../Data/Kind/player_kind.hpp"
 
-class Player final : public ObjBase
+class Player final : public CollideObjBase
 {
 public:
 	Player(std::shared_ptr<Camera> camera);

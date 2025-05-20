@@ -6,8 +6,9 @@
 
 #include "../Concept/common_concepts.hpp"
 
-#include "Quaternion/quaternion.hpp"
+#include "quaternion.hpp"
 
+#include "../Data/Kind/sort_kind.hpp"
 #include "../Data/IncludeList/vector.hpp"
 
 class Line;
@@ -23,23 +24,6 @@ namespace math
 {
 	static constexpr float kDegreesToRadian = DX_PI_F / 180.0f;		// ディグリーをラジアンに変換(変換対象と掛け算を行う)
 	static constexpr float kRadianToDegrees = 180.0f / DX_PI_F;		// ラジアンをディグリーに変換(変換対象と掛け算を行う)
-
-
-	#pragma region ソート
-	template<typename KeyT, typename ValueT>
-	[[nodiscard]] std::unordered_map<KeyT, ValueT> AscendingSort(std::unordered_map<KeyT, ValueT>& u_map)
-	{
-		std::vector<std::pair<KeyT, ValueT>> v(u_map.begin(), u_map.end());
-
-		std::sort(v.begin(), v.end(), [](const auto& a, const auto& b)
-		{
-			return a.second < b.second;
-		});
-
-		std::unordered_map<KeyT, ValueT> ret_u_map(v.begin(), v.end());
-		return ret_u_map;
-	}
-	#pragma endregion
 
 
 	#pragma region 変換
@@ -80,12 +64,79 @@ namespace math
 		return static_cast<ReturnT>(value - min) / (max - min);
 	}
 
-	/// @brief クォータニオンから回転行列へ変換
-	MATRIX ConvertQuaternionToMatrix(const Quaternion& q);
+	/// @brief std::vector<std::pair<key, value>>をstd::unorderd_map<key, value>へ変換
+	template<typename KeyT, typename ValueT>
+	[[nodiscard]] std::unordered_map<KeyT, ValueT> ConvertPairsToUmap(const std::vector<std::pair<KeyT, ValueT>>& pairs)
+	{
+		std::unordered_map<KeyT, ValueT> u_map(pairs.begin(), pairs.end());
+		return u_map;
+	}
 
-	/// @brief 回転行列からクォータニオンへ変換
-	/// @brief TODO : 検証が必要
-	Quaternion ConvertMatrixToQuaternion(const MATRIX& mat);
+	/// @brief std::unorderd_map<key, value>をstd::vector<std::pair<key, value>>へ変換
+	template<typename KeyT, typename ValueT>
+	[[nodiscard]] std::vector<std::pair<KeyT, ValueT>> ConvertUmapToPairs(const std::unordered_map<KeyT, ValueT>& u_map)
+	{
+		std::vector<std::pair<KeyT, ValueT>> pairs(u_map.begin(), u_map.end());
+		return pairs;
+	}
+	#pragma endregion
+
+
+	#pragma region ソート
+	/// @brief unorderd_mapのvalueをソート
+	template<typename KeyT, typename ValueT>
+	[[nodiscard]] std::unordered_map<KeyT, ValueT> Sort(const std::unordered_map<KeyT, ValueT>& u_map, const SortKind sort_kind)
+	{
+		std::vector<std::pair<KeyT, ValueT>> pairs = ConvertUmapToPairs(u_map);
+
+		std::sort(pairs.begin(), pairs.end(), [](const auto& a, const auto& b)
+		{
+			switch (sort_kind)
+			{
+			case SortKind::kAscending:	return a.second < b.second; break;
+			case SortKind::kDescending:	return a.second > b.second;	break;
+			}
+		});
+
+		return ConvertPairsToUmap(pairs);
+	}
+
+	/// @brief unorderd_mapのvalueをソート
+	/// @param main_u_map ソートされるunorderd_map
+	/// @param sub_u_map main_u_mapに同じvalueがあった場合、sub_u_mapでソートを行う
+	template<typename KeyT, typename ValueT>
+	[[nodiscard]] std::unordered_map<KeyT, ValueT> Sort(const std::unordered_map<KeyT, ValueT>& main_u_map, const std::unordered_map<KeyT, ValueT>& sub_u_map, const SortKind sort_kind)
+	{
+		std::vector<std::pair<KeyT, ValueT>> pairs = ConvertUmapToPairs(main_u_map);
+
+		std::sort(pairs.begin(), pairs.end(), [=](const auto& a, const auto& b)
+		{
+			switch (sort_kind)
+			{
+			case SortKind::kAscending:
+
+				// 同じ値でない場合はmain_u_mapでソート
+				if (a.second != b.second)
+				{
+					return a.second < b.second;
+				}
+
+				// 同じ値であった場合はsub_u_mapでソート
+				return sub_u_map.at(a.first) < sub_u_map.at(b.first);
+				break;
+
+			case SortKind::kDescending:
+				if (a.second != b.second)
+				{
+					return a.second > b.second;
+				}
+				return sub_u_map.at(a.first) > sub_u_map.at(b.first);
+				break;
+			}
+		});
+
+		return ConvertPairsToUmap(pairs);
+	}
 	#pragma endregion
 
 
@@ -153,6 +204,13 @@ namespace math
 	#pragma region 回転
 	/// @brief 回転後の座標を取得
 	VECTOR GetRotatedPos(const VECTOR& pos, const Quaternion& rotate_q);
+
+	/// @brief クォータニオンから回転行列へ変換
+	MATRIX ConvertQuaternionToMatrix(const Quaternion& q);
+
+	/// @brief 回転行列からクォータニオンへ変換
+	/// @brief TODO : 検証が必要
+	Quaternion ConvertMatrixToQuaternion(const MATRIX& mat);
 
 	/// @brief ヨー角を取得
 	[[nodiscard]] float GetYaw(const VECTOR& v);

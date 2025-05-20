@@ -1,7 +1,7 @@
 #include "camera.hpp"
 
 Camera::Camera() : 
-	ObjBase				(ObjName.CAMERA, ObjTag.CAMERA, VGet(0.0f, 0.0f, -500.0f)),
+	CollideObjBase		(ObjName.CAMERA, ObjTag.CAMERA),
 	m_target_transform	(nullptr),
 	m_move_speed		(0.0f),
 	m_distance_to_target(0.0f)

@@ -8,9 +8,15 @@ Transform::Transform(const VECTOR& pos) :
 	m_matrix.m[3][2] = pos.z;
 }
 
+Transform::Transform() :
+	m_matrix(MGetIdent())
+{
+	// ˆ—‚È‚µ
+}
+
 Transform::~Transform()
 {
-
+	// ˆ—‚È‚µ
 }
 
 void Transform::Move(const VECTOR& velocity)

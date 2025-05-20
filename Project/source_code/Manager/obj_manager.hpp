@@ -9,8 +9,6 @@
 class ObjManager final : public SingletonBase<ObjManager>
 {
 public:
-	friend SingletonBase<ObjManager>;
-
 	template<obj_concepts::DerivedT ObjT>
 	void AddObj(const std::shared_ptr<ObjT> obj)
 	{
@@ -34,4 +32,6 @@ private:
 
 private:
 	std::unordered_map<std::string, std::shared_ptr<ObjBase>> m_objects;
+
+	friend SingletonBase<ObjManager>;
 };

@@ -1,5 +1,5 @@
 #pragma once
-#include "../../Concept/vector_concepts.hpp"
+#include "../Concept/vector_concepts.hpp"
 
 inline auto operator+ (const v3d_concepts::ValidT auto& v)									{ return v; }
 template<v3d_concepts::ValidT VecT>

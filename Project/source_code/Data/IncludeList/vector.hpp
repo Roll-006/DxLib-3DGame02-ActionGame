@@ -1,3 +1,3 @@
 #pragma once
-#include "../../Math/Vector/vector_2d.hpp"
-#include "../../Math/Vector/vector_3d.hpp"
+#include "../Calculation/vector_2d.hpp"
+#include "../Calculation/vector_3d.hpp"

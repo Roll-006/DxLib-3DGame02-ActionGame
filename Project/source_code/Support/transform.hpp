@@ -1,10 +1,11 @@
 #pragma once
-#include "../Math/math.hpp"
+#include "../Calculation/math.hpp"
 
 class Transform final
 {
 public:
 	Transform(const VECTOR& pos);
+	Transform();
 	~Transform();
 
 	void Move(const VECTOR& velocity);

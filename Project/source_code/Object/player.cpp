@@ -1,10 +1,10 @@
 #include "player.hpp"
 
 Player::Player(std::shared_ptr<Camera> camera) :
-	ObjBase		(ObjName.PLAYER, ObjTag.PLAYER, v3d::GetZeroVector()),
-	m_modeler	(nullptr),
-	m_animator	(nullptr),
-	m_camera	(camera)
+	CollideObjBase	(ObjName.PLAYER, ObjTag.PLAYER),
+	m_modeler		(nullptr),
+	m_animator		(nullptr),
+	m_camera		(camera)
 {
 	m_modeler	= std::make_shared<Modeler> (GetTransform(), ModelPath.CHARA_01);
 	m_animator	= std::make_shared<Animator>(m_modeler, 3.0f);

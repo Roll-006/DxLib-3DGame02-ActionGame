@@ -3,14 +3,12 @@
 #include <DxLib.h>
 
 #include "../Data/Kind/shape_kind.hpp"
-#include "../Math/math.hpp"
+#include "../Calculation/math.hpp"
 
 class ShapeBase
 {
 public:
-	ShapeBase(const ShapeKind shape_kind) :
-		m_shape_kind(shape_kind)
-	{ }
+	ShapeBase(const ShapeKind shape_kind) : m_shape_kind(shape_kind){}
 
 	virtual ~ShapeBase() = default;
 

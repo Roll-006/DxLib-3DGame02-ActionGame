@@ -246,7 +246,7 @@ VECTOR collision::GetValidVelocityAfterHitCapsuleAndSquare(const VECTOR& velocit
     // 未来の座標と平面の距離を取得
     const Plane plane = Plane(static_square.GetCentroid(), static_square.GetNormalVector());
     VECTOR future_pos = future_capsule.GetSegment().GetBeginPos();
-    const float next_to_plane_distance = math::GetDistancePointToPlane(future_pos, plane);
+    const float future_distance_to_square = math::GetDistancePointToSquare(future_pos, static_square);
 
     // 線分の位置からどちら側に位置修正するべきか
     VECTOR closest_dir = plane.GetNormalVector();
@@ -256,7 +256,7 @@ VECTOR collision::GetValidVelocityAfterHitCapsuleAndSquare(const VECTOR& velocit
     }
 
     // 有効velocityを取得
-    future_pos += closest_dir * next_to_plane_distance;
+    future_pos += closest_dir * future_distance_to_square;
     future_pos += plane.GetNormalVector() * dynamic_capsule.GetRadius();
     return future_pos - dynamic_capsule.GetSegment().GetBeginPos();
 }
@@ -264,24 +264,32 @@ VECTOR collision::GetValidVelocityAfterHitCapsuleAndSquare(const VECTOR& velocit
 VECTOR collision::GetValidVelocityAfterHitCapsuleAndOBB(const VECTOR& velocity, const Capsule& dynamic_capsule, const OBB& static_obb)
 {
     VECTOR valid_velocity = velocity;
-    std::unordered_map<SquareKind, float> distance;
+    std::unordered_map<SquareKind, float> current_distance;
+    std::unordered_map<SquareKind, float> future_distance;
 
-    // すべての四角形との距離を取得
+    // 移動後のカプセル
+    Capsule future_capsule = dynamic_capsule;
+    future_capsule.Move(velocity);
+
     for (int i = 0; i < BoxData::kSquareNum; ++i)
     {
-        distance[static_cast<SquareKind>(i)] = math::GetDistancePointToSquare(
+        // 現在の座標とすべての四角形の距離を取得
+        current_distance[static_cast<SquareKind>(i)] = math::GetDistancePointToSquare(
             dynamic_capsule.GetSegment().GetBeginPos(), static_obb.GetSquare(static_cast<SquareKind>(i)));
+
+        // 未来の座標とすべての四角形の距離を取得
+        future_distance[static_cast<SquareKind>(i)] = math::GetDistancePointToSquare(
+            future_capsule.GetSegment().GetBeginPos(), static_obb.GetSquare(static_cast<SquareKind>(i)));
     }
 
-    // 距離が近い順にソート
-    // 距離が同じ場合は、同じもの同士のみで未来の座標が近い順にソート
-    distance = math::AscendingSort(distance);
-    Capsule future_capsule = dynamic_capsule;
+    // 現在の距離が近い順にソート
+    // 距離が同じ場合は、同じもの同士で未来の座標が近い順にソート
+    current_distance = math::Sort(current_distance, future_distance, SortKind::kAscending);
 
     // 移動前の座標と距離が近い四角形から順番に押し戻す
-    for (auto& itr : distance)
+    for (auto& dist : current_distance)
     {
-        valid_velocity = GetValidVelocityAfterHitCapsuleAndSquare(valid_velocity, dynamic_capsule, static_obb.GetSquare(static_cast<SquareKind>(itr.first)));
+        valid_velocity = GetValidVelocityAfterHitCapsuleAndSquare(valid_velocity, dynamic_capsule, static_obb.GetSquare(static_cast<SquareKind>(dist.first)));
     }
 
     return valid_velocity;

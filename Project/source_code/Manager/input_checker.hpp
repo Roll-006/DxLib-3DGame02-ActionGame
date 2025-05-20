@@ -18,8 +18,6 @@
 class InputChecker final : public SingletonBase<InputChecker>
 {
 public:
-	friend SingletonBase<InputChecker>;
-
 	enum class TimeState
 	{
 		kPrev,
@@ -159,5 +157,5 @@ private:
 	std::vector<std::tuple<InputKind, int, TimeState, InputData>> m_input_data;
 	std::unordered_map<TimeState, MouseData> m_mouse_data;
 
-	static InputChecker* m_instance;
+	friend SingletonBase<InputChecker>;
 };
