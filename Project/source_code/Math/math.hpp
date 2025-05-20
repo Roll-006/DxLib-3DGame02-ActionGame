@@ -1,7 +1,8 @@
 ﻿#pragma once
 #include <algorithm>
-#include <array>
 #include <optional>
+#include <array>
+#include <unordered_map>
 
 #include "../Concept/common_concepts.hpp"
 
@@ -22,6 +23,23 @@ namespace math
 {
 	static constexpr float kDegreesToRadian = DX_PI_F / 180.0f;		// ディグリーをラジアンに変換(変換対象と掛け算を行う)
 	static constexpr float kRadianToDegrees = 180.0f / DX_PI_F;		// ラジアンをディグリーに変換(変換対象と掛け算を行う)
+
+
+	#pragma region ソート
+	template<typename KeyT, typename ValueT>
+	[[nodiscard]] std::unordered_map<KeyT, ValueT> AscendingSort(std::unordered_map<KeyT, ValueT>& u_map)
+	{
+		std::vector<std::pair<KeyT, ValueT>> v(u_map.begin(), u_map.end());
+
+		std::sort(v.begin(), v.end(), [](const auto& a, const auto& b)
+		{
+			return a.second < b.second;
+		});
+
+		std::unordered_map<KeyT, ValueT> ret_u_map(v.begin(), v.end());
+		return ret_u_map;
+	}
+	#pragma endregion
 
 
 	#pragma region 変換

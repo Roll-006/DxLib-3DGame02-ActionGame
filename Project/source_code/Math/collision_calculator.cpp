@@ -264,11 +264,26 @@ VECTOR collision::GetValidVelocityAfterHitCapsuleAndSquare(const VECTOR& velocit
 VECTOR collision::GetValidVelocityAfterHitCapsuleAndOBB(const VECTOR& velocity, const Capsule& dynamic_capsule, const OBB& static_obb)
 {
     VECTOR valid_velocity = velocity;
+    std::unordered_map<SquareKind, float> distance;
 
-    for (int i = 0; i < BoxData::kVertexNum; ++i)
+    // すべての四角形との距離を取得
+    for (int i = 0; i < BoxData::kSquareNum; ++i)
     {
-        valid_velocity = GetValidVelocityAfterHitCapsuleAndSquare(valid_velocity, dynamic_capsule, static_obb.GetSquare(static_cast<SquareKind>(i)));
+        distance[static_cast<SquareKind>(i)] = math::GetDistancePointToSquare(
+            dynamic_capsule.GetSegment().GetBeginPos(), static_obb.GetSquare(static_cast<SquareKind>(i)));
     }
+
+    // 距離が近い順にソート
+    // 距離が同じ場合は、同じもの同士のみで未来の座標が近い順にソート
+    distance = math::AscendingSort(distance);
+    Capsule future_capsule = dynamic_capsule;
+
+    // 移動前の座標と距離が近い四角形から順番に押し戻す
+    for (auto& itr : distance)
+    {
+        valid_velocity = GetValidVelocityAfterHitCapsuleAndSquare(valid_velocity, dynamic_capsule, static_obb.GetSquare(static_cast<SquareKind>(itr.first)));
+    }
+
     return valid_velocity;
 }
 #pragma endregion
