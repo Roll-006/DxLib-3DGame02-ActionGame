@@ -14,7 +14,7 @@ public:
 
 	void Draw();
 
-	[[nodiscard]] int GetModelHandle() { return m_model_handle; }
+	[[nodiscard]] int GetModelHandle()const { return m_model_handle; }
 
 private:
 	int   m_model_handle;

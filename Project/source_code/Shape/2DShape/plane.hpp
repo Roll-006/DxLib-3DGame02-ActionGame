@@ -17,10 +17,10 @@ public:
 	/// @param draw_edge_length •`‰æ‚Ì’¼ü‚Ì’·‚³(ÀÛ‚É‚Í–³ŒÀ‚É‘±‚­)
 	/// @param alpha_blend_num “§‰ß’l (0`255 : 0‚ÅŠ®‘S“§‰ß)
 	void Draw(const bool is_draw_normal_vector, const bool is_draw_frame, 
-		const float draw_edge_length, const int alpha_blend_num, const unsigned int frame_color);
+		const float draw_edge_length, const int alpha_blend_num, const unsigned int frame_color)const;
 
 	/// @brief •`‰æ—p‚ÌlŠpŒ`‚ğì¬
-	[[nodiscard]] Square&& MakeDrawSquare(const float edge_length);
+	[[nodiscard]] Square&& MakeDrawSquare(const float edge_length)const;
 
 	void Move(const VECTOR& velocity);
 

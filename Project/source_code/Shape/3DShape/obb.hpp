@@ -3,7 +3,7 @@
 #include "../../Data/box_data.hpp"
 #include "../../Data/Kind/box_kind.hpp"
 
-class OBB final : public ShapeBase
+class OBB : public ShapeBase
 {
 public:
 	OBB(const VECTOR& pos, const VECTOR& dir, const VECTOR& length);

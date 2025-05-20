@@ -108,25 +108,27 @@ namespace math
 
 	#pragma region ベクトル
 	/// @brief ベクトル同士が平行かを判定
-	[[nodiscard]] bool IsHorizontal(const VECTOR& vector1, const VECTOR& vector2);
+	[[nodiscard]] bool IsHorizontal(const VECTOR& v1, const VECTOR& v2);
 
 	/// @brief ベクトル同士が垂直かを判定
-	[[nodiscard]] bool IsVertical(const VECTOR& vector1, const VECTOR& vector2);
+	[[nodiscard]] bool IsVertical(const VECTOR& v1, const VECTOR& v2);
 
 	/// @brief 基準とするベクトルから法線ベクトルを求め、その内の一つを取得
-	[[nodiscard]] VECTOR GetNormalVector(const VECTOR& vector);
+	[[nodiscard]] VECTOR GetNormalVector(const VECTOR& v);
 
-	[[nodiscard]] VECTOR GetNormalVector(const VECTOR& vector1, const VECTOR& vector2);
+	[[nodiscard]] VECTOR GetNormalVector(const VECTOR& v1, const VECTOR& v2);
+
+	[[nodiscard]] VECTOR GetProjectionVector(const VECTOR& v);
 	#pragma endregion
 
 
 	#pragma region 角度
 	/// @brief 鋭角かを判定
-	[[nodiscard]] bool IsAcuteAngle(const VECTOR& vector1, const VECTOR& vector2);
+	[[nodiscard]] bool IsAcuteAngle(const VECTOR& v1, const VECTOR& v2);
 	[[nodiscard]] bool IsAcuteAngle(const float radian);
 
 	/// @brief 二つのベクトルのなす角を取得
-	[[nodiscard]] float GetAngleBetweenTwoVector(const VECTOR& vector1, const VECTOR& vector2);
+	[[nodiscard]] float GetAngleBetweenTwoVector(const VECTOR& v1, const VECTOR& v2);
 	#pragma endregion
 
 
@@ -135,10 +137,10 @@ namespace math
 	VECTOR GetRotatedPos(const VECTOR& pos, const Quaternion& rotate_q);
 
 	/// @brief ヨー角を取得
-	[[nodiscard]] float GetYaw(const VECTOR& vector);
+	[[nodiscard]] float GetYaw(const VECTOR& v);
 
 	/// @brief ヨー角回転ベクトルを取得
-	[[nodiscard]] VECTOR GetYawRotateVector(const VECTOR& vector);
+	[[nodiscard]] VECTOR GetYawRotateVector(const VECTOR& v);
 	#pragma endregion
 
 

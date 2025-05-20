@@ -111,55 +111,55 @@ float math::GetHypotenuseLengthRightTriangle(const float adjacent_length, const 
 
 
 #pragma region ベクトル
-bool math::IsHorizontal(const VECTOR& vector1, const VECTOR& vector2)
+bool math::IsHorizontal(const VECTOR& v1, const VECTOR& v2)
 {
-    VECTOR cross = VCross(vector1, vector2);
+    VECTOR cross = VCross(v1, v2);
 
     // 小数点第5位より後は誤差とみなして四捨五入
     cross = RoundOff(cross, -5);
     return cross == v3d::GetZeroVector();
 }
 
-bool math::IsVertical(const VECTOR& vector1, const VECTOR& vector2)
+bool math::IsVertical(const VECTOR& v1, const VECTOR& v2)
 {
-    float dot = VDot(vector1, vector2);
+    float dot = VDot(v1, v2);
 
     // 小数点第5位より後は誤差とみなして四捨五入
     dot = RoundOff(dot, -5);
     return dot == 0.0f;
 }
 
-VECTOR math::GetNormalVector(const VECTOR& vector)
+VECTOR math::GetNormalVector(const VECTOR& v)
 {
     VECTOR normal_v = v3d::GetZeroVector();
 
-    if (vector != VGet(1, 0, 0))
+    if (v != VGet(1, 0, 0))
     {
-        normal_v = math::GetNormalVector(vector, VGet(1, 0, 0));
+        normal_v = math::GetNormalVector(v, VGet(1, 0, 0));
     }
-    else if (vector != VGet(0, 1, 0))
+    else if (v != VGet(0, 1, 0))
     {
-        normal_v = math::GetNormalVector(vector, VGet(0, 1, 0));
+        normal_v = math::GetNormalVector(v, VGet(0, 1, 0));
     }
-    else if (vector != VGet(0, 0, 1))
+    else if (v != VGet(0, 0, 1))
     {
-        normal_v = math::GetNormalVector(vector, VGet(0, 0, 1));
+        normal_v = math::GetNormalVector(v, VGet(0, 0, 1));
     }
     return v3d::GetNormalizedVector(normal_v);
 }
 
-VECTOR math::GetNormalVector(const VECTOR& vector1, const VECTOR& vector2)
+VECTOR math::GetNormalVector(const VECTOR& v1, const VECTOR& v2)
 {
     // [法線ベクトル = v1とv2の外積]から成分を取得
-    return v3d::GetNormalizedVector(VCross(vector1, vector2));
+    return v3d::GetNormalizedVector(VCross(v1, v2));
 }
 #pragma endregion
 
 
 #pragma region 角度
-bool math::IsAcuteAngle(const VECTOR& vector1, const VECTOR& vector2)
+bool math::IsAcuteAngle(const VECTOR& v1, const VECTOR& v2)
 {
-    const float radian = VDot(vector1, vector2) / (VSize(vector1) * VSize(vector2));
+    const float radian = VDot(v1, v2) / (VSize(v1) * VSize(v2));
     return (radian < 90.0f * kDegreesToRadian && radian > 0.0f);
 }
 
@@ -168,14 +168,14 @@ bool math::IsAcuteAngle(const float radian)
     return (radian < 90.0f * kDegreesToRadian && radian > 0.0f);
 }
 
-float math::GetAngleBetweenTwoVector(const VECTOR& vector1, const VECTOR& vector2)
+float math::GetAngleBetweenTwoVector(const VECTOR& v1, const VECTOR& v2)
 {
-    if (vector1 == v3d::GetZeroVector() || vector2 == v3d::GetZeroVector()) { return 0.0f; }
+    if (v1 == v3d::GetZeroVector() || v2 == v3d::GetZeroVector()) { return 0.0f; }
 
-    const float length1 = VSize(vector1);
-    const float length2 = VSize(vector2);
+    const float length1 = VSize(v1);
+    const float length2 = VSize(v2);
 
-    return acos(VDot(vector1, vector2) / (length1 * length2));
+    return acos(VDot(v1, v2) / (length1 * length2));
 }
 #pragma endregion
 
@@ -191,14 +191,14 @@ VECTOR math::GetRotatedPos(const VECTOR& pos, const Quaternion& rotate_q)
 	return VGet(totated_q.x, totated_q.y, totated_q.z);
 }
 
-float math::GetYaw(const VECTOR& vector)
+float math::GetYaw(const VECTOR& v)
 {
-    return atan2f(-vector.x, -vector.z);
+    return atan2f(-v.x, -v.z);
 }
 
-VECTOR math::GetYawRotateVector(const VECTOR& vector)
+VECTOR math::GetYawRotateVector(const VECTOR& v)
 {
-    return VGet(0.0f, GetYaw(vector), 0.0f);
+    return VGet(0.0f, GetYaw(v), 0.0f);
 }
 #pragma endregion
 
