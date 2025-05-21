@@ -3,7 +3,7 @@
 /// @brief シングルトン基底クラス
 /// @brief 派生クラスに「friend SingletonBase<派生クラス>;」を定義する必要あり
 template<typename T>
-class SingletonBase
+class SingletonBase abstract
 {
 public:
 	static void Generate()

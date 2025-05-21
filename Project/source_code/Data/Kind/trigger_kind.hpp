@@ -2,5 +2,6 @@
 
 enum class TriggerKind
 {
-	kHead,
+	kLanding,	// 着地判定用トリガー
+	kHead,		// 頭部トリガー
 };

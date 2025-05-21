@@ -5,7 +5,7 @@
 #include "../Data/Kind/shape_kind.hpp"
 #include "../Calculation/math.hpp"
 
-class ShapeBase
+class ShapeBase abstract
 {
 public:
 	ShapeBase(const ShapeKind shape_kind) : m_shape_kind(shape_kind){}

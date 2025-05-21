@@ -304,6 +304,9 @@
     <ClInclude Include="source_code\Data\Kind\trigger_kind.hpp">
       <Filter>Data\Kind</Filter>
     </ClInclude>
+    <ClInclude Include="source_code\Data\Kind\mass_step_kind.hpp">
+      <Filter>Data\Kind</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Object">

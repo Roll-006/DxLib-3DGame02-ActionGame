@@ -196,6 +196,7 @@
     <ClInclude Include="source_code\Data\IncludeList\shape.hpp" />
     <ClInclude Include="source_code\Data\IncludeList\vector.hpp" />
     <ClInclude Include="source_code\Data\input_data.hpp" />
+    <ClInclude Include="source_code\Data\Kind\mass_step_kind.hpp" />
     <ClInclude Include="source_code\Data\Kind\sort_kind.hpp" />
     <ClInclude Include="source_code\Data\Kind\box_kind.hpp" />
     <ClInclude Include="source_code\Data\Kind\input_kind.hpp" />

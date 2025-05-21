@@ -1,0 +1,11 @@
+#pragma once
+
+/// @brief Ž¿—ÊƒŒƒxƒ‹
+enum class MassStepKind
+{
+	k,
+	k,
+	k,
+	k,
+	k,
+};

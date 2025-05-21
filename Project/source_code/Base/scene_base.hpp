@@ -3,15 +3,15 @@
 
 #include "../Data/Kind/scene_kind.hpp"
 
-class SceneBase
+class SceneBase abstract
 {
 public:
 	SceneBase() : m_is_active(true){}
 	virtual ~SceneBase() = default;
 
-	virtual void Init()		 = 0;
-	virtual void Update()	 = 0;
-	virtual void Draw()const = 0;
+	virtual void Init()		 abstract;
+	virtual void Update()	 abstract;
+	virtual void Draw()const abstract;
 
 	/// @brief アクティブ化する
 	void Activate(){ m_is_active = true; }

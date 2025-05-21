@@ -4,7 +4,7 @@
 /// @brief インスタンスの生成が1つに限られるシングルトンの基底クラス()
 /// @brief GetInstanceを禁止
 template<typename T>
-class OneInstanceSingletonBase
+class OneInstanceSingletonBase abstract
 {
 public:
 	OneInstanceSingletonBase()

@@ -8,7 +8,7 @@
 
 class ObjManager;
 
-class ObjBase
+class ObjBase abstract
 {
 public:
 	ObjBase(const std::string& name, const std::string& tag) : 
@@ -19,9 +19,9 @@ public:
 
 	virtual ~ObjBase() = default;
 
-	virtual void Init()			= 0;
-	virtual void Update()		= 0;
-	virtual void Draw()const	= 0;
+	virtual void Init()			abstract;
+	virtual void Update()		abstract;
+	virtual void Draw()const	abstract;
 
 	[[nodiscard]] std::string GetName()const { return m_name; }
 	[[nodiscard]] std::string GetTag() const { return m_tag; }

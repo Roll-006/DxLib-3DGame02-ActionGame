@@ -7,20 +7,24 @@
 #include "../Data/collide_obj_pair_data.hpp"
 #include "../Calculation/collision_calculator.hpp"
 
-class CollisionManager : public SingletonBase<CollisionManager>
+class CollisionManager final : public SingletonBase<CollisionManager>
 {
 public:
 	void Update();
 
-	/// @brief 衝突判定を行うオブジェクトを追加する
-	void AddCollideObject(std::shared_ptr<CollideObjBase> collide_obj);
+	/// @brief 衝突判定を行うオブジェクトを追加
+	void AddCollideObj(std::shared_ptr<CollideObjBase> collide_obj);
+	/// @brief 衝突判定を行うオブジェクトを解除
+	void RemoveCollideObj(std::shared_ptr<CollideObjBase> collide_obj);
 
-	/// @brief 衝突判定を行うオブジェクトを削除する
-	void RemoveCollideObject(std::shared_ptr<CollideObjBase> collide_obj);
+	/// @brief 衝突判定を無視するオブジェクトを追加
+	void AddIgnoreObj(std::string obj_name);
+	/// @brief 衝突判定を無視するオブジェクトを解除
+	void RemoveIgnoreObj(std::string obj_name);
 
 private:
 	CollisionManager();
-	~CollisionManager();
+	~CollisionManager()override;
 
 	#pragma region 衝突判定
 	std::vector<CollideObjPairData> CheckHitAll();
@@ -37,7 +41,8 @@ private:
 	#pragma endregion
 
 private:
-	std::list<std::shared_ptr<CollideObjBase>> m_collide_objects;
+	std::list<std::shared_ptr<CollideObjBase>> m_collide_objects;	// 衝突判定を行うオブジェクト
+	std::list<std::string> m_ignore_objects;						// 衝突判定を無視するオブジェクト
 
 	friend SingletonBase<CollisionManager>;
 };
