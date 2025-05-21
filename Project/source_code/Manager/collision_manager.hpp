@@ -26,8 +26,11 @@ private:
 	CollisionManager();
 	~CollisionManager()override;
 
+	/// @brief 衝突判定を起こしたオブジェクトの組み合わせを生成
+	/// @return 衝突を起こした全てのペア
+	std::vector<CollideObjPairData> MakeHitObjPair();
+
 	#pragma region 衝突判定
-	std::vector<CollideObjPairData> CheckHitAll();
 	bool IsHit						(const CollideObjBase&	owner_obj,	const CollideObjBase& target_obj);
 	bool IsHitLineAndTarget			(const Line&			line,		const CollideObjBase& target_obj);
 	bool IsHitSegmentAndTarget		(const Segment&			segment,	const CollideObjBase& target_obj);

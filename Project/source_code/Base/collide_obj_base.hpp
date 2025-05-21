@@ -14,7 +14,7 @@ public:
 		ObjBase				(name, tag),
 		m_collider			(nullptr)
 	{ }
-
+	
 	virtual ~CollideObjBase() = default;
 
 	virtual void OnCollide(const CollideObjBase& check_hit_obj)abstract;
