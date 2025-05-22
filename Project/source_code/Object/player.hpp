@@ -12,9 +12,11 @@ public:
 	Player(std::shared_ptr<Camera> camera);
 	~Player();
 
-	void Init();
-	void Update();
-	void Draw()const;
+	void Init()			override;
+	void Update()		override;
+	void Draw()const	override;
+
+	void OnCollide(const CollideObjBase& check_hit_obj)override;
 
 	void ChangeAnimState();
 

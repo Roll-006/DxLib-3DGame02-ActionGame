@@ -2,16 +2,17 @@
 #include <vector>
 #include <unordered_map>
 #include <tuple>
-#include <DxLib.h>
 
 #include "../Base/singleton_base.hpp"
 
 #include "../FPS/fps.hpp"
 #include "../Window/window.hpp"
+
 #include "../Data/CSV/csv.hpp"
 #include "../Data/input_data.hpp"
-#include "../Data/Kind/input_kind.hpp"
+#include "../Data/Kind/device_kind.hpp"
 #include "../Concept/input_concepts.hpp"
+
 #include "../Data/IncludeList/vector.hpp"
 
 /// @brief 役割 : 入力デバイスの検出, 入力状態の取得, 入力時間の計測
@@ -41,12 +42,12 @@ public:
 
 
 	#pragma region 入力判定
-	[[nodiscard]] bool IsInputMouseButton	 (const int				  input_num)const;
-	[[nodiscard]] int  GetMouseWheelParameter(const MouseWheelKind	  input_num)const;
-	[[nodiscard]] bool IsSlideMouse			 (const MouseSlideDirKind input_num)const;
-	[[nodiscard]] bool IsInputPadButton		 (const int				  input_num)const { return m_xinput.Buttons[input_num]; }
-	[[nodiscard]] int  GetPadStickParameter	 (const StickKind		  input_num)const;
-	[[nodiscard]] int  GetPadTriggerParameter(const TriggerKind		  input_num)const;
+	[[nodiscard]] bool IsInputMouseButton	 (const int					input_num)const;
+	[[nodiscard]] int  GetMouseWheelParameter(const mouse::WheelKind	input_num)const;
+	[[nodiscard]] bool IsSlideMouse			 (const mouse::SlideDirKind input_num)const;
+	[[nodiscard]] bool IsInputPadButton		 (const int					input_num)const { return m_xinput.Buttons[input_num]; }
+	[[nodiscard]] int  GetPadStickParameter	 (const pad::StickKind		input_num)const;
+	[[nodiscard]] int  GetPadTriggerParameter(const pad::TriggerKind	input_num)const;
 	#pragma endregion
 
 
@@ -59,7 +60,7 @@ public:
 		{
 			return SupportGetInputTime(InputKind::kMouseButton, input_num, time_state);
 		}
-		if (std::is_same_v<MouseT, MouseSlideDirKind>)
+		if (std::is_same_v<MouseT, mouse::SlideDirKind>)
 		{
 			return SupportGetInputTime(InputKind::kMouseWheel, input_num, time_state);
 		}
@@ -72,7 +73,7 @@ public:
 		{
 			return SupportGetInputTime(InputKind::kPadButton, input_num, time_state);
 		}
-		if (std::is_same_v<PadT, TriggerKind>)
+		if (std::is_same_v<PadT, pad::TriggerKind>)
 		{
 			return SupportGetInputTime(InputKind::kPadTrigger, input_num, time_state);
 		}
@@ -88,8 +89,8 @@ public:
 	{
 		InputKind kind = InputKind::kMouseButton;
 
-		if (std::is_same_v<MouseT, MouseSlideDirKind>) { kind = InputKind::kMouseWheel; }
-		if (std::is_same_v<MouseT, MouseWheelKind>)	   { kind = InputKind::kMouseSlide; }
+		if (std::is_same_v<MouseT, mouse::SlideDirKind>) { kind = InputKind::kMouseWheel; }
+		if (std::is_same_v<MouseT, mouse::WheelKind>)	   { kind = InputKind::kMouseSlide; }
 
 		return SupportGetInputState(kind, input_num);
 	}
@@ -98,8 +99,8 @@ public:
 	{
 		InputKind kind = InputKind::kPadButton;
 
-		if (std::is_same_v<PadT, TriggerKind>) { kind = InputKind::kPadTrigger; }
-		if (std::is_same_v<PadT, StickKind>)   { kind = InputKind::kPadStick; }
+		if (std::is_same_v<PadT, pad::TriggerKind>) { kind = InputKind::kPadTrigger; }
+		if (std::is_same_v<PadT, pad::StickKind>)   { kind = InputKind::kPadStick; }
 
 		return SupportGetInputState(kind, input_num);
 	}

@@ -83,52 +83,52 @@ bool InputChecker::IsInputMouseButton(const int input_num)const
 	return (GetMouseInput() & input_num) != 0;
 }
 
-int InputChecker::GetMouseWheelParameter(const MouseWheelKind input_num)const
+int InputChecker::GetMouseWheelParameter(const mouse::WheelKind input_num)const
 {
 	const int rota = m_mouse_data.at(TimeState::kCurrent).wheel_rotation;
 
 	switch (input_num)
 	{
-	case MouseWheelKind::kUp:	return rota > 0 ? rota : 0;	break;
-	case MouseWheelKind::kDown:	return rota < 0 ? rota : 0;	break;
+	case mouse::WheelKind::kUp:	return rota > 0 ? rota : 0;	break;
+	case mouse::WheelKind::kDown:	return rota < 0 ? rota : 0;	break;
 	}
 	return 0;
 }
 
-bool InputChecker::IsSlideMouse(const MouseSlideDirKind input_num)const
+bool InputChecker::IsSlideMouse(const mouse::SlideDirKind input_num)const
 {
 	switch (input_num)
 	{
-	case MouseSlideDirKind::kLeft:  if (m_mouse_data.at(TimeState::kCurrent).pos.x < m_mouse_data.at(TimeState::kPrev).pos.x) { return true; } break;
-	case MouseSlideDirKind::kRight: if (m_mouse_data.at(TimeState::kCurrent).pos.x > m_mouse_data.at(TimeState::kPrev).pos.x) { return true; } break;
-	case MouseSlideDirKind::kDown:  if (m_mouse_data.at(TimeState::kCurrent).pos.y > m_mouse_data.at(TimeState::kPrev).pos.y) { return true; } break;
-	case MouseSlideDirKind::kUp:    if (m_mouse_data.at(TimeState::kCurrent).pos.y < m_mouse_data.at(TimeState::kPrev).pos.y) { return true; } break;
+	case mouse::SlideDirKind::kLeft:  if (m_mouse_data.at(TimeState::kCurrent).pos.x < m_mouse_data.at(TimeState::kPrev).pos.x) { return true; } break;
+	case mouse::SlideDirKind::kRight: if (m_mouse_data.at(TimeState::kCurrent).pos.x > m_mouse_data.at(TimeState::kPrev).pos.x) { return true; } break;
+	case mouse::SlideDirKind::kDown:  if (m_mouse_data.at(TimeState::kCurrent).pos.y > m_mouse_data.at(TimeState::kPrev).pos.y) { return true; } break;
+	case mouse::SlideDirKind::kUp:    if (m_mouse_data.at(TimeState::kCurrent).pos.y < m_mouse_data.at(TimeState::kPrev).pos.y) { return true; } break;
 	}
 	return false;
 }
 
-int InputChecker::GetPadStickParameter(const StickKind input_num)const
+int InputChecker::GetPadStickParameter(const pad::StickKind input_num)const
 {
 	switch (input_num)
 	{
-	case StickKind::kLSLeft:  if (m_xinput.ThumbLX < -kStickDeadZone) { return m_xinput.ThumbLX; } break;
-	case StickKind::kLSRight: if (m_xinput.ThumbLX >  kStickDeadZone) { return m_xinput.ThumbLX; } break;
-	case StickKind::kLSDown:  if (m_xinput.ThumbLY < -kStickDeadZone) { return m_xinput.ThumbLY; } break;
-	case StickKind::kLSUp:    if (m_xinput.ThumbLY >  kStickDeadZone) { return m_xinput.ThumbLY; } break;
-	case StickKind::kRSLeft:  if (m_xinput.ThumbRX < -kStickDeadZone) { return m_xinput.ThumbRX; } break;
-	case StickKind::kRSRight: if (m_xinput.ThumbRX >  kStickDeadZone) { return m_xinput.ThumbRX; } break;
-	case StickKind::kRSDown:  if (m_xinput.ThumbRY < -kStickDeadZone) { return m_xinput.ThumbRY; } break;
-	case StickKind::kRSUp:	  if (m_xinput.ThumbRY >  kStickDeadZone) { return m_xinput.ThumbRY; } break;
+	case pad::StickKind::kLSLeft:  if (m_xinput.ThumbLX < -kStickDeadZone) { return m_xinput.ThumbLX; } break;
+	case pad::StickKind::kLSRight: if (m_xinput.ThumbLX >  kStickDeadZone) { return m_xinput.ThumbLX; } break;
+	case pad::StickKind::kLSDown:  if (m_xinput.ThumbLY < -kStickDeadZone) { return m_xinput.ThumbLY; } break;
+	case pad::StickKind::kLSUp:    if (m_xinput.ThumbLY >  kStickDeadZone) { return m_xinput.ThumbLY; } break;
+	case pad::StickKind::kRSLeft:  if (m_xinput.ThumbRX < -kStickDeadZone) { return m_xinput.ThumbRX; } break;
+	case pad::StickKind::kRSRight: if (m_xinput.ThumbRX >  kStickDeadZone) { return m_xinput.ThumbRX; } break;
+	case pad::StickKind::kRSDown:  if (m_xinput.ThumbRY < -kStickDeadZone) { return m_xinput.ThumbRY; } break;
+	case pad::StickKind::kRSUp:	   if (m_xinput.ThumbRY >  kStickDeadZone) { return m_xinput.ThumbRY; } break;
 	}
 	return 0;
 }
 
-int InputChecker::GetPadTriggerParameter(const TriggerKind input_num)const
+int InputChecker::GetPadTriggerParameter(const pad::TriggerKind input_num)const
 {
 	switch (input_num)
 	{
-	case TriggerKind::kLT: if (m_xinput.LeftTrigger  > kTriggerDeadZone) { return m_xinput.LeftTrigger; }  break;
-	case TriggerKind::kRT: if (m_xinput.RightTrigger > kTriggerDeadZone) { return m_xinput.RightTrigger; } break;
+	case pad::TriggerKind::kLT: if (m_xinput.LeftTrigger  > kTriggerDeadZone) { return m_xinput.LeftTrigger; }  break;
+	case pad::TriggerKind::kRT: if (m_xinput.RightTrigger > kTriggerDeadZone) { return m_xinput.RightTrigger; } break;
 	}
 	return 0;
 }
@@ -195,11 +195,11 @@ void InputChecker::CheckInputAll()
 			break;
 
 		case InputKind::kMouseWheel:
-			data.is_input = GetMouseWheelParameter(static_cast<MouseWheelKind>(input_n)) ? true : false;
+			data.is_input = GetMouseWheelParameter(static_cast<mouse::WheelKind>(input_n)) ? true : false;
 			break;
 
 		case InputKind::kMouseSlide:
-			data.is_input = IsSlideMouse(static_cast<MouseSlideDirKind>(input_n)) ? true : false;
+			data.is_input = IsSlideMouse(static_cast<mouse::SlideDirKind>(input_n)) ? true : false;
 			break;
 
 		case InputKind::kPadButton:
@@ -207,11 +207,11 @@ void InputChecker::CheckInputAll()
 			break;
 
 		case InputKind::kPadTrigger:
-			data.is_input = GetPadTriggerParameter(static_cast<TriggerKind>(input_n)) ? true : false;
+			data.is_input = GetPadTriggerParameter(static_cast<pad::TriggerKind>(input_n)) ? true : false;
 			break;
 
 		case InputKind::kPadStick:
-			data.is_input = GetPadStickParameter(static_cast<StickKind>(input_n)) ? true : false;
+			data.is_input = GetPadStickParameter(static_cast<pad::StickKind>(input_n)) ? true : false;
 			break;
 		}
 	}
