@@ -6,10 +6,7 @@ Camera::Camera() :
 	m_move_speed		(0.0f),
 	m_distance_to_target(500.0f)
 {
-	m_transform->SetPos(VGet(0.0f, 0.0f, -500.0f));
 	m_target_pos[TimeState::kCurrect] = m_target_pos[TimeState::kNext] = m_transform->GetPos();
-	pos = m_transform->GetPos();
-
 
 	SetCameraNearFar(kNear, kFar);
 	SetupCamera_Perspective(kFOV * math::kDegreesToRadian);
@@ -70,14 +67,13 @@ void Camera::Move()
 {
 	if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_0) == InputState::kHold)
 	{
+		m_transform->SetPos(m_transform->GetPos() - m_target_transform->GetPos());
+
 		float speed = 10.0f * FPS::GetDeltaTime();
 		Quaternion rota_q = quat::GetQuaternion(VGet(0.0f, 1.0f, 0.0f), speed);
-		m_transform->SetPos(math::GetRotatedPos(pos, rota_q));
-		
-		pos = m_transform->GetPos();
+		m_transform->SetPos(math::GetRotatedPos(m_transform->GetPos(), rota_q));
 
-		VECTOR add_v = m_target_transform->GetPos();
-		m_transform->SetPos(m_transform->GetPos() + add_v);
+		m_transform->SetPos(m_transform->GetPos() + m_target_transform->GetPos());
 	}
 }
 

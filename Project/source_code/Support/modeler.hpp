@@ -1,5 +1,4 @@
 #pragma once
-#include <memory>
 #include <DxLib.h>
 
 #include "../Data/Path/model_path.hpp"

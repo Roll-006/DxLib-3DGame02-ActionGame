@@ -1,14 +1,24 @@
 #pragma once
+#include <memory>
 #include "../Calculation/math.hpp"
 
 class Transform final
 {
+public:
+	enum class CoordinateKind
+	{
+		kLocal,
+		kWorld,
+	};
+
 public:
 	Transform(const VECTOR& pos);
 	Transform();
 	~Transform();
 
 	void Move(const VECTOR& velocity);
+
+	void SetOwnerTransform(std::shared_ptr<Transform> owner);
 
 	void SetPos(const VECTOR& pos);
 	//void SetRotatetion();

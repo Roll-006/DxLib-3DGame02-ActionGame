@@ -23,6 +23,7 @@ Modeler::~Modeler()
 
 void Modeler::Draw()
 {
+	//MV1SetRotationXYZ(m_model_handle, );
 	MV1SetPosition(m_model_handle, m_transform->GetPos());
 	MV1DrawModel(m_model_handle);
 }
