@@ -69,8 +69,8 @@ void Camera::Move()
 	{
 		m_transform->SetPos(m_transform->GetPos() - m_target_transform->GetPos());
 
-		float speed = 10.0f * FPS::GetDeltaTime();
-		Quaternion rota_q = quat::GetQuaternion(VGet(0.0f, 1.0f, 0.0f), speed);
+		const float speed = 10.0f * FPS::GetDeltaTime();
+		const Quaternion rota_q = quat::GetQuaternion(VGet(0.0f,1.0f, 0.0f), speed);
 		m_transform->SetPos(math::GetRotatedPos(m_transform->GetPos(), rota_q));
 
 		m_transform->SetPos(m_transform->GetPos() + m_target_transform->GetPos());

@@ -8,7 +8,7 @@ Animator::Animator(std::shared_ptr<Modeler> modeler, const float blend_speed) :
 	m_modeler					(modeler)
 
 {
-	m_time_state_data[TimeState::kPrev] = m_time_state_data[TimeState::kCurrent] = AnimTimeStateData(-1, -1, 0.0f);
+	m_time_state_data[TimeState::kPrev] = m_time_state_data[TimeState::kCurrent] = AnimTimeStateData();
 }
 
 Animator::~Animator()
