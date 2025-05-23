@@ -44,6 +44,7 @@ private:
 
 	std::shared_ptr<Transform>				m_target_transform;
 	std::unordered_map<TimeState, VECTOR>	m_target_pos;
+	VECTOR pos;
 
 	float m_move_speed;
 	float m_distance_to_target;

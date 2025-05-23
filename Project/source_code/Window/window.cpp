@@ -24,7 +24,7 @@ void Window::SetWindowMode()
 
 	if (!CheckHitKey(KEY_INPUT_LALT)) { return; }
 
-	if (InputChecker::GetInstance()->GetKeyInputState(KEY_INPUT_RETURN) == InputState::kSingle)
+	if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_RETURN) == InputState::kSingle)
 	{
 		++m_change_window_count;
 

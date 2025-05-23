@@ -17,7 +17,7 @@ public:
 	/// @param file_path 画像のファイルパス
 	/// @param paste_square テクスチャを張り付ける面
 	/// @param texture_dir テクスチャを張り付ける向き
-	void LoadTexture(const std::string& file_path, const SquareKind paste_square, const TextureDirKind texture_dir);
+	void LoadTexture(const std::string& file_path, const box::SquareKind paste_square, const TextureDirKind texture_dir);
 
 	/// @brief 移動
 	/// @param is_sync_dir 移動方向とOBBの向きを同期させるかどうか
@@ -28,9 +28,9 @@ public:
 
 	[[nodiscard]] VECTOR		 GetPos		()								const { return m_pos; }
 	[[nodiscard]] VECTOR		 GetDir		()								const { return m_dir; }
-	[[nodiscard]] VECTOR		 GetVertex	(const VertexKind vertex_kind)	const { return m_box.vertexes.at(static_cast<int>(vertex_kind)); }
-	[[nodiscard]] const Square&  GetSquare	(const SquareKind square_kind)	const { return m_box.squares.at(static_cast<int>(square_kind)); }
-	[[nodiscard]] const Segment& GetEdge	(const EdgeKind edge_kind)		const;
+	[[nodiscard]] VECTOR		 GetVertex	(const box::VertexKind vertex_kind)	const { return m_box.vertexes.at(static_cast<int>(vertex_kind)); }
+	[[nodiscard]] const Square&  GetSquare	(const box::SquareKind square_kind)	const { return m_box.squares.at(static_cast<int>(square_kind)); }
+	[[nodiscard]] const Segment& GetEdge	(const box::EdgeKind edge_kind)		const;
 
 private:
 	void CalcVertexPos();

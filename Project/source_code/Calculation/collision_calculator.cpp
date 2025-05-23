@@ -264,8 +264,8 @@ VECTOR collision::GetValidVelocityAfterHitCapsuleAndSquare(const VECTOR& velocit
 VECTOR collision::GetValidVelocityAfterHitCapsuleAndOBB(const VECTOR& velocity, const Capsule& dynamic_capsule, const OBB& static_obb)
 {
     VECTOR valid_velocity = velocity;
-    std::unordered_map<SquareKind, float> current_distance;
-    std::unordered_map<SquareKind, float> future_distance;
+    std::unordered_map<box::SquareKind, float> current_distance;
+    std::unordered_map<box::SquareKind, float> future_distance;
 
     // 移動後のカプセル
     Capsule future_capsule = dynamic_capsule;
@@ -274,12 +274,12 @@ VECTOR collision::GetValidVelocityAfterHitCapsuleAndOBB(const VECTOR& velocity, 
     for (int i = 0; i < BoxData::kSquareNum; ++i)
     {
         // 現在の座標とすべての四角形の距離を取得
-        current_distance[static_cast<SquareKind>(i)] = math::GetDistancePointToSquare(
-            dynamic_capsule.GetSegment().GetBeginPos(), static_obb.GetSquare(static_cast<SquareKind>(i)));
+        current_distance[static_cast<box::SquareKind>(i)] = math::GetDistancePointToSquare(
+            dynamic_capsule.GetSegment().GetBeginPos(), static_obb.GetSquare(static_cast<box::SquareKind>(i)));
 
         // 未来の座標とすべての四角形の距離を取得
-        future_distance[static_cast<SquareKind>(i)] = math::GetDistancePointToSquare(
-            future_capsule.GetSegment().GetBeginPos(), static_obb.GetSquare(static_cast<SquareKind>(i)));
+        future_distance[static_cast<box::SquareKind>(i)] = math::GetDistancePointToSquare(
+            future_capsule.GetSegment().GetBeginPos(), static_obb.GetSquare(static_cast<box::SquareKind>(i)));
     }
 
     // 現在の距離が近い順にソート
@@ -289,7 +289,7 @@ VECTOR collision::GetValidVelocityAfterHitCapsuleAndOBB(const VECTOR& velocity, 
     // 移動前の座標と距離が近い四角形から順番に押し戻す
     for (auto& dist : current_distance)
     {
-        valid_velocity = GetValidVelocityAfterHitCapsuleAndSquare(valid_velocity, dynamic_capsule, static_obb.GetSquare(static_cast<SquareKind>(dist.first)));
+        valid_velocity = GetValidVelocityAfterHitCapsuleAndSquare(valid_velocity, dynamic_capsule, static_obb.GetSquare(static_cast<box::SquareKind>(dist.first)));
     }
 
     return valid_velocity;

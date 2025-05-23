@@ -1,12 +1,15 @@
 #include "camera.hpp"
 
 Camera::Camera() : 
-	CollideObjBase		(ObjName.CAMERA, ObjTag.CAMERA, MassLevelKind::kVeryLight),
+	CollideObjBase		(ObjName.CAMERA, ObjTag.CAMERA, MassKind::kVeryLight),
 	m_target_transform	(nullptr),
 	m_move_speed		(0.0f),
 	m_distance_to_target(500.0f)
 {
-	m_transform->SetPos(VGet(0.0f, 0.0f, 500.0f));
+	m_transform->SetPos(VGet(0.0f, 0.0f, -500.0f));
+	m_target_pos[TimeState::kCurrect] = m_target_pos[TimeState::kNext] = m_transform->GetPos();
+	pos = m_transform->GetPos();
+
 
 	SetCameraNearFar(kNear, kFar);
 	SetupCamera_Perspective(kFOV * math::kDegreesToRadian);
@@ -26,6 +29,7 @@ void Camera::Update()
 {
 	Move();
 	SetCameraPositionAndTarget_UpVecY(GetTransform()->GetPos(), m_target_transform->GetPos());
+	//SetCameraPositionAndTarget_UpVecY(GetTransform()->GetPos(), v3d::GetZeroVector());
 }
 
 void Camera::Draw()const
@@ -64,10 +68,16 @@ void Camera::InitAngle()
 
 void Camera::Move()
 {
-	if (InputChecker::GetInstance()->GetKeyInputState(KEY_INPUT_0) == InputState::kHold)
+	if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_0) == InputState::kHold)
 	{
 		float speed = 10.0f * FPS::GetDeltaTime();
-		m_transform->SetPos(math::GetRotatedPos(m_transform->GetPos(), quat::GetQuaternion(VGet(0.0f, 1.0f, 0.0f), speed)));
+		Quaternion rota_q = quat::GetQuaternion(VGet(0.0f, 1.0f, 0.0f), speed);
+		m_transform->SetPos(math::GetRotatedPos(pos, rota_q));
+		
+		pos = m_transform->GetPos();
+
+		VECTOR add_v = m_target_transform->GetPos();
+		m_transform->SetPos(m_transform->GetPos() + add_v);
 	}
 }
 

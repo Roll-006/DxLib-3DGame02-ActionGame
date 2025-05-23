@@ -12,7 +12,7 @@ CollisionManager::~CollisionManager()
 
 void CollisionManager::Update()
 {
-	std::vector<CollideObjPairData> collide_obj_pair = MakeHitObjPair();
+	std::vector<CollideObjPairData> collide_obj_pair = MakeHitObjPairs();
 
 	for (auto& obj : collide_obj_pair)
 	{
@@ -40,24 +40,24 @@ void CollisionManager::RemoveCollideObj(std::shared_ptr<CollideObjBase> collide_
 
 void CollisionManager::AddIgnoreObj(std::string obj_name)
 {
-	if (!std::count(m_ignore_objects.begin(), m_ignore_objects.end(), obj_name))
+	if (!std::count(m_ignore_object_name.begin(), m_ignore_object_name.end(), obj_name))
 	{
-		m_ignore_objects.emplace_back(obj_name);
+		m_ignore_object_name.emplace_back(obj_name);
 	}
 }
 
 void CollisionManager::RemoveIgnoreObj(std::string obj_name)
 {
-	if (std::count(m_ignore_objects.begin(), m_ignore_objects.end(), obj_name))
+	if (std::count(m_ignore_object_name.begin(), m_ignore_object_name.end(), obj_name))
 	{
-		m_ignore_objects.remove(obj_name);
+		m_ignore_object_name.remove(obj_name);
 	}
 }
 #pragma endregion
 
 
 #pragma region è’ìÀîªíË
-std::vector<CollideObjPairData> CollisionManager::MakeHitObjPair()
+std::vector<CollideObjPairData> CollisionManager::MakeHitObjPairs()
 {
 	std::vector<CollideObjPairData> collide_obj_pair;
 

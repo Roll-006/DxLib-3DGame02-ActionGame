@@ -28,7 +28,7 @@ private:
 
 	/// @brief 衝突判定を起こしたオブジェクトの組み合わせを生成
 	/// @return 衝突を起こした全てのペア
-	std::vector<CollideObjPairData> MakeHitObjPair();
+	std::vector<CollideObjPairData> MakeHitObjPairs();
 
 	#pragma region 衝突判定
 	bool IsHit						(const CollideObjBase&	owner_obj,	const CollideObjBase& target_obj);
@@ -45,7 +45,7 @@ private:
 
 private:
 	std::list<std::shared_ptr<CollideObjBase>> m_collide_objects;	// 衝突判定を行うオブジェクト
-	std::list<std::string> m_ignore_objects;						// 衝突判定を無視するオブジェクト
+	std::list<std::string> m_ignore_object_name;					// 衝突判定を無視するオブジェクト
 
 	friend SingletonBase<CollisionManager>;
 };

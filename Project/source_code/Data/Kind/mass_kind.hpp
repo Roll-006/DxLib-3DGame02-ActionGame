@@ -1,7 +1,7 @@
 #pragma once
 
-/// @brief 質量レベル (値が少ないほど軽い)
-enum class MassLevelKind
+/// @brief 質量レベル(値が少ないほど軽い)
+enum class MassKind
 {
 	kVeryLight,
 	kLight,

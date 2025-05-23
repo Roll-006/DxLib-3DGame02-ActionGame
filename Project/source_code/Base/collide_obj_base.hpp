@@ -10,7 +10,7 @@
 class CollideObjBase abstract : public ObjBase
 {
 public:
-	CollideObjBase(const std::string& name, const std::string& tag, MassLevelKind mass_level_kind) :
+	CollideObjBase(const std::string& name, const std::string& tag, MassKind mass_level_kind) :
 		ObjBase				(name, tag),
 		m_collider			(nullptr),
 		m_mass_level_kind	(mass_level_kind)
@@ -30,7 +30,7 @@ public:
 	void AddTrigger(const TriggerKind trigger_kind, std::shared_ptr<ShapeBase> trigger) { m_trigger[trigger_kind] = trigger; }
 
 	/// @brief ¿—ÊƒŒƒxƒ‹‚ğİ’è‚·‚é
-	void SetMassLevel(const MassLevelKind mass_level_kind) { m_mass_level_kind = mass_level_kind; }
+	void SetMassLevel(const MassKind mass_level_kind) { m_mass_level_kind = mass_level_kind; }
 
 	[[nodiscard]] const std::shared_ptr<ShapeBase> GetCollider()const { return m_collider; }
 	[[nodiscard]] const std::shared_ptr<ShapeBase> GetTrigger(const TriggerKind trigger_kind)const
@@ -45,5 +45,5 @@ public:
 protected:
 	std::shared_ptr<ShapeBase> m_collider;
 	std::unordered_map<TriggerKind, std::shared_ptr<ShapeBase>> m_trigger;
-	MassLevelKind m_mass_level_kind;
+	MassKind m_mass_level_kind;
 };

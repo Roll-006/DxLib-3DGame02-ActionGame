@@ -1,13 +1,15 @@
 #include "player.hpp"
 
 Player::Player(std::shared_ptr<Camera> camera) :
-	CollideObjBase	(ObjName.PLAYER, ObjTag.PLAYER, MassLevelKind::kMedium),
+	CollideObjBase	(ObjName.PLAYER, ObjTag.PLAYER, MassKind::kMedium),
 	m_modeler		(nullptr),
 	m_animator		(nullptr),
 	m_camera		(camera)
 {
 	m_modeler	= std::make_shared<Modeler> (GetTransform(), ModelPath.CHARA_01);
 	m_animator	= std::make_shared<Animator>(m_modeler, 3.0f);
+
+	m_transform->SetPos(VGet(300, 100, 100));
 
 	// 各アニメーション追加
 	// 初期状態はIdleとする
