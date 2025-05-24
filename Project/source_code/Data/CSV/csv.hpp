@@ -48,7 +48,7 @@ public:
         ContainerT container;
         std::ifstream ifile(file_path.c_str(), std::ios::in);
         std::string line_buffer;
-
+        
         if (ifile.is_open())
         {
             while (getline(ifile, line_buffer))

@@ -1,6 +1,6 @@
 #pragma once
-#include "../Support/modeler.hpp"
-#include "../Support/animator.hpp"
+#include "../Part/modeler.hpp"
+#include "../Part/animator.hpp"
 
 #include "../Object/camera.hpp"
 

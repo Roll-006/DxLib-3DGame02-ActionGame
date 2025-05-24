@@ -6,7 +6,7 @@ Camera::Camera() :
 	m_move_speed		(0.0f),
 	m_distance_to_target(500.0f)
 {
-	m_target_pos[TimeState::kCurrect] = m_target_pos[TimeState::kNext] = m_transform->GetPos();
+	m_target_pos[TimeState::kCurrect] = m_target_pos[TimeState::kNext] = m_transform->GetPos(CoordinateKind::kLocal);
 
 	SetCameraNearFar(kNear, kFar);
 	SetupCamera_Perspective(kFOV * math::kDegreesToRadian);
@@ -25,7 +25,7 @@ void Camera::Init()
 void Camera::Update()
 {
 	Move();
-	SetCameraPositionAndTarget_UpVecY(GetTransform()->GetPos(), m_target_transform->GetPos());
+	SetCameraPositionAndTarget_UpVecY(GetTransform()->GetPos(CoordinateKind::kWorld), m_target_transform->GetPos(CoordinateKind::kWorld));
 	//SetCameraPositionAndTarget_UpVecY(GetTransform()->GetPos(), v3d::GetZeroVector());
 }
 
@@ -44,18 +44,23 @@ void Camera::OnCollide(const CollideObjBase& check_hit_obj)
 
 void Camera::AttachTarget(const std::shared_ptr<ObjBase> obj)
 {
+	// ターゲットを親オブジェクトとする
 	m_target_transform = obj->GetTransform();
+	m_transform->AttachParent(obj->GetTransform());
 }
 
 void Camera::AttachTarget(const std::string& obj_name)
 {
+	// ターゲットを親オブジェクトとする
 	auto target_obj = ObjManager::GetInstance()->GetObj(obj_name);
 	m_target_transform = target_obj->GetTransform();
+	m_transform->AttachParent(target_obj->GetTransform());
 }
 
 void Camera::DetachTarget()
 {
 	m_target_transform = nullptr;
+	m_transform->DetachParent();
 }
 
 void Camera::InitAngle()
@@ -65,15 +70,27 @@ void Camera::InitAngle()
 
 void Camera::Move()
 {
+
+
+	// 仮でカメラを回転
 	if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_0) == InputState::kHold)
 	{
-		m_transform->SetPos(m_transform->GetPos() - m_target_transform->GetPos());
+		const float		 speed		 = 10.0f * FPS::GetDeltaTime();
+		const Quaternion rota_q		 = quat::GetQuaternion(VGet(0.0f,1.0f, 0.0f), speed);
+		const VECTOR	 rotated_pos = math::GetRotatedPos(m_transform->GetPos(CoordinateKind::kLocal), rota_q);
+		m_transform->SetPos(CoordinateKind::kLocal, rotated_pos);
+	}
 
-		const float speed = 10.0f * FPS::GetDeltaTime();
-		const Quaternion rota_q = quat::GetQuaternion(VGet(0.0f,1.0f, 0.0f), speed);
-		m_transform->SetPos(math::GetRotatedPos(m_transform->GetPos(), rota_q));
+	// 仮で親を外す
+	if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_1) == InputState::kSingle)
+	{
+		m_transform->DetachParent();
+	}
 
-		m_transform->SetPos(m_transform->GetPos() + m_target_transform->GetPos());
+	// 仮で親を外す
+	if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_2) == InputState::kSingle)
+	{
+		m_transform->AttachParent(ObjName.PLAYER);
 	}
 }
 

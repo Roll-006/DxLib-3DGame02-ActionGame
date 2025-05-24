@@ -9,7 +9,7 @@ Player::Player(std::shared_ptr<Camera> camera) :
 	m_modeler	= std::make_shared<Modeler> (GetTransform(), ModelPath.CHARA_01);
 	m_animator	= std::make_shared<Animator>(m_modeler, 3.0f);
 
-	m_transform->SetPos(VGet(300, 100, 100));
+	m_transform->SetPos(CoordinateKind::kWorld, VGet(300, 100, 100));
 
 	// 各アニメーション追加
 	// 初期状態はIdleとする

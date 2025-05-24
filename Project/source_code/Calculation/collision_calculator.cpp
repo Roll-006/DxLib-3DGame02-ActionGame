@@ -255,7 +255,7 @@ VECTOR collision::GetValidVelocityAfterHitCapsuleAndSquare(const VECTOR& velocit
         closest_dir *= -1;
     }
 
-    // 有効velocityを取得
+    // 本来の到達地点までのvelocityを取得
     future_pos += closest_dir * future_distance_to_square;
     future_pos += plane.GetNormalVector() * dynamic_capsule.GetRadius();
     return future_pos - dynamic_capsule.GetSegment().GetBeginPos();
@@ -267,7 +267,7 @@ VECTOR collision::GetValidVelocityAfterHitCapsuleAndOBB(const VECTOR& velocity, 
     std::unordered_map<box::SquareKind, float> current_distance;
     std::unordered_map<box::SquareKind, float> future_distance;
 
-    // 移動後のカプセル
+    // 未来のカプセル
     Capsule future_capsule = dynamic_capsule;
     future_capsule.Move(velocity);
 

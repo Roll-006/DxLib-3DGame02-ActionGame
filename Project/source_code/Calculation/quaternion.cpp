@@ -43,7 +43,7 @@ Quaternion quat::GetNormalizedQuaternion(const Quaternion& q)
 
 Quaternion quat::GetSlerp()
 {
-	return Quaternion();
+
 }
 
 Quaternion quat::GetConjugateQuaternion(const Quaternion& q)

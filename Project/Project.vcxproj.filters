@@ -41,15 +41,6 @@
     <ClCompile Include="source_code\Object\player.cpp">
       <Filter>Object</Filter>
     </ClCompile>
-    <ClCompile Include="source_code\Support\animator.cpp">
-      <Filter>Support</Filter>
-    </ClCompile>
-    <ClCompile Include="source_code\Support\modeler.cpp">
-      <Filter>Support</Filter>
-    </ClCompile>
-    <ClCompile Include="source_code\Support\transform.cpp">
-      <Filter>Support</Filter>
-    </ClCompile>
     <ClCompile Include="source_code\Object\camera.cpp">
       <Filter>Object</Filter>
     </ClCompile>
@@ -83,9 +74,6 @@
     <ClCompile Include="source_code\Shape\3DShape\sphere.cpp">
       <Filter>Shape\3DShape</Filter>
     </ClCompile>
-    <ClCompile Include="source_code\Support\modeler (2).cpp">
-      <Filter>Support</Filter>
-    </ClCompile>
     <ClCompile Include="source_code\Shape\2DShape\circumference.cpp">
       <Filter>Shape\2DShape</Filter>
     </ClCompile>
@@ -100,6 +88,18 @@
     </ClCompile>
     <ClCompile Include="source_code\Calculation\quaternion.cpp">
       <Filter>Calculation</Filter>
+    </ClCompile>
+    <ClCompile Include="source_code\Part\animator.cpp">
+      <Filter>Part</Filter>
+    </ClCompile>
+    <ClCompile Include="source_code\Part\modeler (2).cpp">
+      <Filter>Part</Filter>
+    </ClCompile>
+    <ClCompile Include="source_code\Part\modeler.cpp">
+      <Filter>Part</Filter>
+    </ClCompile>
+    <ClCompile Include="source_code\Part\transform.cpp">
+      <Filter>Part</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -196,15 +196,6 @@
     <ClInclude Include="source_code\Object\player.hpp">
       <Filter>Object</Filter>
     </ClInclude>
-    <ClInclude Include="source_code\Support\animator.hpp">
-      <Filter>Support</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Support\modeler.hpp">
-      <Filter>Support</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Support\transform.hpp">
-      <Filter>Support</Filter>
-    </ClInclude>
     <ClInclude Include="source_code\Object\camera.hpp">
       <Filter>Object</Filter>
     </ClInclude>
@@ -255,9 +246,6 @@
     </ClInclude>
     <ClInclude Include="source_code\Data\IncludeList\vector.hpp">
       <Filter>Data\IncludeList</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Support\modeler (2).hpp">
-      <Filter>Support</Filter>
     </ClInclude>
     <ClInclude Include="source_code\Data\Kind\texture_kind.hpp">
       <Filter>Data\Kind</Filter>
@@ -322,6 +310,21 @@
     <ClInclude Include="source_code\Data\IncludeList\input.hpp">
       <Filter>Data\IncludeList</Filter>
     </ClInclude>
+    <ClInclude Include="source_code\Part\animator.hpp">
+      <Filter>Part</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Part\modeler (2).hpp">
+      <Filter>Part</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Part\modeler.hpp">
+      <Filter>Part</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Part\transform.hpp">
+      <Filter>Part</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Data\Kind\coordinate_kind.hpp">
+      <Filter>Data\Kind</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Object">
@@ -351,9 +354,6 @@
     <Filter Include="Data\CSV">
       <UniqueIdentifier>{aa18a683-8198-4225-be40-2831c615d11f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Window">
-      <UniqueIdentifier>{209348fb-11d3-4b60-abc5-489ba6ddecc4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Data\Path">
       <UniqueIdentifier>{ce592a38-5a0e-4681-97e6-ec115ff7e61a}</UniqueIdentifier>
     </Filter>
@@ -372,9 +372,6 @@
     <Filter Include="Scene">
       <UniqueIdentifier>{47238515-00d6-486e-bcf4-f6f55f21cce5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Support">
-      <UniqueIdentifier>{c6964f06-9b8c-446a-8f44-3299598a3b7f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Shape">
       <UniqueIdentifier>{2694cdd7-3230-4767-9c43-c6a55e47da5a}</UniqueIdentifier>
     </Filter>
@@ -392,6 +389,12 @@
     </Filter>
     <Filter Include="Calculation">
       <UniqueIdentifier>{3983031e-056b-4d1a-a00f-c1acc90bf560}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Part">
+      <UniqueIdentifier>{c6964f06-9b8c-446a-8f44-3299598a3b7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Window">
+      <UniqueIdentifier>{209348fb-11d3-4b60-abc5-489ba6ddecc4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

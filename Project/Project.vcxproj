@@ -149,6 +149,10 @@
     <ClCompile Include="source_code\Manager\scene_manager.cpp" />
     <ClCompile Include="source_code\Object\camera.cpp" />
     <ClCompile Include="source_code\Object\player.cpp" />
+    <ClCompile Include="source_code\Part\animator.cpp" />
+    <ClCompile Include="source_code\Part\modeler (2).cpp" />
+    <ClCompile Include="source_code\Part\modeler.cpp" />
+    <ClCompile Include="source_code\Part\transform.cpp" />
     <ClCompile Include="source_code\Scene\game_clear_scene.cpp" />
     <ClCompile Include="source_code\Scene\game_over_scene.cpp" />
     <ClCompile Include="source_code\Scene\load_scene.cpp" />
@@ -166,10 +170,6 @@
     <ClCompile Include="source_code\Shape\3DShape\capsule.cpp" />
     <ClCompile Include="source_code\Shape\3DShape\obb.cpp" />
     <ClCompile Include="source_code\Shape\3DShape\sphere.cpp" />
-    <ClCompile Include="source_code\Support\animator.cpp" />
-    <ClCompile Include="source_code\Support\modeler (2).cpp" />
-    <ClCompile Include="source_code\Support\modeler.cpp" />
-    <ClCompile Include="source_code\Support\transform.cpp" />
     <ClCompile Include="source_code\Window\window.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -198,6 +198,7 @@
     <ClInclude Include="source_code\Data\IncludeList\input.hpp" />
     <ClInclude Include="source_code\Data\IncludeList\vector.hpp" />
     <ClInclude Include="source_code\Data\input_data.hpp" />
+    <ClInclude Include="source_code\Data\Kind\coordinate_kind.hpp" />
     <ClInclude Include="source_code\Data\Kind\device_kind.hpp" />
     <ClInclude Include="source_code\Data\Kind\mouse_kind.hpp" />
     <ClInclude Include="source_code\Data\Kind\pad_kind.hpp" />
@@ -224,6 +225,10 @@
     <ClInclude Include="source_code\Manager\scene_manager.hpp" />
     <ClInclude Include="source_code\Object\camera.hpp" />
     <ClInclude Include="source_code\Object\player.hpp" />
+    <ClInclude Include="source_code\Part\animator.hpp" />
+    <ClInclude Include="source_code\Part\modeler (2).hpp" />
+    <ClInclude Include="source_code\Part\modeler.hpp" />
+    <ClInclude Include="source_code\Part\transform.hpp" />
     <ClInclude Include="source_code\Scene\game_clear_scene.hpp" />
     <ClInclude Include="source_code\Scene\game_over_scene.hpp" />
     <ClInclude Include="source_code\Scene\load_scene.hpp" />
@@ -241,10 +246,6 @@
     <ClInclude Include="source_code\Shape\3DShape\capsule.hpp" />
     <ClInclude Include="source_code\Shape\3DShape\obb.hpp" />
     <ClInclude Include="source_code\Shape\3DShape\sphere.hpp" />
-    <ClInclude Include="source_code\Support\animator.hpp" />
-    <ClInclude Include="source_code\Support\modeler (2).hpp" />
-    <ClInclude Include="source_code\Support\modeler.hpp" />
-    <ClInclude Include="source_code\Support\transform.hpp" />
     <ClInclude Include="source_code\Window\window.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

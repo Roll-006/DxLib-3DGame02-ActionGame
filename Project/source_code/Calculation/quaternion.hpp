@@ -19,6 +19,7 @@ namespace quat
 	[[nodiscard]] float		 GetSquareSize			(const Quaternion& q);
 	[[nodiscard]] Quaternion GetNormalizedQuaternion(const Quaternion& q);
 
+	/// @brief 球面線形補間
 	[[nodiscard]] Quaternion GetSlerp();
 
 	/// @brief 共役クォータニオンを取得
