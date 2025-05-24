@@ -267,7 +267,7 @@ VECTOR collision::GetValidVelocityAfterHitCapsuleAndOBB(const VECTOR& velocity, 
     std::unordered_map<box::SquareKind, float> current_distance;
     std::unordered_map<box::SquareKind, float> future_distance;
 
-    // 未来のカプセル
+    // 未来のカプセルを取得
     Capsule future_capsule = dynamic_capsule;
     future_capsule.Move(velocity);
 
@@ -287,7 +287,7 @@ VECTOR collision::GetValidVelocityAfterHitCapsuleAndOBB(const VECTOR& velocity, 
     current_distance = math::Sort(current_distance, future_distance, SortKind::kAscending);
 
     // 移動前の座標と距離が近い四角形から順番に押し戻す
-    for (auto& dist : current_distance)
+    for (const auto& dist : current_distance)
     {
         valid_velocity = GetValidVelocityAfterHitCapsuleAndSquare(valid_velocity, dynamic_capsule, static_obb.GetSquare(static_cast<box::SquareKind>(dist.first)));
     }

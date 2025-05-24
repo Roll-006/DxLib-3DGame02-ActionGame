@@ -184,7 +184,6 @@ namespace math
 
 	/// @brief 基準とするベクトルから法線ベクトルを求め、その内の一つを取得
 	[[nodiscard]] VECTOR GetNormalVector(const VECTOR& v);
-
 	[[nodiscard]] VECTOR GetNormalVector(const VECTOR& v1, const VECTOR& v2);
 
 	[[nodiscard]] VECTOR GetProjectionVector(const VECTOR& v);
@@ -217,6 +216,10 @@ namespace math
 
 	/// @brief ヨー角回転ベクトルを取得
 	[[nodiscard]] VECTOR GetYawRotateVector(const VECTOR& v);
+
+	/// @brief ターゲットを見る座標のオイラー角の各回転軸を取得
+	/// @return at(0) : x軸, at(1) : y軸, at(2) : z軸
+	[[nodiscard]] std::vector<VECTOR> GetLookTargetEulerAngles(const VECTOR& pos, const VECTOR& target_pos);
 	#pragma endregion
 
 

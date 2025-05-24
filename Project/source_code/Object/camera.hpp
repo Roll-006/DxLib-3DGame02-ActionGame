@@ -37,13 +37,14 @@ private:
 	void CalcSpeedByMouse();
 
 private:
-	static constexpr float kNear	= 10.0f;
-	static constexpr float kFar		= 2500.0f;
-	static constexpr float kFOV		= 60.0f;
-	static constexpr float kInitAngleTolerance = 0.01f;		// 視点リセットが完了したと判定させる許容値
+	static constexpr float kNear				= 10.0f;
+	static constexpr float kFar					= 2500.0f;
+	static constexpr float kFOV					= 60.0f;
+	static constexpr float kNormalDistance		= 500.0f;
+	static constexpr float kInitAngleTolerance	= 0.01f;		// 視点リセットが完了したと判定させる許容値
 
-	std::shared_ptr<Transform>				m_target_transform;
-	std::unordered_map<TimeState, VECTOR>	m_target_pos;
+	std::shared_ptr<Transform> m_target_transform;
+	//std::unordered_map<TimeState, VECTOR>	m_target_pos;
 
 	float m_move_speed;
 	float m_distance_to_target;

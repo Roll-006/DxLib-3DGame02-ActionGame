@@ -19,7 +19,7 @@ public:
 	};
 
 public:
-	Animator(std::shared_ptr<Modeler> modeler, const float blend_speed);
+	Animator(const std::shared_ptr<Modeler> modeler, const float blend_speed);
 	~Animator();
 
 	void Init();

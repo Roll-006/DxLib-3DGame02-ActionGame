@@ -75,41 +75,18 @@ const Segment& OBB::GetEdge(const box::EdgeKind edge_kind)const
 {
 	switch (edge_kind)
 	{
-	case box::EdgeKind::kBottomFront:
-		return m_box.squares.at(static_cast<int>(box::SquareKind::kBottom)).	GetEdge(1); break;
-
-	case box::EdgeKind::kBottomBack:
-		return m_box.squares.at(static_cast<int>(box::SquareKind::kBottom)).	GetEdge(3); break;
-
-	case box::EdgeKind::kBottomRight:
-		return m_box.squares.at(static_cast<int>(box::SquareKind::kBottom)).	GetEdge(2); break;
-
-	case box::EdgeKind::kBottomLeft:
-		return m_box.squares.at(static_cast<int>(box::SquareKind::kBottom)).	GetEdge(0); break;
-
-	case box::EdgeKind::kTopFront:
-		return m_box.squares.at(static_cast<int>(box::SquareKind::kTop)).	GetEdge(1); break;
-
-	case box::EdgeKind::kTopBack:
-		return m_box.squares.at(static_cast<int>(box::SquareKind::kTop)).	GetEdge(3); break;
-
-	case box::EdgeKind::kTopRight:
-		return m_box.squares.at(static_cast<int>(box::SquareKind::kTop)).	GetEdge(0); break;
-
-	case box::EdgeKind::kTopLeft:
-		return m_box.squares.at(static_cast<int>(box::SquareKind::kTop)).	GetEdge(2); break;
-
-	case box::EdgeKind::kCenterRightBack:
-		return m_box.squares.at(static_cast<int>(box::SquareKind::kBack)).	GetEdge(0); break;
-
-	case box::EdgeKind::kCenterRightFront:
-		return m_box.squares.at(static_cast<int>(box::SquareKind::kRight)).	GetEdge(0); break;
-
-	case box::EdgeKind::kCenterLeftFront:
-		return m_box.squares.at(static_cast<int>(box::SquareKind::kFront)).	GetEdge(0); break;
-
-	case box::EdgeKind::kCenterLeftBack:
-		return m_box.squares.at(static_cast<int>(box::SquareKind::kLeft)).	GetEdge(0); break;
+	case box::EdgeKind::kBottomFront:		return m_box.squares.at(static_cast<int>(box::SquareKind::kBottom)).	GetEdge(1); break;
+	case box::EdgeKind::kBottomBack:		return m_box.squares.at(static_cast<int>(box::SquareKind::kBottom)).	GetEdge(3); break;
+	case box::EdgeKind::kBottomRight:		return m_box.squares.at(static_cast<int>(box::SquareKind::kBottom)).	GetEdge(2); break;
+	case box::EdgeKind::kBottomLeft:		return m_box.squares.at(static_cast<int>(box::SquareKind::kBottom)).	GetEdge(0); break;
+	case box::EdgeKind::kTopFront:			return m_box.squares.at(static_cast<int>(box::SquareKind::kTop)).		GetEdge(1); break;
+	case box::EdgeKind::kTopBack:			return m_box.squares.at(static_cast<int>(box::SquareKind::kTop)).		GetEdge(3); break;
+	case box::EdgeKind::kTopRight:			return m_box.squares.at(static_cast<int>(box::SquareKind::kTop)).		GetEdge(0); break;
+	case box::EdgeKind::kTopLeft:			return m_box.squares.at(static_cast<int>(box::SquareKind::kTop)).		GetEdge(2); break;
+	case box::EdgeKind::kCenterRightBack:	return m_box.squares.at(static_cast<int>(box::SquareKind::kBack)).		GetEdge(0); break;
+	case box::EdgeKind::kCenterRightFront:	return m_box.squares.at(static_cast<int>(box::SquareKind::kRight)).		GetEdge(0); break;
+	case box::EdgeKind::kCenterLeftFront:	return m_box.squares.at(static_cast<int>(box::SquareKind::kFront)).		GetEdge(0); break;
+	case box::EdgeKind::kCenterLeftBack:	return m_box.squares.at(static_cast<int>(box::SquareKind::kLeft)).		GetEdge(0); break;
 
 	default:
 		break;
@@ -126,8 +103,8 @@ void OBB::CalcVertexPos()
 
 	// äeí∏ì_ÇÃç¿ïWÇéÊìæ
 	m_box.vertexes.at(static_cast<int>(box::VertexKind::kBottomRightBack))  = m_pos - dir_z	* m_length.z * 0.5f;
-	m_box.vertexes.at(static_cast<int>(box::VertexKind::kBottomRightBack))  += dir_x         * m_length.x * 0.5f;
-	m_box.vertexes.at(static_cast<int>(box::VertexKind::kBottomRightBack))  -= dir_y         * m_length.y * 0.5f;
+	m_box.vertexes.at(static_cast<int>(box::VertexKind::kBottomRightBack))  += dir_x        * m_length.x * 0.5f;
+	m_box.vertexes.at(static_cast<int>(box::VertexKind::kBottomRightBack))  -= dir_y        * m_length.y * 0.5f;
 	m_box.vertexes.at(static_cast<int>(box::VertexKind::kBottomRightFront)) = m_box.vertexes.at(static_cast<int>(box::VertexKind::kBottomRightBack))  + dir_z * m_length.z;
 	m_box.vertexes.at(static_cast<int>(box::VertexKind::kBottomLeftFront))  = m_box.vertexes.at(static_cast<int>(box::VertexKind::kBottomRightFront)) - dir_x * m_length.x;
 	m_box.vertexes.at(static_cast<int>(box::VertexKind::kBottomLeftBack))   = m_box.vertexes.at(static_cast<int>(box::VertexKind::kBottomLeftFront))  - dir_z * m_length.z;

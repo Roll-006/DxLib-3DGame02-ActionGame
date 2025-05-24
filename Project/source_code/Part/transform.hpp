@@ -14,13 +14,14 @@ public:
 
 	void Move(const CoordinateKind coord_kind, const VECTOR& velocity);
 
-	void SetPos		(const CoordinateKind coord_kind, const VECTOR& pos);
-	void SetRotation(const CoordinateKind coord_kind, const MATRIX& rotation_matrix);
-	void SetScale	(const CoordinateKind coord_kind, const VECTOR& scale);
+	void SetPos		(const CoordinateKind coord_kind, const VECTOR&		pos);
+	void SetRotation(const CoordinateKind coord_kind, const MATRIX&		rotation_matrix);
+	void SetRotation(const CoordinateKind coord_kind, const Quaternion& quaternion);
+	void SetScale	(const CoordinateKind coord_kind, const VECTOR&		scale);
 
 	/// @brief 親とするトランスフォームをアタッチする
-	void AttachParent(const std::shared_ptr<Transform> parent);
-	void AttachParent(const std::string& obj_name);
+	void AttachParent(const std::shared_ptr<Transform> parent_transform);
+	void AttachParent(const std::string& parent_obj_name);
 	/// @brief 親とするトランスフォームをデタッチする
 	void DetachParent();
 

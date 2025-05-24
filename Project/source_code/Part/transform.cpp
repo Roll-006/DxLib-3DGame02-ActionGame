@@ -60,24 +60,33 @@ void Transform::SetScale(const CoordinateKind coord_kind, const VECTOR& scale)
 
 
 #pragma region Attach / Detach
-void Transform::AttachParent(const std::shared_ptr<Transform> parent)
+void Transform::AttachParent(const std::shared_ptr<Transform> parent_transform)
 {
-	m_parent_transform	= parent;
+	// 親がいない場合のみアタッチ
+	if (m_parent_transform) { return; }
+
+	m_parent_transform	= parent_transform;
 	m_local_matrix		= MMult(m_local_matrix, MInverse(m_parent_transform->GetMatrix(CoordinateKind::kWorld)));
 }
 
-void Transform::AttachParent(const std::string& obj_name)
+void Transform::AttachParent(const std::string& parent_obj_name)
 {
-	auto parent_obj			= ObjManager::GetInstance()->GetObj(obj_name);
-	auto parent_transform	= parent_obj->GetTransform();
+	// 親がいない場合のみアタッチ
+	if (m_parent_transform) { return; }
+	
+	const auto parent_obj = ObjManager::GetInstance()->GetObj(parent_obj_name);
+	const auto parent_transform = parent_obj->GetTransform();
 
 	AttachParent(parent_transform);
 }
 
 void Transform::DetachParent()
 {
-	m_local_matrix		= GetMatrix(CoordinateKind::kWorld);
-	m_parent_transform	= nullptr;
+	// 親がいる場合のみデタッチ
+	if (!m_parent_transform) { return; }
+
+	m_local_matrix = GetMatrix(CoordinateKind::kWorld);
+	m_parent_transform = nullptr;
 }
 #pragma endregion
 
@@ -106,8 +115,7 @@ VECTOR Transform::GetPos(const CoordinateKind coord_kind)
 
 MATRIX Transform::GetRotationMatrix(const CoordinateKind coord_kind)
 {
-	const MATRIX mat = GetMatrix(coord_kind);
-	return MGetRotElem(mat);
+	return MGetRotElem(GetMatrix(coord_kind));
 }
 
 VECTOR Transform::GetScale(const CoordinateKind coord_kind)

@@ -9,10 +9,10 @@ Player::Player(std::shared_ptr<Camera> camera) :
 	m_modeler	= std::make_shared<Modeler> (GetTransform(), ModelPath.CHARA_01);
 	m_animator	= std::make_shared<Animator>(m_modeler, 3.0f);
 
-	m_transform->SetPos(CoordinateKind::kWorld, VGet(300, 100, 100));
+	// TEST : 仮で座標を指定
+	m_transform->SetPos(CoordinateKind::kWorld, VGet(0, 50, 0));
 
 	// 各アニメーション追加
-	// 初期状態はIdleとする
 	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdle), AnimPath.IDLE_01, AnimTag.NONE, 20.0f, true);
 	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalk), AnimPath.WALK_01, AnimTag.WALK, 20.0f, true);
 	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kJog),  AnimPath.JOG_01,  AnimTag.WALK, 20.0f, true);

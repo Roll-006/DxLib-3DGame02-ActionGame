@@ -1,6 +1,6 @@
 ﻿#include "animator.hpp"
 
-Animator::Animator(std::shared_ptr<Modeler> modeler, const float blend_speed) :
+Animator::Animator(const std::shared_ptr<Modeler> modeler, const float blend_speed) :
 	m_prev_anim_play_rate		(0.0f),
 	m_blend_rate				(0.0f),
 	m_blend_speed				(blend_speed),
@@ -73,14 +73,14 @@ void Animator::SetPlayStartTime()
 {
 	if (m_kind_data.count(m_time_state_data.at(TimeState::kPrev).kind))
 	{
-		std::string prev_tag	= m_kind_data.at(m_time_state_data.at(TimeState::kPrev).kind).tag;
-		std::string current_tag = m_kind_data.at(m_time_state_data.at(TimeState::kCurrent).kind).tag;
+		const std::string prev_tag	  = m_kind_data.at(m_time_state_data.at(TimeState::kPrev).kind).tag;
+		const std::string current_tag = m_kind_data.at(m_time_state_data.at(TimeState::kCurrent).kind).tag;
 
 		// 同類アニメーションであった場合は再生率を引き継ぐ
 		if (prev_tag == current_tag)
 		{
-			float current_total_t = MV1GetAttachAnimTotalTime(m_modeler->GetModelHandle(), m_time_state_data.at(TimeState::kCurrent).attach_index);
-			float prev_total_t	  = MV1GetAttachAnimTotalTime(m_modeler->GetModelHandle(), m_time_state_data.at(TimeState::kPrev).attach_index);
+			const float current_total_t = MV1GetAttachAnimTotalTime(m_modeler->GetModelHandle(), m_time_state_data.at(TimeState::kCurrent).attach_index);
+			const float prev_total_t	= MV1GetAttachAnimTotalTime(m_modeler->GetModelHandle(), m_time_state_data.at(TimeState::kPrev).attach_index);
 
 			m_prev_anim_play_rate = m_time_state_data.at(TimeState::kPrev).play_timer / prev_total_t;
 			m_time_state_data.at(TimeState::kCurrent).play_timer = current_total_t * m_prev_anim_play_rate;
@@ -96,8 +96,8 @@ void Animator::PlayAnim()
 	{
 		if (data.attach_index > -1)
 		{
-			float total_t = MV1GetAttachAnimTotalTime(m_modeler->GetModelHandle(), data.attach_index);
-			float blend_r = state_t == TimeState::kCurrent ? m_blend_rate : 1.0f - m_blend_rate;
+			const float total_t = MV1GetAttachAnimTotalTime(m_modeler->GetModelHandle(), data.attach_index);
+			const float blend_r = state_t == TimeState::kCurrent ? m_blend_rate : 1.0f - m_blend_rate;
 
 			data.play_timer += m_kind_data.at(data.kind).play_speed * FPS::GetDeltaTime();
 			if (data.play_timer > total_t)

@@ -8,6 +8,7 @@ ShareScene::ShareScene() :
 	ObjManager::GetInstance()->AddObj(m_player);
 
 	m_camera->AttachTarget(ObjName.PLAYER);
+	m_camera->Init();
 }
 
 ShareScene::~ShareScene()

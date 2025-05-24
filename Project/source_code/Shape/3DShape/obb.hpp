@@ -26,8 +26,8 @@ public:
 	void SetPos(const VECTOR& pos);
 	void SetDir(const VECTOR& dir);
 
-	[[nodiscard]] VECTOR		 GetPos		()								const { return m_pos; }
-	[[nodiscard]] VECTOR		 GetDir		()								const { return m_dir; }
+	[[nodiscard]] VECTOR		 GetPos		()									const { return m_pos; }
+	[[nodiscard]] VECTOR		 GetDir		()									const { return m_dir; }
 	[[nodiscard]] VECTOR		 GetVertex	(const box::VertexKind vertex_kind)	const { return m_box.vertexes.at(static_cast<int>(vertex_kind)); }
 	[[nodiscard]] const Square&  GetSquare	(const box::SquareKind square_kind)	const { return m_box.squares.at(static_cast<int>(square_kind)); }
 	[[nodiscard]] const Segment& GetEdge	(const box::EdgeKind edge_kind)		const;

@@ -4,9 +4,9 @@ Camera::Camera() :
 	CollideObjBase		(ObjName.CAMERA, ObjTag.CAMERA, MassKind::kVeryLight),
 	m_target_transform	(nullptr),
 	m_move_speed		(0.0f),
-	m_distance_to_target(500.0f)
+	m_distance_to_target(kNormalDistance)
 {
-	m_target_pos[TimeState::kCurrect] = m_target_pos[TimeState::kNext] = m_transform->GetPos(CoordinateKind::kLocal);
+	//m_target_pos[TimeState::kCurrect] = m_target_pos[TimeState::kNext] = m_transform->GetPos(CoordinateKind::kLocal);
 
 	SetCameraNearFar(kNear, kFar);
 	SetupCamera_Perspective(kFOV * math::kDegreesToRadian);
@@ -19,7 +19,8 @@ Camera::~Camera()
 
 void Camera::Init()
 {
-
+	// カメラ位置を初期位置に戻す
+	m_transform->SetPos(CoordinateKind::kLocal, m_target_transform->GetPos(CoordinateKind::kLocal) - VGet(0.0f, 0.0f, -kNormalDistance));
 }
 
 void Camera::Update()
@@ -32,9 +33,14 @@ void Camera::Update()
 void Camera::Draw()const
 {
 	// TEST : 仮で各軸を描画
-	DrawLine3D(VGet(0, 0, 0), VGet(10000,	  0,	 0), 0xff0000);
-	DrawLine3D(VGet(0, 0, 0), VGet(	   0, 10000,	 0), 0x00ff22);
-	DrawLine3D(VGet(0, 0, 0), VGet(    0,	  0, 10000), 0x0077ff);
+	//DrawLine3D(v3d::GetZeroVector(), VGet(10000,	 0,	    0), 0xff0000);
+	//DrawLine3D(v3d::GetZeroVector(), VGet(	  0, 10000,	    0), 0x00ff22);
+	//DrawLine3D(v3d::GetZeroVector(), VGet(    0,	 0, 10000), 0x0077ff);
+
+	const auto axis = math::GetLookTargetEulerAngles(m_transform->GetPos(CoordinateKind::kWorld), m_target_transform->GetPos(CoordinateKind::kWorld));
+	DrawLine3D(v3d::GetZeroVector(), axis.at(0) * 100, 0xff0000);
+	DrawLine3D(v3d::GetZeroVector(), axis.at(1) * 100, 0x00ff22);
+	DrawLine3D(v3d::GetZeroVector(), axis.at(2) * 100, 0x0077ff);
 }
 
 void Camera::OnCollide(const CollideObjBase& check_hit_obj)
@@ -70,24 +76,41 @@ void Camera::InitAngle()
 
 void Camera::Move()
 {
+	// TEST : 仮でカメラを回転
 
+	Quaternion	rota_q	= quat::GetIdentityQuaternion();
+	const float	speed	= 10.0f * FPS::GetDeltaTime();
+	const auto	axis	= math::GetLookTargetEulerAngles(m_transform->GetPos(CoordinateKind::kWorld), m_target_transform->GetPos(CoordinateKind::kWorld));
 
-	// 仮でカメラを回転
-	if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_0) == InputState::kHold)
+	if (InputChecker::GetInstance()->IsInput(KEY_INPUT_LEFT))
 	{
-		const float		 speed		 = 10.0f * FPS::GetDeltaTime();
-		const Quaternion rota_q		 = quat::GetQuaternion(VGet(0.0f,1.0f, 0.0f), speed);
-		const VECTOR	 rotated_pos = math::GetRotatedPos(m_transform->GetPos(CoordinateKind::kLocal), rota_q);
-		m_transform->SetPos(CoordinateKind::kLocal, rotated_pos);
+		rota_q = quat::GetQuaternion(v3d::GetWorldYAxis(), -speed);
+	}
+	if (InputChecker::GetInstance()->IsInput(KEY_INPUT_RIGHT))
+	{
+		rota_q = quat::GetQuaternion(v3d::GetWorldYAxis(),  speed);
+	}
+	if (InputChecker::GetInstance()->IsInput(KEY_INPUT_UP))
+	{
+		rota_q = quat::GetQuaternion(axis.at(0),  speed);
+	}
+	if (InputChecker::GetInstance()->IsInput(KEY_INPUT_DOWN))
+	{
+		rota_q = quat::GetQuaternion(axis.at(0), -speed);
 	}
 
-	// 仮で親を外す
+	const VECTOR rotated_pos = math::GetRotatedPos(m_transform->GetPos(CoordinateKind::kLocal), rota_q);
+	m_transform->SetPos(CoordinateKind::kLocal, rotated_pos);
+
+
+
+	// TEST : 仮で親を外す
 	if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_1) == InputState::kSingle)
 	{
 		m_transform->DetachParent();
 	}
 
-	// 仮で親を外す
+	// TEST : 仮で親を外す
 	if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_2) == InputState::kSingle)
 	{
 		m_transform->AttachParent(ObjName.PLAYER);

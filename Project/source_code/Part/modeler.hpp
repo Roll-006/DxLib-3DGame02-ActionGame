@@ -7,8 +7,8 @@
 class Modeler final
 {
 public:
-	Modeler(std::shared_ptr<Transform> transform, const std::string& file_path);
-	Modeler(std::shared_ptr<Transform> transform, const int model_handle);
+	Modeler(const std::shared_ptr<Transform> transform, const std::string& file_path);
+	Modeler(const std::shared_ptr<Transform> transform, const int model_handle);
 	~Modeler();
 
 	void Draw();
