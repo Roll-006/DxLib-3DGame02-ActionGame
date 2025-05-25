@@ -60,7 +60,17 @@ bool GameManager::ContinueLoop()
 	if (ClearDrawScreen() != 0) { return false; }
 
 	#ifdef _DEBUG
-	if (CheckHitKey(KEY_INPUT_ESCAPE) != 0) { return false; }
+	if (InputChecker::GetInstance()->IsInput(KEY_INPUT_ESCAPE)) { return false; }
+
+	if (   InputChecker::GetInstance()->IsInput(pad::ButtonKind::kLB)
+		&& InputChecker::GetInstance()->IsInput(pad::ButtonKind::kRB)
+		&& InputChecker::GetInstance()->IsInput(pad::ButtonKind::kLSPush)
+		&& InputChecker::GetInstance()->IsInput(pad::ButtonKind::kRSPush)
+		&& InputChecker::GetInstance()->IsInput(pad::TriggerKind::kRT)
+		&& InputChecker::GetInstance()->IsInput(pad::TriggerKind::kRT))
+	{
+		return false;
+	}
 	#endif
 
 	return true;

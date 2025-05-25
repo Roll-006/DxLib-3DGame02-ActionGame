@@ -58,7 +58,7 @@ void Triangle::Draw(const bool is_draw_normal_vector, const bool is_draw_frame, 
 
 	if (is_draw_frame)
 	{
-		for (const auto edge : m_edges)
+		for (const auto& edge : m_edges)
 		{
 			edge.Draw(frame_color);
 		}

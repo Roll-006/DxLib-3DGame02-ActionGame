@@ -325,6 +325,9 @@
     <ClInclude Include="source_code\Data\Kind\coordinate_kind.hpp">
       <Filter>Data\Kind</Filter>
     </ClInclude>
+    <ClInclude Include="source_code\Data\Kind\axis_kind.hpp">
+      <Filter>Data\Kind</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Object">

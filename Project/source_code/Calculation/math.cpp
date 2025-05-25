@@ -199,18 +199,18 @@ VECTOR math::GetYawRotateVector(const VECTOR& v)
     return VGet(0.0f, GetYaw(v), 0.0f);
 }
 
-std::vector<VECTOR> math::GetLookTargetEulerAngles(const VECTOR& pos, const VECTOR& target_pos)
+std::unordered_map<AxisKind, VECTOR> math::GetLookTargetEulerAngles(const VECTOR& pos, const VECTOR& target_pos)
 {
     // 座標からターゲットまでのdirectionを基準として各軸を取得
     const VECTOR local_dir_z = v3d::GetNormalizedVector(target_pos - pos);
     const VECTOR local_dir_x = math::GetNormalVector(v3d::GetWorldYAxis(), local_dir_z);
     const VECTOR local_dir_y = math::GetNormalVector(local_dir_z, local_dir_x);
 
-    std::vector<VECTOR> euler_angles
+    std::unordered_map<AxisKind, VECTOR> euler_angles
     {
-        local_dir_x,
-        local_dir_y,
-        local_dir_z
+        {AxisKind::kX, local_dir_x},
+        {AxisKind::kY, local_dir_y},
+        {AxisKind::kZ, local_dir_z}
     };
 
     return euler_angles;

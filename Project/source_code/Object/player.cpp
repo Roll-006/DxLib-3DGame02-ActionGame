@@ -10,7 +10,7 @@ Player::Player(std::shared_ptr<Camera> camera) :
 	m_animator	= std::make_shared<Animator>(m_modeler, 3.0f);
 
 	// TEST : 仮で座標を指定
-	m_transform->SetPos(CoordinateKind::kWorld, VGet(0, 50, 0));
+	m_transform->SetPos(CoordinateKind::kWorld, VGet(100, 100, 100));
 
 	// 各アニメーション追加
 	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdle), AnimPath.IDLE_01, AnimTag.NONE, 20.0f, true);

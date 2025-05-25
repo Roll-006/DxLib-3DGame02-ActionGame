@@ -1,10 +1,12 @@
 #include "camera.hpp"
 
 Camera::Camera() : 
-	CollideObjBase		(ObjName.CAMERA, ObjTag.CAMERA, MassKind::kVeryLight),
-	m_target_transform	(nullptr),
-	m_move_speed		(0.0f),
-	m_distance_to_target(kNormalDistance)
+	CollideObjBase			(ObjName.CAMERA, ObjTag.CAMERA, MassKind::kVeryLight),
+	m_target_transform		(nullptr),
+	m_move_speed			(0.0f),
+	m_distance_to_target	(kNormalDistance),
+	m_is_invert_horizontal	(false),
+	m_is_invert_vertical	(false)
 {
 	//m_target_pos[TimeState::kCurrect] = m_target_pos[TimeState::kNext] = m_transform->GetPos(CoordinateKind::kLocal);
 
@@ -26,7 +28,8 @@ void Camera::Init()
 void Camera::Update()
 {
 	Move();
-	SetCameraPositionAndTarget_UpVecY(GetTransform()->GetPos(CoordinateKind::kWorld), m_target_transform->GetPos(CoordinateKind::kWorld));
+	SetCameraPositionAndTarget_UpVecY(GetTransform()->GetPos(CoordinateKind::kWorld), GetTargetPos());
+	
 	//SetCameraPositionAndTarget_UpVecY(GetTransform()->GetPos(), v3d::GetZeroVector());
 }
 
@@ -36,12 +39,6 @@ void Camera::Draw()const
 	DrawLine3D(v3d::GetZeroVector(), VGet(10000,	 0,	    0), 0xff0000);
 	DrawLine3D(v3d::GetZeroVector(), VGet(	  0, 10000,	    0), 0x00ff22);
 	DrawLine3D(v3d::GetZeroVector(), VGet(    0,	 0, 10000), 0x0077ff);
-
-	auto axis = math::GetLookTargetEulerAngles(m_transform->GetPos(CoordinateKind::kWorld), m_target_transform->GetPos(CoordinateKind::kWorld));
-
-	DrawLine3D(v3d::GetZeroVector(), axis.at(0) * 100, 0xff0000);
-	DrawLine3D(v3d::GetZeroVector(), axis.at(1) * 100, 0x00ff22);
-	DrawLine3D(v3d::GetZeroVector(), axis.at(2) * 100, 0x0077ff);
 }
 
 void Camera::OnCollide(const CollideObjBase& check_hit_obj)
@@ -77,54 +74,78 @@ void Camera::InitAngle()
 
 void Camera::Move()
 {
-	// TEST : 仮でカメラを回転
+	const auto axis	  = math::GetLookTargetEulerAngles(m_transform->GetPos(CoordinateKind::kWorld), GetTargetPos());
+	Quaternion rota_q = quat::GetIdentityQuaternion();
 
-	Quaternion	rota_q	= quat::GetIdentityQuaternion();
-	const float	speed	= kMoveSpeed * FPS::GetDeltaTime();
+	// クォータニオンを取得
+	rota_q = GetQuaternionFromPad  (rota_q, axis.at(AxisKind::kX));
+	rota_q = GetQuaternionFromMouse(rota_q, axis.at(AxisKind::kX));
 
-	auto axis = math::GetLookTargetEulerAngles(m_transform->GetPos(CoordinateKind::kWorld), m_target_transform->GetPos(CoordinateKind::kWorld));
-
-	if (InputChecker::GetInstance()->IsInput(KEY_INPUT_UP))
-	{
-		rota_q *= quat::GetQuaternion(axis.at(0), -speed);
-	}
-	if (InputChecker::GetInstance()->IsInput(KEY_INPUT_DOWN))
-	{
-		rota_q *= quat::GetQuaternion(axis.at(0),  speed);
-	}
-	if (InputChecker::GetInstance()->IsInput(KEY_INPUT_LEFT))
-	{
-		rota_q *= quat::GetQuaternion(v3d::GetWorldYAxis(), -speed);
-	}
-	if (InputChecker::GetInstance()->IsInput(KEY_INPUT_RIGHT))
-	{
-		rota_q *= quat::GetQuaternion(v3d::GetWorldYAxis(),  speed);
-	}
-
+	// 回転後の座標を反映
 	const VECTOR rotated_pos = math::GetRotatedPos(m_transform->GetPos(CoordinateKind::kLocal), rota_q);
 	m_transform->SetPos(CoordinateKind::kLocal, rotated_pos);
-
-
-
-	// TEST : 仮で親を外す
-	if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_1) == InputState::kSingle)
-	{
-		m_transform->DetachParent();
-	}
-
-	// TEST : 仮で親を外す
-	if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_2) == InputState::kSingle)
-	{
-		m_transform->AttachParent(ObjName.PLAYER);
-	}
 }
 
-void Camera::CalcSpeedByPad()
+VECTOR Camera::ApplyInvert(VECTOR& velocity)
 {
+	if (m_is_invert_horizontal) { velocity.y *= -1; }
+	if (m_is_invert_vertical)	{ velocity.x *= -1; }
 
+	return velocity;
 }
 
-void Camera::CalcSpeedByMouse()
+Quaternion Camera::GetQuaternionFromPad(Quaternion& rota_q, const VECTOR& x_axis)
 {
+	if (InputChecker::GetInstance()->GetCurrentInputDevice() != DeviceKind::kPad) { return rota_q; }
 
+	VECTOR velocity = v3d::GetZeroVector();
+
+	// 各方向のパラメーターを取得
+	const int up_param		= InputChecker::GetInstance()->GetInputParameter(pad::StickKind::kRSUp);
+	const int down_param	= InputChecker::GetInstance()->GetInputParameter(pad::StickKind::kRSDown);
+	const int left_param	= InputChecker::GetInstance()->GetInputParameter(pad::StickKind::kRSLeft);
+	const int right_param	= InputChecker::GetInstance()->GetInputParameter(pad::StickKind::kRSRight);
+
+	// 入力値を置換
+	if (up_param)	{ velocity.x = math::GetUnitValue<int, float>(InputChecker::kStickDeadZone,  InputChecker::kStickMaxTilt,  up_param);    }
+	if (down_param) { velocity.x = math::GetUnitValue<int, float>(InputChecker::kStickDeadZone, -InputChecker::kStickMinTilt, -down_param);  }
+	if (left_param) { velocity.y = math::GetUnitValue<int, float>(InputChecker::kStickDeadZone, -InputChecker::kStickMinTilt, -left_param);  }
+	if (right_param){ velocity.y = math::GetUnitValue<int, float>(InputChecker::kStickDeadZone,  InputChecker::kStickMaxTilt,  right_param); }
+
+	velocity *= kSpeedWithPad * FPS::GetDeltaTime();
+	velocity = ApplyInvert(velocity);
+
+	// クォータニオンを生成
+	if (up_param)	{ rota_q *= quat::MakeQuaternion(x_axis,			   -velocity.x); }
+	if (down_param) { rota_q *= quat::MakeQuaternion(x_axis,				velocity.x); }
+	if (left_param) { rota_q *= quat::MakeQuaternion(v3d::GetWorldYAxis(), -velocity.y); }
+	if (right_param){ rota_q *= quat::MakeQuaternion(v3d::GetWorldYAxis(),	velocity.y); }
+
+	return rota_q;
+}
+
+Quaternion Camera::GetQuaternionFromMouse(Quaternion& rota_q, const VECTOR& x_axis)
+{
+	if (InputChecker::GetInstance()->GetCurrentInputDevice() != DeviceKind::kKeyboard) { return rota_q; }
+
+	Vector2D<float> velocity_2d = InputChecker::GetInstance()->GetMouseVelocity(InputChecker::TimeState::kCurrent);
+	VECTOR velocity = VGet(velocity_2d.y, velocity_2d.x, 0.0f) * FPS::GetDeltaTime();
+	velocity = ApplyInvert(velocity);
+
+	// クォータニオンを生成
+	if (InputChecker::GetInstance()->IsInput(mouse::SlideDirKind::kUp))		{ rota_q *= quat::MakeQuaternion(x_axis,				velocity.x); }
+	if (InputChecker::GetInstance()->IsInput(mouse::SlideDirKind::kDown))	{ rota_q *= quat::MakeQuaternion(x_axis,				velocity.x); }
+	if (InputChecker::GetInstance()->IsInput(mouse::SlideDirKind::kLeft))	{ rota_q *= quat::MakeQuaternion(v3d::GetWorldYAxis(),	velocity.y); }
+	if (InputChecker::GetInstance()->IsInput(mouse::SlideDirKind::kRight))	{ rota_q *= quat::MakeQuaternion(v3d::GetWorldYAxis(),	velocity.y); }
+
+	return rota_q;
+}
+
+VECTOR Camera::GetTargetPos()
+{
+	if (m_target_transform)
+	{
+		return m_target_transform->GetPos(CoordinateKind::kWorld);
+	}
+	return v3d::GetZeroVector();
 }

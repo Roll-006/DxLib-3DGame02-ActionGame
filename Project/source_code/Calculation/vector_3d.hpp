@@ -17,9 +17,9 @@ inline auto operator* (const VecT& v, const ScaleT scale)									{ return VecT(
 template<typename ScaleT>
 inline auto operator* (const ScaleT scale, const v3d_concepts::ValidT auto& v)				{ return v * scale; }
 
-inline auto operator+=(v3d_concepts::ValidT auto& v1, const v3d_concepts::ValidT auto& v2)		{ v1.x += v2.x; v1.y += v2.y; v1.z += v2.z; return v1; }
-inline auto operator-=(v3d_concepts::ValidT auto& v1, const v3d_concepts::ValidT auto& v2)		{ v1.x -= v2.x; v1.y -= v2.y; v1.z -= v2.z; return v1; }
-inline auto operator*=(v3d_concepts::ValidT auto& v1, const v3d_concepts::ValidT auto& v2)		{ v1.x *= v2.x; v1.y *= v2.y; v1.z *= v2.z; return v1; }
+inline auto operator+=(v3d_concepts::ValidT auto& v1, const v3d_concepts::ValidT auto& v2)	{ v1.x += v2.x; v1.y += v2.y; v1.z += v2.z; return v1; }
+inline auto operator-=(v3d_concepts::ValidT auto& v1, const v3d_concepts::ValidT auto& v2)	{ v1.x -= v2.x; v1.y -= v2.y; v1.z -= v2.z; return v1; }
+inline auto operator*=(v3d_concepts::ValidT auto& v1, const v3d_concepts::ValidT auto& v2)	{ v1.x *= v2.x; v1.y *= v2.y; v1.z *= v2.z; return v1; }
 
 template<typename ScaleT>
 inline auto operator*=(v3d_concepts::ValidT auto& v, const ScaleT scale)						{ v.x *= scale; v.y *= scale; v.z *= scale; return v; }
@@ -33,5 +33,5 @@ namespace v3d
     [[nodiscard]] inline VECTOR GetWorldXAxis()                      { return VGet(1.0f, 0.0f, 0.0f); }
     [[nodiscard]] inline VECTOR GetWorldYAxis()                      { return VGet(0.0f, 1.0f, 0.0f); }
     [[nodiscard]] inline VECTOR GetWorldZAxis()                      { return VGet(0.0f, 0.0f, 1.0f); }
-    [[nodiscard]] inline VECTOR GetNormalizedVector(const VECTOR& v) { return VSize(v) != 0 ? VNorm(v) : v; }
+    [[nodiscard]] inline VECTOR GetNormalizedVector(const VECTOR& v) { return VSize(v) != 0.0f ? VNorm(v) : v; }
 }

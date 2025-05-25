@@ -20,11 +20,16 @@ void Window::Update()
 
 void Window::SetWindowMode()
 {
-	// ALTを押しながらエンターでウィンドウモード変更
+	// [ALT + ENTER]
+	const bool is_change_1 = 
+		InputChecker::GetInstance()->IsInput(KEY_INPUT_LALT) &&
+		InputChecker::GetInstance()->GetInputState(KEY_INPUT_RETURN) == InputState::kSingle;
 
-	if (!CheckHitKey(KEY_INPUT_LALT)) { return; }
+	// [F11]
+	const bool is_change_2 =
+		InputChecker::GetInstance()->GetInputState(KEY_INPUT_F11)    == InputState::kSingle;
 
-	if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_RETURN) == InputState::kSingle)
+	if (is_change_1 || is_change_2)
 	{
 		++m_change_window_count;
 
