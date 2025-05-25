@@ -7,6 +7,7 @@
 #include "../Concept/common_concepts.hpp"
 
 #include "quaternion.hpp"
+#include "axes.hpp"
 
 #include "../Data/Kind/sort_kind.hpp"
 #include "../Data/IncludeList/vector.hpp"
@@ -79,6 +80,21 @@ namespace math
 		std::vector<std::pair<KeyT, ValueT>> pairs(u_map.begin(), u_map.end());
 		return pairs;
 	}
+
+	/// @brief クォータニオンから回転行列へ変換
+	[[nodiscard]] MATRIX ConvertQuaternionToRotationMatrix(const Quaternion& q);
+
+	/// @brief 回転行列からクォータニオンへ変換
+	/// @brief TODO : 検証が必要
+	[[nodiscard]] Quaternion ConvertRotationMatrixToQuaternion(const MATRIX& mat);
+
+	/// @brief XYZ軸から回転行列へ変換
+	/// @param axes 行列に変換するXYZ軸
+	/// @param parent_axes 基準とする親XYZ軸
+	[[nodiscard]] MATRIX ConvertAxesToZXYRotationMatrix(const Axes& axes, const Axes& parent_axes);
+
+	/// @brief 回転行列からXYZ軸へ変換
+	[[nodiscard]] Axes ConvertRotationMatrixToAxes(const MATRIX& mat);
 	#pragma endregion
 
 
@@ -202,14 +218,7 @@ namespace math
 
 	#pragma region 回転
 	/// @brief 回転後の座標を取得
-	VECTOR GetRotatedPos(const VECTOR& pos, const Quaternion& rotate_q);
-
-	/// @brief クォータニオンから回転行列へ変換
-	MATRIX ConvertQuaternionToMatrix(const Quaternion& q);
-
-	/// @brief 回転行列からクォータニオンへ変換
-	/// @brief TODO : 検証が必要
-	Quaternion ConvertMatrixToQuaternion(const MATRIX& mat);
+	[[nodiscard]] VECTOR GetRotatedPos(const VECTOR& pos, const Quaternion& rotate_q);
 
 	/// @brief ヨー角を取得
 	[[nodiscard]] float GetYaw(const VECTOR& v);
@@ -217,8 +226,8 @@ namespace math
 	/// @brief ヨー角回転ベクトルを取得
 	[[nodiscard]] VECTOR GetYawRotateVector(const VECTOR& v);
 
-	/// @brief ターゲットを見る座標のオイラー角の各回転軸を取得
-	[[nodiscard]] std::unordered_map<AxisKind, VECTOR> GetLookTargetEulerAngles(const VECTOR& pos, const VECTOR& target_pos);
+	/// @brief ターゲットを見る座標のXYZ軸を取得
+	[[nodiscard]] Axes GetLookTargetAxes(const VECTOR& pos, const VECTOR& target_pos);
 	#pragma endregion
 
 

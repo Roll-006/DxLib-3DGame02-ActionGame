@@ -328,6 +328,9 @@
     <ClInclude Include="source_code\Data\Kind\axis_kind.hpp">
       <Filter>Data\Kind</Filter>
     </ClInclude>
+    <ClInclude Include="source_code\Calculation\axes.hpp">
+      <Filter>Calculation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Object">

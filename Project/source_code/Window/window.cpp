@@ -35,7 +35,6 @@ void Window::SetWindowMode()
 
 		m_is_full_screen = m_change_window_count % 2 ? true : false;
 		ChangeWindowMode(m_is_full_screen ? FALSE : TRUE);
-		InputChecker::GetInstance()->InitMouseCursor();
 	}
 }
 
@@ -43,6 +42,5 @@ void Window::SetWindowMode(const bool is_full_screen)
 {
 	m_is_full_screen	  = is_full_screen;
 	m_change_window_count = m_is_full_screen ? 1 : 0;
-
 	ChangeWindowMode(m_is_full_screen ? FALSE : TRUE);
 }

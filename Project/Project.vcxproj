@@ -179,6 +179,7 @@
     <ClInclude Include="source_code\Base\one_instance_singleton_base.hpp" />
     <ClInclude Include="source_code\Base\obj_base.hpp" />
     <ClInclude Include="source_code\Base\scene_base.hpp" />
+    <ClInclude Include="source_code\Calculation\axes.hpp" />
     <ClInclude Include="source_code\Calculation\collision_calculator.hpp" />
     <ClInclude Include="source_code\Calculation\math.hpp" />
     <ClInclude Include="source_code\Calculation\quaternion.hpp" />

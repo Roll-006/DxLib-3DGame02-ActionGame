@@ -24,6 +24,9 @@ public:
 	[[nodiscard]] std::shared_ptr<Animator>	GetAnimator()const { return m_animator; }
 
 private:
+	void Move();
+
+private:
 	std::shared_ptr<Modeler>  m_modeler;
 	std::shared_ptr<Animator> m_animator;
 

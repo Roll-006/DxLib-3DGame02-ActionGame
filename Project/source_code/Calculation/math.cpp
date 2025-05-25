@@ -1,112 +1,8 @@
 ﻿#include "../Data/IncludeList/shape.hpp"
 #include "math.hpp"
 
-
-#pragma region 三平方の定理
-float math::GetAdjacentLengthIsoscelesRightTriangle(const float hypotenuse_length)
-{
-    return sqrt(hypotenuse_length * hypotenuse_length * 0.5f);
-}
-
-float math::GetHypotenuseLengthIsoscelesRightTriangle(const float adjacent_length)
-{
-    return sqrt(adjacent_length * adjacent_length + adjacent_length * adjacent_length);
-}
-
-float math::GetAdjacentLengthRightTriangle(const float opposite_length, const float hypotenuse_length)
-{
-    return sqrt(hypotenuse_length * hypotenuse_length - opposite_length * opposite_length);
-}
-
-float math::GetHypotenuseLengthRightTriangle(const float adjacent_length, const float opposite_length)
-{
-    return sqrt(adjacent_length * adjacent_length + opposite_length * opposite_length);
-}
-#pragma endregion
-
-
-#pragma region ベクトル
-bool math::IsHorizontal(const VECTOR& v1, const VECTOR& v2)
-{
-    VECTOR cross = VCross(v1, v2);
-
-    // 小数点第5位より後は誤差とみなして四捨五入
-    cross = RoundOff(cross, -5);
-    return cross == v3d::GetZeroVector();
-}
-
-bool math::IsVertical(const VECTOR& v1, const VECTOR& v2)
-{
-    float dot = VDot(v1, v2);
-
-    // 小数点第5位より後は誤差とみなして四捨五入
-    dot = RoundOff(dot, -5);
-    return dot == 0.0f;
-}
-
-VECTOR math::GetNormalVector(const VECTOR& v)
-{
-    VECTOR normal_v = v3d::GetZeroVector();
-
-    if (v != v3d::GetWorldXAxis())
-    {
-        normal_v = math::GetNormalVector(v, v3d::GetWorldXAxis());
-    }
-    else if (v != v3d::GetWorldYAxis())
-    {
-        normal_v = math::GetNormalVector(v, v3d::GetWorldYAxis());
-    }
-    else if (v != v3d::GetWorldZAxis())
-    {
-        normal_v = math::GetNormalVector(v, v3d::GetWorldZAxis());
-    }
-    return v3d::GetNormalizedVector(normal_v);
-}
-
-VECTOR math::GetNormalVector(const VECTOR& v1, const VECTOR& v2)
-{
-    // [法線ベクトル = v1とv2の外積]から成分を取得
-    return v3d::GetNormalizedVector(VCross(v1, v2));
-}
-#pragma endregion
-
-
-#pragma region 角度
-bool math::IsAcuteAngle(const VECTOR& v1, const VECTOR& v2)
-{
-    const float radian = VDot(v1, v2) / (VSize(v1) * VSize(v2));
-    return (radian < 90.0f * kDegreesToRadian && radian > 0.0f);
-}
-
-bool math::IsAcuteAngle(const float radian)
-{
-    return (radian < 90.0f * kDegreesToRadian && radian > 0.0f);
-}
-
-float math::GetAngleBetweenTwoVector(const VECTOR& v1, const VECTOR& v2)
-{
-    if (v1 == v3d::GetZeroVector() || v2 == v3d::GetZeroVector()) { return 0.0f; }
-
-    const float length1 = VSize(v1);
-    const float length2 = VSize(v2);
-
-    return acos(VDot(v1, v2) / (length1 * length2));
-}
-#pragma endregion
-
-
-#pragma region 回転
-VECTOR math::GetRotatedPos(const VECTOR& pos, const Quaternion& rotate_q)
-{
-	// 参考URL : [ https://zenn.dev/mebiusbox/books/132b654aa02124/viewer/2966c7 ]
-
-	const Quaternion q_pos(pos.x, pos.y, pos.z, 0.0f);
-	const Quaternion n_rotate_q = quat::GetNormalizedQuaternion(rotate_q);
-	const Quaternion totated_q = n_rotate_q * q_pos * quat::GetInverseQuaternion(n_rotate_q);
-	return VGet(totated_q.x, totated_q.y, totated_q.z);
-}
-
-MATRIX math::ConvertQuaternionToMatrix(const Quaternion& q)
+#pragma region 変換
+MATRIX math::ConvertQuaternionToRotationMatrix(const Quaternion& q)
 {
 	MATRIX mat = MGetIdent();
 
@@ -129,7 +25,7 @@ MATRIX math::ConvertQuaternionToMatrix(const Quaternion& q)
 	return MTranspose(mat);
 }
 
-Quaternion math::ConvertMatrixToQuaternion(const MATRIX& mat)
+Quaternion math::ConvertRotationMatrixToQuaternion(const MATRIX& mat)
 {
     // TODO    : 処理の先頭と末尾で転置するべき
 	// FIXME   : おそらく不具合を起こす。行列の成分の配置が違う可能性高
@@ -189,6 +85,132 @@ Quaternion math::ConvertMatrixToQuaternion(const MATRIX& mat)
 	return ret_q;
 }
 
+MATRIX math::ConvertAxesToZXYRotationMatrix(const Axes& axes, const Axes& parent_axes)
+{
+    const float angle_x = GetAngleBetweenTwoVector(parent_axes.x, axes.x);
+    const float angle_y = GetAngleBetweenTwoVector(parent_axes.y, axes.y);
+    const float angle_z = GetAngleBetweenTwoVector(parent_axes.z, axes.z);
+
+    const MATRIX matrix_x = MGetRotAxis(axes.x, angle_x);
+    const MATRIX matrix_y = MGetRotAxis(axes.y, angle_y);
+    const MATRIX matrix_z = MGetRotAxis(axes.z, angle_z);
+
+    return MATRIX(MMult(MMult(matrix_z, matrix_x), matrix_y));
+}
+Axes math::ConvertRotationMatrixToAxes(const MATRIX& mat)
+{
+    const VECTOR axis_x = VGet(mat.m[0][0], mat.m[1][0], mat.m[2][0]);
+    const VECTOR axis_y = VGet(mat.m[0][1], mat.m[1][1], mat.m[2][1]);
+    const VECTOR axis_z = VGet(mat.m[0][2], mat.m[1][2], mat.m[2][2]);
+    return Axes(axis_x, axis_y, axis_z);
+}
+#pragma endregion
+
+
+#pragma region 三平方の定理
+float math::GetAdjacentLengthIsoscelesRightTriangle(const float hypotenuse_length)
+{
+    return sqrt(hypotenuse_length * hypotenuse_length * 0.5f);
+}
+
+float math::GetHypotenuseLengthIsoscelesRightTriangle(const float adjacent_length)
+{
+    return sqrt(adjacent_length * adjacent_length + adjacent_length * adjacent_length);
+}
+
+float math::GetAdjacentLengthRightTriangle(const float opposite_length, const float hypotenuse_length)
+{
+    return sqrt(hypotenuse_length * hypotenuse_length - opposite_length * opposite_length);
+}
+
+float math::GetHypotenuseLengthRightTriangle(const float adjacent_length, const float opposite_length)
+{
+    return sqrt(adjacent_length * adjacent_length + opposite_length * opposite_length);
+}
+#pragma endregion
+
+
+#pragma region ベクトル
+bool math::IsHorizontal(const VECTOR& v1, const VECTOR& v2)
+{
+    VECTOR cross = VCross(v1, v2);
+
+    // 小数点第5位より後は誤差とみなして四捨五入
+    cross = RoundOff(cross, -5);
+    return cross == v3d::GetZeroVector();
+}
+
+bool math::IsVertical(const VECTOR& v1, const VECTOR& v2)
+{
+    float dot = VDot(v1, v2);
+
+    // 小数点第5位より後は誤差とみなして四捨五入
+    dot = RoundOff(dot, -5);
+    return dot == 0.0f;
+}
+
+VECTOR math::GetNormalVector(const VECTOR& v)
+{
+    VECTOR normal_v = v3d::GetZeroVector();
+
+    if (v != axis::GetWorldXAxis())
+    {
+        normal_v = math::GetNormalVector(v, axis::GetWorldXAxis());
+    }
+    else if (v != axis::GetWorldYAxis())
+    {
+        normal_v = math::GetNormalVector(v, axis::GetWorldYAxis());
+    }
+    else if (v != axis::GetWorldZAxis())
+    {
+        normal_v = math::GetNormalVector(v, axis::GetWorldZAxis());
+    }
+    return v3d::GetNormalizedVector(normal_v);
+}
+
+VECTOR math::GetNormalVector(const VECTOR& v1, const VECTOR& v2)
+{
+    // [法線ベクトル = v1とv2の外積]から成分を取得
+    return v3d::GetNormalizedVector(VCross(v1, v2));
+}
+#pragma endregion
+
+
+#pragma region 角度
+bool math::IsAcuteAngle(const VECTOR& v1, const VECTOR& v2)
+{
+    const float radian = VDot(v1, v2) / (VSize(v1) * VSize(v2));
+    return (radian < 90.0f * kDegreesToRadian && radian > 0.0f);
+}
+
+bool math::IsAcuteAngle(const float radian)
+{
+    return (radian < 90.0f * kDegreesToRadian && radian > 0.0f);
+}
+
+float math::GetAngleBetweenTwoVector(const VECTOR& v1, const VECTOR& v2)
+{
+    if (v1 == v3d::GetZeroVector() || v2 == v3d::GetZeroVector()) { return 0.0f; }
+
+    const float length1 = VSize(v1);
+    const float length2 = VSize(v2);
+
+    return acos(VDot(v1, v2) / (length1 * length2));
+}
+#pragma endregion
+
+
+#pragma region 回転
+VECTOR math::GetRotatedPos(const VECTOR& pos, const Quaternion& rotate_q)
+{
+	// 参考URL : [ https://zenn.dev/mebiusbox/books/132b654aa02124/viewer/2966c7 ]
+
+	const Quaternion q_pos(pos.x, pos.y, pos.z, 0.0f);
+	const Quaternion n_rotate_q = quat::GetNormalizedQuaternion(rotate_q);
+	const Quaternion totated_q = n_rotate_q * q_pos * quat::GetInverseQuaternion(n_rotate_q);
+	return VGet(totated_q.x, totated_q.y, totated_q.z);
+}
+
 float math::GetYaw(const VECTOR& v)
 {
     return atan2f(-v.x, -v.z);
@@ -199,21 +221,14 @@ VECTOR math::GetYawRotateVector(const VECTOR& v)
     return VGet(0.0f, GetYaw(v), 0.0f);
 }
 
-std::unordered_map<AxisKind, VECTOR> math::GetLookTargetEulerAngles(const VECTOR& pos, const VECTOR& target_pos)
+Axes math::GetLookTargetAxes(const VECTOR& pos, const VECTOR& target_pos)
 {
     // 座標からターゲットまでのdirectionを基準として各軸を取得
     const VECTOR local_dir_z = v3d::GetNormalizedVector(target_pos - pos);
-    const VECTOR local_dir_x = math::GetNormalVector(v3d::GetWorldYAxis(), local_dir_z);
+    const VECTOR local_dir_x = math::GetNormalVector(axis::GetWorldYAxis(), local_dir_z);
     const VECTOR local_dir_y = math::GetNormalVector(local_dir_z, local_dir_x);
 
-    std::unordered_map<AxisKind, VECTOR> euler_angles
-    {
-        {AxisKind::kX, local_dir_x},
-        {AxisKind::kY, local_dir_y},
-        {AxisKind::kZ, local_dir_z}
-    };
-
-    return euler_angles;
+    return Axes(local_dir_x, local_dir_y, local_dir_z);
 }
 #pragma endregion
 
@@ -251,6 +266,7 @@ VECTOR math::GetCentroidOfAQuadrilateral(const VECTOR& pos1, const VECTOR& pos2,
     const auto intersection = GetIntersectionLineAndLine(line1, line2);
     return intersection ? *intersection : centroid_triangle1;
 }
+
 VECTOR math::GetCentroidOfAQuadrilateral(const Square& square)
 {
     const VECTOR pos1 = square.GetPos(0);

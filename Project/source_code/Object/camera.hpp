@@ -60,4 +60,6 @@ private:
 	float  m_distance_to_target;
 	bool   m_is_invert_horizontal;		// ‘€ì‚É¶‰E”½“]‚ğs‚¤‚©‚ğ”»’è
 	bool   m_is_invert_vertical;		// ‘€ì‚Éã‰º”½“]‚ğs‚¤‚©‚ğ”»’è
+	
+	VECTOR m_velocity;
 };

@@ -4,8 +4,7 @@ InputChecker::InputChecker():
 	m_csv					(std::make_unique<CSV>()),
 	m_xinput				(-1),
 	m_current_device		(DeviceKind::kKeyboard),
-	m_is_active_mouse_cursor(true),
-	m_is_init_mouse_pos		(false)
+	m_is_lock_mouse_pos		(false)
 {	
 	SetUseDirectInputFlag(TRUE);
 
@@ -13,7 +12,7 @@ InputChecker::InputChecker():
 	m_mouse_data[TimeState::kPrev].dir		 = m_mouse_data[TimeState::kCurrent].dir	   = Vector2D<float>(0.0f, 0.0f);
 	m_mouse_data[TimeState::kPrev].velocity  = m_mouse_data[TimeState::kCurrent].velocity  = Vector2D<float>(0.0f, 0.0f);
 
-	InitMouseCursor();
+	DeactivateCursor();
 	InitMousePos();
 
 	m_key_number = m_csv->Read1DCSV<std::vector<int>>("data/csv/key_number.csv", false);
@@ -53,9 +52,9 @@ void InputChecker::UpdateMouse()
 {
 	GetMousePoint(&m_mouse_data.at(TimeState::kCurrent).pos.x, &m_mouse_data.at(TimeState::kCurrent).pos.y);
 	m_mouse_data.at(TimeState::kCurrent).wheel_rotation = GetMouseWheelRotVol();
-	if (m_is_init_mouse_pos) { InitMousePos(); }
 	CalcMouseVelocity();
 	CalcMouseDir();
+	if (m_is_lock_mouse_pos) { InitMousePos(); }
 }
 
 void InputChecker::InitMousePos()
@@ -64,23 +63,6 @@ void InputChecker::InitMousePos()
 	m_mouse_data.at(TimeState::kCurrent).pos = Vector2D<int>(Window::kHalfWidth, Window::kHalfHeight);
 
 	SetMousePoint(m_mouse_data.at(TimeState::kCurrent).pos.x, m_mouse_data.at(TimeState::kCurrent).pos.y);
-}
-
-void InputChecker::InitMouseCursor()const
-{
-	SetMouseDispFlag(m_is_active_mouse_cursor);
-}
-
-void InputChecker::ActivateMouseCursor()
-{
-	m_is_active_mouse_cursor = true;
-	InitMouseCursor();
-}
-
-void InputChecker::DeactivateMouseCursor()
-{
-	m_is_active_mouse_cursor = false;
-	InitMouseCursor();
 }
 
 void InputChecker::AddInputData(const InputKind kind, const int input_code)

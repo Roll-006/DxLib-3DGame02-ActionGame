@@ -30,8 +30,5 @@ inline bool operator!=(const v3d_concepts::ValidT auto& v1, const v3d_concepts::
 namespace v3d
 {
     [[nodiscard]] inline VECTOR GetZeroVector()                      { return VGet(0.0f, 0.0f, 0.0f); }
-    [[nodiscard]] inline VECTOR GetWorldXAxis()                      { return VGet(1.0f, 0.0f, 0.0f); }
-    [[nodiscard]] inline VECTOR GetWorldYAxis()                      { return VGet(0.0f, 1.0f, 0.0f); }
-    [[nodiscard]] inline VECTOR GetWorldZAxis()                      { return VGet(0.0f, 0.0f, 1.0f); }
     [[nodiscard]] inline VECTOR GetNormalizedVector(const VECTOR& v) { return VSize(v) != 0.0f ? VNorm(v) : v; }
 }

@@ -26,39 +26,6 @@ void Transform::Move(const CoordinateKind coord_kind, const VECTOR& velocity)
 }
 
 
-#pragma region Setter
-void Transform::SetPos(const CoordinateKind coord_kind, const VECTOR& pos)
-{
-	// ワールド座標
-	if (coord_kind == CoordinateKind::kWorld)
-	{
-		if (m_parent_transform)
-		{
-			m_local_matrix.m[3][0] = pos.x - m_parent_transform->GetPos(CoordinateKind::kWorld).x;
-			m_local_matrix.m[3][1] = pos.y - m_parent_transform->GetPos(CoordinateKind::kWorld).y;
-			m_local_matrix.m[3][2] = pos.z - m_parent_transform->GetPos(CoordinateKind::kWorld).z;
-			return;
-		}
-	}
-
-	// ローカル座標 / 親を持たないワールド座標
-	m_local_matrix.m[3][0] = pos.x;
-	m_local_matrix.m[3][1] = pos.y;
-	m_local_matrix.m[3][2] = pos.z;
-}
-
-void Transform::SetRotation(const CoordinateKind coord_kind, const MATRIX& rotation_matrix)
-{
-
-}
-
-void Transform::SetScale(const CoordinateKind coord_kind, const VECTOR& scale)
-{
-
-}
-#pragma endregion
-
-
 #pragma region Attach / Detach
 void Transform::AttachParent(const std::shared_ptr<Transform> parent_transform)
 {
@@ -87,6 +54,67 @@ void Transform::DetachParent()
 
 	m_local_matrix = GetMatrix(CoordinateKind::kWorld);
 	m_parent_transform = nullptr;
+}
+#pragma endregion
+
+
+#pragma region Setter
+void Transform::SetPos(const CoordinateKind coord_kind, const VECTOR& pos)
+{
+	// ワールド座標
+	if (coord_kind == CoordinateKind::kWorld)
+	{
+		if (m_parent_transform)
+		{
+			m_local_matrix.m[3][0] = pos.x - m_parent_transform->GetPos(CoordinateKind::kWorld).x;
+			m_local_matrix.m[3][1] = pos.y - m_parent_transform->GetPos(CoordinateKind::kWorld).y;
+			m_local_matrix.m[3][2] = pos.z - m_parent_transform->GetPos(CoordinateKind::kWorld).z;
+			return;
+		}
+	}
+
+	// ローカル座標 / 親を持たないワールド座標
+	m_local_matrix.m[3][0] = pos.x;
+	m_local_matrix.m[3][1] = pos.y;
+	m_local_matrix.m[3][2] = pos.z;
+}
+
+void Transform::SetRotation(const CoordinateKind coord_kind, const MATRIX& rotation_matrix)
+{
+	// ワールド座標
+	if (coord_kind == CoordinateKind::kWorld)
+	{
+		if (m_parent_transform)
+		{
+			m_local_matrix = MMult(rotation_matrix, MInverse(m_parent_transform->GetRotationMatrix(coord_kind)));
+			return;
+		}
+	}
+
+	// ローカル座標 / 親を持たないワールド座標
+	m_local_matrix = MMult(rotation_matrix, MGetIdent());
+}
+
+void Transform::SetRotation(const CoordinateKind coord_kind, const Axes& axes)
+{
+	// ワールド座標
+	if (coord_kind == CoordinateKind::kWorld)
+	{
+		if (m_parent_transform)
+		{
+			SetRotation(coord_kind, math::ConvertAxesToZXYRotationMatrix(axes,
+				math::ConvertRotationMatrixToAxes(m_parent_transform->GetRotationMatrix(coord_kind))));
+			return;
+		}
+	}
+
+	// ローカル座標 / 親を持たないワールド座標
+	SetRotation(coord_kind, math::ConvertAxesToZXYRotationMatrix(axes, axis::GetWorldAxes()));
+}
+
+void Transform::SetScale(const CoordinateKind coord_kind, const VECTOR& scale)
+{
+
 }
 #pragma endregion
 

@@ -29,10 +29,14 @@ public:
 	void Update();
 
 	void InitMousePos();
-	void InitMouseCursor()const;
-	void ActivateMouseCursor();
-	void DeactivateMouseCursor();
+	void ActivateCursor()	{ SetMouseDispFlag(TRUE); }
+	void DeactivateCursor() { SetMouseDispFlag(FALSE); }
 
+	/// @brief マウスカーソルを画面中央に固定する
+	/// @brief FIXME : ロックするとカメラが動かなくなる現象発生中
+	void LockCursorToCenter() { m_is_lock_mouse_pos = true; }
+	/// @brief マウスカーソルの固定化を解除する
+	void UnlockCursor()		  { m_is_lock_mouse_pos = false; }
 
 	#pragma region マウス情報
 	[[nodiscard]] Vector2D<int>   GetMousePos	   (const TimeState time_state)const { return m_mouse_data.at(time_state).pos; }
@@ -232,8 +236,7 @@ private:
 	std::unique_ptr<CSV>			m_csv;
 	XINPUT_STATE					m_xinput;
 	DeviceKind						m_current_device;
-	bool							m_is_active_mouse_cursor;
-	bool							m_is_init_mouse_pos;
+	bool							m_is_lock_mouse_pos;
 	std::vector<int>				m_key_number;
 
 	std::vector<std::tuple<InputKind, int, TimeState, InputData>> m_input_data;

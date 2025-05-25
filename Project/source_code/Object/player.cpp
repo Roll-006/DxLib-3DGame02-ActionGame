@@ -46,3 +46,8 @@ void Player::OnCollide(const CollideObjBase& check_hit_obj)
 {
 
 }
+
+void Player::Move()
+{
+
+}
