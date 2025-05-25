@@ -226,9 +226,11 @@ namespace math
 	#pragma region 重心
 	/// @brief 三角形の物理的、および幾何学的重心を取得
 	[[nodiscard]] VECTOR GetCentroidOfATriangle(const VECTOR& pos1, const VECTOR& pos2, const VECTOR& pos3);
+	[[nodiscard]] VECTOR GetCentroidOfATriangle(const Triangle& triangle);
 
 	/// @brief 四角形の物理的重心を取得
 	[[nodiscard]] VECTOR GetCentroidOfAQuadrilateral(const VECTOR& pos1, const VECTOR& pos2, const VECTOR& pos3, const VECTOR& pos4);
+	[[nodiscard]] VECTOR GetCentroidOfAQuadrilateral(const Square& square);
 	#pragma endregion
 
 

@@ -20,7 +20,7 @@ Camera::~Camera()
 void Camera::Init()
 {
 	// カメラ位置を初期位置に戻す
-	m_transform->SetPos(CoordinateKind::kLocal, m_target_transform->GetPos(CoordinateKind::kLocal) - VGet(0.0f, 0.0f, -kNormalDistance));
+	m_transform->SetPos(CoordinateKind::kWorld, m_target_transform->GetPos(CoordinateKind::kWorld) - VGet(0.0f, 0.0f, -kNormalDistance));
 }
 
 void Camera::Update()
@@ -33,11 +33,12 @@ void Camera::Update()
 void Camera::Draw()const
 {
 	// TEST : 仮で各軸を描画
-	//DrawLine3D(v3d::GetZeroVector(), VGet(10000,	 0,	    0), 0xff0000);
-	//DrawLine3D(v3d::GetZeroVector(), VGet(	  0, 10000,	    0), 0x00ff22);
-	//DrawLine3D(v3d::GetZeroVector(), VGet(    0,	 0, 10000), 0x0077ff);
+	DrawLine3D(v3d::GetZeroVector(), VGet(10000,	 0,	    0), 0xff0000);
+	DrawLine3D(v3d::GetZeroVector(), VGet(	  0, 10000,	    0), 0x00ff22);
+	DrawLine3D(v3d::GetZeroVector(), VGet(    0,	 0, 10000), 0x0077ff);
 
-	const auto axis = math::GetLookTargetEulerAngles(m_transform->GetPos(CoordinateKind::kWorld), m_target_transform->GetPos(CoordinateKind::kWorld));
+	auto axis = math::GetLookTargetEulerAngles(m_transform->GetPos(CoordinateKind::kWorld), m_target_transform->GetPos(CoordinateKind::kWorld));
+
 	DrawLine3D(v3d::GetZeroVector(), axis.at(0) * 100, 0xff0000);
 	DrawLine3D(v3d::GetZeroVector(), axis.at(1) * 100, 0x00ff22);
 	DrawLine3D(v3d::GetZeroVector(), axis.at(2) * 100, 0x0077ff);
@@ -79,24 +80,25 @@ void Camera::Move()
 	// TEST : 仮でカメラを回転
 
 	Quaternion	rota_q	= quat::GetIdentityQuaternion();
-	const float	speed	= 10.0f * FPS::GetDeltaTime();
-	const auto	axis	= math::GetLookTargetEulerAngles(m_transform->GetPos(CoordinateKind::kWorld), m_target_transform->GetPos(CoordinateKind::kWorld));
+	const float	speed	= kMoveSpeed * FPS::GetDeltaTime();
 
-	if (InputChecker::GetInstance()->IsInput(KEY_INPUT_LEFT))
-	{
-		rota_q = quat::GetQuaternion(v3d::GetWorldYAxis(), -speed);
-	}
-	if (InputChecker::GetInstance()->IsInput(KEY_INPUT_RIGHT))
-	{
-		rota_q = quat::GetQuaternion(v3d::GetWorldYAxis(),  speed);
-	}
+	auto axis = math::GetLookTargetEulerAngles(m_transform->GetPos(CoordinateKind::kWorld), m_target_transform->GetPos(CoordinateKind::kWorld));
+
 	if (InputChecker::GetInstance()->IsInput(KEY_INPUT_UP))
 	{
-		rota_q = quat::GetQuaternion(axis.at(0),  speed);
+		rota_q *= quat::GetQuaternion(axis.at(0), -speed);
 	}
 	if (InputChecker::GetInstance()->IsInput(KEY_INPUT_DOWN))
 	{
-		rota_q = quat::GetQuaternion(axis.at(0), -speed);
+		rota_q *= quat::GetQuaternion(axis.at(0),  speed);
+	}
+	if (InputChecker::GetInstance()->IsInput(KEY_INPUT_LEFT))
+	{
+		rota_q *= quat::GetQuaternion(v3d::GetWorldYAxis(), -speed);
+	}
+	if (InputChecker::GetInstance()->IsInput(KEY_INPUT_RIGHT))
+	{
+		rota_q *= quat::GetQuaternion(v3d::GetWorldYAxis(),  speed);
 	}
 
 	const VECTOR rotated_pos = math::GetRotatedPos(m_transform->GetPos(CoordinateKind::kLocal), rota_q);

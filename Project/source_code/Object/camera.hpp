@@ -40,7 +40,8 @@ private:
 	static constexpr float kNear				= 10.0f;
 	static constexpr float kFar					= 2500.0f;
 	static constexpr float kFOV					= 60.0f;
-	static constexpr float kNormalDistance		= 500.0f;
+	static constexpr float kNormalDistance		= 700.0f;
+	static constexpr float kMoveSpeed			= 1.0f;
 	static constexpr float kInitAngleTolerance	= 0.01f;		// 視点リセットが完了したと判定させる許容値
 
 	std::shared_ptr<Transform> m_target_transform;

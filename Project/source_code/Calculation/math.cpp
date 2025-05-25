@@ -48,17 +48,17 @@ VECTOR math::GetNormalVector(const VECTOR& v)
 {
     VECTOR normal_v = v3d::GetZeroVector();
 
-    if (v != VGet(1, 0, 0))
+    if (v != v3d::GetWorldXAxis())
     {
-        normal_v = math::GetNormalVector(v, VGet(1, 0, 0));
+        normal_v = math::GetNormalVector(v, v3d::GetWorldXAxis());
     }
-    else if (v != VGet(0, 1, 0))
+    else if (v != v3d::GetWorldYAxis())
     {
-        normal_v = math::GetNormalVector(v, VGet(0, 1, 0));
+        normal_v = math::GetNormalVector(v, v3d::GetWorldYAxis());
     }
-    else if (v != VGet(0, 0, 1))
+    else if (v != v3d::GetWorldZAxis())
     {
-        normal_v = math::GetNormalVector(v, VGet(0, 0, 1));
+        normal_v = math::GetNormalVector(v, v3d::GetWorldZAxis());
     }
     return v3d::GetNormalizedVector(normal_v);
 }
@@ -203,8 +203,8 @@ std::vector<VECTOR> math::GetLookTargetEulerAngles(const VECTOR& pos, const VECT
 {
     // 座標からターゲットまでのdirectionを基準として各軸を取得
     const VECTOR local_dir_z = v3d::GetNormalizedVector(target_pos - pos);
-    const VECTOR local_dir_y = math::GetNormalVector(local_dir_z);
-    const VECTOR local_dir_x = math::GetNormalVector(local_dir_z, local_dir_x);
+    const VECTOR local_dir_x = math::GetNormalVector(v3d::GetWorldYAxis(), local_dir_z);
+    const VECTOR local_dir_y = math::GetNormalVector(local_dir_z, local_dir_x);
 
     std::vector<VECTOR> euler_angles
     {
@@ -228,6 +228,14 @@ VECTOR math::GetCentroidOfATriangle(const VECTOR& pos1, const VECTOR& pos2, cons
     return centroid;
 }
 
+VECTOR math::GetCentroidOfATriangle(const Triangle& triangle)
+{
+    const VECTOR pos1 = triangle.GetPos(0);
+    const VECTOR pos2 = triangle.GetPos(1);
+    const VECTOR pos3 = triangle.GetPos(2);
+    return GetCentroidOfATriangle(pos1, pos2, pos3);
+}
+
 VECTOR math::GetCentroidOfAQuadrilateral(const VECTOR& pos1, const VECTOR& pos2, const VECTOR& pos3, const VECTOR& pos4)
 {
     const VECTOR centroid_triangle1 = GetCentroidOfATriangle(pos1, pos2, pos3);
@@ -242,6 +250,14 @@ VECTOR math::GetCentroidOfAQuadrilateral(const VECTOR& pos1, const VECTOR& pos2,
     // 引数が正常でなかった場合nulloptである可能性があるため判定を行う
     const auto intersection = GetIntersectionLineAndLine(line1, line2);
     return intersection ? *intersection : centroid_triangle1;
+}
+VECTOR math::GetCentroidOfAQuadrilateral(const Square& square)
+{
+    const VECTOR pos1 = square.GetPos(0);
+    const VECTOR pos2 = square.GetPos(1);
+    const VECTOR pos3 = square.GetPos(2);
+    const VECTOR pos4 = square.GetPos(3);
+    return GetCentroidOfAQuadrilateral(pos1, pos2, pos3, pos4);
 }
 #pragma endregion
 

@@ -13,13 +13,13 @@ Triangle::Triangle(const VECTOR& pos1, const VECTOR& pos2, const VECTOR& pos3):
 	m_edges.at(1)	= Segment(pos2, pos3);
 	m_edges.at(2)	= Segment(pos3, pos1);
 	m_normal_vector = math::GetNormalVector(m_vertexes[1].pos - m_vertexes[2].pos, m_vertexes[0].pos - m_vertexes[2].pos);
-	m_centroid		= math::GetCentroidOfATriangle(m_vertexes[0].pos, m_vertexes[1].pos, m_vertexes[2].pos);
+	m_centroid		= math::GetCentroidOfATriangle(*this);
 
 	for (int i = 0; i < kVertexNum; ++i)
 	{
-		m_vertexes[i].norm	= VGet(0.0f, 1.0f, 0.0f);
-		m_vertexes[i].dif		= GetColorU8(255, 255, 255, 255);
-		m_vertexes[i].spc		= GetColorU8(255, 255, 255, 255);
+		m_vertexes[i].norm	= v3d::GetWorldYAxis();
+		m_vertexes[i].dif	= GetColorU8(255, 255, 255, 255);
+		m_vertexes[i].spc	= GetColorU8(255, 255, 255, 255);
 	}
 }
 
@@ -37,7 +37,7 @@ Triangle::Triangle() :
 	for (int i = 0; i < kVertexNum; ++i)
 	{
 		m_vertexes[i].pos		= v3d::GetZeroVector();
-		m_vertexes[i].norm	= VGet(0.0f, 1.0f, 0.0f);
+		m_vertexes[i].norm	= v3d::GetWorldYAxis();
 		m_vertexes[i].dif		= GetColorU8(255, 255, 255, 255);
 		m_vertexes[i].spc		= GetColorU8(255, 255, 255, 255);
 	}
@@ -88,7 +88,7 @@ void Triangle::Move(const VECTOR& velocity)
 	m_edges.at(1)	= Segment(m_vertexes[1].pos, m_vertexes[2].pos);
 	m_edges.at(2)	= Segment(m_vertexes[2].pos, m_vertexes[0].pos);
 	m_normal_vector = math::GetNormalVector(m_vertexes[1].pos - m_vertexes[2].pos, m_vertexes[0].pos - m_vertexes[2].pos);
-	m_centroid		= math::GetCentroidOfATriangle(m_vertexes[0].pos, m_vertexes[1].pos, m_vertexes[2].pos);
+	m_centroid		= math::GetCentroidOfATriangle(*this);
 }
 
 void Triangle::LoadTexture(const std::string& file_path, const float u1, const float v1, const float u2, const float v2, const float u3, const float v3)

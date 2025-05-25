@@ -6,7 +6,7 @@ Square::Square(const VECTOR& pos1, const VECTOR& pos2, const VECTOR& pos3, const
 {
 	m_triangles.at(0) = Triangle(pos1, pos2, pos3);
 	m_triangles.at(1) = Triangle(pos1, pos3, pos4);
-	m_centroid = math::GetCentroidOfAQuadrilateral(pos1, pos2, pos3, pos4);
+	m_centroid = math::GetCentroidOfAQuadrilateral(*this);
 }
 
 Square::Square() :
@@ -58,11 +58,7 @@ void Square::Move(const VECTOR& velocity)
 		triangle.Move(velocity);
 	}
 
-	m_centroid = math::GetCentroidOfAQuadrilateral(
-		m_triangles.at(0).GetPos(0),
-		m_triangles.at(0).GetPos(1),
-		m_triangles.at(0).GetPos(2),
-		m_triangles.at(1).GetPos(2));
+	m_centroid = math::GetCentroidOfAQuadrilateral(*this);
 }
 
 void Square::LoadTexture(const std::string& file_path,
@@ -111,17 +107,10 @@ VECTOR Square::GetPos(const int index)const
 {
 	switch (index)
 	{
-	case 0:
-		return m_triangles.at(0).GetPos(0); break;
-
-	case 1:
-		return m_triangles.at(0).GetPos(1); break;
-
-	case 2:
-		return m_triangles.at(0).GetPos(2); break;
-
-	case 3:
-		return m_triangles.at(1).GetPos(2); break;
+	case 0:	return m_triangles.at(0).GetPos(0); break;
+	case 1:	return m_triangles.at(0).GetPos(1); break;
+	case 2:	return m_triangles.at(0).GetPos(2); break;
+	case 3:	return m_triangles.at(1).GetPos(2); break;
 
 	default:
 		break;
