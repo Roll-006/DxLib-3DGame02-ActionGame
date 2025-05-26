@@ -28,7 +28,7 @@ public:
 
 private:
 	ObjManager();
-	~ObjManager()override;
+	~ObjManager() override;
 
 private:
 	std::unordered_map<std::string, std::shared_ptr<ObjBase>> m_objects;

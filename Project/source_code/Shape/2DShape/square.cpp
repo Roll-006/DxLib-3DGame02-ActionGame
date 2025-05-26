@@ -103,7 +103,7 @@ void Square::LoadTexture(const std::string& file_path, const TextureDirKind text
 	m_triangles.at(1).LoadTexture(file_path, texture_pos.at(0), texture_pos.at(1), texture_pos.at(4), texture_pos.at(5), texture_pos.at(6), texture_pos.at(7));
 }
 
-VECTOR Square::GetPos(const int index)const
+VECTOR Square::GetPos(const int index) const
 {
 	switch (index)
 	{
@@ -118,7 +118,7 @@ VECTOR Square::GetPos(const int index)const
 	return v3d::GetZeroVector();
 }
 
-const Segment& Square::GetEdge(const int index)const
+const Segment& Square::GetEdge(const int index) const
 {
 	switch (index)
 	{

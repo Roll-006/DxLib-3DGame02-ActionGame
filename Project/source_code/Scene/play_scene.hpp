@@ -5,11 +5,11 @@ class PlayScene final : public SceneBase
 {
 public:
 	PlayScene();
-	~PlayScene()override;
+	~PlayScene() override;
 
 	void Init()		 override;
 	void Update()	 override;
-	void Draw()const override;
+	void Draw() const override;
 
 private:
 

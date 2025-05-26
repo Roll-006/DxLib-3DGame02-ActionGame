@@ -27,7 +27,7 @@ void ShareScene::Update()
 	m_player->Update();
 }
 
-void ShareScene::Draw()const
+void ShareScene::Draw() const
 {
 	m_camera->Draw();
 	m_player->Draw();

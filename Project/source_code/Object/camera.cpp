@@ -1,7 +1,7 @@
 #include "camera.hpp"
 
 Camera::Camera() : 
-	CollideObjBase			(ObjName.CAMERA, ObjTag.CAMERA, MassKind::kVeryLight),
+	PhysicalObjBase			(ObjName.CAMERA, ObjTag.CAMERA, MassKind::kVeryLight),
 	m_target_transform		(nullptr),
 	m_move_speed			(0.0f),
 	m_distance_to_target	(kNormalDistance),
@@ -31,7 +31,7 @@ void Camera::Update()
 	SetLookDir();
 }
 
-void Camera::Draw()const
+void Camera::Draw() const
 {
 	// TEST : ‰¼‚ÅŠeŽ²‚ð•`‰æ
 	DrawLine3D(v3d::GetZeroVector(), axis::GetWorldXAxis() * 10000, 0xff0000);
@@ -46,7 +46,12 @@ void Camera::Draw()const
 	matrix::Draw(m_transform->GetMatrix(CoordinateKind::kWorld), VGet(50, 0, 0));
 }
 
-void Camera::OnCollide(const CollideObjBase& check_hit_obj)
+void Camera::OnCollide(const PhysicalObjBase& check_hit_obj)
+{
+
+}
+
+void Camera::OnGravity()
 {
 
 }
@@ -84,7 +89,7 @@ void Camera::SetLookDir()
 	SetCameraPositionAndTarget_UpVecY(pos, look_pos);
 }
 
-Axes Camera::GetAxes()const
+Axes Camera::GetAxes() const
 {
 	VECTOR target_pos = v3d::GetZeroVector();
 
@@ -98,12 +103,8 @@ Axes Camera::GetAxes()const
 
 void Camera::Move()
 {
-	if (InputChecker::GetInstance()->IsInput(pad::ButtonKind::kA)) { AttachTarget(ObjName.PLAYER); }
-	if (InputChecker::GetInstance()->IsInput(pad::ButtonKind::kB)) { DetachTarget(); }
-
 	const Axes axes = GetAxes();
 
-	// ‰ñ“]—Ê‚ðŽæ“¾z
 	CalcAngleFromPad  (axes.x);
 	CalcAngleFromMouse(axes.x);
 
@@ -111,16 +112,18 @@ void Camera::Move()
 	if (m_angle.x < kMinVerticalAngle * math::kDegreesToRadian) { m_angle.x = kMinVerticalAngle * math::kDegreesToRadian; }
 	if (m_angle.x > kMaxVerticalAngle * math::kDegreesToRadian) { m_angle.x = kMaxVerticalAngle * math::kDegreesToRadian; }
 
+	// ‰ñ“]s—ñ‚ð¶¬
 	MATRIX m = MGetIdent();
 	CreateRotationZXYMatrix(&m, m_angle.x, m_angle.y, m_angle.z);
 
+	// Œ‹‰Ê‚ð”½‰f
 	m_transform->SetRotation(CoordinateKind::kWorld, MGetRotElem(m));
 	const VECTOR target_pos = m_target_transform ? m_target_transform->GetPos(CoordinateKind::kWorld) : v3d::GetZeroVector();
 	const VECTOR pos		= target_pos - m_transform->GetForward(CoordinateKind::kWorld) * m_distance_to_target;
 	m_transform->SetPos(CoordinateKind::kWorld, pos);
 }
 
-VECTOR Camera::ApplyInvert(VECTOR& velocity)
+VECTOR Camera::ApplyInvert(VECTOR& velocity) const
 {
 	if (m_is_invert_horizontal) { velocity.y *= -1; }
 	if (m_is_invert_vertical)	{ velocity.x *= -1; }
@@ -141,10 +144,10 @@ void Camera::CalcAngleFromPad(const VECTOR& x_axis)
 	const int right_param	= InputChecker::GetInstance()->GetInputParameter(pad::StickKind::kRSRight);
 
 	// “ü—Í’l‚ð’uŠ·
-	if (up_param)	{ m_velocity.x = math::GetUnitValue<int, float>(InputChecker::kStickDeadZone,  InputChecker::kStickMaxTilt,  up_param);    }
-	if (down_param) { m_velocity.x = math::GetUnitValue<int, float>(InputChecker::kStickDeadZone, -InputChecker::kStickMinTilt, -down_param);  }
-	if (left_param) { m_velocity.y = math::GetUnitValue<int, float>(InputChecker::kStickDeadZone, -InputChecker::kStickMinTilt, -left_param);  }
-	if (right_param){ m_velocity.y = math::GetUnitValue<int, float>(InputChecker::kStickDeadZone,  InputChecker::kStickMaxTilt,  right_param); }
+	if (up_param)	{ m_velocity.x = math::GetUnitValue<int, float>(InputChecker::kStickDeadZone,  InputChecker::kStickMaxSlope,  up_param);    }
+	if (down_param) { m_velocity.x = math::GetUnitValue<int, float>(InputChecker::kStickDeadZone, -InputChecker::kStickMinSlope, -down_param);  }
+	if (left_param) { m_velocity.y = math::GetUnitValue<int, float>(InputChecker::kStickDeadZone, -InputChecker::kStickMinSlope, -left_param);  }
+	if (right_param){ m_velocity.y = math::GetUnitValue<int, float>(InputChecker::kStickDeadZone,  InputChecker::kStickMaxSlope,  right_param); }
 
 	// ˆÚ“®‘¬“x‚ðŽæ“¾
 	m_velocity *= kSpeedWithPad * FPS::GetDeltaTime();

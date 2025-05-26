@@ -39,15 +39,15 @@ public:
 	void UnlockCursor()		  { m_is_lock_mouse_pos = false; }
 
 	#pragma region マウス情報
-	[[nodiscard]] Vector2D<int>   GetMousePos	   (const TimeState time_state)const { return m_mouse_data.at(time_state).pos; }
-	[[nodiscard]] Vector2D<float> GetMouseDir	   (const TimeState time_state)const { return m_mouse_data.at(time_state).dir; }
-	[[nodiscard]] Vector2D<float> GetMouseVelocity (const TimeState time_state)const { return m_mouse_data.at(time_state).velocity; }
+	[[nodiscard]] Vector2D<int>   GetMousePos	   (const TimeState time_state) const { return m_mouse_data.at(time_state).pos; }
+	[[nodiscard]] Vector2D<float> GetMouseDir	   (const TimeState time_state) const { return m_mouse_data.at(time_state).dir; }
+	[[nodiscard]] Vector2D<float> GetMouseVelocity (const TimeState time_state) const { return m_mouse_data.at(time_state).velocity; }
 	#pragma endregion
 
 
 	/// @brief 入力判定
 	template<input_concepts::InputT InputT>
-	[[nodiscard]] bool IsInput(const InputT& input_code)const
+	[[nodiscard]] bool IsInput(const InputT& input_code) const
 	{
 		// キー
 		if (std::is_same_v<int, InputT>)
@@ -95,7 +95,7 @@ public:
 
 	/// @brief 入力パラメータを取得
 	template<input_concepts::ParameterT InputT>
-	[[nodiscard]] int GetInputParameter(const InputT& input_code)const
+	[[nodiscard]] int GetInputParameter(const InputT& input_code) const
 	{
 		// マウススライド
 		if (std::is_same_v<mouse::WheelKind, InputT>)
@@ -197,11 +197,11 @@ public:
 
 	/// @brief 現在の入力デバイスを取得
 	/// @brief キーボードとパッド両方が入力された場合はキーボードを優先
-	[[nodiscard]] DeviceKind GetCurrentInputDevice()const { return m_current_device; }
+	[[nodiscard]] DeviceKind GetCurrentInputDevice() const { return m_current_device; }
 
 private:
 	InputChecker();
-	~InputChecker()override;
+	~InputChecker() override;
 
 	void UpdateMouse();
 
@@ -220,8 +220,8 @@ private:
 	void DetectCurrentInputDevice();
 
 public:
-	static constexpr short			kStickMaxTilt		= SHRT_MAX;		// 傾きの最大値
-	static constexpr short			kStickMinTilt		= SHRT_MIN;		// 傾きの最小値
+	static constexpr short			kStickMaxSlope		= SHRT_MAX;		// 傾きの最大値
+	static constexpr short			kStickMinSlope		= SHRT_MIN;		// 傾きの最小値
 	static constexpr short			kStickDeadZone		= 10000;		// スティック入力無効範囲(指定可能範囲 : -32768～32767)
 	static constexpr unsigned char	kTriggerDeadZone	= 50;			// トリガー入力無効範囲  (指定可能範囲 : 0～255)
 

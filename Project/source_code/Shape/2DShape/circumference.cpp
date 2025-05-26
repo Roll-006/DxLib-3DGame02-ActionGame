@@ -63,7 +63,7 @@
 //	}
 //}
 //
-//void Circumference::Draw(bool is_draw_normal_vector, bool is_draw_frame, int vertex_num, int alpha_blend_num)const
+//void Circumference::Draw(bool is_draw_normal_vector, bool is_draw_frame, int vertex_num, int alpha_blend_num) const
 //{
 //	if (is_draw_normal_vector)
 //	{

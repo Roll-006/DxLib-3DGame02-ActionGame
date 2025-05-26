@@ -20,7 +20,7 @@ void TitleScene::Update()
 
 }
 
-void TitleScene::Draw()const
+void TitleScene::Draw() const
 {
 
 }

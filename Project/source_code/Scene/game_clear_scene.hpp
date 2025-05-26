@@ -5,11 +5,11 @@ class GameClearScene final : public SceneBase
 {
 public:
 	GameClearScene();
-	~GameClearScene()override;
+	~GameClearScene() override;
 
 	void Init()		 override;
 	void Update()	 override;
-	void Draw()const override;
+	void Draw() const override;
 
 private:
 

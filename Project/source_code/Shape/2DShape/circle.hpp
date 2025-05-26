@@ -19,11 +19,11 @@
 //	/// @param is_draw_normal_vector 法線ベクトルを描画するかどうか
 //	/// @param is_draw_frame 枠を描画させるかどうか
 //	/// @param alpha_blend_num 透過値 (0～255 : 0で完全透過)
-//	void Draw(bool is_draw_normal_vector, bool is_draw_frame, int alpha_blend_num)const;
+//	void Draw(bool is_draw_normal_vector, bool is_draw_frame, int alpha_blend_num) const;
 //
-//	[[nodiscard]] VECTOR GetPos()const		{ return m_pos; }
-//	[[nodiscard]] VECTOR GetNormalVector()const { return m_normal_vector; }
-//	[[nodiscard]] float  GetRadius()const		{ return m_radius; }
+//	[[nodiscard]] VECTOR GetPos() const		{ return m_pos; }
+//	[[nodiscard]] VECTOR GetNormalVector() const { return m_normal_vector; }
+//	[[nodiscard]] float  GetRadius() const		{ return m_radius; }
 //
 //private:
 //	static constexpr float kNormalVectorLength	= 100.0f;

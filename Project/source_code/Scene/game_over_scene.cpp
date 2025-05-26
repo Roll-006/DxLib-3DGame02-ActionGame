@@ -20,7 +20,7 @@ void GameOverScene::Update()
 
 }
 
-void GameOverScene::Draw()const
+void GameOverScene::Draw() const
 {
 
 }

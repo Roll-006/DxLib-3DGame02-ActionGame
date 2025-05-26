@@ -11,7 +11,7 @@ public:
 
 	virtual void Init()		 abstract;
 	virtual void Update()	 abstract;
-	virtual void Draw()const abstract;
+	virtual void Draw() const abstract;
 
 	/// @brief アクティブ化する
 	void Activate(){ m_is_active = true; }
@@ -21,7 +21,7 @@ public:
 	/// @brief Init関数を通さずにシーンを再開したい場合に有効
 	void Deactivate(){ m_is_active = false; }
 
-	[[nodiscard]] bool IsActive()const { return m_is_active; }
+	[[nodiscard]] bool IsActive() const { return m_is_active; }
 
 private:
 	bool m_is_active;

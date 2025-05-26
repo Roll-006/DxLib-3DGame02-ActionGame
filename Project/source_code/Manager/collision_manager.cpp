@@ -22,7 +22,7 @@ void CollisionManager::Update()
 
 
 #pragma region ìoò^ÅEâèú
-void CollisionManager::AddCollideObj(std::shared_ptr<CollideObjBase> collide_obj)
+void CollisionManager::AddCollideObj(std::shared_ptr<PhysicalObjBase> collide_obj)
 {
 	if (!std::count(m_collide_objects.begin(), m_collide_objects.end(), collide_obj))
 	{
@@ -30,7 +30,7 @@ void CollisionManager::AddCollideObj(std::shared_ptr<CollideObjBase> collide_obj
 	}
 }
 
-void CollisionManager::RemoveCollideObj(std::shared_ptr<CollideObjBase> collide_obj)
+void CollisionManager::RemoveCollideObj(std::shared_ptr<PhysicalObjBase> collide_obj)
 {
 	if (std::count(m_collide_objects.begin(), m_collide_objects.end(), collide_obj))
 	{
@@ -79,7 +79,7 @@ std::vector<CollideObjPairData> CollisionManager::MakeHitObjPairs()
 	return collide_obj_pair;
 }
 
-bool CollisionManager::IsHit(const CollideObjBase& owner_obj, const CollideObjBase& target_obj)
+bool CollisionManager::IsHit(const PhysicalObjBase& owner_obj, const PhysicalObjBase& target_obj)
 {
 	switch (owner_obj.GetCollider()->GetShapeKind())
 	{
@@ -98,7 +98,7 @@ bool CollisionManager::IsHit(const CollideObjBase& owner_obj, const CollideObjBa
 	return false;
 }
 
-bool CollisionManager::IsHitLineAndTarget			(const Line&		line,		const CollideObjBase& target_obj)
+bool CollisionManager::IsHitLineAndTarget			(const Line&		line,		const PhysicalObjBase& target_obj)
 {
 	switch (target_obj.GetCollider()->GetShapeKind())
 	{
@@ -110,7 +110,7 @@ bool CollisionManager::IsHitLineAndTarget			(const Line&		line,		const CollideOb
 	return false;
 }
 
-bool CollisionManager::IsHitSegmentAndTarget		(const Segment&		segment,	const CollideObjBase& target_obj)
+bool CollisionManager::IsHitSegmentAndTarget		(const Segment&		segment,	const PhysicalObjBase& target_obj)
 {
 	switch (target_obj.GetCollider()->GetShapeKind())
 	{
@@ -125,7 +125,7 @@ bool CollisionManager::IsHitSegmentAndTarget		(const Segment&		segment,	const Co
 	return false;
 }
 
-bool CollisionManager::IsHitPlaneAndTarget			(const Plane&		plane,		const CollideObjBase& target_obj)
+bool CollisionManager::IsHitPlaneAndTarget			(const Plane&		plane,		const PhysicalObjBase& target_obj)
 {
 	switch (target_obj.GetCollider()->GetShapeKind())
 	{
@@ -138,7 +138,7 @@ bool CollisionManager::IsHitPlaneAndTarget			(const Plane&		plane,		const Collid
 	return false;
 }
 
-bool CollisionManager::IsHitTriangleAndTarget		(const Triangle&	triangle,	const CollideObjBase& target_obj)
+bool CollisionManager::IsHitTriangleAndTarget		(const Triangle&	triangle,	const PhysicalObjBase& target_obj)
 {
 	switch (target_obj.GetCollider()->GetShapeKind())
 	{
@@ -150,7 +150,7 @@ bool CollisionManager::IsHitTriangleAndTarget		(const Triangle&	triangle,	const 
 	return false;
 }
 
-bool CollisionManager::IsHitSquareAndTarget			(const Square&		square,		const CollideObjBase& target_obj)
+bool CollisionManager::IsHitSquareAndTarget			(const Square&		square,		const PhysicalObjBase& target_obj)
 {
 	switch (target_obj.GetCollider()->GetShapeKind())
 	{
@@ -162,17 +162,17 @@ bool CollisionManager::IsHitSquareAndTarget			(const Square&		square,		const Col
 	return false;
 }
 
-bool CollisionManager::IsHitAABBAndTarget			(const AABB&		aabb,		const CollideObjBase& target_obj)
+bool CollisionManager::IsHitAABBAndTarget			(const AABB&		aabb,		const PhysicalObjBase& target_obj)
 {
 	return false;
 }
 
-bool CollisionManager::IsHitOBBAndTarget			(const OBB&			obb,		const CollideObjBase& target_obj)
+bool CollisionManager::IsHitOBBAndTarget			(const OBB&			obb,		const PhysicalObjBase& target_obj)
 {
 	return false;
 }
 
-bool CollisionManager::IsHitSphereAndTarget			(const Sphere&		sphere,		const CollideObjBase& target_obj)
+bool CollisionManager::IsHitSphereAndTarget			(const Sphere&		sphere,		const PhysicalObjBase& target_obj)
 {
 	switch (target_obj.GetCollider()->GetShapeKind())
 	{
@@ -184,7 +184,7 @@ bool CollisionManager::IsHitSphereAndTarget			(const Sphere&		sphere,		const Col
 	return false;
 }
 
-bool CollisionManager::IsHitCapsuleAndTarget		(const Capsule&		capsule,	const CollideObjBase& target_obj)
+bool CollisionManager::IsHitCapsuleAndTarget		(const Capsule&		capsule,	const PhysicalObjBase& target_obj)
 {
 	switch (target_obj.GetCollider()->GetShapeKind())
 	{

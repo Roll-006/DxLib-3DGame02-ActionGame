@@ -12,7 +12,7 @@ public:
 
 	virtual ~ShapeBase() = default;
 
-	[[nodiscard]] ShapeKind GetShapeKind()const { return m_shape_kind; }
+	[[nodiscard]] ShapeKind GetShapeKind() const { return m_shape_kind; }
 
 private:
 	ShapeKind m_shape_kind;

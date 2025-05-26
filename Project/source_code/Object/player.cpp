@@ -1,16 +1,21 @@
 #include "player.hpp"
 
 Player::Player(std::shared_ptr<Camera> camera) :
-	CollideObjBase	(ObjName.PLAYER, ObjTag.PLAYER, MassKind::kMedium),
+	PhysicalObjBase	(ObjName.PLAYER, ObjTag.PLAYER, MassKind::kMedium),
 	m_modeler		(nullptr),
 	m_animator		(nullptr),
-	m_camera		(camera)
+	m_camera		(camera),
+	m_dir			(v3d::GetZeroVector()),
+	m_velocity		(v3d::GetZeroVector()),
+	m_move_speed	(0.0f),
+	m_is_move		(false)
 {
 	m_modeler	= std::make_shared<Modeler> (GetTransform(), ModelPath.CHARA_01);
 	m_animator	= std::make_shared<Animator>(m_modeler, 3.0f);
 
-	// TEST : 仮で座標を指定
-	m_transform->SetPos(CoordinateKind::kWorld, VGet(100, 100, 100));
+	// 衝突用の図形を設定
+	MakeCollider(std::make_shared<Capsule>());
+	AddTrigger(TriggerKind::kLanding, std::make_shared<Sphere>());
 
 	// 各アニメーション追加
 	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdle), AnimPath.IDLE_01, AnimTag.NONE, 20.0f, true);
@@ -37,17 +42,127 @@ void Player::Update()
 	m_animator->Update();
 }
 
-void Player::Draw()const
+void Player::Draw() const
 {
 	m_modeler->Draw();
 }
 
-void Player::OnCollide(const CollideObjBase& check_hit_obj)
+void Player::OnCollide(const PhysicalObjBase& check_hit_obj)
+{
+
+}
+
+void Player::OnGravity()
 {
 
 }
 
 void Player::Move()
 {
+	m_is_move = false;
 
+	// 各方向の移動
+	CalcHorizontalVelocity();
+	CalcVerticalVelocity();
+
+	if (m_is_move)
+	{
+		m_velocity = m_dir * m_move_speed;
+	}
+}
+
+void Player::CalcHorizontalVelocity()
+{
+	// カメラの向きから移動方向を抽出
+	const VECTOR right = m_camera->GetTransform()->GetRight(CoordinateKind::kWorld);
+	VECTOR forwrd = m_camera->GetTransform()->GetForward(CoordinateKind::kWorld);
+	forwrd.y = 0.0f;
+	forwrd = v3d::GetNormalizedVector(forwrd);
+
+	// 各方向のパラメーターを取得
+	const int forward_param		= InputChecker::GetInstance()->GetInputParameter(pad::StickKind::kRSUp);
+	const int backward_param	= InputChecker::GetInstance()->GetInputParameter(pad::StickKind::kRSDown);
+	const int left_param		= InputChecker::GetInstance()->GetInputParameter(pad::StickKind::kRSLeft);
+	const int right_param		= InputChecker::GetInstance()->GetInputParameter(pad::StickKind::kRSRight);
+
+	// 移動方向を取得
+	VECTOR move_velocity = v3d::GetZeroVector();
+	if (forward_param)
+	{
+		move_velocity += forwrd * forward_param;
+		m_is_move = true;
+	}
+	if (backward_param)
+	{
+		move_velocity += forwrd * backward_param;
+		m_is_move = true;
+	}
+	if (left_param)
+	{
+		move_velocity += right * left_param;
+		m_is_move = true;
+	}
+	if (right_param)
+	{
+		move_velocity += right * right_param;
+		m_is_move = true;
+	}
+
+	// 移動速度を計算
+	CalcMoveSpeed(VSize(move_velocity));
+
+	if (m_is_move){ m_dir = v3d::GetNormalizedVector(move_velocity); }
+}
+
+void Player::CalcVerticalVelocity()
+{
+
+}
+
+void Player::CalcMoveSpeed(const float input_slope)
+{
+	if (!m_is_move) { return; }
+
+	if (input_slope <= kWalkStickSlopeLimit - InputChecker::kStickDeadZone)
+	{
+		// 速い状態から歩き状態に移行した場合、急速に減速させる
+		if (m_move_speed > kJogSpeed) { m_move_speed = kJogSpeed; }
+
+		Acceleration(kWalkSpeed);
+		Deceleration(kWalkSpeed);
+		return;
+	}
+
+	if (input_slope <= kJogStickSlopeLimit  - InputChecker::kStickDeadZone)
+	{
+		Acceleration(kJogSpeed);
+		Deceleration(kJogSpeed);
+		return;
+	}
+
+	// 遅い状態からダッシュ状態に移行した場合、急速に加速させる
+	if (m_move_speed < kJogSpeed) { m_move_speed = kJogSpeed; }
+	Acceleration(kRunSpeed);
+}
+
+void Player::Acceleration(const float destination_speed)
+{
+	if (m_move_speed >= destination_speed) { return; }
+
+	m_move_speed += kAcceleration * FPS::GetDeltaTime();
+	if (m_move_speed > destination_speed)
+	{
+		m_move_speed = destination_speed;
+	}
+}
+
+void Player::Deceleration(const float destination_speed)
+{
+	if (m_move_speed <= destination_speed)
+	
+	m_move_speed -= kAcceleration * FPS::GetDeltaTime();
+	if (m_move_speed < destination_speed)
+	{
+		m_move_speed = destination_speed;
+	}
 }

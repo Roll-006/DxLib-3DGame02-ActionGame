@@ -101,6 +101,9 @@
     <ClCompile Include="source_code\Part\transform.cpp">
       <Filter>Part</Filter>
     </ClCompile>
+    <ClCompile Include="source_code\Manager\physics_manager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source_code\Manager\game_manager.hpp">
@@ -262,9 +265,6 @@
     <ClInclude Include="source_code\Manager\collision_manager.hpp">
       <Filter>Manager</Filter>
     </ClInclude>
-    <ClInclude Include="source_code\Interface\i_battler.hpp">
-      <Filter>Interface</Filter>
-    </ClInclude>
     <ClInclude Include="source_code\Data\Kind\sort_kind.hpp">
       <Filter>Data\Kind</Filter>
     </ClInclude>
@@ -285,9 +285,6 @@
     </ClInclude>
     <ClInclude Include="source_code\Data\collide_obj_pair_data.hpp">
       <Filter>Data</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Base\collide_obj_base.hpp">
-      <Filter>Base</Filter>
     </ClInclude>
     <ClInclude Include="source_code\Data\Kind\trigger_kind.hpp">
       <Filter>Data\Kind</Filter>
@@ -333,6 +330,18 @@
     </ClInclude>
     <ClInclude Include="source_code\Calculation\matrix.hpp">
       <Filter>Calculation</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Base\chara_base.hpp">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Interface\i_chara.hpp">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Base\physical_obj_base.hpp">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Manager\physics_manager.hpp">
+      <Filter>Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

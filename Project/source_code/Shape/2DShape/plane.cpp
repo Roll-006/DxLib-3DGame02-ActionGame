@@ -22,12 +22,12 @@ Plane::~Plane()
 }
 
 void Plane::Draw(const bool is_draw_normal_vector, const bool is_draw_frame, 
-	const float draw_edge_length, const int alpha_blend_num, const unsigned int frame_color)const
+	const float draw_edge_length, const int alpha_blend_num, const unsigned int frame_color) const
 {
 	MakeDrawSquare(draw_edge_length).Draw(is_draw_normal_vector, is_draw_frame, alpha_blend_num, frame_color);
 }
 
-Square&& Plane::MakeDrawSquare(const float edge_length)const
+Square&& Plane::MakeDrawSquare(const float edge_length) const
 {
 	const VECTOR dir1 = math::GetNormalVector(m_normal_vector);
 	const VECTOR dir2 = math::GetNormalVector(m_normal_vector, dir1);

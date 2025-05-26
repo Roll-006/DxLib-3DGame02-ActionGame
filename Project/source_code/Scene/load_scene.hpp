@@ -5,11 +5,11 @@ class LoadScene final : public SceneBase
 {
 public:
 	LoadScene();
-	~LoadScene()override;
+	~LoadScene() override;
 
 	void Init()		 override;
 	void Update()	 override;
-	void Draw()const override;
+	void Draw() const override;
 
 private:
 

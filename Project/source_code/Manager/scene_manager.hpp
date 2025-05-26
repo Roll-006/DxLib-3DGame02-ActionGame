@@ -17,7 +17,7 @@ public:
 	~SceneObjManager();
 
 	void Update();
-	void Draw()const;
+	void Draw() const;
 
 private:
 	void AttachCurrentScene(const SceneKind scene_kind);

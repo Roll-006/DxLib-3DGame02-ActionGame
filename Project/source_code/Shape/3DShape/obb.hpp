@@ -10,7 +10,7 @@ public:
 	OBB();
 	~OBB();
 
-	void Draw(const bool is_draw_normal_vector, const bool is_draw_frame, const int alpha_blend_num, const unsigned int frame_color)const;
+	void Draw(const bool is_draw_normal_vector, const bool is_draw_frame, const int alpha_blend_num, const unsigned int frame_color) const;
 
 	/// @brief テクスチャ読み込み
 	/// @brief この関数を使用しなかった場合、白い板が描画される

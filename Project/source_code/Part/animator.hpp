@@ -41,7 +41,6 @@ private:
 	void BlendAnim();
 
 private:
-	// TODO : –½–¼‚ª‚â‚â‚±‚µ‚¢‚½‚ß•ÏX—\’è
 	std::unordered_map<int, AnimKindData>				m_kind_data;
 	std::unordered_map<TimeState, AnimTimeStateData>	m_time_state_data;
 

@@ -20,7 +20,7 @@ void LoadScene::Update()
 
 }
 
-void LoadScene::Draw()const
+void LoadScene::Draw() const
 {
 
 }

@@ -37,7 +37,7 @@ Capsule::~Capsule()
     // ˆ—‚È‚µ
 }
 
-void Capsule::Draw(const bool is_draw_frame, const int alpha_blend_num, const unsigned int frame_color)const
+void Capsule::Draw(const bool is_draw_frame, const int alpha_blend_num, const unsigned int frame_color) const
 {
     if (alpha_blend_num > 0)
     {

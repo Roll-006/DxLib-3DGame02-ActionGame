@@ -24,7 +24,7 @@ OBB::~OBB()
 	// èàóùÇ»Çµ
 }
 
-void OBB::Draw(const bool is_draw_normal_vector, const bool is_draw_frame, const int alpha_blend_num, const unsigned int frame_color)const
+void OBB::Draw(const bool is_draw_normal_vector, const bool is_draw_frame, const int alpha_blend_num, const unsigned int frame_color) const
 {
 	for (auto square : m_box.squares)
 	{
@@ -71,7 +71,7 @@ void OBB::SetDir(const VECTOR& dir)
 	CalcSquarePos();
 }
 
-const Segment& OBB::GetEdge(const box::EdgeKind edge_kind)const
+const Segment& OBB::GetEdge(const box::EdgeKind edge_kind) const
 {
 	switch (edge_kind)
 	{

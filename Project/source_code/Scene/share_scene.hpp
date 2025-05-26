@@ -7,11 +7,11 @@ class ShareScene final : public SceneBase
 {
 public:
 	ShareScene();
-	~ShareScene()override;
+	~ShareScene() override;
 
 	void Init()		 override;
 	void Update()	 override;
-	void Draw()const override;
+	void Draw() const override;
 
 private:
 	std::shared_ptr<Camera> m_camera;

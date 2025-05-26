@@ -5,11 +5,11 @@ class GameOverScene final : public SceneBase
 {
 public:
 	GameOverScene();
-	~GameOverScene()override;
+	~GameOverScene() override;
 
 	void Init()		 override;
 	void Update()	 override;
-	void Draw()const override;
+	void Draw() const override;
 
 private:
 

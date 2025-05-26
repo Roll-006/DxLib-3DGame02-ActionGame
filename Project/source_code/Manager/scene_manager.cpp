@@ -21,13 +21,17 @@ SceneObjManager::~SceneObjManager()
 
 void SceneObjManager::Update()
 {
+	InputChecker::GetInstance()->Update();
+
 	for (const auto& scene : m_current_scene)
 	{
 		scene.second->Update();
 	}
+
+	CollisionManager::GetInstance()->Update();
 }
 
-void SceneObjManager::Draw()const
+void SceneObjManager::Draw() const
 {
 	for (const auto& scene : m_current_scene)
 	{

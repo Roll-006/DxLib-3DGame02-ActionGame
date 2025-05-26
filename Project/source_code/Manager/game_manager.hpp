@@ -1,9 +1,5 @@
 #pragma once
-#include <memory>
-#include <unordered_map>
 #include <EffekseerForDXLib.h>
-
-#include "../Base/one_instance_singleton_base.hpp"
 
 #include "../Window/window.hpp"
 #include "../FPS/fps.hpp"

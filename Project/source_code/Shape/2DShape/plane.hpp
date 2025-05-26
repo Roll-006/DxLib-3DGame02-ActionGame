@@ -17,17 +17,17 @@ public:
 	/// @param draw_edge_length 描画時の直線の長さ(実際には無限に続く)
 	/// @param alpha_blend_num 透過値 (0～255 : 0で完全透過)
 	void Draw(const bool is_draw_normal_vector, const bool is_draw_frame, 
-		const float draw_edge_length, const int alpha_blend_num, const unsigned int frame_color)const;
+		const float draw_edge_length, const int alpha_blend_num, const unsigned int frame_color) const;
 
 	/// @brief 描画用の四角形を作成
-	[[nodiscard]] Square&& MakeDrawSquare(const float edge_length)const;
+	[[nodiscard]] Square&& MakeDrawSquare(const float edge_length) const;
 
 	void Move(const VECTOR& velocity);
 
 	void SetPos(const VECTOR& pos){ m_pos = pos; }
 
 	VECTOR GetPos()			const	{ return m_pos; }
-	VECTOR GetNormalVector()const	{ return m_normal_vector; }
+	VECTOR GetNormalVector() const	{ return m_normal_vector; }
 
 private:
 	VECTOR  m_pos;				// 平面上の基準座標

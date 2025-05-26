@@ -21,7 +21,7 @@ Sphere::~Sphere()
     // ˆ—‚È‚µ
 }
 
-void Sphere::Draw(const bool is_draw_frame, const int alpha_blend_num, const unsigned int frame_color)const
+void Sphere::Draw(const bool is_draw_frame, const int alpha_blend_num, const unsigned int frame_color) const
 {
     if (alpha_blend_num > 0)
     {

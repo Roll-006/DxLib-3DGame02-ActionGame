@@ -18,11 +18,11 @@
 //	/// @param is_draw_normal_vector –@üƒxƒNƒgƒ‹‚ğ•`‰æ‚·‚é‚©‚Ç‚¤‚©
 //	/// @param is_draw_frame ˜g‚ğ•`‰æ‚³‚¹‚é‚©‚Ç‚¤‚©
 //	/// @param alpha_blend_num “§‰ß’l (0`255 : 0‚ÅŠ®‘S“§‰ß)
-//	void Draw(bool is_draw_normal_vector, bool is_draw_frame, int vertex_num, int alpha_blend_num)const;
+//	void Draw(bool is_draw_normal_vector, bool is_draw_frame, int vertex_num, int alpha_blend_num) const;
 //
-//	[[nodiscard]] VECTOR GetPos()const		{ return m_pos; }
-//	[[nodiscard]] VECTOR GetNormalVector()const { return m_normal_vector; }
-//	[[nodiscard]] float  GetRadius()const		{ return m_radius; }
+//	[[nodiscard]] VECTOR GetPos() const		{ return m_pos; }
+//	[[nodiscard]] VECTOR GetNormalVector() const { return m_normal_vector; }
+//	[[nodiscard]] float  GetRadius() const		{ return m_radius; }
 //
 //private:
 //	static constexpr float kNormalVectorLength	= 100.0f;

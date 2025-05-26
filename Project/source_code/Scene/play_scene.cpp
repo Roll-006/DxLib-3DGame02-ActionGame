@@ -20,7 +20,7 @@ void PlayScene::Update()
 
 }
 
-void PlayScene::Draw()const
+void PlayScene::Draw() const
 {
 
 }

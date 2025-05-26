@@ -21,9 +21,9 @@ public:
 
 	virtual void Init()			abstract;
 	virtual void Update()		abstract;
-	virtual void Draw()const	abstract;
+	virtual void Draw() const	abstract;
 
-	[[nodiscard]] std::string GetName()const { return m_name; }
+	[[nodiscard]] std::string GetName() const { return m_name; }
 	[[nodiscard]] std::string GetTag() const { return m_tag; }
 	[[nodiscard]] std::shared_ptr<Transform> GetTransform() { return m_transform; }
 

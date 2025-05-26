@@ -8,8 +8,8 @@ struct Vector2D
     ElemT x;
     ElemT y;
 
-    Vector2D  operator+()const              { return *this; }
-    Vector2D  operator-()const              { return Vector2D(-x, -y); }
+    Vector2D  operator+() const              { return *this; }
+    Vector2D  operator-() const              { return Vector2D(-x, -y); }
 
     Vector2D& operator= (const Vector2D& v) { x = v.x;  y = v.y;  return *this; }
 

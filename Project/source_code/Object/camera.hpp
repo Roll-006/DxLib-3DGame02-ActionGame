@@ -1,9 +1,11 @@
 #pragma once
-#include "../Base/collide_obj_base.hpp"
+#include "../Base/physical_obj_base.hpp"
 #include "../Manager/obj_manager.hpp"
 #include "../Manager/input_checker.hpp"
+#include "../Manager/collision_manager.hpp"
+#include "../Manager/physics_manager.hpp"
 
-class Camera final : public CollideObjBase
+class Camera final : public PhysicalObjBase
 {
 public:
 	enum class TimeState
@@ -17,9 +19,10 @@ public:
 
 	void Init()			override;
 	void Update()		override;
-	void Draw()const	override;
+	void Draw() const	override;
 
-	void OnCollide(const CollideObjBase& check_hit_obj)override;
+	void OnCollide(const PhysicalObjBase& check_hit_obj) override;
+	void OnGravity() override;
 
 	void AttachTarget(const std::shared_ptr<ObjBase> obj);
 	void AttachTarget(const std::string& obj_name);
@@ -36,10 +39,10 @@ private:
 
 	void SetLookDir();
 
-	[[nodiscard]] Axes GetAxes()const;
+	[[nodiscard]] Axes GetAxes() const;
 
 	/// @brief ëÄçÏéûÇÃîΩì]èàóùÇìKópÇ∑ÇÈ
-	[[nodiscard]] VECTOR ApplyInvert(VECTOR& velocity);
+	[[nodiscard]] VECTOR ApplyInvert(VECTOR& velocity) const;
 
 	void CalcAngleFromPad  (const VECTOR& x_axis);
 	void CalcAngleFromMouse(const VECTOR& x_axis);

@@ -36,7 +36,7 @@ Segment::~Segment()
 	// ˆ—‚È‚µ
 }
 
-void Segment::Draw(const unsigned int color)const
+void Segment::Draw(const unsigned int color) const
 {
 	DrawLine3D(m_begin_pos, m_end_pos, color);
 }

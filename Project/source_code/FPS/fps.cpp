@@ -37,7 +37,7 @@ void FPS::Update()
     ++m_frame_count;
 }
 
-void FPS::Wait()const
+void FPS::Wait() const
 {
     float wait_t = kMicroSecond / m_fps * m_frame_count - (m_current_time - m_first_time);
     wait_t /= kMillSecond;

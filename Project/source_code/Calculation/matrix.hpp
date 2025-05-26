@@ -9,8 +9,8 @@ namespace matrix
 		{
 			for (int j = 0; j < 4; ++j)
 			{
-				int pos_x = first_draw_pos.x + j * 200;
-				int pos_y = first_draw_pos.y + i * 20;
+				int pos_x = static_cast<int>(first_draw_pos.x + j * 200);
+				int pos_y = static_cast<int>(first_draw_pos.y + i * 20);
 				DrawFormatString(pos_x, pos_y, 0xffffff, "%f", mat.m[i][j]);
 			}
 		}

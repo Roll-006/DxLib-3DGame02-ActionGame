@@ -1,24 +1,24 @@
 #include "game_manager.hpp"
 
 GameManager::GameManager():
-	m_window		(nullptr),
-	m_fps			(nullptr),
-	m_scene_manager	(nullptr)
+	m_window		(std::make_unique<Window>()),
+	m_fps			(std::make_unique<FPS>()),
+	m_scene_manager	(std::make_unique<SceneObjManager>())
 {
 	SetUpGameSystem();
 
-	InputChecker::Generate();
-	ObjManager	::Generate();
-
-	m_window		= std::make_unique<Window>();
-	m_fps			= std::make_unique<FPS>();
-	m_scene_manager = std::make_unique<SceneObjManager>();
+	InputChecker	::Generate();
+	ObjManager		::Generate();
+	CollisionManager::Generate();
+	PhysicsManager	::Generate();
 }
 
 GameManager::~GameManager()
 {
-	InputChecker::Delete();
-	ObjManager	::Delete();
+	InputChecker	::Delete();
+	ObjManager		::Delete();
+	CollisionManager::Delete();
+	PhysicsManager	::Delete();
 	
 	Effkseer_End();
 	DxLib_End();
@@ -30,7 +30,6 @@ void GameManager::Run()
 	{
 		m_fps->Update();
 		m_window->Update();
-		InputChecker::GetInstance()->Update();
 		m_scene_manager->Update();
 		m_scene_manager->Draw();
 		m_fps->Wait();

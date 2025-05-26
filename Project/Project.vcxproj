@@ -142,6 +142,7 @@
     <ClCompile Include="source_code\Calculation\quaternion.cpp" />
     <ClCompile Include="source_code\FPS\fps.cpp" />
     <ClCompile Include="source_code\main.cpp" />
+    <ClCompile Include="source_code\Manager\physics_manager.cpp" />
     <ClCompile Include="source_code\Manager\collision_manager.cpp" />
     <ClCompile Include="source_code\Manager\game_manager.cpp" />
     <ClCompile Include="source_code\Manager\input_checker.cpp" />
@@ -173,7 +174,8 @@
     <ClCompile Include="source_code\Window\window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="source_code\Base\collide_obj_base.hpp" />
+    <ClInclude Include="source_code\Base\chara_base.hpp" />
+    <ClInclude Include="source_code\Base\physical_obj_base.hpp" />
     <ClInclude Include="source_code\Base\shape_base.hpp" />
     <ClInclude Include="source_code\Base\singleton_base.hpp" />
     <ClInclude Include="source_code\Base\one_instance_singleton_base.hpp" />
@@ -220,7 +222,8 @@
     <ClInclude Include="source_code\Data\Tag\obj_tag.hpp" />
     <ClInclude Include="source_code\Data\Tag\animation_tag.hpp" />
     <ClInclude Include="source_code\FPS\fps.hpp" />
-    <ClInclude Include="source_code\Interface\i_battler.hpp" />
+    <ClInclude Include="source_code\Interface\i_chara.hpp" />
+    <ClInclude Include="source_code\Manager\physics_manager.hpp" />
     <ClInclude Include="source_code\Manager\collision_manager.hpp" />
     <ClInclude Include="source_code\Manager\game_manager.hpp" />
     <ClInclude Include="source_code\Manager\input_checker.hpp" />

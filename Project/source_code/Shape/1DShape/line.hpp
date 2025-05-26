@@ -18,10 +18,10 @@ public:
 
 	/// @brief ’¼üã‚Ì“_‚ğæ“¾
 	/// @param length n“_‚©‚ç‚Ì’·‚³
-	[[nodiscard]] VECTOR GetPoint(const float length)const{ return m_pos + m_dir * length; }
+	[[nodiscard]] VECTOR GetPoint(const float length) const{ return m_pos + m_dir * length; }
 
-	[[nodiscard]] VECTOR GetPos()const	{ return m_pos; }
-	[[nodiscard]] VECTOR GetDir()const	{ return m_dir; }
+	[[nodiscard]] VECTOR GetPos() const	{ return m_pos; }
+	[[nodiscard]] VECTOR GetDir() const	{ return m_dir; }
 
 private:
 	VECTOR m_pos;

@@ -9,7 +9,7 @@ public:
 	Segment();
 	~Segment();
 
-	void Draw(const unsigned int color)const;
+	void Draw(const unsigned int color) const;
 
 	void Move(const VECTOR& velocity);
 
@@ -17,9 +17,9 @@ public:
 
 	/// @brief íºê¸è„ÇÃì_ÇéÊìæ
 	/// @param length énì_Ç©ÇÁÇÃí∑Ç≥
-	[[nodiscard]] VECTOR GetPoint(const float length)const { return m_begin_pos + m_dir * length; }
+	[[nodiscard]] VECTOR GetPoint(const float length) const { return m_begin_pos + m_dir * length; }
 
-	[[nodiscard]] VECTOR GetBeginPos()const { return m_begin_pos; }
+	[[nodiscard]] VECTOR GetBeginPos() const { return m_begin_pos; }
 	[[nodiscard]] VECTOR GetEndPos()  const { return m_end_pos; }
 	[[nodiscard]] VECTOR GetDir()	  const { return m_dir; }
 	[[nodiscard]] float  GetLength()  const { return m_length; }

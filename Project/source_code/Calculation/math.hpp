@@ -131,22 +131,15 @@ namespace math
 			switch (sort_kind)
 			{
 			case SortKind::kAscending:
+				if (a.second != b.second) { return a.second < b.second; }
 
-				// 同じ値でない場合はmain_u_mapでソート
-				if (a.second != b.second)
-				{
-					return a.second < b.second;
-				}
-
-				// 同じ値であった場合はsub_u_mapでソート
+				// main_u_mapが同じ値であった場合はsub_u_mapでソート
 				return sub_u_map.at(a.first) < sub_u_map.at(b.first);
 				break;
 
 			case SortKind::kDescending:
-				if (a.second != b.second)
-				{
-					return a.second > b.second;
-				}
+				if (a.second != b.second) { return a.second > b.second; }
+
 				return sub_u_map.at(a.first) > sub_u_map.at(b.first);
 				break;
 			}
@@ -202,8 +195,6 @@ namespace math
 	/// @brief 基準とするベクトルから法線ベクトルを求め、その内の一つを取得
 	[[nodiscard]] VECTOR GetNormalVector(const VECTOR& v);
 	[[nodiscard]] VECTOR GetNormalVector(const VECTOR& v1, const VECTOR& v2);
-
-	[[nodiscard]] VECTOR GetProjectionVector(const VECTOR& v);
 	#pragma endregion
 
 

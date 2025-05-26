@@ -64,7 +64,7 @@
 //	}
 //}
 //
-//void Circle::Draw(bool is_draw_normal_vector, bool is_draw_frame, int alpha_blend_num)const
+//void Circle::Draw(bool is_draw_normal_vector, bool is_draw_frame, int alpha_blend_num) const
 //{
 //	if (is_draw_normal_vector)
 //	{
