@@ -3,7 +3,7 @@
 GameManager::GameManager():
 	m_window		(std::make_unique<Window>()),
 	m_fps			(std::make_unique<FPS>()),
-	m_scene_manager	(std::make_unique<SceneObjManager>())
+	m_scene_manager	(nullptr)
 {
 	SetUpGameSystem();
 
@@ -11,6 +11,8 @@ GameManager::GameManager():
 	ObjManager		::Generate();
 	CollisionManager::Generate();
 	PhysicsManager	::Generate();
+
+	m_scene_manager = std::make_unique<SceneObjManager>();
 }
 
 GameManager::~GameManager()
