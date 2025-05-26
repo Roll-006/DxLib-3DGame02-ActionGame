@@ -34,15 +34,13 @@ private:
 	/// @brief 視点リセット
 	void InitAngle();
 
+	[[nodiscard]] Axes GetAxes()const;
+
 	/// @brief 操作時の反転処理を適用する
 	[[nodiscard]] VECTOR ApplyInvert(VECTOR& velocity);
 
-	/// @brief カメラの回転クォータニオンを取得
-	[[nodiscard]] Quaternion GetRotationFromPad  (Quaternion& rota_q, const VECTOR& x_axis);
-	[[nodiscard]] Quaternion GetRotationFromMouse(Quaternion& rota_q, const VECTOR& x_axis);
-
-	/// @brief ターゲットの座標を取得
-	[[nodiscard]] VECTOR GetTargetPos();
+	void CalcAngleFromPad  (const VECTOR& x_axis);
+	void CalcAngleFromMouse(const VECTOR& x_axis);
 
 private:
 	static constexpr float kNear					= 10.0f;
@@ -58,9 +56,11 @@ private:
 
 	float  m_move_speed;
 	float  m_distance_to_target;
+	bool   m_is_move;
 	bool   m_is_invert_horizontal;		// 操作時に左右反転を行うかを判定
 	bool   m_is_invert_vertical;		// 操作時に上下反転を行うかを判定
 	
 	VECTOR m_velocity;
-	Quaternion m_quaternion;
+	VECTOR m_angle;
+	//Quaternion m_quaternion;
 };

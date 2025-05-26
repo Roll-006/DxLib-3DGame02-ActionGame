@@ -126,4 +126,19 @@ VECTOR Transform::GetScale(const CoordinateKind coord_kind)
 	const MATRIX mat = GetMatrix(coord_kind);
 	return VECTOR(mat.m[0][0], mat.m[1][1], mat.m[2][2]);
 }
+
+VECTOR Transform::GetRight(const CoordinateKind coord_kind)
+{
+	return math::ConvertRotationMatrixToAxes(GetMatrix(coord_kind)).x;
+}
+
+VECTOR Transform::GetUp(const CoordinateKind coord_kind)
+{
+	return math::ConvertRotationMatrixToAxes(GetMatrix(coord_kind)).y;
+}
+
+VECTOR Transform::GetForward(const CoordinateKind coord_kind)
+{
+	return math::ConvertRotationMatrixToAxes(GetMatrix(coord_kind)).z;
+}
 #pragma endregion

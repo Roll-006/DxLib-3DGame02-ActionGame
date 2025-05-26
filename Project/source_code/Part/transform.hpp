@@ -27,6 +27,10 @@ public:
 	[[nodiscard]] VECTOR GetPos				(const CoordinateKind coord_kind);
 	[[nodiscard]] MATRIX GetRotationMatrix	(const CoordinateKind coord_kind);
 	[[nodiscard]] VECTOR GetScale			(const CoordinateKind coord_kind);
+	[[nodiscard]] VECTOR GetRight			(const CoordinateKind coord_kind);
+	[[nodiscard]] VECTOR GetUp				(const CoordinateKind coord_kind);
+	[[nodiscard]] VECTOR GetForward			(const CoordinateKind coord_kind);
+
 
 	/// @brief 親がアタッチされているかを判定
 	[[nodiscard]] bool HasParent() { return m_parent_transform ? true : false; }
