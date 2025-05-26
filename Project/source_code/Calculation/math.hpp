@@ -6,8 +6,9 @@
 
 #include "../Concept/common_concepts.hpp"
 
-#include "quaternion.hpp"
 #include "axes.hpp"
+#include "matrix.hpp"
+#include "quaternion.hpp"
 
 #include "../Data/Kind/sort_kind.hpp"
 #include "../Data/IncludeList/vector.hpp"
@@ -82,7 +83,7 @@ namespace math
 	}
 
 	/// @brief クォータニオンから回転行列へ変換
-	[[nodiscard]] MATRIX ConvertQuaternionToRotationMatrix(const Quaternion& q);
+	[[nodiscard]] MATRIX ConvertQuaternionToRotationMatrix(const MATRIX& mat, const Quaternion& q);
 
 	/// @brief 回転行列からクォータニオンへ変換
 	/// @brief TODO : 検証が必要

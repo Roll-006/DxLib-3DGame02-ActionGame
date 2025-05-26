@@ -81,35 +81,10 @@ void Transform::SetPos(const CoordinateKind coord_kind, const VECTOR& pos)
 
 void Transform::SetRotation(const CoordinateKind coord_kind, const MATRIX& rotation_matrix)
 {
-	// ワールド座標
-	if (coord_kind == CoordinateKind::kWorld)
-	{
-		if (m_parent_transform)
-		{
-			m_local_matrix = MMult(rotation_matrix, MInverse(m_parent_transform->GetRotationMatrix(coord_kind)));
-			return;
-		}
-	}
+	const MATRIX prev_rot = MGetRotElem(GetMatrix(coord_kind));
 
-	// ローカル座標 / 親を持たないワールド座標
-	m_local_matrix = MMult(rotation_matrix, MGetIdent());
-}
-
-void Transform::SetRotation(const CoordinateKind coord_kind, const Axes& axes)
-{
-	// ワールド座標
-	if (coord_kind == CoordinateKind::kWorld)
-	{
-		if (m_parent_transform)
-		{
-			SetRotation(coord_kind, math::ConvertAxesToZXYRotationMatrix(axes,
-				math::ConvertRotationMatrixToAxes(m_parent_transform->GetRotationMatrix(coord_kind))));
-			return;
-		}
-	}
-
-	// ローカル座標 / 親を持たないワールド座標
-	SetRotation(coord_kind, math::ConvertAxesToZXYRotationMatrix(axes, axis::GetWorldAxes()));
+	m_local_matrix = MMult(m_local_matrix, MInverse(prev_rot));
+	m_local_matrix = MMult(m_local_matrix, rotation_matrix);
 }
 
 void Transform::SetScale(const CoordinateKind coord_kind, const VECTOR& scale)

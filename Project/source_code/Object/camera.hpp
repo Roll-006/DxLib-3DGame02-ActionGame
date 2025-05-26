@@ -38,8 +38,8 @@ private:
 	[[nodiscard]] VECTOR ApplyInvert(VECTOR& velocity);
 
 	/// @brief カメラの回転クォータニオンを取得
-	[[nodiscard]] Quaternion GetQuaternionFromPad  (Quaternion& rota_q, const VECTOR& x_axis);
-	[[nodiscard]] Quaternion GetQuaternionFromMouse(Quaternion& rota_q, const VECTOR& x_axis);
+	[[nodiscard]] Quaternion GetRotationFromPad  (Quaternion& rota_q, const VECTOR& x_axis);
+	[[nodiscard]] Quaternion GetRotationFromMouse(Quaternion& rota_q, const VECTOR& x_axis);
 
 	/// @brief ターゲットの座標を取得
 	[[nodiscard]] VECTOR GetTargetPos();
@@ -62,4 +62,5 @@ private:
 	bool   m_is_invert_vertical;		// 操作時に上下反転を行うかを判定
 	
 	VECTOR m_velocity;
+	Quaternion m_quaternion;
 };

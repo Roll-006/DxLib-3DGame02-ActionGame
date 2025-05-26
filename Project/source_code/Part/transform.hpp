@@ -21,7 +21,6 @@ public:
 	void SetPos		(const CoordinateKind coord_kind, const VECTOR&		pos);
 	void SetRotation(const CoordinateKind coord_kind, const MATRIX&		rotation_matrix);
 	void SetRotation(const CoordinateKind coord_kind, const Quaternion& quaternion);
-	void SetRotation(const CoordinateKind coord_kind, const Axes&		axes);
 	void SetScale	(const CoordinateKind coord_kind, const VECTOR&		scale);
 
 	[[nodiscard]] MATRIX GetMatrix			(const CoordinateKind coord_kind);

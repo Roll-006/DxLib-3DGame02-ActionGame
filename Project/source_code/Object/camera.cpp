@@ -6,7 +6,8 @@ Camera::Camera() :
 	m_move_speed			(0.0f),
 	m_distance_to_target	(kNormalDistance),
 	m_is_invert_horizontal	(false),
-	m_is_invert_vertical	(false)
+	m_is_invert_vertical	(false),
+	m_quaternion			(quat::GetIdentityQuaternion())
 {
 	//m_target_pos[TimeState::kCurrect] = m_target_pos[TimeState::kNext] = m_transform->GetPos(CoordinateKind::kLocal);
 
@@ -38,10 +39,12 @@ void Camera::Draw()const
 	DrawLine3D(v3d::GetZeroVector(), axis::GetWorldYAxis() * 10000, 0x00ff22);
 	DrawLine3D(v3d::GetZeroVector(), axis::GetWorldZAxis() * 10000, 0x0077ff);
 
-	//const Axes axes = math::ConvertRotationMatrixToAxes(m_transform->GetRotationMatrix(CoordinateKind::kWorld));
-	//DrawLine3D(v3d::GetZeroVector(), axes.x * 100, 0xff0000);
-	//DrawLine3D(v3d::GetZeroVector(), axes.y * 100, 0x00ff22);
-	//DrawLine3D(v3d::GetZeroVector(), axes.z * 100, 0x0077ff);
+	const Axes axes = math::ConvertRotationMatrixToAxes(m_transform->GetRotationMatrix(CoordinateKind::kWorld));
+	DrawLine3D(v3d::GetZeroVector(), axes.x * 100, 0xff0000);
+	DrawLine3D(v3d::GetZeroVector(), axes.y * 100, 0x00ff22);
+	DrawLine3D(v3d::GetZeroVector(), axes.z * 100, 0x0077ff);
+
+	matrix::Draw(m_transform->GetMatrix(CoordinateKind::kWorld), VGet(50, 0, 0));
 }
 
 void Camera::OnCollide(const CollideObjBase& check_hit_obj)
@@ -79,13 +82,20 @@ void Camera::Move()
 {
 	const Axes axes	  = math::GetLookTargetAxes(m_transform->GetPos(CoordinateKind::kWorld), GetTargetPos());
 	Quaternion rota_q = quat::GetIdentityQuaternion();
-	m_transform->SetRotation(CoordinateKind::kWorld, axes);
 
-	// ƒNƒH[ƒ^ƒjƒIƒ“‚ðŽæ“¾
-	rota_q = GetQuaternionFromPad  (rota_q, axes.x);
-	rota_q = GetQuaternionFromMouse(rota_q, axes.x);
+	// ‰ñ“]—Ê‚ðŽæ“¾
+	rota_q = GetRotationFromPad  (rota_q, axes.x);
+	rota_q = GetRotationFromMouse(rota_q, axes.x);
 
-	// ‰ñ“]Œã‚ÌÀ•W‚ð”½‰f
+	// ‰ñ“]‚ð”½‰f
+	m_quaternion *= rota_q;
+	MATRIX rota_m = math::ConvertQuaternionToRotationMatrix(m_transform->GetRotationMatrix(CoordinateKind::kWorld), m_quaternion);
+	if (rota_q != quat::GetIdentityQuaternion())
+	{
+		m_transform->SetRotation(CoordinateKind::kWorld, rota_m);
+	}
+
+	// À•W‚ð”½‰f
 	const VECTOR rotated_pos = math::GetRotatedPos(m_transform->GetPos(CoordinateKind::kLocal), rota_q);
 	m_transform->SetPos(CoordinateKind::kLocal, rotated_pos);
 }
@@ -98,7 +108,7 @@ VECTOR Camera::ApplyInvert(VECTOR& velocity)
 	return velocity;
 }
 
-Quaternion Camera::GetQuaternionFromPad(Quaternion& rota_q, const VECTOR& x_axis)
+Quaternion Camera::GetRotationFromPad(Quaternion& rota_q, const VECTOR& x_axis)
 {
 	if (InputChecker::GetInstance()->GetCurrentInputDevice() != DeviceKind::kPad) { return rota_q; }
 
@@ -128,7 +138,7 @@ Quaternion Camera::GetQuaternionFromPad(Quaternion& rota_q, const VECTOR& x_axis
 	return rota_q;
 }
 
-Quaternion Camera::GetQuaternionFromMouse(Quaternion& rota_q, const VECTOR& x_axis)
+Quaternion Camera::GetRotationFromMouse(Quaternion& rota_q, const VECTOR& x_axis)
 {
 	if (InputChecker::GetInstance()->GetCurrentInputDevice() != DeviceKind::kKeyboard) { return rota_q; }
 

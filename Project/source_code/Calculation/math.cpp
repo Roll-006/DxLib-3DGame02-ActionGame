@@ -2,27 +2,27 @@
 #include "math.hpp"
 
 #pragma region 変換
-MATRIX math::ConvertQuaternionToRotationMatrix(const Quaternion& q)
+MATRIX math::ConvertQuaternionToRotationMatrix(const MATRIX& mat, const Quaternion& q)
 {
-	MATRIX mat = MGetIdent();
+    MATRIX m = MTranspose(mat);
 
 	//X軸
-	mat.m[0][0] = 1.0f - 2.0f * q.y * q.y - 2.0f * q.z * q.z;
-	mat.m[0][1] =        2.0f * q.x * q.y + 2.0f * q.w * q.z;
-	mat.m[0][2] =        2.0f * q.x * q.z - 2.0f * q.w * q.y;
+	m.m[0][0] = 1.0f - 2.0f * q.y * q.y - 2.0f * q.z * q.z;
+	m.m[0][1] =        2.0f * q.x * q.y + 2.0f * q.w * q.z;
+	m.m[0][2] =        2.0f * q.x * q.z - 2.0f * q.w * q.y;
 
 	//Y軸
-	mat.m[1][0] =        2.0f * q.x * q.y - 2.0f * q.w * q.z;
-	mat.m[1][1] = 1.0f - 2.0f * q.x * q.x - 2.0f * q.z * q.z;
-	mat.m[1][2] =        2.0f * q.y * q.z + 2.0f * q.w * q.x;
+	m.m[1][0] =        2.0f * q.x * q.y - 2.0f * q.w * q.z;
+	m.m[1][1] = 1.0f - 2.0f * q.x * q.x - 2.0f * q.z * q.z;
+	m.m[1][2] =        2.0f * q.y * q.z + 2.0f * q.w * q.x;
 
 	//Z軸
-	mat.m[2][0] =        2.0f * q.x * q.z + 2.0f * q.w * q.y;
-	mat.m[2][1] =        2.0f * q.y * q.z - 2.0f * q.w * q.x;
-	mat.m[2][2] = 1.0f - 2.0f * q.x * q.x - 2.0f * q.y * q.y;
+	m.m[2][0] =        2.0f * q.x * q.z + 2.0f * q.w * q.y;
+	m.m[2][1] =        2.0f * q.y * q.z - 2.0f * q.w * q.x;
+	m.m[2][2] = 1.0f - 2.0f * q.x * q.x - 2.0f * q.y * q.y;
 
 	// 計算後に転置し元に戻す
-	return MTranspose(mat);
+	return MGetRotElem(MTranspose(m));
 }
 
 Quaternion math::ConvertRotationMatrixToQuaternion(const MATRIX& mat)
@@ -91,17 +91,19 @@ MATRIX math::ConvertAxesToZXYRotationMatrix(const Axes& axes, const Axes& parent
     const float angle_y = GetAngleBetweenTwoVector(parent_axes.y, axes.y);
     const float angle_z = GetAngleBetweenTwoVector(parent_axes.z, axes.z);
 
-    const MATRIX matrix_x = MGetRotAxis(axes.x, angle_x);
-    const MATRIX matrix_y = MGetRotAxis(axes.y, angle_y);
-    const MATRIX matrix_z = MGetRotAxis(axes.z, angle_z);
-
-    return MATRIX(MMult(MMult(matrix_z, matrix_x), matrix_y));
+    MATRIX mat = MGetIdent();
+    CreateRotationZXYMatrix(&mat, angle_x, angle_y, angle_z);
+    return mat;
 }
+
 Axes math::ConvertRotationMatrixToAxes(const MATRIX& mat)
 {
-    const VECTOR axis_x = VGet(mat.m[0][0], mat.m[1][0], mat.m[2][0]);
-    const VECTOR axis_y = VGet(mat.m[0][1], mat.m[1][1], mat.m[2][1]);
-    const VECTOR axis_z = VGet(mat.m[0][2], mat.m[1][2], mat.m[2][2]);
+    const MATRIX m = MGetRotElem(mat);
+
+    VECTOR axis_x = VTransform(axis::GetWorldXAxis(), m);
+    VECTOR axis_y = VTransform(axis::GetWorldYAxis(), m);
+    VECTOR axis_z = VTransform(axis::GetWorldZAxis(), m);
+
     return Axes(axis_x, axis_y, axis_z);
 }
 #pragma endregion
