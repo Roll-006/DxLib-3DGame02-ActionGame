@@ -81,10 +81,7 @@ void Transform::SetPos(const CoordinateKind coord_kind, const VECTOR& pos)
 
 void Transform::SetRotation(const CoordinateKind coord_kind, const MATRIX& rotation_matrix)
 {
-	const MATRIX prev_rot = MGetRotElem(GetMatrix(coord_kind));
-
-	m_local_matrix = MMult(m_local_matrix, MInverse(prev_rot));
-	m_local_matrix = MMult(m_local_matrix, rotation_matrix);
+	m_local_matrix = MMult(MMult(rotation_matrix, MInverse(GetRotationMatrix(coord_kind))), m_local_matrix);
 }
 
 void Transform::SetScale(const CoordinateKind coord_kind, const VECTOR& scale)
