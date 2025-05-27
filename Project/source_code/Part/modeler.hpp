@@ -17,7 +17,7 @@ public:
 
 private:
 	int   m_model_handle;
-	float m_opacity_rate;	// モデルの不透明度(0.0f～1.0f)
+	float m_opacity;		// モデルの不透明度(0.0f～1.0f)
 
 	std::shared_ptr<Transform> m_transform;
 };

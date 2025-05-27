@@ -20,7 +20,7 @@ public:
 
 	void SetPos		(const CoordinateKind coord_kind, const VECTOR&		pos);
 	void SetRotation(const CoordinateKind coord_kind, const MATRIX&		rotation_matrix);
-	void SetRotation(const CoordinateKind coord_kind, const Quaternion& quaternion);
+    //void SetRotation(const CoordinateKind coord_kind, const Quaternion& quaternion);
 	void SetScale	(const CoordinateKind coord_kind, const VECTOR&		scale);
 
 	[[nodiscard]] MATRIX GetMatrix			(const CoordinateKind coord_kind);
@@ -30,7 +30,7 @@ public:
 	[[nodiscard]] VECTOR GetRight			(const CoordinateKind coord_kind);
 	[[nodiscard]] VECTOR GetUp				(const CoordinateKind coord_kind);
 	[[nodiscard]] VECTOR GetForward			(const CoordinateKind coord_kind);
-
+	[[nodiscard]] VECTOR GetEulerAngles		(const CoordinateKind coord_kind);
 
 	/// @brief 親がアタッチされているかを判定
 	[[nodiscard]] bool HasParent() { return m_parent_transform ? true : false; }

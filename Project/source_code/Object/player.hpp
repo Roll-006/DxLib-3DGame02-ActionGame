@@ -53,4 +53,5 @@ private:
 	VECTOR m_velocity;
 	float  m_move_speed;
 	bool   m_is_move;
+	bool   m_is_run;
 };

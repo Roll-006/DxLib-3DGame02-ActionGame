@@ -14,12 +14,12 @@ public:
 
 	/// @brief 衝突判定を行うオブジェクトを追加
 	void AddCollideObj(std::shared_ptr<PhysicalObjBase> collide_obj);
-	/// @brief 衝突判定を行うオブジェクトを解除
+	/// @brief 衝突判定を行うオブジェクトから除外
 	void RemoveCollideObj(std::shared_ptr<PhysicalObjBase> collide_obj);
 
 	/// @brief 衝突判定を無視するオブジェクトを追加
 	void AddIgnoreObj(std::string obj_name);
-	/// @brief 衝突判定を無視するオブジェクトを解除
+	/// @brief 衝突判定を無視するオブジェクトから除外
 	void RemoveIgnoreObj(std::string obj_name);
 
 private:
@@ -45,7 +45,7 @@ private:
 
 private:
 	std::list<std::shared_ptr<PhysicalObjBase>> m_collide_objects;	// 衝突判定を行うオブジェクト
-	std::list<std::string> m_ignore_object_name;					// 衝突判定を無視するオブジェクト
+	std::list<std::string> m_ignore_obj_name;						// 衝突判定を無視するオブジェクト
 
 	friend SingletonBase<CollisionManager>;
 };

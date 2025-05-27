@@ -8,7 +8,8 @@ Player::Player(std::shared_ptr<Camera> camera) :
 	m_dir			(v3d::GetZeroVector()),
 	m_velocity		(v3d::GetZeroVector()),
 	m_move_speed	(0.0f),
-	m_is_move		(false)
+	m_is_move		(false),
+	m_is_run		(false)
 {
 	m_modeler	= std::make_shared<Modeler> (GetTransform(), ModelPath.CHARA_01);
 	m_animator	= std::make_shared<Animator>(m_modeler, 3.0f);

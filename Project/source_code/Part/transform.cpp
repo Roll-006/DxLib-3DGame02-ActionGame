@@ -2,7 +2,8 @@
 #include "../Manager/obj_manager.hpp"
 
 Transform::Transform(const VECTOR& local_pos) :
-	m_local_matrix(MGetIdent())
+	m_local_matrix		(MGetIdent()),
+	m_parent_transform	(nullptr)
 {
 	m_local_matrix.m[3][0] = local_pos.x;
 	m_local_matrix.m[3][1] = local_pos.y;
@@ -10,7 +11,8 @@ Transform::Transform(const VECTOR& local_pos) :
 }
 
 Transform::Transform() :
-	m_local_matrix(MGetIdent())
+	m_local_matrix		(MGetIdent()),
+	m_parent_transform	(nullptr)
 {
 	// 処理なし
 }
@@ -61,22 +63,19 @@ void Transform::DetachParent()
 #pragma region Setter
 void Transform::SetPos(const CoordinateKind coord_kind, const VECTOR& pos)
 {
-	// ワールド座標
+	VECTOR parent_pos = v3d::GetZeroVector();
+
 	if (coord_kind == CoordinateKind::kWorld)
 	{
 		if (m_parent_transform)
 		{
-			m_local_matrix.m[3][0] = pos.x - m_parent_transform->GetPos(CoordinateKind::kWorld).x;
-			m_local_matrix.m[3][1] = pos.y - m_parent_transform->GetPos(CoordinateKind::kWorld).y;
-			m_local_matrix.m[3][2] = pos.z - m_parent_transform->GetPos(CoordinateKind::kWorld).z;
-			return;
+			parent_pos = m_parent_transform->GetPos(CoordinateKind::kWorld);
 		}
 	}
 
-	// ローカル座標 / 親を持たないワールド座標
-	m_local_matrix.m[3][0] = pos.x;
-	m_local_matrix.m[3][1] = pos.y;
-	m_local_matrix.m[3][2] = pos.z;
+	m_local_matrix.m[3][0] = pos.x - parent_pos.x;
+	m_local_matrix.m[3][1] = pos.y - parent_pos.y;
+	m_local_matrix.m[3][2] = pos.z - parent_pos.z;
 }
 
 void Transform::SetRotation(const CoordinateKind coord_kind, const MATRIX& rotation_matrix)
@@ -137,5 +136,10 @@ VECTOR Transform::GetUp(const CoordinateKind coord_kind)
 VECTOR Transform::GetForward(const CoordinateKind coord_kind)
 {
 	return math::ConvertRotationMatrixToAxes(GetMatrix(coord_kind)).z;
+}
+
+VECTOR Transform::GetEulerAngles(const CoordinateKind coord_kind)
+{
+	return VECTOR();
 }
 #pragma endregion

@@ -12,9 +12,9 @@ CollisionManager::~CollisionManager()
 
 void CollisionManager::Update()
 {
-	std::vector<CollideObjPairData> collide_obj_pair = MakeHitObjPairs();
+	const auto collide_obj_pair = MakeHitObjPairs();
 
-	for (auto& obj : collide_obj_pair)
+	for (const auto& obj : collide_obj_pair)
 	{
 		obj.owner_obj->OnCollide(*obj.target_obj);
 	}
@@ -40,17 +40,17 @@ void CollisionManager::RemoveCollideObj(std::shared_ptr<PhysicalObjBase> collide
 
 void CollisionManager::AddIgnoreObj(std::string obj_name)
 {
-	if (!std::count(m_ignore_object_name.begin(), m_ignore_object_name.end(), obj_name))
+	if (!std::count(m_ignore_obj_name.begin(), m_ignore_obj_name.end(), obj_name))
 	{
-		m_ignore_object_name.emplace_back(obj_name);
+		m_ignore_obj_name.emplace_back(obj_name);
 	}
 }
 
 void CollisionManager::RemoveIgnoreObj(std::string obj_name)
 {
-	if (std::count(m_ignore_object_name.begin(), m_ignore_object_name.end(), obj_name))
+	if (std::count(m_ignore_obj_name.begin(), m_ignore_obj_name.end(), obj_name))
 	{
-		m_ignore_object_name.remove(obj_name);
+		m_ignore_obj_name.remove(obj_name);
 	}
 }
 #pragma endregion

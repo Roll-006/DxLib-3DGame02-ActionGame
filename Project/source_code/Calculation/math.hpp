@@ -94,6 +94,9 @@ namespace math
 	/// @param parent_axes 基準とする親XYZ軸
 	[[nodiscard]] MATRIX ConvertAxesToZXYRotationMatrix(const Axes& axes, const Axes& parent_axes);
 
+	/// @brief 回転行列からオイラー角へ変換
+	[[nodiscard]] VECTOR ConvertRotationMatrixToEulerAngles(const MATRIX& mat, const Axes& parent_axes);
+
 	/// @brief 回転行列からXYZ軸へ変換
 	[[nodiscard]] Axes ConvertRotationMatrixToAxes(const MATRIX& mat);
 	#pragma endregion

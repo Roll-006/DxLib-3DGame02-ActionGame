@@ -55,7 +55,7 @@ private:
 	static constexpr float kMinVerticalAngle		= -70.0f;
 	static constexpr float kNormalDistance			= 400.0f;
 	static constexpr float kSpeedWithPad			= 2.5f;
-	static constexpr float kSpeedRateWidhMouse		= 0.1f;
+	static constexpr float kSpeedRateWidhMouse		= 0.05;
 	static constexpr float kInitAngleTolerance		= 0.01f;		// 視点リセットが完了したと判定させる許容値
 
 	std::shared_ptr<Transform> m_target_transform;

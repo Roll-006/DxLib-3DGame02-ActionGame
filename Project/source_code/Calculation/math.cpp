@@ -96,15 +96,27 @@ MATRIX math::ConvertAxesToZXYRotationMatrix(const Axes& axes, const Axes& parent
     return mat;
 }
 
+VECTOR math::ConvertRotationMatrixToEulerAngles(const MATRIX& mat, const Axes& parent_axes)
+{
+    const Axes axes = ConvertRotationMatrixToAxes(mat);
+
+    // 親を基準としたなす角を取得
+    const float angle_x = GetAngleBetweenTwoVector(parent_axes.x, axes.x);
+    const float angle_y = GetAngleBetweenTwoVector(parent_axes.y, axes.y);
+    const float angle_z = GetAngleBetweenTwoVector(parent_axes.z, axes.z);
+
+    return VECTOR(angle_x, angle_y, angle_z);
+}
+
 Axes math::ConvertRotationMatrixToAxes(const MATRIX& mat)
 {
     const MATRIX m = MGetRotElem(mat);
 
-    VECTOR axis_x = VTransform(axis::GetWorldXAxis(), m);
-    VECTOR axis_y = VTransform(axis::GetWorldYAxis(), m);
-    VECTOR axis_z = VTransform(axis::GetWorldZAxis(), m);
+    const VECTOR x_axis = VTransform(VGet(1, 0, 0), m);
+    const VECTOR y_axis = VTransform(axis::GetWorldYAxis(), m);
+    const VECTOR z_axis = VTransform(axis::GetWorldZAxis(), m);
 
-    return Axes(axis_x, axis_y, axis_z);
+    return Axes(x_axis, y_axis, z_axis);
 }
 #pragma endregion
 

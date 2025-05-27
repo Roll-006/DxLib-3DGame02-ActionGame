@@ -9,6 +9,13 @@ struct Axes
 	VECTOR z;
 };
 
+struct XYZAxis
+{
+	VECTOR x;
+	VECTOR y;
+	VECTOR z;
+};
+
 namespace axis
 {
 	[[nodiscard]] inline VECTOR GetWorldXAxis() { return VGet(1.0f, 0.0f, 0.0f); }
