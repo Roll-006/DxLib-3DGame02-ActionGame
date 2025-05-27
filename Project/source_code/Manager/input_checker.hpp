@@ -28,15 +28,12 @@ public:
 public:
 	void Update();
 
-	void InitMousePos();
+	void LockCursor();
 	void ActivateCursor()	{ SetMouseDispFlag(TRUE); }
 	void DeactivateCursor() { SetMouseDispFlag(FALSE); }
 
-	/// @brief マウスカーソルを画面中央に固定する
-	/// @brief FIXME : ロックするとカメラが動かなくなる現象発生中
-	void LockCursorToCenter() { m_is_lock_mouse_pos = true; }
-	/// @brief マウスカーソルの固定化を解除する
-	void UnlockCursor()		  { m_is_lock_mouse_pos = false; }
+	/// @brief マウスカーソルを画面中央に固定するかを設定
+	void SetCursorToCenter(const bool is_lock) { m_is_lock_mouse_pos = is_lock; }
 
 	#pragma region マウス情報
 	[[nodiscard]] Vector2D<int>   GetMousePos	   (const TimeState time_state) const { return m_mouse_data.at(time_state).pos; }

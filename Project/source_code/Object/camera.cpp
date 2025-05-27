@@ -43,7 +43,7 @@ void Camera::Draw() const
 	DrawLine3D(v3d::GetZeroVector(), axes.y * 100, 0x00ff22);
 	DrawLine3D(v3d::GetZeroVector(), axes.z * 100, 0x0077ff);
 
-	matrix::Draw(m_transform->GetMatrix(CoordinateKind::kWorld), VGet(50, 0, 0));
+	matrix::Draw(m_transform->GetMatrix(CoordinateKind::kWorld), VGet(0, 0, 0));
 }
 
 void Camera::OnCollide(const PhysicalObjBase& check_hit_obj)

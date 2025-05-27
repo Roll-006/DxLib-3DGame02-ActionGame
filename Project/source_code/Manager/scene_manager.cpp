@@ -29,6 +29,7 @@ void SceneObjManager::Update()
 	}
 
 	CollisionManager::GetInstance()->Update();
+	InputChecker::GetInstance()->LockCursor();
 }
 
 void SceneObjManager::Draw() const
