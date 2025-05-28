@@ -17,7 +17,7 @@ public:
 
     void SetPos(const VECTOR& pos) { m_pos = pos; }
 
-    [[nodiscard]] VECTOR GetPos()   const { return m_pos; }
+    [[nodiscard]] VECTOR GetPos()    const { return m_pos; }
     [[nodiscard]] float  GetRadius() const { return m_radius; }
 
 private:

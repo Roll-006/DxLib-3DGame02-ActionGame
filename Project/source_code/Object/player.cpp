@@ -76,8 +76,6 @@ void Player::OnGravity()
 
 void Player::Move()
 {
-	m_is_move = false;
-
 	// 各方向の移動
 	CalcHorizontalVelocity();
 	CalcVerticalVelocity();
@@ -88,9 +86,11 @@ void Player::Move()
 		//m_transform->SetRotation(CoordinateKind::kWorld, m_dir);
 		m_transform->SetPos		(CoordinateKind::kWorld, m_transform->GetPos(CoordinateKind::kWorld) + m_velocity);
 	}
+}
 
-	Sphere sp(m_transform->GetPos(CoordinateKind::kWorld), 40);
-	sp.Draw(true, 0, 0xffffff);
+void Player::JudgeRun()
+{
+
 }
 
 void Player::CalcHorizontalVelocity()
@@ -101,44 +101,21 @@ void Player::CalcHorizontalVelocity()
 	forwrd.y = 0.0f;
 	forwrd = v3d::GetNormalizedVector(forwrd);
 
-	// 各方向のパラメーターを取得
-	const int forward_param		= InputChecker::GetInstance()->GetInputParameter(pad::StickKind::kLSUp);
-	const int backward_param	= InputChecker::GetInstance()->GetInputParameter(pad::StickKind::kLSDown);
-	const int left_param		= InputChecker::GetInstance()->GetInputParameter(pad::StickKind::kLSLeft);
-	const int right_param		= InputChecker::GetInstance()->GetInputParameter(pad::StickKind::kLSRight);
-
-	// 移動方向を取得
-	VECTOR move_velocity = v3d::GetZeroVector();
-	if (forward_param)
+	// 採用するvelocityを判定
+	VECTOR velocity = v3d::GetZeroVector();
+	if (InputChecker::GetInstance()->GetCurrentInputDevice() == DeviceKind::kPad)
 	{
-		move_velocity += forwrd * (forward_param  - InputChecker::kStickDeadZone);
-		m_is_move = true;
+		velocity = GetVelocityFromPad  (forwrd, right);
 	}
-	if (backward_param)
+	if (InputChecker::GetInstance()->GetCurrentInputDevice() == DeviceKind::kKeyboard)
 	{
-		move_velocity += forwrd * (backward_param + InputChecker::kStickDeadZone);
-		m_is_move = true;
+		velocity = GetVelocityFromMouse(forwrd, right);
 	}
-	if (left_param)
-	{
-		move_velocity += right  * (left_param     + InputChecker::kStickDeadZone);
-		m_is_move = true;
-	}
-	if (right_param)
-	{
-		move_velocity += right  * (right_param    - InputChecker::kStickDeadZone);
-		m_is_move = true;
-	}
-
-	DrawFormatString(0, 300, 0xffffff, "forward_param  : %d", forward_param);
-	DrawFormatString(0, 320, 0xffffff, "backward_param : %d", backward_param);
-	DrawFormatString(0, 340, 0xffffff, "left_param     : %d", left_param);
-	DrawFormatString(0, 360, 0xffffff, "right_param    : %d", right_param);
 
 	// 移動速度を計算
-	CalcMoveSpeed(VSize(move_velocity));
+	CalcMoveSpeed(VSize(velocity));
 
-	if (m_is_move){ m_dir = v3d::GetNormalizedVector(move_velocity); }
+	if (m_is_move){ m_dir = v3d::GetNormalizedVector(velocity); }
 }
 
 void Player::CalcVerticalVelocity()
@@ -155,6 +132,7 @@ void Player::CalcMoveSpeed(const float input_slope)
 		return;
 	}
 
+	// 歩き処理
 	if (input_slope <= kWalkStickSlopeLimit - InputChecker::kStickDeadZone)
 	{
 		// 速い状態から歩き状態に移行した場合、急速に減速させる
@@ -165,6 +143,12 @@ void Player::CalcMoveSpeed(const float input_slope)
 		return;
 	}
 
+	// ダッシュ処理
+	{
+
+	}
+
+	// ジョギング処理
 	if (input_slope <= kJogStickSlopeLimit  - InputChecker::kStickDeadZone)
 	{
 		Acceleration(kJogSpeed);
@@ -172,9 +156,43 @@ void Player::CalcMoveSpeed(const float input_slope)
 		return;
 	}
 
+	// ダッシュ処理
 	// 遅い状態からダッシュ状態に移行した場合、急速に加速させる
 	if (m_move_speed < kJogSpeed) { m_move_speed = kJogSpeed; }
 	Acceleration(kRunSpeed);
+}
+
+VECTOR Player::GetVelocityFromPad(const VECTOR& forwrd, const VECTOR& right)
+{
+	// 各方向のパラメーターを取得
+	const int forward_param		= InputChecker::GetInstance()->GetInputParameter(pad::StickKind::kLSUp);
+	const int backward_param	= InputChecker::GetInstance()->GetInputParameter(pad::StickKind::kLSDown);
+	const int left_param		= InputChecker::GetInstance()->GetInputParameter(pad::StickKind::kLSLeft);
+	const int right_param		= InputChecker::GetInstance()->GetInputParameter(pad::StickKind::kLSRight);
+
+	// 移動方向を取得
+	VECTOR velocity = v3d::GetZeroVector();
+	if (forward_param)	{ velocity += forwrd * (forward_param  - InputChecker::kStickDeadZone); }
+	if (backward_param) { velocity += forwrd * (backward_param + InputChecker::kStickDeadZone); }
+	if (left_param)		{ velocity += right  * (left_param     + InputChecker::kStickDeadZone); }
+	if (right_param)	{ velocity += right  * (right_param    - InputChecker::kStickDeadZone); }
+
+	m_is_move = velocity != v3d::GetZeroVector() ? true : false;
+	return velocity;
+}
+
+VECTOR Player::GetVelocityFromMouse(const VECTOR& forwrd, const VECTOR& right)
+{
+	// 移動方向を取得
+	VECTOR dir = v3d::GetZeroVector();
+	if (InputChecker::GetInstance()->IsInput(KEY_INPUT_W)) { dir += forwrd; }
+	if (InputChecker::GetInstance()->IsInput(KEY_INPUT_S)) { dir -= forwrd; }
+	if (InputChecker::GetInstance()->IsInput(KEY_INPUT_A)) { dir -= right; }
+	if (InputChecker::GetInstance()->IsInput(KEY_INPUT_D)) { dir += right; }
+
+	m_is_move = dir != v3d::GetZeroVector() ? true : false;
+	float speed = math::GetAverageValue<float>(kWalkStickSlopeLimit, kJogStickSlopeLimit) - InputChecker::kStickDeadZone;
+	return v3d::GetNormalizedVector(dir) * speed;
 }
 
 void Player::Acceleration(const float destination_speed)
@@ -197,4 +215,9 @@ void Player::Deceleration(const float destination_speed)
 	{
 		m_move_speed = destination_speed;
 	}
+}
+
+void Player::ConvertMouseVelocityToPadVelocity()
+{
+
 }

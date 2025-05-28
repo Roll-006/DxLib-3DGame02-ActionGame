@@ -43,6 +43,7 @@ public:
 
 
 	/// @brief 入力判定
+	/// @brief キー入力以外はenum classの定義を使用する必要あり
 	template<input_concepts::InputT InputT>
 	[[nodiscard]] bool IsInput(const InputT& input_code) const
 	{
@@ -91,6 +92,7 @@ public:
 	}
 
 	/// @brief 入力パラメータを取得
+	/// @brief キー入力以外はenum classの定義を使用する必要あり
 	template<input_concepts::ParameterT InputT>
 	[[nodiscard]] int GetInputParameter(const InputT& input_code) const
 	{
@@ -133,6 +135,7 @@ public:
 	}
 
 	/// @brief 入力時間を取得
+	/// @brief キー入力以外はenum classの定義を使用する必要あり
 	template<input_concepts::InputT InputT>
 	[[nodiscard]] float GetInputTime(const InputT& input_code, const TimeState time_state)
 	{
@@ -156,6 +159,7 @@ public:
 	}
 
 	/// @brief 入力状態を取得
+	/// @brief キー入力以外はenum classの定義を使用する必要あり
 	template<input_concepts::InputT InputT>
 	[[nodiscard]] InputState GetInputState(const InputT& input_code)
 	{

@@ -27,14 +27,23 @@ public:
 private:
 	void Move();
 
+	/// @brief 走るかを判定
+	void JudgeRun();
+
 	void CalcHorizontalVelocity();
 	void CalcVerticalVelocity();
 	void CalcMoveSpeed(const float input_slope);
+
+	// 入力方式に対応した速度ベクトルを取得
+	[[nodiscard]] VECTOR GetVelocityFromPad	 (const VECTOR& forwrd, const VECTOR& right);
+	[[nodiscard]] VECTOR GetVelocityFromMouse(const VECTOR& forwrd, const VECTOR& right);
 
 	/// @brief 加速処理
 	void Acceleration(const float destination_speed);
 	/// @brief 減速処理
 	void Deceleration(const float destination_speed);
+
+	void ConvertMouseVelocityToPadVelocity();
 
 private:
 	static constexpr float kWalkSpeed			= 10.0f;

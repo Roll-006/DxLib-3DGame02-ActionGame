@@ -264,6 +264,7 @@ VECTOR math::GetRotatedPos(const VECTOR& pos, const Quaternion& rotate_q)
 {
 	// 参考URL : [ https://zenn.dev/mebiusbox/books/132b654aa02124/viewer/2966c7 ]
 
+
 	const Quaternion q_pos(pos.x, pos.y, pos.z, 0.0f);
 	const Quaternion n_rotate_q = quat::GetNormalizedQuaternion(rotate_q);
 	const Quaternion totated_q = n_rotate_q * q_pos * quat::GetInverseQuaternion(n_rotate_q);

@@ -91,13 +91,13 @@ void Transform::SetRotation(const CoordinateKind coord_kind, const VECTOR& dir)
 
 void Transform::SetRotation(const CoordinateKind coord_kind, const Axes& axes)
 {
-	//if (coord_kind == CoordinateKind::kLocal)
-	//{
-	//	if (m_parent_transform)
-	//	{
-	//		SetRotation(coord_kind, math::ConvertAxesToZXYRotationMatrix(axes, m_parent_transform->GetAxes(coord_kind)));
-	//	}
-	//}
+	if (coord_kind == CoordinateKind::kLocal)
+	{
+		if (m_parent_transform)
+		{
+			SetRotation(coord_kind, math::ConvertAxesToZXYRotationMatrix(axes, m_parent_transform->GetAxes(coord_kind)));
+		}
+	}
 	SetRotation(coord_kind, math::ConvertAxesToZXYRotationMatrix(axes, axis::GetWorldAxes()));
 }
 

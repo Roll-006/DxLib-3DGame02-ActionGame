@@ -141,14 +141,17 @@ void InputChecker::CheckInputAll()
 
 void InputChecker::ShiftDataCureentToPrev()
 {
+	// 入力情報のシフト
 	m_mouse_data.at(TimeState::kPrev) = m_mouse_data.at(TimeState::kCurrent);
 
 	for (const auto& [current_input_k, current_input_n, current_state_t, current_data] : m_input_data)
 	{
+		// 1フレーム前の情報であった場合はスキップ
 		if (current_state_t == TimeState::kPrev) { continue; }
 
 		for (auto& [prev_input_k, prev_input_n, prev_state_t, prev_data] : m_input_data)
 		{
+			// 現在のフレームの情報であった場合はスキップ
 			if (prev_state_t == TimeState::kCurrent) { continue; }
 
 			if (prev_input_k == current_input_k && prev_input_n == current_input_n)
