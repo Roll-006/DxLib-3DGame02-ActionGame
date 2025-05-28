@@ -37,10 +37,10 @@ private:
 	void Deceleration(const float destination_speed);
 
 private:
-	static constexpr float kWalkSpeed			= 50.0f;
-	static constexpr float kJogSpeed			= 250.0f;
-	static constexpr float kRunSpeed			= 450.0f;
-	static constexpr float kAcceleration		= 300.0f;	// 加速度(減速度も共通)
+	static constexpr float kWalkSpeed			= 10.0f;
+	static constexpr float kJogSpeed			= 30.0f;
+	static constexpr float kRunSpeed			= 60.0f;
+	static constexpr float kAcceleration		= 5.0f;		// 加速度(減速度も共通)
 	static constexpr int   kWalkStickSlopeLimit	= 15000;	// 歩き状態とするスティック傾きの上限
 	static constexpr int   kJogStickSlopeLimit	= 20000;	// ジョギング状態とするスティック傾きの上限
 

@@ -85,27 +85,72 @@ Quaternion math::ConvertRotationMatrixToQuaternion(const MATRIX& mat)
 	return ret_q;
 }
 
-MATRIX math::ConvertAxesToZXYRotationMatrix(const Axes& axes, const Axes& parent_axes)
+MATRIX math::ConvertAxesToXYZRotationMatrix(const Axes& axes, const Axes& parent_axes)
 {
-    const float angle_x = GetAngleBetweenTwoVector(parent_axes.x, axes.x);
-    const float angle_y = GetAngleBetweenTwoVector(parent_axes.y, axes.y);
-    const float angle_z = GetAngleBetweenTwoVector(parent_axes.z, axes.z);
+    const VECTOR angle = ConvertAxesToEulerAngles(parent_axes, axes);
 
     MATRIX mat = MGetIdent();
-    CreateRotationZXYMatrix(&mat, angle_x, angle_y, angle_z);
+    CreateRotationXYZMatrix(&mat, angle.x, angle.y, angle.z);
     return mat;
 }
 
-VECTOR math::ConvertRotationMatrixToEulerAngles(const MATRIX& mat, const Axes& parent_axes)
+MATRIX math::ConvertAxesToXZYRotationMatrix(const Axes& axes, const Axes& parent_axes)
 {
-    const Axes axes = ConvertRotationMatrixToAxes(mat);
+    const VECTOR angle = ConvertAxesToEulerAngles(parent_axes, axes);
 
-    // 親を基準としたなす角を取得
+    MATRIX mat = MGetIdent();
+    CreateRotationXZYMatrix(&mat, angle.x, angle.y, angle.z);
+    return mat;
+}
+
+MATRIX math::ConvertAxesToYXZRotationMatrix(const Axes& axes, const Axes& parent_axes)
+{
+    const VECTOR angle = ConvertAxesToEulerAngles(parent_axes, axes);
+
+    MATRIX mat = MGetIdent();
+    CreateRotationYXZMatrix(&mat, angle.x, angle.y, angle.z);
+    return mat;
+}
+
+MATRIX math::ConvertAxesToYZXRotationMatrix(const Axes& axes, const Axes& parent_axes)
+{
+    const VECTOR angle = ConvertAxesToEulerAngles(parent_axes, axes);
+
+    MATRIX mat = MGetIdent();
+    CreateRotationYZXMatrix(&mat, angle.x, angle.y, angle.z);
+    return mat;
+}
+
+MATRIX math::ConvertAxesToZXYRotationMatrix(const Axes& axes, const Axes& parent_axes)
+{
+    const VECTOR angle = ConvertAxesToEulerAngles(axes, parent_axes);
+
+    MATRIX mat = MGetIdent();
+    CreateRotationZXYMatrix(&mat, angle.x, angle.y, angle.z);
+    return mat;
+}
+
+MATRIX math::ConvertAxesToZYXRotationMatrix(const Axes& axes, const Axes& parent_axes)
+{
+    const VECTOR angle = ConvertAxesToEulerAngles(parent_axes, axes);
+
+    MATRIX mat = MGetIdent();
+    CreateRotationZYXMatrix(&mat, angle.x, angle.y, angle.z);
+    return mat;
+}
+
+VECTOR math::ConvertAxesToEulerAngles(const Axes& axes, const Axes& parent_axes)
+{
     const float angle_x = GetAngleBetweenTwoVector(parent_axes.x, axes.x);
     const float angle_y = GetAngleBetweenTwoVector(parent_axes.y, axes.y);
     const float angle_z = GetAngleBetweenTwoVector(parent_axes.z, axes.z);
 
     return VECTOR(angle_x, angle_y, angle_z);
+}
+
+VECTOR math::ConvertRotationMatrixToEulerAngles(const MATRIX& mat, const Axes& parent_axes)
+{
+    return ConvertAxesToEulerAngles(parent_axes, ConvertRotationMatrixToAxes(mat));
 }
 
 Axes math::ConvertRotationMatrixToAxes(const MATRIX& mat)
@@ -235,10 +280,10 @@ VECTOR math::GetYawRotateVector(const VECTOR& v)
     return VGet(0.0f, GetYaw(v), 0.0f);
 }
 
-Axes math::GetLookTargetAxes(const VECTOR& pos, const VECTOR& target_pos)
+Axes math::GetAxes(const VECTOR& dir)
 {
-    // 座標からターゲットまでのdirectionを基準として各軸を取得
-    const VECTOR local_dir_z = v3d::GetNormalizedVector(target_pos - pos);
+    // directionを基準として各軸を取得
+    const VECTOR local_dir_z = v3d::GetNormalizedVector(dir);
     const VECTOR local_dir_x = math::GetNormalVector(axis::GetWorldYAxis(), local_dir_z);
     const VECTOR local_dir_y = math::GetNormalVector(local_dir_z, local_dir_x);
 

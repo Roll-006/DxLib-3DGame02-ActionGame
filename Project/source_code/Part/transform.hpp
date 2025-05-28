@@ -18,22 +18,26 @@ public:
 	void AttachParent(const std::string& parent_obj_name);
 	void DetachParent();
 
-	void SetPos		(const CoordinateKind coord_kind, const VECTOR&		pos);
-	void SetRotation(const CoordinateKind coord_kind, const MATRIX&		rotation_matrix);
-    //void SetRotation(const CoordinateKind coord_kind, const Quaternion& quaternion);
-	void SetScale	(const CoordinateKind coord_kind, const VECTOR&		scale);
+	void SetPos		(const CoordinateKind coord_kind, const VECTOR&	pos);
+	void SetRotation(const CoordinateKind coord_kind, const MATRIX&	rotation_matrix);
+	void SetRotation(const CoordinateKind coord_kind, const VECTOR&	dir);
+	void SetRotation(const CoordinateKind coord_kind, const Axes&	axes);
+	void SetScale	(const CoordinateKind coord_kind, const VECTOR&	scale);
 
 	[[nodiscard]] MATRIX GetMatrix			(const CoordinateKind coord_kind);
 	[[nodiscard]] VECTOR GetPos				(const CoordinateKind coord_kind);
 	[[nodiscard]] MATRIX GetRotationMatrix	(const CoordinateKind coord_kind);
 	[[nodiscard]] VECTOR GetScale			(const CoordinateKind coord_kind);
+	[[nodiscard]] Axes   GetAxes			(const CoordinateKind coord_kind);
 	[[nodiscard]] VECTOR GetRight			(const CoordinateKind coord_kind);
 	[[nodiscard]] VECTOR GetUp				(const CoordinateKind coord_kind);
 	[[nodiscard]] VECTOR GetForward			(const CoordinateKind coord_kind);
+
+	/// @brief TODO : 要検証
 	[[nodiscard]] VECTOR GetEulerAngles		(const CoordinateKind coord_kind);
 
 	/// @brief 親がアタッチされているかを判定
-	[[nodiscard]] bool HasParent() { return m_parent_transform ? true : false; }
+	[[nodiscard]] bool HasParent() { return m_parent_transform != nullptr; }
 
 private:
 	MATRIX m_local_matrix;

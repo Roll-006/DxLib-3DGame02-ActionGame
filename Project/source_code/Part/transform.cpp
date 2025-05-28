@@ -35,7 +35,7 @@ void Transform::AttachParent(const std::shared_ptr<Transform> parent_transform)
 	if (m_parent_transform) { return; }
 
 	m_parent_transform	= parent_transform;
-	m_local_matrix		= MMult(m_local_matrix, MInverse(m_parent_transform->GetMatrix(CoordinateKind::kWorld)));
+	m_local_matrix		= m_local_matrix * MInverse(m_parent_transform->GetMatrix(CoordinateKind::kWorld));
 }
 
 void Transform::AttachParent(const std::string& parent_obj_name)
@@ -80,7 +80,25 @@ void Transform::SetPos(const CoordinateKind coord_kind, const VECTOR& pos)
 
 void Transform::SetRotation(const CoordinateKind coord_kind, const MATRIX& rotation_matrix)
 {
-	m_local_matrix = MMult(MMult(rotation_matrix, MInverse(GetRotationMatrix(coord_kind))), m_local_matrix);
+	m_local_matrix = rotation_matrix * MInverse(GetRotationMatrix(coord_kind)) * m_local_matrix;
+}
+
+void Transform::SetRotation(const CoordinateKind coord_kind, const VECTOR& dir)
+{
+	const Axes axes = math::GetAxes(dir);	// FIXME : ƒ[ƒ‹ƒh‚ÌŽ²‚ªo‚Ä‚¢‚é
+	SetRotation(coord_kind, axes);
+}
+
+void Transform::SetRotation(const CoordinateKind coord_kind, const Axes& axes)
+{
+	//if (coord_kind == CoordinateKind::kLocal)
+	//{
+	//	if (m_parent_transform)
+	//	{
+	//		SetRotation(coord_kind, math::ConvertAxesToZXYRotationMatrix(axes, m_parent_transform->GetAxes(coord_kind)));
+	//	}
+	//}
+	SetRotation(coord_kind, math::ConvertAxesToZXYRotationMatrix(axes, axis::GetWorldAxes()));
 }
 
 void Transform::SetScale(const CoordinateKind coord_kind, const VECTOR& scale)
@@ -98,7 +116,7 @@ MATRIX Transform::GetMatrix(const CoordinateKind coord_kind)
 	{
 		if (m_parent_transform)
 		{
-			return MMult(m_local_matrix, m_parent_transform->GetMatrix(CoordinateKind::kWorld));
+			return m_local_matrix * m_parent_transform->GetMatrix(CoordinateKind::kWorld);
 		}
 	}
 
@@ -125,21 +143,33 @@ VECTOR Transform::GetScale(const CoordinateKind coord_kind)
 
 VECTOR Transform::GetRight(const CoordinateKind coord_kind)
 {
-	return math::ConvertRotationMatrixToAxes(GetMatrix(coord_kind)).x;
+	return GetAxes(coord_kind).x;
 }
 
 VECTOR Transform::GetUp(const CoordinateKind coord_kind)
 {
-	return math::ConvertRotationMatrixToAxes(GetMatrix(coord_kind)).y;
+	return GetAxes(coord_kind).y;
 }
 
 VECTOR Transform::GetForward(const CoordinateKind coord_kind)
 {
-	return math::ConvertRotationMatrixToAxes(GetMatrix(coord_kind)).z;
+	return GetAxes(coord_kind).z;
+}
+
+Axes Transform::GetAxes(const CoordinateKind coord_kind)
+{
+	return math::ConvertRotationMatrixToAxes(GetMatrix(coord_kind));
 }
 
 VECTOR Transform::GetEulerAngles(const CoordinateKind coord_kind)
 {
-	return VECTOR();
+	if (coord_kind == CoordinateKind::kLocal)
+	{
+		if (m_parent_transform)
+		{
+			return math::ConvertRotationMatrixToEulerAngles(GetMatrix(coord_kind), m_parent_transform->GetAxes(coord_kind));
+		}
+	}
+	return math::ConvertRotationMatrixToEulerAngles(GetMatrix(coord_kind), axis::GetWorldAxes());
 }
 #pragma endregion

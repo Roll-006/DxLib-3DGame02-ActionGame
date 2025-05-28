@@ -82,17 +82,25 @@ namespace math
 		return pairs;
 	}
 
-	/// @brief クォータニオンから回転行列へ変換
-	[[nodiscard]] MATRIX ConvertQuaternionToRotationMatrix(const MATRIX& mat, const Quaternion& q);
-
 	/// @brief 回転行列からクォータニオンへ変換
 	/// @brief TODO : 検証が必要
 	[[nodiscard]] Quaternion ConvertRotationMatrixToQuaternion(const MATRIX& mat);
 
+	/// @brief クォータニオンから回転行列へ変換
+	[[nodiscard]] MATRIX ConvertQuaternionToRotationMatrix(const MATRIX& mat, const Quaternion& q);
+
 	/// @brief XYZ軸から回転行列へ変換
 	/// @param axes 行列に変換するXYZ軸
 	/// @param parent_axes 基準とする親XYZ軸
+	[[nodiscard]] MATRIX ConvertAxesToXYZRotationMatrix(const Axes& axes, const Axes& parent_axes);
+	[[nodiscard]] MATRIX ConvertAxesToXZYRotationMatrix(const Axes& axes, const Axes& parent_axes);
+	[[nodiscard]] MATRIX ConvertAxesToYXZRotationMatrix(const Axes& axes, const Axes& parent_axes);
+	[[nodiscard]] MATRIX ConvertAxesToYZXRotationMatrix(const Axes& axes, const Axes& parent_axes);
 	[[nodiscard]] MATRIX ConvertAxesToZXYRotationMatrix(const Axes& axes, const Axes& parent_axes);
+	[[nodiscard]] MATRIX ConvertAxesToZYXRotationMatrix(const Axes& axes, const Axes& parent_axes);
+
+	/// @brief XYZ軸からオイラー角へ変換
+	[[nodiscard]] VECTOR ConvertAxesToEulerAngles(const Axes& axes, const Axes& parent_axes);
 
 	/// @brief 回転行列からオイラー角へ変換
 	[[nodiscard]] VECTOR ConvertRotationMatrixToEulerAngles(const MATRIX& mat, const Axes& parent_axes);
@@ -221,8 +229,9 @@ namespace math
 	/// @brief ヨー角回転ベクトルを取得
 	[[nodiscard]] VECTOR GetYawRotateVector(const VECTOR& v);
 
-	/// @brief ターゲットを見る座標のXYZ軸を取得
-	[[nodiscard]] Axes GetLookTargetAxes(const VECTOR& pos, const VECTOR& target_pos);
+	/// @brief XYZ軸を取得
+	/// @param dir 向きベクトル(この値をZ軸とする)
+	[[nodiscard]] Axes GetAxes(const VECTOR& dir);
 	#pragma endregion
 
 

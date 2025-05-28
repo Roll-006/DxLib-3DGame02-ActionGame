@@ -23,7 +23,7 @@ Modeler::~Modeler()
 
 void Modeler::Draw()
 {
-	//MV1SetRotationXYZ(m_model_handle, );
+	MV1SetRotationXYZ(m_model_handle, m_transform->GetEulerAngles(CoordinateKind::kWorld));
 	MV1SetPosition(m_model_handle, m_transform->GetPos(CoordinateKind::kWorld));
 	MV1DrawModel(m_model_handle);
 }

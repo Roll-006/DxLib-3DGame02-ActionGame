@@ -49,13 +49,13 @@ private:
 
 private:
 	static constexpr float kNear					= 10.0f;
-	static constexpr float kFar						= 2500.0f;
+	static constexpr float kFar						= 3000.0f;
 	static constexpr float kFOV						= 60.0f;
 	static constexpr float kMaxVerticalAngle		= 89.0f;
 	static constexpr float kMinVerticalAngle		= -70.0f;
-	static constexpr float kNormalDistance			= 400.0f;
+	static constexpr float kNormalDistance			= 500.0f;
 	static constexpr float kSpeedWithPad			= 2.5f;
-	static constexpr float kSpeedRateWidhMouse		= 0.05;
+	static constexpr float kSpeedRateWithMouse		= 0.1f;
 	static constexpr float kInitAngleTolerance		= 0.01f;		// 視点リセットが完了したと判定させる許容値
 
 	std::shared_ptr<Transform> m_target_transform;

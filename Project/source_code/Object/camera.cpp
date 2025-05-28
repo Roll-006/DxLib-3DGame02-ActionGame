@@ -43,7 +43,7 @@ void Camera::Draw() const
 	DrawLine3D(v3d::GetZeroVector(), axes.y * 100, 0x00ff22);
 	DrawLine3D(v3d::GetZeroVector(), axes.z * 100, 0x0077ff);
 
-	matrix::Draw(m_transform->GetMatrix(CoordinateKind::kWorld), VGet(0, 0, 0));
+	matrix::Draw(m_transform->GetMatrix(CoordinateKind::kWorld), VGet(0, 200, 0));
 }
 
 void Camera::OnCollide(const PhysicalObjBase& check_hit_obj)
@@ -98,7 +98,7 @@ Axes Camera::GetAxes() const
 		target_pos = m_target_transform->GetPos(CoordinateKind::kWorld);
 	}
 
-	return math::GetLookTargetAxes(m_transform->GetPos(CoordinateKind::kWorld), target_pos);
+	return math::GetAxes(target_pos - m_transform->GetPos(CoordinateKind::kWorld));
 }
 
 void Camera::Move()
@@ -117,9 +117,9 @@ void Camera::Move()
 	CreateRotationZXYMatrix(&m, m_angle.x, m_angle.y, m_angle.z);
 
 	// Œ‹‰Ê‚ð”½‰f
-	m_transform->SetRotation(CoordinateKind::kWorld, MGetRotElem(m));
-	const VECTOR target_pos = m_target_transform ? m_target_transform->GetPos(CoordinateKind::kWorld) : v3d::GetZeroVector();
-	const VECTOR pos		= target_pos - m_transform->GetForward(CoordinateKind::kWorld) * m_distance_to_target;
+	m_transform->SetRotation(CoordinateKind::kLocal, MGetRotElem(m));
+	const VECTOR target_pos = m_target_transform ? m_target_transform->GetPos(CoordinateKind::kLocal) : v3d::GetZeroVector();
+	const VECTOR pos		= target_pos - m_transform->GetForward(CoordinateKind::kLocal) * m_distance_to_target;
 	m_transform->SetPos(CoordinateKind::kWorld, pos);
 }
 
@@ -175,6 +175,6 @@ void Camera::CalcAngleFromMouse(const VECTOR& x_axis)
 	     || InputChecker::GetInstance()->IsInput(mouse::SlideDirKind::kLeft)
 	     || InputChecker::GetInstance()->IsInput(mouse::SlideDirKind::kRight))
 	{
-		m_angle += m_velocity;
+		m_angle += m_velocity * kSpeedRateWithMouse;
 	}
 }
