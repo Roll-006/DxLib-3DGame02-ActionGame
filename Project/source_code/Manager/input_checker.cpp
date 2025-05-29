@@ -87,7 +87,7 @@ void InputChecker::CalcMouseVelocity()
 
 void InputChecker::CountInputTimeAll()
 {
-	for (auto& [input_k, input_n, state_t, data] : m_input_data)
+	for (auto& [input_c, state_t, data] : m_input_data)
 	{
 		if (state_t == TimeState::kPrev) { continue; }
 
@@ -102,38 +102,38 @@ void InputChecker::CountInputTimeAll()
 
 void InputChecker::CheckInputAll()
 {
-	for (auto& [input_k, input_n, state_t, data] : m_input_data)
+	for (auto& [input_c, state_t, data] : m_input_data)
 	{
 		if (state_t == TimeState::kPrev) { continue; }
 
-		switch (input_k)
+		switch (input_c.kind)
 		{
 		case InputKind::kKey:
-			data.is_input = IsInput(input_n) ? true : false;
+			data.is_input = IsInput(input_c.code)										? true : false;
 			break;
 
 		case InputKind::kMouseButton:
-			data.is_input = IsInput(static_cast<mouse::ButtonKind>(input_n))	? true : false;
+			data.is_input = IsInput(static_cast<mouse::ButtonKind>(input_c.code))		? true : false;
 			break;
 
 		case InputKind::kMouseWheel:
-			data.is_input = IsInput(static_cast<mouse::WheelKind>(input_n))		? true : false;
+			data.is_input = IsInput(static_cast<mouse::WheelKind>(input_c.code))		? true : false;
 			break;
 
 		case InputKind::kMouseSlide:
-			data.is_input = IsInput(static_cast<mouse::SlideDirKind>(input_n))	? true : false;
+			data.is_input = IsInput(static_cast<mouse::SlideDirKind>(input_c.code))		? true : false;
 			break;
 
 		case InputKind::kPadButton:
-			data.is_input = IsInput(static_cast<pad::ButtonKind>(input_n))		? true : false;
+			data.is_input = IsInput(static_cast<pad::ButtonKind>(input_c.code))			? true : false;
 			break;
 
 		case InputKind::kPadTrigger:
-			data.is_input = IsInput(static_cast<pad::TriggerKind>(input_n))		? true : false;
+			data.is_input = IsInput(static_cast<pad::TriggerKind>(input_c.code))		? true : false;
 			break;
 
 		case InputKind::kPadStick:
-			data.is_input = IsInput(static_cast<pad::StickKind>(input_n))		? true : false;
+			data.is_input = IsInput(static_cast<pad::StickKind>(input_c.code))			? true : false;
 			break;
 		}
 	}
@@ -144,17 +144,17 @@ void InputChecker::ShiftDataCureentToPrev()
 	// 入力情報のシフト
 	m_mouse_data.at(TimeState::kPrev) = m_mouse_data.at(TimeState::kCurrent);
 
-	for (const auto& [current_input_k, current_input_n, current_state_t, current_data] : m_input_data)
+	for (const auto& [current_input_c, current_state_t, current_data] : m_input_data)
 	{
 		// 1フレーム前の情報であった場合はスキップ
 		if (current_state_t == TimeState::kPrev) { continue; }
 
-		for (auto& [prev_input_k, prev_input_n, prev_state_t, prev_data] : m_input_data)
+		for (auto& [prev_input_c, prev_state_t, prev_data] : m_input_data)
 		{
 			// 現在のフレームの情報であった場合はスキップ
 			if (prev_state_t == TimeState::kCurrent) { continue; }
 
-			if (prev_input_k == current_input_k && prev_input_n == current_input_n)
+			if (prev_input_c.kind == current_input_c.kind && prev_input_c.code == current_input_c.code)
 			{
 				prev_data = current_data;
 			}
@@ -164,18 +164,18 @@ void InputChecker::ShiftDataCureentToPrev()
 
 void InputChecker::DetectCurrentInputDevice()
 {
-	for (const auto& [input_k, input_n, state_t, data] : m_input_data)
+	for (const auto& [input_c, state_t, data] : m_input_data)
 	{
 		if (state_t == TimeState::kPrev) { continue; }
 		if (!data.is_input)				 { continue; }
 
 		// マウスをスライドさせただけでは入力デバイスに影響を与えない
-		if (input_k == InputKind::kKey || input_k == InputKind::kMouseButton || input_k == InputKind::kMouseWheel)
+		if (input_c.kind == InputKind::kKey || input_c.kind == InputKind::kMouseButton || input_c.kind == InputKind::kMouseWheel)
 		{
 			m_current_device = DeviceKind::kKeyboard;
 			return;
 		}
-		if (input_k == InputKind::kPadButton || input_k == InputKind::kPadTrigger || input_k == InputKind::kPadStick)
+		if (input_c.kind == InputKind::kPadButton || input_c.kind == InputKind::kPadTrigger || input_c.kind == InputKind::kPadStick)
 		{
 			m_current_device = DeviceKind::kPad;
 			return;

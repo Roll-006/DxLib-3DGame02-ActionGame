@@ -1,8 +1,6 @@
 #pragma once
 #include <unordered_map>
 
-#include "../Base/one_instance_singleton_base.hpp"
-
 #include "../Scene/title_scene.hpp"
 #include "../Scene/play_scene.hpp"
 #include "../Scene/game_clear_scene.hpp"
@@ -20,7 +18,9 @@ public:
 	void Draw() const;
 
 private:
+	/// @brief 実行中のシーンに追加
 	void AttachCurrentScene(const SceneKind scene_kind);
+	/// @brief 実行中のシーンから除外
 	void DetachCurrentScene(const SceneKind scene_kind);
 
 private:

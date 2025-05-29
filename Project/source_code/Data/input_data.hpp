@@ -1,6 +1,16 @@
 #pragma once
 #include <unordered_map>
 #include "../Data/IncludeList/vector.hpp"
+#include "../Data/Kind/input_kind.hpp"
+
+struct InputCode
+{
+	InputKind kind;
+	int code;
+
+	InputCode(){}
+	InputCode(const InputKind kind, const int code) : kind(kind), code(code){}
+};
 
 struct InputData
 {

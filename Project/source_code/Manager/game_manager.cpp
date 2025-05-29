@@ -8,6 +8,7 @@ GameManager::GameManager():
 	SetUpGameSystem();
 
 	InputChecker	::Generate();
+	CommandManager	::Generate();
 	ObjManager		::Generate();
 	CollisionManager::Generate();
 	PhysicsManager	::Generate();
@@ -18,6 +19,7 @@ GameManager::GameManager():
 GameManager::~GameManager()
 {
 	InputChecker	::Delete();
+	CommandManager	::Delete();
 	ObjManager		::Delete();
 	CollisionManager::Delete();
 	PhysicsManager	::Delete();
@@ -50,8 +52,16 @@ void GameManager::SetUpGameSystem()
 	if(Effekseer_Init(8000) == -1){ exit(EXIT_FAILURE); }
 	SetChangeScreenModeGraphicsSystemResetFlag(FALSE);
 	Effekseer_SetGraphicsDeviceLostCallbackFunctions();
+
 	SetUseZBuffer3D(TRUE);
 	SetWriteZBuffer3D(TRUE);
+
+	SetUseLighting(TRUE);
+	//SetGlobalAmbientLight();
+	//SetLightDirection();
+	//SetLightDifColor();
+	//SetLightAmbColor();
+
 	SetMainWindowText("3DGame Sample");
 }
 

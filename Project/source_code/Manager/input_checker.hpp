@@ -148,9 +148,9 @@ public:
 		if (std::is_same_v<pad::TriggerKind, InputT>)	{ kind = InputKind::kPadTrigger; }
 		if (std::is_same_v<pad::StickKind, InputT>)		{ kind = InputKind::kPadStick; }
 
-		for (const auto& [input_k, input_n, state_t, data] : m_input_data)
+		for (const auto& [input_c, state_t, data] : m_input_data)
 		{
-			if (input_k == kind && input_n == input_code && state_t == time_state)
+			if (input_c.kind == kind && input_c.code == input_code && state_t == time_state)
 			{
 				return data.input_time;
 			}
@@ -174,9 +174,9 @@ public:
 		if (std::is_same_v<pad::TriggerKind, InputT>)	{ kind = InputKind::kPadTrigger; }
 		if (std::is_same_v<pad::StickKind, InputT>)		{ kind = InputKind::kPadStick; }
 
-		for (const auto& [input_k, input_n, state_t, data] : m_input_data)
+		for (const auto& [input_c, state_t, data] : m_input_data)
 		{
-			if (input_k == kind && input_n == input_code)
+			if (input_c.kind == kind && input_c.code == input_code)
 			{
 				if (state_t == TimeState::kPrev)
 				{
@@ -240,7 +240,7 @@ private:
 	bool							m_is_lock_mouse_pos;
 	std::vector<int>				m_key_number;
 
-	std::vector<std::tuple<InputKind, int, TimeState, InputData>> m_input_data;
+	std::vector<std::tuple<InputCode, TimeState, InputData>> m_input_data;
 	std::unordered_map<TimeState, MouseData> m_mouse_data;
 	
 	friend SingletonBase<InputChecker>;

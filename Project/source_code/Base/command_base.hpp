@@ -3,7 +3,6 @@
 
 class CommandBase abstract
 {
-	virtual ~CommandBase() = default;
-
+public:
 	virtual void Execute(const ObjBase& obj) abstract;
 };

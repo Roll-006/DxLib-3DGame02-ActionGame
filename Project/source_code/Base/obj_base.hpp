@@ -13,8 +13,7 @@ class ObjBase abstract
 public:
 	ObjBase(const std::string& name, const std::string& tag) : 
 		m_name		(name), 
-		m_tag		(tag), 
-		m_transform	(std::make_shared<Transform>())
+		m_tag		(tag)
 	{ }
 
 	virtual ~ObjBase() = default;
