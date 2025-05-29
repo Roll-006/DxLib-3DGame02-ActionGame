@@ -2,12 +2,34 @@
 #include "../Base/command_base.hpp"
 #include "../Object/player.hpp"
 
-namespace player_command
+namespace player_cmd
 {
 	/// @brief 移動
-	class Move final : public CommandBase
+	class MoveUp final : public CommandBase
 	{
 	public:
+		MoveUp() : CommandBase(CommandKind::kMoveUpPlayer) {}
+		void Execute(const ObjBase& obj) override;
+	};
+
+	class MoveDown final : public CommandBase
+	{
+	public:
+		MoveDown() : CommandBase(CommandKind::kMoveDownPlayer) {}
+		void Execute(const ObjBase& obj) override;
+	};
+
+	class MoveLeft final : public CommandBase
+	{
+	public:
+		MoveLeft() : CommandBase(CommandKind::kMoveLeftPlayer) {}
+		void Execute(const ObjBase& obj) override;
+	};
+
+	class MoveRight final : public CommandBase
+	{
+	public:
+		MoveRight() : CommandBase(CommandKind::kMoveRightPlayer) {}
 		void Execute(const ObjBase& obj) override;
 	};
 
@@ -15,6 +37,7 @@ namespace player_command
 	class Run final : public CommandBase
 	{
 	public:
+		Run() : CommandBase(CommandKind::kRun) {}
 		void Execute(const ObjBase& obj) override;
 	};
 
@@ -22,6 +45,7 @@ namespace player_command
 	class Squat final : public CommandBase
 	{
 	public:
+		Squat() : CommandBase(CommandKind::kSquat) {}
 		void Execute(const ObjBase& obj) override;
 	};
 
@@ -29,6 +53,15 @@ namespace player_command
 	class Shot final : public CommandBase
 	{
 	public:
+		Shot() : CommandBase(CommandKind::kShot) {}
+		void Execute(const ObjBase& obj) override;
+	};
+
+	/// @brief 銃を構える
+	class Ready final : public CommandBase
+	{
+	public:
+		Ready() : CommandBase(CommandKind::kReadyGun) {}
 		void Execute(const ObjBase& obj) override;
 	};
 
@@ -36,6 +69,7 @@ namespace player_command
 	class Reload final : public CommandBase
 	{
 	public:
+		Reload() : CommandBase(CommandKind::kReloadGun) {}
 		void Execute(const ObjBase& obj) override;
 	};
 
@@ -43,6 +77,15 @@ namespace player_command
 	class SilentKill final : public CommandBase
 	{
 	public:
+		SilentKill() : CommandBase(CommandKind::kSilentKill) {}
+		void Execute(const ObjBase& obj) override;
+	};
+
+	/// @brief クイックターン
+	class QuickTurn final : public CommandBase
+	{
+	public:
+		QuickTurn() : CommandBase(CommandKind::kQuickTurn) {}
 		void Execute(const ObjBase& obj) override;
 	};
 }

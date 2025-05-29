@@ -1,12 +1,14 @@
 #pragma once
 #include "../Base/command_base.hpp"
+#include "../Object/selector.hpp"
 
-namespace select_command
+namespace select_cmd
 {
 	/// @brief Œˆ’è
 	class Decide final : public CommandBase
 	{
 	public:
+		Decide() : CommandBase(CommandKind::kDecide){}
 		void Execute(const ObjBase& obj) override;
 	};
 
@@ -14,6 +16,7 @@ namespace select_command
 	class Back final : public CommandBase
 	{
 	public:
+		Back() : CommandBase(CommandKind::kBack) {}
 		void Execute(const ObjBase& obj) override;
 	};
 
@@ -21,6 +24,7 @@ namespace select_command
 	class Up final : public CommandBase
 	{
 	public:
+		Up() : CommandBase(CommandKind::kSelectUp) {}
 		void Execute(const ObjBase& obj) override;
 	};
 
@@ -28,6 +32,7 @@ namespace select_command
 	class Down final : public CommandBase
 	{
 	public:
+		Down() : CommandBase(CommandKind::kSelectDown) {}
 		void Execute(const ObjBase& obj) override;
 	};
 
@@ -35,6 +40,7 @@ namespace select_command
 	class Left final : public CommandBase
 	{
 	public:
+		Left() : CommandBase(CommandKind::kSelectLeft) {}
 		void Execute(const ObjBase& obj) override;
 	};
 
@@ -42,6 +48,7 @@ namespace select_command
 	class Right final : public CommandBase
 	{
 	public:
+		Right() : CommandBase(CommandKind::kSelectRight) {}
 		void Execute(const ObjBase& obj) override;
 	};
 
@@ -49,6 +56,7 @@ namespace select_command
 	class Pause final : public CommandBase
 	{
 	public:
+		Pause() : CommandBase(CommandKind::kPause) {}
 		void Execute(const ObjBase& obj) override;
 	};
 }

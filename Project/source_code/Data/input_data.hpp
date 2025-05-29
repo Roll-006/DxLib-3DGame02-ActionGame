@@ -8,7 +8,7 @@ struct InputCode
 	InputKind kind;
 	int code;
 
-	InputCode(){}
+	InputCode() : kind(InputKind::kKey), code(0){}
 	InputCode(const InputKind kind, const int code) : kind(kind), code(code){}
 };
 

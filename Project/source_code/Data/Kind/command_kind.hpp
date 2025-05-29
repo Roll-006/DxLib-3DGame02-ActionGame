@@ -17,8 +17,10 @@ enum class CommandKind
 	kRun,				// ダッシュ
 	kSquat,				// しゃがむ
 	kShot,				// 銃を撃つ
+	kReadyGun,			// 銃を構える
 	kReloadGun,			// 銃のリロード
 	kSilentKill,		// サイレントキル(不意打ち)
+	kQuickTurn,			// クイックターン
 
 	kMoveUpCamera,		// カメラ上移動
 	kMoveDownCamera,	// カメラ下移動

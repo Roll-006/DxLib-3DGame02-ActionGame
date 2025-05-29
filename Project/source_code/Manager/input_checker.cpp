@@ -15,11 +15,11 @@ InputChecker::InputChecker():
 	DeactivateCursor();
 	LockCursor();
 
-	m_key_number = m_csv->Read1DCSV<std::vector<int>>("data/csv/key_number.csv", false);
-	for (auto& key_kind : m_key_number)
+	m_key_code = m_csv->Read1DCSV<std::vector<int>>("data/csv/key_number.csv", false);
+	for (auto& code : m_key_code)
 	{
-		m_input_data.emplace_back(InputKind::kKey, key_kind, TimeState::kPrev,	  InputData());
-		m_input_data.emplace_back(InputKind::kKey, key_kind, TimeState::kCurrent, InputData());
+		m_input_data.emplace_back(InputCode(InputKind::kKey, code), TimeState::kPrev,	 InputData());
+		m_input_data.emplace_back(InputCode(InputKind::kKey, code), TimeState::kCurrent, InputData());
 	}
 	AddInputData(InputKind::kMouseButton, kMouseButtonNum);
 	AddInputData(InputKind::kMouseWheel,  kMouseWheelNum);
@@ -69,8 +69,8 @@ void InputChecker::AddInputData(const InputKind kind, const int input_code)
 {
 	for (int i = 0; i < input_code; ++i)
 	{
-		m_input_data.emplace_back(kind, i, TimeState::kPrev,	InputData());
-		m_input_data.emplace_back(kind, i, TimeState::kCurrent, InputData());
+		m_input_data.emplace_back(InputCode(kind, i), TimeState::kPrev,		InputData());
+		m_input_data.emplace_back(InputCode(kind, i), TimeState::kCurrent,	InputData());
 	}
 }
 

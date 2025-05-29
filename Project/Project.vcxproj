@@ -152,6 +152,7 @@
     <ClCompile Include="source_code\Manager\input_checker.cpp" />
     <ClCompile Include="source_code\Manager\obj_manager.cpp" />
     <ClCompile Include="source_code\Manager\scene_manager.cpp" />
+    <ClCompile Include="source_code\Object\selector.cpp" />
     <ClCompile Include="source_code\Object\camera.cpp" />
     <ClCompile Include="source_code\Object\player.cpp" />
     <ClCompile Include="source_code\Part\animator.cpp" />
@@ -238,6 +239,7 @@
     <ClInclude Include="source_code\Manager\input_checker.hpp" />
     <ClInclude Include="source_code\Manager\obj_manager.hpp" />
     <ClInclude Include="source_code\Manager\scene_manager.hpp" />
+    <ClInclude Include="source_code\Object\selector.hpp" />
     <ClInclude Include="source_code\Object\camera.hpp" />
     <ClInclude Include="source_code\Object\player.hpp" />
     <ClInclude Include="source_code\Part\animator.hpp" />

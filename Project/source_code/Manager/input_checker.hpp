@@ -141,12 +141,12 @@ public:
 	{
 		InputKind kind = InputKind::kKey;
 
-		if (std::is_same_v<mouse::ButtonKind, InputT>)	{ kind = InputKind::kMouseButton; }
-		if (std::is_same_v<mouse::WheelKind, InputT>)	{ kind = InputKind::kMouseWheel; }
+		if (std::is_same_v<mouse::ButtonKind,	InputT>){ kind = InputKind::kMouseButton; }
+		if (std::is_same_v<mouse::WheelKind,	InputT>){ kind = InputKind::kMouseWheel; }
 		if (std::is_same_v<mouse::SlideDirKind, InputT>){ kind = InputKind::kMouseSlide; }
-		if (std::is_same_v<pad::ButtonKind, InputT>)	{ kind = InputKind::kPadButton; }
-		if (std::is_same_v<pad::TriggerKind, InputT>)	{ kind = InputKind::kPadTrigger; }
-		if (std::is_same_v<pad::StickKind, InputT>)		{ kind = InputKind::kPadStick; }
+		if (std::is_same_v<pad::ButtonKind,		InputT>){ kind = InputKind::kPadButton; }
+		if (std::is_same_v<pad::TriggerKind,	InputT>){ kind = InputKind::kPadTrigger; }
+		if (std::is_same_v<pad::StickKind,		InputT>){ kind = InputKind::kPadStick; }
 
 		for (const auto& [input_c, state_t, data] : m_input_data)
 		{
@@ -167,12 +167,12 @@ public:
 		bool prev_is_input		= false;
 		bool current_is_input	= false;
 
-		if (std::is_same_v<mouse::ButtonKind, InputT>)	{ kind = InputKind::kMouseButton; }
-		if (std::is_same_v<mouse::WheelKind, InputT>)	{ kind = InputKind::kMouseWheel; }
+		if (std::is_same_v<mouse::ButtonKind,	InputT>){ kind = InputKind::kMouseButton; }
+		if (std::is_same_v<mouse::WheelKind,	InputT>){ kind = InputKind::kMouseWheel; }
 		if (std::is_same_v<mouse::SlideDirKind, InputT>){ kind = InputKind::kMouseSlide; }
-		if (std::is_same_v<pad::ButtonKind, InputT>)	{ kind = InputKind::kPadButton; }
-		if (std::is_same_v<pad::TriggerKind, InputT>)	{ kind = InputKind::kPadTrigger; }
-		if (std::is_same_v<pad::StickKind, InputT>)		{ kind = InputKind::kPadStick; }
+		if (std::is_same_v<pad::ButtonKind,		InputT>){ kind = InputKind::kPadButton; }
+		if (std::is_same_v<pad::TriggerKind,	InputT>){ kind = InputKind::kPadTrigger; }
+		if (std::is_same_v<pad::StickKind,		InputT>){ kind = InputKind::kPadStick; }
 
 		for (const auto& [input_c, state_t, data] : m_input_data)
 		{
@@ -211,7 +211,10 @@ private:
 	void CalcMouseDir();
 	void CalcMouseVelocity();
 
+	/// @brief すべての入力時間を計測する
 	void CountInputTimeAll();
+
+	/// @brief すべての入力判定を行う
 	void CheckInputAll();
 
 	/// @brief 入力データを移行する
@@ -238,7 +241,7 @@ private:
 	XINPUT_STATE					m_xinput;
 	DeviceKind						m_current_device;
 	bool							m_is_lock_mouse_pos;
-	std::vector<int>				m_key_number;
+	std::vector<int>				m_key_code;
 
 	std::vector<std::tuple<InputCode, TimeState, InputData>> m_input_data;
 	std::unordered_map<TimeState, MouseData> m_mouse_data;

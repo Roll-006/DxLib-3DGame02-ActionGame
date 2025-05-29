@@ -2,12 +2,37 @@
 #include "../Base/command_base.hpp"
 #include "../Object/camera.hpp"
 
-namespace camera_command
+namespace camera_cmd
 {
-	/// @brief ˆÚ“®
-	class Move final : public CommandBase
+	/// @brief ãˆÚ“®
+	class MoveUp final : public CommandBase
 	{
 	public:
+		MoveUp() : CommandBase(CommandKind::kMoveUpCamera) {}
+		void Execute(const ObjBase& obj) override;
+	};
+
+	/// @brief ‰ºˆÚ“®
+	class MoveDown final : public CommandBase
+	{
+	public:
+		MoveDown() : CommandBase(CommandKind::kMoveDownCamera) {}
+		void Execute(const ObjBase& obj) override;
+	};
+
+	/// @brief ¶ˆÚ“®
+	class MoveLeft final : public CommandBase
+	{
+	public:
+		MoveLeft() : CommandBase(CommandKind::kMoveLeftCamera) {}
+		void Execute(const ObjBase& obj) override;
+	};
+
+	/// @brief ‰EˆÚ“®
+	class MoveRight final : public CommandBase
+	{
+	public:
+		MoveRight() : CommandBase(CommandKind::kMoveRightCamera) {}
 		void Execute(const ObjBase& obj) override;
 	};
 
@@ -15,6 +40,7 @@ namespace camera_command
 	class InitAngle final : public CommandBase
 	{
 	public:
+		InitAngle() : CommandBase(CommandKind::kInitAngle) {}
 		void Execute(const ObjBase& obj) override;
 	};
 }

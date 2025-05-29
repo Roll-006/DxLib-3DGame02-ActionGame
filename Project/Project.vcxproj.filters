@@ -116,6 +116,9 @@
     <ClCompile Include="source_code\Command\select_command.cpp">
       <Filter>Command</Filter>
     </ClCompile>
+    <ClCompile Include="source_code\Object\selector.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source_code\Manager\game_manager.hpp">
@@ -369,6 +372,9 @@
     </ClInclude>
     <ClInclude Include="source_code\Command\player_command.hpp">
       <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Object\selector.hpp">
+      <Filter>Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

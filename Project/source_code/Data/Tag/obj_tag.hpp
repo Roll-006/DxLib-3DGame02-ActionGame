@@ -3,8 +3,9 @@
 
 static struct ObjTag
 {
-	std::string CAMERA = "camera";
-	std::string PLAYER = "player";
-	std::string ENEMY  = "enemy";
+	const std::string CAMERA = "camera";
+	const std::string PLAYER = "player";
+	const std::string ENEMY  = "enemy";
+	const std::string SYSTEM = "system";
 
 }ObjTag;

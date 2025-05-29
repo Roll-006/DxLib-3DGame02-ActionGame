@@ -19,7 +19,7 @@ public:
 	/// @param length Žn“_‚©‚ç‚Ì’·‚³
 	[[nodiscard]] VECTOR GetPoint(const float length) const { return m_begin_pos + m_dir * length; }
 
-	[[nodiscard]] VECTOR GetBeginPos() const { return m_begin_pos; }
+	[[nodiscard]] VECTOR GetBeginPos()const { return m_begin_pos; }
 	[[nodiscard]] VECTOR GetEndPos()  const { return m_end_pos; }
 	[[nodiscard]] VECTOR GetDir()	  const { return m_dir; }
 	[[nodiscard]] float  GetLength()  const { return m_length; }
