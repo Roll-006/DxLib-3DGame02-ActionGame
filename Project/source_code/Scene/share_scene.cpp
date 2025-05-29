@@ -23,12 +23,12 @@ void ShareScene::Init()
 
 void ShareScene::Update()
 {
-	m_camera->Update();
 	m_player->Update();
+	m_camera->Update();
 }
 
 void ShareScene::Draw() const
 {
-	m_camera->Draw();
 	m_player->Draw();
+	m_camera->Draw();
 }

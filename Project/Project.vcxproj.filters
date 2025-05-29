@@ -104,6 +104,9 @@
     <ClCompile Include="source_code\Manager\physics_manager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
+    <ClCompile Include="source_code\Manager\command_manager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source_code\Manager\game_manager.hpp">
@@ -159,9 +162,6 @@
     </ClInclude>
     <ClInclude Include="source_code\Data\Kind\player_kind.hpp">
       <Filter>Data\Kind</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Command\command.hpp">
-      <Filter>Command</Filter>
     </ClInclude>
     <ClInclude Include="source_code\Base\scene_base.hpp">
       <Filter>Base</Filter>
@@ -342,6 +342,24 @@
     </ClInclude>
     <ClInclude Include="source_code\Manager\physics_manager.hpp">
       <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Base\command_base.hpp">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Manager\command_manager.hpp">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Data\Kind\command_kind.hpp">
+      <Filter>Data\Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Command\system_command.hpp">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Command\camera_command.hpp">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Command\player_command.hpp">
+      <Filter>Command</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

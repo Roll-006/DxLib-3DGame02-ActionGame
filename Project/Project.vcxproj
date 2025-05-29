@@ -142,6 +142,7 @@
     <ClCompile Include="source_code\Calculation\quaternion.cpp" />
     <ClCompile Include="source_code\FPS\fps.cpp" />
     <ClCompile Include="source_code\main.cpp" />
+    <ClCompile Include="source_code\Manager\command_manager.cpp" />
     <ClCompile Include="source_code\Manager\physics_manager.cpp" />
     <ClCompile Include="source_code\Manager\collision_manager.cpp" />
     <ClCompile Include="source_code\Manager\game_manager.cpp" />
@@ -175,6 +176,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source_code\Base\chara_base.hpp" />
+    <ClInclude Include="source_code\Base\command_base.hpp" />
     <ClInclude Include="source_code\Base\physical_obj_base.hpp" />
     <ClInclude Include="source_code\Base\shape_base.hpp" />
     <ClInclude Include="source_code\Base\singleton_base.hpp" />
@@ -188,7 +190,9 @@
     <ClInclude Include="source_code\Calculation\quaternion.hpp" />
     <ClInclude Include="source_code\Calculation\vector_2d.hpp" />
     <ClInclude Include="source_code\Calculation\vector_3d.hpp" />
-    <ClInclude Include="source_code\Command\command.hpp" />
+    <ClInclude Include="source_code\Command\system_command.hpp" />
+    <ClInclude Include="source_code\Command\camera_command.hpp" />
+    <ClInclude Include="source_code\Command\player_command.hpp" />
     <ClInclude Include="source_code\Concept\vector_concepts.hpp" />
     <ClInclude Include="source_code\Concept\obj_concepts.hpp" />
     <ClInclude Include="source_code\Concept\common_concepts.hpp" />
@@ -203,6 +207,7 @@
     <ClInclude Include="source_code\Data\IncludeList\vector.hpp" />
     <ClInclude Include="source_code\Data\input_data.hpp" />
     <ClInclude Include="source_code\Data\Kind\axis_kind.hpp" />
+    <ClInclude Include="source_code\Data\Kind\command_kind.hpp" />
     <ClInclude Include="source_code\Data\Kind\coordinate_kind.hpp" />
     <ClInclude Include="source_code\Data\Kind\device_kind.hpp" />
     <ClInclude Include="source_code\Data\Kind\mouse_kind.hpp" />
@@ -223,6 +228,7 @@
     <ClInclude Include="source_code\Data\Tag\animation_tag.hpp" />
     <ClInclude Include="source_code\FPS\fps.hpp" />
     <ClInclude Include="source_code\Interface\i_chara.hpp" />
+    <ClInclude Include="source_code\Manager\command_manager.hpp" />
     <ClInclude Include="source_code\Manager\physics_manager.hpp" />
     <ClInclude Include="source_code\Manager\collision_manager.hpp" />
     <ClInclude Include="source_code\Manager\game_manager.hpp" />

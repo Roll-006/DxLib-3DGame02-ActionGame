@@ -24,7 +24,7 @@ public:
 	virtual void Draw() const	abstract;
 
 	[[nodiscard]] std::string GetName() const { return m_name; }
-	[[nodiscard]] std::string GetTag() const { return m_tag; }
+	[[nodiscard]] std::string GetTag()  const { return m_tag; }
 	[[nodiscard]] std::shared_ptr<Transform> GetTransform() { return m_transform; }
 
 protected:

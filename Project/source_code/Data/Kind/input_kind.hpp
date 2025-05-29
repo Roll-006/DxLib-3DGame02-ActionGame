@@ -18,3 +18,9 @@ enum class InputState
 	kSingle,	// ’P‰Ÿ‚µ
 	kHold,		// ’·‰Ÿ‚µ
 };
+
+enum class InputMode
+{
+	kTrigger,
+	kHold,
+};

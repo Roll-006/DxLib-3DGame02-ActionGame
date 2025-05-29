@@ -33,6 +33,7 @@ private:
 	void CalcHorizontalVelocity();
 	void CalcVerticalVelocity();
 	void CalcMoveSpeed(const float input_slope);
+	void CalcDir(const VECTOR& velocity);
 
 	// 入力方式に対応した速度ベクトルを取得
 	[[nodiscard]] VECTOR GetVelocityFromPad	 (const VECTOR& forwrd, const VECTOR& right);
@@ -46,12 +47,13 @@ private:
 	void ConvertMouseVelocityToPadVelocity();
 
 private:
-	static constexpr float kWalkSpeed			= 10.0f;
-	static constexpr float kJogSpeed			= 30.0f;
-	static constexpr float kRunSpeed			= 60.0f;
-	static constexpr float kAcceleration		= 5.0f;		// 加速度(減速度も共通)
+	static constexpr float kSlowWalkSpeed		= 2.0f;
+	static constexpr float kWalkSpeed			= 4.0f;
+	static constexpr float kRunSpeed			= 8.0f;
+	static constexpr float kAcceleration		= 4.0f;		// 加速度(減速度も共通)
+	static constexpr float kDirCorrectionSpeed  = 0.1f;		// dirの補正速度
+	static constexpr float kDistanceDirToDir	= 1.7f;		// 目的のdirを即座に現在のdirに反映する閾値(dir同士の距離)
 	static constexpr int   kWalkStickSlopeLimit	= 15000;	// 歩き状態とするスティック傾きの上限
-	static constexpr int   kJogStickSlopeLimit	= 20000;	// ジョギング状態とするスティック傾きの上限
 
 	std::shared_ptr<Modeler>  m_modeler;
 	std::shared_ptr<Animator> m_animator;
@@ -59,6 +61,7 @@ private:
 	std::shared_ptr<Camera>	  m_camera;
 
 	VECTOR m_dir;
+	VECTOR m_destination_dir;
 	VECTOR m_velocity;
 	float  m_move_speed;
 	bool   m_is_move;

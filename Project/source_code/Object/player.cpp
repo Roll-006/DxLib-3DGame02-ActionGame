@@ -1,21 +1,22 @@
 #include "player.hpp"
 
 Player::Player(std::shared_ptr<Camera> camera) :
-	PhysicalObjBase	(ObjName.PLAYER, ObjTag.PLAYER, MassKind::kMedium),
-	m_modeler		(nullptr),
-	m_animator		(nullptr),
-	m_camera		(camera),
-	m_dir			(v3d::GetZeroVector()),
-	m_velocity		(v3d::GetZeroVector()),
-	m_move_speed	(0.0f),
-	m_is_move		(false),
-	m_is_run		(false)
+	PhysicalObjBase		(ObjName.PLAYER, ObjTag.PLAYER, MassKind::kMedium),
+	m_modeler			(nullptr),
+	m_animator			(nullptr),
+	m_camera			(camera),
+	m_dir				(v3d::GetZeroVector()),
+	m_destination_dir	(v3d::GetZeroVector()),
+	m_velocity			(v3d::GetZeroVector()),
+	m_move_speed		(0.0f),
+	m_is_move			(false),
+	m_is_run			(false)
 {
 	m_modeler	= std::make_shared<Modeler> (GetTransform(), ModelPath.CHARA_01);
 	m_animator	= std::make_shared<Animator>(m_modeler, 3.0f);
 
 	// 初期pos・dirを設定
-	m_dir = VGet(0.0f, 0.0f, -1.0f);
+	m_dir = m_destination_dir = VGet(0.0f, 0.0f, -1.0f);
 	m_transform->SetRotation(CoordinateKind::kWorld, m_dir);
 	m_transform->SetPos		(CoordinateKind::kWorld, VGet(0, 0, 0));
 
@@ -62,6 +63,9 @@ void Player::Draw() const
 	DrawLine3D(v3d::GetZeroVector(), m_transform->GetRight	(CoordinateKind::kWorld) * 100, 0xff0000);
 	DrawLine3D(v3d::GetZeroVector(), m_transform->GetUp		(CoordinateKind::kWorld) * 100, 0x00ff22);
 	DrawLine3D(v3d::GetZeroVector(), m_transform->GetForward(CoordinateKind::kWorld) * 100, 0x0077ff);
+
+	Sphere s(m_transform->GetPos(CoordinateKind::kWorld), 40);
+	s.Draw(true, 0, 0xffffff);
 }
 
 void Player::OnCollide(const PhysicalObjBase& check_hit_obj)
@@ -76,6 +80,9 @@ void Player::OnGravity()
 
 void Player::Move()
 {
+	// ダッシュするかを判定
+	JudgeRun();
+
 	// 各方向の移動
 	CalcHorizontalVelocity();
 	CalcVerticalVelocity();
@@ -90,7 +97,17 @@ void Player::Move()
 
 void Player::JudgeRun()
 {
+	if (InputChecker::GetInstance()->GetCurrentInputDevice() == DeviceKind::kPad)
+	{
+		if (InputChecker::GetInstance()->IsInput(pad::ButtonKind::kRSPush))
+		{
 
+		}
+	}
+	if (InputChecker::GetInstance()->GetCurrentInputDevice() == DeviceKind::kKeyboard)
+	{
+		
+	}
 }
 
 void Player::CalcHorizontalVelocity()
@@ -112,10 +129,12 @@ void Player::CalcHorizontalVelocity()
 		velocity = GetVelocityFromMouse(forwrd, right);
 	}
 
-	// 移動速度を計算
-	CalcMoveSpeed(VSize(velocity));
+	// 移動判定
+	m_is_move = velocity != v3d::GetZeroVector() ? true : false;
 
-	if (m_is_move){ m_dir = v3d::GetNormalizedVector(velocity); }
+	// 移動速度・方向を計算
+	CalcMoveSpeed(VSize(velocity));
+	CalcDir(velocity);
 }
 
 void Player::CalcVerticalVelocity()
@@ -136,30 +155,50 @@ void Player::CalcMoveSpeed(const float input_slope)
 	if (input_slope <= kWalkStickSlopeLimit - InputChecker::kStickDeadZone)
 	{
 		// 速い状態から歩き状態に移行した場合、急速に減速させる
-		if (m_move_speed > kJogSpeed) { m_move_speed = kJogSpeed; }
+		if (m_move_speed > kWalkSpeed) { m_move_speed = kWalkSpeed; }
 
+		Acceleration(kSlowWalkSpeed);
+		Deceleration(kSlowWalkSpeed);
+		return;
+	}
+
+	// ジョギング処理
+	if (!m_is_run)
+	{
 		Acceleration(kWalkSpeed);
 		Deceleration(kWalkSpeed);
 		return;
 	}
 
 	// ダッシュ処理
+	if (m_is_run)
 	{
-
+		// 遅い状態からダッシュ状態に移行した場合、急速に加速させる
+		if (m_move_speed < kWalkSpeed) { m_move_speed = kWalkSpeed; }
+		Acceleration(kRunSpeed);
 	}
+}
 
-	// ジョギング処理
-	if (input_slope <= kJogStickSlopeLimit  - InputChecker::kStickDeadZone)
+void Player::CalcDir(const VECTOR& velocity)
+{
+	if (!m_is_move) { return; }
+
+	m_destination_dir = v3d::GetNormalizedVector(velocity);
+
+	// 現在のdirと目的のdirが一定距離離れている場合は即座に方向を補正する
+	const VECTOR distance = m_destination_dir - m_dir;
+	if (VSize(distance) > kDistanceDirToDir)
 	{
-		Acceleration(kJogSpeed);
-		Deceleration(kJogSpeed);
+		m_dir = m_destination_dir;
 		return;
 	}
 
-	// ダッシュ処理
-	// 遅い状態からダッシュ状態に移行した場合、急速に加速させる
-	if (m_move_speed < kJogSpeed) { m_move_speed = kJogSpeed; }
-	Acceleration(kRunSpeed);
+	// 現在のdirを目的とするdirに近づけていく
+	m_dir += v3d::GetNormalizedVector(distance) * kDirCorrectionSpeed;
+	if (VSize(m_destination_dir - m_dir) < 0.1f)
+	{
+		m_dir = m_destination_dir;
+	}
 }
 
 VECTOR Player::GetVelocityFromPad(const VECTOR& forwrd, const VECTOR& right)
@@ -170,14 +209,13 @@ VECTOR Player::GetVelocityFromPad(const VECTOR& forwrd, const VECTOR& right)
 	const int left_param		= InputChecker::GetInstance()->GetInputParameter(pad::StickKind::kLSLeft);
 	const int right_param		= InputChecker::GetInstance()->GetInputParameter(pad::StickKind::kLSRight);
 
-	// 移動方向を取得
+	// 速度ベクトルを取得
 	VECTOR velocity = v3d::GetZeroVector();
 	if (forward_param)	{ velocity += forwrd * (forward_param  - InputChecker::kStickDeadZone); }
 	if (backward_param) { velocity += forwrd * (backward_param + InputChecker::kStickDeadZone); }
 	if (left_param)		{ velocity += right  * (left_param     + InputChecker::kStickDeadZone); }
 	if (right_param)	{ velocity += right  * (right_param    - InputChecker::kStickDeadZone); }
 
-	m_is_move = velocity != v3d::GetZeroVector() ? true : false;
 	return velocity;
 }
 
@@ -190,9 +228,8 @@ VECTOR Player::GetVelocityFromMouse(const VECTOR& forwrd, const VECTOR& right)
 	if (InputChecker::GetInstance()->IsInput(KEY_INPUT_A)) { dir -= right; }
 	if (InputChecker::GetInstance()->IsInput(KEY_INPUT_D)) { dir += right; }
 
-	m_is_move = dir != v3d::GetZeroVector() ? true : false;
-	float speed = math::GetAverageValue<float>(kWalkStickSlopeLimit, kJogStickSlopeLimit) - InputChecker::kStickDeadZone;
-	return v3d::GetNormalizedVector(dir) * speed;
+	// 速度ベクトルを取得
+	return v3d::GetNormalizedVector(dir) * InputChecker::kStickMaxSlope;
 }
 
 void Player::Acceleration(const float destination_speed)
