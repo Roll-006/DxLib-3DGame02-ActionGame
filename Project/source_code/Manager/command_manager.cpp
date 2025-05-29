@@ -2,10 +2,12 @@
 
 CommandManager::CommandManager()
 {
+	// ƒRƒ}ƒ“ƒh“Ç‚İ‚İ
 	LoadSelectCommand();
 	LoadPlayerCommand();
 	LoadCameraCommand();
 
+	// ‰Šúİ’è
 	InitKeyCommand();
 	InitPadCommand();
 }
