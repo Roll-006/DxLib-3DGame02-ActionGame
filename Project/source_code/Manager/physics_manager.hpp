@@ -26,6 +26,6 @@ private:
 	static constexpr float kMaxGravity			= 1.0f;	// 最大重力
 
 	std::list<std::shared_ptr<PhysicalObjBase>> m_physical_objects;	// 物理的挙動を行うオブジェクト
-	std::list<std::string> m_ignore_obj_name;					// 物理的挙動を無視するオブジェクト
+	std::list<std::string> m_ignore_obj_name;						// 物理的挙動を無視するオブジェクト
 	friend SingletonBase<PhysicsManager>;
 };

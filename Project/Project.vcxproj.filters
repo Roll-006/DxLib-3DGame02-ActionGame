@@ -376,6 +376,9 @@
     <ClInclude Include="source_code\Object\selector.hpp">
       <Filter>Object</Filter>
     </ClInclude>
+    <ClInclude Include="source_code\Calculation\common_operator.hpp">
+      <Filter>Calculation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Object">

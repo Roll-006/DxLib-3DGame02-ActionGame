@@ -205,10 +205,11 @@ void Player::CalcDir(const VECTOR& velocity)
 VECTOR Player::GetVelocityFromPad(const VECTOR& forwrd, const VECTOR& right)
 {
 	// 各方向のパラメーターを取得
-	const int forward_param		= InputChecker::GetInstance()->GetInputParameter(pad::StickKind::kLSUp);
-	const int backward_param	= InputChecker::GetInstance()->GetInputParameter(pad::StickKind::kLSDown);
-	const int left_param		= InputChecker::GetInstance()->GetInputParameter(pad::StickKind::kLSLeft);
-	const int right_param		= InputChecker::GetInstance()->GetInputParameter(pad::StickKind::kLSRight);
+	const auto input = InputChecker::GetInstance();
+	const int forward_param	 = input->GetInputParameter(pad::StickKind::kLSUp);
+	const int backward_param = input->GetInputParameter(pad::StickKind::kLSDown);
+	const int left_param	 = input->GetInputParameter(pad::StickKind::kLSLeft);
+	const int right_param	 = input->GetInputParameter(pad::StickKind::kLSRight);
 
 	// 速度ベクトルを取得
 	VECTOR velocity = v3d::GetZeroVector();
@@ -222,12 +223,14 @@ VECTOR Player::GetVelocityFromPad(const VECTOR& forwrd, const VECTOR& right)
 
 VECTOR Player::GetVelocityFromMouse(const VECTOR& forwrd, const VECTOR& right)
 {
+	const auto input = InputChecker::GetInstance();
+
 	// 移動方向を取得
 	VECTOR dir = v3d::GetZeroVector();
-	if (InputChecker::GetInstance()->IsInput(KEY_INPUT_W)) { dir += forwrd; }
-	if (InputChecker::GetInstance()->IsInput(KEY_INPUT_S)) { dir -= forwrd; }
-	if (InputChecker::GetInstance()->IsInput(KEY_INPUT_A)) { dir -= right; }
-	if (InputChecker::GetInstance()->IsInput(KEY_INPUT_D)) { dir += right; }
+	if (input->IsInput(KEY_INPUT_W)) { dir += forwrd; }
+	if (input->IsInput(KEY_INPUT_S)) { dir -= forwrd; }
+	if (input->IsInput(KEY_INPUT_A)) { dir -= right; }
+	if (input->IsInput(KEY_INPUT_D)) { dir += right; }
 
 	// 速度ベクトルを取得
 	return v3d::GetNormalizedVector(dir) * InputChecker::kStickMaxSlope;

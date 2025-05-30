@@ -187,6 +187,10 @@
     <ClInclude Include="source_code\Base\one_instance_singleton_base.hpp" />
     <ClInclude Include="source_code\Base\obj_base.hpp" />
     <ClInclude Include="source_code\Base\scene_base.hpp" />
+    <ClInclude Include="source_code\Calculation\common_operator.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="source_code\Calculation\matrix.hpp" />
     <ClInclude Include="source_code\Calculation\axes.hpp" />
     <ClInclude Include="source_code\Calculation\collision_calculator.hpp" />

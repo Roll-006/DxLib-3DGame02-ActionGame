@@ -27,13 +27,27 @@ public:
 
 public:
 	void Update();
-
-	void LockCursor();
-	void ActivateCursor()	{ SetMouseDispFlag(TRUE); }
-	void DeactivateCursor() { SetMouseDispFlag(FALSE); }
+	void LateUpdate();
 
 	/// @brief マウスカーソルを画面中央に固定するかを設定
 	void SetCursorToCenter(const bool is_lock) { m_is_lock_mouse_pos = is_lock; }
+
+	/// @brief 入力テンプレート値から入力コードへ変換
+	template<input_concepts::InputT InputT>
+	[[nodiscard]] InputCode ConvertInputTemplateToInputCode(const InputT& input_t)
+	{
+		InputCode code;
+
+		if (std::is_same_v<int,					InputT>) { code = InputCode(InputKind::kKey,		static_cast<int>(input_t)); }
+		if (std::is_same_v<mouse::ButtonKind,	InputT>) { code = InputCode(InputKind::kMouseButton,static_cast<int>(input_t)); }
+		if (std::is_same_v<mouse::WheelKind,	InputT>) { code = InputCode(InputKind::kMouseWheel, static_cast<int>(input_t)); }
+		if (std::is_same_v<mouse::SlideDirKind, InputT>) { code = InputCode(InputKind::kMouseSlide, static_cast<int>(input_t)); }
+		if (std::is_same_v<pad::ButtonKind,		InputT>) { code = InputCode(InputKind::kPadButton,	static_cast<int>(input_t)); }
+		if (std::is_same_v<pad::TriggerKind,	InputT>) { code = InputCode(InputKind::kPadTrigger, static_cast<int>(input_t)); }
+		if (std::is_same_v<pad::StickKind,		InputT>) { code = InputCode(InputKind::kPadStick,	static_cast<int>(input_t)); }
+
+		return code;
+	}
 
 	#pragma region マウス情報
 	[[nodiscard]] Vector2D<int>   GetMousePos	   (const TimeState time_state) const { return m_mouse_data.at(time_state).pos; }
@@ -210,7 +224,13 @@ private:
 
 	void UpdateMouse();
 
-	void AddInputData(const InputKind kind, const int input_code);
+	/// @brief マウスカーソルを画面中央に固定する
+	void LockCursor();
+
+	/// @brief 入力情報の追加
+	/// @param kind 入力の種類
+	/// @param input_code_num kindが持つ入力コード数
+	void AddInputData(const InputKind kind, const int input_code_num);
 
 	void CalcMouseDir();
 	void CalcMouseVelocity();

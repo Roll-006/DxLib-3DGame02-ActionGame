@@ -6,28 +6,8 @@
 class CommandManager final : public SingletonBase<CommandManager>
 {
 public:
-	void Execute(const CommandKind command_kind, obj_concepts::ObjT auto& obj)
-	{
-		const DeviceKind device = InputChecker::GetInstance()->GetCurrentInputDevice();
-
-		// 指定のコマンドを検索し実行
-		switch (device)
-		{
-		case DeviceKind::kKeyboard:
-			for (const auto& [cmd_k, input_c, cmd] : m_key_command)
-			{
-				if (command_kind == cmd_k) { cmd->Execute(obj); }
-			}
-			break;
-
-		case DeviceKind::kPad:
-			for (const auto& [cmd_k, input_c, cmd] : m_pad_command)
-			{
-				if (command_kind == cmd_k) { cmd->Execute(obj); }
-			}
-			break;
-		}
-	}
+	/// @brief コマンドを実行
+	void Execute(const CommandKind command_kind, obj_concepts::ObjT auto& obj);
 
 	/// @brief コマンドを初期設定に戻す
 	void InitKeyCommand();
@@ -37,63 +17,74 @@ private:
 	CommandManager();
 	~CommandManager() override;
 
+	/// @brief コマンド読み込み
 	void LoadSelectCommand();
 	void LoadPlayerCommand();
 	void LoadCameraCommand();
 
+	/// @brief コマンドに対応する入力の登録
 	template<input_concepts::InputT InputT>
-	void AddCommand(const CommandKind kind, const InputT& input_code, std::shared_ptr<CommandBase> command)
+	void AddInputCode(const CommandKind kind, const InputT& input_code)
 	{
-		InputCode code;
+		// 対応するコマンドがない場合は早期return
+		if (!m_commands.count(kind)) { return; }
 
-		// キー
-		if (std::is_same_v<int, InputT>)
+		const auto input = InputChecker::GetInstance();
+		const auto code	 = input->ConvertInputTemplateToInputCode(input_code);
+		std::vector<std::pair<CommandKind, InputCode>>* codes = nullptr;
+		
+		switch (input->GetCurrentInputDevice())
 		{
-			code = InputCode(InputKind::kKey, static_cast<int>(input_code));
-			m_key_command.emplace_back(std::make_tuple(kind, code, command));
+		case DeviceKind::kKeyboard: codes = &m_key_codes; break;
+		case DeviceKind::kPad:		codes = &m_pad_codes; break;
 		}
-		// マウスボタン
-		if (std::is_same_v<mouse::ButtonKind, InputT>)
+
+		// 新規データのみ追加する
+		const auto add = std::find_if(codes->begin(), codes->end(), [=](const std::pair<CommandKind, InputCode> p)
 		{
-			code = InputCode(InputKind::kMouseButton, static_cast<int>(input_code));
-			m_key_command.emplace_back(std::make_tuple(kind, code, command));
+			return p.first == kind && p.second.kind == code.kind && p.second.code == code.code;
+		});
+
+		if (add == codes->end())
+		{
+			codes->emplace_back(std::make_pair(kind, code));
 		}
-		// マウスホイール
-		if (std::is_same_v<mouse::WheelKind, InputT>)
+	}
+
+	/// @brief コマンドに対応する入力の登録を解除
+	template<input_concepts::InputT InputT>
+	void RemoveInputCode(const CommandKind kind, const InputT& input_code)
+	{
+		// 対応するコマンドがない場合は早期return
+		if (!m_commands.count(kind)) { return; }
+
+		const auto input = InputChecker::GetInstance();
+		const auto code  = input->ConvertInputTemplateToInputCode(input_code);
+		std::vector<std::pair<CommandKind, InputCode>>* codes = nullptr;
+
+		switch (input->GetCurrentInputDevice())
 		{
-			code = InputCode(InputKind::kMouseWheel, static_cast<int>(input_code));
-			m_key_command.emplace_back(std::make_tuple(kind, code, command));
+		case DeviceKind::kKeyboard: codes = &m_key_codes; break;
+		case DeviceKind::kPad:		codes = &m_pad_codes; break;
 		}
-		// マウススライド
-		if (std::is_same_v<mouse::SlideDirKind, InputT>)
+
+		// 削除する入力コードを検索
+		const auto remove = std::find_if(codes->begin(), codes->end(), [=](const std::pair<CommandKind, InputCode> p)
 		{
-			code = InputCode(InputKind::kMouseSlide, static_cast<int>(input_code));
-			m_key_command.emplace_back(std::make_tuple(kind, code, command));
-		}
-		// パッドボタン
-		if (std::is_same_v<pad::ButtonKind, InputT>)
+			return p.first == kind && p.second.kind == code.kind && p.second.code == code.code;
+		});
+
+		// 一致する入力コードを削除
+		if (remove != codes->end())
 		{
-			code = InputCode(InputKind::kPadButton, static_cast<int>(input_code));
-			m_pad_command.emplace_back(std::make_tuple(kind, code, command));
-		}
-		// パッドトリガー
-		if (std::is_same_v<pad::TriggerKind, InputT>)
-		{
-			code = InputCode(InputKind::kPadTrigger, static_cast<int>(input_code));
-			m_pad_command.emplace_back(std::make_tuple(kind, code, command));
-		}
-		// パッドスティック
-		if (std::is_same_v<pad::StickKind, InputT>)
-		{
-			code = InputCode(InputKind::kPadStick, static_cast<int>(input_code));
-			m_pad_command.emplace_back(std::make_tuple(kind, code, command));
+			codes->erase(remove);
 		}
 	}
 
 private:
-	std::vector<std::shared_ptr<CommandBase>> m_commands;
-	std::vector<std::tuple<CommandKind, InputCode, std::shared_ptr<CommandBase>>> m_key_command;
-	std::vector<std::tuple<CommandKind, InputCode, std::shared_ptr<CommandBase>>> m_pad_command;
+	std::unordered_map<CommandKind, std::shared_ptr<CommandBase>> m_commands;
+	std::vector<std::pair<CommandKind, InputCode>>	m_key_codes;
+	std::vector<std::pair<CommandKind, InputCode>>	m_pad_codes;
 
 	friend SingletonBase<CommandManager>;
 };

@@ -12,7 +12,6 @@ InputChecker::InputChecker():
 	m_mouse_data[TimeState::kPrev].dir		 = m_mouse_data[TimeState::kCurrent].dir	   = Vector2D<float>(0.0f, 0.0f);
 	m_mouse_data[TimeState::kPrev].velocity  = m_mouse_data[TimeState::kCurrent].velocity  = Vector2D<float>(0.0f, 0.0f);
 
-	DeactivateCursor();
 	LockCursor();
 
 	m_key_code = m_csv->Read1DCSV<std::vector<int>>("data/csv/key_number.csv", false);
@@ -46,6 +45,11 @@ void InputChecker::Update()
 	CountInputTimeAll();
 
 	DetectCurrentInputDevice();
+}
+
+void InputChecker::LateUpdate()
+{
+	LockCursor();
 }
 
 void InputChecker::UpdateMouse()
@@ -108,15 +112,18 @@ bool InputChecker::IsInput(const InputCode& input_code) const
 
 int InputChecker::GetInputParameter(const InputCode& input_code) const
 {
+	int rota = 0;
+
 	switch (input_code.kind)
 	{
 	case InputKind::kMouseSlide:
-		const int rota = m_mouse_data.at(TimeState::kCurrent).wheel_rotation;
+		rota = m_mouse_data.at(TimeState::kCurrent).wheel_rotation;
 		switch (static_cast<mouse::WheelKind>(input_code.code))
 		{
 		case mouse::WheelKind::kUp:		return rota > 0 ? rota : 0;	break;
 		case mouse::WheelKind::kDown:	return rota < 0 ? rota : 0;	break;
 		}
+		break;
 
 	case InputKind::kPadTrigger:
 		switch (static_cast<pad::TriggerKind>(input_code.code))
@@ -185,9 +192,9 @@ InputState InputChecker::GetInputState(const InputCode& input_code)
 	return prev_is_input ? InputState::kPrev : InputState::kNone;
 }
 
-void InputChecker::AddInputData(const InputKind kind, const int input_code)
+void InputChecker::AddInputData(const InputKind kind, const int input_code_num)
 {
-	for (int i = 0; i < input_code; ++i)
+	for (int i = 0; i < input_code_num; ++i)
 	{
 		m_input_data.emplace_back(InputCode(kind, i), TimeState::kPrev,		InputData());
 		m_input_data.emplace_back(InputCode(kind, i), TimeState::kCurrent,	InputData());
