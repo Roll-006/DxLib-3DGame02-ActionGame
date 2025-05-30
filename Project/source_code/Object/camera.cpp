@@ -1,4 +1,5 @@
 #include "camera.hpp"
+#include "../Manager/command_manager.hpp"
 
 Camera::Camera() : 
 	PhysicalObjBase			(ObjName.CAMERA, ObjTag.CAMERA, MassKind::kVeryLight),

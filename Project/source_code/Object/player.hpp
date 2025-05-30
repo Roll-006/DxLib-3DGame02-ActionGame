@@ -49,7 +49,7 @@ private:
 private:
 	static constexpr float kSlowWalkSpeed		= 2.0f;
 	static constexpr float kWalkSpeed			= 4.0f;
-	static constexpr float kRunSpeed			= 8.0f;
+	static constexpr float kRunSpeed			= 10.0f;
 	static constexpr float kAcceleration		= 4.0f;		// 加速度(減速度も共通)
 	static constexpr float kDirCorrectionSpeed  = 0.1f;		// dirの補正速度
 	static constexpr float kDistanceDirToDir	= 1.7f;		// 目的のdirを即座に現在のdirに反映する閾値(dir同士の距離)

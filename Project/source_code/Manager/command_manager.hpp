@@ -6,7 +6,28 @@
 class CommandManager final : public SingletonBase<CommandManager>
 {
 public:
-	void Execute(const CommandKind command_kind);
+	void Execute(const CommandKind command_kind, obj_concepts::ObjT auto& obj)
+	{
+		const DeviceKind device = InputChecker::GetInstance()->GetCurrentInputDevice();
+
+		// 指定のコマンドを検索し実行
+		switch (device)
+		{
+		case DeviceKind::kKeyboard:
+			for (const auto& [cmd_k, input_c, cmd] : m_key_command)
+			{
+				if (command_kind == cmd_k) { cmd->Execute(obj); }
+			}
+			break;
+
+		case DeviceKind::kPad:
+			for (const auto& [cmd_k, input_c, cmd] : m_pad_command)
+			{
+				if (command_kind == cmd_k) { cmd->Execute(obj); }
+			}
+			break;
+		}
+	}
 
 	/// @brief コマンドを初期設定に戻す
 	void InitKeyCommand();

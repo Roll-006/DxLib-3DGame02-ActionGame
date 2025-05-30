@@ -45,7 +45,7 @@ public:
 	/// @brief 入力判定
 	/// @brief キー入力以外はenum classの定義を使用する必要あり
 	template<input_concepts::InputT InputT>
-	[[nodiscard]] bool IsInput(const InputT& input_code) const
+	[[nodiscard]] bool IsInput(const InputT&	input_code) const
 	{
 		// キー
 		if (std::is_same_v<int, InputT>)
@@ -90,11 +90,12 @@ public:
 		}
 		return false;
 	}
+	[[nodiscard]] bool IsInput(const InputCode& input_code) const;
 
 	/// @brief 入力パラメータを取得
 	/// @brief キー入力以外はenum classの定義を使用する必要あり
 	template<input_concepts::ParameterT InputT>
-	[[nodiscard]] int GetInputParameter(const InputT& input_code) const
+	[[nodiscard]] int GetInputParameter(const InputT&	 input_code) const
 	{
 		// マウススライド
 		if (std::is_same_v<mouse::WheelKind, InputT>)
@@ -133,11 +134,12 @@ public:
 		}
 		return 0;
 	}
+	[[nodiscard]] int GetInputParameter(const InputCode& input_code) const;
 
 	/// @brief 入力時間を取得
 	/// @brief キー入力以外はenum classの定義を使用する必要あり
 	template<input_concepts::InputT InputT>
-	[[nodiscard]] float GetInputTime(const InputT& input_code, const TimeState time_state)
+	[[nodiscard]] float GetInputTime(const InputT&    input_code, const TimeState time_state)
 	{
 		InputKind kind = InputKind::kKey;
 
@@ -157,11 +159,12 @@ public:
 		}
 		return 0.0f;
 	}
+	[[nodiscard]] float GetInputTime(const InputCode& input_code, const TimeState time_state);
 
 	/// @brief 入力状態を取得
 	/// @brief キー入力以外はenum classの定義を使用する必要あり
 	template<input_concepts::InputT InputT>
-	[[nodiscard]] InputState GetInputState(const InputT& input_code)
+	[[nodiscard]] InputState GetInputState(const InputT&    input_code)
 	{
 		InputKind kind			= InputKind::kKey;
 		bool prev_is_input		= false;
@@ -195,8 +198,9 @@ public:
 		}
 		return prev_is_input ? InputState::kPrev : InputState::kNone;
 	}
+	[[nodiscard]] InputState GetInputState(const InputCode& input_code);
 
-	/// @brief 現在の入力デバイスを取得
+	/// @brief 現在の入力デバイスを取得	
 	/// @brief キーボードとパッド両方が入力された場合はキーボードを優先
 	[[nodiscard]] DeviceKind GetCurrentInputDevice() const { return m_current_device; }
 

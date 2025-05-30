@@ -65,6 +65,126 @@ void InputChecker::LockCursor()
 	SetMousePoint(center_pos.x, center_pos.y);
 }
 
+bool InputChecker::IsInput(const InputCode& input_code) const
+{
+	switch (input_code.kind)
+	{
+	case InputKind::kKey:
+		return CheckHitKey(static_cast<int>(input_code.code));
+		break;
+
+	case InputKind::kMouseButton:
+		return (GetMouseInput() & static_cast<int>(input_code.code)) != 0;
+		break;
+
+	case InputKind::kMouseWheel:
+		return GetInputParameter(static_cast<mouse::WheelKind>(input_code.code));
+		break;
+
+	case InputKind::kMouseSlide:
+		switch (static_cast<mouse::SlideDirKind>(input_code.code))
+		{
+		case mouse::SlideDirKind::kLeft:  if (m_mouse_data.at(TimeState::kCurrent).pos.x < m_mouse_data.at(TimeState::kPrev).pos.x) { return true; } break;
+		case mouse::SlideDirKind::kRight: if (m_mouse_data.at(TimeState::kCurrent).pos.x > m_mouse_data.at(TimeState::kPrev).pos.x) { return true; } break;
+		case mouse::SlideDirKind::kDown:  if (m_mouse_data.at(TimeState::kCurrent).pos.y > m_mouse_data.at(TimeState::kPrev).pos.y) { return true; } break;
+		case mouse::SlideDirKind::kUp:    if (m_mouse_data.at(TimeState::kCurrent).pos.y < m_mouse_data.at(TimeState::kPrev).pos.y) { return true; } break;
+		}
+		break;
+
+	case InputKind::kPadButton:
+		return m_xinput.Buttons[static_cast<int>(input_code.code)];
+		break;
+
+	case InputKind::kPadTrigger:
+		return GetInputParameter(static_cast<pad::TriggerKind>(input_code.code));
+		break;
+
+	case InputKind::kPadStick:
+		return GetInputParameter(static_cast<pad::StickKind>(input_code.code));
+		break;
+	}
+	return false;
+}
+
+int InputChecker::GetInputParameter(const InputCode& input_code) const
+{
+	switch (input_code.kind)
+	{
+	case InputKind::kMouseSlide:
+		const int rota = m_mouse_data.at(TimeState::kCurrent).wheel_rotation;
+		switch (static_cast<mouse::WheelKind>(input_code.code))
+		{
+		case mouse::WheelKind::kUp:		return rota > 0 ? rota : 0;	break;
+		case mouse::WheelKind::kDown:	return rota < 0 ? rota : 0;	break;
+		}
+
+	case InputKind::kPadTrigger:
+		switch (static_cast<pad::TriggerKind>(input_code.code))
+		{
+		case pad::TriggerKind::kLT: if (m_xinput.LeftTrigger > kTriggerDeadZone)	{ return m_xinput.LeftTrigger; }  break;
+		case pad::TriggerKind::kRT: if (m_xinput.RightTrigger > kTriggerDeadZone)	{ return m_xinput.RightTrigger; } break;
+		}
+		break;
+
+	case InputKind::kPadStick:
+		switch (static_cast<pad::StickKind>(input_code.code))
+		{
+		case pad::StickKind::kLSLeft:  if (m_xinput.ThumbLX < -kStickDeadZone) { return m_xinput.ThumbLX; } break;
+		case pad::StickKind::kLSRight: if (m_xinput.ThumbLX > kStickDeadZone)  { return m_xinput.ThumbLX; } break;
+		case pad::StickKind::kLSDown:  if (m_xinput.ThumbLY < -kStickDeadZone) { return m_xinput.ThumbLY; } break;
+		case pad::StickKind::kLSUp:    if (m_xinput.ThumbLY > kStickDeadZone)  { return m_xinput.ThumbLY; } break;
+		case pad::StickKind::kRSLeft:  if (m_xinput.ThumbRX < -kStickDeadZone) { return m_xinput.ThumbRX; } break;
+		case pad::StickKind::kRSRight: if (m_xinput.ThumbRX > kStickDeadZone)  { return m_xinput.ThumbRX; } break;
+		case pad::StickKind::kRSDown:  if (m_xinput.ThumbRY < -kStickDeadZone) { return m_xinput.ThumbRY; } break;
+		case pad::StickKind::kRSUp:	   if (m_xinput.ThumbRY > kStickDeadZone)  { return m_xinput.ThumbRY; } break;
+		}
+		break;
+
+	default:
+		break;
+	}
+	return 0;
+}
+
+float InputChecker::GetInputTime(const InputCode& input_code, const TimeState time_state)
+{
+	for (const auto& [input_c, state_t, data] : m_input_data)
+	{
+		if (input_c.kind == input_code.kind && input_c.code == input_code.code && state_t == time_state)
+		{
+			return data.input_time;
+		}
+	}
+	return 0.0f;
+}
+
+InputState InputChecker::GetInputState(const InputCode& input_code)
+{
+	bool prev_is_input = false;
+	bool current_is_input = false;
+
+	for (const auto& [input_c, state_t, data] : m_input_data)
+	{
+		if (input_c.kind == input_code.kind && input_c.code == input_code.code)
+		{
+			if (state_t == TimeState::kPrev)
+			{
+				prev_is_input = data.is_input;
+			}
+			else if (state_t == TimeState::kCurrent)
+			{
+				current_is_input = data.is_input;
+			}
+		}
+	}
+
+	if (current_is_input)
+	{
+		return prev_is_input ? InputState::kHold : InputState::kSingle;
+	}
+	return prev_is_input ? InputState::kPrev : InputState::kNone;
+}
+
 void InputChecker::AddInputData(const InputKind kind, const int input_code)
 {
 	for (int i = 0; i < input_code; ++i)

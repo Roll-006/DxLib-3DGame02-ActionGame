@@ -55,11 +55,6 @@ void CommandManager::LoadCameraCommand()
 	m_commands.emplace_back(std::make_shared<camera_cmd::InitAngle>());
 }
 
-void CommandManager::Execute(const CommandKind command_kind)
-{
-
-}
-
 void CommandManager::InitKeyCommand()
 {
 	m_key_command.clear();

@@ -1,4 +1,5 @@
 #include "player.hpp"
+#include "../Manager/command_manager.hpp"
 
 Player::Player(std::shared_ptr<Camera> camera) :
 	PhysicalObjBase		(ObjName.PLAYER, ObjTag.PLAYER, MassKind::kMedium),

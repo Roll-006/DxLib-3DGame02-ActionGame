@@ -1,5 +1,4 @@
 #pragma once
-#include "../Base/physical_obj_base.hpp"
 #include "../Manager/obj_manager.hpp"
 #include "../Manager/input_checker.hpp"
 #include "../Manager/collision_manager.hpp"
