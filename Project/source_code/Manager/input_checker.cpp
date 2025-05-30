@@ -167,21 +167,19 @@ float InputChecker::GetInputTime(const InputCode& input_code, const TimeState ti
 
 InputState InputChecker::GetInputState(const InputCode& input_code)
 {
-	bool prev_is_input = false;
+	bool prev_is_input	  = false;
 	bool current_is_input = false;
 
 	for (const auto& [input_c, state_t, data] : m_input_data)
 	{
 		if (input_c.kind == input_code.kind && input_c.code == input_code.code)
 		{
-			if (state_t == TimeState::kPrev)
+			switch (state_t)
 			{
-				prev_is_input = data.is_input;
+			case TimeState::kPrev:		prev_is_input	 = data.is_input;	break;
+			case TimeState::kCurrent:	current_is_input = data.is_input;	break;
 			}
-			else if (state_t == TimeState::kCurrent)
-			{
-				current_is_input = data.is_input;
-			}
+			break;
 		}
 	}
 
@@ -216,6 +214,7 @@ void InputChecker::CountInputTimeAll()
 {
 	for (auto& [input_c, state_t, data] : m_input_data)
 	{
+		// ‰ß‹‚Ì“ü—ÍŠÔ‚Í•Ï‰»‚³‚¹‚È‚¢
 		if (state_t == TimeState::kPrev) { continue; }
 
 		if (data.is_input)

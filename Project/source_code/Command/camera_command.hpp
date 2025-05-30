@@ -9,7 +9,7 @@ namespace camera_cmd
 	{
 	public:
 		MoveUp() : CommandBase(CommandKind::kMoveUpCamera) {}
-		void Execute(const ObjBase& obj) override;
+		void Execute(ObjBase& obj) override;
 	};
 
 	/// @brief 下移動
@@ -17,7 +17,7 @@ namespace camera_cmd
 	{
 	public:
 		MoveDown() : CommandBase(CommandKind::kMoveDownCamera) {}
-		void Execute(const ObjBase& obj) override;
+		void Execute(ObjBase& obj) override;
 	};
 
 	/// @brief 左移動
@@ -25,7 +25,7 @@ namespace camera_cmd
 	{
 	public:
 		MoveLeft() : CommandBase(CommandKind::kMoveLeftCamera) {}
-		void Execute(const ObjBase& obj) override;
+		void Execute(ObjBase& obj) override;
 	};
 
 	/// @brief 右移動
@@ -33,7 +33,7 @@ namespace camera_cmd
 	{
 	public:
 		MoveRight() : CommandBase(CommandKind::kMoveRightCamera) {}
-		void Execute(const ObjBase& obj) override;
+		void Execute(ObjBase& obj) override;
 	};
 
 	/// @brief 視点リセット
@@ -41,6 +41,6 @@ namespace camera_cmd
 	{
 	public:
 		InitAngle() : CommandBase(CommandKind::kInitAngle) {}
-		void Execute(const ObjBase& obj) override;
+		void Execute(ObjBase& obj) override;
 	};
 }

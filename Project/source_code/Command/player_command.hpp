@@ -9,28 +9,28 @@ namespace player_cmd
 	{
 	public:
 		MoveUp() : CommandBase(CommandKind::kMoveUpPlayer) {}
-		void Execute(const ObjBase& obj) override;
+		void Execute(ObjBase& obj) override;
 	};
 
 	class MoveDown final : public CommandBase
 	{
 	public:
 		MoveDown() : CommandBase(CommandKind::kMoveDownPlayer) {}
-		void Execute(const ObjBase& obj) override;
+		void Execute(ObjBase& obj) override;
 	};
 
 	class MoveLeft final : public CommandBase
 	{
 	public:
 		MoveLeft() : CommandBase(CommandKind::kMoveLeftPlayer) {}
-		void Execute(const ObjBase& obj) override;
+		void Execute(ObjBase& obj) override;
 	};
 
 	class MoveRight final : public CommandBase
 	{
 	public:
 		MoveRight() : CommandBase(CommandKind::kMoveRightPlayer) {}
-		void Execute(const ObjBase& obj) override;
+		void Execute(ObjBase& obj) override;
 	};
 
 	/// @brief ダッシュ
@@ -38,7 +38,7 @@ namespace player_cmd
 	{
 	public:
 		Run() : CommandBase(CommandKind::kRun) {}
-		void Execute(const ObjBase& obj) override;
+		void Execute(ObjBase& obj) override;
 	};
 
 	/// @brief しゃがむ
@@ -46,7 +46,7 @@ namespace player_cmd
 	{
 	public:
 		Squat() : CommandBase(CommandKind::kSquat) {}
-		void Execute(const ObjBase& obj) override;
+		void Execute(ObjBase& obj) override;
 	};
 
 	/// @brief 弾を撃つ
@@ -54,7 +54,7 @@ namespace player_cmd
 	{
 	public:
 		Shot() : CommandBase(CommandKind::kShot) {}
-		void Execute(const ObjBase& obj) override;
+		void Execute(ObjBase& obj) override;
 	};
 
 	/// @brief 銃を構える
@@ -62,7 +62,7 @@ namespace player_cmd
 	{
 	public:
 		Ready() : CommandBase(CommandKind::kReadyGun) {}
-		void Execute(const ObjBase& obj) override;
+		void Execute(ObjBase& obj) override;
 	};
 
 	/// @brief リロード
@@ -70,7 +70,7 @@ namespace player_cmd
 	{
 	public:
 		Reload() : CommandBase(CommandKind::kReloadGun) {}
-		void Execute(const ObjBase& obj) override;
+		void Execute(ObjBase& obj) override;
 	};
 
 	/// @brief 不意打ち
@@ -78,7 +78,7 @@ namespace player_cmd
 	{
 	public:
 		SilentKill() : CommandBase(CommandKind::kSilentKill) {}
-		void Execute(const ObjBase& obj) override;
+		void Execute(ObjBase& obj) override;
 	};
 
 	/// @brief クイックターン
@@ -86,6 +86,6 @@ namespace player_cmd
 	{
 	public:
 		QuickTurn() : CommandBase(CommandKind::kQuickTurn) {}
-		void Execute(const ObjBase& obj) override;
+		void Execute(ObjBase& obj) override;
 	};
 }
