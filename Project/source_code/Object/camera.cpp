@@ -40,11 +40,11 @@ void Camera::Draw() const
 	DrawLine3D(v3d::GetZeroVector(), axis::GetWorldZAxis() * 10000, 0x0077ff);
 
 	const Axes axes = math::ConvertRotationMatrixToAxes(m_transform->GetRotationMatrix(CoordinateKind::kWorld));
-	DrawLine3D(v3d::GetZeroVector(), axes.x * 100, 0xff0000);
-	DrawLine3D(v3d::GetZeroVector(), axes.y * 100, 0x00ff22);
+	DrawLine3D(v3d::GetZeroVector(), axes.x_axis * 100, 0xff0000);
+	DrawLine3D(v3d::GetZeroVector(), axes.y_axis * 100, 0x00ff22);
 	DrawLine3D(v3d::GetZeroVector(), axes.z * 100, 0x0077ff);
 
-	matrix::Draw(m_transform->GetMatrix(CoordinateKind::kWorld), VGet(0, 200, 0));
+	//matrix::Draw(m_transform->GetMatrix(CoordinateKind::kWorld), VGet(0, 200, 0));
 }
 
 void Camera::OnCollide(const PhysicalObjBase& check_hit_obj)
@@ -93,21 +93,23 @@ void Camera::SetLookDir()
 Axes Camera::GetAxes() const
 {
 	VECTOR target_pos = v3d::GetZeroVector();
-
+	Axes axes = axis::GetWorldAxes();
+	 
 	if (m_target_transform)
 	{
 		target_pos = m_target_transform->GetPos(CoordinateKind::kWorld);
+		axes = m_target_transform->GetAxes(CoordinateKind::kWorld);
 	}
 
-	return math::GetAxes(target_pos - m_transform->GetPos(CoordinateKind::kWorld));
+	return math::GetAxes(target_pos - m_transform->GetPos(CoordinateKind::kWorld), axes);
 }
 
 void Camera::Move()
 {
 	const Axes axes = GetAxes();
 
-	CalcAngleFromPad  (axes.x);
-	CalcAngleFromMouse(axes.x);
+	CalcAngleFromPad  (axes.x_axis);
+	CalcAngleFromMouse(axes.x_axis);
 
 	// äpìxêßå¿
 	if (m_angle.x < kMinVerticalAngle * math::kDegreesToRadian) { m_angle.x = kMinVerticalAngle * math::kDegreesToRadian; }

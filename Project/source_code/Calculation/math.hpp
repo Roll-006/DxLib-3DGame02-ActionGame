@@ -130,6 +130,7 @@ namespace math
 	}
 
 	/// @brief unorderd_mapのvalueをソート
+	/// @brief main_u_mapとsub_u_mapは同じデータ型、同じ個数である必要あり
 	/// @param main_u_map ソートされるunorderd_map
 	/// @param sub_u_map main_u_mapに同じvalueがあった場合、sub_u_mapでソートを行う
 	template<typename KeyT, typename ValueT>
@@ -231,7 +232,8 @@ namespace math
 
 	/// @brief XYZ軸を取得
 	/// @param dir 向きベクトル(この値をZ軸とする)
-	[[nodiscard]] Axes GetAxes(const VECTOR& dir);
+	/// @param parent_axes 親とするXYZ軸
+	[[nodiscard]] Axes GetAxes(const VECTOR& dir, const Axes& parent_axes);
 	#pragma endregion
 
 

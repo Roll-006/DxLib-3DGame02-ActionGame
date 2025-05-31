@@ -1,9 +1,9 @@
 ﻿#include "animator.hpp"
 
-Animator::Animator(const std::shared_ptr<Modeler> modeler, const float blend_speed) :
+Animator::Animator(const std::shared_ptr<Modeler> modeler) :
 	m_prev_anim_play_rate		(0.0f),
 	m_blend_rate				(0.0f),
-	m_blend_speed				(blend_speed),
+	m_blend_speed				(kBlendSpeed),
 	m_is_first_frame_change_anim(false),
 	m_modeler					(modeler)
 

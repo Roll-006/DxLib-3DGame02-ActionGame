@@ -13,6 +13,8 @@ public:
 	void InitKeyCommand();
 	void InitPadCommand();
 
+	[[nodiscard]] InputModeKind GetInputModeKind()const { return m_input_mode; }
+
 private:
 	CommandManager();
 	~CommandManager() override;
@@ -22,69 +24,18 @@ private:
 	void LoadPlayerCommand();
 	void LoadCameraCommand();
 
-	/// @brief コマンドに対応する入力の登録
-	template<input_concepts::InputT InputT>
-	void AddInputCode(const CommandKind kind, const InputT& input_code)
-	{
-		// 対応するコマンドがない場合は早期return
-		if (!m_commands.count(kind)) { return; }
+	/// @brief コマンドに対応する入力コードの登録
+	void AddInputCode(const CommandKind kind, const input_concepts::InputT auto& input_code);
 
-		const auto input = InputChecker::GetInstance();
-		const auto code	 = input->ConvertInputTemplateToInputCode(input_code);
-		std::vector<std::pair<CommandKind, InputCode>>* codes = nullptr;
-		
-		switch (input->GetCurrentInputDevice())
-		{
-		case DeviceKind::kKeyboard: codes = &m_key_codes; break;
-		case DeviceKind::kPad:		codes = &m_pad_codes; break;
-		}
-
-		// 新規データのみ追加する
-		const auto add = std::find_if(codes->begin(), codes->end(), [=](const std::pair<CommandKind, InputCode> p)
-		{
-			return p.first == kind && p.second.kind == code.kind && p.second.code == code.code;
-		});
-
-		if (add == codes->end())
-		{
-			codes->emplace_back(std::make_pair(kind, code));
-		}
-	}
-
-	/// @brief コマンドに対応する入力の登録を解除
-	template<input_concepts::InputT InputT>
-	void RemoveInputCode(const CommandKind kind, const InputT& input_code)
-	{
-		// 対応するコマンドがない場合は早期return
-		if (!m_commands.count(kind)) { return; }
-
-		const auto input = InputChecker::GetInstance();
-		const auto code  = input->ConvertInputTemplateToInputCode(input_code);
-		std::vector<std::pair<CommandKind, InputCode>>* codes = nullptr;
-
-		switch (input->GetCurrentInputDevice())
-		{
-		case DeviceKind::kKeyboard: codes = &m_key_codes; break;
-		case DeviceKind::kPad:		codes = &m_pad_codes; break;
-		}
-
-		// 削除する入力コードを検索
-		const auto remove = std::find_if(codes->begin(), codes->end(), [=](const std::pair<CommandKind, InputCode> p)
-		{
-			return p.first == kind && p.second.kind == code.kind && p.second.code == code.code;
-		});
-
-		// 一致する入力コードを削除
-		if (remove != codes->end())
-		{
-			codes->erase(remove);
-		}
-	}
+	/// @brief コマンドに対応する入力コードの登録を解除
+	void RemoveInputCode(const CommandKind kind, const input_concepts::InputT auto& input_code);
 
 private:
 	std::unordered_map<CommandKind, std::shared_ptr<CommandBase>> m_commands;
 	std::vector<std::pair<CommandKind, InputCode>>	m_key_codes;
 	std::vector<std::pair<CommandKind, InputCode>>	m_pad_codes;
+
+	InputModeKind m_input_mode;		// ダッシュやしゃがみなどの入力方式
 
 	friend SingletonBase<CommandManager>;
 };

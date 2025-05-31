@@ -43,7 +43,7 @@ void Transform::AttachParent(const std::string& parent_obj_name)
 	// 親がいない場合のみアタッチ
 	if (m_parent_transform) { return; }
 	
-	const auto parent_obj = ObjManager::GetInstance()->GetObj(parent_obj_name);
+	const auto parent_obj		= ObjManager::GetInstance()->GetObj(parent_obj_name);
 	const auto parent_transform = parent_obj->GetTransform();
 
 	AttachParent(parent_transform);
@@ -85,20 +85,47 @@ void Transform::SetRotation(const CoordinateKind coord_kind, const MATRIX& rotat
 
 void Transform::SetRotation(const CoordinateKind coord_kind, const VECTOR& dir)
 {
-	const Axes axes = math::GetAxes(dir);	// FIXME : ワールドの軸が出ている
-	SetRotation(coord_kind, axes);
-}
+	Axes axes = math::GetAxes(dir, axis::GetWorldAxes());
 
-void Transform::SetRotation(const CoordinateKind coord_kind, const Axes& axes)
-{
 	if (coord_kind == CoordinateKind::kLocal)
 	{
 		if (m_parent_transform)
 		{
-			SetRotation(coord_kind, math::ConvertAxesToZXYRotationMatrix(axes, m_parent_transform->GetAxes(coord_kind)));
+			axes = math::GetAxes(dir, m_parent_transform->GetAxes(coord_kind));
 		}
 	}
-	SetRotation(coord_kind, math::ConvertAxesToZXYRotationMatrix(axes, axis::GetWorldAxes()));
+	SetRotation(coord_kind, axes);
+
+	DrawFormatString(0, 400, 0xffffff, "%f, %f, %f", axes.z.x, axes.z.y, axes.z.z);
+}
+
+void Transform::SetRotation(const CoordinateKind coord_kind, const Axes& axes)
+{
+	const VECTOR angle = math::ConvertAxesToEulerAngles(axes, axis::GetWorldAxes());
+
+	MATRIX mat = MGetIdent();
+	CreateRotationXYZMatrix(&mat, angle.x, angle.y, angle.z);
+
+	// MEMO : 値のずれあり
+	VECTOR angle2 = math::ConvertRotationMatrixToEulerAngles(mat, axis::GetWorldAxes());
+
+	// MEMO : angleとangle2の値が違う
+	DrawFormatString(500, 400, 0xffffff, "%f, %f, %f", angle.x, angle.y, angle.z);
+	DrawFormatString(500, 420, 0xffffff, "%f, %f, %f", angle2.x, angle2.y, angle2.z);
+
+	SetRotation(coord_kind, mat);
+
+	//if (coord_kind == CoordinateKind::kLocal)
+	//{
+	//	if (m_parent_transform)
+	//	{
+	//		//SetRotation(coord_kind, math::ConvertAxesToXYZRotationMatrix(axes, m_parent_transform->GetAxes(coord_kind)));
+	//		return;
+	//	}
+	//}
+	//SetRotation(coord_kind, math::ConvertAxesToXYZRotationMatrix(axes, axis::GetWorldAxes()));
+
+	//matrix::Draw(math::ConvertAxesToXYZRotationMatrix(axes, axis::GetWorldAxes()), VGet(0, 420, 0));
 }
 
 void Transform::SetScale(const CoordinateKind coord_kind, const VECTOR& scale)
@@ -143,12 +170,12 @@ VECTOR Transform::GetScale(const CoordinateKind coord_kind)
 
 VECTOR Transform::GetRight(const CoordinateKind coord_kind)
 {
-	return GetAxes(coord_kind).x;
+	return GetAxes(coord_kind).x_axis;
 }
 
 VECTOR Transform::GetUp(const CoordinateKind coord_kind)
 {
-	return GetAxes(coord_kind).y;
+	return GetAxes(coord_kind).y_axis;
 }
 
 VECTOR Transform::GetForward(const CoordinateKind coord_kind)

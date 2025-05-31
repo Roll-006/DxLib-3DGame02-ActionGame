@@ -19,7 +19,7 @@ public:
 	};
 
 public:
-	Animator(const std::shared_ptr<Modeler> modeler, const float blend_speed);
+	Animator(const std::shared_ptr<Modeler> modeler);
 	~Animator();
 
 	void Init();
@@ -41,6 +41,8 @@ private:
 	void BlendAnim();
 
 private:
+	static constexpr float kBlendSpeed = 3.0f;
+
 	std::unordered_map<int, AnimKindData>				m_kind_data;
 	std::unordered_map<TimeState, AnimTimeStateData>	m_time_state_data;
 

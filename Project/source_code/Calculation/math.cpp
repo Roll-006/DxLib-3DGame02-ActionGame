@@ -87,11 +87,12 @@ Quaternion math::ConvertRotationMatrixToQuaternion(const MATRIX& mat)
 
 MATRIX math::ConvertAxesToXYZRotationMatrix(const Axes& axes, const Axes& parent_axes)
 {
+    // オイラー角を取得
     const VECTOR angle = ConvertAxesToEulerAngles(parent_axes, axes);
 
     MATRIX mat = MGetIdent();
     CreateRotationXYZMatrix(&mat, angle.x, angle.y, angle.z);
-    return mat;
+    return MGetRotElem(mat);
 }
 
 MATRIX math::ConvertAxesToXZYRotationMatrix(const Axes& axes, const Axes& parent_axes)
@@ -141,8 +142,8 @@ MATRIX math::ConvertAxesToZYXRotationMatrix(const Axes& axes, const Axes& parent
 
 VECTOR math::ConvertAxesToEulerAngles(const Axes& axes, const Axes& parent_axes)
 {
-    const float angle_x = GetAngleBetweenTwoVector(parent_axes.x, axes.x);
-    const float angle_y = GetAngleBetweenTwoVector(parent_axes.y, axes.y);
+    const float angle_x = GetAngleBetweenTwoVector(parent_axes.x_axis, axes.x_axis);
+    const float angle_y = GetAngleBetweenTwoVector(parent_axes.y_axis, axes.y_axis);
     const float angle_z = GetAngleBetweenTwoVector(parent_axes.z, axes.z);
 
     return VECTOR(angle_x, angle_y, angle_z);
@@ -155,13 +156,21 @@ VECTOR math::ConvertRotationMatrixToEulerAngles(const MATRIX& mat, const Axes& p
 
 Axes math::ConvertRotationMatrixToAxes(const MATRIX& mat)
 {
+    // MEMO : 間違っているか確認中
     const MATRIX m = MGetRotElem(mat);
 
-    const VECTOR x_axis = VTransform(VGet(1, 0, 0), m);
+    const VECTOR x_axis = VTransform(axis::GetWorldXAxis(), m);
     const VECTOR y_axis = VTransform(axis::GetWorldYAxis(), m);
     const VECTOR z_axis = VTransform(axis::GetWorldZAxis(), m);
 
-    return Axes(x_axis, y_axis, z_axis);
+    auto a = Axes(x_axis, y_axis, z_axis);
+
+    DrawFormatString(500, 440, 0xffffff, "%f, %f, %f", angle.x, angle.y, angle.z);
+    DrawFormatString(500, 460, 0xffffff, "%f, %f, %f", angle2.x, angle2.y, angle2.z);
+    DrawFormatString(500, 480, 0xffffff, "%f, %f, %f", angle2.x, angle2.y, angle2.z);
+
+
+    return ;
 }
 #pragma endregion
 
@@ -281,11 +290,11 @@ VECTOR math::GetYawRotateVector(const VECTOR& v)
     return VGet(0.0f, GetYaw(v), 0.0f);
 }
 
-Axes math::GetAxes(const VECTOR& dir)
+Axes math::GetAxes(const VECTOR& dir, const Axes& parent_axes)
 {
     // directionを基準として各軸を取得
     const VECTOR local_dir_z = v3d::GetNormalizedVector(dir);
-    const VECTOR local_dir_x = math::GetNormalVector(axis::GetWorldYAxis(), local_dir_z);
+    const VECTOR local_dir_x = math::GetNormalVector(parent_axes.y_axis, local_dir_z);
     const VECTOR local_dir_y = math::GetNormalVector(local_dir_z, local_dir_x);
 
     return Axes(local_dir_x, local_dir_y, local_dir_z);

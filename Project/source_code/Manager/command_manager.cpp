@@ -1,6 +1,7 @@
 #include "command_manager.hpp"
 
-CommandManager::CommandManager()
+CommandManager::CommandManager() : 
+	m_input_mode(InputModeKind::kTrigger)
 {
 	LoadSelectCommand();
 	LoadPlayerCommand();
@@ -38,6 +39,10 @@ void CommandManager::Execute(const CommandKind command_kind, obj_concepts::ObjT 
 	{
 		if (code.first == command_kind)
 		{
+			// TODO : スティック操作は例外として作る
+			// TODO : クイックターンも例外とする
+
+
 			if (input->IsInput(code.second)) { command->Execute(obj); }
 		}
 	}
@@ -78,6 +83,62 @@ void CommandManager::LoadCameraCommand()
 	m_commands[CommandKind::kMoveRightCamera]	= (std::make_shared<camera_cmd::MoveRight>());
 	m_commands[CommandKind::kInitAngle]			= (std::make_shared<camera_cmd::InitAngle>());
 }
+
+void CommandManager::AddInputCode(const CommandKind kind, const input_concepts::InputT auto& input_code)
+{
+	// 対応するコマンドがない場合は早期return
+	if (!m_commands.count(kind)) { return; }
+
+	const auto input = InputChecker::GetInstance();
+	const auto code = input->ConvertInputTemplateToInputCode(input_code);
+	std::vector<std::pair<CommandKind, InputCode>>* codes = nullptr;
+
+	switch (input->GetCurrentInputDevice())
+	{
+	case DeviceKind::kKeyboard: codes = &m_key_codes; break;
+	case DeviceKind::kPad:		codes = &m_pad_codes; break;
+	}
+
+	// 新規データのみ追加する
+	const auto add = std::find_if(codes->begin(), codes->end(), [=](const std::pair<CommandKind, InputCode> p)
+	{
+		return p.first == kind && p.second.kind == code.kind && p.second.code == code.code;
+	});
+
+	if (add == codes->end())
+	{
+		codes->emplace_back(std::make_pair(kind, code));
+	}
+}
+
+void CommandManager::RemoveInputCode(const CommandKind kind, const input_concepts::InputT auto& input_code)
+{
+	// 対応するコマンドがない場合は早期return
+	if (!m_commands.count(kind)) { return; }
+
+	const auto input = InputChecker::GetInstance();
+	const auto code = input->ConvertInputTemplateToInputCode(input_code);
+	std::vector<std::pair<CommandKind, InputCode>>* codes = nullptr;
+
+	switch (input->GetCurrentInputDevice())
+	{
+	case DeviceKind::kKeyboard: codes = &m_key_codes; break;
+	case DeviceKind::kPad:		codes = &m_pad_codes; break;
+	}
+
+	// 削除する入力コードを検索
+	const auto remove = std::find_if(codes->begin(), codes->end(), [=](const std::pair<CommandKind, InputCode> p)
+	{
+		return p.first == kind && p.second.kind == code.kind && p.second.code == code.code;
+	});
+
+	// 一致する入力コードを削除
+	if (remove != codes->end())
+	{
+		codes->erase(remove);
+	}
+}
+
 
 void CommandManager::InitKeyCommand()
 {

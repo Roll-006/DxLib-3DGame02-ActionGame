@@ -90,16 +90,16 @@
       <Filter>Calculation</Filter>
     </ClCompile>
     <ClCompile Include="source_code\Part\animator.cpp">
-      <Filter>Data\FPS\Part</Filter>
+      <Filter>Part</Filter>
     </ClCompile>
     <ClCompile Include="source_code\Part\modeler (2).cpp">
-      <Filter>Data\FPS\Part</Filter>
+      <Filter>Part</Filter>
     </ClCompile>
     <ClCompile Include="source_code\Part\modeler.cpp">
-      <Filter>Data\FPS\Part</Filter>
+      <Filter>Part</Filter>
     </ClCompile>
     <ClCompile Include="source_code\Part\transform.cpp">
-      <Filter>Data\FPS\Part</Filter>
+      <Filter>Part</Filter>
     </ClCompile>
     <ClCompile Include="source_code\Manager\physics_manager.cpp">
       <Filter>Manager</Filter>
@@ -320,16 +320,16 @@
       <Filter>Data\IncludeList</Filter>
     </ClInclude>
     <ClInclude Include="source_code\Part\animator.hpp">
-      <Filter>Data\FPS\Part</Filter>
+      <Filter>Part</Filter>
     </ClInclude>
     <ClInclude Include="source_code\Part\modeler (2).hpp">
-      <Filter>Data\FPS\Part</Filter>
+      <Filter>Part</Filter>
     </ClInclude>
     <ClInclude Include="source_code\Part\modeler.hpp">
-      <Filter>Data\FPS\Part</Filter>
+      <Filter>Part</Filter>
     </ClInclude>
     <ClInclude Include="source_code\Part\transform.hpp">
-      <Filter>Data\FPS\Part</Filter>
+      <Filter>Part</Filter>
     </ClInclude>
     <ClInclude Include="source_code\Data\Kind\coordinate_kind.hpp">
       <Filter>Data\Kind</Filter>
@@ -447,7 +447,7 @@
     <Filter Include="Data\FPS">
       <UniqueIdentifier>{2e55dbb6-3445-4bc3-9190-942193ab83a5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Data\FPS\Part">
+    <Filter Include="Part">
       <UniqueIdentifier>{c6964f06-9b8c-446a-8f44-3299598a3b7f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>

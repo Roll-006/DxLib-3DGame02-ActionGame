@@ -3,8 +3,8 @@
 
 Player::Player(std::shared_ptr<Camera> camera) :
 	PhysicalObjBase		(ObjName.PLAYER, ObjTag.PLAYER, MassKind::kMedium),
-	m_modeler			(nullptr),
-	m_animator			(nullptr),
+	m_modeler			(std::make_shared<Modeler>(GetTransform(), ModelPath.CHARA_01)),
+	m_animator			(std::make_shared<Animator>(m_modeler)),
 	m_camera			(camera),
 	m_dir				(v3d::GetZeroVector()),
 	m_destination_dir	(v3d::GetZeroVector()),
@@ -13,9 +13,6 @@ Player::Player(std::shared_ptr<Camera> camera) :
 	m_is_move			(false),
 	m_is_run			(false)
 {
-	m_modeler	= std::make_shared<Modeler> (GetTransform(), ModelPath.CHARA_01);
-	m_animator	= std::make_shared<Animator>(m_modeler, 3.0f);
-
 	// ‰ŠúposEdir‚ðÝ’è
 	m_dir = m_destination_dir = VGet(0.0f, 0.0f, -1.0f);
 	m_transform->SetRotation(CoordinateKind::kWorld, m_dir);
@@ -55,18 +52,19 @@ void Player::Draw() const
 {
 	m_modeler->Draw();
 
-	DrawFormatString(0,  0, 0xffffff, "speed    : %f", m_move_speed);
-	DrawFormatString(0, 20, 0xffffff, "is_move  : %d", m_is_move);
-	DrawFormatString(0, 40, 0xffffff, "dir      : %f, %f, %f", m_dir.x, m_dir.y, m_dir.z);
-	DrawFormatString(0, 60, 0xffffff, "velocity : %f, %f, %f", m_velocity.x, m_velocity.y, m_velocity.z);
-	matrix::Draw(m_transform->GetMatrix(CoordinateKind::kWorld), VGet(0, 100, 0));
-
-	DrawLine3D(v3d::GetZeroVector(), m_transform->GetRight	(CoordinateKind::kWorld) * 100, 0xff0000);
-	DrawLine3D(v3d::GetZeroVector(), m_transform->GetUp		(CoordinateKind::kWorld) * 100, 0x00ff22);
-	DrawLine3D(v3d::GetZeroVector(), m_transform->GetForward(CoordinateKind::kWorld) * 100, 0x0077ff);
-
 	Sphere s(m_transform->GetPos(CoordinateKind::kWorld), 40);
 	s.Draw(true, 0, 0xffffff);
+
+	//DrawFormatString(0,  0, 0xffffff, "speed    : %f", m_move_speed);
+	//DrawFormatString(0, 20, 0xffffff, "is_move  : %d", m_is_move);
+	//DrawFormatString(0, 40, 0xffffff, "dir      : %f, %f, %f", m_dir.x, m_dir.y, m_dir.z);
+	//DrawFormatString(0, 60, 0xffffff, "velocity : %f, %f, %f", m_velocity.x, m_velocity.y, m_velocity.z);
+	//matrix::Draw(m_transform->GetMatrix(CoordinateKind::kWorld), VGet(0, 100, 0));
+
+	//DrawLine3D(v3d::GetZeroVector(), m_transform->GetRight	(CoordinateKind::kWorld) * 100, 0xff0000);
+	//DrawLine3D(v3d::GetZeroVector(), m_transform->GetUp		(CoordinateKind::kWorld) * 100, 0x00ff22);
+	//DrawLine3D(v3d::GetZeroVector(), m_transform->GetForward(CoordinateKind::kWorld) * 100, 0x0077ff);
+
 }
 
 void Player::OnCollide(const PhysicalObjBase& check_hit_obj)
@@ -91,8 +89,8 @@ void Player::Move()
 	if (m_is_move)
 	{
 		m_velocity = m_dir * m_move_speed;
-		//m_transform->SetRotation(CoordinateKind::kWorld, m_dir);
-		m_transform->SetPos		(CoordinateKind::kWorld, m_transform->GetPos(CoordinateKind::kWorld) + m_velocity);
+		m_transform->SetRotation(CoordinateKind::kWorld, m_dir);
+		m_transform->SetPos(CoordinateKind::kWorld, m_transform->GetPos(CoordinateKind::kWorld) + m_velocity);
 	}
 }
 

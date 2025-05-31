@@ -19,7 +19,7 @@ enum class InputState
 	kHold,		// ’·‰Ÿ‚µ
 };
 
-enum class InputMode
+enum class InputModeKind
 {
 	kTrigger,
 	kHold,
