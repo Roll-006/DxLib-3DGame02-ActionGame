@@ -61,8 +61,8 @@ private:
 
 private:
 	std::unordered_map<CommandKind, std::shared_ptr<CommandBase>> m_commands;
-	std::vector<std::pair<CommandKind, InputCode>>	m_key_codes;
-	std::vector<std::pair<CommandKind, InputCode>>	m_pad_codes;
+	std::vector<std::pair<CommandKind, InputCode>> m_key_codes;
+	std::vector<std::pair<CommandKind, InputCode>> m_pad_codes;
 
 	InputModeKind m_input_mode;		// ƒ_ƒbƒVƒ…‚â‚µ‚á‚ª‚Ý‚È‚Ç‚Ì“ü—Í•ûŽ®
 

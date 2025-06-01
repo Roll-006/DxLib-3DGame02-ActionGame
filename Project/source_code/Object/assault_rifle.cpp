@@ -1,7 +1,7 @@
 #include "assault_rifle.hpp"
 
 AssaultRifle::AssaultRifle() :
-	GunBase(ObjName.ASSAULT_RIFLE, ObjTag.WEAPON)
+	GunBase(ObjName.ASSAULT_RIFLE, GunKind::kAssaultRifle, ModelPath.ASSAULT_RIFLE_01)
 {
 
 }
@@ -23,5 +23,5 @@ void AssaultRifle::Update()
 
 void AssaultRifle::Draw() const
 {
-
+	m_modeler->Draw();
 }

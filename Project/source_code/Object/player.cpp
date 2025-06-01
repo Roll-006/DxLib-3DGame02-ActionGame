@@ -1,9 +1,7 @@
 #include "player.hpp"
 
 Player::Player(std::shared_ptr<Camera> camera) :
-	PhysicalObjBase		(ObjName.PLAYER, ObjTag.PLAYER, MassKind::kMedium),
-	m_modeler			(std::make_shared<Modeler>(GetTransform(), ModelPath.CHARA_01)),
-	m_animator			(std::make_shared<Animator>(m_modeler)),
+	CharaBase			(ObjName.PLAYER, ObjTag.PLAYER, ModelPath.CHARA_01, MassKind::kMedium),
 	m_camera			(camera),
 	m_dir				(v3d::GetZeroVector()),
 	m_destination_dir	(v3d::GetZeroVector()),

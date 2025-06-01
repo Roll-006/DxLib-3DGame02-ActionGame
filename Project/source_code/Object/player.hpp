@@ -1,12 +1,11 @@
 #pragma once
-#include "../Part/modeler.hpp"
-#include "../Part/animator.hpp"
-
-#include "../Object/camera.hpp"
-
+#include "../Base/chara_base.hpp"
 #include "../Data/Kind/player_kind.hpp"
 
-class Player final : public PhysicalObjBase
+#include "assault_rifle.hpp"
+#include "camera.hpp"
+
+class Player final : public CharaBase
 {
 public:
 	Player(std::shared_ptr<Camera> camera);
@@ -19,7 +18,7 @@ public:
 	void OnCollide(const PhysicalObjBase& check_hit_obj) override;
 	void OnGravity() override;
 
-	void ChangeAnimState();
+	void ChangeAnimState() override;
 
 	[[nodiscard]] std::shared_ptr<Modeler>	GetModeler()  const { return m_modeler; }
 	[[nodiscard]] std::shared_ptr<Animator>	GetAnimator() const { return m_animator; }
@@ -55,10 +54,8 @@ private:
 	static constexpr float kDistanceDirToDir	= 1.7f;		// 目的のdirを即座に現在のdirに反映する閾値(dir同士の距離)
 	static constexpr int   kWalkStickSlopeLimit	= 15000;	// 歩き状態とするスティック傾きの上限
 
-	std::shared_ptr<Modeler>  m_modeler;
-	std::shared_ptr<Animator> m_animator;
-
 	std::shared_ptr<Camera>	  m_camera;
+	std::shared_ptr<GunBase>  m_gun;
 
 	VECTOR m_dir;
 	VECTOR m_destination_dir;

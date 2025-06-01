@@ -152,6 +152,7 @@
     <ClCompile Include="source_code\Manager\input_checker.cpp" />
     <ClCompile Include="source_code\Manager\obj_manager.cpp" />
     <ClCompile Include="source_code\Manager\scene_manager.cpp" />
+    <ClCompile Include="source_code\Manager\weapon_manager.cpp" />
     <ClCompile Include="source_code\Object\assault_rifle.cpp" />
     <ClCompile Include="source_code\Object\selector.cpp" />
     <ClCompile Include="source_code\Object\camera.cpp" />
@@ -218,6 +219,8 @@
     <ClInclude Include="source_code\Data\IncludeList\vector.hpp" />
     <ClInclude Include="source_code\Data\input_data.hpp" />
     <ClInclude Include="source_code\Data\Kind\axis_kind.hpp" />
+    <ClInclude Include="source_code\Data\Kind\knife_kind.hpp" />
+    <ClInclude Include="source_code\Data\Kind\gun_kind.hpp" />
     <ClInclude Include="source_code\Data\Kind\command_kind.hpp" />
     <ClInclude Include="source_code\Data\Kind\coordinate_kind.hpp" />
     <ClInclude Include="source_code\Data\Kind\device_kind.hpp" />
@@ -246,6 +249,7 @@
     <ClInclude Include="source_code\Manager\input_checker.hpp" />
     <ClInclude Include="source_code\Manager\obj_manager.hpp" />
     <ClInclude Include="source_code\Manager\scene_manager.hpp" />
+    <ClInclude Include="source_code\Manager\weapon_manager.hpp" />
     <ClInclude Include="source_code\Object\assault_rifle.hpp" />
     <ClInclude Include="source_code\Object\selector.hpp" />
     <ClInclude Include="source_code\Object\camera.hpp" />

@@ -122,6 +122,9 @@
     <ClCompile Include="source_code\Object\assault_rifle.cpp">
       <Filter>Object</Filter>
     </ClCompile>
+    <ClCompile Include="source_code\Manager\weapon_manager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source_code\Manager\game_manager.hpp">
@@ -390,6 +393,15 @@
     </ClInclude>
     <ClInclude Include="source_code\Object\assault_rifle.hpp">
       <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Data\Kind\knife_kind.hpp">
+      <Filter>Data\Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Data\Kind\gun_kind.hpp">
+      <Filter>Data\Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Manager\weapon_manager.hpp">
+      <Filter>Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
