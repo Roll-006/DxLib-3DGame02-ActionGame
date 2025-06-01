@@ -6,7 +6,7 @@ struct Axes
 {
 	VECTOR x_axis;
 	VECTOR y_axis;
-	VECTOR z;
+	VECTOR z_axis;
 };
 
 namespace axis

@@ -3,10 +3,11 @@
 enum class PlayerAnimKind
 {
 	kNone = -1,
-	kIdle,
-	kWalk,
-	kJog,
-	kRun,
-	kJump,
-	kFall,
+	kIdle01,
+	kIdle02,
+	kWalk01,
+	kJog01,
+	kRun01,
+	kJump01,
+	kFall01,
 };

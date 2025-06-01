@@ -1,15 +1,6 @@
 #include "transform.hpp"
 #include "../Manager/obj_manager.hpp"
 
-Transform::Transform(const VECTOR& local_pos) :
-	m_local_matrix		(MGetIdent()),
-	m_parent_transform	(nullptr)
-{
-	m_local_matrix.m[3][0] = local_pos.x;
-	m_local_matrix.m[3][1] = local_pos.y;
-	m_local_matrix.m[3][2] = local_pos.z;
-}
-
 Transform::Transform() :
 	m_local_matrix		(MGetIdent()),
 	m_parent_transform	(nullptr)
@@ -80,7 +71,10 @@ void Transform::SetPos(const CoordinateKind coord_kind, const VECTOR& pos)
 
 void Transform::SetRotation(const CoordinateKind coord_kind, const MATRIX& rotation_matrix)
 {
-	m_local_matrix = rotation_matrix * MInverse(GetRotationMatrix(coord_kind)) * m_local_matrix;
+	// MEMO : ワールド回転行列が引数の場合に不具合あり
+
+	m_local_matrix = rotation_matrix * MInverse(GetRotationMatrix(coord_kind)) * GetMatrix(coord_kind);
+	auto a = GetRotationMatrix(coord_kind);
 }
 
 void Transform::SetRotation(const CoordinateKind coord_kind, const VECTOR& dir)
@@ -96,7 +90,7 @@ void Transform::SetRotation(const CoordinateKind coord_kind, const VECTOR& dir)
 	}
 	SetRotation(coord_kind, axes);
 
-	DrawFormatString(0, 400, 0xffffff, "%f, %f, %f", axes.z.x, axes.z.y, axes.z.z);
+	//DrawFormatString(0, 400, 0xffffff, "%f, %f, %f", axes.z_axis.x, axes.z_axis.y, axes.z_axis.z);
 }
 
 void Transform::SetRotation(const CoordinateKind coord_kind, const Axes& axes)
@@ -110,10 +104,10 @@ void Transform::SetRotation(const CoordinateKind coord_kind, const Axes& axes)
 	VECTOR angle2 = math::ConvertRotationMatrixToEulerAngles(mat, axis::GetWorldAxes());
 
 	// MEMO : angleとangle2の値が違う
-	DrawFormatString(500, 400, 0xffffff, "%f, %f, %f", angle.x, angle.y, angle.z);
-	DrawFormatString(500, 420, 0xffffff, "%f, %f, %f", angle2.x, angle2.y, angle2.z);
+	//DrawFormatString(500, 400, 0xffffff, "%f, %f, %f", angle.x, angle.y, angle.z);
+	//DrawFormatString(500, 420, 0xffffff, "%f, %f, %f", angle2.x, angle2.y, angle2.z);
 
-	SetRotation(coord_kind, mat);
+	SetRotation(coord_kind, mat); 
 
 	//if (coord_kind == CoordinateKind::kLocal)
 	//{
@@ -180,7 +174,7 @@ VECTOR Transform::GetUp(const CoordinateKind coord_kind)
 
 VECTOR Transform::GetForward(const CoordinateKind coord_kind)
 {
-	return GetAxes(coord_kind).z;
+	return GetAxes(coord_kind).z_axis;
 }
 
 Axes Transform::GetAxes(const CoordinateKind coord_kind)

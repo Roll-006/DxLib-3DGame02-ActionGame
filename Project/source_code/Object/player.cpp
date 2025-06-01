@@ -1,5 +1,4 @@
 #include "player.hpp"
-#include "../Manager/command_manager.hpp"
 
 Player::Player(std::shared_ptr<Camera> camera) :
 	PhysicalObjBase		(ObjName.PLAYER, ObjTag.PLAYER, MassKind::kMedium),
@@ -14,7 +13,7 @@ Player::Player(std::shared_ptr<Camera> camera) :
 	m_is_run			(false)
 {
 	// 初期pos・dirを設定
-	m_dir = m_destination_dir = VGet(0.0f, 0.0f, -1.0f);
+	m_dir = m_destination_dir = VGet(0.0f, 0.0f, 1.0f);
 	m_transform->SetRotation(CoordinateKind::kWorld, m_dir);
 	m_transform->SetPos		(CoordinateKind::kWorld, VGet(0, 0, 0));
 
@@ -23,13 +22,14 @@ Player::Player(std::shared_ptr<Camera> camera) :
 	AddTrigger(TriggerKind::kLanding, std::make_shared<Sphere>());
 
 	// 各アニメーション追加
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdle), AnimPath.IDLE_01, AnimTag.NONE, 20.0f, true);
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalk), AnimPath.WALK_01, AnimTag.WALK, 20.0f, true);
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kJog),  AnimPath.JOG_01,  AnimTag.WALK, 20.0f, true);
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kRun),  AnimPath.RUN_01,  AnimTag.WALK, 20.0f, true);
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kJump), AnimPath.JUMP_01, AnimTag.NONE, 20.0f, true);
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kFall), AnimPath.FALL_01, AnimTag.NONE, 20.0f, true);
-	m_animator->AttachAnim	 (static_cast<int>(PlayerAnimKind::kIdle));
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdle01), AnimPath.IDLE_01, 1, AnimTag.NONE, 20.0f, true);
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdle02), AnimPath.IDLE_02, 0, AnimTag.NONE, 20.0f, true);
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalk01), AnimPath.WALK_01, 1, AnimTag.WALK, 20.0f, true);
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kJog01),  AnimPath.JOG_01,  1, AnimTag.WALK, 20.0f, true);
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kRun01),  AnimPath.RUN_01,  1, AnimTag.WALK, 20.0f, true);
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kJump01), AnimPath.JUMP_01, 1, AnimTag.NONE, 20.0f, false);
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kFall01), AnimPath.FALL_01, 1, AnimTag.NONE, 20.0f, false);
+	m_animator->AttachAnim	 (static_cast<int>(PlayerAnimKind::kIdle02));
 }
 
 Player::~Player()
@@ -86,10 +86,11 @@ void Player::Move()
 	CalcHorizontalVelocity();
 	CalcVerticalVelocity();
 
+	// 移動した場合は位置・回転を更新
 	if (m_is_move)
 	{
 		m_velocity = m_dir * m_move_speed;
-		m_transform->SetRotation(CoordinateKind::kWorld, m_dir);
+		//m_transform->SetRotation(CoordinateKind::kWorld, m_dir);
 		m_transform->SetPos(CoordinateKind::kWorld, m_transform->GetPos(CoordinateKind::kWorld) + m_velocity);
 	}
 }

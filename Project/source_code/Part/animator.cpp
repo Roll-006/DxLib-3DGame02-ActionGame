@@ -33,12 +33,12 @@ void Animator::Update()
 	PlayAnim();
 }
 
-void Animator::AddAnimHandle(const int kind, const std::string& file_path, const std::string& tag, const float play_speed, const bool is_loop)
+void Animator::AddAnimHandle(const int kind, const std::string& file_path, const int index, const std::string& tag, const float play_speed, const bool is_loop)
 {
 	// 上書き不可
 	if (m_kind_data.count(kind)) { return; }
 
-	m_kind_data[kind] = AnimKindData(MV1LoadModel(file_path.c_str()), tag, play_speed, is_loop);
+	m_kind_data[kind] = AnimKindData(MV1LoadModel(file_path.c_str()), index, tag, play_speed, is_loop);
 }
 
 void Animator::AttachAnim(const int next_kind)
@@ -52,7 +52,7 @@ void Animator::AttachAnim(const int next_kind)
 
 	// データを移行(Current ➡ Prev, Next ➡ Current)
 	m_time_state_data.at(TimeState::kPrev)				   = m_time_state_data.at(TimeState::kCurrent);
-	m_time_state_data.at(TimeState::kCurrent).attach_index = MV1AttachAnim(m_modeler->GetModelHandle(), 1, m_kind_data.at(next_kind).anim_handle, TRUE);
+	m_time_state_data.at(TimeState::kCurrent).attach_index = MV1AttachAnim(m_modeler->GetModelHandle(), m_kind_data.at(next_kind).index, m_kind_data.at(next_kind).anim_handle, TRUE);
 	m_time_state_data.at(TimeState::kCurrent).kind		   = next_kind;
 	SetPlayStartTime();
 

@@ -8,7 +8,6 @@
 class Transform final
 {
 public:
-	Transform(const VECTOR& local_pos);
 	Transform();
 	~Transform();
 

@@ -144,7 +144,7 @@ VECTOR math::ConvertAxesToEulerAngles(const Axes& axes, const Axes& parent_axes)
 {
     const float angle_x = GetAngleBetweenTwoVector(parent_axes.x_axis, axes.x_axis);
     const float angle_y = GetAngleBetweenTwoVector(parent_axes.y_axis, axes.y_axis);
-    const float angle_z = GetAngleBetweenTwoVector(parent_axes.z, axes.z);
+    const float angle_z = GetAngleBetweenTwoVector(parent_axes.z_axis, axes.z_axis);
 
     return VECTOR(angle_x, angle_y, angle_z);
 }
@@ -156,21 +156,17 @@ VECTOR math::ConvertRotationMatrixToEulerAngles(const MATRIX& mat, const Axes& p
 
 Axes math::ConvertRotationMatrixToAxes(const MATRIX& mat)
 {
-    // MEMO : 間違っているか確認中
+    // MEMO : 正常な可能性高
     const MATRIX m = MGetRotElem(mat);
 
     const VECTOR x_axis = VTransform(axis::GetWorldXAxis(), m);
     const VECTOR y_axis = VTransform(axis::GetWorldYAxis(), m);
     const VECTOR z_axis = VTransform(axis::GetWorldZAxis(), m);
 
+    //matrix::Draw(m, VGet(0, 0, 0));
     auto a = Axes(x_axis, y_axis, z_axis);
-
-    DrawFormatString(500, 440, 0xffffff, "%f, %f, %f", angle.x, angle.y, angle.z);
-    DrawFormatString(500, 460, 0xffffff, "%f, %f, %f", angle2.x, angle2.y, angle2.z);
-    DrawFormatString(500, 480, 0xffffff, "%f, %f, %f", angle2.x, angle2.y, angle2.z);
-
-
-    return ;
+    auto ma = ConvertAxesToXYZRotationMatrix(a, axis::GetWorldAxes());
+    return a;
 }
 #pragma endregion
 

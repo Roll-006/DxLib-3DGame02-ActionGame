@@ -30,6 +30,11 @@ public:
 	/// @brief ターゲットとの距離を設定する
 	void SetDistanceToTarget(const float distance) { m_distance_to_target = distance; }
 
+	#pragma region コマンド
+	void Approach();
+	void Depart();
+	#pragma endregion
+
 private:
 	void Move();
 
@@ -37,8 +42,6 @@ private:
 	void InitAngle();
 
 	void SetLookDir();
-
-	[[nodiscard]] Axes GetAxes() const;
 
 	/// @brief 操作時の反転処理を適用する
 	[[nodiscard]] VECTOR ApplyInvert(VECTOR& velocity) const;
@@ -55,6 +58,7 @@ private:
 	static constexpr float kNormalDistance			= 500.0f;
 	static constexpr float kSpeedWithPad			= 2.5f;
 	static constexpr float kSpeedRateWithMouse		= 0.1f;
+	static constexpr float kApproachSpeed			= 800.0f;
 	static constexpr float kInitAngleTolerance		= 0.01f;		// 視点リセットが完了したと判定させる許容値
 
 	std::shared_ptr<Transform> m_target_transform;

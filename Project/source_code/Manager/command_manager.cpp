@@ -18,36 +18,6 @@ CommandManager::~CommandManager()
 
 }
 
-void CommandManager::Execute(const CommandKind command_kind, obj_concepts::ObjT auto& obj)
-{
-	// 対応するコマンドがない場合は早期return
-	if (!m_commands.count(command_kind)) { return; }
-
-	const auto input   = InputChecker::GetInstance();
-	const auto command = m_commands.at(command_kind);
-	std::vector<std::pair<CommandKind, InputCode>>* codes = nullptr;
-
-	// 現在の入力デバイスと同じ入力以外は実行しない
-	switch (input->GetCurrentInputDevice())
-	{
-	case DeviceKind::kKeyboard: codes = &m_key_codes; break;
-	case DeviceKind::kPad:		codes = &m_pad_codes; break;
-	}
-
-	// コマンドに対応する入力コードをすべて検索し実行
-	for (const auto& code : codes)
-	{
-		if (code.first == command_kind)
-		{
-			// TODO : スティック操作は例外として作る
-			// TODO : クイックターンも例外とする
-
-
-			if (input->IsInput(code.second)) { command->Execute(obj); }
-		}
-	}
-}
-
 void CommandManager::LoadSelectCommand()
 {
 	m_commands[CommandKind::kDecide]			= (std::make_shared<select_cmd::Decide>());
@@ -81,6 +51,8 @@ void CommandManager::LoadCameraCommand()
 	m_commands[CommandKind::kMoveDownCamera]	= (std::make_shared<camera_cmd::MoveDown>());
 	m_commands[CommandKind::kMoveLeftCamera]	= (std::make_shared<camera_cmd::MoveLeft>());
 	m_commands[CommandKind::kMoveRightCamera]	= (std::make_shared<camera_cmd::MoveRight>());
+	m_commands[CommandKind::kApproachCamera]	= (std::make_shared<camera_cmd::Approach>());
+	m_commands[CommandKind::kDepartCamera]		= (std::make_shared<camera_cmd::Depart>());
 	m_commands[CommandKind::kInitAngle]			= (std::make_shared<camera_cmd::InitAngle>());
 }
 
@@ -92,11 +64,21 @@ void CommandManager::AddInputCode(const CommandKind kind, const input_concepts::
 	const auto input = InputChecker::GetInstance();
 	const auto code = input->ConvertInputTemplateToInputCode(input_code);
 	std::vector<std::pair<CommandKind, InputCode>>* codes = nullptr;
-
-	switch (input->GetCurrentInputDevice())
+	
+	switch (input->GetInputKind(input_code))
 	{
-	case DeviceKind::kKeyboard: codes = &m_key_codes; break;
-	case DeviceKind::kPad:		codes = &m_pad_codes; break;
+	case InputKind::kKey:
+	case InputKind::kMouseButton:
+	case InputKind::kMouseWheel:
+	case InputKind::kMouseSlide:
+		codes = &m_key_codes;
+		break;
+
+	case InputKind::kPadButton:
+	case InputKind::kPadTrigger:
+	case InputKind::kPadStick:
+		codes = &m_pad_codes;
+		break;
 	}
 
 	// 新規データのみ追加する
@@ -120,10 +102,20 @@ void CommandManager::RemoveInputCode(const CommandKind kind, const input_concept
 	const auto code = input->ConvertInputTemplateToInputCode(input_code);
 	std::vector<std::pair<CommandKind, InputCode>>* codes = nullptr;
 
-	switch (input->GetCurrentInputDevice())
+	switch (input->GetInputKind(input_code))
 	{
-	case DeviceKind::kKeyboard: codes = &m_key_codes; break;
-	case DeviceKind::kPad:		codes = &m_pad_codes; break;
+	case InputKind::kKey:
+	case InputKind::kMouseButton:
+	case InputKind::kMouseWheel:
+	case InputKind::kMouseSlide:
+		codes = &m_key_codes;
+		break;
+
+	case InputKind::kPadButton:
+	case InputKind::kPadTrigger:
+	case InputKind::kPadStick:
+		codes = &m_pad_codes;
+		break;
 	}
 
 	// 削除する入力コードを検索
@@ -138,7 +130,6 @@ void CommandManager::RemoveInputCode(const CommandKind kind, const input_concept
 		codes->erase(remove);
 	}
 }
-
 
 void CommandManager::InitKeyCommand()
 {
@@ -180,6 +171,8 @@ void CommandManager::InitKeyCommand()
 	AddInputCode(CommandKind::kMoveLeftCamera,	KEY_INPUT_LEFT);
 	AddInputCode(CommandKind::kMoveRightCamera,	mouse::SlideDirKind::kRight);
 	AddInputCode(CommandKind::kMoveRightCamera,	KEY_INPUT_RIGHT);
+	AddInputCode(CommandKind::kApproachCamera,	mouse::WheelKind::kUp);
+	AddInputCode(CommandKind::kDepartCamera,	mouse::WheelKind::kDown);
 	AddInputCode(CommandKind::kInitAngle,		KEY_INPUT_Q);
 }
 
@@ -214,5 +207,7 @@ void CommandManager::InitPadCommand()
 	AddInputCode(CommandKind::kMoveDownCamera,	pad::StickKind	::kRSDown);
 	AddInputCode(CommandKind::kMoveLeftCamera,	pad::StickKind	::kRSLeft);
 	AddInputCode(CommandKind::kMoveRightCamera,	pad::StickKind	::kRSRight);
+	AddInputCode(CommandKind::kApproachCamera,	pad::ButtonKind	::kUp);
+	AddInputCode(CommandKind::kDepartCamera,	pad::ButtonKind ::kDown);
 	AddInputCode(CommandKind::kInitAngle,		pad::ButtonKind	::kRB);
 }

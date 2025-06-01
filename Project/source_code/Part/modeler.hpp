@@ -1,5 +1,6 @@
 #pragma once
 #include <DxLib.h>
+#include <dxlib_helper.h>
 
 #include "../Data/Path/model_path.hpp"
 #include "transform.hpp"

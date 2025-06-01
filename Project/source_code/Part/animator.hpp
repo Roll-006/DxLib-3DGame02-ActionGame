@@ -29,7 +29,7 @@ public:
 	/// @brief デタッチ処理は自動的に実行
 	void AttachAnim(const int next_kind);
 
-	void AddAnimHandle(const int kind, const std::string& file_path, const std::string& tag, const float play_speed, const bool is_loop);
+	void AddAnimHandle(const int kind, const std::string& file_path, const int index, const std::string& tag, const float play_speed, const bool is_loop);
 
 private:
 	void DetachAnim(const TimeState time_state);

@@ -17,13 +17,14 @@ struct AnimTimeStateData
 struct AnimKindData
 {
 	int			anim_handle;
+	int			index;
 	std::string tag;
 	float		play_speed;
 	bool		is_loop;
 
 	AnimKindData() : 
-		anim_handle(-1), tag(""), play_speed(0.0f), is_loop(true) {}
+		anim_handle(-1), index(0), tag(""), play_speed(0.0f), is_loop(true) { }
 
-	AnimKindData(const int anim_handle, const std::string& tag, const float play_speed, const bool is_loop) :
-		anim_handle(anim_handle), tag(tag), play_speed(play_speed), is_loop(is_loop){}
+	AnimKindData(const int anim_handle, const int index, const std::string& tag, const float play_speed, const bool is_loop) :
+		anim_handle(anim_handle), index(index), tag(tag), play_speed(play_speed), is_loop(is_loop){}
 };
