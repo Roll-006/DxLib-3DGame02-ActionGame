@@ -1,19 +1,19 @@
 #include "player.hpp"
 
 Player::Player(std::shared_ptr<Camera> camera) :
-	CharaBase			(ObjName.PLAYER, ObjTag.PLAYER, ModelPath.CHARA_01, MassKind::kMedium),
-	m_camera			(camera),
-	m_dir				(v3d::GetZeroVector()),
-	m_destination_dir	(v3d::GetZeroVector()),
-	m_velocity			(v3d::GetZeroVector()),
-	m_move_speed		(0.0f),
-	m_is_move			(false),
-	m_is_run			(false)
+	CharaBase(ObjName.PLAYER, ObjTag.PLAYER, ModelPath.CHARA_01, MassKind::kMedium),
+	m_camera(camera),
+	m_dir(v3d::GetZeroVector()),
+	m_destination_dir(v3d::GetZeroVector()),
+	m_velocity(v3d::GetZeroVector()),
+	m_move_speed(0.0f),
+	m_is_move(false),
+	m_is_run(false)
 {
 	// 初期pos・dirを設定
 	m_dir = m_destination_dir = VGet(0.0f, 0.0f, 1.0f);
 	m_transform->SetRotation(CoordinateKind::kWorld, m_dir);
-	m_transform->SetPos		(CoordinateKind::kWorld, VGet(0, 0, 0));
+	m_transform->SetPos(CoordinateKind::kWorld, VGet(0, 0, 0));
 
 	// 衝突用の図形を設定
 	MakeCollider(std::make_shared<Capsule>());
@@ -27,7 +27,11 @@ Player::Player(std::shared_ptr<Camera> camera) :
 	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kRun01),  AnimPath.RUN_01,  1, AnimTag.WALK, 20.0f, true);
 	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kJump01), AnimPath.JUMP_01, 1, AnimTag.NONE, 20.0f, false);
 	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kFall01), AnimPath.FALL_01, 1, AnimTag.NONE, 20.0f, false);
-	m_animator->AttachAnim	 (static_cast<int>(PlayerAnimKind::kIdle02));
+	m_animator->AttachAnim(static_cast<int>(PlayerAnimKind::kIdle02));
+
+	// 武器設定
+	AddGun(std::make_shared<AssaultRifle>());
+	AttachGun(GunKind::kAssaultRifle);
 }
 
 Player::~Player()
@@ -44,11 +48,18 @@ void Player::Update()
 {
 	Move();
 	m_animator->Update();
+
+
+	// 仮で武器をアタッチ
+	int    attach_frame_num = MV1SearchFrame(m_modeler->GetModelHandle(), "mixamorig:RightHandMiddle1");
+	MATRIX attach_frame_mat = MV1GetFrameLocalWorldMatrix(m_modeler->GetModelHandle(), attach_frame_num);
+	m_current_attach_gun->GetTransform()->SetMatrix(CoordinateKind::kWorld, attach_frame_mat);
 }
 
 void Player::Draw() const
 {
 	m_modeler->Draw();
+	m_current_attach_gun->Draw();
 
 	Sphere s(m_transform->GetPos(CoordinateKind::kWorld), 40);
 	s.Draw(true, 0, 0xffffff);
@@ -71,6 +82,11 @@ void Player::OnCollide(const PhysicalObjBase& check_hit_obj)
 }
 
 void Player::OnGravity()
+{
+
+}
+
+void Player::ChangeAnimState()
 {
 
 }

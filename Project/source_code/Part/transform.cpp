@@ -52,6 +52,20 @@ void Transform::DetachParent()
 
 
 #pragma region Setter
+void Transform::SetMatrix(const CoordinateKind coord_kind, const MATRIX& matrix)
+{
+	if (coord_kind == CoordinateKind::kWorld)
+	{
+		if (m_parent_transform)
+		{
+			m_local_matrix = MInverse(m_parent_transform->GetMatrix(coord_kind)) * matrix;
+			return;
+		}
+	}
+
+	m_local_matrix = matrix;
+}
+
 void Transform::SetPos(const CoordinateKind coord_kind, const VECTOR& pos)
 {
 	VECTOR parent_pos = v3d::GetZeroVector();
@@ -74,7 +88,6 @@ void Transform::SetRotation(const CoordinateKind coord_kind, const MATRIX& rotat
 	// MEMO : ワールド回転行列が引数の場合に不具合あり
 
 	m_local_matrix = rotation_matrix * MInverse(GetRotationMatrix(coord_kind)) * GetMatrix(coord_kind);
-	auto a = GetRotationMatrix(coord_kind);
 }
 
 void Transform::SetRotation(const CoordinateKind coord_kind, const VECTOR& dir)
@@ -124,7 +137,7 @@ void Transform::SetRotation(const CoordinateKind coord_kind, const Axes& axes)
 
 void Transform::SetScale(const CoordinateKind coord_kind, const VECTOR& scale)
 {
-
+	//m_local_matrix = scale * MInverse(GetRotationMatrix(coord_kind)) * GetMatrix(coord_kind);
 }
 #pragma endregion
 

@@ -54,8 +54,7 @@ private:
 	static constexpr float kDistanceDirToDir	= 1.7f;		// 目的のdirを即座に現在のdirに反映する閾値(dir同士の距離)
 	static constexpr int   kWalkStickSlopeLimit	= 15000;	// 歩き状態とするスティック傾きの上限
 
-	std::shared_ptr<Camera>	  m_camera;
-	std::shared_ptr<GunBase>  m_gun;
+	std::shared_ptr<Camera> m_camera;
 
 	VECTOR m_dir;
 	VECTOR m_destination_dir;

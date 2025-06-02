@@ -17,6 +17,7 @@ public:
 	void AttachParent(const std::string& parent_obj_name);
 	void DetachParent();
 
+	void SetMatrix	(const CoordinateKind coord_kind, const MATRIX& matrix);
 	void SetPos		(const CoordinateKind coord_kind, const VECTOR&	pos);
 	void SetRotation(const CoordinateKind coord_kind, const MATRIX&	rotation_matrix);
 	void SetRotation(const CoordinateKind coord_kind, const VECTOR&	dir);

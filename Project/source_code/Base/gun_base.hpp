@@ -6,7 +6,8 @@ class GunBase : public WeaponBase
 {
 public:
 	GunBase(const std::string& name, const GunKind gun_kind, const std::string& file_path) :
-		WeaponBase(name, file_path)
+		WeaponBase(name, file_path),
+		m_gun_kind(gun_kind)
 	{ }
 
 	virtual ~GunBase() = default;
