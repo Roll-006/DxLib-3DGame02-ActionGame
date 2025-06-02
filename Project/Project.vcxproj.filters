@@ -125,6 +125,9 @@
     <ClCompile Include="source_code\Manager\weapon_manager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
+    <ClCompile Include="source_code\Manager\handle_keeper.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source_code\Manager\game_manager.hpp">
@@ -405,6 +408,9 @@
     </ClInclude>
     <ClInclude Include="source_code\Data\Path\bone_path.hpp">
       <Filter>Data\Path</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Manager\handle_keeper.hpp">
+      <Filter>Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

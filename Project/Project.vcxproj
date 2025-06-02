@@ -145,6 +145,7 @@
     <ClCompile Include="source_code\Command\select_command.cpp" />
     <ClCompile Include="source_code\FPS\fps.cpp" />
     <ClCompile Include="source_code\main.cpp" />
+    <ClCompile Include="source_code\Manager\handle_keeper.cpp" />
     <ClCompile Include="source_code\Manager\command_handler.cpp" />
     <ClCompile Include="source_code\Manager\physics_manager.cpp" />
     <ClCompile Include="source_code\Manager\collision_manager.cpp" />
@@ -243,6 +244,7 @@
     <ClInclude Include="source_code\Data\Tag\animation_tag.hpp" />
     <ClInclude Include="source_code\FPS\fps.hpp" />
     <ClInclude Include="source_code\Interface\i_chara.hpp" />
+    <ClInclude Include="source_code\Manager\handle_keeper.hpp" />
     <ClInclude Include="source_code\Manager\command_handler.hpp" />
     <ClInclude Include="source_code\Manager\physics_manager.hpp" />
     <ClInclude Include="source_code\Manager\collision_manager.hpp" />

@@ -1,6 +1,4 @@
 #pragma once
-#include <EffekseerForDXLib.h>
-
 #include "../Window/window.hpp"
 #include "../FPS/fps.hpp"
 #include "scene_manager.hpp"

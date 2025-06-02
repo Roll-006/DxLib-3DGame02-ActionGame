@@ -1,7 +1,7 @@
 #pragma once
 #include <unordered_map>
 
-#include "../Data/Path/animation_path.hpp"
+#include "../Manager/handle_keeper.hpp"
 #include "../Data/Tag/animation_tag.hpp"
 #include "../Data/animator_data.hpp"
 #include "../Concept/common_concepts.hpp"
@@ -30,6 +30,7 @@ public:
 	void AttachAnim(const int next_kind);
 
 	void AddAnimHandle(const int kind, const std::string& file_path, const int index, const std::string& tag, const float play_speed, const bool is_loop);
+	void AddAnimHandle(const int kind, const int anim_handle,		 const int index, const std::string& tag, const float play_speed, const bool is_loop);
 
 private:
 	void DetachAnim(const TimeState time_state);

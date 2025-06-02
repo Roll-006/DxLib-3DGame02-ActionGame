@@ -45,6 +45,11 @@ void Animator::AddAnimHandle(const int kind, const std::string& file_path, const
 	}
 }
 
+void Animator::AddAnimHandle(const int kind, const int anim_handle, const int index, const std::string& tag, const float play_speed, const bool is_loop)
+{
+
+}
+
 void Animator::AttachAnim(const int next_kind)
 {
 	// 現在のアニメーションと同じであった場合は変更しない

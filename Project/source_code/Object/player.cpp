@@ -52,17 +52,20 @@ void Player::Update()
 
 	// TODO : のちに関数化
 	// 仮で武器をアタッチ
+	m_modeler->ApplyMatrix();
 	int    attach_frame_num = MV1SearchFrame(m_modeler->GetModelHandle(), BonePath.RIGHT_HAND);
 	MATRIX attach_frame_mat = MV1GetFrameLocalWorldMatrix(m_modeler->GetModelHandle(), attach_frame_num);
 	MATRIX result_frame_mat;
 	CreateRotationXYZMatrix(&result_frame_mat, -90.0f * math::kDegreesToRadian, 270.0f * math::kDegreesToRadian, 0.0f);
 	m_current_attach_gun->GetTransform()->SetMatrix(CoordinateKind::kWorld, result_frame_mat * attach_frame_mat);
 	m_current_attach_gun->GetTransform()->SetPos(CoordinateKind::kLocal, m_current_attach_gun->GetTransform()->GetPos(CoordinateKind::kLocal) + VGet(38.0f, -5.0f, -15.0f));
+
 }
 
 void Player::Draw() const
 {
 	m_modeler->Draw();
+
 	m_current_attach_gun->Draw();
 
 	Sphere s(m_transform->GetPos(CoordinateKind::kWorld), 40);
