@@ -20,14 +20,14 @@ Player::Player(std::shared_ptr<Camera> camera) :
 	AddTrigger(TriggerKind::kLanding, std::make_shared<Sphere>());
 
 	// 各アニメーション追加
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdle01), AnimPath.IDLE_01, 1, AnimTag.NONE, 20.0f, true);
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdle01), AnimPath.IDLE_01, 0, AnimTag.NONE, 20.0f, true);
 	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdle02), AnimPath.IDLE_02, 0, AnimTag.NONE, 20.0f, true);
 	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalk01), AnimPath.WALK_01, 1, AnimTag.WALK, 20.0f, true);
 	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kJog01),  AnimPath.JOG_01,  1, AnimTag.WALK, 20.0f, true);
 	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kRun01),  AnimPath.RUN_01,  1, AnimTag.WALK, 20.0f, true);
 	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kJump01), AnimPath.JUMP_01, 1, AnimTag.NONE, 20.0f, false);
 	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kFall01), AnimPath.FALL_01, 1, AnimTag.NONE, 20.0f, false);
-	m_animator->AttachAnim(static_cast<int>(PlayerAnimKind::kIdle02));
+	m_animator->AttachAnim	 (static_cast<int>(PlayerAnimKind::kIdle01));
 
 	// 武器設定
 	AddGun(std::make_shared<AssaultRifle>());
@@ -50,10 +50,14 @@ void Player::Update()
 	m_animator->Update();
 
 
+	// TODO : のちに関数化
 	// 仮で武器をアタッチ
-	int    attach_frame_num = MV1SearchFrame(m_modeler->GetModelHandle(), "mixamorig:RightHandMiddle1");
+	int    attach_frame_num = MV1SearchFrame(m_modeler->GetModelHandle(), BonePath.RIGHT_HAND);
 	MATRIX attach_frame_mat = MV1GetFrameLocalWorldMatrix(m_modeler->GetModelHandle(), attach_frame_num);
-	m_current_attach_gun->GetTransform()->SetMatrix(CoordinateKind::kWorld, attach_frame_mat);
+	MATRIX result_frame_mat;
+	CreateRotationXYZMatrix(&result_frame_mat, -90.0f * math::kDegreesToRadian, 270.0f * math::kDegreesToRadian, 0.0f);
+	m_current_attach_gun->GetTransform()->SetMatrix(CoordinateKind::kWorld, result_frame_mat * attach_frame_mat);
+	m_current_attach_gun->GetTransform()->SetPos(CoordinateKind::kLocal, m_current_attach_gun->GetTransform()->GetPos(CoordinateKind::kLocal) + VGet(38.0f, -5.0f, -15.0f));
 }
 
 void Player::Draw() const

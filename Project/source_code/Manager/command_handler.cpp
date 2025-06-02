@@ -1,6 +1,6 @@
-#include "command_manager.hpp"
+#include "command_handler.hpp"
 
-CommandManager::CommandManager() : 
+CommandHandler::CommandHandler() : 
 	m_input_mode(InputModeKind::kTrigger)
 {
 	LoadSelectCommand();
@@ -13,12 +13,12 @@ CommandManager::CommandManager() :
 	InitPadCommand();
 }
 
-CommandManager::~CommandManager()
+CommandHandler::~CommandHandler()
 {
 
 }
 
-void CommandManager::LoadSelectCommand()
+void CommandHandler::LoadSelectCommand()
 {
 	m_commands[CommandKind::kDecide]			= (std::make_shared<select_cmd::Decide>());
 	m_commands[CommandKind::kBack]				= (std::make_shared<select_cmd::Back>());
@@ -29,7 +29,7 @@ void CommandManager::LoadSelectCommand()
 	m_commands[CommandKind::kPause]				= (std::make_shared<select_cmd::Pause>());
 }
 
-void CommandManager::LoadPlayerCommand()
+void CommandHandler::LoadPlayerCommand()
 {
 	m_commands[CommandKind::kMoveUpPlayer]		= (std::make_shared<player_cmd::MoveUp>());
 	m_commands[CommandKind::kMoveDownPlayer]	= (std::make_shared<player_cmd::MoveDown>());
@@ -44,7 +44,7 @@ void CommandManager::LoadPlayerCommand()
 	m_commands[CommandKind::kQuickTurn]			= (std::make_shared<player_cmd::QuickTurn>());
 }
 
-void CommandManager::LoadCameraCommand()
+void CommandHandler::LoadCameraCommand()
 {
 	// TODO : 後にJson化
 	m_commands[CommandKind::kMoveUpCamera]		= (std::make_shared<camera_cmd::MoveUp>());
@@ -56,7 +56,7 @@ void CommandManager::LoadCameraCommand()
 	m_commands[CommandKind::kInitAngle]			= (std::make_shared<camera_cmd::InitAngle>());
 }
 
-void CommandManager::AddInputCode(const CommandKind kind, const input_concepts::InputT auto& input_code)
+void CommandHandler::AddInputCode(const CommandKind kind, const input_concepts::InputT auto& input_code)
 {
 	// 対応するコマンドがない場合は早期return
 	if (!m_commands.count(kind)) { return; }
@@ -93,7 +93,7 @@ void CommandManager::AddInputCode(const CommandKind kind, const input_concepts::
 	}
 }
 
-void CommandManager::RemoveInputCode(const CommandKind kind, const input_concepts::InputT auto& input_code)
+void CommandHandler::RemoveInputCode(const CommandKind kind, const input_concepts::InputT auto& input_code)
 {
 	// 対応するコマンドがない場合は早期return
 	if (!m_commands.count(kind)) { return; }
@@ -131,7 +131,7 @@ void CommandManager::RemoveInputCode(const CommandKind kind, const input_concept
 	}
 }
 
-void CommandManager::InitKeyCommand()
+void CommandHandler::InitKeyCommand()
 {
 	m_key_codes.clear();
 
@@ -176,7 +176,7 @@ void CommandManager::InitKeyCommand()
 	AddInputCode(CommandKind::kInitAngle,		KEY_INPUT_Q);
 }
 
-void CommandManager::InitPadCommand()
+void CommandHandler::InitPadCommand()
 {
 	m_pad_codes.clear();
 

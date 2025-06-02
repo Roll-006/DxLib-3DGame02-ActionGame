@@ -8,7 +8,7 @@ GameManager::GameManager():
 	SetUpGameSystem();
 
 	InputChecker	::Generate();
-	CommandManager	::Generate();
+	CommandHandler	::Generate();
 	ObjManager		::Generate();
 	CollisionManager::Generate();
 	PhysicsManager	::Generate();
@@ -19,7 +19,7 @@ GameManager::GameManager():
 GameManager::~GameManager()
 {
 	InputChecker	::Delete();
-	CommandManager	::Delete();
+	CommandHandler	::Delete();
 	ObjManager		::Delete();
 	CollisionManager::Delete();
 	PhysicsManager	::Delete();

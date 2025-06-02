@@ -38,7 +38,11 @@ void Animator::AddAnimHandle(const int kind, const std::string& file_path, const
 	// 上書き不可
 	if (m_kind_data.count(kind)) { return; }
 
-	m_kind_data[kind] = AnimKindData(MV1LoadModel(file_path.c_str()), index, tag, play_speed, is_loop);
+	int handle = MV1LoadModel(file_path.c_str());
+	if (handle != -1)
+	{
+		m_kind_data[kind] = AnimKindData(handle, index, tag, play_speed, is_loop);
+	}
 }
 
 void Animator::AttachAnim(const int next_kind)

@@ -1,5 +1,5 @@
 #include "camera.hpp"
-#include "../Manager/command_manager.hpp"
+#include "../Manager/command_handler.hpp"
 
 Camera::Camera() : 
 	PhysicalObjBase			(ObjName.CAMERA, ObjTag.CAMERA, MassKind::kVeryLight),
@@ -104,8 +104,8 @@ void Camera::Move()
 	//DrawFormatString(0, 100, 0xffffff, "%f, %f, %f", m_angle.x, m_angle.y, m_angle.z);
 
 	// Šg‘åEk¬
-	CommandManager::GetInstance()->Execute(CommandKind::kApproachCamera, *this);
-	CommandManager::GetInstance()->Execute(CommandKind::kDepartCamera,   *this);
+	CommandHandler::GetInstance()->Execute(CommandKind::kApproachCamera, *this);
+	CommandHandler::GetInstance()->Execute(CommandKind::kDepartCamera,   *this);
 
 	// ‰ñ“]s—ñ‚ğ¶¬
 	MATRIX m = MGetIdent();

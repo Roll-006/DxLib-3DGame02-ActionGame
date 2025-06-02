@@ -3,6 +3,7 @@
 #include <dxlib_helper.h>
 
 #include "../Data/Path/model_path.hpp"
+#include "../Data/Path/bone_path.hpp"
 #include "transform.hpp"
 
 class Modeler final

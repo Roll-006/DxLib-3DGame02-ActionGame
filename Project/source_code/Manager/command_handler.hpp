@@ -3,7 +3,7 @@
 #include "../Command/camera_command.hpp"
 #include "../Command/player_command.hpp"
 
-class CommandManager final : public SingletonBase<CommandManager>
+class CommandHandler final : public SingletonBase<CommandHandler>
 {
 public:
 	/// @brief コマンドを実行
@@ -45,8 +45,8 @@ public:
 	[[nodiscard]] InputModeKind GetInputModeKind()const { return m_input_mode; }
 
 private:
-	CommandManager();
-	~CommandManager() override;
+	CommandHandler();
+	~CommandHandler() override;
 
 	/// @brief コマンド読み込み
 	void LoadSelectCommand();
@@ -66,5 +66,5 @@ private:
 
 	InputModeKind m_input_mode;		// ダッシュやしゃがみなどの入力方式
 
-	friend SingletonBase<CommandManager>;
+	friend SingletonBase<CommandHandler>;
 };
