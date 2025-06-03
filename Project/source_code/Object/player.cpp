@@ -1,14 +1,14 @@
 #include "player.hpp"
 
 Player::Player(std::shared_ptr<Camera> camera) :
-	CharaBase(ObjName.PLAYER, ObjTag.PLAYER, ModelPath.CHARA_01, MassKind::kMedium),
-	m_camera(camera),
-	m_dir(v3d::GetZeroVector()),
-	m_destination_dir(v3d::GetZeroVector()),
-	m_velocity(v3d::GetZeroVector()),
-	m_move_speed(0.0f),
-	m_is_move(false),
-	m_is_run(false)
+	CharaBase			(ObjName.PLAYER, ObjTag.PLAYER, ModelPath.CHARA_01, MassKind::kMedium),
+	m_camera			(camera),
+	m_dir				(v3d::GetZeroVector()),
+	m_destination_dir	(v3d::GetZeroVector()),
+	m_velocity			(v3d::GetZeroVector()),
+	m_move_speed		(0.0f),
+	m_is_move			(false),
+	m_is_run			(false)
 {
 	// 初期pos・dirを設定
 	m_dir = m_destination_dir = VGet(0.0f, 0.0f, 1.0f);
@@ -49,23 +49,14 @@ void Player::Update()
 	Move();
 	m_animator->Update();
 
-
-	// TODO : のちに関数化
-	// 仮で武器をアタッチ
+	// 武器はモデルの行列情報をもとに位置を決定するため一度モデルに行列を適用
 	m_modeler->ApplyMatrix();
-	int    attach_frame_num = MV1SearchFrame(m_modeler->GetModelHandle(), BonePath.RIGHT_HAND);
-	MATRIX attach_frame_mat = MV1GetFrameLocalWorldMatrix(m_modeler->GetModelHandle(), attach_frame_num);
-	MATRIX result_frame_mat;
-	CreateRotationXYZMatrix(&result_frame_mat, -90.0f * math::kDegreesToRadian, 270.0f * math::kDegreesToRadian, 0.0f);
-	m_current_attach_gun->GetTransform()->SetMatrix(CoordinateKind::kWorld, result_frame_mat * attach_frame_mat);
-	m_current_attach_gun->GetTransform()->SetPos(CoordinateKind::kLocal, m_current_attach_gun->GetTransform()->GetPos(CoordinateKind::kLocal) + VGet(38.0f, -5.0f, -15.0f));
-
+	m_current_attach_gun->TrackOwner();
 }
 
 void Player::Draw() const
 {
 	m_modeler->Draw();
-
 	m_current_attach_gun->Draw();
 
 	Sphere s(m_transform->GetPos(CoordinateKind::kWorld), 40);
@@ -80,6 +71,7 @@ void Player::Draw() const
 	//DrawLine3D(v3d::GetZeroVector(), m_transform->GetRight	(CoordinateKind::kWorld) * 100, 0xff0000);
 	//DrawLine3D(v3d::GetZeroVector(), m_transform->GetUp		(CoordinateKind::kWorld) * 100, 0x00ff22);
 	//DrawLine3D(v3d::GetZeroVector(), m_transform->GetForward(CoordinateKind::kWorld) * 100, 0x0077ff);
+	DrawLine3D(m_transform->GetPos(CoordinateKind::kWorld), m_transform->GetPos(CoordinateKind::kWorld) + m_dir * 100, 0x0077ff);
 
 }
 
@@ -111,7 +103,7 @@ void Player::Move()
 	if (m_is_move)
 	{
 		m_velocity = m_dir * m_move_speed;
-		//m_transform->SetRotation(CoordinateKind::kWorld, m_dir);
+		m_transform->SetRotation(CoordinateKind::kWorld, m_dir);
 		m_transform->SetPos(CoordinateKind::kWorld, m_transform->GetPos(CoordinateKind::kWorld) + m_velocity);
 	}
 }

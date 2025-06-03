@@ -2,7 +2,7 @@
 #include "weapon_base.hpp"
 #include "../Data/Kind/gun_kind.hpp"
 
-class GunBase : public WeaponBase
+class GunBase abstract : public WeaponBase
 {
 public:
 	GunBase(const std::string& name, const GunKind gun_kind, const std::string& file_path) :

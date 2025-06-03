@@ -10,12 +10,12 @@ HandleKeeper::~HandleKeeper()
 
 }
 
-void HandleKeeper::AddHandle(const HandleKind handle_kind, const std::string& file_path, const float scale)
+int HandleKeeper::LoadHandle(const HandleKind handle_kind, const std::string& file_path, const float scale)
 {
-	// 既にロード済みの場合は早期return
+	// 既にロード済みの場合は早急にハンドルを返す
 	for (auto& [kind, path, handle] : m_handles)
 	{
-		if (kind == handle_kind && path == file_path) { return; }
+		if (kind == handle_kind && path == file_path) { return handle; }
 	}
 
 	int handle = -1;
@@ -38,26 +38,31 @@ void HandleKeeper::AddHandle(const HandleKind handle_kind, const std::string& fi
 	}
 
 	m_handles.emplace_back(std::make_tuple(handle_kind, file_path, handle));
+	return handle;
 }
 
-void HandleKeeper::RemoveHandle(const HandleKind handle_kind, const std::string& file_path)
+void HandleKeeper::DeleteHandle(const HandleKind handle_kind, const std::string& file_path)
 {
-	// 削除する入力コードを検索
-	const auto remove = std::find_if(m_handles.begin(), m_handles.end(), [=](const std::tuple<HandleKind, std::string, int> h)
+	for(auto itr = m_handles.begin(); itr != m_handles.end(); ++itr)
 	{
-		return std::get<0>(h) == handle_kind && h.second.kind == code.kind && p.second.code == code.code;
-	});
-
-	// 一致する入力コードを削除
-	if (remove != codes->end())
-	{
-		codes->erase(remove);
+		// 一致するものが見つかれば削除
+		if (std::get<0>(*itr) == handle_kind && std::get<1>(*itr) == file_path)
+		{
+			m_handles.erase(itr);
+		}
 	}
 }
 
-void HandleKeeper::RemoveHandle(const HandleKind handle_kind, const int handle)
+void HandleKeeper::DeleteHandle(const HandleKind handle_kind, const int handle)
 {
-
+	for (auto itr = m_handles.begin(); itr != m_handles.end(); ++itr)
+	{
+		// 一致するものが見つかれば削除
+		if (std::get<0>(*itr) == handle_kind && std::get<2>(*itr) == handle)
+		{
+			m_handles.erase(itr);
+		}
+	}
 }
 
 int HandleKeeper::GetHandle(const HandleKind handle_kind, const std::string& file_path)

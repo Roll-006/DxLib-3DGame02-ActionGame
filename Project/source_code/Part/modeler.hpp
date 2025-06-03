@@ -8,21 +8,22 @@
 class Modeler final
 {
 public:
-	Modeler(const std::shared_ptr<Transform> transform, const std::string& file_path);
-	Modeler(const std::shared_ptr<Transform> transform, const int model_handle);
+	Modeler(const std::shared_ptr<Transform> transform, const std::string& file_path, const bool is_turn_around);
+	Modeler(const std::shared_ptr<Transform> transform, const int model_handle		, const bool is_turn_around);
 	~Modeler();
 
 	void Draw();
 
 	/// @brief モデルに行列情報を適用させる
 	/// @brief MEMO : 通常描画時に適用されるが、武器などがモデルの行列情報を基準とするため先行して適用
-	void ApplyMatrix(){ MV1SetMatrix(m_model_handle, m_transform->GetMatrix(CoordinateKind::kWorld)); }
+	void ApplyMatrix();
 
 	[[nodiscard]] int GetModelHandle() const { return m_model_handle; }
 
 private:
 	int   m_model_handle;
 	float m_opacity;		// モデルの不透明度(0.0f～1.0f)
+	bool  m_is_turn_around;	// モデルを180°回転させるかを判定
 
 	std::shared_ptr<Transform> m_transform;
 };

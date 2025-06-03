@@ -20,12 +20,13 @@ enum class HandleKind
 class HandleKeeper : public SingletonBase<HandleKeeper>
 {
 public:
-	/// @brief ハンドルを登録
+	/// @brief ハンドル読み込み
 	/// @param scale エフェクトの場合のみ有効(未指定の場合は1.0倍)
-	void AddHandle(const HandleKind handle_kind, const std::string& file_path, const float scale = 1.0f);
-	/// @brief ハンドルの登録を削除
-	void RemoveHandle(const HandleKind handle_kind, const std::string& file_path);
-	void RemoveHandle(const HandleKind handle_kind, const int handle);
+	/// @return ハンドル
+	int  LoadHandle  (const HandleKind handle_kind, const std::string& file_path, const float scale = 1.0f);
+	/// @brief ハンドルの破棄
+	void DeleteHandle(const HandleKind handle_kind, const std::string& file_path);
+	void DeleteHandle(const HandleKind handle_kind, const int handle);
 
 	[[nodiscard]] int GetHandle(const HandleKind handle_kind, const std::string& file_path);
 

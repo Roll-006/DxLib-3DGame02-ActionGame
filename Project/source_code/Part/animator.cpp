@@ -38,7 +38,7 @@ void Animator::AddAnimHandle(const int kind, const std::string& file_path, const
 	// 上書き不可
 	if (m_kind_data.count(kind)) { return; }
 
-	int handle = MV1LoadModel(file_path.c_str());
+	int handle = HandleKeeper::GetInstance()->LoadHandle(HandleKind::kAnim, file_path);
 	if (handle != -1)
 	{
 		m_kind_data[kind] = AnimKindData(handle, index, tag, play_speed, is_loop);
@@ -59,7 +59,7 @@ void Animator::AttachAnim(const int next_kind)
 
 	DetachAnim(TimeState::kPrev);
 
-	// データを移行(Current ➡ Prev, Next ➡ Current)
+	// データをシフト(Current ➡ Prev, Next ➡ Current)
 	m_time_state_data.at(TimeState::kPrev)				   = m_time_state_data.at(TimeState::kCurrent);
 	m_time_state_data.at(TimeState::kCurrent).attach_index = MV1AttachAnim(m_modeler->GetModelHandle(), m_kind_data.at(next_kind).index, m_kind_data.at(next_kind).anim_handle, TRUE);
 	m_time_state_data.at(TimeState::kCurrent).kind		   = next_kind;
@@ -114,7 +114,7 @@ void Animator::PlayAnim()
 				data.play_timer = m_kind_data.at(data.kind).is_loop ? 0.0f : total_t;
 			}
 
-			MV1SetAttachAnimTime(m_modeler->GetModelHandle(), data.attach_index, data.play_timer);
+			MV1SetAttachAnimTime	 (m_modeler->GetModelHandle(), data.attach_index, data.play_timer);
 			MV1SetAttachAnimBlendRate(m_modeler->GetModelHandle(), data.attach_index, blend_r);
 		}
 	}

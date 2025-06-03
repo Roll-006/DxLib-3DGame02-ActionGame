@@ -7,6 +7,7 @@ GameManager::GameManager():
 {
 	SetUpGameSystem();
 
+	HandleKeeper	::Generate();
 	InputChecker	::Generate();
 	CommandHandler	::Generate();
 	ObjManager		::Generate();
@@ -18,6 +19,7 @@ GameManager::GameManager():
 
 GameManager::~GameManager()
 {
+	HandleKeeper	::Delete();
 	InputChecker	::Delete();
 	CommandHandler	::Delete();
 	ObjManager		::Delete();

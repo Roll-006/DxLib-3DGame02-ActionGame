@@ -10,7 +10,7 @@ class CharaBase abstract : public PhysicalObjBase
 public:
 	CharaBase(const std::string& name, const std::string& tag, const std::string& file_path, MassKind mass_level_kind) :
 		PhysicalObjBase		(name, tag, mass_level_kind),
-		m_modeler			(std::make_shared<Modeler>(GetTransform(), file_path)),
+		m_modeler			(std::make_shared<Modeler>(GetTransform(), file_path, true)),
 		m_animator			(std::make_shared<Animator>(m_modeler)),
 		m_current_attach_gun(nullptr)
 	{ }
@@ -33,13 +33,19 @@ public:
 	/// @brief 銃をアタッチ(装備)する
 	void AttachGun(const GunKind gun_kind)
 	{
-		if (m_guns.count(gun_kind)) { m_current_attach_gun = m_guns.at(gun_kind); }
+		if (m_guns.count(gun_kind))
+		{
+			m_current_attach_gun = m_guns.at(gun_kind);
+			m_current_attach_gun->AttachOwner(m_modeler);
+		}
 	}
 	/// @brief 銃をデタッチ(装備解除)する
 	void DetachGun(const GunKind gun_kind)
 	{
 		m_current_attach_gun = nullptr;
 	}
+
+	[[nodiscard]] const std::shared_ptr<Modeler> GetModeler()const { return m_modeler; }
 
 protected:
 	std::shared_ptr<Modeler>  m_modeler;
