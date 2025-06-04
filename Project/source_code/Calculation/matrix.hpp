@@ -1,7 +1,7 @@
 #pragma once
 #include <DxLib.h>
 
-inline MATRIX operator+ (const MATRIX& m1, const MATRIX& m2)	{ return MAdd(m1, m2); }
+inline MATRIX operator+ (const MATRIX& m1, const MATRIX& m2)	{ return MAdd (m1, m2); }
 inline MATRIX operator* (const MATRIX& m1, const MATRIX& m2)	{ return MMult(m1, m2); }
 
 template<typename ScaleT>

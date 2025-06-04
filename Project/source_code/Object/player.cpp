@@ -11,8 +11,8 @@ Player::Player(std::shared_ptr<Camera> camera) :
 	m_is_run			(false)
 {
 	// 初期pos・dirを設定
-	m_dir = m_destination_dir = VGet(0.0f, 0.0f, 1.0f);
-	//m_transform->SetRotation(CoordinateKind::kWorld, m_dir);
+	m_dir = m_destination_dir = VGet(1.0f, 0.0f, -1.0f);
+	m_transform->SetRot(CoordinateKind::kWorld, m_dir);
 	m_transform->SetPos(CoordinateKind::kWorld, VGet(0, 0, 0));
 
 	// 衝突用の図形を設定
@@ -69,10 +69,12 @@ void Player::Draw() const
 	//matrix::Draw(m_transform->GetMatrix(CoordinateKind::kWorld), VGet(0, 100, 0));
 
 	auto pos = m_transform->GetPos(CoordinateKind::kWorld);
-	Axes axes = math::GetAxes(m_dir, axis::GetWorldAxes());
+	Axes axes = m_transform->GetAxes(CoordinateKind::kWorld);
 	DrawLine3D(pos, pos + axes.x_axis * 100, 0xff0000);
 	DrawLine3D(pos, pos + axes.y_axis * 100, 0x00ff22);
 	DrawLine3D(pos, pos + axes.z_axis * 100, 0x0077ff);
+	DrawLine3D(pos, pos + m_dir * 500, 0x0077ff);
+
 	//DrawLine3D(m_transform->GetPos(CoordinateKind::kWorld), m_transform->GetPos(CoordinateKind::kWorld) + m_dir * 100, 0x0077ff);
 }
 
@@ -94,7 +96,7 @@ void Player::ChangeAnimState()
 void Player::Move()
 {
 	// ダッシュするかを判定
-	JudgeRun();
+	Run();
 
 	// 各方向の移動
 	CalcHorizontalVelocity();
@@ -104,24 +106,14 @@ void Player::Move()
 	if (m_is_move)
 	{
 		m_velocity = m_dir * m_move_speed;
-		//m_transform->SetRotation(CoordinateKind::kWorld, m_dir);
-		m_transform->SetPos(CoordinateKind::kWorld, m_transform->GetPos(CoordinateKind::kWorld) + m_velocity);
+		//m_transform->SetRot(CoordinateKind::kWorld, m_dir);
+		m_transform->SetPos		(CoordinateKind::kWorld, m_transform->GetPos(CoordinateKind::kWorld) + m_velocity);
 	}
 }
 
-void Player::JudgeRun()
+void Player::Run()
 {
-	if (InputChecker::GetInstance()->GetCurrentInputDevice() == DeviceKind::kPad)
-	{
-		if (InputChecker::GetInstance()->IsInput(pad::ButtonKind::kRSPush))
-		{
 
-		}
-	}
-	if (InputChecker::GetInstance()->GetCurrentInputDevice() == DeviceKind::kKeyboard)
-	{
-		
-	}
 }
 
 void Player::CalcHorizontalVelocity()

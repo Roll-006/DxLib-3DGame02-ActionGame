@@ -27,7 +27,7 @@ private:
 	void Move();
 
 	/// @brief ‘–‚é‚©‚ð”»’è
-	void JudgeRun();
+	void Run();
 
 	void CalcHorizontalVelocity();
 	void CalcVerticalVelocity();

@@ -83,29 +83,19 @@ void Transform::SetPos(const CoordinateKind coord_kind, const VECTOR& pos)
 	m_local_matrix.m[3][2] = pos.z - parent_pos.z;
 }
 
-void Transform::SetRotation(const CoordinateKind coord_kind, const MATRIX& rotation_matrix)
+void Transform::SetRot(const CoordinateKind coord_kind, const MATRIX& rotation_matrix)
 {
 	// ローカル行列として格納
 	m_local_matrix = rotation_matrix * MInverse(GetRotationMatrix(coord_kind)) * GetMatrix(coord_kind);
 }
 
-void Transform::SetRotation(const CoordinateKind coord_kind, const VECTOR& dir)
+void Transform::SetRot(const CoordinateKind coord_kind, const VECTOR& forward)
 {
-	// dirからオブジェクトのXYZ軸を取得
-	Axes axes = math::GetAxes(dir, axis::GetWorldAxes());
-
-	if (coord_kind == CoordinateKind::kLocal)
-	{
-		if (m_parent_transform)
-		{
-			// 親がいる場合は親基準のXYZ軸を取得
-			axes = math::GetAxes(dir, m_parent_transform->GetAxes(CoordinateKind::kWorld));
-		}
-	}
-	SetRotation(coord_kind, axes);
+	float angle = math::GetAngleBetweenTwoVector(axis::GetWorldZAxis(), forward);
+	SetRot(coord_kind, MGetRotY(angle));
 }
 
-void Transform::SetRotation(const CoordinateKind coord_kind, const Axes& axes)
+void Transform::SetRot(const CoordinateKind coord_kind, const Axes& axes)
 {
 	// XYZ軸からオイラー角へ変換
 	VECTOR angle = math::ConvertAxesToEulerAngles(axes, axis::GetWorldAxes());
@@ -122,7 +112,7 @@ void Transform::SetRotation(const CoordinateKind coord_kind, const Axes& axes)
 	MATRIX mat = MGetIdent();
 	CreateRotationXYZMatrix(&mat, angle.x, angle.y, angle.z);
 
-	SetRotation(coord_kind, mat); 
+	SetRot(coord_kind, mat); 
 }
 
 void Transform::SetScale(const CoordinateKind coord_kind, const VECTOR& scale)

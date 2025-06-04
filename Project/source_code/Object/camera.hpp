@@ -46,8 +46,8 @@ private:
 	/// @brief ‘€ì‚Ì”½“]ˆ—‚ğ“K—p‚·‚é
 	[[nodiscard]] VECTOR ApplyInvert(VECTOR& velocity) const;
 
-	void CalcAngleFromPad  (const VECTOR& x_axis);
-	void CalcAngleFromMouse(const VECTOR& x_axis);
+	void CalcAngleFromPad();
+	void CalcAngleFromMouse();
 
 private:
 	static constexpr float kNear					= 10.0f;

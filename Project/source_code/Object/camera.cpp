@@ -39,12 +39,12 @@ void Camera::Draw() const
 	DrawLine3D(v3d::GetZeroVector(), axis::GetWorldYAxis() * 10000, 0x00ff22);
 	DrawLine3D(v3d::GetZeroVector(), axis::GetWorldZAxis() * 10000, 0x0077ff);
 
-	const Axes axes = math::ConvertRotationMatrixToAxes(m_transform->GetRotationMatrix(CoordinateKind::kWorld));
+	const Axes axes = m_transform->GetAxes(CoordinateKind::kWorld);
 	DrawLine3D(v3d::GetZeroVector(), axes.x_axis * 100, 0xff0000);
 	DrawLine3D(v3d::GetZeroVector(), axes.y_axis * 100, 0x00ff22);
 	DrawLine3D(v3d::GetZeroVector(), axes.z_axis * 100, 0x0077ff);
 
-	//matrix::Draw(m_transform->GetMatrix(CoordinateKind::kWorld), VGet(0, 200, 0));
+	// matrix::Draw(m_transform->GetMatrix(CoordinateKind::kWorld), VGet(0, 200, 0));
 }
 
 void Camera::OnCollide(const PhysicalObjBase& check_hit_obj)
@@ -92,16 +92,12 @@ void Camera::SetLookDir()
 
 void Camera::Move()
 {
-	// ÉJÉÅÉâÇÃXYZé≤Çå≥Ç…äpìxÇåvéZ
-	const Axes axes = math::GetAxes(v3d::GetZeroVector() - m_transform->GetPos(CoordinateKind::kWorld), axis::GetWorldAxes());
-	CalcAngleFromPad  (axes.x_axis);
-	CalcAngleFromMouse(axes.x_axis);
+	CalcAngleFromPad  ();
+	CalcAngleFromMouse();
 
 	// äpìxêßå¿
 	if (m_angle.x < kMinVerticalAngle * math::kDegreesToRadian) { m_angle.x = kMinVerticalAngle * math::kDegreesToRadian; }
 	if (m_angle.x > kMaxVerticalAngle * math::kDegreesToRadian) { m_angle.x = kMaxVerticalAngle * math::kDegreesToRadian; }
-
-	//DrawFormatString(0, 100, 0xffffff, "%f, %f, %f", m_angle.x, m_angle.y, m_angle.z);
 
 	// ägëÂÅEèkè¨
 	CommandHandler::GetInstance()->Execute(CommandKind::kApproachCamera, *this);
@@ -111,10 +107,8 @@ void Camera::Move()
 	MATRIX m = MGetIdent();
 	CreateRotationZXYMatrix(&m, m_angle.x, m_angle.y, m_angle.z);
 
-	//matrix::Draw(m, VGet(0, 300, 0));
-
 	// åãâ ÇîΩâf
-	m_transform->SetRotation(CoordinateKind::kWorld, MGetRotElem(m));
+	m_transform->SetRot(CoordinateKind::kWorld, MGetRotElem(m));
 	const VECTOR target_pos = m_target_transform ? m_target_transform->GetPos(CoordinateKind::kWorld) : v3d::GetZeroVector();
 	const VECTOR pos		= target_pos - m_transform->GetForward(CoordinateKind::kLocal) * m_distance_to_target;
 	m_transform->SetPos(CoordinateKind::kWorld, pos);
@@ -128,7 +122,7 @@ VECTOR Camera::ApplyInvert(VECTOR& velocity) const
 	return velocity;
 }
 
-void Camera::CalcAngleFromPad(const VECTOR& x_axis)
+void Camera::CalcAngleFromPad()
 {
 	if (InputChecker::GetInstance()->GetCurrentInputDevice() != DeviceKind::kPad) { return; }
 
@@ -157,7 +151,7 @@ void Camera::CalcAngleFromPad(const VECTOR& x_axis)
 	if (right_param){ m_angle.y += m_velocity.y; }
 }
 
-void Camera::CalcAngleFromMouse(const VECTOR& x_axis)
+void Camera::CalcAngleFromMouse()
 {
 	if (InputChecker::GetInstance()->GetCurrentInputDevice() != DeviceKind::kKeyboard) { return; }
 
