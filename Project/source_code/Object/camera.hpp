@@ -62,7 +62,6 @@ private:
 	static constexpr float kInitAngleTolerance		= 0.01f;		// 視点リセットが完了したと判定させる許容値
 
 	std::shared_ptr<Transform> m_target_transform;
-	//std::unordered_map<TimeState, VECTOR>	m_target_pos;
 
 	float  m_move_speed;
 	float  m_distance_to_target;
@@ -71,5 +70,4 @@ private:
 	
 	VECTOR m_velocity;
 	VECTOR m_angle;
-	//Quaternion m_quaternion;
 };

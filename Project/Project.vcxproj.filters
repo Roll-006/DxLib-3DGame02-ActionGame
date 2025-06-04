@@ -334,9 +334,6 @@
     <ClInclude Include="source_code\Part\modeler (2).hpp">
       <Filter>Part</Filter>
     </ClInclude>
-    <ClInclude Include="source_code\Part\modeler.hpp">
-      <Filter>Part</Filter>
-    </ClInclude>
     <ClInclude Include="source_code\Part\transform.hpp">
       <Filter>Part</Filter>
     </ClInclude>
@@ -411,6 +408,9 @@
     </ClInclude>
     <ClInclude Include="source_code\Manager\handle_keeper.hpp">
       <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Part\modeler.hpp">
+      <Filter>Part</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

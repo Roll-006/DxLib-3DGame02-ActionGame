@@ -5,8 +5,6 @@
 #include "../Data/Kind/coordinate_kind.hpp"
 #include "../Calculation/math.hpp"
 
-#include "../FPS/fps.hpp"
-
 class Transform final
 {
 public:
@@ -19,11 +17,11 @@ public:
 	void AttachParent(const std::string& parent_obj_name);
 	void DetachParent();
 
-	void SetMatrix	(const CoordinateKind coord_kind, const MATRIX&	matrix);
+	void SetMatrix	(const CoordinateKind coord_kind, const MATRIX& matrix);
 	void SetPos		(const CoordinateKind coord_kind, const VECTOR&	pos);
-	void SetRot		(const CoordinateKind coord_kind, const MATRIX&	rotation_matrix);
-	void SetRot		(const CoordinateKind coord_kind, const VECTOR& forward);
+	void SetRot		(const CoordinateKind coord_kind, const MATRIX&	rot_matrix);
 	void SetRot		(const CoordinateKind coord_kind, const Axes&	axes);
+	void SetRot		(const CoordinateKind coord_kind, const VECTOR& forward);
 	void SetScale	(const CoordinateKind coord_kind, const VECTOR&	scale);
 
 	[[nodiscard]] MATRIX GetMatrix			(const CoordinateKind coord_kind);
@@ -34,6 +32,8 @@ public:
 	[[nodiscard]] VECTOR GetRight			(const CoordinateKind coord_kind);
 	[[nodiscard]] VECTOR GetUp				(const CoordinateKind coord_kind);
 	[[nodiscard]] VECTOR GetForward			(const CoordinateKind coord_kind);
+
+	/// @brief TODO : 要検証
 	[[nodiscard]] VECTOR GetEulerAngles		(const CoordinateKind coord_kind);
 
 	/// @brief 親がアタッチされているかを判定

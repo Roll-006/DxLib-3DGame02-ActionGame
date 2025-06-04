@@ -23,6 +23,7 @@ void ShareScene::Init()
 
 void ShareScene::Update()
 {
+	//m_camera->Update();
 	m_player->Update();
 	m_camera->Update();
 }

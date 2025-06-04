@@ -250,10 +250,10 @@ bool math::IsAcuteAngle(const float radian)
 
 float math::GetAngleBetweenTwoVector(const VECTOR& v1, const VECTOR& v2)
 {
-    if (v1 == v3d::GetZeroVector() || v2 == v3d::GetZeroVector()) { return 0.0f; }
-
     const float length1 = VSize(v1);
     const float length2 = VSize(v2);
+
+    if (length1 == 0.0f || length2 == 0.0f) { return 0.0f; }
 
     return acos(VDot(v1, v2) / (length1 * length2));
 }
@@ -265,16 +265,16 @@ VECTOR math::GetRotatedPos(const VECTOR& pos, const Quaternion& rotate_q)
 {
 	// 参考URL : [ https://zenn.dev/mebiusbox/books/132b654aa02124/viewer/2966c7 ]
 
-
 	const Quaternion q_pos(pos.x, pos.y, pos.z, 0.0f);
 	const Quaternion n_rotate_q = quat::GetNormalizedQuaternion(rotate_q);
-	const Quaternion totated_q = n_rotate_q * q_pos * quat::GetInverseQuaternion(n_rotate_q);
+	const Quaternion totated_q  = n_rotate_q * q_pos * quat::GetInverseQuaternion(n_rotate_q);
+
 	return VGet(totated_q.x, totated_q.y, totated_q.z);
 }
 
 float math::GetYaw(const VECTOR& v)
 {
-    return atan2f(-v.x, -v.z);
+    return atan2f(v.x, v.z);
 }
 
 VECTOR math::GetYawRotateVector(const VECTOR& v)

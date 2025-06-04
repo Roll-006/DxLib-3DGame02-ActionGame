@@ -114,7 +114,6 @@ void Animator::PlayAnim()
 				data.play_timer = m_kind_data.at(data.kind).is_loop ? 0.0f : total_t;
 			}
 
-			// 再生位置・ブレンド率を適用
 			MV1SetAttachAnimTime	 (m_modeler->GetModelHandle(), data.attach_index, data.play_timer);
 			MV1SetAttachAnimBlendRate(m_modeler->GetModelHandle(), data.attach_index, blend_r);
 		}

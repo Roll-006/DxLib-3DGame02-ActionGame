@@ -38,13 +38,6 @@ void Camera::Draw() const
 	DrawLine3D(v3d::GetZeroVector(), axis::GetWorldXAxis() * 10000, 0xff0000);
 	DrawLine3D(v3d::GetZeroVector(), axis::GetWorldYAxis() * 10000, 0x00ff22);
 	DrawLine3D(v3d::GetZeroVector(), axis::GetWorldZAxis() * 10000, 0x0077ff);
-
-	const Axes axes = m_transform->GetAxes(CoordinateKind::kWorld);
-	DrawLine3D(v3d::GetZeroVector(), axes.x_axis * 100, 0xff0000);
-	DrawLine3D(v3d::GetZeroVector(), axes.y_axis * 100, 0x00ff22);
-	DrawLine3D(v3d::GetZeroVector(), axes.z_axis * 100, 0x0077ff);
-
-	// matrix::Draw(m_transform->GetMatrix(CoordinateKind::kWorld), VGet(0, 200, 0));
 }
 
 void Camera::OnCollide(const PhysicalObjBase& check_hit_obj)
@@ -61,7 +54,6 @@ void Camera::AttachTarget(const std::shared_ptr<ObjBase> obj)
 {
 	// ターゲットを親オブジェクトとする
 	m_target_transform = obj->GetTransform();
-	m_transform->AttachParent(obj->GetTransform());
 }
 
 void Camera::AttachTarget(const std::string& obj_name)
@@ -69,13 +61,11 @@ void Camera::AttachTarget(const std::string& obj_name)
 	// ターゲットを親オブジェクトとする
 	auto target_obj = ObjManager::GetInstance()->GetObj(obj_name);
 	m_target_transform = target_obj->GetTransform();
-	m_transform->AttachParent(target_obj->GetTransform());
 }
 
 void Camera::DetachTarget()
 {
 	m_target_transform = nullptr;
-	m_transform->DetachParent();
 }
 
 void Camera::InitAngle()
@@ -92,12 +82,14 @@ void Camera::SetLookDir()
 
 void Camera::Move()
 {
-	CalcAngleFromPad  ();
+	CalcAngleFromPad();
 	CalcAngleFromMouse();
 
 	// 角度制限
 	if (m_angle.x < kMinVerticalAngle * math::kDegreesToRadian) { m_angle.x = kMinVerticalAngle * math::kDegreesToRadian; }
 	if (m_angle.x > kMaxVerticalAngle * math::kDegreesToRadian) { m_angle.x = kMaxVerticalAngle * math::kDegreesToRadian; }
+
+	//DrawFormatString(0, 100, 0xffffff, "%f, %f, %f", m_angle.x, m_angle.y, m_angle.z);
 
 	// 拡大・縮小
 	CommandHandler::GetInstance()->Execute(CommandKind::kApproachCamera, *this);
@@ -107,10 +99,13 @@ void Camera::Move()
 	MATRIX m = MGetIdent();
 	CreateRotationZXYMatrix(&m, m_angle.x, m_angle.y, m_angle.z);
 
+	//matrix::Draw(m, VGet(0, 300, 0));
+
 	// 結果を反映
 	m_transform->SetRot(CoordinateKind::kWorld, MGetRotElem(m));
 	const VECTOR target_pos = m_target_transform ? m_target_transform->GetPos(CoordinateKind::kWorld) : v3d::GetZeroVector();
-	const VECTOR pos		= target_pos - m_transform->GetForward(CoordinateKind::kLocal) * m_distance_to_target;
+	const VECTOR forward	= m_transform->GetForward(CoordinateKind::kWorld);
+	const VECTOR pos		= target_pos - forward * m_distance_to_target;
 	m_transform->SetPos(CoordinateKind::kWorld, pos);
 }
 

@@ -3,12 +3,30 @@
 
 static struct AnimationPath
 {
-	const std::string IDLE_01 = "data/animation/idle_01.mv1";
-	const std::string IDLE_02 = "data/animation/idle_02.mv1";
-	const std::string WALK_01 = "data/animation/walk_01.mv1";
-	const std::string JOG_01  = "data/animation/jog_01.mv1";
-	const std::string RUN_01  = "data/animation/run_01.mv1";
-	const std::string JUMP_01 = "data/animation/jump_01.mv1";
-	const std::string FALL_01 = "data/animation/fall_01.mv1";
+	const std::string IDLE						= "data/animation/idle_01.mv1";
+	const std::string IDLE_SQUAT				= "data/animation/Idle_crouching_01.mv1";
+
+	const std::string WALK_FORWARD				= "data/animation/.mv1";
+	const std::string WALK_BACKWARD				= "data/animation/.mv1";
+
+	const std::string WALK_SHOOT_FORWARD		= "data/animation/.mv1";
+	const std::string WALK_SHOOT_BACKWARD		= "data/animation/.mv1";
+	const std::string WALK_SHOOT_LEFT			= "data/animation/.mv1";
+	const std::string WALK_SHOOT_RIGHT			= "data/animation/.mv1";
+	const std::string WALK_SHOOT_FORWARD_LEFT	= "data/animation/.mv1";
+	const std::string WALK_SHOOT_FORWARD_RIGHT	= "data/animation/.mv1";
+	const std::string WALK_SHOOT_BACKWARD_LEFT	= "data/animation/.mv1";
+	const std::string WALK_SHOOT_BACKWARD_RIGHT	= "data/animation/.mv1";
+
+	const std::string WALK_SQUAT_FORWARD		= "data/animation/.mv1";
+	const std::string WALK_SQUAT_BACKWARD		= "data/animation/.mv1";
+	const std::string WALK_SQUAT_LEFT			= "data/animation/.mv1";
+	const std::string WALK_SQUAT_RIGHT			= "data/animation/.mv1";
+	const std::string WALK_SQUAT_FORWARD_LEFT	= "data/animation/.mv1";
+	const std::string WALK_SQUAT_FORWARD_RIGHT	= "data/animation/.mv1";
+	const std::string WALK_SQUAT_BACKWARD_LEFT	= "data/animation/.mv1";
+	const std::string WALK_SQUAT_BACKWARD_RIGHT	= "data/animation/.mv1";
+
+	const std::string RUN_FORWARD				= "data/animation/.mv1";
 
 }AnimPath;

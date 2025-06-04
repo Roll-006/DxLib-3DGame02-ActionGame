@@ -25,22 +25,27 @@ Modeler::~Modeler()
                                                                                    
 void Modeler::Draw()
 {
-	// 透過情報を適用
-	MV1SetUseZBuffer(m_model_handle, TRUE);
-	if (m_opacity != 1.0f) { MV1SetUseZBuffer(m_model_handle, FALSE); }
-	MV1SetOpacityRate(m_model_handle, m_opacity);
-
-	// 行列情報を適用
+	ApplyOpacity();
 	ApplyMatrix();
 
-	// 最終描画
 	MV1DrawModel(m_model_handle);
+}
 
-	//DxLibHelper::DrawModelFrames(m_model_handle);
+void Modeler::ApplyOpacity()
+{
+	if (m_opacity == 1.0f)
+	{
+		MV1SetUseZBuffer(m_model_handle, TRUE);
+	}
+	else
+	{
+		MV1SetUseZBuffer(m_model_handle, FALSE);
+		MV1SetOpacityRate(m_model_handle, m_opacity);
+	}
 }
 
 void Modeler::ApplyMatrix()
 {
-	MV1SetMatrix(m_model_handle, m_transform->GetMatrix(CoordinateKind::kWorld));
-	//if (m_is_turn_around) { MV1SetRotationXYZ(m_model_handle, VGet(0.0f, DX_PI_F, 0.0f)); }
+	MATRIX rot_y = m_is_turn_around ? MGetRotY(DX_PI_F) : MGetIdent();
+	MV1SetMatrix(m_model_handle, rot_y * m_transform->GetMatrix(CoordinateKind::kWorld));
 }

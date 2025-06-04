@@ -9,10 +9,13 @@ class Modeler final
 {
 public:
 	Modeler(const std::shared_ptr<Transform> transform, const std::string& file_path, const bool is_turn_around);
-	Modeler(const std::shared_ptr<Transform> transform, const int model_handle		, const bool is_turn_around);
+	Modeler(const std::shared_ptr<Transform> transform, const int model_handle,		  const bool is_turn_around);
 	~Modeler();
 
 	void Draw();
+
+	/// @brief モデルに不透明度処理を適用
+	void ApplyOpacity();
 
 	/// @brief モデルに行列情報を適用させる
 	/// @brief MEMO : 通常描画時に適用されるが、武器などがモデルの行列情報を基準とするため先行して適用

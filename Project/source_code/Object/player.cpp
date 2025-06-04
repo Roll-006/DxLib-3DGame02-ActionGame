@@ -11,7 +11,7 @@ Player::Player(std::shared_ptr<Camera> camera) :
 	m_is_run			(false)
 {
 	// 初期pos・dirを設定
-	m_dir = m_destination_dir = VGet(1.0f, 0.0f, -1.0f);
+	m_dir = m_destination_dir = VGet(0.0f, 0.0f, 1.0f);
 	m_transform->SetRot(CoordinateKind::kWorld, m_dir);
 	m_transform->SetPos(CoordinateKind::kWorld, VGet(0, 0, 0));
 
@@ -27,7 +27,7 @@ Player::Player(std::shared_ptr<Camera> camera) :
 	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kRun01),  AnimPath.RUN_01,  1, AnimTag.WALK, 20.0f, true);
 	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kJump01), AnimPath.JUMP_01, 1, AnimTag.NONE, 20.0f, false);
 	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kFall01), AnimPath.FALL_01, 1, AnimTag.NONE, 20.0f, false);
-	m_animator->AttachAnim	 (static_cast<int>(PlayerAnimKind::kIdle01));
+	//m_animator->AttachAnim	 (static_cast<int>(PlayerAnimKind::kIdle01));
 
 	// 武器設定
 	AddGun(std::make_shared<AssaultRifle>());
@@ -66,15 +66,13 @@ void Player::Draw() const
 	//DrawFormatString(0, 20, 0xffffff, "is_move  : %d", m_is_move);
 	//DrawFormatString(0, 40, 0xffffff, "dir      : %f, %f, %f", m_dir.x, m_dir.y, m_dir.z);
 	//DrawFormatString(0, 60, 0xffffff, "velocity : %f, %f, %f", m_velocity.x, m_velocity.y, m_velocity.z);
-	//matrix::Draw(m_transform->GetMatrix(CoordinateKind::kWorld), VGet(0, 100, 0));
+	matrix::Draw(m_transform->GetMatrix(CoordinateKind::kWorld), VGet(0, 0, 0));
 
-	auto pos = m_transform->GetPos(CoordinateKind::kWorld);
-	Axes axes = m_transform->GetAxes(CoordinateKind::kWorld);
+	auto pos  = m_transform->GetPos (CoordinateKind::kWorld);
+	auto axes = m_transform->GetAxes(CoordinateKind::kWorld);
 	DrawLine3D(pos, pos + axes.x_axis * 100, 0xff0000);
 	DrawLine3D(pos, pos + axes.y_axis * 100, 0x00ff22);
 	DrawLine3D(pos, pos + axes.z_axis * 100, 0x0077ff);
-	DrawLine3D(pos, pos + m_dir * 500, 0x0077ff);
-
 	//DrawLine3D(m_transform->GetPos(CoordinateKind::kWorld), m_transform->GetPos(CoordinateKind::kWorld) + m_dir * 100, 0x0077ff);
 }
 
@@ -96,7 +94,7 @@ void Player::ChangeAnimState()
 void Player::Move()
 {
 	// ダッシュするかを判定
-	Run();
+	JudgeRun();
 
 	// 各方向の移動
 	CalcHorizontalVelocity();
@@ -106,14 +104,24 @@ void Player::Move()
 	if (m_is_move)
 	{
 		m_velocity = m_dir * m_move_speed;
-		//m_transform->SetRot(CoordinateKind::kWorld, m_dir);
-		m_transform->SetPos		(CoordinateKind::kWorld, m_transform->GetPos(CoordinateKind::kWorld) + m_velocity);
+		m_transform->SetRot(CoordinateKind::kWorld, m_dir);
+		m_transform->SetPos(CoordinateKind::kWorld, m_transform->GetPos(CoordinateKind::kWorld) + m_velocity);
 	}
 }
 
-void Player::Run()
+void Player::JudgeRun()
 {
+	if (InputChecker::GetInstance()->GetCurrentInputDevice() == DeviceKind::kPad)
+	{
+		if (InputChecker::GetInstance()->IsInput(pad::ButtonKind::kRSPush))
+		{
 
+		}
+	}
+	if (InputChecker::GetInstance()->GetCurrentInputDevice() == DeviceKind::kKeyboard)
+	{
+		
+	}
 }
 
 void Player::CalcHorizontalVelocity()

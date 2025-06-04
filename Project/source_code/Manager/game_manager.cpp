@@ -75,10 +75,10 @@ bool GameManager::ContinueLoop()
 	#ifdef _DEBUG
 	if (InputChecker::GetInstance()->IsInput(KEY_INPUT_ESCAPE)) { return false; }
 
-	if (   InputChecker::GetInstance()->IsInput(pad::ButtonKind::kLB)
-		&& InputChecker::GetInstance()->IsInput(pad::ButtonKind::kRB)
-		&& InputChecker::GetInstance()->IsInput(pad::ButtonKind::kLSPush)
-		&& InputChecker::GetInstance()->IsInput(pad::ButtonKind::kRSPush)
+	if (   InputChecker::GetInstance()->IsInput(pad::ButtonKind ::kLB)
+		&& InputChecker::GetInstance()->IsInput(pad::ButtonKind ::kRB)
+		&& InputChecker::GetInstance()->IsInput(pad::ButtonKind ::kLSPush)
+		&& InputChecker::GetInstance()->IsInput(pad::ButtonKind ::kRSPush)
 		&& InputChecker::GetInstance()->IsInput(pad::TriggerKind::kRT)
 		&& InputChecker::GetInstance()->IsInput(pad::TriggerKind::kRT))
 	{

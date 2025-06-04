@@ -83,16 +83,16 @@ void Transform::SetPos(const CoordinateKind coord_kind, const VECTOR& pos)
 	m_local_matrix.m[3][2] = pos.z - parent_pos.z;
 }
 
-void Transform::SetRot(const CoordinateKind coord_kind, const MATRIX& rotation_matrix)
+void Transform::SetRot(const CoordinateKind coord_kind, const MATRIX& rot_matrix)
 {
 	// ÉçÅ[ÉJÉãçsóÒÇ∆ÇµÇƒäiî[
-	m_local_matrix = rotation_matrix * MInverse(GetRotationMatrix(coord_kind)) * GetMatrix(coord_kind);
+	m_local_matrix = rot_matrix * MInverse(GetRotationMatrix(coord_kind)) * GetMatrix(coord_kind);
 }
 
 void Transform::SetRot(const CoordinateKind coord_kind, const VECTOR& forward)
 {
-	float angle = math::GetAngleBetweenTwoVector(axis::GetWorldZAxis(), forward);
-	SetRot(coord_kind, MGetRotY(angle));
+	float yaw = math::GetYaw(forward);
+	SetRot(coord_kind, MGetRotY(yaw));
 }
 
 void Transform::SetRot(const CoordinateKind coord_kind, const Axes& axes)
