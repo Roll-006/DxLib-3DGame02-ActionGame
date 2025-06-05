@@ -219,6 +219,7 @@
     <ClInclude Include="source_code\Data\IncludeList\input.hpp" />
     <ClInclude Include="source_code\Data\IncludeList\vector.hpp" />
     <ClInclude Include="source_code\Data\input_data.hpp" />
+    <ClInclude Include="source_code\Data\Kind\time_kind.hpp" />
     <ClInclude Include="source_code\Data\Kind\axis_kind.hpp" />
     <ClInclude Include="source_code\Data\Kind\knife_kind.hpp" />
     <ClInclude Include="source_code\Data\Kind\gun_kind.hpp" />

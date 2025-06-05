@@ -2,27 +2,27 @@
 
 void player_cmd::MoveUp::Execute(ObjBase& obj)
 {
-	dynamic_cast<Player*>(&obj);
+	dynamic_cast<Player*>(&obj)->CalcMoveForward();
 }
 
 void player_cmd::MoveDown::Execute(ObjBase& obj)
 {
-	dynamic_cast<Player*>(&obj);
+	dynamic_cast<Player*>(&obj)->CalcMoveBackward();
 }
 
 void player_cmd::MoveLeft::Execute(ObjBase& obj)
 {
-	dynamic_cast<Player*>(&obj);
+	dynamic_cast<Player*>(&obj)->CalcMoveLeft();
 }
 
 void player_cmd::MoveRight::Execute(ObjBase& obj)
 {
-	dynamic_cast<Player*>(&obj);
+	dynamic_cast<Player*>(&obj)->CalcMoveRight();
 }
 
 void player_cmd::Run::Execute(ObjBase& obj)
 {
-	dynamic_cast<Player*>(&obj);
+	dynamic_cast<Player*>(&obj)->Run();
 }
 
 void player_cmd::Squat::Execute(ObjBase& obj)

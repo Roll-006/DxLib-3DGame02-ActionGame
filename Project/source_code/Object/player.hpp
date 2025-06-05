@@ -21,11 +21,16 @@ public:
 	[[nodiscard]] std::shared_ptr<Modeler>	GetModeler()  const { return m_modeler; }
 	[[nodiscard]] std::shared_ptr<Animator>	GetAnimator() const { return m_animator; }
 
+	#pragma region コマンド
+	void CalcMoveForward();
+	void CalcMoveBackward();
+	void CalcMoveLeft();
+	void CalcMoveRight();
+	void Run();
+	#pragma endregion
+
 private:
 	void Move();
-
-	/// @brief 走るかを判定
-	void Run();
 
 	void CalcHorizontalVelocity();
 	void CalcVerticalVelocity();
@@ -34,7 +39,7 @@ private:
 
 	// 入力方式に対応した速度ベクトルを取得
 	[[nodiscard]] VECTOR GetVelocityFromPad	 (const VECTOR& forwrd, const VECTOR& right);
-	[[nodiscard]] VECTOR GetVelocityFromMouse(const VECTOR& forwrd, const VECTOR& right);
+	[[nodiscard]] VECTOR GetVelocityFromKey(const VECTOR& forwrd, const VECTOR& right);
 
 	/// @brief 加速処理
 	void Acceleration(const float destination_speed);
@@ -51,14 +56,15 @@ private:
 	static constexpr float kWalkSpeed			= 4.0f;
 	static constexpr float kRunSpeed			= 10.0f;
 	static constexpr float kAcceleration		= 4.0f;		// 加速度(減速度も共通)
-	static constexpr float kDirCorrectionSpeed  = 0.1f;		// dirの補正速度
-	static constexpr float kDistanceDirToDir	= 1.7f;		// 目的のdirを即座に現在のdirに反映する閾値(dir同士の距離)
+	static constexpr float kDirCorrectionSpeed  = 0.07f;	// dirの補正速度
+	static constexpr float kConfirmDirThreshold	= 0.1f;	// 目的のdirを即座に現在のdirに反映する閾値
 	static constexpr int   kWalkStickSlopeLimit	= 15000;	// 歩き状態とするスティック傾きの上限
 
 	std::shared_ptr<Camera> m_camera;
 
-	VECTOR m_dir;
-	VECTOR m_destination_dir;
+	std::unordered_map<TimeKind, VECTOR> m_dir;	// 向いている方向(向き補間のためタイムカインドを用意)
+	VECTOR m_move_dir;							// 移動方向
+
 	VECTOR m_velocity;
 	float  m_move_speed;
 	bool   m_is_move;

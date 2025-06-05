@@ -1,18 +1,18 @@
 #include "player.hpp"
+#include "../Manager/command_handler.hpp"
 
 Player::Player(std::shared_ptr<Camera> camera) :
-	CharaBase			(ObjName.PLAYER, ObjTag.PLAYER, ModelPath.CHARA_01, MassKind::kMedium),
-	m_camera			(camera),
-	m_dir				(v3d::GetZeroVector()),
-	m_destination_dir	(v3d::GetZeroVector()),
-	m_velocity			(v3d::GetZeroVector()),
-	m_move_speed		(0.0f),
-	m_is_move			(false),
-	m_is_run			(false)
+	CharaBase		(ObjName.PLAYER, ObjTag.PLAYER, ModelPath.CHARA_01, MassKind::kMedium),
+	m_camera		(camera),
+	m_move_dir		(v3d::GetZeroVector()),
+	m_velocity		(v3d::GetZeroVector()),
+	m_move_speed	(0.0f),
+	m_is_move		(false),
+	m_is_run		(false)
 {
 	// 初期pos・dirを設定
-	m_dir = m_destination_dir = VGet(0.0f, 0.0f, 1.0f);
-	m_transform->SetRot(CoordinateKind::kWorld, m_dir);
+	m_dir[TimeKind::kCurrent] = m_dir[TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);
+	m_transform->SetRot(CoordinateKind::kWorld, m_dir.at(TimeKind::kCurrent));
 	m_transform->SetPos(CoordinateKind::kWorld, VGet(0, 0, 0));
 
 	// 衝突用の図形を設定
@@ -56,18 +56,14 @@ void Player::Draw() const
 	Sphere s(m_transform->GetPos(CoordinateKind::kWorld), 40);
 	s.Draw(true, 0, 0xffffff);
 
-	//DrawFormatString(0,  0, 0xffffff, "speed    : %f", m_move_speed);
-	//DrawFormatString(0, 20, 0xffffff, "is_move  : %d", m_is_move);
-	//DrawFormatString(0, 40, 0xffffff, "dir      : %f, %f, %f", m_dir.x, m_dir.y, m_dir.z);
-	//DrawFormatString(0, 60, 0xffffff, "velocity : %f, %f, %f", m_velocity.x, m_velocity.y, m_velocity.z);
-	matrix::Draw(m_transform->GetMatrix(CoordinateKind::kWorld), VGet(0, 0, 0));
-
 	auto pos  = m_transform->GetPos (CoordinateKind::kWorld);
 	auto axes = m_transform->GetAxes(CoordinateKind::kWorld);
 	DrawLine3D(pos, pos + axes.x_axis * 100, 0xff0000);
 	DrawLine3D(pos, pos + axes.y_axis * 100, 0x00ff22);
 	DrawLine3D(pos, pos + axes.z_axis * 100, 0x0077ff);
-	//DrawLine3D(m_transform->GetPos(CoordinateKind::kWorld), m_transform->GetPos(CoordinateKind::kWorld) + m_dir * 100, 0x0077ff);
+
+	DrawFormatString(0, 50, 0xffffff, "%d", m_is_run);
+	DrawFormatString(0, 70, 0xffffff, "%f", m_move_speed);
 }
 
 void Player::OnCollide(const PhysicalObjBase& check_hit_obj)
@@ -78,6 +74,64 @@ void Player::OnCollide(const PhysicalObjBase& check_hit_obj)
 void Player::OnGravity()
 {
 
+}
+
+void Player::CalcMoveForward()
+{
+	VECTOR forward = m_camera->GetTransform()->GetForward(CoordinateKind::kWorld);
+	forward.y = 0.0f;
+
+	m_move_dir += v3d::GetNormalizedVector(forward);
+}
+
+void Player::CalcMoveBackward()
+{
+	VECTOR forward = m_camera->GetTransform()->GetForward(CoordinateKind::kWorld);
+	forward.y = 0.0f;
+
+	m_move_dir -= v3d::GetNormalizedVector(forward);
+}
+
+void Player::CalcMoveLeft()
+{
+	m_move_dir -= m_camera->GetTransform()->GetRight(CoordinateKind::kWorld);
+}
+
+void Player::CalcMoveRight()
+{
+	m_move_dir += m_camera->GetTransform()->GetRight(CoordinateKind::kWorld);
+}
+
+void Player::Run()
+{
+	const auto command = CommandHandler::GetInstance();
+	const auto input   = InputChecker  ::GetInstance();
+	m_is_run = false;
+
+	switch (command->GetInputModeKind(MoveKind::kRun))
+	{
+	case InputModeKind::kTrigger:
+		if (input->GetInputState(*command->GetCurrentFrameExecuteInputCode(CommandKind::kRun)) == InputState::kSingle)
+		{
+			command->CountUpTrigger(MoveKind::kRun);
+
+			if (command->GetTriggerCount(MoveKind::kRun) % 2)
+			{
+				m_is_run = true;
+			}
+		}
+
+		// 入力数に応じてダッシュ状態を切り替える
+
+		break;
+
+	case InputModeKind::kHold:
+		if (input->GetInputState(*command->GetCurrentFrameExecuteInputCode(CommandKind::kRun)) == InputState::kHold)
+		{
+			m_is_run = true;
+		}
+		break;
+	}
 }
 
 void Player::LoadAnim()
@@ -113,8 +167,13 @@ void Player::ChangeAnimState()
 
 void Player::Move()
 {
-	// ダッシュするかを判定
-	Run();
+	m_move_dir = v3d::GetZeroVector();
+
+	CommandHandler::GetInstance()->Execute(CommandKind::kRun,				*this);
+	CommandHandler::GetInstance()->Execute(CommandKind::kMoveUpPlayer,		*this);
+	CommandHandler::GetInstance()->Execute(CommandKind::kMoveDownPlayer,	*this);
+	CommandHandler::GetInstance()->Execute(CommandKind::kMoveLeftPlayer,	*this);
+	CommandHandler::GetInstance()->Execute(CommandKind::kMoveRightPlayer,	*this);
 
 	// 各方向の移動
 	CalcHorizontalVelocity();
@@ -123,35 +182,15 @@ void Player::Move()
 	// 移動した場合は位置・回転を更新
 	if (m_is_move)
 	{
-		m_velocity = m_dir * m_move_speed;
-		m_transform->SetRot(CoordinateKind::kWorld, m_dir);
+		m_velocity = m_dir.at(TimeKind::kCurrent) * m_move_speed;
+		m_transform->SetRot(CoordinateKind::kWorld, m_dir.at(TimeKind::kCurrent));
 		m_transform->SetPos(CoordinateKind::kWorld, m_transform->GetPos(CoordinateKind::kWorld) + m_velocity);
 	}
 }
 
-void Player::Run()
-{
-
-}
-
 void Player::CalcHorizontalVelocity()
 {
-	// カメラの向きから移動方向を抽出
-	const VECTOR right = m_camera->GetTransform()->GetRight(CoordinateKind::kWorld);
-	VECTOR forwrd = m_camera->GetTransform()->GetForward(CoordinateKind::kWorld);
-	forwrd.y = 0.0f;
-	forwrd = v3d::GetNormalizedVector(forwrd);
-
-	// 採用するvelocityを判定
-	VECTOR velocity = v3d::GetZeroVector();
-	if (InputChecker::GetInstance()->GetCurrentInputDevice() == DeviceKind::kPad)
-	{
-		velocity = GetVelocityFromPad  (forwrd, right);
-	}
-	if (InputChecker::GetInstance()->GetCurrentInputDevice() == DeviceKind::kKeyboard)
-	{
-		velocity = GetVelocityFromMouse(forwrd, right);
-	}
+	VECTOR velocity = v3d::GetNormalizedVector(m_move_dir) * InputChecker::kStickMaxSlope;
 
 	// 移動判定
 	m_is_move = velocity != v3d::GetZeroVector() ? true : false;
@@ -207,21 +246,15 @@ void Player::CalcDir(const VECTOR& velocity)
 {
 	if (!m_is_move) { return; }
 
-	m_destination_dir = v3d::GetNormalizedVector(velocity);
-
-	// 現在のdirと目的のdirが一定距離離れている場合は即座に方向を補正する
-	const VECTOR distance = m_destination_dir - m_dir;
-	if (VSize(distance) > kDistanceDirToDir)
-	{
-		m_dir = m_destination_dir;
-		return;
-	}
+	// 目的とする向きと距離を取得
+	m_dir.at(TimeKind::kNext) = v3d::GetNormalizedVector(velocity);
+	const VECTOR distance = m_dir.at(TimeKind::kNext) - m_dir.at(TimeKind::kCurrent);
 
 	// 現在のdirを目的とするdirに近づけていく
-	m_dir += v3d::GetNormalizedVector(distance) * kDirCorrectionSpeed;
-	if (VSize(m_destination_dir - m_dir) < 0.1f)
+	m_dir.at(TimeKind::kCurrent) += v3d::GetNormalizedVector(distance) * kDirCorrectionSpeed;
+	if (VSize(m_dir.at(TimeKind::kNext) - m_dir.at(TimeKind::kCurrent)) < kConfirmDirThreshold)
 	{
-		m_dir = m_destination_dir;
+		m_dir.at(TimeKind::kCurrent) = m_dir.at(TimeKind::kNext);
 	}
 }
 
@@ -229,9 +262,9 @@ VECTOR Player::GetVelocityFromPad(const VECTOR& forwrd, const VECTOR& right)
 {
 	// 各方向のパラメーターを取得
 	const auto input = InputChecker::GetInstance();
-	const int forward_param	 = input->GetInputParameter(pad::StickKind::kLSUp);
-	const int backward_param = input->GetInputParameter(pad::StickKind::kLSDown);
-	const int left_param	 = input->GetInputParameter(pad::StickKind::kLSLeft);
+	const int forward_param	 = input->GetInputParameter(pad::StickKind::kLSUp   );
+	const int backward_param = input->GetInputParameter(pad::StickKind::kLSDown );
+	const int left_param	 = input->GetInputParameter(pad::StickKind::kLSLeft );
 	const int right_param	 = input->GetInputParameter(pad::StickKind::kLSRight);
 
 	// 速度ベクトルを取得
@@ -244,7 +277,7 @@ VECTOR Player::GetVelocityFromPad(const VECTOR& forwrd, const VECTOR& right)
 	return velocity;
 }
 
-VECTOR Player::GetVelocityFromMouse(const VECTOR& forwrd, const VECTOR& right)
+VECTOR Player::GetVelocityFromKey(const VECTOR& forwrd, const VECTOR& right)
 {
 	const auto input = InputChecker::GetInstance();
 
@@ -252,8 +285,8 @@ VECTOR Player::GetVelocityFromMouse(const VECTOR& forwrd, const VECTOR& right)
 	VECTOR dir = v3d::GetZeroVector();
 	if (input->IsInput(KEY_INPUT_W)) { dir += forwrd; }
 	if (input->IsInput(KEY_INPUT_S)) { dir -= forwrd; }
-	if (input->IsInput(KEY_INPUT_A)) { dir -= right; }
-	if (input->IsInput(KEY_INPUT_D)) { dir += right; }
+	if (input->IsInput(KEY_INPUT_A)) { dir -= right;  }
+	if (input->IsInput(KEY_INPUT_D)) { dir += right;  }
 
 	// 速度ベクトルを取得
 	return v3d::GetNormalizedVector(dir) * InputChecker::kStickMaxSlope;

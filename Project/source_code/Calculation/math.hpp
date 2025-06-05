@@ -10,6 +10,7 @@
 #include "matrix.hpp"
 #include "quaternion.hpp"
 
+#include "../Data/Kind/time_kind.hpp"
 #include "../Data/Kind/sort_kind.hpp"
 #include "../Data/IncludeList/vector.hpp"
 

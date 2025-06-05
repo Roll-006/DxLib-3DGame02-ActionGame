@@ -26,7 +26,7 @@ public:
 private:
 	int   m_model_handle;
 	float m_opacity;			// モデルの不透明度(0.0f～1.0f)
-	bool  m_is_turn_around;		// モデルを180°回転させるかを判定
+	bool  m_is_turn_around;		// モデルをY軸180°回転させるかを判定
 
 	std::shared_ptr<Transform> m_transform;
 };

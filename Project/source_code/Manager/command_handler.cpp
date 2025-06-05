@@ -20,6 +20,11 @@ CommandHandler::~CommandHandler()
 
 }
 
+void CommandHandler::LateUpdate()
+{
+	m_current_frame_execute.clear();
+}
+
 void CommandHandler::LoadSelectCommand()
 {
 	m_commands[CommandKind::kDecide]			= (std::make_shared<select_cmd::Decide>());
@@ -101,7 +106,7 @@ void CommandHandler::RemoveInputCode(const CommandKind kind, const input_concept
 	if (!m_commands.count(kind)) { return; }
 
 	const auto input = InputChecker::GetInstance();
-	const auto code = input->ConvertInputTemplateToInputCode(input_code);
+	const auto code  = input->ConvertInputTemplateToInputCode(input_code);
 	std::vector<std::pair<CommandKind, InputCode>>* codes = nullptr;
 
 	switch (input->GetInputKind(input_code))

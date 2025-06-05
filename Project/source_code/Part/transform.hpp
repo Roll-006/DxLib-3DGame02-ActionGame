@@ -43,7 +43,7 @@ public:
 	[[nodiscard]] VECTOR GetEulerAngles		(const CoordinateKind coord_kind);
 
 	/// @brief 親がアタッチされているかを判定
-	[[nodiscard]] bool HasParent() { return m_parent_transform != nullptr; }
+	[[nodiscard]] bool HasParent() const { return m_parent_transform != nullptr; }
 
 private:
 	MATRIX m_local_matrix;

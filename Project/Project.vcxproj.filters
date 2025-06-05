@@ -412,6 +412,9 @@
     <ClInclude Include="source_code\Part\modeler.hpp">
       <Filter>Part</Filter>
     </ClInclude>
+    <ClInclude Include="source_code\Data\Kind\time_kind.hpp">
+      <Filter>Data\Kind</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Object">
