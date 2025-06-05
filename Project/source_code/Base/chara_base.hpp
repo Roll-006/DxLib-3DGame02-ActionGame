@@ -17,8 +17,6 @@ public:
 
 	virtual ~CharaBase() = default;
 
-	virtual void ChangeAnimState() abstract;
-
 	/// @brief e‚ÌŠ“o˜^ 
 	void AddGun(const std::shared_ptr<GunBase> gun)
 	{
@@ -48,8 +46,13 @@ public:
 	[[nodiscard]] const std::shared_ptr<Modeler> GetModeler()const { return m_modeler; }
 
 protected:
+	virtual void LoadAnim() abstract;
+	virtual void ChangeAnimState() abstract;
+
+protected:
 	std::shared_ptr<Modeler>  m_modeler;
 	std::shared_ptr<Animator> m_animator;
 	std::unordered_map<GunKind, std::shared_ptr<GunBase>> m_guns;	// “o˜^(Š)‚µ‚Ä‚¢‚ée
 	std::shared_ptr<GunBase>  m_current_attach_gun;					// Œ»İƒAƒ^ƒbƒ`(‘•”õ)‚µ‚Ä‚¢‚ée
 };
+

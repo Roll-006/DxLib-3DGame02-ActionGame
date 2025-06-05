@@ -18,8 +18,6 @@ public:
 	void OnCollide(const PhysicalObjBase& check_hit_obj) override;
 	void OnGravity() override;
 
-	void ChangeAnimState() override;
-
 	[[nodiscard]] std::shared_ptr<Modeler>	GetModeler()  const { return m_modeler; }
 	[[nodiscard]] std::shared_ptr<Animator>	GetAnimator() const { return m_animator; }
 
@@ -27,7 +25,7 @@ private:
 	void Move();
 
 	/// @brief ‘–‚é‚©‚ð”»’è
-	void JudgeRun();
+	void Run();
 
 	void CalcHorizontalVelocity();
 	void CalcVerticalVelocity();
@@ -44,6 +42,9 @@ private:
 	void Deceleration(const float destination_speed);
 
 	void ConvertMouseVelocityToPadVelocity();
+
+	void LoadAnim() override;
+	void ChangeAnimState() override;
 
 private:
 	static constexpr float kSlowWalkSpeed		= 2.0f;

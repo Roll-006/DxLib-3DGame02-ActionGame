@@ -85,13 +85,12 @@ void Transform::SetPos(const CoordinateKind coord_kind, const VECTOR& pos)
 
 void Transform::SetRot(const CoordinateKind coord_kind, const MATRIX& rot_matrix)
 {
-	// ÉçÅ[ÉJÉãçsóÒÇ∆ÇµÇƒäiî[
 	m_local_matrix = rot_matrix * MInverse(GetRotationMatrix(coord_kind)) * GetMatrix(coord_kind);
 }
 
-void Transform::SetRot(const CoordinateKind coord_kind, const VECTOR& forward)
+void Transform::SetRot(const CoordinateKind coord_kind, const VECTOR& dir)
 {
-	float yaw = math::GetYaw(forward);
+	float yaw = math::GetYaw(dir);
 	SetRot(coord_kind, MGetRotY(yaw));
 }
 

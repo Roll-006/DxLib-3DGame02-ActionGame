@@ -1,8 +1,10 @@
 #include "command_handler.hpp"
 
-CommandHandler::CommandHandler() : 
-	m_input_mode(InputModeKind::kTrigger)
+CommandHandler::CommandHandler()
 {
+	m_input_mode   [MoveKind::kRun] = m_input_mode   [MoveKind::kSquat] = InputModeKind::kTrigger;
+	m_trigger_count[MoveKind::kRun] = m_trigger_count[MoveKind::kSquat] = 0;
+
 	LoadSelectCommand();
 	LoadPlayerCommand();
 	LoadCameraCommand();

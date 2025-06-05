@@ -23,7 +23,7 @@ Modeler::~Modeler()
 	MV1DeleteModel(m_model_handle);
 }
                                                                                    
-void Modeler::Draw()
+void Modeler::Draw() const
 {
 	ApplyOpacity();
 	ApplyMatrix();
@@ -31,7 +31,7 @@ void Modeler::Draw()
 	MV1DrawModel(m_model_handle);
 }
 
-void Modeler::ApplyOpacity()
+void Modeler::ApplyOpacity() const
 {
 	if (m_opacity == 1.0f)
 	{
@@ -44,8 +44,8 @@ void Modeler::ApplyOpacity()
 	}
 }
 
-void Modeler::ApplyMatrix()
+void Modeler::ApplyMatrix() const
 {
-	MATRIX rot_y = m_is_turn_around ? MGetRotY(DX_PI_F) : MGetIdent();
+	const MATRIX rot_y = m_is_turn_around ? MGetRotY(DX_PI_F) : MGetIdent();
 	MV1SetMatrix(m_model_handle, rot_y * m_transform->GetMatrix(CoordinateKind::kWorld));
 }

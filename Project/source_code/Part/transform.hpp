@@ -17,12 +17,18 @@ public:
 	void AttachParent(const std::string& parent_obj_name);
 	void DetachParent();
 
+	#pragma region setter
 	void SetMatrix	(const CoordinateKind coord_kind, const MATRIX& matrix);
 	void SetPos		(const CoordinateKind coord_kind, const VECTOR&	pos);
 	void SetRot		(const CoordinateKind coord_kind, const MATRIX&	rot_matrix);
 	void SetRot		(const CoordinateKind coord_kind, const Axes&	axes);
-	void SetRot		(const CoordinateKind coord_kind, const VECTOR& forward);
+
+	/// @brief 回転行列を設定
+	/// @brief キャラクターの水平な回転しか考慮していない
+	/// @param dir 必ずY軸が0である必要あり
+	void SetRot		(const CoordinateKind coord_kind, const VECTOR& dir);
 	void SetScale	(const CoordinateKind coord_kind, const VECTOR&	scale);
+	#pragma endregion
 
 	[[nodiscard]] MATRIX GetMatrix			(const CoordinateKind coord_kind);
 	[[nodiscard]] VECTOR GetPos				(const CoordinateKind coord_kind);

@@ -89,8 +89,6 @@ void Camera::Move()
 	if (m_angle.x < kMinVerticalAngle * math::kDegreesToRadian) { m_angle.x = kMinVerticalAngle * math::kDegreesToRadian; }
 	if (m_angle.x > kMaxVerticalAngle * math::kDegreesToRadian) { m_angle.x = kMaxVerticalAngle * math::kDegreesToRadian; }
 
-	//DrawFormatString(0, 100, 0xffffff, "%f, %f, %f", m_angle.x, m_angle.y, m_angle.z);
-
 	// ägëÂÅEèkè¨
 	CommandHandler::GetInstance()->Execute(CommandKind::kApproachCamera, *this);
 	CommandHandler::GetInstance()->Execute(CommandKind::kDepartCamera,   *this);
@@ -98,8 +96,6 @@ void Camera::Move()
 	// âÒì]çsóÒÇê∂ê¨
 	MATRIX m = MGetIdent();
 	CreateRotationZXYMatrix(&m, m_angle.x, m_angle.y, m_angle.z);
-
-	//matrix::Draw(m, VGet(0, 300, 0));
 
 	// åãâ ÇîΩâf
 	m_transform->SetRot(CoordinateKind::kWorld, MGetRotElem(m));
@@ -167,12 +163,14 @@ void Camera::CalcAngleFromMouse()
 
 void Camera::Approach()
 {
+	// âºÇ≈ê⁄ãﬂ
 	m_distance_to_target -= kApproachSpeed * FPS::GetDeltaTime();
 	if (m_distance_to_target < 100.0f) { m_distance_to_target = 100.0f; }
 }
 
 void Camera::Depart()
 {
+	// âºÇ≈ó£ÇÍÇÈ
 	m_distance_to_target += kApproachSpeed * FPS::GetDeltaTime();
 	if (m_distance_to_target > 1000.0f) { m_distance_to_target = 1000.0f; }
 }

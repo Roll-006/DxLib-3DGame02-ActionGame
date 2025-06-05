@@ -3,6 +3,12 @@
 #include "../Command/camera_command.hpp"
 #include "../Command/player_command.hpp"
 
+enum class MoveKind
+{
+	kRun,
+	kSquat,
+};
+
 class CommandHandler final : public SingletonBase<CommandHandler>
 {
 public:
@@ -28,10 +34,11 @@ public:
 		{
 			if (code.first == command_kind)
 			{
-				// 2つめの同じコマンドは実行しない
 				if (input->IsInput(code.second))
 				{
 					command->Execute(obj);
+
+					// 2つめの同じコマンドは実行しない
 					return;
 				}
 			}
@@ -42,7 +49,10 @@ public:
 	void InitKeyCommand();
 	void InitPadCommand();
 
-	[[nodiscard]] InputModeKind GetInputModeKind()const { return m_input_mode; }
+	void CountUpTrigger(const MoveKind kind) { ++m_trigger_count.at(kind); }
+
+	[[nodiscard]] InputModeKind GetInputModeKind(const MoveKind kind) const { return m_input_mode.at(kind); }
+	[[nodiscard]] int			GetTriggetCount (const MoveKind kind) const { return m_trigger_count.at(kind); }
 
 private:
 	CommandHandler();
@@ -64,7 +74,8 @@ private:
 	std::vector<std::pair<CommandKind, InputCode>> m_key_codes;
 	std::vector<std::pair<CommandKind, InputCode>> m_pad_codes;
 
-	InputModeKind m_input_mode;		// ダッシュやしゃがみなどの入力方式
+	std::unordered_map<MoveKind, InputModeKind> m_input_mode;		// 入力方式
+	std::unordered_map<MoveKind, int>			m_trigger_count;	// トリガー方式入力カウント
 
 	friend SingletonBase<CommandHandler>;
 };

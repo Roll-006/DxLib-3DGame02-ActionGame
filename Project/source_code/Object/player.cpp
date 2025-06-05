@@ -20,14 +20,8 @@ Player::Player(std::shared_ptr<Camera> camera) :
 	AddTrigger(TriggerKind::kLanding, std::make_shared<Sphere>());
 
 	// 各アニメーション追加
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdle01), AnimPath.IDLE_01, 0, AnimTag.NONE, 20.0f, true);
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdle02), AnimPath.IDLE_02, 0, AnimTag.NONE, 20.0f, true);
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalk01), AnimPath.WALK_01, 1, AnimTag.WALK, 20.0f, true);
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kJog01),  AnimPath.JOG_01,  1, AnimTag.WALK, 20.0f, true);
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kRun01),  AnimPath.RUN_01,  1, AnimTag.WALK, 20.0f, true);
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kJump01), AnimPath.JUMP_01, 1, AnimTag.NONE, 20.0f, false);
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kFall01), AnimPath.FALL_01, 1, AnimTag.NONE, 20.0f, false);
-	//m_animator->AttachAnim	 (static_cast<int>(PlayerAnimKind::kIdle01));
+	LoadAnim();
+	m_animator->AttachAnim(static_cast<int>(PlayerAnimKind::kIdle01));
 
 	// 武器設定
 	AddGun(std::make_shared<AssaultRifle>());
@@ -86,6 +80,32 @@ void Player::OnGravity()
 
 }
 
+void Player::LoadAnim()
+{
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdle01),					AnimPath.IDLE_01,						0, AnimTag.NONE, 20.0f, true);
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdleSquat01),				AnimPath.IDLE_SQUAT_01,					0, AnimTag.NONE, 20.0f, true);
+
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkSquatForward01),		AnimPath.WALK_SQUAT_FORWARD_01,			0, AnimTag.WALK, 20.0f, true);
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkSquatBackward01),		AnimPath.WALK_SQUAT_BACKWARD_01,		0, AnimTag.WALK, 20.0f, true);
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkSquatLeft01),			AnimPath.WALK_SQUAT_LEFT_01,			0, AnimTag.WALK, 20.0f, true);
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkSquatRight01),			AnimPath.WALK_SQUAT_RIGHT_01,			0, AnimTag.WALK, 20.0f, true);
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkSquatForwardLeft01),	AnimPath.WALK_SQUAT_FORWARD_LEFT_01,	0, AnimTag.WALK, 20.0f, true);
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkSquatForwardRight01),	AnimPath.WALK_SQUAT_FORWARD_RIGHT_01,	0, AnimTag.WALK, 20.0f, true);
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkSquatBackwardLeft01),	AnimPath.WALK_SQUAT_BACKWARD_LEFT_01,	0, AnimTag.WALK, 20.0f, true);
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkSquatBackwardRight01),	AnimPath.WALK_SQUAT_BACKWARD_RIGHT_01,	0, AnimTag.WALK, 20.0f, true);
+
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkShootForward01),		AnimPath.WALK_SHOOT_FORWARD_01,			0, AnimTag.WALK, 20.0f, true);
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkShootBackward01),		AnimPath.WALK_SHOOT_BACKWARD_01,		0, AnimTag.WALK, 20.0f, true);
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkShootLeft01),			AnimPath.WALK_SHOOT_LEFT_01,			0, AnimTag.WALK, 20.0f, true);
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkShootRight01),			AnimPath.WALK_SHOOT_RIGHT_01,			0, AnimTag.WALK, 20.0f, true);
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkShootForwardLeft01),	AnimPath.WALK_SHOOT_FORWARD_LEFT_01,	0, AnimTag.WALK, 20.0f, true);
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkShootForwardRight01),	AnimPath.WALK_SHOOT_FORWARD_RIGHT_01,	0, AnimTag.WALK, 20.0f, true);
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkShootBackwardLeft01),	AnimPath.WALK_SHOOT_BACKWARD_LEFT_01,	0, AnimTag.WALK, 20.0f, true);
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkShootBackwardRight01),	AnimPath.WALK_SHOOT_BACKWARD_RIGHT_01,	0, AnimTag.WALK, 20.0f, true);
+
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kRunForward01),				AnimPath.RUN_FORWARD_01,				0, AnimTag.WALK, 20.0f, true);
+}
+
 void Player::ChangeAnimState()
 {
 
@@ -94,7 +114,7 @@ void Player::ChangeAnimState()
 void Player::Move()
 {
 	// ダッシュするかを判定
-	JudgeRun();
+	Run();
 
 	// 各方向の移動
 	CalcHorizontalVelocity();
@@ -109,19 +129,9 @@ void Player::Move()
 	}
 }
 
-void Player::JudgeRun()
+void Player::Run()
 {
-	if (InputChecker::GetInstance()->GetCurrentInputDevice() == DeviceKind::kPad)
-	{
-		if (InputChecker::GetInstance()->IsInput(pad::ButtonKind::kRSPush))
-		{
 
-		}
-	}
-	if (InputChecker::GetInstance()->GetCurrentInputDevice() == DeviceKind::kKeyboard)
-	{
-		
-	}
 }
 
 void Player::CalcHorizontalVelocity()

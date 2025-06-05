@@ -29,7 +29,7 @@ void SceneObjManager::Update()
 	}
 
 	CollisionManager::GetInstance()->Update();
-	InputChecker::GetInstance()->LateUpdate();
+	InputChecker    ::GetInstance()->LateUpdate();
 }
 
 void SceneObjManager::Draw() const
