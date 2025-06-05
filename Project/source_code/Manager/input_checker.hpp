@@ -186,7 +186,6 @@ public:
 				case TimeState::kPrev:		prev_is_input	 = data.is_input;	break;
 				case TimeState::kCurrent:	current_is_input = data.is_input;	break;
 				}
-				break;
 			}
 		}
 

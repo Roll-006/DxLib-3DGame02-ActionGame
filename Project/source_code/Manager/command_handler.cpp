@@ -2,7 +2,7 @@
 
 CommandHandler::CommandHandler()
 {
-	m_input_mode   [MoveKind::kRun] = m_input_mode   [MoveKind::kSquat] = InputModeKind::kTrigger;
+	m_input_mode   [MoveKind::kRun] = m_input_mode   [MoveKind::kSquat] = InputModeKind::kHold;
 	m_trigger_count[MoveKind::kRun] = m_trigger_count[MoveKind::kSquat] = 0;
 
 	LoadSelectCommand();

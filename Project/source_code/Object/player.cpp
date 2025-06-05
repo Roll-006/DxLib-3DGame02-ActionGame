@@ -64,6 +64,7 @@ void Player::Draw() const
 
 	DrawFormatString(0, 50, 0xffffff, "%d", m_is_run);
 	DrawFormatString(0, 70, 0xffffff, "%f", m_move_speed);
+	DrawFormatString(0, 90, 0xffffff, "%d", CommandHandler::GetInstance()->GetTriggerCount(MoveKind::kRun));
 }
 
 void Player::OnCollide(const PhysicalObjBase& check_hit_obj)
@@ -106,27 +107,21 @@ void Player::Run()
 {
 	const auto command = CommandHandler::GetInstance();
 	const auto input   = InputChecker  ::GetInstance();
-	m_is_run = false;
+	const auto code    = *command->GetCurrentFrameExecuteInputCode(CommandKind::kRun);
 
 	switch (command->GetInputModeKind(MoveKind::kRun))
 	{
 	case InputModeKind::kTrigger:
-		if (input->GetInputState(*command->GetCurrentFrameExecuteInputCode(CommandKind::kRun)) == InputState::kSingle)
+		if (input->GetInputState(code) == InputState::kSingle)
 		{
 			command->CountUpTrigger(MoveKind::kRun);
 
-			if (command->GetTriggerCount(MoveKind::kRun) % 2)
-			{
-				m_is_run = true;
-			}
+			m_is_run = command->GetTriggerCount(MoveKind::kRun) % 2 ? true : false;
 		}
-
-		// 入力数に応じてダッシュ状態を切り替える
-
 		break;
 
 	case InputModeKind::kHold:
-		if (input->GetInputState(*command->GetCurrentFrameExecuteInputCode(CommandKind::kRun)) == InputState::kHold)
+		if (input->GetInputState(code) == InputState::kHold)
 		{
 			m_is_run = true;
 		}
@@ -167,13 +162,16 @@ void Player::ChangeAnimState()
 
 void Player::Move()
 {
+	// 初期化
 	m_move_dir = v3d::GetZeroVector();
+	const auto command = CommandHandler::GetInstance();
+	if (command->GetInputModeKind(MoveKind::kRun) == InputModeKind::kHold) { m_is_run = false; }
 
-	CommandHandler::GetInstance()->Execute(CommandKind::kRun,				*this);
-	CommandHandler::GetInstance()->Execute(CommandKind::kMoveUpPlayer,		*this);
-	CommandHandler::GetInstance()->Execute(CommandKind::kMoveDownPlayer,	*this);
-	CommandHandler::GetInstance()->Execute(CommandKind::kMoveLeftPlayer,	*this);
-	CommandHandler::GetInstance()->Execute(CommandKind::kMoveRightPlayer,	*this);
+	command->Execute(CommandKind::kRun,				*this);
+	command->Execute(CommandKind::kMoveUpPlayer,	*this);
+	command->Execute(CommandKind::kMoveDownPlayer,	*this);
+	command->Execute(CommandKind::kMoveLeftPlayer,	*this);
+	command->Execute(CommandKind::kMoveRightPlayer,	*this);
 
 	// 各方向の移動
 	CalcHorizontalVelocity();
