@@ -10,6 +10,7 @@
 
 #include "../Data/CSV/csv.hpp"
 #include "../Data/input_data.hpp"
+#include "../Data/Kind/time_kind.hpp"
 #include "../Data/Kind/device_kind.hpp"
 #include "../Concept/input_concepts.hpp"
 
@@ -18,13 +19,6 @@
 /// @brief 役割 : 入力デバイスの検出, 入力状態の取得, 入力時間の計測
 class InputChecker final : public SingletonBase<InputChecker>
 {
-public:
-	enum class TimeState
-	{
-		kPrev,
-		kCurrent,
-	};
-
 public:
 	void Update();
 	void LateUpdate();
@@ -50,9 +44,9 @@ public:
 	}
 
 	#pragma region マウス情報
-	[[nodiscard]] Vector2D<int>   GetMousePos	   (const TimeState time_state) const { return m_mouse_data.at(time_state).pos; }
-	[[nodiscard]] Vector2D<float> GetMouseDir	   (const TimeState time_state) const { return m_mouse_data.at(time_state).dir; }
-	[[nodiscard]] Vector2D<float> GetMouseVelocity (const TimeState time_state) const { return m_mouse_data.at(time_state).velocity; }
+	[[nodiscard]] Vector2D<int>   GetMousePos	   (const TimeKind time_kind) const { return m_mouse_data.at(time_kind).pos; }
+	[[nodiscard]] Vector2D<float> GetMouseDir	   (const TimeKind time_kind) const { return m_mouse_data.at(time_kind).dir; }
+	[[nodiscard]] Vector2D<float> GetMouseVelocity (const TimeKind time_kind) const { return m_mouse_data.at(time_kind).velocity; }
 	#pragma endregion
 
 
@@ -81,10 +75,10 @@ public:
 		{
 			switch (static_cast<mouse::SlideDirKind>(input_code))
 			{
-			case mouse::SlideDirKind::kLeft:  if (m_mouse_data.at(TimeState::kCurrent).pos.x < m_mouse_data.at(TimeState::kPrev).pos.x) { return true; } break;
-			case mouse::SlideDirKind::kRight: if (m_mouse_data.at(TimeState::kCurrent).pos.x > m_mouse_data.at(TimeState::kPrev).pos.x) { return true; } break;
-			case mouse::SlideDirKind::kDown:  if (m_mouse_data.at(TimeState::kCurrent).pos.y > m_mouse_data.at(TimeState::kPrev).pos.y) { return true; } break;
-			case mouse::SlideDirKind::kUp:    if (m_mouse_data.at(TimeState::kCurrent).pos.y < m_mouse_data.at(TimeState::kPrev).pos.y) { return true; } break;
+			case mouse::SlideDirKind::kLeft:  if (m_mouse_data.at(TimeKind::kCurrent).pos.x < m_mouse_data.at(TimeKind::kPrev).pos.x) { return true; } break;
+			case mouse::SlideDirKind::kRight: if (m_mouse_data.at(TimeKind::kCurrent).pos.x > m_mouse_data.at(TimeKind::kPrev).pos.x) { return true; } break;
+			case mouse::SlideDirKind::kDown:  if (m_mouse_data.at(TimeKind::kCurrent).pos.y > m_mouse_data.at(TimeKind::kPrev).pos.y) { return true; } break;
+			case mouse::SlideDirKind::kUp:    if (m_mouse_data.at(TimeKind::kCurrent).pos.y < m_mouse_data.at(TimeKind::kPrev).pos.y) { return true; } break;
 			}
 		}
 		// パッドボタン
@@ -114,7 +108,7 @@ public:
 		// マウススライド
 		if (std::is_same_v<mouse::WheelKind, InputT>)
 		{
-			const int rota = m_mouse_data.at(TimeState::kCurrent).wheel_rotation;
+			const int rota = m_mouse_data.at(TimeKind::kCurrent).wheel_rotation;
 
 			switch (static_cast<mouse::WheelKind>(input_code))
 			{
@@ -153,20 +147,20 @@ public:
 	/// @brief 入力時間を取得
 	/// @brief キー入力以外はenum classの定義を使用する必要あり
 	template<input_concepts::InputT InputT>
-	[[nodiscard]] float GetInputTime(const InputT&    input_code, const TimeState time_state)
+	[[nodiscard]] float GetInputTime(const InputT&    input_code, const TimeKind time_kind)
 	{
 		const InputKind kind = GetInputKind(input_code);
 
 		for (const auto& [input_c, state_t, data] : m_input_data)
 		{
-			if (input_c.kind == kind && input_c.code == input_code && state_t == time_state)
+			if (input_c.kind == kind && input_c.code == input_code && state_t == time_kind)
 			{
 				return data.input_time;
 			}
 		}
 		return 0.0f;
 	}
-	[[nodiscard]] float GetInputTime(const InputCode& input_code, const TimeState time_state);
+	[[nodiscard]] float GetInputTime(const InputCode& input_code, const TimeKind time_kind);
 
 	/// @brief 入力状態を取得
 	/// @brief キー入力以外はenum classの定義を使用する必要あり
@@ -183,8 +177,8 @@ public:
 			{
 				switch (state_t)
 				{
-				case TimeState::kPrev:		prev_is_input	 = data.is_input;	break;
-				case TimeState::kCurrent:	current_is_input = data.is_input;	break;
+				case TimeKind::kPrev:		prev_is_input	 = data.is_input;	break;
+				case TimeKind::kCurrent:	current_is_input = data.is_input;	break;
 				}
 			}
 		}
@@ -267,8 +261,8 @@ private:
 	bool							m_is_lock_mouse_pos;
 	std::vector<int>				m_key_code;
 
-	std::vector<std::tuple<InputCode, TimeState, InputData>> m_input_data;
-	std::unordered_map<TimeState, MouseData> m_mouse_data;
+	std::vector<std::tuple<InputCode, TimeKind, InputData>> m_input_data;
+	std::unordered_map<TimeKind, MouseData> m_mouse_data;
 	
 	friend SingletonBase<InputChecker>;
 };

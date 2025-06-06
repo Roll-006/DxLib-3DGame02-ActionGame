@@ -3,14 +3,15 @@
 #include "../Command/camera_command.hpp"
 #include "../Command/player_command.hpp"
 
-enum class MoveKind
-{
-	kRun,
-	kSquat,
-};
-
 class CommandHandler final : public SingletonBase<CommandHandler>
 {
+public:
+	enum class MoveKind
+	{
+		kRun,
+		kSquat,
+	};
+
 public:
 	void LateUpdate();
 
@@ -53,6 +54,10 @@ public:
 	void InitKeyCommand();
 	void InitPadCommand();
 
+	/// @brief トリガーの入力回数をリセットする
+	void InitTriggerCount(const MoveKind kind) { m_trigger_count.at(kind) = 0; }
+
+	/// @brief トリガーの入力回数をカウントする
 	void CountUpTrigger(const MoveKind kind) { ++m_trigger_count.at(kind); }
 
 	[[nodiscard]] InputModeKind GetInputModeKind(const MoveKind kind) const { return m_input_mode.at(kind); }

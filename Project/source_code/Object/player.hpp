@@ -22,11 +22,11 @@ public:
 	[[nodiscard]] std::shared_ptr<Animator>	GetAnimator() const { return m_animator; }
 
 	#pragma region コマンド
-	void CalcMoveForward();
-	void CalcMoveBackward();
-	void CalcMoveLeft();
-	void CalcMoveRight();
 	void Run();
+	void MoveForward();
+	void MoveBackward();
+	void MoveLeft();
+	void MoveRight();
 	#pragma endregion
 
 private:
@@ -37,16 +37,13 @@ private:
 	void CalcMoveSpeed(const float input_slope);
 	void CalcDir(const VECTOR& velocity);
 
-	// 入力方式に対応した速度ベクトルを取得
-	[[nodiscard]] VECTOR GetVelocityFromPad	 (const VECTOR& forwrd, const VECTOR& right);
-	[[nodiscard]] VECTOR GetVelocityFromKey(const VECTOR& forwrd, const VECTOR& right);
+	// パッド入力での速度ベクトルを取得
+	[[nodiscard]] VECTOR GetVelocityFromPad(VECTOR& velocity);
 
 	/// @brief 加速処理
 	void Acceleration(const float destination_speed);
 	/// @brief 減速処理
 	void Deceleration(const float destination_speed);
-
-	void ConvertMouseVelocityToPadVelocity();
 
 	void LoadAnim() override;
 	void ChangeAnimState() override;

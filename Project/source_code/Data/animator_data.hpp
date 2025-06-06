@@ -1,16 +1,16 @@
 #pragma once
 #include <string>
 
-struct AnimTimeStateData
+struct AnimTimeKindData
 {
 	int   kind;
 	int   attach_index;
 	float play_timer;
 
-	AnimTimeStateData() : 
+	AnimTimeKindData() : 
 		kind(-1), attach_index(-1), play_timer(0.0f){}
 
-	AnimTimeStateData(const int kind, const int attach_index, const float play_timer) :
+	AnimTimeKindData(const int kind, const int attach_index, const float play_timer) :
 		kind(kind), attach_index(attach_index), play_timer(play_timer){}
 };
 

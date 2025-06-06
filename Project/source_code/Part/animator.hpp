@@ -12,13 +12,6 @@
 class Animator final
 {
 public:
-	enum class TimeState
-	{
-		kPrev,
-		kCurrent,
-	};
-
-public:
 	Animator(const std::shared_ptr<Modeler> modeler);
 	~Animator();
 
@@ -33,7 +26,7 @@ public:
 	void AddAnimHandle(const int kind, const int anim_handle,		 const int index, const std::string& tag, const float play_speed, const bool is_loop);
 
 private:
-	void DetachAnim(const TimeState time_state);
+	void DetachAnim(const TimeKind time_kind);
 
 	/// @brief 再生開始地点を設定
 	void SetPlayStartTime();
@@ -44,8 +37,8 @@ private:
 private:
 	static constexpr float kBlendSpeed = 3.0f;
 
-	std::unordered_map<int, AnimKindData>				m_kind_data;
-	std::unordered_map<TimeState, AnimTimeStateData>	m_time_state_data;
+	std::unordered_map<int, AnimKindData>			m_kind_data;
+	std::unordered_map<TimeKind, AnimTimeKindData>	m_time_kind_data;
 
 	float m_prev_anim_play_rate;			// 前回のアニメーションの再生率
 	float m_blend_rate;

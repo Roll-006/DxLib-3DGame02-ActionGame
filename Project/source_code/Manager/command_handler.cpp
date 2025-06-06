@@ -2,7 +2,7 @@
 
 CommandHandler::CommandHandler()
 {
-	m_input_mode   [MoveKind::kRun] = m_input_mode   [MoveKind::kSquat] = InputModeKind::kHold;
+	m_input_mode   [MoveKind::kRun] = m_input_mode   [MoveKind::kSquat] = InputModeKind::kTrigger;
 	m_trigger_count[MoveKind::kRun] = m_trigger_count[MoveKind::kSquat] = 0;
 
 	LoadSelectCommand();
@@ -170,17 +170,19 @@ void CommandHandler::InitKeyCommand()
 	AddInputCode(CommandKind::kReloadGun,		KEY_INPUT_R);
 	AddInputCode(CommandKind::kSilentKill,		mouse::ButtonKind::kLeft);
 	AddInputCode(CommandKind::kQuickTurn,		KEY_INPUT_Q);
-	AddInputCode(CommandKind::kMoveUpCamera,	mouse::SlideDirKind::kUp);
 	AddInputCode(CommandKind::kMoveUpCamera,	KEY_INPUT_UP);
-	AddInputCode(CommandKind::kMoveDownCamera,	mouse::SlideDirKind::kDown);
 	AddInputCode(CommandKind::kMoveDownCamera,	KEY_INPUT_DOWN);
-	AddInputCode(CommandKind::kMoveLeftCamera,	mouse::SlideDirKind::kLeft);
 	AddInputCode(CommandKind::kMoveLeftCamera,	KEY_INPUT_LEFT);
-	AddInputCode(CommandKind::kMoveRightCamera,	mouse::SlideDirKind::kRight);
 	AddInputCode(CommandKind::kMoveRightCamera,	KEY_INPUT_RIGHT);
 	AddInputCode(CommandKind::kApproachCamera,	mouse::WheelKind::kUp);
 	AddInputCode(CommandKind::kDepartCamera,	mouse::WheelKind::kDown);
 	AddInputCode(CommandKind::kInitAngle,		KEY_INPUT_Q);
+
+	// 例外処理として実行
+	//AddInputCode(CommandKind::kMoveUpCamera,		mouse::SlideDirKind::kUp);
+	//AddInputCode(CommandKind::kMoveDownCamera,	mouse::SlideDirKind::kDown);
+	//AddInputCode(CommandKind::kMoveLeftCamera,	mouse::SlideDirKind::kLeft);
+	//AddInputCode(CommandKind::kMoveRightCamera,	mouse::SlideDirKind::kRight);
 }
 
 void CommandHandler::InitPadCommand()
@@ -199,10 +201,6 @@ void CommandHandler::InitPadCommand()
 	AddInputCode(CommandKind::kSelectRight,		pad::ButtonKind	::kRight);
 	AddInputCode(CommandKind::kSelectRight,		pad::StickKind	::kLSRight);
 	AddInputCode(CommandKind::kPause,			pad::ButtonKind	::kStart);
-	AddInputCode(CommandKind::kMoveUpPlayer,	pad::StickKind	::kLSUp);
-	AddInputCode(CommandKind::kMoveDownPlayer,	pad::StickKind	::kLSDown);
-	AddInputCode(CommandKind::kMoveLeftPlayer,	pad::StickKind	::kLSLeft);
-	AddInputCode(CommandKind::kMoveRightPlayer,	pad::StickKind	::kLSRight);
 	AddInputCode(CommandKind::kRun,				pad::ButtonKind	::kLSPush);
 	AddInputCode(CommandKind::kSquat,			pad::ButtonKind	::kB);
 	AddInputCode(CommandKind::kShot,			pad::TriggerKind::kRT);
@@ -210,11 +208,17 @@ void CommandHandler::InitPadCommand()
 	AddInputCode(CommandKind::kReloadGun,		pad::ButtonKind	::kX);
 	AddInputCode(CommandKind::kSilentKill,		pad::TriggerKind::kRT);
 	AddInputCode(CommandKind::kQuickTurn,		pad::ButtonKind	::kRB);
-	AddInputCode(CommandKind::kMoveUpCamera,	pad::StickKind	::kRSUp);
-	AddInputCode(CommandKind::kMoveDownCamera,	pad::StickKind	::kRSDown);
-	AddInputCode(CommandKind::kMoveLeftCamera,	pad::StickKind	::kRSLeft);
-	AddInputCode(CommandKind::kMoveRightCamera,	pad::StickKind	::kRSRight);
 	AddInputCode(CommandKind::kApproachCamera,	pad::ButtonKind	::kUp);
 	AddInputCode(CommandKind::kDepartCamera,	pad::ButtonKind ::kDown);
 	AddInputCode(CommandKind::kInitAngle,		pad::ButtonKind	::kRB);
+
+	// 例外処理として実行
+	//AddInputCode(CommandKind::kMoveUpPlayer,		pad::StickKind	::kLSUp);
+	//AddInputCode(CommandKind::kMoveDownPlayer,	pad::StickKind	::kLSDown);
+	//AddInputCode(CommandKind::kMoveLeftPlayer,	pad::StickKind	::kLSLeft);
+	//AddInputCode(CommandKind::kMoveRightPlayer,	pad::StickKind	::kLSRight);
+	//AddInputCode(CommandKind::kMoveUpCamera,		pad::StickKind	::kRSUp);
+	//AddInputCode(CommandKind::kMoveDownCamera,	pad::StickKind	::kRSDown);
+	//AddInputCode(CommandKind::kMoveLeftCamera,	pad::StickKind	::kRSLeft);
+	//AddInputCode(CommandKind::kMoveRightCamera,	pad::StickKind	::kRSRight);
 }

@@ -4,11 +4,10 @@
 Camera::Camera() : 
 	PhysicalObjBase			(ObjName.CAMERA, ObjTag.CAMERA, MassKind::kVeryLight),
 	m_target_transform		(nullptr),
-	m_move_speed			(0.0f),
 	m_distance_to_target	(kNormalDistance),
 	m_is_invert_horizontal	(false),
 	m_is_invert_vertical	(false),
-	m_velocity				(v3d::GetZeroVector()),
+	m_dir					(v3d::GetZeroVector()),
 	m_angle					(v3d::GetZeroVector())
 {
 	SetCameraNearFar(kNear, kFar);
@@ -28,6 +27,11 @@ void Camera::Init()
 
 void Camera::Update()
 {
+	for (auto& is_input : m_is_input)
+	{
+		is_input = false;
+	}
+
 	Move();
 	SetLookDir();
 }
@@ -49,6 +53,48 @@ void Camera::OnGravity()
 {
 
 }
+
+
+#pragma region コマンド
+void Camera::MoveUp()
+{
+	m_dir.x = -1;
+	m_is_input.at(static_cast<int>(InputDir::kUp))    = true;
+}
+
+void Camera::MoveDown()
+{
+	m_dir.x =  1;
+	m_is_input.at(static_cast<int>(InputDir::kDown))  = true;
+}
+
+void Camera::MoveLeft()
+{
+	m_dir.y = -1;
+	m_is_input.at(static_cast<int>(InputDir::kLeft))  = true;
+}
+
+void Camera::MoveRight()
+{
+	m_dir.y =  1;
+	m_is_input.at(static_cast<int>(InputDir::kRight)) = true;
+}
+
+void Camera::Approach()
+{
+	// 仮で接近
+	m_distance_to_target -= kApproachSpeed * FPS::GetDeltaTime();
+	if (m_distance_to_target < 100.0f) { m_distance_to_target = 100.0f; }
+}
+
+void Camera::Depart()
+{
+	// 仮で離れる
+	m_distance_to_target += kApproachSpeed * FPS::GetDeltaTime();
+	if (m_distance_to_target > 1000.0f) { m_distance_to_target = 1000.0f; }
+}
+#pragma endregion
+
 
 void Camera::AttachTarget(const std::shared_ptr<ObjBase> obj)
 {
@@ -82,16 +128,29 @@ void Camera::SetLookDir()
 
 void Camera::Move()
 {
-	CalcAngleFromPad();
-	CalcAngleFromMouse();
+	const auto command = CommandHandler::GetInstance();
+	m_dir	   = v3d::GetZeroVector();
+	m_velocity = v3d::GetZeroVector();
+
+	command->Execute(CommandKind::kMoveUpCamera,	*this);
+	command->Execute(CommandKind::kMoveDownCamera,	*this);
+	command->Execute(CommandKind::kMoveLeftCamera,	*this);
+	command->Execute(CommandKind::kMoveRightCamera, *this);
+	command->Execute(CommandKind::kInitAngle,		*this);
+	command->Execute(CommandKind::kApproachCamera,	*this);
+	command->Execute(CommandKind::kDepartCamera,	*this);
+
+	CalcDirFromPad();
+	CalcDirFromMouse();
+
+	// 操作反転処理
+	ApplyInvert();
+
+	CalcAngle();
 
 	// 角度制限
 	if (m_angle.x < kMinVerticalAngle * math::kDegreesToRadian) { m_angle.x = kMinVerticalAngle * math::kDegreesToRadian; }
 	if (m_angle.x > kMaxVerticalAngle * math::kDegreesToRadian) { m_angle.x = kMaxVerticalAngle * math::kDegreesToRadian; }
-
-	// 拡大・縮小
-	CommandHandler::GetInstance()->Execute(CommandKind::kApproachCamera, *this);
-	CommandHandler::GetInstance()->Execute(CommandKind::kDepartCamera,   *this);
 
 	// 回転行列を生成
 	MATRIX m = MGetIdent();
@@ -105,72 +164,91 @@ void Camera::Move()
 	m_transform->SetPos(CoordinateKind::kWorld, pos);
 }
 
-VECTOR Camera::ApplyInvert(VECTOR& velocity) const
+void Camera::CalcAngle()
 {
-	if (m_is_invert_horizontal) { velocity.y *= -1; }
-	if (m_is_invert_vertical)	{ velocity.x *= -1; }
+	const auto command = CommandHandler::GetInstance();
 
-	return velocity;
+	// コマンドパターンで入力された場合の速度・方向を取得
+	if (   command->GetCurrentFrameExecuteInputCode(CommandKind::kMoveUpCamera)
+		|| command->GetCurrentFrameExecuteInputCode(CommandKind::kMoveDownCamera)
+		|| command->GetCurrentFrameExecuteInputCode(CommandKind::kMoveLeftCamera)
+		|| command->GetCurrentFrameExecuteInputCode(CommandKind::kMoveRightCamera))
+	{
+		m_dir		= v3d::GetNormalizedVector(m_dir);
+		m_velocity	= m_dir * kMoveSpeedWithButton;
+	}
+
+	m_velocity *= FPS::GetDeltaTime();
+
+	// 角度を取得
+	if (m_is_input.at(static_cast<int>(InputDir::kUp)))		{ m_angle.x += m_velocity.x; }
+	if (m_is_input.at(static_cast<int>(InputDir::kDown)))	{ m_angle.x += m_velocity.x; }
+	if (m_is_input.at(static_cast<int>(InputDir::kLeft)))	{ m_angle.y += m_velocity.y; }
+	if (m_is_input.at(static_cast<int>(InputDir::kRight)))	{ m_angle.y += m_velocity.y; }
 }
 
-void Camera::CalcAngleFromPad()
+void Camera::ApplyInvert()
 {
+	if (m_is_invert_horizontal) { m_dir.y *= -1; }
+	if (m_is_invert_vertical)	{ m_dir.x *= -1; }
+}
+
+void Camera::CalcDirFromPad()
+{
+	if (m_dir != v3d::GetZeroVector()) { return; }
 	if (InputChecker::GetInstance()->GetCurrentInputDevice() != DeviceKind::kPad) { return; }
 
-	m_velocity = v3d::GetZeroVector();
-
 	// 各方向のパラメーターを取得
-	const int up_param		= InputChecker::GetInstance()->GetInputParameter(pad::StickKind::kRSUp);
-	const int down_param	= InputChecker::GetInstance()->GetInputParameter(pad::StickKind::kRSDown);
-	const int left_param	= InputChecker::GetInstance()->GetInputParameter(pad::StickKind::kRSLeft);
-	const int right_param	= InputChecker::GetInstance()->GetInputParameter(pad::StickKind::kRSRight);
+	const auto input = InputChecker::GetInstance();
+	const int up_param		= input->GetInputParameter(pad::StickKind::kRSUp);
+	const int down_param	= input->GetInputParameter(pad::StickKind::kRSDown);
+	const int left_param	= input->GetInputParameter(pad::StickKind::kRSLeft);
+	const int right_param	= input->GetInputParameter(pad::StickKind::kRSRight);
 
-	// 入力値を置換
-	if (up_param)	{ m_velocity.x = math::GetUnitValue<int, float>(InputChecker::kStickDeadZone,  InputChecker::kStickMaxSlope,  up_param);    }
-	if (down_param) { m_velocity.x = math::GetUnitValue<int, float>(InputChecker::kStickDeadZone, -InputChecker::kStickMinSlope, -down_param);  }
-	if (left_param) { m_velocity.y = math::GetUnitValue<int, float>(InputChecker::kStickDeadZone, -InputChecker::kStickMinSlope, -left_param);  }
-	if (right_param){ m_velocity.y = math::GetUnitValue<int, float>(InputChecker::kStickDeadZone,  InputChecker::kStickMaxSlope,  right_param); }
+	// 速度ベクトル・入力判定を取得
+	if (up_param)
+	{
+		m_velocity.x = -math::GetUnitValue<int, float>(InputChecker::kStickDeadZone,  InputChecker::kStickMaxSlope,  up_param);
+		m_is_input.at(static_cast<int>(InputDir::kUp))    = true;
+	}
+	if (down_param)
+	{
+		m_velocity.x =  math::GetUnitValue<int, float>(InputChecker::kStickDeadZone, -InputChecker::kStickMinSlope, -down_param);
+		m_is_input.at(static_cast<int>(InputDir::kDown))  = true;
+	}
+	if (left_param)
+	{
+		m_velocity.y = -math::GetUnitValue<int, float>(InputChecker::kStickDeadZone, -InputChecker::kStickMinSlope, -left_param);
+		m_is_input.at(static_cast<int>(InputDir::kLeft))  = true;
+	}
+	if (right_param)
+	{
+		m_velocity.y =  math::GetUnitValue<int, float>(InputChecker::kStickDeadZone,  InputChecker::kStickMaxSlope,  right_param);
+		m_is_input.at(static_cast<int>(InputDir::kRight)) = true;
+	}
+	m_velocity *= kMoveSpeedWithStick;
 
-	// 移動速度を取得
-	m_velocity *= kSpeedWithPad * FPS::GetDeltaTime();
-	m_velocity = ApplyInvert(m_velocity);
-
-	// 角度を取得
-	if (up_param)	{ m_angle.x -= m_velocity.x; }
-	if (down_param) { m_angle.x += m_velocity.x; }
-	if (left_param) { m_angle.y -= m_velocity.y; }
-	if (right_param){ m_angle.y += m_velocity.y; }
+	// 入力方向も合わせて取得
+	m_dir = v3d::GetNormalizedVector(m_velocity);
 }
 
-void Camera::CalcAngleFromMouse()
+void Camera::CalcDirFromMouse()
 {
+	if (m_dir != v3d::GetZeroVector()) { return; }
 	if (InputChecker::GetInstance()->GetCurrentInputDevice() != DeviceKind::kKeyboard) { return; }
 
+	const auto input = InputChecker::GetInstance();
+
 	// 移動速度を取得
-	Vector2D<float> velocity_2d = InputChecker::GetInstance()->GetMouseVelocity(InputChecker::TimeState::kCurrent);
-	m_velocity = VGet(velocity_2d.y, velocity_2d.x, 0.0f) * FPS::GetDeltaTime();
-	m_velocity = ApplyInvert(m_velocity);
+	Vector2D<float> velocity_2d = input->GetMouseVelocity(TimeKind::kCurrent);
+	m_velocity = VGet(velocity_2d.y, velocity_2d.x, 0.0f) * kMoveSpeedWithMouse;
 
-	// 角度を取得
-	if (    InputChecker::GetInstance()->IsInput(mouse::SlideDirKind::kUp)
-	     || InputChecker::GetInstance()->IsInput(mouse::SlideDirKind::kDown)
-	     || InputChecker::GetInstance()->IsInput(mouse::SlideDirKind::kLeft)
-	     || InputChecker::GetInstance()->IsInput(mouse::SlideDirKind::kRight))
-	{
-		m_angle += m_velocity * kSpeedRateWithMouse;
-	}
-}
+	// 入力判定を取得
+	if (m_velocity.x > 0) { m_is_input.at(static_cast<int>(InputDir::kUp))	  = true; }
+	if (m_velocity.x < 0) { m_is_input.at(static_cast<int>(InputDir::kDown))  = true; }
+	if (m_velocity.y > 0) { m_is_input.at(static_cast<int>(InputDir::kLeft))  = true; }
+	if (m_velocity.y < 0) { m_is_input.at(static_cast<int>(InputDir::kRight)) = true; }
 
-void Camera::Approach()
-{
-	// 仮で接近
-	m_distance_to_target -= kApproachSpeed * FPS::GetDeltaTime();
-	if (m_distance_to_target < 100.0f) { m_distance_to_target = 100.0f; }
-}
-
-void Camera::Depart()
-{
-	// 仮で離れる
-	m_distance_to_target += kApproachSpeed * FPS::GetDeltaTime();
-	if (m_distance_to_target > 1000.0f) { m_distance_to_target = 1000.0f; }
+	// 入力方向も合わせて取得
+	m_dir = v3d::GetNormalizedVector(m_velocity);
 }

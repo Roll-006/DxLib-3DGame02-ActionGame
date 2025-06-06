@@ -8,17 +8,17 @@ InputChecker::InputChecker():
 {	
 	SetUseDirectInputFlag(TRUE);
 
-	m_mouse_data[TimeState::kPrev].pos	     = m_mouse_data[TimeState::kCurrent].pos	   = Vector2D<int>(Window::kHalfWidth, Window::kHalfHeight);
-	m_mouse_data[TimeState::kPrev].dir		 = m_mouse_data[TimeState::kCurrent].dir	   = Vector2D<float>(0.0f, 0.0f);
-	m_mouse_data[TimeState::kPrev].velocity  = m_mouse_data[TimeState::kCurrent].velocity  = Vector2D<float>(0.0f, 0.0f);
+	m_mouse_data[TimeKind::kPrev].pos	     = m_mouse_data[TimeKind::kCurrent].pos	   = Vector2D<int>(Window::kHalfWidth, Window::kHalfHeight);
+	m_mouse_data[TimeKind::kPrev].dir		 = m_mouse_data[TimeKind::kCurrent].dir	   = Vector2D<float>(0.0f, 0.0f);
+	m_mouse_data[TimeKind::kPrev].velocity  = m_mouse_data[TimeKind::kCurrent].velocity  = Vector2D<float>(0.0f, 0.0f);
 
 	LockCursor();
 
 	m_key_code = m_csv->Read1DCSV<std::vector<int>>("data/csv/key_number.csv", false);
 	for (auto& code : m_key_code)
 	{
-		m_input_data.emplace_back(InputCode(InputKind::kKey, code), TimeState::kPrev,	 InputData());
-		m_input_data.emplace_back(InputCode(InputKind::kKey, code), TimeState::kCurrent, InputData());
+		m_input_data.emplace_back(InputCode(InputKind::kKey, code), TimeKind::kPrev,	 InputData());
+		m_input_data.emplace_back(InputCode(InputKind::kKey, code), TimeKind::kCurrent, InputData());
 	}
 	AddInputData(InputKind::kMouseButton, kMouseButtonNum);
 	AddInputData(InputKind::kMouseWheel,  kMouseWheelNum);
@@ -54,8 +54,8 @@ void InputChecker::LateUpdate()
 
 void InputChecker::UpdateMouse()
 {
-	GetMousePoint(&m_mouse_data.at(TimeState::kCurrent).pos.x, &m_mouse_data.at(TimeState::kCurrent).pos.y);
-	m_mouse_data.at(TimeState::kCurrent).wheel_rotation = GetMouseWheelRotVol();
+	GetMousePoint(&m_mouse_data.at(TimeKind::kCurrent).pos.x, &m_mouse_data.at(TimeKind::kCurrent).pos.y);
+	m_mouse_data.at(TimeKind::kCurrent).wheel_rotation = GetMouseWheelRotVol();
 	CalcMouseVelocity();
 	CalcMouseDir();
 }
@@ -65,7 +65,7 @@ void InputChecker::LockCursor()
 	if (!m_is_lock_mouse_pos) { return; }
 
 	Vector2D<int> center_pos = Vector2D<int>(Window::kHalfWidth, Window::kHalfHeight);
-	m_mouse_data.at(TimeState::kPrev).pos = m_mouse_data.at(TimeState::kCurrent).pos = center_pos;
+	m_mouse_data.at(TimeKind::kPrev).pos = m_mouse_data.at(TimeKind::kCurrent).pos = center_pos;
 	SetMousePoint(center_pos.x, center_pos.y);
 }
 
@@ -88,10 +88,10 @@ bool InputChecker::IsInput(const InputCode& input_code) const
 	case InputKind::kMouseSlide:
 		switch (static_cast<mouse::SlideDirKind>(input_code.code))
 		{
-		case mouse::SlideDirKind::kLeft:  if (m_mouse_data.at(TimeState::kCurrent).pos.x < m_mouse_data.at(TimeState::kPrev).pos.x) { return true; } break;
-		case mouse::SlideDirKind::kRight: if (m_mouse_data.at(TimeState::kCurrent).pos.x > m_mouse_data.at(TimeState::kPrev).pos.x) { return true; } break;
-		case mouse::SlideDirKind::kDown:  if (m_mouse_data.at(TimeState::kCurrent).pos.y > m_mouse_data.at(TimeState::kPrev).pos.y) { return true; } break;
-		case mouse::SlideDirKind::kUp:    if (m_mouse_data.at(TimeState::kCurrent).pos.y < m_mouse_data.at(TimeState::kPrev).pos.y) { return true; } break;
+		case mouse::SlideDirKind::kLeft:  if (m_mouse_data.at(TimeKind::kCurrent).pos.x < m_mouse_data.at(TimeKind::kPrev).pos.x) { return true; } break;
+		case mouse::SlideDirKind::kRight: if (m_mouse_data.at(TimeKind::kCurrent).pos.x > m_mouse_data.at(TimeKind::kPrev).pos.x) { return true; } break;
+		case mouse::SlideDirKind::kDown:  if (m_mouse_data.at(TimeKind::kCurrent).pos.y > m_mouse_data.at(TimeKind::kPrev).pos.y) { return true; } break;
+		case mouse::SlideDirKind::kUp:    if (m_mouse_data.at(TimeKind::kCurrent).pos.y < m_mouse_data.at(TimeKind::kPrev).pos.y) { return true; } break;
 		}
 		break;
 
@@ -117,7 +117,7 @@ int InputChecker::GetInputParameter(const InputCode& input_code) const
 	switch (input_code.kind)
 	{
 	case InputKind::kMouseSlide:
-		rota = m_mouse_data.at(TimeState::kCurrent).wheel_rotation;
+		rota = m_mouse_data.at(TimeKind::kCurrent).wheel_rotation;
 		switch (static_cast<mouse::WheelKind>(input_code.code))
 		{
 		case mouse::WheelKind::kUp:		return rota > 0 ? rota : 0;	break;
@@ -153,11 +153,11 @@ int InputChecker::GetInputParameter(const InputCode& input_code) const
 	return 0;
 }
 
-float InputChecker::GetInputTime(const InputCode& input_code, const TimeState time_state)
+float InputChecker::GetInputTime(const InputCode& input_code, const TimeKind time_kind)
 {
 	for (const auto& [input_c, state_t, data] : m_input_data)
 	{
-		if (input_c.kind == input_code.kind && input_c.code == input_code.code && state_t == time_state)
+		if (input_c.kind == input_code.kind && input_c.code == input_code.code && state_t == time_kind)
 		{
 			return data.input_time;
 		}
@@ -176,8 +176,8 @@ InputState InputChecker::GetInputState(const InputCode& input_code)
 		{
 			switch (state_t)
 			{
-			case TimeState::kPrev:		prev_is_input	 = data.is_input;	break;
-			case TimeState::kCurrent:	current_is_input = data.is_input;	break;
+			case TimeKind::kPrev:		prev_is_input	 = data.is_input;	break;
+			case TimeKind::kCurrent:	current_is_input = data.is_input;	break;
 			}
 		}
 	}
@@ -193,20 +193,20 @@ void InputChecker::AddInputData(const InputKind kind, const int input_code_num)
 {
 	for (int i = 0; i < input_code_num; ++i)
 	{
-		m_input_data.emplace_back(InputCode(kind, i), TimeState::kPrev,		InputData());
-		m_input_data.emplace_back(InputCode(kind, i), TimeState::kCurrent,	InputData());
+		m_input_data.emplace_back(InputCode(kind, i), TimeKind::kPrev,		InputData());
+		m_input_data.emplace_back(InputCode(kind, i), TimeKind::kCurrent,	InputData());
 	}
 }
 
 void InputChecker::CalcMouseDir()
 {
-	m_mouse_data.at(TimeState::kCurrent).dir = v2d::GetNormalizedVector(m_mouse_data.at(TimeState::kCurrent).velocity);
+	m_mouse_data.at(TimeKind::kCurrent).dir = v2d::GetNormalizedVector(m_mouse_data.at(TimeKind::kCurrent).velocity);
 }
 
 void InputChecker::CalcMouseVelocity()
 {
-	const Vector2D<int> distance = m_mouse_data.at(TimeState::kCurrent).pos - m_mouse_data.at(TimeState::kPrev).pos;
-	m_mouse_data.at(TimeState::kCurrent).velocity = v2d::ConvertVecType<float>(distance);
+	const Vector2D<int> distance = m_mouse_data.at(TimeKind::kCurrent).pos - m_mouse_data.at(TimeKind::kPrev).pos;
+	m_mouse_data.at(TimeKind::kCurrent).velocity = v2d::ConvertVecType<float>(distance);
 }
 
 void InputChecker::CountInputTimeAll()
@@ -214,7 +214,7 @@ void InputChecker::CountInputTimeAll()
 	for (auto& [input_c, state_t, data] : m_input_data)
 	{
 		// 過去の入力時間は変化させない
-		if (state_t == TimeState::kPrev) { continue; }
+		if (state_t == TimeKind::kPrev) { continue; }
 
 		if (data.is_input)
 		{
@@ -229,7 +229,7 @@ void InputChecker::CheckInputAll()
 {
 	for (auto& [input_c, state_t, data] : m_input_data)
 	{
-		if (state_t == TimeState::kPrev) { continue; }
+		if (state_t == TimeKind::kPrev) { continue; }
 
 		switch (input_c.kind)
 		{
@@ -267,17 +267,17 @@ void InputChecker::CheckInputAll()
 void InputChecker::ShiftDataCureentToPrev()
 {
 	// 入力情報のシフト
-	m_mouse_data.at(TimeState::kPrev) = m_mouse_data.at(TimeState::kCurrent);
+	m_mouse_data.at(TimeKind::kPrev) = m_mouse_data.at(TimeKind::kCurrent);
 
 	for (const auto& [current_input_c, current_state_t, current_data] : m_input_data)
 	{
 		// 1フレーム前の情報であった場合はスキップ
-		if (current_state_t == TimeState::kPrev) { continue; }
+		if (current_state_t == TimeKind::kPrev) { continue; }
 
 		for (auto& [prev_input_c, prev_state_t, prev_data] : m_input_data)
 		{
 			// 現在のフレームの情報であった場合はスキップ
-			if (prev_state_t == TimeState::kCurrent) { continue; }
+			if (prev_state_t == TimeKind::kCurrent) { continue; }
 
 			if (prev_input_c.kind == current_input_c.kind && prev_input_c.code == current_input_c.code)
 			{
@@ -291,7 +291,7 @@ void InputChecker::DetectCurrentInputDevice()
 {
 	for (const auto& [input_c, state_t, data] : m_input_data)
 	{
-		if (state_t == TimeState::kPrev) { continue; }
+		if (state_t == TimeKind::kPrev) { continue; }
 		if (!data.is_input)				 { continue; }
 
 		// マウスをスライドさせただけでは入力デバイスに影響を与えない

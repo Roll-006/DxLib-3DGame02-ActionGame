@@ -8,7 +8,7 @@ Animator::Animator(const std::shared_ptr<Modeler> modeler) :
 	m_modeler					(modeler)
 
 {
-	m_time_state_data[TimeState::kPrev] = m_time_state_data[TimeState::kCurrent] = AnimTimeStateData();
+	m_time_kind_data[TimeKind::kPrev] = m_time_kind_data[TimeKind::kCurrent] = AnimTimeKindData();
 }
 
 Animator::~Animator()
@@ -21,8 +21,8 @@ Animator::~Animator()
 
 void Animator::Init()
 {
-	DetachAnim(TimeState::kPrev);
-	DetachAnim(TimeState::kCurrent);
+	DetachAnim(TimeKind::kPrev);
+	DetachAnim(TimeKind::kCurrent);
 }
 
 void Animator::Update()
@@ -53,60 +53,60 @@ void Animator::AddAnimHandle(const int kind, const int anim_handle, const int in
 void Animator::AttachAnim(const int next_kind)
 {
 	// 現在のアニメーションと同じであった場合は変更しない
-	if (m_time_state_data.at(TimeState::kCurrent).kind == next_kind) { return; }
+	if (m_time_kind_data.at(TimeKind::kCurrent).kind == next_kind) { return; }
 
 	m_is_first_frame_change_anim = true;
 
-	DetachAnim(TimeState::kPrev);
+	DetachAnim(TimeKind::kPrev);
 
 	// データをシフト(Current ➡ Prev, Next ➡ Current)
-	m_time_state_data.at(TimeState::kPrev)				   = m_time_state_data.at(TimeState::kCurrent);
-	m_time_state_data.at(TimeState::kCurrent).attach_index = MV1AttachAnim(m_modeler->GetModelHandle(), m_kind_data.at(next_kind).index, m_kind_data.at(next_kind).anim_handle, TRUE);
-	m_time_state_data.at(TimeState::kCurrent).kind		   = next_kind;
+	m_time_kind_data.at(TimeKind::kPrev)				   = m_time_kind_data.at(TimeKind::kCurrent);
+	m_time_kind_data.at(TimeKind::kCurrent).attach_index = MV1AttachAnim(m_modeler->GetModelHandle(), m_kind_data.at(next_kind).index, m_kind_data.at(next_kind).anim_handle, TRUE);
+	m_time_kind_data.at(TimeKind::kCurrent).kind		   = next_kind;
 	SetPlayStartTime();
 
 	// 前回のアニメーションが存在しない場合は、ブレンド済み(ブレンド率100%)とする
-	m_blend_rate = m_time_state_data.at(TimeState::kPrev).attach_index > -1 ? 0.0f : 1.0f;
+	m_blend_rate = m_time_kind_data.at(TimeKind::kPrev).attach_index > -1 ? 0.0f : 1.0f;
 }
 
-void Animator::DetachAnim(const TimeState time_state)
+void Animator::DetachAnim(const TimeKind time_kind)
 {
-	if (m_time_state_data.at(time_state).attach_index > -1)
+	if (m_time_kind_data.at(time_kind).attach_index > -1)
 	{
-		MV1DetachAnim(m_modeler->GetModelHandle(), m_time_state_data.at(time_state).attach_index);
-		m_time_state_data.at(time_state).attach_index = -1;
+		MV1DetachAnim(m_modeler->GetModelHandle(), m_time_kind_data.at(time_kind).attach_index);
+		m_time_kind_data.at(time_kind).attach_index = -1;
 	}
 }
 
 void Animator::SetPlayStartTime()
 {
-	if (m_kind_data.count(m_time_state_data.at(TimeState::kPrev).kind))
+	if (m_kind_data.count(m_time_kind_data.at(TimeKind::kPrev).kind))
 	{
-		const std::string prev_tag	  = m_kind_data.at(m_time_state_data.at(TimeState::kPrev).kind).tag;
-		const std::string current_tag = m_kind_data.at(m_time_state_data.at(TimeState::kCurrent).kind).tag;
+		const std::string prev_tag	  = m_kind_data.at(m_time_kind_data.at(TimeKind::kPrev).kind).tag;
+		const std::string current_tag = m_kind_data.at(m_time_kind_data.at(TimeKind::kCurrent).kind).tag;
 
 		// 同類アニメーションであった場合は再生率を引き継ぐ
 		if (prev_tag == current_tag)
 		{
-			const float current_total_t = MV1GetAttachAnimTotalTime(m_modeler->GetModelHandle(), m_time_state_data.at(TimeState::kCurrent).attach_index);
-			const float prev_total_t	= MV1GetAttachAnimTotalTime(m_modeler->GetModelHandle(), m_time_state_data.at(TimeState::kPrev).attach_index);
+			const float current_total_t = MV1GetAttachAnimTotalTime(m_modeler->GetModelHandle(), m_time_kind_data.at(TimeKind::kCurrent).attach_index);
+			const float prev_total_t	= MV1GetAttachAnimTotalTime(m_modeler->GetModelHandle(), m_time_kind_data.at(TimeKind::kPrev).attach_index);
 
-			m_prev_anim_play_rate = m_time_state_data.at(TimeState::kPrev).play_timer / prev_total_t;
-			m_time_state_data.at(TimeState::kCurrent).play_timer = current_total_t * m_prev_anim_play_rate;
+			m_prev_anim_play_rate = m_time_kind_data.at(TimeKind::kPrev).play_timer / prev_total_t;
+			m_time_kind_data.at(TimeKind::kCurrent).play_timer = current_total_t * m_prev_anim_play_rate;
 			return;
 		}
 	}
-	m_time_state_data.at(TimeState::kCurrent).play_timer = 0.0f;
+	m_time_kind_data.at(TimeKind::kCurrent).play_timer = 0.0f;
 }
 
 void Animator::PlayAnim()
 {
-	for (auto& [state_t, data] : m_time_state_data)
+	for (auto& [state_t, data] : m_time_kind_data)
 	{
 		if (data.attach_index > -1)
 		{
 			const float total_t = MV1GetAttachAnimTotalTime(m_modeler->GetModelHandle(), data.attach_index);
-			const float blend_r = state_t == TimeState::kCurrent ? m_blend_rate : 1.0f - m_blend_rate;
+			const float blend_r = state_t == TimeKind::kCurrent ? m_blend_rate : 1.0f - m_blend_rate;
 
 			data.play_timer += m_kind_data.at(data.kind).play_speed * FPS::GetDeltaTime();
 			if (data.play_timer > total_t)

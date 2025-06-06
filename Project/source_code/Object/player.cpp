@@ -64,7 +64,7 @@ void Player::Draw() const
 
 	DrawFormatString(0, 50, 0xffffff, "%d", m_is_run);
 	DrawFormatString(0, 70, 0xffffff, "%f", m_move_speed);
-	DrawFormatString(0, 90, 0xffffff, "%d", CommandHandler::GetInstance()->GetTriggerCount(MoveKind::kRun));
+	DrawFormatString(0, 90, 0xffffff, "%d", CommandHandler::GetInstance()->GetTriggerCount(CommandHandler::MoveKind::kRun));
 }
 
 void Player::OnCollide(const PhysicalObjBase& check_hit_obj)
@@ -77,46 +77,22 @@ void Player::OnGravity()
 
 }
 
-void Player::CalcMoveForward()
-{
-	VECTOR forward = m_camera->GetTransform()->GetForward(CoordinateKind::kWorld);
-	forward.y = 0.0f;
 
-	m_move_dir += v3d::GetNormalizedVector(forward);
-}
-
-void Player::CalcMoveBackward()
-{
-	VECTOR forward = m_camera->GetTransform()->GetForward(CoordinateKind::kWorld);
-	forward.y = 0.0f;
-
-	m_move_dir -= v3d::GetNormalizedVector(forward);
-}
-
-void Player::CalcMoveLeft()
-{
-	m_move_dir -= m_camera->GetTransform()->GetRight(CoordinateKind::kWorld);
-}
-
-void Player::CalcMoveRight()
-{
-	m_move_dir += m_camera->GetTransform()->GetRight(CoordinateKind::kWorld);
-}
-
+#pragma region コマンド
 void Player::Run()
 {
 	const auto command = CommandHandler::GetInstance();
 	const auto input   = InputChecker  ::GetInstance();
 	const auto code    = *command->GetCurrentFrameExecuteInputCode(CommandKind::kRun);
 
-	switch (command->GetInputModeKind(MoveKind::kRun))
+	switch (command->GetInputModeKind(CommandHandler::MoveKind::kRun))
 	{
 	case InputModeKind::kTrigger:
 		if (input->GetInputState(code) == InputState::kSingle)
 		{
-			command->CountUpTrigger(MoveKind::kRun);
+			command->CountUpTrigger(CommandHandler::MoveKind::kRun);
 
-			m_is_run = command->GetTriggerCount(MoveKind::kRun) % 2 ? true : false;
+			m_is_run = command->GetTriggerCount(CommandHandler::MoveKind::kRun) % 2 ? true : false;
 		}
 		break;
 
@@ -128,6 +104,34 @@ void Player::Run()
 		break;
 	}
 }
+
+void Player::MoveForward()
+{
+	VECTOR forward = m_camera->GetTransform()->GetForward(CoordinateKind::kWorld);
+	forward.y = 0.0f;
+
+	m_move_dir += v3d::GetNormalizedVector(forward);
+}
+
+void Player::MoveBackward()
+{
+	VECTOR forward = m_camera->GetTransform()->GetForward(CoordinateKind::kWorld);
+	forward.y = 0.0f;
+
+	m_move_dir -= v3d::GetNormalizedVector(forward);
+}
+
+void Player::MoveLeft()
+{
+	m_move_dir -= m_camera->GetTransform()->GetRight(CoordinateKind::kWorld);
+}
+
+void Player::MoveRight()
+{
+	m_move_dir += m_camera->GetTransform()->GetRight(CoordinateKind::kWorld);
+}
+#pragma endregion
+
 
 void Player::LoadAnim()
 {
@@ -163,9 +167,16 @@ void Player::ChangeAnimState()
 void Player::Move()
 {
 	// 初期化
-	m_move_dir = v3d::GetZeroVector();
 	const auto command = CommandHandler::GetInstance();
-	if (command->GetInputModeKind(MoveKind::kRun) == InputModeKind::kHold) { m_is_run = false; }
+	m_move_dir = v3d::GetZeroVector();
+
+	// ダッシュ判定をリセット
+	if (command->GetInputModeKind(CommandHandler::MoveKind::kRun) == InputModeKind::kHold) { m_is_run = false; }
+	if (!m_is_move)
+	{
+		m_is_run = false;
+		command->InitTriggerCount(CommandHandler::MoveKind::kRun);
+	}
 
 	command->Execute(CommandKind::kRun,				*this);
 	command->Execute(CommandKind::kMoveUpPlayer,	*this);
@@ -189,6 +200,7 @@ void Player::Move()
 void Player::CalcHorizontalVelocity()
 {
 	VECTOR velocity = v3d::GetNormalizedVector(m_move_dir) * InputChecker::kStickMaxSlope;
+	velocity = GetVelocityFromPad(velocity);
 
 	// 移動判定
 	m_is_move = velocity != v3d::GetZeroVector() ? true : false;
@@ -256,8 +268,17 @@ void Player::CalcDir(const VECTOR& velocity)
 	}
 }
 
-VECTOR Player::GetVelocityFromPad(const VECTOR& forwrd, const VECTOR& right)
+VECTOR Player::GetVelocityFromPad(VECTOR& velocity)
 {
+	if (velocity != v3d::GetZeroVector()) { return velocity; }
+	if (InputChecker::GetInstance()->GetCurrentInputDevice() != DeviceKind::kPad) { return velocity; }
+
+	// 移動方向を取得
+	const VECTOR right = m_camera->GetTransform()->GetRight(CoordinateKind::kWorld);
+	VECTOR forward = m_camera->GetTransform()->GetForward(CoordinateKind::kWorld);
+	forward.y = 0.0f;
+	forward = v3d::GetNormalizedVector(forward);
+
 	// 各方向のパラメーターを取得
 	const auto input = InputChecker::GetInstance();
 	const int forward_param	 = input->GetInputParameter(pad::StickKind::kLSUp   );
@@ -266,28 +287,12 @@ VECTOR Player::GetVelocityFromPad(const VECTOR& forwrd, const VECTOR& right)
 	const int right_param	 = input->GetInputParameter(pad::StickKind::kLSRight);
 
 	// 速度ベクトルを取得
-	VECTOR velocity = v3d::GetZeroVector();
-	if (forward_param)	{ velocity += forwrd * (forward_param  - InputChecker::kStickDeadZone); }
-	if (backward_param) { velocity += forwrd * (backward_param + InputChecker::kStickDeadZone); }
+	if (forward_param)	{ velocity += forward * (forward_param  - InputChecker::kStickDeadZone); }
+	if (backward_param) { velocity += forward * (backward_param + InputChecker::kStickDeadZone); }
 	if (left_param)		{ velocity += right  * (left_param     + InputChecker::kStickDeadZone); }
 	if (right_param)	{ velocity += right  * (right_param    - InputChecker::kStickDeadZone); }
 
 	return velocity;
-}
-
-VECTOR Player::GetVelocityFromKey(const VECTOR& forwrd, const VECTOR& right)
-{
-	const auto input = InputChecker::GetInstance();
-
-	// 移動方向を取得
-	VECTOR dir = v3d::GetZeroVector();
-	if (input->IsInput(KEY_INPUT_W)) { dir += forwrd; }
-	if (input->IsInput(KEY_INPUT_S)) { dir -= forwrd; }
-	if (input->IsInput(KEY_INPUT_A)) { dir -= right;  }
-	if (input->IsInput(KEY_INPUT_D)) { dir += right;  }
-
-	// 速度ベクトルを取得
-	return v3d::GetNormalizedVector(dir) * InputChecker::kStickMaxSlope;
 }
 
 void Player::Acceleration(const float destination_speed)
@@ -310,9 +315,4 @@ void Player::Deceleration(const float destination_speed)
 	{
 		m_move_speed = destination_speed;
 	}
-}
-
-void Player::ConvertMouseVelocityToPadVelocity()
-{
-
 }
