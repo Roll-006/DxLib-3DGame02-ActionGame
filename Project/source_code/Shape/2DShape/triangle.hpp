@@ -12,7 +12,7 @@ public:
 	/// @brief 必ず左回り(反時計回り)で座標を指定する必要あり
 	Triangle(const VECTOR& pos1, const VECTOR& pos2, const VECTOR& pos3);
 	Triangle();
-	~Triangle();
+	~Triangle() override;
 
 	/// @brief 描画
 	/// @param is_draw_normal_vector 法線ベクトルを描画するかどうか
@@ -20,7 +20,7 @@ public:
 	/// @param alpha_blend_num 透過値 (0～255 : 0で完全透過)
 	void Draw(const bool is_draw_normal_vector, const bool is_draw_frame, const int alpha_blend_num, const unsigned int frame_color) const;
 
-	void Move(const VECTOR& velocity);
+	void Move(const VECTOR& velocity) override;
 
 	/// @brief テクスチャ読み込み
 	/// @brief この関数を使用しなかった場合、白い板が描画される

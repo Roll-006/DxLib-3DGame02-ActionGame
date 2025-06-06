@@ -12,6 +12,8 @@ public:
 
 	virtual ~ShapeBase() = default;
 
+	virtual void Move(const VECTOR& velocity) abstract;
+
 	[[nodiscard]] ShapeKind GetShapeKind() const { return m_shape_kind; }
 
 private:

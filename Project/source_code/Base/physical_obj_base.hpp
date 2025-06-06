@@ -50,8 +50,6 @@ protected:
 
 protected:
 	MassKind m_mass_kind;
-
-private:
 	std::shared_ptr<ShapeBase> m_collider;
 	std::unordered_map<TriggerKind, std::shared_ptr<ShapeBase>> m_trigger;
 };

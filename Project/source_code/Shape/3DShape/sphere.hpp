@@ -6,14 +6,14 @@ class Sphere final : public ShapeBase
 public:
     Sphere(const VECTOR& pos, const float radius);
     Sphere();
-    ~Sphere();
+    ~Sphere() override;
 
     /// @brief ï`âÊ
     /// @param is_draw_frame ògÇï`âÊÇ≥ÇπÇÈÇ©Ç«Ç§Ç©
     /// @param alpha_blend_num ìßâﬂíl (0Å`255 : 0Ç≈äÆëSìßâﬂ)
     void Draw(const bool is_draw_frame, const int alpha_blend_num, const unsigned int frame_color) const;
 
-    void Move(const VECTOR& velocity);
+    void Move(const VECTOR& velocity) override;
 
     void SetPos(const VECTOR& pos) { m_pos = pos; }
 

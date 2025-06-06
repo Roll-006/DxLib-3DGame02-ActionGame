@@ -5,7 +5,9 @@ class AABB : public ShapeBase
 {
 public:
 	AABB();
-	~AABB();
+	~AABB() override;
+
+	void Move(const VECTOR& velocity) override;
 
 private:
 };

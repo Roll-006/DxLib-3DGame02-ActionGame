@@ -16,10 +16,10 @@ Capsule::Capsule(const VECTOR& segment_begin_pos, const VECTOR& segment_end_pos,
     // ˆ—‚È‚µ
 }
 
-Capsule::Capsule(const VECTOR& segment_begin_pos, const VECTOR& dir, const float length, const float radius) :
+Capsule::Capsule(const VECTOR& segment_begin_pos, const VECTOR& dir, const float segment_length, const float radius) :
     ShapeBase   (ShapeKind::kCapsule),
     m_radius    (radius),
-    m_segment   (Segment(segment_begin_pos, dir, length))
+    m_segment   (Segment(segment_begin_pos, dir, segment_length))
 {
     // ˆ—‚È‚µ
 }

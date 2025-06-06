@@ -9,7 +9,7 @@ class Plane final : public ShapeBase
 public:
 	Plane(const VECTOR& pos, const VECTOR& normal_vector);
 	Plane();
-	~Plane();
+	~Plane() override;
 
 	/// @brief 描画
 	/// @param is_draw_normal_vector 法線ベクトルを描画するかどうか
@@ -22,7 +22,7 @@ public:
 	/// @brief 描画用の四角形を作成
 	[[nodiscard]] Square&& MakeDrawSquare(const float edge_length) const;
 
-	void Move(const VECTOR& velocity);
+	void Move(const VECTOR& velocity) override;
 
 	void SetPos(const VECTOR& pos){ m_pos = pos; }
 

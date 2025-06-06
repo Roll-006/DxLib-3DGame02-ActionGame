@@ -45,11 +45,18 @@ void OBB::LoadTexture(const std::string& file_path, const box::SquareKind paste_
 	m_box.squares.at(static_cast<int>(paste_square)).LoadTexture(file_path, texture_dir);
 }
 
-void OBB::Move(const VECTOR& velocity, const bool is_sync_dir)
+void OBB::Move(const VECTOR& velocity)
 {
 	m_pos += velocity;
 
-	if (is_sync_dir) { m_dir = v3d::GetNormalizedVector(velocity); }
+	CalcVertexPos();
+	CalcSquarePos();
+}
+
+void OBB::Move(const VECTOR& velocity, const bool is_sync_dir)
+{
+	m_pos += velocity;
+	m_dir = v3d::GetNormalizedVector(velocity);
 
 	CalcVertexPos();
 	CalcSquarePos();

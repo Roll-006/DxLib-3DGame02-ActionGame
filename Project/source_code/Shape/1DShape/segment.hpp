@@ -7,11 +7,11 @@ public:
 	Segment(const VECTOR& begin_pos, const VECTOR& end_pos);
 	Segment(const VECTOR& begin_pos, const VECTOR& dir, const float length);
 	Segment();
-	~Segment();
+	~Segment() override;
 
 	void Draw(const unsigned int color) const;
 
-	void Move(const VECTOR& velocity);
+	void Move(const VECTOR& velocity) override;
 
 	void SetPos(const VECTOR& begin_pos);
 

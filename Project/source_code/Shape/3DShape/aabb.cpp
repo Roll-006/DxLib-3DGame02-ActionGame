@@ -10,3 +10,8 @@ AABB::~AABB()
 {
 
 }
+
+void AABB::Move(const VECTOR& velocity)
+{
+
+}

@@ -6,13 +6,13 @@ class Line final : public ShapeBase
 public:
 	Line(const VECTOR& pos, const VECTOR& dir);
 	Line();
-	~Line();
+	~Line() override;
 
 	/// @brief ï`âÊ
 	/// @param draw_length ï`âÊÇ∑ÇÈç€ÇÃí∑Ç≥
 	void Draw(const int draw_length, const unsigned int color);
 
-	void Move(const VECTOR& velocity);
+	void Move(const VECTOR& velocity) override;
 
 	void SetPos(const VECTOR& pos);
 

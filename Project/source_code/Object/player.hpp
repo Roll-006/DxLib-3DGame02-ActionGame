@@ -49,13 +49,19 @@ private:
 	void ChangeAnimState() override;
 
 private:
-	static constexpr float kSlowWalkSpeed		= 2.0f;
-	static constexpr float kWalkSpeed			= 4.0f;
-	static constexpr float kRunSpeed			= 10.0f;
-	static constexpr float kAcceleration		= 4.0f;		// 加速度(減速度も共通)
-	static constexpr float kDirCorrectionSpeed  = 0.07f;	// dirの補正速度
-	static constexpr float kConfirmDirThreshold	= 0.1f;	// 目的のdirを即座に現在のdirに反映する閾値
-	static constexpr int   kWalkStickSlopeLimit	= 15000;	// 歩き状態とするスティック傾きの上限
+	static constexpr float kSlowWalkSpeed			= 2.0f;
+	static constexpr float kWalkSpeed				= 4.0f;
+	static constexpr float kRunSpeed				= 10.0f;
+	static constexpr float kAcceleration			= 4.0f;		// 加速度(減速度も共通)
+
+	static constexpr float kDirCorrectionSpeed		= 0.07f;	// dirの補正速度
+	static constexpr float kConfirmDirThreshold		= 0.1f;		// 目的のdirを即座に現在のdirに反映する閾値
+
+	static constexpr int   kWalkStickSlopeLimit		= 15000;	// 歩き状態とするスティック傾きの上限
+
+	static constexpr float kColliderCapsuleRadius	= 34.0f;
+	static constexpr float kColliderCapsuleLength	= 178.0f;
+	static constexpr float kLandingTriggerRadius	= 23.0f;
 
 	std::shared_ptr<Camera> m_camera;
 

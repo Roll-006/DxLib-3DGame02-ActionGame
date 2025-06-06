@@ -8,7 +8,7 @@ class OBB : public ShapeBase
 public:
 	OBB(const VECTOR& pos, const VECTOR& dir, const VECTOR& length);
 	OBB();
-	~OBB();
+	~OBB() override;
 
 	void Draw(const bool is_draw_normal_vector, const bool is_draw_frame, const int alpha_blend_num, const unsigned int frame_color) const;
 
@@ -18,6 +18,8 @@ public:
 	/// @param paste_square テクスチャを張り付ける面
 	/// @param texture_dir テクスチャを張り付ける向き
 	void LoadTexture(const std::string& file_path, const box::SquareKind paste_square, const TextureDirKind texture_dir);
+
+	void Move(const VECTOR& velocity) override;
 
 	/// @brief 移動
 	/// @param is_sync_dir 移動方向とOBBの向きを同期させるかどうか

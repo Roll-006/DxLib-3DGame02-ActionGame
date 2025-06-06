@@ -15,9 +15,14 @@ Player::Player(std::shared_ptr<Camera> camera) :
 	m_transform->SetRot(CoordinateKind::kWorld, m_dir.at(TimeKind::kCurrent));
 	m_transform->SetPos(CoordinateKind::kWorld, VGet(0, 0, 0));
 
-	// 衝突用の図形を設定
-	MakeCollider(std::make_shared<Capsule>());
-	AddTrigger(TriggerKind::kLanding, std::make_shared<Sphere>());
+	// コライダーを設定
+	const auto begin_pos = m_transform->GetPos(CoordinateKind::kWorld) + VGet(0.0f, kColliderCapsuleRadius, 0.0f);
+	const auto segment_length = kColliderCapsuleLength - kColliderCapsuleRadius * 2.0f;
+	MakeCollider(std::make_shared<Capsule>(begin_pos, m_transform->GetUp(CoordinateKind::kWorld), segment_length, kColliderCapsuleRadius));
+
+	// トリガーを設定
+	const auto pos = begin_pos - VGet(0.0f, 18.0f, 0.0f);
+	AddTrigger(TriggerKind::kLanding, std::make_shared<Sphere>(pos, kLandingTriggerRadius));
 
 	// 各アニメーション追加
 	LoadAnim();
@@ -53,18 +58,14 @@ void Player::Draw() const
 	m_modeler->Draw();
 	m_current_attach_gun->Draw();
 
-	Sphere s(m_transform->GetPos(CoordinateKind::kWorld), 40);
-	s.Draw(true, 0, 0xffffff);
+	dynamic_cast<Capsule*>(m_collider.get())->Draw(true, 0, 0xffffff);
+	dynamic_cast<Sphere*>(m_trigger.at(TriggerKind::kLanding).get())->Draw(true, 0, 0xffffff);
 
 	auto pos  = m_transform->GetPos (CoordinateKind::kWorld);
 	auto axes = m_transform->GetAxes(CoordinateKind::kWorld);
 	DrawLine3D(pos, pos + axes.x_axis * 100, 0xff0000);
 	DrawLine3D(pos, pos + axes.y_axis * 100, 0x00ff22);
 	DrawLine3D(pos, pos + axes.z_axis * 100, 0x0077ff);
-
-	DrawFormatString(0, 50, 0xffffff, "%d", m_is_run);
-	DrawFormatString(0, 70, 0xffffff, "%f", m_move_speed);
-	DrawFormatString(0, 90, 0xffffff, "%d", CommandHandler::GetInstance()->GetTriggerCount(CommandHandler::MoveKind::kRun));
 }
 
 void Player::OnCollide(const PhysicalObjBase& check_hit_obj)
@@ -194,6 +195,12 @@ void Player::Move()
 		m_velocity = m_dir.at(TimeKind::kCurrent) * m_move_speed;
 		m_transform->SetRot(CoordinateKind::kWorld, m_dir.at(TimeKind::kCurrent));
 		m_transform->SetPos(CoordinateKind::kWorld, m_transform->GetPos(CoordinateKind::kWorld) + m_velocity);
+
+		m_collider->Move(m_velocity);
+		for (const auto& trigger : m_trigger)
+		{
+			trigger.second->Move(m_velocity);
+		}
 	}
 }
 
@@ -289,8 +296,8 @@ VECTOR Player::GetVelocityFromPad(VECTOR& velocity)
 	// 速度ベクトルを取得
 	if (forward_param)	{ velocity += forward * (forward_param  - InputChecker::kStickDeadZone); }
 	if (backward_param) { velocity += forward * (backward_param + InputChecker::kStickDeadZone); }
-	if (left_param)		{ velocity += right  * (left_param     + InputChecker::kStickDeadZone); }
-	if (right_param)	{ velocity += right  * (right_param    - InputChecker::kStickDeadZone); }
+	if (left_param)		{ velocity += right   * (left_param     + InputChecker::kStickDeadZone); }
+	if (right_param)	{ velocity += right   * (right_param    - InputChecker::kStickDeadZone); }
 
 	return velocity;
 }
