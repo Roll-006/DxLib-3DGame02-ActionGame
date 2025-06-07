@@ -36,20 +36,6 @@ namespace camera_cmd
 		void Execute(ObjBase& obj) override;
 	};
 
-	class Approach final : public CommandBase
-	{
-	public :
-		Approach() : CommandBase(CommandKind::kApproachCamera) {}
-		void Execute(ObjBase& obj) override;
-	};
-
-	class Depart final : public CommandBase
-	{
-	public:
-		Depart() : CommandBase(CommandKind::kDepartCamera) {}
-		void Execute(ObjBase& obj) override;
-	};
-
 	/// @brief 視点リセット
 	class InitAngle final : public CommandBase
 	{

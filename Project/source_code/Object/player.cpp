@@ -6,7 +6,8 @@ Player::Player(std::shared_ptr<Camera> camera) :
 	m_camera		(camera),
 	m_move_speed	(0.0f),
 	m_is_move		(false),
-	m_is_run		(false)
+	m_is_run		(false),
+	m_is_ready_gun	(false)
 {
 	// ‰ŠúposEdir‚ðÝ’è
 	m_move_dir[TimeKind::kCurrent] = m_move_dir[TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);
@@ -45,6 +46,9 @@ void Player::Init()
 
 void Player::Update()
 {
+	m_is_ready_gun = false;
+	if (!m_is_ready_gun) { m_camera->Depart(); }
+
 	Move();
 	ChangeAnimState();
 	m_animator->Update();
@@ -131,6 +135,12 @@ void Player::MoveLeft()
 void Player::MoveRight()
 {
 	m_move_dir.at(TimeKind::kNext) += m_camera->GetTransform()->GetRight(CoordinateKind::kWorld);
+}
+
+void Player::ReadyGun()
+{
+	m_is_ready_gun = true;
+	
 }
 #pragma endregion
 

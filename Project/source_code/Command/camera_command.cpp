@@ -20,16 +20,6 @@ void camera_cmd::MoveRight::Execute(ObjBase& obj)
 	dynamic_cast<Camera*>(&obj)->MoveRight();
 }
 
-void camera_cmd::Approach::Execute(ObjBase& obj)
-{
-	dynamic_cast<Camera*>(&obj)->Approach();
-}
-
-void camera_cmd::Depart::Execute(ObjBase& obj)
-{
-	dynamic_cast<Camera*>(&obj)->Depart();
-}
-
 void camera_cmd::InitAngle::Execute(ObjBase& obj)
 {
 	dynamic_cast<Camera*>(&obj)->InitAngle();

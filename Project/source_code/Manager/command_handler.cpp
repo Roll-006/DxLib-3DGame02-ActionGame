@@ -58,8 +58,6 @@ void CommandHandler::LoadCameraCommand()
 	m_commands[CommandKind::kMoveDownCamera]	= (std::make_shared<camera_cmd::MoveDown>());
 	m_commands[CommandKind::kMoveLeftCamera]	= (std::make_shared<camera_cmd::MoveLeft>());
 	m_commands[CommandKind::kMoveRightCamera]	= (std::make_shared<camera_cmd::MoveRight>());
-	m_commands[CommandKind::kApproachCamera]	= (std::make_shared<camera_cmd::Approach>());
-	m_commands[CommandKind::kDepartCamera]		= (std::make_shared<camera_cmd::Depart>());
 	m_commands[CommandKind::kInitAngle]			= (std::make_shared<camera_cmd::InitAngle>());
 }
 
@@ -174,8 +172,6 @@ void CommandHandler::InitKeyCommand()
 	AddInputCode(CommandKind::kMoveDownCamera,	KEY_INPUT_DOWN);
 	AddInputCode(CommandKind::kMoveLeftCamera,	KEY_INPUT_LEFT);
 	AddInputCode(CommandKind::kMoveRightCamera,	KEY_INPUT_RIGHT);
-	AddInputCode(CommandKind::kApproachCamera,	mouse::WheelKind::kUp);
-	AddInputCode(CommandKind::kDepartCamera,	mouse::WheelKind::kDown);
 	AddInputCode(CommandKind::kInitAngle,		KEY_INPUT_Q);
 
 	// 例外処理として実行
@@ -208,8 +204,6 @@ void CommandHandler::InitPadCommand()
 	AddInputCode(CommandKind::kReloadGun,		pad::ButtonKind	::kX);
 	AddInputCode(CommandKind::kSilentKill,		pad::TriggerKind::kRT);
 	AddInputCode(CommandKind::kQuickTurn,		pad::ButtonKind	::kRB);
-	AddInputCode(CommandKind::kApproachCamera,	pad::ButtonKind	::kUp);
-	AddInputCode(CommandKind::kDepartCamera,	pad::ButtonKind ::kDown);
 	AddInputCode(CommandKind::kInitAngle,		pad::ButtonKind	::kRB);
 
 	// 例外処理として実行

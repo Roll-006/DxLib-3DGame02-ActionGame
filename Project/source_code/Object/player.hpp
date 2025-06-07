@@ -27,6 +27,7 @@ public:
 	void MoveBackward();
 	void MoveLeft();
 	void MoveRight();
+	void ReadyGun();
 	#pragma endregion
 
 private:
@@ -69,12 +70,13 @@ private:
 
 	std::shared_ptr<Camera> m_camera;
 
-	std::unordered_map<TimeKind, VECTOR> m_move_dir;			// 移動方向(TODO : 正確には長さが1でないため命名を変更するべき)
+	std::unordered_map<TimeKind, VECTOR> m_move_dir;			// 移動方向(TODO : 長さが1未満である時がある場合があるため命名を変更すべき)
 	std::unordered_map<TimeKind, VECTOR> m_dir;					// 向いている方向
 
 	std::unordered_map<TimeKind, PlayerAnimKind> m_anim_kind;	// アニメーションの状態を判定
 
-	float  m_move_speed;
-	bool   m_is_move;
-	bool   m_is_run;
+	float m_move_speed;
+	bool  m_is_move;
+	bool  m_is_run;
+	bool  m_is_ready_gun;	// 銃を構える
 };

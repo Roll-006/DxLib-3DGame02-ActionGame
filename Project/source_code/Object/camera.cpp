@@ -25,9 +25,9 @@ Camera::~Camera()
 void Camera::Init()
 {
 	// カメラ位置を初期位置に戻す
-	const VECTOR target_pos	= GetLookPos();
+	const VECTOR look_pos	= GetLookPos();
 	const VECTOR forward	= m_transform->GetForward(CoordinateKind::kWorld);
-	const VECTOR pos		= target_pos - forward * m_distance_to_target;
+	const VECTOR pos		= look_pos - forward * m_distance_to_target;
 	m_transform->SetPos(CoordinateKind::kWorld, pos);
 }
 
@@ -57,6 +57,24 @@ void Camera::OnGravity()
 
 }
 
+void Camera::Approach()
+{
+	m_distance_to_target -= 50.0f * FPS::GetDeltaTime();
+	if (std::abs(m_distance_to_target) < 100.0f)
+	{
+		m_distance_to_target = 100.0f;
+	}
+}
+
+void Camera::Depart()
+{
+	m_distance_to_target += 50.0f * FPS::GetDeltaTime();
+	if (std::abs(m_distance_to_target) > kNormalDistance)
+	{
+		m_distance_to_target = kNormalDistance;
+	}
+}
+
 
 #pragma region コマンド
 void Camera::MoveUp()
@@ -81,20 +99,6 @@ void Camera::MoveRight()
 {
 	m_dir.y =  1;
 	m_is_input.at(static_cast<int>(InputDir::kRight)) = true;
-}
-
-void Camera::Approach()
-{
-	// 仮で接近
-	m_distance_to_target -= kApproachSpeed * FPS::GetDeltaTime();
-	if (m_distance_to_target < 100.0f) { m_distance_to_target = 100.0f; }
-}
-
-void Camera::Depart()
-{
-	// 仮で離れる
-	m_distance_to_target += kApproachSpeed * FPS::GetDeltaTime();
-	if (m_distance_to_target > 1000.0f) { m_distance_to_target = 1000.0f; }
 }
 #pragma endregion
 
@@ -147,8 +151,6 @@ void Camera::Move()
 	command->Execute(CommandKind::kMoveLeftCamera,	this);
 	command->Execute(CommandKind::kMoveRightCamera, this);
 	command->Execute(CommandKind::kInitAngle,		this);
-	command->Execute(CommandKind::kApproachCamera,	this);
-	command->Execute(CommandKind::kDepartCamera,	this);
 
 	CalcDirFromPad();
 	CalcDirFromMouse();
@@ -168,9 +170,9 @@ void Camera::Move()
 
 	// 結果を反映
 	m_transform->SetRot(CoordinateKind::kWorld, MGetRotElem(m));
-	const VECTOR target_pos = GetLookPos();
+	const VECTOR look_pos	= GetLookPos();
 	const VECTOR forward	= m_transform->GetForward(CoordinateKind::kWorld);
-	const VECTOR pos		= target_pos - forward * m_distance_to_target;
+	const VECTOR pos		= look_pos - forward * m_distance_to_target;
 	m_transform->SetPos(CoordinateKind::kWorld, pos);
 }
 
@@ -210,15 +212,15 @@ VECTOR Camera::GetLookPos()
 	// ボーン自体を追跡すると画面の揺れが強すぎるため
 	// 同じ高さの位置を追跡
 	const auto distance	= m_target_transform->GetPos(CoordinateKind::kWorld) - MGetTranslateElem(frame_mat);
-	auto target_pos = m_target_transform->GetPos(CoordinateKind::kWorld) + m_target_transform->GetUp(CoordinateKind::kWorld) * VSize(distance);
+	auto look_pos = m_target_transform->GetPos(CoordinateKind::kWorld) + m_target_transform->GetUp(CoordinateKind::kWorld) * VSize(distance);
 
 	// カメラの軸をもとに位置を修正
 	const auto axes = m_transform->GetAxes(CoordinateKind::kWorld);
-	target_pos += axes.x_axis * kLookCorrectPos.x;
-	target_pos += axes.y_axis * kLookCorrectPos.y;
-	target_pos += axes.z_axis * kLookCorrectPos.z;
+	look_pos += axes.x_axis * kLookCorrectPos.x;
+	look_pos += axes.y_axis * kLookCorrectPos.y;
+	look_pos += axes.z_axis * kLookCorrectPos.z;
 
-	return target_pos;
+	return look_pos;
 }
 
 void Camera::SetLookDir()

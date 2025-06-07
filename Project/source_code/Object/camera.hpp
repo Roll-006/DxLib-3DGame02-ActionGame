@@ -37,14 +37,17 @@ public:
 	/// @brief ターゲットとの距離を設定する
 	void SetDistanceToTarget(const float distance) { m_distance_to_target = distance; }
 
+	/// @brief ターゲットに接近する
+	void Approach();
+	/// @brief ターゲットから離れる
+	void Depart();
+
 	#pragma region コマンド
 	void MoveUp();
 	void MoveDown();
 	void MoveLeft();
 	void MoveRight();
 	void InitAngle();
-	void Approach();
-	void Depart();
 	#pragma endregion
 
 private:
