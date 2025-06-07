@@ -4,10 +4,13 @@
 Camera::Camera() : 
 	PhysicalObjBase			(ObjName.CAMERA, ObjTag.CAMERA, MassKind::kVeryLight),
 	m_target_transform		(nullptr),
+	m_target_modeler		(nullptr),
+	m_target_bone			(""),
 	m_distance_to_target	(kNormalDistance),
 	m_is_invert_horizontal	(false),
 	m_is_invert_vertical	(false),
-	m_dir					(v3d::GetZeroVector()),
+	m_dir					(),
+	m_velocity				(v3d::GetZeroVector()),
 	m_angle					(v3d::GetZeroVector())
 {
 	SetCameraNearFar(kNear, kFar);
@@ -22,15 +25,15 @@ Camera::~Camera()
 void Camera::Init()
 {
 	// カメラ位置を初期位置に戻す
-	m_transform->SetPos(CoordinateKind::kWorld, m_target_transform->GetPos(CoordinateKind::kWorld) - VGet(0.0f, 0.0f, -kNormalDistance));
+	const VECTOR target_pos	= GetLookPos();
+	const VECTOR forward	= m_transform->GetForward(CoordinateKind::kWorld);
+	const VECTOR pos		= target_pos - forward * m_distance_to_target;
+	m_transform->SetPos(CoordinateKind::kWorld, pos);
 }
 
 void Camera::Update()
 {
-	for (auto& is_input : m_is_input)
-	{
-		is_input = false;
-	}
+	for (auto& is_input : m_is_input) { is_input = false; }
 
 	Move();
 	SetLookDir();
@@ -98,15 +101,29 @@ void Camera::Depart()
 
 void Camera::AttachTarget(const std::shared_ptr<ObjBase> obj)
 {
-	// ターゲットを親オブジェクトとする
 	m_target_transform = obj->GetTransform();
 }
 
 void Camera::AttachTarget(const std::string& obj_name)
 {
-	// ターゲットを親オブジェクトとする
 	auto target_obj = ObjManager::GetInstance()->GetObj(obj_name);
-	m_target_transform = target_obj->GetTransform();
+	AttachTarget(target_obj);
+}
+
+void Camera::AttachTarget(const std::shared_ptr<ObjBase> obj, const std::shared_ptr<Modeler> modeler, const std::string& bone_path)
+{
+	AttachTarget(obj);
+
+	m_target_modeler	= modeler;
+	m_target_bone		= bone_path;
+}
+
+void Camera::AttachTarget(const std::string& obj_name, const std::shared_ptr<Modeler> modeler, const std::string& bone_path)
+{
+	AttachTarget(obj_name);
+
+	m_target_modeler	= modeler;
+	m_target_bone		= bone_path;
 }
 
 void Camera::DetachTarget()
@@ -119,26 +136,19 @@ void Camera::InitAngle()
 
 }
 
-void Camera::SetLookDir()
-{
-	const VECTOR pos = m_transform->GetPos(CoordinateKind::kWorld);
-	const VECTOR look_pos = pos + m_transform->GetForward(CoordinateKind::kWorld);
-	SetCameraPositionAndTarget_UpVecY(pos, look_pos);
-}
-
 void Camera::Move()
 {
 	const auto command = CommandHandler::GetInstance();
 	m_dir	   = v3d::GetZeroVector();
 	m_velocity = v3d::GetZeroVector();
 
-	command->Execute(CommandKind::kMoveUpCamera,	*this);
-	command->Execute(CommandKind::kMoveDownCamera,	*this);
-	command->Execute(CommandKind::kMoveLeftCamera,	*this);
-	command->Execute(CommandKind::kMoveRightCamera, *this);
-	command->Execute(CommandKind::kInitAngle,		*this);
-	command->Execute(CommandKind::kApproachCamera,	*this);
-	command->Execute(CommandKind::kDepartCamera,	*this);
+	command->Execute(CommandKind::kMoveUpCamera,	this);
+	command->Execute(CommandKind::kMoveDownCamera,	this);
+	command->Execute(CommandKind::kMoveLeftCamera,	this);
+	command->Execute(CommandKind::kMoveRightCamera, this);
+	command->Execute(CommandKind::kInitAngle,		this);
+	command->Execute(CommandKind::kApproachCamera,	this);
+	command->Execute(CommandKind::kDepartCamera,	this);
 
 	CalcDirFromPad();
 	CalcDirFromMouse();
@@ -158,7 +168,7 @@ void Camera::Move()
 
 	// 結果を反映
 	m_transform->SetRot(CoordinateKind::kWorld, MGetRotElem(m));
-	const VECTOR target_pos = m_target_transform ? m_target_transform->GetPos(CoordinateKind::kWorld) : v3d::GetZeroVector();
+	const VECTOR target_pos = GetLookPos();
 	const VECTOR forward	= m_transform->GetForward(CoordinateKind::kWorld);
 	const VECTOR pos		= target_pos - forward * m_distance_to_target;
 	m_transform->SetPos(CoordinateKind::kWorld, pos);
@@ -185,6 +195,37 @@ void Camera::CalcAngle()
 	if (m_is_input.at(static_cast<int>(InputDir::kDown)))	{ m_angle.x += m_velocity.x; }
 	if (m_is_input.at(static_cast<int>(InputDir::kLeft)))	{ m_angle.y += m_velocity.y; }
 	if (m_is_input.at(static_cast<int>(InputDir::kRight)))	{ m_angle.y += m_velocity.y; }
+}
+
+VECTOR Camera::GetLookPos()
+{
+	if (!m_target_transform) { return v3d::GetZeroVector(); }
+	if (!m_target_modeler)	 { return m_target_transform->GetPos(CoordinateKind::kWorld); }
+
+	// ボーンの行列情報を取得
+	const int model_handle	= m_target_modeler->GetModelHandle();
+	const int frame_num		= MV1SearchFrame(model_handle, m_target_bone.c_str());
+	MATRIX	  frame_mat		= MV1GetFrameLocalWorldMatrix(model_handle, frame_num);
+
+	// ボーン自体を追跡すると画面の揺れが強すぎるため
+	// 同じ高さの位置を追跡
+	const auto distance	= m_target_transform->GetPos(CoordinateKind::kWorld) - MGetTranslateElem(frame_mat);
+	auto target_pos = m_target_transform->GetPos(CoordinateKind::kWorld) + m_target_transform->GetUp(CoordinateKind::kWorld) * VSize(distance);
+
+	// カメラの軸をもとに位置を修正
+	const auto axes = m_transform->GetAxes(CoordinateKind::kWorld);
+	target_pos += axes.x_axis * kLookCorrectPos.x;
+	target_pos += axes.y_axis * kLookCorrectPos.y;
+	target_pos += axes.z_axis * kLookCorrectPos.z;
+
+	return target_pos;
+}
+
+void Camera::SetLookDir()
+{
+	const VECTOR pos = m_transform->GetPos(CoordinateKind::kWorld);
+	const VECTOR look_pos = pos + m_transform->GetForward(CoordinateKind::kWorld);
+	SetCameraPositionAndTarget_UpVecY(pos, look_pos);
 }
 
 void Camera::ApplyInvert()

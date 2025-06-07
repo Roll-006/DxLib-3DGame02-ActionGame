@@ -4,14 +4,13 @@
 Player::Player(std::shared_ptr<Camera> camera) :
 	CharaBase		(ObjName.PLAYER, ObjTag.PLAYER, ModelPath.CHARA_01, MassKind::kMedium),
 	m_camera		(camera),
-	m_move_dir		(v3d::GetZeroVector()),
-	m_velocity		(v3d::GetZeroVector()),
 	m_move_speed	(0.0f),
 	m_is_move		(false),
 	m_is_run		(false)
 {
 	// 初期pos・dirを設定
-	m_dir[TimeKind::kCurrent] = m_dir[TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);
+	m_move_dir[TimeKind::kCurrent] = m_move_dir[TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);
+	m_dir	  [TimeKind::kCurrent] = m_dir	   [TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);
 	m_transform->SetRot(CoordinateKind::kWorld, m_dir.at(TimeKind::kCurrent));
 	m_transform->SetPos(CoordinateKind::kWorld, VGet(0, 0, 0));
 
@@ -26,7 +25,8 @@ Player::Player(std::shared_ptr<Camera> camera) :
 
 	// 各アニメーション追加
 	LoadAnim();
-	m_animator->AttachAnim(static_cast<int>(PlayerAnimKind::kIdle01));
+	m_anim_kind[TimeKind::kPrev] = m_anim_kind[TimeKind::kCurrent] = PlayerAnimKind::kIdle02;
+	m_animator->AttachAnim(static_cast<int>(m_anim_kind.at(TimeKind::kCurrent)));
 
 	// 武器設定
 	AddGun(std::make_shared<AssaultRifle>());
@@ -46,6 +46,7 @@ void Player::Init()
 void Player::Update()
 {
 	Move();
+	ChangeAnimState();
 	m_animator->Update();
 
 	// 武器はモデルの行列情報をもとに位置を決定するため一度モデルに行列を適用
@@ -59,9 +60,9 @@ void Player::Draw() const
 	m_current_attach_gun->Draw();
 
 	dynamic_cast<Capsule*>(m_collider.get())->Draw(true, 0, 0xffffff);
-	dynamic_cast<Sphere*>(m_trigger.at(TriggerKind::kLanding).get())->Draw(true, 0, 0xffffff);
+	dynamic_cast<Sphere*> (m_trigger.at(TriggerKind::kLanding).get())->Draw(true, 0, 0xffffff);
 
-	auto pos  = m_transform->GetPos (CoordinateKind::kWorld);
+	auto pos = m_transform->GetPos (CoordinateKind::kWorld);
 	auto axes = m_transform->GetAxes(CoordinateKind::kWorld);
 	DrawLine3D(pos, pos + axes.x_axis * 100, 0xff0000);
 	DrawLine3D(pos, pos + axes.y_axis * 100, 0x00ff22);
@@ -111,7 +112,7 @@ void Player::MoveForward()
 	VECTOR forward = m_camera->GetTransform()->GetForward(CoordinateKind::kWorld);
 	forward.y = 0.0f;
 
-	m_move_dir += v3d::GetNormalizedVector(forward);
+	m_move_dir.at(TimeKind::kNext) += v3d::GetNormalizedVector(forward);
 }
 
 void Player::MoveBackward()
@@ -119,17 +120,17 @@ void Player::MoveBackward()
 	VECTOR forward = m_camera->GetTransform()->GetForward(CoordinateKind::kWorld);
 	forward.y = 0.0f;
 
-	m_move_dir -= v3d::GetNormalizedVector(forward);
+	m_move_dir.at(TimeKind::kNext) -= v3d::GetNormalizedVector(forward);
 }
 
 void Player::MoveLeft()
 {
-	m_move_dir -= m_camera->GetTransform()->GetRight(CoordinateKind::kWorld);
+	m_move_dir.at(TimeKind::kNext) -= m_camera->GetTransform()->GetRight(CoordinateKind::kWorld);
 }
 
 void Player::MoveRight()
 {
-	m_move_dir += m_camera->GetTransform()->GetRight(CoordinateKind::kWorld);
+	m_move_dir.at(TimeKind::kNext) += m_camera->GetTransform()->GetRight(CoordinateKind::kWorld);
 }
 #pragma endregion
 
@@ -137,6 +138,7 @@ void Player::MoveRight()
 void Player::LoadAnim()
 {
 	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdle01),					AnimPath.IDLE_01,						0, AnimTag.NONE, 20.0f, true);
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdle02),					AnimPath.IDLE_02,						0, AnimTag.NONE, 20.0f, true);
 	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdleSquat01),				AnimPath.IDLE_SQUAT_01,					0, AnimTag.NONE, 20.0f, true);
 
 	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkSquatForward01),		AnimPath.WALK_SQUAT_FORWARD_01,			0, AnimTag.WALK, 20.0f, true);
@@ -162,14 +164,14 @@ void Player::LoadAnim()
 
 void Player::ChangeAnimState()
 {
-
+	m_animator->AttachAnim(static_cast<int>(m_anim_kind.at(TimeKind::kCurrent)));
 }
 
 void Player::Move()
 {
 	// 初期化
 	const auto command = CommandHandler::GetInstance();
-	m_move_dir = v3d::GetZeroVector();
+	m_move_dir.at(TimeKind::kNext) = v3d::GetZeroVector();
 
 	// ダッシュ判定をリセット
 	if (command->GetInputModeKind(CommandHandler::MoveKind::kRun) == InputModeKind::kHold) { m_is_run = false; }
@@ -179,11 +181,11 @@ void Player::Move()
 		command->InitTriggerCount(CommandHandler::MoveKind::kRun);
 	}
 
-	command->Execute(CommandKind::kRun,				*this);
-	command->Execute(CommandKind::kMoveUpPlayer,	*this);
-	command->Execute(CommandKind::kMoveDownPlayer,	*this);
-	command->Execute(CommandKind::kMoveLeftPlayer,	*this);
-	command->Execute(CommandKind::kMoveRightPlayer,	*this);
+	command->Execute(CommandKind::kRun,				this);
+	command->Execute(CommandKind::kMoveUpPlayer,	this);
+	command->Execute(CommandKind::kMoveDownPlayer,	this);
+	command->Execute(CommandKind::kMoveLeftPlayer,	this);
+	command->Execute(CommandKind::kMoveRightPlayer,	this);
 
 	// 各方向の移動
 	CalcHorizontalVelocity();
@@ -192,21 +194,21 @@ void Player::Move()
 	// 移動した場合は位置・回転を更新
 	if (m_is_move)
 	{
-		m_velocity = m_dir.at(TimeKind::kCurrent) * m_move_speed;
+		const VECTOR velocity = m_move_dir.at(TimeKind::kCurrent) * m_move_speed;
 		m_transform->SetRot(CoordinateKind::kWorld, m_dir.at(TimeKind::kCurrent));
-		m_transform->SetPos(CoordinateKind::kWorld, m_transform->GetPos(CoordinateKind::kWorld) + m_velocity);
+		m_transform->SetPos(CoordinateKind::kWorld, m_transform->GetPos(CoordinateKind::kWorld) + velocity);
 
-		m_collider->Move(m_velocity);
+		m_collider->Move(velocity);
 		for (const auto& trigger : m_trigger)
 		{
-			trigger.second->Move(m_velocity);
+			trigger.second->Move(velocity);
 		}
 	}
 }
 
 void Player::CalcHorizontalVelocity()
 {
-	VECTOR velocity = v3d::GetNormalizedVector(m_move_dir) * InputChecker::kStickMaxSlope;
+	VECTOR velocity = v3d::GetNormalizedVector(m_move_dir.at(TimeKind::kNext)) * InputChecker::kStickMaxSlope;
 	velocity = GetVelocityFromPad(velocity);
 
 	// 移動判定
@@ -264,11 +266,35 @@ void Player::CalcDir(const VECTOR& velocity)
 	if (!m_is_move) { return; }
 
 	// 目的とする向きと距離を取得
-	m_dir.at(TimeKind::kNext) = v3d::GetNormalizedVector(velocity);
-	const VECTOR distance = m_dir.at(TimeKind::kNext) - m_dir.at(TimeKind::kCurrent);
+	m_move_dir.at(TimeKind::kNext) = v3d::GetNormalizedVector(velocity);
+	VECTOR distance = m_move_dir.at(TimeKind::kNext) - m_move_dir.at(TimeKind::kCurrent);
 
 	// 現在のdirを目的とするdirに近づけていく
+	m_move_dir.at(TimeKind::kCurrent) += v3d::GetNormalizedVector(distance) * kDirCorrectionSpeed;
+	if (VSize(m_move_dir.at(TimeKind::kNext) - m_move_dir.at(TimeKind::kCurrent)) < kConfirmDirThreshold)
+	{
+		m_move_dir.at(TimeKind::kCurrent) = m_move_dir.at(TimeKind::kNext);
+	}
+
+	// 実際に向く方向を決める
+	// ダッシュ状態であれば進行方向を向く
+	if (m_is_run)
+	{
+		m_dir.at(TimeKind::kNext) = m_move_dir.at(TimeKind::kCurrent);
+	}
+	// 歩き状態であれば常にカメラと同じ向きを向く
+	else
+	{
+		VECTOR forward = m_camera->GetTransform()->GetForward(CoordinateKind::kWorld);
+		forward.y = 0.0f;
+		m_dir.at(TimeKind::kNext) = v3d::GetNormalizedVector(forward);
+	}
+	m_dir.at(TimeKind::kNext) = v3d::GetNormalizedVector(m_dir.at(TimeKind::kNext));
+
+	// 向き補正
+	distance = m_dir.at(TimeKind::kNext) - m_dir.at(TimeKind::kCurrent);
 	m_dir.at(TimeKind::kCurrent) += v3d::GetNormalizedVector(distance) * kDirCorrectionSpeed;
+	m_dir.at(TimeKind::kCurrent)  = v3d::GetNormalizedVector(m_dir.at(TimeKind::kCurrent));
 	if (VSize(m_dir.at(TimeKind::kNext) - m_dir.at(TimeKind::kCurrent)) < kConfirmDirThreshold)
 	{
 		m_dir.at(TimeKind::kCurrent) = m_dir.at(TimeKind::kNext);

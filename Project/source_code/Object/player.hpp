@@ -32,9 +32,13 @@ public:
 private:
 	void Move();
 
+	/// @brief 水平方向の速度ベクトルを計算
 	void CalcHorizontalVelocity();
+	/// @brief 垂直方向の速度ベクトルを計算
 	void CalcVerticalVelocity();
+	/// @brief 移動速度を計算
 	void CalcMoveSpeed(const float input_slope);
+	/// @brief 向きを計算
 	void CalcDir(const VECTOR& velocity);
 
 	// パッド入力での速度ベクトルを取得
@@ -54,8 +58,8 @@ private:
 	static constexpr float kRunSpeed				= 10.0f;
 	static constexpr float kAcceleration			= 4.0f;		// 加速度(減速度も共通)
 
-	static constexpr float kDirCorrectionSpeed		= 0.07f;	// dirの補正速度
-	static constexpr float kConfirmDirThreshold		= 0.1f;		// 目的のdirを即座に現在のdirに反映する閾値
+	static constexpr float kDirCorrectionSpeed		= 0.065f;	// dirの補正速度
+	static constexpr float kConfirmDirThreshold		= 0.08f;	// 目的のdirを即座に現在のdirに反映する閾値
 
 	static constexpr int   kWalkStickSlopeLimit		= 15000;	// 歩き状態とするスティック傾きの上限
 
@@ -65,10 +69,11 @@ private:
 
 	std::shared_ptr<Camera> m_camera;
 
-	std::unordered_map<TimeKind, VECTOR> m_dir;	// 向いている方向(向き補間のためタイムカインドを用意)
-	VECTOR m_move_dir;							// 移動方向
+	std::unordered_map<TimeKind, VECTOR> m_move_dir;			// 移動方向(TODO : 正確には長さが1でないため命名を変更するべき)
+	std::unordered_map<TimeKind, VECTOR> m_dir;					// 向いている方向
 
-	VECTOR m_velocity;
+	std::unordered_map<TimeKind, PlayerAnimKind> m_anim_kind;	// アニメーションの状態を判定
+
 	float  m_move_speed;
 	bool   m_is_move;
 	bool   m_is_run;

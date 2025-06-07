@@ -78,9 +78,7 @@ void Transform::SetPos(const CoordinateKind coord_kind, const VECTOR& pos)
 		}
 	}
 
-	m_local_matrix.m[3][0] = pos.x - parent_pos.x;
-	m_local_matrix.m[3][1] = pos.y - parent_pos.y;
-	m_local_matrix.m[3][2] = pos.z - parent_pos.z;
+	matrix::SetPos(m_local_matrix, pos - parent_pos);
 }
 
 void Transform::SetRot(const CoordinateKind coord_kind, const MATRIX& rot_matrix)

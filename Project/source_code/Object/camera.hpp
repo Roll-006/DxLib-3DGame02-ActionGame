@@ -4,17 +4,10 @@
 #include "../Manager/collision_manager.hpp"
 #include "../Manager/physics_manager.hpp"
 
+#include "../Part/modeler.hpp"
+
 class Camera final : public PhysicalObjBase
 {
-public:
-	enum class InputDir
-	{
-		kUp,
-		kDown,
-		kLeft,
-		kRight,
-	};
-
 public:
 	Camera();
 	~Camera();
@@ -25,10 +18,21 @@ public:
 
 	void OnCollide(const PhysicalObjBase& check_hit_obj) override;
 	void OnGravity() override;
-
+	
+	#pragma region アタッチ・デタッチ
+	/// @brief 追跡対象をアタッチする(トランスフォーム情報で追跡)
 	void AttachTarget(const std::shared_ptr<ObjBase> obj);
+	/// @brief 追跡対象をアタッチする(トランスフォーム情報で追跡)
 	void AttachTarget(const std::string& obj_name);
+	/// @brief 追跡対象をアタッチする(トランスフォーム＋ボーン情報で追跡)
+	/// @param bone_path ボーンのパス
+	void AttachTarget(const std::shared_ptr<ObjBase> obj, const std::shared_ptr<Modeler> modeler, const std::string& bone_path);
+	/// @brief 追跡対象をアタッチする(トランスフォーム＋ボーン情報で追跡)
+	/// @param bone_path ボーンのパス
+	void AttachTarget(const std::string& obj_name, const std::shared_ptr<Modeler> modeler, const std::string& bone_path);
+	/// @brief 追跡対象をデタッチする
 	void DetachTarget();
+	#pragma endregion
 
 	/// @brief ターゲットとの距離を設定する
 	void SetDistanceToTarget(const float distance) { m_distance_to_target = distance; }
@@ -45,8 +49,13 @@ public:
 
 private:
 	void Move();
+
 	void CalcAngle();
 
+	/// @brief 見る座標を取得
+	[[nodiscard]] VECTOR GetLookPos();
+
+	/// @brief 見る方向を設定
 	void SetLookDir();
 
 	/// @brief 操作時の反転処理を適用する
@@ -56,22 +65,35 @@ private:
 	void CalcDirFromMouse();
 
 private:
-	static constexpr float kNear					= 10.0f;
-	static constexpr float kFar						= 3000.0f;
-	static constexpr float kFOV						= 60.0f;
+	enum class InputDir
+	{
+		kUp,
+		kDown,
+		kLeft,
+		kRight,
+	};
 
-	static constexpr float kMaxVerticalAngle		= 89.0f;
-	static constexpr float kMinVerticalAngle		= -70.0f;
-	static constexpr float kNormalDistance			= 500.0f;
+private:
+	static constexpr float  kNear					= 10.0f;
+	static constexpr float  kFar					= 3000.0f;
+	static constexpr float  kFOV					= 60.0f;
 
-	static constexpr float kMoveSpeedWithButton		= 2.0f;
-	static constexpr float kMoveSpeedWithStick		= 2.5f;
-	static constexpr float kMoveSpeedWithMouse		= 0.1f;
-	static constexpr float kApproachSpeed			= 800.0f;
+	static constexpr VECTOR kLookCorrectPos			= VECTOR(90.0f, 40.0f, 0.0f);
 
-	static constexpr float kInitAngleTolerance		= 0.01f;		// 視点リセットが完了したと判定させる許容値
+	static constexpr float  kMaxVerticalAngle		= 89.0f;
+	static constexpr float  kMinVerticalAngle		= -70.0f;
+	static constexpr float  kNormalDistance			= 200.0f;
+
+	static constexpr float  kMoveSpeedWithButton	= 2.0f;
+	static constexpr float  kMoveSpeedWithStick		= 2.5f;
+	static constexpr float  kMoveSpeedWithMouse		= 0.1f;
+	static constexpr float  kApproachSpeed			= 800.0f;
+
+	static constexpr float  kInitAngleTolerance		= 0.01f;		// 視点リセットが完了したと判定させる許容値
 
 	std::shared_ptr<Transform> m_target_transform;
+	std::shared_ptr<Modeler>   m_target_modeler;
+	std::string				   m_target_bone;
 
 	float  m_distance_to_target;
 	bool   m_is_invert_horizontal;		// 操作時に左右反転を行うかを判定

@@ -23,7 +23,7 @@ public:
     [[nodiscard]] float          GetRadius()  const { return m_radius; }
 
 private:
-    static constexpr int kPolygonDetailed = 16; // ƒ|ƒŠƒSƒ“‚Ì×‚©‚³
+    static constexpr int kPolygonDetailed = 8; // ƒ|ƒŠƒSƒ“‚Ì×‚©‚³
 
     float   m_radius;
     Segment m_segment;

@@ -5,6 +5,7 @@ enum class PlayerAnimKind
 	kNone = -1,
 
 	kIdle01,
+	kIdle02,
 	kIdleSquat01,
 
 	kWalkSquatForward01,		// ‚µ‚á‚ª‚İó‘Ô‚Å³–Ê‚ğŒü‚¢‚Ä‘O•û‚É•à‚­

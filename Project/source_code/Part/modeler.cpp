@@ -29,6 +29,7 @@ void Modeler::Draw() const
 	ApplyMatrix();
 
 	MV1DrawModel(m_model_handle);
+	//DxLibHelper::DrawModelFrames(m_model_handle);
 }
 
 void Modeler::ApplyOpacity() const

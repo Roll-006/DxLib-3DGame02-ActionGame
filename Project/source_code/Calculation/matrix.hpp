@@ -17,6 +17,13 @@ inline MATRIX operator*=(MATRIX& m, const ScaleT scale)			{ m = m * scale; retur
 
 namespace matrix
 {
+	inline void SetPos(MATRIX& mat, const VECTOR& pos)
+	{
+		mat.m[3][0] = pos.x;
+		mat.m[3][1] = pos.y;
+		mat.m[3][2] = pos.z;
+	}
+
 	inline void Draw(const MATRIX& mat, const VECTOR& first_draw_pos)
 	{
 		for (int i = 0; i < 4; ++i)

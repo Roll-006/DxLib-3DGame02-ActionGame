@@ -3,7 +3,7 @@
 AssaultRifle::AssaultRifle() :
 	GunBase(ObjName.ASSAULT_RIFLE, GunKind::kAssaultRifle, ModelPath.ASSAULT_RIFLE_01)
 {
-	SetCorrectValue(correct_angle, correct_pos);
+	SetCorrectValue(kCorrectAngle, kCorrectPos);
 }
 
 AssaultRifle::~AssaultRifle()

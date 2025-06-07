@@ -36,9 +36,9 @@ public:
 		const MATRIX owner_attach_frame_mat = MV1GetFrameLocalWorldMatrix(m_owner_modeler->GetModelHandle(), owner_attach_frame_num);
 
 		// 武器をアタッチする部位に合わせて回転し、行列を取得
-		MATRIX mat = MGetIdent();
-		CreateRotationXYZMatrix(&mat, m_correct_angle.x, m_correct_angle.y, m_correct_angle.z);
-		const MATRIX result_mat = mat * owner_attach_frame_mat;
+		MATRIX correct = MGetIdent();
+		CreateRotationXYZMatrix(&correct, m_correct_angle.x, m_correct_angle.y, m_correct_angle.z);
+		const MATRIX result_mat = correct * owner_attach_frame_mat;
 
 		// 情報を適用
 		m_transform->SetMatrix(CoordinateKind::kWorld, result_mat);

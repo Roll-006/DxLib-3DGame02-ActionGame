@@ -16,7 +16,7 @@ public:
 	void LateUpdate();
 
 	/// @brief コマンドを実行
-	void Execute(const CommandKind command_kind, obj_concepts::ObjT auto& obj)
+	void Execute(const CommandKind command_kind, obj_concepts::ObjT auto* obj)
 	{
 		// 対応するコマンドがない場合は早期return
 		if (!m_commands.count(command_kind)) { return; }
@@ -41,7 +41,7 @@ public:
 				if (input->IsInput(code.second))
 				{
 					m_current_frame_execute[code.first] = code.second;
-					command->Execute(obj);
+					command->Execute(*obj);
 
 					// 2つめの同じコマンドは実行しない
 					return;
