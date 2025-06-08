@@ -21,15 +21,11 @@ void Window::Update()
 void Window::SetWindowMode()
 {
 	// [ALT + ENTER]
-	const bool is_change_1 = 
+	const bool is_change = 
 		InputChecker::GetInstance()->IsInput(KEY_INPUT_LALT) &&
 		InputChecker::GetInstance()->GetInputState(KEY_INPUT_RETURN) == InputState::kSingle;
 
-	// [F11]
-	const bool is_change_2 =
-		InputChecker::GetInstance()->GetInputState(KEY_INPUT_F11)    == InputState::kSingle;
-
-	if (is_change_1 || is_change_2)
+	if (is_change)
 	{
 		++m_change_window_count;
 

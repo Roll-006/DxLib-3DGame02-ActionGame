@@ -38,9 +38,9 @@ public:
 	void SetDistanceToTarget(const float distance) { m_distance_to_target = distance; }
 
 	/// @brief ターゲットに接近する
-	void Approach();
+	void Approach(const float min_distance, const float move_speed);
 	/// @brief ターゲットから離れる
-	void Depart();
+	void Depart(const float max_distance, const float move_speed);
 
 	#pragma region コマンド
 	void MoveUp();
@@ -76,6 +76,9 @@ private:
 		kRight,
 	};
 
+public:
+	static constexpr float  kNormalDistance			= 200.0f;
+
 private:
 	static constexpr float  kNear					= 10.0f;
 	static constexpr float  kFar					= 3000.0f;
@@ -85,7 +88,6 @@ private:
 
 	static constexpr float  kMaxVerticalAngle		= 89.0f;
 	static constexpr float  kMinVerticalAngle		= -70.0f;
-	static constexpr float  kNormalDistance			= 200.0f;
 
 	static constexpr float  kMoveSpeedWithButton	= 2.0f;
 	static constexpr float  kMoveSpeedWithStick		= 2.5f;

@@ -7,6 +7,7 @@ InputChecker::InputChecker():
 	m_is_lock_mouse_pos		(true)
 {	
 	SetUseDirectInputFlag(TRUE);
+	SetMouseDispFlag(FALSE);
 
 	m_mouse_data[TimeKind::kPrev].pos	     = m_mouse_data[TimeKind::kCurrent].pos	   = Vector2D<int>(Window::kHalfWidth, Window::kHalfHeight);
 	m_mouse_data[TimeKind::kPrev].dir		 = m_mouse_data[TimeKind::kCurrent].dir	   = Vector2D<float>(0.0f, 0.0f);

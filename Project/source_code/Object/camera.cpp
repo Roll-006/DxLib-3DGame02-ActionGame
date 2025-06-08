@@ -57,21 +57,21 @@ void Camera::OnGravity()
 
 }
 
-void Camera::Approach()
+void Camera::Approach(const float min_distance, const float move_speed)
 {
-	m_distance_to_target -= 50.0f * FPS::GetDeltaTime();
-	if (std::abs(m_distance_to_target) < 100.0f)
+	m_distance_to_target -= move_speed;
+	if (std::abs(m_distance_to_target) < min_distance)
 	{
-		m_distance_to_target = 100.0f;
+		m_distance_to_target = min_distance;
 	}
 }
 
-void Camera::Depart()
+void Camera::Depart(const float max_distance, const float move_speed)
 {
-	m_distance_to_target += 50.0f * FPS::GetDeltaTime();
-	if (std::abs(m_distance_to_target) > kNormalDistance)
+	m_distance_to_target += move_speed;
+	if (std::abs(m_distance_to_target) > max_distance)
 	{
-		m_distance_to_target = kNormalDistance;
+		m_distance_to_target = max_distance;
 	}
 }
 

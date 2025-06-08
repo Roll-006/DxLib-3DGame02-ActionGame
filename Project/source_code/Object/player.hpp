@@ -33,14 +33,19 @@ public:
 private:
 	void Move();
 
+	void InitMove();
+
 	/// @brief 水平方向の速度ベクトルを計算
 	void CalcHorizontalVelocity();
 	/// @brief 垂直方向の速度ベクトルを計算
 	void CalcVerticalVelocity();
 	/// @brief 移動速度を計算
 	void CalcMoveSpeed(const float input_slope);
+
+	/// @brief 移動方向を計算
+	void CalcMoveDir(const VECTOR& velocity);
 	/// @brief 向きを計算
-	void CalcDir(const VECTOR& velocity);
+	void CalcLookDir();
 
 	// パッド入力での速度ベクトルを取得
 	[[nodiscard]] VECTOR GetVelocityFromPad(VECTOR& velocity);
@@ -59,8 +64,10 @@ private:
 	static constexpr float kRunSpeed				= 10.0f;
 	static constexpr float kAcceleration			= 4.0f;		// 加速度(減速度も共通)
 
-	static constexpr float kDirCorrectionSpeed		= 0.065f;	// dirの補正速度
-	static constexpr float kConfirmDirThreshold		= 0.08f;	// 目的のdirを即座に現在のdirに反映する閾値
+	static constexpr float kMoveDirCorrectionSpeed	= 0.065f;	// dirの補正速度
+	static constexpr float kLookDirCorrectionSpeed	= 0.1f;		// dirの補正速度
+	static constexpr float kConfirmMoveDirThreshold	= 0.08f;	// 目的のdirを即座に現在のdirに反映する閾値
+	static constexpr float kConfirmLookDirThreshold	= 0.25f;	// 目的のdirを即座に現在のdirに反映する閾値
 
 	static constexpr int   kWalkStickSlopeLimit		= 15000;	// 歩き状態とするスティック傾きの上限
 
@@ -68,10 +75,12 @@ private:
 	static constexpr float kColliderCapsuleLength	= 178.0f;
 	static constexpr float kLandingTriggerRadius	= 23.0f;
 
+	static constexpr float kAimDownSightsSpeed		= 800.0f;	// スコープをのぞき込む速度
+
 	std::shared_ptr<Camera> m_camera;
 
 	std::unordered_map<TimeKind, VECTOR> m_move_dir;			// 移動方向(TODO : 長さが1未満である時がある場合があるため命名を変更すべき)
-	std::unordered_map<TimeKind, VECTOR> m_dir;					// 向いている方向
+	std::unordered_map<TimeKind, VECTOR> m_look_dir;			// 向いている方向
 
 	std::unordered_map<TimeKind, PlayerAnimKind> m_anim_kind;	// アニメーションの状態を判定
 
