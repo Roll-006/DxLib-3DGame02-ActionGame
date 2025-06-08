@@ -178,10 +178,8 @@ namespace math
 
 
 	#pragma region 修正
-	/// @brief -π～πの値がループするように繋ぎ合わせる
-	/// @param euler_angle オイラー角 
-	/// @return -π～πの間に補正されたオイラー角
-	VECTOR ConnectMinusPiToPi(const VECTOR& euler_angle);
+	/// @brief 角度が-π～πの値をループするように繋ぎ合わせる
+	float ConnectMinusPiToPi(const float angle);
 	#pragma endregion
 
 
@@ -237,7 +235,7 @@ namespace math
 	[[nodiscard]] float GetYaw(const VECTOR& v);
 
 	/// @brief ヨー角回転ベクトルを取得
-	[[nodiscard]] VECTOR GetYawRotateVector(const VECTOR& v);
+	[[nodiscard]] VECTOR GetYawRotVector(const VECTOR& v);
 
 	/// @brief XYZ軸を取得
 	/// @param dir 向きベクトル(この値をZ軸とする)

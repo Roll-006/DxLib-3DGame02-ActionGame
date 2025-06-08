@@ -168,17 +168,12 @@ Axes math::ConvertRotationMatrixToAxes(const MATRIX& mat)
 
 
 #pragma region 修正
-/// @brief -π～πの値がループするように繋ぎ合わせる
-/// @brief 例) [-π - 1 =  π]
-/// @brief 例) [ π + 1 = -π]
-/// @param euler_angle オイラー角 
-/// @return -π～πの間に補正されたオイラー角
-VECTOR math::ConnectMinusPiToPi(const VECTOR& euler_angle)
+float math::ConnectMinusPiToPi(const float angle)
 {
-    VECTOR angle = euler_angle;
-    if (angle.y <= -DX_PI_F) { angle.y += DX_TWO_PI_F; }
-    if (angle.y >=  DX_PI_F) { angle.y -= DX_TWO_PI_F; }
-    return angle;
+    float return_angle = angle;
+    if (return_angle <= -DX_PI_F) { return_angle += DX_TWO_PI_F; }
+    if (return_angle >=  DX_PI_F) { return_angle -= DX_TWO_PI_F; }
+    return return_angle;
 }
 #pragma endregion
 
@@ -293,7 +288,7 @@ float math::GetYaw(const VECTOR& v)
     return atan2f(v.x, v.z);
 }
 
-VECTOR math::GetYawRotateVector(const VECTOR& v)
+VECTOR math::GetYawRotVector(const VECTOR& v)
 {
     return VGet(0.0f, GetYaw(v), 0.0f);
 }

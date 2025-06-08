@@ -9,12 +9,14 @@ Camera::Camera() :
 	m_distance_to_target	(kNormalDistance),
 	m_is_invert_horizontal	(false),
 	m_is_invert_vertical	(false),
-	m_dir					(),
-	m_velocity				(v3d::GetZeroVector()),
-	m_angle					(v3d::GetZeroVector())
+	m_is_init_angle			(false),
+	m_dir					(v3d::GetZeroVector()),
+	m_velocity				(v3d::GetZeroVector())
 {
 	SetCameraNearFar(kNear, kFar);
 	SetupCamera_Perspective(kFOV * math::kDegreesToRadian);
+
+	m_angle[TimeKind::kCurrent] = m_angle[TimeKind::kNext] = v3d::GetZeroVector();
 }
 
 Camera::~Camera()
@@ -79,26 +81,50 @@ void Camera::Depart(const float max_distance, const float move_speed)
 #pragma region コマンド
 void Camera::MoveUp()
 {
+	// 視点リセット中は操作不可
+	if (m_is_init_angle) { return; }
+
 	m_dir.x = -1;
 	m_is_input.at(static_cast<int>(InputDir::kUp))    = true;
 }
 
 void Camera::MoveDown()
 {
+	// 視点リセット中は操作不可
+	if (m_is_init_angle) { return; }
+
 	m_dir.x =  1;
 	m_is_input.at(static_cast<int>(InputDir::kDown))  = true;
 }
 
 void Camera::MoveLeft()
 {
+	// 視点リセット中は操作不可
+	if (m_is_init_angle) { return; }
+
 	m_dir.y = -1;
 	m_is_input.at(static_cast<int>(InputDir::kLeft))  = true;
 }
 
 void Camera::MoveRight()
 {
+	// 視点リセット中は操作不可
+	if (m_is_init_angle) { return; }
+
 	m_dir.y =  1;
 	m_is_input.at(static_cast<int>(InputDir::kRight)) = true;
+}
+
+void Camera::InitAngle()
+{
+	if (!m_target_transform) { return; }
+
+	// プレイヤーのforwardを目標とする
+	const VECTOR forward = m_target_transform->GetForward(CoordinateKind::kWorld);
+	m_angle.at(TimeKind::kNext) = math::GetYawRotVector(forward);
+	m_angle.at(TimeKind::kNext).y = math::ConnectMinusPiToPi(m_angle.at(TimeKind::kNext).y);
+
+	m_is_init_angle = true;
 }
 #pragma endregion
 
@@ -137,10 +163,6 @@ void Camera::DetachTarget()
 	m_target_bone		= "";
 }
 
-void Camera::InitAngle()
-{
-
-}
 
 void Camera::Move()
 {
@@ -148,27 +170,30 @@ void Camera::Move()
 	m_dir	   = v3d::GetZeroVector();
 	m_velocity = v3d::GetZeroVector();
 
+	command->Execute(CommandKind::kInitAngle,		this);
 	command->Execute(CommandKind::kMoveUpCamera,	this);
 	command->Execute(CommandKind::kMoveDownCamera,	this);
 	command->Execute(CommandKind::kMoveLeftCamera,	this);
 	command->Execute(CommandKind::kMoveRightCamera, this);
-	command->Execute(CommandKind::kInitAngle,		this);
 
-	CalcDirFromPad();
-	CalcDirFromMouse();
+	if (!m_is_init_angle)
+	{
+		CalcDirFromPad();
+		CalcDirFromMouse();
+	}
 
 	// 操作反転処理
-	ApplyInvert();
+	//ApplyInvert();
 
 	CalcAngle();
 
 	// 角度制限
-	if (m_angle.x < kMinVerticalAngle * math::kDegreesToRadian) { m_angle.x = kMinVerticalAngle * math::kDegreesToRadian; }
-	if (m_angle.x > kMaxVerticalAngle * math::kDegreesToRadian) { m_angle.x = kMaxVerticalAngle * math::kDegreesToRadian; }
+	if (m_angle.at(TimeKind::kCurrent).x < kMinVerticalAngle * math::kDegreesToRadian) { m_angle.at(TimeKind::kCurrent).x = kMinVerticalAngle * math::kDegreesToRadian; }
+	if (m_angle.at(TimeKind::kCurrent).x > kMaxVerticalAngle * math::kDegreesToRadian) { m_angle.at(TimeKind::kCurrent).x = kMaxVerticalAngle * math::kDegreesToRadian; }
 
 	// 回転行列を生成
 	MATRIX m = MGetIdent();
-	CreateRotationZXYMatrix(&m, m_angle.x, m_angle.y, m_angle.z);
+	CreateRotationZXYMatrix(&m, m_angle.at(TimeKind::kCurrent).x, m_angle.at(TimeKind::kCurrent).y, m_angle.at(TimeKind::kCurrent).z);
 
 	// 結果を反映
 	m_transform->SetRot(CoordinateKind::kWorld, MGetRotElem(m));
@@ -192,13 +217,42 @@ void Camera::CalcAngle()
 		m_velocity	= m_dir * kMoveSpeedWithButton;
 	}
 
+	// 視点リセット
+	if (m_is_init_angle)
+	{
+		// プレイヤー後方を基準として角度を置き換える
+		VECTOR distance_v = m_angle.at(TimeKind::kNext) - m_angle.at(TimeKind::kCurrent);
+		distance_v.y = math::ConnectMinusPiToPi(distance_v.y);
+		VECTOR dir = v3d::GetNormalizedVector(distance_v);
+
+		// 右・左回りから最短経路を取得
+		float distance = VSize(distance_v);
+		float shortest = min(distance, DX_TWO_PI_F - distance);
+		if (distance != shortest)
+		{
+			dir.y *= -1;
+		}
+
+		// 目的地に遠いほど速く移動させる
+		m_angle.at(TimeKind::kCurrent) += dir * distance * kInitAngleSpeed * FPS::GetDeltaTime();
+
+		// 終了判定
+		if (VSize(m_angle.at(TimeKind::kNext) - m_angle.at(TimeKind::kCurrent)) < kInitAngleEndThreshold)
+		{
+			m_angle.at(TimeKind::kCurrent) = m_angle.at(TimeKind::kNext);
+			m_is_init_angle = false;
+		}
+	}
+
 	m_velocity *= FPS::GetDeltaTime();
 
 	// 角度を取得
-	if (m_is_input.at(static_cast<int>(InputDir::kUp)))		{ m_angle.x += m_velocity.x; }
-	if (m_is_input.at(static_cast<int>(InputDir::kDown)))	{ m_angle.x += m_velocity.x; }
-	if (m_is_input.at(static_cast<int>(InputDir::kLeft)))	{ m_angle.y += m_velocity.y; }
-	if (m_is_input.at(static_cast<int>(InputDir::kRight)))	{ m_angle.y += m_velocity.y; }
+	if (m_is_input.at(static_cast<int>(InputDir::kUp)))		{ m_angle.at(TimeKind::kCurrent).x += m_velocity.x; }
+	if (m_is_input.at(static_cast<int>(InputDir::kDown)))	{ m_angle.at(TimeKind::kCurrent).x += m_velocity.x; }
+	if (m_is_input.at(static_cast<int>(InputDir::kLeft)))	{ m_angle.at(TimeKind::kCurrent).y += m_velocity.y; }
+	if (m_is_input.at(static_cast<int>(InputDir::kRight)))	{ m_angle.at(TimeKind::kCurrent).y += m_velocity.y; }
+
+	m_angle.at(TimeKind::kCurrent).y = math::ConnectMinusPiToPi(m_angle.at(TimeKind::kCurrent).y);
 }
 
 VECTOR Camera::GetLookPos()

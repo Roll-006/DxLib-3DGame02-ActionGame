@@ -23,6 +23,7 @@ public:
 
 	#pragma region コマンド
 	void Run();
+	void Squat();
 	void MoveForward();
 	void MoveBackward();
 	void MoveLeft();
@@ -59,10 +60,19 @@ private:
 	void ChangeAnimState() override;
 
 private:
-	static constexpr float kSlowWalkSpeed			= 2.0f;
-	static constexpr float kWalkSpeed				= 4.0f;
-	static constexpr float kRunSpeed				= 10.0f;
-	static constexpr float kAcceleration			= 4.0f;		// 加速度(減速度も共通)
+	enum class MoveDir
+	{
+		kForward,
+		kBackward,
+		kLeft,
+		kRight,
+	};
+
+private:
+	static constexpr float kSlowWalkSpeed					= 2.0f;
+	static constexpr float kWalkSpeed						= 4.0f;
+	static constexpr float kRunSpeed						= 10.0f;
+	static constexpr float kAcceleration					= 4.0f;		// 加速度(減速度も共通)
 
 	static constexpr float kMoveDirCorrectionSpeed			= 0.065f;	// 移動方向の補正速度
 	static constexpr float kLookDirCorrectionAngle			= 0.1f;		// 見る方向を回転させる角度
@@ -71,23 +81,26 @@ private:
 	static constexpr float kConfirmLookDirThreshold			= 0.25f;	// 目的のdirに到達したと判定する閾値
 	static constexpr float kConfirmLookDirThresholdForADS	= 0.55f;	// スコープを覗く際の、目的のdirに到達したと判定する閾値
 
-	static constexpr int   kWalkStickSlopeLimit		= 15000;	// 歩き状態とするスティック傾きの上限
+	static constexpr int   kWalkStickSlopeLimit				= 15000;	// 歩き状態とするスティック傾きの上限
 
-	static constexpr float kColliderCapsuleRadius	= 34.0f;
-	static constexpr float kColliderCapsuleLength	= 178.0f;
-	static constexpr float kLandingTriggerRadius	= 23.0f;
+	static constexpr float kColliderCapsuleRadius			= 34.0f;
+	static constexpr float kColliderCapsuleLength			= 178.0f;
+	static constexpr float kLandingTriggerRadius			= 23.0f;
 
-	static constexpr float kAimDownSightsSpeed		= 800.0f;	// スコープをのぞき込む速度
+	static constexpr float kAimDownSightsSpeed				= 800.0f;	// スコープをのぞき込む速度
 
 	std::shared_ptr<Camera> m_camera;
 
-	std::unordered_map<TimeKind, VECTOR> m_move_dir;			// 移動方向(TODO : 長さが1未満である時がある場合があるため命名を変更すべき)
-	std::unordered_map<TimeKind, VECTOR> m_look_dir;			// 向いている方向
-
-	std::unordered_map<TimeKind, PlayerAnimKind> m_anim_kind;	// アニメーションの状態を判定
+	std::unordered_map<TimeKind, VECTOR> m_move_dir;					// 移動方向(TODO : 長さが1未満である時がある場合があるため命名を変更すべき)
+	std::unordered_map<TimeKind, VECTOR> m_look_dir;					// 向いている方向
+	
+	std::unordered_map<TimeKind, PlayerAnimKind> m_anim_kind;			// アニメーションの状態を判定
 
 	float m_move_speed;
 	bool  m_is_move;
 	bool  m_is_run;
+	bool  m_is_squat;
 	bool  m_is_ready_gun;	// 銃を構える
+
+	std::array<bool, 4> m_is_input_move;
 };

@@ -88,6 +88,8 @@ private:
 
 	static constexpr float  kMaxVerticalAngle		= 89.0f;
 	static constexpr float  kMinVerticalAngle		= -70.0f;
+	static constexpr float  kInitAngleEndThreshold	= 0.01;
+	static constexpr float  kInitAngleSpeed			= 10.0f;
 
 	static constexpr float  kMoveSpeedWithButton	= 2.0f;
 	static constexpr float  kMoveSpeedWithStick		= 2.5f;
@@ -103,9 +105,11 @@ private:
 	float  m_distance_to_target;
 	bool   m_is_invert_horizontal;		// ‘€ì‚É¶‰E”½“]‚ğs‚¤‚©‚ğ”»’è
 	bool   m_is_invert_vertical;		// ‘€ì‚Éã‰º”½“]‚ğs‚¤‚©‚ğ”»’è
-	
+	bool   m_is_init_angle;
+
 	VECTOR m_dir;
 	VECTOR m_velocity;
-	VECTOR m_angle;
+
+	std::unordered_map<TimeKind, VECTOR> m_angle;
 	std::array<bool, 4> m_is_input;
 };
