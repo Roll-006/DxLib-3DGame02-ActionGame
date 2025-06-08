@@ -177,6 +177,14 @@ namespace math
 	#pragma endregion
 
 
+	#pragma region 修正
+	/// @brief -π～πの値がループするように繋ぎ合わせる
+	/// @param euler_angle オイラー角 
+	/// @return -π～πの間に補正されたオイラー角
+	VECTOR ConnectMinusPiToPi(const VECTOR& euler_angle);
+	#pragma endregion
+
+
 	#pragma region 三平方の定理
 	/// @brief 直角二等辺三角形の底辺(又は高さ)の長さを取得
 	/// @param hypotenuse_length 斜辺の長さ

@@ -132,7 +132,9 @@ void Camera::AttachTarget(const std::string& obj_name, const std::shared_ptr<Mod
 
 void Camera::DetachTarget()
 {
-	m_target_transform = nullptr;
+	m_target_transform	= nullptr;
+	m_target_modeler	= nullptr;
+	m_target_bone		= "";
 }
 
 void Camera::InitAngle()

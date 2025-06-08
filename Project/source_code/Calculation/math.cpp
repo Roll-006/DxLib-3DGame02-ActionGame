@@ -167,6 +167,22 @@ Axes math::ConvertRotationMatrixToAxes(const MATRIX& mat)
 #pragma endregion
 
 
+#pragma region 修正
+/// @brief -π～πの値がループするように繋ぎ合わせる
+/// @brief 例) [-π - 1 =  π]
+/// @brief 例) [ π + 1 = -π]
+/// @param euler_angle オイラー角 
+/// @return -π～πの間に補正されたオイラー角
+VECTOR math::ConnectMinusPiToPi(const VECTOR& euler_angle)
+{
+    VECTOR angle = euler_angle;
+    if (angle.y <= -DX_PI_F) { angle.y += DX_TWO_PI_F; }
+    if (angle.y >=  DX_PI_F) { angle.y -= DX_TWO_PI_F; }
+    return angle;
+}
+#pragma endregion
+
+
 #pragma region 三平方の定理
 float math::GetAdjacentLengthIsoscelesRightTriangle(const float hypotenuse_length)
 {

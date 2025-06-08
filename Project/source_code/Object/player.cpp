@@ -314,12 +314,14 @@ void Player::CalcLookDir()
 		m_look_dir.at(TimeKind::kNext) = m_move_dir.at(TimeKind::kCurrent);
 	}
 
-	// 歩き状態であれば常にカメラと同じ向きを向く
+	// 歩き状態、もしくは銃を構えていれば常にカメラと同じ向きを向く
 	if (!m_is_run || m_is_ready_gun)
 	{
+		// カメラのforwardからyベクトル以外を抽出
 		VECTOR forward = m_camera->GetTransform()->GetForward(CoordinateKind::kWorld);
 		forward.y = 0.0f;
-		m_look_dir.at(TimeKind::kNext) = v3d::GetNormalizedVector(forward);
+		forward = v3d::GetNormalizedVector(forward);
+		m_look_dir.at(TimeKind::kNext) = forward;
 	}
 
 	// 向き補正
@@ -327,29 +329,37 @@ void Player::CalcLookDir()
 	{
 		m_look_dir.at(TimeKind::kNext) = v3d::GetNormalizedVector(m_look_dir.at(TimeKind::kNext));
 
-		VECTOR distance = m_look_dir.at(TimeKind::kNext) - m_look_dir.at(TimeKind::kCurrent);
+		// ヨー角回転を取得し、-π～πで値を管理する
+		const VECTOR current_yaw_v	= math::GetYawRotateVector(m_look_dir.at(TimeKind::kCurrent));
+		const VECTOR next_yaw_v		= math::GetYawRotateVector(m_look_dir.at(TimeKind::kNext));
+		VECTOR distance = next_yaw_v - current_yaw_v;
+		distance = math::ConnectMinusPiToPi(distance);
+
+		// スコープを覗く場合は速度を上昇させる
+		float		angle	  = m_is_ready_gun ? -kLookDirCorrectionAngleForADS : -kLookDirCorrectionAngle;
+		const float threshold = m_is_ready_gun ? kConfirmLookDirThresholdForADS : kConfirmLookDirThreshold;
+
+		// カメラを基準にして右側であった場合は反転
+		if (distance.y > 0) { angle *= -1; }
 
 		// ベクトルが間反対に位置している場合は向きがロックされるため回転を与える
-		if (VSize(distance) == 2.0f)
+		// FIXME : 手前を向く瞬間のみ乱数が適応されていない可能性あり
+		if (std::abs(distance.y) == DX_PI_F)
 		{
 			// 回転方向は乱数生成
 			const int rand = GetRand(1);
 			const int dir  = 2 * rand - 1;
-			m_look_dir.at(TimeKind::kCurrent) = v3d::GetNormalizedVector(m_look_dir.at(TimeKind::kCurrent) + axis::GetWorldXAxis() * dir);
+			angle *= dir;
 		}
 
-		m_look_dir.at(TimeKind::kCurrent) += v3d::GetNormalizedVector(distance) * kLookDirCorrectionSpeed;
-		m_look_dir.at(TimeKind::kCurrent) = v3d::GetNormalizedVector(m_look_dir.at(TimeKind::kCurrent));
-		if (VSize(m_look_dir.at(TimeKind::kNext) - m_look_dir.at(TimeKind::kCurrent)) < kConfirmLookDirThreshold)
+		// 回転を適用
+		const Quaternion quat = quat::MakeQuaternion(axis::GetWorldYAxis(), angle);
+		m_look_dir.at(TimeKind::kCurrent) = math::GetRotatedPos(m_look_dir.at(TimeKind::kCurrent), quat);
+		if (VSize(m_look_dir.at(TimeKind::kNext) - m_look_dir.at(TimeKind::kCurrent)) < threshold)
 		{
 			m_look_dir.at(TimeKind::kCurrent) = m_look_dir.at(TimeKind::kNext);
 		}
 	}
-
-	//auto dir1 = m_look_dir.at(TimeKind::kCurrent);
-	//auto dir2 = m_look_dir.at(TimeKind::kNext);
-	//DrawFormatString(0,  0, 0xffffff, "%f, %f, %f", dir1.x, dir1.y, dir1.z);
-	//DrawFormatString(0, 20, 0xffffff, "%f, %f, %f", dir2.x, dir2.y, dir2.z);
 }
 
 VECTOR Player::GetVelocityFromPad(VECTOR& velocity)
