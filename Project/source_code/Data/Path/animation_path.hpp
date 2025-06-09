@@ -6,6 +6,7 @@ static struct AnimationPath
 	const std::string IDLE_01						= "data/animation/idle_01.mv1";
 	const std::string IDLE_02						= "data/animation/idle_02.mv1";
 	const std::string IDLE_SQUAT_01					= "data/animation/idle_crouching_01.mv1";
+	const std::string IDLE_SQUAT_SHOOT_01			= "data/animation/idle_crouching_shoot_01.mv1";
 	const std::string IDLE_SHOOT_01					= "data/animation/idle_shoot_01.mv1";
 
 	const std::string WALK_FORWARD_01				= "data/animation/walk_forward_01.mv1";

@@ -5,6 +5,7 @@ Player::Player(std::shared_ptr<Camera> camera) :
 	CharaBase		(ObjName.PLAYER, ObjTag.PLAYER, ModelPath.CHARA_01, MassKind::kMedium),
 	m_camera		(camera),
 	m_move_speed	(0.0f),
+	m_capsule_length(kCapsuleLengthForStand),
 	m_is_move		(false),
 	m_is_run		(false),
 	m_is_squat		(false),
@@ -17,9 +18,9 @@ Player::Player(std::shared_ptr<Camera> camera) :
 	m_transform->SetPos(CoordinateKind::kWorld, VGet(0, 0, 0));
 
 	// コライダーを設定
-	const auto begin_pos = m_transform->GetPos(CoordinateKind::kWorld) + VGet(0.0f, kColliderCapsuleRadius, 0.0f);
-	const auto segment_length = kColliderCapsuleLength - kColliderCapsuleRadius * 2.0f;
-	MakeCollider(std::make_shared<Capsule>(begin_pos, m_transform->GetUp(CoordinateKind::kWorld), segment_length, kColliderCapsuleRadius));
+	const auto begin_pos = m_transform->GetPos(CoordinateKind::kWorld) + VGet(0.0f, kCapsuleRadius, 0.0f);
+	const auto segment_length = m_capsule_length - kCapsuleRadius * 2.0f;
+	MakeCollider(std::make_shared<Capsule>(begin_pos, m_transform->GetUp(CoordinateKind::kWorld), segment_length, kCapsuleRadius));
 
 	// トリガーを設定
 	const auto pos = begin_pos - VGet(0.0f, 18.0f, 0.0f);
@@ -210,11 +211,8 @@ void Player::ShrinkCapsule()
 	{
 		m_is_run = false;
 
-		const auto begin_pos = m_transform->GetPos(CoordinateKind::kWorld) + VGet(0.0f, kColliderCapsuleRadius, 0.0f);
-		const auto segment_length = kColliderCapsuleLength - kColliderCapsuleRadius * 2.0f;
-		MakeCollider(std::make_shared<Capsule>(begin_pos, m_transform->GetUp(CoordinateKind::kWorld), segment_length, kColliderCapsuleRadius));
-
-		dynamic_cast<Capsule*>(m_collider.get()) = std::make_shared<Capsule>()
+		
+		//dynamic_cast<Capsule*>(m_collider.get())->SetLength();
 	}
 
 }
@@ -224,6 +222,7 @@ void Player::LoadAnim()
 	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdle01),					AnimPath.IDLE_01,						0, AnimTag.NONE, 20.0f, true);
 	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdle02),					AnimPath.IDLE_02,						0, AnimTag.NONE, 20.0f, true);
 	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdleSquat01),				AnimPath.IDLE_SQUAT_01,					0, AnimTag.NONE, 20.0f, true);
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdleSquatShoot01),			AnimPath.IDLE_SQUAT_SHOOT_01,			0, AnimTag.NONE, 20.0f, true);
 	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdleShoot01),				AnimPath.IDLE_SHOOT_01,					0, AnimTag.NONE, 20.0f, true);
 
 	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkSquatForward01),		AnimPath.WALK_SQUAT_FORWARD_01,			0, AnimTag.WALK, 20.0f, true);
@@ -297,6 +296,50 @@ void Player::ChangeAnimState()
 		if (m_is_input_move.at(static_cast<int>(MoveDir::kBackward)) && m_is_input_move.at(static_cast<int>(MoveDir::kRight)))
 		{
 			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkShootBackwardRight01;
+		}
+	}
+
+	// しゃがむ
+	if (m_is_squat)
+	{
+		m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kIdleSquat01;
+
+		if (m_is_ready_gun)
+		{
+			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kIdleSquatShoot01;
+		}
+
+		if (m_is_input_move.at(static_cast<int>(MoveDir::kForward)))
+		{
+			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkSquatForward01;
+		}
+		if (m_is_input_move.at(static_cast<int>(MoveDir::kBackward)))
+		{
+			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkSquatBackward01;
+		}
+		if (m_is_input_move.at(static_cast<int>(MoveDir::kLeft)))
+		{
+			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkSquatLeft01;
+		}
+		if (m_is_input_move.at(static_cast<int>(MoveDir::kRight)))
+		{
+			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkSquatRight01;
+		}
+		if (m_is_input_move.at(static_cast<int>(MoveDir::kForward)) && m_is_input_move.at(static_cast<int>(MoveDir::kLeft)))
+		{
+			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkSquatForwardLeft01;
+		}
+		if (m_is_input_move.at(static_cast<int>(MoveDir::kForward)) && m_is_input_move.at(static_cast<int>(MoveDir::kRight)))
+		{
+			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkSquatForwardRight01;
+		}
+		if (m_is_input_move.at(static_cast<int>(MoveDir::kBackward)) && m_is_input_move.at(static_cast<int>(MoveDir::kLeft)))
+		{
+			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkSquatBackwardLeft01;
+		}
+		if (m_is_input_move.at(static_cast<int>(MoveDir::kBackward)) && m_is_input_move.at(static_cast<int>(MoveDir::kRight)))
+		{
+			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkSquatBackwardRight01;
 		}
 	}
 
@@ -446,7 +489,6 @@ void Player::CalcLookDir()
 		// ヨー角回転を取得し、-π～πで値を管理する
 		const VECTOR current_yaw	= math::GetYawRotVector(m_look_dir.at(TimeKind::kCurrent));
 		const VECTOR next_yaw		= math::GetYawRotVector(m_look_dir.at(TimeKind::kNext));
-
 		VECTOR distance = next_yaw - current_yaw;
 		distance.y = math::ConnectMinusPiToPi(distance.y);
 
@@ -457,7 +499,6 @@ void Player::CalcLookDir()
 		// カメラを基準にして右側であった場合は反転
 		if (distance.y > 0) { angle *= -1; }
 
-		// ベクトルが間反対に位置している場合は向きがロックされるため回転を与える
 		// FIXME : 手前を向く瞬間のみ乱数が適応されていない可能性あり
 		if (std::abs(distance.y) == DX_PI_F)
 		{

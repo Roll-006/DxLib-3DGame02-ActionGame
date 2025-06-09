@@ -14,6 +14,7 @@ public:
 	void Move(const VECTOR& velocity) override;
 
 	void SetPos(const VECTOR& begin_pos);
+	void SetLength(const float length);
 
 	/// @brief ’¼üã‚Ì“_‚ğæ“¾
 	/// @param length n“_‚©‚ç‚Ì’·‚³

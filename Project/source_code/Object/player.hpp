@@ -85,8 +85,9 @@ private:
 
 	static constexpr int   kWalkStickSlopeLimit				= 15000;	// 歩き状態とするスティック傾きの上限
 
-	static constexpr float kColliderCapsuleRadius			= 34.0f;
-	static constexpr float kColliderCapsuleLength			= 178.0f;
+	static constexpr float kCapsuleRadius					= 34.0f;
+	static constexpr float kCapsuleLengthForStand			= 178.0f;
+	static constexpr float kCapsuleLengthForSquat			= 90.0f;
 	static constexpr float kLandingTriggerRadius			= 23.0f;
 
 	static constexpr float kAimDownSightsSpeed				= 800.0f;	// スコープをのぞき込む速度
@@ -99,10 +100,12 @@ private:
 	std::unordered_map<TimeKind, PlayerAnimKind> m_anim_kind;			// アニメーションの状態を判定
 
 	float m_move_speed;
+	float m_capsule_length;		// 押し戻し用のカプセルの長さ
+
 	bool  m_is_move;
 	bool  m_is_run;
 	bool  m_is_squat;
-	bool  m_is_ready_gun;	// 銃を構える
+	bool  m_is_ready_gun;		// 銃を構える
 
 	std::array<bool, 4> m_is_input_move;
 };

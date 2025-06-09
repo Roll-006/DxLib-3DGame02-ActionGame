@@ -52,3 +52,9 @@ void Segment::SetPos(const VECTOR& begin_pos)
 	m_begin_pos = begin_pos;
 	m_end_pos   = m_begin_pos + m_dir * m_length;
 }
+
+void Segment::SetLength(const float length)
+{
+	m_length  = length;
+	m_end_pos = m_begin_pos + m_dir * m_length;
+}
