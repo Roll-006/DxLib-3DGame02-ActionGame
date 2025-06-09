@@ -48,19 +48,19 @@ Triangle::~Triangle()
 	// èàóùÇ»Çµ
 }
 
-void Triangle::Draw(const bool is_draw_normal_vector, const bool is_draw_frame, const int alpha_blend_num, const unsigned int frame_color) const
+void Triangle::Draw(const bool is_draw_frame, const int alpha_blend_num, const unsigned int frame_color) const
 {
-	if (is_draw_normal_vector)
-	{
-		const float length = math::GetAverageValue<float>(m_edges.at(0).GetLength(), m_edges.at(1).GetLength(), m_edges.at(2).GetLength());
-		DrawLine3D(m_centroid, m_centroid + m_normal_vector * length, 0xffffff);
-	}
+	//if (is_draw_normal_vector)
+	//{
+	//	const float length = math::GetAverageValue<float>(m_edges.at(0).GetLength(), m_edges.at(1).GetLength(), m_edges.at(2).GetLength());
+	//	DrawLine3D(m_centroid, m_centroid + m_normal_vector * length, 0xffffff);
+	//}
 
 	if (is_draw_frame)
 	{
 		for (const auto& edge : m_edges)
 		{
-			edge.Draw(frame_color);
+			edge.Draw(false, 0, frame_color);
 		}
 	}
 

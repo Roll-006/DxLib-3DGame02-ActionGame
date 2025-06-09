@@ -9,8 +9,10 @@ public:
 	~Line() override;
 
 	/// @brief 描画
-	/// @param draw_length 描画する際の長さ
-	void Draw(const int draw_length, const unsigned int color);
+	/// @param is_draw_frame フレームを描画させるかどうか
+	/// @param alpha_blend_num 透過値 (0～255 : 0で完全透過)
+	/// @param frame_color フレーム色
+	void Draw(const bool is_draw_frame, const int alpha_blend_num, const unsigned int frame_color) const override;
 
 	void Move(const VECTOR& velocity) override;
 
@@ -24,6 +26,8 @@ public:
 	[[nodiscard]] VECTOR GetDir() const	{ return m_dir; }
 
 private:
+	static constexpr int kDrawLength = 10000;
+
 	VECTOR m_pos;
 	VECTOR m_dir;
 };

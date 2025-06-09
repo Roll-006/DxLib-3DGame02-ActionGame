@@ -6,6 +6,7 @@ Player::Player(std::shared_ptr<Camera> camera) :
 	m_camera		(camera),
 	m_move_speed	(0.0f),
 	m_capsule_length(kCapsuleLengthForStand),
+	m_capsule_collider(nullptr),
 	m_is_move		(false),
 	m_is_run		(false),
 	m_is_squat		(false),
@@ -20,7 +21,8 @@ Player::Player(std::shared_ptr<Camera> camera) :
 	// コライダーを設定
 	const auto begin_pos = m_transform->GetPos(CoordinateKind::kWorld) + VGet(0.0f, kCapsuleRadius, 0.0f);
 	const auto segment_length = m_capsule_length - kCapsuleRadius * 2.0f;
-	MakeCollider(std::make_shared<Capsule>(begin_pos, m_transform->GetUp(CoordinateKind::kWorld), segment_length, kCapsuleRadius));
+	m_capsule_collider = std::make_shared<Capsule>(begin_pos, m_transform->GetUp(CoordinateKind::kWorld), segment_length, kCapsuleRadius);
+	MakeCollider(m_capsule_collider);
 
 	// トリガーを設定
 	const auto pos = begin_pos - VGet(0.0f, 18.0f, 0.0f);
@@ -79,17 +81,19 @@ void Player::Draw() const
 	m_modeler->Draw();
 	m_current_attach_gun->Draw();
 
-	dynamic_cast<Capsule*>(m_collider.get())->Draw(true, 0, 0xffffff);
-	dynamic_cast<Sphere*> (m_trigger.at(TriggerKind::kLanding).get())->Draw(true, 0, 0xffffff);
+	m_collider->Draw(true, 0, 0xffffff);
+	for (auto trigger : m_trigger)
+	{
+		trigger.second->Draw(true, 0, 0xffffff);
+	}
 
-	auto pos = m_transform->GetPos (CoordinateKind::kWorld);
+	auto pos  = m_transform->GetPos (CoordinateKind::kWorld);
 	auto axes = m_transform->GetAxes(CoordinateKind::kWorld);
 	DrawLine3D(pos, pos + axes.x_axis * 100, 0xff0000);
 	DrawLine3D(pos, pos + axes.y_axis * 100, 0x00ff22);
 	DrawLine3D(pos, pos + axes.z_axis * 100, 0x0077ff);
 
-	DrawFormatString(0,  0, 0xffffff, "squat : %d", m_is_squat);
-	DrawFormatString(0, 20, 0xffffff, "run   : %d", m_is_run);
+	DrawFormatString(0, 0, 0xffffff, "%f", m_capsule_length);
 }
 
 void Player::OnCollide(const PhysicalObjBase& check_hit_obj)
@@ -128,6 +132,13 @@ void Player::Run()
 		}
 		break;
 	}
+
+	// ダッシュ状態解除
+	if (m_is_run)
+	{
+		m_is_squat = false;
+		command->InitTriggerCount(CommandHandler::MoveKind::kSquat);
+	}
 }
 
 void Player::Squat()
@@ -153,6 +164,13 @@ void Player::Squat()
 			m_is_squat = true;
 		}
 		break;
+	}
+
+	// しゃがみ状態解除
+	if (m_is_squat)
+	{
+		m_is_run = false;
+		command->InitTriggerCount(CommandHandler::MoveKind::kRun);
 	}
 }
 
@@ -194,13 +212,13 @@ void Player::ReadyGun()
 {
 	m_is_ready_gun	= true;
 
-	// ダッシュ状態を解除
-	m_is_run		= false;
-	CommandHandler::GetInstance()->InitTriggerCount(CommandHandler::MoveKind::kRun);
-
 	// 拡大率から実際の距離を取得
 	float max_distance = Camera::kNormalDistance / m_current_attach_gun->GetScopeScale();
 	m_camera->Approach(max_distance, kAimDownSightsSpeed * FPS::GetDeltaTime());
+
+	// ダッシュ状態を解除
+	m_is_run = false;
+	CommandHandler::GetInstance()->InitTriggerCount(CommandHandler::MoveKind::kRun);
 }
 #pragma endregion
 
@@ -209,12 +227,28 @@ void Player::ShrinkCapsule()
 {
 	if (m_is_squat)
 	{
-		m_is_run = false;
+		// カプセルを縮める
+		m_capsule_length -= kCapsuleLengthShrinkSpeed * FPS::GetDeltaTime();
+		if (m_capsule_length < kCapsuleLengthForSquat)
+		{
+			m_capsule_length = kCapsuleLengthForSquat;
+		}
 
-		
-		//dynamic_cast<Capsule*>(m_collider.get())->SetLength();
+		const auto segment_length = m_capsule_length - kCapsuleRadius * 2.0f;
+		m_capsule_collider->SetLength(segment_length);
 	}
+	else
+	{
+		// カプセルのサイズを戻す
+		m_capsule_length += kCapsuleLengthShrinkSpeed * FPS::GetDeltaTime();
+		if (m_capsule_length > kCapsuleLengthForStand)
+		{
+			m_capsule_length = kCapsuleLengthForStand;
+		}
 
+		const auto segment_length = m_capsule_length - kCapsuleRadius * 2.0f;
+		m_capsule_collider->SetLength(segment_length);
+	}
 }
 
 void Player::LoadAnim()
@@ -419,7 +453,7 @@ void Player::CalcMoveSpeed(const float input_slope)
 		return;
 	}
 
-	// 歩き処理
+	// ゆっくり歩く処理
 	if (input_slope <= kWalkStickSlopeLimit - InputChecker::kStickDeadZone)
 	{
 		// 速い状態から歩き状態に移行した場合、急速に減速させる
@@ -430,7 +464,7 @@ void Player::CalcMoveSpeed(const float input_slope)
 		return;
 	}
 
-	// ジョギング処理
+	// 歩き処理
 	if (!m_is_run)
 	{
 		Acceleration(kWalkSpeed);
@@ -498,15 +532,6 @@ void Player::CalcLookDir()
 
 		// カメラを基準にして右側であった場合は反転
 		if (distance.y > 0) { angle *= -1; }
-
-		// FIXME : 手前を向く瞬間のみ乱数が適応されていない可能性あり
-		if (std::abs(distance.y) == DX_PI_F)
-		{
-			// 回転方向は乱数生成
-			const int rand = GetRand(1);
-			const int dir  = 2 * rand - 1;
-			angle *= dir;
-		}
 
 		// 回転を適用
 		const Quaternion quat = quat::MakeQuaternion(axis::GetWorldYAxis(), angle);

@@ -21,10 +21,9 @@ Plane::~Plane()
 	// èàóùÇ»Çµ
 }
 
-void Plane::Draw(const bool is_draw_normal_vector, const bool is_draw_frame, 
-	const float draw_edge_length, const int alpha_blend_num, const unsigned int frame_color) const
+void Plane::Draw(const bool is_draw_frame, const int alpha_blend_num, const unsigned int frame_color) const
 {
-	MakeDrawSquare(draw_edge_length).Draw(is_draw_normal_vector, is_draw_frame, alpha_blend_num, frame_color);
+	MakeDrawSquare(kDrawDdgeLength).Draw(is_draw_frame, alpha_blend_num, frame_color);
 }
 
 Square&& Plane::MakeDrawSquare(const float edge_length) const

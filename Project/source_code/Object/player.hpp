@@ -71,6 +71,7 @@ private:
 	};
 
 private:
+	static constexpr float kSquatWalkSpeed					= 0.5f;
 	static constexpr float kSlowWalkSpeed					= 2.0f;
 	static constexpr float kWalkSpeed						= 4.0f;
 	static constexpr float kRunSpeed						= 10.0f;
@@ -87,7 +88,8 @@ private:
 
 	static constexpr float kCapsuleRadius					= 34.0f;
 	static constexpr float kCapsuleLengthForStand			= 178.0f;
-	static constexpr float kCapsuleLengthForSquat			= 90.0f;
+	static constexpr float kCapsuleLengthForSquat			= 130.0f;
+	static constexpr float kCapsuleLengthShrinkSpeed		= 130.0f;
 	static constexpr float kLandingTriggerRadius			= 23.0f;
 
 	static constexpr float kAimDownSightsSpeed				= 800.0f;	// スコープをのぞき込む速度
@@ -100,6 +102,8 @@ private:
 	std::unordered_map<TimeKind, PlayerAnimKind> m_anim_kind;			// アニメーションの状態を判定
 
 	float m_move_speed;
+
+	std::shared_ptr<Capsule> m_capsule_collider;
 	float m_capsule_length;		// 押し戻し用のカプセルの長さ
 
 	bool  m_is_move;

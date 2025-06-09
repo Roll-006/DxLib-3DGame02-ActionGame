@@ -12,12 +12,10 @@ public:
 	~Plane() override;
 
 	/// @brief 描画
-	/// @param is_draw_normal_vector 法線ベクトルを描画するかどうか
-	/// @param is_draw_frame 枠を描画させるかどうか
-	/// @param draw_edge_length 描画時の直線の長さ(実際には無限に続く)
+	/// @param is_draw_frame フレームを描画させるかどうか
 	/// @param alpha_blend_num 透過値 (0～255 : 0で完全透過)
-	void Draw(const bool is_draw_normal_vector, const bool is_draw_frame, 
-		const float draw_edge_length, const int alpha_blend_num, const unsigned int frame_color) const;
+	/// @param frame_color フレーム色
+	void Draw(const bool is_draw_frame, const int alpha_blend_num, const unsigned int frame_color) const override;
 
 	/// @brief 描画用の四角形を作成
 	[[nodiscard]] Square&& MakeDrawSquare(const float edge_length) const;
@@ -30,6 +28,8 @@ public:
 	VECTOR GetNormalVector() const	{ return m_normal_vector; }
 
 private:
+	static constexpr float kDrawDdgeLength = 300.0f;
+
 	VECTOR  m_pos;				// 平面上の基準座標
 	VECTOR  m_normal_vector;
 };

@@ -24,30 +24,30 @@ Square::~Square()
 
 }
 
-void Square::Draw(const bool is_draw_normal_vector, const bool is_draw_frame, const int alpha_blend_num, const unsigned int frame_color)
+void Square::Draw(const bool is_draw_frame, const int alpha_blend_num, const unsigned int frame_color) const
 {
-	if (is_draw_normal_vector)
-	{
-		const float length = math::GetAverageValue<float>(
-			m_triangles.at(0).GetEdge(0).GetLength(), 
-			m_triangles.at(0).GetEdge(1).GetLength(),
-			m_triangles.at(1).GetEdge(1).GetLength(),
-			m_triangles.at(1).GetEdge(2).GetLength());
+	//if (is_draw_normal_vector)
+	//{
+	//	const float length = math::GetAverageValue<float>(
+	//		m_triangles.at(0).GetEdge(0).GetLength(), 
+	//		m_triangles.at(0).GetEdge(1).GetLength(),
+	//		m_triangles.at(1).GetEdge(1).GetLength(),
+	//		m_triangles.at(1).GetEdge(2).GetLength());
 
-		DrawLine3D(m_centroid, m_centroid + GetNormalVector() * length, 0xffffff);
-	}
+	//	DrawLine3D(m_centroid, m_centroid + GetNormalVector() * length, 0xffffff);
+	//}
 
 	if (is_draw_frame)
 	{
-		m_triangles.at(0).GetEdge(0).Draw(frame_color);
-		m_triangles.at(0).GetEdge(1).Draw(frame_color);
-		m_triangles.at(1).GetEdge(1).Draw(frame_color);
-		m_triangles.at(1).GetEdge(2).Draw(frame_color);
+		m_triangles.at(0).GetEdge(0).Draw(false, 0, frame_color);
+		m_triangles.at(0).GetEdge(1).Draw(false, 0, frame_color);
+		m_triangles.at(1).GetEdge(1).Draw(false, 0, frame_color);
+		m_triangles.at(1).GetEdge(2).Draw(false, 0, frame_color);
 	}
 
 	for (const auto& triangle : m_triangles)
 	{
-		triangle.Draw(false, false, alpha_blend_num, 0xffffff);
+		triangle.Draw(false, alpha_blend_num, 0xffffff);
 	}
 }
 

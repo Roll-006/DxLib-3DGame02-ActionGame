@@ -36,9 +36,9 @@ Segment::~Segment()
 	// ˆ—‚È‚µ
 }
 
-void Segment::Draw(const unsigned int color) const
+void Segment::Draw(const bool is_draw_frame, const int alpha_blend_num, const unsigned int frame_color) const
 {
-	DrawLine3D(m_begin_pos, m_end_pos, color);
+	DrawLine3D(m_begin_pos, m_end_pos, frame_color);
 }
 
 void Segment::Move(const VECTOR& velocity)

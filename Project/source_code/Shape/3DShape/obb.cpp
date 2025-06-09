@@ -24,18 +24,18 @@ OBB::~OBB()
 	// èàóùÇ»Çµ
 }
 
-void OBB::Draw(const bool is_draw_normal_vector, const bool is_draw_frame, const int alpha_blend_num, const unsigned int frame_color) const
+void OBB::Draw(const bool is_draw_frame, const int alpha_blend_num, const unsigned int frame_color) const
 {
 	for (auto square : m_box.squares)
 	{
-		square.Draw(is_draw_normal_vector, false, alpha_blend_num, 0xffffff);
+		square.Draw(false, alpha_blend_num, 0xffffff);
 	}
 
 	if (is_draw_frame)
 	{
 		for (int i = 0; i < BoxData::kEdgeNum; ++i)
 		{
-			GetEdge(static_cast<box::EdgeKind>(i)).Draw(frame_color);
+			GetEdge(static_cast<box::EdgeKind>(i)).Draw(false, 0, frame_color);
 		}
 	}
 }

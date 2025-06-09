@@ -11,9 +11,10 @@ public:
     ~Capsule() override;
 
     /// @brief •`‰æ
-    /// @param is_draw_frame ˜g‚ğ•`‰æ‚³‚¹‚é‚©‚Ç‚¤‚©
+    /// @param is_draw_frame ƒtƒŒ[ƒ€‚ğ•`‰æ‚³‚¹‚é‚©‚Ç‚¤‚©
     /// @param alpha_blend_num “§‰ß’l (0`255 : 0‚ÅŠ®‘S“§‰ß)
-    void Draw(const bool is_draw_frame, const int alpha_blend_num, const unsigned int frame_color) const;
+    /// @param frame_color ƒtƒŒ[ƒ€F
+    void Draw(const bool is_draw_frame, const int alpha_blend_num, const unsigned int frame_color) const override;
 
     void Move(const VECTOR& velocity) override;
 
