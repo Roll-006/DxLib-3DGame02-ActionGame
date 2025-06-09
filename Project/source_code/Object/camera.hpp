@@ -52,6 +52,7 @@ public:
 
 private:
 	void Move();
+	void InitMove();
 
 	void CalcAngle();
 

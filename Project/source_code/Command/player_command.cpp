@@ -27,7 +27,7 @@ void player_cmd::Run::Execute(ObjBase& obj)
 
 void player_cmd::Squat::Execute(ObjBase& obj)
 {
-	dynamic_cast<Player*>(&obj);
+	dynamic_cast<Player*>(&obj)->Squat();
 }
 
 void player_cmd::Shot::Execute(ObjBase& obj)

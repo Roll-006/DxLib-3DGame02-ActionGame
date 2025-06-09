@@ -9,9 +9,9 @@ InputChecker::InputChecker():
 	SetUseDirectInputFlag(TRUE);
 	SetMouseDispFlag(FALSE);
 
-	m_mouse_data[TimeKind::kPrev].pos	     = m_mouse_data[TimeKind::kCurrent].pos	   = Vector2D<int>(Window::kHalfWidth, Window::kHalfHeight);
-	m_mouse_data[TimeKind::kPrev].dir		 = m_mouse_data[TimeKind::kCurrent].dir	   = Vector2D<float>(0.0f, 0.0f);
-	m_mouse_data[TimeKind::kPrev].velocity  = m_mouse_data[TimeKind::kCurrent].velocity  = Vector2D<float>(0.0f, 0.0f);
+	m_mouse_data[TimeKind::kPrev].pos	    = m_mouse_data[TimeKind::kCurrent].pos		= Vector2D<int>(Window::kHalfWidth, Window::kHalfHeight);
+	m_mouse_data[TimeKind::kPrev].dir		= m_mouse_data[TimeKind::kCurrent].dir		= Vector2D<float>(0.0f, 0.0f);
+	m_mouse_data[TimeKind::kPrev].velocity  = m_mouse_data[TimeKind::kCurrent].velocity = Vector2D<float>(0.0f, 0.0f);
 
 	LockCursor();
 
@@ -129,7 +129,7 @@ int InputChecker::GetInputParameter(const InputCode& input_code) const
 	case InputKind::kPadTrigger:
 		switch (static_cast<pad::TriggerKind>(input_code.code))
 		{
-		case pad::TriggerKind::kLT: if (m_xinput.LeftTrigger > kTriggerDeadZone)	{ return m_xinput.LeftTrigger; }  break;
+		case pad::TriggerKind::kLT: if (m_xinput.LeftTrigger  > kTriggerDeadZone)	{ return m_xinput.LeftTrigger ; } break;
 		case pad::TriggerKind::kRT: if (m_xinput.RightTrigger > kTriggerDeadZone)	{ return m_xinput.RightTrigger; } break;
 		}
 		break;
@@ -138,13 +138,13 @@ int InputChecker::GetInputParameter(const InputCode& input_code) const
 		switch (static_cast<pad::StickKind>(input_code.code))
 		{
 		case pad::StickKind::kLSLeft:  if (m_xinput.ThumbLX < -kStickDeadZone) { return m_xinput.ThumbLX; } break;
-		case pad::StickKind::kLSRight: if (m_xinput.ThumbLX > kStickDeadZone)  { return m_xinput.ThumbLX; } break;
+		case pad::StickKind::kLSRight: if (m_xinput.ThumbLX >  kStickDeadZone) { return m_xinput.ThumbLX; } break;
 		case pad::StickKind::kLSDown:  if (m_xinput.ThumbLY < -kStickDeadZone) { return m_xinput.ThumbLY; } break;
-		case pad::StickKind::kLSUp:    if (m_xinput.ThumbLY > kStickDeadZone)  { return m_xinput.ThumbLY; } break;
+		case pad::StickKind::kLSUp:    if (m_xinput.ThumbLY >  kStickDeadZone) { return m_xinput.ThumbLY; } break;
 		case pad::StickKind::kRSLeft:  if (m_xinput.ThumbRX < -kStickDeadZone) { return m_xinput.ThumbRX; } break;
-		case pad::StickKind::kRSRight: if (m_xinput.ThumbRX > kStickDeadZone)  { return m_xinput.ThumbRX; } break;
+		case pad::StickKind::kRSRight: if (m_xinput.ThumbRX >  kStickDeadZone) { return m_xinput.ThumbRX; } break;
 		case pad::StickKind::kRSDown:  if (m_xinput.ThumbRY < -kStickDeadZone) { return m_xinput.ThumbRY; } break;
-		case pad::StickKind::kRSUp:	   if (m_xinput.ThumbRY > kStickDeadZone)  { return m_xinput.ThumbRY; } break;
+		case pad::StickKind::kRSUp:	   if (m_xinput.ThumbRY >  kStickDeadZone) { return m_xinput.ThumbRY; } break;
 		}
 		break;
 
@@ -194,6 +194,7 @@ void InputChecker::AddInputData(const InputKind kind, const int input_code_num)
 {
 	for (int i = 0; i < input_code_num; ++i)
 	{
+		// ’†g‚Í‹ó‚Å’Ç‰Á
 		m_input_data.emplace_back(InputCode(kind, i), TimeKind::kPrev,		InputData());
 		m_input_data.emplace_back(InputCode(kind, i), TimeKind::kCurrent,	InputData());
 	}
@@ -214,7 +215,7 @@ void InputChecker::CountInputTimeAll()
 {
 	for (auto& [input_c, state_t, data] : m_input_data)
 	{
-		// ‰ß‹Ž‚Ì“ü—ÍŽžŠÔ‚Í•Ï‰»‚³‚¹‚È‚¢
+		// Œ»Ý‚Ì“ü—ÍŽžŠÔ‚Ì‚Ý•ÏX
 		if (state_t == TimeKind::kPrev) { continue; }
 
 		if (data.is_input)
@@ -230,6 +231,7 @@ void InputChecker::CheckInputAll()
 {
 	for (auto& [input_c, state_t, data] : m_input_data)
 	{
+		// Œ»Ý‚Ì“ü—Í‚Ì‚Ý”»’è
 		if (state_t == TimeKind::kPrev) { continue; }
 
 		switch (input_c.kind)

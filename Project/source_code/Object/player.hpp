@@ -33,7 +33,6 @@ public:
 
 private:
 	void Move();
-
 	void InitMove();
 
 	/// @brief 水平方向の速度ベクトルを計算
@@ -55,6 +54,9 @@ private:
 	void Acceleration(const float destination_speed);
 	/// @brief 減速処理
 	void Deceleration(const float destination_speed);
+
+	/// @brief しゃがみ処理によりカプセルを縮める
+	void ShrinkCapsule();
 
 	void LoadAnim() override;
 	void ChangeAnimState() override;

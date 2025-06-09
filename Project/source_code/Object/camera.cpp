@@ -35,7 +35,14 @@ void Camera::Init()
 
 void Camera::Update()
 {
-	for (auto& is_input : m_is_input) { is_input = false; }
+	InitMove();
+
+	const auto command = CommandHandler::GetInstance();
+	command->Execute(CommandKind::kInitAngle,		this);
+	command->Execute(CommandKind::kMoveUpCamera,	this);
+	command->Execute(CommandKind::kMoveDownCamera,	this);
+	command->Execute(CommandKind::kMoveLeftCamera,	this);
+	command->Execute(CommandKind::kMoveRightCamera, this);
 
 	Move();
 	SetLookDir();
@@ -166,16 +173,6 @@ void Camera::DetachTarget()
 
 void Camera::Move()
 {
-	const auto command = CommandHandler::GetInstance();
-	m_dir	   = v3d::GetZeroVector();
-	m_velocity = v3d::GetZeroVector();
-
-	command->Execute(CommandKind::kInitAngle,		this);
-	command->Execute(CommandKind::kMoveUpCamera,	this);
-	command->Execute(CommandKind::kMoveDownCamera,	this);
-	command->Execute(CommandKind::kMoveLeftCamera,	this);
-	command->Execute(CommandKind::kMoveRightCamera, this);
-
 	if (!m_is_init_angle)
 	{
 		CalcDirFromPad();
@@ -203,6 +200,13 @@ void Camera::Move()
 	m_transform->SetPos(CoordinateKind::kWorld, pos);
 }
 
+void Camera::InitMove()
+{
+	for (auto& is_input : m_is_input) { is_input = false; }
+	m_dir = v3d::GetZeroVector();
+	m_velocity = v3d::GetZeroVector();
+}
+
 void Camera::CalcAngle()
 {
 	const auto command = CommandHandler::GetInstance();
@@ -220,12 +224,11 @@ void Camera::CalcAngle()
 	// 視点リセット
 	if (m_is_init_angle)
 	{
-		// プレイヤー後方を基準として角度を置き換える
 		VECTOR distance_v = m_angle.at(TimeKind::kNext) - m_angle.at(TimeKind::kCurrent);
 		distance_v.y = math::ConnectMinusPiToPi(distance_v.y);
 		VECTOR dir = v3d::GetNormalizedVector(distance_v);
 
-		// 右・左回りから最短経路を取得
+		// 右・左回りから最短経路を取得し、回転方向に反映
 		float distance = VSize(distance_v);
 		float shortest = min(distance, DX_TWO_PI_F - distance);
 		if (distance != shortest)

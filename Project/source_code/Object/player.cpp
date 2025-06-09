@@ -47,7 +47,19 @@ void Player::Init()
 
 void Player::Update()
 {
-	for (auto& is_input : m_is_input_move) { is_input = false; }
+	InitMove();
+
+	const auto command = CommandHandler::GetInstance();
+	command->Execute(CommandKind::kRun,				this);
+	command->Execute(CommandKind::kSquat,			this);
+	command->Execute(CommandKind::kReadyGun,		this);
+	command->Execute(CommandKind::kMoveUpPlayer,	this);
+	command->Execute(CommandKind::kMoveDownPlayer,	this);
+	command->Execute(CommandKind::kMoveLeftPlayer,	this);
+	command->Execute(CommandKind::kMoveRightPlayer, this);
+
+	// しゃがみ処理によりカプセルを縮める
+	ShrinkCapsule();
 
 	Move();
 
@@ -74,6 +86,9 @@ void Player::Draw() const
 	DrawLine3D(pos, pos + axes.x_axis * 100, 0xff0000);
 	DrawLine3D(pos, pos + axes.y_axis * 100, 0x00ff22);
 	DrawLine3D(pos, pos + axes.z_axis * 100, 0x0077ff);
+
+	DrawFormatString(0,  0, 0xffffff, "squat : %d", m_is_squat);
+	DrawFormatString(0, 20, 0xffffff, "run   : %d", m_is_run);
 }
 
 void Player::OnCollide(const PhysicalObjBase& check_hit_obj)
@@ -116,7 +131,28 @@ void Player::Run()
 
 void Player::Squat()
 {
-	m_is_squat = true;
+	const auto command = CommandHandler::GetInstance();
+	const auto input = InputChecker::GetInstance();
+	const auto code = *command->GetCurrentFrameExecuteInputCode(CommandKind::kSquat);
+
+	switch (command->GetInputModeKind(CommandHandler::MoveKind::kSquat))
+	{
+	case InputModeKind::kTrigger:
+		if (input->GetInputState(code) == InputState::kSingle)
+		{
+			command->CountUpTrigger(CommandHandler::MoveKind::kSquat);
+
+			m_is_squat = command->GetTriggerCount(CommandHandler::MoveKind::kSquat) % 2 ? true : false;
+		}
+		break;
+
+	case InputModeKind::kHold:
+		if (input->GetInputState(code) == InputState::kHold)
+		{
+			m_is_squat = true;
+		}
+		break;
+	}
 }
 
 void Player::MoveForward()
@@ -167,6 +203,21 @@ void Player::ReadyGun()
 }
 #pragma endregion
 
+
+void Player::ShrinkCapsule()
+{
+	if (m_is_squat)
+	{
+		m_is_run = false;
+
+		const auto begin_pos = m_transform->GetPos(CoordinateKind::kWorld) + VGet(0.0f, kColliderCapsuleRadius, 0.0f);
+		const auto segment_length = kColliderCapsuleLength - kColliderCapsuleRadius * 2.0f;
+		MakeCollider(std::make_shared<Capsule>(begin_pos, m_transform->GetUp(CoordinateKind::kWorld), segment_length, kColliderCapsuleRadius));
+
+		dynamic_cast<Capsule*>(m_collider.get()) = std::make_shared<Capsule>()
+	}
+
+}
 
 void Player::LoadAnim()
 {
@@ -255,16 +306,6 @@ void Player::ChangeAnimState()
 
 void Player::Move()
 {
-	InitMove();
-
-	const auto command = CommandHandler::GetInstance();
-	command->Execute(CommandKind::kRun,				this);
-	command->Execute(CommandKind::kReadyGun,		this);
-	command->Execute(CommandKind::kMoveUpPlayer,	this);
-	command->Execute(CommandKind::kMoveDownPlayer,	this);
-	command->Execute(CommandKind::kMoveLeftPlayer,	this);
-	command->Execute(CommandKind::kMoveRightPlayer, this);
-
 	// 各方向の移動
 	CalcHorizontalVelocity();
 	CalcVerticalVelocity();
@@ -288,6 +329,8 @@ void Player::InitMove()
 {
 	const auto command = CommandHandler::GetInstance();
 
+	for (auto& is_input : m_is_input_move) { is_input = false; }
+
 	// 照準
 	if (!m_is_ready_gun) { m_camera->Depart(Camera::kNormalDistance, kAimDownSightsSpeed * FPS::GetDeltaTime()); }
 	m_move_dir.at(TimeKind::kNext) = v3d::GetZeroVector();
@@ -302,8 +345,7 @@ void Player::InitMove()
 	}
 
 	// しゃがみ判定
-	// TODO : 他の条件との噛み合いも考える
-	m_is_squat = false;
+	if (command->GetInputModeKind(CommandHandler::MoveKind::kSquat) == InputModeKind::kHold) { m_is_squat = false; }
 }
 
 void Player::CalcHorizontalVelocity()
@@ -380,7 +422,6 @@ void Player::CalcMoveDir(const VECTOR& velocity)
 
 void Player::CalcLookDir()
 {
-	// 実際に向く方向を決める
 	// ダッシュ状態であれば進行方向を向く
 	if (m_is_run)
 	{
@@ -472,7 +513,7 @@ VECTOR Player::GetVelocityFromPad(VECTOR& velocity)
 	}
 	if (right_param)
 	{
-		velocity += right   * (right_param - InputChecker::kStickDeadZone);
+		velocity += right * (right_param - InputChecker::kStickDeadZone);
 		m_is_input_move.at(static_cast<int>(MoveDir::kRight)) = true;
 	}
 
