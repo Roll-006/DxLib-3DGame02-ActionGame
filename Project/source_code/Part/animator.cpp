@@ -56,7 +56,6 @@ void Animator::AddAnimHandle(const int kind, const int anim_handle, const int in
 	}
 }
 
-// TODO : 同じアニメーションのアタッチも考慮するよう変更
 void Animator::AttachAnim(const int next_kind)
 {
 	// 現在のアニメーションと同じであった場合は変更しない
@@ -130,9 +129,11 @@ void Animator::PlayAnim()
 			MV1SetAttachAnimTime	 (m_modeler->GetModelHandle(), data.attach_index, data.play_timer);
 			MV1SetAttachAnimBlendRate(m_modeler->GetModelHandle(), data.attach_index, blend_r);
 
-			DrawFormatString(0, 0 + count * 20, 0xffffff, "%f", data.play_timer);
+			DrawFormatString(0, 0 + count * 20, 0xffffff, "kind : %d, timer : %f", data.kind, data.play_timer);
+			DrawFormatString(300, 0 + count * 20, 0xffffff, "blend_r : %f", blend_r);
 		}
 
+		// TEST : 確認用カウント
 		++count;
 	}
 }
@@ -140,5 +141,6 @@ void Animator::PlayAnim()
 void Animator::BlendAnim()
 {
 	// ブレンド率100%まで増加させる
+	// FIXME : ブレンド率が最大に達する前にアニメーションが変更されるとカクつく不具合が発生中
 	math::Increase(m_blend_rate, m_blend_speed * FPS::GetDeltaTime(), 1.0f);
 }

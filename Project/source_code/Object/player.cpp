@@ -99,8 +99,6 @@ void Player::Draw() const
 	DrawLine3D(pos, pos + axes.x_axis * 100, 0xff0000);
 	DrawLine3D(pos, pos + axes.y_axis * 100, 0x00ff22);
 	DrawLine3D(pos, pos + axes.z_axis * 100, 0x0077ff);
-
-	DrawFormatString(0, 40, 0xffffff, "%f", m_move_speed);
 }
 
 void Player::OnCollide(const PhysicalObjBase& check_hit_obj)
