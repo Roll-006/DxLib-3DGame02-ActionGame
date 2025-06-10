@@ -89,7 +89,7 @@ private:
 
 	static constexpr float  kMaxVerticalAngle		= 89.0f;
 	static constexpr float  kMinVerticalAngle		= -70.0f;
-	static constexpr float  kInitAngleEndThreshold	= 0.01;
+	static constexpr float  kInitAngleEndThreshold	= 0.01f;
 	static constexpr float  kInitAngleSpeed			= 10.0f;
 
 	static constexpr float  kMoveSpeedWithButton	= 2.0f;

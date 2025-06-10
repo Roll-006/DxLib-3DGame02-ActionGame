@@ -2,15 +2,16 @@
 #include "../Manager/command_handler.hpp"
 
 Player::Player(std::shared_ptr<Camera> camera) :
-	CharaBase		(ObjName.PLAYER, ObjTag.PLAYER, ModelPath.CHARA_01, MassKind::kMedium),
-	m_camera		(camera),
-	m_move_speed	(0.0f),
-	m_capsule_length(kCapsuleLengthForStand),
-	m_capsule_collider(nullptr),
-	m_is_move		(false),
-	m_is_run		(false),
-	m_is_squat		(false),
-	m_is_ready_gun	(false)
+	CharaBase			(ObjName.PLAYER, ObjTag.PLAYER, ModelPath.CHARA_01, MassKind::kMedium),
+	m_camera			(camera),
+	m_move_speed		(0.0f),
+	m_non_move_time	(0.0f),
+	m_capsule_length	(kCapsuleLengthForStand),
+	m_capsule_collider	(nullptr),
+	m_is_move			(false),
+	m_is_run			(false),
+	m_is_squat			(false),
+	m_is_ready_gun		(false)
 {
 	// 初期pos・dirを設定
 	m_move_dir[TimeKind::kCurrent] = m_move_dir[TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);
@@ -50,6 +51,12 @@ void Player::Init()
 
 void Player::Update()
 {
+	// アニメーション情報をシフト
+	if (m_anim_kind.at(TimeKind::kPrev) != m_anim_kind.at(TimeKind::kCurrent))
+	{
+		m_anim_kind.at(TimeKind::kPrev) = m_anim_kind.at(TimeKind::kCurrent);
+	}
+
 	InitMove();
 
 	const auto command = CommandHandler::GetInstance();
@@ -92,6 +99,8 @@ void Player::Draw() const
 	DrawLine3D(pos, pos + axes.x_axis * 100, 0xff0000);
 	DrawLine3D(pos, pos + axes.y_axis * 100, 0x00ff22);
 	DrawLine3D(pos, pos + axes.z_axis * 100, 0x0077ff);
+
+	DrawFormatString(0, 40, 0xffffff, "%f", m_move_speed);
 }
 
 void Player::OnCollide(const PhysicalObjBase& check_hit_obj)
@@ -275,11 +284,17 @@ void Player::LoadAnim()
 void Player::ChangeAnimState()
 {
 	// アイドル
-	m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kIdle02;
-
-	if (!m_is_move && m_is_ready_gun)
+	if (!m_is_move)
 	{
-		m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kIdleShoot01;
+		if (m_non_move_time > kIdelAnimPlayThreshold)
+		{
+			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kIdle02;
+		}
+
+		if (m_is_ready_gun)
+		{
+			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kIdleShoot01;
+		}
 	}
 
 	// ダッシュ
@@ -351,11 +366,11 @@ void Player::ChangeAnimState()
 		{
 			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkSquatRight01;
 		}
-		if (m_is_input_move.at(static_cast<int>(MoveDir::kForward)) && m_is_input_move.at(static_cast<int>(MoveDir::kLeft)))
+		if (m_is_input_move.at(static_cast<int>(MoveDir::kForward))  && m_is_input_move.at(static_cast<int>(MoveDir::kLeft)))
 		{
 			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkSquatForwardLeft01;
 		}
-		if (m_is_input_move.at(static_cast<int>(MoveDir::kForward)) && m_is_input_move.at(static_cast<int>(MoveDir::kRight)))
+		if (m_is_input_move.at(static_cast<int>(MoveDir::kForward))  && m_is_input_move.at(static_cast<int>(MoveDir::kRight)))
 		{
 			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkSquatForwardRight01;
 		}
@@ -386,6 +401,7 @@ void Player::Move()
 		m_transform->SetRot(CoordinateKind::kWorld, m_look_dir.at(TimeKind::kCurrent));
 		m_transform->SetPos(CoordinateKind::kWorld, m_transform->GetPos(CoordinateKind::kWorld) + velocity);
 
+		// コライダー・トリガーに同期
 		m_collider->Move(velocity);
 		for (const auto& trigger : m_trigger)
 		{
@@ -424,6 +440,16 @@ void Player::CalcHorizontalVelocity()
 
 	// 移動判定
 	m_is_move = velocity != v3d::GetZeroVector() ? true : false;
+
+	// 移動していない時間を計測
+	if (m_is_move)
+	{
+		m_non_move_time = 0.0f;
+	}
+	else
+	{
+		m_non_move_time += FPS::GetDeltaTime();
+	}
 
 	// 移動速度・方向を計算
 	CalcMoveSpeed(VSize(velocity));

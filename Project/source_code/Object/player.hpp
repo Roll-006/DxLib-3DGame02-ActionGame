@@ -80,6 +80,8 @@ private:
 	static constexpr float kConfirmLookDirThreshold			= 0.25f;	// 目的のdirに到達したと判定する閾値
 	static constexpr float kConfirmLookDirThresholdForADS	= 0.55f;	// スコープを覗く際の、目的のdirに到達したと判定する閾値
 
+	static constexpr float kIdelAnimPlayThreshold			= 0.25f;	// アイドルアニメーションを再生すると判定する閾値
+
 	static constexpr int   kWalkStickSlopeLimit				= 15000;	// 歩き状態とするスティック傾きの上限
 
 	static constexpr float kCapsuleRadius					= 34.0f;
@@ -98,14 +100,15 @@ private:
 	std::unordered_map<TimeKind, PlayerAnimKind> m_anim_kind;			// アニメーションの状態を判定
 
 	float m_move_speed;
+	float m_non_move_time;			// 入力をしていない時間
 
 	std::shared_ptr<Capsule> m_capsule_collider;
-	float m_capsule_length;		// 押し戻し用のカプセルの長さ
+	float m_capsule_length;			// 押し戻し用のカプセルの長さ
 
 	bool  m_is_move;
 	bool  m_is_run;
 	bool  m_is_squat;
-	bool  m_is_ready_gun;		// 銃を構える
+	bool  m_is_ready_gun;			// 銃を構える
 
 	std::array<bool, 4> m_is_input_move;
 };
