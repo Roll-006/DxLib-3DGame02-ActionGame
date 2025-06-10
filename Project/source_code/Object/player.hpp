@@ -50,11 +50,6 @@ private:
 	// パッド入力での速度ベクトルを取得
 	[[nodiscard]] VECTOR GetVelocityFromPad(VECTOR& velocity);
 
-	/// @brief 加速処理
-	void Acceleration(const float destination_speed);
-	/// @brief 減速処理
-	void Deceleration(const float destination_speed);
-
 	/// @brief しゃがみ処理によりカプセルを縮める
 	void ShrinkCapsule();
 

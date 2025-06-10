@@ -177,7 +177,30 @@ namespace math
 	#pragma endregion
 
 
-	#pragma region 修正
+	#pragma region 値の変化
+	template<common_concepts::ArithmeticT T>
+	void Increase(T& value, const T& increase_value, const T& max_value)
+	{
+		value += increase_value;
+		if (value > max_value)
+		{
+			value = max_value;
+		}
+	}
+
+	template<common_concepts::ArithmeticT T>
+	void Decrease(T& value, const T& decrease_value, const T& min_value)
+	{
+		value -= decrease_value;
+		if (value < min_value)
+		{
+			value = min_value;
+		}
+	}
+	#pragma endregion
+
+
+	#pragma region 値の修正
 	/// @brief 角度が-π～πの値をループするように繋ぎ合わせる
 	float ConnectMinusPiToPi(const float angle);
 	#pragma endregion

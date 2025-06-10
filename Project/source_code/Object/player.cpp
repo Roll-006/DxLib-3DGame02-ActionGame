@@ -228,27 +228,16 @@ void Player::ShrinkCapsule()
 	if (m_is_squat)
 	{
 		// カプセルを縮める
-		m_capsule_length -= kCapsuleLengthShrinkSpeed * FPS::GetDeltaTime();
-		if (m_capsule_length < kCapsuleLengthForSquat)
-		{
-			m_capsule_length = kCapsuleLengthForSquat;
-		}
-
-		const auto segment_length = m_capsule_length - kCapsuleRadius * 2.0f;
-		m_capsule_collider->SetLength(segment_length);
+		math::Decrease(m_capsule_length, kCapsuleLengthShrinkSpeed * FPS::GetDeltaTime(), kCapsuleLengthForSquat);
 	}
 	else
 	{
 		// カプセルのサイズを戻す
-		m_capsule_length += kCapsuleLengthShrinkSpeed * FPS::GetDeltaTime();
-		if (m_capsule_length > kCapsuleLengthForStand)
-		{
-			m_capsule_length = kCapsuleLengthForStand;
-		}
-
-		const auto segment_length = m_capsule_length - kCapsuleRadius * 2.0f;
-		m_capsule_collider->SetLength(segment_length);
+		math::Increase(m_capsule_length, kCapsuleLengthShrinkSpeed * FPS::GetDeltaTime(), kCapsuleLengthForStand);
 	}
+
+	const auto segment_length = m_capsule_length - kCapsuleRadius * 2.0f;
+	m_capsule_collider->SetLength(segment_length);
 }
 
 void Player::LoadAnim()
@@ -459,17 +448,25 @@ void Player::CalcMoveSpeed(const float input_slope)
 		// 速い状態から歩き状態に移行した場合、急速に減速させる
 		if (m_move_speed > kWalkSpeed) { m_move_speed = kWalkSpeed; }
 
-		Acceleration(kSlowWalkSpeed);
-		Deceleration(kSlowWalkSpeed);
+		math::Increase(m_move_speed, kAcceleration * FPS::GetDeltaTime(), kSlowWalkSpeed);
+		math::Decrease(m_move_speed, kAcceleration * FPS::GetDeltaTime(), kSlowWalkSpeed);
 		return;
 	}
 
 	// 歩き処理
 	if (!m_is_run)
 	{
-		Acceleration(kWalkSpeed);
-		Deceleration(kWalkSpeed);
-		return;
+		math::Increase(m_move_speed, kAcceleration * FPS::GetDeltaTime(), kWalkSpeed);
+		math::Decrease(m_move_speed, kAcceleration * FPS::GetDeltaTime(), kWalkSpeed);
+ 		return;
+	}
+
+	// しゃがみ処理
+	if (m_is_squat)
+	{
+		// 速い状態から歩き状態に移行した場合、急速に減速させる
+		if (m_move_speed > kSlowWalkSpeed) { m_move_speed = kSlowWalkSpeed; }
+		math::Decrease(m_move_speed, kAcceleration * FPS::GetDeltaTime(), kSquatWalkSpeed);
 	}
 
 	// ダッシュ処理
@@ -477,7 +474,7 @@ void Player::CalcMoveSpeed(const float input_slope)
 	{
 		// 遅い状態からダッシュ状態に移行した場合、急速に加速させる
 		if (m_move_speed < kWalkSpeed) { m_move_speed = kWalkSpeed; }
-		Acceleration(kRunSpeed);
+		math::Increase(m_move_speed, kAcceleration * FPS::GetDeltaTime(), kRunSpeed);
 	}
 }
 
@@ -584,26 +581,4 @@ VECTOR Player::GetVelocityFromPad(VECTOR& velocity)
 	}
 
 	return velocity;
-}
-
-void Player::Acceleration(const float destination_speed)
-{
-	if (m_move_speed >= destination_speed) { return; }
-
-	m_move_speed += kAcceleration * FPS::GetDeltaTime();
-	if (m_move_speed > destination_speed)
-	{
-		m_move_speed = destination_speed;
-	}
-}
-
-void Player::Deceleration(const float destination_speed)
-{
-	if (m_move_speed <= destination_speed) { return; }
-	
-	m_move_speed -= kAcceleration * FPS::GetDeltaTime();
-	if (m_move_speed < destination_speed)
-	{
-		m_move_speed = destination_speed;
-	}
 }
