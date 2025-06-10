@@ -47,9 +47,16 @@ void Animator::AddAnimHandle(const int kind, const std::string& file_path, const
 
 void Animator::AddAnimHandle(const int kind, const int anim_handle, const int index, const std::string& tag, const float play_speed, const bool is_loop)
 {
+	// 上書き不可
+	if (m_kind_data.count(kind)) { return; }
 
+	if (anim_handle != -1)
+	{
+		m_kind_data[kind] = AnimKindData(anim_handle, index, tag, play_speed, is_loop);
+	}
 }
 
+// TODO : 同じアニメーションのアタッチも考慮するよう変更
 void Animator::AttachAnim(const int next_kind)
 {
 	// 現在のアニメーションと同じであった場合は変更しない
@@ -60,9 +67,9 @@ void Animator::AttachAnim(const int next_kind)
 	DetachAnim(TimeKind::kPrev);
 
 	// データをシフト(Current ➡ Prev, Next ➡ Current)
-	m_time_kind_data.at(TimeKind::kPrev)				   = m_time_kind_data.at(TimeKind::kCurrent);
-	m_time_kind_data.at(TimeKind::kCurrent).attach_index = MV1AttachAnim(m_modeler->GetModelHandle(), m_kind_data.at(next_kind).index, m_kind_data.at(next_kind).anim_handle, TRUE);
-	m_time_kind_data.at(TimeKind::kCurrent).kind		   = next_kind;
+	m_time_kind_data.at(TimeKind::kPrev)					= m_time_kind_data.at(TimeKind::kCurrent);
+	m_time_kind_data.at(TimeKind::kCurrent).attach_index	= MV1AttachAnim(m_modeler->GetModelHandle(), m_kind_data.at(next_kind).index, m_kind_data.at(next_kind).anim_handle, TRUE);
+	m_time_kind_data.at(TimeKind::kCurrent).kind			= next_kind;
 	SetPlayStartTime();
 
 	// 前回のアニメーションが存在しない場合は、ブレンド済み(ブレンド率100%)とする
@@ -93,6 +100,7 @@ void Animator::SetPlayStartTime()
 
 			m_prev_anim_play_rate = m_time_kind_data.at(TimeKind::kPrev).play_timer / prev_total_t;
 			m_time_kind_data.at(TimeKind::kCurrent).play_timer = current_total_t * m_prev_anim_play_rate;
+
 			return;
 		}
 	}
@@ -101,8 +109,12 @@ void Animator::SetPlayStartTime()
 
 void Animator::PlayAnim()
 {
+	// TEST : 再生位置を確認
+	int count = 0;
+
 	for (auto& [state_t, data] : m_time_kind_data)
 	{
+		// アニメーションが有効であった場合のみ再生
 		if (data.attach_index > -1)
 		{
 			const float total_t = MV1GetAttachAnimTotalTime(m_modeler->GetModelHandle(), data.attach_index);
@@ -114,19 +126,19 @@ void Animator::PlayAnim()
 				data.play_timer = m_kind_data.at(data.kind).is_loop ? 0.0f : total_t;
 			}
 
+			// 再生位置・ブレンド率を適用
 			MV1SetAttachAnimTime	 (m_modeler->GetModelHandle(), data.attach_index, data.play_timer);
 			MV1SetAttachAnimBlendRate(m_modeler->GetModelHandle(), data.attach_index, blend_r);
+
+			DrawFormatString(0, 0 + count * 20, 0xffffff, "%f", data.play_timer);
 		}
+
+		++count;
 	}
 }
 
 void Animator::BlendAnim()
 {
-	if (m_blend_rate >= 1.0f) { return; }
-
-	m_blend_rate += m_blend_speed * FPS::GetDeltaTime();
-	if (m_blend_rate > 1.0f)
-	{
-		m_blend_rate = 1.0f;
-	}
+	// ブレンド率100%まで増加させる
+	math::Increase(m_blend_rate, m_blend_speed * FPS::GetDeltaTime(), 1.0f);
 }

@@ -32,7 +32,7 @@ void player_cmd::Squat::Execute(ObjBase& obj)
 
 void player_cmd::Shot::Execute(ObjBase& obj)
 {
-	dynamic_cast<Player*>(&obj);
+	dynamic_cast<Player*>(&obj)->Shot();
 }
 
 void player_cmd::Ready::Execute(ObjBase& obj)

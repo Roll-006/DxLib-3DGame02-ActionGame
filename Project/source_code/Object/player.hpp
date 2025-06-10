@@ -29,6 +29,7 @@ public:
 	void MoveLeft();
 	void MoveRight();
 	void ReadyGun();
+	void Shot();
 	#pragma endregion
 
 private:
@@ -66,7 +67,7 @@ private:
 	};
 
 private:
-	static constexpr float kSquatWalkSpeed					= 0.5f;
+	static constexpr float kSquatWalkSpeed					= 1.0f;
 	static constexpr float kSlowWalkSpeed					= 2.0f;
 	static constexpr float kWalkSpeed						= 4.0f;
 	static constexpr float kRunSpeed						= 10.0f;

@@ -92,8 +92,6 @@ void Player::Draw() const
 	DrawLine3D(pos, pos + axes.x_axis * 100, 0xff0000);
 	DrawLine3D(pos, pos + axes.y_axis * 100, 0x00ff22);
 	DrawLine3D(pos, pos + axes.z_axis * 100, 0x0077ff);
-
-	DrawFormatString(0, 0, 0xffffff, "%f", m_capsule_length);
 }
 
 void Player::OnCollide(const PhysicalObjBase& check_hit_obj)
@@ -219,6 +217,11 @@ void Player::ReadyGun()
 	// ダッシュ状態を解除
 	m_is_run = false;
 	CommandHandler::GetInstance()->InitTriggerCount(CommandHandler::MoveKind::kRun);
+}
+
+void Player::Shot()
+{
+
 }
 #pragma endregion
 
@@ -442,7 +445,18 @@ void Player::CalcMoveSpeed(const float input_slope)
 		return;
 	}
 
+	// しゃがみ処理
+	if (m_is_squat)
+	{
+		// 速い状態から歩き状態に移行した場合、急速に減速させる
+		if (m_move_speed > kSlowWalkSpeed) { m_move_speed = kSlowWalkSpeed; }
+
+		math::Decrease(m_move_speed, kAcceleration * FPS::GetDeltaTime(), kSquatWalkSpeed);
+		return;
+	}
+
 	// ゆっくり歩く処理
+	// スティック入力でしか実行されない
 	if (input_slope <= kWalkStickSlopeLimit - InputChecker::kStickDeadZone)
 	{
 		// 速い状態から歩き状態に移行した場合、急速に減速させる
@@ -456,17 +470,12 @@ void Player::CalcMoveSpeed(const float input_slope)
 	// 歩き処理
 	if (!m_is_run)
 	{
+		// 遅い状態からダッシュ状態に移行した場合、急速に加速させる
+		if (m_move_speed < kSlowWalkSpeed) { m_move_speed = kSlowWalkSpeed; }
+
 		math::Increase(m_move_speed, kAcceleration * FPS::GetDeltaTime(), kWalkSpeed);
 		math::Decrease(m_move_speed, kAcceleration * FPS::GetDeltaTime(), kWalkSpeed);
  		return;
-	}
-
-	// しゃがみ処理
-	if (m_is_squat)
-	{
-		// 速い状態から歩き状態に移行した場合、急速に減速させる
-		if (m_move_speed > kSlowWalkSpeed) { m_move_speed = kSlowWalkSpeed; }
-		math::Decrease(m_move_speed, kAcceleration * FPS::GetDeltaTime(), kSquatWalkSpeed);
 	}
 
 	// ダッシュ処理
@@ -474,6 +483,7 @@ void Player::CalcMoveSpeed(const float input_slope)
 	{
 		// 遅い状態からダッシュ状態に移行した場合、急速に加速させる
 		if (m_move_speed < kWalkSpeed) { m_move_speed = kWalkSpeed; }
+
 		math::Increase(m_move_speed, kAcceleration * FPS::GetDeltaTime(), kRunSpeed);
 	}
 }

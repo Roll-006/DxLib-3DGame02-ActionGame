@@ -181,6 +181,8 @@ namespace math
 	template<common_concepts::ArithmeticT T>
 	void Increase(T& value, const T& increase_value, const T& max_value)
 	{
+		if (value == max_value) { return; }
+
 		value += increase_value;
 		if (value > max_value)
 		{
@@ -191,6 +193,8 @@ namespace math
 	template<common_concepts::ArithmeticT T>
 	void Decrease(T& value, const T& decrease_value, const T& min_value)
 	{
+		if (value == min_value) { return; }
+
 		value -= decrease_value;
 		if (value < min_value)
 		{
