@@ -205,11 +205,11 @@ namespace math
 		value += increase_value;
 		if (value > max_value)
 		{
-			value = is_loop ? static_cast<T>(0) : max_value;
+			value = is_loop ? 0 : max_value;
 		}
 	}
 
-	/// @brief 値を減少させる(ループ用)
+	/// @brief 値を減少させる
 	/// @param value 減少させる値
 	/// @param decrease_value 減少量
 	/// @param min_value 最大値
@@ -225,7 +225,7 @@ namespace math
 		}
 	}
 	
-	/// @brief 値を減少させる
+	/// @brief 値を減少させる(ループ用)
 	/// @param value 減少させる値
 	/// @param decrease_value 減少量
 	/// @param min_value 最大値
@@ -236,7 +236,7 @@ namespace math
 		value -= decrease_value;
 		if (value < min_value)
 		{
-			value = is_loop ? static_cast<T>(0) : min_value;
+			value = is_loop ? 0 : min_value;
 		}
 	}
 	#pragma endregion

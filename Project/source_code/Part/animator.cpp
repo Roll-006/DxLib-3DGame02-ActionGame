@@ -60,6 +60,7 @@ void Animator::AttachAnim(const int next_kind)
 {
 	// 現在のアニメーションと同じであった場合は変更しない
 	if (m_time_kind_data.at(TimeKind::kCurrent).kind == next_kind) { return; }
+	if (m_blend_rate != 1.0f) { return; }
 
 	m_is_first_frame_change_anim = true;
 
@@ -160,6 +161,6 @@ void Animator::BlendAnim()
 	// ブレンドが完了した場合、PrevAnimの再生は停止する
 	if (m_blend_rate == 1.0f)
 	{
-		m_time_kind_data.at(TimeKind::kPrev).is_play = false;
+		DetachAnim(TimeKind::kPrev);
 	}
 }

@@ -40,6 +40,9 @@ private:
 	std::unordered_map<int, AnimKindData>			m_anim_data;
 	std::unordered_map<TimeKind, AnimTimeKindData>	m_time_kind_data;
 
+	// TEST : 仮
+	std::unordered_map<int, AnimTimeKindData>		m_anim_history_data;
+
 	float m_prev_anim_play_rate;			// 前回のアニメーションの再生率
 	float m_blend_rate;
 	float m_blend_speed;
