@@ -37,7 +37,7 @@ private:
 private:
 	static constexpr float kBlendSpeed = 3.0f;
 
-	std::unordered_map<int, AnimKindData>			m_kind_data;
+	std::unordered_map<int, AnimKindData>			m_anim_data;
 	std::unordered_map<TimeKind, AnimTimeKindData>	m_time_kind_data;
 
 	float m_prev_anim_play_rate;			// 前回のアニメーションの再生率

@@ -71,7 +71,7 @@ private:
 	static constexpr float kSlowWalkSpeed					= 2.0f;
 	static constexpr float kWalkSpeed						= 4.0f;
 	static constexpr float kRunSpeed						= 10.0f;
-	static constexpr float kAcceleration					= 4.0f;		// 加速度(減速度も共通)
+	static constexpr float kAcceleration					= 2.0f;		// 加速度(減速度も共通)
 
 	static constexpr float kMoveDirCorrectionSpeed			= 0.065f;	// 移動方向の補正速度
 	static constexpr float kLookDirCorrectionAngle			= 0.1f;		// 見る方向を回転させる角度
@@ -80,7 +80,7 @@ private:
 	static constexpr float kConfirmLookDirThreshold			= 0.25f;	// 目的のdirに到達したと判定する閾値
 	static constexpr float kConfirmLookDirThresholdForADS	= 0.55f;	// スコープを覗く際の、目的のdirに到達したと判定する閾値
 
-	static constexpr float kIdelAnimPlayThreshold			= 0.25f;	// アイドルアニメーションを再生すると判定する閾値
+	static constexpr float kIdelAnimPlayThreshold			= 0.35f;		// アイドルアニメーションを再生すると判定する閾値
 
 	static constexpr int   kWalkStickSlopeLimit				= 15000;	// 歩き状態とするスティック傾きの上限
 

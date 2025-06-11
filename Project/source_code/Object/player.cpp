@@ -287,6 +287,11 @@ void Player::ChangeAnimState()
 		if (m_non_move_time > kIdelAnimPlayThreshold)
 		{
 			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kIdle02;
+
+			if (m_is_squat)
+			{
+				m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kIdleSquat01;
+			}
 		}
 
 		if (m_is_ready_gun)
@@ -341,8 +346,6 @@ void Player::ChangeAnimState()
 	// ‚µ‚á‚ª‚Þ
 	if (m_is_squat)
 	{
-		m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kIdleSquat01;
-
 		if (m_is_ready_gun)
 		{
 			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kIdleSquatShoot01;
