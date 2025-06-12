@@ -2,17 +2,18 @@
 #include "../Manager/command_handler.hpp"
 
 Player::Player(std::shared_ptr<Camera> camera) :
-	CharaBase			(ObjName.PLAYER, ObjTag.PLAYER, ModelPath.CHARA_01, MassKind::kMedium),
-	m_camera			(camera),
-	m_move_speed		(0.0f),
-	m_non_move_time	(0.0f),
-	m_capsule_length	(kCapsuleLengthForStand),
-	m_capsule_collider	(nullptr),
-	m_is_move			(false),
-	m_is_run			(false),
-	m_is_squat			(false),
-	m_is_ready_gun		(false),
-	m_is_turn_around	(false)
+	CharaBase				(ObjName.PLAYER, ObjTag.PLAYER, ModelPath.CHARA_01, MassKind::kMedium),
+	m_camera				(camera),
+	m_move_speed			(0.0f),
+	m_non_move_time			(0.0f),
+	m_capsule_length		(kCapsuleLengthForStand),
+	m_capsule_collider		(nullptr),
+	m_is_move				(false),
+	m_is_run				(false),
+	m_is_squat				(false),
+	m_is_ready_gun			(false),
+	m_is_turn_around		(false),
+	m_is_correct_look_dir	(false)
 {
 	// ‰ŠúposEdir‚ðÝ’è
 	m_move_dir[TimeKind::kCurrent] = m_move_dir[TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);
@@ -100,6 +101,8 @@ void Player::Draw() const
 	DrawLine3D(pos, pos + axes.x_axis * 100, 0xff0000);
 	DrawLine3D(pos, pos + axes.y_axis * 100, 0x00ff22);
 	DrawLine3D(pos, pos + axes.z_axis * 100, 0x0077ff);
+
+	DrawFormatString(0, 0, 0xffffff, "”½“]Š®—¹ : %d", m_is_turn_around);
 }
 
 void Player::OnCollide(const PhysicalObjBase& check_hit_obj)
@@ -237,7 +240,8 @@ void Player::ReadyGun()
 	// ƒ^[ƒ“’†‚Í‘Šúreturn
 	if (m_is_turn_around) { return; }
 
-	m_is_ready_gun	= true;
+	m_is_ready_gun			= true;
+	m_is_correct_look_dir	= true;
 
 	// Šg‘å—¦‚©‚çŽÀÛ‚Ì‹——£‚ðŽæ“¾
 	float max_distance = Camera::kNormalDistance / m_current_attach_gun->GetScopeScale();
@@ -464,6 +468,9 @@ void Player::InitMove()
 
 	// ‚µ‚á‚ª‚Ý”»’è
 	if (command->GetInputModeKind(CommandHandler::MoveKind::kSquat) == InputModeKind::kHold) { m_is_squat = false; }
+
+	// Œü‚«•â³
+	m_is_correct_look_dir = false;
 }
 
 void Player::CalcHorizontalVelocity()
@@ -474,10 +481,11 @@ void Player::CalcHorizontalVelocity()
 	// ˆÚ“®”»’è
 	m_is_move = velocity != v3d::GetZeroVector() ? true : false;
 
-	// ˆÚ“®‚µ‚Ä‚¢‚È‚¢ŽžŠÔ‚ðŒv‘ª
+	// TODO : ŠÖ”–¼‚Æ–ðŠ„‚É‚¸‚ê‚ª‚ ‚é‚½‚ß•ª—£‚ðŒŸ“¢
 	if (m_is_move)
 	{
-		m_non_move_time = 0.0f;
+		m_non_move_time			= 0.0f;
+		m_is_correct_look_dir	= true;
 	}
 	else
 	{
@@ -570,12 +578,12 @@ void Player::CalcLookDir()
 	forward.y = 0.0f;
 	forward = v3d::GetNormalizedVector(forward);
 
-	//
+	// TODO : ‚Ì‚¿‚ÉŒ©‚â‚·‚­•ÏX
 	if (!m_is_turn_around)
 	{
 		if (v3d::GetNormalizedVector(m_move_dir.at(TimeKind::kNext)) == -forward)
 		{
-			if (InputChecker::GetInstance()->IsInput(pad::ButtonKind::kRB))
+			if (InputChecker::GetInstance()->GetInputState(pad::ButtonKind::kRB) == InputState::kSingle)
 			{
 				m_is_turn_around = true;
 				m_look_dir.at(TimeKind::kNext) = -m_look_dir.at(TimeKind::kCurrent);
@@ -599,37 +607,36 @@ void Player::CalcLookDir()
 		}
 	}
 
+	// ŠŠ‚ç‚©‚Édir‚ð•â³
 	CorrectLookDir();
 }
 
 void Player::CorrectLookDir()
 {
-	if (m_is_move || m_is_ready_gun || m_is_turn_around)
+	if (!m_is_correct_look_dir) { return; }
+	
+	// ƒˆ[Šp‰ñ“]‚ðŽæ“¾‚µA-ƒÎ`ƒÎ‚Å’l‚ðŠÇ—‚·‚é
+	const VECTOR current_yaw	= math::GetYawRotVector(m_look_dir.at(TimeKind::kCurrent));
+	const VECTOR next_yaw		= math::GetYawRotVector(m_look_dir.at(TimeKind::kNext));
+	VECTOR distance = next_yaw - current_yaw;
+	distance.y = math::ConnectMinusPiToPi(distance.y);
+
+	// ƒXƒR[ƒv‚ð”`‚­ê‡‚Í‘¬“x‚ðã¸‚³‚¹‚é
+	float		angle		= m_is_ready_gun ? -kLookDirCorrectionAngleForADS : -kLookDirCorrectionAngle;
+	const float threshold	= m_is_ready_gun ? kConfirmLookDirThresholdForADS : kConfirmLookDirThreshold;
+
+	// ƒJƒƒ‰‚ðŠî€‚É‚µ‚Ä‰E‘¤‚Å‚ ‚Á‚½ê‡‚Í”½“]
+	if (distance.y > 0) { angle *= -1; }
+
+	// ‰ñ“]‚ð“K—p
+	const Quaternion rot_q = quat::MakeQuaternion(axis::GetWorldYAxis(), angle);
+	m_look_dir.at(TimeKind::kCurrent) = math::GetRotatedPos(m_look_dir.at(TimeKind::kCurrent), rot_q);
+	if (VSize(m_look_dir.at(TimeKind::kNext) - m_look_dir.at(TimeKind::kCurrent)) < threshold)
 	{
-		m_look_dir.at(TimeKind::kNext) = v3d::GetNormalizedVector(m_look_dir.at(TimeKind::kNext));
+		m_look_dir.at(TimeKind::kCurrent) = m_look_dir.at(TimeKind::kNext);
 
-		// ƒˆ[Šp‰ñ“]‚ðŽæ“¾‚µA-ƒÎ`ƒÎ‚Å’l‚ðŠÇ—‚·‚é
-		const VECTOR current_yaw	= math::GetYawRotVector(m_look_dir.at(TimeKind::kCurrent));
-		const VECTOR next_yaw		= math::GetYawRotVector(m_look_dir.at(TimeKind::kNext));
-		VECTOR distance = next_yaw - current_yaw;
-		distance.y = math::ConnectMinusPiToPi(distance.y);
-
-		// ƒXƒR[ƒv‚ð”`‚­ê‡‚Í‘¬“x‚ðã¸‚³‚¹‚é
-		float		angle = m_is_ready_gun ? -kLookDirCorrectionAngleForADS : -kLookDirCorrectionAngle;
-		const float threshold = m_is_ready_gun ? kConfirmLookDirThresholdForADS : kConfirmLookDirThreshold;
-
-		// ƒJƒƒ‰‚ðŠî€‚É‚µ‚Ä‰E‘¤‚Å‚ ‚Á‚½ê‡‚Í”½“]
-		if (distance.y > 0) { angle *= -1; }
-
-		// ‰ñ“]‚ð“K—p
-		const Quaternion quat = quat::MakeQuaternion(axis::GetWorldYAxis(), angle);
-		m_look_dir.at(TimeKind::kCurrent) = math::GetRotatedPos(m_look_dir.at(TimeKind::kCurrent), quat);
-		if (VSize(m_look_dir.at(TimeKind::kNext) - m_look_dir.at(TimeKind::kCurrent)) < threshold)
-		{
-			m_look_dir.at(TimeKind::kCurrent) = m_look_dir.at(TimeKind::kNext);
-
-			m_is_turn_around = false;
-		}
+		// –Ú“I‚Ìdir‚É’B‚µ‚½ê‡‚ÍU‚èŒü‚«ˆ—‚ÍI—¹‚Æ‚·‚é
+		m_is_turn_around = false;
 	}
 }
 

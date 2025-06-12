@@ -112,6 +112,7 @@ private:
 	bool  m_is_squat;
 	bool  m_is_ready_gun;			// e‚ğ\‚¦‚é
 	bool  m_is_turn_around;			// Y²180‹‰ñ“]‚³‚¹‚é‚©‚ğ”»’è
+	bool  m_is_correct_look_dir;	// Œ©‚é•ûŒü‚ğ•â³‚·‚é‚©‚ğ”»’è
 
 	std::array<bool, 4> m_is_input_move;
 };

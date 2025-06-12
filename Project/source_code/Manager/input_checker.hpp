@@ -149,11 +149,11 @@ public:
 	template<input_concepts::InputT InputT>
 	[[nodiscard]] float GetInputTime(const InputT&    input_code, const TimeKind time_kind)
 	{
-		const InputKind kind = GetInputKind(input_code);
+		const InputCode code = ConvertInputTemplateToInputCode(input_code);
 
 		for (const auto& [input_c, state_t, data] : m_input_data)
 		{
-			if (input_c.kind == kind && input_c.code == input_code && state_t == time_kind)
+			if (input_c.kind == code.kind && input_c.code == code.code && state_t == time_kind)
 			{
 				return data.input_time;
 			}
@@ -167,13 +167,13 @@ public:
 	template<input_concepts::InputT InputT>
 	[[nodiscard]] InputState GetInputState(const InputT&    input_code)
 	{
-		const InputKind kind	= GetInputKind(input_code);
+		const InputCode code	= ConvertInputTemplateToInputCode(input_code);
 		bool prev_is_input		= false;
 		bool current_is_input	= false;
 
 		for (const auto& [input_c, state_t, data] : m_input_data)
 		{
-			if (input_c.kind == kind && input_c.code == input_code)
+			if (input_c.kind == code.kind && input_c.code == code.code)
 			{
 				switch (state_t)
 				{

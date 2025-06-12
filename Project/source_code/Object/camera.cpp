@@ -184,13 +184,15 @@ void Camera::Move()
 
 	CalcAngle();
 
+
+
 	// äpìxêßå¿
 	if (m_angle.at(TimeKind::kCurrent).x < kMinVerticalAngle * math::kDegreesToRadian) { m_angle.at(TimeKind::kCurrent).x = kMinVerticalAngle * math::kDegreesToRadian; }
 	if (m_angle.at(TimeKind::kCurrent).x > kMaxVerticalAngle * math::kDegreesToRadian) { m_angle.at(TimeKind::kCurrent).x = kMaxVerticalAngle * math::kDegreesToRadian; }
 
 	// âÒì]çsóÒÇê∂ê¨
 	MATRIX m = MGetIdent();
-	CreateRotationZXYMatrix(&m, m_angle.at(TimeKind::kCurrent).x, m_angle.at(TimeKind::kCurrent).y, m_angle.at(TimeKind::kCurrent).z);
+	CreateRotationXYZMatrix(&m, m_angle.at(TimeKind::kCurrent).x, m_angle.at(TimeKind::kCurrent).y, m_angle.at(TimeKind::kCurrent).z);
 
 	// åãâ ÇîΩâf
 	m_transform->SetRot(CoordinateKind::kWorld, MGetRotElem(m));
