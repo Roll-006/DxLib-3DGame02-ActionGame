@@ -50,6 +50,9 @@ public:
 	void InitAngle();
 	#pragma endregion
 
+	/// @brief 視点リセット中かどうかを判定
+	[[nodiscard]] bool IsInitAngle() const { return m_is_init_angle; }
+
 private:
 	void Move();
 	void InitMove();

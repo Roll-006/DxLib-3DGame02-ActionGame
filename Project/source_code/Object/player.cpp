@@ -11,7 +11,8 @@ Player::Player(std::shared_ptr<Camera> camera) :
 	m_is_move			(false),
 	m_is_run			(false),
 	m_is_squat			(false),
-	m_is_ready_gun		(false)
+	m_is_ready_gun		(false),
+	m_is_turn_around	(false)
 {
 	// 初期pos・dirを設定
 	m_move_dir[TimeKind::kCurrent] = m_move_dir[TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);
@@ -68,14 +69,14 @@ void Player::Update()
 	command->Execute(CommandKind::kMoveLeftPlayer,	this);
 	command->Execute(CommandKind::kMoveRightPlayer, this);
 
-	// しゃがみ処理によりカプセルを縮める
-	ShrinkCapsule();
-
 	Move();
 
 	// アニメーション処理
 	ChangeAnimState();
 	m_animator->Update();
+
+	// しゃがみ処理によりカプセルを縮める
+	ShrinkCapsule();
 
 	// 武器処理
 	// 武器はモデルの行列情報をもとに位置を決定するため一度モデルに行列を適用
@@ -115,6 +116,9 @@ void Player::OnGravity()
 #pragma region コマンド
 void Player::Run()
 {
+	// ターン中は早期return
+	if (m_is_turn_around) { return; }
+
 	const auto command = CommandHandler::GetInstance();
 	const auto input   = InputChecker  ::GetInstance();
 	const auto code    = *command->GetCurrentFrameExecuteInputCode(CommandKind::kRun);
@@ -148,6 +152,9 @@ void Player::Run()
 
 void Player::Squat()
 {
+	// ターン中は早期return
+	if (m_is_turn_around) { return; }
+
 	const auto command = CommandHandler::GetInstance();
 	const auto input = InputChecker::GetInstance();
 	const auto code = *command->GetCurrentFrameExecuteInputCode(CommandKind::kSquat);
@@ -181,6 +188,9 @@ void Player::Squat()
 
 void Player::MoveForward()
 {
+	// ターン中は早期return
+	if (m_is_turn_around) { return; }
+
 	m_is_input_move.at(static_cast<int>(MoveDir::kForward)) = true;
 
 	VECTOR forward = m_camera->GetTransform()->GetForward(CoordinateKind::kWorld);
@@ -191,6 +201,9 @@ void Player::MoveForward()
 
 void Player::MoveBackward()
 {
+	// ターン中は早期return
+	if (m_is_turn_around) { return; }
+
 	m_is_input_move.at(static_cast<int>(MoveDir::kBackward)) = true;
 
 	VECTOR forward = m_camera->GetTransform()->GetForward(CoordinateKind::kWorld);
@@ -201,6 +214,9 @@ void Player::MoveBackward()
 
 void Player::MoveLeft()
 {
+	// ターン中は早期return
+	if (m_is_turn_around) { return; }
+
 	m_is_input_move.at(static_cast<int>(MoveDir::kLeft)) = true;
 
 	m_move_dir.at(TimeKind::kNext) -= m_camera->GetTransform()->GetRight(CoordinateKind::kWorld);
@@ -208,6 +224,9 @@ void Player::MoveLeft()
 
 void Player::MoveRight()
 {
+	// ターン中は早期return
+	if (m_is_turn_around) { return; }
+
 	m_is_input_move.at(static_cast<int>(MoveDir::kRight)) = true;
 
 	m_move_dir.at(TimeKind::kNext) += m_camera->GetTransform()->GetRight(CoordinateKind::kWorld);
@@ -215,6 +234,9 @@ void Player::MoveRight()
 
 void Player::ReadyGun()
 {
+	// ターン中は早期return
+	if (m_is_turn_around) { return; }
+
 	m_is_ready_gun	= true;
 
 	// 拡大率から実際の距離を取得
@@ -228,23 +250,33 @@ void Player::ReadyGun()
 
 void Player::Shot()
 {
-
+	// ターン中は早期return
+	if (m_is_turn_around) { return; }
 }
 #pragma endregion
 
 
 void Player::ShrinkCapsule()
 {
-	if (m_is_squat)
-	{
-		// カプセルを縮める
-		math::Decrease(m_capsule_length, kCapsuleLengthShrinkSpeed * FPS::GetDeltaTime(), kCapsuleLengthForSquat);
-	}
-	else
-	{
-		// カプセルのサイズを戻す
-		math::Increase(m_capsule_length, kCapsuleLengthShrinkSpeed * FPS::GetDeltaTime(), kCapsuleLengthForStand);
-	}
+	// 頭部ボーンの行列情報を取得
+	const int model_handle = m_modeler->GetModelHandle();
+	const int frame_num = MV1SearchFrame(model_handle, BonePath.HEAD_TOP_END);
+	MATRIX	  frame_mat = MV1GetFrameLocalWorldMatrix(model_handle, frame_num);
+
+	// 始点から頭部までの長さを取得
+	m_capsule_length = VSize(m_transform->GetPos(CoordinateKind::kWorld) - MGetTranslateElem(frame_mat));
+
+	//// アニメーション依存にさせるため仕様変更
+	//if (m_is_squat)
+	//{
+	//	// カプセルを縮める
+	//	math::Decrease(m_capsule_length, kCapsuleLengthShrinkSpeed * FPS::GetDeltaTime(), kCapsuleLengthForSquat);
+	//}
+	//else
+	//{
+	//	// カプセルのサイズを戻す
+	//	math::Increase(m_capsule_length, kCapsuleLengthShrinkSpeed * FPS::GetDeltaTime(), kCapsuleLengthForStand);
+	//}
 
 	const auto segment_length = m_capsule_length - kCapsuleRadius * 2.0f;
 	m_capsule_collider->SetLength(segment_length);
@@ -533,24 +565,46 @@ void Player::CalcMoveDir(const VECTOR& velocity)
 
 void Player::CalcLookDir()
 {
-	// ダッシュ状態であれば進行方向を向く
-	if (m_is_run)
+	// カメラのforwardからY軸以外を抽出
+	VECTOR forward = m_camera->GetTransform()->GetForward(CoordinateKind::kWorld);
+	forward.y = 0.0f;
+	forward = v3d::GetNormalizedVector(forward);
+
+	//
+	if (!m_is_turn_around)
 	{
-		m_look_dir.at(TimeKind::kNext) = m_move_dir.at(TimeKind::kCurrent);
+		if (v3d::GetNormalizedVector(m_move_dir.at(TimeKind::kNext)) == -forward)
+		{
+			if (InputChecker::GetInstance()->IsInput(pad::ButtonKind::kRB))
+			{
+				m_is_turn_around = true;
+				m_look_dir.at(TimeKind::kNext) = -m_look_dir.at(TimeKind::kCurrent);
+			}
+		}
 	}
 
-	// 歩き状態、もしくは銃を構えていれば常にカメラと同じ向きを向く
-	if (!m_is_run || m_is_ready_gun)
+	if (!m_is_turn_around)
 	{
-		// カメラのforwardからyベクトル以外を抽出
-		VECTOR forward = m_camera->GetTransform()->GetForward(CoordinateKind::kWorld);
-		forward.y = 0.0f;
-		forward = v3d::GetNormalizedVector(forward);
-		m_look_dir.at(TimeKind::kNext) = forward;
+		// ダッシュ状態であれば進行方向を向く
+		if (m_is_run)
+		{
+			m_look_dir.at(TimeKind::kNext) = m_move_dir.at(TimeKind::kCurrent);
+		}
+
+		// 歩き状態、もしくは銃を構えていれば常にカメラと同じ向きを向く
+		if (!m_is_run || m_is_ready_gun)
+		{
+			// カメラのforwardからyベクトル以外を抽出
+			m_look_dir.at(TimeKind::kNext) = forward;
+		}
 	}
 
-	// 向き補正
-	if (m_is_move || m_is_ready_gun)
+	CorrectLookDir();
+}
+
+void Player::CorrectLookDir()
+{
+	if (m_is_move || m_is_ready_gun || m_is_turn_around)
 	{
 		m_look_dir.at(TimeKind::kNext) = v3d::GetNormalizedVector(m_look_dir.at(TimeKind::kNext));
 
@@ -561,7 +615,7 @@ void Player::CalcLookDir()
 		distance.y = math::ConnectMinusPiToPi(distance.y);
 
 		// スコープを覗く場合は速度を上昇させる
-		float		angle	  = m_is_ready_gun ? -kLookDirCorrectionAngleForADS : -kLookDirCorrectionAngle;
+		float		angle = m_is_ready_gun ? -kLookDirCorrectionAngleForADS : -kLookDirCorrectionAngle;
 		const float threshold = m_is_ready_gun ? kConfirmLookDirThresholdForADS : kConfirmLookDirThreshold;
 
 		// カメラを基準にして右側であった場合は反転
@@ -573,6 +627,8 @@ void Player::CalcLookDir()
 		if (VSize(m_look_dir.at(TimeKind::kNext) - m_look_dir.at(TimeKind::kCurrent)) < threshold)
 		{
 			m_look_dir.at(TimeKind::kCurrent) = m_look_dir.at(TimeKind::kNext);
+
+			m_is_turn_around = false;
 		}
 	}
 }

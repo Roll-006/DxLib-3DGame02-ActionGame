@@ -3,7 +3,7 @@
 
 inline auto operator+ (const v3d_concepts::ValidT auto& v)									{ return v; }
 template<v3d_concepts::ValidT VecT>
-inline auto operator- (const VecT& v)														{ return VecT(-v.z, -v.y, -v.z); }
+inline auto operator- (const VecT& v)														{ return VecT(-v.x, -v.y, -v.z); }
 
 template<v3d_concepts::ValidT VecT>
 inline auto operator+ (const VecT& v1, const VecT& v2)										{ return VecT(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z); }

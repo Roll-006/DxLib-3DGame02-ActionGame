@@ -47,6 +47,8 @@ private:
 	void CalcMoveDir(const VECTOR& velocity);
 	/// @brief 向きを計算
 	void CalcLookDir();
+	/// @brief 向きを補正する
+	void CorrectLookDir();
 
 	// パッド入力での速度ベクトルを取得
 	[[nodiscard]] VECTOR GetVelocityFromPad(VECTOR& velocity);
@@ -109,6 +111,7 @@ private:
 	bool  m_is_run;
 	bool  m_is_squat;
 	bool  m_is_ready_gun;			// 銃を構える
+	bool  m_is_turn_around;			// Y軸180°回転させるかを判定
 
 	std::array<bool, 4> m_is_input_move;
 };

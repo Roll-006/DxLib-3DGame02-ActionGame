@@ -2,9 +2,9 @@
 
 Animator::Animator(const std::shared_ptr<Modeler> modeler) :
 	m_prev_anim_play_rate		(0.0f),
-	m_blend_rate				(0.0f),
-	m_blend_speed				(kBlendSpeed),
+	m_blend_rate				(1.0f),
 	m_is_first_frame_change_anim(false),
+	m_is_attached				(false),
 	m_modeler					(modeler)
 
 {
@@ -58,41 +58,25 @@ void Animator::AddAnimHandle(const int kind, const int anim_handle, const int in
 
 void Animator::AttachAnim(const int next_kind)
 {
-	// 現在のアニメーションと同じであった場合は変更しない
-	if (m_time_kind_data.at(TimeKind::kCurrent).kind == next_kind) { return; }
-	if (m_blend_rate != 1.0f) { return; }
-
-	m_is_first_frame_change_anim = true;
+	// 現在のアニメーションと同じであった場合はアタッチを許可しない
+	// ブレンドが完了していない場合はアタッチを許可しない
+	if (m_time_kind_data.at(TimeKind::kCurrent).kind == next_kind || m_blend_rate != 1.0f)
+	{
+		m_is_attached = false;
+		return;
+	}
 
 	DetachAnim(TimeKind::kPrev);
+
+	m_is_attached					= true;
+	m_is_first_frame_change_anim	= true;
 
 	// データをシフト(Current ➡ Prev, Next ➡ Current)
 	m_time_kind_data.at(TimeKind::kPrev)					= m_time_kind_data.at(TimeKind::kCurrent);
 	m_time_kind_data.at(TimeKind::kCurrent).attach_index	= MV1AttachAnim(m_modeler->GetModelHandle(), m_anim_data.at(next_kind).index, m_anim_data.at(next_kind).anim_handle, TRUE);
-	m_time_kind_data.at(TimeKind::kCurrent).is_play			= true;
 	m_time_kind_data.at(TimeKind::kCurrent).kind			= next_kind;
 	SetPlayStartTime();
 
-	// ブレンド中にアタッチされた場合、PrevAnimの再生を停止させ、
-	// その時点の状態とブレンドを開始する
-	//if (m_blend_rate < 1.0f)
-	//{
-	//	m_time_kind_data.at(TimeKind::kPrev).is_play = false;
-	//}
-
-	//if (m_time_kind_data.at(TimeKind::kPrev).attach_index > -1)
-	//{
-	//	if (m_blend_rate == 1.0f)
-	//	{
-	//		m_blend_rate = 0.0f;
-	//	}
-	//}
-
-	//if (m_blend_rate != 1.0f)
-	//{
-	//	m_blend_rate = m_time_kind_data.at(TimeKind::kPrev).attach_index > -1 ? 0.0f : 1.0f;
-	//}
-	
 	// 前回のアニメーションが存在しない場合は、ブレンド済み(ブレンド率100%)とする
 	m_blend_rate = m_time_kind_data.at(TimeKind::kPrev).attach_index > -1 ? 0.0f : 1.0f;
 }
@@ -139,12 +123,8 @@ void Animator::PlayAnim()
 			const float total_t = MV1GetAttachAnimTotalTime(m_modeler->GetModelHandle(), data.attach_index);
 			const float blend_r = state_t == TimeKind::kCurrent ? m_blend_rate : 1.0f - m_blend_rate;
 
-			// 再生が許可させている場合のみ再生位置を変化
-			if (data.is_play)
-			{
-				float play_speed = m_anim_data.at(data.kind).play_speed * FPS::GetDeltaTime();
-				math::IncreaseLoop(data.play_timer, play_speed, total_t, m_anim_data.at(data.kind).is_loop);
-			}
+			float play_speed = m_anim_data.at(data.kind).play_speed * FPS::GetDeltaTime();
+			math::IncreaseLoop(data.play_timer, play_speed, total_t, m_anim_data.at(data.kind).is_loop);
 
 			// 再生位置・ブレンド率を適用
 			MV1SetAttachAnimTime	 (m_modeler->GetModelHandle(), data.attach_index, data.play_timer);
@@ -156,9 +136,9 @@ void Animator::PlayAnim()
 void Animator::BlendAnim()
 {
 	// ブレンド率100%まで増加させる
-	math::Increase(m_blend_rate, m_blend_speed * FPS::GetDeltaTime(), 1.0f);
+	math::Increase(m_blend_rate, kBlendSpeed * FPS::GetDeltaTime(), 1.0f);
 
-	// ブレンドが完了した場合、PrevAnimの再生は停止する
+	// ブレンドが完了した場合、PravAnimは不要なためデタッチする
 	if (m_blend_rate == 1.0f)
 	{
 		DetachAnim(TimeKind::kPrev);
