@@ -20,7 +20,7 @@ enum class CommandKind
 	kReadyGun,			// 銃を構える
 	kReloadGun,			// 銃のリロード
 	kSilentKill,		// サイレントキル(不意打ち)
-	kQuickTurn,			// クイックターン
+	kTurnAround,		// 振り向き
 
 	kMoveUpCamera,		// カメラ上移動
 	kMoveDownCamera,	// カメラ下移動

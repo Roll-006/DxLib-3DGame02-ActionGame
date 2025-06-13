@@ -296,11 +296,23 @@ namespace math
 	/// @brief 回転後の座標を取得
 	[[nodiscard]] VECTOR GetRotatedPos(const VECTOR& pos, const Quaternion& rotate_q);
 
-	/// @brief ヨー角を取得
-	[[nodiscard]] float GetYaw(const VECTOR& v);
+	/// @brief ロール角(X軸回転)を取得
+	/// TODO : 要検証
+	[[nodiscard]] float GetRoll (const VECTOR& v);
+	/// @brief ヨー角(Y軸回転)を取得
+	[[nodiscard]] float GetYaw  (const VECTOR& v);
+	/// @brief ピッチ角(Z軸回転)を取得
+	/// TODO : 要検証
+	[[nodiscard]] float GetPitch(const VECTOR& v);
 
-	/// @brief ヨー角回転ベクトルを取得
-	[[nodiscard]] VECTOR GetYawRotVector(const VECTOR& v);
+	/// @brief ロール角(X軸)回転ベクトルを取得
+	/// TODO : 要検証
+	[[nodiscard]] VECTOR GetRollRotVector (const VECTOR& v);
+	/// @brief ヨー角(Y軸)回転ベクトルを取得
+	[[nodiscard]] VECTOR GetYawRotVector  (const VECTOR& v);
+	/// @brief ピッチ角(Z軸)回転ベクトルを取得
+	/// TODO : 要検証
+	[[nodiscard]] VECTOR GetPitchRotVector(const VECTOR& v);
 
 	/// @brief XYZ軸を取得
 	/// @param dir 向きベクトル(この値をZ軸とする)

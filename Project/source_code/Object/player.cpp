@@ -196,10 +196,7 @@ void Player::MoveForward()
 
 	m_is_input_move.at(static_cast<int>(MoveDir::kForward)) = true;
 
-	VECTOR forward = m_camera->GetTransform()->GetForward(CoordinateKind::kWorld);
-	forward.y = 0.0f;
-
-	m_move_dir.at(TimeKind::kNext) += v3d::GetNormalizedVector(forward);
+	m_move_dir.at(TimeKind::kNext) += GetMoveForward();
 }
 
 void Player::MoveBackward()
@@ -209,10 +206,7 @@ void Player::MoveBackward()
 
 	m_is_input_move.at(static_cast<int>(MoveDir::kBackward)) = true;
 
-	VECTOR forward = m_camera->GetTransform()->GetForward(CoordinateKind::kWorld);
-	forward.y = 0.0f;
-
-	m_move_dir.at(TimeKind::kNext) -= v3d::GetNormalizedVector(forward);
+	m_move_dir.at(TimeKind::kNext) -= GetMoveForward();
 }
 
 void Player::MoveLeft()
@@ -259,171 +253,6 @@ void Player::Shot()
 }
 #pragma endregion
 
-
-void Player::ShrinkCapsule()
-{
-	// 頭部ボーンの行列情報を取得
-	const int model_handle = m_modeler->GetModelHandle();
-	const int frame_num = MV1SearchFrame(model_handle, BonePath.HEAD_TOP_END);
-	MATRIX	  frame_mat = MV1GetFrameLocalWorldMatrix(model_handle, frame_num);
-
-	// 始点から頭部までの長さを取得
-	m_capsule_length = VSize(m_transform->GetPos(CoordinateKind::kWorld) - MGetTranslateElem(frame_mat));
-
-	//// アニメーション依存にさせるため仕様変更
-	//if (m_is_squat)
-	//{
-	//	// カプセルを縮める
-	//	math::Decrease(m_capsule_length, kCapsuleLengthShrinkSpeed * FPS::GetDeltaTime(), kCapsuleLengthForSquat);
-	//}
-	//else
-	//{
-	//	// カプセルのサイズを戻す
-	//	math::Increase(m_capsule_length, kCapsuleLengthShrinkSpeed * FPS::GetDeltaTime(), kCapsuleLengthForStand);
-	//}
-
-	const auto segment_length = m_capsule_length - kCapsuleRadius * 2.0f;
-	m_capsule_collider->SetLength(segment_length);
-}
-
-void Player::LoadAnim()
-{
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdle01),					AnimPath.IDLE_01,						0, AnimTag.NONE, 20.0f, true);
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdle02),					AnimPath.IDLE_02,						0, AnimTag.NONE, 20.0f, true);
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdleSquat01),				AnimPath.IDLE_SQUAT_01,					0, AnimTag.NONE, 20.0f, true);
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdleSquatShoot01),			AnimPath.IDLE_SQUAT_SHOOT_01,			0, AnimTag.NONE, 20.0f, true);
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdleShoot01),				AnimPath.IDLE_SHOOT_01,					0, AnimTag.NONE, 20.0f, true);
-
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkSquatForward01),		AnimPath.WALK_SQUAT_FORWARD_01,			0, AnimTag.WALK, 20.0f, true);
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkSquatBackward01),		AnimPath.WALK_SQUAT_BACKWARD_01,		0, AnimTag.WALK, 20.0f, true);
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkSquatLeft01),			AnimPath.WALK_SQUAT_LEFT_01,			0, AnimTag.WALK, 20.0f, true);
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkSquatRight01),			AnimPath.WALK_SQUAT_RIGHT_01,			0, AnimTag.WALK, 20.0f, true);
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkSquatForwardLeft01),	AnimPath.WALK_SQUAT_FORWARD_LEFT_01,	0, AnimTag.WALK, 20.0f, true);
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkSquatForwardRight01),	AnimPath.WALK_SQUAT_FORWARD_RIGHT_01,	0, AnimTag.WALK, 20.0f, true);
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkSquatBackwardLeft01),	AnimPath.WALK_SQUAT_BACKWARD_LEFT_01,	0, AnimTag.WALK, 20.0f, true);
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkSquatBackwardRight01),	AnimPath.WALK_SQUAT_BACKWARD_RIGHT_01,	0, AnimTag.WALK, 20.0f, true);
-
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkShootForward01),		AnimPath.WALK_SHOOT_FORWARD_01,			0, AnimTag.WALK, 20.0f, true);
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkShootBackward01),		AnimPath.WALK_SHOOT_BACKWARD_01,		0, AnimTag.WALK, 20.0f, true);
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkShootLeft01),			AnimPath.WALK_SHOOT_LEFT_01,			0, AnimTag.WALK, 20.0f, true);
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkShootRight01),			AnimPath.WALK_SHOOT_RIGHT_01,			0, AnimTag.WALK, 20.0f, true);
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkShootForwardLeft01),	AnimPath.WALK_SHOOT_FORWARD_LEFT_01,	0, AnimTag.WALK, 20.0f, true);
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkShootForwardRight01),	AnimPath.WALK_SHOOT_FORWARD_RIGHT_01,	0, AnimTag.WALK, 20.0f, true);
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkShootBackwardLeft01),	AnimPath.WALK_SHOOT_BACKWARD_LEFT_01,	0, AnimTag.WALK, 20.0f, true);
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkShootBackwardRight01),	AnimPath.WALK_SHOOT_BACKWARD_RIGHT_01,	0, AnimTag.WALK, 20.0f, true);
-
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kRunForward01),				AnimPath.RUN_FORWARD_01,				0, AnimTag.WALK, 40.0f, true);
-}
-
-void Player::ChangeAnimState()
-{
-	// アイドル
-	if (!m_is_move)
-	{
-		if (m_non_move_time > kIdelAnimPlayThreshold)
-		{
-			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kIdle02;
-
-			if (m_is_squat)
-			{
-				m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kIdleSquat01;
-			}
-		}
-
-		if (m_is_ready_gun)
-		{
-			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kIdleShoot01;
-		}
-	}
-
-	// ダッシュ
-	if (m_is_run)
-	{
-		m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kRunForward01;
-	}
-
-	// 銃を構えながら歩く
-	if (m_is_move && !m_is_run)
-	{
-		if (m_is_input_move.at(static_cast<int>(MoveDir::kForward)))
-		{
-			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkShootForward01;
-		}
-		if (m_is_input_move.at(static_cast<int>(MoveDir::kBackward)))
-		{
-			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkShootBackward01;
-		}
-		if (m_is_input_move.at(static_cast<int>(MoveDir::kLeft)))
-		{
-			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkShootLeft01;
-		}
-		if (m_is_input_move.at(static_cast<int>(MoveDir::kRight)))
-		{
-			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkShootRight01;
-		}
-		if (m_is_input_move.at(static_cast<int>(MoveDir::kForward))  && m_is_input_move.at(static_cast<int>(MoveDir::kLeft)))
-		{
-			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkShootForwardLeft01;
-		}
-		if (m_is_input_move.at(static_cast<int>(MoveDir::kForward))  && m_is_input_move.at(static_cast<int>(MoveDir::kRight)))
-		{
-			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkShootForwardRight01;
-		}
-		if (m_is_input_move.at(static_cast<int>(MoveDir::kBackward)) && m_is_input_move.at(static_cast<int>(MoveDir::kLeft)))
-		{
-			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkShootBackwardLeft01;
-		}
-		if (m_is_input_move.at(static_cast<int>(MoveDir::kBackward)) && m_is_input_move.at(static_cast<int>(MoveDir::kRight)))
-		{
-			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkShootBackwardRight01;
-		}
-	}
-
-	// しゃがむ
-	if (m_is_squat)
-	{
-		if (m_is_ready_gun)
-		{
-			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kIdleSquatShoot01;
-		}
-
-		if (m_is_input_move.at(static_cast<int>(MoveDir::kForward)))
-		{
-			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkSquatForward01;
-		}
-		if (m_is_input_move.at(static_cast<int>(MoveDir::kBackward)))
-		{
-			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkSquatBackward01;
-		}
-		if (m_is_input_move.at(static_cast<int>(MoveDir::kLeft)))
-		{
-			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkSquatLeft01;
-		}
-		if (m_is_input_move.at(static_cast<int>(MoveDir::kRight)))
-		{
-			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkSquatRight01;
-		}
-		if (m_is_input_move.at(static_cast<int>(MoveDir::kForward))  && m_is_input_move.at(static_cast<int>(MoveDir::kLeft)))
-		{
-			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkSquatForwardLeft01;
-		}
-		if (m_is_input_move.at(static_cast<int>(MoveDir::kForward))  && m_is_input_move.at(static_cast<int>(MoveDir::kRight)))
-		{
-			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkSquatForwardRight01;
-		}
-		if (m_is_input_move.at(static_cast<int>(MoveDir::kBackward)) && m_is_input_move.at(static_cast<int>(MoveDir::kLeft)))
-		{
-			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkSquatBackwardLeft01;
-		}
-		if (m_is_input_move.at(static_cast<int>(MoveDir::kBackward)) && m_is_input_move.at(static_cast<int>(MoveDir::kRight)))
-		{
-			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkSquatBackwardRight01;
-		}
-	}
-
-	// 状態を反映
-	m_animator->AttachAnim(static_cast<int>(m_anim_kind.at(TimeKind::kCurrent)));
-}
 
 void Player::Move()
 {
@@ -573,25 +402,15 @@ void Player::CalcMoveDir(const VECTOR& velocity)
 
 void Player::CalcLookDir()
 {
-	// カメラのforwardからY軸以外を抽出
-	VECTOR forward = m_camera->GetTransform()->GetForward(CoordinateKind::kWorld);
-	forward.y = 0.0f;
-	forward = v3d::GetNormalizedVector(forward);
+	// 振り向き処理
+	JudgeTurnAround();
 
-	// TODO : のちに見やすく変更
-	if (!m_is_turn_around)
+	if (m_is_turn_around)
 	{
-		if (v3d::GetNormalizedVector(m_move_dir.at(TimeKind::kNext)) == -forward)
-		{
-			if (InputChecker::GetInstance()->GetInputState(pad::ButtonKind::kRB) == InputState::kSingle)
-			{
-				m_is_turn_around = true;
-				m_look_dir.at(TimeKind::kNext) = -m_look_dir.at(TimeKind::kCurrent);
-			}
-		}
+		m_camera->InitYaw();
+		m_is_correct_look_dir = true;
 	}
-
-	if (!m_is_turn_around)
+	else
 	{
 		// ダッシュ状態であれば進行方向を向く
 		if (m_is_run)
@@ -603,7 +422,7 @@ void Player::CalcLookDir()
 		if (!m_is_run || m_is_ready_gun)
 		{
 			// カメラのforwardからyベクトル以外を抽出
-			m_look_dir.at(TimeKind::kNext) = forward;
+			m_look_dir.at(TimeKind::kNext) = GetMoveForward();
 		}
 	}
 
@@ -614,6 +433,8 @@ void Player::CalcLookDir()
 void Player::CorrectLookDir()
 {
 	if (!m_is_correct_look_dir) { return; }
+
+	DrawFormatString(0, 20, 0xffffff, "回転補正中");
 	
 	// ヨー角回転を取得し、-π～πで値を管理する
 	const VECTOR current_yaw	= math::GetYawRotVector(m_look_dir.at(TimeKind::kCurrent));
@@ -628,6 +449,9 @@ void Player::CorrectLookDir()
 	// カメラを基準にして右側であった場合は反転
 	if (distance.y > 0) { angle *= -1; }
 
+	DrawFormatString(0, 40, 0xffffff, "m_look_dir.at(TimeKind::kNext)    : %f, %f, %f", m_look_dir.at(TimeKind::kNext).x, m_look_dir.at(TimeKind::kNext).y, m_look_dir.at(TimeKind::kNext).z);
+	DrawFormatString(0, 60, 0xffffff, "m_look_dir.at(TimeKind::kCurrent) : %f, %f, %f", m_look_dir.at(TimeKind::kCurrent).x, m_look_dir.at(TimeKind::kCurrent).y, m_look_dir.at(TimeKind::kCurrent).z);
+
 	// 回転を適用
 	const Quaternion rot_q = quat::MakeQuaternion(axis::GetWorldYAxis(), angle);
 	m_look_dir.at(TimeKind::kCurrent) = math::GetRotatedPos(m_look_dir.at(TimeKind::kCurrent), rot_q);
@@ -637,6 +461,22 @@ void Player::CorrectLookDir()
 
 		// 目的のdirに達した場合は振り向き処理は終了とする
 		m_is_turn_around = false;
+	}
+}
+
+void Player::JudgeTurnAround()
+{
+	if (m_is_turn_around) { return; }
+
+	const float angle = math::GetAngleBetweenTwoVector(-GetMoveForward(), m_move_dir.at(TimeKind::kNext));
+
+	if (angle < kTurnAroundStickAngle * math::kDegreesToRadian)
+	{
+		if (InputChecker::GetInstance()->GetInputState(pad::ButtonKind::kRB) == InputState::kSingle)
+		{
+			m_is_turn_around = true;
+			m_look_dir.at(TimeKind::kNext) = -m_look_dir.at(TimeKind::kCurrent);
+		}
 	}
 }
 
@@ -681,4 +521,165 @@ VECTOR Player::GetVelocityFromPad(VECTOR& velocity)
 	}
 
 	return velocity;
+}
+
+void Player::ShrinkCapsule()
+{
+	// 頭部ボーンの行列情報を取得
+	const int model_handle = m_modeler->GetModelHandle();
+	const int frame_num = MV1SearchFrame(model_handle, BonePath.HEAD_TOP_END);
+	MATRIX	  frame_mat = MV1GetFrameLocalWorldMatrix(model_handle, frame_num);
+
+	// 始点から頭部までの長さを取得
+	m_capsule_length = VSize(m_transform->GetPos(CoordinateKind::kWorld) - MGetTranslateElem(frame_mat));
+
+	const auto segment_length = m_capsule_length - kCapsuleRadius * 2.0f;
+	m_capsule_collider->SetLength(segment_length);
+}
+
+void Player::LoadAnim()
+{
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdle01),					AnimPath.IDLE_01,						0, AnimTag.NONE, 20.0f, true);
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdle02),					AnimPath.IDLE_02,						0, AnimTag.NONE, 20.0f, true);
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdleSquat01),				AnimPath.IDLE_SQUAT_01,					0, AnimTag.NONE, 20.0f, true);
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdleSquatShoot01),			AnimPath.IDLE_SQUAT_SHOOT_01,			0, AnimTag.NONE, 20.0f, true);
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdleShoot01),				AnimPath.IDLE_SHOOT_01,					0, AnimTag.NONE, 20.0f, true);
+
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkSquatForward01),		AnimPath.WALK_SQUAT_FORWARD_01,			0, AnimTag.WALK, 20.0f, true);
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkSquatBackward01),		AnimPath.WALK_SQUAT_BACKWARD_01,		0, AnimTag.WALK, 20.0f, true);
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkSquatLeft01),			AnimPath.WALK_SQUAT_LEFT_01,			0, AnimTag.WALK, 20.0f, true);
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkSquatRight01),			AnimPath.WALK_SQUAT_RIGHT_01,			0, AnimTag.WALK, 20.0f, true);
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkSquatForwardLeft01),	AnimPath.WALK_SQUAT_FORWARD_LEFT_01,	0, AnimTag.WALK, 20.0f, true);
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkSquatForwardRight01),	AnimPath.WALK_SQUAT_FORWARD_RIGHT_01,	0, AnimTag.WALK, 20.0f, true);
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkSquatBackwardLeft01),	AnimPath.WALK_SQUAT_BACKWARD_LEFT_01,	0, AnimTag.WALK, 20.0f, true);
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkSquatBackwardRight01),	AnimPath.WALK_SQUAT_BACKWARD_RIGHT_01,	0, AnimTag.WALK, 20.0f, true);
+
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkShootForward01),		AnimPath.WALK_SHOOT_FORWARD_01,			0, AnimTag.WALK, 20.0f, true);
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkShootBackward01),		AnimPath.WALK_SHOOT_BACKWARD_01,		0, AnimTag.WALK, 20.0f, true);
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkShootLeft01),			AnimPath.WALK_SHOOT_LEFT_01,			0, AnimTag.WALK, 20.0f, true);
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkShootRight01),			AnimPath.WALK_SHOOT_RIGHT_01,			0, AnimTag.WALK, 20.0f, true);
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkShootForwardLeft01),	AnimPath.WALK_SHOOT_FORWARD_LEFT_01,	0, AnimTag.WALK, 20.0f, true);
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkShootForwardRight01),	AnimPath.WALK_SHOOT_FORWARD_RIGHT_01,	0, AnimTag.WALK, 20.0f, true);
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkShootBackwardLeft01),	AnimPath.WALK_SHOOT_BACKWARD_LEFT_01,	0, AnimTag.WALK, 20.0f, true);
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkShootBackwardRight01),	AnimPath.WALK_SHOOT_BACKWARD_RIGHT_01,	0, AnimTag.WALK, 20.0f, true);
+
+	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kRunForward01),				AnimPath.RUN_FORWARD_01,				0, AnimTag.WALK, 40.0f, true);
+}
+
+void Player::ChangeAnimState()
+{
+	// アイドル
+	if (!m_is_move)
+	{
+		if (m_non_move_time > kIdelAnimPlayThreshold)
+		{
+			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kIdle02;
+
+			if (m_is_squat)
+			{
+				m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kIdleSquat01;
+			}
+		}
+
+		if (m_is_ready_gun)
+		{
+			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kIdleShoot01;
+		}
+	}
+
+	// ダッシュ
+	if (m_is_run)
+	{
+		m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kRunForward01;
+	}
+
+	// 銃を構えながら歩く
+	if (m_is_move && !m_is_run)
+	{
+		if (m_is_input_move.at(static_cast<int>(MoveDir::kForward)))
+		{
+			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkShootForward01;
+		}
+		if (m_is_input_move.at(static_cast<int>(MoveDir::kBackward)))
+		{
+			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkShootBackward01;
+		}
+		if (m_is_input_move.at(static_cast<int>(MoveDir::kLeft)))
+		{
+			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkShootLeft01;
+		}
+		if (m_is_input_move.at(static_cast<int>(MoveDir::kRight)))
+		{
+			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkShootRight01;
+		}
+		if (m_is_input_move.at(static_cast<int>(MoveDir::kForward))  && m_is_input_move.at(static_cast<int>(MoveDir::kLeft)))
+		{
+			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkShootForwardLeft01;
+		}
+		if (m_is_input_move.at(static_cast<int>(MoveDir::kForward))  && m_is_input_move.at(static_cast<int>(MoveDir::kRight)))
+		{
+			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkShootForwardRight01;
+		}
+		if (m_is_input_move.at(static_cast<int>(MoveDir::kBackward)) && m_is_input_move.at(static_cast<int>(MoveDir::kLeft)))
+		{
+			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkShootBackwardLeft01;
+		}
+		if (m_is_input_move.at(static_cast<int>(MoveDir::kBackward)) && m_is_input_move.at(static_cast<int>(MoveDir::kRight)))
+		{
+			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkShootBackwardRight01;
+		}
+	}
+
+	// しゃがむ
+	if (m_is_squat)
+	{
+		if (m_is_ready_gun)
+		{
+			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kIdleSquatShoot01;
+		}
+
+		if (m_is_input_move.at(static_cast<int>(MoveDir::kForward)))
+		{
+			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkSquatForward01;
+		}
+		if (m_is_input_move.at(static_cast<int>(MoveDir::kBackward)))
+		{
+			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkSquatBackward01;
+		}
+		if (m_is_input_move.at(static_cast<int>(MoveDir::kLeft)))
+		{
+			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkSquatLeft01;
+		}
+		if (m_is_input_move.at(static_cast<int>(MoveDir::kRight)))
+		{
+			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkSquatRight01;
+		}
+		if (m_is_input_move.at(static_cast<int>(MoveDir::kForward))  && m_is_input_move.at(static_cast<int>(MoveDir::kLeft)))
+		{
+			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkSquatForwardLeft01;
+		}
+		if (m_is_input_move.at(static_cast<int>(MoveDir::kForward))  && m_is_input_move.at(static_cast<int>(MoveDir::kRight)))
+		{
+			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkSquatForwardRight01;
+		}
+		if (m_is_input_move.at(static_cast<int>(MoveDir::kBackward)) && m_is_input_move.at(static_cast<int>(MoveDir::kLeft)))
+		{
+			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkSquatBackwardLeft01;
+		}
+		if (m_is_input_move.at(static_cast<int>(MoveDir::kBackward)) && m_is_input_move.at(static_cast<int>(MoveDir::kRight)))
+		{
+			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkSquatBackwardRight01;
+		}
+	}
+
+	// 状態を反映
+	m_animator->AttachAnim(static_cast<int>(m_anim_kind.at(TimeKind::kCurrent)));
+}
+
+VECTOR Player::GetMoveForward()
+{
+	VECTOR forward = m_camera->GetTransform()->GetForward(CoordinateKind::kWorld);
+	forward.y = 0.0f;
+
+	return v3d::GetNormalizedVector(forward);
 }

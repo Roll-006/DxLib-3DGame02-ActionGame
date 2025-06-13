@@ -50,6 +50,9 @@ public:
 	void InitAngle();
 	#pragma endregion
 
+	/// @brief ヨー角(Y軸回転)の視点をリセット
+	void InitYaw();
+
 	/// @brief 視点リセット中かどうかを判定
 	[[nodiscard]] bool IsInitAngle() const { return m_is_init_angle; }
 
@@ -57,7 +60,11 @@ private:
 	void Move();
 	void InitMove();
 
+	/// @brief カメラ角度を計算する
 	void CalcAngle();
+
+	/// @brief 視点リセット時の角度を計算する
+	void CalcInitAngle();
 
 	/// @brief 見る座標を取得
 	[[nodiscard]] VECTOR GetLookPos();

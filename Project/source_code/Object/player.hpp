@@ -50,6 +50,9 @@ private:
 	/// @brief 向きを補正する
 	void CorrectLookDir();
 
+	/// @brief 振り向くかを判定
+	void JudgeTurnAround();
+
 	// パッド入力での速度ベクトルを取得
 	[[nodiscard]] VECTOR GetVelocityFromPad(VECTOR& velocity);
 
@@ -58,6 +61,10 @@ private:
 
 	void LoadAnim() override;
 	void ChangeAnimState() override;
+
+	/// @brief カメラのforwardをもとにした進行方向ベクトルを取得する
+	/// @return カメラのforwardのY軸を消し飛ばしたベクトル
+	[[nodiscard]] VECTOR GetMoveForward();
 
 private:
 	enum class MoveDir
@@ -82,9 +89,10 @@ private:
 	static constexpr float kConfirmLookDirThreshold			= 0.25f;	// 目的のdirに到達したと判定する閾値
 	static constexpr float kConfirmLookDirThresholdForADS	= 0.55f;	// スコープを覗く際の、目的のdirに到達したと判定する閾値
 
-	static constexpr float kIdelAnimPlayThreshold			= 0.35f;		// アイドルアニメーションを再生すると判定する閾値
+	static constexpr float kIdelAnimPlayThreshold			= 0.35f;	// アイドルアニメーションを再生すると判定する閾値
 
 	static constexpr int   kWalkStickSlopeLimit				= 15000;	// 歩き状態とするスティック傾きの上限
+	static constexpr int   kTurnAroundStickAngle			= 30.0f;	// 振り向きを行うスティックの入力角度
 
 	static constexpr float kCapsuleRadius					= 34.0f;
 	static constexpr float kCapsuleLengthForStand			= 178.0f;

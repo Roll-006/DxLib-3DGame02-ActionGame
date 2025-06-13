@@ -48,7 +48,7 @@ void CommandHandler::LoadPlayerCommand()
 	m_commands[CommandKind::kReadyGun]			= (std::make_shared<player_cmd::Ready>());
 	m_commands[CommandKind::kReloadGun]			= (std::make_shared<player_cmd::Reload>());
 	m_commands[CommandKind::kSilentKill]		= (std::make_shared<player_cmd::SilentKill>());
-	m_commands[CommandKind::kQuickTurn]			= (std::make_shared<player_cmd::QuickTurn>());
+	m_commands[CommandKind::kTurnAround]		= (std::make_shared<player_cmd::TurnAround>());
 }
 
 void CommandHandler::LoadCameraCommand()
@@ -167,7 +167,7 @@ void CommandHandler::InitKeyCommand()
 	AddInputCode(CommandKind::kReadyGun,		mouse::ButtonKind::kRight);
 	AddInputCode(CommandKind::kReloadGun,		KEY_INPUT_R);
 	AddInputCode(CommandKind::kSilentKill,		mouse::ButtonKind::kLeft);
-	AddInputCode(CommandKind::kQuickTurn,		KEY_INPUT_Q);
+	AddInputCode(CommandKind::kTurnAround,		KEY_INPUT_Q);
 	AddInputCode(CommandKind::kMoveUpCamera,	KEY_INPUT_UP);
 	AddInputCode(CommandKind::kMoveDownCamera,	KEY_INPUT_DOWN);
 	AddInputCode(CommandKind::kMoveLeftCamera,	KEY_INPUT_LEFT);
@@ -203,7 +203,7 @@ void CommandHandler::InitPadCommand()
 	AddInputCode(CommandKind::kReadyGun,		pad::TriggerKind::kLT);
 	AddInputCode(CommandKind::kReloadGun,		pad::ButtonKind	::kX);
 	AddInputCode(CommandKind::kSilentKill,		pad::TriggerKind::kRT);
-	AddInputCode(CommandKind::kQuickTurn,		pad::ButtonKind	::kRB);
+	AddInputCode(CommandKind::kTurnAround,		pad::ButtonKind	::kRB);
 	AddInputCode(CommandKind::kInitAngle,		pad::ButtonKind	::kRB);
 
 	// ó·äOèàóùÇ∆ÇµÇƒé¿çs

@@ -266,7 +266,11 @@ float math::GetAngleBetweenTwoVector(const VECTOR& v1, const VECTOR& v2)
 
     if (length1 == 0.0f || length2 == 0.0f) { return 0.0f; }
 
-    return acos(VDot(v1, v2) / (length1 * length2));
+    // 誤差を消し飛ばす
+    float dot = VDot(v1, v2) / (length1 * length2);
+    dot = std::clamp(dot, -1.0f, 1.0f);
+
+    return acos(dot);
 }
 #pragma endregion
 
@@ -283,14 +287,34 @@ VECTOR math::GetRotatedPos(const VECTOR& pos, const Quaternion& rotate_q)
 	return VGet(totated_q.x, totated_q.y, totated_q.z);
 }
 
+float math::GetRoll(const VECTOR& v)
+{
+    return atan2f(v.z, v.y);
+}
+
 float math::GetYaw(const VECTOR& v)
 {
     return atan2f(v.x, v.z);
 }
 
+float math::GetPitch(const VECTOR& v)
+{
+    return atan2f(v.x, v.y);
+}
+
+VECTOR math::GetRollRotVector(const VECTOR& v)
+{
+    return VGet(GetRoll(v),0.0f, 0.0f);
+}
+
 VECTOR math::GetYawRotVector(const VECTOR& v)
 {
     return VGet(0.0f, GetYaw(v), 0.0f);
+}
+
+VECTOR math::GetPitchRotVector(const VECTOR& v)
+{
+    return VGet(0.0f, 0.0f, GetPitch(v));
 }
 
 Axes math::GetAxes(const VECTOR& dir, const Axes& parent_axes)

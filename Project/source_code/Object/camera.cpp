@@ -66,6 +66,40 @@ void Camera::OnGravity()
 
 }
 
+void Camera::AttachTarget(const std::shared_ptr<ObjBase> obj)
+{
+	m_target_transform = obj->GetTransform();
+}
+
+void Camera::AttachTarget(const std::string& obj_name)
+{
+	auto target_obj = ObjManager::GetInstance()->GetObj(obj_name);
+	AttachTarget(target_obj);
+}
+
+void Camera::AttachTarget(const std::shared_ptr<ObjBase> obj, const std::shared_ptr<Modeler> modeler, const std::string& bone_path)
+{
+	AttachTarget(obj);
+
+	m_target_modeler	= modeler;
+	m_target_bone		= bone_path;
+}
+
+void Camera::AttachTarget(const std::string& obj_name, const std::shared_ptr<Modeler> modeler, const std::string& bone_path)
+{
+	AttachTarget(obj_name);
+
+	m_target_modeler	= modeler;
+	m_target_bone		= bone_path;
+}
+
+void Camera::DetachTarget()
+{
+	m_target_transform	= nullptr;
+	m_target_modeler	= nullptr;
+	m_target_bone		= "";
+}
+
 void Camera::Approach(const float min_distance, const float move_speed)
 {
 	m_distance_to_target -= move_speed;
@@ -136,40 +170,16 @@ void Camera::InitAngle()
 #pragma endregion
 
 
-void Camera::AttachTarget(const std::shared_ptr<ObjBase> obj)
+void Camera::InitYaw()
 {
-	m_target_transform = obj->GetTransform();
+	if (!m_target_transform) { return; }
+
+	const VECTOR forward = m_target_transform->GetForward(CoordinateKind::kWorld);
+	m_angle.at(TimeKind::kNext) = VGet(math::GetRoll(m_transform->GetRight(CoordinateKind::kWorld)), math::GetYaw(forward), 0.0f);
+	m_angle.at(TimeKind::kNext).y = math::ConnectMinusPiToPi(m_angle.at(TimeKind::kNext).y);
+
+	m_is_init_angle = true;
 }
-
-void Camera::AttachTarget(const std::string& obj_name)
-{
-	auto target_obj = ObjManager::GetInstance()->GetObj(obj_name);
-	AttachTarget(target_obj);
-}
-
-void Camera::AttachTarget(const std::shared_ptr<ObjBase> obj, const std::shared_ptr<Modeler> modeler, const std::string& bone_path)
-{
-	AttachTarget(obj);
-
-	m_target_modeler	= modeler;
-	m_target_bone		= bone_path;
-}
-
-void Camera::AttachTarget(const std::string& obj_name, const std::shared_ptr<Modeler> modeler, const std::string& bone_path)
-{
-	AttachTarget(obj_name);
-
-	m_target_modeler	= modeler;
-	m_target_bone		= bone_path;
-}
-
-void Camera::DetachTarget()
-{
-	m_target_transform	= nullptr;
-	m_target_modeler	= nullptr;
-	m_target_bone		= "";
-}
-
 
 void Camera::Move()
 {
@@ -183,8 +193,6 @@ void Camera::Move()
 	//ApplyInvert();
 
 	CalcAngle();
-
-
 
 	// 角度制限
 	if (m_angle.at(TimeKind::kCurrent).x < kMinVerticalAngle * math::kDegreesToRadian) { m_angle.at(TimeKind::kCurrent).x = kMinVerticalAngle * math::kDegreesToRadian; }
@@ -224,6 +232,21 @@ void Camera::CalcAngle()
 	}
 
 	// 視点リセット
+	CalcInitAngle();
+
+	m_velocity *= FPS::GetDeltaTime();
+
+	// 角度を取得
+	if (m_is_input.at(static_cast<int>(InputDir::kUp)))		{ m_angle.at(TimeKind::kCurrent).x += m_velocity.x; }
+	if (m_is_input.at(static_cast<int>(InputDir::kDown)))	{ m_angle.at(TimeKind::kCurrent).x += m_velocity.x; }
+	if (m_is_input.at(static_cast<int>(InputDir::kLeft)))	{ m_angle.at(TimeKind::kCurrent).y += m_velocity.y; }
+	if (m_is_input.at(static_cast<int>(InputDir::kRight)))	{ m_angle.at(TimeKind::kCurrent).y += m_velocity.y; }
+
+	m_angle.at(TimeKind::kCurrent).y = math::ConnectMinusPiToPi(m_angle.at(TimeKind::kCurrent).y);
+}
+
+void Camera::CalcInitAngle()
+{
 	if (m_is_init_angle)
 	{
 		VECTOR distance_v = m_angle.at(TimeKind::kNext) - m_angle.at(TimeKind::kCurrent);
@@ -248,16 +271,6 @@ void Camera::CalcAngle()
 			m_is_init_angle = false;
 		}
 	}
-
-	m_velocity *= FPS::GetDeltaTime();
-
-	// 角度を取得
-	if (m_is_input.at(static_cast<int>(InputDir::kUp)))		{ m_angle.at(TimeKind::kCurrent).x += m_velocity.x; }
-	if (m_is_input.at(static_cast<int>(InputDir::kDown)))	{ m_angle.at(TimeKind::kCurrent).x += m_velocity.x; }
-	if (m_is_input.at(static_cast<int>(InputDir::kLeft)))	{ m_angle.at(TimeKind::kCurrent).y += m_velocity.y; }
-	if (m_is_input.at(static_cast<int>(InputDir::kRight)))	{ m_angle.at(TimeKind::kCurrent).y += m_velocity.y; }
-
-	m_angle.at(TimeKind::kCurrent).y = math::ConnectMinusPiToPi(m_angle.at(TimeKind::kCurrent).y);
 }
 
 VECTOR Camera::GetLookPos()

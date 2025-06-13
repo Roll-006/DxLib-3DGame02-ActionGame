@@ -50,7 +50,7 @@ void player_cmd::SilentKill::Execute(ObjBase& obj)
 	dynamic_cast<Player*>(&obj);
 }
 
-void player_cmd::QuickTurn::Execute(ObjBase& obj)
+void player_cmd::TurnAround::Execute(ObjBase& obj)
 {
 	dynamic_cast<Player*>(&obj);
 }

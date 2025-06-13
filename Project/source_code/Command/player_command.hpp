@@ -81,11 +81,11 @@ namespace player_cmd
 		void Execute(ObjBase& obj) override;
 	};
 
-	/// @brief クイックターン
-	class QuickTurn final : public CommandBase
+	/// @brief 振り向き
+	class TurnAround final : public CommandBase
 	{
 	public:
-		QuickTurn() : CommandBase(CommandKind::kQuickTurn) {}
+		TurnAround() : CommandBase(CommandKind::kTurnAround) {}
 		void Execute(ObjBase& obj) override;
 	};
 }
