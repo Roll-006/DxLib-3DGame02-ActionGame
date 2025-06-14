@@ -52,5 +52,5 @@ void player_cmd::SilentKill::Execute(ObjBase& obj)
 
 void player_cmd::TurnAround::Execute(ObjBase& obj)
 {
-	dynamic_cast<Player*>(&obj);
+	dynamic_cast<Player*>(&obj)->TurnAround();
 }

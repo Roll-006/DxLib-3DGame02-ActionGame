@@ -13,7 +13,8 @@ Player::Player(std::shared_ptr<Camera> camera) :
 	m_is_squat				(false),
 	m_is_ready_gun			(false),
 	m_is_turn_around		(false),
-	m_is_correct_look_dir	(false)
+	m_is_correct_look_dir	(false),
+	m_turn_around_count		(0)
 {
 	// ‰ŠúposEdir‚ğİ’è
 	m_move_dir[TimeKind::kCurrent] = m_move_dir[TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);
@@ -102,7 +103,7 @@ void Player::Draw() const
 	DrawLine3D(pos, pos + axes.y_axis * 100, 0x00ff22);
 	DrawLine3D(pos, pos + axes.z_axis * 100, 0x0077ff);
 
-	DrawFormatString(0, 0, 0xffffff, "”½“]Š®—¹ : %d", m_is_turn_around);
+	//DrawFormatString(0, 0, 0xffffff, "”½“]Š®—¹ : %d", m_is_turn_around);
 }
 
 void Player::OnCollide(const PhysicalObjBase& check_hit_obj)
@@ -251,6 +252,23 @@ void Player::Shot()
 	// ƒ^[ƒ“’†‚Í‘Šúreturn
 	if (m_is_turn_around) { return; }
 }
+
+void Player::TurnAround()
+{
+	if (m_is_turn_around)										{ return; }
+	if (m_turn_around_count != 0)								{ return; }
+	if (m_move_dir.at(TimeKind::kNext) == v3d::GetZeroVector()) { return; }
+
+	// ƒoƒbƒN’†‚Å‚ ‚Á‚½ê‡‚ÍU‚èŒü‚­
+	const float angle = math::GetAngleBetweenTwoVector(-GetMoveForward(), m_move_dir.at(TimeKind::kNext));
+	if (angle < kTurnAroundStickAngle * math::kDegreesToRadian)
+	{
+		m_look_dir.at(TimeKind::kNext) = -m_look_dir.at(TimeKind::kCurrent);
+
+		m_is_turn_around = true;
+		++m_turn_around_count;
+	}
+}
 #pragma endregion
 
 
@@ -261,7 +279,7 @@ void Player::Move()
 	CalcVerticalVelocity();
 
 	// ˆÚ“®‚â‰ñ“]‚É•Ï‰»‚ª‚ ‚Á‚½ê‡‚ÍˆÊ’uE‰ñ“]‚ğXV
-	if (m_is_move || m_is_ready_gun)
+	if (m_is_move || m_is_ready_gun || m_is_turn_around)
 	{
 		const VECTOR velocity = m_move_dir.at(TimeKind::kCurrent) * m_move_speed;
 		m_transform->SetRot(CoordinateKind::kWorld, m_look_dir.at(TimeKind::kCurrent));
@@ -390,11 +408,12 @@ void Player::CalcMoveDir(const VECTOR& velocity)
 
 	// –Ú“I‚Æ‚·‚éŒü‚«‚Æ‹——£‚ğæ“¾
 	m_move_dir.at(TimeKind::kNext) = v3d::GetNormalizedVector(velocity);
-	VECTOR distance = m_move_dir.at(TimeKind::kNext) - m_move_dir.at(TimeKind::kCurrent);
+	const VECTOR distance_v = m_move_dir.at(TimeKind::kNext) - m_move_dir.at(TimeKind::kCurrent);
 
 	// Œ»İ‚Ìdir‚ğ–Ú“I‚Æ‚·‚édir‚É‹ß‚Ã‚¯‚Ä‚¢‚­
-	m_move_dir.at(TimeKind::kCurrent) += v3d::GetNormalizedVector(distance) * kMoveDirCorrectionSpeed;
-	if (VSize(m_move_dir.at(TimeKind::kNext) - m_move_dir.at(TimeKind::kCurrent)) < kConfirmMoveDirThreshold)
+	m_move_dir.at(TimeKind::kCurrent) += v3d::GetNormalizedVector(distance_v) * kMoveDirCorrectionSpeed;
+	const float distance = VSize(m_move_dir.at(TimeKind::kNext) - m_move_dir.at(TimeKind::kCurrent));
+	if (distance < kConfirmMoveDirThreshold)
 	{
 		m_move_dir.at(TimeKind::kCurrent) = m_move_dir.at(TimeKind::kNext);
 	}
@@ -403,7 +422,14 @@ void Player::CalcMoveDir(const VECTOR& velocity)
 void Player::CalcLookDir()
 {
 	// U‚èŒü‚«ˆ—
-	JudgeTurnAround();
+	const auto command = CommandHandler::GetInstance();
+	command->Execute(CommandKind::kTurnAround, this);
+
+	// ˜A‘±U‚èŒü‚«‚ğ‘j~
+	if (!command->GetCurrentFrameExecuteInputCode(CommandKind::kTurnAround))
+	{
+		m_turn_around_count = 0;
+	}
 
 	if (m_is_turn_around)
 	{
@@ -432,8 +458,6 @@ void Player::CalcLookDir()
 
 void Player::CorrectLookDir()
 {
-	if (!m_is_correct_look_dir) { return; }
-
 	DrawFormatString(0, 20, 0xffffff, "‰ñ“]•â³’†");
 	
 	// ƒˆ[Šp‰ñ“]‚ğæ“¾‚µA-ƒÎ`ƒÎ‚Å’l‚ğŠÇ—‚·‚é
@@ -461,22 +485,6 @@ void Player::CorrectLookDir()
 
 		// –Ú“I‚Ìdir‚É’B‚µ‚½ê‡‚ÍU‚èŒü‚«ˆ—‚ÍI—¹‚Æ‚·‚é
 		m_is_turn_around = false;
-	}
-}
-
-void Player::JudgeTurnAround()
-{
-	if (m_is_turn_around) { return; }
-
-	const float angle = math::GetAngleBetweenTwoVector(-GetMoveForward(), m_move_dir.at(TimeKind::kNext));
-
-	if (angle < kTurnAroundStickAngle * math::kDegreesToRadian)
-	{
-		if (InputChecker::GetInstance()->GetInputState(pad::ButtonKind::kRB) == InputState::kSingle)
-		{
-			m_is_turn_around = true;
-			m_look_dir.at(TimeKind::kNext) = -m_look_dir.at(TimeKind::kCurrent);
-		}
 	}
 }
 
