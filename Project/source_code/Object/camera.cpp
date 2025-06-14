@@ -10,7 +10,6 @@ Camera::Camera() :
 	m_is_invert_horizontal	(false),
 	m_is_invert_vertical	(false),
 	m_is_init_angle			(false),
-	m_is_init_yaw			(false),
 	m_dir					(v3d::GetZeroVector()),
 	m_velocity				(v3d::GetZeroVector())
 {
@@ -57,7 +56,6 @@ void Camera::Draw() const
 	DrawLine3D(v3d::GetZeroVector(), axis::GetWorldZAxis() * 10000, 0x0077ff);
 
 	DrawFormatString(0,  0, 0xffffff, "m_is_init_angle : %d", m_is_init_angle);
-	DrawFormatString(0, 20, 0xffffff, "m_is_init_yaw   : %d", m_is_init_yaw);
 }
 
 void Camera::OnCollide(const PhysicalObjBase& check_hit_obj)
@@ -163,7 +161,7 @@ void Camera::MoveRight()
 void Camera::InitAngle()
 {
 	if (!m_target_transform) { return; }
-	if (m_is_init_yaw)		 { return; }
+	if (m_is_init_angle)	 { return; }
 
 	// プレイヤーのforwardを目標とする
 	const VECTOR forward = m_target_transform->GetForward(CoordinateKind::kWorld);
@@ -184,7 +182,6 @@ void Camera::InitYaw()
 	m_angle.at(TimeKind::kNext).y = math::ConnectMinusPiToPi(m_angle.at(TimeKind::kNext).y);
 
 	m_is_init_angle = true;
-	m_is_init_yaw   = true;
 }
 
 void Camera::Move()
@@ -278,7 +275,6 @@ void Camera::CalcInitAngle()
 			m_angle.at(TimeKind::kCurrent) = m_angle.at(TimeKind::kNext);
 
 			m_is_init_angle = false;
-			m_is_init_yaw	= false;
 		}
 	}
 }

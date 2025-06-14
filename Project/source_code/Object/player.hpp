@@ -84,7 +84,7 @@ private:
 	static constexpr float kLookDirCorrectionAngle			= 0.1f;		// 見る方向を回転させる角度
 	static constexpr float kLookDirCorrectionAngleForADS	= 0.26f;	// スコープを覗く際の、見る方向を回転させる角度
 	static constexpr float kConfirmMoveDirThreshold			= 0.08f;	// 目的のdirに到達したと判定する閾値
-	static constexpr float kConfirmLookDirThreshold			= 0.25f;	// 目的のdirに到達したと判定する閾値
+	static constexpr float kConfirmLookDirThreshold			= 0.1f;		// 目的のdirに到達したと判定する閾値
 	static constexpr float kConfirmLookDirThresholdForADS	= 0.55f;	// スコープを覗く際の、目的のdirに到達したと判定する閾値
 
 	static constexpr float kIdelAnimPlayThreshold			= 0.35f;	// アイドルアニメーションを再生すると判定する閾値

@@ -113,11 +113,11 @@ private:
 	std::shared_ptr<Modeler>   m_target_modeler;
 	std::string				   m_target_bone;
 
-	float  m_distance_to_target;
+	float  m_distance_to_target;		// 追跡対象までの距離
+
 	bool   m_is_invert_horizontal;		// 操作時に左右反転を行うかを判定
 	bool   m_is_invert_vertical;		// 操作時に上下反転を行うかを判定
 	bool   m_is_init_angle;				// 視点リセットを行うかを判定
-	bool   m_is_init_yaw;				// ヨー角のみの視点リセットを行うかを判定
 
 	VECTOR m_dir;
 	VECTOR m_velocity;
