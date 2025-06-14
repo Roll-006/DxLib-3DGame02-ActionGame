@@ -114,7 +114,26 @@ void Transform::SetRot(const CoordinateKind coord_kind, const Axes& axes)
 
 void Transform::SetScale(const CoordinateKind coord_kind, const VECTOR& scale)
 {
-	//m_local_matrix = scale * MInverse(GetRotationMatrix(coord_kind)) * GetMatrix(coord_kind);
+	const MATRIX scale_m	= MGetScale(scale);
+	const MATRIX rot_m		= GetRotationMatrix(coord_kind);
+	const MATRIX pos_m		= MGetTranslate(GetPos(coord_kind));
+	const MATRIX result_m	= scale_m * rot_m * pos_m;
+
+	if (coord_kind == CoordinateKind::kWorld)
+	{
+		if (m_parent_transform)
+		{
+			m_local_matrix = MInverse(m_parent_transform->GetMatrix(coord_kind)) * result_m;
+			return;
+		}
+	}
+
+	m_local_matrix = result_m;
+}
+
+void Transform::SetScale(const CoordinateKind coord_kind, const float scale)
+{
+	SetScale(coord_kind, VGet(scale, scale, scale));
 }
 #pragma endregion
 
@@ -149,7 +168,12 @@ MATRIX Transform::GetRotationMatrix(const CoordinateKind coord_kind)
 VECTOR Transform::GetScale(const CoordinateKind coord_kind)
 {
 	const MATRIX mat = GetMatrix(coord_kind);
-	return VECTOR(mat.m[0][0], mat.m[1][1], mat.m[2][2]);
+
+	const float angle_x = VSize(VGet(mat.m[0][0], mat.m[0][1], mat.m[0][2]));
+	const float angle_y = VSize(VGet(mat.m[1][0], mat.m[1][1], mat.m[1][2]));
+	const float angle_z = VSize(VGet(mat.m[2][0], mat.m[2][1], mat.m[2][2]));
+
+	return VECTOR(angle_x, angle_y, angle_z);
 }
 
 VECTOR Transform::GetRight(const CoordinateKind coord_kind)
@@ -174,13 +198,6 @@ Axes Transform::GetAxes(const CoordinateKind coord_kind)
 
 VECTOR Transform::GetEulerAngles(const CoordinateKind coord_kind)
 {
-	if (coord_kind == CoordinateKind::kLocal)
-	{
-		if (m_parent_transform)
-		{
-			return math::ConvertRotationMatrixToEulerAngles(GetMatrix(coord_kind), m_parent_transform->GetAxes(coord_kind));
-		}
-	}
-	return math::ConvertRotationMatrixToEulerAngles(GetMatrix(coord_kind), axis::GetWorldAxes());
+	return math::ConvertRotationMatrixToEulerAngles(GetMatrix(coord_kind));
 }
 #pragma endregion

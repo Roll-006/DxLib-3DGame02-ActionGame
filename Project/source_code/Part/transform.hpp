@@ -27,7 +27,9 @@ public:
 	/// @brief キャラクターの水平な回転しか考慮していない
 	/// @param dir 必ずY軸が0である必要あり
 	void SetRot		(const CoordinateKind coord_kind, const VECTOR& dir);
+
 	void SetScale	(const CoordinateKind coord_kind, const VECTOR&	scale);
+	void SetScale	(const CoordinateKind coord_kind, const float	scale);
 	#pragma endregion
 
 	[[nodiscard]] MATRIX GetMatrix			(const CoordinateKind coord_kind);

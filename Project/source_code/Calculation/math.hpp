@@ -94,17 +94,12 @@ namespace math
 	/// @param axes 行列に変換するXYZ軸
 	/// @param parent_axes 基準とする親XYZ軸
 	[[nodiscard]] MATRIX ConvertAxesToXYZRotationMatrix(const Axes& axes, const Axes& parent_axes);
-	[[nodiscard]] MATRIX ConvertAxesToXZYRotationMatrix(const Axes& axes, const Axes& parent_axes);
-	[[nodiscard]] MATRIX ConvertAxesToYXZRotationMatrix(const Axes& axes, const Axes& parent_axes);
-	[[nodiscard]] MATRIX ConvertAxesToYZXRotationMatrix(const Axes& axes, const Axes& parent_axes);
-	[[nodiscard]] MATRIX ConvertAxesToZXYRotationMatrix(const Axes& axes, const Axes& parent_axes);
-	[[nodiscard]] MATRIX ConvertAxesToZYXRotationMatrix(const Axes& axes, const Axes& parent_axes);
 
 	/// @brief XYZ軸からオイラー角へ変換
 	[[nodiscard]] VECTOR ConvertAxesToEulerAngles(const Axes& axes, const Axes& parent_axes);
 
 	/// @brief 回転行列からオイラー角へ変換
-	[[nodiscard]] VECTOR ConvertRotationMatrixToEulerAngles(const MATRIX& mat, const Axes& parent_axes);
+	[[nodiscard]] VECTOR ConvertRotationMatrixToEulerAngles(const MATRIX& mat);
 
 	/// @brief 回転行列からXYZ軸へ変換
 	[[nodiscard]] Axes ConvertRotationMatrixToAxes(const MATRIX& mat);

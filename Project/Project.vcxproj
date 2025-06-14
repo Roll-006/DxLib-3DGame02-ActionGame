@@ -159,6 +159,7 @@
     <ClCompile Include="source_code\Object\selector.cpp" />
     <ClCompile Include="source_code\Object\camera.cpp" />
     <ClCompile Include="source_code\Object\player.cpp" />
+    <ClCompile Include="source_code\Object\skydome.cpp" />
     <ClCompile Include="source_code\Part\animator.cpp" />
     <ClCompile Include="source_code\Part\modeler (2).cpp" />
     <ClCompile Include="source_code\Part\modeler.cpp" />
@@ -260,6 +261,7 @@
     <ClInclude Include="source_code\Object\selector.hpp" />
     <ClInclude Include="source_code\Object\camera.hpp" />
     <ClInclude Include="source_code\Object\player.hpp" />
+    <ClInclude Include="source_code\Object\skydome.hpp" />
     <ClInclude Include="source_code\Part\animator.hpp" />
     <ClInclude Include="source_code\Part\modeler (2).hpp" />
     <ClInclude Include="source_code\Part\modeler.hpp" />

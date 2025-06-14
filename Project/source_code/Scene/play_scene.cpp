@@ -1,6 +1,7 @@
 #include "play_scene.hpp"
 
-PlayScene::PlayScene()
+PlayScene::PlayScene():
+	m_skydome(std::make_shared<Skydome>(std::static_pointer_cast<Camera>(ObjManager::GetInstance()->GetObj(ObjName.CAMERA))))
 {
 
 }
@@ -17,10 +18,10 @@ void PlayScene::Init()
 
 void PlayScene::Update()
 {
-
+	m_skydome->Update();
 }
 
 void PlayScene::Draw() const
 {
-
+	m_skydome->Draw();
 }

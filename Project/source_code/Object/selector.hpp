@@ -6,7 +6,7 @@ class Selector final : public ObjBase
 {
 public:
 	Selector();
-	~Selector();
+	~Selector() override;
 
 private:
 

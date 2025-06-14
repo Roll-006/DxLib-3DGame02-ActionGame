@@ -10,7 +10,7 @@ class Camera final : public PhysicalObjBase
 {
 public:
 	Camera();
-	~Camera();
+	~Camera() override;
 
 	void Init()			override;
 	void Update()		override;

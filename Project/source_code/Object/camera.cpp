@@ -128,7 +128,7 @@ void Camera::MoveUp()
 	if (m_is_init_angle) { return; }
 
 	m_dir.x = -1;
-	m_is_input.at(static_cast<int>(InputDir::kUp))    = true;
+	m_is_input.at(static_cast<int>(InputDir::kUp)) = true;
 }
 
 void Camera::MoveDown()
@@ -136,8 +136,8 @@ void Camera::MoveDown()
 	// 視点リセット中は操作不可
 	if (m_is_init_angle) { return; }
 
-	m_dir.x =  1;
-	m_is_input.at(static_cast<int>(InputDir::kDown))  = true;
+	m_dir.x = 1;
+	m_is_input.at(static_cast<int>(InputDir::kDown)) = true;
 }
 
 void Camera::MoveLeft()
@@ -146,7 +146,7 @@ void Camera::MoveLeft()
 	if (m_is_init_angle) { return; }
 
 	m_dir.y = -1;
-	m_is_input.at(static_cast<int>(InputDir::kLeft))  = true;
+	m_is_input.at(static_cast<int>(InputDir::kLeft)) = true;
 }
 
 void Camera::MoveRight()
@@ -154,7 +154,7 @@ void Camera::MoveRight()
 	// 視点リセット中は操作不可
 	if (m_is_init_angle) { return; }
 
-	m_dir.y =  1;
+	m_dir.y = 1;
 	m_is_input.at(static_cast<int>(InputDir::kRight)) = true;
 }
 
@@ -176,10 +176,13 @@ void Camera::InitAngle()
 void Camera::InitYaw()
 {
 	if (!m_target_transform) { return; }
+	if (m_is_init_angle)	 { return; }
 
 	const VECTOR forward = m_target_transform->GetForward(CoordinateKind::kWorld);
-	m_angle.at(TimeKind::kNext) = VGet(math::GetRoll(m_transform->GetRight(CoordinateKind::kWorld)), math::GetYaw(forward), 0.0f);
-	m_angle.at(TimeKind::kNext).y = math::ConnectMinusPiToPi(m_angle.at(TimeKind::kNext).y);
+	const float  yaw	 = math::GetYaw(forward);
+
+	m_angle.at(TimeKind::kNext) = math::ConvertRotationMatrixToEulerAngles(m_transform->GetMatrix(CoordinateKind::kWorld));
+	m_angle.at(TimeKind::kNext).y = math::ConnectMinusPiToPi(yaw);
 
 	m_is_init_angle = true;
 }

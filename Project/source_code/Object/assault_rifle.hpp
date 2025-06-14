@@ -5,7 +5,7 @@ class AssaultRifle final : public GunBase
 {
 public:
 	AssaultRifle();
-	~AssaultRifle();
+	~AssaultRifle() override;
 
 	void Init()			override;
 	void Update()		override;

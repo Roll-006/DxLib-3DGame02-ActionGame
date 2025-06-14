@@ -9,7 +9,7 @@ class Player final : public CharaBase
 {
 public:
 	Player(std::shared_ptr<Camera> camera);
-	~Player();
+	~Player() override;
 
 	void Init()			override;
 	void Update()		override;
@@ -74,31 +74,31 @@ private:
 	};
 
 private:
-	static constexpr float kSquatWalkSpeed					= 1.0f;
-	static constexpr float kSlowWalkSpeed					= 2.0f;
-	static constexpr float kWalkSpeed						= 4.0f;
-	static constexpr float kRunSpeed						= 10.0f;
-	static constexpr float kAcceleration					= 2.0f;		// 加速度(減速度も共通)
+	static constexpr float kSquatWalkSpeed						= 1.0f;
+	static constexpr float kSlowWalkSpeed						= 2.0f;
+	static constexpr float kWalkSpeed							= 4.0f;
+	static constexpr float kRunSpeed							= 10.0f;
+	static constexpr float kAcceleration						= 2.0f;		// 加速度(減速度も共通)
 
-	static constexpr float kMoveDirCorrectionSpeed			= 0.065f;	// 移動方向の補正速度
-	static constexpr float kLookDirCorrectionAngle			= 0.1f;		// 見る方向を回転させる角度
-	static constexpr float kLookDirCorrectionAngleForADS	= 0.26f;	// スコープを覗く際の、見る方向を回転させる角度
-	static constexpr float kConfirmMoveDirThreshold			= 0.08f;	// 目的のdirに到達したと判定する閾値
-	static constexpr float kConfirmLookDirThreshold			= 0.1f;		// 目的のdirに到達したと判定する閾値
-	static constexpr float kConfirmLookDirThresholdForADS	= 0.55f;	// スコープを覗く際の、目的のdirに到達したと判定する閾値
+	static constexpr float kMoveDirCorrectionSpeed				= 0.065f;	// 移動方向の補正速度
+	static constexpr float kLookDirCorrectionAngle				= 0.1f;		// 見る方向を回転させる角度
+	static constexpr float kLookDirCorrectionAngleForADS		= 0.26f;	// スコープを覗く際の、見る方向を回転させる角度
+	static constexpr float kConfirmMoveDirThreshold				= 0.08f;	// 目的のdirに到達したと判定する閾値
+	static constexpr float kConfirmLookDirThresholdAngle		= 10.0f;	// 目的のdirに到達したと判定する閾値
+	static constexpr float kConfirmLookDirThresholdAngleForADS	= 20.0f;	// スコープを覗く際の、目的のdirに到達したと判定する閾値
 
-	static constexpr float kIdelAnimPlayThreshold			= 0.35f;	// アイドルアニメーションを再生すると判定する閾値
+	static constexpr float kIdelAnimPlayThreshold				= 0.35f;	// アイドルアニメーションを再生すると判定する閾値
 
-	static constexpr int   kWalkStickSlopeLimit				= 15000;	// 歩き状態とするスティック傾きの上限
-	static constexpr int   kTurnAroundStickAngle			= 30.0f;	// 振り向きを行うスティックの入力角度
+	static constexpr int   kWalkStickSlopeLimit					= 15000;	// 歩き状態とするスティック傾きの上限
+	static constexpr int   kTurnAroundStickAngle				= 30.0f;	// 振り向きを行うスティックの入力角度
 
-	static constexpr float kCapsuleRadius					= 34.0f;
-	static constexpr float kCapsuleLengthForStand			= 178.0f;
-	static constexpr float kCapsuleLengthForSquat			= 130.0f;
-	static constexpr float kCapsuleLengthShrinkSpeed		= 130.0f;
-	static constexpr float kLandingTriggerRadius			= 23.0f;
-
-	static constexpr float kAimDownSightsSpeed				= 800.0f;	// スコープをのぞき込む速度
+	static constexpr float kCapsuleRadius						= 34.0f;
+	static constexpr float kCapsuleLengthForStand				= 178.0f;
+	static constexpr float kCapsuleLengthForSquat				= 130.0f;
+	static constexpr float kCapsuleLengthShrinkSpeed			= 130.0f;
+	static constexpr float kLandingTriggerRadius				= 23.0f;
+	
+	static constexpr float kAimDownSightsSpeed					= 800.0f;	// スコープをのぞき込む速度
 
 	std::shared_ptr<Camera> m_camera;
 

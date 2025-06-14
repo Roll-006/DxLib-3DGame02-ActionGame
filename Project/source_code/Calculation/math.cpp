@@ -95,51 +95,6 @@ MATRIX math::ConvertAxesToXYZRotationMatrix(const Axes& axes, const Axes& parent
     return MGetRotElem(mat);
 }
 
-MATRIX math::ConvertAxesToXZYRotationMatrix(const Axes& axes, const Axes& parent_axes)
-{
-    const VECTOR angle = ConvertAxesToEulerAngles(parent_axes, axes);
-
-    MATRIX mat = MGetIdent();
-    CreateRotationXZYMatrix(&mat, angle.x, angle.y, angle.z);
-    return mat;
-}
-
-MATRIX math::ConvertAxesToYXZRotationMatrix(const Axes& axes, const Axes& parent_axes)
-{
-    const VECTOR angle = ConvertAxesToEulerAngles(parent_axes, axes);
-
-    MATRIX mat = MGetIdent();
-    CreateRotationYXZMatrix(&mat, angle.x, angle.y, angle.z);
-    return mat;
-}
-
-MATRIX math::ConvertAxesToYZXRotationMatrix(const Axes& axes, const Axes& parent_axes)
-{
-    const VECTOR angle = ConvertAxesToEulerAngles(parent_axes, axes);
-
-    MATRIX mat = MGetIdent();
-    CreateRotationYZXMatrix(&mat, angle.x, angle.y, angle.z);
-    return mat;
-}
-
-MATRIX math::ConvertAxesToZXYRotationMatrix(const Axes& axes, const Axes& parent_axes)
-{
-    const VECTOR angle = ConvertAxesToEulerAngles(axes, parent_axes);
-
-    MATRIX mat = MGetIdent();
-    CreateRotationZXYMatrix(&mat, angle.x, angle.y, angle.z);
-    return mat;
-}
-
-MATRIX math::ConvertAxesToZYXRotationMatrix(const Axes& axes, const Axes& parent_axes)
-{
-    const VECTOR angle = ConvertAxesToEulerAngles(parent_axes, axes);
-
-    MATRIX mat = MGetIdent();
-    CreateRotationZYXMatrix(&mat, angle.x, angle.y, angle.z);
-    return mat;
-}
-
 VECTOR math::ConvertAxesToEulerAngles(const Axes& axes, const Axes& parent_axes)
 {
     const float angle_x = GetAngleBetweenTwoVector(parent_axes.x_axis, axes.x_axis);
@@ -149,9 +104,13 @@ VECTOR math::ConvertAxesToEulerAngles(const Axes& axes, const Axes& parent_axes)
     return VECTOR(angle_x, angle_y, angle_z);
 }
 
-VECTOR math::ConvertRotationMatrixToEulerAngles(const MATRIX& mat, const Axes& parent_axes)
+VECTOR math::ConvertRotationMatrixToEulerAngles(const MATRIX& mat)
 {
-    return ConvertAxesToEulerAngles(parent_axes, ConvertRotationMatrixToAxes(mat));
+    VECTOR angle = v3d::GetZeroVector();
+    const MATRIX m = mat;
+    GetMatrixXYZRotation(&m, &angle.x, &angle.y, &angle.z);
+
+    return angle;
 }
 
 Axes math::ConvertRotationMatrixToAxes(const MATRIX& mat)

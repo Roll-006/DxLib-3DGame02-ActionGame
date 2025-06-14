@@ -103,6 +103,8 @@ void Player::Draw() const
 	DrawLine3D(pos, pos + axes.y_axis * 100, 0x00ff22);
 	DrawLine3D(pos, pos + axes.z_axis * 100, 0x0077ff);
 
+	DrawLine3D(pos, pos + m_look_dir.at(TimeKind::kNext) * 100, 0xff00ff);
+
 	//DrawFormatString(0, 0, 0xffffff, "反転完了 : %d", m_is_turn_around);
 }
 
@@ -438,18 +440,25 @@ void Player::CalcLookDir()
 	}
 	else
 	{
-		// ダッシュ状態であれば進行方向を向く
-		if (m_is_run)
+		if (m_is_move)
 		{
-			m_look_dir.at(TimeKind::kNext) = m_move_dir.at(TimeKind::kCurrent);
+			// ダッシュ状態であれば進行方向を向く
+			if (m_is_run)
+			{
+				m_look_dir.at(TimeKind::kNext) = m_move_dir.at(TimeKind::kCurrent);
+			}
+			// 歩き状態である場合は常にカメラと同じ向きを向く
+			else
+			{
+				m_look_dir.at(TimeKind::kNext) = GetMoveForward();
+			}
 		}
+	}
 
-		// 歩き状態、もしくは銃を構えていれば常にカメラと同じ向きを向く
-		if (!m_is_run || m_is_ready_gun)
-		{
-			// カメラのforwardからyベクトル以外を抽出
-			m_look_dir.at(TimeKind::kNext) = GetMoveForward();
-		}
+	// 銃を構えている場合は常にカメラと同じ向きを向く
+	if (m_is_ready_gun)
+	{
+		m_look_dir.at(TimeKind::kNext) = GetMoveForward();
 	}
 
 	// 滑らかにdirを補正
@@ -458,8 +467,6 @@ void Player::CalcLookDir()
 
 void Player::CorrectLookDir()
 {
-	DrawFormatString(0, 20, 0xffffff, "回転補正中");
-	
 	// ヨー角回転を取得し、-π～πで値を管理する
 	const VECTOR current_yaw	= math::GetYawRotVector(m_look_dir.at(TimeKind::kCurrent));
 	const VECTOR next_yaw		= math::GetYawRotVector(m_look_dir.at(TimeKind::kNext));
@@ -467,19 +474,21 @@ void Player::CorrectLookDir()
 	distance.y = math::ConnectMinusPiToPi(distance.y);
 
 	// スコープを覗く場合は速度を上昇させる
-	float		angle		= m_is_ready_gun ? -kLookDirCorrectionAngleForADS : -kLookDirCorrectionAngle;
-	const float threshold	= m_is_ready_gun ? kConfirmLookDirThresholdForADS : kConfirmLookDirThreshold;
+	float add_angle			= m_is_ready_gun ? -kLookDirCorrectionAngleForADS		: -kLookDirCorrectionAngle;
+	float threshold_angle	= m_is_ready_gun ? kConfirmLookDirThresholdAngleForADS	: kConfirmLookDirThresholdAngle;
 
 	// カメラを基準にして右側であった場合は反転
-	if (distance.y > 0) { angle *= -1; }
+	if (distance.y > 0) { add_angle *= -1; }
 
 	DrawFormatString(0, 40, 0xffffff, "m_look_dir.at(TimeKind::kNext)    : %f, %f, %f", m_look_dir.at(TimeKind::kNext).x, m_look_dir.at(TimeKind::kNext).y, m_look_dir.at(TimeKind::kNext).z);
 	DrawFormatString(0, 60, 0xffffff, "m_look_dir.at(TimeKind::kCurrent) : %f, %f, %f", m_look_dir.at(TimeKind::kCurrent).x, m_look_dir.at(TimeKind::kCurrent).y, m_look_dir.at(TimeKind::kCurrent).z);
 
 	// 回転を適用
-	const Quaternion rot_q = quat::MakeQuaternion(axis::GetWorldYAxis(), angle);
+	const Quaternion rot_q = quat::MakeQuaternion(axis::GetWorldYAxis(), add_angle);
 	m_look_dir.at(TimeKind::kCurrent) = math::GetRotatedPos(m_look_dir.at(TimeKind::kCurrent), rot_q);
-	if (VSize(m_look_dir.at(TimeKind::kNext) - m_look_dir.at(TimeKind::kCurrent)) < threshold)
+
+	const float angle = math::GetAngleBetweenTwoVector(m_look_dir.at(TimeKind::kNext), m_look_dir.at(TimeKind::kCurrent));
+	if (angle < threshold_angle * math::kDegreesToRadian)
 	{
 		m_look_dir.at(TimeKind::kCurrent) = m_look_dir.at(TimeKind::kNext);
 
