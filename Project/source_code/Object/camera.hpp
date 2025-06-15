@@ -99,8 +99,10 @@ private:
 
 	static constexpr float  kMaxVerticalAngle		= 89.0f;
 	static constexpr float  kMinVerticalAngle		= -70.0f;
-	static constexpr float  kInitAngleEndThreshold	= 0.01f;
 	static constexpr float  kInitAngleSpeed			= 10.0f;
+	static constexpr float  kInitYawSpeed			= 60.0f;
+	static constexpr float  kInitAngleEndThreshold	= 0.01f;
+	static constexpr float  kInitYawEndThreshold	= 0.02f;
 
 	static constexpr float  kMoveSpeedWithButton	= 2.0f;
 	static constexpr float  kMoveSpeedWithStick		= 2.5f;
@@ -114,6 +116,9 @@ private:
 	std::string				   m_target_bone;
 
 	float  m_distance_to_target;		// 追跡対象までの距離
+
+	float  m_init_angle_speed;			// 視点リセットの速度
+	float  m_init_end_threshold;		// 視点リセットの終了判定を行う閾値
 
 	bool   m_is_invert_horizontal;		// 操作時に左右反転を行うかを判定
 	bool   m_is_invert_vertical;		// 操作時に上下反転を行うかを判定

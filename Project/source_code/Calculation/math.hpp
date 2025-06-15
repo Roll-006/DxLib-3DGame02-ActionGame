@@ -99,6 +99,7 @@ namespace math
 	[[nodiscard]] VECTOR ConvertAxesToEulerAngles(const Axes& axes, const Axes& parent_axes);
 
 	/// @brief 回転行列からオイラー角へ変換
+	/// @brief FIXME : 不具合ありな可能性あり。要検証
 	[[nodiscard]] VECTOR ConvertRotationMatrixToEulerAngles(const MATRIX& mat);
 
 	/// @brief 回転行列からXYZ軸へ変換

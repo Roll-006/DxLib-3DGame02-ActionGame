@@ -104,8 +104,6 @@ void Player::Draw() const
 	DrawLine3D(pos, pos + axes.z_axis * 100, 0x0077ff);
 
 	DrawLine3D(pos, pos + m_look_dir.at(TimeKind::kNext) * 100, 0xff00ff);
-
-	//DrawFormatString(0, 0, 0xffffff, "”½“]Š®—¹ : %d", m_is_turn_around);
 }
 
 void Player::OnCollide(const PhysicalObjBase& check_hit_obj)
@@ -258,6 +256,7 @@ void Player::Shot()
 void Player::TurnAround()
 {
 	if (m_is_turn_around)										{ return; }
+	if (m_is_run)												{ return; }
 	if (m_turn_around_count != 0)								{ return; }
 	if (m_move_dir.at(TimeKind::kNext) == v3d::GetZeroVector()) { return; }
 
@@ -479,9 +478,6 @@ void Player::CorrectLookDir()
 
 	// ƒJƒƒ‰‚ðŠî€‚É‚µ‚Ä‰E‘¤‚Å‚ ‚Á‚½ê‡‚Í”½“]
 	if (distance.y > 0) { add_angle *= -1; }
-
-	DrawFormatString(0, 40, 0xffffff, "m_look_dir.at(TimeKind::kNext)    : %f, %f, %f", m_look_dir.at(TimeKind::kNext).x, m_look_dir.at(TimeKind::kNext).y, m_look_dir.at(TimeKind::kNext).z);
-	DrawFormatString(0, 60, 0xffffff, "m_look_dir.at(TimeKind::kCurrent) : %f, %f, %f", m_look_dir.at(TimeKind::kCurrent).x, m_look_dir.at(TimeKind::kCurrent).y, m_look_dir.at(TimeKind::kCurrent).z);
 
 	// ‰ñ“]‚ð“K—p
 	const Quaternion rot_q = quat::MakeQuaternion(axis::GetWorldYAxis(), add_angle);

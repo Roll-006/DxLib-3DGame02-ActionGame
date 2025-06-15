@@ -7,6 +7,8 @@ Camera::Camera() :
 	m_target_modeler		(nullptr),
 	m_target_bone			(""),
 	m_distance_to_target	(kNormalDistance),
+	m_init_angle_speed		(0.0f),
+	m_init_end_threshold	(0.0f),
 	m_is_invert_horizontal	(false),
 	m_is_invert_vertical	(false),
 	m_is_init_angle			(false),
@@ -54,8 +56,6 @@ void Camera::Draw() const
 	DrawLine3D(v3d::GetZeroVector(), axis::GetWorldXAxis() * 10000, 0xff0000);
 	DrawLine3D(v3d::GetZeroVector(), axis::GetWorldYAxis() * 10000, 0x00ff22);
 	DrawLine3D(v3d::GetZeroVector(), axis::GetWorldZAxis() * 10000, 0x0077ff);
-
-	DrawFormatString(0,  0, 0xffffff, "m_is_init_angle : %d", m_is_init_angle);
 }
 
 void Camera::OnCollide(const PhysicalObjBase& check_hit_obj)
@@ -163,12 +163,14 @@ void Camera::InitAngle()
 	if (!m_target_transform) { return; }
 	if (m_is_init_angle)	 { return; }
 
-	// プレイヤーのforwardを目標とする
+	// 追跡対象のforwardを目標とする
 	const VECTOR forward = m_target_transform->GetForward(CoordinateKind::kWorld);
 	m_angle.at(TimeKind::kNext) = math::GetYawRotVector(forward);
 	m_angle.at(TimeKind::kNext).y = math::ConnectMinusPiToPi(m_angle.at(TimeKind::kNext).y);
 
-	m_is_init_angle = true;
+	m_init_angle_speed	 = kInitAngleSpeed;
+	m_init_end_threshold = kInitAngleEndThreshold;
+	m_is_init_angle		 = true;
 }
 #pragma endregion
 
@@ -178,13 +180,15 @@ void Camera::InitYaw()
 	if (!m_target_transform) { return; }
 	if (m_is_init_angle)	 { return; }
 
+	// ヨー角以外はカメラ自身の姿勢をそのまま保つ
 	const VECTOR forward = m_target_transform->GetForward(CoordinateKind::kWorld);
 	const float  yaw	 = math::GetYaw(forward);
-
-	m_angle.at(TimeKind::kNext) = math::ConvertRotationMatrixToEulerAngles(m_transform->GetMatrix(CoordinateKind::kWorld));
+	m_angle.at(TimeKind::kNext) = m_angle.at(TimeKind::kCurrent);
 	m_angle.at(TimeKind::kNext).y = math::ConnectMinusPiToPi(yaw);
 
-	m_is_init_angle = true;
+	m_init_angle_speed	 = kInitYawSpeed;
+	m_init_end_threshold = kInitYawEndThreshold;
+	m_is_init_angle		 = true;
 }
 
 void Camera::Move()
@@ -268,12 +272,11 @@ void Camera::CalcInitAngle()
 		}
 
 		// 目的地に遠いほど速く移動させる
-		m_angle.at(TimeKind::kCurrent) += dir * distance * kInitAngleSpeed * FPS::GetDeltaTime();
-
+		m_angle.at(TimeKind::kCurrent) += dir * distance * m_init_angle_speed * FPS::GetDeltaTime();
+		
 		// 終了判定
 		distance = VSize(m_angle.at(TimeKind::kNext) - m_angle.at(TimeKind::kCurrent));
-		DrawFormatString(0, 220, 0xffffff, "angle(next) - angle(current) : %f", distance);
-		if (distance < kInitAngleEndThreshold)
+		if (distance < m_init_end_threshold)
 		{
 			m_angle.at(TimeKind::kCurrent) = m_angle.at(TimeKind::kNext);
 
