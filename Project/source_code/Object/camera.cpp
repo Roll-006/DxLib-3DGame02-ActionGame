@@ -2,18 +2,19 @@
 #include "../Manager/command_handler.hpp"
 
 Camera::Camera() : 
-	PhysicalObjBase			(ObjName.CAMERA, ObjTag.CAMERA, MassKind::kVeryLight),
-	m_target_transform		(nullptr),
-	m_target_modeler		(nullptr),
-	m_target_bone			(""),
-	m_distance_to_target	(kNormalDistance),
-	m_init_angle_speed		(0.0f),
-	m_init_end_threshold	(0.0f),
-	m_is_invert_horizontal	(false),
-	m_is_invert_vertical	(false),
-	m_is_init_angle			(false),
-	m_dir					(v3d::GetZeroVector()),
-	m_velocity				(v3d::GetZeroVector())
+	PhysicalObjBase				(ObjName.CAMERA, ObjTag.CAMERA, MassKind::kVeryLight),
+	m_target_transform			(nullptr),
+	m_target_modeler			(nullptr),
+	m_target_bone				(""),
+	m_distance_to_target		(kNormalDistance),
+	m_init_angle_speed			(0.0f),
+	m_init_end_threshold		(0.0f),
+	m_is_invert_horizontal		(false),
+	m_is_invert_vertical		(false),
+	m_is_init_angle				(false), 
+	m_is_look_same_dir_target	(false),
+	m_dir						(v3d::GetZeroVector()),
+	m_velocity					(v3d::GetZeroVector())
 {
 	SetCameraNearFar(kNear, kFar);
 	SetupCamera_Perspective(kFOV * math::kDegreesToRadian);
@@ -48,6 +49,7 @@ void Camera::Update()
 
 	Move();
 	SetLookDir();
+	JudgeLookSameDirTarget();
 }
 
 void Camera::Draw() const
@@ -257,31 +259,30 @@ void Camera::CalcAngle()
 
 void Camera::CalcInitAngle()
 {
-	if (m_is_init_angle)
+	if (!m_is_init_angle) { return; }
+	
+	VECTOR distance_v = m_angle.at(TimeKind::kNext) - m_angle.at(TimeKind::kCurrent);
+	distance_v.y = math::ConnectMinusPiToPi(distance_v.y);
+	VECTOR dir = v3d::GetNormalizedVector(distance_v);
+
+	// 右・左回りから最短経路を取得し、回転方向に反映
+	float distance = VSize(distance_v);
+	const float shortest = min(distance, DX_TWO_PI_F - distance);
+	if (distance != shortest)
 	{
-		VECTOR distance_v = m_angle.at(TimeKind::kNext) - m_angle.at(TimeKind::kCurrent);
-		distance_v.y = math::ConnectMinusPiToPi(distance_v.y);
-		VECTOR dir = v3d::GetNormalizedVector(distance_v);
+		dir.y *= -1;
+	}
 
-		// 右・左回りから最短経路を取得し、回転方向に反映
-		float distance = VSize(distance_v);
-		const float shortest = min(distance, DX_TWO_PI_F - distance);
-		if (distance != shortest)
-		{
-			dir.y *= -1;
-		}
-
-		// 目的地に遠いほど速く移動させる
-		m_angle.at(TimeKind::kCurrent) += dir * distance * m_init_angle_speed * FPS::GetDeltaTime();
+	// 目的地に遠いほど速く移動させる
+	m_angle.at(TimeKind::kCurrent) += dir * distance * m_init_angle_speed * FPS::GetDeltaTime();
 		
-		// 終了判定
-		distance = VSize(m_angle.at(TimeKind::kNext) - m_angle.at(TimeKind::kCurrent));
-		if (distance < m_init_end_threshold)
-		{
-			m_angle.at(TimeKind::kCurrent) = m_angle.at(TimeKind::kNext);
+	// 終了判定
+	distance = VSize(m_angle.at(TimeKind::kNext) - m_angle.at(TimeKind::kCurrent));
+	if (distance < m_init_end_threshold)
+	{
+		m_angle.at(TimeKind::kCurrent) = m_angle.at(TimeKind::kNext);
 
-			m_is_init_angle = false;
-		}
+		m_is_init_angle = false;
 	}
 }
 
@@ -314,6 +315,15 @@ void Camera::SetLookDir()
 	const VECTOR pos = m_transform->GetPos(CoordinateKind::kWorld);
 	const VECTOR look_pos = pos + m_transform->GetForward(CoordinateKind::kWorld);
 	SetCameraPositionAndTarget_UpVecY(pos, look_pos);
+}
+
+void Camera::JudgeLookSameDirTarget()
+{
+	const VECTOR forward = m_target_transform->GetForward(CoordinateKind::kWorld);
+	const float  yaw = math::GetYaw(forward);
+	m_angle.at(TimeKind::kCurrent).y;
+
+	m_is_look_same_dir_target = m_angle.at(TimeKind::kCurrent).y == yaw ? true : false;
 }
 
 void Camera::ApplyInvert()

@@ -17,7 +17,7 @@ Player::Player(std::shared_ptr<Camera> camera) :
 	m_turn_around_count		(0)
 {
 	// 初期pos・dirを設定
-	m_move_dir[TimeKind::kCurrent] = m_move_dir[TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);
+	m_move_dir[TimeKind::kPrev] = m_move_dir[TimeKind::kCurrent] = m_move_dir[TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);
 	m_look_dir[TimeKind::kCurrent] = m_look_dir[TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);
 	m_transform->SetRot(CoordinateKind::kWorld, m_look_dir.at(TimeKind::kCurrent));
 	m_transform->SetPos(CoordinateKind::kWorld, VGet(0, 0, 0));
@@ -72,6 +72,8 @@ void Player::Update()
 	command->Execute(CommandKind::kMoveRightPlayer, this);
 
 	Move();
+	UpdateTransform();
+	ApplyVelocityToCollider();
 
 	// アニメーション処理
 	ChangeAnimState();
@@ -278,21 +280,6 @@ void Player::Move()
 	// 各方向の移動
 	CalcHorizontalVelocity();
 	CalcVerticalVelocity();
-
-	// 移動や回転に変化があった場合は位置・回転を更新
-	if (m_is_move || m_is_ready_gun || m_is_turn_around)
-	{
-		const VECTOR velocity = m_move_dir.at(TimeKind::kCurrent) * m_move_speed;
-		m_transform->SetRot(CoordinateKind::kWorld, m_look_dir.at(TimeKind::kCurrent));
-		m_transform->SetPos(CoordinateKind::kWorld, m_transform->GetPos(CoordinateKind::kWorld) + velocity);
-
-		// コライダー・トリガーに同期
-		m_collider->Move(velocity);
-		for (const auto& trigger : m_trigger)
-		{
-			trigger.second->Move(velocity);
-		}
-	}
 }
 
 void Player::InitMove()
@@ -301,9 +288,15 @@ void Player::InitMove()
 
 	for (auto& is_input : m_is_input_move) { is_input = false; }
 
+	// 移動方向
+	m_move_dir.at(TimeKind::kPrev) = m_move_dir.at(TimeKind::kCurrent);
+	m_move_dir.at(TimeKind::kNext) = v3d::GetZeroVector();
+
+	// 向き補正
+	m_is_correct_look_dir = false;
+
 	// 照準
 	if (!m_is_ready_gun) { m_camera->Depart(Camera::kNormalDistance, kAimDownSightsSpeed * FPS::GetDeltaTime()); }
-	m_move_dir.at(TimeKind::kNext) = v3d::GetZeroVector();
 	m_is_ready_gun = false;
 
 	// ダッシュ判定
@@ -316,9 +309,6 @@ void Player::InitMove()
 
 	// しゃがみ判定
 	if (command->GetInputModeKind(CommandHandler::MoveKind::kSquat) == InputModeKind::kHold) { m_is_squat = false; }
-
-	// 向き補正
-	m_is_correct_look_dir = false;
 }
 
 void Player::CalcHorizontalVelocity()
@@ -407,6 +397,11 @@ void Player::CalcMoveDir(const VECTOR& velocity)
 {
 	if (!m_is_move) { return; }
 
+	if (m_is_run && m_camera->IsLookSameDirTarget())
+	{
+		int a = 0;
+	}
+
 	// 目的とする向きと距離を取得
 	m_move_dir.at(TimeKind::kNext) = v3d::GetNormalizedVector(velocity);
 	const VECTOR distance_v = m_move_dir.at(TimeKind::kNext) - m_move_dir.at(TimeKind::kCurrent);
@@ -488,6 +483,11 @@ void Player::CorrectLookDir()
 	{
 		m_look_dir.at(TimeKind::kCurrent) = m_look_dir.at(TimeKind::kNext);
 
+		// 振り向き判定がfalseになることにより適用処理が通らなくなることを避けるため先行して適用
+		// TODO : 処理の変更を検討
+		UpdateTransform();
+		ApplyVelocityToCollider();
+
 		// 目的のdirに達した場合は振り向き処理は終了とする
 		m_is_turn_around = false;
 	}
@@ -548,6 +548,29 @@ void Player::ShrinkCapsule()
 
 	const auto segment_length = m_capsule_length - kCapsuleRadius * 2.0f;
 	m_capsule_collider->SetLength(segment_length);
+}
+
+void Player::UpdateTransform()
+{
+	if (!IsApplyTransform()) { return; }
+
+	const VECTOR velocity = m_move_dir.at(TimeKind::kCurrent) * m_move_speed;
+
+	m_transform->SetRot(CoordinateKind::kWorld, m_look_dir.at(TimeKind::kCurrent));
+	m_transform->SetPos(CoordinateKind::kWorld, m_transform->GetPos(CoordinateKind::kWorld) + velocity);
+}
+
+void Player::ApplyVelocityToCollider()
+{
+	if (!IsApplyTransform()) { return; }
+
+	const VECTOR velocity = m_move_dir.at(TimeKind::kCurrent) * m_move_speed;
+
+	m_collider->Move(velocity);
+	for (const auto& trigger : m_trigger)
+	{
+		trigger.second->Move(velocity);
+	}
 }
 
 void Player::LoadAnim()
@@ -695,4 +718,15 @@ VECTOR Player::GetMoveForward()
 	forward.y = 0.0f;
 
 	return v3d::GetNormalizedVector(forward);
+}
+
+bool Player::IsApplyTransform()
+{
+	bool is_apply = false;
+
+	if (m_is_move)			{ return true; }
+	if (m_is_ready_gun)		{ return true; }
+	if (m_is_turn_around)	{ return true; }
+
+	return false;
 }

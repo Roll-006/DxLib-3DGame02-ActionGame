@@ -56,6 +56,10 @@ public:
 	/// @brief 視点リセット中かどうかを判定
 	[[nodiscard]] bool IsInitAngle() const { return m_is_init_angle; }
 
+	/// @brief 追跡対象と同じ方向を見ているかを判定
+	/// @bried Y成分は考慮しない
+	[[nodiscard]] bool IsLookSameDirTarget() const { return m_is_look_same_dir_target; }
+
 private:
 	void Move();
 	void InitMove();
@@ -71,6 +75,9 @@ private:
 
 	/// @brief 見る方向を設定
 	void SetLookDir();
+
+	/// @brief 追跡対象と同じ方向を見ているかを判定
+	void JudgeLookSameDirTarget();
 
 	/// @brief 操作時の反転処理を適用する
 	void ApplyInvert();
@@ -115,14 +122,16 @@ private:
 	std::shared_ptr<Modeler>   m_target_modeler;
 	std::string				   m_target_bone;
 
-	float  m_distance_to_target;		// 追跡対象までの距離
+	float m_distance_to_target;		// 追跡対象までの距離
 
-	float  m_init_angle_speed;			// 視点リセットの速度
-	float  m_init_end_threshold;		// 視点リセットの終了判定を行う閾値
+	float m_init_angle_speed;		// 視点リセットの速度
+	float m_init_end_threshold;		// 視点リセットの終了判定を行う閾値
 
-	bool   m_is_invert_horizontal;		// 操作時に左右反転を行うかを判定
-	bool   m_is_invert_vertical;		// 操作時に上下反転を行うかを判定
-	bool   m_is_init_angle;				// 視点リセットを行うかを判定
+	bool m_is_invert_horizontal;	// 操作時に左右反転を行うかを判定
+	bool m_is_invert_vertical;		// 操作時に上下反転を行うかを判定
+	bool m_is_init_angle;			// 視点リセットを行うかを判定
+	bool m_is_look_same_dir_target;	// 追跡対象と同じ向きを見ているかを判定(Y成分は考慮しない)
+
 
 	VECTOR m_dir;
 	VECTOR m_velocity;
