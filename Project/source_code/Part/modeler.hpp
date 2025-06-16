@@ -14,6 +14,9 @@ public:
 
 	void Draw() const;
 
+	/// @brief 不透明度を設定
+	void SetOpacity(const float opacity) { m_opacity = opacity; }
+
 	/// @brief モデルに不透明度処理を適用
 	void ApplyOpacity() const;
 

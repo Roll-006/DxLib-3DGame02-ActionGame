@@ -137,7 +137,7 @@ void Animator::BlendAnim()
 {
 	// ブレンド率100%まで増加させる
 	math::Increase(m_blend_rate, kBlendSpeed * FPS::GetDeltaTime(), 1.0f);
-
+  
 	// ブレンドが完了した場合、PravAnimは不要なためデタッチする
 	if (m_blend_rate == 1.0f)
 	{

@@ -85,25 +85,28 @@ namespace math
 
 	/// @brief 回転行列からクォータニオンへ変換
 	/// @brief TODO : 検証が必要
-	[[nodiscard]] Quaternion ConvertRotationMatrixToQuaternion(const MATRIX& mat);
+	[[nodiscard]] Quaternion ConvertRotMatrixToQuaternion(const MATRIX& mat);
 
 	/// @brief クォータニオンから回転行列へ変換
-	[[nodiscard]] MATRIX ConvertQuaternionToRotationMatrix(const MATRIX& mat, const Quaternion& q);
+	[[nodiscard]] MATRIX ConvertQuaternionToRotMatrix(const MATRIX& mat, const Quaternion& q);
 
 	/// @brief XYZ軸から回転行列へ変換
 	/// @param axes 行列に変換するXYZ軸
 	/// @param parent_axes 基準とする親XYZ軸
-	[[nodiscard]] MATRIX ConvertAxesToXYZRotationMatrix(const Axes& axes, const Axes& parent_axes);
+	[[nodiscard]] MATRIX ConvertAxesToXYZRotMatrix(const Axes& axes, const Axes& parent_axes);
 
 	/// @brief XYZ軸からオイラー角へ変換
 	[[nodiscard]] VECTOR ConvertAxesToEulerAngles(const Axes& axes, const Axes& parent_axes);
 
 	/// @brief 回転行列からオイラー角へ変換
 	/// @brief FIXME : 不具合ありな可能性あり。要検証
-	[[nodiscard]] VECTOR ConvertRotationMatrixToEulerAngles(const MATRIX& mat);
+	[[nodiscard]] VECTOR ConvertRotMatrixToEulerAngles(const MATRIX& mat);
 
 	/// @brief 回転行列からXYZ軸へ変換
-	[[nodiscard]] Axes ConvertRotationMatrixToAxes(const MATRIX& mat);
+	[[nodiscard]] Axes ConvertRotMatrixToAxes(const MATRIX& mat);
+
+	/// @brief オイラー角から回転行列へ変換
+	[[nodiscard]] MATRIX ConvertEulerAnglesToRotMatrix(const VECTOR& angle);
 	#pragma endregion
 
 

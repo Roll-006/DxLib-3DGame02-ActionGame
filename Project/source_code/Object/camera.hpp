@@ -104,7 +104,7 @@ private:
 
 	static constexpr VECTOR kLookCorrectPos			= VECTOR(90.0f, 40.0f, 0.0f);
 
-	static constexpr float  kMaxVerticalAngle		= 89.0f;
+	static constexpr float  kMaxVerticalAngle		= 60.0f;
 	static constexpr float  kMinVerticalAngle		= -70.0f;
 	static constexpr float  kInitAngleSpeed			= 10.0f;
 	static constexpr float  kInitYawSpeed			= 60.0f;

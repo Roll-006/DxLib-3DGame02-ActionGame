@@ -9,8 +9,9 @@ public:
 		ObjBase			(name, ObjTag.WEAPON),
 		m_modeler		(std::make_shared<Modeler>(GetTransform(), file_path, true)),
 		m_owner_modeler	(nullptr),
+		m_correct_pos	(v3d::GetZeroVector()),
 		m_correct_angle	(v3d::GetZeroVector()),
-		m_correct_pos	(v3d::GetZeroVector())
+		m_correct_scale	(v3d::GetZeroVector())
 	{ }
 
 	virtual ~WeaponBase() = default;

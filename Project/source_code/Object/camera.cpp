@@ -55,9 +55,9 @@ void Camera::Update()
 void Camera::Draw() const
 {
 	// TEST : ‰¼‚ÅŠeŽ²‚ð•`‰æ
-	DrawLine3D(v3d::GetZeroVector(), axis::GetWorldXAxis() * 10000, 0xff0000);
-	DrawLine3D(v3d::GetZeroVector(), axis::GetWorldYAxis() * 10000, 0x00ff22);
-	DrawLine3D(v3d::GetZeroVector(), axis::GetWorldZAxis() * 10000, 0x0077ff);
+	DrawLine3D(VGet(0, 1, 0), VGet(0, 1, 0) + VGet(1, 0, 0) * 10000, 0xff0000);
+	DrawLine3D(VGet(0, 1, 0), VGet(0, 1, 0) + VGet(0, 1, 0) * 10000, 0x00ff22);
+	DrawLine3D(VGet(0, 1, 0), VGet(0, 1, 0) + VGet(0, 0, 1) * 10000, 0x0077ff);
 }
 
 void Camera::OnCollide(const PhysicalObjBase& check_hit_obj)

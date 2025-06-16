@@ -57,6 +57,9 @@ private:
 	/// @brief しゃがみ処理によりカプセルを縮める
 	void ShrinkCapsule();
 
+	/// @brief ボーンの位置を修正する
+	void CorrectBonePos();
+
 	/// @brief トランスフォーム情報を更新する
 	void UpdateTransform();
 
@@ -85,7 +88,7 @@ private:
 	static constexpr float kSquatWalkSpeed						= 1.0f;
 	static constexpr float kSlowWalkSpeed						= 1.5f;
 	static constexpr float kWalkSpeed							= 2.0f;
-	static constexpr float kRunSpeed							= 10.0f;
+	static constexpr float kRunSpeed							= 7.0f;
 	static constexpr float kAcceleration						= 2.0f;		// 加速度(減速度も共通)
 
 	static constexpr float kMoveDirCorrectionSpeed				= 0.065f;	// 移動方向の補正速度

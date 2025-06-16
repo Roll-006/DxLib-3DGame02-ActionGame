@@ -2,7 +2,7 @@
 #include "math.hpp"
 
 #pragma region 変換
-MATRIX math::ConvertQuaternionToRotationMatrix(const MATRIX& mat, const Quaternion& q)
+MATRIX math::ConvertQuaternionToRotMatrix(const MATRIX& mat, const Quaternion& q)
 {
     MATRIX m = MTranspose(mat);
 
@@ -25,7 +25,7 @@ MATRIX math::ConvertQuaternionToRotationMatrix(const MATRIX& mat, const Quaterni
 	return MGetRotElem(MTranspose(m));
 }
 
-Quaternion math::ConvertRotationMatrixToQuaternion(const MATRIX& mat)
+Quaternion math::ConvertRotMatrixToQuaternion(const MATRIX& mat)
 {
     // TODO    : 処理の先頭と末尾で転置するべき
 	// FIXME   : おそらく不具合を起こす。行列の成分の配置が違う可能性高
@@ -85,7 +85,7 @@ Quaternion math::ConvertRotationMatrixToQuaternion(const MATRIX& mat)
 	return ret_q;
 }
 
-MATRIX math::ConvertAxesToXYZRotationMatrix(const Axes& axes, const Axes& parent_axes)
+MATRIX math::ConvertAxesToXYZRotMatrix(const Axes& axes, const Axes& parent_axes)
 {
     // オイラー角を取得
     const VECTOR angle = ConvertAxesToEulerAngles(parent_axes, axes);
@@ -104,7 +104,7 @@ VECTOR math::ConvertAxesToEulerAngles(const Axes& axes, const Axes& parent_axes)
     return VECTOR(angle_x, angle_y, angle_z);
 }
 
-VECTOR math::ConvertRotationMatrixToEulerAngles(const MATRIX& mat)
+VECTOR math::ConvertRotMatrixToEulerAngles(const MATRIX& mat)
 {
     VECTOR angle = v3d::GetZeroVector();
     const MATRIX m = mat;
@@ -113,7 +113,7 @@ VECTOR math::ConvertRotationMatrixToEulerAngles(const MATRIX& mat)
     return angle;
 }
 
-Axes math::ConvertRotationMatrixToAxes(const MATRIX& mat)
+Axes math::ConvertRotMatrixToAxes(const MATRIX& mat)
 {
     const MATRIX m = MGetRotElem(mat);
 
@@ -122,6 +122,13 @@ Axes math::ConvertRotationMatrixToAxes(const MATRIX& mat)
     const VECTOR z_axis = VTransform(axis::GetWorldZAxis(), m);
 
     return Axes(x_axis, y_axis, z_axis);
+}
+
+MATRIX math::ConvertEulerAnglesToRotMatrix(const VECTOR& angle)
+{
+    MATRIX mat = MGetIdent();
+    CreateRotationXYZMatrix(&mat, angle.x, angle.y, angle.z);
+    return MGetRotElem(mat);
 }
 #pragma endregion
 

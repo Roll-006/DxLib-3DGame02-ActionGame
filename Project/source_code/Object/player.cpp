@@ -75,6 +75,9 @@ void Player::Update()
 	UpdateTransform();
 	ApplyVelocityToCollider();
 
+	// ボーン位置修正
+	CorrectBonePos();
+
 	// アニメーション処理
 	ChangeAnimState();
 	m_animator->Update();
@@ -548,6 +551,31 @@ void Player::ShrinkCapsule()
 
 	const auto segment_length = m_capsule_length - kCapsuleRadius * 2.0f;
 	m_capsule_collider->SetLength(segment_length);
+}
+
+void Player::CorrectBonePos()
+{
+	const int handle			= m_modeler->GetModelHandle();
+	const int frame_num_spine	= MV1SearchFrame(handle, BonePath.SPINE);
+
+	// 武器を構えていない場合は初期値に戻す
+	if (!m_is_ready_gun)
+	{
+		MV1ResetFrameUserLocalMatrix(handle, frame_num_spine);
+		return;
+	}
+
+	MATRIX m	 = m_camera->GetTransform()->GetMatrix(CoordinateKind::kWorld);
+	VECTOR angle = math::ConvertRotMatrixToEulerAngles(m);
+	angle.x *= -1;
+	angle.y = 0.0f;
+
+	matrix::Draw(m, VGet(0, 0, 0));
+	DrawFormatString(0, 80, 0xffffff, "%f, %f, %f", angle.x, angle.y, angle.z);
+
+	MATRIX result_m = math::ConvertEulerAnglesToRotMatrix(angle);
+
+	MV1SetFrameUserLocalMatrix(handle, frame_num_spine, result_m);
 }
 
 void Player::UpdateTransform()

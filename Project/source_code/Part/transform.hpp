@@ -13,9 +13,13 @@ public:
 
 	void Move(const CoordinateKind coord_kind, const VECTOR& velocity);
 
+
+	#pragma region 親のアタッチ/デタッチ
 	void AttachParent(const std::shared_ptr<Transform> parent_transform);
 	void AttachParent(const std::string& parent_obj_name);
 	void DetachParent();
+	#pragma endregion
+
 
 	#pragma region setter
 	void SetMatrix	(const CoordinateKind coord_kind, const MATRIX& matrix);
@@ -25,23 +29,22 @@ public:
 
 	/// @brief 回転行列を設定
 	/// @brief キャラクターの水平な回転しか考慮していない
-	/// @param dir 必ずY軸が0である必要あり
+	/// @param dir Y軸が0である必要あり
 	void SetRot		(const CoordinateKind coord_kind, const VECTOR& dir);
 
 	void SetScale	(const CoordinateKind coord_kind, const VECTOR&	scale);
 	void SetScale	(const CoordinateKind coord_kind, const float	scale);
 	#pragma endregion
 
+
 	[[nodiscard]] MATRIX GetMatrix			(const CoordinateKind coord_kind);
 	[[nodiscard]] VECTOR GetPos				(const CoordinateKind coord_kind);
-	[[nodiscard]] MATRIX GetRotationMatrix	(const CoordinateKind coord_kind);
+	[[nodiscard]] MATRIX GetRotMatrix		(const CoordinateKind coord_kind);
 	[[nodiscard]] VECTOR GetScale			(const CoordinateKind coord_kind);
 	[[nodiscard]] Axes   GetAxes			(const CoordinateKind coord_kind);
 	[[nodiscard]] VECTOR GetRight			(const CoordinateKind coord_kind);
 	[[nodiscard]] VECTOR GetUp				(const CoordinateKind coord_kind);
 	[[nodiscard]] VECTOR GetForward			(const CoordinateKind coord_kind);
-
-	/// @brief TODO : 要検証
 	[[nodiscard]] VECTOR GetEulerAngles		(const CoordinateKind coord_kind);
 
 	/// @brief 親がアタッチされているかを判定

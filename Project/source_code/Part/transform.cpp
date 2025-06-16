@@ -83,7 +83,7 @@ void Transform::SetPos(const CoordinateKind coord_kind, const VECTOR& pos)
 
 void Transform::SetRot(const CoordinateKind coord_kind, const MATRIX& rot_matrix)
 {
-	m_local_matrix = rot_matrix * MInverse(GetRotationMatrix(coord_kind)) * GetMatrix(coord_kind);
+	m_local_matrix = rot_matrix * MInverse(GetRotMatrix(coord_kind)) * GetMatrix(coord_kind);
 }
 
 void Transform::SetRot(const CoordinateKind coord_kind, const VECTOR& dir)
@@ -115,7 +115,7 @@ void Transform::SetRot(const CoordinateKind coord_kind, const Axes& axes)
 void Transform::SetScale(const CoordinateKind coord_kind, const VECTOR& scale)
 {
 	const MATRIX scale_m	= MGetScale(scale);
-	const MATRIX rot_m		= GetRotationMatrix(coord_kind);
+	const MATRIX rot_m		= GetRotMatrix(coord_kind);
 	const MATRIX pos_m		= MGetTranslate(GetPos(coord_kind));
 	const MATRIX result_m	= scale_m * rot_m * pos_m;
 
@@ -160,7 +160,7 @@ VECTOR Transform::GetPos(const CoordinateKind coord_kind)
 	return VECTOR(mat.m[3][0], mat.m[3][1], mat.m[3][2]);
 }
 
-MATRIX Transform::GetRotationMatrix(const CoordinateKind coord_kind)
+MATRIX Transform::GetRotMatrix(const CoordinateKind coord_kind)
 {
 	return MGetRotElem(GetMatrix(coord_kind));
 }
@@ -193,11 +193,11 @@ VECTOR Transform::GetForward(const CoordinateKind coord_kind)
 
 Axes Transform::GetAxes(const CoordinateKind coord_kind)
 {
-	return math::ConvertRotationMatrixToAxes(GetMatrix(coord_kind));
+	return math::ConvertRotMatrixToAxes(GetMatrix(coord_kind));
 }
 
 VECTOR Transform::GetEulerAngles(const CoordinateKind coord_kind)
 {
-	return math::ConvertRotationMatrixToEulerAngles(GetMatrix(coord_kind));
+	return math::ConvertRotMatrixToEulerAngles(GetMatrix(coord_kind));
 }
 #pragma endregion
