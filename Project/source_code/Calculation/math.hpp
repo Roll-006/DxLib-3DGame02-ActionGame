@@ -96,7 +96,7 @@ namespace math
 	[[nodiscard]] MATRIX ConvertAxesToXYZRotMatrix(const Axes& axes, const Axes& parent_axes);
 
 	/// @brief XYZ軸からオイラー角へ変換
-	/// @brief TODO : 検証が必要
+	/// @brief FIXME : 不具合ありな可能性あり。要検証
 	[[nodiscard]] VECTOR ConvertAxesToEulerAngles(const Axes& axes, const Axes& parent_axes);
 
 	/// @brief 回転行列からオイラー角へ変換

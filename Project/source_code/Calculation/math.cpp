@@ -112,7 +112,7 @@ VECTOR math::ConvertRotMatrixToEulerAngles(const MATRIX& mat)
     bool occurred_gimbal_lock = GetMatrixXYZRotation(&m, &angle.x, &angle.y, &angle.z);
 
     matrix::Draw(0, 0, m);
-      
+    
     return angle;
 }
 
