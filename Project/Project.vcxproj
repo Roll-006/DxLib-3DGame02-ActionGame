@@ -161,7 +161,7 @@
     <ClCompile Include="source_code\Object\player.cpp" />
     <ClCompile Include="source_code\Object\skydome.cpp" />
     <ClCompile Include="source_code\Part\animator.cpp" />
-    <ClCompile Include="source_code\Part\modeler (2).cpp" />
+    <ClCompile Include="source_code\Part\bone_pos_corrector.cpp" />
     <ClCompile Include="source_code\Part\modeler.cpp" />
     <ClCompile Include="source_code\Part\transform.cpp" />
     <ClCompile Include="source_code\Scene\game_clear_scene.cpp" />
@@ -263,7 +263,7 @@
     <ClInclude Include="source_code\Object\player.hpp" />
     <ClInclude Include="source_code\Object\skydome.hpp" />
     <ClInclude Include="source_code\Part\animator.hpp" />
-    <ClInclude Include="source_code\Part\modeler (2).hpp" />
+    <ClInclude Include="source_code\Part\bone_pos_corrector.hpp" />
     <ClInclude Include="source_code\Part\modeler.hpp" />
     <ClInclude Include="source_code\Part\transform.hpp" />
     <ClInclude Include="source_code\Scene\game_clear_scene.hpp" />

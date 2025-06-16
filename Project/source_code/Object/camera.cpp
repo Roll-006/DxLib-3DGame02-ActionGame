@@ -54,10 +54,7 @@ void Camera::Update()
 
 void Camera::Draw() const
 {
-	// TEST : âºÇ≈äeé≤Çï`âÊ
-	DrawLine3D(VGet(0, 1, 0), VGet(0, 1, 0) + VGet(1, 0, 0) * 10000, 0xff0000);
-	DrawLine3D(VGet(0, 1, 0), VGet(0, 1, 0) + VGet(0, 1, 0) * 10000, 0x00ff22);
-	DrawLine3D(VGet(0, 1, 0), VGet(0, 1, 0) + VGet(0, 0, 1) * 10000, 0x0077ff);
+
 }
 
 void Camera::OnCollide(const PhysicalObjBase& check_hit_obj)
@@ -205,10 +202,7 @@ void Camera::Move()
 	//ApplyInvert();
 
 	CalcAngle();
-
-	// äpìxêßå¿
-	if (m_angle.at(TimeKind::kCurrent).x < kMinVerticalAngle * math::kDegreesToRadian) { m_angle.at(TimeKind::kCurrent).x = kMinVerticalAngle * math::kDegreesToRadian; }
-	if (m_angle.at(TimeKind::kCurrent).x > kMaxVerticalAngle * math::kDegreesToRadian) { m_angle.at(TimeKind::kCurrent).x = kMaxVerticalAngle * math::kDegreesToRadian; }
+	CalcDistance();
 
 	// âÒì]çsóÒÇê∂ê¨
 	MATRIX m = MGetIdent();
@@ -220,6 +214,9 @@ void Camera::Move()
 	const VECTOR forward	= m_transform->GetForward(CoordinateKind::kWorld);
 	const VECTOR pos		= look_pos - forward * m_distance_to_target;
 	m_transform->SetPos(CoordinateKind::kWorld, pos);
+
+	DrawFormatString(0,  0, 0xffffff, "pos      : %f, %f, %f", pos.x, pos.y, pos.z);
+	DrawFormatString(0, 20, 0xffffff, "look_pos : %f, %f, %f", look_pos.x, look_pos.y, look_pos.z);
 }
 
 void Camera::InitMove()
@@ -255,6 +252,20 @@ void Camera::CalcAngle()
 	if (m_is_input.at(static_cast<int>(InputDir::kRight)))	{ m_angle.at(TimeKind::kCurrent).y += m_velocity.y; }
 
 	m_angle.at(TimeKind::kCurrent).y = math::ConnectMinusPiToPi(m_angle.at(TimeKind::kCurrent).y);
+
+	// äpìxêßå¿
+	if (m_angle.at(TimeKind::kCurrent).x < kMinVerticalAngle * math::kDegreesToRadian) { m_angle.at(TimeKind::kCurrent).x = kMinVerticalAngle * math::kDegreesToRadian; }
+	if (m_angle.at(TimeKind::kCurrent).x > kMaxVerticalAngle * math::kDegreesToRadian) { m_angle.at(TimeKind::kCurrent).x = kMaxVerticalAngle * math::kDegreesToRadian; }
+}
+
+void Camera::CalcDistance()
+{
+	// ëŒè€Çè„Ç©ÇÁå©ÇÈÇ∆ó£ÇÍÅAâ∫Ç©ÇÁå©ÇÈÇ∆ãﬂÇ√Ç≠
+	const float min  = kMinVerticalAngle * math::kDegreesToRadian;
+	const float max  = kMaxVerticalAngle * math::kDegreesToRadian;
+	const float rate = math::GetUnitValue<float, float>(min, max, m_angle.at(TimeKind::kCurrent).x);
+
+	m_distance_to_target = (kMaxDistanceToTarget - kMinDistanceToTarget) * rate + kMinDistanceToTarget;
 }
 
 void Camera::CalcInitAngle()

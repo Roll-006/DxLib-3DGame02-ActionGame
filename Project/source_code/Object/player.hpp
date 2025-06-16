@@ -5,6 +5,8 @@
 #include "assault_rifle.hpp"
 #include "camera.hpp"
 
+#include "../Part/bone_pos_corrector.hpp"
+
 class Player final : public CharaBase
 {
 public:
@@ -57,9 +59,6 @@ private:
 	/// @brief しゃがみ処理によりカプセルを縮める
 	void ShrinkCapsule();
 
-	/// @brief ボーンの位置を修正する
-	void CorrectBonePos();
-
 	/// @brief トランスフォーム情報を更新する
 	void UpdateTransform();
 
@@ -85,11 +84,13 @@ private:
 	};
 
 private:
-	static constexpr float kSquatWalkSpeed						= 1.0f;
-	static constexpr float kSlowWalkSpeed						= 1.5f;
-	static constexpr float kWalkSpeed							= 2.0f;
-	static constexpr float kRunSpeed							= 7.0f;
-	static constexpr float kAcceleration						= 2.0f;		// 加速度(減速度も共通)
+	static constexpr float kModelScale							= 0.25f;
+
+	static constexpr float kSquatWalkSpeed						= 0.1f;
+	static constexpr float kSlowWalkSpeed						= 0.2f;
+	static constexpr float kWalkSpeed							= 0.5f;
+	static constexpr float kRunSpeed							= 2.0f;
+	static constexpr float kAcceleration						= 1.0f;		// 加速度(減速度も共通)
 
 	static constexpr float kMoveDirCorrectionSpeed				= 0.065f;	// 移動方向の補正速度
 	static constexpr float kLookDirCorrectionAngle				= 0.1f;		// 見る方向を回転させる角度
@@ -103,20 +104,20 @@ private:
 	static constexpr int   kWalkStickSlopeLimit					= 15000;	// 歩き状態とするスティック傾きの上限
 	static constexpr float kTurnAroundStickAngle				= 30.0f;	// 振り向きを行うスティックの入力角度
 
-	static constexpr float kCapsuleRadius						= 34.0f;
-	static constexpr float kCapsuleLengthForStand				= 178.0f;
-	static constexpr float kCapsuleLengthForSquat				= 130.0f;
-	static constexpr float kCapsuleLengthShrinkSpeed			= 130.0f;
-	static constexpr float kLandingTriggerRadius				= 23.0f;
+	static constexpr float kCapsuleRadius						= 8.0f;
+	static constexpr float kLandingTriggerRadius				= 6.0f;
 	
-	static constexpr float kAimDownSightsSpeed					= 800.0f;	// スコープをのぞき込む速度
+	static constexpr float kAimDownSightsSpeed					= 70.0f;	// スコープをのぞき込む速度
 
+private:
 	std::shared_ptr<Camera> m_camera;
 
 	std::unordered_map<TimeKind, VECTOR> m_move_dir;			// 移動方向(TODO : 長さが1未満である時がある場合があるため命名を変更すべき)
 	std::unordered_map<TimeKind, VECTOR> m_look_dir;			// 向いている方向
 	
 	std::unordered_map<TimeKind, PlayerAnimKind> m_anim_kind;	// アニメーションの状態を判定
+
+	std::shared_ptr<BonePosCorrector> m_bone_pos_corrector;		// ボーン位置修正
 
 	float m_move_speed;
 	float m_non_move_time;										// 入力をしていない時間

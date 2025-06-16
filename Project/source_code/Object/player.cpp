@@ -4,9 +4,10 @@
 Player::Player(std::shared_ptr<Camera> camera) :
 	CharaBase				(ObjName.PLAYER, ObjTag.PLAYER, ModelPath.CHARA_01, MassKind::kMedium),
 	m_camera				(camera),
+	m_bone_pos_corrector	(std::make_shared<BonePosCorrector>()),
 	m_move_speed			(0.0f),
 	m_non_move_time			(0.0f),
-	m_capsule_length		(kCapsuleLengthForStand),
+	m_capsule_length		(0.0f),
 	m_capsule_collider		(nullptr),
 	m_is_move				(false),
 	m_is_run				(false),
@@ -20,6 +21,7 @@ Player::Player(std::shared_ptr<Camera> camera) :
 	m_move_dir[TimeKind::kPrev] = m_move_dir[TimeKind::kCurrent] = m_move_dir[TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);
 	m_look_dir[TimeKind::kCurrent] = m_look_dir[TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);
 	m_transform->SetRot(CoordinateKind::kWorld, m_look_dir.at(TimeKind::kCurrent));
+	m_transform->SetScale(CoordinateKind::kWorld, kModelScale);
 	m_transform->SetPos(CoordinateKind::kWorld, VGet(0, 0, 0));
 
 	// コライダーを設定
@@ -29,7 +31,7 @@ Player::Player(std::shared_ptr<Camera> camera) :
 	MakeCollider(m_capsule_collider);
 
 	// トリガーを設定
-	const auto pos = begin_pos - VGet(0.0f, 18.0f, 0.0f);
+	const auto pos = begin_pos - VGet(0.0f, 5.0f, 0.0f);
 	AddTrigger(TriggerKind::kLanding, std::make_shared<Sphere>(pos, kLandingTriggerRadius));
 
 	// 各アニメーション追加
@@ -75,12 +77,16 @@ void Player::Update()
 	UpdateTransform();
 	ApplyVelocityToCollider();
 
-	// ボーン位置修正
-	CorrectBonePos();
-
 	// アニメーション処理
 	ChangeAnimState();
 	m_animator->Update();
+
+	//// ボーン位置修正
+	//m_bone_pos_corrector->CorrectGunPoseBone(
+	//	m_modeler->GetModelHandle(), 
+	//	m_look_dir.at(TimeKind::kCurrent),
+	//	m_camera->GetTransform()->GetMatrix(CoordinateKind::kWorld), 
+	//	m_is_ready_gun);
 
 	// しゃがみ処理によりカプセルを縮める
 	ShrinkCapsule();
@@ -400,10 +406,10 @@ void Player::CalcMoveDir(const VECTOR& velocity)
 {
 	if (!m_is_move) { return; }
 
-	if (m_is_run && m_camera->IsLookSameDirTarget())
-	{
-		int a = 0;
-	}
+	//if (m_is_run && m_camera->IsLookSameDirTarget())
+	//{
+	//	int a = 0;
+	//}
 
 	// 目的とする向きと距離を取得
 	m_move_dir.at(TimeKind::kNext) = v3d::GetNormalizedVector(velocity);
@@ -465,6 +471,7 @@ void Player::CalcLookDir()
 void Player::CorrectLookDir()
 {
 	// ヨー角回転を取得し、-π～πで値を管理する
+	/*VGet(0.0f, atan2f(m_look_dir.at(TimeKind::kCurrent).x, m_look_dir.at(TimeKind::kCurrent).z), 0.0f);*/
 	const VECTOR current_yaw	= math::GetYawRotVector(m_look_dir.at(TimeKind::kCurrent));
 	const VECTOR next_yaw		= math::GetYawRotVector(m_look_dir.at(TimeKind::kNext));
 	VECTOR distance = next_yaw - current_yaw;
@@ -553,45 +560,15 @@ void Player::ShrinkCapsule()
 	m_capsule_collider->SetLength(segment_length);
 }
 
-void Player::CorrectBonePos()
-{
-	const int handle			= m_modeler->GetModelHandle();
-	const int frame_num_spine	= MV1SearchFrame(handle, BonePath.SPINE);
-
-	// 武器を構えていない場合は初期値に戻す
-	if (!m_is_ready_gun)
-	{
-		MV1ResetFrameUserLocalMatrix(handle, frame_num_spine);
-		return;
-	}
-
-	// カメラの行列からボーンの回転を取得
-	MATRIX m	 = m_camera->GetTransform()->GetMatrix(CoordinateKind::kWorld);
-	VECTOR angle = math::ConvertRotMatrixToEulerAngles(m);
-	angle.x *= -1;
-	angle.y = 0.0f;
-
-	// HACK : ワールドZ軸に対してlook_dirが90°を超えるとボーンが反転する現象が起きているため
-	//		  その条件下のみ反転し直す
-	//		  無理やりな処理であるため修正が必要
-	if (math::GetAngleBetweenTwoVector(m_look_dir.at(TimeKind::kCurrent), axis::GetWorldZAxis()) >= 90.0f * math::kDegreesToRadian)
-	{
-		angle.x -= DX_PI_F;
-		angle.z -= DX_PI_F;
-	}
-
-	MATRIX result_m = math::ConvertEulerAnglesToRotMatrix(angle);
-	MV1SetFrameUserLocalMatrix(handle, frame_num_spine, result_m);
-}
-
 void Player::UpdateTransform()
 {
 	if (!IsApplyTransform()) { return; }
 
 	const VECTOR velocity = m_move_dir.at(TimeKind::kCurrent) * m_move_speed;
 
-	m_transform->SetRot(CoordinateKind::kWorld, m_look_dir.at(TimeKind::kCurrent));
-	m_transform->SetPos(CoordinateKind::kWorld, m_transform->GetPos(CoordinateKind::kWorld) + velocity);
+	m_transform->SetRot  (CoordinateKind::kWorld, m_look_dir.at(TimeKind::kCurrent));
+	m_transform->SetScale(CoordinateKind::kWorld, kModelScale);
+	m_transform->SetPos  (CoordinateKind::kWorld, m_transform->GetPos(CoordinateKind::kWorld) + velocity);
 }
 
 void Player::ApplyVelocityToCollider()
@@ -638,6 +615,8 @@ void Player::LoadAnim()
 
 void Player::ChangeAnimState()
 {
+	// TODO : のちにイベントでアニメーションを管理
+
 	// アイドル
 	if (!m_is_move)
 	{

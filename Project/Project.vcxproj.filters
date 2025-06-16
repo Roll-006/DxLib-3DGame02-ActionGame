@@ -92,7 +92,7 @@
     <ClCompile Include="source_code\Part\animator.cpp">
       <Filter>Part</Filter>
     </ClCompile>
-    <ClCompile Include="source_code\Part\modeler (2).cpp">
+    <ClCompile Include="source_code\Part\bone_pos_corrector.cpp">
       <Filter>Part</Filter>
     </ClCompile>
     <ClCompile Include="source_code\Part\modeler.cpp">
@@ -337,7 +337,7 @@
     <ClInclude Include="source_code\Part\animator.hpp">
       <Filter>Part</Filter>
     </ClInclude>
-    <ClInclude Include="source_code\Part\modeler (2).hpp">
+    <ClInclude Include="source_code\Part\bone_pos_corrector.hpp">
       <Filter>Part</Filter>
     </ClInclude>
     <ClInclude Include="source_code\Part\transform.hpp">

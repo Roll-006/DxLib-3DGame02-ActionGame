@@ -102,6 +102,7 @@ namespace math
 	/// @brief 回転行列からオイラー角へ変換
 	/// @brief FIXME : 不具合ありな可能性あり。要検証
 	[[nodiscard]] VECTOR ConvertRotMatrixToEulerAngles(const MATRIX& mat);
+	[[nodiscard]] VECTOR ConvertRotMatrixToEulerAngles(const MATRIX& mat, bool& is_gimbal_lock);
 
 	/// @brief 回転行列からXYZ軸へ変換
 	[[nodiscard]] Axes ConvertRotMatrixToAxes(const MATRIX& mat);

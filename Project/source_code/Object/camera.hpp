@@ -64,8 +64,8 @@ private:
 	void Move();
 	void InitMove();
 
-	/// @brief カメラ角度を計算する
 	void CalcAngle();
+	void CalcDistance();
 
 	/// @brief 視点リセット時の角度を計算する
 	void CalcInitAngle();
@@ -95,14 +95,17 @@ private:
 	};
 
 public:
-	static constexpr float  kNormalDistance			= 200.0f;
+	static constexpr float  kNormalDistance			= 42.0f;
 
 private:
-	static constexpr float  kNear					= 10.0f;
+	static constexpr float  kNear					= 1.0f;
 	static constexpr float  kFar					= 3000.0f;
 	static constexpr float  kFOV					= 60.0f;
 
-	static constexpr VECTOR kLookCorrectPos			= VECTOR(90.0f, 40.0f, 0.0f);
+	static constexpr VECTOR kLookCorrectPos			= VECTOR(17.0f, 26.0f, 0.0f);
+
+	static constexpr float  kMaxDistanceToTarget	= 70.0f;
+	static constexpr float  kMinDistanceToTarget	= 8.0f;
 
 	static constexpr float  kMaxVerticalAngle		= 60.0f;
 	static constexpr float  kMinVerticalAngle		= -70.0f;
@@ -114,7 +117,6 @@ private:
 	static constexpr float  kMoveSpeedWithButton	= 2.0f;
 	static constexpr float  kMoveSpeedWithStick		= 2.5f;
 	static constexpr float  kMoveSpeedWithMouse		= 0.1f;
-	static constexpr float  kApproachSpeed			= 800.0f;
 
 	static constexpr float  kInitAngleTolerance		= 0.01f;		// 視点リセットが完了したと判定させる許容値
 
@@ -131,7 +133,6 @@ private:
 	bool m_is_invert_vertical;		// 操作時に上下反転を行うかを判定
 	bool m_is_init_angle;			// 視点リセットを行うかを判定
 	bool m_is_look_same_dir_target;	// 追跡対象と同じ向きを見ているかを判定(Y成分は考慮しない)
-
 
 	VECTOR m_dir;
 	VECTOR m_velocity;

@@ -109,10 +109,18 @@ VECTOR math::ConvertRotMatrixToEulerAngles(const MATRIX& mat)
     VECTOR angle = v3d::GetZeroVector();
     const MATRIX m = mat;
 
-    bool occurred_gimbal_lock = GetMatrixXYZRotation(&m, &angle.x, &angle.y, &angle.z);
+    GetMatrixXYZRotation(&m, &angle.x, &angle.y, &angle.z);
 
-    matrix::Draw(0, 0, m);
-    
+    return angle;
+}
+
+VECTOR math::ConvertRotMatrixToEulerAngles(const MATRIX& mat, bool& is_gimbal_lock)
+{
+    VECTOR angle = v3d::GetZeroVector();
+    const MATRIX m = mat;
+
+    is_gimbal_lock = GetMatrixXYZRotation(&m, &angle.x, &angle.y, &angle.z);
+
     return angle;
 }
 
@@ -139,10 +147,11 @@ MATRIX math::ConvertEulerAnglesToRotMatrix(const VECTOR& angle)
 #pragma region 修正
 float math::ConnectMinusPiToPi(const float angle)
 {
-    float return_angle = angle;
-    if (return_angle <= -DX_PI_F) { return_angle += DX_TWO_PI_F; }
-    if (return_angle >=  DX_PI_F) { return_angle -= DX_TWO_PI_F; }
-    return return_angle;
+    // -π～πの値をループ
+    float connected_angle = angle;
+    if (connected_angle <= -DX_PI_F) { connected_angle += DX_TWO_PI_F; }
+    if (connected_angle >=  DX_PI_F) { connected_angle -= DX_TWO_PI_F; }
+    return connected_angle;
 }
 #pragma endregion
 

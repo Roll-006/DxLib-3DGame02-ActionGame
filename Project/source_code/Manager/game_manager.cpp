@@ -36,8 +36,16 @@ void GameManager::Run()
 	{
 		m_fps->Update();
 		m_window->Update();
+
 		m_scene_manager->Update();
 		m_scene_manager->Draw();
+
+		// TEST : ‰¼‚ÅƒOƒŠƒbƒh‚ð•`‰æ
+		DxLibHelper::DrawYPlaneGrid(FLOAT2(50, 50), 100);
+		DrawLine3D(v3d::GetZeroVector(), axis::GetWorldXAxis() * 10000, 0xff0000);
+		DrawLine3D(v3d::GetZeroVector(), axis::GetWorldYAxis() * 10000, 0x00ff22);
+		DrawLine3D(v3d::GetZeroVector(), axis::GetWorldZAxis() * 10000, 0x0077ff);
+
 		m_fps->Wait();
 
 		ScreenFlip();

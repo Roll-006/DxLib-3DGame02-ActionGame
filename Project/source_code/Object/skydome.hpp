@@ -15,7 +15,7 @@ public:
 	void Draw() const override;
 	
 private:
-	static constexpr float kScale = 15.0f;
+	static constexpr float kScale = 20.0f;
 
 	std::shared_ptr<Modeler>   m_modeler;
 	std::shared_ptr<Transform> m_camera_transform;
