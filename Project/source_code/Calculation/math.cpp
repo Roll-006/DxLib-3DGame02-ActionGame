@@ -108,8 +108,11 @@ VECTOR math::ConvertRotMatrixToEulerAngles(const MATRIX& mat)
 {
     VECTOR angle = v3d::GetZeroVector();
     const MATRIX m = mat;
-    GetMatrixXYZRotation(&m, &angle.x, &angle.y, &angle.z);
 
+    bool occurred_gimbal_lock = GetMatrixXYZRotation(&m, &angle.x, &angle.y, &angle.z);
+
+    matrix::Draw(0, 0, m);
+      
     return angle;
 }
 

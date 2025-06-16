@@ -23,5 +23,5 @@ void PlayScene::Update()
 
 void PlayScene::Draw() const
 {
-	m_skydome->Draw();
+	//m_skydome->Draw();
 }

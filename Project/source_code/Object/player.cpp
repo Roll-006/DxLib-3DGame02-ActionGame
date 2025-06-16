@@ -97,7 +97,7 @@ void Player::Draw() const
 	m_current_attach_gun->Draw();
 
 	m_collider->Draw(true, 0, 0xffffff);
-	for (auto trigger : m_trigger)
+	for (auto& trigger : m_trigger)
 	{
 		trigger.second->Draw(true, 0, 0xffffff);
 	}
@@ -565,16 +565,22 @@ void Player::CorrectBonePos()
 		return;
 	}
 
+	// カメラの行列からボーンの回転を取得
 	MATRIX m	 = m_camera->GetTransform()->GetMatrix(CoordinateKind::kWorld);
 	VECTOR angle = math::ConvertRotMatrixToEulerAngles(m);
 	angle.x *= -1;
 	angle.y = 0.0f;
 
-	matrix::Draw(m, VGet(0, 0, 0));
-	DrawFormatString(0, 80, 0xffffff, "%f, %f, %f", angle.x, angle.y, angle.z);
+	// HACK : ワールドZ軸に対してlook_dirが90°を超えるとボーンが反転する現象が起きているため
+	//		  その条件下のみ反転し直す
+	//		  無理やりな処理であるため修正が必要
+	if (math::GetAngleBetweenTwoVector(m_look_dir.at(TimeKind::kCurrent), axis::GetWorldZAxis()) >= 90.0f * math::kDegreesToRadian)
+	{
+		angle.x -= DX_PI_F;
+		angle.z -= DX_PI_F;
+	}
 
 	MATRIX result_m = math::ConvertEulerAnglesToRotMatrix(angle);
-
 	MV1SetFrameUserLocalMatrix(handle, frame_num_spine, result_m);
 }
 
@@ -748,7 +754,7 @@ VECTOR Player::GetMoveForward()
 	return v3d::GetNormalizedVector(forward);
 }
 
-bool Player::IsApplyTransform()
+bool Player::IsApplyTransform() const
 {
 	bool is_apply = false;
 

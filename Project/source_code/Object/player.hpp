@@ -73,7 +73,7 @@ private:
 	/// @return カメラのforwardのY軸を消し飛ばしたベクトル
 	[[nodiscard]] VECTOR GetMoveForward();
 
-	[[nodiscard]] bool IsApplyTransform();
+	[[nodiscard]] bool IsApplyTransform() const;
 
 private:
 	enum class MoveDir
@@ -101,7 +101,7 @@ private:
 	static constexpr float kIdelAnimPlayThreshold				= 0.35f;	// アイドルアニメーションを再生すると判定する閾値
 
 	static constexpr int   kWalkStickSlopeLimit					= 15000;	// 歩き状態とするスティック傾きの上限
-	static constexpr int   kTurnAroundStickAngle				= 30.0f;	// 振り向きを行うスティックの入力角度
+	static constexpr float kTurnAroundStickAngle				= 30.0f;	// 振り向きを行うスティックの入力角度
 
 	static constexpr float kCapsuleRadius						= 34.0f;
 	static constexpr float kCapsuleLengthForStand				= 178.0f;

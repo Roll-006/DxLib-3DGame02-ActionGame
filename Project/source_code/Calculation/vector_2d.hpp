@@ -53,7 +53,7 @@ namespace v2d
 	template<v2d_concepts::ValidT VecT>
 	[[nodiscard]] inline VecT GetZeroVector()
 	{
-		return VecT(0.0f, 0.0f);
+		return VecT(0, 0);
 	}
 
 	template<v2d_concepts::ValidT VecT>
