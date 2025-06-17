@@ -202,7 +202,7 @@ void Camera::Move()
 	//ApplyInvert();
 
 	CalcAngle();
-	CalcDistance();
+	//CalcDistance();
 
 	// 回転行列を生成
 	MATRIX m = MGetIdent();
@@ -214,9 +214,6 @@ void Camera::Move()
 	const VECTOR forward	= m_transform->GetForward(CoordinateKind::kWorld);
 	const VECTOR pos		= look_pos - forward * m_distance_to_target;
 	m_transform->SetPos(CoordinateKind::kWorld, pos);
-
-	DrawFormatString(0,  0, 0xffffff, "pos      : %f, %f, %f", pos.x, pos.y, pos.z);
-	DrawFormatString(0, 20, 0xffffff, "look_pos : %f, %f, %f", look_pos.x, look_pos.y, look_pos.z);
 }
 
 void Camera::InitMove()
@@ -258,15 +255,15 @@ void Camera::CalcAngle()
 	if (m_angle.at(TimeKind::kCurrent).x > kMaxVerticalAngle * math::kDegreesToRadian) { m_angle.at(TimeKind::kCurrent).x = kMaxVerticalAngle * math::kDegreesToRadian; }
 }
 
-void Camera::CalcDistance()
-{
-	// 対象を上から見ると離れ、下から見ると近づく
-	const float min  = kMinVerticalAngle * math::kDegreesToRadian;
-	const float max  = kMaxVerticalAngle * math::kDegreesToRadian;
-	const float rate = math::GetUnitValue<float, float>(min, max, m_angle.at(TimeKind::kCurrent).x);
-
-	m_distance_to_target = (kMaxDistanceToTarget - kMinDistanceToTarget) * rate + kMinDistanceToTarget;
-}
+//void Camera::CalcDistance()
+//{
+//	// 対象を上から見ると離れ、下から見ると近づく
+//	const float min  = kMinVerticalAngle * math::kDegreesToRadian;
+//	const float max  = kMaxVerticalAngle * math::kDegreesToRadian;
+//	const float rate = math::GetUnitValue<float, float>(min, max, m_angle.at(TimeKind::kCurrent).x);
+//
+//	m_distance_to_target = (kMaxDistanceToTarget - kMinDistanceToTarget) * rate + kMinDistanceToTarget;
+//}
 
 void Camera::CalcInitAngle()
 {
@@ -309,8 +306,10 @@ VECTOR Camera::GetLookPos()
 
 	// ボーン自体を追跡すると画面の揺れが強すぎるため
 	// 同じ高さの位置を追跡
-	const auto distance	= m_target_transform->GetPos(CoordinateKind::kWorld) - MGetTranslateElem(frame_mat);
-	auto look_pos = m_target_transform->GetPos(CoordinateKind::kWorld) + m_target_transform->GetUp(CoordinateKind::kWorld) * VSize(distance);
+	const VECTOR begin_pos  = m_target_transform->GetPos(CoordinateKind::kWorld);
+	const VECTOR distance	= begin_pos - MGetTranslateElem(frame_mat);
+	const VECTOR up			= m_target_transform->GetUp(CoordinateKind::kWorld);
+	VECTOR look_pos = begin_pos + up * VSize(distance);
 
 	// カメラの軸をもとに位置を修正
 	const auto axes = m_transform->GetAxes(CoordinateKind::kWorld);

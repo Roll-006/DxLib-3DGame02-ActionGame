@@ -28,8 +28,8 @@ void Modeler::Draw() const
 	ApplyOpacity();
 	ApplyMatrix();
 
-	MV1DrawModel(m_model_handle);
-	//DxLibHelper::DrawModelFrames(m_model_handle, "a", 0.001f);
+	//MV1DrawModel(m_model_handle);
+	DxLibHelper::DrawModelFrames(m_model_handle, "a", 0.0325f);
 }
 
 void Modeler::ApplyOpacity() const

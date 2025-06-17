@@ -128,9 +128,24 @@ Axes math::ConvertRotMatrixToAxes(const MATRIX& mat)
 {
     const MATRIX m = MGetRotElem(mat);
 
-    const VECTOR x_axis = VTransform(axis::GetWorldXAxis(), m);
-    const VECTOR y_axis = VTransform(axis::GetWorldYAxis(), m);
-    const VECTOR z_axis = VTransform(axis::GetWorldZAxis(), m);
+    const VECTOR scale
+    {
+        VSize(VGet(m.m[0][0], m.m[0][1], m.m[0][2])),
+        VSize(VGet(m.m[0][0], m.m[0][1], m.m[0][2])),
+        VSize(VGet(m.m[2][0], m.m[2][1], m.m[2][2]))
+    };
+
+    const VECTOR reciprocal
+    {
+        1.0f / scale.x,
+        1.0f / scale.y,
+        1.0f / scale.z
+    };
+
+    // スケールを打ち消す
+    const VECTOR x_axis = VTransform(axis::GetWorldXAxis(), m) * reciprocal.x;
+    const VECTOR y_axis = VTransform(axis::GetWorldYAxis(), m) * reciprocal.y;
+    const VECTOR z_axis = VTransform(axis::GetWorldZAxis(), m) * reciprocal.z;
 
     return Axes(x_axis, y_axis, z_axis);
 }

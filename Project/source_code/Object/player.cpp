@@ -81,12 +81,12 @@ void Player::Update()
 	ChangeAnimState();
 	m_animator->Update();
 
-	//// ボーン位置修正
-	//m_bone_pos_corrector->CorrectGunPoseBone(
-	//	m_modeler->GetModelHandle(), 
-	//	m_look_dir.at(TimeKind::kCurrent),
-	//	m_camera->GetTransform()->GetMatrix(CoordinateKind::kWorld), 
-	//	m_is_ready_gun);
+	// ボーン位置修正
+	m_bone_pos_corrector->CorrectGunPoseBone(
+		m_modeler->GetModelHandle(), 
+		m_look_dir.at(TimeKind::kCurrent),
+		m_camera->GetTransform()->GetMatrix(CoordinateKind::kWorld), 
+		m_is_ready_gun);
 
 	// しゃがみ処理によりカプセルを縮める
 	ShrinkCapsule();
@@ -250,8 +250,8 @@ void Player::ReadyGun()
 	m_is_correct_look_dir	= true;
 
 	// 拡大率から実際の距離を取得
-	float max_distance = Camera::kNormalDistance / m_current_attach_gun->GetScopeScale();
-	m_camera->Approach(max_distance, kAimDownSightsSpeed * FPS::GetDeltaTime());
+	float min_distance = Camera::kNormalDistance / m_current_attach_gun->GetScopeScale();
+	m_camera->Approach(min_distance, kAimDownSightsSpeed * FPS::GetDeltaTime());
 
 	// ダッシュ状態を解除
 	m_is_run = false;

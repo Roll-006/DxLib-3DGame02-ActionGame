@@ -65,7 +65,7 @@ private:
 	void InitMove();
 
 	void CalcAngle();
-	void CalcDistance();
+	//void CalcDistance();
 
 	/// @brief 視点リセット時の角度を計算する
 	void CalcInitAngle();
@@ -102,12 +102,12 @@ private:
 	static constexpr float  kFar					= 3000.0f;
 	static constexpr float  kFOV					= 60.0f;
 
-	static constexpr VECTOR kLookCorrectPos			= VECTOR(17.0f, 26.0f, 0.0f);
+	static constexpr VECTOR kLookCorrectPos			= VECTOR(19.0f, 5.0f, 0.0f);
 
-	static constexpr float  kMaxDistanceToTarget	= 70.0f;
-	static constexpr float  kMinDistanceToTarget	= 8.0f;
+	static constexpr float  kMaxDistanceToTarget	= 42.0f;
+	static constexpr float  kMinDistanceToTarget	= 42.0f;
 
-	static constexpr float  kMaxVerticalAngle		= 60.0f;
+	static constexpr float  kMaxVerticalAngle		= 89.0f;
 	static constexpr float  kMinVerticalAngle		= -70.0f;
 	static constexpr float  kInitAngleSpeed			= 10.0f;
 	static constexpr float  kInitYawSpeed			= 60.0f;
