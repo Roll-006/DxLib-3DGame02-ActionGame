@@ -28,8 +28,8 @@ void Modeler::Draw() const
 	ApplyOpacity();
 	ApplyMatrix();
 
-	//MV1DrawModel(m_model_handle);
-	DxLibHelper::DrawModelFrames(m_model_handle, "a", 0.0325f);
+	MV1DrawModel(m_model_handle);
+	//DxLibHelper::DrawModelFrames(m_model_handle, "a", 0.0325f);
 }
 
 void Modeler::ApplyOpacity() const
@@ -40,7 +40,7 @@ void Modeler::ApplyOpacity() const
 	}
 	else
 	{
-		//MV1SetUseZBuffer(m_model_handle, FALSE);
+		MV1SetUseZBuffer(m_model_handle, FALSE);
 		MV1SetOpacityRate(m_model_handle, m_opacity);
 	}
 }

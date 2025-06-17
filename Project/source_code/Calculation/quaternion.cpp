@@ -15,6 +15,8 @@ Quaternion quat::GetZeroQuaternion()
 	return Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
 }
 
+// MEMO : forward‚ğX²‚Æ‚µ‚ÄAŸŒü‚«‚½‚¢•ûŒü‚ğZ‚Æ‚µ‚½‚çA‰ñ“]²‚ÍY²‚É‚È‚é‰Â”\«‚ ‚è
+
 Quaternion quat::GetIdentityQuaternion()
 {
 	return Quaternion(0.0f, 0.0f, 0.0f, 1.0f);

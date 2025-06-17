@@ -2,7 +2,7 @@
 
 void BonePosCorrector::CorrectGunPoseBone(const int model_handle, const VECTOR& look_dir, const MATRIX& rot, const bool m_is_ready_gun)
 {
-	const int frame_num_spine = MV1SearchFrame(model_handle, BonePath.SPINE);
+	const int frame_spine = MV1SearchFrame(model_handle, BonePath.SPINE);
 
 	// データのシフト
 	m_bone_angle[BonePath.SPINE][TimeKind::kPrev] = m_bone_angle[BonePath.SPINE][TimeKind::kCurrent];
@@ -10,7 +10,7 @@ void BonePosCorrector::CorrectGunPoseBone(const int model_handle, const VECTOR& 
 	// 武器を構えていない場合は初期値に戻す
 	if (!m_is_ready_gun)
 	{
-		MV1ResetFrameUserLocalMatrix(model_handle, frame_num_spine);
+		MV1ResetFrameUserLocalMatrix(model_handle, frame_spine);
 		return;
 	}
 
@@ -39,5 +39,5 @@ void BonePosCorrector::CorrectGunPoseBone(const int model_handle, const VECTOR& 
 	}
 
 	MATRIX result_m = math::ConvertEulerAnglesToRotMatrix(m_bone_angle[BonePath.SPINE][TimeKind::kCurrent]);
-	MV1SetFrameUserLocalMatrix(model_handle, frame_num_spine, result_m);
+	MV1SetFrameUserLocalMatrix(model_handle, frame_spine, result_m);
 }

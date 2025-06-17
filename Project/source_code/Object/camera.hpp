@@ -19,6 +19,7 @@ public:
 	void OnCollide(const PhysicalObjBase& check_hit_obj) override;
 	void OnGravity() override;
 	
+
 	#pragma region アタッチ・デタッチ
 	/// @brief 追跡対象をアタッチする(トランスフォーム情報で追跡)
 	void AttachTarget(const std::shared_ptr<ObjBase> obj);
@@ -26,14 +27,16 @@ public:
 	void AttachTarget(const std::string& obj_name);
 	/// @brief 追跡対象をアタッチする(トランスフォーム＋ボーン情報で追跡)
 	/// @param bone_path ボーンのパス
-	void AttachTarget(const std::shared_ptr<ObjBase> obj, const std::shared_ptr<Modeler> modeler, const std::string& bone_path);
+	void AttachTarget(const std::shared_ptr<ObjBase> obj, const std::shared_ptr<Modeler> modeler, const std::string& bone_path, const bool is_track_height_only);
 	/// @brief 追跡対象をアタッチする(トランスフォーム＋ボーン情報で追跡)
 	/// @param bone_path ボーンのパス
-	void AttachTarget(const std::string& obj_name, const std::shared_ptr<Modeler> modeler, const std::string& bone_path);
+	void AttachTarget(const std::string& obj_name, const std::shared_ptr<Modeler> modeler, const std::string& bone_path, const bool is_track_height_only);
 	/// @brief 追跡対象をデタッチする
 	void DetachTarget();
 	#pragma endregion
 
+
+	#pragma region ターゲットとの距離
 	/// @brief ターゲットとの距離を設定する
 	void SetDistanceToTarget(const float distance) { m_distance_to_target = distance; }
 
@@ -41,6 +44,8 @@ public:
 	void Approach(const float min_distance, const float move_speed);
 	/// @brief ターゲットから離れる
 	void Depart(const float max_distance, const float move_speed);
+	#pragma endregion
+
 
 	#pragma region コマンド
 	void MoveUp();
@@ -49,6 +54,14 @@ public:
 	void MoveRight();
 	void InitAngle();
 	#pragma endregion
+
+
+	/// @brief ボーンを追尾する際にボーンの揺れまで追尾する
+	/// @brief ボーンを追尾していない場合は効果なし
+	void TrackBoneWobbly() { m_is_track_height_only = true; }
+	/// @brief ターゲットの原点から対象のボーンまでの高さのみを抽出した位置を追尾
+	/// @brief ボーンを追尾していない場合は効果なし
+	void TrackBoneHeightOnly() { m_is_track_height_only = false; }
 
 	/// @brief ヨー角(Y軸回転)の視点をリセット
 	void InitYaw();
@@ -104,11 +117,11 @@ private:
 
 	static constexpr VECTOR kLookCorrectPos			= VECTOR(19.0f, 5.0f, 0.0f);
 
-	static constexpr float  kMaxDistanceToTarget	= 42.0f;
-	static constexpr float  kMinDistanceToTarget	= 42.0f;
+	//static constexpr float  kMaxDistanceToTarget	= 42.0f;
+	//static constexpr float  kMinDistanceToTarget	= 42.0f;
 
-	static constexpr float  kMaxVerticalAngle		= 89.0f;
-	static constexpr float  kMinVerticalAngle		= -70.0f;
+	static constexpr float  kMaxVerticalAngle		= 60.0f;
+	static constexpr float  kMinVerticalAngle		= -60.0f;
 	static constexpr float  kInitAngleSpeed			= 10.0f;
 	static constexpr float  kInitYawSpeed			= 60.0f;
 	static constexpr float  kInitAngleEndThreshold	= 0.01f;
@@ -133,6 +146,7 @@ private:
 	bool m_is_invert_vertical;		// 操作時に上下反転を行うかを判定
 	bool m_is_init_angle;			// 視点リセットを行うかを判定
 	bool m_is_look_same_dir_target;	// 追跡対象と同じ向きを見ているかを判定(Y成分は考慮しない)
+	bool m_is_track_height_only;	// 高さのみを追尾するかを判定
 
 	VECTOR m_dir;
 	VECTOR m_velocity;

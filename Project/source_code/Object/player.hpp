@@ -86,7 +86,7 @@ private:
 private:
 	static constexpr float kModelScale							= 0.25f;
 
-	static constexpr float kSquatWalkSpeed						= 0.1f;
+	static constexpr float kSquatWalkSpeed						= 0.15f;
 	static constexpr float kSlowWalkSpeed						= 0.2f;
 	static constexpr float kWalkSpeed							= 0.5f;
 	static constexpr float kRunSpeed							= 2.0f;

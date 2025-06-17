@@ -13,6 +13,7 @@ Camera::Camera() :
 	m_is_invert_vertical		(false),
 	m_is_init_angle				(false), 
 	m_is_look_same_dir_target	(false),
+	m_is_track_height_only		(false),
 	m_dir						(v3d::GetZeroVector()),
 	m_velocity					(v3d::GetZeroVector())
 {
@@ -78,27 +79,30 @@ void Camera::AttachTarget(const std::string& obj_name)
 	AttachTarget(target_obj);
 }
 
-void Camera::AttachTarget(const std::shared_ptr<ObjBase> obj, const std::shared_ptr<Modeler> modeler, const std::string& bone_path)
+void Camera::AttachTarget(const std::shared_ptr<ObjBase> obj, const std::shared_ptr<Modeler> modeler, const std::string& bone_path, const bool is_track_height_only)
 {
 	AttachTarget(obj);
 
-	m_target_modeler	= modeler;
-	m_target_bone		= bone_path;
+	m_target_modeler		= modeler;
+	m_target_bone			= bone_path;
+	m_is_track_height_only	= is_track_height_only;
 }
 
-void Camera::AttachTarget(const std::string& obj_name, const std::shared_ptr<Modeler> modeler, const std::string& bone_path)
+void Camera::AttachTarget(const std::string& obj_name, const std::shared_ptr<Modeler> modeler, const std::string& bone_path, const bool is_track_height_only)
 {
 	AttachTarget(obj_name);
 
-	m_target_modeler	= modeler;
-	m_target_bone		= bone_path;
+	m_target_modeler		= modeler;
+	m_target_bone			= bone_path;
+	m_is_track_height_only	= is_track_height_only;
 }
 
 void Camera::DetachTarget()
 {
-	m_target_transform	= nullptr;
-	m_target_modeler	= nullptr;
-	m_target_bone		= "";
+	m_target_transform		= nullptr;
+	m_target_modeler		= nullptr;
+	m_target_bone			= "";
+	m_is_track_height_only	= false;
 }
 
 void Camera::Approach(const float min_distance, const float move_speed)
@@ -303,13 +307,25 @@ VECTOR Camera::GetLookPos()
 	const int model_handle	= m_target_modeler->GetModelHandle();
 	const int frame_num		= MV1SearchFrame(model_handle, m_target_bone.c_str());
 	MATRIX	  frame_mat		= MV1GetFrameLocalWorldMatrix(model_handle, frame_num);
+	VECTOR	  look_pos		= v3d::GetZeroVector();
 
-	// ボーン自体を追跡すると画面の揺れが強すぎるため
-	// 同じ高さの位置を追跡
-	const VECTOR begin_pos  = m_target_transform->GetPos(CoordinateKind::kWorld);
-	const VECTOR distance	= begin_pos - MGetTranslateElem(frame_mat);
-	const VECTOR up			= m_target_transform->GetUp(CoordinateKind::kWorld);
-	VECTOR look_pos = begin_pos + up * VSize(distance);
+	// TEST : 仮で追尾の種類を変更
+	if (CheckHitKey(KEY_INPUT_0)) { TrackBoneWobbly(); }
+	if (CheckHitKey(KEY_INPUT_1)) { TrackBoneHeightOnly(); }
+
+	if (m_is_track_height_only)
+	{
+		look_pos = VTransform(axis::GetWorldZAxis(), frame_mat);
+	}
+	else
+	{
+		// ボーン自体を追跡すると画面の揺れが強すぎるため
+		// 同じ高さの位置を追跡
+		const VECTOR begin_pos = m_target_transform->GetPos(CoordinateKind::kWorld);
+		const VECTOR distance = begin_pos - MGetTranslateElem(frame_mat);
+		const VECTOR up = m_target_transform->GetUp(CoordinateKind::kWorld);
+		look_pos = begin_pos + up * VSize(distance);
+	}
 
 	// カメラの軸をもとに位置を修正
 	const auto axes = m_transform->GetAxes(CoordinateKind::kWorld);
