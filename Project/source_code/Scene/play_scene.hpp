@@ -1,6 +1,8 @@
 #pragma once
 #include "../Base/scene_base.hpp"
+
 #include "../Object/skydome.hpp"
+#include "../Object/enemy.hpp"
 
 class PlayScene final : public SceneBase
 {
@@ -14,4 +16,5 @@ public:
 
 private:
 	std::shared_ptr<Skydome> m_skydome;
+	std::shared_ptr<Enemy>   m_enemy;
 };

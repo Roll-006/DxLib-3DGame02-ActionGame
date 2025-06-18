@@ -1,8 +1,10 @@
 #pragma once
 #include "../Base/scene_base.hpp"
+
 #include "../Object/camera.hpp"
 #include "../Object/player.hpp"
 #include "../Object/selector.hpp"
+
 #include "../Manager/command_handler.hpp"
 
 class ShareScene final : public SceneBase

@@ -5,8 +5,6 @@
 #include "assault_rifle.hpp"
 #include "camera.hpp"
 
-#include "../Part/bone_pos_corrector.hpp"
-
 class Player final : public CharaBase
 {
 public:
@@ -36,6 +34,9 @@ public:
 	#pragma endregion
 
 private:
+	void LoadAnim() override;
+	void ChangeAnimState() override;
+
 	void Move();
 	void InitMove();
 
@@ -56,17 +57,11 @@ private:
 	// パッド入力での速度ベクトルを取得
 	[[nodiscard]] VECTOR GetVelocityFromPad(VECTOR& velocity);
 
-	/// @brief しゃがみ処理によりカプセルを縮める
-	void ShrinkCapsule();
-
 	/// @brief トランスフォーム情報を更新する
 	void UpdateTransform();
 
 	/// @brief 速度ベクトルをコライダーおよびトリガーに適用する;
 	void ApplyVelocityToCollider();
-
-	void LoadAnim() override;
-	void ChangeAnimState() override;
 
 	/// @brief カメラのforwardをもとにした進行方向ベクトルを取得する
 	/// @return カメラのforwardのY軸を消し飛ばしたベクトル
@@ -121,9 +116,6 @@ private:
 
 	float m_move_speed;
 	float m_non_move_time;										// 入力をしていない時間
-
-	std::shared_ptr<Capsule> m_capsule_collider;
-	float m_capsule_length;										// 押し戻し用のカプセルの長さ
 
 	bool m_is_move;
 	bool m_is_run;
