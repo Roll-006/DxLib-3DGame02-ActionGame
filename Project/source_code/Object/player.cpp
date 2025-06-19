@@ -623,11 +623,6 @@ void Player::CorrectLookDir()
 		// –Ú“I‚Ìdir‚É’B‚µ‚½ê‡‚ÍU‚èŒü‚«ˆ—‚ÍI—¹‚Æ‚·‚é
 		m_is_turn_around = false;
 	}
-
-	auto next_dir    = m_look_dir.at(TimeKind::kNext);
-	auto current_dir = m_look_dir.at(TimeKind::kCurrent);
-	DrawFormatString(0, 0, 0xffffff, "m_look_dir.at(TimeKind::kNext)    : %f, %f, %f", next_dir.x, next_dir.y, next_dir.z);
-	DrawFormatString(0, 20, 0xffffff, "m_look_dir.at(TimeKind::kCurrent) : %f, %f, %f", current_dir.x, current_dir.y, current_dir.z);
 }
 
 VECTOR Player::GetVelocityFromPad(VECTOR& velocity)

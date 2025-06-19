@@ -85,7 +85,7 @@ private:
 
 	static constexpr float kMoveDirCorrectionSpeed				= 0.065f;	// 移動方向の補正速度
 	static constexpr float kLookDirCorrectionAngle				= 0.1f;		// 見る方向を回転させる角度
-	static constexpr float kLookDirCorrectionAngleForADS		= 0.005f;	// スコープを覗く際の、見る方向を回転させる角度
+	static constexpr float kLookDirCorrectionAngleForADS		= 0.1f;		// スコープを覗く際の、見る方向を回転させる角度
 	static constexpr float kConfirmMoveDirThreshold				= 0.08f;	// 目的のdirに到達したと判定する閾値
 	static constexpr float kConfirmLookDirThresholdAngle		= 10.0f;	// 目的のdirに到達したと判定する閾値
 	static constexpr float kConfirmLookDirThresholdAngleForADS	= 20.0f;	// スコープを覗く際の、目的のdirに到達したと判定する閾値
