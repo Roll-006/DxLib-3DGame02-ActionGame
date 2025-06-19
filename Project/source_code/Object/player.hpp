@@ -40,10 +40,6 @@ private:
 	void Move();
 	void InitMove();
 
-	/// @brief 水平方向の速度ベクトルを計算
-	void CalcHorizontalVelocity();
-	/// @brief 垂直方向の速度ベクトルを計算
-	void CalcVerticalVelocity();
 	/// @brief 移動速度を計算
 	void CalcMoveSpeed(const float input_slope);
 

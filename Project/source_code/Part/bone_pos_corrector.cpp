@@ -26,7 +26,7 @@ void BonePosCorrector::CorrectGunPoseBone(const int model_handle, const VECTOR& 
 	else
 	{
 		m_bone_angle[BonePath.SPINE][TimeKind::kCurrent].x *= -1;
-		m_bone_angle[BonePath.SPINE][TimeKind::kCurrent].y  = 0.0f;
+		m_bone_angle[BonePath.SPINE][TimeKind::kCurrent].y = 0.0f;
 
 		// HACK : ワールドZ軸に対してlook_dirが90°を超えるとボーンが反転する現象が起きているためその条件下のみ反転し直す
 		//		  無理やりな処理であるため修正が必要
