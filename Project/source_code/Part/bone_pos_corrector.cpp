@@ -16,7 +16,7 @@ void BonePosCorrector::CorrectGunPoseBone(const int model_handle, const VECTOR& 
 
 	// カメラの行列からボーンの回転を取得
 	bool is_gimbal_lock = false;
-	m_bone_angle[BonePath.SPINE][TimeKind::kCurrent] = math::ConvertRotMatrixToEulerAngles(MGetRotElem(rot), is_gimbal_lock);
+	m_bone_angle[BonePath.SPINE][TimeKind::kCurrent] = -math::ConvertRotMatrixToEulerAngles(MGetRotElem(rot), is_gimbal_lock);
 
 	if (is_gimbal_lock)
 	{
@@ -28,7 +28,6 @@ void BonePosCorrector::CorrectGunPoseBone(const int model_handle, const VECTOR& 
 		m_bone_angle[BonePath.SPINE][TimeKind::kCurrent].y = 0.0f;
 
 		// HACK : ワールドZ軸に対してforwardが90°を超えるとボーンが反転する現象が起きているためその条件下のみ反転し直す
-		//		  無理やりな処理であるため修正が必要
 		//		  ConvertRotMatrixToEulerAngles関数の修正が必要な可能性あり
 		const auto forward = math::ConvertRotMatrixToAxes(rot).z_axis;
 		if (math::GetAngleBetweenTwoVector(forward, axis::GetWorldZAxis()) >= 90.0f * math::kDegreesToRadian)
@@ -38,7 +37,7 @@ void BonePosCorrector::CorrectGunPoseBone(const int model_handle, const VECTOR& 
 		}
 	}
 
-	const MATRIX result_m = math::ConvertEulerAnglesToRotMatrix(-m_bone_angle[BonePath.SPINE][TimeKind::kCurrent]);
+	const MATRIX result_m = math::ConvertEulerAnglesToRotMatrix(m_bone_angle[BonePath.SPINE][TimeKind::kCurrent]);
 
 	// 行列情報を適用
 	MV1SetFrameUserLocalMatrix(model_handle, frame_spine, result_m);

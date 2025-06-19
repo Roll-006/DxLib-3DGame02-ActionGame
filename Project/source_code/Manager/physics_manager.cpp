@@ -14,20 +14,14 @@ void PhysicsManager::Update()
 {
 	for (auto& obj : m_physical_objects)
 	{
-		obj->OnGravity();
+		obj->ApplyGravity(kGravityAcceleration, kMaxGravity);
 	}
 }
 
-void PhysicsManager::AddPhysicalObj(std::shared_ptr<PhysicalObjBase> physical_obj)
+void PhysicsManager::RemovePhysicalObj(std::string obj_name)
 {
-	if (!std::count(m_physical_objects.begin(), m_physical_objects.end(), physical_obj))
-	{
-		m_physical_objects.emplace_back(physical_obj);
-	}
-}
+	const auto physical_obj = std::static_pointer_cast<PhysicalObjBase>(ObjManager::GetInstance()->GetObj(obj_name));
 
-void PhysicsManager::RemovePhysicalObj(std::shared_ptr<PhysicalObjBase> physical_obj)
-{
 	if (std::count(m_physical_objects.begin(), m_physical_objects.end(), physical_obj))
 	{
 		m_physical_objects.remove(physical_obj);

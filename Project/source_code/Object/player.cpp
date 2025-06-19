@@ -15,6 +15,9 @@ Player::Player(std::shared_ptr<Camera> camera) :
 	m_is_correct_look_dir	(false),
 	m_turn_around_count		(0)
 {
+	ObjManager    ::GetInstance()->AddObj        (*this);
+	PhysicsManager::GetInstance()->AddPhysicalObj(*this);
+
 	// ‰ŠúposEdir‚ğİ’è
 	m_move_dir[TimeKind::kPrev] = m_move_dir[TimeKind::kCurrent] = m_move_dir[TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);
 	m_look_dir[TimeKind::kCurrent] = m_look_dir[TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);
@@ -105,11 +108,6 @@ void Player::Draw() const
 }
 
 void Player::OnCollide(const PhysicalObjBase& check_hit_obj)
-{
-
-}
-
-void Player::OnGravity()
 {
 
 }

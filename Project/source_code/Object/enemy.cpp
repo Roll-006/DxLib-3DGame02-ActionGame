@@ -4,9 +4,12 @@ Enemy::Enemy() :
 	CharaBase(ObjName.ZOMBIE_POLICE, ObjTag.ENEMY, ModelPath.CHARA_02, MassKind::kMedium),
 	m_dir(VGet(0.0f, 0.0f, 1.0f))
 {
+	ObjManager    ::GetInstance()->AddObj        (*this);
+	PhysicsManager::GetInstance()->AddPhysicalObj(*this);
+
 	m_transform->SetRot  (CoordinateKind::kWorld, m_dir);
 	m_transform->SetScale(CoordinateKind::kWorld, kModelScale);
-	m_transform->SetPos  (CoordinateKind::kWorld, VGet(0, 0, 0));
+	m_transform->SetPos  (CoordinateKind::kWorld, VGet(20, 0, 0));
 
 	// コライダー・トリガーを設定
 	MakeCapsuleCollider(kCapsuleRadius);
@@ -52,11 +55,6 @@ void Enemy::Draw() const
 }
 
 void Enemy::OnCollide(const PhysicalObjBase& check_hit_obj)
-{
-
-}
-
-void Enemy::OnGravity()
 {
 
 }

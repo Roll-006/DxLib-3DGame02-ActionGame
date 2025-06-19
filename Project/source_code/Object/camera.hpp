@@ -17,7 +17,6 @@ public:
 	void Draw() const	override;
 
 	void OnCollide(const PhysicalObjBase& check_hit_obj) override;
-	void OnGravity() override;
 	
 
 	#pragma region アタッチ・デタッチ

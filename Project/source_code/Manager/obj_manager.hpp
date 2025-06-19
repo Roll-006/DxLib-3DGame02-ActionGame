@@ -10,15 +10,14 @@ class ObjManager final : public SingletonBase<ObjManager>
 {
 public:
 	template<obj_concepts::ObjT ObjT>
-	void AddObj(const std::shared_ptr<ObjT> obj)
+	void AddObj(const ObjT& obj)
 	{
 		// 上書き不可
-		if (!m_objects.count(obj->GetName()))
+		if (!m_objects.count(obj.GetName()))
 		{
-			m_objects[obj->GetName()] = obj;
+			m_objects[obj.GetName()] = std::make_shared<ObjT>(obj);
 		}
 	}
-
 	void RemoveObj(const std::string& obj_name);
 
 	/// @brief オブジェクトが存在しているかを判定

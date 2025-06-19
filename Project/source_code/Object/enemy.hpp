@@ -1,5 +1,6 @@
 #pragma once
 #include "../Base/chara_base.hpp"
+#include "../Manager/physics_manager.hpp"
 
 class Enemy final : public CharaBase
 {
@@ -12,7 +13,6 @@ public:
 	void Draw() const	override;
 
 	void OnCollide(const PhysicalObjBase& check_hit_obj) override;
-	void OnGravity() override;
 
 private:
 	void LoadAnim() override;

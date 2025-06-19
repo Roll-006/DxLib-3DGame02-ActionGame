@@ -20,6 +20,9 @@ Camera::Camera() :
 	SetCameraNearFar(kNear, kFar);
 	SetupCamera_Perspective(kFOV * math::kDegreesToRadian);
 
+	ObjManager    ::GetInstance()->AddObj        (*this);
+	PhysicsManager::GetInstance()->AddPhysicalObj(*this);
+
 	m_angle[TimeKind::kCurrent] = m_angle[TimeKind::kNext] = v3d::GetZeroVector();
 }
 
@@ -59,11 +62,6 @@ void Camera::Draw() const
 }
 
 void Camera::OnCollide(const PhysicalObjBase& check_hit_obj)
-{
-
-}
-
-void Camera::OnGravity()
 {
 
 }

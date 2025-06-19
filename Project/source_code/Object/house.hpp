@@ -14,7 +14,6 @@ public:
 	void Draw() const	override;
 
 	void OnCollide(const PhysicalObjBase& check_hit_obj) override;
-	void OnGravity() override;
 
 private:
 	static constexpr float  kModelScale = 10.0f;
