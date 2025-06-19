@@ -22,11 +22,9 @@ Player::Player(std::shared_ptr<Camera> camera) :
 	m_transform->SetScale(CoordinateKind::kWorld, kModelScale);
 	m_transform->SetPos  (CoordinateKind::kWorld, VGet(0, 0, 0));
 
-	// コライダーを設定
+	// コライダー・トリガーを設定
 	MakeCapsuleCollider(kCapsuleRadius);
-
-	// トリガーを設定
-	MakeLandingTrigger(kLandingTriggerRadius);
+	MakeLandingTrigger (kLandingTriggerRadius);
 
 	// 各アニメーション追加
 	LoadAnim();
@@ -45,7 +43,7 @@ Player::~Player()
 
 void Player::Init()
 {
-	// TODO : 後に設定
+	
 }
 
 void Player::Update()
@@ -105,8 +103,6 @@ void Player::Draw() const
 	DrawLine3D(pos, pos + axes.x_axis * 100, 0xff0000);
 	DrawLine3D(pos, pos + axes.y_axis * 100, 0x00ff22);
 	DrawLine3D(pos, pos + axes.z_axis * 100, 0x0077ff);
-
-	DrawLine3D(pos, pos + m_look_dir.at(TimeKind::kNext) * 100, 0xff00ff);
 }
 
 void Player::OnCollide(const PhysicalObjBase& check_hit_obj)

@@ -27,11 +27,4 @@ void Skydome::Update()
 void Skydome::Draw() const
 {
 	//m_modeler->Draw();
-
-	const VECTOR pos1 = VGet( 1000, 0, -1000);
-	const VECTOR pos2 = VGet( 1000, 0,  1000);
-	const VECTOR pos3 = VGet(-1000, 0,  1000);
-	const VECTOR pos4 = VGet(-1000, 0, -1000);
-	Square square(pos1, pos2, pos3, pos4);
-	square.Draw(false, 255, 0xffffff);
 }

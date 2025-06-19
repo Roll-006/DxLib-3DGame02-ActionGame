@@ -155,6 +155,7 @@
     <ClCompile Include="source_code\Manager\scene_manager.cpp" />
     <ClCompile Include="source_code\Manager\weapon_manager.cpp" />
     <ClCompile Include="source_code\Object\assault_rifle.cpp" />
+    <ClCompile Include="source_code\Object\house.cpp" />
     <ClCompile Include="source_code\Object\enemy.cpp" />
     <ClCompile Include="source_code\Object\selector.cpp" />
     <ClCompile Include="source_code\Object\camera.cpp" />
@@ -257,6 +258,7 @@
     <ClInclude Include="source_code\Manager\scene_manager.hpp" />
     <ClInclude Include="source_code\Manager\weapon_manager.hpp" />
     <ClInclude Include="source_code\Object\assault_rifle.hpp" />
+    <ClInclude Include="source_code\Object\house.hpp" />
     <ClInclude Include="source_code\Object\enemy.hpp" />
     <ClInclude Include="source_code\Object\selector.hpp" />
     <ClInclude Include="source_code\Object\camera.hpp" />

@@ -26,7 +26,4 @@ private:
 
 private:
 	VECTOR m_dir;
-
-	std::shared_ptr<Capsule> m_capsule_collider;
-	float m_capsule_length;
 };
