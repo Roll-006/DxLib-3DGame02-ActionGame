@@ -20,8 +20,7 @@ Camera::Camera() :
 	SetCameraNearFar(kNear, kFar);
 	SetupCamera_Perspective(kFOV * math::kDegreesToRadian);
 
-	ObjManager    ::GetInstance()->AddObj        (*this);
-	PhysicsManager::GetInstance()->AddPhysicalObj(*this);
+	PhysicsManager::GetInstance()->AddIgnoreObjGravity(ObjName.CAMERA);
 
 	m_angle[TimeKind::kCurrent] = m_angle[TimeKind::kNext] = v3d::GetZeroVector();
 }

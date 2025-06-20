@@ -4,6 +4,11 @@ ShareScene::ShareScene() :
 	m_camera(std::make_shared<Camera>()),
 	m_player(std::make_shared<Player>(m_camera))
 {
+	ObjManager    ::GetInstance()->AddObj		 (m_player);
+	ObjManager    ::GetInstance()->AddObj		 (m_camera);
+	PhysicsManager::GetInstance()->AddPhysicalObj(m_player);
+	PhysicsManager::GetInstance()->AddPhysicalObj(m_camera);
+
 	m_camera->AttachTarget(ObjName.PLAYER, m_player->GetModeler(), BonePath.SPINE_2, false);
 	m_camera->Init();
 }

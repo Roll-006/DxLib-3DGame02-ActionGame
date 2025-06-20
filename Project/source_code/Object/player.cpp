@@ -12,12 +12,10 @@ Player::Player(std::shared_ptr<Camera> camera) :
 	m_is_squat				(false),
 	m_is_ready_gun			(false),
 	m_is_turn_around		(false),
+	m_is_turn_run			(false),
 	m_is_correct_look_dir	(false),
 	m_turn_around_count		(0)
 {
-	ObjManager    ::GetInstance()->AddObj        (*this);
-	PhysicsManager::GetInstance()->AddPhysicalObj(*this);
-
 	// ‰ŠúposEdir‚ðÝ’è
 	m_move_dir[TimeKind::kPrev] = m_move_dir[TimeKind::kCurrent] = m_move_dir[TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);
 	m_look_dir[TimeKind::kCurrent] = m_look_dir[TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);
@@ -105,6 +103,11 @@ void Player::Draw() const
 	DrawLine3D(pos, pos + axes.x_axis * 100, 0xff0000);
 	DrawLine3D(pos, pos + axes.y_axis * 100, 0x00ff22);
 	DrawLine3D(pos, pos + axes.z_axis * 100, 0x0077ff);
+
+	DrawFormatString(0,  0, 0xffffff, "m_is_run        : %d", m_is_run);
+	DrawFormatString(0, 20, 0xffffff, "m_is_turn_run   : %d", m_is_turn_run);
+	DrawFormatString(0, 40, 0xffffff, "m_fall_velocity : %f, %f, %f", m_fall_velocity.x, m_fall_velocity.y, m_fall_velocity.z);
+	DrawFormatString(0, 60, 0xffffff, "m_fall_speed    : %f", m_fall_speed);
 }
 
 void Player::OnCollide(const PhysicalObjBase& check_hit_obj)
@@ -418,6 +421,7 @@ void Player::Move()
 
 	// ˆÚ“®”»’è
 	m_is_move = velocity != v3d::GetZeroVector() ? true : false;
+	//velocity += m_fall_velocity;
 
 	// TODO : ŠÖ”–¼‚Æ–ðŠ„‚É‚¸‚ê‚ª‚ ‚é‚½‚ß•ª—£‚ðŒŸ“¢
 	if (m_is_move)
@@ -434,6 +438,18 @@ void Player::Move()
 	CalcMoveSpeed(VSize(velocity));
 	CalcMoveDir(velocity);
 	CalcLookDir();
+
+	// U‚èŒü‚«”»’è
+	// TODO : Œã‚ÉU‚èŒü‚«ƒ_ƒbƒVƒ…‚ÉŽg—p
+	if (m_is_run)
+	{
+		const auto angle = math::GetAngleBetweenTwoVector(m_move_dir.at(TimeKind::kNext), m_move_dir.at(TimeKind::kCurrent));
+		if (angle >= 120.0f * math::kDegreesToRadian)
+		{
+			m_is_turn_run = true;
+			DrawFormatString(0, 60, 0xffffff, "U‚èŒü‚«");
+		}
+	}
 }
 
 void Player::InitMove()
@@ -668,13 +684,16 @@ VECTOR Player::GetVelocityFromPad(VECTOR& velocity)
 
 void Player::UpdateTransform()
 {
-	if (!IsApplyTransform()) { return; }
+	if (IsApplyTransform())
+	{
+		const VECTOR velocity = m_move_dir.at(TimeKind::kCurrent) * m_move_speed;
 
-	const VECTOR velocity = m_move_dir.at(TimeKind::kCurrent) * m_move_speed;
+		m_transform->SetRot  (CoordinateKind::kWorld, m_look_dir.at(TimeKind::kCurrent));
+		m_transform->SetScale(CoordinateKind::kWorld, kModelScale);
+		m_transform->SetPos  (CoordinateKind::kWorld, m_transform->GetPos(CoordinateKind::kWorld) + velocity);
+	}
 
-	m_transform->SetRot  (CoordinateKind::kWorld, m_look_dir.at(TimeKind::kCurrent));
-	m_transform->SetScale(CoordinateKind::kWorld, kModelScale);
-	m_transform->SetPos  (CoordinateKind::kWorld, m_transform->GetPos(CoordinateKind::kWorld) + velocity);
+	m_transform->SetPos(CoordinateKind::kWorld, m_transform->GetPos(CoordinateKind::kWorld) + m_fall_velocity);
 }
 
 void Player::ApplyVelocityToCollider()

@@ -8,8 +8,10 @@
 class Modeler final
 {
 public:
-	Modeler(const std::shared_ptr<Transform> transform, const std::string& file_path, const bool is_turn_around);
-	Modeler(const std::shared_ptr<Transform> transform, const int model_handle,		  const bool is_turn_around);
+	Modeler(const std::shared_ptr<Transform> transform, const std::string& file_path, const VECTOR& basic_angle);
+	Modeler(const std::shared_ptr<Transform> transform, const std::string& file_path);
+	Modeler(const std::shared_ptr<Transform> transform, const int model_handle,		  const VECTOR& basic_angle);
+	Modeler(const std::shared_ptr<Transform> transform, const int model_handle);
 	~Modeler();
 
 	void Draw() const;
@@ -27,9 +29,9 @@ public:
 	[[nodiscard]] int GetModelHandle() const { return m_model_handle; }
 
 private:
-	int   m_model_handle;
-	float m_opacity;			// ƒ‚ƒfƒ‹‚Ì•s“§–¾“x(0.0f`1.0f)
-	bool  m_is_turn_around;		// ƒ‚ƒfƒ‹‚ğY²180‹‰ñ“]‚³‚¹‚é‚©‚ğ”»’è
+	int    m_model_handle;
+	float  m_opacity;			// ƒ‚ƒfƒ‹‚Ì•s“§–¾“x(0.0f`1.0f)
+	VECTOR m_basic_angle;		// ƒ‚ƒfƒ‹‚ÌŠî‘b‰ñ“]’l(ƒ‚ƒfƒ‹‚ªŒ³‚©‚ç‚Â‰ñ“]‚ğC³‚·‚é‚½‚ß‚Ì‰ñ“]’l)
 
 	std::shared_ptr<Transform> m_transform;
 };

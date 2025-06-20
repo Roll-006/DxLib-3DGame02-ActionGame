@@ -14,6 +14,7 @@ public:
 	PhysicalObjBase(const std::string& name, const std::string& tag, MassKind mass_level_kind) :
 		ObjBase			(name, tag),
 		m_fall_velocity	(v3d::GetZeroVector()),
+		m_fall_speed	(0.0f),
 		m_is_landing	(false),
 		m_collider		(nullptr),
 		m_mass_kind		(mass_level_kind)
@@ -32,13 +33,17 @@ public:
 		// ínñ Ç…Ç¢ÇÈèÍçáÇÕèdóÕÇó^Ç¶Ç»Ç¢
 		if (m_is_landing) { return; }
 
-		math::Decrease(m_fall_velocity.y, gravity_acceleration * FPS::GetDeltaTime(), max_gravity);
+		math::Decrease(m_fall_speed, gravity_acceleration * FPS::GetDeltaTime(), -max_gravity);
+		m_fall_velocity.y += m_fall_speed;
+
+		DrawFormatString(0,  80, 0xffffff, "m_fall_velocity : %f, %f, %f", m_fall_velocity.x, m_fall_velocity.y, m_fall_velocity.z);
+		DrawFormatString(0, 100, 0xffffff, "m_fall_speed    : %f", m_fall_speed);
 	}
 
 	[[nodiscard]] VECTOR	GetFallVelocity()	const { return m_fall_velocity; }
 	[[nodiscard]] bool		IsLanding()			const { return m_is_landing; }
-	[[nodiscard]] const		std::shared_ptr<ShapeBase> GetCollider() const { return m_collider; }
-	[[nodiscard]] const		std::shared_ptr<ShapeBase> GetTrigger(const TriggerKind trigger_kind) const
+	[[nodiscard]] const	std::shared_ptr<ShapeBase> GetCollider() const { return m_collider; }
+	[[nodiscard]] const	std::shared_ptr<ShapeBase> GetTrigger(const TriggerKind trigger_kind) const
 	{
 		if (m_trigger.count(trigger_kind))
 		{
@@ -70,9 +75,9 @@ protected:
 	}
 
 protected:
-	VECTOR m_fall_velocity;
-	bool   m_is_landing;
-
+	VECTOR	 m_fall_velocity;
+	float    m_fall_speed;
+	bool	 m_is_landing;
 	MassKind m_mass_kind;
 	std::shared_ptr<ShapeBase> m_collider;
 	std::unordered_map<TriggerKind, std::shared_ptr<ShapeBase>> m_trigger;

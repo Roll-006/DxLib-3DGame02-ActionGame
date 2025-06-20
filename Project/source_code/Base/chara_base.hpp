@@ -11,7 +11,7 @@ class CharaBase abstract : public PhysicalObjBase
 public:
 	CharaBase(const std::string& name, const std::string& tag, const std::string& file_path, MassKind mass_level_kind) :
 		PhysicalObjBase		(name, tag, mass_level_kind),
-		m_modeler			(std::make_shared<Modeler>(GetTransform(), file_path, true)),
+		m_modeler			(std::make_shared<Modeler>(GetTransform(), file_path, VGet(0.0f, DX_PI_F, 0.0f))),
 		m_animator			(std::make_shared<Animator>(m_modeler)),
 		m_current_attach_gun(nullptr),
 		m_capsule_collider	(nullptr),

@@ -137,6 +137,9 @@
     <ClCompile Include="source_code\Object\house.cpp">
       <Filter>Object</Filter>
     </ClCompile>
+    <ClCompile Include="source_code\Object\ground.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source_code\Manager\game_manager.hpp">
@@ -431,6 +434,9 @@
       <Filter>Object</Filter>
     </ClInclude>
     <ClInclude Include="source_code\Object\house.hpp">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Object\ground.hpp">
       <Filter>Object</Filter>
     </ClInclude>
   </ItemGroup>

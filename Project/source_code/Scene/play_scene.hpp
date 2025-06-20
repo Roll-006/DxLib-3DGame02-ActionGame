@@ -3,6 +3,7 @@
 
 #include "../Object/enemy.hpp"
 #include "../Object/house.hpp"
+#include "../Object/ground.hpp"
 #include "../Object/skydome.hpp"
 
 class PlayScene final : public SceneBase
@@ -18,5 +19,6 @@ public:
 private:
 	std::shared_ptr<Enemy>   m_enemy;
 	std::shared_ptr<House>   m_house;
+	std::shared_ptr<Ground>  m_ground;
 	std::shared_ptr<Skydome> m_skydome;
 };

@@ -1,19 +1,37 @@
 #include "modeler.hpp"
 
-Modeler::Modeler(const std::shared_ptr<Transform> transform, const std::string& file_path, const bool is_turn_around) :
+Modeler::Modeler(const std::shared_ptr<Transform> transform, const std::string& file_path, const VECTOR& basic_angle) :
 	m_model_handle	(HandleKeeper::GetInstance()->LoadHandle(HandleKind::kModel, file_path)),
 	m_opacity		(1.0f),
 	m_transform		(transform),
-	m_is_turn_around(is_turn_around)
+	m_basic_angle	(basic_angle)
 {
 	
 }
 
-Modeler::Modeler(const std::shared_ptr<Transform> transform, const int model_handle, const bool is_turn_around) :
+Modeler::Modeler(const std::shared_ptr<Transform> transform, const std::string& file_path) :
+	m_model_handle	(HandleKeeper::GetInstance()->LoadHandle(HandleKind::kModel, file_path)),
+	m_opacity		(1.0f),
+	m_transform		(transform),
+	m_basic_angle	(v3d::GetZeroVector())
+{
+
+}
+
+Modeler::Modeler(const std::shared_ptr<Transform> transform, const int model_handle, const VECTOR& basic_angle) :
 	m_model_handle	(model_handle),
 	m_opacity		(1.0f),
 	m_transform		(transform),
-	m_is_turn_around(is_turn_around)
+	m_basic_angle	(basic_angle)
+{
+
+}
+
+Modeler::Modeler(const std::shared_ptr<Transform> transform, const int model_handle) :
+	m_model_handle	(model_handle),
+	m_opacity		(1.0f),
+	m_transform		(transform),
+	m_basic_angle	(v3d::GetZeroVector())
 {
 
 }
@@ -47,6 +65,6 @@ void Modeler::ApplyOpacity() const
 
 void Modeler::ApplyMatrix() const
 {
-	const MATRIX rot_y = m_is_turn_around ? MGetRotY(DX_PI_F) : MGetIdent();
-	MV1SetMatrix(m_model_handle, rot_y * m_transform->GetMatrix(CoordinateKind::kWorld));
+	const MATRIX rot_m = math::ConvertEulerAnglesToRotMatrix(m_basic_angle);
+	MV1SetMatrix(m_model_handle, rot_m * m_transform->GetMatrix(CoordinateKind::kWorld));
 }

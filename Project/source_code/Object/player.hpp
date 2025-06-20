@@ -117,6 +117,7 @@ private:
 	bool m_is_squat;
 	bool m_is_ready_gun;										// 銃を構える
 	bool m_is_turn_around;										// Y軸180°回転させるかを判定
+	bool m_is_turn_run;											// ダッシュ中に振り向くかを判定
 	bool m_is_correct_look_dir;									// 見る方向を補正するかを判定
 
 	int  m_turn_around_count;									// 連続で振り向くことを触れぐための振り向きカウント

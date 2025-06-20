@@ -24,7 +24,8 @@ SceneObjManager::~SceneObjManager()
 
 void SceneObjManager::Update()
 {
-	InputChecker::GetInstance()->Update();
+	InputChecker  ::GetInstance()->Update();
+	PhysicsManager::GetInstance()->Update();
 
 	for (const auto& scene : m_current_scene)
 	{

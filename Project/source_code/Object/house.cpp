@@ -2,11 +2,8 @@
 
 House::House() :
 	PhysicalObjBase(ObjName.HOUSE, ObjTag.BUILDING, MassKind::kVeryHeavy),
-	m_modeler(std::make_shared<Modeler>(m_transform, ModelPath.HOUSE_01, false))
+	m_modeler(std::make_shared<Modeler>(m_transform, ModelPath.HOUSE_01))
 {
-	ObjManager    ::GetInstance()->AddObj        (*this);
-	PhysicsManager::GetInstance()->AddPhysicalObj(*this);
-
 	m_transform->SetScale(CoordinateKind::kWorld, kModelScale);
 	m_transform->SetPos  (CoordinateKind::kWorld, kPos);
 }
