@@ -22,12 +22,23 @@ public:
 		}
 	}
 	/// @brief 物理的挙動を行うオブジェクトから除外
-	void RemovePhysicalObj(std::string obj_name);
+	void RemovePhysicalObj(const std::string& obj_name);
 
-	/// @brief 物理的挙動を無視するオブジェクトを追加
-	void AddIgnoreObj(std::string obj_name);
-	/// @brief 物理的挙動を無視するオブジェクトから除外
-	void RemoveIgnoreObj(std::string obj_name);
+	/// @brief 物理的な挙動全般を無視するオブジェクトを追加
+	void AddIgnoreObjPhysical(const std::string& obj_name);
+	/// @brief 物理的な挙動全般を無視するオブジェクトから除外
+	void RemoveIgnoreObjPhysical(const std::string& obj_name);
+
+	/// @brief 重力の影響を無視するオブジェクトを追加
+	void AddIgnoreObjGravity(const std::string& obj_name);
+	/// @brief 重力の影響を無視するオブジェクトから除外
+	void RemoveIgnoreObjGravity(const std::string& obj_name);
+
+	/// @brief 重力を適用するかを判定する
+	[[nodiscard]] bool IsApplyGravity(const obj_concepts::PhysicalObjT auto& physical_obj) const
+	{
+		return !std::count(m_ignore_gravity_obj_name.begin(), m_ignore_gravity_obj_name.end(), physical_obj.GetName()))
+	}
 
 private:
 	PhysicsManager();
@@ -38,7 +49,8 @@ private:
 	static constexpr float kMaxGravity			= 10.0f;			// 最大重力
 
 	std::list<std::shared_ptr<PhysicalObjBase>> m_physical_objects;	// 物理的挙動を行うオブジェクト
-	std::list<std::string> m_ignore_obj_name;						// 物理的挙動を無視するオブジェクト
+	std::list<std::string> m_ignore_physical_obj_name;				// 物理的な挙動全般を無視するオブジェクト
+	std::list<std::string> m_ignore_gravity_obj_name;				// 重力の影響を無視するオブジェクト
 
 	friend SingletonBase<PhysicsManager>;
 };
