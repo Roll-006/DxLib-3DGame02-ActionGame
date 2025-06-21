@@ -23,6 +23,8 @@ Player::Player(std::shared_ptr<Camera> camera) :
 	m_transform->SetScale(CoordinateKind::kWorld, kModelScale);
 	m_transform->SetPos  (CoordinateKind::kWorld, VGet(0, 0, 0));
 
+	auto a = m_modeler->GetModelHandle();
+
 	// コライダー・トリガーを設定
 	MakeCapsuleCollider(kCapsuleRadius);
 	MakeLandingTrigger (kLandingTriggerRadius);

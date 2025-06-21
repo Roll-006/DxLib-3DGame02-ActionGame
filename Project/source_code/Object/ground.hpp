@@ -18,7 +18,4 @@ public:
 private:
 	static constexpr float  kModelScale = 500.0f;
 	static constexpr VECTOR kPos		= VECTOR(0.0f, -100.0f, 0.0f);
-
-	std::shared_ptr<Modeler> m_modeler;
-	std::shared_ptr<Modeler> m_modeler2;
 };

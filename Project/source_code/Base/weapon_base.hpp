@@ -7,12 +7,13 @@ class WeaponBase abstract : public ObjBase
 public:
 	WeaponBase(const std::string& name, const std::string& file_path) :
 		ObjBase			(name, ObjTag.WEAPON),
-		m_modeler		(std::make_shared<Modeler>(GetTransform(), file_path, VGet(0.0f, DX_PI_F, 0.0f))),
 		m_owner_modeler	(nullptr),
 		m_correct_pos	(v3d::GetZeroVector()),
 		m_correct_angle	(v3d::GetZeroVector()),
 		m_correct_scale	(v3d::GetZeroVector())
-	{ }
+	{
+		m_modeler = std::make_shared<Modeler>(GetTransform(), file_path, VGet(0.0f, DX_PI_F, 0.0f));
+	}
 
 	virtual ~WeaponBase() = default;
 
@@ -67,7 +68,6 @@ protected:
 	}
 
 protected:
-	std::shared_ptr<Modeler> m_modeler;
 	std::shared_ptr<Modeler> m_owner_modeler;	// 武器の持ち主であるオブジェクトのモデラー
 	
 private:

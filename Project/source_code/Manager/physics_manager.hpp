@@ -11,7 +11,7 @@ public:
 
 	/// @brief 物理的挙動を行うオブジェクトを追加
 	template<obj_concepts::PhysicalObjT PhysicalObjT>
-	void AddPhysicalObj(const std::shared_ptr<PhysicalObjT> physical_obj)
+	void AddPhysicalObj   (const std::shared_ptr<PhysicalObjT> physical_obj)
 	{
 		// 上書き不可
 		if (std::find(m_physical_objects.begin(), m_physical_objects.end(), physical_obj) == m_physical_objects.end())
@@ -19,30 +19,16 @@ public:
 			m_physical_objects.emplace_back(physical_obj);
 		}
 	}
-
-	///// @brief 物理的挙動を行うオブジェクトを追加
-	//template<obj_concepts::PhysicalObjT PhysicalObjT>
-	//void AddPhysicalObj(const PhysicalObjT& physical_obj)
-	//{
-	//	const auto obj = std::make_shared<PhysicalObjT>(physical_obj);
-
-	//	// 上書き不可
-	//	if (std::find(m_physical_objects.begin(), m_physical_objects.end(), obj) == m_physical_objects.end())
-	//	{
-	//		m_physical_objects.emplace_back(obj);
-	//	}
-	//}
-
 	/// @brief 物理的挙動を行うオブジェクトから除外
 	void RemovePhysicalObj(const std::string& obj_name);
 
 	/// @brief 物理的な挙動全般を無視するオブジェクトを追加
-	void AddIgnoreObjPhysical(const std::string& obj_name);
+	void AddIgnoreObjPhysical   (const std::string& obj_name);
 	/// @brief 物理的な挙動全般を無視するオブジェクトから除外
 	void RemoveIgnoreObjPhysical(const std::string& obj_name);
 
 	/// @brief 重力の影響を無視するオブジェクトを追加
-	void AddIgnoreObjGravity(const std::string& obj_name);
+	void AddIgnoreObjGravity   (const std::string& obj_name);
 	/// @brief 重力の影響を無視するオブジェクトから除外
 	void RemoveIgnoreObjGravity(const std::string& obj_name);
 

@@ -1,10 +1,10 @@
 #include "ground.hpp"
 
 Ground::Ground() : 
-	PhysicalObjBase(ObjName.GROUND, ObjTag.GROUND, MassKind::kVeryHeavy),
-	m_modeler (std::make_shared<Modeler>(m_transform, ModelPath.GROUND_01, VGet(-90.0f * math::kDegreesToRadian, 0.0f, 0.0f))),
-	m_modeler2(std::make_shared<Modeler>(m_transform, ModelPath.GROUND_02))
+	PhysicalObjBase(ObjName.GROUND, ObjTag.GROUND, MassKind::kVeryHeavy)
 {
+	m_modeler = std::make_shared<Modeler>(m_transform, ModelPath.GROUND_01, VGet(-90.0f * math::kDegreesToRadian, 0.0f, 0.0f));
+
 	m_transform->SetScale(CoordinateKind::kWorld, kModelScale);
 	m_transform->SetPos  (CoordinateKind::kWorld, kPos);
 }
@@ -26,8 +26,7 @@ void Ground::Update()
 
 void Ground::Draw() const
 {
-	//m_modeler->Draw();
-	m_modeler2->Draw();
+	m_modeler->Draw();
 }
 
 void Ground::OnCollide(const PhysicalObjBase& check_hit_obj)

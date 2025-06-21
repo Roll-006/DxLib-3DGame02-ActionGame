@@ -9,16 +9,6 @@
 class ObjManager final : public SingletonBase<ObjManager>
 {
 public:
-	//template<obj_concepts::ObjT ObjT>
-	//void AddObj(const ObjT& obj)
-	//{
-	//	// ã‘‚«•s‰Â
-	//	if (!m_objects.count(obj.GetName()))
-	//	{
-	//		m_objects[obj.GetName()] = std::make_shared<ObjT>(obj);
-	//	}
-	//}
-
 	template<obj_concepts::ObjT ObjT>
 	void AddObj(const std::shared_ptr<ObjT> obj)
 	{

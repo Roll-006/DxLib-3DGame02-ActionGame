@@ -27,7 +27,7 @@ public:
 	/// @brief 重力を与える(適用させる)
 	/// @brief 物理管理クラスから適用される
 	/// @param gravity_acceleration 重力加速度 (デルタタイム適用前)
-	/// @param max_gravity 最大重力
+	/// @param max_gravity 最大重力 (デルタタイム適用後の最大値)
 	void ApplyGravity(const float gravity_acceleration, const float max_gravity)
 	{
 		// 地面にいる場合は重力を与えない
@@ -35,9 +35,6 @@ public:
 
 		math::Decrease(m_fall_speed, gravity_acceleration * FPS::GetDeltaTime(), -max_gravity);
 		m_fall_velocity.y += m_fall_speed;
-
-		DrawFormatString(0,  80, 0xffffff, "m_fall_velocity : %f, %f, %f", m_fall_velocity.x, m_fall_velocity.y, m_fall_velocity.z);
-		DrawFormatString(0, 100, 0xffffff, "m_fall_speed    : %f", m_fall_speed);
 	}
 
 	[[nodiscard]] VECTOR	GetFallVelocity()	const { return m_fall_velocity; }
