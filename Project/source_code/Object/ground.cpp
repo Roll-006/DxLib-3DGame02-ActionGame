@@ -3,7 +3,7 @@
 Ground::Ground() : 
 	PhysicalObjBase(ObjName.GROUND, ObjTag.GROUND, MassKind::kVeryHeavy)
 {
-	m_modeler = std::make_shared<Modeler>(m_transform, ModelPath.GROUND_01, VGet(-90.0f * math::kDegreesToRadian, 0.0f, 0.0f));
+	MakeModel(ModelPath.GROUND_01, VGet(-90.0f * math::kDegreesToRadian, 0.0f, 0.0f));
 
 	m_transform->SetScale(CoordinateKind::kWorld, kModelScale);
 	m_transform->SetPos  (CoordinateKind::kWorld, kPos);

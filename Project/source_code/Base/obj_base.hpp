@@ -25,9 +25,23 @@ public:
 	virtual void Update()		abstract;
 	virtual void Draw() const	abstract;
 
+	/// @brief ƒ‚ƒfƒ‹‚Ìì¬
+	/// @brief ã‘‚«•s‰Â
+	void MakeModel(const std::string& file_path, const VECTOR& basic_angle)
+	{
+		if (m_modeler != nullptr) { return; }
+		m_modeler = std::make_shared<Modeler>(m_transform, file_path, basic_angle);
+	}
+	void MakeModel(const std::string& file_path)
+	{
+		if (m_modeler != nullptr) { return; }
+		m_modeler = std::make_shared<Modeler>(m_transform, file_path);
+	}
+
 	[[nodiscard]] std::string GetName() const { return m_name; }
 	[[nodiscard]] std::string GetTag()  const { return m_tag; }
 	[[nodiscard]] std::shared_ptr<Transform> GetTransform() { return m_transform; }
+	[[nodiscard]] std::shared_ptr<Modeler>   GetModeler()   { return m_modeler; }
 
 protected:
 	std::shared_ptr<Transform> m_transform;

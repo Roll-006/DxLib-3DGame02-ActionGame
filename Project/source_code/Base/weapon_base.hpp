@@ -12,7 +12,7 @@ public:
 		m_correct_angle	(v3d::GetZeroVector()),
 		m_correct_scale	(v3d::GetZeroVector())
 	{
-		m_modeler = std::make_shared<Modeler>(GetTransform(), file_path, VGet(0.0f, DX_PI_F, 0.0f));
+		MakeModel(file_path, VGet(0.0f, DX_PI_F, 0.0f));
 	}
 
 	virtual ~WeaponBase() = default;
