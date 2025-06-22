@@ -18,6 +18,9 @@ private:
 	void LoadAnim() override;
 	void ChangeAnimState() override;
 
+	/// @brief トランスフォーム情報を更新する
+	void UpdateTransform();
+
 private:
 	static constexpr float kModelScale				= 0.25f;
 

@@ -31,14 +31,14 @@ public:
 		const auto segment_length = m_capsule_length - m_capsule_radius * 2.0f;
 		m_capsule_collider = std::make_shared<Capsule>(begin_pos, m_transform->GetUp(CoordinateKind::kWorld), segment_length, m_capsule_radius);
 
-		MakeCollider(m_capsule_collider);
+		AddCollider(std::make_shared<Collider>(ColliderKind::kCollider, m_capsule_collider, this));
 	}
 
 	/// @brief 着地トリガーを作成
 	void MakeLandingTrigger(const float sphere_radius)
 	{
 		const auto pos = m_capsule_collider->GetSegment().GetBeginPos() - VGet(0.0f, 5.0f, 0.0f);
-		AddTrigger(TriggerKind::kLanding, std::make_shared<Sphere>(pos, sphere_radius));
+		AddCollider(std::make_shared<Collider>(ColliderKind::kLandingTrigger, std::make_shared<Sphere>(pos, sphere_radius), this));
 	}
 
 
@@ -80,6 +80,8 @@ protected:
 	/// @brief カプセルの長さを計算
 	void CalcCapsuleLength()
 	{
+		m_modeler->ApplyMatrix();
+
 		// 頭部ボーンの行列情報を取得
 		const int model_handle = m_modeler->GetModelHandle();
 		const int frame_num = MV1SearchFrame(model_handle, BonePath.HEAD_TOP_END);
@@ -88,8 +90,10 @@ protected:
 		// 始点から頭部までの長さを取得
 		m_capsule_length = VSize(m_transform->GetPos(CoordinateKind::kWorld) - MGetTranslateElem(frame_mat));
 
-		const auto segment_length = m_capsule_length - m_capsule_radius * 2.0f;
+		const float segment_length = m_capsule_length - m_capsule_radius * 2.0f;
 		m_capsule_collider->SetLength(segment_length);
+
+		DrawFormatString(0, 100, 0xffffff, "%f", segment_length);
 	}
 
 protected:

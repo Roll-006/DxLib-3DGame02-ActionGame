@@ -6,12 +6,15 @@ PlayScene::PlayScene():
 	m_ground	(std::make_shared<Ground>()),
 	m_skydome	(std::make_shared<Skydome>(std::static_pointer_cast<Camera>(ObjManager::GetInstance()->GetObj(ObjName.CAMERA))))
 {
-	ObjManager    ::GetInstance()->AddObj		 (m_enemy);
-	ObjManager    ::GetInstance()->AddObj		 (m_house);
-	ObjManager    ::GetInstance()->AddObj		 (m_ground);
-	PhysicsManager::GetInstance()->AddPhysicalObj(m_enemy);
-	PhysicsManager::GetInstance()->AddPhysicalObj(m_house);
-	PhysicsManager::GetInstance()->AddPhysicalObj(m_ground);
+	ObjManager		::GetInstance()->AddObj			(m_enemy);
+	ObjManager		::GetInstance()->AddObj			(m_house);
+	ObjManager		::GetInstance()->AddObj			(m_ground);
+	CollisionManager::GetInstance()->AddCollideObj	(m_enemy);
+	CollisionManager::GetInstance()->AddCollideObj	(m_house);
+	CollisionManager::GetInstance()->AddCollideObj	(m_ground);
+	PhysicsManager	::GetInstance()->AddPhysicalObj	(m_enemy);
+	PhysicsManager	::GetInstance()->AddPhysicalObj	(m_house);
+	PhysicsManager	::GetInstance()->AddPhysicalObj	(m_ground);
 }
 
 PlayScene::~PlayScene()

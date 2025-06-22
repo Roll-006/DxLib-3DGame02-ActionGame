@@ -28,6 +28,9 @@ void Enemy::Init()
 
 void Enemy::Update()
 {
+	UpdateTransform();
+	ApplyVelocityToCollider();
+
 	ChangeAnimState();
 	m_animator->Update();
 
@@ -38,10 +41,9 @@ void Enemy::Draw() const
 {
 	m_modeler->Draw();
 
-	m_collider->Draw(true, 0, 0xffffff);
-	for (auto& trigger : m_trigger)
+	for (auto& trigger : m_collider)
 	{
-		trigger.second->Draw(true, 0, 0xffffff);
+		trigger->GetShape()->Draw(true, 0, 0xffffff);
 	}
 
 	auto pos  = m_transform->GetPos (CoordinateKind::kWorld);
@@ -64,4 +66,11 @@ void Enemy::LoadAnim()
 void Enemy::ChangeAnimState()
 {
 
+}
+
+void Enemy::UpdateTransform()
+{
+	m_transform->SetRot  (CoordinateKind::kWorld, m_dir);
+	m_transform->SetScale(CoordinateKind::kWorld, kModelScale);
+	m_transform->SetPos  (CoordinateKind::kWorld, m_transform->GetPos(CoordinateKind::kWorld) + m_velocity);
 }

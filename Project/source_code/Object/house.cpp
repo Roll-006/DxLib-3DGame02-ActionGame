@@ -1,7 +1,7 @@
 #include "house.hpp"
 
 House::House() :
-	PhysicalObjBase(ObjName.HOUSE, ObjTag.BUILDING, MassKind::kVeryHeavy)
+	PhysicalObjBase(ObjName.HOUSE, ObjTag.BUILDING, MassKind::kStatic)
 {
 	m_modeler = std::make_shared<Modeler>(m_transform, ModelPath.HOUSE_01);
 

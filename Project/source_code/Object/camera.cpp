@@ -2,7 +2,7 @@
 #include "../Manager/command_handler.hpp"
 
 Camera::Camera() : 
-	PhysicalObjBase				(ObjName.CAMERA, ObjTag.CAMERA, MassKind::kVeryLight),
+	PhysicalObjBase				(ObjName.CAMERA, ObjTag.CAMERA, MassKind::kLight),
 	m_target_transform			(nullptr),
 	m_target_modeler			(nullptr),
 	m_target_bone				(""),

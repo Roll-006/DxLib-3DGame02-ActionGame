@@ -17,12 +17,12 @@ void PhysicsManager::Update()
 		// d—Íˆ—‚ª‹–‰Â‚³‚ê‚Ä‚¢‚éê‡‚Ì‚Ýd—Í‚ð—^‚¦‚é
 		if (IsApplyGravity(obj))
 		{
-			//obj->ApplyGravity(kGravityAcceleration, kMaxGravity);
+			obj->ApplyGravity(kGravityAcceleration, kMaxGravity);
 		}
 	}
 }
 
-void PhysicsManager::RemovePhysicalObj      (const std::string& obj_name)
+void PhysicsManager::RemovePhysicalObj				(const std::string& obj_name)
 {
 	const auto physical_obj = std::static_pointer_cast<PhysicalObjBase>(ObjManager::GetInstance()->GetObj(obj_name));
 
@@ -48,7 +48,7 @@ void PhysicsManager::RemoveIgnoreObjPhysicalBehavior(const std::string& obj_name
 	}
 }
 
-void PhysicsManager::AddIgnoreObjGravity    (const std::string& obj_name)
+void PhysicsManager::AddIgnoreObjGravity			(const std::string& obj_name)
 {
 	if (std::find(m_ignore_gravity_obj_name.begin(), m_ignore_gravity_obj_name.end(), obj_name) == m_ignore_gravity_obj_name.end())
 	{
@@ -56,7 +56,7 @@ void PhysicsManager::AddIgnoreObjGravity    (const std::string& obj_name)
 	}
 }
 
-void PhysicsManager::RemoveIgnoreObjGravity (const std::string& obj_name)
+void PhysicsManager::RemoveIgnoreObjGravity			(const std::string& obj_name)
 {
 	if (std::find(m_ignore_gravity_obj_name.begin(), m_ignore_gravity_obj_name.end(), obj_name) != m_ignore_gravity_obj_name.end())
 	{

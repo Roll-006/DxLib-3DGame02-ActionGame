@@ -162,6 +162,7 @@
     <ClCompile Include="source_code\Object\camera.cpp" />
     <ClCompile Include="source_code\Object\player.cpp" />
     <ClCompile Include="source_code\Object\skydome.cpp" />
+    <ClCompile Include="source_code\Part\collider.cpp" />
     <ClCompile Include="source_code\Part\animator.cpp" />
     <ClCompile Include="source_code\Part\bone_pos_corrector.cpp" />
     <ClCompile Include="source_code\Part\modeler.cpp" />
@@ -215,7 +216,7 @@
     <ClInclude Include="source_code\Concept\common_concepts.hpp" />
     <ClInclude Include="source_code\Concept\input_concepts.hpp" />
     <ClInclude Include="source_code\Data\camera_data.hpp" />
-    <ClInclude Include="source_code\Data\collide_obj_pair_data.hpp" />
+    <ClInclude Include="source_code\Data\collider_pair_data.hpp" />
     <ClInclude Include="source_code\Data\animator_data.hpp" />
     <ClInclude Include="source_code\Data\box_data.hpp" />
     <ClInclude Include="source_code\Data\CSV\csv.hpp" />
@@ -240,7 +241,7 @@
     <ClInclude Include="source_code\Data\Kind\scene_kind.hpp" />
     <ClInclude Include="source_code\Data\Kind\shape_kind.hpp" />
     <ClInclude Include="source_code\Data\Kind\texture_kind.hpp" />
-    <ClInclude Include="source_code\Data\Kind\trigger_kind.hpp" />
+    <ClInclude Include="source_code\Data\Kind\collider_kind.hpp" />
     <ClInclude Include="source_code\Data\Name\obj_name.hpp" />
     <ClInclude Include="source_code\Data\Path\bone_path.hpp" />
     <ClInclude Include="source_code\Data\Path\model_path.hpp" />
@@ -266,6 +267,7 @@
     <ClInclude Include="source_code\Object\camera.hpp" />
     <ClInclude Include="source_code\Object\player.hpp" />
     <ClInclude Include="source_code\Object\skydome.hpp" />
+    <ClInclude Include="source_code\Part\collider.hpp" />
     <ClInclude Include="source_code\Part\animator.hpp" />
     <ClInclude Include="source_code\Part\bone_pos_corrector.hpp" />
     <ClInclude Include="source_code\Part\modeler.hpp" />

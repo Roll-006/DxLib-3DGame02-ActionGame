@@ -23,8 +23,6 @@ Player::Player(std::shared_ptr<Camera> camera) :
 	m_transform->SetScale(CoordinateKind::kWorld, kModelScale);
 	m_transform->SetPos  (CoordinateKind::kWorld, VGet(0, 0, 0));
 
-	auto a = m_modeler->GetModelHandle();
-
 	// コライダー・トリガーを設定
 	MakeCapsuleCollider(kCapsuleRadius);
 	MakeLandingTrigger (kLandingTriggerRadius);
@@ -69,7 +67,6 @@ void Player::Update()
 	command->Execute(CommandKind::kMoveRightPlayer, this);
 
 	Move();
-	PushBack();
 	UpdateTransform();
 	ApplyVelocityToCollider();
 
@@ -85,8 +82,6 @@ void Player::Update()
 
 	CalcCapsuleLength();
 
-	// 武器はモデルの行列情報をもとに位置を決定するため一度モデルに行列情報を適用
-	m_modeler->ApplyMatrix();
 	m_current_attach_gun->TrackOwner();
 }
 
@@ -95,10 +90,9 @@ void Player::Draw() const
 	m_modeler->Draw();
 	m_current_attach_gun->Draw();
 
-	m_collider->Draw(true, 0, 0xffffff);
-	for (auto& trigger : m_trigger)
+	for (auto& collider : m_collider)
 	{
-		trigger.second->Draw(true, 0, 0xffffff);
+		collider->GetShape()->Draw(true, 0, 0xffffff);
 	}
 
 	auto pos  = m_transform->GetPos (CoordinateKind::kWorld);
@@ -419,9 +413,7 @@ void Player::Move()
 
 	// 移動判定
 	m_is_move = velocity != v3d::GetZeroV() ? true : false;
-	//velocity += m_fall_velocity;
 
-	// TODO : 関数名と役割にずれがあるため分離を検討
 	if (m_is_move)
 	{
 		m_non_move_time = 0.0f;
@@ -436,6 +428,15 @@ void Player::Move()
 	CalcMoveSpeed(VSize(velocity));
 	CalcMoveDir(velocity);
 	CalcLookDir();
+
+	// 速度を計算
+	m_velocity = m_move_dir.at(TimeKind::kCurrent) * m_move_speed;
+	m_velocity += m_fall_velocity;
+
+	// TODO : 仮の押し戻し処理
+	PhysicsManager::GetInstance()->PushBack(this);
+
+
 
 	// 振り向き判定
 	// TODO : 後に振り向きダッシュに使用
@@ -687,47 +688,10 @@ void Player::UpdateTransform()
 	m_transform->SetPos  (CoordinateKind::kWorld, m_transform->GetPos(CoordinateKind::kWorld) + m_velocity);
 }
 
-void Player::ApplyVelocityToCollider()
-{
-	//if (!IsApplyTransform()) { return; }
-
-	m_collider->Move(m_velocity);
-	for (const auto& trigger : m_trigger)
-	{
-		trigger.second->Move(m_velocity);
-	}
-}
-
-void Player::PushBack()
-{
-	//if (IsApplyTransform())
-	{
-		m_velocity = m_move_dir.at(TimeKind::kCurrent) * m_move_speed;
-	}
-	//else
-	{
-		//m_velocity = v3d::GetZeroV();
-	}
-	m_velocity += m_fall_velocity;
-
-	PhysicsManager::GetInstance()->PushBack(this);
-}
-
 VECTOR Player::GetMoveForward()
 {
 	VECTOR forward = m_camera->GetTransform()->GetForward(CoordinateKind::kWorld);
 	forward.y = 0.0f;
 
 	return v3d::GetNormalizedV(forward);
-}
-
-bool Player::IsApplyTransform() const
-{
-	bool is_apply = false;
-
-	if (m_is_move)			{ return true; }
-	if (m_is_ready_gun)		{ return true; }
-	if (m_is_turn_around)	{ return true; }
-
-	return false;
 }

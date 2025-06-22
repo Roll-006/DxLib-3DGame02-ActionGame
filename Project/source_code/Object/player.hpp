@@ -55,16 +55,9 @@ private:
 	/// @brief トランスフォーム情報を更新する
 	void UpdateTransform();
 
-	/// @brief 速度ベクトルをコライダーおよびトリガーに適用する;
-	void ApplyVelocityToCollider();
-
-	void PushBack();
-
 	/// @brief カメラのforwardをもとにした進行方向ベクトルを取得する
 	/// @return カメラのforwardのY軸を消し飛ばしたベクトル
 	[[nodiscard]] VECTOR GetMoveForward();
-
-	[[nodiscard]] bool IsApplyTransform() const;
 
 private:
 	enum class MoveDir

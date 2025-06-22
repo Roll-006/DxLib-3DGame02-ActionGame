@@ -33,6 +33,8 @@ public:
 	{
 		if (!m_owner_modeler) { return; }
 
+		m_owner_modeler->ApplyMatrix();
+
 		// アタッチする部位の行列情報を取り出す
 		const int    owner_attach_frame_num = MV1SearchFrame(m_owner_modeler->GetModelHandle(), BonePath.RIGHT_HAND);
 		const MATRIX owner_attach_frame_mat = MV1GetFrameLocalWorldMatrix(m_owner_modeler->GetModelHandle(), owner_attach_frame_num);

@@ -113,23 +113,23 @@ namespace math
 
 
 	#pragma region ソート
-	///// @brief unorderd_mapのvalueをソート
-	//template<typename KeyT, typename ValueT>
-	//[[nodiscard]] std::unordered_map<KeyT, ValueT> Sort(const std::unordered_map<KeyT, ValueT>& u_map, const SortKind sort_kind)
-	//{
-	//	std::vector<std::pair<KeyT, ValueT>> pairs = ConvertUmapToPairs(u_map);
+	/// @brief unorderd_mapのvalueをソート
+	template<typename KeyT, typename ValueT>
+	[[nodiscard]] std::unordered_map<KeyT, ValueT> Sort(const std::unordered_map<KeyT, ValueT>& u_map, const SortKind sort_kind)
+	{
+		std::vector<std::pair<KeyT, ValueT>> pairs = ConvertUmapToPairs(u_map);
 
-	//	std::sort(pairs.begin(), pairs.end(), [=](const auto& a, const auto& b)
-	//	{
-	//		switch (sort_kind)
-	//		{
-	//		case SortKind::kAscending:	return a.second < b.second; break;
-	//		case SortKind::kDescending:	return a.second > b.second;	break;
-	//		}
-	//	});
+		std::sort(pairs.begin(), pairs.end(), [=](const auto& a, const auto& b)
+		{
+			switch (sort_kind)
+			{
+			case SortKind::kAscending:	return a.second < b.second; break;
+			case SortKind::kDescending:	return a.second > b.second;	break;
+			}
+		});
 
-	//	return ConvertPairsToUmap(pairs);
-	//}
+		return ConvertPairsToUmap(pairs);
+	}
 
 	/// @brief unorderd_mapのvalueをソート
 	/// @brief main_u_mapとsub_u_mapは同じデータ型、同じ個数である必要あり
