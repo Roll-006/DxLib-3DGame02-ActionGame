@@ -13,8 +13,9 @@ class PhysicalObjBase abstract : public ObjBase
 public:
 	PhysicalObjBase(const std::string& name, const std::string& tag, MassKind mass_level_kind) :
 		ObjBase			(name, tag),
-		m_fall_velocity	(v3d::GetZeroVector()),
 		m_fall_speed	(0.0f),
+		m_fall_velocity	(v3d::GetZeroV()),
+		m_velocity		(v3d::GetZeroV()),
 		m_is_landing	(false),
 		m_collider		(nullptr),
 		m_mass_kind		(mass_level_kind)
@@ -72,8 +73,9 @@ protected:
 	}
 
 protected:
-	VECTOR	 m_fall_velocity;
 	float    m_fall_speed;
+	VECTOR	 m_fall_velocity;
+	VECTOR	 m_velocity;
 	bool	 m_is_landing;
 	MassKind m_mass_kind;
 	std::shared_ptr<ShapeBase> m_collider;

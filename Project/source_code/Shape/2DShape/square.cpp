@@ -2,7 +2,7 @@
 
 Square::Square(const VECTOR& pos1, const VECTOR& pos2, const VECTOR& pos3, const VECTOR& pos4):
 	ShapeBase	(ShapeKind::kSquare),
-	m_centroid	(v3d::GetZeroVector())
+	m_centroid	(v3d::GetZeroV())
 {
 	m_triangles.at(0) = Triangle(pos1, pos2, pos3);
 	m_triangles.at(1) = Triangle(pos1, pos3, pos4);
@@ -11,7 +11,7 @@ Square::Square(const VECTOR& pos1, const VECTOR& pos2, const VECTOR& pos3, const
 
 Square::Square() :
 	ShapeBase	(ShapeKind::kSquare),
-	m_centroid	(v3d::GetZeroVector())
+	m_centroid	(v3d::GetZeroV())
 {
 	for (auto& triangle : m_triangles)
 	{
@@ -115,7 +115,7 @@ VECTOR Square::GetPos(const int index) const
 	default:
 		break;
 	}
-	return v3d::GetZeroVector();
+	return v3d::GetZeroV();
 }
 
 const Segment& Square::GetEdge(const int index) const

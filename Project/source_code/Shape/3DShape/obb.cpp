@@ -3,7 +3,7 @@
 OBB::OBB(const VECTOR& pos, const VECTOR& dir, const VECTOR& length):
 	ShapeBase	(ShapeKind::kOBB),
 	m_pos		(pos),
-	m_dir		(v3d::GetNormalizedVector(dir)),
+	m_dir		(v3d::GetNormalizedV(dir)),
 	m_length	(length)
 {
 	CalcVertexPos();
@@ -12,9 +12,9 @@ OBB::OBB(const VECTOR& pos, const VECTOR& dir, const VECTOR& length):
 
 OBB::OBB() :
 	ShapeBase	(ShapeKind::kOBB),
-	m_pos		(v3d::GetZeroVector()),
-	m_dir		(v3d::GetZeroVector()),
-	m_length	(v3d::GetZeroVector())
+	m_pos		(v3d::GetZeroV()),
+	m_dir		(v3d::GetZeroV()),
+	m_length	(v3d::GetZeroV())
 {
 	// èàóùÇ»Çµ
 }
@@ -56,7 +56,7 @@ void OBB::Move(const VECTOR& velocity)
 void OBB::Move(const VECTOR& velocity, const bool is_sync_dir)
 {
 	m_pos += velocity;
-	m_dir = v3d::GetNormalizedVector(velocity);
+	m_dir = v3d::GetNormalizedV(velocity);
 
 	CalcVertexPos();
 	CalcSquarePos();

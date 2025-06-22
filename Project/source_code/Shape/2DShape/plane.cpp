@@ -3,15 +3,15 @@
 Plane::Plane(const VECTOR& pos, const VECTOR& normal_vector):
 	ShapeBase		(ShapeKind::kPlane),
 	m_pos			(pos),
-	m_normal_vector	(v3d::GetNormalizedVector(normal_vector))
+	m_normal_vector	(v3d::GetNormalizedV(normal_vector))
 {
 	// èàóùÇ»Çµ
 }
 
 Plane::Plane() :
 	ShapeBase		(ShapeKind::kPlane),
-	m_pos			(v3d::GetZeroVector()),
-	m_normal_vector	(v3d::GetZeroVector())
+	m_pos			(v3d::GetZeroV()),
+	m_normal_vector	(v3d::GetZeroV())
 {
 	// èàóùÇ»Çµ
 }

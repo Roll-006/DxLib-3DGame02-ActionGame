@@ -113,23 +113,23 @@ namespace math
 
 
 	#pragma region ソート
-	/// @brief unorderd_mapのvalueをソート
-	template<typename KeyT, typename ValueT>
-	[[nodiscard]] std::unordered_map<KeyT, ValueT> Sort(const std::unordered_map<KeyT, ValueT>& u_map, const SortKind sort_kind)
-	{
-		std::vector<std::pair<KeyT, ValueT>> pairs = ConvertUmapToPairs(u_map);
+	///// @brief unorderd_mapのvalueをソート
+	//template<typename KeyT, typename ValueT>
+	//[[nodiscard]] std::unordered_map<KeyT, ValueT> Sort(const std::unordered_map<KeyT, ValueT>& u_map, const SortKind sort_kind)
+	//{
+	//	std::vector<std::pair<KeyT, ValueT>> pairs = ConvertUmapToPairs(u_map);
 
-		std::sort(pairs.begin(), pairs.end(), [](const auto& a, const auto& b)
-		{
-			switch (sort_kind)
-			{
-			case SortKind::kAscending:	return a.second < b.second; break;
-			case SortKind::kDescending:	return a.second > b.second;	break;
-			}
-		});
+	//	std::sort(pairs.begin(), pairs.end(), [=](const auto& a, const auto& b)
+	//	{
+	//		switch (sort_kind)
+	//		{
+	//		case SortKind::kAscending:	return a.second < b.second; break;
+	//		case SortKind::kDescending:	return a.second > b.second;	break;
+	//		}
+	//	});
 
-		return ConvertPairsToUmap(pairs);
-	}
+	//	return ConvertPairsToUmap(pairs);
+	//}
 
 	/// @brief unorderd_mapのvalueをソート
 	/// @brief main_u_mapとsub_u_mapは同じデータ型、同じ個数である必要あり
@@ -408,6 +408,10 @@ namespace math
 
 	/// @brief 三角形と四角形の最短距離を取得
 	[[nodiscard]] float GetDistanceTriangleToSquare		(const Triangle&	triangle,	const Square&	square);
+
+	/// @brief 三角形とカプセルの最短距離を取得
+	/// @brief TODO : 要検証
+	[[nodiscard]] float GetDistanceTriangleToCapsule	(const Triangle&	triangle,	const Capsule&	capsule);
 
 	/// @brief 四角形と四角形の最短距離を取得
 	[[nodiscard]] float GetDistanceSquareToSquare		(const Square&		square1,	const Square&	square2);

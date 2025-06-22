@@ -24,7 +24,7 @@ Quaternion quat::GetIdentityQuaternion()
 
 Quaternion quat::MakeQuaternion(const VECTOR& axis, const float angle)
 {
-	return ConvertFloat4ToQuaternion(QTRot(v3d::GetNormalizedVector(axis), angle));
+	return ConvertFloat4ToQuaternion(QTRot(v3d::GetNormalizedV(axis), angle));
 }
 
 float quat::GetSize(const Quaternion& q)

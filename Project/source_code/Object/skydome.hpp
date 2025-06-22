@@ -1,6 +1,5 @@
 #pragma once
 #include "../Base/obj_base.hpp"
-#include "../Manager/command_handler.hpp"
 
 #include "camera.hpp"
 

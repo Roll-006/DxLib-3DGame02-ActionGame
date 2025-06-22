@@ -10,7 +10,7 @@ Sphere::Sphere(const VECTOR& pos, const float radius):
 
 Sphere::Sphere() :
     ShapeBase   (ShapeKind::kSphere),
-    m_pos       (v3d::GetZeroVector()),
+    m_pos       (v3d::GetZeroV()),
     m_radius    (0.0f)
 {
     // ˆ—‚È‚µ

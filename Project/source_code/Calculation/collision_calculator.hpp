@@ -73,6 +73,14 @@ namespace collision
 
 
     #pragma region 押し戻し(衝突時の有効な速度ベクトルを取得)
+    /// @brief カプセル(移動オブジェクト)と三角形(固定オブジェクト)が衝突する際の有効な速度ベクトルを取得
+    /// @brief 注意点 : この関数は現在衝突対象にめり込んでいないことを前提としている
+    /// @param velocity 速度ベクトル
+    /// @param dynamic_capsule カプセル(移動オブジェクト)
+    /// @param static_triangle 三角形(固定オブジェクト)
+    /// @return 有効な速度ベクトル
+    [[nodiscard]] VECTOR GetValidVelocityAfterHitCapsuleAndTriangle(const VECTOR& velocity, const Capsule& dynamic_capsule, const Triangle& static_triangle);
+
     /// @brief カプセル(移動オブジェクト)と四角形(固定オブジェクト)が衝突する際の有効な速度ベクトルを取得
     /// @brief 注意点 : この関数は現在衝突対象にめり込んでいないことを前提としている
     /// @param velocity 速度ベクトル
@@ -81,8 +89,7 @@ namespace collision
     /// @return 有効な速度ベクトル
     [[nodiscard]] VECTOR GetValidVelocityAfterHitCapsuleAndSquare(const VECTOR& velocity, const Capsule& dynamic_capsule, const Square& static_square);
 
-    // TODO : 欠陥あり
-
+    // FIXME : 欠陥あり
     /// @brief カプセル(移動オブジェクト)とOBB(固定オブジェクト)が衝突した際の有効な速度ベクトルを取得
     /// @param velocity 速度ベクトル
     /// @param dynamic_capsule カプセル(移動オブジェクト)

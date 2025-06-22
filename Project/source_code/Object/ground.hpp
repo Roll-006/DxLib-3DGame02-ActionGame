@@ -1,8 +1,6 @@
 #pragma once
 #include "../Base/physical_obj_base.hpp"
 
-#include "../Manager/command_handler.hpp"
-
 class Ground final : public PhysicalObjBase
 {
 public:

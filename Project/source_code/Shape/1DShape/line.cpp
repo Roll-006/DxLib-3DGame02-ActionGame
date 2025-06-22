@@ -3,15 +3,15 @@
 Line::Line(const VECTOR& pos, const VECTOR& dir):
 	ShapeBase(ShapeKind::kLine),
 	m_pos(pos),
-	m_dir(v3d::GetNormalizedVector(dir))
+	m_dir(v3d::GetNormalizedV(dir))
 {
 	// ˆ—‚È‚µ
 }
 
 Line::Line() :
 	ShapeBase(ShapeKind::kLine),
-	m_pos(v3d::GetZeroVector()),
-	m_dir(v3d::GetZeroVector())
+	m_pos(v3d::GetZeroV()),
+	m_dir(v3d::GetZeroV())
 {
 	// ˆ—‚È‚µ
 }

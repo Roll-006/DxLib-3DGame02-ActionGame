@@ -1,8 +1,6 @@
 #pragma once
 #include "../Base/physical_obj_base.hpp"
 
-#include "../Manager/command_handler.hpp"
-
 class House final : public PhysicalObjBase
 {
 public:
@@ -18,6 +16,4 @@ public:
 private:
 	static constexpr float  kModelScale = 10.0f;
 	static constexpr VECTOR kPos		= VECTOR(0.0f, 0.0f, 1000.0f);
-
-	std::shared_ptr<Modeler> m_modeler;
 };

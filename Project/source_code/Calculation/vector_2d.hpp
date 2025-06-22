@@ -51,13 +51,13 @@ namespace v2d
 	}
 
 	template<v2d_concepts::ValidT VecT>
-	[[nodiscard]] inline VecT GetZeroVector()
+	[[nodiscard]] inline VecT GetZeroV()
 	{
 		return VecT(0, 0);
 	}
 
 	template<v2d_concepts::ValidT VecT>
-	[[nodiscard]] inline VecT GetNormalizedVector(const VecT& v)
+	[[nodiscard]] inline VecT GetNormalizedV(const VecT& v)
 	{
 		float size = GetSize(v);
 		return size != 0 ? VecT(v.x / size, v.y / size) : v;

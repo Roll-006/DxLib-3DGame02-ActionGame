@@ -232,6 +232,35 @@ bool collision::IsHitCapsuleAndCapsule  (const Capsule&     capsule1,   const Ca
 
 
 #pragma region 押し戻し(衝突時の有効な速度ベクトルを取得)
+VECTOR collision::GetValidVelocityAfterHitCapsuleAndTriangle(const VECTOR& velocity, const Capsule& dynamic_capsule, const Triangle& static_triangle)
+{
+    // 未来の座標が衝突しているかを判定
+    Capsule future_capsule = dynamic_capsule;
+    future_capsule.Move(velocity);
+    if (!IsHitTriangleAndCapsule(static_triangle, future_capsule))
+    {
+        // 衝突していない場合、そのまま返す
+        return velocity;
+    }
+
+    // 未来の座標と平面の距離を取得
+    const Plane plane = Plane(static_triangle.GetCentroid(), static_triangle.GetNormalVector());
+    VECTOR future_pos = future_capsule.GetSegment().GetBeginPos();
+    const float future_distance_to_square = math::GetDistancePointToTriangle(future_pos, static_triangle);
+
+    // 線分の位置からどちら側に位置修正するべきか
+    VECTOR closest_dir = plane.GetNormalVector();
+    if (math::IsPointAheadOfPlane(future_pos, plane))
+    {
+        closest_dir *= -1;
+    }
+
+    // 本来の到達地点までのvelocityを取得
+    future_pos += closest_dir * future_distance_to_square;
+    future_pos += plane.GetNormalVector() * dynamic_capsule.GetRadius();
+    return future_pos - dynamic_capsule.GetSegment().GetBeginPos();
+}
+
 VECTOR collision::GetValidVelocityAfterHitCapsuleAndSquare(const VECTOR& velocity, const Capsule& dynamic_capsule, const Square& static_square)
 {
     // 未来の座標が衝突しているかを判定

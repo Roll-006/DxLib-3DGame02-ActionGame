@@ -106,7 +106,7 @@ VECTOR math::ConvertAxesToEulerAngles(const Axes& axes, const Axes& parent_axes)
 
 VECTOR math::ConvertRotMatrixToEulerAngles(const MATRIX& mat)
 {
-    VECTOR angle = v3d::GetZeroVector();
+    VECTOR angle = v3d::GetZeroV();
     const MATRIX m = mat;
 
     GetMatrixXYZRotation(&m, &angle.x, &angle.y, &angle.z);
@@ -116,7 +116,7 @@ VECTOR math::ConvertRotMatrixToEulerAngles(const MATRIX& mat)
 
 VECTOR math::ConvertRotMatrixToEulerAngles(const MATRIX& mat, bool& is_gimbal_lock)
 {
-    VECTOR angle = v3d::GetZeroVector();
+    VECTOR angle = v3d::GetZeroV();
     const MATRIX m = mat;
 
     is_gimbal_lock = GetMatrixXYZRotation(&m, &angle.x, &angle.y, &angle.z);
@@ -201,7 +201,7 @@ bool math::IsHorizontal(const VECTOR& v1, const VECTOR& v2)
 
     // 小数点第5位より後は誤差とみなして四捨五入
     cross = RoundOff(cross, -5);
-    return cross == v3d::GetZeroVector();
+    return cross == v3d::GetZeroV();
 }
 
 bool math::IsVertical(const VECTOR& v1, const VECTOR& v2)
@@ -215,7 +215,7 @@ bool math::IsVertical(const VECTOR& v1, const VECTOR& v2)
 
 VECTOR math::GetNormalVector(const VECTOR& v)
 {
-    VECTOR normal_v = v3d::GetZeroVector();
+    VECTOR normal_v = v3d::GetZeroV();
 
     if (v != axis::GetWorldXAxis())
     {
@@ -229,13 +229,13 @@ VECTOR math::GetNormalVector(const VECTOR& v)
     {
         normal_v = math::GetNormalVector(v, axis::GetWorldZAxis());
     }
-    return v3d::GetNormalizedVector(normal_v);
+    return v3d::GetNormalizedV(normal_v);
 }
 
 VECTOR math::GetNormalVector(const VECTOR& v1, const VECTOR& v2)
 {
     // [法線ベクトル = v1とv2の外積]から成分を取得
-    return v3d::GetNormalizedVector(VCross(v1, v2));
+    return v3d::GetNormalizedV(VCross(v1, v2));
 }
 #pragma endregion
 
@@ -313,7 +313,7 @@ VECTOR math::GetPitchRotVector(const VECTOR& v)
 Axes math::GetAxes(const VECTOR& dir, const Axes& parent_axes)
 {
     // directionを基準として各軸を取得
-    const VECTOR local_dir_z = v3d::GetNormalizedVector(dir);
+    const VECTOR local_dir_z = v3d::GetNormalizedV(dir);
     const VECTOR local_dir_x = math::GetNormalVector(parent_axes.y_axis, local_dir_z);
     const VECTOR local_dir_y = math::GetNormalVector(local_dir_z, local_dir_x);
 
@@ -325,7 +325,7 @@ Axes math::GetAxes(const VECTOR& dir, const Axes& parent_axes)
 #pragma region 重心
 VECTOR math::GetCentroidOfATriangle(const VECTOR& pos1, const VECTOR& pos2, const VECTOR& pos3)
 {
-    VECTOR centroid = v3d::GetZeroVector();
+    VECTOR centroid = v3d::GetZeroV();
     centroid.x = (pos1.x + pos2.x + pos3.x) / 3.0f;
     centroid.y = (pos1.y + pos2.y + pos3.y) / 3.0f;
     centroid.z = (pos1.z + pos2.z + pos3.z) / 3.0f;
@@ -344,11 +344,11 @@ VECTOR math::GetCentroidOfAQuadrilateral(const VECTOR& pos1, const VECTOR& pos2,
 {
     const VECTOR centroid_triangle1 = GetCentroidOfATriangle(pos1, pos2, pos3);
     const VECTOR centroid_triangle2 = GetCentroidOfATriangle(pos3, pos4, pos1);
-    const Line   line1(centroid_triangle1, v3d::GetNormalizedVector(centroid_triangle2 - centroid_triangle1));
+    const Line   line1(centroid_triangle1, v3d::GetNormalizedV(centroid_triangle2 - centroid_triangle1));
 
     const VECTOR centroid_triangle3 = GetCentroidOfATriangle(pos2, pos3, pos4);
     const VECTOR centroid_triangle4 = GetCentroidOfATriangle(pos4, pos1, pos2);
-    const Line   line2(centroid_triangle3, v3d::GetNormalizedVector(centroid_triangle4 - centroid_triangle3));
+    const Line   line2(centroid_triangle3, v3d::GetNormalizedV(centroid_triangle4 - centroid_triangle3));
 
     // 四角形の時点でnulloptを返すことはないが、
     // 引数が正常でなかった場合nulloptである可能性があるため判定を行う
@@ -481,7 +481,7 @@ bool math::IsPointOnSphereSurface(const VECTOR& point, const Sphere& sphere)
 #pragma region 最短距離
 float math::GetDistancePointToLine          (const VECTOR&      point,      const Line&     line)
 {
-    VECTOR h = v3d::GetZeroVector();
+    VECTOR h = v3d::GetZeroV();
     float  t = 0.0f;
     return GetDistancePointToLine(point, line, h, t);
 }
@@ -502,7 +502,7 @@ float math::GetDistancePointToLine          (const VECTOR&      point,      cons
 
 float math::GetDistancePointToSegment       (const VECTOR&      point,      const Segment&  segment)
 {
-    VECTOR h = v3d::GetZeroVector();
+    VECTOR h = v3d::GetZeroV();
     float  t = 0.0f;
     return GetDistancePointToSegment(point, segment, h, t);
 }
@@ -560,8 +560,8 @@ float math::GetDistancePointToSquare        (const VECTOR&      point,      cons
 
 float math::GetDistanceLineToLine           (const Line&        line1,      const Line&     line2)
 {
-    VECTOR h1 = v3d::GetZeroVector();
-    VECTOR h2 = v3d::GetZeroVector();
+    VECTOR h1 = v3d::GetZeroV();
+    VECTOR h2 = v3d::GetZeroV();
     float  t1 = 0.0f;
     float  t2 = 0.0f;
     return GetDistanceLineToLine(line1, line2, h1, h2, t1, t2);
@@ -594,8 +594,8 @@ float math::GetDistanceLineToLine           (const Line&        line1,      cons
 
 float math::GetDistanceSegmentToSegment     (const Segment&     segment1,   const Segment&  segment2)
 {
-    VECTOR h1 = v3d::GetZeroVector();
-    VECTOR h2 = v3d::GetZeroVector();
+    VECTOR h1 = v3d::GetZeroV();
+    VECTOR h2 = v3d::GetZeroV();
     float  t1 = 0.0f;
     float  t2 = 0.0f;
     return GetDistanceSegmentToSegment(segment1, segment2, h1, h2, t1, t2);
@@ -731,6 +731,12 @@ float math::GetDistanceTriangleToSquare     (const Triangle&    triangle,   cons
     const float distance2 = GetDistanceTriangleToTriangle(triangle, square.GetTriangle(1));
 
     return distance1 < distance2 ? distance1 : distance2;
+}
+
+float math::GetDistanceTriangleToCapsule(const Triangle& triangle, const Capsule& capsule)
+{
+    const float distance = GetDistanceSegmentToTriangle(capsule.GetSegment(), triangle) - capsule.GetRadius();
+    return distance < 0.0f ? 0.0f : distance;
 }
 
 float math::GetDistanceSquareToSquare       (const Square&      square1,    const Square&   square2)

@@ -14,15 +14,15 @@ Camera::Camera() :
 	m_is_init_angle				(false), 
 	m_is_look_same_dir_target	(false),
 	m_is_track_height_only		(false),
-	m_dir						(v3d::GetZeroVector()),
-	m_velocity					(v3d::GetZeroVector())
+	m_dir						(v3d::GetZeroV()),
+	m_velocity					(v3d::GetZeroV())
 {
 	SetCameraNearFar(kNear, kFar);
 	SetupCamera_Perspective(kFOV * math::kDegreesToRadian);
 
 	PhysicsManager::GetInstance()->AddIgnoreObjGravity(ObjName.CAMERA);
 
-	m_angle[TimeKind::kCurrent] = m_angle[TimeKind::kNext] = v3d::GetZeroVector();
+	m_angle[TimeKind::kCurrent] = m_angle[TimeKind::kNext] = v3d::GetZeroV();
 }
 
 Camera::~Camera()
@@ -220,8 +220,8 @@ void Camera::Move()
 void Camera::InitMove()
 {
 	for (auto& is_input : m_is_input) { is_input = false; }
-	m_dir = v3d::GetZeroVector();
-	m_velocity = v3d::GetZeroVector();
+	m_dir = v3d::GetZeroV();
+	m_velocity = v3d::GetZeroV();
 }
 
 void Camera::CalcAngle()
@@ -234,7 +234,7 @@ void Camera::CalcAngle()
 		|| command->GetCurrentFrameExecuteInputCode(CommandKind::kMoveLeftCamera)
 		|| command->GetCurrentFrameExecuteInputCode(CommandKind::kMoveRightCamera))
 	{
-		m_dir		= v3d::GetNormalizedVector(m_dir);
+		m_dir		= v3d::GetNormalizedV(m_dir);
 		m_velocity	= m_dir * kMoveSpeedWithButton;
 	}
 
@@ -272,7 +272,7 @@ void Camera::CalcInitAngle()
 	
 	VECTOR distance_v = m_angle.at(TimeKind::kNext) - m_angle.at(TimeKind::kCurrent);
 	distance_v.y = math::ConnectMinusPiToPi(distance_v.y);
-	VECTOR dir = v3d::GetNormalizedVector(distance_v);
+	VECTOR dir = v3d::GetNormalizedV(distance_v);
 
 	// 右・左回りから最短経路を取得し、回転方向に反映
 	float distance = VSize(distance_v);
@@ -297,14 +297,14 @@ void Camera::CalcInitAngle()
 
 VECTOR Camera::GetLookPos()
 {
-	if (!m_target_transform) { return v3d::GetZeroVector(); }
+	if (!m_target_transform) { return v3d::GetZeroV(); }
 	if (!m_target_modeler)	 { return m_target_transform->GetPos(CoordinateKind::kWorld); }
 
 	// ボーンの行列情報を取得
 	const int model_handle	= m_target_modeler->GetModelHandle();
 	const int frame_num		= MV1SearchFrame(model_handle, m_target_bone.c_str());
 	MATRIX	  frame_mat		= MV1GetFrameLocalWorldMatrix(model_handle, frame_num);
-	VECTOR	  look_pos		= v3d::GetZeroVector();
+	VECTOR	  look_pos		= v3d::GetZeroV();
 
 	// TEST : 仮で追尾の種類を変更
 	if (CheckHitKey(KEY_INPUT_0)) { TrackBoneWobbly(); }
@@ -357,7 +357,7 @@ void Camera::ApplyInvert()
 
 void Camera::CalcDirFromPad()
 {
-	if (m_dir != v3d::GetZeroVector()) { return; }
+	if (m_dir != v3d::GetZeroV()) { return; }
 	if (InputChecker::GetInstance()->GetCurrentInputDevice() != DeviceKind::kPad) { return; }
 
 	// 各方向のパラメーターを取得
@@ -391,12 +391,12 @@ void Camera::CalcDirFromPad()
 	m_velocity *= kMoveSpeedWithStick;
 
 	// 入力方向も合わせて取得
-	m_dir = v3d::GetNormalizedVector(m_velocity);
+	m_dir = v3d::GetNormalizedV(m_velocity);
 }
 
 void Camera::CalcDirFromMouse()
 {
-	if (m_dir != v3d::GetZeroVector()) { return; }
+	if (m_dir != v3d::GetZeroV()) { return; }
 	if (InputChecker::GetInstance()->GetCurrentInputDevice() != DeviceKind::kKeyboard) { return; }
 
 	const auto input = InputChecker::GetInstance();
@@ -412,5 +412,5 @@ void Camera::CalcDirFromMouse()
 	if (m_velocity.y < 0) { m_is_input.at(static_cast<int>(InputDir::kRight)) = true; }
 
 	// 入力方向も合わせて取得
-	m_dir = v3d::GetNormalizedVector(m_velocity);
+	m_dir = v3d::GetNormalizedV(m_velocity);
 }

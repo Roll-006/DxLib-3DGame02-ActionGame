@@ -6,16 +6,16 @@ Modeler::Modeler(const std::shared_ptr<Transform> transform, const std::string& 
 	m_transform		(transform),
 	m_basic_angle	(basic_angle)
 {
-	
+	MV1SetupCollInfo(m_model_handle);
 }
 
 Modeler::Modeler(const std::shared_ptr<Transform> transform, const std::string& file_path) :
 	m_model_handle	(HandleKeeper::GetInstance()->LoadHandle(HandleKind::kModel, file_path)),
 	m_opacity		(1.0f),
 	m_transform		(transform),
-	m_basic_angle	(v3d::GetZeroVector())
+	m_basic_angle	(v3d::GetZeroV())
 {
-
+	MV1SetupCollInfo(m_model_handle);
 }
 
 Modeler::Modeler(const std::shared_ptr<Transform> transform, const int model_handle, const VECTOR& basic_angle) :
@@ -24,16 +24,16 @@ Modeler::Modeler(const std::shared_ptr<Transform> transform, const int model_han
 	m_transform		(transform),
 	m_basic_angle	(basic_angle)
 {
-
+	MV1SetupCollInfo(m_model_handle);
 }
 
 Modeler::Modeler(const std::shared_ptr<Transform> transform, const int model_handle) :
 	m_model_handle	(model_handle),
 	m_opacity		(1.0f),
 	m_transform		(transform),
-	m_basic_angle	(v3d::GetZeroVector())
+	m_basic_angle	(v3d::GetZeroV())
 {
-
+	MV1SetupCollInfo(m_model_handle);
 }
 
 Modeler::~Modeler()
@@ -47,6 +47,11 @@ void Modeler::Draw() const
 	ApplyMatrix();
 
 	MV1DrawModel(m_model_handle);
+	//const int mesh_num = MV1GetMeshNum(m_model_handle);
+	//for (int i = 0; i < mesh_num; ++i)
+	//{
+	//	int vertex_num = MV1GetMeshVertexNum(m_model_handle, i);
+	//}
 	//DxLibHelper::DrawModelFrames(m_model_handle, "model", 0.0325f);
 }
 
@@ -58,7 +63,7 @@ void Modeler::ApplyOpacity() const
 	}
 	else
 	{
-		MV1SetUseZBuffer(m_model_handle, FALSE);
+		MV1SetUseZBuffer (m_model_handle, FALSE);
 		MV1SetOpacityRate(m_model_handle, m_opacity);
 	}
 }
@@ -67,4 +72,5 @@ void Modeler::ApplyMatrix() const
 {
 	const MATRIX rot_m = math::ConvertEulerAnglesToRotMatrix(m_basic_angle);
 	MV1SetMatrix(m_model_handle, rot_m * m_transform->GetMatrix(CoordinateKind::kWorld));
+	MV1RefreshCollInfo(m_model_handle);
 }

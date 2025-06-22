@@ -2,8 +2,8 @@
 
 Triangle::Triangle(const VECTOR& pos1, const VECTOR& pos2, const VECTOR& pos3):
 	ShapeBase		(ShapeKind::kTriangle),
-    m_normal_vector	(v3d::GetZeroVector()),
-	m_centroid		(v3d::GetZeroVector()),
+    m_normal_vector	(v3d::GetZeroV()),
+	m_centroid		(v3d::GetZeroV()),
 	m_image_handle	(-1)
 {
 	m_vertexes[0].pos = pos1;
@@ -25,8 +25,8 @@ Triangle::Triangle(const VECTOR& pos1, const VECTOR& pos2, const VECTOR& pos3):
 
 Triangle::Triangle() :
 	ShapeBase(ShapeKind::kTriangle),
-	m_normal_vector	(v3d::GetZeroVector()),
-	m_centroid		(v3d::GetZeroVector()),
+	m_normal_vector	(v3d::GetZeroV()),
+	m_centroid		(v3d::GetZeroV()),
 	m_image_handle	(-1)
 {
 	for (auto& edge : m_edges)
@@ -36,7 +36,7 @@ Triangle::Triangle() :
 
 	for (int i = 0; i < kVertexNum; ++i)
 	{
-		m_vertexes[i].pos		= v3d::GetZeroVector();
+		m_vertexes[i].pos		= v3d::GetZeroV();
 		m_vertexes[i].norm		= axis::GetWorldYAxis();
 		m_vertexes[i].dif		= GetColorU8(255, 255, 255, 255);
 		m_vertexes[i].spc		= GetColorU8(255, 255, 255, 255);

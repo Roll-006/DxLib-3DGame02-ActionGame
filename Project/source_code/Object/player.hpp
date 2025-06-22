@@ -58,6 +58,8 @@ private:
 	/// @brief 速度ベクトルをコライダーおよびトリガーに適用する;
 	void ApplyVelocityToCollider();
 
+	void PushBack();
+
 	/// @brief カメラのforwardをもとにした進行方向ベクトルを取得する
 	/// @return カメラのforwardのY軸を消し飛ばしたベクトル
 	[[nodiscard]] VECTOR GetMoveForward();

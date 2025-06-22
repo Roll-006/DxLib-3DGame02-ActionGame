@@ -68,7 +68,7 @@ void Transform::SetMatrix(const CoordinateKind coord_kind, const MATRIX& matrix)
 
 void Transform::SetPos(const CoordinateKind coord_kind, const VECTOR& pos)
 {
-	VECTOR parent_pos = v3d::GetZeroVector();
+	VECTOR parent_pos = v3d::GetZeroV();
 
 	if (coord_kind == CoordinateKind::kWorld)
 	{

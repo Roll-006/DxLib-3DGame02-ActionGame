@@ -8,11 +8,11 @@ public:
 	WeaponBase(const std::string& name, const std::string& file_path) :
 		ObjBase			(name, ObjTag.WEAPON),
 		m_owner_modeler	(nullptr),
-		m_correct_pos	(v3d::GetZeroVector()),
-		m_correct_angle	(v3d::GetZeroVector()),
-		m_correct_scale	(v3d::GetZeroVector())
+		m_correct_pos	(v3d::GetZeroV()),
+		m_correct_angle	(v3d::GetZeroV()),
+		m_correct_scale	(v3d::GetZeroV())
 	{
-		MakeModel(file_path, VGet(0.0f, DX_PI_F, 0.0f));
+		m_modeler = std::make_shared<Modeler>(m_transform, file_path, VGet(0.0f, DX_PI_F, 0.0f));
 	}
 
 	virtual ~WeaponBase() = default;

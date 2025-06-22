@@ -202,7 +202,7 @@ void InputChecker::AddInputData(const InputKind kind, const int input_code_num)
 
 void InputChecker::CalcMouseDir()
 {
-	m_mouse_data.at(TimeKind::kCurrent).dir = v2d::GetNormalizedVector(m_mouse_data.at(TimeKind::kCurrent).velocity);
+	m_mouse_data.at(TimeKind::kCurrent).dir = v2d::GetNormalizedV(m_mouse_data.at(TimeKind::kCurrent).velocity);
 }
 
 void InputChecker::CalcMouseVelocity()
