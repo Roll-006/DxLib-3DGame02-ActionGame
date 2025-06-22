@@ -29,7 +29,7 @@ void House::Draw() const
 	m_modeler->Draw();
 }
 
-void House::OnCollide(const PhysicalObjBase& check_hit_obj)
+void House::OnCollide(const ColliderPairData& hit_collider_pair)
 {
 
 }

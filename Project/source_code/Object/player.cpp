@@ -83,6 +83,9 @@ void Player::Update()
 	CalcCapsuleLength();
 
 	m_current_attach_gun->TrackOwner();
+
+	// TODO : Œã‚ÉˆÊ’u•ÏX
+	m_is_landing = false;
 }
 
 void Player::Draw() const
@@ -102,9 +105,23 @@ void Player::Draw() const
 	DrawLine3D(pos, pos + axes.z_axis * 100, 0x0077ff);
 }
 
-void Player::OnCollide(const PhysicalObjBase& check_hit_obj)
+void Player::OnCollide(const ColliderPairData& hit_collider_pair)
 {
+	switch (hit_collider_pair.owner_collider->GetColliderKind())
+	{
+	case ColliderKind::kCollider:
+		break;
 
+	case ColliderKind::kLandingTrigger:
+		m_is_landing = true;
+		break;
+
+	case ColliderKind::kHeadTrigger:
+		break;
+
+	default:
+		break;
+	}
 }
 
 

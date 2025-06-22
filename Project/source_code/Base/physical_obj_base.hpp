@@ -3,6 +3,7 @@
 
 #include "../Data/Kind/mass_kind.hpp"
 #include "../Part/collider.hpp"
+#include "../Data/collider_pair_data.hpp"
 #include "../FPS/fps.hpp"
 
 /// @brief 物理的な挙動を行うオブジェクトの基底クラス
@@ -14,12 +15,13 @@ public:
 		m_fall_speed	(0.0f),
 		m_fall_velocity	(v3d::GetZeroV()),
 		m_velocity		(v3d::GetZeroV()),
+		m_is_landing	(false),
 		m_mass_kind		(mass_level_kind)
 	{ }
 	
 	virtual ~PhysicalObjBase() = default;
 
-	virtual void OnCollide(const PhysicalObjBase& check_hit_obj)abstract;
+	virtual void OnCollide(const ColliderPairData& hit_collider_pair) abstract;
 
 	/// @brief 重力を与える(適用させる)
 	/// @brief 物理管理クラスから適用される
@@ -28,10 +30,15 @@ public:
 	void ApplyGravity(const float gravity_acceleration, const float max_gravity)
 	{
 		// 地面にいる場合は重力を与えない
-		//if (m_is_landing) { return; }
-
-		math::Decrease(m_fall_speed, gravity_acceleration * FPS::GetDeltaTime(), -max_gravity);
-		m_fall_velocity.y += m_fall_speed;
+		if (m_is_landing)
+		{
+			m_fall_speed = m_fall_velocity.y = 0.0f;
+		}
+		else
+		{
+			math::Decrease(m_fall_speed, gravity_acceleration * FPS::GetDeltaTime(), -max_gravity);
+			m_fall_velocity.y += m_fall_speed;
+		}
 	}
 
 	[[nodiscard]] VECTOR	GetVelocity()		const { return m_velocity; }
@@ -74,6 +81,7 @@ protected:
 protected:
 	float    m_fall_speed;
 	VECTOR	 m_fall_velocity;
+	bool	 m_is_landing;
 	MassKind m_mass_kind;
 	std::vector<std::shared_ptr<Collider>> m_collider;
 

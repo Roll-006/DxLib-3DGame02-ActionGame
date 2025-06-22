@@ -8,6 +8,7 @@ Ground::Ground() :
 	m_transform->SetScale(CoordinateKind::kWorld, kModelScale);
 	m_transform->SetPos  (CoordinateKind::kWorld, kPos);
 
+	AddCollider(std::make_shared<Collider>(ColliderKind::kCollider, m_modeler->GetModelHandle(), this));
 	m_modeler->ApplyMatrix();
 }
 
@@ -31,7 +32,7 @@ void Ground::Draw() const
 	m_modeler->Draw();
 }
 
-void Ground::OnCollide(const PhysicalObjBase& check_hit_obj)
+void Ground::OnCollide(const ColliderPairData& hit_collider_pair)
 {
 
 }

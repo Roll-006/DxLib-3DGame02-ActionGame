@@ -53,7 +53,7 @@ void Enemy::Draw() const
 	DrawLine3D(pos, pos + axes.z_axis * 100, 0x0077ff);
 }
 
-void Enemy::OnCollide(const PhysicalObjBase& check_hit_obj)
+void Enemy::OnCollide(const ColliderPairData& hit_collider_pair)
 {
 
 }

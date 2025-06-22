@@ -16,7 +16,7 @@ public:
 	void Update()		override;
 	void Draw() const	override;
 
-	void OnCollide(const PhysicalObjBase& check_hit_obj) override;
+	void OnCollide(const ColliderPairData& hit_collider_pair) override;
 	
 
 	#pragma region アタッチ・デタッチ

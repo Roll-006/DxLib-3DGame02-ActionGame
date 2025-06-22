@@ -60,7 +60,7 @@ void Camera::Draw() const
 
 }
 
-void Camera::OnCollide(const PhysicalObjBase& check_hit_obj)
+void Camera::OnCollide(const ColliderPairData& hit_collider_pair)
 {
 
 }
