@@ -8,7 +8,7 @@
 class CollisionManager final : public SingletonBase<CollisionManager>
 {
 public:
-	void Update();
+	void LateUpdate();
 
 	#pragma region 登録・解除
 	/// @brief 衝突判定を行うオブジェクトを追加

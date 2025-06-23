@@ -57,3 +57,24 @@ private:
 
 	std::shared_ptr<Modeler> m_modeler;
 };
+
+
+
+//
+//std::unordered_map<int, int> map;
+//
+//map[key] = value;
+//
+//int a = map[key];		// ‚à‚µ‚±‚Ìkey‚ª‚Ü‚¾‚È‚©‚Á‚½‚ç©“®“I‚Ékey‚ª¶¬‚³‚ê‚é
+//int b = map.at(key);	// ƒGƒ‰[
+//
+//map.erase(key);
+//
+//if (map.count(key))
+//{
+//	// key‚ğì‚Á‚½
+//}
+//else
+//{
+//	// ì‚Á‚Ä‚È‚¢
+//}

@@ -10,7 +10,7 @@ CollisionManager::~CollisionManager()
 	// 処理なし
 }
 
-void CollisionManager::Update()
+void CollisionManager::LateUpdate()
 {
 	const auto collider_pairs = MakeHitColliderPairs();
 
@@ -66,6 +66,7 @@ bool CollisionManager::IsApplyCollide(const std::shared_ptr<PhysicalObjBase> col
 
 bool CollisionManager::IsApplyCollide(const std::string& obj_name, const ColliderKind kind) const
 {
+	// 無視するリストに登録されていれば適用しない
 	for (const auto& [ignore_name, ignore_collider] : m_ignore_collide_collider)
 	{
 		const auto itr = std::find(ignore_collider.begin(), ignore_collider.end(), kind);

@@ -22,6 +22,13 @@ void PhysicsManager::Update()
 	}
 }
 
+void PhysicsManager::LateUpdate()
+{
+
+}
+
+
+#pragma region ìoò^ÅEâèú
 void PhysicsManager::RemovePhysicalObj				(const std::string& obj_name)
 {
 	const auto physical_obj = std::static_pointer_cast<PhysicalObjBase>(ObjManager::GetInstance()->GetObj(obj_name));
@@ -63,3 +70,4 @@ void PhysicsManager::RemoveIgnoreObjGravity			(const std::string& obj_name)
 		erase(m_ignore_gravity_obj_name, obj_name);
 	}
 }
+#pragma endregion

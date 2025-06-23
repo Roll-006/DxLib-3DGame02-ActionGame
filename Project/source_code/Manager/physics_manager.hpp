@@ -9,7 +9,10 @@ class PhysicsManager final : public SingletonBase<PhysicsManager>
 {
 public:
 	void Update();
+	void LateUpdate();
 
+
+	// TODO : ‰¼
 	void PushBack(PhysicalObjBase* physical_obj)
 	{
 		for (const auto& obj : m_physical_objects)
