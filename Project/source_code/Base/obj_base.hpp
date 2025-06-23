@@ -23,6 +23,7 @@ public:
 
 	virtual void Init()			abstract;
 	virtual void Update()		abstract;
+	virtual void LateUpdate()   abstract;
 	virtual void Draw() const	abstract;
 
 	[[nodiscard]] std::string GetName() const { return m_name; }

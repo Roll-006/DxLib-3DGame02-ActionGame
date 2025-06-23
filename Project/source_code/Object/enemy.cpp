@@ -37,6 +37,11 @@ void Enemy::Update()
 	CalcCapsuleLength();
 }
 
+void Enemy::LateUpdate()
+{
+
+}
+
 void Enemy::Draw() const
 {
 	m_modeler->Draw();

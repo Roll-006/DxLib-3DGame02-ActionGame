@@ -20,6 +20,11 @@ void GameClearScene::Update()
 
 }
 
+void GameClearScene::LateUpdate()
+{
+
+}
+
 void GameClearScene::Draw() const
 {
 

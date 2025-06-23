@@ -33,6 +33,12 @@ void ShareScene::Update()
 	m_camera->Update();
 }
 
+void ShareScene::LateUpdate()
+{
+	m_player->LateUpdate();
+	m_camera->LateUpdate();
+}
+
 void ShareScene::Draw() const
 {
 	m_player->Draw();

@@ -25,6 +25,11 @@ void Skydome::Update()
 	m_transform->SetPos(CoordinateKind::kWorld, pos);
 }
 
+void Skydome::LateUpdate()
+{
+
+}
+
 void Skydome::Draw() const
 {
 	//m_modeler->Draw();

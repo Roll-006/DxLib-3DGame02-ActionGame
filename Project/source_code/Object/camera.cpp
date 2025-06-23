@@ -55,6 +55,14 @@ void Camera::Update()
 	JudgeLookSameDirTarget();
 }
 
+void Camera::LateUpdate()
+{
+	const VECTOR look_pos = GetLookPos();
+	const VECTOR forward = m_transform->GetForward(CoordinateKind::kWorld);
+	const VECTOR pos = look_pos - forward * m_distance_to_target;
+	m_transform->SetPos(CoordinateKind::kWorld, pos);
+}
+
 void Camera::Draw() const
 {
 
@@ -65,6 +73,8 @@ void Camera::OnCollide(const ColliderPairData& hit_collider_pair)
 
 }
 
+
+#pragma region アタッチ・デタッチ
 void Camera::AttachTarget(const std::shared_ptr<ObjBase> obj)
 {
 	m_target_transform = obj->GetTransform();
@@ -101,7 +111,10 @@ void Camera::DetachTarget()
 	m_target_bone			= "";
 	m_is_track_height_only	= false;
 }
+#pragma endregion
 
+
+#pragma region ターゲットとの距離
 void Camera::Approach(const float min_distance, const float move_speed)
 {
 	m_distance_to_target -= move_speed;
@@ -119,6 +132,7 @@ void Camera::Depart(const float max_distance, const float move_speed)
 		m_distance_to_target = max_distance;
 	}
 }
+#pragma endregion
 
 
 #pragma region コマンド
@@ -305,10 +319,6 @@ VECTOR Camera::GetLookPos()
 	const int frame_num		= MV1SearchFrame(model_handle, m_target_bone.c_str());
 	MATRIX	  frame_mat		= MV1GetFrameLocalWorldMatrix(model_handle, frame_num);
 	VECTOR	  look_pos		= v3d::GetZeroV();
-
-	// TEST : 仮で追尾の種類を変更
-	if (CheckHitKey(KEY_INPUT_0)) { TrackBoneWobbly(); }
-	if (CheckHitKey(KEY_INPUT_1)) { TrackBoneHeightOnly(); }
 
 	if (m_is_track_height_only)
 	{

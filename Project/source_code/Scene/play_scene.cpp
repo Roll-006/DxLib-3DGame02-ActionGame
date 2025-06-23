@@ -29,16 +29,24 @@ void PlayScene::Init()
 
 void PlayScene::Update()
 {
-	m_enemy->Update();
-	m_house->Update();
-	m_ground->Update();
+	m_enemy  ->Update();
+	m_house  ->Update();
+	m_ground ->Update();
 	m_skydome->Update();
+}
+
+void PlayScene::LateUpdate()
+{
+	m_enemy  ->LateUpdate();
+	m_house  ->LateUpdate();
+	m_ground ->LateUpdate();
+	m_skydome->LateUpdate();
 }
 
 void PlayScene::Draw() const
 {
-	m_enemy->Draw();
-	m_house->Draw();
-	m_ground->Draw();
+	m_enemy  ->Draw();
+	m_house  ->Draw();
+	m_ground ->Draw();
 	m_skydome->Draw();
 }

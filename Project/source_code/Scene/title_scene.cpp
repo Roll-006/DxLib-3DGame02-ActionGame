@@ -20,6 +20,11 @@ void TitleScene::Update()
 
 }
 
+void TitleScene::LateUpdate()
+{
+
+}
+
 void TitleScene::Draw() const
 {
 

@@ -10,3 +10,23 @@ Selector::~Selector()
 {
 
 }
+
+void Selector::Init()
+{
+
+}
+
+void Selector::Update()
+{
+
+}
+
+void Selector::LateUpdate()
+{
+
+}
+
+void Selector::Draw() const
+{
+
+}

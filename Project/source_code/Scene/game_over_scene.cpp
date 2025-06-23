@@ -20,6 +20,11 @@ void GameOverScene::Update()
 
 }
 
+void GameOverScene::LateUpdate()
+{
+
+}
+
 void GameOverScene::Draw() const
 {
 

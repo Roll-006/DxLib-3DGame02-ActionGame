@@ -27,6 +27,11 @@ void House::Update()
 
 }
 
+void House::LateUpdate()
+{
+
+}
+
 void House::Draw() const
 {
 	m_modeler->Draw();

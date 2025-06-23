@@ -13,8 +13,9 @@ public:
 	ShareScene();
 	~ShareScene() override;
 
-	void Init()		 override;
-	void Update()	 override;
+	void Init()		  override;
+	void Update()	  override;
+	void LateUpdate() override;
 	void Draw() const override;
 
 private:

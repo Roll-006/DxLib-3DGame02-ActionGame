@@ -10,6 +10,7 @@ public:
 
 	void Init()			override;
 	void Update()		override;
+	void LateUpdate()	override;
 	void Draw() const	override;
 
 	void OnCollide(const ColliderPairData& hit_collider_pair) override;

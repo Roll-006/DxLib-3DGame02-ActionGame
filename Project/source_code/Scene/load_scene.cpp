@@ -20,6 +20,11 @@ void LoadScene::Update()
 
 }
 
+void LoadScene::LateUpdate()
+{
+
+}
+
 void LoadScene::Draw() const
 {
 

@@ -27,6 +27,11 @@ void Ground::Update()
 
 }
 
+void Ground::LateUpdate()
+{
+
+}
+
 void Ground::Draw() const
 {
 	m_modeler->Draw();

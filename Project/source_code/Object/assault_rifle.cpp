@@ -21,6 +21,11 @@ void AssaultRifle::Update()
 	
 }
 
+void AssaultRifle::LateUpdate()
+{
+
+}
+
 void AssaultRifle::Draw() const
 {
 	m_modeler->Draw();

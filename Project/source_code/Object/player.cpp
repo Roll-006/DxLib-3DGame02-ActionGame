@@ -82,11 +82,14 @@ void Player::Update()
 
 	CalcCapsuleLength();
 
-	// FIXME : velocityの適用を遅らせたため武器の追尾にずれが生じた
-	m_current_attach_gun->TrackOwner();
-
 	// TODO : 後に位置変更
 	m_is_landing = false;
+}
+
+void Player::LateUpdate()
+{
+	m_modeler->ApplyMatrix();
+	m_current_attach_gun->TrackOwner();
 }
 
 void Player::Draw() const

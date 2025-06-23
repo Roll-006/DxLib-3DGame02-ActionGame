@@ -33,6 +33,12 @@ void SceneObjManager::Update()
 	}
 
 	PhysicsManager	::GetInstance()->LateUpdate();
+
+	for (const auto& scene : m_current_scene)
+	{
+		scene.second->LateUpdate();
+	}
+
 	CollisionManager::GetInstance()->LateUpdate();
 	CommandHandler	::GetInstance()->LateUpdate();
 	InputChecker    ::GetInstance()->LateUpdate();
