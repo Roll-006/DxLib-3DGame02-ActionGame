@@ -37,6 +37,7 @@ public:
 	#pragma endregion
 
 
+	#pragma region getter
 	[[nodiscard]] MATRIX GetMatrix			(const CoordinateKind coord_kind);
 	[[nodiscard]] VECTOR GetPos				(const CoordinateKind coord_kind);
 	[[nodiscard]] MATRIX GetRotMatrix		(const CoordinateKind coord_kind);
@@ -46,6 +47,8 @@ public:
 	[[nodiscard]] VECTOR GetUp				(const CoordinateKind coord_kind);
 	[[nodiscard]] VECTOR GetForward			(const CoordinateKind coord_kind);
 	[[nodiscard]] VECTOR GetEulerAngles		(const CoordinateKind coord_kind);
+	#pragma endregion
+
 
 	/// @brief 親がアタッチされているかを判定
 	[[nodiscard]] bool HasParent() const { return m_parent_transform != nullptr; }

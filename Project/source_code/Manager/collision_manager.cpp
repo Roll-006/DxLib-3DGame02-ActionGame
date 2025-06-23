@@ -146,7 +146,7 @@ bool CollisionManager::IsHit					(const Collider& owner_collider, const Collider
 	case ShapeKind::kSphere:		return IsHitSphereAndTarget		(*dynamic_cast<Sphere*>	 (shape), target_collider); break;
 	case ShapeKind::kCapsule:		return IsHitCapsuleAndTarget	(*dynamic_cast<Capsule*> (shape), target_collider); break;
 
-	default:break;
+	default: break;
 	}
 	return false;
 }

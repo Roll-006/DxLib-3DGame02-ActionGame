@@ -7,6 +7,9 @@ House::House() :
 
 	m_transform->SetScale(CoordinateKind::kWorld, kModelScale);
 	m_transform->SetPos  (CoordinateKind::kWorld, kPos);
+
+	AddCollider(std::make_shared<Collider>(ColliderKind::kCollider, m_modeler->GetModelHandle(), this));
+	m_modeler->ApplyMatrix();
 }
 
 House::~House()

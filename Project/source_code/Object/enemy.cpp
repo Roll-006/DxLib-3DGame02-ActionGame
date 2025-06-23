@@ -29,7 +29,7 @@ void Enemy::Init()
 void Enemy::Update()
 {
 	UpdateTransform();
-	ApplyVelocityToCollider();
+	//ApplyVelocityToCollider();
 
 	ChangeAnimState();
 	m_animator->Update();

@@ -26,18 +26,17 @@ void PhysicsManager::LateUpdate()
 {
 	for (const auto& obj : m_physical_objects)
 	{
-		// 落下ベクトルを速度ベクトルに適用
+		// 落下ベクトルを速度ベクトルに加算
 		obj->AddFallVelocity();
 	}
 
 	// 押し戻し(有効な速度ベクトルを取得)
-	PushBackAllPhysicalObj();
+	ExecutePushBackPairs();
 
 	for (const auto& obj : m_physical_objects)
 	{
-		// 速度ベクトルを座標・コライダーに適用
-		obj->ApplyVelocityToPos();
-		obj->ApplyVelocityToCollider();
+		// 速度ベクトルを適用
+		obj->ApplyVelocity();
 	}
 }
 
@@ -87,14 +86,13 @@ void PhysicsManager::RemoveIgnoreObjGravity			(const std::string& obj_name)
 #pragma endregion
 
 
-#pragma region 押し戻し
-void PhysicsManager::PushBackAllPhysicalObj()
+void PhysicsManager::ExecutePushBackPairs()
 {
 	// オブジェクトが持つコライダー、もしくはメッシュの押し戻し処理を行う
 	// TODO : 後に軽量化
 	for (const auto& obj_1 : m_physical_objects)
 	{
-		// 衝突が許可されている場合のみ処理を続行
+		// 衝突が許可されていない場合は以降の処理をスキップ
 		if (!IsApplyPhysicalBehavior(obj_1)) { continue; }
 
 		for (const auto& obj_2 : m_physical_objects)
@@ -102,30 +100,66 @@ void PhysicsManager::PushBackAllPhysicalObj()
 			// 自身との当たり判定は避ける
 			if (obj_1 == obj_2) { continue; }
 
-			// 衝突が許可されている場合のみ処理を続行
+			// 衝突が許可されていない場合は以降の処理をスキップ
 			if (!IsApplyPhysicalBehavior(obj_2)) { continue; }
 
+			// 互いに静的オブジェクトであった場合は以降の処理をスキップ
+			if (obj_1->GetMassKind() == MassKind::kStatic && obj_2->GetMassKind() == MassKind::kStatic) { continue; }
+
 			// 質量を考慮して押し戻される側を判定
-			std::vector<std::shared_ptr<PhysicalObjBase>> obj { obj_1, obj_2 };
-			if (obj.at(0)->GetMassKind() > obj.at(1)->GetMassKind())
+			std::shared_ptr<PhysicalObjBase> low_priority_obj  = obj_1;
+			std::shared_ptr<PhysicalObjBase> high_priority_obj = obj_2;
+			if (low_priority_obj->GetMassKind() > high_priority_obj->GetMassKind())
 			{
-				obj.at(0) = obj_2;
-				obj.at(1) = obj_1;
+				low_priority_obj  = obj_2;
+				high_priority_obj = obj_1;
 			}
 
-
-
-
-
-
-
-
-			//if (IsHit(*owner_obj_collider, *target_obj_collider))
-			//{
-			//	collider_pair.emplace_back(ColliderPairData(owner_obj_collider, target_obj_collider));
-			//	collider_pair.emplace_back(ColliderPairData(owner_obj_collider, target_obj_collider));
-			//}
+			// 押し戻し処理を実行
+			PushBack(low_priority_obj, high_priority_obj);
 		}
+	}
+}
+
+
+#pragma region 押し戻し
+void PhysicsManager::PushBack(const std::shared_ptr<PhysicalObjBase> low_priority_obj, const std::shared_ptr<PhysicalObjBase> high_priority_obj)
+{
+	const ShapeBase* shape = low_priority_obj->GetCollider(ColliderKind::kCollider)->GetShape().get();
+
+	// 図形の登録がされていない場合はモデルで押し戻しを行う
+	if (shape == nullptr)
+	{
+		return;
+	}
+
+	switch (shape->GetShapeKind())
+	{
+	case ShapeKind::kCapsule: PushBackCapsuleAndTarget(low_priority_obj, high_priority_obj);  break;
+
+	default: break;
+	}
+}
+
+void PhysicsManager::PushBackCapsuleAndTarget(const std::shared_ptr<PhysicalObjBase> low_priority_obj, const std::shared_ptr<PhysicalObjBase> high_priority_obj)
+{
+	const auto shape = high_priority_obj->GetCollider(ColliderKind::kCollider)->GetShape();
+
+	// 図形の登録がされていない場合はモデルで押し戻しを行う
+	if (shape == nullptr)
+	{
+		const auto velocity		= low_priority_obj->GetVelocity();
+		const auto capsule		= *std::static_pointer_cast<Capsule>(low_priority_obj->GetCollider(ColliderKind::kCollider)->GetShape());
+		const auto model_handle = high_priority_obj->GetModeler()->GetModelHandle();
+		low_priority_obj->SetVelocity(collision::PushBackCapsuleAndModel(velocity, capsule, model_handle));
+		return;
+	}
+
+	switch (shape->GetShapeKind())
+	{
+	case ShapeKind::kCapsule: break;
+
+	default: break;
 	}
 }
 #pragma endregion

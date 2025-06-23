@@ -66,9 +66,6 @@ void Player::Update()
 	command->Execute(CommandKind::kMoveLeftPlayer,	this);
 	command->Execute(CommandKind::kMoveRightPlayer, this);
 
-	// MEMO : velocityの適用までに遅延が生じる
-	// 
-
 	Move();
 	UpdateTransform();
 	//ApplyVelocityToCollider();
@@ -85,6 +82,7 @@ void Player::Update()
 
 	CalcCapsuleLength();
 
+	// FIXME : velocityの適用を遅らせたため武器の追尾にずれが生じた
 	m_current_attach_gun->TrackOwner();
 
 	// TODO : 後に位置変更
@@ -656,7 +654,7 @@ void Player::CorrectLookDir()
 		// 振り向き判定がfalseになることにより適用処理が通らなくなることを避けるため先行して適用
 		// TODO : 通常時は二度適用処理が行われているため処理の変更を検討
 		UpdateTransform();
-		ApplyVelocityToCollider();
+		//ApplyVelocityToCollider();
 
 		// 目的のdirに達した場合は振り向き処理は終了とする
 		m_is_turn_around = false;

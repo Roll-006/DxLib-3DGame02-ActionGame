@@ -75,26 +75,35 @@ namespace collision
     #pragma region 押し戻し(衝突時の有効な速度ベクトルを取得)
     /// @brief カプセル(移動オブジェクト)と三角形(固定オブジェクト)が衝突する際の有効な速度ベクトルを取得
     /// @brief 注意点 : この関数は現在衝突対象にめり込んでいないことを前提としている
+    /// @brief 注意点 : 法線の裏側を考慮していない
     /// @param velocity 速度ベクトル
     /// @param dynamic_capsule カプセル(移動オブジェクト)
     /// @param static_triangle 三角形(固定オブジェクト)
     /// @return 有効な速度ベクトル
-    [[nodiscard]] VECTOR GetValidVelocityAfterHitCapsuleAndTriangle(const VECTOR& velocity, const Capsule& dynamic_capsule, const Triangle& static_triangle);
+    [[nodiscard]] VECTOR PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsule& dynamic_capsule, const Triangle& static_triangle);
 
     /// @brief カプセル(移動オブジェクト)と四角形(固定オブジェクト)が衝突する際の有効な速度ベクトルを取得
     /// @brief 注意点 : この関数は現在衝突対象にめり込んでいないことを前提としている
+    /// @brief 注意点 : 法線の裏側を考慮していない
     /// @param velocity 速度ベクトル
     /// @param dynamic_capsule カプセル(移動オブジェクト)
     /// @param static_square 四角形(固定オブジェクト)
     /// @return 有効な速度ベクトル
-    [[nodiscard]] VECTOR GetValidVelocityAfterHitCapsuleAndSquare(const VECTOR& velocity, const Capsule& dynamic_capsule, const Square& static_square);
+    [[nodiscard]] VECTOR PushBackCapsuleAndSquare(const VECTOR& velocity, const Capsule& dynamic_capsule, const Square& static_square);
 
-    // FIXME : 欠陥あり
+    /// @brief FIXME : 欠陥あり
     /// @brief カプセル(移動オブジェクト)とOBB(固定オブジェクト)が衝突した際の有効な速度ベクトルを取得
     /// @param velocity 速度ベクトル
     /// @param dynamic_capsule カプセル(移動オブジェクト)
     /// @param static_obb OBB(固定オブジェクト)
     /// @return 有効な速度ベクトル
-    [[nodiscard]] VECTOR GetValidVelocityAfterHitCapsuleAndOBB(const VECTOR& velocity, const Capsule& dynamic_capsule, const OBB& static_obb);
+    [[nodiscard]] VECTOR PushBackCapsuleAndOBB(const VECTOR& velocity, const Capsule& dynamic_capsule, const OBB& static_obb);
+
+    /// @brief カプセル(移動オブジェクト)とモデル(固定オブジェクト)が衝突した際の有効な速度ベクトルを取得
+    /// @param velocity 速度ベクトル
+    /// @param dynamic_capsule カプセル(移動オブジェクト)
+    /// @param model_handle モデルハンドル(固定オブジェクトなモデルのハンドル)
+    /// @return 有効な速度ベクトル
+    [[nodiscard]] VECTOR PushBackCapsuleAndModel(const VECTOR& velocity, const Capsule& dynamic_capsule, const int model_handle);
     #pragma endregion
 };

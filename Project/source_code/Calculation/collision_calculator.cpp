@@ -232,7 +232,7 @@ bool collision::IsHitCapsuleAndCapsule  (const Capsule&     capsule1,   const Ca
 
 
 #pragma region 押し戻し(衝突時の有効な速度ベクトルを取得)
-VECTOR collision::GetValidVelocityAfterHitCapsuleAndTriangle(const VECTOR& velocity, const Capsule& dynamic_capsule, const Triangle& static_triangle)
+VECTOR collision::PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsule& dynamic_capsule, const Triangle& static_triangle)
 {
     // 未来の座標が衝突しているかを判定
     Capsule future_capsule = dynamic_capsule;
@@ -261,7 +261,7 @@ VECTOR collision::GetValidVelocityAfterHitCapsuleAndTriangle(const VECTOR& veloc
     return future_pos - dynamic_capsule.GetSegment().GetBeginPos();
 }
 
-VECTOR collision::GetValidVelocityAfterHitCapsuleAndSquare(const VECTOR& velocity, const Capsule& dynamic_capsule, const Square& static_square)
+VECTOR collision::PushBackCapsuleAndSquare(const VECTOR& velocity, const Capsule& dynamic_capsule, const Square& static_square)
 {
     // 未来の座標が衝突しているかを判定
     Capsule future_capsule = dynamic_capsule;
@@ -290,7 +290,7 @@ VECTOR collision::GetValidVelocityAfterHitCapsuleAndSquare(const VECTOR& velocit
     return future_pos - dynamic_capsule.GetSegment().GetBeginPos();
 }
 
-VECTOR collision::GetValidVelocityAfterHitCapsuleAndOBB(const VECTOR& velocity, const Capsule& dynamic_capsule, const OBB& static_obb)
+VECTOR collision::PushBackCapsuleAndOBB(const VECTOR& velocity, const Capsule& dynamic_capsule, const OBB& static_obb)
 {
     VECTOR valid_velocity = velocity;
     std::unordered_map<box::SquareKind, float> current_distance;
@@ -318,7 +318,50 @@ VECTOR collision::GetValidVelocityAfterHitCapsuleAndOBB(const VECTOR& velocity, 
     // 移動前の座標と距離が近い四角形から順番に押し戻す
     for (const auto& dist : current_distance)
     {
-        valid_velocity = GetValidVelocityAfterHitCapsuleAndSquare(valid_velocity, dynamic_capsule, static_obb.GetSquare(static_cast<box::SquareKind>(dist.first)));
+        valid_velocity = PushBackCapsuleAndSquare(valid_velocity, dynamic_capsule, static_obb.GetSquare(static_cast<box::SquareKind>(dist.first)));
+    }
+
+    return valid_velocity;
+}
+
+VECTOR collision::PushBackCapsuleAndModel(const VECTOR& velocity, const Capsule& dynamic_capsule, const int model_handle)
+{
+    VECTOR valid_velocity = velocity;
+
+    // 未来のカプセルを取得
+    Capsule future_capsule = dynamic_capsule;
+    future_capsule.Move(velocity);
+
+    // 未来の衝突結果を取得
+    const auto hit_result = MV1CollCheck_Capsule(
+        model_handle, -1, 
+        future_capsule.GetSegment().GetBeginPos(), 
+        future_capsule.GetSegment().GetEndPos(), 
+        future_capsule.GetRadius());
+
+    // 衝突していない場合、そのまま返す
+    if (!hit_result.HitNum)
+    {
+        return velocity;
+    }
+
+    // ヒットしたポリゴンから三角形を生成
+    // 三角形との現在の距離を取得
+    std::unordered_map<int, Triangle> triangles;
+    std::unordered_map<int, float>    current_distance;
+    for (int i = 0; i < hit_result.HitNum; ++i)
+    {
+        Triangle triangle = Triangle(hit_result.Dim[i].Position[0], hit_result.Dim[i].Position[2], hit_result.Dim[i].Position[1]);
+
+        current_distance[i] = math::GetDistanceTriangleToCapsule(triangle, dynamic_capsule);
+        triangles[i]        = triangle;
+    }
+
+    // 距離が近い順に押し戻す
+    current_distance = math::Sort(current_distance, SortKind::kAscending);
+    for (const auto& distance : current_distance)
+    {
+        valid_velocity = collision::PushBackCapsuleAndTriangle(valid_velocity, dynamic_capsule, triangles.at(distance.first));
     }
 
     return valid_velocity;

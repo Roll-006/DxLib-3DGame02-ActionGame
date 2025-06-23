@@ -11,14 +11,15 @@ class PhysicalObjBase abstract : public ObjBase
 {
 public:
 	PhysicalObjBase(const std::string& name, const std::string& tag, MassKind mass_level_kind) :
-		ObjBase			(name, tag),
-		m_fall_speed	(0.0f),
-		m_fall_velocity	(v3d::GetZeroV()),
-		m_velocity		(v3d::GetZeroV()),
-		m_is_landing	(false),
-		m_mass_kind		(mass_level_kind)
-	{ }
-	
+		ObjBase(name, tag),
+		m_fall_speed(0.0f),
+		m_fall_velocity(v3d::GetZeroV()),
+		m_velocity(v3d::GetZeroV()),
+		m_is_landing(false),
+		m_mass_kind(mass_level_kind)
+	{
+	}
+
 	virtual ~PhysicalObjBase() = default;
 
 	virtual void OnCollide(const ColliderPairData& hit_collider_pair) abstract;
@@ -47,20 +48,22 @@ public:
 		m_velocity += m_fall_velocity;
 	}
 
-	/// @brief 速度ベクトルを座標に適用
-	void ApplyVelocityToPos()
+	/// @brief 速度ベクトルをトランスフォームおよびコライダーに適用
+	void ApplyVelocity()
 	{
-		m_transform->SetPos(CoordinateKind::kWorld, m_transform->GetPos(CoordinateKind::kWorld) + m_velocity);
-	}
+		m_transform->Move(CoordinateKind::kWorld, m_velocity);
 
-	/// @brief 速度ベクトルをコライダーに適用
-	void ApplyVelocityToCollider()
-	{
 		for (const auto& collider : m_collider)
 		{
-			collider->GetShape()->Move(m_velocity);
+			const auto shape = collider->GetShape();
+			if (shape != nullptr)
+			{
+				shape->Move(m_velocity);
+			}
 		}
 	}
+
+	void SetVelocity(const VECTOR& velocity) { m_velocity = velocity; }
 
 	[[nodiscard]] VECTOR	GetVelocity()		const { return m_velocity; }
 	[[nodiscard]] VECTOR	GetFallVelocity()	const { return m_fall_velocity; }
@@ -93,11 +96,8 @@ protected:
 protected:
 	float    m_fall_speed;
 	VECTOR	 m_fall_velocity;
+	VECTOR	 m_velocity;
 	bool	 m_is_landing;
 	MassKind m_mass_kind;
 	std::vector<std::shared_ptr<Collider>> m_collider;
-
-public:
-	//TODO : 仮でpublicに移行。のちに変更
-	VECTOR	 m_velocity;
 };
