@@ -21,7 +21,7 @@ Player::Player(std::shared_ptr<Camera> camera) :
 	m_look_dir[TimeKind::kCurrent] = m_look_dir[TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);
 	m_transform->SetRot  (CoordinateKind::kWorld, m_look_dir.at(TimeKind::kCurrent));
 	m_transform->SetScale(CoordinateKind::kWorld, kModelScale);
-	m_transform->SetPos  (CoordinateKind::kWorld, VGet(0, 0, 0));
+	m_transform->SetPos  (CoordinateKind::kWorld, VGet(0, 100, 0));
 
 	// コライダー・トリガーを設定
 	MakeCapsuleCollider(kCapsuleRadius);
@@ -66,9 +66,12 @@ void Player::Update()
 	command->Execute(CommandKind::kMoveLeftPlayer,	this);
 	command->Execute(CommandKind::kMoveRightPlayer, this);
 
+	// MEMO : velocityの適用までに遅延が生じる
+	// 
+
 	Move();
 	UpdateTransform();
-	ApplyVelocityToCollider();
+	//ApplyVelocityToCollider();
 
 	// ボーン位置修正
 	m_bone_pos_corrector->CorrectGunPoseBone(
@@ -103,6 +106,8 @@ void Player::Draw() const
 	DrawLine3D(pos, pos + axes.x_axis * 100, 0xff0000);
 	DrawLine3D(pos, pos + axes.y_axis * 100, 0x00ff22);
 	DrawLine3D(pos, pos + axes.z_axis * 100, 0x0077ff);
+
+	DrawFormatString(0, 300, 0xffffff, "%f", m_fall_speed);
 }
 
 void Player::OnCollide(const ColliderPairData& hit_collider_pair)
@@ -446,26 +451,29 @@ void Player::Move()
 	CalcMoveDir(velocity);
 	CalcLookDir();
 
-	// 速度を計算
+	// 速度を取得
 	m_velocity = m_move_dir.at(TimeKind::kCurrent) * m_move_speed;
-	m_velocity += m_fall_velocity;
-
-	// TODO : 仮の押し戻し処理
-	PhysicsManager::GetInstance()->PushBack(this);
 
 
-
-	// 振り向き判定
-	// TODO : 後に振り向きダッシュに使用
-	if (m_is_run)
-	{
-		const auto angle = math::GetAngleBetweenTwoVector(m_move_dir.at(TimeKind::kNext), m_move_dir.at(TimeKind::kCurrent));
-		if (angle >= 120.0f * math::kDegreesToRadian)
-		{
-			m_is_turn_run = true;
-			DrawFormatString(0, 60, 0xffffff, "振り向き");
-		}
-	}
+	// MEMO : 落下ベクトルの適用は、押し戻しと同時に全オブジェクトに一斉に適用
+	//m_velocity += m_fall_velocity;
+	//
+	//// TODO : 仮の押し戻し処理
+	//PhysicsManager::GetInstance()->PushBack(this);
+	//
+	//
+	//
+	//// 振り向き判定
+	//// TODO : 後に振り向きダッシュに使用
+	//if (m_is_run)
+	//{
+	//	const auto angle = math::GetAngleBetweenTwoVector(m_move_dir.at(TimeKind::kNext), m_move_dir.at(TimeKind::kCurrent));
+	//	if (angle >= 120.0f * math::kDegreesToRadian)
+	//	{
+	//		m_is_turn_run = true;
+	//		DrawFormatString(0, 60, 0xffffff, "振り向き");
+	//	}
+	//}
 }
 
 void Player::InitMove()
@@ -702,7 +710,7 @@ void Player::UpdateTransform()
 {
 	m_transform->SetRot  (CoordinateKind::kWorld, m_look_dir.at(TimeKind::kCurrent));
 	m_transform->SetScale(CoordinateKind::kWorld, kModelScale);
-	m_transform->SetPos  (CoordinateKind::kWorld, m_transform->GetPos(CoordinateKind::kWorld) + m_velocity);
+	//m_transform->SetPos  (CoordinateKind::kWorld, m_transform->GetPos(CoordinateKind::kWorld) + m_velocity);
 }
 
 VECTOR Player::GetMoveForward()

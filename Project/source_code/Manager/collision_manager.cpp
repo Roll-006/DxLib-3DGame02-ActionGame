@@ -85,7 +85,13 @@ std::vector<ColliderPairData> CollisionManager::MakeHitColliderPairs()
 	std::vector<ColliderPairData> collider_pair;
 
 	// オブジェクトが持つすべてのコライダーの衝突判定を行う
-	// TODO : 後に軽量化
+	// 
+	// TODO : 軽量化
+	//	・着地用トリガーと頭部トリガーの衝突は無視するなど、ありえない組み合わせは無視
+	//	・遠いオブジェクト同士は無視(移動速度は考慮)
+	//	・二つのオブジェクトの関係において、前フレームと現在のフレームで座標が同じであった場合は無視
+	//	・静的オブジェクト同士は無視(地面と家など)
+	//
 	for (const auto& owner_obj : m_collide_objects)
 	{
 		for (const auto& owner_obj_collider : owner_obj->GetColliderAll())
@@ -118,7 +124,7 @@ std::vector<ColliderPairData> CollisionManager::MakeHitColliderPairs()
 
 
 #pragma region 衝突判定
-bool CollisionManager::IsHit(const Collider& owner_collider, const Collider& target_collider)
+bool CollisionManager::IsHit					(const Collider& owner_collider, const Collider& target_collider)
 {
 	const auto shape = owner_collider.GetShape().get();
 
@@ -145,7 +151,7 @@ bool CollisionManager::IsHit(const Collider& owner_collider, const Collider& tar
 	return false;
 }
 
-bool CollisionManager::IsHitLineAndTarget(const Line& line, const Collider& target_collider)
+bool CollisionManager::IsHitLineAndTarget		(const Line&	 line,			 const Collider& target_collider)
 {
 	const auto shape = target_collider.GetShape().get();
 
@@ -165,7 +171,7 @@ bool CollisionManager::IsHitLineAndTarget(const Line& line, const Collider& targ
 	return false;
 }
 
-bool CollisionManager::IsHitSegmentAndTarget(const Segment& segment, const Collider& target_collider)
+bool CollisionManager::IsHitSegmentAndTarget	(const Segment&  segment,		 const Collider& target_collider)
 {
 	const auto shape = target_collider.GetShape().get();
 
@@ -188,7 +194,7 @@ bool CollisionManager::IsHitSegmentAndTarget(const Segment& segment, const Colli
 	return false;
 }
 
-bool CollisionManager::IsHitPlaneAndTarget(const Plane& plane, const Collider& target_collider)
+bool CollisionManager::IsHitPlaneAndTarget		(const Plane&	 plane,			 const Collider& target_collider)
 {
 	const auto shape = target_collider.GetShape().get();
 
@@ -207,7 +213,7 @@ bool CollisionManager::IsHitPlaneAndTarget(const Plane& plane, const Collider& t
 	return false;
 }
 
-bool CollisionManager::IsHitTriangleAndTarget(const Triangle& triangle, const Collider& target_collider)
+bool CollisionManager::IsHitTriangleAndTarget	(const Triangle& triangle,		 const Collider& target_collider)
 {
 	const auto shape = target_collider.GetShape().get();
 
@@ -227,7 +233,7 @@ bool CollisionManager::IsHitTriangleAndTarget(const Triangle& triangle, const Co
 	return false;
 }
 
-bool CollisionManager::IsHitSquareAndTarget(const Square& square, const Collider& target_collider)
+bool CollisionManager::IsHitSquareAndTarget		(const Square&	 square,		 const Collider& target_collider)
 {
 	const auto shape = target_collider.GetShape().get();
 
@@ -246,17 +252,17 @@ bool CollisionManager::IsHitSquareAndTarget(const Square& square, const Collider
 	return false;
 }
 
-bool CollisionManager::IsHitAABBAndTarget(const AABB& aabb, const Collider& target_collider)
+bool CollisionManager::IsHitAABBAndTarget		(const AABB&	 aabb,			 const Collider& target_collider)
 {
 	return false;
 }
 
-bool CollisionManager::IsHitOBBAndTarget(const OBB& obb, const Collider& target_collider)
+bool CollisionManager::IsHitOBBAndTarget		(const OBB&		 obb,			 const Collider& target_collider)
 {
 	return false;
 }
 
-bool CollisionManager::IsHitSphereAndTarget(const Sphere& sphere, const Collider& target_collider)
+bool CollisionManager::IsHitSphereAndTarget		(const Sphere&	 sphere,		 const Collider& target_collider)
 {
 	const auto shape = target_collider.GetShape().get();
 
@@ -276,7 +282,7 @@ bool CollisionManager::IsHitSphereAndTarget(const Sphere& sphere, const Collider
 	return false;
 }
 
-bool CollisionManager::IsHitCapsuleAndTarget(const Capsule& capsule, const Collider& target_collider)
+bool CollisionManager::IsHitCapsuleAndTarget	(const Capsule&  capsule,		 const Collider& target_collider)
 {
 	const auto shape = target_collider.GetShape().get();
 
@@ -296,7 +302,7 @@ bool CollisionManager::IsHitCapsuleAndTarget(const Capsule& capsule, const Colli
 	return false;
 }
 
-bool CollisionManager::IsHitModelAndTarget(const int model_handle, const Collider& target_collider)
+bool CollisionManager::IsHitModelAndTarget		(const int		 model_handle,	 const Collider& target_collider)
 {
 	return false;
 }

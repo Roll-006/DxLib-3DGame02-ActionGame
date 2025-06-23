@@ -92,8 +92,6 @@ protected:
 
 		const float segment_length = m_capsule_length - m_capsule_radius * 2.0f;
 		m_capsule_collider->SetLength(segment_length);
-
-		DrawFormatString(0, 100, 0xffffff, "%f", segment_length);
 	}
 
 protected:
@@ -105,4 +103,3 @@ protected:
 	float m_capsule_length;
 	float m_capsule_radius;
 };
-

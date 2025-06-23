@@ -24,7 +24,21 @@ void PhysicsManager::Update()
 
 void PhysicsManager::LateUpdate()
 {
+	for (const auto& obj : m_physical_objects)
+	{
+		// 落下ベクトルを速度ベクトルに適用
+		obj->AddFallVelocity();
+	}
 
+	// 押し戻し(有効な速度ベクトルを取得)
+	PushBackAllPhysicalObj();
+
+	for (const auto& obj : m_physical_objects)
+	{
+		// 速度ベクトルを座標・コライダーに適用
+		obj->ApplyVelocityToPos();
+		obj->ApplyVelocityToCollider();
+	}
 }
 
 
@@ -68,6 +82,50 @@ void PhysicsManager::RemoveIgnoreObjGravity			(const std::string& obj_name)
 	if (std::find(m_ignore_gravity_obj_name.begin(), m_ignore_gravity_obj_name.end(), obj_name) != m_ignore_gravity_obj_name.end())
 	{
 		erase(m_ignore_gravity_obj_name, obj_name);
+	}
+}
+#pragma endregion
+
+
+#pragma region 押し戻し
+void PhysicsManager::PushBackAllPhysicalObj()
+{
+	// オブジェクトが持つコライダー、もしくはメッシュの押し戻し処理を行う
+	// TODO : 後に軽量化
+	for (const auto& obj_1 : m_physical_objects)
+	{
+		// 衝突が許可されている場合のみ処理を続行
+		if (!IsApplyPhysicalBehavior(obj_1)) { continue; }
+
+		for (const auto& obj_2 : m_physical_objects)
+		{
+			// 自身との当たり判定は避ける
+			if (obj_1 == obj_2) { continue; }
+
+			// 衝突が許可されている場合のみ処理を続行
+			if (!IsApplyPhysicalBehavior(obj_2)) { continue; }
+
+			// 質量を考慮して押し戻される側を判定
+			std::vector<std::shared_ptr<PhysicalObjBase>> obj { obj_1, obj_2 };
+			if (obj.at(0)->GetMassKind() > obj.at(1)->GetMassKind())
+			{
+				obj.at(0) = obj_2;
+				obj.at(1) = obj_1;
+			}
+
+
+
+
+
+
+
+
+			//if (IsHit(*owner_obj_collider, *target_obj_collider))
+			//{
+			//	collider_pair.emplace_back(ColliderPairData(owner_obj_collider, target_obj_collider));
+			//	collider_pair.emplace_back(ColliderPairData(owner_obj_collider, target_obj_collider));
+			//}
+		}
 	}
 }
 #pragma endregion

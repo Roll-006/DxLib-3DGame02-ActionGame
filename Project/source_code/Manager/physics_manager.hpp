@@ -20,6 +20,7 @@ public:
 			if (physical_obj == obj.get())		{ continue; }	// 自分自身との衝突はスキップ
 			if (!IsApplyPhysicalBehavior(obj))	{ continue; }	// 物理的処理が無効な場合はスキップ
 
+			// 仮でプレイヤーと地面のみで判定
 			if (physical_obj->GetName() != ObjName.PLAYER) { continue; }
 			if (obj->GetName() != ObjName.GROUND) { continue; }
 
@@ -106,20 +107,31 @@ public:
 	{
 		const auto itr = std::find(m_ignore_gravity_obj_name.begin(), m_ignore_gravity_obj_name.end(), physical_obj->GetName());
 
-		if (itr == m_ignore_gravity_obj_name.end() || physical_obj->GetMassKind() == MassKind::kStatic)
+		// 無視リストに登録されている、もしくは静的オブジェクトであった場合は重力を適用させない
+		if (itr != m_ignore_gravity_obj_name.end() || physical_obj->GetMassKind() == MassKind::kStatic)
 		{
-			return true;
+			return false;
 		}
-		return false;
+
+		return true;
 	}
 
 private:
 	PhysicsManager();
 	~PhysicsManager() override;
 
+
+	#pragma region 押し戻し
+	/// @brief すべてのオブジェクトの押し戻し処理を行う
+	void PushBackAllPhysicalObj();
+	#pragma endregion
+
+
+
+
 private:
-	static constexpr float kGravityAcceleration = 1.0f;					// 重力加速度
-	static constexpr float kMaxGravity			= 0.1f;					// 最大重力
+	static constexpr float kGravityAcceleration = 0.98f;				// 重力加速度(デルタタイム適用前)
+	static constexpr float kMaxGravity			= 0.2f;					// 最大重力(デルタタイム適用後の最大値)
 
 	std::vector<std::shared_ptr<PhysicalObjBase>> m_physical_objects;	// 物理的挙動を行うオブジェクト
 	std::vector<std::string> m_ignore_physical_behavior_obj_name;		// 物理的な挙動全般を無視するオブジェクト

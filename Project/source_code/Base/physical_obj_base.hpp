@@ -41,6 +41,27 @@ public:
 		}
 	}
 
+	/// @brief 速度ベクトルに落下速度ベクトルを加算
+	void AddFallVelocity()
+	{
+		m_velocity += m_fall_velocity;
+	}
+
+	/// @brief 速度ベクトルを座標に適用
+	void ApplyVelocityToPos()
+	{
+		m_transform->SetPos(CoordinateKind::kWorld, m_transform->GetPos(CoordinateKind::kWorld) + m_velocity);
+	}
+
+	/// @brief 速度ベクトルをコライダーに適用
+	void ApplyVelocityToCollider()
+	{
+		for (const auto& collider : m_collider)
+		{
+			collider->GetShape()->Move(m_velocity);
+		}
+	}
+
 	[[nodiscard]] VECTOR	GetVelocity()		const { return m_velocity; }
 	[[nodiscard]] VECTOR	GetFallVelocity()	const { return m_fall_velocity; }
 	[[nodiscard]] MassKind	GetMassKind()		const { return m_mass_kind; }
@@ -66,15 +87,6 @@ protected:
 		if (std::find(m_collider.begin(), m_collider.end(), collider) == m_collider.end())
 		{
 			m_collider.emplace_back(collider);
-		}
-	}
-
-	/// @brief 速度ベクトルをコライダーに適用
-	void ApplyVelocityToCollider()
-	{
-		for (const auto& collider : m_collider)
-		{
-			collider->GetShape()->Move(m_velocity);
 		}
 	}
 
