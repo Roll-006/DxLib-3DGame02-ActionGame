@@ -28,6 +28,7 @@ void Enemy::Init()
 
 void Enemy::Update()
 {
+	Move();
 	UpdateTransform();
 
 	ChangeAnimState();
@@ -57,9 +58,6 @@ void Enemy::Draw() const
 	DrawLine3D(pos, pos + axes.x_axis * 100, 0xff0000);
 	DrawLine3D(pos, pos + axes.y_axis * 100, 0x00ff22);
 	DrawLine3D(pos, pos + axes.z_axis * 100, 0x0077ff);
-
-	DrawFormatString(0,  0, 0xffffff, "%f, %f, %f", m_velocity.x, m_velocity.y, m_velocity.z);
-	DrawFormatString(0, 20, 0xffffff, "%f, %f, %f", m_fall_velocity.x, m_fall_velocity.y, m_fall_velocity.z);
 }
 
 void Enemy::OnCollide(const ColliderPairData& hit_collider_pair)

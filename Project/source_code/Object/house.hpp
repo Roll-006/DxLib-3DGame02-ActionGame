@@ -15,6 +15,6 @@ public:
 	void OnCollide(const ColliderPairData& hit_collider_pair) override;
 
 private:
-	static constexpr float  kModelScale = 10.0f;
+	static constexpr float  kModelScale = 5.0f;
 	static constexpr VECTOR kPos		= VECTOR(0.0f, 0.0f, 1000.0f);
 };

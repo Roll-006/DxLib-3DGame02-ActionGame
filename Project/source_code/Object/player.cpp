@@ -21,7 +21,6 @@ Player::Player(std::shared_ptr<Camera> camera) :
 	m_look_dir[TimeKind::kCurrent] = m_look_dir[TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);
 	m_transform->SetRot  (CoordinateKind::kWorld, m_look_dir.at(TimeKind::kCurrent));
 	m_transform->SetScale(CoordinateKind::kWorld, kModelScale);
-	m_transform->SetPos  (CoordinateKind::kWorld, VGet(0, 100, 0));
 
 	// コライダー・トリガーを設定
 	MakeCapsuleCollider(kCapsuleRadius);

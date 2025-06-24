@@ -40,11 +40,11 @@ void GameManager::Run()
 		m_scene_manager->Update();
 		m_scene_manager->Draw();
 
-		// TEST : 仮でグリッドを描画
-		DxLibHelper::DrawYPlaneGrid(FLOAT2(50, 50), 100);
-		DrawLine3D(v3d::GetZeroV(), axis::GetWorldXAxis() * 10000, 0xff0000);
-		DrawLine3D(v3d::GetZeroV(), axis::GetWorldYAxis() * 10000, 0x00ff22);
-		DrawLine3D(v3d::GetZeroV(), axis::GetWorldZAxis() * 10000, 0x0077ff);
+		//// TEST : 仮でグリッドを描画
+		//DxLibHelper::DrawYPlaneGrid(FLOAT2(50, 50), 100);
+		//DrawLine3D(v3d::GetZeroV(), axis::GetWorldXAxis() * 10000, 0xff0000);
+		//DrawLine3D(v3d::GetZeroV(), axis::GetWorldYAxis() * 10000, 0x00ff22);
+		//DrawLine3D(v3d::GetZeroV(), axis::GetWorldZAxis() * 10000, 0x0077ff);
 
 		m_fps->Wait();
 
@@ -54,6 +54,7 @@ void GameManager::Run()
 
 void GameManager::SetUpGameSystem()
 {
+	// 基本設定
 	SetGraphMode(Window::kWidth, Window::kHeight, 32);
 	ChangeWindowMode(TRUE);
 	if (DxLib_Init() == -1){ exit(EXIT_FAILURE); }
@@ -63,14 +64,23 @@ void GameManager::SetUpGameSystem()
 	SetChangeScreenModeGraphicsSystemResetFlag(FALSE);
 	Effekseer_SetGraphicsDeviceLostCallbackFunctions();
 
+	// Zバッファ
 	SetUseZBuffer3D(TRUE);
 	SetWriteZBuffer3D(TRUE);
 
+	// ライト
 	SetUseLighting(TRUE);
 	//SetGlobalAmbientLight();
 	//SetLightDirection();
 	//SetLightDifColor();
 	//SetLightAmbColor();
+
+	// フォグ
+	SetFogEnable	(TRUE);
+	SetFogMode		(DX_FOGMODE_LINEAR);
+	SetFogColor		(195, 207, 219);
+	SetFogStartEnd	(300.f, 3100.0f);
+	SetFogDensity	(0.1f);
 
 	SetMainWindowText("3DGame Sample");
 }

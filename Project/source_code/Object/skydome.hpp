@@ -15,7 +15,7 @@ public:
 	void Draw() const override;
 	
 private:
-	static constexpr float kScale = 30.0f;
+	static constexpr VECTOR kScale = VECTOR(30.0f, 30.0f, 30.0f);
 
 	std::shared_ptr<Transform> m_camera_transform;
 };

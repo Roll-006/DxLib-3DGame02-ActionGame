@@ -4,11 +4,14 @@ AssaultRifle::AssaultRifle() :
 	GunBase(ObjName.ASSAULT_RIFLE, GunKind::kAssaultRifle, ModelPath.ASSAULT_RIFLE_01)
 {
 	SetCorrectValue(kCorrectPos, kCorrectAngle, kCorrectScale);
-	SetScopeScale(kScopeScale);
+
+	m_scope_scale = kScopeScale;
+	m_range		  = kRange;
 }
 
 AssaultRifle::~AssaultRifle()
 {
+
 }
 
 void AssaultRifle::Init()

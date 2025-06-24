@@ -17,4 +17,5 @@ private:
 	static constexpr VECTOR kCorrectAngle	= VECTOR(-90.0f * math::kDegreesToRadian, 270.0f * math::kDegreesToRadian, 0.0f);
 	static constexpr float  kCorrectScale	= 2.0f;
 	static constexpr float  kScopeScale		= 2.0f;
+	static constexpr float  kRange			= 500.0f;
 };

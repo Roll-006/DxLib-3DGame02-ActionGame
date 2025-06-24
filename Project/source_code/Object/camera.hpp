@@ -113,7 +113,7 @@ public:
 
 private:
 	static constexpr float  kNear					= 1.0f;
-	static constexpr float  kFar					= 3000.0f;
+	static constexpr float  kFar					= 5000.0f;
 	static constexpr float  kFOV					= 60.0f;
 
 	static constexpr VECTOR kLookCorrectPos			= VECTOR(19.0f, 5.0f, 0.0f);
