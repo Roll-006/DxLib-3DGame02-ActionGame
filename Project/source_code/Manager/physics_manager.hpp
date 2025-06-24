@@ -70,6 +70,7 @@ private:
 
 	#pragma region ‰Ÿ‚µ–ß‚µ
 	void PushBack				 (const std::shared_ptr<PhysicalObjBase> low_priority_obj, const std::shared_ptr<PhysicalObjBase> high_priority_obj);
+	void PushBackSphereAndTarget (const std::shared_ptr<PhysicalObjBase> low_priority_obj, const std::shared_ptr<PhysicalObjBase> high_priority_obj);
 	void PushBackCapsuleAndTarget(const std::shared_ptr<PhysicalObjBase> low_priority_obj, const std::shared_ptr<PhysicalObjBase> high_priority_obj);
 	#pragma endregion
 

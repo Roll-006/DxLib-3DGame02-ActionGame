@@ -50,6 +50,9 @@ namespace collision
     /// @brief 平面(無限に広がる面)とカプセルの衝突判定
     [[nodiscard]] bool IsHitPlaneAndCapsule        (const Plane&    plane,    const Capsule&  capsule);
 
+    /// @brief 三角形と球の衝突判定
+    [[nodiscard]] bool IsHitTriangleAndSphere      (const Triangle& triangle, const Sphere&   sphere);
+
     /// @brief 三角形とカプセルの衝突判定
     [[nodiscard]] bool IsHitTriangleAndCapsule     (const Triangle& triangle, const Capsule&  capsule);
 
@@ -73,6 +76,16 @@ namespace collision
 
 
     #pragma region 押し戻し(衝突時の有効な速度ベクトルを取得)
+    /// @brief TODO : 正しく機能するか確認していないため要検証
+    /// @brief 球(移動オブジェクト)と三角形(固定オブジェクト)が衝突する際の有効な速度ベクトルを取得
+    /// @brief 注意点 : この関数は現在衝突対象にめり込んでいないことを前提としている
+    /// @brief 注意点 : 法線の裏側を考慮していない
+    /// @param velocity 速度ベクトル
+    /// @param dynamic_sphere 球(移動オブジェクト)
+    /// @param static_triangle 三角形(固定オブジェクト)
+    /// @return 有効な速度ベクトル
+    [[nodiscard]] VECTOR PushBackSphereAndTriangle(const VECTOR& velocity, const Sphere& dynamic_sphere, const Triangle& static_triangle);
+
     /// @brief カプセル(移動オブジェクト)と三角形(固定オブジェクト)が衝突する際の有効な速度ベクトルを取得
     /// @brief 注意点 : この関数は現在衝突対象にめり込んでいないことを前提としている
     /// @brief 注意点 : 法線の裏側を考慮していない
@@ -91,7 +104,7 @@ namespace collision
     /// @return 有効な速度ベクトル
     [[nodiscard]] VECTOR PushBackCapsuleAndSquare(const VECTOR& velocity, const Capsule& dynamic_capsule, const Square& static_square);
 
-    /// @brief FIXME : 欠陥あり
+    /// @brief FIXME : 欠陥あり。角でバグ発生中。
     /// @brief カプセル(移動オブジェクト)とOBB(固定オブジェクト)が衝突した際の有効な速度ベクトルを取得
     /// @param velocity 速度ベクトル
     /// @param dynamic_capsule カプセル(移動オブジェクト)
@@ -99,7 +112,19 @@ namespace collision
     /// @return 有効な速度ベクトル
     [[nodiscard]] VECTOR PushBackCapsuleAndOBB(const VECTOR& velocity, const Capsule& dynamic_capsule, const OBB& static_obb);
 
+    /// @brief TODO : 正しく機能するか確認していないため要検証
+    /// @brief 球(移動オブジェクト)とモデル(固定オブジェクト)が衝突した際の有効な速度ベクトルを取得
+    /// @brief 注意点 : この関数は現在衝突対象にめり込んでいないことを前提としている
+    /// @brief 注意点 : 法線の裏側を考慮していない
+    /// @param velocity 速度ベクトル
+    /// @param dynamic_sphere 球(移動オブジェクト)
+    /// @param model_handle モデルハンドル(固定オブジェクトなモデルのハンドル)
+    /// @return 有効な速度ベクトル
+    [[nodiscard]] VECTOR PushBackSphereAndModel(const VECTOR& velocity, const Sphere& dynamic_sphere, const int model_handle);
+
     /// @brief カプセル(移動オブジェクト)とモデル(固定オブジェクト)が衝突した際の有効な速度ベクトルを取得
+    /// @brief 注意点 : この関数は現在衝突対象にめり込んでいないことを前提としている
+    /// @brief 注意点 : 法線の裏側を考慮していない
     /// @param velocity 速度ベクトル
     /// @param dynamic_capsule カプセル(移動オブジェクト)
     /// @param model_handle モデルハンドル(固定オブジェクトなモデルのハンドル)

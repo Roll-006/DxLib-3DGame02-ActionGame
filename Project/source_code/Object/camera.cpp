@@ -33,10 +33,7 @@ Camera::~Camera()
 void Camera::Init()
 {
 	// ÉJÉÅÉâà íuÇèâä˙à íuÇ…ñﬂÇ∑
-	const VECTOR look_pos	= GetLookPos();
-	const VECTOR forward	= m_transform->GetForward(CoordinateKind::kWorld);
-	const VECTOR pos		= look_pos - forward * m_distance_to_target;
-	m_transform->SetPos(CoordinateKind::kWorld, pos);
+	CalcPos();
 }
 
 void Camera::Update()
@@ -57,10 +54,8 @@ void Camera::Update()
 
 void Camera::LateUpdate()
 {
-	const VECTOR look_pos = GetLookPos();
-	const VECTOR forward = m_transform->GetForward(CoordinateKind::kWorld);
-	const VECTOR pos = look_pos - forward * m_distance_to_target;
-	m_transform->SetPos(CoordinateKind::kWorld, pos);
+	CalcPos();
+	SetLookDir();
 }
 
 void Camera::Draw() const
@@ -225,10 +220,7 @@ void Camera::Move()
 
 	// åãâ ÇîΩâf
 	m_transform->SetRot(CoordinateKind::kWorld, MGetRotElem(m));
-	const VECTOR look_pos	= GetLookPos();
-	const VECTOR forward	= m_transform->GetForward(CoordinateKind::kWorld);
-	const VECTOR pos		= look_pos - forward * m_distance_to_target;
-	m_transform->SetPos(CoordinateKind::kWorld, pos);
+	CalcPos();
 }
 
 void Camera::InitMove()
@@ -268,6 +260,14 @@ void Camera::CalcAngle()
 	// äpìxêßå¿
 	if (m_angle.at(TimeKind::kCurrent).x < kMinVerticalAngle * math::kDegreesToRadian) { m_angle.at(TimeKind::kCurrent).x = kMinVerticalAngle * math::kDegreesToRadian; }
 	if (m_angle.at(TimeKind::kCurrent).x > kMaxVerticalAngle * math::kDegreesToRadian) { m_angle.at(TimeKind::kCurrent).x = kMaxVerticalAngle * math::kDegreesToRadian; }
+}
+
+void Camera::CalcPos()
+{
+	const VECTOR look_pos	= GetLookPos();
+	const VECTOR forward	= m_transform->GetForward(CoordinateKind::kWorld);
+	const VECTOR pos		= look_pos - forward * m_distance_to_target;
+	m_transform->SetPos(CoordinateKind::kWorld, pos);
 }
 
 //void Camera::CalcDistance()

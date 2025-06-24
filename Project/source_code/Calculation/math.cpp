@@ -733,6 +733,12 @@ float math::GetDistanceTriangleToSquare     (const Triangle&    triangle,   cons
     return distance1 < distance2 ? distance1 : distance2;
 }
 
+float math::GetDistanceTriangleToSphere(const Triangle& triangle, const Sphere& sphere)
+{
+    const float distance = GetDistancePointToTriangle(sphere.GetPos(), triangle) - sphere.GetRadius();
+    return distance < 0.0f ? 0.0f : distance;
+}
+
 float math::GetDistanceTriangleToCapsule(const Triangle& triangle, const Capsule& capsule)
 {
     const float distance = GetDistanceSegmentToTriangle(capsule.GetSegment(), triangle) - capsule.GetRadius();

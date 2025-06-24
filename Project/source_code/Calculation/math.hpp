@@ -409,8 +409,10 @@ namespace math
 	/// @brief 三角形と四角形の最短距離を取得
 	[[nodiscard]] float GetDistanceTriangleToSquare		(const Triangle&	triangle,	const Square&	square);
 
+	/// @brief 三角形と球の最短距離を取得
+	[[nodiscard]] float GetDistanceTriangleToSphere     (const Triangle&    triangle,   const Sphere&   sphere);
+
 	/// @brief 三角形とカプセルの最短距離を取得
-	/// @brief TODO : 要検証
 	[[nodiscard]] float GetDistanceTriangleToCapsule	(const Triangle&	triangle,	const Capsule&	capsule);
 
 	/// @brief 四角形と四角形の最短距離を取得

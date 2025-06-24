@@ -78,6 +78,7 @@ private:
 	void InitMove();
 
 	void CalcAngle();
+	void CalcPos();
 	//void CalcDistance();
 
 	/// @brief 視点リセット時の角度を計算する

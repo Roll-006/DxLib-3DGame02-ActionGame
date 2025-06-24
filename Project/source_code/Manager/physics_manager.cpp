@@ -135,8 +135,29 @@ void PhysicsManager::PushBack(const std::shared_ptr<PhysicalObjBase> low_priorit
 
 	switch (shape->GetShapeKind())
 	{
+	case ShapeKind::kSphere:  PushBackSphereAndTarget (low_priority_obj, high_priority_obj);  break;
 	case ShapeKind::kCapsule: PushBackCapsuleAndTarget(low_priority_obj, high_priority_obj);  break;
 
+	default: break;
+	}
+}
+
+void PhysicsManager::PushBackSphereAndTarget(const std::shared_ptr<PhysicalObjBase> low_priority_obj, const std::shared_ptr<PhysicalObjBase> high_priority_obj)
+{
+	const auto shape = high_priority_obj->GetCollider(ColliderKind::kCollider)->GetShape();
+
+	// }Œ`‚Ì“o˜^‚ª‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Íƒ‚ƒfƒ‹‚Å‰Ÿ‚µ–ß‚µ‚ðs‚¤
+	if (shape == nullptr)
+	{
+		const auto velocity		= low_priority_obj->GetVelocity();
+		const auto sphere		= *std::static_pointer_cast<Sphere>(low_priority_obj->GetCollider(ColliderKind::kCollider)->GetShape());
+		const auto model_handle = high_priority_obj->GetModeler()->GetModelHandle();
+		low_priority_obj->SetVelocity(collision::PushBackSphereAndModel(velocity, sphere, model_handle));
+		return;
+	}
+
+	switch (shape->GetShapeKind())
+	{
 	default: break;
 	}
 }
@@ -157,8 +178,6 @@ void PhysicsManager::PushBackCapsuleAndTarget(const std::shared_ptr<PhysicalObjB
 
 	switch (shape->GetShapeKind())
 	{
-	case ShapeKind::kCapsule: break;
-
 	default: break;
 	}
 }

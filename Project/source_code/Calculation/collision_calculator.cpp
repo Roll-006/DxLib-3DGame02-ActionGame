@@ -157,6 +157,11 @@ bool collision::IsHitPlaneAndCapsule    (const Plane&       plane,      const Ca
     return math::GetDistancePlaneToCapsule(plane, capsule) == 0.0f;
 }
 
+bool collision::IsHitTriangleAndSphere(const Triangle& triangle, const Sphere& sphere)
+{
+    return math::GetDistancePointToTriangle(sphere.GetPos(), triangle) <= sphere.GetRadius();
+}
+
 bool collision::IsHitTriangleAndCapsule (const Triangle&    triangle,   const Capsule&  capsule)
 {
     return math::GetDistanceSegmentToTriangle(capsule.GetSegment(), triangle) <= capsule.GetRadius();
@@ -232,6 +237,35 @@ bool collision::IsHitCapsuleAndCapsule  (const Capsule&     capsule1,   const Ca
 
 
 #pragma region 押し戻し(衝突時の有効な速度ベクトルを取得)
+VECTOR collision::PushBackSphereAndTriangle(const VECTOR& velocity, const Sphere& dynamic_sphere, const Triangle& static_triangle)
+{
+    // 未来の座標が衝突しているかを判定
+    Sphere future_sphere = dynamic_sphere;
+    future_sphere.Move(velocity);
+    if (!IsHitTriangleAndSphere(static_triangle, dynamic_sphere))
+    {
+        // 衝突していない場合、そのまま返す
+        return velocity;
+    }
+
+    // 未来の座標と平面の距離を取得
+    const Plane plane = Plane(static_triangle.GetCentroid(), static_triangle.GetNormalVector());
+    VECTOR future_pos = future_sphere.GetPos();
+    const float future_distance_to_square = math::GetDistancePointToTriangle(future_pos, static_triangle);
+
+    // 線分の位置からどちら側に位置修正するべきか
+    VECTOR closest_dir = plane.GetNormalVector();
+    if (math::IsPointAheadOfPlane(future_pos, plane))
+    {
+        closest_dir *= -1;
+    }
+
+    // 本来の到達地点までのvelocityを取得
+    future_pos += closest_dir * future_distance_to_square;
+    future_pos += plane.GetNormalVector() * dynamic_sphere.GetRadius();
+    return future_pos - dynamic_sphere.GetPos();
+}
+
 VECTOR collision::PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsule& dynamic_capsule, const Triangle& static_triangle)
 {
     // 未来の座標が衝突しているかを判定
@@ -324,6 +358,44 @@ VECTOR collision::PushBackCapsuleAndOBB(const VECTOR& velocity, const Capsule& d
     return valid_velocity;
 }
 
+VECTOR collision::PushBackSphereAndModel(const VECTOR& velocity, const Sphere& dynamic_sphere, const int model_handle)
+{
+    VECTOR valid_velocity = velocity;
+
+    // 未来の球を取得
+    Sphere future_sphere = dynamic_sphere;
+    future_sphere.Move(velocity);
+
+    // 未来の衝突結果を取得
+    const auto hit_result = MV1CollCheck_Sphere(model_handle, -1, future_sphere.GetPos(), future_sphere.GetRadius());
+    if (!hit_result.HitNum)
+    {
+        // 衝突していない場合、そのまま返す
+        return velocity;
+    }
+
+    // ヒットしたポリゴンから三角形を生成
+    // 三角形との現在の距離を取得
+    std::unordered_map<int, Triangle> triangles;
+    std::unordered_map<int, float>    current_distance;
+    for (int i = 0; i < hit_result.HitNum; ++i)
+    {
+        Triangle triangle = Triangle(hit_result.Dim[i].Position[0], hit_result.Dim[i].Position[2], hit_result.Dim[i].Position[1]);
+
+        current_distance[i] = math::GetDistanceTriangleToSphere(triangle, dynamic_sphere);
+        triangles[i] = triangle;
+    }
+
+    // 距離が近い順に押し戻す
+    current_distance = math::Sort(current_distance, SortKind::kAscending);
+    for (const auto& distance : current_distance)
+    {
+        valid_velocity = collision::PushBackSphereAndTriangle(valid_velocity, dynamic_sphere, triangles.at(distance.first));
+    }
+
+    return valid_velocity;
+}
+
 VECTOR collision::PushBackCapsuleAndModel(const VECTOR& velocity, const Capsule& dynamic_capsule, const int model_handle)
 {
     VECTOR valid_velocity = velocity;
@@ -333,8 +405,7 @@ VECTOR collision::PushBackCapsuleAndModel(const VECTOR& velocity, const Capsule&
     future_capsule.Move(velocity);
 
     // 未来の衝突結果を取得
-    const auto hit_result = MV1CollCheck_Capsule(
-        model_handle, -1, 
+    const auto hit_result = MV1CollCheck_Capsule(model_handle, -1, 
         future_capsule.GetSegment().GetBeginPos(), 
         future_capsule.GetSegment().GetEndPos(), 
         future_capsule.GetRadius());
@@ -351,7 +422,7 @@ VECTOR collision::PushBackCapsuleAndModel(const VECTOR& velocity, const Capsule&
     std::unordered_map<int, float>    current_distance;
     for (int i = 0; i < hit_result.HitNum; ++i)
     {
-        Triangle triangle = Triangle(hit_result.Dim[i].Position[0], hit_result.Dim[i].Position[2], hit_result.Dim[i].Position[1]);
+        Triangle triangle   = Triangle(hit_result.Dim[i].Position[0], hit_result.Dim[i].Position[2], hit_result.Dim[i].Position[1]);
 
         current_distance[i] = math::GetDistanceTriangleToCapsule(triangle, dynamic_capsule);
         triangles[i]        = triangle;

@@ -88,7 +88,6 @@ void Player::Update()
 
 void Player::LateUpdate()
 {
-	m_modeler->ApplyMatrix();
 	m_current_attach_gun->TrackOwner();
 }
 
