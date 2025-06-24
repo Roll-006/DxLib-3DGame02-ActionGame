@@ -19,6 +19,8 @@ private:
 	void LoadAnim() override;
 	void ChangeAnimState() override;
 
+	void Move();
+
 	/// @brief トランスフォーム情報を更新する
 	void UpdateTransform();
 

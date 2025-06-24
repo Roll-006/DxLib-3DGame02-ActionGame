@@ -75,8 +75,6 @@ private:
 	#pragma endregion
 
 
-
-
 private:
 	static constexpr float kGravityAcceleration = 0.98f;				// 重力加速度(デルタタイム適用前)
 	static constexpr float kMaxGravity			= 0.2f;					// 最大重力(デルタタイム適用後の最大値)

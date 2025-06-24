@@ -154,6 +154,8 @@
     <ClCompile Include="source_code\Manager\obj_manager.cpp" />
     <ClCompile Include="source_code\Manager\scene_manager.cpp" />
     <ClCompile Include="source_code\Manager\weapon_manager.cpp" />
+    <ClCompile Include="source_code\Object\assault_rifle (2).cpp" />
+    <ClCompile Include="source_code\Object\bullet.cpp" />
     <ClCompile Include="source_code\Object\assault_rifle.cpp" />
     <ClCompile Include="source_code\Object\ground.cpp" />
     <ClCompile Include="source_code\Object\house.cpp" />
@@ -259,6 +261,8 @@
     <ClInclude Include="source_code\Manager\obj_manager.hpp" />
     <ClInclude Include="source_code\Manager\scene_manager.hpp" />
     <ClInclude Include="source_code\Manager\weapon_manager.hpp" />
+    <ClInclude Include="source_code\Object\assault_rifle (2).hpp" />
+    <ClInclude Include="source_code\Object\bullet.hpp" />
     <ClInclude Include="source_code\Object\assault_rifle.hpp" />
     <ClInclude Include="source_code\Object\ground.hpp" />
     <ClInclude Include="source_code\Object\house.hpp" />

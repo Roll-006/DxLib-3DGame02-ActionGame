@@ -143,6 +143,12 @@
     <ClCompile Include="source_code\Part\collider.cpp">
       <Filter>Part</Filter>
     </ClCompile>
+    <ClCompile Include="source_code\Object\assault_rifle (2).cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="source_code\Object\bullet.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source_code\Manager\game_manager.hpp">
@@ -444,6 +450,12 @@
     </ClInclude>
     <ClInclude Include="source_code\Part\collider.hpp">
       <Filter>Part</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Object\assault_rifle (2).hpp">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Object\bullet.hpp">
+      <Filter>Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

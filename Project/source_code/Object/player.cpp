@@ -68,26 +68,27 @@ void Player::Update()
 
 	Move();
 	UpdateTransform();
-	//ApplyVelocityToCollider();
-
-	// ボーン位置修正
-	m_bone_pos_corrector->CorrectGunPoseBone(
-		m_modeler->GetModelHandle(), 
-		m_look_dir.at(TimeKind::kCurrent),
-		m_camera->GetTransform()->GetMatrix(CoordinateKind::kWorld), 
-		m_is_ready_gun);
 
 	ChangeAnimState();
 	m_animator->Update();
 
 	CalcCapsuleLength();
 
-	// TODO : 後に位置変更
+	// TODO : 位置変更を検討。enemyも同様
 	m_is_landing = false;
 }
 
 void Player::LateUpdate()
 {
+	m_modeler->ApplyMatrix();
+
+	// ボーン位置修正
+	m_bone_pos_corrector->CorrectGunPoseBone(
+		m_modeler->GetModelHandle(),
+		m_look_dir.at(TimeKind::kCurrent),
+		m_camera->GetTransform()->GetMatrix(CoordinateKind::kWorld),
+		m_is_ready_gun);
+
 	m_current_attach_gun->TrackOwner();
 }
 
@@ -106,22 +107,14 @@ void Player::Draw() const
 	DrawLine3D(pos, pos + axes.x_axis * 100, 0xff0000);
 	DrawLine3D(pos, pos + axes.y_axis * 100, 0x00ff22);
 	DrawLine3D(pos, pos + axes.z_axis * 100, 0x0077ff);
-
-	DrawFormatString(0, 300, 0xffffff, "%f", m_fall_speed);
 }
 
 void Player::OnCollide(const ColliderPairData& hit_collider_pair)
 {
 	switch (hit_collider_pair.owner_collider->GetColliderKind())
 	{
-	case ColliderKind::kCollider:
-		break;
-
 	case ColliderKind::kLandingTrigger:
 		m_is_landing = true;
-		break;
-
-	case ColliderKind::kHeadTrigger:
 		break;
 
 	default:
@@ -710,7 +703,6 @@ void Player::UpdateTransform()
 {
 	m_transform->SetRot  (CoordinateKind::kWorld, m_look_dir.at(TimeKind::kCurrent));
 	m_transform->SetScale(CoordinateKind::kWorld, kModelScale);
-	//m_transform->SetPos  (CoordinateKind::kWorld, m_transform->GetPos(CoordinateKind::kWorld) + m_velocity);
 }
 
 VECTOR Player::GetMoveForward()
