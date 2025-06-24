@@ -1,6 +1,5 @@
 #pragma once
 #include "obj_base.hpp"
-#include "../Part/modeler.hpp"
 
 class WeaponBase abstract : public ObjBase
 {
@@ -28,6 +27,25 @@ public:
 		if (m_owner_modeler) { m_owner_modeler = nullptr; }
 	}
 
+protected:
+	/// @brief ï‚ê≥ílÇê›íË
+	/// @param angle ï‚ê≥äpìx
+	/// @param pos ï‚ê≥ç¿ïW
+	/// @param scale ï‚ê≥î{ó¶
+	void SetCorrectValue(const VECTOR& pos, const VECTOR& angle, const VECTOR& scale)
+	{
+		m_correct_pos   = pos;
+		m_correct_angle = angle;
+		m_correct_scale = scale;
+	}
+
+	void SetCorrectValue(const VECTOR& pos, const VECTOR& angle, const float scale)
+	{
+		m_correct_pos	= pos;
+		m_correct_angle = angle;
+		m_correct_scale = VGet(scale, scale, scale);
+	}
+
 	/// @brief éùÇøéÂÇí«ê’Ç∑ÇÈ
 	void TrackOwner()
 	{
@@ -48,25 +66,6 @@ public:
 		m_transform->SetMatrix(CoordinateKind::kWorld, result_mat);
 		m_transform->SetPos   (CoordinateKind::kLocal, m_transform->GetPos(CoordinateKind::kLocal) + VTransformSR(m_correct_pos, result_mat));
 		m_transform->SetScale (CoordinateKind::kWorld, m_correct_scale);
-	}
-
-protected:
-	/// @brief ï‚ê≥ílÇê›íË
-	/// @param angle ï‚ê≥äpìx
-	/// @param pos ï‚ê≥ç¿ïW
-	/// @param scale ï‚ê≥î{ó¶
-	void SetCorrectValue(const VECTOR& pos, const VECTOR& angle, const VECTOR& scale)
-	{
-		m_correct_pos   = pos;
-		m_correct_angle = angle;
-		m_correct_scale = scale;
-	}
-
-	void SetCorrectValue(const VECTOR& pos, const VECTOR& angle, const float scale)
-	{
-		m_correct_pos	= pos;
-		m_correct_angle = angle;
-		m_correct_scale = VGet(scale, scale, scale);
 	}
 
 protected:

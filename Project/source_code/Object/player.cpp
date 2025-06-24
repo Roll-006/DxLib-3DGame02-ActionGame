@@ -88,7 +88,7 @@ void Player::LateUpdate()
 		m_camera->GetTransform()->GetMatrix(CoordinateKind::kWorld),
 		m_is_ready_gun);
 
-	m_current_attach_gun->TrackOwner();
+	m_current_attach_gun->LateUpdate();
 }
 
 void Player::Draw() const
