@@ -93,7 +93,7 @@ private:
 	static constexpr float kCapsuleRadius						= 8.0f;
 	static constexpr float kLandingTriggerRadius				= 6.0f;
 	
-	static constexpr float kAimDownSightsSpeed					= 70.0f;	// スコープをのぞき込む速度
+	static constexpr float kADSSpeed							= 70.0f;	// スコープをのぞき込む速度
 
 private:
 	std::shared_ptr<Camera> m_camera;
@@ -111,7 +111,7 @@ private:
 	bool m_is_move;
 	bool m_is_run;
 	bool m_is_squat;
-	bool m_is_ready_gun;										// 銃を構える
+	bool m_is_ads_gun;											// 銃をのぞき込む(銃を構える)
 	bool m_is_turn_around;										// Y軸180°回転させるかを判定
 	bool m_is_turn_run;											// ダッシュ中に振り向くかを判定
 	bool m_is_correct_look_dir;									// 見る方向を補正するかを判定

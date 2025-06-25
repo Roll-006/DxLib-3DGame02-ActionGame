@@ -14,6 +14,7 @@ public:
 		m_muzzle_correct_pos(v3d::GetZeroV()),
 		m_scope_scale		(0.0f),
 		m_range				(0.0f),
+		m_is_aiming			(false),
 		m_gun_kind			(gun_kind)
 	{ }
 
@@ -26,6 +27,8 @@ public:
 	[[nodiscard]] float   GetScopeScale() const { return m_scope_scale; }
 	[[nodiscard]] float   GetRange()	  const { return m_range; }
 	[[nodiscard]] GunKind GetGunKind()	  const { return m_gun_kind; }
+
+	[[nodiscard]] bool    IsAiming()      const { return m_is_aiming; }
 
 protected:
 	/// @brief 銃口の座標を計算
@@ -42,7 +45,8 @@ protected:
 	VECTOR  m_muzzle_pos;			// 銃口座標
 	VECTOR  m_muzzle_correct_pos;	// 銃口補正座標(銃口の座標を取得するためのオフセット)
 	float	m_scope_scale;			// スコープ倍率
-	float   m_range;				// 射程
+	float	m_range;				// 射程
+	bool	m_is_aiming;			// 銃がのぞき込まれている(構えられている)
 
 private:
 	GunKind m_gun_kind;

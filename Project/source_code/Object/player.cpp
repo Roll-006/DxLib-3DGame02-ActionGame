@@ -10,7 +10,7 @@ Player::Player(std::shared_ptr<Camera> camera) :
 	m_is_move				(false),
 	m_is_run				(false),
 	m_is_squat				(false),
-	m_is_ready_gun			(false),
+	m_is_ads_gun			(false),
 	m_is_turn_around		(false),
 	m_is_turn_run			(false),
 	m_is_correct_look_dir	(false),
@@ -86,7 +86,7 @@ void Player::LateUpdate()
 		m_modeler->GetModelHandle(),
 		m_look_dir.at(TimeKind::kCurrent),
 		m_camera->GetTransform()->GetMatrix(CoordinateKind::kWorld),
-		m_is_ready_gun);
+		m_is_ads_gun);
 
 	m_current_attach_gun->LateUpdate();
 }
@@ -240,12 +240,12 @@ void Player::ReadyGun()
 	// ターン中は早期return
 	if (m_is_turn_around) { return; }
 
-	m_is_ready_gun			= true;
+	m_is_ads_gun			= true;
 	m_is_correct_look_dir	= true;
 
 	// 拡大率から実際の距離を取得
 	float min_distance = Camera::kNormalDistance / m_current_attach_gun->GetScopeScale();
-	m_camera->Approach(min_distance, kAimDownSightsSpeed * FPS::GetDeltaTime());
+	m_camera->Approach(min_distance, kADSSpeed * FPS::GetDeltaTime());
 	m_camera->TrackBoneWobbly();
 
 	// ダッシュ状態を解除
@@ -325,7 +325,7 @@ void Player::ChangeAnimState()
 			}
 		}
 
-		if (m_is_ready_gun)
+		if (m_is_ads_gun)
 		{
 			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kIdleShoot01;
 		}
@@ -377,7 +377,7 @@ void Player::ChangeAnimState()
 	// しゃがむ
 	if (m_is_squat)
 	{
-		if (m_is_ready_gun)
+		if (m_is_ads_gun)
 		{
 			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kIdleSquatShoot01;
 		}
@@ -482,13 +482,13 @@ void Player::InitMove()
 	m_is_correct_look_dir = false;
 
 	// 照準
-	if (!m_is_ready_gun)
+	if (!m_is_ads_gun)
 	{
-		m_camera->Depart(Camera::kNormalDistance, kAimDownSightsSpeed * FPS::GetDeltaTime());
+		m_camera->Depart(Camera::kNormalDistance, kADSSpeed * FPS::GetDeltaTime());
 		m_camera->TrackBoneHeightOnly();
 	}
 
-	m_is_ready_gun = false;
+	m_is_ads_gun = false;
 
 	// ダッシュ判定
 	if (command->GetInputModeKind(CommandHandler::MoveKind::kRun) == InputModeKind::kHold) { m_is_run = false; }
@@ -611,7 +611,7 @@ void Player::CalcLookDir()
 	}
 
 	// 銃を構えている場合は常にカメラと同じ向きを向く
-	if (m_is_ready_gun)
+	if (m_is_ads_gun)
 	{
 		m_look_dir.at(TimeKind::kNext) = GetMoveForward();
 	}
@@ -630,8 +630,8 @@ void Player::CorrectLookDir()
 	distance.y = math::ConnectMinusPiToPi(distance.y);
 
 	// スコープを覗く場合は速度を上昇させる
-	float add_angle			= m_is_ready_gun ? -kLookDirCorrectionAngleForADS		: -kLookDirCorrectionAngle;
-	float threshold_angle	= m_is_ready_gun ? kConfirmLookDirThresholdAngleForADS	: kConfirmLookDirThresholdAngle;
+	float add_angle			= m_is_ads_gun ? -kLookDirCorrectionAngleForADS		: -kLookDirCorrectionAngle;
+	float threshold_angle	= m_is_ads_gun ? kConfirmLookDirThresholdAngleForADS	: kConfirmLookDirThresholdAngle;
 
 	// カメラを基準にして右側であった場合は反転
 	if (distance.y > 0) { add_angle *= -1; }

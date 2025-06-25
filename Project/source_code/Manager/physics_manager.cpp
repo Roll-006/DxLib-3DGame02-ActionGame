@@ -142,7 +142,7 @@ void PhysicsManager::PushBack(const std::shared_ptr<PhysicalObjBase> low_priorit
 	}
 }
 
-void PhysicsManager::PushBackSphereAndTarget(const std::shared_ptr<PhysicalObjBase> low_priority_obj, const std::shared_ptr<PhysicalObjBase> high_priority_obj)
+void PhysicsManager::PushBackSphereAndTarget (const std::shared_ptr<PhysicalObjBase> low_priority_obj, const std::shared_ptr<PhysicalObjBase> high_priority_obj)
 {
 	const auto shape = high_priority_obj->GetCollider(ColliderKind::kCollider)->GetShape();
 
