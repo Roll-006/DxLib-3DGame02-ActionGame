@@ -20,5 +20,5 @@ private:
 	static constexpr float  kCorrectScale		= 2.0f;
 	static constexpr VECTOR kMuzzleCorrectPos	= VECTOR(0.0f, 15.0f, 32.5f);
 	static constexpr float  kScopeScale			= 2.0f;
-	static constexpr float  kRange				= 500.0f;
+	static constexpr float  kRange				= 1500.0f;
 };

@@ -15,6 +15,7 @@ public:
 	~SceneObjManager();
 
 	void Update();
+	void LateUpdate();
 	void Draw() const;
 
 private:

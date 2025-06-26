@@ -38,6 +38,7 @@ void GameManager::Run()
 		m_window->Update();
 
 		m_scene_manager->Update();
+		m_scene_manager->LateUpdate();
 		m_scene_manager->Draw();
 
 		//// TEST : ‰¼‚ÅƒOƒŠƒbƒh‚ð•`‰æ

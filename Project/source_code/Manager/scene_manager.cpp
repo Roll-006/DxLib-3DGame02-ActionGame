@@ -31,8 +31,11 @@ void SceneObjManager::Update()
 	{
 		scene.second->Update();
 	}
+}
 
-	PhysicsManager	::GetInstance()->LateUpdate();
+void SceneObjManager::LateUpdate()
+{
+	PhysicsManager::GetInstance()->LateUpdate();
 
 	for (const auto& scene : m_current_scene)
 	{
@@ -41,7 +44,7 @@ void SceneObjManager::Update()
 
 	CollisionManager::GetInstance()->LateUpdate();
 	CommandHandler	::GetInstance()->LateUpdate();
-	InputChecker    ::GetInstance()->LateUpdate();
+	InputChecker	::GetInstance()->LateUpdate();
 }
 
 void SceneObjManager::Draw() const
