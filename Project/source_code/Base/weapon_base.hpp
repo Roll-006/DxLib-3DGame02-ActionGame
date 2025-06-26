@@ -1,11 +1,11 @@
 #pragma once
-#include "obj_base.hpp"
+#include "physical_obj_base.hpp"
 
-class WeaponBase abstract : public ObjBase
+class WeaponBase abstract : public PhysicalObjBase
 {
 public:
 	WeaponBase(const std::string& name, const std::string& file_path) :
-		ObjBase			(name, ObjTag.WEAPON),
+		PhysicalObjBase	(name, ObjTag.WEAPON, MassKind::kLight),
 		m_owner_modeler	(nullptr),
 		m_correct_pos	(v3d::GetZeroV()),
 		m_correct_angle	(v3d::GetZeroV()),

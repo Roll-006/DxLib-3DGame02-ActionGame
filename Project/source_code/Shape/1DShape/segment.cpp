@@ -47,10 +47,30 @@ void Segment::Move(const VECTOR& velocity)
 	m_end_pos	= m_begin_pos + m_dir * m_length;
 }
 
-void Segment::SetPos(const VECTOR& begin_pos)
+void Segment::SetBeginPos(const VECTOR& begin_pos, const bool is_alone)
 {
-	m_begin_pos = begin_pos;
-	m_end_pos   = m_begin_pos + m_dir * m_length;
+	if (is_alone)
+	{
+		m_begin_pos = begin_pos;
+	}
+	else
+	{
+		m_begin_pos = begin_pos;
+		m_end_pos   = m_begin_pos + m_dir * m_length;
+	}
+}
+
+void Segment::SetEndPos(const VECTOR& end_pos, const bool is_alone)
+{
+	if (is_alone)
+	{
+		m_end_pos = end_pos;
+	}
+	else
+	{
+		m_end_pos   = end_pos;
+		m_begin_pos = m_end_pos - m_dir * m_length;
+	}
 }
 
 void Segment::SetLength(const float length)

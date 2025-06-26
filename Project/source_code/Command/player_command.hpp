@@ -58,10 +58,10 @@ namespace player_cmd
 	};
 
 	/// @brief e‚ğ\‚¦‚é
-	class Ready final : public CommandBase
+	class Aiming final : public CommandBase
 	{
 	public:
-		Ready() : CommandBase(CommandKind::kReadyGun) {}
+		Aiming() : CommandBase(CommandKind::kAimingGun) {}
 		void Execute(ObjBase& obj) override;
 	};
 

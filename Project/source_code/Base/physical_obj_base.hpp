@@ -68,7 +68,7 @@ public:
 	[[nodiscard]] VECTOR	GetVelocity()		const { return m_velocity; }
 	[[nodiscard]] VECTOR	GetFallVelocity()	const { return m_fall_velocity; }
 	[[nodiscard]] MassKind	GetMassKind()		const { return m_mass_kind; }
-	[[nodiscard]] std::shared_ptr<Collider> GetCollider(const ColliderKind kind)
+	[[nodiscard]] std::shared_ptr<Collider> GetCollider(const ColliderKind kind) const
 	{
 		for (const auto& collider : m_collider)
 		{

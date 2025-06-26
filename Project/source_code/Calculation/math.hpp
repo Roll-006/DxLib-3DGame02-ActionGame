@@ -280,6 +280,12 @@ namespace math
 	/// @brief 基準とするベクトルから法線ベクトルを求め、その内の一つを取得
 	[[nodiscard]] VECTOR GetNormalVector(const VECTOR& v);
 	[[nodiscard]] VECTOR GetNormalVector(const VECTOR& v1, const VECTOR& v2);
+
+	/// @brief 正射影ベクトル
+	/// @param projected_v 投影元ベクトル
+	/// @param base_v 投影先ベクトル
+	/// @return 投影されたベクトル
+	[[nodiscard]] VECTOR GetProjectionVector(const VECTOR& projected_v, const VECTOR& base_v);
 	#pragma endregion
 
 

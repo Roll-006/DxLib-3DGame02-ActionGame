@@ -17,8 +17,15 @@ public:
 
 	void Move(const VECTOR& velocity) override;
 
-	void SetPos(const VECTOR& begin_pos);
-	void SetLength(const float length);
+	/// @brief 始点を設定する
+	/// @param begin_pos 始点
+	/// @param is_alone 始点を単独で設定するか(true : 終点の変化なし、長さの変化あり, false : 終点の変化あり、長さの変化なし)
+	void SetBeginPos(const VECTOR& begin_pos, const bool is_alone);
+	/// @brief 終点を設定する
+	/// @param end_pos 終点
+	/// @param is_alone 終点を単独で設定するか(true : 始点の変化なし、長さの変化あり, false : 始点の変化あり、長さの変化なし)
+	void SetEndPos  (const VECTOR& end_pos,   const bool is_alone);
+	void SetLength  (const float length);
 
 	/// @brief 直線上の点を取得
 	/// @param length 始点からの長さ

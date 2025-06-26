@@ -237,6 +237,13 @@ VECTOR math::GetNormalVector(const VECTOR& v1, const VECTOR& v2)
     // [法線ベクトル = v1とv2の外積]から成分を取得
     return v3d::GetNormalizedV(VCross(v1, v2));
 }
+
+VECTOR math::GetProjectionVector(const VECTOR& projected_v, const VECTOR& base_v)
+{
+    const float dot         = VDot(base_v, projected_v);
+    const float square_base = VSquareSize(base_v);
+    return (dot / square_base) * base_v;
+}
 #pragma endregion
 
 

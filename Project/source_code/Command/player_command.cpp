@@ -35,9 +35,9 @@ void player_cmd::Shot::Execute(ObjBase& obj)
 	dynamic_cast<Player*>(&obj)->Shot();
 }
 
-void player_cmd::Ready::Execute(ObjBase& obj)
+void player_cmd::Aiming::Execute(ObjBase& obj)
 {
-	dynamic_cast<Player*>(&obj)->ReadyGun();
+	dynamic_cast<Player*>(&obj)->AimingGun();
 }
 
 void player_cmd::Reload::Execute(ObjBase& obj)

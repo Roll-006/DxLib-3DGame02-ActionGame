@@ -18,7 +18,7 @@ public:
 
     void Move(const VECTOR& velocity) override;
 
-    void SetPos(const VECTOR& segment_begin_pos) { m_segment.SetPos(segment_begin_pos); }
+    void SetPos(const VECTOR& segment_begin_pos) { m_segment.SetBeginPos(segment_begin_pos, false); }
     void SetLength(const float segment_length) { m_segment.SetLength(segment_length); }
 
     [[nodiscard]] const Segment& GetSegment() const { return m_segment; }

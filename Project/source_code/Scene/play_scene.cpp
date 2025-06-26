@@ -4,7 +4,7 @@ PlayScene::PlayScene():
 	m_enemy		(std::make_shared<Enemy>()),
 	m_house		(std::make_shared<House>()),
 	m_ground	(std::make_shared<Ground>()),
-	m_skydome	(std::make_shared<Skydome>(std::static_pointer_cast<Camera>(ObjManager::GetInstance()->GetObj(ObjName.CAMERA))))
+	m_skydome	(std::make_shared<Skydome>(std::dynamic_pointer_cast<Camera>(ObjManager::GetInstance()->GetObj(ObjName.CAMERA))))
 {
 	ObjManager		::GetInstance()->AddObj			(m_enemy);
 	ObjManager		::GetInstance()->AddObj			(m_house);

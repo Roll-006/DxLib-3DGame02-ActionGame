@@ -21,7 +21,6 @@ Camera::Camera() :
 	SetupCamera_Perspective(kFOV * math::kDegreesToRadian);
 
 	PhysicsManager::GetInstance()->AddIgnoreObjGravity(ObjName.CAMERA);
-	PhysicsManager::GetInstance()->AddIgnoreObjPhysicalBehavior(ObjName.CAMERA);
 
 	m_angle[TimeKind::kCurrent] = m_angle[TimeKind::kNext] = v3d::GetZeroV();
 }

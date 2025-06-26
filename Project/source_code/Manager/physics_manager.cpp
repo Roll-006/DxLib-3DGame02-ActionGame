@@ -44,7 +44,7 @@ void PhysicsManager::LateUpdate()
 #pragma region 登録・解除
 void PhysicsManager::RemovePhysicalObj				(const std::string& obj_name)
 {
-	const auto physical_obj = std::static_pointer_cast<PhysicalObjBase>(ObjManager::GetInstance()->GetObj(obj_name));
+	const auto physical_obj = std::dynamic_pointer_cast<PhysicalObjBase>(ObjManager::GetInstance()->GetObj(obj_name));
 
 	if (std::find(m_physical_objects.begin(), m_physical_objects.end(), physical_obj) != m_physical_objects.end())
 	{
@@ -94,6 +94,7 @@ void PhysicsManager::ExecutePushBackPairs()
 	{
 		// 衝突が許可されていない場合は以降の処理をスキップ
 		if (!IsApplyPhysicalBehavior(obj_1)) { continue; }
+		if (obj_1->GetCollider(ColliderKind::kCollider) == nullptr) { continue; }
 
 		for (const auto& obj_2 : m_physical_objects)
 		{
@@ -102,6 +103,7 @@ void PhysicsManager::ExecutePushBackPairs()
 
 			// 衝突が許可されていない場合は以降の処理をスキップ
 			if (!IsApplyPhysicalBehavior(obj_2)) { continue; }
+			if (obj_2->GetCollider(ColliderKind::kCollider) == nullptr) { continue; }
 
 			// 互いに静的オブジェクトであった場合は以降の処理をスキップ
 			if (obj_1->GetMassKind() == MassKind::kStatic && obj_2->GetMassKind() == MassKind::kStatic) { continue; }
@@ -150,7 +152,7 @@ void PhysicsManager::PushBackSphereAndTarget (const std::shared_ptr<PhysicalObjB
 	if (shape == nullptr)
 	{
 		const auto velocity		= low_priority_obj->GetVelocity();
-		const auto sphere		= *std::static_pointer_cast<Sphere>(low_priority_obj->GetCollider(ColliderKind::kCollider)->GetShape());
+		const auto sphere		= *std::dynamic_pointer_cast<Sphere>(low_priority_obj->GetCollider(ColliderKind::kCollider)->GetShape());
 		const auto model_handle = high_priority_obj->GetModeler()->GetModelHandle();
 		low_priority_obj->SetVelocity(collision::PushBackSphereAndModel(velocity, sphere, model_handle));
 		return;
@@ -170,7 +172,7 @@ void PhysicsManager::PushBackCapsuleAndTarget(const std::shared_ptr<PhysicalObjB
 	if (shape == nullptr)
 	{
 		const auto velocity		= low_priority_obj->GetVelocity();
-		const auto capsule		= *std::static_pointer_cast<Capsule>(low_priority_obj->GetCollider(ColliderKind::kCollider)->GetShape());
+		const auto capsule		= *std::dynamic_pointer_cast<Capsule>(low_priority_obj->GetCollider(ColliderKind::kCollider)->GetShape());
 		const auto model_handle = high_priority_obj->GetModeler()->GetModelHandle();
 		low_priority_obj->SetVelocity(collision::PushBackCapsuleAndModel(velocity, capsule, model_handle));
 		return;

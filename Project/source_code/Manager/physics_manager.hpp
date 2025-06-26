@@ -43,7 +43,12 @@ public:
 	[[nodiscard]] bool IsApplyPhysicalBehavior(const std::shared_ptr<PhysicalObjT> physical_obj) const
 	{
 		const auto itr = std::find(m_ignore_physical_behavior_obj_name.begin(), m_ignore_physical_behavior_obj_name.end(), physical_obj->GetName());
-		return itr == m_ignore_physical_behavior_obj_name.end();
+
+		if (itr != m_ignore_physical_behavior_obj_name.end())
+		{
+			return false;
+		}
+		return true;
 	}
 
 	/// @brief d—Í‚ğ“K—p‚·‚é‚©‚ğ”»’è‚·‚é
@@ -57,7 +62,6 @@ public:
 		{
 			return false;
 		}
-
 		return true;
 	}
 

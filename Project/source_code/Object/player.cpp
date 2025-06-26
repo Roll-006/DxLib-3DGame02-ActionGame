@@ -59,7 +59,7 @@ void Player::Update()
 	const auto command = CommandHandler::GetInstance();
 	command->Execute(CommandKind::kRun,				this);
 	command->Execute(CommandKind::kSquat,			this);
-	command->Execute(CommandKind::kReadyGun,		this);
+	command->Execute(CommandKind::kAimingGun,		this);
 	command->Execute(CommandKind::kMoveUpPlayer,	this);
 	command->Execute(CommandKind::kMoveDownPlayer,	this);
 	command->Execute(CommandKind::kMoveLeftPlayer,	this);
@@ -235,7 +235,7 @@ void Player::MoveRight()
 	m_move_dir.at(TimeKind::kNext) += m_camera->GetTransform()->GetRight(CoordinateKind::kWorld);
 }
 
-void Player::ReadyGun()
+void Player::AimingGun()
 {
 	// ターン中は早期return
 	if (m_is_turn_around) { return; }
@@ -247,6 +247,10 @@ void Player::ReadyGun()
 	float min_distance = Camera::kNormalDistance / m_current_attach_gun->GetScopeScale();
 	m_camera->Approach(min_distance, kADSSpeed * FPS::GetDeltaTime());
 	m_camera->TrackBoneWobbly();
+
+	// 銃に狙う方向を設定
+	m_current_attach_gun->SetAimDir			(m_camera->GetTransform()->GetForward(CoordinateKind::kWorld));
+	m_current_attach_gun->SetPointOnRayLine	(m_camera->GetTransform()->GetPos    (CoordinateKind::kWorld));
 
 	// ダッシュ状態を解除
 	m_is_run = false;
@@ -261,10 +265,10 @@ void Player::Shot()
 
 void Player::TurnAround()
 {
-	if (m_is_turn_around)										{ return; }
-	if (m_is_run)												{ return; }
-	if (m_turn_around_count != 0)								{ return; }
-	if (m_move_dir.at(TimeKind::kNext) == v3d::GetZeroV()) { return; }
+	if (m_is_turn_around)									{ return; }
+	if (m_is_run)											{ return; }
+	if (m_turn_around_count != 0)							{ return; }
+	if (m_move_dir.at(TimeKind::kNext) == v3d::GetZeroV())	{ return; }
 
 	// バック中であった場合は振り向く
 	const float angle = math::GetAngleBetweenTwoVector(-GetMoveForward(), m_move_dir.at(TimeKind::kNext));
