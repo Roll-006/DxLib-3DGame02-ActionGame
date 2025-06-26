@@ -72,21 +72,34 @@ bool collision::IsHitSegmentAndPlane    (const Segment&     segment,    const Pl
 
 bool collision::IsHitSegmentAndTriangle (const Segment&     segment,    const Triangle& triangle)
 {
+    std::optional<VECTOR> intersection = std::nullopt;
+    return IsHitSegmentAndTriangle(segment, triangle, intersection);
+}
+
+bool collision::IsHitSegmentAndTriangle(const Segment& segment, const Triangle& triangle, std::optional<VECTOR>& intersection)
+{
+    // 三角形を平面に拡張
     const Plane plane = Plane(triangle.GetCentroid(), triangle.GetNormalVector());
-    if (!IsHitSegmentAndPlane(segment, plane)) { return false; }
+
+    // 平面と衝突していない場合は衝突なし
+    if (!IsHitSegmentAndPlane(segment, plane))
+    {
+        intersection = std::nullopt;
+        return false;
+    }
 
     const VECTOR v1 = segment.GetBeginPos() - triangle.GetPos(0);
-    const VECTOR v2 = segment.GetEndPos() - triangle.GetPos(0);
-    const float d1  = math::GetDistancePointToPlane(segment.GetBeginPos(), plane);
-    const float d2  = math::GetDistancePointToPlane(segment.GetEndPos(), plane);
-    const float a   = d1 / (d1 + d2);
+    const VECTOR v2 = segment.GetEndPos()   - triangle.GetPos(0);
+    const float  d1 = math::GetDistancePointToPlane(segment.GetBeginPos(), plane);
+    const float  d2 = math::GetDistancePointToPlane(segment.GetEndPos(),   plane);
+    const float  a  = d1 / (d1 + d2);
     const VECTOR v3 = (1 - a) * v1 + a * v2;
 
-    // 貫通点
-    const VECTOR p3 = triangle.GetPos(0) + v3;
+    // 平面との交点
+    intersection = triangle.GetPos(0) + v3;
 
-    // 貫通点が三角形と衝突しているか
-    return IsHitPointAndTriangle(p3, triangle);
+    // 交点が三角形と衝突しているか(三角形に含まれるか)
+    return IsHitPointAndTriangle(*intersection, triangle);
 }
 
 bool collision::IsHitSegmentAndSquare   (const Segment&     segment,    const Square&   square)
@@ -150,6 +163,41 @@ bool collision::IsHitSegmentAndCapsule  (const Segment&     segment,    const Ca
 {
     const float distance = math::GetDistanceSegmentToSegment(segment, capsule.GetSegment());
     return distance <= capsule.GetRadius();
+}
+
+bool collision::IsHitSegmentAndModel    (const Segment&     segment,    const int       model_handle)
+{
+    std::optional<VECTOR> intersection = std::nullopt;
+    return IsHitSegmentAndModel(segment, model_handle, intersection);
+}
+
+bool collision::IsHitSegmentAndModel    (const Segment&     segment,    const int       model_handle, std::optional<VECTOR>& intersection)
+{
+    const auto hit_result = MV1CollCheck_LineDim(model_handle, -1, segment.GetBeginPos(), segment.GetEndPos());
+    if (!hit_result.HitNum)
+    {
+        intersection = std::nullopt;
+        return false;
+    }
+
+    // ヒットしたポリゴンから三角形を生成
+    // 三角形との距離を取得
+    std::unordered_map<int, Triangle> triangles;
+    std::unordered_map<int, float>    distance;
+    for (int i = 0; i < hit_result.HitNum; ++i)
+    {
+        Triangle triangle = Triangle(hit_result.Dim[i].Position[0], hit_result.Dim[i].Position[2], hit_result.Dim[i].Position[1]);
+
+        distance[i] = math::GetDistancePointToTriangle(segment.GetBeginPos(), triangle);
+        triangles[i] = triangle;
+    }
+
+    // 距離が最も近い三角形との交点を取得
+    distance = math::Sort(distance, SortKind::kAscending);
+    for (const auto& dist : distance)
+    {
+        return collision::IsHitSegmentAndTriangle(segment, triangles.at(dist.first), intersection);
+    }
 }
 
 bool collision::IsHitPlaneAndCapsule    (const Plane&       plane,      const Capsule&  capsule)

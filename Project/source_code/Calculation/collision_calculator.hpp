@@ -37,6 +37,10 @@ namespace collision
     
     /// @brief 線分と三角形の衝突判定
     [[nodiscard]] bool IsHitSegmentAndTriangle     (const Segment&  segment,  const Triangle& triangle);
+    /// @brief 線分と三角形の衝突判定
+    /// @param intersection 衝突していれば、線分の始点に最も近い交点を格納
+    /// @return true : 衝突, false : 非衝突
+    [[nodiscard]] bool IsHitSegmentAndTriangle     (const Segment&  segment,  const Triangle& triangle, std::optional<VECTOR>& intersection);
 
     /// @brief 線分と四角形の衝突判定
     [[nodiscard]] bool IsHitSegmentAndSquare       (const Segment&  segment,  const Square&   square);
@@ -46,6 +50,13 @@ namespace collision
 
     /// @brief 線分とカプセルの衝突判定
     [[nodiscard]] bool IsHitSegmentAndCapsule      (const Segment&  segment,  const Capsule&  capsule);
+
+    /// @brief 線分とモデルの衝突判定
+    [[nodiscard]] bool IsHitSegmentAndModel        (const Segment&  segment,  const int       model_handle);
+    /// @brief 線分とモデルの衝突判定
+    /// @param intersection 衝突していれば、線分の始点に最も近い交点を格納
+    /// @return true : 衝突, false : 非衝突
+    [[nodiscard]] bool IsHitSegmentAndModel        (const Segment&  segment,  const int       model_handle, std::optional<VECTOR>& intersection);
 
     /// @brief 平面(無限に広がる面)とカプセルの衝突判定
     [[nodiscard]] bool IsHitPlaneAndCapsule        (const Plane&    plane,    const Capsule&  capsule);

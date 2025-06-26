@@ -9,8 +9,7 @@ Enemy::Enemy() :
 	m_transform->SetPos  (CoordinateKind::kWorld, VGet(20, 0, 0));
 
 	// コライダー・トリガーを設定
-	MakeCapsuleCollider(kCapsuleRadius);
-	MakeLandingTrigger (kLandingTriggerRadius);
+	MakeCollider(kCapsuleRadius, kLandingTriggerRadius);
 
 	// 各アニメーション追加
 	LoadAnim();
@@ -48,9 +47,13 @@ void Enemy::Draw() const
 {
 	m_modeler->Draw();
 
-	for (auto& trigger : m_collider)
+	for (auto& collider : m_collider)
 	{
-		trigger->GetShape()->Draw(true, 0, 0xffffff);
+		const auto shape = collider->GetShape();
+		if (shape != nullptr)
+		{
+			shape->Draw(true, 0, 0xffffff);
+		}
 	}
 
 	auto pos  = m_transform->GetPos (CoordinateKind::kWorld);

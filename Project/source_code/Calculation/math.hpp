@@ -340,11 +340,13 @@ namespace math
 
 
 	#pragma region 図形同士の関係
+	/// @brief TODO : 衝突判定との合成を検討
 	/// @brief 直線と直線の交点を取得
 	/// @return 一点で交差する場合は交点
 	/// @return 該当する値がない場合、もしくは二直線が同一直線上にある場合はnullopt(if(戻り値)で判定する必要あり)
 	[[nodiscard]] std::optional<VECTOR> GetIntersectionLineAndLine(const Line& line1, const Line& line2);
 
+	/// @brief TODO : 衝突判定との合成を検討
 	/// @brief 線分と平面(無限に広がる面)の交点を取得
 	/// @brief 受け取り側で、戻り値がnulloptである場合と不定値である場合を考慮する必要あり
 	/// @return 一点で交差する場合は交点

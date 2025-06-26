@@ -126,7 +126,7 @@ std::vector<ColliderPairData> CollisionManager::MakeHitColliderPairs()
 #pragma region Õ“Ë”»’è
 bool CollisionManager::IsHit					(const Collider& owner_collider, const Collider& target_collider)
 {
-	const auto shape = owner_collider.GetShape().get();
+	const auto shape = owner_collider.GetShape();
 
 	// }Œ`‚Ì“o˜^‚ª‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Íƒ‚ƒfƒ‹‚Å”»’è‚ðs‚¤
 	if (shape == nullptr)
@@ -136,15 +136,15 @@ bool CollisionManager::IsHit					(const Collider& owner_collider, const Collider
 
 	switch (shape->GetShapeKind())
 	{
-	case ShapeKind::kLine:			return IsHitLineAndTarget		(*dynamic_cast<Line*>	 (shape), target_collider); break;
-	case ShapeKind::kSegment:		return IsHitSegmentAndTarget	(*dynamic_cast<Segment*> (shape), target_collider); break;
-	case ShapeKind::kPlane:			return IsHitPlaneAndTarget		(*dynamic_cast<Plane*>	 (shape), target_collider); break;
-	case ShapeKind::kTriangle:		return IsHitTriangleAndTarget	(*dynamic_cast<Triangle*>(shape), target_collider); break;
-	case ShapeKind::kSquare:		return IsHitSquareAndTarget		(*dynamic_cast<Square*>	 (shape), target_collider); break;
-	case ShapeKind::kAABB:			return IsHitAABBAndTarget		(*dynamic_cast<AABB*>	 (shape), target_collider); break;
-	case ShapeKind::kOBB:			return IsHitOBBAndTarget		(*dynamic_cast<OBB*>	 (shape), target_collider); break;
-	case ShapeKind::kSphere:		return IsHitSphereAndTarget		(*dynamic_cast<Sphere*>	 (shape), target_collider); break;
-	case ShapeKind::kCapsule:		return IsHitCapsuleAndTarget	(*dynamic_cast<Capsule*> (shape), target_collider); break;
+	case ShapeKind::kLine:			return IsHitLineAndTarget		(*std::dynamic_pointer_cast<Line>		(shape), target_collider); break;
+	case ShapeKind::kSegment:		return IsHitSegmentAndTarget	(*std::dynamic_pointer_cast<Segment>	(shape), target_collider); break;
+	case ShapeKind::kPlane:			return IsHitPlaneAndTarget		(*std::dynamic_pointer_cast<Plane>		(shape), target_collider); break;
+	case ShapeKind::kTriangle:		return IsHitTriangleAndTarget	(*std::dynamic_pointer_cast<Triangle>	(shape), target_collider); break;
+	case ShapeKind::kSquare:		return IsHitSquareAndTarget		(*std::dynamic_pointer_cast<Square>		(shape), target_collider); break;
+	case ShapeKind::kAABB:			return IsHitAABBAndTarget		(*std::dynamic_pointer_cast<AABB>		(shape), target_collider); break;
+	case ShapeKind::kOBB:			return IsHitOBBAndTarget		(*std::dynamic_pointer_cast<OBB>		(shape), target_collider); break;
+	case ShapeKind::kSphere:		return IsHitSphereAndTarget		(*std::dynamic_pointer_cast<Sphere>		(shape), target_collider); break;
+	case ShapeKind::kCapsule:		return IsHitCapsuleAndTarget	(*std::dynamic_pointer_cast<Capsule>	(shape), target_collider); break;
 
 	default: break;
 	}
@@ -153,7 +153,7 @@ bool CollisionManager::IsHit					(const Collider& owner_collider, const Collider
 
 bool CollisionManager::IsHitLineAndTarget		(const Line&	 line,			 const Collider& target_collider)
 {
-	const auto shape = target_collider.GetShape().get();
+	const auto shape = target_collider.GetShape();
 
 	// }Œ`‚Ì“o˜^‚ª‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Íƒ‚ƒfƒ‹‚Å”»’è‚ðs‚¤
 	if (shape == nullptr)
@@ -163,8 +163,8 @@ bool CollisionManager::IsHitLineAndTarget		(const Line&	 line,			 const Collider
 
 	switch (shape->GetShapeKind())
 	{
-	case ShapeKind::kLine:	return collision::IsHitLineAndLine (line, *dynamic_cast<Line*> (shape));	break;
-	case ShapeKind::kPlane:	return collision::IsHitLineAndPlane(line, *dynamic_cast<Plane*>(shape));	break;
+	case ShapeKind::kLine:	return collision::IsHitLineAndLine (line, *std::dynamic_pointer_cast<Line> (shape));	break;
+	case ShapeKind::kPlane:	return collision::IsHitLineAndPlane(line, *std::dynamic_pointer_cast<Plane>(shape));	break;
 
 	default: break;
 	}
@@ -173,7 +173,7 @@ bool CollisionManager::IsHitLineAndTarget		(const Line&	 line,			 const Collider
 
 bool CollisionManager::IsHitSegmentAndTarget	(const Segment&  segment,		 const Collider& target_collider)
 {
-	const auto shape = target_collider.GetShape().get();
+	const auto shape = target_collider.GetShape();
 
 	// }Œ`‚Ì“o˜^‚ª‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Íƒ‚ƒfƒ‹‚Å”»’è‚ðs‚¤
 	if (shape == nullptr)
@@ -183,11 +183,11 @@ bool CollisionManager::IsHitSegmentAndTarget	(const Segment&  segment,		 const C
 
 	switch (shape->GetShapeKind())
 	{
-	case ShapeKind::kSegment:	return collision::IsHitSegmentAndSegment (segment, *dynamic_cast<Segment*>	(shape));	break;
-	case ShapeKind::kPlane:		return collision::IsHitSegmentAndPlane	 (segment, *dynamic_cast<Plane*>	(shape));	break;
-	case ShapeKind::kTriangle:	return collision::IsHitSegmentAndTriangle(segment, *dynamic_cast<Triangle*>	(shape));	break;
-	case ShapeKind::kSquare:	return collision::IsHitSegmentAndSquare	 (segment, *dynamic_cast<Square*>	(shape));	break;
-	case ShapeKind::kCapsule:	return collision::IsHitSegmentAndCapsule (segment, *dynamic_cast<Capsule*>	(shape));	break;
+	case ShapeKind::kSegment:	return collision::IsHitSegmentAndSegment (segment, *std::dynamic_pointer_cast<Segment>	(shape));	break;
+	case ShapeKind::kPlane:		return collision::IsHitSegmentAndPlane	 (segment, *std::dynamic_pointer_cast<Plane>	(shape));	break;
+	case ShapeKind::kTriangle:	return collision::IsHitSegmentAndTriangle(segment, *std::dynamic_pointer_cast<Triangle>	(shape));	break;
+	case ShapeKind::kSquare:	return collision::IsHitSegmentAndSquare	 (segment, *std::dynamic_pointer_cast<Square>	(shape));	break;
+	case ShapeKind::kCapsule:	return collision::IsHitSegmentAndCapsule (segment, *std::dynamic_pointer_cast<Capsule>	(shape));	break;
 
 	default: break;
 	}
@@ -196,7 +196,7 @@ bool CollisionManager::IsHitSegmentAndTarget	(const Segment&  segment,		 const C
 
 bool CollisionManager::IsHitPlaneAndTarget		(const Plane&	 plane,			 const Collider& target_collider)
 {
-	const auto shape = target_collider.GetShape().get();
+	const auto shape = target_collider.GetShape();
 
 	// }Œ`‚Ì“o˜^‚ª‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Íƒ‚ƒfƒ‹‚Å”»’è‚ðs‚¤
 	if (shape == nullptr)
@@ -206,7 +206,7 @@ bool CollisionManager::IsHitPlaneAndTarget		(const Plane&	 plane,			 const Colli
 
 	switch (shape->GetShapeKind())
 	{
-	case ShapeKind::kCapsule:	return collision::IsHitPlaneAndCapsule(plane, *dynamic_cast<Capsule*> (shape));	break;
+	case ShapeKind::kCapsule:	return collision::IsHitPlaneAndCapsule(plane, *std::dynamic_pointer_cast<Capsule> (shape));	break;
 
 	default: break;
 	}
@@ -215,7 +215,7 @@ bool CollisionManager::IsHitPlaneAndTarget		(const Plane&	 plane,			 const Colli
 
 bool CollisionManager::IsHitTriangleAndTarget	(const Triangle& triangle,		 const Collider& target_collider)
 {
-	const auto shape = target_collider.GetShape().get();
+	const auto shape = target_collider.GetShape();
 
 	// }Œ`‚Ì“o˜^‚ª‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Íƒ‚ƒfƒ‹‚Å”»’è‚ðs‚¤
 	if (shape == nullptr)
@@ -226,7 +226,7 @@ bool CollisionManager::IsHitTriangleAndTarget	(const Triangle& triangle,		 const
 
 	switch (shape->GetShapeKind())
 	{
-	case ShapeKind::kCapsule:	return collision::IsHitTriangleAndCapsule(triangle, *dynamic_cast<Capsule*> (shape));	break;
+	case ShapeKind::kCapsule:	return collision::IsHitTriangleAndCapsule(triangle, *std::dynamic_pointer_cast<Capsule> (shape));	break;
 
 	default: break;
 	}
@@ -235,7 +235,7 @@ bool CollisionManager::IsHitTriangleAndTarget	(const Triangle& triangle,		 const
 
 bool CollisionManager::IsHitSquareAndTarget		(const Square&	 square,		 const Collider& target_collider)
 {
-	const auto shape = target_collider.GetShape().get();
+	const auto shape = target_collider.GetShape();
 
 	// }Œ`‚Ì“o˜^‚ª‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Íƒ‚ƒfƒ‹‚Å”»’è‚ðs‚¤
 	if (shape == nullptr)
@@ -245,7 +245,7 @@ bool CollisionManager::IsHitSquareAndTarget		(const Square&	 square,		 const Col
 
 	switch (shape->GetShapeKind())
 	{
-	case ShapeKind::kCapsule:	return collision::IsHitSquareAndCapsule(square, *dynamic_cast<Capsule*> (shape));	break;
+	case ShapeKind::kCapsule:	return collision::IsHitSquareAndCapsule(square, *std::dynamic_pointer_cast<Capsule> (shape));	break;
 
 	default: break;
 	}
@@ -264,7 +264,7 @@ bool CollisionManager::IsHitOBBAndTarget		(const OBB&		 obb,			 const Collider& 
 
 bool CollisionManager::IsHitSphereAndTarget		(const Sphere&	 sphere,		 const Collider& target_collider)
 {
-	const auto shape = target_collider.GetShape().get();
+	const auto shape = target_collider.GetShape();
 
 	// }Œ`‚Ì“o˜^‚ª‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Íƒ‚ƒfƒ‹‚Å”»’è‚ðs‚¤
 	if (shape == nullptr)
@@ -274,8 +274,8 @@ bool CollisionManager::IsHitSphereAndTarget		(const Sphere&	 sphere,		 const Col
 
 	switch (shape->GetShapeKind())
 	{
-	case ShapeKind::kSphere:	return collision::IsHitSphereAndSphere (sphere, *dynamic_cast<Sphere*> (shape));	break;
-	case ShapeKind::kCapsule:	return collision::IsHitSphereAndCapsule(sphere, *dynamic_cast<Capsule*>(shape));	break;
+	case ShapeKind::kSphere:	return collision::IsHitSphereAndSphere (sphere, *std::dynamic_pointer_cast<Sphere> (shape));	break;
+	case ShapeKind::kCapsule:	return collision::IsHitSphereAndCapsule(sphere, *std::dynamic_pointer_cast<Capsule>(shape));	break;
 
 	default: break;
 	}
@@ -284,7 +284,7 @@ bool CollisionManager::IsHitSphereAndTarget		(const Sphere&	 sphere,		 const Col
 
 bool CollisionManager::IsHitCapsuleAndTarget	(const Capsule&  capsule,		 const Collider& target_collider)
 {
-	const auto shape = target_collider.GetShape().get();
+	const auto shape = target_collider.GetShape();
 
 	// }Œ`‚Ì“o˜^‚ª‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Íƒ‚ƒfƒ‹‚Å”»’è‚ðs‚¤
 	if (shape == nullptr)
@@ -295,7 +295,7 @@ bool CollisionManager::IsHitCapsuleAndTarget	(const Capsule&  capsule,		 const C
 
 	switch (shape->GetShapeKind())
 	{
-	case ShapeKind::kCapsule:	return collision::IsHitCapsuleAndCapsule(capsule, *dynamic_cast<Capsule*> (shape));	break;
+	case ShapeKind::kCapsule:	return collision::IsHitCapsuleAndCapsule(capsule, *std::dynamic_pointer_cast<Capsule> (shape));	break;
 
 	default: break;
 	}

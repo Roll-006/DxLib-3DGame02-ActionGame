@@ -22,24 +22,11 @@ public:
 
 	virtual ~CharaBase() = default;
 
-	/// @brief カプセルコライダーを作成
-	void MakeCapsuleCollider(const float capsule_radius)
-	{
-		m_capsule_radius = capsule_radius;
+	[[nodiscard]] const std::shared_ptr<Modeler> GetModeler()const { return m_modeler; }
 
-		const auto begin_pos = m_transform->GetPos(CoordinateKind::kWorld) + VGet(0.0f, m_capsule_radius, 0.0f);
-		const auto segment_length = m_capsule_length - m_capsule_radius * 2.0f;
-		m_capsule_collider = std::make_shared<Capsule>(begin_pos, m_transform->GetUp(CoordinateKind::kWorld), segment_length, m_capsule_radius);
-
-		AddCollider(std::make_shared<Collider>(ColliderKind::kCollider, m_capsule_collider, this));
-	}
-
-	/// @brief 着地トリガーを作成
-	void MakeLandingTrigger(const float sphere_radius)
-	{
-		const auto pos = m_capsule_collider->GetSegment().GetBeginPos() - VGet(0.0f, 5.0f, 0.0f);
-		AddCollider(std::make_shared<Collider>(ColliderKind::kLandingTrigger, std::make_shared<Sphere>(pos, sphere_radius), this));
-	}
+protected:
+	virtual void LoadAnim() abstract;
+	virtual void ChangeAnimState() abstract;
 
 
 	#pragma region 武器
@@ -70,12 +57,15 @@ public:
 	}
 	#pragma endregion
 
+	/// @brief キャラクターが標準的に持つコライダーを一括で作成する
+	/// @brief カプセル(コライダー), 球(着地判定用トリガー), メッシュトリガー
+	void MakeCollider(const float capsule_radius, const float sphere_radius)
+	{
+		MakeCapsuleCollider(capsule_radius);
+		MakeLandingTrigger (sphere_radius);
 
-	[[nodiscard]] const std::shared_ptr<Modeler> GetModeler()const { return m_modeler; }
-
-protected:
-	virtual void LoadAnim() abstract;
-	virtual void ChangeAnimState() abstract;
+		AddCollider(std::make_shared<Collider>(ColliderKind::kMeshTrigger, m_modeler->GetModelHandle(), this));
+	}
 
 	/// @brief カプセルの長さを計算
 	void CalcCapsuleLength()
@@ -92,6 +82,26 @@ protected:
 
 		const float segment_length = m_capsule_length - m_capsule_radius * 2.0f;
 		m_capsule_collider->SetLength(segment_length);
+	}
+
+private:
+	/// @brief カプセルコライダーを作成
+	void MakeCapsuleCollider(const float capsule_radius)
+	{
+		m_capsule_radius = capsule_radius;
+
+		const auto begin_pos = m_transform->GetPos(CoordinateKind::kWorld) + VGet(0.0f, m_capsule_radius, 0.0f);
+		const auto segment_length = m_capsule_length - m_capsule_radius * 2.0f;
+		m_capsule_collider = std::make_shared<Capsule>(begin_pos, m_transform->GetUp(CoordinateKind::kWorld), segment_length, m_capsule_radius);
+
+		AddCollider(std::make_shared<Collider>(ColliderKind::kCollider, m_capsule_collider, this));
+	}
+
+	/// @brief 着地トリガーを作成
+	void MakeLandingTrigger(const float sphere_radius)
+	{
+		const auto pos = m_capsule_collider->GetSegment().GetBeginPos() - VGet(0.0f, 5.0f, 0.0f);
+		AddCollider(std::make_shared<Collider>(ColliderKind::kLandingTrigger, std::make_shared<Sphere>(pos, sphere_radius), this));
 	}
 
 protected:

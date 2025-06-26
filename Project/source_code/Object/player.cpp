@@ -23,8 +23,7 @@ Player::Player(std::shared_ptr<Camera> camera) :
 	m_transform->SetScale(CoordinateKind::kWorld, kModelScale);
 
 	// コライダー・トリガーを設定
-	MakeCapsuleCollider(kCapsuleRadius);
-	MakeLandingTrigger (kLandingTriggerRadius);
+	MakeCollider(kCapsuleRadius, kLandingTriggerRadius);
 
 	// 各アニメーション追加
 	LoadAnim();
@@ -34,6 +33,12 @@ Player::Player(std::shared_ptr<Camera> camera) :
 	// 武器設定
 	AddGun(std::make_shared<AssaultRifle>());
 	AttachGun(GunKind::kAssaultRifle);
+
+	// TODO : 仮で銃のオブジェ登録
+	ObjManager		::GetInstance()->AddObj(m_current_attach_gun);
+	CollisionManager::GetInstance()->AddCollideObj(m_current_attach_gun);
+	//PhysicsManager	::GetInstance()->AddPhysicalObj(m_current_attach_gun);
+	//PhysicsManager	::GetInstance()->AddIgnoreObjGravity(ObjName.ASSAULT_RIFLE);
 }
 
 Player::~Player()
@@ -98,7 +103,11 @@ void Player::Draw() const
 
 	for (auto& collider : m_collider)
 	{
-		collider->GetShape()->Draw(true, 0, 0xffffff);
+		const auto shape = collider->GetShape();
+		if (shape != nullptr)
+		{
+			shape->Draw(true, 0, 0xffffff);
+		}
 	}
 
 	auto pos  = m_transform->GetPos (CoordinateKind::kWorld);
