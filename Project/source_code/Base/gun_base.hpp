@@ -26,6 +26,9 @@ public:
 	/// @brief 非エイミング中にする
 	void DeactivateAiming() { m_is_aiming = false; }
 
+	/// @brief ショット状態にする
+	void ActivateShot() { m_is_shot = true; }
+
 	/// @brief レイキャスト用の線分を拡張した直線上にある点を設定する
 	/// @brief プレイヤーの場合はカメラの座標
 	/// @brief エネミーの場合はターゲットの座標
@@ -76,6 +79,9 @@ protected:
 	VECTOR  m_point_on_ray_line;		// レイキャスト用の線分を拡張した直線上にある点
 	float	m_scope_scale;				// スコープ倍率
 	float	m_range;					// 射程
+	float   m_move_speed_bullet;
+	float   m_shot_interval;
+	float   m_is_shot;
 	bool	m_is_aiming;				// 銃が構えられているかを判定
 
 private:
