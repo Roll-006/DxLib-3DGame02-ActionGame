@@ -34,7 +34,7 @@ void Ground::LateUpdate()
 
 void Ground::Draw() const
 {
-	//m_modeler->Draw();
+	m_modeler->Draw();
 }
 
 void Ground::OnCollide(const ColliderPairData& hit_collider_pair)

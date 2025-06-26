@@ -112,7 +112,7 @@ public:
 	static constexpr float  kNormalDistance			= 42.0f;
 
 private:
-	static constexpr float  kNear					= 0.1f;
+	static constexpr float  kNear					= 1.0f;
 	static constexpr float  kFar					= 5000.0f;
 	static constexpr float  kFOV					= 60.0f;
 
