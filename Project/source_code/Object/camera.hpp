@@ -116,7 +116,7 @@ private:
 	static constexpr float  kFar					= 5000.0f;
 	static constexpr float  kFOV					= 60.0f;
 
-	static constexpr VECTOR kLookCorrectPos			= VECTOR(19.0f, 5.0f, 0.0f);
+	static constexpr VECTOR kLookCorrectPos			= { 19.0f, 5.0f, 0.0f };
 
 	//static constexpr float  kMaxDistanceToTarget	= 42.0f;
 	//static constexpr float  kMinDistanceToTarget	= 42.0f;

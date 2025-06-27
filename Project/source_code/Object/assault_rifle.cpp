@@ -5,9 +5,10 @@ AssaultRifle::AssaultRifle() :
 {
 	SetCorrectValue(kCorrectPos, kCorrectAngle, kCorrectScale);
 
-	m_scope_scale		 = kScopeScale;
-	m_range				 = kRange;
-	m_muzzle_correct_pos = kMuzzleCorrectPos;
+	m_scope_scale				= kScopeScale;
+	m_range						= kRange;
+	m_muzzle_correct_pos		= kMuzzleCorrectPos;
+	m_ejection_port_correct_pos = kEjectionPortCorrectPos;
 
 	AddCollider(std::make_shared<Collider>(ColliderKind::kRayCast, std::make_shared<Segment>(), this));
 }
@@ -37,7 +38,8 @@ void AssaultRifle::Draw() const
 {
 	m_modeler->Draw();
 
-	DrawSphere3D(GetMuzzlePos(), 2, 8, 0xffffff, 0xffffff, FALSE);
+	DrawSphere3D(GetMuzzlePos(),       2, 8, 0xffffff, 0xffffff, FALSE);
+	DrawSphere3D(GetEjectionPortPos(), 1, 8, 0xffffff, 0xffffff, FALSE);
 
 	const auto segment = std::dynamic_pointer_cast<Segment>(GetCollider(ColliderKind::kRayCast)->GetShape());
 	segment->Draw(false, 0, 0xffffff);

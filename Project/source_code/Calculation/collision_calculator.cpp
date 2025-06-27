@@ -1,22 +1,55 @@
 ﻿#include "collision_calculator.hpp"
 
 #pragma region 衝突判定
+bool collision::IsHitPointAndLine       (const VECTOR&      point,      const Line&     line,           std::optional<VECTOR>& intersection)
+{
+    const bool is_hit = math::GetDistancePointToLine(point, line) <= 0.0f;
+
+    intersection = is_hit ? std::optional<VECTOR>(point) : std::nullopt;
+
+    return is_hit;
+}
+
 bool collision::IsHitPointAndLine       (const VECTOR&      point,      const Line&     line)
 {
-    return math::GetDistancePointToLine(point, line) <= 0.0f;
+    std::optional<VECTOR> intersection = std::nullopt;
+
+    return IsHitPointAndLine(point, line, intersection);
+}
+
+bool collision::IsHitPointAndSegment    (const VECTOR&      point,      const Segment&  segment,        std::optional<VECTOR>& intersection)
+{
+    const bool is_hit = math::GetDistancePointToSegment(point, segment) <= 0.0f;
+
+    intersection = is_hit ? std::optional<VECTOR>(point) : std::nullopt;
+
+    return is_hit;
 }
 
 bool collision::IsHitPointAndSegment    (const VECTOR&      point,      const Segment&  segment)
 {
-    return math::GetDistancePointToSegment(point, segment) <= 0.0f;
+    std::optional<VECTOR> intersection = std::nullopt;
+
+    return IsHitPointAndSegment(point, segment, intersection);
+}
+
+bool collision::IsHitPointAndPlane      (const VECTOR&      point,      const Plane&    plane,          std::optional<VECTOR>& intersection)
+{
+    const bool is_hit = math::GetDistancePointToPlane(point, plane) == 0.0f;
+
+    intersection = is_hit ? std::optional<VECTOR>(point) : std::nullopt;
+
+    return is_hit;
 }
 
 bool collision::IsHitPointAndPlane      (const VECTOR&      point,      const Plane&    plane)
 {
-    return math::GetDistancePointToPlane(point, plane) == 0.0f;
+    std::optional<VECTOR> intersection = std::nullopt;
+
+    return IsHitPointAndPlane(point, plane, intersection);
 }
 
-bool collision::IsHitPointAndTriangle   (const VECTOR&      point,      const Triangle& triangle)
+bool collision::IsHitPointAndTriangle   (const VECTOR&      point,      const Triangle& triangle,       std::optional<VECTOR>& intersection)
 {
     const Plane plane = Plane(triangle.GetCentroid(), triangle.GetNormalVector());
     if (!IsHitPointAndPlane(point, plane)) { return false; }
@@ -29,29 +62,73 @@ bool collision::IsHitPointAndTriangle   (const VECTOR&      point,      const Tr
     const VECTOR n_v2 = math::GetNormalVector(v2, point - triangle.GetPos(2));
     const VECTOR n_v3 = math::GetNormalVector(v3, point - triangle.GetPos(0));
 
-    return (triangle.GetNormalVector() != n_v1
-         && triangle.GetNormalVector() != n_v2
-         && triangle.GetNormalVector() != n_v3);
+    const bool is_hit = (triangle.GetNormalVector() != n_v1
+                      && triangle.GetNormalVector() != n_v2
+                      && triangle.GetNormalVector() != n_v3);
+
+    intersection = is_hit ? std::optional<VECTOR>(point) : std::nullopt;
+
+    return is_hit;
+}
+
+bool collision::IsHitPointAndTriangle   (const VECTOR&      point,      const Triangle& triangle)
+{
+    std::optional<VECTOR> intersection = std::nullopt;
+
+    return IsHitPointAndTriangle(point, triangle, intersection);
+}
+
+bool collision::IsHitPointAndSquare     (const VECTOR&      point,      const Square&   square,         std::optional<VECTOR>& intersection)
+{
+    const bool is_hit = IsHitPointAndTriangle(point, square.GetTriangle(0)) || IsHitPointAndTriangle(point, square.GetTriangle(1));
+
+    intersection = is_hit ? std::optional<VECTOR>(point) : std::nullopt;
+
+    return is_hit;
 }
 
 bool collision::IsHitPointAndSquare     (const VECTOR&      point,      const Square&   square)
 {
-    return IsHitPointAndTriangle(point, square.GetTriangle(0)) || IsHitPointAndTriangle(point, square.GetTriangle(1));
+    std::optional<VECTOR> intersection = std::nullopt;
+
+    return IsHitPointAndSquare(point, square, intersection);
+}
+
+bool collision::IsHitPointAndCapsule    (const VECTOR&      point,      const Capsule&  capsule,        std::optional<VECTOR>& intersection)
+{
+    const float distance = math::GetDistancePointToSegment(point, capsule.GetSegment());
+    const bool  is_hit   = distance <= capsule.GetRadius();
+
+    intersection = is_hit ? std::optional<VECTOR>(point) : std::nullopt;
+
+    return is_hit;
 }
 
 bool collision::IsHitPointAndCapsule    (const VECTOR&      point,      const Capsule&  capsule)
 {
-    const float distance = math::GetDistancePointToSegment(point, capsule.GetSegment());
-    return distance <= capsule.GetRadius();
+    std::optional<VECTOR> intersection = std::nullopt;
+
+    return IsHitPointAndCapsule(point, capsule, intersection);
+}
+
+bool collision::IsHitLineAndLine        (const Line&        line1,      const Line&     line2,          std::optional<VECTOR>& intersection)
+{
+    intersection = std::nullopt;
+
+    return math::GetDistanceLineToLine(line1, line2) <= 0.0f;
 }
 
 bool collision::IsHitLineAndLine        (const Line&        line1,      const Line&     line2)
 {
-    return math::GetDistanceLineToLine(line1, line2) <= 0.0f;
+    std::optional<VECTOR> intersection = std::nullopt;
+
+    return IsHitLineAndLine(line1, line2, intersection);
 }
 
-bool collision::IsHitLineAndPlane       (const Line&        line,       const Plane&    plane)
+bool collision::IsHitLineAndPlane       (const Line&        line,       const Plane&    plane,          std::optional<VECTOR>& intersection)
 {
+    intersection = std::nullopt;
+
     const VECTOR v = line.GetPos() - plane.GetPos();
 
     const bool is_vertical = math::IsVertical(line.GetDir(), plane.GetNormalVector());
@@ -60,23 +137,42 @@ bool collision::IsHitLineAndPlane       (const Line&        line,       const Pl
     return is_contain_plane || !is_vertical;
 }
 
+bool collision::IsHitLineAndPlane       (const Line&        line,       const Plane&    plane)
+{
+    std::optional<VECTOR> intersection = std::nullopt;
+
+    return IsHitLineAndPlane(line, plane, intersection);
+}
+
+bool collision::IsHitSegmentAndSegment  (const Segment&     segment1,   const Segment&  segment2,       std::optional<VECTOR>& intersection)
+{
+    intersection = std::nullopt;
+
+    return math::GetDistanceSegmentToSegment(segment1, segment2) <= 0.0f;
+}
+
 bool collision::IsHitSegmentAndSegment  (const Segment&     segment1,   const Segment&  segment2)
 {
-    return math::GetDistanceSegmentToSegment(segment1, segment2) <= 0.0f;
+    std::optional<VECTOR> intersection = std::nullopt;
+
+    return IsHitSegmentAndSegment(segment1, segment2, intersection);
+}
+
+bool collision::IsHitSegmentAndPlane    (const Segment&     segment,    const Plane&    plane,          std::optional<VECTOR>& intersection)
+{
+    intersection = std::nullopt;
+
+    return math::GetDistanceSegmentToPlane(segment, plane) == 0.0f;
 }
 
 bool collision::IsHitSegmentAndPlane    (const Segment&     segment,    const Plane&    plane)
 {
-    return math::GetDistanceSegmentToPlane(segment, plane) == 0.0f;
-}
-
-bool collision::IsHitSegmentAndTriangle (const Segment&     segment,    const Triangle& triangle)
-{
     std::optional<VECTOR> intersection = std::nullopt;
-    return IsHitSegmentAndTriangle(segment, triangle, intersection);
+
+    return IsHitSegmentAndPlane(segment, plane, intersection);
 }
 
-bool collision::IsHitSegmentAndTriangle(const Segment& segment, const Triangle& triangle, std::optional<VECTOR>& intersection)
+bool collision::IsHitSegmentAndTriangle (const Segment&     segment,    const Triangle& triangle,       std::optional<VECTOR>& intersection)
 {
     // 三角形を平面に拡張
     const Plane plane = Plane(triangle.GetCentroid(), triangle.GetNormalVector());
@@ -102,10 +198,24 @@ bool collision::IsHitSegmentAndTriangle(const Segment& segment, const Triangle& 
     return IsHitPointAndTriangle(*intersection, triangle);
 }
 
+bool collision::IsHitSegmentAndTriangle (const Segment&     segment,    const Triangle& triangle)
+{
+    std::optional<VECTOR> intersection = std::nullopt;
+    return IsHitSegmentAndTriangle(segment, triangle, intersection);
+}
+
+bool collision::IsHitSegmentAndSquare   (const Segment&     segment,    const Square&   square,         std::optional<VECTOR>& intersection)
+{
+    intersection = std::nullopt;
+
+    return IsHitSegmentAndTriangle(segment, square.GetTriangle(0)) || IsHitSegmentAndTriangle(segment, square.GetTriangle(1));
+}
+
 bool collision::IsHitSegmentAndSquare   (const Segment&     segment,    const Square&   square)
 {
-    return IsHitSegmentAndTriangle(segment, square.GetTriangle(0)) || IsHitSegmentAndTriangle(
-        segment, square.GetTriangle(1));
+    std::optional<VECTOR> intersection = std::nullopt;
+
+    return IsHitSegmentAndSquare(segment, square, intersection);
 }
 
 //bool collision::IsHitSegmentAndCircumference(const Segment* segment, const Circle* circle)
@@ -159,19 +269,22 @@ bool collision::IsHitSegmentAndSquare   (const Segment&     segment,    const Sq
 //    return false;
 //}
 
-bool collision::IsHitSegmentAndCapsule  (const Segment&     segment,    const Capsule&  capsule)
+bool collision::IsHitSegmentAndCapsule  (const Segment&     segment,    const Capsule&  capsule,        std::optional<VECTOR>& intersection)
 {
+    intersection = std::nullopt;
+
     const float distance = math::GetDistanceSegmentToSegment(segment, capsule.GetSegment());
     return distance <= capsule.GetRadius();
 }
 
-bool collision::IsHitSegmentAndModel    (const Segment&     segment,    const int       model_handle)
+bool collision::IsHitSegmentAndCapsule  (const Segment&     segment,    const Capsule&  capsule)
 {
     std::optional<VECTOR> intersection = std::nullopt;
-    return IsHitSegmentAndModel(segment, model_handle, intersection);
+
+    return IsHitSegmentAndCapsule(segment, capsule, intersection);
 }
 
-bool collision::IsHitSegmentAndModel    (const Segment&     segment,    const int       model_handle, std::optional<VECTOR>& intersection)
+bool collision::IsHitSegmentAndModel    (const Segment&     segment,    const int       model_handle,   std::optional<VECTOR>& intersection)
 {
     const auto hit_result = MV1CollCheck_LineDim(model_handle, -1, segment.GetBeginPos(), segment.GetEndPos());
     if (!hit_result.HitNum)
@@ -200,50 +313,119 @@ bool collision::IsHitSegmentAndModel    (const Segment&     segment,    const in
     }
 }
 
-bool collision::IsHitPlaneAndCapsule    (const Plane&       plane,      const Capsule&  capsule)
+bool collision::IsHitSegmentAndModel    (const Segment&     segment,    const int       model_handle)
 {
+    std::optional<VECTOR> intersection = std::nullopt;
+    return IsHitSegmentAndModel(segment, model_handle, intersection);
+}
+
+bool collision::IsHitPlaneAndCapsule    (const Plane&       plane,      const Capsule&  capsule,        std::optional<VECTOR>& intersection)
+{
+    intersection = std::nullopt;
+
     return math::GetDistancePlaneToCapsule(plane, capsule) == 0.0f;
 }
 
-bool collision::IsHitTriangleAndSphere(const Triangle& triangle, const Sphere& sphere)
+bool collision::IsHitPlaneAndCapsule    (const Plane&       plane,      const Capsule&  capsule)
 {
+    std::optional<VECTOR> intersection = std::nullopt;
+
+    return IsHitPlaneAndCapsule(plane, capsule, intersection);
+}
+
+bool collision::IsHitTriangleAndSphere  (const Triangle&    triangle,   const Sphere&   sphere,         std::optional<VECTOR>& intersection)
+{
+    intersection = std::nullopt;
+
     return math::GetDistancePointToTriangle(sphere.GetPos(), triangle) <= sphere.GetRadius();
+}
+
+bool collision::IsHitTriangleAndSphere  (const Triangle&    triangle,   const Sphere&   sphere)
+{
+    std::optional<VECTOR> intersection = std::nullopt;
+
+    return IsHitTriangleAndSphere(triangle, sphere, intersection);
+}
+
+bool collision::IsHitTriangleAndCapsule (const Triangle&    triangle,   const Capsule&  capsule,        std::optional<VECTOR>& intersection)
+{
+    intersection = std::nullopt;
+
+    return math::GetDistanceSegmentToTriangle(capsule.GetSegment(), triangle) <= capsule.GetRadius();
 }
 
 bool collision::IsHitTriangleAndCapsule (const Triangle&    triangle,   const Capsule&  capsule)
 {
-    return math::GetDistanceSegmentToTriangle(capsule.GetSegment(), triangle) <= capsule.GetRadius();
+    std::optional<VECTOR> intersection = std::nullopt;
+
+    return IsHitTriangleAndCapsule(triangle, capsule, intersection);
 }
 
-bool collision::IsHitSquareAndCapsule   (const Square&      square,     const Capsule&  capsule)
+bool collision::IsHitSquareAndCapsule   (const Square&      square,     const Capsule&  capsule,        std::optional<VECTOR>& intersection)
 {
+   intersection = std::nullopt;
+
     const float distance1 = math::GetDistanceSegmentToTriangle(capsule.GetSegment(), square.GetTriangle(0));
     const float distance2 = math::GetDistanceSegmentToTriangle(capsule.GetSegment(), square.GetTriangle(1));
 
     return distance1 <= capsule.GetRadius() || distance2 <= capsule.GetRadius();
 }
 
-bool collision::IsHitSphereAndSphere    (const Sphere&      sphere1,    const Sphere&   sphere2)
+bool collision::IsHitSquareAndCapsule   (const Square&      square,     const Capsule&  capsule)
 {
-    const VECTOR p1 = sphere1.GetPos();
-    const VECTOR p2 = sphere2.GetPos();
-    const float distance = VSize(p2 - p1);
+    std::optional<VECTOR> intersection = std::nullopt;
+
+    return IsHitSquareAndCapsule(square, capsule, intersection);
+}
+
+bool collision::IsHitSphereAndSphere    (const Sphere&      sphere1,    const Sphere&   sphere2,        std::optional<VECTOR>& intersection)
+{
+    intersection = std::nullopt;
+
+    const VECTOR p1       = sphere1.GetPos();
+    const VECTOR p2       = sphere2.GetPos();
+    const float  distance = VSize(p2 - p1);
 
     return distance <= sphere1.GetRadius() + sphere2.GetRadius();
 }
 
-bool collision::IsHitSphereAndCapsule   (const Sphere&      sphere,     const Capsule&  capsule)
+bool collision::IsHitSphereAndSphere    (const Sphere&      sphere1,    const Sphere&   sphere2)
 {
+    std::optional<VECTOR> intersection = std::nullopt;
+
+    return IsHitSphereAndSphere(sphere1, sphere2, intersection);
+}
+
+bool collision::IsHitSphereAndCapsule   (const Sphere&      sphere,     const Capsule&  capsule,        std::optional<VECTOR>& intersection)
+{
+    intersection = std::nullopt;
+
     const VECTOR p = sphere.GetPos();
     const float distance = math::GetDistancePointToSegment(p, capsule.GetSegment());
 
     return distance <= sphere.GetRadius() + capsule.GetRadius();
 }
 
-bool collision::IsHitCapsuleAndCapsule  (const Capsule&     capsule1,   const Capsule&  capsule2)
+bool collision::IsHitSphereAndCapsule   (const Sphere&      sphere,     const Capsule&  capsule)
 {
+    std::optional<VECTOR> intersection = std::nullopt;
+
+    return IsHitSphereAndCapsule(sphere, capsule, intersection);
+}
+
+bool collision::IsHitCapsuleAndCapsule  (const Capsule&     capsule1,   const Capsule&  capsule2,       std::optional<VECTOR>& intersection)
+{
+    intersection = std::nullopt;
+
     const float distance = math::GetDistanceSegmentToSegment(capsule1.GetSegment(), capsule2.GetSegment());
     return distance <= capsule1.GetRadius() + capsule2.GetRadius();
+}
+
+bool collision::IsHitCapsuleAndCapsule  (const Capsule&     capsule1,   const Capsule&  capsule2)
+{
+    std::optional<VECTOR> intersection = std::nullopt;
+
+    return IsHitCapsuleAndCapsule(capsule1, capsule2, intersection);
 }
 
 //bool collision::IsHitCircumferenceAndCapsuleLowPrecision(const Circle* circle, const Capsule* capsule)

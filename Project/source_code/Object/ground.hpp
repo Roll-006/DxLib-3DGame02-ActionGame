@@ -16,5 +16,5 @@ public:
 
 private:
 	static constexpr float  kModelScale = 600.0f;
-	static constexpr VECTOR kPos		= VECTOR(0.0f, 0.0f, 0.0f);
+	static constexpr VECTOR kPos		= { 0.0f, 0.0f, 0.0f };
 };
