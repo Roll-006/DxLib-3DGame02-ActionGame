@@ -3,7 +3,7 @@
 #pragma region 衝突判定
 bool collision::IsHitPointAndLine       (const VECTOR&      point,      const Line&     line,           std::optional<VECTOR>& intersection)
 {
-    const bool is_hit = math::GetDistancePointToLine(point, line) <= 0.0f;
+    const bool is_hit = math::GetDistancePointToLine(point, line) < math::kEpsilonLow;
 
     intersection = is_hit ? std::optional<VECTOR>(point) : std::nullopt;
 
@@ -18,7 +18,7 @@ bool collision::IsHitPointAndLine       (const VECTOR&      point,      const Li
 
 bool collision::IsHitPointAndSegment    (const VECTOR&      point,      const Segment&  segment,        std::optional<VECTOR>& intersection)
 {
-    const bool is_hit = math::GetDistancePointToSegment(point, segment) <= 0.0f;
+    const bool is_hit = math::GetDistancePointToSegment(point, segment) < math::kEpsilonLow;
 
     intersection = is_hit ? std::optional<VECTOR>(point) : std::nullopt;
 
@@ -33,7 +33,7 @@ bool collision::IsHitPointAndSegment    (const VECTOR&      point,      const Se
 
 bool collision::IsHitPointAndPlane      (const VECTOR&      point,      const Plane&    plane,          std::optional<VECTOR>& intersection)
 {
-    const bool is_hit = math::GetDistancePointToPlane(point, plane) == 0.0f;
+    const bool is_hit = math::GetDistancePointToPlane(point, plane) < math::kEpsilonLow;
 
     intersection = is_hit ? std::optional<VECTOR>(point) : std::nullopt;
 
@@ -113,7 +113,7 @@ bool collision::IsHitLineAndLine        (const Line&        line1,      const Li
 {
     intersection = std::nullopt;
 
-    return math::GetDistanceLineToLine(line1, line2) <= 0.0f;
+    return math::GetDistanceLineToLine(line1, line2) < math::kEpsilonLow;
 }
 bool collision::IsHitLineAndLine        (const Line&        line1,      const Line&     line2)
 {
@@ -144,7 +144,7 @@ bool collision::IsHitSegmentAndSegment  (const Segment&     segment1,   const Se
 {
     intersection = std::nullopt;
 
-    return math::GetDistanceSegmentToSegment(segment1, segment2) <= 0.0f;
+    return math::GetDistanceSegmentToSegment(segment1, segment2) < math::kEpsilonLow;
 }
 bool collision::IsHitSegmentAndSegment  (const Segment&     segment1,   const Segment&  segment2)
 {
@@ -157,7 +157,7 @@ bool collision::IsHitSegmentAndPlane    (const Segment&     segment,    const Pl
 {
     intersection = std::nullopt;
 
-    return math::GetDistanceSegmentToPlane(segment, plane) == 0.0f;
+    return math::GetDistanceSegmentToPlane(segment, plane) < math::kEpsilonLow;
 }
 bool collision::IsHitSegmentAndPlane    (const Segment&     segment,    const Plane&    plane)
 {
@@ -313,7 +313,7 @@ bool collision::IsHitPlaneAndCapsule    (const Plane&       plane,      const Ca
 {
     intersection = std::nullopt;
 
-    return math::GetDistancePlaneToCapsule(plane, capsule) == 0.0f;
+    return math::GetDistancePlaneToCapsule(plane, capsule) < math::kEpsilonLow;
 }
 bool collision::IsHitPlaneAndCapsule    (const Plane&       plane,      const Capsule&  capsule)
 {

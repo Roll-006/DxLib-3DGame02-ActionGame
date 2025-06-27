@@ -27,6 +27,8 @@ namespace math
 {
 	static constexpr float kDegreesToRadian = DX_PI_F / 180.0f;		// ディグリーをラジアンに変換(変換対象と掛け算を行う)
 	static constexpr float kRadianToDegrees = 180.0f / DX_PI_F;		// ラジアンをディグリーに変換(変換対象と掛け算を行う)
+	static constexpr float kEpsilonLow		= 1e-4f;				// 0とみなす(低精度)
+	static constexpr float kEpsilonHigh		= 1e-6f;				// 0とみなす(高精度)
 
 
 	#pragma region 変換
