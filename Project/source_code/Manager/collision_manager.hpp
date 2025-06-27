@@ -17,7 +17,7 @@ public:
 	void RemoveCollideObj		(const std::string& obj_name);
 
 	/// @brief 衝突判定を無視するコライダーを追加
-	void AddIgnoreCollider	(const std::string& obj_name, const ColliderKind kind);
+	void AddIgnoreCollider	 (const std::string& obj_name, const ColliderKind kind);
 	/// @brief 衝突判定を無視するコライダーから除外
 	void RemoveIgnoreCollider(const std::string& obj_name, const ColliderKind kind);
 	#pragma endregion

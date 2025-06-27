@@ -30,7 +30,6 @@ void AssaultRifle::Update()
 void AssaultRifle::LateUpdate()
 {
 	TrackOwner();
-	CalcMuzzlePos();
 	CalcRayPos();
 }
 
@@ -38,7 +37,7 @@ void AssaultRifle::Draw() const
 {
 	m_modeler->Draw();
 
-	DrawSphere3D(m_muzzle_pos, 2, 8, 0xffffff, 0xffffff, FALSE);
+	DrawSphere3D(GetMuzzlePos(), 2, 8, 0xffffff, 0xffffff, FALSE);
 
 	const auto segment = std::dynamic_pointer_cast<Segment>(GetCollider(ColliderKind::kRayCast)->GetShape());
 	segment->Draw(false, 0, 0xffffff);
