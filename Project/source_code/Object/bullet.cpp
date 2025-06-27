@@ -31,7 +31,7 @@ void Bullet::Draw() const
 
 }
 
-void Bullet::OnCollide(const ColliderPairData& hit_collider_pair)
+void Bullet::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 {
 
 }

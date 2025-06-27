@@ -63,7 +63,7 @@ void Enemy::Draw() const
 	DrawLine3D(pos, pos + axes.z_axis * 100, 0x0077ff);
 }
 
-void Enemy::OnCollide(const ColliderPairData& hit_collider_pair)
+void Enemy::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 {
 	switch (hit_collider_pair.owner_collider->GetColliderKind())
 	{

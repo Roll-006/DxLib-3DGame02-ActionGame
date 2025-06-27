@@ -42,25 +42,25 @@ namespace collision
     [[nodiscard]] bool IsHitPointAndCapsule        (const VECTOR&   point,    const Capsule&  capsule);
 
     /// @brief 直線と直線の衝突判定
-    /// @param intersection 未実装 TODO : のちに実装
+    /// @param intersection 未実装
     /// @return true : 衝突, false : 非衝突
     [[nodiscard]] bool IsHitLineAndLine            (const Line&     line1,    const Line&     line2,        std::optional<VECTOR>& intersection);
     [[nodiscard]] bool IsHitLineAndLine            (const Line&     line1,    const Line&     line2);
 
     /// @brief 直線と平面(無限に広がる面)の衝突判定
-    /// @param intersection 未実装 TODO : のちに実装
+    /// @param intersection 未実装
     /// @return true : 衝突, false : 非衝突
     [[nodiscard]] bool IsHitLineAndPlane           (const Line&     line,     const Plane&    plane,        std::optional<VECTOR>& intersection);
     [[nodiscard]] bool IsHitLineAndPlane           (const Line&     line,     const Plane&    plane);
 
     /// @brief 線分と線分の衝突判定
-    /// @param intersection 未実装 TODO : のちに実装
+    /// @param intersection 未実装
     /// @return true : 衝突, false : 非衝突
     [[nodiscard]] bool IsHitSegmentAndSegment      (const Segment&  segment1, const Segment&  segment2,     std::optional<VECTOR>& intersection);
     [[nodiscard]] bool IsHitSegmentAndSegment      (const Segment&  segment1, const Segment&  segment2);
 
     /// @brief 線分と平面(無限に広がる面)の衝突判定
-    /// @param intersection 未実装 TODO : のちに実装
+    /// @param intersection 未実装
     /// @return true : 衝突, false : 非衝突
     [[nodiscard]] bool IsHitSegmentAndPlane        (const Segment&  segment,  const Plane&    plane,        std::optional<VECTOR>& intersection);
     [[nodiscard]] bool IsHitSegmentAndPlane        (const Segment&  segment,  const Plane&    plane);
@@ -72,7 +72,7 @@ namespace collision
     [[nodiscard]] bool IsHitSegmentAndTriangle     (const Segment&  segment,  const Triangle& triangle);
 
     /// @brief 線分と四角形の衝突判定
-    /// @param intersection 未実装 TODO : のちに実装
+    /// @param intersection 未実装
     /// @return true : 衝突, false : 非衝突
     [[nodiscard]] bool IsHitSegmentAndSquare       (const Segment&  segment,  const Square&   square,       std::optional<VECTOR>& intersection);
     [[nodiscard]] bool IsHitSegmentAndSquare       (const Segment&  segment,  const Square&   square);
@@ -81,7 +81,7 @@ namespace collision
     //[[nodiscard]] bool IsHitSegmentAndCircumference(const Segment*  segment,  const Circle*   circle);
 
     /// @brief 線分とカプセルの衝突判定
-    /// @param intersection 未実装 TODO : のちに実装
+    /// @param intersection 未実装
     /// @return true : 衝突, false : 非衝突
     [[nodiscard]] bool IsHitSegmentAndCapsule      (const Segment&  segment,  const Capsule&  capsule,      std::optional<VECTOR>& intersection);
     [[nodiscard]] bool IsHitSegmentAndCapsule      (const Segment&  segment,  const Capsule&  capsule);
@@ -93,61 +93,61 @@ namespace collision
     [[nodiscard]] bool IsHitSegmentAndModel        (const Segment&  segment,  const int       model_handle);
 
     /// @brief 平面(無限に広がる面)とカプセルの衝突判定
-    /// @param intersection 未実装 TODO : のちに実装
+    /// @param intersection 未実装
     /// @return true : 衝突, false : 非衝突
     [[nodiscard]] bool IsHitPlaneAndCapsule        (const Plane&    plane,    const Capsule&  capsule,      std::optional<VECTOR>& intersection);
     [[nodiscard]] bool IsHitPlaneAndCapsule        (const Plane&    plane,    const Capsule&  capsule);
 
     /// @brief 三角形と球の衝突判定
-    /// @param intersection 未実装 TODO : のちに実装
+    /// @param intersection 未実装
     /// @return true : 衝突, false : 非衝突
     [[nodiscard]] bool IsHitTriangleAndSphere      (const Triangle& triangle, const Sphere&   sphere,       std::optional<VECTOR>& intersection);
     [[nodiscard]] bool IsHitTriangleAndSphere      (const Triangle& triangle, const Sphere&   sphere);
 
     /// @brief 三角形とカプセルの衝突判定
-    /// @param intersection 未実装 TODO : のちに実装
+    /// @param intersection 未実装
     /// @return true : 衝突, false : 非衝突
     [[nodiscard]] bool IsHitTriangleAndCapsule     (const Triangle& triangle, const Capsule&  capsule,      std::optional<VECTOR>& intersection);
     [[nodiscard]] bool IsHitTriangleAndCapsule     (const Triangle& triangle, const Capsule&  capsule);
 
     /// @brief 三角形とモデルの衝突判定
-    /// @param intersection 未実装 TODO : のちに実装
+    /// @param intersection 未実装
     /// @return true : 衝突, false : 非衝突
     [[nodiscard]] bool IsHitTriangleAndModel       (const Triangle& triangle, const int       model_handle, std::optional<VECTOR>& intersection);
     [[nodiscard]] bool IsHitTriangleAndModel       (const Triangle& triangle, const int       model_handle);
 
     /// @brief 四角形とカプセルの衝突判定
-    /// @param intersection 未実装 TODO : のちに実装
+    /// @param intersection 未実装
     /// @return true : 衝突, false : 非衝突
     [[nodiscard]] bool IsHitSquareAndCapsule       (const Square&   square,   const Capsule&  capsule,      std::optional<VECTOR>& intersection);
     [[nodiscard]] bool IsHitSquareAndCapsule       (const Square&   square,   const Capsule&  capsule);
 
     /// @brief 球と球の衝突判定
-    /// @param intersection 未実装 TODO : のちに実装
+    /// @param intersection 未実装
     /// @return true : 衝突, false : 非衝突
     [[nodiscard]] bool IsHitSphereAndSphere        (const Sphere&   sphere1,  const Sphere&   sphere2,      std::optional<VECTOR>& intersection);
     [[nodiscard]] bool IsHitSphereAndSphere        (const Sphere&   sphere1,  const Sphere&   sphere2);
 
     /// @brief 球とカプセルの衝突判定 
-    /// @param intersection 未実装 TODO : のちに実装
+    /// @param intersection 未実装
     /// @return true : 衝突, false : 非衝突
     [[nodiscard]] bool IsHitSphereAndCapsule       (const Sphere&   sphere,   const Capsule&  capsule,      std::optional<VECTOR>& intersection);
     [[nodiscard]] bool IsHitSphereAndCapsule       (const Sphere&   sphere,   const Capsule&  capsule);
 
     /// @brief 球とモデルの衝突判定 
-    /// @param intersection 未実装 TODO : のちに実装
+    /// @param intersection 未実装
     /// @return true : 衝突, false : 非衝突
     [[nodiscard]] bool IsHitSphereAndModel         (const Sphere&   sphere,   const int       model_handle, std::optional<VECTOR>& intersection);
     [[nodiscard]] bool IsHitSphereAndModel         (const Sphere&   sphere,   const int       model_handle);
 
     /// @brief カプセルとカプセルの衝突判定
-    /// @param intersection 未実装 TODO : のちに実装
+    /// @param intersection 未実装
     /// @return true : 衝突, false : 非衝突
     [[nodiscard]] bool IsHitCapsuleAndCapsule      (const Capsule&  capsule1, const Capsule&  capsule2,     std::optional<VECTOR>& intersection);
     [[nodiscard]] bool IsHitCapsuleAndCapsule      (const Capsule&  capsule1, const Capsule&  capsule2);
 
     /// @brief カプセルとモデルの衝突判定
-    /// @param intersection 未実装 TODO : のちに実装
+    /// @param intersection 未実装
     /// @return true : 衝突, false : 非衝突
     [[nodiscard]] bool IsHitCapsuleAndModel        (const Capsule&  capsule,  const int       model_handle, std::optional<VECTOR>& intersection);
     [[nodiscard]] bool IsHitCapsuleAndModel        (const Capsule&  capsule,  const int       model_handle);

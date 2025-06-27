@@ -37,7 +37,7 @@ void House::Draw() const
 	m_modeler->Draw();
 }
 
-void House::OnCollide(const ColliderPairData& hit_collider_pair)
+void House::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 {
 
 }

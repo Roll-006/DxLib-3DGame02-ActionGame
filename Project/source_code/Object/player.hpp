@@ -16,7 +16,7 @@ public:
 	void LateUpdate()	override;
 	void Draw() const	override;
 
-	void OnCollide(const ColliderPairData& hit_collider_pair) override;
+	void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) override;
 
 	[[nodiscard]] std::shared_ptr<Modeler>	GetModeler()  const { return m_modeler; }
 	[[nodiscard]] std::shared_ptr<Animator>	GetAnimator() const { return m_animator; }

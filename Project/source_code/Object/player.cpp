@@ -35,7 +35,7 @@ Player::Player(std::shared_ptr<Camera> camera) :
 	AttachGun(GunKind::kAssaultRifle);
 
 	// TODO : ‰¼‚Åe‚ÌƒIƒuƒWƒF“o˜^
-	ObjManager		::GetInstance()->AddObj(m_current_attach_gun);
+	
 	CollisionManager::GetInstance()->AddCollideObj(m_current_attach_gun);
 	//PhysicsManager	::GetInstance()->AddPhysicalObj(m_current_attach_gun);
 	//PhysicsManager	::GetInstance()->AddIgnoreObjGravity(ObjName.ASSAULT_RIFLE);
@@ -117,7 +117,7 @@ void Player::Draw() const
 	DrawLine3D(pos, pos + axes.z_axis * 100, 0x0077ff);
 }
 
-void Player::OnCollide(const ColliderPairData& hit_collider_pair)
+void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 {
 	switch (hit_collider_pair.owner_collider->GetColliderKind())
 	{

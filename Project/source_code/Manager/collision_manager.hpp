@@ -31,7 +31,7 @@ private:
 	~CollisionManager() override;
 
 	/// @brief 衝突判定を起こしたコライダーの組み合わせを生成
-	std::vector<ColliderPairData> MakeHitColliderPairs();
+	std::vector<ColliderPairOneToManyData> MakeHitColliderPairs();
 
 	#pragma region 衝突判定
 	bool IsHit					(const Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection);

@@ -88,6 +88,8 @@ protected:
 	float   m_is_shot;
 	bool	m_is_aiming;					// e‚ª\‚¦‚ç‚ê‚Ä‚¢‚é‚©‚ğ”»’è
 
+	std::vector<VECTOR> m_hit_pos;			// Õ“Ë“_
+
 private:
 	GunKind m_gun_kind;
 };

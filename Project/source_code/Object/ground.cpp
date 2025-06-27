@@ -37,7 +37,7 @@ void Ground::Draw() const
 	m_modeler->Draw();
 }
 
-void Ground::OnCollide(const ColliderPairData& hit_collider_pair)
+void Ground::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 {
 
 }

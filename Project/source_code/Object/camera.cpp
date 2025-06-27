@@ -63,7 +63,7 @@ void Camera::Draw() const
 
 }
 
-void Camera::OnCollide(const ColliderPairData& hit_collider_pair)
+void Camera::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 {
 
 }

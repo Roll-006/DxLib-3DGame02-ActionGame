@@ -15,9 +15,41 @@ void CollisionManager::LateUpdate()
 	const auto collider_pairs = MakeHitColliderPairs();
 
 	// 衝突したコライダーのオーナーオブジェクトの処理を実行
-	for (const auto& collider_pair : collider_pairs)
+	for (const auto& pair : collider_pairs)
 	{
-		collider_pair.owner_collider->GetOwnerObj()->OnCollide(collider_pair);
+		// レイキャストトリガーの場合は最初に衝突したコライダーのみ衝突したものとする
+		if (pair.owner_collider->GetColliderKind() == ColliderKind::kRayCast && pair.owner_collider->IsClosestOnlyHit())
+		{
+			// コライダーとの距離を取得
+			std::unordered_map<int, TargetColliderData> target;
+			std::unordered_map<int, float> distance;
+			for (int i = 0; i < pair.target_data.size(); ++i)
+			{
+				if (pair.target_data.at(i).intersection)
+				{
+					target[i]	= TargetColliderData(pair.target_data.at(i).collider, pair.target_data.at(i).intersection);
+					distance[i] = VSize(*pair.target_data.at(i).intersection - std::dynamic_pointer_cast<Segment>(pair.owner_collider->GetShape())->GetBeginPos());
+				}
+			}
+
+			// 最も近いコライダーのみ判定
+			distance = math::Sort(distance, SortKind::kAscending);
+			for (const auto& dist : distance)
+			{
+				pair.owner_collider			  ->GetOwnerObj()->OnCollide(ColliderPairOneToOneData(pair.owner_collider, target.at(dist.first).collider, target.at(dist.first).intersection));
+				target.at(dist.first).collider->GetOwnerObj()->OnCollide(ColliderPairOneToOneData(target.at(dist.first).collider, pair.owner_collider, target.at(dist.first).intersection));
+				break;
+			}
+		}
+		// レイキャストトリガーでない場合はすべてのコライダーと衝突判定を行う
+		else
+		{
+			for (const auto& target : pair.target_data)
+			{
+				pair.owner_collider->GetOwnerObj()->OnCollide(ColliderPairOneToOneData(pair.owner_collider, target.collider, target.intersection));
+				target.collider	   ->GetOwnerObj()->OnCollide(ColliderPairOneToOneData(target.collider, pair.owner_collider, target.intersection));
+			}
+		}
 	}
 }
 
@@ -80,9 +112,9 @@ bool CollisionManager::IsApplyCollide(const std::string& obj_name, const Collide
 }
 
 
-std::vector<ColliderPairData> CollisionManager::MakeHitColliderPairs()
+std::vector<ColliderPairOneToManyData> CollisionManager::MakeHitColliderPairs()
 {
-	std::vector<ColliderPairData> collider_pair;
+	std::vector<ColliderPairOneToManyData> collider_pairs;
 
 	// オブジェクトが持つすべてのコライダーの衝突判定を行う
 	// 
@@ -109,18 +141,35 @@ std::vector<ColliderPairData> CollisionManager::MakeHitColliderPairs()
 					// 衝突が許可されている場合のみ処理を続行
 					if (!IsApplyCollide(target_obj->GetName(), target_obj_collider->GetColliderKind())) { continue; }
 
+					// 衝突判定
 					std::optional<VECTOR> intersection;
 					if (IsHit(*owner_obj_collider, *target_obj_collider, intersection))
 					{
-						collider_pair.emplace_back(ColliderPairData(owner_obj_collider, target_obj_collider, intersection));
-						collider_pair.emplace_back(ColliderPairData(owner_obj_collider, target_obj_collider, intersection));
+						// 指定のオーナーのデータコンテナがまだない場合は新たに作成
+						bool is_maked = std::any_of(collider_pairs.begin(), collider_pairs.end(), [=](const ColliderPairOneToManyData& data)
+						{
+							return data.owner_collider == owner_obj_collider;
+						});
+						if (!is_maked)
+						{
+							collider_pairs.emplace_back(owner_obj_collider, std::vector<TargetColliderData>());
+						}
+
+						// オーナーが同じデータへターゲットを追加
+						for (int i = 0; i < collider_pairs.size(); ++i)
+						{
+							if (collider_pairs.at(i).owner_collider == owner_obj_collider)
+							{
+								collider_pairs.at(i).target_data.emplace_back(TargetColliderData(target_obj_collider, intersection));
+							}
+						}
 					}
 				}
 			}
 		}
 	}
 
-	return collider_pair;
+	return collider_pairs;
 }
 
 
