@@ -9,7 +9,6 @@ bool collision::IsHitPointAndLine       (const VECTOR&      point,      const Li
 
     return is_hit;
 }
-
 bool collision::IsHitPointAndLine       (const VECTOR&      point,      const Line&     line)
 {
     std::optional<VECTOR> intersection = std::nullopt;
@@ -25,7 +24,6 @@ bool collision::IsHitPointAndSegment    (const VECTOR&      point,      const Se
 
     return is_hit;
 }
-
 bool collision::IsHitPointAndSegment    (const VECTOR&      point,      const Segment&  segment)
 {
     std::optional<VECTOR> intersection = std::nullopt;
@@ -41,7 +39,6 @@ bool collision::IsHitPointAndPlane      (const VECTOR&      point,      const Pl
 
     return is_hit;
 }
-
 bool collision::IsHitPointAndPlane      (const VECTOR&      point,      const Plane&    plane)
 {
     std::optional<VECTOR> intersection = std::nullopt;
@@ -52,7 +49,11 @@ bool collision::IsHitPointAndPlane      (const VECTOR&      point,      const Pl
 bool collision::IsHitPointAndTriangle   (const VECTOR&      point,      const Triangle& triangle,       std::optional<VECTOR>& intersection)
 {
     const Plane plane = Plane(triangle.GetCentroid(), triangle.GetNormalVector());
-    if (!IsHitPointAndPlane(point, plane)) { return false; }
+    if (!IsHitPointAndPlane(point, plane))
+    {
+        intersection = std::nullopt;
+        return false;
+    }
 
     const VECTOR v1 = triangle.GetPos(0) - triangle.GetPos(1);
     const VECTOR v2 = triangle.GetPos(1) - triangle.GetPos(2);
@@ -70,7 +71,6 @@ bool collision::IsHitPointAndTriangle   (const VECTOR&      point,      const Tr
 
     return is_hit;
 }
-
 bool collision::IsHitPointAndTriangle   (const VECTOR&      point,      const Triangle& triangle)
 {
     std::optional<VECTOR> intersection = std::nullopt;
@@ -86,7 +86,6 @@ bool collision::IsHitPointAndSquare     (const VECTOR&      point,      const Sq
 
     return is_hit;
 }
-
 bool collision::IsHitPointAndSquare     (const VECTOR&      point,      const Square&   square)
 {
     std::optional<VECTOR> intersection = std::nullopt;
@@ -103,7 +102,6 @@ bool collision::IsHitPointAndCapsule    (const VECTOR&      point,      const Ca
 
     return is_hit;
 }
-
 bool collision::IsHitPointAndCapsule    (const VECTOR&      point,      const Capsule&  capsule)
 {
     std::optional<VECTOR> intersection = std::nullopt;
@@ -117,7 +115,6 @@ bool collision::IsHitLineAndLine        (const Line&        line1,      const Li
 
     return math::GetDistanceLineToLine(line1, line2) <= 0.0f;
 }
-
 bool collision::IsHitLineAndLine        (const Line&        line1,      const Line&     line2)
 {
     std::optional<VECTOR> intersection = std::nullopt;
@@ -136,7 +133,6 @@ bool collision::IsHitLineAndPlane       (const Line&        line,       const Pl
 
     return is_contain_plane || !is_vertical;
 }
-
 bool collision::IsHitLineAndPlane       (const Line&        line,       const Plane&    plane)
 {
     std::optional<VECTOR> intersection = std::nullopt;
@@ -150,7 +146,6 @@ bool collision::IsHitSegmentAndSegment  (const Segment&     segment1,   const Se
 
     return math::GetDistanceSegmentToSegment(segment1, segment2) <= 0.0f;
 }
-
 bool collision::IsHitSegmentAndSegment  (const Segment&     segment1,   const Segment&  segment2)
 {
     std::optional<VECTOR> intersection = std::nullopt;
@@ -164,7 +159,6 @@ bool collision::IsHitSegmentAndPlane    (const Segment&     segment,    const Pl
 
     return math::GetDistanceSegmentToPlane(segment, plane) == 0.0f;
 }
-
 bool collision::IsHitSegmentAndPlane    (const Segment&     segment,    const Plane&    plane)
 {
     std::optional<VECTOR> intersection = std::nullopt;
@@ -197,7 +191,6 @@ bool collision::IsHitSegmentAndTriangle (const Segment&     segment,    const Tr
     // 交点が三角形と衝突しているか(三角形に含まれるか)
     return IsHitPointAndTriangle(*intersection, triangle);
 }
-
 bool collision::IsHitSegmentAndTriangle (const Segment&     segment,    const Triangle& triangle)
 {
     std::optional<VECTOR> intersection = std::nullopt;
@@ -210,7 +203,6 @@ bool collision::IsHitSegmentAndSquare   (const Segment&     segment,    const Sq
 
     return IsHitSegmentAndTriangle(segment, square.GetTriangle(0)) || IsHitSegmentAndTriangle(segment, square.GetTriangle(1));
 }
-
 bool collision::IsHitSegmentAndSquare   (const Segment&     segment,    const Square&   square)
 {
     std::optional<VECTOR> intersection = std::nullopt;
@@ -276,7 +268,6 @@ bool collision::IsHitSegmentAndCapsule  (const Segment&     segment,    const Ca
     const float distance = math::GetDistanceSegmentToSegment(segment, capsule.GetSegment());
     return distance <= capsule.GetRadius();
 }
-
 bool collision::IsHitSegmentAndCapsule  (const Segment&     segment,    const Capsule&  capsule)
 {
     std::optional<VECTOR> intersection = std::nullopt;
@@ -312,7 +303,6 @@ bool collision::IsHitSegmentAndModel    (const Segment&     segment,    const in
         return collision::IsHitSegmentAndTriangle(segment, triangles.at(dist.first), intersection);
     }
 }
-
 bool collision::IsHitSegmentAndModel    (const Segment&     segment,    const int       model_handle)
 {
     std::optional<VECTOR> intersection = std::nullopt;
@@ -325,7 +315,6 @@ bool collision::IsHitPlaneAndCapsule    (const Plane&       plane,      const Ca
 
     return math::GetDistancePlaneToCapsule(plane, capsule) == 0.0f;
 }
-
 bool collision::IsHitPlaneAndCapsule    (const Plane&       plane,      const Capsule&  capsule)
 {
     std::optional<VECTOR> intersection = std::nullopt;
@@ -339,7 +328,6 @@ bool collision::IsHitTriangleAndSphere  (const Triangle&    triangle,   const Sp
 
     return math::GetDistancePointToTriangle(sphere.GetPos(), triangle) <= sphere.GetRadius();
 }
-
 bool collision::IsHitTriangleAndSphere  (const Triangle&    triangle,   const Sphere&   sphere)
 {
     std::optional<VECTOR> intersection = std::nullopt;
@@ -353,12 +341,25 @@ bool collision::IsHitTriangleAndCapsule (const Triangle&    triangle,   const Ca
 
     return math::GetDistanceSegmentToTriangle(capsule.GetSegment(), triangle) <= capsule.GetRadius();
 }
-
 bool collision::IsHitTriangleAndCapsule (const Triangle&    triangle,   const Capsule&  capsule)
 {
     std::optional<VECTOR> intersection = std::nullopt;
 
     return IsHitTriangleAndCapsule(triangle, capsule, intersection);
+}
+
+bool collision::IsHitTriangleAndModel   (const Triangle&    triangle,   const int       model_handle,   std::optional<VECTOR>& intersection)
+{
+    intersection = std::nullopt;
+
+    // TODO : 頂点の始点順は確認していないので要検証
+    return MV1CollCheck_Triangle(model_handle, -1, triangle.GetPos(0), triangle.GetPos(1), triangle.GetPos(2)).HitNum;
+}
+bool collision::IsHitTriangleAndModel   (const Triangle&    triangle,   const int       model_handle)
+{
+    std::optional<VECTOR> intersection = std::nullopt;
+
+    return IsHitTriangleAndModel(triangle, model_handle, intersection);
 }
 
 bool collision::IsHitSquareAndCapsule   (const Square&      square,     const Capsule&  capsule,        std::optional<VECTOR>& intersection)
@@ -370,7 +371,6 @@ bool collision::IsHitSquareAndCapsule   (const Square&      square,     const Ca
 
     return distance1 <= capsule.GetRadius() || distance2 <= capsule.GetRadius();
 }
-
 bool collision::IsHitSquareAndCapsule   (const Square&      square,     const Capsule&  capsule)
 {
     std::optional<VECTOR> intersection = std::nullopt;
@@ -388,7 +388,6 @@ bool collision::IsHitSphereAndSphere    (const Sphere&      sphere1,    const Sp
 
     return distance <= sphere1.GetRadius() + sphere2.GetRadius();
 }
-
 bool collision::IsHitSphereAndSphere    (const Sphere&      sphere1,    const Sphere&   sphere2)
 {
     std::optional<VECTOR> intersection = std::nullopt;
@@ -405,12 +404,24 @@ bool collision::IsHitSphereAndCapsule   (const Sphere&      sphere,     const Ca
 
     return distance <= sphere.GetRadius() + capsule.GetRadius();
 }
-
 bool collision::IsHitSphereAndCapsule   (const Sphere&      sphere,     const Capsule&  capsule)
 {
     std::optional<VECTOR> intersection = std::nullopt;
 
     return IsHitSphereAndCapsule(sphere, capsule, intersection);
+}
+
+bool collision::IsHitSphereAndModel     (const Sphere&      sphere,     const int       model_handle,   std::optional<VECTOR>& intersection)
+{
+    intersection = std::nullopt;
+
+    return MV1CollCheck_Sphere(model_handle, -1, sphere.GetPos(), sphere.GetRadius()).HitNum;
+}
+bool collision::IsHitSphereAndModel     (const Sphere&      sphere,     const int       model_handle)
+{
+    std::optional<VECTOR> intersection = std::nullopt;
+
+    return IsHitSphereAndModel(sphere, model_handle, intersection);
 }
 
 bool collision::IsHitCapsuleAndCapsule  (const Capsule&     capsule1,   const Capsule&  capsule2,       std::optional<VECTOR>& intersection)
@@ -420,12 +431,25 @@ bool collision::IsHitCapsuleAndCapsule  (const Capsule&     capsule1,   const Ca
     const float distance = math::GetDistanceSegmentToSegment(capsule1.GetSegment(), capsule2.GetSegment());
     return distance <= capsule1.GetRadius() + capsule2.GetRadius();
 }
-
 bool collision::IsHitCapsuleAndCapsule  (const Capsule&     capsule1,   const Capsule&  capsule2)
 {
     std::optional<VECTOR> intersection = std::nullopt;
 
     return IsHitCapsuleAndCapsule(capsule1, capsule2, intersection);
+}
+
+bool collision::IsHitCapsuleAndModel    (const Capsule&     capsule,    const int       model_handle,   std::optional<VECTOR>& intersection)
+{
+    intersection = std::nullopt;
+
+    const auto segment = capsule.GetSegment();
+    return MV1CollCheck_Capsule(model_handle, -1, segment.GetBeginPos(), segment.GetEndPos(), capsule.GetRadius()).HitNum;
+}
+bool collision::IsHitCapsuleAndModel    (const Capsule&     capsule,    const int       model_handle)
+{
+    std::optional<VECTOR> intersection = std::nullopt;
+
+    return IsHitCapsuleAndModel(capsule, model_handle, intersection);
 }
 
 //bool collision::IsHitCircumferenceAndCapsuleLowPrecision(const Circle* circle, const Capsule* capsule)
@@ -467,7 +491,7 @@ bool collision::IsHitCapsuleAndCapsule  (const Capsule&     capsule1,   const Ca
 
 
 #pragma region 押し戻し(衝突時の有効な速度ベクトルを取得)
-VECTOR collision::PushBackSphereAndTriangle(const VECTOR& velocity, const Sphere& dynamic_sphere, const Triangle& static_triangle)
+VECTOR collision::PushBackSphereAndTriangle (const VECTOR& velocity, const Sphere&  dynamic_sphere,  const Triangle& static_triangle)
 {
     // 未来の座標が衝突しているかを判定
     Sphere future_sphere = dynamic_sphere;
@@ -525,7 +549,7 @@ VECTOR collision::PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsu
     return future_pos - dynamic_capsule.GetSegment().GetBeginPos();
 }
 
-VECTOR collision::PushBackCapsuleAndSquare(const VECTOR& velocity, const Capsule& dynamic_capsule, const Square& static_square)
+VECTOR collision::PushBackCapsuleAndSquare  (const VECTOR& velocity, const Capsule& dynamic_capsule, const Square&   static_square)
 {
     // 未来の座標が衝突しているかを判定
     Capsule future_capsule = dynamic_capsule;
@@ -554,7 +578,7 @@ VECTOR collision::PushBackCapsuleAndSquare(const VECTOR& velocity, const Capsule
     return future_pos - dynamic_capsule.GetSegment().GetBeginPos();
 }
 
-VECTOR collision::PushBackCapsuleAndOBB(const VECTOR& velocity, const Capsule& dynamic_capsule, const OBB& static_obb)
+VECTOR collision::PushBackCapsuleAndOBB     (const VECTOR& velocity, const Capsule& dynamic_capsule, const OBB&      static_obb)
 {
     VECTOR valid_velocity = velocity;
     std::unordered_map<box::SquareKind, float> current_distance;
@@ -588,7 +612,7 @@ VECTOR collision::PushBackCapsuleAndOBB(const VECTOR& velocity, const Capsule& d
     return valid_velocity;
 }
 
-VECTOR collision::PushBackSphereAndModel(const VECTOR& velocity, const Sphere& dynamic_sphere, const int model_handle)
+VECTOR collision::PushBackSphereAndModel    (const VECTOR& velocity, const Sphere&  dynamic_sphere,  const int       model_handle)
 {
     VECTOR valid_velocity = velocity;
 
@@ -626,7 +650,7 @@ VECTOR collision::PushBackSphereAndModel(const VECTOR& velocity, const Sphere& d
     return valid_velocity;
 }
 
-VECTOR collision::PushBackCapsuleAndModel(const VECTOR& velocity, const Capsule& dynamic_capsule, const int model_handle)
+VECTOR collision::PushBackCapsuleAndModel   (const VECTOR& velocity, const Capsule& dynamic_capsule, const int       model_handle)
 {
     VECTOR valid_velocity = velocity;
 

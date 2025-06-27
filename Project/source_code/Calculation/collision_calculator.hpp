@@ -110,6 +110,12 @@ namespace collision
     [[nodiscard]] bool IsHitTriangleAndCapsule     (const Triangle& triangle, const Capsule&  capsule,      std::optional<VECTOR>& intersection);
     [[nodiscard]] bool IsHitTriangleAndCapsule     (const Triangle& triangle, const Capsule&  capsule);
 
+    /// @brief 三角形とモデルの衝突判定
+    /// @param intersection 未実装 TODO : のちに実装
+    /// @return true : 衝突, false : 非衝突
+    [[nodiscard]] bool IsHitTriangleAndModel       (const Triangle& triangle, const int       model_handle, std::optional<VECTOR>& intersection);
+    [[nodiscard]] bool IsHitTriangleAndModel       (const Triangle& triangle, const int       model_handle);
+
     /// @brief 四角形とカプセルの衝突判定
     /// @param intersection 未実装 TODO : のちに実装
     /// @return true : 衝突, false : 非衝突
@@ -128,11 +134,23 @@ namespace collision
     [[nodiscard]] bool IsHitSphereAndCapsule       (const Sphere&   sphere,   const Capsule&  capsule,      std::optional<VECTOR>& intersection);
     [[nodiscard]] bool IsHitSphereAndCapsule       (const Sphere&   sphere,   const Capsule&  capsule);
 
+    /// @brief 球とモデルの衝突判定 
+    /// @param intersection 未実装 TODO : のちに実装
+    /// @return true : 衝突, false : 非衝突
+    [[nodiscard]] bool IsHitSphereAndModel         (const Sphere&   sphere,   const int       model_handle, std::optional<VECTOR>& intersection);
+    [[nodiscard]] bool IsHitSphereAndModel         (const Sphere&   sphere,   const int       model_handle);
+
     /// @brief カプセルとカプセルの衝突判定
     /// @param intersection 未実装 TODO : のちに実装
     /// @return true : 衝突, false : 非衝突
     [[nodiscard]] bool IsHitCapsuleAndCapsule      (const Capsule&  capsule1, const Capsule&  capsule2,     std::optional<VECTOR>& intersection);
     [[nodiscard]] bool IsHitCapsuleAndCapsule      (const Capsule&  capsule1, const Capsule&  capsule2);
+
+    /// @brief カプセルとモデルの衝突判定
+    /// @param intersection 未実装 TODO : のちに実装
+    /// @return true : 衝突, false : 非衝突
+    [[nodiscard]] bool IsHitCapsuleAndModel        (const Capsule&  capsule,  const int       model_handle, std::optional<VECTOR>& intersection);
+    [[nodiscard]] bool IsHitCapsuleAndModel        (const Capsule&  capsule,  const int       model_handle);
 
     /// @brief 円周とカプセルの衝突判定
     /// @brief 注意 : 完璧な当たり判定ではない。円周に大して垂直なカプセルのみの使用を推奨。

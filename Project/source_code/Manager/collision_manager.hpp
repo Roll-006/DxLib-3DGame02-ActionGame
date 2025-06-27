@@ -34,17 +34,17 @@ private:
 	std::vector<ColliderPairData> MakeHitColliderPairs();
 
 	#pragma region è’ìÀîªíË
-	bool IsHit					(const Collider& owner_collider, const Collider& target_collider);
-	bool IsHitLineAndTarget		(const Line&	 line,			 const Collider& target_collider);
-	bool IsHitSegmentAndTarget	(const Segment&	 segment,		 const Collider& target_collider);
-	bool IsHitPlaneAndTarget	(const Plane&	 plane,			 const Collider& target_collider);
-	bool IsHitTriangleAndTarget	(const Triangle& triangle,		 const Collider& target_collider);
-	bool IsHitSquareAndTarget	(const Square&	 square,		 const Collider& target_collider);
-	bool IsHitAABBAndTarget		(const AABB&	 aabb,			 const Collider& target_collider);
-	bool IsHitOBBAndTarget		(const OBB&		 obb,			 const Collider& target_collider);
-	bool IsHitSphereAndTarget	(const Sphere&	 sphere,		 const Collider& target_collider);
-	bool IsHitCapsuleAndTarget	(const Capsule&	 capsule,		 const Collider& target_collider);
-	bool IsHitModelAndTarget	(const int		 model_handle,	 const Collider& target_collider);
+	bool IsHit					(const Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection);
+	bool IsHitLineAndTarget		(const Line&	 line,			 const Collider& target_collider, std::optional<VECTOR>& intersection);
+	bool IsHitSegmentAndTarget	(const Segment&	 segment,		 const Collider& target_collider, std::optional<VECTOR>& intersection);
+	bool IsHitPlaneAndTarget	(const Plane&	 plane,			 const Collider& target_collider, std::optional<VECTOR>& intersection);
+	bool IsHitTriangleAndTarget	(const Triangle& triangle,		 const Collider& target_collider, std::optional<VECTOR>& intersection);
+	bool IsHitSquareAndTarget	(const Square&	 square,		 const Collider& target_collider, std::optional<VECTOR>& intersection);
+	bool IsHitAABBAndTarget		(const AABB&	 aabb,			 const Collider& target_collider, std::optional<VECTOR>& intersection);
+	bool IsHitOBBAndTarget		(const OBB&		 obb,			 const Collider& target_collider, std::optional<VECTOR>& intersection);
+	bool IsHitSphereAndTarget	(const Sphere&	 sphere,		 const Collider& target_collider, std::optional<VECTOR>& intersection);
+	bool IsHitCapsuleAndTarget	(const Capsule&	 capsule,		 const Collider& target_collider, std::optional<VECTOR>& intersection);
+	bool IsHitModelAndTarget	(const int		 model_handle,	 const Collider& target_collider, std::optional<VECTOR>& intersection);
 	#pragma endregion
 
 private:
