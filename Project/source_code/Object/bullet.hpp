@@ -13,4 +13,7 @@ public:
 	void Draw() const	override;
 
 	void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) override;
+
+private:
+
 };
