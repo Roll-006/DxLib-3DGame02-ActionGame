@@ -79,6 +79,7 @@ private:
 
 	void CalcAngle();
 	void CalcPos();
+	void CalcRayPos();
 	//void CalcDistance();
 
 	/// @brief 視点リセット時の角度を計算する

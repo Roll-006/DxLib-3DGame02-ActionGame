@@ -52,7 +52,7 @@ void AssaultRifle::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	{
 	case ColliderKind::kRayCast:
 
-		DrawFormatString(0, 0, 0xffffff, "光線の衝突を検出しました。");
+		//DrawFormatString(0, 0, 0xffffff, "光線の衝突を検出しました。");
 
 		if (hit_collider_pair.target_collider->GetShape() == nullptr)
 		{

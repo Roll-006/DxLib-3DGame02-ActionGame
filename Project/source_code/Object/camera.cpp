@@ -23,6 +23,8 @@ Camera::Camera() :
 	PhysicsManager::GetInstance()->AddIgnoreObjGravity(ObjName.CAMERA);
 
 	m_angle[TimeKind::kCurrent] = m_angle[TimeKind::kNext] = v3d::GetZeroV();
+
+	AddCollider(std::make_shared<Collider>(ColliderKind::kRayCast, std::make_shared<Segment>(), this));
 }
 
 Camera::~Camera()
@@ -56,6 +58,7 @@ void Camera::LateUpdate()
 {
 	CalcPos();
 	SetLookDir();
+	CalcRayPos();
 }
 
 void Camera::Draw() const
@@ -65,7 +68,19 @@ void Camera::Draw() const
 
 void Camera::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 {
+	switch (hit_collider_pair.owner_collider->GetColliderKind())
+	{
+	case ColliderKind::kRayCast:
+		if (hit_collider_pair.intersection)
+		{
+			m_transform->SetPos(CoordinateKind::kWorld, *hit_collider_pair.intersection);
+			SetLookDir();
+		}
+		break;
 
+	default:
+		break;
+	}
 }
 
 
@@ -268,6 +283,14 @@ void Camera::CalcPos()
 	const VECTOR forward	= m_transform->GetForward(CoordinateKind::kWorld);
 	const VECTOR pos		= look_pos - forward * m_distance_to_target;
 	m_transform->SetPos(CoordinateKind::kWorld, pos);
+}
+
+void Camera::CalcRayPos()
+{
+	// Œõü‚ÌÀ•W‚ğXV
+	auto ray = std::dynamic_pointer_cast<Segment>(GetCollider(ColliderKind::kRayCast)->GetShape());
+	ray->SetBeginPos(GetLookPos(), true);
+	ray->SetEndPos  (m_transform->GetPos(CoordinateKind::kWorld), true);
 }
 
 //void Camera::CalcDistance()

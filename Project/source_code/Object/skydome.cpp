@@ -32,5 +32,5 @@ void Skydome::LateUpdate()
 
 void Skydome::Draw() const
 {
-	//m_modeler->Draw();
+	m_modeler->Draw();
 }
