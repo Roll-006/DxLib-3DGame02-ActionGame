@@ -9,6 +9,8 @@ AssaultRifle::AssaultRifle() :
 	m_range						= kRange;
 	m_muzzle_correct_pos		= kMuzzleCorrectPos;
 	m_ejection_port_correct_pos = kEjectionPortCorrectPos;
+	//m_move_speed_bullet			= ;
+	m_shot_interval_time		= kShotIntervalTime;
 
 	AddCollider(std::make_shared<Collider>(ColliderKind::kRayCast, std::make_shared<Segment>(), this));
 }
@@ -25,14 +27,14 @@ void AssaultRifle::Init()
 
 void AssaultRifle::Update()
 {
-	//m_hit_pos.clear();
+	
 }
 
 void AssaultRifle::LateUpdate()
 {
 	TrackOwner();
+	JudgeShot();
 	CalcRayPos();
-
 }
 
 void AssaultRifle::Draw() const
@@ -44,6 +46,9 @@ void AssaultRifle::Draw() const
 
 	const auto segment = std::dynamic_pointer_cast<Segment>(GetCollider(ColliderKind::kRayCast)->GetShape());
 	segment->Draw(false, 0, 0xffffff);
+
+	DrawFormatString(0, 20, 0xffffff, "is_aiming : %d", IsAiming());
+	DrawFormatString(0, 40, 0xffffff, "is_shot   : %d", IsShot());
 }
 
 void AssaultRifle::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
@@ -52,17 +57,15 @@ void AssaultRifle::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	{
 	case ColliderKind::kRayCast:
 
-		//DrawFormatString(0, 0, 0xffffff, "光線の衝突を検出しました。");
+		DrawFormatString(0, 0, 0xffffff, "光線の衝突を検出しました。");
 
 		if (hit_collider_pair.target_collider->GetShape() == nullptr)
 		{
 			if (hit_collider_pair.intersection)
 			{
-				//m_hit_pos.emplace_back(hit_collider_pair.intersection);
 				DrawSphere3D(*hit_collider_pair.intersection, 5, 16, 0xff0000, 0xff0000, TRUE);
 			}
 		}
-
 		break;
 
 	default:

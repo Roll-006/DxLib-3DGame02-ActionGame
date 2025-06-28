@@ -22,4 +22,5 @@ private:
 	static constexpr VECTOR kEjectionPortCorrectPos = { 1.5f, 15.0f, -2.5f };
 	static constexpr float  kScopeScale				= 2.0f;
 	static constexpr float  kRange					= 2000.0f;
+	static constexpr float  kShotIntervalTime		= 0.5f;
 };

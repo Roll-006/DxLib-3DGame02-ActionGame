@@ -137,6 +137,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="source_code\Base\chara_base.cpp" />
+    <ClCompile Include="source_code\Base\gun_base.cpp" />
+    <ClCompile Include="source_code\Base\physical_obj_base.cpp" />
+    <ClCompile Include="source_code\Base\weapon_base.cpp" />
     <ClCompile Include="source_code\Calculation\collision_calculator.cpp" />
     <ClCompile Include="source_code\Calculation\math.cpp" />
     <ClCompile Include="source_code\Calculation\quaternion.cpp" />

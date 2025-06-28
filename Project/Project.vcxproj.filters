@@ -149,6 +149,18 @@
     <ClCompile Include="source_code\Object\bullet.cpp">
       <Filter>Object</Filter>
     </ClCompile>
+    <ClCompile Include="source_code\Base\gun_base.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="source_code\Base\weapon_base.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="source_code\Base\physical_obj_base.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="source_code\Base\chara_base.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source_code\Manager\game_manager.hpp">

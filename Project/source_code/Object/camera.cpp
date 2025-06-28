@@ -63,7 +63,7 @@ void Camera::LateUpdate()
 
 void Camera::Draw() const
 {
-
+	
 }
 
 void Camera::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
@@ -287,7 +287,7 @@ void Camera::CalcPos()
 
 void Camera::CalcRayPos()
 {
-	// 光線の座標を更新
+	// 光線の座標を計算
 	auto ray = std::dynamic_pointer_cast<Segment>(GetCollider(ColliderKind::kRayCast)->GetShape());
 	ray->SetBeginPos(GetLookPos(), true);
 	ray->SetEndPos  (m_transform->GetPos(CoordinateKind::kWorld), true);

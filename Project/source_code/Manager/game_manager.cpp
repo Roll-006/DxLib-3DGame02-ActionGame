@@ -80,7 +80,7 @@ void GameManager::SetUpGameSystem()
 	SetFogEnable	(TRUE);
 	SetFogMode		(DX_FOGMODE_LINEAR);
 	SetFogColor		(195, 207, 219);
-	SetFogStartEnd	(300.f, 3150.0f);
+	SetFogStartEnd	(300.f, 3100.0f);
 	SetFogDensity	(0.1f);
 
 	SetMainWindowText("3DGame Sample");

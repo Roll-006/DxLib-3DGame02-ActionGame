@@ -15,6 +15,10 @@ public:
 		m_point_on_ray_line			(v3d::GetZeroV()),
 		m_scope_scale				(0.0f),
 		m_range						(0.0f),
+		m_move_speed_bullet			(0.0f),
+		m_shot_interval_time		(0.0f),
+		m_shot_timer				(0.0f),
+		m_is_shot					(false),
 		m_is_aiming					(false),
 		m_gun_kind					(gun_kind)
 	{ }
@@ -27,7 +31,7 @@ public:
 	void DeactivateAiming() { m_is_aiming = false; }
 
 	/// @brief ショット状態にする
-	void ActivateShot() { m_is_shot = true; }
+	//void ActivateShot() { m_is_shot = true; }
 
 	/// @brief レイキャスト用の線分を拡張した直線上にある点を設定する
 	/// @brief プレイヤーの場合はカメラの座標
@@ -36,45 +40,21 @@ public:
 	void SetAimDir(const VECTOR& aim_dir) { m_aim_dir = aim_dir; }
 
 	[[nodiscard]] VECTOR  GetAimDir()			const { return m_aim_dir; }
-	[[nodiscard]] VECTOR  GetMuzzlePos()		const
-	{
-		const auto world_m   = m_transform->GetMatrix(CoordinateKind::kWorld);
-		const auto local_pos = m_transform->GetPos   (CoordinateKind::kLocal);
-
-		return local_pos + VTransformSR(m_muzzle_correct_pos, world_m);
-	}
-	[[nodiscard]] VECTOR  GetEjectionPortPos()  const
-	{
-		const auto world_m   = m_transform->GetMatrix(CoordinateKind::kWorld);
-		const auto local_pos = m_transform->GetPos   (CoordinateKind::kLocal);
-
-		return local_pos + VTransformSR(m_ejection_port_correct_pos, world_m);
-	}
+	[[nodiscard]] VECTOR  GetMuzzlePos()		const;
+	[[nodiscard]] VECTOR  GetEjectionPortPos()  const;
 	[[nodiscard]] float   GetScopeScale()		const { return m_scope_scale; }
 	[[nodiscard]] float   GetRange()			const { return m_range; }
 	[[nodiscard]] GunKind GetGunKind()			const { return m_gun_kind; }
 
 	[[nodiscard]] bool    IsAiming()			const { return m_is_aiming; }
+	[[nodiscard]] bool	  IsShot()				const { return m_is_shot; }
 
 protected:
 	/// @brief レイキャスト用の光線の座標を計算
-	void CalcRayPos()
-	{
-		if (!m_is_aiming) { return; }
+	void CalcRayPos();
 
-		// 光線の始点を計算
-		Segment s1 = Segment(m_point_on_ray_line, m_point_on_ray_line + m_aim_dir);
-		Segment s2 = Segment(m_point_on_ray_line, GetMuzzlePos());
-		VECTOR  v1 = s1.GetEndPos() - s1.GetBeginPos();
-		VECTOR  v2 = s2.GetEndPos() - s2.GetBeginPos();
-		VECTOR  h  = math::GetProjectionVector(v2, v1);
-		VECTOR  ray_begin_pos = s1.GetBeginPos() + h;
-
-		// 光線の座標を更新
-		auto ray = std::dynamic_pointer_cast<Segment>(GetCollider(ColliderKind::kRayCast)->GetShape());
-		ray->SetBeginPos(ray_begin_pos, true);
-		ray->SetEndPos  (ray->GetBeginPos() + m_aim_dir * m_range, true);
-	}
+	/// @brief 弾丸を発射するかを判定する
+	void JudgeShot();
 
 protected:
 	VECTOR  m_aim_dir;						// 狙う方向
@@ -83,13 +63,12 @@ protected:
 	VECTOR  m_point_on_ray_line;			// レイキャスト用の線分を拡張した直線上にある点
 	float	m_scope_scale;					// スコープ倍率
 	float	m_range;						// 射程
-	float   m_move_speed_bullet;
-	float   m_shot_interval;
-	float   m_is_shot;
+	float   m_move_speed_bullet;			// 弾丸の移動速度
+	float   m_shot_interval_time;			// 弾丸が発射される時間間隔
+	float	m_shot_timer;					// 弾丸を撃つためのタイマー
+	bool    m_is_shot;						// 弾丸を撃つかを判定
 	bool	m_is_aiming;					// 銃が構えられているかを判定
 
-	std::vector<VECTOR> m_hit_pos;			// 衝突点
-
 private:
-	GunKind m_gun_kind;
+	GunKind m_gun_kind;						// 銃の種類
 };
