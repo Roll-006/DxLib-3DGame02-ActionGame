@@ -6,10 +6,10 @@ Enemy::Enemy() :
 {
 	m_transform->SetRot  (CoordinateKind::kWorld, m_dir);
 	m_transform->SetScale(CoordinateKind::kWorld, kModelScale);
-	m_transform->SetPos  (CoordinateKind::kWorld, VGet(20, 0, 0));
+	m_transform->SetPos  (CoordinateKind::kWorld, VGet(100, 0, 100));
 
 	// コライダー・トリガーを設定
-	MakeCollider(kCapsuleRadius, kLandingTriggerRadius);
+	CreateCollider(kCapsuleRadius, kLandingTriggerRadius);
 
 	// 各アニメーション追加
 	LoadAnim();
@@ -36,6 +36,7 @@ void Enemy::Update()
 	m_animator->Update();
 
 	CalcCapsuleLength();
+	AddFallVelocity();
 
 	m_is_landing = false;
 }

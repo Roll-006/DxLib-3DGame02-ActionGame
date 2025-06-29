@@ -22,7 +22,7 @@ Quaternion quat::GetIdentityQuaternion()
 	return Quaternion(0.0f, 0.0f, 0.0f, 1.0f);
 }
 
-Quaternion quat::MakeQuaternion(const VECTOR& axis, const float angle)
+Quaternion quat::CreateQuaternion(const VECTOR& axis, const float angle)
 {
 	return ConvertFloat4ToQuaternion(QTRot(v3d::GetNormalizedV(axis), angle));
 }

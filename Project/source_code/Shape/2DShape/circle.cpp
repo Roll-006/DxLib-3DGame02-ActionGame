@@ -60,7 +60,7 @@
 //		VECTOR pos1 = m_pos + m_radius * (cosf(m_interval_andle * i      ) * dir1 + sinf(m_interval_andle * i      ) * dir2);
 //		VECTOR pos2 = m_pos + m_radius * (cosf(m_interval_andle * (i + 1)) * dir1 + sinf(m_interval_andle * (i + 1)) * dir2);
 //
-//		m_triangle.at(i)->MakeTriangle(pos1, pos2, m_pos);
+//		m_triangle.at(i)->CreateTriangle(pos1, pos2, m_pos);
 //	}
 //}
 //

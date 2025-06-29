@@ -1,6 +1,7 @@
 #include "collision_manager.hpp"
 
-CollisionManager::CollisionManager()
+CollisionManager::CollisionManager() : 
+	m_handle_create_count(-1)
 {
 	// 処理なし
 }
@@ -12,7 +13,7 @@ CollisionManager::~CollisionManager()
 
 void CollisionManager::LateUpdate()
 {
-	const auto collider_pairs = MakeHitColliderPairs();
+	const auto collider_pairs = CreateHitColliderPairs();
 
 	// 衝突したコライダーのオーナーオブジェクトの処理を実行
 	for (const auto& pair : collider_pairs)
@@ -98,6 +99,10 @@ bool CollisionManager::IsApplyCollide(const std::shared_ptr<PhysicalObjBase> col
 
 bool CollisionManager::IsApplyCollide(const std::string& obj_name, const ColliderKind kind) const
 {
+	// 非アクティブであれば適用しない
+	const auto obj = ObjManager::GetInstance()->GetObj(obj_name);
+	if (!obj->IsActive()) { return false; }
+
 	// 無視するリストに登録されていれば適用しない
 	for (const auto& [ignore_name, ignore_collider] : m_ignore_collide_collider)
 	{
@@ -112,7 +117,7 @@ bool CollisionManager::IsApplyCollide(const std::string& obj_name, const Collide
 }
 
 
-std::vector<ColliderPairOneToManyData> CollisionManager::MakeHitColliderPairs()
+std::vector<ColliderPairOneToManyData> CollisionManager::CreateHitColliderPairs()
 {
 	std::vector<ColliderPairOneToManyData> collider_pairs;
 

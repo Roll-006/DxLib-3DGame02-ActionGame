@@ -1,37 +1,78 @@
 #include "chara_base.hpp"
 
 #pragma region 武器
-void CharaBase::AddGun(const std::shared_ptr<GunBase> gun)
+CharaBase::CharaBase(const std::string& name, const std::string& tag, const std::string& file_path, MassKind mass_level_kind) : 
+	PhysicalObjBase			(name, tag, mass_level_kind),
+	m_animator				(nullptr),
+	m_current_attach_weapon	(nullptr),
+	m_capsule_collider		(nullptr),
+	m_capsule_length		(0.0f),
+	m_capsule_radius		(0.0f)
 {
-	if (!m_guns.count(gun->GetGunKind())) { m_guns[gun->GetGunKind()] = gun; }
+	m_modeler  = std::make_shared<Modeler> (m_transform, file_path, VGet(0.0f, DX_PI_F, 0.0f));
+	m_animator = std::make_shared<Animator>(m_modeler);
 }
 
-void CharaBase::RemoveGun(const GunKind gun_kind)
+void CharaBase::RemoveWeapon(const std::string& obj_name)
 {
-	m_guns.erase(gun_kind);
-}
-
-
-void CharaBase::AttachGun(const GunKind gun_kind)
-{
-	if (m_guns.count(gun_kind))
+	// 指定武器を削除
+	// MEMO : erase-remove idiom
+	const auto remove_weapon = std::find_if(m_weapons.begin(), m_weapons.end(), [=](const std::shared_ptr<WeaponBase> weapon)
 	{
-		m_current_attach_gun = m_guns.at(gun_kind);
-		m_current_attach_gun->AttachOwner(m_modeler);
+		return weapon->GetName() == obj_name;
+	});
+
+	m_weapons.erase(remove_weapon, m_weapons.end());
+}
+
+void CharaBase::RemoveWeapon(const int obj_handle)
+{
+	// 指定武器を削除
+	// MEMO : erase-remove idiom
+	const auto remove_weapon = std::find_if(m_weapons.begin(), m_weapons.end(), [=](const std::shared_ptr<WeaponBase> weapon)
+	{
+		return weapon->GetObjHandle() == obj_handle;
+	});
+
+	m_weapons.erase(remove_weapon, m_weapons.end());
+}
+
+void CharaBase::AttachWeapon(const std::string& obj_name)
+{
+	for (const auto& weapon : m_weapons)
+	{
+		if (weapon->GetName() == obj_name)
+		{
+			m_current_attach_weapon = weapon;
+			m_current_attach_weapon->AttachOwner(m_modeler);
+		}
 	}
 }
 
-void CharaBase::DetachGun(const GunKind gun_kind)
+void CharaBase::AttachWeapon(const int obj_handle)
 {
-	m_current_attach_gun = nullptr;
+	for (const auto& weapon : m_weapons)
+	{
+		if (weapon->GetObjHandle() == obj_handle)
+		{
+			m_current_attach_weapon = weapon;
+			m_current_attach_weapon->AttachOwner(m_modeler);
+		}
+	}
+}
+
+void CharaBase::DetachWeapon()
+{
+	m_current_attach_weapon = nullptr;
 }
 #pragma endregion
 
 
-void CharaBase::MakeCollider(const float capsule_radius, const float sphere_radius)
+#pragma region コライダー
+void CharaBase::CreateCollider(const float capsule_radius, const float sphere_radius)
 {
-	MakeCapsuleCollider(capsule_radius);
-	MakeLandingTrigger (sphere_radius);
+	CreateCapsuleCollider(capsule_radius);
+	CreateLandingTrigger (sphere_radius);
 
 	AddCollider(std::make_shared<Collider>(ColliderKind::kMeshTrigger, m_modeler->GetModelHandle(), this));
 }
@@ -52,7 +93,7 @@ void CharaBase::CalcCapsuleLength()
 	m_capsule_collider->SetLength(segment_length);
 }
 
-void CharaBase::MakeCapsuleCollider(const float capsule_radius)
+void CharaBase::CreateCapsuleCollider(const float capsule_radius)
 {
 	m_capsule_radius = capsule_radius;
 
@@ -63,8 +104,9 @@ void CharaBase::MakeCapsuleCollider(const float capsule_radius)
 	AddCollider(std::make_shared<Collider>(ColliderKind::kCollider, m_capsule_collider, this));
 }
 
-void CharaBase::MakeLandingTrigger(const float sphere_radius)
+void CharaBase::CreateLandingTrigger(const float sphere_radius)
 {
 	const auto pos = m_capsule_collider->GetSegment().GetBeginPos() - VGet(0.0f, 5.0f, 0.0f);
 	AddCollider(std::make_shared<Collider>(ColliderKind::kLandingTrigger, std::make_shared<Sphere>(pos, sphere_radius), this));
 }
+#pragma endregion

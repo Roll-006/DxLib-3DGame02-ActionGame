@@ -4,25 +4,13 @@
 
 #include "../Object/camera.hpp"
 
+#include "../Part/bullet_object_pool.hpp"
+#include "../Manager/bullet_manager.hpp"
+
 class GunBase abstract : public WeaponBase
 {
 public:
-	GunBase(const std::string& name, const GunKind gun_kind, const std::string& file_path) :
-		WeaponBase					(name, file_path),
-		m_aim_dir					(v3d::GetZeroV()),
-		m_muzzle_correct_pos		(v3d::GetZeroV()),
-		m_ejection_port_correct_pos	(v3d::GetZeroV()),
-		m_point_on_ray_line			(v3d::GetZeroV()),
-		m_scope_scale				(0.0f),
-		m_range						(0.0f),
-		m_move_speed_bullet			(0.0f),
-		m_shot_interval_time		(0.0f),
-		m_shot_timer				(0.0f),
-		m_is_shot					(false),
-		m_is_aiming					(false),
-		m_gun_kind					(gun_kind)
-	{ }
-
+	GunBase(const std::string& name, const GunKind gun_kind, const std::string& file_path);
 	virtual ~GunBase() = default;
 
 	/// @brief エイミング中にする
@@ -30,12 +18,9 @@ public:
 	/// @brief 非エイミング中にする
 	void DeactivateAiming() { m_is_aiming = false; }
 
-	/// @brief ショット状態にする
-	//void ActivateShot() { m_is_shot = true; }
-
 	/// @brief レイキャスト用の線分を拡張した直線上にある点を設定する
-	/// @brief プレイヤーの場合はカメラの座標
-	/// @brief エネミーの場合はターゲットの座標
+	/// @brief 操作キャラの場合はカメラの座標
+	/// @brief 非操作キャラの場合はターゲットの座標
 	void SetPointOnRayLine(const VECTOR& point) { m_point_on_ray_line = point; }
 	void SetAimDir(const VECTOR& aim_dir) { m_aim_dir = aim_dir; }
 
@@ -53,8 +38,8 @@ protected:
 	/// @brief レイキャスト用の光線の座標を計算
 	void CalcRayPos();
 
-	/// @brief 弾丸を発射するかを判定する
-	void JudgeShot();
+	/// @brief 弾丸発射処理
+	void Shot();
 
 protected:
 	VECTOR  m_aim_dir;						// 狙う方向
@@ -63,7 +48,7 @@ protected:
 	VECTOR  m_point_on_ray_line;			// レイキャスト用の線分を拡張した直線上にある点
 	float	m_scope_scale;					// スコープ倍率
 	float	m_range;						// 射程
-	float   m_move_speed_bullet;			// 弾丸の移動速度
+	float   m_initial_velocity_bullet;		// 弾丸の初速
 	float   m_shot_interval_time;			// 弾丸が発射される時間間隔
 	float	m_shot_timer;					// 弾丸を撃つためのタイマー
 	bool    m_is_shot;						// 弾丸を撃つかを判定

@@ -13,7 +13,7 @@ namespace quat
 
 	[[nodiscard]] Quaternion GetZeroQuaternion();
 	[[nodiscard]] Quaternion GetIdentityQuaternion();
-	[[nodiscard]] Quaternion MakeQuaternion			(const VECTOR& axis, const float angle);
+	[[nodiscard]] Quaternion CreateQuaternion			(const VECTOR& axis, const float angle);
 
 	[[nodiscard]] float		 GetSize				(const Quaternion& q);
 	[[nodiscard]] float		 GetSquareSize			(const Quaternion& q);

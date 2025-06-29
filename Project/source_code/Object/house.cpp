@@ -7,9 +7,9 @@ House::House() :
 
 	m_transform->SetScale(CoordinateKind::kWorld, kModelScale);
 	m_transform->SetPos  (CoordinateKind::kWorld, kPos);
+	m_modeler->ApplyMatrix();
 
 	AddCollider(std::make_shared<Collider>(ColliderKind::kCollider, m_modeler->GetModelHandle(), this));
-	m_modeler->ApplyMatrix();
 }
 
 House::~House()
@@ -25,6 +25,8 @@ void House::Init()
 void House::Update()
 {
 	if (!IsActive()) { return; }
+
+	AddFallVelocity();
 }
 
 void House::LateUpdate()

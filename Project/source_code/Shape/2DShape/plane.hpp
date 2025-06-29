@@ -18,7 +18,7 @@ public:
 	void Draw(const bool is_draw_frame, const int alpha_blend_num, const unsigned int frame_color) const override;
 
 	/// @brief •`‰æ—p‚ÌlŠpŒ`‚ğì¬
-	[[nodiscard]] Square&& MakeDrawSquare(const float edge_length) const;
+	[[nodiscard]] Square&& CreateDrawSquare(const float edge_length) const;
 
 	void Move(const VECTOR& velocity) override;
 

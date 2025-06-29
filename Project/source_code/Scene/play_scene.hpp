@@ -22,4 +22,5 @@ private:
 	std::shared_ptr<House>   m_house;
 	std::shared_ptr<Ground>  m_ground;
 	std::shared_ptr<Skydome> m_skydome;
+	std::shared_ptr<BulletObjectPool> m_bullet_object_pool;
 };

@@ -10,7 +10,6 @@ Player::Player(std::shared_ptr<Camera> camera) :
 	m_is_move				(false),
 	m_is_run				(false),
 	m_is_squat				(false),
-	//m_is_aiming_gun			(false),
 	m_is_turn_around		(false),
 	m_is_turn_run			(false),
 	m_is_correct_look_dir	(false),
@@ -23,7 +22,7 @@ Player::Player(std::shared_ptr<Camera> camera) :
 	m_transform->SetScale(CoordinateKind::kWorld, kModelScale);
 
 	// コライダー・トリガーを設定
-	MakeCollider(kCapsuleRadius, kLandingTriggerRadius);
+	CreateCollider(kCapsuleRadius, kLandingTriggerRadius);
 
 	// 各アニメーション追加
 	LoadAnim();
@@ -31,19 +30,21 @@ Player::Player(std::shared_ptr<Camera> camera) :
 	m_animator->AttachAnim(static_cast<int>(m_anim_kind.at(TimeKind::kCurrent)));
 
 	// 武器設定
-	AddGun(std::make_shared<AssaultRifle>());
-	AttachGun(GunKind::kAssaultRifle);
+	const auto gun = std::make_shared<AssaultRifle>();
+	AddWeapon(gun);
+	AttachWeapon(gun);
 
 	// TODO : 仮で銃のオブジェ登録
 	
-	CollisionManager::GetInstance()->AddCollideObj(m_current_attach_gun);
+	ObjManager		::GetInstance()->AddObj(m_current_attach_weapon);
+	CollisionManager::GetInstance()->AddCollideObj(m_current_attach_weapon);
 	//PhysicsManager	::GetInstance()->AddPhysicalObj(m_current_attach_gun);
 	//PhysicsManager	::GetInstance()->AddIgnoreObjGravity(ObjName.ASSAULT_RIFLE);
 }
 
 Player::~Player()
 {
-
+	
 }
 
 void Player::Init()
@@ -79,6 +80,7 @@ void Player::Update()
 	m_animator->Update();
 
 	CalcCapsuleLength();
+	AddFallVelocity();
 
 	// TODO : 位置変更を検討。enemyも同様
 	m_is_landing = false;
@@ -95,9 +97,9 @@ void Player::LateUpdate()
 		m_modeler->GetModelHandle(),
 		m_look_dir.at(TimeKind::kCurrent),
 		m_camera->GetTransform()->GetMatrix(CoordinateKind::kWorld),
-		m_current_attach_gun->IsAiming());
+		std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->IsAiming());
 
-	m_current_attach_gun->LateUpdate();
+	m_current_attach_weapon->LateUpdate();
 }
 
 void Player::Draw() const
@@ -105,7 +107,7 @@ void Player::Draw() const
 	if (!IsActive()) { return; }
 
 	m_modeler->Draw();
-	m_current_attach_gun->Draw();
+	m_current_attach_weapon->Draw();
 
 	for (auto& collider : m_collider)
 	{
@@ -255,17 +257,17 @@ void Player::AimingGun()
 	// ターン中は早期return
 	if (m_is_turn_around) { return; }
 
-	m_current_attach_gun->ActivateAiming();
+	std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->ActivateAiming();
 	m_is_correct_look_dir = true;
 
 	// 拡大率から実際の距離を取得
-	float min_distance = Camera::kNormalDistance / m_current_attach_gun->GetScopeScale();
+	float min_distance = Camera::kNormalDistance / std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->GetScopeScale();
 	m_camera->Approach(min_distance, kADSSpeed * FPS::GetDeltaTime());
 	m_camera->TrackBoneWobbly();
 
 	// 銃に狙う方向を設定
-	m_current_attach_gun->SetAimDir			(m_camera->GetTransform()->GetForward(CoordinateKind::kWorld));
-	m_current_attach_gun->SetPointOnRayLine	(m_camera->GetTransform()->GetPos    (CoordinateKind::kWorld));
+	std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->SetAimDir		  (m_camera->GetTransform()->GetForward(CoordinateKind::kWorld));
+	std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->SetPointOnRayLine(m_camera->GetTransform()->GetPos    (CoordinateKind::kWorld));
 
 	// ダッシュ状態を解除
 	m_is_run = false;
@@ -333,7 +335,7 @@ void Player::LoadAnim()
 
 void Player::ChangeAnimState()
 {
-	// TODO : のちにイベントでアニメーションを管理
+	// TODO : のちに変更
 
 	// アイドル
 	if (!m_is_move)
@@ -348,7 +350,7 @@ void Player::ChangeAnimState()
 			}
 		}
 
-		if (m_current_attach_gun->IsAiming())
+		if (std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->IsAiming())
 		{
 			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kIdleShoot01;
 		}
@@ -400,7 +402,7 @@ void Player::ChangeAnimState()
 	// しゃがむ
 	if (m_is_squat)
 	{
-		if (m_current_attach_gun->IsAiming())
+		if (std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->IsAiming())
 		{
 			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kIdleSquatShoot01;
 		}
@@ -505,13 +507,13 @@ void Player::InitMove()
 	m_is_correct_look_dir = false;
 
 	// 照準
-	if (!m_current_attach_gun->IsAiming())
+	if (!std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->IsAiming())
 	{
 		m_camera->Depart(Camera::kNormalDistance, kADSSpeed * FPS::GetDeltaTime());
 		m_camera->TrackBoneHeightOnly();
 	}
 
-	m_current_attach_gun->DeactivateAiming();
+	std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->DeactivateAiming();
 
 	// ダッシュ判定
 	if (command->GetInputModeKind(CommandHandler::MoveKind::kRun) == InputModeKind::kHold) { m_is_run = false; }
@@ -634,7 +636,7 @@ void Player::CalcLookDir()
 	}
 
 	// 銃を構えている場合は常にカメラと同じ向きを向く
-	if (m_current_attach_gun->IsAiming())
+	if (std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->IsAiming())
 	{
 		m_look_dir.at(TimeKind::kNext) = GetMoveForward();
 	}
@@ -653,14 +655,14 @@ void Player::CorrectLookDir()
 	distance.y = math::ConnectMinusPiToPi(distance.y);
 
 	// スコープを覗く場合は速度を上昇させる
-	float add_angle			= m_current_attach_gun->IsAiming() ? -kLookDirCorrectionAngleForADS		: -kLookDirCorrectionAngle;
-	float threshold_angle	= m_current_attach_gun->IsAiming() ? kConfirmLookDirThresholdAngleForADS	: kConfirmLookDirThresholdAngle;
+	float add_angle			= std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->IsAiming() ? -kLookDirCorrectionAngleForADS		: -kLookDirCorrectionAngle;
+	float threshold_angle	= std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->IsAiming() ? kConfirmLookDirThresholdAngleForADS	: kConfirmLookDirThresholdAngle;
 
 	// カメラを基準にして右側であった場合は反転
 	if (distance.y > 0) { add_angle *= -1; }
 
 	// 回転を適用
-	const Quaternion rot_q = quat::MakeQuaternion(axis::GetWorldYAxis(), add_angle);
+	const Quaternion rot_q = quat::CreateQuaternion(axis::GetWorldYAxis(), add_angle);
 	m_look_dir.at(TimeKind::kCurrent) = math::GetRotatedPos(m_look_dir.at(TimeKind::kCurrent), rot_q);
 
 	const float angle = math::GetAngleBetweenTwoVector(m_look_dir.at(TimeKind::kNext), m_look_dir.at(TimeKind::kCurrent));

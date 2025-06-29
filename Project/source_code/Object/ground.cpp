@@ -7,9 +7,9 @@ Ground::Ground() :
 
 	m_transform->SetScale(CoordinateKind::kWorld, kModelScale);
 	m_transform->SetPos  (CoordinateKind::kWorld, kPos);
+	m_modeler->ApplyMatrix();
 
 	AddCollider(std::make_shared<Collider>(ColliderKind::kCollider, m_modeler->GetModelHandle(), this));
-	m_modeler->ApplyMatrix();
 }
 
 Ground::~Ground()
@@ -25,6 +25,8 @@ void Ground::Init()
 void Ground::Update()
 {
 	if (!IsActive()) { return; }
+
+	AddFallVelocity();
 }
 
 void Ground::LateUpdate()

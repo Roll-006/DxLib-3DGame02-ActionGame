@@ -17,6 +17,6 @@ void WeaponBase::TrackOwner()
 
 	// î•ñ‚ð“K—p
 	m_transform->SetMatrix(CoordinateKind::kWorld, result_mat);
-	m_transform->SetPos(CoordinateKind::kLocal, m_transform->GetPos(CoordinateKind::kLocal) + VTransformSR(m_correct_pos, result_mat));
-	m_transform->SetScale(CoordinateKind::kWorld, m_correct_scale);
+	m_transform->SetPos   (CoordinateKind::kLocal, m_transform->GetPos(CoordinateKind::kLocal) + VTransformSR(m_correct_pos, result_mat));
+	m_transform->SetScale (CoordinateKind::kWorld, m_correct_scale);
 }

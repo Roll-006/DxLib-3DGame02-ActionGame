@@ -140,6 +140,7 @@
     <ClCompile Include="source_code\Base\chara_base.cpp" />
     <ClCompile Include="source_code\Base\gun_base.cpp" />
     <ClCompile Include="source_code\Base\object_pool_base.cpp" />
+    <ClCompile Include="source_code\Base\obj_base.cpp" />
     <ClCompile Include="source_code\Base\physical_obj_base.cpp" />
     <ClCompile Include="source_code\Base\weapon_base.cpp" />
     <ClCompile Include="source_code\Calculation\collision_calculator.cpp" />
@@ -152,6 +153,8 @@
     <ClCompile Include="source_code\main.cpp" />
     <ClCompile Include="source_code\Manager\handle_keeper.cpp" />
     <ClCompile Include="source_code\Manager\command_handler.cpp" />
+    <ClCompile Include="source_code\Manager\bullet_manager.cpp" />
+    <ClCompile Include="source_code\Manager\object_pool_manager.cpp" />
     <ClCompile Include="source_code\Manager\physics_manager.cpp" />
     <ClCompile Include="source_code\Manager\collision_manager.cpp" />
     <ClCompile Include="source_code\Manager\game_manager.cpp" />
@@ -174,7 +177,7 @@
     <ClCompile Include="source_code\Part\animator.cpp" />
     <ClCompile Include="source_code\Part\bone_pos_corrector.cpp" />
     <ClCompile Include="source_code\Part\modeler.cpp" />
-    <ClCompile Include="source_code\Part\object_pool.cpp" />
+    <ClCompile Include="source_code\Part\bullet_object_pool.cpp" />
     <ClCompile Include="source_code\Part\transform.cpp" />
     <ClCompile Include="source_code\Scene\game_clear_scene.cpp" />
     <ClCompile Include="source_code\Scene\game_over_scene.cpp" />
@@ -252,6 +255,7 @@
     <ClInclude Include="source_code\Data\Kind\shape_kind.hpp" />
     <ClInclude Include="source_code\Data\Kind\texture_kind.hpp" />
     <ClInclude Include="source_code\Data\Kind\collider_kind.hpp" />
+    <ClInclude Include="source_code\Data\Name\object_pool_name.hpp" />
     <ClInclude Include="source_code\Data\Name\obj_name.hpp" />
     <ClInclude Include="source_code\Data\Path\bone_path.hpp" />
     <ClInclude Include="source_code\Data\Path\model_path.hpp" />
@@ -259,9 +263,10 @@
     <ClInclude Include="source_code\Data\Tag\obj_tag.hpp" />
     <ClInclude Include="source_code\Data\Tag\animation_tag.hpp" />
     <ClInclude Include="source_code\FPS\fps.hpp" />
-    <ClInclude Include="source_code\Interface\i_chara.hpp" />
     <ClInclude Include="source_code\Manager\handle_keeper.hpp" />
     <ClInclude Include="source_code\Manager\command_handler.hpp" />
+    <ClInclude Include="source_code\Manager\bullet_manager.hpp" />
+    <ClInclude Include="source_code\Manager\object_pool_manager.hpp" />
     <ClInclude Include="source_code\Manager\physics_manager.hpp" />
     <ClInclude Include="source_code\Manager\collision_manager.hpp" />
     <ClInclude Include="source_code\Manager\game_manager.hpp" />
@@ -284,7 +289,7 @@
     <ClInclude Include="source_code\Part\animator.hpp" />
     <ClInclude Include="source_code\Part\bone_pos_corrector.hpp" />
     <ClInclude Include="source_code\Part\modeler.hpp" />
-    <ClInclude Include="source_code\Part\object_pool.hpp" />
+    <ClInclude Include="source_code\Part\bullet_object_pool.hpp" />
     <ClInclude Include="source_code\Part\transform.hpp" />
     <ClInclude Include="source_code\Scene\game_clear_scene.hpp" />
     <ClInclude Include="source_code\Scene\game_over_scene.hpp" />

@@ -9,7 +9,7 @@ AssaultRifle::AssaultRifle() :
 	m_range						= kRange;
 	m_muzzle_correct_pos		= kMuzzleCorrectPos;
 	m_ejection_port_correct_pos = kEjectionPortCorrectPos;
-	//m_move_speed_bullet			= ;
+	m_initial_velocity_bullet	= kInitialVelocityBullet;
 	m_shot_interval_time		= kShotIntervalTime;
 
 	AddCollider(std::make_shared<Collider>(ColliderKind::kRayCast, std::make_shared<Segment>(), this));
@@ -28,6 +28,8 @@ void AssaultRifle::Init()
 void AssaultRifle::Update()
 {
 	if (!IsActive()) { return; }
+
+	AddFallVelocity();
 }
 
 void AssaultRifle::LateUpdate()
@@ -35,8 +37,8 @@ void AssaultRifle::LateUpdate()
 	if (!IsActive()) { return; }
 
 	TrackOwner();
-	JudgeShot();
-	CalcRayPos();
+	Shot();
+	//CalcRayPos();
 }
 
 void AssaultRifle::Draw() const
@@ -53,6 +55,7 @@ void AssaultRifle::Draw() const
 
 	DrawFormatString(0, 20, 0xffffff, "is_aiming : %d", IsAiming());
 	DrawFormatString(0, 40, 0xffffff, "is_shot   : %d", IsShot());
+	//DrawFormatString(0, 60, 0xffffff, "Žc’e      : %d", ObjectPoolManager::GetInstance()->GetObjectPool(ObjectPoolName.BULLET_POOL)->GetPoolSize(ObjName.BULLET));
 }
 
 void AssaultRifle::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)

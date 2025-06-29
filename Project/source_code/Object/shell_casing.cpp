@@ -19,6 +19,8 @@ void ShellCasing::Init()
 void ShellCasing::Update()
 {
 	if (!IsActive()) { return; }
+
+	AddFallVelocity();
 }
 
 void ShellCasing::LateUpdate()

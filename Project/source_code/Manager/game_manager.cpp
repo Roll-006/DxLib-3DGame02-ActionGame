@@ -7,24 +7,28 @@ GameManager::GameManager():
 {
 	SetUpGameSystem();
 
-	HandleKeeper	::Generate();
-	InputChecker	::Generate();
-	CommandHandler	::Generate();
-	ObjManager		::Generate();
-	CollisionManager::Generate();
-	PhysicsManager	::Generate();
+	HandleKeeper	 ::Generate();
+	InputChecker	 ::Generate();
+	CommandHandler	 ::Generate();
+	ObjManager		 ::Generate();
+	CollisionManager ::Generate();
+	PhysicsManager	 ::Generate();
+	ObjectPoolManager::Generate();
+	BulletManager	 ::Generate();
 
 	m_scene_manager = std::make_unique<SceneObjManager>();
 }
 
 GameManager::~GameManager()
 {
-	HandleKeeper	::Delete();
-	InputChecker	::Delete();
-	CommandHandler	::Delete();
-	ObjManager		::Delete();
-	CollisionManager::Delete();
-	PhysicsManager	::Delete();
+	HandleKeeper	 ::Delete();
+	InputChecker	 ::Delete();
+	CommandHandler	 ::Delete();
+	ObjManager		 ::Delete();
+	CollisionManager ::Delete();
+	PhysicsManager	 ::Delete();
+	ObjectPoolManager::Delete();
+	BulletManager	 ::Delete();
 	
 	Effkseer_End();
 	DxLib_End();

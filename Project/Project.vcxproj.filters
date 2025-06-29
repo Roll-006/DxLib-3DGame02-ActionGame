@@ -161,7 +161,7 @@
     <ClCompile Include="source_code\Base\chara_base.cpp">
       <Filter>Base</Filter>
     </ClCompile>
-    <ClCompile Include="source_code\Part\object_pool.cpp">
+    <ClCompile Include="source_code\Part\bullet_object_pool.cpp">
       <Filter>Part</Filter>
     </ClCompile>
     <ClCompile Include="source_code\Base\object_pool_base.cpp">
@@ -169,6 +169,15 @@
     </ClCompile>
     <ClCompile Include="source_code\Object\shell_casing.cpp">
       <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="source_code\Base\obj_base.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="source_code\Manager\object_pool_manager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="source_code\Manager\bullet_manager.cpp">
+      <Filter>Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -394,9 +403,6 @@
     <ClInclude Include="source_code\Base\chara_base.hpp">
       <Filter>Base</Filter>
     </ClInclude>
-    <ClInclude Include="source_code\Interface\i_chara.hpp">
-      <Filter>Interface</Filter>
-    </ClInclude>
     <ClInclude Include="source_code\Base\physical_obj_base.hpp">
       <Filter>Base</Filter>
     </ClInclude>
@@ -478,7 +484,7 @@
     <ClInclude Include="source_code\Object\bullet.hpp">
       <Filter>Object</Filter>
     </ClInclude>
-    <ClInclude Include="source_code\Part\object_pool.hpp">
+    <ClInclude Include="source_code\Part\bullet_object_pool.hpp">
       <Filter>Part</Filter>
     </ClInclude>
     <ClInclude Include="source_code\Base\object_pool_base.hpp">
@@ -486,6 +492,15 @@
     </ClInclude>
     <ClInclude Include="source_code\Object\shell_casing.hpp">
       <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Manager\object_pool_manager.hpp">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Data\Name\object_pool_name.hpp">
+      <Filter>Data\Name</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Manager\bullet_manager.hpp">
+      <Filter>Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -24,17 +24,17 @@ public:
 		}
 	}
 	/// @brief 物理的挙動を行うオブジェクトから除外
-	void RemovePhysicalObj(const std::string& obj_name);
+	void RemovePhysicalObj				(const int obj_handle);
 
 	/// @brief 物理的な挙動全般を無視するオブジェクトを追加
-	void AddIgnoreObjPhysicalBehavior   (const std::string& obj_name);
+	void AddIgnoreObjPhysicalBehavior   (const int obj_handle);
 	/// @brief 物理的な挙動全般を無視するオブジェクトから除外
-	void RemoveIgnoreObjPhysicalBehavior(const std::string& obj_name);
+	void RemoveIgnoreObjPhysicalBehavior(const int obj_handle);
 
 	/// @brief 重力の影響を無視するオブジェクトを追加
-	void AddIgnoreObjGravity   (const std::string& obj_name);
+	void AddIgnoreObjGravity			(const int obj_handle);
 	/// @brief 重力の影響を無視するオブジェクトから除外
-	void RemoveIgnoreObjGravity(const std::string& obj_name);
+	void RemoveIgnoreObjGravity			(const int obj_handle);
 	#pragma endregion
 
 
@@ -42,12 +42,14 @@ public:
 	template<obj_concepts::PhysicalObjT PhysicalObjT>
 	[[nodiscard]] bool IsApplyPhysicalBehavior(const std::shared_ptr<PhysicalObjT> physical_obj) const
 	{
-		const auto itr = std::find(m_ignore_physical_behavior_obj_name.begin(), m_ignore_physical_behavior_obj_name.end(), physical_obj->GetName());
+		const auto itr = std::find(m_ignore_physical_behavior_obj_handle.begin(), m_ignore_physical_behavior_obj_handle.end(), physical_obj->GetObjHandle());
 
-		if (itr != m_ignore_physical_behavior_obj_name.end())
-		{
-			return false;
-		}
+		// 非アクティブであれば適用しない
+		if (!physical_obj->IsActive()) { return false; }
+
+		// 無視するリストに登録されていれば適用しない
+		if (itr != m_ignore_physical_behavior_obj_handle.end()) { return false; }
+
 		return true;
 	}
 
@@ -55,13 +57,14 @@ public:
 	template<obj_concepts::PhysicalObjT PhysicalObjT>
 	[[nodiscard]] bool IsApplyGravity(const std::shared_ptr<PhysicalObjT> physical_obj) const
 	{
-		const auto itr = std::find(m_ignore_gravity_obj_name.begin(), m_ignore_gravity_obj_name.end(), physical_obj->GetName());
+		const auto itr = std::find(m_ignore_gravity_obj_handle.begin(), m_ignore_gravity_obj_handle.end(), physical_obj->GetObjHandle());
+
+		// 非アクティブであれば適用しない
+		if (!physical_obj->IsActive()) { return false; }
 
 		// 無視リストに登録されている、もしくは静的オブジェクトであった場合は重力を適用させない
-		if (itr != m_ignore_gravity_obj_name.end() || physical_obj->GetMassKind() == MassKind::kStatic)
-		{
-			return false;
-		}
+		if (itr != m_ignore_gravity_obj_handle.end() || physical_obj->GetMassKind() == MassKind::kStatic) { return false; }
+
 		return true;
 	}
 
@@ -84,8 +87,8 @@ private:
 	static constexpr float kMaxGravity			= 0.2f;					// 最大重力(デルタタイム適用後の最大値)
 
 	std::vector<std::shared_ptr<PhysicalObjBase>> m_physical_objects;	// 物理的挙動を行うオブジェクト
-	std::vector<std::string> m_ignore_physical_behavior_obj_name;		// 物理的な挙動全般を無視するオブジェクト
-	std::vector<std::string> m_ignore_gravity_obj_name;					// 重力の影響を無視するオブジェクト
+	std::vector<int> m_ignore_physical_behavior_obj_handle;				// 物理的な挙動全般を無視するオブジェクト
+	std::vector<int> m_ignore_gravity_obj_handle;						// 重力の影響を無視するオブジェクト
 
 	friend SingletonBase<PhysicsManager>;
 };

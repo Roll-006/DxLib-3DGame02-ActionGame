@@ -15,12 +15,13 @@ Camera::Camera() :
 	m_is_look_same_dir_target	(false),
 	m_is_track_height_only		(false),
 	m_dir						(v3d::GetZeroV()),
-	m_velocity					(v3d::GetZeroV())
+	m_velocity					(v3d::GetZeroV()),
+	m_is_input					(false)
 {
 	SetCameraNearFar(kNear, kFar);
 	SetupCamera_Perspective(kFOV * math::kDegreesToRadian);
 
-	PhysicsManager::GetInstance()->AddIgnoreObjGravity(ObjName.CAMERA);
+	PhysicsManager::GetInstance()->AddIgnoreObjGravity(this->GetObjHandle());
 
 	m_angle[TimeKind::kCurrent] = m_angle[TimeKind::kNext] = v3d::GetZeroV();
 
@@ -54,6 +55,7 @@ void Camera::Update()
 	Move();
 	SetLookDir();
 	JudgeLookSameDirTarget();
+	AddFallVelocity();
 }
 
 void Camera::LateUpdate()
