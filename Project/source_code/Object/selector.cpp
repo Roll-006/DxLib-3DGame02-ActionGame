@@ -18,15 +18,15 @@ void Selector::Init()
 
 void Selector::Update()
 {
-
+	if (!IsActive()) { return; }
 }
 
 void Selector::LateUpdate()
 {
-
+	if (!IsActive()) { return; }
 }
 
 void Selector::Draw() const
 {
-
+	if (!IsActive()) { return; }
 }

@@ -139,6 +139,7 @@
   <ItemGroup>
     <ClCompile Include="source_code\Base\chara_base.cpp" />
     <ClCompile Include="source_code\Base\gun_base.cpp" />
+    <ClCompile Include="source_code\Base\object_pool_base.cpp" />
     <ClCompile Include="source_code\Base\physical_obj_base.cpp" />
     <ClCompile Include="source_code\Base\weapon_base.cpp" />
     <ClCompile Include="source_code\Calculation\collision_calculator.cpp" />
@@ -159,6 +160,7 @@
     <ClCompile Include="source_code\Manager\scene_manager.cpp" />
     <ClCompile Include="source_code\Manager\weapon_manager.cpp" />
     <ClCompile Include="source_code\Object\assault_rifle (2).cpp" />
+    <ClCompile Include="source_code\Object\shell_casing.cpp" />
     <ClCompile Include="source_code\Object\bullet.cpp" />
     <ClCompile Include="source_code\Object\assault_rifle.cpp" />
     <ClCompile Include="source_code\Object\ground.cpp" />
@@ -172,6 +174,7 @@
     <ClCompile Include="source_code\Part\animator.cpp" />
     <ClCompile Include="source_code\Part\bone_pos_corrector.cpp" />
     <ClCompile Include="source_code\Part\modeler.cpp" />
+    <ClCompile Include="source_code\Part\object_pool.cpp" />
     <ClCompile Include="source_code\Part\transform.cpp" />
     <ClCompile Include="source_code\Scene\game_clear_scene.cpp" />
     <ClCompile Include="source_code\Scene\game_over_scene.cpp" />
@@ -194,6 +197,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source_code\Base\gun_base.hpp" />
+    <ClInclude Include="source_code\Base\object_pool_base.hpp" />
     <ClInclude Include="source_code\Base\weapon_base.hpp" />
     <ClInclude Include="source_code\Base\chara_base.hpp" />
     <ClInclude Include="source_code\Base\command_base.hpp" />
@@ -266,6 +270,7 @@
     <ClInclude Include="source_code\Manager\scene_manager.hpp" />
     <ClInclude Include="source_code\Manager\weapon_manager.hpp" />
     <ClInclude Include="source_code\Object\assault_rifle (2).hpp" />
+    <ClInclude Include="source_code\Object\shell_casing.hpp" />
     <ClInclude Include="source_code\Object\bullet.hpp" />
     <ClInclude Include="source_code\Object\assault_rifle.hpp" />
     <ClInclude Include="source_code\Object\ground.hpp" />
@@ -279,6 +284,7 @@
     <ClInclude Include="source_code\Part\animator.hpp" />
     <ClInclude Include="source_code\Part\bone_pos_corrector.hpp" />
     <ClInclude Include="source_code\Part\modeler.hpp" />
+    <ClInclude Include="source_code\Part\object_pool.hpp" />
     <ClInclude Include="source_code\Part\transform.hpp" />
     <ClInclude Include="source_code\Scene\game_clear_scene.hpp" />
     <ClInclude Include="source_code\Scene\game_over_scene.hpp" />

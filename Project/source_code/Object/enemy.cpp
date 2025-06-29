@@ -27,6 +27,8 @@ void Enemy::Init()
 
 void Enemy::Update()
 {
+	if (!IsActive()) { return; }
+
 	Move();
 	UpdateTransform();
 
@@ -40,11 +42,13 @@ void Enemy::Update()
 
 void Enemy::LateUpdate()
 {
-
+	if (!IsActive()) { return; }
 }
 
 void Enemy::Draw() const
 {
+	if (!IsActive()) { return; }
+
 	m_modeler->Draw();
 
 	for (auto& collider : m_collider)

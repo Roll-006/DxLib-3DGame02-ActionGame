@@ -40,9 +40,9 @@ public:
 
 	void SetVelocity(const VECTOR& velocity) { m_velocity = velocity; }
 
-	[[nodiscard]] VECTOR	GetVelocity()		const { return m_velocity; }
-	[[nodiscard]] VECTOR	GetFallVelocity()	const { return m_fall_velocity; }
-	[[nodiscard]] MassKind	GetMassKind()		const { return m_mass_kind; }
+	[[nodiscard]] VECTOR   GetVelocity()		const { return m_velocity; }
+	[[nodiscard]] VECTOR   GetFallVelocity()	const { return m_fall_velocity; }
+	[[nodiscard]] MassKind GetMassKind()		const { return m_mass_kind; }
 	[[nodiscard]] std::shared_ptr<Collider> GetCollider(const ColliderKind kind) const;
 	[[nodiscard]] std::vector<std::shared_ptr<Collider>> GetColliderAll() const { return m_collider; }
 

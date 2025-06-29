@@ -24,16 +24,18 @@ void House::Init()
 
 void House::Update()
 {
-
+	if (!IsActive()) { return; }
 }
 
 void House::LateUpdate()
 {
-
+	if (!IsActive()) { return; }
 }
 
 void House::Draw() const
 {
+	if (!IsActive()) { return; }
+
 	m_modeler->Draw();
 }
 

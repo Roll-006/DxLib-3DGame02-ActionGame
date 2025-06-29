@@ -53,6 +53,8 @@ void Player::Init()
 
 void Player::Update()
 {
+	if (!IsActive()) { return; }
+
 	// アニメーション情報をシフト
 	if (m_anim_kind.at(TimeKind::kPrev) != m_anim_kind.at(TimeKind::kCurrent))
 	{
@@ -84,6 +86,8 @@ void Player::Update()
 
 void Player::LateUpdate()
 {
+	if (!IsActive()) { return; }
+
 	m_modeler->ApplyMatrix();
 
 	// ボーン位置修正
@@ -98,6 +102,8 @@ void Player::LateUpdate()
 
 void Player::Draw() const
 {
+	if (!IsActive()) { return; }
+
 	m_modeler->Draw();
 	m_current_attach_gun->Draw();
 

@@ -44,6 +44,12 @@ void PhysicalObjBase::AddCollider(const std::shared_ptr<Collider> collider)
 {
 	if (std::find(m_collider.begin(), m_collider.end(), collider) == m_collider.end())
 	{
+		// レイキャストトリガーの場合は線分以外許可しない
+		if (collider->GetColliderKind() == ColliderKind::kRayCast)
+		{
+			assert(collider->GetShape()->GetShapeKind() == ShapeKind::kSegment);
+		}
+
 		m_collider.emplace_back(collider);
 	}
 }

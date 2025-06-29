@@ -27,11 +27,13 @@ void AssaultRifle::Init()
 
 void AssaultRifle::Update()
 {
-	
+	if (!IsActive()) { return; }
 }
 
 void AssaultRifle::LateUpdate()
 {
+	if (!IsActive()) { return; }
+
 	TrackOwner();
 	JudgeShot();
 	CalcRayPos();
@@ -39,6 +41,8 @@ void AssaultRifle::LateUpdate()
 
 void AssaultRifle::Draw() const
 {
+	if (!IsActive()) { return; }
+
 	m_modeler->Draw();
 
 	DrawSphere3D(GetMuzzlePos(),       2, 8, 0xffffff, 0xffffff, FALSE);

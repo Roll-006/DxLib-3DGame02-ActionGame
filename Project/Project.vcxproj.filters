@@ -161,6 +161,15 @@
     <ClCompile Include="source_code\Base\chara_base.cpp">
       <Filter>Base</Filter>
     </ClCompile>
+    <ClCompile Include="source_code\Part\object_pool.cpp">
+      <Filter>Part</Filter>
+    </ClCompile>
+    <ClCompile Include="source_code\Base\object_pool_base.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="source_code\Object\shell_casing.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source_code\Manager\game_manager.hpp">
@@ -467,6 +476,15 @@
       <Filter>Object</Filter>
     </ClInclude>
     <ClInclude Include="source_code\Object\bullet.hpp">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Part\object_pool.hpp">
+      <Filter>Part</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Base\object_pool_base.hpp">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="source_code\Object\shell_casing.hpp">
       <Filter>Object</Filter>
     </ClInclude>
   </ItemGroup>

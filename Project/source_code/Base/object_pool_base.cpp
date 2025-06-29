@@ -1,0 +1,45 @@
+﻿#include "object_pool_base.hpp"
+
+void ObjectPoolBase::ReturnObj(const std::shared_ptr<ObjBase> obj)
+{
+	if (!m_objects.count(obj->GetName())) { return; }
+
+	// 非アクティブ化して追加
+	obj->Deactivate();
+	m_objects[obj->GetName()].push(obj);
+}
+
+void ObjectPoolBase::DestroyObj(const std::string& obj_name)
+{
+	m_objects.erase(obj_name);
+}
+
+std::shared_ptr<ObjBase> ObjectPoolBase::GetObj(const std::string& obj_name)
+{
+	if (!m_objects.count(obj_name))     { return nullptr; }
+	if (m_objects.at(obj_name).empty()) { return nullptr; }
+
+	const auto obj = m_objects.at(obj_name).front();
+	m_objects.at(obj_name).pop();
+
+	// アクティブ化・初期化して取得
+	obj->Activate();
+	obj->Init();
+
+	return obj;
+}
+
+int ObjectPoolBase::GetPoolSize(const std::string& obj_name) const
+{
+	if (!m_pool_size.count(obj_name)) { return 0; }
+
+	return m_pool_size.at(obj_name);
+}
+
+void ObjectPoolBase::CreateObj(const std::shared_ptr<ObjBase> obj)
+{
+	// 既に指定したプールサイズに到達している場合は追加を許可しない
+	if (m_objects[obj->GetName()].size() >= GetPoolSize(obj->GetName())) { return; }
+
+	m_objects[obj->GetName()].push(obj);
+}

@@ -40,6 +40,8 @@ void Camera::Init()
 
 void Camera::Update()
 {
+	if (!IsActive()) { return; }
+
 	InitMove();
 
 	const auto command = CommandHandler::GetInstance();
@@ -56,6 +58,8 @@ void Camera::Update()
 
 void Camera::LateUpdate()
 {
+	if (!IsActive()) { return; }
+
 	CalcPos();
 	SetLookDir();
 	CalcRayPos();
@@ -63,7 +67,7 @@ void Camera::LateUpdate()
 
 void Camera::Draw() const
 {
-	
+	if (!IsActive()) { return; }
 }
 
 void Camera::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)

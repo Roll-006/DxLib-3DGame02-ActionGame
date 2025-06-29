@@ -24,16 +24,18 @@ void Ground::Init()
 
 void Ground::Update()
 {
-
+	if (!IsActive()) { return; }
 }
 
 void Ground::LateUpdate()
 {
-
+	if (!IsActive()) { return; }
 }
 
 void Ground::Draw() const
 {
+	if (!IsActive()) { return; }
+
 	m_modeler->Draw();
 }
 
