@@ -70,6 +70,6 @@ void GunBase::Shot()
 	// ”­ŽËŒÄ‚Ño‚µ
 	if (m_is_shot)
 	{
-		BulletManager::GetInstance()->Shot(GetMuzzlePos(), m_aim_dir, m_initial_velocity_bullet);
+		BulletManager::GetInstance()->Shot(GetMuzzlePos(), m_aim_dir, m_initial_velocity_bullet, m_range);
 	}
 }

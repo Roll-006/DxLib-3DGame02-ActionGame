@@ -99,10 +99,6 @@ bool CollisionManager::IsApplyCollide(const std::shared_ptr<PhysicalObjBase> col
 
 bool CollisionManager::IsApplyCollide(const std::string& obj_name, const ColliderKind kind) const
 {
-	// 非アクティブであれば適用しない
-	const auto obj = ObjManager::GetInstance()->GetObj(obj_name);
-	if (!obj->IsActive()) { return false; }
-
 	// 無視するリストに登録されていれば適用しない
 	for (const auto& [ignore_name, ignore_collider] : m_ignore_collide_collider)
 	{
@@ -131,6 +127,9 @@ std::vector<ColliderPairOneToManyData> CollisionManager::CreateHitColliderPairs(
 	//
 	for (const auto& owner_obj : m_collide_objects)
 	{
+		// 非アクティブの場合はスキップ
+		if (!owner_obj->IsActive()) { continue; }
+
 		for (const auto& owner_obj_collider : owner_obj->GetColliderAll())
 		{
 			// 衝突が許可されている場合のみ処理を続行
@@ -141,6 +140,9 @@ std::vector<ColliderPairOneToManyData> CollisionManager::CreateHitColliderPairs(
 				// 自身との当たり判定は避ける
 				if (owner_obj == target_obj) { continue; }
 
+				// 非アクティブの場合はスキップ
+				if (!target_obj->IsActive()) { continue; }
+
 				for (const auto& target_obj_collider : target_obj->GetColliderAll())
 				{
 					// 衝突が許可されている場合のみ処理を続行
@@ -150,6 +152,12 @@ std::vector<ColliderPairOneToManyData> CollisionManager::CreateHitColliderPairs(
 					std::optional<VECTOR> intersection;
 					if (IsHit(*owner_obj_collider, *target_obj_collider, intersection))
 					{
+						// MEMO : 確認用
+						if (target_obj->GetName() == ObjName.BULLET)
+						{
+							int a = 0;
+						}
+
 						// 指定のオーナーのデータコンテナがまだない場合は新たに作成
 						bool is_maked = std::any_of(collider_pairs.begin(), collider_pairs.end(), [=](const ColliderPairOneToManyData& data)
 						{

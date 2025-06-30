@@ -5,7 +5,9 @@ Bullet::Bullet() :
 	PhysicalObjBase	(ObjName.BULLET, ObjTag.BULLET, MassKind::kLight),
 	m_dir			(v3d::GetZeroV()),
 	m_prev_pos		(v3d::GetZeroV()),
-	m_move_speed	(0.0f)
+	m_first_pos		(v3d::GetZeroV()),
+	m_move_speed	(0.0f),
+	m_Is_alive		(true)
 {
 	AddCollider(std::make_shared<Collider>(ColliderKind::kRayCast, std::make_shared<Segment>(), this));
 }
@@ -38,6 +40,7 @@ void Bullet::LateUpdate()
 
 	Move();
 	CalcRayPos();
+	JudgeAlive();
 }
 
 void Bullet::Draw() const
@@ -55,10 +58,8 @@ void Bullet::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	case ColliderKind::kRayCast:
 		if (hit_collider_pair.intersection)
 		{
-			// ’…’e’n“_
-			// TODO : ‚±‚±‚ÅBulletObjectPool‚É’e‚ð•Ô‹p
-			DrawSphere3D(*hit_collider_pair.intersection, 5, 16, 0xff0000, 0xff0000, TRUE);
 			BulletManager::GetInstance()->DeleteBullet(this->GetObjHandle());
+			BulletManager::GetInstance()->AddHitPos(*hit_collider_pair.intersection);
 		}
 		break;
 
@@ -67,12 +68,14 @@ void Bullet::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	}
 }
 
-void Bullet::OnShot(const VECTOR& pos, const VECTOR& dir, const float initial_velocity)
+void Bullet::OnShot(const VECTOR& pos, const VECTOR& dir, const float initial_velocity, const float range)
 {
 	m_transform->SetPos(CoordinateKind::kWorld, pos);
 	m_prev_pos	 = pos;
+	m_first_pos  = pos;
 	m_dir		 = dir;
 	m_move_speed = initial_velocity;
+	m_range		 = range;
 }
 
 void Bullet::Move()
@@ -86,4 +89,15 @@ void Bullet::CalcRayPos()
 	auto ray = std::dynamic_pointer_cast<Segment>(GetCollider(ColliderKind::kRayCast)->GetShape());
 	ray->SetBeginPos(m_prev_pos, true);
 	ray->SetEndPos	(m_transform->GetPos(CoordinateKind::kWorld), true);
+}
+
+void Bullet::JudgeAlive()
+{
+	float distance = VSize(m_transform->GetPos(CoordinateKind::kWorld) - m_first_pos);
+
+	// ŽË’ö”ÍˆÍ‚ð’´‚¦‚½ê‡‚Í’eŠÛ‚ðƒv[ƒ‹‚É•Ô‹p
+	if (distance > m_range)
+	{
+		m_Is_alive = false;
+	}
 }

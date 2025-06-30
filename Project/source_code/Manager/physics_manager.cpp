@@ -15,7 +15,7 @@ void PhysicsManager::Update()
 	for (const auto& obj : m_physical_objects)
 	{
 		// 重力処理が許可されている場合のみ重力を与える
-		if (IsApplyGravity(obj))
+		if (IsApplyGravity(obj) && obj->IsActive())
 		{
 			obj->ApplyGravity(kGravityAcceleration, kMaxGravity);
 		}
@@ -86,6 +86,9 @@ void PhysicsManager::ExecutePushBackPairs()
 	// TODO : 後に軽量化
 	for (const auto& obj_1 : m_physical_objects)
 	{
+		// 非アクティブであれば適用しない
+		if (!obj_1->IsActive()) { continue; }
+
 		// 衝突が許可されていない場合は以降の処理をスキップ
 		if (!IsApplyPhysicalBehavior(obj_1)) { continue; }
 		if (obj_1->GetCollider(ColliderKind::kCollider) == nullptr) { continue; }
@@ -94,6 +97,9 @@ void PhysicsManager::ExecutePushBackPairs()
 		{
 			// 自身との当たり判定は避ける
 			if (obj_1 == obj_2) { continue; }
+
+			// 非アクティブであれば適用しない
+			if (!obj_2->IsActive()) { continue; }
 
 			// 衝突が許可されていない場合は以降の処理をスキップ
 			if (!IsApplyPhysicalBehavior(obj_2)) { continue; }

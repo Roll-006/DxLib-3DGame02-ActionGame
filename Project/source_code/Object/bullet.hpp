@@ -21,14 +21,23 @@ public:
 	/// @param pos ‰ŠúÀ•W
 	/// @param dir ”­Ë•ûŒü
 	/// @param initial_velocity ‰‘¬
-	void OnShot(const VECTOR& pos, const VECTOR& dir, const float initial_velocity);
+	/// @param range Ë’ö
+	void OnShot(const VECTOR& pos, const VECTOR& dir, const float initial_velocity, const float range);
+
+	[[nodiscard]] bool IsAlive() const { return m_Is_alive; }
 
 private:
 	void Move();
 	void CalcRayPos();
 
+	/// @brief ’eŠÛ‚Ì¶‘¶‚ğ”»’è
+	void JudgeAlive();
+
 private:
 	VECTOR m_dir;
 	VECTOR m_prev_pos;
-	float  m_move_speed;
+	VECTOR m_first_pos;		// ‰Šú”­ËˆÊ’u
+	float  m_move_speed;	// ˆÚ“®‘¬“x
+	float  m_range;			// Ë’ö
+	bool   m_Is_alive;		// ¶‘¶”»’è
 };

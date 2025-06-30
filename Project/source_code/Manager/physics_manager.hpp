@@ -44,9 +44,6 @@ public:
 	{
 		const auto itr = std::find(m_ignore_physical_behavior_obj_handle.begin(), m_ignore_physical_behavior_obj_handle.end(), physical_obj->GetObjHandle());
 
-		// 非アクティブであれば適用しない
-		if (!physical_obj->IsActive()) { return false; }
-
 		// 無視するリストに登録されていれば適用しない
 		if (itr != m_ignore_physical_behavior_obj_handle.end()) { return false; }
 
@@ -58,9 +55,6 @@ public:
 	[[nodiscard]] bool IsApplyGravity(const std::shared_ptr<PhysicalObjT> physical_obj) const
 	{
 		const auto itr = std::find(m_ignore_gravity_obj_handle.begin(), m_ignore_gravity_obj_handle.end(), physical_obj->GetObjHandle());
-
-		// 非アクティブであれば適用しない
-		if (!physical_obj->IsActive()) { return false; }
 
 		// 無視リストに登録されている、もしくは静的オブジェクトであった場合は重力を適用させない
 		if (itr != m_ignore_gravity_obj_handle.end() || physical_obj->GetMassKind() == MassKind::kStatic) { return false; }
