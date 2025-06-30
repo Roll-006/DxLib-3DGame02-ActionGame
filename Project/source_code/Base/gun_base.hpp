@@ -35,8 +35,8 @@ public:
 	[[nodiscard]] bool	  IsShot()				const { return m_is_shot; }
 
 protected:
-	/// @brief レイキャスト用の光線の座標を計算
-	void CalcRayPos();
+	/// @brief 弾丸の発射位置を取得
+	[[nodiscard]] VECTOR GetFirstShotPos();
 
 	/// @brief 弾丸発射処理
 	void Shot();

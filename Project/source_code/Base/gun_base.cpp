@@ -34,11 +34,8 @@ VECTOR GunBase::GetEjectionPortPos() const
 	return local_pos + VTransformSR(m_ejection_port_correct_pos, world_m);
 }
 
-void GunBase::CalcRayPos()
+VECTOR GunBase::GetFirstShotPos()
 {
-	if (!m_is_aiming) { return; }
-
-	// 光線の始点を計算
 	// 操作キャラの場合は銃口からカメラforwardに投影
 	// 非操作キャラの場合はそのまま銃口
 	Segment s1 = Segment(m_point_on_ray_line, m_point_on_ray_line + m_aim_dir);
@@ -46,12 +43,8 @@ void GunBase::CalcRayPos()
 	VECTOR  v1 = s1.GetEndPos() - s1.GetBeginPos();
 	VECTOR  v2 = s2.GetEndPos() - s2.GetBeginPos();
 	VECTOR  h  = math::GetProjectionVector(v2, v1);
-	VECTOR  ray_begin_pos = s1.GetBeginPos() + h;
 
-	// 光線の座標を更新
-	auto ray = std::dynamic_pointer_cast<Segment>(GetCollider(ColliderKind::kRayCast)->GetShape());
-	ray->SetBeginPos(ray_begin_pos, true);
-	ray->SetEndPos  (ray->GetBeginPos() + m_aim_dir * m_range, true);
+	return s1.GetBeginPos() + h;
 }
 
 void GunBase::Shot()
@@ -70,6 +63,6 @@ void GunBase::Shot()
 	// 発射呼び出し
 	if (m_is_shot)
 	{
-		BulletManager::GetInstance()->Shot(GetMuzzlePos(), m_aim_dir, m_initial_velocity_bullet, m_range);
+		BulletManager::GetInstance()->Shot(GetFirstShotPos(), m_aim_dir, m_initial_velocity_bullet, m_range);
 	}
 }

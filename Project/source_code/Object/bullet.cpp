@@ -7,6 +7,7 @@ Bullet::Bullet() :
 	m_prev_pos		(v3d::GetZeroV()),
 	m_first_pos		(v3d::GetZeroV()),
 	m_move_speed	(0.0f),
+	m_range			(0.0f),
 	m_Is_alive		(true)
 {
 	AddCollider(std::make_shared<Collider>(ColliderKind::kRayCast, std::make_shared<Segment>(), this));
@@ -19,9 +20,9 @@ Bullet::~Bullet()
 
 void Bullet::Init()
 {
-	m_fall_velocity = v3d::GetZeroV();
 	m_velocity		= v3d::GetZeroV();
-	m_move_speed	= 0.0f;
+	m_fall_velocity = v3d::GetZeroV();
+	m_Is_alive		= true;
 }
 
 void Bullet::Update()
