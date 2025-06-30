@@ -33,7 +33,7 @@ void PlayScene::Init()
 void PlayScene::Update()
 {
 	m_enemy						->Update();
-	BulletManager::GetInstance()->Update();
+	RifleCartridgeManager::GetInstance()->Update();
 	m_house						->Update();
 	m_ground					->Update();
 	m_skydome					->Update();
@@ -42,7 +42,7 @@ void PlayScene::Update()
 void PlayScene::LateUpdate()
 {
 	m_enemy						->LateUpdate();
-	BulletManager::GetInstance()->LateUpdate();
+	RifleCartridgeManager::GetInstance()->LateUpdate();
 	m_house						->LateUpdate();
 	m_ground					->LateUpdate();
 	m_skydome					->LateUpdate();
@@ -51,7 +51,7 @@ void PlayScene::LateUpdate()
 void PlayScene::Draw() const
 {
 	m_enemy						->Draw();
-	BulletManager::GetInstance()->Draw();
+	RifleCartridgeManager::GetInstance()->Draw();
 	m_house						->Draw();
 	m_ground					->Draw();
 	m_skydome					->Draw();

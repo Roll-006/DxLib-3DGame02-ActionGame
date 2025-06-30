@@ -14,7 +14,7 @@ GameManager::GameManager():
 	CollisionManager ::Generate();
 	PhysicsManager	 ::Generate();
 	ObjectPoolManager::Generate();
-	BulletManager	 ::Generate();
+	RifleCartridgeManager	 ::Generate();
 
 	m_scene_manager = std::make_unique<SceneObjManager>();
 }
@@ -28,7 +28,7 @@ GameManager::~GameManager()
 	CollisionManager ::Delete();
 	PhysicsManager	 ::Delete();
 	ObjectPoolManager::Delete();
-	BulletManager	 ::Delete();
+	RifleCartridgeManager	 ::Delete();
 	
 	Effkseer_End();
 	DxLib_End();

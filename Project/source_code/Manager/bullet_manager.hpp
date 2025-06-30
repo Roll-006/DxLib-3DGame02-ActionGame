@@ -1,9 +1,12 @@
 #pragma once
 #include "../Base/singleton_base.hpp"
+
 #include "../Manager/object_pool_manager.hpp"
 #include "../Object/Bullet.hpp"
+#include "../Object/shell_casing.hpp"
 
-class BulletManager final : public SingletonBase<BulletManager>
+/// @brief 弾丸および薬莢の管理クラス
+class RifleCartridgeManager final : public SingletonBase<RifleCartridgeManager>
 {
 public:
 	void Update();
@@ -11,11 +14,7 @@ public:
 	void Draw() const;
 
 	/// @brief 弾丸の発射
-	/// @param pos 初期座標
-	/// @param dir 発射方向
-	/// @param initial_velocity 初速
-	/// @param range 射程
-	void Shot(const VECTOR& pos, const VECTOR& dir, const float initial_velocity, const float range);
+	void Shot(GunBase& gun);
 
 	/// @brief 使用済み弾丸を削除
 	void DeleteBullet(const int obj_handle);
@@ -26,14 +25,16 @@ public:
 	}
 
 private:
-	BulletManager();
-	~BulletManager() override;
+	RifleCartridgeManager();
+	~RifleCartridgeManager() override;
 
-	void AddBullet(const std::shared_ptr<Bullet> bullet);
+	void AddBullet		(const std::shared_ptr<Bullet>		bullet);
+	void AddShellCasing	(const std::shared_ptr<ShellCasing> shell_casing);
 
 private:
-	std::vector<std::shared_ptr<Bullet>> m_bullets;
+	std::unordered_map<std::string, std::vector<std::shared_ptr<ObjBase>>> m_rifle_cartridge;
+
 	std::vector<VECTOR> m_hit_pos;	// MEMO : 仮の衝突座標
 
-	friend SingletonBase<BulletManager>;
+	friend SingletonBase<RifleCartridgeManager>;
 };

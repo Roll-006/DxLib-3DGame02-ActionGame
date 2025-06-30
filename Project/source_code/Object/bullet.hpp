@@ -1,8 +1,11 @@
 #pragma once
 #include "../Base/physical_obj_base.hpp"
+
 #include "../Manager/obj_manager.hpp"
 #include "../Manager/collision_manager.hpp"
 #include "../Manager/physics_manager.hpp"
+
+class GunBase;
 
 class Bullet final : public PhysicalObjBase
 {
@@ -18,11 +21,7 @@ public:
 	void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) override;
 	
 	/// @brief ’eŠÛ‚ª”­Ë‚³‚ê‚½
-	/// @param pos ‰ŠúÀ•W
-	/// @param dir ”­Ë•ûŒü
-	/// @param initial_velocity ‰‘¬
-	/// @param range Ë’ö
-	void OnShot(const VECTOR& pos, const VECTOR& dir, const float initial_velocity, const float range);
+	void OnShot(const GunBase& gun);
 
 	[[nodiscard]] bool IsAlive() const { return m_Is_alive; }
 

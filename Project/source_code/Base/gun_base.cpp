@@ -8,7 +8,7 @@ GunBase::GunBase(const std::string& name, const GunKind gun_kind, const std::str
 	m_point_on_ray_line			(v3d::GetZeroV()),
 	m_scope_scale				(0.0f),
 	m_range						(0.0f),
-	m_initial_velocity_bullet	(0.0f),
+	m_initial_velocity			(0.0f),
 	m_shot_interval_time		(0.0f),
 	m_shot_timer				(0.0f),
 	m_is_shot					(false),
@@ -34,7 +34,7 @@ VECTOR GunBase::GetEjectionPortPos() const
 	return local_pos + VTransformSR(m_ejection_port_correct_pos, world_m);
 }
 
-VECTOR GunBase::GetFirstShotPos()
+VECTOR GunBase::GetFirstShotPos() const
 {
 	// ‘€ìƒLƒƒƒ‰‚Ìê‡‚ÍeŒû‚©‚çƒJƒƒ‰forward‚É“Š‰e
 	// ”ñ‘€ìƒLƒƒƒ‰‚Ìê‡‚Í‚»‚Ì‚Ü‚ÜeŒû
@@ -63,6 +63,6 @@ void GunBase::Shot()
 	// ”­ŽËŒÄ‚Ño‚µ
 	if (m_is_shot)
 	{
-		BulletManager::GetInstance()->Shot(GetFirstShotPos(), m_aim_dir, m_initial_velocity_bullet, m_range);
+		RifleCartridgeManager::GetInstance()->Shot(*this);
 	}
 }

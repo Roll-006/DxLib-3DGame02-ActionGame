@@ -29,15 +29,16 @@ public:
 	[[nodiscard]] VECTOR  GetEjectionPortPos()  const;
 	[[nodiscard]] float   GetScopeScale()		const { return m_scope_scale; }
 	[[nodiscard]] float   GetRange()			const { return m_range; }
+	[[nodiscard]] float   GetInitialVelocity()	const { return m_initial_velocity; }
 	[[nodiscard]] GunKind GetGunKind()			const { return m_gun_kind; }
+
+	/// @brief 弾丸の発射位置を取得
+	[[nodiscard]] VECTOR  GetFirstShotPos()		const;
 
 	[[nodiscard]] bool    IsAiming()			const { return m_is_aiming; }
 	[[nodiscard]] bool	  IsShot()				const { return m_is_shot; }
 
 protected:
-	/// @brief 弾丸の発射位置を取得
-	[[nodiscard]] VECTOR GetFirstShotPos();
-
 	/// @brief 弾丸発射処理
 	void Shot();
 
@@ -48,7 +49,7 @@ protected:
 	VECTOR  m_point_on_ray_line;			// レイキャスト用の線分を拡張した直線上にある点
 	float	m_scope_scale;					// スコープ倍率
 	float	m_range;						// 射程
-	float   m_initial_velocity_bullet;		// 弾丸の初速
+	float   m_initial_velocity;				// 弾丸の初速
 	float   m_shot_interval_time;			// 弾丸が発射される時間間隔
 	float	m_shot_timer;					// 弾丸を撃つためのタイマー
 	bool    m_is_shot;						// 弾丸を撃つかを判定

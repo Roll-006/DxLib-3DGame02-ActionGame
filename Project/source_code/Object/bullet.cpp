@@ -1,5 +1,6 @@
 #include "bullet.hpp"
 #include "../Manager/bullet_manager.hpp"
+#include "../Base/gun_base.hpp"
 
 Bullet::Bullet() : 
 	PhysicalObjBase	(ObjName.BULLET, ObjTag.BULLET, MassKind::kLight),
@@ -59,8 +60,8 @@ void Bullet::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	case ColliderKind::kRayCast:
 		if (hit_collider_pair.intersection)
 		{
-			BulletManager::GetInstance()->DeleteBullet(this->GetObjHandle());
-			BulletManager::GetInstance()->AddHitPos(*hit_collider_pair.intersection);
+			RifleCartridgeManager::GetInstance()->DeleteBullet(this->GetObjHandle());
+			RifleCartridgeManager::GetInstance()->AddHitPos(*hit_collider_pair.intersection);
 		}
 		break;
 
@@ -69,14 +70,14 @@ void Bullet::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	}
 }
 
-void Bullet::OnShot(const VECTOR& pos, const VECTOR& dir, const float initial_velocity, const float range)
+void Bullet::OnShot(const GunBase& gun)
 {
-	m_transform->SetPos(CoordinateKind::kWorld, pos);
-	m_prev_pos	 = pos;
-	m_first_pos  = pos;
-	m_dir		 = dir;
-	m_move_speed = initial_velocity;
-	m_range		 = range;
+	m_first_pos  = gun.GetFirstShotPos();
+	m_transform->SetPos(CoordinateKind::kWorld, m_first_pos);
+	m_prev_pos	 = m_first_pos;
+	m_dir		 = gun.GetAimDir();
+	m_move_speed = gun.GetInitialVelocity();
+	m_range		 = gun.GetRange();
 }
 
 void Bullet::Move()
