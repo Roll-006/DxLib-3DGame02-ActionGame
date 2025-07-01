@@ -7,13 +7,13 @@
 #include "../Concept/common_concepts.hpp"
 #include "../FPS/fps.hpp"
 
-#include "modeler.hpp"
+#include "../Part/modeler.hpp"
 
-class Animator final
+class AnimatorBase abstract
 {
 public:
-	Animator(const std::shared_ptr<Modeler> modeler);
-	~Animator();
+	AnimatorBase(const std::shared_ptr<Modeler> modeler);
+	~AnimatorBase();
 
 	void Init();
 	void Update();
@@ -35,6 +35,8 @@ public:
 	[[nodiscard]] float GetBlendRate()const { m_blend_rate; }
 
 private:
+	virtual void LoadAnim() abstract;
+
 	void DetachAnim(const TimeKind time_kind);
 
 	/// @brief 再生開始地点を設定

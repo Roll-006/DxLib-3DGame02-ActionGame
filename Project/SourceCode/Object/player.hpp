@@ -1,6 +1,7 @@
 #pragma once
 #include "../Base/chara_base.hpp"
-#include "../Data/Kind/player_kind.hpp"
+
+#include "../Part/player_animator.hpp"
 
 #include "assault_rifle.hpp"
 #include "camera.hpp"
@@ -18,9 +19,6 @@ public:
 
 	void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) override;
 
-	[[nodiscard]] std::shared_ptr<Modeler>	GetModeler()  const { return m_modeler; }
-	[[nodiscard]] std::shared_ptr<Animator>	GetAnimator() const { return m_animator; }
-
 	#pragma region コマンド
 	void Run();
 	void Squat();
@@ -34,7 +32,6 @@ public:
 	#pragma endregion
 
 private:
-	void LoadAnim() override;
 	void ChangeAnimState() override;
 
 	void Move();
@@ -101,7 +98,7 @@ private:
 	std::unordered_map<TimeKind, VECTOR> m_move_dir;			// 移動方向(TODO : 長さが1未満である時がある場合があるため命名を変更すべき)
 	std::unordered_map<TimeKind, VECTOR> m_look_dir;			// 向いている方向
 	
-	std::unordered_map<TimeKind, PlayerAnimKind> m_anim_kind;	// アニメーションの状態を判定
+	PlayerAnimKind m_anim_kind;									// アニメーションの状態を判定
 
 	std::shared_ptr<BonePosCorrector> m_bone_pos_corrector;		// ボーン位置修正
 

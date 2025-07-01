@@ -1,6 +1,6 @@
-﻿#include "animator.hpp"
+﻿#include "animator_base.hpp"
 
-Animator::Animator(const std::shared_ptr<Modeler> modeler) :
+AnimatorBase::AnimatorBase(const std::shared_ptr<Modeler> modeler) :
 	m_prev_anim_play_rate		(0.0f),
 	m_blend_rate				(1.0f),
 	m_is_first_frame_change_anim(false),
@@ -11,7 +11,7 @@ Animator::Animator(const std::shared_ptr<Modeler> modeler) :
 	m_time_kind_data[TimeKind::kPrev] = m_time_kind_data[TimeKind::kCurrent] = AnimTimeKindData();
 }
 
-Animator::~Animator()
+AnimatorBase::~AnimatorBase()
 {
 	for (auto& data : m_anim_data)
 	{
@@ -19,13 +19,13 @@ Animator::~Animator()
 	}
 }
 
-void Animator::Init()
+void AnimatorBase::Init()
 {
 	DetachAnim(TimeKind::kPrev);
 	DetachAnim(TimeKind::kCurrent);
 }
 
-void Animator::Update()
+void AnimatorBase::Update()
 {
 	m_is_first_frame_change_anim = false;
 
@@ -33,7 +33,7 @@ void Animator::Update()
 	PlayAnim();
 }
 
-void Animator::AddAnimHandle(const int kind, const std::string& file_path, const int index, const std::string& tag, const float play_speed, const bool is_loop)
+void AnimatorBase::AddAnimHandle(const int kind, const std::string& file_path, const int index, const std::string& tag, const float play_speed, const bool is_loop)
 {
 	// 上書き不可
 	if (m_anim_data.count(kind)) { return; }
@@ -45,7 +45,7 @@ void Animator::AddAnimHandle(const int kind, const std::string& file_path, const
 	}
 }
 
-void Animator::AddAnimHandle(const int kind, const int anim_handle, const int index, const std::string& tag, const float play_speed, const bool is_loop)
+void AnimatorBase::AddAnimHandle(const int kind, const int anim_handle, const int index, const std::string& tag, const float play_speed, const bool is_loop)
 {
 	// 上書き不可
 	if (m_anim_data.count(kind)) { return; }
@@ -56,7 +56,7 @@ void Animator::AddAnimHandle(const int kind, const int anim_handle, const int in
 	}
 }
 
-void Animator::AttachAnim(const int next_kind)
+void AnimatorBase::AttachAnim(const int next_kind)
 {
 	// 現在のアニメーションと同じであった場合はアタッチを許可しない
 	// ブレンドが完了していない場合はアタッチを許可しない
@@ -81,7 +81,7 @@ void Animator::AttachAnim(const int next_kind)
 	m_blend_rate = m_time_kind_data.at(TimeKind::kPrev).attach_index > -1 ? 0.0f : 1.0f;
 }
 
-void Animator::DetachAnim(const TimeKind time_kind)
+void AnimatorBase::DetachAnim(const TimeKind time_kind)
 {
 	if (m_time_kind_data.at(time_kind).attach_index > -1)
 	{
@@ -90,7 +90,7 @@ void Animator::DetachAnim(const TimeKind time_kind)
 	}
 }
 
-void Animator::SetPlayStartTime()
+void AnimatorBase::SetPlayStartTime()
 {
 	if (m_anim_data.count(m_time_kind_data.at(TimeKind::kPrev).kind))
 	{
@@ -113,7 +113,7 @@ void Animator::SetPlayStartTime()
 	m_time_kind_data.at(TimeKind::kCurrent).play_timer = 0.0f;
 }
 
-void Animator::PlayAnim()
+void AnimatorBase::PlayAnim()
 {
 	for (auto& [state_t, data] : m_time_kind_data)
 	{
@@ -133,7 +133,7 @@ void Animator::PlayAnim()
 	}
 }
 
-void Animator::BlendAnim()
+void AnimatorBase::BlendAnim()
 {
 	// ブレンド率100%まで増加させる
 	math::Increase(m_blend_rate, kBlendSpeed * FPS::GetDeltaTime(), 1.0f);

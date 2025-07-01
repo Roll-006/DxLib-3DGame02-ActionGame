@@ -4,6 +4,7 @@
 Player::Player(std::shared_ptr<Camera> camera) :
 	CharaBase				(ObjName.PLAYER, ObjTag.PLAYER, ModelPath.CHARA_01, MassKind::kMedium),
 	m_camera				(camera),
+	m_anim_kind				(PlayerAnimKind::kIdle02),
 	m_bone_pos_corrector	(std::make_shared<BonePosCorrector>()),
 	m_move_speed			(0.0f),
 	m_non_move_time			(0.0f),
@@ -26,9 +27,8 @@ Player::Player(std::shared_ptr<Camera> camera) :
 	CreateCollider(kCapsuleRadius, kLandingTriggerRadius);
 
 	// 各アニメーション追加
-	LoadAnim();
-	m_anim_kind[TimeKind::kPrev] = m_anim_kind[TimeKind::kCurrent] = PlayerAnimKind::kIdle02;
-	m_animator->AttachAnim(static_cast<int>(m_anim_kind.at(TimeKind::kCurrent)));
+	m_animator = std::make_shared<PlayerAnimator>(m_modeler);
+	m_animator->AttachAnim(static_cast<int>(m_anim_kind));
 
 	// 武器設定
 	const auto gun = std::make_shared<AssaultRifle>();
@@ -56,12 +56,6 @@ void Player::Init()
 void Player::Update()
 {
 	if (!IsActive()) { return; }
-
-	// アニメーション情報をシフト
-	if (m_anim_kind.at(TimeKind::kPrev) != m_anim_kind.at(TimeKind::kCurrent))
-	{
-		m_anim_kind.at(TimeKind::kPrev) = m_anim_kind.at(TimeKind::kCurrent);
-	}
 
 	InitMove();
 
@@ -269,7 +263,7 @@ void Player::AimingGun()
 
 	// 銃に狙う方向を設定
 	std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->SetAimDir		  (m_camera->GetTransform()->GetForward(CoordinateKind::kWorld));
-	std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->SetPointOnRayLine(m_camera->GetTransform()->GetPos    (CoordinateKind::kWorld));
+	std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->SetPosOnRayLine(m_camera->GetTransform()->GetPos    (CoordinateKind::kWorld));
 
 	// ダッシュ状態を解除
 	m_is_run = false;
@@ -308,35 +302,6 @@ void Player::TurnAround()
 #pragma endregion
 
 
-void Player::LoadAnim()
-{
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdle01),					AnimPath.IDLE_01,						0, AnimTag.NONE, 20.0f, true);
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdle02),					AnimPath.IDLE_02,						0, AnimTag.NONE, 20.0f, true);
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdleSquat01),				AnimPath.IDLE_SQUAT_01,					0, AnimTag.NONE, 20.0f, true);
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdleSquatShoot01),			AnimPath.IDLE_SQUAT_SHOOT_01,			0, AnimTag.NONE, 20.0f, true);
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdleShoot01),				AnimPath.IDLE_SHOOT_01,					0, AnimTag.NONE, 20.0f, true);
-
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkSquatForward01),		AnimPath.WALK_SQUAT_FORWARD_01,			0, AnimTag.WALK, 20.0f, true);
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkSquatBackward01),		AnimPath.WALK_SQUAT_BACKWARD_01,		0, AnimTag.WALK, 20.0f, true);
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkSquatLeft01),			AnimPath.WALK_SQUAT_LEFT_01,			0, AnimTag.WALK, 20.0f, true);
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkSquatRight01),			AnimPath.WALK_SQUAT_RIGHT_01,			0, AnimTag.WALK, 20.0f, true);
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkSquatForwardLeft01),	AnimPath.WALK_SQUAT_FORWARD_LEFT_01,	0, AnimTag.WALK, 20.0f, true);
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkSquatForwardRight01),	AnimPath.WALK_SQUAT_FORWARD_RIGHT_01,	0, AnimTag.WALK, 20.0f, true);
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkSquatBackwardLeft01),	AnimPath.WALK_SQUAT_BACKWARD_LEFT_01,	0, AnimTag.WALK, 20.0f, true);
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkSquatBackwardRight01),	AnimPath.WALK_SQUAT_BACKWARD_RIGHT_01,	0, AnimTag.WALK, 20.0f, true);
-
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkShootForward01),		AnimPath.WALK_SHOOT_FORWARD_01,			0, AnimTag.WALK, 30.0f, true);
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkShootBackward01),		AnimPath.WALK_SHOOT_BACKWARD_01,		0, AnimTag.WALK, 30.0f, true);
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkShootLeft01),			AnimPath.WALK_SHOOT_LEFT_01,			0, AnimTag.WALK, 30.0f, true);
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkShootRight01),			AnimPath.WALK_SHOOT_RIGHT_01,			0, AnimTag.WALK, 40.0f, true);
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkShootForwardLeft01),	AnimPath.WALK_SHOOT_FORWARD_LEFT_01,	0, AnimTag.WALK, 30.0f, true);
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkShootForwardRight01),	AnimPath.WALK_SHOOT_FORWARD_RIGHT_01,	0, AnimTag.WALK, 30.0f, true);
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkShootBackwardLeft01),	AnimPath.WALK_SHOOT_BACKWARD_LEFT_01,	0, AnimTag.WALK, 30.0f, true);
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkShootBackwardRight01),	AnimPath.WALK_SHOOT_BACKWARD_RIGHT_01,	0, AnimTag.WALK, 30.0f, true);
-
-	m_animator->AddAnimHandle(static_cast<int>(PlayerAnimKind::kRunForward01),				AnimPath.RUN_FORWARD_01,				0, AnimTag.WALK, 40.0f, true);
-}
-
 void Player::ChangeAnimState()
 {
 	// TODO : のちに変更
@@ -346,24 +311,24 @@ void Player::ChangeAnimState()
 	{
 		if (m_non_move_time > kIdelAnimPlayThreshold)
 		{
-			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kIdle02;
+			m_anim_kind = PlayerAnimKind::kIdle02;
 
 			if (m_is_squat)
 			{
-				m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kIdleSquat01;
+				m_anim_kind = PlayerAnimKind::kIdleSquat01;
 			}
 		}
 
 		if (m_is_aiming)
 		{
-			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kIdleShoot01;
+			m_anim_kind = PlayerAnimKind::kIdleShoot01;
 		}
 	}
 
 	// ダッシュ
 	if (m_is_run)
 	{
-		m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kRunForward01;
+		m_anim_kind = PlayerAnimKind::kRunForward01;
 	}
 
 	// 銃を構えながら歩く
@@ -371,35 +336,35 @@ void Player::ChangeAnimState()
 	{
 		if (m_is_input_move.at(static_cast<int>(MoveDir::kForward)))
 		{
-			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkShootForward01;
+			m_anim_kind = PlayerAnimKind::kWalkShootForward01;
 		}
 		if (m_is_input_move.at(static_cast<int>(MoveDir::kBackward)))
 		{
-			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkShootBackward01;
+			m_anim_kind = PlayerAnimKind::kWalkShootBackward01;
 		}
 		if (m_is_input_move.at(static_cast<int>(MoveDir::kLeft)))
 		{
-			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkShootLeft01;
+			m_anim_kind = PlayerAnimKind::kWalkShootLeft01;
 		}
 		if (m_is_input_move.at(static_cast<int>(MoveDir::kRight)))
 		{
-			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkShootRight01;
+			m_anim_kind = PlayerAnimKind::kWalkShootRight01;
 		}
 		if (m_is_input_move.at(static_cast<int>(MoveDir::kForward)) && m_is_input_move.at(static_cast<int>(MoveDir::kLeft)))
 		{
-			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkShootForwardLeft01;
+			m_anim_kind = PlayerAnimKind::kWalkShootForwardLeft01;
 		}
 		if (m_is_input_move.at(static_cast<int>(MoveDir::kForward)) && m_is_input_move.at(static_cast<int>(MoveDir::kRight)))
 		{
-			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkShootForwardRight01;
+			m_anim_kind = PlayerAnimKind::kWalkShootForwardRight01;
 		}
 		if (m_is_input_move.at(static_cast<int>(MoveDir::kBackward)) && m_is_input_move.at(static_cast<int>(MoveDir::kLeft)))
 		{
-			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkShootBackwardLeft01;
+			m_anim_kind = PlayerAnimKind::kWalkShootBackwardLeft01;
 		}
 		if (m_is_input_move.at(static_cast<int>(MoveDir::kBackward)) && m_is_input_move.at(static_cast<int>(MoveDir::kRight)))
 		{
-			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkShootBackwardRight01;
+			m_anim_kind = PlayerAnimKind::kWalkShootBackwardRight01;
 		}
 	}
 
@@ -408,45 +373,45 @@ void Player::ChangeAnimState()
 	{
 		if (m_is_aiming)
 		{
-			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kIdleSquatShoot01;
+			m_anim_kind = PlayerAnimKind::kIdleSquatShoot01;
 		}
 
 		if (m_is_input_move.at(static_cast<int>(MoveDir::kForward)))
 		{
-			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkSquatForward01;
+			m_anim_kind = PlayerAnimKind::kWalkSquatForward01;
 		}
 		if (m_is_input_move.at(static_cast<int>(MoveDir::kBackward)))
 		{
-			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkSquatBackward01;
+			m_anim_kind = PlayerAnimKind::kWalkSquatBackward01;
 		}
 		if (m_is_input_move.at(static_cast<int>(MoveDir::kLeft)))
 		{
-			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkSquatLeft01;
+			m_anim_kind = PlayerAnimKind::kWalkSquatLeft01;
 		}
 		if (m_is_input_move.at(static_cast<int>(MoveDir::kRight)))
 		{
-			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkSquatRight01;
+			m_anim_kind = PlayerAnimKind::kWalkSquatRight01;
 		}
 		if (m_is_input_move.at(static_cast<int>(MoveDir::kForward)) && m_is_input_move.at(static_cast<int>(MoveDir::kLeft)))
 		{
-			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkSquatForwardLeft01;
+			m_anim_kind = PlayerAnimKind::kWalkSquatForwardLeft01;
 		}
 		if (m_is_input_move.at(static_cast<int>(MoveDir::kForward)) && m_is_input_move.at(static_cast<int>(MoveDir::kRight)))
 		{
-			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkSquatForwardRight01;
+			m_anim_kind = PlayerAnimKind::kWalkSquatForwardRight01;
 		}
 		if (m_is_input_move.at(static_cast<int>(MoveDir::kBackward)) && m_is_input_move.at(static_cast<int>(MoveDir::kLeft)))
 		{
-			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkSquatBackwardLeft01;
+			m_anim_kind = PlayerAnimKind::kWalkSquatBackwardLeft01;
 		}
 		if (m_is_input_move.at(static_cast<int>(MoveDir::kBackward)) && m_is_input_move.at(static_cast<int>(MoveDir::kRight)))
 		{
-			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kWalkSquatBackwardRight01;
+			m_anim_kind = PlayerAnimKind::kWalkSquatBackwardRight01;
 		}
 	}
 
 	// 状態を反映
-	m_animator->AttachAnim(static_cast<int>(m_anim_kind.at(TimeKind::kCurrent)));
+	m_animator->AttachAnim(static_cast<int>(m_anim_kind));
 }
 
 void Player::Move()

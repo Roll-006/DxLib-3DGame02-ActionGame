@@ -3,9 +3,10 @@
 
 ShellCasing::ShellCasing() :
 	PhysicalObjBase	(ObjName.SHELL_CASING, ObjTag.BULLET, MassKind::kLight),
+	m_move_dir		(v3d::GetZeroV()),
 	m_alive_timer	(0.0f),
-	m_is_alive		(true),
-	m_move_dir		(v3d::GetZeroV())
+	m_move_speed	(kMoveSpeed),
+	m_is_alive		(true)
 {
 	m_modeler = std::make_shared<Modeler>(m_transform, ModelPath.SHELL_CASING_556x45, VGet(90.0f * math::kDegreesToRadian, 0.0f, 0.0f));
 
@@ -23,6 +24,7 @@ void ShellCasing::Init()
 	m_velocity		= v3d::GetZeroV();
 	m_fall_velocity = v3d::GetZeroV();
 	m_alive_timer	= 0.0f;
+	m_move_speed	= kMoveSpeed;
 	m_is_alive		= true;
 }
 
@@ -30,7 +32,6 @@ void ShellCasing::Update()
 {
 	if (!IsActive()) { return; }
 
-	//CalcColliderPos();
 	AddFallVelocity();
 
 	m_is_landing = false;
@@ -49,6 +50,9 @@ void ShellCasing::Draw() const
 	if (!IsActive()) { return; }
 
 	m_modeler->Draw();
+
+	//GetCollider(ColliderKind::kCollider)	  ->GetShape()->Draw(true, 255, 0xffffff);
+	//GetCollider(ColliderKind::kLandingTrigger)->GetShape()->Draw(true,   0, 0xff0000);
 
 	//for (auto& collider : m_collider)
 	//{
@@ -91,7 +95,8 @@ void ShellCasing::Eject(GunBase& gun)
 
 void ShellCasing::Move()
 {
-	m_velocity = m_move_dir * kMoveSpeed;
+	math::Decrease(m_move_speed, kDeceleration * FPS::GetDeltaTime(), 0.0f);
+	m_velocity = m_move_dir * m_move_speed;
 }
 
 void ShellCasing::JudgeAlive()
@@ -115,6 +120,6 @@ void ShellCasing::CalcColliderPos()
 
 	// 着地用トリガー
 	auto landing_capsule = std::dynamic_pointer_cast<Capsule>(GetCollider(ColliderKind::kLandingTrigger)->GetShape());
-	landing_capsule->SetSegmentBeginPos(begin_pos, true);
-	landing_capsule->SetSegmentEndPos  (end_pos,   true);
+	landing_capsule->SetSegmentBeginPos(begin_pos + kLandingTriggerCorrectPos, true);
+	landing_capsule->SetSegmentEndPos  (end_pos   + kLandingTriggerCorrectPos, true);
 }

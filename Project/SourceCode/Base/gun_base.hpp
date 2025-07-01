@@ -21,7 +21,7 @@ public:
 	/// @brief レイキャスト用の線分を拡張した直線上にある点を設定する
 	/// @brief 操作キャラの場合はカメラの座標
 	/// @brief 非操作キャラの場合はターゲットの座標
-	void SetPointOnRayLine(const VECTOR& point) { m_point_on_ray_line = point; }
+	void SetPosOnRayLine(const VECTOR& point) { m_point_on_ray_line = point; }
 	void SetAimDir(const VECTOR& aim_dir) { m_aim_dir = aim_dir; }
 
 	[[nodiscard]] VECTOR  GetAimDir()			const { return m_aim_dir; }
@@ -35,8 +35,8 @@ public:
 	/// @brief 弾丸の発射位置を取得
 	[[nodiscard]] VECTOR  GetFirstShotPos()		const;
 
-	[[nodiscard]] bool IsPullTrigger() const { return m_is_pull_trigger; }
-	[[nodiscard]] bool IsShot()		   const { return m_is_shot; }
+	[[nodiscard]] bool    IsPullTrigger()       const { return m_is_pull_trigger; }
+	[[nodiscard]] bool    IsShot()		        const { return m_is_shot; }
 
 protected:
 	/// @brief 弾丸発射処理

@@ -1,506 +1,518 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="source_code\Manager\game_manager.cpp">
+    <ClCompile Include="SourceCode\Base\chara_base.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Base\gun_base.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Base\obj_base.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Base\object_pool_base.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Base\physical_obj_base.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Base\weapon_base.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Calculation\collision_calculator.cpp">
+      <Filter>Calculation</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Calculation\math.cpp">
+      <Filter>Calculation</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Calculation\quaternion.cpp">
+      <Filter>Calculation</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Command\camera_command.cpp">
+      <Filter>Command</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Command\player_command.cpp">
+      <Filter>Command</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Command\select_command.cpp">
+      <Filter>Command</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\FPS\fps.cpp">
+      <Filter>FPS</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Manager\collision_manager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
-    <ClCompile Include="source_code\Manager\scene_manager.cpp">
+    <ClCompile Include="SourceCode\Manager\command_handler.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
-    <ClCompile Include="source_code\FPS\fps.cpp">
-      <Filter>Data\FPS</Filter>
-    </ClCompile>
-    <ClCompile Include="source_code\main.cpp" />
-    <ClCompile Include="source_code\Manager\input_checker.cpp">
+    <ClCompile Include="SourceCode\Manager\game_manager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
-    <ClCompile Include="source_code\Window\window.cpp">
+    <ClCompile Include="SourceCode\Manager\handle_keeper.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Manager\input_checker.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Manager\obj_manager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Manager\object_pool_manager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Manager\physics_manager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Manager\rifle_cartridge_manager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Manager\scene_manager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Manager\weapon_manager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Object\assault_rifle (2).cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Object\assault_rifle.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Object\bullet.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Object\camera.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Object\enemy.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Object\ground.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Object\house.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Object\player.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Object\selector.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Object\shell_casing.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Object\skydome.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Part\bone_pos_corrector.cpp">
+      <Filter>Part</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Part\collider.cpp">
+      <Filter>Part</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Part\modeler.cpp">
+      <Filter>Part</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Part\rifle_cartridge_object_pool.cpp">
+      <Filter>Part</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Part\transform.cpp">
+      <Filter>Part</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Scene\game_clear_scene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Scene\game_over_scene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Scene\load_scene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Scene\play_scene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Scene\share_scene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Scene\title_scene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Window\window.cpp">
       <Filter>Window</Filter>
     </ClCompile>
-    <ClCompile Include="source_code\Manager\obj_manager.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="source_code\Scene\game_clear_scene.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="source_code\Scene\game_over_scene.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="source_code\Scene\load_scene.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="source_code\Scene\play_scene.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="source_code\Scene\share_scene.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="source_code\Scene\title_scene.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="source_code\Object\player.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
-    <ClCompile Include="source_code\Object\camera.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
-    <ClCompile Include="source_code\Shape\1DShape\line.cpp">
+    <ClCompile Include="SourceCode\main.cpp" />
+    <ClCompile Include="SourceCode\Shape\1DShape\line.cpp">
       <Filter>Shape\1DShape</Filter>
     </ClCompile>
-    <ClCompile Include="source_code\Shape\1DShape\segment.cpp">
+    <ClCompile Include="SourceCode\Shape\1DShape\segment.cpp">
       <Filter>Shape\1DShape</Filter>
     </ClCompile>
-    <ClCompile Include="source_code\Shape\2DShape\circle.cpp">
+    <ClCompile Include="SourceCode\Shape\2DShape\circle.cpp">
       <Filter>Shape\2DShape</Filter>
     </ClCompile>
-    <ClCompile Include="source_code\Shape\2DShape\plane.cpp">
+    <ClCompile Include="SourceCode\Shape\2DShape\circumference.cpp">
       <Filter>Shape\2DShape</Filter>
     </ClCompile>
-    <ClCompile Include="source_code\Shape\2DShape\square.cpp">
+    <ClCompile Include="SourceCode\Shape\2DShape\plane.cpp">
       <Filter>Shape\2DShape</Filter>
     </ClCompile>
-    <ClCompile Include="source_code\Shape\2DShape\triangle.cpp">
+    <ClCompile Include="SourceCode\Shape\2DShape\square.cpp">
       <Filter>Shape\2DShape</Filter>
     </ClCompile>
-    <ClCompile Include="source_code\Shape\3DShape\aabb.cpp">
+    <ClCompile Include="SourceCode\Shape\2DShape\triangle.cpp">
+      <Filter>Shape\2DShape</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Shape\3DShape\aabb.cpp">
       <Filter>Shape\3DShape</Filter>
     </ClCompile>
-    <ClCompile Include="source_code\Shape\3DShape\capsule.cpp">
+    <ClCompile Include="SourceCode\Shape\3DShape\capsule.cpp">
       <Filter>Shape\3DShape</Filter>
     </ClCompile>
-    <ClCompile Include="source_code\Shape\3DShape\obb.cpp">
+    <ClCompile Include="SourceCode\Shape\3DShape\obb.cpp">
       <Filter>Shape\3DShape</Filter>
     </ClCompile>
-    <ClCompile Include="source_code\Shape\3DShape\sphere.cpp">
+    <ClCompile Include="SourceCode\Shape\3DShape\sphere.cpp">
       <Filter>Shape\3DShape</Filter>
     </ClCompile>
-    <ClCompile Include="source_code\Shape\2DShape\circumference.cpp">
-      <Filter>Shape\2DShape</Filter>
+    <ClCompile Include="SourceCode\Debugger\debugger.cpp">
+      <Filter>Debugger</Filter>
     </ClCompile>
-    <ClCompile Include="source_code\Manager\collision_manager.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="source_code\Calculation\collision_calculator.cpp">
-      <Filter>Calculation</Filter>
-    </ClCompile>
-    <ClCompile Include="source_code\Calculation\math.cpp">
-      <Filter>Calculation</Filter>
-    </ClCompile>
-    <ClCompile Include="source_code\Calculation\quaternion.cpp">
-      <Filter>Calculation</Filter>
-    </ClCompile>
-    <ClCompile Include="source_code\Part\animator.cpp">
+    <ClCompile Include="SourceCode\Part\player_animator.cpp">
       <Filter>Part</Filter>
     </ClCompile>
-    <ClCompile Include="source_code\Part\bone_pos_corrector.cpp">
-      <Filter>Part</Filter>
-    </ClCompile>
-    <ClCompile Include="source_code\Part\modeler.cpp">
-      <Filter>Part</Filter>
-    </ClCompile>
-    <ClCompile Include="source_code\Part\transform.cpp">
-      <Filter>Part</Filter>
-    </ClCompile>
-    <ClCompile Include="source_code\Manager\physics_manager.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="source_code\Manager\command_handler.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="source_code\Command\camera_command.cpp">
-      <Filter>Command</Filter>
-    </ClCompile>
-    <ClCompile Include="source_code\Command\player_command.cpp">
-      <Filter>Command</Filter>
-    </ClCompile>
-    <ClCompile Include="source_code\Command\select_command.cpp">
-      <Filter>Command</Filter>
-    </ClCompile>
-    <ClCompile Include="source_code\Object\selector.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
-    <ClCompile Include="source_code\Object\assault_rifle.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
-    <ClCompile Include="source_code\Manager\weapon_manager.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="source_code\Manager\handle_keeper.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="source_code\Object\enemy.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
-    <ClCompile Include="source_code\Object\skydome.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
-    <ClCompile Include="source_code\Object\house.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
-    <ClCompile Include="source_code\Object\ground.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
-    <ClCompile Include="source_code\Part\collider.cpp">
-      <Filter>Part</Filter>
-    </ClCompile>
-    <ClCompile Include="source_code\Object\assault_rifle (2).cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
-    <ClCompile Include="source_code\Object\bullet.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
-    <ClCompile Include="source_code\Base\gun_base.cpp">
+    <ClCompile Include="SourceCode\Base\animator_base.cpp">
       <Filter>Base</Filter>
-    </ClCompile>
-    <ClCompile Include="source_code\Base\weapon_base.cpp">
-      <Filter>Base</Filter>
-    </ClCompile>
-    <ClCompile Include="source_code\Base\physical_obj_base.cpp">
-      <Filter>Base</Filter>
-    </ClCompile>
-    <ClCompile Include="source_code\Base\chara_base.cpp">
-      <Filter>Base</Filter>
-    </ClCompile>
-    <ClCompile Include="source_code\Part\rifle_cartridge_object_pool.cpp">
-      <Filter>Part</Filter>
-    </ClCompile>
-    <ClCompile Include="source_code\Base\object_pool_base.cpp">
-      <Filter>Base</Filter>
-    </ClCompile>
-    <ClCompile Include="source_code\Object\shell_casing.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
-    <ClCompile Include="source_code\Base\obj_base.cpp">
-      <Filter>Base</Filter>
-    </ClCompile>
-    <ClCompile Include="source_code\Manager\object_pool_manager.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="source_code\Manager\rifle_cartridge_manager.cpp">
-      <Filter>Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="source_code\Manager\game_manager.hpp">
-      <Filter>Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Manager\scene_manager.hpp">
-      <Filter>Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\FPS\fps.hpp">
-      <Filter>Data\FPS</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Data\animator_data.hpp">
-      <Filter>Data</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Data\Tag\obj_tag.hpp">
-      <Filter>Data\Tag</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Data\Tag\animation_tag.hpp">
-      <Filter>Data\Tag</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Data\Name\obj_name.hpp">
-      <Filter>Data\Name</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Base\obj_base.hpp">
+    <ClInclude Include="SourceCode\Base\chara_base.hpp">
       <Filter>Base</Filter>
     </ClInclude>
-    <ClInclude Include="source_code\Concept\common_concepts.hpp">
+    <ClInclude Include="SourceCode\Base\command_base.hpp">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Base\gun_base.hpp">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Base\obj_base.hpp">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Base\object_pool_base.hpp">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Base\one_instance_singleton_base.hpp">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Base\physical_obj_base.hpp">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Base\scene_base.hpp">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Base\shape_base.hpp">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Base\singleton_base.hpp">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Base\weapon_base.hpp">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Calculation\axes.hpp">
+      <Filter>Calculation</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Calculation\collision_calculator.hpp">
+      <Filter>Calculation</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Calculation\common_operator.hpp">
+      <Filter>Calculation</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Calculation\math.hpp">
+      <Filter>Calculation</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Calculation\matrix.hpp">
+      <Filter>Calculation</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Calculation\quaternion.hpp">
+      <Filter>Calculation</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Calculation\vector_2d.hpp">
+      <Filter>Calculation</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Calculation\vector_3d.hpp">
+      <Filter>Calculation</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Command\camera_command.hpp">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Command\player_command.hpp">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Command\select_command.hpp">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Concept\common_concepts.hpp">
       <Filter>Concept</Filter>
     </ClInclude>
-    <ClInclude Include="source_code\Data\CSV\csv.hpp">
+    <ClInclude Include="SourceCode\Concept\input_concepts.hpp">
+      <Filter>Concept</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Concept\obj_concepts.hpp">
+      <Filter>Concept</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Concept\vector_concepts.hpp">
+      <Filter>Concept</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\CSV\csv.hpp">
       <Filter>Data\CSV</Filter>
     </ClInclude>
-    <ClInclude Include="source_code\Manager\input_checker.hpp">
-      <Filter>Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Data\input_data.hpp">
-      <Filter>Data</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Concept\input_concepts.hpp">
-      <Filter>Concept</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Window\window.hpp">
-      <Filter>Window</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Data\Path\animation_path.hpp">
-      <Filter>Data\Path</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Data\Path\model_path.hpp">
-      <Filter>Data\Path</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Data\Kind\input_kind.hpp">
-      <Filter>Data\Kind</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Data\Kind\player_kind.hpp">
-      <Filter>Data\Kind</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Base\scene_base.hpp">
-      <Filter>Base</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Manager\obj_manager.hpp">
-      <Filter>Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Data\Kind\scene_kind.hpp">
-      <Filter>Data\Kind</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Base\one_instance_singleton_base.hpp">
-      <Filter>Base</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Base\singleton_base.hpp">
-      <Filter>Base</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Scene\game_clear_scene.hpp">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Scene\game_over_scene.hpp">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Scene\load_scene.hpp">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Scene\play_scene.hpp">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Scene\share_scene.hpp">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Scene\title_scene.hpp">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Object\player.hpp">
-      <Filter>Object</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Object\camera.hpp">
-      <Filter>Object</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Concept\obj_concepts.hpp">
-      <Filter>Concept</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Shape\1DShape\line.hpp">
-      <Filter>Shape\1DShape</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Shape\1DShape\segment.hpp">
-      <Filter>Shape\1DShape</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Shape\2DShape\circle.hpp">
-      <Filter>Shape\2DShape</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Shape\2DShape\plane.hpp">
-      <Filter>Shape\2DShape</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Shape\2DShape\square.hpp">
-      <Filter>Shape\2DShape</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Shape\2DShape\triangle.hpp">
-      <Filter>Shape\2DShape</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Shape\3DShape\aabb.hpp">
-      <Filter>Shape\3DShape</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Shape\3DShape\capsule.hpp">
-      <Filter>Shape\3DShape</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Shape\3DShape\obb.hpp">
-      <Filter>Shape\3DShape</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Shape\3DShape\sphere.hpp">
-      <Filter>Shape\3DShape</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Base\shape_base.hpp">
-      <Filter>Base</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Data\Kind\shape_kind.hpp">
-      <Filter>Data\Kind</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Concept\vector_concepts.hpp">
-      <Filter>Concept</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Data\IncludeList\shape.hpp">
+    <ClInclude Include="SourceCode\Data\IncludeList\input.hpp">
       <Filter>Data\IncludeList</Filter>
     </ClInclude>
-    <ClInclude Include="source_code\Data\IncludeList\vector.hpp">
+    <ClInclude Include="SourceCode\Data\IncludeList\shape.hpp">
       <Filter>Data\IncludeList</Filter>
     </ClInclude>
-    <ClInclude Include="source_code\Data\Kind\texture_kind.hpp">
-      <Filter>Data\Kind</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Shape\2DShape\circumference.hpp">
-      <Filter>Shape\2DShape</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Data\box_data.hpp">
-      <Filter>Data</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Data\Kind\box_kind.hpp">
-      <Filter>Data\Kind</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Manager\collision_manager.hpp">
-      <Filter>Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Data\Kind\sort_kind.hpp">
-      <Filter>Data\Kind</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Calculation\collision_calculator.hpp">
-      <Filter>Calculation</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Calculation\math.hpp">
-      <Filter>Calculation</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Calculation\quaternion.hpp">
-      <Filter>Calculation</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Calculation\vector_2d.hpp">
-      <Filter>Calculation</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Calculation\vector_3d.hpp">
-      <Filter>Calculation</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Data\collider_pair_data.hpp">
-      <Filter>Data</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Data\Kind\collider_kind.hpp">
-      <Filter>Data\Kind</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Data\Kind\mass_kind.hpp">
-      <Filter>Data\Kind</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Data\camera_data.hpp">
-      <Filter>Data</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Data\Kind\pad_kind.hpp">
-      <Filter>Data\Kind</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Data\Kind\mouse_kind.hpp">
-      <Filter>Data\Kind</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Data\Kind\device_kind.hpp">
-      <Filter>Data\Kind</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Data\IncludeList\input.hpp">
+    <ClInclude Include="SourceCode\Data\IncludeList\vector.hpp">
       <Filter>Data\IncludeList</Filter>
     </ClInclude>
-    <ClInclude Include="source_code\Part\animator.hpp">
-      <Filter>Part</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Part\bone_pos_corrector.hpp">
-      <Filter>Part</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Part\transform.hpp">
-      <Filter>Part</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Data\Kind\coordinate_kind.hpp">
+    <ClInclude Include="SourceCode\Data\Kind\axis_kind.hpp">
       <Filter>Data\Kind</Filter>
     </ClInclude>
-    <ClInclude Include="source_code\Data\Kind\axis_kind.hpp">
+    <ClInclude Include="SourceCode\Data\Kind\box_kind.hpp">
       <Filter>Data\Kind</Filter>
     </ClInclude>
-    <ClInclude Include="source_code\Calculation\axes.hpp">
-      <Filter>Calculation</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Calculation\matrix.hpp">
-      <Filter>Calculation</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Base\chara_base.hpp">
-      <Filter>Base</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Base\physical_obj_base.hpp">
-      <Filter>Base</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Manager\physics_manager.hpp">
-      <Filter>Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Base\command_base.hpp">
-      <Filter>Base</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Manager\command_handler.hpp">
-      <Filter>Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Data\Kind\command_kind.hpp">
+    <ClInclude Include="SourceCode\Data\Kind\collider_kind.hpp">
       <Filter>Data\Kind</Filter>
     </ClInclude>
-    <ClInclude Include="source_code\Command\select_command.hpp">
-      <Filter>Command</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Command\camera_command.hpp">
-      <Filter>Command</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Command\player_command.hpp">
-      <Filter>Command</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Object\selector.hpp">
-      <Filter>Object</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Calculation\common_operator.hpp">
-      <Filter>Calculation</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Base\gun_base.hpp">
-      <Filter>Base</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Base\weapon_base.hpp">
-      <Filter>Base</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Object\assault_rifle.hpp">
-      <Filter>Object</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Data\Kind\knife_kind.hpp">
+    <ClInclude Include="SourceCode\Data\Kind\command_kind.hpp">
       <Filter>Data\Kind</Filter>
     </ClInclude>
-    <ClInclude Include="source_code\Data\Kind\gun_kind.hpp">
+    <ClInclude Include="SourceCode\Data\Kind\coordinate_kind.hpp">
       <Filter>Data\Kind</Filter>
     </ClInclude>
-    <ClInclude Include="source_code\Manager\weapon_manager.hpp">
-      <Filter>Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Data\Path\bone_path.hpp">
-      <Filter>Data\Path</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Manager\handle_keeper.hpp">
-      <Filter>Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Part\modeler.hpp">
-      <Filter>Part</Filter>
-    </ClInclude>
-    <ClInclude Include="source_code\Data\Kind\time_kind.hpp">
+    <ClInclude Include="SourceCode\Data\Kind\device_kind.hpp">
       <Filter>Data\Kind</Filter>
     </ClInclude>
-    <ClInclude Include="source_code\Object\enemy.hpp">
-      <Filter>Object</Filter>
+    <ClInclude Include="SourceCode\Data\Kind\gun_kind.hpp">
+      <Filter>Data\Kind</Filter>
     </ClInclude>
-    <ClInclude Include="source_code\Object\skydome.hpp">
-      <Filter>Object</Filter>
+    <ClInclude Include="SourceCode\Data\Kind\input_kind.hpp">
+      <Filter>Data\Kind</Filter>
     </ClInclude>
-    <ClInclude Include="source_code\Object\house.hpp">
-      <Filter>Object</Filter>
+    <ClInclude Include="SourceCode\Data\Kind\knife_kind.hpp">
+      <Filter>Data\Kind</Filter>
     </ClInclude>
-    <ClInclude Include="source_code\Object\ground.hpp">
-      <Filter>Object</Filter>
+    <ClInclude Include="SourceCode\Data\Kind\mass_kind.hpp">
+      <Filter>Data\Kind</Filter>
     </ClInclude>
-    <ClInclude Include="source_code\Part\collider.hpp">
-      <Filter>Part</Filter>
+    <ClInclude Include="SourceCode\Data\Kind\mouse_kind.hpp">
+      <Filter>Data\Kind</Filter>
     </ClInclude>
-    <ClInclude Include="source_code\Object\assault_rifle (2).hpp">
-      <Filter>Object</Filter>
+    <ClInclude Include="SourceCode\Data\Kind\pad_kind.hpp">
+      <Filter>Data\Kind</Filter>
     </ClInclude>
-    <ClInclude Include="source_code\Object\bullet.hpp">
-      <Filter>Object</Filter>
+    <ClInclude Include="SourceCode\Data\Kind\player_kind.hpp">
+      <Filter>Data\Kind</Filter>
     </ClInclude>
-    <ClInclude Include="source_code\Part\rifle_cartridge_object_pool.hpp">
-      <Filter>Part</Filter>
+    <ClInclude Include="SourceCode\Data\Kind\scene_kind.hpp">
+      <Filter>Data\Kind</Filter>
     </ClInclude>
-    <ClInclude Include="source_code\Base\object_pool_base.hpp">
-      <Filter>Base</Filter>
+    <ClInclude Include="SourceCode\Data\Kind\shape_kind.hpp">
+      <Filter>Data\Kind</Filter>
     </ClInclude>
-    <ClInclude Include="source_code\Object\shell_casing.hpp">
-      <Filter>Object</Filter>
+    <ClInclude Include="SourceCode\Data\Kind\sort_kind.hpp">
+      <Filter>Data\Kind</Filter>
     </ClInclude>
-    <ClInclude Include="source_code\Manager\object_pool_manager.hpp">
-      <Filter>Manager</Filter>
+    <ClInclude Include="SourceCode\Data\Kind\texture_kind.hpp">
+      <Filter>Data\Kind</Filter>
     </ClInclude>
-    <ClInclude Include="source_code\Data\Name\object_pool_name.hpp">
+    <ClInclude Include="SourceCode\Data\Kind\time_kind.hpp">
+      <Filter>Data\Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\Name\obj_name.hpp">
       <Filter>Data\Name</Filter>
     </ClInclude>
-    <ClInclude Include="source_code\Manager\rifle_cartridge_manager.hpp">
+    <ClInclude Include="SourceCode\Data\Name\object_pool_name.hpp">
+      <Filter>Data\Name</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\Path\animation_path.hpp">
+      <Filter>Data\Path</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\Path\bone_path.hpp">
+      <Filter>Data\Path</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\Path\model_path.hpp">
+      <Filter>Data\Path</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\Tag\animation_tag.hpp">
+      <Filter>Data\Tag</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\Tag\obj_tag.hpp">
+      <Filter>Data\Tag</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\animator_data.hpp">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\box_data.hpp">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\camera_data.hpp">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\collider_pair_data.hpp">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\input_data.hpp">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\FPS\fps.hpp">
+      <Filter>FPS</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Manager\collision_manager.hpp">
       <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Manager\command_handler.hpp">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Manager\game_manager.hpp">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Manager\handle_keeper.hpp">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Manager\input_checker.hpp">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Manager\obj_manager.hpp">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Manager\object_pool_manager.hpp">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Manager\physics_manager.hpp">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Manager\rifle_cartridge_manager.hpp">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Manager\scene_manager.hpp">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Manager\weapon_manager.hpp">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Object\assault_rifle (2).hpp">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Object\assault_rifle.hpp">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Object\bullet.hpp">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Object\camera.hpp">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Object\enemy.hpp">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Object\ground.hpp">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Object\house.hpp">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Object\player.hpp">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Object\selector.hpp">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Object\shell_casing.hpp">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Object\skydome.hpp">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Part\bone_pos_corrector.hpp">
+      <Filter>Part</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Part\collider.hpp">
+      <Filter>Part</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Part\modeler.hpp">
+      <Filter>Part</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Part\rifle_cartridge_object_pool.hpp">
+      <Filter>Part</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Part\transform.hpp">
+      <Filter>Part</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Scene\game_clear_scene.hpp">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Scene\game_over_scene.hpp">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Scene\load_scene.hpp">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Scene\play_scene.hpp">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Scene\share_scene.hpp">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Scene\title_scene.hpp">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Window\window.hpp">
+      <Filter>Window</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Shape\1DShape\line.hpp">
+      <Filter>Shape\1DShape</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Shape\1DShape\segment.hpp">
+      <Filter>Shape\1DShape</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Shape\2DShape\circle.hpp">
+      <Filter>Shape\2DShape</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Shape\2DShape\circumference.hpp">
+      <Filter>Shape\2DShape</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Shape\2DShape\plane.hpp">
+      <Filter>Shape\2DShape</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Shape\2DShape\square.hpp">
+      <Filter>Shape\2DShape</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Shape\2DShape\triangle.hpp">
+      <Filter>Shape\2DShape</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Shape\3DShape\aabb.hpp">
+      <Filter>Shape\3DShape</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Shape\3DShape\capsule.hpp">
+      <Filter>Shape\3DShape</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Shape\3DShape\obb.hpp">
+      <Filter>Shape\3DShape</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Shape\3DShape\sphere.hpp">
+      <Filter>Shape\3DShape</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Debugger\debugger.hpp">
+      <Filter>Debugger</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Part\player_animator.hpp">
+      <Filter>Part</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Base\animator_base.hpp">
+      <Filter>Base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -537,9 +549,6 @@
     <Filter Include="Data\Tag">
       <UniqueIdentifier>{cd4f92e3-b298-4e4a-9752-61379ba99845}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Interface">
-      <UniqueIdentifier>{36d9f591-dd1d-4425-a4b4-d2afb84d29d1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scene">
       <UniqueIdentifier>{47238515-00d6-486e-bcf4-f6f55f21cce5}</UniqueIdentifier>
     </Filter>
@@ -564,14 +573,17 @@
     <Filter Include="Window">
       <UniqueIdentifier>{209348fb-11d3-4b60-abc5-489ba6ddecc4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Data\FPS">
-      <UniqueIdentifier>{2e55dbb6-3445-4bc3-9190-942193ab83a5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Part">
       <UniqueIdentifier>{c6964f06-9b8c-446a-8f44-3299598a3b7f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Object">
       <UniqueIdentifier>{12318b27-d5b3-41f7-b2c0-6e3e27ab8d35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FPS">
+      <UniqueIdentifier>{2e55dbb6-3445-4bc3-9190-942193ab83a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Debugger">
+      <UniqueIdentifier>{0f578ace-5d63-4ed1-91d5-90e33a16cf7f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

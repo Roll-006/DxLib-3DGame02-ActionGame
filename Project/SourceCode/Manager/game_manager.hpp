@@ -19,7 +19,7 @@ private:
 	void SetUpGameSystem();
 
 	/// @brief ƒQ[ƒ€ƒ‹[ƒv‚ğŒp‘±‚·‚é‚©‚ğ”»’è
-	[[nodiscard]] bool ContinueLoop();
+	[[nodiscard]] bool IsContinueLoop();
 
 private:
 	std::unique_ptr<Window>			 m_window;

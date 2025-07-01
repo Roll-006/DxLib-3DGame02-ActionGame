@@ -54,6 +54,8 @@ void Capsule::Draw(const bool is_draw_frame, const int alpha_blend_num, const un
 
 void Capsule::Move(const VECTOR& velocity)
 {
+    // TODO : m_segment.Move(velocity);‚ÅˆÚ“®‚Å‚«‚È‚©‚Á‚½‚½‚ßŒŸØ‚ª•K—v
+
     SetSegmentBeginPos(GetSegment().GetBeginPos() + velocity, true);
     SetSegmentEndPos  (GetSegment().GetEndPos()   + velocity, true);
 }

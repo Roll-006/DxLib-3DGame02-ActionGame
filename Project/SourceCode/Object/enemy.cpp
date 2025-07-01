@@ -11,8 +11,6 @@ Enemy::Enemy() :
 	// コライダー・トリガーを設定
 	CreateCollider(kCapsuleRadius, kLandingTriggerRadius);
 
-	// 各アニメーション追加
-	LoadAnim();
 }
 
 Enemy::~Enemy()
@@ -33,7 +31,7 @@ void Enemy::Update()
 	UpdateTransform();
 
 	ChangeAnimState();
-	m_animator->Update();
+	//m_animator->Update();
 
 	CalcCapsuleLength();
 	AddFallVelocity();
@@ -79,11 +77,6 @@ void Enemy::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	default:
 		break;
 	}
-}
-
-void Enemy::LoadAnim()
-{
-
 }
 
 void Enemy::ChangeAnimState()

@@ -1,7 +1,7 @@
 #include "chara_base.hpp"
 
 #pragma region ïêäÌ
-CharaBase::CharaBase(const std::string& name, const std::string& tag, const std::string& file_path, MassKind mass_level_kind) : 
+CharaBase::CharaBase(const std::string& name, const std::string& tag, const std::string& file_path, const MassKind mass_level_kind) : 
 	PhysicalObjBase			(name, tag, mass_level_kind),
 	m_animator				(nullptr),
 	m_current_attach_weapon	(nullptr),
@@ -9,8 +9,7 @@ CharaBase::CharaBase(const std::string& name, const std::string& tag, const std:
 	m_capsule_length		(0.0f),
 	m_capsule_radius		(0.0f)
 {
-	m_modeler  = std::make_shared<Modeler> (m_transform, file_path, VGet(0.0f, DX_PI_F, 0.0f));
-	m_animator = std::make_shared<Animator>(m_modeler);
+	m_modeler = std::make_shared<Modeler>(m_transform, file_path, VGet(0.0f, DX_PI_F, 0.0f));
 }
 
 void CharaBase::RemoveWeapon(const std::string& obj_name)
@@ -21,7 +20,6 @@ void CharaBase::RemoveWeapon(const std::string& obj_name)
 	{
 		return weapon->GetName() == obj_name;
 	});
-
 	m_weapons.erase(remove_weapon, m_weapons.end());
 }
 
@@ -88,9 +86,7 @@ void CharaBase::CalcCapsuleLength()
 
 	// énì_Ç©ÇÁì™ïîÇ‹Ç≈ÇÃí∑Ç≥ÇéÊìæ
 	m_capsule_length = VSize(m_transform->GetPos(CoordinateKind::kWorld) - MGetTranslateElem(frame_mat));
-
-	const float segment_length = m_capsule_length - m_capsule_radius * 2.0f;
-	m_capsule_collider->SetLength(segment_length);
+	m_capsule_collider->SetLength(m_capsule_length);
 }
 
 void CharaBase::CreateCapsuleCollider(const float capsule_radius)

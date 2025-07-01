@@ -21,7 +21,11 @@ public:
 
 	void AddHitPos(const VECTOR& hit_pos)
 	{
-		m_hit_pos.emplace_back(hit_pos);
+		if (m_hit_pos.size() == 20)
+		{
+			m_hit_pos.pop();
+		}
+		m_hit_pos.push(hit_pos);
 	}
 
 private:
@@ -34,7 +38,7 @@ private:
 private:
 	std::unordered_map<std::string, std::vector<std::shared_ptr<ObjBase>>> m_rifle_cartridge;
 
-	std::vector<VECTOR> m_hit_pos;	// MEMO : âºÇÃè’ìÀç¿ïW
+	std::queue<VECTOR> m_hit_pos;	// MEMO : âºÇÃè’ìÀç¿ïW
 
 	friend SingletonBase<RifleCartridgeManager>;
 };

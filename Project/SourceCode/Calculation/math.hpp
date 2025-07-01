@@ -215,7 +215,7 @@ namespace math
 	/// @brief 値を減少させる
 	/// @param value 減少させる値
 	/// @param decrease_value 減少量
-	/// @param min_value 最大値
+	/// @param min_value 最小値
 	template<common_concepts::ArithmeticT T>
 	void Decrease(T& value, const T& decrease_value, const T& min_value)
 	{
@@ -231,7 +231,7 @@ namespace math
 	/// @brief 値を減少させる(ループ用)
 	/// @param value 減少させる値
 	/// @param decrease_value 減少量
-	/// @param min_value 最大値
+	/// @param min_value 最小値
 	/// @param is_loop ループ判定
 	template<common_concepts::ArithmeticT T>
 	void DecreaseLoop(T& value, const T& decrease_value, const T& min_value, const bool is_loop)

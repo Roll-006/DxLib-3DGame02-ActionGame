@@ -7,6 +7,7 @@ GameManager::GameManager():
 {
 	SetUpGameSystem();
 
+	
 	HandleKeeper			::Generate();
 	InputChecker			::Generate();
 	CommandHandler			::Generate();
@@ -36,7 +37,7 @@ GameManager::~GameManager()
 
 void GameManager::Run()
 {
-	while (ContinueLoop())
+	while (IsContinueLoop())
 	{
 		m_fps->Update();
 		m_window->Update();
@@ -90,7 +91,7 @@ void GameManager::SetUpGameSystem()
 	SetMainWindowText("3DGame Sample");
 }
 
-bool GameManager::ContinueLoop()
+bool GameManager::IsContinueLoop()
 {
 	if (ProcessMessage()  != 0) { return false; }
 	if (ClearDrawScreen() != 0) { return false; }

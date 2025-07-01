@@ -2,20 +2,19 @@
 #include "physical_obj_base.hpp"
 #include "gun_base.hpp"
 
-#include "../Part/animator.hpp"
+#include "animator_base.hpp"
 #include "../Part/bone_pos_corrector.hpp"
 
 class CharaBase abstract : public PhysicalObjBase
 {
 public:
-	CharaBase(const std::string& name, const std::string& tag, const std::string& file_path, MassKind mass_level_kind);
+	CharaBase(const std::string& name, const std::string& tag, const std::string& file_path, const MassKind mass_level_kind);
 	virtual ~CharaBase() = default;
 
 	[[nodiscard]] const std::shared_ptr<Modeler> GetModeler()const { return m_modeler; }
 
 protected:
 	#pragma region アニメーション
-	virtual void LoadAnim() abstract;
 	virtual void ChangeAnimState() abstract;
 	#pragma endregion
 
@@ -79,6 +78,9 @@ protected:
 	void CalcCapsuleLength();
 	#pragma endregion
 
+
+	[[nodiscard]] std::shared_ptr<AnimatorBase>	GetAnimator() const { return m_animator; }
+
 private:
 	#pragma region コライダー
 	/// @brief カプセルコライダーを作成
@@ -89,7 +91,7 @@ private:
 	#pragma endregion
 
 protected:
-	std::shared_ptr<Animator> m_animator;
+	std::shared_ptr<AnimatorBase> m_animator;
 
 	std::vector<std::shared_ptr<WeaponBase>> m_weapons;		// 登録(所持)している武器
 	std::shared_ptr<WeaponBase> m_current_attach_weapon;	// 現在アタッチ(装備)している武器

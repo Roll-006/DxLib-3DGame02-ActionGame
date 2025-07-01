@@ -72,20 +72,12 @@ void RifleCartridgeManager::Draw() const
 	DrawFormatString(0, 120, 0xffffff, "bullet_manager_size       : %d", m_rifle_cartridge.at(ObjName.BULLET).size());
 	DrawFormatString(0, 140, 0xffffff, "shell_casing_manager_size : %d", m_rifle_cartridge.at(ObjName.SHELL_CASING).size());
 
-	//int count = 0;
-	//for (const auto& bullet : m_bullets)
-	//{
-	//	bullet->Draw();
-	//
-	//	const auto pos = bullet->GetTransform()->GetPos(CoordinateKind::kWorld);
-	//	DrawFormatString(  0, 120 + 20 * count, 0xffffff, "%f, %f, %f", pos.x, pos.y, pos.z);
-	//	DrawFormatString(400, 120 + 20 * count, 0xffffff, "%d", bullet->IsAlive());
-	//	++count;
-	//}
 
-	for (const auto& pos : m_hit_pos)
+	std::queue<VECTOR> temp = m_hit_pos;
+	while (!temp.empty())
 	{
-		DrawSphere3D(pos, 5, 16, 0xff0000, 0xff0000, TRUE);
+		DrawSphere3D(temp.front(), 5, 16, 0xff0000, 0xff0000, TRUE);
+		temp.pop();
 	}
 }
 
