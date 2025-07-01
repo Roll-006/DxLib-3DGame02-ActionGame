@@ -49,7 +49,7 @@ void Bullet::Draw() const
 {
 	if (!IsActive()) { return; }
 
-	DrawSphere3D(m_transform->GetPos(CoordinateKind::kWorld), 5, 16, 0xffffff, 0xffffff, TRUE);
+	DrawSphere3D(m_transform->GetPos(CoordinateKind::kWorld), 2, 8, 0xffffff, 0xffffff, TRUE);
 	std::dynamic_pointer_cast<Segment>(GetCollider(ColliderKind::kRayCast)->GetShape())->Draw(false, 0, 0xffffff);
 }
 

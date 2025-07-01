@@ -24,5 +24,5 @@ private:
 	static constexpr float  kScopeScale				= 2.0f;
 	static constexpr float  kRange					= 2000.0f;
 	static constexpr float  kInitialVelocity		= 50.0f;
-	static constexpr float  kShotIntervalTime		= 0.1;
+	static constexpr float  kShotIntervalTime		= 0.1f;
 };

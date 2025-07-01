@@ -18,11 +18,21 @@ public:
 
     void Move(const VECTOR& velocity) override;
 
-    void SetPos(const VECTOR& segment_begin_pos) { m_segment.SetBeginPos(segment_begin_pos, false); }
-    void SetLength(const float segment_length) { m_segment.SetLength(segment_length); }
+    /// @brief 始点を設定する
+    /// @param segment_begin_pos 始点
+    /// @param is_alone 始点を単独で設定するか(true : 終点の変化なし、長さの変化あり, false : 終点の変化あり、長さの変化なし)
+    void SetSegmentBeginPos(const VECTOR& segment_begin_pos, const bool is_alone) { m_segment.SetBeginPos(segment_begin_pos, is_alone); }
+    /// @brief 終点を設定する
+    /// @param segment_end_pos 終点
+    /// @param is_alone 終点を単独で設定するか(true : 始点の変化なし、長さの変化あり, false : 始点の変化あり、長さの変化なし)
+    void SetSegmentEndPos(const VECTOR& segment_end_pos, const bool is_alone) { m_segment.SetEndPos(segment_end_pos, is_alone); }
+
+    /// @brief カプセルの長さを設定
+    /// @param length カプセルの長さ
+    void SetLength(const float length) { m_segment.SetLength(length - m_radius * 2.0f); }
 
     [[nodiscard]] const Segment& GetSegment() const { return m_segment; }
-    [[nodiscard]] float          GetRadius()  const { return m_radius; }
+    [[nodiscard]] float GetRadius() const { return m_radius; }
 
 private:
     static constexpr int kPolygonDetailed = 8; // ポリゴンの細かさ

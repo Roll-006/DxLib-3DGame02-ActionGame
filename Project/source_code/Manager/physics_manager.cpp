@@ -30,6 +30,7 @@ void PhysicsManager::LateUpdate()
 	for (const auto& obj : m_physical_objects)
 	{
 		// 速度ベクトルを適用
+		// FIXME : 薬莢のカプセルの縮めているのはここ
 		obj->ApplyVelocity();
 	}
 }

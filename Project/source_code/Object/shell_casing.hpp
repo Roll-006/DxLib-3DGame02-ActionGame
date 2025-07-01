@@ -27,11 +27,17 @@ private:
 	/// @brief ¶‘¶‚Ì”»’è
 	void JudgeAlive();
 
+	void CalcColliderPos();
+
 private:
-	static constexpr float  kDisappearTime		= 3.0f;						// Á‚¦‚é‚Ü‚Å‚ÌŠÔ
-	static constexpr float  kInitialVelocity	= 100.0f;					// ‰‘¬
-	static constexpr VECTOR kLocalFirstMoveDir	= { 1.0f, 1.0f, 0.0f };		// ‰Šú‚ÌˆÚ“®•ûŒü
-	static constexpr float  kMoveSpeed			= 1.5f;						// ˆÚ“®‘¬“x
+	static constexpr float  kDisappearTime			= 3.0f;						// Á‚¦‚é‚Ü‚Å‚ÌŠÔ
+	static constexpr float  kInitialVelocity		= 100.0f;					// ‰‘¬
+	static constexpr VECTOR kLocalFirstMoveDir		= { 1.0f, 1.0f, 0.0f };		// ‰Šú‚ÌˆÚ“®•ûŒü
+	static constexpr float  kMoveSpeed				= 1.5f;						// ˆÚ“®‘¬“x
+
+	static constexpr float kCapsuleRadius			= 0.3f;
+	static constexpr float kCapsuleLength			= 2.0f;
+	static constexpr float kLandingTriggerRadius	= 0.4f;
 
 	float  m_alive_timer;
 	bool   m_is_alive;

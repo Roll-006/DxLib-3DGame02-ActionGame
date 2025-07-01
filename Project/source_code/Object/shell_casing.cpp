@@ -9,8 +9,8 @@ ShellCasing::ShellCasing() :
 {
 	m_modeler = std::make_shared<Modeler>(m_transform, ModelPath.SHELL_CASING_556x45, VGet(90.0f * math::kDegreesToRadian, 0.0f, 0.0f));
 
-	AddCollider(std::make_shared<Collider>(ColliderKind::kCollider,		  std::shared_ptr<Capsule>(), this));
-	AddCollider(std::make_shared<Collider>(ColliderKind::kLandingTrigger, std::shared_ptr<Capsule>(), this));
+	AddCollider(std::make_shared<Collider>(ColliderKind::kCollider,		  std::make_shared<Capsule>(v3d::GetZeroV(), v3d::GetZeroV(), kCapsuleRadius),        this));
+	AddCollider(std::make_shared<Collider>(ColliderKind::kLandingTrigger, std::make_shared<Capsule>(v3d::GetZeroV(), v3d::GetZeroV(), kLandingTriggerRadius), this));
 }
 
 ShellCasing::~ShellCasing()
@@ -30,14 +30,17 @@ void ShellCasing::Update()
 {
 	if (!IsActive()) { return; }
 
-	Move();
+	//CalcColliderPos();
 	AddFallVelocity();
+
+	m_is_landing = false;
 }
 
 void ShellCasing::LateUpdate()
 {
 	if (!IsActive()) { return; }
 
+	Move();
 	JudgeAlive();
 }
 
@@ -46,8 +49,6 @@ void ShellCasing::Draw() const
 	if (!IsActive()) { return; }
 
 	m_modeler->Draw();
-
-	//DrawSphere3D(m_transform->GetPos(CoordinateKind::kWorld), 1, 8, GetColor(0, 0, 255), GetColor(0, 0, 255), TRUE);
 
 	for (auto& collider : m_collider)
 	{
@@ -61,7 +62,15 @@ void ShellCasing::Draw() const
 
 void ShellCasing::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 {
+	switch (hit_collider_pair.owner_collider->GetColliderKind())
+	{
+	case ColliderKind::kLandingTrigger:
+		m_is_landing = true;
+		break;
 
+	default:
+		break;
+	}
 }
 
 void ShellCasing::Eject(GunBase& gun)
@@ -69,11 +78,15 @@ void ShellCasing::Eject(GunBase& gun)
 	m_transform->SetPos(CoordinateKind::kWorld, gun.GetEjectionPortPos());
 	m_transform->SetRot(CoordinateKind::kWorld, gun.GetTransform()->GetRotMatrix(CoordinateKind::kWorld));
 
-	const auto angle = gun.GetTransform()->GetEulerAngles(CoordinateKind::kWorld).x;
-	DrawFormatString(400, 0, 0xffffff, "%f", angle);
+	//const auto angle = math::GetAngleBetweenTwoVector(gun.GetTransform()->GetUp(CoordinateKind::kWorld), axis::GetWorldYAxis());
+	//DrawFormatString(400, 0, 0xffffff, "%f", angle);
 
+	// 銃を基準に移動方向を設定
 	const auto gun_rot = gun.GetTransform()->GetRotMatrix(CoordinateKind::kWorld);
 	m_move_dir = VTransform(v3d::GetNormalizedV(kLocalFirstMoveDir), gun_rot);
+
+	// コライダーを設定
+	CalcColliderPos();
 }
 
 void ShellCasing::Move()
@@ -86,4 +99,22 @@ void ShellCasing::JudgeAlive()
 	// 生存時間を超えたら死亡したものとする
 	m_alive_timer += FPS::GetDeltaTime();
 	m_is_alive = m_alive_timer > kDisappearTime ? false : true;
+}
+
+void ShellCasing::CalcColliderPos()
+{
+	// 位置設定
+	const auto center_pos = m_transform->GetPos(CoordinateKind::kWorld);
+	const auto begin_pos  = center_pos - m_transform->GetForward(CoordinateKind::kWorld) * kCapsuleLength * 0.5f;
+	const auto end_pos    = center_pos + m_transform->GetForward(CoordinateKind::kWorld) * kCapsuleLength * 0.5f;
+
+	// 押し戻し用コライダー
+	auto collider_capsule = std::dynamic_pointer_cast<Capsule>(GetCollider(ColliderKind::kCollider)->GetShape());
+	collider_capsule->SetSegmentBeginPos(begin_pos, true);
+	collider_capsule->SetSegmentEndPos  (end_pos,   true);
+
+	// 着地用トリガー
+	auto landing_capsule = std::dynamic_pointer_cast<Capsule>(GetCollider(ColliderKind::kLandingTrigger)->GetShape());
+	landing_capsule->SetSegmentBeginPos(begin_pos, true);
+	landing_capsule->SetSegmentEndPos  (end_pos,   true);
 }
