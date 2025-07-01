@@ -21,7 +21,7 @@ BulletObjectPool::BulletObjectPool() :
 	// 薬莢
 	for (int i = 0; i < m_pool_size.at(ObjName.SHELL_CASING); ++i)
 	{
-		const auto shell_casing = std::make_shared<Bullet>();
+		const auto shell_casing = std::make_shared<ShellCasing>();
 
 		CreateObj(shell_casing);
 

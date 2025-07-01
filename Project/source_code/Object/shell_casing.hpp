@@ -25,4 +25,5 @@ private:
 	static constexpr float kDisappearTime = 5.0f;
 
 	float m_alive_timer;
+	bool  m_is_alive;
 };

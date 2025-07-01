@@ -3,7 +3,8 @@
 
 ShellCasing::ShellCasing() :
 	PhysicalObjBase	(ObjName.BULLET, ObjTag.BULLET, MassKind::kLight),
-	m_alive_timer	(0.0f)
+	m_alive_timer	(0.0f),
+	m_is_alive		(true)
 {
 	m_modeler = std::make_shared<Modeler>(m_transform, ModelPath.SHELL_CASING_556x45);
 
@@ -18,7 +19,8 @@ ShellCasing::~ShellCasing()
 
 void ShellCasing::Init()
 {
-
+	m_alive_timer	= 0.0f;
+	m_is_alive		= true;
 }
 
 void ShellCasing::Update()
