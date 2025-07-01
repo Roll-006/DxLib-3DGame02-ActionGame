@@ -10,6 +10,7 @@ Player::Player(std::shared_ptr<Camera> camera) :
 	m_is_move				(false),
 	m_is_run				(false),
 	m_is_squat				(false),
+	m_is_aiming				(false),
 	m_is_turn_around		(false),
 	m_is_turn_run			(false),
 	m_is_correct_look_dir	(false),
@@ -68,6 +69,7 @@ void Player::Update()
 	command->Execute(CommandKind::kRun,				this);
 	command->Execute(CommandKind::kSquat,			this);
 	command->Execute(CommandKind::kAimingGun,		this);
+	command->Execute(CommandKind::kShot,			this);
 	command->Execute(CommandKind::kMoveUpPlayer,	this);
 	command->Execute(CommandKind::kMoveDownPlayer,	this);
 	command->Execute(CommandKind::kMoveLeftPlayer,	this);
@@ -97,7 +99,7 @@ void Player::LateUpdate()
 		m_modeler->GetModelHandle(),
 		m_look_dir.at(TimeKind::kCurrent),
 		m_camera->GetTransform()->GetMatrix(CoordinateKind::kWorld),
-		std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->IsAiming());
+		m_is_aiming);
 
 	m_current_attach_weapon->LateUpdate();
 }
@@ -257,8 +259,8 @@ void Player::AimingGun()
 	// ターン中は早期return
 	if (m_is_turn_around) { return; }
 
-	std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->ActivateAiming();
-	m_is_correct_look_dir = true;
+	m_is_aiming				= true;
+	m_is_correct_look_dir	= true;
 
 	// 拡大率から実際の距離を取得
 	float min_distance = Camera::kNormalDistance / std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->GetScopeScale();
@@ -282,6 +284,8 @@ void Player::Shot()
 {
 	// ターン中は早期return
 	if (m_is_turn_around) { return; }
+
+	std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->PullTrigger();
 }
 
 void Player::TurnAround()
@@ -350,7 +354,7 @@ void Player::ChangeAnimState()
 			}
 		}
 
-		if (std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->IsAiming())
+		if (m_is_aiming)
 		{
 			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kIdleShoot01;
 		}
@@ -402,7 +406,7 @@ void Player::ChangeAnimState()
 	// しゃがむ
 	if (m_is_squat)
 	{
-		if (std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->IsAiming())
+		if (m_is_aiming)
 		{
 			m_anim_kind.at(TimeKind::kCurrent) = PlayerAnimKind::kIdleSquatShoot01;
 		}
@@ -507,13 +511,14 @@ void Player::InitMove()
 	m_is_correct_look_dir = false;
 
 	// 照準
-	if (!std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->IsAiming())
+	if (!m_is_aiming)
 	{
 		m_camera->Depart(Camera::kNormalDistance, kADSSpeed * FPS::GetDeltaTime());
 		m_camera->TrackBoneHeightOnly();
 	}
 
-	std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->DeactivateAiming();
+	m_is_aiming = false;
+	std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->ReleaseTrigger();
 
 	// ダッシュ判定
 	if (command->GetInputModeKind(CommandHandler::MoveKind::kRun) == InputModeKind::kHold) { m_is_run = false; }
@@ -636,7 +641,7 @@ void Player::CalcLookDir()
 	}
 
 	// 銃を構えている場合は常にカメラと同じ向きを向く
-	if (std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->IsAiming())
+	if (m_is_aiming)
 	{
 		m_look_dir.at(TimeKind::kNext) = GetMoveForward();
 	}
@@ -655,8 +660,8 @@ void Player::CorrectLookDir()
 	distance.y = math::ConnectMinusPiToPi(distance.y);
 
 	// スコープを覗く場合は速度を上昇させる
-	float add_angle			= std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->IsAiming() ? -kLookDirCorrectionAngleForADS		: -kLookDirCorrectionAngle;
-	float threshold_angle	= std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->IsAiming() ? kConfirmLookDirThresholdAngleForADS	: kConfirmLookDirThresholdAngle;
+	float add_angle			= m_is_aiming ? -kLookDirCorrectionAngleForADS		: -kLookDirCorrectionAngle;
+	float threshold_angle	= m_is_aiming ? kConfirmLookDirThresholdAngleForADS	: kConfirmLookDirThresholdAngle;
 
 	// カメラを基準にして右側であった場合は反転
 	if (distance.y > 0) { add_angle *= -1; }

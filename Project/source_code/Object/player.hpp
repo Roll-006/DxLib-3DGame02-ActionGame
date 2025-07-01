@@ -111,7 +111,7 @@ private:
 	bool m_is_move;
 	bool m_is_run;
 	bool m_is_squat;
-	//bool m_is_aiming_gun;										// e‚ğ‚Ì‚¼‚«‚Ş(e‚ğ\‚¦‚é)
+	bool m_is_aiming;											// e‚ğ\‚¦‚é
 	bool m_is_turn_around;										// Y²180‹‰ñ“]‚³‚¹‚é‚©‚ğ”»’è
 	bool m_is_turn_run;											// ƒ_ƒbƒVƒ…’†‚ÉU‚èŒü‚­‚©‚ğ”»’è
 	bool m_is_correct_look_dir;									// Œ©‚é•ûŒü‚ğ•â³‚·‚é‚©‚ğ”»’è

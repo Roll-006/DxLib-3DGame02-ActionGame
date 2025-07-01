@@ -52,10 +52,6 @@ void AssaultRifle::Draw() const
 
 	const auto segment = std::dynamic_pointer_cast<Segment>(GetCollider(ColliderKind::kRayCast)->GetShape());
 	segment->Draw(false, 0, 0xffffff);
-
-	DrawFormatString(0, 20, 0xffffff, "is_aiming : %d", IsAiming());
-	DrawFormatString(0, 40, 0xffffff, "is_shot   : %d", IsShot());
-	//DrawFormatString(0, 60, 0xffffff, "Žc’e      : %d", ObjectPoolManager::GetInstance()->GetObjectPool(ObjectPoolName.BULLET_POOL)->GetPoolSize(ObjName.BULLET));
 }
 
 void AssaultRifle::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)

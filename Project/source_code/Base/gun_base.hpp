@@ -13,10 +13,10 @@ public:
 	GunBase(const std::string& name, const GunKind gun_kind, const std::string& file_path);
 	virtual ~GunBase() = default;
 
-	/// @brief エイミング中にする
-	void ActivateAiming()   { m_is_aiming = true; }
-	/// @brief 非エイミング中にする
-	void DeactivateAiming() { m_is_aiming = false; }
+	// 引き金を引く
+	void PullTrigger() { m_is_pull_trigger = true; }
+	/// @brief 引き金から手を離す
+	void ReleaseTrigger() { m_is_pull_trigger = false; }
 
 	/// @brief レイキャスト用の線分を拡張した直線上にある点を設定する
 	/// @brief 操作キャラの場合はカメラの座標
@@ -35,8 +35,8 @@ public:
 	/// @brief 弾丸の発射位置を取得
 	[[nodiscard]] VECTOR  GetFirstShotPos()		const;
 
-	[[nodiscard]] bool    IsAiming()			const { return m_is_aiming; }
-	[[nodiscard]] bool	  IsShot()				const { return m_is_shot; }
+	[[nodiscard]] bool IsPullTrigger() const { return m_is_pull_trigger; }
+	[[nodiscard]] bool IsShot()		   const { return m_is_shot; }
 
 protected:
 	/// @brief 弾丸発射処理
@@ -53,7 +53,7 @@ protected:
 	float   m_shot_interval_time;			// 弾丸が発射される時間間隔
 	float	m_shot_timer;					// 弾丸を撃つためのタイマー
 	bool    m_is_shot;						// 弾丸を撃つかを判定
-	bool	m_is_aiming;					// 銃が構えられているかを判定
+	bool	m_is_pull_trigger;				// 銃の引き金が引かれているかを判定
 
 private:
 	GunKind m_gun_kind;						// 銃の種類

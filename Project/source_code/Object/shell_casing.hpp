@@ -35,9 +35,9 @@ private:
 	static constexpr VECTOR kLocalFirstMoveDir		= { 1.0f, 1.0f, 0.0f };		// ‰Šú‚ÌˆÚ“®•ûŒü
 	static constexpr float  kMoveSpeed				= 1.5f;						// ˆÚ“®‘¬“x
 
-	static constexpr float kCapsuleRadius			= 0.3f;
+	static constexpr float kCapsuleRadius			= 0.5f;
+	static constexpr float kLandingTriggerRadius	= 0.8f;
 	static constexpr float kCapsuleLength			= 2.0f;
-	static constexpr float kLandingTriggerRadius	= 0.4f;
 
 	float  m_alive_timer;
 	bool   m_is_alive;

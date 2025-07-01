@@ -50,14 +50,14 @@ void ShellCasing::Draw() const
 
 	m_modeler->Draw();
 
-	for (auto& collider : m_collider)
-	{
-		const auto shape = collider->GetShape();
-		if (shape != nullptr)
-		{
-			shape->Draw(true, 0, 0xffffff);
-		}
-	}
+	//for (auto& collider : m_collider)
+	//{
+	//	const auto shape = collider->GetShape();
+	//	if (shape != nullptr)
+	//	{
+	//		shape->Draw(true, 0, 0xffffff);
+	//	}
+	//}
 }
 
 void ShellCasing::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)

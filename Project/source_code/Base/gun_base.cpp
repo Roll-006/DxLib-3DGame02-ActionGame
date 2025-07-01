@@ -12,7 +12,7 @@ GunBase::GunBase(const std::string& name, const GunKind gun_kind, const std::str
 	m_shot_interval_time		(0.0f),
 	m_shot_timer				(0.0f),
 	m_is_shot					(false),
-	m_is_aiming					(false),
+	m_is_pull_trigger			(false),
 	m_gun_kind					(gun_kind)
 {
 
@@ -49,7 +49,7 @@ VECTOR GunBase::GetFirstShotPos() const
 
 void GunBase::Shot()
 {
-	if (!m_is_aiming)
+	if (!m_is_pull_trigger)
 	{
 		m_shot_timer = 0.0f;
 		m_is_shot    = false;
