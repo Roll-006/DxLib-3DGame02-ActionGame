@@ -4,8 +4,8 @@
 
 #include "../Object/camera.hpp"
 
-#include "../Part/bullet_object_pool.hpp"
-#include "../Manager/bullet_manager.hpp"
+#include "../Part/rifle_cartridge_object_pool.hpp"
+#include "../Manager/rifle_cartridge_manager.hpp"
 
 class GunBase abstract : public WeaponBase
 {

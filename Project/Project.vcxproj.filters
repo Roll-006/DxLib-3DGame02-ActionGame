@@ -161,7 +161,7 @@
     <ClCompile Include="source_code\Base\chara_base.cpp">
       <Filter>Base</Filter>
     </ClCompile>
-    <ClCompile Include="source_code\Part\bullet_object_pool.cpp">
+    <ClCompile Include="source_code\Part\rifle_cartridge_object_pool.cpp">
       <Filter>Part</Filter>
     </ClCompile>
     <ClCompile Include="source_code\Base\object_pool_base.cpp">
@@ -176,7 +176,7 @@
     <ClCompile Include="source_code\Manager\object_pool_manager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
-    <ClCompile Include="source_code\Manager\bullet_manager.cpp">
+    <ClCompile Include="source_code\Manager\rifle_cartridge_manager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
   </ItemGroup>
@@ -484,7 +484,7 @@
     <ClInclude Include="source_code\Object\bullet.hpp">
       <Filter>Object</Filter>
     </ClInclude>
-    <ClInclude Include="source_code\Part\bullet_object_pool.hpp">
+    <ClInclude Include="source_code\Part\rifle_cartridge_object_pool.hpp">
       <Filter>Part</Filter>
     </ClInclude>
     <ClInclude Include="source_code\Base\object_pool_base.hpp">
@@ -499,7 +499,7 @@
     <ClInclude Include="source_code\Data\Name\object_pool_name.hpp">
       <Filter>Data\Name</Filter>
     </ClInclude>
-    <ClInclude Include="source_code\Manager\bullet_manager.hpp">
+    <ClInclude Include="source_code\Manager\rifle_cartridge_manager.hpp">
       <Filter>Manager</Filter>
     </ClInclude>
   </ItemGroup>

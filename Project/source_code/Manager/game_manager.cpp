@@ -45,11 +45,11 @@ void GameManager::Run()
 		m_scene_manager->LateUpdate();
 		m_scene_manager->Draw();
 
-		//// TEST : 仮でグリッドを描画
+		// TEST : 仮でグリッドを描画
 		//DxLibHelper::DrawYPlaneGrid(FLOAT2(50, 50), 100);
-		//DrawLine3D(v3d::GetZeroV(), axis::GetWorldXAxis() * 10000, 0xff0000);
-		//DrawLine3D(v3d::GetZeroV(), axis::GetWorldYAxis() * 10000, 0x00ff22);
-		//DrawLine3D(v3d::GetZeroV(), axis::GetWorldZAxis() * 10000, 0x0077ff);
+		DrawLine3D(v3d::GetZeroV(), axis::GetWorldXAxis() * 10000, 0xff0000);
+		DrawLine3D(v3d::GetZeroV(), axis::GetWorldYAxis() * 10000, 0x00ff22);
+		DrawLine3D(v3d::GetZeroV(), axis::GetWorldZAxis() * 10000, 0x0077ff);
 
 		m_fps->Wait();
 

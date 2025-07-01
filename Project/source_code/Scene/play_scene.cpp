@@ -5,7 +5,7 @@ PlayScene::PlayScene():
 	m_house				(std::make_shared<House>()),
 	m_ground			(std::make_shared<Ground>()),
 	m_skydome			(std::make_shared<Skydome>(std::dynamic_pointer_cast<Camera>(ObjManager::GetInstance()->GetObj(ObjName.CAMERA)))),
-	m_bullet_object_pool(std::make_shared<BulletObjectPool>())
+	m_rifle_cartridge_object_pool(std::make_shared<RifleCartridgeObjectPool>())
 {
 	ObjManager		::GetInstance()->AddObj			(m_enemy);
 	ObjManager		::GetInstance()->AddObj			(m_house);
@@ -17,7 +17,7 @@ PlayScene::PlayScene():
 	PhysicsManager	::GetInstance()->AddPhysicalObj	(m_house);
 	PhysicsManager	::GetInstance()->AddPhysicalObj	(m_ground);
 
-	ObjectPoolManager::GetInstance()->AddObjectPool(m_bullet_object_pool);
+	ObjectPoolManager::GetInstance()->AddObjectPool(m_rifle_cartridge_object_pool);
 }
 
 PlayScene::~PlayScene()

@@ -1,6 +1,6 @@
-﻿#include "bullet_object_pool.hpp"
+﻿#include "rifle_cartridge_object_pool.hpp"
 
-BulletObjectPool::BulletObjectPool() : 
+RifleCartridgeObjectPool::RifleCartridgeObjectPool() : 
 	ObjectPoolBase(ObjectPoolName.BULLET_POOL)
 {
 	m_pool_size[ObjName.BULLET]			= kBulletPoolSize;
@@ -31,7 +31,7 @@ BulletObjectPool::BulletObjectPool() :
 	}
 }
 
-BulletObjectPool::~BulletObjectPool()
+RifleCartridgeObjectPool::~RifleCartridgeObjectPool()
 {
 
 }

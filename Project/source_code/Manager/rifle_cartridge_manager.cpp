@@ -1,4 +1,4 @@
-#include "bullet_manager.hpp"
+#include "rifle_cartridge_manager.hpp"
 
 RifleCartridgeManager::RifleCartridgeManager()
 {
@@ -66,8 +66,11 @@ void RifleCartridgeManager::Draw() const
 		}
 	}
 
-	//DrawFormatString(0,  80, 0xffffff, "pool_size    : %d", ObjectPoolManager::GetInstance()->GetObjectPool(ObjectPoolName.BULLET_POOL)->GetPoolSize(ObjName.BULLET));
-	//DrawFormatString(0, 100, 0xffffff, "manager_size : %d", m_bullets.size());
+	const auto pool = ObjectPoolManager::GetInstance()->GetObjectPool(ObjectPoolName.BULLET_POOL);
+	DrawFormatString(0,  80, 0xffffff, "bullet_pool_size          : %d", pool->GetPoolSize(ObjName.BULLET));
+	DrawFormatString(0, 100, 0xffffff, "shell_casing_pool_size    : %d", pool->GetPoolSize(ObjName.SHELL_CASING));
+	DrawFormatString(0, 120, 0xffffff, "bullet_manager_size       : %d", m_rifle_cartridge.at(ObjName.BULLET).size());
+	DrawFormatString(0, 140, 0xffffff, "shell_casing_manager_size : %d", m_rifle_cartridge.at(ObjName.SHELL_CASING).size());
 
 	//int count = 0;
 	//for (const auto& bullet : m_bullets)

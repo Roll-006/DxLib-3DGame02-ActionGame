@@ -52,9 +52,10 @@ int ObjectPoolBase::GetPoolSize(const std::string& obj_name) const
 void ObjectPoolBase::CreateObj(const std::shared_ptr<ObjBase> obj)
 {
 	// 既に指定したプールサイズに到達している場合は追加を許可しない
-	if (m_objects[obj->GetName()].size() >= GetMaxPoolSize(obj->GetName())) { return; }
+	m_objects[obj->GetName()];
+	if (m_objects.at(obj->GetName()).size() >= GetMaxPoolSize(obj->GetName())) { return; }
 
-	m_objects[obj->GetName()].push(obj);
+	m_objects.at(obj->GetName()).push(obj);
 
 	// 非アクティブ化
 	obj->Deactivate();

@@ -3,13 +3,13 @@
 #include "../Object/bullet.hpp"
 #include "../Object/shell_casing.hpp"
 
-class BulletObjectPool : public ObjectPoolBase
+class RifleCartridgeObjectPool : public ObjectPoolBase
 {
 public:
-	BulletObjectPool();
-	~BulletObjectPool() override;
+	RifleCartridgeObjectPool();
+	~RifleCartridgeObjectPool() override;
 
 private:
 	static constexpr int kBulletPoolSize		= 20;
-	static constexpr int kShellCasingPoolSize	= 30;
+	static constexpr int kShellCasingPoolSize	= 40;
 };

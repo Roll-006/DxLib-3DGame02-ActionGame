@@ -9,7 +9,7 @@ AssaultRifle::AssaultRifle() :
 	m_range						= kRange;
 	m_muzzle_correct_pos		= kMuzzleCorrectPos;
 	m_ejection_port_correct_pos = kEjectionPortCorrectPos;
-	m_initial_velocity	= kInitialVelocityBullet;
+	m_initial_velocity	= kInitialVelocity;
 	m_shot_interval_time		= kShotIntervalTime;
 
 	AddCollider(std::make_shared<Collider>(ColliderKind::kRayCast, std::make_shared<Segment>(), this));

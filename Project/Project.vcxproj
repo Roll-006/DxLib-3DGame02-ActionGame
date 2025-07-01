@@ -153,7 +153,7 @@
     <ClCompile Include="source_code\main.cpp" />
     <ClCompile Include="source_code\Manager\handle_keeper.cpp" />
     <ClCompile Include="source_code\Manager\command_handler.cpp" />
-    <ClCompile Include="source_code\Manager\bullet_manager.cpp" />
+    <ClCompile Include="source_code\Manager\rifle_cartridge_manager.cpp" />
     <ClCompile Include="source_code\Manager\object_pool_manager.cpp" />
     <ClCompile Include="source_code\Manager\physics_manager.cpp" />
     <ClCompile Include="source_code\Manager\collision_manager.cpp" />
@@ -177,7 +177,7 @@
     <ClCompile Include="source_code\Part\animator.cpp" />
     <ClCompile Include="source_code\Part\bone_pos_corrector.cpp" />
     <ClCompile Include="source_code\Part\modeler.cpp" />
-    <ClCompile Include="source_code\Part\bullet_object_pool.cpp" />
+    <ClCompile Include="source_code\Part\rifle_cartridge_object_pool.cpp" />
     <ClCompile Include="source_code\Part\transform.cpp" />
     <ClCompile Include="source_code\Scene\game_clear_scene.cpp" />
     <ClCompile Include="source_code\Scene\game_over_scene.cpp" />
@@ -265,7 +265,7 @@
     <ClInclude Include="source_code\FPS\fps.hpp" />
     <ClInclude Include="source_code\Manager\handle_keeper.hpp" />
     <ClInclude Include="source_code\Manager\command_handler.hpp" />
-    <ClInclude Include="source_code\Manager\bullet_manager.hpp" />
+    <ClInclude Include="source_code\Manager\rifle_cartridge_manager.hpp" />
     <ClInclude Include="source_code\Manager\object_pool_manager.hpp" />
     <ClInclude Include="source_code\Manager\physics_manager.hpp" />
     <ClInclude Include="source_code\Manager\collision_manager.hpp" />
@@ -289,7 +289,7 @@
     <ClInclude Include="source_code\Part\animator.hpp" />
     <ClInclude Include="source_code\Part\bone_pos_corrector.hpp" />
     <ClInclude Include="source_code\Part\modeler.hpp" />
-    <ClInclude Include="source_code\Part\bullet_object_pool.hpp" />
+    <ClInclude Include="source_code\Part\rifle_cartridge_object_pool.hpp" />
     <ClInclude Include="source_code\Part\transform.hpp" />
     <ClInclude Include="source_code\Scene\game_clear_scene.hpp" />
     <ClInclude Include="source_code\Scene\game_over_scene.hpp" />

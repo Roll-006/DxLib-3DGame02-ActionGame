@@ -1,5 +1,5 @@
 #include "bullet.hpp"
-#include "../Manager/bullet_manager.hpp"
+#include "../Manager/rifle_cartridge_manager.hpp"
 #include "../Base/gun_base.hpp"
 
 Bullet::Bullet() : 

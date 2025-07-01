@@ -19,11 +19,21 @@ public:
 	/// @brief –òä°‚ğ”ro‚·‚é
 	void Eject(GunBase& gun);
 
-	[[nodiscard]] bool IsAlive() const;
+	[[nodiscard]] bool IsAlive() const { return m_is_alive; }
 
 private:
-	static constexpr float kDisappearTime = 5.0f;
+	void Move();
 
-	float m_alive_timer;
-	bool  m_is_alive;
+	/// @brief ¶‘¶‚Ì”»’è
+	void JudgeAlive();
+
+private:
+	static constexpr float  kDisappearTime		= 3.0f;						// Á‚¦‚é‚Ü‚Å‚ÌŠÔ
+	static constexpr float  kInitialVelocity	= 100.0f;					// ‰‘¬
+	static constexpr VECTOR kLocalFirstMoveDir	= { 1.0f, 1.0f, 0.0f };		// ‰Šú‚ÌˆÚ“®•ûŒü
+	static constexpr float  kMoveSpeed			= 1.5f;						// ˆÚ“®‘¬“x
+
+	float  m_alive_timer;
+	bool   m_is_alive;
+	VECTOR m_move_dir;
 };
