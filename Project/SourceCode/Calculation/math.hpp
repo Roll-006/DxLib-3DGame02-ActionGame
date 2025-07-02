@@ -19,6 +19,7 @@ class Segment;
 class Plane;
 class Triangle;
 class Square;
+class Circle;
 class Sphere;
 class Capsule;
 class OBB;
@@ -360,6 +361,21 @@ namespace math
 	/// @brief 点が球の表面にあるかを判定
 	/// TODO : 正しく機能するか試していないため検証が必要
 	[[nodiscard]] bool IsPointOnSphereSurface(const VECTOR& point, const Sphere& sphere);
+	#pragma endregion
+
+
+	#pragma region 図形
+	/// @brief 円内のランダムな点を取得する
+	/// @param center_pos 円の中心座標
+	/// @param radius 円の半径
+	/// @return 円内のランダム座標
+	[[nodiscard]] Vector2D<int> GetRandomPointInCircle2D(const Vector2D<int>& center_pos, const float radius);
+
+	/// @brief 円内のランダムな点を取得する
+	/// @param center_pos 円の中心座標
+	/// @param radius 円の半径
+	/// @return 円内のランダム座標
+	[[nodiscard]] VECTOR GetRandomPointInCircle(const Circle& circle);
 	#pragma endregion
 
 

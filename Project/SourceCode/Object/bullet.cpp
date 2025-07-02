@@ -8,6 +8,7 @@ Bullet::Bullet() :
 	m_prev_pos		(v3d::GetZeroV()),
 	m_first_pos		(v3d::GetZeroV()),
 	m_move_speed	(0.0f),
+	m_deceleration	(0.0f),
 	m_range			(0.0f),
 	m_Is_alive		(true)
 {
@@ -72,16 +73,18 @@ void Bullet::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 void Bullet::OnShot(const GunBase& gun)
 {
-	m_first_pos  = gun.GetFirstShotPos();
+	m_first_pos		= gun.GetFirstShotPos();
 	m_transform->SetPos(CoordinateKind::kWorld, m_first_pos);
-	m_prev_pos	 = m_first_pos;
-	m_dir		 = gun.GetAimDir();
-	m_move_speed = gun.GetInitialVelocity();
-	m_range		 = gun.GetRange();
+	m_prev_pos		= m_first_pos;
+	m_dir			= gun.GetAimDir();
+	m_move_speed	= gun.GetInitialVelocity();
+	m_deceleration  = gun.GetDeceleration();
+	m_range			= gun.GetRange();
 }
 
 void Bullet::Move()
 {
+	math::Decrease(m_move_speed, m_deceleration * FPS::GetDeltaTime(), 0.0f);
 	m_velocity = m_dir * m_move_speed;
 }
 

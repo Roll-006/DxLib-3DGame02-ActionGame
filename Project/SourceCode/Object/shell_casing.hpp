@@ -31,9 +31,8 @@ private:
 
 private:
 	static constexpr float  kDisappearTime				= 3.0f;						// Á‚¦‚é‚Ü‚Å‚ÌŠÔ
-	static constexpr float  kInitialVelocity			= 200.0f;					// ‰‘¬
 	static constexpr VECTOR kLocalFirstMoveDir			= { 1.0f, 1.0f, 0.0f };		// ‰Šú‚ÌˆÚ“®•ûŒü
-	static constexpr float  kMoveSpeed					= 1.5f;						// ˆÚ“®‘¬“x
+	static constexpr float  kInitialVelocity			= 1.5f;						// ‰‘¬
 	static constexpr float  kDeceleration				= 0.5f;						// Œ¸‘¬“x
 
 	static constexpr float  kCapsuleLength				= 2.0f;

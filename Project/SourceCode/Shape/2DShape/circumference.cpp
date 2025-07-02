@@ -2,7 +2,7 @@
 //
 //Circumference::Circumference(const VECTOR& normal_vector, float radius):
 //	ShapeBase		(ShapeKind::kCircumference),
-//	m_pos			(v3d::GetZeroVector()),
+//	m_pos			(v3d::GetZeroV()),
 //	m_normal_vector	(v3d::GetNormalizedVector(normal_vector)),
 //	m_radius		(radius),
 //	m_interval_andle(0.0f)
@@ -19,8 +19,8 @@
 //
 //Circumference::Circumference() :
 //	ShapeBase(has_internal ? ShapeKind::kCircle : ShapeKind::kCircumference),
-//	m_pos		(v3d::GetZeroVector()),
-//	m_normal_vector	(v3d::GetZeroVector()),
+//	m_pos		(v3d::GetZeroV()),
+//	m_normal_vector	(v3d::GetZeroV()),
 //	m_radius		(0.0f),
 //	m_interval_andle(0.0f)
 //{

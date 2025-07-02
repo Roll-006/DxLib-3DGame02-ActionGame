@@ -9,7 +9,8 @@ AssaultRifle::AssaultRifle() :
 	m_range						= kRange;
 	m_muzzle_correct_pos		= kMuzzleCorrectPos;
 	m_ejection_port_correct_pos = kEjectionPortCorrectPos;
-	m_initial_velocity	= kInitialVelocity;
+	m_initial_velocity			= kInitialVelocity;
+	m_deceleration				= kDeceleration;
 	m_shot_interval_time		= kShotIntervalTime;
 
 	AddCollider(std::make_shared<Collider>(ColliderKind::kRayCast, std::make_shared<Segment>(), this));
@@ -37,8 +38,8 @@ void AssaultRifle::LateUpdate()
 	if (!IsActive()) { return; }
 
 	TrackOwner();
+	CalcTargetPos();
 	Shot();
-	//CalcRayPos();
 }
 
 void AssaultRifle::Draw() const
@@ -74,4 +75,14 @@ void AssaultRifle::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	default:
 		break;
 	}
+}
+
+void AssaultRifle::CalcTargetPos()
+{
+	if (!m_is_aiming) { return; }
+
+	Vector2D<int> pos = math::GetRandomPointInCircle2D(Vector2D<int>(Window::kHalfWidth, Window::kHalfHeight), kDiffusionRadius);
+	//DrawCircle(Window::kHalfWidth, Window::kHalfHeight, kDiffusionRadius, 0xffffff, FALSE);
+
+	m_target_pos = ConvScreenPosToWorldPos(VGet(pos.x, pos.y, 0.0f));
 }

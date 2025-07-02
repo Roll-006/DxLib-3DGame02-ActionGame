@@ -108,7 +108,6 @@ private:
 	bool m_is_move;
 	bool m_is_run;
 	bool m_is_squat;
-	bool m_is_aiming;											// 銃を構える
 	bool m_is_turn_around;										// Y軸180°回転させるかを判定
 	bool m_is_turn_run;											// ダッシュ中に振り向くかを判定
 	bool m_is_correct_look_dir;									// 見る方向を補正するかを判定

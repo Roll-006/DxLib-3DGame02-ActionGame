@@ -37,6 +37,7 @@ private:
 	VECTOR m_prev_pos;
 	VECTOR m_first_pos;		// ‰Šú”­ËˆÊ’u
 	float  m_move_speed;	// ˆÚ“®‘¬“x
+	float  m_deceleration;	// Œ¸‘¬“x
 	float  m_range;			// Ë’ö
 	bool   m_Is_alive;		// ¶‘¶”»’è
 };

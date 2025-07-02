@@ -15,6 +15,9 @@ public:
 	void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) override;
 
 private:
+	void CalcTargetPos() override;
+
+private:
 	static constexpr VECTOR kCorrectPos				= { -5.0f, -20.0f, 35.0f };
 	static constexpr VECTOR kCorrectAngle			= { -90.0f * math::kDegreesToRadian, 270.0f * math::kDegreesToRadian, 0.0f };
 	static constexpr float  kCorrectScale			= 2.0f;
@@ -23,6 +26,10 @@ private:
 	static constexpr VECTOR kEjectionPortCorrectPos = { 1.5f, 15.0f, -2.5f };
 	static constexpr float  kScopeScale				= 2.0f;
 	static constexpr float  kRange					= 2000.0f;
-	static constexpr float  kInitialVelocity		= 50.0f;
+	static constexpr float  kInitialVelocity		= 140.0f;
+	static constexpr float  kDeceleration			= 100.0f;
 	static constexpr float  kShotIntervalTime		= 0.1f;
+
+	static constexpr float  kDiffusionRadius		= 100.0f;
+
 };

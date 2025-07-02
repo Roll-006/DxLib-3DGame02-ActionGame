@@ -11,7 +11,6 @@ Player::Player(std::shared_ptr<Camera> camera) :
 	m_is_move				(false),
 	m_is_run				(false),
 	m_is_squat				(false),
-	m_is_aiming				(false),
 	m_is_turn_around		(false),
 	m_is_turn_run			(false),
 	m_is_correct_look_dir	(false),
@@ -80,6 +79,8 @@ void Player::Update()
 
 	// TODO : 位置変更を検討。enemyも同様
 	m_is_landing = false;
+
+	m_current_attach_weapon->Update();
 }
 
 void Player::LateUpdate()
@@ -93,7 +94,7 @@ void Player::LateUpdate()
 		m_modeler->GetModelHandle(),
 		m_look_dir.at(TimeKind::kCurrent),
 		m_camera->GetTransform()->GetMatrix(CoordinateKind::kWorld),
-		m_is_aiming);
+		std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->IsAiming());
 
 	m_current_attach_weapon->LateUpdate();
 }
@@ -253,7 +254,7 @@ void Player::AimingGun()
 	// ターン中は早期return
 	if (m_is_turn_around) { return; }
 
-	m_is_aiming				= true;
+	std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->ActivateAiming();
 	m_is_correct_look_dir	= true;
 
 	// 拡大率から実際の距離を取得
@@ -262,7 +263,7 @@ void Player::AimingGun()
 	m_camera->TrackBoneWobbly();
 
 	// 銃に狙う方向を設定
-	std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->SetAimDir		  (m_camera->GetTransform()->GetForward(CoordinateKind::kWorld));
+	std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->SetAimDir		(m_camera->GetTransform()->GetForward(CoordinateKind::kWorld));
 	std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->SetPosOnRayLine(m_camera->GetTransform()->GetPos    (CoordinateKind::kWorld));
 
 	// ダッシュ状態を解除
@@ -319,7 +320,7 @@ void Player::ChangeAnimState()
 			}
 		}
 
-		if (m_is_aiming)
+		if (std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->IsAiming())
 		{
 			m_anim_kind = PlayerAnimKind::kIdleShoot01;
 		}
@@ -371,7 +372,7 @@ void Player::ChangeAnimState()
 	// しゃがむ
 	if (m_is_squat)
 	{
-		if (m_is_aiming)
+		if (std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->IsAiming())
 		{
 			m_anim_kind = PlayerAnimKind::kIdleSquatShoot01;
 		}
@@ -476,13 +477,13 @@ void Player::InitMove()
 	m_is_correct_look_dir = false;
 
 	// 照準
-	if (!m_is_aiming)
+	if (!std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->IsAiming())
 	{
 		m_camera->Depart(Camera::kNormalDistance, kADSSpeed * FPS::GetDeltaTime());
 		m_camera->TrackBoneHeightOnly();
 	}
 
-	m_is_aiming = false;
+	std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->DeactivateAiming();
 	std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->ReleaseTrigger();
 
 	// ダッシュ判定
@@ -606,7 +607,7 @@ void Player::CalcLookDir()
 	}
 
 	// 銃を構えている場合は常にカメラと同じ向きを向く
-	if (m_is_aiming)
+	if (std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->IsAiming())
 	{
 		m_look_dir.at(TimeKind::kNext) = GetMoveForward();
 	}
@@ -625,8 +626,8 @@ void Player::CorrectLookDir()
 	distance.y = math::ConnectMinusPiToPi(distance.y);
 
 	// スコープを覗く場合は速度を上昇させる
-	float add_angle			= m_is_aiming ? -kLookDirCorrectionAngleForADS		: -kLookDirCorrectionAngle;
-	float threshold_angle	= m_is_aiming ? kConfirmLookDirThresholdAngleForADS	: kConfirmLookDirThresholdAngle;
+	float add_angle			= std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->IsAiming() ? -kLookDirCorrectionAngleForADS		: -kLookDirCorrectionAngle;
+	float threshold_angle	= std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->IsAiming() ? kConfirmLookDirThresholdAngleForADS	: kConfirmLookDirThresholdAngle;
 
 	// カメラを基準にして右側であった場合は反転
 	if (distance.y > 0) { add_angle *= -1; }

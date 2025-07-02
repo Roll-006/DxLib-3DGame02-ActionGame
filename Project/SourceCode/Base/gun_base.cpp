@@ -3,16 +3,19 @@
 GunBase::GunBase(const std::string& name, const GunKind gun_kind, const std::string& file_path) :
 	WeaponBase					(name, file_path),
 	m_aim_dir					(v3d::GetZeroV()),
+	m_target_pos				(v3d::GetZeroV()),
 	m_muzzle_correct_pos		(v3d::GetZeroV()),
 	m_ejection_port_correct_pos	(v3d::GetZeroV()),
 	m_point_on_ray_line			(v3d::GetZeroV()),
 	m_scope_scale				(0.0f),
 	m_range						(0.0f),
 	m_initial_velocity			(0.0f),
+	m_deceleration				(0.0f),
 	m_shot_interval_time		(0.0f),
 	m_shot_timer				(0.0f),
 	m_is_shot					(false),
 	m_is_pull_trigger			(false),
+	m_is_aiming					(false),
 	m_gun_kind					(gun_kind)
 {
 

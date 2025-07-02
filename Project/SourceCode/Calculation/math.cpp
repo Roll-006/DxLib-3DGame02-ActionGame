@@ -465,6 +465,26 @@ bool math::IsPointOnSphereSurface(const VECTOR& point, const Sphere& sphere)
 #pragma endregion
 
 
+#pragma region 図形
+Vector2D<int> math::GetRandomPointInCircle2D(const Vector2D<int>& center_pos, const float radius)
+{
+    // 角度・距離を乱数で設定
+    float angle    = DX_TWO_PI_F * ((GetRand(DX_TWO_PI_F - 1.0f) + 1.0f) / DX_TWO_PI_F);
+    float distance = radius      * ((GetRand(radius - 1) + 1)            / radius);
+
+    Vector2D<int> pos;
+    pos.x = center_pos.x + distance * cosf(angle);
+    pos.y = center_pos.y + distance * sinf(angle);
+    return pos;
+}
+
+VECTOR math::GetRandomPointInCircle(const Circle& circle)
+{
+    return VECTOR();
+}
+#pragma endregion
+
+
 #pragma region 最短距離
 float math::GetDistancePointToLine          (const VECTOR&      point,      const Line&     line)
 {
