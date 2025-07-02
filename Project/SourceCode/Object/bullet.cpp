@@ -76,7 +76,7 @@ void Bullet::OnShot(const GunBase& gun)
 	m_first_pos		= gun.GetFirstShotPos();
 	m_transform->SetPos(CoordinateKind::kWorld, m_first_pos);
 	m_prev_pos		= m_first_pos;
-	m_dir			= gun.GetAimDir();
+	m_dir			= gun.GetShotDir();
 	m_move_speed	= gun.GetInitialVelocity();
 	m_deceleration  = gun.GetDeceleration();
 	m_range			= gun.GetRange();

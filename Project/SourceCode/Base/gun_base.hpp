@@ -30,6 +30,7 @@ public:
 	void SetAimDir(const VECTOR& aim_dir) { m_aim_dir = aim_dir; }
 
 	[[nodiscard]] VECTOR  GetAimDir()			const { return m_aim_dir; }
+	[[nodiscard]] VECTOR  GetShotDir()			const;
 	[[nodiscard]] VECTOR  GetMuzzlePos()		const;
 	[[nodiscard]] VECTOR  GetEjectionPortPos()  const;
 	[[nodiscard]] float   GetScopeScale()		const { return m_scope_scale; }
@@ -53,6 +54,8 @@ protected:
 	virtual void CalcTargetPos() abstract;
 
 protected:
+	static constexpr float kDiffusionDistance = 1500.0f;		// 拡散範囲が位置する座標までの距離
+
 	VECTOR  m_aim_dir;						// 狙う方向
 	VECTOR  m_target_pos;					// 狙う位置
 	VECTOR  m_muzzle_correct_pos;			// 銃口補正座標(銃口の座標を取得するためのオフセット)

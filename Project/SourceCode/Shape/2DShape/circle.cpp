@@ -7,7 +7,7 @@ Circle::Circle(const VECTOR& normal_vector, float radius):
 	m_radius		(radius),
 	m_interval_andle(360.0f / kVertexNum * math::kDegreesToRadian)
 {
-	// ˆ—‚È‚µ
+	SetPos(m_pos);
 }
 
 Circle::Circle() :
@@ -17,7 +17,7 @@ Circle::Circle() :
 	m_radius		(0.0f),
 	m_interval_andle(360.0f / kVertexNum * math::kDegreesToRadian)
 {
-	// ˆ—‚È‚µ
+	SetPos(m_pos);
 }
 
 Circle::~Circle()
@@ -25,6 +25,7 @@ Circle::~Circle()
 	// ˆ—‚È‚µ
 }
 
+// FIXME : F‚ª‚Â‚©‚È‚¢ƒ~ƒX‚ ‚è
 void Circle::Draw(const bool is_draw_frame, const int alpha_blend_num, const unsigned int frame_color) const
 {
 	//if (is_draw_normal_vector)
@@ -36,7 +37,7 @@ void Circle::Draw(const bool is_draw_frame, const int alpha_blend_num, const uns
 	{
 		for (const auto& triangle : m_triangles)
 		{
-			DrawLine3D(triangle.GetPos(0), triangle.GetPos(1), 0xff0000);
+			DrawLine3D(triangle.GetPos(0), triangle.GetPos(1), frame_color);
 		}
 	}
 

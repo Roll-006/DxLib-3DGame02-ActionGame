@@ -21,6 +21,11 @@ GunBase::GunBase(const std::string& name, const GunKind gun_kind, const std::str
 
 }
 
+VECTOR GunBase::GetShotDir() const
+{
+	return v3d::GetNormalizedV(m_target_pos - GetFirstShotPos());
+}
+
 VECTOR GunBase::GetMuzzlePos() const
 {
 	const auto world_m   = m_transform->GetMatrix(CoordinateKind::kWorld);

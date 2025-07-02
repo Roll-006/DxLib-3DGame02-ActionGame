@@ -81,8 +81,11 @@ void AssaultRifle::CalcTargetPos()
 {
 	if (!m_is_aiming) { return; }
 
-	Vector2D<int> pos = math::GetRandomPointInCircle2D(Vector2D<int>(Window::kHalfWidth, Window::kHalfHeight), kDiffusionRadius);
-	//DrawCircle(Window::kHalfWidth, Window::kHalfHeight, kDiffusionRadius, 0xffffff, FALSE);
+	Circle circle(m_aim_dir, kDiffusionRadius);
+	circle.SetPos(GetFirstShotPos() + m_aim_dir * kDiffusionDistance);
+	m_target_pos = math::GetRandomPointInCircle(circle);
 
-	m_target_pos = ConvScreenPosToWorldPos(VGet(pos.x, pos.y, 0.0f));
+	circle.Draw(true, 0, 0xffffff);
+
+	DrawSphere3D(circle.GetPos(), 10, 32, 0xffffff, 0xffffff, FALSE);
 }

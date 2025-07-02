@@ -30,6 +30,6 @@ private:
 	static constexpr float  kDeceleration			= 100.0f;
 	static constexpr float  kShotIntervalTime		= 0.1f;
 
-	static constexpr float  kDiffusionRadius		= 100.0f;
+	static constexpr float  kDiffusionRadius		= 50.0f;		// ŠgŽU”ÍˆÍ‚Ì”¼Œa
 
 };

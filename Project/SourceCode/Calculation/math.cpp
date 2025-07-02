@@ -469,8 +469,8 @@ bool math::IsPointOnSphereSurface(const VECTOR& point, const Sphere& sphere)
 Vector2D<int> math::GetRandomPointInCircle2D(const Vector2D<int>& center_pos, const float radius)
 {
     // 角度・距離を乱数で設定
-    float angle    = DX_TWO_PI_F * ((GetRand(DX_TWO_PI_F - 1.0f) + 1.0f) / DX_TWO_PI_F);
-    float distance = radius      * ((GetRand(radius - 1) + 1)            / radius);
+    float angle     = DX_TWO_PI_F * ((GetRand(DX_TWO_PI_F - 1.0f) + 1.0f) / DX_TWO_PI_F);
+    float distance  = radius * ((GetRand(radius - 1) + 1) / radius);
 
     Vector2D<int> pos;
     pos.x = center_pos.x + distance * cosf(angle);
@@ -480,7 +480,14 @@ Vector2D<int> math::GetRandomPointInCircle2D(const Vector2D<int>& center_pos, co
 
 VECTOR math::GetRandomPointInCircle(const Circle& circle)
 {
-    return VECTOR();
+    // 角度・距離を乱数で設定
+    // FIXME : GetRandがint型のためデータが失われている
+    float angle     = DX_TWO_PI_F * ((GetRand(DX_TWO_PI_F - 1.0f) + 1.0f) / DX_TWO_PI_F);
+    float distance  = circle.GetRadius() * ((GetRand(circle.GetRadius() - 1) + 1) / circle.GetRadius());
+
+    // 座標を距離分移動させ、回転させる
+    VECTOR pos = circle.GetPos() + math::GetNormalVector(circle.GetNormalVector()) * distance;
+    return math::GetRotatedPos(pos, quat::CreateQuaternion(circle.GetNormalVector(), angle));
 }
 #pragma endregion
 
