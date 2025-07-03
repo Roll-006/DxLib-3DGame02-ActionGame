@@ -194,10 +194,10 @@
     <ClCompile Include="SourceCode\Base\virtual_camera_base.cpp">
       <Filter>Base</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\VirtualCamera\assault_rifle (2) (2).cpp">
+    <ClCompile Include="SourceCode\VirtualCamera\scope_aiming_camera.cpp">
       <Filter>VirtualCamera</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\VirtualCamera\assault_rifle (2).cpp">
+    <ClCompile Include="SourceCode\VirtualCamera\aiming_camera.cpp">
       <Filter>VirtualCamera</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Manager\ui_manager.cpp">
@@ -208,6 +208,18 @@
     </ClCompile>
     <ClCompile Include="SourceCode\Algorithm\algorithm.cpp">
       <Filter>Algorithm</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\VirtualCamera\aiming_camera (2).cpp">
+      <Filter>VirtualCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\VirtualCamera\aiming_camera (3).cpp">
+      <Filter>VirtualCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\VirtualCamera\tps_camera.cpp">
+      <Filter>VirtualCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\VirtualCamera\fps_camera.cpp">
+      <Filter>VirtualCamera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -547,10 +559,10 @@
     <ClInclude Include="SourceCode\Base\virtual_camera_base.hpp">
       <Filter>Base</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\VirtualCamera\assault_rifle (2) (2).hpp">
+    <ClInclude Include="SourceCode\VirtualCamera\scope_aiming_camera.hpp">
       <Filter>VirtualCamera</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\VirtualCamera\assault_rifle (2).hpp">
+    <ClInclude Include="SourceCode\VirtualCamera\aiming_camera.hpp">
       <Filter>VirtualCamera</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Manager\ui_manager.hpp">
@@ -561,6 +573,18 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Algorithm\algorithm.hpp">
       <Filter>Algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\VirtualCamera\aiming_camera (2).hpp">
+      <Filter>VirtualCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\VirtualCamera\aiming_camera (3).hpp">
+      <Filter>VirtualCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\VirtualCamera\tps_camera.hpp">
+      <Filter>VirtualCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\VirtualCamera\fps_camera.hpp">
+      <Filter>VirtualCamera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
