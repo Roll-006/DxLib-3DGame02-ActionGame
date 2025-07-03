@@ -50,11 +50,16 @@ protected:
 	/// @brief 弾丸発射処理
 	void Shot();
 
-	/// @brief ターゲットの位置を計算
+	/// @brief 拡散範囲を計算
+	virtual void CalcDiffusionRange() abstract;
+
+	/// @brief 射撃するターゲット座標を計算
 	virtual void CalcTargetPos() abstract;
 
 protected:
 	static constexpr float kDiffusionDistance = 1500.0f;		// 拡散範囲が位置する座標までの距離
+
+	std::shared_ptr<ShapeBase> m_diffusion_shape;				// 拡散範囲指定用の図形
 
 	VECTOR  m_aim_dir;						// 狙う方向
 	VECTOR  m_target_pos;					// 狙う位置

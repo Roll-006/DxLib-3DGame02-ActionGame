@@ -1,5 +1,5 @@
 #pragma once
-#include "../2DShape/triangle.hpp"
+#include "triangle.hpp"
 
 class Circle final : public ShapeBase
 {

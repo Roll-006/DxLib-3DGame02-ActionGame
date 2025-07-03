@@ -5,6 +5,7 @@ AssaultRifle::AssaultRifle() :
 {
 	SetCorrectValue(kCorrectPos, kCorrectAngle, kCorrectScale);
 
+	m_diffusion_shape			= std::make_shared<Circle>();
 	m_scope_scale				= kScopeScale;
 	m_range						= kRange;
 	m_muzzle_correct_pos		= kMuzzleCorrectPos;
@@ -38,6 +39,7 @@ void AssaultRifle::LateUpdate()
 	if (!IsActive()) { return; }
 
 	TrackOwner();
+	CalcDiffusionRange();
 	CalcTargetPos();
 	Shot();
 }
@@ -77,13 +79,18 @@ void AssaultRifle::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	}
 }
 
-void AssaultRifle::CalcTargetPos()
+void AssaultRifle::CalcDiffusionRange()
 {
 	if (!m_is_aiming) { return; }
 
 	// ŠgŽU”ÍˆÍ‚ðŽw’è
-	Circle circle(m_aim_dir, kDiffusionRadius);
-	circle.SetPos(GetFirstShotPos() + m_aim_dir * kDiffusionDistance);
+	m_diffusion_shape = std::make_shared<Circle>(m_aim_dir, kDiffusionRadius);
+	std::dynamic_pointer_cast<Circle>(m_diffusion_shape)->SetPos(GetFirstShotPos() + m_aim_dir * kDiffusionDistance);
+}
 
-	m_target_pos = math::GetRandomPointInCircle(circle);
+void AssaultRifle::CalcTargetPos()
+{
+	if (!m_is_aiming) { return; }
+
+	m_target_pos = math::GetRandomPointInCircle(*std::dynamic_pointer_cast<Circle>(m_diffusion_shape));
 }

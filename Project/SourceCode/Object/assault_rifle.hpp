@@ -15,7 +15,8 @@ public:
 	void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) override;
 
 private:
-	void CalcTargetPos() override;
+	void CalcDiffusionRange() override;
+	void CalcTargetPos()	  override;
 
 private:
 	static constexpr VECTOR kCorrectPos				= { -5.0f, -20.0f, 35.0f };
@@ -31,5 +32,4 @@ private:
 	static constexpr float  kShotIntervalTime		= 0.1f;
 
 	static constexpr float  kDiffusionRadius		= 50.0f;		// ŠgŽU”ÍˆÍ‚Ì”¼Œa
-
 };

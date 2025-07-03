@@ -190,6 +190,7 @@
     <ClCompile Include="SourceCode\Scene\title_scene.cpp" />
     <ClCompile Include="SourceCode\Shape\1DShape\line.cpp" />
     <ClCompile Include="SourceCode\Shape\1DShape\segment.cpp" />
+    <ClCompile Include="SourceCode\Shape\2DShape\capsule2D.cpp" />
     <ClCompile Include="SourceCode\Shape\2DShape\circle.cpp" />
     <ClCompile Include="SourceCode\Shape\2DShape\circumference.cpp" />
     <ClCompile Include="SourceCode\Shape\2DShape\plane.cpp" />
@@ -302,6 +303,7 @@
     <ClInclude Include="SourceCode\Scene\title_scene.hpp" />
     <ClInclude Include="SourceCode\Shape\1DShape\line.hpp" />
     <ClInclude Include="SourceCode\Shape\1DShape\segment.hpp" />
+    <ClInclude Include="SourceCode\Shape\2DShape\capsule2D.hpp" />
     <ClInclude Include="SourceCode\Shape\2DShape\circle.hpp" />
     <ClInclude Include="SourceCode\Shape\2DShape\circumference.hpp" />
     <ClInclude Include="SourceCode\Shape\2DShape\plane.hpp" />

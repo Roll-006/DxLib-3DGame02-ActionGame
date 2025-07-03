@@ -2,6 +2,7 @@
 
 GunBase::GunBase(const std::string& name, const GunKind gun_kind, const std::string& file_path) :
 	WeaponBase					(name, file_path),
+	m_diffusion_shape			(nullptr),
 	m_aim_dir					(v3d::GetZeroV()),
 	m_target_pos				(v3d::GetZeroV()),
 	m_muzzle_correct_pos		(v3d::GetZeroV()),

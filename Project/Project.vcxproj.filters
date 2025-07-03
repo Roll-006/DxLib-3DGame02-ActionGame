@@ -188,6 +188,9 @@
     <ClCompile Include="SourceCode\Random\random_generator.cpp">
       <Filter>Random</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\Shape\2DShape\capsule2D.cpp">
+      <Filter>Shape\2DShape</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\chara_base.hpp">
@@ -519,6 +522,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Random\random_generator.hpp">
       <Filter>Random</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Shape\2DShape\capsule2D.hpp">
+      <Filter>Shape\2DShape</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
