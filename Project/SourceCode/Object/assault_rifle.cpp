@@ -81,11 +81,9 @@ void AssaultRifle::CalcTargetPos()
 {
 	if (!m_is_aiming) { return; }
 
+	// ŠgŽU”ÍˆÍ‚ðŽw’è
 	Circle circle(m_aim_dir, kDiffusionRadius);
 	circle.SetPos(GetFirstShotPos() + m_aim_dir * kDiffusionDistance);
+
 	m_target_pos = math::GetRandomPointInCircle(circle);
-
-	circle.Draw(true, 0, 0xffffff);
-
-	DrawSphere3D(circle.GetPos(), 10, 32, 0xffffff, 0xffffff, FALSE);
 }

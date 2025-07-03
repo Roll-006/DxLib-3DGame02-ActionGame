@@ -466,28 +466,20 @@ bool math::IsPointOnSphereSurface(const VECTOR& point, const Sphere& sphere)
 
 
 #pragma region 図形
-Vector2D<int> math::GetRandomPointInCircle2D(const Vector2D<int>& center_pos, const float radius)
-{
-    // 角度・距離を乱数で設定
-    float angle     = DX_TWO_PI_F * ((GetRand(DX_TWO_PI_F - 1.0f) + 1.0f) / DX_TWO_PI_F);
-    float distance  = radius * ((GetRand(radius - 1) + 1) / radius);
-
-    Vector2D<int> pos;
-    pos.x = center_pos.x + distance * cosf(angle);
-    pos.y = center_pos.y + distance * sinf(angle);
-    return pos;
-}
-
 VECTOR math::GetRandomPointInCircle(const Circle& circle)
 {
+    const auto rand_gen = RandomGenerator::GetInstance();
+
     // 角度・距離を乱数で設定
-    // FIXME : GetRandがint型のためデータが失われている
-    float angle     = DX_TWO_PI_F * ((GetRand(DX_TWO_PI_F - 1.0f) + 1.0f) / DX_TWO_PI_F);
-    float distance  = circle.GetRadius() * ((GetRand(circle.GetRadius() - 1) + 1) / circle.GetRadius());
+    float angle     = DX_TWO_PI_F * (rand_gen->GetRandOpenClosed<float>(0.0f, DX_TWO_PI_F) / DX_TWO_PI_F);
+    float distance  = circle.GetRadius() * (rand_gen->GetRandOpenClosed<float>(0.0f, circle.GetRadius()) / circle.GetRadius());
+
+    DrawFormatString(0,  0, 0xffffff, "angle    : %f", angle);
+    DrawFormatString(0, 20, 0xffffff, "distance : %f", distance);
 
     // 座標を距離分移動させ、回転させる
-    VECTOR pos = circle.GetPos() + math::GetNormalVector(circle.GetNormalVector()) * distance;
-    return math::GetRotatedPos(pos, quat::CreateQuaternion(circle.GetNormalVector(), angle));
+    VECTOR pos = circle.GetPos() + math::GetNormalVector(-circle.GetNormalVector(), axis::GetWorldYAxis()) * distance;
+    return math::GetRotatedPos(pos, quat::CreateQuaternion(circle.GetPos() + circle.GetNormalVector(), angle));
 }
 #pragma endregion
 

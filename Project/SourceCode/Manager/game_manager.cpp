@@ -7,7 +7,7 @@ GameManager::GameManager():
 {
 	SetUpGameSystem();
 
-	
+	RandomGenerator			::Generate();
 	HandleKeeper			::Generate();
 	InputChecker			::Generate();
 	CommandHandler			::Generate();
@@ -22,6 +22,7 @@ GameManager::GameManager():
 
 GameManager::~GameManager()
 {
+	RandomGenerator			::Delete();
 	HandleKeeper			::Delete();
 	InputChecker			::Delete();
 	CommandHandler			::Delete();

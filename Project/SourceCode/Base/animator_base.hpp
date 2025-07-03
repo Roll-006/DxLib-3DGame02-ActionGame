@@ -52,7 +52,7 @@ private:
 	std::unordered_map<TimeKind, AnimTimeKindData>	m_time_kind_data;
 
 	float m_prev_anim_play_rate;			// 前回のアニメーションの再生率
-	float m_blend_rate;
+	float m_blend_rate;						// ブレンド率
 
 	bool  m_is_first_frame_change_anim;		// アニメーションが変更されて最初のフレームであるかを判定
 	bool  m_is_attached;					// 直近でアタッチを試みたアニメーションがアタッチされたかを判定

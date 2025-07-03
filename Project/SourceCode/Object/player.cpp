@@ -279,6 +279,7 @@ void Player::Shot()
 {
 	// ƒ^[ƒ“’†‚Í‘Šúreturn
 	if (m_is_turn_around) { return; }
+	if (!std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->IsAiming()) { return; }
 
 	std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->PullTrigger();
 }

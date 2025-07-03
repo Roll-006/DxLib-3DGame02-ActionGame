@@ -4,6 +4,8 @@
 #include <array>
 #include <unordered_map>
 
+#include "../Random/random_generator.hpp"
+
 #include "../Concept/common_concepts.hpp"
 
 #include "axes.hpp"
@@ -365,12 +367,6 @@ namespace math
 
 
 	#pragma region 図形
-	/// @brief 円内のランダムな点を取得する
-	/// @param center_pos 円の中心座標
-	/// @param radius 円の半径
-	/// @return 円内のランダム座標
-	[[nodiscard]] Vector2D<int> GetRandomPointInCircle2D(const Vector2D<int>& center_pos, const float radius);
-
 	/// @brief 円内のランダムな点を取得する
 	/// @param center_pos 円の中心座標
 	/// @param radius 円の半径

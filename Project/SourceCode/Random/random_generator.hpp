@@ -1,0 +1,61 @@
+#pragma once
+#include <random>
+
+#include "../Base/singleton_base.hpp"
+#include "../Concept/common_concepts.hpp"
+
+class RandomGenerator final : public SingletonBase<RandomGenerator>
+{
+public:
+	/// @brief —”‚ğæ“¾(min <= num < max)
+	/// @param min Å¬’l(”ÍˆÍ‚ÉŠÜ‚Ş)
+	/// @param max Å‘å’l(”ÍˆÍ‚ÉŠÜ‚Ü‚È‚¢)
+	template<common_concepts::ArithmeticT T>
+	[[nodiscard]] T GetRandClosedOpen(const T min, const T max)
+	{
+		// ®”Œ^‚Å‚ ‚éê‡
+		if constexpr (std::is_integral_v<T>)
+		{
+			std::uniform_int_distribution<T>  rand(min, max);
+			return rand(m_rand_generator);
+		}
+		// •‚“®¬”“_”Œ^‚Å‚ ‚éê‡
+		if constexpr (std::is_floating_point_v<T>)
+		{
+			std::uniform_real_distribution<T> rand(min, max);
+			return rand(m_rand_generator);
+		}
+		return 0;
+	}
+
+	/// @brief —”‚ğæ“¾(min < num <= max)
+	/// @param min Å¬’l(”ÍˆÍ‚ÉŠÜ‚Ü‚È‚¢)
+	/// @param max Å‘å’l(”ÍˆÍ‚ÉŠÜ‚Ş)
+	template<common_concepts::ArithmeticT T>
+	[[nodiscard]] T GetRandOpenClosed(const T min, const T max)
+	{
+		// ®”Œ^‚Å‚ ‚éê‡
+		if constexpr (std::is_integral_v<T>)
+		{
+			std::uniform_int_distribution<T>  rand(-max, -min);
+			return -rand(m_rand_generator);
+		}
+		// •‚“®¬”“_”Œ^‚Å‚ ‚éê‡
+		if constexpr (std::is_floating_point_v<T>)
+		{
+			std::uniform_real_distribution<T> rand(-max, -min);
+			return -rand(m_rand_generator);
+		}
+		return 0;
+	}
+
+private:
+	RandomGenerator();
+	~RandomGenerator();
+
+private:
+	std::random_device m_seed;
+	std::mt19937 m_rand_generator;
+
+	friend SingletonBase<RandomGenerator>;
+};

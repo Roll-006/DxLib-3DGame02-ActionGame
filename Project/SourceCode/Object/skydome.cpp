@@ -36,5 +36,5 @@ void Skydome::Draw() const
 {
 	if (!IsActive()) { return; }
 
-	m_modeler->Draw();
+	//m_modeler->Draw();
 }

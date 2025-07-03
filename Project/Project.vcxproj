@@ -181,6 +181,7 @@
     <ClCompile Include="SourceCode\Part\player_animator.cpp" />
     <ClCompile Include="SourceCode\Part\rifle_cartridge_object_pool.cpp" />
     <ClCompile Include="SourceCode\Part\transform.cpp" />
+    <ClCompile Include="SourceCode\Random\random_generator.cpp" />
     <ClCompile Include="SourceCode\Scene\game_clear_scene.cpp" />
     <ClCompile Include="SourceCode\Scene\game_over_scene.cpp" />
     <ClCompile Include="SourceCode\Scene\load_scene.cpp" />
@@ -292,6 +293,7 @@
     <ClInclude Include="SourceCode\Part\player_animator.hpp" />
     <ClInclude Include="SourceCode\Part\rifle_cartridge_object_pool.hpp" />
     <ClInclude Include="SourceCode\Part\transform.hpp" />
+    <ClInclude Include="SourceCode\Random\random_generator.hpp" />
     <ClInclude Include="SourceCode\Scene\game_clear_scene.hpp" />
     <ClInclude Include="SourceCode\Scene\game_over_scene.hpp" />
     <ClInclude Include="SourceCode\Scene\load_scene.hpp" />

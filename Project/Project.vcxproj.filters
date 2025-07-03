@@ -185,6 +185,9 @@
     <ClCompile Include="SourceCode\Base\animator_base.cpp">
       <Filter>Base</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\Random\random_generator.cpp">
+      <Filter>Random</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\chara_base.hpp">
@@ -514,6 +517,9 @@
     <ClInclude Include="SourceCode\Base\animator_base.hpp">
       <Filter>Base</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\Random\random_generator.hpp">
+      <Filter>Random</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Manager">
@@ -584,6 +590,9 @@
     </Filter>
     <Filter Include="Debugger">
       <UniqueIdentifier>{0f578ace-5d63-4ed1-91d5-90e33a16cf7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Random">
+      <UniqueIdentifier>{d4a7cfb9-bc76-4840-bd83-b43643529fba}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
