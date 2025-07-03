@@ -203,6 +203,12 @@
     <ClCompile Include="SourceCode\Manager\ui_manager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\UI\player_ui_creator.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Algorithm\algorithm.cpp">
+      <Filter>Algorithm</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\chara_base.hpp">
@@ -550,6 +556,12 @@
     <ClInclude Include="SourceCode\Manager\ui_manager.hpp">
       <Filter>Manager</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\UI\player_ui_creator.hpp">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Algorithm\algorithm.hpp">
+      <Filter>Algorithm</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Manager">
@@ -626,6 +638,12 @@
     </Filter>
     <Filter Include="VirtualCamera">
       <UniqueIdentifier>{81d6ad34-35fe-4a8d-a1cf-1c9d3f946d67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{086e891d-27f0-4a74-adb0-64470b2222e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Algorithm">
+      <UniqueIdentifier>{b0890834-20a2-48aa-b030-750bd28f8af2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

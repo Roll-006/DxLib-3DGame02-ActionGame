@@ -34,7 +34,7 @@ void Transform::AttachParent(const std::string& parent_obj_name)
 	// 親がいない場合のみアタッチ
 	if (m_parent_transform) { return; }
 	
-	const auto parent_obj		= ObjManager::GetInstance()->GetObj(parent_obj_name);
+	const auto parent_obj		= ObjManager::GetInstance()->GetObj<ObjBase>(parent_obj_name);
 	const auto parent_transform = parent_obj->GetTransform();
 
 	AttachParent(parent_transform);

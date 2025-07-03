@@ -38,8 +38,8 @@ private:
 
 	static constexpr float  kCapsuleLength				= 2.0f;
 	static constexpr float  kCapsuleRadius				= 0.5f;
-	static constexpr float  kLandingTriggerRadius		= 0.4f;
-	static constexpr VECTOR kLandingTriggerCorrectPos	= { 0.0f, -0.3f, 0.0f };
+	static constexpr float  kLandingTriggerRadius		= 0.25f;
+	static constexpr VECTOR kLandingTriggerCorrectPos	= { 0.0f, -0.35f, 0.0f };
 
 private:
 	std::shared_ptr<Modeler> m_modeler;

@@ -29,6 +29,7 @@ public:
 	void SetPosOnRayLine(const VECTOR& point) { m_point_on_ray_line = point; }
 	void SetAimDir(const VECTOR& aim_dir) { m_aim_dir = aim_dir; }
 
+	[[nodiscard]] std::shared_ptr<ShapeBase> GetDiffusionShape() const { return m_diffusion_shape; }
 	[[nodiscard]] VECTOR  GetAimDir()			const { return m_aim_dir; }
 	[[nodiscard]] VECTOR  GetShotDir()			const;
 	[[nodiscard]] VECTOR  GetMuzzlePos()		const;

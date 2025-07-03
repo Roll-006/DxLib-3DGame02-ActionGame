@@ -2,5 +2,11 @@
 
 enum class GunKind
 {
-	kAssaultRifle,
+	kHandgun,
+	kShotgun,
+	kSniperRifle,
+	kBoltThrower,
+	kMagnum,
+	kSubmachineGun,
+	kRocketLauncher,
 };

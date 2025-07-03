@@ -98,7 +98,7 @@ void Camera::AttachTarget(const std::shared_ptr<ObjBase> obj)
 
 void Camera::AttachTarget(const std::string& obj_name)
 {
-	auto target_obj = ObjManager::GetInstance()->GetObj(obj_name);
+	auto target_obj = ObjManager::GetInstance()->GetObj<ObjBase>(obj_name);
 	AttachTarget(target_obj);
 }
 

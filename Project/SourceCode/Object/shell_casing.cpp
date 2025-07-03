@@ -53,7 +53,7 @@ void ShellCasing::Draw() const
 	m_modeler->Draw();
 
 	//GetCollider(ColliderKind::kCollider)	  ->GetShape()->Draw(true, 255, 0xffffff);
-	//GetCollider(ColliderKind::kLandingTrigger)->GetShape()->Draw(true,   0, 0xff0000);
+	GetCollider(ColliderKind::kLandingTrigger)->GetShape()->Draw(true,   0, 0xff0000);
 
 	//for (auto& collider : m_collider)
 	//{

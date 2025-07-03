@@ -297,7 +297,7 @@ bool collision::IsHitSegmentAndModel    (const Segment&     segment,    const in
     }
 
     // 距離が最も近い三角形との交点を取得
-    distance = math::Sort(distance, SortKind::kAscending);
+    distance = algorithm::Sort(distance, SortKind::kAscending);
     for (const auto& dist : distance)
     {
         return collision::IsHitSegmentAndTriangle(segment, triangles.at(dist.first), intersection);
@@ -601,7 +601,7 @@ VECTOR collision::PushBackCapsuleAndOBB     (const VECTOR& velocity, const Capsu
 
     // 現在の距離が近い順にソート
     // 距離が同じ場合は、同じもの同士で未来の座標が近い順にソート
-    current_distance = math::Sort(current_distance, future_distance, SortKind::kAscending);
+    current_distance = algorithm::Sort(current_distance, future_distance, SortKind::kAscending);
 
     // 移動前の座標と距離が近い四角形から順番に押し戻す
     for (const auto& dist : current_distance)
@@ -641,7 +641,7 @@ VECTOR collision::PushBackSphereAndModel    (const VECTOR& velocity, const Spher
     }
 
     // 距離が近い順に押し戻す
-    current_distance = math::Sort(current_distance, SortKind::kAscending);
+    current_distance = algorithm::Sort(current_distance, SortKind::kAscending);
     for (const auto& distance : current_distance)
     {
         valid_velocity = collision::PushBackSphereAndTriangle(valid_velocity, dynamic_sphere, triangles.at(distance.first));
@@ -683,7 +683,7 @@ VECTOR collision::PushBackCapsuleAndModel   (const VECTOR& velocity, const Capsu
     }
 
     // 距離が近い順に押し戻す
-    current_distance = math::Sort(current_distance, SortKind::kAscending);
+    current_distance = algorithm::Sort(current_distance, SortKind::kAscending);
     for (const auto& distance : current_distance)
     {
         valid_velocity = collision::PushBackCapsuleAndTriangle(valid_velocity, dynamic_capsule, triangles.at(distance.first));

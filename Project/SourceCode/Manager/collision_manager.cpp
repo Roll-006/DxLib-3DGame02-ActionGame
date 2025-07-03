@@ -34,7 +34,7 @@ void CollisionManager::LateUpdate()
 			}
 
 			// 最も近いコライダーのみ判定
-			distance = math::Sort(distance, SortKind::kAscending);
+			distance = algorithm::Sort(distance, SortKind::kAscending);
 			for (const auto& dist : distance)
 			{
 				pair.owner_collider			  ->GetOwnerObj()->OnCollide(ColliderPairOneToOneData(pair.owner_collider, target.at(dist.first).collider, target.at(dist.first).intersection));
@@ -66,7 +66,7 @@ void CollisionManager::AddCollideObj(const std::shared_ptr<PhysicalObjBase> coll
 
 void CollisionManager::RemoveCollideObj(const std::string& obj_name)
 {
-	const auto physical_obj = std::dynamic_pointer_cast<PhysicalObjBase>(ObjManager::GetInstance()->GetObj(obj_name));
+	const auto physical_obj = ObjManager::GetInstance()->GetObj<PhysicalObjBase>(obj_name);
 
 	if (std::find(m_collide_objects.begin(), m_collide_objects.end(), physical_obj) != m_collide_objects.end())
 	{

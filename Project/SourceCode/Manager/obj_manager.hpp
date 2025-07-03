@@ -25,10 +25,27 @@ public:
 
 	/// @brief オブジェクトを取得
 	/// @param obj_handle オブジェクトハンドル
-	[[nodiscard]] std::shared_ptr<ObjBase> GetObj(const int obj_handle);
+	template<obj_concepts::ObjT ObjT>
+	[[nodiscard]] std::shared_ptr<ObjT> GetObj(const int obj_handle)
+	{
+		return m_objects.count(obj_handle) ? std::dynamic_pointer_cast<ObjT>(m_objects.at(obj_handle)) : nullptr;
+	}
+
 	/// @brief オブジェクトを取得
 	/// @param obj_name オブジェクト名(同じキャラクターが存在している場合はオブジェクトハンドルでの取得を推奨)
-	[[nodiscard]] std::shared_ptr<ObjBase> GetObj(const std::string& obj_name);
+	template<obj_concepts::ObjT ObjT>
+	[[nodiscard]] std::shared_ptr<ObjT> GetObj(const std::string& obj_name)
+	{
+		for (const auto& obj : m_objects)
+		{
+			if (obj.second->GetName() == obj_name)
+			{
+				return std::dynamic_pointer_cast<ObjT>(obj.second);
+			}
+		}
+
+		return nullptr;
+	}
 
 	/// @brief オブジェクトハンドルを生成
 	[[nodiscard]] int CreateObjHandle() { return ++m_handle_create_count; }

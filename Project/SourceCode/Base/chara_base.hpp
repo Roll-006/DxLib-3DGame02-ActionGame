@@ -11,7 +11,10 @@ public:
 	CharaBase(const std::string& name, const std::string& tag, const std::string& file_path, const MassKind mass_level_kind);
 	virtual ~CharaBase() = default;
 
-	[[nodiscard]] const std::shared_ptr<Modeler> GetModeler()const { return m_modeler; }
+	[[nodiscard]] std::shared_ptr<Modeler>		GetModeler()								{ return m_modeler; }
+	[[nodiscard]] std::shared_ptr<AnimatorBase>	GetAnimator()						const	{ return m_animator; }
+	[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentAttachWeapon()			const	{ return m_current_attach_weapon; }
+	[[nodiscard]] std::vector<std::shared_ptr<WeaponBase>>	GetCurrentHaveWeapon()	const	{ return m_weapons; }
 
 protected:
 	#pragma region アニメーション
@@ -77,10 +80,6 @@ protected:
 	/// @brief カプセルの長さを計算
 	void CalcCapsuleLength();
 	#pragma endregion
-
-
-	[[nodiscard]] std::shared_ptr<Modeler>		GetModeler()		{ return m_modeler; }
-	[[nodiscard]] std::shared_ptr<AnimatorBase>	GetAnimator() const { return m_animator; }
 
 private:
 	#pragma region コライダー

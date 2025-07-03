@@ -39,7 +39,7 @@ void PhysicsManager::LateUpdate()
 #pragma region ìoò^ÅEâèú
 void PhysicsManager::RemovePhysicalObj				(const int obj_handle)
 {
-	const auto physical_obj = std::dynamic_pointer_cast<PhysicalObjBase>(ObjManager::GetInstance()->GetObj(obj_handle));
+	const auto physical_obj = ObjManager::GetInstance()->GetObj<PhysicalObjBase>(obj_handle);
 
 	if (std::find(m_physical_objects.begin(), m_physical_objects.end(), physical_obj) != m_physical_objects.end())
 	{

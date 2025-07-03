@@ -24,7 +24,7 @@ private:
 	static constexpr float  kCorrectScale			= 2.0f;
 
 	static constexpr VECTOR kMuzzleCorrectPos		= { 0.0f, 15.0f, 32.5f };
-	static constexpr VECTOR kEjectionPortCorrectPos = { 1.5f, 15.0f, -2.5f };
+	static constexpr VECTOR kEjectionPortCorrectPos = { 1.5f, 15.5f, -2.5f };
 	static constexpr float  kScopeScale				= 2.0f;
 	static constexpr float  kRange					= 2000.0f;
 	static constexpr float  kInitialVelocity		= 140.0f;

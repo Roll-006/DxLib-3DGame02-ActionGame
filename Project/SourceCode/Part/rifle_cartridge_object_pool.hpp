@@ -10,6 +10,6 @@ public:
 	~RifleCartridgeObjectPool() override;
 
 private:
-	static constexpr int kBulletPoolSize		= 20;
-	static constexpr int kShellCasingPoolSize	= 40;
+	static constexpr int kBulletPoolSize		= 50;
+	static constexpr int kShellCasingPoolSize	= 35;
 };
