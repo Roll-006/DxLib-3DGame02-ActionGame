@@ -73,9 +73,6 @@
     <ClCompile Include="SourceCode\Manager\weapon_manager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Object\assault_rifle (2).cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\Object\assault_rifle.cpp">
       <Filter>Object</Filter>
     </ClCompile>
@@ -190,6 +187,21 @@
     </ClCompile>
     <ClCompile Include="SourceCode\Shape\2DShape\capsule2D.cpp">
       <Filter>Shape\2DShape</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Manager\camera_manager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Base\virtual_camera_base.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\VirtualCamera\assault_rifle (2) (2).cpp">
+      <Filter>VirtualCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\VirtualCamera\assault_rifle (2).cpp">
+      <Filter>VirtualCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Manager\ui_manager.cpp">
+      <Filter>Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -409,9 +421,6 @@
     <ClInclude Include="SourceCode\Manager\weapon_manager.hpp">
       <Filter>Manager</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Object\assault_rifle (2).hpp">
-      <Filter>Object</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\Object\assault_rifle.hpp">
       <Filter>Object</Filter>
     </ClInclude>
@@ -526,6 +535,21 @@
     <ClInclude Include="SourceCode\Shape\2DShape\capsule2D.hpp">
       <Filter>Shape\2DShape</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\Manager\camera_manager.hpp">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Base\virtual_camera_base.hpp">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\VirtualCamera\assault_rifle (2) (2).hpp">
+      <Filter>VirtualCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\VirtualCamera\assault_rifle (2).hpp">
+      <Filter>VirtualCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Manager\ui_manager.hpp">
+      <Filter>Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Manager">
@@ -599,6 +623,9 @@
     </Filter>
     <Filter Include="Random">
       <UniqueIdentifier>{d4a7cfb9-bc76-4840-bd83-b43643529fba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="VirtualCamera">
+      <UniqueIdentifier>{81d6ad34-35fe-4a8d-a1cf-1c9d3f946d67}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -4,7 +4,7 @@
 Camera::Camera() : 
 	PhysicalObjBase				(ObjName.CAMERA, ObjTag.CAMERA, MassKind::kLight),
 	m_target_transform			(nullptr),
-	m_target_modeler			(nullptr),
+	m_target_model_handle		(-1),
 	m_target_bone				(""),
 	m_distance_to_target		(kNormalDistance),
 	m_init_angle_speed			(0.0f),
@@ -102,20 +102,20 @@ void Camera::AttachTarget(const std::string& obj_name)
 	AttachTarget(target_obj);
 }
 
-void Camera::AttachTarget(const std::shared_ptr<ObjBase> obj, const std::shared_ptr<Modeler> modeler, const std::string& bone_path, const bool is_track_height_only)
+void Camera::AttachTarget(const std::shared_ptr<ObjBase> obj, const int model_handle, const std::string& bone_path, const bool is_track_height_only)
 {
 	AttachTarget(obj);
 
-	m_target_modeler		= modeler;
+	m_target_model_handle	= model_handle;
 	m_target_bone			= bone_path;
 	m_is_track_height_only	= is_track_height_only;
 }
 
-void Camera::AttachTarget(const std::string& obj_name, const std::shared_ptr<Modeler> modeler, const std::string& bone_path, const bool is_track_height_only)
+void Camera::AttachTarget(const std::string& obj_name, const int model_handle, const std::string& bone_path, const bool is_track_height_only)
 {
 	AttachTarget(obj_name);
 
-	m_target_modeler		= modeler;
+	m_target_model_handle	= model_handle;
 	m_target_bone			= bone_path;
 	m_is_track_height_only	= is_track_height_only;
 }
@@ -123,7 +123,7 @@ void Camera::AttachTarget(const std::string& obj_name, const std::shared_ptr<Mod
 void Camera::DetachTarget()
 {
 	m_target_transform		= nullptr;
-	m_target_modeler		= nullptr;
+	m_target_model_handle	= -1;
 	m_target_bone			= "";
 	m_is_track_height_only	= false;
 }
@@ -340,11 +340,11 @@ void Camera::CalcInitAngle()
 
 VECTOR Camera::GetLookPos()
 {
-	if (!m_target_transform) { return v3d::GetZeroV(); }
-	if (!m_target_modeler)	 { return m_target_transform->GetPos(CoordinateKind::kWorld); }
+	if (!m_target_transform)			{ return v3d::GetZeroV(); }
+	if (m_target_model_handle == -1)	{ return m_target_transform->GetPos(CoordinateKind::kWorld); }
 
 	// ƒ{[ƒ“‚Ìs—ñî•ñ‚ðŽæ“¾
-	const int model_handle	= m_target_modeler->GetModelHandle();
+	const int model_handle	= m_target_model_handle;
 	const int frame_num		= MV1SearchFrame(model_handle, m_target_bone.c_str());
 	MATRIX	  frame_mat		= MV1GetFrameLocalWorldMatrix(model_handle, frame_num);
 	VECTOR	  look_pos		= v3d::GetZeroV();

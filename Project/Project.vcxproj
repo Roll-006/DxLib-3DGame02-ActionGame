@@ -143,6 +143,7 @@
     <ClCompile Include="SourceCode\Base\object_pool_base.cpp" />
     <ClCompile Include="SourceCode\Base\obj_base.cpp" />
     <ClCompile Include="SourceCode\Base\physical_obj_base.cpp" />
+    <ClCompile Include="SourceCode\Base\virtual_camera_base.cpp" />
     <ClCompile Include="SourceCode\Base\weapon_base.cpp" />
     <ClCompile Include="SourceCode\Calculation\collision_calculator.cpp" />
     <ClCompile Include="SourceCode\Calculation\math.cpp" />
@@ -153,6 +154,7 @@
     <ClCompile Include="SourceCode\Debugger\debugger.cpp" />
     <ClCompile Include="SourceCode\FPS\fps.cpp" />
     <ClCompile Include="SourceCode\main.cpp" />
+    <ClCompile Include="SourceCode\Manager\camera_manager.cpp" />
     <ClCompile Include="SourceCode\Manager\collision_manager.cpp" />
     <ClCompile Include="SourceCode\Manager\command_handler.cpp" />
     <ClCompile Include="SourceCode\Manager\game_manager.cpp" />
@@ -163,8 +165,8 @@
     <ClCompile Include="SourceCode\Manager\physics_manager.cpp" />
     <ClCompile Include="SourceCode\Manager\rifle_cartridge_manager.cpp" />
     <ClCompile Include="SourceCode\Manager\scene_manager.cpp" />
+    <ClCompile Include="SourceCode\Manager\ui_manager.cpp" />
     <ClCompile Include="SourceCode\Manager\weapon_manager.cpp" />
-    <ClCompile Include="SourceCode\Object\assault_rifle (2).cpp" />
     <ClCompile Include="SourceCode\Object\assault_rifle.cpp" />
     <ClCompile Include="SourceCode\Object\bullet.cpp" />
     <ClCompile Include="SourceCode\Object\camera.cpp" />
@@ -200,6 +202,8 @@
     <ClCompile Include="SourceCode\Shape\3DShape\capsule.cpp" />
     <ClCompile Include="SourceCode\Shape\3DShape\obb.cpp" />
     <ClCompile Include="SourceCode\Shape\3DShape\sphere.cpp" />
+    <ClCompile Include="SourceCode\VirtualCamera\assault_rifle (2) (2).cpp" />
+    <ClCompile Include="SourceCode\VirtualCamera\assault_rifle (2).cpp" />
     <ClCompile Include="SourceCode\Window\window.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -214,6 +218,7 @@
     <ClInclude Include="SourceCode\Base\scene_base.hpp" />
     <ClInclude Include="SourceCode\Base\shape_base.hpp" />
     <ClInclude Include="SourceCode\Base\singleton_base.hpp" />
+    <ClInclude Include="SourceCode\Base\virtual_camera_base.hpp" />
     <ClInclude Include="SourceCode\Base\weapon_base.hpp" />
     <ClInclude Include="SourceCode\Calculation\axes.hpp" />
     <ClInclude Include="SourceCode\Calculation\collision_calculator.hpp" />
@@ -266,6 +271,7 @@
     <ClInclude Include="SourceCode\Data\Tag\obj_tag.hpp" />
     <ClInclude Include="SourceCode\Debugger\debugger.hpp" />
     <ClInclude Include="SourceCode\FPS\fps.hpp" />
+    <ClInclude Include="SourceCode\Manager\camera_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\collision_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\command_handler.hpp" />
     <ClInclude Include="SourceCode\Manager\game_manager.hpp" />
@@ -276,8 +282,8 @@
     <ClInclude Include="SourceCode\Manager\physics_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\rifle_cartridge_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\scene_manager.hpp" />
+    <ClInclude Include="SourceCode\Manager\ui_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\weapon_manager.hpp" />
-    <ClInclude Include="SourceCode\Object\assault_rifle (2).hpp" />
     <ClInclude Include="SourceCode\Object\assault_rifle.hpp" />
     <ClInclude Include="SourceCode\Object\bullet.hpp" />
     <ClInclude Include="SourceCode\Object\camera.hpp" />
@@ -313,6 +319,8 @@
     <ClInclude Include="SourceCode\Shape\3DShape\capsule.hpp" />
     <ClInclude Include="SourceCode\Shape\3DShape\obb.hpp" />
     <ClInclude Include="SourceCode\Shape\3DShape\sphere.hpp" />
+    <ClInclude Include="SourceCode\VirtualCamera\assault_rifle (2) (2).hpp" />
+    <ClInclude Include="SourceCode\VirtualCamera\assault_rifle (2).hpp" />
     <ClInclude Include="SourceCode\Window\window.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

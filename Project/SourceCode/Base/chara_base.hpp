@@ -79,6 +79,7 @@ protected:
 	#pragma endregion
 
 
+	[[nodiscard]] std::shared_ptr<Modeler>		GetModeler()		{ return m_modeler; }
 	[[nodiscard]] std::shared_ptr<AnimatorBase>	GetAnimator() const { return m_animator; }
 
 private:
@@ -91,7 +92,8 @@ private:
 	#pragma endregion
 
 protected:
-	std::shared_ptr<AnimatorBase> m_animator;
+	std::shared_ptr<Modeler>		m_modeler;
+	std::shared_ptr<AnimatorBase>	m_animator;
 
 	std::vector<std::shared_ptr<WeaponBase>> m_weapons;		// 登録(所持)している武器
 	std::shared_ptr<WeaponBase> m_current_attach_weapon;	// 現在アタッチ(装備)している武器

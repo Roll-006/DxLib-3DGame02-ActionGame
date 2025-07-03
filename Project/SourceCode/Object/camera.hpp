@@ -27,10 +27,10 @@ public:
 	void AttachTarget(const std::string& obj_name);
 	/// @brief 追跡対象をアタッチする(トランスフォーム＋ボーン情報で追跡)
 	/// @param bone_path ボーンのパス
-	void AttachTarget(const std::shared_ptr<ObjBase> obj, const std::shared_ptr<Modeler> modeler, const std::string& bone_path, const bool is_track_height_only);
+	void AttachTarget(const std::shared_ptr<ObjBase> obj, const int model_handle, const std::string& bone_path, const bool is_track_height_only);
 	/// @brief 追跡対象をアタッチする(トランスフォーム＋ボーン情報で追跡)
 	/// @param bone_path ボーンのパス
-	void AttachTarget(const std::string& obj_name, const std::shared_ptr<Modeler> modeler, const std::string& bone_path, const bool is_track_height_only);
+	void AttachTarget(const std::string& obj_name, const int model_handle, const std::string& bone_path, const bool is_track_height_only);
 	/// @brief 追跡対象をデタッチする
 	void DetachTarget();
 	#pragma endregion
@@ -135,9 +135,9 @@ private:
 
 	static constexpr float  kInitAngleTolerance		= 0.01f;		// 視点リセットが完了したと判定させる許容値
 
-	std::shared_ptr<Transform> m_target_transform;
-	std::shared_ptr<Modeler>   m_target_modeler;
-	std::string				   m_target_bone;
+	std::shared_ptr<Transform>	m_target_transform;
+	int							m_target_model_handle;
+	std::string					m_target_bone;
 
 	float m_distance_to_target;		// 追跡対象までの距離
 

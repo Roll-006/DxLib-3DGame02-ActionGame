@@ -11,7 +11,7 @@ ShareScene::ShareScene() :
 	PhysicsManager	::GetInstance()->AddPhysicalObj	(m_player);
 	PhysicsManager	::GetInstance()->AddPhysicalObj	(m_camera);
 
-	m_camera->AttachTarget(ObjName.PLAYER, m_player->GetModeler(), BonePath.SPINE_2, false);
+	m_camera->AttachTarget(ObjName.PLAYER, m_player->GetModelHandle(), BonePath.SPINE_2, false);
 	m_camera->Init();
 }
 

@@ -1,5 +1,17 @@
 #include "physical_obj_base.hpp"
 
+PhysicalObjBase::PhysicalObjBase(const std::string& name, const std::string& tag, MassKind mass_level_kind) :
+	ObjBase			(name, tag),
+	m_fall_speed	(0.0f),
+	m_fall_velocity	(v3d::GetZeroV()),
+	m_velocity		(v3d::GetZeroV()),
+	m_is_landing	(false),
+	m_mass_kind		(mass_level_kind),
+	m_model_handle	(-1)
+{
+
+}
+
 void PhysicalObjBase::ApplyGravity(const float gravity_acceleration, const float max_gravity)
 {
 	// ínñ Ç…Ç¢ÇÈèÍçáÇÕèdóÕÇó^Ç¶Ç»Ç¢

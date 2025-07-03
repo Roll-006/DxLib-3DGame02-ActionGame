@@ -4,16 +4,7 @@
 class WeaponBase abstract : public PhysicalObjBase
 {
 public:
-	WeaponBase(const std::string& name, const std::string& file_path) :
-		PhysicalObjBase	(name, ObjTag.WEAPON, MassKind::kLight),
-		m_owner_modeler	(nullptr),
-		m_correct_pos	(v3d::GetZeroV()),
-		m_correct_angle	(v3d::GetZeroV()),
-		m_correct_scale	(v3d::GetZeroV())
-	{
-		m_modeler = std::make_shared<Modeler>(m_transform, file_path, VGet(0.0f, DX_PI_F, 0.0f));
-	}
-
+	WeaponBase(const std::string& name, const std::string& file_path);
 	virtual ~WeaponBase() = default;
 
 	/// @brief 装備する持ち主をアタッチする
@@ -26,6 +17,8 @@ public:
 	{
 		if (m_owner_modeler) { m_owner_modeler = nullptr; }
 	}
+
+	[[nodiscard]] std::shared_ptr<Modeler> GetModeler() { return m_modeler; }
 
 protected:
 	/// @brief 補正値を設定
@@ -50,6 +43,7 @@ protected:
 	void TrackOwner();
 
 protected:
+	std::shared_ptr<Modeler> m_modeler;
 	std::shared_ptr<Modeler> m_owner_modeler;	// 武器の持ち主であるオブジェクトのモデラー
 	
 private:

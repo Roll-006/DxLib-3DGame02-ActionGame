@@ -1,9 +1,10 @@
 #include "house.hpp"
 
 House::House() :
-	PhysicalObjBase(ObjName.HOUSE, ObjTag.BUILDING, MassKind::kStatic)
+	PhysicalObjBase	(ObjName.HOUSE, ObjTag.BUILDING, MassKind::kStatic),
+	m_modeler		(std::make_shared<Modeler>(m_transform, ModelPath.HOUSE_01))
 {
-	m_modeler = std::make_shared<Modeler>(m_transform, ModelPath.HOUSE_01);
+	SetModelHandle(m_modeler->GetModelHandle());
 
 	m_transform->SetScale(CoordinateKind::kWorld, kModelScale);
 	m_transform->SetPos  (CoordinateKind::kWorld, kPos);

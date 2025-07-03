@@ -4,6 +4,7 @@
 
 Bullet::Bullet() : 
 	PhysicalObjBase	(ObjName.BULLET, ObjTag.BULLET, MassKind::kLight),
+	m_modeler		(nullptr),
 	m_dir			(v3d::GetZeroV()),
 	m_prev_pos		(v3d::GetZeroV()),
 	m_first_pos		(v3d::GetZeroV()),

@@ -154,7 +154,7 @@ void PhysicsManager::PushBackSphereAndTarget (const std::shared_ptr<PhysicalObjB
 	{
 		const auto velocity		= low_priority_obj->GetVelocity();
 		const auto sphere		= *std::dynamic_pointer_cast<Sphere>(low_priority_obj->GetCollider(ColliderKind::kCollider)->GetShape());
-		const auto model_handle = high_priority_obj->GetModeler()->GetModelHandle();
+		const auto model_handle = high_priority_obj->GetModelHandle();
 		low_priority_obj->SetVelocity(collision::PushBackSphereAndModel(velocity, sphere, model_handle));
 		return;
 	}
@@ -174,7 +174,7 @@ void PhysicsManager::PushBackCapsuleAndTarget(const std::shared_ptr<PhysicalObjB
 	{
 		const auto velocity		= low_priority_obj->GetVelocity();
 		const auto capsule		= *std::dynamic_pointer_cast<Capsule>(low_priority_obj->GetCollider(ColliderKind::kCollider)->GetShape());
-		const auto model_handle = high_priority_obj->GetModeler()->GetModelHandle();
+		const auto model_handle = high_priority_obj->GetModelHandle();
 		low_priority_obj->SetVelocity(collision::PushBackCapsuleAndModel(velocity, capsule, model_handle));
 		return;
 	}

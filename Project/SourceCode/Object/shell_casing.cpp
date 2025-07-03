@@ -3,12 +3,13 @@
 
 ShellCasing::ShellCasing() :
 	PhysicalObjBase	(ObjName.SHELL_CASING, ObjTag.BULLET, MassKind::kLight),
+	m_modeler		(std::make_shared<Modeler>(m_transform, ModelPath.SHELL_CASING_556x45, VGet(90.0f * math::kDegreesToRadian, 0.0f, 0.0f))),
 	m_move_dir		(v3d::GetZeroV()),
 	m_alive_timer	(0.0f),
 	m_move_speed	(kInitialVelocity),
 	m_is_alive		(true)
 {
-	m_modeler = std::make_shared<Modeler>(m_transform, ModelPath.SHELL_CASING_556x45, VGet(90.0f * math::kDegreesToRadian, 0.0f, 0.0f));
+	SetModelHandle(m_modeler->GetModelHandle());
 
 	AddCollider(std::make_shared<Collider>(ColliderKind::kCollider,		  std::make_shared<Capsule>(v3d::GetZeroV(), v3d::GetZeroV(), kCapsuleRadius),        this));
 	AddCollider(std::make_shared<Collider>(ColliderKind::kLandingTrigger, std::make_shared<Capsule>(v3d::GetZeroV(), v3d::GetZeroV(), kLandingTriggerRadius), this));

@@ -26,7 +26,6 @@ public:
 	void Deactivate() { m_is_active = false; }
 
 	[[nodiscard]] std::shared_ptr<Transform> GetTransform() { return m_transform; }
-	[[nodiscard]] std::shared_ptr<Modeler>   GetModeler()   { return m_modeler; }
 	[[nodiscard]] std::string GetName() const { return m_name; }
 	[[nodiscard]] std::string GetTag()  const { return m_tag; }
 	[[nodiscard]] int GetObjHandle()	const { return m_obj_handle; }
@@ -35,7 +34,6 @@ public:
 
 protected:
 	std::shared_ptr<Transform> m_transform;
-	std::shared_ptr<Modeler>   m_modeler;
 
 private:
 	std::string m_name;		// オブジェクトの名前

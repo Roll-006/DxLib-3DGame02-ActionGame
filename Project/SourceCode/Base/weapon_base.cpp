@@ -1,5 +1,16 @@
 #include "weapon_base.hpp"
 
+WeaponBase::WeaponBase(const std::string& name, const std::string& file_path) :
+	PhysicalObjBase	(name, ObjTag.WEAPON, MassKind::kLight),
+	m_modeler		(std::make_shared<Modeler>(m_transform, file_path, VGet(0.0f, DX_PI_F, 0.0f))),
+	m_owner_modeler	(nullptr),
+	m_correct_pos	(v3d::GetZeroV()),
+	m_correct_angle	(v3d::GetZeroV()),
+	m_correct_scale	(v3d::GetZeroV())
+{
+	SetModelHandle(m_modeler->GetModelHandle());
+}
+
 void WeaponBase::TrackOwner()
 {
 	if (!m_owner_modeler) { return; }

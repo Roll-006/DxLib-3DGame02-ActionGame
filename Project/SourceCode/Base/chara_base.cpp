@@ -3,13 +3,14 @@
 #pragma region ïêäÌ
 CharaBase::CharaBase(const std::string& name, const std::string& tag, const std::string& file_path, const MassKind mass_level_kind) : 
 	PhysicalObjBase			(name, tag, mass_level_kind),
+	m_modeler				(std::make_shared<Modeler>(m_transform, file_path, VGet(0.0f, DX_PI_F, 0.0f))),
 	m_animator				(nullptr),
 	m_current_attach_weapon	(nullptr),
 	m_capsule_collider		(nullptr),
 	m_capsule_length		(0.0f),
 	m_capsule_radius		(0.0f)
 {
-	m_modeler = std::make_shared<Modeler>(m_transform, file_path, VGet(0.0f, DX_PI_F, 0.0f));
+	SetModelHandle(m_modeler->GetModelHandle());
 }
 
 void CharaBase::RemoveWeapon(const std::string& obj_name)

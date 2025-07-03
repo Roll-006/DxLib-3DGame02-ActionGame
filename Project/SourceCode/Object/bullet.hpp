@@ -23,6 +23,7 @@ public:
 	/// @brief ’eŠÛ‚ª”­Ë‚³‚ê‚½
 	void OnShot(const GunBase& gun);
 
+	[[nodiscard]] std::shared_ptr<Modeler> GetModeler() { return m_modeler; }
 	[[nodiscard]] bool IsAlive() const { return m_Is_alive; }
 
 private:
@@ -33,6 +34,8 @@ private:
 	void JudgeAlive();
 
 private:
+	std::shared_ptr<Modeler> m_modeler;
+
 	VECTOR m_dir;
 	VECTOR m_prev_pos;
 	VECTOR m_first_pos;		// ‰Šú”­ËˆÊ’u

@@ -10,15 +10,7 @@
 class PhysicalObjBase abstract : public ObjBase
 {
 public:
-	PhysicalObjBase(const std::string& name, const std::string& tag, MassKind mass_level_kind) :
-		ObjBase			(name, tag),
-		m_fall_speed	(0.0f),
-		m_fall_velocity	(v3d::GetZeroV()),
-		m_velocity		(v3d::GetZeroV()),
-		m_is_landing	(false),
-		m_mass_kind		(mass_level_kind)
-	{ }
-
+	PhysicalObjBase(const std::string& name, const std::string& tag, MassKind mass_level_kind);
 	virtual ~PhysicalObjBase() = default;
 
 	virtual void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) abstract;
@@ -38,11 +30,13 @@ public:
 	/// @brief 速度ベクトルをトランスフォームおよびコライダーに適用
 	void ApplyVelocity();
 
-	void SetVelocity(const VECTOR& velocity) { m_velocity = velocity; }
+	void SetModelHandle	(const int model_handle) { m_model_handle = model_handle; }
+	void SetVelocity	(const VECTOR& velocity) { m_velocity = velocity; }
 
-	[[nodiscard]] VECTOR   GetVelocity()		const { return m_velocity; }
-	[[nodiscard]] VECTOR   GetFallVelocity()	const { return m_fall_velocity; }
-	[[nodiscard]] MassKind GetMassKind()		const { return m_mass_kind; }
+	[[nodiscard]] int		GetModelHandle()	const { return m_model_handle; }
+	[[nodiscard]] VECTOR	GetVelocity()		const { return m_velocity; }
+	[[nodiscard]] VECTOR	GetFallVelocity()	const { return m_fall_velocity; }
+	[[nodiscard]] MassKind	GetMassKind()		const { return m_mass_kind; }
 	[[nodiscard]] std::shared_ptr<Collider> GetCollider(const ColliderKind kind) const;
 	[[nodiscard]] std::vector<std::shared_ptr<Collider>> GetColliderAll() const { return m_collider; }
 
@@ -59,4 +53,7 @@ protected:
 	bool	 m_is_landing;
 	MassKind m_mass_kind;
 	std::vector<std::shared_ptr<Collider>> m_collider;
+
+private:
+	int m_model_handle;
 };

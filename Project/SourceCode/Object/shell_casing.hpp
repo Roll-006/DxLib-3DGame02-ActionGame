@@ -20,6 +20,7 @@ public:
 	void Eject(GunBase& gun);
 
 	[[nodiscard]] bool IsAlive() const { return m_is_alive; }
+	[[nodiscard]] std::shared_ptr<Modeler> GetModeler() { return m_modeler; }
 
 private:
 	void Move();
@@ -39,6 +40,9 @@ private:
 	static constexpr float  kCapsuleRadius				= 0.5f;
 	static constexpr float  kLandingTriggerRadius		= 0.4f;
 	static constexpr VECTOR kLandingTriggerCorrectPos	= { 0.0f, -0.3f, 0.0f };
+
+private:
+	std::shared_ptr<Modeler> m_modeler;
 
 	VECTOR m_move_dir;
 	float  m_alive_timer;
