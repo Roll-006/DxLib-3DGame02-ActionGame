@@ -73,10 +73,11 @@ void PlayerUICreator::CreateSniperRifleCrossHair()
 	const auto gun		= std::dynamic_pointer_cast<GunBase>(m_player->GetCurrentAttachWeapon());
 	const auto circle	= std::dynamic_pointer_cast<Circle>(gun->GetDiffusionShape());
 
-	const auto right_pos_3d = circle->GetPos() + math::GetNormalVector(-gun->GetAimDir(), axis::GetWorldYAxis()) * circle->GetRadius();
-	const auto right_pos_2d = ConvWorldPosToScreenPos(right_pos_3d);
-	const auto pos_2d		= ConvWorldPosToScreenPos(circle->GetPos());
-	m_2d_diffusion_shape	= std::make_shared<Circle>(axis::GetWorldZAxis(), VSize(pos_2d - right_pos_2d));
+	// ŽOŽŸŒ³‹óŠÔ‚Ì‰~‚ð“ñŽŸŒ³‹óŠÔ‚É•ÏŠ·
+	const auto point_on_circle_world	= circle->GetPos() + math::GetNormalVector(-circle->GetNormalVector(), axis::GetWorldYAxis()) * circle->GetRadius();
+	const auto point_on_circle_screen	= ConvWorldPosToScreenPos(point_on_circle_world);
+	const auto center_pos_screen		= ConvWorldPosToScreenPos(circle->GetPos());
+	m_2d_diffusion_shape = std::make_shared<Circle>(axis::GetWorldZAxis(), VSize(center_pos_screen - point_on_circle_screen));
 
-	std::dynamic_pointer_cast<Circle>(m_2d_diffusion_shape)->SetPos(pos_2d);
+	std::dynamic_pointer_cast<Circle>(m_2d_diffusion_shape)->SetPos(center_pos_screen);
 }
