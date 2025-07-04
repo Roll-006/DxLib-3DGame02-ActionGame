@@ -23,6 +23,10 @@ public:
 	/// @brief 非エイミング状態にする
 	void DeactivateAiming() { m_is_aiming = false; }
 
+	/// @brief 弾丸のリロード
+	/// @param have_bullets キャラクターが所持している弾丸数(装填した分が引かれて返ってくる)
+	void OnReload(int& have_bullets);
+
 	/// @brief レイキャスト用の線分を拡張した直線上にある点を設定する
 	/// @brief 操作キャラの場合はカメラの座標
 	/// @brief 非操作キャラの場合はターゲットの座標
@@ -67,6 +71,9 @@ protected:
 	VECTOR  m_muzzle_correct_pos;			// 銃口補正座標(銃口の座標を取得するためのオフセット)
 	VECTOR  m_ejection_port_correct_pos;	// 薬莢を排出する開口部の座標を取得するためのオフセット
 	VECTOR  m_point_on_ray_line;			// レイキャスト用の線分を拡張した直線上にある点
+
+	int		m_remaining_bullet_num;			// 残弾数
+	int     m_max_bullet_num;				// 最大弾数
 
 	float	m_scope_scale;					// スコープ倍率
 	float	m_range;						// 射程

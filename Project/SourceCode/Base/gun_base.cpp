@@ -8,6 +8,8 @@ GunBase::GunBase(const std::string& name, const GunKind gun_kind, const std::str
 	m_muzzle_correct_pos		(v3d::GetZeroV()),
 	m_ejection_port_correct_pos	(v3d::GetZeroV()),
 	m_point_on_ray_line			(v3d::GetZeroV()),
+	m_remaining_bullet_num		(0),
+	m_max_bullet_num			(0),
 	m_scope_scale				(0.0f),
 	m_range						(0.0f),
 	m_initial_velocity			(0.0f),
@@ -20,6 +22,27 @@ GunBase::GunBase(const std::string& name, const GunKind gun_kind, const std::str
 	m_gun_kind					(gun_kind)
 {
 
+}
+
+void GunBase::OnReload(int& have_bullets)
+{
+	// 既に最大値の場合はリロードさせない
+	if (m_remaining_bullet_num >= m_max_bullet_num) { return; }
+
+	// 不足分の計算
+	const int shortage_num = m_max_bullet_num - m_remaining_bullet_num;
+
+	// 可能な数だけリロードし、所持している弾丸を減少させる
+	if (have_bullets < shortage_num)
+	{
+		have_bullets = 0;
+		m_max_bullet_num += have_bullets;
+	}
+	else
+	{
+		have_bullets -= shortage_num;
+		m_max_bullet_num += shortage_num;
+	}
 }
 
 VECTOR GunBase::GetShotDir() const

@@ -5,6 +5,10 @@ static struct ModelPath
 {
 	const std::string CHARA_01					= "data/model/chara/01/mesh.mv1";
 	const std::string CHARA_02					= "data/model/chara/02/mesh.mv1";
+	const std::string CHARA_03					= "data/model/chara/03/mesh.mv1";
+	const std::string CHARA_04					= "data/model/chara/04/mesh.mv1";
+	const std::string CHARA_05					= "data/model/chara/05/mesh.mv1";
+	const std::string CHARA_06					= "data/model/chara/06/mesh.mv1";
 	const std::string RIFLE_CARTRIDGE_556x45	= "data/model/item/bullet/5.56x45mm/rifle_cartridge.mv1";
 	const std::string BULLET_556x45				= "data/model/item/bullet/5.56x45mm/bullet.mv1";
 	const std::string SHELL_CASING_556x45		= "data/model/item/bullet/5.56x45mm/shell_casing.mv1";
