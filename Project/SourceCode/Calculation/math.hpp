@@ -182,6 +182,18 @@ namespace math
 	#pragma region 値の修正
 	/// @brief 角度が-π～πの値をループするように繋ぎ合わせる
 	float ConnectMinusPiToPi(const float angle);
+
+	/// @brief 特定の範囲にあった値を、別の範囲に置き換えた場合の値を取得
+	/// @param old_min もとの範囲の最小値
+	/// @param old_max もとの範囲の最大値
+	/// @param new_min 新たな範囲の最小値
+	/// @param new_max 新たな範囲の最大値
+	/// @param value 変換対象の値
+	template<common_concepts::ArithmeticT TargetT, common_concepts::FloatingPointT ReturnT>
+	[[nodiscard]] ReturnT ConvertValueNewRange(const TargetT old_min, const TargetT old_max, const TargetT new_min, const TargetT new_max, const TargetT value)
+	{
+		return static_cast<ReturnT>(value - old_min) / (old_max - old_min) * (new_max - new_min) + new_min;
+	}
 	#pragma endregion
 
 
@@ -240,10 +252,10 @@ namespace math
 	[[nodiscard]] VECTOR GetRotatedPos(const VECTOR& pos, const Quaternion& rotate_q);
 
 	/// @brief ヨー角(Y軸回転)を取得
-	[[nodiscard]] float GetYaw  (const VECTOR& v);
+	[[nodiscard]] float GetYaw(const VECTOR& v);
 
 	/// @brief ヨー角(Y軸)回転ベクトルを取得
-	[[nodiscard]] VECTOR GetYawRotVector  (const VECTOR& v);
+	[[nodiscard]] VECTOR GetYawRotVector(const VECTOR& v);
 
 	/// @brief XYZ軸を取得
 	/// @param dir 向きベクトル(この値をZ軸とする)
