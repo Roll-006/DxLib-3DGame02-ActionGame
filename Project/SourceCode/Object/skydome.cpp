@@ -6,7 +6,6 @@ Skydome::Skydome(std::shared_ptr<Camera> camera) :
 	m_camera_transform	(camera->GetTransform())
 {
 	m_transform->SetScale(CoordinateKind::kWorld, kScale);
-	sample_v = VGet(0, 100, 0);
 }
 
 Skydome::~Skydome()
@@ -25,8 +24,6 @@ void Skydome::Update()
 
 	const VECTOR pos = m_camera_transform->GetPos(CoordinateKind::kWorld);
 	m_transform->SetPos(CoordinateKind::kWorld, pos);
-
-	sample_v = math::GetRotatedPos(sample_v, quat::CreateQuaternion(axis::GetWorldZAxis(), 1 * FPS::GetDeltaTime()));
 }
 
 void Skydome::LateUpdate()
@@ -39,5 +36,4 @@ void Skydome::Draw() const
 	if (!IsActive()) { return; }
 
 	//m_modeler->Draw();
-	DrawLine3D(v3d::GetZeroV(), sample_v, 0xffffff);
 }

@@ -524,6 +524,8 @@ VECTOR collision::PushBackSphereAndTriangle (const VECTOR& velocity, const Spher
 VECTOR collision::PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsule& dynamic_capsule, const Triangle& static_triangle,
     const float slope_difficulty_angle_threshold, const float max_slope_angle)
 {
+    VECTOR valid_velocity = velocity;
+
     // 未来の座標が衝突しているかを判定
     Capsule future_capsule = dynamic_capsule;
     future_capsule.Move(velocity);
@@ -533,7 +535,8 @@ VECTOR collision::PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsu
         return velocity;
     }
 
-    // 平面の角度を計算
+    // 坂の角度
+    float slope_angle = math::GetAngleBetweenTwoVector(static_triangle.GetNormalVector(), axis::GetWorldYAxis());
 
     // 未来の座標と平面の距離を取得
     const Plane plane = Plane(static_triangle.GetCentroid(), static_triangle.GetNormalVector());
