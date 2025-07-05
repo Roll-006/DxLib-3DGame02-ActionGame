@@ -164,7 +164,9 @@ void CommandHandler::InitKeyCommand()
 	AddInputCode(CommandKind::kSquat,			KEY_INPUT_LCONTROL);
 	AddInputCode(CommandKind::kSquat,			KEY_INPUT_E);
 	AddInputCode(CommandKind::kShot,			mouse::ButtonKind::kLeft);
+	AddInputCode(CommandKind::kShot,			KEY_INPUT_SPACE);
 	AddInputCode(CommandKind::kAimingGun,		mouse::ButtonKind::kRight);
+	AddInputCode(CommandKind::kAimingGun,		KEY_INPUT_F);
 	AddInputCode(CommandKind::kReloadGun,		KEY_INPUT_R);
 	AddInputCode(CommandKind::kSilentKill,		mouse::ButtonKind::kLeft);
 	AddInputCode(CommandKind::kTurnAround,		KEY_INPUT_Q);

@@ -42,7 +42,7 @@ void player_cmd::Aiming::Execute(ObjBase& obj)
 
 void player_cmd::Reload::Execute(ObjBase& obj)
 {
-	dynamic_cast<Player*>(&obj);
+	dynamic_cast<Player*>(&obj)->Reload();
 }
 
 void player_cmd::SilentKill::Execute(ObjBase& obj)

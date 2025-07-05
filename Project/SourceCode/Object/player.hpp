@@ -28,6 +28,7 @@ public:
 	void MoveRight();
 	void AimingGun();
 	void Shot();
+	void Reload();
 	void TurnAround();
 	#pragma endregion
 

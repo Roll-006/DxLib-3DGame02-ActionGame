@@ -98,6 +98,8 @@ protected:
 	std::shared_ptr<WeaponBase> m_current_attach_weapon;	// 現在アタッチ(装備)している武器
 
 	std::shared_ptr<Capsule> m_capsule_collider;
-	float m_capsule_length;
-	float m_capsule_radius;
+	float	m_capsule_length;
+	float	m_capsule_radius;
+
+	int		m_current_remaining_bullet_num;							// 残弾数
 };

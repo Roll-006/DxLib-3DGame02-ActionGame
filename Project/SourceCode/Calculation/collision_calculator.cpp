@@ -491,7 +491,8 @@ bool collision::IsHitCapsuleAndModel    (const Capsule&     capsule,    const in
 
 
 #pragma region 押し戻し(衝突時の有効な速度ベクトルを取得)
-VECTOR collision::PushBackSphereAndTriangle (const VECTOR& velocity, const Sphere&  dynamic_sphere,  const Triangle& static_triangle)
+VECTOR collision::PushBackSphereAndTriangle (const VECTOR& velocity, const Sphere&  dynamic_sphere,  const Triangle& static_triangle,
+    const float slope_difficulty_angle_threshold, const float max_slope_angle)
 {
     // 未来の座標が衝突しているかを判定
     Sphere future_sphere = dynamic_sphere;
@@ -520,7 +521,8 @@ VECTOR collision::PushBackSphereAndTriangle (const VECTOR& velocity, const Spher
     return future_pos - dynamic_sphere.GetPos();
 }
 
-VECTOR collision::PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsule& dynamic_capsule, const Triangle& static_triangle)
+VECTOR collision::PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsule& dynamic_capsule, const Triangle& static_triangle,
+    const float slope_difficulty_angle_threshold, const float max_slope_angle)
 {
     // 未来の座標が衝突しているかを判定
     Capsule future_capsule = dynamic_capsule;
@@ -530,6 +532,8 @@ VECTOR collision::PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsu
         // 衝突していない場合、そのまま返す
         return velocity;
     }
+
+    // 平面の角度を計算
 
     // 未来の座標と平面の距離を取得
     const Plane plane = Plane(static_triangle.GetCentroid(), static_triangle.GetNormalVector());
@@ -549,7 +553,8 @@ VECTOR collision::PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsu
     return future_pos - dynamic_capsule.GetSegment().GetBeginPos();
 }
 
-VECTOR collision::PushBackCapsuleAndSquare  (const VECTOR& velocity, const Capsule& dynamic_capsule, const Square&   static_square)
+VECTOR collision::PushBackCapsuleAndSquare  (const VECTOR& velocity, const Capsule& dynamic_capsule, const Square&   static_square,
+    const float slope_difficulty_angle_threshold, const float max_slope_angle)
 {
     // 未来の座標が衝突しているかを判定
     Capsule future_capsule = dynamic_capsule;
@@ -578,7 +583,8 @@ VECTOR collision::PushBackCapsuleAndSquare  (const VECTOR& velocity, const Capsu
     return future_pos - dynamic_capsule.GetSegment().GetBeginPos();
 }
 
-VECTOR collision::PushBackCapsuleAndOBB     (const VECTOR& velocity, const Capsule& dynamic_capsule, const OBB&      static_obb)
+VECTOR collision::PushBackCapsuleAndOBB     (const VECTOR& velocity, const Capsule& dynamic_capsule, const OBB&      static_obb,
+    const float slope_difficulty_angle_threshold, const float max_slope_angle)
 {
     VECTOR valid_velocity = velocity;
     std::unordered_map<box::SquareKind, float> current_distance;
@@ -606,13 +612,14 @@ VECTOR collision::PushBackCapsuleAndOBB     (const VECTOR& velocity, const Capsu
     // 移動前の座標と距離が近い四角形から順番に押し戻す
     for (const auto& dist : current_distance)
     {
-        valid_velocity = PushBackCapsuleAndSquare(valid_velocity, dynamic_capsule, static_obb.GetSquare(static_cast<box::SquareKind>(dist.first)));
+        valid_velocity = PushBackCapsuleAndSquare(valid_velocity, dynamic_capsule, static_obb.GetSquare(static_cast<box::SquareKind>(dist.first)), slope_difficulty_angle_threshold, max_slope_angle);
     }
 
     return valid_velocity;
 }
 
-VECTOR collision::PushBackSphereAndModel    (const VECTOR& velocity, const Sphere&  dynamic_sphere,  const int       model_handle)
+VECTOR collision::PushBackSphereAndModel    (const VECTOR& velocity, const Sphere&  dynamic_sphere,  const int       model_handle,
+    const float slope_difficulty_angle_threshold, const float max_slope_angle)
 {
     VECTOR valid_velocity = velocity;
 
@@ -644,13 +651,14 @@ VECTOR collision::PushBackSphereAndModel    (const VECTOR& velocity, const Spher
     current_distance = algorithm::Sort(current_distance, SortKind::kAscending);
     for (const auto& distance : current_distance)
     {
-        valid_velocity = collision::PushBackSphereAndTriangle(valid_velocity, dynamic_sphere, triangles.at(distance.first));
+        valid_velocity = collision::PushBackSphereAndTriangle(valid_velocity, dynamic_sphere, triangles.at(distance.first), slope_difficulty_angle_threshold, max_slope_angle);
     }
 
     return valid_velocity;
 }
 
-VECTOR collision::PushBackCapsuleAndModel   (const VECTOR& velocity, const Capsule& dynamic_capsule, const int       model_handle)
+VECTOR collision::PushBackCapsuleAndModel   (const VECTOR& velocity, const Capsule& dynamic_capsule, const int       model_handle,
+    const float slope_difficulty_angle_threshold, const float max_slope_angle)
 {
     VECTOR valid_velocity = velocity;
 
@@ -686,7 +694,7 @@ VECTOR collision::PushBackCapsuleAndModel   (const VECTOR& velocity, const Capsu
     current_distance = algorithm::Sort(current_distance, SortKind::kAscending);
     for (const auto& distance : current_distance)
     {
-        valid_velocity = collision::PushBackCapsuleAndTriangle(valid_velocity, dynamic_capsule, triangles.at(distance.first));
+        valid_velocity = collision::PushBackCapsuleAndTriangle(valid_velocity, dynamic_capsule, triangles.at(distance.first), slope_difficulty_angle_threshold, max_slope_angle);
     }
 
     return valid_velocity;

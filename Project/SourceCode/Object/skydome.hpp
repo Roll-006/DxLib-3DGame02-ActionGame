@@ -22,4 +22,6 @@ private:
 private:
 	std::shared_ptr<Modeler>   m_modeler;
 	std::shared_ptr<Transform> m_camera_transform;
+
+	VECTOR sample_v;
 };

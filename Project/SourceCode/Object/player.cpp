@@ -40,6 +40,9 @@ Player::Player(std::shared_ptr<Camera> camera) :
 	CollisionManager::GetInstance()->AddCollideObj(m_current_attach_weapon);
 	//PhysicsManager	::GetInstance()->AddPhysicalObj(m_current_attach_gun);
 	//PhysicsManager	::GetInstance()->AddIgnoreObjGravity(ObjName.ASSAULT_RIFLE);
+
+	// TODO : âºÇ≈èäéùécÇËíeêîÇê›íË
+	m_current_remaining_bullet_num = 100;
 }
 
 Player::~Player()
@@ -61,6 +64,7 @@ void Player::Update()
 	const auto command = CommandHandler::GetInstance();
 	command->Execute(CommandKind::kRun,				this);
 	command->Execute(CommandKind::kSquat,			this);
+	command->Execute(CommandKind::kReloadGun,		this);
 	command->Execute(CommandKind::kAimingGun,		this);
 	command->Execute(CommandKind::kShot,			this);
 	command->Execute(CommandKind::kMoveUpPlayer,	this);
@@ -120,6 +124,8 @@ void Player::Draw() const
 	DrawLine3D(pos, pos + axes.x_axis * 100, 0xff0000);
 	DrawLine3D(pos, pos + axes.y_axis * 100, 0x00ff22);
 	DrawLine3D(pos, pos + axes.z_axis * 100, 0x0077ff);
+
+	DrawFormatString(300, 40, 0xffffff, "èäéùÇµÇƒÇ¢ÇÈíeêî : %d", m_current_remaining_bullet_num);
 }
 
 void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
@@ -282,6 +288,11 @@ void Player::Shot()
 	if (!std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->IsAiming()) { return; }
 
 	std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->PullTrigger();
+}
+
+void Player::Reload()
+{
+	std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->OnReload(m_current_remaining_bullet_num);
 }
 
 void Player::TurnAround()

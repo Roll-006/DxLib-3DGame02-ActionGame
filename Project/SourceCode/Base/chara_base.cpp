@@ -8,7 +8,8 @@ CharaBase::CharaBase(const std::string& name, const std::string& tag, const std:
 	m_current_attach_weapon	(nullptr),
 	m_capsule_collider		(nullptr),
 	m_capsule_length		(0.0f),
-	m_capsule_radius		(0.0f)
+	m_capsule_radius		(0.0f),
+	m_current_remaining_bullet_num	(0)
 {
 	SetModelHandle(m_modeler->GetModelHandle());
 }

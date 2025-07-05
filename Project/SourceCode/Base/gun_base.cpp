@@ -1,25 +1,25 @@
 #include "gun_base.hpp"
 
 GunBase::GunBase(const std::string& name, const GunKind gun_kind, const std::string& file_path) :
-	WeaponBase					(name, file_path),
-	m_diffusion_shape			(nullptr),
-	m_aim_dir					(v3d::GetZeroV()),
-	m_target_pos				(v3d::GetZeroV()),
-	m_muzzle_correct_pos		(v3d::GetZeroV()),
-	m_ejection_port_correct_pos	(v3d::GetZeroV()),
-	m_point_on_ray_line			(v3d::GetZeroV()),
-	m_remaining_bullet_num		(0),
-	m_max_bullet_num			(0),
-	m_scope_scale				(0.0f),
-	m_range						(0.0f),
-	m_initial_velocity			(0.0f),
-	m_deceleration				(0.0f),
-	m_shot_interval_time		(0.0f),
-	m_shot_timer				(0.0f),
-	m_is_shot					(false),
-	m_is_pull_trigger			(false),
-	m_is_aiming					(false),
-	m_gun_kind					(gun_kind)
+	WeaponBase						(name, file_path),
+	m_diffusion_shape				(nullptr),
+	m_aim_dir						(v3d::GetZeroV()),
+	m_target_pos					(v3d::GetZeroV()),
+	m_muzzle_correct_pos			(v3d::GetZeroV()),
+	m_ejection_port_correct_pos		(v3d::GetZeroV()),
+	m_point_on_ray_line				(v3d::GetZeroV()),
+	m_current_remaining_bullet_num	(0),
+	m_max_remaining_bullet_num		(0),
+	m_scope_scale					(0.0f),
+	m_range							(0.0f),
+	m_initial_velocity				(0.0f),
+	m_deceleration					(0.0f),
+	m_shot_interval_time			(0.0f),
+	m_shot_timer					(0.0f),
+	m_is_shot						(false),
+	m_is_pull_trigger				(false),
+	m_is_aiming						(false),
+	m_gun_kind						(gun_kind)
 {
 
 }
@@ -27,21 +27,21 @@ GunBase::GunBase(const std::string& name, const GunKind gun_kind, const std::str
 void GunBase::OnReload(int& have_bullets)
 {
 	// 既に最大値の場合はリロードさせない
-	if (m_remaining_bullet_num >= m_max_bullet_num) { return; }
+	if (m_current_remaining_bullet_num >= m_max_remaining_bullet_num) { return; }
 
 	// 不足分の計算
-	const int shortage_num = m_max_bullet_num - m_remaining_bullet_num;
+	const int shortage_num = m_max_remaining_bullet_num - m_current_remaining_bullet_num;
 
 	// 可能な数だけリロードし、所持している弾丸を減少させる
 	if (have_bullets < shortage_num)
 	{
 		have_bullets = 0;
-		m_max_bullet_num += have_bullets;
+		m_current_remaining_bullet_num += have_bullets;
 	}
 	else
 	{
 		have_bullets -= shortage_num;
-		m_max_bullet_num += shortage_num;
+		m_current_remaining_bullet_num += shortage_num;
 	}
 }
 
@@ -81,9 +81,16 @@ VECTOR GunBase::GetFirstShotPos() const
 
 void GunBase::Shot()
 {
+	// 弾丸がない場合は早期return
+	if (m_current_remaining_bullet_num <= 0)
+	{
+		return;
+	}
+
+	// トリガーが引かれていない場合は早期return
 	if (!m_is_pull_trigger)
 	{
-		m_shot_timer = 0.0f;
+		m_shot_timer = m_shot_interval_time;
 		m_is_shot    = false;
 		return;
 	}
@@ -96,5 +103,6 @@ void GunBase::Shot()
 	if (m_is_shot)
 	{
 		RifleCartridgeManager::GetInstance()->Shot(*this);
+		--m_current_remaining_bullet_num;
 	}
 }

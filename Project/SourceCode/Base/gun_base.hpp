@@ -34,22 +34,27 @@ public:
 	void SetAimDir(const VECTOR& aim_dir) { m_aim_dir = aim_dir; }
 
 	[[nodiscard]] std::shared_ptr<ShapeBase> GetDiffusionShape() const { return m_diffusion_shape; }
-	[[nodiscard]] VECTOR  GetAimDir()			const { return m_aim_dir; }
-	[[nodiscard]] VECTOR  GetShotDir()			const;
-	[[nodiscard]] VECTOR  GetMuzzlePos()		const;
-	[[nodiscard]] VECTOR  GetEjectionPortPos()  const;
-	[[nodiscard]] float   GetScopeScale()		const { return m_scope_scale; }
-	[[nodiscard]] float   GetRange()			const { return m_range; }
-	[[nodiscard]] float   GetInitialVelocity()	const { return m_initial_velocity; }
-	[[nodiscard]] float	  GetDeceleration()		const { return m_deceleration; }
-	[[nodiscard]] GunKind GetGunKind()			const { return m_gun_kind; }
+	[[nodiscard]] VECTOR	GetAimDir()				const { return m_aim_dir; }
+	[[nodiscard]] VECTOR	GetShotDir()			const;
+	[[nodiscard]] VECTOR	GetMuzzlePos()			const;
+	[[nodiscard]] VECTOR	GetEjectionPortPos()	const;
+	[[nodiscard]] float		GetScopeScale()			const { return m_scope_scale; }
+	[[nodiscard]] float		GetRange()				const { return m_range; }
+	[[nodiscard]] float		GetInitialVelocity()	const { return m_initial_velocity; }
+	[[nodiscard]] float		GetDeceleration()		const { return m_deceleration; }
+	[[nodiscard]] GunKind	GetGunKind()			const { return m_gun_kind; }
 
 	/// @brief 弾丸の発射位置を取得
-	[[nodiscard]] VECTOR  GetFirstShotPos()		const;
+	[[nodiscard]] VECTOR	GetFirstShotPos()		const;
 
-	[[nodiscard]] bool    IsPullTrigger()       const { return m_is_pull_trigger; }
-	[[nodiscard]] bool    IsAiming()			const { return m_is_aiming; }
-	[[nodiscard]] bool    IsShot()		        const { return m_is_shot; }
+	/// @brief 残弾数を取得
+	[[nodiscard]] int		GetCurrentRemainingBulletNum()	const { return m_current_remaining_bullet_num; }
+	/// @brief 最大の残弾数を取得
+	[[nodiscard]] int		GetMaxRemainingBulletNum()		const { return m_max_remaining_bullet_num; }
+
+	[[nodiscard]] bool		IsPullTrigger()			const { return m_is_pull_trigger; }
+	[[nodiscard]] bool		IsAiming()				const { return m_is_aiming; }
+	[[nodiscard]] bool		IsShot()		        const { return m_is_shot; }
 
 protected:
 	/// @brief 弾丸発射処理
@@ -72,8 +77,8 @@ protected:
 	VECTOR  m_ejection_port_correct_pos;	// 薬莢を排出する開口部の座標を取得するためのオフセット
 	VECTOR  m_point_on_ray_line;			// レイキャスト用の線分を拡張した直線上にある点
 
-	int		m_remaining_bullet_num;			// 残弾数
-	int     m_max_bullet_num;				// 最大弾数
+	int		m_current_remaining_bullet_num;	// 現在の残弾数
+	int     m_max_remaining_bullet_num;		// 最大残弾数
 
 	float	m_scope_scale;					// スコープ倍率
 	float	m_range;						// 射程
