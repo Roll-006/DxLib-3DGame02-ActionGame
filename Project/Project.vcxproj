@@ -140,6 +140,7 @@
     <ClCompile Include="SourceCode\Algorithm\algorithm.cpp" />
     <ClCompile Include="SourceCode\Base\animator_base.cpp" />
     <ClCompile Include="SourceCode\Base\chara_base.cpp" />
+    <ClCompile Include="SourceCode\Base\enemy_base.cpp" />
     <ClCompile Include="SourceCode\Base\gun_base.cpp" />
     <ClCompile Include="SourceCode\Base\object_pool_base.cpp" />
     <ClCompile Include="SourceCode\Base\obj_base.cpp" />
@@ -171,7 +172,7 @@
     <ClCompile Include="SourceCode\Object\assault_rifle.cpp" />
     <ClCompile Include="SourceCode\Object\bullet.cpp" />
     <ClCompile Include="SourceCode\Object\camera.cpp" />
-    <ClCompile Include="SourceCode\Object\enemy.cpp" />
+    <ClCompile Include="SourceCode\Object\zombie.cpp" />
     <ClCompile Include="SourceCode\Object\ground.cpp" />
     <ClCompile Include="SourceCode\Object\house.cpp" />
     <ClCompile Include="SourceCode\Object\player.cpp" />
@@ -217,6 +218,7 @@
     <ClInclude Include="SourceCode\Base\animator_base.hpp" />
     <ClInclude Include="SourceCode\Base\chara_base.hpp" />
     <ClInclude Include="SourceCode\Base\command_base.hpp" />
+    <ClInclude Include="SourceCode\Base\enemy_base.hpp" />
     <ClInclude Include="SourceCode\Base\gun_base.hpp" />
     <ClInclude Include="SourceCode\Base\object_pool_base.hpp" />
     <ClInclude Include="SourceCode\Base\obj_base.hpp" />
@@ -294,7 +296,7 @@
     <ClInclude Include="SourceCode\Object\assault_rifle.hpp" />
     <ClInclude Include="SourceCode\Object\bullet.hpp" />
     <ClInclude Include="SourceCode\Object\camera.hpp" />
-    <ClInclude Include="SourceCode\Object\enemy.hpp" />
+    <ClInclude Include="SourceCode\Object\zombie.hpp" />
     <ClInclude Include="SourceCode\Object\ground.hpp" />
     <ClInclude Include="SourceCode\Object\house.hpp" />
     <ClInclude Include="SourceCode\Object\player.hpp" />

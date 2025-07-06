@@ -577,12 +577,9 @@ VECTOR collision::PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsu
         const float  angle_range        =  math::GetAngleBetweenTwoVector(plane.GetNormalVector(), horizontal_v);
         // FIXME : 角度がマイナスになる場合がある
         float  push_back_angle          = -math::ConvertValueNewRange<float, float>(slope_threshold_agl, max_slope_agl, -angle_range, 0.0f, slope_angle);
-        if (slope_angle >= max_slope_agl)
-        {
-            push_back_angle = 0.0f;
-        }
+        if (slope_angle >= max_slope_agl) { push_back_angle = 0.0f; }
         const VECTOR v1                 =  math::GetNormalVector(plane.GetNormalVector(), axis::GetWorldYAxis());
-        // MEMO : 回転方向を決める必要がある可能性あり
+        // FIXME : 回転方向を決める必要がある可能性あり
         const VECTOR push_back_dir      =  math::GetRotatedPos(horizontal_v, quat::CreateQuaternion(v1, push_back_angle));
 
         printfDx("push_back_angle : %f\n", push_back_angle);

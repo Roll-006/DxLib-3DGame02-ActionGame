@@ -1,12 +1,12 @@
 #pragma once
-#include "../Base/chara_base.hpp"
-#include "../Manager/physics_manager.hpp"
+#include "../Base/enemy_base.hpp"
+//#include "../Manager/physics_manager.hpp"
 
-class Enemy final : public CharaBase
+class Zombie final : public EnemyBase
 {
 public:
-	Enemy();
-	~Enemy() override;
+	Zombie();
+	~Zombie() override;
 
 	void Init()			override;
 	void Update()		override;
@@ -20,15 +20,15 @@ private:
 
 	void Move();
 
-	/// @brief トランスフォーム情報を更新する
-	void UpdateTransform();
-
 private:
 	static constexpr float kModelScale				= 0.25f;
 
 	static constexpr float kCapsuleRadius			= 8.0f;
 	static constexpr float kLandingTriggerRadius	= 6.0f;
+	static constexpr float kUpLegTriggerRadius		= 3.5f;
+	static constexpr float kDownLegTriggerRadius	= 2.5f;
+	static constexpr float kHeadTriggerRadius		= 4.5f;
 
 private:
-	VECTOR m_dir;
+
 };

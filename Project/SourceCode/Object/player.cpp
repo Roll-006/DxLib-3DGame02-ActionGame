@@ -23,7 +23,7 @@ Player::Player(std::shared_ptr<Camera> camera) :
 	m_transform->SetScale(CoordinateKind::kWorld, kModelScale);
 
 	// コライダー・トリガーを設定
-	CreateCollider(kCapsuleRadius, kLandingTriggerRadius);
+	CreateCharaBasisCollider(kCapsuleRadius, kLandingTriggerRadius);
 
 	// 各アニメーション追加
 	m_animator = std::make_shared<PlayerAnimator>(m_modeler);
@@ -73,18 +73,17 @@ void Player::Update()
 	command->Execute(CommandKind::kMoveRightPlayer, this);
 
 	Move();
-	UpdateTransform();
+	UpdateTransform(m_look_dir.at(TimeKind::kCurrent), kModelScale);
 
 	ChangeAnimState();
 	m_animator->Update();
 
-	CalcCapsuleLength();
+	CalcCapsuleColliderLength();
 	AddFallVelocity();
 
-	// TODO : 位置変更を検討。enemyも同様
-	m_is_landing = false;
-
 	m_current_attach_weapon->Update();
+
+	m_is_landing = false;
 }
 
 void Player::LateUpdate()
@@ -600,6 +599,7 @@ void Player::CalcLookDir()
 	{
 		m_camera->InitYaw();
 		m_is_correct_look_dir = true;
+		VECTOR pos = m_transform->GetPos(CoordinateKind::kWorld) + VGet(0, 30, 0);
 	}
 	else
 	{
@@ -655,7 +655,7 @@ void Player::CorrectLookDir()
 
 		// 振り向き判定がfalseになることにより適用処理が通らなくなることを避けるため先行して適用
 		// TODO : 通常時は二度適用処理が行われているため処理の変更を検討
-		UpdateTransform();
+		UpdateTransform(m_look_dir.at(TimeKind::kCurrent), kModelScale);
 		//ApplyVelocityToCollider();
 
 		// 目的のdirに達した場合は振り向き処理は終了とする
@@ -704,12 +704,6 @@ VECTOR Player::GetVelocityFromPad(VECTOR& velocity)
 	}
 
 	return velocity;
-}
-
-void Player::UpdateTransform()
-{
-	m_transform->SetRot  (CoordinateKind::kWorld, m_look_dir.at(TimeKind::kCurrent));
-	m_transform->SetScale(CoordinateKind::kWorld, kModelScale);
 }
 
 VECTOR Player::GetMoveForward()

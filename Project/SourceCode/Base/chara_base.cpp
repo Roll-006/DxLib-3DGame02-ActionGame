@@ -69,7 +69,7 @@ void CharaBase::DetachWeapon()
 
 
 #pragma region コライダー
-void CharaBase::CreateCollider(const float capsule_radius, const float sphere_radius)
+void CharaBase::CreateCharaBasisCollider(const float capsule_radius, const float sphere_radius)
 {
 	CreateCapsuleCollider(capsule_radius);
 	CreateLandingTrigger (sphere_radius);
@@ -77,7 +77,7 @@ void CharaBase::CreateCollider(const float capsule_radius, const float sphere_ra
 	AddCollider(std::make_shared<Collider>(ColliderKind::kMeshTrigger, m_modeler->GetModelHandle(), this));
 }
 
-void CharaBase::CalcCapsuleLength()
+void CharaBase::CalcCapsuleColliderLength()
 {
 	m_modeler->ApplyMatrix();
 
@@ -108,3 +108,10 @@ void CharaBase::CreateLandingTrigger(const float sphere_radius)
 	AddCollider(std::make_shared<Collider>(ColliderKind::kLandingTrigger, std::make_shared<Sphere>(pos, sphere_radius), this));
 }
 #pragma endregion
+
+
+void CharaBase::UpdateTransform(const VECTOR& look_dir, const float scale)
+{
+	m_transform->SetRot  (CoordinateKind::kWorld, look_dir);
+	m_transform->SetScale(CoordinateKind::kWorld, scale);
+}

@@ -75,11 +75,15 @@ protected:
 	#pragma region コライダー
 	/// @brief キャラクターが標準的に持つコライダーを一括で作成する
 	/// @brief カプセル(コライダー), 球(着地判定用トリガー), メッシュトリガー
-	void CreateCollider(const float capsule_radius, const float sphere_radius);
+	void CreateCharaBasisCollider(const float capsule_radius, const float sphere_radius);
 
 	/// @brief カプセルの長さを計算
-	void CalcCapsuleLength();
+	void CalcCapsuleColliderLength();
 	#pragma endregion
+
+
+	/// @brief トランスフォーム情報を更新する
+	void UpdateTransform(const VECTOR& look_dir, const float scale);
 
 private:
 	#pragma region コライダー
@@ -101,5 +105,5 @@ protected:
 	float	m_capsule_length;
 	float	m_capsule_radius;
 
-	int		m_current_remaining_bullet_num;							// 残弾数
+	int		m_current_remaining_bullet_num;					// 残弾数
 };

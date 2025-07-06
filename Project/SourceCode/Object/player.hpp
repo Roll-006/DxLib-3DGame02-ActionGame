@@ -51,9 +51,6 @@ private:
 	// パッド入力での速度ベクトルを取得
 	[[nodiscard]] VECTOR GetVelocityFromPad(VECTOR& velocity);
 
-	/// @brief トランスフォーム情報を更新する
-	void UpdateTransform();
-
 	/// @brief カメラのforwardをもとにした進行方向ベクトルを取得する
 	/// @return カメラのforwardのY軸を消し飛ばしたベクトル
 	[[nodiscard]] VECTOR GetMoveForward();

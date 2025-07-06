@@ -1,50 +1,53 @@
-#include "enemy.hpp"
+#include "zombie.hpp"
 
-Enemy::Enemy() :
-	CharaBase(ObjName.ZOMBIE_POLICE, ObjTag.ENEMY, ModelPath.CHARA_02, MassKind::kMedium),
-	m_dir(VGet(0.0f, 0.0f, 1.0f))
+Zombie::Zombie() :
+	EnemyBase(ObjName.ZOMBIE_POLICE, ModelPath.CHARA_02, MassKind::kMedium)
 {
-	m_transform->SetRot  (CoordinateKind::kWorld, m_dir);
+	m_look_dir = VGet(0.0f, 0.0f, 1.0f);
+	m_transform->SetRot  (CoordinateKind::kWorld, m_look_dir);
 	m_transform->SetScale(CoordinateKind::kWorld, kModelScale);
 	m_transform->SetPos  (CoordinateKind::kWorld, VGet(100, 0, 100));
+	m_modeler->ApplyMatrix();
 
 	// コライダー・トリガーを設定
-	CreateCollider(kCapsuleRadius, kLandingTriggerRadius);
-
+	CreateCharaBasisCollider(kCapsuleRadius, kLandingTriggerRadius);
+	CreateLegTrigger		(kUpLegTriggerRadius, kDownLegTriggerRadius);
+	CreateHeadTrigger		(kHeadTriggerRadius);
 }
 
-Enemy::~Enemy()
+Zombie::~Zombie()
 {
 
 }
 
-void Enemy::Init()
+void Zombie::Init()
 {
 
 }
 
-void Enemy::Update()
+void Zombie::Update()
 {
 	if (!IsActive()) { return; }
 
 	Move();
-	UpdateTransform();
+	UpdateTransform(m_look_dir, kModelScale);
 
 	ChangeAnimState();
 	//m_animator->Update();
 
-	CalcCapsuleLength();
+	CalcCapsuleColliderLength();
+	CalcLegTriggerPos();
 	AddFallVelocity();
 
 	m_is_landing = false;
 }
 
-void Enemy::LateUpdate()
+void Zombie::LateUpdate()
 {
 	if (!IsActive()) { return; }
 }
 
-void Enemy::Draw() const
+void Zombie::Draw() const
 {
 	if (!IsActive()) { return; }
 
@@ -66,7 +69,7 @@ void Enemy::Draw() const
 	DrawLine3D(pos, pos + axes.z_axis * 100, 0x0077ff);
 }
 
-void Enemy::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
+void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 {
 	switch (hit_collider_pair.owner_collider->GetColliderKind())
 	{
@@ -79,18 +82,12 @@ void Enemy::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	}
 }
 
-void Enemy::ChangeAnimState()
+void Zombie::ChangeAnimState()
 {
 
 }
 
-void Enemy::Move()
+void Zombie::Move()
 {
 	m_velocity = v3d::GetZeroV();
-}
-
-void Enemy::UpdateTransform()
-{
-	m_transform->SetRot  (CoordinateKind::kWorld, m_dir);
-	m_transform->SetScale(CoordinateKind::kWorld, kModelScale);
 }

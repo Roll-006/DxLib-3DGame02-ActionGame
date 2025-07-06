@@ -46,7 +46,7 @@ int ObjectPoolBase::GetPoolSize(const std::string& obj_name) const
 {
 	if (!m_objects.count(obj_name)) { return 0; }
 
-	return m_objects.at(obj_name).size();
+	return static_cast<int>(m_objects.at(obj_name).size());
 }
 
 void ObjectPoolBase::CreateObj(const std::shared_ptr<ObjBase> obj)

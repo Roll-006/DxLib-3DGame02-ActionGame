@@ -1,7 +1,7 @@
 #pragma once
 #include "../Base/scene_base.hpp"
 
-#include "../Object/enemy.hpp"
+#include "../Object/zombie.hpp"
 #include "../Object/house.hpp"
 #include "../Object/ground.hpp"
 #include "../Object/skydome.hpp"
@@ -20,7 +20,7 @@ public:
 	void Draw() const override;
 
 private:
-	std::shared_ptr<Enemy>						m_enemy;
+	std::shared_ptr<Zombie>						m_zombie;
 	std::shared_ptr<House>						m_house;
 	std::shared_ptr<Ground>						m_ground;
 	std::shared_ptr<Skydome>					m_skydome;

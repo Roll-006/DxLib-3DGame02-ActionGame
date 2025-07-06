@@ -333,7 +333,6 @@ void Camera::CalcInitAngle()
 	if (distance < m_init_end_threshold)
 	{
 		m_angle.at(TimeKind::kCurrent) = m_angle.at(TimeKind::kNext);
-
 		m_is_init_angle = false;
 	}
 }

@@ -47,11 +47,6 @@ void Modeler::Draw() const
 	ApplyMatrix();
 
 	MV1DrawModel(m_model_handle);
-	//const int mesh_num = MV1GetMeshNum(m_model_handle);
-	//for (int i = 0; i < mesh_num; ++i)
-	//{
-	//	int vertex_num = MV1GetMeshVertexNum(m_model_handle, i);
-	//}
 	//DxLibHelper::DrawModelFrames(m_model_handle, "model", 0.0325f);
 }
 

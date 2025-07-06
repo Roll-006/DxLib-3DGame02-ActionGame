@@ -36,7 +36,7 @@ private:
 private:
 	std::shared_ptr<Modeler> m_modeler;
 
-	VECTOR m_dir;
+	VECTOR m_move_dir;
 	VECTOR m_prev_pos;
 	VECTOR m_first_pos;		// ‰Šú”­ËˆÊ’u
 	float  m_move_speed;	// ˆÚ“®‘¬“x

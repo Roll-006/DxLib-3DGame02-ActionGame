@@ -47,11 +47,11 @@ protected:
 	void AddCollider(const std::shared_ptr<Collider> collider);
 
 protected:
-	float    m_fall_speed;
-	VECTOR	 m_fall_velocity;
-	VECTOR	 m_velocity;
-	bool	 m_is_landing;
-	MassKind m_mass_kind;
+	float		m_fall_speed;
+	VECTOR		m_fall_velocity;
+	VECTOR		m_velocity;
+	bool		m_is_landing;
+	MassKind	m_mass_kind;
 	std::vector<std::shared_ptr<Collider>> m_collider;
 
 private:
