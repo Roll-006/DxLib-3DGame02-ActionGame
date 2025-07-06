@@ -105,5 +105,6 @@ protected:
 	float	m_capsule_length;
 	float	m_capsule_radius;
 
+	float	m_hp;
 	int		m_current_remaining_bullet_num;					// écíeêî
 };

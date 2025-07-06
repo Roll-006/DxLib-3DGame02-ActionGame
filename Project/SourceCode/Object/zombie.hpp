@@ -24,10 +24,11 @@ private:
 	static constexpr float kModelScale				= 0.25f;
 
 	static constexpr float kCapsuleRadius			= 8.0f;
+	static constexpr float kHeadTriggerRadius		= 4.5f;
+	static constexpr float kBodyTriggerRadius		= 6.0f;
 	static constexpr float kLandingTriggerRadius	= 6.0f;
 	static constexpr float kUpLegTriggerRadius		= 3.5f;
 	static constexpr float kDownLegTriggerRadius	= 2.5f;
-	static constexpr float kHeadTriggerRadius		= 4.5f;
 
 private:
 

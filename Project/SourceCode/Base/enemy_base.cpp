@@ -5,21 +5,21 @@ EnemyBase::EnemyBase(const std::string& name, const std::string& file_path, cons
 	m_move_dir	(v3d::GetZeroV()),
 	m_look_dir	(v3d::GetZeroV())
 {
-
+	// 処理なし
 }
 
 void EnemyBase::CreateLegTrigger (const float up_leg_capsule_radius, const float down_leg_capsule_radius)
 {
-	m_leg_trigger[ColliderKind::kLeftUpLegTrigger]		= std::make_shared<Capsule>(v3d::GetZeroV(), v3d::GetZeroV(), up_leg_capsule_radius);
-	m_leg_trigger[ColliderKind::kLeftDownLegTrigger]	= std::make_shared<Capsule>(v3d::GetZeroV(), v3d::GetZeroV(), down_leg_capsule_radius);
-	m_leg_trigger[ColliderKind::kRightUpLegTrigger]		= std::make_shared<Capsule>(v3d::GetZeroV(), v3d::GetZeroV(), up_leg_capsule_radius);
-	m_leg_trigger[ColliderKind::kRightDownLegTrigger]	= std::make_shared<Capsule>(v3d::GetZeroV(), v3d::GetZeroV(), down_leg_capsule_radius);
+	const auto left_up_leg_trigger		= std::make_shared<Capsule>(v3d::GetZeroV(), v3d::GetZeroV(), up_leg_capsule_radius);
+	const auto left_down_leg_trigger	= std::make_shared<Capsule>(v3d::GetZeroV(), v3d::GetZeroV(), down_leg_capsule_radius);
+	const auto right_up_leg_trigger	 	= std::make_shared<Capsule>(v3d::GetZeroV(), v3d::GetZeroV(), up_leg_capsule_radius);
+	const auto right_down_leg_trigger	= std::make_shared<Capsule>(v3d::GetZeroV(), v3d::GetZeroV(), down_leg_capsule_radius);
 
 	// 登録
-	AddCollider(std::make_shared<Collider>(ColliderKind::kLeftUpLegTrigger,		m_leg_trigger.at(ColliderKind::kLeftUpLegTrigger),		this));
-	AddCollider(std::make_shared<Collider>(ColliderKind::kLeftDownLegTrigger,	m_leg_trigger.at(ColliderKind::kLeftDownLegTrigger),	this));
-	AddCollider(std::make_shared<Collider>(ColliderKind::kRightUpLegTrigger,	m_leg_trigger.at(ColliderKind::kRightUpLegTrigger),		this));
-	AddCollider(std::make_shared<Collider>(ColliderKind::kRightDownLegTrigger,	m_leg_trigger.at(ColliderKind::kRightDownLegTrigger),	this));
+	AddCollider(std::make_shared<Collider>(ColliderKind::kLeftUpLegTrigger,		left_up_leg_trigger,	this));
+	AddCollider(std::make_shared<Collider>(ColliderKind::kLeftDownLegTrigger,	left_down_leg_trigger,	this));
+	AddCollider(std::make_shared<Collider>(ColliderKind::kRightUpLegTrigger,	right_up_leg_trigger,	this));
+	AddCollider(std::make_shared<Collider>(ColliderKind::kRightDownLegTrigger,	right_down_leg_trigger,	this));
 
 	CalcLegTriggerPos();
 }
@@ -30,6 +30,13 @@ void EnemyBase::CreateHeadTrigger(const float sphere_radius)
 	const VECTOR head_pos = MGetTranslateElem(head_mat);
 
 	AddCollider(std::make_shared<Collider>(ColliderKind::kHeadTrigger, std::make_shared<Sphere>(head_pos, sphere_radius), this));
+}
+
+void EnemyBase::CreateBodyTrigger(const float capsule_radius)
+{
+	AddCollider(std::make_shared<Collider>(ColliderKind::kBodyTrigger, std::make_shared<Capsule>(v3d::GetZeroV(), v3d::GetZeroV(), capsule_radius), this));
+
+	CalcBodyTriggerPos();
 }
 
 void EnemyBase::CalcLegTriggerPos()
@@ -53,12 +60,29 @@ void EnemyBase::CalcLegTriggerPos()
 	const VECTOR right_foot_pos		= MGetTranslateElem(right_foot_mat);
 
 	// 位置を適用
-	m_leg_trigger.at(ColliderKind::kLeftUpLegTrigger)	->SetSegmentBeginPos(left_leg_pos,		true);
-	m_leg_trigger.at(ColliderKind::kLeftUpLegTrigger)	->SetSegmentEndPos	(left_up_leg_pos,	true);
-	m_leg_trigger.at(ColliderKind::kLeftDownLegTrigger)	->SetSegmentBeginPos(left_foot_pos,		true);
-	m_leg_trigger.at(ColliderKind::kLeftDownLegTrigger)	->SetSegmentEndPos	(left_leg_pos,		true);
-	m_leg_trigger.at(ColliderKind::kRightUpLegTrigger)  ->SetSegmentBeginPos(right_leg_pos,		true);
-	m_leg_trigger.at(ColliderKind::kRightUpLegTrigger)  ->SetSegmentEndPos	(right_up_leg_pos,	true);
-	m_leg_trigger.at(ColliderKind::kRightDownLegTrigger)->SetSegmentBeginPos(right_foot_pos,	true);
-	m_leg_trigger.at(ColliderKind::kRightDownLegTrigger)->SetSegmentEndPos	(right_leg_pos,		true);
+	std::dynamic_pointer_cast<Capsule>(GetCollider(ColliderKind::kLeftUpLegTrigger)		->GetShape())->SetSegmentBeginPos(left_leg_pos,		true);
+	std::dynamic_pointer_cast<Capsule>(GetCollider(ColliderKind::kLeftUpLegTrigger)		->GetShape())->SetSegmentEndPos	(left_up_leg_pos,	true);
+	std::dynamic_pointer_cast<Capsule>(GetCollider(ColliderKind::kLeftDownLegTrigger)	->GetShape())->SetSegmentBeginPos(left_foot_pos,		true);
+	std::dynamic_pointer_cast<Capsule>(GetCollider(ColliderKind::kLeftDownLegTrigger)	->GetShape())->SetSegmentEndPos	(left_leg_pos,		true);
+	std::dynamic_pointer_cast<Capsule>(GetCollider(ColliderKind::kRightUpLegTrigger)	->GetShape())->SetSegmentBeginPos(right_leg_pos,		true);
+	std::dynamic_pointer_cast<Capsule>(GetCollider(ColliderKind::kRightUpLegTrigger)	->GetShape())->SetSegmentEndPos	(right_up_leg_pos,	true);
+	std::dynamic_pointer_cast<Capsule>(GetCollider(ColliderKind::kRightDownLegTrigger)	->GetShape())->SetSegmentBeginPos(right_foot_pos,	true);
+	std::dynamic_pointer_cast<Capsule>(GetCollider(ColliderKind::kRightDownLegTrigger)	->GetShape())->SetSegmentEndPos	(right_leg_pos,		true);
+}
+
+void EnemyBase::CalcBodyTriggerPos()
+{
+	const int model_handle = m_modeler->GetModelHandle();
+
+	// フレームの行列情報を取得
+	MATRIX spine2_mat	= MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, BonePath.SPINE_2));
+	MATRIX hips_mat		= MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, BonePath.HIPS));
+
+	// 位置を取得
+	const VECTOR spine2_pos	= MGetTranslateElem(spine2_mat);
+	const VECTOR hips_pos	= MGetTranslateElem(hips_mat);
+
+	// 位置を適用
+	std::dynamic_pointer_cast<Capsule>(GetCollider(ColliderKind::kBodyTrigger)->GetShape())->SetSegmentBeginPos	(spine2_pos, true);
+	std::dynamic_pointer_cast<Capsule>(GetCollider(ColliderKind::kBodyTrigger)->GetShape())->SetSegmentEndPos	(hips_pos,	 true);
 }

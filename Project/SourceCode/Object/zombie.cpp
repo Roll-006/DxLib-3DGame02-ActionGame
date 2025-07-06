@@ -11,8 +11,9 @@ Zombie::Zombie() :
 
 	// コライダー・トリガーを設定
 	CreateCharaBasisCollider(kCapsuleRadius, kLandingTriggerRadius);
-	CreateLegTrigger		(kUpLegTriggerRadius, kDownLegTriggerRadius);
 	CreateHeadTrigger		(kHeadTriggerRadius);
+	CreateBodyTrigger		(kBodyTriggerRadius);
+	CreateLegTrigger		(kUpLegTriggerRadius, kDownLegTriggerRadius);
 }
 
 Zombie::~Zombie()
@@ -37,6 +38,7 @@ void Zombie::Update()
 
 	CalcCapsuleColliderLength();
 	CalcLegTriggerPos();
+	CalcBodyTriggerPos();
 	AddFallVelocity();
 
 	m_is_landing = false;
