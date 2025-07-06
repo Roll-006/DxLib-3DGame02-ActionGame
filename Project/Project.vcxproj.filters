@@ -592,6 +592,12 @@
     <ClInclude Include="SourceCode\Base\enemy_base.hpp">
       <Filter>Base</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\Base\ui_creator_base.hpp">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\Name\ui_creator_name.hpp">
+      <Filter>Data\Name</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Manager">

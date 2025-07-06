@@ -93,7 +93,6 @@ void AssaultRifle::CalcDiffusionRange()
 	// ŠgŽU”ÍˆÍ‚ðŽw’è
 	m_diffusion_shape = std::make_shared<Circle>(m_aim_dir, kDiffusionRadius);
 	std::dynamic_pointer_cast<Circle>(m_diffusion_shape)->SetPos(GetFirstShotPos() + m_aim_dir * kDiffusionDistance);
-	std::dynamic_pointer_cast<Circle>(m_diffusion_shape)->Draw(true, 0, 0xff0000);
 }
 
 void AssaultRifle::CalcTargetPos()

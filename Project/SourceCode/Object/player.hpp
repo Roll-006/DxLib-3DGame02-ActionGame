@@ -37,6 +37,7 @@ private:
 
 	void Move();
 	void InitMove();
+	void InitWeapon();
 
 	/// @brief ˆÚ“®‘¬“x‚ðŒvŽZ
 	void CalcMoveSpeed(const float input_slope);

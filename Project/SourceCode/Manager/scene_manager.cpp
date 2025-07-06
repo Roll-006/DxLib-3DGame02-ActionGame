@@ -53,6 +53,8 @@ void SceneObjManager::Draw() const
 	{
 		scene.second->Draw();
 	}
+
+	UIManager::GetInstance()->Draw();
 }
 
 void SceneObjManager::AttachCurrentScene(const SceneKind scene_kind)

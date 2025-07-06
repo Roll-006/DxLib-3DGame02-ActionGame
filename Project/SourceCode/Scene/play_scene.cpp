@@ -19,6 +19,7 @@ PlayScene::PlayScene():
 	PhysicsManager	::GetInstance()->AddPhysicalObj	(m_ground);
 
 	ObjectPoolManager::GetInstance()->AddObjectPool(m_rifle_cartridge_object_pool);
+	UIManager		 ::GetInstance()->AddUICreator (m_player_ui_creator);
 }
 
 PlayScene::~PlayScene()
@@ -33,7 +34,7 @@ void PlayScene::Init()
 
 void PlayScene::Update()
 {
-	m_zombie->Update();
+	m_zombie							->Update();
 	RifleCartridgeManager::GetInstance()->Update();
 	m_house								->Update();
 	m_ground							->Update();
@@ -57,5 +58,4 @@ void PlayScene::Draw() const
 	m_house								->Draw();
 	m_ground							->Draw();
 	m_skydome							->Draw();
-	m_player_ui_creator->TestDraw();
 }

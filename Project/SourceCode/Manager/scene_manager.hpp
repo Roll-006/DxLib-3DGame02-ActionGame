@@ -1,6 +1,8 @@
 #pragma once
 #include <unordered_map>
 
+#include "ui_manager.hpp"
+
 #include "../Scene/title_scene.hpp"
 #include "../Scene/play_scene.hpp"
 #include "../Scene/game_clear_scene.hpp"

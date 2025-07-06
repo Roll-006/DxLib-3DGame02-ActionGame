@@ -64,9 +64,6 @@ void Player::Update()
 	const auto command = CommandHandler::GetInstance();
 	command->Execute(CommandKind::kRun,				this);
 	command->Execute(CommandKind::kSquat,			this);
-	command->Execute(CommandKind::kReloadGun,		this);
-	command->Execute(CommandKind::kAimingGun,		this);
-	command->Execute(CommandKind::kShot,			this);
 	command->Execute(CommandKind::kMoveUpPlayer,	this);
 	command->Execute(CommandKind::kMoveDownPlayer,	this);
 	command->Execute(CommandKind::kMoveLeftPlayer,	this);
@@ -89,6 +86,16 @@ void Player::Update()
 void Player::LateUpdate()
 {
 	if (!IsActive()) { return; }
+
+	InitWeapon();
+
+	std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->DeactivateAiming();
+	std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->ReleaseTrigger();
+
+	const auto command = CommandHandler::GetInstance();
+	command->Execute(CommandKind::kReloadGun,		this);
+	command->Execute(CommandKind::kAimingGun,		this);
+	command->Execute(CommandKind::kShot,			this);
 
 	m_modeler->ApplyMatrix();
 
@@ -487,16 +494,6 @@ void Player::InitMove()
 	// å¸Ç´ï‚ê≥
 	m_is_correct_look_dir = false;
 
-	// è∆èÄ
-	if (!std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->IsAiming())
-	{
-		m_camera->Depart(Camera::kNormalDistance, kADSSpeed * FPS::GetDeltaTime());
-		m_camera->TrackBoneHeightOnly();
-	}
-
-	std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->DeactivateAiming();
-	std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->ReleaseTrigger();
-
 	// É_ÉbÉVÉÖîªíË
 	if (command->GetInputModeKind(CommandHandler::MoveKind::kRun) == InputModeKind::kHold) { m_is_run = false; }
 	if (!m_is_move)
@@ -507,6 +504,16 @@ void Player::InitMove()
 
 	// ÇµÇ·Ç™Ç›îªíË
 	if (command->GetInputModeKind(CommandHandler::MoveKind::kSquat) == InputModeKind::kHold) { m_is_squat = false; }
+}
+
+void Player::InitWeapon()
+{
+	// è∆èÄ
+	if (!std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->IsAiming())
+	{
+		m_camera->Depart(Camera::kNormalDistance, kADSSpeed * FPS::GetDeltaTime());
+		m_camera->TrackBoneHeightOnly();
+	}
 }
 
 void Player::CalcMoveSpeed(const float input_slope)

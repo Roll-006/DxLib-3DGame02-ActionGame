@@ -10,6 +10,7 @@ GameManager::GameManager():
 	RandomGenerator			::Generate();
 	HandleKeeper			::Generate();
 	InputChecker			::Generate();
+	UIManager				::Generate();
 	CommandHandler			::Generate();
 	ObjManager				::Generate();
 	CollisionManager		::Generate();
@@ -25,6 +26,7 @@ GameManager::~GameManager()
 	RandomGenerator			::Delete();
 	HandleKeeper			::Delete();
 	InputChecker			::Delete();
+	UIManager				::Delete();
 	CommandHandler			::Delete();
 	ObjManager				::Delete();
 	CollisionManager		::Delete();

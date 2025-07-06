@@ -375,6 +375,7 @@ void Camera::SetLookDir()
 {
 	const VECTOR pos = m_transform->GetPos(CoordinateKind::kWorld);
 	const VECTOR look_pos = pos + m_transform->GetForward(CoordinateKind::kWorld);
+
 	SetCameraPositionAndTarget_UpVecY(pos, look_pos);
 }
 

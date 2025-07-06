@@ -1,6 +1,7 @@
 #include "player_ui_creator.hpp"
 
 PlayerUICreator::PlayerUICreator(const std::shared_ptr<Player> player) : 
+	UICreatorBase		(UICreatorName.PLAYER_UI_CREATOR),
 	m_player			(player),
 	m_2d_diffusion_shape(nullptr)
 {
@@ -17,9 +18,10 @@ void PlayerUICreator::LateUpdate()
 	CreateCrossHair();
 }
 
-void PlayerUICreator::TestDraw()
+void PlayerUICreator::OnDraw()
 {
 	if (!m_2d_diffusion_shape) { return; }
+	if (!std::dynamic_pointer_cast<GunBase>(m_player->GetCurrentAttachWeapon())->IsAiming()) { return; }
 
 	const auto shape = std::dynamic_pointer_cast<Circle>(m_2d_diffusion_shape);
 	DrawCircle(shape->GetPos().x, shape->GetPos().y, shape->GetRadius(), 0xffffff, FALSE);

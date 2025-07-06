@@ -215,6 +215,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Algorithm\algorithm.hpp" />
+    <ClInclude Include="SourceCode\Base\ui_creator_base.hpp" />
     <ClInclude Include="SourceCode\Base\animator_base.hpp" />
     <ClInclude Include="SourceCode\Base\chara_base.hpp" />
     <ClInclude Include="SourceCode\Base\command_base.hpp" />
@@ -273,6 +274,7 @@
     <ClInclude Include="SourceCode\Data\Kind\time_kind.hpp" />
     <ClInclude Include="SourceCode\Data\Name\object_pool_name.hpp" />
     <ClInclude Include="SourceCode\Data\Name\obj_name.hpp" />
+    <ClInclude Include="SourceCode\Data\Name\ui_creator_name.hpp" />
     <ClInclude Include="SourceCode\Data\Path\animation_path.hpp" />
     <ClInclude Include="SourceCode\Data\Path\bone_path.hpp" />
     <ClInclude Include="SourceCode\Data\Path\model_path.hpp" />
