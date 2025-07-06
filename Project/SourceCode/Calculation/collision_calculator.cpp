@@ -562,54 +562,41 @@ VECTOR collision::PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsu
     // 押し戻す方向は三角形の角度が上がるほどワールドX軸に向かう
     else
     {
+        DrawFormatString(0, 0, 0xffffff, "登るのが困難です");
+        if (slope_angle >= max_slope_agl)
+        {
+            DrawFormatString(0, 20, 0xffffff, "登れません");
+        }
+
         // 平面の法線を、ワールドX軸に対して水平にする
         VECTOR horizontal_v = plane.GetNormalVector();
         horizontal_v.y = 0.0f;
         horizontal_v = v3d::GetNormalizedV(horizontal_v);
 
-        //// 押し戻す方向を取得
-        //const float  angle_range     =  math::GetAngleBetweenTwoVector(plane.GetNormalVector(), horizontal_v);
-        //const float  push_back_angle = -math::ConvertValueNewRange<float, float>(slope_threshold_agl, max_slope_agl, -angle_range, 0.0f, slope_angle);
-        //const VECTOR push_back_dir   =  math::GetRotatedPos(plane.GetNormalVector(), quat::CreateQuaternion(math::GetNormalVector(plane.GetNormalVector(), axis::GetWorldYAxis()), push_back_angle));
+        // 押し戻す方向を取得
+        const float  angle_range        =  math::GetAngleBetweenTwoVector(plane.GetNormalVector(), horizontal_v);
+        // FIXME : 角度がマイナスになる場合がある
+        float  push_back_angle          = -math::ConvertValueNewRange<float, float>(slope_threshold_agl, max_slope_agl, -angle_range, 0.0f, slope_angle);
+        if (slope_angle >= max_slope_agl)
+        {
+            push_back_angle = 0.0f;
+        }
+        const VECTOR v1                 =  math::GetNormalVector(plane.GetNormalVector(), axis::GetWorldYAxis());
+        // MEMO : 回転方向を決める必要がある可能性あり
+        const VECTOR push_back_dir      =  math::GetRotatedPos(horizontal_v, quat::CreateQuaternion(v1, push_back_angle));
 
-        // 平面の裏側の押し戻しベクトルの長さを取得
-        ////const VECTOR v      = math::GetNormalVector(plane.GetNormalVector(), math::GetNormalVector(plane.GetNormalVector(), axis::GetWorldYAxis()));
-        ////const float  angle1 = math::GetAngleBetweenTwoVector(v, horizontal_v);
-        //const float  angle2 = 180.0f * math::kDegreesToRadian - angle1 - push_back_angle;
-        //const float  angle3 = 90.0f  * math::kDegreesToRadian - angle2;
-        //const float  front_length = distance_to_plane / cos(angle3);
- 
-        ////const float angle2          = 90.0f * math::kDegreesToRadian - angle1;
-        ////const float front_length    = future_distance_to_triangle / cos(angle2);
-
-
-        //// 平面の表側の押し戻しベクトルの長さを取得
-        //const float angle4 = 180.0f * math::kDegreesToRadian - angle3;
-        //const float angle5 = 90.0f  * math::kDegreesToRadian - angle4;
-        //const float back_length = dynamic_capsule.GetRadius() / cos(angle5);
-
-        ////const float back_length = dynamic_capsule.GetRadius() / cos(angle2);
-
-
-        // 本来の到達地点を取得
-        //valid_velocity = push_back_dir * (front_length + back_length);
-        ////DrawSphere3D(future_pos + horizontal_v * front_length, 4, 16, 0xffffff, 0xffffff, TRUE);
-        ////future_pos += horizontal_v * (front_length + back_length);
-        ////DrawSphere3D(future_pos, 4, 16, 0xffffff, 0xffffff, TRUE);
-
-
-
+        printfDx("push_back_angle : %f\n", push_back_angle);
 
         // 押し戻しベクトルの長さを取得
-        const VECTOR v1             = math::GetNormalVector(plane.GetNormalVector(), axis::GetWorldYAxis());
-        const VECTOR v2             = math::GetNormalVector(plane.GetNormalVector(), v1);
-        const float  angle1         = math::GetAngleBetweenTwoVector(v2, horizontal_v);
-        const float  angle2         = 90.0f * math::kDegreesToRadian - angle1;
-        const float  front_length   = cos(angle2) / future_distance_to_plane;
-        const float  back_length    = cos(angle2) / dynamic_capsule.GetRadius();
+        const VECTOR v2                 = math::GetNormalVector(plane.GetNormalVector(), v1);
+        const float  angle1             = math::GetAngleBetweenTwoVector(v2, horizontal_v);
+        const float  angle2             = 90.0f * math::kDegreesToRadian - angle1;
+        const float  angle3             = push_back_angle - angle2;
+        const float  back_length        = cos(angle3) / future_distance_to_plane;
+        const float  front_length       = cos(angle3) / dynamic_capsule.GetRadius();
 
         // 本来の到達地点を取得
-        future_pos += horizontal_v * (front_length + back_length);
+        future_pos += push_back_dir * (back_length + front_length);
     }
 
     // 本来の到達地点までのvelocityを取得

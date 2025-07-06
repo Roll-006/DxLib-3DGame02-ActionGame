@@ -76,8 +76,9 @@ void ShellCasing::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 		break;
 
 	case ColliderKind::kLandingTrigger:
-		m_is_landing = true;
-		//m_move_dir = v3d::GetNormalizedV(m_velocity);
+		// ’nŒ`‚Ì‰e‹¿‚ðŽó‚¯‚é‚æ‚¤‚Évelocity‚ðdir‚É•Û‘¶
+		m_move_dir		= v3d::GetNormalizedV(m_velocity);
+		m_is_landing	= true;
 		break;
 
 	default:

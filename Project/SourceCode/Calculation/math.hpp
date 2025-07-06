@@ -192,7 +192,7 @@ namespace math
 	template<common_concepts::ArithmeticT TargetT, common_concepts::FloatingPointT ReturnT>
 	[[nodiscard]] ReturnT ConvertValueNewRange(const TargetT old_min, const TargetT old_max, const TargetT new_min, const TargetT new_max, const TargetT value)
 	{
-		return static_cast<ReturnT>(value - old_min) / (old_max - old_min) * (new_max - new_min) + new_min;
+		return static_cast<ReturnT>(value - old_min) / ((old_max - old_min) * (new_max - new_min)) + new_min;
 	}
 	#pragma endregion
 
