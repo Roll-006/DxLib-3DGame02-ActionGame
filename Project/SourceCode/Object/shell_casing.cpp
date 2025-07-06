@@ -69,8 +69,15 @@ void ShellCasing::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 {
 	switch (hit_collider_pair.owner_collider->GetColliderKind())
 	{
+	case ColliderKind::kCollider:
+		if (hit_collider_pair.target_collider->GetColliderKind() == ColliderKind::kCollider)
+		{
+		}
+		break;
+
 	case ColliderKind::kLandingTrigger:
 		m_is_landing = true;
+		//m_move_dir = v3d::GetNormalizedV(m_velocity);
 		break;
 
 	default:

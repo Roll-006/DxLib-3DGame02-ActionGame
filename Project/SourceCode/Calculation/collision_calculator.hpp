@@ -226,7 +226,6 @@ namespace collision
         const float slope_difficulty_angle_threshold, const float max_slope_angle);
 
     /// @brief カプセル(移動オブジェクト)とモデル(固定オブジェクト)が衝突した際の有効な速度ベクトルを取得
-    /// @brief TODO : 角度制限未実装
     /// @brief WARNING : この関数は現在衝突対象にめり込んでいないことを前提としている
     /// @brief WARNING : 法線の裏側を考慮していない
     /// @param velocity 速度ベクトル

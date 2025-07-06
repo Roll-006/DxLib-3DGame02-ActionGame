@@ -42,7 +42,7 @@ Player::Player(std::shared_ptr<Camera> camera) :
 	//PhysicsManager	::GetInstance()->AddIgnoreObjGravity(ObjName.ASSAULT_RIFLE);
 
 	// TODO : ‰¼‚ÅŠc‚è’e”‚ğİ’è
-	m_current_remaining_bullet_num = 100;
+	m_current_remaining_bullet_num = 10000;
 }
 
 Player::~Player()
@@ -125,7 +125,7 @@ void Player::Draw() const
 	DrawLine3D(pos, pos + axes.y_axis * 100, 0x00ff22);
 	DrawLine3D(pos, pos + axes.z_axis * 100, 0x0077ff);
 
-	DrawFormatString(300, 40, 0xffffff, "Š‚µ‚Ä‚¢‚é’e” : %d", m_current_remaining_bullet_num);
+	//DrawFormatString(300, 40, 0xffffff, "Š‚µ‚Ä‚¢‚é’e” : %d", m_current_remaining_bullet_num);
 }
 
 void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
