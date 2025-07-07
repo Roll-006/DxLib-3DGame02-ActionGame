@@ -9,3 +9,4 @@
 #include "../../Shape/3DShape/obb.hpp"
 #include "../../Shape/3DShape/sphere.hpp"
 #include "../../Shape/3DShape/capsule.hpp"
+#include "../../Shape/3DShape/ray_capsule.hpp"

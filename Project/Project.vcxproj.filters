@@ -230,6 +230,9 @@
     <ClCompile Include="SourceCode\Part\camera_noise.cpp">
       <Filter>Part</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\Shape\3DShape\ray_capsule.cpp">
+      <Filter>Shape\3DShape</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\chara_base.hpp">
@@ -609,6 +612,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Part\camera_noise.hpp">
       <Filter>Part</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Shape\3DShape\ray_capsule.hpp">
+      <Filter>Shape\3DShape</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -88,7 +88,7 @@ void CharaBase::CalcCapsuleColliderLength()
 
 	// Žn“_‚©‚ç“ª•”‚Ü‚Å‚Ì’·‚³‚ðŽæ“¾
 	m_capsule_length = VSize(m_transform->GetPos(CoordinateKind::kWorld) - MGetTranslateElem(frame_mat));
-	m_capsule_collider->SetLength(m_capsule_length);
+	m_capsule_collider->SetCapsuleLength(m_capsule_length);
 }
 
 void CharaBase::CreateCapsuleCollider(const float capsule_radius)

@@ -29,7 +29,7 @@ public:
 
     /// @brief カプセルの長さを設定
     /// @param length カプセルの長さ
-    void SetLength(const float length) { m_segment.SetLength(length - m_radius * 2.0f); }
+    void SetCapsuleLength(const float capsule_length) { m_segment.SetLength(capsule_length - m_radius * 2.0f); }
 
     [[nodiscard]] const Segment& GetSegment() const { return m_segment; }
     [[nodiscard]] float GetRadius() const { return m_radius; }

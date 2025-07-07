@@ -348,6 +348,19 @@ bool collision::IsHitTriangleAndCapsule (const Triangle&    triangle,   const Ca
     return IsHitTriangleAndCapsule(triangle, capsule, intersection);
 }
 
+bool collision::IsHitTriangleAndRayCapsule(const Triangle& triangle, const RayCapsule& rayc_apsule, std::optional<VECTOR>& intersection)
+{
+    intersection = std::nullopt;
+
+    // TODO : 作成中
+}
+bool collision::IsHitTriangleAndRayCapsule(const Triangle& triangle, const RayCapsule& ray_capsule)
+{
+    std::optional<VECTOR> intersection = std::nullopt;
+
+    return IsHitTriangleAndRayCapsule(triangle, ray_capsule, intersection);
+}
+
 bool collision::IsHitTriangleAndModel   (const Triangle&    triangle,   const int       model_handle,   std::optional<VECTOR>& intersection)
 {
     intersection = std::nullopt;

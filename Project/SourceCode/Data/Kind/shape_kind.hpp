@@ -15,4 +15,5 @@ enum class ShapeKind
 	kOBB,			// 有向境界ボックス
 	kSphere,		// 球
 	kCapsule,		// カプセル
+	kRayCapsule,	// 光線カプセル
 };
