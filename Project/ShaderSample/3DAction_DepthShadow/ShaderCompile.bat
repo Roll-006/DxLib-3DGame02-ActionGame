@@ -1,0 +1,7 @@
+ShaderCompiler.exe /Tvs_2_0 SkinMesh4_DepthShadow_Step1VS.fx
+ShaderCompiler.exe /Tvs_2_0 NormalMesh_DepthShadow_Step1VS.fx
+ShaderCompiler.exe /Tps_2_0 DepthShadow_Step1PS.fx
+ShaderCompiler.exe /Tvs_2_0 SkinMesh4_DirLight_DepthShadow_Step2VS.fx
+ShaderCompiler.exe /Tvs_2_0 NormalMesh_DirLight_DepthShadow_Step2VS.fx
+ShaderCompiler.exe /Tps_2_0 DirLight_DepthShadow_Step2PS.fx
+pause

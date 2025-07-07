@@ -339,6 +339,15 @@
     <ClInclude Include="SourceCode\VirtualCamera\aiming_camera.hpp" />
     <ClInclude Include="SourceCode\Window\window.hpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="SourceCode\Shader\blur_shader.pso" />
+    <None Include="SourceCode\Shader\shadow_map_apply_lambert_pixel.pso" />
+    <None Include="SourceCode\Shader\shadow_map_apply_lambert_vertex.vso" />
+    <None Include="SourceCode\Shader\shadow_map_draw_pixel.pso" />
+    <None Include="SourceCode\Shader\shadow_map_draw_vertex.vso" />
+    <None Include="SourceCode\Shader\shadow_map_save_zbuffer_pixel.pso" />
+    <None Include="SourceCode\Shader\shadow_map_save_zbuffer_vertex.vso" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -681,5 +681,31 @@
     <Filter Include="Algorithm">
       <UniqueIdentifier>{b0890834-20a2-48aa-b030-750bd28f8af2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{386eb507-c76b-4ff9-bc74-69fb60f96a8a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SourceCode\Shader\blur_shader.pso">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="SourceCode\Shader\shadow_map_apply_lambert_pixel.pso">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="SourceCode\Shader\shadow_map_apply_lambert_vertex.vso">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="SourceCode\Shader\shadow_map_draw_pixel.pso">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="SourceCode\Shader\shadow_map_draw_vertex.vso">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="SourceCode\Shader\shadow_map_save_zbuffer_pixel.pso">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="SourceCode\Shader\shadow_map_save_zbuffer_vertex.vso">
+      <Filter>Shader</Filter>
+    </None>
   </ItemGroup>
 </Project>
