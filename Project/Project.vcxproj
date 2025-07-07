@@ -180,6 +180,9 @@
     <ClCompile Include="SourceCode\Object\shell_casing.cpp" />
     <ClCompile Include="SourceCode\Object\skydome.cpp" />
     <ClCompile Include="SourceCode\Part\bone_pos_corrector.cpp" />
+    <ClCompile Include="SourceCode\Part\camera_aim.cpp" />
+    <ClCompile Include="SourceCode\Part\camera_body.cpp" />
+    <ClCompile Include="SourceCode\Part\camera_noise.cpp" />
     <ClCompile Include="SourceCode\Part\collider.cpp" />
     <ClCompile Include="SourceCode\Part\modeler.cpp" />
     <ClCompile Include="SourceCode\Part\player_animator.cpp" />
@@ -207,7 +210,7 @@
     <ClCompile Include="SourceCode\UI\player_ui_creator.cpp" />
     <ClCompile Include="SourceCode\VirtualCamera\aiming_camera (2).cpp" />
     <ClCompile Include="SourceCode\VirtualCamera\aiming_camera (3).cpp" />
-    <ClCompile Include="SourceCode\VirtualCamera\tps_camera.cpp" />
+    <ClCompile Include="SourceCode\VirtualCamera\track_camera.cpp" />
     <ClCompile Include="SourceCode\VirtualCamera\fps_camera.cpp" />
     <ClCompile Include="SourceCode\VirtualCamera\scope_aiming_camera.cpp" />
     <ClCompile Include="SourceCode\VirtualCamera\aiming_camera.cpp" />
@@ -306,6 +309,9 @@
     <ClInclude Include="SourceCode\Object\shell_casing.hpp" />
     <ClInclude Include="SourceCode\Object\skydome.hpp" />
     <ClInclude Include="SourceCode\Part\bone_pos_corrector.hpp" />
+    <ClInclude Include="SourceCode\Part\camera_aim.hpp" />
+    <ClInclude Include="SourceCode\Part\camera_body.hpp" />
+    <ClInclude Include="SourceCode\Part\camera_noise.hpp" />
     <ClInclude Include="SourceCode\Part\collider.hpp" />
     <ClInclude Include="SourceCode\Part\modeler.hpp" />
     <ClInclude Include="SourceCode\Part\player_animator.hpp" />
@@ -333,7 +339,7 @@
     <ClInclude Include="SourceCode\UI\player_ui_creator.hpp" />
     <ClInclude Include="SourceCode\VirtualCamera\aiming_camera (2).hpp" />
     <ClInclude Include="SourceCode\VirtualCamera\aiming_camera (3).hpp" />
-    <ClInclude Include="SourceCode\VirtualCamera\tps_camera.hpp" />
+    <ClInclude Include="SourceCode\VirtualCamera\track_camera.hpp" />
     <ClInclude Include="SourceCode\VirtualCamera\fps_camera.hpp" />
     <ClInclude Include="SourceCode\VirtualCamera\scope_aiming_camera.hpp" />
     <ClInclude Include="SourceCode\VirtualCamera\aiming_camera.hpp" />

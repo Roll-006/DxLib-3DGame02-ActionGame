@@ -1,1 +1,34 @@
 /// @brief 深度バッファ記録用頂点シェーダ
+
+// 頂点シェーダーの入力
+struct VS_INPUT
+{
+	float4 Pos        : POSITION ;	// ローカル
+} ;
+
+// 頂点シェーダーの出力
+struct VS_OUTPUT
+{
+	float4 Pos			: POSITION ;		// 射影
+	float4 Tex			: TEXCOORD0;		// テクスチャ座標
+	//float4 Depth		: TEXCOORD1;		// 深度バッファ
+	//float3 E     		: TEXCOORD1;		// 視線ベクトル（ローカル）
+	//float4 WorldPos	: TEXCOORD2;		// ワールドポジション
+} ;
+
+// C++ 側で設定する定数の定義
+float4x4 g_World : register( c94 ) ; 		// ローカル→ワールド
+float4x4 g_View  : register( c6 ) ;			// ワールド→ビュー
+float4x4 g_Proj  : register( c2 ) ;			// ビュー→射影
+
+// main関数
+VS_OUTPUT main( VS_INPUT VSInput )
+{
+	VS_OUTPUT VSOutput;
+
+    //ローカル→ワールド→ビュー→射影変換
+    VSOutput.Pos = mul(mul(mul(VSInput.Pos, g_World), g_View), g_Proj);
+	VSOutput.Tex = VSOutput.Pos;
+ 
+	return VSOutput;
+}

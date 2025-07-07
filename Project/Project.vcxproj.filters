@@ -215,7 +215,7 @@
     <ClCompile Include="SourceCode\VirtualCamera\aiming_camera (3).cpp">
       <Filter>VirtualCamera</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\VirtualCamera\tps_camera.cpp">
+    <ClCompile Include="SourceCode\VirtualCamera\track_camera.cpp">
       <Filter>VirtualCamera</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\VirtualCamera\fps_camera.cpp">
@@ -223,6 +223,15 @@
     </ClCompile>
     <ClCompile Include="SourceCode\Base\enemy_base.cpp">
       <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Part\camera_aim.cpp">
+      <Filter>Part</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Part\camera_body.cpp">
+      <Filter>Part</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Part\camera_noise.cpp">
+      <Filter>Part</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -583,7 +592,7 @@
     <ClInclude Include="SourceCode\VirtualCamera\aiming_camera (3).hpp">
       <Filter>VirtualCamera</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\VirtualCamera\tps_camera.hpp">
+    <ClInclude Include="SourceCode\VirtualCamera\track_camera.hpp">
       <Filter>VirtualCamera</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\VirtualCamera\fps_camera.hpp">
@@ -597,6 +606,15 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Data\Name\ui_creator_name.hpp">
       <Filter>Data\Name</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Part\camera_aim.hpp">
+      <Filter>Part</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Part\camera_body.hpp">
+      <Filter>Part</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Part\camera_noise.hpp">
+      <Filter>Part</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
