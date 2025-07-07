@@ -138,6 +138,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="SourceCode\Algorithm\algorithm.cpp" />
+    <ClCompile Include="SourceCode\Algorithm\a_star.cpp" />
     <ClCompile Include="SourceCode\Base\animator_base.cpp" />
     <ClCompile Include="SourceCode\Base\chara_base.cpp" />
     <ClCompile Include="SourceCode\Base\enemy_base.cpp" />
@@ -218,6 +219,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Algorithm\algorithm.hpp" />
+    <ClInclude Include="SourceCode\Algorithm\a_star.hpp" />
     <ClInclude Include="SourceCode\Base\ui_creator_base.hpp" />
     <ClInclude Include="SourceCode\Base\animator_base.hpp" />
     <ClInclude Include="SourceCode\Base\chara_base.hpp" />

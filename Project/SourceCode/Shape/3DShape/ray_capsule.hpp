@@ -51,6 +51,7 @@ public:
 
     [[nodiscard]] const Capsule& GetBeginCapsule()  const { return m_begin_capsule; }
     [[nodiscard]] const Capsule& GetEndCapsule()    const { return m_end_capsule; }
+    [[nodiscard]] VECTOR         GetDir()           const { return m_dir; }
     [[nodiscard]] float          GetRayLength()     const { return m_ray_length; }
 
 private:

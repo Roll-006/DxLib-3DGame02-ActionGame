@@ -1,7 +1,8 @@
 ﻿#include "collision_calculator.hpp"
 
 #pragma region 衝突判定
-bool collision::IsHitPointAndLine       (const VECTOR&      point,      const Line&     line,           std::optional<VECTOR>& intersection)
+/// @brief 点と直線の衝突判定
+bool collision::IsHitPointAndLine           (const VECTOR&      point,          const Line&         line,           std::optional<VECTOR>& intersection)
 {
     const bool is_hit = math::GetDistancePointToLine(point, line) < math::kEpsilonLow;
 
@@ -9,14 +10,15 @@ bool collision::IsHitPointAndLine       (const VECTOR&      point,      const Li
 
     return is_hit;
 }
-bool collision::IsHitPointAndLine       (const VECTOR&      point,      const Line&     line)
+bool collision::IsHitPointAndLine           (const VECTOR&      point,          const Line&         line)
 {
     std::optional<VECTOR> intersection = std::nullopt;
 
     return IsHitPointAndLine(point, line, intersection);
 }
 
-bool collision::IsHitPointAndSegment    (const VECTOR&      point,      const Segment&  segment,        std::optional<VECTOR>& intersection)
+/// @brief 点と線分の衝突判定
+bool collision::IsHitPointAndSegment        (const VECTOR&      point,          const Segment&      segment,        std::optional<VECTOR>& intersection)
 {
     const bool is_hit = math::GetDistancePointToSegment(point, segment) < math::kEpsilonLow;
 
@@ -24,14 +26,15 @@ bool collision::IsHitPointAndSegment    (const VECTOR&      point,      const Se
 
     return is_hit;
 }
-bool collision::IsHitPointAndSegment    (const VECTOR&      point,      const Segment&  segment)
+bool collision::IsHitPointAndSegment        (const VECTOR&      point,          const Segment&      segment)
 {
     std::optional<VECTOR> intersection = std::nullopt;
 
     return IsHitPointAndSegment(point, segment, intersection);
 }
 
-bool collision::IsHitPointAndPlane      (const VECTOR&      point,      const Plane&    plane,          std::optional<VECTOR>& intersection)
+/// @brief 点と平面(無限に広がる面)の衝突判定
+bool collision::IsHitPointAndPlane          (const VECTOR&      point,          const Plane&        plane,          std::optional<VECTOR>& intersection)
 {
     const bool is_hit = math::GetDistancePointToPlane(point, plane) < math::kEpsilonLow;
 
@@ -39,14 +42,15 @@ bool collision::IsHitPointAndPlane      (const VECTOR&      point,      const Pl
 
     return is_hit;
 }
-bool collision::IsHitPointAndPlane      (const VECTOR&      point,      const Plane&    plane)
+bool collision::IsHitPointAndPlane          (const VECTOR&      point,          const Plane&        plane)
 {
     std::optional<VECTOR> intersection = std::nullopt;
 
     return IsHitPointAndPlane(point, plane, intersection);
 }
 
-bool collision::IsHitPointAndTriangle   (const VECTOR&      point,      const Triangle& triangle,       std::optional<VECTOR>& intersection)
+/// @brief 点と三角形の衝突判定
+bool collision::IsHitPointAndTriangle       (const VECTOR&      point,          const Triangle&     triangle,       std::optional<VECTOR>& intersection)
 {
     const Plane plane = Plane(triangle.GetCentroid(), triangle.GetNormalVector());
     if (!IsHitPointAndPlane(point, plane))
@@ -71,14 +75,15 @@ bool collision::IsHitPointAndTriangle   (const VECTOR&      point,      const Tr
 
     return is_hit;
 }
-bool collision::IsHitPointAndTriangle   (const VECTOR&      point,      const Triangle& triangle)
+bool collision::IsHitPointAndTriangle       (const VECTOR&      point,          const Triangle&     triangle)
 {
     std::optional<VECTOR> intersection = std::nullopt;
 
     return IsHitPointAndTriangle(point, triangle, intersection);
 }
 
-bool collision::IsHitPointAndSquare     (const VECTOR&      point,      const Square&   square,         std::optional<VECTOR>& intersection)
+/// @brief 点と四角形の衝突判定
+bool collision::IsHitPointAndSquare         (const VECTOR&      point,          const Square&       square,         std::optional<VECTOR>& intersection)
 {
     const bool is_hit = IsHitPointAndTriangle(point, square.GetTriangle(0)) || IsHitPointAndTriangle(point, square.GetTriangle(1));
 
@@ -86,14 +91,14 @@ bool collision::IsHitPointAndSquare     (const VECTOR&      point,      const Sq
 
     return is_hit;
 }
-bool collision::IsHitPointAndSquare     (const VECTOR&      point,      const Square&   square)
+bool collision::IsHitPointAndSquare         (const VECTOR&      point,          const Square&       square)
 {
     std::optional<VECTOR> intersection = std::nullopt;
 
     return IsHitPointAndSquare(point, square, intersection);
 }
 
-bool collision::IsHitPointAndCapsule    (const VECTOR&      point,      const Capsule&  capsule,        std::optional<VECTOR>& intersection)
+bool collision::IsHitPointAndCapsule        (const VECTOR&      point,          const Capsule&      capsule,        std::optional<VECTOR>& intersection)
 {
     const float distance = math::GetDistancePointToSegment(point, capsule.GetSegment());
     const bool  is_hit   = distance <= capsule.GetRadius();
@@ -102,27 +107,29 @@ bool collision::IsHitPointAndCapsule    (const VECTOR&      point,      const Ca
 
     return is_hit;
 }
-bool collision::IsHitPointAndCapsule    (const VECTOR&      point,      const Capsule&  capsule)
+bool collision::IsHitPointAndCapsule        (const VECTOR&      point,          const Capsule&      capsule)
 {
     std::optional<VECTOR> intersection = std::nullopt;
 
     return IsHitPointAndCapsule(point, capsule, intersection);
 }
 
-bool collision::IsHitLineAndLine        (const Line&        line1,      const Line&     line2,          std::optional<VECTOR>& intersection)
+/// @brief 直線と直線の衝突判定
+bool collision::IsHitLineAndLine            (const Line&        line1,          const Line&         line2,          std::optional<VECTOR>& intersection)
 {
     intersection = std::nullopt;
 
     return math::GetDistanceLineToLine(line1, line2) < math::kEpsilonLow;
 }
-bool collision::IsHitLineAndLine        (const Line&        line1,      const Line&     line2)
+bool collision::IsHitLineAndLine            (const Line&        line1,          const Line&         line2)
 {
     std::optional<VECTOR> intersection = std::nullopt;
 
     return IsHitLineAndLine(line1, line2, intersection);
 }
 
-bool collision::IsHitLineAndPlane       (const Line&        line,       const Plane&    plane,          std::optional<VECTOR>& intersection)
+/// @brief 直線と直線の衝突判定
+bool collision::IsHitLineAndPlane           (const Line&        line,           const Plane&        plane,          std::optional<VECTOR>& intersection)
 {
     intersection = std::nullopt;
 
@@ -133,40 +140,43 @@ bool collision::IsHitLineAndPlane       (const Line&        line,       const Pl
 
     return is_contain_plane || !is_vertical;
 }
-bool collision::IsHitLineAndPlane       (const Line&        line,       const Plane&    plane)
+bool collision::IsHitLineAndPlane           (const Line&        line,           const Plane&        plane)
 {
     std::optional<VECTOR> intersection = std::nullopt;
 
     return IsHitLineAndPlane(line, plane, intersection);
 }
 
-bool collision::IsHitSegmentAndSegment  (const Segment&     segment1,   const Segment&  segment2,       std::optional<VECTOR>& intersection)
+/// @brief 直線と直線の衝突判定
+bool collision::IsHitSegmentAndSegment      (const Segment&     segment1,       const Segment&      segment2,       std::optional<VECTOR>& intersection)
 {
     intersection = std::nullopt;
 
     return math::GetDistanceSegmentToSegment(segment1, segment2) < math::kEpsilonLow;
 }
-bool collision::IsHitSegmentAndSegment  (const Segment&     segment1,   const Segment&  segment2)
+bool collision::IsHitSegmentAndSegment      (const Segment&     segment1,       const Segment&      segment2)
 {
     std::optional<VECTOR> intersection = std::nullopt;
 
     return IsHitSegmentAndSegment(segment1, segment2, intersection);
 }
 
-bool collision::IsHitSegmentAndPlane    (const Segment&     segment,    const Plane&    plane,          std::optional<VECTOR>& intersection)
+/// @brief 線分と平面(無限に広がる面)の衝突判定
+bool collision::IsHitSegmentAndPlane        (const Segment&     segment,        const Plane&        plane,          std::optional<VECTOR>& intersection)
 {
     intersection = std::nullopt;
 
     return math::GetDistanceSegmentToPlane(segment, plane) < math::kEpsilonLow;
 }
-bool collision::IsHitSegmentAndPlane    (const Segment&     segment,    const Plane&    plane)
+bool collision::IsHitSegmentAndPlane        (const Segment&     segment,        const Plane&        plane)
 {
     std::optional<VECTOR> intersection = std::nullopt;
 
     return IsHitSegmentAndPlane(segment, plane, intersection);
 }
 
-bool collision::IsHitSegmentAndTriangle (const Segment&     segment,    const Triangle& triangle,       std::optional<VECTOR>& intersection)
+/// @brief 線分と三角形の衝突判定
+bool collision::IsHitSegmentAndTriangle     (const Segment&     segment,        const Triangle&     triangle,       std::optional<VECTOR>& intersection)
 {
     // 三角形を平面に拡張
     const Plane plane = Plane(triangle.GetCentroid(), triangle.GetNormalVector());
@@ -191,19 +201,20 @@ bool collision::IsHitSegmentAndTriangle (const Segment&     segment,    const Tr
     // 交点が三角形と衝突しているか(三角形に含まれるか)
     return IsHitPointAndTriangle(*intersection, triangle);
 }
-bool collision::IsHitSegmentAndTriangle (const Segment&     segment,    const Triangle& triangle)
+bool collision::IsHitSegmentAndTriangle     (const Segment&     segment,        const Triangle&     triangle)
 {
     std::optional<VECTOR> intersection = std::nullopt;
     return IsHitSegmentAndTriangle(segment, triangle, intersection);
 }
 
-bool collision::IsHitSegmentAndSquare   (const Segment&     segment,    const Square&   square,         std::optional<VECTOR>& intersection)
+/// @brief 線分と四角形の衝突判定
+bool collision::IsHitSegmentAndSquare       (const Segment&     segment,        const Square&       square,         std::optional<VECTOR>& intersection)
 {
     intersection = std::nullopt;
 
     return IsHitSegmentAndTriangle(segment, square.GetTriangle(0)) || IsHitSegmentAndTriangle(segment, square.GetTriangle(1));
 }
-bool collision::IsHitSegmentAndSquare   (const Segment&     segment,    const Square&   square)
+bool collision::IsHitSegmentAndSquare       (const Segment&     segment,        const Square&       square)
 {
     std::optional<VECTOR> intersection = std::nullopt;
 
@@ -261,21 +272,23 @@ bool collision::IsHitSegmentAndSquare   (const Segment&     segment,    const Sq
 //    return false;
 //}
 
-bool collision::IsHitSegmentAndCapsule  (const Segment&     segment,    const Capsule&  capsule,        std::optional<VECTOR>& intersection)
+/// @brief 線分とカプセルの衝突判定
+bool collision::IsHitSegmentAndCapsule      (const Segment&     segment,        const Capsule&      capsule,        std::optional<VECTOR>& intersection)
 {
     intersection = std::nullopt;
 
     const float distance = math::GetDistanceSegmentToSegment(segment, capsule.GetSegment());
     return distance <= capsule.GetRadius();
 }
-bool collision::IsHitSegmentAndCapsule  (const Segment&     segment,    const Capsule&  capsule)
+bool collision::IsHitSegmentAndCapsule      (const Segment&     segment,        const Capsule&      capsule)
 {
     std::optional<VECTOR> intersection = std::nullopt;
 
     return IsHitSegmentAndCapsule(segment, capsule, intersection);
 }
 
-bool collision::IsHitSegmentAndModel    (const Segment&     segment,    const int       model_handle,   std::optional<VECTOR>& intersection)
+/// @brief 線分とモデルの衝突判定
+bool collision::IsHitSegmentAndModel        (const Segment&     segment,        const int           model_handle,   std::optional<VECTOR>& intersection)
 {
     const auto hit_result = MV1CollCheck_LineDim(model_handle, -1, segment.GetBeginPos(), segment.GetEndPos());
     if (!hit_result.HitNum)
@@ -303,79 +316,100 @@ bool collision::IsHitSegmentAndModel    (const Segment&     segment,    const in
         return collision::IsHitSegmentAndTriangle(segment, triangles.at(dist.first), intersection);
     }
 }
-bool collision::IsHitSegmentAndModel    (const Segment&     segment,    const int       model_handle)
+bool collision::IsHitSegmentAndModel        (const Segment&     segment,        const int           model_handle)
 {
     std::optional<VECTOR> intersection = std::nullopt;
     return IsHitSegmentAndModel(segment, model_handle, intersection);
 }
 
-bool collision::IsHitPlaneAndCapsule    (const Plane&       plane,      const Capsule&  capsule,        std::optional<VECTOR>& intersection)
+/// @brief 平面(無限に広がる面)とカプセルの衝突判定
+bool collision::IsHitPlaneAndCapsule        (const Plane&       plane,          const Capsule&      capsule,        std::optional<VECTOR>& intersection)
 {
     intersection = std::nullopt;
 
     return math::GetDistancePlaneToCapsule(plane, capsule) < math::kEpsilonLow;
 }
-bool collision::IsHitPlaneAndCapsule    (const Plane&       plane,      const Capsule&  capsule)
+bool collision::IsHitPlaneAndCapsule        (const Plane&       plane,          const Capsule&      capsule)
 {
     std::optional<VECTOR> intersection = std::nullopt;
 
     return IsHitPlaneAndCapsule(plane, capsule, intersection);
 }
 
-bool collision::IsHitTriangleAndSphere  (const Triangle&    triangle,   const Sphere&   sphere,         std::optional<VECTOR>& intersection)
+/// @brief 三角形と球の衝突判定
+bool collision::IsHitTriangleAndSphere      (const Triangle&    triangle,       const Sphere&       sphere,         std::optional<VECTOR>& intersection)
 {
     intersection = std::nullopt;
 
     return math::GetDistancePointToTriangle(sphere.GetPos(), triangle) <= sphere.GetRadius();
 }
-bool collision::IsHitTriangleAndSphere  (const Triangle&    triangle,   const Sphere&   sphere)
+bool collision::IsHitTriangleAndSphere      (const Triangle&    triangle,       const Sphere&       sphere)
 {
     std::optional<VECTOR> intersection = std::nullopt;
 
     return IsHitTriangleAndSphere(triangle, sphere, intersection);
 }
 
-bool collision::IsHitTriangleAndCapsule (const Triangle&    triangle,   const Capsule&  capsule,        std::optional<VECTOR>& intersection)
+/// @brief 三角形とカプセルの衝突判定
+bool collision::IsHitTriangleAndCapsule     (const Triangle&    triangle,       const Capsule&      capsule,        std::optional<VECTOR>& intersection)
 {
     intersection = std::nullopt;
 
     return math::GetDistanceSegmentToTriangle(capsule.GetSegment(), triangle) <= capsule.GetRadius();
 }
-bool collision::IsHitTriangleAndCapsule (const Triangle&    triangle,   const Capsule&  capsule)
+bool collision::IsHitTriangleAndCapsule     (const Triangle&    triangle,       const Capsule&      capsule)
 {
     std::optional<VECTOR> intersection = std::nullopt;
 
     return IsHitTriangleAndCapsule(triangle, capsule, intersection);
 }
 
-bool collision::IsHitTriangleAndRayCapsule(const Triangle& triangle, const RayCapsule& rayc_apsule, std::optional<VECTOR>& intersection)
+/// @brief 三角形と光線カプセルの衝突判定
+bool collision::IsHitTriangleAndRayCapsule  (const Triangle&    triangle,       const RayCapsule&   ray_capsule,    std::optional<VECTOR>& intersection)
 {
-    intersection = std::nullopt;
+    intersection    = std::nullopt;
+    Capsule capsule = ray_capsule.GetBeginCapsule();
 
-    // TODO : 作成中
+    // 速度を分割
+    VECTOR velocity = ray_capsule.GetDir() * ray_capsule.GetRayLength();
+    velocity *= (1.0f / kRayCapsuleDivisionNum);
+
+    for (int i = 0; i < kRayCapsuleDivisionNum + 1; ++i)
+    {
+        if (IsHitTriangleAndCapsule(triangle, capsule, intersection))
+        {
+            return true;
+        }
+
+        capsule.Move(velocity);
+    }
+
+    return false;
 }
-bool collision::IsHitTriangleAndRayCapsule(const Triangle& triangle, const RayCapsule& ray_capsule)
+bool collision::IsHitTriangleAndRayCapsule  (const Triangle&    triangle,       const RayCapsule&   ray_capsule)
 {
     std::optional<VECTOR> intersection = std::nullopt;
 
     return IsHitTriangleAndRayCapsule(triangle, ray_capsule, intersection);
 }
 
-bool collision::IsHitTriangleAndModel   (const Triangle&    triangle,   const int       model_handle,   std::optional<VECTOR>& intersection)
+/// @brief 三角形とモデルの衝突判定
+bool collision::IsHitTriangleAndModel       (const Triangle&    triangle,       const int           model_handle,   std::optional<VECTOR>& intersection)
 {
     intersection = std::nullopt;
 
     // TODO : 頂点の始点順は確認していないので要検証
     return MV1CollCheck_Triangle(model_handle, -1, triangle.GetPos(0), triangle.GetPos(1), triangle.GetPos(2)).HitNum;
 }
-bool collision::IsHitTriangleAndModel   (const Triangle&    triangle,   const int       model_handle)
+bool collision::IsHitTriangleAndModel       (const Triangle&    triangle,       const int           model_handle)
 {
     std::optional<VECTOR> intersection = std::nullopt;
 
     return IsHitTriangleAndModel(triangle, model_handle, intersection);
 }
 
-bool collision::IsHitSquareAndCapsule   (const Square&      square,     const Capsule&  capsule,        std::optional<VECTOR>& intersection)
+/// @brief 四角形とカプセルの衝突判定
+bool collision::IsHitSquareAndCapsule       (const Square&      square,         const Capsule&      capsule,        std::optional<VECTOR>& intersection)
 {
    intersection = std::nullopt;
 
@@ -384,14 +418,44 @@ bool collision::IsHitSquareAndCapsule   (const Square&      square,     const Ca
 
     return distance1 <= capsule.GetRadius() || distance2 <= capsule.GetRadius();
 }
-bool collision::IsHitSquareAndCapsule   (const Square&      square,     const Capsule&  capsule)
+bool collision::IsHitSquareAndCapsule       (const Square&      square,         const Capsule&      capsule)
 {
     std::optional<VECTOR> intersection = std::nullopt;
 
     return IsHitSquareAndCapsule(square, capsule, intersection);
 }
 
-bool collision::IsHitSphereAndSphere    (const Sphere&      sphere1,    const Sphere&   sphere2,        std::optional<VECTOR>& intersection)
+/// @brief 四角形と光線カプセルの衝突判定
+bool collision::IsHitSquareAndRayCapsule    (const Square&      square,         const RayCapsule&   ray_capsule,    std::optional<VECTOR>& intersection)
+{
+    intersection    = std::nullopt;
+    Capsule capsule = ray_capsule.GetBeginCapsule();
+
+    // 速度を分割
+    VECTOR velocity = ray_capsule.GetDir() * ray_capsule.GetRayLength();
+    velocity *= (1.0f / kRayCapsuleDivisionNum);
+
+    for (int i = 0; i < kRayCapsuleDivisionNum + 1; ++i)
+    {
+        if (IsHitSquareAndCapsule(square, capsule, intersection))
+        {
+            return true;
+        }
+
+        capsule.Move(velocity);
+    }
+
+    return false;
+}
+bool collision::IsHitSquareAndRayCapsule    (const Square&      square,         const RayCapsule&   ray_capsule)
+{
+    std::optional<VECTOR> intersection = std::nullopt;
+
+    return IsHitSquareAndRayCapsule(square, ray_capsule, intersection);
+}
+
+/// @brief 球と球の衝突判定
+bool collision::IsHitSphereAndSphere        (const Sphere&      sphere1,        const Sphere&       sphere2,        std::optional<VECTOR>& intersection)
 {
     intersection = std::nullopt;
 
@@ -401,14 +465,15 @@ bool collision::IsHitSphereAndSphere    (const Sphere&      sphere1,    const Sp
 
     return distance <= sphere1.GetRadius() + sphere2.GetRadius();
 }
-bool collision::IsHitSphereAndSphere    (const Sphere&      sphere1,    const Sphere&   sphere2)
+bool collision::IsHitSphereAndSphere        (const Sphere&      sphere1,        const Sphere&       sphere2)
 {
     std::optional<VECTOR> intersection = std::nullopt;
 
     return IsHitSphereAndSphere(sphere1, sphere2, intersection);
 }
 
-bool collision::IsHitSphereAndCapsule   (const Sphere&      sphere,     const Capsule&  capsule,        std::optional<VECTOR>& intersection)
+/// @brief 球とカプセルの衝突判定 
+bool collision::IsHitSphereAndCapsule       (const Sphere&      sphere,         const Capsule&      capsule,        std::optional<VECTOR>& intersection)
 {
     intersection = std::nullopt;
 
@@ -417,52 +482,111 @@ bool collision::IsHitSphereAndCapsule   (const Sphere&      sphere,     const Ca
 
     return distance <= sphere.GetRadius() + capsule.GetRadius();
 }
-bool collision::IsHitSphereAndCapsule   (const Sphere&      sphere,     const Capsule&  capsule)
+bool collision::IsHitSphereAndCapsule       (const Sphere&      sphere,         const Capsule&      capsule)
 {
     std::optional<VECTOR> intersection = std::nullopt;
 
     return IsHitSphereAndCapsule(sphere, capsule, intersection);
 }
 
-bool collision::IsHitSphereAndModel     (const Sphere&      sphere,     const int       model_handle,   std::optional<VECTOR>& intersection)
+/// @brief 球とモデルの衝突判定 
+bool collision::IsHitSphereAndModel         (const Sphere&      sphere,         const int           model_handle,   std::optional<VECTOR>& intersection)
 {
     intersection = std::nullopt;
 
     return MV1CollCheck_Sphere(model_handle, -1, sphere.GetPos(), sphere.GetRadius()).HitNum;
 }
-bool collision::IsHitSphereAndModel     (const Sphere&      sphere,     const int       model_handle)
+bool collision::IsHitSphereAndModel         (const Sphere&      sphere,         const int           model_handle)
 {
     std::optional<VECTOR> intersection = std::nullopt;
 
     return IsHitSphereAndModel(sphere, model_handle, intersection);
 }
 
-bool collision::IsHitCapsuleAndCapsule  (const Capsule&     capsule1,   const Capsule&  capsule2,       std::optional<VECTOR>& intersection)
+/// @brief カプセルとカプセルの衝突判定
+bool collision::IsHitCapsuleAndCapsule      (const Capsule&     capsule1,       const Capsule&      capsule2,       std::optional<VECTOR>& intersection)
 {
     intersection = std::nullopt;
 
     const float distance = math::GetDistanceSegmentToSegment(capsule1.GetSegment(), capsule2.GetSegment());
     return distance <= capsule1.GetRadius() + capsule2.GetRadius();
 }
-bool collision::IsHitCapsuleAndCapsule  (const Capsule&     capsule1,   const Capsule&  capsule2)
+bool collision::IsHitCapsuleAndCapsule      (const Capsule&     capsule1,       const Capsule&      capsule2)
 {
     std::optional<VECTOR> intersection = std::nullopt;
 
     return IsHitCapsuleAndCapsule(capsule1, capsule2, intersection);
 }
 
-bool collision::IsHitCapsuleAndModel    (const Capsule&     capsule,    const int       model_handle,   std::optional<VECTOR>& intersection)
+/// @brief カプセルとモデルの衝突判定
+bool collision::IsHitCapsuleAndModel        (const Capsule&     capsule,        const int           model_handle,   std::optional<VECTOR>& intersection)
 {
     intersection = std::nullopt;
 
     const auto segment = capsule.GetSegment();
     return MV1CollCheck_Capsule(model_handle, -1, segment.GetBeginPos(), segment.GetEndPos(), capsule.GetRadius()).HitNum;
 }
-bool collision::IsHitCapsuleAndModel    (const Capsule&     capsule,    const int       model_handle)
+bool collision::IsHitCapsuleAndModel        (const Capsule&     capsule,        const int           model_handle,   MV1_COLL_RESULT_POLY_DIM& hit_result)
+{
+    const auto segment = capsule.GetSegment();
+    hit_result = MV1CollCheck_Capsule(model_handle, -1, segment.GetBeginPos(), segment.GetEndPos(), capsule.GetRadius());
+    return hit_result.HitNum;
+}
+bool collision::IsHitCapsuleAndModel        (const Capsule&     capsule,        const int           model_handle)
 {
     std::optional<VECTOR> intersection = std::nullopt;
 
     return IsHitCapsuleAndModel(capsule, model_handle, intersection);
+}
+
+/// @brief 光線カプセルとモデルの衝突判定
+bool collision::IsHitRayCapsuleAndModel     (const RayCapsule&  ray_capsule,    const int           model_handle,   std::optional<VECTOR>& intersection)
+{
+    intersection    = std::nullopt;
+    Capsule capsule = ray_capsule.GetBeginCapsule();
+
+    // 速度を分割
+    VECTOR velocity = ray_capsule.GetDir() * ray_capsule.GetRayLength();
+    velocity *= (1.0f / kRayCapsuleDivisionNum);
+
+    for (int i = 0; i < kRayCapsuleDivisionNum + 1; ++i)
+    {
+        if (MV1CollCheck_Capsule(model_handle, -1, capsule.GetSegment().GetBeginPos(), capsule.GetSegment().GetEndPos(), capsule.GetRadius()).HitNum)
+        {
+            return true;
+        }
+        
+        capsule.Move(velocity);
+    }
+
+    return false;
+}
+bool collision::IsHitRayCapsuleAndModel     (const RayCapsule&  ray_capsule,    const int           model_handle,   MV1_COLL_RESULT_POLY_DIM& hit_result)
+{
+    Capsule capsule = ray_capsule.GetBeginCapsule();
+
+    // 速度を分割
+    VECTOR velocity = ray_capsule.GetDir() * ray_capsule.GetRayLength();
+    velocity *= (1.0f / kRayCapsuleDivisionNum);
+
+    for (int i = 0; i < kRayCapsuleDivisionNum + 1; ++i)
+    {
+        hit_result = MV1CollCheck_Capsule(model_handle, -1, capsule.GetSegment().GetBeginPos(), capsule.GetSegment().GetEndPos(), capsule.GetRadius());
+        if (hit_result.HitNum)
+        {
+            return true;
+        }
+
+        capsule.Move(velocity);
+    }
+
+    return false;
+}
+bool collision::IsHitRayCapsuleAndModel     (const RayCapsule&  ray_capsule,    const int           model_handle)
+{
+    std::optional<VECTOR> intersection = std::nullopt;
+
+    return IsHitRayCapsuleAndModel(ray_capsule, model_handle, intersection);
 }
 
 //bool collision::IsHitCircumferenceAndCapsuleLowPrecision(const Circle* circle, const Capsule* capsule)
@@ -507,14 +631,22 @@ bool collision::IsHitCapsuleAndModel    (const Capsule&     capsule,    const in
 VECTOR collision::PushBackSphereAndTriangle (const VECTOR& velocity, const Sphere&  dynamic_sphere,  const Triangle& static_triangle,
     const float slope_difficulty_angle_threshold, const float max_slope_angle)
 {
-    // 未来の座標が衝突しているかを判定
+    // 未来の球を取得
     Sphere future_sphere = dynamic_sphere;
     future_sphere.Move(velocity);
+
+    // 未来の座標と衝突しているかを判定
     if (!IsHitTriangleAndSphere(static_triangle, dynamic_sphere))
     {
-        // 衝突していない場合、そのまま返す
         return velocity;
     }
+
+    //// 未来の座標と衝突しているかを判定
+    //if (!IsHitTriangleAndCapsule(static_triangle, Capsule(dynamic_sphere.GetPos(), future_sphere.GetPos(), dynamic_sphere.GetRadius())))
+    //{
+    //    // 衝突していない場合、そのまま返す
+    //    return velocity;
+    //}
 
     // 未来の座標と平面の距離を取得
     const Plane plane = Plane(static_triangle.GetCentroid(), static_triangle.GetNormalVector());
@@ -534,18 +666,57 @@ VECTOR collision::PushBackSphereAndTriangle (const VECTOR& velocity, const Spher
     return future_pos - dynamic_sphere.GetPos();
 }
 
+VECTOR collision::PushBackSphereAndModel    (const VECTOR& velocity, const Sphere&  dynamic_sphere,  const int       model_handle,
+    const float slope_difficulty_angle_threshold, const float max_slope_angle)
+{
+    VECTOR valid_velocity = velocity;
+
+    // 未来の球を取得
+    Sphere future_sphere = dynamic_sphere;
+    future_sphere.Move(velocity);
+
+    // 未来の座標と衝突しているかを判定
+    const auto hit_result = MV1CollCheck_Sphere(model_handle, -1, future_sphere.GetPos(), future_sphere.GetRadius());
+    if (!hit_result.HitNum)
+    {
+        return velocity;
+    }
+
+    // ヒットしたポリゴンから三角形を生成
+    // 三角形との現在の距離を取得
+    std::unordered_map<int, Triangle> triangles;
+    std::unordered_map<int, float>    current_distance;
+    for (int i = 0; i < hit_result.HitNum; ++i)
+    {
+        Triangle triangle = Triangle(hit_result.Dim[i].Position[0], hit_result.Dim[i].Position[2], hit_result.Dim[i].Position[1]);
+
+        current_distance[i] = math::GetDistanceTriangleToSphere(triangle, dynamic_sphere);
+        triangles[i] = triangle;
+    }
+
+    // 距離が近い順に押し戻す
+    current_distance = algorithm::Sort(current_distance, SortKind::kAscending);
+    for (const auto& distance : current_distance)
+    {
+        valid_velocity = collision::PushBackSphereAndTriangle(valid_velocity, dynamic_sphere, triangles.at(distance.first), slope_difficulty_angle_threshold, max_slope_angle);
+    }
+
+    return valid_velocity;
+}
+
 VECTOR collision::PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsule& dynamic_capsule, const Triangle& static_triangle,
     const float slope_difficulty_angle_threshold, const float max_slope_angle)
 {
     const float slope_threshold_agl = slope_difficulty_angle_threshold  * math::kDegreesToRadian;
     const float max_slope_agl       = max_slope_angle                   * math::kDegreesToRadian;
 
-    // 未来の座標が衝突しているかを判定
+    // 未来のカプセルを取得
     Capsule future_capsule = dynamic_capsule;
     future_capsule.Move(velocity);
+
+    // 未来の座標と衝突しているかを判定
     if (!IsHitTriangleAndCapsule(static_triangle, future_capsule))
     {
-        // 衝突していない場合、そのまま返す
         return velocity;
     }
 
@@ -575,12 +746,6 @@ VECTOR collision::PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsu
     // 押し戻す方向は三角形の角度が上がるほどワールドX軸に向かう
     else
     {
-        DrawFormatString(0, 0, 0xffffff, "登るのが困難です");
-        if (slope_angle >= max_slope_agl)
-        {
-            DrawFormatString(0, 20, 0xffffff, "登れません");
-        }
-
         // 平面の法線を、ワールドX軸に対して水平にする
         VECTOR horizontal_v = plane.GetNormalVector();
         horizontal_v.y = 0.0f;
@@ -616,12 +781,13 @@ VECTOR collision::PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsu
 VECTOR collision::PushBackCapsuleAndSquare  (const VECTOR& velocity, const Capsule& dynamic_capsule, const Square&   static_square,
     const float slope_difficulty_angle_threshold, const float max_slope_angle)
 {
-    // 未来の座標が衝突しているかを判定
+    // 未来のカプセルを取得
     Capsule future_capsule = dynamic_capsule;
     future_capsule.Move(velocity);
+
+    // 未来の座標と衝突しているかを判定
     if (!IsHitSquareAndCapsule(static_square, future_capsule))
     {
-        // 衝突していない場合、そのまま返す
         return velocity;
     }
 
@@ -678,62 +844,18 @@ VECTOR collision::PushBackCapsuleAndOBB     (const VECTOR& velocity, const Capsu
     return valid_velocity;
 }
 
-VECTOR collision::PushBackSphereAndModel    (const VECTOR& velocity, const Sphere&  dynamic_sphere,  const int       model_handle,
-    const float slope_difficulty_angle_threshold, const float max_slope_angle)
-{
-    VECTOR valid_velocity = velocity;
-
-    // 未来の球を取得
-    Sphere future_sphere = dynamic_sphere;
-    future_sphere.Move(velocity);
-
-    // 未来の衝突結果を取得
-    const auto hit_result = MV1CollCheck_Sphere(model_handle, -1, future_sphere.GetPos(), future_sphere.GetRadius());
-    if (!hit_result.HitNum)
-    {
-        // 衝突していない場合、そのまま返す
-        return velocity;
-    }
-
-    // ヒットしたポリゴンから三角形を生成
-    // 三角形との現在の距離を取得
-    std::unordered_map<int, Triangle> triangles;
-    std::unordered_map<int, float>    current_distance;
-    for (int i = 0; i < hit_result.HitNum; ++i)
-    {
-        Triangle triangle = Triangle(hit_result.Dim[i].Position[0], hit_result.Dim[i].Position[2], hit_result.Dim[i].Position[1]);
-
-        current_distance[i] = math::GetDistanceTriangleToSphere(triangle, dynamic_sphere);
-        triangles[i] = triangle;
-    }
-
-    // 距離が近い順に押し戻す
-    current_distance = algorithm::Sort(current_distance, SortKind::kAscending);
-    for (const auto& distance : current_distance)
-    {
-        valid_velocity = collision::PushBackSphereAndTriangle(valid_velocity, dynamic_sphere, triangles.at(distance.first), slope_difficulty_angle_threshold, max_slope_angle);
-    }
-
-    return valid_velocity;
-}
-
 VECTOR collision::PushBackCapsuleAndModel   (const VECTOR& velocity, const Capsule& dynamic_capsule, const int       model_handle,
     const float slope_difficulty_angle_threshold, const float max_slope_angle)
 {
     VECTOR valid_velocity = velocity;
+    MV1_COLL_RESULT_POLY_DIM hit_result = {};
 
     // 未来のカプセルを取得
     Capsule future_capsule = dynamic_capsule;
     future_capsule.Move(velocity);
 
-    // 未来の衝突結果を取得
-    const auto hit_result = MV1CollCheck_Capsule(model_handle, -1, 
-        future_capsule.GetSegment().GetBeginPos(), 
-        future_capsule.GetSegment().GetEndPos(), 
-        future_capsule.GetRadius());
-
-    // 衝突していない場合、そのまま返す
-    if (!hit_result.HitNum)
+    // 未来の座標と衝突しているかを判定
+    if (!IsHitCapsuleAndModel(future_capsule, model_handle, hit_result))
     {
         return velocity;
     }

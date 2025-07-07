@@ -233,6 +233,9 @@
     <ClCompile Include="SourceCode\Shape\3DShape\ray_capsule.cpp">
       <Filter>Shape\3DShape</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\Algorithm\a_star.cpp">
+      <Filter>Algorithm</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\chara_base.hpp">
@@ -615,6 +618,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Shape\3DShape\ray_capsule.hpp">
       <Filter>Shape\3DShape</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Algorithm\a_star.hpp">
+      <Filter>Algorithm</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
