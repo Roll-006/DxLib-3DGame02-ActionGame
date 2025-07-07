@@ -4,7 +4,7 @@ PlayScene::PlayScene():
 	m_zombie						(std::make_shared<Zombie>()),
 	m_house							(std::make_shared<House>()),
 	m_ground						(std::make_shared<Ground>()),
-	m_skydome						(std::make_shared<Skydome>(ObjManager::GetInstance()->GetObj<Camera>(ObjName.CAMERA))),
+	m_skydome						(std::make_shared<Skydome>(ObjManager::GetInstance()->GetObj<MainCamera>(ObjName.MAIN_CAMERA))),
 	m_rifle_cartridge_object_pool	(std::make_shared<RifleCartridgeObjectPool>()),
 	m_player_ui_creator				(std::make_shared<PlayerUICreator>(ObjManager::GetInstance()->GetObj<Player>(ObjName.PLAYER)))
 {

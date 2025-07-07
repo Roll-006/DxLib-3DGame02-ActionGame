@@ -1,6 +1,6 @@
 #pragma once
 #include "../Base/command_base.hpp"
-#include "../Object/camera.hpp"
+#include "../Object/main_camera.hpp"
 
 namespace camera_cmd
 {

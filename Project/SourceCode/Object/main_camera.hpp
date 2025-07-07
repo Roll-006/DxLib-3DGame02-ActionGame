@@ -6,11 +6,11 @@
 
 #include "../Part/modeler.hpp"
 
-class Camera final : public PhysicalObjBase
+class MainCamera final : public PhysicalObjBase
 {
 public:
-	Camera();
-	~Camera() override;
+	MainCamera();
+	~MainCamera() override;
 
 	void Init()			override;
 	void Update()		override;

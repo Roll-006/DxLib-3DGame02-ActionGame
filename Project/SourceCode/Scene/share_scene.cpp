@@ -1,7 +1,7 @@
 #include "share_scene.hpp"
 
 ShareScene::ShareScene() : 
-	m_camera(std::make_shared<Camera>()),
+	m_camera(std::make_shared<MainCamera>()),
 	m_player(std::make_shared<Player>(m_camera))
 {
 	ObjManager		::GetInstance()->AddObj			(m_player);

@@ -1,7 +1,7 @@
 #include "player.hpp"
 #include "../Manager/command_handler.hpp"
 
-Player::Player(std::shared_ptr<Camera> camera) :
+Player::Player(std::shared_ptr<MainCamera> camera) :
 	CharaBase				(ObjName.PLAYER, ObjTag.PLAYER, ModelPath.CHARA_01, MassKind::kMedium),
 	m_camera				(camera),
 	m_anim_kind				(PlayerAnimKind::kIdle02),
@@ -270,7 +270,7 @@ void Player::AimingGun()
 	m_is_correct_look_dir	= true;
 
 	// Šg‘å—¦‚©‚çÀÛ‚Ì‹——£‚ğæ“¾
-	float min_distance = Camera::kNormalDistance / std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->GetScopeScale();
+	float min_distance = MainCamera::kNormalDistance / std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->GetScopeScale();
 	m_camera->Approach(min_distance, kADSSpeed * FPS::GetDeltaTime());
 	m_camera->TrackBoneWobbly();
 
@@ -511,7 +511,7 @@ void Player::InitWeapon()
 	// Æ€
 	if (!std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->IsAiming())
 	{
-		m_camera->Depart(Camera::kNormalDistance, kADSSpeed * FPS::GetDeltaTime());
+		m_camera->Depart(MainCamera::kNormalDistance, kADSSpeed * FPS::GetDeltaTime());
 		m_camera->TrackBoneHeightOnly();
 	}
 }

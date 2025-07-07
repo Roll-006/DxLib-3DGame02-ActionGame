@@ -1,12 +1,12 @@
 #pragma once
 #include "../Base/obj_base.hpp"
 
-#include "camera.hpp"
+#include "main_camera.hpp"
 
 class Skydome final : public ObjBase
 {
 public:
-	Skydome(std::shared_ptr<Camera> camera);
+	Skydome(std::shared_ptr<MainCamera> camera);
 	~Skydome() override;
 
 	void Init()		  override;

@@ -171,7 +171,7 @@
     <ClCompile Include="SourceCode\Manager\weapon_manager.cpp" />
     <ClCompile Include="SourceCode\Object\assault_rifle.cpp" />
     <ClCompile Include="SourceCode\Object\bullet.cpp" />
-    <ClCompile Include="SourceCode\Object\camera.cpp" />
+    <ClCompile Include="SourceCode\Object\main_camera.cpp" />
     <ClCompile Include="SourceCode\Object\zombie.cpp" />
     <ClCompile Include="SourceCode\Object\ground.cpp" />
     <ClCompile Include="SourceCode\Object\house.cpp" />
@@ -211,7 +211,6 @@
     <ClCompile Include="SourceCode\VirtualCamera\aiming_camera (2).cpp" />
     <ClCompile Include="SourceCode\VirtualCamera\aiming_camera (3).cpp" />
     <ClCompile Include="SourceCode\VirtualCamera\track_camera.cpp" />
-    <ClCompile Include="SourceCode\VirtualCamera\fps_camera.cpp" />
     <ClCompile Include="SourceCode\VirtualCamera\scope_aiming_camera.cpp" />
     <ClCompile Include="SourceCode\VirtualCamera\aiming_camera.cpp" />
     <ClCompile Include="SourceCode\Window\window.cpp" />
@@ -300,7 +299,7 @@
     <ClInclude Include="SourceCode\Manager\weapon_manager.hpp" />
     <ClInclude Include="SourceCode\Object\assault_rifle.hpp" />
     <ClInclude Include="SourceCode\Object\bullet.hpp" />
-    <ClInclude Include="SourceCode\Object\camera.hpp" />
+    <ClInclude Include="SourceCode\Object\main_camera.hpp" />
     <ClInclude Include="SourceCode\Object\zombie.hpp" />
     <ClInclude Include="SourceCode\Object\ground.hpp" />
     <ClInclude Include="SourceCode\Object\house.hpp" />
@@ -340,7 +339,6 @@
     <ClInclude Include="SourceCode\VirtualCamera\aiming_camera (2).hpp" />
     <ClInclude Include="SourceCode\VirtualCamera\aiming_camera (3).hpp" />
     <ClInclude Include="SourceCode\VirtualCamera\track_camera.hpp" />
-    <ClInclude Include="SourceCode\VirtualCamera\fps_camera.hpp" />
     <ClInclude Include="SourceCode\VirtualCamera\scope_aiming_camera.hpp" />
     <ClInclude Include="SourceCode\VirtualCamera\aiming_camera.hpp" />
     <ClInclude Include="SourceCode\Window\window.hpp" />

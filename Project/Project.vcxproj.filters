@@ -79,7 +79,7 @@
     <ClCompile Include="SourceCode\Object\bullet.cpp">
       <Filter>Object</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Object\camera.cpp">
+    <ClCompile Include="SourceCode\Object\main_camera.cpp">
       <Filter>Object</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Object\zombie.cpp">
@@ -216,9 +216,6 @@
       <Filter>VirtualCamera</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\VirtualCamera\track_camera.cpp">
-      <Filter>VirtualCamera</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\VirtualCamera\fps_camera.cpp">
       <Filter>VirtualCamera</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Base\enemy_base.cpp">
@@ -457,7 +454,7 @@
     <ClInclude Include="SourceCode\Object\bullet.hpp">
       <Filter>Object</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Object\camera.hpp">
+    <ClInclude Include="SourceCode\Object\main_camera.hpp">
       <Filter>Object</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Object\zombie.hpp">
@@ -593,9 +590,6 @@
       <Filter>VirtualCamera</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\VirtualCamera\track_camera.hpp">
-      <Filter>VirtualCamera</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\VirtualCamera\fps_camera.hpp">
       <Filter>VirtualCamera</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Base\enemy_base.hpp">

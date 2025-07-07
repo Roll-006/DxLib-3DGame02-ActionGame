@@ -4,12 +4,12 @@
 #include "../Part/player_animator.hpp"
 
 #include "assault_rifle.hpp"
-#include "camera.hpp"
+#include "main_camera.hpp"
 
 class Player final : public CharaBase
 {
 public:
-	Player(std::shared_ptr<Camera> camera);
+	Player(std::shared_ptr<MainCamera> camera);
 	~Player() override;
 
 	void Init()			override;
@@ -92,7 +92,7 @@ private:
 	static constexpr float kADSSpeed							= 70.0f;	// スコープをのぞき込む速度
 
 private:
-	std::shared_ptr<Camera> m_camera;
+	std::shared_ptr<MainCamera> m_camera;
 
 	std::unordered_map<TimeKind, VECTOR> m_move_dir;			// 移動方向(TODO : 長さが1未満である時がある場合があるため命名を変更すべき)
 	std::unordered_map<TimeKind, VECTOR> m_look_dir;			// 向いている方向

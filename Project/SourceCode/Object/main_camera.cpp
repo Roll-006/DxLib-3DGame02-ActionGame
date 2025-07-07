@@ -1,8 +1,8 @@
-#include "camera.hpp"
+#include "main_camera.hpp"
 #include "../Manager/command_handler.hpp"
 
-Camera::Camera() : 
-	PhysicalObjBase				(ObjName.CAMERA, ObjTag.CAMERA, MassKind::kLight),
+MainCamera::MainCamera() : 
+	PhysicalObjBase				(ObjName.MAIN_CAMERA, ObjTag.CAMERA, MassKind::kLight),
 	m_target_transform			(nullptr),
 	m_target_model_handle		(-1),
 	m_target_bone				(""),
@@ -28,18 +28,18 @@ Camera::Camera() :
 	AddCollider(std::make_shared<Collider>(ColliderKind::kRayCast, std::make_shared<Segment>(), this));
 }
 
-Camera::~Camera()
+MainCamera::~MainCamera()
 {
 	// 処理なし
 }
 
-void Camera::Init()
+void MainCamera::Init()
 {
 	// カメラ位置を初期位置に戻す
 	CalcPos();
 }
 
-void Camera::Update()
+void MainCamera::Update()
 {
 	if (!IsActive()) { return; }
 
@@ -58,7 +58,7 @@ void Camera::Update()
 	AddFallVelocity();
 }
 
-void Camera::LateUpdate()
+void MainCamera::LateUpdate()
 {
 	if (!IsActive()) { return; }
 
@@ -67,12 +67,12 @@ void Camera::LateUpdate()
 	CalcRayPos();
 }
 
-void Camera::Draw() const
+void MainCamera::Draw() const
 {
 	if (!IsActive()) { return; }
 }
 
-void Camera::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
+void MainCamera::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 {
 	switch (hit_collider_pair.owner_collider->GetColliderKind())
 	{
@@ -91,18 +91,18 @@ void Camera::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 
 #pragma region アタッチ・デタッチ
-void Camera::AttachTarget(const std::shared_ptr<ObjBase> obj)
+void MainCamera::AttachTarget(const std::shared_ptr<ObjBase> obj)
 {
 	m_target_transform = obj->GetTransform();
 }
 
-void Camera::AttachTarget(const std::string& obj_name)
+void MainCamera::AttachTarget(const std::string& obj_name)
 {
 	auto target_obj = ObjManager::GetInstance()->GetObj<ObjBase>(obj_name);
 	AttachTarget(target_obj);
 }
 
-void Camera::AttachTarget(const std::shared_ptr<ObjBase> obj, const int model_handle, const std::string& bone_path, const bool is_track_height_only)
+void MainCamera::AttachTarget(const std::shared_ptr<ObjBase> obj, const int model_handle, const std::string& bone_path, const bool is_track_height_only)
 {
 	AttachTarget(obj);
 
@@ -111,7 +111,7 @@ void Camera::AttachTarget(const std::shared_ptr<ObjBase> obj, const int model_ha
 	m_is_track_height_only	= is_track_height_only;
 }
 
-void Camera::AttachTarget(const std::string& obj_name, const int model_handle, const std::string& bone_path, const bool is_track_height_only)
+void MainCamera::AttachTarget(const std::string& obj_name, const int model_handle, const std::string& bone_path, const bool is_track_height_only)
 {
 	AttachTarget(obj_name);
 
@@ -120,7 +120,7 @@ void Camera::AttachTarget(const std::string& obj_name, const int model_handle, c
 	m_is_track_height_only	= is_track_height_only;
 }
 
-void Camera::DetachTarget()
+void MainCamera::DetachTarget()
 {
 	m_target_transform		= nullptr;
 	m_target_model_handle	= -1;
@@ -131,7 +131,7 @@ void Camera::DetachTarget()
 
 
 #pragma region ターゲットとの距離
-void Camera::Approach(const float min_distance, const float move_speed)
+void MainCamera::Approach(const float min_distance, const float move_speed)
 {
 	m_distance_to_target -= move_speed;
 	if (std::abs(m_distance_to_target) < min_distance)
@@ -140,7 +140,7 @@ void Camera::Approach(const float min_distance, const float move_speed)
 	}
 }
 
-void Camera::Depart(const float max_distance, const float move_speed)
+void MainCamera::Depart(const float max_distance, const float move_speed)
 {
 	m_distance_to_target += move_speed;
 	if (std::abs(m_distance_to_target) > max_distance)
@@ -152,7 +152,7 @@ void Camera::Depart(const float max_distance, const float move_speed)
 
 
 #pragma region コマンド
-void Camera::MoveUp()
+void MainCamera::MoveUp()
 {
 	// 視点リセット中は操作不可
 	if (m_is_init_angle) { return; }
@@ -161,7 +161,7 @@ void Camera::MoveUp()
 	m_is_input.at(static_cast<int>(InputDir::kUp)) = true;
 }
 
-void Camera::MoveDown()
+void MainCamera::MoveDown()
 {
 	// 視点リセット中は操作不可
 	if (m_is_init_angle) { return; }
@@ -170,7 +170,7 @@ void Camera::MoveDown()
 	m_is_input.at(static_cast<int>(InputDir::kDown)) = true;
 }
 
-void Camera::MoveLeft()
+void MainCamera::MoveLeft()
 {
 	// 視点リセット中は操作不可
 	if (m_is_init_angle) { return; }
@@ -179,7 +179,7 @@ void Camera::MoveLeft()
 	m_is_input.at(static_cast<int>(InputDir::kLeft)) = true;
 }
 
-void Camera::MoveRight()
+void MainCamera::MoveRight()
 {
 	// 視点リセット中は操作不可
 	if (m_is_init_angle) { return; }
@@ -188,7 +188,7 @@ void Camera::MoveRight()
 	m_is_input.at(static_cast<int>(InputDir::kRight)) = true;
 }
 
-void Camera::InitAngle()
+void MainCamera::InitAngle()
 {
 	if (!m_target_transform) { return; }
 	if (m_is_init_angle)	 { return; }
@@ -205,7 +205,7 @@ void Camera::InitAngle()
 #pragma endregion
 
 
-void Camera::InitYaw()
+void MainCamera::InitYaw()
 {
 	if (!m_target_transform) { return; }
 	if (m_is_init_angle)	 { return; }
@@ -221,7 +221,7 @@ void Camera::InitYaw()
 	m_is_init_angle		 = true;
 }
 
-void Camera::Move()
+void MainCamera::Move()
 {
 	if (!m_is_init_angle)
 	{
@@ -244,14 +244,14 @@ void Camera::Move()
 	CalcPos();
 }
 
-void Camera::InitMove()
+void MainCamera::InitMove()
 {
 	for (auto& is_input : m_is_input) { is_input = false; }
 	m_dir = v3d::GetZeroV();
 	m_velocity = v3d::GetZeroV();
 }
 
-void Camera::CalcAngle()
+void MainCamera::CalcAngle()
 {
 	const auto command = CommandHandler::GetInstance();
 
@@ -283,7 +283,7 @@ void Camera::CalcAngle()
 	if (m_angle.at(TimeKind::kCurrent).x > kMaxVerticalAngle * math::kDegreesToRadian) { m_angle.at(TimeKind::kCurrent).x = kMaxVerticalAngle * math::kDegreesToRadian; }
 }
 
-void Camera::CalcPos()
+void MainCamera::CalcPos()
 {
 	const VECTOR look_pos	= GetLookPos();
 	const VECTOR forward	= m_transform->GetForward(CoordinateKind::kWorld);
@@ -291,7 +291,7 @@ void Camera::CalcPos()
 	m_transform->SetPos(CoordinateKind::kWorld, pos);
 }
 
-void Camera::CalcRayPos()
+void MainCamera::CalcRayPos()
 {
 	// 光線の座標を計算
 	auto ray = std::dynamic_pointer_cast<Segment>(GetCollider(ColliderKind::kRayCast)->GetShape());
@@ -309,7 +309,7 @@ void Camera::CalcRayPos()
 //	m_distance_to_target = (kMaxDistanceToTarget - kMinDistanceToTarget) * rate + kMinDistanceToTarget;
 //}
 
-void Camera::CalcInitAngle()
+void MainCamera::CalcInitAngle()
 {
 	if (!m_is_init_angle) { return; }
 	
@@ -337,7 +337,7 @@ void Camera::CalcInitAngle()
 	}
 }
 
-VECTOR Camera::GetLookPos()
+VECTOR MainCamera::GetLookPos()
 {
 	if (!m_target_transform)			{ return v3d::GetZeroV(); }
 	if (m_target_model_handle == -1)	{ return m_target_transform->GetPos(CoordinateKind::kWorld); }
@@ -371,7 +371,7 @@ VECTOR Camera::GetLookPos()
 	return look_pos;
 }
 
-void Camera::SetLookDir()
+void MainCamera::SetLookDir()
 {
 	const VECTOR pos = m_transform->GetPos(CoordinateKind::kWorld);
 	const VECTOR look_pos = pos + m_transform->GetForward(CoordinateKind::kWorld);
@@ -379,7 +379,7 @@ void Camera::SetLookDir()
 	SetCameraPositionAndTarget_UpVecY(pos, look_pos);
 }
 
-void Camera::JudgeLookSameDirTarget()
+void MainCamera::JudgeLookSameDirTarget()
 {
 	const VECTOR forward = m_target_transform->GetForward(CoordinateKind::kWorld);
 	const float  yaw = math::GetYaw(forward);
@@ -388,13 +388,13 @@ void Camera::JudgeLookSameDirTarget()
 	m_is_look_same_dir_target = m_angle.at(TimeKind::kCurrent).y == yaw ? true : false;
 }
 
-void Camera::ApplyInvert()
+void MainCamera::ApplyInvert()
 {
 	if (m_is_invert_horizontal) { m_dir.y *= -1; }
 	if (m_is_invert_vertical)	{ m_dir.x *= -1; }
 }
 
-void Camera::CalcDirFromPad()
+void MainCamera::CalcDirFromPad()
 {
 	if (m_dir != v3d::GetZeroV()) { return; }
 	if (InputChecker::GetInstance()->GetCurrentInputDevice() != DeviceKind::kPad) { return; }
@@ -433,7 +433,7 @@ void Camera::CalcDirFromPad()
 	m_dir = v3d::GetNormalizedV(m_velocity);
 }
 
-void Camera::CalcDirFromMouse()
+void MainCamera::CalcDirFromMouse()
 {
 	if (m_dir != v3d::GetZeroV()) { return; }
 	if (InputChecker::GetInstance()->GetCurrentInputDevice() != DeviceKind::kKeyboard) { return; }

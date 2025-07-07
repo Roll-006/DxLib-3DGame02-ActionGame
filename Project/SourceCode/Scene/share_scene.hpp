@@ -1,7 +1,7 @@
 #pragma once
 #include "../Base/scene_base.hpp"
 
-#include "../Object/camera.hpp"
+#include "../Object/main_camera.hpp"
 #include "../Object/player.hpp"
 #include "../Object/selector.hpp"
 
@@ -19,6 +19,6 @@ public:
 	void Draw() const override;
 
 private:
-	std::shared_ptr<Camera> m_camera;
+	std::shared_ptr<MainCamera> m_camera;
 	std::shared_ptr<Player> m_player;
 };
