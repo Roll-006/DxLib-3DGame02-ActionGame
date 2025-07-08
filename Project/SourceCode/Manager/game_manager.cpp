@@ -49,6 +49,8 @@ void GameManager::Run()
 		m_scene_manager->LateUpdate();
 		m_scene_manager->Draw();
 
+		m_fps->Draw();
+
 		// TEST : ‰¼‚ÅƒOƒŠƒbƒh‚ð•`‰æ
 		//DxLibHelper::DrawYPlaneGrid(FLOAT2(50, 50), 100);
 		//DrawLine3D(v3d::GetZeroV(), axis::GetWorldXAxis() * 10000, 0xff0000);

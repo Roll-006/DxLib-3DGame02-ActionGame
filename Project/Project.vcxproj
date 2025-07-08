@@ -213,7 +213,7 @@
     <ClCompile Include="SourceCode\UI\player_ui_creator.cpp" />
     <ClCompile Include="SourceCode\VirtualCamera\aiming_camera (2).cpp" />
     <ClCompile Include="SourceCode\VirtualCamera\aiming_camera (3).cpp" />
-    <ClCompile Include="SourceCode\VirtualCamera\track_camera.cpp" />
+    <ClCompile Include="SourceCode\VirtualCamera\rot_control_camera.cpp" />
     <ClCompile Include="SourceCode\VirtualCamera\scope_aiming_camera.cpp" />
     <ClCompile Include="SourceCode\VirtualCamera\aiming_camera.cpp" />
     <ClCompile Include="SourceCode\Window\window.cpp" />
@@ -260,7 +260,6 @@
     <ClInclude Include="SourceCode\Data\IncludeList\shape.hpp" />
     <ClInclude Include="SourceCode\Data\IncludeList\vector.hpp" />
     <ClInclude Include="SourceCode\Data\input_data.hpp" />
-    <ClInclude Include="SourceCode\Data\Kind\axis_kind.hpp" />
     <ClInclude Include="SourceCode\Data\Kind\box_kind.hpp" />
     <ClInclude Include="SourceCode\Data\Kind\collider_kind.hpp" />
     <ClInclude Include="SourceCode\Data\Kind\command_kind.hpp" />
@@ -278,6 +277,7 @@
     <ClInclude Include="SourceCode\Data\Kind\sort_kind.hpp" />
     <ClInclude Include="SourceCode\Data\Kind\texture_kind.hpp" />
     <ClInclude Include="SourceCode\Data\Kind\time_kind.hpp" />
+    <ClInclude Include="SourceCode\Data\Kind\virtual_camera_kind.hpp" />
     <ClInclude Include="SourceCode\Data\Name\object_pool_name.hpp" />
     <ClInclude Include="SourceCode\Data\Name\obj_name.hpp" />
     <ClInclude Include="SourceCode\Data\Name\ui_creator_name.hpp" />
@@ -345,7 +345,7 @@
     <ClInclude Include="SourceCode\UI\player_ui_creator.hpp" />
     <ClInclude Include="SourceCode\VirtualCamera\aiming_camera (2).hpp" />
     <ClInclude Include="SourceCode\VirtualCamera\aiming_camera (3).hpp" />
-    <ClInclude Include="SourceCode\VirtualCamera\track_camera.hpp" />
+    <ClInclude Include="SourceCode\VirtualCamera\rot_control_camera.hpp" />
     <ClInclude Include="SourceCode\VirtualCamera\scope_aiming_camera.hpp" />
     <ClInclude Include="SourceCode\VirtualCamera\aiming_camera.hpp" />
     <ClInclude Include="SourceCode\Window\window.hpp" />

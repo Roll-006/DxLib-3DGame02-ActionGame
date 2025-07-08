@@ -37,6 +37,11 @@ void FPS::Update()
     ++m_frame_count;
 }
 
+void FPS::Draw() const
+{
+    DrawFormatString(0, 0, 0xffffff, "%f", m_average_fps);
+}
+
 void FPS::Wait() const
 {
     float wait_t = kMicroSecond / m_fps * m_frame_count - (m_current_time - m_first_time);

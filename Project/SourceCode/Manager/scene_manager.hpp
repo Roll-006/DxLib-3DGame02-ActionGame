@@ -20,6 +20,9 @@ public:
 	void LateUpdate();
 	void Draw() const;
 
+	/// @brief 現在のシーンの種類を取得
+	[[nodiscard]] std::vector<SceneKind> GetCurrentSceneKind() const;
+
 private:
 	/// @brief 実行中のシーンに追加
 	void AttachCurrentScene(const SceneKind scene_kind);

@@ -215,7 +215,7 @@
     <ClCompile Include="SourceCode\VirtualCamera\aiming_camera (3).cpp">
       <Filter>VirtualCamera</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\VirtualCamera\track_camera.cpp">
+    <ClCompile Include="SourceCode\VirtualCamera\rot_control_camera.cpp">
       <Filter>VirtualCamera</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Base\enemy_base.cpp">
@@ -330,9 +330,6 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Data\IncludeList\vector.hpp">
       <Filter>Data\IncludeList</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\Kind\axis_kind.hpp">
-      <Filter>Data\Kind</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Data\Kind\box_kind.hpp">
       <Filter>Data\Kind</Filter>
@@ -598,7 +595,7 @@
     <ClInclude Include="SourceCode\VirtualCamera\aiming_camera (3).hpp">
       <Filter>VirtualCamera</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\VirtualCamera\track_camera.hpp">
+    <ClInclude Include="SourceCode\VirtualCamera\rot_control_camera.hpp">
       <Filter>VirtualCamera</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Base\enemy_base.hpp">
@@ -630,6 +627,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Data\Path\graphic_path.hpp">
       <Filter>Data\Path</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\Kind\virtual_camera_kind.hpp">
+      <Filter>Data\Kind</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

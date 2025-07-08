@@ -57,6 +57,17 @@ void SceneObjManager::Draw() const
 	UIManager::GetInstance()->Draw();
 }
 
+std::vector<SceneKind> SceneObjManager::GetCurrentSceneKind() const
+{
+	std::vector<SceneKind> current_scene_kind;
+
+	for (const auto& scene : m_current_scene)
+	{
+		current_scene_kind.emplace_back(scene.first);
+	}
+	return current_scene_kind;
+}
+
 void SceneObjManager::AttachCurrentScene(const SceneKind scene_kind)
 {
 	m_current_scene[scene_kind] = m_scene_list.at(scene_kind);

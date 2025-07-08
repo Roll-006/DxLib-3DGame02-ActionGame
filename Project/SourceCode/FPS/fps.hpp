@@ -9,6 +9,7 @@ public:
 	~FPS();
 
 	void Update();
+	void Draw()const;
 	void Wait() const;
 
 	[[nodiscard]] static float GetDeltaTime() { return m_delta_time; }
