@@ -17,7 +17,6 @@ CharaBase::CharaBase(const std::string& name, const std::string& tag, const std:
 void CharaBase::RemoveWeapon(const std::string& obj_name)
 {
 	// w’è•Ší‚ğíœ
-	// MEMO : erase-remove idiom
 	const auto remove_weapon = std::find_if(m_weapons.begin(), m_weapons.end(), [=](const std::shared_ptr<WeaponBase> weapon)
 	{
 		return weapon->GetName() == obj_name;
