@@ -8,6 +8,6 @@ int WINAPI WinMain(
 {
     std::unique_ptr<GameManager> game_manager(std::make_unique<GameManager>());
     game_manager->Run();
-
+    
     return 0;
 }

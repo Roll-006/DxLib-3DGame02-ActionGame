@@ -3,6 +3,7 @@
 #include "gun_base.hpp"
 
 #include "animator_base.hpp"
+#include "../Part/modeler.hpp"
 #include "../Part/bone_pos_corrector.hpp"
 
 class CharaBase abstract : public PhysicalObjBase

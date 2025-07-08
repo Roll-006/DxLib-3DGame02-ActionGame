@@ -1,6 +1,8 @@
 #pragma once
 #include "../Base/physical_obj_base.hpp"
 
+#include "../Part/modeler.hpp"
+
 #include "../Manager/obj_manager.hpp"
 #include "../Manager/collision_manager.hpp"
 #include "../Manager/physics_manager.hpp"

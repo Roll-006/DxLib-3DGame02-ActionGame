@@ -1,5 +1,6 @@
 #pragma once
 #include "../Base/physical_obj_base.hpp"
+#include "../Part/modeler.hpp"
 
 class House final : public PhysicalObjBase
 {

@@ -8,42 +8,15 @@ class PhysicalObjBase;
 class Collider final
 {
 public:
-	Collider(const ColliderKind kind, const std::shared_ptr<ShapeBase> shape, PhysicalObjBase* owner_obj) :
-		m_kind					(kind),
-		m_shape					(shape),
-		m_model_handle			(-1),
-		m_is_closest_only_hit	(kind == ColliderKind::kRayCast ? true : false),
-		m_owner_obj				(owner_obj)
-	{ }
-
-	Collider(const ColliderKind kind, const std::shared_ptr<ShapeBase> shape, const bool is_closest_only_hit, PhysicalObjBase* owner_obj) :
-		m_kind					(kind),
-		m_shape					(shape),
-		m_model_handle			(-1),
-		m_is_closest_only_hit	(kind == ColliderKind::kRayCast ? is_closest_only_hit : false),
-		m_owner_obj				(owner_obj)
-	{ }
-
-	Collider(const ColliderKind kind, const int model_handle, PhysicalObjBase* owner_obj) :
-		m_kind					(kind),
-		m_shape					(nullptr),
-		m_model_handle			(model_handle),
-		m_is_closest_only_hit	(false),
-		m_owner_obj				(owner_obj)
-	{ }
-
+	Collider(const ColliderKind kind, const std::shared_ptr<ShapeBase> shape, PhysicalObjBase* owner_obj);
+	Collider(const ColliderKind kind, const std::shared_ptr<ShapeBase> shape, const bool is_closest_only_hit, PhysicalObjBase* owner_obj);
+	Collider(const ColliderKind kind, const int model_handle, PhysicalObjBase* owner_obj);
 	~Collider() { m_owner_obj = nullptr; }
 
 	/// @brief すべてのコライダーとの衝突判定を有効にする(レイキャストでのみ有効な関数)
-	void EnableAllRayCastHit()
-	{
-		if (m_kind == ColliderKind::kRayCast) { m_is_closest_only_hit = false; }
-	}
+	void EnableAllRayCastHit()			{ if (m_kind == ColliderKind::kRayCast) { m_is_closest_only_hit = false; } }
 	/// @brief 最も近いコライダーとの衝突判定のみを有効にする(レイキャストでのみ有効な関数)
-	void EnableClosestOnlyRayCastHit()
-	{
-		if (m_kind == ColliderKind::kRayCast) { m_is_closest_only_hit = true; }
-	}
+	void EnableClosestOnlyRayCastHit()	{ if (m_kind == ColliderKind::kRayCast) { m_is_closest_only_hit = true; } }
 
 	[[nodiscard]] ColliderKind GetColliderKind()		const { return m_kind; }
 	[[nodiscard]] std::shared_ptr<ShapeBase> GetShape() const { return m_shape; }

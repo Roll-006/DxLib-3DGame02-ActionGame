@@ -23,7 +23,7 @@ int HandleKeeper::LoadHandle(const HandleKind handle_kind, const std::string& fi
 	// í—Ş•Ê‚Éƒ[ƒh
 	switch (handle_kind)
 	{
-	case HandleKind::kImage:
+	case HandleKind::kGraphic:
 		handle = LoadGraph(file_path.c_str(), TRUE);
 		break;
 

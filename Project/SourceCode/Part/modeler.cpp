@@ -1,37 +1,37 @@
 #include "modeler.hpp"
 
 Modeler::Modeler(const std::shared_ptr<Transform> transform, const std::string& file_path, const VECTOR& basic_angle) :
-	m_model_handle	(HandleKeeper::GetInstance()->LoadHandle(HandleKind::kModel, file_path)),
-	m_opacity		(1.0f),
-	m_transform		(transform),
-	m_basic_angle	(basic_angle)
+	m_model_handle(HandleKeeper::GetInstance()->LoadHandle(HandleKind::kModel, file_path)),
+	m_opacity(1.0f),
+	m_transform(transform),
+	m_basic_angle(basic_angle)
 {
 	MV1SetupCollInfo(m_model_handle);
 }
 
 Modeler::Modeler(const std::shared_ptr<Transform> transform, const std::string& file_path) :
-	m_model_handle	(HandleKeeper::GetInstance()->LoadHandle(HandleKind::kModel, file_path)),
-	m_opacity		(1.0f),
-	m_transform		(transform),
-	m_basic_angle	(v3d::GetZeroV())
+	m_model_handle(HandleKeeper::GetInstance()->LoadHandle(HandleKind::kModel, file_path)),
+	m_opacity(1.0f),
+	m_transform(transform),
+	m_basic_angle(v3d::GetZeroV())
 {
 	MV1SetupCollInfo(m_model_handle);
 }
 
 Modeler::Modeler(const std::shared_ptr<Transform> transform, const int model_handle, const VECTOR& basic_angle) :
-	m_model_handle	(model_handle),
-	m_opacity		(1.0f),
-	m_transform		(transform),
-	m_basic_angle	(basic_angle)
+	m_model_handle(model_handle),
+	m_opacity(1.0f),
+	m_transform(transform),
+	m_basic_angle(basic_angle)
 {
 	MV1SetupCollInfo(m_model_handle);
 }
 
 Modeler::Modeler(const std::shared_ptr<Transform> transform, const int model_handle) :
-	m_model_handle	(model_handle),
-	m_opacity		(1.0f),
-	m_transform		(transform),
-	m_basic_angle	(v3d::GetZeroV())
+	m_model_handle(model_handle),
+	m_opacity(1.0f),
+	m_transform(transform),
+	m_basic_angle(v3d::GetZeroV())
 {
 	MV1SetupCollInfo(m_model_handle);
 }
@@ -40,7 +40,7 @@ Modeler::~Modeler()
 {
 	MV1DeleteModel(m_model_handle);
 }
-                                                                                   
+
 void Modeler::Draw() const
 {
 	ApplyOpacity();
@@ -58,7 +58,7 @@ void Modeler::ApplyOpacity() const
 	}
 	else
 	{
-		MV1SetUseZBuffer (m_model_handle, FALSE);
+		MV1SetUseZBuffer(m_model_handle, FALSE);
 		MV1SetOpacityRate(m_model_handle, m_opacity);
 	}
 }

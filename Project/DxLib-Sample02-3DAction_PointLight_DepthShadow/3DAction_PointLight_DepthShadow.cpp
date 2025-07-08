@@ -1,6 +1,7 @@
 // ３Ｄアクション基本
 
 #include "DxLib.h"
+#include "DxGraphics.h"
 #include <math.h>
 
 // 固定値定義 -------------------------------------------------------------------------------------
@@ -34,6 +35,9 @@
 #define NOTPLAYER_MOVETIME			120		// 一つの方向に移動する時間
 #define NOTPLAYER_JUMPRATIO			250		// プレイヤー以外のキャラがジャンプする確率
 
+// ライト関係
+#define LIGHT_ANGLE_SPEED			0.01f		// ライトの位置を決定する角度の変化速度
+#define LIGHT_CENTER_DISTANCE			1500.0f		// ライトが移動する範囲
 
 // 構造体定義 -------------------------------------------------------------------------------------
 
@@ -86,6 +90,7 @@ struct CHARA_COMMON
 struct STAGE
 {
 	int		ModelHandle ;				// モデルハンドル
+
 } ;
 
 // カメラ情報構造体
@@ -136,13 +141,39 @@ CHARA_COMMON chcmn ;	// キャラクターの共通情報の実体宣言
 STAGE stg ;		// ステージ情報の実体宣言
 CAMERA cam ;		// カメラ情報の実体宣言
 
+// 全方位シャドウマップをレンダリングする際のカメラの方向
+VECTOR depth_lookAt[ 6 ] =
+{
+	{  1.0f,  0.0f,  0.0f },
+	{ -1.0f,  0.0f,  0.0f },
+	{  0.0f,  1.0f,  0.0f },
+	{  0.0f, -1.0f,  0.0f },
+	{  0.0f,  0.0f,  1.0f },
+	{  0.0f,  0.0f, -1.0f },
+};
+
+// 全方位シャドウマップをレンダリングする際のカメラの上方向
+VECTOR depth_up[ 6 ] =
+{
+	{  0.0f,  1.0f,  0.0f },
+	{  0.0f,  1.0f,  0.0f },
+	{  0.0f,  0.0f, -1.0f },
+	{  0.0f,  0.0f,  1.0f },
+	{  0.0f,  1.0f,  0.0f },
+	{  0.0f,  1.0f,  0.0f },
+};
+
+// ライトの位置
+VECTOR LightPos ;
+VECTOR LightBasePos = { 0.0f, 3375.0f, 0.0f } ;
+float LightPosAngle ;
 
 // 影用の深度値を保存する描画可能グラフィック
-int DepthBufferGraphHandle ;
+int DepthBufferGraphHandle[ 6 ] ;
 
 // 影用の深度記録画像を作成した際のカメラのビュー行列と射影行列
-MATRIX LightCamera_ViewMatrix ;
-MATRIX LightCamera_ProjectionMatrix ;
+MATRIX LightCamera_ViewMatrix[ 6 ] ;
+MATRIX LightCamera_ProjectionMatrix[ 6 ] ;
 
 // 深度記録画像への描画用の剛体メッシュ用頂点シェーダーと
 // スキニングメッシュ用の頂点シェーダー
@@ -152,13 +183,13 @@ int Normal_DepthShadow_Step1_VertexShader ;
 // 深度記録画像への描画用のピクセルシェーダー
 int DepthShadow_Step1_PixelShader ;
 
-// 深度記録画像を使ったディレクショナルライト一つ付きの描画用の剛体メッシュ用頂点シェーダーと
+// 深度記録画像を使ったポイントライト一つ付きの描画用の剛体メッシュ用頂点シェーダーと
 // スキニングメッシュ用の頂点シェーダー
-int Skin4_DirLight_DepthShadow_Step2_VertexShader ;
-int Normal_DirLight_DepthShadow_Step2_VertexShader ;
+int Skin4_PointLight_DepthShadow_Step2_VertexShader ;
+int Normal_PointLight_DepthShadow_Step2_VertexShader ;
 
-// 深度記録画像を使ったディレクショナルライト一つ付きの描画用のピクセルシェーダー
-int DirLight_DepthShadow_Step2_PixelShader ;
+// 深度記録画像を使ったポイントライト一つ付きの描画用のピクセルシェーダー
+int PointLight_DepthShadow_Step2_PixelShader ;
 
 
 
@@ -1052,12 +1083,13 @@ void NotPlayer_Process( void )
 // ステージの初期化処理
 void Stage_Initialize( void )
 {
+	int i ;
+
 	// ステージモデルの読み込み
 	stg.ModelHandle = MV1LoadModel( "ColTestStage.mqo" ) ;
 
 	// モデル全体のコリジョン情報のセットアップ
 	MV1SetupCollInfo( stg.ModelHandle, -1 ) ;
-
 
 	// 作成する画像のフォーマットを不動小数点型で１チャンネル、１６ビットにする
 	SetDrawValidFloatTypeGraphCreateFlag( TRUE ) ;
@@ -1065,7 +1097,10 @@ void Stage_Initialize( void )
 	SetCreateGraphColorBitDepth( 16 ) ;
 
 	// 影用深度記録画像の作成
-	DepthBufferGraphHandle = MakeScreen( 4096, 4096, FALSE ) ;
+	for( i = 0; i < 6; i++ )
+	{
+		DepthBufferGraphHandle[ i ] = MakeScreen( 2048, 2048, FALSE ) ;
+	}
 
 	// 設定を元に戻す
 	SetDrawValidFloatTypeGraphCreateFlag( FALSE ) ;
@@ -1073,18 +1108,18 @@ void Stage_Initialize( void )
 	SetCreateGraphColorBitDepth( 32 ) ;
 
 	// 深度記録画像描画用の頂点シェーダーを読み込む
-	Skin4_DepthShadow_Step1_VertexShader = LoadVertexShader( "SkinMesh4_DepthShadow_Step1VS.vso" ) ;
+	Skin4_DepthShadow_Step1_VertexShader  = LoadVertexShader( "SkinMesh4_DepthShadow_Step1VS.vso" ) ;
 	Normal_DepthShadow_Step1_VertexShader = LoadVertexShader( "NormalMesh_DepthShadow_Step1VS.vso" ) ;
 
 	// 深度記録画像描画用のピクセルシェーダーを読み込む
 	DepthShadow_Step1_PixelShader = LoadPixelShader( "DepthShadow_Step1PS.pso" ) ;
 
-	// 深度記録画像を使ったディレクショナルライト一つの描画用頂点シェーダーを読み込む
-	Skin4_DirLight_DepthShadow_Step2_VertexShader = LoadVertexShader( "SkinMesh4_DirLight_DepthShadow_Step2VS.vso" ) ;
-	Normal_DirLight_DepthShadow_Step2_VertexShader = LoadVertexShader( "NormalMesh_DirLight_DepthShadow_Step2VS.vso" ) ;
+	// 深度記録画像を使ったポイントライト一つの描画用頂点シェーダーを読み込む
+	Skin4_PointLight_DepthShadow_Step2_VertexShader = LoadVertexShader( "SkinMesh4_PointLight_DepthShadow_Step2VS.vso" ) ;
+	Normal_PointLight_DepthShadow_Step2_VertexShader = LoadVertexShader( "NormalMesh_PointLight_DepthShadow_Step2VS.vso" ) ;
 
-	// 深度記録画像を使ったディレクショナルライト一つの描画用ピクセルシェーダーを読み込む
-	DirLight_DepthShadow_Step2_PixelShader = LoadPixelShader( "DirLight_DepthShadow_Step2PS.pso" ) ;
+	// 深度記録画像を使ったポイントライト一つの描画用ピクセルシェーダーを読み込む
+	PointLight_DepthShadow_Step2_PixelShader = LoadPixelShader( "PointLight_DepthShadow_Step2PS.pso" ) ;
 }
 
 // ステージの後始末処理
@@ -1239,40 +1274,8 @@ void Camera_Process( void )
 void SetupDepthImage( void )
 {
 	int i ;
-	VECTOR LightDirection ;
-	VECTOR LightPosition ;
-	VECTOR LightTarget ;
-
-
-	// 描画先を影用深度記録画像にする
-	SetDrawScreen( DepthBufferGraphHandle ) ;
-
-	// 影用深度記録画像を真っ白にクリア
-	SetBackgroundColor( 255, 255, 255 ) ;
-	ClearDrawScreen() ;
-	SetBackgroundColor( 0, 0, 0 ) ;
-
-
-	// カメラのタイプを正射影タイプにセット、描画範囲も指定
-	SetupCamera_Ortho( 13250.0f ) ;
-
-	// 描画する奥行き範囲をセット
-	SetCameraNearFar( 10.0f, 13050.0f ) ;
-
-	// カメラの向きはライトの向き
-	LightDirection = GetLightDirection() ;
-
-	// カメラの位置と注視点はステージ全体が見渡せる位置
-	LightTarget.x = 3620.0f ;
-	LightTarget.y = 0.0f ;
-	LightTarget.z = 3830.0f ;
-	LightPosition = VAdd( LightTarget, VScale( LightDirection, -12400.0f ) ) ;
-	SetCameraPositionAndTarget_UpVecY( LightPosition, LightTarget ) ;
-
-	// 設定したカメラのビュー行列と射影行列を取得しておく
-	LightCamera_ViewMatrix = GetCameraViewMatrix() ;
-	LightCamera_ProjectionMatrix = GetCameraProjectionMatrix() ;
-
+	int j ;
+	VECTOR LookAt_WorldPos ;
 
 	// モデルの描画にオリジナルのシェーダーを使用するように設定する
 	MV1SetUseOrigShader( TRUE ) ;
@@ -1280,26 +1283,54 @@ void SetupDepthImage( void )
 	// 深度記録画像への描画用のピクセルシェーダーをセット
 	SetUsePixelShader( DepthShadow_Step1_PixelShader ) ;
 
-
-	// 深度記録画像への剛体メッシュ描画用の頂点シェーダーをセット
-	SetUseVertexShader( Normal_DepthShadow_Step1_VertexShader ) ;
-
-	// ステージを描画
-	MV1DrawModel( stg.ModelHandle ) ;
-
-
-	// 深度記録画像へのスキニングメッシュ描画用の頂点シェーダーをセット
-	SetUseVertexShader( Skin4_DepthShadow_Step1_VertexShader ) ;
-
-	// プレイヤーモデルの描画
-	MV1DrawModel( pl.CharaInfo.ModelHandle ) ;
-
-	// プレイヤー以外キャラモデルの描画
-	for( i = 0 ; i < NOTPLAYER_NUM ; i ++ )
+	// 全方位の方向の数だけ繰り返し
+	for( i = 0; i < 6; i ++ )
 	{
-		MV1DrawModel( npl[ i ].CharaInfo.ModelHandle ) ;
-	}
+		// 描画先を影用深度記録画像にする
+		SetDrawScreen( DepthBufferGraphHandle[ i ] ) ;
 
+		// 影用深度記録画像を真っ白にクリア
+		SetBackgroundColor( 255, 255, 255 ) ;
+		ClearDrawScreen() ;
+		SetBackgroundColor( 0, 0, 0 ) ;
+
+		// 描画する奥行き範囲をセット
+		SetCameraNearFar( 100.0f, 15000.0f ) ;
+
+		// カメラの画角は90度に設定
+		SetupCamera_Perspective( 90.0f / 180.0f * DX_PI_F ) ;
+
+		// カメラの位置と注視点、カメラの上方向を設定
+		LookAt_WorldPos = VAdd( depth_lookAt[ i ], LightPos );
+		SetCameraPositionAndTargetAndUpVec( LightPos, LookAt_WorldPos, depth_up[ i ] ) ;
+
+		// 設定したカメラのビュー行列と射影行列を取得しておく
+		LightCamera_ViewMatrix[ i ] = GetCameraViewMatrix() ;
+		LightCamera_ProjectionMatrix[ i ] = GetCameraProjectionMatrix() ;
+
+		// 深度記録画像への剛体メッシュ描画用の頂点シェーダーをセット
+		SetUseVertexShader( Normal_DepthShadow_Step1_VertexShader ) ;
+
+		// ステージモデルの描画
+		{
+			// 天井はシャドウマップには描画しない( 真っ暗になってしまうため )
+			MV1SetFrameVisible( stg.ModelHandle, 5, FALSE ) ;
+			MV1DrawModel( stg.ModelHandle ) ;
+			MV1SetFrameVisible( stg.ModelHandle, 5, TRUE ) ;
+		}
+
+		// 深度記録画像へのスキニングメッシュ描画用の頂点シェーダーをセット
+		SetUseVertexShader( Skin4_DepthShadow_Step1_VertexShader ) ;
+	
+		// プレイヤーモデルの描画
+		MV1DrawModel( pl.CharaInfo.ModelHandle ) ;
+
+		// プレイヤー以外キャラモデルの描画
+		for( j = 0 ; j < NOTPLAYER_NUM ; j ++ )
+		{
+			MV1DrawModel( npl[ j ].CharaInfo.ModelHandle ) ;
+		}
+	}
 
 	// モデルの描画にオリジナルのシェーダーを使用するようにした設定を解除
 	MV1SetUseOrigShader( FALSE ) ;
@@ -1319,26 +1350,31 @@ void DrawModelWithDepthShadow( void )
 	// モデルの描画にオリジナルのシェーダーを使用するように設定する
 	MV1SetUseOrigShader( TRUE ) ;
 
-	// 深度記録画像を使った影＋ディレクショナルライト一つ描画用のピクセルシェーダーをセット
-	SetUsePixelShader( DirLight_DepthShadow_Step2_PixelShader ) ;
+	// 深度記録画像を使った影＋ポイントライト一つ描画用のピクセルシェーダーをセット
+	SetUsePixelShader( PointLight_DepthShadow_Step2_PixelShader ) ;
 
 	// 影用深度記録画像を描画したときのカメラのビュー行列と射影行列を定数に設定する
-	SetVSConstFMtx( 43, LightCamera_ViewMatrix ) ;
-	SetVSConstFMtx( 47, LightCamera_ProjectionMatrix ) ;
+	for( i = 0; i < 6; i++ )
+	{
+		SetVSConstFMtx( 43 + i * 8, LightCamera_ViewMatrix[ i ] ) ;
+		SetVSConstFMtx( 47 + i * 8, LightCamera_ProjectionMatrix[ i ] ) ;
+	}
 
-	// 影用深度記録画像をテクスチャ１にセット
-	SetUseTextureToShader( 1, DepthBufferGraphHandle ) ;
+	// 影用深度記録画像をテクスチャ１～６にセット
+	for( i = 0; i < 6; i++ )
+	{
+		SetUseTextureToShader( 1 + i, DepthBufferGraphHandle[ i ] ) ;
+	}
 
+	// 深度記録画像を使った影＋ポイントライト一つの剛体メッシュ描画用の頂点シェーダーをセット
+	SetUseVertexShader( Normal_PointLight_DepthShadow_Step2_VertexShader ) ;
 
-	// 深度記録画像を使った影＋ディレクショナルライト一つの剛体メッシュ描画用の頂点シェーダーをセット
-	SetUseVertexShader( Normal_DirLight_DepthShadow_Step2_VertexShader ) ;
-
-	// ステージモデルの描画
+	// ステージを描画
 	MV1DrawModel( stg.ModelHandle ) ;
 
 
-	// 深度記録画像を使った影＋ディレクショナルライト一つのスキニングメッシュ描画用の頂点シェーダーをセット
-	SetUseVertexShader( Skin4_DirLight_DepthShadow_Step2_VertexShader ) ;
+	// 深度記録画像を使った影＋ポイントライト一つのスキニングメッシュ描画用の頂点シェーダーをセット
+	SetUseVertexShader( Skin4_PointLight_DepthShadow_Step2_VertexShader ) ;
 
 	// プレイヤーモデルの描画
 	MV1DrawModel( pl.CharaInfo.ModelHandle ) ;
@@ -1356,7 +1392,10 @@ void DrawModelWithDepthShadow( void )
 	SetUseTextureToShader( 1, -1 ) ;
 
 	// 設定した定数を解除
-	ResetVSConstF( 43, 8 ) ;
+	ResetVSConstF( 43, 8 * 6 ) ;
+
+	// カメラの設定を行う
+	SetCameraPositionAndTarget_UpVecY( cam.Eye, cam.Target ) ;
 }
 
 // 描画処理
@@ -1365,8 +1404,24 @@ void Render_Process( void )
 	// 影用の深度記録画像の準備を行う
 	SetupDepthImage() ;
 
+	// 描画先を裏画面に設定
+	SetDrawScreen( DX_SCREEN_BACK ) ;
+	ClearDrawScreen() ;
+
+	// 描画する奥行き範囲をセット
+	SetupCamera_Perspective( 60.0f / 180.0f * DX_PI_F ) ;
+	SetCameraNearFar( 100.0f, 15000.0f ) ;
+
+	// カメラの設定を行う
+	SetCameraPositionAndTarget_UpVecY( cam.Eye, cam.Target ) ;
+
 	// 影用の深度記録画像を使った影を落とす処理も含めたモデルの描画
 	DrawModelWithDepthShadow() ;
+
+	// ライトの位置に球を描画する
+	SetUseLighting( FALSE ) ;
+	DrawSphere3D( LightPos, 200.0f, 16, GetColor( 255,255,255 ), GetColor( 255,255,255 ), TRUE ) ;
+	SetUseLighting( TRUE  ) ;
 }
 
 // WinMain
@@ -1414,6 +1469,19 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 
 		// カメラの処理
 		Camera_Process() ;
+
+		// ライトの位置を移動する
+		LightPosAngle += LIGHT_ANGLE_SPEED ;
+		if( LightPosAngle >= DX_TWO_PI_F )
+		{
+			LightPosAngle -= DX_TWO_PI_F ;
+		}
+		LightPos.x = LightBasePos.x + sin( LightPosAngle ) * LIGHT_CENTER_DISTANCE ;
+		LightPos.y = LightBasePos.y ;
+		LightPos.z = LightBasePos.z + cos( LightPosAngle ) * LIGHT_CENTER_DISTANCE ;
+
+		// ポイントライトの設定
+		ChangeLightTypePoint( LightPos, 7854.0f, 0.0f, 0.000227f, 0.0f ) ;
 
 		// 描画処理
 		Render_Process() ;

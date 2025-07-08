@@ -17,7 +17,7 @@ PS_OUTPUT main( PS_INPUT PSInput )
 	float4 TextureDiffuseColor ;
 
 	// Ｚ値を色として出力
-	PSOutput.Color0 = PSInput.PPosition.z;
+	PSOutput.Color0 = PSInput.PPosition.z / PSInput.PPosition.w;
 
 	// 透明にならないようにアルファは必ず１
 	PSOutput.Color0.a = 1.0f;

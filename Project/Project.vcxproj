@@ -185,6 +185,7 @@
     <ClCompile Include="SourceCode\Part\camera_body.cpp" />
     <ClCompile Include="SourceCode\Part\camera_noise.cpp" />
     <ClCompile Include="SourceCode\Part\collider.cpp" />
+    <ClCompile Include="SourceCode\Part\graphicer.cpp" />
     <ClCompile Include="SourceCode\Part\modeler.cpp" />
     <ClCompile Include="SourceCode\Part\player_animator.cpp" />
     <ClCompile Include="SourceCode\Part\rifle_cartridge_object_pool.cpp" />
@@ -282,6 +283,7 @@
     <ClInclude Include="SourceCode\Data\Name\ui_creator_name.hpp" />
     <ClInclude Include="SourceCode\Data\Path\animation_path.hpp" />
     <ClInclude Include="SourceCode\Data\Path\bone_path.hpp" />
+    <ClInclude Include="SourceCode\Data\Path\graphic_path.hpp" />
     <ClInclude Include="SourceCode\Data\Path\model_path.hpp" />
     <ClInclude Include="SourceCode\Data\Tag\animation_tag.hpp" />
     <ClInclude Include="SourceCode\Data\Tag\obj_tag.hpp" />
@@ -315,6 +317,7 @@
     <ClInclude Include="SourceCode\Part\camera_body.hpp" />
     <ClInclude Include="SourceCode\Part\camera_noise.hpp" />
     <ClInclude Include="SourceCode\Part\collider.hpp" />
+    <ClInclude Include="SourceCode\Part\graphicer.hpp" />
     <ClInclude Include="SourceCode\Part\modeler.hpp" />
     <ClInclude Include="SourceCode\Part\player_animator.hpp" />
     <ClInclude Include="SourceCode\Part\rifle_cartridge_object_pool.hpp" />
@@ -348,13 +351,56 @@
     <ClInclude Include="SourceCode\Window\window.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="SourceCode\Shader\blur_shader.pso" />
-    <None Include="SourceCode\Shader\shadow_map_apply_lambert_pixel.pso" />
-    <None Include="SourceCode\Shader\shadow_map_apply_lambert_vertex.vso" />
-    <None Include="SourceCode\Shader\shadow_map_draw_pixel.pso" />
-    <None Include="SourceCode\Shader\shadow_map_draw_vertex.vso" />
-    <None Include="SourceCode\Shader\shadow_map_save_zbuffer_pixel.pso" />
-    <None Include="SourceCode\Shader\shadow_map_save_zbuffer_vertex.vso" />
+    <FxCompile Include="SourceCode\Shader\DepthShadow_Step1PS.fx">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="SourceCode\Shader\NormalMesh_DepthShadow_Step1VS.fx">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="SourceCode\Shader\NormalMesh_PointLight_DepthShadow_Step2VS.fx">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="SourceCode\Shader\PointLight_DepthShadow_Step2PS.fx">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="SourceCode\Shader\SkinMesh4_DepthShadow_Step1VS.fx">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="SourceCode\Shader\SkinMesh4_PointLight_DepthShadow_Step2VS.fx">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SourceCode\Shader\DepthShadow_Step1PS.pso">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </None>
+    <None Include="SourceCode\Shader\NormalMesh_DepthShadow_Step1VS.vso">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </None>
+    <None Include="SourceCode\Shader\NormalMesh_PointLight_DepthShadow_Step2VS.vso">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </None>
+    <None Include="SourceCode\Shader\PointLight_DepthShadow_Step2PS.pso">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </None>
+    <None Include="SourceCode\Shader\SkinMesh4_DepthShadow_Step1VS.vso">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </None>
+    <None Include="SourceCode\Shader\SkinMesh4_PointLight_DepthShadow_Step2VS.vso">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </None>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

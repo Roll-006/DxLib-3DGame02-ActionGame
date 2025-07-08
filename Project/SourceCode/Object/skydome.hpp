@@ -1,5 +1,6 @@
 #pragma once
 #include "../Base/obj_base.hpp"
+#include "../Part/modeler.hpp"
 
 #include "main_camera.hpp"
 

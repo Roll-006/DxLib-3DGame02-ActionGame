@@ -1,5 +1,6 @@
 #pragma once
 #include "physical_obj_base.hpp"
+#include "../Part/modeler.hpp"
 
 class WeaponBase abstract : public PhysicalObjBase
 {
