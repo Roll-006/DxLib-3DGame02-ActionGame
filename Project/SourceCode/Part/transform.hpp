@@ -21,7 +21,7 @@ public:
 	#pragma endregion
 
 
-	#pragma region setter
+	#pragma region Setter
 	void SetMatrix	(const CoordinateKind coord_kind, const MATRIX& matrix);
 	void SetPos		(const CoordinateKind coord_kind, const VECTOR&	pos);
 	void SetRot		(const CoordinateKind coord_kind, const MATRIX&	rot_matrix);
@@ -37,7 +37,7 @@ public:
 	#pragma endregion
 
 
-	#pragma region getter
+	#pragma region Getter
 	[[nodiscard]] MATRIX GetMatrix			(const CoordinateKind coord_kind);
 	[[nodiscard]] VECTOR GetPos				(const CoordinateKind coord_kind);
 	[[nodiscard]] MATRIX GetRotMatrix		(const CoordinateKind coord_kind);

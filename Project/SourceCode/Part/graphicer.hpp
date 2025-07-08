@@ -3,6 +3,7 @@
 #include "../Calculation/vector_2d.hpp"
 #include "../Window/window.hpp"
 
+// TODO : ì¬’†
 class Graphicer final
 {
 public:
