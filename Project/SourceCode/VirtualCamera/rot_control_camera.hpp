@@ -1,19 +1,18 @@
 #pragma once
-#include "../Base/virtual_camera_base.hpp"
+#include "../Base/control_virtual_camera_base.hpp"
 
-class RotControlCamera final : public VirtualCameraBase
+class RotControlCamera final : public ControlVirtualCameraBase
 {
 public:
 	RotControlCamera();
 	~RotControlCamera() override;
 
-
 	#pragma region ƒRƒ}ƒ“ƒh
-	void MoveUp();
-	void MoveDown();
-	void MoveLeft();
-	void MoveRight();
-	void InitAngle();
+	void MoveUp()		override;
+	void MoveDown()		override;
+	void MoveLeft()		override;
+	void MoveRight()	override;
+	void InitAim()		override;
 	#pragma endregion
 
 private:

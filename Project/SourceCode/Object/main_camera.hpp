@@ -17,5 +17,5 @@ public:
 
 private:
 	/// @brief Œ©‚é•ûŒü‚ğİ’è
-	void SetLookDir();
+	void SetAim();
 };

@@ -1,7 +1,7 @@
 #include "rot_control_camera.hpp"
 
 RotControlCamera::RotControlCamera() : 
-	VirtualCameraBase(ObjName.ROT_CONTROL_CAMERA, VirtualCameraKind::kRotControl)
+	ControlVirtualCameraBase(ObjName.ROT_CONTROL_CAMERA, VirtualCameraKind::kRotControl)
 {
 	m_priority = kPriority;
 	m_active_scene_kind.emplace_back(SceneKind::kPlay);
@@ -32,7 +32,7 @@ void RotControlCamera::MoveRight()
 
 }
 
-void RotControlCamera::InitAngle()
+void RotControlCamera::InitAim()
 {
 
 }

@@ -234,6 +234,7 @@
     <ClInclude Include="SourceCode\Base\scene_base.hpp" />
     <ClInclude Include="SourceCode\Base\shape_base.hpp" />
     <ClInclude Include="SourceCode\Base\singleton_base.hpp" />
+    <ClInclude Include="SourceCode\Base\control_virtual_camera_base.hpp" />
     <ClInclude Include="SourceCode\Base\virtual_camera_base.hpp" />
     <ClInclude Include="SourceCode\Base\weapon_base.hpp" />
     <ClInclude Include="SourceCode\Calculation\axes.hpp" />

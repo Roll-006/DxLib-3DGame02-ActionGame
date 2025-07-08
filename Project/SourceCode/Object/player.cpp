@@ -270,9 +270,9 @@ void Player::AimingGun()
 	m_is_correct_look_dir	= true;
 
 	// Šg‘å—¦‚©‚çÀÛ‚Ì‹——£‚ğæ“¾
-	float min_distance = MainCamera::kNormalDistance / std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->GetScopeScale();
-	m_camera->Approach(min_distance, kADSSpeed * FPS::GetDeltaTime());
-	m_camera->TrackBoneWobbly();
+	//float min_distance = MainCamera::kNormalDistance / std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->GetScopeScale();
+	//m_camera->Approach(min_distance, kADSSpeed * FPS::GetDeltaTime());
+	//m_camera->TrackBoneWobbly();
 
 	// e‚É‘_‚¤•ûŒü‚ğİ’è
 	std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->SetAimDir		(m_camera->GetTransform()->GetForward(CoordinateKind::kWorld));
@@ -511,8 +511,8 @@ void Player::InitWeapon()
 	// Æ€
 	if (!std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->IsAiming())
 	{
-		m_camera->Depart(MainCamera::kNormalDistance, kADSSpeed * FPS::GetDeltaTime());
-		m_camera->TrackBoneHeightOnly();
+		//m_camera->Depart(MainCamera::kNormalDistance, kADSSpeed * FPS::GetDeltaTime());
+		//m_camera->TrackBoneHeightOnly();
 	}
 }
 
@@ -604,7 +604,7 @@ void Player::CalcLookDir()
 
 	if (m_is_turn_around)
 	{
-		m_camera->InitYaw();
+		//m_camera->InitYaw();
 		m_is_correct_look_dir = true;
 		VECTOR pos = m_transform->GetPos(CoordinateKind::kWorld) + VGet(0, 30, 0);
 	}

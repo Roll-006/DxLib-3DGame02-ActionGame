@@ -54,11 +54,11 @@ void CommandHandler::LoadPlayerCommand()
 void CommandHandler::LoadCameraCommand()
 {
 	// TODO : 後にJson化
-	m_commands[CommandKind::kMoveUpCamera]		= (std::make_shared<camera_cmd::MoveUp>());
-	m_commands[CommandKind::kMoveDownCamera]	= (std::make_shared<camera_cmd::MoveDown>());
-	m_commands[CommandKind::kMoveLeftCamera]	= (std::make_shared<camera_cmd::MoveLeft>());
-	m_commands[CommandKind::kMoveRightCamera]	= (std::make_shared<camera_cmd::MoveRight>());
-	m_commands[CommandKind::kInitAngle]			= (std::make_shared<camera_cmd::InitAngle>());
+	m_commands[CommandKind::kMoveUpCamera]		= (std::make_shared<control_camera_cmd::MoveUp>());
+	m_commands[CommandKind::kMoveDownCamera]	= (std::make_shared<control_camera_cmd::MoveDown>());
+	m_commands[CommandKind::kMoveLeftCamera]	= (std::make_shared<control_camera_cmd::MoveLeft>());
+	m_commands[CommandKind::kMoveRightCamera]	= (std::make_shared<control_camera_cmd::MoveRight>());
+	m_commands[CommandKind::kInitAim]			= (std::make_shared<control_camera_cmd::InitAim>());
 }
 
 void CommandHandler::AddInputCode(const CommandKind kind, const input_concepts::InputT auto& input_code)
@@ -174,7 +174,7 @@ void CommandHandler::InitKeyCommand()
 	AddInputCode(CommandKind::kMoveDownCamera,	KEY_INPUT_DOWN);
 	AddInputCode(CommandKind::kMoveLeftCamera,	KEY_INPUT_LEFT);
 	AddInputCode(CommandKind::kMoveRightCamera,	KEY_INPUT_RIGHT);
-	AddInputCode(CommandKind::kInitAngle,		KEY_INPUT_Q);
+	AddInputCode(CommandKind::kInitAim,			KEY_INPUT_Q);
 
 	// 例外処理として実行
 	//AddInputCode(CommandKind::kMoveUpCamera,		mouse::SlideDirKind::kUp);
@@ -206,7 +206,7 @@ void CommandHandler::InitPadCommand()
 	AddInputCode(CommandKind::kReloadGun,		pad::ButtonKind	::kX);
 	AddInputCode(CommandKind::kSilentKill,		pad::TriggerKind::kRT);
 	AddInputCode(CommandKind::kTurnAround,		pad::ButtonKind	::kRB);
-	AddInputCode(CommandKind::kInitAngle,		pad::ButtonKind	::kRB);
+	AddInputCode(CommandKind::kInitAim,			pad::ButtonKind	::kRB);
 
 	// 例外処理として実行
 	//AddInputCode(CommandKind::kMoveUpPlayer,		pad::StickKind	::kLSUp);

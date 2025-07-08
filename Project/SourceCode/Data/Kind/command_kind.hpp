@@ -26,5 +26,5 @@ enum class CommandKind
 	kMoveDownCamera,	// カメラ下移動
 	kMoveLeftCamera,	// カメラ左移動
 	kMoveRightCamera,	// カメラ右移動
-	kInitAngle,			// 視点リセット
+	kInitAim,			// 視点リセット
 };

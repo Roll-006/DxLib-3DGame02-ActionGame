@@ -1,26 +1,26 @@
 #include "camera_command.hpp"
 
-void camera_cmd::MoveUp::Execute(ObjBase& obj)
+void control_camera_cmd::MoveUp::Execute(ObjBase& obj)
 {
-	static_cast<MainCamera*>(&obj)->MoveUp();
+	static_cast<ControlVirtualCameraBase*>(&obj)->MoveUp();
 }
 
-void camera_cmd::MoveDown::Execute(ObjBase& obj)
+void control_camera_cmd::MoveDown::Execute(ObjBase& obj)
 {
-	static_cast<MainCamera*>(&obj)->MoveDown();
+	static_cast<ControlVirtualCameraBase*>(&obj)->MoveDown();
 }
 
-void camera_cmd::MoveLeft::Execute(ObjBase& obj)
+void control_camera_cmd::MoveLeft::Execute(ObjBase& obj)
 {
-	static_cast<MainCamera*>(&obj)->MoveLeft();
+	static_cast<ControlVirtualCameraBase*>(&obj)->MoveLeft();
 }
 
-void camera_cmd::MoveRight::Execute(ObjBase& obj)
+void control_camera_cmd::MoveRight::Execute(ObjBase& obj)
 {
-	static_cast<MainCamera*>(&obj)->MoveRight();
+	static_cast<ControlVirtualCameraBase*>(&obj)->MoveRight();
 }
 
-void camera_cmd::InitAngle::Execute(ObjBase& obj)
+void control_camera_cmd::InitAim::Execute(ObjBase& obj)
 {
-	static_cast<MainCamera*>(&obj)->InitAngle();
+	static_cast<ControlVirtualCameraBase*>(&obj)->InitAim();
 }

@@ -1,8 +1,8 @@
 #pragma once
 #include "../Base/command_base.hpp"
-#include "../Object/main_camera.hpp"
+#include "../Base/control_virtual_camera_base.hpp"
 
-namespace camera_cmd
+namespace control_camera_cmd
 {
 	/// @brief 上移動
 	class MoveUp final : public CommandBase
@@ -37,10 +37,10 @@ namespace camera_cmd
 	};
 
 	/// @brief 視点リセット
-	class InitAngle final : public CommandBase
+	class InitAim final : public CommandBase
 	{
 	public:
-		InitAngle() : CommandBase(CommandKind::kInitAngle) {}
+		InitAim() : CommandBase(CommandKind::kInitAim) {}
 		void Execute(ObjBase& obj) override;
 	};
 }

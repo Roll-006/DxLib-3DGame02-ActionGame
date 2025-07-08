@@ -40,7 +40,7 @@ void MainCamera::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 		if (hit_collider_pair.intersection)
 		{
 			m_transform->SetPos(CoordinateKind::kWorld, *hit_collider_pair.intersection);
-			SetLookDir();
+			SetAim();
 		}
 		break;
 
@@ -49,10 +49,10 @@ void MainCamera::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	}
 }
 
-void MainCamera::SetLookDir()
+void MainCamera::SetAim()
 {
 	const VECTOR pos		= m_transform->GetPos(CoordinateKind::kWorld);
-	const VECTOR look_pos	= pos + m_transform->GetForward(CoordinateKind::kWorld);
+	const VECTOR target_pos	= pos + m_transform->GetForward(CoordinateKind::kWorld);
 
-	SetCameraPositionAndTarget_UpVecY(pos, look_pos);
+	SetCameraPositionAndTarget_UpVecY(pos, target_pos);
 }
