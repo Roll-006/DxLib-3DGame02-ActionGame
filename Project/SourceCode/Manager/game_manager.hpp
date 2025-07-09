@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../GameSystemSetter/game_system_setter.hpp"
 #include "../Window/window.hpp"
 #include "../FPS/fps.hpp"
 
@@ -16,13 +17,12 @@ public:
 	void Run();
 
 private:
-	void SetUpGameSystem();
-
 	/// @brief ƒQ[ƒ€ƒ‹[ƒv‚ğŒp‘±‚·‚é‚©‚ğ”»’è
 	[[nodiscard]] bool IsContinueLoop();
 
 private:
-	std::unique_ptr<Window>			 m_window;
-	std::unique_ptr<FPS>			 m_fps;
-	std::unique_ptr<SceneObjManager> m_scene_manager;
+	std::unique_ptr<GameSystemSetter>	m_game_system_setter;
+	std::unique_ptr<Window>				m_window;
+	std::unique_ptr<FPS>				m_fps;
+	std::unique_ptr<SceneManager>		m_scene_manager;
 };

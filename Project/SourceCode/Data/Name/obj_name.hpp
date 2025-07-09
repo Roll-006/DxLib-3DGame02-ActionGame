@@ -4,7 +4,7 @@
 static struct ObjName
 {
 	const std::string MAIN_CAMERA			= "main_camera";		// メインカメラ
-	const std::string ROT_CONTROL_CAMERA	= "rot_control_camera";	// 回転コントロールカメラ
+	const std::string ROT_CONTROL_CAMERA	= "rot_control_virtual_camera";	// 回転コントロールカメラ
 	const std::string TRACK_CAMERA			= "track_camera";		// 追跡カメラ
 	const std::string AIMING_CAMERA			= "aiming_camera";		// 銃を構える際のカメラ
 	const std::string SCOPE_CAMERA			= "scope_camera";		// 銃のスコープ視点のカメラ

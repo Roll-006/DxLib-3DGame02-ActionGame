@@ -194,10 +194,10 @@
     <ClCompile Include="SourceCode\Base\virtual_camera_base.cpp">
       <Filter>Base</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\VirtualCamera\scope_aiming_camera.cpp">
+    <ClCompile Include="SourceCode\VirtualCamera\scope_aiming_virtual_camera.cpp">
       <Filter>VirtualCamera</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\VirtualCamera\aiming_camera.cpp">
+    <ClCompile Include="SourceCode\VirtualCamera\aiming_virtual_camera.cpp">
       <Filter>VirtualCamera</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Manager\ui_manager.cpp">
@@ -215,7 +215,7 @@
     <ClCompile Include="SourceCode\VirtualCamera\aiming_camera (3).cpp">
       <Filter>VirtualCamera</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\VirtualCamera\rot_control_camera.cpp">
+    <ClCompile Include="SourceCode\VirtualCamera\rot_control_virtual_camera.cpp">
       <Filter>VirtualCamera</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Base\enemy_base.cpp">
@@ -238,6 +238,12 @@
     </ClCompile>
     <ClCompile Include="SourceCode\Part\graphicer.cpp">
       <Filter>Part</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Base\control_virtual_camera_base.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\GameSystemSetter\game_system_setter.cpp">
+      <Filter>GameSystemSetter</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -574,10 +580,10 @@
     <ClInclude Include="SourceCode\Base\virtual_camera_base.hpp">
       <Filter>Base</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\VirtualCamera\scope_aiming_camera.hpp">
+    <ClInclude Include="SourceCode\VirtualCamera\scope_aiming_virtual_camera.hpp">
       <Filter>VirtualCamera</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\VirtualCamera\aiming_camera.hpp">
+    <ClInclude Include="SourceCode\VirtualCamera\aiming_virtual_camera.hpp">
       <Filter>VirtualCamera</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Manager\ui_manager.hpp">
@@ -595,7 +601,7 @@
     <ClInclude Include="SourceCode\VirtualCamera\aiming_camera (3).hpp">
       <Filter>VirtualCamera</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\VirtualCamera\rot_control_camera.hpp">
+    <ClInclude Include="SourceCode\VirtualCamera\rot_control_virtual_camera.hpp">
       <Filter>VirtualCamera</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Base\enemy_base.hpp">
@@ -630,6 +636,12 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Data\Kind\virtual_camera_kind.hpp">
       <Filter>Data\Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Base\control_virtual_camera_base.hpp">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\GameSystemSetter\game_system_setter.hpp">
+      <Filter>GameSystemSetter</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -716,6 +728,9 @@
     </Filter>
     <Filter Include="Shader">
       <UniqueIdentifier>{386eb507-c76b-4ff9-bc74-69fb60f96a8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameSystemSetter">
+      <UniqueIdentifier>{9c2a5154-d2f7-4994-943f-afea0c330812}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

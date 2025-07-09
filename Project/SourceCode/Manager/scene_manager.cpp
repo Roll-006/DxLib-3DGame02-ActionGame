@@ -1,6 +1,6 @@
 #include "scene_manager.hpp"
 
-SceneObjManager::SceneObjManager()
+SceneManager::SceneManager()
 {
 	m_scene_list[SceneKind::kShare]		= std::make_shared<ShareScene>();
 	m_scene_list[SceneKind::kTitle]		= std::make_shared<TitleScene>();
@@ -16,13 +16,13 @@ SceneObjManager::SceneObjManager()
 	AttachCurrentScene(SceneKind::kPlay);
 }
 
-SceneObjManager::~SceneObjManager()
+SceneManager::~SceneManager()
 {
 	// ˆ—‚È‚µ
 	// FIXME : ‚±‚Ì’n“_‚ð”²‚¯‚éÛ‚É—áŠO‚ª”­¶‚·‚é
 }
 
-void SceneObjManager::Update()
+void SceneManager::Update()
 {
 	InputChecker  ::GetInstance()->Update();
 	PhysicsManager::GetInstance()->Update();
@@ -33,7 +33,7 @@ void SceneObjManager::Update()
 	}
 }
 
-void SceneObjManager::LateUpdate()
+void SceneManager::LateUpdate()
 {
 	PhysicsManager::GetInstance()->LateUpdate();
 
@@ -47,7 +47,7 @@ void SceneObjManager::LateUpdate()
 	InputChecker	::GetInstance()->LateUpdate();
 }
 
-void SceneObjManager::Draw() const
+void SceneManager::Draw() const
 {
 	for (const auto& scene : m_current_scene)
 	{
@@ -57,7 +57,7 @@ void SceneObjManager::Draw() const
 	UIManager::GetInstance()->Draw();
 }
 
-std::vector<SceneKind> SceneObjManager::GetCurrentSceneKind() const
+std::vector<SceneKind> SceneManager::GetCurrentSceneKind() const
 {
 	std::vector<SceneKind> current_scene_kind;
 
@@ -68,14 +68,14 @@ std::vector<SceneKind> SceneObjManager::GetCurrentSceneKind() const
 	return current_scene_kind;
 }
 
-void SceneObjManager::AttachCurrentScene(const SceneKind scene_kind)
+void SceneManager::AttachCurrentScene(const SceneKind scene_kind)
 {
 	m_current_scene[scene_kind] = m_scene_list.at(scene_kind);
 
 	m_current_scene.at(scene_kind)->Init();
 }
 
-void SceneObjManager::DetachCurrentScene(const SceneKind scene_kind)
+void SceneManager::DetachCurrentScene(const SceneKind scene_kind)
 {
 	m_current_scene.erase(scene_kind);
 }

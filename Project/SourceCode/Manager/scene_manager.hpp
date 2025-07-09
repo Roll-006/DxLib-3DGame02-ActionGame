@@ -10,11 +10,11 @@
 #include "../Scene/share_scene.hpp"
 #include "../Scene/load_scene.hpp"
 
-class SceneObjManager final : public OneInstanceSingletonBase<SceneObjManager>
+class SceneManager final : public OneInstanceSingletonBase<SceneManager>
 {
 public:
-	SceneObjManager();
-	~SceneObjManager();
+	SceneManager();
+	~SceneManager();
 
 	void Update();
 	void LateUpdate();
