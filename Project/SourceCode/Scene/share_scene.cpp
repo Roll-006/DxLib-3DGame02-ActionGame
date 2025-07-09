@@ -13,6 +13,8 @@ ShareScene::ShareScene() :
 
 	//m_camera->AttachTarget(ObjName.PLAYER, m_player->GetModelHandle(), BonePath.SPINE_2, false);
 	CameraManager::GetInstance()->SetMainCamera(m_main_camera);
+	CameraManager::GetInstance()->AddVirtualCamera(std::make_shared<RotControlVirtualCamera>());
+
 }
 
 ShareScene::~ShareScene()

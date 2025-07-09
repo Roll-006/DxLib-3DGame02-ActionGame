@@ -100,11 +100,11 @@ void Player::LateUpdate()
 	m_modeler->ApplyMatrix();
 
 	// ボーン位置修正
-	m_bone_pos_corrector->CorrectGunPoseBone(
-		m_modeler->GetModelHandle(),
-		m_look_dir.at(TimeKind::kCurrent),
-		m_camera->GetTransform()->GetMatrix(CoordinateKind::kWorld),
-		std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->IsAiming());
+	//m_bone_pos_corrector->CorrectGunPoseBone(
+	//	m_modeler->GetModelHandle(),
+	//	m_look_dir.at(TimeKind::kCurrent),
+	//	m_camera->GetTransform()->GetMatrix(CoordinateKind::kWorld),
+	//	std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->IsAiming());
 
 	m_current_attach_weapon->LateUpdate();
 }
@@ -248,7 +248,7 @@ void Player::MoveLeft()
 
 	m_is_input_move.at(static_cast<int>(MoveDir::kLeft)) = true;
 
-	m_move_dir.at(TimeKind::kNext) -= m_camera->GetTransform()->GetRight(CoordinateKind::kWorld);
+	//m_move_dir.at(TimeKind::kNext) -= m_camera->GetTransform()->GetRight(CoordinateKind::kWorld);
 }
 
 void Player::MoveRight()
@@ -258,7 +258,7 @@ void Player::MoveRight()
 
 	m_is_input_move.at(static_cast<int>(MoveDir::kRight)) = true;
 
-	m_move_dir.at(TimeKind::kNext) += m_camera->GetTransform()->GetRight(CoordinateKind::kWorld);
+	//m_move_dir.at(TimeKind::kNext) += m_camera->GetTransform()->GetRight(CoordinateKind::kWorld);
 }
 
 void Player::AimingGun()
@@ -275,8 +275,8 @@ void Player::AimingGun()
 	//m_camera->TrackBoneWobbly();
 
 	// 銃に狙う方向を設定
-	std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->SetAimDir		(m_camera->GetTransform()->GetForward(CoordinateKind::kWorld));
-	std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->SetPosOnRayLine(m_camera->GetTransform()->GetPos    (CoordinateKind::kWorld));
+	//std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->SetAimDir		(m_camera->GetTransform()->GetForward(CoordinateKind::kWorld));
+	//std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->SetPosOnRayLine(m_camera->GetTransform()->GetPos    (CoordinateKind::kWorld));
 
 	// ダッシュ状態を解除
 	m_is_run = false;
@@ -604,7 +604,7 @@ void Player::CalcLookDir()
 
 	if (m_is_turn_around)
 	{
-		//m_camera->InitYaw();
+		CameraManager::GetInstance()->GetVirtualCamera<RotControlVirtualCamera>(VirtualCameraKind::kRotControl)->InitAim();
 		m_is_correct_look_dir = true;
 		VECTOR pos = m_transform->GetPos(CoordinateKind::kWorld) + VGet(0, 30, 0);
 	}
@@ -676,8 +676,9 @@ VECTOR Player::GetVelocityFromPad(VECTOR& velocity)
 	if (InputChecker::GetInstance()->GetCurrentInputDevice() != DeviceKind::kPad) { return velocity; }
 
 	// 移動方向を取得
-	const VECTOR right = m_camera->GetTransform()->GetRight(CoordinateKind::kWorld);
-	VECTOR forward = m_camera->GetTransform()->GetForward(CoordinateKind::kWorld);
+	const auto camera	= CameraManager::GetInstance()->GetMainCamera();
+	const auto right	= camera->GetTransform()->GetRight  (CoordinateKind::kWorld);
+	auto forward		= camera->GetTransform()->GetForward(CoordinateKind::kWorld);
 	forward.y = 0.0f;
 	forward = v3d::GetNormalizedV(forward);
 
@@ -715,7 +716,8 @@ VECTOR Player::GetVelocityFromPad(VECTOR& velocity)
 
 VECTOR Player::GetMoveForward()
 {
-	VECTOR forward = m_camera->GetTransform()->GetForward(CoordinateKind::kWorld);
+	const auto camera	= CameraManager::GetInstance()->GetMainCamera();
+	auto forward		= camera->GetTransform()->GetForward(CoordinateKind::kWorld);
 	forward.y = 0.0f;
 
 	return v3d::GetNormalizedV(forward);

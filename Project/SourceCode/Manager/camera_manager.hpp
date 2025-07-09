@@ -1,7 +1,7 @@
 #pragma once
 #include "../Base/singleton_base.hpp"
 
-#include "../Base/virtual_camera_base.hpp"
+#include "../VirtualCamera/rot_control_virtual_camera.hpp"
 #include "../Object/main_camera.hpp"
 
 namespace virtual_camera_concepts
@@ -14,19 +14,14 @@ namespace virtual_camera_concepts
 class CameraManager final : public SingletonBase<CameraManager>
 {
 public:
-	enum class BlendKind
-	{
-		kTime,		// 時間でブレンド
-		kSpeed,		// 速度でブレンド
-	};
-
-public:
 	void Update();
 	void LateUpdate();
 
 	/// @brief メインカメラを設定する
 	void SetMainCamera(const std::shared_ptr<MainCamera> main_camera);
 
+
+	#pragma region 登録 / 解除
 	/// @brief バーチャルカメラを登録する
 	template<virtual_camera_concepts::VirtualCameraT VirtualCameraT>
 	void AddVirtualCamera(const std::shared_ptr<VirtualCameraT> virtual_camera)
@@ -39,19 +34,51 @@ public:
 	
 	/// @brief バーチャルカメラの登録を解除する
 	void RemoveVirtualCamera(const int obj_handle);
-	
+	#pragma endregion
+
 
 	#pragma region Getter
 	[[nodiscard]] std::shared_ptr<MainCamera> GetMainCamera() const { return m_main_camera; }
 
 	/// @brief バーチャルカメラを取得
 	/// @param obj_handle オブジェクトハンドル
-	[[nodiscard]] std::shared_ptr<VirtualCameraBase> GetVirtualCamera(const int obj_handle) const;
+	template<virtual_camera_concepts::VirtualCameraT VirtualCameraT>
+	[[nodiscard]] std::shared_ptr<VirtualCameraT> GetVirtualCamera(const int obj_handle) const
+	{
+		return m_virtual_camera.count(obj_handle) ? std::dynamic_pointer_cast<VirtualCameraT>(m_virtual_camera.at(obj_handle)) : nullptr;
+	}
 
 	/// @brief バーチャルカメラを取得
-	/// @brief オブジェクト名カメラを判別する(同じ名前が複数ある場合はオブジェクトハンドルでの取得を推奨)
+	/// @brief オブジェクト名でカメラを判別する(同じ名前が複数ある場合はオブジェクトハンドルでの取得を推奨)
 	/// @param obj_name オブジェクト名
-	[[nodiscard]] std::shared_ptr<VirtualCameraBase> GetVirtualCamera(const std::string& obj_name) const;
+	template<virtual_camera_concepts::VirtualCameraT VirtualCameraT>
+	[[nodiscard]] std::shared_ptr<VirtualCameraT> GetVirtualCamera(const std::string& obj_name) const
+	{
+		for (const auto& camera : m_virtual_camera)
+		{
+			if (camera.second->GetName() == obj_name)
+			{
+				return std::dynamic_pointer_cast<VirtualCameraT>(camera.second);
+			}
+		}
+		return nullptr;
+	}
+
+	/// @brief バーチャルカメラを取得
+	/// @brief バーチャルカメラの種類でカメラを判別する(同じ種類が複数ある場合はオブジェクトハンドルでの取得を推奨)
+	/// @param camra_kind バーチャルカメラの種類
+	template<virtual_camera_concepts::VirtualCameraT VirtualCameraT>
+	[[nodiscard]] std::shared_ptr<VirtualCameraT> GetVirtualCamera(const VirtualCameraKind camra_kind) const
+	{
+		for (const auto& camera : m_virtual_camera)
+		{
+			if (camera.second->GetCameraKind() == camra_kind)
+			{
+				return std::dynamic_pointer_cast<VirtualCameraT>(camera.second);
+			}
+		}
+		return nullptr;
+	}
 	#pragma endregion
 
 
@@ -118,9 +145,9 @@ private:
 //	void CalcAngle();
 //	void CalcPos();
 //	void CalcRayPos();
-//	//void CalcDistance();
+//	void CalcDistance();
 //
-//	/// @brief 視点リセット時の角度を計算する
+//	@brief 視点リセット時の角度を計算する
 //	void CalcInitAngle();
 //
 //	/// @brief 見る座標を取得
@@ -135,22 +162,10 @@ private:
 //	void CalcDirFromPad();
 //	void CalcDirFromMouse();
 //
-//private:
-//	enum class InputDir
-//	{
-//		kUp,
-//		kDown,
-//		kLeft,
-//		kRight,
-//	};
-//
 //public:
 //	static constexpr float  kNormalDistance = 42.0f;
 //
 //private:
-//	static constexpr float  kNear = 1.0f;
-//	static constexpr float  kFar = 5000.0f;
-//	static constexpr float  kFOV = 45.0f;
 //
 //	static constexpr VECTOR kLookCorrectPos = { 19.0f, 5.0f, 0.0f };
 //
@@ -175,29 +190,21 @@ private:
 //	std::string					m_target_bone;
 //
 //	float m_distance_to_target;		// 追跡対象までの距離
-//
-//	float m_init_angle_speed;		// 視点リセットの速度
-//	float m_init_end_threshold;		// 視点リセットの終了判定を行う閾値
-//
-//	bool m_is_invert_horizontal;	// 操作時に左右反転を行うかを判定
-//	bool m_is_invert_vertical;		// 操作時に上下反転を行うかを判定
-//	bool m_is_init_angle;			// 視点リセットを行うかを判定
 //	bool m_is_look_same_dir_target;	// 追跡対象と同じ向きを見ているかを判定(Y成分は考慮しない)
 //	bool m_is_track_height_only;	// 高さのみを追尾するかを判定
-//
-//	VECTOR m_dir;
-//	VECTOR m_velocity;
-//
-//	std::unordered_map<TimeKind, VECTOR> m_angle;
-//	std::array<bool, 4> m_is_input;
 	
 private:
+	static constexpr float  kNear	= 1.0f;
+	static constexpr float  kFar	= 5000.0f;
+	static constexpr float  kFOV	= 45.0f;
+
 	std::shared_ptr<MainCamera>									m_main_camera;
 	std::unordered_map<int, std::shared_ptr<VirtualCameraBase>> m_virtual_camera;
 
-	float m_blend_time;
-	float m_blend_speed;
-	bool  m_is_blending;
+	float m_blend_time;					// ブレンドにかける時間
+	bool  m_is_blending;				// ブレンド中かを判定
+	bool  m_is_invert_horizontal;		// 操作時に左右反転を行うかを判定
+	bool  m_is_invert_vertical;			// 操作時に上下反転を行うかを判定
 
 	friend SingletonBase<CameraManager>;
 };
