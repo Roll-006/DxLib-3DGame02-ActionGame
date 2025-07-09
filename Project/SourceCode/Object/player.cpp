@@ -1,9 +1,8 @@
 #include "player.hpp"
 #include "../Manager/command_handler.hpp"
 
-Player::Player(std::shared_ptr<MainCamera> camera) :
+Player::Player() :
 	CharaBase				(ObjName.PLAYER, ObjTag.PLAYER, ModelPath.CHARA_01, MassKind::kMedium),
-	m_camera				(camera),
 	m_anim_kind				(PlayerAnimKind::kIdle02),
 	m_bone_pos_corrector	(std::make_shared<BonePosCorrector>()),
 	m_move_speed			(0.0f),
@@ -14,7 +13,8 @@ Player::Player(std::shared_ptr<MainCamera> camera) :
 	m_is_turn_around		(false),
 	m_is_turn_run			(false),
 	m_is_correct_look_dir	(false),
-	m_turn_around_count		(0)
+	m_turn_around_count		(0),
+	m_is_input_move			(false, false, false, false)
 {
 	// ‰ŠúposEdir‚ğİ’è
 	m_move_dir[TimeKind::kPrev] = m_move_dir[TimeKind::kCurrent] = m_move_dir[TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);

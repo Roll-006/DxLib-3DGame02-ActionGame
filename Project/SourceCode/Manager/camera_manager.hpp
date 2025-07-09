@@ -1,7 +1,7 @@
 #pragma once
 #include "../Base/singleton_base.hpp"
-#include "../Base/virtual_camera_base.hpp"
 
+#include "../Base/virtual_camera_base.hpp"
 #include "../Object/main_camera.hpp"
 
 namespace virtual_camera_concepts
@@ -24,22 +24,39 @@ public:
 	void Update();
 	void LateUpdate();
 
+	/// @brief メインカメラを設定する
+	void SetMainCamera(const std::shared_ptr<MainCamera> main_camera);
+
 	/// @brief バーチャルカメラを登録する
 	template<virtual_camera_concepts::VirtualCameraT VirtualCameraT>
 	void AddVirtualCamera(const std::shared_ptr<VirtualCameraT> virtual_camera)
 	{
-
+		if (!m_virtual_camera.count(virtual_camera->GetObjHandle()))
+		{
+			m_virtual_camera[virtual_camera->GetObjHandle()] = virtual_camera;
+		}
 	}
 	
 	/// @brief バーチャルカメラの登録を解除する
 	void RemoveVirtualCamera(const int obj_handle);
 	
+
+	#pragma region Getter
+	[[nodiscard]] std::shared_ptr<MainCamera> GetMainCamera() const { return m_main_camera; }
+
+	/// @brief バーチャルカメラを取得
+	/// @param obj_handle オブジェクトハンドル
+	[[nodiscard]] std::shared_ptr<VirtualCameraBase> GetVirtualCamera(const int obj_handle) const;
+
+	/// @brief バーチャルカメラを取得
+	/// @brief オブジェクト名カメラを判別する(同じ名前が複数ある場合はオブジェクトハンドルでの取得を推奨)
+	/// @param obj_name オブジェクト名
+	[[nodiscard]] std::shared_ptr<VirtualCameraBase> GetVirtualCamera(const std::string& obj_name) const;
+	#pragma endregion
+
+
 	/// @brief バーチャルカメラをブレンド中であるかを判定
 	[[nodiscard]] bool IsBlending() const { return m_is_blending; }
-	
-	
-	
-
 	
 // @brief 追跡対象をアタッチする(トランスフォーム情報で追跡)
 //	void AttachTarget(const std::string& obj_name);
@@ -86,7 +103,7 @@ public:
 //	[[nodiscard]] bool IsLookSameDirTarget() const { return m_is_look_same_dir_target; }
 
 private:
-	CameraManager(const std::shared_ptr<MainCamera> main_camera);
+	CameraManager();
 	~CameraManager() override;
 	
 	/// @brief バーチャルカメラ間のブレンドを行う
@@ -175,8 +192,8 @@ private:
 //	std::array<bool, 4> m_is_input;
 	
 private:
-	std::shared_ptr<MainCamera> m_main_camera;
-	std::vector<std::shared_ptr<VirtualCameraBase>> m_virtual_camera;
+	std::shared_ptr<MainCamera>									m_main_camera;
+	std::unordered_map<int, std::shared_ptr<VirtualCameraBase>> m_virtual_camera;
 
 	float m_blend_time;
 	float m_blend_speed;

@@ -6,6 +6,7 @@
 #include "../Object/selector.hpp"
 
 #include "../Manager/command_handler.hpp"
+#include "../Manager/camera_manager.hpp"
 
 class ShareScene final : public SceneBase
 {
@@ -19,6 +20,6 @@ public:
 	void Draw() const override;
 
 private:
-	std::shared_ptr<MainCamera> m_camera;
-	std::shared_ptr<Player> m_player;
+	std::shared_ptr<MainCamera> m_main_camera;
+	std::shared_ptr<Player>		m_player;
 };

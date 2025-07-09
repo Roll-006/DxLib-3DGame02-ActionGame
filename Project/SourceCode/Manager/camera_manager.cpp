@@ -1,7 +1,7 @@
 #include "camera_manager.hpp"
 
-CameraManager::CameraManager(const std::shared_ptr<MainCamera> main_camera) :
-	m_main_camera	(main_camera),
+CameraManager::CameraManager() :
+	m_main_camera	(nullptr),
 	m_blend_time	(0.0f),
 	m_blend_speed	(0.0f),
 	m_is_blending	(false)
@@ -34,9 +34,34 @@ void CameraManager::LateUpdate()
 
 }
 
+void CameraManager::SetMainCamera(const std::shared_ptr<MainCamera> main_camera)
+{
+	if (!m_main_camera)	
+	{
+		m_main_camera = main_camera;
+	}
+}
+
 void CameraManager::RemoveVirtualCamera(const int obj_handle)
 {
+	m_virtual_camera.erase(obj_handle);
+}
 
+std::shared_ptr<VirtualCameraBase> CameraManager::GetVirtualCamera(const int obj_handle) const
+{
+	return m_virtual_camera.count(obj_handle) ? m_virtual_camera.at(obj_handle) : nullptr;
+}
+
+std::shared_ptr<VirtualCameraBase> CameraManager::GetVirtualCamera(const std::string& obj_name) const
+{
+	for (const auto& camera : m_virtual_camera)
+	{
+		if (camera.second->GetName() == obj_name)
+		{
+			return camera.second;
+		}
+	}
+	return nullptr;
 }
 
 //#pragma region アタッチ・デタッチ

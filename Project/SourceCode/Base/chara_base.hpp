@@ -42,6 +42,7 @@ protected:
 		remove(m_weapons.begin(), m_weapons.end(), weapon);
 	}
 	/// @brief 武器の所持登録を解除
+	/// @brief 指定のオブジェ名の武器の登録がすべて解除される
 	/// @param obj_name オブジェクト名(同じ武器を所持している場合はオブジェクトハンドルでの取得を推奨)
 	void RemoveWeapon(const std::string& obj_name);
 	/// @brief 武器の所持登録を解除
@@ -61,6 +62,7 @@ protected:
 	}
 	/// @brief 所持している武器の中からアタッチ(装備)する
 	/// @brief 現在武器を装備している場合でもデタッチする必要はない
+	/// @brief 指定のオブジェ名の中から最初に見つかった武器を装備する
 	/// @param obj_name オブジェクト名(同じ武器を所持している場合はオブジェクトハンドルでの取得を推奨)
 	void AttachWeapon(const std::string& obj_name);
 	/// @brief 所持している武器の中からアタッチ(装備)する
@@ -106,6 +108,6 @@ protected:
 	float	m_capsule_length;
 	float	m_capsule_radius;
 
-	float	m_hp;
+	//float	m_hp;
 	int		m_current_remaining_bullet_num;					// 残弾数
 };
