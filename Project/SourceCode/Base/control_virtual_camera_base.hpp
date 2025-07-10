@@ -24,6 +24,8 @@ protected:
 	virtual void CalcMoveDirFromPad()	abstract;
 	virtual void CalcMoveDirFromMouse()	abstract;
 
+	[[nodiscard]] virtual MATRIX GetRotMatrix() abstract;
+
 protected:
 	enum class InputDir
 	{

@@ -28,13 +28,11 @@ private:
 	void CalcMoveDirFromPad()	override;
 	void CalcMoveDirFromMouse()	override;
 
-	void InitMove();
+	//void InitMove();
 
-	void CalcAngle();
+	void CalcInputAngle();
 	void CalcPos();
 	void CalcInitAngle();
-
-	VECTOR GetLookPos();
 
 	//void JudgeLookSameDirTarget();
 	//void ApplyInvert();

@@ -29,6 +29,7 @@ public:
 
 
 	#pragma region Setter
+	void SetRot					(const MATRIX&			rot_matrix);
 	void SetAimCorrect			(const VECTOR&			aim_correct)		{ m_aim_correct			= aim_correct;		}
 	void SetHorizontalDamping	(const float			horizontal_damping)	{ m_horizontal_damping	= horizontal_damping;	}
 	void SetVerticalDamping		(const float			vertical_damping)	{ m_vertical_damping	= vertical_damping;		}
@@ -38,8 +39,17 @@ public:
 	void SetBias				(const Vector2D<float>& bias);
 	#pragma endregion
 
-private:
 
+	#pragma region Getter
+	[[nodiscard]] VECTOR			GetAimPos()				const;
+	[[nodiscard]] VECTOR			GetAimCorrect()			const { return m_aim_correct; }
+	[[nodiscard]] float				GetHorizontalDamping()	const { return m_horizontal_damping; }
+	[[nodiscard]] float				GetVerticalDamping()	const { return m_vertical_damping; }
+	[[nodiscard]] Vector2D<float>	GetScreen()				const { return m_screen; }
+	[[nodiscard]] Vector2D<float>	GetDeadZone()			const { return m_dead_zone; }
+	[[nodiscard]] Vector2D<float>	GetSoftZone()			const { return m_soft_zone; }
+	[[nodiscard]] Vector2D<float>	GetBias()				const { return m_bias; }
+	#pragma endregion
 
 private:
 	std::shared_ptr<Transform> m_camera_transform;

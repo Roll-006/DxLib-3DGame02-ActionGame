@@ -20,7 +20,9 @@ void RotControlVirtualCamera::Init()
 
 void RotControlVirtualCamera::Update()
 {
+	Move();
 
+	m_aim->SetRot(math::ConvertEulerAnglesToRotMatrix(m_input_angle.at(TimeKind::kCurrent)));
 }
 
 void RotControlVirtualCamera::LateUpdate()
@@ -73,8 +75,7 @@ void RotControlVirtualCamera::MoveRight()
 
 void RotControlVirtualCamera::InitAim()
 {
-	if (!m_target_transform)	{ return; }
-	if (m_is_init_aiming)		{ return; }
+	if (m_is_init_aiming) { return; }
 
 	// 追跡対象のforwardを目標とする
 	const VECTOR forward				= m_target_transform->GetForward(CoordinateKind::kWorld);
@@ -87,9 +88,8 @@ void RotControlVirtualCamera::InitAim()
 }
 
 void RotControlVirtualCamera::InitYawAim()
-{
-	if (!m_target_transform)	{ return; }
-	if (m_is_init_aiming)		{ return; }
+{	
+	if (m_is_init_aiming) { return; }
 
 	// ヨー角以外はカメラ自身の姿勢をそのまま保つ
 	const VECTOR forward				= m_target_transform->GetForward(CoordinateKind::kWorld);
@@ -106,30 +106,23 @@ void RotControlVirtualCamera::InitYawAim()
 
 void RotControlVirtualCamera::Move()
 {
-	if (!m_is_init_aiming)
-	{
-		CalcMoveDirFromPad();
-		CalcMoveDirFromMouse();
-	}
+	if (!m_target_transform) { return; }
+
+	CalcMoveDirFromPad();
+	CalcMoveDirFromMouse();
 	
-	// 操作反転処理
-	//ApplyInvert();
+	CalcInputAngle();
 	
-	CalcAngle();
 	
-	// 回転行列を生成
-	MATRIX m = MGetIdent();
-	CreateRotationXYZMatrix(&m, m_input_angle.at(TimeKind::kCurrent).x, m_input_angle.at(TimeKind::kCurrent).y, m_input_angle.at(TimeKind::kCurrent).z);
-	
-	// 結果を反映
-	m_transform->SetRot(CoordinateKind::kWorld, MGetRotElem(m));
+
 	CalcPos();
 }
 
 void RotControlVirtualCamera::CalcMoveDirFromPad()
 {
-	if (m_move_dir != v3d::GetZeroV()) { return; }
-	if (InputChecker::GetInstance()->GetCurrentInputDevice() != DeviceKind::kPad) { return; }
+	if (m_is_init_aiming)															{ return; }
+	if (m_move_dir != v3d::GetZeroV())												{ return; }
+	if (InputChecker::GetInstance()->GetCurrentInputDevice() != DeviceKind::kPad)	{ return; }
 
 	// 各方向のパラメーターを取得
 	const auto input		= InputChecker::GetInstance();
@@ -167,8 +160,9 @@ void RotControlVirtualCamera::CalcMoveDirFromPad()
 
 void RotControlVirtualCamera::CalcMoveDirFromMouse()
 {
-	if (m_move_dir != v3d::GetZeroV()) { return; }
-	if (InputChecker::GetInstance()->GetCurrentInputDevice() != DeviceKind::kKeyboard) { return; }
+	if (m_is_init_aiming)																{ return; }
+	if (m_move_dir != v3d::GetZeroV())													{ return; }
+	if (InputChecker::GetInstance()->GetCurrentInputDevice() != DeviceKind::kKeyboard)	{ return; }
 
 	const auto input = InputChecker::GetInstance();
 
@@ -186,18 +180,14 @@ void RotControlVirtualCamera::CalcMoveDirFromMouse()
 	m_move_dir = v3d::GetNormalizedV(m_velocity);
 }
 
+//void RotControlVirtualCamera::InitMove()
+//{
+//	for (auto& is_input : m_is_input) { is_input = false; }
+//	m_move_dir = v3d::GetZeroV();
+//	m_velocity = v3d::GetZeroV();
+//}
 
-
-
-
-void RotControlVirtualCamera::InitMove()
-{
-	for (auto& is_input : m_is_input) { is_input = false; }
-	m_move_dir = v3d::GetZeroV();
-	m_velocity = v3d::GetZeroV();
-}
-
-void RotControlVirtualCamera::CalcAngle()
+void RotControlVirtualCamera::CalcInputAngle()
 {
 	const auto command = CommandHandler::GetInstance();
 
@@ -231,13 +221,11 @@ void RotControlVirtualCamera::CalcAngle()
 
 void RotControlVirtualCamera::CalcPos()
 {
-	const VECTOR look_pos = GetLookPos();
+	const VECTOR look_pos = m_aim->GetAimPos();
 	const VECTOR forward = m_transform->GetForward(CoordinateKind::kWorld);
-	//const VECTOR pos = look_pos - forward * m_distance_to_target;
-	//m_transform->SetPos(CoordinateKind::kWorld, pos);
+	const VECTOR pos = look_pos - forward * m_distance_to_target;
+	m_transform->SetPos(CoordinateKind::kWorld, pos);
 }
-
-
 
 //void Camera::CalcDistance()
 //{
@@ -277,39 +265,7 @@ void RotControlVirtualCamera::CalcInitAngle()
 	}
 }
 
-VECTOR RotControlVirtualCamera::GetLookPos()
-{
-	//if (!m_target_transform) { return v3d::GetZeroV(); }
 
-	//// ボーンの行列情報を取得
-	//const int model_handle = m_target_model_handle;
-	//const int frame_num = MV1SearchFrame(model_handle, m_target_bone.c_str());
-	//MATRIX	  frame_mat = MV1GetFrameLocalWorldMatrix(model_handle, frame_num);
-	//VECTOR	  look_pos = v3d::GetZeroV();
-
-	//if (m_is_track_height_only)
-	//{
-	//	look_pos = VTransform(axis::GetWorldZAxis(), frame_mat);
-	//}
-	//else
-	//{
-	//	// ボーン自体を追跡すると画面の揺れが強すぎるため
-	//	// 同じ高さの位置を追跡
-	//	const VECTOR begin_pos = m_target_transform->GetPos(CoordinateKind::kWorld);
-	//	const VECTOR distance = begin_pos - MGetTranslateElem(frame_mat);
-	//	const VECTOR up = m_target_transform->GetUp(CoordinateKind::kWorld);
-	//	look_pos = begin_pos + up * VSize(distance);
-	//}
-
-	//// カメラの軸をもとに位置を修正
-	//const auto axes = m_transform->GetAxes(CoordinateKind::kWorld);
-	//look_pos += axes.x_axis * kLookCorrectPos.x;
-	//look_pos += axes.y_axis * kLookCorrectPos.y;
-	//look_pos += axes.z_axis * kLookCorrectPos.z;
-
-	//return look_pos;
-	return v3d::GetZeroV();
-}
 
 //void RotControlVirtualCamera::JudgeLookSameDirTarget()
 //{

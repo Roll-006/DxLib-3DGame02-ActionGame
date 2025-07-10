@@ -22,9 +22,19 @@ public:
 	void AttachTarget(const std::shared_ptr<Transform> target_transform, const VECTOR& follow_correct_pos, const VECTOR& damping, const float damping_yaw);
 	void DetachTarget();
 
+
+	#pragma region Setter
 	void SetTrackCorrectPos	(const VECTOR& track_correct_pos)	{ m_track_correct_pos	= track_correct_pos; }
 	void SetDamping			(const VECTOR& damping)				{ m_damping				= damping; }
 	void SetDampingYaw		(const float   damping_yaw)			{ m_damping_yaw			= damping_yaw; }
+	#pragma endregion
+
+
+	#pragma region Getter
+	VECTOR GetTrackCorrectPos() const { return m_track_correct_pos; }
+	VECTOR GetDamping()			const { return m_damping; }
+	float  GetDampingYaw()		const { return m_damping_yaw; }
+	#pragma endregion
 
 private:
 	void CalcCameraPos();

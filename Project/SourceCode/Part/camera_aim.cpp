@@ -3,7 +3,7 @@
 CameraAim::CameraAim(const std::shared_ptr<Transform> camera_transform) :
 	m_camera_transform	(camera_transform),
 	m_target_transform	(nullptr),
-	m_aim_correct	(v3d::GetZeroV()),
+	m_aim_correct		(v3d::GetZeroV()),
 	m_horizontal_damping(0.0f),
 	m_vertical_damping	(0.0f),
 	m_screen			(0.5f, 0.5f),
@@ -25,6 +25,8 @@ void CameraAim::Update()
 
 }
 
+
+#pragma region Attach / Detach
 void CameraAim::AttachTarget(const std::shared_ptr<Transform> target_transform)
 {
 	m_target_transform		= target_transform;
@@ -48,8 +50,16 @@ void CameraAim::DetachTarget()
 	m_target_transform	= nullptr;
 	m_is_track			= false;
 }
+#pragma endregion
 
-void CameraAim::SetScreen(const Vector2D<float>& screen)
+
+#pragma region Setter
+void CameraAim::SetRot		(const MATRIX& rot_matrix)
+{
+	m_camera_transform->SetRot(CoordinateKind::kWorld, rot_matrix);
+}
+
+void CameraAim::SetScreen	(const Vector2D<float>& screen)
 {
 	m_screen = screen;
 
@@ -57,7 +67,7 @@ void CameraAim::SetScreen(const Vector2D<float>& screen)
 	m_screen.y = std::clamp(m_screen.y, 0.0f, 1.0f);
 }
 
-void CameraAim::SetDeadZone(const Vector2D<float>& dead_zone)
+void CameraAim::SetDeadZone	(const Vector2D<float>& dead_zone)
 {
 	m_dead_zone = dead_zone;
 
@@ -65,7 +75,7 @@ void CameraAim::SetDeadZone(const Vector2D<float>& dead_zone)
 	m_dead_zone.y = std::clamp(m_dead_zone.y, 0.0f, 1.0f);
 }
 
-void CameraAim::SetSoftZone(const Vector2D<float>& soft_zone)
+void CameraAim::SetSoftZone	(const Vector2D<float>& soft_zone)
 {
 	m_soft_zone = soft_zone;
 
@@ -73,10 +83,27 @@ void CameraAim::SetSoftZone(const Vector2D<float>& soft_zone)
 	m_soft_zone.y = std::clamp(m_soft_zone.y, 0.0f, 1.0f);
 }
 
-void CameraAim::SetBias(const Vector2D<float>& bias)
+void CameraAim::SetBias		(const Vector2D<float>& bias)
 {
 	m_bias = bias;
 
 	m_bias.x = std::clamp(m_bias.x, -0.5f, 0.5f);
 	m_bias.y = std::clamp(m_bias.y, -0.5f, 0.5f);
 }
+#pragma endregion
+
+
+#pragma region Getter
+VECTOR CameraAim::GetAimPos() const
+{
+	VECTOR look_pos = m_target_transform->GetPos(CoordinateKind::kWorld);
+
+	// カメラの軸をもとに位置を修正
+	const auto axes = m_camera_transform->GetAxes(CoordinateKind::kWorld);
+	look_pos += axes.x_axis * GetAimCorrect().x;
+	look_pos += axes.y_axis * GetAimCorrect().y;
+	look_pos += axes.z_axis * GetAimCorrect().z;
+
+	return look_pos;
+}
+#pragma endregion
