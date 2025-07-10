@@ -14,6 +14,9 @@ public:
 
 	void Update();
 
+	/// @brief カメラのエイム(見る位置)を計算
+	void CalcAim();
+
 	/// @brief ターゲットを追尾する
 	void TrackTarget()			{ m_is_track = true; }
 	/// @brief ターゲットの追尾を停止する

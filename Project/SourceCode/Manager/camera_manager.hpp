@@ -128,8 +128,8 @@ private:
 	/// @brief バーチャルカメラ間のブレンドを行う
 	void BlendVirtualCamera();
 
-	/// @brief バーチャルカメラのブレンド結果をメインカメラに受け渡す
-	[[nodiscard]] MATRIX GiveBlendResultMatrix();
+	/// @brief バーチャルカメラのブレンド結果をメインカメラに適用させる
+	void ApplyBlendResultMatrix();
 
 //	void Move();
 //	void InitMove();

@@ -8,23 +8,28 @@ public:
 	virtual ~ControlVirtualCameraBase() = default;
 
 	#pragma region コマンド
-	virtual void MoveUp()		abstract;
-	virtual void MoveDown()		abstract;
-	virtual void MoveLeft()		abstract;
-	virtual void MoveRight()	abstract;
-	virtual void InitAim()		abstract;
-	virtual void InitYawAim()   abstract;
+	virtual void MoveUp()					abstract;
+	virtual void MoveDown()					abstract;
+	virtual void MoveLeft()					abstract;
+	virtual void MoveRight()				abstract;
+	virtual void InitAim()					abstract;
+	virtual void InitYawAim()				abstract;
 	#pragma endregion
 
 	/// @brief 視点リセット中かを取得
 	[[nodiscard]] bool IsInitAiming() const { return m_is_init_aiming; }
 
 protected:
-	virtual void Move()					abstract;
-	virtual void CalcMoveDirFromPad()	abstract;
-	virtual void CalcMoveDirFromMouse()	abstract;
+	virtual void Move()						abstract;
 
-	[[nodiscard]] virtual MATRIX GetRotMatrix() abstract;
+	virtual void CalcMoveDirFromPad()		abstract;
+	virtual void CalcMoveDirFromMouse()		abstract;
+	virtual void CalcMoveDirFromCommand()	abstract;
+
+	/// @brief 入力角度の計算を行う
+	virtual void CalcInputAngle()			abstract;
+	/// @brief 視点リセットの計算を行う
+	virtual void CalcInitAim()				abstract;
 
 protected:
 	enum class InputDir

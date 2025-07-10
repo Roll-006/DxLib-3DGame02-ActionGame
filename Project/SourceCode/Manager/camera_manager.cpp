@@ -15,24 +15,20 @@ CameraManager::~CameraManager()
 
 }
 
-void CameraManager::BlendVirtualCamera()
-{
-	
-}
-
-MATRIX CameraManager::GiveBlendResultMatrix()
-{
-	return MATRIX();
-}
-
 void CameraManager::Update()
 {
-
+	for (const auto& camera : m_virtual_camera)
+	{
+		camera.second->Update();
+	}
 }
 
 void CameraManager::LateUpdate()
 {
-
+	for (const auto& camera : m_virtual_camera)
+	{
+		camera.second->LateUpdate();
+	}
 }
 
 void CameraManager::SetMainCamera(const std::shared_ptr<MainCamera> main_camera)
@@ -46,6 +42,27 @@ void CameraManager::SetMainCamera(const std::shared_ptr<MainCamera> main_camera)
 void CameraManager::RemoveVirtualCamera(const int obj_handle)
 {
 	m_virtual_camera.erase(obj_handle);
+}
+
+void CameraManager::BlendVirtualCamera()
+{
+	// カメラを優先度順にソート
+	std::unordered_map<int, int> obj_handle;
+	std::unordered_map<int, int> priority;
+	for (int i = 0; i < m_virtual_camera.size(); ++i)
+	{
+		obj_handle[i] = m_virtual_camera.at(i)->GetObjHandle();
+		priority[i]	  = m_virtual_camera.at(i)->GetPriority();
+	}
+	priority = algorithm::Sort(priority, SortKind::kDescending);
+
+	// TODO : 仮
+	m_main_camera->GetTransform()->SetMatrix(CoordinateKind::kWorld, GetVirtualCamera<RotControlVirtualCamera>(VirtualCameraKind::kRotControl)->GetTransform()->GetMatrix(CoordinateKind::kWorld));
+}
+
+void CameraManager::ApplyBlendResultMatrix()
+{
+	
 }
 
 //#pragma region アタッチ・デタッチ

@@ -25,6 +25,11 @@ void CameraAim::Update()
 
 }
 
+void CameraAim::CalcAim()
+{
+
+}
+
 
 #pragma region Attach / Detach
 void CameraAim::AttachTarget(const std::shared_ptr<Transform> target_transform)
@@ -100,9 +105,9 @@ VECTOR CameraAim::GetAimPos() const
 
 	// カメラの軸をもとに位置を修正
 	const auto axes = m_camera_transform->GetAxes(CoordinateKind::kWorld);
-	look_pos += axes.x_axis * GetAimCorrect().x;
-	look_pos += axes.y_axis * GetAimCorrect().y;
-	look_pos += axes.z_axis * GetAimCorrect().z;
+	look_pos += axes.x_axis * m_aim_correct.x;
+	look_pos += axes.y_axis * m_aim_correct.y;
+	look_pos += axes.z_axis * m_aim_correct.z;
 
 	return look_pos;
 }

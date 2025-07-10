@@ -6,6 +6,8 @@ RotControlVirtualCamera::RotControlVirtualCamera() :
 {
 	m_priority = kPriority;
 	m_active_scene_kind.emplace_back(SceneKind::kPlay);
+
+	m_body->SetCameraCorrectPos(VGet(500, 30, -100));
 }
 
 RotControlVirtualCamera::~RotControlVirtualCamera()
@@ -22,7 +24,8 @@ void RotControlVirtualCamera::Update()
 {
 	Move();
 
-	m_aim->SetRot(math::ConvertEulerAnglesToRotMatrix(m_input_angle.at(TimeKind::kCurrent)));
+	m_aim ->SetRot(math::ConvertEulerAnglesToRotMatrix(m_input_angle.at(TimeKind::kCurrent)));
+	m_body->CalcCameraPos();
 }
 
 void RotControlVirtualCamera::LateUpdate()
@@ -110,12 +113,9 @@ void RotControlVirtualCamera::Move()
 
 	CalcMoveDirFromPad();
 	CalcMoveDirFromMouse();
-	
-	CalcInputAngle();
-	
-	
+	CalcMoveDirFromCommand();
 
-	CalcPos();
+	CalcInputAngle();
 }
 
 void RotControlVirtualCamera::CalcMoveDirFromPad()
@@ -180,29 +180,25 @@ void RotControlVirtualCamera::CalcMoveDirFromMouse()
 	m_move_dir = v3d::GetNormalizedV(m_velocity);
 }
 
-//void RotControlVirtualCamera::InitMove()
-//{
-//	for (auto& is_input : m_is_input) { is_input = false; }
-//	m_move_dir = v3d::GetZeroV();
-//	m_velocity = v3d::GetZeroV();
-//}
-
-void RotControlVirtualCamera::CalcInputAngle()
+void RotControlVirtualCamera::CalcMoveDirFromCommand()
 {
 	const auto command = CommandHandler::GetInstance();
 
 	// コマンドパターンで入力された場合の速度・方向を取得
 	if (	command->GetCurrentFrameExecuteInputCode(CommandKind::kMoveUpCamera)
-		||  command->GetCurrentFrameExecuteInputCode(CommandKind::kMoveDownCamera)
-		||  command->GetCurrentFrameExecuteInputCode(CommandKind::kMoveLeftCamera)
-		||  command->GetCurrentFrameExecuteInputCode(CommandKind::kMoveRightCamera))
+		||	command->GetCurrentFrameExecuteInputCode(CommandKind::kMoveDownCamera)
+		||	command->GetCurrentFrameExecuteInputCode(CommandKind::kMoveLeftCamera)
+		||	command->GetCurrentFrameExecuteInputCode(CommandKind::kMoveRightCamera))
 	{
 		m_move_dir = v3d::GetNormalizedV(m_move_dir);
 		m_velocity = m_move_dir * kMoveSpeedWithButton;
 	}
+}
 
+void RotControlVirtualCamera::CalcInputAngle()
+{
 	// 視点リセット
-	CalcInitAngle();
+	CalcInitAim();
 
 	m_velocity *= FPS::GetDeltaTime();
 
@@ -219,25 +215,7 @@ void RotControlVirtualCamera::CalcInputAngle()
 	if (m_input_angle.at(TimeKind::kCurrent).x > kMaxVerticalInputAngle * math::kDegreesToRadian) { m_input_angle.at(TimeKind::kCurrent).x = kMaxVerticalInputAngle * math::kDegreesToRadian; }
 }
 
-void RotControlVirtualCamera::CalcPos()
-{
-	const VECTOR look_pos = m_aim->GetAimPos();
-	const VECTOR forward = m_transform->GetForward(CoordinateKind::kWorld);
-	const VECTOR pos = look_pos - forward * m_distance_to_target;
-	m_transform->SetPos(CoordinateKind::kWorld, pos);
-}
-
-//void Camera::CalcDistance()
-//{
-//	// 対象を上から見ると離れ、下から見ると近づく
-//	const float min  = kMinVerticalAngle * math::kDegreesToRadian;
-//	const float max  = kMaxVerticalAngle * math::kDegreesToRadian;
-//	const float rate = math::GetUnitValue<float, float>(min, max, m_input_angle.at(TimeKind::kCurrent).x);
-//
-//	m_distance_to_target = (kMaxDistanceToTarget - kMinDistanceToTarget) * rate + kMinDistanceToTarget;
-//}
-
-void RotControlVirtualCamera::CalcInitAngle()
+void RotControlVirtualCamera::CalcInitAim()
 {
 	if (!m_is_init_aiming) { return; }
 
@@ -265,7 +243,31 @@ void RotControlVirtualCamera::CalcInitAngle()
 	}
 }
 
+//void RotControlVirtualCamera::InitMove()
+//{
+//	for (auto& is_input : m_is_input) { is_input = false; }
+//	m_move_dir = v3d::GetZeroV();
+//	m_velocity = v3d::GetZeroV();
+//}
 
+
+//void RotControlVirtualCamera::CalcPos()
+//{
+//	const VECTOR look_pos	= m_aim->GetAimPos();
+//	const VECTOR forward	= m_transform->GetForward(CoordinateKind::kWorld);
+//	const VECTOR pos		= look_pos - forward * m_distance_to_target;
+//	m_transform->SetPos(CoordinateKind::kWorld, pos);
+//}
+
+//void Camera::CalcDistance()
+//{
+//	// 対象を上から見ると離れ、下から見ると近づく
+//	const float min  = kMinVerticalAngle * math::kDegreesToRadian;
+//	const float max  = kMaxVerticalAngle * math::kDegreesToRadian;
+//	const float rate = math::GetUnitValue<float, float>(min, max, m_input_angle.at(TimeKind::kCurrent).x);
+//
+//	m_distance_to_target = (kMaxDistanceToTarget - kMinDistanceToTarget) * rate + kMinDistanceToTarget;
+//}
 
 //void RotControlVirtualCamera::JudgeLookSameDirTarget()
 //{

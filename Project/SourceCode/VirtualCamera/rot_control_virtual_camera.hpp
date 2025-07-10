@@ -7,33 +7,38 @@ class RotControlVirtualCamera final : public ControlVirtualCameraBase
 {
 public:
 	RotControlVirtualCamera();
-	~RotControlVirtualCamera() override;
+	~RotControlVirtualCamera()		override;
 
-	void Init()			override;
-	void Update()		override;
-	void LateUpdate()   override;
-	void Draw() const	override;
+	void Init()						override;
+	void Update()					override;
+	void LateUpdate()				override;
+	void Draw() const				override;
 
 	#pragma region ƒRƒ}ƒ“ƒh
-	void MoveUp()		override;
-	void MoveDown()		override;
-	void MoveLeft()		override;
-	void MoveRight()	override;
-	void InitAim()		override;
-	void InitYawAim()   override;
+	void MoveUp()					override;
+	void MoveDown()					override;
+	void MoveLeft()					override;
+	void MoveRight()				override;
+	void InitAim()					override;
+	void InitYawAim()				override;
 	#pragma endregion
 
 private:
-	void Move()					override;
-	void CalcMoveDirFromPad()	override;
-	void CalcMoveDirFromMouse()	override;
+	void Move()						override;
 
+	void CalcMoveDirFromPad()		override;
+	void CalcMoveDirFromMouse()		override;
+	void CalcMoveDirFromCommand()	override;
+
+	void CalcInputAngle()			override;
+	void CalcInitAim()				override;
+	
+
+
+	//void CalcPos();
+
+	//[[nodiscard]] MATRIX GetRotMatrix() override;
 	//void InitMove();
-
-	void CalcInputAngle();
-	void CalcPos();
-	void CalcInitAngle();
-
 	//void JudgeLookSameDirTarget();
 	//void ApplyInvert();
 

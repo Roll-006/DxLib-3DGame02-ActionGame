@@ -15,12 +15,16 @@ VirtualCameraBase::VirtualCameraBase(const std::string& name, const VirtualCamer
 
 void VirtualCameraBase::AttachTarget(const std::shared_ptr<Transform> target_transform)
 {
-	m_body->AttachTarget(target_transform);
-	m_aim ->AttachTarget(target_transform);
+	m_target_transform = target_transform;
+
+	m_body->AttachTarget(m_target_transform);
+	m_aim ->AttachTarget(m_target_transform);
 }
 
 void VirtualCameraBase::DetachTarget()
 {
+	m_target_transform = nullptr;
+
 	m_body->DetachTarget();
 	m_aim ->DetachTarget();
 }
