@@ -1,7 +1,7 @@
 #pragma once
 #include <cassert>
 
-/// @brief インスタンスの生成が1つに限られるシングルトンの基底クラス()
+/// @brief インスタンスの生成が1つに限られるシングルトンの基底クラス
 /// @brief GetInstanceを禁止
 template<typename T>
 class OneInstanceSingletonBase abstract

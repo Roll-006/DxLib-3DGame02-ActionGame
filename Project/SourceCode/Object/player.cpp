@@ -248,7 +248,7 @@ void Player::MoveLeft()
 
 	m_is_input_move.at(static_cast<int>(MoveDir::kLeft)) = true;
 
-	//m_move_dir.at(TimeKind::kNext) -= m_camera->GetTransform()->GetRight(CoordinateKind::kWorld);
+	m_move_dir.at(TimeKind::kNext) -= CameraManager::GetInstance()->GetMainCamera()->GetTransform()->GetRight(CoordinateKind::kWorld);
 }
 
 void Player::MoveRight()
@@ -258,7 +258,7 @@ void Player::MoveRight()
 
 	m_is_input_move.at(static_cast<int>(MoveDir::kRight)) = true;
 
-	//m_move_dir.at(TimeKind::kNext) += m_camera->GetTransform()->GetRight(CoordinateKind::kWorld);
+	m_move_dir.at(TimeKind::kNext) += CameraManager::GetInstance()->GetMainCamera()->GetTransform()->GetRight(CoordinateKind::kWorld);
 }
 
 void Player::AimingGun()
@@ -571,11 +571,6 @@ void Player::CalcMoveSpeed(const float input_slope)
 void Player::CalcMoveDir(const VECTOR& velocity)
 {
 	if (!m_is_move) { return; }
-
-	//if (m_is_run && m_camera->IsLookSameDirTarget())
-	//{
-	//	int a = 0;
-	//}
 
 	// –Ú“I‚Æ‚·‚éŒü‚«‚Æ‹——£‚ðŽæ“¾
 	m_move_dir.at(TimeKind::kNext) = v3d::GetNormalizedV(velocity);

@@ -12,9 +12,10 @@ ShareScene::ShareScene() :
 	PhysicsManager	::GetInstance()->AddPhysicalObj	(m_main_camera);
 
 	//m_camera->AttachTarget(ObjName.PLAYER, m_player->GetModelHandle(), BonePath.SPINE_2, false);
-	CameraManager::GetInstance()->SetMainCamera(m_main_camera);
-	CameraManager::GetInstance()->AddVirtualCamera(std::make_shared<RotControlVirtualCamera>());
-
+	const auto camera_manager = CameraManager::GetInstance();
+	camera_manager->SetMainCamera(m_main_camera);
+	camera_manager->AddVirtualCamera(std::make_shared<RotControlVirtualCamera>());
+	camera_manager->GetVirtualCamera<RotControlVirtualCamera>(VirtualCameraKind::kRotControl)->AttachTarget(m_player->GetTransform());
 }
 
 ShareScene::~ShareScene()

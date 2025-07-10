@@ -97,7 +97,6 @@ public:
 //	void DetachTarget();
 //#pragma endregion
 //
-//
 //#pragma region ターゲットとの距離
 //	/// @brief ターゲットとの距離を設定する
 //	void SetDistanceToTarget(const float distance) { m_distance_to_target = distance; }
@@ -108,19 +107,12 @@ public:
 //	void Depart(const float max_distance, const float move_speed);
 //#pragma endregion
 //
-//
-//
-//
-//
 //	/// @brief ボーンを追尾する際にボーンの揺れまで追尾する
 //	/// @brief ボーンを追尾していない場合は効果なし
 //	void TrackBoneWobbly() { m_is_track_height_only = true; }
 //	/// @brief ターゲットの原点から対象のボーンまでの高さのみを抽出した位置を追尾
 //	/// @brief ボーンを追尾していない場合は効果なし
 //	void TrackBoneHeightOnly() { m_is_track_height_only = false; }
-//
-//	/// @brief ヨー角(Y軸回転)の視点をリセット
-//	void InitYaw();
 //
 //	/// @brief 視点リセット中かどうかを判定
 //	[[nodiscard]] bool IsInitAngle() const { return m_is_init_angle; }
@@ -172,16 +164,8 @@ private:
 //	//static constexpr float  kMaxDistanceToTarget	= 42.0f;
 //	//static constexpr float  kMinDistanceToTarget	= 42.0f;
 //
-//	static constexpr float  kMaxVerticalAngle = 60.0f;
-//	static constexpr float  kMinVerticalAngle = -60.0f;
-//	static constexpr float  kInitAngleSpeed = 10.0f;
-//	static constexpr float  kInitYawSpeed = 60.0f;
-//	static constexpr float  kInitAngleEndThreshold = 0.01f;
-//	static constexpr float  kInitYawEndThreshold = 0.3f;
-//
-//	static constexpr float  kMoveSpeedWithButton = 2.0f;
-//	static constexpr float  kMoveSpeedWithStick = 2.5f;
-//	static constexpr float  kMoveSpeedWithMouse = 0.1f;
+
+
 //
 //	static constexpr float  kInitAngleTolerance = 0.01f;		// 視点リセットが完了したと判定させる許容値
 //

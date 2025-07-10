@@ -2,9 +2,9 @@
 
 VirtualCameraBase::VirtualCameraBase(const std::string& name, const VirtualCameraKind camera_kind) :
 	ObjBase				(name, ObjTag.VIRTUAL_CAMERA),
-	m_body				(nullptr),
-	m_aim				(nullptr),
-	m_noise				(nullptr),
+	m_body				(std::make_shared<CameraBody> (m_transform)),
+	m_aim				(std::make_shared<CameraAim>  (m_transform)),
+	m_noise				(std::make_shared<CameraNoise>(m_transform)),
 	m_target_transform	(nullptr),
 	m_priority			(0),
 	m_camera_kind		(camera_kind),
@@ -15,10 +15,12 @@ VirtualCameraBase::VirtualCameraBase(const std::string& name, const VirtualCamer
 
 void VirtualCameraBase::AttachTarget(const std::shared_ptr<Transform> target_transform)
 {
-
+	m_body->AttachTarget(target_transform);
+	m_aim ->AttachTarget(target_transform);
 }
 
 void VirtualCameraBase::DetachTarget()
 {
-
+	m_body->DetachTarget();
+	m_aim ->DetachTarget();
 }

@@ -18,4 +18,7 @@ public:
 private:
 	/// @brief 見る方向を設定
 	void SetAim();
+
+	/// @brief レイキャストトリガーの位置を計算
+	void CalcRayPos();
 };

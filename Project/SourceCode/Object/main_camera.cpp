@@ -4,7 +4,7 @@
 MainCamera::MainCamera() : 
 	PhysicalObjBase(ObjName.MAIN_CAMERA, ObjTag.CAMERA, MassKind::kLight)
 {
-
+	AddCollider(std::make_shared<Collider>(ColliderKind::kRayCast, std::make_shared<Segment>(), this));
 }
 
 MainCamera::~MainCamera()
@@ -55,4 +55,12 @@ void MainCamera::SetAim()
 	const VECTOR target_pos	= pos + m_transform->GetForward(CoordinateKind::kWorld);
 
 	SetCameraPositionAndTarget_UpVecY(pos, target_pos);
+}
+
+void MainCamera::CalcRayPos()
+{
+	// Œõü‚ÌÀ•W‚ğŒvZ
+	//auto ray = std::dynamic_pointer_cast<Segment>(GetCollider(ColliderKind::kRayCast)->GetShape());
+	//ray->SetBeginPos(GetLookPos(), true);
+	//ray->SetEndPos	(m_transform->GetPos(CoordinateKind::kWorld), true);
 }

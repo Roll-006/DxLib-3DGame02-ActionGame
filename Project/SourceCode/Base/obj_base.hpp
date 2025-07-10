@@ -25,12 +25,12 @@ public:
 	/// @brief オブジェクトを非アクティブ化する(削除せずに機能を停止)
 	void Deactivate() { m_is_active = false; }
 
-	[[nodiscard]] std::shared_ptr<Transform> GetTransform() { return m_transform; }
-	[[nodiscard]] std::string GetName() const { return m_name; }
-	[[nodiscard]] std::string GetTag()  const { return m_tag; }
-	[[nodiscard]] int GetObjHandle()	const { return m_obj_handle; }
+	[[nodiscard]] std::shared_ptr<Transform> GetTransform()			{ return m_transform; }
+	[[nodiscard]] std::string				 GetName()		const	{ return m_name; }
+	[[nodiscard]] std::string				 GetTag()		const	{ return m_tag; }
+	[[nodiscard]] int						 GetObjHandle()	const	{ return m_obj_handle; }
 
-	[[nodiscard]] bool IsActive() const { return m_is_active; }
+	[[nodiscard]] bool						 IsActive()		const	{ return m_is_active; }
 
 protected:
 	std::shared_ptr<Transform> m_transform;
