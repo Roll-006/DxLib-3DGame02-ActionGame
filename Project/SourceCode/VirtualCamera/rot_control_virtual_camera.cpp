@@ -8,7 +8,7 @@ RotControlVirtualCamera::RotControlVirtualCamera() :
 	m_active_scene_kind.emplace_back(SceneKind::kPlay);
 
 	m_body->SetCameraCorrectPos	(VGet(30.0f,  50.0f, -150.0f));
-	m_aim ->SetAimCorrect		(VGet(0.0f,  0.0f,    0.0f));
+	m_aim ->SetAimCorrect		(VGet(100.0f,  0.0f,    0.0f));
 }
 
 RotControlVirtualCamera::~RotControlVirtualCamera()
@@ -35,8 +35,8 @@ void RotControlVirtualCamera::Update()
 	Move();
 
 	m_aim ->SetRot		 (math::ConvertEulerAnglesToRotMatrix(m_input_angle.at(TimeKind::kCurrent)));
-	m_body->SetCameraPos (GetCameraPos());
 	m_body->CalcCameraPos();
+	m_body->SetCameraPos (GetCameraPos()/* + m_body->GetCameraPos()*/);
 }
 
 void RotControlVirtualCamera::LateUpdate()
@@ -261,10 +261,11 @@ void RotControlVirtualCamera::CalcInitAim()
 
 VECTOR RotControlVirtualCamera::GetCameraPos()
 {
-	const VECTOR look_pos	= m_aim->GetAimPos();
+	const VECTOR aim_pos	= m_aim->GetAimPos();
 	const VECTOR forward	= m_transform->GetForward(CoordinateKind::kWorld);
+	const float  distance	= VSize(aim_pos - m_body->GetCameraPos());
 
-	return look_pos - forward * 100;
+	return aim_pos - forward * distance;
 }
 
 
