@@ -20,6 +20,7 @@ public:
 	[[nodiscard]] bool IsInitAiming() const { return m_is_init_aiming; }
 
 protected:
+	virtual void InitMove()					abstract;
 	virtual void Move()						abstract;
 
 	virtual void CalcMoveDirFromPad()		abstract;

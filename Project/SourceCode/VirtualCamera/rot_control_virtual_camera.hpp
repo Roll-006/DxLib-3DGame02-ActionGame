@@ -24,6 +24,7 @@ public:
 	#pragma endregion
 
 private:
+	void InitMove()					override;
 	void Move()						override;
 
 	void CalcMoveDirFromPad()		override;
@@ -33,7 +34,7 @@ private:
 	void CalcInputAngle()			override;
 	void CalcInitAim()				override;
 	
-
+	[[nodiscard]] VECTOR GetCameraPos();
 
 	//void CalcPos();
 

@@ -57,9 +57,17 @@ void CameraBody::DetachTarget()
 
 VECTOR CameraBody::GetCameraPos() const
 {
-	const auto target_world_mat = m_target_transform->GetMatrix(CoordinateKind::kWorld);
-	const auto target_local_pos = m_target_transform->GetPos   (CoordinateKind::kLocal);
+	const auto target_world_mat		= m_target_transform->GetMatrix(CoordinateKind::kWorld);
+	const auto target_local_pos		= m_target_transform->GetPos   (CoordinateKind::kLocal);
+	const auto target_world_scale	= m_target_transform->GetScale (CoordinateKind::kWorld);
 
-	// TODO : スケールを打ち消す必要あり
-	return target_local_pos + VTransformSR(m_camera_correct_pos, target_world_mat);
+	const VECTOR reciprocal
+	{
+		1.0f / target_world_scale.x,
+		1.0f / target_world_scale.y,
+		1.0f / target_world_scale.z
+	};
+
+	// スケール分を打ち消す
+	return target_local_pos + VTransformSR(m_camera_correct_pos, target_world_mat) * reciprocal;
 }

@@ -7,7 +7,8 @@ RotControlVirtualCamera::RotControlVirtualCamera() :
 	m_priority = kPriority;
 	m_active_scene_kind.emplace_back(SceneKind::kPlay);
 
-	m_body->SetCameraCorrectPos(VGet(500, 30, -100));
+	m_body->SetCameraCorrectPos	(VGet(30.0f,  50.0f, -150.0f));
+	m_aim ->SetAimCorrect		(VGet(0.0f,  0.0f,    0.0f));
 }
 
 RotControlVirtualCamera::~RotControlVirtualCamera()
@@ -22,9 +23,19 @@ void RotControlVirtualCamera::Init()
 
 void RotControlVirtualCamera::Update()
 {
+	InitMove();
+
+	const auto command = CommandHandler::GetInstance();
+	command->Execute(CommandKind::kInitAim,			this);
+	command->Execute(CommandKind::kMoveUpCamera,	this);
+	command->Execute(CommandKind::kMoveDownCamera,	this);
+	command->Execute(CommandKind::kMoveLeftCamera,	this);
+	command->Execute(CommandKind::kMoveRightCamera, this);
+
 	Move();
 
-	m_aim ->SetRot(math::ConvertEulerAnglesToRotMatrix(m_input_angle.at(TimeKind::kCurrent)));
+	m_aim ->SetRot		 (math::ConvertEulerAnglesToRotMatrix(m_input_angle.at(TimeKind::kCurrent)));
+	m_body->SetCameraPos (GetCameraPos());
 	m_body->CalcCameraPos();
 }
 
@@ -107,6 +118,13 @@ void RotControlVirtualCamera::InitYawAim()
 #pragma endregion
 
 
+void RotControlVirtualCamera::InitMove()
+{
+	for (auto& is_input : m_is_input) { is_input = false; }
+	m_move_dir = v3d::GetZeroV();
+	m_velocity = v3d::GetZeroV();
+}
+
 void RotControlVirtualCamera::Move()
 {
 	if (!m_target_transform) { return; }
@@ -164,10 +182,8 @@ void RotControlVirtualCamera::CalcMoveDirFromMouse()
 	if (m_move_dir != v3d::GetZeroV())													{ return; }
 	if (InputChecker::GetInstance()->GetCurrentInputDevice() != DeviceKind::kKeyboard)	{ return; }
 
-	const auto input = InputChecker::GetInstance();
-
 	// ˆÚ“®‘¬“x‚ðŽæ“¾
-	Vector2D<float> velocity_2d = input->GetMouseVelocity(TimeKind::kCurrent);
+	Vector2D<float> velocity_2d = InputChecker::GetInstance()->GetMouseVelocity(TimeKind::kCurrent);
 	m_velocity = VGet(velocity_2d.y, velocity_2d.x, 0.0f) * kMoveSpeedWithMouse;
 
 	// “ü—Í”»’è‚ðŽæ“¾
@@ -219,9 +235,9 @@ void RotControlVirtualCamera::CalcInitAim()
 {
 	if (!m_is_init_aiming) { return; }
 
-	VECTOR distance_v = m_input_angle.at(TimeKind::kNext) - m_input_angle.at(TimeKind::kCurrent);
-	distance_v.y = math::ConnectMinusPiToPi(distance_v.y);
-	VECTOR dir = v3d::GetNormalizedV(distance_v);
+	VECTOR distance_v	= m_input_angle.at(TimeKind::kNext) - m_input_angle.at(TimeKind::kCurrent);
+	distance_v.y		= math::ConnectMinusPiToPi(distance_v.y);
+	VECTOR dir			= v3d::GetNormalizedV(distance_v);
 
 	// ‰EE¶‰ñ‚è‚©‚çÅ’ZŒo˜H‚ðŽæ“¾‚µA‰ñ“]•ûŒü‚É”½‰f
 	float distance = VSize(distance_v);
@@ -243,12 +259,13 @@ void RotControlVirtualCamera::CalcInitAim()
 	}
 }
 
-//void RotControlVirtualCamera::InitMove()
-//{
-//	for (auto& is_input : m_is_input) { is_input = false; }
-//	m_move_dir = v3d::GetZeroV();
-//	m_velocity = v3d::GetZeroV();
-//}
+VECTOR RotControlVirtualCamera::GetCameraPos()
+{
+	const VECTOR look_pos	= m_aim->GetAimPos();
+	const VECTOR forward	= m_transform->GetForward(CoordinateKind::kWorld);
+
+	return look_pos - forward * 100;
+}
 
 
 //void RotControlVirtualCamera::CalcPos()

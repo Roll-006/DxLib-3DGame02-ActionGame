@@ -35,9 +35,9 @@ void CameraAim::CalcAim()
 void CameraAim::AttachTarget(const std::shared_ptr<Transform> target_transform)
 {
 	m_target_transform		= target_transform;
-	m_aim_correct			= v3d::GetZeroV();
-	m_horizontal_damping	= 0.0f;
-	m_vertical_damping		= 0.0f;
+	//m_aim_correct			= v3d::GetZeroV();
+	//m_horizontal_damping	= 0.0f;
+	//m_vertical_damping	= 0.0f;
 	m_is_track				= true;
 }
 

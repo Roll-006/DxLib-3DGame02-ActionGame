@@ -52,8 +52,8 @@ VECTOR GunBase::GetShotDir() const
 
 VECTOR GunBase::GetMuzzlePos() const
 {
-	const auto world_m   = m_transform->GetMatrix(CoordinateKind::kWorld);
-	const auto local_pos = m_transform->GetPos   (CoordinateKind::kLocal);
+	const auto world_m		= m_transform->GetMatrix(CoordinateKind::kWorld);
+	const auto local_pos	= m_transform->GetPos   (CoordinateKind::kLocal);
 
 	return local_pos + VTransformSR(m_muzzle_correct_pos, world_m);
 }

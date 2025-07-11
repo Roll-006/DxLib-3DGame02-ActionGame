@@ -179,7 +179,7 @@ private:
 	
 private:
 	static constexpr float  kNear	= 1.0f;
-	static constexpr float  kFar	= 5000.0f;
+	static constexpr float  kFar	= 3000.0f;
 	static constexpr float  kFOV	= 45.0f;
 
 	std::shared_ptr<MainCamera>									m_main_camera;
