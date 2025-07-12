@@ -89,7 +89,7 @@ void CameraManager::BlendVirtualCamera()
 	//priority = algorithm::Sort(priority, SortKind::kDescending);
 
 	// TODO : ‰¼
-	m_main_camera->GetTransform()->SetMatrix(CoordinateKind::kWorld, GetVirtualCamera(VirtualCameraKind::kRotControl)->GetTransform()->GetMatrix(CoordinateKind::kWorld));
+	m_main_camera->GetTransform()->SetMatrix(CoordinateKind::kWorld, GetVirtualCamera(ObjName.SCOPE_CAMERA)->GetTransform()->GetMatrix(CoordinateKind::kWorld));
 }
 
 void CameraManager::ApplyBlendResultMatrix()

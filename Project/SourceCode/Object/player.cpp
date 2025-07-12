@@ -35,11 +35,16 @@ Player::Player() :
 	AttachWeapon(gun);
 
 	// TODO : ‰¼‚Åe‚ÌƒIƒuƒWƒF“o˜^
-	
 	ObjManager		::GetInstance()->AddObj(m_current_attach_weapon);
 	CollisionManager::GetInstance()->AddCollideObj(m_current_attach_weapon);
 	//PhysicsManager	::GetInstance()->AddPhysicalObj(m_current_attach_gun);
 	//PhysicsManager	::GetInstance()->AddIgnoreObjGravity(ObjName.ASSAULT_RIFLE);
+
+	// TODO : ‰¼‚Åe—p‚ÌƒJƒƒ‰‚ğ“o˜^
+	const auto camera_manager = CameraManager::GetInstance();
+	const auto scope_camera = std::make_shared<ScopeVirtualCamera>();
+	camera_manager->AddVirtualCamera(scope_camera);
+	scope_camera->AttachTarget(gun->GetTransform());
 
 	// TODO : ‰¼‚ÅŠc‚è’e”‚ğİ’è
 	m_current_remaining_bullet_num = 10000;

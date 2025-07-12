@@ -44,8 +44,8 @@ private:
 private:
 	static constexpr int	kPriority				= 10;		// バーチャルカメラの優先度
 
-	static constexpr float  kMaxVerticalInputAngle	= 89.0f;
-	static constexpr float  kMinVerticalInputAngle	= -89.0f;
+	static constexpr float  kMaxVerticalInputAngle	= 60.0f;
+	static constexpr float  kMinVerticalInputAngle	= -60.0f;
 	static constexpr float  kInitAngleSpeed			= 10.0f;
 	static constexpr float  kInitYawSpeed			= 60.0f;
 	static constexpr float  kInitAngleEndThreshold	= 0.01f;

@@ -33,7 +33,7 @@ public:
 	/// @brief WARNING : 回転量の補正値は自動的に適用されるため考慮する必要はない
 	/// @param rot_matrix 回転行列
 	void SetRot					(const MATRIX&			rot_matrix);
-	void SetAimCorrectAngle		(const VECTOR&			aim_correct_angle)	{ m_aim_correct_angle	= aim_correct_angle;	}
+	void SetAimCorrect			(const VECTOR&			aim_correct)		{ m_aim_correct			= aim_correct;		}
 	void SetHorizontalDamping	(const float			horizontal_damping)	{ m_horizontal_damping	= horizontal_damping;	}
 	void SetVerticalDamping		(const float			vertical_damping)	{ m_vertical_damping	= vertical_damping;		}
 	/// @brief ターゲットをスクリーンのどこに位置させるかを設定
@@ -52,7 +52,8 @@ public:
 
 
 	#pragma region Getter
-	[[nodiscard]] VECTOR			GetAimCorrectAngle()	const { return m_aim_correct_angle; }
+	[[nodiscard]] VECTOR			GetAimPos()				const;
+	[[nodiscard]] VECTOR			GetAimCorrect()			const { return m_aim_correct; }
 	[[nodiscard]] float				GetHorizontalDamping()	const { return m_horizontal_damping; }
 	[[nodiscard]] float				GetVerticalDamping()	const { return m_vertical_damping; }
 	[[nodiscard]] Vector2D<float>	GetScreen()				const { return m_screen; }
@@ -69,7 +70,7 @@ private:
 	std::shared_ptr<Transform> m_camera_transform;
 	std::shared_ptr<Transform> m_target_transform;
 
-	VECTOR			m_aim_correct_angle;	// ターゲットを見る方向の補正(オフセット)
+	VECTOR			m_aim_correct;			// ターゲットを見る方向の補正(オフセット)
 	float			m_horizontal_damping;	// 水平方向の追尾遅延
 	float			m_vertical_damping;		// 垂直方向の追尾遅延
 	Vector2D<float>	m_screen;				// ターゲットをスクリーンのどこに位置させるか

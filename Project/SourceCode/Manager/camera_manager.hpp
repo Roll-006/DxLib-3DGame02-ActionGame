@@ -2,6 +2,7 @@
 #include "../Base/singleton_base.hpp"
 
 #include "../VirtualCamera/rot_control_virtual_camera.hpp"
+#include "../VirtualCamera/scope_virtual_camera.hpp"
 #include "../Object/main_camera.hpp"
 
 namespace virtual_camera_concepts
