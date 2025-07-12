@@ -28,7 +28,7 @@ public:
 
 	#pragma region Setter
 	void SetCameraPos		(const VECTOR& camera_pos)			{ m_camera_transform->SetPos(CoordinateKind::kWorld, camera_pos); }
-	void SetCameraCorrectPos(const VECTOR& camera_correct_pos)	{ m_camera_correct_pos = camera_correct_pos; }
+	void SetCameraCorrectPos(const VECTOR& camera_correct_pos)	{ m_camera_correct_pos	= camera_correct_pos; }
 	void SetDamping			(const VECTOR& damping)				{ m_damping				= damping; }
 	void SetDampingYaw		(const float   damping_yaw)			{ m_damping_yaw			= damping_yaw; }
 	#pragma endregion
@@ -41,6 +41,8 @@ public:
 	[[nodiscard]] float  GetDampingYaw()		const { return m_damping_yaw; }
 	#pragma endregion
 
+private:
+	void CalcPos();
 
 private:
 	std::shared_ptr<Transform> m_camera_transform;

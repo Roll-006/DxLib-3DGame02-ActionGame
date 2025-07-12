@@ -2,7 +2,7 @@
 
 Window::Window():
 	m_change_window_count	(0),
-	m_is_full_screen		(true)
+	m_is_full_screen		(false)
 {
 	ChangeWindowMode(m_is_full_screen ? FALSE : TRUE);	// DxLib既存の関数はFALSEがフルスクリーンであるためフラグを反転
 	if (m_is_full_screen) { ++m_change_window_count; }

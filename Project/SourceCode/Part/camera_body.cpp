@@ -16,6 +16,11 @@ CameraBody::~CameraBody()
 	// 処理なし
 }
 
+void CameraBody::Update()
+{
+	CalcPos();
+}
+
 
 #pragma region Attach / Detach
 void CameraBody::AttachTarget(const std::shared_ptr<Transform> target_transform)
@@ -39,32 +44,23 @@ void CameraBody::DetachTarget()
 #pragma endregion
 
 
+#pragma region Getter
 VECTOR CameraBody::GetCameraPos() const
 {
-	//const auto target_world_mat		= MGetTranslate(m_target_transform->GetPos(CoordinateKind::kWorld));
-	//const auto target_local_pos		= m_target_transform->GetPos   (CoordinateKind::kLocal);
-	//const auto target_world_scale	= m_target_transform->GetScale (CoordinateKind::kWorld);
-	//const auto camera_correct_pos	= m_camera_correct_dir * m_distance_to_target;
+	VECTOR camera_pos = m_target_transform->GetPos (CoordinateKind::kWorld);
 
-	//// スケールを打ち消す逆数
-	//const VECTOR reciprocal
-	//{
-	//	1.0f / target_world_scale.x,
-	//	1.0f / target_world_scale.y,
-	//	1.0f / target_world_scale.z
-	//};
-
-	//return target_local_pos + VTransformSR(camera_correct_pos, target_world_mat) * reciprocal;
-
-
-	const auto target_pos  = m_target_transform->GetPos (CoordinateKind::kWorld);
+	// カメラの軸をもとに位置を決定
 	const auto camera_axes = m_camera_transform->GetAxes(CoordinateKind::kWorld);
-	VECTOR pos = target_pos;
+	camera_pos += camera_axes.x_axis * m_camera_correct_pos.x;
+	camera_pos += camera_axes.y_axis * m_camera_correct_pos.y;
+	camera_pos += camera_axes.z_axis * m_camera_correct_pos.z;
 
-	// カメラから見て位置を決定
-	pos += camera_axes.x_axis * m_camera_correct_pos.x;
-	pos += camera_axes.y_axis * m_camera_correct_pos.y;
-	pos += camera_axes.z_axis * m_camera_correct_pos.z;
+	return camera_pos;
+}
+#pragma endregion
 
-	return pos;
+
+void CameraBody::CalcPos()
+{
+	m_camera_transform->SetPos(CoordinateKind::kWorld, GetCameraPos());
 }

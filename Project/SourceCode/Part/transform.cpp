@@ -86,9 +86,9 @@ void Transform::SetRot(const CoordinateKind coord_kind, const MATRIX& rot_matrix
 	m_local_matrix = rot_matrix * MInverse(GetRotMatrix(coord_kind)) * GetMatrix(coord_kind);
 }
 
-void Transform::SetRot(const CoordinateKind coord_kind, const VECTOR& dir)
+void Transform::SetRot(const CoordinateKind coord_kind, const VECTOR& forward)
 {
-	float yaw = math::GetYaw(dir);
+	float yaw = math::GetYaw(forward);
 	SetRot(coord_kind, MGetRotY(yaw));
 }
 

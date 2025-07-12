@@ -28,9 +28,8 @@ public:
 	void SetRot		(const CoordinateKind coord_kind, const Axes&	axes);
 
 	/// @brief 回転行列を設定
-	/// @brief キャラクターの水平な回転しか考慮していない
-	/// @param dir Y軸が0である必要あり
-	void SetRot		(const CoordinateKind coord_kind, const VECTOR& dir);
+	/// @brief WARNING : 水平的な回転しか考慮していない。forwardのY軸が0である必要あり。
+	void SetRot		(const CoordinateKind coord_kind, const VECTOR& forward);
 
 	void SetScale	(const CoordinateKind coord_kind, const VECTOR&	scale);
 	void SetScale	(const CoordinateKind coord_kind, const float	scale);

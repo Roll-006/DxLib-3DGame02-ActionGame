@@ -35,7 +35,7 @@ void RifleCartridgeManager::LateUpdate()
 	// 生存していない弾丸は削除
 	const auto remove_bullet = std::find_if(m_rifle_cartridge[ObjName.BULLET].begin(), m_rifle_cartridge[ObjName.BULLET].end(), [](const std::shared_ptr<ObjBase> obj)
 	{
-		return !std::dynamic_pointer_cast<Bullet>(obj)->IsAlive();
+		return !std::static_pointer_cast<Bullet>(obj)->IsAlive();
 	});
 	if (remove_bullet != m_rifle_cartridge[ObjName.BULLET].end())
 	{
@@ -47,7 +47,7 @@ void RifleCartridgeManager::LateUpdate()
 	// 生存していない薬莢は削除
 	const auto remove_shell_casing = std::find_if(m_rifle_cartridge[ObjName.SHELL_CASING].begin(), m_rifle_cartridge[ObjName.SHELL_CASING].end(), [](const std::shared_ptr<ObjBase> obj)
 	{
-		return !std::dynamic_pointer_cast<ShellCasing>(obj)->IsAlive();
+		return !std::static_pointer_cast<ShellCasing>(obj)->IsAlive();
 	});
 	if (remove_shell_casing != m_rifle_cartridge[ObjName.SHELL_CASING].end())
 	{
@@ -86,7 +86,7 @@ void RifleCartridgeManager::Shot(GunBase& gun)
 	const auto object_pool = ObjectPoolManager::GetInstance()->GetObjectPool(ObjectPoolName.BULLET_POOL);
 
 	// プールから弾丸を取得し、有効であれば発射
-	const auto bullet = std::dynamic_pointer_cast<Bullet>(object_pool->GetObj(ObjName.BULLET));
+	const auto bullet = std::static_pointer_cast<Bullet>(object_pool->GetObj(ObjName.BULLET));
 	if (bullet != nullptr)
 	{
 		bullet->OnShot(gun);
@@ -95,7 +95,7 @@ void RifleCartridgeManager::Shot(GunBase& gun)
 	}
 
 	// プールから薬莢を取得し、有効であれば排出
-	const auto shell_casing = std::dynamic_pointer_cast<ShellCasing>(object_pool->GetObj(ObjName.SHELL_CASING));
+	const auto shell_casing = std::static_pointer_cast<ShellCasing>(object_pool->GetObj(ObjName.SHELL_CASING));
 	if (shell_casing != nullptr)
 	{
 		shell_casing->Eject(gun);

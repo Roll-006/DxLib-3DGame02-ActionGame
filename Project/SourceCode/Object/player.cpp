@@ -125,11 +125,11 @@ void Player::Draw() const
 		}
 	}
 
-	auto pos  = m_transform->GetPos (CoordinateKind::kWorld);
-	auto axes = m_transform->GetAxes(CoordinateKind::kWorld);
-	DrawLine3D(pos, pos + axes.x_axis * 100, 0xff0000);
-	DrawLine3D(pos, pos + axes.y_axis * 100, 0x00ff22);
-	DrawLine3D(pos, pos + axes.z_axis * 100, 0x0077ff);
+	//auto pos  = m_transform->GetPos (CoordinateKind::kWorld);
+	//auto axes = m_transform->GetAxes(CoordinateKind::kWorld);
+	//DrawLine3D(pos, pos + axes.x_axis * 100, 0xff0000);
+	//DrawLine3D(pos, pos + axes.y_axis * 100, 0x00ff22);
+	//DrawLine3D(pos, pos + axes.z_axis * 100, 0x0077ff);
 
 	//DrawFormatString(300, 40, 0xffffff, "Š‚µ‚Ä‚¢‚é’e” : %d", m_current_remaining_bullet_num);
 }

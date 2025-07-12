@@ -62,9 +62,9 @@ void EnemyBase::CalcLegTriggerPos()
 	// ˆÊ’u‚ð“K—p
 	std::dynamic_pointer_cast<Capsule>(GetCollider(ColliderKind::kLeftUpLegTrigger)		->GetShape())->SetSegmentBeginPos(left_leg_pos,		true);
 	std::dynamic_pointer_cast<Capsule>(GetCollider(ColliderKind::kLeftUpLegTrigger)		->GetShape())->SetSegmentEndPos	(left_up_leg_pos,	true);
-	std::dynamic_pointer_cast<Capsule>(GetCollider(ColliderKind::kLeftDownLegTrigger)	->GetShape())->SetSegmentBeginPos(left_foot_pos,		true);
+	std::dynamic_pointer_cast<Capsule>(GetCollider(ColliderKind::kLeftDownLegTrigger)	->GetShape())->SetSegmentBeginPos(left_foot_pos,	true);
 	std::dynamic_pointer_cast<Capsule>(GetCollider(ColliderKind::kLeftDownLegTrigger)	->GetShape())->SetSegmentEndPos	(left_leg_pos,		true);
-	std::dynamic_pointer_cast<Capsule>(GetCollider(ColliderKind::kRightUpLegTrigger)	->GetShape())->SetSegmentBeginPos(right_leg_pos,		true);
+	std::dynamic_pointer_cast<Capsule>(GetCollider(ColliderKind::kRightUpLegTrigger)	->GetShape())->SetSegmentBeginPos(right_leg_pos,	true);
 	std::dynamic_pointer_cast<Capsule>(GetCollider(ColliderKind::kRightUpLegTrigger)	->GetShape())->SetSegmentEndPos	(right_up_leg_pos,	true);
 	std::dynamic_pointer_cast<Capsule>(GetCollider(ColliderKind::kRightDownLegTrigger)	->GetShape())->SetSegmentBeginPos(right_foot_pos,	true);
 	std::dynamic_pointer_cast<Capsule>(GetCollider(ColliderKind::kRightDownLegTrigger)	->GetShape())->SetSegmentEndPos	(right_leg_pos,		true);
