@@ -599,7 +599,7 @@ void Player::CalcLookDir()
 
 	if (m_is_turn_around)
 	{
-		CameraManager::GetInstance()->GetVirtualCamera<RotControlVirtualCamera>(VirtualCameraKind::kRotControl)->InitAim();
+		std::dynamic_pointer_cast<ControlVirtualCameraBase>(CameraManager::GetInstance()->GetVirtualCamera(VirtualCameraKind::kRotControl))->InitAim();
 		m_is_correct_look_dir = true;
 		VECTOR pos = m_transform->GetPos(CoordinateKind::kWorld) + VGet(0, 30, 0);
 	}

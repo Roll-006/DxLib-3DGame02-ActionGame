@@ -16,34 +16,18 @@ CameraBody::~CameraBody()
 	// 処理なし
 }
 
-void CameraBody::Update()
-{
-	CalcCameraPos();
-}
 
-void CameraBody::CalcCameraPos()
-{
-	m_camera_transform->SetPos(CoordinateKind::kWorld, GetCameraPos());
-}
-
-
+#pragma region Attach / Detach
 void CameraBody::AttachTarget(const std::shared_ptr<Transform> target_transform)
 {
 	m_target_transform		= target_transform;
-	//m_camera_correct_pos	= v3d::GetZeroV();
-	//m_damping				= v3d::GetZeroV();
-	//m_damping_yaw			= 0.0f;
 	m_is_track				= true;
 }
 
-
-#pragma region Attach / Detach
-void CameraBody::AttachTarget(const std::shared_ptr<Transform> target_transform, const VECTOR& camera_correct_pos, const VECTOR& damping, const float damping_yaw)
+void CameraBody::AttachTarget(const std::shared_ptr<Transform> target_transform, const VECTOR& camera_correct_pos)
 {
 	m_target_transform		= target_transform;
 	m_camera_correct_pos	= camera_correct_pos;
-	m_damping				= damping;
-	m_damping_yaw			= damping_yaw;
 	m_is_track				= true;
 }
 
@@ -57,17 +41,30 @@ void CameraBody::DetachTarget()
 
 VECTOR CameraBody::GetCameraPos() const
 {
-	const auto target_world_mat		= m_target_transform->GetMatrix(CoordinateKind::kWorld);
-	const auto target_local_pos		= m_target_transform->GetPos   (CoordinateKind::kLocal);
-	const auto target_world_scale	= m_target_transform->GetScale (CoordinateKind::kWorld);
+	//const auto target_world_mat		= MGetTranslate(m_target_transform->GetPos(CoordinateKind::kWorld));
+	//const auto target_local_pos		= m_target_transform->GetPos   (CoordinateKind::kLocal);
+	//const auto target_world_scale	= m_target_transform->GetScale (CoordinateKind::kWorld);
+	//const auto camera_correct_pos	= m_camera_correct_dir * m_distance_to_target;
 
-	const VECTOR reciprocal
-	{
-		1.0f / target_world_scale.x,
-		1.0f / target_world_scale.y,
-		1.0f / target_world_scale.z
-	};
+	//// スケールを打ち消す逆数
+	//const VECTOR reciprocal
+	//{
+	//	1.0f / target_world_scale.x,
+	//	1.0f / target_world_scale.y,
+	//	1.0f / target_world_scale.z
+	//};
 
-	// スケール分を打ち消す
-	return target_local_pos + VTransformSR(m_camera_correct_pos, target_world_mat) * reciprocal;
+	//return target_local_pos + VTransformSR(camera_correct_pos, target_world_mat) * reciprocal;
+
+
+	const auto target_pos  = m_target_transform->GetPos (CoordinateKind::kWorld);
+	const auto camera_axes = m_camera_transform->GetAxes(CoordinateKind::kWorld);
+	VECTOR pos = target_pos;
+
+	// カメラから見て位置を決定
+	pos += camera_axes.x_axis * m_camera_correct_pos.x;
+	pos += camera_axes.y_axis * m_camera_correct_pos.y;
+	pos += camera_axes.z_axis * m_camera_correct_pos.z;
+
+	return pos;
 }

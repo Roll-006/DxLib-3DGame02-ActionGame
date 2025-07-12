@@ -33,8 +33,6 @@ private:
 
 	void CalcInputAngle()			override;
 	void CalcInitAim()				override;
-	
-	[[nodiscard]] VECTOR GetCameraPos();
 
 	//void CalcPos();
 

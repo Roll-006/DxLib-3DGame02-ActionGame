@@ -14,9 +14,6 @@ public:
 
 	void Update();
 
-	/// @brief カメラのエイム(見る位置)を計算
-	void CalcAim();
-
 	/// @brief ターゲットを追尾する
 	void TrackTarget()			{ m_is_track = true; }
 	/// @brief ターゲットの追尾を停止する
@@ -26,7 +23,7 @@ public:
 	#pragma region Attach / Detach
 	/// @brief ターゲットをアタッチする(上書き可)
 	void AttachTarget(const std::shared_ptr<Transform> target_transform);
-	void AttachTarget(const std::shared_ptr<Transform> target_transform, const VECTOR& aim_correct_dir, const float horizontal_damping, const float vertical_damping);
+	void AttachTarget(const std::shared_ptr<Transform> target_transform, const VECTOR& aim_correct);
 	void DetachTarget();
 	#pragma endregion
 

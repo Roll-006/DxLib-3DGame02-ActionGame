@@ -25,11 +25,6 @@ void CameraAim::Update()
 
 }
 
-void CameraAim::CalcAim()
-{
-
-}
-
 
 #pragma region Attach / Detach
 void CameraAim::AttachTarget(const std::shared_ptr<Transform> target_transform)
@@ -41,12 +36,10 @@ void CameraAim::AttachTarget(const std::shared_ptr<Transform> target_transform)
 	m_is_track				= true;
 }
 
-void CameraAim::AttachTarget(const std::shared_ptr<Transform> target_transform, const VECTOR& aim_correct, const float horizontal_damping, const float vertical_damping)
+void CameraAim::AttachTarget(const std::shared_ptr<Transform> target_transform, const VECTOR& aim_correct)
 {
 	m_target_transform		= target_transform;
 	m_aim_correct			= aim_correct;
-	m_horizontal_damping	= horizontal_damping;
-	m_vertical_damping		= vertical_damping;
 	m_is_track				= true;
 }
 

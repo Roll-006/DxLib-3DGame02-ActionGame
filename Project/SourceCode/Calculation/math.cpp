@@ -135,6 +135,7 @@ Axes math::ConvertRotMatrixToAxes(const MATRIX& mat)
         VSize(VGet(m.m[2][0], m.m[2][1], m.m[2][2]))
     };
 
+    // スケールを打ち消す逆数
     const VECTOR reciprocal
     {
         1.0f / scale.x,
@@ -142,7 +143,6 @@ Axes math::ConvertRotMatrixToAxes(const MATRIX& mat)
         1.0f / scale.z
     };
 
-    // スケールを打ち消す
     const VECTOR x_axis = VTransform(axis::GetWorldXAxis(), m) * reciprocal.x;
     const VECTOR y_axis = VTransform(axis::GetWorldYAxis(), m) * reciprocal.y;
     const VECTOR z_axis = VTransform(axis::GetWorldZAxis(), m) * reciprocal.z;
