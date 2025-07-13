@@ -3,6 +3,7 @@
 CameraAim::CameraAim(const std::shared_ptr<Transform> camera_transform) :
 	m_camera_transform	(camera_transform),
 	m_target_transform	(nullptr),
+	m_target_correct_pos(v3d::GetZeroV()),
 	m_aim_correct		(v3d::GetZeroV()),
 	m_horizontal_damping(0.0f),
 	m_vertical_damping	(0.0f),
@@ -20,26 +21,12 @@ CameraAim::~CameraAim()
 
 }
 
-void CameraAim::Update()
-{
-
-}
-
 
 #pragma region Attach / Detach
-void CameraAim::AttachTarget(const std::shared_ptr<Transform> target_transform)
+void CameraAim::AttachTarget(const std::shared_ptr<Transform> target_transform, const VECTOR& target_correct_pos)
 {
 	m_target_transform		= target_transform;
-	//m_aim_correct			= v3d::GetZeroV();
-	//m_horizontal_damping	= 0.0f;
-	//m_vertical_damping	= 0.0f;
-	m_is_track				= true;
-}
-
-void CameraAim::AttachTarget(const std::shared_ptr<Transform> target_transform, const VECTOR& aim_correct)
-{
-	m_target_transform		= target_transform;
-	m_aim_correct			= aim_correct;
+	m_target_correct_pos	= target_correct_pos;
 	m_is_track				= true;
 }
 
@@ -59,34 +46,30 @@ void CameraAim::SetRot		(const MATRIX& rot_matrix)
 
 void CameraAim::SetScreen	(const Vector2D<float>& screen)
 {
-	m_screen = screen;
-
-	m_screen.x = std::clamp(m_screen.x, 0.0f, 1.0f);
-	m_screen.y = std::clamp(m_screen.y, 0.0f, 1.0f);
+	m_screen		= screen;
+	m_screen.x		= std::clamp(m_screen.x, 0.0f, 1.0f);
+	m_screen.y		= std::clamp(m_screen.y, 0.0f, 1.0f);
 }
 
 void CameraAim::SetDeadZone	(const Vector2D<float>& dead_zone)
 {
-	m_dead_zone = dead_zone;
-
-	m_dead_zone.x = std::clamp(m_dead_zone.x, 0.0f, 1.0f);
-	m_dead_zone.y = std::clamp(m_dead_zone.y, 0.0f, 1.0f);
+	m_dead_zone		= dead_zone;
+	m_dead_zone.x	= std::clamp(m_dead_zone.x, 0.0f, 1.0f);
+	m_dead_zone.y	= std::clamp(m_dead_zone.y, 0.0f, 1.0f);
 }
 
 void CameraAim::SetSoftZone	(const Vector2D<float>& soft_zone)
 {
-	m_soft_zone = soft_zone;
-
-	m_soft_zone.x = std::clamp(m_soft_zone.x, 0.0f, 1.0f);
-	m_soft_zone.y = std::clamp(m_soft_zone.y, 0.0f, 1.0f);
+	m_soft_zone		= soft_zone;
+	m_soft_zone.x	= std::clamp(m_soft_zone.x, 0.0f, 1.0f);
+	m_soft_zone.y	= std::clamp(m_soft_zone.y, 0.0f, 1.0f);
 }
 
 void CameraAim::SetBias		(const Vector2D<float>& bias)
 {
-	m_bias = bias;
-
-	m_bias.x = std::clamp(m_bias.x, -0.5f, 0.5f);
-	m_bias.y = std::clamp(m_bias.y, -0.5f, 0.5f);
+	m_bias			= bias;
+	m_bias.x		= std::clamp(m_bias.x, -0.5f, 0.5f);
+	m_bias.y		= std::clamp(m_bias.y, -0.5f, 0.5f);
 }
 #pragma endregion
 
@@ -95,6 +78,7 @@ void CameraAim::SetBias		(const Vector2D<float>& bias)
 VECTOR CameraAim::GetAimPos() const
 {
 	VECTOR aim_pos = m_target_transform->GetPos(CoordinateKind::kWorld);
+	aim_pos += m_target_correct_pos;
 
 	// カメラの軸をもとに位置を修正
 	const auto axes = m_camera_transform->GetAxes(CoordinateKind::kWorld);

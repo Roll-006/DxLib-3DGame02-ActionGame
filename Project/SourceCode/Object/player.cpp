@@ -42,9 +42,15 @@ Player::Player() :
 
 	// TODO : ‰¼‚Åe—p‚ÌƒJƒƒ‰‚ğ“o˜^
 	const auto camera_manager = CameraManager::GetInstance();
+
+	const auto rot_camera	= std::make_shared<RotControlVirtualCamera>();
+	camera_manager->AddVirtualCamera(rot_camera);
+	rot_camera	->AttachTarget(m_transform, VGet(0.0f, 30.0f, 0.0f));
+
 	const auto scope_camera = std::make_shared<ScopeVirtualCamera>();
 	camera_manager->AddVirtualCamera(scope_camera);
 	scope_camera->AttachTarget(gun->GetTransform());
+
 
 	// TODO : ‰¼‚ÅŠc‚è’e”‚ğİ’è
 	m_current_remaining_bullet_num = 10000;

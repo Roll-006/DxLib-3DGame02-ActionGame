@@ -7,8 +7,7 @@ RotControlVirtualCamera::RotControlVirtualCamera() :
 	m_priority = kPriority;
 	m_active_scene_kind.emplace_back(SceneKind::kPlay);
 
-	m_aim ->SetAimCorrect		(VGet(100.0f, 100.0f, 100.0f));
-	m_body->SetCameraCorrectPos	(VGet(50.0f, 10.0f, -200.0f));
+	m_aim ->SetAimCorrect(VGet(20.0f, 60.0f, 0.0f));
 }
 
 RotControlVirtualCamera::~RotControlVirtualCamera()
@@ -23,6 +22,8 @@ void RotControlVirtualCamera::Init()
 
 void RotControlVirtualCamera::Update()
 {
+	if (!IsActive()) { return; }
+
 	InitMove();
 
 	const auto command = CommandHandler::GetInstance();
@@ -34,23 +35,26 @@ void RotControlVirtualCamera::Update()
 
 	Move();
 
-	m_aim ->SetRot				(math::ConvertEulerAnglesToRotMatrix(m_input_angle.at(TimeKind::kCurrent)));
-	//m_body->SetCameraCorrectDir	(VGet(0, 1, 1));
-	//m_body->SetCameraCorrectDir	(-m_transform->GetForward(CoordinateKind::kWorld) + VGet(0, 10, -10));
-
-	m_body->Update();
+	m_aim ->SetRot(math::ConvertEulerAnglesToRotMatrix(m_input_angle.at(TimeKind::kCurrent)));
+	m_body->SetCameraCorrectDir(-m_transform->GetForward(CoordinateKind::kWorld));
+	m_body->SetDistanceToTarget(300.0f);
+	m_body->SetCameraPos(m_aim->GetAimPos() + m_body->GetCameraCorrectDir() * m_body->GetDistanceToTarget());
 
 	DrawSphere3D(m_aim->GetAimPos(), 10, 8, 0xffffff, 0xffffff, FALSE);
 }
 
 void RotControlVirtualCamera::LateUpdate()
 {
+	if (!IsActive()) { return; }
 
+	m_body->SetCameraCorrectDir(-m_transform->GetForward(CoordinateKind::kWorld));
+	m_body->SetDistanceToTarget(300.0f);
+	m_body->SetCameraPos(m_aim->GetAimPos() + m_body->GetCameraCorrectDir() * m_body->GetDistanceToTarget());
 }
 
 void RotControlVirtualCamera::Draw() const
 {
-
+	if (!IsActive()) { return; }
 }
 
 
@@ -262,36 +266,3 @@ void RotControlVirtualCamera::CalcInitAim()
 		m_is_init_aiming = false;
 	}
 }
-
-//void RotControlVirtualCamera::CalcPos()
-//{
-//	const VECTOR look_pos	= m_aim->GetAimPos();
-//	const VECTOR forward	= m_transform->GetForward(CoordinateKind::kWorld);
-//	const VECTOR pos		= look_pos - forward * m_distance_to_target;
-//	m_transform->SetPos(CoordinateKind::kWorld, pos);
-//}
-
-//void Camera::CalcDistance()
-//{
-//	// ëŒè€Çè„Ç©ÇÁå©ÇÈÇ∆ó£ÇÍÅAâ∫Ç©ÇÁå©ÇÈÇ∆ãﬂÇ√Ç≠
-//	const float min  = kMinVerticalAngle * math::kDegreesToRadian;
-//	const float max  = kMaxVerticalAngle * math::kDegreesToRadian;
-//	const float rate = math::GetUnitValue<float, float>(min, max, m_input_angle.at(TimeKind::kCurrent).x);
-//
-//	m_distance_to_target = (kMaxDistanceToTarget - kMinDistanceToTarget) * rate + kMinDistanceToTarget;
-//}
-
-//void RotControlVirtualCamera::JudgeLookSameDirTarget()
-//{
-//	const VECTOR forward = m_target_transform->GetForward(CoordinateKind::kWorld);
-//	const float  yaw = math::GetYaw(forward);
-//	m_input_angle.at(TimeKind::kCurrent).y;
-//
-//	m_is_look_same_dir_target = m_input_angle.at(TimeKind::kCurrent).y == yaw ? true : false;
-//}
-
-//void RotControlVirtualCamera::ApplyInvert()
-//{
-//	if (m_is_invert_horizontal) { m_move_dir.y *= -1; }
-//	if (m_is_invert_vertical) { m_move_dir.x *= -1; }
-//}

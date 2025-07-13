@@ -4,6 +4,7 @@ ShareScene::ShareScene() :
 	m_main_camera	(std::make_shared<MainCamera>()),
 	m_player		(std::make_shared<Player>())
 {
+	// 各オブジェクトマネージャーへの登録
 	ObjManager		::GetInstance()->AddObj			(m_player);
 	ObjManager		::GetInstance()->AddObj			(m_main_camera);
 	CollisionManager::GetInstance()->AddCollideObj	(m_player);
@@ -11,12 +12,10 @@ ShareScene::ShareScene() :
 	PhysicsManager	::GetInstance()->AddPhysicalObj	(m_player);
 	PhysicsManager	::GetInstance()->AddPhysicalObj	(m_main_camera);
 
-	//m_camera->AttachTarget(ObjName.PLAYER, m_player->GetModelHandle(), BonePath.SPINE_2, false);
+	// メインカメラの登録
 	const auto camera_manager = CameraManager::GetInstance();
 	const auto rot_camera = std::make_shared<RotControlVirtualCamera>();
 	camera_manager->SetMainCamera(m_main_camera);
-	camera_manager->AddVirtualCamera(rot_camera);
-	rot_camera->AttachTarget(m_player->GetTransform());
 }
 
 ShareScene::~ShareScene()
@@ -33,14 +32,12 @@ void ShareScene::Update()
 {
 	m_player					->Update();
 	CameraManager::GetInstance()->Update();
-	m_main_camera				->Update();
 }
 
 void ShareScene::LateUpdate()
 {
 	m_player					->LateUpdate();
 	CameraManager::GetInstance()->LateUpdate();
-	m_main_camera				->LateUpdate();
 }
 
 void ShareScene::Draw() const

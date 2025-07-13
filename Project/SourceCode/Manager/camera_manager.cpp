@@ -24,6 +24,9 @@ void CameraManager::Update()
 	}
 
 	BlendVirtualCamera();
+
+	assert(m_main_camera != nullptr);
+	m_main_camera->Update();
 }
 
 void CameraManager::LateUpdate()
@@ -32,6 +35,10 @@ void CameraManager::LateUpdate()
 	{
 		camera.second->LateUpdate();
 	}
+
+	BlendVirtualCamera();
+
+	m_main_camera->LateUpdate();
 }
 
 void CameraManager::SetMainCamera(const std::shared_ptr<MainCamera> main_camera)
@@ -89,7 +96,7 @@ void CameraManager::BlendVirtualCamera()
 	//priority = algorithm::Sort(priority, SortKind::kDescending);
 
 	// TODO : ‰¼
-	m_main_camera->GetTransform()->SetMatrix(CoordinateKind::kWorld, GetVirtualCamera(ObjName.SCOPE_CAMERA)->GetTransform()->GetMatrix(CoordinateKind::kWorld));
+	m_main_camera->GetTransform()->SetMatrix(CoordinateKind::kWorld, GetVirtualCamera(ObjName.ROT_CONTROL_CAMERA)->GetTransform()->GetMatrix(CoordinateKind::kWorld));
 }
 
 void CameraManager::ApplyBlendResultMatrix()

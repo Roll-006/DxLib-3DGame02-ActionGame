@@ -12,8 +12,6 @@ public:
 	CameraAim(const std::shared_ptr<Transform> camera_transform);
 	~CameraAim();
 
-	void Update();
-
 	/// @brief ターゲットを追尾する
 	void TrackTarget()			{ m_is_track = true; }
 	/// @brief ターゲットの追尾を停止する
@@ -22,8 +20,7 @@ public:
 
 	#pragma region Attach / Detach
 	/// @brief ターゲットをアタッチする(上書き可)
-	void AttachTarget(const std::shared_ptr<Transform> target_transform);
-	void AttachTarget(const std::shared_ptr<Transform> target_transform, const VECTOR& aim_correct);
+	void AttachTarget(const std::shared_ptr<Transform> target_transform, const VECTOR& target_correct_pos);
 	void DetachTarget();
 	#pragma endregion
 
@@ -64,12 +61,13 @@ public:
 
 private:
 	/// @brief 姿勢を計算する
-	void CalcRotMatrix();
+	//void CalcRotMatrix();
 
 private:
 	std::shared_ptr<Transform> m_camera_transform;
 	std::shared_ptr<Transform> m_target_transform;
 
+	VECTOR			m_target_correct_pos;	// ターゲットの補正座標(オフセット)
 	VECTOR			m_aim_correct;			// ターゲットを見る方向の補正(オフセット)
 	float			m_horizontal_damping;	// 水平方向の追尾遅延
 	float			m_vertical_damping;		// 垂直方向の追尾遅延

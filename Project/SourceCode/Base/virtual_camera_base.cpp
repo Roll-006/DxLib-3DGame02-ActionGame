@@ -6,6 +6,7 @@ VirtualCameraBase::VirtualCameraBase(const std::string& name, const VirtualCamer
 	m_aim				(std::make_shared<CameraAim>  (m_transform)),
 	m_noise				(std::make_shared<CameraNoise>(m_transform)),
 	m_target_transform	(nullptr),
+	m_target_correct_pos(v3d::GetZeroV()),
 	m_priority			(0),
 	m_camera_kind		(camera_kind),
 	m_is_active_camera	(true)
@@ -15,10 +16,15 @@ VirtualCameraBase::VirtualCameraBase(const std::string& name, const VirtualCamer
 
 void VirtualCameraBase::AttachTarget(const std::shared_ptr<Transform> target_transform)
 {
+	AttachTarget(target_transform, m_target_correct_pos);
+}
+
+void VirtualCameraBase::AttachTarget(const std::shared_ptr<Transform> target_transform, const VECTOR& target_correct_pos)
+{
 	m_target_transform = target_transform;
 
-	m_body->AttachTarget(m_target_transform);
-	m_aim ->AttachTarget(m_target_transform);
+	m_body->AttachTarget(m_target_transform, target_correct_pos);
+	m_aim ->AttachTarget(m_target_transform, target_correct_pos);
 }
 
 void VirtualCameraBase::DetachTarget()
