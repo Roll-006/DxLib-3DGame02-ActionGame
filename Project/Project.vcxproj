@@ -168,6 +168,7 @@
     <ClCompile Include="SourceCode\Manager\object_pool_manager.cpp" />
     <ClCompile Include="SourceCode\Manager\obj_manager.cpp" />
     <ClCompile Include="SourceCode\Manager\physics_manager.cpp" />
+    <ClCompile Include="SourceCode\Manager\player_state_manager.cpp" />
     <ClCompile Include="SourceCode\Manager\rifle_cartridge_manager.cpp" />
     <ClCompile Include="SourceCode\Manager\scene_manager.cpp" />
     <ClCompile Include="SourceCode\Manager\ui_manager.cpp" />
@@ -214,8 +215,10 @@
     <ClCompile Include="SourceCode\Shape\3DShape\sphere.cpp" />
     <ClCompile Include="SourceCode\State\aiming_state.cpp" />
     <ClCompile Include="SourceCode\State\idle_state.cpp" />
+    <ClCompile Include="SourceCode\State\move_state.cpp" />
     <ClCompile Include="SourceCode\State\reload_state.cpp" />
     <ClCompile Include="SourceCode\State\run_state.cpp" />
+    <ClCompile Include="SourceCode\State\shot_state.cpp" />
     <ClCompile Include="SourceCode\State\squat_state.cpp" />
     <ClCompile Include="SourceCode\UI\player_ui_creator.cpp" />
     <ClCompile Include="SourceCode\VirtualCamera\aiming_camera (2).cpp" />
@@ -299,6 +302,9 @@
     <ClInclude Include="SourceCode\FPS\fps.hpp" />
     <ClInclude Include="SourceCode\GameSystemSetter\game_system_setter.hpp" />
     <ClInclude Include="SourceCode\Input\input_checker.hpp" />
+    <ClInclude Include="SourceCode\Interface\i_attack_state.hpp" />
+    <ClInclude Include="SourceCode\Interface\i_basis_move_state.hpp" />
+    <ClInclude Include="SourceCode\Interface\i_extension_move_state.hpp" />
     <ClInclude Include="SourceCode\Interface\i_state.hpp" />
     <ClInclude Include="SourceCode\Manager\camera_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\collision_manager.hpp" />
@@ -308,6 +314,7 @@
     <ClInclude Include="SourceCode\Manager\object_pool_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\obj_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\physics_manager.hpp" />
+    <ClInclude Include="SourceCode\Manager\player_state_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\rifle_cartridge_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\scene_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\ui_manager.hpp" />
@@ -353,17 +360,12 @@
     <ClInclude Include="SourceCode\Shape\3DShape\ray_capsule.hpp" />
     <ClInclude Include="SourceCode\Shape\3DShape\sphere.hpp" />
     <ClInclude Include="SourceCode\State\aiming_state.hpp" />
-    <ClInclude Include="SourceCode\State\idle_shoot_state.hpp" />
-    <ClInclude Include="SourceCode\State\idle_squat_shoot_state.hpp" />
-    <ClInclude Include="SourceCode\State\idle_squat_state.hpp" />
     <ClInclude Include="SourceCode\State\idle_state.hpp" />
-    <ClInclude Include="SourceCode\State\player_state.hpp" />
     <ClInclude Include="SourceCode\State\reload_state.hpp" />
     <ClInclude Include="SourceCode\State\run_state.hpp" />
     <ClInclude Include="SourceCode\State\shot_state.hpp" />
     <ClInclude Include="SourceCode\State\squat_state.hpp" />
-    <ClInclude Include="SourceCode\State\walk_shoot_state.hpp" />
-    <ClInclude Include="SourceCode\State\walk_squat_state.hpp" />
+    <ClInclude Include="SourceCode\State\move_state.hpp" />
     <ClInclude Include="SourceCode\UI\player_ui_creator.hpp" />
     <ClInclude Include="SourceCode\VirtualCamera\aiming_camera (2).hpp" />
     <ClInclude Include="SourceCode\VirtualCamera\aiming_camera (3).hpp" />

@@ -260,6 +260,15 @@
     <ClCompile Include="SourceCode\Input\input_checker.cpp">
       <Filter>Input</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\State\move_state.cpp">
+      <Filter>State</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\shot_state.cpp">
+      <Filter>State</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Manager\player_state_manager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\chara_base.hpp">
@@ -658,19 +667,7 @@
     <ClInclude Include="SourceCode\Interface\i_state.hpp">
       <Filter>Interface</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\State\idle_shoot_state.hpp">
-      <Filter>State</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\State\idle_squat_shoot_state.hpp">
-      <Filter>State</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\State\idle_squat_state.hpp">
-      <Filter>State</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\State\idle_state.hpp">
-      <Filter>State</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\State\player_state.hpp">
       <Filter>State</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\State\run_state.hpp">
@@ -679,10 +676,7 @@
     <ClInclude Include="SourceCode\State\squat_state.hpp">
       <Filter>State</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\State\walk_shoot_state.hpp">
-      <Filter>State</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\State\walk_squat_state.hpp">
+    <ClInclude Include="SourceCode\State\move_state.hpp">
       <Filter>State</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\State\aiming_state.hpp">
@@ -696,6 +690,18 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Input\input_checker.hpp">
       <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Manager\player_state_manager.hpp">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Interface\i_attack_state.hpp">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Interface\i_basis_move_state.hpp">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Interface\i_extension_move_state.hpp">
+      <Filter>Interface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

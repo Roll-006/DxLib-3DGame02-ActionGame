@@ -2,11 +2,11 @@
 #include "../Interface/i_state.hpp"
 #include "../Object/player.hpp"
 
-class ShotState final : public IState<Player>
+class MoveState final : public IState<Player>
 {
 public:
-	ShotState();
-	~ShotState() override;
+	MoveState();
+	~MoveState() override;
 
 	void Update		(const Player* obj) override;
 	void ChangeState(const Player* obj) override;

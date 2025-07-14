@@ -6,6 +6,8 @@
 #include "assault_rifle.hpp"
 #include "../Manager/camera_manager.hpp"
 
+class PlayerStateManager;
+
 class Player final : public CharaBase
 {
 public:

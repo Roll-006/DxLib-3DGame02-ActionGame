@@ -1,5 +1,6 @@
 #include "player.hpp"
 #include "../Manager/command_handler.hpp"
+#include "../Manager/player_state_manager.hpp"
 
 Player::Player() :
 	CharaBase				(ObjName.PLAYER, ObjTag.PLAYER, ModelPath.CHARA_01, MassKind::kMedium),
@@ -37,8 +38,8 @@ Player::Player() :
 	// TODO : ‰¼‚Åe‚ÌƒIƒuƒWƒF“o˜^
 	ObjManager		::GetInstance()->AddObj(m_current_attach_weapon);
 	CollisionManager::GetInstance()->AddCollideObj(m_current_attach_weapon);
-	//PhysicsManager	::GetInstance()->AddPhysicalObj(m_current_attach_gun);
-	//PhysicsManager	::GetInstance()->AddIgnoreObjGravity(ObjName.ASSAULT_RIFLE);
+	//PhysicsManager::GetInstance()->AddPhysicalObj(m_current_attach_gun);
+	//PhysicsManager::GetInstance()->AddIgnoreObjGravity(ObjName.ASSAULT_RIFLE);
 
 	// TODO : ‰¼‚Åe—p‚ÌƒJƒƒ‰‚ğ“o˜^
 	const auto camera_manager = CameraManager::GetInstance();
