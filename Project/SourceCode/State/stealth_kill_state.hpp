@@ -2,16 +2,16 @@
 #include "../Interface/i_state.hpp"
 #include "../Object/player.hpp"
 
-class IdleState final : public IState<Player>
+class StealthKillState final : public IState<Player>
 {
 public:
-	IdleState();
-	~IdleState() override;
+	StealthKillState();
+	~StealthKillState() override;
 
 	void Update(const Player* obj) override;
 	void Enter (const Player* obj) override;
 	[[nodiscard]] IState<Player>* ChangeState(const Player* obj) override;
 
 private:
-	float m_non_move_time;
+
 };

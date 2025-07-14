@@ -98,6 +98,7 @@ private:
 	std::unordered_map<TimeKind, VECTOR> m_look_dir;			// 向いている方向
 	
 	PlayerAnimKind m_anim_kind;									// アニメーションの状態を判定
+	std::shared_ptr<PlayerStateManager> m_state;
 
 	std::shared_ptr<BonePosCorrector> m_bone_pos_corrector;		// ボーン位置修正
 

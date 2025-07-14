@@ -269,6 +269,48 @@
     <ClCompile Include="SourceCode\Manager\player_state_manager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\State\suplex_state.cpp">
+      <Filter>State</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\escape_state.cpp">
+      <Filter>State</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\knife_equipped_state.cpp">
+      <Filter>State</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\stab_knife_state.cpp">
+      <Filter>State</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\side_slash_knife_state.cpp">
+      <Filter>State</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\parry_state.cpp">
+      <Filter>State</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\stealth_kill_state.cpp">
+      <Filter>State</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\finish_off_state.cpp">
+      <Filter>State</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\escape_with_knife_state.cpp">
+      <Filter>State</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\gun_equipped_state.cpp">
+      <Filter>State</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\attack_null_state.cpp">
+      <Filter>State</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\front_kick_state.cpp">
+      <Filter>State</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\roundhouse_kick_state.cpp">
+      <Filter>State</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\extension_move_null_state.cpp">
+      <Filter>State</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\chara_base.hpp">
@@ -694,14 +736,47 @@
     <ClInclude Include="SourceCode\Manager\player_state_manager.hpp">
       <Filter>Manager</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Interface\i_attack_state.hpp">
-      <Filter>Interface</Filter>
+    <ClInclude Include="SourceCode\State\suplex_state.hpp">
+      <Filter>State</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Interface\i_basis_move_state.hpp">
-      <Filter>Interface</Filter>
+    <ClInclude Include="SourceCode\State\escape_state.hpp">
+      <Filter>State</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Interface\i_extension_move_state.hpp">
-      <Filter>Interface</Filter>
+    <ClInclude Include="SourceCode\State\knife_equipped_state.hpp">
+      <Filter>State</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\stab_knife_state.hpp">
+      <Filter>State</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\side_slash_knife_state.hpp">
+      <Filter>State</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\parry_state.hpp">
+      <Filter>State</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\stealth_kill_state.hpp">
+      <Filter>State</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\finish_off_state.hpp">
+      <Filter>State</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\escape_with_knife_state.hpp">
+      <Filter>State</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\gun_equipped_state.hpp">
+      <Filter>State</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\attack_null_state.hpp">
+      <Filter>State</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\front_kick_state.hpp">
+      <Filter>State</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\roundhouse_kick_state.hpp">
+      <Filter>State</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\extension_move_null_state.hpp">
+      <Filter>State</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -5,6 +5,7 @@
 Player::Player() :
 	CharaBase				(ObjName.PLAYER, ObjTag.PLAYER, ModelPath.CHARA_01, MassKind::kMedium),
 	m_anim_kind				(PlayerAnimKind::kIdle02),
+	m_state					(std::make_shared<PlayerStateManager>()),
 	m_bone_pos_corrector	(std::make_shared<BonePosCorrector>()),
 	m_move_speed			(0.0f),
 	m_non_move_time			(0.0f),

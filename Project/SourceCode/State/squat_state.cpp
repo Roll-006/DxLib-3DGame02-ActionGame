@@ -15,7 +15,12 @@ void SquatState::Update(const Player* obj)
 
 }
 
-void SquatState::ChangeState(const Player* obj)
+void SquatState::Enter(const Player* obj)
+{
+
+}
+
+IState<Player>* SquatState::ChangeState(const Player* obj)
 {
 
 }

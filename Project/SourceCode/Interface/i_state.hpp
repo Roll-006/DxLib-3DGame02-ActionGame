@@ -7,6 +7,7 @@ class IState abstract
 public:
 	virtual ~IState() = default;
 
-	virtual void Update		(const ObjT* obj) abstract;
-	virtual void ChangeState(const ObjT* obj) abstract;
+	virtual void Update(const ObjT* obj) abstract;
+	virtual void Enter (const ObjT* obj) abstract;
+	[[nodiscard]] virtual IState<ObjT>* ChangeState(const ObjT* obj) abstract;
 };
