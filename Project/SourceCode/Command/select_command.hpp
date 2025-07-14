@@ -9,7 +9,7 @@ namespace select_cmd
 	{
 	public:
 		Decide() : CommandBase(CommandKind::kDecide){}
-		void Execute(ObjBase& obj) override;
+		void Execute(ObjBase* obj) override;
 	};
 
 	/// @brief 戻る
@@ -17,7 +17,7 @@ namespace select_cmd
 	{
 	public:
 		Back() : CommandBase(CommandKind::kBack) {}
-		void Execute(ObjBase& obj) override;
+		void Execute(ObjBase* obj) override;
 	};
 
 	/// @brief 上選択
@@ -25,7 +25,7 @@ namespace select_cmd
 	{
 	public:
 		Up() : CommandBase(CommandKind::kSelectUp) {}
-		void Execute(ObjBase& obj) override;
+		void Execute(ObjBase* obj) override;
 	};
 
 	/// @brief 下選択
@@ -33,7 +33,7 @@ namespace select_cmd
 	{
 	public:
 		Down() : CommandBase(CommandKind::kSelectDown) {}
-		void Execute(ObjBase& obj) override;
+		void Execute(ObjBase* obj) override;
 	};
 
 	/// @brief 左選択
@@ -41,7 +41,7 @@ namespace select_cmd
 	{
 	public:
 		Left() : CommandBase(CommandKind::kSelectLeft) {}
-		void Execute(ObjBase& obj) override;
+		void Execute(ObjBase* obj) override;
 	};
 
 	/// @brief 右選択
@@ -49,7 +49,7 @@ namespace select_cmd
 	{
 	public:
 		Right() : CommandBase(CommandKind::kSelectRight) {}
-		void Execute(ObjBase& obj) override;
+		void Execute(ObjBase* obj) override;
 	};
 
 	/// @brief ポーズ
@@ -57,6 +57,6 @@ namespace select_cmd
 	{
 	public:
 		Pause() : CommandBase(CommandKind::kPause) {}
-		void Execute(ObjBase& obj) override;
+		void Execute(ObjBase* obj) override;
 	};
 }

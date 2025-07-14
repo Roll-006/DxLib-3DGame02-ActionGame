@@ -7,7 +7,7 @@ class CommandBase abstract
 public:
 	CommandBase(const CommandKind kind) : m_command_kind(kind){}
 
-	virtual void Execute(ObjBase& obj) abstract;
+	virtual void Execute(ObjBase* obj) abstract;
 
 	[[nodiscard]] CommandKind GetCommandKind() const { return m_command_kind; }
 	

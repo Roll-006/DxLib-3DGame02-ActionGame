@@ -41,7 +41,7 @@ public:
 				if (input->IsInput(code.second))
 				{
 					m_current_frame_execute[code.first] = code.second;
-					command->Execute(*obj);
+					command->Execute(obj);
 
 					// 2つめの同じコマンドは実行しない
 					return;

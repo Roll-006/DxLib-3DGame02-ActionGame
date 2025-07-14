@@ -1,56 +1,56 @@
 #include "player_command.hpp"
 
-void player_cmd::MoveUp::Execute(ObjBase& obj)
+void player_cmd::MoveUp::Execute(ObjBase* obj)
 {
-	static_cast<Player*>(&obj)->MoveForward();
+	static_cast<Player*>(obj)->MoveForward();
 }
 
-void player_cmd::MoveDown::Execute(ObjBase& obj)
+void player_cmd::MoveDown::Execute(ObjBase* obj)
 {
-	static_cast<Player*>(&obj)->MoveBackward();
+	static_cast<Player*>(obj)->MoveBackward();
 }
 
-void player_cmd::MoveLeft::Execute(ObjBase& obj)
+void player_cmd::MoveLeft::Execute(ObjBase* obj)
 {
-	static_cast<Player*>(&obj)->MoveLeft();
+	static_cast<Player*>(obj)->MoveLeft();
 }
 
-void player_cmd::MoveRight::Execute(ObjBase& obj)
+void player_cmd::MoveRight::Execute(ObjBase* obj)
 {
-	static_cast<Player*>(&obj)->MoveRight();
+	static_cast<Player*>(obj)->MoveRight();
 }
 
-void player_cmd::Run::Execute(ObjBase& obj)
+void player_cmd::Run::Execute(ObjBase* obj)
 {
-	static_cast<Player*>(&obj)->Run();
+	static_cast<Player*>(obj)->Run();
 }
 
-void player_cmd::Squat::Execute(ObjBase& obj)
+void player_cmd::Squat::Execute(ObjBase* obj)
 {
-	static_cast<Player*>(&obj)->Squat();
+	static_cast<Player*>(obj)->Squat();
 }
 
-void player_cmd::Shot::Execute(ObjBase& obj)
+void player_cmd::Shot::Execute(ObjBase* obj)
 {
-	static_cast<Player*>(&obj)->Shot();
+	static_cast<Player*>(obj)->Shot();
 }
 
-void player_cmd::Aiming::Execute(ObjBase& obj)
+void player_cmd::Aiming::Execute(ObjBase* obj)
 {
-	static_cast<Player*>(&obj)->AimingGun();
+	static_cast<Player*>(obj)->AimingGun();
 }
 
-void player_cmd::Reload::Execute(ObjBase& obj)
+void player_cmd::Reload::Execute(ObjBase* obj)
 {
-	static_cast<Player*>(&obj)->Reload();
+	static_cast<Player*>(obj)->Reload();
 }
 
-void player_cmd::SilentKill::Execute(ObjBase& obj)
+void player_cmd::SilentKill::Execute(ObjBase* obj)
 {
-	static_cast<Player*>(&obj);
+	static_cast<Player*>(obj);
 }
 
-void player_cmd::TurnAround::Execute(ObjBase& obj)
+void player_cmd::TurnAround::Execute(ObjBase* obj)
 {
-	static_cast<Player*>(&obj)->TurnAround();
+	static_cast<Player*>(obj)->TurnAround();
 }

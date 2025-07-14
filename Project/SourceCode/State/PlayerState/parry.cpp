@@ -1,0 +1,26 @@
+#include "parry.hpp"
+
+player_state::Parry::Parry()
+{
+
+}
+
+player_state::Parry::~Parry()
+{
+
+}
+
+void player_state::Parry::Update(const Player* obj)
+{
+
+}
+
+void player_state::Parry::Enter(const Player* obj)
+{
+
+}
+
+IState<Player>* player_state::Parry::ChangeState(const Player* obj)
+{
+
+}
