@@ -73,7 +73,7 @@ void PlayerUICreator::CreateCrossHair()
 void PlayerUICreator::CreateSniperRifleCrossHair()
 {
 	const auto gun		= std::dynamic_pointer_cast<GunBase>(m_player->GetCurrentAttachWeapon());
-	const auto circle	= std::dynamic_pointer_cast<Circle>(gun->GetDiffusionShape());
+	const auto circle	= std::dynamic_pointer_cast<Circle> (gun->GetDiffusionShape());
 
 	// ŽOŽŸŒ³‹óŠÔ‚Ì‰~‚ð“ñŽŸŒ³‹óŠÔ‚É•ÏŠ·
 	const auto point_on_circle_world	= circle->GetPos() + math::GetNormalVector(-circle->GetNormalVector(), axis::GetWorldYAxis()) * circle->GetRadius();

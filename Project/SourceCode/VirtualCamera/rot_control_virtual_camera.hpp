@@ -48,7 +48,7 @@ private:
 	static constexpr float  kMinVerticalInputAngle	= -60.0f;
 	static constexpr float  kInitAngleSpeed			= 10.0f;
 	static constexpr float  kInitYawSpeed			= 60.0f;
-	static constexpr float  kInitAngleEndThreshold	= 0.01f;
+	static constexpr float  kInitAngleEndThreshold	= 0.02f;
 	static constexpr float  kInitYawEndThreshold	= 0.3f;
 
 	static constexpr float	kMoveSpeedWithStick		= 2.5f;

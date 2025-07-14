@@ -29,6 +29,7 @@ void MainCamera::LateUpdate()
 	if (!IsActive()) { return; }
 
 	SetAim();
+	CalcRayPos();
 }
 
 void MainCamera::Draw() const

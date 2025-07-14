@@ -8,8 +8,7 @@ VirtualCameraBase::VirtualCameraBase(const std::string& name, const VirtualCamer
 	m_target_transform	(nullptr),
 	m_target_correct_pos(v3d::GetZeroV()),
 	m_priority			(0),
-	m_camera_kind		(camera_kind),
-	m_is_active_camera	(true)
+	m_camera_kind		(camera_kind)
 {
 	// 処理なし
 }

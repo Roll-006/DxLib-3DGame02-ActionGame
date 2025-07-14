@@ -52,9 +52,6 @@
     <ClCompile Include="SourceCode\Manager\handle_keeper.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Manager\input_checker.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\Manager\obj_manager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
@@ -244,6 +241,24 @@
     </ClCompile>
     <ClCompile Include="SourceCode\GameSystemSetter\game_system_setter.cpp">
       <Filter>GameSystemSetter</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\run_state.cpp">
+      <Filter>State</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\squat_state.cpp">
+      <Filter>State</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\idle_state.cpp">
+      <Filter>State</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\reload_state.cpp">
+      <Filter>State</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\aiming_state.cpp">
+      <Filter>State</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Input\input_checker.cpp">
+      <Filter>Input</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -437,9 +452,6 @@
       <Filter>Manager</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Manager\handle_keeper.hpp">
-      <Filter>Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Manager\input_checker.hpp">
       <Filter>Manager</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Manager\obj_manager.hpp">
@@ -643,6 +655,48 @@
     <ClInclude Include="SourceCode\GameSystemSetter\game_system_setter.hpp">
       <Filter>GameSystemSetter</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\Interface\i_state.hpp">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\idle_shoot_state.hpp">
+      <Filter>State</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\idle_squat_shoot_state.hpp">
+      <Filter>State</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\idle_squat_state.hpp">
+      <Filter>State</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\idle_state.hpp">
+      <Filter>State</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\player_state.hpp">
+      <Filter>State</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\run_state.hpp">
+      <Filter>State</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\squat_state.hpp">
+      <Filter>State</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\walk_shoot_state.hpp">
+      <Filter>State</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\walk_squat_state.hpp">
+      <Filter>State</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\aiming_state.hpp">
+      <Filter>State</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\reload_state.hpp">
+      <Filter>State</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\shot_state.hpp">
+      <Filter>State</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Input\input_checker.hpp">
+      <Filter>Input</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Manager">
@@ -731,6 +785,15 @@
     </Filter>
     <Filter Include="GameSystemSetter">
       <UniqueIdentifier>{9c2a5154-d2f7-4994-943f-afea0c330812}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State">
+      <UniqueIdentifier>{9a691bb4-740c-48d4-baec-fd67b8b9b808}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface">
+      <UniqueIdentifier>{ca30a1cf-6f57-4e96-a660-dd84bdc29e45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{6e63f400-6b05-4fc8-a6aa-4c6d33790181}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

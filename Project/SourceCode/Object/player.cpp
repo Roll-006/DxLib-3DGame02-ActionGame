@@ -49,8 +49,8 @@ Player::Player() :
 
 	const auto scope_camera = std::make_shared<ScopeVirtualCamera>();
 	camera_manager->AddVirtualCamera(scope_camera);
-	scope_camera->AttachTarget(gun->GetTransform());
-
+	scope_camera->AttachTarget(m_transform, VGet(0.0f, 30.0f, 0.0f));
+	 
 
 	// TODO : 仮で所持残り弾数を設定
 	m_current_remaining_bullet_num = 10000;
@@ -334,7 +334,7 @@ void Player::TurnAround()
 
 void Player::ChangeAnimState()
 {
-	// TODO : のちに変更
+	// TODO : のちステートマシンへ移行
 
 	// アイドル
 	if (!m_is_move)
@@ -698,23 +698,23 @@ VECTOR Player::GetVelocityFromPad(VECTOR& velocity)
 	// 速度ベクトルを取得
 	if (forward_param)
 	{
-		velocity += forward * (forward_param - InputChecker::kStickDeadZone);
-		m_is_input_move.at(static_cast<int>(MoveDir::kForward)) = true;
+		velocity += forward * (forward_param	- InputChecker::kStickDeadZone);
+		m_is_input_move.at(static_cast<int>(MoveDir::kForward))		= true;
 	}
 	if (backward_param)
 	{
-		velocity += forward * (backward_param + InputChecker::kStickDeadZone);
-		m_is_input_move.at(static_cast<int>(MoveDir::kBackward)) = true;
+		velocity += forward * (backward_param	+ InputChecker::kStickDeadZone);
+		m_is_input_move.at(static_cast<int>(MoveDir::kBackward))	= true;
 	}
 	if (left_param)
 	{
-		velocity += right * (left_param + InputChecker::kStickDeadZone);
-		m_is_input_move.at(static_cast<int>(MoveDir::kLeft)) = true;
+		velocity += right	* (left_param		+ InputChecker::kStickDeadZone);
+		m_is_input_move.at(static_cast<int>(MoveDir::kLeft))		= true;
 	}
 	if (right_param)
 	{
-		velocity += right * (right_param - InputChecker::kStickDeadZone);
-		m_is_input_move.at(static_cast<int>(MoveDir::kRight)) = true;
+		velocity += right	* (right_param		- InputChecker::kStickDeadZone);
+		m_is_input_move.at(static_cast<int>(MoveDir::kRight))		= true;
 	}
 
 	return velocity;
