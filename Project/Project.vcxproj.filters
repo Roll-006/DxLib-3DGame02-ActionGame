@@ -251,7 +251,7 @@
     <ClCompile Include="SourceCode\State\PlayerState\aiming.cpp">
       <Filter>State\PlayerState</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\State\PlayerState\attack_null.cpp">
+    <ClCompile Include="SourceCode\State\PlayerState\weapon_action_null.cpp">
       <Filter>State\PlayerState</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\State\PlayerState\escape.cpp">
@@ -260,7 +260,7 @@
     <ClCompile Include="SourceCode\State\PlayerState\escape_with_knife.cpp">
       <Filter>State\PlayerState</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\State\PlayerState\extension_move_null.cpp">
+    <ClCompile Include="SourceCode\State\PlayerState\action_null.cpp">
       <Filter>State\PlayerState</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\State\PlayerState\finish_off.cpp">
@@ -272,7 +272,7 @@
     <ClCompile Include="SourceCode\State\PlayerState\gun_equipped.cpp">
       <Filter>State\PlayerState</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\State\PlayerState\idle.cpp">
+    <ClCompile Include="SourceCode\State\PlayerState\move_null.cpp">
       <Filter>State\PlayerState</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\State\PlayerState\knife_equipped.cpp">
@@ -312,6 +312,9 @@
       <Filter>State\PlayerState</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\State\PlayerState\turn_around.cpp">
+      <Filter>State\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\PlayerState\special_null.cpp">
       <Filter>State\PlayerState</Filter>
     </ClCompile>
   </ItemGroup>
@@ -721,7 +724,7 @@
     <ClInclude Include="SourceCode\State\PlayerState\aiming.hpp">
       <Filter>State\PlayerState</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\State\PlayerState\attack_null.hpp">
+    <ClInclude Include="SourceCode\State\PlayerState\weapon_action_null.hpp">
       <Filter>State\PlayerState</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\State\PlayerState\escape.hpp">
@@ -730,7 +733,7 @@
     <ClInclude Include="SourceCode\State\PlayerState\escape_with_knife.hpp">
       <Filter>State\PlayerState</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\State\PlayerState\extension_move_null.hpp">
+    <ClInclude Include="SourceCode\State\PlayerState\action_null.hpp">
       <Filter>State\PlayerState</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\State\PlayerState\finish_off.hpp">
@@ -742,7 +745,7 @@
     <ClInclude Include="SourceCode\State\PlayerState\gun_equipped.hpp">
       <Filter>State\PlayerState</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\State\PlayerState\idle.hpp">
+    <ClInclude Include="SourceCode\State\PlayerState\move_null.hpp">
       <Filter>State\PlayerState</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\State\PlayerState\knife_equipped.hpp">
@@ -782,6 +785,21 @@
       <Filter>State\PlayerState</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\State\PlayerState\turn_around.hpp">
+      <Filter>State\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Interface\i_move_state.hpp">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Interface\i_special_state.hpp">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Interface\i_weapon_action_state.hpp">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Interface\i_action_state.hpp">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\PlayerState\special_null.hpp">
       <Filter>State\PlayerState</Filter>
     </ClInclude>
   </ItemGroup>

@@ -3,7 +3,7 @@
 AnimatorBase::AnimatorBase(const std::shared_ptr<Modeler> modeler) :
 	m_prev_anim_play_rate		(0.0f),
 	m_blend_rate				(1.0f),
-	m_is_first_frame_change_anim(false),
+	//m_is_first_frame_change_anim(false),
 	m_is_attached				(false),
 	m_modeler					(modeler)
 
@@ -17,20 +17,6 @@ AnimatorBase::~AnimatorBase()
 	{
 		MV1DeleteModel(data.second.anim_handle);
 	}
-}
-
-void AnimatorBase::Init()
-{
-	DetachAnim(TimeKind::kPrev);
-	DetachAnim(TimeKind::kCurrent);
-}
-
-void AnimatorBase::Update()
-{
-	m_is_first_frame_change_anim = false;
-
-	BlendAnim();
-	PlayAnim();
 }
 
 void AnimatorBase::AddAnimHandle(const int kind, const std::string& file_path, const int index, const std::string& tag, const float play_speed, const bool is_loop)
@@ -69,7 +55,7 @@ void AnimatorBase::AttachAnim(const int next_kind)
 	DetachAnim(TimeKind::kPrev);
 
 	m_is_attached					= true;
-	m_is_first_frame_change_anim	= true;
+	//m_is_first_frame_change_anim	= true;
 
 	// データをシフト(Current ➡ Prev, Next ➡ Current)
 	m_time_kind_data.at(TimeKind::kPrev)					= m_time_kind_data.at(TimeKind::kCurrent);

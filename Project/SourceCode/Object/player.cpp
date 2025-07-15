@@ -28,7 +28,7 @@ Player::Player() :
 	CreateCharaBasisCollider(kCapsuleRadius, kLandingTriggerRadius);
 
 	// 各アニメーション追加
-	m_animator = std::make_shared<PlayerAnimator>(m_modeler);
+	m_animator = std::make_shared<PlayerAnimator>(m_modeler, m_state);
 	m_animator->AttachAnim(static_cast<int>(m_anim_kind));
 
 	// 武器設定

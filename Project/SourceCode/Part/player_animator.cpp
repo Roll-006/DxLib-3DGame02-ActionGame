@@ -1,7 +1,9 @@
-﻿#include "player_animator.hpp"
+﻿#include "../Manager/player_state_manager.hpp"
+#include "player_animator.hpp"
 
-PlayerAnimator::PlayerAnimator(const std::shared_ptr<Modeler> modeler) : 
-	AnimatorBase(modeler)
+PlayerAnimator::PlayerAnimator(const std::shared_ptr<Modeler> modeler, const std::shared_ptr<PlayerStateManager> state) :
+	AnimatorBase(modeler),
+	m_state		(state)
 {
 	LoadAnim();
 }
@@ -9,6 +11,19 @@ PlayerAnimator::PlayerAnimator(const std::shared_ptr<Modeler> modeler) :
 PlayerAnimator::~PlayerAnimator()
 {
 
+}
+
+void PlayerAnimator::Init()
+{
+
+}
+
+void PlayerAnimator::Update()
+{
+	ChangeAnim();
+
+	BlendAnim();
+	PlayAnim();
 }
 
 void PlayerAnimator::LoadAnim()
@@ -38,4 +53,9 @@ void PlayerAnimator::LoadAnim()
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kWalkShootBackwardRight01),	AnimPath.WALK_SHOOT_BACKWARD_RIGHT_01,	0, AnimTag.WALK, 30.0f, true);
 
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kRunForward01),				AnimPath.RUN_FORWARD_01,				0, AnimTag.WALK, 40.0f, true);
+}
+
+void PlayerAnimator::ChangeAnim()
+{
+
 }

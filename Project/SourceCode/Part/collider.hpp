@@ -27,9 +27,9 @@ public:
 	[[nodiscard]] bool IsClosestOnlyHit() const { return m_is_closest_only_hit; }
 
 private:
-	ColliderKind m_kind;
-	std::shared_ptr<ShapeBase> m_shape;
-	int		m_model_handle;
-	bool	m_is_closest_only_hit;			// 自身と最も近いコライダーのみ衝突を許可する(レイキャストでのみ有効)
-	PhysicalObjBase* m_owner_obj;
+	ColliderKind				m_kind;
+	std::shared_ptr<ShapeBase>	m_shape;
+	int							m_model_handle;
+	bool						m_is_closest_only_hit;		// 自身と最も近いコライダーのみ衝突を許可する(レイキャストでのみ有効)
+	PhysicalObjBase*			m_owner_obj;
 };

@@ -11,6 +11,15 @@ class PlayerStateManager;
 class Player final : public CharaBase
 {
 public:
+	enum class MoveDir
+	{
+		kForward,
+		kBackward,
+		kLeft,
+		kRight,
+	};
+
+public:
 	Player();
 	~Player() override;
 
@@ -57,15 +66,6 @@ private:
 	/// @brief カメラのforwardをもとにした進行方向ベクトルを取得する
 	/// @return カメラのforwardのY軸を消し飛ばしたベクトル
 	[[nodiscard]] VECTOR GetMoveForward();
-
-private:
-	enum class MoveDir
-	{
-		kForward,
-		kBackward,
-		kLeft,
-		kRight,
-	};
 
 private:
 	static constexpr float kModelScale							= 0.25f;

@@ -24,7 +24,12 @@ void PlayerUICreator::OnDraw()
 	if (!std::dynamic_pointer_cast<GunBase>(m_player->GetCurrentAttachWeapon())->IsAiming()) { return; }
 
 	const auto shape = std::dynamic_pointer_cast<Circle>(m_2d_diffusion_shape);
-	DrawCircle(shape->GetPos().x, shape->GetPos().y, shape->GetRadius(), 0xffffff, FALSE);
+
+	DrawCircle(
+		static_cast<int>(shape->GetPos().x), 
+		static_cast<int>(shape->GetPos().y), 
+		static_cast<int>(shape->GetRadius()), 
+		0xffffff, FALSE);
 }
 
 void PlayerUICreator::CreateCrossHair()

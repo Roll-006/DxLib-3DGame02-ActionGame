@@ -15,8 +15,8 @@ public:
 	AnimatorBase(const std::shared_ptr<Modeler> modeler);
 	~AnimatorBase();
 
-	void Init();
-	void Update();
+	virtual void Init()		abstract;
+	virtual void Update()	abstract;
 
 	/// @brief アニメーションをアタッチする
 	/// @brief デタッチ処理は自動的に実行
@@ -34,6 +34,10 @@ public:
 	/// @brief ブレンド率を取得する
 	[[nodiscard]] float GetBlendRate()const { m_blend_rate; }
 
+protected:
+	void PlayAnim();
+	void BlendAnim();
+
 private:
 	virtual void LoadAnim() abstract;
 
@@ -41,9 +45,6 @@ private:
 
 	/// @brief 再生開始地点を設定
 	void SetPlayStartTime();
-
-	void PlayAnim();
-	void BlendAnim();
 
 private:
 	static constexpr float kBlendSpeed = 3.0f;
@@ -54,7 +55,7 @@ private:
 	float m_prev_anim_play_rate;			// 前回のアニメーションの再生率
 	float m_blend_rate;						// ブレンド率
 
-	bool  m_is_first_frame_change_anim;		// アニメーションが変更されて最初のフレームであるかを判定
+	//bool  m_is_first_frame_change_anim;		// アニメーションが変更されて最初のフレームであるかを判定
 	bool  m_is_attached;					// 直近でアタッチを試みたアニメーションがアタッチされたかを判定
 
 	std::shared_ptr<Modeler> m_modeler;
