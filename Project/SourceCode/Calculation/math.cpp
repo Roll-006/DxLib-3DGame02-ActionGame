@@ -474,9 +474,6 @@ VECTOR math::GetRandomPointInCircle(const Circle& circle)
     float angle     = DX_TWO_PI_F * (rand_gen->GetRandOpenClosed<float>(0.0f, DX_TWO_PI_F) / DX_TWO_PI_F);
     float distance  = circle.GetRadius() * (rand_gen->GetRandOpenClosed<float>(0.0f, circle.GetRadius()) / circle.GetRadius());
 
-    DrawFormatString(0,  0, 0xffffff, "angle    : %f", angle);
-    DrawFormatString(0, 20, 0xffffff, "distance : %f", distance);
-
     // 座標を距離分移動させ、回転させる
     VECTOR pos = circle.GetPos() + math::GetNormalVector(-circle.GetNormalVector(), axis::GetWorldYAxis()) * distance;
     return math::GetRotatedPos(pos, quat::CreateQuaternion(circle.GetPos() + circle.GetNormalVector(), angle));

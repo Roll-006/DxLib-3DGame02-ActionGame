@@ -127,7 +127,7 @@ private:
 	static constexpr float  kInitAngleSpeed			= 10.0f;
 	static constexpr float  kInitYawSpeed			= 60.0f;
 	static constexpr float  kInitAngleEndThreshold	= 0.01f;
-	static constexpr float  kInitYawEndThreshold	= 0.3f;
+	static constexpr float  kInitYawEndThreshold	= 2.0f;
 
 	static constexpr float  kMoveSpeedWithButton	= 2.0f;
 	static constexpr float  kMoveSpeedWithStick		= 2.5f;
