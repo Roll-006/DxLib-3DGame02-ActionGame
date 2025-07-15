@@ -20,8 +20,12 @@ void player_state::Move::Enter(const Player* obj)
 
 }
 
-IState<Player>* player_state::Move::ChangeState(const Player* obj)
+std::shared_ptr<IState<Player>> player_state::Move::ChangeState(const Player* obj)
 {
-	auto test = Move();
-	return &test;
+	if (!obj->IsInputMove())
+	{
+		return std::make_shared<MoveNull>();
+	}
+
+	return nullptr;
 }

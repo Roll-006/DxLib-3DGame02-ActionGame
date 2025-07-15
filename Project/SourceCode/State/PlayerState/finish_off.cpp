@@ -20,8 +20,7 @@ void player_state::FinishOff::Enter(const Player* obj)
 
 }
 
-IState<Player>* player_state::FinishOff::ChangeState(const Player* obj)
+std::shared_ptr<IState<Player>> player_state::FinishOff::ChangeState(const Player* obj)
 {
-	auto test = FinishOff();
-	return &test;
+	return nullptr;
 }

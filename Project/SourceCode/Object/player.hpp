@@ -43,6 +43,11 @@ public:
 	void TurnAround();
 	#pragma endregion
 
+	[[nodiscard]] bool IsInputMove()						const { return std::any_of(m_is_input_move.begin(), m_is_input_move.end(), [](bool is_input_move) { return is_input_move; }); }
+	[[nodiscard]] bool IsInputMove(const MoveDir move_dir)	const { return m_is_input_move.at(static_cast<int>(move_dir)); }
+	[[nodiscard]] bool IsRun()								const { return m_is_run; }
+	[[nodiscard]] bool IsSquat()							const { return m_is_squat; }
+
 private:
 	void ChangeAnimState() override;
 

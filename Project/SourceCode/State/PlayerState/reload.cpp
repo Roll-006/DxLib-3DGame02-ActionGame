@@ -20,8 +20,7 @@ void player_state::Reload::Enter(const Player* obj)
 
 }
 
-IState<Player>* player_state::Reload::ChangeState(const Player* obj)
+std::shared_ptr<IState<Player>> player_state::Reload::ChangeState(const Player* obj)
 {
-	auto test = Reload();
-	return &test;
+	return nullptr;
 }

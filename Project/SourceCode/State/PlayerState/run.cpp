@@ -20,8 +20,7 @@ void player_state::Run::Enter(const Player* obj)
 
 }
 
-IState<Player>* player_state::Run::ChangeState(const Player* obj)
+std::shared_ptr<IState<Player>> player_state::Run::ChangeState(const Player* obj)
 {
-	auto test = Run();
-	return &test;
+	return nullptr;
 }

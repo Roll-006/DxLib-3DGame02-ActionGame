@@ -20,8 +20,7 @@ void player_state::SpecialNull::Enter(const Player* obj)
 
 }
 
-IState<Player>* player_state::SpecialNull::ChangeState(const Player* obj)
+std::shared_ptr<IState<Player>> player_state::SpecialNull::ChangeState(const Player* obj)
 {
-	auto test = SpecialNull();
-	return &test;
+	return nullptr;
 }

@@ -20,8 +20,7 @@ void player_state::FrontKick::Enter(const Player* obj)
 
 }
 
-IState<Player>* player_state::FrontKick::ChangeState(const Player* obj)
+std::shared_ptr<IState<Player>> player_state::FrontKick::ChangeState(const Player* obj)
 {
-	auto test = FrontKick();
-	return &test;
+	return nullptr;
 }

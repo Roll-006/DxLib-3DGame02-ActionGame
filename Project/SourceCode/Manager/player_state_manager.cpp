@@ -50,8 +50,24 @@ void PlayerStateManager::Update(const Player* player)
 
 void PlayerStateManager::ChangeState(const Player* player)
 {
-	m_current_move_state			->ChangeState(player);
-	m_current_action_state			->ChangeState(player);
-	m_current_weapon_action_state	->ChangeState(player);
-	m_current_special_state			->ChangeState(player);
+	std::shared_ptr<IState<Player>> move_state = m_current_move_state->ChangeState(player);
+	if (move_state)
+	{
+		m_current_move_state = nullptr;
+		m_current_move_state = std::static_pointer_cast<IMoveState<Player>>(move_state);
+		m_current_move_state->Enter(player);
+	}
+
+	if (m_current_move_state == std::make_shared<player_state::MoveNull>())
+	{
+		DrawFormatString(500, 0, 0xffffff, "ƒAƒCƒhƒ‹");
+	}
+	if (m_current_move_state == std::make_shared<player_state::Move>())
+	{
+		DrawFormatString(500, 0, 0xffffff, "ˆÚ“®");
+	}
+
+	//m_current_action_state			->ChangeState(player);
+	//m_current_weapon_action_state	->ChangeState(player);
+	//m_current_special_state			->ChangeState(player);
 }

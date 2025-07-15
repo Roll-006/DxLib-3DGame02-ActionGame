@@ -13,16 +13,20 @@ player_state::MoveNull::~MoveNull()
 
 void player_state::MoveNull::Update(const Player* obj)
 {
-
+	m_non_move_time += FPS::GetDeltaTime();
 }
 
 void player_state::MoveNull::Enter(const Player* obj)
 {
-
+	m_non_move_time = 0.0f;
 }
 
-IState<Player>* player_state::MoveNull::ChangeState(const Player* obj)
+std::shared_ptr<IState<Player>> player_state::MoveNull::ChangeState(const Player* obj)
 {
-	auto test = MoveNull();
-	return &test;
+	if (obj->IsInputMove())
+	{
+		return std::make_shared<Move>();
+	}
+
+	return nullptr;
 }

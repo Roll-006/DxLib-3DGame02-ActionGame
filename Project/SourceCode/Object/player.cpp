@@ -72,15 +72,19 @@ void Player::Update()
 {
 	if (!IsActive()) { return; }
 
-	InitMove();
+	//std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->DeactivateAiming();
+	//std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->ReleaseTrigger();
 
 	const auto command = CommandHandler::GetInstance();
-	command->Execute(CommandKind::kRun,				this);
-	command->Execute(CommandKind::kSquat,			this);
 	command->Execute(CommandKind::kMoveUpPlayer,	this);
 	command->Execute(CommandKind::kMoveDownPlayer,	this);
 	command->Execute(CommandKind::kMoveLeftPlayer,	this);
 	command->Execute(CommandKind::kMoveRightPlayer, this);
+	command->Execute(CommandKind::kRun,				this);
+	command->Execute(CommandKind::kSquat,			this);
+	command->Execute(CommandKind::kReloadGun,		this);
+	command->Execute(CommandKind::kAimingGun,		this);
+	command->Execute(CommandKind::kShot,			this);
 
 	Move();
 	UpdateTransform(m_look_dir.at(TimeKind::kCurrent), kModelScale);
@@ -88,7 +92,7 @@ void Player::Update()
 	m_state->Update(this);
 	m_state->ChangeState(this);
 
-	ChangeAnimState();
+	//ChangeAnimState();
 	m_animator->Update();
 
 	CalcCapsuleColliderLength();
@@ -103,26 +107,15 @@ void Player::LateUpdate()
 {
 	if (!IsActive()) { return; }
 
-	InitWeapon();
-
-	std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->DeactivateAiming();
-	std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->ReleaseTrigger();
-
-	const auto command = CommandHandler::GetInstance();
-	command->Execute(CommandKind::kReloadGun,		this);
-	command->Execute(CommandKind::kAimingGun,		this);
-	command->Execute(CommandKind::kShot,			this);
-
-	m_modeler->ApplyMatrix();
-
 	// ボーン位置修正
+	//m_modeler->ApplyMatrix();
 	//m_bone_pos_corrector->CorrectGunPoseBone(
 	//	m_modeler->GetModelHandle(),
 	//	m_look_dir.at(TimeKind::kCurrent),
 	//	m_camera->GetTransform()->GetMatrix(CoordinateKind::kWorld),
 	//	std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->IsAiming());
 
-	m_current_attach_weapon->LateUpdate();
+	//m_current_attach_weapon->LateUpdate();
 }
 
 void Player::Draw() const
@@ -165,14 +158,39 @@ void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 
 #pragma region コマンド
+void Player::MoveForward()
+{
+	m_is_input_move.at(static_cast<int>(MoveDir::kForward)) = true;
+
+	m_move_dir.at(TimeKind::kNext) += GetMoveForward();
+}
+
+void Player::MoveBackward()
+{
+	m_is_input_move.at(static_cast<int>(MoveDir::kBackward)) = true;
+
+	m_move_dir.at(TimeKind::kNext) -= GetMoveForward();
+}
+
+void Player::MoveLeft()
+{
+	m_is_input_move.at(static_cast<int>(MoveDir::kLeft)) = true;
+
+	m_move_dir.at(TimeKind::kNext) -= CameraManager::GetInstance()->GetMainCamera()->GetTransform()->GetRight(CoordinateKind::kWorld);
+}
+
+void Player::MoveRight()
+{
+	m_is_input_move.at(static_cast<int>(MoveDir::kRight)) = true;
+
+	m_move_dir.at(TimeKind::kNext) += CameraManager::GetInstance()->GetMainCamera()->GetTransform()->GetRight(CoordinateKind::kWorld);
+}
+
 void Player::Run()
 {
-	// ターン中は早期return
-	if (m_is_turn_around) { return; }
-
-	const auto command = CommandHandler::GetInstance();
-	const auto input   = InputChecker  ::GetInstance();
-	const auto code    = *command->GetCurrentFrameExecuteInputCode(CommandKind::kRun);
+	const auto command	= CommandHandler::GetInstance();
+	const auto input	= InputChecker  ::GetInstance();
+	const auto code		= *command->GetCurrentFrameExecuteInputCode(CommandKind::kRun);
 
 	switch (command->GetInputModeKind(CommandHandler::MoveKind::kRun))
 	{
@@ -180,7 +198,6 @@ void Player::Run()
 		if (input->GetInputState(code) == InputState::kSingle)
 		{
 			command->CountUpTrigger(CommandHandler::MoveKind::kRun);
-
 			m_is_run = command->GetTriggerCount(CommandHandler::MoveKind::kRun) % 2 ? true : false;
 		}
 		break;
@@ -192,23 +209,13 @@ void Player::Run()
 		}
 		break;
 	}
-
-	// しゃがみ状態解除
-	if (m_is_run)
-	{
-		m_is_squat = false;
-		command->InitTriggerCount(CommandHandler::MoveKind::kSquat);
-	}
 }
 
 void Player::Squat()
 {
-	// ターン中は早期return
-	if (m_is_turn_around) { return; }
-
-	const auto command = CommandHandler::GetInstance();
-	const auto input = InputChecker::GetInstance();
-	const auto code = *command->GetCurrentFrameExecuteInputCode(CommandKind::kSquat);
+	const auto command	= CommandHandler::GetInstance();
+	const auto input	= InputChecker	::GetInstance();
+	const auto code		= *command->GetCurrentFrameExecuteInputCode(CommandKind::kSquat);
 
 	switch (command->GetInputModeKind(CommandHandler::MoveKind::kSquat))
 	{
@@ -216,7 +223,6 @@ void Player::Squat()
 		if (input->GetInputState(code) == InputState::kSingle)
 		{
 			command->CountUpTrigger(CommandHandler::MoveKind::kSquat);
-
 			m_is_squat = command->GetTriggerCount(CommandHandler::MoveKind::kSquat) % 2 ? true : false;
 		}
 		break;
@@ -228,53 +234,6 @@ void Player::Squat()
 		}
 		break;
 	}
-
-	// しゃがみ状態解除
-	if (m_is_squat)
-	{
-		m_is_run = false;
-		command->InitTriggerCount(CommandHandler::MoveKind::kRun);
-	}
-}
-
-void Player::MoveForward()
-{
-	// ターン中は早期return
-	if (m_is_turn_around) { return; }
-
-	m_is_input_move.at(static_cast<int>(MoveDir::kForward)) = true;
-
-	m_move_dir.at(TimeKind::kNext) += GetMoveForward();
-}
-
-void Player::MoveBackward()
-{
-	// ターン中は早期return
-	if (m_is_turn_around) { return; }
-
-	m_is_input_move.at(static_cast<int>(MoveDir::kBackward)) = true;
-
-	m_move_dir.at(TimeKind::kNext) -= GetMoveForward();
-}
-
-void Player::MoveLeft()
-{
-	// ターン中は早期return
-	if (m_is_turn_around) { return; }
-
-	m_is_input_move.at(static_cast<int>(MoveDir::kLeft)) = true;
-
-	m_move_dir.at(TimeKind::kNext) -= CameraManager::GetInstance()->GetMainCamera()->GetTransform()->GetRight(CoordinateKind::kWorld);
-}
-
-void Player::MoveRight()
-{
-	// ターン中は早期return
-	if (m_is_turn_around) { return; }
-
-	m_is_input_move.at(static_cast<int>(MoveDir::kRight)) = true;
-
-	m_move_dir.at(TimeKind::kNext) += CameraManager::GetInstance()->GetMainCamera()->GetTransform()->GetRight(CoordinateKind::kWorld);
 }
 
 void Player::AimingGun()
@@ -283,24 +242,7 @@ void Player::AimingGun()
 	if (m_is_turn_around) { return; }
 
 	std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->ActivateAiming();
-	m_is_correct_look_dir	= true;
 
-	// 拡大率から実際の距離を取得
-	//float min_distance = MainCamera::kNormalDistance / std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->GetScopeScale();
-	//m_camera->Approach(min_distance, kADSSpeed * FPS::GetDeltaTime());
-	//m_camera->TrackBoneWobbly();
-
-	// 銃に狙う方向を設定
-	//std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->SetAimDir		(m_camera->GetTransform()->GetForward(CoordinateKind::kWorld));
-	//std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->SetPosOnRayLine(m_camera->GetTransform()->GetPos    (CoordinateKind::kWorld));
-
-	// ダッシュ状態を解除
-	m_is_run = false;
-	CommandHandler::GetInstance()->InitTriggerCount(CommandHandler::MoveKind::kRun);
-
-	// しゃがみ状態解除
-	m_is_squat = false;
-	CommandHandler::GetInstance()->InitTriggerCount(CommandHandler::MoveKind::kSquat);
 }
 
 void Player::Shot()

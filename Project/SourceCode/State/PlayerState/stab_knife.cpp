@@ -20,8 +20,7 @@ void player_state::StabKnife::Enter(const Player* obj)
 
 }
 
-IState<Player>* player_state::StabKnife::ChangeState(const Player* obj)
+std::shared_ptr<IState<Player>> player_state::StabKnife::ChangeState(const Player* obj)
 {
-	auto test = StabKnife();
-	return &test;
+	return nullptr;
 }

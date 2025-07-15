@@ -20,8 +20,7 @@ void player_state::TurnAround::Enter(const Player* obj)
 
 }
 
-IState<Player>* player_state::TurnAround::ChangeState(const Player* obj)
+std::shared_ptr<IState<Player>> player_state::TurnAround::ChangeState(const Player* obj)
 {
-	auto test = TurnAround();
-	return &test;
+	return nullptr;
 }

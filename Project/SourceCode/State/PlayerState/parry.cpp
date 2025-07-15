@@ -20,8 +20,7 @@ void player_state::Parry::Enter(const Player* obj)
 
 }
 
-IState<Player>* player_state::Parry::ChangeState(const Player* obj)
+std::shared_ptr<IState<Player>> player_state::Parry::ChangeState(const Player* obj)
 {
-	auto test = Parry();
-	return &test;
+	return nullptr;
 }
