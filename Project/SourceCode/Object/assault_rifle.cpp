@@ -15,8 +15,8 @@ AssaultRifle::AssaultRifle() :
 	m_shot_interval_time		= kShotIntervalTime;
 
 	// TODO : ‰¼‚Å’e”‚ğİ’è
-	m_max_remaining_bullet_num			= 30;
-	m_current_remaining_bullet_num		= m_max_remaining_bullet_num;
+	m_max_remaining_bullet_num		= 30;
+	m_current_remaining_bullet_num	= m_max_remaining_bullet_num;
 
 	AddCollider(std::make_shared<Collider>(ColliderKind::kRayCast, std::make_shared<Segment>(), this));
 }

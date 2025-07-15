@@ -22,5 +22,6 @@ void player_state::Move::Enter(const Player* obj)
 
 IState<Player>* player_state::Move::ChangeState(const Player* obj)
 {
-
+	auto test = Move();
+	return &test;
 }

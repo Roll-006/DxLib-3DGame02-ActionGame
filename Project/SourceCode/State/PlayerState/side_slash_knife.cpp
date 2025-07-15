@@ -22,5 +22,6 @@ void player_state::SideSlashKnife::Enter(const Player* obj)
 
 IState<Player>* player_state::SideSlashKnife::ChangeState(const Player* obj)
 {
-
+	auto test = SideSlashKnife();
+	return &test;
 }

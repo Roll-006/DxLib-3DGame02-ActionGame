@@ -23,5 +23,6 @@ void player_state::Idle::Enter(const Player* obj)
 
 IState<Player>* player_state::Idle::ChangeState(const Player* obj)
 {
-
+	auto test = Idle();
+	return &test;
 }

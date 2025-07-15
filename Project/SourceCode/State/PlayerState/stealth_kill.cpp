@@ -22,5 +22,6 @@ void player_state::StealthKill::Enter(const Player* obj)
 
 IState<Player>* player_state::StealthKill::ChangeState(const Player* obj)
 {
-
+	auto test = StealthKill();
+	return &test;
 }

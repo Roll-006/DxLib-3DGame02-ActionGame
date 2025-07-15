@@ -22,5 +22,6 @@ void player_state::GunEquipped::Enter(const Player* obj)
 
 IState<Player>* player_state::GunEquipped::ChangeState(const Player* obj)
 {
-
+	auto test = GunEquipped();
+	return &test;
 }

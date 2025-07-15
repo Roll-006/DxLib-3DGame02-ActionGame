@@ -22,5 +22,6 @@ void player_state::FinishOff::Enter(const Player* obj)
 
 IState<Player>* player_state::FinishOff::ChangeState(const Player* obj)
 {
-
+	auto test = FinishOff();
+	return &test;
 }

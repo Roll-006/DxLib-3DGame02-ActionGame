@@ -22,5 +22,6 @@ void player_state::Reload::Enter(const Player* obj)
 
 IState<Player>* player_state::Reload::ChangeState(const Player* obj)
 {
-
+	auto test = Reload();
+	return &test;
 }

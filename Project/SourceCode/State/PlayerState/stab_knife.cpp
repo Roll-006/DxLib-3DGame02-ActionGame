@@ -22,5 +22,6 @@ void player_state::StabKnife::Enter(const Player* obj)
 
 IState<Player>* player_state::StabKnife::ChangeState(const Player* obj)
 {
-
+	auto test = StabKnife();
+	return &test;
 }

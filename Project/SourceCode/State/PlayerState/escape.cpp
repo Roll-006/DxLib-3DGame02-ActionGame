@@ -22,5 +22,6 @@ void player_state::Escape::Enter(const Player* obj)
 
 IState<Player>* player_state::Escape::ChangeState(const Player* obj)
 {
-
+	auto test = Escape();
+	return &test;
 }

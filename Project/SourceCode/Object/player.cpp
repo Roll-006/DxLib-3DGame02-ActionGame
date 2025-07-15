@@ -45,14 +45,14 @@ Player::Player() :
 	// TODO : ‰¼‚Åe—p‚ÌƒJƒƒ‰‚ğ“o˜^
 	const auto camera_manager = CameraManager::GetInstance();
 
-	const auto rot_camera	= std::make_shared<RotControlVirtualCamera>();
+	const auto rot_camera = std::make_shared<RotControlVirtualCamera>();
 	camera_manager->AddVirtualCamera(rot_camera);
-	rot_camera	->AttachTarget(m_transform, VGet(0.0f, 30.0f, 0.0f));
+	rot_camera->AttachTarget(m_transform, VGet(0.0f, 30.0f, 0.0f));
 
 	const auto scope_camera = std::make_shared<ScopeVirtualCamera>();
 	camera_manager->AddVirtualCamera(scope_camera);
 	scope_camera->AttachTarget(m_transform, VGet(0.0f, 30.0f, 0.0f));
-	 
+	
 
 	// TODO : ‰¼‚ÅŠc‚è’e”‚ğİ’è
 	m_current_remaining_bullet_num = 10000;
@@ -84,6 +84,9 @@ void Player::Update()
 
 	Move();
 	UpdateTransform(m_look_dir.at(TimeKind::kCurrent), kModelScale);
+
+	m_state->Update(this);
+	m_state->ChangeState(this);
 
 	ChangeAnimState();
 	m_animator->Update();
@@ -190,7 +193,7 @@ void Player::Run()
 		break;
 	}
 
-	// ƒ_ƒbƒVƒ…ó‘Ô‰ğœ
+	// ‚µ‚á‚ª‚İó‘Ô‰ğœ
 	if (m_is_run)
 	{
 		m_is_squat = false;

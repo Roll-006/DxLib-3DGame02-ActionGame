@@ -70,9 +70,9 @@ private:
 	void ApplyBlendResultMatrix();
 	
 private:
-	static constexpr float  kNear	= 1.0f;
-	static constexpr float  kFar	= 3000.0f;
-	static constexpr float  kFOV	= 45.0f;
+	static constexpr float  kNear		= 1.0f;
+	static constexpr float  kFar		= 3000.0f;
+	static constexpr float  kFOV		= 45.0f;
 
 	std::shared_ptr<MainCamera>									m_main_camera;		// バーチャルカメラを適用させるメインカメラ
 	std::unordered_map<int, std::shared_ptr<VirtualCameraBase>> m_virtual_camera;	// 登録されているバーチャルカメラ

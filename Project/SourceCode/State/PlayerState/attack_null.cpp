@@ -22,5 +22,6 @@ void player_state::AttackNull::Enter(const Player* obj)
 
 IState<Player>* player_state::AttackNull::ChangeState(const Player* obj)
 {
-
+	auto test = AttackNull();
+	return &test;
 }

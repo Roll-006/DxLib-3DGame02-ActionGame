@@ -22,5 +22,6 @@ void player_state::Suplex::Enter(const Player* obj)
 
 IState<Player>* player_state::Suplex::ChangeState(const Player* obj)
 {
-
+	auto test = Suplex();
+	return &test;
 }

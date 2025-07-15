@@ -22,5 +22,6 @@ void player_state::RoundhouseKick::Enter(const Player* obj)
 
 IState<Player>* player_state::RoundhouseKick::ChangeState(const Player* obj)
 {
-
+	auto test = RoundhouseKick();
+	return &test;
 }
