@@ -6,11 +6,11 @@
 
 namespace player_state
 {
-	class Squat final : public IActionState<Player>
+	class Crouch final : public IActionState<Player>
 	{
 	public:
-		Squat();
-		~Squat() override;
+		Crouch();
+		~Crouch() override;
 
 		void Update(Player* obj) override;
 		void Enter (const Player* obj) override;

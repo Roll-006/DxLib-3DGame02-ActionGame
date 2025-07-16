@@ -26,14 +26,6 @@ void RotControlVirtualCamera::Update()
 
 	InitMove();
 
-	// ƒRƒ}ƒ“ƒh‘€ì
-	const auto command = CommandHandler::GetInstance();
-	command->Execute(CommandKind::kInitAim,			this);
-	command->Execute(CommandKind::kMoveUpCamera,	this);
-	command->Execute(CommandKind::kMoveDownCamera,	this);
-	command->Execute(CommandKind::kMoveLeftCamera,	this);
-	command->Execute(CommandKind::kMoveRightCamera, this);
-
 	Move();
 
 	m_aim ->SetRot(math::ConvertEulerAnglesToRotMatrix(m_input_angle.at(TimeKind::kCurrent)));

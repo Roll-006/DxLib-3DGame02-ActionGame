@@ -2,15 +2,10 @@
 
 CommandHandler::CommandHandler()
 {
-	m_input_mode   [MoveKind::kRun] = m_input_mode   [MoveKind::kSquat] = InputModeKind::kTrigger;
-	m_trigger_count[MoveKind::kRun] = m_trigger_count[MoveKind::kSquat] = 0;
-
-	LoadSelectCommand();
-	LoadPlayerCommand();
-	LoadCameraCommand();
+	m_input_mode   [MoveKind::kRun] = m_input_mode   [MoveKind::kCrouch] = InputModeKind::kTrigger;
+	m_trigger_count[MoveKind::kRun] = m_trigger_count[MoveKind::kCrouch] = 0;
 
 	// 初期設定
-	// TODO : 後にJsonで設定を保持できるよう変更
 	InitKeyCommand();
 	InitPadCommand();
 }
@@ -20,52 +15,30 @@ CommandHandler::~CommandHandler()
 
 }
 
+void CommandHandler::Update()
+{
+	const auto input = InputChecker::GetInstance();
+
+	// 現在の入力デバイスに合わせて処理を実行
+	switch (input->GetCurrentInputDevice())
+	{
+	case DeviceKind::kKeyboard:
+		TryExecuteCommand(m_key_codes);
+		break;
+
+	case DeviceKind::kPad:
+		TryExecuteCommand(m_pad_codes);
+		break;
+	}
+}
+
 void CommandHandler::LateUpdate()
 {
 	m_current_frame_execute.clear();
 }
 
-void CommandHandler::LoadSelectCommand()
-{
-	m_commands[CommandKind::kDecide]			= (std::make_shared<select_cmd::Decide>());
-	m_commands[CommandKind::kBack]				= (std::make_shared<select_cmd::Back>());
-	m_commands[CommandKind::kSelectUp]			= (std::make_shared<select_cmd::Up>());
-	m_commands[CommandKind::kSelectDown]		= (std::make_shared<select_cmd::Down>());
-	m_commands[CommandKind::kSelectLeft]		= (std::make_shared<select_cmd::Left>());
-	m_commands[CommandKind::kSelectRight]		= (std::make_shared<select_cmd::Right>());
-	m_commands[CommandKind::kPause]				= (std::make_shared<select_cmd::Pause>());
-}
-
-void CommandHandler::LoadPlayerCommand()
-{
-	m_commands[CommandKind::kMoveUpPlayer]		= (std::make_shared<player_cmd::MoveUp>());
-	m_commands[CommandKind::kMoveDownPlayer]	= (std::make_shared<player_cmd::MoveDown>());
-	m_commands[CommandKind::kMoveLeftPlayer]	= (std::make_shared<player_cmd::MoveLeft>());
-	m_commands[CommandKind::kMoveRightPlayer]	= (std::make_shared<player_cmd::MoveRight>());
-	m_commands[CommandKind::kRun]				= (std::make_shared<player_cmd::Run>());
-	m_commands[CommandKind::kSquat]				= (std::make_shared<player_cmd::Squat>());
-	m_commands[CommandKind::kShot]				= (std::make_shared<player_cmd::Shot>());
-	m_commands[CommandKind::kAimingGun]			= (std::make_shared<player_cmd::Aiming>());
-	m_commands[CommandKind::kReloadGun]			= (std::make_shared<player_cmd::Reload>());
-	m_commands[CommandKind::kSilentKill]		= (std::make_shared<player_cmd::SilentKill>());
-	m_commands[CommandKind::kTurnAround]		= (std::make_shared<player_cmd::TurnAround>());
-}
-
-void CommandHandler::LoadCameraCommand()
-{
-	// TODO : 後にJson化
-	m_commands[CommandKind::kMoveUpCamera]		= (std::make_shared<control_camera_cmd::MoveUp>());
-	m_commands[CommandKind::kMoveDownCamera]	= (std::make_shared<control_camera_cmd::MoveDown>());
-	m_commands[CommandKind::kMoveLeftCamera]	= (std::make_shared<control_camera_cmd::MoveLeft>());
-	m_commands[CommandKind::kMoveRightCamera]	= (std::make_shared<control_camera_cmd::MoveRight>());
-	m_commands[CommandKind::kInitAim]			= (std::make_shared<control_camera_cmd::InitAim>());
-}
-
 void CommandHandler::AddInputCode(const CommandKind kind, const input_concepts::InputT auto& input_code)
 {
-	// 対応するコマンドがない場合は早期return
-	if (!m_commands.count(kind)) { return; }
-
 	const auto input = InputChecker::GetInstance();
 	const auto code = input->ConvertInputTemplateToInputCode(input_code);
 	std::vector<std::pair<CommandKind, InputCode>>* codes = nullptr;
@@ -100,9 +73,6 @@ void CommandHandler::AddInputCode(const CommandKind kind, const input_concepts::
 
 void CommandHandler::RemoveInputCode(const CommandKind kind, const input_concepts::InputT auto& input_code)
 {
-	// 対応するコマンドがない場合は早期return
-	if (!m_commands.count(kind)) { return; }
-
 	const auto input = InputChecker::GetInstance();
 	const auto code  = input->ConvertInputTemplateToInputCode(input_code);
 	std::vector<std::pair<CommandKind, InputCode>>* codes = nullptr;
@@ -136,6 +106,26 @@ void CommandHandler::RemoveInputCode(const CommandKind kind, const input_concept
 	}
 }
 
+void CommandHandler::TryExecuteCommand(const std::vector<std::pair<CommandKind, InputCode>>& codes)
+{
+	const auto input = InputChecker::GetInstance();
+	std::vector<CommandKind> executed_command;
+
+	for (const auto& code : codes)
+	{
+		if (input->IsInput(code.second))
+		{
+			// 入力されていないコマンドのみ格納
+			if (std::find(executed_command.begin(), executed_command.end(), code.first) == executed_command.end())
+			{
+				executed_command.emplace_back(code.first);
+				m_current_frame_execute[code.first] = code.second;
+
+			}
+		}
+	}
+}
+
 void CommandHandler::InitKeyCommand()
 {
 	m_key_codes.clear();
@@ -161,8 +151,8 @@ void CommandHandler::InitKeyCommand()
 	AddInputCode(CommandKind::kMoveLeftPlayer,	KEY_INPUT_A);
 	AddInputCode(CommandKind::kMoveRightPlayer,	KEY_INPUT_D);
 	AddInputCode(CommandKind::kRun,				KEY_INPUT_LSHIFT);
-	AddInputCode(CommandKind::kSquat,			KEY_INPUT_LCONTROL);
-	AddInputCode(CommandKind::kSquat,			KEY_INPUT_E);
+	AddInputCode(CommandKind::kCrouch,			KEY_INPUT_LCONTROL);
+	AddInputCode(CommandKind::kCrouch,			KEY_INPUT_E);
 	AddInputCode(CommandKind::kShot,			mouse::ButtonKind::kLeft);
 	AddInputCode(CommandKind::kShot,			KEY_INPUT_SPACE);
 	AddInputCode(CommandKind::kAimingGun,		mouse::ButtonKind::kRight);
@@ -200,7 +190,7 @@ void CommandHandler::InitPadCommand()
 	AddInputCode(CommandKind::kSelectRight,		pad::StickKind	::kLSRight);
 	AddInputCode(CommandKind::kPause,			pad::ButtonKind	::kStart);
 	AddInputCode(CommandKind::kRun,				pad::ButtonKind	::kLSPush);
-	AddInputCode(CommandKind::kSquat,			pad::ButtonKind	::kB);
+	AddInputCode(CommandKind::kCrouch,			pad::ButtonKind	::kB);
 	AddInputCode(CommandKind::kShot,			pad::TriggerKind::kRT);
 	AddInputCode(CommandKind::kAimingGun,		pad::TriggerKind::kLT);
 	AddInputCode(CommandKind::kReloadGun,		pad::ButtonKind	::kX);

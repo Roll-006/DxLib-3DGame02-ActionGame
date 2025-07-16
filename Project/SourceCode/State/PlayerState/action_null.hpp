@@ -17,6 +17,7 @@ namespace player_state
 		[[nodiscard]] std::shared_ptr<IState<Player>> ChangeState(const Player* obj) override;
 
 	private:
-
+		[[nodiscard]] bool TryRun();
+		[[nodiscard]] bool TryCrouch();
 	};
 }

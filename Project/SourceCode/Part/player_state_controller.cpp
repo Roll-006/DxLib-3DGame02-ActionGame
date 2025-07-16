@@ -9,7 +9,7 @@ PlayerStateController::PlayerStateController() :
 	m_states[typeid(player_state::MoveNull)]			= std::make_shared<player_state::MoveNull>();
 	m_states[typeid(player_state::Move)]				= std::make_shared<player_state::Move>();
 	m_states[typeid(player_state::ActionNull)]			= std::make_shared<player_state::ActionNull>();
-	m_states[typeid(player_state::Squat)]				= std::make_shared<player_state::Squat>();
+	m_states[typeid(player_state::Crouch)]				= std::make_shared<player_state::Crouch>();
 	m_states[typeid(player_state::Run)]					= std::make_shared<player_state::Run>();
 	m_states[typeid(player_state::TurnAround)]			= std::make_shared<player_state::TurnAround>();
 	m_states[typeid(player_state::WeaponActionNull)]	= std::make_shared<player_state::WeaponActionNull>();

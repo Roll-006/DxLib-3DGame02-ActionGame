@@ -28,15 +28,6 @@
     <ClCompile Include="SourceCode\Calculation\quaternion.cpp">
       <Filter>Calculation</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Command\camera_command.cpp">
-      <Filter>Command</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\Command\player_command.cpp">
-      <Filter>Command</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\Command\select_command.cpp">
-      <Filter>Command</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\FPS\fps.cpp">
       <Filter>FPS</Filter>
     </ClCompile>
@@ -296,7 +287,7 @@
     <ClCompile Include="SourceCode\State\PlayerState\side_slash_knife.cpp">
       <Filter>State\PlayerState</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\State\PlayerState\squat.cpp">
+    <ClCompile Include="SourceCode\State\PlayerState\crouch.cpp">
       <Filter>State\PlayerState</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\State\PlayerState\stab_knife.cpp">
@@ -320,9 +311,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\chara_base.hpp">
-      <Filter>Base</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Base\command_base.hpp">
       <Filter>Base</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Base\gun_base.hpp">
@@ -375,15 +363,6 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Calculation\vector_3d.hpp">
       <Filter>Calculation</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Command\camera_command.hpp">
-      <Filter>Command</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Command\player_command.hpp">
-      <Filter>Command</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Command\select_command.hpp">
-      <Filter>Command</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Concept\common_concepts.hpp">
       <Filter>Concept</Filter>
@@ -769,7 +748,7 @@
     <ClInclude Include="SourceCode\State\PlayerState\side_slash_knife.hpp">
       <Filter>State\PlayerState</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\State\PlayerState\squat.hpp">
+    <ClInclude Include="SourceCode\State\PlayerState\crouch.hpp">
       <Filter>State\PlayerState</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\State\PlayerState\stab_knife.hpp">
@@ -837,9 +816,6 @@
     <Filter Include="Data\Kind">
       <UniqueIdentifier>{72135338-3c4c-44c1-a81b-ef11a7ace830}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Command">
-      <UniqueIdentifier>{c15fa1e6-f8eb-4c6f-91c6-2afeff442fe5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Data\Tag">
       <UniqueIdentifier>{cd4f92e3-b298-4e4a-9752-61379ba99845}</UniqueIdentifier>
     </Filter>
@@ -854,9 +830,6 @@
     </Filter>
     <Filter Include="Shape\2DShape">
       <UniqueIdentifier>{4b13d9b8-f21f-434a-aa12-561611daf8ca}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Shape\3DShape">
-      <UniqueIdentifier>{ac75a37e-b63a-4367-aa7b-75ba0c9cc8f7}</UniqueIdentifier>
     </Filter>
     <Filter Include="Data\IncludeList">
       <UniqueIdentifier>{a9b5adeb-15db-4ac4-822d-1b42782f9731}</UniqueIdentifier>
@@ -914,6 +887,9 @@
     </Filter>
     <Filter Include="State\CharaState">
       <UniqueIdentifier>{ff495161-2f03-4c6e-a508-ddbb081ecd2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shape\3DShape">
+      <UniqueIdentifier>{ac75a37e-b63a-4367-aa7b-75ba0c9cc8f7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

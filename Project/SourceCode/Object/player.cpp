@@ -67,24 +67,11 @@ void Player::Update()
 	//std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->DeactivateAiming();
 	//std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->ReleaseTrigger();
 
-	const auto command = CommandHandler::GetInstance();
-	command->Execute(CommandKind::kMoveUpPlayer,	this);
-	command->Execute(CommandKind::kMoveDownPlayer,	this);
-	command->Execute(CommandKind::kMoveLeftPlayer,	this);
-	command->Execute(CommandKind::kMoveRightPlayer, this);
-	command->Execute(CommandKind::kRun,				this);
-	command->Execute(CommandKind::kSquat,			this);
-	command->Execute(CommandKind::kReloadGun,		this);
-	command->Execute(CommandKind::kAimingGun,		this);
-	command->Execute(CommandKind::kShot,			this);
-
 	Move();
 	UpdateTransform(m_look_dir.at(TimeKind::kCurrent), kModelScale);
 
 	m_state->Update(this);
 	m_state->ChangeState(this);
-
-	//ChangeAnimState();
 	m_animator->Update();
 
 	CalcCapsuleColliderLength();
@@ -195,26 +182,26 @@ void Player::Run()
 	}
 }
 
-void Player::Squat()
+void Player::Crouch()
 {
 	const auto command	= CommandHandler::GetInstance();
 	const auto input	= InputChecker	::GetInstance();
-	const auto code		= *command->GetCurrentFrameExecuteInputCode(CommandKind::kSquat);
+	const auto code		= *command->GetCurrentFrameExecuteInputCode(CommandKind::kCrouch);
 
-	switch (command->GetInputModeKind(CommandHandler::MoveKind::kSquat))
+	switch (command->GetInputModeKind(CommandHandler::MoveKind::kCrouch))
 	{
 	case InputModeKind::kTrigger:
 		if (input->GetInputState(code) == InputState::kSingle)
 		{
-			command->CountUpTrigger(CommandHandler::MoveKind::kSquat);
-			m_is_squat = command->GetTriggerCount(CommandHandler::MoveKind::kSquat) % 2 ? true : false;
+			command->CountUpTrigger(CommandHandler::MoveKind::kCrouch);
+			m_is_crouch = command->GetTriggerCount(CommandHandler::MoveKind::kCrouch) % 2 ? true : false;
 		}
 		break;
 
 	case InputModeKind::kHold:
 		if (input->GetInputState(code) == InputState::kHold)
 		{
-			m_is_squat = true;
+			m_is_crouch = true;
 		}
 		break;
 	}
@@ -264,9 +251,9 @@ void Player::ChangeAnimState()
 		{
 			m_anim_kind = PlayerAnimKind::kIdle02;
 
-			if (m_is_squat)
+			if (m_is_crouch)
 			{
-				m_anim_kind = PlayerAnimKind::kIdleSquat01;
+				m_anim_kind = PlayerAnimKind::kIdleCrouch01;
 			}
 		}
 
@@ -320,44 +307,44 @@ void Player::ChangeAnimState()
 	}
 
 	// ‚µ‚á‚ª‚Þ
-	if (m_is_squat)
+	if (m_is_crouch)
 	{
 		if (std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->IsAiming())
 		{
-			m_anim_kind = PlayerAnimKind::kIdleSquatShoot01;
+			m_anim_kind = PlayerAnimKind::kIdleCrouchShoot01;
 		}
 
 		if (m_is_input_move.at(static_cast<int>(MoveDir::kForward)))
 		{
-			m_anim_kind = PlayerAnimKind::kWalkSquatForward01;
+			m_anim_kind = PlayerAnimKind::kWalkCrouchForward01;
 		}
 		if (m_is_input_move.at(static_cast<int>(MoveDir::kBackward)))
 		{
-			m_anim_kind = PlayerAnimKind::kWalkSquatBackward01;
+			m_anim_kind = PlayerAnimKind::kWalkCrouchBackward01;
 		}
 		if (m_is_input_move.at(static_cast<int>(MoveDir::kLeft)))
 		{
-			m_anim_kind = PlayerAnimKind::kWalkSquatLeft01;
+			m_anim_kind = PlayerAnimKind::kWalkCrouchLeft01;
 		}
 		if (m_is_input_move.at(static_cast<int>(MoveDir::kRight)))
 		{
-			m_anim_kind = PlayerAnimKind::kWalkSquatRight01;
+			m_anim_kind = PlayerAnimKind::kWalkCrouchRight01;
 		}
 		if (m_is_input_move.at(static_cast<int>(MoveDir::kForward)) && m_is_input_move.at(static_cast<int>(MoveDir::kLeft)))
 		{
-			m_anim_kind = PlayerAnimKind::kWalkSquatForwardLeft01;
+			m_anim_kind = PlayerAnimKind::kWalkCrouchForwardLeft01;
 		}
 		if (m_is_input_move.at(static_cast<int>(MoveDir::kForward)) && m_is_input_move.at(static_cast<int>(MoveDir::kRight)))
 		{
-			m_anim_kind = PlayerAnimKind::kWalkSquatForwardRight01;
+			m_anim_kind = PlayerAnimKind::kWalkCrouchForwardRight01;
 		}
 		if (m_is_input_move.at(static_cast<int>(MoveDir::kBackward)) && m_is_input_move.at(static_cast<int>(MoveDir::kLeft)))
 		{
-			m_anim_kind = PlayerAnimKind::kWalkSquatBackwardLeft01;
+			m_anim_kind = PlayerAnimKind::kWalkCrouchBackwardLeft01;
 		}
 		if (m_is_input_move.at(static_cast<int>(MoveDir::kBackward)) && m_is_input_move.at(static_cast<int>(MoveDir::kRight)))
 		{
-			m_anim_kind = PlayerAnimKind::kWalkSquatBackwardRight01;
+			m_anim_kind = PlayerAnimKind::kWalkCrouchBackwardRight01;
 		}
 	}
 
@@ -435,7 +422,7 @@ void Player::InitMove()
 	}
 
 	// ‚µ‚á‚ª‚Ý”»’è
-	if (command->GetInputModeKind(CommandHandler::MoveKind::kSquat) == InputModeKind::kHold) { m_is_squat = false; }
+	if (command->GetInputModeKind(CommandHandler::MoveKind::kCrouch) == InputModeKind::kHold) { m_is_crouch = false; }
 }
 
 void Player::InitWeapon()
@@ -458,12 +445,12 @@ void Player::CalcMoveSpeed(const float input_slope)
 	}
 
 	// ‚µ‚á‚ª‚Ýˆ—
-	if (m_is_squat)
+	if (m_is_crouch)
 	{
 		// ‘¬‚¢ó‘Ô‚©‚ç•à‚«ó‘Ô‚ÉˆÚs‚µ‚½ê‡A‹}‘¬‚ÉŒ¸‘¬‚³‚¹‚é
 		if (m_move_speed > kSlowWalkSpeed) { m_move_speed = kSlowWalkSpeed; }
 
-		math::Decrease(m_move_speed, kAcceleration * FPS::GetDeltaTime(), kSquatWalkSpeed);
+		math::Decrease(m_move_speed, kAcceleration * FPS::GetDeltaTime(), kCrouchWalkSpeed);
 		return;
 	}
 
@@ -521,7 +508,7 @@ void Player::CalcLookDir()
 {
 	// U‚èŒü‚«ˆ—
 	const auto command = CommandHandler::GetInstance();
-	command->Execute(CommandKind::kTurnAround, this);
+	//command->Update(CommandKind::kTurnAround, this);
 
 	// ˜A‘±U‚èŒü‚«‚ð‘jŽ~
 	if (!command->GetCurrentFrameExecuteInputCode(CommandKind::kTurnAround))

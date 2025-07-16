@@ -154,9 +154,6 @@
     <ClCompile Include="SourceCode\Calculation\collision_calculator.cpp" />
     <ClCompile Include="SourceCode\Calculation\math.cpp" />
     <ClCompile Include="SourceCode\Calculation\quaternion.cpp" />
-    <ClCompile Include="SourceCode\Command\camera_command.cpp" />
-    <ClCompile Include="SourceCode\Command\player_command.cpp" />
-    <ClCompile Include="SourceCode\Command\select_command.cpp" />
     <ClCompile Include="SourceCode\Debugger\debugger.cpp" />
     <ClCompile Include="SourceCode\FPS\fps.cpp" />
     <ClCompile Include="SourceCode\GameSystemSetter\game_system_setter.cpp" />
@@ -233,7 +230,7 @@
     <ClCompile Include="SourceCode\State\PlayerState\run.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\shot.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\side_slash_knife.cpp" />
-    <ClCompile Include="SourceCode\State\PlayerState\squat.cpp" />
+    <ClCompile Include="SourceCode\State\PlayerState\crouch.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\stab_knife.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\stealth_kill.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\suplex.cpp" />
@@ -252,7 +249,6 @@
     <ClInclude Include="SourceCode\Base\ui_creator_base.hpp" />
     <ClInclude Include="SourceCode\Base\animator_base.hpp" />
     <ClInclude Include="SourceCode\Base\chara_base.hpp" />
-    <ClInclude Include="SourceCode\Base\command_base.hpp" />
     <ClInclude Include="SourceCode\Base\enemy_base.hpp" />
     <ClInclude Include="SourceCode\Base\gun_base.hpp" />
     <ClInclude Include="SourceCode\Base\object_pool_base.hpp" />
@@ -273,9 +269,6 @@
     <ClInclude Include="SourceCode\Calculation\quaternion.hpp" />
     <ClInclude Include="SourceCode\Calculation\vector_2d.hpp" />
     <ClInclude Include="SourceCode\Calculation\vector_3d.hpp" />
-    <ClInclude Include="SourceCode\Command\camera_command.hpp" />
-    <ClInclude Include="SourceCode\Command\player_command.hpp" />
-    <ClInclude Include="SourceCode\Command\select_command.hpp" />
     <ClInclude Include="SourceCode\Concept\common_concepts.hpp" />
     <ClInclude Include="SourceCode\Concept\input_concepts.hpp" />
     <ClInclude Include="SourceCode\Concept\obj_concepts.hpp" />
@@ -398,7 +391,7 @@
     <ClInclude Include="SourceCode\State\PlayerState\run.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\shot.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\side_slash_knife.hpp" />
-    <ClInclude Include="SourceCode\State\PlayerState\squat.hpp" />
+    <ClInclude Include="SourceCode\State\PlayerState\crouch.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\stab_knife.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\stealth_kill.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\suplex.hpp" />

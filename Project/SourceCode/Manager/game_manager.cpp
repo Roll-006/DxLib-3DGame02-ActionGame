@@ -36,7 +36,7 @@ void GameManager::Run()
 {
 	while (IsContinueLoop())
 	{
-		m_fps->Update();
+		m_fps	->Update();
 		m_window->Update();
 
 		m_scene_manager->Update();
@@ -47,12 +47,6 @@ void GameManager::Run()
 
 		m_fps->Wait();
 		ScreenFlip();
-
-		// TEST : ‰¼‚ÅƒOƒŠƒbƒh‚ð•`‰æ
-		//DxLibHelper::DrawYPlaneGrid(FLOAT2(50, 50), 100);
-		//DrawLine3D(v3d::GetZeroV(), axis::GetWorldXAxis() * 10000, 0xff0000);
-		//DrawLine3D(v3d::GetZeroV(), axis::GetWorldYAxis() * 10000, 0x00ff22);
-		//DrawLine3D(v3d::GetZeroV(), axis::GetWorldZAxis() * 10000, 0x0077ff);
 	}
 }
 

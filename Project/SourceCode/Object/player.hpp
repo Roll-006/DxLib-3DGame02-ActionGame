@@ -38,7 +38,7 @@ public:
 
 	#pragma region コマンド
 	void Run();
-	void Squat();
+	void Crouch();
 	void AimingGun();
 	void Shot();
 	void Reload();
@@ -49,7 +49,7 @@ public:
 	#pragma region Getter
 	[[nodiscard]] std::shared_ptr<PlayerStateController> GetStateController() const { return m_state; }
 	[[nodiscard]] bool IsRun()								const { return m_is_run; }
-	[[nodiscard]] bool IsSquat()							const { return m_is_squat; }
+	[[nodiscard]] bool IsCrouch()							const { return m_is_crouch; }
 	#pragma endregion
 
 private:
@@ -79,7 +79,7 @@ private:
 private:
 	static constexpr float kModelScale							= 0.25f;
 
-	static constexpr float kSquatWalkSpeed						= 0.15f;
+	static constexpr float kCrouchWalkSpeed						= 0.15f;
 	static constexpr float kSlowWalkSpeed						= 0.2f;
 	static constexpr float kWalkSpeed							= 0.5f;
 	static constexpr float kRunSpeed							= 2.0f;
@@ -116,7 +116,7 @@ private:
 
 	bool m_is_move;
 	bool m_is_run;
-	bool m_is_squat;
+	bool m_is_crouch;
 	bool m_is_turn_around;										// Y軸180°回転させるかを判定
 	bool m_is_turn_run;											// ダッシュ中に振り向くかを判定
 	bool m_is_correct_look_dir;									// 見る方向を補正するかを判定

@@ -15,7 +15,7 @@ enum class CommandKind
 	kMoveLeftPlayer,	// プレイヤー左移動
 	kMoveRightPlayer,	// プレイヤー右移動
 	kRun,				// ダッシュ
-	kSquat,				// しゃがむ
+	kCrouch,				// しゃがむ
 	kShot,				// 銃を撃つ
 	kAimingGun,			// 銃を構える
 	kReloadGun,			// 銃のリロード

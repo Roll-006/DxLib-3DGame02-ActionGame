@@ -11,7 +11,7 @@ namespace player_state
 	enum class ActionStateKind
 	{
 		kActionNull,
-		kSquat,
+		kCrouch,
 		kRun,
 		kTurnAround,
 	};

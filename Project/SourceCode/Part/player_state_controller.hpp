@@ -7,7 +7,7 @@
 #include "../State/PlayerState/move.hpp"
 
 #include "../State/PlayerState/action_null.hpp"
-#include "../State/PlayerState/squat.hpp"
+#include "../State/PlayerState/crouch.hpp"
 #include "../State/PlayerState/run.hpp"
 #include "../State/PlayerState/turn_around.hpp"
 
