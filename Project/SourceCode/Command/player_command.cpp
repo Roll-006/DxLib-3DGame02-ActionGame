@@ -2,22 +2,26 @@
 
 void player_cmd::MoveUp::Execute(ObjBase* obj)
 {
-	static_cast<Player*>(obj)->MoveForward();
+	// 処理なし
+	// 呼ばれることで実行されたと判定
 }
 
 void player_cmd::MoveDown::Execute(ObjBase* obj)
 {
-	static_cast<Player*>(obj)->MoveBackward();
+	// 処理なし
+	// 呼ばれることで実行されたと判定
 }
 
 void player_cmd::MoveLeft::Execute(ObjBase* obj)
 {
-	static_cast<Player*>(obj)->MoveLeft();
+	// 処理なし
+	// 呼ばれることで実行されたと判定
 }
 
 void player_cmd::MoveRight::Execute(ObjBase* obj)
 {
-	static_cast<Player*>(obj)->MoveRight();
+	// 処理なし
+	// 呼ばれることで実行されたと判定
 }
 
 void player_cmd::Run::Execute(ObjBase* obj)

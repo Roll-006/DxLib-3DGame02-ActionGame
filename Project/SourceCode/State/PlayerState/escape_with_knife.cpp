@@ -10,7 +10,7 @@ player_state::EscapeWithKnife::~EscapeWithKnife()
 
 }
 
-void player_state::EscapeWithKnife::Update(const Player* obj)
+void player_state::EscapeWithKnife::Update(Player* obj)
 {
 
 }

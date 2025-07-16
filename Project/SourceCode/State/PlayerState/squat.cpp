@@ -10,7 +10,7 @@ player_state::Squat::~Squat()
 
 }
 
-void player_state::Squat::Update(const Player* obj)
+void player_state::Squat::Update(Player* obj)
 {
 
 }

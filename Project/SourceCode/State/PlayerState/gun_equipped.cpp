@@ -10,7 +10,7 @@ player_state::GunEquipped::~GunEquipped()
 
 }
 
-void player_state::GunEquipped::Update(const Player* obj)
+void player_state::GunEquipped::Update(Player* obj)
 {
 
 }

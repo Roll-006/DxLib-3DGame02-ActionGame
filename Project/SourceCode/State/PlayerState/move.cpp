@@ -10,9 +10,26 @@ player_state::Move::~Move()
 
 }
 
-void player_state::Move::Update(const Player* obj)
+void player_state::Move::Update(Player* obj)
 {
-
+	// ˆÚ“®•ûŒü‚ÌŒˆ’è
+	const auto command = CommandHandler::GetInstance();
+	if (command->GetCurrentFrameExecuteInputCode(CommandKind::kMoveUpPlayer))
+	{
+		obj->MoveForward();
+	}
+	if (command->GetCurrentFrameExecuteInputCode(CommandKind::kMoveDownPlayer))
+	{
+		obj->MoveBackward();
+	}
+	if (command->GetCurrentFrameExecuteInputCode(CommandKind::kMoveLeftPlayer))
+	{
+		obj->MoveLeft();
+	}
+	if (command->GetCurrentFrameExecuteInputCode(CommandKind::kMoveRightPlayer))
+	{
+		obj->MoveRight();
+	}
 }
 
 void player_state::Move::Enter(const Player* obj)
@@ -22,9 +39,14 @@ void player_state::Move::Enter(const Player* obj)
 
 std::shared_ptr<IState<Player>> player_state::Move::ChangeState(const Player* obj)
 {
-	if (!obj->IsInputMove())
+	// ‰½‚à“ü—Í‚³‚ê‚Ä‚¢‚È‚¢ê‡ANull(Idle)‚ÖˆÚs
+	const auto command = CommandHandler::GetInstance();
+	if (!(	command->GetCurrentFrameExecuteInputCode(CommandKind::kMoveUpPlayer)
+		||	command->GetCurrentFrameExecuteInputCode(CommandKind::kMoveDownPlayer)
+		||	command->GetCurrentFrameExecuteInputCode(CommandKind::kMoveLeftPlayer)
+		||	command->GetCurrentFrameExecuteInputCode(CommandKind::kMoveRightPlayer)))
 	{
-		return std::make_shared<MoveNull>();
+		return obj->GetStateController()->GetState<MoveNull, Player>();
 	}
 
 	return nullptr;

@@ -10,7 +10,7 @@ player_state::Shot::~Shot()
 
 }
 
-void player_state::Shot::Update(const Player* obj)
+void player_state::Shot::Update(Player* obj)
 {
 
 }

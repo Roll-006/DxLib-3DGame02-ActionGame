@@ -1,21 +1,13 @@
 #include "player.hpp"
 #include "../Manager/command_handler.hpp"
-#include "../Manager/player_state_manager.hpp"
+#include "../Part/player_state_controller.hpp"
 
 Player::Player() :
 	CharaBase				(ObjName.PLAYER, ObjTag.PLAYER, ModelPath.CHARA_01, MassKind::kMedium),
 	m_anim_kind				(PlayerAnimKind::kIdle02),
-	m_state					(std::make_shared<PlayerStateManager>()),
+	m_state					(std::make_shared<PlayerStateController>()),
 	m_bone_pos_corrector	(std::make_shared<BonePosCorrector>()),
 	m_move_speed			(0.0f),
-	m_non_move_time			(0.0f),
-	m_is_move				(false),
-	m_is_run				(false),
-	m_is_squat				(false),
-	m_is_turn_around		(false),
-	m_is_turn_run			(false),
-	m_is_correct_look_dir	(false),
-	m_turn_around_count		(0),
 	m_is_input_move			(false, false, false, false)
 {
 	// 初期pos・dirを設定
@@ -156,36 +148,28 @@ void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	}
 }
 
-
-#pragma region コマンド
 void Player::MoveForward()
 {
-	m_is_input_move.at(static_cast<int>(MoveDir::kForward)) = true;
-
 	m_move_dir.at(TimeKind::kNext) += GetMoveForward();
 }
 
 void Player::MoveBackward()
 {
-	m_is_input_move.at(static_cast<int>(MoveDir::kBackward)) = true;
-
 	m_move_dir.at(TimeKind::kNext) -= GetMoveForward();
 }
 
 void Player::MoveLeft()
 {
-	m_is_input_move.at(static_cast<int>(MoveDir::kLeft)) = true;
-
 	m_move_dir.at(TimeKind::kNext) -= CameraManager::GetInstance()->GetMainCamera()->GetTransform()->GetRight(CoordinateKind::kWorld);
 }
 
 void Player::MoveRight()
 {
-	m_is_input_move.at(static_cast<int>(MoveDir::kRight)) = true;
-
 	m_move_dir.at(TimeKind::kNext) += CameraManager::GetInstance()->GetMainCamera()->GetTransform()->GetRight(CoordinateKind::kWorld);
 }
 
+
+#pragma region コマンド
 void Player::Run()
 {
 	const auto command	= CommandHandler::GetInstance();
@@ -238,19 +222,12 @@ void Player::Squat()
 
 void Player::AimingGun()
 {
-	// ターン中は早期return
-	if (m_is_turn_around) { return; }
-
 	std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->ActivateAiming();
 
 }
 
 void Player::Shot()
 {
-	// ターン中は早期return
-	if (m_is_turn_around) { return; }
-	if (!std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->IsAiming()) { return; }
-
 	std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->PullTrigger();
 }
 
@@ -261,20 +238,17 @@ void Player::Reload()
 
 void Player::TurnAround()
 {
-	if (m_is_turn_around)									{ return; }
-	if (m_is_run)											{ return; }
-	if (m_turn_around_count != 0)							{ return; }
-	if (m_move_dir.at(TimeKind::kNext) == v3d::GetZeroV())	{ return; }
+	//if (m_move_dir.at(TimeKind::kNext) == v3d::GetZeroV())	{ return; }
 
-	// バック中であった場合は振り向く
-	const float angle = math::GetAngleBetweenTwoVector(-GetMoveForward(), m_move_dir.at(TimeKind::kNext));
-	if (angle < kTurnAroundStickAngle * math::kDegreesToRadian)
-	{
-		m_look_dir.at(TimeKind::kNext) = -m_look_dir.at(TimeKind::kCurrent);
+	//// バック中であった場合は振り向く
+	//const float angle = math::GetAngleBetweenTwoVector(-GetMoveForward(), m_move_dir.at(TimeKind::kNext));
+	//if (angle < kTurnAroundStickAngle * math::kDegreesToRadian)
+	//{
+	//	m_look_dir.at(TimeKind::kNext) = -m_look_dir.at(TimeKind::kCurrent);
 
-		m_is_turn_around = true;
-		++m_turn_around_count;
-	}
+	//	m_is_turn_around = true;
+	//	++m_turn_around_count;
+	//}
 }
 #pragma endregion
 
@@ -443,7 +417,7 @@ void Player::InitMove()
 {
 	const auto command = CommandHandler::GetInstance();
 
-	for (auto& is_input : m_is_input_move) { is_input = false; }
+	
 
 	// 移動方向
 	m_move_dir.at(TimeKind::kPrev) = m_move_dir.at(TimeKind::kCurrent);

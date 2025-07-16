@@ -10,7 +10,7 @@ player_state::SideSlashKnife::~SideSlashKnife()
 
 }
 
-void player_state::SideSlashKnife::Update(const Player* obj)
+void player_state::SideSlashKnife::Update(Player* obj)
 {
 
 }

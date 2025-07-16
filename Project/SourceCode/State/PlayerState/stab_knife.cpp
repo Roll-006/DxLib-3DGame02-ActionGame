@@ -10,7 +10,7 @@ player_state::StabKnife::~StabKnife()
 
 }
 
-void player_state::StabKnife::Update(const Player* obj)
+void player_state::StabKnife::Update(Player* obj)
 {
 
 }

@@ -10,7 +10,7 @@ player_state::SpecialNull::~SpecialNull()
 
 }
 
-void player_state::SpecialNull::Update(const Player* obj)
+void player_state::SpecialNull::Update(Player* obj)
 {
 
 }

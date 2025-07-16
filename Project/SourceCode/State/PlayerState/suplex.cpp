@@ -10,7 +10,7 @@ player_state::Suplex::~Suplex()
 
 }
 
-void player_state::Suplex::Update(const Player* obj)
+void player_state::Suplex::Update(Player* obj)
 {
 
 }

@@ -10,7 +10,7 @@ player_state::RoundhouseKick::~RoundhouseKick()
 
 }
 
-void player_state::RoundhouseKick::Update(const Player* obj)
+void player_state::RoundhouseKick::Update(Player* obj)
 {
 
 }

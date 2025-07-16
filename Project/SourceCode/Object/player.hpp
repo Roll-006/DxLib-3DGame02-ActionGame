@@ -6,7 +6,7 @@
 #include "assault_rifle.hpp"
 #include "../Manager/camera_manager.hpp"
 
-class PlayerStateManager;
+class PlayerStateController;
 
 class Player final : public CharaBase
 {
@@ -30,23 +30,27 @@ public:
 
 	void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) override;
 
-	#pragma region コマンド
-	void Run();
-	void Squat();
 	void MoveForward();
 	void MoveBackward();
 	void MoveLeft();
 	void MoveRight();
+
+
+	#pragma region コマンド
+	void Run();
+	void Squat();
 	void AimingGun();
 	void Shot();
 	void Reload();
 	void TurnAround();
 	#pragma endregion
 
-	[[nodiscard]] bool IsInputMove()						const { return std::any_of(m_is_input_move.begin(), m_is_input_move.end(), [](bool is_input_move) { return is_input_move; }); }
-	[[nodiscard]] bool IsInputMove(const MoveDir move_dir)	const { return m_is_input_move.at(static_cast<int>(move_dir)); }
+
+	#pragma region Getter
+	[[nodiscard]] std::shared_ptr<PlayerStateController> GetStateController() const { return m_state; }
 	[[nodiscard]] bool IsRun()								const { return m_is_run; }
 	[[nodiscard]] bool IsSquat()							const { return m_is_squat; }
+	#pragma endregion
 
 private:
 	void ChangeAnimState() override;
@@ -103,7 +107,7 @@ private:
 	std::unordered_map<TimeKind, VECTOR> m_look_dir;			// 向いている方向
 	
 	PlayerAnimKind m_anim_kind;									// アニメーションの状態を判定
-	std::shared_ptr<PlayerStateManager> m_state;
+	std::shared_ptr<PlayerStateController> m_state;
 
 	std::shared_ptr<BonePosCorrector> m_bone_pos_corrector;		// ボーン位置修正
 

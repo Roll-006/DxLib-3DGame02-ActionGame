@@ -245,9 +245,6 @@
     <ClCompile Include="SourceCode\Input\input_checker.cpp">
       <Filter>Input</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Manager\player_state_manager.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\State\PlayerState\aiming.cpp">
       <Filter>State\PlayerState</Filter>
     </ClCompile>
@@ -316,6 +313,9 @@
     </ClCompile>
     <ClCompile Include="SourceCode\State\PlayerState\special_null.cpp">
       <Filter>State\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Part\player_state_controller.cpp">
+      <Filter>Part</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -718,9 +718,6 @@
     <ClInclude Include="SourceCode\Input\input_checker.hpp">
       <Filter>Input</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Manager\player_state_manager.hpp">
-      <Filter>Manager</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\State\PlayerState\aiming.hpp">
       <Filter>State\PlayerState</Filter>
     </ClInclude>
@@ -801,6 +798,15 @@
     </ClInclude>
     <ClInclude Include="SourceCode\State\PlayerState\special_null.hpp">
       <Filter>State\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Concept\state_concepts.hpp">
+      <Filter>Concept</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Part\player_state_controller.hpp">
+      <Filter>Part</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\Kind\player_state_kind.hpp">
+      <Filter>Data\Kind</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

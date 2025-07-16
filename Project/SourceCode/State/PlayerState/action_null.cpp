@@ -10,7 +10,7 @@ player_state::ActionNull::~ActionNull()
 
 }
 
-void player_state::ActionNull::Update(const Player* obj)
+void player_state::ActionNull::Update(Player* obj)
 {
 
 }

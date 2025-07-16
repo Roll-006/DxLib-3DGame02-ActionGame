@@ -10,7 +10,7 @@ player_state::Aiming::~Aiming()
 
 }
 
-void player_state::Aiming::Update(const Player* obj)
+void player_state::Aiming::Update(Player* obj)
 {
 
 }

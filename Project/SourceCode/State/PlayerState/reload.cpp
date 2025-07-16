@@ -10,7 +10,7 @@ player_state::Reload::~Reload()
 
 }
 
-void player_state::Reload::Update(const Player* obj)
+void player_state::Reload::Update(Player* obj)
 {
 
 }

@@ -109,6 +109,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>Library/Dxlib_h;Library/EffekseerForDXLib;Library/DxlibHelper_h;Library/nlohmann</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -127,6 +128,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>Library/Dxlib_h;Library/EffekseerForDXLib;Library/DxlibHelper_h;Library/nlohmann</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -168,7 +170,6 @@
     <ClCompile Include="SourceCode\Manager\object_pool_manager.cpp" />
     <ClCompile Include="SourceCode\Manager\obj_manager.cpp" />
     <ClCompile Include="SourceCode\Manager\physics_manager.cpp" />
-    <ClCompile Include="SourceCode\Manager\player_state_manager.cpp" />
     <ClCompile Include="SourceCode\Manager\rifle_cartridge_manager.cpp" />
     <ClCompile Include="SourceCode\Manager\scene_manager.cpp" />
     <ClCompile Include="SourceCode\Manager\ui_manager.cpp" />
@@ -191,6 +192,7 @@
     <ClCompile Include="SourceCode\Part\graphicer.cpp" />
     <ClCompile Include="SourceCode\Part\modeler.cpp" />
     <ClCompile Include="SourceCode\Part\player_animator.cpp" />
+    <ClCompile Include="SourceCode\Part\player_state_controller.cpp" />
     <ClCompile Include="SourceCode\Part\rifle_cartridge_object_pool.cpp" />
     <ClCompile Include="SourceCode\Part\transform.cpp" />
     <ClCompile Include="SourceCode\Random\random_generator.cpp" />
@@ -277,6 +279,7 @@
     <ClInclude Include="SourceCode\Concept\common_concepts.hpp" />
     <ClInclude Include="SourceCode\Concept\input_concepts.hpp" />
     <ClInclude Include="SourceCode\Concept\obj_concepts.hpp" />
+    <ClInclude Include="SourceCode\Concept\state_concepts.hpp" />
     <ClInclude Include="SourceCode\Concept\vector_concepts.hpp" />
     <ClInclude Include="SourceCode\Data\animator_data.hpp" />
     <ClInclude Include="SourceCode\Data\box_data.hpp" />
@@ -299,6 +302,7 @@
     <ClInclude Include="SourceCode\Data\Kind\mouse_kind.hpp" />
     <ClInclude Include="SourceCode\Data\Kind\pad_kind.hpp" />
     <ClInclude Include="SourceCode\Data\Kind\player_kind.hpp" />
+    <ClInclude Include="SourceCode\Data\Kind\player_state_kind.hpp" />
     <ClInclude Include="SourceCode\Data\Kind\scene_kind.hpp" />
     <ClInclude Include="SourceCode\Data\Kind\shape_kind.hpp" />
     <ClInclude Include="SourceCode\Data\Kind\sort_kind.hpp" />
@@ -331,7 +335,6 @@
     <ClInclude Include="SourceCode\Manager\object_pool_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\obj_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\physics_manager.hpp" />
-    <ClInclude Include="SourceCode\Manager\player_state_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\rifle_cartridge_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\scene_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\ui_manager.hpp" />
@@ -354,6 +357,7 @@
     <ClInclude Include="SourceCode\Part\graphicer.hpp" />
     <ClInclude Include="SourceCode\Part\modeler.hpp" />
     <ClInclude Include="SourceCode\Part\player_animator.hpp" />
+    <ClInclude Include="SourceCode\Part\player_state_controller.hpp" />
     <ClInclude Include="SourceCode\Part\rifle_cartridge_object_pool.hpp" />
     <ClInclude Include="SourceCode\Part\transform.hpp" />
     <ClInclude Include="SourceCode\Random\random_generator.hpp" />

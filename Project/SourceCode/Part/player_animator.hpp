@@ -2,12 +2,12 @@
 #include "../Base/animator_base.hpp"
 #include "../Data/Kind/player_kind.hpp"
 
-class PlayerStateManager;
+class PlayerStateController;
 
 class PlayerAnimator final : public AnimatorBase
 {
 public:
-	PlayerAnimator(const std::shared_ptr<Modeler> modeler, const std::shared_ptr<PlayerStateManager> state);
+	PlayerAnimator(const std::shared_ptr<Modeler> modeler, const std::shared_ptr<PlayerStateController> state);
 	~PlayerAnimator();
 
 	void Init()		override;
@@ -18,5 +18,5 @@ private:
 	void ChangeAnim();
 
 private:
-	std::shared_ptr<PlayerStateManager> m_state;
+	std::shared_ptr<PlayerStateController> m_state;
 };

@@ -1,7 +1,7 @@
-﻿#include "../Manager/player_state_manager.hpp"
+﻿#include "player_state_controller.hpp"
 #include "player_animator.hpp"
 
-PlayerAnimator::PlayerAnimator(const std::shared_ptr<Modeler> modeler, const std::shared_ptr<PlayerStateManager> state) :
+PlayerAnimator::PlayerAnimator(const std::shared_ptr<Modeler> modeler, const std::shared_ptr<PlayerStateController> state) :
 	AnimatorBase(modeler),
 	m_state		(state)
 {
@@ -57,5 +57,5 @@ void PlayerAnimator::LoadAnim()
 
 void PlayerAnimator::ChangeAnim()
 {
-
+	
 }

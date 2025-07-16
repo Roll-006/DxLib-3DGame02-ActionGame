@@ -10,7 +10,7 @@ player_state::FinishOff::~FinishOff()
 
 }
 
-void player_state::FinishOff::Update(const Player* obj)
+void player_state::FinishOff::Update(Player* obj)
 {
 
 }

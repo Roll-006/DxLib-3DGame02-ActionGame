@@ -10,7 +10,7 @@ player_state::TurnAround::~TurnAround()
 
 }
 
-void player_state::TurnAround::Update(const Player* obj)
+void player_state::TurnAround::Update(Player* obj)
 {
 
 }

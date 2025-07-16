@@ -10,7 +10,7 @@ player_state::StealthKill::~StealthKill()
 
 }
 
-void player_state::StealthKill::Update(const Player* obj)
+void player_state::StealthKill::Update(Player* obj)
 {
 
 }

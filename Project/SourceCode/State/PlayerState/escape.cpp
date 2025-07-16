@@ -10,7 +10,7 @@ player_state::Escape::~Escape()
 
 }
 
-void player_state::Escape::Update(const Player* obj)
+void player_state::Escape::Update(Player* obj)
 {
 
 }

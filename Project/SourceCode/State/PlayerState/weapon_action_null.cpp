@@ -10,7 +10,7 @@ player_state::WeaponActionNull::~WeaponActionNull()
 
 }
 
-void player_state::WeaponActionNull::Update(const Player* obj)
+void player_state::WeaponActionNull::Update(Player* obj)
 {
 
 }

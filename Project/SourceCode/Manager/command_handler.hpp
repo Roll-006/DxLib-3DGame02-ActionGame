@@ -86,13 +86,13 @@ private:
 	void RemoveInputCode(const CommandKind kind, const input_concepts::InputT auto& input_code);
 
 private:
-	std::unordered_map<CommandKind, std::shared_ptr<CommandBase>> m_commands;
-	std::unordered_map<CommandKind, InputCode>	   m_current_frame_execute;		// 現在のフレームで実行されたコマンドに対応する入力コード
-	std::vector<std::pair<CommandKind, InputCode>> m_key_codes;
-	std::vector<std::pair<CommandKind, InputCode>> m_pad_codes;
+	std::unordered_map<CommandKind, std::shared_ptr<CommandBase>>	m_commands;
+	std::unordered_map<CommandKind, InputCode>						m_current_frame_execute;		// 現在のフレームで実行されたコマンドに対応する入力コード
+	std::vector<std::pair<CommandKind, InputCode>>					m_key_codes;
+	std::vector<std::pair<CommandKind, InputCode>>					m_pad_codes;
 
-	std::unordered_map<MoveKind, InputModeKind> m_input_mode;		// 入力方式
-	std::unordered_map<MoveKind, int>			m_trigger_count;	// トリガー方式入力カウント
+	std::unordered_map<MoveKind, InputModeKind>						m_input_mode;					// 入力方式
+	std::unordered_map<MoveKind, int>								m_trigger_count;				// トリガー方式入力カウント
 
 	friend SingletonBase<CommandHandler>;
 };

@@ -11,7 +11,7 @@ player_state::MoveNull::~MoveNull()
 
 }
 
-void player_state::MoveNull::Update(const Player* obj)
+void player_state::MoveNull::Update(Player* obj)
 {
 	m_non_move_time += FPS::GetDeltaTime();
 }
@@ -23,9 +23,14 @@ void player_state::MoveNull::Enter(const Player* obj)
 
 std::shared_ptr<IState<Player>> player_state::MoveNull::ChangeState(const Player* obj)
 {
-	if (obj->IsInputMove())
+	// “ü—Í‚ª‚ ‚Á‚½ê‡AMove‚ÖˆÚs
+	const auto command = CommandHandler::GetInstance();
+	if ((	command->GetCurrentFrameExecuteInputCode(CommandKind::kMoveUpPlayer)
+		||	command->GetCurrentFrameExecuteInputCode(CommandKind::kMoveDownPlayer)
+		||	command->GetCurrentFrameExecuteInputCode(CommandKind::kMoveLeftPlayer)
+		||	command->GetCurrentFrameExecuteInputCode(CommandKind::kMoveRightPlayer)))
 	{
-		return std::make_shared<Move>();
+		return obj->GetStateController()->GetState<Move, Player>();
 	}
 
 	return nullptr;
