@@ -1,6 +1,7 @@
 #include "roundhouse_kick.hpp"
 
-player_state::RoundhouseKick::RoundhouseKick()
+player_state::RoundhouseKick::RoundhouseKick() :
+	SpecialStateBase(static_cast<int>(player_state::SpecialStateKind::kRoundhouseKick))
 {
 
 }

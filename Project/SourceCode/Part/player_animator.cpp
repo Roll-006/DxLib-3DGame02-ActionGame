@@ -57,5 +57,226 @@ void PlayerAnimator::LoadAnim()
 
 void PlayerAnimator::ChangeAnim()
 {
-	
+	switch (m_state->GetCurrentMoveState()->GetStateKind())
+	{
+	case static_cast<int>(player_state::MoveStateKind::kMoveNull):
+		AddToMoveNullState();
+		break;
+
+	case static_cast<int>(player_state::MoveStateKind::kMove):
+		AddToMoveState();
+		break;
+	}
+}
+
+void PlayerAnimator::AddToMoveNullState()
+{
+	switch (m_state->GetCurrentActionState()->GetStateKind())
+	{
+	case static_cast<int>(player_state::ActionStateKind::kActionNull):
+		AddToActionNullState();
+		break;
+
+	case static_cast<int>(player_state::ActionStateKind::kCrouch):
+		AddToCrouchState();
+		break;
+
+	case static_cast<int>(player_state::ActionStateKind::kRun):
+		AddToRunState();
+		break;
+
+	case static_cast<int>(player_state::ActionStateKind::kTurnAround):
+		AddToTurnAround();
+		break;
+	}
+}
+
+void PlayerAnimator::AddToMoveState()
+{
+	switch (m_state->GetCurrentActionState()->GetStateKind())
+	{
+	case static_cast<int>(player_state::ActionStateKind::kActionNull):
+		AddToActionNullState();
+		break;
+
+	case static_cast<int>(player_state::ActionStateKind::kCrouch):
+		AddToCrouchState();
+		break;
+
+	case static_cast<int>(player_state::ActionStateKind::kRun):
+		AddToRunState();
+		break;
+
+	case static_cast<int>(player_state::ActionStateKind::kTurnAround):
+		AddToTurnAround();
+		break;
+	}
+}
+
+void PlayerAnimator::AddToActionNullState()
+{
+	switch (m_state->GetCurrentActionState()->GetStateKind())
+	{
+	case static_cast<int>(player_state::WeaponActionStateKind::kWeaponActionNull):
+		AttachAnim(static_cast<int>(PlayerAnimKind::kIdle02));
+		break;
+
+	case static_cast<int>(player_state::WeaponActionStateKind::kKnifeEquipped):
+		
+		break;
+
+	case static_cast<int>(player_state::WeaponActionStateKind::kStabKnife):
+		
+		break;
+
+	case static_cast<int>(player_state::WeaponActionStateKind::kSideSlashKnife):
+		
+		break;
+
+	case static_cast<int>(player_state::WeaponActionStateKind::kParry):
+
+		break;
+
+	case static_cast<int>(player_state::WeaponActionStateKind::kGunEquipped):
+
+		break;
+
+	case static_cast<int>(player_state::WeaponActionStateKind::kAiming):
+
+		break;
+
+	case static_cast<int>(player_state::WeaponActionStateKind::kShot):
+
+		break;
+
+	case static_cast<int>(player_state::WeaponActionStateKind::kReload):
+
+		break;
+	}
+}
+
+void PlayerAnimator::AddToCrouchState()
+{
+	switch (m_state->GetCurrentActionState()->GetStateKind())
+	{
+	case static_cast<int>(player_state::WeaponActionStateKind::kWeaponActionNull):
+
+		break;
+
+	case static_cast<int>(player_state::WeaponActionStateKind::kKnifeEquipped):
+
+		break;
+
+	case static_cast<int>(player_state::WeaponActionStateKind::kStabKnife):
+
+		break;
+
+	case static_cast<int>(player_state::WeaponActionStateKind::kSideSlashKnife):
+
+		break;
+
+	case static_cast<int>(player_state::WeaponActionStateKind::kParry):
+
+		break;
+
+	case static_cast<int>(player_state::WeaponActionStateKind::kGunEquipped):
+
+		break;
+
+	case static_cast<int>(player_state::WeaponActionStateKind::kAiming):
+
+		break;
+
+	case static_cast<int>(player_state::WeaponActionStateKind::kShot):
+
+		break;
+
+	case static_cast<int>(player_state::WeaponActionStateKind::kReload):
+
+		break;
+	}
+}
+
+void PlayerAnimator::AddToRunState()
+{
+	switch (m_state->GetCurrentActionState()->GetStateKind())
+	{
+	case static_cast<int>(player_state::WeaponActionStateKind::kWeaponActionNull):
+
+		break;
+
+	case static_cast<int>(player_state::WeaponActionStateKind::kKnifeEquipped):
+
+		break;
+
+	case static_cast<int>(player_state::WeaponActionStateKind::kStabKnife):
+
+		break;
+
+	case static_cast<int>(player_state::WeaponActionStateKind::kSideSlashKnife):
+
+		break;
+
+	case static_cast<int>(player_state::WeaponActionStateKind::kParry):
+
+		break;
+
+	case static_cast<int>(player_state::WeaponActionStateKind::kGunEquipped):
+
+		break;
+
+	case static_cast<int>(player_state::WeaponActionStateKind::kAiming):
+
+		break;
+
+	case static_cast<int>(player_state::WeaponActionStateKind::kShot):
+
+		break;
+
+	case static_cast<int>(player_state::WeaponActionStateKind::kReload):
+
+		break;
+	}
+}
+
+void PlayerAnimator::AddToTurnAround()
+{
+	switch (m_state->GetCurrentActionState()->GetStateKind())
+	{
+	case static_cast<int>(player_state::WeaponActionStateKind::kWeaponActionNull):
+
+		break;
+
+	case static_cast<int>(player_state::WeaponActionStateKind::kKnifeEquipped):
+
+		break;
+
+	case static_cast<int>(player_state::WeaponActionStateKind::kStabKnife):
+
+		break;
+
+	case static_cast<int>(player_state::WeaponActionStateKind::kSideSlashKnife):
+
+		break;
+
+	case static_cast<int>(player_state::WeaponActionStateKind::kParry):
+
+		break;
+
+	case static_cast<int>(player_state::WeaponActionStateKind::kGunEquipped):
+
+		break;
+
+	case static_cast<int>(player_state::WeaponActionStateKind::kAiming):
+
+		break;
+
+	case static_cast<int>(player_state::WeaponActionStateKind::kShot):
+
+		break;
+
+	case static_cast<int>(player_state::WeaponActionStateKind::kReload):
+
+		break;
+	}
 }

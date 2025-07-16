@@ -1,12 +1,12 @@
 #pragma once
-#include "../../Interface/i_action_state.hpp"
+#include "../../Base/action_state_base.hpp"
 
 #include "../../Object/player.hpp"
 #include "../../Part/player_state_controller.hpp"
 
 namespace player_state
 {
-	class ActionNull final : public IActionState<Player>
+	class ActionNull final : public ActionStateBase<Player>
 	{
 	public:
 		ActionNull();
@@ -17,7 +17,6 @@ namespace player_state
 		[[nodiscard]] std::shared_ptr<IState<Player>> ChangeState(const Player* obj) override;
 
 	private:
-		[[nodiscard]] bool TryRun();
-		[[nodiscard]] bool TryCrouch();
+		
 	};
 }

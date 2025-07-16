@@ -18,11 +18,6 @@ public:
 	[[nodiscard]] std::vector<std::shared_ptr<WeaponBase>>	GetCurrentHaveWeapon()	const	{ return m_weapons; }
 
 protected:
-	#pragma region アニメーション
-	virtual void ChangeAnimState() abstract;
-	#pragma endregion
-
-
 	#pragma region 武器
 	/// @brief 武器の所持登録 
 	template<obj_concepts::WeaponObjT WeaponObjT>

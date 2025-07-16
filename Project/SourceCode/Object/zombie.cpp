@@ -33,7 +33,6 @@ void Zombie::Update()
 	Move();
 	UpdateTransform(m_look_dir, kModelScale);
 
-	ChangeAnimState();
 	//m_animator->Update();
 
 	CalcCapsuleColliderLength();
@@ -82,11 +81,6 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	default:
 		break;
 	}
-}
-
-void Zombie::ChangeAnimState()
-{
-
 }
 
 void Zombie::Move()

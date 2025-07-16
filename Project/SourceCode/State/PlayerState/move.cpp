@@ -1,6 +1,7 @@
 #include "move.hpp"
 
-player_state::Move::Move()
+player_state::Move::Move() :
+	MoveStateBase(static_cast<int>(player_state::MoveStateKind::kMove))
 {
 
 }
@@ -40,11 +41,7 @@ void player_state::Move::Enter(const Player* obj)
 std::shared_ptr<IState<Player>> player_state::Move::ChangeState(const Player* obj)
 {
 	// ‰½‚à“ü—Í‚³‚ê‚Ä‚¢‚È‚¢ê‡ANull(Idle)‚ÖˆÚs
-	const auto command = CommandHandler::GetInstance();
-	if (!(	command->GetCurrentFrameExecuteInputCode(CommandKind::kMoveUpPlayer)
-		||	command->GetCurrentFrameExecuteInputCode(CommandKind::kMoveDownPlayer)
-		||	command->GetCurrentFrameExecuteInputCode(CommandKind::kMoveLeftPlayer)
-		||	command->GetCurrentFrameExecuteInputCode(CommandKind::kMoveRightPlayer)))
+	if (!obj->GetStateController()->TryMove())
 	{
 		return obj->GetStateController()->GetState<MoveNull, Player>();
 	}

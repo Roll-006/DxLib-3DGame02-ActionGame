@@ -1,6 +1,7 @@
 #include "stealth_kill.hpp"
 
-player_state::StealthKill::StealthKill()
+player_state::StealthKill::StealthKill() :
+	SpecialStateBase(static_cast<int>(player_state::SpecialStateKind::kStealthKill))
 {
 
 }

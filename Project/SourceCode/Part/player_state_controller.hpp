@@ -2,6 +2,7 @@
 #include <typeindex>
 
 #include "../Concept/state_concepts.hpp"
+#include "../Data/Kind/player_state_kind.hpp"
 
 #include "../State/PlayerState/move_null.hpp"
 #include "../State/PlayerState/move.hpp"
@@ -47,16 +48,26 @@ public:
 		return m_states.count(typeid(StateT)) ? std::static_pointer_cast<StateT>(m_states.at(typeid(StateT))) : nullptr;
 	}
 
-	[[nodiscard]] std::shared_ptr<IMoveState<Player>>			GetCurrentMoveState()			const { return m_current_move_state; }
-	[[nodiscard]] std::shared_ptr<IActionState<Player>>			GetCurrentActionState()			const { return m_current_action_state; }
-	[[nodiscard]] std::shared_ptr<IWeaponActionState<Player>>	GetCurrentWeaponActionState()	const { return m_current_weapon_action_state; }
-	[[nodiscard]] std::shared_ptr<ISpecialState<Player>>		GetCurrentSpecialState()		const { return m_current_special_state; }
+
+	#pragma region Try判定
+	[[nodiscard]] bool TryMove();
+	[[nodiscard]] bool TryRun();
+	[[nodiscard]] bool TryCrouch();
+	#pragma endregion
+
+
+	#pragma region Getter
+	[[nodiscard]] std::shared_ptr<MoveStateBase<Player>>			GetCurrentMoveState()			const { return m_current_move_state; }
+	[[nodiscard]] std::shared_ptr<ActionStateBase<Player>>			GetCurrentActionState()			const { return m_current_action_state; }
+	[[nodiscard]] std::shared_ptr<WeaponActionStateBase<Player>>	GetCurrentWeaponActionState()	const { return m_current_weapon_action_state; }
+	[[nodiscard]] std::shared_ptr<SpecialStateBase<Player>>		GetCurrentSpecialState()		const { return m_current_special_state; }
+	#pragma endregion
 
 private:
 	std::unordered_map<std::type_index, std::shared_ptr<IState<Player>>> m_states;	// 各ステート(型情報をKeyとして使用)
 
-	std::shared_ptr<IMoveState<Player>>				m_current_move_state;			// 移動ステート
-	std::shared_ptr<IActionState<Player>>			m_current_action_state;			// 行動ステート
-	std::shared_ptr<IWeaponActionState<Player>>		m_current_weapon_action_state;	// 武器に関するステート
-	std::shared_ptr<ISpecialState<Player>>			m_current_special_state;		// 特殊ステート
+	std::shared_ptr<MoveStateBase<Player>>				m_current_move_state;			// 移動ステート
+	std::shared_ptr<ActionStateBase<Player>>			m_current_action_state;			// 行動ステート
+	std::shared_ptr<WeaponActionStateBase<Player>>		m_current_weapon_action_state;	// 武器に関するステート
+	std::shared_ptr<SpecialStateBase<Player>>			m_current_special_state;		// 特殊ステート
 };

@@ -1,6 +1,7 @@
 #include "reload.hpp"
 
-player_state::Reload::Reload()
+player_state::Reload::Reload() :
+	WeaponActionStateBase(static_cast<int>(player_state::WeaponActionStateKind::kReload))
 {
 
 }

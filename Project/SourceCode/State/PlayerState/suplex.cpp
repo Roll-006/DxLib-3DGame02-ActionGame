@@ -1,6 +1,7 @@
 #include "suplex.hpp"
 
-player_state::Suplex::Suplex()
+player_state::Suplex::Suplex() :
+	SpecialStateBase(static_cast<int>(player_state::SpecialStateKind::kSuplex))
 {
 
 }

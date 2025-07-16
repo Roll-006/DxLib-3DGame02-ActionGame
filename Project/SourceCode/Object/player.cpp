@@ -155,202 +155,117 @@ void Player::MoveRight()
 	m_move_dir.at(TimeKind::kNext) += CameraManager::GetInstance()->GetMainCamera()->GetTransform()->GetRight(CoordinateKind::kWorld);
 }
 
-
-#pragma region コマンド
-void Player::Run()
-{
-	const auto command	= CommandHandler::GetInstance();
-	const auto input	= InputChecker  ::GetInstance();
-	const auto code		= *command->GetCurrentFrameExecuteInputCode(CommandKind::kRun);
-
-	switch (command->GetInputModeKind(CommandHandler::MoveKind::kRun))
-	{
-	case InputModeKind::kTrigger:
-		if (input->GetInputState(code) == InputState::kSingle)
-		{
-			command->CountUpTrigger(CommandHandler::MoveKind::kRun);
-			m_is_run = command->GetTriggerCount(CommandHandler::MoveKind::kRun) % 2 ? true : false;
-		}
-		break;
-
-	case InputModeKind::kHold:
-		if (input->GetInputState(code) == InputState::kHold)
-		{
-			m_is_run = true;
-		}
-		break;
-	}
-}
-
-void Player::Crouch()
-{
-	const auto command	= CommandHandler::GetInstance();
-	const auto input	= InputChecker	::GetInstance();
-	const auto code		= *command->GetCurrentFrameExecuteInputCode(CommandKind::kCrouch);
-
-	switch (command->GetInputModeKind(CommandHandler::MoveKind::kCrouch))
-	{
-	case InputModeKind::kTrigger:
-		if (input->GetInputState(code) == InputState::kSingle)
-		{
-			command->CountUpTrigger(CommandHandler::MoveKind::kCrouch);
-			m_is_crouch = command->GetTriggerCount(CommandHandler::MoveKind::kCrouch) % 2 ? true : false;
-		}
-		break;
-
-	case InputModeKind::kHold:
-		if (input->GetInputState(code) == InputState::kHold)
-		{
-			m_is_crouch = true;
-		}
-		break;
-	}
-}
-
-void Player::AimingGun()
-{
-	std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->ActivateAiming();
-
-}
-
-void Player::Shot()
-{
-	std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->PullTrigger();
-}
-
-void Player::Reload()
-{
-	std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->OnReload(m_current_remaining_bullet_num);
-}
-
-void Player::TurnAround()
-{
-	//if (m_move_dir.at(TimeKind::kNext) == v3d::GetZeroV())	{ return; }
-
-	//// バック中であった場合は振り向く
-	//const float angle = math::GetAngleBetweenTwoVector(-GetMoveForward(), m_move_dir.at(TimeKind::kNext));
-	//if (angle < kTurnAroundStickAngle * math::kDegreesToRadian)
-	//{
-	//	m_look_dir.at(TimeKind::kNext) = -m_look_dir.at(TimeKind::kCurrent);
-
-	//	m_is_turn_around = true;
-	//	++m_turn_around_count;
-	//}
-}
-#pragma endregion
-
-
-void Player::ChangeAnimState()
-{
-	// TODO : のちステートマシンへ移行
-
-	// アイドル
-	if (!m_is_move)
-	{
-		if (m_non_move_time > kIdelAnimPlayThreshold)
-		{
-			m_anim_kind = PlayerAnimKind::kIdle02;
-
-			if (m_is_crouch)
-			{
-				m_anim_kind = PlayerAnimKind::kIdleCrouch01;
-			}
-		}
-
-		if (std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->IsAiming())
-		{
-			m_anim_kind = PlayerAnimKind::kIdleShoot01;
-		}
-	}
-
-	// ダッシュ
-	if (m_is_run)
-	{
-		m_anim_kind = PlayerAnimKind::kRunForward01;
-	}
-
-	// 銃を構えながら歩く
-	if (m_is_move && !m_is_run)
-	{
-		if (m_is_input_move.at(static_cast<int>(MoveDir::kForward)))
-		{
-			m_anim_kind = PlayerAnimKind::kWalkShootForward01;
-		}
-		if (m_is_input_move.at(static_cast<int>(MoveDir::kBackward)))
-		{
-			m_anim_kind = PlayerAnimKind::kWalkShootBackward01;
-		}
-		if (m_is_input_move.at(static_cast<int>(MoveDir::kLeft)))
-		{
-			m_anim_kind = PlayerAnimKind::kWalkShootLeft01;
-		}
-		if (m_is_input_move.at(static_cast<int>(MoveDir::kRight)))
-		{
-			m_anim_kind = PlayerAnimKind::kWalkShootRight01;
-		}
-		if (m_is_input_move.at(static_cast<int>(MoveDir::kForward)) && m_is_input_move.at(static_cast<int>(MoveDir::kLeft)))
-		{
-			m_anim_kind = PlayerAnimKind::kWalkShootForwardLeft01;
-		}
-		if (m_is_input_move.at(static_cast<int>(MoveDir::kForward)) && m_is_input_move.at(static_cast<int>(MoveDir::kRight)))
-		{
-			m_anim_kind = PlayerAnimKind::kWalkShootForwardRight01;
-		}
-		if (m_is_input_move.at(static_cast<int>(MoveDir::kBackward)) && m_is_input_move.at(static_cast<int>(MoveDir::kLeft)))
-		{
-			m_anim_kind = PlayerAnimKind::kWalkShootBackwardLeft01;
-		}
-		if (m_is_input_move.at(static_cast<int>(MoveDir::kBackward)) && m_is_input_move.at(static_cast<int>(MoveDir::kRight)))
-		{
-			m_anim_kind = PlayerAnimKind::kWalkShootBackwardRight01;
-		}
-	}
-
-	// しゃがむ
-	if (m_is_crouch)
-	{
-		if (std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->IsAiming())
-		{
-			m_anim_kind = PlayerAnimKind::kIdleCrouchShoot01;
-		}
-
-		if (m_is_input_move.at(static_cast<int>(MoveDir::kForward)))
-		{
-			m_anim_kind = PlayerAnimKind::kWalkCrouchForward01;
-		}
-		if (m_is_input_move.at(static_cast<int>(MoveDir::kBackward)))
-		{
-			m_anim_kind = PlayerAnimKind::kWalkCrouchBackward01;
-		}
-		if (m_is_input_move.at(static_cast<int>(MoveDir::kLeft)))
-		{
-			m_anim_kind = PlayerAnimKind::kWalkCrouchLeft01;
-		}
-		if (m_is_input_move.at(static_cast<int>(MoveDir::kRight)))
-		{
-			m_anim_kind = PlayerAnimKind::kWalkCrouchRight01;
-		}
-		if (m_is_input_move.at(static_cast<int>(MoveDir::kForward)) && m_is_input_move.at(static_cast<int>(MoveDir::kLeft)))
-		{
-			m_anim_kind = PlayerAnimKind::kWalkCrouchForwardLeft01;
-		}
-		if (m_is_input_move.at(static_cast<int>(MoveDir::kForward)) && m_is_input_move.at(static_cast<int>(MoveDir::kRight)))
-		{
-			m_anim_kind = PlayerAnimKind::kWalkCrouchForwardRight01;
-		}
-		if (m_is_input_move.at(static_cast<int>(MoveDir::kBackward)) && m_is_input_move.at(static_cast<int>(MoveDir::kLeft)))
-		{
-			m_anim_kind = PlayerAnimKind::kWalkCrouchBackwardLeft01;
-		}
-		if (m_is_input_move.at(static_cast<int>(MoveDir::kBackward)) && m_is_input_move.at(static_cast<int>(MoveDir::kRight)))
-		{
-			m_anim_kind = PlayerAnimKind::kWalkCrouchBackwardRight01;
-		}
-	}
-
-	// 状態を反映
-	m_animator->AttachAnim(static_cast<int>(m_anim_kind));
-}
+//void Player::ChangeAnimState()
+//{
+//	// TODO : のちステートマシンへ移行
+//
+//	// アイドル
+//	if (!m_is_move)
+//	{
+//		if (m_non_move_time > kIdelAnimPlayThreshold)
+//		{
+//			m_anim_kind = PlayerAnimKind::kIdle02;
+//
+//			if (m_is_crouch)
+//			{
+//				m_anim_kind = PlayerAnimKind::kIdleCrouch01;
+//			}
+//		}
+//
+//		if (std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->IsAiming())
+//		{
+//			m_anim_kind = PlayerAnimKind::kIdleShoot01;
+//		}
+//	}
+//
+//	// ダッシュ
+//	if (m_is_run)
+//	{
+//		m_anim_kind = PlayerAnimKind::kRunForward01;
+//	}
+//
+//	// 銃を構えながら歩く
+//	if (m_is_move && !m_is_run)
+//	{
+//		if (m_is_input_move.at(static_cast<int>(MoveDir::kForward)))
+//		{
+//			m_anim_kind = PlayerAnimKind::kWalkShootForward01;
+//		}
+//		if (m_is_input_move.at(static_cast<int>(MoveDir::kBackward)))
+//		{
+//			m_anim_kind = PlayerAnimKind::kWalkShootBackward01;
+//		}
+//		if (m_is_input_move.at(static_cast<int>(MoveDir::kLeft)))
+//		{
+//			m_anim_kind = PlayerAnimKind::kWalkShootLeft01;
+//		}
+//		if (m_is_input_move.at(static_cast<int>(MoveDir::kRight)))
+//		{
+//			m_anim_kind = PlayerAnimKind::kWalkShootRight01;
+//		}
+//		if (m_is_input_move.at(static_cast<int>(MoveDir::kForward)) && m_is_input_move.at(static_cast<int>(MoveDir::kLeft)))
+//		{
+//			m_anim_kind = PlayerAnimKind::kWalkShootForwardLeft01;
+//		}
+//		if (m_is_input_move.at(static_cast<int>(MoveDir::kForward)) && m_is_input_move.at(static_cast<int>(MoveDir::kRight)))
+//		{
+//			m_anim_kind = PlayerAnimKind::kWalkShootForwardRight01;
+//		}
+//		if (m_is_input_move.at(static_cast<int>(MoveDir::kBackward)) && m_is_input_move.at(static_cast<int>(MoveDir::kLeft)))
+//		{
+//			m_anim_kind = PlayerAnimKind::kWalkShootBackwardLeft01;
+//		}
+//		if (m_is_input_move.at(static_cast<int>(MoveDir::kBackward)) && m_is_input_move.at(static_cast<int>(MoveDir::kRight)))
+//		{
+//			m_anim_kind = PlayerAnimKind::kWalkShootBackwardRight01;
+//		}
+//	}
+//
+//	// しゃがむ
+//	if (m_is_crouch)
+//	{
+//		if (std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->IsAiming())
+//		{
+//			m_anim_kind = PlayerAnimKind::kIdleCrouchShoot01;
+//		}
+//
+//		if (m_is_input_move.at(static_cast<int>(MoveDir::kForward)))
+//		{
+//			m_anim_kind = PlayerAnimKind::kWalkCrouchForward01;
+//		}
+//		if (m_is_input_move.at(static_cast<int>(MoveDir::kBackward)))
+//		{
+//			m_anim_kind = PlayerAnimKind::kWalkCrouchBackward01;
+//		}
+//		if (m_is_input_move.at(static_cast<int>(MoveDir::kLeft)))
+//		{
+//			m_anim_kind = PlayerAnimKind::kWalkCrouchLeft01;
+//		}
+//		if (m_is_input_move.at(static_cast<int>(MoveDir::kRight)))
+//		{
+//			m_anim_kind = PlayerAnimKind::kWalkCrouchRight01;
+//		}
+//		if (m_is_input_move.at(static_cast<int>(MoveDir::kForward)) && m_is_input_move.at(static_cast<int>(MoveDir::kLeft)))
+//		{
+//			m_anim_kind = PlayerAnimKind::kWalkCrouchForwardLeft01;
+//		}
+//		if (m_is_input_move.at(static_cast<int>(MoveDir::kForward)) && m_is_input_move.at(static_cast<int>(MoveDir::kRight)))
+//		{
+//			m_anim_kind = PlayerAnimKind::kWalkCrouchForwardRight01;
+//		}
+//		if (m_is_input_move.at(static_cast<int>(MoveDir::kBackward)) && m_is_input_move.at(static_cast<int>(MoveDir::kLeft)))
+//		{
+//			m_anim_kind = PlayerAnimKind::kWalkCrouchBackwardLeft01;
+//		}
+//		if (m_is_input_move.at(static_cast<int>(MoveDir::kBackward)) && m_is_input_move.at(static_cast<int>(MoveDir::kRight)))
+//		{
+//			m_anim_kind = PlayerAnimKind::kWalkCrouchBackwardRight01;
+//		}
+//	}
+//
+//	// 状態を反映
+//	m_animator->AttachAnim(static_cast<int>(m_anim_kind));
+//}
 
 void Player::Move()
 {

@@ -55,7 +55,7 @@ void PlayerStateController::ChangeState(const Player* player)
 	if (move_state)
 	{
 		m_current_move_state = nullptr;
-		m_current_move_state = std::static_pointer_cast<IMoveState<Player>>(move_state);
+		m_current_move_state = std::static_pointer_cast<MoveStateBase<Player>>(move_state);
 		m_current_move_state->Enter(player);
 	}
 
@@ -63,3 +63,81 @@ void PlayerStateController::ChangeState(const Player* player)
 	//m_current_weapon_action_state	->ChangeState(player);
 	//m_current_special_state			->ChangeState(player);
 }
+
+
+#pragma region Try判定
+bool PlayerStateController::TryMove()
+{
+	const auto command = CommandHandler::GetInstance();
+
+	if ((	command->GetCurrentFrameExecuteInputCode(CommandKind::kMoveUpPlayer)
+		||	command->GetCurrentFrameExecuteInputCode(CommandKind::kMoveDownPlayer)
+		||	command->GetCurrentFrameExecuteInputCode(CommandKind::kMoveLeftPlayer)
+		||	command->GetCurrentFrameExecuteInputCode(CommandKind::kMoveRightPlayer)))
+	{
+		return true;
+	}
+
+	return false;
+}
+
+bool PlayerStateController::TryRun()
+{
+	const auto command	= CommandHandler::GetInstance();
+	const auto input	= InputChecker	::GetInstance();
+	const auto code		= *command->GetCurrentFrameExecuteInputCode(CommandKind::kRun);
+
+	switch (command->GetInputModeKind(CommandHandler::MoveKind::kRun))
+	{
+	case InputModeKind::kTrigger:
+		// トリガーの入力回数が偶数回の場合、Runへの移行を許可
+		if (input->GetInputState(code) == InputState::kSingle)
+		{
+			command->CountUpTrigger(CommandHandler::MoveKind::kRun);
+
+			return command->GetTriggerCount(CommandHandler::MoveKind::kRun) % 2 ? true : false;
+		}
+		break;
+
+	case InputModeKind::kHold:
+		// ホールド中の場合、Runへの移行を許可
+		if (input->GetInputState(code) == InputState::kHold)
+		{
+			return true;
+		}
+		break;
+	}
+
+	return false;
+}
+
+bool PlayerStateController::TryCrouch()
+{
+	const auto command	= CommandHandler::GetInstance();
+	const auto input	= InputChecker	::GetInstance();
+	const auto code		= *command->GetCurrentFrameExecuteInputCode(CommandKind::kCrouch);
+
+	switch (command->GetInputModeKind(CommandHandler::MoveKind::kCrouch))
+	{
+	case InputModeKind::kTrigger:
+		// トリガーの入力回数が偶数回の場合、Crouchへの移行を許可
+		if (input->GetInputState(code) == InputState::kSingle)
+		{
+			command->CountUpTrigger(CommandHandler::MoveKind::kCrouch);
+
+			return command->GetTriggerCount(CommandHandler::MoveKind::kCrouch) % 2 ? true : false;
+		}
+		break;
+
+	case InputModeKind::kHold:
+		// ホールド中の場合、Crouchへの移行を許可
+		if (input->GetInputState(code) == InputState::kHold)
+		{
+			return true;
+		}
+		break;
+	}
+
+	return false;
+}
+#pragma endregion

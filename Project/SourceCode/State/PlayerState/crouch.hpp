@@ -1,12 +1,12 @@
 #pragma once
-#include "../../Interface/i_action_state.hpp"
+#include "../../Base/action_state_base.hpp"
 
 #include "../../Object/player.hpp"
 #include "../../Part/player_state_controller.hpp"
 
 namespace player_state
 {
-	class Crouch final : public IActionState<Player>
+	class Crouch final : public ActionStateBase<Player>
 	{
 	public:
 		Crouch();

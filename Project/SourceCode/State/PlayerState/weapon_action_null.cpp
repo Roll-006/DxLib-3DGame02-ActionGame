@@ -1,6 +1,7 @@
 #include "weapon_action_null.hpp"
 
-player_state::WeaponActionNull::WeaponActionNull()
+player_state::WeaponActionNull::WeaponActionNull() :
+	WeaponActionStateBase(static_cast<int>(player_state::WeaponActionStateKind::kWeaponActionNull))
 {
 
 }

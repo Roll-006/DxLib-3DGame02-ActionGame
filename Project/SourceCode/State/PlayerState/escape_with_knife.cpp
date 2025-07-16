@@ -1,6 +1,7 @@
 #include "escape_with_knife.hpp"
 
-player_state::EscapeWithKnife::EscapeWithKnife()
+player_state::EscapeWithKnife::EscapeWithKnife() :
+	SpecialStateBase(static_cast<int>(player_state::SpecialStateKind::kEscapeWithKnife))
 {
 
 }

@@ -1,12 +1,12 @@
 #pragma once
-#include "../../Interface/i_special_state.hpp"
+#include "../../Base/special_state_base.hpp"
 
 #include "../../Object/player.hpp"
 #include "../../Part/player_state_controller.hpp"
 
 namespace player_state
 {
-	class FrontKick final : public ISpecialState<Player>
+	class FrontKick final : public SpecialStateBase<Player>
 	{
 	public:
 		FrontKick();

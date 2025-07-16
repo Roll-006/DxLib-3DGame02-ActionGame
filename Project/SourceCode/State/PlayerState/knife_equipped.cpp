@@ -1,6 +1,7 @@
 #include "knife_equipped.hpp"
 
-player_state::KnifeEquipped::KnifeEquipped()
+player_state::KnifeEquipped::KnifeEquipped() :
+	WeaponActionStateBase(static_cast<int>(player_state::WeaponActionStateKind::kKnifeEquipped))
 {
 
 }

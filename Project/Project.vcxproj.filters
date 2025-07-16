@@ -787,6 +787,18 @@
     <ClInclude Include="SourceCode\Data\Kind\player_state_kind.hpp">
       <Filter>Data\Kind</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\Base\action_state_base.hpp">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Base\move_state_base.hpp">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Base\special_state_base.hpp">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Base\weapon_action_state_base.hpp">
+      <Filter>Base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Manager">

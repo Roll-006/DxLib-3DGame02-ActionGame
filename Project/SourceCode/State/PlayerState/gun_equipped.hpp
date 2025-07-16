@@ -1,12 +1,12 @@
 #pragma once
-#include "../../Interface/i_weapon_action_state.hpp"
+#include "../../Base/weapon_action_state_base.hpp"
 
 #include "../../Object/player.hpp"
 #include "../../Part/player_state_controller.hpp"
 
 namespace player_state
 {
-	class GunEquipped final : public IWeaponActionState<Player>
+	class GunEquipped final : public WeaponActionStateBase<Player>
 	{
 	public:
 		GunEquipped();

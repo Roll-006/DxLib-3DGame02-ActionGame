@@ -1,6 +1,7 @@
 #include "aiming.hpp"
 
-player_state::Aiming::Aiming()
+player_state::Aiming::Aiming() :
+	WeaponActionStateBase(static_cast<int>(player_state::WeaponActionStateKind::kAiming))
 {
 
 }

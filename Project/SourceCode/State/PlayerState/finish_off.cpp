@@ -1,6 +1,7 @@
 #include "finish_off.hpp"
 
-player_state::FinishOff::FinishOff()
+player_state::FinishOff::FinishOff() :
+	SpecialStateBase(static_cast<int>(player_state::SpecialStateKind::kFinishOff))
 {
 
 }

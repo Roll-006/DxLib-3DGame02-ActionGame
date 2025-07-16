@@ -35,26 +35,11 @@ public:
 	void MoveLeft();
 	void MoveRight();
 
-
-	#pragma region ƒRƒ}ƒ“ƒh
-	void Run();
-	void Crouch();
-	void AimingGun();
-	void Shot();
-	void Reload();
-	void TurnAround();
-	#pragma endregion
-
-
 	#pragma region Getter
 	[[nodiscard]] std::shared_ptr<PlayerStateController> GetStateController() const { return m_state; }
-	[[nodiscard]] bool IsRun()								const { return m_is_run; }
-	[[nodiscard]] bool IsCrouch()							const { return m_is_crouch; }
 	#pragma endregion
 
 private:
-	void ChangeAnimState() override;
-
 	void Move();
 	void InitMove();
 	void InitWeapon();

@@ -15,7 +15,15 @@ public:
 
 private:
 	void LoadAnim() override;
+
 	void ChangeAnim();
+
+	void AddToMoveNullState();
+	void AddToMoveState();
+	void AddToActionNullState();
+	void AddToCrouchState();
+	void AddToRunState();
+	void AddToTurnAround();
 
 private:
 	std::shared_ptr<PlayerStateController> m_state;

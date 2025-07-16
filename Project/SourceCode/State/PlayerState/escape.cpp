@@ -1,6 +1,7 @@
 #include "escape.hpp"
 
-player_state::Escape::Escape()
+player_state::Escape::Escape() :
+	SpecialStateBase(static_cast<int>(player_state::SpecialStateKind::kEscape))
 {
 
 }

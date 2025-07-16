@@ -1,6 +1,7 @@
 #include "special_null.hpp"
 
-player_state::SpecialNull::SpecialNull()
+player_state::SpecialNull::SpecialNull() :
+	SpecialStateBase(static_cast<int>(player_state::SpecialStateKind::kSpecialNull))
 {
 
 }

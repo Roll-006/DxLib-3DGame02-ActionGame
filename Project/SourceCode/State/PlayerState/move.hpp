@@ -1,5 +1,5 @@
 #pragma once
-#include "../../Interface/i_move_state.hpp"
+#include "../../Base/move_state_base.hpp"
 
 #include "../../Object/player.hpp"
 #include "../../Part/player_state_controller.hpp"
@@ -7,7 +7,7 @@
 
 namespace player_state
 {
-	class Move final : public IMoveState<Player>
+	class Move final : public MoveStateBase<Player>
 	{
 	public:
 		Move();

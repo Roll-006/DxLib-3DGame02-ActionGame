@@ -16,8 +16,6 @@ public:
 	void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) override;
 
 private:
-	void ChangeAnimState() override;
-
 	void Move();
 
 private:

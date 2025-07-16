@@ -1,6 +1,7 @@
 #include "parry.hpp"
 
-player_state::Parry::Parry()
+player_state::Parry::Parry() :
+	WeaponActionStateBase(static_cast<int>(player_state::WeaponActionStateKind::kParry))
 {
 
 }

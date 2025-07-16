@@ -1,6 +1,7 @@
 #include "side_slash_knife.hpp"
 
-player_state::SideSlashKnife::SideSlashKnife()
+player_state::SideSlashKnife::SideSlashKnife() :
+	WeaponActionStateBase(static_cast<int>(player_state::WeaponActionStateKind::kSideSlashKnife))
 {
 
 }
