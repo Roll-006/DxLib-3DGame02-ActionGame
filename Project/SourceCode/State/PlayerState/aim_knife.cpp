@@ -16,7 +16,12 @@ void player_state::AimKnife::Update(Player* obj)
 
 }
 
-void player_state::AimKnife::Enter(const Player* obj)
+void player_state::AimKnife::Enter(Player* obj)
+{
+
+}
+
+void player_state::AimKnife::Exit(Player* obj)
 {
 
 }

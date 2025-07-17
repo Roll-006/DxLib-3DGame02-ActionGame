@@ -30,35 +30,41 @@ public:
 
 	void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) override;
 
-	void MoveForward();
-	void MoveBackward();
-	void MoveLeft();
-	void MoveRight();
 
-	/// @brief 移動方向の情報をシフト(Current ➡ Prev, 空 ➡ Next)
-	void ShiftMoveDirTimeKindInfo();
+	#pragma region State
+	void Move();
+
+	//void MoveForward();
+	//void MoveBackward();
+	//void MoveLeft();
+	//void MoveRight();
+
+	void CalcStopSpeed();
+	void CalcCrouchSpeed();
+	void CalcRunSpeed();
+	#pragma endregion
+
 
 	#pragma region Getter
 	[[nodiscard]] std::shared_ptr<PlayerStateController> GetStateController() const { return m_state; }
 	#pragma endregion
 
 private:
-	void Move();
-	void InitMove();
-	void InitWeapon();
-
-	/// @brief 移動速度を計算
 	void CalcMoveSpeed(const float input_slope);
 
-	/// @brief 移動方向を計算
+	void CalcVelocity();
 	void CalcMoveDir(const VECTOR& velocity);
+
+	void MoveOld();
+
+	/// @brief 移動方向を計算
 	/// @brief 向きを計算
 	void CalcLookDir();
 	/// @brief 向きを補正する
 	void CorrectLookDir();
 
 	// パッド入力での速度ベクトルを取得
-	[[nodiscard]] VECTOR GetVelocityFromPad(VECTOR& velocity);
+	[[nodiscard]] VECTOR GetVelocityFromPad();
 
 	/// @brief カメラのforwardをもとにした進行方向ベクトルを取得する
 	/// @return カメラのforwardのY軸を消し飛ばしたベクトル

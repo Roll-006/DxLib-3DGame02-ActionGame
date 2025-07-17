@@ -16,7 +16,12 @@ void player_state::Shot::Update(Player* obj)
 
 }
 
-void player_state::Shot::Enter(const Player* obj)
+void player_state::Shot::Enter(Player* obj)
+{
+
+}
+
+void player_state::Shot::Exit(Player* obj)
 {
 
 }

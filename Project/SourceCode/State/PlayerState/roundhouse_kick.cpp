@@ -16,7 +16,12 @@ void player_state::RoundhouseKick::Update(Player* obj)
 
 }
 
-void player_state::RoundhouseKick::Enter(const Player* obj)
+void player_state::RoundhouseKick::Enter(Player* obj)
+{
+
+}
+
+void player_state::RoundhouseKick::Exit(Player* obj)
 {
 
 }

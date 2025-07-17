@@ -16,7 +16,12 @@ void player_state::TurnAround::Update(Player* obj)
 
 }
 
-void player_state::TurnAround::Enter(const Player* obj)
+void player_state::TurnAround::Enter(Player* obj)
+{
+
+}
+
+void player_state::TurnAround::Exit(Player* obj)
 {
 
 }

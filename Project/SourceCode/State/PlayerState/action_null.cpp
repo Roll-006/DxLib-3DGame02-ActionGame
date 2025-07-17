@@ -16,7 +16,12 @@ void player_state::ActionNull::Update(Player* obj)
 
 }
 
-void player_state::ActionNull::Enter(const Player* obj)
+void player_state::ActionNull::Enter(Player* obj)
+{
+
+}
+
+void player_state::ActionNull::Exit(Player* obj)
 {
 
 }

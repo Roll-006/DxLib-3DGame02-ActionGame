@@ -27,6 +27,6 @@ public:
 	static constexpr VECTOR	kCenterPos	= { kHalfWidth, kHalfHeight, 0.0f };
 
 private:
-	int  m_change_window_count;
 	bool m_is_full_screen;
+	int  m_change_window_count;
 };

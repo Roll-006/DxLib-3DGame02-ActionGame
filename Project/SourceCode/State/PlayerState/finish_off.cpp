@@ -16,7 +16,12 @@ void player_state::FinishOff::Update(Player* obj)
 
 }
 
-void player_state::FinishOff::Enter(const Player* obj)
+void player_state::FinishOff::Enter(Player* obj)
+{
+
+}
+
+void player_state::FinishOff::Exit(Player* obj)
 {
 
 }

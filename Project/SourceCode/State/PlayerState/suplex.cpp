@@ -16,7 +16,12 @@ void player_state::Suplex::Update(Player* obj)
 
 }
 
-void player_state::Suplex::Enter(const Player* obj)
+void player_state::Suplex::Enter(Player* obj)
+{
+
+}
+
+void player_state::Suplex::Exit(Player* obj)
 {
 
 }

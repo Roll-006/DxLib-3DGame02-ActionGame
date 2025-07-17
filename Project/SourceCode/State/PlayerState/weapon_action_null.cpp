@@ -16,7 +16,12 @@ void player_state::WeaponActionNull::Update(Player* obj)
 
 }
 
-void player_state::WeaponActionNull::Enter(const Player* obj)
+void player_state::WeaponActionNull::Enter(Player* obj)
+{
+
+}
+
+void player_state::WeaponActionNull::Exit(Player* obj)
 {
 
 }

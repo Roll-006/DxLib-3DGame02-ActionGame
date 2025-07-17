@@ -9,7 +9,8 @@ public:
 	virtual ~IState() = default;
 
 	virtual void Update(ObjT* obj) abstract;
-	virtual void Enter (const ObjT* obj) abstract;
+	virtual void Enter (ObjT* obj) abstract;
+	virtual void Exit  (ObjT* obj) abstract;
 
 	/// @brief アクティブ化する
 	virtual void Activate()   abstract;

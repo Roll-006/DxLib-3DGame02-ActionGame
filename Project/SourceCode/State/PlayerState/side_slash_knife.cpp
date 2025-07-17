@@ -16,7 +16,12 @@ void player_state::SideSlashKnife::Update(Player* obj)
 
 }
 
-void player_state::SideSlashKnife::Enter(const Player* obj)
+void player_state::SideSlashKnife::Enter(Player* obj)
+{
+
+}
+
+void player_state::SideSlashKnife::Exit(Player* obj)
 {
 
 }

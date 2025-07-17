@@ -6,13 +6,6 @@
 class CommandHandler final : public SingletonBase<CommandHandler>
 {
 public:
-	enum class MoveKind
-	{
-		kRun,
-		kCrouch,
-	};
-
-public:
 	void Update();
 	void LateUpdate();
 
@@ -21,20 +14,16 @@ public:
 	void InitPadCommand();
 
 	/// @brief トリガーの入力回数をリセットする
-	void InitTriggerCount(const MoveKind kind) { m_trigger_count.at(kind) = 0; }
+	void InitTriggerCount(const CommandKind kind) { m_trigger_count.at(kind) = 0; }
 
 	/// @brief トリガーの入力回数をカウントする
-	void CountUpTrigger(const MoveKind kind) { ++m_trigger_count.at(kind); }
+	void CountUpTrigger(const CommandKind kind) { ++m_trigger_count.at(kind); }
 
-	[[nodiscard]] InputModeKind GetInputModeKind(const MoveKind kind) const { return m_input_mode.at(kind); }
-	[[nodiscard]] int			GetTriggerCount (const MoveKind kind) const { return m_trigger_count.at(kind); }
+	[[nodiscard]] InputModeKind GetInputModeKind(const CommandKind kind) const { return m_special_command.at(kind); }
+	[[nodiscard]] int			GetTriggerCount (const CommandKind kind) const { return m_trigger_count.at(kind); }
 
-	/// @brief 現在のフレームで実行されたコマンドに対応する入力コードを取得
-	/// @return 存在した場合 : 対応コード, 存在しない場合 : nullptr
-	[[nodiscard]] InputCode* GetCurrentFrameExecuteInputCode(const CommandKind kind)
-	{
-		return m_current_frame_execute.count(kind) ? &m_current_frame_execute.at(kind) : nullptr;
-	}
+	/// @brief 指定のコマンドが現在実行中かを判定
+	[[nodiscard]] bool IsExecutingCommand(const CommandKind kind);
 
 private:
 	CommandHandler();
@@ -54,8 +43,8 @@ private:
 	std::vector<std::pair<CommandKind, InputCode>>		m_key_codes;
 	std::vector<std::pair<CommandKind, InputCode>>		m_pad_codes;
 
-	std::unordered_map<MoveKind, InputModeKind>			m_input_mode;					// 入力方式
-	std::unordered_map<MoveKind, int>					m_trigger_count;				// トリガー方式入力カウント
+	std::unordered_map<CommandKind, InputModeKind>		m_special_command;				// 特殊コマンド
+	std::unordered_map<CommandKind, int>				m_trigger_count;				// トリガー方式入力カウント
 
 	friend SingletonBase<CommandHandler>;
 };

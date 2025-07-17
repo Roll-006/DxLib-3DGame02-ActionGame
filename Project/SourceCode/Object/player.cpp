@@ -62,17 +62,14 @@ void Player::Update()
 {
 	if (!IsActive()) { return; }
 
-	//std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->DeactivateAiming();
-	//std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->ReleaseTrigger();
-
-	Move();
-	UpdateTransform(m_look_dir.at(TimeKind::kCurrent), kModelScale);
-
 	m_state->Update(this);
-	m_state->ChangeState(this);
 	m_animator->Update();
 
+	UpdateTransform(m_look_dir.at(TimeKind::kCurrent), kModelScale);
+
+	CalcVelocity();
 	CalcCapsuleColliderLength();
+
 	AddFallVelocity();
 
 	m_current_attach_weapon->Update();
@@ -92,7 +89,7 @@ void Player::LateUpdate()
 	//	m_camera->GetTransform()->GetMatrix(CoordinateKind::kWorld),
 	//	std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->IsAiming());
 
-	//m_current_attach_weapon->LateUpdate();
+	m_current_attach_weapon->LateUpdate();
 }
 
 void Player::Draw() const
@@ -117,7 +114,12 @@ void Player::Draw() const
 	//DrawLine3D(pos, pos + axes.y_axis * 100, 0x00ff22);
 	//DrawLine3D(pos, pos + axes.z_axis * 100, 0x0077ff);
 
-	//DrawFormatString(300, 0, 0xffffff, "%f, %f, %f", m_move_dir[TimeKind::kNext].x, m_move_dir[TimeKind::kNext].y, m_move_dir[TimeKind::kNext].z);
+	DrawFormatString(300,  0, 0xffffff, "%d", InputChecker::GetInstance()->GetCurrentInputDevice());
+	if (m_move_dir.count(TimeKind::kNext))
+	{
+		DrawFormatString(300, 20, 0xffffff, "%f, %f, %f", m_move_dir.at(TimeKind::kNext).x, m_move_dir.at(TimeKind::kNext).y, m_move_dir.at(TimeKind::kNext).z);
+	}
+	DrawFormatString(300, 40, 0xffffff, "%f", m_move_speed);
 }
 
 void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
@@ -133,58 +135,152 @@ void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	}
 }
 
-void Player::MoveForward()
-{
-	m_move_dir[TimeKind::kNext] += GetMoveForward();
-}
-
-void Player::MoveBackward()
-{
-	m_move_dir[TimeKind::kNext] -= GetMoveForward();
-}
-
-void Player::MoveLeft()
-{
-	m_move_dir[TimeKind::kNext] -= CameraManager::GetInstance()->GetMainCamera()->GetTransform()->GetRight(CoordinateKind::kWorld);
-}
-
-void Player::MoveRight()
-{
-	m_move_dir[TimeKind::kNext] += CameraManager::GetInstance()->GetMainCamera()->GetTransform()->GetRight(CoordinateKind::kWorld);
-}
-
-void Player::ShiftMoveDirTimeKindInfo()
+void Player::Move()
 {
 	m_move_dir[TimeKind::kPrev] = m_move_dir[TimeKind::kCurrent];
 	m_move_dir[TimeKind::kNext] = v3d::GetZeroV();
-}
 
-void Player::Move()
-{
-	VECTOR velocity = v3d::GetNormalizedV(m_move_dir[TimeKind::kNext]) * InputChecker::kStickMaxSlope;
-	velocity = GetVelocityFromPad(velocity);
-
-	// 移動判定
-	m_is_move = velocity != v3d::GetZeroV() ? true : false;
-
-	if (m_is_move)
+	// 移動方向の決定
+	const auto command = CommandHandler::GetInstance();
+	if (command->IsExecutingCommand(CommandKind::kMoveUpPlayer))
 	{
-		m_non_move_time = 0.0f;
-		m_is_correct_look_dir = true;
+		m_move_dir[TimeKind::kNext] += GetMoveForward();
 	}
-	else
+	if (command->IsExecutingCommand(CommandKind::kMoveDownPlayer))
 	{
-		m_non_move_time += FPS::GetDeltaTime();
+		m_move_dir[TimeKind::kNext] -= GetMoveForward();
+	}
+	if (command->IsExecutingCommand(CommandKind::kMoveLeftPlayer))
+	{
+		m_move_dir[TimeKind::kNext] -= CameraManager::GetInstance()->GetMainCamera()->GetTransform()->GetRight(CoordinateKind::kWorld);
+	}
+	if (command->IsExecutingCommand(CommandKind::kMoveRightPlayer))
+	{
+		m_move_dir[TimeKind::kNext] += CameraManager::GetInstance()->GetMainCamera()->GetTransform()->GetRight(CoordinateKind::kWorld);
 	}
 
-	// 移動速度・方向を計算
+	// 移動速度を取得
+	VECTOR velocity = v3d::GetZeroV();
+	switch (InputChecker::GetInstance()->GetCurrentInputDevice())
+	{
+	case DeviceKind::kKeyboard:
+		velocity = v3d::GetNormalizedV(m_move_dir[TimeKind::kNext]) * InputChecker::kStickMaxSlope;
+		break;
+
+	case DeviceKind::kPad:
+		velocity = GetVelocityFromPad();
+		break;
+	}
+
 	CalcMoveSpeed(VSize(velocity));
 	CalcMoveDir(velocity);
-	CalcLookDir();
+}
 
-	// 速度を取得
+void Player::CalcStopSpeed()
+{
+	// 速い状態から歩き状態に移行した場合、急速に減速させる
+	if (m_move_speed > kCrouchWalkSpeed) { m_move_speed = kCrouchWalkSpeed; }
+
+	math::Decrease(m_move_speed, kAcceleration * FPS::GetDeltaTime(), 0.0f);
+}
+
+void Player::CalcMoveSpeed(const float input_slope)
+{
+	if (input_slope <= kWalkStickSlopeLimit - InputChecker::kStickDeadZone)
+	{
+		// 速い状態から歩き状態に移行した場合、急速に減速させる
+		if (m_move_speed > kWalkSpeed) { m_move_speed = kWalkSpeed; }
+
+		math::Increase(m_move_speed, kAcceleration * FPS::GetDeltaTime(), kSlowWalkSpeed);
+		math::Decrease(m_move_speed, kAcceleration * FPS::GetDeltaTime(), kSlowWalkSpeed);
+		return;
+	}
+
+	// 遅い状態からダッシュ状態に移行した場合、急速に加速させる
+	if (m_move_speed < kSlowWalkSpeed) { m_move_speed = kSlowWalkSpeed; }
+
+	math::Increase(m_move_speed, kAcceleration * FPS::GetDeltaTime(), kWalkSpeed);
+	math::Decrease(m_move_speed, kAcceleration * FPS::GetDeltaTime(), kWalkSpeed);
+}
+
+void Player::CalcCrouchSpeed()
+{
+	// 速い状態から歩き状態に移行した場合、急速に減速させる
+	if (m_move_speed > kSlowWalkSpeed) { m_move_speed = kSlowWalkSpeed; }
+
+	math::Decrease(m_move_speed, kAcceleration * FPS::GetDeltaTime(), kCrouchWalkSpeed);
+}
+
+void Player::CalcRunSpeed()
+{
+	// 遅い状態からダッシュ状態に移行した場合、急速に加速させる
+	if (m_move_speed < kWalkSpeed) { m_move_speed = kWalkSpeed; }
+
+	math::Increase(m_move_speed, kAcceleration * FPS::GetDeltaTime(), kRunSpeed);
+}
+
+void Player::CalcVelocity()
+{
 	m_velocity = m_move_dir[TimeKind::kCurrent] * m_move_speed;
+}
 
+void Player::CalcMoveDir(const VECTOR& velocity)
+{
+	// 目的とする向きと距離を取得
+	m_move_dir[TimeKind::kNext] = v3d::GetNormalizedV(velocity);
+	const VECTOR distance_v = m_move_dir[TimeKind::kNext] - m_move_dir[TimeKind::kCurrent];
+
+	// 現在のdirを目的とするdirに近づけていく
+	m_move_dir[TimeKind::kCurrent] += v3d::GetNormalizedV(distance_v) * kMoveDirCorrectionSpeed;
+	const float distance = VSize(m_move_dir[TimeKind::kNext] - m_move_dir[TimeKind::kCurrent]);
+	if (distance < kConfirmMoveDirThreshold)
+	{
+		m_move_dir[TimeKind::kCurrent] = m_move_dir[TimeKind::kNext];
+	}
+}
+
+VECTOR Player::GetVelocityFromPad()
+{
+	// 移動方向を取得
+	const auto camera	= CameraManager::GetInstance()->GetMainCamera();
+	const auto right	= camera->GetTransform()->GetRight  (CoordinateKind::kWorld);
+	auto forward		= camera->GetTransform()->GetForward(CoordinateKind::kWorld);
+	forward.y = 0.0f;
+	forward = v3d::GetNormalizedV(forward);
+
+	// 各方向のパラメーターを取得
+	const auto input = InputChecker::GetInstance();
+	const int forward_param	 = input->GetInputParameter(pad::StickKind::kLSUp   );
+	const int backward_param = input->GetInputParameter(pad::StickKind::kLSDown );
+	const int left_param	 = input->GetInputParameter(pad::StickKind::kLSLeft );
+	const int right_param	 = input->GetInputParameter(pad::StickKind::kLSRight);
+
+	// 速度ベクトルを取得
+	VECTOR velocity = v3d::GetZeroV();
+	if (forward_param)	{ velocity += forward * (forward_param  - InputChecker::kStickDeadZone); }
+	if (backward_param) { velocity += forward * (backward_param + InputChecker::kStickDeadZone); }
+	if (left_param)		{ velocity += right	  * (left_param     + InputChecker::kStickDeadZone); }
+	if (right_param)	{ velocity += right	  * (right_param    - InputChecker::kStickDeadZone); }
+
+	return velocity;
+}
+
+VECTOR Player::GetMoveForward()
+{
+	const auto camera	= CameraManager::GetInstance()->GetMainCamera();
+	auto forward		= camera->GetTransform()->GetForward(CoordinateKind::kWorld);
+	forward.y = 0.0f;
+
+	return v3d::GetNormalizedV(forward);
+}
+
+
+
+
+
+void Player::MoveOld()
+{
+	CalcLookDir();
 
 	// MEMO : 落下ベクトルの適用は、押し戻しと同時に全オブジェクトに一斉に適用
 	//m_velocity += m_fall_velocity;
@@ -207,109 +303,6 @@ void Player::Move()
 	//}
 }
 
-void Player::InitMove()
-{
-	const auto command = CommandHandler::GetInstance();
-
-	
-
-	// 移動方向
-
-
-	// 向き補正
-	m_is_correct_look_dir = false;
-
-	// ダッシュ判定
-	if (command->GetInputModeKind(CommandHandler::MoveKind::kRun) == InputModeKind::kHold) { m_is_run = false; }
-	if (!m_is_move)
-	{
-		m_is_run = false;
-		command->InitTriggerCount(CommandHandler::MoveKind::kRun);
-	}
-
-	// しゃがみ判定
-	if (command->GetInputModeKind(CommandHandler::MoveKind::kCrouch) == InputModeKind::kHold) { m_is_crouch = false; }
-}
-
-void Player::InitWeapon()
-{
-	// 照準
-	if (!std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->IsAiming())
-	{
-		//m_camera->Depart(MainCamera::kNormalDistance, kADSSpeed * FPS::GetDeltaTime());
-		//m_camera->TrackBoneHeightOnly();
-	}
-}
-
-void Player::CalcMoveSpeed(const float input_slope)
-{
-	// 移動していない場合は速度を0に設定
-	if (!m_is_move)
-	{
-		m_move_speed = 0.0f;
-		return;
-	}
-
-	// しゃがみ処理
-	if (m_is_crouch)
-	{
-		// 速い状態から歩き状態に移行した場合、急速に減速させる
-		if (m_move_speed > kSlowWalkSpeed) { m_move_speed = kSlowWalkSpeed; }
-
-		math::Decrease(m_move_speed, kAcceleration * FPS::GetDeltaTime(), kCrouchWalkSpeed);
-		return;
-	}
-
-	// ゆっくり歩く処理
-	// スティック入力でしか実行されない
-	if (input_slope <= kWalkStickSlopeLimit - InputChecker::kStickDeadZone)
-	{
-		// 速い状態から歩き状態に移行した場合、急速に減速させる
-		if (m_move_speed > kWalkSpeed) { m_move_speed = kWalkSpeed; }
-
-		math::Increase(m_move_speed, kAcceleration * FPS::GetDeltaTime(), kSlowWalkSpeed);
-		math::Decrease(m_move_speed, kAcceleration * FPS::GetDeltaTime(), kSlowWalkSpeed);
-		return;
-	}
-
-	// 歩き処理
-	if (!m_is_run)
-	{
-		// 遅い状態からダッシュ状態に移行した場合、急速に加速させる
-		if (m_move_speed < kSlowWalkSpeed) { m_move_speed = kSlowWalkSpeed; }
-
-		math::Increase(m_move_speed, kAcceleration * FPS::GetDeltaTime(), kWalkSpeed);
-		math::Decrease(m_move_speed, kAcceleration * FPS::GetDeltaTime(), kWalkSpeed);
- 		return;
-	}
-
-	// ダッシュ処理
-	if (m_is_run)
-	{
-		// 遅い状態からダッシュ状態に移行した場合、急速に加速させる
-		if (m_move_speed < kWalkSpeed) { m_move_speed = kWalkSpeed; }
-
-		math::Increase(m_move_speed, kAcceleration * FPS::GetDeltaTime(), kRunSpeed);
-	}
-}
-
-void Player::CalcMoveDir(const VECTOR& velocity)
-{
-	if (!m_state->TryMove()) { return; }
-
-	// 目的とする向きと距離を取得
-	m_move_dir[TimeKind::kNext] = v3d::GetNormalizedV(velocity);
-	const VECTOR distance_v = m_move_dir[TimeKind::kNext] - m_move_dir[TimeKind::kCurrent];
-
-	// 現在のdirを目的とするdirに近づけていく
-	m_move_dir[TimeKind::kCurrent] += v3d::GetNormalizedV(distance_v) * kMoveDirCorrectionSpeed;
-	const float distance = VSize(m_move_dir[TimeKind::kNext] - m_move_dir[TimeKind::kCurrent]);
-	if (distance < kConfirmMoveDirThreshold)
-	{
-		m_move_dir[TimeKind::kCurrent] = m_move_dir[TimeKind::kNext];
-	}
-}
-
 void Player::CalcLookDir()
 {
 	// 振り向き処理
@@ -317,7 +310,7 @@ void Player::CalcLookDir()
 	//command->Update(CommandKind::kTurnAround, this);
 
 	// 連続振り向きを阻止
-	if (!command->GetCurrentFrameExecuteInputCode(CommandKind::kTurnAround))
+	if (!command->IsExecutingCommand(CommandKind::kTurnAround))
 	{
 		m_turn_around_count = 0;
 	}
@@ -388,57 +381,4 @@ void Player::CorrectLookDir()
 		// 目的のdirに達した場合は振り向き処理は終了とする
 		m_is_turn_around = false;
 	}
-}
-
-VECTOR Player::GetVelocityFromPad(VECTOR& velocity)
-{
-	if (velocity != v3d::GetZeroV()) { return velocity; }
-	if (InputChecker::GetInstance()->GetCurrentInputDevice() != DeviceKind::kPad) { return velocity; }
-
-	// 移動方向を取得
-	const auto camera	= CameraManager::GetInstance()->GetMainCamera();
-	const auto right	= camera->GetTransform()->GetRight  (CoordinateKind::kWorld);
-	auto forward		= camera->GetTransform()->GetForward(CoordinateKind::kWorld);
-	forward.y = 0.0f;
-	forward = v3d::GetNormalizedV(forward);
-
-	// 各方向のパラメーターを取得
-	const auto input = InputChecker::GetInstance();
-	const int forward_param	 = input->GetInputParameter(pad::StickKind::kLSUp   );
-	const int backward_param = input->GetInputParameter(pad::StickKind::kLSDown );
-	const int left_param	 = input->GetInputParameter(pad::StickKind::kLSLeft );
-	const int right_param	 = input->GetInputParameter(pad::StickKind::kLSRight);
-
-	// 速度ベクトルを取得
-	if (forward_param)
-	{
-		velocity += forward * (forward_param	- InputChecker::kStickDeadZone);
-		m_is_input_move.at(static_cast<int>(MoveDir::kForward))		= true;
-	}
-	if (backward_param)
-	{
-		velocity += forward * (backward_param	+ InputChecker::kStickDeadZone);
-		m_is_input_move.at(static_cast<int>(MoveDir::kBackward))	= true;
-	}
-	if (left_param)
-	{
-		velocity += right	* (left_param		+ InputChecker::kStickDeadZone);
-		m_is_input_move.at(static_cast<int>(MoveDir::kLeft))		= true;
-	}
-	if (right_param)
-	{
-		velocity += right	* (right_param		- InputChecker::kStickDeadZone);
-		m_is_input_move.at(static_cast<int>(MoveDir::kRight))		= true;
-	}
-
-	return velocity;
-}
-
-VECTOR Player::GetMoveForward()
-{
-	const auto camera	= CameraManager::GetInstance()->GetMainCamera();
-	auto forward		= camera->GetTransform()->GetForward(CoordinateKind::kWorld);
-	forward.y = 0.0f;
-
-	return v3d::GetNormalizedV(forward);
 }

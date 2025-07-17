@@ -16,7 +16,12 @@ void player_state::AimGun::Update(Player* obj)
 
 }
 
-void player_state::AimGun::Enter(const Player* obj)
+void player_state::AimGun::Enter(Player* obj)
+{
+
+}
+
+void player_state::AimGun::Exit(Player* obj)
 {
 
 }

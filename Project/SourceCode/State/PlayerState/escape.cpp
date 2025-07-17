@@ -16,7 +16,12 @@ void player_state::Escape::Update(Player* obj)
 
 }
 
-void player_state::Escape::Enter(const Player* obj)
+void player_state::Escape::Enter(Player* obj)
+{
+
+}
+
+void player_state::Escape::Exit(Player* obj)
 {
 
 }

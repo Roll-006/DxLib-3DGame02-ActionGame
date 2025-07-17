@@ -2,8 +2,8 @@
 
 CommandHandler::CommandHandler()
 {
-	m_input_mode   [MoveKind::kRun] = m_input_mode   [MoveKind::kCrouch] = InputModeKind::kTrigger;
-	m_trigger_count[MoveKind::kRun] = m_trigger_count[MoveKind::kCrouch] = 0;
+	m_special_command[CommandKind::kRun] = m_special_command[CommandKind::kCrouch] = InputModeKind::kTrigger;
+	m_trigger_count	 [CommandKind::kRun] = m_trigger_count  [CommandKind::kCrouch] = -1;
 
 	// 初期設定
 	InitKeyCommand();
@@ -35,6 +35,126 @@ void CommandHandler::Update()
 void CommandHandler::LateUpdate()
 {
 	m_current_frame_execute.clear();
+}
+
+void CommandHandler::InitKeyCommand()
+{
+	m_key_codes.clear();
+
+	// TODO : 後にJson化
+	AddInputCode(CommandKind::kDecide,			KEY_INPUT_SPACE);
+	AddInputCode(CommandKind::kDecide,			KEY_INPUT_F);
+	AddInputCode(CommandKind::kBack,			mouse::ButtonKind::kRight);
+	AddInputCode(CommandKind::kSelectUp,		KEY_INPUT_W);
+	AddInputCode(CommandKind::kSelectUp,		KEY_INPUT_UP);
+	AddInputCode(CommandKind::kSelectUp,		mouse::WheelKind::kUp);
+	AddInputCode(CommandKind::kSelectDown,		KEY_INPUT_S);
+	AddInputCode(CommandKind::kSelectDown,		KEY_INPUT_DOWN);
+	AddInputCode(CommandKind::kSelectDown,		mouse::WheelKind::kDown);
+	AddInputCode(CommandKind::kSelectLeft,		KEY_INPUT_A);
+	AddInputCode(CommandKind::kSelectLeft,		KEY_INPUT_LEFT);
+	AddInputCode(CommandKind::kSelectRight,		KEY_INPUT_D);
+	AddInputCode(CommandKind::kSelectRight,		KEY_INPUT_RIGHT);
+	AddInputCode(CommandKind::kPause,			KEY_INPUT_ESCAPE);
+	AddInputCode(CommandKind::kPause,			KEY_INPUT_TAB);
+	AddInputCode(CommandKind::kMoveUpPlayer,	KEY_INPUT_W);
+	AddInputCode(CommandKind::kMoveDownPlayer,	KEY_INPUT_S);
+	AddInputCode(CommandKind::kMoveLeftPlayer,	KEY_INPUT_A);
+	AddInputCode(CommandKind::kMoveRightPlayer,	KEY_INPUT_D);
+	AddInputCode(CommandKind::kRun,				KEY_INPUT_LSHIFT);
+	AddInputCode(CommandKind::kCrouch,			KEY_INPUT_LCONTROL);
+	AddInputCode(CommandKind::kCrouch,			KEY_INPUT_E);
+	AddInputCode(CommandKind::kAimKnife,		mouse::ButtonKind::kRight);
+	AddInputCode(CommandKind::kAimKnife,		KEY_INPUT_F);
+	AddInputCode(CommandKind::kSideSlashKnife,	mouse::ButtonKind::kLeft);
+	AddInputCode(CommandKind::kSideSlashKnife,	KEY_INPUT_SPACE);
+	AddInputCode(CommandKind::kAimGun,			mouse::ButtonKind::kRight);
+	AddInputCode(CommandKind::kAimGun,			KEY_INPUT_F);
+	AddInputCode(CommandKind::kShot,			mouse::ButtonKind::kLeft);
+	AddInputCode(CommandKind::kShot,			KEY_INPUT_SPACE);
+	AddInputCode(CommandKind::kReload,			KEY_INPUT_R);
+	AddInputCode(CommandKind::kSilentKill,		mouse::ButtonKind::kLeft);
+	AddInputCode(CommandKind::kTurnAround,		KEY_INPUT_Q);
+	AddInputCode(CommandKind::kMoveUpCamera,	KEY_INPUT_UP);
+	AddInputCode(CommandKind::kMoveDownCamera,	KEY_INPUT_DOWN);
+	AddInputCode(CommandKind::kMoveLeftCamera,	KEY_INPUT_LEFT);
+	AddInputCode(CommandKind::kMoveRightCamera,	KEY_INPUT_RIGHT);
+	AddInputCode(CommandKind::kInitAim,			KEY_INPUT_Q);
+
+	// 例外処理として実行
+	//AddInputCode(CommandKind::kMoveUpCamera,		mouse::SlideDirKind::kUp);
+	//AddInputCode(CommandKind::kMoveDownCamera,	mouse::SlideDirKind::kDown);
+	//AddInputCode(CommandKind::kMoveLeftCamera,	mouse::SlideDirKind::kLeft);
+	//AddInputCode(CommandKind::kMoveRightCamera,	mouse::SlideDirKind::kRight);
+}
+
+void CommandHandler::InitPadCommand()
+{
+	m_pad_codes.clear();
+
+	// TODO : 後にJson化
+	AddInputCode(CommandKind::kDecide,			pad::ButtonKind	::kA);
+	AddInputCode(CommandKind::kBack,			pad::ButtonKind	::kB);
+	AddInputCode(CommandKind::kSelectUp,		pad::ButtonKind	::kUp);
+	AddInputCode(CommandKind::kSelectUp,		pad::StickKind	::kLSUp);
+	AddInputCode(CommandKind::kSelectDown,		pad::ButtonKind	::kDown);
+	AddInputCode(CommandKind::kSelectDown,		pad::StickKind	::kLSDown);
+	AddInputCode(CommandKind::kSelectLeft,		pad::ButtonKind	::kLeft);
+	AddInputCode(CommandKind::kSelectLeft,		pad::StickKind	::kLSLeft);
+	AddInputCode(CommandKind::kSelectRight,		pad::ButtonKind	::kRight);
+	AddInputCode(CommandKind::kSelectRight,		pad::StickKind	::kLSRight);
+	AddInputCode(CommandKind::kPause,			pad::ButtonKind	::kStart);
+	AddInputCode(CommandKind::kMoveUpPlayer,	pad::StickKind	::kLSUp);
+	AddInputCode(CommandKind::kMoveDownPlayer,	pad::StickKind	::kLSDown);
+	AddInputCode(CommandKind::kMoveLeftPlayer,	pad::StickKind	::kLSLeft);
+	AddInputCode(CommandKind::kMoveRightPlayer,	pad::StickKind	::kLSRight);
+	AddInputCode(CommandKind::kRun,				pad::ButtonKind	::kLSPush);
+	AddInputCode(CommandKind::kCrouch,			pad::ButtonKind	::kB);
+	AddInputCode(CommandKind::kAimKnife,		pad::ButtonKind	::kLB);
+	AddInputCode(CommandKind::kSideSlashKnife,	pad::TriggerKind::kRT);
+	AddInputCode(CommandKind::kAimGun,			pad::TriggerKind::kLT);
+	AddInputCode(CommandKind::kShot,			pad::TriggerKind::kRT);
+	AddInputCode(CommandKind::kReload,			pad::ButtonKind	::kX);
+	AddInputCode(CommandKind::kSilentKill,		pad::TriggerKind::kRT);
+	AddInputCode(CommandKind::kTurnAround,		pad::ButtonKind	::kRB);
+	AddInputCode(CommandKind::kInitAim,			pad::ButtonKind	::kRB);
+
+	// 例外処理として実行
+	//AddInputCode(CommandKind::kMoveUpCamera,		pad::StickKind	::kRSUp);
+	//AddInputCode(CommandKind::kMoveDownCamera,	pad::StickKind	::kRSDown);
+	//AddInputCode(CommandKind::kMoveLeftCamera,	pad::StickKind	::kRSLeft);
+	//AddInputCode(CommandKind::kMoveRightCamera,	pad::StickKind	::kRSRight);
+}
+
+bool CommandHandler::IsExecutingCommand(const CommandKind kind)
+{
+	// 特殊コマンドのトリガー方式の場合、入力カウントによって実行されたかを判定
+	if (m_special_command.count(kind))
+	{
+		const auto input = InputChecker::GetInstance();
+		int count = 0;
+		switch (GetInputModeKind(kind))
+		{
+		case InputModeKind::kTrigger:
+			//return GetTriggerCount(kind) % 2 == 0 ? true : false;
+			count = GetTriggerCount(kind);
+			if (count % 2 == 0)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+			break;
+
+		default:
+			break;
+		}
+	}
+
+	// 通常コマンド・特殊コマンドのホールド方式
+	return m_current_frame_execute.count(kind) ? true : false;
 }
 
 void CommandHandler::AddInputCode(const CommandKind kind, const input_concepts::InputT auto& input_code)
@@ -109,6 +229,8 @@ void CommandHandler::RemoveInputCode(const CommandKind kind, const input_concept
 void CommandHandler::TryExecuteCommand(const std::vector<std::pair<CommandKind, InputCode>>& codes)
 {
 	const auto input = InputChecker::GetInstance();
+
+	// 入力された情報を保存
 	std::vector<CommandKind> executed_command;
 
 	for (const auto& code : codes)
@@ -118,93 +240,15 @@ void CommandHandler::TryExecuteCommand(const std::vector<std::pair<CommandKind, 
 			// 入力されていないコマンドのみ格納
 			if (std::find(executed_command.begin(), executed_command.end(), code.first) == executed_command.end())
 			{
+				// 特殊コマンドのトリガー方式であった場合、入力回数をカウント
+				if (m_special_command.count(code.first) && input->GetInputState(code.second) == InputState::kSingle)
+				{
+					CountUpTrigger(code.first);
+				}
+
 				executed_command.emplace_back(code.first);
 				m_current_frame_execute[code.first] = code.second;
-
 			}
 		}
 	}
-}
-
-void CommandHandler::InitKeyCommand()
-{
-	m_key_codes.clear();
-
-	// TODO : 後にJson化
-	AddInputCode(CommandKind::kDecide,			KEY_INPUT_SPACE);
-	AddInputCode(CommandKind::kDecide,			KEY_INPUT_F);
-	AddInputCode(CommandKind::kBack,			mouse::ButtonKind::kRight);
-	AddInputCode(CommandKind::kSelectUp,		KEY_INPUT_W);
-	AddInputCode(CommandKind::kSelectUp,		KEY_INPUT_UP);
-	AddInputCode(CommandKind::kSelectUp,		mouse::WheelKind::kUp);
-	AddInputCode(CommandKind::kSelectDown,		KEY_INPUT_S);
-	AddInputCode(CommandKind::kSelectDown,		KEY_INPUT_DOWN);
-	AddInputCode(CommandKind::kSelectDown,		mouse::WheelKind::kDown);
-	AddInputCode(CommandKind::kSelectLeft,		KEY_INPUT_A);
-	AddInputCode(CommandKind::kSelectLeft,		KEY_INPUT_LEFT);
-	AddInputCode(CommandKind::kSelectRight,		KEY_INPUT_D);
-	AddInputCode(CommandKind::kSelectRight,		KEY_INPUT_RIGHT);
-	AddInputCode(CommandKind::kPause,			KEY_INPUT_ESCAPE);
-	AddInputCode(CommandKind::kPause,			KEY_INPUT_TAB);
-	AddInputCode(CommandKind::kMoveUpPlayer,	KEY_INPUT_W);
-	AddInputCode(CommandKind::kMoveDownPlayer,	KEY_INPUT_S);
-	AddInputCode(CommandKind::kMoveLeftPlayer,	KEY_INPUT_A);
-	AddInputCode(CommandKind::kMoveRightPlayer,	KEY_INPUT_D);
-	AddInputCode(CommandKind::kRun,				KEY_INPUT_LSHIFT);
-	AddInputCode(CommandKind::kCrouch,			KEY_INPUT_LCONTROL);
-	AddInputCode(CommandKind::kCrouch,			KEY_INPUT_E);
-	AddInputCode(CommandKind::kShot,			mouse::ButtonKind::kLeft);
-	AddInputCode(CommandKind::kShot,			KEY_INPUT_SPACE);
-	AddInputCode(CommandKind::kAimingGun,		mouse::ButtonKind::kRight);
-	AddInputCode(CommandKind::kAimingGun,		KEY_INPUT_F);
-	AddInputCode(CommandKind::kReloadGun,		KEY_INPUT_R);
-	AddInputCode(CommandKind::kSilentKill,		mouse::ButtonKind::kLeft);
-	AddInputCode(CommandKind::kTurnAround,		KEY_INPUT_Q);
-	AddInputCode(CommandKind::kMoveUpCamera,	KEY_INPUT_UP);
-	AddInputCode(CommandKind::kMoveDownCamera,	KEY_INPUT_DOWN);
-	AddInputCode(CommandKind::kMoveLeftCamera,	KEY_INPUT_LEFT);
-	AddInputCode(CommandKind::kMoveRightCamera,	KEY_INPUT_RIGHT);
-	AddInputCode(CommandKind::kInitAim,			KEY_INPUT_Q);
-
-	// 例外処理として実行
-	//AddInputCode(CommandKind::kMoveUpCamera,		mouse::SlideDirKind::kUp);
-	//AddInputCode(CommandKind::kMoveDownCamera,	mouse::SlideDirKind::kDown);
-	//AddInputCode(CommandKind::kMoveLeftCamera,	mouse::SlideDirKind::kLeft);
-	//AddInputCode(CommandKind::kMoveRightCamera,	mouse::SlideDirKind::kRight);
-}
-
-void CommandHandler::InitPadCommand()
-{
-	m_pad_codes.clear();
-
-	// TODO : 後にJson化
-	AddInputCode(CommandKind::kDecide,			pad::ButtonKind	::kA);
-	AddInputCode(CommandKind::kBack,			pad::ButtonKind	::kB);
-	AddInputCode(CommandKind::kSelectUp,		pad::ButtonKind	::kUp);
-	AddInputCode(CommandKind::kSelectUp,		pad::StickKind	::kLSUp);
-	AddInputCode(CommandKind::kSelectDown,		pad::ButtonKind	::kDown);
-	AddInputCode(CommandKind::kSelectDown,		pad::StickKind	::kLSDown);
-	AddInputCode(CommandKind::kSelectLeft,		pad::ButtonKind	::kLeft);
-	AddInputCode(CommandKind::kSelectLeft,		pad::StickKind	::kLSLeft);
-	AddInputCode(CommandKind::kSelectRight,		pad::ButtonKind	::kRight);
-	AddInputCode(CommandKind::kSelectRight,		pad::StickKind	::kLSRight);
-	AddInputCode(CommandKind::kPause,			pad::ButtonKind	::kStart);
-	AddInputCode(CommandKind::kRun,				pad::ButtonKind	::kLSPush);
-	AddInputCode(CommandKind::kCrouch,			pad::ButtonKind	::kB);
-	AddInputCode(CommandKind::kShot,			pad::TriggerKind::kRT);
-	AddInputCode(CommandKind::kAimingGun,		pad::TriggerKind::kLT);
-	AddInputCode(CommandKind::kReloadGun,		pad::ButtonKind	::kX);
-	AddInputCode(CommandKind::kSilentKill,		pad::TriggerKind::kRT);
-	AddInputCode(CommandKind::kTurnAround,		pad::ButtonKind	::kRB);
-	AddInputCode(CommandKind::kInitAim,			pad::ButtonKind	::kRB);
-
-	// 例外処理として実行
-	//AddInputCode(CommandKind::kMoveUpPlayer,		pad::StickKind	::kLSUp);
-	//AddInputCode(CommandKind::kMoveDownPlayer,	pad::StickKind	::kLSDown);
-	//AddInputCode(CommandKind::kMoveLeftPlayer,	pad::StickKind	::kLSLeft);
-	//AddInputCode(CommandKind::kMoveRightPlayer,	pad::StickKind	::kLSRight);
-	//AddInputCode(CommandKind::kMoveUpCamera,		pad::StickKind	::kRSUp);
-	//AddInputCode(CommandKind::kMoveDownCamera,	pad::StickKind	::kRSDown);
-	//AddInputCode(CommandKind::kMoveLeftCamera,	pad::StickKind	::kRSLeft);
-	//AddInputCode(CommandKind::kMoveRightCamera,	pad::StickKind	::kRSRight);
 }

@@ -16,7 +16,12 @@ void player_state::Reload::Update(Player* obj)
 
 }
 
-void player_state::Reload::Enter(const Player* obj)
+void player_state::Reload::Enter(Player* obj)
+{
+
+}
+
+void player_state::Reload::Exit(Player* obj)
 {
 
 }

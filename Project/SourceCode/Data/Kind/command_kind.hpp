@@ -15,10 +15,12 @@ enum class CommandKind
 	kMoveLeftPlayer,	// プレイヤー左移動
 	kMoveRightPlayer,	// プレイヤー右移動
 	kRun,				// ダッシュ
-	kCrouch,				// しゃがむ
+	kCrouch,			// しゃがむ
+	kAimKnife,			// ナイフを構える
+	kSideSlashKnife,	// 大ぶり(ナイフ)
+	kAimGun,			// 銃を構える
 	kShot,				// 銃を撃つ
-	kAimingGun,			// 銃を構える
-	kReloadGun,			// 銃のリロード
+	kReload,			// 銃のリロード
 	kSilentKill,		// サイレントキル(不意打ち)
 	kTurnAround,		// 振り向き
 

@@ -25,9 +25,6 @@ public:
 	void AddAnimHandle(const int kind, const std::string& file_path, const int index, const std::string& tag, const float play_speed, const bool is_loop);
 	void AddAnimHandle(const int kind, const int anim_handle,		 const int index, const std::string& tag, const float play_speed, const bool is_loop);
 
-	/// @brief 直近でアタッチを試みたアニメーションがアタッチされたかを判定
-	[[nodiscard]] bool IsAttached() const { m_is_attached; }
-
 	/// @brief 再生されているアニメーションの種類を取得
 	[[nodiscard]] int GetAnimKind(const TimeKind time_kind) const { m_time_kind_data.at(time_kind).kind; }
 
@@ -54,9 +51,6 @@ private:
 
 	float m_prev_anim_play_rate;			// 前回のアニメーションの再生率
 	float m_blend_rate;						// ブレンド率
-
-	//bool  m_is_first_frame_change_anim;		// アニメーションが変更されて最初のフレームであるかを判定
-	bool  m_is_attached;					// 直近でアタッチを試みたアニメーションがアタッチされたかを判定
 
 	std::shared_ptr<Modeler> m_modeler;
 };

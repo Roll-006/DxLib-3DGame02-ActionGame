@@ -16,7 +16,12 @@ void player_state::StealthKill::Update(Player* obj)
 
 }
 
-void player_state::StealthKill::Enter(const Player* obj)
+void player_state::StealthKill::Enter(Player* obj)
+{
+
+}
+
+void player_state::StealthKill::Exit(Player* obj)
 {
 
 }

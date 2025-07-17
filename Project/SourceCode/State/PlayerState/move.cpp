@@ -13,29 +13,15 @@ player_state::Move::~Move()
 
 void player_state::Move::Update(Player* obj)
 {
-	obj->ShiftMoveDirTimeKindInfo();
-
-	// ˆÚ“®•ûŒü‚ÌŒˆ’è
-	const auto command = CommandHandler::GetInstance();
-	if (command->GetCurrentFrameExecuteInputCode(CommandKind::kMoveUpPlayer))
-	{
-		obj->MoveForward();
-	}
-	if (command->GetCurrentFrameExecuteInputCode(CommandKind::kMoveDownPlayer))
-	{
-		obj->MoveBackward();
-	}
-	if (command->GetCurrentFrameExecuteInputCode(CommandKind::kMoveLeftPlayer))
-	{
-		obj->MoveLeft();
-	}
-	if (command->GetCurrentFrameExecuteInputCode(CommandKind::kMoveRightPlayer))
-	{
-		obj->MoveRight();
-	}
+	obj->Move();
 }
 
-void player_state::Move::Enter(const Player* obj)
+void player_state::Move::Enter(Player* obj)
+{
+
+}
+
+void player_state::Move::Exit(Player* obj)
 {
 
 }

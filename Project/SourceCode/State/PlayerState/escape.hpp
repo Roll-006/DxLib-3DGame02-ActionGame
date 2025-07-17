@@ -13,7 +13,8 @@ namespace player_state
 		~Escape() override;
 
 		void Update(Player* obj) override;
-		void Enter (const Player* obj) override;
+		void Enter (Player* obj) override;
+		void Exit  (Player* obj) override;
 		[[nodiscard]] std::shared_ptr<IState<Player>> ChangeState(const Player* obj) override;
 
 	private:

@@ -41,20 +41,50 @@ PlayerStateController::~PlayerStateController()
 
 void PlayerStateController::Update(Player* player)
 {
+	ChangeState(player);
+
 	m_move_state			.at(TimeKind::kCurrent)->Update(player);
 	m_action_state			.at(TimeKind::kCurrent)->Update(player);
 	m_weapon_action_state	.at(TimeKind::kCurrent)->Update(player);
 	m_special_state			.at(TimeKind::kCurrent)->Update(player);
 }
 
-void PlayerStateController::ChangeState(const Player* player)
+void PlayerStateController::ChangeState(Player* player)
 {
 	std::shared_ptr<IState<Player>> move_state = m_move_state.at(TimeKind::kCurrent)->ChangeState(player);
 	if (move_state)
 	{
 		m_move_state.at(TimeKind::kPrev)	= m_move_state.at(TimeKind::kCurrent);
-		m_move_state.at(TimeKind::kCurrent) = std::static_pointer_cast<MoveStateBase<Player>>(move_state);
-		m_move_state.at(TimeKind::kCurrent)->Enter(player);
+		m_move_state.at(TimeKind::kCurrent)	= std::static_pointer_cast<MoveStateBase<Player>>(move_state);
+		m_move_state.at(TimeKind::kPrev)	->Exit(player);
+		m_move_state.at(TimeKind::kCurrent)	->Enter(player);
+	}
+
+	std::shared_ptr<IState<Player>> action_state = m_action_state.at(TimeKind::kCurrent)->ChangeState(player);
+	if (action_state)
+	{
+		m_action_state.at(TimeKind::kPrev)	  = m_action_state.at(TimeKind::kCurrent);
+		m_action_state.at(TimeKind::kCurrent) = std::static_pointer_cast<ActionStateBase<Player>>(action_state);
+		m_action_state.at(TimeKind::kPrev)	  ->Exit (player);
+		m_action_state.at(TimeKind::kCurrent) ->Enter(player);
+	}
+
+	std::shared_ptr<IState<Player>> weapon_action_state = m_weapon_action_state.at(TimeKind::kCurrent)->ChangeState(player);
+	if (weapon_action_state)
+	{
+		m_weapon_action_state.at(TimeKind::kPrev)	 = m_weapon_action_state.at(TimeKind::kCurrent);
+		m_weapon_action_state.at(TimeKind::kCurrent) = std::static_pointer_cast<WeaponActionStateBase<Player>>(weapon_action_state);
+		m_weapon_action_state.at(TimeKind::kPrev)	 ->Exit (player);
+		m_weapon_action_state.at(TimeKind::kCurrent) ->Enter(player);
+	}
+
+	std::shared_ptr<IState<Player>> special_state = m_special_state.at(TimeKind::kCurrent)->ChangeState(player);
+	if (special_state)
+	{
+		m_special_state.at(TimeKind::kPrev)	   = m_special_state.at(TimeKind::kCurrent);
+		m_special_state.at(TimeKind::kCurrent) = std::static_pointer_cast<SpecialStateBase<Player>>(special_state);
+		m_special_state.at(TimeKind::kPrev)	   ->Exit (player);
+		m_special_state.at(TimeKind::kCurrent) ->Enter(player);
 	}
 
 	//m_current_action_state			->ChangeState(player);
@@ -64,14 +94,34 @@ void PlayerStateController::ChangeState(const Player* player)
 
 
 #pragma region Try判定
+bool PlayerStateController::TryMoveForward()
+{
+	return CommandHandler::GetInstance()->IsExecutingCommand(CommandKind::kMoveUpPlayer);
+}
+
+bool PlayerStateController::TryMoveBackward()
+{
+	return CommandHandler::GetInstance()->IsExecutingCommand(CommandKind::kMoveDownPlayer);
+}
+
+bool PlayerStateController::TryMoveLeft()
+{
+	return CommandHandler::GetInstance()->IsExecutingCommand(CommandKind::kMoveLeftPlayer);
+}
+
+bool PlayerStateController::TryMoveRight()
+{
+	return CommandHandler::GetInstance()->IsExecutingCommand(CommandKind::kMoveRightPlayer);
+}
+
 bool PlayerStateController::TryMove()
 {
 	const auto command = CommandHandler::GetInstance();
 
-	if ((	command->GetCurrentFrameExecuteInputCode(CommandKind::kMoveUpPlayer)
-		||	command->GetCurrentFrameExecuteInputCode(CommandKind::kMoveDownPlayer)
-		||	command->GetCurrentFrameExecuteInputCode(CommandKind::kMoveLeftPlayer)
-		||	command->GetCurrentFrameExecuteInputCode(CommandKind::kMoveRightPlayer)))
+	if ((	command->IsExecutingCommand(CommandKind::kMoveUpPlayer)
+		||	command->IsExecutingCommand(CommandKind::kMoveDownPlayer)
+		||	command->IsExecutingCommand(CommandKind::kMoveLeftPlayer)
+		||	command->IsExecutingCommand(CommandKind::kMoveRightPlayer)))
 	{
 		return true;
 	}
@@ -81,61 +131,11 @@ bool PlayerStateController::TryMove()
 
 bool PlayerStateController::TryRun()
 {
-	const auto command	= CommandHandler::GetInstance();
-	const auto input	= InputChecker	::GetInstance();
-	const auto code		= *command->GetCurrentFrameExecuteInputCode(CommandKind::kRun);
-
-	switch (command->GetInputModeKind(CommandHandler::MoveKind::kRun))
-	{
-	case InputModeKind::kTrigger:
-		// トリガーの入力回数が偶数回の場合、Runへの移行を許可
-		if (input->GetInputState(code) == InputState::kSingle)
-		{
-			command->CountUpTrigger(CommandHandler::MoveKind::kRun);
-
-			return command->GetTriggerCount(CommandHandler::MoveKind::kRun) % 2 ? true : false;
-		}
-		break;
-
-	case InputModeKind::kHold:
-		// ホールド中の場合、Runへの移行を許可
-		if (input->GetInputState(code) == InputState::kHold)
-		{
-			return true;
-		}
-		break;
-	}
-
-	return false;
+	return CommandHandler::GetInstance()->IsExecutingCommand(CommandKind::kRun);
 }
 
 bool PlayerStateController::TryCrouch()
 {
-	const auto command	= CommandHandler::GetInstance();
-	const auto input	= InputChecker	::GetInstance();
-	const auto code		= *command->GetCurrentFrameExecuteInputCode(CommandKind::kCrouch);
-
-	switch (command->GetInputModeKind(CommandHandler::MoveKind::kCrouch))
-	{
-	case InputModeKind::kTrigger:
-		// トリガーの入力回数が偶数回の場合、Crouchへの移行を許可
-		if (input->GetInputState(code) == InputState::kSingle)
-		{
-			command->CountUpTrigger(CommandHandler::MoveKind::kCrouch);
-
-			return command->GetTriggerCount(CommandHandler::MoveKind::kCrouch) % 2 ? true : false;
-		}
-		break;
-
-	case InputModeKind::kHold:
-		// ホールド中の場合、Crouchへの移行を許可
-		if (input->GetInputState(code) == InputState::kHold)
-		{
-			return true;
-		}
-		break;
-	}
-
-	return false;
+	return CommandHandler::GetInstance()->IsExecutingCommand(CommandKind::kCrouch);
 }
 #pragma endregion

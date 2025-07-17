@@ -16,7 +16,12 @@ void player_state::Crouch::Update(Player* obj)
 
 }
 
-void player_state::Crouch::Enter(const Player* obj)
+void player_state::Crouch::Enter(Player* obj)
+{
+
+}
+
+void player_state::Crouch::Exit(Player* obj)
 {
 
 }

@@ -16,7 +16,12 @@ void player_state::FrontKick::Update(Player* obj)
 
 }
 
-void player_state::FrontKick::Enter(const Player* obj)
+void player_state::FrontKick::Enter(Player* obj)
+{
+
+}
+
+void player_state::FrontKick::Exit(Player* obj)
 {
 
 }

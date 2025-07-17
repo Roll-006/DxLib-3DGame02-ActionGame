@@ -174,6 +174,8 @@ void PlayerAnimator::ChangeAnim()
 	}
 }
 
+
+#pragma region 状態の合成
 void PlayerAnimator::CombineMoveNullWithAction()
 {
 	switch (m_state->GetActionState(TimeKind::kCurrent)->GetStateKind())
@@ -426,48 +428,58 @@ void PlayerAnimator::CombineMoveRunWithWeaponAction()
 		break;
 	}
 }
+#pragma endregion
+
 
 void PlayerAnimator::AttachAnimEightDir(const int forward_anim_kind)
 {
-	// forward移動のアニメーションを基準とし、enum classの値をずらしてアタッチ
-	//// 左前方
-	//if ()
-	//{
-	//	AttachAnim(forward_anim_kind + 4);
-	//}
-	//// 右前方
-	//if ()
-	//{
-	//	AttachAnim(forward_anim_kind + 5);
-	//}
-	//// 左後方
-	//if ()
-	//{
-	//	AttachAnim(forward_anim_kind + 6);
-	//}
-	//// 右後方
-	//if ()
-	//{
-	//	AttachAnim(forward_anim_kind + 7);
-	//}
-	//// 前方
-	//if ()
-	//{
-	//	AttachAnim(forward_anim_kind);
-	//}
-	//// 後方
-	//if ()
-	//{
-	//	AttachAnim(forward_anim_kind + 1);
-	//}
-	//// 左
-	//if ()
-	//{
-	//	AttachAnim(forward_anim_kind + 2);
-	//}
-	//// 右
-	//if ()
-	//{
-	//	AttachAnim(forward_anim_kind + 3);
-	//}
+	// forwardのアニメーションを基準とし、enum classの値をずらしてアタッチ
+	// 左前方
+	if (m_state->TryMoveForward() && m_state->TryMoveLeft())
+	{
+		AttachAnim(forward_anim_kind + 4);
+		return;
+	}
+	// 右前方
+	if (m_state->TryMoveForward() && m_state->TryMoveRight())
+	{
+		AttachAnim(forward_anim_kind + 5);
+		return;
+	}
+	// 左後方
+	if (m_state->TryMoveBackward() && m_state->TryMoveLeft())
+	{
+		AttachAnim(forward_anim_kind + 6);
+		return;
+	}
+	// 右後方
+	if (m_state->TryMoveBackward() && m_state->TryMoveRight())
+	{
+		AttachAnim(forward_anim_kind + 7);
+		return;
+	}
+	// 前方
+	if (m_state->TryMoveForward())
+	{
+		AttachAnim(forward_anim_kind);
+		return;
+	}
+	// 後方
+	if (m_state->TryMoveBackward())
+	{
+		AttachAnim(forward_anim_kind + 1);
+		return;
+	}
+	// 左
+	if (m_state->TryMoveLeft())
+	{
+		AttachAnim(forward_anim_kind + 2);
+		return;
+	}
+	// 右
+	if (m_state->TryMoveRight())
+	{
+		AttachAnim(forward_anim_kind + 3);
+		return;
+	}
 }

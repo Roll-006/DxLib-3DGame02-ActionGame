@@ -16,7 +16,12 @@ void player_state::Parry::Update(Player* obj)
 
 }
 
-void player_state::Parry::Enter(const Player* obj)
+void player_state::Parry::Enter(Player* obj)
+{
+
+}
+
+void player_state::Parry::Exit(Player* obj)
 {
 
 }

@@ -40,7 +40,6 @@ public:
 	~PlayerStateController();
 
 	void Update		(Player* player);
-	void ChangeState(const Player* player);
 
 	/// @brief ステートを取得
 	template<typename StateT, typename ObjT>
@@ -52,6 +51,10 @@ public:
 
 
 	#pragma region Try判定
+	[[nodiscard]] bool TryMoveForward();
+	[[nodiscard]] bool TryMoveBackward();
+	[[nodiscard]] bool TryMoveLeft();
+	[[nodiscard]] bool TryMoveRight();
 	[[nodiscard]] bool TryMove();
 	[[nodiscard]] bool TryRun();
 	[[nodiscard]] bool TryCrouch();
@@ -64,6 +67,9 @@ public:
 	[[nodiscard]] std::shared_ptr<WeaponActionStateBase<Player>> GetWeaponActionState(const TimeKind time_kind)	const { return m_weapon_action_state.at(time_kind); }
 	[[nodiscard]] std::shared_ptr<SpecialStateBase<Player>>		 GetSpecialState	 (const TimeKind time_kind)	const { return m_special_state.at(time_kind); }
 	#pragma endregion
+
+private:
+	void ChangeState(Player* player);
 
 private:
 	std::unordered_map<std::type_index, std::shared_ptr<IState<Player>>>			m_states;				// 各ステート(型情報をKeyとして使用)

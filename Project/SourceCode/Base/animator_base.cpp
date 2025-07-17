@@ -1,11 +1,9 @@
 ﻿#include "animator_base.hpp"
 
 AnimatorBase::AnimatorBase(const std::shared_ptr<Modeler> modeler) :
-	m_prev_anim_play_rate		(0.0f),
-	m_blend_rate				(1.0f),
-	//m_is_first_frame_change_anim(false),
-	m_is_attached				(false),
-	m_modeler					(modeler)
+	m_prev_anim_play_rate	(0.0f),
+	m_blend_rate			(1.0f),
+	m_modeler				(modeler)
 
 {
 	m_time_kind_data[TimeKind::kPrev] = m_time_kind_data[TimeKind::kCurrent] = AnimTimeKindData();
@@ -43,19 +41,12 @@ void AnimatorBase::AddAnimHandle(const int kind, const int anim_handle, const in
 }
 
 void AnimatorBase::AttachAnim(const int next_kind)
-{
-	// 現在のアニメーションと同じであった場合はアタッチを許可しない
-	// ブレンドが完了していない場合はアタッチを許可しない
-	if (m_time_kind_data.at(TimeKind::kCurrent).kind == next_kind || m_blend_rate != 1.0f)
-	{
-		m_is_attached = false;
-		return;
-	}
+{	
+	if (!m_anim_data.count(next_kind))								{ return; }	// アニメーションが存在しない場合は早期return
+	if (m_time_kind_data.at(TimeKind::kCurrent).kind == next_kind)	{ return; }	// 現在のアニメーションと同じであった場合はアタッチを許可しない	
+	if (m_blend_rate != 1.0f)										{ return; }	// ブレンドが完了していない場合はアタッチを許可しない
 
 	DetachAnim(TimeKind::kPrev);
-
-	m_is_attached					= true;
-	//m_is_first_frame_change_anim	= true;
 
 	// データをシフト(Current ➡ Prev, Next ➡ Current)
 	m_time_kind_data.at(TimeKind::kPrev)					= m_time_kind_data.at(TimeKind::kCurrent);

@@ -16,7 +16,12 @@ void player_state::CrouchTurnAround::Update(Player* obj)
 
 }
 
-void player_state::CrouchTurnAround::Enter(const Player* obj)
+void player_state::CrouchTurnAround::Enter(Player* obj)
+{
+
+}
+
+void player_state::CrouchTurnAround::Exit(Player* obj)
 {
 
 }
