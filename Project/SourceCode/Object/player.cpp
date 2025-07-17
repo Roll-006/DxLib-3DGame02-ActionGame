@@ -4,14 +4,13 @@
 
 Player::Player() :
 	CharaBase				(ObjName.PLAYER, ObjTag.PLAYER, ModelPath.CHARA_01, MassKind::kMedium),
-	m_anim_kind				(PlayerAnimKind::kIdle02),
+	m_anim_kind				(PlayerAnimKind::kIdle),
 	m_state					(std::make_shared<PlayerStateController>()),
 	m_bone_pos_corrector	(std::make_shared<BonePosCorrector>()),
 	m_move_speed			(0.0f),
 	m_is_input_move			(false, false, false, false)
 {
 	// 初期pos・dirを設定
-	m_move_dir[TimeKind::kPrev] = m_move_dir[TimeKind::kCurrent] = m_move_dir[TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);
 	m_look_dir[TimeKind::kCurrent] = m_look_dir[TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);
 	m_transform->SetRot  (CoordinateKind::kWorld, m_look_dir.at(TimeKind::kCurrent));
 	m_transform->SetScale(CoordinateKind::kWorld, kModelScale);
@@ -21,7 +20,6 @@ Player::Player() :
 
 	// 各アニメーション追加
 	m_animator = std::make_shared<PlayerAnimator>(m_modeler, m_state);
-	m_animator->AttachAnim(static_cast<int>(m_anim_kind));
 
 	// 武器設定
 	const auto gun = std::make_shared<AssaultRifle>();
@@ -119,7 +117,7 @@ void Player::Draw() const
 	//DrawLine3D(pos, pos + axes.y_axis * 100, 0x00ff22);
 	//DrawLine3D(pos, pos + axes.z_axis * 100, 0x0077ff);
 
-	//DrawFormatString(300, 40, 0xffffff, "所持している弾数 : %d", m_current_remaining_bullet_num);
+	//DrawFormatString(300, 0, 0xffffff, "%f, %f, %f", m_move_dir[TimeKind::kNext].x, m_move_dir[TimeKind::kNext].y, m_move_dir[TimeKind::kNext].z);
 }
 
 void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
@@ -137,139 +135,33 @@ void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 void Player::MoveForward()
 {
-	m_move_dir.at(TimeKind::kNext) += GetMoveForward();
+	m_move_dir[TimeKind::kNext] += GetMoveForward();
 }
 
 void Player::MoveBackward()
 {
-	m_move_dir.at(TimeKind::kNext) -= GetMoveForward();
+	m_move_dir[TimeKind::kNext] -= GetMoveForward();
 }
 
 void Player::MoveLeft()
 {
-	m_move_dir.at(TimeKind::kNext) -= CameraManager::GetInstance()->GetMainCamera()->GetTransform()->GetRight(CoordinateKind::kWorld);
+	m_move_dir[TimeKind::kNext] -= CameraManager::GetInstance()->GetMainCamera()->GetTransform()->GetRight(CoordinateKind::kWorld);
 }
 
 void Player::MoveRight()
 {
-	m_move_dir.at(TimeKind::kNext) += CameraManager::GetInstance()->GetMainCamera()->GetTransform()->GetRight(CoordinateKind::kWorld);
+	m_move_dir[TimeKind::kNext] += CameraManager::GetInstance()->GetMainCamera()->GetTransform()->GetRight(CoordinateKind::kWorld);
 }
 
-//void Player::ChangeAnimState()
-//{
-//	// TODO : のちステートマシンへ移行
-//
-//	// アイドル
-//	if (!m_is_move)
-//	{
-//		if (m_non_move_time > kIdelAnimPlayThreshold)
-//		{
-//			m_anim_kind = PlayerAnimKind::kIdle02;
-//
-//			if (m_is_crouch)
-//			{
-//				m_anim_kind = PlayerAnimKind::kIdleCrouch01;
-//			}
-//		}
-//
-//		if (std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->IsAiming())
-//		{
-//			m_anim_kind = PlayerAnimKind::kIdleShoot01;
-//		}
-//	}
-//
-//	// ダッシュ
-//	if (m_is_run)
-//	{
-//		m_anim_kind = PlayerAnimKind::kRunForward01;
-//	}
-//
-//	// 銃を構えながら歩く
-//	if (m_is_move && !m_is_run)
-//	{
-//		if (m_is_input_move.at(static_cast<int>(MoveDir::kForward)))
-//		{
-//			m_anim_kind = PlayerAnimKind::kWalkShootForward01;
-//		}
-//		if (m_is_input_move.at(static_cast<int>(MoveDir::kBackward)))
-//		{
-//			m_anim_kind = PlayerAnimKind::kWalkShootBackward01;
-//		}
-//		if (m_is_input_move.at(static_cast<int>(MoveDir::kLeft)))
-//		{
-//			m_anim_kind = PlayerAnimKind::kWalkShootLeft01;
-//		}
-//		if (m_is_input_move.at(static_cast<int>(MoveDir::kRight)))
-//		{
-//			m_anim_kind = PlayerAnimKind::kWalkShootRight01;
-//		}
-//		if (m_is_input_move.at(static_cast<int>(MoveDir::kForward)) && m_is_input_move.at(static_cast<int>(MoveDir::kLeft)))
-//		{
-//			m_anim_kind = PlayerAnimKind::kWalkShootForwardLeft01;
-//		}
-//		if (m_is_input_move.at(static_cast<int>(MoveDir::kForward)) && m_is_input_move.at(static_cast<int>(MoveDir::kRight)))
-//		{
-//			m_anim_kind = PlayerAnimKind::kWalkShootForwardRight01;
-//		}
-//		if (m_is_input_move.at(static_cast<int>(MoveDir::kBackward)) && m_is_input_move.at(static_cast<int>(MoveDir::kLeft)))
-//		{
-//			m_anim_kind = PlayerAnimKind::kWalkShootBackwardLeft01;
-//		}
-//		if (m_is_input_move.at(static_cast<int>(MoveDir::kBackward)) && m_is_input_move.at(static_cast<int>(MoveDir::kRight)))
-//		{
-//			m_anim_kind = PlayerAnimKind::kWalkShootBackwardRight01;
-//		}
-//	}
-//
-//	// しゃがむ
-//	if (m_is_crouch)
-//	{
-//		if (std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->IsAiming())
-//		{
-//			m_anim_kind = PlayerAnimKind::kIdleCrouchShoot01;
-//		}
-//
-//		if (m_is_input_move.at(static_cast<int>(MoveDir::kForward)))
-//		{
-//			m_anim_kind = PlayerAnimKind::kWalkCrouchForward01;
-//		}
-//		if (m_is_input_move.at(static_cast<int>(MoveDir::kBackward)))
-//		{
-//			m_anim_kind = PlayerAnimKind::kWalkCrouchBackward01;
-//		}
-//		if (m_is_input_move.at(static_cast<int>(MoveDir::kLeft)))
-//		{
-//			m_anim_kind = PlayerAnimKind::kWalkCrouchLeft01;
-//		}
-//		if (m_is_input_move.at(static_cast<int>(MoveDir::kRight)))
-//		{
-//			m_anim_kind = PlayerAnimKind::kWalkCrouchRight01;
-//		}
-//		if (m_is_input_move.at(static_cast<int>(MoveDir::kForward)) && m_is_input_move.at(static_cast<int>(MoveDir::kLeft)))
-//		{
-//			m_anim_kind = PlayerAnimKind::kWalkCrouchForwardLeft01;
-//		}
-//		if (m_is_input_move.at(static_cast<int>(MoveDir::kForward)) && m_is_input_move.at(static_cast<int>(MoveDir::kRight)))
-//		{
-//			m_anim_kind = PlayerAnimKind::kWalkCrouchForwardRight01;
-//		}
-//		if (m_is_input_move.at(static_cast<int>(MoveDir::kBackward)) && m_is_input_move.at(static_cast<int>(MoveDir::kLeft)))
-//		{
-//			m_anim_kind = PlayerAnimKind::kWalkCrouchBackwardLeft01;
-//		}
-//		if (m_is_input_move.at(static_cast<int>(MoveDir::kBackward)) && m_is_input_move.at(static_cast<int>(MoveDir::kRight)))
-//		{
-//			m_anim_kind = PlayerAnimKind::kWalkCrouchBackwardRight01;
-//		}
-//	}
-//
-//	// 状態を反映
-//	m_animator->AttachAnim(static_cast<int>(m_anim_kind));
-//}
+void Player::ShiftMoveDirTimeKindInfo()
+{
+	m_move_dir[TimeKind::kPrev] = m_move_dir[TimeKind::kCurrent];
+	m_move_dir[TimeKind::kNext] = v3d::GetZeroV();
+}
 
 void Player::Move()
 {
-	VECTOR velocity = v3d::GetNormalizedV(m_move_dir.at(TimeKind::kNext)) * InputChecker::kStickMaxSlope;
+	VECTOR velocity = v3d::GetNormalizedV(m_move_dir[TimeKind::kNext]) * InputChecker::kStickMaxSlope;
 	velocity = GetVelocityFromPad(velocity);
 
 	// 移動判定
@@ -291,7 +183,7 @@ void Player::Move()
 	CalcLookDir();
 
 	// 速度を取得
-	m_velocity = m_move_dir.at(TimeKind::kCurrent) * m_move_speed;
+	m_velocity = m_move_dir[TimeKind::kCurrent] * m_move_speed;
 
 
 	// MEMO : 落下ベクトルの適用は、押し戻しと同時に全オブジェクトに一斉に適用
@@ -306,7 +198,7 @@ void Player::Move()
 	//// TODO : 後に振り向きダッシュに使用
 	//if (m_is_run)
 	//{
-	//	const auto angle = math::GetAngleBetweenTwoVector(m_move_dir.at(TimeKind::kNext), m_move_dir.at(TimeKind::kCurrent));
+	//	const auto angle = math::GetAngleBetweenTwoVector(m_move_dir[TimeKind::kNext], m_move_dir[TimeKind::kCurrent]);
 	//	if (angle >= 120.0f * math::kDegreesToRadian)
 	//	{
 	//		m_is_turn_run = true;
@@ -322,8 +214,7 @@ void Player::InitMove()
 	
 
 	// 移動方向
-	m_move_dir.at(TimeKind::kPrev) = m_move_dir.at(TimeKind::kCurrent);
-	m_move_dir.at(TimeKind::kNext) = v3d::GetZeroV();
+
 
 	// 向き補正
 	m_is_correct_look_dir = false;
@@ -404,18 +295,18 @@ void Player::CalcMoveSpeed(const float input_slope)
 
 void Player::CalcMoveDir(const VECTOR& velocity)
 {
-	if (!m_is_move) { return; }
+	if (!m_state->TryMove()) { return; }
 
 	// 目的とする向きと距離を取得
-	m_move_dir.at(TimeKind::kNext) = v3d::GetNormalizedV(velocity);
-	const VECTOR distance_v = m_move_dir.at(TimeKind::kNext) - m_move_dir.at(TimeKind::kCurrent);
+	m_move_dir[TimeKind::kNext] = v3d::GetNormalizedV(velocity);
+	const VECTOR distance_v = m_move_dir[TimeKind::kNext] - m_move_dir[TimeKind::kCurrent];
 
 	// 現在のdirを目的とするdirに近づけていく
-	m_move_dir.at(TimeKind::kCurrent) += v3d::GetNormalizedV(distance_v) * kMoveDirCorrectionSpeed;
-	const float distance = VSize(m_move_dir.at(TimeKind::kNext) - m_move_dir.at(TimeKind::kCurrent));
+	m_move_dir[TimeKind::kCurrent] += v3d::GetNormalizedV(distance_v) * kMoveDirCorrectionSpeed;
+	const float distance = VSize(m_move_dir[TimeKind::kNext] - m_move_dir[TimeKind::kCurrent]);
 	if (distance < kConfirmMoveDirThreshold)
 	{
-		m_move_dir.at(TimeKind::kCurrent) = m_move_dir.at(TimeKind::kNext);
+		m_move_dir[TimeKind::kCurrent] = m_move_dir[TimeKind::kNext];
 	}
 }
 
@@ -444,7 +335,7 @@ void Player::CalcLookDir()
 			// ダッシュ状態であれば進行方向を向く
 			if (m_is_run)
 			{
-				m_look_dir.at(TimeKind::kNext) = m_move_dir.at(TimeKind::kCurrent);
+				m_look_dir.at(TimeKind::kNext) = m_move_dir[TimeKind::kCurrent];
 			}
 			// 歩き状態である場合は常にカメラと同じ向きを向く
 			else

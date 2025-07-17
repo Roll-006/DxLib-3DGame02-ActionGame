@@ -1,10 +1,6 @@
 #include "player_state_controller.hpp"
 
-PlayerStateController::PlayerStateController() :
-	m_current_move_state			(nullptr),
-	m_current_action_state			(nullptr),
-	m_current_weapon_action_state	(nullptr),
-	m_current_special_state			(nullptr)
+PlayerStateController::PlayerStateController()
 {
 	m_states[typeid(player_state::MoveNull)]			= std::make_shared<player_state::MoveNull>();
 	m_states[typeid(player_state::Move)]				= std::make_shared<player_state::Move>();
@@ -12,13 +8,15 @@ PlayerStateController::PlayerStateController() :
 	m_states[typeid(player_state::Crouch)]				= std::make_shared<player_state::Crouch>();
 	m_states[typeid(player_state::Run)]					= std::make_shared<player_state::Run>();
 	m_states[typeid(player_state::TurnAround)]			= std::make_shared<player_state::TurnAround>();
+	m_states[typeid(player_state::CrouchTurnAround)]	= std::make_shared<player_state::CrouchTurnAround>();
 	m_states[typeid(player_state::WeaponActionNull)]	= std::make_shared<player_state::WeaponActionNull>();
 	m_states[typeid(player_state::KnifeEquipped)]		= std::make_shared<player_state::KnifeEquipped>();
+	m_states[typeid(player_state::AimKnife)]			= std::make_shared<player_state::AimKnife>();
 	m_states[typeid(player_state::StabKnife)]			= std::make_shared<player_state::StabKnife>();
 	m_states[typeid(player_state::SideSlashKnife)]		= std::make_shared<player_state::SideSlashKnife>();
 	m_states[typeid(player_state::Parry)]				= std::make_shared<player_state::Parry>();
 	m_states[typeid(player_state::GunEquipped)]			= std::make_shared<player_state::GunEquipped>();
-	m_states[typeid(player_state::Aiming)]				= std::make_shared<player_state::Aiming>();
+	m_states[typeid(player_state::AimGun)]				= std::make_shared<player_state::AimGun>();
 	m_states[typeid(player_state::Shot)]				= std::make_shared<player_state::Shot>();
 	m_states[typeid(player_state::Reload)]				= std::make_shared<player_state::Reload>();
 	m_states[typeid(player_state::SpecialNull)]			= std::make_shared<player_state::SpecialNull>();
@@ -30,10 +28,10 @@ PlayerStateController::PlayerStateController() :
 	m_states[typeid(player_state::FinishOff)]			= std::make_shared<player_state::FinishOff>();
 	m_states[typeid(player_state::EscapeWithKnife)]		= std::make_shared<player_state::EscapeWithKnife>();
 
-	m_current_move_state			= GetState<player_state::MoveNull,			Player>();
-	m_current_action_state			= GetState<player_state::ActionNull,		Player>();
-	m_current_weapon_action_state	= GetState<player_state::WeaponActionNull,	Player>();
-	m_current_special_state			= GetState<player_state::SpecialNull,		Player>();
+	m_move_state			[TimeKind::kPrev] = m_move_state			[TimeKind::kCurrent] = GetState<player_state::MoveNull,			Player>();
+	m_action_state			[TimeKind::kPrev] = m_action_state			[TimeKind::kCurrent] = GetState<player_state::ActionNull,		Player>();
+	m_weapon_action_state	[TimeKind::kPrev] = m_weapon_action_state	[TimeKind::kCurrent] = GetState<player_state::WeaponActionNull,	Player>();
+	m_special_state			[TimeKind::kPrev] = m_special_state			[TimeKind::kCurrent] = GetState<player_state::SpecialNull,		Player>();
 }
 
 PlayerStateController::~PlayerStateController()
@@ -43,20 +41,20 @@ PlayerStateController::~PlayerStateController()
 
 void PlayerStateController::Update(Player* player)
 {
-	m_current_move_state			->Update(player);
-	m_current_action_state			->Update(player);
-	m_current_weapon_action_state	->Update(player);
-	m_current_special_state			->Update(player);
+	m_move_state			.at(TimeKind::kCurrent)->Update(player);
+	m_action_state			.at(TimeKind::kCurrent)->Update(player);
+	m_weapon_action_state	.at(TimeKind::kCurrent)->Update(player);
+	m_special_state			.at(TimeKind::kCurrent)->Update(player);
 }
 
 void PlayerStateController::ChangeState(const Player* player)
 {
-	std::shared_ptr<IState<Player>> move_state = m_current_move_state->ChangeState(player);
+	std::shared_ptr<IState<Player>> move_state = m_move_state.at(TimeKind::kCurrent)->ChangeState(player);
 	if (move_state)
 	{
-		m_current_move_state = nullptr;
-		m_current_move_state = std::static_pointer_cast<MoveStateBase<Player>>(move_state);
-		m_current_move_state->Enter(player);
+		m_move_state.at(TimeKind::kPrev)	= m_move_state.at(TimeKind::kCurrent);
+		m_move_state.at(TimeKind::kCurrent) = std::static_pointer_cast<MoveStateBase<Player>>(move_state);
+		m_move_state.at(TimeKind::kCurrent)->Enter(player);
 	}
 
 	//m_current_action_state			->ChangeState(player);

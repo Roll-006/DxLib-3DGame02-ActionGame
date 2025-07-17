@@ -11,14 +11,16 @@
 #include "../State/PlayerState/crouch.hpp"
 #include "../State/PlayerState/run.hpp"
 #include "../State/PlayerState/turn_around.hpp"
+#include "../State/PlayerState/crouch_turn_around.hpp"
 
 #include "../State/PlayerState/weapon_action_null.hpp"
 #include "../State/PlayerState/knife_equipped.hpp"
+#include "../State/PlayerState/aim_knife.hpp"
 #include "../State/PlayerState/stab_knife.hpp"
 #include "../State/PlayerState/side_slash_knife.hpp"
 #include "../State/PlayerState/parry.hpp"
 #include "../State/PlayerState/gun_equipped.hpp"
-#include "../State/PlayerState/aiming.hpp"
+#include "../State/PlayerState/aim_gun.hpp"
 #include "../State/PlayerState/shot.hpp"
 #include "../State/PlayerState/reload.hpp"
 
@@ -57,17 +59,17 @@ public:
 
 
 	#pragma region Getter
-	[[nodiscard]] std::shared_ptr<MoveStateBase<Player>>			GetCurrentMoveState()			const { return m_current_move_state; }
-	[[nodiscard]] std::shared_ptr<ActionStateBase<Player>>			GetCurrentActionState()			const { return m_current_action_state; }
-	[[nodiscard]] std::shared_ptr<WeaponActionStateBase<Player>>	GetCurrentWeaponActionState()	const { return m_current_weapon_action_state; }
-	[[nodiscard]] std::shared_ptr<SpecialStateBase<Player>>		GetCurrentSpecialState()		const { return m_current_special_state; }
+	[[nodiscard]] std::shared_ptr<MoveStateBase<Player>>		 GetMoveState		 (const TimeKind time_kind)	const { return m_move_state.at(time_kind); }
+	[[nodiscard]] std::shared_ptr<ActionStateBase<Player>>		 GetActionState		 (const TimeKind time_kind)	const { return m_action_state.at(time_kind); }
+	[[nodiscard]] std::shared_ptr<WeaponActionStateBase<Player>> GetWeaponActionState(const TimeKind time_kind)	const { return m_weapon_action_state.at(time_kind); }
+	[[nodiscard]] std::shared_ptr<SpecialStateBase<Player>>		 GetSpecialState	 (const TimeKind time_kind)	const { return m_special_state.at(time_kind); }
 	#pragma endregion
 
 private:
-	std::unordered_map<std::type_index, std::shared_ptr<IState<Player>>> m_states;	// 各ステート(型情報をKeyとして使用)
+	std::unordered_map<std::type_index, std::shared_ptr<IState<Player>>>			m_states;				// 各ステート(型情報をKeyとして使用)
 
-	std::shared_ptr<MoveStateBase<Player>>				m_current_move_state;			// 移動ステート
-	std::shared_ptr<ActionStateBase<Player>>			m_current_action_state;			// 行動ステート
-	std::shared_ptr<WeaponActionStateBase<Player>>		m_current_weapon_action_state;	// 武器に関するステート
-	std::shared_ptr<SpecialStateBase<Player>>			m_current_special_state;		// 特殊ステート
+	std::unordered_map<TimeKind, std::shared_ptr<MoveStateBase<Player>>>			m_move_state;			// 移動ステート
+	std::unordered_map<TimeKind, std::shared_ptr<ActionStateBase<Player>>>			m_action_state;			// 行動ステート
+	std::unordered_map<TimeKind, std::shared_ptr<WeaponActionStateBase<Player>>>	m_weapon_action_state;	// 武器に関するステート
+	std::unordered_map<TimeKind, std::shared_ptr<SpecialStateBase<Player>>>			m_special_state;		// 特殊ステート
 };

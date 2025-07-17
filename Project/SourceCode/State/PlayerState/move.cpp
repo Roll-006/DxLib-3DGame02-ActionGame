@@ -13,6 +13,8 @@ player_state::Move::~Move()
 
 void player_state::Move::Update(Player* obj)
 {
+	obj->ShiftMoveDirTimeKindInfo();
+
 	// ˆÚ“®•ûŒü‚ÌŒˆ’è
 	const auto command = CommandHandler::GetInstance();
 	if (command->GetCurrentFrameExecuteInputCode(CommandKind::kMoveUpPlayer))

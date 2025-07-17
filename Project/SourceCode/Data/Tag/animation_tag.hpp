@@ -3,7 +3,8 @@
 
 static struct AnimationTag
 {
-	std::string NONE = "none";	// –¢•ª—Ş
-	std::string WALK = "walk";
+	std::string NONE	= "none";		// –¢•ª—Ş
+	std::string MOVE	= "move";		// ˆÚ“®
+	std::string RELOAD	= "reload";		// ƒŠƒ[ƒh
 
 }AnimTag;

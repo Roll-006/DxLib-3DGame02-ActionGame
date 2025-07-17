@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "../Base/chara_base.hpp"
 
 #include "../Part/player_animator.hpp"
@@ -35,6 +35,9 @@ public:
 	void MoveLeft();
 	void MoveRight();
 
+	/// @brief ç§»å‹•æ–¹å‘ã®æƒ…å ±ã‚’ã‚·ãƒ•ãƒˆ(Current â¡ Prev, ç©º â¡ Next)
+	void ShiftMoveDirTimeKindInfo();
+
 	#pragma region Getter
 	[[nodiscard]] std::shared_ptr<PlayerStateController> GetStateController() const { return m_state; }
 	#pragma endregion
@@ -44,21 +47,21 @@ private:
 	void InitMove();
 	void InitWeapon();
 
-	/// @brief ˆÚ“®‘¬“x‚ğŒvZ
+	/// @brief ç§»å‹•é€Ÿåº¦ã‚’è¨ˆç®—
 	void CalcMoveSpeed(const float input_slope);
 
-	/// @brief ˆÚ“®•ûŒü‚ğŒvZ
+	/// @brief ç§»å‹•æ–¹å‘ã‚’è¨ˆç®—
 	void CalcMoveDir(const VECTOR& velocity);
-	/// @brief Œü‚«‚ğŒvZ
+	/// @brief å‘ãã‚’è¨ˆç®—
 	void CalcLookDir();
-	/// @brief Œü‚«‚ğ•â³‚·‚é
+	/// @brief å‘ãã‚’è£œæ­£ã™ã‚‹
 	void CorrectLookDir();
 
-	// ƒpƒbƒh“ü—Í‚Å‚Ì‘¬“xƒxƒNƒgƒ‹‚ğæ“¾
+	// ãƒ‘ãƒƒãƒ‰å…¥åŠ›ã§ã®é€Ÿåº¦ãƒ™ã‚¯ãƒˆãƒ«ã‚’å–å¾—
 	[[nodiscard]] VECTOR GetVelocityFromPad(VECTOR& velocity);
 
-	/// @brief ƒJƒƒ‰‚Ìforward‚ğ‚à‚Æ‚É‚µ‚½is•ûŒüƒxƒNƒgƒ‹‚ğæ“¾‚·‚é
-	/// @return ƒJƒƒ‰‚Ìforward‚ÌY²‚ğÁ‚µ”ò‚Î‚µ‚½ƒxƒNƒgƒ‹
+	/// @brief ã‚«ãƒ¡ãƒ©ã®forwardã‚’ã‚‚ã¨ã«ã—ãŸé€²è¡Œæ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«ã‚’å–å¾—ã™ã‚‹
+	/// @return ã‚«ãƒ¡ãƒ©ã®forwardã®Yè»¸ã‚’æ¶ˆã—é£›ã°ã—ãŸãƒ™ã‚¯ãƒˆãƒ«
 	[[nodiscard]] VECTOR GetMoveForward();
 
 private:
@@ -68,45 +71,45 @@ private:
 	static constexpr float kSlowWalkSpeed						= 0.2f;
 	static constexpr float kWalkSpeed							= 0.5f;
 	static constexpr float kRunSpeed							= 2.0f;
-	static constexpr float kAcceleration						= 1.0f;		// ‰Á‘¬“x(Œ¸‘¬“x‚à‹¤’Ê)
+	static constexpr float kAcceleration						= 1.0f;		// åŠ é€Ÿåº¦(æ¸›é€Ÿåº¦ã‚‚å…±é€š)
 
-	static constexpr float kMoveDirCorrectionSpeed				= 0.065f;	// ˆÚ“®•ûŒü‚Ì•â³‘¬“x
-	static constexpr float kLookDirCorrectionAngle				= 0.1f;		// Œ©‚é•ûŒü‚ğ‰ñ“]‚³‚¹‚éŠp“x
-	static constexpr float kLookDirCorrectionAngleForADS		= 0.3f;		// ƒXƒR[ƒv‚ğ”`‚­Û‚ÌAŒ©‚é•ûŒü‚ğ‰ñ“]‚³‚¹‚éŠp“x
-	static constexpr float kConfirmMoveDirThreshold				= 0.08f;	// –Ú“I‚Ìdir‚É“’B‚µ‚½‚Æ”»’è‚·‚éè‡’l
-	static constexpr float kConfirmLookDirThresholdAngle		= 10.0f;	// –Ú“I‚Ìdir‚É“’B‚µ‚½‚Æ”»’è‚·‚éè‡’l
-	static constexpr float kConfirmLookDirThresholdAngleForADS	= 20.0f;	// ƒXƒR[ƒv‚ğ”`‚­Û‚ÌA–Ú“I‚Ìdir‚É“’B‚µ‚½‚Æ”»’è‚·‚éè‡’l
+	static constexpr float kMoveDirCorrectionSpeed				= 0.065f;	// ç§»å‹•æ–¹å‘ã®è£œæ­£é€Ÿåº¦
+	static constexpr float kLookDirCorrectionAngle				= 0.1f;		// è¦‹ã‚‹æ–¹å‘ã‚’å›è»¢ã•ã›ã‚‹è§’åº¦
+	static constexpr float kLookDirCorrectionAngleForADS		= 0.3f;		// ã‚¹ã‚³ãƒ¼ãƒ—ã‚’è¦—ãéš›ã®ã€è¦‹ã‚‹æ–¹å‘ã‚’å›è»¢ã•ã›ã‚‹è§’åº¦
+	static constexpr float kConfirmMoveDirThreshold				= 0.08f;	// ç›®çš„ã®dirã«åˆ°é”ã—ãŸã¨åˆ¤å®šã™ã‚‹é–¾å€¤
+	static constexpr float kConfirmLookDirThresholdAngle		= 10.0f;	// ç›®çš„ã®dirã«åˆ°é”ã—ãŸã¨åˆ¤å®šã™ã‚‹é–¾å€¤
+	static constexpr float kConfirmLookDirThresholdAngleForADS	= 20.0f;	// ã‚¹ã‚³ãƒ¼ãƒ—ã‚’è¦—ãéš›ã®ã€ç›®çš„ã®dirã«åˆ°é”ã—ãŸã¨åˆ¤å®šã™ã‚‹é–¾å€¤
 
-	static constexpr float kIdelAnimPlayThreshold				= 0.35f;	// ƒAƒCƒhƒ‹ƒAƒjƒ[ƒVƒ‡ƒ“‚ğÄ¶‚·‚é‚Æ”»’è‚·‚éè‡’l
+	static constexpr float kIdelAnimPlayThreshold				= 0.35f;	// ã‚¢ã‚¤ãƒ‰ãƒ«ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å†ç”Ÿã™ã‚‹ã¨åˆ¤å®šã™ã‚‹é–¾å€¤
 
-	static constexpr int   kWalkStickSlopeLimit					= 15000;	// •à‚«ó‘Ô‚Æ‚·‚éƒXƒeƒBƒbƒNŒX‚«‚ÌãŒÀ
-	static constexpr float kTurnAroundStickAngle				= 30.0f;	// U‚èŒü‚«‚ğs‚¤ƒXƒeƒBƒbƒN‚Ì“ü—ÍŠp“x
+	static constexpr int   kWalkStickSlopeLimit					= 15000;	// æ­©ãçŠ¶æ…‹ã¨ã™ã‚‹ã‚¹ãƒ†ã‚£ãƒƒã‚¯å‚¾ãã®ä¸Šé™
+	static constexpr float kTurnAroundStickAngle				= 30.0f;	// æŒ¯ã‚Šå‘ãã‚’è¡Œã†ã‚¹ãƒ†ã‚£ãƒƒã‚¯ã®å…¥åŠ›è§’åº¦
 
 	static constexpr float kCapsuleRadius						= 8.0f;
 	static constexpr float kLandingTriggerRadius				= 6.0f;
 	
-	static constexpr float kADSSpeed							= 70.0f;	// ƒXƒR[ƒv‚ğ‚Ì‚¼‚«‚Ş‘¬“x
+	static constexpr float kADSSpeed							= 70.0f;	// ã‚¹ã‚³ãƒ¼ãƒ—ã‚’ã®ããè¾¼ã‚€é€Ÿåº¦
 
 private:
-	std::unordered_map<TimeKind, VECTOR> m_move_dir;			// ˆÚ“®•ûŒü(TODO : ’·‚³‚ª1–¢–‚Å‚ ‚é‚ª‚ ‚éê‡‚ª‚ ‚é‚½‚ß–½–¼‚ğ•ÏX‚·‚×‚«)
-	std::unordered_map<TimeKind, VECTOR> m_look_dir;			// Œü‚¢‚Ä‚¢‚é•ûŒü
+	std::unordered_map<TimeKind, VECTOR> m_move_dir;			// ç§»å‹•æ–¹å‘(TODO : é•·ã•ãŒ1æœªæº€ã§ã‚ã‚‹æ™‚ãŒã‚ã‚‹å ´åˆãŒã‚ã‚‹ãŸã‚å‘½åã‚’å¤‰æ›´ã™ã¹ã)
+	std::unordered_map<TimeKind, VECTOR> m_look_dir;			// å‘ã„ã¦ã„ã‚‹æ–¹å‘
 	
-	PlayerAnimKind m_anim_kind;									// ƒAƒjƒ[ƒVƒ‡ƒ“‚Ìó‘Ô‚ğ”»’è
+	PlayerAnimKind m_anim_kind;									// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®çŠ¶æ…‹ã‚’åˆ¤å®š
 	std::shared_ptr<PlayerStateController> m_state;
 
-	std::shared_ptr<BonePosCorrector> m_bone_pos_corrector;		// ƒ{[ƒ“ˆÊ’uC³
+	std::shared_ptr<BonePosCorrector> m_bone_pos_corrector;		// ãƒœãƒ¼ãƒ³ä½ç½®ä¿®æ­£
 
 	float m_move_speed;
-	float m_non_move_time;										// “ü—Í‚ğ‚µ‚Ä‚¢‚È‚¢ŠÔ
+	float m_non_move_time;										// å…¥åŠ›ã‚’ã—ã¦ã„ãªã„æ™‚é–“
 
 	bool m_is_move;
 	bool m_is_run;
 	bool m_is_crouch;
-	bool m_is_turn_around;										// Y²180‹‰ñ“]‚³‚¹‚é‚©‚ğ”»’è
-	bool m_is_turn_run;											// ƒ_ƒbƒVƒ…’†‚ÉU‚èŒü‚­‚©‚ğ”»’è
-	bool m_is_correct_look_dir;									// Œ©‚é•ûŒü‚ğ•â³‚·‚é‚©‚ğ”»’è
+	bool m_is_turn_around;										// Yè»¸180Â°å›è»¢ã•ã›ã‚‹ã‹ã‚’åˆ¤å®š
+	bool m_is_turn_run;											// ãƒ€ãƒƒã‚·ãƒ¥ä¸­ã«æŒ¯ã‚Šå‘ãã‹ã‚’åˆ¤å®š
+	bool m_is_correct_look_dir;									// è¦‹ã‚‹æ–¹å‘ã‚’è£œæ­£ã™ã‚‹ã‹ã‚’åˆ¤å®š
 
-	int  m_turn_around_count;									// ˜A‘±‚ÅU‚èŒü‚­‚±‚Æ‚ğG‚ê‚®‚½‚ß‚ÌU‚èŒü‚«ƒJƒEƒ“ƒg
+	int  m_turn_around_count;									// é€£ç¶šã§æŒ¯ã‚Šå‘ãã“ã¨ã‚’è§¦ã‚ŒããŸã‚ã®æŒ¯ã‚Šå‘ãã‚«ã‚¦ãƒ³ãƒˆ
 
 	std::array<bool, 4> m_is_input_move;
 };

@@ -212,8 +212,10 @@
     <ClCompile Include="SourceCode\Shape\3DShape\obb.cpp" />
     <ClCompile Include="SourceCode\Shape\3DShape\ray_capsule.cpp" />
     <ClCompile Include="SourceCode\Shape\3DShape\sphere.cpp" />
-    <ClCompile Include="SourceCode\State\PlayerState\aiming.cpp" />
+    <ClCompile Include="SourceCode\State\PlayerState\aim_gun.cpp" />
+    <ClCompile Include="SourceCode\State\PlayerState\aim_knife.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\special_null.cpp" />
+    <ClCompile Include="SourceCode\State\PlayerState\crouch_turn_around.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\weapon_action_null.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\escape.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\escape_with_knife.cpp" />
@@ -298,7 +300,7 @@
     <ClInclude Include="SourceCode\Data\Kind\mass_kind.hpp" />
     <ClInclude Include="SourceCode\Data\Kind\mouse_kind.hpp" />
     <ClInclude Include="SourceCode\Data\Kind\pad_kind.hpp" />
-    <ClInclude Include="SourceCode\Data\Kind\player_kind.hpp" />
+    <ClInclude Include="SourceCode\Data\Kind\player_anim_kind.hpp" />
     <ClInclude Include="SourceCode\Data\Kind\player_state_kind.hpp" />
     <ClInclude Include="SourceCode\Data\Kind\scene_kind.hpp" />
     <ClInclude Include="SourceCode\Data\Kind\shape_kind.hpp" />
@@ -319,11 +321,7 @@
     <ClInclude Include="SourceCode\FPS\fps.hpp" />
     <ClInclude Include="SourceCode\GameSystemSetter\game_system_setter.hpp" />
     <ClInclude Include="SourceCode\Input\input_checker.hpp" />
-    <ClInclude Include="SourceCode\Interface\i_move_state.hpp" />
-    <ClInclude Include="SourceCode\Interface\i_action_state.hpp" />
-    <ClInclude Include="SourceCode\Interface\i_special_state.hpp" />
     <ClInclude Include="SourceCode\Interface\i_state.hpp" />
-    <ClInclude Include="SourceCode\Interface\i_weapon_action_state.hpp" />
     <ClInclude Include="SourceCode\Manager\camera_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\collision_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\command_handler.hpp" />
@@ -377,8 +375,10 @@
     <ClInclude Include="SourceCode\Shape\3DShape\obb.hpp" />
     <ClInclude Include="SourceCode\Shape\3DShape\ray_capsule.hpp" />
     <ClInclude Include="SourceCode\Shape\3DShape\sphere.hpp" />
-    <ClInclude Include="SourceCode\State\PlayerState\aiming.hpp" />
+    <ClInclude Include="SourceCode\State\PlayerState\aim_gun.hpp" />
+    <ClInclude Include="SourceCode\State\PlayerState\aim_knife.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\special_null.hpp" />
+    <ClInclude Include="SourceCode\State\PlayerState\crouch_turn_around.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\weapon_action_null.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\escape.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\escape_with_knife.hpp" />

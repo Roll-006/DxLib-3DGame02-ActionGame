@@ -14,17 +14,19 @@ namespace player_state
 		kCrouch,
 		kRun,
 		kTurnAround,
+		kCrouchTurnAround,
 	};
 
 	enum class WeaponActionStateKind
 	{
 		kWeaponActionNull,
 		kKnifeEquipped,
+		kAimKnife,
 		kStabKnife,
 		kSideSlashKnife,
 		kParry,
 		kGunEquipped,
-		kAiming,
+		kAimGun,
 		kShot,
 		kReload,
 	};

@@ -236,7 +236,7 @@
     <ClCompile Include="SourceCode\Input\input_checker.cpp">
       <Filter>Input</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\State\PlayerState\aiming.cpp">
+    <ClCompile Include="SourceCode\State\PlayerState\aim_gun.cpp">
       <Filter>State\PlayerState</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\State\PlayerState\weapon_action_null.cpp">
@@ -307,6 +307,12 @@
     </ClCompile>
     <ClCompile Include="SourceCode\Part\player_state_controller.cpp">
       <Filter>Part</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\PlayerState\aim_knife.cpp">
+      <Filter>State\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\PlayerState\crouch_turn_around.cpp">
+      <Filter>State\PlayerState</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -421,7 +427,7 @@
     <ClInclude Include="SourceCode\Data\Kind\pad_kind.hpp">
       <Filter>Data\Kind</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Data\Kind\player_kind.hpp">
+    <ClInclude Include="SourceCode\Data\Kind\player_anim_kind.hpp">
       <Filter>Data\Kind</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Data\Kind\scene_kind.hpp">
@@ -697,7 +703,7 @@
     <ClInclude Include="SourceCode\Input\input_checker.hpp">
       <Filter>Input</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\State\PlayerState\aiming.hpp">
+    <ClInclude Include="SourceCode\State\PlayerState\aim_gun.hpp">
       <Filter>State\PlayerState</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\State\PlayerState\weapon_action_null.hpp">
@@ -763,18 +769,6 @@
     <ClInclude Include="SourceCode\State\PlayerState\turn_around.hpp">
       <Filter>State\PlayerState</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Interface\i_move_state.hpp">
-      <Filter>Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Interface\i_special_state.hpp">
-      <Filter>Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Interface\i_weapon_action_state.hpp">
-      <Filter>Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Interface\i_action_state.hpp">
-      <Filter>Interface</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\State\PlayerState\special_null.hpp">
       <Filter>State\PlayerState</Filter>
     </ClInclude>
@@ -798,6 +792,12 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Base\weapon_action_state_base.hpp">
       <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\PlayerState\aim_knife.hpp">
+      <Filter>State\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\PlayerState\crouch_turn_around.hpp">
+      <Filter>State\PlayerState</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

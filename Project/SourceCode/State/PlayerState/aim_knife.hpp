@@ -6,11 +6,11 @@
 
 namespace player_state
 {
-	class Aiming final : public WeaponActionStateBase<Player>
+	class AimKnife final : public WeaponActionStateBase<Player>
 	{
 	public:
-		Aiming();
-		~Aiming() override;
+		AimKnife();
+		~AimKnife() override;
 
 		void Update(Player* obj) override;
 		void Enter (const Player* obj) override;
