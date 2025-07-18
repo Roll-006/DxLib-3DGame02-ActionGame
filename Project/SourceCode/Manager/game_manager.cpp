@@ -7,13 +7,13 @@ GameManager::GameManager():
 	m_scene_manager		(nullptr)
 {
 	HandleKeeper			::Generate();	
-	UIManager				::Generate();
+	UIDrawer				::Generate();
 	CommandHandler			::Generate();
 	ObjManager				::Generate();
 	CollisionManager		::Generate();
 	PhysicsManager			::Generate();
 	CameraManager			::Generate();
-	ObjectPoolManager		::Generate();
+	ObjectPoolHolder		::Generate();
 	RifleCartridgeManager	::Generate();
 
 	m_scene_manager = std::make_unique<SceneManager>();
@@ -22,13 +22,13 @@ GameManager::GameManager():
 GameManager::~GameManager()
 {	
 	HandleKeeper			::Delete();	
-	UIManager				::Delete();
+	UIDrawer				::Delete();
 	CommandHandler			::Delete();
 	ObjManager				::Delete();
 	CollisionManager		::Delete();
 	PhysicsManager			::Delete();
 	CameraManager			::Delete();
-	ObjectPoolManager		::Delete();
+	ObjectPoolHolder		::Delete();
 	RifleCartridgeManager	::Delete();
 }
 

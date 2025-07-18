@@ -1,7 +1,7 @@
 #pragma once
 #include "../Base/singleton_base.hpp"
 
-#include "../Manager/object_pool_manager.hpp"
+#include "../ObjectPool/object_pool_holder.hpp"
 #include "../Object/Bullet.hpp"
 #include "../Object/shell_casing.hpp"
 

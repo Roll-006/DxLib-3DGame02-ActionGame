@@ -23,7 +23,7 @@ void player_state::Run::Enter(Player* obj)
 
 void player_state::Run::Exit(Player* obj)
 {
-
+	CommandHandler::GetInstance()->InitTriggerCount(CommandKind::kRun);
 }
 
 std::shared_ptr<IState<Player>> player_state::Run::ChangeState(const Player* obj)

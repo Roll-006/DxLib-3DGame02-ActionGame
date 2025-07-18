@@ -1,5 +1,5 @@
 #include "player.hpp"
-#include "../Manager/command_handler.hpp"
+#include "../Command/command_handler.hpp"
 #include "../Part/player_state_controller.hpp"
 
 Player::Player() :
@@ -117,7 +117,7 @@ void Player::Draw() const
 	DrawFormatString(300,  0, 0xffffff, "%d", InputChecker::GetInstance()->GetCurrentInputDevice());
 	if (m_move_dir.count(TimeKind::kNext))
 	{
-		DrawFormatString(300, 20, 0xffffff, "%f, %f, %f", m_move_dir.at(TimeKind::kNext).x, m_move_dir.at(TimeKind::kNext).y, m_move_dir.at(TimeKind::kNext).z);
+		DrawFormatString(300, 20, 0xffffff, "%f, %f, %f", m_move_dir.at(TimeKind::kCurrent).x, m_move_dir.at(TimeKind::kCurrent).y, m_move_dir.at(TimeKind::kCurrent).z);
 	}
 	DrawFormatString(300, 40, 0xffffff, "%f", m_move_speed);
 }
@@ -132,6 +132,16 @@ void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 	default:
 		break;
+	}
+}
+
+void Player::CalcMoveDirFirstFrame()
+{
+	// ‚È‚·Šp‚ª90‹ˆÈã‚Ìê‡‚ÍˆÚ“®•ûŒü‚ð•Û‘¶‚µ‚È‚¢
+	const float angle = math::GetAngleBetweenTwoVector(m_move_dir[TimeKind::kCurrent], m_move_dir[TimeKind::kNext]);
+	if (angle >= 90.0f * math::kDegreesToRadian)
+	{
+		m_move_dir[TimeKind::kCurrent] = v3d::GetZeroV();
 	}
 }
 
@@ -186,6 +196,8 @@ void Player::CalcStopSpeed()
 
 void Player::CalcMoveSpeed(const float input_slope)
 {
+	if (m_state->GetActionState(TimeKind::kCurrent)->GetStateKind() != static_cast<int>(player_state::ActionStateKind::kActionNull)) { return; }
+
 	if (input_slope <= kWalkStickSlopeLimit - InputChecker::kStickDeadZone)
 	{
 		// ‘¬‚¢ó‘Ô‚©‚ç•à‚«ó‘Ô‚ÉˆÚs‚µ‚½ê‡A‹}‘¬‚ÉŒ¸‘¬‚³‚¹‚é

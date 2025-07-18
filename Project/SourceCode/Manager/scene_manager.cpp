@@ -55,7 +55,7 @@ void SceneManager::Draw() const
 		scene.second->Draw();
 	}
 
-	UIManager::GetInstance()->Draw();
+	UIDrawer::GetInstance()->Draw();
 }
 
 std::vector<SceneKind> SceneManager::GetCurrentSceneKind() const

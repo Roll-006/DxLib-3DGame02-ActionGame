@@ -3,7 +3,7 @@
 
 #include "../../Object/player.hpp"
 #include "../../Part/player_state_controller.hpp"
-#include "../../Manager/command_handler.hpp"
+#include "../../Command/command_handler.hpp"
 
 namespace player_state
 {
@@ -19,6 +19,6 @@ namespace player_state
 		[[nodiscard]] std::shared_ptr<IState<Player>> ChangeState(const Player* obj) override;
 
 	private:
-
+		bool m_is_first_move_frame;		// 移動を開始して最初のフレームであるかを判定
 	};
 }

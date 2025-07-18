@@ -1,21 +1,21 @@
-#include "ui_manager.hpp"
+#include "ui_drawer.hpp"
 
-UIManager::UIManager()
+UIDrawer::UIDrawer()
 {
 
 }
 
-UIManager::~UIManager()
+UIDrawer::~UIDrawer()
 {
 
 }
 
-void UIManager::Remove(const std::string& name)
+void UIDrawer::Remove(const std::string& name)
 {
 	m_ui_creator.erase(name);
 }
 
-void UIManager::Draw()
+void UIDrawer::Draw()
 {
 	for (const auto& ui : m_ui_creator)
 	{

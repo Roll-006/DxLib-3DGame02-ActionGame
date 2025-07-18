@@ -3,7 +3,7 @@
 CommandHandler::CommandHandler()
 {
 	m_special_command[CommandKind::kRun] = m_special_command[CommandKind::kCrouch] = InputModeKind::kTrigger;
-	m_trigger_count	 [CommandKind::kRun] = m_trigger_count  [CommandKind::kCrouch] = -1;
+	m_trigger_count	 [CommandKind::kRun] = m_trigger_count  [CommandKind::kCrouch] = 0;
 
 	// 初期設定
 	InitKeyCommand();
@@ -34,7 +34,7 @@ void CommandHandler::Update()
 
 void CommandHandler::LateUpdate()
 {
-	m_current_frame_execute.clear();
+	m_current_execute_command.clear();
 }
 
 void CommandHandler::InitKeyCommand()
@@ -136,16 +136,7 @@ bool CommandHandler::IsExecutingCommand(const CommandKind kind)
 		switch (GetInputModeKind(kind))
 		{
 		case InputModeKind::kTrigger:
-			//return GetTriggerCount(kind) % 2 == 0 ? true : false;
-			count = GetTriggerCount(kind);
-			if (count % 2 == 0)
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
+			return GetTriggerCount(kind) % 2 == 1 ? true : false;
 			break;
 
 		default:
@@ -154,7 +145,7 @@ bool CommandHandler::IsExecutingCommand(const CommandKind kind)
 	}
 
 	// 通常コマンド・特殊コマンドのホールド方式
-	return m_current_frame_execute.count(kind) ? true : false;
+	return std::find(m_current_execute_command.begin(), m_current_execute_command.end(), kind) != m_current_execute_command.end();
 }
 
 void CommandHandler::AddInputCode(const CommandKind kind, const input_concepts::InputT auto& input_code)
@@ -246,8 +237,8 @@ void CommandHandler::TryExecuteCommand(const std::vector<std::pair<CommandKind, 
 					CountUpTrigger(code.first);
 				}
 
-				executed_command.emplace_back(code.first);
-				m_current_frame_execute[code.first] = code.second;
+				executed_command		 .emplace_back(code.first);
+				m_current_execute_command.emplace_back(code.first);
 			}
 		}
 	}

@@ -6,17 +6,17 @@
 #include "../Base/singleton_base.hpp"
 #include "../Base/ui_creator_base.hpp"
 
-namespace ui_creator_concepts
+namespace ui_concepts
 {
 	/// @brief UIクリエイター型である
 	template<typename T>
 	concept UICeratorT = std::is_base_of_v<UICreatorBase, T>;
 }
 
-class UIManager final : public SingletonBase<UIManager>
+class UIDrawer final : public SingletonBase<UIDrawer>
 {
 public:
-	template<ui_creator_concepts::UICeratorT UICeratorT>
+	template<ui_concepts::UICeratorT UICeratorT>
 	void AddUICreator(std::shared_ptr<UICeratorT> ui_creator)
 	{
 		if (!m_ui_creator.count(ui_creator->GetName()))
@@ -34,11 +34,11 @@ public:
 	void Deactivate	(const std::string& name) { m_ui_creator.at(name)->Deactivate(); }
 
 private:
-	UIManager();
-	~UIManager() override;
+	UIDrawer();
+	~UIDrawer() override;
 
 private:
 	std::unordered_map<std::string, std::shared_ptr<UICreatorBase>> m_ui_creator;
 
-	friend SingletonBase<UIManager>;
+	friend SingletonBase<UIDrawer>;
 };

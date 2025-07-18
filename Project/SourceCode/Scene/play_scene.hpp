@@ -6,7 +6,7 @@
 #include "../Object/ground.hpp"
 #include "../Object/skydome.hpp"
 
-#include "../Manager/ui_manager.hpp"
+#include "../Manager/ui_drawer.hpp"
 #include "../UI/player_ui_creator.hpp"
 
 class PlayScene final : public SceneBase

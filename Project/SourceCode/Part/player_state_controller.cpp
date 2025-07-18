@@ -131,7 +131,11 @@ bool PlayerStateController::TryMove()
 
 bool PlayerStateController::TryRun()
 {
-	return CommandHandler::GetInstance()->IsExecutingCommand(CommandKind::kRun);
+	if (m_move_state.at(TimeKind::kCurrent)->GetStateKind() == static_cast<int>(player_state::MoveStateKind::kMove))
+	{
+		return CommandHandler::GetInstance()->IsExecutingCommand(CommandKind::kRun);
+	}
+	return false;
 }
 
 bool PlayerStateController::TryCrouch()

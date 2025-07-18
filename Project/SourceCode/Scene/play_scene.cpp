@@ -18,8 +18,8 @@ PlayScene::PlayScene():
 	PhysicsManager	::GetInstance()->AddPhysicalObj	(m_house);
 	PhysicsManager	::GetInstance()->AddPhysicalObj	(m_ground);
 
-	ObjectPoolManager::GetInstance()->AddObjectPool(m_rifle_cartridge_object_pool);
-	UIManager		 ::GetInstance()->AddUICreator (m_player_ui_creator);
+	ObjectPoolHolder::GetInstance()->AddObjectPool(m_rifle_cartridge_object_pool);
+	UIDrawer		 ::GetInstance()->AddUICreator (m_player_ui_creator);
 }
 
 PlayScene::~PlayScene()

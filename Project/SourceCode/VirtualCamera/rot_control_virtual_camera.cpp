@@ -1,5 +1,5 @@
 #include "rot_control_virtual_camera.hpp"
-#include "../Manager/command_handler.hpp"
+#include "../Command/command_handler.hpp"
 
 RotControlVirtualCamera::RotControlVirtualCamera() : 
 	ControlVirtualCameraBase(ObjName.ROT_CONTROL_CAMERA, VirtualCameraKind::kRotControl)
@@ -30,7 +30,7 @@ void RotControlVirtualCamera::Update()
 
 	m_aim ->SetRot(math::ConvertEulerAnglesToRotMatrix(m_input_angle.at(TimeKind::kCurrent)));
 	m_body->SetCameraCorrectDir(-m_transform->GetForward(CoordinateKind::kWorld));
-	m_body->SetDistanceToTarget(50.0f);
+	m_body->SetDistanceToTarget(kDistanceToTarget);
 	m_body->SetCameraPos(m_aim->GetAimPos() + m_body->GetCameraCorrectDir() * m_body->GetDistanceToTarget());
 
 }
@@ -40,7 +40,7 @@ void RotControlVirtualCamera::LateUpdate()
 	if (!IsActive()) { return; }
 
 	m_body->SetCameraCorrectDir(-m_transform->GetForward(CoordinateKind::kWorld));
-	m_body->SetDistanceToTarget(50.0f);
+	m_body->SetDistanceToTarget(kDistanceToTarget);
 	m_body->SetCameraPos(m_aim->GetAimPos() + m_body->GetCameraCorrectDir() * m_body->GetDistanceToTarget());
 }
 

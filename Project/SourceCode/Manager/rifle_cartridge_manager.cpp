@@ -39,7 +39,7 @@ void RifleCartridgeManager::LateUpdate()
 	});
 	if (remove_bullet != m_rifle_cartridge[ObjName.BULLET].end())
 	{
-		ObjectPoolManager::GetInstance()->GetObjectPool(ObjectPoolName.BULLET_POOL)->ReturnObj(*remove_bullet);
+		ObjectPoolHolder::GetInstance()->GetObjectPool(ObjectPoolName.BULLET_POOL)->ReturnObj(*remove_bullet);
 		m_rifle_cartridge[ObjName.BULLET].erase(remove_bullet);
 	}
 
@@ -51,7 +51,7 @@ void RifleCartridgeManager::LateUpdate()
 	});
 	if (remove_shell_casing != m_rifle_cartridge[ObjName.SHELL_CASING].end())
 	{
-		ObjectPoolManager::GetInstance()->GetObjectPool(ObjectPoolName.BULLET_POOL)->ReturnObj(*remove_shell_casing);
+		ObjectPoolHolder::GetInstance()->GetObjectPool(ObjectPoolName.BULLET_POOL)->ReturnObj(*remove_shell_casing);
 		m_rifle_cartridge[ObjName.SHELL_CASING].erase(remove_shell_casing);
 	}
 }
@@ -66,7 +66,7 @@ void RifleCartridgeManager::Draw() const
 		}
 	}
 
-	const auto pool = ObjectPoolManager::GetInstance()->GetObjectPool(ObjectPoolName.BULLET_POOL);
+	const auto pool = ObjectPoolHolder::GetInstance()->GetObjectPool(ObjectPoolName.BULLET_POOL);
 	//DrawFormatString(0,  80, 0xffffff, "bullet_pool_size          : %d", pool->GetPoolSize(ObjName.BULLET));
 	//DrawFormatString(0, 100, 0xffffff, "shell_casing_pool_size    : %d", pool->GetPoolSize(ObjName.SHELL_CASING));
 	//DrawFormatString(0, 120, 0xffffff, "bullet_manager_size       : %d", m_rifle_cartridge.at(ObjName.BULLET).size());
@@ -83,7 +83,7 @@ void RifleCartridgeManager::Draw() const
 
 void RifleCartridgeManager::Shot(GunBase& gun)
 {
-	const auto object_pool = ObjectPoolManager::GetInstance()->GetObjectPool(ObjectPoolName.BULLET_POOL);
+	const auto object_pool = ObjectPoolHolder::GetInstance()->GetObjectPool(ObjectPoolName.BULLET_POOL);
 
 	// プールから弾丸を取得し、有効であれば発射
 	const auto bullet = std::static_pointer_cast<Bullet>(object_pool->GetObj(ObjName.BULLET));
@@ -113,7 +113,7 @@ void RifleCartridgeManager::DeleteBullet(const int obj_handle)
 
 	if(remove_bullet != m_rifle_cartridge[ObjName.BULLET].end())
 	{
-		ObjectPoolManager::GetInstance()->GetObjectPool(ObjectPoolName.BULLET_POOL)->ReturnObj(*remove_bullet);
+		ObjectPoolHolder::GetInstance()->GetObjectPool(ObjectPoolName.BULLET_POOL)->ReturnObj(*remove_bullet);
 		m_rifle_cartridge[ObjName.BULLET].erase(remove_bullet);
 	}
 }

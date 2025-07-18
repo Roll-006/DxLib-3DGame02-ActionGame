@@ -9,7 +9,7 @@ namespace object_pool_concepts
 	concept ObjectPoolT = std::is_base_of_v<ObjectPoolBase, T>;
 }
 
-class ObjectPoolManager final : public SingletonBase<ObjectPoolManager>
+class ObjectPoolHolder final : public SingletonBase<ObjectPoolHolder>
 {
 public:
 	template<object_pool_concepts::ObjectPoolT ObjectPoolT>
@@ -25,11 +25,11 @@ public:
 	[[nodiscard]] std::shared_ptr<ObjectPoolBase> GetObjectPool(const std::string& object_pool_name);
 
 private:
-	ObjectPoolManager();
-	~ObjectPoolManager() override;
+	ObjectPoolHolder();
+	~ObjectPoolHolder() override;
 
 private:
 	std::unordered_map<std::string, std::shared_ptr<ObjectPoolBase>> m_object_pools;
 
-	friend SingletonBase<ObjectPoolManager>;
+	friend SingletonBase<ObjectPoolHolder>;
 };

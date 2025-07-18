@@ -39,7 +39,7 @@ private:
 	void TryExecuteCommand(const std::vector<std::pair<CommandKind, InputCode>>& codes);
 
 private:
-	std::unordered_map<CommandKind, InputCode>			m_current_frame_execute;		// 現在のフレームで実行されたコマンドに対応する入力コード
+	std::vector<CommandKind>							m_current_execute_command;		// 現在実行中のコマンド
 	std::vector<std::pair<CommandKind, InputCode>>		m_key_codes;
 	std::vector<std::pair<CommandKind, InputCode>>		m_pad_codes;
 

@@ -32,12 +32,9 @@ public:
 
 
 	#pragma region State
-	void Move();
+	void CalcMoveDirFirstFrame();
 
-	//void MoveForward();
-	//void MoveBackward();
-	//void MoveLeft();
-	//void MoveRight();
+	void Move();
 
 	void CalcStopSpeed();
 	void CalcCrouchSpeed();

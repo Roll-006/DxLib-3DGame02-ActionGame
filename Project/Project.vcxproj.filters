@@ -34,19 +34,10 @@
     <ClCompile Include="SourceCode\Manager\collision_manager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Manager\command_handler.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\Manager\game_manager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Manager\handle_keeper.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\Manager\obj_manager.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\Manager\object_pool_manager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Manager\physics_manager.cpp">
@@ -98,9 +89,6 @@
       <Filter>Part</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Part\modeler.cpp">
-      <Filter>Part</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\Part\rifle_cartridge_object_pool.cpp">
       <Filter>Part</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Part\transform.cpp">
@@ -188,9 +176,6 @@
     <ClCompile Include="SourceCode\VirtualCamera\aiming_virtual_camera.cpp">
       <Filter>VirtualCamera</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Manager\ui_manager.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\UI\player_ui_creator.cpp">
       <Filter>UI</Filter>
     </ClCompile>
@@ -229,9 +214,6 @@
     </ClCompile>
     <ClCompile Include="SourceCode\Base\control_virtual_camera_base.cpp">
       <Filter>Base</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\GameSystemSetter\game_system_setter.cpp">
-      <Filter>GameSystemSetter</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Input\input_checker.cpp">
       <Filter>Input</Filter>
@@ -313,6 +295,24 @@
     </ClCompile>
     <ClCompile Include="SourceCode\State\PlayerState\crouch_turn_around.cpp">
       <Filter>State\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Manager\ui_drawer.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\ObjectPool\object_pool_holder.cpp">
+      <Filter>ObjectPool</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\ObjectPool\rifle_cartridge_object_pool.cpp">
+      <Filter>ObjectPool</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Handle\handle_keeper.cpp">
+      <Filter>Handle</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\GameSystem\game_system_setter.cpp">
+      <Filter>GameSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Command\command_handler.cpp">
+      <Filter>Command</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -487,19 +487,10 @@
     <ClInclude Include="SourceCode\Manager\collision_manager.hpp">
       <Filter>Manager</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Manager\command_handler.hpp">
-      <Filter>Manager</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\Manager\game_manager.hpp">
       <Filter>Manager</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Manager\handle_keeper.hpp">
-      <Filter>Manager</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\Manager\obj_manager.hpp">
-      <Filter>Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Manager\object_pool_manager.hpp">
       <Filter>Manager</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Manager\physics_manager.hpp">
@@ -551,9 +542,6 @@
       <Filter>Part</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Part\modeler.hpp">
-      <Filter>Part</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Part\rifle_cartridge_object_pool.hpp">
       <Filter>Part</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Part\transform.hpp">
@@ -640,9 +628,6 @@
     <ClInclude Include="SourceCode\VirtualCamera\aiming_virtual_camera.hpp">
       <Filter>VirtualCamera</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Manager\ui_manager.hpp">
-      <Filter>Manager</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\UI\player_ui_creator.hpp">
       <Filter>UI</Filter>
     </ClInclude>
@@ -693,9 +678,6 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Base\control_virtual_camera_base.hpp">
       <Filter>Base</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\GameSystemSetter\game_system_setter.hpp">
-      <Filter>GameSystemSetter</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Interface\i_state.hpp">
       <Filter>Interface</Filter>
@@ -799,6 +781,24 @@
     <ClInclude Include="SourceCode\State\PlayerState\crouch_turn_around.hpp">
       <Filter>State\PlayerState</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\Manager\ui_drawer.hpp">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\ObjectPool\object_pool_holder.hpp">
+      <Filter>ObjectPool</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\ObjectPool\rifle_cartridge_object_pool.hpp">
+      <Filter>ObjectPool</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Handle\handle_keeper.hpp">
+      <Filter>Handle</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\GameSystem\game_system_setter.hpp">
+      <Filter>GameSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Command\command_handler.hpp">
+      <Filter>Command</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Manager">
@@ -879,9 +879,6 @@
     <Filter Include="Shader">
       <UniqueIdentifier>{386eb507-c76b-4ff9-bc74-69fb60f96a8a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameSystemSetter">
-      <UniqueIdentifier>{9c2a5154-d2f7-4994-943f-afea0c330812}</UniqueIdentifier>
-    </Filter>
     <Filter Include="State">
       <UniqueIdentifier>{9a691bb4-740c-48d4-baec-fd67b8b9b808}</UniqueIdentifier>
     </Filter>
@@ -902,6 +899,18 @@
     </Filter>
     <Filter Include="Shape\3DShape">
       <UniqueIdentifier>{ac75a37e-b63a-4367-aa7b-75ba0c9cc8f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ObjectPool">
+      <UniqueIdentifier>{babb64c0-15ce-4652-be32-4fda876508c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Handle">
+      <UniqueIdentifier>{cfc4f451-f315-4d70-a0c8-344f9afc963d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameSystem">
+      <UniqueIdentifier>{9c2a5154-d2f7-4994-943f-afea0c330812}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Command">
+      <UniqueIdentifier>{d5ed3af6-7b23-411d-ab3e-44150fb5ace3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
