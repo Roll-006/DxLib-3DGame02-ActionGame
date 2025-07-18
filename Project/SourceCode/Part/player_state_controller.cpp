@@ -86,10 +86,6 @@ void PlayerStateController::ChangeState(Player* player)
 		m_special_state.at(TimeKind::kPrev)	   ->Exit (player);
 		m_special_state.at(TimeKind::kCurrent) ->Enter(player);
 	}
-
-	//m_current_action_state			->ChangeState(player);
-	//m_current_weapon_action_state	->ChangeState(player);
-	//m_current_special_state			->ChangeState(player);
 }
 
 

@@ -13,7 +13,7 @@ player_state::ActionNull::~ActionNull()
 
 void player_state::ActionNull::Update(Player* obj)
 {
-
+	obj->DirOfCameraForward();
 }
 
 void player_state::ActionNull::Enter(Player* obj)

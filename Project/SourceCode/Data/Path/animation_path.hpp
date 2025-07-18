@@ -6,15 +6,15 @@ static struct AnimationPath
 	#pragma region IDLE
 
 	#pragma region 通常
-	const std::string IDLE										= "data/animation/idle.mv1";
+	const std::string IDLE										= "data/animation/.mv1";
 	const std::string IDLE_KNIFE_EQUIPPED						= "data/animation/.mv1";
 	const std::string IDLE_AIM_KNIFE							= "data/animation/.mv1";
 	const std::string IDLE_STAB_KNIFE							= "data/animation/.mv1";
 	const std::string IDLE_SIDE_SLASH_KNIFE						= "data/animation/.mv1";
 	const std::string IDLE_PARRY								= "data/animation/.mv1";
-	const std::string IDLE_GUN_EQUIPPED							= "data/animation/.mv1";
-	const std::string IDLE_AIM_GUN								= "data/animation/.mv1";
-	const std::string IDLE_SHOT									= "data/animation/.mv1";
+	const std::string IDLE_GUN_EQUIPPED							= "data/animation/idle_gun_equipped.mv1";
+	const std::string IDLE_AIM_GUN								= "data/animation/idle_aim_gun.mv1";
+	const std::string IDLE_SHOT									= "data/animation/idle_aim_gun.mv1";
 	const std::string IDLE_RELOAD								= "data/animation/.mv1";
 	#pragma endregion
 
@@ -77,8 +77,8 @@ static struct AnimationPath
 	#pragma endregion
 
 	#pragma region 移動(銃装備状態)
-	const std::string MOVE_FORWARD_GUN_EQUIPPED					= "data/animation/.mv1";
-	const std::string MOVE_BACKWARD_GUN_EQUIPPED				= "data/animation/.mv1";
+	const std::string MOVE_FORWARD_GUN_EQUIPPED					= "data/animation/move_forward_gun_equipped.mv1";
+	const std::string MOVE_BACKWARD_GUN_EQUIPPED				= "data/animation/move_backward_gun_equipped.mv1";
 	const std::string MOVE_LEFT_GUN_EQUIPPED					= "data/animation/.mv1";
 	const std::string MOVE_RIGHT_GUN_EQUIPPED					= "data/animation/.mv1";
 	const std::string MOVE_FORWARD_LEFT_GUN_EQUIPPED			= "data/animation/.mv1";
@@ -88,25 +88,25 @@ static struct AnimationPath
 	#pragma endregion
 
 	#pragma region 銃を構えながら移動
-	const std::string MOVE_FORWARD_AIM_GUN						= "data/animation/.mv1";
-	const std::string MOVE_BACKWARD_AIM_GUN						= "data/animation/.mv1";
-	const std::string MOVE_LEFT_AIM_GUN							= "data/animation/.mv1";
-	const std::string MOVE_RIGHT_AIM_GUNE						= "data/animation/.mv1";
-	const std::string MOVE_FORWARD_LEFT_AIM_GUN					= "data/animation/.mv1";
-	const std::string MOVE_FORWARD_RIGHT_AIM_GUN				= "data/animation/.mv1";
-	const std::string MOVE_BACKWARD_LEFT_AIM_GUN				= "data/animation/.mv1";
-	const std::string MOVE_BACKWARD_RIGHT_AIM_GUN				= "data/animation/.mv1";
+	const std::string MOVE_FORWARD_AIM_GUN						= "data/animation/move_forward_aim_gun.mv1";
+	const std::string MOVE_BACKWARD_AIM_GUN						= "data/animation/move_backward_aim_gun.mv1";
+	const std::string MOVE_LEFT_AIM_GUN							= "data/animation/move_left_aim_gun.mv1";
+	const std::string MOVE_RIGHT_AIM_GUNE						= "data/animation/move_right_aim_gun.mv1";
+	const std::string MOVE_FORWARD_LEFT_AIM_GUN					= "data/animation/move_forward_left_aim_gun.mv1";
+	const std::string MOVE_FORWARD_RIGHT_AIM_GUN				= "data/animation/move_forward_right_aim_gun.mv1";
+	const std::string MOVE_BACKWARD_LEFT_AIM_GUN				= "data/animation/move_backward_left_aim_gun.mv1";
+	const std::string MOVE_BACKWARD_RIGHT_AIM_GUN				= "data/animation/move_backward_right_aim_gun.mv1";
 	#pragma endregion
 
 	#pragma region 銃を撃ちながら移動
-	const std::string MOVE_FORWARD_SHOT							= "data/animation/.mv1";
-	const std::string MOVE_BACKWARD_SHOT						= "data/animation/.mv1";
-	const std::string MOVE_LEFT_SHOT							= "data/animation/.mv1";
-	const std::string MOVE_RIGHT_SHOT							= "data/animation/.mv1";
-	const std::string MOVE_FORWARD_LEFT_SHOT					= "data/animation/.mv1";
-	const std::string MOVE_FORWARD_RIGHT_SHOT					= "data/animation/.mv1";
-	const std::string MOVE_BACKWARD_LEFT_SHOT					= "data/animation/.mv1";
-	const std::string MOVE_BACKWARD_RIGHT_SHOT					= "data/animation/.mv1";
+	const std::string MOVE_FORWARD_SHOT							= "data/animation/move_forward_aim_gun.mv1";
+	const std::string MOVE_BACKWARD_SHOT						= "data/animation/move_backward_aim_gun.mv1";
+	const std::string MOVE_LEFT_SHOT							= "data/animation/move_left_aim_gun.mv1";
+	const std::string MOVE_RIGHT_SHOT							= "data/animation/move_right_aim_gun.mv1";
+	const std::string MOVE_FORWARD_LEFT_SHOT					= "data/animation/move_forward_left_aim_gun.mv1";
+	const std::string MOVE_FORWARD_RIGHT_SHOT					= "data/animation/move_forward_right_aim_gun.mv1";
+	const std::string MOVE_BACKWARD_LEFT_SHOT					= "data/animation/move_backward_left_aim_gun.mv1";
+	const std::string MOVE_BACKWARD_RIGHT_SHOT					= "data/animation/move_backward_right_aim_gun.mv1";
 	#pragma endregion
 
 	#pragma region リロードしながら移動
@@ -167,7 +167,7 @@ static struct AnimationPath
 	#pragma region ダッシュ移動
 	const std::string MOVE_FORWARD_RUN							= "data/animation/.mv1";
 	const std::string MOVE_FORWARD_RUN_KNIFE_EQUIPPED			= "data/animation/.mv1";
-	const std::string MOVE_FORWARD_RUN_GUN_EQUIPPED				= "data/animation/move_forward_run.mv1";
+	const std::string MOVE_FORWARD_RUN_GUN_EQUIPPED				= "data/animation/move_forward_run_gun_equipped.mv1";
 	const std::string MOVE_FORWARD_RUN_RELOAD					= "data/animation/.mv1";
 	#pragma endregion
 

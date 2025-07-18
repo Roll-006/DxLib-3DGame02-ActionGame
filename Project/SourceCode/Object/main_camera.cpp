@@ -1,5 +1,5 @@
 #include "main_camera.hpp"
-#include "../Manager/command_handler.hpp"
+#include "../Command/command_handler.hpp"
 
 MainCamera::MainCamera() : 
 	PhysicalObjBase(ObjName.MAIN_CAMERA, ObjTag.CAMERA, MassKind::kLight)

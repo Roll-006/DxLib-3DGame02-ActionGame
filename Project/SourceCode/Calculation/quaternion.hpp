@@ -13,14 +13,11 @@ namespace quat
 
 	[[nodiscard]] Quaternion GetZeroQuaternion();
 	[[nodiscard]] Quaternion GetIdentityQuaternion();
-	[[nodiscard]] Quaternion CreateQuaternion			(const VECTOR& axis, const float angle);
+	[[nodiscard]] Quaternion CreateQuaternion		(const VECTOR& axis, const float angle);
 
 	[[nodiscard]] float		 GetSize				(const Quaternion& q);
 	[[nodiscard]] float		 GetSquareSize			(const Quaternion& q);
 	[[nodiscard]] Quaternion GetNormalizedQuaternion(const Quaternion& q);
-
-	/// @brief 球面線形補間
-	[[nodiscard]] Quaternion GetSlerp();
 
 	/// @brief 共役クォータニオンを取得
 	[[nodiscard]] Quaternion GetConjugateQuaternion	(const Quaternion& q);

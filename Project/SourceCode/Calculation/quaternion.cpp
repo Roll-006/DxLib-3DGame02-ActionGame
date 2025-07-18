@@ -43,11 +43,6 @@ Quaternion quat::GetNormalizedQuaternion(const Quaternion& q)
 	return size != 0 ? Quaternion(q.x / size, q.y / size, q.z / size, q.w / size) : q;
 }
 
-Quaternion quat::GetSlerp()
-{
-	return Quaternion();
-}
-
 Quaternion quat::GetConjugateQuaternion(const Quaternion& q)
 {
 	return Quaternion(-q.x, -q.y, -q.z, q.w);

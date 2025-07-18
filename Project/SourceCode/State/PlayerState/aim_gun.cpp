@@ -13,7 +13,7 @@ player_state::AimGun::~AimGun()
 
 void player_state::AimGun::Update(Player* obj)
 {
-
+	obj->SetLookDirCorrectValueForAim();
 }
 
 void player_state::AimGun::Enter(Player* obj)

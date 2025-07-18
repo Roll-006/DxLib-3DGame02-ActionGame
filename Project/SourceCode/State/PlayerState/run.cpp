@@ -14,6 +14,7 @@ player_state::Run::~Run()
 void player_state::Run::Update(Player* obj)
 {
 	obj->CalcRunSpeed();
+	obj->DirOfMovement();
 }
 
 void player_state::Run::Enter(Player* obj)

@@ -193,11 +193,11 @@ VECTOR Transform::GetForward(const CoordinateKind coord_kind)
 
 Axes Transform::GetAxes(const CoordinateKind coord_kind)
 {
-	return math::ConvertRotMatrixToAxes(GetMatrix(coord_kind));
+	return math::ConvertRotMatrixToAxes(GetRotMatrix(coord_kind));
 }
 
 VECTOR Transform::GetEulerAngles(const CoordinateKind coord_kind)
 {
-	return math::ConvertRotMatrixToEulerAngles(GetMatrix(coord_kind));
+	return math::ConvertRotMatrixToEulerAngles(GetRotMatrix(coord_kind));
 }
 #pragma endregion

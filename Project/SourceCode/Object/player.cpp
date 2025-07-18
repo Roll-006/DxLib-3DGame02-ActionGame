@@ -3,12 +3,12 @@
 #include "../Part/player_state_controller.hpp"
 
 Player::Player() :
-	CharaBase				(ObjName.PLAYER, ObjTag.PLAYER, ModelPath.CHARA_01, MassKind::kMedium),
-	m_anim_kind				(PlayerAnimKind::kIdle),
-	m_state					(std::make_shared<PlayerStateController>()),
-	m_bone_pos_corrector	(std::make_shared<BonePosCorrector>()),
-	m_move_speed			(0.0f),
-	m_is_input_move			(false, false, false, false)
+	CharaBase							(ObjName.PLAYER, ObjTag.PLAYER, ModelPath.CHARA_01, MassKind::kMedium),
+	m_state								(std::make_shared<PlayerStateController>()),
+	m_move_speed						(0.0f),
+	m_look_dir_correct_angle			(0.0f),
+	m_confirm_look_dir_threshold_angle	(0.0f),
+	m_bone_pos_corrector				(std::make_shared<BonePosCorrector>())
 {
 	// 初期pos・dirを設定
 	m_look_dir[TimeKind::kCurrent] = m_look_dir[TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);
@@ -24,11 +24,11 @@ Player::Player() :
 	// 武器設定
 	const auto gun = std::make_shared<AssaultRifle>();
 	AddWeapon(gun);
-	AttachWeapon(gun);
+	//AttachWeapon(gun);
 
 	// TODO : 仮で銃のオブジェ登録
-	ObjManager		::GetInstance()->AddObj(m_current_attach_weapon);
-	CollisionManager::GetInstance()->AddCollideObj(m_current_attach_weapon);
+	ObjManager		::GetInstance()->AddObj(gun);
+	CollisionManager::GetInstance()->AddCollideObj(gun);
 	//PhysicsManager::GetInstance()->AddPhysicalObj(m_current_attach_gun);
 	//PhysicsManager::GetInstance()->AddIgnoreObjGravity(ObjName.ASSAULT_RIFLE);
 
@@ -62,17 +62,22 @@ void Player::Update()
 {
 	if (!IsActive()) { return; }
 
+	m_look_dir_correct_angle			= kLookDirCorrectAngle;
+	m_confirm_look_dir_threshold_angle	= kConfirmLookDirThresholdAngle * math::kDegreesToRadian;
+
 	m_state->Update(this);
 	m_animator->Update();
 
-	UpdateTransform(m_look_dir.at(TimeKind::kCurrent), kModelScale);
-
+	CalcMoveDir(m_velocity);
+	CalcLookDir();
 	CalcVelocity();
 	CalcCapsuleColliderLength();
 
 	AddFallVelocity();
 
-	m_current_attach_weapon->Update();
+	UpdateTransform(m_look_dir.at(TimeKind::kCurrent), kModelScale);
+
+	//m_current_attach_weapon->Update();
 
 	m_is_landing = false;
 }
@@ -89,7 +94,7 @@ void Player::LateUpdate()
 	//	m_camera->GetTransform()->GetMatrix(CoordinateKind::kWorld),
 	//	std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->IsAiming());
 
-	m_current_attach_weapon->LateUpdate();
+	//m_current_attach_weapon->LateUpdate();
 }
 
 void Player::Draw() const
@@ -97,7 +102,7 @@ void Player::Draw() const
 	if (!IsActive()) { return; }
 
 	m_modeler->Draw();
-	m_current_attach_weapon->Draw();
+	//m_current_attach_weapon->Draw();
 
 	for (auto& collider : m_collider)
 	{
@@ -135,15 +140,15 @@ void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	}
 }
 
-void Player::CalcMoveDirFirstFrame()
-{
-	// なす角が90°以上の場合は移動方向を保存しない
-	const float angle = math::GetAngleBetweenTwoVector(m_move_dir[TimeKind::kCurrent], m_move_dir[TimeKind::kNext]);
-	if (angle >= 90.0f * math::kDegreesToRadian)
-	{
-		m_move_dir[TimeKind::kCurrent] = v3d::GetZeroV();
-	}
-}
+//void Player::CalcMoveDirFirstFrame()
+//{
+//	// なす角が90°以上の場合は移動方向を保存しない
+//	const float angle = math::GetAngleBetweenTwoVector(m_move_dir[TimeKind::kCurrent], m_move_dir[TimeKind::kNext]);
+//	if (angle >= 90.0f * math::kDegreesToRadian)
+//	{
+//		m_move_dir[TimeKind::kCurrent] = v3d::GetZeroV();
+//	}
+//}
 
 void Player::Move()
 {
@@ -170,26 +175,43 @@ void Player::Move()
 	}
 
 	// 移動速度を取得
-	VECTOR velocity = v3d::GetZeroV();
 	switch (InputChecker::GetInstance()->GetCurrentInputDevice())
 	{
 	case DeviceKind::kKeyboard:
-		velocity = v3d::GetNormalizedV(m_move_dir[TimeKind::kNext]) * InputChecker::kStickMaxSlope;
+		m_velocity = v3d::GetNormalizedV(m_move_dir[TimeKind::kNext]) * InputChecker::kStickMaxSlope;
 		break;
 
 	case DeviceKind::kPad:
-		velocity = GetVelocityFromPad();
+		m_velocity = GetVelocityFromPad();
 		break;
 	}
 
-	CalcMoveSpeed(VSize(velocity));
-	CalcMoveDir(velocity);
+	CalcMoveSpeed(VSize(m_velocity));
+}
+
+void Player::SetLookDirCorrectValueForAim()
+{
+	m_look_dir_correct_angle			= kLookDirCorrectAngleForAim;
+	m_confirm_look_dir_threshold_angle	= kConfirmLookDirThresholdAngleForAim * math::kDegreesToRadian;
+}
+
+void Player::DirOfMovement()
+{
+	m_look_dir.at(TimeKind::kNext) = m_move_dir[TimeKind::kCurrent];
+}
+
+void Player::DirOfCameraForward()
+{
+	if (m_state->GetMoveState(TimeKind::kCurrent)->GetStateKind() == static_cast<int>(player_state::MoveStateKind::kMove))
+	{
+		m_look_dir.at(TimeKind::kNext) = GetMoveForward();
+	}
 }
 
 void Player::CalcStopSpeed()
 {
 	// 速い状態から歩き状態に移行した場合、急速に減速させる
-	if (m_move_speed > kCrouchWalkSpeed) { m_move_speed = kCrouchWalkSpeed; }
+	if (m_move_speed > kSlowWalkSpeed) { m_move_speed = kSlowWalkSpeed; }
 
 	math::Decrease(m_move_speed, kAcceleration * FPS::GetDeltaTime(), 0.0f);
 }
@@ -217,6 +239,8 @@ void Player::CalcMoveSpeed(const float input_slope)
 
 void Player::CalcCrouchSpeed()
 {
+	if (m_state->GetMoveState(TimeKind::kCurrent)->GetStateKind() == static_cast<int>(player_state::MoveStateKind::kMoveNull)) { return; }
+
 	// 速い状態から歩き状態に移行した場合、急速に減速させる
 	if (m_move_speed > kSlowWalkSpeed) { m_move_speed = kSlowWalkSpeed; }
 
@@ -243,11 +267,33 @@ void Player::CalcMoveDir(const VECTOR& velocity)
 	const VECTOR distance_v = m_move_dir[TimeKind::kNext] - m_move_dir[TimeKind::kCurrent];
 
 	// 現在のdirを目的とするdirに近づけていく
-	m_move_dir[TimeKind::kCurrent] += v3d::GetNormalizedV(distance_v) * kMoveDirCorrectionSpeed;
+	m_move_dir[TimeKind::kCurrent] += v3d::GetNormalizedV(distance_v) * kMoveDirCorrectSpeed;
 	const float distance = VSize(m_move_dir[TimeKind::kNext] - m_move_dir[TimeKind::kCurrent]);
-	if (distance < kConfirmMoveDirThreshold)
+	if (distance < kConfirmMoveDirThresholdDistance)
 	{
 		m_move_dir[TimeKind::kCurrent] = m_move_dir[TimeKind::kNext];
+	}
+}
+
+void Player::CalcLookDir()
+{
+	// ヨー角回転を取得し、-π～πで値を管理する
+	const VECTOR current_yaw	= math::GetYawRotVector(m_look_dir.at(TimeKind::kCurrent));
+	const VECTOR next_yaw		= math::GetYawRotVector(m_look_dir.at(TimeKind::kNext));
+	VECTOR distance = next_yaw - current_yaw;
+	distance.y = math::ConnectMinusPiToPi(distance.y);
+
+	// カメラを基準にして右側であった場合は反転
+	if (distance.y > 0) { m_look_dir_correct_angle *= -1; }
+
+	// 回転を適用
+	const Quaternion rot_q = quat::CreateQuaternion(axis::GetWorldYAxis(), -m_look_dir_correct_angle);
+	m_look_dir.at(TimeKind::kCurrent) = math::GetRotatedPos(m_look_dir.at(TimeKind::kCurrent), rot_q);
+
+	const float angle = math::GetAngleBetweenTwoVector(m_look_dir.at(TimeKind::kNext), m_look_dir.at(TimeKind::kCurrent));
+	if (angle < m_confirm_look_dir_threshold_angle)
+	{
+		m_look_dir.at(TimeKind::kCurrent) = m_look_dir.at(TimeKind::kNext);
 	}
 }
 
@@ -284,113 +330,4 @@ VECTOR Player::GetMoveForward()
 	forward.y = 0.0f;
 
 	return v3d::GetNormalizedV(forward);
-}
-
-
-
-
-
-void Player::MoveOld()
-{
-	CalcLookDir();
-
-	// MEMO : 落下ベクトルの適用は、押し戻しと同時に全オブジェクトに一斉に適用
-	//m_velocity += m_fall_velocity;
-	//
-	//// TODO : 仮の押し戻し処理
-	//PhysicsManager::GetInstance()->PushBack(this);
-	//
-	//
-	//
-	//// 振り向き判定
-	//// TODO : 後に振り向きダッシュに使用
-	//if (m_is_run)
-	//{
-	//	const auto angle = math::GetAngleBetweenTwoVector(m_move_dir[TimeKind::kNext], m_move_dir[TimeKind::kCurrent]);
-	//	if (angle >= 120.0f * math::kDegreesToRadian)
-	//	{
-	//		m_is_turn_run = true;
-	//		DrawFormatString(0, 60, 0xffffff, "振り向き");
-	//	}
-	//}
-}
-
-void Player::CalcLookDir()
-{
-	// 振り向き処理
-	const auto command = CommandHandler::GetInstance();
-	//command->Update(CommandKind::kTurnAround, this);
-
-	// 連続振り向きを阻止
-	if (!command->IsExecutingCommand(CommandKind::kTurnAround))
-	{
-		m_turn_around_count = 0;
-	}
-
-	if (m_is_turn_around)
-	{
-		std::dynamic_pointer_cast<ControlVirtualCameraBase>(CameraManager::GetInstance()->GetVirtualCamera(VirtualCameraKind::kRotControl))->InitAim();
-		m_is_correct_look_dir = true;
-		VECTOR pos = m_transform->GetPos(CoordinateKind::kWorld) + VGet(0, 30, 0);
-	}
-	else
-	{
-		if (m_is_move)
-		{
-			// ダッシュ状態であれば進行方向を向く
-			if (m_is_run)
-			{
-				m_look_dir.at(TimeKind::kNext) = m_move_dir[TimeKind::kCurrent];
-			}
-			// 歩き状態である場合は常にカメラと同じ向きを向く
-			else
-			{
-				m_look_dir.at(TimeKind::kNext) = GetMoveForward();
-			}
-		}
-	}
-
-	// 銃を構えている場合は常にカメラと同じ向きを向く
-	if (std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->IsAiming())
-	{
-		m_look_dir.at(TimeKind::kNext) = GetMoveForward();
-	}
-
-	// 滑らかにdirを補正
-	CorrectLookDir();
-}
-
-void Player::CorrectLookDir()
-{
-	// ヨー角回転を取得し、-π～πで値を管理する
-	/*VGet(0.0f, atan2f(m_look_dir.at(TimeKind::kCurrent).x, m_look_dir.at(TimeKind::kCurrent).z), 0.0f);*/
-	const VECTOR current_yaw	= math::GetYawRotVector(m_look_dir.at(TimeKind::kCurrent));
-	const VECTOR next_yaw		= math::GetYawRotVector(m_look_dir.at(TimeKind::kNext));
-	VECTOR distance = next_yaw - current_yaw;
-	distance.y = math::ConnectMinusPiToPi(distance.y);
-
-	// スコープを覗く場合は速度を上昇させる
-	float add_angle			= std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->IsAiming() ? -kLookDirCorrectionAngleForADS		: -kLookDirCorrectionAngle;
-	float threshold_angle	= std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->IsAiming() ? kConfirmLookDirThresholdAngleForADS	: kConfirmLookDirThresholdAngle;
-
-	// カメラを基準にして右側であった場合は反転
-	if (distance.y > 0) { add_angle *= -1; }
-
-	// 回転を適用
-	const Quaternion rot_q = quat::CreateQuaternion(axis::GetWorldYAxis(), add_angle);
-	m_look_dir.at(TimeKind::kCurrent) = math::GetRotatedPos(m_look_dir.at(TimeKind::kCurrent), rot_q);
-
-	const float angle = math::GetAngleBetweenTwoVector(m_look_dir.at(TimeKind::kNext), m_look_dir.at(TimeKind::kCurrent));
-	if (angle < threshold_angle * math::kDegreesToRadian)
-	{
-		m_look_dir.at(TimeKind::kCurrent) = m_look_dir.at(TimeKind::kNext);
-
-		// 振り向き判定がfalseになることにより適用処理が通らなくなることを避けるため先行して適用
-		// TODO : 通常時は二度適用処理が行われているため処理の変更を検討
-		UpdateTransform(m_look_dir.at(TimeKind::kCurrent), kModelScale);
-		//ApplyVelocityToCollider();
-
-		// 目的のdirに達した場合は振り向き処理は終了とする
-		m_is_turn_around = false;
-	}
 }
