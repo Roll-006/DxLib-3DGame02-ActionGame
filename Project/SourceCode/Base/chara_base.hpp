@@ -93,16 +93,17 @@ private:
 	#pragma endregion
 
 protected:
-	std::shared_ptr<Modeler>		m_modeler;
-	std::shared_ptr<AnimatorBase>	m_animator;
+	std::shared_ptr<Modeler>					m_modeler;
+	std::shared_ptr<AnimatorBase>				m_animator;
 
-	std::vector<std::shared_ptr<WeaponBase>> m_weapons;		// 登録(所持)している武器
-	std::shared_ptr<WeaponBase> m_current_attach_weapon;	// 現在アタッチ(装備)している武器
+	std::vector<std::shared_ptr<WeaponBase>>	m_weapons;					// 登録(所持)している武器
+	std::shared_ptr<WeaponBase>					m_current_attach_weapon;	// 現在アタッチ(装備)している武器
+	// TODO : 体に付けるようの処理を作成
 
-	std::shared_ptr<Capsule> m_capsule_collider;
-	float	m_capsule_length;
-	float	m_capsule_radius;
+	std::shared_ptr<Capsule>					m_capsule_collider;
+	float										m_capsule_length;
+	float										m_capsule_radius;
 
 	//float	m_hp;
-	int		m_current_remaining_bullet_num;					// 残弾数
+	int											m_current_remaining_bullet_num;		// 残弾数
 };

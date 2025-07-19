@@ -10,19 +10,20 @@ enum class CommandKind
 	kSelectRight,		// 選択(右)
 	kPause,				// ポーズ画面切り替え
 
+	kAimGun,			// 銃を構える
+	kAttack,			// 攻撃
+	kAimKnife,			// ナイフを構える / (パリィ)
+	kInvestigate,		// 調べる / (拾う)
+	kMelee,				// メレー
+	kReload,			// リロード
+	kScope,				// スコープ倍率変更
 	kMoveUpPlayer,		// プレイヤー上移動
 	kMoveDownPlayer,	// プレイヤー下移動
 	kMoveLeftPlayer,	// プレイヤー左移動
 	kMoveRightPlayer,	// プレイヤー右移動
 	kRun,				// ダッシュ
 	kCrouch,			// しゃがむ
-	kAimKnife,			// ナイフを構える
-	kSideSlashKnife,	// 大ぶり(ナイフ)
-	kAimGun,			// 銃を構える
-	kShot,				// 銃を撃つ
-	kReload,			// 銃のリロード
-	kSilentKill,		// サイレントキル(不意打ち)
-	kTurnAround,		// 振り向き
+	kQuickTurn,			// クイックターン
 
 	kMoveUpCamera,		// カメラ上移動
 	kMoveDownCamera,	// カメラ下移動

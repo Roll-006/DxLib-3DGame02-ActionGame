@@ -3,16 +3,16 @@
 #include "../Part/player_state_controller.hpp"
 
 Player::Player() :
-	CharaBase							(ObjName.PLAYER, ObjTag.PLAYER, ModelPath.CHARA_01, MassKind::kMedium),
-	m_state								(std::make_shared<PlayerStateController>()),
-	m_move_speed						(0.0f),
-	m_look_dir_correct_angle			(0.0f),
-	m_confirm_look_dir_threshold_angle	(0.0f),
-	m_bone_pos_corrector				(std::make_shared<BonePosCorrector>())
+	CharaBase(ObjName.PLAYER, ObjTag.PLAYER, ModelPath.CHARA_01, MassKind::kMedium),
+	m_state(std::make_shared<PlayerStateController>()),
+	m_move_speed(0.0f),
+	m_look_dir_correct_angle(0.0f),
+	m_confirm_look_dir_threshold_angle(0.0f),
+	m_bone_pos_corrector(std::make_shared<BonePosCorrector>())
 {
 	// 初期pos・dirを設定
 	m_look_dir[TimeKind::kCurrent] = m_look_dir[TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);
-	m_transform->SetRot  (CoordinateKind::kWorld, m_look_dir.at(TimeKind::kCurrent));
+	m_transform->SetRot(CoordinateKind::kWorld, m_look_dir.at(TimeKind::kCurrent));
 	m_transform->SetScale(CoordinateKind::kWorld, kModelScale);
 
 	// コライダー・トリガーを設定
@@ -27,7 +27,7 @@ Player::Player() :
 	//AttachWeapon(gun);
 
 	// TODO : 仮で銃のオブジェ登録
-	ObjManager		::GetInstance()->AddObj(gun);
+	ObjManager::GetInstance()->AddObj(gun);
 	CollisionManager::GetInstance()->AddCollideObj(gun);
 	//PhysicsManager::GetInstance()->AddPhysicalObj(m_current_attach_gun);
 	//PhysicsManager::GetInstance()->AddIgnoreObjGravity(ObjName.ASSAULT_RIFLE);
@@ -42,7 +42,6 @@ Player::Player() :
 	const auto scope_camera = std::make_shared<ScopeVirtualCamera>();
 	camera_manager->AddVirtualCamera(scope_camera);
 	scope_camera->AttachTarget(m_transform, VGet(0.0f, 30.0f, 0.0f));
-	
 
 	// TODO : 仮で所持残り弾数を設定
 	m_current_remaining_bullet_num = 10000;
@@ -50,20 +49,20 @@ Player::Player() :
 
 Player::~Player()
 {
-	
+
 }
 
 void Player::Init()
 {
-	
+
 }
 
 void Player::Update()
 {
 	if (!IsActive()) { return; }
 
-	m_look_dir_correct_angle			= kLookDirCorrectAngle;
-	m_confirm_look_dir_threshold_angle	= kConfirmLookDirThresholdAngle * math::kDegreesToRadian;
+	m_look_dir_correct_angle = kLookDirCorrectAngle;
+	m_confirm_look_dir_threshold_angle = kConfirmLookDirThresholdAngle * math::kDegreesToRadian;
 
 	m_state->Update(this);
 	m_animator->Update();
@@ -119,7 +118,7 @@ void Player::Draw() const
 	//DrawLine3D(pos, pos + axes.y_axis * 100, 0x00ff22);
 	//DrawLine3D(pos, pos + axes.z_axis * 100, 0x0077ff);
 
-	DrawFormatString(300,  0, 0xffffff, "%d", InputChecker::GetInstance()->GetCurrentInputDevice());
+	DrawFormatString(300, 0, 0xffffff, "%d", InputChecker::GetInstance()->GetCurrentInputDevice());
 	if (m_move_dir.count(TimeKind::kNext))
 	{
 		DrawFormatString(300, 20, 0xffffff, "%f, %f, %f", m_move_dir.at(TimeKind::kCurrent).x, m_move_dir.at(TimeKind::kCurrent).y, m_move_dir.at(TimeKind::kCurrent).z);
@@ -191,8 +190,8 @@ void Player::Move()
 
 void Player::SetLookDirCorrectValueForAim()
 {
-	m_look_dir_correct_angle			= kLookDirCorrectAngleForAim;
-	m_confirm_look_dir_threshold_angle	= kConfirmLookDirThresholdAngleForAim * math::kDegreesToRadian;
+	m_look_dir_correct_angle = kLookDirCorrectAngleForAim;
+	m_confirm_look_dir_threshold_angle = kConfirmLookDirThresholdAngleForAim * math::kDegreesToRadian;
 }
 
 void Player::DirOfMovement()
@@ -278,8 +277,8 @@ void Player::CalcMoveDir(const VECTOR& velocity)
 void Player::CalcLookDir()
 {
 	// ヨー角回転を取得し、-π～πで値を管理する
-	const VECTOR current_yaw	= math::GetYawRotVector(m_look_dir.at(TimeKind::kCurrent));
-	const VECTOR next_yaw		= math::GetYawRotVector(m_look_dir.at(TimeKind::kNext));
+	const VECTOR current_yaw = math::GetYawRotVector(m_look_dir.at(TimeKind::kCurrent));
+	const VECTOR next_yaw = math::GetYawRotVector(m_look_dir.at(TimeKind::kNext));
 	VECTOR distance = next_yaw - current_yaw;
 	distance.y = math::ConnectMinusPiToPi(distance.y);
 
@@ -300,33 +299,33 @@ void Player::CalcLookDir()
 VECTOR Player::GetVelocityFromPad()
 {
 	// 移動方向を取得
-	const auto camera	= CameraManager::GetInstance()->GetMainCamera();
-	const auto right	= camera->GetTransform()->GetRight  (CoordinateKind::kWorld);
-	auto forward		= camera->GetTransform()->GetForward(CoordinateKind::kWorld);
+	const auto camera = CameraManager::GetInstance()->GetMainCamera();
+	const auto right = camera->GetTransform()->GetRight(CoordinateKind::kWorld);
+	auto forward = camera->GetTransform()->GetForward(CoordinateKind::kWorld);
 	forward.y = 0.0f;
 	forward = v3d::GetNormalizedV(forward);
 
 	// 各方向のパラメーターを取得
 	const auto input = InputChecker::GetInstance();
-	const int forward_param	 = input->GetInputParameter(pad::StickKind::kLSUp   );
-	const int backward_param = input->GetInputParameter(pad::StickKind::kLSDown );
-	const int left_param	 = input->GetInputParameter(pad::StickKind::kLSLeft );
-	const int right_param	 = input->GetInputParameter(pad::StickKind::kLSRight);
+	const int forward_param = input->GetInputParameter(pad::StickKind::kLSUp);
+	const int backward_param = input->GetInputParameter(pad::StickKind::kLSDown);
+	const int left_param = input->GetInputParameter(pad::StickKind::kLSLeft);
+	const int right_param = input->GetInputParameter(pad::StickKind::kLSRight);
 
 	// 速度ベクトルを取得
 	VECTOR velocity = v3d::GetZeroV();
-	if (forward_param)	{ velocity += forward * (forward_param  - InputChecker::kStickDeadZone); }
+	if (forward_param) { velocity += forward * (forward_param - InputChecker::kStickDeadZone); }
 	if (backward_param) { velocity += forward * (backward_param + InputChecker::kStickDeadZone); }
-	if (left_param)		{ velocity += right	  * (left_param     + InputChecker::kStickDeadZone); }
-	if (right_param)	{ velocity += right	  * (right_param    - InputChecker::kStickDeadZone); }
+	if (left_param) { velocity += right * (left_param + InputChecker::kStickDeadZone); }
+	if (right_param) { velocity += right * (right_param - InputChecker::kStickDeadZone); }
 
 	return velocity;
 }
 
 VECTOR Player::GetMoveForward()
 {
-	const auto camera	= CameraManager::GetInstance()->GetMainCamera();
-	auto forward		= camera->GetTransform()->GetForward(CoordinateKind::kWorld);
+	const auto camera = CameraManager::GetInstance()->GetMainCamera();
+	auto forward = camera->GetTransform()->GetForward(CoordinateKind::kWorld);
 	forward.y = 0.0f;
 
 	return v3d::GetNormalizedV(forward);
