@@ -13,7 +13,11 @@ player_state::ActionNull::~ActionNull()
 
 void player_state::ActionNull::Update(Player* obj)
 {
-	obj->DirOfCameraForward();
+	const auto state_controller = obj->GetStateController();
+	if (state_controller->GetMoveState(TimeKind::kCurrent)->GetStateKind() == static_cast<int>(player_state::MoveStateKind::kMove))
+	{
+		obj->DirOfCameraForward();
+	}
 }
 
 void player_state::ActionNull::LateUpdate(Player* obj)

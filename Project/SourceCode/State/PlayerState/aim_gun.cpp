@@ -14,6 +14,7 @@ player_state::AimGun::~AimGun()
 void player_state::AimGun::Update(Player* obj)
 {
 	obj->SetLookDirCorrectValueForAim();
+	obj->DirOfCameraForward();
 }
 
 void player_state::AimGun::LateUpdate(Player* obj)

@@ -14,6 +14,7 @@ player_state::AimKnife::~AimKnife()
 void player_state::AimKnife::Update(Player* obj)
 {
 	obj->SetLookDirCorrectValueForAim();
+	obj->DirOfCameraForward();
 }
 
 void player_state::AimKnife::LateUpdate(Player* obj)

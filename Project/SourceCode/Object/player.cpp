@@ -114,24 +114,13 @@ void Player::Draw() const
 		}
 	}
 
-	//auto pos  = m_transform->GetPos (CoordinateKind::kWorld);
-	//auto axes = m_transform->GetAxes(CoordinateKind::kWorld);
-	//DrawLine3D(pos, pos + axes.x_axis * 100, 0xff0000);
-	//DrawLine3D(pos, pos + axes.y_axis * 100, 0x00ff22);
-	//DrawLine3D(pos, pos + axes.z_axis * 100, 0x0077ff);
 
-	DrawFormatString(300, 0, 0xffffff, "%d", InputChecker::GetInstance()->GetCurrentInputDevice());
+
 	if (m_move_dir.count(TimeKind::kNext))
 	{
-		DrawFormatString(300, 20, 0xffffff, "move_dir_current : %f, %f, %f", m_move_dir.at(TimeKind::kCurrent).x, m_move_dir.at(TimeKind::kCurrent).y, m_move_dir.at(TimeKind::kCurrent).z);
-		DrawFormatString(300, 40, 0xffffff, "move_dir_next    : %f, %f, %f", m_move_dir.at(TimeKind::kNext).x, m_move_dir.at(TimeKind::kNext).y, m_move_dir.at(TimeKind::kNext).z);
-		DrawFormatString(300, 60, 0xffffff, "look_dir_current : %f, %f, %f", m_look_dir.at(TimeKind::kCurrent).x, m_look_dir.at(TimeKind::kCurrent).y, m_look_dir.at(TimeKind::kCurrent).z);
-		DrawFormatString(300, 80, 0xffffff, "look_dir_next    : %f, %f, %f", m_look_dir.at(TimeKind::kNext).x, m_look_dir.at(TimeKind::kNext).y, m_look_dir.at(TimeKind::kNext).z);
+		//DrawFormatString(0, 20, 0xffffff, "m_move_dir.at(TimeKind::kCurrent).y : %f", m_move_dir.at(TimeKind::kCurrent).y);
+		//DrawFormatString(0, 40, 0xffffff, "m_move_dir.at(TimeKind::kNext).y    : %f", m_move_dir.at(TimeKind::kNext).y);
 	}
-	DrawFormatString(300, 100, 0xffffff, "move_speed : %f", m_move_speed);
-	DrawFormatString(300, 120, 0xffffff, "look_dir_correct_angle : %f", m_look_dir_correct_angle);
-
-	DrawFormatString(800, 0, 0xffffff, "run_count : %d", CommandHandler::GetInstance()->GetTriggerCount(CommandKind::kRun));	
 }
 
 void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
@@ -174,11 +163,11 @@ void Player::Move()
 	}
 	if (command->IsExecuting(CommandKind::kMoveLeftPlayer))
 	{
-		m_move_dir[TimeKind::kNext] -= CameraManager::GetInstance()->GetMainCamera()->GetTransform()->GetRight(CoordinateKind::kWorld);
+		m_move_dir[TimeKind::kNext] -= GetMoveRight();
 	}
 	if (command->IsExecuting(CommandKind::kMoveRightPlayer))
 	{
-		m_move_dir[TimeKind::kNext] += CameraManager::GetInstance()->GetMainCamera()->GetTransform()->GetRight(CoordinateKind::kWorld);
+		m_move_dir[TimeKind::kNext] += GetMoveRight();
 	}
 
 	// 移動速度を取得
@@ -208,14 +197,20 @@ void Player::DirOfMovement()
 	{
 		m_look_dir.at(TimeKind::kNext) = v3d::GetNormalizedV(m_move_dir[TimeKind::kCurrent]);
 	}
+
+	auto pos = m_transform->GetPos(CoordinateKind::kWorld);
+	VECTOR o1 = { 0, 30, 0 };
+	VECTOR o2 = { 0, 40, 0 };
+	VECTOR o3 = { 0, 50, 0 };
+	DrawLine3D(pos + o1, pos + o1 + m_look_dir.at(TimeKind::kCurrent)	* 100, GetColor(255, 0, 0));
+	DrawLine3D(pos + o2, pos + o2 + m_look_dir.at(TimeKind::kNext)		* 100, GetColor(0, 255, 0));
+	DrawLine3D(pos + o3, pos + o3 + m_move_dir[TimeKind::kCurrent]		* 100, GetColor(0, 0, 255));
+	DrawFormatString(0, 40, 0xffffff, "m_look_dir.at(TimeKind::kNext).y : %f, %f, %f", m_look_dir.at(TimeKind::kNext).x, m_look_dir.at(TimeKind::kNext).y, m_look_dir.at(TimeKind::kNext).z);
 }
 
 void Player::DirOfCameraForward()
 {
-	if (m_state->GetMoveState(TimeKind::kCurrent)->GetStateKind() == static_cast<int>(player_state::MoveStateKind::kMove))
-	{
-		m_look_dir.at(TimeKind::kNext) = GetMoveForward();
-	}
+	m_look_dir.at(TimeKind::kNext) = GetMoveForward();
 }
 
 void Player::CalcStopSpeed()
@@ -295,11 +290,6 @@ void Player::CalcLookDir()
 	VECTOR distance = next_yaw - current_yaw;
 	distance.y = math::ConnectMinusPiToPi(distance.y);
 
-	DrawFormatString(300, 140, 0xffffff, "confirm_look_dir_threshold_angle : %f", m_confirm_look_dir_threshold_angle * math::kRadianToDegrees);
-	DrawFormatString(300, 180, 0xffffff, "current_yaw : %f, %f, %f", current_yaw.x, current_yaw.y, current_yaw.z);
-	DrawFormatString(300, 200, 0xffffff, "next_yaw    : %f, %f, %f", next_yaw.x, next_yaw.y, next_yaw.z);
-	DrawFormatString(300, 220, 0xffffff, "distance.y  : %f", distance.y);
-
 	// カメラを基準にして右側であった場合は反転
 	if (distance.y > 0) { m_look_dir_correct_angle *= -1; }
 
@@ -308,36 +298,35 @@ void Player::CalcLookDir()
 	m_look_dir.at(TimeKind::kCurrent) = math::GetRotatedPos(m_look_dir.at(TimeKind::kCurrent), rot_q);
 
 	const float angle = math::GetAngleBetweenTwoVector(m_look_dir.at(TimeKind::kNext), m_look_dir.at(TimeKind::kCurrent));
-	DrawFormatString(300, 240, 0xffffff, "angle : %f", angle * math::kRadianToDegrees);
+	DrawFormatString(0, 60, 0xffffff, "angle : %f", angle * math::kRadianToDegrees);
 	if (angle < m_confirm_look_dir_threshold_angle)
 	{
 		m_look_dir.at(TimeKind::kCurrent) = m_look_dir.at(TimeKind::kNext);
-		DrawFormatString(300, 280, 0xffffff, "look_dirの方向決定");
 	}
 }
 
 VECTOR Player::GetVelocityFromPad()
 {
 	// 移動方向を取得
-	const auto camera = CameraManager::GetInstance()->GetMainCamera();
-	const auto right = camera->GetTransform()->GetRight(CoordinateKind::kWorld);
-	auto forward = camera->GetTransform()->GetForward(CoordinateKind::kWorld);
+	const auto camera	= CameraManager::GetInstance()->GetMainCamera();
+	const auto right	= camera->GetTransform()->GetRight(CoordinateKind::kWorld);
+	auto forward		= camera->GetTransform()->GetForward(CoordinateKind::kWorld);
 	forward.y = 0.0f;
 	forward = v3d::GetNormalizedV(forward);
 
 	// 各方向のパラメーターを取得
 	const auto input = InputChecker::GetInstance();
-	const int forward_param = input->GetInputParameter(pad::StickKind::kLSUp);
-	const int backward_param = input->GetInputParameter(pad::StickKind::kLSDown);
-	const int left_param = input->GetInputParameter(pad::StickKind::kLSLeft);
-	const int right_param = input->GetInputParameter(pad::StickKind::kLSRight);
+	const int forward_param		= input->GetInputParameter(pad::StickKind::kLSUp);
+	const int backward_param	= input->GetInputParameter(pad::StickKind::kLSDown);
+	const int left_param		= input->GetInputParameter(pad::StickKind::kLSLeft);
+	const int right_param		= input->GetInputParameter(pad::StickKind::kLSRight);
 
 	// 速度ベクトルを取得
 	VECTOR velocity = v3d::GetZeroV();
-	if (forward_param) { velocity += forward * (forward_param - InputChecker::kStickDeadZone); }
-	if (backward_param) { velocity += forward * (backward_param + InputChecker::kStickDeadZone); }
-	if (left_param) { velocity += right * (left_param + InputChecker::kStickDeadZone); }
-	if (right_param) { velocity += right * (right_param - InputChecker::kStickDeadZone); }
+	if (forward_param)	{ velocity += forward	* (forward_param	- InputChecker::kStickDeadZone); }
+	if (backward_param) { velocity += forward	* (backward_param	+ InputChecker::kStickDeadZone); }
+	if (left_param)		{ velocity += right		* (left_param		+ InputChecker::kStickDeadZone); }
+	if (right_param)	{ velocity += right		* (right_param		- InputChecker::kStickDeadZone); }
 
 	return velocity;
 }
@@ -349,4 +338,13 @@ VECTOR Player::GetMoveForward()
 	forward.y = 0.0f;
 
 	return v3d::GetNormalizedV(forward);
+}
+
+VECTOR Player::GetMoveRight()
+{
+	const auto camera = CameraManager::GetInstance()->GetMainCamera();
+	auto right = camera->GetTransform()->GetRight(CoordinateKind::kWorld);
+	right.y = 0.0f;
+	
+	return v3d::GetNormalizedV(right);
 }
