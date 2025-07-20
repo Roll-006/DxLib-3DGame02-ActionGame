@@ -290,45 +290,31 @@ bool PlayerStateController::TryMove()
 {
 	const auto command = CommandHandler::GetInstance();
 
-	if ((	command->IsExecuting(CommandKind::kMoveUpPlayer)
-		||	command->IsExecuting(CommandKind::kMoveDownPlayer)
-		||	command->IsExecuting(CommandKind::kMoveLeftPlayer)
-		||	command->IsExecuting(CommandKind::kMoveRightPlayer)))
-	{
-		return true;
-	}
-
-	return false;
+	return((command->IsExecuting(CommandKind::kMoveUpPlayer)
+		 || command->IsExecuting(CommandKind::kMoveDownPlayer)
+		 || command->IsExecuting(CommandKind::kMoveLeftPlayer)
+		 || command->IsExecuting(CommandKind::kMoveRightPlayer)));
 }
 
 bool PlayerStateController::TryRun()
 {
-	const auto command	= CommandHandler::GetInstance();
-	const auto input	= InputChecker::GetInstance();
-	bool is_run = false;
+	const auto command		= CommandHandler::GetInstance();
+	const auto input		= InputChecker::GetInstance();
+	const auto is_trigger	= command->GetInputModeKind(CommandKind::kRun) == InputModeKind::kTrigger ? true : false;
 
-	// IDLEであった場合、入力モードを強制的にホールド方式に変更
+	// IDLEであった場合、ホールド方式に変更して判定を行う
 	if (m_move_state.at(TimeKind::kCurrent)->GetStateKind() == static_cast<int>(player_state::MoveStateKind::kMoveNull))
 	{
-		const bool is_trigger = command->GetInputModeKind(CommandKind::kRun) == InputModeKind::kTrigger ? true : false;
-
-		command->SetInputModeKind(CommandKind::kRun, InputModeKind::kHold);
-		if (input->IsInput(KEY_INPUT_LSHIFT))
-		{
-			is_run = true;
-		}
-
-		// もともとトリガー方式であれば元に戻す
-		if (is_trigger) { command->SetInputModeKind(CommandKind::kRun, InputModeKind::kTrigger); }
+		command->SetInputMode(CommandKind::kRun, InputModeKind::kHold);
 	}
-	else
-	{
-		if (command->IsExecuting(CommandKind::kRun))
-		{
-			is_run = true;
-		}
-	}
+
+	// 実行判定
+	const auto is_run = command->IsExecuting(CommandKind::kRun);
+
+	// もともとトリガー方式であれば元に戻す
+	if (is_trigger) { command->SetInputMode(CommandKind::kRun, InputModeKind::kTrigger); }
 
 	return is_run;
 }
 #pragma endregion
+	

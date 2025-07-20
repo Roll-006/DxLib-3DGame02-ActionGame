@@ -204,7 +204,10 @@ void Player::SetLookDirCorrectValueForAim()
 
 void Player::DirOfMovement()
 {
-	m_look_dir.at(TimeKind::kNext) = m_move_dir[TimeKind::kCurrent];
+	if (m_move_dir[TimeKind::kCurrent] != v3d::GetZeroV())
+	{
+		m_look_dir.at(TimeKind::kNext) = v3d::GetNormalizedV(m_move_dir[TimeKind::kCurrent]);
+	}
 }
 
 void Player::DirOfCameraForward()

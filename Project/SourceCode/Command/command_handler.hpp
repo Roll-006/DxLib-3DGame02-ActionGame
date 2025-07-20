@@ -22,7 +22,7 @@ public:
 	/// @brief 特殊コマンドの入力モードを設定する
 	/// @param kind コマンドの種類
 	/// @param input_mode 入力モード
-	void SetInputModeKind(const CommandKind kind, const InputModeKind input_mode) { m_special_command.at(kind) = input_mode; }
+	void SetInputMode(const CommandKind kind, const InputModeKind input_mode) { m_special_command.at(kind) = input_mode; }
 
 	[[nodiscard]] InputModeKind GetInputModeKind(const CommandKind kind) const { return m_special_command.at(kind); }
 	[[nodiscard]] int			GetTriggerCount (const CommandKind kind) const { return m_trigger_count.at(kind); }
