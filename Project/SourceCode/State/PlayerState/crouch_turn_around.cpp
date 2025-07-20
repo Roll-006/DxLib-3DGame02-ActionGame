@@ -16,6 +16,11 @@ void player_state::CrouchTurnAround::Update(Player* obj)
 
 }
 
+void player_state::CrouchTurnAround::LateUpdate(Player* obj)
+{
+
+}
+
 void player_state::CrouchTurnAround::Enter(Player* obj)
 {
 

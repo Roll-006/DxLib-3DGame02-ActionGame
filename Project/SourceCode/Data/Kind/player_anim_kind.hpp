@@ -15,12 +15,12 @@ enum class PlayerAnimKind
 
 	#pragma region 通常
 	kIdle,									// IDLE
-	kIdleKnifeEquipped,						// ナイフ装備状態
+	kIdleEquipKnifeped,						// ナイフ装備状態
 	kIdleAimKnife,							// ナイフを構える
 	kIdleStabKnife,							// 突き刺す(ナイフ)
 	kIdleSideSlashKnife,					// 大振り(ナイフ)
 	kIdleParry,								// パリィ
-	kIdleGunEquipped,						// 銃装備状態
+	kIdleEquipGun,						// 銃装備状態
 	kIdleAimGun,							// 銃を構える
 	kIdleShot,								// 銃を撃つ
 	kIdleReload,							// リロード
@@ -28,21 +28,21 @@ enum class PlayerAnimKind
 
 	#pragma region しゃがみ
 	kIdleCrouch,							// しゃがみ
-	kIdleCrouchKnifeEquipped,				// しゃがみ(ナイフ装備状態)
-	kIdleCrouchGunEquipped,					// しゃがみ(銃装備状態)
+	kIdleCrouchEquipKnifeped,				// しゃがみ(ナイフ装備状態)
+	kIdleCrouchEquipGun,					// しゃがみ(銃装備状態)
 	kIdleCrouchReload,						// しゃがみ状態でリロード
 	#pragma endregion
 
 	#pragma region 振り向き
 	kIdleTurnAround,						// 振り向く
-	kIdleTurnAroundKnifeEquipped,			// 振り向く(ナイフ装備状態)
-	kIdleTurnAroundGunEquipped,				// 振り向く(銃装備状態)
+	kIdleTurnAroundEquipKnifeped,			// 振り向く(ナイフ装備状態)
+	kIdleTurnAroundEquipGun,				// 振り向く(銃装備状態)
 	#pragma endregion
 
 	#pragma region しゃがみ振り向き
 	kIdleCrouchTurnAround,					// しゃがみ状態で振り向く
-	kIdleCrouchTurnAroundKnifeEquipped,		// しゃがみ状態で振り向く(ナイフ装備状態)
-	kIdleCrouchTurnAroundGunEquipped,		// しゃがみ状態で振り向く(銃装備状態)
+	kIdleCrouchTurnAroundEquipKnifeped,		// しゃがみ状態で振り向く(ナイフ装備状態)
+	kIdleCrouchTurnAroundEquipGun,		// しゃがみ状態で振り向く(銃装備状態)
 	#pragma endregion
 
 	#pragma endregion
@@ -63,14 +63,14 @@ enum class PlayerAnimKind
 	#pragma endregion
 
 	#pragma region 移動(ナイフ装備状態)
-	kMoveForwardKnifeEquipped,				// 前方に移動(ナイフ装備状態)
-	kMoveBackwardKnifeEquipped,				// 後方に移動(ナイフ装備状態)
-	kMoveLeftKnifeEquipped,					// 左に移動(ナイフ装備状態)
-	kMoveRightKnifeEquipped,				// 右に移動(ナイフ装備状態)
-	kMoveForwardLeftKnifeEquipped,			// 左前方に移動(ナイフ装備状態)
-	kMoveForwardRightKnifeEquipped,			// 右前方に移動(ナイフ装備状態)
-	kMoveBackwardLeftKnifeEquipped,			// 左後方に移動(ナイフ装備状態)
-	kMoveBackwardRightKnifeEquipped,		// 右後方に移動(ナイフ装備状態)
+	kMoveForwardEquipKnifeped,				// 前方に移動(ナイフ装備状態)
+	kMoveBackwardEquipKnifeped,				// 後方に移動(ナイフ装備状態)
+	kMoveLeftEquipKnifeped,					// 左に移動(ナイフ装備状態)
+	kMoveRightEquipKnifeped,				// 右に移動(ナイフ装備状態)
+	kMoveForwardLeftEquipKnifeped,			// 左前方に移動(ナイフ装備状態)
+	kMoveForwardRightEquipKnifeped,			// 右前方に移動(ナイフ装備状態)
+	kMoveBackwardLeftEquipKnifeped,			// 左後方に移動(ナイフ装備状態)
+	kMoveBackwardRightEquipKnifeped,		// 右後方に移動(ナイフ装備状態)
 	#pragma endregion
 
 	#pragma region ナイフを構えながら移動
@@ -85,14 +85,14 @@ enum class PlayerAnimKind
 	#pragma endregion
 
 	#pragma region 移動(銃装備状態)
-	kMoveForwardGunEquipped,				// 前方に移動(銃装備状態)
-	kMoveBackwardGunEquipped,				// 後方に移動(銃装備状態)
-	kMoveLeftGunEquipped,					// 左に移動(銃装備状態)
-	kMoveRightGunEquipped,					// 右に移動(銃装備状態)
-	kMoveForwardLeftGunEquipped,			// 左前方に移動(銃装備状態)
-	kMoveForwardRightGunEquipped,			// 右前方に移動(銃装備状態)
-	kMoveBackwardLeftGunEquipped,			// 左後方に移動(銃装備状態)
-	kMoveBackwardRightGunEquipped,			// 右後方に移動(銃装備状態)
+	kMoveForwardEquipGun,				// 前方に移動(銃装備状態)
+	kMoveBackwardEquipGun,				// 後方に移動(銃装備状態)
+	kMoveLeftEquipGun,					// 左に移動(銃装備状態)
+	kMoveRightEquipGun,					// 右に移動(銃装備状態)
+	kMoveForwardLeftEquipGun,			// 左前方に移動(銃装備状態)
+	kMoveForwardRightEquipGun,			// 右前方に移動(銃装備状態)
+	kMoveBackwardLeftEquipGun,			// 左後方に移動(銃装備状態)
+	kMoveBackwardRightEquipGun,			// 右後方に移動(銃装備状態)
 	#pragma endregion
 
 	#pragma region 銃を構えながら移動
@@ -140,25 +140,25 @@ enum class PlayerAnimKind
 	#pragma endregion
 	
 	#pragma region しゃがみ移動(ナイフ装備状態)
-	kMoveForwardCrouchKnifeEquipped,		// しゃがみ状態で前方に移動(ナイフ装備状態)
-	kMoveBackwardCrouchKnifeEquipped,		// しゃがみ状態で後方に移動(ナイフ装備状態)
-	kMoveLeftCrouchKnifeEquipped,			// しゃがみ状態で左に移動(ナイフ装備状態)
-	kMoveRightCrouchKnifeEquipped,			// しゃがみ状態で右に移動(ナイフ装備状態)
-	kMoveForwardLeftCrouchKnifeEquipped,	// しゃがみ状態で左前方に移動(ナイフ装備状態)
-	kMoveForwardRightCrouchKnifeEquipped,	// しゃがみ状態で右前方に移動(ナイフ装備状態)
-	kMoveBackwardLeftCrouchKnifeEquipped,	// しゃがみ状態で左後方に移動(ナイフ装備状態)
-	kMoveBackwardRightCrouchKnifeEquipped,	// しゃがみ状態で右後方に移動(ナイフ装備状態)
+	kMoveForwardCrouchEquipKnifeped,		// しゃがみ状態で前方に移動(ナイフ装備状態)
+	kMoveBackwardCrouchEquipKnifeped,		// しゃがみ状態で後方に移動(ナイフ装備状態)
+	kMoveLeftCrouchEquipKnifeped,			// しゃがみ状態で左に移動(ナイフ装備状態)
+	kMoveRightCrouchEquipKnifeped,			// しゃがみ状態で右に移動(ナイフ装備状態)
+	kMoveForwardLeftCrouchEquipKnifeped,	// しゃがみ状態で左前方に移動(ナイフ装備状態)
+	kMoveForwardRightCrouchEquipKnifeped,	// しゃがみ状態で右前方に移動(ナイフ装備状態)
+	kMoveBackwardLeftCrouchEquipKnifeped,	// しゃがみ状態で左後方に移動(ナイフ装備状態)
+	kMoveBackwardRightCrouchEquipKnifeped,	// しゃがみ状態で右後方に移動(ナイフ装備状態)
 	#pragma endregion
 
 	#pragma region しゃがみ移動(銃装備状態)
-	kMoveForwardCrouchGunEquipped,			// しゃがみ状態で前方に移動(銃装備状態)
-	kMoveBackwardCrouchGunEquipped,			// しゃがみ状態で後方に移動(銃装備状態)
-	kMoveLeftCrouchGunEquipped,				// しゃがみ状態で左に移動(銃装備状態)
-	kMoveRightCrouchGunEquipped,			// しゃがみ状態で右に移動(銃装備状態)
-	kMoveForwardLeftCrouchGunEquipped,		// しゃがみ状態で左前方に移動(銃装備状態)
-	kMoveForwardRightCrouchGunEquipped,		// しゃがみ状態で右前方に移動(銃装備状態)
-	kMoveBackwardLeftCrouchGunEquipped,		// しゃがみ状態で左後方に移動(銃装備状態)
-	kMoveBackwardRightCrouchGunEquipped,	// しゃがみ状態で右後方に移動(銃装備状態)
+	kMoveForwardCrouchEquipGun,			// しゃがみ状態で前方に移動(銃装備状態)
+	kMoveBackwardCrouchEquipGun,			// しゃがみ状態で後方に移動(銃装備状態)
+	kMoveLeftCrouchEquipGun,				// しゃがみ状態で左に移動(銃装備状態)
+	kMoveRightCrouchEquipGun,			// しゃがみ状態で右に移動(銃装備状態)
+	kMoveForwardLeftCrouchEquipGun,		// しゃがみ状態で左前方に移動(銃装備状態)
+	kMoveForwardRightCrouchEquipGun,		// しゃがみ状態で右前方に移動(銃装備状態)
+	kMoveBackwardLeftCrouchEquipGun,		// しゃがみ状態で左後方に移動(銃装備状態)
+	kMoveBackwardRightCrouchEquipGun,	// しゃがみ状態で右後方に移動(銃装備状態)
 	#pragma endregion
 
 	#pragma region リロードしながら移動
@@ -174,8 +174,8 @@ enum class PlayerAnimKind
 
 	#pragma region ダッシュ移動
 	kMoveForwardRun,						// 前方に走る
-	kMoveForwardRunKnifeEquipped,			// 前方に走る(ナイフ装備状態)
-	kMoveForwardRunGunEquipped,				// 前方に走る(銃装備状態)
+	kMoveForwardRunEquipKnifeped,			// 前方に走る(ナイフ装備状態)
+	kMoveForwardRunEquipGun,				// 前方に走る(銃装備状態)
 	kMoveForwardRunReload,					// 前方に走りながらリロード
 	#pragma endregion
 

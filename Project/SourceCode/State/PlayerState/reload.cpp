@@ -16,6 +16,11 @@ void player_state::Reload::Update(Player* obj)
 
 }
 
+void player_state::Reload::LateUpdate(Player* obj)
+{
+
+}
+
 void player_state::Reload::Enter(Player* obj)
 {
 

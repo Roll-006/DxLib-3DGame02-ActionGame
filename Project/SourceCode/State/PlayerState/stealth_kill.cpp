@@ -16,6 +16,11 @@ void player_state::StealthKill::Update(Player* obj)
 
 }
 
+void player_state::StealthKill::LateUpdate(Player* obj)
+{
+
+}
+
 void player_state::StealthKill::Enter(Player* obj)
 {
 

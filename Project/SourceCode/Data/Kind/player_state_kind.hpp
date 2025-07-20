@@ -20,12 +20,12 @@ namespace player_state
 	enum class WeaponActionStateKind
 	{
 		kWeaponActionNull,
-		kKnifeEquipped,
+		kEquipKnife,
 		kAimKnife,
 		kStabKnife,
 		kSideSlashKnife,
 		kParry,
-		kGunEquipped,
+		kEquipGun,
 		kAimGun,
 		kShot,
 		kReload,

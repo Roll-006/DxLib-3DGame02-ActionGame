@@ -16,6 +16,11 @@ void player_state::RoundhouseKick::Update(Player* obj)
 
 }
 
+void player_state::RoundhouseKick::LateUpdate(Player* obj)
+{
+
+}
+
 void player_state::RoundhouseKick::Enter(Player* obj)
 {
 

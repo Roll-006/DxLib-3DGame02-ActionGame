@@ -6,6 +6,8 @@
 #include "../Base/obj_base.hpp"
 #include "../Concept/obj_concepts.hpp"
 
+#include "../Handle/state_handler.hpp"
+
 class ObjManager final : public SingletonBase<ObjManager>
 {
 public:
@@ -48,7 +50,7 @@ public:
 	}
 
 	/// @brief オブジェクトハンドルを生成
-	[[nodiscard]] int CreateObjHandle() { return ++m_handle_create_count; }
+	[[nodiscard]] int CreateObjHandle() { return HandleCreator::GetInstance()->CreateHandle(); }
 
 private:
 	ObjManager();
@@ -56,7 +58,6 @@ private:
 
 private:
 	std::unordered_map<int, std::shared_ptr<ObjBase>> m_objects;
-	int m_handle_create_count;	// オブジェクトハンドル生成用カウント
 
 	friend SingletonBase<ObjManager>;
 };

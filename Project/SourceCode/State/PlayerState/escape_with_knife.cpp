@@ -16,6 +16,11 @@ void player_state::EscapeWithKnife::Update(Player* obj)
 
 }
 
+void player_state::EscapeWithKnife::LateUpdate(Player* obj)
+{
+
+}
+
 void player_state::EscapeWithKnife::Enter(Player* obj)
 {
 

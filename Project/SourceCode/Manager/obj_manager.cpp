@@ -1,8 +1,7 @@
 #include "../Base/obj_base.hpp"
 #include "obj_manager.hpp"
 
-ObjManager::ObjManager() : 
-	m_handle_create_count(-1)
+ObjManager::ObjManager()
 {
 	// ˆ—‚È‚µ
 }

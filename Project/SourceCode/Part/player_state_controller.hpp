@@ -14,12 +14,12 @@
 #include "../State/PlayerState/crouch_turn_around.hpp"
 
 #include "../State/PlayerState/weapon_action_null.hpp"
-#include "../State/PlayerState/knife_equipped.hpp"
+#include "../State/PlayerState/equip_knife.hpp"
 #include "../State/PlayerState/aim_knife.hpp"
 #include "../State/PlayerState/stab_knife.hpp"
 #include "../State/PlayerState/side_slash_knife.hpp"
 #include "../State/PlayerState/parry.hpp"
-#include "../State/PlayerState/gun_equipped.hpp"
+#include "../State/PlayerState/equip_gun.hpp"
 #include "../State/PlayerState/aim_gun.hpp"
 #include "../State/PlayerState/shot.hpp"
 #include "../State/PlayerState/reload.hpp"
@@ -40,6 +40,7 @@ public:
 	~PlayerStateController();
 
 	void Update		(Player* player);
+	void LateUpdate	(Player* player);
 
 	/// @brief ステートを取得
 	template<typename StateT, typename ObjT>
@@ -51,13 +52,7 @@ public:
 
 
 	#pragma region Try判定
-	[[nodiscard]] bool TryMoveForward();
-	[[nodiscard]] bool TryMoveBackward();
-	[[nodiscard]] bool TryMoveLeft();
-	[[nodiscard]] bool TryMoveRight();
 	[[nodiscard]] bool TryMove();
-	[[nodiscard]] bool TryRun();
-	[[nodiscard]] bool TryCrouch();
 	#pragma endregion
 
 
@@ -69,13 +64,33 @@ public:
 	#pragma endregion
 
 private:
+	void CreateState();
+	void AddStopStatePair();
+	void AddCheckStopState();
+
+	/// @brief ステートを変更
 	void ChangeState(Player* player);
 
-private:
-	std::unordered_map<std::type_index, std::shared_ptr<IState<Player>>>			m_states;				// 各ステート(型情報をKeyとして使用)
+	/// @brief 変更するステートを生成
+	[[nodiscard]] std::vector<std::shared_ptr<IState<Player>>> CreateChangeState(Player* player);
 
-	std::unordered_map<TimeKind, std::shared_ptr<MoveStateBase<Player>>>			m_move_state;			// 移動ステート
-	std::unordered_map<TimeKind, std::shared_ptr<ActionStateBase<Player>>>			m_action_state;			// 行動ステート
-	std::unordered_map<TimeKind, std::shared_ptr<WeaponActionStateBase<Player>>>	m_weapon_action_state;	// 武器に関するステート
-	std::unordered_map<TimeKind, std::shared_ptr<SpecialStateBase<Player>>>			m_special_state;		// 特殊ステート
+	/// @brief 未来のステート構成を生成
+	[[nodiscard]] std::vector<std::shared_ptr<IState<Player>>> CreateFutureState(const std::vector<std::shared_ptr<IState<Player>>>& next_state);
+	
+	/// @brief ステートの停止処理
+	void StopState(std::vector<std::shared_ptr<IState<Player>>>& future_state, const std::shared_ptr<IState<Player>> stop_state);
+
+	void JudgeDestinationMoveState			(std::shared_ptr<IState<Player>>& stop_state);
+	void JudgeDestinationActionState		(std::shared_ptr<IState<Player>>& stop_state);
+	void JudgeDestinationWeaponActionState	(std::shared_ptr<IState<Player>>& stop_state);
+	void JudgeDestinationSpecialState		(std::shared_ptr<IState<Player>>& stop_state);
+
+private:
+	std::unordered_map<std::type_index, std::shared_ptr<IState<Player>>>			m_states;						// 各ステート
+	std::vector<int>																m_check_stop_state_handles;		// ステートの停止
+
+	std::unordered_map<TimeKind, std::shared_ptr<MoveStateBase<Player>>>			m_move_state;					// 移動ステート
+	std::unordered_map<TimeKind, std::shared_ptr<ActionStateBase<Player>>>			m_action_state;					// 行動ステート
+	std::unordered_map<TimeKind, std::shared_ptr<WeaponActionStateBase<Player>>>	m_weapon_action_state;			// 武器に関するステート
+	std::unordered_map<TimeKind, std::shared_ptr<SpecialStateBase<Player>>>			m_special_state;				// 特殊ステート
 };

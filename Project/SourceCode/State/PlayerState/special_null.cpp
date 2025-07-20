@@ -16,6 +16,11 @@ void player_state::SpecialNull::Update(Player* obj)
 
 }
 
+void player_state::SpecialNull::LateUpdate(Player* obj)
+{
+
+}
+
 void player_state::SpecialNull::Enter(Player* obj)
 {
 

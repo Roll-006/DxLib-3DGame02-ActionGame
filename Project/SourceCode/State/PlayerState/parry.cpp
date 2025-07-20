@@ -16,6 +16,11 @@ void player_state::Parry::Update(Player* obj)
 
 }
 
+void player_state::Parry::LateUpdate(Player* obj)
+{
+
+}
+
 void player_state::Parry::Enter(Player* obj)
 {
 

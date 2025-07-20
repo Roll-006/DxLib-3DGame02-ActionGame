@@ -12,9 +12,10 @@ namespace player_state
 		SideSlashKnife();
 		~SideSlashKnife() override;
 
-		void Update(Player* obj) override;
-		void Enter (Player* obj) override;
-		void Exit  (Player* obj) override;
+		void Update		(Player* obj) override;
+		void LateUpdate	(Player* obj) override;
+		void Enter		(Player* obj) override;
+		void Exit		(Player* obj) override;
 		[[nodiscard]] std::shared_ptr<IState<Player>> ChangeState(const Player* obj) override;
 
 	private:

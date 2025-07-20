@@ -16,6 +16,11 @@ void player_state::TurnAround::Update(Player* obj)
 
 }
 
+void player_state::TurnAround::LateUpdate(Player* obj)
+{
+
+}
+
 void player_state::TurnAround::Enter(Player* obj)
 {
 

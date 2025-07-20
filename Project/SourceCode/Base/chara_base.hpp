@@ -14,7 +14,7 @@ public:
 
 	[[nodiscard]] std::shared_ptr<Modeler>					GetModeler()					{ return m_modeler; }
 	[[nodiscard]] std::shared_ptr<AnimatorBase>				GetAnimator()			const	{ return m_animator; }
-	[[nodiscard]] std::shared_ptr<WeaponBase>				GetCurrentAttachWeapon()const	{ return m_current_attach_weapon; }
+	[[nodiscard]] std::shared_ptr<WeaponBase>				GetCurrentAttachWeapon()const	{ return m_current_equip_weapon; }
 	[[nodiscard]] std::vector<std::shared_ptr<WeaponBase>>	GetCurrentHaveWeapon()	const	{ return m_weapons; }
 
 protected:
@@ -51,8 +51,8 @@ protected:
 	{
 		if (std::find(m_weapons.begin(), m_weapons.end(), weapon) != m_weapons.end())
 		{
-			m_current_attach_weapon = weapon;
-			m_current_attach_weapon->AttachOwner(m_modeler);
+			m_current_equip_weapon = weapon;
+			m_current_equip_weapon->AttachOwner(m_modeler);
 		}	
 	}
 	/// @brief 所持している武器の中からアタッチ(装備)する
@@ -96,9 +96,8 @@ protected:
 	std::shared_ptr<Modeler>					m_modeler;
 	std::shared_ptr<AnimatorBase>				m_animator;
 
-	std::vector<std::shared_ptr<WeaponBase>>	m_weapons;					// 登録(所持)している武器
-	std::shared_ptr<WeaponBase>					m_current_attach_weapon;	// 現在アタッチ(装備)している武器
-	// TODO : 体に付けるようの処理を作成
+	std::vector<std::shared_ptr<WeaponBase>>	m_weapons;							// 登録(所持)している武器
+	std::shared_ptr<WeaponBase>					m_current_equip_weapon;				// 現在アタッチ(装備)している武器
 
 	std::shared_ptr<Capsule>					m_capsule_collider;
 	float										m_capsule_length;

@@ -2,13 +2,13 @@
 
 #pragma region ïêäÌ
 CharaBase::CharaBase(const std::string& name, const std::string& tag, const std::string& file_path, const MassKind mass_level_kind) : 
-	PhysicalObjBase			(name, tag, mass_level_kind),
-	m_modeler				(std::make_shared<Modeler>(m_transform, file_path, VGet(0.0f, DX_PI_F, 0.0f))),
-	m_animator				(nullptr),
-	m_current_attach_weapon	(nullptr),
-	m_capsule_collider		(nullptr),
-	m_capsule_length		(0.0f),
-	m_capsule_radius		(0.0f),
+	PhysicalObjBase					(name, tag, mass_level_kind),
+	m_modeler						(std::make_shared<Modeler>(m_transform, file_path, VGet(0.0f, DX_PI_F, 0.0f))),
+	m_animator						(nullptr),
+	m_current_equip_weapon			(nullptr),
+	m_capsule_collider				(nullptr),
+	m_capsule_length				(0.0f),
+	m_capsule_radius				(0.0f),
 	m_current_remaining_bullet_num	(0)
 {
 	SetModelHandle(m_modeler->GetModelHandle());
@@ -42,8 +42,8 @@ void CharaBase::AttachWeapon(const std::string& obj_name)
 	{
 		if (weapon->GetName() == obj_name)
 		{
-			m_current_attach_weapon = weapon;
-			m_current_attach_weapon->AttachOwner(m_modeler);
+			m_current_equip_weapon = weapon;
+			m_current_equip_weapon->AttachOwner(m_modeler);
 		}
 	}
 }
@@ -54,15 +54,15 @@ void CharaBase::AttachWeapon(const int obj_handle)
 	{
 		if (weapon->GetObjHandle() == obj_handle)
 		{
-			m_current_attach_weapon = weapon;
-			m_current_attach_weapon->AttachOwner(m_modeler);
+			m_current_equip_weapon = weapon;
+			m_current_equip_weapon->AttachOwner(m_modeler);
 		}
 	}
 }
 
 void CharaBase::DetachWeapon()
 {
-	m_current_attach_weapon = nullptr;
+	m_current_equip_weapon = nullptr;
 }
 #pragma endregion
 

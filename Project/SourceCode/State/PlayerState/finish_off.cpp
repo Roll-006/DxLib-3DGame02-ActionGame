@@ -16,6 +16,11 @@ void player_state::FinishOff::Update(Player* obj)
 
 }
 
+void player_state::FinishOff::LateUpdate(Player* obj)
+{
+
+}
+
 void player_state::FinishOff::Enter(Player* obj)
 {
 

@@ -16,6 +16,11 @@ void player_state::ActionNull::Update(Player* obj)
 	obj->DirOfCameraForward();
 }
 
+void player_state::ActionNull::LateUpdate(Player* obj)
+{
+
+}
+
 void player_state::ActionNull::Enter(Player* obj)
 {
 
@@ -30,11 +35,11 @@ std::shared_ptr<IState<Player>> player_state::ActionNull::ChangeState(const Play
 {
 	const auto state_controller = obj->GetStateController();
 
-	if (state_controller->TryRun())
+	if (CommandHandler::GetInstance()->IsExecutingCommand(CommandKind::kRun))
 	{
 		return state_controller->GetState<Run, Player>();
 	}
-	if (state_controller->TryCrouch())
+	if (CommandHandler::GetInstance()->IsExecutingCommand(CommandKind::kCrouch))
 	{
 		return state_controller->GetState<Crouch, Player>();
 	}

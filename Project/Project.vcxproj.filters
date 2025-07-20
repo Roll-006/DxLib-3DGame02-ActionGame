@@ -239,13 +239,13 @@
     <ClCompile Include="SourceCode\State\PlayerState\front_kick.cpp">
       <Filter>State\PlayerState</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\State\PlayerState\gun_equipped.cpp">
+    <ClCompile Include="SourceCode\State\PlayerState\equip_gun.cpp">
       <Filter>State\PlayerState</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\State\PlayerState\move_null.cpp">
       <Filter>State\PlayerState</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\State\PlayerState\knife_equipped.cpp">
+    <ClCompile Include="SourceCode\State\PlayerState\equip_knife.cpp">
       <Filter>State\PlayerState</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\State\PlayerState\move.cpp">
@@ -706,13 +706,13 @@
     <ClInclude Include="SourceCode\State\PlayerState\front_kick.hpp">
       <Filter>State\PlayerState</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\State\PlayerState\gun_equipped.hpp">
+    <ClInclude Include="SourceCode\State\PlayerState\equip_gun.hpp">
       <Filter>State\PlayerState</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\State\PlayerState\move_null.hpp">
       <Filter>State\PlayerState</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\State\PlayerState\knife_equipped.hpp">
+    <ClInclude Include="SourceCode\State\PlayerState\equip_knife.hpp">
       <Filter>State\PlayerState</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\State\PlayerState\move.hpp">
@@ -798,6 +798,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Command\command_handler.hpp">
       <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Handle\state_handler.hpp">
+      <Filter>Handle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

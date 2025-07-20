@@ -16,6 +16,11 @@ void player_state::AimKnife::Update(Player* obj)
 	obj->SetLookDirCorrectValueForAim();
 }
 
+void player_state::AimKnife::LateUpdate(Player* obj)
+{
+
+}
+
 void player_state::AimKnife::Enter(Player* obj)
 {
 

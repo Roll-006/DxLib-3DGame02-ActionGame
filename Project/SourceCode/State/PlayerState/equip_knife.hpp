@@ -6,15 +6,16 @@
 
 namespace player_state
 {
-	class KnifeEquipped final : public WeaponActionStateBase<Player>
+	class EquipKnife final : public WeaponActionStateBase<Player>
 	{
 	public:
-		KnifeEquipped();
-		~KnifeEquipped() override;
+		EquipKnife();
+		~EquipKnife() override;
 
-		void Update(Player* obj) override;
-		void Enter (Player* obj) override;
-		void Exit  (Player* obj) override;
+		void Update		(Player* obj) override;
+		void LateUpdate	(Player* obj) override;
+		void Enter		(Player* obj) override;
+		void Exit		(Player* obj) override;
 		[[nodiscard]] std::shared_ptr<IState<Player>> ChangeState(const Player* obj) override;
 
 	private:

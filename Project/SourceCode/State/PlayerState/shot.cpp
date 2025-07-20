@@ -16,6 +16,11 @@ void player_state::Shot::Update(Player* obj)
 	obj->SetLookDirCorrectValueForAim();
 }
 
+void player_state::Shot::LateUpdate(Player* obj)
+{
+
+}
+
 void player_state::Shot::Enter(Player* obj)
 {
 

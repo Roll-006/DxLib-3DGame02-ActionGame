@@ -16,6 +16,11 @@ void player_state::StabKnife::Update(Player* obj)
 	obj->SetLookDirCorrectValueForAim();
 }
 
+void player_state::StabKnife::LateUpdate(Player* obj)
+{
+
+}
+
 void player_state::StabKnife::Enter(Player* obj)
 {
 

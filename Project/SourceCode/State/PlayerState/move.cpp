@@ -19,6 +19,11 @@ void player_state::Move::Update(Player* obj)
 	m_is_first_move_frame = false;
 }
 
+void player_state::Move::LateUpdate(Player* obj)
+{
+
+}
+
 void player_state::Move::Enter(Player* obj)
 {
 	m_is_first_move_frame = true;

@@ -7,7 +7,7 @@ RotControlVirtualCamera::RotControlVirtualCamera() :
 	m_priority = kPriority;
 	m_active_scene_kind.emplace_back(SceneKind::kPlay);
 
-	m_aim ->SetAimCorrect(VGet(20.0f, 10.0f, 0.0f));
+	m_aim ->SetAimCorrect(kAimCorrect);
 }
 
 RotControlVirtualCamera::~RotControlVirtualCamera()

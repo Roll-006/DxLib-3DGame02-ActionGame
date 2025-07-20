@@ -13,20 +13,32 @@ player_state::WeaponActionNull::~WeaponActionNull()
 
 void player_state::WeaponActionNull::Update(Player* obj)
 {
+	
+}
+
+void player_state::WeaponActionNull::LateUpdate(Player* obj)
+{
 
 }
 
 void player_state::WeaponActionNull::Enter(Player* obj)
 {
-
+	
 }
 
 void player_state::WeaponActionNull::Exit(Player* obj)
 {
-
+	
 }
 
 std::shared_ptr<IState<Player>> player_state::WeaponActionNull::ChangeState(const Player* obj)
 {
+	const auto state_controller = obj->GetStateController();
+
+	if (CommandHandler::GetInstance()->IsExecutingCommand(CommandKind::kAimGun))
+	{
+		return state_controller->GetState<EquipGun, Player>();
+	}
+
 	return nullptr;
 }

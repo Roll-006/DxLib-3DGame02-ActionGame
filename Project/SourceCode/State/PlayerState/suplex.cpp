@@ -16,6 +16,11 @@ void player_state::Suplex::Update(Player* obj)
 
 }
 
+void player_state::Suplex::LateUpdate(Player* obj)
+{
+
+}
+
 void player_state::Suplex::Enter(Player* obj)
 {
 

@@ -16,6 +16,11 @@ void player_state::Escape::Update(Player* obj)
 
 }
 
+void player_state::Escape::LateUpdate(Player* obj)
+{
+
+}
+
 void player_state::Escape::Enter(Player* obj)
 {
 

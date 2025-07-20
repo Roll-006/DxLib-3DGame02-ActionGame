@@ -16,6 +16,11 @@ void player_state::FrontKick::Update(Player* obj)
 
 }
 
+void player_state::FrontKick::LateUpdate(Player* obj)
+{
+
+}
+
 void player_state::FrontKick::Enter(Player* obj)
 {
 
