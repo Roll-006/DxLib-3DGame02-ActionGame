@@ -67,7 +67,7 @@ void PlayerStateController::CreateState()
 
 void PlayerStateController::AddStopStatePair()
 {
-	m_states.at(typeid(player_state::MoveNull))			->AddStopState(m_states.at(typeid(player_state::Run))	->GetStateHandle());
+	//m_states.at(typeid(player_state::MoveNull))			->AddStopState(m_states.at(typeid(player_state::Run))	->GetStateHandle());
 	m_states.at(typeid(player_state::AimKnife))			->AddStopState(m_states.at(typeid(player_state::Crouch))->GetStateHandle());
 	m_states.at(typeid(player_state::AimKnife))			->AddStopState(m_states.at(typeid(player_state::Run))	->GetStateHandle());
 	m_states.at(typeid(player_state::StabKnife))		->AddStopState(m_states.at(typeid(player_state::Crouch))->GetStateHandle());
@@ -252,7 +252,12 @@ void PlayerStateController::JudgeDestinationActionState(std::shared_ptr<IState<P
 	switch (static_cast<player_state::ActionStateKind>(stop_state->GetStateKind()))
 	{
 	case player_state::ActionStateKind::kCrouch:
+		CommandHandler::GetInstance()->InitTriggerInputCount(CommandKind::kCrouch);
+		stop_state = m_states.at(typeid(player_state::ActionNull));
+		break;
+
 	case player_state::ActionStateKind::kRun:
+		CommandHandler::GetInstance()->InitTriggerInputCount(CommandKind::kRun);
 		stop_state = m_states.at(typeid(player_state::ActionNull));
 		break;
 
@@ -285,14 +290,45 @@ bool PlayerStateController::TryMove()
 {
 	const auto command = CommandHandler::GetInstance();
 
-	if ((	command->IsExecutingCommand(CommandKind::kMoveUpPlayer)
-		||	command->IsExecutingCommand(CommandKind::kMoveDownPlayer)
-		||	command->IsExecutingCommand(CommandKind::kMoveLeftPlayer)
-		||	command->IsExecutingCommand(CommandKind::kMoveRightPlayer)))
+	if ((	command->IsExecuting(CommandKind::kMoveUpPlayer)
+		||	command->IsExecuting(CommandKind::kMoveDownPlayer)
+		||	command->IsExecuting(CommandKind::kMoveLeftPlayer)
+		||	command->IsExecuting(CommandKind::kMoveRightPlayer)))
 	{
 		return true;
 	}
 
 	return false;
+}
+
+bool PlayerStateController::TryRun()
+{
+	const auto command	= CommandHandler::GetInstance();
+	const auto input	= InputChecker::GetInstance();
+	bool is_run = false;
+
+	// IDLEであった場合、入力モードを強制的にホールド方式に変更
+	if (m_move_state.at(TimeKind::kCurrent)->GetStateKind() == static_cast<int>(player_state::MoveStateKind::kMoveNull))
+	{
+		const bool is_trigger = command->GetInputModeKind(CommandKind::kRun) == InputModeKind::kTrigger ? true : false;
+
+		command->SetInputModeKind(CommandKind::kRun, InputModeKind::kHold);
+		if (input->IsInput(KEY_INPUT_LSHIFT))
+		{
+			is_run = true;
+		}
+
+		// もともとトリガー方式であれば元に戻す
+		if (is_trigger) { command->SetInputModeKind(CommandKind::kRun, InputModeKind::kTrigger); }
+	}
+	else
+	{
+		if (command->IsExecuting(CommandKind::kRun))
+		{
+			is_run = true;
+		}
+	}
+
+	return is_run;
 }
 #pragma endregion

@@ -35,7 +35,7 @@ std::shared_ptr<IState<Player>> player_state::AimGun::ChangeState(const Player* 
 {
 	const auto state_controller = obj->GetStateController();
 
-	if (!CommandHandler::GetInstance()->IsExecutingCommand(CommandKind::kAimGun))
+	if (!CommandHandler::GetInstance()->IsExecuting(CommandKind::kAimGun))
 	{
 		return state_controller->GetState<EquipGun, Player>();
 	}

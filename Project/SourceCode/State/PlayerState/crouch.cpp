@@ -29,20 +29,29 @@ void player_state::Crouch::Enter(Player* obj)
 
 void player_state::Crouch::Exit(Player* obj)
 {
-	CommandHandler::GetInstance()->InitTriggerCount(CommandKind::kCrouch);
+	CommandHandler::GetInstance()->InitTriggerInputCount(CommandKind::kCrouch);
 }
 
 std::shared_ptr<IState<Player>> player_state::Crouch::ChangeState(const Player* obj)
 {
 	const auto state_controller = obj->GetStateController();
+	const auto command			= CommandHandler::GetInstance();
+	const auto command_mode		= command->GetInstance()->GetInputModeKind(CommandKind::kCrouch);
 
-	if (!CommandHandler::GetInstance()->IsExecutingCommand(CommandKind::kCrouch))
+	// NULL
+	if (!command->IsExecuting(CommandKind::kCrouch))
 	{
 		return state_controller->GetState<ActionNull, Player>();
 	}
-	if (CommandHandler::GetInstance()->IsExecutingCommand(CommandKind::kRun))
+	// ダッシュ
+	if (state_controller->TryRun())
 	{
-		return state_controller->GetState<Run, Player>();
+		// Crouchコマンドがホールド方式で、入力中であった場合は移行を許可しない
+		if (!(command_mode == InputModeKind::kHold && command->IsExecuting(CommandKind::kCrouch)))
+		{
+			return state_controller->GetState<Run, Player>();
+		}
+		command->InitTriggerInputCount(CommandKind::kRun);
 	}
 
 	return nullptr;

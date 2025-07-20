@@ -61,8 +61,8 @@ void Player::Update()
 {
 	if (!IsActive()) { return; }
 
-	m_look_dir_correct_angle = kLookDirCorrectAngle;
-	m_confirm_look_dir_threshold_angle = kConfirmLookDirThresholdAngle * math::kDegreesToRadian;
+	m_look_dir_correct_angle			= kLookDirCorrectAngle;
+	m_confirm_look_dir_threshold_angle	= kConfirmLookDirThresholdAngle * math::kDegreesToRadian;
 
 	m_state->Update(this);
 	m_animator->Update();
@@ -84,6 +84,8 @@ void Player::Update()
 void Player::LateUpdate()
 {
 	if (!IsActive()) { return; }
+
+	m_state->LateUpdate(this);
 
 	// ボーン位置修正
 	//m_modeler->ApplyMatrix();
@@ -121,9 +123,15 @@ void Player::Draw() const
 	DrawFormatString(300, 0, 0xffffff, "%d", InputChecker::GetInstance()->GetCurrentInputDevice());
 	if (m_move_dir.count(TimeKind::kNext))
 	{
-		DrawFormatString(300, 20, 0xffffff, "%f, %f, %f", m_move_dir.at(TimeKind::kCurrent).x, m_move_dir.at(TimeKind::kCurrent).y, m_move_dir.at(TimeKind::kCurrent).z);
+		DrawFormatString(300, 20, 0xffffff, "move_dir_current : %f, %f, %f", m_move_dir.at(TimeKind::kCurrent).x, m_move_dir.at(TimeKind::kCurrent).y, m_move_dir.at(TimeKind::kCurrent).z);
+		DrawFormatString(300, 40, 0xffffff, "move_dir_next    : %f, %f, %f", m_move_dir.at(TimeKind::kNext).x, m_move_dir.at(TimeKind::kNext).y, m_move_dir.at(TimeKind::kNext).z);
+		DrawFormatString(300, 60, 0xffffff, "look_dir_current : %f, %f, %f", m_look_dir.at(TimeKind::kCurrent).x, m_look_dir.at(TimeKind::kCurrent).y, m_look_dir.at(TimeKind::kCurrent).z);
+		DrawFormatString(300, 80, 0xffffff, "look_dir_next    : %f, %f, %f", m_look_dir.at(TimeKind::kNext).x, m_look_dir.at(TimeKind::kNext).y, m_look_dir.at(TimeKind::kNext).z);
 	}
-	DrawFormatString(300, 40, 0xffffff, "%f", m_move_speed);
+	DrawFormatString(300, 100, 0xffffff, "move_speed : %f", m_move_speed);
+	DrawFormatString(300, 120, 0xffffff, "look_dir_correct_angle : %f", m_look_dir_correct_angle);
+
+	DrawFormatString(800, 0, 0xffffff, "run_count : %d", CommandHandler::GetInstance()->GetTriggerCount(CommandKind::kRun));	
 }
 
 void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
@@ -156,19 +164,19 @@ void Player::Move()
 
 	// 移動方向の決定
 	const auto command = CommandHandler::GetInstance();
-	if (command->IsExecutingCommand(CommandKind::kMoveUpPlayer))
+	if (command->IsExecuting(CommandKind::kMoveUpPlayer))
 	{
 		m_move_dir[TimeKind::kNext] += GetMoveForward();
 	}
-	if (command->IsExecutingCommand(CommandKind::kMoveDownPlayer))
+	if (command->IsExecuting(CommandKind::kMoveDownPlayer))
 	{
 		m_move_dir[TimeKind::kNext] -= GetMoveForward();
 	}
-	if (command->IsExecutingCommand(CommandKind::kMoveLeftPlayer))
+	if (command->IsExecuting(CommandKind::kMoveLeftPlayer))
 	{
 		m_move_dir[TimeKind::kNext] -= CameraManager::GetInstance()->GetMainCamera()->GetTransform()->GetRight(CoordinateKind::kWorld);
 	}
-	if (command->IsExecutingCommand(CommandKind::kMoveRightPlayer))
+	if (command->IsExecuting(CommandKind::kMoveRightPlayer))
 	{
 		m_move_dir[TimeKind::kNext] += CameraManager::GetInstance()->GetMainCamera()->GetTransform()->GetRight(CoordinateKind::kWorld);
 	}
@@ -190,8 +198,8 @@ void Player::Move()
 
 void Player::SetLookDirCorrectValueForAim()
 {
-	m_look_dir_correct_angle = kLookDirCorrectAngleForAim;
-	m_confirm_look_dir_threshold_angle = kConfirmLookDirThresholdAngleForAim * math::kDegreesToRadian;
+	m_look_dir_correct_angle			= kLookDirCorrectAngleForAim;
+	m_confirm_look_dir_threshold_angle	= kConfirmLookDirThresholdAngleForAim * math::kDegreesToRadian;
 }
 
 void Player::DirOfMovement()
@@ -248,6 +256,8 @@ void Player::CalcCrouchSpeed()
 
 void Player::CalcRunSpeed()
 {
+	if (m_state->GetMoveState(TimeKind::kCurrent)->GetStateKind() == static_cast<int>(player_state::MoveStateKind::kMoveNull)) { return; }
+
 	// 遅い状態からダッシュ状態に移行した場合、急速に加速させる
 	if (m_move_speed < kWalkSpeed) { m_move_speed = kWalkSpeed; }
 
@@ -278,9 +288,14 @@ void Player::CalcLookDir()
 {
 	// ヨー角回転を取得し、-π～πで値を管理する
 	const VECTOR current_yaw = math::GetYawRotVector(m_look_dir.at(TimeKind::kCurrent));
-	const VECTOR next_yaw = math::GetYawRotVector(m_look_dir.at(TimeKind::kNext));
+	const VECTOR next_yaw	 = math::GetYawRotVector(m_look_dir.at(TimeKind::kNext));
 	VECTOR distance = next_yaw - current_yaw;
 	distance.y = math::ConnectMinusPiToPi(distance.y);
+
+	DrawFormatString(300, 140, 0xffffff, "confirm_look_dir_threshold_angle : %f", m_confirm_look_dir_threshold_angle * math::kRadianToDegrees);
+	DrawFormatString(300, 180, 0xffffff, "current_yaw : %f, %f, %f", current_yaw.x, current_yaw.y, current_yaw.z);
+	DrawFormatString(300, 200, 0xffffff, "next_yaw    : %f, %f, %f", next_yaw.x, next_yaw.y, next_yaw.z);
+	DrawFormatString(300, 220, 0xffffff, "distance.y  : %f", distance.y);
 
 	// カメラを基準にして右側であった場合は反転
 	if (distance.y > 0) { m_look_dir_correct_angle *= -1; }
@@ -290,9 +305,11 @@ void Player::CalcLookDir()
 	m_look_dir.at(TimeKind::kCurrent) = math::GetRotatedPos(m_look_dir.at(TimeKind::kCurrent), rot_q);
 
 	const float angle = math::GetAngleBetweenTwoVector(m_look_dir.at(TimeKind::kNext), m_look_dir.at(TimeKind::kCurrent));
+	DrawFormatString(300, 240, 0xffffff, "angle : %f", angle * math::kRadianToDegrees);
 	if (angle < m_confirm_look_dir_threshold_angle)
 	{
 		m_look_dir.at(TimeKind::kCurrent) = m_look_dir.at(TimeKind::kNext);
+		DrawFormatString(300, 280, 0xffffff, "look_dirの方向決定");
 	}
 }
 

@@ -2,8 +2,10 @@
 
 CommandHandler::CommandHandler()
 {
-	m_special_command[CommandKind::kRun] = m_special_command[CommandKind::kCrouch] = InputModeKind::kTrigger;
 	m_trigger_count	 [CommandKind::kRun] = m_trigger_count  [CommandKind::kCrouch] = 0;
+
+	m_special_command[CommandKind::kRun]	= InputModeKind::kTrigger;
+	m_special_command[CommandKind::kCrouch] = InputModeKind::kTrigger;
 
 	// 初期設定
 	InitKeyCommand();
@@ -127,7 +129,7 @@ void CommandHandler::InitPadCommand()
 	//AddInputCode(CommandKind::kMoveRightCamera,	pad::StickKind	::kRSRight);
 }
 
-bool CommandHandler::IsExecutingCommand(const CommandKind kind)
+bool CommandHandler::IsExecuting(const CommandKind kind)
 {
 	// 特殊コマンドのトリガー方式の場合、入力カウントによって実行されたかを判定
 	if (m_special_command.count(kind))
@@ -235,7 +237,7 @@ void CommandHandler::TryExecuteCommand(const std::vector<std::pair<CommandKind, 
 				// 特殊コマンドのトリガー方式であった場合、入力回数をカウント
 				if (m_special_command.count(code.first) && input->GetInputState(code.second) == InputState::kSingle)
 				{
-					CountUpTrigger(code.first);
+					++m_trigger_count.at(code.first);
 				}
 
 				executed_command		 .emplace_back(code.first);

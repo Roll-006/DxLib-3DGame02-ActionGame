@@ -53,6 +53,7 @@ public:
 
 	#pragma region Try”»’è
 	[[nodiscard]] bool TryMove();
+	[[nodiscard]] bool TryRun();
 	#pragma endregion
 
 

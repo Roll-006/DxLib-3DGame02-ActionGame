@@ -86,7 +86,7 @@ private:
 	static constexpr float kLookDirCorrectAngle					= 0.1f;				// 見る方向の補正角度
 	static constexpr float kLookDirCorrectAngleForAim			= 0.3f;				// エイミング時の見る方向を回転させる角度
 	static constexpr float kConfirmMoveDirThresholdDistance		= 0.08f;			// 目的の移動方向に到達したと判定する閾値
-	static constexpr float kConfirmLookDirThresholdAngle		= 10.0f;			// 目的の見る方向に到達したと判定する閾値
+	static constexpr float kConfirmLookDirThresholdAngle		= 20.0f;			// 目的の見る方向に到達したと判定する閾値
 	static constexpr float kConfirmLookDirThresholdAngleForAim	= 20.0f;			// エイミング時の目的の見る方向に到達したと判定する閾値
 
 	static constexpr int   kWalkStickSlopeLimit					= 15000;			// 歩き状態とするスティック傾きの上限

@@ -26,7 +26,7 @@ void player_state::Move::LateUpdate(Player* obj)
 
 void player_state::Move::Enter(Player* obj)
 {
-	m_is_first_move_frame = true;
+	m_is_first_move_frame	= true;
 }
 
 void player_state::Move::Exit(Player* obj)
@@ -36,7 +36,7 @@ void player_state::Move::Exit(Player* obj)
 
 std::shared_ptr<IState<Player>> player_state::Move::ChangeState(const Player* obj)
 {
-	// ‰½‚à“ü—Í‚³‚ê‚Ä‚¢‚È‚¢ê‡ANull(Idle)‚ÖˆÚs
+	// IDLE
 	if (!obj->GetStateController()->TryMove())
 	{
 		return obj->GetStateController()->GetState<MoveNull, Player>();

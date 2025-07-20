@@ -37,7 +37,7 @@ std::shared_ptr<IState<Player>> player_state::EquipGun::ChangeState(const Player
 	const auto state_controller = obj->GetStateController();
 
 	// 入力されてから一定時間経過でエイミング状態へ移行
-	if (CommandHandler::GetInstance()->IsExecutingCommand(CommandKind::kAimGun))
+	if (CommandHandler::GetInstance()->IsExecuting(CommandKind::kAimGun))
 	{
 		m_possible_aim_timer += FPS::GetDeltaTime();
 		if (m_possible_aim_timer >= kPossibleAimTime)

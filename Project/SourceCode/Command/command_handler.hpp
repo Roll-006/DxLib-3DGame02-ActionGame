@@ -14,16 +14,21 @@ public:
 	void InitPadCommand();
 
 	/// @brief トリガーの入力回数をリセットする
-	void InitTriggerCount(const CommandKind kind) { m_trigger_count.at(kind) = 0; }
+	void InitTriggerInputCount(const CommandKind kind) { m_trigger_count.at(kind) = 0; }
 
 	/// @brief トリガーの入力回数をカウントする
-	void CountUpTrigger(const CommandKind kind) { ++m_trigger_count.at(kind); }
+	//void CountUpTriggerInput(const CommandKind kind) { ++m_trigger_count.at(kind); }
+
+	/// @brief 特殊コマンドの入力モードを設定する
+	/// @param kind コマンドの種類
+	/// @param input_mode 入力モード
+	void SetInputModeKind(const CommandKind kind, const InputModeKind input_mode) { m_special_command.at(kind) = input_mode; }
 
 	[[nodiscard]] InputModeKind GetInputModeKind(const CommandKind kind) const { return m_special_command.at(kind); }
 	[[nodiscard]] int			GetTriggerCount (const CommandKind kind) const { return m_trigger_count.at(kind); }
 
 	/// @brief 指定のコマンドが現在実行中かを判定
-	[[nodiscard]] bool IsExecutingCommand(const CommandKind kind);
+	[[nodiscard]] bool IsExecuting(const CommandKind kind);
 
 private:
 	CommandHandler();

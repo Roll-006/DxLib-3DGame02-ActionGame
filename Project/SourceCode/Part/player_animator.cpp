@@ -437,49 +437,49 @@ void PlayerAnimator::AttachAnimEightDir(const int forward_anim_kind)
 
 	// forwardのアニメーションを基準とし、enum classの値をずらしてアタッチ
 	// 左前方
-	if (command->IsExecutingCommand(CommandKind::kMoveUpPlayer)   && command->IsExecutingCommand(CommandKind::kMoveLeftPlayer))
+	if (command->IsExecuting(CommandKind::kMoveUpPlayer)   && command->IsExecuting(CommandKind::kMoveLeftPlayer))
 	{
 		AttachAnim(forward_anim_kind + 4);
 		return;
 	}
 	// 右前方
-	if (command->IsExecutingCommand(CommandKind::kMoveUpPlayer)	  && command->IsExecutingCommand(CommandKind::kMoveRightPlayer))
+	if (command->IsExecuting(CommandKind::kMoveUpPlayer)   && command->IsExecuting(CommandKind::kMoveRightPlayer))
 	{
 		AttachAnim(forward_anim_kind + 5);
 		return;
 	}
 	// 左後方
-	if (command->IsExecutingCommand(CommandKind::kMoveDownPlayer) && command->IsExecutingCommand(CommandKind::kMoveLeftPlayer))
+	if (command->IsExecuting(CommandKind::kMoveDownPlayer) && command->IsExecuting(CommandKind::kMoveLeftPlayer))
 	{
 		AttachAnim(forward_anim_kind + 6);
 		return;
 	}
 	// 右後方
-	if (command->IsExecutingCommand(CommandKind::kMoveDownPlayer) && command->IsExecutingCommand(CommandKind::kMoveRightPlayer))
+	if (command->IsExecuting(CommandKind::kMoveDownPlayer) && command->IsExecuting(CommandKind::kMoveRightPlayer))
 	{
 		AttachAnim(forward_anim_kind + 7);
 		return;
 	}
 	// 前方
-	if (command->IsExecutingCommand(CommandKind::kMoveUpPlayer))
+	if (command->IsExecuting(CommandKind::kMoveUpPlayer))
 	{
 		AttachAnim(forward_anim_kind);
 		return;
 	}
 	// 後方
-	if (command->IsExecutingCommand(CommandKind::kMoveDownPlayer))
+	if (command->IsExecuting(CommandKind::kMoveDownPlayer))
 	{
 		AttachAnim(forward_anim_kind + 1);
 		return;
 	}
 	// 左
-	if (command->IsExecutingCommand(CommandKind::kMoveLeftPlayer))
+	if (command->IsExecuting(CommandKind::kMoveLeftPlayer))
 	{
 		AttachAnim(forward_anim_kind + 2);
 		return;
 	}
 	// 右
-	if (command->IsExecutingCommand(CommandKind::kMoveRightPlayer))
+	if (command->IsExecuting(CommandKind::kMoveRightPlayer))
 	{
 		AttachAnim(forward_anim_kind + 3);
 		return;

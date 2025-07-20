@@ -15,6 +15,7 @@ player_state::MoveNull::~MoveNull()
 void player_state::MoveNull::Update(Player* obj)
 {
 	obj->CalcStopSpeed();
+
 	m_non_move_time += FPS::GetDeltaTime();
 }
 

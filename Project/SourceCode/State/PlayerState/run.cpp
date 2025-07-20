@@ -29,20 +29,29 @@ void player_state::Run::Enter(Player* obj)
 
 void player_state::Run::Exit(Player* obj)
 {
-	CommandHandler::GetInstance()->InitTriggerCount(CommandKind::kRun);
+	CommandHandler::GetInstance()->InitTriggerInputCount(CommandKind::kRun);
 }
 
 std::shared_ptr<IState<Player>> player_state::Run::ChangeState(const Player* obj)
 {
 	const auto state_controller = obj->GetStateController();
+	const auto command			= CommandHandler::GetInstance();
+	const auto command_mode		= command->GetInstance()->GetInputModeKind(CommandKind::kRun);
 
-	if (!CommandHandler::GetInstance()->IsExecutingCommand(CommandKind::kRun))
+	// NULL
+	if (!state_controller->TryRun())
 	{
 		return state_controller->GetState<ActionNull, Player>();
 	}
-	if (CommandHandler::GetInstance()->IsExecutingCommand(CommandKind::kCrouch))
+	// しゃがむ
+	if (command->IsExecuting(CommandKind::kCrouch))
 	{
-		return state_controller->GetState<Crouch, Player>();
+		// Runコマンドがホールド方式で、入力中であった場合は移行を許可しない
+		if (!(command_mode == InputModeKind::kHold && state_controller->TryRun()))
+		{
+			return state_controller->GetState<Crouch, Player>();
+		}
+		command->InitTriggerInputCount(CommandKind::kCrouch);
 	}
 
 	return nullptr;

@@ -35,11 +35,13 @@ std::shared_ptr<IState<Player>> player_state::ActionNull::ChangeState(const Play
 {
 	const auto state_controller = obj->GetStateController();
 
-	if (CommandHandler::GetInstance()->IsExecutingCommand(CommandKind::kRun))
+	// ƒ_ƒbƒVƒ…
+	if (state_controller->TryRun())
 	{
 		return state_controller->GetState<Run, Player>();
 	}
-	if (CommandHandler::GetInstance()->IsExecutingCommand(CommandKind::kCrouch))
+	// ‚µ‚á‚ª‚Ş
+	if (CommandHandler::GetInstance()->IsExecuting(CommandKind::kCrouch))
 	{
 		return state_controller->GetState<Crouch, Player>();
 	}

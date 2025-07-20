@@ -201,10 +201,10 @@ void RotControlVirtualCamera::CalcMoveDirFromCommand()
 	const auto command = CommandHandler::GetInstance();
 
 	// コマンドパターンで入力された場合の速度・方向を取得
-	if (	command->IsExecutingCommand(CommandKind::kMoveUpCamera)
-		||	command->IsExecutingCommand(CommandKind::kMoveDownCamera)
-		||	command->IsExecutingCommand(CommandKind::kMoveLeftCamera)
-		||	command->IsExecutingCommand(CommandKind::kMoveRightCamera))
+	if (	command->IsExecuting(CommandKind::kMoveUpCamera)
+		||	command->IsExecuting(CommandKind::kMoveDownCamera)
+		||	command->IsExecuting(CommandKind::kMoveLeftCamera)
+		||	command->IsExecuting(CommandKind::kMoveRightCamera))
 	{
 		m_move_dir = v3d::GetNormalizedV(m_move_dir);
 		m_velocity = m_move_dir * kMoveSpeedWithButton;
