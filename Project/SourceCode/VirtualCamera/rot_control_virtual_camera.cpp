@@ -1,10 +1,10 @@
 #include "rot_control_virtual_camera.hpp"
 #include "../Command/command_handler.hpp"
 
-RotControlVirtualCamera::RotControlVirtualCamera() : 
+RotControlVirtualCamera::RotControlVirtualCamera(const int priority) :
 	ControlVirtualCameraBase(ObjName.ROT_CONTROL_CAMERA, VirtualCameraKind::kRotControl)
 {
-	m_priority = kPriority;
+	m_priority = priority;
 	m_active_scene_kind.emplace_back(SceneKind::kPlay);
 
 	m_aim ->SetAimCorrect(kAimCorrect);
@@ -33,6 +33,7 @@ void RotControlVirtualCamera::Update()
 	m_body->SetDistanceToTarget(kDistanceToTarget);
 	m_body->SetCameraPos(m_aim->GetAimPos() + m_body->GetCameraCorrectDir() * m_body->GetDistanceToTarget());
 
+	DrawSphere3D(m_aim->GetAimPos(), 5, 8, 0xff0000, 0xff0000, FALSE);
 }
 
 void RotControlVirtualCamera::LateUpdate()

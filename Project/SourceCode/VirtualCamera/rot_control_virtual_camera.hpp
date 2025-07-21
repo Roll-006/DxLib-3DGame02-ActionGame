@@ -6,7 +6,7 @@
 class RotControlVirtualCamera final : public ControlVirtualCameraBase
 {
 public:
-	RotControlVirtualCamera();
+	RotControlVirtualCamera(const int priority);
 	~RotControlVirtualCamera()		override;
 
 	void Init()						override;

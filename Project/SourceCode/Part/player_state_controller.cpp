@@ -166,7 +166,7 @@ std::vector<std::shared_ptr<IState<Player>>> PlayerStateController::CreateChange
 	}
 
 	// ã‚ÌŠK‘w‚É‚ ‚éƒXƒe[ƒg‚Ì’â~ˆ—
-	for (int i = 0; i < future_state.size(); ++i)
+	for (size_t i = 0; i < future_state.size(); ++i)
 	{
 		// ’â~”»’è
 		for (auto itr = check_stop_state_index.begin(); itr != check_stop_state_index.end(); )
@@ -210,7 +210,7 @@ std::vector<std::shared_ptr<IState<Player>>> PlayerStateController::CreateFuture
 
 void PlayerStateController::StopState(std::vector<std::shared_ptr<IState<Player>>>& future_state, const std::shared_ptr<IState<Player>> stop_state)
 {
-	for (int i = 0; i < future_state.size(); ++i)
+	for (size_t i = 0; i < future_state.size(); ++i)
 	{
 		if (future_state.at(i) == stop_state)
 		{

@@ -66,7 +66,7 @@ void Circle::SetPos(const VECTOR& pos)
 	VECTOR dir2 = math::GetNormalVector(m_normal_vector, dir1);
 	m_pos		= pos;
 	
-	for (int i = 0; i < m_triangles.size(); ++i)
+	for (size_t i = 0; i < m_triangles.size(); ++i)
 	{
 		VECTOR pos1 = m_pos + m_radius * (cosf(m_interval_andle *  i     ) * dir1 + sinf(m_interval_andle *  i     ) * dir2);
 		VECTOR pos2 = m_pos + m_radius * (cosf(m_interval_andle * (i + 1)) * dir1 + sinf(m_interval_andle * (i + 1)) * dir2);

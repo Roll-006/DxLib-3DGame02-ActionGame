@@ -14,7 +14,6 @@ ShareScene::ShareScene() :
 
 	// ƒƒCƒ“ƒJƒƒ‰‚Ì“o˜^
 	const auto camera_manager = CameraManager::GetInstance();
-	const auto rot_camera = std::make_shared<RotControlVirtualCamera>();
 	camera_manager->SetMainCamera(m_main_camera);
 }
 

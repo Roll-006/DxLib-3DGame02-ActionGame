@@ -14,6 +14,7 @@
 
 #include "../Data/Kind/time_kind.hpp"
 #include "../Data/IncludeList/vector.hpp"
+#include "../FPS/fps.hpp"
 
 class Line;
 class Segment;
@@ -25,12 +26,15 @@ class Sphere;
 class Capsule;
 class OBB;
 
+class Transform;
+
 namespace math
 {
 	static constexpr float kDegreesToRadian = DX_PI_F / 180.0f;		// ディグリーをラジアンに変換(変換対象と掛け算を行う)
 	static constexpr float kRadianToDegrees = 180.0f / DX_PI_F;		// ラジアンをディグリーに変換(変換対象と掛け算を行う)
 	static constexpr float kEpsilonLow		= 1e-4f;				// 0とみなす(低精度)
 	static constexpr float kEpsilonHigh		= 1e-6f;				// 0とみなす(高精度)
+	static constexpr float kStopThreshold	= 2.0f;
 
 
 	#pragma region 変換
@@ -57,18 +61,6 @@ namespace math
 	inline [[nodiscard]] VECTOR RoundOff(const VECTOR& value, int digit)
 	{
 		return VGet(RoundOff(value.x, digit), RoundOff(value.y, digit), RoundOff(value.z, digit));
-	}
-
-	/// @brief 0～1の間に変換した値を取得
-	/// @tparam T 変換対象の型
-	/// @tparam ReturnValue 戻り値の型(浮動小数点数型である必要有り)
-	/// @param min 値の最小値(この値を0とする)
-	/// @param max 値の最大値(この値を1とする)
-	/// @param value 変換対象の値
-	template<typename T, common_concepts::FloatingPointT ReturnT>
-	[[nodiscard]] ReturnT GetUnitValue(const T min, const T max, const T value)
-	{
-		return static_cast<ReturnT>(value - min) / (max - min);
 	}
 
 	/// @brief 回転行列からクォータニオンへ変換
@@ -114,7 +106,7 @@ namespace math
 	#pragma endregion
 
 
-	#pragma region 値の変化
+	#pragma region インクリメント / デクリメント
 	/// @brief 値を増加させる
 	/// @param value 増加させる値
 	/// @param increase_value 増加量
@@ -179,9 +171,48 @@ namespace math
 	#pragma endregion
 
 
+	#pragma region 補間
+	/// @brief 始点から終点までの座標補間を行う
+	/// @param begion_pos 始点
+	/// @param end_pos 終点
+	/// @param current_pos 現在の座標
+	/// @param interpolate_time 補間にかける時間
+	/// @return 補間後の座標
+	[[nodiscard]] VECTOR GetInterpolatedPos(
+		const VECTOR& begion_pos, 
+		const VECTOR& end_pos, 
+		const VECTOR& current_pos, 
+		const float interpolate_time);
+	
+	/// @brief 2つのTransform間で補間されたTransformを取得します。
+	/// @param begion_transform 補間の開始点となるTransform
+	/// @param end_transform 補間の終了点となるTransform
+	/// @param current_transform 現在のTransform
+	/// @param interpolate_time 補間にかける時間
+	/// @return 補間されたTransform
+	[[nodiscard]] std::shared_ptr<Transform> GetInterpolatedTransform(
+		const std::shared_ptr<Transform> begion_transform,
+		const std::shared_ptr<Transform> end_transform,
+		const std::shared_ptr<Transform> current_transform,
+		const float interpolate_time);
+	#pragma endregion
+
+
 	#pragma region 値の修正
 	/// @brief 角度が-π～πの値をループするように繋ぎ合わせる
 	float ConnectMinusPiToPi(const float angle);
+
+	/// @brief 0～1の間に変換した値を取得
+	/// @tparam T 変換対象の型
+	/// @tparam ReturnValue 戻り値の型(浮動小数点数型である必要有り)
+	/// @param min 値の最小値(この値を0とする)
+	/// @param max 値の最大値(この値を1とする)
+	/// @param value 変換対象の値
+	template<typename T, common_concepts::FloatingPointT ReturnT>
+	[[nodiscard]] ReturnT GetUnitValue(const T min, const T max, const T value)
+	{
+		return static_cast<ReturnT>(value - min) / (max - min);
+	}
 
 	/// @brief 特定の範囲にあった値を、別の範囲に置き換えた場合の値を取得
 	/// @param old_min もとの範囲の最小値

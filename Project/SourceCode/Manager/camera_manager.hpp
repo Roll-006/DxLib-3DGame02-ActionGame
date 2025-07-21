@@ -1,8 +1,8 @@
 #pragma once
+#include <queue>
 #include "../Base/singleton_base.hpp"
 
 #include "../VirtualCamera/rot_control_virtual_camera.hpp"
-#include "../VirtualCamera/scope_virtual_camera.hpp"
 #include "../Object/main_camera.hpp"
 
 namespace virtual_camera_concepts
@@ -27,9 +27,16 @@ public:
 	template<virtual_camera_concepts::VirtualCameraT VirtualCameraT>
 	void AddVirtualCamera(const std::shared_ptr<VirtualCameraT> virtual_camera)
 	{
-		if (!m_virtual_camera.count(virtual_camera->GetObjHandle()))
+		if (!m_virtual_cameras.count(virtual_camera->GetObjHandle()))
 		{
-			m_virtual_camera[virtual_camera->GetObjHandle()] = virtual_camera;
+			m_virtual_cameras[virtual_camera->GetObjHandle()] = virtual_camera;
+			
+			// 優先順位も同時に格納
+			for (const auto& v_camera : m_virtual_cameras)
+			{
+				m_priority[v_camera.second->GetObjHandle()] = v_camera.second->GetPriority();
+			}
+			m_priority = algorithm::Sort(m_priority, SortKind::kDescending);
 		}
 	}
 	
@@ -58,7 +65,6 @@ public:
 	/// @brief バーチャルカメラをブレンド中であるかを判定
 	[[nodiscard]] bool IsBlending() const { return m_is_blending; }
 
-
 private:
 	CameraManager();
 	~CameraManager() override;
@@ -66,22 +72,28 @@ private:
 	/// @brief バーチャルカメラ間のブレンドを行う
 	void BlendVirtualCamera();
 
-	/// @brief バーチャルカメラのブレンド結果をメインカメラに適用させる
-	void ApplyBlendResultMatrix();
-	
+	/// @brief ブレンド対象となるバーチャルカメラを設定
+	void SetBlendVirtualCamera(std::queue<int>& sorted_camera_handles);
+
 private:
-	static constexpr float  kNear		= 1.0f;
-	static constexpr float  kFar		= 3000.0f;
-	static constexpr float  kFOV		= 25.0f;
+	static constexpr float kNear		= 10.0f;
+	static constexpr float kFar			= 4000.0f;
+	static constexpr float kFOV			= 25.0f;
+	static constexpr float kBlendTime	= 5.0f;
 
 	std::shared_ptr<MainCamera>									m_main_camera;		// バーチャルカメラを適用させるメインカメラ
-	std::unordered_map<int, std::shared_ptr<VirtualCameraBase>> m_virtual_camera;	// 登録されているバーチャルカメラ
-	std::unordered_map<TimeKind, Transform>						m_blend_transform;	// ブレンド対象のトランスフォーム
+	std::unordered_map<int, std::shared_ptr<VirtualCameraBase>>	m_virtual_cameras;	// 登録されているバーチャルカメラ
+	std::unordered_map<TimeKind, std::shared_ptr<Transform>>	m_blend_transforms;	// ブレンド対象のトランスフォーム
+	std::unordered_map<int, int>								m_priority;			// 優先順位<オブジェクトハンドル, 優先度>
+	std::unordered_map<TimeKind, std::shared_ptr<Transform>>	m_result_transform;	// ブレンド結果トランスフォーム
 
 	float m_blend_time;					// ブレンドにかける時間
 	bool  m_is_blending;				// ブレンド中かを判定
 	bool  m_is_invert_horizontal;		// 操作時に左右反転を行うかを判定
 	bool  m_is_invert_vertical;			// 操作時に上下反転を行うかを判定
+
+	bool test_is_add1;
+	bool test_is_add2;
 
 	friend SingletonBase<CameraManager>;
 };

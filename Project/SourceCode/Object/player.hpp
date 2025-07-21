@@ -11,15 +11,6 @@ class PlayerStateController;
 class Player final : public CharaBase
 {
 public:
-	enum class MoveDir
-	{
-		kForward,
-		kBackward,
-		kLeft,
-		kRight,
-	};
-
-public:
 	Player();
 	~Player() override;
 

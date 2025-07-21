@@ -24,7 +24,7 @@ void CollisionManager::LateUpdate()
 			// コライダーとの距離を取得
 			std::unordered_map<int, TargetColliderData> target;
 			std::unordered_map<int, float> distance;
-			for (int i = 0; i < pair.target_data.size(); ++i)
+			for (size_t i = 0; i < pair.target_data.size(); ++i)
 			{
 				if (pair.target_data.at(i).intersection)
 				{
@@ -169,7 +169,7 @@ std::vector<ColliderPairOneToManyData> CollisionManager::CreateHitColliderPairs(
 						}
 
 						// オーナーが同じデータへターゲットを追加
-						for (int i = 0; i < collider_pairs.size(); ++i)
+						for (size_t i = 0; i < collider_pairs.size(); ++i)
 						{
 							if (collider_pairs.at(i).owner_collider == owner_obj_collider)
 							{

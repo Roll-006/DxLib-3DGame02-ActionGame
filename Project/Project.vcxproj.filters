@@ -170,10 +170,7 @@
     <ClCompile Include="SourceCode\Base\virtual_camera_base.cpp">
       <Filter>Base</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\VirtualCamera\scope_virtual_camera.cpp">
-      <Filter>VirtualCamera</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\VirtualCamera\aiming_virtual_camera.cpp">
+    <ClCompile Include="SourceCode\VirtualCamera\virtual_camera.cpp">
       <Filter>VirtualCamera</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\UI\player_ui_creator.cpp">
@@ -622,10 +619,7 @@
     <ClInclude Include="SourceCode\Base\virtual_camera_base.hpp">
       <Filter>Base</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\VirtualCamera\scope_virtual_camera.hpp">
-      <Filter>VirtualCamera</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\VirtualCamera\aiming_virtual_camera.hpp">
+    <ClInclude Include="SourceCode\VirtualCamera\virtual_camera.hpp">
       <Filter>VirtualCamera</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\UI\player_ui_creator.hpp">

@@ -241,8 +241,7 @@
     <ClCompile Include="SourceCode\VirtualCamera\aiming_camera (2).cpp" />
     <ClCompile Include="SourceCode\VirtualCamera\aiming_camera (3).cpp" />
     <ClCompile Include="SourceCode\VirtualCamera\rot_control_virtual_camera.cpp" />
-    <ClCompile Include="SourceCode\VirtualCamera\scope_virtual_camera.cpp" />
-    <ClCompile Include="SourceCode\VirtualCamera\aiming_virtual_camera.cpp" />
+    <ClCompile Include="SourceCode\VirtualCamera\virtual_camera.cpp" />
     <ClCompile Include="SourceCode\Window\window.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -405,8 +404,7 @@
     <ClInclude Include="SourceCode\VirtualCamera\aiming_camera (2).hpp" />
     <ClInclude Include="SourceCode\VirtualCamera\aiming_camera (3).hpp" />
     <ClInclude Include="SourceCode\VirtualCamera\rot_control_virtual_camera.hpp" />
-    <ClInclude Include="SourceCode\VirtualCamera\scope_virtual_camera.hpp" />
-    <ClInclude Include="SourceCode\VirtualCamera\aiming_virtual_camera.hpp" />
+    <ClInclude Include="SourceCode\VirtualCamera\virtual_camera.hpp" />
     <ClInclude Include="SourceCode\Window\window.hpp" />
   </ItemGroup>
   <ItemGroup>

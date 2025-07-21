@@ -39,7 +39,7 @@ void House::Draw() const
 {
 	if (!IsActive()) { return; }
 
-	m_modeler->Draw();
+	//m_modeler->Draw();
 }
 
 void House::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)

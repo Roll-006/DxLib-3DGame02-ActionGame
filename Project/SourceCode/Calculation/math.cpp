@@ -1,4 +1,5 @@
 ﻿#include "../Data/IncludeList/shape.hpp"
+#include "../Part/transform.hpp"
 #include "math.hpp"
 
 #pragma region 変換
@@ -42,7 +43,7 @@ Quaternion math::ConvertRotMatrixToQuaternion(const MATRIX& mat)
 	};
 
 	int max_index = 0;
-	for (int i = 0; i < e.size(); ++i)
+	for (size_t i = 0; i < e.size(); ++i)
 	{
 		if (e.at(i) > e.at(max_index))
 		{
@@ -159,7 +160,56 @@ MATRIX math::ConvertEulerAnglesToRotMatrix(const VECTOR& angle)
 #pragma endregion
 
 
+#pragma region 補間
+VECTOR math::GetInterpolatedPos(
+    const VECTOR& begion_pos, 
+    const VECTOR& end_pos, 
+    const VECTOR& current_pos, 
+    const float interpolate_time)
+{
+    VECTOR pos = current_pos;
+    const VECTOR distance_v = end_pos - begion_pos;
+    const VECTOR dir        = v3d::GetNormalizedV(distance_v);
+    const float  move_speed = (VSize(distance_v) / interpolate_time) * FPS::GetDeltaTime();
+
+    //DrawFormatString(500,   0, 0xffffff, "begion_pos  : %f, %f, %f", begion_pos.x,  begion_pos.y,  begion_pos.z);
+    //DrawFormatString(500,  20, 0xffffff, "end_pos     : %f, %f, %f", end_pos.x,     end_pos.y,     end_pos.z);
+    //DrawFormatString(500,  40, 0xffffff, "current_pos : %f, %f, %f", current_pos.x, current_pos.y, current_pos.z);
+    //DrawFormatString(500,  60, 0xffffff, "dir         : %f, %f, %f", dir.x, dir.y, dir.z);
+    //DrawFormatString(500,  80, 0xffffff, "distance    : %f", VSize(distance_v));
+    //DrawFormatString(500, 100, 0xffffff, "move_speed  : %f", move_speed);
+
+    pos += dir * move_speed;
+    if (VSize(pos - end_pos) < move_speed * kStopThreshold)
+    {
+        pos = end_pos;
+    }
+
+    return pos;
+}
+
+std::shared_ptr<Transform> math::GetInterpolatedTransform(
+    const std::shared_ptr<Transform> begion_transform, 
+    const std::shared_ptr<Transform> end_transform, 
+    const std::shared_ptr<Transform> current_transform, 
+    const float interpolate_time)
+{
+    auto transform = std::make_shared<Transform>();
+
+    // 座標補間
+    const VECTOR begion_pos     = begion_transform  ->GetPos(CoordinateKind::kWorld);
+    const VECTOR end_pos        = end_transform     ->GetPos(CoordinateKind::kWorld);
+    const VECTOR current_pos    = current_transform ->GetPos(CoordinateKind::kWorld);
+    transform->SetPos(CoordinateKind::kWorld,
+        math::GetInterpolatedPos(begion_pos, end_pos, current_pos, interpolate_time));
+
+    return transform;
+}
+#pragma endregion}
+
+
 #pragma region 修正
+
 float math::ConnectMinusPiToPi(const float angle)
 {
     // -π～πの値をループ

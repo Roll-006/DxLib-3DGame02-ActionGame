@@ -4,16 +4,16 @@
 
 Player::Player() :
 	CharaBase(ObjName.PLAYER, ObjTag.PLAYER, ModelPath.CHARA_01, MassKind::kMedium),
-	m_state(std::make_shared<PlayerStateController>()),
-	m_move_speed(0.0f),
-	m_look_dir_correct_angle(0.0f),
-	m_confirm_look_dir_threshold_angle(0.0f),
-	m_bone_pos_corrector(std::make_shared<BonePosCorrector>())
+	m_state								(std::make_shared<PlayerStateController>()),
+	m_move_speed						(0.0f),
+	m_look_dir_correct_angle			(0.0f),
+	m_confirm_look_dir_threshold_angle	(0.0f),
+	m_bone_pos_corrector				(std::make_shared<BonePosCorrector>())
 {
 	// 初期pos・dirを設定
 	m_look_dir[TimeKind::kCurrent] = m_look_dir[TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);
-	m_transform->SetRot(CoordinateKind::kWorld, m_look_dir.at(TimeKind::kCurrent));
-	m_transform->SetScale(CoordinateKind::kWorld, kModelScale);
+	m_transform->SetRot		(CoordinateKind::kWorld, m_look_dir.at(TimeKind::kCurrent));
+	m_transform->SetScale	(CoordinateKind::kWorld, kModelScale);
 
 	// コライダー・トリガーを設定
 	CreateCharaBasisCollider(kCapsuleRadius, kLandingTriggerRadius);
@@ -35,13 +35,9 @@ Player::Player() :
 	// TODO : 仮で銃用のカメラを登録
 	const auto camera_manager = CameraManager::GetInstance();
 
-	const auto rot_camera = std::make_shared<RotControlVirtualCamera>();
+	const auto rot_camera = std::make_shared<RotControlVirtualCamera>(1);
 	camera_manager->AddVirtualCamera(rot_camera);
 	rot_camera->AttachTarget(m_transform, VGet(0.0f, 30.0f, 0.0f));
-
-	const auto scope_camera = std::make_shared<ScopeVirtualCamera>();
-	camera_manager->AddVirtualCamera(scope_camera);
-	scope_camera->AttachTarget(m_transform, VGet(0.0f, 30.0f, 0.0f));
 
 	// TODO : 仮で所持残り弾数を設定
 	m_current_remaining_bullet_num = 10000;
@@ -112,14 +108,6 @@ void Player::Draw() const
 		{
 			shape->Draw(true, 0, 0xffffff);
 		}
-	}
-
-
-
-	if (m_move_dir.count(TimeKind::kNext))
-	{
-		//DrawFormatString(0, 20, 0xffffff, "m_move_dir.at(TimeKind::kCurrent).y : %f", m_move_dir.at(TimeKind::kCurrent).y);
-		//DrawFormatString(0, 40, 0xffffff, "m_move_dir.at(TimeKind::kNext).y    : %f", m_move_dir.at(TimeKind::kNext).y);
 	}
 }
 
@@ -198,14 +186,14 @@ void Player::DirOfMovement()
 		m_look_dir.at(TimeKind::kNext) = v3d::GetNormalizedV(m_move_dir[TimeKind::kCurrent]);
 	}
 
-	auto pos = m_transform->GetPos(CoordinateKind::kWorld);
-	VECTOR o1 = { 0, 30, 0 };
-	VECTOR o2 = { 0, 40, 0 };
-	VECTOR o3 = { 0, 50, 0 };
-	DrawLine3D(pos + o1, pos + o1 + m_look_dir.at(TimeKind::kCurrent)	* 100, GetColor(255, 0, 0));
-	DrawLine3D(pos + o2, pos + o2 + m_look_dir.at(TimeKind::kNext)		* 100, GetColor(0, 255, 0));
-	DrawLine3D(pos + o3, pos + o3 + m_move_dir[TimeKind::kCurrent]		* 100, GetColor(0, 0, 255));
-	DrawFormatString(0, 40, 0xffffff, "m_look_dir.at(TimeKind::kNext).y : %f, %f, %f", m_look_dir.at(TimeKind::kNext).x, m_look_dir.at(TimeKind::kNext).y, m_look_dir.at(TimeKind::kNext).z);
+	//auto pos = m_transform->GetPos(CoordinateKind::kWorld);
+	//VECTOR o1 = { 0, 30, 0 };
+	//VECTOR o2 = { 0, 40, 0 };
+	//VECTOR o3 = { 0, 50, 0 };
+	//DrawLine3D(pos + o1, pos + o1 + m_look_dir.at(TimeKind::kCurrent)	* 100, GetColor(255, 0, 0));
+	//DrawLine3D(pos + o2, pos + o2 + m_look_dir.at(TimeKind::kNext)		* 100, GetColor(0, 255, 0));
+	//DrawLine3D(pos + o3, pos + o3 + m_move_dir[TimeKind::kCurrent]		* 100, GetColor(0, 0, 255));
+	//DrawFormatString(0, 40, 0xffffff, "m_look_dir.at(TimeKind::kNext).y : %f, %f, %f", m_look_dir.at(TimeKind::kNext).x, m_look_dir.at(TimeKind::kNext).y, m_look_dir.at(TimeKind::kNext).z);
 }
 
 void Player::DirOfCameraForward()
@@ -284,6 +272,8 @@ void Player::CalcMoveDir(const VECTOR& velocity)
 
 void Player::CalcLookDir()
 {
+	// FIXME : 振動発生中。look_dirのY軸が0でないことが原因を思われる。
+
 	// ヨー角回転を取得し、-π～πで値を管理する
 	const VECTOR current_yaw = math::GetYawRotVector(m_look_dir.at(TimeKind::kCurrent));
 	const VECTOR next_yaw	 = math::GetYawRotVector(m_look_dir.at(TimeKind::kNext));
@@ -298,7 +288,7 @@ void Player::CalcLookDir()
 	m_look_dir.at(TimeKind::kCurrent) = math::GetRotatedPos(m_look_dir.at(TimeKind::kCurrent), rot_q);
 
 	const float angle = math::GetAngleBetweenTwoVector(m_look_dir.at(TimeKind::kNext), m_look_dir.at(TimeKind::kCurrent));
-	DrawFormatString(0, 60, 0xffffff, "angle : %f", angle * math::kRadianToDegrees);
+	//DrawFormatString(0, 60, 0xffffff, "angle : %f", angle * math::kRadianToDegrees);
 	if (angle < m_confirm_look_dir_threshold_angle)
 	{
 		m_look_dir.at(TimeKind::kCurrent) = m_look_dir.at(TimeKind::kNext);
