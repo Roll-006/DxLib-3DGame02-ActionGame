@@ -33,7 +33,7 @@ void RotControlVirtualCamera::Update()
 	m_body->SetDistanceToTarget(kDistanceToTarget);
 	m_body->SetCameraPos(m_aim->GetAimPos() + m_body->GetCameraCorrectDir() * m_body->GetDistanceToTarget());
 
-	DrawSphere3D(m_aim->GetAimPos(), 5, 8, 0xff0000, 0xff0000, FALSE);
+	DrawSphere3D(m_aim->GetAimPos(), 4, 8, 0xff0000, 0xff0000, TRUE);
 }
 
 void RotControlVirtualCamera::LateUpdate()

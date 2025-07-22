@@ -69,14 +69,21 @@ private:
 	CameraManager();
 	~CameraManager() override;
 	
+
+	#pragma region ブレンド関連処理
 	/// @brief バーチャルカメラ間のブレンドを行う
 	void BlendVirtualCamera();
 
-	/// @brief ブレンド対象となるバーチャルカメラを設定
-	void SetBlendVirtualCamera(std::queue<int>& sorted_camera_handles);
+	/// @brief ターゲットとなるバーチャルカメラを変更する
+	void ChangeTargetVirtualCamera(const int obj_handle);
+
+	/// @brief ブレンド対象となるトランスフォームを設定
+	void SetBlendTransform(std::queue<int>& sorted_camera_handles);
 
 	/// @brief ブレンド結果行列トランスフォームを計算
 	void CalcBlendResuletTransform();
+	#pragma endregion
+
 
 private:
 	static constexpr float kNear		= 10.0f;
@@ -96,12 +103,16 @@ private:
 
 	int   m_target_virtual_camera_handle;	// ブレンドのターゲットとしているバーチャルカメラのハンドル
 	float m_blend_timer;					// ブレンドにかける時間を計測
+	float m_blend_coefficient;				// ブレンド係数
 	bool  m_is_blending;					// ブレンド中かを判定
 	bool  m_is_invert_horizontal;			// 操作時に左右反転を行うかを判定
 	bool  m_is_invert_vertical;				// 操作時に上下反転を行うかを判定
 
 	bool test_is_add1;
 	bool test_is_add2;
+	int handle1;
+	int handle2;
+	int handle3;
 
 	friend SingletonBase<CameraManager>;
 };
