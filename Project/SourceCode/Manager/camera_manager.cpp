@@ -2,7 +2,7 @@
 
 CameraManager::CameraManager() :
 	m_main_camera			(nullptr),
-	m_blend_time			(0.0f),
+	m_blend_timer			(0.0f),
 	m_is_blending			(false),
 	m_is_invert_horizontal	(false),
 	m_is_invert_vertical	(false)
@@ -116,8 +116,6 @@ void CameraManager::BlendVirtualCamera()
 		}
 	}
 
-	DrawSphere3D(VGet(100, 100, -500), 20, 8, 0xffffff, 0xffffff, FALSE);
-
 	// キューにソート済みバーチャルカメラのハンドルを格納
 	std::queue<int> sorted_camera_handles;
 	int add_count = 0;
@@ -142,11 +140,23 @@ void CameraManager::BlendVirtualCamera()
 			current_transform = m_result_transform.at(TimeKind::kCurrent);
 		}
 
-		m_result_transform.at(TimeKind::kCurrent) = math::GetInterpolatedTransform(
+		// タイマーを増加
+		math::Increase(m_blend_timer, FPS::GetDeltaTime(), kBlendTime);
+		const float t = math::GetUnitValue<float, float>(0.0f, kBlendTime, m_blend_timer);
+
+		// トランスフォーム間の補間
+		m_result_transform.at(TimeKind::kCurrent) = math::GetLerpTransform(
 			m_blend_transforms[TimeKind::kPrev],
 			m_blend_transforms[TimeKind::kCurrent],
-			current_transform,
-			kBlendTime);
+			t, true, false, true);
+
+		DrawFormatString(0, 20, 0xffffff, "blend : %f", m_blend_timer);
+		DrawFormatString(0, 40, 0xffffff, "t     : %f", t);
+
+		const auto p1 = m_blend_transforms[TimeKind::kCurrent]->GetPos(CoordinateKind::kWorld);
+		const auto p2 = m_result_transform.at(TimeKind::kCurrent)->GetPos(CoordinateKind::kWorld);
+		DrawFormatString(0, 60, 0xffffff, "pos1 : %f, %f, %f", p1.x, p1.y, p1.z);
+		DrawFormatString(0, 80, 0xffffff, "pos2 : %f, %f, %f", p2.x, p2.y, p2.z);
 
 		result_matrix = m_result_transform.at(TimeKind::kCurrent)->GetMatrix(CoordinateKind::kWorld);
 	}
