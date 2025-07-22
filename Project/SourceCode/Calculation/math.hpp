@@ -63,12 +63,11 @@ namespace math
 		return VGet(RoundOff(value.x, digit), RoundOff(value.y, digit), RoundOff(value.z, digit));
 	}
 
-	/// @brief 回転行列からクォータニオンへ変換
-	/// @brief TODO : 検証が必要
-	[[nodiscard]] Quaternion ConvertRotMatrixToQuaternion(const MATRIX& mat);
-
 	/// @brief クォータニオンから回転行列へ変換
-	[[nodiscard]] MATRIX ConvertQuaternionToRotMatrix(const MATRIX& mat, const Quaternion& q);
+	[[nodiscard]] MATRIX ConvertQuaternionToRotMatrix(const Quaternion& q);
+
+	/// @brief 回転行列からクォータニオンへ変換
+	[[nodiscard]] Quaternion ConvertRotMatrixToQuaternion(const MATRIX& rot_matrix);
 
 	/// @brief XYZ軸から回転行列へ変換
 	/// @param axes 行列に変換するXYZ軸
@@ -81,11 +80,11 @@ namespace math
 
 	/// @brief 回転行列からオイラー角へ変換
 	/// @brief FIXME : 不具合ありな可能性あり。要検証
-	[[nodiscard]] VECTOR ConvertRotMatrixToEulerAngles(const MATRIX& mat);
-	[[nodiscard]] VECTOR ConvertRotMatrixToEulerAngles(const MATRIX& mat, bool& is_gimbal_lock);
+	[[nodiscard]] VECTOR ConvertRotMatrixToEulerAngles(const MATRIX& rot_matrix);
+	[[nodiscard]] VECTOR ConvertRotMatrixToEulerAngles(const MATRIX& rot_matrix, bool& is_gimbal_lock);
 
 	/// @brief 回転行列からXYZ軸へ変換
-	[[nodiscard]] Axes ConvertRotMatrixToAxes(const MATRIX& mat);
+	[[nodiscard]] Axes ConvertRotMatrixToAxes(const MATRIX& rot_matrix);
 
 	/// @brief オイラー角から回転行列へ変換
 	[[nodiscard]] MATRIX ConvertEulerAnglesToRotMatrix(const VECTOR& angle);
@@ -173,25 +172,25 @@ namespace math
 
 	#pragma region 補間
 	/// @brief 始点から終点までの座標補間を行う
-	/// @param begion_pos 始点
+	/// @param begin_pos 始点
 	/// @param end_pos 終点
 	/// @param current_pos 現在の座標
 	/// @param interpolate_time 補間にかける時間
 	/// @return 補間後の座標
 	[[nodiscard]] VECTOR GetInterpolatedPos(
-		const VECTOR& begion_pos, 
+		const VECTOR& begin_pos, 
 		const VECTOR& end_pos, 
 		const VECTOR& current_pos, 
 		const float interpolate_time);
 	
 	/// @brief 2つのTransform間で補間されたTransformを取得します。
-	/// @param begion_transform 補間の開始点となるTransform
+	/// @param begin_transform 補間の開始点となるTransform
 	/// @param end_transform 補間の終了点となるTransform
 	/// @param current_transform 現在のTransform
 	/// @param interpolate_time 補間にかける時間
 	/// @return 補間されたTransform
 	[[nodiscard]] std::shared_ptr<Transform> GetInterpolatedTransform(
-		const std::shared_ptr<Transform> begion_transform,
+		const std::shared_ptr<Transform> begin_transform,
 		const std::shared_ptr<Transform> end_transform,
 		const std::shared_ptr<Transform> current_transform,
 		const float interpolate_time);

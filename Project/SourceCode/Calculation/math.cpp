@@ -3,9 +3,9 @@
 #include "math.hpp"
 
 #pragma region 変換
-MATRIX math::ConvertQuaternionToRotMatrix(const MATRIX& mat, const Quaternion& q)
+MATRIX math::ConvertQuaternionToRotMatrix(const Quaternion& q)
 {
-    MATRIX m = MTranspose(mat);
+    MATRIX m = MGetIdent();
 
 	//X軸
 	m.m[0][0] = 1.0f - 2.0f * q.y * q.y - 2.0f * q.z * q.z;
@@ -22,68 +22,66 @@ MATRIX math::ConvertQuaternionToRotMatrix(const MATRIX& mat, const Quaternion& q
 	m.m[2][1] =        2.0f * q.y * q.z - 2.0f * q.w * q.x;
 	m.m[2][2] = 1.0f - 2.0f * q.x * q.x - 2.0f * q.y * q.y;
 
-	// 計算後に転置し元に戻す
-	return MGetRotElem(MTranspose(m));
+	// 転置し列優先に対応
+	return MTranspose(m);
 }
 
-Quaternion math::ConvertRotMatrixToQuaternion(const MATRIX& mat)
+Quaternion math::ConvertRotMatrixToQuaternion(const MATRIX& rot_matrix)
 {
-    // TODO    : 処理の先頭と末尾で転置するべき
-	// FIXME   : おそらく不具合を起こす。行列の成分の配置が違う可能性高
-	// 参考URL : [ http://marupeke296.com/DXG_No58_RotQuaternionTrans.html ]
+    MATRIX m = MTranspose(MGetRotElem(rot_matrix));
 
-    MATRIX tmp_m = MTranspose(mat);
+    // 最大成分を検索
+    std::array<float, 4> e
+    {
+         m.m[0][0] - m.m[1][1] - m.m[2][2] + 1.0f,    // x
+        -m.m[0][0] + m.m[1][1] - m.m[2][2] + 1.0f,    // y
+        -m.m[0][0] - m.m[1][1] + m.m[2][2] + 1.0f,    // z
+         m.m[0][0] + m.m[1][1] + m.m[2][2] + 1.0f     // w
+    };
 
-	std::array<float, 4> e
-	{
-         tmp_m.m[0][0] - tmp_m.m[1][1] - tmp_m.m[2][2] + 1.0f,
-		-tmp_m.m[0][0] + tmp_m.m[1][1] - tmp_m.m[2][2] + 1.0f,
-		-tmp_m.m[0][0] - tmp_m.m[1][1] + tmp_m.m[2][2] + 1.0f,
-         tmp_m.m[0][0] + tmp_m.m[1][1] + tmp_m.m[2][2] + 1.0f
-	};
+    unsigned int max_index = 0;
+    for (size_t i = 1; i < e.size(); ++i)
+    {
+        if (e.at(i) > e.at(max_index))
+        {
+            max_index = i;
+        }
+    }
 
-	int max_index = 0;
-	for (size_t i = 0; i < e.size(); ++i)
-	{
-		if (e.at(i) > e.at(max_index))
-		{
-			max_index = i;
-		}
-	}
+    // 最大要素の値を算出
+    std::array<float, 4> q{ 0.0f, 0.0f, 0.0f, 1.0f };
+    const float v       = sqrtf(e.at(max_index)) * 0.5f;
+    const float mult    = 0.25f / v;
+    q.at(max_index)     = v;
 
-	std::array<float, 4> q{ 0.0f, 0.0f, 0.0f, 0.0f };
-	const float v    = sqrtf(e.at(max_index)) * 0.5f;
-	q.at(max_index)  = v;
-	const float mult = 0.25f / v;
+    switch (static_cast<quat::AxesKind>(max_index))
+    {
+    case quat::AxesKind::kX:
+        q.at(1) = (m.m[0][1] + m.m[1][0]) * mult;
+        q.at(2) = (m.m[2][0] + m.m[0][2]) * mult;
+        q.at(3) = (m.m[1][2] - m.m[2][1]) * mult;
+        break;
 
-	Quaternion ret_q(q.at(0), q.at(1), q.at(2), q.at(3));
-	switch (max_index)
-	{
-	case 0:
-		ret_q.y = (tmp_m.m[0][1] + tmp_m.m[1][0]) * mult;
-		ret_q.z = (tmp_m.m[2][0] + tmp_m.m[0][2]) * mult;
-		ret_q.w = (tmp_m.m[1][2] + tmp_m.m[2][1]) * mult;
-		break;
+    case quat::AxesKind::kY:
+        q.at(0) = (m.m[0][1] + m.m[1][0]) * mult;
+        q.at(2) = (m.m[1][2] + m.m[2][1]) * mult;
+        q.at(3) = (m.m[2][0] - m.m[0][2]) * mult;
+        break;
 
-	case 1:
-		ret_q.x = (tmp_m.m[0][1] + tmp_m.m[1][0]) * mult;
-		ret_q.z = (tmp_m.m[1][2] + tmp_m.m[2][1]) * mult;
-		ret_q.w = (tmp_m.m[2][0] + tmp_m.m[0][2]) * mult;
-		break;
+    case quat::AxesKind::kZ:
+        q.at(0) = (m.m[2][0] + m.m[0][2]) * mult;
+        q.at(1) = (m.m[1][2] + m.m[2][1]) * mult;
+        q.at(3) = (m.m[0][1] - m.m[1][0]) * mult;
+        break;
 
-	case 2:
-		ret_q.x = (tmp_m.m[2][0] + tmp_m.m[0][2]) * mult;
-		ret_q.y = (tmp_m.m[1][2] + tmp_m.m[2][1]) * mult;
-		ret_q.w = (tmp_m.m[0][1] + tmp_m.m[1][0]) * mult;
-		break;
+    case quat::AxesKind::kW:
+        q.at(0) = (m.m[1][2] - m.m[2][1]) * mult;
+        q.at(1) = (m.m[2][0] - m.m[0][2]) * mult;
+        q.at(2) = (m.m[0][1] - m.m[1][0]) * mult;
+        break;
+    }
 
-	case 3:
-		ret_q.x = (tmp_m.m[1][2] + tmp_m.m[2][1]) * mult;
-		ret_q.y = (tmp_m.m[2][0] + tmp_m.m[0][2]) * mult;
-		ret_q.z = (tmp_m.m[0][1] + tmp_m.m[1][0]) * mult;
-		break;
-	}
-	return ret_q;
+    return Quaternion(q.at(0), q.at(1), q.at(2), q.at(3));
 }
 
 MATRIX math::ConvertAxesToXYZRotMatrix(const Axes& axes, const Axes& parent_axes)
@@ -105,29 +103,29 @@ VECTOR math::ConvertAxesToEulerAngles(const Axes& axes, const Axes& parent_axes)
     return VECTOR(angle_x, angle_y, angle_z);
 }
 
-VECTOR math::ConvertRotMatrixToEulerAngles(const MATRIX& mat)
+VECTOR math::ConvertRotMatrixToEulerAngles(const MATRIX& rot_matrix)
 {
     VECTOR angle = v3d::GetZeroV();
-    const MATRIX m = mat;
+    const MATRIX m = MGetRotElem(rot_matrix);
 
     GetMatrixXYZRotation(&m, &angle.x, &angle.y, &angle.z);
 
     return angle;
 }
 
-VECTOR math::ConvertRotMatrixToEulerAngles(const MATRIX& mat, bool& is_gimbal_lock)
+VECTOR math::ConvertRotMatrixToEulerAngles(const MATRIX& rot_matrix, bool& is_gimbal_lock)
 {
     VECTOR angle = v3d::GetZeroV();
-    const MATRIX m = mat;
+    const MATRIX m = MGetRotElem(rot_matrix);
 
     is_gimbal_lock = GetMatrixXYZRotation(&m, &angle.x, &angle.y, &angle.z);
 
     return angle;
 }
 
-Axes math::ConvertRotMatrixToAxes(const MATRIX& mat)
+Axes math::ConvertRotMatrixToAxes(const MATRIX& rot_matrix)
 {
-    const MATRIX m = MGetRotElem(mat);
+    const MATRIX m = MGetRotElem(rot_matrix);
 
     const VECTOR scale
     {
@@ -161,18 +159,14 @@ MATRIX math::ConvertEulerAnglesToRotMatrix(const VECTOR& angle)
 
 
 #pragma region 補間
-VECTOR math::GetInterpolatedPos(
-    const VECTOR& begion_pos, 
-    const VECTOR& end_pos, 
-    const VECTOR& current_pos, 
-    const float interpolate_time)
+VECTOR math::GetInterpolatedPos(const VECTOR& begin_pos, const VECTOR& end_pos, const VECTOR& current_pos, const float interpolate_time)
 {
     VECTOR pos = current_pos;
-    const VECTOR distance_v = end_pos - begion_pos;
+    const VECTOR distance_v = end_pos - begin_pos;
     const VECTOR dir        = v3d::GetNormalizedV(distance_v);
     const float  move_speed = (VSize(distance_v) / interpolate_time) * FPS::GetDeltaTime();
 
-    //DrawFormatString(500,   0, 0xffffff, "begion_pos  : %f, %f, %f", begion_pos.x,  begion_pos.y,  begion_pos.z);
+    //DrawFormatString(500,   0, 0xffffff, "begin_pos  : %f, %f, %f", begin_pos.x,  begin_pos.y,  begin_pos.z);
     //DrawFormatString(500,  20, 0xffffff, "end_pos     : %f, %f, %f", end_pos.x,     end_pos.y,     end_pos.z);
     //DrawFormatString(500,  40, 0xffffff, "current_pos : %f, %f, %f", current_pos.x, current_pos.y, current_pos.z);
     //DrawFormatString(500,  60, 0xffffff, "dir         : %f, %f, %f", dir.x, dir.y, dir.z);
@@ -189,7 +183,7 @@ VECTOR math::GetInterpolatedPos(
 }
 
 std::shared_ptr<Transform> math::GetInterpolatedTransform(
-    const std::shared_ptr<Transform> begion_transform, 
+    const std::shared_ptr<Transform> begin_transform, 
     const std::shared_ptr<Transform> end_transform, 
     const std::shared_ptr<Transform> current_transform, 
     const float interpolate_time)
@@ -197,11 +191,10 @@ std::shared_ptr<Transform> math::GetInterpolatedTransform(
     auto transform = std::make_shared<Transform>();
 
     // 座標補間
-    const VECTOR begion_pos     = begion_transform  ->GetPos(CoordinateKind::kWorld);
+    const VECTOR begin_pos      = begin_transform   ->GetPos(CoordinateKind::kWorld);
     const VECTOR end_pos        = end_transform     ->GetPos(CoordinateKind::kWorld);
     const VECTOR current_pos    = current_transform ->GetPos(CoordinateKind::kWorld);
-    transform->SetPos(CoordinateKind::kWorld,
-        math::GetInterpolatedPos(begion_pos, end_pos, current_pos, interpolate_time));
+    transform->SetPos(CoordinateKind::kWorld, math::GetInterpolatedPos(begin_pos, end_pos, current_pos, interpolate_time));
 
     return transform;
 }

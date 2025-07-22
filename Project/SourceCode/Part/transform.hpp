@@ -22,10 +22,11 @@ public:
 
 
 	#pragma region Setter
-	void SetMatrix	(const CoordinateKind coord_kind, const MATRIX& matrix);
-	void SetPos		(const CoordinateKind coord_kind, const VECTOR&	pos);
-	void SetRot		(const CoordinateKind coord_kind, const MATRIX&	rot_matrix);
-	void SetRot		(const CoordinateKind coord_kind, const Axes&	axes);
+	void SetMatrix	(const CoordinateKind coord_kind, const MATRIX&		matrix);
+	void SetPos		(const CoordinateKind coord_kind, const VECTOR&		pos);
+	void SetRot		(const CoordinateKind coord_kind, const MATRIX&		rot_matrix);
+	void SetRot		(const CoordinateKind coord_kind, const Quaternion& q);
+	void SetRot		(const CoordinateKind coord_kind, const Axes&		axes);
 
 	/// @brief 回転行列を設定
 	/// @brief WARNING : 水平的な回転しか考慮していない。forwardのY軸が0である必要あり。
@@ -37,15 +38,16 @@ public:
 
 
 	#pragma region Getter
-	[[nodiscard]] MATRIX GetMatrix			(const CoordinateKind coord_kind);
-	[[nodiscard]] VECTOR GetPos				(const CoordinateKind coord_kind);
-	[[nodiscard]] MATRIX GetRotMatrix		(const CoordinateKind coord_kind);
-	[[nodiscard]] VECTOR GetScale			(const CoordinateKind coord_kind);
-	[[nodiscard]] Axes   GetAxes			(const CoordinateKind coord_kind);
-	[[nodiscard]] VECTOR GetRight			(const CoordinateKind coord_kind);
-	[[nodiscard]] VECTOR GetUp				(const CoordinateKind coord_kind);
-	[[nodiscard]] VECTOR GetForward			(const CoordinateKind coord_kind);
-	[[nodiscard]] VECTOR GetEulerAngles		(const CoordinateKind coord_kind);
+	[[nodiscard]] MATRIX	 GetMatrix		(const CoordinateKind coord_kind);
+	[[nodiscard]] VECTOR	 GetPos			(const CoordinateKind coord_kind);
+	[[nodiscard]] MATRIX	 GetRotMatrix	(const CoordinateKind coord_kind);
+	[[nodiscard]] Quaternion GetQuaternion	(const CoordinateKind coord_kind);
+	[[nodiscard]] VECTOR	 GetScale		(const CoordinateKind coord_kind);
+	[[nodiscard]] Axes		 GetAxes		(const CoordinateKind coord_kind);
+	[[nodiscard]] VECTOR	 GetRight		(const CoordinateKind coord_kind);
+	[[nodiscard]] VECTOR	 GetUp			(const CoordinateKind coord_kind);
+	[[nodiscard]] VECTOR	 GetForward		(const CoordinateKind coord_kind);
+	[[nodiscard]] VECTOR	 GetEulerAngles	(const CoordinateKind coord_kind);
 	#pragma endregion
 
 

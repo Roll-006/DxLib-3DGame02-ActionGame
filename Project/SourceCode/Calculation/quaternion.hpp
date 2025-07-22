@@ -7,6 +7,14 @@ struct Quaternion;
 
 namespace quat
 {
+	enum class AxesKind
+	{
+		kX,
+		kY,
+		kZ,
+		kW,
+	};
+
 	/// @brief クォータニオン型とFLOAT4型の変換
 	[[nodiscard]] Quaternion ConvertFloat4ToQuaternion(const FLOAT4& f);
 	[[nodiscard]] FLOAT4	 ConvertQuaternionToFloat4(const Quaternion& q);
@@ -24,6 +32,13 @@ namespace quat
 
 	/// @brief 逆クォータニオンを取得
 	[[nodiscard]] Quaternion GetInverseQuaternion	(const Quaternion& q);
+
+	/// @brief 球面線形補間後のクォータニオンを取得
+	/// @param begin_q 開始地点となるクォータニオン
+	/// @param end_q 終了地点となるクォータニオン
+	/// @param t 補間係数
+	/// @return 補間結果クォータニオン
+	[[nodiscard]] Quaternion GetSlerpQuaternion(const Quaternion& begin_q, const Quaternion& end_q, const float t);
 }
 
 /// @brief クォータニオン

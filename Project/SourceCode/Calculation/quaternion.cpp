@@ -15,8 +15,6 @@ Quaternion quat::GetZeroQuaternion()
 	return Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
 }
 
-// MEMO : forwardをX軸として、次向きたい方向をZとしたら、回転軸はY軸になる可能性あり
-
 Quaternion quat::GetIdentityQuaternion()
 {
 	return Quaternion(0.0f, 0.0f, 0.0f, 1.0f);
@@ -51,4 +49,35 @@ Quaternion quat::GetConjugateQuaternion(const Quaternion& q)
 Quaternion quat::GetInverseQuaternion(const Quaternion& q)
 {
 	return GetConjugateQuaternion(q) * (1.0f / GetSquareSize(q));
+}
+
+Quaternion quat::GetSlerpQuaternion(const Quaternion& begin_q, const Quaternion& end_q, const float t)
+{
+    // 角度算出
+    const float len1 = sqrt(begin_q.x * begin_q.x + begin_q.y * begin_q.y + begin_q.z * begin_q.z + begin_q.w * begin_q.w);
+    const float len2 = sqrt(end_q.x   * end_q.x   + end_q.y   * end_q.y   + end_q.z   * end_q.z   + end_q.w   * end_q.w  );
+
+    // 不正なクォータニオンは処理を中断
+    if (len1 == 0.0f || len2 == 0.0f)
+    {
+        return begin_q; 
+    }
+
+    const float cos_val = (begin_q.x * end_q.x + begin_q.y * end_q.y + begin_q.z * end_q.z + begin_q.w * end_q.w) / (len1 * len2);
+    const float w       = acos(cos_val);
+
+    // 球面線形補間
+    const float sin_w       = sin(w);
+    const float sin_t_w     = sin(t * w);
+    const float sin_inv_t_w = sin((1.0f - t) * w);
+    const float mult_q1     = sin_inv_t_w / sin_w;
+    const float mult_q2     = sin_t_w / sin_w;
+
+    return Quaternion
+    {
+        mult_q1 * begin_q.x + mult_q2 * end_q.x,
+        mult_q1 * begin_q.y + mult_q2 * end_q.y,
+        mult_q1 * begin_q.z + mult_q2 * end_q.z,
+        mult_q1 * begin_q.w + mult_q2 * end_q.w
+    };
 }

@@ -86,6 +86,11 @@ void Transform::SetRot(const CoordinateKind coord_kind, const MATRIX& rot_matrix
 	m_local_matrix = rot_matrix * MInverse(GetRotMatrix(coord_kind)) * GetMatrix(coord_kind);
 }
 
+void Transform::SetRot(const CoordinateKind coord_kind, const Quaternion& q)
+{
+	SetRot(coord_kind, math::ConvertQuaternionToRotMatrix(q));
+}
+
 void Transform::SetRot(const CoordinateKind coord_kind, const VECTOR& forward)
 {
 	float yaw = math::GetYaw(forward);
@@ -163,6 +168,11 @@ VECTOR Transform::GetPos(const CoordinateKind coord_kind)
 MATRIX Transform::GetRotMatrix(const CoordinateKind coord_kind)
 {
 	return MGetRotElem(GetMatrix(coord_kind));
+}
+
+Quaternion Transform::GetQuaternion(const CoordinateKind coord_kind)
+{
+	return math::ConvertRotMatrixToQuaternion(GetRotMatrix(coord_kind));
 }
 
 VECTOR Transform::GetScale(const CoordinateKind coord_kind)

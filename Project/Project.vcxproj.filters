@@ -311,6 +311,9 @@
     <ClCompile Include="SourceCode\Command\command_handler.cpp">
       <Filter>Command</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\Part\camera_state_controller.cpp">
+      <Filter>Part</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\chara_base.hpp">
@@ -754,9 +757,6 @@
     <ClInclude Include="SourceCode\Part\player_state_controller.hpp">
       <Filter>Part</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Data\Kind\player_state_kind.hpp">
-      <Filter>Data\Kind</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\Base\action_state_base.hpp">
       <Filter>Base</Filter>
     </ClInclude>
@@ -795,6 +795,15 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Handle\state_handler.hpp">
       <Filter>Handle</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\Kind\camera_state_kind.hpp">
+      <Filter>Data\Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\Kind\player_state_kind.hpp">
+      <Filter>Data\Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Part\camera_state_controller.hpp">
+      <Filter>Part</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -891,9 +900,6 @@
     <Filter Include="State\EnemyState">
       <UniqueIdentifier>{d2ef4260-3541-4500-92a8-03e820d5ca75}</UniqueIdentifier>
     </Filter>
-    <Filter Include="State\CharaState">
-      <UniqueIdentifier>{ff495161-2f03-4c6e-a508-ddbb081ecd2c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Shape\3DShape">
       <UniqueIdentifier>{ac75a37e-b63a-4367-aa7b-75ba0c9cc8f7}</UniqueIdentifier>
     </Filter>
@@ -908,6 +914,9 @@
     </Filter>
     <Filter Include="Command">
       <UniqueIdentifier>{d5ed3af6-7b23-411d-ab3e-44150fb5ace3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\CameraState">
+      <UniqueIdentifier>{ff495161-2f03-4c6e-a508-ddbb081ecd2c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
