@@ -159,42 +159,115 @@ MATRIX math::ConvertEulerAnglesToRotMatrix(const VECTOR& angle)
 
 
 #pragma region 補間
-VECTOR math::GetInterpolatedPos(const VECTOR& begin_pos, const VECTOR& end_pos, const VECTOR& current_pos, const float interpolate_time)
+//VECTOR math::GetInterpolatedPos(const VECTOR& begin_pos, const VECTOR& end_pos, const VECTOR& current_pos, const float interpolate_time)
+//{
+//    VECTOR pos = current_pos;
+//    const auto distance_v = end_pos - begin_pos;
+//    const auto dir        = v3d::GetNormalizedV(distance_v);
+//    const auto move_speed = (VSize(distance_v) / interpolate_time) * FPS::GetDeltaTime();
+//
+//    //DrawFormatString(500,   0, 0xffffff, "begin_pos  : %f, %f, %f", begin_pos.x,  begin_pos.y,  begin_pos.z);
+//    //DrawFormatString(500,  20, 0xffffff, "end_pos     : %f, %f, %f", end_pos.x,     end_pos.y,     end_pos.z);
+//    //DrawFormatString(500,  40, 0xffffff, "current_pos : %f, %f, %f", current_pos.x, current_pos.y, current_pos.z);
+//    //DrawFormatString(500,  60, 0xffffff, "dir         : %f, %f, %f", dir.x, dir.y, dir.z);
+//    //DrawFormatString(500,  80, 0xffffff, "distance    : %f", VSize(distance_v));
+//    //DrawFormatString(500, 100, 0xffffff, "move_speed  : %f", move_speed);
+//
+//    // いてい距離に近づいた場合は完全に一致させる
+//    pos += dir * move_speed;
+//    if (VSize(pos - end_pos) < move_speed * kStopThreshold)
+//    {
+//        pos = end_pos;
+//    }
+//
+//    return pos;
+//}
+
+VECTOR math::GetLerpPos(const VECTOR& begin_pos, const VECTOR& end_pos, const float t)
 {
-    VECTOR pos = current_pos;
-    const VECTOR distance_v = end_pos - begin_pos;
-    const VECTOR dir        = v3d::GetNormalizedV(distance_v);
-    const float  move_speed = (VSize(distance_v) / interpolate_time) * FPS::GetDeltaTime();
+    const auto dir              = v3d::GetNormalizedV(end_pos - begin_pos);
+    const auto total_distance   = VSize(end_pos - begin_pos);
+    const auto distance         = ConvertValueNewRange<float, float>(0.0f, 1.0f, 0.0f, total_distance, t);
 
-    //DrawFormatString(500,   0, 0xffffff, "begin_pos  : %f, %f, %f", begin_pos.x,  begin_pos.y,  begin_pos.z);
-    //DrawFormatString(500,  20, 0xffffff, "end_pos     : %f, %f, %f", end_pos.x,     end_pos.y,     end_pos.z);
-    //DrawFormatString(500,  40, 0xffffff, "current_pos : %f, %f, %f", current_pos.x, current_pos.y, current_pos.z);
-    //DrawFormatString(500,  60, 0xffffff, "dir         : %f, %f, %f", dir.x, dir.y, dir.z);
-    //DrawFormatString(500,  80, 0xffffff, "distance    : %f", VSize(distance_v));
-    //DrawFormatString(500, 100, 0xffffff, "move_speed  : %f", move_speed);
-
-    pos += dir * move_speed;
-    if (VSize(pos - end_pos) < move_speed * kStopThreshold)
-    {
-        pos = end_pos;
-    }
-
-    return pos;
+    return begin_pos + dir * distance;
 }
 
-std::shared_ptr<Transform> math::GetInterpolatedTransform(
+VECTOR math::GetLerpScale(const VECTOR& begin_scale, const VECTOR& end_scale, const float t)
+{
+    const auto dir              = v3d::GetNormalizedV(end_scale - begin_scale);
+    const auto total_distance   = VSize(end_scale - begin_scale);
+    const auto distance         = ConvertValueNewRange<float, float>(0.0f, 1.0f, 0.0f, total_distance, t);
+
+    return begin_scale + dir * distance;
+}
+
+Quaternion math::GetSlerpQuaternion(const Quaternion& begin_q, const Quaternion& end_q, const float t)
+{
+    // 角度算出
+    const float len1 = sqrt(begin_q.x * begin_q.x + begin_q.y * begin_q.y + begin_q.z * begin_q.z + begin_q.w * begin_q.w);
+    const float len2 = sqrt(end_q.x   * end_q.x   + end_q.y   * end_q.y   + end_q.z   * end_q.z   + end_q.w   * end_q.w  );
+
+    // 不正なクォータニオンは処理を中断
+    if (len1 == 0.0f || len2 == 0.0f)
+    {
+        return begin_q;
+    }
+
+    const float cos_val = (begin_q.x * end_q.x + begin_q.y * end_q.y + begin_q.z * end_q.z + begin_q.w * end_q.w) / (len1 * len2);
+    const float w = acos(cos_val);
+
+    // 球面線形補間
+    const float sin_w       = sin(w);
+    const float sin_t_w     = sin(t * w);
+    const float sin_inv_t_w = sin((1.0f - t) * w);
+    const float mult_q1     = sin_inv_t_w / sin_w;
+    const float mult_q2     = sin_t_w / sin_w;
+
+    return Quaternion
+    {
+        mult_q1 * begin_q.x + mult_q2 * end_q.x,
+        mult_q1 * begin_q.y + mult_q2 * end_q.y,
+        mult_q1 * begin_q.z + mult_q2 * end_q.z,
+        mult_q1 * begin_q.w + mult_q2 * end_q.w
+    };
+}
+
+std::shared_ptr<Transform> math::GetLerpTransform(
     const std::shared_ptr<Transform> begin_transform, 
     const std::shared_ptr<Transform> end_transform, 
-    const std::shared_ptr<Transform> current_transform, 
-    const float interpolate_time)
+    const float t, 
+    const bool is_interpolate_pos, 
+    const bool is_interpolate_scale, 
+    const bool is_interpolate_rot)
 {
     auto transform = std::make_shared<Transform>();
 
     // 座標補間
-    const VECTOR begin_pos      = begin_transform   ->GetPos(CoordinateKind::kWorld);
-    const VECTOR end_pos        = end_transform     ->GetPos(CoordinateKind::kWorld);
-    const VECTOR current_pos    = current_transform ->GetPos(CoordinateKind::kWorld);
-    transform->SetPos(CoordinateKind::kWorld, math::GetInterpolatedPos(begin_pos, end_pos, current_pos, interpolate_time));
+    if (is_interpolate_pos)
+    {
+        const auto begin_pos    = begin_transform->GetPos(CoordinateKind::kWorld);
+        const auto end_pos      = end_transform  ->GetPos(CoordinateKind::kWorld);
+        const auto result_pos   = GetLerpPos(begin_pos, end_pos, t);
+        transform->SetPos(CoordinateKind::kWorld, result_pos);
+    }
+
+    // スケール補間
+    if (is_interpolate_scale)
+    {
+        const auto begin_scale  = begin_transform->GetScale(CoordinateKind::kWorld);
+        const auto end_scale    = end_transform  ->GetScale(CoordinateKind::kWorld);
+        const auto result_scale = GetLerpScale(begin_scale, end_scale, t);
+        transform->SetScale(CoordinateKind::kWorld, result_scale);
+    }
+
+    // 回転補間
+    if (is_interpolate_rot)
+    {
+        const auto begin_q      = begin_transform->GetQuaternion(CoordinateKind::kWorld);
+        const auto end_q        = end_transform  ->GetQuaternion(CoordinateKind::kWorld);
+        const auto result_q     = GetSlerpQuaternion(begin_q, end_q, t);
+        transform->SetRot(CoordinateKind::kWorld, result_q);
+    }
 
     return transform;
 }
@@ -202,7 +275,6 @@ std::shared_ptr<Transform> math::GetInterpolatedTransform(
 
 
 #pragma region 修正
-
 float math::ConnectMinusPiToPi(const float angle)
 {
     // -π～πの値をループ

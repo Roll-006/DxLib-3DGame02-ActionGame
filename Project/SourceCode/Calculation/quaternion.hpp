@@ -32,13 +32,6 @@ namespace quat
 
 	/// @brief 逆クォータニオンを取得
 	[[nodiscard]] Quaternion GetInverseQuaternion	(const Quaternion& q);
-
-	/// @brief 球面線形補間後のクォータニオンを取得
-	/// @param begin_q 開始地点となるクォータニオン
-	/// @param end_q 終了地点となるクォータニオン
-	/// @param t 補間係数
-	/// @return 補間結果クォータニオン
-	[[nodiscard]] Quaternion GetSlerpQuaternion(const Quaternion& begin_q, const Quaternion& end_q, const float t);
 }
 
 /// @brief クォータニオン

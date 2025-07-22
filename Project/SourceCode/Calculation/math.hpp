@@ -171,29 +171,43 @@ namespace math
 
 
 	#pragma region 補間
-	/// @brief 始点から終点までの座標補間を行う
-	/// @param begin_pos 始点
-	/// @param end_pos 終点
-	/// @param current_pos 現在の座標
-	/// @param interpolate_time 補間にかける時間
-	/// @return 補間後の座標
-	[[nodiscard]] VECTOR GetInterpolatedPos(
-		const VECTOR& begin_pos, 
-		const VECTOR& end_pos, 
-		const VECTOR& current_pos, 
-		const float interpolate_time);
+	/// @brief 2つの座標を線形補間で補間
+	/// @param begin_pos 開始地点
+	/// @param end_pos 終了地点
+	/// @param t 補間係数(0.0～1.0)
+	/// @return 補間結果の座標
+	[[nodiscard]] VECTOR GetLerpPos(const VECTOR& begin_pos, const VECTOR& end_pos, const float t);
+
+	/// @brief 2つのスケールを線形補間で補間
+	/// @param begin_scale 開始地点となるスケール
+	/// @param end_scale 終了地点となるスケール
+	/// @param t 補間係数(0.0～1.0)
+	/// @return 補間結果のスケール
+	[[nodiscard]] VECTOR GetLerpScale(const VECTOR& begin_scale, const VECTOR& end_scale, const float t);
+
+	/// @brief 2つのクォータニオンを球面線形補間で補間
+	/// @param begin_q 開始地点となるクォータニオン
+	/// @param end_q 終了地点となるクォータニオン
+	/// @param t 補間係数(0.0～1.0)
+	/// @return 補間結果のクォータニオン
+	[[nodiscard]] Quaternion GetSlerpQuaternion(const Quaternion& begin_q, const Quaternion& end_q, const float t);
 	
-	/// @brief 2つのTransform間で補間されたTransformを取得します。
-	/// @param begin_transform 補間の開始点となるTransform
-	/// @param end_transform 補間の終了点となるTransform
-	/// @param current_transform 現在のTransform
-	/// @param interpolate_time 補間にかける時間
-	/// @return 補間されたTransform
-	[[nodiscard]] std::shared_ptr<Transform> GetInterpolatedTransform(
+	/// @brief 2つのトランスフォームを線形補間で補間
+	/// @brief 座標 : 線形補間, 回転 : 球面線形補間, スケール : 線形補間
+	/// @param begin_scale 開始地点となるトランスフォーム
+	/// @param end_scale 終了地点となるトランスフォーム
+	/// @param t 補間係数(0.0～1.0)
+	/// @param is_interpolate_pos 座標の補間を行うか
+	/// @param is_interpolate_scale スケールの補間を行うか
+	/// @param is_interpolate_rot 回転の補間を行うか
+	/// @return 補間結果のトランスフォーム
+	[[nodiscard]] std::shared_ptr<Transform> GetLerpTransform(
 		const std::shared_ptr<Transform> begin_transform,
 		const std::shared_ptr<Transform> end_transform,
-		const std::shared_ptr<Transform> current_transform,
-		const float interpolate_time);
+		const float t,
+		const bool is_interpolate_pos,
+		const bool is_interpolate_scale,
+		const bool is_interpolate_rot);
 	#pragma endregion
 
 
