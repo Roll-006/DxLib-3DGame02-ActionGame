@@ -228,15 +228,19 @@ namespace math
 	}
 
 	/// @brief 特定の範囲にあった値を、別の範囲に置き換えた場合の値を取得
-	/// @param old_min もとの範囲の最小値
-	/// @param old_max もとの範囲の最大値
+	/// @param old_min 元の範囲の最小値
+	/// @param old_max 元の範囲の最大値
 	/// @param new_min 新たな範囲の最小値
 	/// @param new_max 新たな範囲の最大値
 	/// @param value 変換対象の値
 	template<common_concepts::ArithmeticT TargetT, common_concepts::FloatingPointT ReturnT>
 	[[nodiscard]] ReturnT ConvertValueNewRange(const TargetT old_min, const TargetT old_max, const TargetT new_min, const TargetT new_max, const TargetT value)
 	{
-		return static_cast<ReturnT>(value - old_min) / ((old_max - old_min) * (new_max - new_min)) + new_min;
+		// 元の値を0～1の範囲に収める
+		ReturnT normalized = GetUnitValue<TargetT, ReturnT>(old_min, old_max, value);
+
+		// 新しい範囲にスケール
+		return normalized * static_cast<ReturnT>(new_max - new_min) + static_cast<ReturnT>(new_min);
 	}
 	#pragma endregion
 

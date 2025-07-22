@@ -109,7 +109,7 @@ void CameraManager::BlendVirtualCamera()
 			const auto rot_camera = std::make_shared<RotControlVirtualCamera>(3);
 			AddVirtualCamera(rot_camera);
 			const auto transform = std::make_shared<Transform>();
-			transform->SetPos(CoordinateKind::kWorld, VGet(100, 100, -500));
+			transform->SetPos(CoordinateKind::kWorld, VGet(-500, 500, -500));
 			rot_camera->AttachTarget(transform);
 
 			test_is_add2 = true;
@@ -153,10 +153,12 @@ void CameraManager::BlendVirtualCamera()
 		DrawFormatString(0, 20, 0xffffff, "blend : %f", m_blend_timer);
 		DrawFormatString(0, 40, 0xffffff, "t     : %f", t);
 
-		const auto p1 = m_blend_transforms[TimeKind::kCurrent]->GetPos(CoordinateKind::kWorld);
-		const auto p2 = m_result_transform.at(TimeKind::kCurrent)->GetPos(CoordinateKind::kWorld);
-		DrawFormatString(0, 60, 0xffffff, "pos1 : %f, %f, %f", p1.x, p1.y, p1.z);
-		DrawFormatString(0, 80, 0xffffff, "pos2 : %f, %f, %f", p2.x, p2.y, p2.z);
+		const auto p1 = m_blend_transforms[TimeKind::kPrev]	  ->GetPos(CoordinateKind::kWorld);
+		const auto p2 = m_blend_transforms[TimeKind::kCurrent]->GetPos(CoordinateKind::kWorld);
+		const auto p3 = m_result_transform.at(TimeKind::kCurrent)->GetPos(CoordinateKind::kWorld);
+		DrawFormatString(0,  60, 0xffffff, "m_blend_transforms[TimeKind::kPrev]    : %f, %f, %f", p1.x, p1.y, p1.z);
+		DrawFormatString(0,  80, 0xffffff, "m_blend_transforms[TimeKind::kCurrent] : %f, %f, %f", p2.x, p2.y, p2.z);
+		DrawFormatString(0, 100, 0xffffff, "m_result_transform                     : %f, %f, %f", p3.x, p3.y, p3.z);
 
 		result_matrix = m_result_transform.at(TimeKind::kCurrent)->GetMatrix(CoordinateKind::kWorld);
 	}
