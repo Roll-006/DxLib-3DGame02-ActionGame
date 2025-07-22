@@ -1,19 +1,19 @@
 #include "camera_manager.hpp"
 
 CameraManager::CameraManager() :
-	m_main_camera			(nullptr),
-	m_blend_timer			(0.0f),
-	m_is_blending			(false),
-	m_is_invert_horizontal	(false),
-	m_is_invert_vertical	(false)
+	m_main_camera					(nullptr),
+	m_blend_origin_transform		(nullptr),
+	m_blend_target_transform		(nullptr),
+	m_blend_origin_result_transform	(nullptr),
+	m_blend_result_transform		(nullptr),
+	m_target_virtual_camera_handle	(-1),
+	m_blend_timer					(0.0f),
+	m_is_blending					(false),
+	m_is_invert_horizontal			(false),
+	m_is_invert_vertical			(false)
 {
 	SetCameraNearFar		(kNear, kFar);
 	SetupCamera_Perspective	(kFOV * math::kDegreesToRadian);
-
-	m_result_transform[TimeKind::kPrev] = m_result_transform[TimeKind::kCurrent] = nullptr;
-
-	test_is_add1 = false;
-	test_is_add2 = false;
 }
 
 CameraManager::~CameraManager()
@@ -111,6 +111,7 @@ void CameraManager::BlendVirtualCamera()
 			const auto transform = std::make_shared<Transform>();
 			transform->SetPos(CoordinateKind::kWorld, VGet(-500, 500, -500));
 			rot_camera->AttachTarget(transform);
+			rot_camera->Update();
 
 			test_is_add2 = true;
 		}
@@ -123,53 +124,40 @@ void CameraManager::BlendVirtualCamera()
 	{
 		// PrevとCurrentの2種類のみしか不要なため3つ目の追加は許可しない
 		if (add_count > 2) { break; }
+		++add_count;
 
 		sorted_camera_handles.push(pr.first);
-		++add_count;
+
+		// 最優先カメラが切り替わった場合の処理
+		if (add_count == 1)
+		{
+			if (m_target_virtual_camera_handle != pr.first)
+			{
+				// ブレンド中に最優先カメラが切り替わった場合、それまでのブレンド結果をブレンドの起点とする
+				if (m_blend_timer != kBlendTime)
+				{
+					m_blend_origin_result_transform = m_blend_result_transform;
+				}
+
+				m_target_virtual_camera_handle = pr.first;
+				m_blend_timer = 0.0f;
+				m_is_blending = true;
+			}
+		}
 	}
 
+	// ブレンドの起点とターゲットを設定
 	SetBlendVirtualCamera(sorted_camera_handles);
 
-	// ブレンド結果を格納
-	auto result_matrix = MGetIdent();
-	if (m_blend_transforms[TimeKind::kPrev])
-	{
-		auto current_transform = m_blend_transforms[TimeKind::kPrev];
-		if (m_result_transform.at(TimeKind::kCurrent))
-		{
-			current_transform = m_result_transform.at(TimeKind::kCurrent);
-		}
+	// ブレンド結果を計算
+	CalcBlendResuletTransform();
 
-		// タイマーを増加
-		math::Increase(m_blend_timer, FPS::GetDeltaTime(), kBlendTime);
-		const float t = math::GetUnitValue<float, float>(0.0f, kBlendTime, m_blend_timer);
-
-		// トランスフォーム間の補間
-		m_result_transform.at(TimeKind::kCurrent) = math::GetLerpTransform(
-			m_blend_transforms[TimeKind::kPrev],
-			m_blend_transforms[TimeKind::kCurrent],
-			t, true, false, true);
-
-		DrawFormatString(0, 20, 0xffffff, "blend : %f", m_blend_timer);
-		DrawFormatString(0, 40, 0xffffff, "t     : %f", t);
-
-		const auto p1 = m_blend_transforms[TimeKind::kPrev]	  ->GetPos(CoordinateKind::kWorld);
-		const auto p2 = m_blend_transforms[TimeKind::kCurrent]->GetPos(CoordinateKind::kWorld);
-		const auto p3 = m_result_transform.at(TimeKind::kCurrent)->GetPos(CoordinateKind::kWorld);
-		DrawFormatString(0,  60, 0xffffff, "m_blend_transforms[TimeKind::kPrev]    : %f, %f, %f", p1.x, p1.y, p1.z);
-		DrawFormatString(0,  80, 0xffffff, "m_blend_transforms[TimeKind::kCurrent] : %f, %f, %f", p2.x, p2.y, p2.z);
-		DrawFormatString(0, 100, 0xffffff, "m_result_transform                     : %f, %f, %f", p3.x, p3.y, p3.z);
-
-		result_matrix = m_result_transform.at(TimeKind::kCurrent)->GetMatrix(CoordinateKind::kWorld);
-	}
-	else
-	{
-		result_matrix = m_blend_transforms[TimeKind::kCurrent]->GetMatrix(CoordinateKind::kWorld);
-	}
+	const auto m = m_blend_result_transform->GetMatrix(CoordinateKind::kWorld);
+	matrix::Draw(0, 20, m);
 
 
 	// メインカメラへ適用
-	m_main_camera->GetTransform()->SetMatrix(CoordinateKind::kWorld, result_matrix);
+	m_main_camera->GetTransform()->SetMatrix(CoordinateKind::kWorld, m_blend_result_transform->GetMatrix(CoordinateKind::kWorld));
 }
 
 void CameraManager::SetBlendVirtualCamera(std::queue<int>& sorted_camera_handles)
@@ -183,23 +171,51 @@ void CameraManager::SetBlendVirtualCamera(std::queue<int>& sorted_camera_handles
 		switch (i)
 		{
 		case 0:
-			m_blend_transforms[TimeKind::kCurrent] = GetVirtualCamera(handle)->GetTransform();
+			m_blend_target_transform = GetVirtualCamera(handle)->GetTransform();
 			break;
 
 		case 1:
 			// ブレンド結果が格納されていればそれを採用
-			if (m_result_transform.at(TimeKind::kPrev))
+			if (m_blend_origin_result_transform != nullptr)
 			{
-				m_blend_transforms[TimeKind::kPrev] = m_result_transform.at(TimeKind::kPrev);
+				m_blend_origin_transform = m_blend_origin_result_transform;
 			}
 			// ブレンド結果がない場合はバーチャルカメラのトランスフォームを直接格納
 			else
 			{
-				m_blend_transforms[TimeKind::kPrev] = GetVirtualCamera(handle)->GetTransform();
+				m_blend_origin_transform = GetVirtualCamera(handle)->GetTransform();
 			}
 			break;
 		}
 
 		sorted_camera_handles.pop();
+	}
+}
+
+void CameraManager::CalcBlendResuletTransform()
+{
+	// バーチャルカメラが単独で存在していた場合、
+	// もしくはブレンドが完了済みの場合は、それ自身を追尾させる
+	if (m_virtual_cameras.size() == 1 || !m_is_blending)
+	{
+		m_blend_result_transform = m_blend_target_transform;
+		return;
+	}
+
+	// タイマーを増加
+	math::Increase(m_blend_timer, FPS::GetDeltaTime(), kBlendTime);
+
+	// トランスフォーム間の補間
+	const float t = math::GetUnitValue<float, float>(0.0f, kBlendTime, m_blend_timer);
+	m_blend_result_transform = math::GetLerpTransform(m_blend_origin_transform, m_blend_target_transform, t, true, false, true);
+
+	DrawFormatString(0, 160, 0xffffff, "t             : %f", t);
+	DrawFormatString(0, 180, 0xffffff, "m_blend_timer : %f", m_blend_timer);
+
+	// ブレンド完了判定
+	if (t >= 1.0f)
+	{
+		m_blend_origin_result_transform = nullptr;
+		m_is_blending					= false;
 	}
 }

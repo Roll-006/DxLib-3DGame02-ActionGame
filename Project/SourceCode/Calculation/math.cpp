@@ -203,17 +203,23 @@ VECTOR math::GetLerpScale(const VECTOR& begin_scale, const VECTOR& end_scale, co
 
 Quaternion math::GetSlerpQuaternion(const Quaternion& begin_q, const Quaternion& end_q, const float t)
 {
+    // 一致していた場合は補間完了とする
+    if (begin_q == end_q)
+    {
+        return end_q;
+    }
+
     // 角度算出
-    const float len1 = sqrt(begin_q.x * begin_q.x + begin_q.y * begin_q.y + begin_q.z * begin_q.z + begin_q.w * begin_q.w);
-    const float len2 = sqrt(end_q.x   * end_q.x   + end_q.y   * end_q.y   + end_q.z   * end_q.z   + end_q.w   * end_q.w  );
+    const float begin_size  = quat::GetSize(begin_q);
+    const float end_size    = quat::GetSize(end_q);
 
     // 不正なクォータニオンは処理を中断
-    if (len1 == 0.0f || len2 == 0.0f)
+    if (begin_size == 0.0f || end_size == 0.0f)
     {
         return begin_q;
     }
 
-    const float cos_val = (begin_q.x * end_q.x + begin_q.y * end_q.y + begin_q.z * end_q.z + begin_q.w * end_q.w) / (len1 * len2);
+    const float cos_val = (begin_q.x * end_q.x + begin_q.y * end_q.y + begin_q.z * end_q.z + begin_q.w * end_q.w) / (begin_size * end_size);
     const float w = acos(cos_val);
 
     // 球面線形補間

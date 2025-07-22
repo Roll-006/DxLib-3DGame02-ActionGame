@@ -75,22 +75,30 @@ private:
 	/// @brief ブレンド対象となるバーチャルカメラを設定
 	void SetBlendVirtualCamera(std::queue<int>& sorted_camera_handles);
 
+	/// @brief ブレンド結果行列トランスフォームを計算
+	void CalcBlendResuletTransform();
+
 private:
 	static constexpr float kNear		= 10.0f;
 	static constexpr float kFar			= 4000.0f;
 	static constexpr float kFOV			= 25.0f;
 	static constexpr float kBlendTime	= 5.0f;
 
-	std::shared_ptr<MainCamera>									m_main_camera;		// バーチャルカメラを適用させるメインカメラ
-	std::unordered_map<int, std::shared_ptr<VirtualCameraBase>>	m_virtual_cameras;	// 登録されているバーチャルカメラ
-	std::unordered_map<TimeKind, std::shared_ptr<Transform>>	m_blend_transforms;	// ブレンド対象のトランスフォーム
-	std::unordered_map<int, int>								m_priority;			// 優先順位<オブジェクトハンドル, 優先度>
-	std::unordered_map<TimeKind, std::shared_ptr<Transform>>	m_result_transform;	// ブレンド結果トランスフォーム
+	std::shared_ptr<MainCamera>									m_main_camera;			// バーチャルカメラを適用させるメインカメラ
+	std::unordered_map<int, std::shared_ptr<VirtualCameraBase>>	m_virtual_cameras;		// 登録されているバーチャルカメラ
+	std::unordered_map<int, int>								m_priority;				// 優先順位<オブジェクトハンドル, 優先度>
 
-	float m_blend_timer;				// ブレンドにかける時間を計測
-	bool  m_is_blending;				// ブレンド中かを判定
-	bool  m_is_invert_horizontal;		// 操作時に左右反転を行うかを判定
-	bool  m_is_invert_vertical;			// 操作時に上下反転を行うかを判定
+	std::shared_ptr<Transform> m_blend_origin_transform;			// ブレンドの起点とするトランスフォーム
+	std::shared_ptr<Transform> m_blend_target_transform;			// ブレンドのターゲットとするトランスフォーム
+	std::shared_ptr<Transform> m_blend_origin_result_transform;		// ブレンドの起点に利用するブレンド結果トランスフォーム
+	std::shared_ptr<Transform> m_blend_result_transform;			// ブレンド結果トランスフォーム
+
+
+	int   m_target_virtual_camera_handle;	// ブレンドのターゲットとしているバーチャルカメラのハンドル
+	float m_blend_timer;					// ブレンドにかける時間を計測
+	bool  m_is_blending;					// ブレンド中かを判定
+	bool  m_is_invert_horizontal;			// 操作時に左右反転を行うかを判定
+	bool  m_is_invert_vertical;				// 操作時に上下反転を行うかを判定
 
 	bool test_is_add1;
 	bool test_is_add2;
