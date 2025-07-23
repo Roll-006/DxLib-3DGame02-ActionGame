@@ -100,13 +100,14 @@ private:
 	std::shared_ptr<Transform>			m_blend_origin_result_transform;				// ブレンドの起点に利用するブレンド結果トランスフォーム
 	std::shared_ptr<Transform>			m_blend_result_transform;						// ブレンド結果トランスフォーム
 
-	std::unordered_map<TimeKind, int>	m_target_virtual_camera_handle;					// ブレンドのターゲットとしているバーチャルカメラのハンドル
+	int									m_origin_virtual_camera_handle;					// ブレンドの起点とするバーチャルカメラのハンドル
+	std::unordered_map<TimeKind, int>	m_target_virtual_camera_handle;					// ブレンドのターゲットとするバーチャルカメラのハンドル
 
-	float m_blend_timer;					// ブレンドにかける時間を計測
-	float m_blend_coefficient;				// ブレンド係数
-	bool  m_is_blending;					// ブレンド中かを判定
-	bool  m_is_invert_horizontal;			// 操作時に左右反転を行うかを判定
-	bool  m_is_invert_vertical;				// 操作時に上下反転を行うかを判定
+	float m_blend_timer;																// ブレンドにかける時間を計測
+	float m_blend_coefficient;															// ブレンド係数
+	bool  m_is_blending;																// ブレンド中かを判定
+	bool  m_is_invert_horizontal;														// 操作時に左右反転を行うかを判定
+	bool  m_is_invert_vertical;															// 操作時に上下反転を行うかを判定
 
 	// TODO : 仮変数。のちに削除
 	bool test_is_add1;

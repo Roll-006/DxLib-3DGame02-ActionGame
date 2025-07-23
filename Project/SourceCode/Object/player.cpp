@@ -3,7 +3,7 @@
 #include "../Part/player_state_controller.hpp"
 
 Player::Player() :
-	CharaBase(ObjName.PLAYER, ObjTag.PLAYER, ModelPath.CHARA_01, MassKind::kMedium),
+	CharaBase(ObjName.PLAYER, ObjTag.PLAYER, ModelPath.CHARA_06, MassKind::kMedium),
 	m_state								(std::make_shared<PlayerStateController>()),
 	m_move_speed						(0.0f),
 	m_look_dir_correct_angle			(0.0f),

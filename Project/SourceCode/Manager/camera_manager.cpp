@@ -1,4 +1,4 @@
-#include "camera_manager.hpp"
+ï»¿#include "camera_manager.hpp"
 
 CameraManager::CameraManager() :
 	m_main_camera					(nullptr),
@@ -6,6 +6,7 @@ CameraManager::CameraManager() :
 	m_blend_target_transform		(nullptr),
 	m_blend_origin_result_transform	(nullptr),
 	m_blend_result_transform		(nullptr),
+	m_origin_virtual_camera_handle	(-1),
 	m_blend_timer					(0.0f),
 	m_blend_coefficient				(0.0f),
 	m_is_blending					(false),
@@ -92,10 +93,10 @@ std::shared_ptr<VirtualCameraBase> CameraManager::GetVirtualCamera(const Virtual
 #pragma endregion
 
 
-#pragma region ƒuƒŒƒ“ƒhŠÖ˜Aˆ—
+#pragma region ãƒ–ãƒ¬ãƒ³ãƒ‰é–¢é€£å‡¦ç†
 void CameraManager::BlendVirtualCamera()
 {
-	// ‰¼‚Ì’Ç‰Á
+	// ä»®ã®è¿½åŠ 
 	if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_1) == InputState::kSingle)
 	{
 		if (!test_is_add1)
@@ -111,6 +112,14 @@ void CameraManager::BlendVirtualCamera()
 	}
 	if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_2) == InputState::kSingle)
 	{
+		GetVirtualCamera(handle2)->Deactivate();
+	}
+	if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_3) == InputState::kSingle)
+	{
+		GetVirtualCamera(handle2)->Activate();
+	}
+	if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_4) == InputState::kSingle)
+	{
 		if (!test_is_add2)
 		{
 			const auto rot_camera = std::make_shared<RotControlVirtualCamera>(3);
@@ -124,14 +133,6 @@ void CameraManager::BlendVirtualCamera()
 			test_is_add2 = true;
 		}
 	}
-	if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_3) == InputState::kSingle)
-	{
-		GetVirtualCamera(handle2)->Deactivate();
-	}
-	if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_4) == InputState::kSingle)
-	{
-		GetVirtualCamera(handle2)->Activate();
-	}
 	if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_5) == InputState::kSingle)
 	{
 		GetVirtualCamera(handle3)->Deactivate();
@@ -141,31 +142,13 @@ void CameraManager::BlendVirtualCamera()
 		GetVirtualCamera(handle3)->Activate();
 	}
 
-	//m_target_virtual_camera_handle[TimeKind::kPrev] = m_target_virtual_camera_handle[TimeKind::kCurrent];
-
-	// ƒuƒŒƒ“ƒh‚Ì‹N“_‚Æƒ^[ƒQƒbƒg‚ğİ’è
+	// ãƒ–ãƒ¬ãƒ³ãƒ‰ã®èµ·ç‚¹ã¨ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’è¨­å®š
 	SetBlendTransform();
 
-	// ƒuƒŒƒ“ƒhŒ‹‰Ê‚ğŒvZ
+	// ãƒ–ãƒ¬ãƒ³ãƒ‰çµæœã‚’è¨ˆç®—
 	CalcBlendResuletTransform();
 
-	DrawFormatString(0, 20, 0xffffff, "blend_timer         : %f", m_blend_timer);
-	DrawFormatString(0, 40, 0xffffff, "is_blending         : %d", m_is_blending); 
-	DrawFormatString(0, 60, 0xffffff, "m_blend_coefficient : %f", m_blend_coefficient);
-
-	if(m_blend_result_transform)
-	DrawSphere3D(m_blend_result_transform->GetPos(CoordinateKind::kWorld), 5, 8, 0xffffff, 0xffffff, TRUE);
-
-	matrix::Draw(400, 0, m_blend_result_transform->GetMatrix(CoordinateKind::kWorld));
-
-	int c = 0;
-	for (const auto& pr : m_priority)
-	{
-		DrawFormatString(0, 80 + (c * 20), 0xffffff, "handle %3d : is_active %d", pr.first, GetVirtualCamera(pr.first)->IsActive());
-		++c;
-	}
-
-	// ƒƒCƒ“ƒJƒƒ‰‚Ö“K—p
+	// ãƒ¡ã‚¤ãƒ³ã‚«ãƒ¡ãƒ©ã¸é©ç”¨
 	m_main_camera->GetTransform()->SetMatrix(CoordinateKind::kWorld, m_blend_result_transform->GetMatrix(CoordinateKind::kWorld));
 }
 
@@ -176,7 +159,7 @@ void CameraManager::ChangeTargetVirtualCamera(const int obj_handle)
 
 	if (m_target_virtual_camera_handle[TimeKind::kPrev] != m_target_virtual_camera_handle[TimeKind::kCurrent])
 	{
-		// ƒuƒŒƒ“ƒh’†‚ÉÅ—DæƒJƒƒ‰‚ªØ‚è‘Ö‚í‚Á‚½ê‡A‚»‚ê‚Ü‚Å‚ÌƒuƒŒƒ“ƒhŒ‹‰Ê‚ğƒuƒŒƒ“ƒh‚Ì‹N“_‚Æ‚·‚é
+		// ãƒ–ãƒ¬ãƒ³ãƒ‰ä¸­ã«æœ€å„ªå…ˆã‚«ãƒ¡ãƒ©ãŒåˆ‡ã‚Šæ›¿ã‚ã£ãŸå ´åˆã€ãã‚Œã¾ã§ã®ãƒ–ãƒ¬ãƒ³ãƒ‰çµæœã‚’ãƒ–ãƒ¬ãƒ³ãƒ‰ã®èµ·ç‚¹ã¨ã™ã‚‹
 		if (m_blend_timer != kBlendTime)
 		{
 			m_blend_origin_result_transform = m_blend_result_transform;
@@ -189,60 +172,64 @@ void CameraManager::ChangeTargetVirtualCamera(const int obj_handle)
 
 void CameraManager::SetBlendTransform()
 {
-	std::vector<bool> active_list;
-	bool is_seted_target	= false;
-	int  loop_count			= 0;;
-
-	// ‰ß‹‚Ìó‘Ô‚ğ•Û‘¶
+	bool is_seted_target_transform = false;
+	bool is_seted_origin_transform = false;
 
 	for (const auto& pr : m_priority)
 	{
-		active_list.emplace_back((GetVirtualCamera(pr.first))->IsActive());
-
-		// ƒAƒNƒeƒBƒu‚Å‚ ‚é‚©‚ÂAƒ^[ƒQƒbƒg‚ª‚Ü‚¾İ’è‚³‚ê‚Ä‚¢‚È‚¢ê‡Aƒ^[ƒQƒbƒg‚ğİ’è‚·‚é
-		if (active_list.at(loop_count) && !is_seted_target)
+		// ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã§ã‚ã‚‹ã‹ã¤ã€ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãŒã¾ã è¨­å®šã•ã‚Œã¦ã„ãªã„å ´åˆã€ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’è¨­å®šã™ã‚‹
+		if (GetVirtualCamera(pr.first)->IsActive() && !is_seted_target_transform)
 		{
 			m_blend_target_transform = GetVirtualCamera(pr.first)->GetTransform();
 			ChangeTargetVirtualCamera(pr.first);
 
-			is_seted_target	= true;
+			is_seted_target_transform = true;
 		}
-		else
+		else if(!is_seted_origin_transform)
 		{
-			// ƒuƒŒƒ“ƒhŒ‹‰Ê‚ªŠi”[‚³‚ê‚Ä‚¢‚ê‚ÎƒuƒŒƒ“ƒhŒ‹‰Ê‚ğ‹N“_‚Æ‚·‚é
-			if (m_blend_origin_result_transform != nullptr)
+			// ä»¥å‰ã¾ã§ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã§ã‚ã£ãŸã‚«ãƒ¡ãƒ©ã‚’èµ·ç‚¹ã«ç§»è¡Œ
+			m_origin_virtual_camera_handle = m_target_virtual_camera_handle[TimeKind::kPrev];
+
+			if (m_origin_virtual_camera_handle == pr.first)
 			{
-				m_blend_origin_transform = m_blend_origin_result_transform;
+				// ãƒ–ãƒ¬ãƒ³ãƒ‰çµæœãŒæ ¼ç´ã•ã‚Œã¦ã„ã‚Œã°ãƒ–ãƒ¬ãƒ³ãƒ‰çµæœã‚’èµ·ç‚¹ã¨ã™ã‚‹
+				// FIXME : originAâ¡targetBã«ãƒ–ãƒ¬ãƒ³ãƒ‰ä¸­ã«ã€originBâ¡targetAã«åˆ‡ã‚Šæ›¿ã‚ã£ãŸå ´åˆã€åˆ°é”ã¾ã§ã®æ™‚é–“ãŒæ—©ããªã‚‹ä¸å…·åˆç™ºç”Ÿä¸­
+				if (m_blend_origin_result_transform != nullptr /*
+					&& m_target_virtual_camera_handle[TimeKind::kPrev] != m_origin_virtual_camera_handle*/)
+				{
+					m_blend_origin_transform = m_blend_origin_result_transform;
+				}
+				// ãƒ–ãƒ¬ãƒ³ãƒ‰çµæœãŒãªã„å ´åˆã¯ãƒãƒ¼ãƒãƒ£ãƒ«ã‚«ãƒ¡ãƒ©ã®ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ ã‚’ç›´æ¥èµ·ç‚¹ã¨ã™ã‚‹
+				else
+				{
+					m_blend_origin_transform = GetVirtualCamera(pr.first)->GetTransform();
+				}
+
+				is_seted_origin_transform = true;
 			}
-			// ƒuƒŒƒ“ƒhŒ‹‰Ê‚ª‚È‚¢ê‡‚Íƒo[ƒ`ƒƒƒ‹ƒJƒƒ‰‚Ìƒgƒ‰ƒ“ƒXƒtƒH[ƒ€‚ğ’¼Ú‹N“_‚Æ‚·‚é
-			else
-			{
-				m_blend_origin_transform = GetVirtualCamera(pr.first)->GetTransform();
-			}
+
 		}
 
-		++loop_count;
+		if (is_seted_target_transform && is_seted_origin_transform) { break; }
 	}
 }
 
 void CameraManager::CalcBlendResuletTransform()
 {
-	// ƒo[ƒ`ƒƒƒ‹ƒJƒƒ‰‚ª’P“Æ‚Å‘¶İ‚µ‚Ä‚¢‚½ê‡A
-	// ‚à‚µ‚­‚ÍƒuƒŒƒ“ƒh‚ªŠ®—¹Ï‚İ‚Ìê‡‚ÍAƒ^[ƒQƒbƒg©g‚ğ’Ç”ö‚·‚é
+	// ãƒãƒ¼ãƒãƒ£ãƒ«ã‚«ãƒ¡ãƒ©ãŒå˜ç‹¬ã§å­˜åœ¨ã—ã¦ã„ãŸå ´åˆã€
+	// ã‚‚ã—ãã¯ãƒ–ãƒ¬ãƒ³ãƒ‰ãŒå®Œäº†æ¸ˆã¿ã®å ´åˆã¯ã€ã‚¿ãƒ¼ã‚²ãƒƒãƒˆè‡ªèº«ã‚’è¿½å°¾ã™ã‚‹
 	if (m_blend_origin_transform == nullptr || !m_is_blending)
 	{
 		m_blend_result_transform = m_blend_target_transform;
 		return;
 	}
 
-	// ƒuƒŒƒ“ƒhŒW”‚ğŒvZ
+	// ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ é–“ã®è£œé–“
 	math::Increase(m_blend_timer, FPS::GetDeltaTime(), kBlendTime);
-	m_blend_coefficient = math::GetUnitValue<float, float>(0.0f, kBlendTime, m_blend_timer);
-
-	// ƒgƒ‰ƒ“ƒXƒtƒH[ƒ€ŠÔ‚Ì•âŠÔ
+	m_blend_coefficient		 = math::GetUnitValue<float, float>(0.0f, kBlendTime, m_blend_timer);
 	m_blend_result_transform = math::GetLerpTransform(m_blend_origin_transform, m_blend_target_transform, m_blend_coefficient, true, false, true);
 
-	// ƒuƒŒƒ“ƒhŠ®—¹”»’è
+	// ãƒ–ãƒ¬ãƒ³ãƒ‰å®Œäº†åˆ¤å®š
 	if (m_blend_coefficient >= 1.0f)
 	{
 		m_blend_origin_result_transform = nullptr;
