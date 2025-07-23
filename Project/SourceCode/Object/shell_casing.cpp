@@ -33,8 +33,6 @@ void ShellCasing::Update()
 {
 	if (!IsActive()) { return; }
 
-	AddFallVelocity();
-
 	m_is_landing = false;
 }
 

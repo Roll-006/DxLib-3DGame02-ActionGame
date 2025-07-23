@@ -26,8 +26,6 @@ void House::Init()
 void House::Update()
 {
 	if (!IsActive()) { return; }
-
-	AddFallVelocity();
 }
 
 void House::LateUpdate()

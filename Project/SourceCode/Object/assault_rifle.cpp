@@ -34,8 +34,6 @@ void AssaultRifle::Init()
 void AssaultRifle::Update()
 {
 	if (!IsActive()) { return; }
-
-	AddFallVelocity();
 }
 
 void AssaultRifle::LateUpdate()

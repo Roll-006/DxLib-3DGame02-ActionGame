@@ -17,20 +17,27 @@ void PhysicsManager::Update()
 		// 重力処理が許可されている場合のみ重力を与える
 		if (IsApplyGravity(obj) && obj->IsActive())
 		{
-			obj->ApplyGravity(kGravityAcceleration, kMaxGravity);
+			obj->ApplyGravity(kGravityAcceleration, kMaxGravity);		
 		}
 	}
 }
 
 void PhysicsManager::LateUpdate()
 {
+	for (const auto& obj : m_physical_objects)
+	{
+		if (IsApplyGravity(obj) && obj->IsActive())
+		{
+			obj->AddFallVelocity();
+		}
+	}
+
 	// 押し戻し(有効な速度ベクトルを取得)
 	ExecutePushBackPairs();
 
 	for (const auto& obj : m_physical_objects)
 	{
 		// 速度ベクトルを適用
-		// FIXME : 薬莢のカプセルの縮めているのはここ
 		obj->ApplyVelocity();
 	}
 }
@@ -152,10 +159,11 @@ void PhysicsManager::PushBackSphereAndTarget (const std::shared_ptr<PhysicalObjB
 	// 図形の登録がされていない場合はモデルで押し戻しを行う
 	if (shape == nullptr)
 	{
-		const auto velocity		= low_priority_obj->GetVelocity();
-		const auto sphere		= *std::dynamic_pointer_cast<Sphere>(low_priority_obj->GetCollider(ColliderKind::kCollider)->GetShape());
-		const auto model_handle = high_priority_obj->GetModelHandle();
-		low_priority_obj->SetVelocity(collision::PushBackSphereAndModel(velocity, sphere, model_handle, kSlopeDifficultyAngleThreshold, kMaxSlopeAngle));
+		const auto velocity				= low_priority_obj->GetVelocity();
+		const auto sphere				= *std::dynamic_pointer_cast<Sphere>(low_priority_obj->GetCollider(ColliderKind::kCollider)->GetShape());
+		const auto model_handle			= high_priority_obj->GetModelHandle();
+		const auto push_backed_velocity = collision::PushBackSphereAndModel(velocity, sphere, model_handle, kSlopeDifficultyAngleThreshold, kMaxSlopeAngle);
+		low_priority_obj->SetVelocity(push_backed_velocity);
 		return;
 	}
 
@@ -172,10 +180,11 @@ void PhysicsManager::PushBackCapsuleAndTarget(const std::shared_ptr<PhysicalObjB
 	// 図形の登録がされていない場合はモデルで押し戻しを行う
 	if (shape == nullptr)
 	{
-		const auto velocity		= low_priority_obj->GetVelocity();
-		const auto capsule		= *std::dynamic_pointer_cast<Capsule>(low_priority_obj->GetCollider(ColliderKind::kCollider)->GetShape());
-		const auto model_handle = high_priority_obj->GetModelHandle();
-		low_priority_obj->SetVelocity(collision::PushBackCapsuleAndModel(velocity, capsule, model_handle, kSlopeDifficultyAngleThreshold, kMaxSlopeAngle));
+		const auto velocity				= low_priority_obj->GetVelocity();
+		const auto capsule				= *std::dynamic_pointer_cast<Capsule>(low_priority_obj->GetCollider(ColliderKind::kCollider)->GetShape());
+		const auto model_handle			= high_priority_obj->GetModelHandle();
+		const auto push_backed_velocity	= collision::PushBackCapsuleAndModel(velocity, capsule, model_handle, kSlopeDifficultyAngleThreshold, kMaxSlopeAngle);
+		low_priority_obj->SetVelocity(push_backed_velocity);
 		return;
 	}
 

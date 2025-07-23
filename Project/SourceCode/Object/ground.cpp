@@ -26,8 +26,6 @@ void Ground::Init()
 void Ground::Update()
 {
 	if (!IsActive()) { return; }
-
-	AddFallVelocity();
 }
 
 void Ground::LateUpdate()

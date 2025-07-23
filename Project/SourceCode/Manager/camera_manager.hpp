@@ -78,7 +78,7 @@ private:
 	void ChangeTargetVirtualCamera(const int obj_handle);
 
 	/// @brief ブレンド対象となるトランスフォームを設定
-	void SetBlendTransform(std::queue<int>& sorted_camera_handles);
+	void SetBlendTransform();
 
 	/// @brief ブレンド結果行列トランスフォームを計算
 	void CalcBlendResuletTransform();
@@ -95,19 +95,20 @@ private:
 	std::unordered_map<int, std::shared_ptr<VirtualCameraBase>>	m_virtual_cameras;		// 登録されているバーチャルカメラ
 	std::unordered_map<int, int>								m_priority;				// 優先順位<オブジェクトハンドル, 優先度>
 
-	std::shared_ptr<Transform> m_blend_origin_transform;			// ブレンドの起点とするトランスフォーム
-	std::shared_ptr<Transform> m_blend_target_transform;			// ブレンドのターゲットとするトランスフォーム
-	std::shared_ptr<Transform> m_blend_origin_result_transform;		// ブレンドの起点に利用するブレンド結果トランスフォーム
-	std::shared_ptr<Transform> m_blend_result_transform;			// ブレンド結果トランスフォーム
+	std::shared_ptr<Transform>			m_blend_origin_transform;						// ブレンドの起点とするトランスフォーム
+	std::shared_ptr<Transform>			m_blend_target_transform;						// ブレンドのターゲットとするトランスフォーム
+	std::shared_ptr<Transform>			m_blend_origin_result_transform;				// ブレンドの起点に利用するブレンド結果トランスフォーム
+	std::shared_ptr<Transform>			m_blend_result_transform;						// ブレンド結果トランスフォーム
 
+	std::unordered_map<TimeKind, int>	m_target_virtual_camera_handle;					// ブレンドのターゲットとしているバーチャルカメラのハンドル
 
-	int   m_target_virtual_camera_handle;	// ブレンドのターゲットとしているバーチャルカメラのハンドル
 	float m_blend_timer;					// ブレンドにかける時間を計測
 	float m_blend_coefficient;				// ブレンド係数
 	bool  m_is_blending;					// ブレンド中かを判定
 	bool  m_is_invert_horizontal;			// 操作時に左右反転を行うかを判定
 	bool  m_is_invert_vertical;				// 操作時に上下反転を行うかを判定
 
+	// TODO : 仮変数。のちに削除
 	bool test_is_add1;
 	bool test_is_add2;
 	int handle1;

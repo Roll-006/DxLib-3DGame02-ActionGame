@@ -5,12 +5,13 @@ ShareScene::ShareScene() :
 	m_player		(std::make_shared<Player>())
 {
 	// 各オブジェクトマネージャーへの登録
-	ObjManager		::GetInstance()->AddObj			(m_player);
-	ObjManager		::GetInstance()->AddObj			(m_main_camera);
-	CollisionManager::GetInstance()->AddCollideObj	(m_player);
-	CollisionManager::GetInstance()->AddCollideObj	(m_main_camera);
-	PhysicsManager	::GetInstance()->AddPhysicalObj	(m_player);
-	PhysicsManager	::GetInstance()->AddPhysicalObj	(m_main_camera);
+	ObjManager		::GetInstance()->AddObj				(m_player);
+	ObjManager		::GetInstance()->AddObj				(m_main_camera);
+	CollisionManager::GetInstance()->AddCollideObj		(m_player);
+	CollisionManager::GetInstance()->AddCollideObj		(m_main_camera);
+	PhysicsManager	::GetInstance()->AddPhysicalObj		(m_player);
+	PhysicsManager	::GetInstance()->AddPhysicalObj		(m_main_camera);
+	PhysicsManager  ::GetInstance()->AddIgnoreObjGravity(m_main_camera->GetObjHandle());
 
 	// メインカメラの登録
 	const auto camera_manager = CameraManager::GetInstance();

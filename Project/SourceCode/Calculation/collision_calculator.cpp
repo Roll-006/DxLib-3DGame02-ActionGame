@@ -745,6 +745,7 @@ VECTOR collision::PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsu
     // 登るのが困難な角度・登れない角度の場合は、「三角形の法線～ワールドX軸に対して平行」の範囲内の方向に押し戻す
     // 押し戻す方向は三角形の角度が上がるほどワールドX軸に向かう
     else
+   
     {
         // 平面の法線を、ワールドX軸に対して水平にする
         VECTOR horizontal_v = plane.GetNormalVector();
@@ -760,7 +761,7 @@ VECTOR collision::PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsu
         // FIXME : 回転方向を決める必要がある可能性あり
         const VECTOR push_back_dir      =  math::GetRotatedPos(horizontal_v, quat::CreateQuaternion(v1, push_back_angle));
 
-        printfDx("push_back_angle : %f\n", push_back_angle);
+        //printfDx("push_back_angle : %f\n", push_back_angle);
 
         // 押し戻しベクトルの長さを取得
         const VECTOR v2                 = math::GetNormalVector(plane.GetNormalVector(), v1);

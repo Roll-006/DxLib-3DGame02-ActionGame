@@ -34,8 +34,6 @@ void Bullet::Update()
 
 	// 位置情報をシフト
 	m_prev_pos = m_transform->GetPos(CoordinateKind::kWorld);
-
-	AddFallVelocity();
 }
 
 void Bullet::LateUpdate()

@@ -38,8 +38,7 @@ void Zombie::Update()
 	CalcCapsuleColliderLength();
 	CalcLegTriggerPos();
 	CalcBodyTriggerPos();
-	AddFallVelocity();
-
+	
 	m_is_landing = false;
 }
 

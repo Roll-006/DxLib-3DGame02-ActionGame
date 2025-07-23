@@ -38,7 +38,6 @@ Player::Player() :
 	const auto rot_camera = std::make_shared<RotControlVirtualCamera>(1);
 	camera_manager->AddVirtualCamera(rot_camera);
 	rot_camera->AttachTarget(m_transform, VGet(0.0f, 30.0f, 0.0f));
-	rot_camera->Deactivate();
 
 	// TODO : ‰¼‚ÅŠc‚è’e”‚ğİ’è
 	m_current_remaining_bullet_num = 10000;
@@ -68,8 +67,6 @@ void Player::Update()
 	CalcLookDir();
 	CalcVelocity();
 	CalcCapsuleColliderLength();
-
-	AddFallVelocity();
 
 	UpdateTransform(m_look_dir.at(TimeKind::kCurrent), kModelScale);
 
