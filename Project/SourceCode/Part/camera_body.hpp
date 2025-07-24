@@ -44,6 +44,8 @@ private:
 	void CalcPos();
 
 private:
+	static constexpr float kMaxDampingNum = 20.0f;
+
 	std::shared_ptr<Transform> m_camera_transform;
 	std::shared_ptr<Transform> m_target_transform;
 
