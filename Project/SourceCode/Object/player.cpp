@@ -70,7 +70,7 @@ void Player::Update()
 
 	UpdateTransform(m_look_dir.at(TimeKind::kCurrent), kModelScale);
 
-	//m_current_attach_weapon->Update();
+	// MEMO : Update‚Å‚Í’eŠÛ‚Ì”­ŽË”»’è‚Ì‚Ý‚ðs‚¤‚à‚Ì‚Æ‚·‚é
 
 	m_is_landing = false;
 }
@@ -80,6 +80,8 @@ void Player::LateUpdate()
 	if (!IsActive()) { return; }
 
 	m_state->LateUpdate(this);
+
+	// MEMO : LateUpdate‚ÅŽÀÛ‚Ì’eŠÛ‚ð”­ŽË‚³‚¹‚é
 
 	// ƒ{[ƒ“ˆÊ’uC³
 	//m_modeler->ApplyMatrix();

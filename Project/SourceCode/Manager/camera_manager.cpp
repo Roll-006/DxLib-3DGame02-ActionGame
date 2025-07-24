@@ -3,7 +3,7 @@
 CameraManager::CameraManager() :
 	m_main_camera					(nullptr),
 	m_blend_origin_transform		(nullptr),
-	m_blend_target_transform		(nullptr),
+	m_blend_target_transform		(std::make_shared<Transform>()),
 	m_blend_origin_result_transform	(nullptr),
 	m_blend_result_transform		(nullptr),
 	m_origin_virtual_camera_handle	(-1),
@@ -29,9 +29,6 @@ void CameraManager::Update()
 		camera.second->Update();
 	}
 
-	BlendVirtualCamera();
-
-	assert(m_main_camera != nullptr);
 	m_main_camera->Update();
 }
 
@@ -172,6 +169,8 @@ void CameraManager::ChangeTargetVirtualCamera(const int obj_handle)
 
 void CameraManager::SetBlendTransform()
 {
+	// WARNING : バーチャルカメラが一つもない状態や、一つもアクティブなカメラがない状態は考慮していない
+
 	bool is_seted_target_transform = false;
 	bool is_seted_origin_transform = false;
 
@@ -194,7 +193,7 @@ void CameraManager::SetBlendTransform()
 			{
 				// ブレンド結果が格納されていればブレンド結果を起点とする
 				// FIXME : originA➡targetBにブレンド中に、originB➡targetAに切り替わった場合、到達までの時間が早くなる不具合発生中
-				if (m_blend_origin_result_transform != nullptr /*
+				if (m_blend_origin_result_transform != nullptr/* 
 					&& m_target_virtual_camera_handle[TimeKind::kPrev] != m_origin_virtual_camera_handle*/)
 				{
 					m_blend_origin_transform = m_blend_origin_result_transform;

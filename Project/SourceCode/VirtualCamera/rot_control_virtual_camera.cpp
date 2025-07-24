@@ -25,24 +25,29 @@ void RotControlVirtualCamera::Update()
 	if (!IsActive()) { return; }
 
 	InitMove();
-
 	Move();
 
-	m_aim ->SetRot(math::ConvertEulerAnglesToRotMatrix(m_input_angle.at(TimeKind::kCurrent)));
-	m_body->SetCameraCorrectDir(-m_transform->GetForward(CoordinateKind::kWorld));
-	m_body->SetDistanceToTarget(kDistanceToTarget);
-	m_body->SetCameraPos(m_aim->GetAimPos() + m_body->GetCameraCorrectDir() * m_body->GetDistanceToTarget());
+	DrawSphere3D(m_aim->GetAimPos(), 4, 8, GetColor(255, 0, 0), GetColor(255, 0, 0), TRUE);
+	DrawSphere3D(m_target_transform->GetPos(CoordinateKind::kWorld), 4, 8, GetColor(255, 0, 0), GetColor(255, 0, 0), TRUE);
 
-	DrawSphere3D(m_aim->GetAimPos(), 4, 8, 0xff0000, 0xff0000, TRUE);
+	const auto pos		= m_target_transform->GetPos(CoordinateKind::kWorld);
+	const auto aim_pos	= m_aim->GetAimPos();
 }
 
 void RotControlVirtualCamera::LateUpdate()
 {
 	if (!IsActive()) { return; }
 
+	m_aim ->SetRot(math::ConvertEulerAnglesToRotMatrix(m_input_angle.at(TimeKind::kCurrent)));
 	m_body->SetCameraCorrectDir(-m_transform->GetForward(CoordinateKind::kWorld));
 	m_body->SetDistanceToTarget(kDistanceToTarget);
 	m_body->SetCameraPos(m_aim->GetAimPos() + m_body->GetCameraCorrectDir() * m_body->GetDistanceToTarget());
+
+	const auto pos		= m_target_transform->GetPos(CoordinateKind::kWorld);
+	const auto aim_pos	= m_aim->GetAimPos();
+
+	DrawSphere3D(m_aim->GetAimPos(), 4, 8, GetColor(0, 255, 0), GetColor(0, 255, 0), TRUE);
+	DrawSphere3D(m_target_transform->GetPos(CoordinateKind::kWorld), 4, 8, GetColor(0, 255, 0), GetColor(0, 255, 0), TRUE);
 }
 
 void RotControlVirtualCamera::Draw() const

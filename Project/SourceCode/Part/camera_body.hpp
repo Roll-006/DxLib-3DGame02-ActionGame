@@ -27,8 +27,8 @@ public:
 	void SetCameraPos		(const VECTOR& camera_pos)			{ m_camera_transform->SetPos(CoordinateKind::kWorld, camera_pos); }
 	void SetCameraCorrectDir(const VECTOR& camera_correct_dir)	{ m_camera_correct_dir	= camera_correct_dir; }
 	void SetDistanceToTarget(const float   distance_to_target)	{ m_distance_to_target	= distance_to_target; }
-	void SetDamping			(const VECTOR& damping)				{ m_damping				= damping; }
-	void SetDampingYaw		(const float   damping_yaw)			{ m_damping_yaw			= damping_yaw; }
+	void SetDamping			(const VECTOR& damping);
+	void SetDampingYaw		(const float   damping_yaw);
 	#pragma endregion
 
 
@@ -39,9 +39,6 @@ public:
 	[[nodiscard]] VECTOR GetDamping()			const { return m_damping; }
 	[[nodiscard]] float  GetDampingYaw()		const { return m_damping_yaw; }
 	#pragma endregion
-
-private:
-	void CalcPos();
 
 private:
 	static constexpr float kMaxDampingNum = 20.0f;

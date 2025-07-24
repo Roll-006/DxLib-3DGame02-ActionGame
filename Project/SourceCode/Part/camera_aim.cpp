@@ -44,32 +44,38 @@ void CameraAim::SetRot		(const MATRIX& rot_matrix)
 	m_camera_transform->SetRot(CoordinateKind::kWorld, rot_matrix);
 }
 
+void CameraAim::SetHorizontalDamping(const float horizontal_damping)
+{
+	m_horizontal_damping = std::clamp(horizontal_damping, 0.0f, kMaxDampingNum);
+}
+
+void CameraAim::SetVerticalDamping(const float vertical_damping)
+{
+	m_vertical_damping = std::clamp(vertical_damping, 0.0f, kMaxDampingNum);
+}
+
 void CameraAim::SetScreen	(const Vector2D<float>& screen)
 {
-	m_screen		= screen;
-	m_screen.x		= std::clamp(m_screen.x, 0.0f, 1.0f);
-	m_screen.y		= std::clamp(m_screen.y, 0.0f, 1.0f);
+	m_screen.x		= std::clamp(screen.x, 0.0f, 1.0f);
+	m_screen.y		= std::clamp(screen.y, 0.0f, 1.0f);
 }
 
 void CameraAim::SetDeadZone	(const Vector2D<float>& dead_zone)
 {
-	m_dead_zone		= dead_zone;
-	m_dead_zone.x	= std::clamp(m_dead_zone.x, 0.0f, 1.0f);
-	m_dead_zone.y	= std::clamp(m_dead_zone.y, 0.0f, 1.0f);
+	m_dead_zone.x	= std::clamp(dead_zone.x, 0.0f, 1.0f);
+	m_dead_zone.y	= std::clamp(dead_zone.y, 0.0f, 1.0f);
 }
 
 void CameraAim::SetSoftZone	(const Vector2D<float>& soft_zone)
 {
-	m_soft_zone		= soft_zone;
-	m_soft_zone.x	= std::clamp(m_soft_zone.x, 0.0f, 1.0f);
-	m_soft_zone.y	= std::clamp(m_soft_zone.y, 0.0f, 1.0f);
+	m_soft_zone.x	= std::clamp(soft_zone.x, 0.0f, 1.0f);
+	m_soft_zone.y	= std::clamp(soft_zone.y, 0.0f, 1.0f);
 }
 
 void CameraAim::SetBias		(const Vector2D<float>& bias)
 {
-	m_bias			= bias;
-	m_bias.x		= std::clamp(m_bias.x, -0.5f, 0.5f);
-	m_bias.y		= std::clamp(m_bias.y, -0.5f, 0.5f);
+	m_bias.x		= std::clamp(bias.x, -0.5f, 0.5f);
+	m_bias.y		= std::clamp(bias.y, -0.5f, 0.5f);
 }
 #pragma endregion
 

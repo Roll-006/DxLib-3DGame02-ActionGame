@@ -8,18 +8,18 @@ PlayScene::PlayScene():
 	m_rifle_cartridge_object_pool	(std::make_shared<RifleCartridgeObjectPool>()),
 	m_player_ui_creator				(std::make_shared<PlayerUICreator>(ObjManager::GetInstance()->GetObj<Player>(ObjName.PLAYER)))
 {
-	ObjManager		::GetInstance()->AddObj			(m_zombie);
-	ObjManager		::GetInstance()->AddObj			(m_house);
-	ObjManager		::GetInstance()->AddObj			(m_ground);
-	CollisionManager::GetInstance()->AddCollideObj	(m_zombie);
-	CollisionManager::GetInstance()->AddCollideObj	(m_house);
-	CollisionManager::GetInstance()->AddCollideObj	(m_ground);
-	PhysicsManager	::GetInstance()->AddPhysicalObj	(m_zombie);
-	PhysicsManager	::GetInstance()->AddPhysicalObj	(m_house);
-	PhysicsManager	::GetInstance()->AddPhysicalObj	(m_ground);
+	ObjManager		::GetInstance()->AddObj		   (m_zombie);
+	ObjManager		::GetInstance()->AddObj		   (m_house);
+	ObjManager		::GetInstance()->AddObj		   (m_ground);
+	CollisionManager::GetInstance()->AddCollideObj (m_zombie);
+	CollisionManager::GetInstance()->AddCollideObj (m_house);
+	CollisionManager::GetInstance()->AddCollideObj (m_ground);
+	PhysicsManager	::GetInstance()->AddPhysicalObj(m_zombie);
+	PhysicsManager	::GetInstance()->AddPhysicalObj(m_house);
+	PhysicsManager	::GetInstance()->AddPhysicalObj(m_ground);
 
-	ObjectPoolHolder::GetInstance()->AddObjectPool(m_rifle_cartridge_object_pool);
-	UIDrawer		 ::GetInstance()->AddUICreator (m_player_ui_creator);
+	ObjectPoolHolder::GetInstance()->AddObjectPool (m_rifle_cartridge_object_pool);
+	UIDrawer		::GetInstance()->AddUICreator  (m_player_ui_creator);
 }
 
 PlayScene::~PlayScene()

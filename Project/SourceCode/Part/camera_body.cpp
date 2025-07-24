@@ -35,6 +35,21 @@ void CameraBody::DetachTarget()
 #pragma endregion
 
 
+#pragma region Setter
+void CameraBody::SetDamping(const VECTOR& damping)
+{
+	m_damping.x = std::clamp(damping.x, 0.0f, kMaxDampingNum);
+	m_damping.y = std::clamp(damping.y, 0.0f, kMaxDampingNum);
+	m_damping.z = std::clamp(damping.y, 0.0f, kMaxDampingNum);
+}
+
+void CameraBody::SetDampingYaw(const float damping_yaw)
+{
+	m_damping_yaw = std::clamp(damping_yaw, 0.0f, kMaxDampingNum);
+}
+#pragma endregion
+
+
 #pragma region Getter
 //VECTOR CameraBody::GetCameraPos() const
 //{
@@ -50,9 +65,3 @@ void CameraBody::DetachTarget()
 //	return camera_pos;
 //}
 #pragma endregion
-
-
-void CameraBody::CalcPos()
-{
-	//m_camera_transform->SetPos(CoordinateKind::kWorld, GetCameraPos());
-}

@@ -30,9 +30,13 @@ public:
 	/// @brief WARNING : 回転量の補正値は自動的に適用されるため考慮する必要はない
 	/// @param rot_matrix 回転行列
 	void SetRot					(const MATRIX&			rot_matrix);
-	void SetAimCorrect			(const VECTOR&			aim_correct)		{ m_aim_correct			= aim_correct;		}
-	void SetHorizontalDamping	(const float			horizontal_damping)	{ m_horizontal_damping	= horizontal_damping;	}
-	void SetVerticalDamping		(const float			vertical_damping)	{ m_vertical_damping	= vertical_damping;		}
+	void SetAimCorrect			(const VECTOR&			aim_correct) { m_aim_correct = aim_correct; }
+	/// @brief 水平方向のダンピング値を設定
+	/// @param horizontal_damping 指定可能範囲 : 0.0～20.0
+	void SetHorizontalDamping	(const float			horizontal_damping);
+	/// @brief 垂直方向のダンピング値を設定
+	/// @param vertical_damping 指定可能範囲 : 0.0～20.0
+	void SetVerticalDamping		(const float			vertical_damping);
 	/// @brief ターゲットをスクリーンのどこに位置させるかを設定
 	/// @param screen 指定可能範囲 : 0.0～1.0
 	void SetScreen				(const Vector2D<float>& screen);
@@ -58,10 +62,6 @@ public:
 	[[nodiscard]] Vector2D<float>	GetSoftZone()			const { return m_soft_zone; }
 	[[nodiscard]] Vector2D<float>	GetBias()				const { return m_bias; }
 	#pragma endregion
-
-private:
-	/// @brief 姿勢を計算する
-	//void CalcRotMatrix();
 
 private:
 	static constexpr float kMaxDampingNum = 20.0f;
