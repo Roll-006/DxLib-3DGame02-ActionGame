@@ -97,7 +97,7 @@ std::shared_ptr<VirtualCameraBase> CameraManager::GetVirtualCamera(const Virtual
 void CameraManager::BlendVirtualCamera()
 {
 	// 仮の追加
-	if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_1) == InputState::kSingle)
+	//if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_1) == InputState::kSingle)
 	{
 		if (!test_is_add1)
 		{
@@ -106,6 +106,7 @@ void CameraManager::BlendVirtualCamera()
 			rot_camera->AttachTarget(std::make_shared<Transform>());
 
 			handle2 = rot_camera->GetObjHandle();
+			GetVirtualCamera(handle2)->Deactivate();
 
 			test_is_add1 = true;		
 		}
@@ -118,7 +119,7 @@ void CameraManager::BlendVirtualCamera()
 	{
 		GetVirtualCamera(handle2)->Activate();
 	}
-	if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_4) == InputState::kSingle)
+	//if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_4) == InputState::kSingle)
 	{
 		if (!test_is_add2)
 		{
@@ -129,6 +130,7 @@ void CameraManager::BlendVirtualCamera()
 			rot_camera->AttachTarget(transform);
 
 			handle3 = rot_camera->GetObjHandle();
+			GetVirtualCamera(handle3)->Deactivate();
 
 			test_is_add2 = true;
 		}
