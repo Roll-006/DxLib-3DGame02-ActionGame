@@ -33,6 +33,10 @@ void RotControlVirtualCamera::LateUpdate()
 {
 	if (!IsActive()) { return; }
 
+	MATRIX m = MGetIdent();
+	CreateRotationXYZMatrix(&m, m_input_angle.at(TimeKind::kCurrent).x, m_input_angle.at(TimeKind::kCurrent).y, m_input_angle.at(TimeKind::kCurrent).z);
+	m_target_transform->SetRot(CoordinateKind::kWorld, MGetRotElem(m));
+
 	CalcTransform();
 }
 

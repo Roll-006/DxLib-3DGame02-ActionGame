@@ -5,6 +5,7 @@
 Player::Player() :
 	CharaBase(ObjName.PLAYER, ObjTag.PLAYER, ModelPath.CHARA_06, MassKind::kMedium),
 	m_state								(std::make_shared<PlayerStateController>()),
+	m_camera_aim_transform				(std::make_shared<Transform>()),
 	m_move_speed						(0.0f),
 	m_look_dir_correct_angle			(0.0f),
 	m_confirm_look_dir_threshold_angle	(0.0f),
@@ -37,7 +38,7 @@ Player::Player() :
 
 	const auto rot_camera = std::make_shared<RotControlVirtualCamera>(1);
 	camera_manager->AddVirtualCamera(rot_camera);
-	rot_camera->AttachTarget(m_transform);
+	rot_camera->AttachTarget(m_camera_aim_transform);
 
 	// TODO : 仮で所持残り弾数を設定
 	m_current_remaining_bullet_num = 10000;
@@ -80,6 +81,8 @@ void Player::LateUpdate()
 	if (!IsActive()) { return; }
 
 	m_state->LateUpdate(this);
+
+	CalcCameraAimPos();
 
 	// MEMO : LateUpdateで実際の弾丸を発射させる
 
@@ -293,6 +296,22 @@ void Player::CalcLookDir()
 	{
 		m_look_dir.at(TimeKind::kCurrent) = m_look_dir.at(TimeKind::kNext);
 	}
+}
+
+void Player::CalcCameraAimPos()
+{
+	m_modeler->ApplyMatrix();
+
+	// 追跡するボーンから行列を取得
+	const int model_handle	= m_modeler->GetModelHandle();
+	const int frame_num		= MV1SearchFrame(model_handle, BonePath.SPINE_2);
+	MATRIX frame_mat		= MV1GetFrameLocalWorldMatrix(model_handle, frame_num);
+	
+	// ボーン自体を追跡すると画面の揺れが強すぎるため同じ高さの位置を追跡
+	const VECTOR begin_pos	= m_transform->GetPos(CoordinateKind::kWorld);
+	const VECTOR distance	= begin_pos - MGetTranslateElem(frame_mat);
+	const VECTOR aim_pos	= begin_pos + m_transform->GetUp(CoordinateKind::kWorld) * VSize(distance);
+	m_camera_aim_transform->SetPos(CoordinateKind::kWorld, aim_pos);
 }
 
 VECTOR Player::GetVelocityFromPad()

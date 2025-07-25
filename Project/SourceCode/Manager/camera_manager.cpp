@@ -98,7 +98,8 @@ void CameraManager::BlendVirtualCamera()
 		{
 			const auto rot_camera = std::make_shared<RotControlVirtualCamera>(2);
 			AddVirtualCamera(rot_camera);
-			rot_camera->AttachTarget(std::make_shared<Transform>());
+			transform1 = std::make_shared<Transform>();
+			rot_camera->AttachTarget(transform1);
 
 			handle2 = rot_camera->GetObjHandle();
 
@@ -120,9 +121,9 @@ void CameraManager::BlendVirtualCamera()
 		{
 			const auto rot_camera = std::make_shared<RotControlVirtualCamera>(3);
 			AddVirtualCamera(rot_camera);
-			const auto transform = std::make_shared<Transform>();
-			transform->SetPos(CoordinateKind::kWorld, VGet(-500, 500, -500));
-			rot_camera->AttachTarget(transform);
+			transform2 = std::make_shared<Transform>();
+			transform2->SetPos(CoordinateKind::kWorld, VGet(-500, 500, -500));
+			rot_camera->AttachTarget(transform2);
 
 			handle3 = rot_camera->GetObjHandle();
 
@@ -147,6 +148,8 @@ void CameraManager::BlendVirtualCamera()
 
 	// メインカメラへ適用
 	m_main_camera->GetTransform()->SetMatrix(CoordinateKind::kWorld, m_blend_result_transform->GetMatrix(CoordinateKind::kWorld));
+
+	matrix::Draw(0, 40, m_blend_result_transform->GetMatrix(CoordinateKind::kWorld));
 }
 
 void CameraManager::ChangeTargetVirtualCamera(const int obj_handle)

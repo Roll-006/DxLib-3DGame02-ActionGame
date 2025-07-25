@@ -115,6 +115,8 @@ private:
 	int handle1;
 	int handle2;
 	int handle3;
+	std::shared_ptr<Transform> transform1;
+	std::shared_ptr<Transform> transform2;
 
 	friend SingletonBase<CameraManager>;
 };
