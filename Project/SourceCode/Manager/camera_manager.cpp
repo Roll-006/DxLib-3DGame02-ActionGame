@@ -29,10 +29,10 @@ void CameraManager::Update()
 		camera.second->Update();
 	}
 
-	BlendVirtualCamera();
+	//BlendVirtualCamera();
 
 	assert(m_main_camera != nullptr);
-	m_main_camera->Update();
+	//m_main_camera->Update();
 }
 
 void CameraManager::LateUpdate()
@@ -152,6 +152,12 @@ void CameraManager::BlendVirtualCamera()
 
 	// メインカメラへ適用
 	m_main_camera->GetTransform()->SetMatrix(CoordinateKind::kWorld, m_blend_result_transform->GetMatrix(CoordinateKind::kWorld));
+
+	matrix::Draw(0, 60, m_blend_result_transform->GetMatrix(CoordinateKind::kWorld));
+	if (m_blend_origin_transform) matrix::Draw(600, 60, m_blend_origin_transform->GetMatrix(CoordinateKind::kWorld));
+	if (m_blend_target_transform) matrix::Draw(600, 200, m_blend_target_transform->GetMatrix(CoordinateKind::kWorld));
+	DrawFormatString(600, 0, 0xffffff, "m_blend_timer       : %f", m_blend_timer);
+	DrawFormatString(600, 20, 0xffffff, "m_blend_coefficient : %f", m_blend_coefficient);
 }
 
 void CameraManager::ChangeTargetVirtualCamera(const int obj_handle)
