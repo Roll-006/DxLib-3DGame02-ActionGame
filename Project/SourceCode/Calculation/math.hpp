@@ -70,9 +70,7 @@ namespace math
 	[[nodiscard]] Quaternion ConvertRotMatrixToQuaternion(const MATRIX& rot_matrix);
 
 	/// @brief XYZ軸から回転行列へ変換
-	/// @param axes 行列に変換するXYZ軸
-	/// @param parent_axes 基準とする親XYZ軸
-	[[nodiscard]] MATRIX ConvertAxesToXYZRotMatrix(const Axes& axes, const Axes& parent_axes);
+	[[nodiscard]] MATRIX ConvertAxesToXYZRotMatrix(const Axes& axes);
 
 	/// @brief XYZ軸からオイラー角へ変換
 	/// @brief FIXME : 不具合ありな可能性あり。要検証
@@ -80,14 +78,14 @@ namespace math
 
 	/// @brief 回転行列からオイラー角へ変換
 	/// @brief FIXME : 不具合ありな可能性あり。要検証
-	[[nodiscard]] VECTOR ConvertRotMatrixToEulerAngles(const MATRIX& rot_matrix);
-	[[nodiscard]] VECTOR ConvertRotMatrixToEulerAngles(const MATRIX& rot_matrix, bool& is_gimbal_lock);
+	[[nodiscard]] VECTOR ConvertXYZRotMatrixToEulerAngles(const MATRIX& rot_matrix);
+	[[nodiscard]] VECTOR ConvertXYZRotMatrixToEulerAngles(const MATRIX& rot_matrix, bool& is_gimbal_lock);
 
 	/// @brief 回転行列からXYZ軸へ変換
 	[[nodiscard]] Axes ConvertRotMatrixToAxes(const MATRIX& rot_matrix);
 
 	/// @brief オイラー角から回転行列へ変換
-	[[nodiscard]] MATRIX ConvertEulerAnglesToRotMatrix(const VECTOR& angle);
+	[[nodiscard]] MATRIX ConvertEulerAnglesToXYZRotMatrix(const VECTOR& angle);
 	#pragma endregion
 
 
@@ -171,19 +169,12 @@ namespace math
 
 
 	#pragma region 補間
-	/// @brief 2つの座標を線形補間で補間
-	/// @param begin_pos 開始地点
-	/// @param end_pos 終了地点
+	/// @brief 2つのベクトルを線形補間で補間
+	/// @param begin_v 開始地点
+	/// @param end_v 終了地点
 	/// @param t 補間係数(0.0～1.0)
-	/// @return 補間結果の座標
-	[[nodiscard]] VECTOR GetLerpPos(const VECTOR& begin_pos, const VECTOR& end_pos, const float t);
-
-	/// @brief 2つのスケールを線形補間で補間
-	/// @param begin_scale 開始地点となるスケール
-	/// @param end_scale 終了地点となるスケール
-	/// @param t 補間係数(0.0～1.0)
-	/// @return 補間結果のスケール
-	[[nodiscard]] VECTOR GetLerpScale(const VECTOR& begin_scale, const VECTOR& end_scale, const float t);
+	/// @return 補間結果
+	[[nodiscard]] VECTOR GetLerpVector(const VECTOR& beginv, const VECTOR& end_v, const float t);
 
 	/// @brief 2つのクォータニオンを球面線形補間で補間
 	/// @param begin_q 開始地点となるクォータニオン
@@ -208,6 +199,13 @@ namespace math
 		const bool is_interpolate_pos,
 		const bool is_interpolate_scale,
 		const bool is_interpolate_rot);
+
+	/// @brief 減衰後の値を取得
+	/// @param current_value 現在の値
+	/// @param target_value 目的の値
+	/// @param damping ダンピング値(時定数)
+	/// @return 減衰後の値
+	[[nodiscard]] float GetDampedValue(const float current_value, const float target_value, const float damping);
 	#pragma endregion
 
 

@@ -16,11 +16,14 @@ public:
 
 	/// @brief ターゲットをアタッチする(上書き可)
 	void AttachTarget(const std::shared_ptr<Transform> target_transform);
-	void AttachTarget(const std::shared_ptr<Transform> target_transform, const VECTOR& target_correct_pos);
 	void DetachTarget();
 
 	[[nodiscard]] int				GetPriority()		const { return m_priority; }
 	[[nodiscard]] VirtualCameraKind GetCameraKind()		const { return m_camera_kind; }
+
+protected:
+	/// @brief body, aim, noiseによりトランスフォーム値を計算する
+	void CalcTransform();
 
 protected:
 	std::shared_ptr<CameraBody>		m_body;
@@ -28,7 +31,6 @@ protected:
 	std::shared_ptr<CameraNoise>	m_noise;
 
 	std::shared_ptr<Transform>		m_target_transform;
-	VECTOR							m_target_correct_pos;	// ターゲットの補正座標(オフセット)
 
 	std::vector<SceneKind>			m_active_scene_kind;	// どのシーンでアクティブ化されるかを格納
 	int								m_priority;				// 優先度

@@ -9,8 +9,11 @@
 class CameraAim final
 {
 public:
-	CameraAim(const std::shared_ptr<Transform> camera_transform);
+	CameraAim(const std::shared_ptr<Transform> owner_transform);
 	~CameraAim();
+
+	void CalcAimPos();
+	void CalcRot();
 
 	/// @brief ターゲットを追尾する
 	void TrackTarget()			{ m_is_track = true; }
@@ -20,7 +23,7 @@ public:
 
 	#pragma region Attach / Detach
 	/// @brief ターゲットをアタッチする(上書き可)
-	void AttachTarget(const std::shared_ptr<Transform> target_transform, const VECTOR& target_correct_pos);
+	void AttachTarget(const std::shared_ptr<Transform> target_transform);
 	void DetachTarget();
 	#pragma endregion
 
@@ -53,7 +56,7 @@ public:
 
 
 	#pragma region Getter
-	[[nodiscard]] VECTOR			GetAimPos()				const;
+	[[nodiscard]] VECTOR			GetAimPos()				const { return m_aim_pos; }
 	[[nodiscard]] VECTOR			GetAimCorrect()			const { return m_aim_correct; }
 	[[nodiscard]] float				GetHorizontalDamping()	const { return m_horizontal_damping; }
 	[[nodiscard]] float				GetVerticalDamping()	const { return m_vertical_damping; }
@@ -66,11 +69,14 @@ public:
 private:
 	static constexpr float kMaxDampingNum = 20.0f;
 
-	std::shared_ptr<Transform> m_camera_transform;
+	std::shared_ptr<Transform> m_owner_transform;
 	std::shared_ptr<Transform> m_target_transform;
 
-	VECTOR			m_target_correct_pos;	// ターゲットの補正座標(オフセット)
+	VECTOR m_aim_pos;
+	MATRIX m_rot_matrix;
+
 	VECTOR			m_aim_correct;			// ターゲットを見る方向の補正(オフセット)
+
 	float			m_horizontal_damping;	// 水平方向の追尾遅延
 	float			m_vertical_damping;		// 垂直方向の追尾遅延
 	Vector2D<float>	m_screen;				// ターゲットをスクリーンのどこに位置させるか

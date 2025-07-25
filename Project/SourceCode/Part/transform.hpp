@@ -26,7 +26,7 @@ public:
 	void SetPos		(const CoordinateKind coord_kind, const VECTOR&		pos);
 	void SetRot		(const CoordinateKind coord_kind, const MATRIX&		rot_matrix);
 	void SetRot		(const CoordinateKind coord_kind, const Quaternion& q);
-	void SetRot		(const CoordinateKind coord_kind, const Axes&		axes);
+	//void SetRot		(const CoordinateKind coord_kind, const Axes&		axes);
 
 	/// @brief 回転行列を設定
 	/// @brief WARNING : 水平的な回転しか考慮していない。forwardのY軸が0である必要あり。

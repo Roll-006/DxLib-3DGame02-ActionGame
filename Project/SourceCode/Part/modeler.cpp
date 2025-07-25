@@ -65,7 +65,7 @@ void Modeler::ApplyOpacity() const
 
 void Modeler::ApplyMatrix() const
 {
-	const MATRIX rot_m = math::ConvertEulerAnglesToRotMatrix(m_basic_angle);
+	const MATRIX rot_m = math::ConvertEulerAnglesToXYZRotMatrix(m_basic_angle);
 	MV1SetMatrix(m_model_handle, rot_m * m_transform->GetMatrix(CoordinateKind::kWorld));
 
 	// 行列情報の更新と同時に衝突情報も更新

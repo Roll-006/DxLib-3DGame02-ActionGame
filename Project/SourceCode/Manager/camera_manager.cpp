@@ -28,8 +28,6 @@ void CameraManager::Update()
 	{
 		camera.second->Update();
 	}
-
-	m_main_camera->Update();
 }
 
 void CameraManager::LateUpdate()
@@ -94,7 +92,7 @@ std::shared_ptr<VirtualCameraBase> CameraManager::GetVirtualCamera(const Virtual
 void CameraManager::BlendVirtualCamera()
 {
 	// 仮の追加
-	if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_1) == InputState::kSingle)
+	//if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_1) == InputState::kSingle)
 	{
 		if (!test_is_add1)
 		{
@@ -104,7 +102,8 @@ void CameraManager::BlendVirtualCamera()
 
 			handle2 = rot_camera->GetObjHandle();
 
-			test_is_add1 = true;		
+			test_is_add1 = true;
+			GetVirtualCamera(handle2)->Deactivate();
 		}
 	}
 	if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_2) == InputState::kSingle)
@@ -115,7 +114,7 @@ void CameraManager::BlendVirtualCamera()
 	{
 		GetVirtualCamera(handle2)->Activate();
 	}
-	if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_4) == InputState::kSingle)
+	//if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_4) == InputState::kSingle)
 	{
 		if (!test_is_add2)
 		{
@@ -128,6 +127,7 @@ void CameraManager::BlendVirtualCamera()
 			handle3 = rot_camera->GetObjHandle();
 
 			test_is_add2 = true;
+			GetVirtualCamera(handle3)->Deactivate();
 		}
 	}
 	if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_5) == InputState::kSingle)

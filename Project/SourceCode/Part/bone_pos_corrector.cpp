@@ -16,7 +16,7 @@ void BonePosCorrector::CorrectGunPoseBone(const int model_handle, const VECTOR& 
 
 	// カメラの行列からボーンの回転を取得
 	bool is_gimbal_lock = false;
-	m_bone_angle[BonePath.SPINE][TimeKind::kCurrent] = -math::ConvertRotMatrixToEulerAngles(MGetRotElem(rot), is_gimbal_lock);
+	m_bone_angle[BonePath.SPINE][TimeKind::kCurrent] = -math::ConvertXYZRotMatrixToEulerAngles(MGetRotElem(rot), is_gimbal_lock);
 
 	if (is_gimbal_lock)
 	{
@@ -37,7 +37,7 @@ void BonePosCorrector::CorrectGunPoseBone(const int model_handle, const VECTOR& 
 		}
 	}
 
-	const MATRIX result_m = math::ConvertEulerAnglesToRotMatrix(m_bone_angle[BonePath.SPINE][TimeKind::kCurrent]);
+	const MATRIX result_m = math::ConvertEulerAnglesToXYZRotMatrix(m_bone_angle[BonePath.SPINE][TimeKind::kCurrent]);
 
 	// 行列情報を適用
 	MV1SetFrameUserLocalMatrix(model_handle, frame_spine, result_m);

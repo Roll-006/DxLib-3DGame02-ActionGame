@@ -20,8 +20,6 @@ void MainCamera::Init()
 void MainCamera::Update()
 {
 	if (!IsActive()) { return; }
-
-	SetAim();
 }
 
 void MainCamera::LateUpdate()

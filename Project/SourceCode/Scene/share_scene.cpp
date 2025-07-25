@@ -42,6 +42,5 @@ void ShareScene::LateUpdate()
 
 void ShareScene::Draw() const
 {
-	m_player		->Draw();
-	m_main_camera	->Draw();
+	m_player->Draw();
 }

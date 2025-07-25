@@ -57,5 +57,5 @@ private:
 
 	static constexpr float  kDistanceToTarget		= 90.0f;
 
-	static constexpr VECTOR kAimCorrect				= { 15.0f, 10.0f, 0.0f };
+	static constexpr VECTOR kAimCorrect				= { 10.0f, 0.0f, 0.0f };
 };

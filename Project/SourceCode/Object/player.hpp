@@ -93,6 +93,7 @@ private:
 
 private:
 	std::shared_ptr<PlayerStateController>	m_state;
+	std::shared_ptr<Transform>				m_camera_aim_transform;					// 
 
 	std::unordered_map<TimeKind, VECTOR>	m_move_dir;								// 移動方向(TODO : 長さが1未満である時がある場合があるため命名を変更すべき)
 	std::unordered_map<TimeKind, VECTOR>	m_look_dir;								// 向いている方向

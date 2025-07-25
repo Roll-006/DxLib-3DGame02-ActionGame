@@ -84,14 +84,34 @@ Quaternion math::ConvertRotMatrixToQuaternion(const MATRIX& rot_matrix)
     return Quaternion(q.at(0), q.at(1), q.at(2), q.at(3));
 }
 
-MATRIX math::ConvertAxesToXYZRotMatrix(const Axes& axes, const Axes& parent_axes)
+MATRIX math::ConvertAxesToXYZRotMatrix(const Axes& axes)
 {
-    // オイラー角を取得
-    const VECTOR angle = ConvertAxesToEulerAngles(parent_axes, axes);
-
     MATRIX mat = MGetIdent();
-    CreateRotationXYZMatrix(&mat, angle.x, angle.y, angle.z);
-    return MGetRotElem(mat);
+
+    // right
+    mat.m[0][0] = axes.x_axis.x;
+    mat.m[0][1] = axes.x_axis.y;
+    mat.m[0][2] = axes.x_axis.z;
+    mat.m[0][3] = 0.0f;
+
+    // up
+    mat.m[1][0] = axes.y_axis.x;
+    mat.m[1][1] = axes.y_axis.y;
+    mat.m[1][2] = axes.y_axis.z;
+    mat.m[1][3] = 0.0f;
+
+    // forward
+    mat.m[2][0] = axes.z_axis.x;
+    mat.m[2][1] = axes.z_axis.y;
+    mat.m[2][2] = axes.z_axis.z;
+    mat.m[2][3] = 0.0f;
+
+    mat.m[3][0] = 0.0f;
+    mat.m[3][1] = 0.0f;
+    mat.m[3][2] = 0.0f;
+    mat.m[3][3] = 1.0f;
+
+    return mat;
 }
 
 VECTOR math::ConvertAxesToEulerAngles(const Axes& axes, const Axes& parent_axes)
@@ -103,7 +123,7 @@ VECTOR math::ConvertAxesToEulerAngles(const Axes& axes, const Axes& parent_axes)
     return VECTOR(angle_x, angle_y, angle_z);
 }
 
-VECTOR math::ConvertRotMatrixToEulerAngles(const MATRIX& rot_matrix)
+VECTOR math::ConvertXYZRotMatrixToEulerAngles(const MATRIX& rot_matrix)
 {
     VECTOR angle = v3d::GetZeroV();
     const MATRIX m = MGetRotElem(rot_matrix);
@@ -113,7 +133,7 @@ VECTOR math::ConvertRotMatrixToEulerAngles(const MATRIX& rot_matrix)
     return angle;
 }
 
-VECTOR math::ConvertRotMatrixToEulerAngles(const MATRIX& rot_matrix, bool& is_gimbal_lock)
+VECTOR math::ConvertXYZRotMatrixToEulerAngles(const MATRIX& rot_matrix, bool& is_gimbal_lock)
 {
     VECTOR angle = v3d::GetZeroV();
     const MATRIX m = MGetRotElem(rot_matrix);
@@ -149,7 +169,7 @@ Axes math::ConvertRotMatrixToAxes(const MATRIX& rot_matrix)
     return Axes(x_axis, y_axis, z_axis);
 }
 
-MATRIX math::ConvertEulerAnglesToRotMatrix(const VECTOR& angle)
+MATRIX math::ConvertEulerAnglesToXYZRotMatrix(const VECTOR& angle)
 {
     MATRIX mat = MGetIdent();
     CreateRotationXYZMatrix(&mat, angle.x, angle.y, angle.z);
@@ -183,22 +203,13 @@ MATRIX math::ConvertEulerAnglesToRotMatrix(const VECTOR& angle)
 //    return pos;
 //}
 
-VECTOR math::GetLerpPos(const VECTOR& begin_pos, const VECTOR& end_pos, const float t)
+VECTOR math::GetLerpVector(const VECTOR& begin_v, const VECTOR& end_v, const float t)
 {
-    const auto dir              = v3d::GetNormalizedV(end_pos - begin_pos);
-    const auto total_distance   = VSize(end_pos - begin_pos);
-    const auto distance         = ConvertValueNewRange<float, float>(0.0f, 1.0f, 0.0f, total_distance, t);
+    const auto dir = v3d::GetNormalizedV(end_v - begin_v);
+    const auto total_distance = VSize(end_v - begin_v);
+    const auto distance = ConvertValueNewRange<float, float>(0.0f, 1.0f, 0.0f, total_distance, t);
 
-    return begin_pos + dir * distance;
-}
-
-VECTOR math::GetLerpScale(const VECTOR& begin_scale, const VECTOR& end_scale, const float t)
-{
-    const auto dir              = v3d::GetNormalizedV(end_scale - begin_scale);
-    const auto total_distance   = VSize(end_scale - begin_scale);
-    const auto distance         = ConvertValueNewRange<float, float>(0.0f, 1.0f, 0.0f, total_distance, t);
-
-    return begin_scale + dir * distance;
+    return begin_v + dir * distance;
 }
 
 Quaternion math::GetSlerpQuaternion(const Quaternion& begin_q, const Quaternion& end_q, const float t)
@@ -246,14 +257,14 @@ std::shared_ptr<Transform> math::GetLerpTransform(
     const bool is_interpolate_scale, 
     const bool is_interpolate_rot)
 {
-    auto transform = std::make_shared<Transform>();
+    auto transform = begin_transform;
 
     // 座標補間
     if (is_interpolate_pos)
     {
         const auto begin_pos    = begin_transform->GetPos(CoordinateKind::kWorld);
         const auto end_pos      = end_transform  ->GetPos(CoordinateKind::kWorld);
-        const auto result_pos   = GetLerpPos(begin_pos, end_pos, t);
+        const auto result_pos   = GetLerpVector(begin_pos, end_pos, t);
         transform->SetPos(CoordinateKind::kWorld, result_pos);
     }
 
@@ -262,7 +273,7 @@ std::shared_ptr<Transform> math::GetLerpTransform(
     {
         const auto begin_scale  = begin_transform->GetScale(CoordinateKind::kWorld);
         const auto end_scale    = end_transform  ->GetScale(CoordinateKind::kWorld);
-        const auto result_scale = GetLerpScale(begin_scale, end_scale, t);
+        const auto result_scale = GetLerpVector(begin_scale, end_scale, t);
         transform->SetScale(CoordinateKind::kWorld, result_scale);
     }
 
@@ -276,6 +287,25 @@ std::shared_ptr<Transform> math::GetLerpTransform(
     }
 
     return transform;
+}
+
+float math::GetDampedValue(const float current_value, const float target_value, const float damping)
+{
+    // damping値が0に近い場合は即座に目標値に設定
+    if (damping <= kEpsilonLow)
+    {
+        return target_value;
+    }
+
+    // 減衰周波数を取得
+    float omega = 1.0f / damping;
+
+    // テイラー展開による近似式
+    // 高速化のためstd::exp(-x)は避ける
+    float x = omega * FPS::GetDeltaTime();
+    float exp = 1.0f / (1.0f + x + 0.48f * x * x + 0.235f * x * x * x);
+
+    return target_value + (current_value - target_value) * exp;
 }
 #pragma endregion}
 

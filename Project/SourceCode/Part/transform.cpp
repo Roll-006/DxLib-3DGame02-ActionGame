@@ -97,25 +97,25 @@ void Transform::SetRot(const CoordinateKind coord_kind, const VECTOR& forward)
 	SetRot(coord_kind, MGetRotY(yaw));
 }
 
-void Transform::SetRot(const CoordinateKind coord_kind, const Axes& axes)
-{
-	// XYZ軸からオイラー角へ変換
-	VECTOR angle = math::ConvertAxesToEulerAngles(axes, axis::GetWorldAxes());
-
-	if (coord_kind == CoordinateKind::kLocal)
-	{
-		if (m_parent_transform)
-		{
-			angle = math::ConvertAxesToEulerAngles(axes, m_parent_transform->GetAxes(CoordinateKind::kWorld));
-		}
-	}
-
-	// オイラー角から回転行列を生成
-	MATRIX mat = MGetIdent();
-	CreateRotationXYZMatrix(&mat, angle.x, angle.y, angle.z);
-
-	SetRot(coord_kind, mat); 
-}
+//void Transform::SetRot(const CoordinateKind coord_kind, const Axes& axes)
+//{
+//	// XYZ軸からオイラー角へ変換
+//	VECTOR angle = math::ConvertAxesToEulerAngles(axes, axis::GetWorldAxes());
+//
+//	if (coord_kind == CoordinateKind::kLocal)
+//	{
+//		if (m_parent_transform)
+//		{
+//			angle = math::ConvertAxesToEulerAngles(axes, m_parent_transform->GetAxes(CoordinateKind::kWorld));
+//		}
+//	}
+//
+//	// オイラー角から回転行列を生成
+//	MATRIX mat = MGetIdent();
+//	CreateRotationXYZMatrix(&mat, angle.x, angle.y, angle.z);
+//
+//	SetRot(coord_kind, mat); 
+//}
 
 void Transform::SetScale(const CoordinateKind coord_kind, const VECTOR& scale)
 {
@@ -208,6 +208,6 @@ Axes Transform::GetAxes(const CoordinateKind coord_kind)
 
 VECTOR Transform::GetEulerAngles(const CoordinateKind coord_kind)
 {
-	return math::ConvertRotMatrixToEulerAngles(GetRotMatrix(coord_kind));
+	return math::ConvertXYZRotMatrixToEulerAngles(GetRotMatrix(coord_kind));
 }
 #pragma endregion
