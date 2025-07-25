@@ -54,11 +54,11 @@ void Modeler::ApplyOpacity() const
 {
 	if (m_opacity == 1.0f)
 	{
-		MV1SetUseZBuffer(m_model_handle, TRUE);
+		MV1SetUseZBuffer (m_model_handle, TRUE);
 	}
 	else
 	{
-		MV1SetUseZBuffer(m_model_handle, FALSE);
+		MV1SetUseZBuffer (m_model_handle, FALSE);
 		MV1SetOpacityRate(m_model_handle, m_opacity);
 	}
 }

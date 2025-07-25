@@ -34,6 +34,7 @@ namespace math
 	static constexpr float kRadianToDegrees = 180.0f / DX_PI_F;		// ラジアンをディグリーに変換(変換対象と掛け算を行う)
 	static constexpr float kEpsilonLow		= 1e-4f;				// 0とみなす(低精度)
 	static constexpr float kEpsilonHigh		= 1e-6f;				// 0とみなす(高精度)
+	static constexpr float kOneThreshold	= 0.9999f;				// 1とみなす閾値
 	static constexpr float kStopThreshold	= 2.0f;
 
 

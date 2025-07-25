@@ -41,6 +41,11 @@ Quaternion quat::GetNormalizedQuaternion(const Quaternion& q)
 	return size != 0 ? Quaternion(q.x / size, q.y / size, q.z / size, q.w / size) : q;
 }
 
+float quat::GetDot(const Quaternion& q1, const Quaternion& q2)
+{
+	return q1.x * q2.x + q1.y * q2.y + q1.z * q2.z + q1.w + q2.w;
+}
+
 Quaternion quat::GetConjugateQuaternion(const Quaternion& q)
 {
 	return Quaternion(-q.x, -q.y, -q.z, q.w);

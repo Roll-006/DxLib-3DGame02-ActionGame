@@ -27,6 +27,8 @@ namespace quat
 	[[nodiscard]] float		 GetSquareSize			(const Quaternion& q);
 	[[nodiscard]] Quaternion GetNormalizedQuaternion(const Quaternion& q);
 
+	[[nodiscard]] float      GetDot					(const Quaternion& q1, const Quaternion& q2);
+
 	/// @brief 共役クォータニオンを取得
 	[[nodiscard]] Quaternion GetConjugateQuaternion	(const Quaternion& q);
 

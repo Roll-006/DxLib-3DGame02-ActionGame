@@ -1,20 +1,20 @@
 ﻿#include "camera_manager.hpp"
 
 CameraManager::CameraManager() :
-	m_main_camera					(nullptr),
-	m_blend_origin_transform		(nullptr),
-	m_blend_target_transform		(std::make_shared<Transform>()),
-	m_blend_origin_result_transform	(nullptr),
-	m_blend_result_transform		(nullptr),
-	m_origin_virtual_camera_handle	(-1),
-	m_blend_timer					(0.0f),
-	m_blend_coefficient				(0.0f),
-	m_is_blending					(false),
-	m_is_invert_horizontal			(false),
-	m_is_invert_vertical			(false)
+	m_main_camera(nullptr),
+	m_blend_origin_transform(nullptr),
+	m_blend_target_transform(nullptr),
+	m_blend_origin_result_transform(nullptr),
+	m_blend_result_transform(nullptr),
+	m_origin_virtual_camera_handle(-1),
+	m_blend_timer(0.0f),
+	m_blend_coefficient(0.0f),
+	m_is_blending(false),
+	m_is_invert_horizontal(false),
+	m_is_invert_vertical(false)
 {
-	SetCameraNearFar		(kNear, kFar);
-	SetupCamera_Perspective	(kFOV * math::kDegreesToRadian);
+	SetCameraNearFar(kNear, kFar);
+	SetupCamera_Perspective(kFOV * math::kDegreesToRadian);
 }
 
 CameraManager::~CameraManager()
@@ -28,6 +28,11 @@ void CameraManager::Update()
 	{
 		camera.second->Update();
 	}
+
+	//BlendVirtualCamera();
+
+	assert(m_main_camera != nullptr);
+	//m_main_camera->Update();
 }
 
 void CameraManager::LateUpdate()
@@ -44,7 +49,7 @@ void CameraManager::LateUpdate()
 
 void CameraManager::SetMainCamera(const std::shared_ptr<MainCamera> main_camera)
 {
-	if (!m_main_camera)	
+	if (!m_main_camera)
 	{
 		m_main_camera = main_camera;
 	}
@@ -98,13 +103,12 @@ void CameraManager::BlendVirtualCamera()
 		{
 			const auto rot_camera = std::make_shared<RotControlVirtualCamera>(2);
 			AddVirtualCamera(rot_camera);
-			transform1 = std::make_shared<Transform>();
-			rot_camera->AttachTarget(transform1);
+			rot_camera->AttachTarget(std::make_shared<Transform>());
 
 			handle2 = rot_camera->GetObjHandle();
+			GetVirtualCamera(handle2)->Deactivate();
 
 			test_is_add1 = true;
-			GetVirtualCamera(handle2)->Deactivate();
 		}
 	}
 	if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_2) == InputState::kSingle)
@@ -121,14 +125,14 @@ void CameraManager::BlendVirtualCamera()
 		{
 			const auto rot_camera = std::make_shared<RotControlVirtualCamera>(3);
 			AddVirtualCamera(rot_camera);
-			transform2 = std::make_shared<Transform>();
-			transform2->SetPos(CoordinateKind::kWorld, VGet(-500, 500, -500));
-			rot_camera->AttachTarget(transform2);
+			const auto transform = std::make_shared<Transform>();
+			transform->SetPos(CoordinateKind::kWorld, VGet(-500, 500, -500));
+			rot_camera->AttachTarget(transform);
 
 			handle3 = rot_camera->GetObjHandle();
+			GetVirtualCamera(handle3)->Deactivate();
 
 			test_is_add2 = true;
-			GetVirtualCamera(handle3)->Deactivate();
 		}
 	}
 	if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_5) == InputState::kSingle)
@@ -149,13 +153,17 @@ void CameraManager::BlendVirtualCamera()
 	// メインカメラへ適用
 	m_main_camera->GetTransform()->SetMatrix(CoordinateKind::kWorld, m_blend_result_transform->GetMatrix(CoordinateKind::kWorld));
 
-	matrix::Draw(0, 40, m_blend_result_transform->GetMatrix(CoordinateKind::kWorld));
+	matrix::Draw(0, 60, m_blend_result_transform->GetMatrix(CoordinateKind::kWorld));
+	if (m_blend_origin_transform) matrix::Draw(600, 60, m_blend_origin_transform->GetMatrix(CoordinateKind::kWorld));
+	if (m_blend_target_transform) matrix::Draw(600, 200, m_blend_target_transform->GetMatrix(CoordinateKind::kWorld));
+	DrawFormatString(600, 0, 0xffffff, "m_blend_timer       : %f", m_blend_timer);
+	DrawFormatString(600, 20, 0xffffff, "m_blend_coefficient : %f", m_blend_coefficient);
 }
 
 void CameraManager::ChangeTargetVirtualCamera(const int obj_handle)
 {
-	m_target_virtual_camera_handle[TimeKind::kPrev]		= m_target_virtual_camera_handle[TimeKind::kCurrent];
-	m_target_virtual_camera_handle[TimeKind::kCurrent]	= obj_handle;
+	m_target_virtual_camera_handle[TimeKind::kPrev] = m_target_virtual_camera_handle[TimeKind::kCurrent];
+	m_target_virtual_camera_handle[TimeKind::kCurrent] = obj_handle;
 
 	if (m_target_virtual_camera_handle[TimeKind::kPrev] != m_target_virtual_camera_handle[TimeKind::kCurrent])
 	{
@@ -172,8 +180,6 @@ void CameraManager::ChangeTargetVirtualCamera(const int obj_handle)
 
 void CameraManager::SetBlendTransform()
 {
-	// WARNING : バーチャルカメラが一つもない状態や、一つもアクティブなカメラがない状態は考慮していない
-
 	bool is_seted_target_transform = false;
 	bool is_seted_origin_transform = false;
 
@@ -187,7 +193,7 @@ void CameraManager::SetBlendTransform()
 
 			is_seted_target_transform = true;
 		}
-		else if(!is_seted_origin_transform)
+		else if (!is_seted_origin_transform)
 		{
 			// 以前までターゲットであったカメラを起点に移行
 			m_origin_virtual_camera_handle = m_target_virtual_camera_handle[TimeKind::kPrev];
@@ -196,7 +202,7 @@ void CameraManager::SetBlendTransform()
 			{
 				// ブレンド結果が格納されていればブレンド結果を起点とする
 				// FIXME : originA➡targetBにブレンド中に、originB➡targetAに切り替わった場合、到達までの時間が早くなる不具合発生中
-				if (m_blend_origin_result_transform != nullptr/* 
+				if (m_blend_origin_result_transform != nullptr /*
 					&& m_target_virtual_camera_handle[TimeKind::kPrev] != m_origin_virtual_camera_handle*/)
 				{
 					m_blend_origin_transform = m_blend_origin_result_transform;
@@ -228,7 +234,7 @@ void CameraManager::CalcBlendResuletTransform()
 
 	// トランスフォーム間の補間
 	math::Increase(m_blend_timer, FPS::GetDeltaTime(), kBlendTime);
-	m_blend_coefficient		 = math::GetUnitValue<float, float>(0.0f, kBlendTime, m_blend_timer);
+	m_blend_coefficient = math::GetUnitValue<float, float>(0.0f, kBlendTime, m_blend_timer);
 	m_blend_result_transform = math::GetLerpTransform(m_blend_origin_transform, m_blend_target_transform, m_blend_coefficient, true, false, true);
 
 	// ブレンド完了判定

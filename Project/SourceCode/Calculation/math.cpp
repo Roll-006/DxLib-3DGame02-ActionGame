@@ -215,7 +215,7 @@ VECTOR math::GetLerpVector(const VECTOR& begin_v, const VECTOR& end_v, const flo
 Quaternion math::GetSlerpQuaternion(const Quaternion& begin_q, const Quaternion& end_q, const float t)
 {
     // 一致していた場合は補間完了とする
-    if (begin_q == end_q)
+    if (quat::GetDot(begin_q, end_q) > kOneThreshold)
     {
         return end_q;
     }
