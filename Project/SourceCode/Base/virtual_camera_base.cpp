@@ -31,6 +31,7 @@ void VirtualCameraBase::DetachTarget()
 void VirtualCameraBase::CalcTransform()
 {
 	m_body->CalcPos();
-	m_aim ->CalcAimPos();
 	m_aim ->CalcRot();
+	m_body->CalcDampedPos();
+	m_aim ->CalcDampedRot();
 }

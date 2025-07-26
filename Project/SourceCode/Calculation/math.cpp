@@ -281,9 +281,9 @@ std::shared_ptr<Transform> math::GetLerpTransform(
     // 回転補間
     if (is_interpolate_rot)
     {
-        const auto begin_q      = begin_transform->GetQuaternion(CoordinateKind::kWorld);
-        const auto end_q        = end_transform  ->GetQuaternion(CoordinateKind::kWorld);
-        const auto result_q     = GetSlerpQuaternion(begin_q, end_q, t);
+        const auto begin_q  = begin_transform->GetQuaternion(CoordinateKind::kWorld);
+        const auto end_q    = end_transform  ->GetQuaternion(CoordinateKind::kWorld);
+        const auto result_q = GetSlerpQuaternion(begin_q, end_q, t);
         transform->SetRot(CoordinateKind::kWorld, result_q);
     }
 

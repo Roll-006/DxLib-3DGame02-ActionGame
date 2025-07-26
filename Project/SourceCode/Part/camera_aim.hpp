@@ -12,8 +12,8 @@ public:
 	CameraAim(const std::shared_ptr<Transform> owner_transform);
 	~CameraAim();
 
-	void CalcAimPos();
 	void CalcRot();
+	void CalcDampedRot();
 
 	/// @brief ターゲットを追尾する
 	void TrackTarget()			{ m_is_track = true; }
@@ -56,7 +56,7 @@ public:
 
 
 	#pragma region Getter
-	[[nodiscard]] VECTOR			GetAimPos()				const { return m_aim_pos; }
+	[[nodiscard]] VECTOR			GetAimPos()				const { return m_current_aim_pos; }
 	[[nodiscard]] VECTOR			GetAimCorrect()			const { return m_aim_correct; }
 	[[nodiscard]] float				GetHorizontalDamping()	const { return m_horizontal_damping; }
 	[[nodiscard]] float				GetVerticalDamping()	const { return m_vertical_damping; }
@@ -67,22 +67,27 @@ public:
 	#pragma endregion
 
 private:
+	void CalcAimPos();
+	void CalcDampedAimPos();
+
+private:
 	static constexpr float kMaxDampingNum = 20.0f;
 
 	std::shared_ptr<Transform> m_owner_transform;
 	std::shared_ptr<Transform> m_target_transform;
 
-	VECTOR m_aim_pos;
-	MATRIX m_rot_matrix;
+	MATRIX			m_rot_matrix;				// 回転行列
+	VECTOR			m_destination_aim_pos;		// 目的とする見る座標
+	VECTOR			m_current_aim_pos;			// 現在の見ている座標
 
-	VECTOR			m_aim_correct;			// ターゲットを見る方向の補正(オフセット)
+	VECTOR			m_aim_correct;				// ターゲットを見る方向の補正(オフセット)
 
-	float			m_horizontal_damping;	// 水平方向の追尾遅延
-	float			m_vertical_damping;		// 垂直方向の追尾遅延
-	Vector2D<float>	m_screen;				// ターゲットをスクリーンのどこに位置させるか
-	Vector2D<float>	m_dead_zone;			// デッドゾーン
-	Vector2D<float>	m_soft_zone;			// ソフトゾーン
-	Vector2D<float> m_bias;					// デッドゾーンおよびソフトゾーンのずらし量
+	float			m_horizontal_damping;		// 水平方向の追尾遅延
+	float			m_vertical_damping;			// 垂直方向の追尾遅延
+	Vector2D<float>	m_screen;					// ターゲットをスクリーンのどこに位置させるか
+	Vector2D<float>	m_dead_zone;				// デッドゾーン
+	Vector2D<float>	m_soft_zone;				// ソフトゾーン
+	Vector2D<float> m_bias;						// デッドゾーンおよびソフトゾーンのずらし量
 
-	bool			m_is_track;				// 追尾を行うかを判定
+	bool			m_is_track;					// 追尾を行うかを判定
 };
