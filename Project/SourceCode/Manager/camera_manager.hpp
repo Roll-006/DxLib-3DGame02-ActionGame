@@ -100,7 +100,7 @@ private:
 	std::shared_ptr<Transform>			m_blend_origin_result_transform;				// ブレンドの起点に利用するブレンド結果トランスフォーム
 	std::shared_ptr<Transform>			m_blend_result_transform;						// ブレンド結果トランスフォーム
 
-	int									m_origin_virtual_camera_handle;					// ブレンドの起点とするバーチャルカメラのハンドル
+	std::unordered_map<TimeKind, int>	m_origin_virtual_camera_handle;					// ブレンドの起点とするバーチャルカメラのハンドル
 	std::unordered_map<TimeKind, int>	m_target_virtual_camera_handle;					// ブレンドのターゲットとするバーチャルカメラのハンドル
 
 	float m_blend_timer;																// ブレンドにかける時間を計測

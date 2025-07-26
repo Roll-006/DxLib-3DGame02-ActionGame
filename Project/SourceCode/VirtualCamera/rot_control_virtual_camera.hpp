@@ -54,8 +54,4 @@ private:
 	static constexpr float	kMoveSpeedWithStick		= 2.5f;
 	static constexpr float	kMoveSpeedWithMouse		= 0.1f;
 	static constexpr float	kMoveSpeedWithButton	= 2.0f;
-
-	static constexpr float  kDistanceToTarget		= 90.0f;
-
-	static constexpr VECTOR kAimCorrect				= { 10.0f, 0.0f, 0.0f };
 };

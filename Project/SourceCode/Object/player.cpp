@@ -33,9 +33,8 @@ Player::Player() :
 	//PhysicsManager::GetInstance()->AddPhysicalObj(m_current_attach_gun);
 	//PhysicsManager::GetInstance()->AddIgnoreObjGravity(ObjName.ASSAULT_RIFLE);
 
-	// TODO : ‰¼‚Åe—p‚ÌƒJƒƒ‰‚ğ“o˜^
+	// ƒJƒƒ‰“o˜^
 	const auto camera_manager = CameraManager::GetInstance();
-
 	const auto rot_camera = std::make_shared<RotControlVirtualCamera>(1);
 	camera_manager->AddVirtualCamera(rot_camera);
 	rot_camera->AttachTarget(m_camera_aim_transform);

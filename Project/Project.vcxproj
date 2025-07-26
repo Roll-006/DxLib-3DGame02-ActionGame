@@ -186,7 +186,6 @@
     <ClCompile Include="SourceCode\Part\camera_aim.cpp" />
     <ClCompile Include="SourceCode\Part\camera_body.cpp" />
     <ClCompile Include="SourceCode\Part\camera_noise.cpp" />
-    <ClCompile Include="SourceCode\Part\camera_state_controller.cpp" />
     <ClCompile Include="SourceCode\Part\collider.cpp" />
     <ClCompile Include="SourceCode\Part\graphicer.cpp" />
     <ClCompile Include="SourceCode\Part\modeler.cpp" />
@@ -351,7 +350,6 @@
     <ClInclude Include="SourceCode\Part\camera_aim.hpp" />
     <ClInclude Include="SourceCode\Part\camera_body.hpp" />
     <ClInclude Include="SourceCode\Part\camera_noise.hpp" />
-    <ClInclude Include="SourceCode\Part\camera_state_controller.hpp" />
     <ClInclude Include="SourceCode\Part\collider.hpp" />
     <ClInclude Include="SourceCode\Part\graphicer.hpp" />
     <ClInclude Include="SourceCode\Part\modeler.hpp" />

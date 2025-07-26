@@ -23,6 +23,15 @@ CameraAim::~CameraAim()
 
 void CameraAim::CalcAimPos()
 {
+	if (std::isnan(m_owner_transform->GetMatrix(CoordinateKind::kWorld).m[0][0]))
+	{
+		int a = 0;
+	}
+	if (std::isnan(m_owner_transform->GetMatrix(CoordinateKind::kWorld).m[3][0]))
+	{
+		int a = 0;
+	}
+
 	m_aim_pos = m_target_transform->GetPos(CoordinateKind::kWorld);
 
 	// カメラの軸をもとに位置を修正

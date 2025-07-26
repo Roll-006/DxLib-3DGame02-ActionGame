@@ -257,7 +257,8 @@ std::shared_ptr<Transform> math::GetLerpTransform(
     const bool is_interpolate_scale, 
     const bool is_interpolate_rot)
 {
-    auto transform = begin_transform;
+    // FIXME : 本来begin_transformを代入すべきだと思われるがエラー値が出力される場合があるため検討が必要
+    auto transform = std::make_shared<Transform>();
 
     // 座標補間
     if (is_interpolate_pos)

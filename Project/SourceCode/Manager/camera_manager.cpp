@@ -1,17 +1,16 @@
 ﻿#include "camera_manager.hpp"
 
 CameraManager::CameraManager() :
-	m_main_camera(nullptr),
-	m_blend_origin_transform(nullptr),
-	m_blend_target_transform(nullptr),
-	m_blend_origin_result_transform(nullptr),
-	m_blend_result_transform(nullptr),
-	m_origin_virtual_camera_handle(-1),
-	m_blend_timer(0.0f),
-	m_blend_coefficient(0.0f),
-	m_is_blending(false),
-	m_is_invert_horizontal(false),
-	m_is_invert_vertical(false)
+	m_main_camera					(nullptr),
+	m_blend_origin_transform		(nullptr),
+	m_blend_target_transform		(nullptr),
+	m_blend_origin_result_transform	(nullptr),
+	m_blend_result_transform		(nullptr),
+	m_blend_timer					(0.0f),
+	m_blend_coefficient				(0.0f),
+	m_is_blending					(false),
+	m_is_invert_horizontal			(false),
+	m_is_invert_vertical			(false)
 {
 	SetCameraNearFar(kNear, kFar);
 	SetupCamera_Perspective(kFOV * math::kDegreesToRadian);
@@ -28,11 +27,6 @@ void CameraManager::Update()
 	{
 		camera.second->Update();
 	}
-
-	//BlendVirtualCamera();
-
-	assert(m_main_camera != nullptr);
-	//m_main_camera->Update();
 }
 
 void CameraManager::LateUpdate()
@@ -103,7 +97,8 @@ void CameraManager::BlendVirtualCamera()
 		{
 			const auto rot_camera = std::make_shared<RotControlVirtualCamera>(2);
 			AddVirtualCamera(rot_camera);
-			rot_camera->AttachTarget(std::make_shared<Transform>());
+			transform1 = std::make_shared<Transform>();
+			rot_camera->AttachTarget(transform1);
 
 			handle2 = rot_camera->GetObjHandle();
 			GetVirtualCamera(handle2)->Deactivate();
@@ -125,9 +120,9 @@ void CameraManager::BlendVirtualCamera()
 		{
 			const auto rot_camera = std::make_shared<RotControlVirtualCamera>(3);
 			AddVirtualCamera(rot_camera);
-			const auto transform = std::make_shared<Transform>();
-			transform->SetPos(CoordinateKind::kWorld, VGet(-500, 500, -500));
-			rot_camera->AttachTarget(transform);
+			transform2 = std::make_shared<Transform>();
+			transform2->SetPos(CoordinateKind::kWorld, VGet(-500, 500, -500));
+			rot_camera->AttachTarget(transform2);
 
 			handle3 = rot_camera->GetObjHandle();
 			GetVirtualCamera(handle3)->Deactivate();
@@ -152,17 +147,11 @@ void CameraManager::BlendVirtualCamera()
 
 	// メインカメラへ適用
 	m_main_camera->GetTransform()->SetMatrix(CoordinateKind::kWorld, m_blend_result_transform->GetMatrix(CoordinateKind::kWorld));
-
-	matrix::Draw(0, 60, m_blend_result_transform->GetMatrix(CoordinateKind::kWorld));
-	if (m_blend_origin_transform) matrix::Draw(600, 60, m_blend_origin_transform->GetMatrix(CoordinateKind::kWorld));
-	if (m_blend_target_transform) matrix::Draw(600, 200, m_blend_target_transform->GetMatrix(CoordinateKind::kWorld));
-	DrawFormatString(600, 0, 0xffffff, "m_blend_timer       : %f", m_blend_timer);
-	DrawFormatString(600, 20, 0xffffff, "m_blend_coefficient : %f", m_blend_coefficient);
 }
 
 void CameraManager::ChangeTargetVirtualCamera(const int obj_handle)
 {
-	m_target_virtual_camera_handle[TimeKind::kPrev] = m_target_virtual_camera_handle[TimeKind::kCurrent];
+	m_target_virtual_camera_handle[TimeKind::kPrev]    = m_target_virtual_camera_handle[TimeKind::kCurrent];
 	m_target_virtual_camera_handle[TimeKind::kCurrent] = obj_handle;
 
 	if (m_target_virtual_camera_handle[TimeKind::kPrev] != m_target_virtual_camera_handle[TimeKind::kCurrent])
@@ -196,9 +185,9 @@ void CameraManager::SetBlendTransform()
 		else if (!is_seted_origin_transform)
 		{
 			// 以前までターゲットであったカメラを起点に移行
-			m_origin_virtual_camera_handle = m_target_virtual_camera_handle[TimeKind::kPrev];
+			m_origin_virtual_camera_handle[TimeKind::kCurrent] = m_target_virtual_camera_handle[TimeKind::kPrev];
 
-			if (m_origin_virtual_camera_handle == pr.first)
+			if (m_origin_virtual_camera_handle[TimeKind::kCurrent] == pr.first)
 			{
 				// ブレンド結果が格納されていればブレンド結果を起点とする
 				// FIXME : originA➡targetBにブレンド中に、originB➡targetAに切り替わった場合、到達までの時間が早くなる不具合発生中
@@ -215,7 +204,6 @@ void CameraManager::SetBlendTransform()
 
 				is_seted_origin_transform = true;
 			}
-
 		}
 
 		if (is_seted_target_transform && is_seted_origin_transform) { break; }
@@ -234,8 +222,11 @@ void CameraManager::CalcBlendResuletTransform()
 
 	// トランスフォーム間の補間
 	math::Increase(m_blend_timer, FPS::GetDeltaTime(), kBlendTime);
-	m_blend_coefficient = math::GetUnitValue<float, float>(0.0f, kBlendTime, m_blend_timer);
-	m_blend_result_transform = math::GetLerpTransform(m_blend_origin_transform, m_blend_target_transform, m_blend_coefficient, true, false, true);
+	m_blend_coefficient			= math::GetUnitValue<float, float>(0.0f, kBlendTime, m_blend_timer);
+	m_blend_result_transform	= math::GetLerpTransform(m_blend_origin_transform, m_blend_target_transform, m_blend_coefficient, true, false, true);
+
+	//DrawFormatString(600,  0, 0xffffff, "m_blend_timer       : %f", m_blend_timer);
+	//DrawFormatString(600, 20, 0xffffff, "m_blend_coefficient : %f", m_blend_coefficient);
 
 	// ブレンド完了判定
 	if (m_blend_coefficient >= 1.0f)
