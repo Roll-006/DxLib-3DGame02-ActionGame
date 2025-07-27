@@ -193,9 +193,9 @@ namespace math
 	/// @param is_interpolate_scale スケールの補間を行うか
 	/// @param is_interpolate_rot 回転の補間を行うか
 	/// @return 補間結果のトランスフォーム
-	[[nodiscard]] std::shared_ptr<Transform> GetLerpTransform(
-		const std::shared_ptr<Transform> begin_transform,
-		const std::shared_ptr<Transform> end_transform,
+	[[nodiscard]] Transform& GetLerpTransform(
+		Transform& begin_transform,
+		Transform& end_transform,
 		const float t,
 		const bool is_interpolate_pos,
 		const bool is_interpolate_scale,
@@ -204,9 +204,18 @@ namespace math
 	/// @brief 減衰後の値を取得
 	/// @param current_value 現在の値
 	/// @param target_value 目的の値
-	/// @param damping ダンピング値(時定数)
+	/// @param damping 減衰値(時定数)
 	/// @return 減衰後の値
-	[[nodiscard]] float GetDampedValue(const float current_value, const float target_value, const float damping);
+	[[nodiscard]] float  GetDampedValue(const float   current_value, const float   target_value, const float   damping);
+	[[nodiscard]] VECTOR GetDampedValue(const VECTOR& current_value, const VECTOR& target_value, const VECTOR& damping);
+
+	/// @brief 特定の軸(forward, right, up)を基準にした減衰後の値を取得
+	/// @param current_value 現在の値
+	/// @param target_value 目的の値
+	/// @param damping 減衰値(時定数)
+	/// @param parent_axes 基準とする軸
+	/// @return 減衰後の値
+	[[nodiscard]] VECTOR GetDampedValueOnAxes(const VECTOR& current_value, const VECTOR& target_value, const VECTOR& damping, const Axes& parent_axes);
 	#pragma endregion
 
 

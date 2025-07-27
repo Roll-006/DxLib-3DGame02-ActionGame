@@ -27,19 +27,25 @@ public:
 
 
 	#pragma region Setter
-	void SetCameraCorrectPos(const VECTOR& camera_correct_pos)	{ m_camera_correct_pos  = camera_correct_pos; }
+	void SetFollowOffset	(const VECTOR& follow_offset) { m_follow_offset = follow_offset; }
+	/// @brief 各座標のダンピング値を設定
+	/// @param damping 指定可能範囲 : 0.0～20.0
 	void SetDamping			(const VECTOR& damping);
-	void SetDampingYaw		(const float   damping_yaw);
+	/// @brief ヨーのダンピング値を設定
+	/// @param damping_yaw 指定可能範囲 : 0.0～20.0
+	//void SetDampingYaw		(const float damping_yaw);
+	///// @brief ピッチのダンピング値を設定
+	///// @param damping_pitch 指定可能範囲 : 0.0～20.0
+	//void SetDampingPitch	(const float damping_pitch);
 	#pragma endregion
 
 
 	#pragma region Getter
-	[[nodiscard]] VECTOR GetCameraCorrectPps()	const { return m_camera_correct_pos; }
-	[[nodiscard]] VECTOR GetDamping()			const { return m_damping; }
-	[[nodiscard]] float  GetDampingYaw()		const { return m_damping_yaw; }
+	[[nodiscard]] VECTOR GetFollowOffset()	const { return m_follow_offset; }
+	[[nodiscard]] VECTOR GetDamping()		const { return m_damping; }
+	//[[nodiscard]] float  GetDampingYaw()	const { return m_damping_yaw; }
+	//[[nodiscard]] float  GetDampingPitch()	const { return m_damping_pitch; }
 	#pragma endregion
-
-private:
 
 private:
 	static constexpr float kMaxDampingNum = 20.0f;
@@ -50,10 +56,11 @@ private:
 	VECTOR m_destination_pos;		// 目的とする座標
 	VECTOR m_current_pos;			// 現在の座標
 
-	VECTOR m_camera_correct_pos;	// カメラの補正座標(オフセット)
+	VECTOR m_follow_offset;			// カメラの補正座標(オフセット)
 
-	VECTOR m_damping;				// 追尾遅延
-	float  m_damping_yaw;			// ヨー角回転の追尾遅延
+	VECTOR m_damping;				// 各座標の減衰値
+	//float  m_damping_yaw;			// ヨーの減衰値
+	//float  m_damping_pitch;			// ピッチの減衰値
 
 	bool   m_is_track;				// 追尾を行うかを判定
 };

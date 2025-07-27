@@ -9,6 +9,8 @@ class Transform final
 {
 public:
 	Transform();
+	Transform(Transform& transform);
+	Transform(Transform* transform);
 	~Transform();
 
 	void Move(const CoordinateKind coord_kind, const VECTOR& velocity);

@@ -7,11 +7,11 @@ RotControlVirtualCamera::RotControlVirtualCamera(const int priority) :
 	m_priority = priority;
 	m_active_scene_kind.emplace_back(SceneKind::kPlay);
 
-	m_aim->SetAimCorrect		(VGet(10.0f, 10.0f, 0.0f));
+	m_aim->SetTrackedObjOffset		(VGet(10.0f, 10.0f, 0.0f));
 	m_aim->SetHorizontalDamping	(0.05f);
 	m_aim->SetVerticalDamping	(0.0f);
 
-	m_body->SetCameraCorrectPos	(VGet(30.0f, 20.0f, -90.0f));
+	m_body->SetFollowOffset	(VGet(30.0f, 20.0f, -90.0f));
 	m_body->SetDamping			(VGet(0.015f, 0.015f, 0.0f));
 }
 

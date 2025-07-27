@@ -205,9 +205,9 @@ MATRIX math::ConvertEulerAnglesToXYZRotMatrix(const VECTOR& angle)
 
 VECTOR math::GetLerpVector(const VECTOR& begin_v, const VECTOR& end_v, const float t)
 {
-    const auto dir = v3d::GetNormalizedV(end_v - begin_v);
-    const auto total_distance = VSize(end_v - begin_v);
-    const auto distance = ConvertValueNewRange<float, float>(0.0f, 1.0f, 0.0f, total_distance, t);
+    const auto dir              = v3d::GetNormalizedV(end_v - begin_v);
+    const auto total_distance   = VSize(end_v - begin_v);
+    const auto distance         = ConvertValueNewRange<float, float>(0.0f, 1.0f, 0.0f, total_distance, t);
 
     return begin_v + dir * distance;
 }
@@ -249,45 +249,44 @@ Quaternion math::GetSlerpQuaternion(const Quaternion& begin_q, const Quaternion&
     };
 }
 
-std::shared_ptr<Transform> math::GetLerpTransform(
-    const std::shared_ptr<Transform> begin_transform, 
-    const std::shared_ptr<Transform> end_transform, 
+Transform& math::GetLerpTransform(
+    Transform& begin_transform,
+    Transform& end_transform,
     const float t, 
     const bool is_interpolate_pos, 
     const bool is_interpolate_scale, 
     const bool is_interpolate_rot)
 {
-    // FIXME : 本来begin_transformを代入すべきだと思われるがエラー値が出力される場合があるため検討が必要
-    auto transform = std::make_shared<Transform>();
+    Transform result_transform = begin_transform;
 
     // 座標補間
     if (is_interpolate_pos)
     {
-        const auto begin_pos    = begin_transform->GetPos(CoordinateKind::kWorld);
-        const auto end_pos      = end_transform  ->GetPos(CoordinateKind::kWorld);
+        const auto begin_pos    = begin_transform.GetPos(CoordinateKind::kWorld);
+        const auto end_pos      = end_transform  .GetPos(CoordinateKind::kWorld);
         const auto result_pos   = GetLerpVector(begin_pos, end_pos, t);
-        transform->SetPos(CoordinateKind::kWorld, result_pos);
+        result_transform.SetPos(CoordinateKind::kWorld, result_pos);
     }
 
     // スケール補間
     if (is_interpolate_scale)
     {
-        const auto begin_scale  = begin_transform->GetScale(CoordinateKind::kWorld);
-        const auto end_scale    = end_transform  ->GetScale(CoordinateKind::kWorld);
+        const auto begin_scale  = begin_transform.GetScale(CoordinateKind::kWorld);
+        const auto end_scale    = end_transform  .GetScale(CoordinateKind::kWorld);
         const auto result_scale = GetLerpVector(begin_scale, end_scale, t);
-        transform->SetScale(CoordinateKind::kWorld, result_scale);
+        result_transform.SetScale(CoordinateKind::kWorld, result_scale);
     }
 
     // 回転補間
     if (is_interpolate_rot)
     {
-        const auto begin_q  = begin_transform->GetQuaternion(CoordinateKind::kWorld);
-        const auto end_q    = end_transform  ->GetQuaternion(CoordinateKind::kWorld);
+        const auto begin_q  = begin_transform.GetQuaternion(CoordinateKind::kWorld);
+        const auto end_q    = end_transform  .GetQuaternion(CoordinateKind::kWorld);
         const auto result_q = GetSlerpQuaternion(begin_q, end_q, t);
-        transform->SetRot(CoordinateKind::kWorld, result_q);
+        result_transform.SetRot(CoordinateKind::kWorld, result_q);
     }
 
-    return transform;
+    return result_transform;
 }
 
 float math::GetDampedValue(const float current_value, const float target_value, const float damping)
@@ -307,6 +306,42 @@ float math::GetDampedValue(const float current_value, const float target_value, 
     float exp = 1.0f / (1.0f + x + 0.48f * x * x + 0.235f * x * x * x);
 
     return target_value + (current_value - target_value) * exp;
+}
+
+VECTOR math::GetDampedValue(const VECTOR& current_value, const VECTOR& target_value, const VECTOR& damping)
+{
+    VECTOR damped_value = current_value;
+    damped_value.x = GetDampedValue(current_value.x, target_value.x, damping.x);
+    damped_value.y = GetDampedValue(current_value.y, target_value.y, damping.y);
+    damped_value.z = GetDampedValue(current_value.z, target_value.z, damping.z);
+    return damped_value;
+}
+
+VECTOR math::GetDampedValueOnAxes(const VECTOR& current_value, const VECTOR& target_value, const VECTOR& damping, const Axes& parent_axes)
+{
+    VECTOR damped_value         = current_value;
+    const auto distance         = target_value - current_value;
+
+    // カメラの軸に分解（内積）
+    // distanceが各軸にどれだけ含まれているかをを取得
+    const auto forward_dot      = VDot(distance, parent_axes.z_axis);
+    const auto right_dot        = VDot(distance, parent_axes.x_axis);
+    const auto up_dot           = VDot(distance, parent_axes.y_axis);
+
+    // 各軸の移動量に対して減衰を適用
+    const auto damped_forward   = math::GetDampedValue(0.0f, forward_dot, damping.z);
+    const auto damped_right     = math::GetDampedValue(0.0f, right_dot,   damping.x);
+    const auto damped_up        = math::GetDampedValue(0.0f, up_dot,      damping.y);
+
+    // 減衰移動ベクトルを再合成
+    const VECTOR damped_move =
+        parent_axes.z_axis * damped_forward +
+        parent_axes.x_axis * damped_right +
+        parent_axes.y_axis * damped_up;
+
+    damped_value += damped_move;
+
+    return damped_value;
 }
 #pragma endregion}
 

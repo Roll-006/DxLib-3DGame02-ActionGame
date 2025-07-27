@@ -32,14 +32,14 @@ public:
 	/// @brief 回転量を設定する
 	/// @brief WARNING : 回転量の補正値は自動的に適用されるため考慮する必要はない
 	/// @param rot_matrix 回転行列
-	void SetRot					(const MATRIX&			rot_matrix);
-	void SetAimCorrect			(const VECTOR&			aim_correct) { m_aim_correct = aim_correct; }
+	void SetRot					(const MATRIX& rot_matrix);
+	void SetTrackedObjOffset	(const VECTOR& tracked_obj_offset) { m_tracked_obj_offset = tracked_obj_offset; }
 	/// @brief 水平方向のダンピング値を設定
 	/// @param horizontal_damping 指定可能範囲 : 0.0～20.0
-	void SetHorizontalDamping	(const float			horizontal_damping);
+	void SetHorizontalDamping	(const float horizontal_damping);
 	/// @brief 垂直方向のダンピング値を設定
 	/// @param vertical_damping 指定可能範囲 : 0.0～20.0
-	void SetVerticalDamping		(const float			vertical_damping);
+	void SetVerticalDamping		(const float vertical_damping);
 	/// @brief ターゲットをスクリーンのどこに位置させるかを設定
 	/// @param screen 指定可能範囲 : 0.0～1.0
 	void SetScreen				(const Vector2D<float>& screen);
@@ -57,7 +57,7 @@ public:
 
 	#pragma region Getter
 	[[nodiscard]] VECTOR			GetAimPos()				const { return m_current_aim_pos; }
-	[[nodiscard]] VECTOR			GetAimCorrect()			const { return m_aim_correct; }
+	[[nodiscard]] VECTOR			GetTrackedObjOffset()	const { return m_tracked_obj_offset; }
 	[[nodiscard]] float				GetHorizontalDamping()	const { return m_horizontal_damping; }
 	[[nodiscard]] float				GetVerticalDamping()	const { return m_vertical_damping; }
 	[[nodiscard]] Vector2D<float>	GetScreen()				const { return m_screen; }
@@ -80,10 +80,10 @@ private:
 	VECTOR			m_destination_aim_pos;		// 目的とする見る座標
 	VECTOR			m_current_aim_pos;			// 現在の見ている座標
 
-	VECTOR			m_aim_correct;				// ターゲットを見る方向の補正(オフセット)
+	VECTOR			m_tracked_obj_offset;		// ターゲットを見る方向の補正(オフセット)
 
-	float			m_horizontal_damping;		// 水平方向の追尾遅延
-	float			m_vertical_damping;			// 垂直方向の追尾遅延
+	float			m_horizontal_damping;		// 水平方向の減衰値
+	float			m_vertical_damping;			// 垂直方向の減衰値
 	Vector2D<float>	m_screen;					// ターゲットをスクリーンのどこに位置させるか
 	Vector2D<float>	m_dead_zone;				// デッドゾーン
 	Vector2D<float>	m_soft_zone;				// ソフトゾーン

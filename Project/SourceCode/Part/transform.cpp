@@ -8,6 +8,20 @@ Transform::Transform() :
 	// ˆ—‚È‚µ
 }
 
+Transform::Transform(Transform& transform) :
+	m_local_matrix		(transform.GetMatrix(CoordinateKind::kLocal)),
+	m_parent_transform	(nullptr)
+{
+	// ˆ—‚È‚µ
+}
+
+Transform::Transform(Transform* transform) :
+	m_local_matrix		(transform->GetMatrix(CoordinateKind::kLocal)),
+	m_parent_transform	(nullptr)
+{
+	// ˆ—‚È‚µ
+}
+
 Transform::~Transform()
 {
 	// ˆ—‚È‚µ

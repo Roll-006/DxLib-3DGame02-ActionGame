@@ -23,6 +23,57 @@ CameraManager::~CameraManager()
 
 void CameraManager::Update()
 {
+	// TODO : 仮の実装。のちに削除。
+	{
+		//if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_1) == InputState::kSingle)
+		{
+			if (!test_is_add1)
+			{
+				const auto rot_camera = std::make_shared<RotControlVirtualCamera>(2);
+				AddVirtualCamera(rot_camera);
+				transform1 = std::make_shared<Transform>();
+				rot_camera->AttachTarget(transform1);
+
+				handle2 = rot_camera->GetObjHandle();
+				GetVirtualCamera(handle2)->Deactivate();
+
+				test_is_add1 = true;
+			}
+		}
+		if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_2) == InputState::kSingle)
+		{
+			GetVirtualCamera(handle2)->Deactivate();
+		}
+		if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_3) == InputState::kSingle)
+		{
+			GetVirtualCamera(handle2)->Activate();
+		}
+		//if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_4) == InputState::kSingle)
+		{
+			if (!test_is_add2)
+			{
+				const auto rot_camera = std::make_shared<RotControlVirtualCamera>(3);
+				AddVirtualCamera(rot_camera);
+				transform2 = std::make_shared<Transform>();
+				transform2->SetPos(CoordinateKind::kWorld, VGet(-500, 500, -500));
+				rot_camera->AttachTarget(transform2);
+
+				handle3 = rot_camera->GetObjHandle();
+				GetVirtualCamera(handle3)->Deactivate();
+
+				test_is_add2 = true;
+			}
+		}
+		if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_5) == InputState::kSingle)
+		{
+			GetVirtualCamera(handle3)->Deactivate();
+		}
+		if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_6) == InputState::kSingle)
+		{
+			GetVirtualCamera(handle3)->Activate();
+		}
+	}
+
 	for (const auto& camera : m_virtual_cameras)
 	{
 		camera.second->Update();
@@ -90,55 +141,6 @@ std::shared_ptr<VirtualCameraBase> CameraManager::GetVirtualCamera(const Virtual
 #pragma region ブレンド関連処理
 void CameraManager::BlendVirtualCamera()
 {
-	// 仮の追加
-	//if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_1) == InputState::kSingle)
-	{
-		if (!test_is_add1)
-		{
-			const auto rot_camera = std::make_shared<RotControlVirtualCamera>(2);
-			AddVirtualCamera(rot_camera);
-			transform1 = std::make_shared<Transform>();
-			rot_camera->AttachTarget(transform1);
-
-			handle2 = rot_camera->GetObjHandle();
-			GetVirtualCamera(handle2)->Deactivate();
-
-			test_is_add1 = true;
-		}
-	}
-	if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_2) == InputState::kSingle)
-	{
-		GetVirtualCamera(handle2)->Deactivate();
-	}
-	if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_3) == InputState::kSingle)
-	{
-		GetVirtualCamera(handle2)->Activate();
-	}
-	//if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_4) == InputState::kSingle)
-	{
-		if (!test_is_add2)
-		{
-			const auto rot_camera = std::make_shared<RotControlVirtualCamera>(3);
-			AddVirtualCamera(rot_camera);
-			transform2 = std::make_shared<Transform>();
-			transform2->SetPos(CoordinateKind::kWorld, VGet(-500, 500, -500));
-			rot_camera->AttachTarget(transform2);
-
-			handle3 = rot_camera->GetObjHandle();
-			GetVirtualCamera(handle3)->Deactivate();
-
-			test_is_add2 = true;
-		}
-	}
-	if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_5) == InputState::kSingle)
-	{
-		GetVirtualCamera(handle3)->Deactivate();
-	}
-	if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_6) == InputState::kSingle)
-	{
-		GetVirtualCamera(handle3)->Activate();
-	}
-
 	// ブレンドの起点とターゲットを設定
 	SetBlendTransform();
 
@@ -147,6 +149,10 @@ void CameraManager::BlendVirtualCamera()
 
 	// メインカメラへ適用
 	m_main_camera->GetTransform()->SetMatrix(CoordinateKind::kWorld, m_blend_result_transform->GetMatrix(CoordinateKind::kWorld));
+
+	if(m_blend_result_transform)matrix::Draw(  0,  40, m_blend_result_transform->GetMatrix(CoordinateKind::kWorld));
+	if(m_blend_origin_transform)matrix::Draw(  0, 140, m_blend_origin_transform->GetMatrix(CoordinateKind::kWorld));
+	if(m_blend_target_transform)matrix::Draw(700, 140, m_blend_target_transform->GetMatrix(CoordinateKind::kWorld));
 }
 
 void CameraManager::ChangeTargetVirtualCamera(const int obj_handle)
@@ -223,7 +229,8 @@ void CameraManager::CalcBlendResuletTransform()
 	// トランスフォーム間の補間
 	math::Increase(m_blend_timer, FPS::GetDeltaTime(), kBlendTime);
 	m_blend_coefficient			= math::GetUnitValue<float, float>(0.0f, kBlendTime, m_blend_timer);
-	m_blend_result_transform	= math::GetLerpTransform(m_blend_origin_transform, m_blend_target_transform, m_blend_coefficient, true, false, true);
+	auto blended_transform		= math::GetLerpTransform(*m_blend_origin_transform, *m_blend_target_transform, m_blend_coefficient, true, false, true);
+	m_blend_result_transform	= std::make_shared<Transform>(blended_transform);
 
 	//DrawFormatString(600,  0, 0xffffff, "m_blend_timer       : %f", m_blend_timer);
 	//DrawFormatString(600, 20, 0xffffff, "m_blend_coefficient : %f", m_blend_coefficient);
