@@ -175,6 +175,8 @@ void CameraManager::ChangeTargetVirtualCamera(const int obj_handle)
 
 void CameraManager::SetBlendTransform()
 {
+	// FIXME : ブレンドが開始した一瞬、別の地点が描画される現象発生中
+
 	bool is_seted_target_transform = false;
 	bool is_seted_origin_transform = false;
 

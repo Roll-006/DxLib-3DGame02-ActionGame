@@ -745,7 +745,7 @@ VECTOR collision::PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsu
     // 登るのが困難な角度・登れない角度の場合は、「三角形の法線～ワールドX軸に対して平行」の範囲内の方向に押し戻す
     // 押し戻す方向は三角形の角度が上がるほどワールドX軸に向かう
     else
-   
+  
     {
         // 平面の法線を、ワールドX軸に対して水平にする
         VECTOR horizontal_v = plane.GetNormalVector();

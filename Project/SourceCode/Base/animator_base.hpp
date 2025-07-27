@@ -12,6 +12,13 @@
 class AnimatorBase abstract
 {
 public:
+	enum class BodyKind
+	{
+		kUpperBody,
+		kLowerBody,
+	};
+
+public:
 	AnimatorBase(const std::shared_ptr<Modeler> modeler);
 	~AnimatorBase();
 
