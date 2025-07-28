@@ -323,7 +323,7 @@ bool collision::IsHitSegmentAndModel        (const Segment&     segment,        
 }
 bool collision::IsHitSegmentAndModel        (const Segment&     segment,        const int           model_handle,   std::optional<VECTOR>& intersection)
 {
-    std::vector<Triangle> hit_triangles {};
+    std::vector<Triangle> hit_triangles;
     return IsHitSegmentAndModel(segment, model_handle, intersection, hit_triangles);
 }
 bool collision::IsHitSegmentAndModel        (const Segment&     segment,        const int           model_handle)
@@ -606,7 +606,7 @@ bool collision::IsHitCapsuleAndCapsule      (const Capsule&     capsule1,       
 }
 
 /// @brief カプセルとモデルの衝突判定
-bool collision::IsHitCapsuleAndModel(const Capsule& capsule, const int model_handle, std::optional<VECTOR>& intersection, std::vector<Triangle>& hit_triangles)
+bool collision::IsHitCapsuleAndModel        (const Capsule&     capsule,        const int           model_handle,   std::optional<VECTOR>& intersection, std::vector<Triangle>& hit_triangles)
 {
     hit_triangles.clear();
 
@@ -658,58 +658,54 @@ bool collision::IsHitCapsuleAndModel        (const Capsule&     capsule,        
 }
 
 /// @brief 光線カプセルとモデルの衝突判定
-//bool collision::IsHitRayCapsuleAndModel(const RayCapsule& ray_capsule, const int model_handle, std::optional<VECTOR>& intersection, std::vector<Triangle>& hit_triangles)
-//{
-//    return false;
-//}
-//bool collision::IsHitRayCapsuleAndModel     (const RayCapsule&  ray_capsule,    const int           model_handle,   std::optional<VECTOR>& intersection)
-//{
-//    intersection    = std::nullopt;
-//    Capsule capsule = ray_capsule.GetBeginCapsule();
-//
-//    // 速度を分割
-//    VECTOR velocity = ray_capsule.GetDir() * ray_capsule.GetRayLength();
-//    velocity *= (1.0f / kRayCapsuleDivisionNum);
-//
-//    for (int i = 0; i < kRayCapsuleDivisionNum + 1; ++i)
-//    {
-//        if (MV1CollCheck_Capsule(model_handle, -1, capsule.GetSegment().GetBeginPos(), capsule.GetSegment().GetEndPos(), capsule.GetRadius()).HitNum)
-//        {
-//            return true;
-//        }
-//        
-//        capsule.Move(velocity);
-//    }
-//
-//    return false;
-//}
-//bool collision::IsHitRayCapsuleAndModel     (const RayCapsule&  ray_capsule,    const int           model_handle,   MV1_COLL_RESULT_POLY_DIM& hit_result)
-//{
-//    Capsule capsule = ray_capsule.GetBeginCapsule();
-//
-//    // 速度を分割
-//    VECTOR velocity = ray_capsule.GetDir() * ray_capsule.GetRayLength();
-//    velocity *= (1.0f / kRayCapsuleDivisionNum);
-//
-//    for (int i = 0; i < kRayCapsuleDivisionNum + 1; ++i)
-//    {
-//        hit_result = MV1CollCheck_Capsule(model_handle, -1, capsule.GetSegment().GetBeginPos(), capsule.GetSegment().GetEndPos(), capsule.GetRadius());
-//        if (hit_result.HitNum)
-//        {
-//            return true;
-//        }
-//
-//        capsule.Move(velocity);
-//    }
-//
-//    return false;
-//}
-//bool collision::IsHitRayCapsuleAndModel     (const RayCapsule&  ray_capsule,    const int           model_handle)
-//{
-//    std::optional<VECTOR> intersection = std::nullopt;
-//
-//    return IsHitRayCapsuleAndModel(ray_capsule, model_handle, intersection);
-//}
+bool collision::IsHitRayCapsuleAndModel     (const RayCapsule&  ray_capsule,    const int           model_handle,   std::optional<VECTOR>& intersection)
+{
+    intersection    = std::nullopt;
+    Capsule capsule = ray_capsule.GetBeginCapsule();
+
+    // 速度を分割
+    VECTOR velocity = ray_capsule.GetDir() * ray_capsule.GetRayLength();
+    velocity *= (1.0f / kRayCapsuleDivisionNum);
+
+    for (int i = 0; i < kRayCapsuleDivisionNum + 1; ++i)
+    {
+        if (MV1CollCheck_Capsule(model_handle, -1, capsule.GetSegment().GetBeginPos(), capsule.GetSegment().GetEndPos(), capsule.GetRadius()).HitNum)
+        {
+            return true;
+        }
+        
+        capsule.Move(velocity);
+    }
+
+    return false;
+}
+bool collision::IsHitRayCapsuleAndModel     (const RayCapsule&  ray_capsule,    const int           model_handle,   MV1_COLL_RESULT_POLY_DIM& hit_result)
+{
+    Capsule capsule = ray_capsule.GetBeginCapsule();
+
+    // 速度を分割
+    VECTOR velocity = ray_capsule.GetDir() * ray_capsule.GetRayLength();
+    velocity *= (1.0f / kRayCapsuleDivisionNum);
+
+    for (int i = 0; i < kRayCapsuleDivisionNum + 1; ++i)
+    {
+        hit_result = MV1CollCheck_Capsule(model_handle, -1, capsule.GetSegment().GetBeginPos(), capsule.GetSegment().GetEndPos(), capsule.GetRadius());
+        if (hit_result.HitNum)
+        {
+            return true;
+        }
+
+        capsule.Move(velocity);
+    }
+
+    return false;
+}
+bool collision::IsHitRayCapsuleAndModel     (const RayCapsule&  ray_capsule,    const int           model_handle)
+{
+    std::optional<VECTOR> intersection = std::nullopt;
+
+    return IsHitRayCapsuleAndModel(ray_capsule, model_handle, intersection);
+}
 
 //bool collision::IsHitCircumferenceAndCapsuleLowPrecision(const Circle* circle, const Capsule* capsule)
 //{
@@ -971,7 +967,7 @@ VECTOR collision::PushBackCapsuleAndModel   (const VECTOR& velocity, const Capsu
     const float slope_difficulty_angle_threshold, const float max_slope_angle)
 {
     VECTOR valid_velocity = velocity;
-    MV1_COLL_RESULT_POLY_DIM hit_result = {};
+    MV1_COLL_RESULT_POLY_DIM hit_result;
 
     // 未来のカプセルを取得
     Capsule future_capsule = dynamic_capsule;

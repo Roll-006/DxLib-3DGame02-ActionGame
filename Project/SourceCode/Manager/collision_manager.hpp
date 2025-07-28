@@ -10,6 +10,7 @@ class CollisionManager final : public SingletonBase<CollisionManager>
 public:
 	void LateUpdate();
 
+
 	#pragma region 登録・解除
 	/// @brief 衝突判定を行うオブジェクトを追加
 	void AddCollideObj			(const std::shared_ptr<PhysicalObjBase> collide_obj);
@@ -21,6 +22,7 @@ public:
 	/// @brief 衝突判定を無視するコライダーから除外
 	void RemoveIgnoreCollider(const std::string& obj_name, const ColliderKind kind);
 	#pragma endregion
+
 
 	/// @brief 衝突判定を適用させる
 	[[nodiscard]] bool IsApplyCollide(const std::shared_ptr<PhysicalObjBase> collide_obj, const ColliderKind kind) const;

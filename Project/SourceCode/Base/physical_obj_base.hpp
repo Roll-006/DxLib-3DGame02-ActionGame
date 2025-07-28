@@ -36,8 +36,6 @@ public:
 
 	/// @brief 速度ベクトルを接している面に投影する
 	void ProjectionVelocity();
-	/// @brief 座標を着地面に投影する
-	void ProjectionPos();
 
 	/// @brief 着地判定を解除する
 	void ReleaseLanding() { m_is_landing = false; }

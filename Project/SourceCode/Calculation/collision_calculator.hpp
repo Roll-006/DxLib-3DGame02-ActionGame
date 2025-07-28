@@ -183,10 +183,9 @@ namespace collision
     /// @brief 視点カプセルを徐々に移動させて判定を行っている(判定回数は定数[collision::kRayCapsuleDivisionNum]に依存)
     /// @param intersection 未実装
     /// @return true : 衝突, false : 非衝突
-    //[[nodiscard]] bool IsHitRayCapsuleAndModel      (const RayCapsule&  ray_capsule,    const int           model_handle,   std::optional<VECTOR>& intersection, std::vector<Triangle>& hit_triangles);
-    //[[nodiscard]] bool IsHitRayCapsuleAndModel      (const RayCapsule&  ray_capsule,    const int           model_handle,   std::optional<VECTOR>& intersection);
-    //[[nodiscard]] bool IsHitRayCapsuleAndModel      (const RayCapsule&  ray_capsule,    const int           model_handle,   MV1_COLL_RESULT_POLY_DIM& hit_result);
-    //[[nodiscard]] bool IsHitRayCapsuleAndModel      (const RayCapsule&  ray_capsule,    const int           model_handle);
+    [[nodiscard]] bool IsHitRayCapsuleAndModel      (const RayCapsule&  ray_capsule,    const int           model_handle,   std::optional<VECTOR>& intersection);
+    [[nodiscard]] bool IsHitRayCapsuleAndModel      (const RayCapsule&  ray_capsule,    const int           model_handle,   MV1_COLL_RESULT_POLY_DIM& hit_result);
+    [[nodiscard]] bool IsHitRayCapsuleAndModel      (const RayCapsule&  ray_capsule,    const int           model_handle);
 
     /// @brief 円周とカプセルの衝突判定
     /// @brief WARNING : 完璧な当たり判定ではない。円周に大して垂直なカプセルのみの使用を推奨。

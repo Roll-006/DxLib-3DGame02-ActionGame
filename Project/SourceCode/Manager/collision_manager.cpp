@@ -118,7 +118,6 @@ bool CollisionManager::IsApplyCollide(const std::string& obj_name, const Collide
 	return true;
 }
 
-
 std::vector<ColliderPairOneToManyData> CollisionManager::CreateHitColliderPairs()
 {
 	std::vector<ColliderPairOneToManyData> collider_pairs;
@@ -158,12 +157,6 @@ std::vector<ColliderPairOneToManyData> CollisionManager::CreateHitColliderPairs(
 					std::optional<VECTOR> intersection;
 					if (IsHit(*owner_obj_collider, *target_obj_collider, intersection))
 					{
-						// MEMO : 確認用
-						if (target_obj->GetName() == ObjName.BULLET)
-						{
-							int a = 0;
-						}
-
 						// 指定のオーナーのデータコンテナがまだない場合は新たに作成
 						bool is_maked = std::any_of(collider_pairs.begin(), collider_pairs.end(), [=](const ColliderPairOneToManyData& data)
 						{
@@ -256,9 +249,14 @@ bool CollisionManager::IsHitSegmentAndTarget	(Collider& owner_collider, const Co
 	// 図形の登録がされていない場合はモデルで判定を行う
 	if (shape == nullptr)
 	{
-		std::vector<Triangle> hit_triangles {};
+		std::vector<Triangle> hit_triangles;
 		const bool is_hit = collision::IsHitSegmentAndModel(*std::dynamic_pointer_cast<Segment>(owner_collider.GetShape()), target_collider.GetModelHandle(), intersection, hit_triangles);
-		owner_collider.AddHitModelTriangle(target_collider.GetModelHandle(), hit_triangles);
+		
+		// 衝突対象がコライダーであった場合は三角形情報を追加する
+		if (target_collider.GetColliderKind() == ColliderKind::kCollider)
+		{
+			owner_collider.AddHitModelTriangle(target_collider.GetModelHandle(), hit_triangles);
+		}
 
 		return is_hit;
 	}
@@ -322,9 +320,14 @@ bool CollisionManager::IsHitTriangleAndTarget	(Collider& owner_collider, const C
 	// 図形の登録がされていない場合はモデルで判定を行う
 	if (shape == nullptr)
 	{
-		std::vector<Triangle> hit_triangles {};
+		std::vector<Triangle> hit_triangles;
 		const bool is_hit = collision::IsHitTriangleAndModel(*std::dynamic_pointer_cast<Triangle>(owner_collider.GetShape()), target_collider.GetModelHandle(), intersection, hit_triangles);
-		owner_collider.AddHitModelTriangle(target_collider.GetModelHandle(), hit_triangles);
+		
+		// 衝突対象がコライダーであった場合は三角形情報を追加する
+		if (target_collider.GetColliderKind() == ColliderKind::kCollider)
+		{
+			owner_collider.AddHitModelTriangle(target_collider.GetModelHandle(), hit_triangles);
+		}
 
 		return is_hit;
 	}
@@ -382,9 +385,14 @@ bool CollisionManager::IsHitSphereAndTarget		(Collider& owner_collider, const Co
 	// 図形の登録がされていない場合はモデルで判定を行う
 	if (shape == nullptr)
 	{
-		std::vector<Triangle> hit_triangles {};
+		std::vector<Triangle> hit_triangles;
 		const bool is_hit = collision::IsHitSphereAndModel(*std::dynamic_pointer_cast<Sphere>(owner_collider.GetShape()), target_collider.GetModelHandle(), intersection, hit_triangles);
-		owner_collider.AddHitModelTriangle(target_collider.GetModelHandle(), hit_triangles);
+		
+		// 衝突対象がコライダーであった場合は三角形情報を追加する
+		if (target_collider.GetColliderKind() == ColliderKind::kCollider)
+		{
+			owner_collider.AddHitModelTriangle(target_collider.GetModelHandle(), hit_triangles);
+		}
 
 		return is_hit;
 	}
@@ -413,9 +421,14 @@ bool CollisionManager::IsHitCapsuleAndTarget	(Collider& owner_collider, const Co
 	// 図形の登録がされていない場合はモデルで判定を行う
 	if (shape == nullptr)
 	{
-		std::vector<Triangle> hit_triangles {};
+		std::vector<Triangle> hit_triangles;
 		const bool is_hit = collision::IsHitCapsuleAndModel(*std::dynamic_pointer_cast<Capsule>(owner_collider.GetShape()), target_collider.GetModelHandle(), intersection, hit_triangles);
-		owner_collider.AddHitModelTriangle(target_collider.GetModelHandle(), hit_triangles);
+		
+		// 衝突対象がコライダーであった場合は三角形情報を追加する
+		if (target_collider.GetColliderKind() == ColliderKind::kCollider)
+		{
+			owner_collider.AddHitModelTriangle(target_collider.GetModelHandle(), hit_triangles);
+		}
 
 		return is_hit;
 	}

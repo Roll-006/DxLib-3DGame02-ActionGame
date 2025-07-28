@@ -36,14 +36,14 @@ void SceneManager::Update()
 
 void SceneManager::LateUpdate()
 {
-	PhysicsManager::GetInstance()->LateUpdate();		// velocity強制, 移動, 
+	PhysicsManager::GetInstance()->LateUpdate();
 
 	for (const auto& scene : m_current_scene)
 	{
 		scene.second->LateUpdate();
 	}
 
-	CollisionManager::GetInstance()->LateUpdate();		// 着地判定オフ, 着地判定オン
+	CollisionManager::GetInstance()->LateUpdate();
 	CommandHandler	::GetInstance()->LateUpdate();
 	InputChecker	::GetInstance()->LateUpdate();
 }

@@ -56,7 +56,7 @@ void PhysicalObjBase::ProjectionVelocity()
 	if (!landing_trigger) { return; }
 	if (landing_trigger->GetHitTriangles().empty() && landing_trigger->GetHitModelTriangles().empty()) { return; }
 
-	std::vector<Triangle> all_triangles {};
+	std::vector<Triangle> all_triangles;
 	size_t all_size = 0;
 
 	// ÉäÉTÉCÉY
@@ -107,11 +107,6 @@ void PhysicalObjBase::ProjectionVelocity()
 		m_velocity			= math::GetProjectionVector(m_velocity, base_v);
 		return;
 	}
-}
-
-void PhysicalObjBase::ProjectionPos()
-{
-
 }
 
 std::shared_ptr<Collider> PhysicalObjBase::GetCollider(const ColliderKind kind) const
