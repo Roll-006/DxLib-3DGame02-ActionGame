@@ -7,7 +7,7 @@ Collider::Collider(const ColliderKind kind, const std::shared_ptr<ShapeBase> sha
 	m_is_closest_only_hit	(kind == ColliderKind::kRayCast ? true : false),
 	m_owner_obj				(owner_obj)
 {
-	// 処理なし
+	JudgeValidShape();
 }
 
 Collider::Collider(const ColliderKind kind, const std::shared_ptr<ShapeBase> shape, const bool is_closest_only_hit, PhysicalObjBase* owner_obj) :
@@ -17,7 +17,7 @@ Collider::Collider(const ColliderKind kind, const std::shared_ptr<ShapeBase> sha
 	m_is_closest_only_hit	(kind == ColliderKind::kRayCast ? is_closest_only_hit : false),
 	m_owner_obj				(owner_obj)
 {
-	// 処理なし
+	JudgeValidShape();
 }
 
 Collider::Collider(const ColliderKind kind, const int model_handle, PhysicalObjBase* owner_obj) :
@@ -27,5 +27,35 @@ Collider::Collider(const ColliderKind kind, const int model_handle, PhysicalObjB
 	m_is_closest_only_hit	(false),
 	m_owner_obj				(owner_obj)
 {
-	// 処理なし
+	JudgeValidShape();
+}
+
+
+void Collider::EnableAllRayCastHit()
+{
+	if (m_kind == ColliderKind::kRayCast)
+	{
+		m_is_closest_only_hit = false;
+	}
+}
+
+void Collider::EnableClosestOnlyRayCastHit()
+{
+	if (m_kind == ColliderKind::kRayCast)
+	{
+		m_is_closest_only_hit = true;
+	}
+}
+
+void Collider::JudgeValidShape()
+{
+	switch (m_kind)
+	{
+	case ColliderKind::kRayCast:
+		assert(m_shape->GetShapeKind() == ShapeKind::kSegment);
+		break;
+
+	default:
+		break;
+	}
 }

@@ -32,8 +32,6 @@ void ShellCasing::Init()
 void ShellCasing::Update()
 {
 	if (!IsActive()) { return; }
-
-	m_is_landing = false;
 }
 
 void ShellCasing::LateUpdate()

@@ -1,5 +1,4 @@
 #pragma once
-#include <queue>
 #include "../Base/singleton_base.hpp"
 
 #include "../VirtualCamera/rot_control_virtual_camera.hpp"

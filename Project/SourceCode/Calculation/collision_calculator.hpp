@@ -91,6 +91,7 @@ namespace collision
     /// @brief 線分とモデルの衝突判定
     /// @param intersection 衝突していれば、線分の始点に最も近い交点を格納
     /// @return true : 衝突, false : 非衝突
+    [[nodiscard]] bool IsHitSegmentAndModel         (const Segment&     segment,        const int           model_handle,   std::optional<VECTOR>& intersection, std::vector<Triangle>& hit_triangles);
     [[nodiscard]] bool IsHitSegmentAndModel         (const Segment&     segment,        const int           model_handle,   std::optional<VECTOR>& intersection);
     [[nodiscard]] bool IsHitSegmentAndModel         (const Segment&     segment,        const int           model_handle);
 
@@ -105,6 +106,12 @@ namespace collision
     /// @return true : 衝突, false : 非衝突
     [[nodiscard]] bool IsHitTriangleAndSphere       (const Triangle&    triangle,       const Sphere&       sphere,         std::optional<VECTOR>& intersection);
     [[nodiscard]] bool IsHitTriangleAndSphere       (const Triangle&    triangle,       const Sphere&       sphere);
+
+    /// @brief 三角形と三角形の衝突判定
+    /// @param intersection 未実装
+    /// @return true : 衝突, false : 非衝突
+    [[nodiscard]] bool IsHitTriangleAndTriangle     (const Triangle&    triangle1,      const Triangle&     triangle2,      std::optional<VECTOR>& intersection);
+    [[nodiscard]] bool IsHitTriangleAndTriangle     (const Triangle&    triangle1,      const Triangle&     triangle2);
 
     /// @brief 三角形とカプセルの衝突判定
     /// @param intersection 未実装
@@ -122,6 +129,7 @@ namespace collision
     /// @brief 三角形とモデルの衝突判定
     /// @param intersection 未実装
     /// @return true : 衝突, false : 非衝突
+    [[nodiscard]] bool IsHitTriangleAndModel        (const Triangle&    triangle,       const int           model_handle,   std::optional<VECTOR>& intersection, std::vector<Triangle>& hit_triangles);
     [[nodiscard]] bool IsHitTriangleAndModel        (const Triangle&    triangle,       const int           model_handle,   std::optional<VECTOR>& intersection);
     [[nodiscard]] bool IsHitTriangleAndModel        (const Triangle&    triangle,       const int           model_handle);
 
@@ -153,6 +161,7 @@ namespace collision
     /// @brief 球とモデルの衝突判定 
     /// @param intersection 未実装
     /// @return true : 衝突, false : 非衝突
+    [[nodiscard]] bool IsHitSphereAndModel          (const Sphere&      sphere,         const int           model_handle,   std::optional<VECTOR>& intersection, std::vector<Triangle>& hit_triangles);
     [[nodiscard]] bool IsHitSphereAndModel          (const Sphere&      sphere,         const int           model_handle,   std::optional<VECTOR>& intersection);
     [[nodiscard]] bool IsHitSphereAndModel          (const Sphere&      sphere,         const int           model_handle);
 
@@ -165,6 +174,7 @@ namespace collision
     /// @brief カプセルとモデルの衝突判定
     /// @param intersection 未実装
     /// @return true : 衝突, false : 非衝突
+    [[nodiscard]] bool IsHitCapsuleAndModel         (const Capsule&     capsule,        const int           model_handle,   std::optional<VECTOR>& intersection, std::vector<Triangle>& hit_triangles);
     [[nodiscard]] bool IsHitCapsuleAndModel         (const Capsule&     capsule,        const int           model_handle,   std::optional<VECTOR>& intersection);
     [[nodiscard]] bool IsHitCapsuleAndModel         (const Capsule&     capsule,        const int           model_handle,   MV1_COLL_RESULT_POLY_DIM& hit_result);
     [[nodiscard]] bool IsHitCapsuleAndModel         (const Capsule&     capsule,        const int           model_handle);
@@ -173,9 +183,10 @@ namespace collision
     /// @brief 視点カプセルを徐々に移動させて判定を行っている(判定回数は定数[collision::kRayCapsuleDivisionNum]に依存)
     /// @param intersection 未実装
     /// @return true : 衝突, false : 非衝突
-    [[nodiscard]] bool IsHitRayCapsuleAndModel      (const RayCapsule&  ray_capsule,    const int           model_handle,   std::optional<VECTOR>& intersection);
-    [[nodiscard]] bool IsHitRayCapsuleAndModel      (const RayCapsule&  ray_capsule,    const int           model_handle,   MV1_COLL_RESULT_POLY_DIM& hit_result);
-    [[nodiscard]] bool IsHitRayCapsuleAndModel      (const RayCapsule&  ray_capsule,    const int           model_handle);
+    //[[nodiscard]] bool IsHitRayCapsuleAndModel      (const RayCapsule&  ray_capsule,    const int           model_handle,   std::optional<VECTOR>& intersection, std::vector<Triangle>& hit_triangles);
+    //[[nodiscard]] bool IsHitRayCapsuleAndModel      (const RayCapsule&  ray_capsule,    const int           model_handle,   std::optional<VECTOR>& intersection);
+    //[[nodiscard]] bool IsHitRayCapsuleAndModel      (const RayCapsule&  ray_capsule,    const int           model_handle,   MV1_COLL_RESULT_POLY_DIM& hit_result);
+    //[[nodiscard]] bool IsHitRayCapsuleAndModel      (const RayCapsule&  ray_capsule,    const int           model_handle);
 
     /// @brief 円周とカプセルの衝突判定
     /// @brief WARNING : 完璧な当たり判定ではない。円周に大して垂直なカプセルのみの使用を推奨。

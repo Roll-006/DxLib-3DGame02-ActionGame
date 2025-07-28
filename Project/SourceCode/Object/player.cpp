@@ -71,8 +71,6 @@ void Player::Update()
 	UpdateTransform(m_look_dir.at(TimeKind::kCurrent), kModelScale);
 
 	// MEMO : Update‚Å‚Í’eŠÛ‚Ì”­Ë”»’è‚Ì‚İ‚ğs‚¤‚à‚Ì‚Æ‚·‚é
-
-	m_is_landing = false;
 }
 
 void Player::LateUpdate()
@@ -115,10 +113,24 @@ void Player::Draw() const
 
 void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 {
+	std::shared_ptr<ShapeBase> shape = nullptr;
+
 	switch (hit_collider_pair.owner_collider->GetColliderKind())
 	{
 	case ColliderKind::kLandingTrigger:
 		m_is_landing = true;
+		
+		shape = hit_collider_pair.target_collider->GetShape();
+
+		// }Œ`‚Ì“o˜^‚ª‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Íƒ‚ƒfƒ‹‚Å”»’è‚ğs‚¤
+		if (shape == nullptr)
+		{
+			
+		}
+		else
+		{
+			
+		}
 		break;
 
 	default:

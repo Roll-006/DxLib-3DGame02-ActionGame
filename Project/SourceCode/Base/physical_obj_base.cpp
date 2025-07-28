@@ -12,6 +12,15 @@ PhysicalObjBase::PhysicalObjBase(const std::string& name, const std::string& tag
 
 }
 
+void PhysicalObjBase::RemoveHitTriangles()
+{
+	for (const auto& collider : m_collider)
+	{
+		collider->RemoveHitTriangle();
+		collider->RemoveHitModelTriangle();
+	}
+}
+
 void PhysicalObjBase::ApplyGravity(const float gravity_acceleration, const float max_gravity)
 {
 	// 地面にいる場合は重力を与えない
@@ -40,6 +49,71 @@ void PhysicalObjBase::ApplyVelocity()
 	}
 }
 
+void PhysicalObjBase::ProjectionVelocity()
+{
+	const auto landing_trigger = GetCollider(ColliderKind::kLandingTrigger);
+
+	if (!landing_trigger) { return; }
+	if (landing_trigger->GetHitTriangles().empty() && landing_trigger->GetHitModelTriangles().empty()) { return; }
+
+	std::vector<Triangle> all_triangles {};
+	size_t all_size = 0;
+
+	// リサイズ
+	if (!landing_trigger->GetHitTriangles().empty())
+	{
+		all_size = landing_trigger->GetHitTriangles().size();
+	}
+	if (!landing_trigger->GetHitModelTriangles().empty())
+	{
+		for (const auto& [handle, triangle] : landing_trigger->GetHitModelTriangles())
+		{
+			all_size += triangle.size();
+		}
+	}
+	all_triangles.reserve(all_size);
+
+	// 合成
+	if (!landing_trigger->GetHitTriangles().empty())
+	{
+		all_triangles.insert(all_triangles.end(), landing_trigger->GetHitTriangles().begin(), landing_trigger->GetHitTriangles().end());
+	}
+	if (!landing_trigger->GetHitModelTriangles().empty())
+	{
+		for (const auto& [handle, triangle] : landing_trigger->GetHitModelTriangles())
+		{
+			all_triangles.insert(all_triangles.end(), triangle.begin(), triangle.end());
+		}
+	}
+
+	// ヒットしたポリゴンから三角形を生成
+	// 三角形との距離を取得
+	std::unordered_map<int, Triangle> triangles;
+	std::unordered_map<int, float>    distance;
+	for (size_t i = 0; i < all_triangles.size(); ++i)
+	{
+		distance[i]		= math::GetDistanceTriangleToSphere(all_triangles.at(i), *std::dynamic_pointer_cast<Sphere>(landing_trigger->GetShape()));
+		triangles[i]	= all_triangles.at(i);
+	}
+
+	// 距離が最も近い三角形との交点を取得
+	distance = algorithm::Sort(distance, SortKind::kAscending);
+	for (const auto& dist : distance)
+	{
+		// 斜面に投影
+		const auto cross_x	= math::GetNormalVector(triangles.at(dist.first).GetNormalVector(), axis::GetWorldYAxis());
+		auto base_v			= math::GetNormalVector(triangles.at(dist.first).GetNormalVector(), cross_x);
+		base_v				= v3d::GetNormalizedV(VGet(m_velocity.x, base_v.y, m_velocity.z));
+		m_velocity			= math::GetProjectionVector(m_velocity, base_v);
+		return;
+	}
+}
+
+void PhysicalObjBase::ProjectionPos()
+{
+
+}
+
 std::shared_ptr<Collider> PhysicalObjBase::GetCollider(const ColliderKind kind) const
 {
 	for (const auto& collider : m_collider)
@@ -56,12 +130,6 @@ void PhysicalObjBase::AddCollider(const std::shared_ptr<Collider> collider)
 {
 	if (std::find(m_collider.begin(), m_collider.end(), collider) == m_collider.end())
 	{
-		// レイキャストトリガーの場合は線分以外許可しない
-		if (collider->GetColliderKind() == ColliderKind::kRayCast)
-		{
-			assert(collider->GetShape()->GetShapeKind() == ShapeKind::kSegment);
-		}
-
 		m_collider.emplace_back(collider);
 	}
 }

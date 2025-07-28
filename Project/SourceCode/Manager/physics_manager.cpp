@@ -29,6 +29,9 @@ void PhysicsManager::LateUpdate()
 		if (IsApplyGravity(obj) && obj->IsActive())
 		{
 			obj->AddFallVelocity();
+
+			// velocityが浮かないよう張り付ける
+			obj->ProjectionVelocity();
 		}
 	}
 
@@ -37,7 +40,7 @@ void PhysicsManager::LateUpdate()
 
 	for (const auto& obj : m_physical_objects)
 	{
-		// 速度ベクトルを適用
+		// velocityをオブジェクトに適用
 		obj->ApplyVelocity();
 	}
 }

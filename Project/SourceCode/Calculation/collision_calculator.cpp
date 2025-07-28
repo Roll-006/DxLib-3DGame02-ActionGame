@@ -288,8 +288,10 @@ bool collision::IsHitSegmentAndCapsule      (const Segment&     segment,        
 }
 
 /// @brief 線分とモデルの衝突判定
-bool collision::IsHitSegmentAndModel        (const Segment&     segment,        const int           model_handle,   std::optional<VECTOR>& intersection)
+bool collision::IsHitSegmentAndModel        (const Segment&     segment,        const int           model_handle,   std::optional<VECTOR>& intersection, std::vector<Triangle>& hit_triangles)
 {
+    hit_triangles.clear();
+
     const auto hit_result = MV1CollCheck_LineDim(model_handle, -1, segment.GetBeginPos(), segment.GetEndPos());
     if (!hit_result.HitNum)
     {
@@ -303,18 +305,26 @@ bool collision::IsHitSegmentAndModel        (const Segment&     segment,        
     std::unordered_map<int, float>    distance;
     for (int i = 0; i < hit_result.HitNum; ++i)
     {
-        Triangle triangle = Triangle(hit_result.Dim[i].Position[0], hit_result.Dim[i].Position[2], hit_result.Dim[i].Position[1]);
+        hit_triangles.emplace_back(Triangle(hit_result.Dim[i].Position[0], hit_result.Dim[i].Position[2], hit_result.Dim[i].Position[1]));
 
-        distance[i] = math::GetDistancePointToTriangle(segment.GetBeginPos(), triangle);
-        triangles[i] = triangle;
+        distance[i]     = math::GetDistancePointToTriangle(segment.GetBeginPos(), hit_triangles.at(i));
+        triangles[i]    = hit_triangles.at(i);
     }
 
     // 距離が最も近い三角形との交点を取得
     distance = algorithm::Sort(distance, SortKind::kAscending);
+    int loop_count = 0;
     for (const auto& dist : distance)
     {
-        return collision::IsHitSegmentAndTriangle(segment, triangles.at(dist.first), intersection);
+        hit_triangles.at(loop_count) = triangles.at(dist.first);
+        ++loop_count;
     }
+    return collision::IsHitSegmentAndTriangle(segment, hit_triangles.at(0), intersection);
+}
+bool collision::IsHitSegmentAndModel        (const Segment&     segment,        const int           model_handle,   std::optional<VECTOR>& intersection)
+{
+    std::vector<Triangle> hit_triangles {};
+    return IsHitSegmentAndModel(segment, model_handle, intersection, hit_triangles);
 }
 bool collision::IsHitSegmentAndModel        (const Segment&     segment,        const int           model_handle)
 {
@@ -348,6 +358,20 @@ bool collision::IsHitTriangleAndSphere      (const Triangle&    triangle,       
     std::optional<VECTOR> intersection = std::nullopt;
 
     return IsHitTriangleAndSphere(triangle, sphere, intersection);
+}
+
+/// @brief 三角形と三角形の衝突判定
+bool collision::IsHitTriangleAndTriangle    (const Triangle&    triangle1,      const Triangle&     triangle2,      std::optional<VECTOR>& intersection)
+{
+    intersection = std::nullopt;
+
+    return math::GetDistanceTriangleToTriangle(triangle1, triangle2) < math::kEpsilonLow;
+}
+bool collision::IsHitTriangleAndTriangle    (const Triangle&    triangle1,      const Triangle&     triangle2)
+{
+    std::optional<VECTOR> intersection = std::nullopt;
+
+    return IsHitTriangleAndTriangle(triangle1, triangle2, intersection);
 }
 
 /// @brief 三角形とカプセルの衝突判定
@@ -394,12 +418,43 @@ bool collision::IsHitTriangleAndRayCapsule  (const Triangle&    triangle,       
 }
 
 /// @brief 三角形とモデルの衝突判定
+bool collision::IsHitTriangleAndModel       (const Triangle&    triangle,       const int           model_handle,   std::optional<VECTOR>& intersection, std::vector<Triangle>& hit_triangles)
+{
+    hit_triangles.clear();
+
+    const auto hit_result = MV1CollCheck_Triangle(model_handle, -1, triangle.GetPos(0), triangle.GetPos(1), triangle.GetPos(2));
+    if (!hit_result.HitNum)
+    {
+        intersection = std::nullopt;
+        return false;
+    }
+
+    // ヒットしたポリゴンから三角形を生成
+    // 三角形との距離を取得
+    std::unordered_map<int, Triangle> triangles;
+    std::unordered_map<int, float>    distance;
+    for (int i = 0; i < hit_result.HitNum; ++i)
+    {
+        hit_triangles.emplace_back(Triangle(hit_result.Dim[i].Position[0], hit_result.Dim[i].Position[2], hit_result.Dim[i].Position[1]));
+
+        distance[i] = math::GetDistanceTriangleToTriangle(triangle, hit_triangles.at(i));
+        triangles[i] = hit_triangles.at(i);
+    }
+
+    // 距離が最も近い三角形との交点を取得
+    distance = algorithm::Sort(distance, SortKind::kAscending);
+    int loop_count = 0;
+    for (const auto& dist : distance)
+    {
+        hit_triangles.at(loop_count) = triangles.at(dist.first);
+        ++loop_count;
+    }
+    return collision::IsHitTriangleAndTriangle(triangle, hit_triangles.at(0), intersection);
+}
 bool collision::IsHitTriangleAndModel       (const Triangle&    triangle,       const int           model_handle,   std::optional<VECTOR>& intersection)
 {
-    intersection = std::nullopt;
-
-    // TODO : 頂点の始点順は確認していないので要検証
-    return MV1CollCheck_Triangle(model_handle, -1, triangle.GetPos(0), triangle.GetPos(1), triangle.GetPos(2)).HitNum;
+    std::vector<Triangle> hit_triangles{};
+    return IsHitTriangleAndModel(triangle, model_handle, intersection, hit_triangles);
 }
 bool collision::IsHitTriangleAndModel       (const Triangle&    triangle,       const int           model_handle)
 {
@@ -490,11 +545,43 @@ bool collision::IsHitSphereAndCapsule       (const Sphere&      sphere,         
 }
 
 /// @brief 球とモデルの衝突判定 
+bool collision::IsHitSphereAndModel         (const Sphere&      sphere,         const int           model_handle,   std::optional<VECTOR>& intersection, std::vector<Triangle>& hit_triangles)
+{
+    hit_triangles.clear();
+
+    const auto hit_result = MV1CollCheck_Sphere(model_handle, -1, sphere.GetPos(), sphere.GetRadius());
+    if (!hit_result.HitNum)
+    {
+        intersection = std::nullopt;
+        return false;
+    }
+
+    // ヒットしたポリゴンから三角形を生成
+    // 三角形との距離を取得
+    std::unordered_map<int, Triangle> triangles;
+    std::unordered_map<int, float>    distance;
+    for (int i = 0; i < hit_result.HitNum; ++i)
+    {
+        hit_triangles.emplace_back(Triangle(hit_result.Dim[i].Position[0], hit_result.Dim[i].Position[2], hit_result.Dim[i].Position[1]));
+
+        distance[i] = math::GetDistanceTriangleToSphere(hit_triangles.at(i), sphere);
+        triangles[i] = hit_triangles.at(i);
+    }
+
+    // 距離が最も近い三角形との交点を取得
+    distance = algorithm::Sort(distance, SortKind::kAscending);
+    int loop_count = 0;
+    for (const auto& dist : distance)
+    {
+        hit_triangles.at(loop_count) = triangles.at(dist.first);
+        ++loop_count;
+    }
+    return collision::IsHitTriangleAndSphere(hit_triangles.at(0), sphere, intersection);
+}
 bool collision::IsHitSphereAndModel         (const Sphere&      sphere,         const int           model_handle,   std::optional<VECTOR>& intersection)
 {
-    intersection = std::nullopt;
-
-    return MV1CollCheck_Sphere(model_handle, -1, sphere.GetPos(), sphere.GetRadius()).HitNum;
+    std::vector<Triangle> hit_triangles{};
+    return IsHitSphereAndModel(sphere, model_handle, intersection, hit_triangles);
 }
 bool collision::IsHitSphereAndModel         (const Sphere&      sphere,         const int           model_handle)
 {
@@ -519,12 +606,43 @@ bool collision::IsHitCapsuleAndCapsule      (const Capsule&     capsule1,       
 }
 
 /// @brief カプセルとモデルの衝突判定
+bool collision::IsHitCapsuleAndModel(const Capsule& capsule, const int model_handle, std::optional<VECTOR>& intersection, std::vector<Triangle>& hit_triangles)
+{
+    hit_triangles.clear();
+
+    const auto hit_result = MV1CollCheck_Capsule(model_handle, -1, capsule.GetSegment().GetBeginPos(), capsule.GetSegment().GetEndPos(), capsule.GetRadius());
+    if (!hit_result.HitNum)
+    {
+        intersection = std::nullopt;
+        return false;
+    }
+
+    // ヒットしたポリゴンから三角形を生成
+    // 三角形との距離を取得
+    std::unordered_map<int, Triangle> triangles;
+    std::unordered_map<int, float>    distance;
+    for (int i = 0; i < hit_result.HitNum; ++i)
+    {
+        hit_triangles.emplace_back(Triangle(hit_result.Dim[i].Position[0], hit_result.Dim[i].Position[2], hit_result.Dim[i].Position[1]));
+
+        distance[i] = math::GetDistanceTriangleToCapsule(hit_triangles.at(i), capsule);
+        triangles[i] = hit_triangles.at(i);
+    }
+
+    // 距離が最も近い三角形との交点を取得
+    distance = algorithm::Sort(distance, SortKind::kAscending);
+    int loop_count = 0;
+    for (const auto& dist : distance)
+    {
+        hit_triangles.at(loop_count) = triangles.at(dist.first);
+        ++loop_count;
+    }
+    return collision::IsHitTriangleAndCapsule(hit_triangles.at(0), capsule, intersection);
+}
 bool collision::IsHitCapsuleAndModel        (const Capsule&     capsule,        const int           model_handle,   std::optional<VECTOR>& intersection)
 {
-    intersection = std::nullopt;
-
-    const auto segment = capsule.GetSegment();
-    return MV1CollCheck_Capsule(model_handle, -1, segment.GetBeginPos(), segment.GetEndPos(), capsule.GetRadius()).HitNum;
+    std::vector<Triangle> hit_triangles{};
+    return IsHitCapsuleAndModel(capsule, model_handle, intersection, hit_triangles);
 }
 bool collision::IsHitCapsuleAndModel        (const Capsule&     capsule,        const int           model_handle,   MV1_COLL_RESULT_POLY_DIM& hit_result)
 {
@@ -540,54 +658,58 @@ bool collision::IsHitCapsuleAndModel        (const Capsule&     capsule,        
 }
 
 /// @brief 光線カプセルとモデルの衝突判定
-bool collision::IsHitRayCapsuleAndModel     (const RayCapsule&  ray_capsule,    const int           model_handle,   std::optional<VECTOR>& intersection)
-{
-    intersection    = std::nullopt;
-    Capsule capsule = ray_capsule.GetBeginCapsule();
-
-    // 速度を分割
-    VECTOR velocity = ray_capsule.GetDir() * ray_capsule.GetRayLength();
-    velocity *= (1.0f / kRayCapsuleDivisionNum);
-
-    for (int i = 0; i < kRayCapsuleDivisionNum + 1; ++i)
-    {
-        if (MV1CollCheck_Capsule(model_handle, -1, capsule.GetSegment().GetBeginPos(), capsule.GetSegment().GetEndPos(), capsule.GetRadius()).HitNum)
-        {
-            return true;
-        }
-        
-        capsule.Move(velocity);
-    }
-
-    return false;
-}
-bool collision::IsHitRayCapsuleAndModel     (const RayCapsule&  ray_capsule,    const int           model_handle,   MV1_COLL_RESULT_POLY_DIM& hit_result)
-{
-    Capsule capsule = ray_capsule.GetBeginCapsule();
-
-    // 速度を分割
-    VECTOR velocity = ray_capsule.GetDir() * ray_capsule.GetRayLength();
-    velocity *= (1.0f / kRayCapsuleDivisionNum);
-
-    for (int i = 0; i < kRayCapsuleDivisionNum + 1; ++i)
-    {
-        hit_result = MV1CollCheck_Capsule(model_handle, -1, capsule.GetSegment().GetBeginPos(), capsule.GetSegment().GetEndPos(), capsule.GetRadius());
-        if (hit_result.HitNum)
-        {
-            return true;
-        }
-
-        capsule.Move(velocity);
-    }
-
-    return false;
-}
-bool collision::IsHitRayCapsuleAndModel     (const RayCapsule&  ray_capsule,    const int           model_handle)
-{
-    std::optional<VECTOR> intersection = std::nullopt;
-
-    return IsHitRayCapsuleAndModel(ray_capsule, model_handle, intersection);
-}
+//bool collision::IsHitRayCapsuleAndModel(const RayCapsule& ray_capsule, const int model_handle, std::optional<VECTOR>& intersection, std::vector<Triangle>& hit_triangles)
+//{
+//    return false;
+//}
+//bool collision::IsHitRayCapsuleAndModel     (const RayCapsule&  ray_capsule,    const int           model_handle,   std::optional<VECTOR>& intersection)
+//{
+//    intersection    = std::nullopt;
+//    Capsule capsule = ray_capsule.GetBeginCapsule();
+//
+//    // 速度を分割
+//    VECTOR velocity = ray_capsule.GetDir() * ray_capsule.GetRayLength();
+//    velocity *= (1.0f / kRayCapsuleDivisionNum);
+//
+//    for (int i = 0; i < kRayCapsuleDivisionNum + 1; ++i)
+//    {
+//        if (MV1CollCheck_Capsule(model_handle, -1, capsule.GetSegment().GetBeginPos(), capsule.GetSegment().GetEndPos(), capsule.GetRadius()).HitNum)
+//        {
+//            return true;
+//        }
+//        
+//        capsule.Move(velocity);
+//    }
+//
+//    return false;
+//}
+//bool collision::IsHitRayCapsuleAndModel     (const RayCapsule&  ray_capsule,    const int           model_handle,   MV1_COLL_RESULT_POLY_DIM& hit_result)
+//{
+//    Capsule capsule = ray_capsule.GetBeginCapsule();
+//
+//    // 速度を分割
+//    VECTOR velocity = ray_capsule.GetDir() * ray_capsule.GetRayLength();
+//    velocity *= (1.0f / kRayCapsuleDivisionNum);
+//
+//    for (int i = 0; i < kRayCapsuleDivisionNum + 1; ++i)
+//    {
+//        hit_result = MV1CollCheck_Capsule(model_handle, -1, capsule.GetSegment().GetBeginPos(), capsule.GetSegment().GetEndPos(), capsule.GetRadius());
+//        if (hit_result.HitNum)
+//        {
+//            return true;
+//        }
+//
+//        capsule.Move(velocity);
+//    }
+//
+//    return false;
+//}
+//bool collision::IsHitRayCapsuleAndModel     (const RayCapsule&  ray_capsule,    const int           model_handle)
+//{
+//    std::optional<VECTOR> intersection = std::nullopt;
+//
+//    return IsHitRayCapsuleAndModel(ray_capsule, model_handle, intersection);
+//}
 
 //bool collision::IsHitCircumferenceAndCapsuleLowPrecision(const Circle* circle, const Capsule* capsule)
 //{

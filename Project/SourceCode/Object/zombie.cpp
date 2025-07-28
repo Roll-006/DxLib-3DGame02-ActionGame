@@ -38,8 +38,6 @@ void Zombie::Update()
 	CalcCapsuleColliderLength();
 	CalcLegTriggerPos();
 	CalcBodyTriggerPos();
-	
-	m_is_landing = false;
 }
 
 void Zombie::LateUpdate()
