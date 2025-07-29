@@ -1,12 +1,18 @@
 ﻿#include "animator_base.hpp"
 
 AnimatorBase::AnimatorBase(const std::shared_ptr<Modeler> modeler) :
-	m_prev_anim_play_rate	(0.0f),
-	m_blend_rate			(1.0f),
-	m_modeler				(modeler)
-
+	m_result_modeler(modeler)
 {
-	m_time_kind_data[TimeKind::kPrev] = m_time_kind_data[TimeKind::kCurrent] = AnimTimeKindData();
+	const auto t = std::make_shared<Transform>();
+	t->SetPos(CoordinateKind::kWorld, VGet(100, 0, 0));
+	m_resource_modeler[BodyKind::kUpperBody] = std::make_shared<Modeler>(t, m_result_modeler->GetModelHandle());
+	m_resource_modeler[BodyKind::kLowerBody] = std::make_shared<Modeler>(   m_result_modeler->GetModelHandle());
+	m_resource_modeler.at(BodyKind::kUpperBody)->ApplyMatrix();
+
+	m_time_kind_data.emplace_back(std::make_tuple(BodyKind::kUpperBody, TimeKind::kPrev,	AnimTimeKindData()));
+	m_time_kind_data.emplace_back(std::make_tuple(BodyKind::kUpperBody, TimeKind::kCurrent, AnimTimeKindData()));
+	m_time_kind_data.emplace_back(std::make_tuple(BodyKind::kLowerBody, TimeKind::kPrev,	AnimTimeKindData()));
+	m_time_kind_data.emplace_back(std::make_tuple(BodyKind::kLowerBody, TimeKind::kCurrent, AnimTimeKindData()));
 }
 
 AnimatorBase::~AnimatorBase()
@@ -22,10 +28,10 @@ void AnimatorBase::AddAnimHandle(const int kind, const std::string& file_path, c
 	// 上書き不可
 	if (m_anim_data.count(kind)) { return; }
 
-	int handle = HandleKeeper::GetInstance()->LoadHandle(HandleKind::kAnim, file_path);
-	if (handle != -1)
+	int anim_handle = HandleKeeper::GetInstance()->LoadHandle(HandleKind::kAnim, file_path);
+	if (anim_handle != -1)
 	{
-		m_anim_data[kind] = AnimKindData(handle, index, tag, play_speed, is_loop);
+		m_anim_data[kind] = AnimKindData(anim_handle, index, tag, play_speed, is_loop);
 	}
 }
 
@@ -40,72 +46,110 @@ void AnimatorBase::AddAnimHandle(const int kind, const int anim_handle, const in
 	}
 }
 
-void AnimatorBase::AttachAnim(const int next_kind)
+void AnimatorBase::AttachAnim(const int next_kind, const BodyKind body_kind)
 {	
-	if (!m_anim_data.count(next_kind))								{ return; }	// アニメーションが存在しない場合は早期return
-	if (m_time_kind_data.at(TimeKind::kCurrent).kind == next_kind)	{ return; }	// 現在のアニメーションと同じであった場合はアタッチを許可しない	
-	if (m_blend_rate != 1.0f)										{ return; }	// ブレンドが完了していない場合はアタッチを許可しない
+	if (!CanAttachAnim(next_kind, body_kind)) { return; }
 
-	DetachAnim(TimeKind::kPrev);
+	// 指定のアニメーション・ボディに該当するデータを検索
+	AnimTimeKindData	prev_time_data;
+	AnimTimeKindData*	current_time_data		= nullptr;
+	bool				is_seted_prev_data		= false;
+	bool				is_seted_current_data	= false;
+	for (auto& [body, time, data] : m_time_kind_data)
+	{
+		if (body == body_kind)
+		{
+			if (time == TimeKind::kPrev)	{ prev_time_data	= data;  is_seted_prev_data		= true; }
+			if (time == TimeKind::kCurrent) { current_time_data	= &data; is_seted_current_data	= true; }
+		}
+
+		if (is_seted_prev_data && is_seted_current_data) { break; }
+	}
 
 	// データをシフト(Current ➡ Prev, Next ➡ Current)
-	m_time_kind_data.at(TimeKind::kPrev)					= m_time_kind_data.at(TimeKind::kCurrent);
-	m_time_kind_data.at(TimeKind::kCurrent).attach_index	= MV1AttachAnim(m_modeler->GetModelHandle(), m_anim_data.at(next_kind).index, m_anim_data.at(next_kind).anim_handle, TRUE);
-	m_time_kind_data.at(TimeKind::kCurrent).kind			= next_kind;
-	SetPlayStartTime();
-
-	// 前回のアニメーションが存在しない場合は、ブレンド済み(ブレンド率100%)とする
-	m_blend_rate = m_time_kind_data.at(TimeKind::kPrev).attach_index > -1 ? 0.0f : 1.0f;
-}
-
-void AnimatorBase::DetachAnim(const TimeKind time_kind)
-{
-	if (m_time_kind_data.at(time_kind).attach_index > -1)
+	for (auto& [body, time, data] : m_time_kind_data)
 	{
-		MV1DetachAnim(m_modeler->GetModelHandle(), m_time_kind_data.at(time_kind).attach_index);
-		m_time_kind_data.at(time_kind).attach_index = -1;
-	}
-}
-
-void AnimatorBase::SetPlayStartTime()
-{
-	if (m_anim_data.count(m_time_kind_data.at(TimeKind::kPrev).kind))
-	{
-		const std::string prev_tag	  = m_anim_data.at(m_time_kind_data.at(TimeKind::kPrev).kind).tag;
-		const std::string current_tag = m_anim_data.at(m_time_kind_data.at(TimeKind::kCurrent).kind).tag;
-
-		// 同類アニメーションであった場合は再生率を引き継ぐ
-		if (prev_tag == current_tag)
+		if (body == body_kind && time == TimeKind::kPrev)
 		{
-			const float current_total_t = MV1GetAttachAnimTotalTime(m_modeler->GetModelHandle(), m_time_kind_data.at(TimeKind::kCurrent).attach_index);
-			const float prev_total_t	= MV1GetAttachAnimTotalTime(m_modeler->GetModelHandle(), m_time_kind_data.at(TimeKind::kPrev).attach_index);
-
-			m_prev_anim_play_rate = m_time_kind_data.at(TimeKind::kPrev).play_timer / prev_total_t;
-			m_time_kind_data.at(TimeKind::kCurrent).play_timer = current_total_t * m_prev_anim_play_rate;
-
-			return;
+			data = *current_time_data;
+			prev_time_data = data;
 		}
 	}
 
-	m_time_kind_data.at(TimeKind::kCurrent).play_timer = 0.0f;
+	current_time_data->attach_index	= MV1AttachAnim(m_resource_modeler.at(body_kind)->GetModelHandle(), m_anim_data.at(next_kind).index, m_anim_data.at(next_kind).anim_handle, TRUE);
+	current_time_data->kind			= next_kind;
+	SetPlayStartTime(current_time_data, prev_time_data, body_kind);
+
+	// 前回のアニメーションが存在しない場合は、ブレンド済み(ブレンド率100%)とする
+	m_blend_rate[body_kind] = prev_time_data.attach_index > -1 ? 0.0f : 1.0f;
+}
+
+void AnimatorBase::DetachAnim(const TimeKind time_kind, const BodyKind body_kind)
+{
+	for (auto& [body, time, data] : m_time_kind_data)
+	{
+		if (body == body_kind && time == time_kind && data.attach_index > -1)
+		{
+			MV1DetachAnim(m_resource_modeler.at(body_kind)->GetModelHandle(), data.attach_index);
+			data.attach_index = -1;
+			return;
+		}
+	}
 }
 
 void AnimatorBase::PlayAnim()
 {
-	for (auto& [state_t, data] : m_time_kind_data)
+	for (auto& [body_kind, time_kind, data] : m_time_kind_data)
 	{
 		// アニメーションが有効であった場合のみ再生
 		if (data.attach_index > -1)
 		{
-			const float total_t = MV1GetAttachAnimTotalTime(m_modeler->GetModelHandle(), data.attach_index);
-			const float blend_r = state_t == TimeKind::kCurrent ? m_blend_rate : 1.0f - m_blend_rate;
+			const float total_time = MV1GetAttachAnimTotalTime(m_resource_modeler.at(body_kind)->GetModelHandle(), data.attach_index);
+			const float blend_rate = time_kind == TimeKind::kCurrent ? m_blend_rate[body_kind] : 1.0f - m_blend_rate[body_kind];
 
 			float play_speed = m_anim_data.at(data.kind).play_speed * FPS::GetDeltaTime();
-			math::IncreaseLoop(data.play_timer, play_speed, total_t, m_anim_data.at(data.kind).is_loop);
+			math::IncreaseLoop(data.play_timer, play_speed, total_time, m_anim_data.at(data.kind).is_loop);
 
 			// 再生位置・ブレンド率を適用
-			MV1SetAttachAnimTime	 (m_modeler->GetModelHandle(), data.attach_index, data.play_timer);
-			MV1SetAttachAnimBlendRate(m_modeler->GetModelHandle(), data.attach_index, blend_r);
+			MV1SetAttachAnimTime     (m_resource_modeler.at(body_kind)->GetModelHandle(), data.attach_index, data.play_timer);
+			MV1SetAttachAnimBlendRate(m_resource_modeler.at(body_kind)->GetModelHandle(), data.attach_index, blend_rate);
+		}
+	}
+
+	CombineAnim();
+
+
+
+	MV1DrawModel(m_resource_modeler.at(BodyKind::kUpperBody)->GetModelHandle());
+	MV1DrawModel(m_resource_modeler.at(BodyKind::kLowerBody)->GetModelHandle());
+
+	for (auto& [body_kind, time_kind, data] : m_time_kind_data)
+	{
+		if (body_kind == BodyKind::kUpperBody)
+		{
+			if (time_kind == TimeKind::kCurrent)
+			{
+				DrawFormatString(0, 20, 0xffffff, "upper_current : kind = %d, index = %d", data.kind, data.attach_index);
+			}
+			if (time_kind == TimeKind::kPrev)
+			{
+				DrawFormatString(0, 40, 0xffffff, "upper_prev    : kind = %d, index = %d", data.kind, data.attach_index);
+			}
+
+			DrawFormatString(0, 100, 0xffffff, "upper_blend = %f", m_blend_rate[BodyKind::kUpperBody]);
+		}
+		if (body_kind == BodyKind::kLowerBody)
+		{
+			if (time_kind == TimeKind::kCurrent)
+			{
+				DrawFormatString(0, 60, 0xffffff, "lower_current : kind = %d, index = %d", data.kind, data.attach_index);
+			}
+			if (time_kind == TimeKind::kPrev)
+			{
+				DrawFormatString(0, 80, 0xffffff, "lower_prev    : kind = %d, index = %d", data.kind, data.attach_index);
+			}
+
+			DrawFormatString(0, 120, 0xffffff, "lower_blend = %f", m_blend_rate[BodyKind::kLowerBody]);
 		}
 	}
 }
@@ -113,11 +157,65 @@ void AnimatorBase::PlayAnim()
 void AnimatorBase::BlendAnim()
 {
 	// ブレンド率100%まで増加させる
-	math::Increase(m_blend_rate, kBlendSpeed * FPS::GetDeltaTime(), 1.0f);
+	math::Increase(m_blend_rate[BodyKind::kUpperBody], kBlendSpeed * FPS::GetDeltaTime(), 1.0f);
+	math::Increase(m_blend_rate[BodyKind::kLowerBody], kBlendSpeed * FPS::GetDeltaTime(), 1.0f);
   
 	// ブレンドが完了した場合、PravAnimは不要なためデタッチする
-	if (m_blend_rate == 1.0f)
+	if (m_blend_rate[BodyKind::kUpperBody] == 1.0f) { DetachAnim(TimeKind::kPrev, BodyKind::kUpperBody); }
+	if (m_blend_rate[BodyKind::kLowerBody] == 1.0f) { DetachAnim(TimeKind::kPrev, BodyKind::kLowerBody); }
+}
+
+void AnimatorBase::SetPlayStartTime(AnimTimeKindData* current_time_kind_data, const AnimTimeKindData& prev_time_kind_data, const BodyKind body_kind)
+{
+	if (m_anim_data.count(prev_time_kind_data.kind))
 	{
-		DetachAnim(TimeKind::kPrev);
+		const std::string prev_tag		= m_anim_data.at(prev_time_kind_data    .kind).tag;
+		const std::string current_tag	= m_anim_data.at(current_time_kind_data->kind).tag;
+
+		// 同類アニメーションであった場合は再生率を引き継ぐ
+		if (prev_tag == current_tag)
+		{
+			const float current_total_time = MV1GetAttachAnimTotalTime(m_resource_modeler.at(body_kind)->GetModelHandle(), current_time_kind_data->attach_index);
+			const float prev_total_time    = MV1GetAttachAnimTotalTime(m_resource_modeler.at(body_kind)->GetModelHandle(), prev_time_kind_data    .attach_index);
+
+			m_prev_anim_play_rate[body_kind] = prev_time_kind_data.play_timer / prev_total_time;
+			current_time_kind_data->play_timer = current_total_time * m_prev_anim_play_rate[body_kind];
+
+			return;
+		}
 	}
+
+	current_time_kind_data->play_timer = 0.0f;
+}
+
+void AnimatorBase::CombineAnim()
+{
+
+}
+
+bool AnimatorBase::CanAttachAnim(const int next_kind, const BodyKind body_kind)
+{
+	// 指定のアニメーションが存在していなければ早期return
+	if (!m_anim_data.count(next_kind))
+	{
+		return false;
+	}
+
+	// 現在のアニメーションと同じであった場合はアタッチを許可しない	
+	const bool is_same = false;
+	for (const auto& [body, time, data] : m_time_kind_data)
+	{
+		if (body == body_kind && time == TimeKind::kCurrent && data.kind == next_kind)
+		{
+			return false;
+		}
+	}
+
+	// ブレンドが完了していない場合はアタッチを許可しない
+	if (m_blend_rate[body_kind] != 1.0f)
+	{
+		return false;
+	}
+
+	return true;
 }

@@ -25,7 +25,11 @@ public:
 	/// @brief ハンドル読み込み
 	/// @param scale エフェクトの場合のみ有効(未指定の場合は1.0倍)
 	/// @return ハンドル
-	int  LoadHandle  (const HandleKind handle_kind, const std::string& file_path, const float scale = 1.0f);
+	int LoadHandle(const HandleKind handle_kind, const std::string& file_path, const float scale = 1.0f);
+
+	/// @brief ハンドルの再読み込み
+	int ReloadHnadle(const HandleKind handle_kind, const int handle);
+
 	/// @brief ハンドルの破棄
 	void DeleteHandle(const HandleKind handle_kind, const std::string& file_path);
 	void DeleteHandle(const HandleKind handle_kind, const int handle);
@@ -35,6 +39,9 @@ public:
 private:
 	HandleKeeper();
 	~HandleKeeper() override;
+
+	/// @brief ハンドルの再読み込み
+	int ReloadHandle(const HandleKind handle_kind, const std::string& file_path);
 
 private:
 	std::vector<std::tuple<HandleKind, std::string, int>> m_handles;

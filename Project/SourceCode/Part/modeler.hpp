@@ -12,6 +12,9 @@ public:
 	Modeler(const std::shared_ptr<Transform> transform, const std::string& file_path);
 	Modeler(const std::shared_ptr<Transform> transform, const int model_handle,		  const VECTOR& basic_angle);
 	Modeler(const std::shared_ptr<Transform> transform, const int model_handle);
+	Modeler(const std::string& file_path);
+	Modeler(const int model_handle);
+	Modeler();
 	~Modeler();
 
 	void Draw() const;
@@ -26,12 +29,15 @@ public:
 	/// @brief MEMO : 通常描画時に適用されるが、武器などがモデルの行列情報を基準とするため先行して適用
 	void ApplyMatrix() const;
 
-	[[nodiscard]] int GetModelHandle() const { return m_model_handle; }
+	[[nodiscard]] int						 GetModelHandle()	const { return m_model_handle; }
+	[[nodiscard]] float						 GetOpacity()		const { return m_opacity; }
+	[[nodiscard]] VECTOR					 GetBasicAngle()	const { return m_basic_angle; }
+	[[nodiscard]] std::shared_ptr<Transform> GetTransform()		const { return m_transform; }
 
 private:
-	int    m_model_handle;
-	float  m_opacity;			// モデルの不透明度(0.0f～1.0f)
-	VECTOR m_basic_angle;		// モデルの基礎回転値(モデルが元から持つ回転を修正するための回転値)
+	int			m_model_handle;
+	float		m_opacity;			// モデルの不透明度(0.0f～1.0f)
+	VECTOR		m_basic_angle;		// モデルの基礎回転値(モデルが元から持つ回転を修正するための回転値)
 
 	std::shared_ptr<Transform> m_transform;
 };

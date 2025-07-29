@@ -13,12 +13,8 @@ HandleKeeper::~HandleKeeper()
 int HandleKeeper::LoadHandle(const HandleKind handle_kind, const std::string& file_path, const float scale)
 {
 	// 既にロード済みの場合は早急にハンドルを返す
-	for (auto& [kind, path, handle] : m_handles)
-	{
-		if (kind == handle_kind && path == file_path) { return handle; }
-	}
-
-	int handle = -1;
+	int handle = ReloadHandle(handle_kind, file_path);
+	if (handle > -1) { return handle; }
 
 	// 種類別にロード
 	switch (handle_kind)
@@ -39,6 +35,54 @@ int HandleKeeper::LoadHandle(const HandleKind handle_kind, const std::string& fi
 
 	m_handles.emplace_back(std::make_tuple(handle_kind, file_path, handle));
 	return handle;
+}
+
+int HandleKeeper::ReloadHnadle(const HandleKind handle_kind, const int handle)
+{
+	for (auto& [kind, path, hdl] : m_handles)
+	{
+		switch (handle_kind)
+		{
+		case HandleKind::kGraphic:
+			if (hdl == handle) { return handle; }
+			break;
+
+		case HandleKind::kModel:
+		case HandleKind::kAnim:
+			if (hdl == handle) { return MV1DuplicateModel(handle); }
+			break;
+
+		case HandleKind::kEffect:
+			if (hdl == handle) { return handle; }
+			break;
+		}
+	}
+
+	return -1;
+}
+
+int HandleKeeper::ReloadHandle(const HandleKind handle_kind, const std::string& file_path)
+{
+	for (auto& [kind, path, handle] : m_handles)
+	{
+		switch (handle_kind)
+		{
+		case HandleKind::kGraphic:
+			if (path == file_path) { return handle; }
+			break;
+
+		case HandleKind::kModel:
+		case HandleKind::kAnim:
+			if (path == file_path) { return MV1DuplicateModel(handle); }
+			break;
+
+		case HandleKind::kEffect:
+			if (path == file_path) { return handle; }
+			break;
+		}
+	}
+
+	return -1;
 }
 
 void HandleKeeper::DeleteHandle(const HandleKind handle_kind, const std::string& file_path)

@@ -150,9 +150,9 @@ void CameraManager::BlendVirtualCamera()
 	// メインカメラへ適用
 	m_main_camera->GetTransform()->SetMatrix(CoordinateKind::kWorld, m_blend_result_transform->GetMatrix(CoordinateKind::kWorld));
 
-	if(m_blend_result_transform)matrix::Draw(  0,  40, m_blend_result_transform->GetMatrix(CoordinateKind::kWorld));
-	if(m_blend_origin_transform)matrix::Draw(  0, 140, m_blend_origin_transform->GetMatrix(CoordinateKind::kWorld));
-	if(m_blend_target_transform)matrix::Draw(700, 140, m_blend_target_transform->GetMatrix(CoordinateKind::kWorld));
+	//if(m_blend_result_transform)matrix::Draw(  0,  40, m_blend_result_transform->GetMatrix(CoordinateKind::kWorld));
+	//if(m_blend_origin_transform)matrix::Draw(  0, 140, m_blend_origin_transform->GetMatrix(CoordinateKind::kWorld));
+	//if(m_blend_target_transform)matrix::Draw(700, 140, m_blend_target_transform->GetMatrix(CoordinateKind::kWorld));
 }
 
 void CameraManager::ChangeTargetVirtualCamera(const int obj_handle)

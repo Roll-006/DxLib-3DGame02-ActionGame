@@ -1,45 +1,75 @@
 #include "modeler.hpp"
 
+#pragma region コンストラクタ / デストラクタ
 Modeler::Modeler(const std::shared_ptr<Transform> transform, const std::string& file_path, const VECTOR& basic_angle) :
-	m_model_handle(HandleKeeper::GetInstance()->LoadHandle(HandleKind::kModel, file_path)),
-	m_opacity(1.0f),
-	m_transform(transform),
-	m_basic_angle(basic_angle)
+	m_model_handle	(HandleKeeper::GetInstance()->LoadHandle(HandleKind::kModel, file_path)),
+	m_opacity		(1.0f),
+	m_transform		(transform),
+	m_basic_angle	(basic_angle)
 {
 	MV1SetupCollInfo(m_model_handle);
 }
 
 Modeler::Modeler(const std::shared_ptr<Transform> transform, const std::string& file_path) :
-	m_model_handle(HandleKeeper::GetInstance()->LoadHandle(HandleKind::kModel, file_path)),
-	m_opacity(1.0f),
-	m_transform(transform),
-	m_basic_angle(v3d::GetZeroV())
+	m_model_handle	(HandleKeeper::GetInstance()->LoadHandle(HandleKind::kModel, file_path)),
+	m_opacity		(1.0f),
+	m_transform		(transform),
+	m_basic_angle	(v3d::GetZeroV())
 {
 	MV1SetupCollInfo(m_model_handle);
 }
 
 Modeler::Modeler(const std::shared_ptr<Transform> transform, const int model_handle, const VECTOR& basic_angle) :
-	m_model_handle(model_handle),
-	m_opacity(1.0f),
-	m_transform(transform),
-	m_basic_angle(basic_angle)
+	m_model_handle	(HandleKeeper::GetInstance()->ReloadHnadle(HandleKind::kModel, model_handle)),
+	m_opacity		(1.0f),
+	m_transform		(transform),
+	m_basic_angle	(basic_angle)
 {
 	MV1SetupCollInfo(m_model_handle);
 }
 
 Modeler::Modeler(const std::shared_ptr<Transform> transform, const int model_handle) :
-	m_model_handle(model_handle),
-	m_opacity(1.0f),
-	m_transform(transform),
-	m_basic_angle(v3d::GetZeroV())
+	m_model_handle	(HandleKeeper::GetInstance()->ReloadHnadle(HandleKind::kModel, model_handle)),
+	m_opacity		(1.0f),
+	m_transform		(transform),
+	m_basic_angle	(v3d::GetZeroV())
 {
 	MV1SetupCollInfo(m_model_handle);
+}
+
+Modeler::Modeler(const std::string& file_path) :
+	m_model_handle	(HandleKeeper::GetInstance()->LoadHandle(HandleKind::kModel, file_path)),
+	m_opacity		(1.0f),
+	m_transform		(nullptr),
+	m_basic_angle	(v3d::GetZeroV())
+{
+	MV1SetupCollInfo(m_model_handle);
+}
+
+Modeler::Modeler(const int model_handle) :
+	m_model_handle	(HandleKeeper::GetInstance()->ReloadHnadle(HandleKind::kModel, model_handle)),
+	m_opacity		(1.0f),
+	m_transform		(nullptr),
+	m_basic_angle	(v3d::GetZeroV())
+{
+	MV1SetupCollInfo(m_model_handle);
+}
+
+Modeler::Modeler() :
+	m_model_handle	(-1),
+	m_opacity		(1.0f),
+	m_transform		(nullptr),
+	m_basic_angle	(v3d::GetZeroV())
+{
+	// 処理なし
 }
 
 Modeler::~Modeler()
 {
 	MV1DeleteModel(m_model_handle);
 }
+#pragma endregion
+
 
 void Modeler::Draw() const
 {

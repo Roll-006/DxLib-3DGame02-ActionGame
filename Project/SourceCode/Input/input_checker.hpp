@@ -256,7 +256,7 @@ private:
 	static constexpr int			kPadStickNum		= 8;
 
 	std::unique_ptr<CSV>			m_csv;
-	XINPUT_STATE					m_xinput;
+	XINPUT_STATE					m_xinput;	// TODO : 複数コントローラーに対応できるよう後にコンテナ化
 	DeviceKind						m_current_device;
 	bool							m_is_lock_mouse_pos;
 	std::vector<int>				m_key_code;
