@@ -109,6 +109,15 @@ void Player::Draw() const
 			shape->Draw(true, 0, 0xffffff);
 		}
 	}
+
+	const auto look_dir_current = m_look_dir.at(TimeKind::kCurrent);
+	const auto look_dir_next	= m_look_dir.at(TimeKind::kNext);
+	DrawFormatString(0, 20, 0xffffff, "look_dir_current : %f %f, %f", look_dir_current.x, look_dir_current.y, look_dir_current.z);
+	DrawFormatString(0, 40, 0xffffff, "look_dir_next    : %f %f, %f", look_dir_next.x,    look_dir_next.y,    look_dir_next.z);
+
+	const auto p = m_transform->GetPos(CoordinateKind::kWorld) + VGet(0, 40, 0);
+	DrawLine3D(p, p + look_dir_current * 100, 0xff0000);
+	DrawLine3D(p, p + look_dir_next    * 100, 0xffffff);
 }
 
 void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
@@ -286,7 +295,7 @@ void Player::CalcMoveDir(const VECTOR& velocity)
 
 void Player::CalcLookDir()
 {
-	// FIXME : 振動発生中。look_dirのY軸が0でないことが原因を思われる。
+	// FIXME : look_dirのY軸が0でないことがある
 
 	// ヨー角回転を取得し、-π～πで値を管理する
 	const VECTOR current_yaw = math::GetYawRotVector(m_look_dir.at(TimeKind::kCurrent));
@@ -301,8 +310,9 @@ void Player::CalcLookDir()
 	const Quaternion rot_q = quat::CreateQuaternion(axis::GetWorldYAxis(), -m_look_dir_correct_angle);
 	m_look_dir.at(TimeKind::kCurrent) = math::GetRotatedPos(m_look_dir.at(TimeKind::kCurrent), rot_q);
 
-	const float angle = math::GetAngleBetweenTwoVector(m_look_dir.at(TimeKind::kNext), m_look_dir.at(TimeKind::kCurrent));
-	//DrawFormatString(0, 60, 0xffffff, "angle : %f", angle * math::kRadianToDegrees);
+	const float angle = math::GetYawBetweenTwoVector(m_look_dir.at(TimeKind::kNext), m_look_dir.at(TimeKind::kCurrent));
+	DrawFormatString(0, 60, 0xffffff, "angle           : %f", angle * math::kRadianToDegrees);
+	DrawFormatString(0, 80, 0xffffff, "threshold_angle : %f", m_confirm_look_dir_threshold_angle * math::kRadianToDegrees);
 	if (angle < m_confirm_look_dir_threshold_angle)
 	{
 		m_look_dir.at(TimeKind::kCurrent) = m_look_dir.at(TimeKind::kNext);

@@ -37,7 +37,7 @@ static struct AnimationPath
 	const std::string MOVE_BACKWARD_LEFT_CROUCH		= "data/animation/move_backward_left_crouch_aim_gun.mv1";
 	const std::string MOVE_BACKWARD_RIGHT_CROUCH	= "data/animation/move_backward_right_crouch_aim_gun.mv1";
 
-	const std::string MOVE_FORWARD_RUN				= "data/animation/move_forward_run_equip_gun.mv1";
+	const std::string MOVE_FORWARD_RUN				= "data/animation/move_forward_run.mv1";
 	#pragma endregion
 
 }AnimPath;

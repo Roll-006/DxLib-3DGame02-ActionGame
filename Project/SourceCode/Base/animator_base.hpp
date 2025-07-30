@@ -30,6 +30,9 @@ public:
 	/// @param next_kind アタッチするアニメーションの種類
 	/// @param body_kind アタッチする部位
 	void AttachAnim(const int next_kind, const BodyKind body_kind);
+	/// @brief リザルト(全身)アニメーションに直接アタッチする
+	/// @param アタッチするアニメーションの種類
+	void AttachResultAnim(const int next_kind);
 
 	void AddAnimHandle(const int kind, const std::string& file_path, const int index, const std::string& tag, const float play_speed, const bool is_loop);
 	void AddAnimHandle(const int kind, const int anim_handle,		 const int index, const std::string& tag, const float play_speed, const bool is_loop);

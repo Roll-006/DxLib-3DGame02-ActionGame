@@ -133,8 +133,7 @@ void PlayerAnimator::CombineMoveNullActionNullWithWeaponAction()
 	switch (m_state->GetWeaponActionState(TimeKind::kCurrent)->GetStateKind())
 	{
 	case static_cast<int>(player_state::WeaponActionStateKind::kWeaponActionNull):
-		AttachAnim(static_cast<int>(PlayerAnimKind::kIdle),				BodyKind::kLowerBody);
-		AttachAnim(static_cast<int>(PlayerAnimKind::kIdle),				BodyKind::kUpperBody);
+		AttachResultAnim(static_cast<int>(PlayerAnimKind::kIdle));
 		break;
 
 	case static_cast<int>(player_state::WeaponActionStateKind::kEquipKnife):
@@ -311,16 +310,15 @@ void PlayerAnimator::CombineMoveCrouchWithWeaponAction()
 
 void PlayerAnimator::CombineMoveRunWithWeaponAction()
 {
-	AttachAnim(static_cast<int>(PlayerAnimKind::kMoveForwardRun), BodyKind::kLowerBody);
-
 	switch (m_state->GetWeaponActionState(TimeKind::kCurrent)->GetStateKind())
 	{
 	case static_cast<int>(player_state::WeaponActionStateKind::kWeaponActionNull):
-		AttachAnim(static_cast<int>(PlayerAnimKind::kIdle),			BodyKind::kUpperBody);
+		AttachResultAnim(static_cast<int>(PlayerAnimKind::kMoveForwardRun));
 		break;
 
 	case static_cast<int>(player_state::WeaponActionStateKind::kEquipKnife):
-		AttachAnim(static_cast<int>(PlayerAnimKind::kEquipKnife),	BodyKind::kUpperBody);
+		AttachAnim(static_cast<int>(PlayerAnimKind::kMoveForwardRun),	BodyKind::kLowerBody);
+		AttachAnim(static_cast<int>(PlayerAnimKind::kEquipKnife),		BodyKind::kUpperBody);
 		break;
 
 	case static_cast<int>(player_state::WeaponActionStateKind::kSideSlashKnife):
@@ -328,11 +326,13 @@ void PlayerAnimator::CombineMoveRunWithWeaponAction()
 		break;
 
 	case static_cast<int>(player_state::WeaponActionStateKind::kEquipGun):
-		AttachAnim(static_cast<int>(PlayerAnimKind::kEquipGun),		BodyKind::kUpperBody);
+		AttachAnim(static_cast<int>(PlayerAnimKind::kMoveForwardRun),	BodyKind::kLowerBody);
+		AttachAnim(static_cast<int>(PlayerAnimKind::kEquipGun),			BodyKind::kUpperBody);
 		break;
 
 	case static_cast<int>(player_state::WeaponActionStateKind::kReload):
-		AttachAnim(static_cast<int>(PlayerAnimKind::kReload),		BodyKind::kUpperBody);
+		AttachAnim(static_cast<int>(PlayerAnimKind::kMoveForwardRun),	BodyKind::kLowerBody);
+		AttachAnim(static_cast<int>(PlayerAnimKind::kReload),			BodyKind::kUpperBody);
 		break;
 
 	default:

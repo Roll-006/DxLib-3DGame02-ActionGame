@@ -4,8 +4,8 @@ CommandHandler::CommandHandler()
 {
 	m_trigger_count	 [CommandKind::kRun] = m_trigger_count  [CommandKind::kCrouch] = 0;
 
-	m_special_command[CommandKind::kRun]	= InputModeKind::kHold;
-	m_special_command[CommandKind::kCrouch] = InputModeKind::kHold;
+	m_special_command[CommandKind::kRun]	= InputModeKind::kTrigger;
+	m_special_command[CommandKind::kCrouch] = InputModeKind::kTrigger;
 
 	// ‰Šúİ’è
 	InitKeyCommand();

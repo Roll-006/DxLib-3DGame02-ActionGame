@@ -25,7 +25,7 @@ void GameSystemSetter::SetUpGameSystem()
 	if (DxLib_Init() == -1) { exit(EXIT_FAILURE); }
 	SetDrawScreen(DX_SCREEN_BACK);
 	SetUseDirect3DVersion(DX_DIRECT3D_11);
-	if (Effekseer_Init(8000) == -1) { exit(EXIT_FAILURE); }
+	if (Effekseer_Init(8000) == -1) { exit(EXIT_FAILURE); } // TODO : íËêîâª
 	SetChangeScreenModeGraphicsSystemResetFlag(FALSE);
 	Effekseer_SetGraphicsDeviceLostCallbackFunctions();
 	SetMainWindowText("3DGAME");

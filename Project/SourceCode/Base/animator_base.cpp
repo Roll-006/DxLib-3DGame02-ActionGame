@@ -68,22 +68,60 @@ void AnimatorBase::AttachAnim(const int next_kind, const BodyKind body_kind)
 		if (is_seted_prev_data && is_seted_current_data) { break; }
 	}
 
-	// データをシフト(Current ➡ Prev, Next ➡ Current)
+	// データをシフト(Current ➡ Prev)
 	for (auto& [body, time, data] : m_time_kind_data)
 	{
 		if (body == body_kind && time == TimeKind::kPrev)
 		{
-			data = *current_time_data;
-			prev_time_data = data;
+			if (current_time_data)
+			{
+				data = *current_time_data;
+				prev_time_data = data;
+				break;
+			}
 		}
 	}
 
-	current_time_data->attach_index	= MV1AttachAnim(m_resource_modeler.at(body_kind)->GetModelHandle(), m_anim_data.at(next_kind).index, m_anim_data.at(next_kind).anim_handle, TRUE);
-	current_time_data->kind			= next_kind;
-	SetPlayStartTime(current_time_data, prev_time_data, body_kind);
+	// データをシフト(Next ➡ Current)
+	if (current_time_data)
+	{
+		current_time_data->attach_index = MV1AttachAnim(m_resource_modeler.at(body_kind)->GetModelHandle(), m_anim_data.at(next_kind).index, m_anim_data.at(next_kind).anim_handle, TRUE);
+		current_time_data->kind			= next_kind;
+		SetPlayStartTime(current_time_data, prev_time_data, body_kind);
+	}
 
 	// 前回のアニメーションが存在しない場合は、ブレンド済み(ブレンド率100%)とする
 	m_blend_rate[body_kind] = prev_time_data.attach_index > -1 ? 0.0f : 1.0f;
+}
+
+void AnimatorBase::AttachResultAnim(const int next_kind)
+{
+	// どちらかのブレンド率が1.0に到達していない場合はアタッチを許可しない
+	if (m_blend_rate[BodyKind::kUpperBody] != 1.0f || m_blend_rate[BodyKind::kLowerBody] != 1.0f){ return; }
+
+	AttachAnim(next_kind, BodyKind::kUpperBody);
+	AttachAnim(next_kind, BodyKind::kLowerBody);
+
+	// 下半身アニメーションの再生位置を引き継ぐ
+	float				lower_play_timer	= 0.0f;
+	AnimTimeKindData*	upper_body_data		= nullptr;
+	for (auto& [body_kind, time_kind, data] : m_time_kind_data)
+	{
+		if (time_kind == TimeKind::kCurrent)
+		{
+			switch (body_kind)
+			{
+			case BodyKind::kUpperBody:
+				upper_body_data = &data;
+				break;
+
+			case BodyKind::kLowerBody:
+				lower_play_timer = data.play_timer;
+				break;
+			}
+		}
+	}
+	if (upper_body_data) { upper_body_data->play_timer = lower_play_timer; }
 }
 
 void AnimatorBase::DetachAnim(const TimeKind time_kind, const BodyKind body_kind)
@@ -144,6 +182,8 @@ void AnimatorBase::SetBoneNum()
 
 	// 下半身のボーンを設定
 	lower_body_bone_num[BonePath.HIPS]			 = MV1SearchFrame(model_handle, BonePath.HIPS);
+	lower_body_bone_num[BonePath.SPINE]			 = MV1SearchFrame(model_handle, BonePath.SPINE);
+	lower_body_bone_num[BonePath.SPINE_1]		 = MV1SearchFrame(model_handle, BonePath.SPINE_1);
 	lower_body_bone_num[BonePath.LEFT_UP_LEG]	 = MV1SearchFrame(model_handle, BonePath.LEFT_UP_LEG);
 	lower_body_bone_num[BonePath.LEFT_LEG]		 = MV1SearchFrame(model_handle, BonePath.LEFT_LEG);
 	lower_body_bone_num[BonePath.LEFT_FOOT]		 = MV1SearchFrame(model_handle, BonePath.LEFT_FOOT);
@@ -215,7 +255,7 @@ void AnimatorBase::CombineAnim()
 		}
 	}
 	
-	// 取得したボーンをリザルトモデルに適用
+	// 取得した行列をリザルトモデルに適用
 	for (const auto& m : lower_body_matrix)
 	{
 		MV1SetFrameUserLocalMatrix(m_result_modeler->GetModelHandle(), m.first, m.second);

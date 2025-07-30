@@ -459,6 +459,14 @@ float math::GetAngleBetweenTwoVector(const VECTOR& v1, const VECTOR& v2)
 
     return acos(dot);
 }
+
+float math::GetYawBetweenTwoVector(const VECTOR& v1, const VECTOR& v2)
+{
+    const auto horizontal_v1 = v3d::GetNormalizedV(VGet(v1.x, 0.0f, v1.z));
+    const auto horizontal_v2 = v3d::GetNormalizedV(VGet(v2.x, 0.0f, v2.z));
+
+    return GetAngleBetweenTwoVector(horizontal_v1, horizontal_v2);
+}
 #pragma endregion
 
 

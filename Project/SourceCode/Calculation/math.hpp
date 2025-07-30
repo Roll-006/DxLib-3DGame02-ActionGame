@@ -300,6 +300,9 @@ namespace math
 
 	/// @brief 二つのベクトルのなす角を取得
 	[[nodiscard]] float GetAngleBetweenTwoVector(const VECTOR& v1, const VECTOR& v2);
+
+	/// @brief 二つのベクトルのヨー角(Y軸)回転のなす角を取得
+	[[nodiscard]] float GetYawBetweenTwoVector(const VECTOR& v1, const VECTOR& v2);
 	#pragma endregion
 
 
