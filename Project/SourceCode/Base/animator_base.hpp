@@ -16,7 +16,6 @@ public:
 	{
 		kUpperBody,		// 上半身
 		kLowerBody,		// 下半身
-		kWholeBody,		// 全身
 	};
 
 public:
@@ -45,6 +44,8 @@ protected:
 private:
 	virtual void LoadAnim() abstract;
 
+	void SetBoneNum();
+
 	void DetachAnim(const TimeKind time_kind, const BodyKind body_kind);
 
 	/// @brief 再生開始地点を設定
@@ -59,12 +60,11 @@ private:
 private:
 	static constexpr float kBlendSpeed = 3.0f;
 
-	std::vector<std::tuple<BodyKind, TimeKind, AnimTimeKindData>>	m_time_kind_data;
-	std::unordered_map<int, AnimKindData>							m_anim_data;
-
-	std::unordered_map<BodyKind, std::shared_ptr<Modeler>>			m_resource_modeler;
-	std::shared_ptr<Modeler>										m_result_modeler;
-
-	std::unordered_map<BodyKind, float>								m_prev_anim_play_rate;		// 前回のアニメーションの再生率
-	std::unordered_map<BodyKind, float>								m_blend_rate;				// ブレンド率
+	std::vector<std::tuple<BodyKind, TimeKind, AnimTimeKindData>>		m_time_kind_data;
+	std::unordered_map<int, AnimKindData>								m_anim_data;
+	std::unordered_map<BodyKind, std::shared_ptr<Modeler>>				m_resource_modeler;
+	std::shared_ptr<Modeler>											m_result_modeler;
+	std::unordered_map<BodyKind, std::unordered_map<std::string, int>>	m_bone_num;
+	std::unordered_map<BodyKind, float>									m_prev_anim_play_rate;		// 前回のアニメーションの再生率
+	std::unordered_map<BodyKind, float>									m_blend_rate;				// ブレンド率
 };

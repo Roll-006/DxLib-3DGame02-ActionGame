@@ -13,6 +13,8 @@ AnimatorBase::AnimatorBase(const std::shared_ptr<Modeler> modeler) :
 	m_time_kind_data.emplace_back(std::make_tuple(BodyKind::kUpperBody, TimeKind::kCurrent, AnimTimeKindData()));
 	m_time_kind_data.emplace_back(std::make_tuple(BodyKind::kLowerBody, TimeKind::kPrev,	AnimTimeKindData()));
 	m_time_kind_data.emplace_back(std::make_tuple(BodyKind::kLowerBody, TimeKind::kCurrent, AnimTimeKindData()));
+
+	SetBoneNum();
 }
 
 AnimatorBase::~AnimatorBase()
@@ -118,40 +120,8 @@ void AnimatorBase::PlayAnim()
 
 	CombineAnim();
 
-
-
 	MV1DrawModel(m_resource_modeler.at(BodyKind::kUpperBody)->GetModelHandle());
 	MV1DrawModel(m_resource_modeler.at(BodyKind::kLowerBody)->GetModelHandle());
-
-	for (auto& [body_kind, time_kind, data] : m_time_kind_data)
-	{
-		if (body_kind == BodyKind::kUpperBody)
-		{
-			if (time_kind == TimeKind::kCurrent)
-			{
-				DrawFormatString(0, 20, 0xffffff, "upper_current : kind = %d, index = %d", data.kind, data.attach_index);
-			}
-			if (time_kind == TimeKind::kPrev)
-			{
-				DrawFormatString(0, 40, 0xffffff, "upper_prev    : kind = %d, index = %d", data.kind, data.attach_index);
-			}
-
-			DrawFormatString(0, 100, 0xffffff, "upper_blend = %f", m_blend_rate[BodyKind::kUpperBody]);
-		}
-		if (body_kind == BodyKind::kLowerBody)
-		{
-			if (time_kind == TimeKind::kCurrent)
-			{
-				DrawFormatString(0, 60, 0xffffff, "lower_current : kind = %d, index = %d", data.kind, data.attach_index);
-			}
-			if (time_kind == TimeKind::kPrev)
-			{
-				DrawFormatString(0, 80, 0xffffff, "lower_prev    : kind = %d, index = %d", data.kind, data.attach_index);
-			}
-
-			DrawFormatString(0, 120, 0xffffff, "lower_blend = %f", m_blend_rate[BodyKind::kLowerBody]);
-		}
-	}
 }
 
 void AnimatorBase::BlendAnim()
@@ -163,6 +133,40 @@ void AnimatorBase::BlendAnim()
 	// ブレンドが完了した場合、PravAnimは不要なためデタッチする
 	if (m_blend_rate[BodyKind::kUpperBody] == 1.0f) { DetachAnim(TimeKind::kPrev, BodyKind::kUpperBody); }
 	if (m_blend_rate[BodyKind::kLowerBody] == 1.0f) { DetachAnim(TimeKind::kPrev, BodyKind::kLowerBody); }
+}
+
+void AnimatorBase::SetBoneNum()
+{
+	// WARNING : Mixamoモデル以外のモデルは想定していない
+	const int model_handle = m_result_modeler->GetModelHandle();
+	std::unordered_map<std::string, int> upper_body_bone_num;
+	std::unordered_map<std::string, int> lower_body_bone_num;
+
+	// 下半身のボーンを設定
+	lower_body_bone_num[BonePath.HIPS]			 = MV1SearchFrame(model_handle, BonePath.HIPS);
+	lower_body_bone_num[BonePath.LEFT_UP_LEG]	 = MV1SearchFrame(model_handle, BonePath.LEFT_UP_LEG);
+	lower_body_bone_num[BonePath.LEFT_LEG]		 = MV1SearchFrame(model_handle, BonePath.LEFT_LEG);
+	lower_body_bone_num[BonePath.LEFT_FOOT]		 = MV1SearchFrame(model_handle, BonePath.LEFT_FOOT);
+	lower_body_bone_num[BonePath.LEFT_TOE_BASE]  = MV1SearchFrame(model_handle, BonePath.LEFT_TOE_BASE);
+	lower_body_bone_num[BonePath.LEFT_TOE_END]	 = MV1SearchFrame(model_handle, BonePath.LEFT_TOE_END);
+	lower_body_bone_num[BonePath.RIGHT_UP_LEG]	 = MV1SearchFrame(model_handle, BonePath.RIGHT_UP_LEG);
+	lower_body_bone_num[BonePath.RIGHT_LEG]		 = MV1SearchFrame(model_handle, BonePath.RIGHT_LEG);
+	lower_body_bone_num[BonePath.RIGHT_FOOT]	 = MV1SearchFrame(model_handle, BonePath.RIGHT_FOOT);
+	lower_body_bone_num[BonePath.RIGHT_TOE_BASE] = MV1SearchFrame(model_handle, BonePath.RIGHT_TOE_BASE);
+	lower_body_bone_num[BonePath.RIGHT_TOE_END]  = MV1SearchFrame(model_handle, BonePath.RIGHT_TOE_END);
+	m_bone_num[BodyKind::kLowerBody] = lower_body_bone_num;
+
+	// 上半身のボーンを設定
+	for (int i = 0; i < MV1GetFrameNum(model_handle); ++i)
+	{
+		const auto bone_name = MV1GetFrameName(model_handle, i);
+
+		if (!lower_body_bone_num.count(bone_name))
+		{
+			upper_body_bone_num[bone_name] = i;
+		}
+	}
+	m_bone_num[BodyKind::kUpperBody] = upper_body_bone_num;
 }
 
 void AnimatorBase::SetPlayStartTime(AnimTimeKindData* current_time_kind_data, const AnimTimeKindData& prev_time_kind_data, const BodyKind body_kind)
@@ -190,7 +194,36 @@ void AnimatorBase::SetPlayStartTime(AnimTimeKindData* current_time_kind_data, co
 
 void AnimatorBase::CombineAnim()
 {
+	std::unordered_map<int, MATRIX> upper_body_matrix;
+	std::unordered_map<int, MATRIX> lower_body_matrix;
 
+	// 各ボーンの行列を取得
+	for (const auto& [body_kind, bones] : m_bone_num)
+	{
+		for (const auto& [name, num] : bones)
+		{
+			switch (body_kind)
+			{
+			case BodyKind::kUpperBody:
+				upper_body_matrix[num] = MV1GetFrameLocalMatrix(m_resource_modeler.at(body_kind)->GetModelHandle(), num);
+				break;
+
+			case BodyKind::kLowerBody:
+				lower_body_matrix[num] = MV1GetFrameLocalMatrix(m_resource_modeler.at(body_kind)->GetModelHandle(), num);
+				break;
+			}
+		}
+	}
+	
+	// 取得したボーンをリザルトモデルに適用
+	for (const auto& m : lower_body_matrix)
+	{
+		MV1SetFrameUserLocalMatrix(m_result_modeler->GetModelHandle(), m.first, m.second);
+	}
+	for (const auto& m : upper_body_matrix)
+	{
+		MV1SetFrameUserLocalMatrix(m_result_modeler->GetModelHandle(), m.first, m.second);
+	}
 }
 
 bool AnimatorBase::CanAttachAnim(const int next_kind, const BodyKind body_kind)
