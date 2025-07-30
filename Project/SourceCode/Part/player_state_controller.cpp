@@ -8,7 +8,7 @@ PlayerStateController::PlayerStateController()
 
 	// 初期ステート
 	m_move_state		 [TimeKind::kPrev] = m_move_state		  [TimeKind::kCurrent] = GetState<player_state::MoveNull,			Player>();
-	m_action_state		 [TimeKind::kPrev] = m_action_state		  [TimeKind::kCurrent] = GetState<player_state::ActionNull,		Player>();
+	m_action_state		 [TimeKind::kPrev] = m_action_state		  [TimeKind::kCurrent] = GetState<player_state::ActionNull,			Player>();
 	m_weapon_action_state[TimeKind::kPrev] = m_weapon_action_state[TimeKind::kCurrent] = GetState<player_state::WeaponActionNull,	Player>();
 	m_special_state		 [TimeKind::kPrev] = m_special_state	  [TimeKind::kCurrent] = GetState<player_state::SpecialNull,		Player>();
 }
@@ -67,7 +67,6 @@ void PlayerStateController::CreateState()
 
 void PlayerStateController::AddStopStatePair()
 {
-	//m_states.at(typeid(player_state::MoveNull))			->AddStopState(m_states.at(typeid(player_state::Run))	->GetStateHandle());
 	m_states.at(typeid(player_state::AimKnife))			->AddStopState(m_states.at(typeid(player_state::Crouch))->GetStateHandle());
 	m_states.at(typeid(player_state::AimKnife))			->AddStopState(m_states.at(typeid(player_state::Run))	->GetStateHandle());
 	m_states.at(typeid(player_state::StabKnife))		->AddStopState(m_states.at(typeid(player_state::Crouch))->GetStateHandle());
@@ -165,7 +164,7 @@ std::vector<std::shared_ptr<IState<Player>>> PlayerStateController::CreateChange
 		}
 	}
 
-	// 上の階層にあるステートの停止処理
+	// 下の階層にあるステートの停止処理
 	for (size_t i = 0; i < future_state.size(); ++i)
 	{
 		// 停止判定
@@ -309,7 +308,14 @@ bool PlayerStateController::TryRun()
 	}
 
 	// 実行判定
-	const auto is_run = command->IsExecuting(CommandKind::kRun);
+	auto is_run = command->IsExecuting(CommandKind::kRun);
+
+	// IDLEであるかつ現在ダッシュ状態である場合、ダッシュ状態を解除する
+	if (   m_move_state  .at(TimeKind::kCurrent)->GetStateKind() == static_cast<int>(player_state::MoveStateKind::kMoveNull)
+		&& m_action_state.at(TimeKind::kCurrent)->GetStateKind() == static_cast<int>(player_state::ActionStateKind::kRun))
+	{
+		is_run = false;
+	}
 
 	// もともとトリガー方式であれば元に戻す
 	if (is_trigger) { command->SetInputMode(CommandKind::kRun, InputModeKind::kTrigger); }
