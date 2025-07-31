@@ -6,12 +6,13 @@ struct AnimTimeKindData
 	int   kind;
 	int   attach_index;
 	float play_timer;
+	float total_time;
 
 	AnimTimeKindData() : 
-		kind(-1), attach_index(-1), play_timer(0.0f){}
+		kind(-1), attach_index(-1), play_timer(0.0f), total_time(0.0f){}
 
-	AnimTimeKindData(const int kind, const int attach_index, const float play_timer) :
-		kind(kind), attach_index(attach_index), play_timer(play_timer){}
+	AnimTimeKindData(const int kind, const int attach_index, const float play_timer, const float total_time) :
+		kind(kind), attach_index(attach_index), play_timer(play_timer), total_time(total_time){}
 };
 
 struct AnimKindData

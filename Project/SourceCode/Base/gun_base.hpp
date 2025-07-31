@@ -13,15 +13,15 @@ public:
 	GunBase(const std::string& name, const GunKind gun_kind, const std::string& file_path);
 	virtual ~GunBase() = default;
 
-	// 引き金を引く
-	void PullTrigger() { m_is_pull_trigger = true; }
-	/// @brief 引き金から手を離す
-	void ReleaseTrigger() { m_is_pull_trigger = false; }
+	// 引き金が引かれる
+	void PullTrigger() { m_on_pull_trigger = true; }
+	/// @brief 引き金から離される
+	void ReleaseTrigger() { m_on_pull_trigger = false; }
 
-	/// @brief エイミング状態にする
-	void ActivateAiming() { m_is_aiming = true; }
+	/// @brief 構えられる
+	void EnterAiming() { m_on_aiming = true; }
 	/// @brief 非エイミング状態にする
-	void DeactivateAiming() { m_is_aiming = false; }
+	void ExitAiming() { m_on_aiming = false; }
 
 	/// @brief 弾丸のリロード
 	/// @param have_bullets キャラクターが所持している弾丸数(装填した分が引かれて返ってくる)
@@ -52,8 +52,8 @@ public:
 	/// @brief 最大の残弾数を取得
 	[[nodiscard]] int		GetMaxRemainingBulletNum()		const { return m_max_remaining_bullet_num; }
 
-	[[nodiscard]] bool		IsPullTrigger()			const { return m_is_pull_trigger; }
-	[[nodiscard]] bool		IsAiming()				const { return m_is_aiming; }
+	[[nodiscard]] bool		IsPullTrigger()			const { return m_on_pull_trigger; }
+	[[nodiscard]] bool		IsAiming()				const { return m_on_aiming; }
 	[[nodiscard]] bool		IsShot()		        const { return m_is_shot; }
 
 protected:
@@ -87,8 +87,8 @@ protected:
 	float   m_shot_interval_time;			// 弾丸が発射される時間間隔
 	float	m_shot_timer;					// 弾丸を撃つためのタイマー
 	bool    m_is_shot;						// 弾丸を撃つかを判定
-	bool	m_is_pull_trigger;				// 銃の引き金が引かれているかを判定
-	bool	m_is_aiming;					// 銃が構えられているかを判定
+	bool	m_on_pull_trigger;				// 銃の引き金が引かれているかを判定
+	bool	m_on_aiming;					// 銃が構えられているかを判定
 
 private:
 	GunKind m_gun_kind;						// 銃の種類

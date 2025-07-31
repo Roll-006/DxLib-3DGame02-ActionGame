@@ -54,6 +54,7 @@ public:
 	#pragma region Try”»’è
 	[[nodiscard]] bool TryMove();
 	[[nodiscard]] bool TryRun();
+	//[[nodiscard]] bool TryAimGun(Player* obj);
 	#pragma endregion
 
 

@@ -1,11 +1,13 @@
 #pragma once
 #include "physical_obj_base.hpp"
+
 #include "../Part/modeler.hpp"
+#include "../Data/Kind/weapon_kind.hpp"
 
 class WeaponBase abstract : public PhysicalObjBase
 {
 public:
-	WeaponBase(const std::string& name, const std::string& file_path);
+	WeaponBase(const std::string& name, const WeaponKind weapon_kind, const std::string& file_path);
 	virtual ~WeaponBase() = default;
 
 	/// @brief 装備する持ち主をアタッチする
@@ -19,7 +21,8 @@ public:
 		if (m_owner_modeler) { m_owner_modeler = nullptr; }
 	}
 
-	[[nodiscard]] std::shared_ptr<Modeler> GetModeler() { return m_modeler; }
+	[[nodiscard]] std::shared_ptr<Modeler>	GetModeler()	const { return m_modeler; }
+	[[nodiscard]] WeaponKind				GetWeaponKind() const { return m_weapon_kind; }
 
 protected:
 	/// @brief 補正値を設定
@@ -51,4 +54,6 @@ private:
 	VECTOR m_correct_pos;		// 補正座標
 	VECTOR m_correct_angle;		// 補正角度
 	VECTOR m_correct_scale;		// 補正倍率
+
+	WeaponKind m_weapon_kind;
 };

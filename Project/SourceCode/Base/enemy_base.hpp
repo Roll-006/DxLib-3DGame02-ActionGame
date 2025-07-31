@@ -1,7 +1,7 @@
 #pragma once
-#include "chara_base.hpp"
+#include "character_base.hpp"
 
-class EnemyBase abstract : public CharaBase
+class EnemyBase abstract : public CharacterBase
 {
 public:
 	EnemyBase(const std::string& name, const std::string& file_path, const MassKind mass_level_kind);

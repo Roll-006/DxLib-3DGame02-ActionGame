@@ -1,7 +1,7 @@
 #include "enemy_base.hpp"
 
 EnemyBase::EnemyBase(const std::string& name, const std::string& file_path, const MassKind mass_level_kind) : 
-	CharaBase	(name, ObjTag.ENEMY, file_path, mass_level_kind),
+	CharacterBase	(name, ObjTag.ENEMY, file_path, mass_level_kind),
 	m_move_dir	(v3d::GetZeroV()),
 	m_look_dir	(v3d::GetZeroV())
 {

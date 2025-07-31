@@ -142,7 +142,7 @@
     <ClCompile Include="SourceCode\Algorithm\algorithm.cpp" />
     <ClCompile Include="SourceCode\Algorithm\a_star.cpp" />
     <ClCompile Include="SourceCode\Base\animator_base.cpp" />
-    <ClCompile Include="SourceCode\Base\chara_base.cpp" />
+    <ClCompile Include="SourceCode\Base\character_base.cpp" />
     <ClCompile Include="SourceCode\Base\control_virtual_camera_base.cpp" />
     <ClCompile Include="SourceCode\Base\enemy_base.cpp" />
     <ClCompile Include="SourceCode\Base\gun_base.cpp" />
@@ -252,7 +252,7 @@
     <ClInclude Include="SourceCode\Base\special_state_base.hpp" />
     <ClInclude Include="SourceCode\Base\ui_creator_base.hpp" />
     <ClInclude Include="SourceCode\Base\animator_base.hpp" />
-    <ClInclude Include="SourceCode\Base\chara_base.hpp" />
+    <ClInclude Include="SourceCode\Base\character_base.hpp" />
     <ClInclude Include="SourceCode\Base\enemy_base.hpp" />
     <ClInclude Include="SourceCode\Base\gun_base.hpp" />
     <ClInclude Include="SourceCode\Base\object_pool_base.hpp" />
@@ -309,6 +309,7 @@
     <ClInclude Include="SourceCode\Data\Kind\texture_kind.hpp" />
     <ClInclude Include="SourceCode\Data\Kind\time_kind.hpp" />
     <ClInclude Include="SourceCode\Data\Kind\virtual_camera_kind.hpp" />
+    <ClInclude Include="SourceCode\Data\Kind\weapon_kind.hpp" />
     <ClInclude Include="SourceCode\Data\Name\object_pool_name.hpp" />
     <ClInclude Include="SourceCode\Data\Name\obj_name.hpp" />
     <ClInclude Include="SourceCode\Data\Name\ui_creator_name.hpp" />

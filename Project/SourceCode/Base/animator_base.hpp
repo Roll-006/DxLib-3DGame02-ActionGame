@@ -40,6 +40,10 @@ public:
 	/// @brief ブレンド率を取得する
 	[[nodiscard]] float GetBlendRate()const { m_blend_rate; }
 
+	/// @brief 再生が終了したかを判定
+	/// @brief ループ再生されないアニメーションでのみ有効
+	[[nodiscard]] bool IsPlayEnd(const BodyKind body_kind);
+
 protected:
 	void PlayAnim();
 	void BlendAnim();

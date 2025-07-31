@@ -85,8 +85,9 @@ void AnimatorBase::AttachAnim(const int next_kind, const BodyKind body_kind)
 	// データをシフト(Next ➡ Current)
 	if (current_time_data)
 	{
-		current_time_data->attach_index = MV1AttachAnim(m_resource_modeler.at(body_kind)->GetModelHandle(), m_anim_data.at(next_kind).index, m_anim_data.at(next_kind).anim_handle, TRUE);
 		current_time_data->kind			= next_kind;
+		current_time_data->attach_index = MV1AttachAnim(m_resource_modeler.at(body_kind)->GetModelHandle(), m_anim_data.at(next_kind).index, m_anim_data.at(next_kind).anim_handle, TRUE);
+		current_time_data->total_time	= MV1GetAttachAnimTotalTime(m_resource_modeler.at(body_kind)->GetModelHandle(), current_time_data->attach_index);
 		SetPlayStartTime(current_time_data, prev_time_data, body_kind);
 	}
 
@@ -137,6 +138,19 @@ void AnimatorBase::DetachAnim(const TimeKind time_kind, const BodyKind body_kind
 	}
 }
 
+bool AnimatorBase::IsPlayEnd(const BodyKind body_kind)
+{
+	for (auto& [body, time, data] : m_time_kind_data)
+	{
+		if (body == body_kind && time == TimeKind::kCurrent)
+		{
+			return data.play_timer == data.total_time;
+		}
+	}
+
+	return false;
+}
+
 void AnimatorBase::PlayAnim()
 {
 	for (auto& [body_kind, time_kind, data] : m_time_kind_data)
@@ -144,11 +158,15 @@ void AnimatorBase::PlayAnim()
 		// アニメーションが有効であった場合のみ再生
 		if (data.attach_index > -1)
 		{
-			const float total_time = MV1GetAttachAnimTotalTime(m_resource_modeler.at(body_kind)->GetModelHandle(), data.attach_index);
-			const float blend_rate = time_kind == TimeKind::kCurrent ? m_blend_rate[body_kind] : 1.0f - m_blend_rate[body_kind];
+			const float blend_rate	= time_kind == TimeKind::kCurrent ? m_blend_rate[body_kind] : 1.0f - m_blend_rate[body_kind];
+			float play_speed		= m_anim_data.at(data.kind).play_speed * FPS::GetDeltaTime();
+			math::IncreaseLoop(data.play_timer, play_speed, data.total_time, m_anim_data.at(data.kind).is_loop);
 
-			float play_speed = m_anim_data.at(data.kind).play_speed * FPS::GetDeltaTime();
-			math::IncreaseLoop(data.play_timer, play_speed, total_time, m_anim_data.at(data.kind).is_loop);
+			if (body_kind == BodyKind::kLowerBody && time_kind == TimeKind::kCurrent)
+			{
+				DrawFormatString(0, 20, 0xffffff, "play_timer : %f", data.play_timer);
+				DrawFormatString(0, 40, 0xffffff, "total_time : %f", data.total_time);
+			}
 
 			// 再生位置・ブレンド率を適用
 			MV1SetAttachAnimTime     (m_resource_modeler.at(body_kind)->GetModelHandle(), data.attach_index, data.play_timer);
@@ -219,11 +237,8 @@ void AnimatorBase::SetPlayStartTime(AnimTimeKindData* current_time_kind_data, co
 		// 同類アニメーションであった場合は再生率を引き継ぐ
 		if (prev_tag == current_tag)
 		{
-			const float current_total_time = MV1GetAttachAnimTotalTime(m_resource_modeler.at(body_kind)->GetModelHandle(), current_time_kind_data->attach_index);
-			const float prev_total_time    = MV1GetAttachAnimTotalTime(m_resource_modeler.at(body_kind)->GetModelHandle(), prev_time_kind_data    .attach_index);
-
-			m_prev_anim_play_rate[body_kind] = prev_time_kind_data.play_timer / prev_total_time;
-			current_time_kind_data->play_timer = current_total_time * m_prev_anim_play_rate[body_kind];
+			m_prev_anim_play_rate[body_kind]   = prev_time_kind_data.play_timer / prev_time_kind_data.total_time;
+			current_time_kind_data->play_timer = current_time_kind_data->total_time * m_prev_anim_play_rate[body_kind];
 
 			return;
 		}

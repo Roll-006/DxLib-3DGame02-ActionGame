@@ -1,12 +1,13 @@
 #include "weapon_base.hpp"
 
-WeaponBase::WeaponBase(const std::string& name, const std::string& file_path) :
+WeaponBase::WeaponBase(const std::string& name, const WeaponKind weapon_kind, const std::string& file_path) :
 	PhysicalObjBase	(name, ObjTag.WEAPON, MassKind::kLight),
 	m_modeler		(std::make_shared<Modeler>(m_transform, file_path, VGet(0.0f, DX_PI_F, 0.0f))),
 	m_owner_modeler	(nullptr),
 	m_correct_pos	(v3d::GetZeroV()),
 	m_correct_angle	(v3d::GetZeroV()),
-	m_correct_scale	(v3d::GetZeroV())
+	m_correct_scale	(v3d::GetZeroV()),
+	m_weapon_kind	(weapon_kind)
 {
 	SetModelHandle(m_modeler->GetModelHandle());
 }

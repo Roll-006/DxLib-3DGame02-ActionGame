@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "../Base/chara_base.hpp"
+#include "../Base/character_base.hpp"
 
 #include "../Part/player_animator.hpp"
 
@@ -8,7 +8,7 @@
 
 class PlayerStateController;
 
-class Player final : public CharaBase
+class Player final : public CharacterBase
 {
 public:
 	Player();

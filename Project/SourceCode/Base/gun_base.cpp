@@ -1,7 +1,7 @@
 #include "gun_base.hpp"
 
 GunBase::GunBase(const std::string& name, const GunKind gun_kind, const std::string& file_path) :
-	WeaponBase						(name, file_path),
+	WeaponBase						(name, WeaponKind::kGun, file_path),
 	m_diffusion_shape				(nullptr),
 	m_aim_dir						(v3d::GetZeroV()),
 	m_target_pos					(v3d::GetZeroV()),
@@ -17,11 +17,11 @@ GunBase::GunBase(const std::string& name, const GunKind gun_kind, const std::str
 	m_shot_interval_time			(0.0f),
 	m_shot_timer					(0.0f),
 	m_is_shot						(false),
-	m_is_pull_trigger				(false),
-	m_is_aiming						(false),
+	m_on_pull_trigger				(false),
+	m_on_aiming						(false),
 	m_gun_kind						(gun_kind)
 {
-
+	// ˆ—‚È‚µ
 }
 
 void GunBase::OnReload(int& have_bullets)
@@ -88,7 +88,7 @@ void GunBase::Shot()
 	}
 
 	// ƒgƒŠƒK[‚ªˆø‚©‚ê‚Ä‚¢‚È‚¢ê‡‚Í‘Šúreturn
-	if (!m_is_pull_trigger)
+	if (!m_on_pull_trigger)
 	{
 		m_shot_timer = m_shot_interval_time;
 		m_is_shot    = false;

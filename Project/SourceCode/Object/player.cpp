@@ -3,7 +3,7 @@
 #include "../Part/player_state_controller.hpp"
 
 Player::Player() :
-	CharaBase(ObjName.PLAYER, ObjTag.PLAYER, ModelPath.CHARA_06, MassKind::kMedium),
+	CharacterBase(ObjName.PLAYER, ObjTag.PLAYER, ModelPath.CHARA_06, MassKind::kMedium),
 	m_state								(std::make_shared<PlayerStateController>()),
 	m_camera_aim_transform				(std::make_shared<Transform>()),
 	m_move_speed						(0.0f),
@@ -25,13 +25,10 @@ Player::Player() :
 	// ïêäÌê›íË
 	const auto gun = std::make_shared<AssaultRifle>();
 	AddWeapon(gun);
-	//AttachWeapon(gun);
 
 	// TODO : âºÇ≈èeÇÃÉIÉuÉWÉFìoò^
 	ObjManager::GetInstance()->AddObj(gun);
 	CollisionManager::GetInstance()->AddCollideObj(gun);
-	//PhysicsManager::GetInstance()->AddPhysicalObj(m_current_attach_gun);
-	//PhysicsManager::GetInstance()->AddIgnoreObjGravity(ObjName.ASSAULT_RIFLE);
 
 	// ÉJÉÅÉâìoò^
 	const auto camera_manager = CameraManager::GetInstance();
@@ -39,7 +36,6 @@ Player::Player() :
 	camera_manager->AddVirtualCamera(rot_camera);
 	rot_camera->AttachTarget(m_camera_aim_transform);
 
-	// TODO : âºÇ≈èäéùécÇËíeêîÇê›íË
 	m_current_remaining_bullet_num = 10000;
 }
 
@@ -110,14 +106,14 @@ void Player::Draw() const
 		}
 	}
 
-	const auto look_dir_current = m_look_dir.at(TimeKind::kCurrent);
-	const auto look_dir_next	= m_look_dir.at(TimeKind::kNext);
-	DrawFormatString(0, 20, 0xffffff, "look_dir_current : %f %f, %f", look_dir_current.x, look_dir_current.y, look_dir_current.z);
-	DrawFormatString(0, 40, 0xffffff, "look_dir_next    : %f %f, %f", look_dir_next.x,    look_dir_next.y,    look_dir_next.z);
+	//const auto look_dir_current = m_look_dir.at(TimeKind::kCurrent);
+	//const auto look_dir_next	= m_look_dir.at(TimeKind::kNext);
+	//DrawFormatString(0, 20, 0xffffff, "look_dir_current : %f %f, %f", look_dir_current.x, look_dir_current.y, look_dir_current.z);
+	//DrawFormatString(0, 40, 0xffffff, "look_dir_next    : %f %f, %f", look_dir_next.x,    look_dir_next.y,    look_dir_next.z);
 
-	const auto p = m_transform->GetPos(CoordinateKind::kWorld) + VGet(0, 40, 0);
-	DrawLine3D(p, p + look_dir_current * 100, 0xff0000);
-	DrawLine3D(p, p + look_dir_next    * 100, 0xffffff);
+	//const auto p = m_transform->GetPos(CoordinateKind::kWorld) + VGet(0, 40, 0);
+	//DrawLine3D(p, p + look_dir_current * 100, 0xff0000);
+	//DrawLine3D(p, p + look_dir_next    * 100, 0xffffff);
 }
 
 void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)

@@ -86,7 +86,7 @@ void AssaultRifle::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 void AssaultRifle::CalcDiffusionRange()
 {
-	if (!m_is_aiming) { return; }
+	if (!m_on_aiming) { return; }
 
 	// ŠgŽU”ÍˆÍ‚ðŽw’è
 	m_diffusion_shape = std::make_shared<Circle>(m_aim_dir, kDiffusionRadius);
@@ -95,7 +95,7 @@ void AssaultRifle::CalcDiffusionRange()
 
 void AssaultRifle::CalcTargetPos()
 {
-	if (!m_is_aiming) { return; }
+	if (!m_on_aiming) { return; }
 
 	m_target_pos = math::GetRandomPointInCircle(*std::dynamic_pointer_cast<Circle>(m_diffusion_shape));
 }
