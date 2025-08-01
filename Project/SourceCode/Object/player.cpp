@@ -3,12 +3,13 @@
 #include "../Part/player_state_controller.hpp"
 
 Player::Player() :
-	CharacterBase(ObjName.PLAYER, ObjTag.PLAYER, ModelPath.CHARA_06, MassKind::kMedium),
+	CharacterBase(ObjName.PLAYER, ObjTag.PLAYER, ModelPath.SPECIAL_FORCES, MassKind::kMedium),
 	m_state								(std::make_shared<PlayerStateController>()),
 	m_camera_aim_transform				(std::make_shared<Transform>()),
 	m_move_speed						(0.0f),
-	m_look_dir_correct_angle			(0.0f),
-	m_confirm_look_dir_threshold_angle	(0.0f)
+	m_look_dir_offset_angle				(0.0f),
+	m_confirm_look_dir_threshold_angle	(0.0f),
+	m_weapon_shortcut_changer			(std::make_shared<WeaponShortcutChanger>(m_current_equip_weapon))
 {
 	// 初期pos・dirを設定
 	m_look_dir[TimeKind::kCurrent] = m_look_dir[TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);
@@ -54,7 +55,7 @@ void Player::Update()
 {
 	if (!IsActive()) { return; }
 
-	m_look_dir_correct_angle			= kLookDirCorrectAngle;
+	m_look_dir_offset_angle			= kLookDirOffsetAngle;
 	m_confirm_look_dir_threshold_angle	= kConfirmLookDirThresholdAngle * math::kDegreesToRadian;
 
 	m_state->Update(this);
@@ -82,7 +83,7 @@ void Player::LateUpdate()
 
 	// ボーン位置修正
 	//m_modeler->ApplyMatrix();
-	//m_bone_pos_corrector->CorrectGunPoseBone(
+	//m_bone_pos_offsetor->OffsetGunPoseBone(
 	//	m_modeler->GetModelHandle(),
 	//	m_look_dir.at(TimeKind::kCurrent),
 	//	m_camera->GetTransform()->GetMatrix(CoordinateKind::kWorld),
@@ -96,9 +97,15 @@ void Player::Draw() const
 	if (!IsActive()) { return; }
 
 	m_modeler->Draw();
-	//m_current_attach_weapon->Draw();
 
-	for (auto& collider : m_collider)
+	if (m_current_equip_weapon) { m_current_equip_weapon->Draw(); }
+
+	for (const auto& attach_weapon : m_attach_weapons)
+	{
+		if (attach_weapon.second) { attach_weapon.second->Draw(); }
+	}
+
+	for (const auto& collider : m_collider)
 	{
 		const auto shape = collider->GetShape();
 		if (shape != nullptr)
@@ -106,6 +113,7 @@ void Player::Draw() const
 			shape->Draw(true, 0, 0xffffff);
 		}
 	}
+
 
 	//const auto look_dir_current = m_look_dir.at(TimeKind::kCurrent);
 	//const auto look_dir_next	= m_look_dir.at(TimeKind::kNext);
@@ -195,9 +203,9 @@ void Player::Move()
 	CalcMoveSpeed(VSize(m_velocity));
 }
 
-void Player::SetLookDirCorrectValueForAim()
+void Player::SetLookDirOffsetValueForAim()
 {
-	m_look_dir_correct_angle			= kLookDirCorrectAngleForAim;
+	m_look_dir_offset_angle			= kLookDirOffsetAngleForAim;
 	m_confirm_look_dir_threshold_angle	= kConfirmLookDirThresholdAngleForAim * math::kDegreesToRadian;
 }
 
@@ -286,7 +294,7 @@ void Player::CalcMoveDir(const VECTOR& velocity)
 	const VECTOR distance_v = m_move_dir[TimeKind::kNext] - m_move_dir[TimeKind::kCurrent];
 
 	// 現在のdirを目的とするdirに近づけていく
-	m_move_dir[TimeKind::kCurrent] += v3d::GetNormalizedV(distance_v) * kMoveDirCorrectSpeed;
+	m_move_dir[TimeKind::kCurrent] += v3d::GetNormalizedV(distance_v) * kMoveDirOffsetSpeed;
 	const float distance = VSize(m_move_dir[TimeKind::kNext] - m_move_dir[TimeKind::kCurrent]);
 	if (distance < kConfirmMoveDirThresholdDistance)
 	{
@@ -305,10 +313,10 @@ void Player::CalcLookDir()
 	distance.y = math::ConnectMinusPiToPi(distance.y);
 
 	// カメラを基準にして右側であった場合は反転
-	if (distance.y > 0) { m_look_dir_correct_angle *= -1; }
+	if (distance.y > 0) { m_look_dir_offset_angle *= -1; }
 
 	// 回転を適用
-	const Quaternion rot_q = quat::CreateQuaternion(axis::GetWorldYAxis(), -m_look_dir_correct_angle);
+	const Quaternion rot_q = quat::CreateQuaternion(axis::GetWorldYAxis(), -m_look_dir_offset_angle);
 	m_look_dir.at(TimeKind::kCurrent) = math::GetRotatedPos(m_look_dir.at(TimeKind::kCurrent), rot_q);
 
 	const float angle = math::GetYawBetweenTwoVector(m_look_dir.at(TimeKind::kNext), m_look_dir.at(TimeKind::kCurrent));
@@ -354,10 +362,10 @@ VECTOR Player::GetVelocityFromPad()
 
 	// 速度ベクトルを取得
 	VECTOR velocity = v3d::GetZeroV();
-	if (forward_param)	{ velocity += forward	* (forward_param	- InputChecker::kStickDeadZone); }
-	if (backward_param) { velocity += forward	* (backward_param	+ InputChecker::kStickDeadZone); }
-	if (left_param)		{ velocity += right		* (left_param		+ InputChecker::kStickDeadZone); }
-	if (right_param)	{ velocity += right		* (right_param		- InputChecker::kStickDeadZone); }
+	if (forward_param)	{ velocity += forward * (forward_param  - InputChecker::kStickDeadZone); }
+	if (backward_param) { velocity += forward * (backward_param + InputChecker::kStickDeadZone); }
+	if (left_param)		{ velocity += right	  * (left_param	    + InputChecker::kStickDeadZone); }
+	if (right_param)	{ velocity += right	  * (right_param    - InputChecker::kStickDeadZone); }
 
 	return velocity;
 }

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -193,6 +193,9 @@
     <ClCompile Include="SourceCode\Part\player_animator.cpp" />
     <ClCompile Include="SourceCode\Part\player_state_controller.cpp" />
     <ClCompile Include="SourceCode\Part\transform.cpp" />
+    <ClCompile Include="SourceCode\Part\weapon_shortcut.cpp" />
+    <ClCompile Include="SourceCode\Part\weapon_shortcut_changer.cpp" />
+    <ClCompile Include="SourceCode\Part\weapon_shortcut_icon.cpp" />
     <ClCompile Include="SourceCode\Random\random_generator.cpp" />
     <ClCompile Include="SourceCode\Scene\game_clear_scene.cpp" />
     <ClCompile Include="SourceCode\Scene\game_over_scene.cpp" />
@@ -314,12 +317,13 @@
     <ClInclude Include="SourceCode\Data\Kind\time_kind.hpp" />
     <ClInclude Include="SourceCode\Data\Kind\virtual_camera_kind.hpp" />
     <ClInclude Include="SourceCode\Data\Kind\weapon_kind.hpp" />
+    <ClInclude Include="SourceCode\Data\Kind\weapon_shortcut_pos_kind.hpp" />
     <ClInclude Include="SourceCode\Data\Name\object_pool_name.hpp" />
     <ClInclude Include="SourceCode\Data\Name\obj_name.hpp" />
     <ClInclude Include="SourceCode\Data\Name\ui_creator_name.hpp" />
     <ClInclude Include="SourceCode\Data\Path\animation_path.hpp" />
     <ClInclude Include="SourceCode\Data\Path\bone_path.hpp" />
-    <ClInclude Include="SourceCode\Data\Path\graphic_path.hpp" />
+    <ClInclude Include="SourceCode\Data\Path\ui_graphic_path.hpp" />
     <ClInclude Include="SourceCode\Data\Path\model_path.hpp" />
     <ClInclude Include="SourceCode\Data\Tag\animation_tag.hpp" />
     <ClInclude Include="SourceCode\Data\Tag\obj_tag.hpp" />
@@ -363,6 +367,9 @@
     <ClInclude Include="SourceCode\Part\player_animator.hpp" />
     <ClInclude Include="SourceCode\Part\player_state_controller.hpp" />
     <ClInclude Include="SourceCode\Part\transform.hpp" />
+    <ClInclude Include="SourceCode\Part\weapon_shortcut_changer.hpp" />
+    <ClInclude Include="SourceCode\Part\weapon_shortcut.hpp" />
+    <ClInclude Include="SourceCode\Part\weapon_shortcut_icon.hpp" />
     <ClInclude Include="SourceCode\Random\random_generator.hpp" />
     <ClInclude Include="SourceCode\Scene\game_clear_scene.hpp" />
     <ClInclude Include="SourceCode\Scene\game_over_scene.hpp" />

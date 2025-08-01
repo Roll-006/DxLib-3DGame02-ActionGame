@@ -13,7 +13,7 @@ player_state::StabKnife::~StabKnife()
 
 void player_state::StabKnife::Update(Player* obj)
 {
-	obj->SetLookDirCorrectValueForAim();
+	obj->SetLookDirOffsetValueForAim();
 }
 
 void player_state::StabKnife::LateUpdate(Player* obj)

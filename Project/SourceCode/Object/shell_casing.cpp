@@ -125,6 +125,6 @@ void ShellCasing::CalcColliderPos()
 
 	// 着地用トリガー
 	auto landing_capsule = std::dynamic_pointer_cast<Capsule>(GetCollider(ColliderKind::kLandingTrigger)->GetShape());
-	landing_capsule->SetSegmentBeginPos(begin_pos + kLandingTriggerCorrectPos, true);
-	landing_capsule->SetSegmentEndPos  (end_pos   + kLandingTriggerCorrectPos, true);
+	landing_capsule->SetSegmentBeginPos(begin_pos + kLandingTriggerOffsetPos, true);
+	landing_capsule->SetSegmentEndPos  (end_pos   + kLandingTriggerOffsetPos, true);
 }

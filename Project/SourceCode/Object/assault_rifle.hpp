@@ -19,12 +19,12 @@ private:
 	void CalcTargetPos()	  override;
 
 private:
-	static constexpr VECTOR kCorrectPos				= { -5.0f, -20.0f, 35.0f };
-	static constexpr VECTOR kCorrectAngle			= { -90.0f * math::kDegreesToRadian, 270.0f * math::kDegreesToRadian, 0.0f };
-	static constexpr float  kCorrectScale			= 2.0f;
+	static constexpr VECTOR kOffsetPos				= { -5.0f, -20.0f, 35.0f };
+	static constexpr VECTOR kOffsetAngle			= { -90.0f * math::kDegreesToRadian, 270.0f * math::kDegreesToRadian, 0.0f };
+	static constexpr float  kOffsetScale			= 2.0f;
 
-	static constexpr VECTOR kMuzzleCorrectPos		= { 0.0f, 15.0f, 32.5f };
-	static constexpr VECTOR kEjectionPortCorrectPos = { 1.5f, 15.5f, -2.5f };
+	static constexpr VECTOR kMuzzleOffsetPos		= { 0.0f, 15.0f, 32.5f };
+	static constexpr VECTOR kEjectionPortOffsetPos = { 1.5f, 15.5f, -2.5f };
 	static constexpr float  kScopeScale				= 2.0f;
 	static constexpr float  kRange					= 2000.0f;
 	static constexpr float  kInitialVelocity		= 140.0f;

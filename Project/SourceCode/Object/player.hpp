@@ -5,6 +5,8 @@
 
 #include "assault_rifle.hpp"
 #include "knife.hpp"
+#include "../Part/weapon_shortcut_changer.hpp"
+
 #include "../Manager/camera_manager.hpp"
 
 class PlayerStateController;
@@ -53,7 +55,7 @@ public:
 	void Move();
 
 	/// @brief エイミング時の見る方向を修正するための値を設定する
-	void SetLookDirCorrectValueForAim();
+	void SetLookDirOffsetValueForAim();
 
 	/// @brief 進行方向を向く
 	void DirOfMovement();
@@ -105,9 +107,9 @@ private:
 	static constexpr float kRunSpeed							= 2.0f;
 	static constexpr float kAcceleration						= 1.0f;				// 加速度(減速度も共通)
 
-	static constexpr float kMoveDirCorrectSpeed					= 0.065f;			// 移動方向の補正速度
-	static constexpr float kLookDirCorrectAngle					= 0.1f;				// 見る方向の補正角度
-	static constexpr float kLookDirCorrectAngleForAim			= 0.3f;				// エイミング時の見る方向を回転させる角度
+	static constexpr float kMoveDirOffsetSpeed					= 0.065f;			// 移動方向の補正速度
+	static constexpr float kLookDirOffsetAngle					= 0.1f;				// 見る方向の補正角度
+	static constexpr float kLookDirOffsetAngleForAim			= 0.3f;				// エイミング時の見る方向を回転させる角度
 	static constexpr float kConfirmMoveDirThresholdDistance		= 0.08f;			// 目的の移動方向に到達したと判定する閾値
 	static constexpr float kConfirmLookDirThresholdAngle		= 10.0f;			// 目的の見る方向に到達したと判定する閾値
 	static constexpr float kConfirmLookDirThresholdAngleForAim	= 20.0f;			// エイミング時の目的の見る方向に到達したと判定する閾値
@@ -128,9 +130,9 @@ private:
 	std::unordered_map<TimeKind, VECTOR>		m_look_dir;								// 向いている方向
 	float										m_move_speed;
 
-	float										m_look_dir_correct_angle;				// 見る方向の補正角度
+	float										m_look_dir_offset_angle;				// 見る方向の補正角度
 	float										m_confirm_look_dir_threshold_angle;		// 目的の見る方向に到達したと判定する閾値
 	
-	std::unordered_map<ItemKind, std::vector<std::shared_ptr<IItem>>> m_items;			// 所持しているアイテム
-	std::unordered_map<int, std::shared_ptr<WeaponBase>>	m_shortcut_weapons;			// ショートカットに登録されている武器
+	std::shared_ptr<WeaponShortcutChanger>		m_weapon_shortcut_changer;				// ショートカットに登録されている武器
+	std::unordered_map<ItemKind, std::vector<std::shared_ptr<IItem>>>	m_items;		// 所持しているアイテム
 };

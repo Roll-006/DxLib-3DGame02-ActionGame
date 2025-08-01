@@ -13,7 +13,7 @@ player_state::Shot::~Shot()
 
 void player_state::Shot::Update(Player* obj)
 {
-	obj->SetLookDirCorrectValueForAim();
+	obj->SetLookDirOffsetValueForAim();
 }
 
 void player_state::Shot::LateUpdate(Player* obj)

@@ -15,7 +15,7 @@ InputChecker::InputChecker():
 
 	LockCursor();
 
-	m_key_code = m_csv->Read1DCSV<std::vector<int>>("data/csv/key_number.csv", false);
+	m_key_code = m_csv->Read1DCSV<std::vector<int>>("Data/CSV/key_number.csv", false);
 	for (auto& code : m_key_code)
 	{
 		m_input_data.emplace_back(InputCode(InputKind::kKey, code), TimeKind::kPrev,	 InputData());

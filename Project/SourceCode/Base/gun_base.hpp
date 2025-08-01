@@ -73,8 +73,8 @@ protected:
 
 	VECTOR  m_aim_dir;						// 狙う方向
 	VECTOR  m_target_pos;					// 狙う位置
-	VECTOR  m_muzzle_correct_pos;			// 銃口補正座標(銃口の座標を取得するためのオフセット)
-	VECTOR  m_ejection_port_correct_pos;	// 薬莢を排出する開口部の座標を取得するためのオフセット
+	VECTOR  m_muzzle_offset_pos;			// 銃口補正座標(銃口の座標を取得するためのオフセット)
+	VECTOR  m_ejection_port_offset_pos;	// 薬莢を排出する開口部の座標を取得するためのオフセット
 	VECTOR  m_point_on_ray_line;			// レイキャスト用の線分を拡張した直線上にある点
 
 	int		m_current_remaining_bullet_num;	// 現在の残弾数

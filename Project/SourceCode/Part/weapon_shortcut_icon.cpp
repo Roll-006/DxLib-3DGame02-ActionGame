@@ -1,0 +1,45 @@
+#include "weapon_shortcut_icon.hpp"
+
+WeaponShortcutIcon::WeaponShortcutIcon(const Vector2D<int> center_pos, const int width, const int height) :
+	m_center_pos	(center_pos),
+	m_icon_width	(width),
+	m_icon_height	(height),
+	m_graphicer		(nullptr)
+{
+	// èàóùÇ»Çµ
+}
+
+WeaponShortcutIcon::~WeaponShortcutIcon()
+{
+
+}
+
+void WeaponShortcutIcon::Draw() const
+{
+	DrawBox(
+		static_cast<int>(m_center_pos.x - m_icon_width  * 0.5f),
+		static_cast<int>(m_center_pos.y - m_icon_height * 0.5f),
+		static_cast<int>(m_center_pos.x + m_icon_width  * 0.5f),
+		static_cast<int>(m_center_pos.y + m_icon_height * 0.5f),
+		0x000000, TRUE);
+
+	DrawBox(
+		static_cast<int>(m_center_pos.x - m_icon_width  * 0.5f),
+		static_cast<int>(m_center_pos.y - m_icon_height * 0.5f),
+		static_cast<int>(m_center_pos.x + m_icon_width  * 0.5f),
+		static_cast<int>(m_center_pos.y + m_icon_height * 0.5f),
+		0xffffff, FALSE);
+
+	DrawCircle(m_center_pos.x, m_center_pos.y, 4, 0xffffff, FALSE);
+
+	if (m_graphicer) { m_graphicer->Draw(); }
+}
+
+void WeaponShortcutIcon::AttachGraphic(std::shared_ptr<Graphicer> graphicer)
+{
+	// è„èëÇ´ïsâ¬
+	if (m_graphicer) { return; }
+
+	m_graphicer = graphicer;
+	m_graphicer->SetCenterPos(m_center_pos);
+}

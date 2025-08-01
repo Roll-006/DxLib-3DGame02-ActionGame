@@ -17,9 +17,9 @@ public:
 	[[nodiscard]] ItemKind GetItemKind() const override { return m_item_kind; }
 
 private:
-	static constexpr VECTOR kCorrectPos		= { -5.0f, -20.0f, 35.0f };
-	static constexpr VECTOR kCorrectAngle	= { -90.0f * math::kDegreesToRadian, 270.0f * math::kDegreesToRadian, 0.0f };
-	static constexpr float  kCorrectScale	= 2.0f;
+	static constexpr VECTOR kOffsetPos		= { -5.0f, -20.0f, 35.0f };
+	static constexpr VECTOR kOffsetAngle	= { -90.0f * math::kDegreesToRadian, 270.0f * math::kDegreesToRadian, 0.0f };
+	static constexpr float  kOffsetScale	= 2.0f;
 
 	ItemKind m_item_kind;
 };

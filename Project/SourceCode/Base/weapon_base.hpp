@@ -33,18 +33,18 @@ protected:
 	/// @param angle 補正角度
 	/// @param pos 補正座標
 	/// @param scale 補正倍率
-	void SetCorrectValue(const VECTOR& pos, const VECTOR& angle, const VECTOR& scale)
+	void SetOffset(const VECTOR& pos, const VECTOR& angle, const VECTOR& scale)
 	{
-		m_correct_pos   = pos;
-		m_correct_angle = angle;
-		m_correct_scale = scale;
+		m_offset_pos   = pos;
+		m_offset_angle = angle;
+		m_offset_scale = scale;
 	}
 
-	void SetCorrectValue(const VECTOR& pos, const VECTOR& angle, const float scale)
+	void SetOffset(const VECTOR& pos, const VECTOR& angle, const float scale)
 	{
-		m_correct_pos	= pos;
-		m_correct_angle = angle;
-		m_correct_scale = VGet(scale, scale, scale);
+		m_offset_pos	= pos;
+		m_offset_angle = angle;
+		m_offset_scale = VGet(scale, scale, scale);
 	}
 
 	/// @brief 持ち主を追跡する
@@ -55,9 +55,9 @@ protected:
 	std::shared_ptr<Modeler> m_owner_modeler;	// 武器の持ち主であるオブジェクトのモデラー
 	
 private:
-	VECTOR m_correct_pos;		// 補正座標
-	VECTOR m_correct_angle;		// 補正角度
-	VECTOR m_correct_scale;		// 補正倍率
+	VECTOR m_offset_pos;		// 補正座標
+	VECTOR m_offset_angle;		// 補正角度
+	VECTOR m_offset_scale;		// 補正倍率
 
 	ItemKind	m_item_kind;
 	WeaponKind	m_weapon_kind;

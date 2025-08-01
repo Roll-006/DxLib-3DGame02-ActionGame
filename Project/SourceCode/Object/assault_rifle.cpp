@@ -1,15 +1,15 @@
 #include "assault_rifle.hpp"
 
 AssaultRifle::AssaultRifle() :
-	GunBase(ObjName.ASSAULT_RIFLE, GunKind::kSniperRifle, HolsterKind::kRifle, ModelPath.ASSAULT_RIFLE_01)
+	GunBase(ObjName.ASSAULT_RIFLE, GunKind::kSniperRifle, HolsterKind::kRifle, ModelPath.ASSAULT_RIFLE)
 {
-	SetCorrectValue(kCorrectPos, kCorrectAngle, kCorrectScale);
+	SetOffset(kOffsetPos, kOffsetAngle, kOffsetScale);
 
 	m_diffusion_shape			= std::make_shared<Circle>();
 	m_scope_scale				= kScopeScale;
 	m_range						= kRange;
-	m_muzzle_correct_pos		= kMuzzleCorrectPos;
-	m_ejection_port_correct_pos = kEjectionPortCorrectPos;
+	m_muzzle_offset_pos			= kMuzzleOffsetPos;
+	m_ejection_port_offset_pos	= kEjectionPortOffsetPos;
 	m_initial_velocity			= kInitialVelocity;
 	m_deceleration				= kDeceleration;
 	m_shot_interval_time		= kShotIntervalTime;

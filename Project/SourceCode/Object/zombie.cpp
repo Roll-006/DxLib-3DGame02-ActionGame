@@ -1,7 +1,7 @@
 #include "zombie.hpp"
 
 Zombie::Zombie() :
-	EnemyBase(ObjName.ZOMBIE_POLICE, ModelPath.CHARA_02, MassKind::kMedium)
+	EnemyBase(ObjName.ZOMBIE_POLICE, ModelPath.ZOMBIE_02, MassKind::kMedium)
 {
 	m_look_dir = VGet(0.0f, 0.0f, 1.0f);
 	m_transform->SetRot  (CoordinateKind::kWorld, m_look_dir);

@@ -6,7 +6,7 @@
 
 #include "../Base/singleton_base.hpp"
 
-#include "../Data/Path/graphic_path.hpp"
+//#include "../Data/Path/graphic_path.hpp"
 #include "../Data/Path/model_path.hpp"
 #include "../Data/Path/animation_path.hpp"
 

@@ -5,8 +5,8 @@ GunBase::GunBase(const std::string& name, const GunKind gun_kind, const HolsterK
 	m_diffusion_shape				(nullptr),
 	m_aim_dir						(v3d::GetZeroV()),
 	m_target_pos					(v3d::GetZeroV()),
-	m_muzzle_correct_pos			(v3d::GetZeroV()),
-	m_ejection_port_correct_pos		(v3d::GetZeroV()),
+	m_muzzle_offset_pos			(v3d::GetZeroV()),
+	m_ejection_port_offset_pos		(v3d::GetZeroV()),
 	m_point_on_ray_line				(v3d::GetZeroV()),
 	m_current_remaining_bullet_num	(0),
 	m_max_remaining_bullet_num		(0),
@@ -55,7 +55,7 @@ VECTOR GunBase::GetMuzzlePos() const
 	const auto world_m		= m_transform->GetMatrix(CoordinateKind::kWorld);
 	const auto local_pos	= m_transform->GetPos   (CoordinateKind::kLocal);
 
-	return local_pos + VTransformSR(m_muzzle_correct_pos, world_m);
+	return local_pos + VTransformSR(m_muzzle_offset_pos, world_m);
 }
 
 VECTOR GunBase::GetEjectionPortPos() const
@@ -63,7 +63,7 @@ VECTOR GunBase::GetEjectionPortPos() const
 	const auto world_m   = m_transform->GetMatrix(CoordinateKind::kWorld);
 	const auto local_pos = m_transform->GetPos   (CoordinateKind::kLocal);
 
-	return local_pos + VTransformSR(m_ejection_port_correct_pos, world_m);
+	return local_pos + VTransformSR(m_ejection_port_offset_pos, world_m);
 }
 
 VECTOR GunBase::GetFirstShotPos() const
