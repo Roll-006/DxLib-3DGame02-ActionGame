@@ -1,7 +1,8 @@
 #include "first_side_slash_knife.hpp"
 
 player_state::FirstSideSlashKnife::FirstSideSlashKnife() :
-	WeaponActionStateBase(static_cast<int>(player_state::WeaponActionStateKind::kFirstSideSlashKnife))
+	WeaponActionStateBase	(static_cast<int>(player_state::WeaponActionStateKind::kFirstSideSlashKnife)),
+	m_combo_timer			(0.0f)
 {
 
 }
@@ -13,7 +14,7 @@ player_state::FirstSideSlashKnife::~FirstSideSlashKnife()
 
 void player_state::FirstSideSlashKnife::Update(Player* obj)
 {
-
+	m_combo_timer += FPS::GetDeltaTime();
 }
 
 void player_state::FirstSideSlashKnife::LateUpdate(Player* obj)
@@ -23,7 +24,7 @@ void player_state::FirstSideSlashKnife::LateUpdate(Player* obj)
 
 void player_state::FirstSideSlashKnife::Enter(Player* obj)
 {
-
+	m_combo_timer = 0.0f;
 }
 
 void player_state::FirstSideSlashKnife::Exit(Player* obj)
@@ -37,7 +38,7 @@ std::shared_ptr<IState<Player>> player_state::FirstSideSlashKnife::ChangeState(c
 	const auto command			= CommandHandler::GetInstance();
 
 	// Ø‚è—ô‚­(‘æ“ñ’iŠK)
-	if (obj->GetAnimator()->IsPlayEnd(AnimatorBase::BodyKind::kUpperBody) && command->IsExecuting(CommandKind::kAttack))
+	if (m_combo_timer > kComboValidTime && command->IsExecuting(CommandKind::kAttack))
 	{
 		return state_controller->GetState<SecondSideSlashKnife, Player>();
 	}

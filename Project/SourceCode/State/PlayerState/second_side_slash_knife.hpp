@@ -19,6 +19,8 @@ namespace player_state
 		[[nodiscard]] std::shared_ptr<IState<Player>> ChangeState(const Player* obj) override;
 
 	private:
+		static constexpr float kComboValidTime = 0.7f;	// ˆê’iŠK–Ú‚ÌUŒ‚‚ª—LŒø‚É‚È‚éŠÔ
 
+		float m_combo_timer;
 	};
 }
