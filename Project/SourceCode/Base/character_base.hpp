@@ -1,10 +1,10 @@
 #pragma once
 #include "physical_obj_base.hpp"
-#include "gun_base.hpp"
 
 #include "animator_base.hpp"
 #include "../Part/modeler.hpp"
-#include "../Part/bone_pos_corrector.hpp"
+
+#include "gun_base.hpp"
 
 class CharacterBase abstract : public PhysicalObjBase
 {
@@ -12,62 +12,36 @@ public:
 	CharacterBase(const std::string& name, const std::string& tag, const std::string& file_path, const MassKind mass_level_kind);
 	virtual ~CharacterBase() = default;
 
-	[[nodiscard]] std::shared_ptr<Modeler>					GetModeler()					{ return m_modeler; }
-	[[nodiscard]] std::shared_ptr<AnimatorBase>				GetAnimator()			const	{ return m_animator; }
-	[[nodiscard]] std::shared_ptr<WeaponBase>				GetCurrentAttachWeapon()const	{ return m_current_equip_weapon; }
-	[[nodiscard]] std::vector<std::shared_ptr<WeaponBase>>	GetCurrentHaveWeapon()	const	{ return m_weapons; }
-	[[nodiscard]] WeaponKind								GetCurrentEquipWeaponKind();
+	[[nodiscard]] std::shared_ptr<Modeler>		GetModeler()						{ return m_modeler; }
+	[[nodiscard]] std::shared_ptr<AnimatorBase>	GetAnimator()				const	{ return m_animator; }
+	[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentAttachWeapon()	const	{ return m_current_equip_weapon; }
+	[[nodiscard]] WeaponKind					GetCurrentEquipWeaponKind();
 
 protected:
 	#pragma region 武器
-	/// @brief 武器の所持登録 
-	template<obj_concepts::WeaponObjT WeaponObjT>
-	void AddWeapon(const std::shared_ptr<WeaponObjT> weapon)
+	/// @brief 武器を装備する
+	template<obj_concepts::WeaponT WeaponObjT>
+	void EquipWeapon(const std::shared_ptr<WeaponObjT> weapon)
 	{
-		// 上書き不可
-		for (const auto& itr : m_weapons) { if (itr == weapon) { return; } }
-
-		m_weapons.emplace_back(weapon);
-	}
-
-	/// @brief 武器の所持登録を解除
-	/// @param weapon 武器
-	template<obj_concepts::WeaponObjT WeaponObjT>
-	void RemoveWeapon(const std::shared_ptr<WeaponObjT> weapon)
-	{
-		remove(m_weapons.begin(), m_weapons.end(), weapon);
-	}
-	/// @brief 武器の所持登録を解除
-	/// @brief 指定のオブジェ名の武器の登録がすべて解除される
-	/// @param obj_name オブジェクト名(同じ武器を所持している場合はオブジェクトハンドルでの取得を推奨)
-	void RemoveWeapon(const std::string& obj_name);
-	/// @brief 武器の所持登録を解除
-	/// @param obj_handle オブジェクトハンドル
-	void RemoveWeapon(const int obj_handle);
-
-	/// @brief 所持している武器の中からアタッチ(装備)する
-	/// @param weapon 武器
-	template<obj_concepts::WeaponObjT WeaponObjT>
-	void AttachWeapon(const std::shared_ptr<WeaponObjT> weapon)
-	{
-		if (std::find(m_weapons.begin(), m_weapons.end(), weapon) != m_weapons.end())
+		if (m_current_equip_weapon != weapon)
 		{
 			m_current_equip_weapon = weapon;
 			m_current_equip_weapon->AttachOwner(m_modeler);
 		}	
 	}
-	/// @brief 所持している武器の中からアタッチ(装備)する
-	/// @brief 現在武器を装備している場合でもデタッチする必要はない
-	/// @brief 指定のオブジェ名の中から最初に見つかった武器を装備する
-	/// @param obj_name オブジェクト名(同じ武器を所持している場合はオブジェクトハンドルでの取得を推奨)
-	void AttachWeapon(const std::string& obj_name);
-	/// @brief 所持している武器の中からアタッチ(装備)する
-	/// @brief 現在武器を装備している場合でもデタッチする必要はない
-	/// @param obj_handle オブジェクトハンドル
-	void AttachWeapon(const int obj_handle);
+	void EquipWeapon(const int obj_handle);
+	/// @brief 武器の装備を解除する
+	void UnequipWeapon();
 
-	/// @brief 武器をデタッチ(装備解除)する
-	void DetachWeapon();
+	/// @brief 武器を装着する
+	template<obj_concepts::WeaponT WeaponObjT>
+	void AttachWeapon(const std::shared_ptr<WeaponObjT> weapon)
+	{
+		m_attach_weapons[weapon->GetHolsterKind()] = weapon;
+	}
+	void AttachWeapon(const int obj_handle);
+	/// @brief 武器の装着を解除する
+	void DetachWeapon(const HolsterKind holster_kind);
 	#pragma endregion
 
 
@@ -94,17 +68,17 @@ private:
 	#pragma endregion
 
 protected:
-	std::shared_ptr<Modeler>					m_modeler;
-	std::shared_ptr<AnimatorBase>				m_animator;
+	std::shared_ptr<Modeler>		m_modeler;
+	std::shared_ptr<AnimatorBase>	m_animator;
 
-	std::vector<std::shared_ptr<WeaponBase>>	m_weapons;							// 登録(所持)している武器
-	std::shared_ptr<WeaponBase>					m_current_equip_weapon;				// 現在装備している武器
-	WeaponKind									m_current_equip_weapon_kind;		// 現在装備している武器の種類
+	std::shared_ptr<WeaponBase>		m_current_equip_weapon;							// 現在装備している武器
+	WeaponKind						m_current_equip_weapon_kind;					// 現在装備している武器の種類
+	std::unordered_map<HolsterKind, std::shared_ptr<WeaponBase>> m_attach_weapons;	// 装着している武器
 
-	std::shared_ptr<Capsule>					m_capsule_collider;
-	float										m_capsule_length;
-	float										m_capsule_radius;
+	std::shared_ptr<Capsule>		m_capsule_collider;
+	float							m_capsule_length;
+	float							m_capsule_radius;
 
 	//float	m_hp;
-	int											m_current_remaining_bullet_num;		// 残弾数
+	int								m_current_remaining_bullet_num;		// 残弾数
 };

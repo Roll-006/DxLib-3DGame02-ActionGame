@@ -1,6 +1,7 @@
 #pragma once
 #include "../Part/collider.hpp"
 
+/// @brief 衝突対象のコライダーデータ
 struct TargetColliderData
 {
 	std::shared_ptr<Collider> collider;
@@ -13,6 +14,7 @@ struct TargetColliderData
 		collider(collider), intersection(intersection) {}
 };
 
+/// @brief 一対一の衝突コライダーデータ
 struct ColliderPairOneToOneData
 {
 	std::shared_ptr<Collider> owner_collider;
@@ -26,6 +28,7 @@ struct ColliderPairOneToOneData
 		owner_collider(owner_collider), target_collider(target_collider), intersection(intersection) {}
 };
 
+/// @brief 一対多の衝突コライダーデータ
 struct ColliderPairOneToManyData
 {
 	std::shared_ptr<Collider>		owner_collider;

@@ -21,6 +21,7 @@ enum class InputState
 
 enum class InputModeKind
 {
+	kSingle,
 	kTrigger,
 	kHold,
 };

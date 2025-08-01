@@ -34,5 +34,19 @@ void player_state::AimKnife::Exit(Player* obj)
 
 std::shared_ptr<IState<Player>> player_state::AimKnife::ChangeState(const Player* obj)
 {
+	const auto state_controller = obj->GetStateController();
+	const auto command			= CommandHandler::GetInstance();
+
+	// ƒiƒCƒt‘•”õó‘Ô
+	if (!command->IsExecuting(CommandKind::kAimKnife))
+	{
+		return state_controller->GetState<EquipKnife, Player>();
+	}
+	// “Ë‚«Žh‚·
+	if (command->IsExecuting(CommandKind::kAttack))
+	{
+		return state_controller->GetState<StabKnife, Player>();
+	}
+
 	return nullptr;
 }

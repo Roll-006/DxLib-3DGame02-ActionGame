@@ -38,51 +38,60 @@ void PlayerStateController::LateUpdate(Player* player)
 
 void PlayerStateController::CreateState()
 {
-	m_states[typeid(player_state::MoveNull)]			= std::make_shared<player_state::MoveNull>();
-	m_states[typeid(player_state::Move)]				= std::make_shared<player_state::Move>();
-	m_states[typeid(player_state::ActionNull)]			= std::make_shared<player_state::ActionNull>();
-	m_states[typeid(player_state::Crouch)]				= std::make_shared<player_state::Crouch>();
-	m_states[typeid(player_state::Run)]					= std::make_shared<player_state::Run>();
-	m_states[typeid(player_state::TurnAround)]			= std::make_shared<player_state::TurnAround>();
-	m_states[typeid(player_state::CrouchTurnAround)]	= std::make_shared<player_state::CrouchTurnAround>();
-	m_states[typeid(player_state::WeaponActionNull)]	= std::make_shared<player_state::WeaponActionNull>();
-	m_states[typeid(player_state::EquipKnife)]			= std::make_shared<player_state::EquipKnife>();
-	m_states[typeid(player_state::AimKnife)]			= std::make_shared<player_state::AimKnife>();
-	m_states[typeid(player_state::StabKnife)]			= std::make_shared<player_state::StabKnife>();
-	m_states[typeid(player_state::SideSlashKnife)]		= std::make_shared<player_state::SideSlashKnife>();
-	m_states[typeid(player_state::Parry)]				= std::make_shared<player_state::Parry>();
-	m_states[typeid(player_state::EquipGun)]			= std::make_shared<player_state::EquipGun>();
-	m_states[typeid(player_state::AimGun)]				= std::make_shared<player_state::AimGun>();
-	m_states[typeid(player_state::Shot)]				= std::make_shared<player_state::Shot>();
-	m_states[typeid(player_state::Reload)]				= std::make_shared<player_state::Reload>();
-	m_states[typeid(player_state::SpecialNull)]			= std::make_shared<player_state::SpecialNull>();
-	m_states[typeid(player_state::RoundhouseKick)]		= std::make_shared<player_state::RoundhouseKick>();
-	m_states[typeid(player_state::FrontKick)]			= std::make_shared<player_state::FrontKick>();
-	m_states[typeid(player_state::Suplex)]				= std::make_shared<player_state::Suplex>();
-	m_states[typeid(player_state::Escape)]				= std::make_shared<player_state::Escape>();
-	m_states[typeid(player_state::StealthKill)]			= std::make_shared<player_state::StealthKill>();
-	m_states[typeid(player_state::FinishOff)]			= std::make_shared<player_state::FinishOff>();
-	m_states[typeid(player_state::EscapeWithKnife)]		= std::make_shared<player_state::EscapeWithKnife>();
+	m_states[typeid(player_state::MoveNull)]			 = std::make_shared<player_state::MoveNull>();
+	m_states[typeid(player_state::Move)]				 = std::make_shared<player_state::Move>();
+	m_states[typeid(player_state::ActionNull)]			 = std::make_shared<player_state::ActionNull>();
+	m_states[typeid(player_state::Crouch)]				 = std::make_shared<player_state::Crouch>();
+	m_states[typeid(player_state::Run)]					 = std::make_shared<player_state::Run>();
+	m_states[typeid(player_state::TurnAround)]			 = std::make_shared<player_state::TurnAround>();
+	m_states[typeid(player_state::CrouchTurnAround)]	 = std::make_shared<player_state::CrouchTurnAround>();
+	m_states[typeid(player_state::WeaponActionNull)]	 = std::make_shared<player_state::WeaponActionNull>();
+	m_states[typeid(player_state::EquipKnife)]			 = std::make_shared<player_state::EquipKnife>();
+	m_states[typeid(player_state::AimKnife)]			 = std::make_shared<player_state::AimKnife>();
+	m_states[typeid(player_state::StabKnife)]			 = std::make_shared<player_state::StabKnife>();
+	m_states[typeid(player_state::FirstSideSlashKnife)]	 = std::make_shared<player_state::FirstSideSlashKnife>();
+	m_states[typeid(player_state::SecondSideSlashKnife)] = std::make_shared<player_state::SecondSideSlashKnife>();
+	m_states[typeid(player_state::Parry)]				 = std::make_shared<player_state::Parry>();
+	m_states[typeid(player_state::EquipGun)]			 = std::make_shared<player_state::EquipGun>();
+	m_states[typeid(player_state::AimGun)]				 = std::make_shared<player_state::AimGun>();
+	m_states[typeid(player_state::Shot)]				 = std::make_shared<player_state::Shot>();
+	m_states[typeid(player_state::Reload)]				 = std::make_shared<player_state::Reload>();
+	m_states[typeid(player_state::SpecialNull)]			 = std::make_shared<player_state::SpecialNull>();
+	m_states[typeid(player_state::RoundhouseKick)]		 = std::make_shared<player_state::RoundhouseKick>();
+	m_states[typeid(player_state::FrontKick)]			 = std::make_shared<player_state::FrontKick>();
+	m_states[typeid(player_state::Suplex)]				 = std::make_shared<player_state::Suplex>();
+	m_states[typeid(player_state::Escape)]				 = std::make_shared<player_state::Escape>();
+	m_states[typeid(player_state::StealthKill)]			 = std::make_shared<player_state::StealthKill>();
+	m_states[typeid(player_state::FinishOff)]			 = std::make_shared<player_state::FinishOff>();
+	m_states[typeid(player_state::EscapeWithKnife)]		 = std::make_shared<player_state::EscapeWithKnife>();
 }
 
 void PlayerStateController::AddStopStatePair()
 {
-	m_states.at(typeid(player_state::AimKnife))			->AddStopState(m_states.at(typeid(player_state::Crouch))->GetStateHandle());
-	m_states.at(typeid(player_state::AimKnife))			->AddStopState(m_states.at(typeid(player_state::Run))	->GetStateHandle());
-	m_states.at(typeid(player_state::StabKnife))		->AddStopState(m_states.at(typeid(player_state::Crouch))->GetStateHandle());
-	m_states.at(typeid(player_state::StabKnife))		->AddStopState(m_states.at(typeid(player_state::Run))	->GetStateHandle());
-	m_states.at(typeid(player_state::SideSlashKnife))	->AddStopState(m_states.at(typeid(player_state::Crouch))->GetStateHandle());
-	m_states.at(typeid(player_state::SideSlashKnife))	->AddStopState(m_states.at(typeid(player_state::Run))	->GetStateHandle());
-	m_states.at(typeid(player_state::Parry))			->AddStopState(m_states.at(typeid(player_state::Crouch))->GetStateHandle());
-	m_states.at(typeid(player_state::Parry))			->AddStopState(m_states.at(typeid(player_state::Run))	->GetStateHandle());
-	m_states.at(typeid(player_state::AimGun))			->AddStopState(m_states.at(typeid(player_state::Crouch))->GetStateHandle());
-	m_states.at(typeid(player_state::AimGun))			->AddStopState(m_states.at(typeid(player_state::Run))	->GetStateHandle());
-	m_states.at(typeid(player_state::Shot))				->AddStopState(m_states.at(typeid(player_state::Crouch))->GetStateHandle());
-	m_states.at(typeid(player_state::Shot))				->AddStopState(m_states.at(typeid(player_state::Run))	->GetStateHandle());
+	m_states.at(typeid(player_state::AimKnife))				->AddStopState(m_states.at(typeid(player_state::Crouch))->GetStateHandle());
+	m_states.at(typeid(player_state::AimKnife))				->AddStopState(m_states.at(typeid(player_state::Run))	->GetStateHandle());
+	m_states.at(typeid(player_state::StabKnife))			->AddStopState(m_states.at(typeid(player_state::Crouch))->GetStateHandle());
+	m_states.at(typeid(player_state::StabKnife))			->AddStopState(m_states.at(typeid(player_state::Run))	->GetStateHandle());
+	m_states.at(typeid(player_state::StabKnife))			->AddStopState(m_states.at(typeid(player_state::Move))	->GetStateHandle());
+	m_states.at(typeid(player_state::StabKnife))			->AddStopState(m_states.at(typeid(player_state::Crouch))->GetStateHandle());
+	m_states.at(typeid(player_state::StabKnife))			->AddStopState(m_states.at(typeid(player_state::Run))	->GetStateHandle());
+	m_states.at(typeid(player_state::FirstSideSlashKnife))	->AddStopState(m_states.at(typeid(player_state::Move))	->GetStateHandle());
+	m_states.at(typeid(player_state::FirstSideSlashKnife))	->AddStopState(m_states.at(typeid(player_state::Crouch))->GetStateHandle());
+	m_states.at(typeid(player_state::FirstSideSlashKnife))	->AddStopState(m_states.at(typeid(player_state::Run))	->GetStateHandle());
+	m_states.at(typeid(player_state::SecondSideSlashKnife))	->AddStopState(m_states.at(typeid(player_state::Move))	->GetStateHandle());
+	m_states.at(typeid(player_state::SecondSideSlashKnife))	->AddStopState(m_states.at(typeid(player_state::Crouch))->GetStateHandle());
+	m_states.at(typeid(player_state::SecondSideSlashKnife))	->AddStopState(m_states.at(typeid(player_state::Run))	->GetStateHandle());
+	m_states.at(typeid(player_state::Parry))				->AddStopState(m_states.at(typeid(player_state::Crouch))->GetStateHandle());
+	m_states.at(typeid(player_state::Parry))				->AddStopState(m_states.at(typeid(player_state::Run))	->GetStateHandle());
+	m_states.at(typeid(player_state::AimGun))				->AddStopState(m_states.at(typeid(player_state::Crouch))->GetStateHandle());
+	m_states.at(typeid(player_state::AimGun))				->AddStopState(m_states.at(typeid(player_state::Run))	->GetStateHandle());
+	m_states.at(typeid(player_state::Shot))					->AddStopState(m_states.at(typeid(player_state::Crouch))->GetStateHandle());
+	m_states.at(typeid(player_state::Shot))					->AddStopState(m_states.at(typeid(player_state::Run))	->GetStateHandle());
 }
 
 void PlayerStateController::AddCheckStopState()
 {
+	m_check_stop_state_handles.emplace_back(m_states.at(typeid(player_state::Move))		->GetStateHandle());
 	m_check_stop_state_handles.emplace_back(m_states.at(typeid(player_state::Crouch))	->GetStateHandle());
 	m_check_stop_state_handles.emplace_back(m_states.at(typeid(player_state::Run))		->GetStateHandle());
 }
@@ -241,6 +250,10 @@ void PlayerStateController::JudgeDestinationMoveState(std::shared_ptr<IState<Pla
 {
 	switch (static_cast<player_state::MoveStateKind>(stop_state->GetStateKind()))
 	{
+	case player_state::MoveStateKind::kMove:
+		stop_state = m_states.at(typeid(player_state::MoveNull));
+		break;
+
 	default:
 		break;
 	}

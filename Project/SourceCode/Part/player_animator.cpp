@@ -29,39 +29,39 @@ void PlayerAnimator::Update()
 void PlayerAnimator::LoadAnim()
 {
 	// 上半身
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kEquipKnife),				AnimPath.EQUIP_KNIFE,					 0, AnimTag.NONE, 20.0f, true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kAimKnife),					AnimPath.AIM_KNIFE,						 0, AnimTag.NONE, 20.0f, true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kStabKnife),					AnimPath.STAB_KNIFE,					 0, AnimTag.NONE, 20.0f, false);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kSideSlashKnifeLeftToRight),	AnimPath.SIDE_SLASH_KNIFE_LEFT_TO_RIGHT, 0, AnimTag.NONE, 20.0f, false);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kSideSlashKnifeRightToLeft),	AnimPath.SIDE_SLASH_KNIFE_RIGHT_TO_LEFT, 0, AnimTag.NONE, 20.0f, false);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kParry),						AnimPath.PARRY,							 0, AnimTag.NONE, 20.0f, false);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kEquipGun),					AnimPath.EQUIP_GUN,						 0, AnimTag.NONE, 20.0f, true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kAimGun),					AnimPath.AIM_GUN,						 0, AnimTag.NONE, 20.0f, true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kReload),					AnimPath.RELOAD,						 0, AnimTag.NONE, 20.0f, false);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kEquipKnife),				AnimPath.EQUIP_KNIFE,					0, AnimTag.NONE, 20.0f, true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kAimKnife),					AnimPath.AIM_KNIFE,						1, AnimTag.NONE, 20.0f, true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kStabKnife),					AnimPath.STAB_KNIFE,					0, AnimTag.NONE, 70.0f, false);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kFirstSideSlashKnife),		AnimPath.FIRST_SIDE_SLASH_KNIFE,		0, AnimTag.NONE, 100.0f, false);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kSecondSideSlashKnife),		AnimPath.SECOND_SIDE_SLASH_KNIFE,		0, AnimTag.NONE, 100.0f, false);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kParry),						AnimPath.PARRY,							0, AnimTag.NONE, 20.0f, false);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kEquipGun),					AnimPath.EQUIP_GUN,						0, AnimTag.NONE, 20.0f, true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kAimGun),					AnimPath.AIM_GUN,						0, AnimTag.NONE, 20.0f, true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kReload),					AnimPath.RELOAD,						0, AnimTag.NONE, 20.0f, false);
 																														 
 	// 下半身																											  
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdle),						AnimPath.IDLE,							 0, AnimTag.NONE, 20.0f, true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kCrouch),					AnimPath.CROUCH,						 0, AnimTag.NONE, 20.0f, true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdle),						AnimPath.IDLE,							0, AnimTag.NONE, 20.0f, true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kCrouch),					AnimPath.CROUCH,						0, AnimTag.NONE, 20.0f, true);
 																														 
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForward),				AnimPath.MOVE_FORWARD,					 0, AnimTag.MOVE, 20.0f, true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveBackward),				AnimPath.MOVE_BACKWARD,					 0, AnimTag.MOVE, 20.0f, true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveLeft),					AnimPath.MOVE_LEFT,						 0, AnimTag.MOVE, 20.0f, true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveRight),					AnimPath.MOVE_RIGHT,					 0, AnimTag.MOVE, 20.0f, true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardLeft),			AnimPath.MOVE_FORWARD_LEFT,				 0, AnimTag.MOVE, 20.0f, true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardRight),			AnimPath.MOVE_FORWARD_RIGHT,			 0, AnimTag.MOVE, 20.0f, true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveBackwardLeft),			AnimPath.MOVE_BACKWARD_LEFT,			 0, AnimTag.MOVE, 20.0f, true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveBackwardRight),			AnimPath.MOVE_BACKWARD_RIGHT,			 0, AnimTag.MOVE, 20.0f, true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForward),				AnimPath.MOVE_FORWARD,					0, AnimTag.MOVE, 20.0f, true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveBackward),				AnimPath.MOVE_BACKWARD,					0, AnimTag.MOVE, 20.0f, true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveLeft),					AnimPath.MOVE_LEFT,						0, AnimTag.MOVE, 20.0f, true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveRight),					AnimPath.MOVE_RIGHT,					0, AnimTag.MOVE, 30.0f, true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardLeft),			AnimPath.MOVE_FORWARD_LEFT,				0, AnimTag.MOVE, 20.0f, true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardRight),			AnimPath.MOVE_FORWARD_RIGHT,			0, AnimTag.MOVE, 20.0f, true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveBackwardLeft),			AnimPath.MOVE_BACKWARD_LEFT,			0, AnimTag.MOVE, 20.0f, true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveBackwardRight),			AnimPath.MOVE_BACKWARD_RIGHT,			0, AnimTag.MOVE, 20.0f, true);
 																														 
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardCrouch),			AnimPath.MOVE_FORWARD_CROUCH,			 0, AnimTag.MOVE, 20.0f, true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveBackwardCrouch),		AnimPath.MOVE_BACKWARD_CROUCH,			 0, AnimTag.MOVE, 20.0f, true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveLeftCrouch),			AnimPath.MOVE_LEFT_CROUCH,				 0, AnimTag.MOVE, 20.0f, true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveRightCrouch),			AnimPath.MOVE_RIGHT_CROUCH,				 0, AnimTag.MOVE, 20.0f, true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardLeftCrouch),		AnimPath.MOVE_FORWARD_LEFT_CROUCH,		 0, AnimTag.MOVE, 20.0f, true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardRightCrouch),	AnimPath.MOVE_FORWARD_RIGHT_CROUCH,		 0, AnimTag.MOVE, 20.0f, true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveBackwardLeftCrouch),	AnimPath.MOVE_BACKWARD_LEFT_CROUCH,		 0, AnimTag.MOVE, 20.0f, true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveBackwardRightCrouch),	AnimPath.MOVE_BACKWARD_RIGHT_CROUCH,	 0, AnimTag.MOVE, 20.0f, true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardCrouch),			AnimPath.MOVE_FORWARD_CROUCH,			0, AnimTag.MOVE, 20.0f, true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveBackwardCrouch),		AnimPath.MOVE_BACKWARD_CROUCH,			0, AnimTag.MOVE, 20.0f, true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveLeftCrouch),			AnimPath.MOVE_LEFT_CROUCH,				0, AnimTag.MOVE, 20.0f, true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveRightCrouch),			AnimPath.MOVE_RIGHT_CROUCH,				0, AnimTag.MOVE, 20.0f, true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardLeftCrouch),		AnimPath.MOVE_FORWARD_LEFT_CROUCH,		0, AnimTag.MOVE, 20.0f, true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardRightCrouch),	AnimPath.MOVE_FORWARD_RIGHT_CROUCH,		0, AnimTag.MOVE, 20.0f, true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveBackwardLeftCrouch),	AnimPath.MOVE_BACKWARD_LEFT_CROUCH,		0, AnimTag.MOVE, 20.0f, true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveBackwardRightCrouch),	AnimPath.MOVE_BACKWARD_RIGHT_CROUCH,	0, AnimTag.MOVE, 20.0f, true);
 																														 
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardRun),			AnimPath.MOVE_FORWARD_RUN,				 0, AnimTag.MOVE, 20.0f, true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardRun),			AnimPath.MOVE_FORWARD_RUN,				0, AnimTag.MOVE, 27.0f, true);
 }
 
 void PlayerAnimator::ChangeAnim()
@@ -148,18 +148,15 @@ void PlayerAnimator::CombineMoveNullActionNullWithWeaponAction()
 		break;
 
 	case static_cast<int>(player_state::WeaponActionStateKind::kStabKnife):
-		AttachAnim(static_cast<int>(PlayerAnimKind::kIdle),							BodyKind::kLowerBody);
-		AttachAnim(static_cast<int>(PlayerAnimKind::kStabKnife),					BodyKind::kUpperBody);
+		AttachResultAnim(static_cast<int>(PlayerAnimKind::kStabKnife));
 		break;
 
-	case static_cast<int>(player_state::WeaponActionStateKind::kSideSlashKnifeLeftToRight):
-		AttachAnim(static_cast<int>(PlayerAnimKind::kIdle),							BodyKind::kLowerBody);
-		AttachAnim(static_cast<int>(PlayerAnimKind::kSideSlashKnifeLeftToRight),	BodyKind::kUpperBody);
+	case static_cast<int>(player_state::WeaponActionStateKind::kFirstSideSlashKnife):
+		AttachResultAnim(static_cast<int>(PlayerAnimKind::kFirstSideSlashKnife));
 		break;
 
-	case static_cast<int>(player_state::WeaponActionStateKind::kSideSlashKnifeRightToLeft):
-		AttachAnim(static_cast<int>(PlayerAnimKind::kIdle),							BodyKind::kLowerBody);
-		AttachAnim(static_cast<int>(PlayerAnimKind::kSideSlashKnifeRightToLeft),	BodyKind::kUpperBody);
+	case static_cast<int>(player_state::WeaponActionStateKind::kSecondSideSlashKnife):
+		AttachResultAnim(static_cast<int>(PlayerAnimKind::kSecondSideSlashKnife));
 		break;
 
 	case static_cast<int>(player_state::WeaponActionStateKind::kParry):
@@ -327,7 +324,7 @@ void PlayerAnimator::CombineMoveRunWithWeaponAction()
 		AttachAnim(static_cast<int>(PlayerAnimKind::kEquipKnife),		BodyKind::kUpperBody);
 		break;
 
-	case static_cast<int>(player_state::WeaponActionStateKind::kSideSlashKnifeLeftToRight):
+	case static_cast<int>(player_state::WeaponActionStateKind::kFirstSideSlashKnife):
 		// MEMO : ダッシュ切りをここで判定するかは検討中
 		break;
 

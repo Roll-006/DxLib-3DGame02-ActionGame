@@ -4,6 +4,7 @@
 #include "../Part/player_animator.hpp"
 
 #include "assault_rifle.hpp"
+#include "knife.hpp"
 #include "../Manager/camera_manager.hpp"
 
 class PlayerStateController;
@@ -20,6 +21,30 @@ public:
 	void Draw() const	override;
 
 	void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) override;
+
+
+	#pragma region アイテム
+	/// @brief アイテムの所持登録 
+	template<obj_concepts::ItemT ItemT>
+	void AddItem(const std::shared_ptr<ItemT> item)
+	{
+		const auto item_kind = item->GetItemKind();
+
+		if (std::find(m_items[item_kind].begin(), m_items[item_kind].end(), item) == m_items[item_kind].end())
+		{
+			m_items[item_kind].emplace_back(item);
+		}
+	}
+
+	/// @brief アイテムの所持登録を解除
+	template<obj_concepts::ItemT ItemT>
+	void RemoveItem(const std::shared_ptr<ItemT> item)
+	{
+		const auto item_kind = item->GetItemKind();
+
+		m_items[item_kind].erase(std::remove(m_items[item_kind].begin(), m_items[item_kind].end(), item), m_items[item_kind].end());
+	}
+	#pragma endregion
 
 
 	#pragma region State
@@ -46,6 +71,7 @@ public:
 
 	#pragma region Getter
 	[[nodiscard]] std::shared_ptr<PlayerStateController> GetStateController() const { return m_state; }
+	[[nodiscard]] std::vector<std::shared_ptr<IItem>>	 GetCurrentHaveItem(const ItemKind item_kind) const { return m_items.at(item_kind); }
 	#pragma endregion
 
 private:
@@ -95,15 +121,16 @@ private:
 	//static constexpr float kADSSpeed							= 70.0f;			// スコープをのぞき込む速度
 
 private:
-	std::shared_ptr<PlayerStateController>	m_state;
-	std::shared_ptr<Transform>				m_camera_aim_transform;					// カメラのターゲットとなるトランスフォーム
+	std::shared_ptr<PlayerStateController>		m_state;
+	std::shared_ptr<Transform>					m_camera_aim_transform;					// カメラのターゲットとなるトランスフォーム
 
-	std::unordered_map<TimeKind, VECTOR>	m_move_dir;								// 移動方向(TODO : 長さが1未満である時がある場合があるため命名を変更すべき)
-	std::unordered_map<TimeKind, VECTOR>	m_look_dir;								// 向いている方向
-	float									m_move_speed;
+	std::unordered_map<TimeKind, VECTOR>		m_move_dir;								// 移動方向(TODO : 長さが1未満である時がある場合があるため命名を変更すべき)
+	std::unordered_map<TimeKind, VECTOR>		m_look_dir;								// 向いている方向
+	float										m_move_speed;
 
-	float									m_look_dir_correct_angle;				// 見る方向の補正角度
-	float									m_confirm_look_dir_threshold_angle;		// 目的の見る方向に到達したと判定する閾値
+	float										m_look_dir_correct_angle;				// 見る方向の補正角度
+	float										m_confirm_look_dir_threshold_angle;		// 目的の見る方向に到達したと判定する閾値
 	
-	std::shared_ptr<BonePosCorrector>		m_bone_pos_corrector;					// ボーン位置修正
+	std::unordered_map<ItemKind, std::vector<std::shared_ptr<IItem>>> m_items;			// 所持しているアイテム
+	std::unordered_map<int, std::shared_ptr<WeaponBase>>	m_shortcut_weapons;			// ショートカットに登録されている武器
 };

@@ -59,6 +59,11 @@ void AnimatorBase::AttachAnim(const int next_kind, const BodyKind body_kind)
 	bool				is_seted_current_data	= false;
 	for (auto& [body, time, data] : m_time_kind_data)
 	{
+		if (body == BodyKind::kUpperBody && time == TimeKind::kCurrent)
+		{
+			DrawFormatString(0, 100, 0xffffff, "アタッチ");
+		}
+
 		if (body == body_kind)
 		{
 			if (time == TimeKind::kPrev)	{ prev_time_data	= data;  is_seted_prev_data		= true; }
@@ -164,8 +169,13 @@ void AnimatorBase::PlayAnim()
 
 			if (body_kind == BodyKind::kLowerBody && time_kind == TimeKind::kCurrent)
 			{
-				DrawFormatString(0, 20, 0xffffff, "play_timer : %f", data.play_timer);
-				DrawFormatString(0, 40, 0xffffff, "total_time : %f", data.total_time);
+				DrawFormatString(0, 20, 0xffffff, "lower play_timer : %f", data.play_timer);
+				DrawFormatString(0, 40, 0xffffff, "lower total_time : %f", data.total_time);
+			}
+			if (body_kind == BodyKind::kUpperBody && time_kind == TimeKind::kCurrent)
+			{
+				DrawFormatString(0, 60, 0xffffff, "upper play_timer : %f", data.play_timer);
+				DrawFormatString(0, 80, 0xffffff, "upper total_time : %f", data.total_time);
 			}
 
 			// 再生位置・ブレンド率を適用
@@ -235,7 +245,7 @@ void AnimatorBase::SetPlayStartTime(AnimTimeKindData* current_time_kind_data, co
 		const std::string current_tag	= m_anim_data.at(current_time_kind_data->kind).tag;
 
 		// 同類アニメーションであった場合は再生率を引き継ぐ
-		if (prev_tag == current_tag)
+		if (prev_tag == current_tag && prev_tag != AnimTag.NONE && current_tag != AnimTag.NONE)
 		{
 			m_prev_anim_play_rate[body_kind]   = prev_time_kind_data.play_timer / prev_time_kind_data.total_time;
 			current_time_kind_data->play_timer = current_time_kind_data->total_time * m_prev_anim_play_rate[body_kind];

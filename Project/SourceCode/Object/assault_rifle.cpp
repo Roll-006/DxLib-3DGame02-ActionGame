@@ -1,7 +1,7 @@
 #include "assault_rifle.hpp"
 
 AssaultRifle::AssaultRifle() :
-	GunBase(ObjName.ASSAULT_RIFLE, GunKind::kSniperRifle, ModelPath.ASSAULT_RIFLE_01)
+	GunBase(ObjName.ASSAULT_RIFLE, GunKind::kSniperRifle, HolsterKind::kRifle, ModelPath.ASSAULT_RIFLE_01)
 {
 	SetCorrectValue(kCorrectPos, kCorrectAngle, kCorrectScale);
 

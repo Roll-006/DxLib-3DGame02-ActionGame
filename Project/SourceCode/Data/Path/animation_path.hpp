@@ -7,8 +7,8 @@ static struct AnimationPath
 	const std::string EQUIP_KNIFE						= "data/animation/idle_equip_knife.mv1";
 	const std::string AIM_KNIFE							= "data/animation/aim_knife.mv1";
 	const std::string STAB_KNIFE						= "data/animation/stab_knife.mv1";
-	const std::string SIDE_SLASH_KNIFE_LEFT_TO_RIGHT	= "data/animation/side_slash_knife_left_to_right.mv1";
-	const std::string SIDE_SLASH_KNIFE_RIGHT_TO_LEFT	= "data/animation/side_slash_knife_right_to_left.mv1";
+	const std::string FIRST_SIDE_SLASH_KNIFE			= "data/animation/side_slash_knife_left_to_right.mv1";
+	const std::string SECOND_SIDE_SLASH_KNIFE			= "data/animation/side_slash_knife_right_to_left.mv1";
 	const std::string PARRY								= "data/animation/.mv1";
 	const std::string EQUIP_GUN							= "data/animation/idle_equip_gun.mv1";
 	const std::string AIM_GUN							= "data/animation/idle_aim_gun.mv1";

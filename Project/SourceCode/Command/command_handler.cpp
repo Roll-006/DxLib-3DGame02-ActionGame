@@ -2,14 +2,12 @@
 
 CommandHandler::CommandHandler()
 {
-	m_trigger_count	 [CommandKind::kRun] = m_trigger_count  [CommandKind::kCrouch] = 0;
-
-	m_special_command[CommandKind::kRun]	= InputModeKind::kTrigger;
-	m_special_command[CommandKind::kCrouch] = InputModeKind::kTrigger;
+	m_trigger_count[CommandKind::kRun] = m_trigger_count[CommandKind::kCrouch] = 0;
 
 	// 初期設定
 	InitKeyCommand();
 	InitPadCommand();
+	InitInputMode();
 }
 
 CommandHandler::~CommandHandler()
@@ -129,26 +127,66 @@ void CommandHandler::InitPadCommand()
 	//AddInputCode(CommandKind::kMoveRightCamera,	pad::StickKind	::kRSRight);
 }
 
+void CommandHandler::InitInputMode()
+{
+	m_input_mode[CommandKind::kDecide]			= InputModeKind::kSingle;
+	m_input_mode[CommandKind::kBack]			= InputModeKind::kSingle;
+	m_input_mode[CommandKind::kSelectUp]		= InputModeKind::kSingle;
+	m_input_mode[CommandKind::kSelectDown]		= InputModeKind::kSingle;
+	m_input_mode[CommandKind::kSelectLeft]		= InputModeKind::kSingle;
+	m_input_mode[CommandKind::kSelectRight]		= InputModeKind::kSingle;
+	m_input_mode[CommandKind::kPause]			= InputModeKind::kSingle;
+	m_input_mode[CommandKind::kAimGun]			= InputModeKind::kHold;
+	m_input_mode[CommandKind::kAttack]			= InputModeKind::kSingle;
+	m_input_mode[CommandKind::kAimKnife]		= InputModeKind::kHold;
+	m_input_mode[CommandKind::kInvestigate]		= InputModeKind::kSingle;
+	m_input_mode[CommandKind::kMelee]			= InputModeKind::kSingle;
+	m_input_mode[CommandKind::kReload]			= InputModeKind::kSingle;
+	m_input_mode[CommandKind::kScope]			= InputModeKind::kSingle;
+	m_input_mode[CommandKind::kMoveUpPlayer]	= InputModeKind::kHold;
+	m_input_mode[CommandKind::kMoveDownPlayer]	= InputModeKind::kHold;
+	m_input_mode[CommandKind::kMoveLeftPlayer]	= InputModeKind::kHold;
+	m_input_mode[CommandKind::kMoveRightPlayer] = InputModeKind::kHold;
+	m_input_mode[CommandKind::kRun]				= InputModeKind::kTrigger;
+	m_input_mode[CommandKind::kCrouch]			= InputModeKind::kTrigger;
+	m_input_mode[CommandKind::kQuickTurn]		= InputModeKind::kSingle;
+	m_input_mode[CommandKind::kMoveUpCamera]	= InputModeKind::kHold;
+	m_input_mode[CommandKind::kMoveDownCamera]	= InputModeKind::kHold;
+	m_input_mode[CommandKind::kMoveLeftCamera]	= InputModeKind::kHold;
+	m_input_mode[CommandKind::kMoveRightCamera] = InputModeKind::kHold;
+	m_input_mode[CommandKind::kInitAim]			= InputModeKind::kSingle;
+}
+
 bool CommandHandler::IsExecuting(const CommandKind kind)
 {
-	// 特殊コマンドのトリガー方式の場合、入力カウントによって実行されたかを判定
-	if (m_special_command.count(kind))
-	{
-		const auto input = InputChecker::GetInstance();
-		int count = 0;
-		switch (GetInputModeKind(kind))
-		{
-		case InputModeKind::kTrigger:
-			return GetTriggerCount(kind) % 2 == 1 ? true : false;
-			break;
+	const auto input  = InputChecker::GetInstance();
+	const auto codes  = input->GetCurrentInputDevice() == DeviceKind::kKeyboard ? m_key_codes : m_pad_codes;
+	bool is_executing = false;
 
-		default:
-			break;
-		}
+	switch (m_input_mode.at(kind))
+	{
+	case InputModeKind::kSingle:
+		for (const auto& code : codes)
+		{
+			if (code.first == kind)
+			{
+				is_executing = input->GetInputState(code.second) == InputState::kSingle;
+				if (is_executing) { break; }
+			}			
+		}	
+		break;
+
+	// トリガー方式の場合、入力カウントによって実行されたかを判定
+	case InputModeKind::kTrigger:
+		is_executing = GetTriggerCount(kind) % 2 == 1 ? true : false;
+		break;
+
+	case InputModeKind::kHold:
+		is_executing = std::find(m_current_execute_command.begin(), m_current_execute_command.end(), kind) != m_current_execute_command.end();
+		break;
 	}
 
-	// 通常コマンド・特殊コマンドのホールド方式
-	return std::find(m_current_execute_command.begin(), m_current_execute_command.end(), kind) != m_current_execute_command.end();
+	return is_executing;
 }
 
 void CommandHandler::AddInputCode(const CommandKind kind, const input_concepts::InputT auto& input_code)
@@ -235,7 +273,7 @@ void CommandHandler::TryExecuteCommand(const std::vector<std::pair<CommandKind, 
 			if (std::find(executed_command.begin(), executed_command.end(), code.first) == executed_command.end())
 			{
 				// 特殊コマンドのトリガー方式であった場合、入力回数をカウント
-				if (m_special_command.count(code.first) && input->GetInputState(code.second) == InputState::kSingle)
+				if (m_input_mode.at(code.first) == InputModeKind::kTrigger && input->GetInputState(code.second) == InputState::kSingle)
 				{
 					++m_trigger_count.at(code.first);
 				}

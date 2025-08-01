@@ -70,7 +70,7 @@ void InputChecker::LockCursor()
 	SetMousePoint(center_pos.x, center_pos.y);
 }
 
-bool InputChecker::IsInput(const InputCode& input_code) const
+bool InputChecker::IsInput(const InputCode& input_code)
 {
 	switch (input_code.kind)
 	{

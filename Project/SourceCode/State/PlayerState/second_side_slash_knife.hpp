@@ -6,11 +6,11 @@
 
 namespace player_state
 {
-	class SideSlashKnife final : public WeaponActionStateBase<Player>
+	class SecondSideSlashKnife final : public WeaponActionStateBase<Player>
 	{
 	public:
-		SideSlashKnife();
-		~SideSlashKnife() override;
+		SecondSideSlashKnife();
+		~SecondSideSlashKnife() override;
 
 		void Update		(Player* obj) override;
 		void LateUpdate	(Player* obj) override;

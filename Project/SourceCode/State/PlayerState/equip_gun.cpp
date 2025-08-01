@@ -14,7 +14,14 @@ player_state::EquipGun::~EquipGun()
 
 void player_state::EquipGun::Update(Player* obj)
 {
-
+	if (CommandHandler::GetInstance()->IsExecuting(CommandKind::kAimGun))
+	{
+		m_possible_aim_timer += FPS::GetDeltaTime();
+	}
+	else
+	{
+		m_possible_aim_timer = 0.0f;
+	}
 }
 
 void player_state::EquipGun::LateUpdate(Player* obj)
@@ -35,19 +42,25 @@ void player_state::EquipGun::Exit(Player* obj)
 std::shared_ptr<IState<Player>> player_state::EquipGun::ChangeState(const Player* obj)
 {
 	const auto state_controller = obj->GetStateController();
+	const auto command			= CommandHandler::GetInstance();
 
-	// 入力されてから一定時間経過でエイミング状態へ移行
+	// 銃エイミング状態
 	if (CommandHandler::GetInstance()->IsExecuting(CommandKind::kAimGun))
-	{
-		m_possible_aim_timer += FPS::GetDeltaTime();
+	{	
 		if (m_possible_aim_timer >= kPossibleAimTime)
 		{
 			return state_controller->GetState<AimGun, Player>();
 		}
 	}
-	else
+	// ナイフエイミング状態
+	if (command->IsExecuting(CommandKind::kAimKnife))
 	{
-		m_possible_aim_timer = 0.0f;
+		return state_controller->GetState<AimKnife, Player>();
+	}
+	// 切り裂く(第一段階)
+	if (command->IsExecuting(CommandKind::kAttack))
+	{
+		return state_controller->GetState<FirstSideSlashKnife, Player>();
 	}
 
 	return nullptr;

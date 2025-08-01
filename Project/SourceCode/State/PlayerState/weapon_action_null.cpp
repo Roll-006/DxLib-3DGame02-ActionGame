@@ -34,11 +34,22 @@ void player_state::WeaponActionNull::Exit(Player* obj)
 std::shared_ptr<IState<Player>> player_state::WeaponActionNull::ChangeState(const Player* obj)
 {
 	const auto state_controller = obj->GetStateController();
+	const auto command			= CommandHandler::GetInstance();
 
-	// 銃を構える
-	if (CommandHandler::GetInstance()->IsExecuting(CommandKind::kAimGun))
+	// 銃装備状態
+	if (command->IsExecuting(CommandKind::kAimGun))
 	{
 		return state_controller->GetState<EquipGun, Player>();
+	}
+	// ナイフエイミング状態
+	if (command->IsExecuting(CommandKind::kAimKnife))
+	{
+		return state_controller->GetState<AimKnife, Player>();
+	}
+	// 切り裂く(第一段階)
+	if (command->IsExecuting(CommandKind::kAttack))
+	{
+		return state_controller->GetState<FirstSideSlashKnife, Player>();
 	}
 
 	return nullptr;

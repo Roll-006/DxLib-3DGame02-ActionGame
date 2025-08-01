@@ -33,5 +33,13 @@ void player_state::StabKnife::Exit(Player* obj)
 
 std::shared_ptr<IState<Player>> player_state::StabKnife::ChangeState(const Player* obj)
 {
+	const auto state_controller = obj->GetStateController();
+
+	// ナイフエイミング状態
+	if (obj->GetAnimator()->IsPlayEnd(AnimatorBase::BodyKind::kUpperBody))
+	{
+		return state_controller->GetState<AimKnife, Player>();
+	}
+
 	return nullptr;
 }

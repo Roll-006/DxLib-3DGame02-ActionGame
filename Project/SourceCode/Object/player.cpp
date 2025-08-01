@@ -8,8 +8,7 @@ Player::Player() :
 	m_camera_aim_transform				(std::make_shared<Transform>()),
 	m_move_speed						(0.0f),
 	m_look_dir_correct_angle			(0.0f),
-	m_confirm_look_dir_threshold_angle	(0.0f),
-	m_bone_pos_corrector				(std::make_shared<BonePosCorrector>())
+	m_confirm_look_dir_threshold_angle	(0.0f)
 {
 	// èâä˙posÅEdirÇê›íË
 	m_look_dir[TimeKind::kCurrent] = m_look_dir[TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);
@@ -23,8 +22,10 @@ Player::Player() :
 	m_animator = std::make_shared<PlayerAnimator>(m_modeler, m_state);
 
 	// ïêäÌê›íË
-	const auto gun = std::make_shared<AssaultRifle>();
-	AddWeapon(gun);
+	const auto gun   = std::make_shared<AssaultRifle>();
+	const auto knife = std::make_shared<Knife>();
+	AddItem(gun);
+	AddItem(knife);
 
 	// TODO : âºÇ≈èeÇÃÉIÉuÉWÉFìoò^
 	ObjManager::GetInstance()->AddObj(gun);
@@ -153,6 +154,8 @@ void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 //	}
 //}
 
+
+#pragma region State
 void Player::Move()
 {
 	m_move_dir[TimeKind::kPrev] = m_move_dir[TimeKind::kCurrent];
@@ -268,6 +271,8 @@ void Player::CalcRunSpeed()
 
 	math::Increase(m_move_speed, kAcceleration * FPS::GetDeltaTime(), kRunSpeed);
 }
+#pragma endregion
+
 
 void Player::CalcVelocity()
 {
@@ -307,8 +312,8 @@ void Player::CalcLookDir()
 	m_look_dir.at(TimeKind::kCurrent) = math::GetRotatedPos(m_look_dir.at(TimeKind::kCurrent), rot_q);
 
 	const float angle = math::GetYawBetweenTwoVector(m_look_dir.at(TimeKind::kNext), m_look_dir.at(TimeKind::kCurrent));
-	DrawFormatString(0, 60, 0xffffff, "angle           : %f", angle * math::kRadianToDegrees);
-	DrawFormatString(0, 80, 0xffffff, "threshold_angle : %f", m_confirm_look_dir_threshold_angle * math::kRadianToDegrees);
+	//DrawFormatString(0, 60, 0xffffff, "angle           : %f", angle * math::kRadianToDegrees);
+	//DrawFormatString(0, 80, 0xffffff, "threshold_angle : %f", m_confirm_look_dir_threshold_angle * math::kRadianToDegrees);
 	if (angle < m_confirm_look_dir_threshold_angle)
 	{
 		m_look_dir.at(TimeKind::kCurrent) = m_look_dir.at(TimeKind::kNext);

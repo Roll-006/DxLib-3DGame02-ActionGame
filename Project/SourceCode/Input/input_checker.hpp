@@ -53,94 +53,18 @@ public:
 	/// @brief 入力判定
 	/// @brief キー入力以外はenum classの定義を使用する必要あり
 	template<input_concepts::InputT InputT>
-	[[nodiscard]] bool IsInput(const InputT&	input_code) const
+	[[nodiscard]] bool IsInput(const InputT&	input_code)
 	{
-		// キー
-		if (std::is_same_v<int, InputT>)
-		{
-			return CheckHitKey(static_cast<int>(input_code));
-		}
-		// マウスボタン
-		if (std::is_same_v<mouse::ButtonKind, InputT>)
-		{
-			return (GetMouseInput() & static_cast<int>(input_code)) != 0;
-		}
-		// マウスホイール
-		if (std::is_same_v<mouse::WheelKind, InputT>)
-		{
-			return GetInputParameter(static_cast<mouse::WheelKind>(input_code));
-		}
-		// マウススライド
-		if (std::is_same_v<mouse::SlideDirKind, InputT>)
-		{
-			switch (static_cast<mouse::SlideDirKind>(input_code))
-			{
-			case mouse::SlideDirKind::kLeft:  if (m_mouse_data.at(TimeKind::kCurrent).pos.x < m_mouse_data.at(TimeKind::kPrev).pos.x) { return true; } break;
-			case mouse::SlideDirKind::kRight: if (m_mouse_data.at(TimeKind::kCurrent).pos.x > m_mouse_data.at(TimeKind::kPrev).pos.x) { return true; } break;
-			case mouse::SlideDirKind::kDown:  if (m_mouse_data.at(TimeKind::kCurrent).pos.y > m_mouse_data.at(TimeKind::kPrev).pos.y) { return true; } break;
-			case mouse::SlideDirKind::kUp:    if (m_mouse_data.at(TimeKind::kCurrent).pos.y < m_mouse_data.at(TimeKind::kPrev).pos.y) { return true; } break;
-			}
-		}
-		// パッドボタン
-		if (std::is_same_v<pad::ButtonKind, InputT>)
-		{
-			return m_xinput.Buttons[static_cast<int>(input_code)];
-		}
-		// パッドトリガー
-		if (std::is_same_v<pad::TriggerKind, InputT>)
-		{
-			return GetInputParameter(static_cast<pad::TriggerKind>(input_code));
-		}
-		// パッドスティック
-		if (std::is_same_v<pad::StickKind, InputT>)
-		{
-			return GetInputParameter(static_cast<pad::StickKind>(input_code));
-		}
-		return false;
+		return IsInput(ConvertInputTemplateToInputCode(input_code));
 	}
-	[[nodiscard]] bool IsInput(const InputCode& input_code) const;
+	[[nodiscard]] bool IsInput(const InputCode& input_code);
 
 	/// @brief 入力パラメータを取得
 	/// @brief キー入力以外はenum classの定義を使用する必要あり
 	template<input_concepts::ParameterT InputT>
-	[[nodiscard]] int GetInputParameter(const InputT&	 input_code) const
+	[[nodiscard]] int GetInputParameter(const InputT&	 input_code)
 	{
-		// マウススライド
-		if (std::is_same_v<mouse::WheelKind, InputT>)
-		{
-			const int rota = m_mouse_data.at(TimeKind::kCurrent).wheel_rotation;
-
-			switch (static_cast<mouse::WheelKind>(input_code))
-			{
-			case mouse::WheelKind::kUp:		return rota > 0 ? rota : 0;	break;
-			case mouse::WheelKind::kDown:	return rota < 0 ? rota : 0;	break;
-			}
-		}
-		// パッドトリガー
-		if (std::is_same_v<pad::TriggerKind, InputT>)
-		{
-			switch (static_cast<pad::TriggerKind>(input_code))
-			{
-			case pad::TriggerKind::kLT: if (m_xinput.LeftTrigger  > kTriggerDeadZone) { return m_xinput.LeftTrigger; }  break;
-			case pad::TriggerKind::kRT: if (m_xinput.RightTrigger > kTriggerDeadZone) { return m_xinput.RightTrigger; } break;
-			}
-		}
-		// パッドスティック
-		if (std::is_same_v<pad::StickKind, InputT>)
-		{
-			switch (static_cast<pad::StickKind>(input_code))
-			{
-			case pad::StickKind::kLSLeft:  if (m_xinput.ThumbLX < -kStickDeadZone) { return m_xinput.ThumbLX; } break;
-			case pad::StickKind::kLSRight: if (m_xinput.ThumbLX >  kStickDeadZone) { return m_xinput.ThumbLX; } break;
-			case pad::StickKind::kLSDown:  if (m_xinput.ThumbLY < -kStickDeadZone) { return m_xinput.ThumbLY; } break;
-			case pad::StickKind::kLSUp:    if (m_xinput.ThumbLY >  kStickDeadZone) { return m_xinput.ThumbLY; } break;
-			case pad::StickKind::kRSLeft:  if (m_xinput.ThumbRX < -kStickDeadZone) { return m_xinput.ThumbRX; } break;
-			case pad::StickKind::kRSRight: if (m_xinput.ThumbRX >  kStickDeadZone) { return m_xinput.ThumbRX; } break;
-			case pad::StickKind::kRSDown:  if (m_xinput.ThumbRY < -kStickDeadZone) { return m_xinput.ThumbRY; } break;
-			case pad::StickKind::kRSUp:	   if (m_xinput.ThumbRY >  kStickDeadZone) { return m_xinput.ThumbRY; } break;
-			}
-		}
-		return 0;
+		return GetInputParameter(ConvertInputTemplateToInputCode(input_code));
 	}
 	[[nodiscard]] int GetInputParameter(const InputCode& input_code) const;
 
@@ -149,16 +73,7 @@ public:
 	template<input_concepts::InputT InputT>
 	[[nodiscard]] float GetInputTime(const InputT&    input_code, const TimeKind time_kind)
 	{
-		const InputCode code = ConvertInputTemplateToInputCode(input_code);
-
-		for (const auto& [input_c, state_t, data] : m_input_data)
-		{
-			if (input_c.kind == code.kind && input_c.code == code.code && state_t == time_kind)
-			{
-				return data.input_time;
-			}
-		}
-		return 0.0f;
+		return GetInputTime(ConvertInputTemplateToInputCode(input_code), time_kind);
 	}
 	[[nodiscard]] float GetInputTime(const InputCode& input_code, const TimeKind time_kind);
 
@@ -167,27 +82,7 @@ public:
 	template<input_concepts::InputT InputT>
 	[[nodiscard]] InputState GetInputState(const InputT&    input_code)
 	{
-		const InputCode code	= ConvertInputTemplateToInputCode(input_code);
-		bool prev_is_input		= false;
-		bool current_is_input	= false;
-
-		for (const auto& [input_c, state_t, data] : m_input_data)
-		{
-			if (input_c.kind == code.kind && input_c.code == code.code)
-			{
-				switch (state_t)
-				{
-				case TimeKind::kPrev:		prev_is_input	 = data.is_input;	break;
-				case TimeKind::kCurrent:	current_is_input = data.is_input;	break;
-				}
-			}
-		}
-
-		if (current_is_input)
-		{
-			return prev_is_input ? InputState::kHold : InputState::kSingle;
-		}
-		return prev_is_input ? InputState::kPrev : InputState::kNone;
+		return GetInputState(ConvertInputTemplateToInputCode(input_code));
 	}
 	[[nodiscard]] InputState GetInputState(const InputCode& input_code);
 

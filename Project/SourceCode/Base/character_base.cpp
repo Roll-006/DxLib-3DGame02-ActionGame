@@ -21,55 +21,35 @@ WeaponKind CharacterBase::GetCurrentEquipWeaponKind()
 	return m_current_equip_weapon_kind;
 }
 
-void CharacterBase::RemoveWeapon(const std::string& obj_name)
+void CharacterBase::EquipWeapon(const int obj_handle)
 {
-	// w’è•Ší‚ğíœ
-	const auto remove_weapon = std::find_if(m_weapons.begin(), m_weapons.end(), [=](const std::shared_ptr<WeaponBase> weapon)
-	{
-		return weapon->GetName() == obj_name;
-	});
-	m_weapons.erase(remove_weapon, m_weapons.end());
-}
+	auto weapon = ObjManager::GetInstance()->GetObj<WeaponBase>(obj_handle);
 
-void CharacterBase::RemoveWeapon(const int obj_handle)
-{
-	// w’è•Ší‚ğíœ
-	// MEMO : erase-remove idiom
-	const auto remove_weapon = std::find_if(m_weapons.begin(), m_weapons.end(), [=](const std::shared_ptr<WeaponBase> weapon)
+	if (weapon)
 	{
-		return weapon->GetObjHandle() == obj_handle;
-	});
-
-	m_weapons.erase(remove_weapon, m_weapons.end());
-}
-
-void CharacterBase::AttachWeapon(const std::string& obj_name)
-{
-	for (const auto& weapon : m_weapons)
-	{
-		if (weapon->GetName() == obj_name)
-		{
-			m_current_equip_weapon = weapon;
-			m_current_equip_weapon->AttachOwner(m_modeler);
-		}
+		m_current_equip_weapon = weapon;
+		m_current_equip_weapon->AttachOwner(m_modeler);
 	}
+}
+
+void CharacterBase::UnequipWeapon()
+{
+	m_current_equip_weapon = nullptr;
 }
 
 void CharacterBase::AttachWeapon(const int obj_handle)
 {
-	for (const auto& weapon : m_weapons)
+	auto weapon = ObjManager::GetInstance()->GetObj<WeaponBase>(obj_handle);
+
+	if (weapon)
 	{
-		if (weapon->GetObjHandle() == obj_handle)
-		{
-			m_current_equip_weapon = weapon;
-			m_current_equip_weapon->AttachOwner(m_modeler);
-		}
+		m_attach_weapons[weapon->GetHolsterKind()] = weapon;
 	}
 }
 
-void CharacterBase::DetachWeapon()
+void CharacterBase::DetachWeapon(const HolsterKind holster_kind)
 {
-	m_current_equip_weapon = nullptr;
+	m_attach_weapons.erase(holster_kind);
 }
 #pragma endregion
 

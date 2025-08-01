@@ -4,6 +4,7 @@
 class ObjBase;
 class PhysicalObjBase;
 class CharacterBase;
+class IItem;
 class WeaponBase;
 class GunBase;
 
@@ -19,13 +20,17 @@ namespace obj_concepts
 
 	/// @brief キャラオブジェクト型である
 	template<typename T>
-	concept CharaObjT		= std::is_base_of_v<CharacterBase, T>;
+	concept CharacterT		= std::is_base_of_v<CharacterBase, T>;
+
+	/// @brief アイテム型である
+	template<typename T>
+	concept ItemT			= std::is_base_of_v<IItem, T>;
 
 	/// @brief 武器オブジェクト型である
 	template<typename T>
-	concept WeaponObjT		= std::is_base_of_v<WeaponBase, T>;
+	concept WeaponT			= std::is_base_of_v<WeaponBase, T>;
 
 	/// @brief 銃オブジェクト型である
 	template<typename T>
-	concept GunObjT			= std::is_base_of_v<GunBase, T>;
+	concept GunT			= std::is_base_of_v<GunBase, T>;
 }

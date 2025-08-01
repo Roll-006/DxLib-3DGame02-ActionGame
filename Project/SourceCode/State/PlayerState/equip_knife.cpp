@@ -33,5 +33,19 @@ void player_state::EquipKnife::Exit(Player* obj)
 
 std::shared_ptr<IState<Player>> player_state::EquipKnife::ChangeState(const Player* obj)
 {
+	const auto state_controller = obj->GetStateController();
+	const auto command			= CommandHandler::GetInstance();
+
+	// ナイフエイミング状態
+	if (command->IsExecuting(CommandKind::kAimKnife))
+	{
+		return state_controller->GetState<AimKnife, Player>();
+	}
+	// 切り裂く(第一段階)
+	if (command->IsExecuting(CommandKind::kAttack))
+	{
+		return state_controller->GetState<FirstSideSlashKnife, Player>();
+	}
+
 	return nullptr;
 }

@@ -10,7 +10,7 @@
 class GunBase abstract : public WeaponBase
 {
 public:
-	GunBase(const std::string& name, const GunKind gun_kind, const std::string& file_path);
+	GunBase(const std::string& name, const GunKind gun_kind, const HolsterKind holster_kind, const std::string& file_path);
 	virtual ~GunBase() = default;
 
 	// ˆø‚«‹à‚ªˆø‚©‚ê‚é

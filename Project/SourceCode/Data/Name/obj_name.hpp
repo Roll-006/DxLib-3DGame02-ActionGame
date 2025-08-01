@@ -18,6 +18,7 @@ static struct ObjName
 	const std::string SELECTOR				= "selector";
 	
 	const std::string ASSAULT_RIFLE			= "assault_rifle";
+	const std::string KNIFE					= "knife";
 
 	const std::string BULLET				= "bullet";
 	const std::string SHELL_CASING			= "shell_casing";

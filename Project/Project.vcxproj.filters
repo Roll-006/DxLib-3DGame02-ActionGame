@@ -263,9 +263,6 @@
     <ClCompile Include="SourceCode\State\PlayerState\shot.cpp">
       <Filter>State\PlayerState</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\State\PlayerState\side_slash_knife.cpp">
-      <Filter>State\PlayerState</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\State\PlayerState\crouch.cpp">
       <Filter>State\PlayerState</Filter>
     </ClCompile>
@@ -310,6 +307,15 @@
     </ClCompile>
     <ClCompile Include="SourceCode\Command\command_handler.cpp">
       <Filter>Command</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Object\knife.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\PlayerState\first_side_slash_knife.cpp">
+      <Filter>State\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\PlayerState\second_side_slash_knife.cpp">
+      <Filter>State\PlayerState</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -727,9 +733,6 @@
     <ClInclude Include="SourceCode\State\PlayerState\shot.hpp">
       <Filter>State\PlayerState</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\State\PlayerState\side_slash_knife.hpp">
-      <Filter>State\PlayerState</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\State\PlayerState\crouch.hpp">
       <Filter>State\PlayerState</Filter>
     </ClInclude>
@@ -801,6 +804,24 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Data\Kind\weapon_kind.hpp">
       <Filter>Data\Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Interface\i_item.hpp">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\Kind\item_kind.hpp">
+      <Filter>Data\Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Object\knife.hpp">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\Kind\holster_kind.hpp">
+      <Filter>Data\Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\PlayerState\first_side_slash_knife.hpp">
+      <Filter>State\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\PlayerState\second_side_slash_knife.hpp">
+      <Filter>State\PlayerState</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
