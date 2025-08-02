@@ -31,7 +31,7 @@ void player_state::EscapeWithKnife::Exit(Player* obj)
 
 }
 
-std::shared_ptr<IState<Player>> player_state::EscapeWithKnife::ChangeState(const Player* obj)
+std::shared_ptr<IState<Player>> player_state::EscapeWithKnife::ChangeState(Player* obj)
 {
 	return nullptr;
 }

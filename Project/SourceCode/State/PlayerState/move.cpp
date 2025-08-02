@@ -34,7 +34,7 @@ void player_state::Move::Exit(Player* obj)
 	
 }
 
-std::shared_ptr<IState<Player>> player_state::Move::ChangeState(const Player* obj)
+std::shared_ptr<IState<Player>> player_state::Move::ChangeState(Player* obj)
 {
 	// IDLE
 	if (!obj->GetStateController()->TryMove())

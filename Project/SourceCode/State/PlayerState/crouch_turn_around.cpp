@@ -31,7 +31,7 @@ void player_state::CrouchTurnAround::Exit(Player* obj)
 
 }
 
-std::shared_ptr<IState<Player>> player_state::CrouchTurnAround::ChangeState(const Player* obj)
+std::shared_ptr<IState<Player>> player_state::CrouchTurnAround::ChangeState(Player* obj)
 {
 	return nullptr;
 }

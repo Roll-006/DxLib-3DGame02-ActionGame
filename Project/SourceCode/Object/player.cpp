@@ -9,7 +9,9 @@ Player::Player() :
 	m_move_speed						(0.0f),
 	m_look_dir_offset_angle				(0.0f),
 	m_confirm_look_dir_threshold_angle	(0.0f),
-	m_weapon_shortcut_selecter					(std::make_shared<WeaponShortcutSelecter>(m_current_equip_weapon))
+	m_current_equip_weapon				(nullptr),
+	m_current_equip_knife				(nullptr),
+	m_weapon_shortcut_selecter			(std::make_shared<WeaponShortcutSelecter>())
 {
 	// ‰ŠúposEdir‚ğİ’è
 	m_look_dir[TimeKind::kCurrent] = m_look_dir[TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);
@@ -27,7 +29,9 @@ Player::Player() :
 	const auto knife = std::make_shared<Knife>();
 	AddItem(gun);
 	AddItem(knife);
-	m_weapon_shortcut_selecter->AttachShortcutWeapon(WeaponShortcutPosKind::kInsideUp, gun);
+	EquipWeapon(gun);
+	EquipKnife (knife);
+	m_weapon_shortcut_selecter->AttachShortcutWeapon(WeaponShortcutPosKind::kInsideLeft, gun);
 
 	// TODO : ‰¼‚Åe‚ÌƒIƒuƒWƒF“o˜^
 	ObjManager::GetInstance()->AddObj(gun);
@@ -59,7 +63,7 @@ void Player::Update()
 	m_look_dir_offset_angle				= kLookDirOffsetAngle;
 	m_confirm_look_dir_threshold_angle	= kConfirmLookDirThresholdAngle * math::kDegreesToRadian;
 
-	m_weapon_shortcut_selecter	->Update();
+	m_weapon_shortcut_selecter	->Update(this);
 	m_state						->Update(this);
 	m_animator					->Update();
 
@@ -69,9 +73,6 @@ void Player::Update()
 	CalcCapsuleColliderLength();
 
 	UpdateTransform(m_look_dir.at(TimeKind::kCurrent), kModelScale);
-
-
-	// MEMO : Update‚Å‚Í’eŠÛ‚Ì”­Ë”»’è‚Ì‚İ‚ğs‚¤‚à‚Ì‚Æ‚·‚é
 }
 
 void Player::LateUpdate()
@@ -81,18 +82,6 @@ void Player::LateUpdate()
 	m_state->LateUpdate(this);
 
 	CalcCameraAimPos();
-
-	// MEMO : LateUpdate‚ÅÀÛ‚Ì’eŠÛ‚ğ”­Ë‚³‚¹‚é
-
-	// ƒ{[ƒ“ˆÊ’uC³
-	//m_modeler->ApplyMatrix();
-	//m_bone_pos_offsetor->OffsetGunPoseBone(
-	//	m_modeler->GetModelHandle(),
-	//	m_look_dir.at(TimeKind::kCurrent),
-	//	m_camera->GetTransform()->GetMatrix(CoordinateKind::kWorld),
-	//	std::dynamic_pointer_cast<GunBase>(m_current_attach_weapon)->IsAiming());
-
-	//m_current_attach_weapon->LateUpdate();
 }
 
 void Player::Draw() const
@@ -101,7 +90,7 @@ void Player::Draw() const
 
 	m_modeler->Draw();
 
-	if (m_current_equip_weapon) { m_current_equip_weapon->Draw(); }
+	if (m_current_held_weapon) { m_current_held_weapon->Draw(); }
 
 	for (const auto& attach_weapon : m_attach_weapons)
 	{
@@ -164,6 +153,19 @@ void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 //		m_move_dir[TimeKind::kCurrent] = v3d::GetZeroV();
 //	}
 //}
+
+
+#pragma region •Ší
+void Player::UnequipWeapon()
+{
+	m_current_equip_weapon = nullptr;
+}
+
+void Player::UnequipKnife()
+{
+	m_current_equip_knife = nullptr;
+}
+#pragma endregion
 
 
 #pragma region State
@@ -284,6 +286,11 @@ void Player::CalcRunSpeed()
 }
 #pragma endregion
 
+
+WeaponKind Player::GetCurrentEquipWeaponKind()
+{
+	return m_current_equip_weapon ? m_current_equip_weapon->GetWeaponKind() : WeaponKind::kNone;
+}
 
 void Player::CalcVelocity()
 {

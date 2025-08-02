@@ -31,7 +31,7 @@ void player_state::SpecialNull::Exit(Player* obj)
 
 }
 
-std::shared_ptr<IState<Player>> player_state::SpecialNull::ChangeState(const Player* obj)
+std::shared_ptr<IState<Player>> player_state::SpecialNull::ChangeState(Player* obj)
 {
 	return nullptr;
 }

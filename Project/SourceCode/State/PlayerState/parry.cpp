@@ -31,7 +31,7 @@ void player_state::Parry::Exit(Player* obj)
 
 }
 
-std::shared_ptr<IState<Player>> player_state::Parry::ChangeState(const Player* obj)
+std::shared_ptr<IState<Player>> player_state::Parry::ChangeState(Player* obj)
 {
 	return nullptr;
 }

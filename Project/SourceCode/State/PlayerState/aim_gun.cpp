@@ -15,16 +15,18 @@ void player_state::AimGun::Update(Player* obj)
 {
 	obj->SetLookDirOffsetValueForAim();
 	obj->DirOfCameraForward();
+
+	obj->GetCurrentHeldWeapon()->Update();
 }
 
 void player_state::AimGun::LateUpdate(Player* obj)
 {
-
+	obj->GetCurrentHeldWeapon()->LateUpdate();
 }
 
 void player_state::AimGun::Enter(Player* obj)
 {
-
+	obj->HoldWeapon(obj->GetCurrentEquipWeapon());
 }
 
 void player_state::AimGun::Exit(Player* obj)
@@ -32,7 +34,7 @@ void player_state::AimGun::Exit(Player* obj)
 
 }
 
-std::shared_ptr<IState<Player>> player_state::AimGun::ChangeState(const Player* obj)
+std::shared_ptr<IState<Player>> player_state::AimGun::ChangeState(Player* obj)
 {
 	const auto state_controller = obj->GetStateController();
 

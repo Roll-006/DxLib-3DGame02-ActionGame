@@ -1,9 +1,10 @@
 #include "weapon_shortcut_selecter.hpp"
+
+#include "../Object/player.hpp"
 #include "../Command/command_handler.hpp"
 
-WeaponShortcutSelecter::WeaponShortcutSelecter(const std::shared_ptr<WeaponBase> equip_weapon) : 
-	m_current_equip_weapon		(equip_weapon),
-	m_current_select_shortcut	(WeaponShortcutPosKind::kInsideUp)
+WeaponShortcutSelecter::WeaponShortcutSelecter() : 
+	m_current_select_shortcut(WeaponShortcutPosKind::kInsideUp)
 {
 	
 }
@@ -13,10 +14,12 @@ WeaponShortcutSelecter::~WeaponShortcutSelecter()
 
 }
 
-void WeaponShortcutSelecter::Update()
+void WeaponShortcutSelecter::Update(const Player* player)
 {
 	SelectWeaponByKey();
 	SelectWeaponByPad();
+
+	HoldWeapon(player);
 }
 
 void WeaponShortcutSelecter::AttachShortcutWeapon(const WeaponShortcutPosKind shortcut_pos_kind, const std::shared_ptr<WeaponBase> weapon)
@@ -91,5 +94,14 @@ void WeaponShortcutSelecter::SelectWeaponRotate(const CommandKind command_kind)
 		if (current_shortcut_num < 0) { current_shortcut_num = 3; }
 
 		m_current_select_shortcut = static_cast<WeaponShortcutPosKind>(current_shortcut_num);
+	}
+}
+
+void WeaponShortcutSelecter::HoldWeapon(const Player* player)
+{
+	if (m_shortcut_weapons[m_current_select_shortcut])
+	{
+		//player->EquipWeapon();
+		//player->HeldWeapon();
 	}
 }

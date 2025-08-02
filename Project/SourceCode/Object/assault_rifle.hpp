@@ -19,9 +19,10 @@ private:
 	void CalcTargetPos()	  override;
 
 private:
-	static constexpr VECTOR kOffsetPos				= { -5.0f, -20.0f, 35.0f };
+	static constexpr VECTOR kModelBasicAngle		= { 0.0f, DX_PI_F, 0.0f };
+	static constexpr VECTOR kOffsetPos				= { -5.0f, -16.0f, 30.0f };
 	static constexpr VECTOR kOffsetAngle			= { -90.0f * math::kDegreesToRadian, 270.0f * math::kDegreesToRadian, 0.0f };
-	static constexpr float  kOffsetScale			= 2.0f;
+	static constexpr float  kOffsetScale			= 1.85f;
 
 	static constexpr VECTOR kMuzzleOffsetPos		= { 0.0f, 15.0f, 32.5f };
 	static constexpr VECTOR kEjectionPortOffsetPos = { 1.5f, 15.5f, -2.5f };

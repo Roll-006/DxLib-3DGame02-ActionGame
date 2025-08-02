@@ -3,13 +3,15 @@
 #include "../Data/Kind/weapon_shortcut_pos_kind.hpp"
 #include "../Data/Kind/command_kind.hpp"
 
+class Player;
+
 class WeaponShortcutSelecter final
 {
 public:
-	WeaponShortcutSelecter(const std::shared_ptr<WeaponBase> equip_weapon);
+	WeaponShortcutSelecter();
 	~WeaponShortcutSelecter();
 
-	void Update();
+	void Update(const Player* player);
 
 	void AttachShortcutWeapon(const WeaponShortcutPosKind pos_kind, const std::shared_ptr<WeaponBase> weapon);
 	void DetachShortcutWeapon(const WeaponShortcutPosKind pos_kind);
@@ -22,8 +24,10 @@ private:
 	void SelectWeaponByKey();
 	void SelectWeaponRotate(const CommandKind command_kind);
 
+	/// @brief 武器を持たせる
+	void HoldWeapon(const Player* player);
+
 private:
 	std::unordered_map<WeaponShortcutPosKind, std::shared_ptr<WeaponBase>>	m_shortcut_weapons;			// ショートカットに登録している武器
-	std::shared_ptr<WeaponBase>												m_current_equip_weapon;		// 現在装備している武器
 	WeaponShortcutPosKind													m_current_select_shortcut;	// 現在選択しているショートカット
 };

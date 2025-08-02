@@ -1,8 +1,8 @@
 #include "weapon_base.hpp"
 
-WeaponBase::WeaponBase(const std::string& name, const WeaponKind weapon_kind, const HolsterKind holster_kind, const std::string& file_path) :
+WeaponBase::WeaponBase(const std::string& name, const WeaponKind weapon_kind, const HolsterKind holster_kind) :
 	PhysicalObjBase	(name, ObjTag.WEAPON, MassKind::kLight),
-	m_modeler		(std::make_shared<Modeler>(m_transform, file_path, VGet(0.0f, DX_PI_F, 0.0f))),
+	m_modeler		(nullptr),
 	m_owner_modeler	(nullptr),
 	m_offset_pos	(v3d::GetZeroV()),
 	m_offset_angle	(v3d::GetZeroV()),
@@ -11,7 +11,7 @@ WeaponBase::WeaponBase(const std::string& name, const WeaponKind weapon_kind, co
 	m_weapon_kind	(weapon_kind),
 	m_holster_kind	(holster_kind)
 {
-	SetModelHandle(m_modeler->GetModelHandle());
+	
 }
 
 void WeaponBase::TrackOwner()

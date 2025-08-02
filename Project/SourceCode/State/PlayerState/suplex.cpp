@@ -31,7 +31,7 @@ void player_state::Suplex::Exit(Player* obj)
 
 }
 
-std::shared_ptr<IState<Player>> player_state::Suplex::ChangeState(const Player* obj)
+std::shared_ptr<IState<Player>> player_state::Suplex::ChangeState(Player* obj)
 {
 	return nullptr;
 }

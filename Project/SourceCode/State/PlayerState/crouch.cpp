@@ -32,7 +32,7 @@ void player_state::Crouch::Exit(Player* obj)
 	CommandHandler::GetInstance()->InitTriggerInputCount(CommandKind::kCrouch);
 }
 
-std::shared_ptr<IState<Player>> player_state::Crouch::ChangeState(const Player* obj)
+std::shared_ptr<IState<Player>> player_state::Crouch::ChangeState(Player* obj)
 {
 	const auto state_controller = obj->GetStateController();
 	const auto command			= CommandHandler::GetInstance();

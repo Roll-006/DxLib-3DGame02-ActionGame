@@ -1,7 +1,7 @@
 #pragma once
-#include "../Base/weapon_base.hpp"
+#include "../Base/knife_base.hpp"
 
-class Knife: public WeaponBase
+class Knife final : public KnifeBase
 {
 public:
 	Knife();
@@ -14,12 +14,9 @@ public:
 
 	void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) override;
 
-	[[nodiscard]] ItemKind GetItemKind() const override { return m_item_kind; }
-
 private:
-	static constexpr VECTOR kOffsetPos		= { -5.0f, -20.0f, 35.0f };
-	static constexpr VECTOR kOffsetAngle	= { -90.0f * math::kDegreesToRadian, 270.0f * math::kDegreesToRadian, 0.0f };
-	static constexpr float  kOffsetScale	= 2.0f;
-
-	ItemKind m_item_kind;
+	static constexpr VECTOR kModelBasicAngle	= { 0.0f, 270.0f * math::kDegreesToRadian, 0.0f };
+	static constexpr VECTOR kOffsetPos			= { -1.0f, -6.0f, 13.0f };
+	static constexpr VECTOR kOffsetAngle		= { 0.0f, 270.0f * math::kDegreesToRadian, DX_PI_F };
+	static constexpr float  kOffsetScale		= 0.1f;
 };

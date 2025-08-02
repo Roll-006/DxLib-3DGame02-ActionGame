@@ -12,26 +12,23 @@ public:
 	CharacterBase(const std::string& name, const std::string& tag, const std::string& file_path, const MassKind mass_level_kind);
 	virtual ~CharacterBase() = default;
 
-	[[nodiscard]] std::shared_ptr<Modeler>		GetModeler()						{ return m_modeler; }
-	[[nodiscard]] std::shared_ptr<AnimatorBase>	GetAnimator()				const	{ return m_animator; }
-	[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentAttachWeapon()	const	{ return m_current_equip_weapon; }
-	[[nodiscard]] WeaponKind					GetCurrentEquipWeaponKind();
+	[[nodiscard]] std::shared_ptr<Modeler>		GetModeler()					  { return m_modeler; }
+	[[nodiscard]] std::shared_ptr<AnimatorBase>	GetAnimator()				const { return m_animator; }
+	[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentHeldWeapon()		const { return m_current_held_weapon; }
+	[[nodiscard]] WeaponKind					GetCurrentHeldWeaponKind();
 
-protected:
+
 	#pragma region 武器
 	/// @brief 武器を装備する
 	template<obj_concepts::WeaponT WeaponObjT>
-	void EquipWeapon(const std::shared_ptr<WeaponObjT> weapon)
+	void HoldWeapon(const std::shared_ptr<WeaponObjT> weapon)
 	{
-		if (m_current_equip_weapon != weapon)
-		{
-			m_current_equip_weapon = weapon;
-			m_current_equip_weapon->AttachOwner(m_modeler);
-		}	
+		m_current_held_weapon = weapon;
+		m_current_held_weapon->AttachOwner(m_modeler);
 	}
-	void EquipWeapon(const int obj_handle);
+	void HoldWeapon(const int obj_handle);
 	/// @brief 武器の装備を解除する
-	void UnequipWeapon();
+	void ReleaseWeapon();
 
 	/// @brief 武器を装着する
 	template<obj_concepts::WeaponT WeaponObjT>
@@ -44,7 +41,7 @@ protected:
 	void DetachWeapon(const HolsterKind holster_kind);
 	#pragma endregion
 
-
+protected:
 	#pragma region コライダー
 	/// @brief キャラクターが標準的に持つコライダーを一括で作成する
 	/// @brief カプセル(コライダー), 球(着地判定用トリガー), メッシュトリガー
@@ -71,8 +68,7 @@ protected:
 	std::shared_ptr<Modeler>		m_modeler;
 	std::shared_ptr<AnimatorBase>	m_animator;
 
-	std::shared_ptr<WeaponBase>		m_current_equip_weapon;							// 現在装備している武器
-	WeaponKind						m_current_equip_weapon_kind;					// 現在装備している武器の種類
+	std::shared_ptr<WeaponBase>		m_current_held_weapon;							// 現在手に持っている武器
 	std::unordered_map<HolsterKind, std::shared_ptr<WeaponBase>> m_attach_weapons;	// 装着している武器
 
 	std::shared_ptr<Capsule>		m_capsule_collider;

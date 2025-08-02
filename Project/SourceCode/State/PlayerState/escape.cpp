@@ -31,7 +31,7 @@ void player_state::Escape::Exit(Player* obj)
 
 }
 
-std::shared_ptr<IState<Player>> player_state::Escape::ChangeState(const Player* obj)
+std::shared_ptr<IState<Player>> player_state::Escape::ChangeState(Player* obj)
 {
 	return nullptr;
 }

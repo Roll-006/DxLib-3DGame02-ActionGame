@@ -15,16 +15,20 @@ player_state::FirstSideSlashKnife::~FirstSideSlashKnife()
 void player_state::FirstSideSlashKnife::Update(Player* obj)
 {
 	m_combo_timer += FPS::GetDeltaTime();
+
+	obj->GetCurrentHeldWeapon()->Update();
 }
 
 void player_state::FirstSideSlashKnife::LateUpdate(Player* obj)
 {
-
+	obj->GetCurrentHeldWeapon()->LateUpdate();
 }
 
 void player_state::FirstSideSlashKnife::Enter(Player* obj)
 {
 	m_combo_timer = 0.0f;
+
+	obj->HoldWeapon(obj->GetCurrentEquipKnife());
 }
 
 void player_state::FirstSideSlashKnife::Exit(Player* obj)
@@ -32,7 +36,7 @@ void player_state::FirstSideSlashKnife::Exit(Player* obj)
 
 }
 
-std::shared_ptr<IState<Player>> player_state::FirstSideSlashKnife::ChangeState(const Player* obj)
+std::shared_ptr<IState<Player>> player_state::FirstSideSlashKnife::ChangeState(Player* obj)
 {
 	const auto state_controller = obj->GetStateController();
 	const auto command			= CommandHandler::GetInstance();

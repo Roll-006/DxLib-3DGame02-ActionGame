@@ -31,18 +31,18 @@ void player_state::WeaponActionNull::Exit(Player* obj)
 	
 }
 
-std::shared_ptr<IState<Player>> player_state::WeaponActionNull::ChangeState(const Player* obj)
+std::shared_ptr<IState<Player>> player_state::WeaponActionNull::ChangeState(Player* obj)
 {
 	const auto state_controller = obj->GetStateController();
 	const auto command			= CommandHandler::GetInstance();
 
 	// 銃装備状態
-	if (command->IsExecuting(CommandKind::kAimGun))
+	if (state_controller->TryEquipGun(obj))
 	{
 		return state_controller->GetState<EquipGun, Player>();
 	}
 	// ナイフエイミング状態
-	if (command->IsExecuting(CommandKind::kAimKnife))
+	if (command->IsExecuting(CommandKind::kAimKnife) && obj->GetCurrentEquipKnife())
 	{
 		return state_controller->GetState<AimKnife, Player>();
 	}

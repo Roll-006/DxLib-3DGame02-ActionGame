@@ -1,11 +1,11 @@
 #include "gun_base.hpp"
 
-GunBase::GunBase(const std::string& name, const GunKind gun_kind, const HolsterKind holster_kind, const std::string& file_path) :
-	WeaponBase						(name, WeaponKind::kGun, holster_kind, file_path),
+GunBase::GunBase(const std::string& name, const GunKind gun_kind, const HolsterKind holster_kind) :
+	WeaponBase						(name, WeaponKind::kGun, holster_kind),
 	m_diffusion_shape				(nullptr),
 	m_aim_dir						(v3d::GetZeroV()),
 	m_target_pos					(v3d::GetZeroV()),
-	m_muzzle_offset_pos			(v3d::GetZeroV()),
+	m_muzzle_offset_pos				(v3d::GetZeroV()),
 	m_ejection_port_offset_pos		(v3d::GetZeroV()),
 	m_point_on_ray_line				(v3d::GetZeroV()),
 	m_current_remaining_bullet_num	(0),

@@ -37,7 +37,6 @@ public:
 			m_items[item_kind].emplace_back(item);
 		}
 	}
-
 	/// @brief アイテムの所持登録を解除
 	template<obj_concepts::ItemT ItemT>
 	void RemoveItem(const std::shared_ptr<ItemT> item)
@@ -46,6 +45,30 @@ public:
 
 		m_items[item_kind].erase(std::remove(m_items[item_kind].begin(), m_items[item_kind].end(), item), m_items[item_kind].end());
 	}
+	#pragma endregion
+
+
+	#pragma region 武器
+	/// @brief 武器を装備させる
+	/// @brief ナイフの登録は許可しない
+	template<obj_concepts::WeaponT WeaponT>
+	void EquipWeapon(const std::shared_ptr<WeaponT> weapon)
+	{
+		if (weapon->GetWeaponKind() == WeaponKind::kKnife) { return; }
+
+		m_current_equip_weapon = weapon;
+	}
+	/// @brief 武器の装備を解除
+	void UnequipWeapon();
+
+	/// @brief ナイフを装備させる
+	template<obj_concepts::KnifeT KnifeT>
+	void EquipKnife(const std::shared_ptr<KnifeT> knife)
+	{
+		m_current_equip_knife = knife;
+	}
+	/// @brief ナイフの装備を解除
+	void UnequipKnife();
 	#pragma endregion
 
 
@@ -74,6 +97,9 @@ public:
 	#pragma region Getter
 	[[nodiscard]] std::shared_ptr<PlayerStateController>	GetStateController()		const { return m_state; }
 	[[nodiscard]] std::vector<std::shared_ptr<IItem>>		GetCurrentHaveItem(const ItemKind item_kind) const { return m_items.at(item_kind); }
+	[[nodiscard]] WeaponKind								GetCurrentEquipWeaponKind();
+	[[nodiscard]] std::shared_ptr<WeaponBase>				GetCurrentEquipWeapon()		const { return m_current_equip_weapon; }
+	[[nodiscard]] std::shared_ptr<KnifeBase>				GetCurrentEquipKnife()		const { return m_current_equip_knife; }
 	[[nodiscard]] std::shared_ptr<WeaponShortcutSelecter>	GetWeaponShortcutSelecter()	const { return m_weapon_shortcut_selecter; }
 	#pragma endregion
 
@@ -106,22 +132,22 @@ private:
 	static constexpr float kSlowWalkSpeed						= 0.2f;
 	static constexpr float kWalkSpeed							= 0.5f;
 	static constexpr float kRunSpeed							= 2.0f;
-	static constexpr float kAcceleration						= 1.0f;				// 加速度(減速度も共通)
+	static constexpr float kAcceleration						= 1.0f;					// 加速度(減速度も共通)
 
-	static constexpr float kMoveDirOffsetSpeed					= 0.065f;			// 移動方向の補正速度
-	static constexpr float kLookDirOffsetAngle					= 0.1f;				// 見る方向の補正角度
-	static constexpr float kLookDirOffsetAngleForAim			= 0.3f;				// エイミング時の見る方向を回転させる角度
-	static constexpr float kConfirmMoveDirThresholdDistance		= 0.08f;			// 目的の移動方向に到達したと判定する閾値
-	static constexpr float kConfirmLookDirThresholdAngle		= 10.0f;			// 目的の見る方向に到達したと判定する閾値
-	static constexpr float kConfirmLookDirThresholdAngleForAim	= 20.0f;			// エイミング時の目的の見る方向に到達したと判定する閾値
+	static constexpr float kMoveDirOffsetSpeed					= 0.065f;				// 移動方向の補正速度
+	static constexpr float kLookDirOffsetAngle					= 0.1f;					// 見る方向の補正角度
+	static constexpr float kLookDirOffsetAngleForAim			= 0.3f;					// エイミング時の見る方向を回転させる角度
+	static constexpr float kConfirmMoveDirThresholdDistance		= 0.08f;				// 目的の移動方向に到達したと判定する閾値
+	static constexpr float kConfirmLookDirThresholdAngle		= 10.0f;				// 目的の見る方向に到達したと判定する閾値
+	static constexpr float kConfirmLookDirThresholdAngleForAim	= 20.0f;				// エイミング時の目的の見る方向に到達したと判定する閾値
 
-	static constexpr int   kWalkStickSlopeLimit					= 15000;			// 歩き状態とするスティック傾きの上限
-	//static constexpr float kTurnAroundStickAngle				= 30.0f;			// 振り向きを行うスティックの入力角度
+	static constexpr int   kWalkStickSlopeLimit					= 15000;				// 歩き状態とするスティック傾きの上限
+	//static constexpr float kTurnAroundStickAngle				= 30.0f;				// 振り向きを行うスティックの入力角度
 
 	static constexpr float kCapsuleRadius						= 8.0f;
 	static constexpr float kLandingTriggerRadius				= 6.0f;
 	
-	//static constexpr float kADSSpeed							= 70.0f;			// スコープをのぞき込む速度
+	//static constexpr float kADSSpeed							= 70.0f;				// スコープをのぞき込む速度
 
 private:
 	std::shared_ptr<PlayerStateController>		m_state;
@@ -134,6 +160,8 @@ private:
 	float										m_look_dir_offset_angle;				// 見る方向の補正角度
 	float										m_confirm_look_dir_threshold_angle;		// 目的の見る方向に到達したと判定する閾値
 	
+	std::unordered_map<ItemKind, std::vector<std::shared_ptr<IItem>>> m_items;			// 所持しているアイテム
+	std::shared_ptr<WeaponBase>					m_current_equip_weapon;					// 現在装備している武器(ナイフ以外)
+	std::shared_ptr<KnifeBase>					m_current_equip_knife;					// 現在装備しているナイフ
 	std::shared_ptr<WeaponShortcutSelecter>		m_weapon_shortcut_selecter;				// ショートカットに登録されている武器
-	std::unordered_map<ItemKind, std::vector<std::shared_ptr<IItem>>>	m_items;		// 所持しているアイテム
 };

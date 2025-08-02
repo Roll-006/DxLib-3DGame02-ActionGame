@@ -22,7 +22,7 @@ public:
 	/// @brief 非アクティブ化する
 	virtual void Deactivate() abstract;
 
-	[[nodiscard]] virtual std::shared_ptr<IState<ObjT>> ChangeState(const ObjT* obj) abstract;
+	[[nodiscard]] virtual std::shared_ptr<IState<ObjT>> ChangeState(ObjT* obj) abstract;
 	[[nodiscard]] virtual int  GetStateKind()   const abstract;
 	[[nodiscard]] virtual int  GetStateHandle() const abstract;
 	[[nodiscard]] virtual bool IsActive()		const abstract;

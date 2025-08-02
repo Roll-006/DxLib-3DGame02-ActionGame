@@ -31,7 +31,7 @@ void player_state::FrontKick::Exit(Player* obj)
 
 }
 
-std::shared_ptr<IState<Player>> player_state::FrontKick::ChangeState(const Player* obj)
+std::shared_ptr<IState<Player>> player_state::FrontKick::ChangeState(Player* obj)
 {
 	return nullptr;
 }

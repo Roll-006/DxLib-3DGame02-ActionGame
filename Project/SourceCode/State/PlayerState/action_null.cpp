@@ -35,7 +35,7 @@ void player_state::ActionNull::Exit(Player* obj)
 
 }
 
-std::shared_ptr<IState<Player>> player_state::ActionNull::ChangeState(const Player* obj)
+std::shared_ptr<IState<Player>> player_state::ActionNull::ChangeState(Player* obj)
 {
 	const auto state_controller = obj->GetStateController();
 

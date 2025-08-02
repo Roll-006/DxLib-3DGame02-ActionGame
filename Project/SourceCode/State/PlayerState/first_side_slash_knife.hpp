@@ -16,7 +16,7 @@ namespace player_state
 		void LateUpdate	(Player* obj) override;
 		void Enter		(Player* obj) override;
 		void Exit		(Player* obj) override;
-		[[nodiscard]] std::shared_ptr<IState<Player>> ChangeState(const Player* obj) override;
+		[[nodiscard]] std::shared_ptr<IState<Player>> ChangeState(Player* obj) override;
 
 	private:
 		static constexpr float kComboValidTime = 0.7f;	// “ñ’iŠK–Ú‚ÌUŒ‚‚ª—LŒø‚É‚È‚éŠÔ

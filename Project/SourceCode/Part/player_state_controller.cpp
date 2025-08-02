@@ -336,6 +336,11 @@ bool PlayerStateController::TryRun()
 	return is_run;
 }
 
+bool PlayerStateController::TryEquipGun(Player* obj)
+{
+	return obj->GetCurrentEquipWeaponKind() == WeaponKind::kGun && CommandHandler::GetInstance()->IsExecuting(CommandKind::kAimGun);
+}
+
 //bool PlayerStateController::TryAimGun(Player* obj)
 //{
 //	return obj->GetCurrentEquipWeaponKind() == WeaponKind::kGun && CommandHandler::GetInstance()->IsExecuting(CommandKind::kAimGun);

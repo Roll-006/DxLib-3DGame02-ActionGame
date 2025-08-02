@@ -17,7 +17,7 @@ namespace player_state
 		void LateUpdate	(Player* obj) override;
 		void Enter		(Player* obj) override;
 		void Exit		(Player* obj) override;
-		[[nodiscard]] std::shared_ptr<IState<Player>> ChangeState(const Player* obj) override;
+		[[nodiscard]] std::shared_ptr<IState<Player>> ChangeState(Player* obj) override;
 
 	private:
 		bool m_is_first_move_frame;		// 移動を開始して最初のフレームであるかを判定

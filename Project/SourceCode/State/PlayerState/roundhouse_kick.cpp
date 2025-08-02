@@ -31,7 +31,7 @@ void player_state::RoundhouseKick::Exit(Player* obj)
 
 }
 
-std::shared_ptr<IState<Player>> player_state::RoundhouseKick::ChangeState(const Player* obj)
+std::shared_ptr<IState<Player>> player_state::RoundhouseKick::ChangeState(Player* obj)
 {
 	return nullptr;
 }

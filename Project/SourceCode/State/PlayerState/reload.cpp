@@ -31,7 +31,7 @@ void player_state::Reload::Exit(Player* obj)
 
 }
 
-std::shared_ptr<IState<Player>> player_state::Reload::ChangeState(const Player* obj)
+std::shared_ptr<IState<Player>> player_state::Reload::ChangeState(Player* obj)
 {
 	return nullptr;
 }

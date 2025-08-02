@@ -31,7 +31,7 @@ void player_state::Shot::Exit(Player* obj)
 
 }
 
-std::shared_ptr<IState<Player>> player_state::Shot::ChangeState(const Player* obj)
+std::shared_ptr<IState<Player>> player_state::Shot::ChangeState(Player* obj)
 {
 	return nullptr;
 }

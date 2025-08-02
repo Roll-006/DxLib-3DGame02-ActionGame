@@ -9,7 +9,7 @@
 class WeaponBase abstract : public PhysicalObjBase, public IItem
 {
 public:
-	WeaponBase(const std::string& name, const WeaponKind weapon_kind, const HolsterKind holster_kind, const std::string& file_path);
+	WeaponBase(const std::string& name, const WeaponKind weapon_kind, const HolsterKind holster_kind);
 	virtual ~WeaponBase() = default;
 
 	/// @brief 装備する持ち主をアタッチする

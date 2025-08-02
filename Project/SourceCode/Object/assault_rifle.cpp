@@ -1,8 +1,11 @@
 #include "assault_rifle.hpp"
 
 AssaultRifle::AssaultRifle() :
-	GunBase(ObjName.ASSAULT_RIFLE, GunKind::kSniperRifle, HolsterKind::kRifle, ModelPath.ASSAULT_RIFLE)
+	GunBase(ObjName.ASSAULT_RIFLE, GunKind::kSniperRifle, HolsterKind::kRifle)
 {
+	m_modeler = std::make_shared<Modeler>(m_transform, ModelPath.ASSAULT_RIFLE, kModelBasicAngle);
+
+	SetModelHandle(m_modeler->GetModelHandle());
 	SetOffset(kOffsetPos, kOffsetAngle, kOffsetScale);
 
 	m_diffusion_shape			= std::make_shared<Circle>();

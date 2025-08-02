@@ -14,11 +14,13 @@ player_state::StabKnife::~StabKnife()
 void player_state::StabKnife::Update(Player* obj)
 {
 	obj->SetLookDirOffsetValueForAim();
+
+	obj->GetCurrentHeldWeapon()->Update();
 }
 
 void player_state::StabKnife::LateUpdate(Player* obj)
 {
-
+	obj->GetCurrentHeldWeapon()->LateUpdate();
 }
 
 void player_state::StabKnife::Enter(Player* obj)
@@ -31,12 +33,12 @@ void player_state::StabKnife::Exit(Player* obj)
 
 }
 
-std::shared_ptr<IState<Player>> player_state::StabKnife::ChangeState(const Player* obj)
+std::shared_ptr<IState<Player>> player_state::StabKnife::ChangeState(Player* obj)
 {
 	const auto state_controller = obj->GetStateController();
 
 	// ナイフエイミング状態
-	if (obj->GetAnimator()->IsPlayEnd(AnimatorBase::BodyKind::kUpperBody))
+	if (obj->GetAnimator()->IsPlayEnd(AnimatorBase::BodyKind::kUpperBody) && obj->GetCurrentEquipKnife())
 	{
 		return state_controller->GetState<AimKnife, Player>();
 	}

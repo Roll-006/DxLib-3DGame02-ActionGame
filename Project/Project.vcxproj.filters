@@ -326,6 +326,9 @@
     <ClCompile Include="SourceCode\Part\weapon_shortcut_selecter.cpp">
       <Filter>Part</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\Base\knife_base.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\character_base.hpp">
@@ -843,6 +846,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Data\Kind\weapon_shortcut_pos_kind.hpp">
       <Filter>Data\Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Base\knife_base.hpp">
+      <Filter>Base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -5,8 +5,7 @@ CharacterBase::CharacterBase(const std::string& name, const std::string& tag, co
 	PhysicalObjBase					(name, tag, mass_level_kind),
 	m_modeler						(std::make_shared<Modeler>(m_transform, file_path, VGet(0.0f, DX_PI_F, 0.0f))),
 	m_animator						(nullptr),
-	m_current_equip_weapon			(nullptr),
-	m_current_equip_weapon_kind		(WeaponKind::kNone),
+	m_current_held_weapon			(nullptr),
 	m_capsule_collider				(nullptr),
 	m_capsule_length				(0.0f),
 	m_capsule_radius				(0.0f),
@@ -15,26 +14,26 @@ CharacterBase::CharacterBase(const std::string& name, const std::string& tag, co
 	SetModelHandle(m_modeler->GetModelHandle());
 }
 
-WeaponKind CharacterBase::GetCurrentEquipWeaponKind()
+WeaponKind CharacterBase::GetCurrentHeldWeaponKind()
 {
-	m_current_equip_weapon_kind = m_current_equip_weapon ? m_current_equip_weapon->GetWeaponKind() : WeaponKind::kNone;
-	return m_current_equip_weapon_kind;
+	return m_current_held_weapon ? m_current_held_weapon->GetWeaponKind() : WeaponKind::kNone;
 }
 
-void CharacterBase::EquipWeapon(const int obj_handle)
+void CharacterBase::HoldWeapon(const int obj_handle)
 {
 	auto weapon = ObjManager::GetInstance()->GetObj<WeaponBase>(obj_handle);
 
 	if (weapon)
 	{
-		m_current_equip_weapon = weapon;
-		m_current_equip_weapon->AttachOwner(m_modeler);
+		m_current_held_weapon = weapon;
+		m_current_held_weapon->AttachOwner(m_modeler);
 	}
 }
 
-void CharacterBase::UnequipWeapon()
+void CharacterBase::ReleaseWeapon()
 {
-	m_current_equip_weapon = nullptr;
+	m_current_held_weapon->DetachOwner();
+	m_current_held_weapon = nullptr;
 }
 
 void CharacterBase::AttachWeapon(const int obj_handle)

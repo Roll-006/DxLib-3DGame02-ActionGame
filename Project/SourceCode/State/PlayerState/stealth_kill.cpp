@@ -31,7 +31,7 @@ void player_state::StealthKill::Exit(Player* obj)
 
 }
 
-std::shared_ptr<IState<Player>> player_state::StealthKill::ChangeState(const Player* obj)
+std::shared_ptr<IState<Player>> player_state::StealthKill::ChangeState(Player* obj)
 {
 	return nullptr;
 }
