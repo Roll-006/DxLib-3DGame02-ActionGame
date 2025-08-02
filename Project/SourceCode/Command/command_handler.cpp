@@ -42,41 +42,53 @@ void CommandHandler::InitKeyCommand()
 	m_key_codes.clear();
 
 	// TODO : 後にJson化
-	AddInputCode(CommandKind::kDecide,			KEY_INPUT_SPACE);
-	AddInputCode(CommandKind::kDecide,			KEY_INPUT_RETURN);
-	AddInputCode(CommandKind::kBack,			mouse::ButtonKind::kRight);
-	AddInputCode(CommandKind::kSelectUp,		KEY_INPUT_W);
-	AddInputCode(CommandKind::kSelectUp,		KEY_INPUT_UP);
-	AddInputCode(CommandKind::kSelectUp,		mouse::WheelKind::kUp);
-	AddInputCode(CommandKind::kSelectDown,		KEY_INPUT_S);
-	AddInputCode(CommandKind::kSelectDown,		KEY_INPUT_DOWN);
-	AddInputCode(CommandKind::kSelectDown,		mouse::WheelKind::kDown);
-	AddInputCode(CommandKind::kSelectLeft,		KEY_INPUT_A);
-	AddInputCode(CommandKind::kSelectLeft,		KEY_INPUT_LEFT);
-	AddInputCode(CommandKind::kSelectRight,		KEY_INPUT_D);
-	AddInputCode(CommandKind::kSelectRight,		KEY_INPUT_RIGHT);
-	AddInputCode(CommandKind::kPause,			KEY_INPUT_ESCAPE);
-	AddInputCode(CommandKind::kPause,			KEY_INPUT_TAB);
+	AddInputCode(CommandKind::kDecide,						KEY_INPUT_SPACE);
+	AddInputCode(CommandKind::kDecide,						KEY_INPUT_RETURN);
+	AddInputCode(CommandKind::kBack,						mouse::ButtonKind::kRight);
+	AddInputCode(CommandKind::kSelectUp,					KEY_INPUT_W);
+	AddInputCode(CommandKind::kSelectUp,					KEY_INPUT_UP);
+	AddInputCode(CommandKind::kSelectUp,					mouse::WheelKind::kUp);
+	AddInputCode(CommandKind::kSelectDown,					KEY_INPUT_S);
+	AddInputCode(CommandKind::kSelectDown,					KEY_INPUT_DOWN);
+	AddInputCode(CommandKind::kSelectDown,					mouse::WheelKind::kDown);
+	AddInputCode(CommandKind::kSelectLeft,					KEY_INPUT_A);
+	AddInputCode(CommandKind::kSelectLeft,					KEY_INPUT_LEFT);
+	AddInputCode(CommandKind::kSelectRight,					KEY_INPUT_D);
+	AddInputCode(CommandKind::kSelectRight,					KEY_INPUT_RIGHT);
+	AddInputCode(CommandKind::kPause,						KEY_INPUT_ESCAPE);
+	AddInputCode(CommandKind::kPause,						KEY_INPUT_TAB);
 
-	AddInputCode(CommandKind::kAimGun,			mouse::ButtonKind::kRight);
-	AddInputCode(CommandKind::kAttack,			mouse::ButtonKind::kLeft);
-	AddInputCode(CommandKind::kAimKnife,		KEY_INPUT_SPACE);
-	AddInputCode(CommandKind::kInvestigate,		KEY_INPUT_F);
-	AddInputCode(CommandKind::kMelee,			KEY_INPUT_F);
-	AddInputCode(CommandKind::kReload,			KEY_INPUT_R);
-	AddInputCode(CommandKind::kScope,			KEY_INPUT_LALT);
-	AddInputCode(CommandKind::kMoveUpPlayer,	KEY_INPUT_W);
-	AddInputCode(CommandKind::kMoveDownPlayer,	KEY_INPUT_S);
-	AddInputCode(CommandKind::kMoveLeftPlayer,	KEY_INPUT_A);
-	AddInputCode(CommandKind::kMoveRightPlayer,	KEY_INPUT_D);
-	AddInputCode(CommandKind::kRun,				KEY_INPUT_LSHIFT);
-	AddInputCode(CommandKind::kCrouch,			KEY_INPUT_E);
-	AddInputCode(CommandKind::kQuickTurn,		KEY_INPUT_Q);
+	AddInputCode(CommandKind::kAimGun,						mouse::ButtonKind::kRight);
+	AddInputCode(CommandKind::kAttack,						mouse::ButtonKind::kLeft);
+	AddInputCode(CommandKind::kAimKnife,					KEY_INPUT_SPACE);
+	AddInputCode(CommandKind::kInvestigate,					KEY_INPUT_F);
+	AddInputCode(CommandKind::kMelee,						KEY_INPUT_F);
+	AddInputCode(CommandKind::kReload,						KEY_INPUT_R);
+	AddInputCode(CommandKind::kScope,						KEY_INPUT_LALT);
+	AddInputCode(CommandKind::kMoveUpPlayer,				KEY_INPUT_W);
+	AddInputCode(CommandKind::kMoveDownPlayer,				KEY_INPUT_S);
+	AddInputCode(CommandKind::kMoveLeftPlayer,				KEY_INPUT_A);
+	AddInputCode(CommandKind::kMoveRightPlayer,				KEY_INPUT_D);
+	AddInputCode(CommandKind::kRun,							KEY_INPUT_LSHIFT);
+	AddInputCode(CommandKind::kCrouch,						KEY_INPUT_E);
+	AddInputCode(CommandKind::kQuickTurn,					KEY_INPUT_Q);
 
-	AddInputCode(CommandKind::kMoveUpCamera,	KEY_INPUT_UP);
-	AddInputCode(CommandKind::kMoveDownCamera,	KEY_INPUT_DOWN);
-	AddInputCode(CommandKind::kMoveLeftCamera,	KEY_INPUT_LEFT);
-	AddInputCode(CommandKind::kMoveRightCamera,	KEY_INPUT_RIGHT);
+	AddInputCode(CommandKind::kMoveUpCamera,				KEY_INPUT_UP);
+	AddInputCode(CommandKind::kMoveDownCamera,				KEY_INPUT_DOWN);
+	AddInputCode(CommandKind::kMoveLeftCamera,				KEY_INPUT_LEFT);
+	AddInputCode(CommandKind::kMoveRightCamera,				KEY_INPUT_RIGHT);
+
+	AddInputCode(CommandKind::kSelectWeaponInsideLeft,		KEY_INPUT_2);
+	AddInputCode(CommandKind::kSelectWeaponInsideUp,		KEY_INPUT_1);
+	AddInputCode(CommandKind::kSelectWeaponInsideRight,		KEY_INPUT_4);
+	AddInputCode(CommandKind::kSelectWeaponInsideDown,		KEY_INPUT_3);
+	AddInputCode(CommandKind::kSelectWeaponOutsideLeft,		KEY_INPUT_6);
+	AddInputCode(CommandKind::kSelectWeaponOutsideUp,		KEY_INPUT_5);
+	AddInputCode(CommandKind::kSelectWeaponOutsideRight,	KEY_INPUT_8);
+	AddInputCode(CommandKind::kSelectWeaponOutsideDown,		KEY_INPUT_7);
+	AddInputCode(CommandKind::kSelectWeaponRotateLeft,		mouse::WheelKind ::kUp);
+	AddInputCode(CommandKind::kSelectWeaponRotateRight,		mouse::WheelKind ::kDown);
+	AddInputCode(CommandKind::kSideChangeWeapon,			mouse::ButtonKind::kMiddle);
 
 	// 例外処理として実行
 	//AddInputCode(CommandKind::kMoveUpCamera,		mouse::SlideDirKind::kUp);
@@ -90,35 +102,40 @@ void CommandHandler::InitPadCommand()
 	m_pad_codes.clear();
 
 	// TODO : 後にJson化
-	AddInputCode(CommandKind::kDecide,			pad::ButtonKind	::kA);
-	AddInputCode(CommandKind::kBack,			pad::ButtonKind	::kB);
-	AddInputCode(CommandKind::kSelectUp,		pad::ButtonKind	::kUp);
-	AddInputCode(CommandKind::kSelectUp,		pad::StickKind	::kLSUp);
-	AddInputCode(CommandKind::kSelectDown,		pad::ButtonKind	::kDown);
-	AddInputCode(CommandKind::kSelectDown,		pad::StickKind	::kLSDown);
-	AddInputCode(CommandKind::kSelectLeft,		pad::ButtonKind	::kLeft);
-	AddInputCode(CommandKind::kSelectLeft,		pad::StickKind	::kLSLeft);
-	AddInputCode(CommandKind::kSelectRight,		pad::ButtonKind	::kRight);
-	AddInputCode(CommandKind::kSelectRight,		pad::StickKind	::kLSRight);
-	AddInputCode(CommandKind::kPause,			pad::ButtonKind	::kStart);
+	AddInputCode(CommandKind::kDecide,				pad::ButtonKind	::kA);
+	AddInputCode(CommandKind::kBack,				pad::ButtonKind	::kB);
+	AddInputCode(CommandKind::kSelectUp,			pad::ButtonKind	::kUp);
+	AddInputCode(CommandKind::kSelectUp,			pad::StickKind	::kLSUp);
+	AddInputCode(CommandKind::kSelectDown,			pad::ButtonKind	::kDown);
+	AddInputCode(CommandKind::kSelectDown,			pad::StickKind	::kLSDown);
+	AddInputCode(CommandKind::kSelectLeft,			pad::ButtonKind	::kLeft);
+	AddInputCode(CommandKind::kSelectLeft,			pad::StickKind	::kLSLeft);
+	AddInputCode(CommandKind::kSelectRight,			pad::ButtonKind	::kRight);
+	AddInputCode(CommandKind::kSelectRight,			pad::StickKind	::kLSRight);
+	AddInputCode(CommandKind::kPause,				pad::ButtonKind	::kStart);
 
-	AddInputCode(CommandKind::kAimGun,			pad::TriggerKind::kLT);
-	AddInputCode(CommandKind::kAttack,			pad::TriggerKind::kRT);
-	AddInputCode(CommandKind::kAimKnife,		pad::ButtonKind	::kLB);
-	AddInputCode(CommandKind::kInvestigate,		pad::ButtonKind	::kA);
-	AddInputCode(CommandKind::kMelee,			pad::ButtonKind	::kA);
-	AddInputCode(CommandKind::kReload,			pad::ButtonKind	::kX);
-	AddInputCode(CommandKind::kScope,			pad::ButtonKind	::kLSPush);
-	AddInputCode(CommandKind::kMoveUpPlayer,	pad::StickKind	::kLSUp);
-	AddInputCode(CommandKind::kMoveDownPlayer,	pad::StickKind	::kLSDown);
-	AddInputCode(CommandKind::kMoveLeftPlayer,	pad::StickKind	::kLSLeft);
-	AddInputCode(CommandKind::kMoveRightPlayer, pad::StickKind	::kLSRight);
-	AddInputCode(CommandKind::kRun,				pad::ButtonKind	::kLSPush);
-	AddInputCode(CommandKind::kRun,				pad::ButtonKind	::kRB);
-	AddInputCode(CommandKind::kCrouch,			pad::ButtonKind	::kB);
-	AddInputCode(CommandKind::kQuickTurn,		pad::ButtonKind	::kRB);
+	AddInputCode(CommandKind::kAimGun,				pad::TriggerKind::kLT);
+	AddInputCode(CommandKind::kAttack,				pad::TriggerKind::kRT);
+	AddInputCode(CommandKind::kAimKnife,			pad::ButtonKind	::kLB);
+	AddInputCode(CommandKind::kInvestigate,			pad::ButtonKind	::kA);
+	AddInputCode(CommandKind::kMelee,				pad::ButtonKind	::kA);
+	AddInputCode(CommandKind::kReload,				pad::ButtonKind	::kX);
+	AddInputCode(CommandKind::kScope,				pad::ButtonKind	::kLSPush);
+	AddInputCode(CommandKind::kMoveUpPlayer,		pad::StickKind	::kLSUp);
+	AddInputCode(CommandKind::kMoveDownPlayer,		pad::StickKind	::kLSDown);
+	AddInputCode(CommandKind::kMoveLeftPlayer,		pad::StickKind	::kLSLeft);
+	AddInputCode(CommandKind::kMoveRightPlayer,		pad::StickKind	::kLSRight);
+	AddInputCode(CommandKind::kRun,					pad::ButtonKind	::kLSPush);
+	AddInputCode(CommandKind::kRun,					pad::ButtonKind	::kRB);
+	AddInputCode(CommandKind::kCrouch,				pad::ButtonKind	::kB);
+	AddInputCode(CommandKind::kQuickTurn,			pad::ButtonKind	::kRB);
 
-	AddInputCode(CommandKind::kInitAim,			pad::ButtonKind	::kRB);
+	AddInputCode(CommandKind::kInitAim,				pad::ButtonKind	::kRB);
+
+	AddInputCode(CommandKind::kSelectWeaponLeft,	pad::ButtonKind	::kLeft);
+	AddInputCode(CommandKind::kSelectWeaponUp,		pad::ButtonKind	::kUp);
+	AddInputCode(CommandKind::kSelectWeaponRight,	pad::ButtonKind	::kRight);
+	AddInputCode(CommandKind::kSelectWeaponDown,	pad::ButtonKind	::kDown);
 
 	// 例外処理として実行
 	//AddInputCode(CommandKind::kMoveUpCamera,		pad::StickKind	::kRSUp);
@@ -129,32 +146,47 @@ void CommandHandler::InitPadCommand()
 
 void CommandHandler::InitInputMode()
 {
-	m_input_mode[CommandKind::kDecide]			= InputModeKind::kSingle;
-	m_input_mode[CommandKind::kBack]			= InputModeKind::kSingle;
-	m_input_mode[CommandKind::kSelectUp]		= InputModeKind::kSingle;
-	m_input_mode[CommandKind::kSelectDown]		= InputModeKind::kSingle;
-	m_input_mode[CommandKind::kSelectLeft]		= InputModeKind::kSingle;
-	m_input_mode[CommandKind::kSelectRight]		= InputModeKind::kSingle;
-	m_input_mode[CommandKind::kPause]			= InputModeKind::kSingle;
-	m_input_mode[CommandKind::kAimGun]			= InputModeKind::kHold;
-	m_input_mode[CommandKind::kAttack]			= InputModeKind::kSingle;
-	m_input_mode[CommandKind::kAimKnife]		= InputModeKind::kHold;
-	m_input_mode[CommandKind::kInvestigate]		= InputModeKind::kSingle;
-	m_input_mode[CommandKind::kMelee]			= InputModeKind::kSingle;
-	m_input_mode[CommandKind::kReload]			= InputModeKind::kSingle;
-	m_input_mode[CommandKind::kScope]			= InputModeKind::kSingle;
-	m_input_mode[CommandKind::kMoveUpPlayer]	= InputModeKind::kHold;
-	m_input_mode[CommandKind::kMoveDownPlayer]	= InputModeKind::kHold;
-	m_input_mode[CommandKind::kMoveLeftPlayer]	= InputModeKind::kHold;
-	m_input_mode[CommandKind::kMoveRightPlayer] = InputModeKind::kHold;
-	m_input_mode[CommandKind::kRun]				= InputModeKind::kTrigger;
-	m_input_mode[CommandKind::kCrouch]			= InputModeKind::kTrigger;
-	m_input_mode[CommandKind::kQuickTurn]		= InputModeKind::kSingle;
-	m_input_mode[CommandKind::kMoveUpCamera]	= InputModeKind::kHold;
-	m_input_mode[CommandKind::kMoveDownCamera]	= InputModeKind::kHold;
-	m_input_mode[CommandKind::kMoveLeftCamera]	= InputModeKind::kHold;
-	m_input_mode[CommandKind::kMoveRightCamera] = InputModeKind::kHold;
-	m_input_mode[CommandKind::kInitAim]			= InputModeKind::kSingle;
+	m_input_mode[CommandKind::kDecide]						= InputModeKind::kSingle;
+	m_input_mode[CommandKind::kBack]						= InputModeKind::kSingle;
+	m_input_mode[CommandKind::kSelectUp]					= InputModeKind::kSingle;
+	m_input_mode[CommandKind::kSelectDown]					= InputModeKind::kSingle;
+	m_input_mode[CommandKind::kSelectLeft]					= InputModeKind::kSingle;
+	m_input_mode[CommandKind::kSelectRight]					= InputModeKind::kSingle;
+	m_input_mode[CommandKind::kPause]						= InputModeKind::kSingle;
+	m_input_mode[CommandKind::kAimGun]						= InputModeKind::kHold;
+	m_input_mode[CommandKind::kAttack]						= InputModeKind::kSingle;
+	m_input_mode[CommandKind::kAimKnife]					= InputModeKind::kHold;
+	m_input_mode[CommandKind::kInvestigate]					= InputModeKind::kSingle;
+	m_input_mode[CommandKind::kMelee]						= InputModeKind::kSingle;
+	m_input_mode[CommandKind::kReload]						= InputModeKind::kSingle;
+	m_input_mode[CommandKind::kScope]						= InputModeKind::kSingle;
+	m_input_mode[CommandKind::kMoveUpPlayer]				= InputModeKind::kHold;
+	m_input_mode[CommandKind::kMoveDownPlayer]				= InputModeKind::kHold;
+	m_input_mode[CommandKind::kMoveLeftPlayer]				= InputModeKind::kHold;
+	m_input_mode[CommandKind::kMoveRightPlayer]				= InputModeKind::kHold;
+	m_input_mode[CommandKind::kRun]							= InputModeKind::kTrigger;
+	m_input_mode[CommandKind::kCrouch]						= InputModeKind::kTrigger;
+	m_input_mode[CommandKind::kQuickTurn]					= InputModeKind::kSingle;
+	m_input_mode[CommandKind::kMoveUpCamera]				= InputModeKind::kHold;
+	m_input_mode[CommandKind::kMoveDownCamera]				= InputModeKind::kHold;
+	m_input_mode[CommandKind::kMoveLeftCamera]				= InputModeKind::kHold;
+	m_input_mode[CommandKind::kMoveRightCamera]				= InputModeKind::kHold;
+	m_input_mode[CommandKind::kInitAim]						= InputModeKind::kSingle;
+	m_input_mode[CommandKind::kSelectWeaponInsideLeft]		= InputModeKind::kSingle;
+	m_input_mode[CommandKind::kSelectWeaponInsideUp]		= InputModeKind::kSingle;
+	m_input_mode[CommandKind::kSelectWeaponInsideRight]		= InputModeKind::kSingle;
+	m_input_mode[CommandKind::kSelectWeaponInsideDown]		= InputModeKind::kSingle;
+	m_input_mode[CommandKind::kSelectWeaponOutsideLeft]		= InputModeKind::kSingle;
+	m_input_mode[CommandKind::kSelectWeaponOutsideUp]		= InputModeKind::kSingle;
+	m_input_mode[CommandKind::kSelectWeaponOutsideRight]	= InputModeKind::kSingle;
+	m_input_mode[CommandKind::kSelectWeaponOutsideDown]		= InputModeKind::kSingle;
+	m_input_mode[CommandKind::kSelectWeaponRotateLeft]		= InputModeKind::kSingle;
+	m_input_mode[CommandKind::kSelectWeaponRotateRight]		= InputModeKind::kSingle;
+	m_input_mode[CommandKind::kSideChangeWeapon]			= InputModeKind::kSingle;
+	m_input_mode[CommandKind::kSelectWeaponLeft]			= InputModeKind::kSingle;
+	m_input_mode[CommandKind::kSelectWeaponUp]				= InputModeKind::kSingle;
+	m_input_mode[CommandKind::kSelectWeaponRight]			= InputModeKind::kSingle;
+	m_input_mode[CommandKind::kSelectWeaponDown]			= InputModeKind::kSingle;
 }
 
 bool CommandHandler::IsExecuting(const CommandKind kind)

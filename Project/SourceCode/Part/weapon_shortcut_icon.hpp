@@ -18,6 +18,8 @@ public:
 	}
 
 private:
+	static constexpr int kAlphaBlendNum = 100;
+
 	Vector2D<int>				m_center_pos;
 	int							m_icon_width;
 	int							m_icon_height;

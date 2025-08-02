@@ -323,7 +323,7 @@
     <ClCompile Include="SourceCode\Part\weapon_shortcut.cpp">
       <Filter>Part</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Part\weapon_shortcut_changer.cpp">
+    <ClCompile Include="SourceCode\Part\weapon_selecter.cpp">
       <Filter>Part</Filter>
     </ClCompile>
   </ItemGroup>
@@ -838,7 +838,7 @@
     <ClInclude Include="SourceCode\Part\weapon_shortcut.hpp">
       <Filter>Part</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Part\weapon_shortcut_changer.hpp">
+    <ClInclude Include="SourceCode\Part\weapon_selecter.hpp">
       <Filter>Part</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Data\Kind\weapon_shortcut_pos_kind.hpp">

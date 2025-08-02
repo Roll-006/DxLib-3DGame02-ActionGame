@@ -117,7 +117,7 @@ int InputChecker::GetInputParameter(const InputCode& input_code) const
 
 	switch (input_code.kind)
 	{
-	case InputKind::kMouseSlide:
+	case InputKind::kMouseWheel:
 		rota = m_mouse_data.at(TimeKind::kCurrent).wheel_rotation;
 		switch (static_cast<mouse::WheelKind>(input_code.code))
 		{

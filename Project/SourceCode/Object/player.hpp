@@ -5,7 +5,7 @@
 
 #include "assault_rifle.hpp"
 #include "knife.hpp"
-#include "../Part/weapon_shortcut_changer.hpp"
+#include "../Part/weapon_selecter.hpp"
 
 #include "../Manager/camera_manager.hpp"
 
@@ -74,6 +74,7 @@ public:
 	#pragma region Getter
 	[[nodiscard]] std::shared_ptr<PlayerStateController> GetStateController() const { return m_state; }
 	[[nodiscard]] std::vector<std::shared_ptr<IItem>>	 GetCurrentHaveItem(const ItemKind item_kind) const { return m_items.at(item_kind); }
+	[[nodiscard]] std::shared_ptr<WeaponSelecter>		 GetWeaponSelecter()  const { return m_weapon_selecter; }
 	#pragma endregion
 
 private:
@@ -133,6 +134,6 @@ private:
 	float										m_look_dir_offset_angle;				// 見る方向の補正角度
 	float										m_confirm_look_dir_threshold_angle;		// 目的の見る方向に到達したと判定する閾値
 	
-	std::shared_ptr<WeaponShortcutChanger>		m_weapon_shortcut_changer;				// ショートカットに登録されている武器
+	std::shared_ptr<WeaponSelecter>		m_weapon_selecter;				// ショートカットに登録されている武器
 	std::unordered_map<ItemKind, std::vector<std::shared_ptr<IItem>>>	m_items;		// 所持しているアイテム
 };

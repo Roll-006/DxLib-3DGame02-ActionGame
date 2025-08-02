@@ -13,19 +13,25 @@ WeaponShortcut::~WeaponShortcut()
 
 }
 
-void WeaponShortcut::Update()
-{
-
-}
-
 void WeaponShortcut::Draw() const
 {
+	const auto current_select_shortcut	= m_player->GetWeaponSelecter()->GetCurrentSelectShortcut();
+	const auto current_center_pos		= m_center_pos.at(current_select_shortcut);
+
 	for (const auto& shortcut_icon : m_weapon_shortcut_icons)
 	{
 		shortcut_icon.second->Draw();
 	}
 
+	DrawBox(
+		static_cast<int>(current_center_pos.x - kIconWidth  * 0.5f),
+		static_cast<int>(current_center_pos.y - kIconHeight * 0.5f),
+		static_cast<int>(current_center_pos.x + kIconWidth  * 0.5f),
+		static_cast<int>(current_center_pos.y + kIconHeight * 0.5f),
+		0xffffff, FALSE);
+
 	DrawCircle(kCenterPos.x, kCenterPos.y, 2, 0xff0000, TRUE);
+	DrawCircle(current_center_pos.x, current_center_pos.y, 4, 0xff0000, TRUE);
 }
 
 void WeaponShortcut::CreateShortcutIcon()
@@ -45,10 +51,11 @@ void WeaponShortcut::CreateShortcutIcon()
 		else
 		{
 			const int offset_y_size = i < 4 ? kIconHeight * 0.5f : kIconHeight * 1.5f + kIntervalPos;
-			const int offset_y = (0b00110011 >> i) & 1 ? -offset_y_size : offset_y_size;
+			const int offset_y		= (0b00110011 >> i) & 1 ? -offset_y_size : offset_y_size;
 			center_pos.y += first_offset + offset_y;
 		}
 
-		m_weapon_shortcut_icons[static_cast<WeaponShortcutPosKind>(i)] = std::make_shared<WeaponShortcutIcon>(center_pos, kIconWidth, kIconHeight);
+		m_center_pos			[static_cast<WeaponShortcutPosKind>(i)] = center_pos;
+		m_weapon_shortcut_icons	[static_cast<WeaponShortcutPosKind>(i)] = std::make_shared<WeaponShortcutIcon>(center_pos, kIconWidth, kIconHeight);
 	}
 }

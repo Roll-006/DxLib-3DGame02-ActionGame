@@ -16,6 +16,7 @@ WeaponShortcutIcon::~WeaponShortcutIcon()
 
 void WeaponShortcutIcon::Draw() const
 {
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, kAlphaBlendNum);
 	DrawBox(
 		static_cast<int>(m_center_pos.x - m_icon_width  * 0.5f),
 		static_cast<int>(m_center_pos.y - m_icon_height * 0.5f),
@@ -29,6 +30,7 @@ void WeaponShortcutIcon::Draw() const
 		static_cast<int>(m_center_pos.x + m_icon_width  * 0.5f),
 		static_cast<int>(m_center_pos.y + m_icon_height * 0.5f),
 		0xffffff, FALSE);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	DrawCircle(m_center_pos.x, m_center_pos.y, 4, 0xffffff, FALSE);
 

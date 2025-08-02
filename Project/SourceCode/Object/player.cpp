@@ -9,7 +9,7 @@ Player::Player() :
 	m_move_speed						(0.0f),
 	m_look_dir_offset_angle				(0.0f),
 	m_confirm_look_dir_threshold_angle	(0.0f),
-	m_weapon_shortcut_changer			(std::make_shared<WeaponShortcutChanger>(m_current_equip_weapon))
+	m_weapon_selecter					(std::make_shared<WeaponSelecter>(m_current_equip_weapon))
 {
 	// ‰ŠúposEdir‚ğİ’è
 	m_look_dir[TimeKind::kCurrent] = m_look_dir[TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);
@@ -55,11 +55,12 @@ void Player::Update()
 {
 	if (!IsActive()) { return; }
 
-	m_look_dir_offset_angle			= kLookDirOffsetAngle;
+	m_look_dir_offset_angle				= kLookDirOffsetAngle;
 	m_confirm_look_dir_threshold_angle	= kConfirmLookDirThresholdAngle * math::kDegreesToRadian;
 
-	m_state->Update(this);
-	m_animator->Update();
+	m_weapon_selecter	->Update();
+	m_state				->Update(this);
+	m_animator			->Update();
 
 	CalcMoveDir(m_velocity);
 	CalcLookDir();
@@ -67,6 +68,7 @@ void Player::Update()
 	CalcCapsuleColliderLength();
 
 	UpdateTransform(m_look_dir.at(TimeKind::kCurrent), kModelScale);
+
 
 	// MEMO : Update‚Å‚Í’eŠÛ‚Ì”­Ë”»’è‚Ì‚İ‚ğs‚¤‚à‚Ì‚Æ‚·‚é
 }

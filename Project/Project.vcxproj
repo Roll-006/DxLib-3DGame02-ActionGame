@@ -194,7 +194,7 @@
     <ClCompile Include="SourceCode\Part\player_state_controller.cpp" />
     <ClCompile Include="SourceCode\Part\transform.cpp" />
     <ClCompile Include="SourceCode\Part\weapon_shortcut.cpp" />
-    <ClCompile Include="SourceCode\Part\weapon_shortcut_changer.cpp" />
+    <ClCompile Include="SourceCode\Part\weapon_selecter.cpp" />
     <ClCompile Include="SourceCode\Part\weapon_shortcut_icon.cpp" />
     <ClCompile Include="SourceCode\Random\random_generator.cpp" />
     <ClCompile Include="SourceCode\Scene\game_clear_scene.cpp" />
@@ -367,7 +367,7 @@
     <ClInclude Include="SourceCode\Part\player_animator.hpp" />
     <ClInclude Include="SourceCode\Part\player_state_controller.hpp" />
     <ClInclude Include="SourceCode\Part\transform.hpp" />
-    <ClInclude Include="SourceCode\Part\weapon_shortcut_changer.hpp" />
+    <ClInclude Include="SourceCode\Part\weapon_selecter.hpp" />
     <ClInclude Include="SourceCode\Part\weapon_shortcut.hpp" />
     <ClInclude Include="SourceCode\Part\weapon_shortcut_icon.hpp" />
     <ClInclude Include="SourceCode\Random\random_generator.hpp" />
