@@ -3,7 +3,7 @@
 PlayerUICreator::PlayerUICreator(const std::shared_ptr<Player> player) : 
 	UICreatorBase		(UICreatorName.PLAYER_UI_CREATOR),
 	m_player			(player),
-	m_weapon_shortcut	(std::make_shared<WeaponShortcut>(player))
+	m_weapon_shortcut	(std::make_shared<WeaponShortcutDrawer>(player))
 	//m_2d_diffusion_shape(nullptr)
 {
 
@@ -16,6 +16,7 @@ PlayerUICreator::~PlayerUICreator()
 
 void PlayerUICreator::LateUpdate()
 {
+	m_weapon_shortcut->LateUpdate();
 	//CreateCrossHair();
 }
 

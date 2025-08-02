@@ -13,24 +13,31 @@ public:
 
 	void Draw() const;
 
-	void SetCenterPos	(const Vector2D<int>&	pos)	{ m_center_pos	= pos; }
-	void SetScale		(const Vector2D<float>& scale)	{ m_scale		= scale; }
-	void SetAngle		(const float			angle)	{ m_angle		= angle; }
-	void SetWidth		(const int width)				{ m_width		= width; }
-	void SetHeigth		(const int height)				{ m_height		= height; }
+	void SetCenterPos		(const Vector2D<int>& pos)			{ m_center_pos				= pos; }
+	void SetScale			(const Vector2D<float>& scale)		{ m_scale					= scale; }
+	void SetScale			(const float scale)					{ m_scale					= Vector2D<float>(scale, scale); }
+	void SetAngle			(const float angle)					{ m_angle					= angle; }
+	//void SetWidth			(const int width)					{ m_width					= width; }
+	//void SetHeigth		(const int height)					{ m_height					= height; }
+	void SetInvertHorizontal(const bool is_invert_horizontal)	{ m_is_invert_horizontal	= is_invert_horizontal; }
+	void SetInvertVertical	(const bool is_invert_vertical)		{ m_is_invert_vertical		= is_invert_vertical; }
 
-	[[nodiscard]] int				GetGraphicHandle()	const { return m_graphic_handle; }
-	[[nodiscard]] Vector2D<int>		GetCenterPos()		const { return m_center_pos; }
-	[[nodiscard]] Vector2D<float>	GetScale()			const { return m_scale; }
-	[[nodiscard]] float				GetAngle()			const { return m_angle; }
-	[[nodiscard]] int				GetWidth()			const { return m_width; }
-	[[nodiscard]] int				GetHeight()			const { return m_height; }
+	[[nodiscard]] int				GetGraphicHandle()		const { return m_graphic_handle; }
+	[[nodiscard]] Vector2D<int>		GetCenterPos()			const { return m_center_pos; }
+	[[nodiscard]] Vector2D<float>	GetScale()				const { return m_scale; }
+	[[nodiscard]] float				GetAngle()				const { return m_angle; }
+	[[nodiscard]] int				GetOriginWidth()		const { return m_origin_width; }
+	[[nodiscard]] int				GetOriginHeight()		const { return m_origin_height; }
+	[[nodiscard]] bool				IsInvertHorizontal()	const { return m_is_invert_horizontal; }
+	[[nodiscard]] bool				IsInvertVertical()		const { return m_is_invert_vertical; }
 
 private:
 	int				m_graphic_handle;
 	Vector2D<int>	m_center_pos;
 	Vector2D<float> m_scale;
 	float			m_angle;
-	int				m_width;
-	int				m_height;
+	int				m_origin_width;
+	int				m_origin_height;
+	bool			m_is_invert_horizontal;
+	bool			m_is_invert_vertical;
 };

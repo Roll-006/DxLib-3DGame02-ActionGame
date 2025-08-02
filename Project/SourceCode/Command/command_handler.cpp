@@ -180,8 +180,8 @@ void CommandHandler::InitInputMode()
 	m_input_mode[CommandKind::kSelectWeaponOutsideUp]		= InputModeKind::kSingle;
 	m_input_mode[CommandKind::kSelectWeaponOutsideRight]	= InputModeKind::kSingle;
 	m_input_mode[CommandKind::kSelectWeaponOutsideDown]		= InputModeKind::kSingle;
-	m_input_mode[CommandKind::kSelectWeaponRotateLeft]		= InputModeKind::kSingle;
-	m_input_mode[CommandKind::kSelectWeaponRotateRight]		= InputModeKind::kSingle;
+	m_input_mode[CommandKind::kSelectWeaponRotateLeft]		= InputModeKind::kHold;
+	m_input_mode[CommandKind::kSelectWeaponRotateRight]		= InputModeKind::kHold;
 	m_input_mode[CommandKind::kSideChangeWeapon]			= InputModeKind::kSingle;
 	m_input_mode[CommandKind::kSelectWeaponLeft]			= InputModeKind::kSingle;
 	m_input_mode[CommandKind::kSelectWeaponUp]				= InputModeKind::kSingle;

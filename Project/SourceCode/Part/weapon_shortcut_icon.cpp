@@ -34,7 +34,10 @@ void WeaponShortcutIcon::Draw() const
 
 	DrawCircle(m_center_pos.x, m_center_pos.y, 4, 0xffffff, FALSE);
 
-	if (m_graphicer) { m_graphicer->Draw(); }
+	if (m_graphicer)
+	{
+		m_graphicer->Draw();
+	}
 }
 
 void WeaponShortcutIcon::AttachGraphic(std::shared_ptr<Graphicer> graphicer)

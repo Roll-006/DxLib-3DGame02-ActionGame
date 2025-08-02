@@ -2,7 +2,7 @@
 #include "../Base/ui_creator_base.hpp"
 //#include "../Object/player.hpp"
 
-#include "../Part/weapon_shortcut.hpp"
+#include "../Part/weapon_shortcut_drawer.hpp"
 
 class PlayerUICreator final : public UICreatorBase
 {
@@ -21,7 +21,7 @@ private:
 private:
 	std::shared_ptr<Player>			m_player;
 
-	std::shared_ptr<WeaponShortcut> m_weapon_shortcut;
+	std::shared_ptr<WeaponShortcutDrawer> m_weapon_shortcut;
 
 	// ‰¼
 	//std::shared_ptr<ShapeBase>	m_2d_diffusion_shape;	// “ñŸŒ³ã‚ÌŠgU”ÍˆÍ}Œ`

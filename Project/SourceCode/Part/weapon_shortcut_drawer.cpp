@@ -1,21 +1,33 @@
-#include "weapon_shortcut.hpp"
+#include "weapon_shortcut_drawer.hpp"
 
-WeaponShortcut::WeaponShortcut(const std::shared_ptr<Player> player) : 
+WeaponShortcutDrawer::WeaponShortcutDrawer(const std::shared_ptr<Player> player) : 
 	m_player(player)
 {
 	CreateShortcutIcon();
 
 	m_weapon_graphic_pair[ObjName.ASSAULT_RIFLE] = std::make_shared<Graphicer>(UIGraphicPath.ASSAULT_RIFLE);
+	m_weapon_graphic_pair[ObjName.ASSAULT_RIFLE]->SetScale(0.07f);
 }
 
-WeaponShortcut::~WeaponShortcut()
+WeaponShortcutDrawer::~WeaponShortcutDrawer()
 {
 
 }
 
-void WeaponShortcut::Draw() const
+void WeaponShortcutDrawer::LateUpdate()
 {
-	const auto current_select_shortcut	= m_player->GetWeaponSelecter()->GetCurrentSelectShortcut();
+	for (const auto& icon : m_weapon_shortcut_icons)
+	{
+		const auto weapon = m_player->GetWeaponShortcutSelecter()->GetShortcutWeapon(icon.first);
+		if (!weapon) { continue; }
+
+		icon.second->AttachGraphic(m_weapon_graphic_pair[weapon->GetName()]);
+	}
+}
+
+void WeaponShortcutDrawer::Draw() const
+{
+	const auto current_select_shortcut	= m_player->GetWeaponShortcutSelecter()->GetCurrentSelectShortcut();
 	const auto current_center_pos		= m_center_pos.at(current_select_shortcut);
 
 	for (const auto& shortcut_icon : m_weapon_shortcut_icons)
@@ -34,7 +46,7 @@ void WeaponShortcut::Draw() const
 	DrawCircle(current_center_pos.x, current_center_pos.y, 4, 0xff0000, TRUE);
 }
 
-void WeaponShortcut::CreateShortcutIcon()
+void WeaponShortcutDrawer::CreateShortcutIcon()
 {
 	// WARNING : WeaponShortcutPosKindÇÃíËã`èáÇ…àÀë∂ÇµÇƒÇ¢ÇÈ
 	for (int i = 0; i < 8; ++i)

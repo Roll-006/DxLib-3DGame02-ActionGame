@@ -1,15 +1,13 @@
 #pragma once
-#include "../Base/one_instance_singleton_base.hpp"
-
 #include "../Base/weapon_base.hpp"
 #include "../Data/Kind/weapon_shortcut_pos_kind.hpp"
 #include "../Data/Kind/command_kind.hpp"
 
-class WeaponSelecter final : public OneInstanceSingletonBase<WeaponSelecter>
+class WeaponShortcutSelecter final
 {
 public:
-	WeaponSelecter(const std::shared_ptr<WeaponBase> equip_weapon);
-	~WeaponSelecter();
+	WeaponShortcutSelecter(const std::shared_ptr<WeaponBase> equip_weapon);
+	~WeaponShortcutSelecter();
 
 	void Update();
 
@@ -28,6 +26,4 @@ private:
 	std::unordered_map<WeaponShortcutPosKind, std::shared_ptr<WeaponBase>>	m_shortcut_weapons;			// ショートカットに登録している武器
 	std::shared_ptr<WeaponBase>												m_current_equip_weapon;		// 現在装備している武器
 	WeaponShortcutPosKind													m_current_select_shortcut;	// 現在選択しているショートカット
-
-	friend OneInstanceSingletonBase<WeaponSelecter>;
 };

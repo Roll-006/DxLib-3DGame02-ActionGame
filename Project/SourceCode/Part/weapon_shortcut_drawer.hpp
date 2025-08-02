@@ -2,12 +2,13 @@
 #include "weapon_shortcut_icon.hpp"
 #include "../Object/player.hpp"
 
-class WeaponShortcut final
+class WeaponShortcutDrawer final
 {
 public:
-	WeaponShortcut(const std::shared_ptr<Player> player);
-	~WeaponShortcut();
+	WeaponShortcutDrawer(const std::shared_ptr<Player> player);
+	~WeaponShortcutDrawer();
 
+	void LateUpdate();
 	void Draw() const;
 
 private:

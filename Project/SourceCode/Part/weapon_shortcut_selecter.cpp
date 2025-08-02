@@ -1,45 +1,45 @@
-#include "weapon_selecter.hpp"
+#include "weapon_shortcut_selecter.hpp"
 #include "../Command/command_handler.hpp"
 
-WeaponSelecter::WeaponSelecter(const std::shared_ptr<WeaponBase> equip_weapon) : 
+WeaponShortcutSelecter::WeaponShortcutSelecter(const std::shared_ptr<WeaponBase> equip_weapon) : 
 	m_current_equip_weapon		(equip_weapon),
 	m_current_select_shortcut	(WeaponShortcutPosKind::kInsideUp)
 {
 	
 }
 
-WeaponSelecter::~WeaponSelecter()
+WeaponShortcutSelecter::~WeaponShortcutSelecter()
 {
 
 }
 
-void WeaponSelecter::Update()
+void WeaponShortcutSelecter::Update()
 {
 	SelectWeaponByKey();
 	SelectWeaponByPad();
 }
 
-void WeaponSelecter::AttachShortcutWeapon(const WeaponShortcutPosKind shortcut_pos_kind, const std::shared_ptr<WeaponBase> weapon)
+void WeaponShortcutSelecter::AttachShortcutWeapon(const WeaponShortcutPosKind shortcut_pos_kind, const std::shared_ptr<WeaponBase> weapon)
 {
 	m_shortcut_weapons[shortcut_pos_kind] = weapon;
 }
 
-void WeaponSelecter::DetachShortcutWeapon(const WeaponShortcutPosKind shortcut_pos_kind)
+void WeaponShortcutSelecter::DetachShortcutWeapon(const WeaponShortcutPosKind shortcut_pos_kind)
 {
 	m_shortcut_weapons[shortcut_pos_kind] = nullptr;
 }
 
-std::shared_ptr<WeaponBase> WeaponSelecter::GetShortcutWeapon(const WeaponShortcutPosKind shortcut_pos_kind)
+std::shared_ptr<WeaponBase> WeaponShortcutSelecter::GetShortcutWeapon(const WeaponShortcutPosKind shortcut_pos_kind)
 {
 	return m_shortcut_weapons.count(shortcut_pos_kind) ? m_shortcut_weapons[shortcut_pos_kind] : nullptr;
 }
 
-void WeaponSelecter::SelectWeaponByPad()
+void WeaponShortcutSelecter::SelectWeaponByPad()
 {
 
 }
 
-void WeaponSelecter::SelectWeaponByKey()
+void WeaponShortcutSelecter::SelectWeaponByKey()
 {
 	const auto command = CommandHandler::GetInstance();
 
@@ -56,7 +56,6 @@ void WeaponSelecter::SelectWeaponByKey()
 		}
 	}
 
-
 	// 内側 / 外側の移動
 	if (command->IsExecuting(CommandKind::kSideChangeWeapon))
 	{
@@ -72,39 +71,24 @@ void WeaponSelecter::SelectWeaponByKey()
 	SelectWeaponRotate(CommandKind::kSelectWeaponRotateLeft);
 }
 
-void WeaponSelecter::SelectWeaponRotate(const CommandKind command_kind)
+void WeaponShortcutSelecter::SelectWeaponRotate(const CommandKind command_kind)
 {
 	if (command_kind != CommandKind::kSelectWeaponRotateRight && command_kind != CommandKind::kSelectWeaponRotateLeft) { return; }
 
 	if (CommandHandler::GetInstance()->IsExecuting(command_kind))
 	{
-		const bool	is_left_rotation		= command_kind == CommandKind::kSelectWeaponRotateLeft ? true : false;
-		int			current_shortcut_num	= static_cast<int>(m_current_select_shortcut);
-		const bool	is_outside				= current_shortcut_num >= 4;
-		const int	increase_value			= is_left_rotation ? 1 : -1;
+		int		  current_shortcut_num	= static_cast<int>(m_current_select_shortcut);
+		const int increase_value		= command_kind == CommandKind::kSelectWeaponRotateLeft ? 1 : -1;
 
 		// 外側であった場合、強制的に内側に移動させる
-		if (is_outside)
+		if (current_shortcut_num >= 4)
 		{
 			current_shortcut_num -= 4;
 		}
 
 		current_shortcut_num += increase_value;
-
-		if (is_left_rotation)
-		{
-			if (current_shortcut_num > 3)
-			{
-				current_shortcut_num = 0;
-			}
-		}
-		else
-		{
-			if (current_shortcut_num < 0)
-			{
-				current_shortcut_num = 3;
-			}
-		}
+		if (current_shortcut_num > 3) { current_shortcut_num = 0; }
+		if (current_shortcut_num < 0) { current_shortcut_num = 3; }
 
 		m_current_select_shortcut = static_cast<WeaponShortcutPosKind>(current_shortcut_num);
 	}
