@@ -6,6 +6,7 @@ PlayScene::PlayScene():
 	m_ground						(std::make_shared<Ground>()),
 	m_skydome						(std::make_shared<Skydome>(ObjManager::GetInstance()->GetObj<MainCamera>(ObjName.MAIN_CAMERA))),
 	m_rifle_cartridge_object_pool	(std::make_shared<RifleCartridgeObjectPool>()),
+	m_play_scene_effect_object_pool (std::make_shared<PlaySceneEffectObjectPool>()),
 	m_player_ui_creator				(std::make_shared<PlayerUICreator>(ObjManager::GetInstance()->GetObj<Player>(ObjName.PLAYER)))
 {
 	ObjManager		::GetInstance()->AddObj		   (m_zombie);
@@ -19,6 +20,7 @@ PlayScene::PlayScene():
 	PhysicsManager	::GetInstance()->AddPhysicalObj(m_ground);
 
 	ObjectPoolHolder::GetInstance()->AddObjectPool (m_rifle_cartridge_object_pool);
+	ObjectPoolHolder::GetInstance()->AddObjectPool (m_play_scene_effect_object_pool);
 	UIDrawer		::GetInstance()->AddUICreator  (m_player_ui_creator);
 }
 

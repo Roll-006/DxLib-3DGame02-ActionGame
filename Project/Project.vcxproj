@@ -164,6 +164,7 @@
     <ClCompile Include="SourceCode\main.cpp" />
     <ClCompile Include="SourceCode\Manager\camera_manager.cpp" />
     <ClCompile Include="SourceCode\Manager\collision_manager.cpp" />
+    <ClCompile Include="SourceCode\Manager\effect_manager.cpp" />
     <ClCompile Include="SourceCode\Manager\game_manager.cpp" />
     <ClCompile Include="SourceCode\Manager\obj_manager.cpp" />
     <ClCompile Include="SourceCode\Manager\physics_manager.cpp" />
@@ -171,10 +172,13 @@
     <ClCompile Include="SourceCode\Manager\scene_manager.cpp" />
     <ClCompile Include="SourceCode\Manager\ui_drawer.cpp" />
     <ClCompile Include="SourceCode\Manager\weapon_manager.cpp" />
+    <ClCompile Include="SourceCode\ObjectPool\share_scene_effect_object_pool.cpp" />
+    <ClCompile Include="SourceCode\ObjectPool\play_scene_effect_object_pool.cpp" />
     <ClCompile Include="SourceCode\ObjectPool\object_pool_holder.cpp" />
     <ClCompile Include="SourceCode\ObjectPool\rifle_cartridge_object_pool.cpp" />
     <ClCompile Include="SourceCode\Object\assault_rifle.cpp" />
     <ClCompile Include="SourceCode\Object\bullet.cpp" />
+    <ClCompile Include="SourceCode\Object\effect.cpp" />
     <ClCompile Include="SourceCode\Object\knife.cpp" />
     <ClCompile Include="SourceCode\Object\main_camera.cpp" />
     <ClCompile Include="SourceCode\Object\zombie.cpp" />
@@ -323,6 +327,7 @@
     <ClInclude Include="SourceCode\Data\Name\object_pool_name.hpp" />
     <ClInclude Include="SourceCode\Data\Name\obj_name.hpp" />
     <ClInclude Include="SourceCode\Data\Name\ui_creator_name.hpp" />
+    <ClInclude Include="SourceCode\Data\Path\effect_path.hpp" />
     <ClInclude Include="SourceCode\Data\Path\animation_path.hpp" />
     <ClInclude Include="SourceCode\Data\Path\bone_path.hpp" />
     <ClInclude Include="SourceCode\Data\Path\ui_graphic_path.hpp" />
@@ -336,9 +341,11 @@
     <ClInclude Include="SourceCode\Handle\state_handler.hpp" />
     <ClInclude Include="SourceCode\Input\input_checker.hpp" />
     <ClInclude Include="SourceCode\Interface\i_item.hpp" />
+    <ClInclude Include="SourceCode\Interface\i_poolable.hpp" />
     <ClInclude Include="SourceCode\Interface\i_state.hpp" />
     <ClInclude Include="SourceCode\Manager\camera_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\collision_manager.hpp" />
+    <ClInclude Include="SourceCode\Manager\effect_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\game_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\obj_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\physics_manager.hpp" />
@@ -346,10 +353,13 @@
     <ClInclude Include="SourceCode\Manager\scene_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\ui_drawer.hpp" />
     <ClInclude Include="SourceCode\Manager\weapon_manager.hpp" />
+    <ClInclude Include="SourceCode\ObjectPool\share_scene_effect_object_pool.hpp" />
+    <ClInclude Include="SourceCode\ObjectPool\play_scene_effect_object_pool.hpp" />
     <ClInclude Include="SourceCode\ObjectPool\object_pool_holder.hpp" />
     <ClInclude Include="SourceCode\ObjectPool\rifle_cartridge_object_pool.hpp" />
     <ClInclude Include="SourceCode\Object\assault_rifle.hpp" />
     <ClInclude Include="SourceCode\Object\bullet.hpp" />
+    <ClInclude Include="SourceCode\Object\effect.hpp" />
     <ClInclude Include="SourceCode\Object\knife.hpp" />
     <ClInclude Include="SourceCode\Object\main_camera.hpp" />
     <ClInclude Include="SourceCode\Object\zombie.hpp" />

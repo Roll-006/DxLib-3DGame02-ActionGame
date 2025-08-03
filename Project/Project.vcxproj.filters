@@ -329,6 +329,18 @@
     <ClCompile Include="SourceCode\Base\knife_base.cpp">
       <Filter>Base</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\ObjectPool\play_scene_effect_object_pool.cpp">
+      <Filter>ObjectPool</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\ObjectPool\share_scene_effect_object_pool.cpp">
+      <Filter>ObjectPool</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Manager\effect_manager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Object\effect.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\character_base.hpp">
@@ -849,6 +861,24 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Base\knife_base.hpp">
       <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\ObjectPool\play_scene_effect_object_pool.hpp">
+      <Filter>ObjectPool</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\ObjectPool\share_scene_effect_object_pool.hpp">
+      <Filter>ObjectPool</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Manager\effect_manager.hpp">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Object\effect.hpp">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Interface\i_poolable.hpp">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\Path\effect_path.hpp">
+      <Filter>Data\Path</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

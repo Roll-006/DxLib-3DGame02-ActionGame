@@ -1,11 +1,8 @@
 #pragma once
-#include <memory>
-
 #include "../Data/Name/obj_name.hpp"
 #include "../Data/Tag/obj_tag.hpp"
 
 #include "../Part/transform.hpp"
-#include "../Part/graphicer.hpp"
 
 class ObjManager;
 
@@ -38,8 +35,6 @@ protected:
 private:
 	std::string m_name;		// オブジェクトの名前
 	std::string m_tag;		// オブジェクトの分類
-
-	//std::shared_ptr<Graphicer> m_shadow_graphic;
 
 	bool m_is_active;
 	int  m_obj_handle;

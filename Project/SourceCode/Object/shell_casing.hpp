@@ -1,10 +1,12 @@
 #pragma once
 #include "../Base/physical_obj_base.hpp"
+#include "../Interface/i_poolable.hpp"
+
 #include "../Part/modeler.hpp"
 
 class GunBase;
 
-class ShellCasing final : public PhysicalObjBase
+class ShellCasing final : public PhysicalObjBase, public IPoolable
 {
 public:
 	ShellCasing();
@@ -20,14 +22,11 @@ public:
 	/// @brief ñÚ‰∞ÇîrèoÇ∑ÇÈ
 	void Eject(GunBase& gun);
 
-	[[nodiscard]] bool IsAlive() const { return m_is_alive; }
+	[[nodiscard]] bool IsReturnPool() override;
 	[[nodiscard]] std::shared_ptr<Modeler> GetModeler() { return m_modeler; }
 
 private:
 	void Move();
-
-	/// @brief ê∂ë∂ÇÃîªíË
-	void JudgeAlive();
 
 	void CalcColliderPos();
 
@@ -47,6 +46,6 @@ private:
 
 	VECTOR m_move_dir;
 	float  m_alive_timer;
+
 	float  m_move_speed;
-	bool   m_is_alive;
 };

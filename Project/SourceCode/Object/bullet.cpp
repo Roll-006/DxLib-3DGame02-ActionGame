@@ -10,8 +10,7 @@ Bullet::Bullet() :
 	m_first_pos		(v3d::GetZeroV()),
 	m_move_speed	(0.0f),
 	m_deceleration	(0.0f),
-	m_range			(0.0f),
-	m_Is_alive		(true)
+	m_range			(0.0f)
 {
 	AddCollider(std::make_shared<Collider>(ColliderKind::kRayCast, std::make_shared<Segment>(), this));
 }
@@ -23,9 +22,8 @@ Bullet::~Bullet()
 
 void Bullet::Init()
 {
-	m_velocity		= v3d::GetZeroV();
-	m_fall_velocity = v3d::GetZeroV();
-	m_Is_alive		= true;
+	m_velocity			= v3d::GetZeroV();
+	m_fall_velocity		= v3d::GetZeroV();
 }
 
 void Bullet::Update()
@@ -42,7 +40,6 @@ void Bullet::LateUpdate()
 
 	Move();
 	CalcRayPos();
-	JudgeAlive();
 }
 
 void Bullet::Draw() const
@@ -81,6 +78,14 @@ void Bullet::OnShot(const GunBase& gun)
 	m_range			= gun.GetRange();
 }
 
+bool Bullet::IsReturnPool()
+{
+	float distance = VSize(m_transform->GetPos(CoordinateKind::kWorld) - m_first_pos);
+
+	// ŽË’ö”ÍˆÍ‚ð’´‚¦‚½ê‡‚Í’eŠÛ‚ðƒv[ƒ‹‚É•Ô‹p
+	return distance > m_range ? true : false;
+}
+
 void Bullet::Move()
 {
 	math::Decrease(m_move_speed, m_deceleration * FPS::GetDeltaTime(), 0.0f);
@@ -93,15 +98,4 @@ void Bullet::CalcRayPos()
 	auto ray = std::dynamic_pointer_cast<Segment>(GetCollider(ColliderKind::kRayCast)->GetShape());
 	ray->SetBeginPos(m_prev_pos, true);
 	ray->SetEndPos	(m_transform->GetPos(CoordinateKind::kWorld), true);
-}
-
-void Bullet::JudgeAlive()
-{
-	float distance = VSize(m_transform->GetPos(CoordinateKind::kWorld) - m_first_pos);
-
-	// ŽË’ö”ÍˆÍ‚ð’´‚¦‚½ê‡‚Í’eŠÛ‚ðƒv[ƒ‹‚É•Ô‹p
-	if (distance > m_range)
-	{
-		m_Is_alive = false;
-	}
 }

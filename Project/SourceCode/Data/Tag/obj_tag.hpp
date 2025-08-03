@@ -13,5 +13,6 @@ static struct ObjTag
 	const std::string WEAPON			= "weapon";
 	const std::string BULLET			= "bullet";
 	const std::string SKYDOME			= "skydome";
+	const std::string EFFECT			= "effect";
 
 }ObjTag;

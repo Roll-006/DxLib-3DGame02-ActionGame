@@ -32,6 +32,8 @@ void SceneManager::Update()
 	{
 		scene.second->Update();
 	}
+
+	EffectManager::GetInstance()->Update();
 }
 
 void SceneManager::LateUpdate()
@@ -43,6 +45,7 @@ void SceneManager::LateUpdate()
 		scene.second->LateUpdate();
 	}
 
+	EffectManager	::GetInstance()->LateUpdate();
 	CollisionManager::GetInstance()->LateUpdate();
 	CommandHandler	::GetInstance()->LateUpdate();
 	InputChecker	::GetInstance()->LateUpdate();
@@ -55,7 +58,8 @@ void SceneManager::Draw() const
 		scene.second->Draw();
 	}
 
-	UIDrawer::GetInstance()->Draw();
+	EffectManager::GetInstance()->Draw();
+	UIDrawer	 ::GetInstance()->Draw();
 }
 
 std::vector<SceneKind> SceneManager::GetCurrentSceneKind() const

@@ -1,7 +1,7 @@
 ﻿#include "rifle_cartridge_object_pool.hpp"
 
 RifleCartridgeObjectPool::RifleCartridgeObjectPool() : 
-	ObjectPoolBase(ObjectPoolName.BULLET_POOL)
+	ObjectPoolBase(ObjectPoolName.RIFLE_CARTRIDGE_POOL)
 {
 	m_pool_size[ObjName.BULLET]			= kBulletPoolSize;
 	m_pool_size[ObjName.SHELL_CASING]	= kShellCasingPoolSize;

@@ -81,6 +81,7 @@ namespace math
 	/// @brief FIXME : 不具合ありな可能性あり。要検証
 	[[nodiscard]] VECTOR ConvertXYZRotMatrixToEulerAngles(const MATRIX& rot_matrix);
 	[[nodiscard]] VECTOR ConvertXYZRotMatrixToEulerAngles(const MATRIX& rot_matrix, bool& is_gimbal_lock);
+	[[nodiscard]] VECTOR ConvertZXYRotMatrixToEulerAngles(const MATRIX& rot_matrix);
 
 	/// @brief 回転行列からXYZ軸へ変換
 	[[nodiscard]] Axes ConvertRotMatrixToAxes(const MATRIX& rot_matrix);

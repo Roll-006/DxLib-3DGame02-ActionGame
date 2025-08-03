@@ -4,7 +4,6 @@
 
 #include "../Object/main_camera.hpp"
 
-#include "../ObjectPool/rifle_cartridge_object_pool.hpp"
 #include "../Manager/rifle_cartridge_manager.hpp"
 
 class GunBase abstract : public WeaponBase

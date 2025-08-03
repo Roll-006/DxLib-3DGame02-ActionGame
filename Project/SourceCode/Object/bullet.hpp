@@ -1,5 +1,6 @@
 #pragma once
 #include "../Base/physical_obj_base.hpp"
+#include "../Interface/i_poolable.hpp"
 
 #include "../Part/modeler.hpp"
 
@@ -9,7 +10,7 @@
 
 class GunBase;
 
-class Bullet final : public PhysicalObjBase
+class Bullet final : public PhysicalObjBase, public IPoolable
 {
 public:
 	Bullet();
@@ -25,15 +26,12 @@ public:
 	/// @brief ’eŠÛ‚ª”­Ë‚³‚ê‚½
 	void OnShot(const GunBase& gun);
 
+	[[nodiscard]] bool IsReturnPool() override;
 	[[nodiscard]] std::shared_ptr<Modeler> GetModeler() { return m_modeler; }
-	[[nodiscard]] bool IsAlive() const { return m_Is_alive; }
 
 private:
 	void Move();
 	void CalcRayPos();
-
-	/// @brief ’eŠÛ‚Ì¶‘¶‚ğ”»’è
-	void JudgeAlive();
 
 private:
 	std::shared_ptr<Modeler> m_modeler;
@@ -44,5 +42,4 @@ private:
 	float  m_move_speed;	// ˆÚ“®‘¬“x
 	float  m_deceleration;	// Œ¸‘¬“x
 	float  m_range;			// Ë’ö
-	bool   m_Is_alive;		// ¶‘¶”»’è
 };

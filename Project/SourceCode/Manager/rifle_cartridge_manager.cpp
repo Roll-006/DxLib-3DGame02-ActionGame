@@ -31,28 +31,22 @@ void RifleCartridgeManager::LateUpdate()
 		}
 	}
 	
-	// TODO : 後に見やすく変更
-	// 生存していない弾丸は削除
-	const auto remove_bullet = std::find_if(m_rifle_cartridge[ObjName.BULLET].begin(), m_rifle_cartridge[ObjName.BULLET].end(), [](const std::shared_ptr<ObjBase> obj)
+	// プールへ変換
+	for (auto& [obj_name, objects] : m_rifle_cartridge)
 	{
-		return !std::static_pointer_cast<Bullet>(obj)->IsAlive();
-	});
-	if (remove_bullet != m_rifle_cartridge[ObjName.BULLET].end())
-	{
-		ObjectPoolHolder::GetInstance()->GetObjectPool(ObjectPoolName.BULLET_POOL)->ReturnObj(*remove_bullet);
-		m_rifle_cartridge[ObjName.BULLET].erase(remove_bullet);
-	}
-
-	// TODO : 後に見やすく変更
-	// 生存していない薬莢は削除
-	const auto remove_shell_casing = std::find_if(m_rifle_cartridge[ObjName.SHELL_CASING].begin(), m_rifle_cartridge[ObjName.SHELL_CASING].end(), [](const std::shared_ptr<ObjBase> obj)
-	{
-		return !std::static_pointer_cast<ShellCasing>(obj)->IsAlive();
-	});
-	if (remove_shell_casing != m_rifle_cartridge[ObjName.SHELL_CASING].end())
-	{
-		ObjectPoolHolder::GetInstance()->GetObjectPool(ObjectPoolName.BULLET_POOL)->ReturnObj(*remove_shell_casing);
-		m_rifle_cartridge[ObjName.SHELL_CASING].erase(remove_shell_casing);
+		auto& vec = objects;
+		for (auto itr = vec.begin(); itr != vec.end();)
+		{
+			if (std::dynamic_pointer_cast<IPoolable>(*itr)->IsReturnPool())
+			{
+				ObjectPoolHolder::GetInstance()->GetObjectPool(ObjectPoolName.RIFLE_CARTRIDGE_POOL)->ReturnObj(*itr);
+				itr = vec.erase(itr);
+			}
+			else
+			{
+				++itr;
+			}
+		}
 	}
 }
 
@@ -66,7 +60,7 @@ void RifleCartridgeManager::Draw() const
 		}
 	}
 
-	const auto pool = ObjectPoolHolder::GetInstance()->GetObjectPool(ObjectPoolName.BULLET_POOL);
+	const auto pool = ObjectPoolHolder::GetInstance()->GetObjectPool(ObjectPoolName.RIFLE_CARTRIDGE_POOL);
 	//DrawFormatString(0,  80, 0xffffff, "bullet_pool_size          : %d", pool->GetPoolSize(ObjName.BULLET));
 	//DrawFormatString(0, 100, 0xffffff, "shell_casing_pool_size    : %d", pool->GetPoolSize(ObjName.SHELL_CASING));
 	//DrawFormatString(0, 120, 0xffffff, "bullet_manager_size       : %d", m_rifle_cartridge.at(ObjName.BULLET).size());
@@ -83,15 +77,14 @@ void RifleCartridgeManager::Draw() const
 
 void RifleCartridgeManager::Shot(GunBase& gun)
 {
-	const auto object_pool = ObjectPoolHolder::GetInstance()->GetObjectPool(ObjectPoolName.BULLET_POOL);
+	const auto object_pool = ObjectPoolHolder::GetInstance()->GetObjectPool(ObjectPoolName.RIFLE_CARTRIDGE_POOL);
 
 	// プールから弾丸を取得し、有効であれば発射
 	const auto bullet = std::static_pointer_cast<Bullet>(object_pool->GetObj(ObjName.BULLET));
 	if (bullet != nullptr)
 	{
 		bullet->OnShot(gun);
-		AddBullet(bullet);
-		
+		AddRifleCartridge(bullet);	
 	}
 
 	// プールから薬莢を取得し、有効であれば排出
@@ -99,7 +92,7 @@ void RifleCartridgeManager::Shot(GunBase& gun)
 	if (shell_casing != nullptr)
 	{
 		shell_casing->Eject(gun);
-		AddShellCasing(shell_casing);
+		AddRifleCartridge(shell_casing);
 	}
 }
 
@@ -113,23 +106,15 @@ void RifleCartridgeManager::DeleteBullet(const int obj_handle)
 
 	if(remove_bullet != m_rifle_cartridge[ObjName.BULLET].end())
 	{
-		ObjectPoolHolder::GetInstance()->GetObjectPool(ObjectPoolName.BULLET_POOL)->ReturnObj(*remove_bullet);
+		ObjectPoolHolder::GetInstance()->GetObjectPool(ObjectPoolName.RIFLE_CARTRIDGE_POOL)->ReturnObj(*remove_bullet);
 		m_rifle_cartridge[ObjName.BULLET].erase(remove_bullet);
 	}
 }
 
-void RifleCartridgeManager::AddBullet(const std::shared_ptr<Bullet> bullet)
+void RifleCartridgeManager::AddRifleCartridge(const std::shared_ptr<ObjBase> rifle_cartridge)
 {
-	if (std::find(m_rifle_cartridge[ObjName.BULLET].begin(), m_rifle_cartridge[ObjName.BULLET].end(), bullet) == m_rifle_cartridge[ObjName.BULLET].end())
+	if (std::find(m_rifle_cartridge[rifle_cartridge->GetName()].begin(), m_rifle_cartridge[rifle_cartridge->GetName()].end(), rifle_cartridge) == m_rifle_cartridge[rifle_cartridge->GetName()].end())
 	{
-		m_rifle_cartridge[ObjName.BULLET].emplace_back(bullet);
-	}
-}
-
-void RifleCartridgeManager::AddShellCasing(const std::shared_ptr<ShellCasing> shell_casing)
-{
-	if (std::find(m_rifle_cartridge[ObjName.SHELL_CASING].begin(), m_rifle_cartridge[ObjName.SHELL_CASING].end(), shell_casing) == m_rifle_cartridge[ObjName.SHELL_CASING].end())
-	{
-		m_rifle_cartridge[ObjName.SHELL_CASING].emplace_back(shell_casing);
+		m_rifle_cartridge[rifle_cartridge->GetName()].emplace_back(rifle_cartridge);
 	}
 }

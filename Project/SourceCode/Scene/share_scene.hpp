@@ -8,6 +8,8 @@
 #include "../Command/command_handler.hpp"
 #include "../Manager/camera_manager.hpp"
 
+#include "../ObjectPool/share_scene_effect_object_pool.hpp"
+
 class ShareScene final : public SceneBase
 {
 public:
@@ -20,6 +22,7 @@ public:
 	void Draw() const override;
 
 private:
-	std::shared_ptr<MainCamera> m_main_camera;
-	std::shared_ptr<Player>		m_player;
+	std::shared_ptr<MainCamera>					m_main_camera;
+	std::shared_ptr<Player>						m_player;
+	std::shared_ptr<ShareSceneEffectObjectPool>	m_share_scene_effect_object_pool;
 };

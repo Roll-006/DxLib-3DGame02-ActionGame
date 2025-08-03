@@ -143,6 +143,16 @@ VECTOR math::ConvertXYZRotMatrixToEulerAngles(const MATRIX& rot_matrix, bool& is
     return angle;
 }
 
+VECTOR math::ConvertZXYRotMatrixToEulerAngles(const MATRIX& rot_matrix)
+{
+    VECTOR angle = v3d::GetZeroV();
+    const MATRIX m = MGetRotElem(rot_matrix);
+
+    GetMatrixZXYRotation(&m, &angle.x, &angle.y, &angle.z);
+
+    return angle;
+}
+
 Axes math::ConvertRotMatrixToAxes(const MATRIX& rot_matrix)
 {
     const MATRIX m = MGetRotElem(rot_matrix);

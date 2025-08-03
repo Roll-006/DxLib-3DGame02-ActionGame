@@ -2,8 +2,7 @@
 #include "../Base/singleton_base.hpp"
 
 #include "../ObjectPool/object_pool_holder.hpp"
-#include "../Object/Bullet.hpp"
-#include "../Object/shell_casing.hpp"
+#include "../ObjectPool/rifle_cartridge_object_pool.hpp"
 
 /// @brief 弾丸および薬莢の管理クラス
 class RifleCartridgeManager final : public SingletonBase<RifleCartridgeManager>
@@ -19,6 +18,8 @@ public:
 	/// @brief 使用済み弾丸を削除
 	void DeleteBullet(const int obj_handle);
 
+
+	// TODO : 仮実装。のちに削除
 	void AddHitPos(const VECTOR& hit_pos)
 	{
 		if (m_hit_pos.size() == 20)
@@ -32,13 +33,12 @@ private:
 	RifleCartridgeManager();
 	~RifleCartridgeManager() override;
 
-	void AddBullet		(const std::shared_ptr<Bullet>		bullet);
-	void AddShellCasing	(const std::shared_ptr<ShellCasing> shell_casing);
+	void AddRifleCartridge(const std::shared_ptr<ObjBase> rifle_cartridge);
 
 private:
 	std::unordered_map<std::string, std::vector<std::shared_ptr<ObjBase>>> m_rifle_cartridge;
 
-	std::queue<VECTOR> m_hit_pos;	// MEMO : 仮の衝突座標
+	std::queue<VECTOR> m_hit_pos;	// TODO : 仮の衝突座標。のちに削除
 
 	friend SingletonBase<RifleCartridgeManager>;
 };

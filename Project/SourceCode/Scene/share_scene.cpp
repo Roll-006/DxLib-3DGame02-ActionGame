@@ -1,8 +1,9 @@
 #include "share_scene.hpp"
 
 ShareScene::ShareScene() : 
-	m_main_camera	(std::make_shared<MainCamera>()),
-	m_player		(std::make_shared<Player>())
+	m_main_camera					(std::make_shared<MainCamera>()),
+	m_player						(std::make_shared<Player>()),
+	m_share_scene_effect_object_pool(std::make_shared<ShareSceneEffectObjectPool>())
 {
 	// 各オブジェクトマネージャーへの登録
 	ObjManager		::GetInstance()->AddObj				(m_player);
@@ -12,6 +13,8 @@ ShareScene::ShareScene() :
 	PhysicsManager	::GetInstance()->AddPhysicalObj		(m_player);
 	PhysicsManager	::GetInstance()->AddPhysicalObj		(m_main_camera);
 	PhysicsManager  ::GetInstance()->AddIgnoreObjGravity(m_main_camera->GetObjHandle());
+
+	ObjectPoolHolder::GetInstance()->AddObjectPool(m_share_scene_effect_object_pool);
 
 	// メインカメラの登録
 	const auto camera_manager = CameraManager::GetInstance();

@@ -1,6 +1,7 @@
 #pragma once
 #include <unordered_map>
 
+#include "effect_manager.hpp"
 #include "ui_drawer.hpp"
 
 #include "../Scene/title_scene.hpp"
