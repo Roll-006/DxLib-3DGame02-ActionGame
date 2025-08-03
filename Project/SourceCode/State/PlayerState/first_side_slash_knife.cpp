@@ -16,6 +16,8 @@ void player_state::FirstSideSlashKnife::Update(Player* obj)
 {
 	m_combo_timer += FPS::GetDeltaTime();
 
+	//obj->CalcMoveOffsetSideSlashKnife();
+
 	obj->GetCurrentHeldWeapon()->Update();
 }
 
@@ -28,12 +30,14 @@ void player_state::FirstSideSlashKnife::Enter(Player* obj)
 {
 	m_combo_timer = 0.0f;
 
+	obj->DetachWeapon(obj->GetCurrentEquipKnife());
 	obj->HoldWeapon(obj->GetCurrentEquipKnife());
 }
 
 void player_state::FirstSideSlashKnife::Exit(Player* obj)
 {
-
+	obj->ReleaseWeapon();
+	obj->AttachWeapon(obj->GetCurrentEquipKnife());
 }
 
 std::shared_ptr<IState<Player>> player_state::FirstSideSlashKnife::ChangeState(Player* obj)

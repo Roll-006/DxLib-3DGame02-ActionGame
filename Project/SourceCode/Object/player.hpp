@@ -86,11 +86,15 @@ public:
 	void DirOfCameraForward();
 
 	/// @brief 移動を停止する際の速度を計算
-	void CalcStopSpeed();
+	void CalcMoveSpeedStop();
 	/// @brief しゃがみ時の移動速度を計算
-	void CalcCrouchSpeed();
+	void CalcMoveSpeedCrouch();
 	/// @brief ダッシュ時の移動速度を計算
-	void CalcRunSpeed();
+	void CalcMoveSpeedRun();
+
+	/// @brief 切り裂く攻撃の移動補正値を計算
+	//void CalcMoveOffsetSideSlashKnife();
+	//void Test() { m_move_dir[TimeKind::kNext] = m_look_dir[TimeKind::kCurrent]; }
 	#pragma endregion
 
 
@@ -125,8 +129,12 @@ private:
 	/// @return カメラのrightのY軸を消し飛ばしたベクトル
 	[[nodiscard]] VECTOR GetMoveRight();
 
+	/// @brief 無加工のボーンをカメラが追尾するかを判定
+	/// @return true : ボーンそのものをカメラが追尾, false : ボーンを同じ高さにある位置を追尾
+	[[nodiscard]] bool IsTrackCameraOriginBone() const;
+
 private:
-	static constexpr float kModelScale							= 0.25f;
+	static constexpr float kModelScale							= 0.3f;
 
 	static constexpr float kCrouchWalkSpeed						= 0.15f;
 	static constexpr float kSlowWalkSpeed						= 0.2f;
@@ -134,7 +142,7 @@ private:
 	static constexpr float kRunSpeed							= 2.0f;
 	static constexpr float kAcceleration						= 1.0f;					// 加速度(減速度も共通)
 
-	static constexpr float kMoveDirOffsetSpeed					= 0.065f;				// 移動方向の補正速度
+	static constexpr float kMoveDirOffsetSpeed					= 5.0f;					// 移動方向の補正速度
 	static constexpr float kLookDirOffsetAngle					= 0.1f;					// 見る方向の補正角度
 	static constexpr float kLookDirOffsetAngleForAim			= 0.3f;					// エイミング時の見る方向を回転させる角度
 	static constexpr float kConfirmMoveDirThresholdDistance		= 0.08f;				// 目的の移動方向に到達したと判定する閾値
@@ -146,12 +154,15 @@ private:
 
 	static constexpr float kCapsuleRadius						= 8.0f;
 	static constexpr float kLandingTriggerRadius				= 6.0f;
+
+	static constexpr float kCameraAimOffsetBasicSpeed			= 40.0f;
 	
 	//static constexpr float kADSSpeed							= 70.0f;				// スコープをのぞき込む速度
 
 private:
 	std::shared_ptr<PlayerStateController>		m_state;
 	std::shared_ptr<Transform>					m_camera_aim_transform;					// カメラのターゲットとなるトランスフォーム
+	VECTOR										m_current_camera_aim_pos;
 
 	std::unordered_map<TimeKind, VECTOR>		m_move_dir;								// 移動方向(TODO : 長さが1未満である時がある場合があるため命名を変更すべき)
 	std::unordered_map<TimeKind, VECTOR>		m_look_dir;								// 向いている方向

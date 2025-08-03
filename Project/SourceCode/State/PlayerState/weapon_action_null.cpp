@@ -23,7 +23,10 @@ void player_state::WeaponActionNull::LateUpdate(Player* obj)
 
 void player_state::WeaponActionNull::Enter(Player* obj)
 {
-	
+	if (obj->GetCurrentHeldWeapon())
+	{
+		obj->ReleaseWeapon();
+	}
 }
 
 void player_state::WeaponActionNull::Exit(Player* obj)

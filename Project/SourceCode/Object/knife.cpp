@@ -6,7 +6,11 @@ Knife::Knife() :
 	m_modeler = std::make_shared<Modeler>(m_transform, ModelPath.KNIFE, kModelBasicAngle);
 
 	SetModelHandle(m_modeler->GetModelHandle());
-	SetOffset(kOffsetPos, kOffsetAngle, kOffsetScale);
+
+	SetOffset(kHoldOffsetPos,   kHoldOffsetAngle,   kHoldOffsetScale,
+			  kAttachOffsetPos, kAttachOffsetAngle, kAttachOffsetScale);
+
+	CreateAttackTrigger(kTriggerOffsetPos, kTriggerRadius);
 }
 
 Knife::~Knife()
@@ -28,7 +32,8 @@ void Knife::LateUpdate()
 {
 	if (!IsActive()) { return; }
 
-	TrackOwner();
+	TrackOwnerHand();
+	CalcAttackTriggerPos();
 }
 
 void Knife::Draw() const
@@ -36,6 +41,15 @@ void Knife::Draw() const
 	if (!IsActive()) { return; }
 
 	m_modeler->Draw();
+
+	for (const auto& collider : m_collider)
+	{
+		const auto shape = collider->GetShape();
+		if (shape != nullptr)
+		{
+			shape->Draw(true, 0, 0xffffff);
+		}
+	}
 }
 
 void Knife::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)

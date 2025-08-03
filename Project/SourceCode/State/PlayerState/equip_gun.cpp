@@ -35,12 +35,14 @@ void player_state::EquipGun::Enter(Player* obj)
 {
 	m_possible_aim_timer = 0.0f;
 
+	obj->DetachWeapon(obj->GetCurrentEquipWeapon());
 	obj->HoldWeapon(obj->GetCurrentEquipWeapon());
 }
 
 void player_state::EquipGun::Exit(Player* obj)
 {
-
+	obj->ReleaseWeapon();
+	obj->AttachWeapon(obj->GetCurrentEquipWeapon());
 }
 
 std::shared_ptr<IState<Player>> player_state::EquipGun::ChangeState(Player* obj)

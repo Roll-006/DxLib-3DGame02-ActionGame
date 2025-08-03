@@ -13,7 +13,7 @@ player_state::Run::~Run()
 
 void player_state::Run::Update(Player* obj)
 {
-	obj->CalcRunSpeed();
+	obj->CalcMoveSpeedRun();
 	obj->DirOfMovement();
 }
 

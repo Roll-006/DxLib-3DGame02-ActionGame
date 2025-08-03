@@ -6,6 +6,7 @@ Player::Player() :
 	CharacterBase(ObjName.PLAYER, ObjTag.PLAYER, ModelPath.SPECIAL_FORCES, MassKind::kMedium),
 	m_state								(std::make_shared<PlayerStateController>()),
 	m_camera_aim_transform				(std::make_shared<Transform>()),
+	m_current_camera_aim_pos			(v3d::GetZeroV()),
 	m_move_speed						(0.0f),
 	m_look_dir_offset_angle				(0.0f),
 	m_confirm_look_dir_threshold_angle	(0.0f),
@@ -27,11 +28,13 @@ Player::Player() :
 	// 武器設定
 	const auto gun   = std::make_shared<AssaultRifle>();
 	const auto knife = std::make_shared<Knife>();
-	AddItem(gun);
-	AddItem(knife);
-	EquipWeapon(gun);
-	EquipKnife (knife);
 	m_weapon_shortcut_selecter->AttachShortcutWeapon(WeaponShortcutPosKind::kInsideLeft, gun);
+	AddItem     (gun);
+	AddItem     (knife);
+	EquipWeapon (gun);
+	EquipKnife  (knife);
+	AttachWeapon(gun);
+	AttachWeapon(knife);
 
 	// TODO : 仮で銃のオブジェ登録
 	ObjManager::GetInstance()->AddObj(gun);
@@ -81,6 +84,14 @@ void Player::LateUpdate()
 
 	m_state->LateUpdate(this);
 
+	for (const auto& attach_weapon : m_attach_weapons)
+	{
+		if (attach_weapon.second)
+		{
+			attach_weapon.second->TrackOwnerHolster();
+		}
+	}
+
 	CalcCameraAimPos();
 }
 
@@ -106,7 +117,6 @@ void Player::Draw() const
 		}
 	}
 
-
 	//const auto look_dir_current = m_look_dir.at(TimeKind::kCurrent);
 	//const auto look_dir_next	= m_look_dir.at(TimeKind::kNext);
 	//DrawFormatString(0, 20, 0xffffff, "look_dir_current : %f %f, %f", look_dir_current.x, look_dir_current.y, look_dir_current.z);
@@ -115,6 +125,10 @@ void Player::Draw() const
 	//const auto p = m_transform->GetPos(CoordinateKind::kWorld) + VGet(0, 40, 0);
 	//DrawLine3D(p, p + look_dir_current * 100, 0xff0000);
 	//DrawLine3D(p, p + look_dir_next    * 100, 0xffffff);
+
+	DrawFormatString(500, 20, 0xffffff, "move_speed       : %f", m_move_speed);
+	DrawFormatString(500, 40, 0xffffff, "move_dir_next    : %f, %f ,%f", m_move_dir.at(TimeKind::kNext).x, m_move_dir.at(TimeKind::kNext).y, m_move_dir.at(TimeKind::kNext).z);
+	DrawFormatString(500, 60, 0xffffff, "move_dir_current : %f, %f ,%f", m_move_dir.at(TimeKind::kCurrent).x, m_move_dir.at(TimeKind::kCurrent).y, m_move_dir.at(TimeKind::kCurrent).z);
 }
 
 void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
@@ -236,8 +250,11 @@ void Player::DirOfCameraForward()
 	m_look_dir.at(TimeKind::kNext) = GetMoveForward();
 }
 
-void Player::CalcStopSpeed()
+void Player::CalcMoveSpeedStop()
 {
+	//if (   m_state->GetWeaponActionState(TimeKind::kCurrent)->GetStateKind() == static_cast<int>(player_state::WeaponActionStateKind::kFirstSideSlashKnife)
+	//	|| m_state->GetWeaponActionState(TimeKind::kCurrent)->GetStateKind() == static_cast<int>(player_state::WeaponActionStateKind::kSecondSideSlashKnife)) { return; }
+
 	// 速い状態から歩き状態に移行した場合、急速に減速させる
 	if (m_move_speed > kSlowWalkSpeed) { m_move_speed = kSlowWalkSpeed; }
 
@@ -265,7 +282,7 @@ void Player::CalcMoveSpeed(const float input_slope)
 	math::Decrease(m_move_speed, kAcceleration * FPS::GetDeltaTime(), kWalkSpeed);
 }
 
-void Player::CalcCrouchSpeed()
+void Player::CalcMoveSpeedCrouch()
 {
 	if (m_state->GetMoveState(TimeKind::kCurrent)->GetStateKind() == static_cast<int>(player_state::MoveStateKind::kMoveNull)) { return; }
 
@@ -275,7 +292,7 @@ void Player::CalcCrouchSpeed()
 	math::Decrease(m_move_speed, kAcceleration * FPS::GetDeltaTime(), kCrouchWalkSpeed);
 }
 
-void Player::CalcRunSpeed()
+void Player::CalcMoveSpeedRun()
 {
 	if (m_state->GetMoveState(TimeKind::kCurrent)->GetStateKind() == static_cast<int>(player_state::MoveStateKind::kMoveNull)) { return; }
 
@@ -284,6 +301,11 @@ void Player::CalcRunSpeed()
 
 	math::Increase(m_move_speed, kAcceleration * FPS::GetDeltaTime(), kRunSpeed);
 }
+
+//void Player::CalcMoveOffsetSideSlashKnife()
+//{
+//	math::Increase(m_move_speed, 10 * FPS::GetDeltaTime(), 10.0f);
+//}
 #pragma endregion
 
 
@@ -301,15 +323,12 @@ void Player::CalcMoveDir(const VECTOR& velocity)
 {
 	// 目的とする向きと距離を取得
 	m_move_dir[TimeKind::kNext] = v3d::GetNormalizedV(velocity);
-	const VECTOR distance_v = m_move_dir[TimeKind::kNext] - m_move_dir[TimeKind::kCurrent];
 
 	// 現在のdirを目的とするdirに近づけていく
-	m_move_dir[TimeKind::kCurrent] += v3d::GetNormalizedV(distance_v) * kMoveDirOffsetSpeed;
-	const float distance = VSize(m_move_dir[TimeKind::kNext] - m_move_dir[TimeKind::kCurrent]);
-	if (distance < kConfirmMoveDirThresholdDistance)
-	{
-		m_move_dir[TimeKind::kCurrent] = m_move_dir[TimeKind::kNext];
-	}
+	m_move_dir[TimeKind::kCurrent] = math::GetApproachedVector(
+		m_move_dir[TimeKind::kCurrent], 
+		m_move_dir[TimeKind::kNext], 
+		kMoveDirOffsetSpeed * FPS::GetDeltaTime());
 }
 
 void Player::CalcLookDir()
@@ -343,15 +362,22 @@ void Player::CalcCameraAimPos()
 	m_modeler->ApplyMatrix();
 
 	// 追跡するボーンから行列を取得
-	const int model_handle	= m_modeler->GetModelHandle();
-	const int frame_num		= MV1SearchFrame(model_handle, BonePath.SPINE_2);
-	MATRIX frame_mat		= MV1GetFrameLocalWorldMatrix(model_handle, frame_num);
+	const auto	model_handle	= m_modeler->GetModelHandle();
+	const auto	frame_num		= MV1SearchFrame(model_handle, BonePath.SPINE_2);
+	auto		frame_mat		= MV1GetFrameLocalWorldMatrix(model_handle, frame_num);
+	auto		aim_pos			= MGetTranslateElem(frame_mat);
 	
-	// ボーン自体を追跡すると画面の揺れが強すぎるため同じ高さの位置を追跡
-	const VECTOR begin_pos	= m_transform->GetPos(CoordinateKind::kWorld);
-	const VECTOR distance	= begin_pos - MGetTranslateElem(frame_mat);
-	const VECTOR aim_pos	= begin_pos + m_transform->GetUp(CoordinateKind::kWorld) * VSize(distance);
-	m_camera_aim_transform->SetPos(CoordinateKind::kWorld, aim_pos);
+	if (!IsTrackCameraOriginBone())
+	{
+		// ボーンと同じ高さの位置を追跡
+		const auto begin_pos	= m_transform->GetPos(CoordinateKind::kWorld);
+		const auto distance		= begin_pos - aim_pos;
+		aim_pos					= begin_pos + m_transform->GetUp(CoordinateKind::kWorld) * VSize(distance);
+	}
+
+	m_current_camera_aim_pos = math::GetApproachedVector(m_current_camera_aim_pos, aim_pos, kCameraAimOffsetBasicSpeed * VSize(aim_pos - m_current_camera_aim_pos));
+
+	m_camera_aim_transform->SetPos(CoordinateKind::kWorld, m_current_camera_aim_pos);
 }
 
 VECTOR Player::GetVelocityFromPad()
@@ -396,4 +422,13 @@ VECTOR Player::GetMoveRight()
 	right.y = 0.0f;
 	
 	return v3d::GetNormalizedV(right);
+}
+
+bool Player::IsTrackCameraOriginBone() const
+{
+	const auto weapon_state_kind = static_cast<player_state::WeaponActionStateKind>(m_state->GetWeaponActionState(TimeKind::kCurrent)->GetStateKind());
+	
+	return(weapon_state_kind == player_state::WeaponActionStateKind::kFirstSideSlashKnife
+		|| weapon_state_kind == player_state::WeaponActionStateKind::kSecondSideSlashKnife
+		|| weapon_state_kind == player_state::WeaponActionStateKind::kStabKnife);
 }

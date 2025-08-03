@@ -12,14 +12,19 @@ public:
 	CharacterBase(const std::string& name, const std::string& tag, const std::string& file_path, const MassKind mass_level_kind);
 	virtual ~CharacterBase() = default;
 
+
+	#pragma region Getter
 	[[nodiscard]] std::shared_ptr<Modeler>		GetModeler()					  { return m_modeler; }
 	[[nodiscard]] std::shared_ptr<AnimatorBase>	GetAnimator()				const { return m_animator; }
 	[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentHeldWeapon()		const { return m_current_held_weapon; }
 	[[nodiscard]] WeaponKind					GetCurrentHeldWeaponKind();
+	[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentAttachWeapon		(const HolsterKind holster_kind) const;
+	[[nodiscard]] WeaponKind					GetCurrentAttachWeaponKind	(const HolsterKind holster_kind) const;
+	#pragma endregion
 
 
 	#pragma region •Ší
-	/// @brief •Ší‚ğ‘•”õ‚·‚é
+	/// @brief •Ší‚ğè‚É‚½‚¹‚é
 	template<obj_concepts::WeaponT WeaponObjT>
 	void HoldWeapon(const std::shared_ptr<WeaponObjT> weapon)
 	{
@@ -27,7 +32,8 @@ public:
 		m_current_held_weapon->AttachOwner(m_modeler);
 	}
 	void HoldWeapon(const int obj_handle);
-	/// @brief •Ší‚Ì‘•”õ‚ğ‰ğœ‚·‚é
+
+	/// @brief è‚É‚Á‚Ä‚¢‚é•Ší‚ğ•ú‚·
 	void ReleaseWeapon();
 
 	/// @brief •Ší‚ğ‘•’…‚·‚é
@@ -35,9 +41,24 @@ public:
 	void AttachWeapon(const std::shared_ptr<WeaponObjT> weapon)
 	{
 		m_attach_weapons[weapon->GetHolsterKind()] = weapon;
+		m_attach_weapons[weapon->GetHolsterKind()]->AttachOwner(m_modeler);
 	}
 	void AttachWeapon(const int obj_handle);
-	/// @brief •Ší‚Ì‘•’…‚ğ‰ğœ‚·‚é
+
+	/// @brief •Ší‚Ì’…’E‚·‚é
+	template<obj_concepts::WeaponT WeaponObjT>
+	void DetachWeapon(const std::shared_ptr<WeaponObjT> weapon)
+	{
+		// ©g‚ª‘•’…‚³‚ê‚Ä‚¢‚ê‚Î’…’E‚·‚é
+		if (m_attach_weapons.count(weapon->GetHolsterKind()))
+		{
+			if (m_attach_weapons[weapon->GetHolsterKind()] == weapon)
+			{
+				m_attach_weapons[weapon->GetHolsterKind()]->DetachOwner();
+				m_attach_weapons[weapon->GetHolsterKind()] = nullptr;
+			}
+		}
+	}
 	void DetachWeapon(const HolsterKind holster_kind);
 	#pragma endregion
 

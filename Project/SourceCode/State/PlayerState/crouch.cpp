@@ -13,7 +13,7 @@ player_state::Crouch::~Crouch()
 
 void player_state::Crouch::Update(Player* obj)
 {
-	obj->CalcCrouchSpeed();
+	obj->CalcMoveSpeedCrouch();
 	obj->DirOfCameraForward();
 }
 

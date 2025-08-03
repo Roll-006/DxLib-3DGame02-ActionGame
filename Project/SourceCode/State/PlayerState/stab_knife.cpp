@@ -25,12 +25,14 @@ void player_state::StabKnife::LateUpdate(Player* obj)
 
 void player_state::StabKnife::Enter(Player* obj)
 {
-
+	obj->DetachWeapon(obj->GetCurrentEquipKnife());
+	obj->HoldWeapon(obj->GetCurrentEquipKnife());
 }
 
 void player_state::StabKnife::Exit(Player* obj)
 {
-
+	obj->ReleaseWeapon();
+	obj->AttachWeapon(obj->GetCurrentEquipKnife());
 }
 
 std::shared_ptr<IState<Player>> player_state::StabKnife::ChangeState(Player* obj)

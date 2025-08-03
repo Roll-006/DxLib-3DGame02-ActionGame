@@ -203,6 +203,30 @@ MATRIX math::ConvertEulerAnglesToXYZRotMatrix(const VECTOR& angle)
 //    return pos;
 //}
 
+VECTOR math::GetApproachedVector(const VECTOR& current_v, const VECTOR& end_v, const float speed)
+{
+    if (VSize(end_v - current_v) < kEpsilonLow) { return end_v; }
+
+    const auto distance_end_to_current  = end_v - current_v;
+    const auto dir                      = v3d::GetNormalizedV(distance_end_to_current);
+    auto       result_v                 = current_v + dir * speed;
+
+    // 終了判定
+    if (VSize(end_v - result_v) < speed * kStopThreshold)
+    {
+        result_v = end_v;
+    }
+
+    // 終了判定を抜けた場合、強制的に終了させる
+    const auto distance_result_to_current = result_v - current_v;
+    if (VDot(distance_result_to_current, distance_end_to_current) > VSquareSize(distance_end_to_current))
+    {
+        result_v = end_v;
+    }
+
+    return result_v;
+}
+
 VECTOR math::GetLerpVector(const VECTOR& begin_v, const VECTOR& end_v, const float t)
 {
     const auto dir              = v3d::GetNormalizedV(end_v - begin_v);

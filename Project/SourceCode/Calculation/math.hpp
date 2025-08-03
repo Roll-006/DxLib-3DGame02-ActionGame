@@ -170,12 +170,19 @@ namespace math
 
 
 	#pragma region 補間
+	/// @brief 目的地に向かって移動したベクトルを取得する
+	/// @param current_v 現在地点
+	/// @param end_v 終了地点
+	/// @param speed 移動速度(デルタタイム適用後)
+	/// @return 移動後ベクトル
+	[[nodiscard]] VECTOR GetApproachedVector(const VECTOR& current_v, const VECTOR& end_v, const float speed);
+
 	/// @brief 2つのベクトルを線形補間で補間
 	/// @param begin_v 開始地点
 	/// @param end_v 終了地点
 	/// @param t 補間係数(0.0～1.0)
 	/// @return 補間結果
-	[[nodiscard]] VECTOR GetLerpVector(const VECTOR& beginv, const VECTOR& end_v, const float t);
+	[[nodiscard]] VECTOR GetLerpVector(const VECTOR& begin_v, const VECTOR& end_v, const float t);
 
 	/// @brief 2つのクォータニオンを球面線形補間で補間
 	/// @param begin_q 開始地点となるクォータニオン

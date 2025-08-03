@@ -23,6 +23,11 @@ public:
 		if (m_owner_modeler) { m_owner_modeler = nullptr; }
 	}
 
+	/// @brief 持ち主の手を追跡する
+	void TrackOwnerHand();
+	/// @brief 持ち主のホルスター(武器収納位置)を追尾する
+	void TrackOwnerHolster();
+
 	[[nodiscard]] std::shared_ptr<Modeler>	GetModeler()	 const			{ return m_modeler; }
 	[[nodiscard]] ItemKind					GetItemKind()	 const override	{ return m_item_kind; }
 	[[nodiscard]] WeaponKind				GetWeaponKind()	 const			{ return m_weapon_kind; }
@@ -30,34 +35,38 @@ public:
 
 protected:
 	/// @brief 補正値を設定
-	/// @param angle 補正角度
-	/// @param pos 補正座標
-	/// @param scale 補正倍率
-	void SetOffset(const VECTOR& pos, const VECTOR& angle, const VECTOR& scale)
-	{
-		m_offset_pos   = pos;
-		m_offset_angle = angle;
-		m_offset_scale = scale;
-	}
+	/// @param hold_pos 手に持たれる際のオフセット座標
+	/// @param hold_angle 手に持たれる際のオフセット角度
+	/// @param attach_pos ホルスターに装着されている際のオフセット座標
+	/// @param attach_angle ホルスターに装着されている際のオフセット角度
+	/// @param scale オフセットスケール
+	void SetOffset(
+		const VECTOR& hold_pos,
+		const VECTOR& hold_angle,
+		const VECTOR& hold_scale,
+		const VECTOR& attach_pos,
+		const VECTOR& attach_angle,
+		const VECTOR& attach_scale);
 
-	void SetOffset(const VECTOR& pos, const VECTOR& angle, const float scale)
-	{
-		m_offset_pos	= pos;
-		m_offset_angle = angle;
-		m_offset_scale = VGet(scale, scale, scale);
-	}
-
-	/// @brief 持ち主を追跡する
-	void TrackOwner();
+	void SetOffset(
+		const VECTOR& hold_pos,
+		const VECTOR& hold_angle,
+		const float   hold_scale,
+		const VECTOR& attach_pos,
+		const VECTOR& attach_angle,
+		const float   attach_scale);
 
 protected:
 	std::shared_ptr<Modeler> m_modeler;
 	std::shared_ptr<Modeler> m_owner_modeler;	// 武器の持ち主であるオブジェクトのモデラー
 	
 private:
-	VECTOR m_offset_pos;		// 補正座標
-	VECTOR m_offset_angle;		// 補正角度
-	VECTOR m_offset_scale;		// 補正倍率
+	VECTOR m_hold_offset_pos;		// 手に持たれる際のオフセット座標
+	VECTOR m_hold_offset_angle;		// 手に持たれる際のオフセット角度
+	VECTOR m_hold_offset_scale;		// 手に持たれる際のオフセットスケール
+	VECTOR m_attach_offset_pos;		// ホルスターに装着されている際のオフセット座標
+	VECTOR m_attach_offset_angle;	// ホルスターに装着されている際のオフセット角度
+	VECTOR m_attach_offset_scale;	// ホルスターに装着されている際のオフセットスケール
 
 	ItemKind	m_item_kind;
 	WeaponKind	m_weapon_kind;

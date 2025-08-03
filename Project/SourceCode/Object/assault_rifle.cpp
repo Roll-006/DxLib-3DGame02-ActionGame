@@ -6,7 +6,9 @@ AssaultRifle::AssaultRifle() :
 	m_modeler = std::make_shared<Modeler>(m_transform, ModelPath.ASSAULT_RIFLE, kModelBasicAngle);
 
 	SetModelHandle(m_modeler->GetModelHandle());
-	SetOffset(kOffsetPos, kOffsetAngle, kOffsetScale);
+
+	SetOffset(kHoldOffsetPos,   kHoldOffsetAngle,   kHoldOffsetScale, 
+			  kAttachOffsetPos, kAttachOffsetAngle, kAttachOffsetScale);
 
 	m_diffusion_shape			= std::make_shared<Circle>();
 	m_scope_scale				= kScopeScale;
@@ -43,7 +45,7 @@ void AssaultRifle::LateUpdate()
 {
 	if (!IsActive()) { return; }
 
-	TrackOwner();
+	TrackOwnerHand();
 	CalcDiffusionRange();
 	CalcTargetPos();
 	Shot();

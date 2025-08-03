@@ -1,36 +1,107 @@
 #include "weapon_base.hpp"
 
 WeaponBase::WeaponBase(const std::string& name, const WeaponKind weapon_kind, const HolsterKind holster_kind) :
-	PhysicalObjBase	(name, ObjTag.WEAPON, MassKind::kLight),
-	m_modeler		(nullptr),
-	m_owner_modeler	(nullptr),
-	m_offset_pos	(v3d::GetZeroV()),
-	m_offset_angle	(v3d::GetZeroV()),
-	m_offset_scale	(v3d::GetZeroV()),
-	m_item_kind		(ItemKind::kWeapon),
-	m_weapon_kind	(weapon_kind),
-	m_holster_kind	(holster_kind)
+	PhysicalObjBase			(name, ObjTag.WEAPON, MassKind::kLight),
+	m_modeler				(nullptr),
+	m_owner_modeler			(nullptr),
+	m_hold_offset_pos		(v3d::GetZeroV()),
+	m_hold_offset_angle		(v3d::GetZeroV()),
+	m_hold_offset_scale		(v3d::GetZeroV()),
+	m_attach_offset_pos		(v3d::GetZeroV()),
+	m_attach_offset_angle	(v3d::GetZeroV()),
+	m_attach_offset_scale	(v3d::GetZeroV()),
+	m_item_kind				(ItemKind::kWeapon),
+	m_weapon_kind			(weapon_kind),
+	m_holster_kind			(holster_kind)
 {
 	
 }
 
-void WeaponBase::TrackOwner()
+void WeaponBase::TrackOwnerHand()
 {
 	if (!m_owner_modeler) { return; }
-
 	m_owner_modeler->ApplyMatrix();
 
 	// アタッチする部位の行列情報を取り出す
-	const int    owner_attach_frame_num = MV1SearchFrame(m_owner_modeler->GetModelHandle(), BonePath.RIGHT_HAND);
-	const MATRIX owner_attach_frame_mat = MV1GetFrameLocalWorldMatrix(m_owner_modeler->GetModelHandle(), owner_attach_frame_num);
+	const auto owner_attach_frame_num = MV1SearchFrame(m_owner_modeler->GetModelHandle(), BonePath.RIGHT_HAND);
+	const auto owner_attach_frame_mat = MV1GetFrameLocalWorldMatrix(m_owner_modeler->GetModelHandle(), owner_attach_frame_num);
 
 	// 武器をアタッチする部位に合わせて回転し、行列を取得
-	MATRIX offset_angle_mat = MGetIdent();
-	CreateRotationXYZMatrix(&offset_angle_mat, m_offset_angle.x, m_offset_angle.y, m_offset_angle.z);
-	const MATRIX result_mat = offset_angle_mat * owner_attach_frame_mat;
+	const auto offset_angle_mat = math::ConvertEulerAnglesToXYZRotMatrix(m_hold_offset_angle);
+	const auto result_mat		= offset_angle_mat * owner_attach_frame_mat;
 
 	// 情報を適用
-	m_transform->SetMatrix(CoordinateKind::kWorld, result_mat);
-	m_transform->SetPos   (CoordinateKind::kLocal, m_transform->GetPos(CoordinateKind::kLocal) + VTransformSR(m_offset_pos, result_mat));
-	m_transform->SetScale (CoordinateKind::kWorld, m_offset_scale);
+	m_transform->SetMatrix	(CoordinateKind::kWorld, result_mat);
+	m_transform->SetPos		(CoordinateKind::kLocal, m_transform->GetPos(CoordinateKind::kLocal) + VTransformSR(m_hold_offset_pos, result_mat));
+	m_transform->SetScale	(CoordinateKind::kWorld, m_hold_offset_scale);
+}
+
+void WeaponBase::TrackOwnerHolster()
+{
+	if (!m_owner_modeler) { return; }
+	m_owner_modeler->ApplyMatrix();
+
+	int owner_attach_frame_num = -1;
+
+	switch (m_holster_kind)
+	{
+	case HolsterKind::kKnife:
+		owner_attach_frame_num = MV1SearchFrame(m_owner_modeler->GetModelHandle(), BonePath.SPINE_2);
+		break;
+
+	case HolsterKind::kHandgun:
+		owner_attach_frame_num = MV1SearchFrame(m_owner_modeler->GetModelHandle(), BonePath.RIGHT_UP_LEG);
+		break;
+
+	case HolsterKind::kRifle:
+		owner_attach_frame_num = MV1SearchFrame(m_owner_modeler->GetModelHandle(), BonePath.SPINE_2);
+		break;
+
+	case HolsterKind::kGrenade:
+		owner_attach_frame_num = MV1SearchFrame(m_owner_modeler->GetModelHandle(), BonePath.RIGHT_UP_LEG);
+		break;
+	}
+
+
+	// 武器をアタッチする部位に合わせて回転し、行列を取得
+	const auto owner_attach_frame_mat	= MV1GetFrameLocalWorldMatrix(m_owner_modeler->GetModelHandle(), owner_attach_frame_num);
+	const auto offset_angle_mat			= math::ConvertEulerAnglesToXYZRotMatrix(m_attach_offset_angle);
+	const auto result_mat				= offset_angle_mat * owner_attach_frame_mat;
+
+	// 情報を適用
+	m_transform->SetMatrix	(CoordinateKind::kWorld, result_mat);
+	m_transform->SetPos		(CoordinateKind::kLocal, m_transform->GetPos(CoordinateKind::kLocal) + VTransformSR(m_attach_offset_pos, result_mat));
+	m_transform->SetScale	(CoordinateKind::kWorld, m_attach_offset_scale);
+}
+
+void WeaponBase::SetOffset(
+	const VECTOR& hold_pos,
+	const VECTOR& hold_angle,
+	const VECTOR& hold_scale,
+	const VECTOR& attach_pos,
+	const VECTOR& attach_angle,
+	const VECTOR& attach_scale)
+{
+	m_hold_offset_pos		= hold_pos;
+	m_hold_offset_angle		= hold_angle;
+	m_hold_offset_scale		= hold_scale;
+	m_attach_offset_pos		= attach_pos;
+	m_attach_offset_angle	= attach_angle;
+	m_attach_offset_scale	= attach_scale;
+}
+
+void WeaponBase::SetOffset(
+	const VECTOR& hold_pos,
+	const VECTOR& hold_angle,
+	const float   hold_scale,
+	const VECTOR& attach_pos,
+	const VECTOR& attach_angle,
+	const float   attach_scale)
+{
+	m_hold_offset_pos		= hold_pos;
+	m_hold_offset_angle		= hold_angle;
+	m_hold_offset_scale		= VGet(hold_scale, hold_scale, hold_scale);
+	m_attach_offset_pos		= attach_pos;
+	m_attach_offset_angle	= attach_angle;
+	m_attach_offset_scale	= VGet(attach_scale, attach_scale, attach_scale);
 }

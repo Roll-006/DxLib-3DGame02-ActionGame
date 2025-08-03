@@ -51,7 +51,6 @@ public:
 		return m_states.count(typeid(StateT)) ? std::static_pointer_cast<StateT>(m_states.at(typeid(StateT))) : nullptr;
 	}
 
-
 	#pragma region Try”»’è
 	[[nodiscard]] bool TryMove();
 	[[nodiscard]] bool TryRun();
