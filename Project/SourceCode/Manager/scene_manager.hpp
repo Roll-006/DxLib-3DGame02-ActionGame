@@ -1,14 +1,13 @@
 #pragma once
 #include <unordered_map>
 
-#include "ui_drawer.hpp"
-#include "../ShadowMap/shadow_map.hpp"
+#include "../Drawer/drawer.hpp"
 
+#include "../Scene/share_scene.hpp"
 #include "../Scene/title_scene.hpp"
 #include "../Scene/play_scene.hpp"
 #include "../Scene/game_clear_scene.hpp"
 #include "../Scene/game_over_scene.hpp"
-#include "../Scene/share_scene.hpp"
 #include "../Scene/load_scene.hpp"
 
 class SceneManager final : public OneInstanceSingletonBase<SceneManager>
@@ -19,7 +18,8 @@ public:
 
 	void Update();
 	void LateUpdate();
-	void Draw() const;
+	void DrawToShadowMap()	const;
+	void Draw()				const;
 
 	/// @brief 現在のシーンの種類を取得
 	[[nodiscard]] std::vector<SceneKind> GetCurrentSceneKind() const;
@@ -34,5 +34,5 @@ private:
 	std::unordered_map<SceneKind, std::shared_ptr<SceneBase>> m_scene_list;		// すべてのシーン
 	std::unordered_map<SceneKind, std::shared_ptr<SceneBase>> m_current_scene;	// 現在(実行中)のシーン
 
-	std::unique_ptr<ShadowMap> m_shadow_map;
+	std::unique_ptr<Drawer> m_drawer;
 };

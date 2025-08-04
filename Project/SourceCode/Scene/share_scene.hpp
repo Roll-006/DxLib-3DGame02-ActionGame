@@ -6,8 +6,8 @@
 #include "../Object/selector.hpp"
 
 #include "../Command/command_handler.hpp"
-#include "../Manager/camera_manager.hpp"
 
+#include "../Manager/camera_manager.hpp"
 #include "../Manager/effect_manager.hpp"
 
 class ShareScene final : public SceneBase

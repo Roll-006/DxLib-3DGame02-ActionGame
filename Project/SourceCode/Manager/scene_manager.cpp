@@ -1,7 +1,7 @@
 #include "scene_manager.hpp"
 
 SceneManager::SceneManager() : 
-	m_shadow_map(std::make_unique<ShadowMap>())
+	m_drawer(nullptr)
 {
 	m_scene_list[SceneKind::kShare]		= std::make_shared<ShareScene>();
 	m_scene_list[SceneKind::kTitle]		= std::make_shared<TitleScene>();
@@ -9,6 +9,8 @@ SceneManager::SceneManager() :
 	m_scene_list[SceneKind::kGameClear]	= std::make_shared<GameClearScene>();
 	m_scene_list[SceneKind::kGameOver]	= std::make_shared<GameOverScene>();
 	m_scene_list[SceneKind::kLoad]		= std::make_shared<LoadScene>();
+
+	m_drawer = std::make_unique<Drawer>(ObjManager::GetInstance()->GetObj<ObjBase>(ObjName.MAIN_CAMERA)->GetTransform());
 
 	// ‹¤—LƒV[ƒ“‚Íí‚É—¬‚·
 	AttachCurrentScene(SceneKind::kShare);
@@ -49,24 +51,14 @@ void SceneManager::LateUpdate()
 	InputChecker	::GetInstance()->LateUpdate();
 }
 
+void SceneManager::DrawToShadowMap() const
+{
+	m_drawer->DrawToShadowMap(m_current_scene);
+}
+
 void SceneManager::Draw() const
 {
-	m_shadow_map->PrepareDrawShadowMap();
-	for (const auto& scene : m_current_scene)
-	{
-		scene.second->DrawToShadowMap();
-	}
-	m_shadow_map->EndDrawShadowMap();
-
-	m_shadow_map->UseShadowMap();
-	for (const auto& scene : m_current_scene)
-	{
-		scene.second->Draw();
-	}
-	m_shadow_map->UnuseShadowMap();
-
-	DrawEffekseer3D();
-	UIDrawer::GetInstance()->Draw();
+	m_drawer->Draw(m_current_scene);
 }
 
 std::vector<SceneKind> SceneManager::GetCurrentSceneKind() const

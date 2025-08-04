@@ -101,11 +101,11 @@ void Player::DrawToShadowMap() const
 
 	m_modeler->DrawToShadowMap();
 
-	if (m_current_held_weapon) { m_current_held_weapon->Draw(); }
+	if (m_current_held_weapon) { m_current_held_weapon->DrawToShadowMap(); }
 
 	for (const auto& attach_weapon : m_attach_weapons)
 	{
-		if (attach_weapon.second) { attach_weapon.second->Draw(); }
+		if (attach_weapon.second) { attach_weapon.second->DrawToShadowMap(); }
 	}
 }
 

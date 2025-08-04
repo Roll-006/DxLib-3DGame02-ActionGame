@@ -6,7 +6,7 @@
 #include "../Object/ground.hpp"
 #include "../Object/skydome.hpp"
 
-#include "../Manager/ui_drawer.hpp"
+#include "../UI/ui_drawer.hpp"
 #include "../UI/player_ui_creator.hpp"
 
 #include "../ObjectPool/play_scene_effect_object_pool.hpp"

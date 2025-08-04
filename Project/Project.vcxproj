@@ -157,6 +157,7 @@
     <ClCompile Include="SourceCode\Calculation\quaternion.cpp" />
     <ClCompile Include="SourceCode\Command\command_handler.cpp" />
     <ClCompile Include="SourceCode\Debugger\debugger.cpp" />
+    <ClCompile Include="SourceCode\Drawer\drawer.cpp" />
     <ClCompile Include="SourceCode\FPS\fps.cpp" />
     <ClCompile Include="SourceCode\GameSystem\game_system_setter.cpp" />
     <ClCompile Include="SourceCode\Handle\handle_keeper.cpp" />
@@ -170,7 +171,6 @@
     <ClCompile Include="SourceCode\Manager\physics_manager.cpp" />
     <ClCompile Include="SourceCode\Manager\rifle_cartridge_manager.cpp" />
     <ClCompile Include="SourceCode\Manager\scene_manager.cpp" />
-    <ClCompile Include="SourceCode\Manager\ui_drawer.cpp" />
     <ClCompile Include="SourceCode\Manager\weapon_manager.cpp" />
     <ClCompile Include="SourceCode\ObjectPool\share_scene_effect_object_pool.cpp" />
     <ClCompile Include="SourceCode\ObjectPool\play_scene_effect_object_pool.cpp" />
@@ -249,6 +249,7 @@
     <ClCompile Include="SourceCode\State\PlayerState\suplex.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\turn_around.cpp" />
     <ClCompile Include="SourceCode\UI\player_ui_creator.cpp" />
+    <ClCompile Include="SourceCode\UI\ui_drawer.cpp" />
     <ClCompile Include="SourceCode\VirtualCamera\aiming_camera (2).cpp" />
     <ClCompile Include="SourceCode\VirtualCamera\aiming_camera (3).cpp" />
     <ClCompile Include="SourceCode\VirtualCamera\rot_control_virtual_camera.cpp" />
@@ -337,6 +338,7 @@
     <ClInclude Include="SourceCode\Data\Tag\animation_tag.hpp" />
     <ClInclude Include="SourceCode\Data\Tag\obj_tag.hpp" />
     <ClInclude Include="SourceCode\Debugger\debugger.hpp" />
+    <ClInclude Include="SourceCode\Drawer\drawer.hpp" />
     <ClInclude Include="SourceCode\FPS\fps.hpp" />
     <ClInclude Include="SourceCode\GameSystem\game_system_setter.hpp" />
     <ClInclude Include="SourceCode\Handle\handle_keeper.hpp" />
@@ -354,7 +356,6 @@
     <ClInclude Include="SourceCode\Manager\physics_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\rifle_cartridge_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\scene_manager.hpp" />
-    <ClInclude Include="SourceCode\Manager\ui_drawer.hpp" />
     <ClInclude Include="SourceCode\Manager\weapon_manager.hpp" />
     <ClInclude Include="SourceCode\ObjectPool\share_scene_effect_object_pool.hpp" />
     <ClInclude Include="SourceCode\ObjectPool\play_scene_effect_object_pool.hpp" />
@@ -434,87 +435,12 @@
     <ClInclude Include="SourceCode\State\PlayerState\suplex.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\turn_around.hpp" />
     <ClInclude Include="SourceCode\UI\player_ui_creator.hpp" />
+    <ClInclude Include="SourceCode\UI\ui_drawer.hpp" />
     <ClInclude Include="SourceCode\VirtualCamera\aiming_camera (2).hpp" />
     <ClInclude Include="SourceCode\VirtualCamera\aiming_camera (3).hpp" />
     <ClInclude Include="SourceCode\VirtualCamera\rot_control_virtual_camera.hpp" />
     <ClInclude Include="SourceCode\VirtualCamera\virtual_camera.hpp" />
     <ClInclude Include="SourceCode\Window\window.hpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="SourceCode\Shader\DepthShadow_Step1PS.fx">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </FxCompile>
-    <FxCompile Include="SourceCode\Shader\NormalMesh_DepthShadow_Step1VS.fx">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </FxCompile>
-    <FxCompile Include="SourceCode\Shader\NormalMesh_PointLight_DepthShadow_Step2VS.fx">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </FxCompile>
-    <FxCompile Include="SourceCode\Shader\PointLight_DepthShadow_Step2PS.fx">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </FxCompile>
-    <FxCompile Include="SourceCode\Shader\SkinMesh4_DepthShadow_Step1VS.fx">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </FxCompile>
-    <FxCompile Include="SourceCode\Shader\SkinMesh4_PointLight_DepthShadow_Step2VS.fx">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </FxCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="SourceCode\Shader\DepthShadow_Step1PS.pso">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </None>
-    <None Include="SourceCode\Shader\NormalMesh_DepthShadow_Step1VS.vso">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </None>
-    <None Include="SourceCode\Shader\NormalMesh_PointLight_DepthShadow_Step2VS.vso">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </None>
-    <None Include="SourceCode\Shader\PointLight_DepthShadow_Step2PS.pso">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </None>
-    <None Include="SourceCode\Shader\SkinMesh4_DepthShadow_Step1VS.vso">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </None>
-    <None Include="SourceCode\Shader\SkinMesh4_PointLight_DepthShadow_Step2VS.vso">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </None>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

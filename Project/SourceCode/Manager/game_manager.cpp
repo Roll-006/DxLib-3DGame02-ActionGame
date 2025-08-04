@@ -45,6 +45,7 @@ void GameManager::Run()
 
 		m_scene_manager->Update();
 		m_scene_manager->LateUpdate();
+		m_scene_manager->DrawToShadowMap();
 		m_scene_manager->Draw();
 
 		m_fps->Draw();

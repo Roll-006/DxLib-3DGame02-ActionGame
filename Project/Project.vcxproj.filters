@@ -290,9 +290,6 @@
     <ClCompile Include="SourceCode\State\PlayerState\crouch_turn_around.cpp">
       <Filter>State\PlayerState</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Manager\ui_drawer.cpp">
-      <Filter>UI</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\ObjectPool\object_pool_holder.cpp">
       <Filter>ObjectPool</Filter>
     </ClCompile>
@@ -343,6 +340,12 @@
     </ClCompile>
     <ClCompile Include="SourceCode\ShadowMap\shadow_map.cpp">
       <Filter>ShadowMap</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\UI\ui_drawer.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Drawer\drawer.cpp">
+      <Filter>Drawer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -802,9 +805,6 @@
     <ClInclude Include="SourceCode\State\PlayerState\crouch_turn_around.hpp">
       <Filter>State\PlayerState</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Manager\ui_drawer.hpp">
-      <Filter>UI</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\ObjectPool\object_pool_holder.hpp">
       <Filter>ObjectPool</Filter>
     </ClInclude>
@@ -895,6 +895,12 @@
     <ClInclude Include="SourceCode\ShadowMap\shadow_map.hpp">
       <Filter>ShadowMap</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\UI\ui_drawer.hpp">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Drawer\drawer.hpp">
+      <Filter>Drawer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Manager">
@@ -972,9 +978,6 @@
     <Filter Include="Algorithm">
       <UniqueIdentifier>{b0890834-20a2-48aa-b030-750bd28f8af2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Shader">
-      <UniqueIdentifier>{386eb507-c76b-4ff9-bc74-69fb60f96a8a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="State">
       <UniqueIdentifier>{9a691bb4-740c-48d4-baec-fd67b8b9b808}</UniqueIdentifier>
     </Filter>
@@ -1011,45 +1014,8 @@
     <Filter Include="ShadowMap">
       <UniqueIdentifier>{42ae97fb-a9d7-47a3-b9b8-61b541d541e4}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="SourceCode\Shader\DepthShadow_Step1PS.fx">
-      <Filter>Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="SourceCode\Shader\NormalMesh_DepthShadow_Step1VS.fx">
-      <Filter>Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="SourceCode\Shader\NormalMesh_PointLight_DepthShadow_Step2VS.fx">
-      <Filter>Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="SourceCode\Shader\PointLight_DepthShadow_Step2PS.fx">
-      <Filter>Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="SourceCode\Shader\SkinMesh4_DepthShadow_Step1VS.fx">
-      <Filter>Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="SourceCode\Shader\SkinMesh4_PointLight_DepthShadow_Step2VS.fx">
-      <Filter>Shader</Filter>
-    </FxCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="SourceCode\Shader\DepthShadow_Step1PS.pso">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="SourceCode\Shader\NormalMesh_DepthShadow_Step1VS.vso">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="SourceCode\Shader\NormalMesh_PointLight_DepthShadow_Step2VS.vso">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="SourceCode\Shader\PointLight_DepthShadow_Step2PS.pso">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="SourceCode\Shader\SkinMesh4_DepthShadow_Step1VS.vso">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="SourceCode\Shader\SkinMesh4_PointLight_DepthShadow_Step2VS.vso">
-      <Filter>Shader</Filter>
-    </None>
+    <Filter Include="Drawer">
+      <UniqueIdentifier>{0ad1cdd1-f9f1-4f0c-8cec-bf613a662d11}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

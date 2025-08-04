@@ -33,7 +33,7 @@ void Skydome::LateUpdate()
 
 void Skydome::DrawToShadowMap() const
 {
-
+	// ˆ—‚È‚µ
 }
 
 void Skydome::Draw() const
