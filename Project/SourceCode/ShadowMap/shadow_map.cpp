@@ -4,8 +4,8 @@ ShadowMap::ShadowMap(const std::shared_ptr<Transform> camera_transform) :
 	m_shadow_map_handle	(MakeShadowMap(kSizeX, kSizeY)),
 	m_camera_transform	(camera_transform)
 {
+	// TODO : Œã‚ÉÅ‚à‹­‚¢ŒõŒ¹‚É‰e‹¿‚ğó‚¯‚é‚æ‚¤‚É•ÏX
 	SetShadowMapLightDirection(m_shadow_map_handle, VGet(0.5f, -0.5f, 0.5f));
-
 }
 
 ShadowMap::~ShadowMap()

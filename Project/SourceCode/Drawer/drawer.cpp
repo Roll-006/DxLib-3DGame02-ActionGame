@@ -29,7 +29,7 @@ void Drawer::Draw(std::unordered_map<SceneKind, std::shared_ptr<SceneBase>> curr
 
 	for (const auto& scene : current_scene)
 	{
-		scene.second->DrawToShadowMap();
+		scene.second->Draw();
 	}
 
 	m_shadow_map->UnuseShadowMap();
