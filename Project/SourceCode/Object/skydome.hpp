@@ -10,10 +10,11 @@ public:
 	Skydome(std::shared_ptr<MainCamera> camera);
 	~Skydome() override;
 
-	void Init()		  override;
-	void Update()	  override;
-	void LateUpdate() override;
-	void Draw() const override;
+	void Init()						override;
+	void Update()					override;
+	void LateUpdate()				override;
+	void DrawToShadowMap()	const	override;
+	void Draw()				const	override;
 
 	[[nodiscard]] std::shared_ptr<Modeler> GetModeler() { return m_modeler; }
 	

@@ -26,6 +26,11 @@ void Selector::LateUpdate()
 	if (!IsActive()) { return; }
 }
 
+void Selector::DrawToShadowMap() const
+{
+
+}
+
 void Selector::Draw() const
 {
 	if (!IsActive()) { return; }

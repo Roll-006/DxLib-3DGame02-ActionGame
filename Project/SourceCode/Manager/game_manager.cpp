@@ -17,7 +17,6 @@ GameManager::GameManager():
 	PhysicsManager			::Generate();
 	CameraManager			::Generate();
 	RifleCartridgeManager	::Generate();
-	EffectManager			::Generate();
 
 	m_scene_manager = std::make_unique<SceneManager>();
 }
@@ -35,7 +34,6 @@ GameManager::~GameManager()
 	PhysicsManager			::Delete();
 	CameraManager			::Delete();
 	RifleCartridgeManager	::Delete();
-	EffectManager			::Delete();
 }
 
 void GameManager::Run()

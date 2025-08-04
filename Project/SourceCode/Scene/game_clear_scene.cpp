@@ -25,6 +25,11 @@ void GameClearScene::LateUpdate()
 
 }
 
+void GameClearScene::DrawToShadowMap() const
+{
+
+}
+
 void GameClearScene::Draw() const
 {
 

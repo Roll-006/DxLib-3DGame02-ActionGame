@@ -5,6 +5,7 @@ Knife::Knife() :
 {
 	m_modeler = std::make_shared<Modeler>(m_transform, ModelPath.KNIFE, kModelBasicAngle);
 
+	
 	SetModelHandle(m_modeler->GetModelHandle());
 
 	SetOffset(kHoldOffsetPos,   kHoldOffsetAngle,   kHoldOffsetScale,
@@ -34,6 +35,13 @@ void Knife::LateUpdate()
 
 	TrackOwnerHand();
 	CalcAttackTriggerPos();
+}
+
+void Knife::DrawToShadowMap() const
+{
+	if (!IsActive()) { return; }
+
+	m_modeler->DrawToShadowMap();
 }
 
 void Knife::Draw() const

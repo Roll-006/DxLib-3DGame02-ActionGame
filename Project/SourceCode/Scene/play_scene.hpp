@@ -17,10 +17,11 @@ public:
 	PlayScene();
 	~PlayScene() override;
 
-	void Init()		  override;
-	void Update()	  override;
-	void LateUpdate() override;
-	void Draw() const override;
+	void Init()						override;
+	void Update()					override;
+	void LateUpdate()				override;
+	void DrawToShadowMap()	const	override;
+	void Draw()				const	override;
 
 private:
 	std::shared_ptr<Zombie>						m_zombie;

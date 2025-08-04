@@ -8,6 +8,7 @@ ShellCasing::ShellCasing() :
 	m_alive_timer	(0.0f),
 	m_move_speed	(kInitialVelocity)
 {
+	
 	SetModelHandle(m_modeler->GetModelHandle());
 
 	AddCollider(std::make_shared<Collider>(ColliderKind::kCollider,		  std::make_shared<Capsule>(v3d::GetZeroV(), v3d::GetZeroV(), kCapsuleRadius),        this));
@@ -39,6 +40,13 @@ void ShellCasing::LateUpdate()
 	Move();
 
 	m_alive_timer += FPS::GetDeltaTime();
+}
+
+void ShellCasing::DrawToShadowMap() const
+{
+	if (!IsActive()) { return; }
+
+	m_modeler->DrawToShadowMap();
 }
 
 void ShellCasing::Draw() const

@@ -95,6 +95,20 @@ void Player::LateUpdate()
 	CalcCameraAimPos();
 }
 
+void Player::DrawToShadowMap() const
+{
+	if (!IsActive()) { return; }
+
+	m_modeler->DrawToShadowMap();
+
+	if (m_current_held_weapon) { m_current_held_weapon->Draw(); }
+
+	for (const auto& attach_weapon : m_attach_weapons)
+	{
+		if (attach_weapon.second) { attach_weapon.second->Draw(); }
+	}
+}
+
 void Player::Draw() const
 {
 	if (!IsActive()) { return; }
@@ -270,7 +284,7 @@ void Player::CalcMoveSpeed(const float input_slope)
 		// 速い状態から歩き状態に移行した場合、急速に減速させる
 		if (m_move_speed > kWalkSpeed) { m_move_speed = kWalkSpeed; }
 
-		math::Increase(m_move_speed, kAcceleration * FPS::GetDeltaTime(), kSlowWalkSpeed);
+		math::Increase(m_move_speed, kAcceleration * FPS::GetDeltaTime(), kSlowWalkSpeed, false);
 		math::Decrease(m_move_speed, kAcceleration * FPS::GetDeltaTime(), kSlowWalkSpeed);
 		return;
 	}
@@ -278,7 +292,7 @@ void Player::CalcMoveSpeed(const float input_slope)
 	// 遅い状態からダッシュ状態に移行した場合、急速に加速させる
 	if (m_move_speed < kSlowWalkSpeed) { m_move_speed = kSlowWalkSpeed; }
 
-	math::Increase(m_move_speed, kAcceleration * FPS::GetDeltaTime(), kWalkSpeed);
+	math::Increase(m_move_speed, kAcceleration * FPS::GetDeltaTime(), kWalkSpeed, false);
 	math::Decrease(m_move_speed, kAcceleration * FPS::GetDeltaTime(), kWalkSpeed);
 }
 
@@ -299,7 +313,7 @@ void Player::CalcMoveSpeedRun()
 	// 遅い状態からダッシュ状態に移行した場合、急速に加速させる
 	if (m_move_speed < kWalkSpeed) { m_move_speed = kWalkSpeed; }
 
-	math::Increase(m_move_speed, kAcceleration * FPS::GetDeltaTime(), kRunSpeed);
+	math::Increase(m_move_speed, kAcceleration * FPS::GetDeltaTime(), kRunSpeed, false);
 }
 
 //void Player::CalcMoveOffsetSideSlashKnife()

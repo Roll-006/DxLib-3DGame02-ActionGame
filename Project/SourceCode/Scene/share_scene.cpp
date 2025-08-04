@@ -3,7 +3,8 @@
 ShareScene::ShareScene() : 
 	m_main_camera					(std::make_shared<MainCamera>()),
 	m_player						(std::make_shared<Player>()),
-	m_share_scene_effect_object_pool(std::make_shared<ShareSceneEffectObjectPool>())
+	m_share_scene_effect_object_pool(std::make_shared<ShareSceneEffectObjectPool>()),
+	m_effect_manager				(std::make_shared<EffectManager>())
 {
 	// 各オブジェクトマネージャーへの登録
 	ObjManager		::GetInstance()->AddObj				(m_player);
@@ -35,12 +36,19 @@ void ShareScene::Update()
 {
 	m_player					->Update();
 	CameraManager::GetInstance()->Update();
+	m_effect_manager			->Update();
 }
 
 void ShareScene::LateUpdate()
 {
 	m_player					->LateUpdate();
 	CameraManager::GetInstance()->LateUpdate();
+	m_effect_manager			->LateUpdate();
+}
+
+void ShareScene::DrawToShadowMap() const
+{
+	m_player->DrawToShadowMap();
 }
 
 void ShareScene::Draw() const

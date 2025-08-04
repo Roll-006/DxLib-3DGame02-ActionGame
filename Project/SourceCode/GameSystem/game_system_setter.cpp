@@ -31,7 +31,7 @@ void GameSystemSetter::SetUpGameSystem()
 	SetMainWindowText("3DGAME");
 
 	// Zバッファ
-	SetUseZBuffer3D(TRUE);
+	SetUseZBuffer3D  (TRUE);
 	SetWriteZBuffer3D(TRUE);
 
 	// ライト

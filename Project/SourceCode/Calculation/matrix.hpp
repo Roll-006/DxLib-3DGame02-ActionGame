@@ -15,6 +15,22 @@ inline MATRIX operator*=(MATRIX& m1, const MATRIX& m2)			{ m1 = m1 * m2; return 
 template<typename ScaleT>
 inline MATRIX operator*=(MATRIX& m, const ScaleT scale)			{ m = m * scale; return m; }
 
+inline bool operator==(const MATRIX& m1, const MATRIX& m2)
+{
+	for (int i = 0; i < 4; ++i)
+	{
+		for (int j = 0; j < 4; ++j)
+		{
+			if (m1.m[i][j] != m2.m[i][j])
+			{
+				return false;
+			}
+		}
+	}
+	return true;
+}
+inline bool operator!=(const MATRIX& m1, const MATRIX& m2) { return !(m1 == m2); }
+
 namespace matrix
 {
 	inline void SetPos(MATRIX& mat, const VECTOR& pos)

@@ -31,9 +31,14 @@ void Skydome::LateUpdate()
 	if (!IsActive()) { return; }
 }
 
+void Skydome::DrawToShadowMap() const
+{
+
+}
+
 void Skydome::Draw() const
 {
 	if (!IsActive()) { return; }
 
-	//m_modeler->Draw();
+	m_modeler->Draw();
 }

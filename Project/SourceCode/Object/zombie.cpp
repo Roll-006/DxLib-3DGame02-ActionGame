@@ -1,7 +1,7 @@
 #include "zombie.hpp"
 
 Zombie::Zombie() :
-	EnemyBase(ObjName.ZOMBIE_POLICE, ModelPath.ZOMBIE_02, MassKind::kMedium)
+	EnemyBase(ObjName.ZOMBIE_POLICE, ModelPath.ZOMBIE_05, MassKind::kMedium)
 {
 	m_look_dir = VGet(0.0f, 0.0f, 1.0f);
 	m_transform->SetRot  (CoordinateKind::kWorld, m_look_dir);
@@ -43,6 +43,13 @@ void Zombie::Update()
 void Zombie::LateUpdate()
 {
 	if (!IsActive()) { return; }
+}
+
+void Zombie::DrawToShadowMap() const
+{
+	if (!IsActive()) { return; }
+
+	m_modeler->DrawToShadowMap();
 }
 
 void Zombie::Draw() const

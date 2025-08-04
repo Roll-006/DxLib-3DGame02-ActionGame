@@ -25,6 +25,11 @@ void LoadScene::LateUpdate()
 
 }
 
+void LoadScene::DrawToShadowMap() const
+{
+
+}
+
 void LoadScene::Draw() const
 {
 

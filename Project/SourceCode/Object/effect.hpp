@@ -13,10 +13,11 @@ public:
 	Effect(const std::string& obj_name, const float play_speed, const bool is_loop, const std::string& file_path);
 	~Effect() override;
 
-	void Init()			override;
-	void Update()		override;
-	void LateUpdate()   override;
-	void Draw() const	override;
+	void Init()						override;
+	void Update()					override;
+	void LateUpdate()				override;
+	void DrawToShadowMap()	const	override;
+	void Draw()				const	override;
 
 	[[nodiscard]] int	GetOriginEffectHandle()	 const	{ return m_origin_effect_handle; }
 	[[nodiscard]] int	GetPlayingEffectHandle() const	{ return m_playing_effect_handle; }

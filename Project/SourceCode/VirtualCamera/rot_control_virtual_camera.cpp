@@ -44,6 +44,11 @@ void RotControlVirtualCamera::LateUpdate()
 	CalcTransform();
 }
 
+void RotControlVirtualCamera::DrawToShadowMap() const
+{
+	if (!IsActive()) { return; }
+}
+
 void RotControlVirtualCamera::Draw() const
 {
 	if (!IsActive()) { return; }

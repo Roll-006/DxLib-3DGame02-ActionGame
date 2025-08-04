@@ -71,7 +71,7 @@ private:
 	std::unordered_map<int, AnimKindData>								m_anim_data;
 	std::unordered_map<BodyKind, std::shared_ptr<Modeler>>				m_resource_modeler;
 	std::shared_ptr<Modeler>											m_result_modeler;
-	std::unordered_map<BodyKind, std::unordered_map<std::string, int>>	m_bone_num;
+	std::unordered_map<BodyKind, std::unordered_map<std::string, int>>	m_bone_numbers;
 	std::unordered_map<BodyKind, float>									m_prev_anim_play_rate;		// 前回のアニメーションの再生率
 	std::unordered_map<BodyKind, float>									m_blend_rate;				// ブレンド率
 };

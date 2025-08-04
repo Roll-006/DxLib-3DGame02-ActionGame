@@ -1,6 +1,7 @@
 #include "scene_manager.hpp"
 
-SceneManager::SceneManager()
+SceneManager::SceneManager() : 
+	m_shadow_map(std::make_unique<ShadowMap>())
 {
 	m_scene_list[SceneKind::kShare]		= std::make_shared<ShareScene>();
 	m_scene_list[SceneKind::kTitle]		= std::make_shared<TitleScene>();
@@ -32,8 +33,6 @@ void SceneManager::Update()
 	{
 		scene.second->Update();
 	}
-
-	EffectManager::GetInstance()->Update();
 }
 
 void SceneManager::LateUpdate()
@@ -45,7 +44,6 @@ void SceneManager::LateUpdate()
 		scene.second->LateUpdate();
 	}
 
-	EffectManager	::GetInstance()->LateUpdate();
 	CollisionManager::GetInstance()->LateUpdate();
 	CommandHandler	::GetInstance()->LateUpdate();
 	InputChecker	::GetInstance()->LateUpdate();
@@ -53,13 +51,22 @@ void SceneManager::LateUpdate()
 
 void SceneManager::Draw() const
 {
+	m_shadow_map->PrepareDrawShadowMap();
+	for (const auto& scene : m_current_scene)
+	{
+		scene.second->DrawToShadowMap();
+	}
+	m_shadow_map->EndDrawShadowMap();
+
+	m_shadow_map->UseShadowMap();
 	for (const auto& scene : m_current_scene)
 	{
 		scene.second->Draw();
 	}
+	m_shadow_map->UnuseShadowMap();
 
-	EffectManager::GetInstance()->Draw();
-	UIDrawer	 ::GetInstance()->Draw();
+	DrawEffekseer3D();
+	UIDrawer::GetInstance()->Draw();
 }
 
 std::vector<SceneKind> SceneManager::GetCurrentSceneKind() const

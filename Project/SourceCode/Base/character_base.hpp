@@ -1,8 +1,8 @@
 #pragma once
 #include "physical_obj_base.hpp"
 
-#include "animator_base.hpp"
 #include "../Part/modeler.hpp"
+#include "animator_base.hpp"
 
 #include "gun_base.hpp"
 
@@ -14,7 +14,7 @@ public:
 
 
 	#pragma region Getter
-	[[nodiscard]] std::shared_ptr<Modeler>		GetModeler()					  { return m_modeler; }
+	[[nodiscard]] std::shared_ptr<Modeler>		GetModeler()				const { return m_modeler; }
 	[[nodiscard]] std::shared_ptr<AnimatorBase>	GetAnimator()				const { return m_animator; }
 	[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentHeldWeapon()		const { return m_current_held_weapon; }
 	[[nodiscard]] WeaponKind					GetCurrentHeldWeaponKind();

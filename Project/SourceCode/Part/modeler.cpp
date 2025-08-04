@@ -55,21 +55,20 @@ Modeler::Modeler(const int model_handle) :
 	MV1SetupCollInfo(m_model_handle);
 }
 
-Modeler::Modeler() :
-	m_model_handle	(-1),
-	m_opacity		(1.0f),
-	m_transform		(nullptr),
-	m_basic_angle	(v3d::GetZeroV())
-{
-	// 処理なし
-}
-
 Modeler::~Modeler()
 {
 	MV1DeleteModel(m_model_handle);
 }
 #pragma endregion
 
+
+void Modeler::DrawToShadowMap() const
+{
+	ApplyOpacity();
+	ApplyMatrix();
+
+	MV1DrawModel(m_model_handle);
+}
 
 void Modeler::Draw() const
 {
@@ -82,6 +81,9 @@ void Modeler::Draw() const
 
 void Modeler::ApplyOpacity() const
 {
+	// 適用済みの値と同じ場合は重複した適用を避ける
+	if (MV1GetOpacityRate(m_model_handle) == m_opacity) { return; }
+
 	if (m_opacity == 1.0f)
 	{
 		MV1SetUseZBuffer (m_model_handle, TRUE);
@@ -95,9 +97,13 @@ void Modeler::ApplyOpacity() const
 
 void Modeler::ApplyMatrix() const
 {
-	const MATRIX rot_m = math::ConvertEulerAnglesToXYZRotMatrix(m_basic_angle);
-	MV1SetMatrix(m_model_handle, rot_m * m_transform->GetMatrix(CoordinateKind::kWorld));
+	const auto rot_m	= math::ConvertEulerAnglesToXYZRotMatrix(m_basic_angle);
+	const auto result_m = rot_m * m_transform->GetMatrix(CoordinateKind::kWorld);
+	
+	// 適用済みの値と同じ場合は重複した適用を避ける
+	if (MV1GetMatrix(m_model_handle) == result_m) { return; }
 
 	// 行列情報の更新と同時に衝突情報も更新
+	MV1SetMatrix(m_model_handle, result_m);
 	MV1RefreshCollInfo(m_model_handle);
 }

@@ -25,6 +25,11 @@ void TitleScene::LateUpdate()
 
 }
 
+void TitleScene::DrawToShadowMap() const
+{
+
+}
+
 void TitleScene::Draw() const
 {
 

@@ -336,9 +336,17 @@ bool PlayerStateController::TryRun()
 	return is_run;
 }
 
-bool PlayerStateController::TryEquipGun(Player* obj)
+bool PlayerStateController::TryEquipGun(Player* player)
 {
-	return obj->GetCurrentEquipWeaponKind() == WeaponKind::kGun && CommandHandler::GetInstance()->IsExecuting(CommandKind::kAimGun);
+	return player->GetCurrentEquipWeaponKind() == WeaponKind::kGun && CommandHandler::GetInstance()->IsExecuting(CommandKind::kAimGun);
+}
+
+bool PlayerStateController::TryShot(Player* player)
+{
+	const auto is_hold_gun		= player->GetCurrentHeldWeaponKind() == WeaponKind::kGun;
+	const auto is_pull_trigger	= CommandHandler::GetInstance()->IsExecuting(CommandKind::kAttack);
+	
+	return false;
 }
 
 //bool PlayerStateController::TryAimGun(Player* obj)

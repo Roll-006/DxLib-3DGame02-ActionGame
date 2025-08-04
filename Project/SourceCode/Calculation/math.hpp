@@ -110,25 +110,9 @@ namespace math
 	/// @param value 増加させる値
 	/// @param increase_value 増加量
 	/// @param max_value 最大値
-	template<common_concepts::ArithmeticT T>
-	void Increase(T& value, const T& increase_value, const T& max_value)
-	{
-		if (value == max_value) { return; }
-
-		value += increase_value;
-		if (value > max_value)
-		{
-			value = max_value;
-		}
-	}
-
-	/// @brief 値を増加させる(ループ用)
-	/// @param value 増加させる値
-	/// @param increase_value 増加量
-	/// @param max_value 最大値
 	/// @param is_loop ループ判定
 	template<common_concepts::ArithmeticT T>
-	void IncreaseLoop(T& value, const T& increase_value, const T& max_value, const bool is_loop)
+	void Increase(T& value, const T& increase_value, const T& max_value, const bool is_loop)
 	{
 		value += increase_value;
 		if (value > max_value)
@@ -150,21 +134,6 @@ namespace math
 		if (value < min_value)
 		{
 			value = min_value;
-		}
-	}
-	
-	/// @brief 値を減少させる(ループ用)
-	/// @param value 減少させる値
-	/// @param decrease_value 減少量
-	/// @param min_value 最小値
-	/// @param is_loop ループ判定
-	template<common_concepts::ArithmeticT T>
-	void DecreaseLoop(T& value, const T& decrease_value, const T& min_value, const bool is_loop)
-	{
-		value -= decrease_value;
-		if (value < min_value)
-		{
-			value = is_loop ? 0 : min_value;
 		}
 	}
 	#pragma endregion

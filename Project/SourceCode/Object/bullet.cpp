@@ -4,7 +4,6 @@
 
 Bullet::Bullet() : 
 	PhysicalObjBase	(ObjName.BULLET, ObjTag.BULLET, MassKind::kLight),
-	m_modeler		(nullptr),
 	m_move_dir		(v3d::GetZeroV()),
 	m_prev_pos		(v3d::GetZeroV()),
 	m_first_pos		(v3d::GetZeroV()),
@@ -40,6 +39,11 @@ void Bullet::LateUpdate()
 
 	Move();
 	CalcRayPos();
+}
+
+void Bullet::DrawToShadowMap() const
+{
+
 }
 
 void Bullet::Draw() const

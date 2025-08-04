@@ -1,8 +1,8 @@
 #pragma once
 #include <unordered_map>
 
-#include "effect_manager.hpp"
 #include "ui_drawer.hpp"
+#include "../ShadowMap/shadow_map.hpp"
 
 #include "../Scene/title_scene.hpp"
 #include "../Scene/play_scene.hpp"
@@ -33,4 +33,6 @@ private:
 private:
 	std::unordered_map<SceneKind, std::shared_ptr<SceneBase>> m_scene_list;		// すべてのシーン
 	std::unordered_map<SceneKind, std::shared_ptr<SceneBase>> m_current_scene;	// 現在(実行中)のシーン
+
+	std::unique_ptr<ShadowMap> m_shadow_map;
 };

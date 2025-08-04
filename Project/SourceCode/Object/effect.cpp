@@ -36,6 +36,11 @@ void Effect::LateUpdate()
 	PlayEffect();
 }
 
+void Effect::DrawToShadowMap() const
+{
+
+}
+
 void Effect::Draw() const
 {
 	if (!IsActive()) { return; }

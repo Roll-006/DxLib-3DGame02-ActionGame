@@ -14,10 +14,10 @@ public:
 	Modeler(const std::shared_ptr<Transform> transform, const int model_handle);
 	Modeler(const std::string& file_path);
 	Modeler(const int model_handle);
-	Modeler();
 	~Modeler();
 
-	void Draw() const;
+	void DrawToShadowMap()	const;
+	void Draw()				const;
 
 	/// @brief •s“§–¾“x‚ğİ’è
 	void SetOpacity(const float opacity) { m_opacity = opacity; }

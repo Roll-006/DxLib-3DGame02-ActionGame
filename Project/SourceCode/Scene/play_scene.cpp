@@ -53,6 +53,14 @@ void PlayScene::LateUpdate()
 	m_player_ui_creator					->LateUpdate();
 }
 
+void PlayScene::DrawToShadowMap() const
+{
+	m_zombie							->DrawToShadowMap();
+	RifleCartridgeManager::GetInstance()->DrawToShadowMap();
+	m_house								->DrawToShadowMap();
+	m_ground							->DrawToShadowMap();
+}
+
 void PlayScene::Draw() const
 {
 	m_zombie							->Draw();

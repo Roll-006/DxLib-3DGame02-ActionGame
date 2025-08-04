@@ -12,7 +12,8 @@ public:
 	void Init()						override;
 	void Update()					override;
 	void LateUpdate()				override;
-	void Draw() const				override;
+	void DrawToShadowMap()	const	override;
+	void Draw()				const	override;
 
 	#pragma region ƒRƒ}ƒ“ƒh
 	void MoveUp()					override;

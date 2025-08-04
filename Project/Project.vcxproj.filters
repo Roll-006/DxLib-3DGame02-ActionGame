@@ -341,6 +341,9 @@
     <ClCompile Include="SourceCode\Object\effect.cpp">
       <Filter>Object</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\ShadowMap\shadow_map.cpp">
+      <Filter>ShadowMap</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\character_base.hpp">
@@ -880,6 +883,18 @@
     <ClInclude Include="SourceCode\Data\Path\effect_path.hpp">
       <Filter>Data\Path</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\Interface\i_observer.hpp">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Part\subject.hpp">
+      <Filter>Part</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\Kind\event_kind.hpp">
+      <Filter>Data\Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\ShadowMap\shadow_map.hpp">
+      <Filter>ShadowMap</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Manager">
@@ -992,6 +1007,9 @@
     </Filter>
     <Filter Include="State\CameraState">
       <UniqueIdentifier>{ff495161-2f03-4c6e-a508-ddbb081ecd2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShadowMap">
+      <UniqueIdentifier>{42ae97fb-a9d7-47a3-b9b8-61b541d541e4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

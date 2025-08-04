@@ -50,6 +50,17 @@ void RifleCartridgeManager::LateUpdate()
 	}
 }
 
+void RifleCartridgeManager::DrawToShadowMap() const
+{
+	for (const auto& rifle_cartridge : m_rifle_cartridge)
+	{
+		for (const auto& part : rifle_cartridge.second)
+		{
+			part->DrawToShadowMap();
+		}
+	}
+}
+
 void RifleCartridgeManager::Draw() const
 {
 	for (const auto& rifle_cartridge : m_rifle_cartridge)

@@ -12,6 +12,7 @@ CharacterBase::CharacterBase(const std::string& name, const std::string& tag, co
 	m_current_remaining_bullet_num	(0)
 {
 	SetModelHandle(m_modeler->GetModelHandle());
+	
 }
 
 

@@ -9,10 +9,11 @@ public:
 	SceneBase() : m_is_active(true){}
 	virtual ~SceneBase() = default;
 
-	virtual void Init()		  abstract;
-	virtual void Update()	  abstract;
-	virtual void LateUpdate() abstract;
-	virtual void Draw() const abstract;
+	virtual void Init()						abstract;
+	virtual void Update()					abstract;
+	virtual void LateUpdate()				abstract;
+	virtual void DrawToShadowMap()	const	abstract;
+	virtual void Draw()				const	abstract;
 
 	/// @brief アクティブ化する
 	void Activate(){ m_is_active = true; }

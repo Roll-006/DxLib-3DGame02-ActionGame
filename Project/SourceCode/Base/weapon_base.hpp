@@ -1,8 +1,9 @@
 #pragma once
-#include "../Interface/i_item.hpp"
 #include "physical_obj_base.hpp"
+#include "../Interface/i_item.hpp"
 
 #include "../Part/modeler.hpp"
+
 #include "../Data/Kind/weapon_kind.hpp"
 #include "../Data/Kind/holster_kind.hpp"
 

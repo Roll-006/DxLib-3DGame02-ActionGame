@@ -165,7 +165,7 @@ void AnimatorBase::PlayAnim()
 		{
 			const float blend_rate	= time_kind == TimeKind::kCurrent ? m_blend_rate[body_kind] : 1.0f - m_blend_rate[body_kind];
 			float play_speed		= m_anim_data.at(data.kind).play_speed * FPS::GetDeltaTime();
-			math::IncreaseLoop(data.play_timer, play_speed, data.total_time, m_anim_data.at(data.kind).is_loop);
+			math::Increase(data.play_timer, play_speed, data.total_time, m_anim_data.at(data.kind).is_loop);
 
 			if (body_kind == BodyKind::kLowerBody && time_kind == TimeKind::kCurrent)
 			{
@@ -193,8 +193,8 @@ void AnimatorBase::PlayAnim()
 void AnimatorBase::BlendAnim()
 {
 	// ブレンド率100%まで増加させる
-	math::Increase(m_blend_rate[BodyKind::kUpperBody], kBlendSpeed * FPS::GetDeltaTime(), 1.0f);
-	math::Increase(m_blend_rate[BodyKind::kLowerBody], kBlendSpeed * FPS::GetDeltaTime(), 1.0f);
+	math::Increase(m_blend_rate[BodyKind::kUpperBody], kBlendSpeed * FPS::GetDeltaTime(), 1.0f, false);
+	math::Increase(m_blend_rate[BodyKind::kLowerBody], kBlendSpeed * FPS::GetDeltaTime(), 1.0f, false);
   
 	// ブレンドが完了した場合、PravAnimは不要なためデタッチする
 	if (m_blend_rate[BodyKind::kUpperBody] == 1.0f) { DetachAnim(TimeKind::kPrev, BodyKind::kUpperBody); }
@@ -222,7 +222,7 @@ void AnimatorBase::SetBoneNum()
 	lower_body_bone_num[BonePath.RIGHT_FOOT]	 = MV1SearchFrame(model_handle, BonePath.RIGHT_FOOT);
 	lower_body_bone_num[BonePath.RIGHT_TOE_BASE] = MV1SearchFrame(model_handle, BonePath.RIGHT_TOE_BASE);
 	lower_body_bone_num[BonePath.RIGHT_TOE_END]  = MV1SearchFrame(model_handle, BonePath.RIGHT_TOE_END);
-	m_bone_num[BodyKind::kLowerBody] = lower_body_bone_num;
+	m_bone_numbers[BodyKind::kLowerBody] = lower_body_bone_num;
 
 	// 上半身のボーンを設定
 	for (int i = 0; i < MV1GetFrameNum(model_handle); ++i)
@@ -234,7 +234,7 @@ void AnimatorBase::SetBoneNum()
 			upper_body_bone_num[bone_name] = i;
 		}
 	}
-	m_bone_num[BodyKind::kUpperBody] = upper_body_bone_num;
+	m_bone_numbers[BodyKind::kUpperBody] = upper_body_bone_num;
 }
 
 void AnimatorBase::SetPlayStartTime(AnimTimeKindData* current_time_kind_data, const AnimTimeKindData& prev_time_kind_data, const BodyKind body_kind)
@@ -259,35 +259,22 @@ void AnimatorBase::SetPlayStartTime(AnimTimeKindData* current_time_kind_data, co
 
 void AnimatorBase::CombineAnim()
 {
-	std::unordered_map<int, MATRIX> upper_body_matrix;
-	std::unordered_map<int, MATRIX> lower_body_matrix;
+	std::vector<std::tuple<BodyKind, int, MATRIX>> matrix;
 
 	// 各ボーンの行列を取得
-	for (const auto& [body_kind, bones] : m_bone_num)
+	for (const auto& [body_kind, bone_numbers] : m_bone_numbers)
 	{
-		for (const auto& [name, num] : bones)
+		for (const auto& [name, bone_num] : bone_numbers)
 		{
-			switch (body_kind)
-			{
-			case BodyKind::kUpperBody:
-				upper_body_matrix[num] = MV1GetFrameLocalMatrix(m_resource_modeler.at(body_kind)->GetModelHandle(), num);
-				break;
-
-			case BodyKind::kLowerBody:
-				lower_body_matrix[num] = MV1GetFrameLocalMatrix(m_resource_modeler.at(body_kind)->GetModelHandle(), num);
-				break;
-			}
+			const auto m = MV1GetFrameLocalMatrix(m_resource_modeler.at(body_kind)->GetModelHandle(), bone_num);
+			matrix.emplace_back(std::make_tuple(body_kind, bone_num, m));
 		}
 	}
-	
-	// 取得した行列をリザルトモデルに適用
-	for (const auto& m : lower_body_matrix)
+
+	// リザルトモデルに適用
+	for (const auto& [body_kind, bone_num, mat] : matrix)
 	{
-		MV1SetFrameUserLocalMatrix(m_result_modeler->GetModelHandle(), m.first, m.second);
-	}
-	for (const auto& m : upper_body_matrix)
-	{
-		MV1SetFrameUserLocalMatrix(m_result_modeler->GetModelHandle(), m.first, m.second);
+		MV1SetFrameUserLocalMatrix(m_result_modeler->GetModelHandle(), bone_num, mat);
 	}
 }
 

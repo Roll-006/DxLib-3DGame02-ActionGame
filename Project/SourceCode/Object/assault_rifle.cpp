@@ -5,6 +5,7 @@ AssaultRifle::AssaultRifle() :
 {
 	m_modeler = std::make_shared<Modeler>(m_transform, ModelPath.ASSAULT_RIFLE, kModelBasicAngle);
 
+	
 	SetModelHandle(m_modeler->GetModelHandle());
 
 	SetOffset(kHoldOffsetPos,   kHoldOffsetAngle,   kHoldOffsetScale, 
@@ -39,6 +40,8 @@ void AssaultRifle::Init()
 void AssaultRifle::Update()
 {
 	if (!IsActive()) { return; }
+
+	CalcShotTimer();
 }
 
 void AssaultRifle::LateUpdate()
@@ -48,7 +51,13 @@ void AssaultRifle::LateUpdate()
 	TrackOwnerHand();
 	CalcDiffusionRange();
 	CalcTargetPos();
-	Shot();
+}
+
+void AssaultRifle::DrawToShadowMap() const
+{
+	if (!IsActive()) { return; }
+
+	m_modeler->DrawToShadowMap();
 }
 
 void AssaultRifle::Draw() const
@@ -91,16 +100,16 @@ void AssaultRifle::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 void AssaultRifle::CalcDiffusionRange()
 {
-	if (!m_on_aiming) { return; }
-
-	// ŠgŽU”ÍˆÍ‚ðŽw’è
-	m_diffusion_shape = std::make_shared<Circle>(m_aim_dir, kDiffusionRadius);
-	std::dynamic_pointer_cast<Circle>(m_diffusion_shape)->SetPos(GetFirstShotPos() + m_aim_dir * kDiffusionDistance);
+	//if (!m_on_aiming) { return; }
+	//
+	//// ŠgŽU”ÍˆÍ‚ðŽw’è
+	//m_diffusion_shape = std::make_shared<Circle>(m_aim_dir, kDiffusionRadius);
+	//std::dynamic_pointer_cast<Circle>(m_diffusion_shape)->SetPos(GetFirstShotPos() + m_aim_dir * kDiffusionDistance);
 }
 
 void AssaultRifle::CalcTargetPos()
 {
-	if (!m_on_aiming) { return; }
-
-	m_target_pos = math::GetRandomPointInCircle(*std::dynamic_pointer_cast<Circle>(m_diffusion_shape));
+	//if (!m_on_aiming) { return; }
+	//
+	//m_target_pos = math::GetRandomPointInCircle(*std::dynamic_pointer_cast<Circle>(m_diffusion_shape));
 }

@@ -1,9 +1,5 @@
 #include "effect_manager.hpp"
 
-
-
-#include "../Input/input_checker.hpp"
-
 EffectManager::EffectManager()
 {
 
@@ -16,20 +12,6 @@ EffectManager::~EffectManager()
 
 void EffectManager::Update()
 {
-	if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_G) == InputState::kSingle)
-	{
-		const auto object_pool = ObjectPoolHolder::GetInstance()->GetObjectPool(ObjectPoolName.PLAY_SCENE_EFFECT_POOL);
-
-		// プールから弾丸を取得し、有効であれば発射
-		const auto effect = std::static_pointer_cast<Effect>(object_pool->GetObj(ObjName.TEST));
-		if (effect != nullptr)
-		{
-			AddEffect(effect);
-		}
-	}
-
-	// TODO : オブザーバーにてエフェクトを呼び出す
-
 	for (const auto& effect : m_effects)
 	{
 		for (const auto& e : effect.second)
@@ -71,9 +53,16 @@ void EffectManager::LateUpdate()
 	}
 }
 
-void EffectManager::Draw() const
+void EffectManager::OnNotify(const std::shared_ptr<ObjBase> obj, const EventKind event_kind)
 {
-	DrawEffekseer3D();
+	switch (event_kind)
+	{
+	case EventKind::k:
+		break;
+
+	default:
+		break;
+	}
 }
 
 void EffectManager::AddEffect(const std::shared_ptr<Effect> effect)

@@ -16,12 +16,19 @@ GunBase::GunBase(const std::string& name, const GunKind gun_kind, const HolsterK
 	m_deceleration					(0.0f),
 	m_shot_interval_time			(0.0f),
 	m_shot_timer					(0.0f),
-	m_is_shot						(false),
 	m_on_pull_trigger				(false),
-	m_on_aiming						(false),
 	m_gun_kind						(gun_kind)
 {
 	// 処理なし
+}
+
+void GunBase::Shot()
+{
+	if (IsShot())
+	{
+		RifleCartridgeManager::GetInstance()->Shot(*this);
+		--m_current_remaining_bullet_num;
+	}
 }
 
 void GunBase::OnReload(int& have_bullets)
@@ -45,6 +52,20 @@ void GunBase::OnReload(int& have_bullets)
 	}
 }
 
+void GunBase::CalcShotTimer()
+{
+	if (m_on_pull_trigger)
+	{
+		math::Increase(m_shot_timer, FPS::GetDeltaTime(), m_shot_interval_time, true);
+	}
+	else
+	{
+		m_shot_timer = 0.0f;
+	}
+}
+
+
+#pragma region Getter
 VECTOR GunBase::GetShotDir() const
 {
 	return v3d::GetNormalizedV(m_target_pos - GetFirstShotPos());
@@ -79,30 +100,12 @@ VECTOR GunBase::GetFirstShotPos() const
 	return s1.GetBeginPos() + h;
 }
 
-void GunBase::Shot()
+bool GunBase::IsShot() const
 {
-	// 弾丸がない場合は早期return
-	if (m_current_remaining_bullet_num <= 0)
+	if (m_current_remaining_bullet_num <= 0 && m_shot_timer == 0.0f && m_on_pull_trigger)
 	{
-		return;
+		return true;
 	}
-
-	// トリガーが引かれていない場合は早期return
-	if (!m_on_pull_trigger)
-	{
-		m_shot_timer = m_shot_interval_time;
-		m_is_shot    = false;
-		return;
-	}
-
-	// エイミング中のみ発射タイマーを増加
-	math::IncreaseLoop(m_shot_timer, FPS::GetDeltaTime(), m_shot_interval_time, true);
-	m_is_shot = m_shot_timer == 0.0f ? true : false;
-
-	// 発射呼び出し
-	if (m_is_shot)
-	{
-		RifleCartridgeManager::GetInstance()->Shot(*this);
-		--m_current_remaining_bullet_num;
-	}
+	return false;
 }
+#pragma endregion

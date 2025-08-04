@@ -30,6 +30,11 @@ void MainCamera::LateUpdate()
 	CalcRayPos();
 }
 
+void MainCamera::DrawToShadowMap() const
+{
+
+}
+
 void MainCamera::Draw() const
 {
 	if (!IsActive()) { return; }

@@ -4,6 +4,7 @@ House::House() :
 	PhysicalObjBase	(ObjName.HOUSE, ObjTag.BUILDING, MassKind::kStatic),
 	m_modeler		(std::make_shared<Modeler>(m_transform, ModelPath.HOUSE_01))
 {
+	
 	SetModelHandle(m_modeler->GetModelHandle());
 
 	m_transform->SetScale(CoordinateKind::kWorld, kModelScale);
@@ -31,6 +32,13 @@ void House::Update()
 void House::LateUpdate()
 {
 	if (!IsActive()) { return; }
+}
+
+void House::DrawToShadowMap() const
+{
+	if (!IsActive()) { return; }
+
+	m_modeler->DrawToShadowMap();
 }
 
 void House::Draw() const

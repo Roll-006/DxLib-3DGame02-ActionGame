@@ -16,6 +16,12 @@ void player_state::AimGun::Update(Player* obj)
 	obj->SetLookDirOffsetValueForAim();
 	obj->DirOfCameraForward();
 
+	// ˆø‚«‹à‚ð
+	if (CommandHandler::GetInstance()->GetInstance()->IsExecuting(CommandKind::kAttack))
+	{
+
+	}
+
 	obj->GetCurrentHeldWeapon()->Update();
 }
 
@@ -39,10 +45,17 @@ void player_state::AimGun::Exit(Player* obj)
 std::shared_ptr<IState<Player>> player_state::AimGun::ChangeState(Player* obj)
 {
 	const auto state_controller = obj->GetStateController();
+	const auto command			= CommandHandler::GetInstance();
 
-	if (!CommandHandler::GetInstance()->IsExecuting(CommandKind::kAimGun))
+	// e‘•”õó‘Ô
+	if (!command->IsExecuting(CommandKind::kAimGun))
 	{
 		return state_controller->GetState<EquipGun, Player>();
+	}
+	// ƒVƒ‡ƒbƒg
+	if (command->IsExecuting(CommandKind::kAttack))
+	{
+		return state_controller->GetState<Shot, Player>();
 	}
 
 	return nullptr;

@@ -1,0 +1,40 @@
+#pragma once
+#include "../Interface/i_observer.hpp"
+
+template <typename T>
+class Subject final
+{
+public:
+	Subject() {}
+	~Subject() {}
+
+	void AddObserver(std::shared_ptr<IObserver> observer)
+	{
+		if (std::find(m_observers.begin(), m_observers.end(), observer) == m_observers.end())
+		{
+			m_observers.emplace_back(observer);
+		}
+	}
+
+	void RemoveObserver(std::shared_ptr<IObserver> observer)
+	{
+		if (std::find(m_observers.begin(), m_observers.end(), observer) != m_observers.end())
+		{
+			erase(m_observers, observer);
+		}
+	}
+
+private:
+	void Notify(const std::shared_ptr<ObjBase> obj, const EventKind event_kind)
+	{
+		for (const auto& observer : m_observers)
+		{
+			observer->OnNotify(obj, event_kind);
+		}
+	}
+
+private:
+	std::vector<std::shared_ptr<IObserver>> m_observers;
+
+	friend T;
+};

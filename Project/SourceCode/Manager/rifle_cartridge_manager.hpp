@@ -10,7 +10,8 @@ class RifleCartridgeManager final : public SingletonBase<RifleCartridgeManager>
 public:
 	void Update();
 	void LateUpdate();
-	void Draw() const;
+	void DrawToShadowMap()	const;
+	void Draw()				const;
 
 	/// @brief ’eŠÛ‚Ì”­ŽË
 	void Shot(GunBase& gun);

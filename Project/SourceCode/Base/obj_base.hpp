@@ -12,10 +12,11 @@ public:
 	ObjBase(const std::string& name, const std::string& tag);
 	virtual ~ObjBase() = default;
 
-	virtual void Init()			abstract;
-	virtual void Update()		abstract;
-	virtual void LateUpdate()   abstract;
-	virtual void Draw() const	abstract;
+	virtual void Init()						abstract;
+	virtual void Update()					abstract;
+	virtual void LateUpdate()				abstract;
+	virtual void DrawToShadowMap()	const	abstract;
+	virtual void Draw()				const	abstract;
 
 	/// @brief オブジェクトをアクティブ化する
 	void Activate()   { m_is_active = true; }

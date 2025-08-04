@@ -208,6 +208,7 @@
     <ClCompile Include="SourceCode\Scene\play_scene.cpp" />
     <ClCompile Include="SourceCode\Scene\share_scene.cpp" />
     <ClCompile Include="SourceCode\Scene\title_scene.cpp" />
+    <ClCompile Include="SourceCode\ShadowMap\shadow_map.cpp" />
     <ClCompile Include="SourceCode\Shape\1DShape\line.cpp" />
     <ClCompile Include="SourceCode\Shape\1DShape\segment.cpp" />
     <ClCompile Include="SourceCode\Shape\2DShape\capsule2D.cpp" />
@@ -306,6 +307,7 @@
     <ClInclude Include="SourceCode\Data\Kind\command_kind.hpp" />
     <ClInclude Include="SourceCode\Data\Kind\coordinate_kind.hpp" />
     <ClInclude Include="SourceCode\Data\Kind\device_kind.hpp" />
+    <ClInclude Include="SourceCode\Data\Kind\event_kind.hpp" />
     <ClInclude Include="SourceCode\Data\Kind\gun_kind.hpp" />
     <ClInclude Include="SourceCode\Data\Kind\holster_kind.hpp" />
     <ClInclude Include="SourceCode\Data\Kind\input_kind.hpp" />
@@ -341,6 +343,7 @@
     <ClInclude Include="SourceCode\Handle\state_handler.hpp" />
     <ClInclude Include="SourceCode\Input\input_checker.hpp" />
     <ClInclude Include="SourceCode\Interface\i_item.hpp" />
+    <ClInclude Include="SourceCode\Interface\i_observer.hpp" />
     <ClInclude Include="SourceCode\Interface\i_poolable.hpp" />
     <ClInclude Include="SourceCode\Interface\i_state.hpp" />
     <ClInclude Include="SourceCode\Manager\camera_manager.hpp" />
@@ -378,6 +381,7 @@
     <ClInclude Include="SourceCode\Part\modeler.hpp" />
     <ClInclude Include="SourceCode\Part\player_animator.hpp" />
     <ClInclude Include="SourceCode\Part\player_state_controller.hpp" />
+    <ClInclude Include="SourceCode\Part\subject.hpp" />
     <ClInclude Include="SourceCode\Part\transform.hpp" />
     <ClInclude Include="SourceCode\Part\weapon_shortcut_selecter.hpp" />
     <ClInclude Include="SourceCode\Part\weapon_shortcut_drawer.hpp" />
@@ -389,6 +393,7 @@
     <ClInclude Include="SourceCode\Scene\play_scene.hpp" />
     <ClInclude Include="SourceCode\Scene\share_scene.hpp" />
     <ClInclude Include="SourceCode\Scene\title_scene.hpp" />
+    <ClInclude Include="SourceCode\ShadowMap\shadow_map.hpp" />
     <ClInclude Include="SourceCode\Shape\1DShape\line.hpp" />
     <ClInclude Include="SourceCode\Shape\1DShape\segment.hpp" />
     <ClInclude Include="SourceCode\Shape\2DShape\capsule2D.hpp" />
