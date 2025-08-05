@@ -753,18 +753,18 @@ VECTOR collision::PushBackSphereAndTriangle (const VECTOR& velocity, const Spher
     Sphere future_sphere = dynamic_sphere;
     future_sphere.Move(velocity);
 
-    // 未来の座標と衝突しているかを判定
-    if (!IsHitTriangleAndSphere(static_triangle, dynamic_sphere))
-    {
-        return velocity;
-    }
-
     //// 未来の座標と衝突しているかを判定
-    //if (!IsHitTriangleAndCapsule(static_triangle, Capsule(dynamic_sphere.GetPos(), future_sphere.GetPos(), dynamic_sphere.GetRadius())))
+    //if (!IsHitTriangleAndSphere(static_triangle, dynamic_sphere))
     //{
-    //    // 衝突していない場合、そのまま返す
     //    return velocity;
     //}
+
+    // 未来の座標から生成されたカプセルと衝突しているかを判定
+    if (!IsHitTriangleAndCapsule(static_triangle, Capsule(dynamic_sphere.GetPos(), future_sphere.GetPos(), dynamic_sphere.GetRadius())))
+    {
+        // 衝突していない場合、そのまま返す
+        return velocity;
+    }
 
     // 未来の座標と平面の距離を取得
     const Plane plane = Plane(static_triangle.GetCentroid(), static_triangle.GetNormalVector());
@@ -793,8 +793,8 @@ VECTOR collision::PushBackSphereAndModel    (const VECTOR& velocity, const Spher
     Sphere future_sphere = dynamic_sphere;
     future_sphere.Move(velocity);
 
-    // 未来の座標と衝突しているかを判定
-    const auto hit_result = MV1CollCheck_Sphere(model_handle, -1, future_sphere.GetPos(), future_sphere.GetRadius());
+    // 未来の座標から生成されたカプセルと衝突しているかを判定
+    const auto hit_result = MV1CollCheck_Capsule(model_handle, -1, dynamic_sphere.GetPos(), dynamic_sphere.GetPos(), future_sphere.GetRadius());
     if (!hit_result.HitNum)
     {
         return velocity;

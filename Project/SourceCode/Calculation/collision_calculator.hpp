@@ -198,6 +198,7 @@ namespace collision
     /// @brief TODO : 正しく機能するか確認していないため要検証
     /// @brief TODO : 角度制限未実装
     /// @brief 球(移動オブジェクト)と三角形(固定オブジェクト)が衝突する際の有効な速度ベクトルを取得
+    /// @brief 高速移動対応
     /// @brief WARNING : この関数は現在衝突対象にめり込んでいないことを前提としている
     /// @brief WARNING : 法線の裏側を考慮していない
     /// @param velocity 速度ベクトル
@@ -212,6 +213,7 @@ namespace collision
     /// @brief TODO : 正しく機能するか確認していないため要検証
     /// @brief TODO : 角度制限未実装
     /// @brief 球(移動オブジェクト)とモデル(固定オブジェクト)が衝突した際の有効な速度ベクトルを取得
+    /// @brief 高速移動対応
     /// @brief WARNING : この関数は現在衝突対象にめり込んでいないことを前提としている
     /// @brief WARNING : 法線の裏側を考慮していない
     /// @param velocity 速度ベクトル

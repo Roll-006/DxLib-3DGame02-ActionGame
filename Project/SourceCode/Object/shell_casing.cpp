@@ -54,8 +54,8 @@ void ShellCasing::Draw() const
 
 	m_modeler->Draw();
 
-	GetCollider(ColliderKind::kCollider)	  ->GetShape()->Draw(true, 255, 0xffffff);
-	GetCollider(ColliderKind::kLandingTrigger)->GetShape()->Draw(true,   0, 0xff0000);
+	//GetCollider(ColliderKind::kCollider)	  ->GetShape()->Draw(false, 255, 0xffffff);
+	//GetCollider(ColliderKind::kLandingTrigger)->GetShape()->Draw(false,   0, 0xff0000);
 
 	//for (auto& collider : m_collider)
 	//{
@@ -80,8 +80,12 @@ void ShellCasing::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 	case ColliderKind::kLandingTrigger:
 		// 地形の影響を受けるようにvelocityをdirに保存
-		m_move_dir		= v3d::GetNormalizedV(m_velocity);
-		m_is_landing	= true;
+		// TODO : 自身との着地判定は避ける。のちに衝突マネージャーで管理
+		if (hit_collider_pair.target_collider->GetOwnerObj()->GetName() != ObjName.SHELL_CASING)
+		{
+			m_move_dir = v3d::GetNormalizedV(m_velocity);
+			m_is_landing = true;
+		}
 		break;
 
 	default:

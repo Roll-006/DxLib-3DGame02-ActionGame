@@ -33,7 +33,7 @@ void CameraAim::CalcAimPos()
 	m_destination_aim_pos += target_axes.y_axis * m_tracked_obj_offset.y;
 	m_destination_aim_pos += target_axes.z_axis * m_tracked_obj_offset.z;
 
-	DrawSphere3D(m_destination_aim_pos, 3, 8, 0xffffff, 0xffffff, TRUE);
+	//DrawSphere3D(m_destination_aim_pos, 3, 8, 0xffffff, 0xffffff, TRUE);
 }
 
 void CameraAim::CalcDampedAimPos()
@@ -43,7 +43,7 @@ void CameraAim::CalcDampedAimPos()
 
 	m_current_aim_pos		= math::GetDampedValueOnAxes(m_current_aim_pos, m_destination_aim_pos, damping, owner_axes);
 
-	DrawSphere3D(m_current_aim_pos, 3, 8, 0xffffff, 0xffffff, TRUE);
+	//DrawSphere3D(m_current_aim_pos, 3, 8, 0xffffff, 0xffffff, TRUE);
 }
 
 void CameraAim::CalcRot()

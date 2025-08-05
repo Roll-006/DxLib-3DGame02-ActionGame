@@ -4,7 +4,6 @@ AssaultRifle::AssaultRifle() :
 	GunBase(ObjName.ASSAULT_RIFLE, GunKind::kSniperRifle, HolsterKind::kRifle)
 {
 	m_modeler = std::make_shared<Modeler>(m_transform, ModelPath.ASSAULT_RIFLE, kModelBasicAngle);
-
 	
 	SetModelHandle(m_modeler->GetModelHandle());
 
@@ -21,7 +20,7 @@ AssaultRifle::AssaultRifle() :
 	m_shot_interval_time		= kShotIntervalTime;
 
 	// TODO : âºÇ≈íeêîÇê›íË
-	m_max_remaining_bullet_num		= 30;
+	m_max_remaining_bullet_num		= 100;
 	m_current_remaining_bullet_num	= m_max_remaining_bullet_num;
 
 	AddCollider(std::make_shared<Collider>(ColliderKind::kRayCast, std::make_shared<Segment>(), this));
