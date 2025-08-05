@@ -20,7 +20,7 @@ private:
 	static constexpr int	kSizeX			= 8192;
 	static constexpr int	kSizeY			= 8192;
 	static constexpr VECTOR kMinOffsetPos	= { -700.0f, -10.0f, -700.0f };
-	static constexpr VECTOR kMaxOffsetPos	= { 700.0f, 100.0f, 700.0f };
+	static constexpr VECTOR kMaxOffsetPos	= {  700.0f, 300.0f,  700.0f };
 
 	int m_shadow_map_handle;
 	std::shared_ptr<Transform> m_camera_transform;

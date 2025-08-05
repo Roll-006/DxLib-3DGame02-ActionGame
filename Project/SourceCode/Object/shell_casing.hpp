@@ -37,10 +37,9 @@ private:
 	static constexpr float  kInitialVelocity			= 1.7f;						// èâë¨
 	static constexpr float  kDeceleration				= 1.5f;						// å∏ë¨ìx
 
-	static constexpr float  kCapsuleLength				= 2.0f;
-	static constexpr float  kCapsuleRadius				= 0.5f;
-	static constexpr float  kLandingTriggerRadius		= 0.25f;
-	static constexpr VECTOR kLandingTriggerOffsetPos	= { 0.0f, -0.35f, 0.0f };
+	static constexpr float  kColliderRadius				= 1.0f;
+	static constexpr float  kLandingTriggerRadius		= 0.8f;
+	static constexpr VECTOR kLandingTriggerOffsetPos	= { 0.0f, -0.8f, 0.0f };
 
 private:
 	std::shared_ptr<Modeler> m_modeler;

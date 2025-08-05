@@ -16,18 +16,20 @@ void player_state::AimGun::Update(Player* obj)
 	obj->SetLookDirOffsetValueForAim();
 	obj->DirOfCameraForward();
 
-	// ˆø‚«‹à‚ð
-	if (CommandHandler::GetInstance()->GetInstance()->IsExecuting(CommandKind::kAttack))
-	{
-
-	}
-
 	obj->GetCurrentHeldWeapon()->Update();
 }
 
 void player_state::AimGun::LateUpdate(Player* obj)
 {
+	const auto gun		= std::static_pointer_cast<GunBase>(obj->GetCurrentHeldWeapon());
+	const auto camera	= ObjManager::GetInstance()->GetObj<ObjBase>(ObjName.MAIN_CAMERA);
+
 	obj->GetCurrentHeldWeapon()->LateUpdate();
+
+	gun->CalcDiffusionRange();
+	gun->CalcTargetPos();
+	gun->SetAimDir  (camera->GetTransform()->GetForward	(CoordinateKind::kWorld));
+	gun->SetPosOnRay(camera->GetTransform()->GetPos		(CoordinateKind::kWorld));
 }
 
 void player_state::AimGun::Enter(Player* obj)
@@ -46,6 +48,7 @@ std::shared_ptr<IState<Player>> player_state::AimGun::ChangeState(Player* obj)
 {
 	const auto state_controller = obj->GetStateController();
 	const auto command			= CommandHandler::GetInstance();
+	const auto gun				= std::static_pointer_cast<GunBase>(obj->GetCurrentHeldWeapon());
 
 	// e‘•”õó‘Ô
 	if (!command->IsExecuting(CommandKind::kAimGun))
@@ -53,9 +56,12 @@ std::shared_ptr<IState<Player>> player_state::AimGun::ChangeState(Player* obj)
 		return state_controller->GetState<EquipGun, Player>();
 	}
 	// ƒVƒ‡ƒbƒg
-	if (command->IsExecuting(CommandKind::kAttack))
+	if (state_controller->TryPullTrigger(obj))
 	{
-		return state_controller->GetState<Shot, Player>();
+		if (gun->IsShot())
+		{
+			return state_controller->GetState<Shot, Player>();
+		}
 	}
 
 	return nullptr;

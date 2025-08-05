@@ -181,6 +181,8 @@
     <ClCompile Include="SourceCode\Object\effect.cpp" />
     <ClCompile Include="SourceCode\Object\knife.cpp" />
     <ClCompile Include="SourceCode\Object\main_camera.cpp" />
+    <ClCompile Include="SourceCode\Object\rocket_bomb.cpp" />
+    <ClCompile Include="SourceCode\Object\rocket_launcher.cpp" />
     <ClCompile Include="SourceCode\Object\zombie.cpp" />
     <ClCompile Include="SourceCode\Object\ground.cpp" />
     <ClCompile Include="SourceCode\Object\house.cpp" />
@@ -344,6 +346,7 @@
     <ClInclude Include="SourceCode\Handle\handle_keeper.hpp" />
     <ClInclude Include="SourceCode\Handle\state_handler.hpp" />
     <ClInclude Include="SourceCode\Input\input_checker.hpp" />
+    <ClInclude Include="SourceCode\Interface\i_bullet.hpp" />
     <ClInclude Include="SourceCode\Interface\i_item.hpp" />
     <ClInclude Include="SourceCode\Interface\i_observer.hpp" />
     <ClInclude Include="SourceCode\Interface\i_poolable.hpp" />
@@ -366,6 +369,8 @@
     <ClInclude Include="SourceCode\Object\effect.hpp" />
     <ClInclude Include="SourceCode\Object\knife.hpp" />
     <ClInclude Include="SourceCode\Object\main_camera.hpp" />
+    <ClInclude Include="SourceCode\Object\rocket_bomb.hpp" />
+    <ClInclude Include="SourceCode\Object\rocket_launcher.hpp" />
     <ClInclude Include="SourceCode\Object\zombie.hpp" />
     <ClInclude Include="SourceCode\Object\ground.hpp" />
     <ClInclude Include="SourceCode\Object\house.hpp" />

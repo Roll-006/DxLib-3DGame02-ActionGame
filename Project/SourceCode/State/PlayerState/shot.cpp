@@ -20,7 +20,16 @@ void player_state::Shot::Update(Player* obj)
 
 void player_state::Shot::LateUpdate(Player* obj)
 {
+	const auto gun		= std::static_pointer_cast<GunBase>(obj->GetCurrentHeldWeapon());
+	const auto camera	= ObjManager::GetInstance()->GetObj<ObjBase>(ObjName.MAIN_CAMERA);
+
 	obj->GetCurrentHeldWeapon()->LateUpdate();
+
+	gun->CalcDiffusionRange();
+	gun->CalcTargetPos();
+	gun->SetAimDir  (camera->GetTransform()->GetForward	(CoordinateKind::kWorld));
+	gun->SetPosOnRay(camera->GetTransform()->GetPos		(CoordinateKind::kWorld));
+	gun->OnShot();
 }
 
 void player_state::Shot::Enter(Player* obj)
@@ -37,5 +46,10 @@ void player_state::Shot::Exit(Player* obj)
 
 std::shared_ptr<IState<Player>> player_state::Shot::ChangeState(Player* obj)
 {
-	return nullptr;
+	const auto state_controller = obj->GetStateController();
+	const auto command			= CommandHandler::GetInstance();
+
+	return state_controller->GetState<AimGun, Player>();
+
+	//return nullptr;
 }

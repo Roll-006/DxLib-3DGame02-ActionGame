@@ -7,12 +7,11 @@ ShellCasing::ShellCasing() :
 	m_move_dir		(v3d::GetZeroV()),
 	m_alive_timer	(0.0f),
 	m_move_speed	(kInitialVelocity)
-{
-	
+{	
 	SetModelHandle(m_modeler->GetModelHandle());
 
-	AddCollider(std::make_shared<Collider>(ColliderKind::kCollider,		  std::make_shared<Capsule>(v3d::GetZeroV(), v3d::GetZeroV(), kCapsuleRadius),        this));
-	AddCollider(std::make_shared<Collider>(ColliderKind::kLandingTrigger, std::make_shared<Capsule>(v3d::GetZeroV(), v3d::GetZeroV(), kLandingTriggerRadius), this));
+	AddCollider(std::make_shared<Collider>(ColliderKind::kCollider,		  std::make_shared<Sphere>(v3d::GetZeroV(), kColliderRadius),       this));
+	AddCollider(std::make_shared<Collider>(ColliderKind::kLandingTrigger, std::make_shared<Sphere>(v3d::GetZeroV(), kLandingTriggerRadius), this));
 }
 
 ShellCasing::~ShellCasing()
@@ -55,8 +54,8 @@ void ShellCasing::Draw() const
 
 	m_modeler->Draw();
 
-	//GetCollider(ColliderKind::kCollider)	  ->GetShape()->Draw(true, 255, 0xffffff);
-	//GetCollider(ColliderKind::kLandingTrigger)->GetShape()->Draw(true,   0, 0xff0000);
+	GetCollider(ColliderKind::kCollider)	  ->GetShape()->Draw(true, 255, 0xffffff);
+	GetCollider(ColliderKind::kLandingTrigger)->GetShape()->Draw(true,   0, 0xff0000);
 
 	//for (auto& collider : m_collider)
 	//{
@@ -75,6 +74,7 @@ void ShellCasing::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	case ColliderKind::kCollider:
 		if (hit_collider_pair.target_collider->GetColliderKind() == ColliderKind::kCollider)
 		{
+
 		}
 		break;
 
@@ -118,18 +118,13 @@ void ShellCasing::Move()
 
 void ShellCasing::CalcColliderPos()
 {
-	// 位置設定
-	const auto center_pos = m_transform->GetPos(CoordinateKind::kWorld);
-	const auto begin_pos  = center_pos - m_transform->GetForward(CoordinateKind::kWorld) * kCapsuleLength * 0.5f;
-	const auto end_pos    = center_pos + m_transform->GetForward(CoordinateKind::kWorld) * kCapsuleLength * 0.5f;
+	const auto pos = m_transform->GetPos(CoordinateKind::kWorld);
 
 	// 押し戻し用コライダー
-	auto collider_capsule = std::dynamic_pointer_cast<Capsule>(GetCollider(ColliderKind::kCollider)->GetShape());
-	collider_capsule->SetSegmentBeginPos(begin_pos, true);
-	collider_capsule->SetSegmentEndPos  (end_pos,   true);
+	auto collider_sphere = std::dynamic_pointer_cast<Sphere>(GetCollider(ColliderKind::kCollider)->GetShape());
+	collider_sphere->SetPos(pos);
 
 	// 着地用トリガー
-	auto landing_capsule = std::dynamic_pointer_cast<Capsule>(GetCollider(ColliderKind::kLandingTrigger)->GetShape());
-	landing_capsule->SetSegmentBeginPos(begin_pos + kLandingTriggerOffsetPos, true);
-	landing_capsule->SetSegmentEndPos  (end_pos   + kLandingTriggerOffsetPos, true);
+	auto landing_sphere = std::dynamic_pointer_cast<Sphere>(GetCollider(ColliderKind::kLandingTrigger)->GetShape());
+	landing_sphere->SetPos(pos + kLandingTriggerOffsetPos);
 }

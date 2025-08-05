@@ -60,6 +60,7 @@ void CommandHandler::InitKeyCommand()
 
 	AddInputCode(CommandKind::kAimGun,						mouse::ButtonKind::kRight);
 	AddInputCode(CommandKind::kAttack,						mouse::ButtonKind::kLeft);
+	AddInputCode(CommandKind::kPullTrigger,					mouse::ButtonKind::kLeft);
 	AddInputCode(CommandKind::kAimKnife,					KEY_INPUT_SPACE);
 	AddInputCode(CommandKind::kInvestigate,					KEY_INPUT_F);
 	AddInputCode(CommandKind::kMelee,						KEY_INPUT_F);
@@ -116,6 +117,7 @@ void CommandHandler::InitPadCommand()
 
 	AddInputCode(CommandKind::kAimGun,				pad::TriggerKind::kLT);
 	AddInputCode(CommandKind::kAttack,				pad::TriggerKind::kRT);
+	AddInputCode(CommandKind::kPullTrigger,			pad::TriggerKind::kRT);
 	AddInputCode(CommandKind::kAimKnife,			pad::ButtonKind	::kLB);
 	AddInputCode(CommandKind::kInvestigate,			pad::ButtonKind	::kA);
 	AddInputCode(CommandKind::kMelee,				pad::ButtonKind	::kA);
@@ -155,6 +157,7 @@ void CommandHandler::InitInputMode()
 	m_input_mode[CommandKind::kPause]						= InputModeKind::kSingle;
 	m_input_mode[CommandKind::kAimGun]						= InputModeKind::kHold;
 	m_input_mode[CommandKind::kAttack]						= InputModeKind::kSingle;
+	m_input_mode[CommandKind::kPullTrigger]					= InputModeKind::kHold;
 	m_input_mode[CommandKind::kAimKnife]					= InputModeKind::kHold;
 	m_input_mode[CommandKind::kInvestigate]					= InputModeKind::kSingle;
 	m_input_mode[CommandKind::kMelee]						= InputModeKind::kSingle;

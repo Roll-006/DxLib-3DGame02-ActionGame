@@ -6,7 +6,7 @@ static struct AnimationPath
 	#pragma region UPPER BODY
 	const std::string EQUIP_KNIFE						= "Data/Animation/idle_equip_knife.mv1";
 	const std::string AIM_KNIFE							= "Data/Animation/aim_knife.mv1";
-	const std::string STAB_KNIFE						= "Data/Animation/stab_knife_2.mv1";
+	const std::string STAB_KNIFE						= "Data/Animation/stab_knife.mv1";
 	const std::string FIRST_SIDE_SLASH_KNIFE			= "Data/Animation/side_slash_knife_left_to_right.mv1";
 	const std::string SECOND_SIDE_SLASH_KNIFE			= "Data/Animation/side_slash_knife_right_to_left.mv1";
 	const std::string PARRY								= "Data/Animation/.mv1";

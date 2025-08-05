@@ -347,6 +347,12 @@
     <ClCompile Include="SourceCode\Drawer\drawer.cpp">
       <Filter>Drawer</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\Object\rocket_bomb.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Object\rocket_launcher.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\character_base.hpp">
@@ -900,6 +906,15 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Drawer\drawer.hpp">
       <Filter>Drawer</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Object\rocket_bomb.hpp">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Object\rocket_launcher.hpp">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Interface\i_bullet.hpp">
+      <Filter>Interface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

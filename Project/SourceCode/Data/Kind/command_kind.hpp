@@ -13,6 +13,7 @@ enum class CommandKind
 
 	kAimGun,							// 銃を構える
 	kAttack,							// 攻撃
+	kPullTrigger,						// 引き金を引く
 	kAimKnife,							// ナイフを構える / (パリィ)
 	kInvestigate,						// 調べる / (拾う)
 	kMelee,								// メレー

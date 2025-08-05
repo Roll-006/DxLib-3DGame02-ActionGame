@@ -341,11 +341,24 @@ bool PlayerStateController::TryEquipGun(Player* player)
 	return player->GetCurrentEquipWeaponKind() == WeaponKind::kGun && CommandHandler::GetInstance()->IsExecuting(CommandKind::kAimGun);
 }
 
-bool PlayerStateController::TryShot(Player* player)
+bool PlayerStateController::TryPullTrigger(Player* player)
 {
-	const auto is_hold_gun		= player->GetCurrentHeldWeaponKind() == WeaponKind::kGun;
-	const auto is_pull_trigger	= CommandHandler::GetInstance()->IsExecuting(CommandKind::kAttack);
+	const auto gun				= std::dynamic_pointer_cast<GunBase>(player->GetCurrentHeldWeapon());
+	const auto is_pull_trigger	= CommandHandler::GetInstance()->IsExecuting(CommandKind::kPullTrigger);
 	
+	if (gun)
+	{
+		if (is_pull_trigger)
+		{
+			gun->PullTrigger();
+			return true;
+		}
+		else
+		{
+			gun->ReleaseTrigger();
+		}
+	}
+
 	return false;
 }
 

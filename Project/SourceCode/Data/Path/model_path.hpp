@@ -12,9 +12,12 @@ static struct ModelPath
 
 	const std::string KNIFE						= "Data/Model/Item/Weapon/Knife/mesh.mv1";
 	const std::string ASSAULT_RIFLE				= "Data/Model/Item/Weapon/Gun/AssaultRifle/mesh.mv1";
+	const std::string ROCKET_LAUNCHER			= "Data/Model/Item/Weapon/RocketLauncher/mesh.mv1";
+
 	const std::string RIFLE_CARTRIDGE_556x45	= "Data/Model/Item/Bullet/5.56x45mm/rifle_cartridge.mv1";
 	const std::string BULLET_556x45				= "Data/Model/Item/Bullet/5.56x45mm/bullet.mv1";
 	const std::string SHELL_CASING_556x45		= "Data/Model/Item/Bullet/5.56x45mm/shell_casing.mv1";
+	const std::string ROCKET_BOMB				= "Data/Model/Item/Bullet/RocketBomb/mesh.mv1";
 
 	const std::string HOUSE_01					= "Data/Model/Building/01/mesh.mv1";
 	const std::string GROUND_01					= "Data/Model/Ground/01/mesh.mv1";

@@ -12,30 +12,31 @@ public:
 	GunBase(const std::string& name, const GunKind gun_kind, const HolsterKind holster_kind);
 	virtual ~GunBase() = default;
 
-	// 引き金が引かれる
+	/// @brief 引き金が引かれる
 	void PullTrigger()    { m_on_pull_trigger = true; }
 	/// @brief 引き金から離される
 	void ReleaseTrigger() { m_on_pull_trigger = false; }
-	//
-	///// @brief 構えられる
-	//void EnterAiming() { m_on_aiming = true; }
-	///// @brief 非エイミング状態にする
-	//void ExitAiming() { m_on_aiming = false; }
 
-	void Shot();
+	void OnShot();
 
 	/// @brief 弾丸のリロード
 	/// @param have_bullets キャラクターが所持している弾丸数(装填した分が引かれて返ってくる)
 	void OnReload(int& have_bullets);
 
-	void CalcShotTimer();
+	/// @brief 拡散範囲を計算
+	virtual void CalcDiffusionRange() abstract;
+
+	/// @brief 射撃するターゲット座標を計算
+	virtual void CalcTargetPos() abstract;
 
 	/// @brief レイキャスト用の線分を拡張した直線上にある点を設定する
 	/// @brief 操作キャラの場合はカメラの座標
 	/// @brief 非操作キャラの場合はターゲットの座標
-	void SetPosOnRayLine(const VECTOR& point) { m_point_on_ray_line = point; }
+	void SetPosOnRay(const VECTOR& point) { m_point_on_ray = point; }
 	void SetAimDir(const VECTOR& aim_dir) { m_aim_dir = aim_dir; }
 
+
+	#pragma region Getter
 	[[nodiscard]] std::shared_ptr<ShapeBase> GetDiffusionShape() const { return m_diffusion_shape; }
 	[[nodiscard]] VECTOR	GetAimDir()				const { return m_aim_dir; }
 	[[nodiscard]] VECTOR	GetShotDir()			const;
@@ -56,13 +57,10 @@ public:
 	[[nodiscard]] int		GetMaxRemainingBulletNum()		const { return m_max_remaining_bullet_num; }
 
 	[[nodiscard]] bool IsShot() const;
+	#pragma endregion
 
 protected:
-	/// @brief 拡散範囲を計算
-	virtual void CalcDiffusionRange() abstract;
-
-	/// @brief 射撃するターゲット座標を計算
-	virtual void CalcTargetPos() abstract;
+	void CalcShotTimer();
 
 protected:
 	static constexpr float kDiffusionDistance = 1500.0f;		// 拡散範囲が位置する座標までの距離
@@ -73,7 +71,7 @@ protected:
 	VECTOR  m_target_pos;					// 狙う位置
 	VECTOR  m_muzzle_offset_pos;			// 銃口の座標を取得するためのオフセット
 	VECTOR  m_ejection_port_offset_pos;		// 薬莢を排出する開口部の座標を取得するためのオフセット
-	VECTOR  m_point_on_ray_line;			// レイキャスト用の線分を拡張した直線上にある点
+	VECTOR  m_point_on_ray;					// レイキャスト用の線分を拡張した直線上にある点
 
 	int		m_current_remaining_bullet_num;	// 現在の残弾数
 	int     m_max_remaining_bullet_num;		// 最大残弾数

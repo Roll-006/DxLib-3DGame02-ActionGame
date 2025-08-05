@@ -1,6 +1,5 @@
 #include "bullet.hpp"
 #include "../Manager/rifle_cartridge_manager.hpp"
-#include "../Base/gun_base.hpp"
 
 Bullet::Bullet() : 
 	PhysicalObjBase	(ObjName.BULLET, ObjTag.BULLET, MassKind::kLight),
@@ -43,7 +42,7 @@ void Bullet::LateUpdate()
 
 void Bullet::DrawToShadowMap() const
 {
-
+	// èàóùÇ»Çµ
 }
 
 void Bullet::Draw() const

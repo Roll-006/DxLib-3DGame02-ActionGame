@@ -7,7 +7,7 @@ GunBase::GunBase(const std::string& name, const GunKind gun_kind, const HolsterK
 	m_target_pos					(v3d::GetZeroV()),
 	m_muzzle_offset_pos				(v3d::GetZeroV()),
 	m_ejection_port_offset_pos		(v3d::GetZeroV()),
-	m_point_on_ray_line				(v3d::GetZeroV()),
+	m_point_on_ray					(v3d::GetZeroV()),
 	m_current_remaining_bullet_num	(0),
 	m_max_remaining_bullet_num		(0),
 	m_scope_scale					(0.0f),
@@ -22,13 +22,10 @@ GunBase::GunBase(const std::string& name, const GunKind gun_kind, const HolsterK
 	// ˆ—‚È‚µ
 }
 
-void GunBase::Shot()
+void GunBase::OnShot()
 {
-	if (IsShot())
-	{
-		RifleCartridgeManager::GetInstance()->Shot(*this);
-		--m_current_remaining_bullet_num;
-	}
+	RifleCartridgeManager::GetInstance()->Shot(*this);
+	--m_current_remaining_bullet_num;
 }
 
 void GunBase::OnReload(int& have_bullets)
@@ -49,18 +46,6 @@ void GunBase::OnReload(int& have_bullets)
 	{
 		have_bullets -= shortage_num;
 		m_current_remaining_bullet_num += shortage_num;
-	}
-}
-
-void GunBase::CalcShotTimer()
-{
-	if (m_on_pull_trigger)
-	{
-		math::Increase(m_shot_timer, FPS::GetDeltaTime(), m_shot_interval_time, true);
-	}
-	else
-	{
-		m_shot_timer = 0.0f;
 	}
 }
 
@@ -91,8 +76,8 @@ VECTOR GunBase::GetFirstShotPos() const
 {
 	// ‘€ìƒLƒƒƒ‰‚Ìê‡‚ÍeŒû‚©‚çƒJƒƒ‰forward‚É“Š‰e
 	// ”ñ‘€ìƒLƒƒƒ‰‚Ìê‡‚Í‚»‚Ì‚Ü‚ÜeŒû
-	Segment s1 = Segment(m_point_on_ray_line, m_point_on_ray_line + m_aim_dir);
-	Segment s2 = Segment(m_point_on_ray_line, GetMuzzlePos());
+	Segment s1 = Segment(m_point_on_ray, m_point_on_ray + m_aim_dir);
+	Segment s2 = Segment(m_point_on_ray, GetMuzzlePos());
 	VECTOR  v1 = s1.GetEndPos() - s1.GetBeginPos();
 	VECTOR  v2 = s2.GetEndPos() - s2.GetBeginPos();
 	VECTOR  h  = math::GetProjectionVector(v2, v1);
@@ -102,10 +87,23 @@ VECTOR GunBase::GetFirstShotPos() const
 
 bool GunBase::IsShot() const
 {
-	if (m_current_remaining_bullet_num <= 0 && m_shot_timer == 0.0f && m_on_pull_trigger)
+	if (m_current_remaining_bullet_num > 0 && m_shot_timer == 0.0f && m_on_pull_trigger)
 	{
 		return true;
 	}
 	return false;
 }
 #pragma endregion
+
+
+void GunBase::CalcShotTimer()
+{
+	if (m_on_pull_trigger)
+	{
+		math::Increase(m_shot_timer, FPS::GetDeltaTime(), m_shot_interval_time, true);
+	}
+	else
+	{
+		m_shot_timer = 0.0f;
+	}
+}

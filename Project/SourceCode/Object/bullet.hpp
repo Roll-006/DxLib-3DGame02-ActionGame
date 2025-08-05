@@ -1,14 +1,13 @@
 #pragma once
 #include "../Base/physical_obj_base.hpp"
 #include "../Interface/i_poolable.hpp"
+#include "../Interface/i_bullet.hpp"
 
 #include "../Manager/obj_manager.hpp"
 #include "../Manager/collision_manager.hpp"
 #include "../Manager/physics_manager.hpp"
 
-class GunBase;
-
-class Bullet final : public PhysicalObjBase, public IPoolable
+class Bullet final : public PhysicalObjBase, public IPoolable, public IBullet
 {
 public:
 	Bullet();
@@ -23,13 +22,13 @@ public:
 	void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) override;
 	
 	/// @brief ’eŠÛ‚ª”­ŽË‚³‚ê‚½
-	void OnShot(const GunBase& gun);
+	void OnShot(const GunBase& gun) override;
 
 	[[nodiscard]] bool IsReturnPool() override;
 
 private:
 	void Move();
-	void CalcRayPos();
+	void CalcRayPos() override;
 
 private:
 	VECTOR m_move_dir;
