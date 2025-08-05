@@ -8,7 +8,7 @@ static struct ModelPath
 	const std::string ZOMBIE_03					= "Data/Model/Character/Zombie/03/mesh.mv1";
 	const std::string ZOMBIE_04					= "Data/Model/Character/Zombie/04/mesh.mv1";
 	const std::string ZOMBIE_05					= "Data/Model/Character/Zombie/05/mesh.mv1";
-	const std::string SPECIAL_FORCES			= "Data/Model/Character/SpecialForces/mesh.mv1";
+	const std::string SWAT						= "Data/Model/Character/SWAT/mesh.mv1";
 
 	const std::string KNIFE						= "Data/Model/Item/Weapon/Knife/mesh.mv1";
 	const std::string ASSAULT_RIFLE				= "Data/Model/Item/Weapon/Gun/AssaultRifle/mesh.mv1";

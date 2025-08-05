@@ -32,6 +32,9 @@ private:
 	void CalcColliderPos();
 
 private:
+	static constexpr VECTOR kBasicAngle					= { 90.0f * math::kDegreesToRadian, 0.0f, 0.0f };
+	static constexpr float  kBasicScale					= 1.5f;
+
 	static constexpr float  kDisappearTime				= 3.0f;						// Á‚¦‚é‚Ü‚Å‚ÌŠÔ
 	static constexpr VECTOR kLocalFirstMoveDir			= { 1.0f, 1.0f, 0.0f };		// ‰Šú‚ÌˆÚ“®•ûŒü
 	static constexpr float  kInitialVelocity			= 1.7f;						// ‰‘¬

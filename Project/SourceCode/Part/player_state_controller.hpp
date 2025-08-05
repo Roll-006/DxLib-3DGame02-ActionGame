@@ -56,6 +56,7 @@ public:
 	[[nodiscard]] bool TryRun();
 	[[nodiscard]] bool TryEquipGun(Player* player);
 	[[nodiscard]] bool TryPullTrigger(Player* player);
+	[[nodiscard]] bool TryReload(Player* player);
 	#pragma endregion
 
 

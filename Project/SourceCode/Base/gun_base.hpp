@@ -20,8 +20,9 @@ public:
 	void OnShot();
 
 	/// @brief 弾丸のリロード
-	/// @param have_bullets キャラクターが所持している弾丸数(装填した分が引かれて返ってくる)
-	void OnReload(int& have_bullets);
+	/// @param have_bullets キャラクターが所持している弾丸数
+	/// @return 装填した分が引かれた残弾数
+	[[nodiscard]] int OnReload(const int have_bullets);
 
 	/// @brief 拡散範囲を計算
 	virtual void CalcDiffusionRange() abstract;
@@ -57,6 +58,7 @@ public:
 	[[nodiscard]] int		GetMaxRemainingBulletNum()		const { return m_max_remaining_bullet_num; }
 
 	[[nodiscard]] bool IsShot() const;
+	[[nodiscard]] bool CanReload() const;
 	#pragma endregion
 
 protected:

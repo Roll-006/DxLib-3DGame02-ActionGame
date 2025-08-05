@@ -47,7 +47,7 @@ std::shared_ptr<IState<Player>> player_state::AimKnife::ChangeState(Player* obj)
 		return state_controller->GetState<EquipKnife, Player>();
 	}
 	// “Ë‚«h‚·
-	if (command->IsExecuting(CommandKind::kAttack))
+	if (command->IsExecuting(CommandKind::kAttack) || command->IsExecuting(CommandKind::kReload))
 	{
 		return state_controller->GetState<StabKnife, Player>();
 	}

@@ -24,6 +24,9 @@ int HandleKeeper::LoadHandle(const HandleKind handle_kind, const std::string& fi
 		break;
 
 	case HandleKind::kModel:
+		handle = MV1LoadModel(file_path.c_str());
+		break;
+
 	case HandleKind::kAnim:
 		handle = MV1LoadModel(file_path.c_str());
 		break;
@@ -39,26 +42,31 @@ int HandleKeeper::LoadHandle(const HandleKind handle_kind, const std::string& fi
 
 int HandleKeeper::ReloadHnadle(const HandleKind handle_kind, const int handle)
 {
-	for (auto& [kind, path, hdl] : m_handles)
+	int result_handle = -1;
+
+	for (const auto& [kind, path, hdl] : m_handles)
 	{
 		switch (handle_kind)
 		{
 		case HandleKind::kGraphic:
-			if (hdl == handle) { return handle; }
+			if (hdl == handle) { result_handle = handle; }
 			break;
 
 		case HandleKind::kModel:
+			if (hdl == handle) { result_handle = MV1DuplicateModel(handle); }
+			break;
+
 		case HandleKind::kAnim:
-			if (hdl == handle) { return MV1DuplicateModel(handle); }
+			if (hdl == handle) { result_handle = MV1DuplicateModel(handle); }
 			break;
 
 		case HandleKind::kEffect:
-			if (hdl == handle) { return handle; }
+			if (hdl == handle) { result_handle = handle; }
 			break;
 		}
 	}
 
-	return -1;
+	return result_handle;
 }
 
 int HandleKeeper::ReloadHandle(const HandleKind handle_kind, const std::string& file_path)

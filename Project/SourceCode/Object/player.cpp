@@ -3,7 +3,7 @@
 #include "../Part/player_state_controller.hpp"
 
 Player::Player() :
-	CharacterBase(ObjName.PLAYER, ObjTag.PLAYER, ModelPath.SPECIAL_FORCES, MassKind::kMedium),
+	CharacterBase(ObjName.PLAYER, ObjTag.PLAYER, MassKind::kMedium),
 	m_state								(std::make_shared<PlayerStateController>()),
 	m_camera_aim_transform				(std::make_shared<Transform>()),
 	m_current_camera_aim_pos			(v3d::GetZeroV()),
@@ -14,10 +14,12 @@ Player::Player() :
 	m_current_equip_knife				(nullptr),
 	m_weapon_shortcut_selecter			(std::make_shared<WeaponShortcutSelecter>())
 {
+	m_modeler = std::make_shared<Modeler>(m_transform, ModelPath.SWAT, kBasicAngle, kBasicScale);
+	SetModelHandle(m_modeler->GetModelHandle());
+
 	// 初期pos・dirを設定
 	m_look_dir[TimeKind::kCurrent] = m_look_dir[TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);
 	m_transform->SetRot		(CoordinateKind::kWorld, m_look_dir.at(TimeKind::kCurrent));
-	m_transform->SetScale	(CoordinateKind::kWorld, kModelScale);
 
 	// コライダー・トリガーを設定
 	CreateCharaBasisCollider(kCapsuleRadius, kLandingTriggerRadius);
@@ -75,7 +77,7 @@ void Player::Update()
 	CalcVelocity();
 	CalcCapsuleColliderLength();
 
-	UpdateTransform(m_look_dir.at(TimeKind::kCurrent), kModelScale);
+	ApplyLookDirToTransform(m_look_dir.at(TimeKind::kCurrent));
 }
 
 void Player::LateUpdate()
@@ -140,9 +142,10 @@ void Player::Draw() const
 	//DrawLine3D(p, p + look_dir_current * 100, 0xff0000);
 	//DrawLine3D(p, p + look_dir_next    * 100, 0xffffff);
 
-	DrawFormatString(500, 20, 0xffffff, "move_speed       : %f", m_move_speed);
-	DrawFormatString(500, 40, 0xffffff, "move_dir_next    : %f, %f ,%f", m_move_dir.at(TimeKind::kNext).x, m_move_dir.at(TimeKind::kNext).y, m_move_dir.at(TimeKind::kNext).z);
-	DrawFormatString(500, 60, 0xffffff, "move_dir_current : %f, %f ,%f", m_move_dir.at(TimeKind::kCurrent).x, m_move_dir.at(TimeKind::kCurrent).y, m_move_dir.at(TimeKind::kCurrent).z);
+	DrawFormatString(0, 20, 0xffffff, "m_current_remaining_bullet_num : %d", m_current_remaining_bullet_num);
+	//DrawFormatString(500, 20, 0xffffff, "move_speed       : %f", m_move_speed);
+	//DrawFormatString(500, 40, 0xffffff, "move_dir_next    : %f, %f ,%f", m_move_dir.at(TimeKind::kNext).x, m_move_dir.at(TimeKind::kNext).y, m_move_dir.at(TimeKind::kNext).z);
+	//DrawFormatString(500, 60, 0xffffff, "move_dir_current : %f, %f ,%f", m_move_dir.at(TimeKind::kCurrent).x, m_move_dir.at(TimeKind::kCurrent).y, m_move_dir.at(TimeKind::kCurrent).z);
 }
 
 void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)

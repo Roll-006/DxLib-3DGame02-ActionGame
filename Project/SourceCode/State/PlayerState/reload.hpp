@@ -19,6 +19,6 @@ namespace player_state
 		[[nodiscard]] std::shared_ptr<IState<Player>> ChangeState(Player* obj) override;
 
 	private:
-
+		bool m_is_reloaded;
 	};
 }

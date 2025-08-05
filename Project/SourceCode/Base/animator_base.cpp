@@ -143,6 +143,19 @@ void AnimatorBase::DetachAnim(const TimeKind time_kind, const BodyKind body_kind
 	}
 }
 
+float AnimatorBase::GetPlayRate(const BodyKind body_kind) const
+{
+	for (auto& [body, time, data] : m_time_kind_data)
+	{
+		if (body == body_kind && time == TimeKind::kCurrent)
+		{
+			return data.play_timer / data.total_time;
+		}
+	}
+
+	return 0.0f;
+}
+
 bool AnimatorBase::IsPlayEnd(const BodyKind body_kind)
 {
 	for (auto& [body, time, data] : m_time_kind_data)

@@ -16,14 +16,16 @@ public:
 	void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) override;
 
 private:
-	static constexpr VECTOR kModelBasicAngle	= { 0.0f, 270.0f * math::kDegreesToRadian, 0.0f };
+	static constexpr VECTOR kBasicAngle			= { 0.0f, 270.0f * math::kDegreesToRadian, 0.0f };
+	static constexpr float  kBasicScale			= 0.1f;
+
 	static constexpr VECTOR kHoldOffsetPos		= { -1.0f, -6.0f, 13.0f };
 	static constexpr VECTOR kHoldOffsetAngle	= { 0.0f, 270.0f * math::kDegreesToRadian, DX_PI_F };
-	static constexpr float  kHoldOffsetScale	= 0.1f;
+	static constexpr float  kHoldOffsetScale	= 1.0f;
 	static constexpr VECTOR kAttachOffsetPos	= { 18.0f, -8.0f, 0.0f };
 	static constexpr VECTOR kAttachOffsetAngle	= { 270.0f * math::kDegreesToRadian, 90.0f * math::kDegreesToRadian, 0.0f };
-	static constexpr float  kAttachOffsetScale	= 0.06f;
+	static constexpr float  kAttachOffsetScale	= 0.6f;
 
-	static constexpr VECTOR kTriggerOffsetPos	= { 0.0f, 0.0f, 100.0f };
+	static constexpr VECTOR kTriggerOffsetPos	= { 0.0f, 0.0f, 15.0f };
 	static constexpr float  kTriggerRadius		= 5.0f;
 };

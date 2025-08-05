@@ -12,7 +12,7 @@ static struct AnimationPath
 	const std::string PARRY								= "Data/Animation/.mv1";
 	const std::string EQUIP_GUN							= "Data/Animation/idle_equip_gun.mv1";
 	const std::string AIM_GUN							= "Data/Animation/idle_aim_gun.mv1";
-	const std::string RELOAD							= "Data/Animation/.mv1";
+	const std::string RELOAD							= "Data/Animation/crouch_reload.mv1";
 	#pragma endregion
 
 

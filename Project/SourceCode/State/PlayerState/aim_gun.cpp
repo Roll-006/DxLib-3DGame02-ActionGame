@@ -63,6 +63,11 @@ std::shared_ptr<IState<Player>> player_state::AimGun::ChangeState(Player* obj)
 			return state_controller->GetState<Shot, Player>();
 		}
 	}
+	// ƒŠƒ[ƒh
+	if (state_controller->TryReload(obj))
+	{
+		return state_controller->GetState<Reload, Player>();
+	}
 
 	return nullptr;
 }

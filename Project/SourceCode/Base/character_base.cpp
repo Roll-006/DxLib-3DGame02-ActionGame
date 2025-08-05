@@ -1,9 +1,9 @@
 #include "character_base.hpp"
 
 #pragma region •Ší
-CharacterBase::CharacterBase(const std::string& name, const std::string& tag, const std::string& file_path, const MassKind mass_level_kind) : 
+CharacterBase::CharacterBase(const std::string& name, const std::string& tag, const MassKind mass_level_kind) : 
 	PhysicalObjBase					(name, tag, mass_level_kind),
-	m_modeler						(std::make_shared<Modeler>(m_transform, file_path, VGet(0.0f, DX_PI_F, 0.0f))),
+	m_modeler						(nullptr),
 	m_animator						(nullptr),
 	m_current_held_weapon			(nullptr),
 	m_capsule_collider				(nullptr),
@@ -11,8 +11,7 @@ CharacterBase::CharacterBase(const std::string& name, const std::string& tag, co
 	m_capsule_radius				(0.0f),
 	m_current_remaining_bullet_num	(0)
 {
-	SetModelHandle(m_modeler->GetModelHandle());
-	
+		
 }
 
 
@@ -112,8 +111,7 @@ void CharacterBase::CreateLandingTrigger(const float sphere_radius)
 #pragma endregion
 
 
-void CharacterBase::UpdateTransform(const VECTOR& look_dir, const float scale)
+void CharacterBase::ApplyLookDirToTransform(const VECTOR& look_dir)
 {
 	m_transform->SetRot  (CoordinateKind::kWorld, look_dir);
-	m_transform->SetScale(CoordinateKind::kWorld, scale);
 }

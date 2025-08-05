@@ -19,6 +19,8 @@ namespace player_state
 		[[nodiscard]] std::shared_ptr<IState<Player>> ChangeState(Player* obj) override;
 
 	private:
+		static constexpr float kReleaseKinfeForciblyTime = 5.0f;	// ナイフを手に持った状態を強制的に解除するまでの時間
 
+		float m_elapsed_time;
 	};
 }

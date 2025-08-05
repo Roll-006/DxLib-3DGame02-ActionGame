@@ -14,7 +14,7 @@ static struct ObjName
 
 	#pragma region キャラクター
 	const std::string PLAYER				= "player";
-	const std::string ZOMBIE_POLICE			= "zombie_police";
+	const std::string ZOMBIE				= "zombie";
 	#pragma endregion
 
 
@@ -42,7 +42,7 @@ static struct ObjName
 
 
 	#pragma region エフェクト
-	const std::string TEST			= "test";
+	const std::string TEST		= "test";
 	#pragma endregion
 
 

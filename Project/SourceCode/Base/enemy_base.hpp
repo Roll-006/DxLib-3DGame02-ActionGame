@@ -4,7 +4,7 @@
 class EnemyBase abstract : public CharacterBase
 {
 public:
-	EnemyBase(const std::string& name, const std::string& file_path, const MassKind mass_level_kind);
+	EnemyBase(const std::string& name, const MassKind mass_level_kind);
 	virtual ~EnemyBase() = default;
 
 protected:

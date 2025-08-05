@@ -1,11 +1,13 @@
 #include "zombie.hpp"
 
 Zombie::Zombie() :
-	EnemyBase(ObjName.ZOMBIE_POLICE, ModelPath.ZOMBIE_05, MassKind::kMedium)
+	EnemyBase(ObjName.ZOMBIE, MassKind::kMedium)
 {
+	m_modeler = std::make_shared<Modeler>(m_transform, ModelPath.ZOMBIE_05, kBasicAngle, kBasicScale);
+	SetModelHandle(m_modeler->GetModelHandle());
+
 	m_look_dir = VGet(0.0f, 0.0f, 1.0f);
 	m_transform->SetRot  (CoordinateKind::kWorld, m_look_dir);
-	m_transform->SetScale(CoordinateKind::kWorld, kModelScale);
 	m_transform->SetPos  (CoordinateKind::kWorld, VGet(100, 0, 100));
 	m_modeler->ApplyMatrix();
 
@@ -31,7 +33,7 @@ void Zombie::Update()
 	if (!IsActive()) { return; }
 
 	Move();
-	UpdateTransform(m_look_dir, kModelScale);
+	ApplyLookDirToTransform(m_look_dir);
 
 	//m_animator->Update();
 

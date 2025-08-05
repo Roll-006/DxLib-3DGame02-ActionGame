@@ -37,8 +37,8 @@ public:
 	void AddAnimHandle(const int kind, const std::string& file_path, const int index, const std::string& tag, const float play_speed, const bool is_loop);
 	void AddAnimHandle(const int kind, const int anim_handle,		 const int index, const std::string& tag, const float play_speed, const bool is_loop);
 
-	/// @brief ブレンド率を取得する
-	[[nodiscard]] float GetBlendRate()const { m_blend_rate; }
+	[[nodiscard]] float GetBlendRate(const BodyKind body_kind) const { return m_blend_rate.count(body_kind) ? m_blend_rate.at(body_kind) : 0.0f; }
+	[[nodiscard]] float GetPlayRate (const BodyKind body_kind) const;
 
 	/// @brief 再生が終了したかを判定
 	/// @brief ループ再生されないアニメーションでのみ有効

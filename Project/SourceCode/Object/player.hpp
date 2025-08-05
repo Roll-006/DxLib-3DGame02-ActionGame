@@ -135,7 +135,8 @@ private:
 	[[nodiscard]] bool IsTrackCameraOriginBone() const;
 
 private:
-	static constexpr float kModelScale							= 0.3f;
+	static constexpr VECTOR kBasicAngle							= { 0.0f, DX_PI_F, 0.0f };
+	static constexpr float  kBasicScale							= 0.3f;
 
 	static constexpr float kCrouchWalkSpeed						= 0.15f;
 	static constexpr float kSlowWalkSpeed						= 0.2f;

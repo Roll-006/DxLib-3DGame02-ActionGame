@@ -9,17 +9,22 @@
 class CharacterBase abstract : public PhysicalObjBase
 {
 public:
-	CharacterBase(const std::string& name, const std::string& tag, const std::string& file_path, const MassKind mass_level_kind);
+	CharacterBase(const std::string& name, const std::string& tag, const MassKind mass_level_kind);
 	virtual ~CharacterBase() = default;
+
+	/// @brief 残弾数を設定する
+	/// @param remaining_bullet_num 
+	void SetRemainingBulletNum(const int remaining_bullet_num) { m_current_remaining_bullet_num = remaining_bullet_num; }
 
 
 	#pragma region Getter
-	[[nodiscard]] std::shared_ptr<Modeler>		GetModeler()				const { return m_modeler; }
-	[[nodiscard]] std::shared_ptr<AnimatorBase>	GetAnimator()				const { return m_animator; }
-	[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentHeldWeapon()		const { return m_current_held_weapon; }
+	[[nodiscard]] std::shared_ptr<Modeler>		GetModeler()					const { return m_modeler; }
+	[[nodiscard]] std::shared_ptr<AnimatorBase>	GetAnimator()					const { return m_animator; }
+	[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentHeldWeapon()			const { return m_current_held_weapon; }
 	[[nodiscard]] WeaponKind					GetCurrentHeldWeaponKind();
 	[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentAttachWeapon		(const HolsterKind holster_kind) const;
 	[[nodiscard]] WeaponKind					GetCurrentAttachWeaponKind	(const HolsterKind holster_kind) const;
+	[[nodiscard]] int							GetCurrentRemainingBulletNum()	const { return m_current_remaining_bullet_num; }
 	#pragma endregion
 
 
@@ -73,8 +78,8 @@ protected:
 	#pragma endregion
 
 
-	/// @brief トランスフォーム情報を更新する
-	void UpdateTransform(const VECTOR& look_dir, const float scale);
+	/// @brief 見ている方向をトランスフォームに適用する
+	void ApplyLookDirToTransform(const VECTOR& look_dir);
 
 private:
 	#pragma region コライダー

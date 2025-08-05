@@ -1,11 +1,12 @@
 #include "modeler.hpp"
 
 #pragma region コンストラクタ / デストラクタ
-Modeler::Modeler(const std::shared_ptr<Transform> transform, const std::string& file_path, const VECTOR& basic_angle) :
+Modeler::Modeler(const std::shared_ptr<Transform> transform, const std::string& file_path, const VECTOR& basic_angle, const float basic_scale) :
 	m_model_handle	(HandleKeeper::GetInstance()->LoadHandle(HandleKind::kModel, file_path)),
 	m_opacity		(1.0f),
 	m_transform		(transform),
-	m_basic_angle	(basic_angle)
+	m_basic_angle	(basic_angle),
+	m_basic_scale	(VGet(basic_scale, basic_scale, basic_scale))
 {
 	MV1SetupCollInfo(m_model_handle);
 }
@@ -14,16 +15,18 @@ Modeler::Modeler(const std::shared_ptr<Transform> transform, const std::string& 
 	m_model_handle	(HandleKeeper::GetInstance()->LoadHandle(HandleKind::kModel, file_path)),
 	m_opacity		(1.0f),
 	m_transform		(transform),
-	m_basic_angle	(v3d::GetZeroV())
+	m_basic_angle	(v3d::GetZeroV()),
+	m_basic_scale	(VGet(1.0f, 1.0f, 1.0f))
 {
 	MV1SetupCollInfo(m_model_handle);
 }
 
-Modeler::Modeler(const std::shared_ptr<Transform> transform, const int model_handle, const VECTOR& basic_angle) :
+Modeler::Modeler(const std::shared_ptr<Transform> transform, const int model_handle, const VECTOR& basic_angle, const float basic_scale) :
 	m_model_handle	(HandleKeeper::GetInstance()->ReloadHnadle(HandleKind::kModel, model_handle)),
 	m_opacity		(1.0f),
 	m_transform		(transform),
-	m_basic_angle	(basic_angle)
+	m_basic_angle	(basic_angle),
+	m_basic_scale	(VGet(basic_scale, basic_scale, basic_scale))
 {
 	MV1SetupCollInfo(m_model_handle);
 }
@@ -32,7 +35,8 @@ Modeler::Modeler(const std::shared_ptr<Transform> transform, const int model_han
 	m_model_handle	(HandleKeeper::GetInstance()->ReloadHnadle(HandleKind::kModel, model_handle)),
 	m_opacity		(1.0f),
 	m_transform		(transform),
-	m_basic_angle	(v3d::GetZeroV())
+	m_basic_angle	(v3d::GetZeroV()),
+	m_basic_scale	(VGet(1.0f, 1.0f, 1.0f))
 {
 	MV1SetupCollInfo(m_model_handle);
 }
@@ -41,7 +45,8 @@ Modeler::Modeler(const std::string& file_path) :
 	m_model_handle	(HandleKeeper::GetInstance()->LoadHandle(HandleKind::kModel, file_path)),
 	m_opacity		(1.0f),
 	m_transform		(nullptr),
-	m_basic_angle	(v3d::GetZeroV())
+	m_basic_angle	(v3d::GetZeroV()),
+	m_basic_scale	(VGet(1.0f, 1.0f, 1.0f))
 {
 	MV1SetupCollInfo(m_model_handle);
 }
@@ -50,7 +55,8 @@ Modeler::Modeler(const int model_handle) :
 	m_model_handle	(HandleKeeper::GetInstance()->ReloadHnadle(HandleKind::kModel, model_handle)),
 	m_opacity		(1.0f),
 	m_transform		(nullptr),
-	m_basic_angle	(v3d::GetZeroV())
+	m_basic_angle	(v3d::GetZeroV()),
+	m_basic_scale	(VGet(1.0f, 1.0f, 1.0f))
 {
 	MV1SetupCollInfo(m_model_handle);
 }
@@ -97,7 +103,8 @@ void Modeler::ApplyOpacity() const
 void Modeler::ApplyMatrix() const
 {
 	const auto rot_m	= math::ConvertEulerAnglesToXYZRotMatrix(m_basic_angle);
-	const auto result_m = rot_m * m_transform->GetMatrix(CoordinateKind::kWorld);
+	const auto scale_m	= MGetScale(m_basic_scale);
+	const auto result_m = scale_m * rot_m * m_transform->GetMatrix(CoordinateKind::kWorld);
 	
 	// 適用済みの値と同じ場合は重複した適用を避ける
 	if (MV1GetMatrix(m_model_handle) == result_m) { return; }

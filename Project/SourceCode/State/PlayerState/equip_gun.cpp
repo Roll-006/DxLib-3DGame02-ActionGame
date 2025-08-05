@@ -58,6 +58,11 @@ std::shared_ptr<IState<Player>> player_state::EquipGun::ChangeState(Player* obj)
 			return state_controller->GetState<AimGun, Player>();
 		}
 	}
+	// リロード
+	if (state_controller->TryReload(obj))
+	{
+		return state_controller->GetState<Reload, Player>();
+	}
 	// ナイフエイミング状態
 	if (command->IsExecuting(CommandKind::kAimKnife) && obj->GetCurrentEquipKnife())
 	{

@@ -3,7 +3,7 @@
 
 ShellCasing::ShellCasing() :
 	PhysicalObjBase	(ObjName.SHELL_CASING, ObjTag.BULLET, MassKind::kLight),
-	m_modeler		(std::make_shared<Modeler>(m_transform, ModelPath.SHELL_CASING_556x45, VGet(90.0f * math::kDegreesToRadian, 0.0f, 0.0f))),
+	m_modeler		(std::make_shared<Modeler>(m_transform, ModelPath.SHELL_CASING_556x45, kBasicAngle, kBasicScale)),
 	m_move_dir		(v3d::GetZeroV()),
 	m_alive_timer	(0.0f),
 	m_move_speed	(kInitialVelocity)

@@ -28,25 +28,29 @@ void GunBase::OnShot()
 	--m_current_remaining_bullet_num;
 }
 
-void GunBase::OnReload(int& have_bullets)
+int GunBase::OnReload(const int have_bullets)
 {
+	int remaining_bullets_num = have_bullets;
+
 	// 既に最大値の場合はリロードさせない
-	if (m_current_remaining_bullet_num >= m_max_remaining_bullet_num) { return; }
+	if (m_current_remaining_bullet_num >= m_max_remaining_bullet_num) { return remaining_bullets_num; }
 
 	// 不足分の計算
 	const int shortage_num = m_max_remaining_bullet_num - m_current_remaining_bullet_num;
 
 	// 可能な数だけリロードし、所持している弾丸を減少させる
-	if (have_bullets < shortage_num)
+	if (remaining_bullets_num < shortage_num)
 	{
-		have_bullets = 0;
+		remaining_bullets_num = 0;
 		m_current_remaining_bullet_num += have_bullets;
 	}
 	else
 	{
-		have_bullets -= shortage_num;
+		remaining_bullets_num -= shortage_num;
 		m_current_remaining_bullet_num += shortage_num;
 	}
+
+	return remaining_bullets_num;
 }
 
 
@@ -92,6 +96,11 @@ bool GunBase::IsShot() const
 		return true;
 	}
 	return false;
+}
+
+bool GunBase::CanReload() const
+{
+	return m_current_remaining_bullet_num < m_max_remaining_bullet_num;
 }
 #pragma endregion
 
