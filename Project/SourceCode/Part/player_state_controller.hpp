@@ -19,6 +19,7 @@
 #include "../State/PlayerState/stab_knife.hpp"
 #include "../State/PlayerState/first_side_slash_knife.hpp"
 #include "../State/PlayerState/second_side_slash_knife.hpp"
+#include "../State/PlayerState/spinning_slash_knife.hpp"
 #include "../State/PlayerState/parry.hpp"
 #include "../State/PlayerState/equip_gun.hpp"
 #include "../State/PlayerState/aim_gun.hpp"
@@ -54,9 +55,10 @@ public:
 	#pragma region Try”»’è
 	[[nodiscard]] bool TryMove();
 	[[nodiscard]] bool TryRun();
-	[[nodiscard]] bool TryEquipGun(Player* player);
-	[[nodiscard]] bool TryPullTrigger(Player* player);
-	[[nodiscard]] bool TryReload(Player* player);
+	[[nodiscard]] bool TrySpinningSlash();
+	[[nodiscard]] bool TryEquipGun		(Player* player);
+	[[nodiscard]] bool TryPullTrigger	(Player* player);
+	[[nodiscard]] bool TryReload		(Player* player);
 	#pragma endregion
 
 

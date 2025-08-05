@@ -10,7 +10,7 @@ PlayerAnimator::PlayerAnimator(const std::shared_ptr<Modeler> modeler, const std
 
 PlayerAnimator::~PlayerAnimator()
 {
-
+	
 }
 
 void PlayerAnimator::Init()
@@ -34,6 +34,7 @@ void PlayerAnimator::LoadAnim()
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kStabKnife),					AnimPath.STAB_KNIFE,					1, AnimTag.NONE, 100.0f, false);
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kFirstSideSlashKnife),		AnimPath.FIRST_SIDE_SLASH_KNIFE,		0, AnimTag.NONE, 100.0f, false);
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kSecondSideSlashKnife),		AnimPath.SECOND_SIDE_SLASH_KNIFE,		0, AnimTag.NONE, 70.0f,  false);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kSpinningSlashKnife),		AnimPath.SPINNING_SLASH_KNIFE,			1, AnimTag.NONE, 70.0f,  false);
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kParry),						AnimPath.PARRY,							0, AnimTag.NONE, 20.0f,  false);
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kEquipGun),					AnimPath.EQUIP_GUN,						0, AnimTag.NONE, 20.0f,  true);
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kAimGun),					AnimPath.AIM_GUN,						0, AnimTag.NONE, 20.0f,  true);
@@ -157,6 +158,10 @@ void PlayerAnimator::CombineMoveNullActionNullWithWeaponAction()
 
 	case static_cast<int>(player_state::WeaponActionStateKind::kSecondSideSlashKnife):
 		AttachResultAnim(static_cast<int>(PlayerAnimKind::kSecondSideSlashKnife));
+		break;
+
+	case static_cast<int>(player_state::WeaponActionStateKind::kSpinningSlashKnife):
+		AttachResultAnim(static_cast<int>(PlayerAnimKind::kSpinningSlashKnife));
 		break;
 
 	case static_cast<int>(player_state::WeaponActionStateKind::kParry):
@@ -322,10 +327,6 @@ void PlayerAnimator::CombineMoveRunWithWeaponAction()
 	case static_cast<int>(player_state::WeaponActionStateKind::kEquipKnife):
 		AttachAnim(static_cast<int>(PlayerAnimKind::kMoveForwardRun),	BodyKind::kLowerBody);
 		AttachAnim(static_cast<int>(PlayerAnimKind::kEquipKnife),		BodyKind::kUpperBody);
-		break;
-
-	case static_cast<int>(player_state::WeaponActionStateKind::kFirstSideSlashKnife):
-		// MEMO : ダッシュ切りをここで判定するかは検討中
 		break;
 
 	case static_cast<int>(player_state::WeaponActionStateKind::kEquipGun):

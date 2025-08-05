@@ -51,6 +51,7 @@ void PlayerStateController::CreateState()
 	m_states[typeid(player_state::StabKnife)]			 = std::make_shared<player_state::StabKnife>();
 	m_states[typeid(player_state::FirstSideSlashKnife)]	 = std::make_shared<player_state::FirstSideSlashKnife>();
 	m_states[typeid(player_state::SecondSideSlashKnife)] = std::make_shared<player_state::SecondSideSlashKnife>();
+	m_states[typeid(player_state::SpinningSlashKnife)]	 = std::make_shared<player_state::SpinningSlashKnife>();
 	m_states[typeid(player_state::Parry)]				 = std::make_shared<player_state::Parry>();
 	m_states[typeid(player_state::EquipGun)]			 = std::make_shared<player_state::EquipGun>();
 	m_states[typeid(player_state::AimGun)]				 = std::make_shared<player_state::AimGun>();
@@ -81,6 +82,9 @@ void PlayerStateController::AddStopStatePair()
 	m_states.at(typeid(player_state::SecondSideSlashKnife))	->AddStopState(m_states.at(typeid(player_state::Move))	->GetStateHandle());
 	m_states.at(typeid(player_state::SecondSideSlashKnife))	->AddStopState(m_states.at(typeid(player_state::Crouch))->GetStateHandle());
 	m_states.at(typeid(player_state::SecondSideSlashKnife))	->AddStopState(m_states.at(typeid(player_state::Run))	->GetStateHandle());
+	m_states.at(typeid(player_state::SpinningSlashKnife))	->AddStopState(m_states.at(typeid(player_state::Move))	->GetStateHandle());
+	m_states.at(typeid(player_state::SpinningSlashKnife))	->AddStopState(m_states.at(typeid(player_state::Crouch))->GetStateHandle());
+	m_states.at(typeid(player_state::SpinningSlashKnife))	->AddStopState(m_states.at(typeid(player_state::Run))	->GetStateHandle());
 	m_states.at(typeid(player_state::Parry))				->AddStopState(m_states.at(typeid(player_state::Crouch))->GetStateHandle());
 	m_states.at(typeid(player_state::Parry))				->AddStopState(m_states.at(typeid(player_state::Run))	->GetStateHandle());
 	m_states.at(typeid(player_state::AimGun))				->AddStopState(m_states.at(typeid(player_state::Crouch))->GetStateHandle());
@@ -334,6 +338,13 @@ bool PlayerStateController::TryRun()
 	if (is_trigger) { command->SetInputMode(CommandKind::kRun, InputModeKind::kTrigger); }
 
 	return is_run;
+}
+
+bool PlayerStateController::TrySpinningSlash()
+{
+	const bool is_run = m_action_state.at(TimeKind::kCurrent)->GetStateKind() == static_cast<int>(player_state::ActionStateKind::kRun);
+
+	return  is_run && CommandHandler::GetInstance()->IsExecuting(CommandKind::kAttack);
 }
 
 bool PlayerStateController::TryEquipGun(Player* player)

@@ -447,5 +447,6 @@ bool Player::IsTrackCameraOriginBone() const
 	
 	return(weapon_state_kind == player_state::WeaponActionStateKind::kFirstSideSlashKnife
 		|| weapon_state_kind == player_state::WeaponActionStateKind::kSecondSideSlashKnife
+		|| weapon_state_kind == player_state::WeaponActionStateKind::kSpinningSlashKnife
 		|| weapon_state_kind == player_state::WeaponActionStateKind::kStabKnife);
 }

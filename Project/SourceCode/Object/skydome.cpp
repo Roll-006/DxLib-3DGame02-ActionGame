@@ -21,14 +21,14 @@ void Skydome::Init()
 void Skydome::Update()
 {
 	if (!IsActive()) { return; }
-
-	const VECTOR pos = m_camera_transform->GetPos(CoordinateKind::kWorld);
-	m_transform->SetPos(CoordinateKind::kWorld, pos);
 }
 
 void Skydome::LateUpdate()
 {
 	if (!IsActive()) { return; }
+
+	const VECTOR pos = m_camera_transform->GetPos(CoordinateKind::kWorld);
+	m_transform->SetPos(CoordinateKind::kWorld, pos);
 }
 
 void Skydome::DrawToShadowMap() const

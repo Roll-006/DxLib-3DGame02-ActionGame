@@ -226,6 +226,7 @@
     <ClCompile Include="SourceCode\Shape\3DShape\sphere.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\aim_gun.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\aim_knife.cpp" />
+    <ClCompile Include="SourceCode\State\PlayerState\spinning_slash_knife.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\first_side_slash_knife.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\second_side_slash_knife.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\special_null.cpp" />
@@ -415,6 +416,7 @@
     <ClInclude Include="SourceCode\Shape\3DShape\sphere.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\aim_gun.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\aim_knife.hpp" />
+    <ClInclude Include="SourceCode\State\PlayerState\spinning_slash_knife.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\first_side_slash_knife.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\second_side_slash_knife.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\special_null.hpp" />

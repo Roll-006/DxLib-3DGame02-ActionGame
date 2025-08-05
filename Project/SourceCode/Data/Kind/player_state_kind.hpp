@@ -25,6 +25,7 @@ namespace player_state
 		kStabKnife,
 		kFirstSideSlashKnife,
 		kSecondSideSlashKnife,
+		kSpinningSlashKnife,
 		kParry,
 		kEquipGun,
 		kAimGun,
