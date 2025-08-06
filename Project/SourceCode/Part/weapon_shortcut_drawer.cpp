@@ -5,8 +5,11 @@ WeaponShortcutDrawer::WeaponShortcutDrawer(const std::shared_ptr<Player> player)
 {
 	CreateShortcutIcon();
 
-	m_weapon_graphic_pair[ObjName.ASSAULT_RIFLE] = std::make_shared<Graphicer>(UIGraphicPath.ASSAULT_RIFLE);
+	m_weapon_graphic_pair[ObjName.ASSAULT_RIFLE]	= std::make_shared<Graphicer>(UIGraphicPath.ASSAULT_RIFLE);
 	m_weapon_graphic_pair[ObjName.ASSAULT_RIFLE]->SetScale(0.07f);
+
+	m_weapon_graphic_pair[ObjName.ROCKET_LAUNCHER]	= std::make_shared<Graphicer>(UIGraphicPath.ROCKET_LAUNCHER);
+	m_weapon_graphic_pair[ObjName.ROCKET_LAUNCHER]->SetScale(0.05f);
 }
 
 WeaponShortcutDrawer::~WeaponShortcutDrawer()

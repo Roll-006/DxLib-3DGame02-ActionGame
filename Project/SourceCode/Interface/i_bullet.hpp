@@ -1,5 +1,5 @@
 #pragma once
-#include "../Base/gun_base.hpp"
+class GunBase;
 
 class IBullet abstract
 {

@@ -2,7 +2,7 @@
 #include "../Base/gun_base.hpp"
 
 ShellCasing::ShellCasing() :
-	PhysicalObjBase	(ObjName.SHELL_CASING, ObjTag.BULLET, MassKind::kLight),
+	PhysicalObjBase	(ObjName.SHELL_CASING_556x45, ObjTag.BULLET, MassKind::kLight),
 	m_modeler		(std::make_shared<Modeler>(m_transform, ModelPath.SHELL_CASING_556x45, kBasicAngle, kBasicScale)),
 	m_move_dir		(v3d::GetZeroV()),
 	m_alive_timer	(0.0f),
@@ -81,7 +81,7 @@ void ShellCasing::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	case ColliderKind::kLandingTrigger:
 		// 地形の影響を受けるようにvelocityをdirに保存
 		// TODO : 自身との着地判定は避ける。のちに衝突マネージャーで管理
-		if (hit_collider_pair.target_collider->GetOwnerObj()->GetName() != ObjName.SHELL_CASING)
+		if (hit_collider_pair.target_collider->GetOwnerObj()->GetName() != ObjName.SHELL_CASING_556x45)
 		{
 			m_move_dir = v3d::GetNormalizedV(m_velocity);
 			m_is_landing = true;

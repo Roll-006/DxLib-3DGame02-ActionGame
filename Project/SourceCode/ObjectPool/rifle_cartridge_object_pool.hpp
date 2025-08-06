@@ -2,6 +2,7 @@
 #include "../Base/object_pool_base.hpp"
 #include "../Object/bullet.hpp"
 #include "../Object/shell_casing.hpp"
+#include "../Object/rocket_bomb.hpp"
 
 class RifleCartridgeObjectPool : public ObjectPoolBase
 {
@@ -12,4 +13,5 @@ public:
 private:
 	static constexpr int kBulletPoolSize		= 50;
 	static constexpr int kShellCasingPoolSize	= 35;
+	static constexpr int kRocketBombPoolSize	= 5;
 };

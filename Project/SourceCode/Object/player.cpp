@@ -28,19 +28,26 @@ Player::Player() :
 	m_animator = std::make_shared<PlayerAnimator>(m_modeler, m_state);
 
 	// •Šíİ’è
-	const auto gun   = std::make_shared<AssaultRifle>();
+	const auto assault_rifle	= std::make_shared<AssaultRifle>();
+	const auto rocket_launcher  = std::make_shared<RocketLauncher>();
 	const auto knife = std::make_shared<Knife>();
-	m_weapon_shortcut_selecter->AttachShortcutWeapon(WeaponShortcutPosKind::kInsideLeft, gun);
-	AddItem     (gun);
+	m_weapon_shortcut_selecter->AttachShortcutWeapon(WeaponShortcutPosKind::kInsideLeft,  assault_rifle);
+	m_weapon_shortcut_selecter->AttachShortcutWeapon(WeaponShortcutPosKind::kOutsideDown, rocket_launcher);
+	AddItem     (assault_rifle);
+	AddItem     (rocket_launcher);
 	AddItem     (knife);
-	EquipWeapon (gun);
+	EquipWeapon (assault_rifle);
+	EquipWeapon (rocket_launcher);
 	EquipKnife  (knife);
-	AttachWeapon(gun);
+	AttachWeapon(assault_rifle);
+	AttachWeapon(rocket_launcher);
 	AttachWeapon(knife);
 
 	// TODO : ‰¼‚Åe‚ÌƒIƒuƒWƒF“o˜^
-	ObjManager::GetInstance()->AddObj(gun);
-	CollisionManager::GetInstance()->AddCollideObj(gun);
+	ObjManager::GetInstance()->AddObj(assault_rifle);
+	ObjManager::GetInstance()->AddObj(rocket_launcher);
+	CollisionManager::GetInstance()->AddCollideObj(assault_rifle);
+	CollisionManager::GetInstance()->AddCollideObj(rocket_launcher);
 
 	// ƒJƒƒ‰“o˜^
 	const auto camera_manager = CameraManager::GetInstance();

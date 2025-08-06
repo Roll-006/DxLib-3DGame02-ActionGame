@@ -25,14 +25,16 @@ static struct ObjName
 
 
 	#pragma region ïêäÌ
-	const std::string ASSAULT_RIFLE			= "assault_rifle";
 	const std::string KNIFE					= "knife";
+	const std::string ASSAULT_RIFLE			= "assault_rifle";
+	const std::string ROCKET_LAUNCHER		= "rocket_launcher";
 	#pragma endregion
 
 
 	#pragma region íeä€
-	const std::string BULLET				= "bullet";
-	const std::string SHELL_CASING			= "shell_casing";
+	const std::string BULLET_556x45			= "bullet_5.56x45mm";
+	const std::string SHELL_CASING_556x45	= "shell_casing_556x45";
+	const std::string ROCKET_BOMB			= "rocket_bomb";
 	#pragma endregion
 
 

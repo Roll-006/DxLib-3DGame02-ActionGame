@@ -1,8 +1,9 @@
 #include "bullet.hpp"
 #include "../Manager/rifle_cartridge_manager.hpp"
+#include "../Base/gun_base.hpp"
 
-Bullet::Bullet() : 
-	PhysicalObjBase	(ObjName.BULLET, ObjTag.BULLET, MassKind::kLight),
+Bullet::Bullet() :
+	PhysicalObjBase	(ObjName.BULLET_556x45, ObjTag.BULLET, MassKind::kLight),
 	m_move_dir		(v3d::GetZeroV()),
 	m_prev_pos		(v3d::GetZeroV()),
 	m_first_pos		(v3d::GetZeroV()),
@@ -20,8 +21,8 @@ Bullet::~Bullet()
 
 void Bullet::Init()
 {
-	m_velocity			= v3d::GetZeroV();
-	m_fall_velocity		= v3d::GetZeroV();
+	m_velocity = v3d::GetZeroV();
+	m_fall_velocity = v3d::GetZeroV();
 }
 
 void Bullet::Update()
@@ -77,7 +78,7 @@ void Bullet::OnShot(const GunBase& gun)
 	m_prev_pos		= m_first_pos;
 	m_move_dir		= gun.GetShotDir();
 	m_move_speed	= gun.GetInitialVelocity();
-	m_deceleration  = gun.GetDeceleration();
+	m_deceleration	= gun.GetDeceleration();
 	m_range			= gun.GetRange();
 }
 
@@ -100,5 +101,5 @@ void Bullet::CalcRayPos()
 	// åıê¸ÇÃà íuÇåvéZ
 	auto ray = std::dynamic_pointer_cast<Segment>(GetCollider(ColliderKind::kRayCast)->GetShape());
 	ray->SetBeginPos(m_prev_pos, true);
-	ray->SetEndPos	(m_transform->GetPos(CoordinateKind::kWorld), true);
+	ray->SetEndPos(m_transform->GetPos(CoordinateKind::kWorld), true);
 }

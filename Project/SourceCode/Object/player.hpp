@@ -4,6 +4,7 @@
 #include "../Part/player_animator.hpp"
 
 #include "assault_rifle.hpp"
+#include "rocket_launcher.hpp"
 #include "knife.hpp"
 #include "../Part/weapon_shortcut_selecter.hpp"
 
