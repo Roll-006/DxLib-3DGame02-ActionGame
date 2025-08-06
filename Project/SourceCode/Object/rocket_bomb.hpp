@@ -7,6 +7,8 @@
 #include "../Manager/collision_manager.hpp"
 #include "../Manager/physics_manager.hpp"
 
+#include "../Part/modeler.hpp"
+
 class RocketBomb final : public PhysicalObjBase, public IPoolable, public IBullet
 {
 public:
@@ -31,6 +33,11 @@ private:
 	void CalcRayPos() override;
 
 private:
+	static constexpr VECTOR kBasicAngle	= { 0.0f, 90.0f * math::kDegreesToRadian, 0.0f };
+	static constexpr float  kBasicScale = 1.2f;
+
+	std::shared_ptr<Modeler> m_modeler;
+
 	VECTOR m_move_dir;
 	VECTOR m_prev_pos;
 	VECTOR m_first_pos;		// èâä˙î≠éÀà íu

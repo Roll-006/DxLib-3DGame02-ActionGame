@@ -29,13 +29,12 @@ private:
 	static constexpr VECTOR kAttachOffsetAngle		= { 270.0f * math::kDegreesToRadian, 90.0f * math::kDegreesToRadian, 0.0f };
 	static constexpr float  kAttachOffsetScale		= 1.0f;
 
-	static constexpr VECTOR kMuzzleOffsetPos		= { 0.0f, 10.0f, 48.0f };
-	static constexpr VECTOR kEjectionPortOffsetPos	= { 2.0f, 10.0f, 0.15f };
+	static constexpr VECTOR kMuzzleOffsetPos		= { 0.0f, 0.0f, 65.0f };
 	static constexpr float  kScopeScale				= 2.0f;
-	static constexpr float  kRange					= 2000.0f;
+	static constexpr float  kRange					= 3000.0f;
 	static constexpr float  kInitialVelocity		= 140.0f;
-	static constexpr float  kDeceleration			= 100.0f;
-	static constexpr float  kShotIntervalTime		= 0.1f;
+	static constexpr float  kDeceleration			= 140.0f;
+	static constexpr float  kShotIntervalTime		= 1.5f;
 
-	static constexpr float  kDiffusionRadius		= 50.0f;		// ŠgŽU”ÍˆÍ‚Ì”¼Œa
+	static constexpr float  kDiffusionRadius		= 10.0f;		// ŠgŽU”ÍˆÍ‚Ì”¼Œa
 };

@@ -4,6 +4,7 @@
 
 RocketBomb::RocketBomb() :
 	PhysicalObjBase	(ObjName.ROCKET_BOMB, ObjTag.BULLET, MassKind::kLight),
+	m_modeler		(std::make_shared<Modeler>(m_transform, ModelPath.ROCKET_BOMB, kBasicAngle, kBasicScale)),
 	m_move_dir		(v3d::GetZeroV()),
 	m_prev_pos		(v3d::GetZeroV()),
 	m_first_pos		(v3d::GetZeroV()),
@@ -11,6 +12,8 @@ RocketBomb::RocketBomb() :
 	m_deceleration	(0.0f),
 	m_range			(0.0f)
 {
+	SetModelHandle(m_modeler->GetModelHandle());
+
 	AddCollider(std::make_shared<Collider>(ColliderKind::kRayCast, std::make_shared<Segment>(), this));
 }
 
@@ -43,12 +46,14 @@ void RocketBomb::LateUpdate()
 
 void RocketBomb::DrawToShadowMap() const
 {
-	// ˆ—‚È‚µ
+	m_modeler->DrawToShadowMap();
 }
 
 void RocketBomb::Draw() const
 {
 	if (!IsActive()) { return; }
+
+	m_modeler->Draw();
 
 	DrawSphere3D(m_transform->GetPos(CoordinateKind::kWorld), 2, 8, 0xffffff, 0xffffff, TRUE);
 	std::dynamic_pointer_cast<Segment>(GetCollider(ColliderKind::kRayCast)->GetShape())->Draw(false, 0, 0xffffff);

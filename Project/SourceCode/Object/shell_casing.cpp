@@ -1,9 +1,9 @@
 #include "shell_casing.hpp"
 #include "../Base/gun_base.hpp"
 
-ShellCasing::ShellCasing() :
+ShellCasing::ShellCasing(const std::string& file_path) :
 	PhysicalObjBase	(ObjName.SHELL_CASING_556x45, ObjTag.BULLET, MassKind::kLight),
-	m_modeler		(std::make_shared<Modeler>(m_transform, ModelPath.SHELL_CASING_556x45, kBasicAngle, kBasicScale)),
+	m_modeler		(std::make_shared<Modeler>(m_transform, file_path, kBasicAngle, kBasicScale)),
 	m_move_dir		(v3d::GetZeroV()),
 	m_alive_timer	(0.0f),
 	m_move_speed	(kInitialVelocity)

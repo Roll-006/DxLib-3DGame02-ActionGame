@@ -3,7 +3,7 @@
 #include "../Base/gun_base.hpp"
 
 Bullet::Bullet() :
-	PhysicalObjBase	(ObjName.BULLET_556x45, ObjTag.BULLET, MassKind::kLight),
+	PhysicalObjBase	(ObjName.BULLET, ObjTag.BULLET, MassKind::kLight),
 	m_move_dir		(v3d::GetZeroV()),
 	m_prev_pos		(v3d::GetZeroV()),
 	m_first_pos		(v3d::GetZeroV()),

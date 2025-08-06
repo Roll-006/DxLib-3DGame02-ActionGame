@@ -149,7 +149,7 @@ void Player::Draw() const
 	//DrawLine3D(p, p + look_dir_current * 100, 0xff0000);
 	//DrawLine3D(p, p + look_dir_next    * 100, 0xffffff);
 
-	DrawFormatString(0, 20, 0xffffff, "m_current_remaining_bullet_num : %d", m_current_remaining_bullet_num);
+	//DrawFormatString(0,   20, 0xffffff, "m_current_remaining_bullet_num : %d", m_current_remaining_bullet_num);
 	//DrawFormatString(500, 20, 0xffffff, "move_speed       : %f", m_move_speed);
 	//DrawFormatString(500, 40, 0xffffff, "move_dir_next    : %f, %f ,%f", m_move_dir.at(TimeKind::kNext).x, m_move_dir.at(TimeKind::kNext).y, m_move_dir.at(TimeKind::kNext).z);
 	//DrawFormatString(500, 60, 0xffffff, "move_dir_current : %f, %f ,%f", m_move_dir.at(TimeKind::kCurrent).x, m_move_dir.at(TimeKind::kCurrent).y, m_move_dir.at(TimeKind::kCurrent).z);

@@ -13,7 +13,6 @@ RocketLauncher::RocketLauncher() :
 	m_scope_scale				= kScopeScale;
 	m_range						= kRange;
 	m_muzzle_offset_pos			= kMuzzleOffsetPos;
-	m_ejection_port_offset_pos	= kEjectionPortOffsetPos;
 	m_initial_velocity			= kInitialVelocity;
 	m_deceleration				= kDeceleration;
 	m_shot_interval_time		= kShotIntervalTime;

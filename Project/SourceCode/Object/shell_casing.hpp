@@ -9,7 +9,7 @@ class GunBase;
 class ShellCasing final : public PhysicalObjBase, public IPoolable
 {
 public:
-	ShellCasing();
+	ShellCasing(const std::string& file_path);
 	~ShellCasing() override;
 
 	void Init()						override;

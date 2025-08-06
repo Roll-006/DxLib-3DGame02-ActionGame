@@ -28,7 +28,16 @@ void player_state::Shot::LateUpdate(Player* obj)
 	gun->CalcDiffusionRange();
 	gun->CalcTargetPos();
 	gun->SetAimDir  (camera->GetTransform()->GetForward	(CoordinateKind::kWorld));
-	gun->SetPosOnRay(camera->GetTransform()->GetPos		(CoordinateKind::kWorld));
+
+	if (gun->GetGunKind() == GunKind::kRocketLauncher)
+	{
+		gun->SetPosOnRay(gun->GetMuzzlePos());
+	}
+	else
+	{
+		gun->SetPosOnRay(camera->GetTransform()->GetPos(CoordinateKind::kWorld));
+	}
+
 	gun->OnShot();
 }
 

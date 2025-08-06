@@ -20,6 +20,11 @@ void RifleCartridgeManager::Update()
 			part->Update();
 		}
 	}
+
+	if (m_rifle_cartridge.count(ObjName.ROCKET_BOMB))
+	{
+		DrawFormatString(0, 20, 0xffffff, "%d", m_rifle_cartridge.at(ObjName.ROCKET_BOMB).size());
+	}
 }
 
 void RifleCartridgeManager::LateUpdate()
@@ -89,59 +94,55 @@ void RifleCartridgeManager::Draw() const
 void RifleCartridgeManager::Shot(GunBase& gun)
 {
 	const auto object_pool = ObjectPoolHolder::GetInstance()->GetObjectPool(ObjectPoolName.RIFLE_CARTRIDGE_POOL);
-	std::optional<std::string> bullet_name			= std::nullopt;
-	std::optional<std::string> shell_casing_name	= std::nullopt;
+	std::shared_ptr<ObjBase>		bullet_obj		= nullptr;
+	std::shared_ptr<IBullet>		bullet			= nullptr;
+	std::shared_ptr<ShellCasing>	shell_casing	= nullptr;
 
+	// プールから弾丸・薬莢を取得
 	switch (gun.GetGunKind())
 	{
 	case GunKind::kSniperRifle:
-		bullet_name			= ObjName.BULLET_556x45;
-		shell_casing_name	= ObjName.SHELL_CASING_556x45;
+		bullet_obj		= object_pool->GetObj(ObjName.BULLET);
+		bullet			= std::static_pointer_cast<Bullet>(bullet_obj);
+		shell_casing	= std::static_pointer_cast<ShellCasing>(object_pool->GetObj(ObjName.SHELL_CASING_556x45));
 		break;
 
 	case GunKind::kRocketLauncher:
-		bullet_name			= ObjName.ROCKET_BOMB;
+		bullet_obj		= object_pool->GetObj(ObjName.ROCKET_BOMB);
+		bullet			= std::static_pointer_cast<RocketBomb>(bullet_obj);
 		break;
 
 	default:
 		break;
 	}
 
-	// プールから弾丸を取得し、有効であれば発射
-	if (bullet_name)
+	// 有効であれば発射
+	if (bullet != nullptr)
 	{
-		const auto bullet = std::static_pointer_cast<Bullet>(object_pool->GetObj(*bullet_name));
-		if (bullet != nullptr)
-		{
-			bullet->OnShot(gun);
-			AddRifleCartridge(bullet);
-		}
+		bullet->OnShot(gun);
+		AddRifleCartridge(bullet_obj);
 	}
 
-	// プールから薬莢を取得し、有効であれば排出
-	if (shell_casing_name)
+	// 有効であれば排出
+	if (shell_casing != nullptr)
 	{
-		const auto shell_casing = std::static_pointer_cast<ShellCasing>(object_pool->GetObj(*shell_casing_name));
-		if (shell_casing != nullptr)
-		{
-			shell_casing->Eject(gun);
-			AddRifleCartridge(shell_casing);
-		}
+		shell_casing->Eject(gun);
+		AddRifleCartridge(shell_casing);
 	}
 }
 
 void RifleCartridgeManager::DeleteBullet(const int obj_handle)
 {
 	// 指定の弾丸を削除
-	const auto remove_bullet = std::find_if(m_rifle_cartridge[ObjName.BULLET_556x45].begin(), m_rifle_cartridge[ObjName.BULLET_556x45].end(), [=](const std::shared_ptr<ObjBase> obj)
+	const auto remove_bullet = std::find_if(m_rifle_cartridge[ObjName.BULLET].begin(), m_rifle_cartridge[ObjName.BULLET].end(), [=](const std::shared_ptr<ObjBase> obj)
 	{
 		return obj->GetObjHandle() == obj_handle;
 	});
 
-	if(remove_bullet != m_rifle_cartridge[ObjName.BULLET_556x45].end())
+	if(remove_bullet != m_rifle_cartridge[ObjName.BULLET].end())
 	{
 		ObjectPoolHolder::GetInstance()->GetObjectPool(ObjectPoolName.RIFLE_CARTRIDGE_POOL)->ReturnObj(*remove_bullet);
-		m_rifle_cartridge[ObjName.BULLET_556x45].erase(remove_bullet);
+		m_rifle_cartridge[ObjName.BULLET].erase(remove_bullet);
 	}
 }
 

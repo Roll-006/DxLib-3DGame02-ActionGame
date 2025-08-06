@@ -59,11 +59,6 @@ void AnimatorBase::AttachAnim(const int next_kind, const BodyKind body_kind)
 	bool				is_seted_current_data	= false;
 	for (auto& [body, time, data] : m_time_kind_data)
 	{
-		if (body == BodyKind::kUpperBody && time == TimeKind::kCurrent)
-		{
-			DrawFormatString(0, 100, 0xffffff, "アタッチ");
-		}
-
 		if (body == body_kind)
 		{
 			if (time == TimeKind::kPrev)	{ prev_time_data	= data;  is_seted_prev_data		= true; }
@@ -179,17 +174,6 @@ void AnimatorBase::PlayAnim()
 			const float blend_rate	= time_kind == TimeKind::kCurrent ? m_blend_rate[body_kind] : 1.0f - m_blend_rate[body_kind];
 			float play_speed		= m_anim_data.at(data.kind).play_speed * FPS::GetDeltaTime();
 			math::Increase(data.play_timer, play_speed, data.total_time, m_anim_data.at(data.kind).is_loop);
-
-			if (body_kind == BodyKind::kLowerBody && time_kind == TimeKind::kCurrent)
-			{
-				DrawFormatString(0, 20, 0xffffff, "lower play_timer : %f", data.play_timer);
-				DrawFormatString(0, 40, 0xffffff, "lower total_time : %f", data.total_time);
-			}
-			if (body_kind == BodyKind::kUpperBody && time_kind == TimeKind::kCurrent)
-			{
-				DrawFormatString(0, 60, 0xffffff, "upper play_timer : %f", data.play_timer);
-				DrawFormatString(0, 80, 0xffffff, "upper total_time : %f", data.total_time);
-			}
 
 			// 再生位置・ブレンド率を適用
 			MV1SetAttachAnimTime     (m_resource_modeler.at(body_kind)->GetModelHandle(), data.attach_index, data.play_timer);
