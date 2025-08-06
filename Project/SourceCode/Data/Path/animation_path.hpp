@@ -4,6 +4,10 @@
 static struct AnimationPath
 {
 	#pragma region UPPER BODY
+	const std::string ATTACH_RIFLE						= "Data/Animation/attach_rifle.mv1";
+	const std::string DETACH_RIFLE						= "Data/Animation/detach_rifle.mv1";
+	const std::string ATTACH_HANDGUN					= "Data/Animation/attach_handgun.mv1";
+	const std::string DETACH_HANDGUN					= "Data/Animation/detach_handgun.mv1";
 	const std::string EQUIP_KNIFE						= "Data/Animation/idle_equip_knife.mv1";
 	const std::string AIM_KNIFE							= "Data/Animation/aim_knife.mv1";
 	const std::string STAB_KNIFE						= "Data/Animation/stab_knife.mv1";

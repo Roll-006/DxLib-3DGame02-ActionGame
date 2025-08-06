@@ -4,7 +4,8 @@
 #include "../Command/command_handler.hpp"
 
 WeaponShortcutSelecter::WeaponShortcutSelecter() : 
-	m_current_select_shortcut(WeaponShortcutPosKind::kInsideUp)
+	m_current_select_shortcut	(WeaponShortcutPosKind::kInsideUp),
+	m_is_selected				(false)
 {
 	
 }
@@ -16,6 +17,8 @@ WeaponShortcutSelecter::~WeaponShortcutSelecter()
 
 void WeaponShortcutSelecter::Update(Player* player)
 {
+	m_is_selected = false;
+
 	SelectWeaponByKey();
 	SelectWeaponByPad();
 
@@ -39,7 +42,33 @@ std::shared_ptr<WeaponBase> WeaponShortcutSelecter::GetShortcutWeapon(const Weap
 
 void WeaponShortcutSelecter::SelectWeaponByPad()
 {
+	for (int i = 0; i < 4; ++i)
+	{
+		const auto command		= CommandHandler::GetInstance();
+		const auto command_num	= static_cast<int>(CommandKind::kSelectWeaponUp) + i;
+		
+		if (command->IsExecuting(static_cast<CommandKind>(command_num)))
+		{
+			auto	   current_shortcut_num = static_cast<int>(m_current_select_shortcut);
+			const auto is_inside			= current_shortcut_num < 4;
+			const auto increase_value		= is_inside ? 4 : -4;
+			const auto offset				= is_inside ? 0 : 4;
+			const auto is_select_same_dir	= current_shortcut_num == i + offset ? true : false;
 
+			if (is_select_same_dir)
+			{
+				current_shortcut_num += increase_value;
+			}
+			else
+			{
+				current_shortcut_num = i;
+			}
+
+			m_current_select_shortcut	= static_cast<WeaponShortcutPosKind>(current_shortcut_num);
+			m_is_selected				= true;
+			break;
+		}
+	}
 }
 
 void WeaponShortcutSelecter::SelectWeaponByKey()
@@ -49,12 +78,13 @@ void WeaponShortcutSelecter::SelectWeaponByKey()
 	// 直接選択
 	for (int i = 0; i < 8; ++i)
 	{
-		const int command_num = static_cast<int>(CommandKind::kSelectWeaponInsideLeft) + i;
-		const int shortcut_num = static_cast<int>(WeaponShortcutPosKind::kInsideLeft) + i;
+		const auto command_num  = static_cast<int>(CommandKind::kSelectWeaponInsideUp) + i;
+		const auto shortcut_num = static_cast<int>(WeaponShortcutPosKind::kInsideUp) + i;
 
 		if (command->IsExecuting(static_cast<CommandKind>(command_num)))
 		{
-			m_current_select_shortcut = static_cast<WeaponShortcutPosKind>(shortcut_num);
+			m_current_select_shortcut	= static_cast<WeaponShortcutPosKind>(shortcut_num);
+			m_is_selected				= true;
 			break;
 		}
 	}
@@ -62,11 +92,12 @@ void WeaponShortcutSelecter::SelectWeaponByKey()
 	// 内側 / 外側の移動
 	if (command->IsExecuting(CommandKind::kSideChangeWeapon))
 	{
-		const int current_shortcut_num = static_cast<int>(m_current_select_shortcut);
-		const int decrease_value = current_shortcut_num < 4 ? 4 : -4;
-		const int result_shortcut = current_shortcut_num + decrease_value;
+		const auto current_shortcut_num	= static_cast<int>(m_current_select_shortcut);
+		const auto increase_value		= current_shortcut_num < 4 ? 4 : -4;
+		const auto result_shortcut		= current_shortcut_num + increase_value;
 
-		m_current_select_shortcut = static_cast<WeaponShortcutPosKind>(result_shortcut);
+		m_current_select_shortcut	= static_cast<WeaponShortcutPosKind>(result_shortcut);
+		m_is_selected				= true;
 	}
 
 	// 回転選択
@@ -78,43 +109,60 @@ void WeaponShortcutSelecter::SelectWeaponRotate(const CommandKind command_kind)
 {
 	if (command_kind != CommandKind::kSelectWeaponRotateRight && command_kind != CommandKind::kSelectWeaponRotateLeft) { return; }
 
-	if (CommandHandler::GetInstance()->IsExecuting(command_kind))
-	{
-		int		  current_shortcut_num	= static_cast<int>(m_current_select_shortcut);
-		const int increase_value		= command_kind == CommandKind::kSelectWeaponRotateLeft ? 1 : -1;
+	const auto command = CommandHandler::GetInstance();
 
-		// 外側であった場合、強制的に内側に移動させる
-		if (current_shortcut_num >= 4)
+	// 内側 / 外側切り替えの入力モードを強制的にホールド式へ変更
+	const auto input_mode_kind = command->GetInputModeKind(CommandKind::kSideChangeWeapon);
+	command->SetInputMode(CommandKind::kSideChangeWeapon, InputModeKind::kHold);
+
+	if (command->IsExecuting(command_kind))
+	{
+		auto	   current_shortcut_num		= static_cast<int>(m_current_select_shortcut);
+		const auto increase_value			= command_kind == CommandKind::kSelectWeaponRotateLeft ? -1 : 1;
+		const auto is_inside				= current_shortcut_num < 4;
+		const auto is_select_inside			= !command->IsExecuting(CommandKind::kSideChangeWeapon);
+		const auto max_select_num			= is_select_inside ? 3 : 7;
+		const auto min_select_num			= is_select_inside ? 0 : 4;
+
+		if (is_select_inside)
 		{
-			current_shortcut_num -= 4;
+			// 外側であった場合、強制的に内側に移動させる
+			if (!is_inside) { current_shortcut_num -= 4; }
+		}
+		else
+		{
+			// 内側であった場合、強制的に外側に移動させる
+			if (is_inside)  { current_shortcut_num += 4; }
 		}
 
+		// 加算およびループ処理
 		current_shortcut_num += increase_value;
-		if (current_shortcut_num > 3) { current_shortcut_num = 0; }
-		if (current_shortcut_num < 0) { current_shortcut_num = 3; }
+		if (current_shortcut_num > max_select_num) { current_shortcut_num = min_select_num; }
+		if (current_shortcut_num < min_select_num) { current_shortcut_num = max_select_num; }
 
-		m_current_select_shortcut = static_cast<WeaponShortcutPosKind>(current_shortcut_num);
+		m_current_select_shortcut	= static_cast<WeaponShortcutPosKind>(current_shortcut_num);
+		m_is_selected				= true;
 	}
+
+	// 内側 / 外側切り替えの入力モードを元の状態へ戻す
+	command->SetInputMode(CommandKind::kSideChangeWeapon, input_mode_kind);
 }
 
 void WeaponShortcutSelecter::HoldWeapon(Player* player)
 {
-	const auto select_weapon = m_shortcut_weapons[m_current_select_shortcut];
+	const auto select_weapon = GetShortcutWeapon(m_current_select_shortcut);
 
-	if (select_weapon)
+	if (select_weapon && m_is_selected)
 	{
-		const auto current_attach_weapon = player->GetCurrentAttachWeapon(select_weapon->GetHolsterKind());
-		if (current_attach_weapon)
+		// 現在手に持っている武器を装着する
+		const auto current_held_weapon = player->GetCurrentHeldWeapon();
+		if (current_held_weapon && current_held_weapon != select_weapon)
 		{
-			if (current_attach_weapon->GetHolsterKind() == select_weapon->GetHolsterKind())
-			{
-
-			}
+			player->AttachWeapon(current_held_weapon);
 		}
 
-		player->EquipWeapon(select_weapon);
-		player->HoldWeapon (select_weapon);
-
-		//if(player->GetCurrentAttachWeapon())
+		player->DetachWeapon(select_weapon);
+		player->EquipWeapon	(select_weapon);
+		player->HoldWeapon	(select_weapon);
 	}
 }

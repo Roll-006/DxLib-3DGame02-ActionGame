@@ -59,15 +59,15 @@ void WeaponShortcutDrawer::CreateShortcutIcon()
 
 		if (i % 2 == 0)
 		{
-			const int offset_x_size = i < 4 ? kIconWidth * 0.5f : kIconWidth * 1.5f + kIntervalPos;
-			const int offset_x		= (0b00110011 >> i) & 1 ? -offset_x_size : offset_x_size;
-			center_pos.x += first_offset + offset_x;
-		}
-		else
-		{
 			const int offset_y_size = i < 4 ? kIconHeight * 0.5f : kIconHeight * 1.5f + kIntervalPos;
 			const int offset_y		= (0b00110011 >> i) & 1 ? -offset_y_size : offset_y_size;
 			center_pos.y += first_offset + offset_y;
+		}
+		else
+		{
+			const int offset_x_size = i < 4 ? kIconWidth * 0.5f : kIconWidth * 1.5f + kIntervalPos;
+			const int offset_x		= (0b00110011 >> i) & 1 ? -offset_x_size : offset_x_size;
+			center_pos.x += first_offset + offset_x;
 		}
 
 		m_center_pos			[static_cast<WeaponShortcutPosKind>(i)] = center_pos;

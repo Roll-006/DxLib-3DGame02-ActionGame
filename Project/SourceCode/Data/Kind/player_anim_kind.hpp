@@ -6,6 +6,10 @@ enum class PlayerAnimKind
 
 
 	#pragma region UPPER BODY
+	kAttachRifle,
+	kDetachRifle,
+	kAttachHandgun,
+	kDetachHandgun,
 	kEquipKnife,
 	kAimKnife,
 	kStabKnife,

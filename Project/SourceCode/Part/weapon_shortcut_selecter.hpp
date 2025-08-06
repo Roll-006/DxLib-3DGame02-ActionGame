@@ -30,4 +30,5 @@ private:
 private:
 	std::unordered_map<WeaponShortcutPosKind, std::shared_ptr<WeaponBase>>	m_shortcut_weapons;			// ショートカットに登録している武器
 	WeaponShortcutPosKind													m_current_select_shortcut;	// 現在選択しているショートカット
+	bool																	m_is_selected;
 };

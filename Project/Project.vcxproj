@@ -231,6 +231,8 @@
     <ClCompile Include="SourceCode\State\PlayerState\second_side_slash_knife.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\special_null.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\crouch_turn_around.cpp" />
+    <ClCompile Include="SourceCode\State\PlayerState\detach_weapon.cpp" />
+    <ClCompile Include="SourceCode\State\PlayerState\attach_weapon.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\weapon_action_null.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\escape.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\escape_with_knife.cpp" />
@@ -421,6 +423,8 @@
     <ClInclude Include="SourceCode\State\PlayerState\second_side_slash_knife.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\special_null.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\crouch_turn_around.hpp" />
+    <ClInclude Include="SourceCode\State\PlayerState\detach_weapon.hpp" />
+    <ClInclude Include="SourceCode\State\PlayerState\attach_weapon.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\weapon_action_null.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\escape.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\escape_with_knife.hpp" />

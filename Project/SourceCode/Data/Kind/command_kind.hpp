@@ -36,14 +36,14 @@ enum class CommandKind
 
 
 	#pragma region キー固有
-	kSelectWeaponInsideLeft,			// 内側左の武器を選択する
 	kSelectWeaponInsideUp,				// 内側上の武器を選択する
-	kSelectWeaponInsideRight,			// 内側右の武器を選択する
+	kSelectWeaponInsideLeft,			// 内側左の武器を選択する
 	kSelectWeaponInsideDown,			// 内側下の武器を選択する
-	kSelectWeaponOutsideLeft,			// 外側左の武器を選択する
+	kSelectWeaponInsideRight,			// 内側右の武器を選択する
 	kSelectWeaponOutsideUp,				// 外側上の武器を選択する
-	kSelectWeaponOutsideRight,			// 外側右の武器を選択する
+	kSelectWeaponOutsideLeft,			// 外側左の武器を選択する
 	kSelectWeaponOutsideDown,			// 外側下の武器を選択する
+	kSelectWeaponOutsideRight,			// 外側右の武器を選択する
 	kSelectWeaponRotateLeft,			// 左回転で武器を選択する
 	kSelectWeaponRotateRight,			// 右回転で武器を選択する
 	kSideChangeWeapon,					// 武器ショートカットの内側 / 外側切り替え
@@ -51,9 +51,9 @@ enum class CommandKind
 
 
 	#pragma region パッド固有
-	kSelectWeaponLeft,					// 左の武器を選択する
 	kSelectWeaponUp,					// 上の武器を選択する
-	kSelectWeaponRight,					// 右の武器を選択する
+	kSelectWeaponLeft,					// 左の武器を選択する
 	kSelectWeaponDown,					// 下の武器を選択する
+	kSelectWeaponRight,					// 右の武器を選択する
 	#pragma endregion
 };

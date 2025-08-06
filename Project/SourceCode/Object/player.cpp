@@ -153,6 +153,7 @@ void Player::Draw() const
 	//DrawFormatString(500, 20, 0xffffff, "move_speed       : %f", m_move_speed);
 	//DrawFormatString(500, 40, 0xffffff, "move_dir_next    : %f, %f ,%f", m_move_dir.at(TimeKind::kNext).x, m_move_dir.at(TimeKind::kNext).y, m_move_dir.at(TimeKind::kNext).z);
 	//DrawFormatString(500, 60, 0xffffff, "move_dir_current : %f, %f ,%f", m_move_dir.at(TimeKind::kCurrent).x, m_move_dir.at(TimeKind::kCurrent).y, m_move_dir.at(TimeKind::kCurrent).z);
+	if(m_current_held_weapon)DrawFormatString(0, 20, 0xffffff, "%s", m_current_held_weapon->GetName().c_str());
 }
 
 void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)

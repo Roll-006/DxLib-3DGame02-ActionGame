@@ -356,6 +356,12 @@
     <ClCompile Include="SourceCode\State\PlayerState\spinning_slash_knife.cpp">
       <Filter>State\PlayerState</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\State\PlayerState\detach_weapon.cpp">
+      <Filter>State\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\PlayerState\attach_weapon.cpp">
+      <Filter>State\PlayerState</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\character_base.hpp">
@@ -920,6 +926,12 @@
       <Filter>Interface</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\State\PlayerState\spinning_slash_knife.hpp">
+      <Filter>State\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\PlayerState\detach_weapon.hpp">
+      <Filter>State\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\PlayerState\attach_weapon.hpp">
       <Filter>State\PlayerState</Filter>
     </ClInclude>
   </ItemGroup>

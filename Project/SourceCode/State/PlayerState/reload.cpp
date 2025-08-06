@@ -56,6 +56,11 @@ std::shared_ptr<IState<Player>> player_state::Reload::ChangeState(Player* obj)
 	{
 		return state_controller->GetState<AimGun, Player>();
 	}
+	//// e‘•”õó‘Ô
+	//if (state_controller->TryEquipGunShortcut(obj))
+	//{
+	//	return state_controller->GetState<EquipGun, Player>();
+	//}
 	// e‘•”õó‘Ô
 	if (obj->GetAnimator()->IsPlayEnd(AnimatorBase::BodyKind::kUpperBody))
 	{

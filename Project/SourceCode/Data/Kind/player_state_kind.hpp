@@ -20,6 +20,8 @@ namespace player_state
 	enum class WeaponActionStateKind
 	{
 		kWeaponActionNull,
+		kAttachWeapon,
+		kDetachWeapon,
 		kEquipKnife,
 		kAimKnife,
 		kStabKnife,

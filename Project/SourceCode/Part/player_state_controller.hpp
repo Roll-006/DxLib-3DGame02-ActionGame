@@ -14,6 +14,8 @@
 #include "../State/PlayerState/crouch_turn_around.hpp"
 
 #include "../State/PlayerState/weapon_action_null.hpp"
+#include "../State/PlayerState/attach_weapon.hpp"
+#include "../State/PlayerState/detach_weapon.hpp"
 #include "../State/PlayerState/equip_knife.hpp"
 #include "../State/PlayerState/aim_knife.hpp"
 #include "../State/PlayerState/stab_knife.hpp"
@@ -101,4 +103,6 @@ private:
 	std::unordered_map<TimeKind, std::shared_ptr<ActionStateBase<Player>>>			m_action_state;					// 行動ステート
 	std::unordered_map<TimeKind, std::shared_ptr<WeaponActionStateBase<Player>>>	m_weapon_action_state;			// 武器に関するステート
 	std::unordered_map<TimeKind, std::shared_ptr<SpecialStateBase<Player>>>			m_special_state;				// 特殊ステート
+
+	std::shared_ptr<WeaponActionStateBase<Player>>									m_change_weapon_after_state;	// 武器を取り換えた後に実行されるステート
 };

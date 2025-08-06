@@ -1,6 +1,7 @@
 #include "player_state_controller.hpp"
 
-PlayerStateController::PlayerStateController()
+PlayerStateController::PlayerStateController() : 
+	m_change_weapon_after_state(nullptr)
 {
 	CreateState();
 	AddCheckStopState();

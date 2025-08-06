@@ -1,14 +1,14 @@
 #pragma once
 
-/// @brief WARNING : 定義順の変更はアイコンの位置生成に影響を及ぼすため注意が必要
+/// @brief WARNING : 定義順の変更はショートカットの選択や生成順などに影響を及ぼすため注意が必要
 enum class WeaponShortcutPosKind
 {
-	kInsideLeft,
 	kInsideUp,
-	kInsideRight,
+	kInsideLeft,
 	kInsideDown,
-	kOutsideLeft,
+	kInsideRight,
 	kOutsideUp,
-	kOutsideRight,
+	kOutsideLeft,
 	kOutsideDown,
+	kOutsideRight,
 };
