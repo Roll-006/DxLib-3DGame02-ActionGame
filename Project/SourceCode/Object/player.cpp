@@ -25,7 +25,7 @@ Player::Player() :
 	CreateCharaBasisCollider(kCapsuleRadius, kLandingTriggerRadius);
 
 	// 各アニメーション追加
-	m_animator = std::make_shared<PlayerAnimator>(m_modeler, m_state);
+	m_animator = std::make_shared<PlayerAnimator>(m_modeler, m_state, m_current_held_weapon, m_current_equip_weapon);
 
 	// 武器設定
 	const auto assault_rifle	= std::make_shared<AssaultRifle>();

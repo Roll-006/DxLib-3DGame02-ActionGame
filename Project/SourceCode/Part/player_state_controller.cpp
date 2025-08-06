@@ -340,6 +340,17 @@ bool PlayerStateController::TryRun()
 	return is_run;
 }
 
+bool PlayerStateController::TryEquipKnifeShortcut(Player* player)
+{
+	const auto weapon = player->GetCurrentHeldWeapon();
+
+	if (weapon)
+	{
+		return weapon->GetWeaponKind() == WeaponKind::kKnife;
+	}
+	return false;
+}
+
 bool PlayerStateController::TrySpinningSlash()
 {
 	const bool is_run = m_action_state.at(TimeKind::kCurrent)->GetStateKind() == static_cast<int>(player_state::ActionStateKind::kRun);
@@ -350,6 +361,17 @@ bool PlayerStateController::TrySpinningSlash()
 bool PlayerStateController::TryEquipGun(Player* player)
 {
 	return player->GetCurrentEquipWeaponKind() == WeaponKind::kGun && CommandHandler::GetInstance()->IsExecuting(CommandKind::kAimGun);
+}
+
+bool PlayerStateController::TryEquipGunShortcut(Player* player)
+{
+	const auto weapon = player->GetCurrentHeldWeapon();
+
+	if (weapon)
+	{
+		return weapon->GetWeaponKind() == WeaponKind::kGun;
+	}
+	return false;
 }
 
 bool PlayerStateController::TryPullTrigger(Player* player)

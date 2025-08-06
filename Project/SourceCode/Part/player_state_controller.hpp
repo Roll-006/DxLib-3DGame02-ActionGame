@@ -55,10 +55,12 @@ public:
 	#pragma region Try”»’è
 	[[nodiscard]] bool TryMove();
 	[[nodiscard]] bool TryRun();
+	[[nodiscard]] bool TryEquipKnifeShortcut(Player* player);
 	[[nodiscard]] bool TrySpinningSlash();
-	[[nodiscard]] bool TryEquipGun		(Player* player);
-	[[nodiscard]] bool TryPullTrigger	(Player* player);
-	[[nodiscard]] bool TryReload		(Player* player);
+	[[nodiscard]] bool TryEquipGun(Player* player);
+	[[nodiscard]] bool TryEquipGunShortcut(Player* player);
+	[[nodiscard]] bool TryPullTrigger(Player* player);
+	[[nodiscard]] bool TryReload(Player* player);
 	#pragma endregion
 
 

@@ -7,7 +7,12 @@ class PlayerStateController;
 class PlayerAnimator final : public AnimatorBase
 {
 public:
-	PlayerAnimator(const std::shared_ptr<Modeler> modeler, const std::shared_ptr<PlayerStateController> state);
+	PlayerAnimator(
+		const std::shared_ptr<Modeler>					modeler, 
+		const std::shared_ptr<PlayerStateController>	state,
+		const std::shared_ptr<WeaponBase>				held_weapon,
+		const std::shared_ptr<WeaponBase>				equip_weapon);
+
 	~PlayerAnimator();
 
 	void Init()		override;
@@ -48,5 +53,7 @@ private:
 	void AttachAnimEightDir(const int forward_anim_kind);
 
 private:
-	std::shared_ptr<PlayerStateController> m_state;
+	std::shared_ptr<PlayerStateController>	m_state;
+	std::shared_ptr<WeaponBase>				m_held_weapon;
+	std::shared_ptr<WeaponBase>				m_equip_weapon;
 };

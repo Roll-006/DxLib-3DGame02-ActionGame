@@ -11,7 +11,7 @@ public:
 	WeaponShortcutSelecter();
 	~WeaponShortcutSelecter();
 
-	void Update(const Player* player);
+	void Update(Player* player);
 
 	void AttachShortcutWeapon(const WeaponShortcutPosKind pos_kind, const std::shared_ptr<WeaponBase> weapon);
 	void DetachShortcutWeapon(const WeaponShortcutPosKind pos_kind);
@@ -25,7 +25,7 @@ private:
 	void SelectWeaponRotate(const CommandKind command_kind);
 
 	/// @brief 武器を持たせる
-	void HoldWeapon(const Player* player);
+	void HoldWeapon(Player* player);
 
 private:
 	std::unordered_map<WeaponShortcutPosKind, std::shared_ptr<WeaponBase>>	m_shortcut_weapons;			// ショートカットに登録している武器

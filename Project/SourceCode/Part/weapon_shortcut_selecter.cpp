@@ -14,7 +14,7 @@ WeaponShortcutSelecter::~WeaponShortcutSelecter()
 
 }
 
-void WeaponShortcutSelecter::Update(const Player* player)
+void WeaponShortcutSelecter::Update(Player* player)
 {
 	SelectWeaponByKey();
 	SelectWeaponByPad();
@@ -97,11 +97,24 @@ void WeaponShortcutSelecter::SelectWeaponRotate(const CommandKind command_kind)
 	}
 }
 
-void WeaponShortcutSelecter::HoldWeapon(const Player* player)
+void WeaponShortcutSelecter::HoldWeapon(Player* player)
 {
-	if (m_shortcut_weapons[m_current_select_shortcut])
+	const auto select_weapon = m_shortcut_weapons[m_current_select_shortcut];
+
+	if (select_weapon)
 	{
-		//player->EquipWeapon();
-		//player->HeldWeapon();
+		const auto current_attach_weapon = player->GetCurrentAttachWeapon(select_weapon->GetHolsterKind());
+		if (current_attach_weapon)
+		{
+			if (current_attach_weapon->GetHolsterKind() == select_weapon->GetHolsterKind())
+			{
+
+			}
+		}
+
+		player->EquipWeapon(select_weapon);
+		player->HoldWeapon (select_weapon);
+
+		//if(player->GetCurrentAttachWeapon())
 	}
 }

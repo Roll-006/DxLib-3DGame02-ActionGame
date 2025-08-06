@@ -40,6 +40,11 @@ std::shared_ptr<IState<Player>> player_state::WeaponActionNull::ChangeState(Play
 	const auto command			= CommandHandler::GetInstance();
 
 	// e‘•”õó‘Ô
+	if (state_controller->TryEquipGunShortcut(obj))
+	{
+		return state_controller->GetState<EquipGun, Player>();
+	}
+	// e‘•”õó‘Ô
 	if (state_controller->TryEquipGun(obj))
 	{
 		return state_controller->GetState<EquipGun, Player>();
