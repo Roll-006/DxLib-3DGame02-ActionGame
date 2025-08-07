@@ -17,6 +17,12 @@ WeaponBase::WeaponBase(const std::string& name, const WeaponKind weapon_kind, co
 	
 }
 
+void WeaponBase::AddToObjManager()
+{
+	ObjManager		::GetInstance()->AddObj			(shared_from_this());
+	CollisionManager::GetInstance()->AddCollideObj	(std::dynamic_pointer_cast<PhysicalObjBase>(shared_from_this()));
+}
+
 void WeaponBase::TrackOwnerHand()
 {
 	if (!m_owner_modeler) { return; }

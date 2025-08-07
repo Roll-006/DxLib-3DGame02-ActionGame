@@ -1,6 +1,5 @@
 #pragma once
 #include "../Base/enemy_base.hpp"
-//#include "../Manager/physics_manager.hpp"
 
 class Zombie final : public EnemyBase
 {

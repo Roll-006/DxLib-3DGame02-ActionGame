@@ -3,6 +3,10 @@
 
 #include "../Part/modeler.hpp"
 
+#include "../Manager/obj_manager.hpp"
+#include "../Manager/collision_manager.hpp"
+#include "../Manager/physics_manager.hpp"
+
 class House final : public PhysicalObjBase
 {
 public:
@@ -16,6 +20,8 @@ public:
 	void Draw()				const	override;
 
 	void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) override;
+
+	void AddToObjManager()			override;
 
 	[[nodiscard]] std::shared_ptr<Modeler> GetModeler() const { return m_modeler; }
 

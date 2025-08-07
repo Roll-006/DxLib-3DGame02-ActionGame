@@ -102,9 +102,10 @@ void Modeler::ApplyOpacity() const
 
 void Modeler::ApplyMatrix() const
 {
-	const auto rot_m	= math::ConvertEulerAnglesToXYZRotMatrix(m_basic_angle);
-	const auto scale_m	= MGetScale(m_basic_scale);
-	const auto result_m = scale_m * rot_m * m_transform->GetMatrix(CoordinateKind::kWorld);
+	const auto basic_rot_m	= math::ConvertEulerAnglesToXYZRotMatrix(m_basic_angle);
+	const auto scale_m		= MGetScale(m_basic_scale);
+	const auto m			= m_transform->GetMatrix(CoordinateKind::kWorld);
+	const auto result_m		= scale_m * basic_rot_m * m;
 	
 	// 適用済みの値と同じ場合は重複した適用を避ける
 	if (MV1GetMatrix(m_model_handle) == result_m) { return; }

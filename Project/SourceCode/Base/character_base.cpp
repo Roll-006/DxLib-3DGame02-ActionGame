@@ -14,6 +14,13 @@ CharacterBase::CharacterBase(const std::string& name, const std::string& tag, co
 		
 }
 
+void CharacterBase::AddToObjManager()
+{
+	ObjManager		::GetInstance()->AddObj			(shared_from_this());
+	CollisionManager::GetInstance()->AddCollideObj	(std::dynamic_pointer_cast<PhysicalObjBase>(shared_from_this()));
+	PhysicsManager	::GetInstance()->AddPhysicalObj	(std::dynamic_pointer_cast<PhysicalObjBase>(shared_from_this()));
+}
+
 
 #pragma region Getter
 WeaponKind CharacterBase::GetCurrentHeldWeaponKind()

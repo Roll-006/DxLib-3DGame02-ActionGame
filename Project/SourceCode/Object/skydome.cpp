@@ -42,3 +42,8 @@ void Skydome::Draw() const
 
 	//m_modeler->Draw();
 }
+
+void Skydome::AddToObjManager()
+{
+
+}

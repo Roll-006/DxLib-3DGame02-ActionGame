@@ -3,6 +3,7 @@
 #include "../Data/Kind/gun_kind.hpp"
 
 #include "../Object/main_camera.hpp"
+#include "../Part/subject.hpp"
 
 #include "../Manager/rifle_cartridge_manager.hpp"
 
@@ -67,7 +68,9 @@ protected:
 protected:
 	static constexpr float kDiffusionDistance = 1500.0f;		// ŠgU”ÍˆÍ‚ªˆÊ’u‚·‚éÀ•W‚Ü‚Å‚Ì‹——£
 
-	std::shared_ptr<ShapeBase> m_diffusion_shape;				// ŠgU”ÍˆÍw’è—p‚Ì}Œ`
+	std::shared_ptr<Subject<GunBase>>	m_subject;
+
+	std::shared_ptr<ShapeBase>			m_diffusion_shape;		// ŠgU”ÍˆÍw’è—p‚Ì}Œ`
 
 	VECTOR  m_aim_dir;						// ‘_‚¤•ûŒü
 	VECTOR  m_target_pos;					// ‘_‚¤ˆÊ’u

@@ -2,6 +2,7 @@
 
 GunBase::GunBase(const std::string& name, const GunKind gun_kind, const HolsterKind holster_kind) :
 	WeaponBase						(name, WeaponKind::kGun, holster_kind),
+	m_subject						(std::make_shared<Subject<GunBase>>()),
 	m_diffusion_shape				(nullptr),
 	m_aim_dir						(v3d::GetZeroV()),
 	m_target_pos					(v3d::GetZeroV()),
@@ -19,13 +20,15 @@ GunBase::GunBase(const std::string& name, const GunKind gun_kind, const HolsterK
 	m_on_pull_trigger				(false),
 	m_gun_kind						(gun_kind)
 {
-	// 処理なし
+	//m_subject->AddObserver(EffectManager);
 }
 
 void GunBase::OnShot()
 {
 	RifleCartridgeManager::GetInstance()->Shot(*this);
 	--m_current_remaining_bullet_num;
+
+	m_subject->Notify(*this, EventKind::kShot);
 }
 
 int GunBase::OnReload(const int have_bullets)
@@ -107,6 +110,7 @@ bool GunBase::CanReload() const
 
 void GunBase::CalcShotTimer()
 {
+	// TODO : 連射が可能なため後に仕様変更
 	if (m_on_pull_trigger)
 	{
 		math::Increase(m_shot_timer, FPS::GetDeltaTime(), m_shot_interval_time, true);

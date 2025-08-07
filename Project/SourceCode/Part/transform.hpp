@@ -27,15 +27,14 @@ public:
 	void SetMatrix	(const CoordinateKind coord_kind, const MATRIX&		matrix);
 	void SetPos		(const CoordinateKind coord_kind, const VECTOR&		pos);
 	void SetRot		(const CoordinateKind coord_kind, const MATRIX&		rot_matrix);
-	void SetRot		(const CoordinateKind coord_kind, const Quaternion& q);
-	//void SetRot		(const CoordinateKind coord_kind, const Axes&		axes);
+	void SetRot		(const CoordinateKind coord_kind, const Quaternion& quaternion);
 
-	/// @brief 回転行列を設定
-	/// @brief WARNING : 水平的な回転しか考慮していない。forwardのY軸が0である必要あり。
-	void SetRot		(const CoordinateKind coord_kind, const VECTOR& forward);
+	/// @brief forwardから回転を設定
+	/// @biref WARNING : forwardがワールドY軸に平行であった場合は回転が失われる
+	void SetRot		(const CoordinateKind coord_kind, const VECTOR&		forward);
 
-	void SetScale	(const CoordinateKind coord_kind, const VECTOR&	scale);
-	void SetScale	(const CoordinateKind coord_kind, const float	scale);
+	void SetScale	(const CoordinateKind coord_kind, const VECTOR&		scale);
+	void SetScale	(const CoordinateKind coord_kind, const float		scale);
 	#pragma endregion
 
 

@@ -93,6 +93,13 @@ void ShellCasing::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	}
 }
 
+void ShellCasing::AddToObjManager()
+{
+	ObjManager		::GetInstance()->AddObj			(shared_from_this());
+	CollisionManager::GetInstance()->AddCollideObj	(std::dynamic_pointer_cast<PhysicalObjBase>(shared_from_this()));
+	PhysicsManager	::GetInstance()->AddPhysicalObj	(std::dynamic_pointer_cast<PhysicalObjBase>(shared_from_this()));
+}
+
 void ShellCasing::Eject(GunBase& gun)
 {
 	m_transform->SetPos(CoordinateKind::kWorld, gun.GetEjectionPortPos());

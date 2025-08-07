@@ -1,6 +1,9 @@
 #pragma once
-#include "../Manager/obj_manager.hpp"
 #include "../Manager/collision_manager.hpp"
+#include "../Manager/physics_manager.hpp"
+#include "../Manager/effect_manager.hpp"
+
+class CameraManager;
 
 class MainCamera final : public PhysicalObjBase
 {
@@ -15,6 +18,8 @@ public:
 	void Draw()				const	override;
 
 	void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) override;
+
+	void AddToObjManager()			override;
 
 private:
 	/// @brief Œ©‚é•ûŒü‚ğİ’è

@@ -7,11 +7,18 @@
 #include "../Data/Kind/weapon_kind.hpp"
 #include "../Data/Kind/holster_kind.hpp"
 
+#include "../Manager/obj_manager.hpp"
+#include "../Manager/collision_manager.hpp"
+#include "../Manager/physics_manager.hpp"
+#include "../Manager/effect_manager.hpp"
+
 class WeaponBase abstract : public PhysicalObjBase, public IItem
 {
 public:
 	WeaponBase(const std::string& name, const WeaponKind weapon_kind, const HolsterKind holster_kind);
 	virtual ~WeaponBase() = default;
+
+	void AddToObjManager() override;
 
 	/// @brief 装備する持ち主をアタッチする
 	void AttachOwner(const std::shared_ptr<Modeler> owner_modeler)

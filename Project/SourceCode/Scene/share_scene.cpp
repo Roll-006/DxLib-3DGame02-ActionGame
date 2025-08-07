@@ -3,23 +3,12 @@
 ShareScene::ShareScene() : 
 	m_main_camera					(std::make_shared<MainCamera>()),
 	m_player						(std::make_shared<Player>()),
-	m_share_scene_effect_object_pool(std::make_shared<ShareSceneEffectObjectPool>()),
-	m_effect_manager				(std::make_shared<EffectManager>())
+	m_share_scene_effect_object_pool(std::make_shared<ShareSceneEffectObjectPool>())
 {
-	// 各オブジェクトマネージャーへの登録
-	ObjManager		::GetInstance()->AddObj				(m_player);
-	ObjManager		::GetInstance()->AddObj				(m_main_camera);
-	CollisionManager::GetInstance()->AddCollideObj		(m_player);
-	CollisionManager::GetInstance()->AddCollideObj		(m_main_camera);
-	PhysicsManager	::GetInstance()->AddPhysicalObj		(m_player);
-	PhysicsManager	::GetInstance()->AddPhysicalObj		(m_main_camera);
-	PhysicsManager  ::GetInstance()->AddIgnoreObjGravity(m_main_camera->GetObjHandle());
+	m_main_camera	->AddToObjManager();
+	m_player		->AddToObjManager();
 
 	ObjectPoolHolder::GetInstance()->AddObjectPool(m_share_scene_effect_object_pool);
-
-	// メインカメラの登録
-	const auto camera_manager = CameraManager::GetInstance();
-	camera_manager->SetMainCamera(m_main_camera);
 }
 
 ShareScene::~ShareScene()
@@ -36,14 +25,14 @@ void ShareScene::Update()
 {
 	m_player					->Update();
 	CameraManager::GetInstance()->Update();
-	m_effect_manager			->Update();
+	EffectManager::GetInstance()->Update();
 }
 
 void ShareScene::LateUpdate()
 {
 	m_player					->LateUpdate();
 	CameraManager::GetInstance()->LateUpdate();
-	m_effect_manager			->LateUpdate();
+	EffectManager::GetInstance()->LateUpdate();
 }
 
 void ShareScene::DrawToShadowMap() const

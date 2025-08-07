@@ -71,6 +71,13 @@ void Bullet::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	}
 }
 
+void Bullet::AddToObjManager()
+{
+	ObjManager		::GetInstance()->AddObj(shared_from_this());
+	CollisionManager::GetInstance()->AddCollideObj(std::dynamic_pointer_cast<PhysicalObjBase>(shared_from_this()));
+	PhysicsManager	::GetInstance()->AddPhysicalObj(std::dynamic_pointer_cast<PhysicalObjBase>(shared_from_this()));
+}
+
 void Bullet::OnShot(const GunBase& gun)
 {
 	m_first_pos		= gun.GetFirstShotPos();

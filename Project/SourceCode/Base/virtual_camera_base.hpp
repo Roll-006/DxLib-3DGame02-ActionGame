@@ -14,6 +14,8 @@ public:
 	VirtualCameraBase(const std::string& name, const VirtualCameraKind camera_kind);
 	virtual ~VirtualCameraBase() = default;
 
+	void AddToObjManager() override;
+
 	/// @brief ターゲットをアタッチする(上書き可)
 	void AttachTarget(const std::shared_ptr<Transform> target_transform);
 	void DetachTarget();

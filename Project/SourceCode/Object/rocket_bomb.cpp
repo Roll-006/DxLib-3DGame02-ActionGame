@@ -40,12 +40,27 @@ void RocketBomb::LateUpdate()
 {
 	if (!IsActive()) { return; }
 
+	if (m_velocity != v3d::GetZeroV())
+	{
+		const auto forward = v3d::GetNormalizedV(m_velocity);
+		if (forward != axis::GetWorldYAxis() && forward != -axis::GetWorldYAxis())
+		{
+			m_transform->SetRot(CoordinateKind::kWorld, forward);
+		}
+	}
+	else
+	{
+		m_transform->SetRot(CoordinateKind::kWorld, m_move_dir);
+	}
+
 	Move();
 	CalcRayPos();
 }
 
 void RocketBomb::DrawToShadowMap() const
 {
+	if (!IsActive()) { return; }
+
 	m_modeler->DrawToShadowMap();
 }
 
@@ -55,8 +70,8 @@ void RocketBomb::Draw() const
 
 	m_modeler->Draw();
 
-	DrawSphere3D(m_transform->GetPos(CoordinateKind::kWorld), 2, 8, 0xffffff, 0xffffff, TRUE);
-	std::dynamic_pointer_cast<Segment>(GetCollider(ColliderKind::kRayCast)->GetShape())->Draw(false, 0, 0xffffff);
+	//DrawSphere3D(m_transform->GetPos(CoordinateKind::kWorld), 2, 8, 0xffffff, 0xffffff, TRUE);
+	//std::dynamic_pointer_cast<Segment>(GetCollider(ColliderKind::kRayCast)->GetShape())->Draw(false, 0, 0xffffff);
 }
 
 void RocketBomb::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
@@ -76,8 +91,16 @@ void RocketBomb::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	}
 }
 
+void RocketBomb::AddToObjManager()
+{
+	ObjManager		::GetInstance()->AddObj			(shared_from_this());
+	CollisionManager::GetInstance()->AddCollideObj	(std::dynamic_pointer_cast<PhysicalObjBase>(shared_from_this()));
+	PhysicsManager	::GetInstance()->AddPhysicalObj	(std::dynamic_pointer_cast<PhysicalObjBase>(shared_from_this()));
+}
+
 void RocketBomb::OnShot(const GunBase& gun)
 {
+	m_transform->SetRot(CoordinateKind::kWorld, MGetIdent());
 	m_first_pos		= gun.GetFirstShotPos();
 	m_transform->SetPos(CoordinateKind::kWorld, m_first_pos);
 	m_prev_pos		= m_first_pos;

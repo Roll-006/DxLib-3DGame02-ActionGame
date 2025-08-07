@@ -15,6 +15,7 @@ GameManager::GameManager():
 	ObjManager				::Generate();
 	CollisionManager		::Generate();
 	PhysicsManager			::Generate();
+	EffectManager			::Generate();
 	CameraManager			::Generate();
 	RifleCartridgeManager	::Generate();
 
@@ -32,6 +33,7 @@ GameManager::~GameManager()
 	ObjManager				::Delete();
 	CollisionManager		::Delete();
 	PhysicsManager			::Delete();
+	EffectManager			::Delete();
 	CameraManager			::Delete();
 	RifleCartridgeManager	::Delete();
 }

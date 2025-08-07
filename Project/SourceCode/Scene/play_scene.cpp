@@ -9,15 +9,9 @@ PlayScene::PlayScene():
 	m_play_scene_effect_object_pool (std::make_shared<PlaySceneEffectObjectPool>()),
 	m_player_ui_creator				(std::make_shared<PlayerUICreator>(ObjManager::GetInstance()->GetObj<Player>(ObjName.PLAYER)))
 {
-	ObjManager		::GetInstance()->AddObj		   (m_zombie);
-	ObjManager		::GetInstance()->AddObj		   (m_house);
-	ObjManager		::GetInstance()->AddObj		   (m_ground);
-	CollisionManager::GetInstance()->AddCollideObj (m_zombie);
-	CollisionManager::GetInstance()->AddCollideObj (m_house);
-	CollisionManager::GetInstance()->AddCollideObj (m_ground);
-	PhysicsManager	::GetInstance()->AddPhysicalObj(m_zombie);
-	PhysicsManager	::GetInstance()->AddPhysicalObj(m_house);
-	PhysicsManager	::GetInstance()->AddPhysicalObj(m_ground);
+	m_zombie->AddToObjManager();
+	m_house ->AddToObjManager();
+	m_ground->AddToObjManager();
 
 	ObjectPoolHolder::GetInstance()->AddObjectPool (m_rifle_cartridge_object_pool);
 	ObjectPoolHolder::GetInstance()->AddObjectPool (m_play_scene_effect_object_pool);

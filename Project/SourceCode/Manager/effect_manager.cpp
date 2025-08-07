@@ -53,11 +53,11 @@ void EffectManager::LateUpdate()
 	}
 }
 
-void EffectManager::OnNotify(const std::shared_ptr<ObjBase> obj, const EventKind event_kind)
+void EffectManager::OnNotify(const ObjBase& obj, const EventKind event_kind)
 {
 	switch (event_kind)
 	{
-	case EventKind::k:
+	case EventKind::kShotRocketLauncher:
 		break;
 
 	default:

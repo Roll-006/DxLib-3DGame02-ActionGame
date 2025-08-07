@@ -52,13 +52,9 @@ void CameraAim::CalcRot()
 
 	// 目的とする回転行列を取得
 	// Z軸回転は無効化する
-	const auto forward	= v3d::GetNormalizedV(m_destination_aim_pos - m_owner_transform->GetPos(CoordinateKind::kWorld));
-	const auto right	= -math::GetNormalVector(forward, axis::GetWorldYAxis());
-	const auto up		= math::GetNormalVector(forward, right);
-	const auto axes		= Axes(right, up, forward);
-	m_rot_matrix = math::ConvertAxesToXYZRotMatrix(axes);
+	const auto forward = v3d::GetNormalizedV(m_destination_aim_pos - m_owner_transform->GetPos(CoordinateKind::kWorld));
 
-	m_owner_transform->SetRot(CoordinateKind::kWorld, m_rot_matrix);
+	m_owner_transform->SetRot(CoordinateKind::kWorld, forward);
 }
 
 void CameraAim::CalcDampedRot()
@@ -67,13 +63,9 @@ void CameraAim::CalcDampedRot()
 
 	// 目的とする回転行列を取得
 	// Z軸回転は無効化する
-	const auto forward	= v3d::GetNormalizedV(m_current_aim_pos - m_owner_transform->GetPos(CoordinateKind::kWorld));
-	const auto right	= -math::GetNormalVector(forward, axis::GetWorldYAxis());
-	const auto up		= math::GetNormalVector(forward, right);
-	const auto axes		= Axes(right, up, forward);
-	m_rot_matrix = math::ConvertAxesToXYZRotMatrix(axes);
+	const auto forward = v3d::GetNormalizedV(m_current_aim_pos - m_owner_transform->GetPos(CoordinateKind::kWorld));
 
-	m_owner_transform->SetRot(CoordinateKind::kWorld, m_rot_matrix);
+	m_owner_transform->SetRot(CoordinateKind::kWorld, forward);
 }
 
 

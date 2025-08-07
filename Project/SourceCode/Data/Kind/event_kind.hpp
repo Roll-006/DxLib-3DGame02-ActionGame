@@ -2,5 +2,6 @@
 
 enum class EventKind
 {
-	k,
+	kShot,					// 銃を撃った
+	kShotRocketLauncher,	// ロケットランチャーが発射された
 };

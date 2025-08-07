@@ -6,7 +6,7 @@
 
 class ObjManager;
 
-class ObjBase abstract
+class ObjBase abstract : public std::enable_shared_from_this<ObjBase>
 {
 public:
 	ObjBase(const std::string& name, const std::string& tag);
@@ -17,6 +17,9 @@ public:
 	virtual void LateUpdate()				abstract;
 	virtual void DrawToShadowMap()	const	abstract;
 	virtual void Draw()				const	abstract;
+
+	/// @brief 各マネージャーに自身を登録する
+	virtual void AddToObjManager()			abstract;
 
 	/// @brief オブジェクトをアクティブ化する
 	void Activate()   { m_is_active = true; }

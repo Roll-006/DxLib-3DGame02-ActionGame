@@ -46,6 +46,11 @@ void Effect::Draw() const
 	if (!IsActive()) { return; }
 }
 
+void Effect::AddToObjManager()
+{
+	ObjManager::GetInstance()->AddObj(shared_from_this());
+}
+
 bool Effect::IsReturnPool()
 {
 	if (m_playing_effect_handle > -1 && !m_is_loop && m_play_count > 0)

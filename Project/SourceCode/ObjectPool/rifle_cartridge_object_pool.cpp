@@ -13,10 +13,7 @@ RifleCartridgeObjectPool::RifleCartridgeObjectPool() :
 		const auto bullet = std::make_shared<Bullet>();
 
 		CreateObj(bullet);
-
-		ObjManager		::GetInstance()->AddObj		   (bullet);
-		CollisionManager::GetInstance()->AddCollideObj (bullet);
-		PhysicsManager	::GetInstance()->AddPhysicalObj(bullet);
+		bullet->AddToObjManager();
 	}
 
 	// 薬莢
@@ -25,10 +22,7 @@ RifleCartridgeObjectPool::RifleCartridgeObjectPool() :
 		const auto shell_casing = std::make_shared<ShellCasing>(ModelPath.SHELL_CASING_556x45);
 
 		CreateObj(shell_casing);
-
-		ObjManager		::GetInstance()->AddObj			(shell_casing);
-		CollisionManager::GetInstance()->AddCollideObj	(shell_casing);
-		PhysicsManager	::GetInstance()->AddPhysicalObj	(shell_casing);
+		shell_casing->AddToObjManager();
 	}
 
 	// ロケット弾
@@ -37,10 +31,7 @@ RifleCartridgeObjectPool::RifleCartridgeObjectPool() :
 		const auto rocket_bomb = std::make_shared<RocketBomb>();
 
 		CreateObj(rocket_bomb);
-
-		ObjManager		::GetInstance()->AddObj			(rocket_bomb);
-		CollisionManager::GetInstance()->AddCollideObj	(rocket_bomb);
-		PhysicsManager	::GetInstance()->AddPhysicalObj	(rocket_bomb);
+		rocket_bomb->AddToObjManager();
 	}
 }
 

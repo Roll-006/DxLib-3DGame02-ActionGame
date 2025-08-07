@@ -1,4 +1,5 @@
 #include "main_camera.hpp"
+#include "../Manager/camera_manager.hpp"
 #include "../Command/command_handler.hpp"
 
 MainCamera::MainCamera() : 
@@ -55,6 +56,16 @@ void MainCamera::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	default:
 		break;
 	}
+}
+
+void MainCamera::AddToObjManager()
+{
+	ObjManager		::GetInstance()->AddObj				(shared_from_this());
+	CollisionManager::GetInstance()->AddCollideObj		(std::dynamic_pointer_cast<PhysicalObjBase>(shared_from_this()));
+	PhysicsManager	::GetInstance()->AddPhysicalObj		(std::dynamic_pointer_cast<PhysicalObjBase>(shared_from_this()));
+	PhysicsManager	::GetInstance()->AddIgnoreObjGravity(this->GetObjHandle());
+
+	CameraManager::GetInstance()->SetMainCamera(std::dynamic_pointer_cast<MainCamera>(shared_from_this()));
 }
 
 void MainCamera::SetAim()

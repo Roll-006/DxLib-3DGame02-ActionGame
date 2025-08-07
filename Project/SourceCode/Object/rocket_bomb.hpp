@@ -23,6 +23,8 @@ public:
 
 	void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) override;
 
+	void AddToObjManager()			override;
+
 	/// @brief ’eŠÛ‚ª”­ŽË‚³‚ê‚½
 	void OnShot(const GunBase& gun) override;
 

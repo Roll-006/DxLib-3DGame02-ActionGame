@@ -19,6 +19,8 @@ public:
 	void DrawToShadowMap()	const	override;
 	void Draw()				const	override;
 
+	void AddToObjManager()			override;
+
 	[[nodiscard]] int	GetOriginEffectHandle()	 const	{ return m_origin_effect_handle; }
 	[[nodiscard]] int	GetPlayingEffectHandle() const	{ return m_playing_effect_handle; }
 	[[nodiscard]] bool	IsReturnPool() override;

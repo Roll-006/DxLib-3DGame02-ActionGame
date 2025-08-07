@@ -12,6 +12,11 @@ VirtualCameraBase::VirtualCameraBase(const std::string& name, const VirtualCamer
 	// 処理なし
 }
 
+void VirtualCameraBase::AddToObjManager()
+{
+
+}
+
 void VirtualCameraBase::AttachTarget(const std::shared_ptr<Transform> target_transform)
 {
 	m_target_transform = target_transform;

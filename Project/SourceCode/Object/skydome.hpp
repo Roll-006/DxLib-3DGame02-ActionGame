@@ -16,6 +16,8 @@ public:
 	void DrawToShadowMap()	const	override;
 	void Draw()				const	override;
 
+	void AddToObjManager()			override;
+
 	[[nodiscard]] std::shared_ptr<Modeler> GetModeler() { return m_modeler; }
 	
 private:

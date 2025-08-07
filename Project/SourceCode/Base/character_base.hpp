@@ -12,6 +12,8 @@ public:
 	CharacterBase(const std::string& name, const std::string& tag, const MassKind mass_level_kind);
 	virtual ~CharacterBase() = default;
 
+	void AddToObjManager() override;
+
 	/// @brief c’e”‚ğİ’è‚·‚é
 	/// @param remaining_bullet_num 
 	void SetRemainingBulletNum(const int remaining_bullet_num) { m_current_remaining_bullet_num = remaining_bullet_num; }

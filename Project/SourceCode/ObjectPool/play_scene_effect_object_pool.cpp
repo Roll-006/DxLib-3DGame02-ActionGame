@@ -3,16 +3,15 @@
 PlaySceneEffectObjectPool::PlaySceneEffectObjectPool() :
 	ObjectPoolBase(ObjectPoolName.PLAY_SCENE_EFFECT_POOL)
 {
-	m_pool_size[ObjName.TEST] = kTestPoolSize;
+	m_pool_size[ObjName.LIGHT_ROCKET_LAUNCHER_EXHAUST_VENT_EFFECT] = kLightRocketLauncherExhaustVentEffectPoolSize;
 
-	for (int i = 0; i < m_pool_size.at(ObjName.TEST); ++i)
+	for (int i = 0; i < m_pool_size.at(ObjName.LIGHT_ROCKET_LAUNCHER_EXHAUST_VENT_EFFECT); ++i)
 	{
-		const auto test = std::make_shared<Effect>(ObjName.TEST, 50.0f, false, EffectPath.TEST);
-		test->GetTransform()->SetScale(CoordinateKind::kWorld, 10.0f);
+		const auto effect = std::make_shared<Effect>(ObjName.LIGHT_ROCKET_LAUNCHER_EXHAUST_VENT_EFFECT, 50.0f, false, EffectPath.LIGHT_ROCKET_LAUNCHER_EXHAUST_VENT);
+		effect->GetTransform()->SetScale(CoordinateKind::kWorld, 10.0f);
 
-		CreateObj(test);
-
-		ObjManager::GetInstance()->AddObj(test);
+		CreateObj(effect);
+		effect->AddToObjManager();
 	}
 }
 

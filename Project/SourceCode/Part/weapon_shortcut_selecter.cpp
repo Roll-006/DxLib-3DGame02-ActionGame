@@ -55,6 +55,7 @@ void WeaponShortcutSelecter::SelectWeaponByPad()
 			const auto offset				= is_inside ? 0 : 4;
 			const auto is_select_same_dir	= current_shortcut_num == i + offset ? true : false;
 
+			// Šù‚É“ü—Í‚µ‚½•ûŒü‚É‚¢‚½ê‡‚Í“à‘¤ / ŠO‘¤‚ÌØ‚è‘Ö‚¦‚ğs‚¤
 			if (is_select_same_dir)
 			{
 				current_shortcut_num += increase_value;
@@ -79,10 +80,11 @@ void WeaponShortcutSelecter::SelectWeaponByKey()
 	for (int i = 0; i < 8; ++i)
 	{
 		const auto command_num  = static_cast<int>(CommandKind::kSelectWeaponInsideUp) + i;
-		const auto shortcut_num = static_cast<int>(WeaponShortcutPosKind::kInsideUp) + i;
 
 		if (command->IsExecuting(static_cast<CommandKind>(command_num)))
 		{
+			const auto shortcut_num = static_cast<int>(WeaponShortcutPosKind::kInsideUp) + i;
+
 			m_current_select_shortcut	= static_cast<WeaponShortcutPosKind>(shortcut_num);
 			m_is_selected				= true;
 			break;

@@ -100,15 +100,19 @@ void Transform::SetRot(const CoordinateKind coord_kind, const MATRIX& rot_matrix
 	m_local_matrix = rot_matrix * MInverse(GetRotMatrix(coord_kind)) * GetMatrix(coord_kind);
 }
 
-void Transform::SetRot(const CoordinateKind coord_kind, const Quaternion& q)
+void Transform::SetRot(const CoordinateKind coord_kind, const Quaternion& quaternion)
 {
-	SetRot(coord_kind, math::ConvertQuaternionToRotMatrix(q));
+	SetRot(coord_kind, math::ConvertQuaternionToRotMatrix(quaternion));
 }
 
 void Transform::SetRot(const CoordinateKind coord_kind, const VECTOR& forward)
 {
-	float yaw = math::GetYaw(forward);
-	SetRot(coord_kind, MGetRotY(yaw));
+	const auto forward_n	= v3d::GetNormalizedV(forward);
+	const auto right		= -math::GetNormalVector(forward_n, axis::GetWorldYAxis());
+	const auto up			= math::GetNormalVector(forward_n, right);
+	const auto result_m		= math::ConvertAxesToXYZRotMatrix(Axes(right, up, forward_n));
+
+	SetRot(coord_kind, result_m);
 }
 
 //void Transform::SetRot(const CoordinateKind coord_kind, const Axes& axes)

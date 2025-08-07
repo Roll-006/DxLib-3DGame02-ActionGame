@@ -8,7 +8,6 @@
 #include "../Command/command_handler.hpp"
 
 #include "../Manager/camera_manager.hpp"
-#include "../Manager/effect_manager.hpp"
 
 class ShareScene final : public SceneBase
 {
@@ -26,5 +25,4 @@ private:
 	std::shared_ptr<MainCamera>					m_main_camera;
 	std::shared_ptr<Player>						m_player;
 	std::shared_ptr<ShareSceneEffectObjectPool>	m_share_scene_effect_object_pool;
-	std::shared_ptr<EffectManager>				m_effect_manager;
 };

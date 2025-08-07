@@ -14,6 +14,8 @@ public:
 	void DrawToShadowMap()	const	override;
 	void Draw()				const	override;
 
+	void AddToObjManager()			override;
+
 private:
 
 };

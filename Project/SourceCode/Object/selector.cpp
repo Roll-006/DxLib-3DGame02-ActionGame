@@ -35,3 +35,8 @@ void Selector::Draw() const
 {
 	if (!IsActive()) { return; }
 }
+
+void Selector::AddToObjManager()
+{
+
+}

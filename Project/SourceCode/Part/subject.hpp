@@ -25,7 +25,7 @@ public:
 	}
 
 private:
-	void Notify(const std::shared_ptr<ObjBase> obj, const EventKind event_kind)
+	void Notify(const ObjBase& obj, const EventKind event_kind)
 	{
 		for (const auto& observer : m_observers)
 		{
