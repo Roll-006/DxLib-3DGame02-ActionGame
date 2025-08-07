@@ -13,5 +13,5 @@ public:
 private:
 	static constexpr int kBulletPoolSize		= 50;
 	static constexpr int kShellCasingPoolSize	= 35;
-	static constexpr int kRocketBombPoolSize	= 5;
+	static constexpr int kRocketBombPoolSize	= 7;
 };

@@ -18,6 +18,8 @@ public:
 	void CalcDiffusionRange() override;
 	void CalcTargetPos()	  override;
 
+	[[nodiscard]] VECTOR GetExhaustVentMatrix();
+
 private:
 	static constexpr VECTOR kBasicAngle				= { 0.0f, 90.0f * math::kDegreesToRadian, 0.0f };
 	static constexpr float  kBasicScale				= 1.2f;
@@ -30,10 +32,11 @@ private:
 	static constexpr float  kAttachOffsetScale		= 1.0f;
 
 	static constexpr VECTOR kMuzzleOffsetPos		= { 0.0f, 0.0f, 65.0f };
+	static constexpr VECTOR kExhaustVentOffsetPos	= { 0.0f, 0.0f, -100.0f };
 	static constexpr float  kScopeScale				= 2.0f;
-	static constexpr float  kRange					= 3000.0f;
-	static constexpr float  kInitialVelocity		= 100.0f;
-	static constexpr float  kDeceleration			= 180.0f;
+	static constexpr float  kRange					= 5000.0f;
+	static constexpr float  kInitialVelocity		= 50.0f;
+	static constexpr float  kDeceleration			= 10.0f;
 	static constexpr float  kShotIntervalTime		= 1.5f;
 
 	static constexpr float  kDiffusionRadius		= 10.0f;		// ŠgŽU”ÍˆÍ‚Ì”¼Œa

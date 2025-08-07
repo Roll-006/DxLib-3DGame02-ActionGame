@@ -20,12 +20,13 @@ private:
 	static constexpr float kMillSecond		= 1000.0f;
 	static constexpr float kMicroSecond		= 1000000.0f;
 
-	int      m_fps;
-	LONGLONG m_first_time;		// 1フレーム目の計測時間
-	LONGLONG m_current_time;
-	LONGLONG m_prev_time;
-	int	     m_frame_count;
-	float    m_average_fps;
+	int				m_fps;
+	LONGLONG		m_first_time;		// 1フレーム目の計測時間
+	LONGLONG		m_current_time;
+	LONGLONG		m_prev_time;
+	int				m_frame_count;
+	float			m_average_fps;
 
-	static float m_delta_time;
+	float			m_elapsed_time;
+	static float	m_delta_time;
 };

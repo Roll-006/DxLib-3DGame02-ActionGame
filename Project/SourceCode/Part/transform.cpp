@@ -110,7 +110,7 @@ void Transform::SetRot(const CoordinateKind coord_kind, const VECTOR& forward)
 	const auto forward_n	= v3d::GetNormalizedV(forward);
 	const auto right		= -math::GetNormalVector(forward_n, axis::GetWorldYAxis());
 	const auto up			= math::GetNormalVector(forward_n, right);
-	const auto result_m		= math::ConvertAxesToXYZRotMatrix(Axes(right, up, forward_n));
+	const auto result_m		= math::ConvertAxesToRotMatrix(Axes(right, up, forward_n));
 
 	SetRot(coord_kind, result_m);
 }

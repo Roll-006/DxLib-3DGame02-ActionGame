@@ -9,5 +9,7 @@ public:
 	~PlaySceneEffectObjectPool() override;
 
 private:
-	static constexpr int kLightRocketLauncherExhaustVentEffectPoolSize = 1;
+	static constexpr int kLightRocketLauncherExhaustVentPoolSize	= 3;
+	static constexpr int kRocketBombSmokePoolSize					= 10;
+	static constexpr int kExpandingSmokePoolSize					= 10;
 };

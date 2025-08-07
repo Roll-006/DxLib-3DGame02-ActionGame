@@ -5,40 +5,20 @@
 
 struct InputCode
 {
-	InputKind kind;
-	int code;
-
-	InputCode() : kind(InputKind::kKey), code(0){}
-	InputCode(const InputKind kind, const int code) : kind(kind), code(code){}
+	InputKind	kind = InputKind::kKey;
+	int			code = 0;
 };
 
 struct InputData
 {
-	bool  is_input;
-	float input_time;
-
-	InputData() : is_input(false), input_time(0.0f){}
-	InputData(const bool is_input, const float input_time) : is_input(is_input), input_time(input_time) {}
+	bool  is_input		= false;
+	float input_time	= 0.0f;
 };
 
 struct MouseData
 {
-	Vector2D<int>   pos;
-	Vector2D<float> dir;
-	Vector2D<float> velocity;
-	int wheel_rotation;
-
-	MouseData() : 
-		pos				(v2d::GetZeroV<Vector2D<int>>()), 
-		dir				(v2d::GetZeroV<Vector2D<float>>()), 
-		velocity		(v2d::GetZeroV<Vector2D<float>>()), 
-		wheel_rotation	(0)
-	{ }
-
-	MouseData(const Vector2D<int> pos, const Vector2D<float> dir, const Vector2D<float> velocity, const int wheel_rotation) :
-		pos				(pos),
-		dir				(dir),
-		velocity		(velocity),
-		wheel_rotation	(wheel_rotation)
-	{ }
+	Vector2D<int>   pos				= v2d::GetZeroV<Vector2D<int>>();
+	Vector2D<float> dir				= v2d::GetZeroV<Vector2D<float>>();
+	Vector2D<float> velocity		= v2d::GetZeroV<Vector2D<float>>();
+	int				wheel_rotation	= 0;
 };

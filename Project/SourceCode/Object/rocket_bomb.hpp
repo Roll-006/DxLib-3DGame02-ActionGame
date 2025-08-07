@@ -8,6 +8,7 @@
 #include "../Manager/physics_manager.hpp"
 
 #include "../Part/modeler.hpp"
+#include "../Part/subject.hpp"
 
 class RocketBomb final : public PhysicalObjBase, public IPoolable, public IBullet
 {
@@ -36,9 +37,10 @@ private:
 
 private:
 	static constexpr VECTOR kBasicAngle	= { 0.0f, 90.0f * math::kDegreesToRadian, 0.0f };
-	static constexpr float  kBasicScale = 1.2f;
+	static constexpr float  kBasicScale = 1.2f * 0.3f;
 
-	std::shared_ptr<Modeler> m_modeler;
+	std::shared_ptr<Modeler>				m_modeler;
+	std::shared_ptr<Subject<RocketBomb>>	m_subject;
 
 	VECTOR m_move_dir;
 	VECTOR m_prev_pos;

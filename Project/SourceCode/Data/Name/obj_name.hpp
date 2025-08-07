@@ -45,6 +45,8 @@ static struct ObjName
 
 	#pragma region エフェクト
 	const std::string LIGHT_ROCKET_LAUNCHER_EXHAUST_VENT_EFFECT = "light_rocket_launcher_exhaust_vent_effect";
+	const std::string EXPANDING_SMOKE_EFFECT					= "expanding_smoke_effect";
+	const std::string ROCKET_BOMB_SMOKE_EFFECT					= "rocket_bomb_smoke_effect";
 	#pragma endregion
 
 

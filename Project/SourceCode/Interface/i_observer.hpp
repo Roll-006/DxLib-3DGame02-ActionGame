@@ -7,5 +7,5 @@ class IObserver abstract
 public:
 	virtual ~IObserver() = default;
 
-	virtual void OnNotify(const ObjBase& obj, const EventKind event_kind) abstract;
+	virtual void OnNotify(ObjBase& obj, const EventKind event_kind) abstract;
 };

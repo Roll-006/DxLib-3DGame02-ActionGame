@@ -84,7 +84,7 @@ Quaternion math::ConvertRotMatrixToQuaternion(const MATRIX& rot_matrix)
     return Quaternion(q.at(0), q.at(1), q.at(2), q.at(3));
 }
 
-MATRIX math::ConvertAxesToXYZRotMatrix(const Axes& axes)
+MATRIX math::ConvertAxesToRotMatrix(const Axes& axes)
 {
     MATRIX mat = MGetIdent();
 
@@ -183,6 +183,13 @@ MATRIX math::ConvertEulerAnglesToXYZRotMatrix(const VECTOR& angle)
 {
     MATRIX mat = MGetIdent();
     CreateRotationXYZMatrix(&mat, angle.x, angle.y, angle.z);
+    return MGetRotElem(mat);
+}
+
+MATRIX math::ConvertEulerAnglesToZXYRotMatrix(const VECTOR& angle)
+{
+    MATRIX mat = MGetIdent();
+    CreateRotationZXYMatrix(&mat, angle.x, angle.y, angle.z);
     return MGetRotElem(mat);
 }
 #pragma endregion
@@ -389,6 +396,17 @@ float math::ConnectMinusPiToPi(const float angle)
     if (connected_angle >=  DX_PI_F) { connected_angle -= DX_TWO_PI_F; }
     return connected_angle;
 }
+
+//MATRIX math::GetCorrectedMatrix(const MATRIX& origin_m, const VECTOR& offset_pos, const VECTOR& offset_angle, const VECTOR& offset_scale)
+//{
+//    const auto offset_angle_mat = math::ConvertEulerAnglesToXYZRotMatrix(offset_angle);
+//    const auto result_mat       = offset_angle_mat * origin_m;
+//
+//    // 情報を適用
+//    //m_transform->SetMatrix(CoordinateKind::kWorld, result_mat);
+//    //m_transform->SetPos(CoordinateKind::kLocal, m_transform->GetPos(CoordinateKind::kLocal) + VTransformSR(offset_pos, result_mat));
+//    //m_transform->SetScale(CoordinateKind::kWorld, offset_scale);
+//}
 #pragma endregion
 
 

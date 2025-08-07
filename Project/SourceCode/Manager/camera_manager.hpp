@@ -118,5 +118,5 @@ private:
 	std::shared_ptr<Transform> transform1;
 	std::shared_ptr<Transform> transform2;
 
-	friend SingletonBase<CameraManager>;
+	friend class SingletonBase<CameraManager>;
 };

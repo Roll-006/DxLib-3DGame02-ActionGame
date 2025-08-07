@@ -79,8 +79,8 @@ private:
 
 
 private:
-	static constexpr float kGravityAcceleration				= 0.98f;	// 重力加速度(デルタタイム適用前)
-	static constexpr float kMaxGravity						= 0.2f;		// 最大重力(デルタタイム適用後の最大値)
+	static constexpr float kGravityAcceleration				= 0.2f;		// 重力加速度(デルタタイム適用前)
+	static constexpr float kMaxGravity						= 0.4f;		// 最大重力(デルタタイム適用後の最大値)
 	static constexpr float kSlopeDifficultyAngleThreshold	= 50.0f;	// 登るのが困難になり始める角度
 	static constexpr float kMaxSlopeAngle					= 75.0f;	// 登れる角度の最大値
 

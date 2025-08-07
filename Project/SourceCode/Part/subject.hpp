@@ -25,7 +25,7 @@ public:
 	}
 
 private:
-	void Notify(const ObjBase& obj, const EventKind event_kind)
+	void Notify(ObjBase& obj, const EventKind event_kind)
 	{
 		for (const auto& observer : m_observers)
 		{

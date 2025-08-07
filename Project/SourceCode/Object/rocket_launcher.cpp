@@ -104,3 +104,11 @@ void RocketLauncher::CalcTargetPos()
 {
 	m_target_pos = math::GetRandomPointInCircle(*std::dynamic_pointer_cast<Circle>(m_diffusion_shape));
 }
+
+VECTOR RocketLauncher::GetExhaustVentMatrix()
+{
+	const auto world_m		= m_transform->GetMatrix(CoordinateKind::kWorld);
+	const auto local_pos	= m_transform->GetPos	(CoordinateKind::kLocal);
+
+	return local_pos + VTransformSR(kExhaustVentOffsetPos, world_m);
+}

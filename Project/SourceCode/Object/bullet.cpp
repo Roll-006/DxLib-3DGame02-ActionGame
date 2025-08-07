@@ -4,6 +4,7 @@
 
 Bullet::Bullet() :
 	PhysicalObjBase	(ObjName.BULLET, ObjTag.BULLET, MassKind::kLight),
+	m_subject		(std::make_shared<Subject<Bullet>>()),
 	m_move_dir		(v3d::GetZeroV()),
 	m_prev_pos		(v3d::GetZeroV()),
 	m_first_pos		(v3d::GetZeroV()),
@@ -12,6 +13,8 @@ Bullet::Bullet() :
 	m_range			(0.0f)
 {
 	AddCollider(std::make_shared<Collider>(ColliderKind::kRayCast, std::make_shared<Segment>(), this));
+
+	EffectManager::GetInstance()->AddToSubject<Bullet>(m_subject);
 }
 
 Bullet::~Bullet()
@@ -21,8 +24,9 @@ Bullet::~Bullet()
 
 void Bullet::Init()
 {
-	m_velocity = v3d::GetZeroV();
+	m_velocity		= v3d::GetZeroV();
 	m_fall_velocity = v3d::GetZeroV();
+	m_fall_speed	= 0.0f;
 }
 
 void Bullet::Update()
@@ -87,6 +91,8 @@ void Bullet::OnShot(const GunBase& gun)
 	m_move_speed	= gun.GetInitialVelocity();
 	m_deceleration	= gun.GetDeceleration();
 	m_range			= gun.GetRange();
+
+	m_subject->Notify(*this, EventKind::kShot);
 }
 
 bool Bullet::IsReturnPool()

@@ -303,6 +303,7 @@
     <ClInclude Include="SourceCode\Data\camera_data.hpp" />
     <ClInclude Include="SourceCode\Data\collider_pair_data.hpp" />
     <ClInclude Include="SourceCode\Data\CSV\csv.hpp" />
+    <ClInclude Include="SourceCode\Data\effect_data.hpp" />
     <ClInclude Include="SourceCode\Data\IncludeList\input.hpp" />
     <ClInclude Include="SourceCode\Data\IncludeList\shape.hpp" />
     <ClInclude Include="SourceCode\Data\IncludeList\vector.hpp" />

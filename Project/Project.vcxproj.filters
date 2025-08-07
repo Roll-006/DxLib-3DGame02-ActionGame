@@ -934,6 +934,9 @@
     <ClInclude Include="SourceCode\State\PlayerState\attach_weapon.hpp">
       <Filter>State\PlayerState</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\Data\effect_data.hpp">
+      <Filter>Data</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Manager">

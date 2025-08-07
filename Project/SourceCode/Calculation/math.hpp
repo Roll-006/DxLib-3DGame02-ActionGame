@@ -64,14 +64,14 @@ namespace math
 		return VGet(RoundOff(value.x, digit), RoundOff(value.y, digit), RoundOff(value.z, digit));
 	}
 
-	/// @brief クォータニオンから回転行列へ変換
+	/// @brief クォータニオンから回転行列(回転順は問わない)へ変換
 	[[nodiscard]] MATRIX ConvertQuaternionToRotMatrix(const Quaternion& q);
 
-	/// @brief 回転行列からクォータニオンへ変換
+	/// @brief 回転行列(回転順は問わない)からクォータニオンへ変換
 	[[nodiscard]] Quaternion ConvertRotMatrixToQuaternion(const MATRIX& rot_matrix);
 
-	/// @brief XYZ軸から回転行列へ変換
-	[[nodiscard]] MATRIX ConvertAxesToXYZRotMatrix(const Axes& axes);
+	/// @brief XYZ軸から回転行列(回転順は問わない)へ変換
+	[[nodiscard]] MATRIX ConvertAxesToRotMatrix(const Axes& axes);
 
 	/// @brief XYZ軸からオイラー角へ変換
 	/// @brief FIXME : 不具合ありな可能性あり。要検証
@@ -83,11 +83,12 @@ namespace math
 	[[nodiscard]] VECTOR ConvertXYZRotMatrixToEulerAngles(const MATRIX& rot_matrix, bool& is_gimbal_lock);
 	[[nodiscard]] VECTOR ConvertZXYRotMatrixToEulerAngles(const MATRIX& rot_matrix);
 
-	/// @brief 回転行列からXYZ軸へ変換
+	/// @brief 回転行列(回転順は問わない)からXYZ軸へ変換
 	[[nodiscard]] Axes ConvertRotMatrixToAxes(const MATRIX& rot_matrix);
 
 	/// @brief オイラー角から回転行列へ変換
 	[[nodiscard]] MATRIX ConvertEulerAnglesToXYZRotMatrix(const VECTOR& angle);
+	[[nodiscard]] MATRIX ConvertEulerAnglesToZXYRotMatrix(const VECTOR& angle);
 	#pragma endregion
 
 
@@ -227,6 +228,14 @@ namespace math
 		// 新しい範囲にスケール
 		return normalized * static_cast<ReturnT>(new_max - new_min) + static_cast<ReturnT>(new_min);
 	}
+
+	/// @brief 補正後の行列を取得する
+	/// @param origin_m 補正前行列
+	/// @param offset_pos オフセット座標
+	/// @param offset_angle オフセット角度
+	/// @param offset_scale オフセットスケール
+	/// @return 補正後行列
+	[[nodiscard]] MATRIX GetCorrectedMatrix(const MATRIX& origin_m, const VECTOR& offset_pos, const VECTOR& offset_angle, const VECTOR& offset_scale);
 	#pragma endregion
 
 

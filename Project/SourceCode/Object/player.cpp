@@ -19,7 +19,8 @@ Player::Player() :
 
 	// 初期pos・dirを設定
 	m_look_dir[TimeKind::kCurrent] = m_look_dir[TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);
-	m_transform->SetRot		(CoordinateKind::kWorld, m_look_dir.at(TimeKind::kCurrent));
+	m_transform->SetPos(CoordinateKind::kWorld, VGet(0, 1000, 0));
+	m_transform->SetRot(CoordinateKind::kWorld, m_look_dir.at(TimeKind::kCurrent));
 
 	// コライダー・トリガーを設定
 	CreateCharaBasisCollider(kCapsuleRadius, kLandingTriggerRadius);
@@ -149,7 +150,7 @@ void Player::Draw() const
 	//DrawFormatString(500, 20, 0xffffff, "move_speed       : %f", m_move_speed);
 	//DrawFormatString(500, 40, 0xffffff, "move_dir_next    : %f, %f ,%f", m_move_dir.at(TimeKind::kNext).x, m_move_dir.at(TimeKind::kNext).y, m_move_dir.at(TimeKind::kNext).z);
 	//DrawFormatString(500, 60, 0xffffff, "move_dir_current : %f, %f ,%f", m_move_dir.at(TimeKind::kCurrent).x, m_move_dir.at(TimeKind::kCurrent).y, m_move_dir.at(TimeKind::kCurrent).z);
-	if(m_current_held_weapon)DrawFormatString(0, 20, 0xffffff, "%s", m_current_held_weapon->GetName().c_str());
+	//if(m_current_held_weapon)DrawFormatString(0, 20, 0xffffff, "%s", m_current_held_weapon->GetName().c_str());
 }
 
 void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)

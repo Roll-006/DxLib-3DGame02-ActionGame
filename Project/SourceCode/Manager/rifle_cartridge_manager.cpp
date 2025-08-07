@@ -20,11 +20,6 @@ void RifleCartridgeManager::Update()
 			part->Update();
 		}
 	}
-
-	if (m_rifle_cartridge.count(ObjName.ROCKET_BOMB))
-	{
-		DrawFormatString(0, 20, 0xffffff, "%d", m_rifle_cartridge.at(ObjName.ROCKET_BOMB).size());
-	}
 }
 
 void RifleCartridgeManager::LateUpdate()
@@ -93,7 +88,7 @@ void RifleCartridgeManager::Draw() const
 
 void RifleCartridgeManager::Shot(GunBase& gun)
 {
-	const auto object_pool = ObjectPoolHolder::GetInstance()->GetObjectPool(ObjectPoolName.RIFLE_CARTRIDGE_POOL);
+	const auto pool = ObjectPoolHolder::GetInstance()->GetObjectPool(ObjectPoolName.RIFLE_CARTRIDGE_POOL);
 	std::shared_ptr<ObjBase>		bullet_obj		= nullptr;
 	std::shared_ptr<IBullet>		bullet			= nullptr;
 	std::shared_ptr<ShellCasing>	shell_casing	= nullptr;
@@ -102,13 +97,13 @@ void RifleCartridgeManager::Shot(GunBase& gun)
 	switch (gun.GetGunKind())
 	{
 	case GunKind::kSniperRifle:
-		bullet_obj		= object_pool->GetObj(ObjName.BULLET);
+		bullet_obj		= pool->GetObj(ObjName.BULLET);
 		bullet			= std::static_pointer_cast<Bullet>(bullet_obj);
-		shell_casing	= std::static_pointer_cast<ShellCasing>(object_pool->GetObj(ObjName.SHELL_CASING_556x45));
+		shell_casing	= std::static_pointer_cast<ShellCasing>(pool->GetObj(ObjName.SHELL_CASING_556x45));
 		break;
 
 	case GunKind::kRocketLauncher:
-		bullet_obj		= object_pool->GetObj(ObjName.ROCKET_BOMB);
+		bullet_obj		= pool->GetObj(ObjName.ROCKET_BOMB);
 		bullet			= std::static_pointer_cast<RocketBomb>(bullet_obj);
 		break;
 

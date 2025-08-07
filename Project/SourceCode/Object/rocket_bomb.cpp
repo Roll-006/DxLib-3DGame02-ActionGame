@@ -5,6 +5,7 @@
 RocketBomb::RocketBomb() :
 	PhysicalObjBase	(ObjName.ROCKET_BOMB, ObjTag.BULLET, MassKind::kLight),
 	m_modeler		(std::make_shared<Modeler>(m_transform, ModelPath.ROCKET_BOMB, kBasicAngle, kBasicScale)),
+	m_subject		(std::make_shared<Subject<RocketBomb>>()),
 	m_move_dir		(v3d::GetZeroV()),
 	m_prev_pos		(v3d::GetZeroV()),
 	m_first_pos		(v3d::GetZeroV()),
@@ -15,6 +16,8 @@ RocketBomb::RocketBomb() :
 	SetModelHandle(m_modeler->GetModelHandle());
 
 	AddCollider(std::make_shared<Collider>(ColliderKind::kRayCast, std::make_shared<Segment>(), this));
+
+	EffectManager::GetInstance()->AddToSubject<RocketBomb>(m_subject);
 }
 
 RocketBomb::~RocketBomb()
@@ -26,6 +29,7 @@ void RocketBomb::Init()
 {
 	m_velocity		= v3d::GetZeroV();
 	m_fall_velocity = v3d::GetZeroV();
+	m_fall_speed	= 0.0f;
 }
 
 void RocketBomb::Update()
@@ -70,7 +74,9 @@ void RocketBomb::Draw() const
 
 	m_modeler->Draw();
 
-	//DrawSphere3D(m_transform->GetPos(CoordinateKind::kWorld), 2, 8, 0xffffff, 0xffffff, TRUE);
+	DrawSphere3D(m_transform->GetPos(CoordinateKind::kWorld), 2, 8, 0xffffff, 0xffffff, TRUE);
+	
+	DrawFormatString(0,  80, 0xffffff, "m_fall_speed : %f", m_fall_speed);
 	//std::dynamic_pointer_cast<Segment>(GetCollider(ColliderKind::kRayCast)->GetShape())->Draw(false, 0, 0xffffff);
 }
 
@@ -93,9 +99,13 @@ void RocketBomb::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 void RocketBomb::AddToObjManager()
 {
+	const auto physical_obj = std::dynamic_pointer_cast<PhysicalObjBase>(shared_from_this());
+
 	ObjManager		::GetInstance()->AddObj			(shared_from_this());
-	CollisionManager::GetInstance()->AddCollideObj	(std::dynamic_pointer_cast<PhysicalObjBase>(shared_from_this()));
-	PhysicsManager	::GetInstance()->AddPhysicalObj	(std::dynamic_pointer_cast<PhysicalObjBase>(shared_from_this()));
+	CollisionManager::GetInstance()->AddCollideObj	(physical_obj);
+	PhysicsManager	::GetInstance()->AddPhysicalObj	(physical_obj);
+
+	//PhysicsManager::GetInstance()->AddIgnoreObjGravity(physical_obj->GetObjHandle());
 }
 
 void RocketBomb::OnShot(const GunBase& gun)
@@ -108,6 +118,8 @@ void RocketBomb::OnShot(const GunBase& gun)
 	m_move_speed	= gun.GetInitialVelocity();
 	m_deceleration	= gun.GetDeceleration();
 	m_range			= gun.GetRange();
+
+	m_subject->Notify(*this, EventKind::kShot);
 }
 
 bool RocketBomb::IsReturnPool()

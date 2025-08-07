@@ -7,6 +7,8 @@
 #include "../Manager/collision_manager.hpp"
 #include "../Manager/physics_manager.hpp"
 
+#include "../Part/subject.hpp"
+
 class Bullet final : public PhysicalObjBase, public IPoolable, public IBullet
 {
 public:
@@ -33,6 +35,8 @@ private:
 	void CalcRayPos() override;
 
 private:
+	std::shared_ptr<Subject<Bullet>> m_subject;
+
 	VECTOR m_move_dir;
 	VECTOR m_prev_pos;
 	VECTOR m_first_pos;		// ‰Šú”­ËˆÊ’u

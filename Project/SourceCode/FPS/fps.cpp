@@ -8,7 +8,8 @@ FPS::FPS() :
     m_current_time  (0),
     m_prev_time     (0),
     m_frame_count   (1),
-    m_average_fps   (0.0f)
+    m_average_fps   (0.0f),
+    m_elapsed_time  (0.0f)
 {
     m_first_time = m_current_time = m_prev_time = GetNowHiPerformanceCount();
 }
@@ -35,11 +36,14 @@ void FPS::Update()
         return;
     }
     ++m_frame_count;
+
+    m_elapsed_time += m_delta_time;
 }
 
 void FPS::Draw() const
 {
-    DrawFormatString(0, 0, 0xffffff, "%f", m_average_fps);
+    DrawFormatString(0,  0, 0xffffff, "FPS          : %f", m_average_fps);
+    DrawFormatString(0, 20, 0xffffff, "Elapsed Time : %f", m_elapsed_time);
 }
 
 void FPS::Wait() const

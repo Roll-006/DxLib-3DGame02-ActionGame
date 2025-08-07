@@ -44,7 +44,7 @@ void GameSystemSetter::SetUpGameSystem()
 	// ÉtÉHÉO
 	SetFogEnable(TRUE);
 	SetFogMode(DX_FOGMODE_LINEAR);
-	SetFogColor(195, 207, 219);
-	SetFogStartEnd(300.f, 3100.0f);
+	SetFogColor(48, 49, 56);
+	SetFogStartEnd(200.f, 4500.0f);
 	SetFogDensity(0.1f);
 }

@@ -1,12 +1,16 @@
 #include "effect.hpp"
 
-Effect::Effect(const std::string& obj_name, const float play_speed, const bool is_loop, const std::string& file_path) :
-	ObjBase					(obj_name, ObjTag.EFFECT),
-	m_origin_effect_handle	(HandleKeeper::GetInstance()->LoadHandle(HandleKind::kEffect, file_path)),
+Effect::Effect(const EffectData& data) :
+	ObjBase					(data.obj_name, ObjTag.EFFECT),
+	m_origin_effect_handle	(HandleKeeper::GetInstance()->LoadHandle(HandleKind::kEffect, data.file_path)),
 	m_playing_effect_handle	(-1),
+	m_owner_transform		(nullptr),
+	m_offset_pos			(v3d::GetZeroV()),
+	m_offset_angle			(v3d::GetZeroV()),
+	m_offset_scale			(VGet(1.0f, 1.0f, 1.0f)),
+	m_data					(data),
 	m_play_count			(0),
-	m_play_speed			(play_speed),
-	m_is_loop				(is_loop)
+	m_play_wait_timer		(0.0f)
 {
 
 }
@@ -18,12 +22,24 @@ Effect::~Effect()
 
 void Effect::Init()
 {
-	m_play_count = 0;
+	m_offset_pos		= v3d::GetZeroV();
+	m_offset_angle		= v3d::GetZeroV();
+	m_offset_scale		= VGet(1.0f, 1.0f, 1.0f);
+
+	m_play_count		= 0;
+	m_play_wait_timer	= 0.0f;
+
+	if (m_playing_effect_handle > -1)
+	{
+		StopEffekseer3DEffect(m_playing_effect_handle);
+	}
 }
 
 void Effect::Update()
 {
 	if (!IsActive()) { return; }
+
+	m_play_wait_timer += FPS::GetDeltaTime();
 }
 
 void Effect::LateUpdate()
@@ -51,9 +67,19 @@ void Effect::AddToObjManager()
 	ObjManager::GetInstance()->AddObj(shared_from_this());
 }
 
+void Effect::AttachOwnerTransform(const std::shared_ptr<Transform> owner_transform)
+{
+	m_owner_transform = owner_transform;
+}
+
+void Effect::DetachOwnerTransform()
+{
+	m_owner_transform = nullptr;
+}
+
 bool Effect::IsReturnPool()
 {
-	if (m_playing_effect_handle > -1 && !m_is_loop && m_play_count > 0)
+	if (m_playing_effect_handle > -1 && !m_data.is_loop && m_play_count > 0)
 	{
 		if (IsEffekseer3DEffectPlaying(m_playing_effect_handle) == -1)
 		{
@@ -67,10 +93,22 @@ void Effect::ApplyMatrix() const
 {
 	if (m_playing_effect_handle > -1)
 	{
-		const auto pos		= m_transform->GetPos(CoordinateKind::kWorld);
-		const auto rot		= math::ConvertQuaternionToRotMatrix(m_transform->GetQuaternion(CoordinateKind::kWorld));
-		const auto angle	= math::ConvertZXYRotMatrixToEulerAngles(rot);
-		const auto scale	= m_transform->GetScale(CoordinateKind::kWorld);
+		if (m_owner_transform)
+		{
+			m_transform->SetMatrix(CoordinateKind::kWorld, m_owner_transform->GetMatrix(CoordinateKind::kWorld));
+		}
+
+		// オフセット値の適用
+		const auto scale_m		= MGetScale(m_offset_scale);
+		const auto rot_m		= math::ConvertEulerAnglesToXYZRotMatrix(m_offset_angle);
+		const auto pos_m		= MGetTranslate(m_offset_pos);
+		const auto offset_m		= scale_m * rot_m * pos_m;
+		m_transform->SetMatrix	(CoordinateKind::kWorld, offset_m * m_transform->GetMatrix(CoordinateKind::kWorld));
+
+		// 情報の取得
+		const auto pos			= m_transform->GetPos(CoordinateKind::kWorld);
+		const auto angle		= math::ConvertZXYRotMatrixToEulerAngles(m_transform->GetRotMatrix(CoordinateKind::kWorld));
+		const auto scale		= m_transform->GetScale(CoordinateKind::kWorld);
 
 		SetPosPlayingEffekseer3DEffect		(m_playing_effect_handle, pos.x,   pos.y,   pos.z);
 		SetRotationPlayingEffekseer3DEffect	(m_playing_effect_handle, angle.x, angle.y, angle.z);
@@ -82,13 +120,13 @@ void Effect::ApplyPlaySpeed() const
 {
 	if (m_playing_effect_handle > -1)
 	{
-		SetSpeedPlayingEffekseer3DEffect(m_playing_effect_handle, m_play_speed * FPS::GetDeltaTime());
+		SetSpeedPlayingEffekseer3DEffect(m_playing_effect_handle, m_data.play_speed * FPS::GetDeltaTime());
 	}
 }
 
 void Effect::PlayEffect()
 {
-	if (IsEffekseer3DEffectPlaying(m_playing_effect_handle) == -1)
+	if (IsEffekseer3DEffectPlaying(m_playing_effect_handle) == -1 && m_play_wait_timer > m_data.play_wait_time)
 	{
 		m_playing_effect_handle = PlayEffekseer3DEffect(m_origin_effect_handle);
 		++m_play_count;

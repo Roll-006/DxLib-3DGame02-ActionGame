@@ -20,7 +20,7 @@ GunBase::GunBase(const std::string& name, const GunKind gun_kind, const HolsterK
 	m_on_pull_trigger				(false),
 	m_gun_kind						(gun_kind)
 {
-	//m_subject->AddObserver(EffectManager);
+	EffectManager::GetInstance()->AddToSubject<GunBase>(m_subject);
 }
 
 void GunBase::OnShot()

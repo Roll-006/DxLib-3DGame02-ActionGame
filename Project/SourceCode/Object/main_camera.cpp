@@ -60,12 +60,14 @@ void MainCamera::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 void MainCamera::AddToObjManager()
 {
+	const auto physical_obj = std::dynamic_pointer_cast<PhysicalObjBase>(shared_from_this());
+
 	ObjManager		::GetInstance()->AddObj				(shared_from_this());
-	CollisionManager::GetInstance()->AddCollideObj		(std::dynamic_pointer_cast<PhysicalObjBase>(shared_from_this()));
-	PhysicsManager	::GetInstance()->AddPhysicalObj		(std::dynamic_pointer_cast<PhysicalObjBase>(shared_from_this()));
+	CollisionManager::GetInstance()->AddCollideObj		(physical_obj);
+	PhysicsManager	::GetInstance()->AddPhysicalObj		(physical_obj);
 	PhysicsManager	::GetInstance()->AddIgnoreObjGravity(this->GetObjHandle());
 
-	CameraManager::GetInstance()->SetMainCamera(std::dynamic_pointer_cast<MainCamera>(shared_from_this()));
+	CameraManager::GetInstance()->SetMainCamera(std::static_pointer_cast<MainCamera>(shared_from_this()));
 }
 
 void MainCamera::SetAim()

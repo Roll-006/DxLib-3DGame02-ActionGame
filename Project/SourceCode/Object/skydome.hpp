@@ -22,7 +22,7 @@ public:
 	
 private:
 	static constexpr VECTOR kBasicAngle = { 0.0f, DX_PI_F, 0.0f };
-	static constexpr float  kBasicScale = 30.0f;
+	static constexpr float  kBasicScale = 40.0f;
 
 private:
 	std::shared_ptr<Modeler>   m_modeler;
