@@ -17,7 +17,7 @@ public:
 	void Shot(GunBase& gun);
 
 	/// @brief g—pÏ‚İ’eŠÛ‚ğíœ
-	void DeleteBullet(const int obj_handle);
+	void DeleteBullet(std::shared_ptr<ObjBase> bullet);
 
 
 	// TODO : ‰¼À‘•B‚Ì‚¿‚Éíœ

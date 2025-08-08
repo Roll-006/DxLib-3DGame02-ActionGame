@@ -80,8 +80,8 @@ protected:
 	#pragma endregion
 
 
-	/// @brief 見ている方向をトランスフォームに適用する
-	void ApplyLookDirToTransform(const VECTOR& look_dir);
+	/// @brief 見ている方向を回転に適用する
+	void ApplyLookDirToRot(const VECTOR& look_dir);
 
 private:
 	#pragma region コライダー

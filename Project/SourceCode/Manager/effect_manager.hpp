@@ -29,6 +29,10 @@ public:
 
 	void OnNotify(const IEvent& event) override;
 
+	/// @brief エフェクトを強制的にプールに戻す
+	void ForciblyReturnPoolEffect(std::shared_ptr<Effect> effect);
+	void ForciblyReturnPoolEffect(const int return_trigger_handle);
+
 private:
 	EffectManager();
 	~EffectManager();
@@ -36,11 +40,15 @@ private:
 	void AddEffect(const std::shared_ptr<Effect> effect);
 
 
-	#pragma region エフェクトの生成
-	/// @brief 銃エフェクト
-	void CreateGunEffect	(ObjBase& obj);
-	/// @brief 弾丸エフェクト
-	void CreateBulletEffect	(ObjBase& obj);
+	#pragma region エフェクトの出力
+	/// @brief 武器が弾丸を発射した際のエフェクトを出力
+	void OutputWeaponShotEffect			(const Event<WeaponShotData>& event);
+	/// @brief ロケットランチャーが弾丸を発射した際のエフェクトを出力
+	void OutputRocketLauncherShotEffect	(const Event<RocketLauncherShotData>& event);
+	/// @brief 弾丸が発射された際のエフェクトを出力
+	void OutputOnShotBulletEffect		(const Event<OnShotBulletData>& event);
+	/// @brief 弾丸が衝突した際のエフェクトを出力
+	void OutputOnHitBulletEffect		(const Event<OnHitBulletData>& event);
 	#pragma endregion
 
 private:

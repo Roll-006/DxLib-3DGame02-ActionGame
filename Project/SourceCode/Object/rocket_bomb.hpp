@@ -32,6 +32,8 @@ public:
 	[[nodiscard]] bool IsReturnPool() override;
 
 private:
+	/// @brief ˆÚ“®•ûŒü‚ğp¨‚É“K—p‚·‚é
+	void ApplyMoveDirToRot();
 	void Move();
 	void CalcRayPos() override;
 

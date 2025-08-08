@@ -65,7 +65,7 @@ void Bullet::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	case ColliderKind::kRayCast:
 		if (hit_collider_pair.intersection)
 		{
-			RifleCartridgeManager::GetInstance()->DeleteBullet(this->GetObjHandle());
+			RifleCartridgeManager::GetInstance()->DeleteBullet(shared_from_this());
 			RifleCartridgeManager::GetInstance()->AddHitPos(*hit_collider_pair.intersection);
 		}
 		break;
@@ -77,9 +77,11 @@ void Bullet::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 void Bullet::AddToObjManager()
 {
-	ObjManager		::GetInstance()->AddObj(shared_from_this());
-	CollisionManager::GetInstance()->AddCollideObj(std::dynamic_pointer_cast<PhysicalObjBase>(shared_from_this()));
-	PhysicsManager	::GetInstance()->AddPhysicalObj(std::dynamic_pointer_cast<PhysicalObjBase>(shared_from_this()));
+	const auto physical_obj = std::dynamic_pointer_cast<PhysicalObjBase>(shared_from_this());
+
+	ObjManager		::GetInstance()->AddObj			(shared_from_this());
+	CollisionManager::GetInstance()->AddCollideObj	(physical_obj);
+	PhysicsManager	::GetInstance()->AddPhysicalObj	(physical_obj);
 }
 
 void Bullet::OnShot(GunBase& gun)
@@ -92,7 +94,7 @@ void Bullet::OnShot(GunBase& gun)
 	m_deceleration	= gun.GetDeceleration();
 	m_range			= gun.GetRange();
 
-	const Event<OnShotBulletData> event = { EventKind::kOnShotBullet, { GetName(), m_transform} };
+	const Event<OnShotBulletData> event = { EventKind::kOnShotBullet, { GetName(), GetObjHandle(), m_transform}};
 	m_subject->Notify(event);
 }
 
@@ -115,5 +117,5 @@ void Bullet::CalcRayPos()
 	// Œõü‚ÌˆÊ’u‚ğŒvZ
 	auto ray = std::dynamic_pointer_cast<Segment>(GetCollider(ColliderKind::kRayCast)->GetShape());
 	ray->SetBeginPos(m_prev_pos, true);
-	ray->SetEndPos(m_transform->GetPos(CoordinateKind::kWorld), true);
+	ray->SetEndPos	(m_transform->GetPos(CoordinateKind::kWorld), true);
 }

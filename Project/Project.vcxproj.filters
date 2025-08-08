@@ -940,7 +940,7 @@
     <ClInclude Include="SourceCode\Data\Event\event (2).hpp">
       <Filter>Data\Event</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Data\Event\event (3).hpp">
+    <ClInclude Include="SourceCode\Data\Event\rocket_launcher_shot_data.hpp">
       <Filter>Data\Event</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Data\Event\on_hit_bullet.hpp">

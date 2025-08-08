@@ -18,7 +18,10 @@ public:
 	void CalcDiffusionRange() override;
 	void CalcTargetPos()	  override;
 
-	[[nodiscard]] VECTOR GetExhaustVentMatrix();
+	[[nodiscard]] std::shared_ptr<Transform> GetExhaustVentTransform() const { return m_exhaust_vent_transform; }
+
+private:
+	void CalcExhaustVentTransform();
 
 private:
 	static constexpr VECTOR kBasicAngle				= { 0.0f, 90.0f * math::kDegreesToRadian, 0.0f };
@@ -32,7 +35,7 @@ private:
 	static constexpr float  kAttachOffsetScale		= 1.0f;
 
 	static constexpr VECTOR kMuzzleOffsetPos		= { 0.0f, 0.0f, 65.0f };
-	static constexpr VECTOR kExhaustVentOffsetPos	= { 0.0f, 0.0f, -100.0f };
+	static constexpr VECTOR kExhaustVentOffsetPos	= { 0.0f, 0.0f, -70.0f };
 	static constexpr float  kScopeScale				= 2.0f;
 	static constexpr float  kRange					= 5000.0f;
 	static constexpr float  kInitialVelocity		= 40.0f;
@@ -40,4 +43,6 @@ private:
 	static constexpr float  kShotIntervalTime		= 1.5f;
 
 	static constexpr float  kDiffusionRadius		= 10.0f;		// ŠgŽU”ÍˆÍ‚Ì”¼Œa
+
+	std::shared_ptr<Transform> m_exhaust_vent_transform;
 };

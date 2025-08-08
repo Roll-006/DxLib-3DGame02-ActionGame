@@ -305,7 +305,7 @@
     <ClInclude Include="SourceCode\Data\CSV\csv.hpp" />
     <ClInclude Include="SourceCode\Data\effect_data.hpp" />
     <ClInclude Include="SourceCode\Data\Event\event (2).hpp" />
-    <ClInclude Include="SourceCode\Data\Event\event (3).hpp" />
+    <ClInclude Include="SourceCode\Data\Event\rocket_launcher_shot_data.hpp" />
     <ClInclude Include="SourceCode\Data\Event\on_hit_bullet.hpp" />
     <ClInclude Include="SourceCode\Data\Event\on_shot_bullet_data.hpp" />
     <ClInclude Include="SourceCode\Data\Event\weapon_shot_data.hpp" />

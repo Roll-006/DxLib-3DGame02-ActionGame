@@ -4,6 +4,7 @@
 
 Player::Player() :
 	CharacterBase(ObjName.PLAYER, ObjTag.PLAYER, MassKind::kMedium),
+	m_subject							(std::make_shared<Subject<Player>>()),
 	m_state								(std::make_shared<PlayerStateController>()),
 	m_camera_aim_transform				(std::make_shared<Transform>()),
 	m_current_camera_aim_pos			(v3d::GetZeroV()),
@@ -14,6 +15,8 @@ Player::Player() :
 	m_current_equip_knife				(nullptr),
 	m_weapon_shortcut_selecter			(std::make_shared<WeaponShortcutSelecter>())
 {
+	EffectManager::GetInstance()->AddToSubject<Player>(m_subject);
+
 	m_modeler = std::make_shared<Modeler>(m_transform, ModelPath.SWAT, kBasicAngle, kBasicScale);
 	SetModelHandle(m_modeler->GetModelHandle());
 
@@ -28,31 +31,34 @@ Player::Player() :
 	// 各アニメーション追加
 	m_animator = std::make_shared<PlayerAnimator>(m_modeler, m_state, m_current_held_weapon, m_current_equip_weapon);
 
-	// 武器設定
-	const auto assault_rifle	= std::make_shared<AssaultRifle>();
-	const auto rocket_launcher  = std::make_shared<RocketLauncher>();
-	const auto knife			= std::make_shared<Knife>();
-	assault_rifle	->AddToObjManager();
-	rocket_launcher	->AddToObjManager();
-	m_weapon_shortcut_selecter->AttachShortcutWeapon(WeaponShortcutPosKind::kInsideLeft,  assault_rifle);
-	m_weapon_shortcut_selecter->AttachShortcutWeapon(WeaponShortcutPosKind::kOutsideDown, rocket_launcher);
-	AddItem     (assault_rifle);
-	AddItem     (rocket_launcher);
-	AddItem     (knife);
-	EquipWeapon (assault_rifle);
-	EquipWeapon (rocket_launcher);
-	EquipKnife  (knife);
-	AttachWeapon(assault_rifle);
-	AttachWeapon(rocket_launcher);
-	AttachWeapon(knife);
+	// TODO : 仮後に変更
+	{
+		// 武器設定
+		const auto assault_rifle = std::make_shared<AssaultRifle>();
+		const auto rocket_launcher = std::make_shared<RocketLauncher>();
+		const auto knife = std::make_shared<Knife>();
+		assault_rifle->AddToObjManager();
+		rocket_launcher->AddToObjManager();
+		m_weapon_shortcut_selecter->AttachShortcutWeapon(WeaponShortcutPosKind::kInsideLeft, assault_rifle);
+		m_weapon_shortcut_selecter->AttachShortcutWeapon(WeaponShortcutPosKind::kOutsideDown, rocket_launcher);
+		AddItem(assault_rifle);
+		AddItem(rocket_launcher);
+		AddItem(knife);
+		EquipWeapon(assault_rifle);
+		EquipWeapon(rocket_launcher);
+		EquipKnife(knife);
+		AttachWeapon(assault_rifle);
+		AttachWeapon(rocket_launcher);
+		AttachWeapon(knife);
 
-	// カメラ登録
-	const auto camera_manager = CameraManager::GetInstance();
-	const auto rot_camera = std::make_shared<RotControlVirtualCamera>(1);
-	camera_manager->AddVirtualCamera(rot_camera);
-	rot_camera->AttachTarget(m_camera_aim_transform);
+		// カメラ登録
+		const auto camera_manager = CameraManager::GetInstance();
+		const auto rot_camera = std::make_shared<RotControlVirtualCamera>(1);
+		camera_manager->AddVirtualCamera(rot_camera);
+		rot_camera->AttachTarget(m_camera_aim_transform);
 
-	m_current_remaining_bullet_num = 10000;
+		m_current_remaining_bullet_num = 10000;
+	}
 }
 
 Player::~Player()
@@ -81,7 +87,7 @@ void Player::Update()
 	CalcVelocity();
 	CalcCapsuleColliderLength();
 
-	ApplyLookDirToTransform(m_look_dir.at(TimeKind::kCurrent));
+	ApplyLookDirToRot(m_look_dir.at(TimeKind::kCurrent));
 }
 
 void Player::LateUpdate()
@@ -177,6 +183,17 @@ void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 	default:
 		break;
+	}
+}
+
+void Player::NotifyShotRocketLauncher()
+{
+	const auto roket_launcher = std::dynamic_pointer_cast<RocketLauncher>(m_current_held_weapon);
+
+	if (roket_launcher)
+	{
+		const Event<RocketLauncherShotData> event = { EventKind::kRocketLauncherShot, { roket_launcher->GetExhaustVentTransform() }};
+		m_subject->Notify(event);
 	}
 }
 

@@ -1,7 +1,8 @@
 #include "rocket_launcher.hpp"
 
 RocketLauncher::RocketLauncher() :
-	GunBase(ObjName.ROCKET_LAUNCHER, GunKind::kRocketLauncher, HolsterKind::kRifle)
+	GunBase					(ObjName.ROCKET_LAUNCHER, GunKind::kRocketLauncher, HolsterKind::kRifle),
+	m_exhaust_vent_transform(std::make_shared<Transform>())
 {
 	m_modeler = std::make_shared<Modeler>(m_transform, ModelPath.ROCKET_LAUNCHER, kBasicAngle, kBasicScale);
 	SetModelHandle(m_modeler->GetModelHandle());
@@ -46,6 +47,8 @@ void RocketLauncher::LateUpdate()
 	if (!IsActive()) { return; }
 
 	TrackOwnerHand();
+	CalcMuzzleTransform();
+	CalcExhaustVentTransform();
 }
 
 void RocketLauncher::DrawToShadowMap() const
@@ -61,7 +64,8 @@ void RocketLauncher::Draw() const
 
 	m_modeler->Draw();
 
-	//DrawSphere3D(GetMuzzleTransform()->GetPos(CoordinateKind::kWorld), 2, 8, 0xffffff, 0xffffff, FALSE);
+	if(GetMuzzleTransform())DrawSphere3D(GetMuzzleTransform()->GetPos(CoordinateKind::kWorld), 2, 8, 0xffffff, 0xffffff, FALSE);
+	DrawSphere3D(m_exhaust_vent_transform->GetPos(CoordinateKind::kWorld), 2, 8, 0xffffff, 0xffffff, FALSE);
 	//DrawSphere3D(GetEjectionPortPos(), 1, 8, 0xffffff, 0xffffff, FALSE);
 
 	//DrawFormatString(300,  0, 0xffffff, "Žc’e     : %d", m_current_remaining_bullet_num);
@@ -105,10 +109,12 @@ void RocketLauncher::CalcTargetPos()
 	m_target_pos = math::GetRandomPointInCircle(*std::dynamic_pointer_cast<Circle>(m_diffusion_shape));
 }
 
-VECTOR RocketLauncher::GetExhaustVentMatrix()
+void RocketLauncher::CalcExhaustVentTransform()
 {
-	const auto world_m		= m_transform->GetMatrix(CoordinateKind::kWorld);
-	const auto local_pos	= m_transform->GetPos	(CoordinateKind::kLocal);
+	m_exhaust_vent_transform->SetMatrix(CoordinateKind::kWorld, m_transform->GetMatrix(CoordinateKind::kWorld));
 
-	return local_pos + VTransformSR(kExhaustVentOffsetPos, world_m);
+	const auto world_m = m_transform->GetMatrix(CoordinateKind::kWorld);
+	const auto local_pos = m_transform->GetPos(CoordinateKind::kLocal);
+
+	m_exhaust_vent_transform->SetPos(CoordinateKind::kWorld, local_pos + VTransformSR(kExhaustVentOffsetPos, world_m));
 }

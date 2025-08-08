@@ -2,6 +2,7 @@
 #include "../Base/character_base.hpp"
 
 #include "../Part/player_animator.hpp"
+#include "../Part/subject.hpp"
 
 #include "assault_rifle.hpp"
 #include "rocket_launcher.hpp"
@@ -25,6 +26,8 @@ public:
 	void Draw()				const	override;
 
 	void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) override;
+
+	void NotifyShotRocketLauncher();
 
 
 	#pragma region アイテム
@@ -101,6 +104,7 @@ public:
 
 
 	#pragma region Getter
+	[[nodiscard]] std::shared_ptr<Subject<Player>>			GetSubject()				const { return m_subject; }
 	[[nodiscard]] std::shared_ptr<PlayerStateController>	GetStateController()		const { return m_state; }
 	[[nodiscard]] std::vector<std::shared_ptr<IItem>>		GetCurrentHaveItem(const ItemKind item_kind) const { return m_items.at(item_kind); }
 	[[nodiscard]] WeaponKind								GetCurrentEquipWeaponKind();
@@ -163,6 +167,8 @@ private:
 	//static constexpr float kADSSpeed							= 70.0f;				// スコープをのぞき込む速度
 
 private:
+	std::shared_ptr<Subject<Player>>			m_subject;
+
 	std::shared_ptr<PlayerStateController>		m_state;
 	std::shared_ptr<Transform>					m_camera_aim_transform;					// カメラのターゲットとなるトランスフォーム
 	VECTOR										m_current_camera_aim_pos;

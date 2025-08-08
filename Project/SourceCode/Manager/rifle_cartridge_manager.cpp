@@ -126,18 +126,18 @@ void RifleCartridgeManager::Shot(GunBase& gun)
 	}
 }
 
-void RifleCartridgeManager::DeleteBullet(const int obj_handle)
+void RifleCartridgeManager::DeleteBullet(std::shared_ptr<ObjBase> bullet)
 {
 	// w’è‚Ì’eŠÛ‚ğíœ
-	const auto remove_bullet = std::find_if(m_rifle_cartridge[ObjName.BULLET].begin(), m_rifle_cartridge[ObjName.BULLET].end(), [=](const std::shared_ptr<ObjBase> obj)
+	const auto remove_bullet = std::find_if(m_rifle_cartridge[bullet->GetName()].begin(), m_rifle_cartridge[bullet->GetName()].end(), [=](const std::shared_ptr<ObjBase> obj)
 	{
-		return obj->GetObjHandle() == obj_handle;
+		return obj->GetObjHandle() == bullet->GetObjHandle();
 	});
 
-	if(remove_bullet != m_rifle_cartridge[ObjName.BULLET].end())
+	if(remove_bullet != m_rifle_cartridge[bullet->GetName()].end())
 	{
 		ObjectPoolHolder::GetInstance()->GetObjectPool(ObjectPoolName.RIFLE_CARTRIDGE_POOL)->ReturnObj(*remove_bullet);
-		m_rifle_cartridge[ObjName.BULLET].erase(remove_bullet);
+		m_rifle_cartridge[bullet->GetName()].erase(remove_bullet);
 	}
 }
 

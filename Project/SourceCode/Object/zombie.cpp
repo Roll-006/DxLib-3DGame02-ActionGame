@@ -33,7 +33,7 @@ void Zombie::Update()
 	if (!IsActive()) { return; }
 
 	Move();
-	ApplyLookDirToTransform(m_look_dir);
+	ApplyLookDirToRot(m_look_dir);
 
 	//m_animator->Update();
 

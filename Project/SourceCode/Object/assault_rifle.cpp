@@ -47,6 +47,8 @@ void AssaultRifle::LateUpdate()
 	if (!IsActive()) { return; }
 
 	TrackOwnerHand();
+	CalcMuzzleTransform();
+	CalcEjectionPortTransform();
 }
 
 void AssaultRifle::DrawToShadowMap() const
@@ -62,8 +64,8 @@ void AssaultRifle::Draw() const
 
 	m_modeler->Draw();
 
-	DrawSphere3D(GetMuzzlePos(),       2, 8, 0xffffff, 0xffffff, FALSE);
-	DrawSphere3D(GetEjectionPortPos(), 1, 8, 0xffffff, 0xffffff, FALSE);
+	DrawSphere3D(GetMuzzleTransform()->GetPos(CoordinateKind::kWorld), 2, 8, 0xffffff, 0xffffff, FALSE);
+	DrawSphere3D(GetEjectionPortTransform()->GetPos(CoordinateKind::kWorld), 1, 8, 0xffffff, 0xffffff, FALSE);
 
 	//DrawFormatString(300,  0, 0xffffff, "écíe     : %d", m_current_remaining_bullet_num);
 	//DrawFormatString(300, 20, 0xffffff, "ç≈ëÂécíe : %d", m_max_remaining_bullet_num);

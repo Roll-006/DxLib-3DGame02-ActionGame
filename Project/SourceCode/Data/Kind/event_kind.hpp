@@ -2,7 +2,8 @@
 
 enum class EventKind
 {
-	kWeaponShot,		// e‚ª’eŠÛ‚ð”­ŽË‚µ‚½
-	kOnShotBullet,		// ’eŠÛ‚ª”­ŽË‚³‚ê‚½
-	kOnHitBullet,		// ’eŠÛ‚ªÕ“Ë‚µ‚½
+	kWeaponShot,			// e‚ª’eŠÛ‚ð”­ŽË‚µ‚½
+	kRocketLauncherShot,	// ƒƒPƒbƒgƒ‰ƒ“ƒ`ƒƒ[‚ª’eŠÛ‚ð”­ŽË‚µ‚½
+	kOnShotBullet,			// ’eŠÛ‚ª”­ŽË‚³‚ê‚½
+	kOnHitBullet,			// ’eŠÛ‚ªÕ“Ë‚µ‚½
 };

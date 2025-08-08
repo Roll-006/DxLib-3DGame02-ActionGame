@@ -4,7 +4,8 @@ GunBase::GunBase(const std::string& name, const GunKind gun_kind, const HolsterK
 	WeaponBase						(name, WeaponKind::kGun, holster_kind),
 	m_subject						(std::make_shared<Subject<GunBase>>()),
 	m_diffusion_shape				(nullptr),
-	m_muzzle_transform				(nullptr),
+	m_muzzle_transform				(std::make_shared<Transform>()),
+	m_ejection_port_transform		(nullptr),
 	m_aim_dir						(v3d::GetZeroV()),
 	m_target_pos					(v3d::GetZeroV()),
 	m_muzzle_offset_pos				(v3d::GetZeroV()),
@@ -29,7 +30,7 @@ void GunBase::OnShot()
 	RifleCartridgeManager::GetInstance()->Shot(*this);
 	--m_current_remaining_bullet_num;
 
-	const Event<WeaponShotData> event = { EventKind::kWeaponShot, { m_gun_kind, m_muzzle_transform } };
+	const Event<WeaponShotData> event = { EventKind::kWeaponShot, { m_gun_kind, m_muzzle_transform, m_ejection_port_transform } };
 	m_subject->Notify(event);
 }
 
@@ -65,34 +66,12 @@ VECTOR GunBase::GetShotDir() const
 	return v3d::GetNormalizedV(m_target_pos - GetFirstShotPos());
 }
 
-VECTOR GunBase::GetMuzzlePos() const
-{
-	//const auto scale_m = MGetScale(m_offset_scale);
-	//const auto rot_m = math::ConvertEulerAnglesToXYZRotMatrix(m_offset_angle);
-	//const auto pos_m = MGetTranslate(m_offset_pos);
-	//const auto offset_m = scale_m * rot_m * pos_m;
-	//m_transform->SetMatrix(CoordinateKind::kWorld, offset_m * m_transform->GetMatrix(CoordinateKind::kWorld));
-
-	const auto world_m		= m_transform->GetMatrix(CoordinateKind::kWorld);
-	const auto local_pos	= m_transform->GetPos	(CoordinateKind::kLocal);
-
-	return local_pos + VTransformSR(m_muzzle_offset_pos, world_m);
-}
-
-VECTOR GunBase::GetEjectionPortPos() const
-{
-	const auto world_m		= m_transform->GetMatrix(CoordinateKind::kWorld);
-	const auto local_pos	= m_transform->GetPos   (CoordinateKind::kLocal);
-
-	return local_pos + VTransformSR(m_ejection_port_offset_pos, world_m);
-}
-
 VECTOR GunBase::GetFirstShotPos() const
 {
 	// ‘€ìƒLƒƒƒ‰‚Ìê‡‚ÍeŒû‚©‚çƒJƒƒ‰forward‚É“Š‰e
 	// ”ñ‘€ìƒLƒƒƒ‰‚Ìê‡‚Í‚»‚Ì‚Ü‚ÜeŒû
 	Segment s1 = Segment(m_point_on_ray, m_point_on_ray + m_aim_dir);
-	Segment s2 = Segment(m_point_on_ray, GetMuzzlePos());
+	Segment s2 = Segment(m_point_on_ray, GetMuzzleTransform()->GetPos(CoordinateKind::kWorld));
 	VECTOR  v1 = s1.GetEndPos() - s1.GetBeginPos();
 	VECTOR  v2 = s2.GetEndPos() - s2.GetBeginPos();
 	VECTOR  h  = math::GetProjectionVector(v2, v1);
@@ -127,4 +106,27 @@ void GunBase::CalcShotTimer()
 	{
 		m_shot_timer = 0.0f;
 	}
+}
+
+void GunBase::CalcMuzzleTransform()
+{
+	m_muzzle_transform->SetMatrix(CoordinateKind::kWorld, m_transform->GetMatrix(CoordinateKind::kWorld));
+
+	const auto world_m			= m_transform->GetMatrix(CoordinateKind::kWorld);
+	const auto local_pos		= m_transform->GetPos(CoordinateKind::kLocal);
+	const auto pos				= VTransformSR(m_muzzle_offset_pos, world_m);
+
+	m_muzzle_transform->SetPos(CoordinateKind::kWorld, local_pos + pos);
+}
+
+void GunBase::CalcEjectionPortTransform()
+{
+	if (!m_ejection_port_transform) { m_ejection_port_transform = std::make_shared<Transform>(); }
+
+	m_ejection_port_transform->SetMatrix(CoordinateKind::kWorld, m_transform->GetMatrix(CoordinateKind::kWorld));
+
+	const auto world_m			= m_transform->GetMatrix(CoordinateKind::kWorld);
+	const auto local_pos		= m_transform->GetPos(CoordinateKind::kLocal);
+
+	m_ejection_port_transform->SetPos(CoordinateKind::kWorld, local_pos + VTransformSR(m_ejection_port_offset_pos, world_m));
 }

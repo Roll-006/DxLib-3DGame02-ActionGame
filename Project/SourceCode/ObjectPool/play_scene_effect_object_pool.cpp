@@ -27,7 +27,7 @@ PlaySceneEffectObjectPool::PlaySceneEffectObjectPool() :
 	}
 
 	// ÉçÉPÉbÉgíeÇÃíÖíeéûîöî≠
-	data = { ObjName.ROCKET_BOMB_HIT_EXPLOSION_EFFECT, EffectPath.ROCKET_BOMB_HIT_EXPLOSION, 60.0f, 1.0f, true };
+	data = { ObjName.ROCKET_BOMB_HIT_EXPLOSION_EFFECT, EffectPath.ROCKET_BOMB_HIT_EXPLOSION, 30.0f, 0.0f, false };
 	for (int i = 0; i < m_pool_size.at(ObjName.ROCKET_BOMB_HIT_EXPLOSION_EFFECT); ++i)
 	{
 		const auto effect = std::make_shared<Effect>(data);

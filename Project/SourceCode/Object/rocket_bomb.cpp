@@ -44,19 +44,7 @@ void RocketBomb::LateUpdate()
 {
 	if (!IsActive()) { return; }
 
-	if (m_velocity != v3d::GetZeroV())
-	{
-		const auto forward = v3d::GetNormalizedV(m_velocity);
-		if (forward != axis::GetWorldYAxis() && forward != -axis::GetWorldYAxis())
-		{
-			m_transform->SetRot(CoordinateKind::kWorld, forward);
-		}
-	}
-	else
-	{
-		m_transform->SetRot(CoordinateKind::kWorld, m_move_dir);
-	}
-
+	ApplyMoveDirToRot();
 	Move();
 	CalcRayPos();
 }
@@ -85,8 +73,13 @@ void RocketBomb::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	case ColliderKind::kRayCast:
 		if (hit_collider_pair.intersection)
 		{
-			RifleCartridgeManager::GetInstance()->DeleteBullet(this->GetObjHandle());
+			RifleCartridgeManager::GetInstance()->DeleteBullet(shared_from_this());
 			RifleCartridgeManager::GetInstance()->AddHitPos(*hit_collider_pair.intersection);
+
+			const Event<OnHitBulletData> event = { EventKind::kOnHitBullet, { GetName(), *hit_collider_pair.intersection, m_move_dir } };
+			m_subject->Notify(event);
+
+			EffectManager::GetInstance()->ForciblyReturnPoolEffect(GetObjHandle());
 		}
 		break;
 
@@ -102,8 +95,6 @@ void RocketBomb::AddToObjManager()
 	ObjManager		::GetInstance()->AddObj			(shared_from_this());
 	CollisionManager::GetInstance()->AddCollideObj	(physical_obj);
 	PhysicsManager	::GetInstance()->AddPhysicalObj	(physical_obj);
-
-	//PhysicsManager::GetInstance()->AddIgnoreObjGravity(physical_obj->GetObjHandle());
 }
 
 void RocketBomb::OnShot(GunBase& gun)
@@ -117,7 +108,7 @@ void RocketBomb::OnShot(GunBase& gun)
 	m_deceleration	= gun.GetDeceleration();
 	m_range			= gun.GetRange();
 
-	const Event<OnShotBulletData> event = { EventKind::kOnShotBullet, { GetName(), m_transform}};
+	const Event<OnShotBulletData> event = { EventKind::kOnShotBullet, { GetName(), GetObjHandle(), m_transform}};
 	m_subject->Notify(event);
 }
 
@@ -127,6 +118,23 @@ bool RocketBomb::IsReturnPool()
 
 	// ŽË’ö”ÍˆÍ‚ð’´‚¦‚½ê‡‚Í’eŠÛ‚ðƒv[ƒ‹‚É•Ô‹p
 	return distance > m_range ? true : false;
+}
+
+void RocketBomb::ApplyMoveDirToRot()
+{
+	if (m_velocity != v3d::GetZeroV())
+	{
+		const auto forward = v3d::GetNormalizedV(m_velocity);
+
+		if (forward != axis::GetWorldYAxis() && forward != -axis::GetWorldYAxis())
+		{
+			m_transform->SetRot(CoordinateKind::kWorld, forward);
+		}
+	}
+	else
+	{
+		m_transform->SetRot(CoordinateKind::kWorld, m_move_dir);
+	}
 }
 
 void RocketBomb::Move()

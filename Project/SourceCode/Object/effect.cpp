@@ -1,16 +1,17 @@
 #include "effect.hpp"
 
 Effect::Effect(const EffectData& data) :
-	ObjBase					(data.obj_name, ObjTag.EFFECT),
-	m_origin_effect_handle	(HandleKeeper::GetInstance()->LoadHandle(HandleKind::kEffect, data.file_path)),
-	m_playing_effect_handle	(-1),
-	m_owner_transform		(nullptr),
-	m_offset_pos			(v3d::GetZeroV()),
-	m_offset_angle			(v3d::GetZeroV()),
-	m_offset_scale			(VGet(1.0f, 1.0f, 1.0f)),
-	m_data					(data),
-	m_play_count			(0),
-	m_play_wait_timer		(0.0f)
+	ObjBase						(data.obj_name, ObjTag.EFFECT),
+	m_origin_effect_handle		(HandleKeeper::GetInstance()->LoadHandle(HandleKind::kEffect, data.file_path)),
+	m_playing_effect_handle		(-1),
+	m_owner_transform			(nullptr),
+	m_return_pool_trigger_handle(-1),
+	m_offset_pos				(v3d::GetZeroV()),
+	m_offset_angle				(v3d::GetZeroV()),
+	m_offset_scale				(VGet(1.0f, 1.0f, 1.0f)),
+	m_data						(data),
+	m_play_count				(0),
+	m_play_wait_timer			(0.0f)
 {
 
 }
@@ -22,16 +23,21 @@ Effect::~Effect()
 
 void Effect::Init()
 {
-	m_offset_pos		= v3d::GetZeroV();
-	m_offset_angle		= v3d::GetZeroV();
-	m_offset_scale		= VGet(1.0f, 1.0f, 1.0f);
+	m_owner_transform				= nullptr;
+	m_return_pool_trigger_handle	= -1;
 
-	m_play_count		= 0;
-	m_play_wait_timer	= 0.0f;
+	m_offset_pos					= v3d::GetZeroV();
+	m_offset_angle					= v3d::GetZeroV();
+	m_offset_scale					= VGet(1.0f, 1.0f, 1.0f);
 
-	if (m_playing_effect_handle > -1)
+	m_play_count					= 0;
+	m_play_wait_timer				= 0.0f;
+
+	// Effekseer上で無限生成がオンかつループ再生がtrueの場合は
+	// プールから取り出された段階で再生する
+	if (m_playing_effect_handle == -1 && m_data.is_loop)
 	{
-		StopEffekseer3DEffect(m_playing_effect_handle);
+		m_playing_effect_handle = PlayEffekseer3DEffect(m_origin_effect_handle);
 	}
 }
 
@@ -67,6 +73,8 @@ void Effect::AddToObjManager()
 	ObjManager::GetInstance()->AddObj(shared_from_this());
 }
 
+
+#pragma region Attach / Detach
 void Effect::AttachOwnerTransform(const std::shared_ptr<Transform> owner_transform)
 {
 	m_owner_transform = owner_transform;
@@ -77,15 +85,29 @@ void Effect::DetachOwnerTransform()
 	m_owner_transform = nullptr;
 }
 
+void Effect::AddReturnPoolTriggerHandle(const int return_trigger_handle)
+{
+	m_return_pool_trigger_handle = return_trigger_handle;
+}
+
+void Effect::RemoveReturnPoolTriggerHandle()
+{
+	m_return_pool_trigger_handle = -1;
+}
+#pragma endregion
+
+
 bool Effect::IsReturnPool()
 {
-	if (m_playing_effect_handle > -1 && !m_data.is_loop && m_play_count > 0)
+	if (m_playing_effect_handle > -1)
 	{
-		if (IsEffekseer3DEffectPlaying(m_playing_effect_handle) == -1)
+		// ループ再生なしで再生が終了した場合はプールに返却
+		if (!m_data.is_loop && m_play_count > 0 && IsEffekseer3DEffectPlaying(m_playing_effect_handle) == -1)
 		{
 			return true;
 		}
 	}
+
 	return false;
 }
 

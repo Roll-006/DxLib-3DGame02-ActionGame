@@ -118,7 +118,7 @@ void CharacterBase::CreateLandingTrigger(const float sphere_radius)
 #pragma endregion
 
 
-void CharacterBase::ApplyLookDirToTransform(const VECTOR& look_dir)
+void CharacterBase::ApplyLookDirToRot(const VECTOR& look_dir)
 {
 	m_transform->SetRot  (CoordinateKind::kWorld, look_dir);
 }

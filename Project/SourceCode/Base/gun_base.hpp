@@ -39,31 +39,34 @@ public:
 
 
 	#pragma region Getter
-	[[nodiscard]] std::shared_ptr<ShapeBase> GetDiffusionShape() const { return m_diffusion_shape; }
-	[[nodiscard]] VECTOR	GetAimDir()				const { return m_aim_dir; }
-	[[nodiscard]] VECTOR	GetShotDir()			const;
-	[[nodiscard]] VECTOR	GetMuzzlePos()			const;
-	[[nodiscard]] VECTOR	GetEjectionPortPos()	const;
-	[[nodiscard]] float		GetScopeScale()			const { return m_scope_scale; }
-	[[nodiscard]] float		GetRange()				const { return m_range; }
-	[[nodiscard]] float		GetInitialVelocity()	const { return m_initial_velocity; }
-	[[nodiscard]] float		GetDeceleration()		const { return m_deceleration; }
-	[[nodiscard]] GunKind	GetGunKind()			const { return m_gun_kind; }
+	[[nodiscard]] std::shared_ptr<Subject<GunBase>> GetSubject()		const { return m_subject; }
+	[[nodiscard]] std::shared_ptr<ShapeBase> GetDiffusionShape()		const { return m_diffusion_shape; }
+	[[nodiscard]] std::shared_ptr<Transform> GetMuzzleTransform()		const { return m_muzzle_transform; }
+	[[nodiscard]] std::shared_ptr<Transform> GetEjectionPortTransform()	const { return m_ejection_port_transform; }
+	[[nodiscard]] VECTOR	GetAimDir()						const { return m_aim_dir; }
+	[[nodiscard]] VECTOR	GetShotDir()					const;
+	[[nodiscard]] float		GetScopeScale()					const { return m_scope_scale; }
+	[[nodiscard]] float		GetRange()						const { return m_range; }
+	[[nodiscard]] float		GetInitialVelocity()			const { return m_initial_velocity; }
+	[[nodiscard]] float		GetDeceleration()				const { return m_deceleration; }
+	[[nodiscard]] GunKind	GetGunKind()					const { return m_gun_kind; }
 
 	/// @brief ’eŠÛ‚Ì”­ËˆÊ’u‚ğæ“¾
-	[[nodiscard]] VECTOR	GetFirstShotPos()		const;
+	[[nodiscard]] VECTOR	GetFirstShotPos()				const;
 
 	/// @brief c’e”‚ğæ“¾
 	[[nodiscard]] int		GetCurrentRemainingBulletNum()	const { return m_current_remaining_bullet_num; }
 	/// @brief Å‘å‚Ìc’e”‚ğæ“¾
 	[[nodiscard]] int		GetMaxRemainingBulletNum()		const { return m_max_remaining_bullet_num; }
 
-	[[nodiscard]] bool IsShot() const;
-	[[nodiscard]] bool CanReload() const;
+	[[nodiscard]] bool		IsShot() const;
+	[[nodiscard]] bool		CanReload() const;
 	#pragma endregion
 
 protected:
 	void CalcShotTimer();
+	void CalcMuzzleTransform();
+	void CalcEjectionPortTransform();
 
 protected:
 	static constexpr float kDiffusionDistance = 1500.0f;		// ŠgU”ÍˆÍ‚ªˆÊ’u‚·‚éÀ•W‚Ü‚Å‚Ì‹——£
@@ -72,6 +75,7 @@ protected:
 
 	std::shared_ptr<ShapeBase>			m_diffusion_shape;		// ŠgU”ÍˆÍw’è—p‚Ì}Œ`
 	std::shared_ptr<Transform>			m_muzzle_transform;
+	std::shared_ptr<Transform>			m_ejection_port_transform;
 
 	VECTOR  m_aim_dir;						// ‘_‚¤•ûŒü
 	VECTOR  m_target_pos;					// ‘_‚¤ˆÊ’u

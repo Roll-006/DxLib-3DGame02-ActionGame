@@ -22,17 +22,31 @@ public:
 
 	void AddToObjManager()			override;
 
+	#pragma region Attach / Detach
 	void AttachOwnerTransform(const std::shared_ptr<Transform> owner_transform);
 	void DetachOwnerTransform();
 
-	void SetOffsetPos  (const VECTOR& offset_pos)   { m_offset_pos		= offset_pos; }
-	void SetOffsetAngle(const VECTOR& offset_angle) { m_offset_angle	= offset_angle; }
-	void SetOffsetScale(const VECTOR& offset_scale) { m_offset_scale	= offset_scale; }
-	void SetOffsetScale(const float   offset_scale) { m_offset_scale	= VGet(offset_scale, offset_scale, offset_scale); }
+	/// @brief 強制的にプールに返却させるためのハンドルを追加する
+	/// @brief 主にオーナーとしてアタッチしたトランスフォームのオブジェクトハンドルを追加する
+	void AddReturnPoolTriggerHandle(const int return_trigger_handle);
+	void RemoveReturnPoolTriggerHandle();
+	#pragma endregion
 
-	[[nodiscard]] int	GetOriginEffectHandle()	 const	{ return m_origin_effect_handle; }
-	[[nodiscard]] int	GetPlayingEffectHandle() const	{ return m_playing_effect_handle; }
+
+	#pragma region Setter
+	void SetOffsetPos  (const VECTOR& offset_pos)   { m_offset_pos	 = offset_pos; }
+	void SetOffsetAngle(const VECTOR& offset_angle) { m_offset_angle = offset_angle; }
+	void SetOffsetScale(const VECTOR& offset_scale) { m_offset_scale = offset_scale; }
+	void SetOffsetScale(const float   offset_scale) { m_offset_scale = VGet(offset_scale, offset_scale, offset_scale); }
+	#pragma endregion
+
+
+	#pragma region Getter
+	[[nodiscard]] int	GetOriginEffectHandle()		 const	{ return m_origin_effect_handle; }
+	[[nodiscard]] int	GetPlayingEffectHandle()	 const	{ return m_playing_effect_handle; }
+	[[nodiscard]] int   GetReturnPoolTriggerHandle() const	{ return m_return_pool_trigger_handle; }
 	[[nodiscard]] bool	IsReturnPool() override;
+	#pragma endregion
 
 private:
 	void ApplyMatrix()    const;
@@ -41,9 +55,10 @@ private:
 	void PlayEffect();
 
 private:
-	int   m_origin_effect_handle;		// エフェクトハンドル
-	int   m_playing_effect_handle;		// 再生中のエフェクトハンドル
+	int			m_origin_effect_handle;			// エフェクトハンドル
+	int			m_playing_effect_handle;		// 再生中のエフェクトハンドル
 
+	int			m_return_pool_trigger_handle;	// エフェクトを強制的にプールに返却するためのトリガーとするハンドル
 	std::shared_ptr<Transform> m_owner_transform;
 
 	VECTOR		m_offset_pos;
@@ -52,5 +67,5 @@ private:
 
 	EffectData	m_data;
 	int			m_play_count;
-	float		m_play_wait_timer;			// 再生開始を待つ時間を計測
+	float		m_play_wait_timer;				// 再生開始を待つ時間を計測
 };

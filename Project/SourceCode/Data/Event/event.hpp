@@ -4,6 +4,7 @@
 #include "../Kind/event_kind.hpp"
 
 #include "weapon_shot_data.hpp"
+#include "rocket_launcher_shot_data.hpp"
 #include "on_shot_bullet_data.hpp"
 #include "on_hit_bullet.hpp"
 

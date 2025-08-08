@@ -30,6 +30,8 @@ void player_state::Shot::LateUpdate(Player* obj)
 	gun->SetAimDir  (camera->GetTransform()->GetForward	(CoordinateKind::kWorld));
 	gun->SetPosOnRay(camera->GetTransform()->GetPos		(CoordinateKind::kWorld));
 	gun->OnShot();
+
+	obj->NotifyShotRocketLauncher();
 }
 
 void player_state::Shot::Enter(Player* obj)
