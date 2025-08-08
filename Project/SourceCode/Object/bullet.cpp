@@ -82,7 +82,7 @@ void Bullet::AddToObjManager()
 	PhysicsManager	::GetInstance()->AddPhysicalObj(std::dynamic_pointer_cast<PhysicalObjBase>(shared_from_this()));
 }
 
-void Bullet::OnShot(const GunBase& gun)
+void Bullet::OnShot(GunBase& gun)
 {
 	m_first_pos		= gun.GetFirstShotPos();
 	m_transform->SetPos(CoordinateKind::kWorld, m_first_pos);
@@ -92,7 +92,8 @@ void Bullet::OnShot(const GunBase& gun)
 	m_deceleration	= gun.GetDeceleration();
 	m_range			= gun.GetRange();
 
-	m_subject->Notify(*this, EventKind::kShot);
+	const Event<OnShotBulletData> event = { EventKind::kOnShotBullet, { GetName(), m_transform} };
+	m_subject->Notify(event);
 }
 
 bool Bullet::IsReturnPool()

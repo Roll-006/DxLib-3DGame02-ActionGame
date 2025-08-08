@@ -204,6 +204,11 @@ VECTOR Transform::GetScale(const CoordinateKind coord_kind)
 	return VECTOR(angle_x, angle_y, angle_z);
 }
 
+MATRIX Transform::GetScaleMatrix(const CoordinateKind coord_kind)
+{
+	return MGetScale(GetScale(coord_kind));
+}
+
 VECTOR Transform::GetRight(const CoordinateKind coord_kind)
 {
 	return GetAxes(coord_kind).x_axis;

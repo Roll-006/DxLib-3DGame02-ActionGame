@@ -1,11 +1,10 @@
 #pragma once
-#include "../Base/obj_base.hpp"
-#include "../Data/Kind/event_kind.hpp"
+#include "../Data/Event/event.hpp"
 
 class IObserver abstract
 {
 public:
 	virtual ~IObserver() = default;
 
-	virtual void OnNotify(ObjBase& obj, const EventKind event_kind) abstract;
+	virtual void OnNotify(const IEvent& event) abstract;
 };

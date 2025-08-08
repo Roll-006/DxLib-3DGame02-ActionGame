@@ -26,7 +26,7 @@ public:
 	void AddToObjManager()			override;
 	
 	/// @brief ’eŠÛ‚ª”­ŽË‚³‚ê‚½
-	void OnShot(const GunBase& gun) override;
+	void OnShot(GunBase& gun) override;
 
 	[[nodiscard]] bool IsReturnPool() override;
 

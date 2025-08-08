@@ -27,7 +27,7 @@ public:
 		}
 	}
 
-	void OnNotify(ObjBase& obj, const EventKind event_kind) override;
+	void OnNotify(const IEvent& event) override;
 
 private:
 	EffectManager();
@@ -38,9 +38,9 @@ private:
 
 	#pragma region エフェクトの生成
 	/// @brief 銃エフェクト
-	void CreateGunEffect	(ObjBase& obj, const EventKind event_kind);
+	void CreateGunEffect	(ObjBase& obj);
 	/// @brief 弾丸エフェクト
-	void CreateBulletEffect	(ObjBase& obj, const EventKind event_kind);
+	void CreateBulletEffect	(ObjBase& obj);
 	#pragma endregion
 
 private:

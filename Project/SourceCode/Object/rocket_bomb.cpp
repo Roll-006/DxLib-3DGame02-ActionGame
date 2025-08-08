@@ -75,8 +75,6 @@ void RocketBomb::Draw() const
 	m_modeler->Draw();
 
 	DrawSphere3D(m_transform->GetPos(CoordinateKind::kWorld), 2, 8, 0xffffff, 0xffffff, TRUE);
-	
-	DrawFormatString(0,  80, 0xffffff, "m_fall_speed : %f", m_fall_speed);
 	//std::dynamic_pointer_cast<Segment>(GetCollider(ColliderKind::kRayCast)->GetShape())->Draw(false, 0, 0xffffff);
 }
 
@@ -108,7 +106,7 @@ void RocketBomb::AddToObjManager()
 	//PhysicsManager::GetInstance()->AddIgnoreObjGravity(physical_obj->GetObjHandle());
 }
 
-void RocketBomb::OnShot(const GunBase& gun)
+void RocketBomb::OnShot(GunBase& gun)
 {
 	m_transform->SetRot(CoordinateKind::kWorld, MGetIdent());
 	m_first_pos		= gun.GetFirstShotPos();
@@ -119,7 +117,8 @@ void RocketBomb::OnShot(const GunBase& gun)
 	m_deceleration	= gun.GetDeceleration();
 	m_range			= gun.GetRange();
 
-	m_subject->Notify(*this, EventKind::kShot);
+	const Event<OnShotBulletData> event = { EventKind::kOnShotBullet, { GetName(), m_transform}};
+	m_subject->Notify(event);
 }
 
 bool RocketBomb::IsReturnPool()

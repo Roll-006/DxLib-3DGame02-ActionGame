@@ -304,6 +304,12 @@
     <ClInclude Include="SourceCode\Data\collider_pair_data.hpp" />
     <ClInclude Include="SourceCode\Data\CSV\csv.hpp" />
     <ClInclude Include="SourceCode\Data\effect_data.hpp" />
+    <ClInclude Include="SourceCode\Data\Event\event (2).hpp" />
+    <ClInclude Include="SourceCode\Data\Event\event (3).hpp" />
+    <ClInclude Include="SourceCode\Data\Event\on_hit_bullet.hpp" />
+    <ClInclude Include="SourceCode\Data\Event\on_shot_bullet_data.hpp" />
+    <ClInclude Include="SourceCode\Data\Event\weapon_shot_data.hpp" />
+    <ClInclude Include="SourceCode\Data\Event\event.hpp" />
     <ClInclude Include="SourceCode\Data\IncludeList\input.hpp" />
     <ClInclude Include="SourceCode\Data\IncludeList\shape.hpp" />
     <ClInclude Include="SourceCode\Data\IncludeList\vector.hpp" />
@@ -350,6 +356,7 @@
     <ClInclude Include="SourceCode\Handle\handle_keeper.hpp" />
     <ClInclude Include="SourceCode\Handle\state_handler.hpp" />
     <ClInclude Include="SourceCode\Input\input_checker.hpp" />
+    <ClInclude Include="SourceCode\Interface\i_event.hpp" />
     <ClInclude Include="SourceCode\Interface\i_bullet.hpp" />
     <ClInclude Include="SourceCode\Interface\i_item.hpp" />
     <ClInclude Include="SourceCode\Interface\i_observer.hpp" />

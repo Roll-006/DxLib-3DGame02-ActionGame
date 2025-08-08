@@ -1,0 +1,10 @@
+#pragma once
+#include "../Kind/gun_kind.hpp"
+#include "../../Part/transform.hpp"
+
+/// @brief •Ší‚ª’eŠÛ‚ğ”­Ë‚µ‚½
+struct WeaponShotData
+{
+	GunKind						gun_kind			= static_cast<GunKind>(0);
+	std::shared_ptr<Transform>	muzzle_transform	= nullptr;
+};

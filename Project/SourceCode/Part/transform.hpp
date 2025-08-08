@@ -44,6 +44,7 @@ public:
 	[[nodiscard]] MATRIX	 GetRotMatrix	(const CoordinateKind coord_kind);
 	[[nodiscard]] Quaternion GetQuaternion	(const CoordinateKind coord_kind);
 	[[nodiscard]] VECTOR	 GetScale		(const CoordinateKind coord_kind);
+	[[nodiscard]] MATRIX	 GetScaleMatrix	(const CoordinateKind coord_kind);
 	[[nodiscard]] Axes		 GetAxes		(const CoordinateKind coord_kind);
 	[[nodiscard]] VECTOR	 GetRight		(const CoordinateKind coord_kind);
 	[[nodiscard]] VECTOR	 GetUp			(const CoordinateKind coord_kind);

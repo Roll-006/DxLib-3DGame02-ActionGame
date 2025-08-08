@@ -2,8 +2,7 @@
 
 enum class EventKind
 {
-	kShot,					// 銃を撃った
-	kHitBulletToObj,		// 弾丸がオブジェクトに衝突した
-	kHitBulletToEnemy,		// 弾丸が敵に衝突した
-	kShotRocketLauncher,	// ロケットランチャーが発射された
+	kWeaponShot,		// 銃が弾丸を発射した
+	kOnShotBullet,		// 弾丸が発射された
+	kOnHitBullet,		// 弾丸が衝突した
 };

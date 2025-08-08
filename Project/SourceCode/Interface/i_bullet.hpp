@@ -6,7 +6,7 @@ class IBullet abstract
 public:
 	virtual ~IBullet() = default;
 
-	virtual void OnShot(const GunBase& gun) abstract;
+	virtual void OnShot(GunBase& gun) abstract;
 
 protected:
 	virtual void CalcRayPos() abstract;

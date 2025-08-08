@@ -25,19 +25,10 @@ public:
 	void AttachOwnerTransform(const std::shared_ptr<Transform> owner_transform);
 	void DetachOwnerTransform();
 
-	void SetOffset(const VECTOR& offset_pos, const VECTOR& offset_angle, const VECTOR& offset_scale)
-	{
-		m_offset_pos	= offset_pos;
-		m_offset_angle	= offset_angle;
-		m_offset_scale	= offset_scale;
-	}
-
-	void SetOffset(const VECTOR& offset_pos, const VECTOR& offset_angle, const float offset_scale)
-	{
-		m_offset_pos	= offset_pos;
-		m_offset_angle	= offset_angle;
-		m_offset_scale	= VGet(offset_scale, offset_scale, offset_scale);
-	}
+	void SetOffsetPos  (const VECTOR& offset_pos)   { m_offset_pos		= offset_pos; }
+	void SetOffsetAngle(const VECTOR& offset_angle) { m_offset_angle	= offset_angle; }
+	void SetOffsetScale(const VECTOR& offset_scale) { m_offset_scale	= offset_scale; }
+	void SetOffsetScale(const float   offset_scale) { m_offset_scale	= VGet(offset_scale, offset_scale, offset_scale); }
 
 	[[nodiscard]] int	GetOriginEffectHandle()	 const	{ return m_origin_effect_handle; }
 	[[nodiscard]] int	GetPlayingEffectHandle() const	{ return m_playing_effect_handle; }

@@ -25,11 +25,11 @@ public:
 	}
 
 private:
-	void Notify(ObjBase& obj, const EventKind event_kind)
+	void Notify(const IEvent& event)
 	{
 		for (const auto& observer : m_observers)
 		{
-			observer->OnNotify(obj, event_kind);
+			observer->OnNotify(event);
 		}
 	}
 

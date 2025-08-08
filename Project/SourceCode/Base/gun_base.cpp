@@ -4,6 +4,7 @@ GunBase::GunBase(const std::string& name, const GunKind gun_kind, const HolsterK
 	WeaponBase						(name, WeaponKind::kGun, holster_kind),
 	m_subject						(std::make_shared<Subject<GunBase>>()),
 	m_diffusion_shape				(nullptr),
+	m_muzzle_transform				(nullptr),
 	m_aim_dir						(v3d::GetZeroV()),
 	m_target_pos					(v3d::GetZeroV()),
 	m_muzzle_offset_pos				(v3d::GetZeroV()),
@@ -28,7 +29,8 @@ void GunBase::OnShot()
 	RifleCartridgeManager::GetInstance()->Shot(*this);
 	--m_current_remaining_bullet_num;
 
-	m_subject->Notify(*this, EventKind::kShot);
+	const Event<WeaponShotData> event = { EventKind::kWeaponShot, { m_gun_kind, m_muzzle_transform } };
+	m_subject->Notify(event);
 }
 
 int GunBase::OnReload(const int have_bullets)
@@ -65,16 +67,22 @@ VECTOR GunBase::GetShotDir() const
 
 VECTOR GunBase::GetMuzzlePos() const
 {
+	//const auto scale_m = MGetScale(m_offset_scale);
+	//const auto rot_m = math::ConvertEulerAnglesToXYZRotMatrix(m_offset_angle);
+	//const auto pos_m = MGetTranslate(m_offset_pos);
+	//const auto offset_m = scale_m * rot_m * pos_m;
+	//m_transform->SetMatrix(CoordinateKind::kWorld, offset_m * m_transform->GetMatrix(CoordinateKind::kWorld));
+
 	const auto world_m		= m_transform->GetMatrix(CoordinateKind::kWorld);
-	const auto local_pos	= m_transform->GetPos   (CoordinateKind::kLocal);
+	const auto local_pos	= m_transform->GetPos	(CoordinateKind::kLocal);
 
 	return local_pos + VTransformSR(m_muzzle_offset_pos, world_m);
 }
 
 VECTOR GunBase::GetEjectionPortPos() const
 {
-	const auto world_m   = m_transform->GetMatrix(CoordinateKind::kWorld);
-	const auto local_pos = m_transform->GetPos   (CoordinateKind::kLocal);
+	const auto world_m		= m_transform->GetMatrix(CoordinateKind::kWorld);
+	const auto local_pos	= m_transform->GetPos   (CoordinateKind::kLocal);
 
 	return local_pos + VTransformSR(m_ejection_port_offset_pos, world_m);
 }

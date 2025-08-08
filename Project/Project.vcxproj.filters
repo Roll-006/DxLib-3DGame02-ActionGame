@@ -937,6 +937,27 @@
     <ClInclude Include="SourceCode\Data\effect_data.hpp">
       <Filter>Data</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\Data\Event\event (2).hpp">
+      <Filter>Data\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\Event\event (3).hpp">
+      <Filter>Data\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\Event\on_hit_bullet.hpp">
+      <Filter>Data\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\Event\on_shot_bullet_data.hpp">
+      <Filter>Data\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\Event\weapon_shot_data.hpp">
+      <Filter>Data\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\Event\event.hpp">
+      <Filter>Data\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Interface\i_event.hpp">
+      <Filter>Interface</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Manager">
@@ -1052,6 +1073,9 @@
     </Filter>
     <Filter Include="Drawer">
       <UniqueIdentifier>{0ad1cdd1-f9f1-4f0c-8cec-bf613a662d11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Data\Event">
+      <UniqueIdentifier>{f5b974f8-f979-4048-b2ca-49cde3426995}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

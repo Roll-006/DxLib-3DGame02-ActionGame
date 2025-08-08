@@ -71,6 +71,7 @@ protected:
 	std::shared_ptr<Subject<GunBase>>	m_subject;
 
 	std::shared_ptr<ShapeBase>			m_diffusion_shape;		// ŠgU”ÍˆÍw’è—p‚Ì}Œ`
+	std::shared_ptr<Transform>			m_muzzle_transform;
 
 	VECTOR  m_aim_dir;						// ‘_‚¤•ûŒü
 	VECTOR  m_target_pos;					// ‘_‚¤ˆÊ’u
