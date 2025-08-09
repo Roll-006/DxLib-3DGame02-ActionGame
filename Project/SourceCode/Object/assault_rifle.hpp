@@ -33,8 +33,8 @@ private:
 	static constexpr VECTOR kEjectionPortOffsetPos  = { 2.0f, 10.0f, 0.15f };
 	static constexpr float  kScopeScale				= 2.0f;
 	static constexpr float  kRange					= 2000.0f;
-	static constexpr float  kInitialVelocity		= 140.0f;
-	static constexpr float  kDeceleration			= 100.0f;
+	static constexpr float  kInitialVelocity		= 2500.0f;
+	static constexpr float  kDeceleration			= 0.1f;
 	static constexpr float  kShotIntervalTime		= 0.1f;
 
 	static constexpr float  kDiffusionRadius		= 50.0f;		// ŠgŽU”ÍˆÍ‚Ì”¼Œa

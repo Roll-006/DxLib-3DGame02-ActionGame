@@ -2,7 +2,6 @@
 
 PhysicalObjBase::PhysicalObjBase(const std::string& name, const std::string& tag, MassKind mass_level_kind) :
 	ObjBase			(name, tag),
-	m_fall_speed	(0.0f),
 	m_fall_velocity	(v3d::GetZeroV()),
 	m_velocity		(v3d::GetZeroV()),
 	m_is_landing	(false),
@@ -26,18 +25,11 @@ void PhysicalObjBase::ApplyGravity(const float gravity_acceleration, const float
 	// ’n–Ê‚É‚¢‚éê‡‚Íd—Í‚ð—^‚¦‚È‚¢
 	if (m_is_landing)
 	{
-		m_fall_speed = m_fall_velocity.y = 0.0f;
+		m_fall_velocity.y = 0.0f;
 	}
 	else
 	{
-		const auto time_manager = GameTimeManager::GetInstance();
-
-		const float delta_time = GetName() == ObjName.PLAYER
-			? time_manager->GetDeltaTime(TimeScale::LayerKind::kPlayer)
-			: time_manager->GetDeltaTime(TimeScale::LayerKind::kWorld);
-
-		math::Decrease(m_fall_speed, gravity_acceleration * delta_time, -max_gravity);
-		m_fall_velocity.y += m_fall_speed;
+		math::Decrease(m_fall_velocity.y, gravity_acceleration * GetDeltaTime(), -max_gravity);
 	}
 }
 

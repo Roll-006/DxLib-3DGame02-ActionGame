@@ -77,10 +77,9 @@ private:
 	void PushBackCapsuleAndTarget(const std::shared_ptr<PhysicalObjBase> low_priority_obj, const std::shared_ptr<PhysicalObjBase> high_priority_obj);
 	#pragma endregion
 
-
 private:
-	static constexpr float kGravityAcceleration				= 0.2f;		// 重力加速度(デルタタイム適用前)
-	static constexpr float kMaxGravity						= 0.4f;		// 最大重力(デルタタイム適用後の最大値)
+	static constexpr float kGravityAcceleration				= 100.0f;		// 重力加速度(デルタタイム適用前)
+	static constexpr float kMaxGravity						= 100.0f;	// 最大重力(デルタタイム適用後の最大値)
 	static constexpr float kSlopeDifficultyAngleThreshold	= 50.0f;	// 登るのが困難になり始める角度
 	static constexpr float kMaxSlopeAngle					= 75.0f;	// 登れる角度の最大値
 

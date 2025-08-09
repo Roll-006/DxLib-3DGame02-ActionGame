@@ -21,6 +21,8 @@ public:
 
 	void AddToObjManager()			override;
 
+	[[nodiscard]] float	GetDeltaTime() const override;
+
 private:
 	/// @brief Œ©‚é•ûŒü‚ğİ’è
 	void SetAim();

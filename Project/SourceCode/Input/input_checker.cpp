@@ -221,7 +221,7 @@ void InputChecker::CountInputTimeAll()
 		if (data.is_input)
 		{
 			const auto time_manager = GameTimeManager::GetInstance();
-			data.input_time += time_manager->GetDeltaTime(TimeScale::LayerKind::kNoneScale);
+			data.input_time += time_manager->GetDeltaTime(TimeScaleController::LayerKind::kNoneScale);
 			continue;
 		}
 		data.input_time = 0.0f;

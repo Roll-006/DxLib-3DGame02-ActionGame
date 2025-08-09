@@ -29,7 +29,8 @@ public:
 	/// @brief ’eŠÛ‚ª”­Ë‚³‚ê‚½
 	void OnShot(GunBase& gun)		override;
 
-	[[nodiscard]] bool IsReturnPool() override;
+	[[nodiscard]] float	GetDeltaTime() const override;
+	[[nodiscard]] bool  IsReturnPool() override;
 
 private:
 	/// @brief ˆÚ“®•ûŒü‚ğp¨‚É“K—p‚·‚é

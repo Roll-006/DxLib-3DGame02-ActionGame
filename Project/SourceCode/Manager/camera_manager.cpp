@@ -230,7 +230,7 @@ void CameraManager::CalcBlendResuletTransform()
 
 	// トランスフォーム間の補間
 	const auto time_manager = GameTimeManager::GetInstance();
-	math::Increase(m_blend_timer, time_manager->GetDeltaTime(TimeScale::LayerKind::kCamera), kBlendTime, false);
+	math::Increase(m_blend_timer, time_manager->GetDeltaTime(TimeScaleController::LayerKind::kCamera), kBlendTime, false);
 	m_blend_coefficient			= math::GetUnitValue<float, float>(0.0f, kBlendTime, m_blend_timer);
 	auto blended_transform		= math::GetLerpTransform(*m_blend_origin_transform, *m_blend_target_transform, m_blend_coefficient, true, false, true);
 	m_blend_result_transform	= std::make_shared<Transform>(blended_transform);

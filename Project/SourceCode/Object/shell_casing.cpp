@@ -127,7 +127,7 @@ bool ShellCasing::IsReturnPool()
 
 void ShellCasing::Move()
 {
-	math::Decrease(m_move_speed, kDeceleration * GetDeltaTime(), 0.0f);
+	math::Decrease(m_move_speed, kDeceleration, 0.0f);
 	m_velocity = m_move_dir * m_move_speed;
 }
 
@@ -149,6 +149,6 @@ float ShellCasing::GetDeltaTime() const
 	const auto time_manager = GameTimeManager::GetInstance();
 
 	return m_time_scale_owner_name == ObjName.PLAYER
-		? time_manager->GetDeltaTime(TimeScale::LayerKind::kPlayer)
-		: time_manager->GetDeltaTime(TimeScale::LayerKind::kEffect);
+		? time_manager->GetDeltaTime(TimeScaleController::LayerKind::kPlayer)
+		: time_manager->GetDeltaTime(TimeScaleController::LayerKind::kWorld);
 }

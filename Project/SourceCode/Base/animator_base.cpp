@@ -314,6 +314,6 @@ float AnimatorBase::GetDeltaTime() const
 	const auto time_manager = GameTimeManager::GetInstance();
 
 	return m_obj_name == ObjName.PLAYER
-		? time_manager->GetDeltaTime(TimeScale::LayerKind::kPlayer)
-		: time_manager->GetDeltaTime(TimeScale::LayerKind::kWorld);
+		? time_manager->GetDeltaTime(TimeScaleController::LayerKind::kPlayer)
+		: time_manager->GetDeltaTime(TimeScaleController::LayerKind::kWorld);
 }

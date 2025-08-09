@@ -23,6 +23,7 @@ public:
 
 	void AddToObjManager()			override;
 
+	[[nodiscard]] float	GetDeltaTime() const override;
 	[[nodiscard]] std::shared_ptr<Modeler> GetModeler() const { return m_modeler; }
 
 private:

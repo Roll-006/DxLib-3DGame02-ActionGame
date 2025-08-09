@@ -33,6 +33,12 @@ void VirtualCameraBase::DetachTarget()
 	m_aim ->DetachTarget();
 }
 
+float VirtualCameraBase::GetDeltaTime() const
+{
+	const auto time_manager = GameTimeManager::GetInstance();
+	return time_manager->GetDeltaTime(TimeScaleController::LayerKind::kCamera);
+}
+
 void VirtualCameraBase::CalcTransform()
 {
 	m_body->CalcPos();

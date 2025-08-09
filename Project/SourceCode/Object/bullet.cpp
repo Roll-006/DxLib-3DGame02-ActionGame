@@ -28,7 +28,6 @@ void Bullet::Init()
 	m_time_scale_owner_name = "";
 	m_velocity				= v3d::GetZeroV();
 	m_fall_velocity			= v3d::GetZeroV();
-	m_fall_speed			= 0.0f;
 }
 
 void Bullet::Update()
@@ -102,6 +101,15 @@ void Bullet::OnShot(GunBase& gun)
 	m_subject->Notify(event);
 }
 
+float Bullet::GetDeltaTime() const
+{
+	const auto time_manager = GameTimeManager::GetInstance();
+
+	return m_time_scale_owner_name == ObjName.PLAYER
+		? time_manager->GetDeltaTime(TimeScaleController::LayerKind::kPlayer)
+		: time_manager->GetDeltaTime(TimeScaleController::LayerKind::kWorld);
+}
+
 bool Bullet::IsReturnPool()
 {
 	float distance = VSize(m_transform->GetPos(CoordinateKind::kWorld) - m_first_pos);
@@ -112,12 +120,7 @@ bool Bullet::IsReturnPool()
 
 void Bullet::Move()
 {
-	const auto time_manager = GameTimeManager::GetInstance();
-	const float delta_time = m_time_scale_owner_name == ObjName.PLAYER
-		? time_manager->GetDeltaTime(TimeScale::LayerKind::kPlayer)
-		: time_manager->GetDeltaTime(TimeScale::LayerKind::kWorld);
-
-	math::Decrease(m_move_speed, m_deceleration * delta_time, 0.0f);
+	math::Decrease(m_move_speed, m_deceleration, 0.0f);
 	m_velocity = m_move_dir * m_move_speed;
 }
 

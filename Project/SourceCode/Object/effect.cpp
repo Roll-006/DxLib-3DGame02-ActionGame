@@ -175,6 +175,6 @@ float Effect::GetDeltaTime() const
 	const auto time_manager = GameTimeManager::GetInstance();
 
 	return m_time_scale_owner_name == ObjName.PLAYER
-		? time_manager->GetDeltaTime(TimeScale::LayerKind::kPlayer)
-		: time_manager->GetDeltaTime(TimeScale::LayerKind::kEffect);
+		? time_manager->GetDeltaTime(TimeScaleController::LayerKind::kPlayer)
+		: time_manager->GetDeltaTime(TimeScaleController::LayerKind::kEffect);
 }

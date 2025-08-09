@@ -30,6 +30,7 @@ public:
 	/// @brief 持ち主のホルスター(武器収納位置)を追尾する
 	void TrackOwnerHolster();
 
+	[[nodiscard]] float						GetDeltaTime()	 const override;
 	[[nodiscard]] std::shared_ptr<Modeler>	GetModeler()	 const			{ return m_modeler; }
 	[[nodiscard]] std::string				GetOwnerName()	 const			{ return m_owner_name; }
 	[[nodiscard]] ItemKind					GetItemKind()	 const override	{ return m_item_kind; }

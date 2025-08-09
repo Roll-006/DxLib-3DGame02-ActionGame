@@ -160,7 +160,7 @@
     <ClCompile Include="SourceCode\GameSystem\game_system_setter.cpp" />
     <ClCompile Include="SourceCode\GameTime\fps.cpp" />
     <ClCompile Include="SourceCode\GameTime\game_time_manager.cpp" />
-    <ClCompile Include="SourceCode\GameTime\time_scale.cpp" />
+    <ClCompile Include="SourceCode\GameTime\time_scale_controller.cpp" />
     <ClCompile Include="SourceCode\Handle\handle_keeper.cpp" />
     <ClCompile Include="SourceCode\Input\input_checker.cpp" />
     <ClCompile Include="SourceCode\main.cpp" />
@@ -355,7 +355,7 @@
     <ClInclude Include="SourceCode\GameSystem\game_system_setter.hpp" />
     <ClInclude Include="SourceCode\GameTime\fps.hpp" />
     <ClInclude Include="SourceCode\GameTime\game_time_manager.hpp" />
-    <ClInclude Include="SourceCode\GameTime\time_scale.hpp" />
+    <ClInclude Include="SourceCode\GameTime\time_scale_controller.hpp" />
     <ClInclude Include="SourceCode\Handle\handle_keeper.hpp" />
     <ClInclude Include="SourceCode\Handle\state_handler.hpp" />
     <ClInclude Include="SourceCode\Input\input_checker.hpp" />

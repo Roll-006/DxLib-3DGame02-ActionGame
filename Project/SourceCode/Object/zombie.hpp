@@ -15,6 +15,8 @@ public:
 
 	void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) override;
 
+	[[nodiscard]] float	GetDeltaTime() const override;
+
 private:
 	void Move();
 

@@ -16,6 +16,8 @@ public:
 
 	void AddToObjManager()			override;
 
+	[[nodiscard]] float	GetDeltaTime() const override;
+
 private:
 
 };

@@ -100,8 +100,7 @@ void GunBase::CalcShotTimer()
 	// TODO : 連射が可能なため後に仕様変更
 	if (m_on_pull_trigger)
 	{
-		const auto time_manager = GameTimeManager::GetInstance();
-		math::Increase(m_shot_timer, time_manager->GetDeltaTime(TimeScale::LayerKind::kPlayer), m_shot_interval_time, true);
+		math::Increase(m_shot_timer, GetDeltaTime(), m_shot_interval_time, true);
 	}
 	else
 	{

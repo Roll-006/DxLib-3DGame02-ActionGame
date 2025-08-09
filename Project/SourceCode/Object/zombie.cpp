@@ -89,6 +89,12 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	}
 }
 
+float Zombie::GetDeltaTime() const
+{
+	const auto time_manager = GameTimeManager::GetInstance();
+	return time_manager->GetDeltaTime(TimeScaleController::LayerKind::kWorld);
+}
+
 void Zombie::Move()
 {
 	m_velocity = v3d::GetZeroV();

@@ -223,7 +223,7 @@ void RotControlVirtualCamera::CalcInputAngle()
 	CalcInitAim();
 
 	const auto time_manager = GameTimeManager::GetInstance();
-	m_data.velocity *= time_manager->GetDeltaTime(TimeScale::LayerKind::kCamera);
+	m_data.velocity *= time_manager->GetDeltaTime(TimeScaleController::LayerKind::kCamera);
 
 	// 角度を取得
 	const auto command = CommandHandler::GetInstance();
@@ -257,7 +257,7 @@ void RotControlVirtualCamera::CalcInitAim()
 
 	// 目的地に遠いほど速く移動させる
 	const auto time_manager = GameTimeManager::GetInstance();
-	m_data.input_angle[TimeKind::kCurrent] += dir * distance * m_data.init_angle_speed * time_manager->GetDeltaTime(TimeScale::LayerKind::kCamera);
+	m_data.input_angle[TimeKind::kCurrent] += dir * distance * m_data.init_angle_speed * time_manager->GetDeltaTime(TimeScaleController::LayerKind::kCamera);
 
 	// 終了判定
 	distance = VSize(m_data.input_angle[TimeKind::kNext] - m_data.input_angle[TimeKind::kCurrent]);

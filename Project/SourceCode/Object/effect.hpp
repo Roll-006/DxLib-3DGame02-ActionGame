@@ -62,7 +62,7 @@ private:
 
 	void PlayEffect();
 
-	[[nodiscard]] float GetDeltaTime() const;
+	[[nodiscard]] float	GetDeltaTime() const override;
 
 private:
 	int			m_origin_effect_handle;			// エフェクトハンドル

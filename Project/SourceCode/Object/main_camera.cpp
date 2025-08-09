@@ -70,6 +70,12 @@ void MainCamera::AddToObjManager()
 	CameraManager::GetInstance()->SetMainCamera(std::static_pointer_cast<MainCamera>(shared_from_this()));
 }
 
+float MainCamera::GetDeltaTime() const
+{
+	const auto time_manager = GameTimeManager::GetInstance();
+	return time_manager->GetDeltaTime(TimeScaleController::LayerKind::kCamera);
+}
+
 void MainCamera::SetAim()
 {
 	const VECTOR pos		= m_transform->GetPos(CoordinateKind::kWorld);

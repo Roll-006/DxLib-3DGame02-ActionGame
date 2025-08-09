@@ -100,6 +100,15 @@ void WeaponBase::TrackOwnerHolster()
 	m_transform->SetScale	(CoordinateKind::kWorld, m_attach_offset_scale);
 }
 
+float WeaponBase::GetDeltaTime() const
+{
+	const auto time_manager = GameTimeManager::GetInstance();
+
+	return m_owner_name == ObjName.PLAYER
+		? time_manager->GetDeltaTime(TimeScaleController::LayerKind::kPlayer)
+		: time_manager->GetDeltaTime(TimeScaleController::LayerKind::kWorld);
+}
+
 void WeaponBase::SetOffset(
 	const VECTOR& hold_pos,
 	const VECTOR& hold_angle,

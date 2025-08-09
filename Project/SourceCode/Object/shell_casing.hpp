@@ -33,7 +33,7 @@ private:
 
 	void CalcColliderPos();
 
-	[[nodiscard]] float GetDeltaTime() const;
+	[[nodiscard]] float	GetDeltaTime() const override;
 
 private:
 	static constexpr VECTOR kBasicAngle					= { 90.0f * math::kDegToRad, 0.0f, 0.0f };
@@ -41,8 +41,8 @@ private:
 
 	static constexpr float  kDisappearTime				= 3.0f;						// Á‚¦‚é‚Ü‚Å‚ÌŠÔ
 	static constexpr VECTOR kLocalFirstMoveDir			= { 1.0f, 1.0f, 0.0f };		// ‰Šú‚ÌˆÚ“®•ûŒü
-	static constexpr float  kInitialVelocity			= 1.7f;						// ‰‘¬
-	static constexpr float  kDeceleration				= 1.5f;						// Œ¸‘¬“x
+	static constexpr float  kInitialVelocity			= 100.0f;					// ‰‘¬
+	static constexpr float  kDeceleration				= 2.0f;						// Œ¸‘¬“x
 
 	static constexpr float  kColliderRadius				= 0.9f;
 	static constexpr float  kLandingTriggerRadius		= 0.9f;

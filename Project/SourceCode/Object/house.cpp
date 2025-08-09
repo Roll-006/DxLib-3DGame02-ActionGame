@@ -57,3 +57,9 @@ void House::AddToObjManager()
 	CollisionManager::GetInstance()->AddCollideObj	(std::dynamic_pointer_cast<PhysicalObjBase>(shared_from_this()));
 	PhysicsManager	::GetInstance()->AddPhysicalObj	(std::dynamic_pointer_cast<PhysicalObjBase>(shared_from_this()));
 }
+
+float House::GetDeltaTime() const
+{
+	const auto time_manager = GameTimeManager::GetInstance();
+	return time_manager->GetDeltaTime(TimeScaleController::LayerKind::kWorld);
+}

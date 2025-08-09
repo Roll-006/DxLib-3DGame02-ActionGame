@@ -38,8 +38,8 @@ private:
 	static constexpr VECTOR kExhaustVentOffsetPos	= { 0.0f, 0.0f, -70.0f };
 	static constexpr float  kScopeScale				= 2.0f;
 	static constexpr float  kRange					= 5000.0f;
-	static constexpr float  kInitialVelocity		= 40.0f;
-	static constexpr float  kDeceleration			= 10.0f;
+	static constexpr float  kInitialVelocity		= 1500.0f;
+	static constexpr float  kDeceleration			= 0.2f;
 	static constexpr float  kShotIntervalTime		= 1.5f;
 
 	static constexpr float  kDiffusionRadius		= 10.0f;		// ŠgŽU”ÍˆÍ‚Ì”¼Œa

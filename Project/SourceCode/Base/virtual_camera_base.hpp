@@ -20,8 +20,9 @@ public:
 	void AttachTarget(const std::shared_ptr<Transform> target_transform);
 	void DetachTarget();
 
-	[[nodiscard]] int				GetPriority()		const { return m_priority; }
-	[[nodiscard]] VirtualCameraKind GetCameraKind()		const { return m_camera_kind; }
+	[[nodiscard]] float				GetDeltaTime()	const override;
+	[[nodiscard]] int				GetPriority()	const { return m_priority; }
+	[[nodiscard]] VirtualCameraKind GetCameraKind()	const { return m_camera_kind; }
 
 protected:
 	/// @brief body, aim, noiseによりトランスフォーム値を計算する

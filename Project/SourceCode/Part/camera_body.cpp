@@ -39,7 +39,7 @@ void CameraBody::CalcDampedPos()
 
 	m_current_pos = math::GetDampedValueOnAxes(
 		m_current_pos, m_destination_pos, m_damping, 
-		owner_axes, time_manager->GetDeltaTime(TimeScale::LayerKind::kCamera));
+		owner_axes, time_manager->GetDeltaTime(TimeScaleController::LayerKind::kCamera));
 
 	m_owner_transform->SetPos(CoordinateKind::kWorld, m_current_pos);
 }

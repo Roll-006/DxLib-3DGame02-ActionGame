@@ -47,3 +47,9 @@ void Skydome::AddToObjManager()
 {
 
 }
+
+float Skydome::GetDeltaTime() const
+{
+	const auto time_manager = GameTimeManager::GetInstance();
+	return time_manager->GetDeltaTime(TimeScaleController::LayerKind::kWorld);
+}

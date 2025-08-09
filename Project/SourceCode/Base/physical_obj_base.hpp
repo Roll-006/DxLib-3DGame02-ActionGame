@@ -29,6 +29,7 @@ public:
 	void AddFallVelocity()
 	{
 		m_velocity += m_fall_velocity;
+		m_velocity *= GetDeltaTime();
 	}
 
 	/// @brief 速度ベクトルをトランスフォームおよびコライダーに適用
@@ -57,7 +58,6 @@ protected:
 	void AddCollider(const std::shared_ptr<Collider> collider);
 
 protected:
-	float	 m_fall_speed;
 	VECTOR	 m_fall_velocity;
 	VECTOR	 m_velocity;
 	bool	 m_is_landing;

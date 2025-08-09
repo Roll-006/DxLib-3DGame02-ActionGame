@@ -40,3 +40,9 @@ void Selector::AddToObjManager()
 {
 
 }
+
+float Selector::GetDeltaTime() const
+{
+	const auto time_manager = GameTimeManager::GetInstance();
+	return time_manager->GetDeltaTime(TimeScaleController::LayerKind::kNoneScale);
+}
