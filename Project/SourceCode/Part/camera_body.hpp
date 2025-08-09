@@ -2,7 +2,7 @@
 #include <memory>
 
 #include "transform.hpp"
-#include "../FPS/fps.hpp"
+#include "../GameTime/game_time_manager.hpp"
 
 class CameraBody final
 {

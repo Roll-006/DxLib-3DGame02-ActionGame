@@ -2,6 +2,7 @@
 #include "../Base/obj_base.hpp"
 #include "../Interface/i_poolable.hpp"
 
+#include "../GameTime/game_time_manager.hpp"
 #include "../Manager/obj_manager.hpp"
 
 #include "../Data/Path/effect_path.hpp"
@@ -26,6 +27,12 @@ public:
 	#pragma region Attach / Detach
 	void AttachOwnerTransform(const std::shared_ptr<Transform> owner_transform);
 	void DetachOwnerTransform();
+	#pragma endregion
+
+
+	#pragma region 登録 / 削除
+	void AddTimeScaleOwner(const std::string& owner_name);
+	void RemoveTimeScaleOwner();
 
 	/// @brief 強制的にプールに返却させるためのハンドルを追加する
 	/// @brief 主にオーナーとしてアタッチしたトランスフォームのオブジェクトハンドルを追加する
@@ -55,11 +62,14 @@ private:
 
 	void PlayEffect();
 
+	[[nodiscard]] float GetDeltaTime() const;
+
 private:
 	int			m_origin_effect_handle;			// エフェクトハンドル
 	int			m_playing_effect_handle;		// 再生中のエフェクトハンドル
 
 	int			m_return_pool_trigger_handle;	// エフェクトを強制的にプールに返却するためのトリガーとするハンドル
+	std::string m_time_scale_owner_name;
 	std::shared_ptr<Transform> m_owner_transform;
 
 	VECTOR		m_offset_pos;

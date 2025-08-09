@@ -2,11 +2,12 @@
 #include "../Base/gun_base.hpp"
 
 ShellCasing::ShellCasing(const std::string& file_path) :
-	PhysicalObjBase	(ObjName.SHELL_CASING_556x45, ObjTag.BULLET, MassKind::kLight),
-	m_modeler		(std::make_shared<Modeler>(m_transform, file_path, kBasicAngle, kBasicScale)),
-	m_move_dir		(v3d::GetZeroV()),
-	m_alive_timer	(0.0f),
-	m_move_speed	(kInitialVelocity)
+	PhysicalObjBase			(ObjName.SHELL_CASING_556x45, ObjTag.BULLET, MassKind::kLight),
+	m_modeler				(std::make_shared<Modeler>(m_transform, file_path, kBasicAngle, kBasicScale)),
+	m_time_scale_owner_name	(""),
+	m_move_dir				(v3d::GetZeroV()),
+	m_alive_timer			(0.0f),
+	m_move_speed			(kInitialVelocity)
 {	
 	SetModelHandle(m_modeler->GetModelHandle());
 
@@ -21,10 +22,11 @@ ShellCasing::~ShellCasing()
 
 void ShellCasing::Init()
 {
-	m_velocity			= v3d::GetZeroV();
-	m_fall_velocity		= v3d::GetZeroV();
-	m_alive_timer		= 0.0f;
-	m_move_speed		= kInitialVelocity;
+	m_time_scale_owner_name = "";
+	m_velocity				= v3d::GetZeroV();
+	m_fall_velocity			= v3d::GetZeroV();
+	m_alive_timer			= 0.0f;
+	m_move_speed			= kInitialVelocity;
 }
 
 void ShellCasing::Update()
@@ -38,7 +40,7 @@ void ShellCasing::LateUpdate()
 
 	Move();
 
-	m_alive_timer += FPS::GetDeltaTime();
+	m_alive_timer += GetDeltaTime();
 }
 
 void ShellCasing::DrawToShadowMap() const
@@ -102,6 +104,8 @@ void ShellCasing::AddToObjManager()
 
 void ShellCasing::Eject(GunBase& gun)
 {
+	m_time_scale_owner_name = gun.GetOwnerName();
+
 	m_transform->SetPos(CoordinateKind::kWorld, gun.GetEjectionPortTransform()->GetPos(CoordinateKind::kWorld));
 	m_transform->SetRot(CoordinateKind::kWorld, gun.GetTransform()->GetRotMatrix(CoordinateKind::kWorld));
 
@@ -123,7 +127,7 @@ bool ShellCasing::IsReturnPool()
 
 void ShellCasing::Move()
 {
-	math::Decrease(m_move_speed, kDeceleration * FPS::GetDeltaTime(), 0.0f);
+	math::Decrease(m_move_speed, kDeceleration * GetDeltaTime(), 0.0f);
 	m_velocity = m_move_dir * m_move_speed;
 }
 
@@ -138,4 +142,13 @@ void ShellCasing::CalcColliderPos()
 	// 着地用トリガー
 	auto landing_sphere = std::dynamic_pointer_cast<Sphere>(GetCollider(ColliderKind::kLandingTrigger)->GetShape());
 	landing_sphere->SetPos(pos + kLandingTriggerOffsetPos);
+}
+
+float ShellCasing::GetDeltaTime() const
+{
+	const auto time_manager = GameTimeManager::GetInstance();
+
+	return m_time_scale_owner_name == ObjName.PLAYER
+		? time_manager->GetDeltaTime(TimeScale::LayerKind::kPlayer)
+		: time_manager->GetDeltaTime(TimeScale::LayerKind::kEffect);
 }

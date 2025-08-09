@@ -5,7 +5,7 @@
 
 #include "../Base/singleton_base.hpp"
 
-#include "../FPS/fps.hpp"
+#include "../GameTime/game_time_manager.hpp"
 #include "../Window/window.hpp"
 
 #include "../Data/CSV/csv.hpp"

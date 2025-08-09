@@ -2,7 +2,7 @@
 
 #include "../GameSystem/game_system_setter.hpp"
 #include "../Window/window.hpp"
-#include "../FPS/fps.hpp"
+#include "../GameTime/game_time_manager.hpp"
 
 #include "scene_manager.hpp"
 #include "obj_manager.hpp"
@@ -22,6 +22,5 @@ private:
 private:
 	std::unique_ptr<GameSystemSetter>	m_game_system_setter;
 	std::unique_ptr<Window>				m_window;
-	std::unique_ptr<FPS>				m_fps;
 	std::unique_ptr<SceneManager>		m_scene_manager;
 };

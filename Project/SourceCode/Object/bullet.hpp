@@ -36,6 +36,7 @@ private:
 
 private:
 	std::shared_ptr<Subject<Bullet>> m_subject;
+	std::string m_time_scale_owner_name;
 
 	VECTOR m_move_dir;
 	VECTOR m_prev_pos;

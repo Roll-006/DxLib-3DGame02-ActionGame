@@ -16,7 +16,8 @@ void player_state::EquipGun::Update(Player* obj)
 {
 	if (CommandHandler::GetInstance()->IsExecuting(CommandKind::kAimGun))
 	{
-		m_possible_aim_timer += FPS::GetDeltaTime();
+		const auto time_manager = GameTimeManager::GetInstance();
+		m_possible_aim_timer += time_manager->GetDeltaTime(TimeScale::LayerKind::kPlayer);
 	}
 	else
 	{

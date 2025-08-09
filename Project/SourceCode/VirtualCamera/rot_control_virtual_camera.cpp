@@ -2,7 +2,7 @@
 #include "../Command/command_handler.hpp"
 
 RotControlVirtualCamera::RotControlVirtualCamera(const int priority) :
-	VirtualCameraBase	(ObjName.ROT_CONTROL_CAMERA, VirtualCameraKind::kRotControl),
+	VirtualCameraBase	(ObjName.ROT_CONTROL_VIRTUAL_CAMERA, VirtualCameraKind::kControl),
 	m_data				(ControlVirtualCameraData())
 {
 	m_priority = priority;
@@ -198,7 +198,10 @@ void RotControlVirtualCamera::CalcMoveDirFromCommand()
 	for (int i = 0; i < 4; ++i)
 	{
 		if (input->IsInput(static_cast<mouse::SlideDirKind>(i))) { return; }
-		if (input->IsInput(static_cast<pad::StickKind>(i + 4)))  { return; }
+	}
+	for (int i = 0; i < 8; ++i)
+	{
+		if (input->IsInput(static_cast<pad::StickKind>(i))) { return; }
 	}
 
 	// コマンドパターンで入力された場合の速度・方向を取得
@@ -219,7 +222,8 @@ void RotControlVirtualCamera::CalcInputAngle()
 	// 視点リセット
 	CalcInitAim();
 
-	m_data.velocity *= FPS::GetDeltaTime();
+	const auto time_manager = GameTimeManager::GetInstance();
+	m_data.velocity *= time_manager->GetDeltaTime(TimeScale::LayerKind::kCamera);
 
 	// 角度を取得
 	const auto command = CommandHandler::GetInstance();
@@ -252,7 +256,8 @@ void RotControlVirtualCamera::CalcInitAim()
 	}
 
 	// 目的地に遠いほど速く移動させる
-	m_data.input_angle[TimeKind::kCurrent] += dir * distance * m_data.init_angle_speed * FPS::GetDeltaTime();
+	const auto time_manager = GameTimeManager::GetInstance();
+	m_data.input_angle[TimeKind::kCurrent] += dir * distance * m_data.init_angle_speed * time_manager->GetDeltaTime(TimeScale::LayerKind::kCamera);
 
 	// 終了判定
 	distance = VSize(m_data.input_angle[TimeKind::kNext] - m_data.input_angle[TimeKind::kCurrent]);

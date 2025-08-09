@@ -16,7 +16,7 @@ void player_state::MoveNull::Update(Player* obj)
 {
 	obj->CalcMoveSpeedStop();
 
-	m_non_move_time += FPS::GetDeltaTime();
+	//m_non_move_time += FPS::GetDeltaTime();
 }
 
 void player_state::MoveNull::LateUpdate(Player* obj)
@@ -26,7 +26,7 @@ void player_state::MoveNull::LateUpdate(Player* obj)
 
 void player_state::MoveNull::Enter(Player* obj)
 {
-	m_non_move_time = 0.0f;
+	//m_non_move_time = 0.0f;
 }
 
 void player_state::MoveNull::Exit(Player* obj)

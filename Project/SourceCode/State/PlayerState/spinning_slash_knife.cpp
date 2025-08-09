@@ -14,7 +14,8 @@ player_state::SpinningSlashKnife::~SpinningSlashKnife()
 
 void player_state::SpinningSlashKnife::Update(Player* obj)
 {
-	m_combo_timer += FPS::GetDeltaTime();
+	const auto time_manager = GameTimeManager::GetInstance();
+	m_combo_timer += time_manager->GetDeltaTime(TimeScale::LayerKind::kWorld);
 
 	//obj->CalcMoveOffsetSideSlashKnife();
 

@@ -4,6 +4,7 @@
 #include "../VirtualCamera/rot_control_virtual_camera.hpp"
 #include "../Object/main_camera.hpp"
 #include "../Input/input_checker.hpp"
+#include "../GameTime/game_time_manager.hpp"
 
 namespace virtual_camera_concepts
 {

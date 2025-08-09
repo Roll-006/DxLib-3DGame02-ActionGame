@@ -28,9 +28,6 @@
     <ClCompile Include="SourceCode\Calculation\quaternion.cpp">
       <Filter>Calculation</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\FPS\fps.cpp">
-      <Filter>FPS</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\Manager\collision_manager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
@@ -182,7 +179,7 @@
     <ClCompile Include="SourceCode\VirtualCamera\aiming_camera (2).cpp">
       <Filter>VirtualCamera</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\VirtualCamera\aiming_camera (3).cpp">
+    <ClCompile Include="SourceCode\VirtualCamera\rocket_launcher_virtual_camera_controller.cpp">
       <Filter>VirtualCamera</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\VirtualCamera\rot_control_virtual_camera.cpp">
@@ -359,6 +356,15 @@
     <ClCompile Include="SourceCode\State\PlayerState\attach_weapon.cpp">
       <Filter>State\PlayerState</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\GameTime\fps.cpp">
+      <Filter>GameTime</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\GameTime\time_scale.cpp">
+      <Filter>GameTime</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\GameTime\game_time_manager.cpp">
+      <Filter>GameTime</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\character_base.hpp">
@@ -526,9 +532,6 @@
     <ClInclude Include="SourceCode\Data\input_data.hpp">
       <Filter>Data</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\FPS\fps.hpp">
-      <Filter>FPS</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\Manager\collision_manager.hpp">
       <Filter>Manager</Filter>
     </ClInclude>
@@ -679,7 +682,7 @@
     <ClInclude Include="SourceCode\VirtualCamera\aiming_camera (2).hpp">
       <Filter>VirtualCamera</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\VirtualCamera\aiming_camera (3).hpp">
+    <ClInclude Include="SourceCode\VirtualCamera\rocket_launcher_virtual_camera_controller.hpp">
       <Filter>VirtualCamera</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\VirtualCamera\rot_control_virtual_camera.hpp">
@@ -958,6 +961,15 @@
     <ClInclude Include="SourceCode\Data\control_virtual_camera_data.hpp">
       <Filter>Data</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\GameTime\fps.hpp">
+      <Filter>GameTime</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\GameTime\time_scale.hpp">
+      <Filter>GameTime</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\GameTime\game_time_manager.hpp">
+      <Filter>GameTime</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Manager">
@@ -1017,9 +1029,6 @@
     <Filter Include="Object">
       <UniqueIdentifier>{12318b27-d5b3-41f7-b2c0-6e3e27ab8d35}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FPS">
-      <UniqueIdentifier>{2e55dbb6-3445-4bc3-9190-942193ab83a5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Debugger">
       <UniqueIdentifier>{0f578ace-5d63-4ed1-91d5-90e33a16cf7f}</UniqueIdentifier>
     </Filter>
@@ -1076,6 +1085,9 @@
     </Filter>
     <Filter Include="Data\Event">
       <UniqueIdentifier>{f5b974f8-f979-4048-b2ca-49cde3426995}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameTime">
+      <UniqueIdentifier>{2bb7eee7-c5b3-48ad-a6f8-72c884dfb3b2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -21,15 +21,9 @@ public:
 	void AddToObjManager() override;
 
 	/// @brief 装備する持ち主をアタッチする
-	void AttachOwner(const std::shared_ptr<Modeler> owner_modeler)
-	{
-		if (!m_owner_modeler) { m_owner_modeler = owner_modeler; }
-	}
+	void AttachOwner(const std::shared_ptr<Modeler> owner_modeler, const std::string& owner_name);
 	/// @brief 装備していた持ち主をデタッチする
-	void DetachOwner()
-	{
-		if (m_owner_modeler) { m_owner_modeler = nullptr; }
-	}
+	void DetachOwner();
 
 	/// @brief 持ち主の手を追跡する
 	void TrackOwnerHand();
@@ -37,6 +31,7 @@ public:
 	void TrackOwnerHolster();
 
 	[[nodiscard]] std::shared_ptr<Modeler>	GetModeler()	 const			{ return m_modeler; }
+	[[nodiscard]] std::string				GetOwnerName()	 const			{ return m_owner_name; }
 	[[nodiscard]] ItemKind					GetItemKind()	 const override	{ return m_item_kind; }
 	[[nodiscard]] WeaponKind				GetWeaponKind()	 const			{ return m_weapon_kind; }
 	[[nodiscard]] HolsterKind				GetHolsterKind() const			{ return m_holster_kind; }
@@ -67,6 +62,7 @@ protected:
 protected:
 	std::shared_ptr<Modeler> m_modeler;
 	std::shared_ptr<Modeler> m_owner_modeler;	// 武器の持ち主であるオブジェクトのモデラー
+	std::string				 m_owner_name;
 	
 private:
 	VECTOR m_hold_offset_pos;		// 手に持たれる際のオフセット座標

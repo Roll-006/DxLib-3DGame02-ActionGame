@@ -1,7 +1,5 @@
 #include "fps.hpp"
 
-float FPS::m_delta_time = 0.0f;
-
 FPS::FPS() :
     m_fps           (kFPS),
     m_first_time    (0),
@@ -9,6 +7,7 @@ FPS::FPS() :
     m_prev_time     (0),
     m_frame_count   (1),
     m_average_fps   (0.0f),
+    m_delta_time    (0.0f),
     m_elapsed_time  (0.0f)
 {
     m_first_time = m_current_time = m_prev_time = GetNowHiPerformanceCount();

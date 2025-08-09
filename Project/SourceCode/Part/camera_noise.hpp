@@ -2,7 +2,7 @@
 #include <memory>
 
 #include "transform.hpp"
-#include "../FPS/fps.hpp"
+#include "../GameTime/fps.hpp"
 
 class CameraNoise final
 {

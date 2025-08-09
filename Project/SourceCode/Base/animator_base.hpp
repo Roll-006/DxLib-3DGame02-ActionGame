@@ -2,12 +2,13 @@
 #include <unordered_map>
 
 #include "../Handle/handle_keeper.hpp"
-#include "../Data/Tag/animation_tag.hpp"
-#include "../Data/animator_data.hpp"
-#include "../Concept/common_concepts.hpp"
-#include "../FPS/fps.hpp"
-
 #include "../Part/modeler.hpp"
+#include "../GameTime/game_time_manager.hpp"
+
+#include "../Data/animator_data.hpp"
+#include "../Data/Tag/animation_tag.hpp"
+#include "../Data/Name/obj_name.hpp"
+//#include "../Concept/common_concepts.hpp"
 
 class AnimatorBase abstract
 {
@@ -19,7 +20,7 @@ public:
 	};
 
 public:
-	AnimatorBase(const std::shared_ptr<Modeler> modeler);
+	AnimatorBase(const std::shared_ptr<Modeler> modeler, const std::string& obj_name);
 	~AnimatorBase();
 
 	virtual void Init()		abstract;
@@ -71,9 +72,12 @@ private:
 	/// @brief アニメーションのアタッチが可能であるかを判定
 	[[nodiscard]] bool CanAttachAnim(const int next_kind, const BodyKind body_kind);
 
+	[[nodiscard]] float GetDeltaTime() const;
+
 private:
 	static constexpr float kBlendSpeed = 3.0f;
 
+	std::string															m_obj_name;
 	std::vector<std::tuple<BodyKind, TimeKind, AnimTimeKindData>>		m_time_kind_data;
 	std::unordered_map<int, AnimKindData>								m_anim_data;
 	std::unordered_map<BodyKind, std::shared_ptr<Modeler>>				m_resource_modeler;

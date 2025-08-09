@@ -5,7 +5,8 @@
 /// @brief •Ší‚ª’eŠÛ‚ğ”­Ë‚µ‚½
 struct WeaponShotData
 {
-	GunKind						gun_kind					= static_cast<GunKind>(0);
-	std::shared_ptr<Transform>	muzzle_transform			= nullptr;
-	std::shared_ptr<Transform>	m_ejection_port_transform	= nullptr;
+	GunKind						gun_kind				= static_cast<GunKind>(0);
+	std::string					weapon_owner_name		= "";
+	std::shared_ptr<Transform>	muzzle_transform		= nullptr;
+	std::shared_ptr<Transform>	ejection_port_transform	= nullptr;
 };

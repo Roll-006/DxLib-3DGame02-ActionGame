@@ -43,6 +43,7 @@ private:
 
 	std::shared_ptr<Modeler>				m_modeler;
 	std::shared_ptr<Subject<RocketBomb>>	m_subject;
+	std::string								m_time_scale_owner_name;
 
 	VECTOR m_move_dir;
 	VECTOR m_prev_pos;

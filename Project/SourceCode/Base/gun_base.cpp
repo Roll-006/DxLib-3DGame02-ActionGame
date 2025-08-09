@@ -30,7 +30,7 @@ void GunBase::OnShot()
 	RifleCartridgeManager::GetInstance()->Shot(*this);
 	--m_current_remaining_bullet_num;
 
-	const Event<WeaponShotData> event = { EventKind::kWeaponShot, { m_gun_kind, m_muzzle_transform, m_ejection_port_transform } };
+	const Event<WeaponShotData> event = { EventKind::kWeaponShot, { m_gun_kind, m_owner_name, m_muzzle_transform, m_ejection_port_transform } };
 	m_subject->Notify(event);
 }
 
@@ -100,7 +100,8 @@ void GunBase::CalcShotTimer()
 	// TODO : 連射が可能なため後に仕様変更
 	if (m_on_pull_trigger)
 	{
-		math::Increase(m_shot_timer, FPS::GetDeltaTime(), m_shot_interval_time, true);
+		const auto time_manager = GameTimeManager::GetInstance();
+		math::Increase(m_shot_timer, time_manager->GetDeltaTime(TimeScale::LayerKind::kPlayer), m_shot_interval_time, true);
 	}
 	else
 	{

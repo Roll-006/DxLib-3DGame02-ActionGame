@@ -4,7 +4,7 @@
 
 #include "../Base/one_instance_singleton_base.hpp"
 
-#include "../FPS/fps.hpp"
+#include "../GameTime/fps.hpp"
 #include "../Input/input_checker.hpp"
 
 class Window final : public OneInstanceSingletonBase<Window>

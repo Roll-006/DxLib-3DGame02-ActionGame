@@ -38,10 +38,12 @@ void CameraAim::CalcAimPos()
 
 void CameraAim::CalcDampedAimPos()
 {
+	const auto time_manager = GameTimeManager::GetInstance();
 	const auto   owner_axes	= m_owner_transform->GetAxes(CoordinateKind::kWorld);
 	const VECTOR damping	= { m_horizontal_damping, m_vertical_damping, 0.0f };
 
-	m_current_aim_pos		= math::GetDampedValueOnAxes(m_current_aim_pos, m_destination_aim_pos, damping, owner_axes);
+	m_current_aim_pos = math::GetDampedValueOnAxes(m_current_aim_pos, m_destination_aim_pos, damping, 
+		owner_axes, time_manager->GetDeltaTime(TimeScale::LayerKind::kCamera));
 
 	//DrawSphere3D(m_current_aim_pos, 3, 8, 0xffffff, 0xffffff, TRUE);
 }

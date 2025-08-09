@@ -14,7 +14,8 @@ player_state::FirstSideSlashKnife::~FirstSideSlashKnife()
 
 void player_state::FirstSideSlashKnife::Update(Player* obj)
 {
-	m_combo_timer += FPS::GetDeltaTime();
+	const auto time_manager = GameTimeManager::GetInstance();
+	m_combo_timer += time_manager->GetDeltaTime(TimeScale::LayerKind::kWorld);
 
 	//obj->CalcMoveOffsetSideSlashKnife();
 

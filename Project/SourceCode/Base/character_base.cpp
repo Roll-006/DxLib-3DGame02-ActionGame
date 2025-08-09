@@ -47,7 +47,7 @@ void CharacterBase::HoldWeapon(const int obj_handle)
 	if (weapon)
 	{
 		m_current_held_weapon = weapon;
-		m_current_held_weapon->AttachOwner(m_modeler);
+		m_current_held_weapon->AttachOwner(m_modeler, GetName());
 	}
 }
 
@@ -64,7 +64,7 @@ void CharacterBase::AttachWeapon(const int obj_handle)
 	if (weapon)
 	{
 		m_attach_weapons[weapon->GetHolsterKind()] = weapon;
-		m_attach_weapons[weapon->GetHolsterKind()]->AttachOwner(m_modeler);
+		m_attach_weapons[weapon->GetHolsterKind()]->AttachOwner(m_modeler, GetName());
 	}
 }
 

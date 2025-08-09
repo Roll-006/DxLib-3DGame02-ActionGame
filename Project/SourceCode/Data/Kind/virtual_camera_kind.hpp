@@ -3,5 +3,6 @@
 enum class VirtualCameraKind
 {
 	kNormal,		// 通常バーチャルカメラ
-	kRotControl,	// 回転コントロールバーチャルカメラ
+	kControl,		// コントロールバーチャルカメラ
+	kSpecial,		// 特殊バーチャルカメラ
 };

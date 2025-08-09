@@ -36,7 +36,7 @@ public:
 	void HoldWeapon(const std::shared_ptr<WeaponObjT> weapon)
 	{
 		m_current_held_weapon = weapon;
-		m_current_held_weapon->AttachOwner(m_modeler);
+		m_current_held_weapon->AttachOwner(m_modeler, GetName());
 	}
 	void HoldWeapon(const int obj_handle);
 
@@ -48,7 +48,7 @@ public:
 	void AttachWeapon(const std::shared_ptr<WeaponObjT> weapon)
 	{
 		m_attach_weapons[weapon->GetHolsterKind()] = weapon;
-		m_attach_weapons[weapon->GetHolsterKind()]->AttachOwner(m_modeler);
+		m_attach_weapons[weapon->GetHolsterKind()]->AttachOwner(m_modeler, GetName());
 	}
 	void AttachWeapon(const int obj_handle);
 

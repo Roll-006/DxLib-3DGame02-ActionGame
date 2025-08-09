@@ -339,7 +339,7 @@ Transform& math::GetLerpTransform(
     return result_transform;
 }
 
-float math::GetDampedValue(const float current_value, const float target_value, const float damping)
+float math::GetDampedValue(const float current_value, const float target_value, const float damping, const float delta_time)
 {
     // damping値が0に近い場合は即座に目標値に設定
     if (damping <= kEpsilonLow)
@@ -352,22 +352,22 @@ float math::GetDampedValue(const float current_value, const float target_value, 
 
     // テイラー展開による近似式
     // 高速化のためstd::exp(-x)は避ける
-    float x = omega * FPS::GetDeltaTime();
+    float x = omega * delta_time;
     float exp = 1.0f / (1.0f + x + 0.48f * x * x + 0.235f * x * x * x);
 
     return target_value + (current_value - target_value) * exp;
 }
 
-VECTOR math::GetDampedValue(const VECTOR& current_value, const VECTOR& target_value, const VECTOR& damping)
+VECTOR math::GetDampedValue(const VECTOR& current_value, const VECTOR& target_value, const VECTOR& damping, const float delta_time)
 {
     VECTOR damped_value = current_value;
-    damped_value.x = GetDampedValue(current_value.x, target_value.x, damping.x);
-    damped_value.y = GetDampedValue(current_value.y, target_value.y, damping.y);
-    damped_value.z = GetDampedValue(current_value.z, target_value.z, damping.z);
+    damped_value.x = GetDampedValue(current_value.x, target_value.x, damping.x, delta_time);
+    damped_value.y = GetDampedValue(current_value.y, target_value.y, damping.y, delta_time);
+    damped_value.z = GetDampedValue(current_value.z, target_value.z, damping.z, delta_time);
     return damped_value;
 }
 
-VECTOR math::GetDampedValueOnAxes(const VECTOR& current_value, const VECTOR& target_value, const VECTOR& damping, const Axes& parent_axes)
+VECTOR math::GetDampedValueOnAxes(const VECTOR& current_value, const VECTOR& target_value, const VECTOR& damping, const Axes& parent_axes, const float delta_time)
 {
     VECTOR damped_value         = current_value;
     const auto distance         = target_value - current_value;
@@ -379,9 +379,9 @@ VECTOR math::GetDampedValueOnAxes(const VECTOR& current_value, const VECTOR& tar
     const auto up_dot           = VDot(distance, parent_axes.y_axis);
 
     // 各軸の移動量に対して減衰を適用
-    const auto damped_forward   = math::GetDampedValue(0.0f, forward_dot, damping.z);
-    const auto damped_right     = math::GetDampedValue(0.0f, right_dot,   damping.x);
-    const auto damped_up        = math::GetDampedValue(0.0f, up_dot,      damping.y);
+    const auto damped_forward   = math::GetDampedValue(0.0f, forward_dot, damping.z, delta_time);
+    const auto damped_right     = math::GetDampedValue(0.0f, right_dot,   damping.x, delta_time);
+    const auto damped_up        = math::GetDampedValue(0.0f, up_dot,      damping.y, delta_time);
 
     // 減衰移動ベクトルを再合成
     const VECTOR damped_move =

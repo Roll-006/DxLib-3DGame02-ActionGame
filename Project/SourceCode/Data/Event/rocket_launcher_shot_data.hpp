@@ -5,5 +5,6 @@
 /// @brief ロケットランチャーが弾丸を発射した
 struct RocketLauncherShotData
 {
-	std::shared_ptr<Transform>	m_ejection_port_transform = nullptr;
+	std::string					weapon_owner_name		= "";
+	std::shared_ptr<Transform>	ejection_port_transform = nullptr;
 };

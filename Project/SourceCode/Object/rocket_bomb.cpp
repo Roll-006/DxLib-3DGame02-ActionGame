@@ -3,15 +3,16 @@
 #include "../Base/gun_base.hpp"
 
 RocketBomb::RocketBomb() :
-	PhysicalObjBase	(ObjName.ROCKET_BOMB, ObjTag.BULLET, MassKind::kLight),
-	m_modeler		(std::make_shared<Modeler>(m_transform, ModelPath.ROCKET_BOMB, kBasicAngle, kBasicScale)),
-	m_subject		(std::make_shared<Subject<RocketBomb>>()),
-	m_move_dir		(v3d::GetZeroV()),
-	m_prev_pos		(v3d::GetZeroV()),
-	m_first_pos		(v3d::GetZeroV()),
-	m_move_speed	(0.0f),
-	m_deceleration	(0.0f),
-	m_range			(0.0f)
+	PhysicalObjBase			(ObjName.ROCKET_BOMB, ObjTag.BULLET, MassKind::kLight),
+	m_modeler				(std::make_shared<Modeler>(m_transform, ModelPath.ROCKET_BOMB, kBasicAngle, kBasicScale)),
+	m_subject				(std::make_shared<Subject<RocketBomb>>()),
+	m_time_scale_owner_name	(""),
+	m_move_dir				(v3d::GetZeroV()),
+	m_prev_pos				(v3d::GetZeroV()),
+	m_first_pos				(v3d::GetZeroV()),
+	m_move_speed			(0.0f),
+	m_deceleration			(0.0f),
+	m_range					(0.0f)
 {
 	SetModelHandle(m_modeler->GetModelHandle());
 
@@ -27,9 +28,10 @@ RocketBomb::~RocketBomb()
 
 void RocketBomb::Init()
 {
-	m_velocity		= v3d::GetZeroV();
-	m_fall_velocity = v3d::GetZeroV();
-	m_fall_speed	= 0.0f;
+	m_time_scale_owner_name = "";
+	m_velocity				= v3d::GetZeroV();
+	m_fall_velocity			= v3d::GetZeroV();
+	m_fall_speed			= 0.0f;
 }
 
 void RocketBomb::Update()
@@ -99,6 +101,8 @@ void RocketBomb::AddToObjManager()
 
 void RocketBomb::OnShot(GunBase& gun)
 {
+	m_time_scale_owner_name = gun.GetOwnerName();
+
 	m_transform->SetRot(CoordinateKind::kWorld, MGetIdent());
 	m_first_pos		= gun.GetFirstShotPos();
 	m_transform->SetPos(CoordinateKind::kWorld, m_first_pos);
@@ -108,7 +112,7 @@ void RocketBomb::OnShot(GunBase& gun)
 	m_deceleration	= gun.GetDeceleration();
 	m_range			= gun.GetRange();
 
-	const Event<OnShotBulletData> event = { EventKind::kOnShotBullet, { GetName(), GetObjHandle(), m_transform}};
+	const Event<OnShotBulletData> event = { EventKind::kOnShotBullet, { GetName(), gun.GetOwnerName(), GetObjHandle(), m_transform}};
 	m_subject->Notify(event);
 }
 
@@ -139,7 +143,13 @@ void RocketBomb::ApplyMoveDirToRot()
 
 void RocketBomb::Move()
 {
-	math::Decrease(m_move_speed, m_deceleration * FPS::GetDeltaTime(), 0.0f);
+	const auto time_manager = GameTimeManager::GetInstance();
+
+	const float delta_time = m_time_scale_owner_name == ObjName.PLAYER
+		? time_manager->GetDeltaTime(TimeScale::LayerKind::kPlayer)
+		: time_manager->GetDeltaTime(TimeScale::LayerKind::kWorld);
+
+	math::Decrease(m_move_speed, m_deceleration * delta_time, 0.0f);
 	m_velocity = m_move_dir * m_move_speed;
 }
 

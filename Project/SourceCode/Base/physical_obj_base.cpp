@@ -30,7 +30,13 @@ void PhysicalObjBase::ApplyGravity(const float gravity_acceleration, const float
 	}
 	else
 	{
-		math::Decrease(m_fall_speed, gravity_acceleration * FPS::GetDeltaTime(), -max_gravity);
+		const auto time_manager = GameTimeManager::GetInstance();
+
+		const float delta_time = GetName() == ObjName.PLAYER
+			? time_manager->GetDeltaTime(TimeScale::LayerKind::kPlayer)
+			: time_manager->GetDeltaTime(TimeScale::LayerKind::kWorld);
+
+		math::Decrease(m_fall_speed, gravity_acceleration * delta_time, -max_gravity);
 		m_fall_velocity.y += m_fall_speed;
 	}
 }

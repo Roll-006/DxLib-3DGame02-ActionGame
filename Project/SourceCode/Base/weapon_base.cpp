@@ -4,6 +4,7 @@ WeaponBase::WeaponBase(const std::string& name, const WeaponKind weapon_kind, co
 	PhysicalObjBase			(name, ObjTag.WEAPON, MassKind::kLight),
 	m_modeler				(nullptr),
 	m_owner_modeler			(nullptr),
+	m_owner_name			(""),
 	m_hold_offset_pos		(v3d::GetZeroV()),
 	m_hold_offset_angle		(v3d::GetZeroV()),
 	m_hold_offset_scale		(v3d::GetZeroV()),
@@ -21,6 +22,25 @@ void WeaponBase::AddToObjManager()
 {
 	ObjManager		::GetInstance()->AddObj			(shared_from_this());
 	CollisionManager::GetInstance()->AddCollideObj	(std::dynamic_pointer_cast<PhysicalObjBase>(shared_from_this()));
+}
+
+/// @brief 装備する持ち主をアタッチする
+void WeaponBase::AttachOwner(const std::shared_ptr<Modeler> owner_modeler, const std::string& owner_name)
+{
+	if (!m_owner_modeler)
+	{
+		m_owner_modeler = owner_modeler;
+		m_owner_name	= owner_name;
+	}
+}
+/// @brief 装備していた持ち主をデタッチする
+void WeaponBase::DetachOwner()
+{
+	if (m_owner_modeler)
+	{
+		m_owner_modeler = nullptr;
+		m_owner_name	= "";
+	}
 }
 
 void WeaponBase::TrackOwnerHand()

@@ -5,7 +5,7 @@
 #include "../Data/Kind/mass_kind.hpp"
 #include "../Part/collider.hpp"
 #include "../Data/collider_pair_data.hpp"
-#include "../FPS/fps.hpp"
+#include "../GameTime/game_time_manager.hpp"
 
 /// @brief 物理的な挙動を行うオブジェクトの基底クラス
 class PhysicalObjBase abstract : public ObjBase

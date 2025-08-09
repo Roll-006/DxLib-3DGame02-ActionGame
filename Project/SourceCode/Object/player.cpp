@@ -193,7 +193,7 @@ void Player::NotifyShotRocketLauncher()
 
 	if (roket_launcher)
 	{
-		const Event<RocketLauncherShotData> event = { EventKind::kRocketLauncherShot, { roket_launcher->GetExhaustVentTransform() }};
+		const Event<RocketLauncherShotData> event = { EventKind::kRocketLauncherShot, { roket_launcher->GetOwnerName(), roket_launcher->GetExhaustVentTransform() }};
 		m_subject->Notify(event);
 	}
 }
@@ -298,28 +298,31 @@ void Player::CalcMoveSpeedStop()
 	// 速い状態から歩き状態に移行した場合、急速に減速させる
 	if (m_move_speed > kSlowWalkSpeed) { m_move_speed = kSlowWalkSpeed; }
 
-	math::Decrease(m_move_speed, kAcceleration * FPS::GetDeltaTime(), 0.0f);
+	const auto time_manager = GameTimeManager::GetInstance();
+	math::Decrease(m_move_speed, kAcceleration * time_manager->GetDeltaTime(TimeScale::LayerKind::kPlayer), 0.0f);
 }
 
 void Player::CalcMoveSpeed(const float input_slope)
 {
 	if (m_state->GetActionState(TimeKind::kCurrent)->GetStateKind() != static_cast<int>(player_state::ActionStateKind::kActionNull)) { return; }
 
+	const auto time_manager = GameTimeManager::GetInstance();
+
 	if (input_slope <= kWalkStickSlopeLimit - InputChecker::kStickDeadZone)
 	{
 		// 速い状態から歩き状態に移行した場合、急速に減速させる
 		if (m_move_speed > kWalkSpeed) { m_move_speed = kWalkSpeed; }
 
-		math::Increase(m_move_speed, kAcceleration * FPS::GetDeltaTime(), kSlowWalkSpeed, false);
-		math::Decrease(m_move_speed, kAcceleration * FPS::GetDeltaTime(), kSlowWalkSpeed);
+		math::Increase(m_move_speed, kAcceleration * time_manager->GetDeltaTime(TimeScale::LayerKind::kPlayer), kSlowWalkSpeed, false);
+		math::Decrease(m_move_speed, kAcceleration * time_manager->GetDeltaTime(TimeScale::LayerKind::kPlayer), kSlowWalkSpeed);
 		return;
 	}
 
 	// 遅い状態からダッシュ状態に移行した場合、急速に加速させる
 	if (m_move_speed < kSlowWalkSpeed) { m_move_speed = kSlowWalkSpeed; }
 
-	math::Increase(m_move_speed, kAcceleration * FPS::GetDeltaTime(), kWalkSpeed, false);
-	math::Decrease(m_move_speed, kAcceleration * FPS::GetDeltaTime(), kWalkSpeed);
+	math::Increase(m_move_speed, kAcceleration * time_manager->GetDeltaTime(TimeScale::LayerKind::kPlayer), kWalkSpeed, false);
+	math::Decrease(m_move_speed, kAcceleration * time_manager->GetDeltaTime(TimeScale::LayerKind::kPlayer), kWalkSpeed);
 }
 
 void Player::CalcMoveSpeedCrouch()
@@ -329,7 +332,8 @@ void Player::CalcMoveSpeedCrouch()
 	// 速い状態から歩き状態に移行した場合、急速に減速させる
 	if (m_move_speed > kSlowWalkSpeed) { m_move_speed = kSlowWalkSpeed; }
 
-	math::Decrease(m_move_speed, kAcceleration * FPS::GetDeltaTime(), kCrouchWalkSpeed);
+	const auto time_manager = GameTimeManager::GetInstance();
+	math::Decrease(m_move_speed, kAcceleration * time_manager->GetDeltaTime(TimeScale::LayerKind::kPlayer), kCrouchWalkSpeed);
 }
 
 void Player::CalcMoveSpeedRun()
@@ -339,7 +343,8 @@ void Player::CalcMoveSpeedRun()
 	// 遅い状態からダッシュ状態に移行した場合、急速に加速させる
 	if (m_move_speed < kWalkSpeed) { m_move_speed = kWalkSpeed; }
 
-	math::Increase(m_move_speed, kAcceleration * FPS::GetDeltaTime(), kRunSpeed, false);
+	const auto time_manager = GameTimeManager::GetInstance();
+	math::Increase(m_move_speed, kAcceleration * time_manager->GetDeltaTime(TimeScale::LayerKind::kPlayer), kRunSpeed, false);
 }
 
 //void Player::CalcMoveOffsetSideSlashKnife()
@@ -365,10 +370,11 @@ void Player::CalcMoveDir(const VECTOR& velocity)
 	m_move_dir[TimeKind::kNext] = v3d::GetNormalizedV(velocity);
 
 	// 現在のdirを目的とするdirに近づけていく
+	const auto time_manager = GameTimeManager::GetInstance();
 	m_move_dir[TimeKind::kCurrent] = math::GetApproachedVector(
 		m_move_dir[TimeKind::kCurrent], 
 		m_move_dir[TimeKind::kNext], 
-		kMoveDirOffsetSpeed * FPS::GetDeltaTime());
+		kMoveDirOffsetSpeed * time_manager->GetDeltaTime(TimeScale::LayerKind::kPlayer));
 }
 
 void Player::CalcLookDir()

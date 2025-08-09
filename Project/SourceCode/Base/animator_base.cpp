@@ -1,6 +1,7 @@
 ﻿#include "animator_base.hpp"
 
-AnimatorBase::AnimatorBase(const std::shared_ptr<Modeler> modeler) :
+AnimatorBase::AnimatorBase(const std::shared_ptr<Modeler> modeler, const std::string& obj_name) :
+	m_obj_name		(obj_name),
 	m_result_modeler(modeler)
 {
 	m_resource_modeler[BodyKind::kUpperBody] = std::make_shared<Modeler>(m_result_modeler->GetModelHandle());
@@ -170,7 +171,7 @@ void AnimatorBase::PlayAnim()
 		if (data.attach_index > -1)
 		{
 			const float blend_rate	= time_kind == TimeKind::kCurrent ? m_blend_rate[body_kind] : 1.0f - m_blend_rate[body_kind];
-			float play_speed		= m_anim_data.at(data.kind).play_speed * FPS::GetDeltaTime();
+			float play_speed		= m_anim_data.at(data.kind).play_speed * GetDeltaTime();
 			math::Increase(data.play_timer, play_speed, data.total_time, m_anim_data.at(data.kind).is_loop);
 
 			// 再生位置・ブレンド率を適用
@@ -185,8 +186,8 @@ void AnimatorBase::PlayAnim()
 void AnimatorBase::BlendAnim()
 {
 	// ブレンド率100%まで増加させる
-	math::Increase(m_blend_rate[BodyKind::kUpperBody], kBlendSpeed * FPS::GetDeltaTime(), 1.0f, false);
-	math::Increase(m_blend_rate[BodyKind::kLowerBody], kBlendSpeed * FPS::GetDeltaTime(), 1.0f, false);
+	math::Increase(m_blend_rate[BodyKind::kUpperBody], kBlendSpeed * GetDeltaTime(), 1.0f, false);
+	math::Increase(m_blend_rate[BodyKind::kLowerBody], kBlendSpeed * GetDeltaTime(), 1.0f, false);
   
 	// ブレンドが完了した場合、PravAnimは不要なためデタッチする
 	if (m_blend_rate[BodyKind::kUpperBody] == 1.0f) { DetachAnim(TimeKind::kPrev, BodyKind::kUpperBody); }
@@ -306,4 +307,13 @@ bool AnimatorBase::CanAttachAnim(const int next_kind, const BodyKind body_kind)
 	}
 
 	return true;
+}
+
+float AnimatorBase::GetDeltaTime() const
+{
+	const auto time_manager = GameTimeManager::GetInstance();
+
+	return m_obj_name == ObjName.PLAYER
+		? time_manager->GetDeltaTime(TimeScale::LayerKind::kPlayer)
+		: time_manager->GetDeltaTime(TimeScale::LayerKind::kWorld);
 }

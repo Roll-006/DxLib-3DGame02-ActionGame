@@ -3,7 +3,6 @@
 GameManager::GameManager():
 	m_game_system_setter(std::make_unique<GameSystemSetter>()),
 	m_window			(std::make_unique<Window>()),
-	m_fps				(std::make_unique<FPS>()),
 	m_scene_manager		(nullptr)
 {
 	HandleKeeper			::Generate();
@@ -12,11 +11,12 @@ GameManager::GameManager():
 	CommandHandler			::Generate();
 	ObjectPoolHolder		::Generate();
 
+	GameTimeManager			::Generate();
 	ObjManager				::Generate();
 	CollisionManager		::Generate();
 	PhysicsManager			::Generate();
-	EffectManager			::Generate();
 	CameraManager			::Generate();
+	EffectManager			::Generate();
 	RifleCartridgeManager	::Generate();
 
 	m_scene_manager = std::make_unique<SceneManager>();
@@ -30,11 +30,12 @@ GameManager::~GameManager()
 	CommandHandler			::Delete();
 	ObjectPoolHolder		::Delete();
 
+	GameTimeManager			::Delete();
 	ObjManager				::Delete();
 	CollisionManager		::Delete();
 	PhysicsManager			::Delete();
-	EffectManager			::Delete();
 	CameraManager			::Delete();
+	EffectManager			::Delete();
 	RifleCartridgeManager	::Delete();
 }
 
@@ -42,7 +43,7 @@ void GameManager::Run()
 {
 	while (IsContinueLoop())
 	{
-		m_fps	->Update();
+		GameTimeManager::GetInstance()->Update();
 		m_window->Update();
 
 		m_scene_manager->Update();
@@ -50,9 +51,8 @@ void GameManager::Run()
 		m_scene_manager->DrawToShadowMap();
 		m_scene_manager->Draw();
 
-		m_fps->Draw();
-
-		m_fps->Wait();
+		GameTimeManager::GetInstance()->Draw();
+		GameTimeManager::GetInstance()->WaitTime();
 		ScreenFlip();
 	}
 }

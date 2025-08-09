@@ -139,6 +139,7 @@ void EffectManager::OutputWeaponShotEffect(const Event<WeaponShotData>& event)
 		{
 			const auto effect = std::static_pointer_cast<Effect>(obj);
 			effect->AttachOwnerTransform(event.data.muzzle_transform);
+			effect->AddTimeScaleOwner(event.data.weapon_owner_name);
 			effect->SetOffsetAngle(VGet(270.0f * math::kDegToRad, 0.0f, 0.0f));
 			effect->SetOffsetScale(3.0f);
 			AddEffect(effect);
@@ -159,7 +160,8 @@ void EffectManager::OutputRocketLauncherShotEffect(const Event<RocketLauncherSho
 	if (obj)
 	{
 		const auto effect = std::static_pointer_cast<Effect>(obj);
-		effect->AttachOwnerTransform(event.data.m_ejection_port_transform);
+		effect->AttachOwnerTransform(event.data.ejection_port_transform);
+		effect->AddTimeScaleOwner(event.data.weapon_owner_name);
 		effect->SetOffsetAngle(VGet(270.0f * math::kDegToRad, 0.0f, 0.0f));
 		effect->SetOffsetScale(1.0f);
 		AddEffect(effect);
@@ -178,7 +180,8 @@ void EffectManager::OutputOnShotBulletEffect(const Event<OnShotBulletData>& even
 		{
 			const auto effect = std::static_pointer_cast<Effect>(obj);
 			effect->AttachOwnerTransform(event.data.bullet_transform);
-			effect->AddReturnPoolTriggerHandle(event.data.m_obj_handle);
+			effect->AddTimeScaleOwner(event.data.weapon_owner_name);
+			effect->AddReturnPoolTriggerHandle(event.data.obj_handle);
 			effect->SetOffsetAngle(VGet(0.0f, DX_PI_F, 0.0f));
 			effect->SetOffsetScale(2.5f);
 			AddEffect(effect);

@@ -33,6 +33,8 @@ private:
 
 	void CalcColliderPos();
 
+	[[nodiscard]] float GetDeltaTime() const;
+
 private:
 	static constexpr VECTOR kBasicAngle					= { 90.0f * math::kDegToRad, 0.0f, 0.0f };
 	static constexpr float  kBasicScale					= 1.5f;
@@ -48,6 +50,7 @@ private:
 
 private:
 	std::shared_ptr<Modeler> m_modeler;
+	std::string m_time_scale_owner_name;
 
 	VECTOR m_move_dir;
 	float  m_alive_timer;

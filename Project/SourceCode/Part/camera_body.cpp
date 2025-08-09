@@ -34,8 +34,12 @@ void CameraBody::CalcPos()
 
 void CameraBody::CalcDampedPos()
 {
+	const auto time_manager = GameTimeManager::GetInstance();
 	const auto owner_axes	= m_owner_transform->GetAxes(CoordinateKind::kWorld);
-	m_current_pos			= math::GetDampedValueOnAxes(m_current_pos, m_destination_pos, m_damping, owner_axes);
+
+	m_current_pos = math::GetDampedValueOnAxes(
+		m_current_pos, m_destination_pos, m_damping, 
+		owner_axes, time_manager->GetDeltaTime(TimeScale::LayerKind::kCamera));
 
 	m_owner_transform->SetPos(CoordinateKind::kWorld, m_current_pos);
 }

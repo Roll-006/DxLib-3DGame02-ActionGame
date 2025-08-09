@@ -4,6 +4,7 @@ Effect::Effect(const EffectData& data) :
 	ObjBase						(data.obj_name, ObjTag.EFFECT),
 	m_origin_effect_handle		(HandleKeeper::GetInstance()->LoadHandle(HandleKind::kEffect, data.file_path)),
 	m_playing_effect_handle		(-1),
+	m_time_scale_owner_name		(""),
 	m_owner_transform			(nullptr),
 	m_return_pool_trigger_handle(-1),
 	m_offset_pos				(v3d::GetZeroV()),
@@ -23,8 +24,9 @@ Effect::~Effect()
 
 void Effect::Init()
 {
-	m_owner_transform				= nullptr;
+	m_time_scale_owner_name			= "";
 	m_return_pool_trigger_handle	= -1;
+	m_owner_transform				= nullptr;
 
 	m_offset_pos					= v3d::GetZeroV();
 	m_offset_angle					= v3d::GetZeroV();
@@ -45,7 +47,7 @@ void Effect::Update()
 {
 	if (!IsActive()) { return; }
 
-	m_play_wait_timer += FPS::GetDeltaTime();
+	m_play_wait_timer += GetDeltaTime();
 }
 
 void Effect::LateUpdate()
@@ -83,6 +85,19 @@ void Effect::AttachOwnerTransform(const std::shared_ptr<Transform> owner_transfo
 void Effect::DetachOwnerTransform()
 {
 	m_owner_transform = nullptr;
+}
+#pragma endregion
+
+
+#pragma region “o˜^ / íœ
+void Effect::AddTimeScaleOwner(const std::string& owner_name)
+{
+	m_time_scale_owner_name = owner_name;
+}
+
+void Effect::RemoveTimeScaleOwner()
+{
+	m_time_scale_owner_name = "";
 }
 
 void Effect::AddReturnPoolTriggerHandle(const int return_trigger_handle)
@@ -142,7 +157,7 @@ void Effect::ApplyPlaySpeed() const
 {
 	if (m_playing_effect_handle > -1)
 	{
-		SetSpeedPlayingEffekseer3DEffect(m_playing_effect_handle, m_data.play_speed * FPS::GetDeltaTime());
+		SetSpeedPlayingEffekseer3DEffect(m_playing_effect_handle, m_data.play_speed * GetDeltaTime());
 	}
 }
 
@@ -153,4 +168,13 @@ void Effect::PlayEffect()
 		m_playing_effect_handle = PlayEffekseer3DEffect(m_origin_effect_handle);
 		++m_play_count;
 	}
+}
+
+float Effect::GetDeltaTime() const
+{
+	const auto time_manager = GameTimeManager::GetInstance();
+
+	return m_time_scale_owner_name == ObjName.PLAYER
+		? time_manager->GetDeltaTime(TimeScale::LayerKind::kPlayer)
+		: time_manager->GetDeltaTime(TimeScale::LayerKind::kEffect);
 }

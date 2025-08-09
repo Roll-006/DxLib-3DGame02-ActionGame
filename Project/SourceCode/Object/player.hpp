@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "../Base/character_base.hpp"
 
+#include "../GameTime/game_time_manager.hpp"
 #include "../Part/player_animator.hpp"
 #include "../Part/subject.hpp"
 

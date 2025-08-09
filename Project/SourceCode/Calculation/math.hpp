@@ -14,7 +14,7 @@
 
 #include "../Data/Kind/time_kind.hpp"
 #include "../Data/IncludeList/vector.hpp"
-#include "../FPS/fps.hpp"
+#include "../GameTime/fps.hpp"
 
 class Line;
 class Segment;
@@ -186,8 +186,8 @@ namespace math
 	/// @param target_value 目的の値
 	/// @param damping 減衰値(時定数)
 	/// @return 減衰後の値
-	[[nodiscard]] float  GetDampedValue(const float   current_value, const float   target_value, const float   damping);
-	[[nodiscard]] VECTOR GetDampedValue(const VECTOR& current_value, const VECTOR& target_value, const VECTOR& damping);
+	[[nodiscard]] float  GetDampedValue(const float   current_value, const float   target_value, const float   damping, const float delta_time);
+	[[nodiscard]] VECTOR GetDampedValue(const VECTOR& current_value, const VECTOR& target_value, const VECTOR& damping, const float delta_time);
 
 	/// @brief 特定の軸(forward, right, up)を基準にした減衰後の値を取得
 	/// @param current_value 現在の値
@@ -195,7 +195,7 @@ namespace math
 	/// @param damping 減衰値(時定数)
 	/// @param parent_axes 基準とする軸
 	/// @return 減衰後の値
-	[[nodiscard]] VECTOR GetDampedValueOnAxes(const VECTOR& current_value, const VECTOR& target_value, const VECTOR& damping, const Axes& parent_axes);
+	[[nodiscard]] VECTOR GetDampedValueOnAxes(const VECTOR& current_value, const VECTOR& target_value, const VECTOR& damping, const Axes& parent_axes, const float delta_time);
 	#pragma endregion
 
 

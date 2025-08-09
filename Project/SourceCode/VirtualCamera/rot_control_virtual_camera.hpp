@@ -3,7 +3,6 @@
 #include "../Interface/i_control_virtual_camera.hpp"
 
 /// @brief 回転コントロールカメラ
-/// @brief 対象の周りを回転する
 class RotControlVirtualCamera final : public VirtualCameraBase, public IControlVirtualCamera
 {
 public:
@@ -19,8 +18,8 @@ public:
 
 	#pragma region コマンド
 	//void MoveUp()					override;
-	//void MoveDown()					override;
-	//void MoveLeft()					override;
+	//void MoveDown()				override;
+	//void MoveLeft()				override;
 	//void MoveRight()				override;
 	void InitAim()					override;
 	void InitYawAim()				override;
