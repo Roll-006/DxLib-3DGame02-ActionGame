@@ -25,3 +25,11 @@ enum class InputModeKind
 	kTrigger,
 	kHold,
 };
+
+enum class InputDirKind
+{
+	kLeft,
+	kRight,
+	kUp,
+	kDown,
+};

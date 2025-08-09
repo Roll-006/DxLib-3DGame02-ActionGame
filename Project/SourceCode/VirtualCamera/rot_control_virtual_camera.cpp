@@ -2,16 +2,17 @@
 #include "../Command/command_handler.hpp"
 
 RotControlVirtualCamera::RotControlVirtualCamera(const int priority) :
-	ControlVirtualCameraBase(ObjName.ROT_CONTROL_CAMERA, VirtualCameraKind::kRotControl)
+	VirtualCameraBase	(ObjName.ROT_CONTROL_CAMERA, VirtualCameraKind::kRotControl),
+	m_data				(ControlVirtualCameraData())
 {
 	m_priority = priority;
 	m_active_scene_kind.emplace_back(SceneKind::kPlay);
 
-	m_aim->SetTrackedObjOffset		(VGet(10.0f, 10.0f, 0.0f));
+	m_aim->SetTrackedObjOffset	(VGet(10.0f, 10.0f, 0.0f));
 	m_aim->SetHorizontalDamping	(0.05f);
 	m_aim->SetVerticalDamping	(0.0f);
 
-	m_body->SetFollowOffset	(VGet(30.0f, 20.0f, -90.0f));
+	m_body->SetFollowOffset		(VGet(30.0f, 20.0f, -90.0f));
 	m_body->SetDamping			(VGet(0.015f, 0.015f, 0.0f));
 }
 
@@ -38,7 +39,7 @@ void RotControlVirtualCamera::LateUpdate()
 	if (!IsActive()) { return; }
 
 	MATRIX m = MGetIdent();
-	CreateRotationXYZMatrix(&m, m_input_angle.at(TimeKind::kCurrent).x, m_input_angle.at(TimeKind::kCurrent).y, m_input_angle.at(TimeKind::kCurrent).z);
+	CreateRotationXYZMatrix(&m, m_data.input_angle[TimeKind::kCurrent].x, m_data.input_angle[TimeKind::kCurrent].y, m_data.input_angle[TimeKind::kCurrent].z);
 	m_target_transform->SetRot(CoordinateKind::kWorld, MGetRotElem(m));
 
 	CalcTransform();
@@ -56,78 +57,73 @@ void RotControlVirtualCamera::Draw() const
 
 
 #pragma region コマンド
-void RotControlVirtualCamera::MoveUp()
-{
-	// 視点リセット中は操作不可
-	if (m_is_init_aiming) { return; }
-
-	m_move_dir.x = -1;
-	m_is_input.at(static_cast<int>(InputDir::kUp)) = true;
-}
-
-void RotControlVirtualCamera::MoveDown()
-{
-	// 視点リセット中は操作不可
-	if (m_is_init_aiming) { return; }
-
-	m_move_dir.x = 1;
-	m_is_input.at(static_cast<int>(InputDir::kDown)) = true;
-}
-
-void RotControlVirtualCamera::MoveLeft()
-{
-	// 視点リセット中は操作不可
-	if (m_is_init_aiming) { return; }
-
-	m_move_dir.y = -1;
-	m_is_input.at(static_cast<int>(InputDir::kLeft)) = true;
-}
-
-void RotControlVirtualCamera::MoveRight()
-{
-	// 視点リセット中は操作不可
-	if (m_is_init_aiming) { return; }
-
-	m_move_dir.y = 1;
-	m_is_input.at(static_cast<int>(InputDir::kRight)) = true;
-}
+//void RotControlVirtualCamera::MoveUp()
+//{
+//	// 視点リセット中は操作不可
+//	if (m_data.is_init_aiming) { return; }
+//
+//	m_data.move_dir.x = -1;
+//}
+//
+//void RotControlVirtualCamera::MoveDown()
+//{
+//	// 視点リセット中は操作不可
+//	if (m_data.is_init_aiming) { return; }
+//
+//	m_data.move_dir.x = 1;
+//}
+//
+//void RotControlVirtualCamera::MoveLeft()
+//{
+//	// 視点リセット中は操作不可
+//	if (m_data.is_init_aiming) { return; }
+//
+//	m_data.move_dir.y = -1;
+//}
+//
+//void RotControlVirtualCamera::MoveRight()
+//{
+//	// 視点リセット中は操作不可
+//	if (m_data.is_init_aiming) { return; }
+//
+//	m_data.move_dir.y = 1;
+//}
 
 void RotControlVirtualCamera::InitAim()
 {
-	if (m_is_init_aiming) { return; }
+	if (m_data.is_init_aiming) { return; }
 
 	// 追跡対象のforwardを目標とする
-	const VECTOR forward				= m_target_transform->GetForward(CoordinateKind::kWorld);
-	m_input_angle.at(TimeKind::kNext)	= math::GetYawRotVector(forward);
-	m_input_angle.at(TimeKind::kNext).y	= math::ConnectMinusPiToPi(m_input_angle.at(TimeKind::kNext).y);
+	const VECTOR forward					= m_target_transform->GetForward(CoordinateKind::kWorld);
+	m_data.input_angle[TimeKind::kNext]		= math::GetYawRotVector(forward);
+	m_data.input_angle[TimeKind::kNext].y	= math::ConnectMinusPiToPi(m_data.input_angle[TimeKind::kNext].y);
 
-	m_init_angle_speed					= kInitAngleSpeed;
-	m_init_end_threshold				= kInitAngleEndThreshold;
-	m_is_init_aiming					= true;
+	m_data.init_angle_speed					= kInitAngleSpeed;
+	m_data.init_end_threshold				= kInitAngleEndThreshold;
+	m_data.is_init_aiming					= true;
 }
 
 void RotControlVirtualCamera::InitYawAim()
 {	
-	if (m_is_init_aiming) { return; }
+	if (m_data.is_init_aiming) { return; }
 
 	// ヨー角以外はカメラ自身の姿勢をそのまま保つ
 	const VECTOR forward				= m_target_transform->GetForward(CoordinateKind::kWorld);
 	const float  yaw					= math::GetYaw(forward);
-	m_input_angle.at(TimeKind::kNext)	= m_input_angle.at(TimeKind::kCurrent);
-	m_input_angle.at(TimeKind::kNext).y	= math::ConnectMinusPiToPi(yaw);
+	m_data.input_angle[TimeKind::kNext]	= m_data.input_angle[TimeKind::kCurrent];
+	m_data.input_angle[TimeKind::kNext].y	= math::ConnectMinusPiToPi(yaw);
 
-	m_init_angle_speed					= kInitYawSpeed;
-	m_init_end_threshold				= kInitYawEndThreshold;
-	m_is_init_aiming					= true;
+	m_data.init_angle_speed					= kInitYawSpeed;
+	m_data.init_end_threshold				= kInitYawEndThreshold;
+	m_data.is_init_aiming					= true;
 }
 #pragma endregion
 
 
 void RotControlVirtualCamera::InitMove()
 {
-	for (auto& is_input : m_is_input) { is_input = false; }
-	m_move_dir = v3d::GetZeroV();
-	m_velocity = v3d::GetZeroV();
+	m_data.move_dir = v3d::GetZeroV();
+	m_data.velocity = v3d::GetZeroV();
 }
 
 void RotControlVirtualCamera::Move()
@@ -143,8 +139,8 @@ void RotControlVirtualCamera::Move()
 
 void RotControlVirtualCamera::CalcMoveDirFromPad()
 {
-	if (m_is_init_aiming)															{ return; }
-	if (m_move_dir != v3d::GetZeroV())												{ return; }
+	if (m_data.is_init_aiming)														{ return; }
+	if (m_data.move_dir != v3d::GetZeroV())											{ return; }
 	if (InputChecker::GetInstance()->GetCurrentInputDevice() != DeviceKind::kPad)	{ return; }
 
 	// 各方向のパラメーターを取得
@@ -157,62 +153,64 @@ void RotControlVirtualCamera::CalcMoveDirFromPad()
 	// 速度ベクトル・入力判定を取得
 	if (up_param)
 	{
-		m_velocity.x = -math::GetUnitValue<int, float>(InputChecker::kStickDeadZone,  InputChecker::kStickMaxSlope, up_param);
-		m_is_input.at(static_cast<int>(InputDir::kUp))    = true;
+		m_data.velocity.x = -math::GetUnitValue<int, float>(InputChecker::kStickDeadZone,  InputChecker::kStickMaxSlope, up_param);
 	}
 	if (down_param)
 	{
-		m_velocity.x =  math::GetUnitValue<int, float>(InputChecker::kStickDeadZone, -InputChecker::kStickMinSlope, -down_param);
-		m_is_input.at(static_cast<int>(InputDir::kDown))  = true;
+		m_data.velocity.x =  math::GetUnitValue<int, float>(InputChecker::kStickDeadZone, -InputChecker::kStickMinSlope, -down_param);
 	}
 	if (left_param)
 	{
-		m_velocity.y = -math::GetUnitValue<int, float>(InputChecker::kStickDeadZone, -InputChecker::kStickMinSlope, -left_param);
-		m_is_input.at(static_cast<int>(InputDir::kLeft))  = true;
+		m_data.velocity.y = -math::GetUnitValue<int, float>(InputChecker::kStickDeadZone, -InputChecker::kStickMinSlope, -left_param);
 	}
 	if (right_param)
 	{
-		m_velocity.y =  math::GetUnitValue<int, float>(InputChecker::kStickDeadZone,  InputChecker::kStickMaxSlope, right_param);
-		m_is_input.at(static_cast<int>(InputDir::kRight)) = true;
+		m_data.velocity.y =  math::GetUnitValue<int, float>(InputChecker::kStickDeadZone,  InputChecker::kStickMaxSlope, right_param);
 	}
-	m_velocity *= kMoveSpeedWithStick;
+	m_data.velocity *= kMoveSpeedWithStick;
 
 	// 入力方向も合わせて取得
-	m_move_dir = v3d::GetNormalizedV(m_velocity);
+	m_data.move_dir = v3d::GetNormalizedV(m_data.velocity);
 }
 
 void RotControlVirtualCamera::CalcMoveDirFromMouse()
 {
-	if (m_is_init_aiming)																{ return; }
-	if (m_move_dir != v3d::GetZeroV())													{ return; }
+	if (m_data.is_init_aiming)															{ return; }
+	if (m_data.move_dir != v3d::GetZeroV())												{ return; }
 	if (InputChecker::GetInstance()->GetCurrentInputDevice() != DeviceKind::kKeyboard)	{ return; }
 
 	// 移動速度を取得
 	Vector2D<float> velocity_2d = InputChecker::GetInstance()->GetMouseVelocity(TimeKind::kCurrent);
-	m_velocity = VGet(velocity_2d.y, velocity_2d.x, 0.0f) * kMoveSpeedWithMouse;
-
-	// 入力判定を取得
-	if (m_velocity.x > 0) { m_is_input.at(static_cast<int>(InputDir::kUp))		= true; }
-	if (m_velocity.x < 0) { m_is_input.at(static_cast<int>(InputDir::kDown))	= true; }
-	if (m_velocity.y > 0) { m_is_input.at(static_cast<int>(InputDir::kLeft))	= true; }
-	if (m_velocity.y < 0) { m_is_input.at(static_cast<int>(InputDir::kRight))	= true; }
+	m_data.velocity = VGet(velocity_2d.y, velocity_2d.x, 0.0f) * kMoveSpeedWithMouse;
 
 	// 入力方向も合わせて取得
-	m_move_dir = v3d::GetNormalizedV(m_velocity);
+	m_data.move_dir = v3d::GetNormalizedV(m_data.velocity);
 }
 
 void RotControlVirtualCamera::CalcMoveDirFromCommand()
 {
-	const auto command = CommandHandler::GetInstance();
+	if (m_data.is_init_aiming) { return; }
+
+	const auto input	= InputChecker	::GetInstance();
+	const auto command	= CommandHandler::GetInstance();
+
+	// パッド・マウスの入力は例外的にコマンド入力の動きを適用しない
+	for (int i = 0; i < 4; ++i)
+	{
+		if (input->IsInput(static_cast<mouse::SlideDirKind>(i))) { return; }
+		if (input->IsInput(static_cast<pad::StickKind>(i + 4)))  { return; }
+	}
 
 	// コマンドパターンで入力された場合の速度・方向を取得
-	if (	command->IsExecuting(CommandKind::kMoveUpCamera)
-		||	command->IsExecuting(CommandKind::kMoveDownCamera)
-		||	command->IsExecuting(CommandKind::kMoveLeftCamera)
-		||	command->IsExecuting(CommandKind::kMoveRightCamera))
+	if (command->IsExecuting(CommandKind::kMoveUpCamera))    { m_data.move_dir.x = -1; }
+	if (command->IsExecuting(CommandKind::kMoveDownCamera))  { m_data.move_dir.x =  1; }
+	if (command->IsExecuting(CommandKind::kMoveLeftCamera))  { m_data.move_dir.y = -1; }
+	if (command->IsExecuting(CommandKind::kMoveRightCamera)) { m_data.move_dir.y =  1; }
+
+	if (m_data.move_dir != v3d::GetZeroV())
 	{
-		m_move_dir = v3d::GetNormalizedV(m_move_dir);
-		m_velocity = m_move_dir * kMoveSpeedWithButton;
+		m_data.move_dir = v3d::GetNormalizedV(m_data.move_dir);
+		m_data.velocity = m_data.move_dir * kMoveSpeedWithButton;
 	}
 }
 
@@ -221,26 +219,27 @@ void RotControlVirtualCamera::CalcInputAngle()
 	// 視点リセット
 	CalcInitAim();
 
-	m_velocity *= FPS::GetDeltaTime();
+	m_data.velocity *= FPS::GetDeltaTime();
 
 	// 角度を取得
-	if (m_is_input.at(static_cast<int>(InputDir::kUp)))		{ m_input_angle.at(TimeKind::kCurrent).x += m_velocity.x; }
-	if (m_is_input.at(static_cast<int>(InputDir::kDown)))	{ m_input_angle.at(TimeKind::kCurrent).x += m_velocity.x; }
-	if (m_is_input.at(static_cast<int>(InputDir::kLeft)))	{ m_input_angle.at(TimeKind::kCurrent).y += m_velocity.y; }
-	if (m_is_input.at(static_cast<int>(InputDir::kRight)))	{ m_input_angle.at(TimeKind::kCurrent).y += m_velocity.y; }
+	const auto command = CommandHandler::GetInstance();
+	if (command->IsExecuting(CommandKind::kMoveUpCamera))	{ m_data.input_angle[TimeKind::kCurrent].x += m_data.velocity.x; }
+	if (command->IsExecuting(CommandKind::kMoveDownCamera))	{ m_data.input_angle[TimeKind::kCurrent].x += m_data.velocity.x; }
+	if (command->IsExecuting(CommandKind::kMoveLeftCamera))	{ m_data.input_angle[TimeKind::kCurrent].y += m_data.velocity.y; }
+	if (command->IsExecuting(CommandKind::kMoveRightCamera)){ m_data.input_angle[TimeKind::kCurrent].y += m_data.velocity.y; }
 
-	m_input_angle.at(TimeKind::kCurrent).y = math::ConnectMinusPiToPi(m_input_angle.at(TimeKind::kCurrent).y);
+	m_data.input_angle[TimeKind::kCurrent].y = math::ConnectMinusPiToPi(m_data.input_angle[TimeKind::kCurrent].y);
 
 	// 角度制限
-	if (m_input_angle.at(TimeKind::kCurrent).x < kMinVerticalInputAngle * math::kDegToRad) { m_input_angle.at(TimeKind::kCurrent).x = kMinVerticalInputAngle * math::kDegToRad; }
-	if (m_input_angle.at(TimeKind::kCurrent).x > kMaxVerticalInputAngle * math::kDegToRad) { m_input_angle.at(TimeKind::kCurrent).x = kMaxVerticalInputAngle * math::kDegToRad; }
+	if (m_data.input_angle[TimeKind::kCurrent].x < kMinVerticalInputAngle * math::kDegToRad) { m_data.input_angle[TimeKind::kCurrent].x = kMinVerticalInputAngle * math::kDegToRad; }
+	if (m_data.input_angle[TimeKind::kCurrent].x > kMaxVerticalInputAngle * math::kDegToRad) { m_data.input_angle[TimeKind::kCurrent].x = kMaxVerticalInputAngle * math::kDegToRad; }
 }
 
 void RotControlVirtualCamera::CalcInitAim()
 {
-	if (!m_is_init_aiming) { return; }
+	if (!m_data.is_init_aiming) { return; }
 
-	VECTOR distance_v	= m_input_angle.at(TimeKind::kNext) - m_input_angle.at(TimeKind::kCurrent);
+	VECTOR distance_v	= m_data.input_angle[TimeKind::kNext] - m_data.input_angle[TimeKind::kCurrent];
 	distance_v.y		= math::ConnectMinusPiToPi(distance_v.y);
 	VECTOR dir			= v3d::GetNormalizedV(distance_v);
 
@@ -253,13 +252,13 @@ void RotControlVirtualCamera::CalcInitAim()
 	}
 
 	// 目的地に遠いほど速く移動させる
-	m_input_angle.at(TimeKind::kCurrent) += dir * distance * m_init_angle_speed * FPS::GetDeltaTime();
+	m_data.input_angle[TimeKind::kCurrent] += dir * distance * m_data.init_angle_speed * FPS::GetDeltaTime();
 
 	// 終了判定
-	distance = VSize(m_input_angle.at(TimeKind::kNext) - m_input_angle.at(TimeKind::kCurrent));
-	if (distance < m_init_end_threshold)
+	distance = VSize(m_data.input_angle[TimeKind::kNext] - m_data.input_angle[TimeKind::kCurrent]);
+	if (distance < m_data.init_end_threshold)
 	{
-		m_input_angle.at(TimeKind::kCurrent) = m_input_angle.at(TimeKind::kNext);
-		m_is_init_aiming = false;
+		m_data.input_angle[TimeKind::kCurrent] = m_data.input_angle.at(TimeKind::kNext);
+		m_data.is_init_aiming = false;
 	}
 }

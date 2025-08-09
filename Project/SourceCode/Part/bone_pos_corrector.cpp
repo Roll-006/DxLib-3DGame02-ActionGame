@@ -2,7 +2,6 @@
 
 void BonePosCorrector::CorrectAimPoseBonePos(const int model_handle, const VECTOR& aim_dir)
 {
-
 	// ボーンインデックス取得
 	const auto  spine_index		= MV1SearchFrame(model_handle, BonePath.SPINE);
 	const auto  spine1_index	= MV1SearchFrame(model_handle, BonePath.SPINE_1);

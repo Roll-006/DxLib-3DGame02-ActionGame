@@ -75,9 +75,13 @@ void CommandHandler::InitKeyCommand()
 	AddInputCode(CommandKind::kQuickTurn,					KEY_INPUT_Q);
 
 	AddInputCode(CommandKind::kMoveUpCamera,				KEY_INPUT_UP);
+	AddInputCode(CommandKind::kMoveUpCamera,				mouse::SlideDirKind::kUp);
 	AddInputCode(CommandKind::kMoveDownCamera,				KEY_INPUT_DOWN);
+	AddInputCode(CommandKind::kMoveDownCamera,				mouse::SlideDirKind::kDown);
 	AddInputCode(CommandKind::kMoveLeftCamera,				KEY_INPUT_LEFT);
+	AddInputCode(CommandKind::kMoveLeftCamera,				mouse::SlideDirKind::kLeft);
 	AddInputCode(CommandKind::kMoveRightCamera,				KEY_INPUT_RIGHT);
+	AddInputCode(CommandKind::kMoveRightCamera,				mouse::SlideDirKind::kRight);
 
 	AddInputCode(CommandKind::kSelectWeaponInsideLeft,		KEY_INPUT_2);
 	AddInputCode(CommandKind::kSelectWeaponInsideUp,		KEY_INPUT_1);
@@ -90,12 +94,6 @@ void CommandHandler::InitKeyCommand()
 	AddInputCode(CommandKind::kSelectWeaponRotateLeft,		mouse::WheelKind ::kUp);
 	AddInputCode(CommandKind::kSelectWeaponRotateRight,		mouse::WheelKind ::kDown);
 	AddInputCode(CommandKind::kSideChangeWeapon,			mouse::ButtonKind::kMiddle);
-
-	// 例外処理として実行
-	//AddInputCode(CommandKind::kMoveUpCamera,		mouse::SlideDirKind::kUp);
-	//AddInputCode(CommandKind::kMoveDownCamera,	mouse::SlideDirKind::kDown);
-	//AddInputCode(CommandKind::kMoveLeftCamera,	mouse::SlideDirKind::kLeft);
-	//AddInputCode(CommandKind::kMoveRightCamera,	mouse::SlideDirKind::kRight);
 }
 
 void CommandHandler::InitPadCommand()
@@ -132,18 +130,16 @@ void CommandHandler::InitPadCommand()
 	AddInputCode(CommandKind::kCrouch,				pad::ButtonKind	::kB);
 	AddInputCode(CommandKind::kQuickTurn,			pad::ButtonKind	::kRB);
 
+	AddInputCode(CommandKind::kMoveUpCamera,		pad::StickKind	::kRSUp);
+	AddInputCode(CommandKind::kMoveDownCamera,		pad::StickKind	::kRSDown);
+	AddInputCode(CommandKind::kMoveLeftCamera,		pad::StickKind	::kRSLeft);
+	AddInputCode(CommandKind::kMoveRightCamera,		pad::StickKind	::kRSRight);
 	AddInputCode(CommandKind::kInitAim,				pad::ButtonKind	::kRB);
 
 	AddInputCode(CommandKind::kSelectWeaponLeft,	pad::ButtonKind	::kLeft);
 	AddInputCode(CommandKind::kSelectWeaponUp,		pad::ButtonKind	::kUp);
 	AddInputCode(CommandKind::kSelectWeaponRight,	pad::ButtonKind	::kRight);
 	AddInputCode(CommandKind::kSelectWeaponDown,	pad::ButtonKind	::kDown);
-
-	// 例外処理として実行
-	//AddInputCode(CommandKind::kMoveUpCamera,		pad::StickKind	::kRSUp);
-	//AddInputCode(CommandKind::kMoveDownCamera,	pad::StickKind	::kRSDown);
-	//AddInputCode(CommandKind::kMoveLeftCamera,	pad::StickKind	::kRSLeft);
-	//AddInputCode(CommandKind::kMoveRightCamera,	pad::StickKind	::kRSRight);
 }
 
 void CommandHandler::InitInputMode()

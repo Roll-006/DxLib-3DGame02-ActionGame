@@ -1,9 +1,10 @@
 #pragma once
-#include "../Base/control_virtual_camera_base.hpp"
+#include "../Base/virtual_camera_base.hpp"
+#include "../Interface/i_control_virtual_camera.hpp"
 
 /// @brief 回転コントロールカメラ
 /// @brief 対象の周りを回転する
-class RotControlVirtualCamera final : public ControlVirtualCameraBase
+class RotControlVirtualCamera final : public VirtualCameraBase, public IControlVirtualCamera
 {
 public:
 	RotControlVirtualCamera(const int priority);
@@ -15,14 +16,18 @@ public:
 	void DrawToShadowMap()	const	override;
 	void Draw()				const	override;
 
+
 	#pragma region コマンド
-	void MoveUp()					override;
-	void MoveDown()					override;
-	void MoveLeft()					override;
-	void MoveRight()				override;
+	//void MoveUp()					override;
+	//void MoveDown()					override;
+	//void MoveLeft()					override;
+	//void MoveRight()				override;
 	void InitAim()					override;
 	void InitYawAim()				override;
 	#pragma endregion
+
+
+	[[nodiscard]] bool IsInitAiming() const override { return m_data.is_init_aiming; }
 
 private:
 	void InitMove()					override;
@@ -34,13 +39,6 @@ private:
 
 	void CalcInputAngle()			override;
 	void CalcInitAim()				override;
-
-	//void CalcPos();
-
-	//[[nodiscard]] MATRIX GetRotMatrix() override;
-	//void InitMove();
-	//void JudgeLookSameDirTarget();
-	//void ApplyInvert();
 
 private:
 	static constexpr int	kPriority				= 10;		// バーチャルカメラの優先度
@@ -55,4 +53,6 @@ private:
 	static constexpr float	kMoveSpeedWithStick		= 2.5f;
 	static constexpr float	kMoveSpeedWithMouse		= 0.1f;
 	static constexpr float	kMoveSpeedWithButton	= 2.0f;
+
+	ControlVirtualCameraData m_data;
 };
