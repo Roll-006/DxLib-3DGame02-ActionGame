@@ -3,18 +3,16 @@
 AnimatorBase::AnimatorBase(const std::shared_ptr<Modeler> modeler) :
 	m_result_modeler(modeler)
 {
-	const auto t = std::make_shared<Transform>();
-	t->SetPos(CoordinateKind::kWorld, VGet(100, 0, 0));
-	m_resource_modeler[BodyKind::kUpperBody] = std::make_shared<Modeler>(t, m_result_modeler->GetModelHandle());
-	m_resource_modeler[BodyKind::kLowerBody] = std::make_shared<Modeler>(   m_result_modeler->GetModelHandle());
-	m_resource_modeler.at(BodyKind::kUpperBody)->ApplyMatrix();
+	m_resource_modeler[BodyKind::kUpperBody] = std::make_shared<Modeler>(m_result_modeler->GetModelHandle());
+	m_resource_modeler[BodyKind::kLowerBody] = std::make_shared<Modeler>(m_result_modeler->GetModelHandle());
 
 	m_time_kind_data.emplace_back(std::make_tuple(BodyKind::kUpperBody, TimeKind::kPrev,	AnimTimeKindData()));
 	m_time_kind_data.emplace_back(std::make_tuple(BodyKind::kUpperBody, TimeKind::kCurrent, AnimTimeKindData()));
 	m_time_kind_data.emplace_back(std::make_tuple(BodyKind::kLowerBody, TimeKind::kPrev,	AnimTimeKindData()));
 	m_time_kind_data.emplace_back(std::make_tuple(BodyKind::kLowerBody, TimeKind::kCurrent, AnimTimeKindData()));
 
-	SetBoneNum();
+	SetupStaticBone();
+	DivideBone();
 }
 
 AnimatorBase::~AnimatorBase()
@@ -182,9 +180,6 @@ void AnimatorBase::PlayAnim()
 	}
 
 	CombineAnim();
-
-	MV1DrawModel(m_resource_modeler.at(BodyKind::kUpperBody)->GetModelHandle());
-	MV1DrawModel(m_resource_modeler.at(BodyKind::kLowerBody)->GetModelHandle());
 }
 
 void AnimatorBase::BlendAnim()
@@ -198,40 +193,51 @@ void AnimatorBase::BlendAnim()
 	if (m_blend_rate[BodyKind::kLowerBody] == 1.0f) { DetachAnim(TimeKind::kPrev, BodyKind::kLowerBody); }
 }
 
-void AnimatorBase::SetBoneNum()
+void AnimatorBase::SetupStaticBone()
 {
-	// WARNING : Mixamoモデル以外のモデルは想定していない
 	const int model_handle = m_result_modeler->GetModelHandle();
-	std::unordered_map<std::string, int> upper_body_bone_num;
 	std::unordered_map<std::string, int> lower_body_bone_num;
+	std::unordered_map<std::string, int> upper_body_bone_num;
 
 	// 下半身のボーンを設定
-	lower_body_bone_num[BonePath.HIPS]			 = MV1SearchFrame(model_handle, BonePath.HIPS);
-	lower_body_bone_num[BonePath.SPINE]			 = MV1SearchFrame(model_handle, BonePath.SPINE);
-	lower_body_bone_num[BonePath.SPINE_1]		 = MV1SearchFrame(model_handle, BonePath.SPINE_1);
-	lower_body_bone_num[BonePath.LEFT_UP_LEG]	 = MV1SearchFrame(model_handle, BonePath.LEFT_UP_LEG);
-	lower_body_bone_num[BonePath.LEFT_LEG]		 = MV1SearchFrame(model_handle, BonePath.LEFT_LEG);
-	lower_body_bone_num[BonePath.LEFT_FOOT]		 = MV1SearchFrame(model_handle, BonePath.LEFT_FOOT);
-	lower_body_bone_num[BonePath.LEFT_TOE_BASE]  = MV1SearchFrame(model_handle, BonePath.LEFT_TOE_BASE);
-	lower_body_bone_num[BonePath.LEFT_TOE_END]	 = MV1SearchFrame(model_handle, BonePath.LEFT_TOE_END);
-	lower_body_bone_num[BonePath.RIGHT_UP_LEG]	 = MV1SearchFrame(model_handle, BonePath.RIGHT_UP_LEG);
-	lower_body_bone_num[BonePath.RIGHT_LEG]		 = MV1SearchFrame(model_handle, BonePath.RIGHT_LEG);
-	lower_body_bone_num[BonePath.RIGHT_FOOT]	 = MV1SearchFrame(model_handle, BonePath.RIGHT_FOOT);
-	lower_body_bone_num[BonePath.RIGHT_TOE_BASE] = MV1SearchFrame(model_handle, BonePath.RIGHT_TOE_BASE);
-	lower_body_bone_num[BonePath.RIGHT_TOE_END]  = MV1SearchFrame(model_handle, BonePath.RIGHT_TOE_END);
+	const auto begin_lower_body_bone_num = MV1SearchFrame(model_handle, BonePath.LEFT_UP_LEG);
+	const auto   end_lower_body_bone_num = MV1SearchFrame(model_handle, BonePath.RIGHT_TOE_END);
+	for (int i = begin_lower_body_bone_num; i <= end_lower_body_bone_num; ++i)
+	{
+		lower_body_bone_num[MV1GetFrameName(model_handle, i)] = i;
+	}
 	m_bone_numbers[BodyKind::kLowerBody] = lower_body_bone_num;
 
 	// 上半身のボーンを設定
-	for (int i = 0; i < MV1GetFrameNum(model_handle); ++i)
+	const auto begin_upper_body_bone_num = MV1SearchFrame(model_handle, BonePath.LEFT_SHOULDER);
+	const auto   end_upper_body_bone_num = MV1SearchFrame(model_handle, BonePath.RIGHT_HAND_PINKY_4);
+	for (int i = begin_upper_body_bone_num; i <= end_upper_body_bone_num; ++i)
 	{
-		const auto bone_name = MV1GetFrameName(model_handle, i);
-
-		if (!lower_body_bone_num.count(bone_name))
-		{
-			upper_body_bone_num[bone_name] = i;
-		}
+		upper_body_bone_num[MV1GetFrameName(model_handle, i)] = i;
 	}
 	m_bone_numbers[BodyKind::kUpperBody] = upper_body_bone_num;
+}
+
+void AnimatorBase::DivideBone(const TCHAR* upper_body_end_bone)
+{
+	const int model_handle = m_result_modeler->GetModelHandle();
+
+	// 下半身のボーンを設定
+	const auto begin_lower_body_bone_num = MV1SearchFrame(model_handle, BonePath.HIPS);
+	const auto   end_lower_body_bone_num = MV1SearchFrame(model_handle, upper_body_end_bone) - 1;
+	for (int i = begin_lower_body_bone_num; i <= end_lower_body_bone_num; ++i)
+	{
+		m_bone_numbers[BodyKind::kLowerBody][MV1GetFrameName(model_handle, i)] = i;
+		m_bone_numbers[BodyKind::kUpperBody].erase(MV1GetFrameName(model_handle, i));
+	}
+
+	// 上半身のボーンを設定
+	const auto begin_upper_body_bone_num = MV1SearchFrame(model_handle, upper_body_end_bone);
+	const auto   end_upper_body_bone_num = MV1SearchFrame(model_handle, BonePath.HEAD_TOP_END);
+	for (int i = begin_upper_body_bone_num; i <= end_upper_body_bone_num; ++i)
+	{
+		m_bone_numbers[BodyKind::kUpperBody][MV1GetFrameName(model_handle, i)] = i;
+	}
 }
 
 void AnimatorBase::SetPlayStartTime(AnimTimeKindData* current_time_kind_data, const AnimTimeKindData& prev_time_kind_data, const BodyKind body_kind)

@@ -30,8 +30,8 @@ class Transform;
 
 namespace math
 {
-	static constexpr float kDegreesToRadian = DX_PI_F / 180.0f;		// ディグリーをラジアンに変換(変換対象と掛け算を行う)
-	static constexpr float kRadianToDegrees = 180.0f / DX_PI_F;		// ラジアンをディグリーに変換(変換対象と掛け算を行う)
+	static constexpr float kDegToRad		= DX_PI_F / 180.0f;		// ディグリーをラジアンに変換(変換対象と掛け算を行う)
+	static constexpr float kRadToDeg		= 180.0f / DX_PI_F;		// ラジアンをディグリーに変換(変換対象と掛け算を行う)
 	static constexpr float kEpsilonLow		= 1e-4f;				// 0とみなす(低精度)
 	static constexpr float kEpsilonHigh		= 1e-6f;				// 0とみなす(高精度)
 	static constexpr float kOneThreshold	= 0.9999f;				// 1とみなす閾値
@@ -74,8 +74,7 @@ namespace math
 	[[nodiscard]] MATRIX ConvertAxesToRotMatrix(const Axes& axes);
 
 	/// @brief XYZ軸からオイラー角へ変換
-	/// @brief FIXME : 不具合ありな可能性あり。要検証
-	[[nodiscard]] VECTOR ConvertAxesToEulerAngles(const Axes& axes, const Axes& parent_axes);
+	[[nodiscard]] VECTOR ConvertAxesToEulerAngles(const Axes& axes);
 
 	/// @brief 回転行列からオイラー角へ変換
 	/// @brief FIXME : 不具合ありな可能性あり。要検証
@@ -89,6 +88,9 @@ namespace math
 	/// @brief オイラー角から回転行列へ変換
 	[[nodiscard]] MATRIX ConvertEulerAnglesToXYZRotMatrix(const VECTOR& angle);
 	[[nodiscard]] MATRIX ConvertEulerAnglesToZXYRotMatrix(const VECTOR& angle);
+
+	/// @brief forwardから回転ベクトルを取得(Z軸回転なし)
+	[[nodiscard]] MATRIX ConvertForwardToRotMatrix(const VECTOR& forward);
 	#pragma endregion
 
 

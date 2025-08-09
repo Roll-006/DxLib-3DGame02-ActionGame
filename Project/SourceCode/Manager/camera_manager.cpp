@@ -13,7 +13,7 @@ CameraManager::CameraManager() :
 	m_is_invert_vertical			(false)
 {
 	SetCameraNearFar(kNear, kFar);
-	SetupCamera_Perspective(kFOV * math::kDegreesToRadian);
+	SetupCamera_Perspective(kFOV * math::kDegToRad);
 }
 
 CameraManager::~CameraManager()

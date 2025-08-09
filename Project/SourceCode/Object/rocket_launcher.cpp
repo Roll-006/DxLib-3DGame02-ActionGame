@@ -10,13 +10,13 @@ RocketLauncher::RocketLauncher() :
 	SetOffset(kHoldOffsetPos,	kHoldOffsetAngle,	kHoldOffsetScale,
 			  kAttachOffsetPos, kAttachOffsetAngle, kAttachOffsetScale);
 
-	m_diffusion_shape			= std::make_shared<Circle>();
-	m_scope_scale				= kScopeScale;
-	m_range						= kRange;
-	m_muzzle_offset_pos			= kMuzzleOffsetPos;
-	m_initial_velocity			= kInitialVelocity;
-	m_deceleration				= kDeceleration;
-	m_shot_interval_time		= kShotIntervalTime;
+	m_diffusion_shape		= std::make_shared<Circle>();
+	m_scope_scale			= kScopeScale;
+	m_range					= kRange;
+	m_muzzle_offset_pos		= kMuzzleOffsetPos;
+	m_initial_velocity		= kInitialVelocity;
+	m_deceleration			= kDeceleration;
+	m_shot_interval_time	= kShotIntervalTime;
 
 	// TODO : âºÇ≈íeêîÇê›íË
 	m_max_remaining_bullet_num		= 30;

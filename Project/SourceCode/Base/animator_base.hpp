@@ -37,6 +37,12 @@ public:
 	void AddAnimHandle(const int kind, const std::string& file_path, const int index, const std::string& tag, const float play_speed, const bool is_loop);
 	void AddAnimHandle(const int kind, const int anim_handle,		 const int index, const std::string& tag, const float play_speed, const bool is_loop);
 
+	/// @brief FIXME : ボーンが突然切り替わり不自然なため一時的に初期設定のみでの仕様にとどめる(private化)
+	/// @brief 上半身と下半身の境目のボーンを設定する
+	/// @brief 指定可能ボーン : HIPS, SPINE, SPINE_1, SPINE_2, NECK, HEAD, HEAD_TOP_END
+	/// @param upper_body_end_bone 上半身の最下層とするボーン
+	void DivideBone(const TCHAR* upper_body_end_bone = BonePath.SPINE_2);
+
 	[[nodiscard]] float GetBlendRate(const BodyKind body_kind) const { return m_blend_rate.count(body_kind) ? m_blend_rate.at(body_kind) : 0.0f; }
 	[[nodiscard]] float GetPlayRate (const BodyKind body_kind) const;
 
@@ -51,9 +57,10 @@ protected:
 private:
 	virtual void LoadAnim() abstract;
 
-	void SetBoneNum();
-
 	void DetachAnim(const TimeKind time_kind, const BodyKind body_kind);
+
+	/// @brief 不変(上半身・下半身の行き来がない)ボーンを設定する
+	void SetupStaticBone();
 
 	/// @brief 再生開始地点を設定
 	void SetPlayStartTime(AnimTimeKindData* current_time_kind_data, const AnimTimeKindData& prev_time_kind_data, const BodyKind body_kind);

@@ -139,7 +139,7 @@ void EffectManager::OutputWeaponShotEffect(const Event<WeaponShotData>& event)
 		{
 			const auto effect = std::static_pointer_cast<Effect>(obj);
 			effect->AttachOwnerTransform(event.data.muzzle_transform);
-			effect->SetOffsetAngle(VGet(270.0f * math::kDegreesToRadian, 0.0f, 0.0f));
+			effect->SetOffsetAngle(VGet(270.0f * math::kDegToRad, 0.0f, 0.0f));
 			effect->SetOffsetScale(3.0f);
 			AddEffect(effect);
 		}
@@ -160,7 +160,7 @@ void EffectManager::OutputRocketLauncherShotEffect(const Event<RocketLauncherSho
 	{
 		const auto effect = std::static_pointer_cast<Effect>(obj);
 		effect->AttachOwnerTransform(event.data.m_ejection_port_transform);
-		effect->SetOffsetAngle(VGet(270.0f * math::kDegreesToRadian, 0.0f, 0.0f));
+		effect->SetOffsetAngle(VGet(270.0f * math::kDegToRad, 0.0f, 0.0f));
 		effect->SetOffsetScale(1.0f);
 		AddEffect(effect);
 	}

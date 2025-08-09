@@ -26,6 +26,7 @@ void PlayerAnimator::Init()
 
 void PlayerAnimator::Update()
 {
+	DivideBone();
 	ChangeAnim();
 
 	BlendAnim();
@@ -164,6 +165,7 @@ void PlayerAnimator::CombineMoveNullActionNullWithWeaponAction()
 		break;
 
 	case static_cast<int>(player_state::WeaponActionStateKind::kAimKnife):
+		DivideBone(BonePath.HIPS);
 		AttachAnim(static_cast<int>(PlayerAnimKind::kIdle),							BodyKind::kLowerBody);
 		AttachAnim(static_cast<int>(PlayerAnimKind::kAimKnife),						BodyKind::kUpperBody);
 		break;
@@ -196,6 +198,7 @@ void PlayerAnimator::CombineMoveNullActionNullWithWeaponAction()
 
 	case static_cast<int>(player_state::WeaponActionStateKind::kAimGun):
 	case static_cast<int>(player_state::WeaponActionStateKind::kShot):
+		DivideBone(BonePath.HIPS);
 		AttachAnim(static_cast<int>(PlayerAnimKind::kIdle),							BodyKind::kLowerBody);
 		AttachAnim(static_cast<int>(PlayerAnimKind::kAimGun),						BodyKind::kUpperBody);
 		break;
@@ -305,6 +308,7 @@ void PlayerAnimator::CombineMoveActionNullWithWeaponAction()
 		break;
 
 	case static_cast<int>(player_state::WeaponActionStateKind::kAimKnife):
+		DivideBone(BonePath.HIPS);
 		AttachAnim(static_cast<int>(PlayerAnimKind::kAimKnife),			BodyKind::kUpperBody);
 		break;
 
@@ -314,6 +318,7 @@ void PlayerAnimator::CombineMoveActionNullWithWeaponAction()
 
 	case static_cast<int>(player_state::WeaponActionStateKind::kAimGun):
 	case static_cast<int>(player_state::WeaponActionStateKind::kShot):
+		DivideBone(BonePath.HIPS);
 		AttachAnim(static_cast<int>(PlayerAnimKind::kAimGun),			BodyKind::kUpperBody);
 		break;
 

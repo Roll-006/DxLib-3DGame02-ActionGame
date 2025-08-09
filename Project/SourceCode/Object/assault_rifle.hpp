@@ -23,10 +23,10 @@ private:
 	static constexpr float  kBasicScale				= 5.2f;
 
 	static constexpr VECTOR kHoldOffsetPos			= { -3.0f, 3.0f, 23.0f };
-	static constexpr VECTOR kHoldOffsetAngle		= { 270.0f * math::kDegreesToRadian, 270.0f * math::kDegreesToRadian, 0.0f };
+	static constexpr VECTOR kHoldOffsetAngle		= { 270.0f * math::kDegToRad, 270.0f * math::kDegToRad, 0.0f };
 	static constexpr float  kHoldOffsetScale		= 1.0f;
 	static constexpr VECTOR kAttachOffsetPos		= { 15.0f, -5.0f, -5.0f };
-	static constexpr VECTOR kAttachOffsetAngle		= { 45.0f * math::kDegreesToRadian, 270.0f * math::kDegreesToRadian, 0.0f };
+	static constexpr VECTOR kAttachOffsetAngle		= { 45.0f * math::kDegToRad, 270.0f * math::kDegToRad, 0.0f };
 	static constexpr float  kAttachOffsetScale		= 1.0f;
 
 	static constexpr VECTOR kMuzzleOffsetPos		= { 0.0f, 10.0f, 48.0f };

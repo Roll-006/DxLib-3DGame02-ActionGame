@@ -825,8 +825,8 @@ VECTOR collision::PushBackSphereAndModel    (const VECTOR& velocity, const Spher
 VECTOR collision::PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsule& dynamic_capsule, const Triangle& static_triangle,
     const float slope_difficulty_angle_threshold, const float max_slope_angle)
 {
-    const float slope_threshold_agl = slope_difficulty_angle_threshold  * math::kDegreesToRadian;
-    const float max_slope_agl       = max_slope_angle                   * math::kDegreesToRadian;
+    const float slope_threshold_agl = slope_difficulty_angle_threshold  * math::kDegToRad;
+    const float max_slope_agl       = max_slope_angle                   * math::kDegToRad;
 
     // 未来のカプセルを取得
     Capsule future_capsule = dynamic_capsule;
@@ -847,7 +847,7 @@ VECTOR collision::PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsu
 
     // 登れる角度である場合は壁ずりを行う
     const float slope_angle = math::GetAngleBetweenTwoVector(static_triangle.GetNormalVector(), axis::GetWorldYAxis());
-    if (slope_angle < slope_threshold_agl || slope_angle >= 90.0f * math::kDegreesToRadian)
+    if (slope_angle < slope_threshold_agl || slope_angle >= 90.0f * math::kDegToRad)
     {
         // 線分の位置からどちら側に位置修正するべきか
         VECTOR closest_dir = plane.GetNormalVector();
@@ -883,7 +883,7 @@ VECTOR collision::PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsu
         // 押し戻しベクトルの長さを取得
         const VECTOR v2                 = math::GetNormalVector(plane.GetNormalVector(), v1);
         const float  angle1             = math::GetAngleBetweenTwoVector(v2, horizontal_v);
-        const float  angle2             = 90.0f * math::kDegreesToRadian - angle1;
+        const float  angle2             = 90.0f * math::kDegToRad - angle1;
         const float  angle3             = push_back_angle - angle2;
         const float  back_length        = cos(angle3) / future_distance_to_plane;
         const float  front_length       = cos(angle3) / dynamic_capsule.GetRadius();

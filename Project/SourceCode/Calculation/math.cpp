@@ -114,11 +114,11 @@ MATRIX math::ConvertAxesToRotMatrix(const Axes& axes)
     return mat;
 }
 
-VECTOR math::ConvertAxesToEulerAngles(const Axes& axes, const Axes& parent_axes)
+VECTOR math::ConvertAxesToEulerAngles(const Axes& axes)
 {
-    const float angle_x = GetAngleBetweenTwoVector(parent_axes.x_axis, axes.x_axis);
-    const float angle_y = GetAngleBetweenTwoVector(parent_axes.y_axis, axes.y_axis);
-    const float angle_z = GetAngleBetweenTwoVector(parent_axes.z_axis, axes.z_axis);
+    const float angle_x = GetAngleBetweenTwoVector(axis::GetWorldXAxis(), axes.x_axis);
+    const float angle_y = GetAngleBetweenTwoVector(axis::GetWorldYAxis(), axes.y_axis);
+    const float angle_z = GetAngleBetweenTwoVector(axis::GetWorldZAxis(), axes.z_axis);
 
     return VECTOR(angle_x, angle_y, angle_z);
 }
@@ -191,6 +191,15 @@ MATRIX math::ConvertEulerAnglesToZXYRotMatrix(const VECTOR& angle)
     MATRIX mat = MGetIdent();
     CreateRotationZXYMatrix(&mat, angle.x, angle.y, angle.z);
     return MGetRotElem(mat);
+}
+
+MATRIX math::ConvertForwardToRotMatrix(const VECTOR& forward)
+{
+    const auto forward_n    = v3d::GetNormalizedV(forward);
+    const auto right        = -math::GetNormalVector(forward_n, axis::GetWorldYAxis());
+    const auto up           = math::GetNormalVector(forward_n, right);
+
+    return math::ConvertAxesToRotMatrix(Axes(right, up, forward_n));
 }
 #pragma endregion
 
@@ -490,12 +499,12 @@ VECTOR math::GetProjectionVector(const VECTOR& projected_v, const VECTOR& base_v
 bool math::IsAcuteAngle(const VECTOR& v1, const VECTOR& v2)
 {
     const float radian = VDot(v1, v2) / (VSize(v1) * VSize(v2));
-    return (radian < 90.0f * kDegreesToRadian && radian > 0.0f);
+    return (radian < 90.0f * kDegToRad && radian > 0.0f);
 }
 
 bool math::IsAcuteAngle(const float radian)
 {
-    return (radian < 90.0f * kDegreesToRadian && radian > 0.0f);
+    return (radian < 90.0f * kDegToRad && radian > 0.0f);
 }
 
 float math::GetAngleBetweenTwoVector(const VECTOR& v1, const VECTOR& v2)
@@ -702,7 +711,7 @@ bool math::IsPointAheadOfPlane(const VECTOR& point, const Plane& plane)
     const VECTOR v = point - plane.GetPos();
     const float angle = GetAngleBetweenTwoVector(plane.GetNormalVector(), v);
 
-    return angle < 90 * kDegreesToRadian;
+    return angle < 90 * kDegToRad;
 }
 
 bool math::IsPointOnSphereSurface(const VECTOR& point, const Sphere& sphere)

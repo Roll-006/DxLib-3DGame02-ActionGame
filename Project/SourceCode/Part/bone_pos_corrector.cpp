@@ -1,44 +1,40 @@
 #include "bone_pos_corrector.hpp"
 
-void BonePosCorrector::CorrectGunPoseBone(const int model_handle, const VECTOR& look_dir, const MATRIX& rot, const bool m_is_ready_gun)
+void BonePosCorrector::CorrectAimPoseBonePos(const int model_handle, const VECTOR& aim_dir)
 {
-	const int frame_spine = MV1SearchFrame(model_handle, BonePath.SPINE);
 
-	// データのシフト
-	m_bone_angle[BonePath.SPINE][TimeKind::kPrev] = m_bone_angle[BonePath.SPINE][TimeKind::kCurrent];
+	// ボーンインデックス取得
+	const auto  spine_index		= MV1SearchFrame(model_handle, BonePath.SPINE);
+	const auto  spine1_index	= MV1SearchFrame(model_handle, BonePath.SPINE_1);
+	const auto  spine2_index	= MV1SearchFrame(model_handle, BonePath.SPINE_2);
 
-	// 武器を構えていない場合は初期値に戻す
-	if (!m_is_ready_gun)
-	{
-		MV1ResetFrameUserLocalMatrix(model_handle, frame_spine);
-		return;
-	}
+	// 回転量を分割
+	auto angle					= math::GetAngleBetweenTwoVector(aim_dir, axis::GetWorldYAxis()) - 90.0f * math::kDegToRad;
+	angle						+= kAimOffsetAngle * math::kDegToRad;
+	const auto spine_angle		= angle * kAimSpineAngleRate;
+	const auto spine1_angle		= angle * kAimSpine1AngleRate;
+	const auto spine2_angle		= angle * kAimSpine2AngleRate;
 
-	// カメラの行列からボーンの回転を取得
-	bool is_gimbal_lock = false;
-	m_bone_angle[BonePath.SPINE][TimeKind::kCurrent] = -math::ConvertXYZRotMatrixToEulerAngles(MGetRotElem(rot), is_gimbal_lock);
+	// ローカル行列を取得
+	auto		spine_local_m	= MV1GetFrameLocalMatrix(model_handle, spine_index);
+	auto		spine1_local_m	= MV1GetFrameLocalMatrix(model_handle, spine1_index);
+	auto		spine2_local_m	= MV1GetFrameLocalMatrix(model_handle, spine2_index);
 
-	if (is_gimbal_lock)
-	{
-		// ジンバルロックが発生した場合は、発生していなかった状態の値を採用
-		m_bone_angle[BonePath.SPINE][TimeKind::kCurrent] = m_bone_angle[BonePath.SPINE][TimeKind::kPrev];
-	}
-	else
-	{
-		m_bone_angle[BonePath.SPINE][TimeKind::kCurrent].y = 0.0f;
+	// 座標を保管
+	const auto spine_pos		= MGetTranslateElem(spine_local_m);
+	const auto spine1_pos		= MGetTranslateElem(spine1_local_m);
+	const auto spine2_pos		= MGetTranslateElem(spine2_local_m);
 
-		// HACK : ワールドZ軸に対してforwardが90°を超えるとボーンが反転する現象が起きているためその条件下のみ反転し直す
-		//		  ConvertRotMatrixToEulerAngles関数の修正が必要な可能性あり
-		const auto forward = math::ConvertRotMatrixToAxes(rot).z_axis;
-		if (math::GetAngleBetweenTwoVector(forward, axis::GetWorldZAxis()) >= 90.0f * math::kDegreesToRadian)
-		{
-			m_bone_angle[BonePath.SPINE][TimeKind::kCurrent].x -= DX_PI_F;
-			m_bone_angle[BonePath.SPINE][TimeKind::kCurrent].z -= DX_PI_F;
-		}
-	}
+	// 適用
+	auto result_spine_local_m	= math::ConvertEulerAnglesToZXYRotMatrix(VGet(-spine_angle, kAimAngle * math::kDegToRad, -spine_angle));
+	matrix::SetPos(result_spine_local_m, spine_pos);
+	MV1SetFrameUserLocalMatrix(model_handle, spine_index,  result_spine_local_m);
 
-	const MATRIX result_m = math::ConvertEulerAnglesToXYZRotMatrix(m_bone_angle[BonePath.SPINE][TimeKind::kCurrent]);
+	auto result_spine1_local_m	= math::ConvertEulerAnglesToZXYRotMatrix(VGet(-spine1_angle, 0.0f, -spine1_angle));
+	matrix::SetPos(result_spine1_local_m, spine1_pos);
+	MV1SetFrameUserLocalMatrix(model_handle, spine1_index, result_spine1_local_m);
 
-	// 行列情報を適用
-	MV1SetFrameUserLocalMatrix(model_handle, frame_spine, result_m);
+	auto result_spine2_local_m	= math::ConvertEulerAnglesToZXYRotMatrix(VGet(-spine2_angle, 0.0f, -spine2_angle));
+	matrix::SetPos(result_spine2_local_m, spine2_pos);
+	MV1SetFrameUserLocalMatrix(model_handle, spine2_index, result_spine2_local_m);
 }

@@ -24,14 +24,14 @@ private:
 	void CalcExhaustVentTransform();
 
 private:
-	static constexpr VECTOR kBasicAngle				= { 0.0f, 90.0f * math::kDegreesToRadian, 0.0f };
+	static constexpr VECTOR kBasicAngle				= { 0.0f, 90.0f * math::kDegToRad, 0.0f };
 	static constexpr float  kBasicScale				= 1.2f;
 
 	static constexpr VECTOR kHoldOffsetPos			= { -3.0f, 11.0f, -22.5f };
-	static constexpr VECTOR kHoldOffsetAngle		= { 270.0f * math::kDegreesToRadian, 270.0f * math::kDegreesToRadian, 0.0f };
+	static constexpr VECTOR kHoldOffsetAngle		= { 270.0f * math::kDegToRad, 270.0f * math::kDegToRad, 0.0f };
 	static constexpr float  kHoldOffsetScale		= 1.0f;
 	static constexpr VECTOR kAttachOffsetPos		= { -17.0f, -7.0f, 0.0f };
-	static constexpr VECTOR kAttachOffsetAngle		= { 270.0f * math::kDegreesToRadian, 90.0f * math::kDegreesToRadian, 0.0f };
+	static constexpr VECTOR kAttachOffsetAngle		= { 270.0f * math::kDegToRad, 90.0f * math::kDegToRad, 0.0f };
 	static constexpr float  kAttachOffsetScale		= 1.0f;
 
 	static constexpr VECTOR kMuzzleOffsetPos		= { 0.0f, 0.0f, 65.0f };

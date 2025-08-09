@@ -38,7 +38,7 @@ private:
 	void CalcRayPos() override;
 
 private:
-	static constexpr VECTOR kBasicAngle	= { 0.0f, 90.0f * math::kDegreesToRadian, 0.0f };
+	static constexpr VECTOR kBasicAngle	= { 0.0f, 90.0f * math::kDegToRad, 0.0f };
 	static constexpr float  kBasicScale = 1.2f * 0.3f;
 
 	std::shared_ptr<Modeler>				m_modeler;

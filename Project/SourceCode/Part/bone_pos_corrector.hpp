@@ -10,12 +10,15 @@
 class BonePosCorrector
 {
 public:
-	/// @brief 銃を構えた際のボーン位置を修正
+	/// @brief 銃を構えた際のボーンの位置を修正
 	/// @param model_handle モデルハンドル
-	/// @param rot ターゲットを見た時の姿勢
-	/// @param m_is_ready_gun 銃を構えているか
-	void CorrectGunPoseBone(const int model_handle, const VECTOR& look_dir, const MATRIX& rot, const bool m_is_ready_gun);
+	/// @param aim_dir 狙っている方向
+	void CorrectAimPoseBonePos(const int model_handle, const VECTOR& aim_dir);
 
 private:
-	std::unordered_map<std::string, std::unordered_map<TimeKind, VECTOR>> m_bone_angle;
+	static constexpr float kAimAngle			= 20.0f;
+	static constexpr float kAimOffsetAngle		= 20.0f;
+	static constexpr float kAimSpineAngleRate	= 0.2f;
+	static constexpr float kAimSpine1AngleRate	= 0.4f;
+	static constexpr float kAimSpine2AngleRate	= 0.4f;
 };

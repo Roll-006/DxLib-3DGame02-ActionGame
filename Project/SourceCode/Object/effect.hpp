@@ -22,6 +22,7 @@ public:
 
 	void AddToObjManager()			override;
 
+
 	#pragma region Attach / Detach
 	void AttachOwnerTransform(const std::shared_ptr<Transform> owner_transform);
 	void DetachOwnerTransform();

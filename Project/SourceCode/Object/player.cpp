@@ -6,6 +6,7 @@ Player::Player() :
 	CharacterBase(ObjName.PLAYER, ObjTag.PLAYER, MassKind::kMedium),
 	m_subject							(std::make_shared<Subject<Player>>()),
 	m_state								(std::make_shared<PlayerStateController>()),
+	m_bone_pos_corrector				(std::make_shared<BonePosCorrector>()),
 	m_camera_aim_transform				(std::make_shared<Transform>()),
 	m_current_camera_aim_pos			(v3d::GetZeroV()),
 	m_move_speed						(0.0f),
@@ -76,7 +77,7 @@ void Player::Update()
 	if (!IsActive()) { return; }
 
 	m_look_dir_offset_angle				= kLookDirOffsetAngle;
-	m_confirm_look_dir_threshold_angle	= kConfirmLookDirThresholdAngle * math::kDegreesToRadian;
+	m_confirm_look_dir_threshold_angle	= kConfirmLookDirThresholdAngle * math::kDegToRad;
 
 	m_weapon_shortcut_selecter	->Update(this);
 	m_state						->Update(this);
@@ -264,7 +265,7 @@ void Player::Move()
 void Player::SetLookDirOffsetValueForAim()
 {
 	m_look_dir_offset_angle			= kLookDirOffsetAngleForAim;
-	m_confirm_look_dir_threshold_angle	= kConfirmLookDirThresholdAngleForAim * math::kDegreesToRadian;
+	m_confirm_look_dir_threshold_angle	= kConfirmLookDirThresholdAngleForAim * math::kDegToRad;
 }
 
 void Player::DirOfMovement()

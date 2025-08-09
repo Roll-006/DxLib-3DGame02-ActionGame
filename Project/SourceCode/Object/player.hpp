@@ -8,6 +8,7 @@
 #include "rocket_launcher.hpp"
 #include "knife.hpp"
 #include "../Part/weapon_shortcut_selecter.hpp"
+#include "../Part/bone_pos_corrector.hpp"
 
 #include "../Manager/camera_manager.hpp"
 
@@ -106,6 +107,7 @@ public:
 	#pragma region Getter
 	[[nodiscard]] std::shared_ptr<Subject<Player>>			GetSubject()				const { return m_subject; }
 	[[nodiscard]] std::shared_ptr<PlayerStateController>	GetStateController()		const { return m_state; }
+	[[nodiscard]] std::shared_ptr<BonePosCorrector>			GetBonePosCorrector()		const { return m_bone_pos_corrector; }
 	[[nodiscard]] std::vector<std::shared_ptr<IItem>>		GetCurrentHaveItem(const ItemKind item_kind) const { return m_items.at(item_kind); }
 	[[nodiscard]] WeaponKind								GetCurrentEquipWeaponKind();
 	[[nodiscard]] std::shared_ptr<WeaponBase>				GetCurrentEquipWeapon()		const { return m_current_equip_weapon; }
@@ -170,6 +172,7 @@ private:
 	std::shared_ptr<Subject<Player>>			m_subject;
 
 	std::shared_ptr<PlayerStateController>		m_state;
+	std::shared_ptr<BonePosCorrector>			m_bone_pos_corrector;
 	std::shared_ptr<Transform>					m_camera_aim_transform;					// カメラのターゲットとなるトランスフォーム
 	VECTOR										m_current_camera_aim_pos;
 

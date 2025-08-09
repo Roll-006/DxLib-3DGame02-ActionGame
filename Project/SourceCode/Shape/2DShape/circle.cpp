@@ -5,7 +5,7 @@ Circle::Circle(const VECTOR& normal_vector, float radius):
 	m_pos			(v3d::GetZeroV()),
 	m_normal_vector	(normal_vector),
 	m_radius		(radius),
-	m_interval_andle(360.0f / kVertexNum * math::kDegreesToRadian)
+	m_interval_andle(360.0f / kVertexNum * math::kDegToRad)
 {
 	SetPos(m_pos);
 }
@@ -15,7 +15,7 @@ Circle::Circle() :
 	m_pos			(v3d::GetZeroV()),
 	m_normal_vector	(v3d::GetZeroV()),
 	m_radius		(0.0f),
-	m_interval_andle(360.0f / kVertexNum * math::kDegreesToRadian)
+	m_interval_andle(360.0f / kVertexNum * math::kDegToRad)
 {
 	SetPos(m_pos);
 }

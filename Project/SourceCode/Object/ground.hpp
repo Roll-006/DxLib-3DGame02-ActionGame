@@ -28,7 +28,7 @@ public:
 private:
 	std::shared_ptr<Modeler> m_modeler;
 
-	static constexpr VECTOR kBasicAngle = { -90.0f * math::kDegreesToRadian, 0.0f, 0.0f };
+	static constexpr VECTOR kBasicAngle = { -90.0f * math::kDegToRad, 0.0f, 0.0f };
 	static constexpr float  kBasicScale = 600.0f;
 	static constexpr VECTOR kPos		= { 0.0f, 0.0f, 0.0f };
 };

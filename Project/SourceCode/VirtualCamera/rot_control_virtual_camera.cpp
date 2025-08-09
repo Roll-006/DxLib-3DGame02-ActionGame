@@ -232,8 +232,8 @@ void RotControlVirtualCamera::CalcInputAngle()
 	m_input_angle.at(TimeKind::kCurrent).y = math::ConnectMinusPiToPi(m_input_angle.at(TimeKind::kCurrent).y);
 
 	// äpìxêßå¿
-	if (m_input_angle.at(TimeKind::kCurrent).x < kMinVerticalInputAngle * math::kDegreesToRadian) { m_input_angle.at(TimeKind::kCurrent).x = kMinVerticalInputAngle * math::kDegreesToRadian; }
-	if (m_input_angle.at(TimeKind::kCurrent).x > kMaxVerticalInputAngle * math::kDegreesToRadian) { m_input_angle.at(TimeKind::kCurrent).x = kMaxVerticalInputAngle * math::kDegreesToRadian; }
+	if (m_input_angle.at(TimeKind::kCurrent).x < kMinVerticalInputAngle * math::kDegToRad) { m_input_angle.at(TimeKind::kCurrent).x = kMinVerticalInputAngle * math::kDegToRad; }
+	if (m_input_angle.at(TimeKind::kCurrent).x > kMaxVerticalInputAngle * math::kDegToRad) { m_input_angle.at(TimeKind::kCurrent).x = kMaxVerticalInputAngle * math::kDegToRad; }
 }
 
 void RotControlVirtualCamera::CalcInitAim()

@@ -22,13 +22,17 @@ void player_state::Shot::LateUpdate(Player* obj)
 {
 	const auto gun		= std::static_pointer_cast<GunBase>(obj->GetCurrentHeldWeapon());
 	const auto camera	= ObjManager::GetInstance()->GetObj<ObjBase>(ObjName.MAIN_CAMERA);
+	const auto aim_dir	= camera->GetTransform()->GetForward(CoordinateKind::kWorld);
+
+	// ƒ{[ƒ“ˆÊ’u•â³
+	obj->GetBonePosCorrector()->CorrectAimPoseBonePos(obj->GetModeler()->GetModelHandle(), aim_dir);
 
 	obj->GetCurrentHeldWeapon()->LateUpdate();
 
 	gun->CalcDiffusionRange();
 	gun->CalcTargetPos();
-	gun->SetAimDir  (camera->GetTransform()->GetForward	(CoordinateKind::kWorld));
-	gun->SetPosOnRay(camera->GetTransform()->GetPos		(CoordinateKind::kWorld));
+	gun->SetAimDir  (aim_dir);
+	gun->SetPosOnRay(camera->GetTransform()->GetPos(CoordinateKind::kWorld));
 	gun->OnShot();
 
 	obj->NotifyShotRocketLauncher();
