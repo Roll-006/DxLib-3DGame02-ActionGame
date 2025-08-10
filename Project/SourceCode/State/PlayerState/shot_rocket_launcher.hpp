@@ -18,7 +18,7 @@ namespace player_state
 		[[nodiscard]] std::shared_ptr<IState<Player>> ChangeState(Player* obj) override;
 
 	private:
-		static constexpr float kShotWaitTime = 2.0f;	// ’eŠÛ‚ª”­ŽË‚³‚ê‚é‚Ü‚Å‚Ì‘Ò‚¿ŽžŠÔ
+		static constexpr float kShotWaitTime = 6.0f;	// ’eŠÛ‚ª”­ŽË‚³‚ê‚é‚Ü‚Å‚Ì‘Ò‚¿ŽžŠÔ
 
 		std::shared_ptr<RocketLauncherVirtualCameraController> m_camera_controller;
 		float m_wait_timer;
