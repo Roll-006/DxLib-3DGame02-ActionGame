@@ -1,4 +1,5 @@
 ﻿#include "virtual_camera_base.hpp"
+#include "../Manager/camera_manager.hpp"
 
 VirtualCameraBase::VirtualCameraBase(const std::string& name, const VirtualCameraKind camera_kind) :
 	ObjBase				(name, ObjTag.VIRTUAL_CAMERA),
@@ -31,6 +32,13 @@ void VirtualCameraBase::DetachTarget()
 
 	m_body->DetachTarget();
 	m_aim ->DetachTarget();
+}
+
+void VirtualCameraBase::SetPriority(const int priority)
+{
+	m_priority = priority;
+
+	CameraManager::GetInstance()->SortPriority(std::static_pointer_cast<VirtualCameraBase>(shared_from_this()));
 }
 
 float VirtualCameraBase::GetDeltaTime() const

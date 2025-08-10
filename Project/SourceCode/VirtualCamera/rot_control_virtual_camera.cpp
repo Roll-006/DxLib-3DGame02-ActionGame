@@ -1,11 +1,10 @@
 #include "rot_control_virtual_camera.hpp"
 #include "../Command/command_handler.hpp"
 
-RotControlVirtualCamera::RotControlVirtualCamera(const int priority) :
+RotControlVirtualCamera::RotControlVirtualCamera() :
 	VirtualCameraBase	(ObjName.ROT_CONTROL_VIRTUAL_CAMERA, VirtualCameraKind::kControl),
 	m_data				(ControlVirtualCameraData())
 {
-	m_priority = priority;
 	m_active_scene_kind.emplace_back(SceneKind::kPlay);
 
 	m_aim->SetTrackedObjOffset	(VGet(10.0f, 10.0f, 0.0f));

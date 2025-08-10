@@ -337,6 +337,7 @@
     <ClInclude Include="SourceCode\Data\Kind\sort_kind.hpp" />
     <ClInclude Include="SourceCode\Data\Kind\texture_kind.hpp" />
     <ClInclude Include="SourceCode\Data\Kind\time_kind.hpp" />
+    <ClInclude Include="SourceCode\Data\Kind\virtual_camera_controller_kind.hpp" />
     <ClInclude Include="SourceCode\Data\Kind\virtual_camera_kind.hpp" />
     <ClInclude Include="SourceCode\Data\Kind\weapon_kind.hpp" />
     <ClInclude Include="SourceCode\Data\Kind\weapon_shortcut_pos_kind.hpp" />
@@ -366,6 +367,7 @@
     <ClInclude Include="SourceCode\Interface\i_observer.hpp" />
     <ClInclude Include="SourceCode\Interface\i_poolable.hpp" />
     <ClInclude Include="SourceCode\Interface\i_state.hpp" />
+    <ClInclude Include="SourceCode\Interface\i_virtual_camera_controller.hpp" />
     <ClInclude Include="SourceCode\Manager\camera_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\collision_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\effect_manager.hpp" />

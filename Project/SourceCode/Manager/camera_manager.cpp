@@ -1,16 +1,17 @@
 ﻿#include "camera_manager.hpp"
+#include "../Object/player.hpp"
 
 CameraManager::CameraManager() :
-	m_main_camera					(nullptr),
-	m_blend_origin_transform		(nullptr),
-	m_blend_target_transform		(nullptr),
-	m_blend_origin_result_transform	(nullptr),
-	m_blend_result_transform		(nullptr),
-	m_blend_timer					(0.0f),
-	m_blend_coefficient				(0.0f),
-	m_is_blending					(false),
-	m_is_invert_horizontal			(false),
-	m_is_invert_vertical			(false)
+	m_main_camera								(nullptr),
+	m_blend_origin_transform					(nullptr),
+	m_blend_target_transform					(nullptr),
+	m_blend_origin_result_transform				(nullptr),
+	m_blend_result_transform					(nullptr),
+	m_blend_timer								(0.0f),
+	m_blend_coefficient							(0.0f),
+	m_is_blending								(false),
+	m_is_invert_horizontal						(false),
+	m_is_invert_vertical						(false)
 {
 	SetCameraNearFar(kNear, kFar);
 	SetupCamera_Perspective(kFOV * math::kDegToRad);
@@ -23,55 +24,9 @@ CameraManager::~CameraManager()
 
 void CameraManager::Update()
 {
-	// TODO : 仮の実装。のちに削除。
+	for (const auto& camera_controller : m_virtual_camera_controllers)
 	{
-		//if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_1) == InputState::kSingle)
-		{
-			if (!test_is_add1)
-			{
-				const auto rot_camera = std::make_shared<RotControlVirtualCamera>(2);
-				AddVirtualCamera(rot_camera);
-				transform1 = std::make_shared<Transform>();
-				rot_camera->AttachTarget(transform1);
-
-				handle2 = rot_camera->GetObjHandle();
-				GetVirtualCamera(handle2)->Deactivate();
-
-				test_is_add1 = true;
-			}
-		}
-		if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_2) == InputState::kSingle)
-		{
-			GetVirtualCamera(handle2)->Deactivate();
-		}
-		if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_3) == InputState::kSingle)
-		{
-			GetVirtualCamera(handle2)->Activate();
-		}
-		//if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_4) == InputState::kSingle)
-		{
-			if (!test_is_add2)
-			{
-				const auto rot_camera = std::make_shared<RotControlVirtualCamera>(3);
-				AddVirtualCamera(rot_camera);
-				transform2 = std::make_shared<Transform>();
-				transform2->SetPos(CoordinateKind::kWorld, VGet(-500, 500, -500));
-				rot_camera->AttachTarget(transform2);
-
-				handle3 = rot_camera->GetObjHandle();
-				GetVirtualCamera(handle3)->Deactivate();
-
-				test_is_add2 = true;
-			}
-		}
-		if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_5) == InputState::kSingle)
-		{
-			GetVirtualCamera(handle3)->Deactivate();
-		}
-		if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_6) == InputState::kSingle)
-		{
-			GetVirtualCamera(handle3)->Activate();
-		}
+		camera_controller->Update();
 	}
 
 	for (const auto& camera : m_virtual_cameras)
@@ -82,6 +37,11 @@ void CameraManager::Update()
 
 void CameraManager::LateUpdate()
 {
+	for (const auto& camera_controller : m_virtual_camera_controllers)
+	{
+		camera_controller->LateUpdate();
+	}
+
 	for (const auto& camera : m_virtual_cameras)
 	{
 		camera.second->LateUpdate();

@@ -970,11 +970,14 @@
     <ClInclude Include="SourceCode\GameTime\game_time_manager.hpp">
       <Filter>GameTime</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\Interface\i_virtual_camera_controller.hpp">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\Kind\virtual_camera_controller_kind.hpp">
+      <Filter>Data\Kind</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Manager">
-      <UniqueIdentifier>{69894637-334e-46d6-be72-079330c80427}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Data">
       <UniqueIdentifier>{5a2c6f1c-a568-4987-8934-7f3f80ed2bd5}</UniqueIdentifier>
     </Filter>
@@ -1088,6 +1091,9 @@
     </Filter>
     <Filter Include="GameTime">
       <UniqueIdentifier>{2bb7eee7-c5b3-48ad-a6f8-72c884dfb3b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager">
+      <UniqueIdentifier>{69894637-334e-46d6-be72-079330c80427}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

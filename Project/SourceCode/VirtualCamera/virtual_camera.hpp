@@ -5,7 +5,7 @@
 class VirtualCamera final : public VirtualCameraBase
 {
 public:
-	VirtualCamera(const int priority);
+	VirtualCamera();
 	~VirtualCamera()		override;
 
 	void Init()						override;

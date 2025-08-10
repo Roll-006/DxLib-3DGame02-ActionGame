@@ -20,6 +20,8 @@ void player_state::Shot::Update(Player* obj)
 
 void player_state::Shot::LateUpdate(Player* obj)
 {
+	obj->NotifyShotRocketLauncher();
+
 	const auto gun		= std::static_pointer_cast<GunBase>(obj->GetCurrentHeldWeapon());
 	const auto camera	= ObjManager::GetInstance()->GetObj<ObjBase>(ObjName.MAIN_CAMERA);
 	const auto aim_dir	= camera->GetTransform()->GetForward(CoordinateKind::kWorld);
@@ -34,8 +36,6 @@ void player_state::Shot::LateUpdate(Player* obj)
 	gun->SetAimDir  (aim_dir);
 	gun->SetPosOnRay(camera->GetTransform()->GetPos(CoordinateKind::kWorld));
 	gun->OnShot();
-
-	obj->NotifyShotRocketLauncher();
 }
 
 void player_state::Shot::Enter(Player* obj)

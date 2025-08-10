@@ -1,16 +1,24 @@
 #pragma once
 #include "../Base/singleton_base.hpp"
 
-#include "../VirtualCamera/rot_control_virtual_camera.hpp"
 #include "../Object/main_camera.hpp"
+#include "../VirtualCamera/rot_control_virtual_camera.hpp"
+#include "../VirtualCamera/rocket_launcher_virtual_camera_controller.hpp"
+
 #include "../Input/input_checker.hpp"
 #include "../GameTime/game_time_manager.hpp"
+
+class Player;
 
 namespace virtual_camera_concepts
 {
 	/// @brief バーチャルカメラ型である
 	template<typename T>
-	concept VirtualCameraT = std::is_base_of_v<VirtualCameraBase, T>;
+	concept VirtualCameraT			= std::is_base_of_v<VirtualCameraBase, T>;
+
+	/// @brief バーチャルカメラコントローラー型である
+	template<typename T>
+	concept VirtualCameraController = std::is_base_of_v<IVirtualCameraController, T>;
 }
 
 class CameraManager final : public SingletonBase<CameraManager>
@@ -22,6 +30,20 @@ public:
 	/// @brief メインカメラを設定する
 	void SetMainCamera(const std::shared_ptr<MainCamera> main_camera);
 
+	/// @brief 優先順位をソートする
+	template<virtual_camera_concepts::VirtualCameraT VirtualCameraT>
+	void SortPriority(const std::shared_ptr<VirtualCameraT> virtual_camera)
+	{
+		if (m_virtual_cameras.count(virtual_camera->GetObjHandle()))
+		{
+			for (const auto& v_camera : m_virtual_cameras)
+			{
+				m_priority[v_camera.second->GetObjHandle()] = v_camera.second->GetPriority();
+			}
+			m_priority = algorithm::Sort(m_priority, SortKind::kDescending);
+		}
+	}
+
 
 	#pragma region 登録 / 解除
 	/// @brief バーチャルカメラを登録する
@@ -31,18 +53,33 @@ public:
 		if (!m_virtual_cameras.count(virtual_camera->GetObjHandle()))
 		{
 			m_virtual_cameras[virtual_camera->GetObjHandle()] = virtual_camera;
-			
-			// 優先順位も同時に格納
-			for (const auto& v_camera : m_virtual_cameras)
-			{
-				m_priority[v_camera.second->GetObjHandle()] = v_camera.second->GetPriority();
-			}
-			m_priority = algorithm::Sort(m_priority, SortKind::kDescending);
+
+			SortPriority(virtual_camera);
 		}
 	}
 	
 	/// @brief バーチャルカメラの登録を解除する
 	void RemoveVirtualCamera(const int obj_handle);
+
+	/// @brief バーチャルカメラコントローラーを登録する
+	template<virtual_camera_concepts::VirtualCameraController ControllerT>
+	void AddVirtualCameraController(std::shared_ptr<ControllerT> virtual_camera_controller)
+	{
+		if (std::find(m_virtual_camera_controllers.begin(), m_virtual_camera_controllers.end(), virtual_camera_controller) == m_virtual_camera_controllers.end())
+		{
+			m_virtual_camera_controllers.emplace_back(virtual_camera_controller);
+		}
+	}
+
+	/// @brief バーチャルカメラコントローラーの登録を解除する
+	template<virtual_camera_concepts::VirtualCameraController ControllerT>
+	void RemoveVirtualCameraController(std::shared_ptr<ControllerT> virtual_camera_controller)
+	{
+		if (std::find(m_virtual_camera_controllers.begin(), m_virtual_camera_controllers.end(), virtual_camera_controller) != m_virtual_camera_controllers.end())
+		{
+			erase(m_virtual_camera_controllers, virtual_camera_controller);
+		}
+	}
 	#pragma endregion
 
 
@@ -90,7 +127,7 @@ private:
 	static constexpr float kNear		= 10.0f;
 	static constexpr float kFar			= 4000.0f;
 	static constexpr float kFOV			= 25.0f;
-	static constexpr float kBlendTime	= 5.0f;
+	static constexpr float kBlendTime	= 5.0f;		// TODO : 自由に変更できるよう変更
 
 	std::shared_ptr<MainCamera>									m_main_camera;			// バーチャルカメラを適用させるメインカメラ
 	std::unordered_map<int, std::shared_ptr<VirtualCameraBase>>	m_virtual_cameras;		// 登録されているバーチャルカメラ
@@ -110,14 +147,7 @@ private:
 	bool  m_is_invert_horizontal;														// 操作時に左右反転を行うかを判定
 	bool  m_is_invert_vertical;															// 操作時に上下反転を行うかを判定
 
-	// TODO : 仮変数。のちに削除
-	bool test_is_add1;
-	bool test_is_add2;
-	int handle1;
-	int handle2;
-	int handle3;
-	std::shared_ptr<Transform> transform1;
-	std::shared_ptr<Transform> transform2;
+	std::vector<std::shared_ptr<IVirtualCameraController>> m_virtual_camera_controllers;
 
 	friend class SingletonBase<CameraManager>;
 };

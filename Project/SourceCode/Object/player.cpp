@@ -55,7 +55,8 @@ Player::Player() :
 
 		// カメラ登録
 		const auto camera_manager = CameraManager::GetInstance();
-		const auto rot_camera = std::make_shared<RotControlVirtualCamera>(1);
+		const auto rot_camera = std::make_shared<RotControlVirtualCamera>();
+		rot_camera->SetPriority(1);
 		camera_manager->AddVirtualCamera(rot_camera);
 		rot_camera->AttachTarget(m_camera_aim_transform);
 
@@ -197,13 +198,17 @@ void Player::NotifyShotRocketLauncher()
 
 	if (roket_launcher)
 	{
+		// 演出用カメラを生成
+		const auto camera_manager			= CameraManager::GetInstance();
+		const auto roket_launcher_camera	= std::make_shared<RocketLauncherVirtualCameraController>(std::static_pointer_cast<Player>(shared_from_this()));
+		camera_manager->AddVirtualCameraController(roket_launcher_camera);
+
+		// 各オブザーバーへ通知
 		const RocketLauncherShotData data = { 
 			roket_launcher->GetOwnerName(),
 			roket_launcher->GetExhaustVentTransform(), 
-			1.0f };
-		
+			0.1f };
 		const Event<RocketLauncherShotData> event ={ EventKind::kRocketLauncherShot, data };
-	
 		m_subject->Notify(event);
 	}
 }

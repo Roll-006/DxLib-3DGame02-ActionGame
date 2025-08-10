@@ -8,6 +8,8 @@
 #include "../Data/Kind/scene_kind.hpp"
 #include "../Data/Kind/virtual_camera_kind.hpp"
 
+class CameraManager;
+
 class VirtualCameraBase abstract : public ObjBase
 {
 public:
@@ -20,9 +22,14 @@ public:
 	void AttachTarget(const std::shared_ptr<Transform> target_transform);
 	void DetachTarget();
 
-	[[nodiscard]] float				GetDeltaTime()	const override;
-	[[nodiscard]] int				GetPriority()	const { return m_priority; }
-	[[nodiscard]] VirtualCameraKind GetCameraKind()	const { return m_camera_kind; }
+	void SetPriority(const int priority);
+
+	[[nodiscard]] float							GetDeltaTime()	const override;
+	[[nodiscard]] int							GetPriority()	const { return m_priority; }
+	[[nodiscard]] VirtualCameraKind				GetCameraKind()	const { return m_camera_kind; }
+	[[nodiscard]] std::shared_ptr<CameraBody>	GetBody()		const { return m_body; }
+	[[nodiscard]] std::shared_ptr<CameraAim>	GetAim()		const { return m_aim; }
+	[[nodiscard]] std::shared_ptr<CameraNoise>	GetNoise()		const { return m_noise; }
 
 protected:
 	/// @brief body, aim, noiseによりトランスフォーム値を計算する
