@@ -25,7 +25,8 @@ public:
 	[[nodiscard]] bool IsActive() const override { return m_is_active; }
 
 private:
-	void CalcCameraAimPos(const std::shared_ptr<Transform> aim_transform, const TCHAR* aim_bone);
+	void CalcAimTransformForRotCamera();
+	void CalcAimTransformForZoomOutCamera();
 
 private:
 	std::shared_ptr<Player> m_player;

@@ -30,6 +30,9 @@ public:
 	/// @brief メインカメラを設定する
 	void SetMainCamera(const std::shared_ptr<MainCamera> main_camera);
 
+	/// @brief ブレンドにかける時間を設定する
+	void SetBlendTime(const float blend_time);
+
 	/// @brief 優先順位をソートする
 	template<virtual_camera_concepts::VirtualCameraT VirtualCameraT>
 	void SortPriority(const std::shared_ptr<VirtualCameraT> virtual_camera)
@@ -127,7 +130,6 @@ private:
 	static constexpr float kNear		= 10.0f;
 	static constexpr float kFar			= 4000.0f;
 	static constexpr float kFOV			= 25.0f;
-	static constexpr float kBlendTime	= 5.0f;		// TODO : 自由に変更できるよう変更
 
 	std::shared_ptr<MainCamera>									m_main_camera;			// バーチャルカメラを適用させるメインカメラ
 	std::unordered_map<int, std::shared_ptr<VirtualCameraBase>>	m_virtual_cameras;		// 登録されているバーチャルカメラ
@@ -141,6 +143,7 @@ private:
 	std::unordered_map<TimeKind, int>	m_origin_virtual_camera_handle;					// ブレンドの起点とするバーチャルカメラのハンドル
 	std::unordered_map<TimeKind, int>	m_target_virtual_camera_handle;					// ブレンドのターゲットとするバーチャルカメラのハンドル
 
+	float m_blend_time;
 	float m_blend_timer;																// ブレンドにかける時間を計測
 	float m_blend_coefficient;															// ブレンド係数
 	bool  m_is_blending;																// ブレンド中かを判定
@@ -148,6 +151,19 @@ private:
 	bool  m_is_invert_vertical;															// 操作時に上下反転を行うかを判定
 
 	std::vector<std::shared_ptr<IVirtualCameraController>> m_virtual_camera_controllers;
+
+
+
+
+	bool test_is_add1;
+	bool test_is_add2;
+	int handle1;
+	int handle2;
+	int handle3;
+	std::shared_ptr<Transform> transform1;
+	std::shared_ptr<Transform> transform2;
+
+
 
 	friend class SingletonBase<CameraManager>;
 };

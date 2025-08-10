@@ -128,7 +128,9 @@ void Player::Draw() const
 {
 	if (!IsActive()) { return; }
 
-	m_modeler->Draw();
+	//m_modeler->Draw();
+
+	DxLibHelper::DrawModelFrames(m_modeler->GetModelHandle(), "", 0.05f, 20.0f);
 
 	if (m_current_held_weapon) { m_current_held_weapon->Draw(); }
 

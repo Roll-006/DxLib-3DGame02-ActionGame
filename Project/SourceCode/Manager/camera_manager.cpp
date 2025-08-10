@@ -7,6 +7,7 @@ CameraManager::CameraManager() :
 	m_blend_target_transform					(nullptr),
 	m_blend_origin_result_transform				(nullptr),
 	m_blend_result_transform					(nullptr),
+	m_blend_time								(1.0f),
 	m_blend_timer								(0.0f),
 	m_blend_coefficient							(0.0f),
 	m_is_blending								(false),
@@ -23,7 +24,7 @@ CameraManager::~CameraManager()
 }
 
 void CameraManager::Update()
-{
+{      
 	for (const auto& camera_controller : m_virtual_camera_controllers)
 	{
 		camera_controller->Update();
@@ -58,6 +59,18 @@ void CameraManager::SetMainCamera(const std::shared_ptr<MainCamera> main_camera)
 	{
 		m_main_camera = main_camera;
 	}
+}
+
+void CameraManager::SetBlendTime(const float blend_time)
+{
+	float scale = 0.0f;
+	if (blend_time != 0.0f)
+	{
+		scale = blend_time / m_blend_time;
+	}
+
+	m_blend_time = blend_time;
+	m_blend_timer *= scale;
 }
 
 void CameraManager::RemoveVirtualCamera(const int obj_handle)
@@ -123,7 +136,7 @@ void CameraManager::ChangeTargetVirtualCamera(const int obj_handle)
 	if (m_target_virtual_camera_handle[TimeKind::kPrev] != m_target_virtual_camera_handle[TimeKind::kCurrent])
 	{
 		// ブレンド中に最優先カメラが切り替わった場合、それまでのブレンド結果をブレンドの起点とする
-		if (m_blend_timer != kBlendTime)
+		if (m_blend_timer != m_blend_time)
 		{
 			m_blend_origin_result_transform = m_blend_result_transform;
 		}
@@ -190,8 +203,8 @@ void CameraManager::CalcBlendResuletTransform()
 
 	// トランスフォーム間の補間
 	const auto time_manager = GameTimeManager::GetInstance();
-	math::Increase(m_blend_timer, time_manager->GetDeltaTime(TimeScaleController::LayerKind::kCamera), kBlendTime, false);
-	m_blend_coefficient			= math::GetUnitValue<float, float>(0.0f, kBlendTime, m_blend_timer);
+	math::Increase(m_blend_timer, time_manager->GetDeltaTime(TimeScaleController::LayerKind::kCamera), m_blend_time, false);
+	m_blend_coefficient			= m_blend_time != 0.0f ? math::GetUnitValue<float, float>(0.0f, m_blend_time, m_blend_timer) : 1.0f;
 	auto blended_transform		= math::GetLerpTransform(*m_blend_origin_transform, *m_blend_target_transform, m_blend_coefficient, true, false, true);
 	m_blend_result_transform	= std::make_shared<Transform>(blended_transform);
 
