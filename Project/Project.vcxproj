@@ -227,6 +227,7 @@
     <ClCompile Include="SourceCode\Shape\3DShape\sphere.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\aim_gun.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\aim_knife.cpp" />
+    <ClCompile Include="SourceCode\State\PlayerState\shot_rocket_launcher.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\spinning_slash_knife.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\first_side_slash_knife.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\second_side_slash_knife.cpp" />
@@ -305,9 +306,9 @@
     <ClInclude Include="SourceCode\Data\control_virtual_camera_data.hpp" />
     <ClInclude Include="SourceCode\Data\CSV\csv.hpp" />
     <ClInclude Include="SourceCode\Data\effect_data.hpp" />
-    <ClInclude Include="SourceCode\Data\Event\event (2).hpp" />
+    <ClInclude Include="SourceCode\Data\Event\end_rocket_launcher_cutscene_data.hpp" />
     <ClInclude Include="SourceCode\Data\Event\rocket_launcher_shot_data.hpp" />
-    <ClInclude Include="SourceCode\Data\Event\on_hit_bullet.hpp" />
+    <ClInclude Include="SourceCode\Data\Event\on_hit_bullet_data.hpp" />
     <ClInclude Include="SourceCode\Data\Event\on_shot_bullet_data.hpp" />
     <ClInclude Include="SourceCode\Data\Event\weapon_shot_data.hpp" />
     <ClInclude Include="SourceCode\Data\Event\event.hpp" />
@@ -432,6 +433,7 @@
     <ClInclude Include="SourceCode\Shape\3DShape\sphere.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\aim_gun.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\aim_knife.hpp" />
+    <ClInclude Include="SourceCode\State\PlayerState\shot_rocket_launcher.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\spinning_slash_knife.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\first_side_slash_knife.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\second_side_slash_knife.hpp" />

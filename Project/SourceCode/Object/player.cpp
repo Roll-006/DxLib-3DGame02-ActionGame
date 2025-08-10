@@ -128,9 +128,9 @@ void Player::Draw() const
 {
 	if (!IsActive()) { return; }
 
-	//m_modeler->Draw();
+	m_modeler->Draw();
 
-	DxLibHelper::DrawModelFrames(m_modeler->GetModelHandle(), "", 0.05f, 20.0f);
+	//DxLibHelper::DrawModelFrames(m_modeler->GetModelHandle(), "", 0.05f, 20.0f);
 
 	if (m_current_held_weapon) { m_current_held_weapon->Draw(); }
 
@@ -148,18 +148,30 @@ void Player::Draw() const
 		}
 	}
 
-	DrawFormatString(500, 20, 0xffffff, "%f", m_fall_velocity.y);
-	DrawFormatString(500, 40, 0xffffff, "%f", m_velocity.y);
+	{
+		const auto	model_handle = m_modeler->GetModelHandle();
+		const auto	head_index = MV1SearchFrame(model_handle, BonePath.RIGHT_HAND);
+		auto		head_world_m = MV1GetFrameLocalWorldMatrix(model_handle, head_index);
+		const auto  aim_offset_rot = math::ConvertEulerAnglesToXYZRotMatrix(VGet(-90.0f * math::kDegToRad, -90.0f * math::kDegToRad, 0.0f));
+		const auto	aim_rot = aim_offset_rot * MGetRotElem(head_world_m);
+		const auto	aim_pos = MGetTranslateElem(head_world_m);
 
+		const auto axes = math::ConvertRotMatrixToAxes(aim_rot);
+		axis::Draw(axes, aim_pos, 200);
+	}
+
+	//DrawFormatString(500, 20, 0xffffff, "%f", m_fall_velocity.y);
+	//DrawFormatString(500, 40, 0xffffff, "%f", m_velocity.y);
+	//
 	//const auto look_dir_current = m_look_dir.at(TimeKind::kCurrent);
 	//const auto look_dir_next	= m_look_dir.at(TimeKind::kNext);
-	//DrawFormatString(0, 20, 0xffffff, "look_dir_current : %f %f, %f", look_dir_current.x, look_dir_current.y, look_dir_current.z);
-	//DrawFormatString(0, 40, 0xffffff, "look_dir_next    : %f %f, %f", look_dir_next.x,    look_dir_next.y,    look_dir_next.z);
-
+	//DrawFormatString(0,  80, 0xffffff, "look_dir_current : %f %f, %f", look_dir_current.x, look_dir_current.y, look_dir_current.z);
+	//DrawFormatString(0, 100, 0xffffff, "look_dir_next    : %f %f, %f", look_dir_next.x,    look_dir_next.y,    look_dir_next.z);
+	//
 	//const auto p = m_transform->GetPos(CoordinateKind::kWorld) + VGet(0, 40, 0);
 	//DrawLine3D(p, p + look_dir_current * 100, 0xff0000);
 	//DrawLine3D(p, p + look_dir_next    * 100, 0xffffff);
-
+	//
 	//DrawFormatString(0,   20, 0xffffff, "m_current_remaining_bullet_num : %d", m_current_remaining_bullet_num);
 	//DrawFormatString(500, 20, 0xffffff, "move_speed       : %f", m_move_speed);
 	//DrawFormatString(500, 40, 0xffffff, "move_dir_next    : %f, %f ,%f", m_move_dir.at(TimeKind::kNext).x, m_move_dir.at(TimeKind::kNext).y, m_move_dir.at(TimeKind::kNext).z);
@@ -200,16 +212,11 @@ void Player::NotifyShotRocketLauncher()
 
 	if (roket_launcher)
 	{
-		// 演出用カメラを生成
-		const auto camera_manager			= CameraManager::GetInstance();
-		const auto roket_launcher_camera	= std::make_shared<RocketLauncherVirtualCameraController>(std::static_pointer_cast<Player>(shared_from_this()));
-		camera_manager->AddVirtualCameraController(roket_launcher_camera);
-
 		// 各オブザーバーへ通知
 		const RocketLauncherShotData data = { 
 			roket_launcher->GetOwnerName(),
 			roket_launcher->GetExhaustVentTransform(), 
-			0.1f };
+			0.01f };
 		const Event<RocketLauncherShotData> event ={ EventKind::kRocketLauncherShot, data };
 		m_subject->Notify(event);
 	}
@@ -281,7 +288,7 @@ void Player::Move()
 
 void Player::SetLookDirOffsetValueForAim()
 {
-	m_look_dir_offset_angle			= kLookDirOffsetAngleForAim;
+	m_look_dir_offset_angle				= kLookDirOffsetAngleForAim;
 	m_confirm_look_dir_threshold_angle	= kConfirmLookDirThresholdAngleForAim * math::kDegToRad;
 }
 

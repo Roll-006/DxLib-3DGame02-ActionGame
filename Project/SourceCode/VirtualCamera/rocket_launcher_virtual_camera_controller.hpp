@@ -9,7 +9,7 @@ class Player;
 class RocketLauncherVirtualCameraController final : public IObserver, public IVirtualCameraController
 {
 public:
-	RocketLauncherVirtualCameraController(const std::shared_ptr<Player> player);
+	RocketLauncherVirtualCameraController(Player& player);
 	~RocketLauncherVirtualCameraController();
 
 	void Init();
@@ -29,15 +29,18 @@ private:
 	void CalcAimTransformForZoomOutCamera();
 
 private:
-	std::shared_ptr<Player> m_player;
+	static constexpr float  kZoomOutkAcceleration	= 2.8f;
+	static constexpr VECTOR kFollowOffsetForZoomOut	= { 10.0f, 0.0f, -50.0f };
+
+	Player& m_player;
 
 	std::shared_ptr<VirtualCamera>	m_rot_angle_camera;
 	std::shared_ptr<VirtualCamera>	m_zoom_out_camera;
-
 	std::shared_ptr<Transform>		m_rot_camera_aim_transform;
 	std::shared_ptr<Transform>		m_zoom_out_camera_aim_transform;
 
 	VirtualCameraControllerKind		m_virtual_camera_controller_kind;
 
-	bool m_is_active;
+	VECTOR	m_follow_offset_for_zoom_out;
+	bool	m_is_active;
 };

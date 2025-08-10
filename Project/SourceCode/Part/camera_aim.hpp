@@ -80,7 +80,7 @@ private:
 	VECTOR			m_destination_aim_pos;		// 目的とする見る座標
 	VECTOR			m_current_aim_pos;			// 現在の見ている座標
 
-	VECTOR			m_tracked_obj_offset;		// ターゲットを見る方向の補正(オフセット)
+	VECTOR			m_tracked_obj_offset;		// ターゲットを見る方向のオフセット
 
 	float			m_horizontal_damping;		// 水平方向の減衰値
 	float			m_vertical_damping;			// 垂直方向の減衰値

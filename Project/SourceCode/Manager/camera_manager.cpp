@@ -76,6 +76,7 @@ void CameraManager::SetBlendTime(const float blend_time)
 void CameraManager::RemoveVirtualCamera(const int obj_handle)
 {
 	m_virtual_cameras.erase(obj_handle);
+	m_priority.erase(obj_handle);
 }
 
 

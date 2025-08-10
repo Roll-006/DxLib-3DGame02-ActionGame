@@ -32,6 +32,7 @@ namespace player_state
 		kEquipGun,
 		kAimGun,
 		kShot,
+		kShotRocketLauncher,
 		kReload,
 	};
 

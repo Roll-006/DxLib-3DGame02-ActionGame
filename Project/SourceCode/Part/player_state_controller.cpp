@@ -57,6 +57,7 @@ void PlayerStateController::CreateState()
 	m_states[typeid(player_state::EquipGun)]			 = std::make_shared<player_state::EquipGun>();
 	m_states[typeid(player_state::AimGun)]				 = std::make_shared<player_state::AimGun>();
 	m_states[typeid(player_state::Shot)]				 = std::make_shared<player_state::Shot>();
+	m_states[typeid(player_state::ShotRocketLauncher)]	 = std::make_shared<player_state::ShotRocketLauncher>();
 	m_states[typeid(player_state::Reload)]				 = std::make_shared<player_state::Reload>();
 	m_states[typeid(player_state::SpecialNull)]			 = std::make_shared<player_state::SpecialNull>();
 	m_states[typeid(player_state::RoundhouseKick)]		 = std::make_shared<player_state::RoundhouseKick>();
@@ -92,6 +93,8 @@ void PlayerStateController::AddStopStatePair()
 	m_states.at(typeid(player_state::AimGun))				->AddStopState(m_states.at(typeid(player_state::Run))	->GetStateHandle());
 	m_states.at(typeid(player_state::Shot))					->AddStopState(m_states.at(typeid(player_state::Crouch))->GetStateHandle());
 	m_states.at(typeid(player_state::Shot))					->AddStopState(m_states.at(typeid(player_state::Run))	->GetStateHandle());
+	m_states.at(typeid(player_state::ShotRocketLauncher))	->AddStopState(m_states.at(typeid(player_state::Crouch))->GetStateHandle());
+	m_states.at(typeid(player_state::ShotRocketLauncher))	->AddStopState(m_states.at(typeid(player_state::Run))	->GetStateHandle());
 }
 
 void PlayerStateController::AddCheckStopState()

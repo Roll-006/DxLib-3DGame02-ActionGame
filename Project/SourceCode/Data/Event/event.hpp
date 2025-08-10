@@ -6,7 +6,8 @@
 #include "weapon_shot_data.hpp"
 #include "rocket_launcher_shot_data.hpp"
 #include "on_shot_bullet_data.hpp"
-#include "on_hit_bullet.hpp"
+#include "on_hit_bullet_data.hpp"
+#include "end_rocket_launcher_cutscene_data.hpp"
 
 template <typename EventDataT>
 struct Event : public IEvent

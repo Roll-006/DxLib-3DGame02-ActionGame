@@ -113,8 +113,8 @@ void RocketLauncher::CalcExhaustVentTransform()
 {
 	m_exhaust_vent_transform->SetMatrix(CoordinateKind::kWorld, m_transform->GetMatrix(CoordinateKind::kWorld));
 
-	const auto world_m = m_transform->GetMatrix(CoordinateKind::kWorld);
-	const auto local_pos = m_transform->GetPos(CoordinateKind::kLocal);
+	const auto world_m		= m_transform->GetMatrix(CoordinateKind::kWorld);
+	const auto local_pos	= m_transform->GetPos	(CoordinateKind::kLocal);
 
 	m_exhaust_vent_transform->SetPos(CoordinateKind::kWorld, local_pos + VTransformSR(kExhaustVentOffsetPos, world_m));
 }

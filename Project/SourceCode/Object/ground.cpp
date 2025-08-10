@@ -43,7 +43,7 @@ void Ground::Draw() const
 {
 	if (!IsActive()) { return; }
 
-	m_modeler->Draw();
+	//m_modeler->Draw();
 }
 
 void Ground::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
@@ -60,6 +60,6 @@ void Ground::AddToObjManager()
 
 float Ground::GetDeltaTime() const
 {
-	const auto time_manager = GameTimeManager::GetInstance();
+const auto time_manager = GameTimeManager::GetInstance();
 	return time_manager->GetDeltaTime(TimeScaleController::LayerKind::kWorld);
 }

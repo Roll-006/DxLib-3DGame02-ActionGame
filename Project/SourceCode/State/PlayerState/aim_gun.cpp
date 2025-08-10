@@ -64,7 +64,16 @@ std::shared_ptr<IState<Player>> player_state::AimGun::ChangeState(Player* obj)
 	{
 		if (gun->IsShot())
 		{
-			return state_controller->GetState<Shot, Player>();
+			// ロケットランチャーショット(必殺技)
+			if (gun->GetGunKind() == GunKind::kRocketLauncher)
+			{
+				return state_controller->GetState<ShotRocketLauncher, Player>();
+			}
+			// 通常ショット
+			else
+			{
+				return state_controller->GetState<Shot, Player>();
+			}
 		}
 	}
 	// リロード

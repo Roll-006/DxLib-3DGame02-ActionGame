@@ -20,8 +20,6 @@ void player_state::Shot::Update(Player* obj)
 
 void player_state::Shot::LateUpdate(Player* obj)
 {
-	obj->NotifyShotRocketLauncher();
-
 	const auto gun		= std::static_pointer_cast<GunBase>(obj->GetCurrentHeldWeapon());
 	const auto camera	= ObjManager::GetInstance()->GetObj<ObjBase>(ObjName.MAIN_CAMERA);
 	const auto aim_dir	= camera->GetTransform()->GetForward(CoordinateKind::kWorld);
@@ -55,7 +53,6 @@ std::shared_ptr<IState<Player>> player_state::Shot::ChangeState(Player* obj)
 	const auto state_controller = obj->GetStateController();
 	const auto command			= CommandHandler::GetInstance();
 
+	// 銃エイミング状態
 	return state_controller->GetState<AimGun, Player>();
-
-	//return nullptr;
 }

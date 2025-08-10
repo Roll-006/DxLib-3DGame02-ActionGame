@@ -26,6 +26,7 @@
 #include "../State/PlayerState/equip_gun.hpp"
 #include "../State/PlayerState/aim_gun.hpp"
 #include "../State/PlayerState/shot.hpp"
+#include "../State/PlayerState/shot_rocket_launcher.hpp"
 #include "../State/PlayerState/reload.hpp"
 
 #include "../State/PlayerState/special_null.hpp"
