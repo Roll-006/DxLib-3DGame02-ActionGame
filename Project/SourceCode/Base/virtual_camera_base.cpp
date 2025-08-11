@@ -1,14 +1,15 @@
 ﻿#include "virtual_camera_base.hpp"
 #include "../Manager/camera_manager.hpp"
 
-VirtualCameraBase::VirtualCameraBase(const std::string& name, const VirtualCameraKind camera_kind) :
-	ObjBase				(name, ObjTag.VIRTUAL_CAMERA),
-	m_body				(std::make_shared<CameraBody> (m_transform)),
-	m_aim				(std::make_shared<CameraAim>  (m_transform)),
-	m_noise				(std::make_shared<CameraNoise>(m_transform)),
-	m_target_transform	(nullptr),
-	m_priority			(0),
-	m_camera_kind		(camera_kind)
+VirtualCameraBase::VirtualCameraBase(const std::string& name, const VirtualCameraKind camera_kind, const BlendActivationPolicyKind blend_policy_kind) :
+	ObjBase							(name, ObjTag.VIRTUAL_CAMERA),
+	m_body							(std::make_shared<CameraBody> (m_transform)),
+	m_aim							(std::make_shared<CameraAim>  (m_transform)),
+	m_noise							(std::make_shared<CameraNoise>(m_transform)),
+	m_target_transform				(nullptr),
+	m_priority						(0),
+	m_blend_activation_policy_kind	(blend_policy_kind),
+	m_camera_kind					(camera_kind)
 {
 	// 処理なし
 }

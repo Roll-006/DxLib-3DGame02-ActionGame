@@ -20,7 +20,7 @@ public:
 	void EnableClosestOnlyRayCastHit();
 
 
-#pragma region “o˜^ / ‰ğœ
+	#pragma region “o˜^ / ‰ğœ
 	void AddHitTriangle(const Triangle& hit_triangle)
 	{
 		m_hit_triangles.emplace_back(hit_triangle);
@@ -43,9 +43,10 @@ public:
 	{
 		m_hit_model_triangles.clear();
 	}
-#pragma endregion
+	#pragma endregion
 
 
+	#pragma region “o˜^ / ‰ğœ
 	[[nodiscard]] ColliderKind										GetColliderKind()		const { return m_kind; }
 	[[nodiscard]] std::shared_ptr<ShapeBase>						GetShape()				const { return m_shape; }
 	[[nodiscard]] int												GetModelHandle()		const { return m_model_handle; }
@@ -55,6 +56,7 @@ public:
 
 	/// @brief Å‚à‹ß‚¢ƒRƒ‰ƒCƒ_[‚Æ‚Ì‚İÕ“Ë‚ğ‹–‰Â‚·‚é‚©‚ğ”»’è(ƒŒƒCƒLƒƒƒXƒg‚Å‚Ì‚İ—LŒø‚ÈŠÖ”)
 	[[nodiscard]] bool IsClosestOnlyHit() const { return m_is_closest_only_hit; }
+	#pragma endregion
 
 private:
 	/// @brief —LŒø‚È}Œ`‚Å‚ ‚é‚©‚ğ”»’è

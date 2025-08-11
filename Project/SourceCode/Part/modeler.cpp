@@ -96,8 +96,8 @@ void Modeler::ApplyOpacity() const
 	else
 	{
 		MV1SetUseZBuffer (m_model_handle, FALSE);
-		MV1SetOpacityRate(m_model_handle, m_opacity);
 	}
+	MV1SetOpacityRate(m_model_handle, m_opacity);
 }
 
 void Modeler::ApplyMatrix() const

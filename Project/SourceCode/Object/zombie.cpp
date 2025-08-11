@@ -4,7 +4,7 @@ Zombie::Zombie() :
 	EnemyBase(ObjName.ZOMBIE, MassKind::kMedium)
 {
 	m_modeler = std::make_shared<Modeler>(m_transform, ModelPath.ZOMBIE_05, kBasicAngle, kBasicScale);
-	SetModelHandle(m_modeler->GetModelHandle());
+	SetColliderModelHandle(m_modeler->GetModelHandle());
 
 	m_look_dir = VGet(0.0f, 0.0f, 1.0f);
 	m_transform->SetRot  (CoordinateKind::kWorld, m_look_dir);

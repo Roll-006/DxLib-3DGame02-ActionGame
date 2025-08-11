@@ -982,6 +982,9 @@
     <ClInclude Include="SourceCode\State\PlayerState\shot_rocket_launcher.hpp">
       <Filter>State\PlayerState</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\Data\Kind\blend_activation_policy_kind.hpp">
+      <Filter>Data\Kind</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Data">

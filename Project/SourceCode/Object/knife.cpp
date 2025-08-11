@@ -4,7 +4,7 @@ Knife::Knife() :
 	KnifeBase(ObjName.KNIFE, HolsterKind::kKnife)
 {
 	m_modeler = std::make_shared<Modeler>(m_transform, ModelPath.KNIFE, kBasicAngle, kBasicScale);	
-	SetModelHandle(m_modeler->GetModelHandle());
+	SetColliderModelHandle(m_modeler->GetModelHandle());
 
 	SetOffset(kHoldOffsetPos,   kHoldOffsetAngle,   kHoldOffsetScale,
 			  kAttachOffsetPos, kAttachOffsetAngle, kAttachOffsetScale);

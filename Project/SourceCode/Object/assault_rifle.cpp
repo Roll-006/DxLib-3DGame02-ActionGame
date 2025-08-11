@@ -4,7 +4,7 @@ AssaultRifle::AssaultRifle() :
 	GunBase(ObjName.ASSAULT_RIFLE, GunKind::kSniperRifle, HolsterKind::kRifle)
 {
 	m_modeler = std::make_shared<Modeler>(m_transform, ModelPath.ASSAULT_RIFLE, kBasicAngle, kBasicScale);	
-	SetModelHandle(m_modeler->GetModelHandle());
+	SetColliderModelHandle(m_modeler->GetModelHandle());
 
 	SetOffset(kHoldOffsetPos,   kHoldOffsetAngle,   kHoldOffsetScale, 
 			  kAttachOffsetPos, kAttachOffsetAngle, kAttachOffsetScale);

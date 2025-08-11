@@ -19,31 +19,46 @@ public:
 	void Deactivate() override { m_is_active = false; }
 
 	[[nodiscard]] VirtualCameraControllerKind GetVirtualCameraControllerKind() const override;
+
 	[[nodiscard]] bool IsActive() const override { return m_is_active; }
 
 private:
 	void CalcAimTransformForRotCamera();
+	void CalcAimTransformForZoomInCamera();
 	void CalcAimTransformForZoomOutCamera();
 
 private:
-	static constexpr VECTOR kFollowOffsetForRot			= {  0.0f, 0.0f, -50.0f };
-	static constexpr VECTOR kTrackedObjOffsetForRot		= { 10.0f, 0.0f,   0.0f };
-	static constexpr VECTOR kFollowOffsetForZoomOut		= {  0.0f, 0.0f, -50.0f };
-	static constexpr VECTOR kTrackedObjOffsetForZoomOut	= { 10.0f, 0.0f,   0.0f };
-	static constexpr VECTOR kFirstRotCameraAngle		= { 0.0f, -60.0f * math::kDegToRad, 0.0f };
-	static constexpr float  kZoomOutkAcceleration		= 2.8f;
-	static constexpr float  kRotAcceleration			= 0.7f;
+	static constexpr VECTOR kFirstFollowOffsetForRotCamera				= {  9.0f, 6.0f, -50.0f };
+	static constexpr VECTOR kFirstFollowOffsetForZoomInCamera			= {  9.0f, 6.0f, -50.0f };
+	static constexpr VECTOR kDestinationFollowOffsetForZoomInCamera		= {  9.0f, 6.0f, -34.0f };
+	static constexpr VECTOR kTrackedObjOffsetForRotCamera				= { -2.0f, 2.0f,   0.0f };
+	static constexpr VECTOR kTrackedObjOffsetForZoomCamera				= { -2.0f, 2.0f,   0.0f };
+	static constexpr VECTOR kFirstAngleForRotCamera						= { 0.0f, 0.0f * math::kDegToRad, 0.0f };
 
+	static constexpr float  kRotAcceleration							= 0.7f;
+	static constexpr float  kZoomOutDeceleration						= 12.0f;
+	static constexpr float  kZoomOutMaxDeceleration						= 0.3f;
+	static constexpr float  kZoomOutInitialVelocity						= 1.0f;
+	static constexpr float  kZoomInDamping								= 0.5f;
+
+private:
 	Player& m_player;
+	std::shared_ptr<Subject<RocketLauncherVirtualCameraController>> m_subject;
 
 	std::shared_ptr<VirtualCamera>	m_rot_camera;
+	std::shared_ptr<VirtualCamera>	m_zoom_in_camera;
 	std::shared_ptr<VirtualCamera>	m_zoom_out_camera;
+
 	std::shared_ptr<Transform>		m_rot_camera_aim_transform;
-	std::shared_ptr<Transform>		m_zoom_out_camera_aim_transform;
+	std::shared_ptr<Transform>		m_zoom_camera_aim_transform;
 
 	VirtualCameraControllerKind		m_virtual_camera_controller_kind;
 
+	VECTOR	m_follow_offset_for_zoom_in;
 	VECTOR	m_follow_offset_for_zoom_out;
 	VECTOR  m_rot_camera_angle;
+	float	m_zoom_in_wait_timer;
+	float   m_zoom_out_speed;
+
 	bool	m_is_active;
 };

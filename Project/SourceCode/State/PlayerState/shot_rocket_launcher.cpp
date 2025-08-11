@@ -27,8 +27,6 @@ void player_state::ShotRocketLauncher::Update(Player* obj)
 
 void player_state::ShotRocketLauncher::LateUpdate(Player* obj)
 {
-	obj->NotifyShotRocketLauncher();
-
 	const auto gun		= std::static_pointer_cast<GunBase>(obj->GetCurrentHeldWeapon());
 	const auto camera	= ObjManager::GetInstance()->GetObj<ObjBase>(ObjName.MAIN_CAMERA);
 
@@ -42,9 +40,11 @@ void player_state::ShotRocketLauncher::LateUpdate(Player* obj)
 	gun->SetAimDir  (gun->GetAimDir());
 	gun->SetPosOnRay(camera->GetTransform()->GetPos(CoordinateKind::kWorld));
 
+	// ショット
 	if (m_wait_timer > kShotWaitTime && !m_was_shot)
 	{
 		gun->OnShot();
+		obj->NotifyShotRocketLauncher();
 		m_was_shot = true;
 	}
 }
@@ -81,7 +81,7 @@ std::shared_ptr<IState<Player>> player_state::ShotRocketLauncher::ChangeState(Pl
 	const auto command			= CommandHandler::GetInstance();
 
 	// 銃エイミング状態
-	if (test > 100.0f)
+	if (test > 30.0f)
 	{
 		return state_controller->GetState<AimGun, Player>();
 	}

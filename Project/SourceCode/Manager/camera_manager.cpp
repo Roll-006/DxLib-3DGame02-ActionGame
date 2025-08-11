@@ -24,7 +24,10 @@ CameraManager::~CameraManager()
 }
 
 void CameraManager::Update()
-{      
+{
+	// 非アクティブ化処理の遅延防止のため一度先行してトランスフォームを取得
+	SetBlendTransform();
+
 	for (const auto& camera_controller : m_virtual_camera_controllers)
 	{
 		camera_controller->Update();
@@ -113,6 +116,29 @@ std::shared_ptr<VirtualCameraBase> CameraManager::GetVirtualCamera(const Virtual
 
 
 #pragma region ブレンド関連処理
+void CameraManager::DeactivateVirtualCamera(const std::shared_ptr<VirtualCameraBase> origin_camera, const std::shared_ptr<VirtualCameraBase> target_camera)
+{
+	switch (target_camera->GetBlendActivationPolicyKind())
+	{
+	case BlendActivationPolicyKind::kDeactivateOriginCamera:
+		if (origin_camera) { origin_camera->Deactivate(); }
+		break;
+
+	case BlendActivationPolicyKind::kDeactivateAllCamera:
+		for (const auto& camera : m_virtual_cameras)
+		{
+			if (target_camera != camera.second)
+			{
+				camera.second->Deactivate();
+			}
+		}
+		break;
+
+	default:
+		break;
+	}
+}
+
 void CameraManager::BlendVirtualCamera()
 {
 	// ブレンドの起点とターゲットを設定
@@ -150,16 +176,20 @@ void CameraManager::ChangeTargetVirtualCamera(const int obj_handle)
 void CameraManager::SetBlendTransform()
 {
 	// FIXME : ブレンドが開始した一瞬、別の地点が描画される現象発生中
-
+	// FIXME : originA➡targetBにブレンド中に、originB➡targetAに切り替わった場合、到達までの時間が早くなる不具合発生中
+	
 	bool is_seted_target_transform = false;
 	bool is_seted_origin_transform = false;
+	std::shared_ptr<VirtualCameraBase> origin_camera = nullptr;
+	std::shared_ptr<VirtualCameraBase> target_camera = nullptr;
 
 	for (const auto& pr : m_priority)
 	{
 		// アクティブであるかつ、ターゲットがまだ設定されていない場合、ターゲットを設定する
 		if (GetVirtualCamera(pr.first)->IsActive() && !is_seted_target_transform)
 		{
-			m_blend_target_transform = GetVirtualCamera(pr.first)->GetTransform();
+			target_camera = GetVirtualCamera(pr.first);
+			m_blend_target_transform = target_camera->GetTransform();
 			ChangeTargetVirtualCamera(pr.first);
 
 			is_seted_target_transform = true;
@@ -181,7 +211,8 @@ void CameraManager::SetBlendTransform()
 				// ブレンド結果がない場合はバーチャルカメラのトランスフォームを直接起点とする
 				else
 				{
-					m_blend_origin_transform = GetVirtualCamera(pr.first)->GetTransform();
+					origin_camera = GetVirtualCamera(pr.first);
+					m_blend_origin_transform = origin_camera->GetTransform();
 				}
 
 				is_seted_origin_transform = true;
@@ -190,6 +221,9 @@ void CameraManager::SetBlendTransform()
 
 		if (is_seted_target_transform && is_seted_origin_transform) { break; }
 	}
+
+	// ターゲットのブレンド方針に従ってターゲット以外のカメラのアクティブ状態を制御
+	DeactivateVirtualCamera(origin_camera, target_camera);
 }
 
 void CameraManager::CalcBlendResuletTransform()
@@ -209,9 +243,6 @@ void CameraManager::CalcBlendResuletTransform()
 	auto blended_transform		= math::GetLerpTransform(*m_blend_origin_transform, *m_blend_target_transform, m_blend_coefficient, true, false, true);
 	m_blend_result_transform	= std::make_shared<Transform>(blended_transform);
 
-	//DrawFormatString(600,  0, 0xffffff, "m_blend_timer       : %f", m_blend_timer);
-	//DrawFormatString(600, 20, 0xffffff, "m_blend_coefficient : %f", m_blend_coefficient);
-
 	// ブレンド完了判定
 	if (m_blend_coefficient >= 1.0f)
 	{
@@ -220,4 +251,3 @@ void CameraManager::CalcBlendResuletTransform()
 	}
 }
 #pragma endregion
-

@@ -41,13 +41,13 @@ public:
 	/// @brief íÖínîªíËÇâèúÇ∑ÇÈ
 	void ReleaseLanding() { m_is_landing = false; }
 
-	void SetModelHandle	(const int model_handle) { m_model_handle = model_handle; }
-	void SetVelocity	(const VECTOR& velocity) { m_velocity = velocity; }
+	void SetColliderModelHandle(const int model_handle) { m_model_handle = model_handle; }
+	void SetVelocity(const VECTOR& velocity) { m_velocity = velocity; }
 
-	[[nodiscard]] int		GetModelHandle()	const { return m_model_handle; }
-	[[nodiscard]] VECTOR	GetVelocity()		const { return m_velocity; }
-	[[nodiscard]] VECTOR	GetFallVelocity()	const { return m_fall_velocity; }
-	[[nodiscard]] MassKind	GetMassKind()		const { return m_mass_kind; }
+	[[nodiscard]] int		GetColliderModelHandle() const { return m_model_handle; }
+	[[nodiscard]] VECTOR	GetVelocity()			 const { return m_velocity; }
+	[[nodiscard]] VECTOR	GetFallVelocity()		 const { return m_fall_velocity; }
+	[[nodiscard]] MassKind	GetMassKind()			 const { return m_mass_kind; }
 	[[nodiscard]] std::shared_ptr<Collider> GetCollider(const ColliderKind kind) const;
 	[[nodiscard]] std::vector<std::shared_ptr<Collider>> GetColliderAll() const { return m_collider; }
 

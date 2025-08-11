@@ -50,14 +50,26 @@ public:
 
 	#pragma region 登録 / 解除
 	/// @brief バーチャルカメラを登録する
+	
+	/// @brief バーチャルカメラを登録する
+	/// @param virtual_camera 登録するバーチャルカメラ
+	/// @param is_active アクティブ化するかどうか
 	template<virtual_camera_concepts::VirtualCameraT VirtualCameraT>
-	void AddVirtualCamera(const std::shared_ptr<VirtualCameraT> virtual_camera)
+	void AddVirtualCamera(const std::shared_ptr<VirtualCameraT> virtual_camera, const bool is_active)
 	{
 		if (!m_virtual_cameras.count(virtual_camera->GetObjHandle()))
 		{
 			m_virtual_cameras[virtual_camera->GetObjHandle()] = virtual_camera;
-
 			SortPriority(virtual_camera);
+
+			if (is_active)
+			{
+				virtual_camera->Activate();
+			}
+			else
+			{
+				virtual_camera->Deactivate();
+			}
 		}
 	}
 	
@@ -112,6 +124,10 @@ private:
 	
 
 	#pragma region ブレンド関連処理
+	/// @brief ターゲットバーチャルカメラによって自身以外のバーチャルカメラを非アクティブ化させる
+	/// @brief 非アクティブ化条件はターゲットバーチャルカメラが保持
+	void DeactivateVirtualCamera(const std::shared_ptr<VirtualCameraBase> origin_camera, const std::shared_ptr<VirtualCameraBase> target_camera);
+
 	/// @brief バーチャルカメラ間のブレンドを行う
 	void BlendVirtualCamera();
 
@@ -151,19 +167,6 @@ private:
 	bool  m_is_invert_vertical;															// 操作時に上下反転を行うかを判定
 
 	std::vector<std::shared_ptr<IVirtualCameraController>> m_virtual_camera_controllers;
-
-
-
-
-	bool test_is_add1;
-	bool test_is_add2;
-	int handle1;
-	int handle2;
-	int handle3;
-	std::shared_ptr<Transform> transform1;
-	std::shared_ptr<Transform> transform2;
-
-
 
 	friend class SingletonBase<CameraManager>;
 };

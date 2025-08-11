@@ -24,11 +24,20 @@ void TimeScaleController::Update()
 
 void TimeScaleController::OnNotify(const IEvent& event)
 {
+	// ロケットランチャーが弾丸を発射
 	if (event.GetType() == std::type_index(typeid(RocketLauncherShotData)))
 	{
-		const auto& rocket_launcher_shot = static_cast<const Event<RocketLauncherShotData>&>(event);
-		m_next_time_scale.at(LayerKind::kWorld)  = rocket_launcher_shot.data.cutscene_time_scale;
-		m_next_time_scale.at(LayerKind::kPlayer) = rocket_launcher_shot.data.cutscene_time_scale;
-		m_next_time_scale.at(LayerKind::kEffect) = rocket_launcher_shot.data.cutscene_time_scale;
+		const auto& event_data = static_cast<const Event<RocketLauncherShotData>&>(event).data;
+		m_next_time_scale.at(LayerKind::kWorld)		= event_data.cutscene_time_scale;
+		m_next_time_scale.at(LayerKind::kPlayer)	= event_data.cutscene_time_scale;
+		m_next_time_scale.at(LayerKind::kEffect)	= event_data.cutscene_time_scale;
+	}
+	// ロケットランチャー専用カットシーンの終了
+	if (event.GetType() == std::type_index(typeid(EndRocketLauncherCutsceneData)))
+	{
+		const auto& event_data = static_cast<const Event<EndRocketLauncherCutsceneData>&>(event).data;
+		m_next_time_scale.at(LayerKind::kWorld)		= event_data.time_scale;
+		m_next_time_scale.at(LayerKind::kPlayer)	= event_data.time_scale;
+		m_next_time_scale.at(LayerKind::kEffect)	= event_data.time_scale;
 	}
 }

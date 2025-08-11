@@ -5,7 +5,7 @@ RocketLauncher::RocketLauncher() :
 	m_exhaust_vent_transform(std::make_shared<Transform>())
 {
 	m_modeler = std::make_shared<Modeler>(m_transform, ModelPath.ROCKET_LAUNCHER, kBasicAngle, kBasicScale);
-	SetModelHandle(m_modeler->GetModelHandle());
+	SetColliderModelHandle(m_modeler->GetModelHandle());
 
 	SetOffset(kHoldOffsetPos,	kHoldOffsetAngle,	kHoldOffsetScale,
 			  kAttachOffsetPos, kAttachOffsetAngle, kAttachOffsetScale);

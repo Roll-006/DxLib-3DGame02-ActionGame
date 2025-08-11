@@ -20,7 +20,7 @@ Player::Player() :
 	GameTimeManager::GetInstance()->GetTimeScaleController()->AddToSubject<Player>(m_subject);
 
 	m_modeler = std::make_shared<Modeler>(m_transform, ModelPath.SWAT, kBasicAngle, kBasicScale);
-	SetModelHandle(m_modeler->GetModelHandle());
+	SetColliderModelHandle(m_modeler->GetModelHandle());
 
 	// èâä˙posÅEdirÇê›íË
 	m_look_dir[TimeKind::kCurrent] = m_look_dir[TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);
@@ -57,7 +57,7 @@ Player::Player() :
 		const auto camera_manager = CameraManager::GetInstance();
 		const auto rot_camera = std::make_shared<RotControlVirtualCamera>();
 		rot_camera->SetPriority(1);
-		camera_manager->AddVirtualCamera(rot_camera);
+		camera_manager->AddVirtualCamera(rot_camera, true);
 		rot_camera->AttachTarget(m_camera_aim_transform);
 
 		m_current_remaining_bullet_num = 10000;
@@ -146,18 +146,6 @@ void Player::Draw() const
 		{
 			shape->Draw(true, 0, 0xffffff);
 		}
-	}
-
-	{
-		const auto	model_handle = m_modeler->GetModelHandle();
-		const auto	head_index = MV1SearchFrame(model_handle, BonePath.RIGHT_HAND);
-		auto		head_world_m = MV1GetFrameLocalWorldMatrix(model_handle, head_index);
-		const auto  aim_offset_rot = math::ConvertEulerAnglesToXYZRotMatrix(VGet(-90.0f * math::kDegToRad, -90.0f * math::kDegToRad, 0.0f));
-		const auto	aim_rot = aim_offset_rot * MGetRotElem(head_world_m);
-		const auto	aim_pos = MGetTranslateElem(head_world_m);
-
-		const auto axes = math::ConvertRotMatrixToAxes(aim_rot);
-		axis::Draw(axes, aim_pos, 200);
 	}
 
 	//DrawFormatString(500, 20, 0xffffff, "%f", m_fall_velocity.y);

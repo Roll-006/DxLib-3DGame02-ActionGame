@@ -4,7 +4,7 @@ Ground::Ground() :
 	PhysicalObjBase	(ObjName.GROUND, ObjTag.GROUND, MassKind::kStatic),
 	m_modeler		(std::make_shared<Modeler>(m_transform, ModelPath.GROUND_01, kBasicAngle, kBasicScale))
 {	
-	SetModelHandle(m_modeler->GetModelHandle());
+	SetColliderModelHandle(m_modeler->GetModelHandle());
 
 	m_transform->SetPos (CoordinateKind::kWorld, kPos);
 	m_modeler->ApplyMatrix();

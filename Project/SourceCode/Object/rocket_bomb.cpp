@@ -14,7 +14,7 @@ RocketBomb::RocketBomb() :
 	m_deceleration			(0.0f),
 	m_range					(0.0f)
 {
-	SetModelHandle(m_modeler->GetModelHandle());
+	SetColliderModelHandle(m_modeler->GetModelHandle());
 
 	AddCollider(std::make_shared<Collider>(ColliderKind::kRayCast, std::make_shared<Segment>(), this));
 

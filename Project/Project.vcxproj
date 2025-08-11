@@ -316,6 +316,7 @@
     <ClInclude Include="SourceCode\Data\IncludeList\shape.hpp" />
     <ClInclude Include="SourceCode\Data\IncludeList\vector.hpp" />
     <ClInclude Include="SourceCode\Data\input_data.hpp" />
+    <ClInclude Include="SourceCode\Data\Kind\blend_activation_policy_kind.hpp" />
     <ClInclude Include="SourceCode\Data\Kind\box_kind.hpp" />
     <ClInclude Include="SourceCode\Data\Kind\camera_state_kind.hpp" />
     <ClInclude Include="SourceCode\Data\Kind\collider_kind.hpp" />

@@ -5,8 +5,8 @@
 class VirtualCamera final : public VirtualCameraBase
 {
 public:
-	VirtualCamera();
-	~VirtualCamera()		override;
+	VirtualCamera(const BlendActivationPolicyKind blend_policy_kind);
+	~VirtualCamera() override;
 
 	void Init()						override;
 	void Update()					override;

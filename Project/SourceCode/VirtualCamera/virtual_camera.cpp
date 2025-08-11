@@ -1,7 +1,7 @@
 #include "virtual_camera.hpp"
 
-VirtualCamera::VirtualCamera() : 
-	VirtualCameraBase(ObjName.NORMAL_VIRTUAL_CAMERA, VirtualCameraKind::kNormal)
+VirtualCamera::VirtualCamera(const BlendActivationPolicyKind blend_policy_kind) :
+	VirtualCameraBase(ObjName.NORMAL_VIRTUAL_CAMERA, VirtualCameraKind::kNormal, blend_policy_kind)
 {
 
 }
