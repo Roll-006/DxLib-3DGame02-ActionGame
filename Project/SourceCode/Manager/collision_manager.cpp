@@ -29,13 +29,15 @@ void CollisionManager::LateUpdate()
 		{
 			// コライダーとの距離を取得
 			std::unordered_map<int, TargetColliderData> target;
-			std::unordered_map<int, float>				distance;
+			std::vector<std::pair<int, float>>			distance;
 			for (size_t i = 0; i < pair.target_data.size(); ++i)
 			{
 				if (pair.target_data.at(i).intersection)
 				{
-					target[i]	= TargetColliderData(pair.target_data.at(i).collider, pair.target_data.at(i).intersection);
-					distance[i] = VSize(*pair.target_data.at(i).intersection - std::static_pointer_cast<Segment>(pair.owner_collider->GetShape())->GetBeginPos());
+					target[i] = TargetColliderData(pair.target_data.at(i).collider, pair.target_data.at(i).intersection);
+
+					const auto dist = VSize(*pair.target_data.at(i).intersection - std::static_pointer_cast<Segment>(pair.owner_collider->GetShape())->GetBeginPos());
+					distance.emplace_back(std::make_pair(i, dist));
 				}
 			}
 

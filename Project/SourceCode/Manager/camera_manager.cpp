@@ -56,6 +56,20 @@ void CameraManager::LateUpdate()
 	m_main_camera->LateUpdate();
 }
 
+void CameraManager::RemoveVirtualCamera(const int obj_handle)
+{
+	m_virtual_cameras.erase(obj_handle);
+
+	const auto remove = std::remove_if(m_priority.begin(), m_priority.end(), [=](const std::pair<int, int>& pair)
+	{
+		return pair.first == obj_handle;
+	});
+	m_priority.erase(remove, m_priority.end());
+
+}
+
+
+#pragma region Setter
 void CameraManager::SetMainCamera(const std::shared_ptr<MainCamera> main_camera)
 {
 	if (!m_main_camera)
@@ -75,12 +89,7 @@ void CameraManager::SetBlendTime(const float blend_time)
 	m_blend_time = blend_time;
 	m_blend_timer *= scale;
 }
-
-void CameraManager::RemoveVirtualCamera(const int obj_handle)
-{
-	m_virtual_cameras.erase(obj_handle);
-	m_priority.erase(obj_handle);
-}
+#pragma endregion
 
 
 #pragma region Getter
@@ -185,10 +194,12 @@ void CameraManager::SetBlendTransform()
 
 	for (const auto& pr : m_priority)
 	{
+		const auto camera = GetVirtualCamera(pr.first);
+
 		// アクティブであるかつ、ターゲットがまだ設定されていない場合、ターゲットを設定する
-		if (GetVirtualCamera(pr.first)->IsActive() && !is_seted_target_transform)
+		if (camera->IsActive() && !is_seted_target_transform)
 		{
-			target_camera = GetVirtualCamera(pr.first);
+			target_camera = camera;
 			m_blend_target_transform = target_camera->GetTransform();
 			ChangeTargetVirtualCamera(pr.first);
 
@@ -211,7 +222,7 @@ void CameraManager::SetBlendTransform()
 				// ブレンド結果がない場合はバーチャルカメラのトランスフォームを直接起点とする
 				else
 				{
-					origin_camera = GetVirtualCamera(pr.first);
+					origin_camera = camera;
 					m_blend_origin_transform = origin_camera->GetTransform();
 				}
 

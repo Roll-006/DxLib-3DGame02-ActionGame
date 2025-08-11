@@ -127,7 +127,7 @@ private:
 	void CalcLookDir();
 
 	/// @brief カメラに見られる座標を計算
-	void CalcCameraAimPos();
+	//void CalcCameraAimPos();
 
 	// パッド入力での速度ベクトルを取得
 	[[nodiscard]] VECTOR GetVelocityFromPad();
@@ -141,7 +141,7 @@ private:
 
 	/// @brief 無加工のボーンをカメラが追尾するかを判定
 	/// @return true : ボーンそのものをカメラが追尾, false : ボーンを同じ高さにある位置を追尾
-	[[nodiscard]] bool IsTrackCameraOriginBone() const;
+	//[[nodiscard]] bool IsTrackCameraOriginBone() const;
 
 private:
 	static constexpr VECTOR kBasicAngle							= { 0.0f, DX_PI_F, 0.0f };

@@ -86,12 +86,14 @@ void PhysicalObjBase::ProjectionVelocity()
 
 	// ヒットしたポリゴンから三角形を生成
 	// 三角形との距離を取得
-	std::unordered_map<int, Triangle> triangles;
-	std::unordered_map<int, float>    distance;
+	std::unordered_map<int, Triangle>	triangles;
+	std::vector<std::pair<int, float>>	distance;
 	for (size_t i = 0; i < all_triangles.size(); ++i)
 	{
-		distance[i]		= math::GetDistanceTriangleToSphere(all_triangles.at(i), *std::dynamic_pointer_cast<Sphere>(landing_trigger->GetShape()));
-		triangles[i]	= all_triangles.at(i);
+		triangles[i] = all_triangles.at(i);
+
+		const auto dist = math::GetDistanceTriangleToSphere(all_triangles.at(i), *std::dynamic_pointer_cast<Sphere>(landing_trigger->GetShape()));
+		distance.emplace_back(std::make_pair(i, dist));
 	}
 
 	// 距離が最も近い三角形との交点を取得

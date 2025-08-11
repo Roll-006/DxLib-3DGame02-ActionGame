@@ -7,9 +7,9 @@ VirtualCameraBase::VirtualCameraBase(const std::string& name, const VirtualCamer
 	m_aim							(std::make_shared<CameraAim>  (m_transform)),
 	m_noise							(std::make_shared<CameraNoise>(m_transform)),
 	m_target_transform				(nullptr),
-	m_priority						(0),
 	m_blend_activation_policy_kind	(blend_policy_kind),
-	m_camera_kind					(camera_kind)
+	m_camera_kind					(camera_kind),
+	m_priority						(0)
 {
 	// 処理なし
 }

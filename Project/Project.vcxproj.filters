@@ -176,7 +176,7 @@
     <ClCompile Include="SourceCode\Algorithm\algorithm.cpp">
       <Filter>Algorithm</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\VirtualCamera\aiming_camera (2).cpp">
+    <ClCompile Include="SourceCode\VirtualCamera\control_virtual_camera_controller.cpp">
       <Filter>VirtualCamera</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\VirtualCamera\rocket_launcher_virtual_camera_controller.cpp">
@@ -682,7 +682,7 @@
     <ClInclude Include="SourceCode\Algorithm\algorithm.hpp">
       <Filter>Algorithm</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\VirtualCamera\aiming_camera (2).hpp">
+    <ClInclude Include="SourceCode\VirtualCamera\control_virtual_camera_controller.hpp">
       <Filter>VirtualCamera</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\VirtualCamera\rocket_launcher_virtual_camera_controller.hpp">

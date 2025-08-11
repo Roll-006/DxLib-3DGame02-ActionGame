@@ -301,14 +301,14 @@ bool collision::IsHitSegmentAndModel        (const Segment&     segment,        
 
     // ヒットしたポリゴンから三角形を生成
     // 三角形との距離を取得
-    std::unordered_map<int, Triangle> triangles;
-    std::unordered_map<int, float>    distance;
+    std::unordered_map<int, Triangle>   triangles;
+    std::vector<std::pair<int, float>>	distance;
     for (int i = 0; i < hit_result.HitNum; ++i)
     {
         hit_triangles.emplace_back(Triangle(hit_result.Dim[i].Position[0], hit_result.Dim[i].Position[2], hit_result.Dim[i].Position[1]));
 
-        distance[i]     = math::GetDistancePointToTriangle(segment.GetBeginPos(), hit_triangles.at(i));
-        triangles[i]    = hit_triangles.at(i);
+        triangles[i] = hit_triangles.at(i);
+        distance.emplace_back(std::make_pair(i, math::GetDistancePointToTriangle(segment.GetBeginPos(), hit_triangles.at(i))));
     }
 
     // 距離が最も近い三角形との交点を取得
@@ -431,14 +431,14 @@ bool collision::IsHitTriangleAndModel       (const Triangle&    triangle,       
 
     // ヒットしたポリゴンから三角形を生成
     // 三角形との距離を取得
-    std::unordered_map<int, Triangle> triangles;
-    std::unordered_map<int, float>    distance;
+    std::unordered_map<int, Triangle>   triangles;
+    std::vector<std::pair<int, float>>	distance;
     for (int i = 0; i < hit_result.HitNum; ++i)
     {
         hit_triangles.emplace_back(Triangle(hit_result.Dim[i].Position[0], hit_result.Dim[i].Position[2], hit_result.Dim[i].Position[1]));
 
-        distance[i] = math::GetDistanceTriangleToTriangle(triangle, hit_triangles.at(i));
         triangles[i] = hit_triangles.at(i);
+        distance.emplace_back(std::make_pair(i, math::GetDistanceTriangleToTriangle(triangle, hit_triangles.at(i))));
     }
 
     // 距離が最も近い三角形との交点を取得
@@ -558,14 +558,14 @@ bool collision::IsHitSphereAndModel         (const Sphere&      sphere,         
 
     // ヒットしたポリゴンから三角形を生成
     // 三角形との距離を取得
-    std::unordered_map<int, Triangle> triangles;
-    std::unordered_map<int, float>    distance;
+    std::unordered_map<int, Triangle>   triangles;
+    std::vector<std::pair<int, float>>	distance;
     for (int i = 0; i < hit_result.HitNum; ++i)
     {
         hit_triangles.emplace_back(Triangle(hit_result.Dim[i].Position[0], hit_result.Dim[i].Position[2], hit_result.Dim[i].Position[1]));
 
-        distance[i] = math::GetDistanceTriangleToSphere(hit_triangles.at(i), sphere);
         triangles[i] = hit_triangles.at(i);
+        distance.emplace_back(std::make_pair(i, math::GetDistanceTriangleToSphere(hit_triangles.at(i), sphere)));
     }
 
     // 距離が最も近い三角形との交点を取得
@@ -619,14 +619,14 @@ bool collision::IsHitCapsuleAndModel        (const Capsule&     capsule,        
 
     // ヒットしたポリゴンから三角形を生成
     // 三角形との距離を取得
-    std::unordered_map<int, Triangle> triangles;
-    std::unordered_map<int, float>    distance;
+    std::unordered_map<int, Triangle>   triangles;
+    std::vector<std::pair<int, float>>	distance;
     for (int i = 0; i < hit_result.HitNum; ++i)
     {
         hit_triangles.emplace_back(Triangle(hit_result.Dim[i].Position[0], hit_result.Dim[i].Position[2], hit_result.Dim[i].Position[1]));
 
-        distance[i] = math::GetDistanceTriangleToCapsule(hit_triangles.at(i), capsule);
         triangles[i] = hit_triangles.at(i);
+        distance.emplace_back(std::make_pair(i, math::GetDistanceTriangleToCapsule(hit_triangles.at(i), capsule)));
     }
 
     // 距離が最も近い三角形との交点を取得
@@ -802,14 +802,14 @@ VECTOR collision::PushBackSphereAndModel    (const VECTOR& velocity, const Spher
 
     // ヒットしたポリゴンから三角形を生成
     // 三角形との現在の距離を取得
-    std::unordered_map<int, Triangle> triangles;
-    std::unordered_map<int, float>    current_distance;
+    std::unordered_map<int, Triangle>   triangles;
+    std::vector<std::pair<int, float>>	current_distance;
     for (int i = 0; i < hit_result.HitNum; ++i)
     {
         Triangle triangle = Triangle(hit_result.Dim[i].Position[0], hit_result.Dim[i].Position[2], hit_result.Dim[i].Position[1]);
 
-        current_distance[i] = math::GetDistanceTriangleToSphere(triangle, dynamic_sphere);
         triangles[i] = triangle;
+        current_distance.emplace_back(std::make_pair(i, math::GetDistanceTriangleToSphere(triangle, dynamic_sphere)));
     }
 
     // 距離が近い順に押し戻す
@@ -931,8 +931,8 @@ VECTOR collision::PushBackCapsuleAndOBB     (const VECTOR& velocity, const Capsu
     const float slope_difficulty_angle_threshold, const float max_slope_angle)
 {
     VECTOR valid_velocity = velocity;
-    std::unordered_map<box::SquareKind, float> current_distance;
-    std::unordered_map<box::SquareKind, float> future_distance;
+    std::vector<std::pair<box::SquareKind, float>> current_distance;
+    std::vector<std::pair<box::SquareKind, float>> future_distance;
 
     // 未来のカプセルを取得
     Capsule future_capsule = dynamic_capsule;
@@ -941,12 +941,14 @@ VECTOR collision::PushBackCapsuleAndOBB     (const VECTOR& velocity, const Capsu
     for (int i = 0; i < BoxData::kSquareNum; ++i)
     {
         // 現在の座標とすべての四角形の距離を取得
-        current_distance[static_cast<box::SquareKind>(i)] = math::GetDistancePointToSquare(
+        const auto current_dist = math::GetDistancePointToSquare(
             dynamic_capsule.GetSegment().GetBeginPos(), static_obb.GetSquare(static_cast<box::SquareKind>(i)));
+        current_distance.emplace_back(std::make_pair(static_cast<box::SquareKind>(i), current_dist));
 
         // 未来の座標とすべての四角形の距離を取得
-        future_distance[static_cast<box::SquareKind>(i)] = math::GetDistancePointToSquare(
+        const auto future_dist = math::GetDistancePointToSquare(
             future_capsule.GetSegment().GetBeginPos(), static_obb.GetSquare(static_cast<box::SquareKind>(i)));
+        future_distance.emplace_back(std::make_pair(static_cast<box::SquareKind>(i), future_dist));
     }
 
     // 現在の距離が近い順にソート
@@ -980,14 +982,14 @@ VECTOR collision::PushBackCapsuleAndModel   (const VECTOR& velocity, const Capsu
 
     // ヒットしたポリゴンから三角形を生成
     // 三角形との現在の距離を取得
-    std::unordered_map<int, Triangle> triangles;
-    std::unordered_map<int, float>    current_distance;
+    std::unordered_map<int, Triangle>   triangles;
+    std::vector<std::pair<int, float>>  current_distance;
     for (int i = 0; i < hit_result.HitNum; ++i)
     {
         Triangle triangle   = Triangle(hit_result.Dim[i].Position[0], hit_result.Dim[i].Position[2], hit_result.Dim[i].Position[1]);
 
-        current_distance[i] = math::GetDistanceTriangleToCapsule(triangle, dynamic_capsule);
-        triangles[i]        = triangle;
+        triangles[i] = triangle;
+        current_distance.emplace_back(std::make_pair(i, math::GetDistanceTriangleToCapsule(triangle, dynamic_capsule)));
     }
 
     // 距離が近い順に押し戻す

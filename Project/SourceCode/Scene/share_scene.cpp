@@ -8,6 +8,9 @@ ShareScene::ShareScene() :
 	m_main_camera	->AddToObjManager();
 	m_player		->AddToObjManager();
 
+	const auto camera_manager = CameraManager::GetInstance();
+	camera_manager->AddVirtualCameraController(std::make_shared<ControlVirtualCameraController>(*m_player.get()));
+
 	ObjectPoolHolder::GetInstance()->AddObjectPool(m_share_scene_effect_object_pool);
 }
 

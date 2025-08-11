@@ -10,6 +10,8 @@
 
 class CameraManager;
 
+// TODO : 基底クラスの削除を検討。すべてのバーチャルカメラが同じ値を持つため基底クラスは不要である可能性あり
+
 class VirtualCameraBase abstract : public ObjBase
 {
 public:
@@ -43,9 +45,9 @@ protected:
 
 	std::shared_ptr<Transform>		m_target_transform;
 
-	int								m_priority;							// 優先度
 	BlendActivationPolicyKind		m_blend_activation_policy_kind;		// ブレンド時のアクティブ処理の方針
 
 private:
 	VirtualCameraKind				m_camera_kind;						// カメラの種類
+	int								m_priority;							// 優先度
 };

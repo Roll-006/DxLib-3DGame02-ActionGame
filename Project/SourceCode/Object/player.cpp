@@ -53,13 +53,6 @@ Player::Player() :
 		AttachWeapon(rocket_launcher);
 		AttachWeapon(knife);
 
-		// カメラ登録
-		const auto camera_manager = CameraManager::GetInstance();
-		const auto rot_camera = std::make_shared<RotControlVirtualCamera>();
-		rot_camera->SetPriority(1);
-		camera_manager->AddVirtualCamera(rot_camera, true);
-		rot_camera->AttachTarget(m_camera_aim_transform);
-
 		m_current_remaining_bullet_num = 10000;
 	}
 }
@@ -107,7 +100,7 @@ void Player::LateUpdate()
 		}
 	}
 
-	CalcCameraAimPos();
+	//CalcCameraAimPos();
 }
 
 void Player::DrawToShadowMap() const
@@ -415,28 +408,28 @@ void Player::CalcLookDir()
 	}
 }
 
-void Player::CalcCameraAimPos()
-{
-	m_modeler->ApplyMatrix();
-
-	// 追跡するボーンから行列を取得
-	const auto	model_handle	= m_modeler->GetModelHandle();
-	const auto	frame_num		= MV1SearchFrame(model_handle, BonePath.SPINE_2);
-	auto		frame_mat		= MV1GetFrameLocalWorldMatrix(model_handle, frame_num);
-	auto		aim_pos			= MGetTranslateElem(frame_mat);
-	
-	if (!IsTrackCameraOriginBone())
-	{
-		// ボーンと同じ高さの位置を追跡
-		const auto begin_pos	= m_transform->GetPos(CoordinateKind::kWorld);
-		const auto distance		= begin_pos - aim_pos;
-		aim_pos					= begin_pos + m_transform->GetUp(CoordinateKind::kWorld) * VSize(distance);
-	}
-
-	m_current_camera_aim_pos = math::GetApproachedVector(m_current_camera_aim_pos, aim_pos, kCameraAimOffsetBasicSpeed * VSize(aim_pos - m_current_camera_aim_pos));
-
-	m_camera_aim_transform->SetPos(CoordinateKind::kWorld, m_current_camera_aim_pos);
-}
+//void Player::CalcCameraAimPos()
+//{
+//	m_modeler->ApplyMatrix();
+//
+//	// 追跡するボーンから行列を取得
+//	const auto	model_handle	= m_modeler->GetModelHandle();
+//	const auto	frame_num		= MV1SearchFrame(model_handle, BonePath.SPINE_2);
+//	auto		frame_mat		= MV1GetFrameLocalWorldMatrix(model_handle, frame_num);
+//	auto		aim_pos			= MGetTranslateElem(frame_mat);
+//	
+//	if (!IsTrackCameraOriginBone())
+//	{
+//		// ボーンと同じ高さの位置を追跡
+//		const auto begin_pos	= m_transform->GetPos(CoordinateKind::kWorld);
+//		const auto distance		= begin_pos - aim_pos;
+//		aim_pos					= begin_pos + m_transform->GetUp(CoordinateKind::kWorld) * VSize(distance);
+//	}
+//
+//	m_current_camera_aim_pos = math::GetApproachedVector(m_current_camera_aim_pos, aim_pos, kCameraAimOffsetBasicSpeed * VSize(aim_pos - m_current_camera_aim_pos));
+//
+//	m_camera_aim_transform->SetPos(CoordinateKind::kWorld, m_current_camera_aim_pos);
+//}
 
 VECTOR Player::GetVelocityFromPad()
 {
@@ -482,12 +475,12 @@ VECTOR Player::GetMoveRight()
 	return v3d::GetNormalizedV(right);
 }
 
-bool Player::IsTrackCameraOriginBone() const
-{
-	const auto weapon_state_kind = static_cast<player_state::WeaponActionStateKind>(m_state->GetWeaponActionState(TimeKind::kCurrent)->GetStateKind());
-	
-	return(weapon_state_kind == player_state::WeaponActionStateKind::kFirstSideSlashKnife
-		|| weapon_state_kind == player_state::WeaponActionStateKind::kSecondSideSlashKnife
-		|| weapon_state_kind == player_state::WeaponActionStateKind::kSpinningSlashKnife
-		|| weapon_state_kind == player_state::WeaponActionStateKind::kStabKnife);
-}
+//bool Player::IsTrackCameraOriginBone() const
+//{
+//	const auto weapon_state_kind = static_cast<player_state::WeaponActionStateKind>(m_state->GetWeaponActionState(TimeKind::kCurrent)->GetStateKind());
+//	
+//	return(weapon_state_kind == player_state::WeaponActionStateKind::kFirstSideSlashKnife
+//		|| weapon_state_kind == player_state::WeaponActionStateKind::kSecondSideSlashKnife
+//		|| weapon_state_kind == player_state::WeaponActionStateKind::kSpinningSlashKnife
+//		|| weapon_state_kind == player_state::WeaponActionStateKind::kStabKnife);
+//}

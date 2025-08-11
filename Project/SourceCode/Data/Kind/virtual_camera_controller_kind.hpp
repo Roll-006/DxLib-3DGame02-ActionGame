@@ -2,5 +2,6 @@
 
 enum class VirtualCameraControllerKind
 {
-	kRocketLauncherShot,
+	kControl,
+	kRocketLauncherCutscene,
 };

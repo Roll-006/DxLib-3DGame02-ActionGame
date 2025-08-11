@@ -4,11 +4,11 @@
 static struct ObjName
 {
 	#pragma region カメラ
-	const std::string MAIN_CAMERA								= "main_camera";				// メインカメラ
-	const std::string NORMAL_VIRTUAL_CAMERA						= "normal_virtual_camera";		// 通常バーチャルカメラ
-	const std::string ROT_CONTROL_VIRTUAL_CAMERA				= "rot_control_virtual_camera";	// 回転コントロールバーチャルカメラ
-	const std::string AIM_VIRTUAL_CAMERA						= "aiming_virtual_camera";		// エイミング時バーチャルカメラ
-	const std::string SCOPE_VIRTUAL_CAMERA						= "scope_virtual_camera";		// スコープバーチャルカメラ
+	const std::string MAIN_CAMERA								= "main_camera";
+	const std::string NORMAL_VIRTUAL_CAMERA						= "normal_virtual_camera";
+	const std::string ROT_CONTROL_VIRTUAL_CAMERA				= "rot_control_virtual_camera";
+	const std::string AIM_CONTROL_VIRTUAL_CAMERA				= "aim_control_virtual_camera";
+	const std::string SCOPE_VIRTUAL_CAMERA						= "scope_virtual_camera";
 	#pragma endregion
 
 

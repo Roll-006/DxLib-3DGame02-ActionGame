@@ -23,6 +23,10 @@ public:
 	[[nodiscard]] bool IsActive() const override { return m_is_active; }
 
 private:
+	void SetupForRotCamera();
+	void SetupForZoomInCamera();
+	void SetupForZoomOutCamera();
+
 	void CalcAimTransformForRotCamera();
 	void CalcAimTransformForZoomInCamera();
 	void CalcAimTransformForZoomOutCamera();
@@ -42,6 +46,9 @@ private:
 	static constexpr float  kZoomInDamping								= 0.5f;
 
 private:
+	VirtualCameraControllerKind	m_virtual_camera_controller_kind;
+	bool m_is_active;
+
 	Player& m_player;
 	std::shared_ptr<Subject<RocketLauncherVirtualCameraController>> m_subject;
 
@@ -52,13 +59,9 @@ private:
 	std::shared_ptr<Transform>		m_rot_camera_aim_transform;
 	std::shared_ptr<Transform>		m_zoom_camera_aim_transform;
 
-	VirtualCameraControllerKind		m_virtual_camera_controller_kind;
-
 	VECTOR	m_follow_offset_for_zoom_in;
 	VECTOR	m_follow_offset_for_zoom_out;
 	VECTOR  m_rot_camera_angle;
 	float	m_zoom_in_wait_timer;
 	float   m_zoom_out_speed;
-
-	bool	m_is_active;
 };

@@ -257,7 +257,7 @@
     <ClCompile Include="SourceCode\State\PlayerState\turn_around.cpp" />
     <ClCompile Include="SourceCode\UI\player_ui_creator.cpp" />
     <ClCompile Include="SourceCode\UI\ui_drawer.cpp" />
-    <ClCompile Include="SourceCode\VirtualCamera\aiming_camera (2).cpp" />
+    <ClCompile Include="SourceCode\VirtualCamera\control_virtual_camera_controller.cpp" />
     <ClCompile Include="SourceCode\VirtualCamera\rocket_launcher_virtual_camera_controller.cpp" />
     <ClCompile Include="SourceCode\VirtualCamera\rot_control_virtual_camera.cpp" />
     <ClCompile Include="SourceCode\VirtualCamera\virtual_camera.cpp" />
@@ -464,7 +464,7 @@
     <ClInclude Include="SourceCode\State\PlayerState\turn_around.hpp" />
     <ClInclude Include="SourceCode\UI\player_ui_creator.hpp" />
     <ClInclude Include="SourceCode\UI\ui_drawer.hpp" />
-    <ClInclude Include="SourceCode\VirtualCamera\aiming_camera (2).hpp" />
+    <ClInclude Include="SourceCode\VirtualCamera\control_virtual_camera_controller.hpp" />
     <ClInclude Include="SourceCode\VirtualCamera\rocket_launcher_virtual_camera_controller.hpp" />
     <ClInclude Include="SourceCode\VirtualCamera\rot_control_virtual_camera.hpp" />
     <ClInclude Include="SourceCode\VirtualCamera\virtual_camera.hpp" />

@@ -9,8 +9,8 @@ public:
 
 	#pragma region ƒRƒ}ƒ“ƒh
 	//virtual void MoveUp()		abstract;
-	//virtual void MoveDown()		abstract;
-	//virtual void MoveLeft()		abstract;
+	//virtual void MoveDown()	abstract;
+	//virtual void MoveLeft()	abstract;
 	//virtual void MoveRight()	abstract;
 	virtual void InitAim()		abstract;
 	virtual void InitYawAim()	abstract;

@@ -3,6 +3,7 @@
 
 #include "../Object/main_camera.hpp"
 #include "../VirtualCamera/rot_control_virtual_camera.hpp"
+#include "../VirtualCamera/control_virtual_camera_controller.hpp"
 #include "../VirtualCamera/rocket_launcher_virtual_camera_controller.hpp"
 
 #include "../Input/input_checker.hpp"
@@ -27,22 +28,13 @@ public:
 	void Update();
 	void LateUpdate();
 
-	/// @brief メインカメラを設定する
-	void SetMainCamera(const std::shared_ptr<MainCamera> main_camera);
-
-	/// @brief ブレンドにかける時間を設定する
-	void SetBlendTime(const float blend_time);
-
 	/// @brief 優先順位をソートする
 	template<virtual_camera_concepts::VirtualCameraT VirtualCameraT>
 	void SortPriority(const std::shared_ptr<VirtualCameraT> virtual_camera)
 	{
 		if (m_virtual_cameras.count(virtual_camera->GetObjHandle()))
 		{
-			for (const auto& v_camera : m_virtual_cameras)
-			{
-				m_priority[v_camera.second->GetObjHandle()] = v_camera.second->GetPriority();
-			}
+			m_priority.emplace_back(std::make_pair(virtual_camera->GetObjHandle(), virtual_camera->GetPriority()));
 			m_priority = algorithm::Sort(m_priority, SortKind::kDescending);
 		}
 	}
@@ -98,6 +90,15 @@ public:
 	#pragma endregion
 
 
+	#pragma region Setter
+	/// @brief メインカメラを設定する
+	void SetMainCamera(const std::shared_ptr<MainCamera> main_camera);
+
+	/// @brief ブレンドにかける時間を設定する
+	void SetBlendTime(const float blend_time);
+	#pragma endregion
+
+
 	#pragma region Getter
 	[[nodiscard]] std::shared_ptr<MainCamera> GetMainCamera() const { return m_main_camera; }
 
@@ -112,11 +113,10 @@ public:
 	/// @brief バーチャルカメラの種類でカメラを判別する(同じ種類が複数ある場合はオブジェクトハンドルでの取得を推奨)
 	/// @param camra_kind バーチャルカメラの種類
 	[[nodiscard]] std::shared_ptr<VirtualCameraBase> GetVirtualCamera(const VirtualCameraKind camra_kind) const;
-	#pragma endregion
-
 
 	/// @brief バーチャルカメラをブレンド中であるかを判定
 	[[nodiscard]] bool IsBlending() const { return m_is_blending; }
+	#pragma endregion
 
 private:
 	CameraManager();
@@ -149,7 +149,7 @@ private:
 
 	std::shared_ptr<MainCamera>									m_main_camera;			// バーチャルカメラを適用させるメインカメラ
 	std::unordered_map<int, std::shared_ptr<VirtualCameraBase>>	m_virtual_cameras;		// 登録されているバーチャルカメラ
-	std::unordered_map<int, int>								m_priority;				// 優先順位<オブジェクトハンドル, 優先度>
+	std::vector<std::pair<int, int>>							m_priority;				// 優先順位<オブジェクトハンドル, 優先度>
 
 	std::shared_ptr<Transform>			m_blend_origin_transform;						// ブレンドの起点とするトランスフォーム
 	std::shared_ptr<Transform>			m_blend_target_transform;						// ブレンドのターゲットとするトランスフォーム
