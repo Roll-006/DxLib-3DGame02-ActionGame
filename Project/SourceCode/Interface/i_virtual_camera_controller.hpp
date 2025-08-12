@@ -15,5 +15,6 @@ public:
 	virtual void Deactivate() abstract;
 
 	virtual [[nodiscard]] VirtualCameraControllerKind GetVirtualCameraControllerKind() const abstract;
+	virtual [[nodiscard]] int GetControllerHandle() const abstract;
 	virtual [[nodiscard]] bool IsActive() const abstract;
 };

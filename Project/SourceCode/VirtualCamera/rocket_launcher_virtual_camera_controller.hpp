@@ -19,7 +19,7 @@ public:
 	void Deactivate() override { m_is_active = false; }
 
 	[[nodiscard]] VirtualCameraControllerKind GetVirtualCameraControllerKind() const override;
-
+	[[nodiscard]] int GetControllerHandle() const override { return m_controller_handle; }
 	[[nodiscard]] bool IsActive() const override { return m_is_active; }
 
 private:
@@ -46,8 +46,9 @@ private:
 	static constexpr float  kZoomInDamping								= 0.5f;
 
 private:
-	VirtualCameraControllerKind	m_virtual_camera_controller_kind;
-	bool m_is_active;
+	VirtualCameraControllerKind		m_virtual_camera_controller_kind;
+	int								m_controller_handle;
+	bool							m_is_active;
 
 	Player& m_player;
 	std::shared_ptr<Subject<RocketLauncherVirtualCameraController>> m_subject;

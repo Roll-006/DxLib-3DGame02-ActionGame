@@ -50,12 +50,14 @@ void player_state::AimGun::Exit(Player* obj)
 
 std::shared_ptr<IState<Player>> player_state::AimGun::ChangeState(Player* obj)
 {
-	const auto state_controller = obj->GetStateController();
-	const auto command			= CommandHandler::GetInstance();
-	const auto gun				= std::static_pointer_cast<GunBase>(obj->GetCurrentHeldWeapon());
+	const auto state_controller		= obj->GetStateController();
+	const auto command				= CommandHandler::GetInstance();
+	const auto gun					= std::static_pointer_cast<GunBase>(obj->GetCurrentHeldWeapon());
+	const auto camera_manager		= CameraManager::GetInstance();
+	const auto camera_controller	= std::static_pointer_cast<ControlVirtualCamerasController>(camera_manager->GetVirtualCameraController(VirtualCameraControllerKind::kControl));
 
 	// e‘•”õó‘Ô
-	if (!command->IsExecuting(CommandKind::kAimGun))
+	if (!command->IsExecuting(CommandKind::kAimGun) && camera_controller->IsReachedRecoilPeak())
 	{
 		return state_controller->GetState<EquipGun, Player>();
 	}
@@ -77,7 +79,7 @@ std::shared_ptr<IState<Player>> player_state::AimGun::ChangeState(Player* obj)
 		}
 	}
 	// ƒŠƒ[ƒh
-	if (state_controller->TryReload(obj))
+	if (state_controller->TryReload(obj) && !camera_controller->IsRecoiling())
 	{
 		return state_controller->GetState<Reload, Player>();
 	}

@@ -121,6 +121,30 @@ std::shared_ptr<VirtualCameraBase> CameraManager::GetVirtualCamera(const Virtual
 	}
 	return nullptr;
 }
+
+std::shared_ptr<IVirtualCameraController> CameraManager::GetVirtualCameraController(const int controller_handle) const
+{
+	for (const auto& controller : m_virtual_camera_controllers)
+	{
+		if (controller->GetControllerHandle() == controller_handle)
+		{
+			return controller;
+		}
+	}
+	return nullptr;
+}
+
+std::shared_ptr<IVirtualCameraController> CameraManager::GetVirtualCameraController(const VirtualCameraControllerKind controller_kind) const
+{
+	for (const auto& controller : m_virtual_camera_controllers)
+	{
+		if (controller->GetVirtualCameraControllerKind() == controller_kind)
+		{
+			return controller;
+		}
+	}
+	return nullptr;
+}
 #pragma endregion
 
 

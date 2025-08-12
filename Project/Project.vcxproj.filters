@@ -176,7 +176,7 @@
     <ClCompile Include="SourceCode\Algorithm\algorithm.cpp">
       <Filter>Algorithm</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\VirtualCamera\control_virtual_camera_controller.cpp">
+    <ClCompile Include="SourceCode\VirtualCamera\control_virtual_cameras_controller.cpp">
       <Filter>VirtualCamera</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\VirtualCamera\rocket_launcher_virtual_camera_controller.cpp">
@@ -682,7 +682,7 @@
     <ClInclude Include="SourceCode\Algorithm\algorithm.hpp">
       <Filter>Algorithm</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\VirtualCamera\control_virtual_camera_controller.hpp">
+    <ClInclude Include="SourceCode\VirtualCamera\control_virtual_cameras_controller.hpp">
       <Filter>VirtualCamera</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\VirtualCamera\rocket_launcher_virtual_camera_controller.hpp">
@@ -984,6 +984,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Data\Kind\blend_activation_policy_kind.hpp">
       <Filter>Data\Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\recoil_data.hpp">
+      <Filter>Data</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

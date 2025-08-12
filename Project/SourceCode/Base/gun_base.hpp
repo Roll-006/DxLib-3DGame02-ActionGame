@@ -4,6 +4,7 @@
 
 #include "../Object/main_camera.hpp"
 #include "../Part/subject.hpp"
+#include "../Data/recoil_data.hpp"
 
 #include "../Manager/rifle_cartridge_manager.hpp"
 
@@ -43,24 +44,25 @@ public:
 	[[nodiscard]] std::shared_ptr<ShapeBase> GetDiffusionShape()		const { return m_diffusion_shape; }
 	[[nodiscard]] std::shared_ptr<Transform> GetMuzzleTransform()		const { return m_muzzle_transform; }
 	[[nodiscard]] std::shared_ptr<Transform> GetEjectionPortTransform()	const { return m_ejection_port_transform; }
-	[[nodiscard]] VECTOR	GetAimDir()						const { return m_aim_dir; }
-	[[nodiscard]] VECTOR	GetShotDir()					const;
-	[[nodiscard]] float		GetScopeScale()					const { return m_scope_scale; }
-	[[nodiscard]] float		GetRange()						const { return m_range; }
-	[[nodiscard]] float		GetInitialVelocity()			const { return m_initial_velocity; }
-	[[nodiscard]] float		GetDeceleration()				const { return m_deceleration; }
-	[[nodiscard]] GunKind	GetGunKind()					const { return m_gun_kind; }
+	[[nodiscard]] VECTOR	 GetAimDir()					const { return m_aim_dir; }
+	[[nodiscard]] VECTOR	 GetShotDir()					const;
+	[[nodiscard]] float		 GetScopeScale()				const { return m_scope_scale; }
+	[[nodiscard]] float		 GetRange()						const { return m_range; }
+	[[nodiscard]] float		 GetInitialVelocity()			const { return m_initial_velocity; }
+	[[nodiscard]] float		 GetDeceleration()				const { return m_deceleration; }
+	[[nodiscard]] RecoilData GetRecoilData()				const { return m_recoil_data; }
+	[[nodiscard]] GunKind	 GetGunKind()					const { return m_gun_kind; }
 
 	/// @brief 弾丸の発射位置を取得
-	[[nodiscard]] VECTOR	GetFirstShotPos()				const;
+	[[nodiscard]] VECTOR	 GetFirstShotPos()				const;
 
 	/// @brief 残弾数を取得
-	[[nodiscard]] int		GetCurrentRemainingBulletNum()	const { return m_current_remaining_bullet_num; }
+	[[nodiscard]] int		 GetCurrentRemainingBulletNum()	const { return m_current_remaining_bullet_num; }
 	/// @brief 最大の残弾数を取得
-	[[nodiscard]] int		GetMaxRemainingBulletNum()		const { return m_max_remaining_bullet_num; }
+	[[nodiscard]] int		 GetMaxRemainingBulletNum()		const { return m_max_remaining_bullet_num; }
 
-	[[nodiscard]] bool		IsShot() const;
-	[[nodiscard]] bool		CanReload() const;
+	[[nodiscard]] bool		 IsShot() const;
+	[[nodiscard]] bool		 CanReload() const;
 	#pragma endregion
 
 protected:
@@ -77,23 +79,25 @@ protected:
 	std::shared_ptr<Transform>			m_muzzle_transform;
 	std::shared_ptr<Transform>			m_ejection_port_transform;
 
-	VECTOR  m_aim_dir;						// 狙う方向
-	VECTOR  m_target_pos;					// 狙う位置
-	VECTOR  m_muzzle_offset_pos;			// 銃口の座標を取得するためのオフセット
-	VECTOR  m_ejection_port_offset_pos;		// 薬莢を排出する開口部の座標を取得するためのオフセット
-	VECTOR  m_point_on_ray;					// レイキャスト用の線分を拡張した直線上にある点
+	VECTOR		m_aim_dir;						// 狙う方向
+	VECTOR		m_target_pos;					// 狙う位置
+	VECTOR		m_muzzle_offset_pos;			// 銃口の座標を取得するためのオフセット
+	VECTOR		 m_ejection_port_offset_pos;	// 薬莢を排出する開口部の座標を取得するためのオフセット
+	VECTOR		m_point_on_ray;					// レイキャスト用の線分を拡張した直線上にある点
 
-	int		m_current_remaining_bullet_num;	// 現在の残弾数
-	int     m_max_remaining_bullet_num;		// 最大残弾数
+	int			m_current_remaining_bullet_num;	// 現在の残弾数
+	int			m_max_remaining_bullet_num;		// 最大残弾数
 
-	float	m_scope_scale;					// スコープ倍率
-	float	m_range;						// 射程
-	float   m_initial_velocity;				// 弾丸の初速
-	float   m_deceleration;					// 弾丸の減速度
-	float   m_shot_interval_time;			// 弾丸が発射される時間間隔
-	float	m_shot_timer;					// 弾丸を撃つためのタイマー
-	bool	m_on_pull_trigger;				// 銃の引き金が引かれているかを判定
+	float		m_scope_scale;					// スコープ倍率
+	float		m_range;						// 射程
+	float		m_initial_velocity;				// 弾丸の初速
+	float		m_deceleration;					// 弾丸の減速度
+	RecoilData	m_recoil_data;
+
+	float		m_shot_interval_time;			// 弾丸が発射される時間間隔
+	float		m_shot_timer;					// 弾丸を撃つためのタイマー
+	bool		m_on_pull_trigger;				// 銃の引き金が引かれているかを判定
 
 private:
-	GunKind m_gun_kind;						// 銃の種類
+	GunKind m_gun_kind;							// 銃の種類
 };

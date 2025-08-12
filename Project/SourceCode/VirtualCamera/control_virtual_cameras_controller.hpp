@@ -2,25 +2,33 @@
 #include "../Interface/i_virtual_camera_controller.hpp"
 #include "virtual_camera.hpp"
 
+#include "../Data/recoil_data.hpp"
+
 class CameraManager;
 class Player;
+class GunBase;
 
-class ControlVirtualCameraController final : public IVirtualCameraController
+class ControlVirtualCamerasController final : public IVirtualCameraController
 {
 public:
-	ControlVirtualCameraController(Player& player);
-	~ControlVirtualCameraController();
+	ControlVirtualCamerasController(Player& player);
+	~ControlVirtualCamerasController();
 
 	void Init();
 	void Update();
 	void LateUpdate();
 
+	/// @brief 銃が撃たれた際のリコイル処理
+	void OnRecoil(const GunBase& gun);
+
 	void Activate()   override { m_is_active = true; }
 	void Deactivate() override { m_is_active = false; }
 
 	[[nodiscard]] VirtualCameraControllerKind GetVirtualCameraControllerKind() const override;
-
-	[[nodiscard]] bool IsActive() const override { return m_is_active; }
+	[[nodiscard]] int  GetControllerHandle() const override { return m_controller_handle; }
+	[[nodiscard]] bool IsRecoiling()		 const			{ return m_is_recoiling; }
+	[[nodiscard]] bool IsReachedRecoilPeak() const			{ return m_is_reached_recoil_peak; }
+	[[nodiscard]] bool IsActive()			 const override { return m_is_active; }
 
 private:
 	void SetupForRotCamera();
@@ -32,8 +40,11 @@ private:
 	void CalcMoveDirFromMouse();
 	void CalcMoveDirFromCommand();
 
-	void CalcInputAngle();
 	void CalcAimPos();
+	void CalcInputAngle();
+	void CalcRecoilAngle();
+	void CalcResultAngle();
+	//void CalcInitAim();
 
 	/// @brief 無加工のボーンをカメラが追尾するかを判定
 	/// @return true : ボーンそのものをカメラが追尾, false : ボーンを同じ高さにある位置を追尾
@@ -62,7 +73,8 @@ private:
 
 private:
 	VirtualCameraControllerKind				m_virtual_camera_controller_kind;
-	bool	m_is_active;
+	int										m_controller_handle;
+	bool									m_is_active;
 
 	Player& m_player;
 
@@ -75,6 +87,13 @@ private:
 	VECTOR									m_move_dir;							// 移動方向
 	VECTOR									m_velocity;							// 速度ベクトル
 	std::unordered_map<TimeKind, VECTOR>	m_input_angle;						// 入力角度
+	std::unordered_map<TimeKind, VECTOR>	m_recoil_angle;						// リコイル角度
+	std::unordered_map<TimeKind, VECTOR>	m_result_angle;						// リザルト角度
+
+	RecoilData								m_recoil_data;
+	bool									m_is_recoiling;
+	bool									m_is_reached_recoil_peak;
+	float									m_recoil_timer;
 
 	//float									init_angle_speed	= 0.0f;			// 視点リセット速度
 	//float									init_end_threshold	= 0.0f;			// 視点リセットを終了する閾値

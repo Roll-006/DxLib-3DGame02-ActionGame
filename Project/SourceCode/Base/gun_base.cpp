@@ -17,6 +17,7 @@ GunBase::GunBase(const std::string& name, const GunKind gun_kind, const HolsterK
 	m_range							(0.0f),
 	m_initial_velocity				(0.0f),
 	m_deceleration					(0.0f),
+	m_recoil_data					(RecoilData()),
 	m_shot_interval_time			(0.0f),
 	m_shot_timer					(0.0f),
 	m_on_pull_trigger				(false),

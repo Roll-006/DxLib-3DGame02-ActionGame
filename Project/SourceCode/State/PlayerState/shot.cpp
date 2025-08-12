@@ -34,6 +34,10 @@ void player_state::Shot::LateUpdate(Player* obj)
 	gun->SetAimDir  (aim_dir);
 	gun->SetPosOnRay(camera->GetTransform()->GetPos(CoordinateKind::kWorld));
 	gun->OnShot();
+	
+	// ƒŠƒRƒCƒ‹ˆ—
+	const auto camera_controller = CameraManager::GetInstance()->GetVirtualCameraController(VirtualCameraControllerKind::kControl);
+	std::static_pointer_cast<ControlVirtualCamerasController>(camera_controller)->OnRecoil(*gun.get());
 }
 
 void player_state::Shot::Enter(Player* obj)

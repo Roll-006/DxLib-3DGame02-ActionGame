@@ -45,6 +45,7 @@ void player_state::ShotRocketLauncher::LateUpdate(Player* obj)
 	{
 		gun->OnShot();
 		obj->NotifyShotRocketLauncher();
+
 		m_was_shot = true;
 	}
 }
@@ -70,6 +71,11 @@ void player_state::ShotRocketLauncher::Exit(Player* obj)
 	const auto camera_manager = CameraManager::GetInstance();
 	camera_manager->RemoveVirtualCameraController(m_camera_controller);
 	m_camera_controller = nullptr;
+
+	// 演出終了後にリコイル処理
+	const auto gun = std::static_pointer_cast<GunBase>(obj->GetCurrentHeldWeapon());
+	const auto camera_control = CameraManager::GetInstance()->GetVirtualCameraController(VirtualCameraControllerKind::kControl);
+	std::static_pointer_cast<ControlVirtualCamerasController>(camera_control)->OnRecoil(*gun.get());
 
 	obj->ReleaseWeapon();
 	obj->AttachWeapon(obj->GetCurrentEquipWeapon());

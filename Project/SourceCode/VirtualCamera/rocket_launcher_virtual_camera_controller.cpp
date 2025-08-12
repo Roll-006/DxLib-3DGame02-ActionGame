@@ -4,6 +4,7 @@
 
 RocketLauncherVirtualCameraController::RocketLauncherVirtualCameraController(Player& player) :
 	m_virtual_camera_controller_kind(VirtualCameraControllerKind::kRocketLauncherCutscene),
+	m_controller_handle				(HandleCreator::GetInstance()->CreateHandle()),
 	m_is_active						(true),
 	m_player						(player),
 	m_subject						(std::make_shared<Subject<RocketLauncherVirtualCameraController>>()),

@@ -3,7 +3,7 @@
 
 #include "../Object/main_camera.hpp"
 #include "../VirtualCamera/rot_control_virtual_camera.hpp"
-#include "../VirtualCamera/control_virtual_camera_controller.hpp"
+#include "../VirtualCamera/control_virtual_cameras_controller.hpp"
 #include "../VirtualCamera/rocket_launcher_virtual_camera_controller.hpp"
 
 #include "../Input/input_checker.hpp"
@@ -113,6 +113,14 @@ public:
 	/// @brief バーチャルカメラの種類でカメラを判別する(同じ種類が複数ある場合はオブジェクトハンドルでの取得を推奨)
 	/// @param camra_kind バーチャルカメラの種類
 	[[nodiscard]] std::shared_ptr<VirtualCameraBase> GetVirtualCamera(const VirtualCameraKind camra_kind) const;
+
+	/// @brief バーチャルカメラコントローラーを取得
+	/// @param obj_handle バーチャルカメラコントローラーハンドル
+	[[nodiscard]] std::shared_ptr<IVirtualCameraController> GetVirtualCameraController(const int controller_handle) const;
+	/// @brief バーチャルカメラコントローラーを取得
+	/// @brief バーチャルカメラの種類でカメラを判別する(同じ種類が複数ある場合はハンドルでの取得を推奨)
+	/// @param camra_kind バーチャルカメラの種類
+	[[nodiscard]] std::shared_ptr<IVirtualCameraController> GetVirtualCameraController(const VirtualCameraControllerKind controller_kind) const;
 
 	/// @brief バーチャルカメラをブレンド中であるかを判定
 	[[nodiscard]] bool IsBlending() const { return m_is_blending; }
