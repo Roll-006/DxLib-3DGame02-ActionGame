@@ -4,28 +4,33 @@
 
 namespace collision
 {
-    static constexpr int kRayCapsuleDivisionNum = 3;   // 光線カプセルの衝突分割数
+    static constexpr int    kRayCapsuleDivisionNum  = 3;        // 光線カプセルの衝突分割数
+    static constexpr float  kPointCollisionRadius   = 0.05f;    // 点を球として扱うための半径
 
     #pragma region 衝突判定
     /// @brief 点と直線の衝突判定
+    /// @brief WARNING : 完全な点なため誤差が生じる可能性あり
     /// @param intersection 交点を格納
     /// @return true : 衝突, false : 非衝突
     [[nodiscard]] bool IsHitPointAndLine            (const VECTOR&      point,          const Line&         line,           std::optional<VECTOR>& intersection);
     [[nodiscard]] bool IsHitPointAndLine            (const VECTOR&      point,          const Line&         line);
 
     /// @brief 点と線分の衝突判定
+    /// @brief WARNING : 完全な点なため誤差が生じる可能性あり
     /// @param intersection 交点を格納
     /// @return true : 衝突, false : 非衝突
     [[nodiscard]] bool IsHitPointAndSegment         (const VECTOR&      point,          const Segment&      segment,        std::optional<VECTOR>& intersection);
     [[nodiscard]] bool IsHitPointAndSegment         (const VECTOR&      point,          const Segment&      segment);
 
     /// @brief 点と平面(無限に広がる面)の衝突判定
+    /// @brief WARNING : 完全な点なため誤差が生じる可能性あり
     /// @param intersection 交点を格納
     /// @return true : 衝突, false : 非衝突
     [[nodiscard]] bool IsHitPointAndPlane           (const VECTOR&      point,          const Plane&        plane,          std::optional<VECTOR>& intersection);
     [[nodiscard]] bool IsHitPointAndPlane           (const VECTOR&      point,          const Plane&        plane);
 
     /// @brief 点と三角形の衝突判定
+    /// @brief WARNING : 完全な点なため誤差が生じる可能性あり
     /// @param intersection 交点を格納
     /// @return true : 衝突, false : 非衝突
     [[nodiscard]] bool IsHitPointAndTriangle        (const VECTOR&      point,          const Triangle&     triangle,       std::optional<VECTOR>& intersection);

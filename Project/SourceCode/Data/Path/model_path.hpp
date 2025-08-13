@@ -19,8 +19,8 @@ static struct ModelPath
 	const std::string SHELL_CASING_556x45		= "Data/Model/Item/Bullet/5.56x45mm/shell_casing.mv1";
 	const std::string ROCKET_BOMB				= "Data/Model/Item/Bullet/RocketBomb/mesh.mv1";
 
-	const std::string HOUSE_01					= "Data/Model/Building/01/mesh.mv1";
-	const std::string GROUND_01					= "Data/Model/Ground/01/mesh.mv1";
+	const std::string HOUSE_01					= "Data/Model/Building/03/mesh.mv1";
+	const std::string GROUND_01					= "Data/Model/Ground/03/mesh.mv1";
 	const std::string GROUND_02					= "Data/Model/Ground/02/mesh.mv1";
 
 	const std::string NIGHT_SKYDOME				= "Data/Model/Skydome/Night/mesh.mv1";

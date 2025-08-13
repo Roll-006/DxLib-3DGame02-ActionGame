@@ -71,6 +71,8 @@ private:
 	static constexpr float	kMoveSpeedWithMouse				= 0.1f;
 	static constexpr float	kMoveSpeedWithButton			= 2.0f;
 
+	static constexpr float  kRecoilEndThreshold				= 0.002f;
+
 private:
 	VirtualCameraControllerKind				m_virtual_camera_controller_kind;
 	int										m_controller_handle;

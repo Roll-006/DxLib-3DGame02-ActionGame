@@ -24,7 +24,7 @@ Player::Player() :
 
 	// 初期pos・dirを設定
 	m_look_dir[TimeKind::kCurrent] = m_look_dir[TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);
-	m_transform->SetPos(CoordinateKind::kWorld, VGet(0, 1000, 0));
+	m_transform->SetPos(CoordinateKind::kWorld, VGet(0, 3000, 0));
 	m_transform->SetRot(CoordinateKind::kWorld, m_look_dir.at(TimeKind::kCurrent));
 
 	// コライダー・トリガーを設定
@@ -308,7 +308,10 @@ void Player::CalcMoveSpeedStop()
 
 void Player::CalcMoveSpeed(const float input_slope)
 {
-	if (m_state->GetActionState(TimeKind::kCurrent)->GetStateKind() != static_cast<int>(player_state::ActionStateKind::kActionNull)) { return; }
+	const auto current_action_state_kind = m_state->GetActionState(TimeKind::kCurrent)->GetStateKind();
+
+	if (   current_action_state_kind != static_cast<int>(player_state::ActionStateKind::kActionNull)
+		&& current_action_state_kind != static_cast<int>(player_state::ActionStateKind::kCrouch)) { return; }
 
 	if (input_slope <= kWalkStickSlopeLimit - InputChecker::kStickDeadZone)
 	{
@@ -327,15 +330,15 @@ void Player::CalcMoveSpeed(const float input_slope)
 	math::Decrease(m_move_speed, kAcceleration, kWalkSpeed);
 }
 
-void Player::CalcMoveSpeedCrouch()
-{
-	if (m_state->GetMoveState(TimeKind::kCurrent)->GetStateKind() == static_cast<int>(player_state::MoveStateKind::kMoveNull)) { return; }
-
-	// 速い状態から歩き状態に移行した場合、急速に減速させる
-	if (m_move_speed > kSlowWalkSpeed) { m_move_speed = kSlowWalkSpeed; }
-
-	math::Decrease(m_move_speed, kAcceleration, kCrouchWalkSpeed);
-}
+//void Player::CalcMoveSpeedCrouch()
+//{
+//	if (m_state->GetMoveState(TimeKind::kCurrent)->GetStateKind() == static_cast<int>(player_state::MoveStateKind::kMoveNull)) { return; }
+//
+//	// 速い状態から歩き状態に移行した場合、急速に減速させる
+//	if (m_move_speed > kSlowWalkSpeed) { m_move_speed = kSlowWalkSpeed; }
+//
+//	math::Decrease(m_move_speed, kAcceleration, kCrouchWalkSpeed);
+//}
 
 void Player::CalcMoveSpeedRun()
 {

@@ -268,7 +268,7 @@ void ControlVirtualCamerasController::CalcRecoilAngle()
 				m_recoil_angle[TimeKind::kCurrent], m_recoil_angle[TimeKind::kNext], m_recoil_data.return_damping, delta_time);
 			
 			// èIóπîªíË
-			if (VSize(m_recoil_angle[TimeKind::kCurrent]) < 0.001f)
+			if (VSize(m_recoil_angle[TimeKind::kCurrent]) < kRecoilEndThreshold)
 			{
 				m_recoil_angle[TimeKind::kCurrent] = m_recoil_angle[TimeKind::kNext];
 

@@ -30,6 +30,6 @@ private:
 	std::shared_ptr<Modeler> m_modeler;
 
 	static constexpr VECTOR kBasicAngle = { 0.0f, 0.0f, 0.0f };
-	static constexpr float  kBasicScale = 5.0f;
-	static constexpr VECTOR kPos		= { 0.0f, 0.0f, 1000.0f };
+	static constexpr float  kBasicScale = 0.3f;
+	static constexpr VECTOR kPos		= { 0.0f, -200.0f, 1000.0f };
 };

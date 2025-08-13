@@ -198,8 +198,9 @@ bool collision::IsHitSegmentAndTriangle     (const Segment&     segment,        
     // 平面との交点
     intersection = triangle.GetPos(0) + v3;
 
-    // 交点が三角形と衝突しているか(三角形に含まれるか)
-    return IsHitPointAndTriangle(*intersection, triangle);
+    // 球に拡張した交点が三角形と衝突しているか
+    const Sphere sphere(*intersection, kPointCollisionRadius);
+    return IsHitTriangleAndSphere(triangle, sphere);
 }
 bool collision::IsHitSegmentAndTriangle     (const Segment&     segment,        const Triangle&     triangle)
 {
@@ -305,10 +306,10 @@ bool collision::IsHitSegmentAndModel        (const Segment&     segment,        
     std::vector<std::pair<int, float>>	distance;
     for (int i = 0; i < hit_result.HitNum; ++i)
     {
-        hit_triangles.emplace_back(Triangle(hit_result.Dim[i].Position[0], hit_result.Dim[i].Position[2], hit_result.Dim[i].Position[1]));
+        Triangle triangle(hit_result.Dim[i].Position[0], hit_result.Dim[i].Position[2], hit_result.Dim[i].Position[1]);
 
-        triangles[i] = hit_triangles.at(i);
-        distance.emplace_back(std::make_pair(i, math::GetDistancePointToTriangle(segment.GetBeginPos(), hit_triangles.at(i))));
+        triangles[i] = triangle;
+        distance.emplace_back(std::make_pair(i, math::GetDistancePointToTriangle(segment.GetBeginPos(), triangle)));
     }
 
     // 距離が最も近い三角形との交点を取得
@@ -316,9 +317,11 @@ bool collision::IsHitSegmentAndModel        (const Segment&     segment,        
     int loop_count = 0;
     for (const auto& dist : distance)
     {
-        hit_triangles.at(loop_count) = triangles.at(dist.first);
+        hit_triangles.emplace_back(triangles.at(dist.first));
         ++loop_count;
     }
+
+    MV1CollResultPolyDimTerminate(hit_result);
     return collision::IsHitSegmentAndTriangle(segment, hit_triangles.at(0), intersection);
 }
 bool collision::IsHitSegmentAndModel        (const Segment&     segment,        const int           model_handle,   std::optional<VECTOR>& intersection)
@@ -449,6 +452,8 @@ bool collision::IsHitTriangleAndModel       (const Triangle&    triangle,       
         hit_triangles.at(loop_count) = triangles.at(dist.first);
         ++loop_count;
     }
+
+    MV1CollResultPolyDimTerminate(hit_result);
     return collision::IsHitTriangleAndTriangle(triangle, hit_triangles.at(0), intersection);
 }
 bool collision::IsHitTriangleAndModel       (const Triangle&    triangle,       const int           model_handle,   std::optional<VECTOR>& intersection)
@@ -576,6 +581,8 @@ bool collision::IsHitSphereAndModel         (const Sphere&      sphere,         
         hit_triangles.at(loop_count) = triangles.at(dist.first);
         ++loop_count;
     }
+
+    MV1CollResultPolyDimTerminate(hit_result);
     return collision::IsHitTriangleAndSphere(hit_triangles.at(0), sphere, intersection);
 }
 bool collision::IsHitSphereAndModel         (const Sphere&      sphere,         const int           model_handle,   std::optional<VECTOR>& intersection)
@@ -637,6 +644,8 @@ bool collision::IsHitCapsuleAndModel        (const Capsule&     capsule,        
         hit_triangles.at(loop_count) = triangles.at(dist.first);
         ++loop_count;
     }
+
+    MV1CollResultPolyDimTerminate(hit_result);
     return collision::IsHitTriangleAndCapsule(hit_triangles.at(0), capsule, intersection);
 }
 bool collision::IsHitCapsuleAndModel        (const Capsule&     capsule,        const int           model_handle,   std::optional<VECTOR>& intersection)
@@ -806,7 +815,7 @@ VECTOR collision::PushBackSphereAndModel    (const VECTOR& velocity, const Spher
     std::vector<std::pair<int, float>>	current_distance;
     for (int i = 0; i < hit_result.HitNum; ++i)
     {
-        Triangle triangle = Triangle(hit_result.Dim[i].Position[0], hit_result.Dim[i].Position[2], hit_result.Dim[i].Position[1]);
+        Triangle triangle(hit_result.Dim[i].Position[0], hit_result.Dim[i].Position[2], hit_result.Dim[i].Position[1]);
 
         triangles[i] = triangle;
         current_distance.emplace_back(std::make_pair(i, math::GetDistanceTriangleToSphere(triangle, dynamic_sphere)));
@@ -819,6 +828,7 @@ VECTOR collision::PushBackSphereAndModel    (const VECTOR& velocity, const Spher
         valid_velocity = collision::PushBackSphereAndTriangle(valid_velocity, dynamic_sphere, triangles.at(distance.first), slope_difficulty_angle_threshold, max_slope_angle);
     }
 
+    MV1CollResultPolyDimTerminate(hit_result);
     return valid_velocity;
 }
 
@@ -986,7 +996,7 @@ VECTOR collision::PushBackCapsuleAndModel   (const VECTOR& velocity, const Capsu
     std::vector<std::pair<int, float>>  current_distance;
     for (int i = 0; i < hit_result.HitNum; ++i)
     {
-        Triangle triangle   = Triangle(hit_result.Dim[i].Position[0], hit_result.Dim[i].Position[2], hit_result.Dim[i].Position[1]);
+        Triangle triangle(hit_result.Dim[i].Position[0], hit_result.Dim[i].Position[2], hit_result.Dim[i].Position[1]);
 
         triangles[i] = triangle;
         current_distance.emplace_back(std::make_pair(i, math::GetDistanceTriangleToCapsule(triangle, dynamic_capsule)));

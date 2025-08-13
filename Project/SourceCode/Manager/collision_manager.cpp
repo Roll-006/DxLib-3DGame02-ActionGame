@@ -254,8 +254,7 @@ bool CollisionManager::IsHitSegmentAndTarget	(Collider& owner_collider, const Co
 		std::vector<Triangle> hit_triangles;
 		const bool is_hit = collision::IsHitSegmentAndModel(*std::dynamic_pointer_cast<Segment>(owner_collider.GetShape()), target_collider.GetModelHandle(), intersection, hit_triangles);
 		
-		// 衝突対象がコライダーであった場合は三角形情報を追加する
-		if (target_collider.GetColliderKind() == ColliderKind::kCollider)
+		if (is_hit && target_collider.GetColliderKind() == ColliderKind::kCollider)
 		{
 			owner_collider.AddHitModelTriangle(target_collider.GetModelHandle(), hit_triangles);
 		}
@@ -326,7 +325,7 @@ bool CollisionManager::IsHitTriangleAndTarget	(Collider& owner_collider, const C
 		const bool is_hit = collision::IsHitTriangleAndModel(*std::dynamic_pointer_cast<Triangle>(owner_collider.GetShape()), target_collider.GetModelHandle(), intersection, hit_triangles);
 		
 		// 衝突対象がコライダーであった場合は三角形情報を追加する
-		if (target_collider.GetColliderKind() == ColliderKind::kCollider)
+		if (is_hit && target_collider.GetColliderKind() == ColliderKind::kCollider)
 		{
 			owner_collider.AddHitModelTriangle(target_collider.GetModelHandle(), hit_triangles);
 		}
@@ -391,7 +390,7 @@ bool CollisionManager::IsHitSphereAndTarget		(Collider& owner_collider, const Co
 		const bool is_hit = collision::IsHitSphereAndModel(*std::dynamic_pointer_cast<Sphere>(owner_collider.GetShape()), target_collider.GetModelHandle(), intersection, hit_triangles);
 		
 		// 衝突対象がコライダーであった場合は三角形情報を追加する
-		if (target_collider.GetColliderKind() == ColliderKind::kCollider)
+		if (is_hit && target_collider.GetColliderKind() == ColliderKind::kCollider)
 		{
 			owner_collider.AddHitModelTriangle(target_collider.GetModelHandle(), hit_triangles);
 		}
@@ -427,7 +426,7 @@ bool CollisionManager::IsHitCapsuleAndTarget	(Collider& owner_collider, const Co
 		const bool is_hit = collision::IsHitCapsuleAndModel(*std::dynamic_pointer_cast<Capsule>(owner_collider.GetShape()), target_collider.GetModelHandle(), intersection, hit_triangles);
 		
 		// 衝突対象がコライダーであった場合は三角形情報を追加する
-		if (target_collider.GetColliderKind() == ColliderKind::kCollider)
+		if (is_hit && target_collider.GetColliderKind() == ColliderKind::kCollider)
 		{
 			owner_collider.AddHitModelTriangle(target_collider.GetModelHandle(), hit_triangles);
 		}

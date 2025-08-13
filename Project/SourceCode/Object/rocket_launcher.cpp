@@ -23,7 +23,7 @@ RocketLauncher::RocketLauncher() :
 	m_max_remaining_bullet_num		= 30;
 	m_current_remaining_bullet_num	= m_max_remaining_bullet_num;
 
-	AddCollider(std::make_shared<Collider>(ColliderKind::kRayCast, std::make_shared<Segment>(), this));
+	//AddCollider(std::make_shared<Collider>(ColliderKind::kRayCast, std::make_shared<Segment>(), this));
 }
 
 RocketLauncher::~RocketLauncher()
@@ -72,30 +72,13 @@ void RocketLauncher::Draw() const
 	//DrawFormatString(300,  0, 0xffffff, "écíe     : %d", m_current_remaining_bullet_num);
 	//DrawFormatString(300, 20, 0xffffff, "ç≈ëÂécíe : %d", m_max_remaining_bullet_num);
 
-	const auto segment = std::dynamic_pointer_cast<Segment>(GetCollider(ColliderKind::kRayCast)->GetShape());
-	segment->Draw(false, 0, 0xffffff);
+	//const auto segment = std::dynamic_pointer_cast<Segment>(GetCollider(ColliderKind::kRayCast)->GetShape());
+	//segment->Draw(false, 0, 0xffffff);
 }
 
 void RocketLauncher::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 {
-	switch (hit_collider_pair.owner_collider->GetColliderKind())
-	{
-	case ColliderKind::kRayCast:
 
-		DrawFormatString(0, 0, 0xffffff, "åıê¸ÇÃè’ìÀÇåüèoÇµÇ‹ÇµÇΩÅB");
-
-		if (hit_collider_pair.target_collider->GetShape() == nullptr)
-		{
-			if (hit_collider_pair.intersection)
-			{
-				DrawSphere3D(*hit_collider_pair.intersection, 5, 16, 0xff0000, 0xff0000, TRUE);
-			}
-		}
-		break;
-
-	default:
-		break;
-	}
 }
 
 void RocketLauncher::CalcDiffusionRange()

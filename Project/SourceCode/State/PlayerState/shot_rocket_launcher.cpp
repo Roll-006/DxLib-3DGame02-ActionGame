@@ -87,7 +87,7 @@ std::shared_ptr<IState<Player>> player_state::ShotRocketLauncher::ChangeState(Pl
 	const auto command			= CommandHandler::GetInstance();
 
 	// 銃エイミング状態
-	if (test > 30.0f)
+	if (test > 10.0f)
 	{
 		return state_controller->GetState<AimGun, Player>();
 	}

@@ -129,6 +129,11 @@ void ShellCasing::Move()
 {
 	math::Decrease(m_move_speed, kDeceleration, 0.0f);
 	m_velocity = m_move_dir * m_move_speed;
+
+	if (m_velocity == v3d::GetZeroV())
+	{
+		int a = 0;
+	}
 }
 
 void ShellCasing::CalcColliderPos()
