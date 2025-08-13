@@ -139,7 +139,6 @@ void Player::Draw() const
 		}
 	}
 
-	//DrawFormatString(500, 20, 0xffffff, "%f", m_fall_velocity.y);
 	//DrawFormatString(500, 40, 0xffffff, "%f", m_velocity.y);
 	//
 	//const auto look_dir_current = m_look_dir.at(TimeKind::kCurrent);
@@ -230,6 +229,7 @@ void Player::Move()
 {
 	m_move_dir[TimeKind::kPrev] = m_move_dir[TimeKind::kCurrent];
 	m_move_dir[TimeKind::kNext] = v3d::GetZeroV();
+	m_input_slope = v3d::GetZeroV();
 
 	CalcInputSlopeFromPad();
 	CalcInputSlopeFromCommand();
@@ -421,6 +421,8 @@ void Player::CalcVelocity()
 
 void Player::CalcMoveDir()
 {
+	m_move_dir[TimeKind::kNext] = v3d::GetNormalizedV(m_input_slope);
+
 	// åªç›ÇÃdirÇñ⁄ìIÇ∆Ç∑ÇÈdirÇ…ãﬂÇ√ÇØÇƒÇ¢Ç≠
 	m_move_dir[TimeKind::kCurrent] = math::GetApproachedVector(
 		m_move_dir[TimeKind::kCurrent], 
