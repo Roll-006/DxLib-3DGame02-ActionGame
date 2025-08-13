@@ -106,6 +106,11 @@ void Modeler::ApplyMatrix() const
 	const auto scale_m		= MGetScale(m_basic_scale);
 	const auto m			= m_transform->GetMatrix(CoordinateKind::kWorld);
 	const auto result_m		= scale_m * basic_rot_m * m;
+
+	if(std::isnan(m_transform->GetPos(CoordinateKind::kWorld).x))
+	{
+		int a = 0;
+	}
 	
 	// 適用済みの値と同じ場合は重複した適用を避ける
 	if (MV1GetMatrix(m_model_handle) == result_m) { return; }

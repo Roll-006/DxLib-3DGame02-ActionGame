@@ -40,8 +40,18 @@ void PhysicsManager::LateUpdate()
 
 	for (const auto& obj : m_physical_objects)
 	{
+		if (std::isnan(obj->GetVelocity().x))
+		{
+			int a = 0;
+		}
+
 		// velocityをオブジェクトに適用
 		obj->ApplyVelocity();
+
+		if (std::isnan(obj->GetVelocity().x))
+		{
+			int a = 0;
+		}
 	}
 
 	for (const auto& obj : m_physical_objects)
@@ -175,7 +185,7 @@ void PhysicsManager::ExecutePushBackPairs()
 #pragma region 押し戻し
 void PhysicsManager::PushBack(const std::shared_ptr<PhysicalObjBase> low_priority_obj, const std::shared_ptr<PhysicalObjBase> high_priority_obj)
 {
-	const ShapeBase* shape = low_priority_obj->GetCollider(ColliderKind::kCollider)->GetShape().get();
+	const auto* shape = low_priority_obj->GetCollider(ColliderKind::kCollider)->GetShape().get();
 
 	// 図形の登録がされていない場合はモデルで押し戻しを行う
 	if (shape == nullptr)
@@ -194,13 +204,13 @@ void PhysicsManager::PushBack(const std::shared_ptr<PhysicalObjBase> low_priorit
 
 void PhysicsManager::PushBackSphereAndTarget (const std::shared_ptr<PhysicalObjBase> low_priority_obj, const std::shared_ptr<PhysicalObjBase> high_priority_obj)
 {
-	const auto shape = high_priority_obj->GetCollider(ColliderKind::kCollider)->GetShape();
+	const auto* shape		= high_priority_obj->GetCollider(ColliderKind::kCollider)->GetShape().get();
+	const auto  velocity	= low_priority_obj->GetVelocity();
+	const auto  sphere		= *std::dynamic_pointer_cast<Sphere>(low_priority_obj->GetCollider(ColliderKind::kCollider)->GetShape());
 
 	// 図形の登録がされていない場合はモデルで押し戻しを行う
 	if (shape == nullptr)
 	{
-		const auto velocity				= low_priority_obj->GetVelocity();
-		const auto sphere				= *std::dynamic_pointer_cast<Sphere>(low_priority_obj->GetCollider(ColliderKind::kCollider)->GetShape());
 		const auto model_handle			= high_priority_obj->GetColliderModelHandle();
 		const auto push_backed_velocity = collision::PushBackSphereAndModel(velocity, sphere, model_handle, kSlopeDifficultyAngleThreshold, kMaxSlopeAngle);
 		low_priority_obj->SetVelocity(push_backed_velocity);
@@ -215,22 +225,29 @@ void PhysicsManager::PushBackSphereAndTarget (const std::shared_ptr<PhysicalObjB
 
 void PhysicsManager::PushBackCapsuleAndTarget(const std::shared_ptr<PhysicalObjBase> low_priority_obj, const std::shared_ptr<PhysicalObjBase> high_priority_obj)
 {
-	const auto shape = high_priority_obj->GetCollider(ColliderKind::kCollider)->GetShape();
+	const auto* shape		= high_priority_obj->GetCollider(ColliderKind::kCollider)->GetShape().get();
+	const auto  velocity	= low_priority_obj->GetVelocity();
+	const auto  capsule		= *std::dynamic_pointer_cast<Capsule>(low_priority_obj->GetCollider(ColliderKind::kCollider)->GetShape());
+	auto push_backed_velocity = v3d::GetZeroV();
 
 	// 図形の登録がされていない場合はモデルで押し戻しを行う
 	if (shape == nullptr)
 	{
-		const auto velocity				= low_priority_obj->GetVelocity();
-		const auto capsule				= *std::dynamic_pointer_cast<Capsule>(low_priority_obj->GetCollider(ColliderKind::kCollider)->GetShape());
-		const auto model_handle			= high_priority_obj->GetColliderModelHandle();
-		const auto push_backed_velocity	= collision::PushBackCapsuleAndModel(velocity, capsule, model_handle, kSlopeDifficultyAngleThreshold, kMaxSlopeAngle);
+		const auto model_handle	= high_priority_obj->GetColliderModelHandle();
+		push_backed_velocity	= collision::PushBackCapsuleAndModel(velocity, capsule, model_handle, kSlopeDifficultyAngleThreshold, kMaxSlopeAngle);
 		low_priority_obj->SetVelocity(push_backed_velocity);
 		return;
 	}
 
 	switch (shape->GetShapeKind())
 	{
-	default: break;
+	case ShapeKind::kTriangle:
+		push_backed_velocity = collision::PushBackCapsuleAndTriangle(velocity, capsule, *static_cast<const Triangle*>(shape), kSlopeDifficultyAngleThreshold, kMaxSlopeAngle);  break;
+		low_priority_obj->SetVelocity(push_backed_velocity);
+		break;
+
+	default:
+		break;
 	}
 }
 #pragma endregion

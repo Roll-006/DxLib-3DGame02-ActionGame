@@ -349,20 +349,6 @@ bool collision::IsHitPlaneAndCapsule        (const Plane&       plane,          
     return IsHitPlaneAndCapsule(plane, capsule, intersection);
 }
 
-/// @brief 三角形と球の衝突判定
-bool collision::IsHitTriangleAndSphere      (const Triangle&    triangle,       const Sphere&       sphere,         std::optional<VECTOR>& intersection)
-{
-    intersection = std::nullopt;
-
-    return math::GetDistancePointToTriangle(sphere.GetPos(), triangle) <= sphere.GetRadius();
-}
-bool collision::IsHitTriangleAndSphere      (const Triangle&    triangle,       const Sphere&       sphere)
-{
-    std::optional<VECTOR> intersection = std::nullopt;
-
-    return IsHitTriangleAndSphere(triangle, sphere, intersection);
-}
-
 /// @brief 三角形と三角形の衝突判定
 bool collision::IsHitTriangleAndTriangle    (const Triangle&    triangle1,      const Triangle&     triangle2,      std::optional<VECTOR>& intersection)
 {
@@ -375,6 +361,20 @@ bool collision::IsHitTriangleAndTriangle    (const Triangle&    triangle1,      
     std::optional<VECTOR> intersection = std::nullopt;
 
     return IsHitTriangleAndTriangle(triangle1, triangle2, intersection);
+}
+
+/// @brief 三角形と球の衝突判定
+bool collision::IsHitTriangleAndSphere      (const Triangle&    triangle,       const Sphere&       sphere,         std::optional<VECTOR>& intersection)
+{
+    intersection = std::nullopt;
+
+    return math::GetDistancePointToTriangle(sphere.GetPos(), triangle) <= sphere.GetRadius();
+}
+bool collision::IsHitTriangleAndSphere      (const Triangle&    triangle,       const Sphere&       sphere)
+{
+    std::optional<VECTOR> intersection = std::nullopt;
+
+    return IsHitTriangleAndSphere(triangle, sphere, intersection);
 }
 
 /// @brief 三角形とカプセルの衝突判定
@@ -835,8 +835,8 @@ VECTOR collision::PushBackSphereAndModel    (const VECTOR& velocity, const Spher
 VECTOR collision::PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsule& dynamic_capsule, const Triangle& static_triangle,
     const float slope_difficulty_angle_threshold, const float max_slope_angle)
 {
-    const float slope_threshold_agl = slope_difficulty_angle_threshold  * math::kDegToRad;
-    const float max_slope_agl       = max_slope_angle                   * math::kDegToRad;
+    //const float slope_threshold_agl = slope_difficulty_angle_threshold  * math::kDegToRad;
+    //const float max_slope_agl       = max_slope_angle                   * math::kDegToRad;
 
     // 未来のカプセルを取得
     Capsule future_capsule = dynamic_capsule;
@@ -848,62 +848,68 @@ VECTOR collision::PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsu
         return velocity;
     }
 
-    // 未来の座標を取得
-    const Plane plane = Plane(static_triangle.GetCentroid(), static_triangle.GetNormalVector());
-    VECTOR future_pos = future_capsule.GetSegment().GetBeginPos();
-
-    // 未来の座標と平面の距離を取得
-    const float future_distance_to_plane = math::GetDistancePointToPlane(future_pos, plane);
-
     // 登れる角度である場合は壁ずりを行う
-    const float slope_angle = math::GetAngleBetweenTwoVector(static_triangle.GetNormalVector(), axis::GetWorldYAxis());
-    if (slope_angle < slope_threshold_agl || slope_angle >= 90.0f * math::kDegToRad)
-    {
-        // 線分の位置からどちら側に位置修正するべきか
-        VECTOR closest_dir = plane.GetNormalVector();
-        if (math::IsPointAheadOfPlane(future_pos, plane))
-        {
-            closest_dir *= -1;
-        }
+    //const float slope_angle = math::GetAngleBetweenTwoVector(static_triangle.GetNormalVector(), axis::GetWorldYAxis());
+    //if (slope_angle < slope_threshold_agl || slope_angle >= 90.0f * math::kDegToRad)
+    
+    // 三角形を平面に拡張
+    const Plane  plane              = Plane(static_triangle.GetCentroid(), static_triangle.GetNormalVector());
+    const float  angle              = math::GetAngleBetweenTwoVector(axis::GetWorldYAxis(), plane.GetNormalVector());
+    VECTOR       future_begin_pos   = future_capsule.GetSegment().GetBeginPos();
+    VECTOR       future_origin_pos  = future_begin_pos;
 
-        // 本来の到達地点を取得
-        future_pos += closest_dir * future_distance_to_plane;
-        future_pos += plane.GetNormalVector() * dynamic_capsule.GetRadius();
+    // 三角形が下を向いている場合、終点を基準に押し戻す
+    if (angle > 90.0f * math::kDegToRad)
+    {
+        future_origin_pos = future_capsule.GetSegment().GetEndPos();
     }
+
+    // 線分の位置からどちら側に位置修正するべきか
+    VECTOR closest_dir = plane.GetNormalVector();
+    if (math::IsPointAheadOfPlane(future_origin_pos, plane))
+    {
+        closest_dir *= -1;
+    }
+
+    // 本来の到達地点を取得
+    const float future_distance_to_plane = math::GetDistancePointToPlane(future_origin_pos, plane);
+    future_begin_pos += closest_dir * future_distance_to_plane;
+    future_begin_pos += plane.GetNormalVector() * dynamic_capsule.GetRadius();
+    
     // 登るのが困難な角度・登れない角度の場合は、「三角形の法線～ワールドX軸に対して平行」の範囲内の方向に押し戻す
     // 押し戻す方向は三角形の角度が上がるほどワールドX軸に向かう
-    else 
-    {
-        // 平面の法線を、ワールドX軸に対して水平にする
-        VECTOR horizontal_v = plane.GetNormalVector();
-        horizontal_v.y = 0.0f;
-        horizontal_v = v3d::GetNormalizedV(horizontal_v);
-
-        // 押し戻す方向を取得
-        const float  angle_range        =  math::GetAngleBetweenTwoVector(plane.GetNormalVector(), horizontal_v);
-        // FIXME : 角度がマイナスになる場合がある
-        float  push_back_angle          = -math::ConvertValueNewRange<float, float>(slope_threshold_agl, max_slope_agl, -angle_range, 0.0f, slope_angle);
-        if (slope_angle >= max_slope_agl) { push_back_angle = 0.0f; }
-        const VECTOR v1                 =  math::GetNormalVector(plane.GetNormalVector(), axis::GetWorldYAxis());
-        // FIXME : 回転方向を決める必要がある可能性あり
-        const VECTOR push_back_dir      =  math::GetRotatedPos(horizontal_v, quat::CreateQuaternion(v1, push_back_angle));
-
-        //printfDx("push_back_angle : %f\n", push_back_angle);
-
-        // 押し戻しベクトルの長さを取得
-        const VECTOR v2                 = math::GetNormalVector(plane.GetNormalVector(), v1);
-        const float  angle1             = math::GetAngleBetweenTwoVector(v2, horizontal_v);
-        const float  angle2             = 90.0f * math::kDegToRad - angle1;
-        const float  angle3             = push_back_angle - angle2;
-        const float  back_length        = cos(angle3) / future_distance_to_plane;
-        const float  front_length       = cos(angle3) / dynamic_capsule.GetRadius();
-
-        // 本来の到達地点を取得
-        future_pos += push_back_dir * (back_length + front_length);
-    }
+    //else 
+    //{
+    //    // 平面の法線を、ワールドX軸に対して水平にする
+    //    VECTOR horizontal_v = plane.GetNormalVector();
+    //    horizontal_v.y = 0.0f;
+    //    horizontal_v = v3d::GetNormalizedV(horizontal_v);
+    //
+    //    // 押し戻す方向を取得
+    //    const float  angle_range        =  math::GetAngleBetweenTwoVector(plane.GetNormalVector(), horizontal_v);
+    //    // FIXME : 角度がマイナスになる場合がある
+    //    float  push_back_angle          = -math::ConvertValueNewRange<float, float>(slope_threshold_agl, max_slope_agl, -angle_range, 0.0f, slope_angle);
+    //    if (slope_angle >= max_slope_agl) { push_back_angle = 0.0f; }
+    //    const VECTOR v1                 =  math::GetNormalVector(plane.GetNormalVector(), axis::GetWorldYAxis());
+    //    // FIXME : 回転方向を決める必要がある可能性あり
+    //    const VECTOR push_back_dir      =  math::GetRotatedPos(horizontal_v, quat::CreateQuaternion(v1, push_back_angle));
+    //
+    //    //printfDx("push_back_angle : %f\n", push_back_angle);
+    //
+    //    // 押し戻しベクトルの長さを取得
+    //    const VECTOR v2                 = math::GetNormalVector(plane.GetNormalVector(), v1);
+    //    const float  angle1             = math::GetAngleBetweenTwoVector(v2, horizontal_v);
+    //    const float  angle2             = 90.0f * math::kDegToRad - angle1;
+    //    const float  angle3             = push_back_angle - angle2;
+    //    const float  back_length        = cos(angle3) / future_distance_to_plane;
+    //    const float  front_length       = cos(angle3) / dynamic_capsule.GetRadius();
+    //
+    //    // 本来の到達地点を取得
+    //    future_pos += push_back_dir * (back_length + front_length);
+    //}
 
     // 本来の到達地点までのvelocityを取得
-    return future_pos - dynamic_capsule.GetSegment().GetBeginPos();
+    return future_begin_pos - dynamic_capsule.GetSegment().GetBeginPos();
 }
 
 VECTOR collision::PushBackCapsuleAndSquare  (const VECTOR& velocity, const Capsule& dynamic_capsule, const Square&   static_square,
@@ -993,20 +999,22 @@ VECTOR collision::PushBackCapsuleAndModel   (const VECTOR& velocity, const Capsu
     // ヒットしたポリゴンから三角形を生成
     // 三角形との現在の距離を取得
     std::unordered_map<int, Triangle>   triangles;
-    std::vector<std::pair<int, float>>  current_distance;
+    std::vector<std::pair<int, float>>  angle;
+    std::vector<std::pair<int, float>>  distance;
     for (int i = 0; i < hit_result.HitNum; ++i)
     {
         Triangle triangle(hit_result.Dim[i].Position[0], hit_result.Dim[i].Position[2], hit_result.Dim[i].Position[1]);
 
         triangles[i] = triangle;
-        current_distance.emplace_back(std::make_pair(i, math::GetDistanceTriangleToCapsule(triangle, dynamic_capsule)));
+        angle   .emplace_back(std::make_pair(i, math::GetAngleBetweenTwoVector(triangle.GetNormalVector(), axis::GetWorldYAxis())));
+        distance.emplace_back(std::make_pair(i, math::GetDistanceTriangleToCapsule(triangle, dynamic_capsule)));
     }
 
-    // 距離が近い順に押し戻す
-    current_distance = algorithm::Sort(current_distance, SortKind::kAscending);
-    for (const auto& distance : current_distance)
+    // 角度が低い順に押し出す
+    const auto sorted = algorithm::Sort(angle, distance, SortKind::kAscending);
+    for (const auto& sorted : sorted)
     {
-        valid_velocity = collision::PushBackCapsuleAndTriangle(valid_velocity, dynamic_capsule, triangles.at(distance.first), slope_difficulty_angle_threshold, max_slope_angle);
+        valid_velocity = collision::PushBackCapsuleAndTriangle(valid_velocity, dynamic_capsule, triangles.at(sorted.first), slope_difficulty_angle_threshold, max_slope_angle);
     }
 
     return valid_velocity;

@@ -490,7 +490,7 @@ VECTOR math::GetProjectionVector(const VECTOR& projected_v, const VECTOR& base_v
 {
     const float dot         = VDot(base_v, projected_v);
     const float square_base = VSquareSize(base_v);
-    return (dot / square_base) * base_v;
+    return square_base != 0.0f ? (dot / square_base) * base_v : v3d::GetZeroV();
 }
 #pragma endregion
 
@@ -711,7 +711,7 @@ bool math::IsPointAheadOfPlane(const VECTOR& point, const Plane& plane)
     const VECTOR v = point - plane.GetPos();
     const float angle = GetAngleBetweenTwoVector(plane.GetNormalVector(), v);
 
-    return angle < 90 * kDegToRad;
+    return angle < 90.0f * kDegToRad;
 }
 
 bool math::IsPointOnSphereSurface(const VECTOR& point, const Sphere& sphere)

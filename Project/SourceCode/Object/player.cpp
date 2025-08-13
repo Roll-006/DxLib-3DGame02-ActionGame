@@ -124,6 +124,8 @@ void Player::Draw() const
 	m_modeler->Draw();
 
 	//DxLibHelper::DrawModelFrames(m_modeler->GetModelHandle(), "", 0.05f, 20.0f);
+	DrawFormatString(500, 60, 0xffffff, "%f, %f, %f", m_velocity.x, m_velocity.y, m_velocity.z);
+	DrawFormatString(500, 80, 0xffffff, "%f, %f, %f", m_fall_velocity.x, m_fall_velocity.y, m_fall_velocity.z);
 
 	if (m_current_held_weapon) { m_current_held_weapon->Draw(); }
 
@@ -168,6 +170,7 @@ void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	{
 	case ColliderKind::kLandingTrigger:
 		m_is_landing = true;
+		DrawFormatString(500, 0, 0xffffff, "’…’n’†");
 		
 		shape = hit_collider_pair.target_collider->GetShape();
 

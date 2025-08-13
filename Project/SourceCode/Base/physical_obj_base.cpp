@@ -100,11 +100,22 @@ void PhysicalObjBase::ProjectionVelocity()
 	distance = algorithm::Sort(distance, SortKind::kAscending);
 	for (const auto& dist : distance)
 	{
+		if (std::isnan(m_velocity.x))
+		{
+			int a = 0;
+		}
+
 		// ŽÎ–Ê‚É“Š‰e
 		const auto cross_x	= math::GetNormalVector(triangles.at(dist.first).GetNormalVector(), axis::GetWorldYAxis());
 		auto base_v			= math::GetNormalVector(triangles.at(dist.first).GetNormalVector(), cross_x);
 		base_v				= v3d::GetNormalizedV(VGet(m_velocity.x, base_v.y, m_velocity.z));
 		m_velocity			= math::GetProjectionVector(m_velocity, base_v);
+
+		if (std::isnan(m_velocity.x))
+		{
+			int a = 0;
+		}
+
 		return;
 	}
 }

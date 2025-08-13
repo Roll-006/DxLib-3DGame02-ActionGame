@@ -31,5 +31,10 @@ private:
 
 	static constexpr VECTOR kBasicAngle = { 0.0f, 0.0f, 0.0f };
 	static constexpr float  kBasicScale = 5.0f;
-	static constexpr VECTOR kPos		= { 0.0f, -2000.0f, 0.0f };
+	static constexpr VECTOR kPos		= { 0.0f, 0.0f, 0.0f };
+
+	std::shared_ptr<Triangle> t1;
+	std::shared_ptr<Triangle> t2;
+	std::shared_ptr<Triangle> t3;
+	std::shared_ptr<Triangle> t4;
 };
