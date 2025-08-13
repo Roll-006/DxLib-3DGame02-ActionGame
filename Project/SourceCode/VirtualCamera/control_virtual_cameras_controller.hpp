@@ -90,7 +90,7 @@ private:
 	VECTOR									m_velocity;							// 速度ベクトル
 	std::unordered_map<TimeKind, VECTOR>	m_input_angle;						// 入力角度
 	std::unordered_map<TimeKind, VECTOR>	m_recoil_angle;						// リコイル角度
-	std::unordered_map<TimeKind, VECTOR>	m_result_angle;						// リザルト角度
+	VECTOR									m_result_angle;						// リザルト角度
 
 	RecoilData								m_recoil_data;
 	bool									m_is_recoiling;

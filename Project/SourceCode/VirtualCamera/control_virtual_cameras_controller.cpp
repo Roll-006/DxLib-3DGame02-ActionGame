@@ -17,7 +17,7 @@ ControlVirtualCamerasController::ControlVirtualCamerasController(Player& player)
 	m_velocity						(v3d::GetZeroV()),
 	m_recoil_data					(RecoilData()),
 	m_is_recoiling					(false),
-	m_is_reached_recoil_peak		(false)
+	m_is_reached_recoil_peak		(true)
 {
 	// パラメータ設定
 	SetupForRotCamera();
@@ -60,7 +60,7 @@ void ControlVirtualCamerasController::LateUpdate()
 	CalcResultAngle();
 
 	MATRIX result_m = MGetIdent();
-	CreateRotationXYZMatrix(&result_m, m_result_angle[TimeKind::kCurrent].x, m_result_angle[TimeKind::kCurrent].y, m_result_angle[TimeKind::kCurrent].z);
+	CreateRotationXYZMatrix(&result_m, m_result_angle.x, m_result_angle.y, m_result_angle.z);
 	m_aim_transform->SetRot(CoordinateKind::kWorld, MGetRotElem(result_m));
 }
 
@@ -72,7 +72,7 @@ void ControlVirtualCamerasController::OnRecoil(const GunBase& gun)
 	m_is_reached_recoil_peak	= false;
 	m_recoil_timer				= 0.0f;
 
-	m_input_angle[TimeKind::kCurrent] = m_result_angle[TimeKind::kCurrent];
+	m_input_angle[TimeKind::kCurrent] = m_result_angle;
 
 	// リコイル値の取得
 	float recoil_pitch			= 1.0f;
@@ -147,7 +147,6 @@ void ControlVirtualCamerasController::CalcMoveDirFromPad()
 	if (right_param) { m_velocity.y =  math::GetUnitValue<int, float>(InputChecker::kStickDeadZone,  InputChecker::kStickMaxSlope,  right_param); }
 	m_velocity *= kMoveSpeedWithStick;
 
-	// 入力方向も合わせて取得
 	m_move_dir = v3d::GetNormalizedV(m_velocity);
 }
 
@@ -161,7 +160,6 @@ void ControlVirtualCamerasController::CalcMoveDirFromMouse()
 	Vector2D<float> velocity_2d = InputChecker::GetInstance()->GetMouseVelocity(TimeKind::kCurrent);
 	m_velocity = VGet(velocity_2d.y, velocity_2d.x, 0.0f) * kMoveSpeedWithMouse;
 
-	// 入力方向も合わせて取得
 	m_move_dir = v3d::GetNormalizedV(m_velocity);
 }
 
@@ -177,10 +175,10 @@ void ControlVirtualCamerasController::CalcMoveDirFromCommand()
 	for (int i = 0; i < 8; ++i) { if (input->IsInput(static_cast<pad::StickKind>(i)))		{ return; } }
 
 	// コマンドパターンで入力された場合の速度・方向を取得
-	if (command->IsExecuting(CommandKind::kMoveUpCamera))	 { m_move_dir.x = -1; }
-	if (command->IsExecuting(CommandKind::kMoveDownCamera))  { m_move_dir.x =  1; }
-	if (command->IsExecuting(CommandKind::kMoveLeftCamera))  { m_move_dir.y = -1; }
-	if (command->IsExecuting(CommandKind::kMoveRightCamera)) { m_move_dir.y =  1; }
+	if (command->IsExecute(CommandKind::kMoveUpCamera,		TimeKind::kCurrent)) { m_move_dir.x = -1; }
+	if (command->IsExecute(CommandKind::kMoveDownCamera,	TimeKind::kCurrent)) { m_move_dir.x =  1; }
+	if (command->IsExecute(CommandKind::kMoveLeftCamera,	TimeKind::kCurrent)) { m_move_dir.y = -1; }
+	if (command->IsExecute(CommandKind::kMoveRightCamera,	TimeKind::kCurrent)) { m_move_dir.y =  1; }
 
 	if (m_move_dir != v3d::GetZeroV())
 	{
@@ -224,10 +222,10 @@ void ControlVirtualCamerasController::CalcInputAngle()
 
 	// 角度を取得
 	const auto command = CommandHandler::GetInstance();
-	if (command->IsExecuting(CommandKind::kMoveUpCamera))	 { m_input_angle[TimeKind::kCurrent].x += m_velocity.x; }
-	if (command->IsExecuting(CommandKind::kMoveDownCamera))  { m_input_angle[TimeKind::kCurrent].x += m_velocity.x; }
-	if (command->IsExecuting(CommandKind::kMoveLeftCamera))  { m_input_angle[TimeKind::kCurrent].y += m_velocity.y; }
-	if (command->IsExecuting(CommandKind::kMoveRightCamera)) { m_input_angle[TimeKind::kCurrent].y += m_velocity.y; }
+	if (command->IsExecute(CommandKind::kMoveUpCamera,		TimeKind::kCurrent)) { m_input_angle[TimeKind::kCurrent].x += m_velocity.x; }
+	if (command->IsExecute(CommandKind::kMoveDownCamera,	TimeKind::kCurrent)) { m_input_angle[TimeKind::kCurrent].x += m_velocity.x; }
+	if (command->IsExecute(CommandKind::kMoveLeftCamera,	TimeKind::kCurrent)) { m_input_angle[TimeKind::kCurrent].y += m_velocity.y; }
+	if (command->IsExecute(CommandKind::kMoveRightCamera,	TimeKind::kCurrent)) { m_input_angle[TimeKind::kCurrent].y += m_velocity.y; }
 
 	m_input_angle[TimeKind::kCurrent].y = math::ConnectMinusPiToPi(m_input_angle[TimeKind::kCurrent].y);
 
@@ -272,8 +270,7 @@ void ControlVirtualCamerasController::CalcRecoilAngle()
 			{
 				m_recoil_angle[TimeKind::kCurrent] = m_recoil_angle[TimeKind::kNext];
 
-				m_is_recoiling				= false;
-				m_is_reached_recoil_peak	= false;
+				m_is_recoiling = false;
 			}
 		}
 		else
@@ -285,7 +282,7 @@ void ControlVirtualCamerasController::CalcRecoilAngle()
 
 void ControlVirtualCamerasController::CalcResultAngle()
 {
-	m_result_angle[TimeKind::kCurrent] = m_input_angle[TimeKind::kCurrent] + m_recoil_angle[TimeKind::kCurrent];
+	m_result_angle = m_input_angle[TimeKind::kCurrent] + m_recoil_angle[TimeKind::kCurrent];
 }
 
 

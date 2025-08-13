@@ -14,7 +14,7 @@ player_state::EquipGun::~EquipGun()
 
 void player_state::EquipGun::Update(Player* obj)
 {
-	if (CommandHandler::GetInstance()->IsExecuting(CommandKind::kAimGun))
+	if (CommandHandler::GetInstance()->IsExecute(CommandKind::kAimGun, TimeKind::kCurrent))
 	{
 		const auto time_manager = GameTimeManager::GetInstance();
 		m_possible_aim_timer += time_manager->GetDeltaTime(TimeScaleController::LayerKind::kPlayer);
@@ -52,7 +52,7 @@ std::shared_ptr<IState<Player>> player_state::EquipGun::ChangeState(Player* obj)
 	const auto command			= CommandHandler::GetInstance();
 
 	// 銃エイミング状態
-	if (CommandHandler::GetInstance()->IsExecuting(CommandKind::kAimGun))
+	if (CommandHandler::GetInstance()->IsExecute(CommandKind::kAimGun, TimeKind::kCurrent))
 	{	
 		if (m_possible_aim_timer >= kPossibleAimTime)
 		{
@@ -65,7 +65,7 @@ std::shared_ptr<IState<Player>> player_state::EquipGun::ChangeState(Player* obj)
 		return state_controller->GetState<Reload, Player>();
 	}
 	// ナイフエイミング状態
-	if (command->IsExecuting(CommandKind::kAimKnife) && obj->GetCurrentEquipKnife())
+	if (command->IsExecute(CommandKind::kAimKnife, TimeKind::kCurrent) && obj->GetCurrentEquipKnife())
 	{
 		return state_controller->GetState<AimKnife, Player>();
 	}
@@ -75,7 +75,7 @@ std::shared_ptr<IState<Player>> player_state::EquipGun::ChangeState(Player* obj)
 		return state_controller->GetState<SpinningSlashKnife, Player>();
 	}
 	// 切り裂く(第一段階)
-	if (command->IsExecuting(CommandKind::kAttack))
+	if (command->IsExecute(CommandKind::kAttack, TimeKind::kCurrent))
 	{
 		return state_controller->GetState<FirstSideSlashKnife, Player>();
 	}

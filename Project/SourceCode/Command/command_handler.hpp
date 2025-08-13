@@ -7,7 +7,6 @@ class CommandHandler final : public SingletonBase<CommandHandler>
 {
 public:
 	void Update();
-	void LateUpdate();
 
 	/// @brief コマンドを初期設定に戻す
 	void InitKeyCommand();
@@ -15,7 +14,7 @@ public:
 	void InitInputMode();
 
 	/// @brief トリガーの入力回数をリセットする
-	void InitTriggerInputCount(const CommandKind kind) { m_trigger_count.at(kind) = 0; }
+	void InitCurrentTriggerInputCount(const CommandKind kind);
 
 	/// @brief 特殊コマンドの入力モードを設定する
 	/// @param kind コマンドの種類
@@ -23,10 +22,12 @@ public:
 	void SetInputMode(const CommandKind kind, const InputModeKind input_mode) { m_input_mode.at(kind) = input_mode; }
 
 	[[nodiscard]] InputModeKind GetInputModeKind(const CommandKind kind) const { return m_input_mode.at(kind); }
-	[[nodiscard]] int			GetTriggerCount (const CommandKind kind) const { return m_trigger_count.at(kind); }
+	[[nodiscard]] int			GetCurrentTriggerCount (const CommandKind kind) const;
 
-	/// @brief 指定のコマンドが現在実行中かを判定
-	[[nodiscard]] bool IsExecuting(const CommandKind kind);
+	/// @brief 指定のコマンドが実行状況を判定
+	/// @brief command_kind 判定するコマンド
+	/// @brief time_kind kCurrent : 現在実行中, kPrev : 1フレーム前に実行
+	[[nodiscard]] bool IsExecute(const CommandKind command_kind, const TimeKind time_kind);
 
 private:
 	CommandHandler();
@@ -42,12 +43,12 @@ private:
 	void TryExecuteCommand(const std::vector<std::pair<CommandKind, InputCode>>& codes);
 
 private:
-	std::vector<CommandKind>						m_current_execute_command;	// 現在実行中のコマンド
-	std::vector<std::pair<CommandKind, InputCode>>	m_key_codes;
-	std::vector<std::pair<CommandKind, InputCode>>	m_pad_codes;
+	std::unordered_map<TimeKind, std::vector<CommandKind>>				m_execute_command;		// 現在実行中のコマンド
+	std::vector<std::pair<CommandKind, InputCode>>						m_key_codes;
+	std::vector<std::pair<CommandKind, InputCode>>						m_pad_codes;
 
-	std::unordered_map<CommandKind, InputModeKind>	m_input_mode;				// 入力モード
-	std::unordered_map<CommandKind, int>			m_trigger_count;			// トリガー方式入力カウント
+	std::unordered_map<CommandKind, InputModeKind>						m_input_mode;			// 入力モード
+	std::unordered_map<TimeKind, std::unordered_map<CommandKind, int>>	m_trigger_count;		// トリガー方式入力カウント
 
 	friend SingletonBase<CommandHandler>;
 };

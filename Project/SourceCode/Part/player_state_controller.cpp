@@ -73,8 +73,6 @@ void PlayerStateController::AddStopStatePair()
 {
 	m_states.at(typeid(player_state::AimKnife))				->AddStopState(m_states.at(typeid(player_state::Crouch))->GetStateHandle());
 	m_states.at(typeid(player_state::AimKnife))				->AddStopState(m_states.at(typeid(player_state::Run))	->GetStateHandle());
-	m_states.at(typeid(player_state::StabKnife))			->AddStopState(m_states.at(typeid(player_state::Crouch))->GetStateHandle());
-	m_states.at(typeid(player_state::StabKnife))			->AddStopState(m_states.at(typeid(player_state::Run))	->GetStateHandle());
 	m_states.at(typeid(player_state::StabKnife))			->AddStopState(m_states.at(typeid(player_state::Move))	->GetStateHandle());
 	m_states.at(typeid(player_state::StabKnife))			->AddStopState(m_states.at(typeid(player_state::Crouch))->GetStateHandle());
 	m_states.at(typeid(player_state::StabKnife))			->AddStopState(m_states.at(typeid(player_state::Run))	->GetStateHandle());
@@ -93,6 +91,7 @@ void PlayerStateController::AddStopStatePair()
 	m_states.at(typeid(player_state::AimGun))				->AddStopState(m_states.at(typeid(player_state::Run))	->GetStateHandle());
 	m_states.at(typeid(player_state::Shot))					->AddStopState(m_states.at(typeid(player_state::Crouch))->GetStateHandle());
 	m_states.at(typeid(player_state::Shot))					->AddStopState(m_states.at(typeid(player_state::Run))	->GetStateHandle());
+	m_states.at(typeid(player_state::ShotRocketLauncher))	->AddStopState(m_states.at(typeid(player_state::Move))	->GetStateHandle());
 	m_states.at(typeid(player_state::ShotRocketLauncher))	->AddStopState(m_states.at(typeid(player_state::Crouch))->GetStateHandle());
 	m_states.at(typeid(player_state::ShotRocketLauncher))	->AddStopState(m_states.at(typeid(player_state::Run))	->GetStateHandle());
 }
@@ -272,12 +271,12 @@ void PlayerStateController::JudgeDestinationActionState(std::shared_ptr<IState<P
 	switch (static_cast<player_state::ActionStateKind>(stop_state->GetStateKind()))
 	{
 	case player_state::ActionStateKind::kCrouch:
-		CommandHandler::GetInstance()->InitTriggerInputCount(CommandKind::kCrouch);
+		CommandHandler::GetInstance()->InitCurrentTriggerInputCount(CommandKind::kCrouch);
 		stop_state = m_states.at(typeid(player_state::ActionNull));
 		break;
 
 	case player_state::ActionStateKind::kRun:
-		CommandHandler::GetInstance()->InitTriggerInputCount(CommandKind::kRun);
+		CommandHandler::GetInstance()->InitCurrentTriggerInputCount(CommandKind::kRun);
 		stop_state = m_states.at(typeid(player_state::ActionNull));
 		break;
 
@@ -310,10 +309,10 @@ bool PlayerStateController::TryMove()
 {
 	const auto command = CommandHandler::GetInstance();
 
-	return((command->IsExecuting(CommandKind::kMoveUpPlayer)
-		 || command->IsExecuting(CommandKind::kMoveDownPlayer)
-		 || command->IsExecuting(CommandKind::kMoveLeftPlayer)
-		 || command->IsExecuting(CommandKind::kMoveRightPlayer)));
+	return((command->IsExecute(CommandKind::kMoveUpPlayer,		TimeKind::kCurrent)
+		 || command->IsExecute(CommandKind::kMoveDownPlayer,	TimeKind::kCurrent)
+		 || command->IsExecute(CommandKind::kMoveLeftPlayer,	TimeKind::kCurrent)
+		 || command->IsExecute(CommandKind::kMoveRightPlayer,	TimeKind::kCurrent)));
 }
 
 bool PlayerStateController::TryRun()
@@ -329,7 +328,7 @@ bool PlayerStateController::TryRun()
 	}
 
 	// 実行判定
-	auto is_run = command->IsExecuting(CommandKind::kRun);
+	auto is_run = command->IsExecute(CommandKind::kRun, TimeKind::kCurrent);
 
 	// IDLEであるかつ現在ダッシュ状態である場合、ダッシュ状態を解除する
 	if (   m_move_state  .at(TimeKind::kCurrent)->GetStateKind() == static_cast<int>(player_state::MoveStateKind::kMoveNull)
@@ -359,12 +358,13 @@ bool PlayerStateController::TrySpinningSlash()
 {
 	const bool is_run = m_action_state.at(TimeKind::kCurrent)->GetStateKind() == static_cast<int>(player_state::ActionStateKind::kRun);
 
-	return  is_run && CommandHandler::GetInstance()->IsExecuting(CommandKind::kAttack);
+	return  is_run && CommandHandler::GetInstance()->IsExecute(CommandKind::kAttack, TimeKind::kCurrent);
 }
 
 bool PlayerStateController::TryEquipGun(Player* player)
 {
-	return player->GetCurrentEquipWeaponKind() == WeaponKind::kGun && CommandHandler::GetInstance()->IsExecuting(CommandKind::kAimGun);
+	return player->GetCurrentEquipWeaponKind() == WeaponKind::kGun
+		&& CommandHandler::GetInstance()->IsExecute(CommandKind::kAimGun, TimeKind::kCurrent);
 }
 
 bool PlayerStateController::TryEquipGunShortcut(Player* player)
@@ -384,7 +384,7 @@ bool PlayerStateController::TryPullTrigger(Player* player)
 
 	if (gun)
 	{
-		if (CommandHandler::GetInstance()->IsExecuting(CommandKind::kPullTrigger))
+		if (CommandHandler::GetInstance()->IsExecute(CommandKind::kPullTrigger, TimeKind::kCurrent))
 		{
 			gun->PullTrigger();
 			return true;
@@ -404,7 +404,7 @@ bool PlayerStateController::TryReload(Player* player)
 
 	if (gun)
 	{
-		return gun->CanReload() && CommandHandler::GetInstance()->IsExecuting(CommandKind::kReload);
+		return gun->CanReload() && CommandHandler::GetInstance()->IsExecute(CommandKind::kReload, TimeKind::kCurrent);
 	}
 
 	return false;

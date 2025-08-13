@@ -29,7 +29,7 @@ void player_state::Run::Enter(Player* obj)
 
 void player_state::Run::Exit(Player* obj)
 {
-	CommandHandler::GetInstance()->InitTriggerInputCount(CommandKind::kRun);
+	CommandHandler::GetInstance()->InitCurrentTriggerInputCount(CommandKind::kRun);
 }
 
 std::shared_ptr<IState<Player>> player_state::Run::ChangeState(Player* obj)
@@ -44,14 +44,14 @@ std::shared_ptr<IState<Player>> player_state::Run::ChangeState(Player* obj)
 		return state_controller->GetState<ActionNull, Player>();
 	}
 	// しゃがむ
-	if (command->IsExecuting(CommandKind::kCrouch))
+	if (command->IsExecute(CommandKind::kCrouch, TimeKind::kCurrent))
 	{
 		// Runコマンドがホールド方式で、入力中であった場合は移行を許可しない
 		if (!(command_mode == InputModeKind::kHold && state_controller->TryRun()))
 		{
 			return state_controller->GetState<Crouch, Player>();
 		}
-		command->InitTriggerInputCount(CommandKind::kCrouch);
+		command->InitCurrentTriggerInputCount(CommandKind::kCrouch);
 	}
 
 	return nullptr;

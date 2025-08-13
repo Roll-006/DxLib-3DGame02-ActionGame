@@ -45,7 +45,7 @@ std::shared_ptr<IState<Player>> player_state::ActionNull::ChangeState(Player* ob
 		return state_controller->GetState<Run, Player>();
 	}
 	// ‚µ‚á‚ª‚Ş
-	if (CommandHandler::GetInstance()->IsExecuting(CommandKind::kCrouch))
+	if (CommandHandler::GetInstance()->IsExecute(CommandKind::kCrouch, TimeKind::kCurrent))
 	{
 		return state_controller->GetState<Crouch, Player>();
 	}

@@ -47,7 +47,6 @@ void SceneManager::LateUpdate()
 	}
 
 	CollisionManager::GetInstance()->LateUpdate();
-	CommandHandler	::GetInstance()->LateUpdate();
 	InputChecker	::GetInstance()->LateUpdate();
 }
 

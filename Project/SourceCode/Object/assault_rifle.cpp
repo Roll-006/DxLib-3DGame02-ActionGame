@@ -17,7 +17,7 @@ AssaultRifle::AssaultRifle() :
 	m_initial_velocity			= kInitialVelocity;
 	m_deceleration				= kDeceleration;
 	m_shot_interval_time		= kShotIntervalTime;
-	m_recoil_data				= RecoilData(1.0f, -0.3f, 0.5f * math::kDegToRad, 0.7f * math::kDegToRad, 0.1f, VGet(0.5f, 0.5f, 0.5f));
+	m_recoil_data				= RecoilData(1.0f, -0.3f, 0.5f * math::kDegToRad, 0.7f * math::kDegToRad, 0.2f, VGet(0.5f, 0.5f, 0.5f));
 
 	// TODO : âºÇ≈íeêîÇê›íË
 	m_max_remaining_bullet_num		= 30;

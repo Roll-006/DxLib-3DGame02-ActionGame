@@ -2,7 +2,8 @@
 
 CommandHandler::CommandHandler()
 {
-	m_trigger_count[CommandKind::kRun] = m_trigger_count[CommandKind::kCrouch] = 0;
+	m_trigger_count[TimeKind::kCurrent][CommandKind::kRun]		= 0;
+	m_trigger_count[TimeKind::kCurrent][CommandKind::kCrouch]	= 0;
 
 	// 初期設定
 	InitKeyCommand();
@@ -19,6 +20,11 @@ void CommandHandler::Update()
 {
 	const auto input = InputChecker::GetInstance();
 
+	m_execute_command[TimeKind::kPrev] = m_execute_command[TimeKind::kCurrent];
+	m_execute_command[TimeKind::kCurrent].clear();
+
+	m_trigger_count[TimeKind::kPrev] = m_trigger_count[TimeKind::kCurrent];
+
 	// 現在の入力デバイスに合わせて処理を実行
 	switch (input->GetCurrentInputDevice())
 	{
@@ -30,11 +36,6 @@ void CommandHandler::Update()
 		TryExecuteCommand(m_pad_codes);
 		break;
 	}
-}
-
-void CommandHandler::LateUpdate()
-{
-	m_current_execute_command.clear();
 }
 
 void CommandHandler::InitKeyCommand()
@@ -188,36 +189,52 @@ void CommandHandler::InitInputMode()
 	m_input_mode[CommandKind::kSelectWeaponDown]			= InputModeKind::kSingle;
 }
 
-bool CommandHandler::IsExecuting(const CommandKind kind)
+void CommandHandler::InitCurrentTriggerInputCount(const CommandKind kind)
+{
+	m_trigger_count.at(TimeKind::kCurrent).at(kind) = 0;
+}
+
+int CommandHandler::GetCurrentTriggerCount(const CommandKind kind) const
+{
+	return m_trigger_count.at(TimeKind::kCurrent).at(kind);
+}
+
+bool CommandHandler::IsExecute(const CommandKind command_kind, const TimeKind time_kind)
 {
 	const auto input  = InputChecker::GetInstance();
 	const auto codes  = input->GetCurrentInputDevice() == DeviceKind::kKeyboard ? m_key_codes : m_pad_codes;
 	bool is_executing = false;
 
-	switch (m_input_mode.at(kind))
+	switch (m_input_mode.at(command_kind))
 	{
 	case InputModeKind::kSingle:
 		for (const auto& code : codes)
 		{
-			if (code.first == kind)
+			if (code.first == command_kind)
 			{
-				is_executing = input->GetInputState(code.second) == InputState::kSingle;
-				if (is_executing) { break; }
+				if (time_kind == TimeKind::kCurrent)
+				{
+					return input->GetInputState(code.second) == InputState::kSingle;
+				}
+				else if (time_kind == TimeKind::kPrev)
+				{
+					return input->GetInputState(code.second) == InputState::kPrev;
+				}
 			}			
 		}	
 		break;
 
 	// トリガー方式の場合、入力カウントによって実行されたかを判定
 	case InputModeKind::kTrigger:
-		is_executing = GetTriggerCount(kind) % 2 == 1 ? true : false;
+		return m_trigger_count.at(time_kind).at(command_kind) % 2 == 1 ? true : false;
 		break;
 
 	case InputModeKind::kHold:
-		is_executing = std::find(m_current_execute_command.begin(), m_current_execute_command.end(), kind) != m_current_execute_command.end();
+		return std::find(m_execute_command.at(time_kind).begin(), m_execute_command.at(time_kind).end(), command_kind) != m_execute_command.at(time_kind).end();
 		break;
 	}
 
-	return is_executing;
+	return false;
 }
 
 void CommandHandler::AddInputCode(const CommandKind kind, const input_concepts::InputT auto& input_code)
@@ -306,11 +323,11 @@ void CommandHandler::TryExecuteCommand(const std::vector<std::pair<CommandKind, 
 				// 特殊コマンドのトリガー方式であった場合、入力回数をカウント
 				if (m_input_mode.at(code.first) == InputModeKind::kTrigger && input->GetInputState(code.second) == InputState::kSingle)
 				{
-					++m_trigger_count.at(code.first);
+					++m_trigger_count[TimeKind::kCurrent][code.first];
 				}
 
-				executed_command		 .emplace_back(code.first);
-				m_current_execute_command.emplace_back(code.first);
+				executed_command.emplace_back(code.first);
+				m_execute_command[TimeKind::kCurrent].emplace_back(code.first);
 			}
 		}
 	}

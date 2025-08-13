@@ -48,12 +48,13 @@ std::shared_ptr<IState<Player>> player_state::AimKnife::ChangeState(Player* obj)
 	const auto command			= CommandHandler::GetInstance();
 
 	// ƒiƒCƒt‘•”õó‘Ô
-	if (!command->IsExecuting(CommandKind::kAimKnife))
+	if (!command->IsExecute(CommandKind::kAimKnife, TimeKind::kCurrent))
 	{
 		return state_controller->GetState<EquipKnife, Player>();
 	}
 	// “Ë‚«h‚·
-	if (command->IsExecuting(CommandKind::kAttack) || command->IsExecuting(CommandKind::kReload))
+	if (command->IsExecute(CommandKind::kAttack, TimeKind::kCurrent)
+		|| command->IsExecute(CommandKind::kReload, TimeKind::kCurrent))
 	{
 		return state_controller->GetState<StabKnife, Player>();
 	}

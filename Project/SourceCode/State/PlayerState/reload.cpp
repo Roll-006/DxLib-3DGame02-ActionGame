@@ -52,7 +52,8 @@ std::shared_ptr<IState<Player>> player_state::Reload::ChangeState(Player* obj)
 	const auto command			= CommandHandler::GetInstance();
 	
 	// 銃エイミング状態
-	if (obj->GetAnimator()->IsPlayEnd(AnimatorBase::BodyKind::kUpperBody) && command->IsExecuting(CommandKind::kAimGun))
+	if (obj->GetAnimator()->IsPlayEnd(AnimatorBase::BodyKind::kUpperBody)
+		&& command->IsExecute(CommandKind::kAimGun, TimeKind::kCurrent))
 	{
 		return state_controller->GetState<AimGun, Player>();
 	}

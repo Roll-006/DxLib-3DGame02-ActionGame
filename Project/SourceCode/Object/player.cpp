@@ -7,8 +7,7 @@ Player::Player() :
 	m_subject							(std::make_shared<Subject<Player>>()),
 	m_state								(std::make_shared<PlayerStateController>()),
 	m_bone_pos_corrector				(std::make_shared<BonePosCorrector>()),
-	m_camera_aim_transform				(std::make_shared<Transform>()),
-	m_current_camera_aim_pos			(v3d::GetZeroV()),
+	m_input_slope						(v3d::GetZeroV()),
 	m_move_speed						(0.0f),
 	m_look_dir_offset_angle				(0.0f),
 	m_confirm_look_dir_threshold_angle	(0.0f),
@@ -24,7 +23,7 @@ Player::Player() :
 
 	// 初期pos・dirを設定
 	m_look_dir[TimeKind::kCurrent] = m_look_dir[TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);
-	m_transform->SetPos(CoordinateKind::kWorld, VGet(0, 3000, 0));
+	m_transform->SetPos(CoordinateKind::kWorld, VGet(0, 500, 0));
 	m_transform->SetRot(CoordinateKind::kWorld, m_look_dir.at(TimeKind::kCurrent));
 
 	// コライダー・トリガーを設定
@@ -78,9 +77,10 @@ void Player::Update()
 	m_state						->Update(this);
 	m_animator					->Update();
 
-	CalcMoveDir(m_velocity);
+	CalcMoveDir();
 	CalcLookDir();
 	CalcVelocity();
+
 	CalcCapsuleColliderLength();
 
 	ApplyLookDirToRot(m_look_dir.at(TimeKind::kCurrent));
@@ -99,8 +99,6 @@ void Player::LateUpdate()
 			attach_weapon.second->TrackOwnerHolster();
 		}
 	}
-
-	//CalcCameraAimPos();
 }
 
 void Player::DrawToShadowMap() const
@@ -233,38 +231,10 @@ void Player::Move()
 	m_move_dir[TimeKind::kPrev] = m_move_dir[TimeKind::kCurrent];
 	m_move_dir[TimeKind::kNext] = v3d::GetZeroV();
 
-	// 移動方向の決定
-	const auto command = CommandHandler::GetInstance();
-	if (command->IsExecuting(CommandKind::kMoveUpPlayer))
-	{
-		m_move_dir[TimeKind::kNext] += GetMoveForward();
-	}
-	if (command->IsExecuting(CommandKind::kMoveDownPlayer))
-	{
-		m_move_dir[TimeKind::kNext] -= GetMoveForward();
-	}
-	if (command->IsExecuting(CommandKind::kMoveLeftPlayer))
-	{
-		m_move_dir[TimeKind::kNext] -= GetMoveRight();
-	}
-	if (command->IsExecuting(CommandKind::kMoveRightPlayer))
-	{
-		m_move_dir[TimeKind::kNext] += GetMoveRight();
-	}
+	CalcInputSlopeFromPad();
+	CalcInputSlopeFromCommand();
 
-	// 移動速度を取得
-	switch (InputChecker::GetInstance()->GetCurrentInputDevice())
-	{
-	case DeviceKind::kKeyboard:
-		m_velocity = v3d::GetNormalizedV(m_move_dir[TimeKind::kNext]) * InputChecker::kStickMaxSlope;
-		break;
-
-	case DeviceKind::kPad:
-		m_velocity = GetVelocityFromPad();
-		break;
-	}
-
-	CalcMoveSpeed(VSize(m_velocity));
+	CalcMoveSpeed();
 }
 
 void Player::SetLookDirOffsetValueForAim()
@@ -279,15 +249,6 @@ void Player::DirOfMovement()
 	{
 		m_look_dir.at(TimeKind::kNext) = v3d::GetNormalizedV(m_move_dir[TimeKind::kCurrent]);
 	}
-
-	//auto pos = m_transform->GetPos(CoordinateKind::kWorld);
-	//VECTOR o1 = { 0, 30, 0 };
-	//VECTOR o2 = { 0, 40, 0 };
-	//VECTOR o3 = { 0, 50, 0 };
-	//DrawLine3D(pos + o1, pos + o1 + m_look_dir.at(TimeKind::kCurrent)	* 100, GetColor(255, 0, 0));
-	//DrawLine3D(pos + o2, pos + o2 + m_look_dir.at(TimeKind::kNext)		* 100, GetColor(0, 255, 0));
-	//DrawLine3D(pos + o3, pos + o3 + m_move_dir[TimeKind::kCurrent]		* 100, GetColor(0, 0, 255));
-	//DrawFormatString(0, 40, 0xffffff, "m_look_dir.at(TimeKind::kNext).y : %f, %f, %f", m_look_dir.at(TimeKind::kNext).x, m_look_dir.at(TimeKind::kNext).y, m_look_dir.at(TimeKind::kNext).z);
 }
 
 void Player::DirOfCameraForward()
@@ -306,14 +267,14 @@ void Player::CalcMoveSpeedStop()
 	math::Decrease(m_move_speed, kAcceleration, 0.0f);
 }
 
-void Player::CalcMoveSpeed(const float input_slope)
+void Player::CalcMoveSpeed()
 {
 	const auto current_action_state_kind = m_state->GetActionState(TimeKind::kCurrent)->GetStateKind();
 
 	if (   current_action_state_kind != static_cast<int>(player_state::ActionStateKind::kActionNull)
 		&& current_action_state_kind != static_cast<int>(player_state::ActionStateKind::kCrouch)) { return; }
 
-	if (input_slope <= kWalkStickSlopeLimit - InputChecker::kStickDeadZone)
+	if (VSize(m_input_slope) <= kWalkStickSlopeLimit - InputChecker::kStickDeadZone)
 	{
 		// 速い状態から歩き状態に移行した場合、急速に減速させる
 		if (m_move_speed > kWalkSpeed) { m_move_speed = kWalkSpeed; }
@@ -368,16 +329,98 @@ WeaponKind Player::GetCurrentEquipWeaponKind()
 	return m_current_equip_weapon ? m_current_equip_weapon->GetWeaponKind() : WeaponKind::kNone;
 }
 
+void Player::CalcInputSlopeFromPad()
+{
+	if (InputChecker::GetInstance()->GetCurrentInputDevice() != DeviceKind::kPad) { return; }
+
+	const auto forward	= GetMoveForward();
+	const auto right	= GetMoveRight();
+
+	// 各方向のパラメーターを取得
+	const auto input			= InputChecker::GetInstance();
+	const auto forward_param	= input->GetInputParameter(pad::StickKind::kLSUp);
+	const auto backward_param	= input->GetInputParameter(pad::StickKind::kLSDown);
+	const auto left_param		= input->GetInputParameter(pad::StickKind::kLSLeft);
+	const auto right_param		= input->GetInputParameter(pad::StickKind::kLSRight);
+
+	// 入力値を取得
+	m_input_slope = v3d::GetZeroV();
+	if (forward_param)	{ m_input_slope += forward * (forward_param	 - InputChecker::kStickDeadZone); }
+	if (backward_param) { m_input_slope += forward * (backward_param + InputChecker::kStickDeadZone); }
+	if (left_param)		{ m_input_slope += right   * (left_param	 + InputChecker::kStickDeadZone); }
+	if (right_param)	{ m_input_slope += right   * (right_param	 - InputChecker::kStickDeadZone); }
+
+	m_move_dir[TimeKind::kNext] = v3d::GetNormalizedV(m_input_slope);
+}
+
+void Player::CalcInputSlopeFromCommand()
+{
+	if (m_move_dir[TimeKind::kNext] != v3d::GetZeroV()) { return; }
+
+	const auto command					= CommandHandler::GetInstance();
+	const auto forward					= GetMoveForward();
+	const auto right					= GetMoveRight();
+	auto	   current_input_slope		= v3d::GetZeroV();
+	auto	   continue_input_slope		= v3d::GetZeroV();
+	
+	// 現在入力されているvelocityを取得
+	if (command->IsExecute(CommandKind::kMoveUpPlayer,    TimeKind::kCurrent))
+	{
+		current_input_slope += forward;
+	}
+	if (command->IsExecute(CommandKind::kMoveDownPlayer,  TimeKind::kCurrent))
+	{
+		current_input_slope -= forward;
+	}
+	if (command->IsExecute(CommandKind::kMoveLeftPlayer,  TimeKind::kCurrent))
+	{
+		current_input_slope -= right;
+	}
+	if (command->IsExecute(CommandKind::kMoveRightPlayer, TimeKind::kCurrent))
+	{
+		current_input_slope += right;
+	}
+	m_input_slope = v3d::GetNormalizedV(current_input_slope) * InputChecker::kStickMaxSlope;
+
+	//// 継続して入力されているvelocityを取得
+	//if (   command->IsExecute(CommandKind::kMoveUpPlayer,	 TimeKind::kCurrent)
+	//	&& command->IsExecute(CommandKind::kMoveUpPlayer,    TimeKind::kPrev))
+	//{
+	//	continue_input_slope += forward;
+	//}
+	//if (   command->IsExecute(CommandKind::kMoveDownPlayer,  TimeKind::kCurrent)
+	//	&& command->IsExecute(CommandKind::kMoveDownPlayer,  TimeKind::kPrev))
+	//{
+	//	continue_input_slope -= forward;
+	//}
+	//if (   command->IsExecute(CommandKind::kMoveLeftPlayer,  TimeKind::kCurrent)
+	//	&& command->IsExecute(CommandKind::kMoveLeftPlayer,  TimeKind::kPrev))
+	//{
+	//	continue_input_slope -= right;
+	//}
+	//if (   command->IsExecute(CommandKind::kMoveRightPlayer, TimeKind::kCurrent)
+	//	&& command->IsExecute(CommandKind::kMoveRightPlayer, TimeKind::kPrev))
+	//{
+	//	continue_input_slope += right;
+	//}
+	//continue_input_slope = v3d::GetNormalizedV(continue_input_slope) * (InputChecker::kStickMaxSlope - InputChecker::kStickDeadZone);
+
+	// 継続して入力されていたvelocityが、現在のvelocityと逆を向いていた場合現在のvelocityを縮める
+	if (std::abs(math::GetAngleBetweenTwoVector(m_input_slope, continue_input_slope) - DX_PI_F) < math::kEpsilonLow)
+	{
+		m_input_slope += continue_input_slope;
+	}
+
+	m_move_dir[TimeKind::kNext] = v3d::GetNormalizedV(m_input_slope);
+}
+
 void Player::CalcVelocity()
 {
 	m_velocity = m_move_dir[TimeKind::kCurrent] * m_move_speed;
 }
 
-void Player::CalcMoveDir(const VECTOR& velocity)
+void Player::CalcMoveDir()
 {
-	// 目的とする向きと距離を取得
-	m_move_dir[TimeKind::kNext] = v3d::GetNormalizedV(velocity);
-
 	// 現在のdirを目的とするdirに近づけていく
 	m_move_dir[TimeKind::kCurrent] = math::GetApproachedVector(
 		m_move_dir[TimeKind::kCurrent], 
@@ -403,8 +446,6 @@ void Player::CalcLookDir()
 	m_look_dir.at(TimeKind::kCurrent) = math::GetRotatedPos(m_look_dir.at(TimeKind::kCurrent), rot_q);
 
 	const float angle = math::GetYawBetweenTwoVector(m_look_dir.at(TimeKind::kNext), m_look_dir.at(TimeKind::kCurrent));
-	//DrawFormatString(0, 60, 0xffffff, "angle           : %f", angle * math::kRadianToDegrees);
-	//DrawFormatString(0, 80, 0xffffff, "threshold_angle : %f", m_confirm_look_dir_threshold_angle * math::kRadianToDegrees);
 	if (angle < m_confirm_look_dir_threshold_angle)
 	{
 		m_look_dir.at(TimeKind::kCurrent) = m_look_dir.at(TimeKind::kNext);
@@ -434,32 +475,6 @@ void Player::CalcLookDir()
 //	m_camera_aim_transform->SetPos(CoordinateKind::kWorld, m_current_camera_aim_pos);
 //}
 
-VECTOR Player::GetVelocityFromPad()
-{
-	// 移動方向を取得
-	const auto camera	= CameraManager::GetInstance()->GetMainCamera();
-	const auto right	= camera->GetTransform()->GetRight(CoordinateKind::kWorld);
-	auto forward		= camera->GetTransform()->GetForward(CoordinateKind::kWorld);
-	forward.y = 0.0f;
-	forward = v3d::GetNormalizedV(forward);
-
-	// 各方向のパラメーターを取得
-	const auto input = InputChecker::GetInstance();
-	const int forward_param		= input->GetInputParameter(pad::StickKind::kLSUp);
-	const int backward_param	= input->GetInputParameter(pad::StickKind::kLSDown);
-	const int left_param		= input->GetInputParameter(pad::StickKind::kLSLeft);
-	const int right_param		= input->GetInputParameter(pad::StickKind::kLSRight);
-
-	// 速度ベクトルを取得
-	VECTOR velocity = v3d::GetZeroV();
-	if (forward_param)	{ velocity += forward * (forward_param  - InputChecker::kStickDeadZone); }
-	if (backward_param) { velocity += forward * (backward_param + InputChecker::kStickDeadZone); }
-	if (left_param)		{ velocity += right	  * (left_param	    + InputChecker::kStickDeadZone); }
-	if (right_param)	{ velocity += right	  * (right_param    - InputChecker::kStickDeadZone); }
-
-	return velocity;
-}
-
 VECTOR Player::GetMoveForward()
 {
 	const auto camera = CameraManager::GetInstance()->GetMainCamera();
@@ -477,13 +492,3 @@ VECTOR Player::GetMoveRight()
 	
 	return v3d::GetNormalizedV(right);
 }
-
-//bool Player::IsTrackCameraOriginBone() const
-//{
-//	const auto weapon_state_kind = static_cast<player_state::WeaponActionStateKind>(m_state->GetWeaponActionState(TimeKind::kCurrent)->GetStateKind());
-//	
-//	return(weapon_state_kind == player_state::WeaponActionStateKind::kFirstSideSlashKnife
-//		|| weapon_state_kind == player_state::WeaponActionStateKind::kSecondSideSlashKnife
-//		|| weapon_state_kind == player_state::WeaponActionStateKind::kSpinningSlashKnife
-//		|| weapon_state_kind == player_state::WeaponActionStateKind::kStabKnife);
-//}

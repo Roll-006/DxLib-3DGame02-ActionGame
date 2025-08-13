@@ -50,7 +50,7 @@ std::shared_ptr<IState<Player>> player_state::WeaponActionNull::ChangeState(Play
 		return state_controller->GetState<EquipGun, Player>();
 	}
 	// ナイフエイミング状態
-	if (command->IsExecuting(CommandKind::kAimKnife) && obj->GetCurrentEquipKnife())
+	if (command->IsExecute(CommandKind::kAimKnife, TimeKind::kCurrent) && obj->GetCurrentEquipKnife())
 	{
 		return state_controller->GetState<AimKnife, Player>();
 	}
@@ -60,7 +60,7 @@ std::shared_ptr<IState<Player>> player_state::WeaponActionNull::ChangeState(Play
 		return state_controller->GetState<SpinningSlashKnife, Player>();
 	}
 	// 切り裂く(第一段階)
-	if (command->IsExecuting(CommandKind::kAttack))
+	if (command->IsExecute(CommandKind::kAttack, TimeKind::kCurrent))
 	{
 		return state_controller->GetState<FirstSideSlashKnife, Player>();
 	}

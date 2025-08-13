@@ -80,8 +80,6 @@ public:
 
 
 	#pragma region State
-	//void CalcMoveDirFirstFrame();
-
 	void Move();
 
 	/// @brief エイミング時の見る方向を修正するための値を設定する
@@ -92,16 +90,10 @@ public:
 	/// @brief カメラのforward(Y軸は0)方向を向く
 	void DirOfCameraForward();
 
-	/// @brief 移動を停止する際の速度を計算
+	void CalcMoveSpeed();
 	void CalcMoveSpeedStop();
-	/// @brief しゃがみ時の移動速度を計算
 	void CalcMoveSpeedCrouch();
-	/// @brief ダッシュ時の移動速度を計算
 	void CalcMoveSpeedRun();
-
-	/// @brief 切り裂く攻撃の移動補正値を計算
-	//void CalcMoveOffsetSideSlashKnife();
-	//void Test() { m_move_dir[TimeKind::kNext] = m_look_dir[TimeKind::kCurrent]; }
 	#pragma endregion
 
 
@@ -118,19 +110,12 @@ public:
 	#pragma endregion
 
 private:
-	/// @brief 入力されたスティックの傾きから移動速度を計算
-	/// @param input_slope スティックの傾き
-	void CalcMoveSpeed(const float input_slope);
+	void CalcInputSlopeFromPad();
+	void CalcInputSlopeFromCommand();
 
-	void CalcVelocity();
-	void CalcMoveDir(const VECTOR& velocity);
+	void CalcMoveDir();
 	void CalcLookDir();
-
-	/// @brief カメラに見られる座標を計算
-	//void CalcCameraAimPos();
-
-	// パッド入力での速度ベクトルを取得
-	[[nodiscard]] VECTOR GetVelocityFromPad();
+	void CalcVelocity();
 
 	/// @brief カメラのforwardをもとにした進行方向ベクトルを取得する
 	/// @return カメラのforwardのY軸を消し飛ばしたベクトル
@@ -138,10 +123,6 @@ private:
 	/// @brief カメラのrightをもとにした進行方向ベクトルを取得する
 	/// @return カメラのrightのY軸を消し飛ばしたベクトル
 	[[nodiscard]] VECTOR GetMoveRight();
-
-	/// @brief 無加工のボーンをカメラが追尾するかを判定
-	/// @return true : ボーンそのものをカメラが追尾, false : ボーンを同じ高さにある位置を追尾
-	//[[nodiscard]] bool IsTrackCameraOriginBone() const;
 
 private:
 	static constexpr VECTOR kBasicAngle							= { 0.0f, DX_PI_F, 0.0f };
@@ -175,9 +156,8 @@ private:
 
 	std::shared_ptr<PlayerStateController>		m_state;
 	std::shared_ptr<BonePosCorrector>			m_bone_pos_corrector;
-	std::shared_ptr<Transform>					m_camera_aim_transform;					// カメラのターゲットとなるトランスフォーム
-	VECTOR										m_current_camera_aim_pos;
 
+	VECTOR										m_input_slope;
 	std::unordered_map<TimeKind, VECTOR>		m_move_dir;								// 移動方向(TODO : 長さが1未満である時がある場合があるため命名を変更すべき)
 	std::unordered_map<TimeKind, VECTOR>		m_look_dir;								// 向いている方向
 	float										m_move_speed;

@@ -56,8 +56,10 @@ std::shared_ptr<IState<Player>> player_state::AimGun::ChangeState(Player* obj)
 	const auto camera_manager		= CameraManager::GetInstance();
 	const auto camera_controller	= std::static_pointer_cast<ControlVirtualCamerasController>(camera_manager->GetVirtualCameraController(VirtualCameraControllerKind::kControl));
 
+	DrawFormatString(0, 100, 0xffffff, "%d", camera_controller->IsReachedRecoilPeak());
+
 	// e‘•”õó‘Ô
-	if (!command->IsExecuting(CommandKind::kAimGun) && camera_controller->IsReachedRecoilPeak())
+	if (!command->IsExecute(CommandKind::kAimGun, TimeKind::kCurrent) && camera_controller->IsReachedRecoilPeak())
 	{
 		return state_controller->GetState<EquipGun, Player>();
 	}

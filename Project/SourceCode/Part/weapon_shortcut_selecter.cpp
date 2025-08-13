@@ -47,7 +47,7 @@ void WeaponShortcutSelecter::SelectWeaponByPad()
 		const auto command		= CommandHandler::GetInstance();
 		const auto command_num	= static_cast<int>(CommandKind::kSelectWeaponUp) + i;
 		
-		if (command->IsExecuting(static_cast<CommandKind>(command_num)))
+		if (command->IsExecute(static_cast<CommandKind>(command_num), TimeKind::kCurrent))
 		{
 			auto	   current_shortcut_num = static_cast<int>(m_current_select_shortcut);
 			const auto is_inside			= current_shortcut_num < 4;
@@ -81,7 +81,7 @@ void WeaponShortcutSelecter::SelectWeaponByKey()
 	{
 		const auto command_num  = static_cast<int>(CommandKind::kSelectWeaponInsideUp) + i;
 
-		if (command->IsExecuting(static_cast<CommandKind>(command_num)))
+		if (command->IsExecute(static_cast<CommandKind>(command_num), TimeKind::kCurrent))
 		{
 			const auto shortcut_num = static_cast<int>(WeaponShortcutPosKind::kInsideUp) + i;
 
@@ -92,7 +92,7 @@ void WeaponShortcutSelecter::SelectWeaponByKey()
 	}
 
 	// “à‘¤ / ŠO‘¤‚ÌˆÚ“®
-	if (command->IsExecuting(CommandKind::kSideChangeWeapon))
+	if (command->IsExecute(CommandKind::kSideChangeWeapon, TimeKind::kCurrent))
 	{
 		const auto current_shortcut_num	= static_cast<int>(m_current_select_shortcut);
 		const auto increase_value		= current_shortcut_num < 4 ? 4 : -4;
@@ -117,12 +117,12 @@ void WeaponShortcutSelecter::SelectWeaponRotate(const CommandKind command_kind)
 	const auto input_mode_kind = command->GetInputModeKind(CommandKind::kSideChangeWeapon);
 	command->SetInputMode(CommandKind::kSideChangeWeapon, InputModeKind::kHold);
 
-	if (command->IsExecuting(command_kind))
+	if (command->IsExecute(command_kind, TimeKind::kCurrent))
 	{
 		auto	   current_shortcut_num		= static_cast<int>(m_current_select_shortcut);
 		const auto increase_value			= command_kind == CommandKind::kSelectWeaponRotateLeft ? -1 : 1;
 		const auto is_inside				= current_shortcut_num < 4;
-		const auto is_select_inside			= !command->IsExecuting(CommandKind::kSideChangeWeapon);
+		const auto is_select_inside			= !command->IsExecute(CommandKind::kSideChangeWeapon, TimeKind::kCurrent);
 		const auto max_select_num			= is_select_inside ? 3 : 7;
 		const auto min_select_num			= is_select_inside ? 0 : 4;
 

@@ -414,49 +414,53 @@ void PlayerAnimator::AttachAnimEightDir(const int forward_anim_kind)
 
 	// forwardのアニメーションを基準とし、enum classの値をずらしてアタッチ
 	// 左前方
-	if (command->IsExecuting(CommandKind::kMoveUpPlayer)   && command->IsExecuting(CommandKind::kMoveLeftPlayer))
+	if (command->IsExecute(CommandKind::kMoveUpPlayer, TimeKind::kCurrent)
+		&& command->IsExecute(CommandKind::kMoveLeftPlayer, TimeKind::kCurrent))
 	{
 		AttachAnim(forward_anim_kind + 4, BodyKind::kLowerBody);
 		return;
 	}
 	// 右前方
-	if (command->IsExecuting(CommandKind::kMoveUpPlayer)   && command->IsExecuting(CommandKind::kMoveRightPlayer))
+	if (command->IsExecute(CommandKind::kMoveUpPlayer, TimeKind::kCurrent)
+		&& command->IsExecute(CommandKind::kMoveRightPlayer, TimeKind::kCurrent))
 	{
 		AttachAnim(forward_anim_kind + 5, BodyKind::kLowerBody);
 		return;
 	}
 	// 左後方
-	if (command->IsExecuting(CommandKind::kMoveDownPlayer) && command->IsExecuting(CommandKind::kMoveLeftPlayer))
+	if (command->IsExecute(CommandKind::kMoveDownPlayer, TimeKind::kCurrent)
+		&& command->IsExecute(CommandKind::kMoveLeftPlayer, TimeKind::kCurrent))
 	{
 		AttachAnim(forward_anim_kind + 6, BodyKind::kLowerBody);
 		return;
 	}
 	// 右後方
-	if (command->IsExecuting(CommandKind::kMoveDownPlayer) && command->IsExecuting(CommandKind::kMoveRightPlayer))
+	if (command->IsExecute(CommandKind::kMoveDownPlayer, TimeKind::kCurrent)
+		&& command->IsExecute(CommandKind::kMoveRightPlayer, TimeKind::kCurrent))
 	{
 		AttachAnim(forward_anim_kind + 7, BodyKind::kLowerBody);
 		return;
 	}
 	// 前方
-	if (command->IsExecuting(CommandKind::kMoveUpPlayer))
+	if (command->IsExecute(CommandKind::kMoveUpPlayer, TimeKind::kCurrent))
 	{
 		AttachAnim(forward_anim_kind, BodyKind::kLowerBody);
 		return;
 	}
 	// 後方
-	if (command->IsExecuting(CommandKind::kMoveDownPlayer))
+	if (command->IsExecute(CommandKind::kMoveDownPlayer, TimeKind::kCurrent))
 	{
 		AttachAnim(forward_anim_kind + 1, BodyKind::kLowerBody);
 		return;
 	}
 	// 左
-	if (command->IsExecuting(CommandKind::kMoveLeftPlayer))
+	if (command->IsExecute(CommandKind::kMoveLeftPlayer, TimeKind::kCurrent))
 	{
 		AttachAnim(forward_anim_kind + 2, BodyKind::kLowerBody);
 		return;
 	}
 	// 右
-	if (command->IsExecuting(CommandKind::kMoveRightPlayer))
+	if (command->IsExecute(CommandKind::kMoveRightPlayer, TimeKind::kCurrent))
 	{
 		AttachAnim(forward_anim_kind + 3, BodyKind::kLowerBody);
 		return;
