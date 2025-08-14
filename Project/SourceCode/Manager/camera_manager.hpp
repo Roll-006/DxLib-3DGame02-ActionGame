@@ -109,10 +109,6 @@ public:
 	/// @brief オブジェクト名でカメラを判別する(同じ名前が複数ある場合はオブジェクトハンドルでの取得を推奨)
 	/// @param obj_name オブジェクト名
 	[[nodiscard]] std::shared_ptr<VirtualCameraBase> GetVirtualCamera(const std::string& obj_name) const;
-	/// @brief バーチャルカメラを取得
-	/// @brief バーチャルカメラの種類でカメラを判別する(同じ種類が複数ある場合はオブジェクトハンドルでの取得を推奨)
-	/// @param camra_kind バーチャルカメラの種類
-	[[nodiscard]] std::shared_ptr<VirtualCameraBase> GetVirtualCamera(const VirtualCameraKind camra_kind) const;
 
 	/// @brief バーチャルカメラコントローラーを取得
 	/// @param obj_handle バーチャルカメラコントローラーハンドル

@@ -1,10 +1,10 @@
 #include "shot_rocket_launcher.hpp"
 
 player_state::ShotRocketLauncher::ShotRocketLauncher() :
-	WeaponActionStateBase	(static_cast<int>(player_state::WeaponActionStateKind::kShotRocketLauncher)),
-	m_camera_controller		(nullptr),
-	m_wait_timer			(0.0f),
-	m_was_shot				(false)
+	WeaponActionStateBase				(static_cast<int>(player_state::WeaponActionStateKind::kShotRocketLauncher)),
+	m_rocket_launcher_camera_controller	(nullptr),
+	m_wait_timer						(0.0f),
+	m_was_shot							(false)
 {
 
 }
@@ -58,8 +58,8 @@ void player_state::ShotRocketLauncher::Enter(Player* obj)
 
 	// 演出用カメラを生成
 	const auto camera_manager = CameraManager::GetInstance();
-	m_camera_controller = std::make_shared<RocketLauncherVirtualCameraController>(*obj);
-	camera_manager->AddVirtualCameraController(m_camera_controller);
+	m_rocket_launcher_camera_controller = std::make_shared<RocketLauncherVirtualCameraController>(*obj);
+	camera_manager->AddVirtualCameraController(m_rocket_launcher_camera_controller);
 
 	obj->DetachWeapon(obj->GetCurrentEquipWeapon());
 	obj->HoldWeapon(obj->GetCurrentEquipWeapon());
@@ -69,12 +69,19 @@ void player_state::ShotRocketLauncher::Exit(Player* obj)
 {
 	// 演出用カメラを削除
 	const auto camera_manager = CameraManager::GetInstance();
-	camera_manager->RemoveVirtualCameraController(m_camera_controller);
-	m_camera_controller = nullptr;
+	camera_manager->RemoveVirtualCameraController(m_rocket_launcher_camera_controller);
+	m_rocket_launcher_camera_controller = nullptr;
 
 	// 演出終了後にリコイル処理
 	const auto gun = std::static_pointer_cast<GunBase>(obj->GetCurrentHeldWeapon());
-	const auto camera_control = CameraManager::GetInstance()->GetVirtualCameraController(VirtualCameraControllerKind::kControl);
+	const auto camera_control	  = CameraManager::GetInstance()->GetVirtualCameraController(VirtualCameraControllerKind::kControl);
+	const auto control_all_camra  = camera_control->GetHaveAllVirtualCamera();
+	
+	for (const auto& camera : control_all_camra)
+	{
+		camera->Activate();
+	}
+
 	std::static_pointer_cast<ControlVirtualCamerasController>(camera_control)->OnRecoil(*gun.get());
 
 	obj->ReleaseWeapon();
@@ -84,10 +91,9 @@ void player_state::ShotRocketLauncher::Exit(Player* obj)
 std::shared_ptr<IState<Player>> player_state::ShotRocketLauncher::ChangeState(Player* obj)
 {
 	const auto state_controller = obj->GetStateController();
-	const auto command			= CommandHandler::GetInstance();
 
 	// 銃エイミング状態
-	if (test > 10.0f)
+	if (m_rocket_launcher_camera_controller->IsEndZoomOut())
 	{
 		return state_controller->GetState<AimGun, Player>();
 	}

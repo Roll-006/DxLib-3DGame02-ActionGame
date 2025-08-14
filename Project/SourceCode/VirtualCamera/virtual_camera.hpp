@@ -5,7 +5,7 @@
 class VirtualCamera final : public VirtualCameraBase
 {
 public:
-	VirtualCamera(const BlendActivationPolicyKind blend_policy_kind);
+	VirtualCamera(const std::string& name, const BlendActivationPolicyKind blend_policy_kind);
 	~VirtualCamera() override;
 
 	void Init()						override;

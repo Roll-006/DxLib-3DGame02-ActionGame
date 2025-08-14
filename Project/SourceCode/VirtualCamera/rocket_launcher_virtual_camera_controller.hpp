@@ -19,8 +19,11 @@ public:
 	void Deactivate() override { m_is_active = false; }
 
 	[[nodiscard]] VirtualCameraControllerKind GetVirtualCameraControllerKind() const override;
-	[[nodiscard]] int GetControllerHandle() const override { return m_controller_handle; }
-	[[nodiscard]] bool IsActive() const override { return m_is_active; }
+	[[nodiscard]] std::shared_ptr<VirtualCameraBase> GetHaveVirtualCamera(std::string& name) const override;
+	[[nodiscard]] std::vector<std::shared_ptr<VirtualCameraBase>> GetHaveAllVirtualCamera()  const override;
+	[[nodiscard]] int  GetControllerHandle() const override { return m_controller_handle; }
+	[[nodiscard]] bool IsEndZoomOut()		 const			{ return m_zoom_out_timer >= kZoomOutTime; }
+	[[nodiscard]] bool IsActive()			 const override { return m_is_active; }
 
 private:
 	void SetupForRotCamera();
@@ -44,6 +47,7 @@ private:
 	static constexpr float  kZoomOutMaxDeceleration						= 0.3f;
 	static constexpr float  kZoomOutInitialVelocity						= 1.0f;
 	static constexpr float  kZoomInDamping								= 0.5f;
+	static constexpr float  kZoomOutTime								= 2.0f;
 
 private:
 	VirtualCameraControllerKind		m_virtual_camera_controller_kind;
@@ -65,4 +69,5 @@ private:
 	VECTOR  m_rot_camera_angle;
 	float	m_zoom_in_wait_timer;
 	float   m_zoom_out_speed;
+	float   m_zoom_out_timer;
 };

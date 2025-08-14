@@ -3,9 +3,9 @@
 void BonePosCorrector::CorrectAimPoseBonePos(const int model_handle, const VECTOR& aim_dir)
 {
 	// ボーンインデックス取得
-	const auto  spine_index		= MV1SearchFrame(model_handle, BonePath.SPINE);
-	const auto  spine1_index	= MV1SearchFrame(model_handle, BonePath.SPINE_1);
-	const auto  spine2_index	= MV1SearchFrame(model_handle, BonePath.SPINE_2);
+	const auto spine_index		= MV1SearchFrame(model_handle, BonePath.SPINE);
+	const auto spine1_index		= MV1SearchFrame(model_handle, BonePath.SPINE_1);
+	const auto spine2_index		= MV1SearchFrame(model_handle, BonePath.SPINE_2);
 
 	// 回転量を分割
 	auto angle					= math::GetAngleBetweenTwoVector(aim_dir, axis::GetWorldYAxis()) - 90.0f * math::kDegToRad;
@@ -14,10 +14,15 @@ void BonePosCorrector::CorrectAimPoseBonePos(const int model_handle, const VECTO
 	const auto spine1_angle		= angle * kAimSpine1AngleRate;
 	const auto spine2_angle		= angle * kAimSpine2AngleRate;
 
+	const auto angle1 = angle			* math::kRadToDeg;
+	const auto angle2 = spine_angle		* math::kRadToDeg;
+	const auto angle3 = spine1_angle	* math::kRadToDeg;
+	const auto angle4 = spine2_angle	* math::kRadToDeg;
+
 	// ローカル行列を取得
-	auto		spine_local_m	= MV1GetFrameLocalMatrix(model_handle, spine_index);
-	auto		spine1_local_m	= MV1GetFrameLocalMatrix(model_handle, spine1_index);
-	auto		spine2_local_m	= MV1GetFrameLocalMatrix(model_handle, spine2_index);
+	auto	   spine_local_m	= MV1GetFrameLocalMatrix(model_handle, spine_index);
+	auto	   spine1_local_m	= MV1GetFrameLocalMatrix(model_handle, spine1_index);
+	auto	   spine2_local_m	= MV1GetFrameLocalMatrix(model_handle, spine2_index);
 
 	// 座標を保管
 	const auto spine_pos		= MGetTranslateElem(spine_local_m);

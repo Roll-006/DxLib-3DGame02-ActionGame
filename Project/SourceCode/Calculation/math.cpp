@@ -488,6 +488,9 @@ VECTOR math::GetNormalVector(const VECTOR& v1, const VECTOR& v2)
 
 VECTOR math::GetProjectionVector(const VECTOR& projected_v, const VECTOR& base_v)
 {
+    // 投影先ベクトルが0の場合はゼロベクトルとする
+    if (base_v == v3d::GetZeroV()) { return v3d::GetZeroV(); }
+
     const float dot         = VDot(base_v, projected_v);
     const float square_base = VSquareSize(base_v);
     return (dot / square_base) * base_v;

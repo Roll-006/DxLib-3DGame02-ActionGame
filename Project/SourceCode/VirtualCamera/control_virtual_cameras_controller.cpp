@@ -9,8 +9,8 @@ ControlVirtualCamerasController::ControlVirtualCamerasController(Player& player)
 	m_controller_handle				(HandleCreator::GetInstance()->CreateHandle()),
 	m_is_active						(true),
 	m_player						(player),
-	m_rot_control_camera			(std::make_shared<VirtualCamera>(BlendActivationPolicyKind::kKeepOriginCamera)),
-	m_aim_control_camera			(std::make_shared<VirtualCamera>(BlendActivationPolicyKind::kKeepOriginCamera)),
+	m_rot_control_camera			(std::make_shared<VirtualCamera>(ObjName.ROT_CONTROL_VIRTUAL_CAMERA, BlendActivationPolicyKind::kKeepOriginCamera)),
+	m_aim_control_camera			(std::make_shared<VirtualCamera>(ObjName.AIM_CONTROL_VIRTUAL_CAMERA, BlendActivationPolicyKind::kKeepOriginCamera)),
 	m_aim_transform					(std::make_shared<Transform>()),
 	m_current_aim_pos				(v3d::GetZeroV()),
 	m_move_dir						(v3d::GetZeroV()),
@@ -88,6 +88,25 @@ VirtualCameraControllerKind ControlVirtualCamerasController::GetVirtualCameraCon
 	return m_virtual_camera_controller_kind;
 }
 
+std::shared_ptr<VirtualCameraBase> ControlVirtualCamerasController::GetHaveVirtualCamera(std::string& name) const
+{
+	const auto camera_manager = CameraManager::GetInstance();
+	const auto camera = camera_manager->GetVirtualCamera(name);
+
+	if (   camera == m_rot_control_camera
+		|| camera == m_aim_control_camera)
+	{
+		return camera;
+	}
+
+	return nullptr;
+}
+
+std::vector<std::shared_ptr<VirtualCameraBase>> ControlVirtualCamerasController::GetHaveAllVirtualCamera() const
+{
+	return std::vector<std::shared_ptr<VirtualCameraBase>>{m_rot_control_camera, m_aim_control_camera};
+}
+		
 void ControlVirtualCamerasController::SetupForRotCamera()
 {
 	m_rot_control_camera->SetPriority(4);
@@ -129,7 +148,6 @@ void ControlVirtualCamerasController::Move()
 
 void ControlVirtualCamerasController::CalcMoveDirFromPad()
 {
-	//if (m_data.is_init_aiming) { return; }
 	if (m_move_dir != v3d::GetZeroV()) { return; }
 	if (InputChecker::GetInstance()->GetCurrentInputDevice() != DeviceKind::kPad) { return; }
 
@@ -214,9 +232,6 @@ void ControlVirtualCamerasController::CalcAimPos()
 
 void ControlVirtualCamerasController::CalcInputAngle()
 {
-	// 視点リセット
-	//CalcInitAim();
-
 	const auto time_manager = GameTimeManager::GetInstance();
 	m_velocity *= time_manager->GetDeltaTime(TimeScaleController::LayerKind::kCamera);
 
@@ -284,7 +299,6 @@ void ControlVirtualCamerasController::CalcResultAngle()
 {
 	m_result_angle = m_input_angle[TimeKind::kCurrent] + m_recoil_angle[TimeKind::kCurrent];
 }
-
 
 //void ControlVirtualCameraController::CalcInitAim()
 //{

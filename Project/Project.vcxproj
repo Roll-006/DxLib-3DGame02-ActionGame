@@ -341,7 +341,6 @@
     <ClInclude Include="SourceCode\Data\Kind\texture_kind.hpp" />
     <ClInclude Include="SourceCode\Data\Kind\time_kind.hpp" />
     <ClInclude Include="SourceCode\Data\Kind\virtual_camera_controller_kind.hpp" />
-    <ClInclude Include="SourceCode\Data\Kind\virtual_camera_kind.hpp" />
     <ClInclude Include="SourceCode\Data\Kind\weapon_kind.hpp" />
     <ClInclude Include="SourceCode\Data\Kind\weapon_shortcut_pos_kind.hpp" />
     <ClInclude Include="SourceCode\Data\Name\object_pool_name.hpp" />

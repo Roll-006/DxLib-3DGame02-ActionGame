@@ -25,6 +25,8 @@ public:
 	void Deactivate() override { m_is_active = false; }
 
 	[[nodiscard]] VirtualCameraControllerKind GetVirtualCameraControllerKind() const override;
+	[[nodiscard]] std::shared_ptr<VirtualCameraBase> GetHaveVirtualCamera(std::string& name) const override;
+	[[nodiscard]] std::vector<std::shared_ptr<VirtualCameraBase>> GetHaveAllVirtualCamera()  const override;
 	[[nodiscard]] int  GetControllerHandle() const override { return m_controller_handle; }
 	[[nodiscard]] bool IsRecoiling()		 const			{ return m_is_recoiling; }
 	[[nodiscard]] bool IsReachedRecoilPeak() const			{ return m_is_reached_recoil_peak; }

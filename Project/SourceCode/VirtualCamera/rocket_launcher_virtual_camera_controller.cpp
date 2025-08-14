@@ -8,16 +8,17 @@ RocketLauncherVirtualCameraController::RocketLauncherVirtualCameraController(Pla
 	m_is_active						(true),
 	m_player						(player),
 	m_subject						(std::make_shared<Subject<RocketLauncherVirtualCameraController>>()),
-	m_rot_camera					(std::make_shared<VirtualCamera>(BlendActivationPolicyKind::kDeactivateAllCamera)),
-	m_zoom_in_camera				(std::make_shared<VirtualCamera>(BlendActivationPolicyKind::kDeactivateAllCamera)),
-	m_zoom_out_camera				(std::make_shared<VirtualCamera>(BlendActivationPolicyKind::kDeactivateAllCamera)),
+	m_rot_camera					(std::make_shared<VirtualCamera>(ObjName.ROCKET_LAUNCHER_ROT_VIRTUAL_CAMERA,	  BlendActivationPolicyKind::kDeactivateAllCamera)),
+	m_zoom_in_camera				(std::make_shared<VirtualCamera>(ObjName.ROCKET_LAUNCHER_ZOOM_IN_VIRTUAL_CAMERA,  BlendActivationPolicyKind::kDeactivateAllCamera)),
+	m_zoom_out_camera				(std::make_shared<VirtualCamera>(ObjName.ROCKET_LAUNCHER_ZOOM_OUT_VIRTUAL_CAMERA, BlendActivationPolicyKind::kDeactivateAllCamera)),
 	m_rot_camera_aim_transform		(std::make_shared<Transform>()),
 	m_zoom_camera_aim_transform		(std::make_shared<Transform>()),
 	m_follow_offset_for_zoom_in		(kFirstFollowOffsetForZoomInCamera),
 	m_follow_offset_for_zoom_out	(v3d::GetZeroV()),
 	m_rot_camera_angle				(kFirstAngleForRotCamera),
 	m_zoom_in_wait_timer			(0.0f),
-	m_zoom_out_speed				(kZoomOutInitialVelocity)
+	m_zoom_out_speed				(kZoomOutInitialVelocity),
+	m_zoom_out_timer				(0.0f)
 {
 	// パラメータ設定
 	SetupForRotCamera();
@@ -64,6 +65,26 @@ void RocketLauncherVirtualCameraController::LateUpdate()
 VirtualCameraControllerKind RocketLauncherVirtualCameraController::GetVirtualCameraControllerKind() const
 {
 	return m_virtual_camera_controller_kind;
+}
+
+std::shared_ptr<VirtualCameraBase> RocketLauncherVirtualCameraController::GetHaveVirtualCamera(std::string& name) const
+{
+	const auto camera_manager = CameraManager::GetInstance();
+	const auto camera = camera_manager->GetVirtualCamera(name);
+
+	if (   camera == m_rot_camera
+		|| camera == m_zoom_in_camera
+		|| camera == m_zoom_out_camera)
+	{
+		return camera;
+	}
+
+	return nullptr;
+}
+
+std::vector<std::shared_ptr<VirtualCameraBase>> RocketLauncherVirtualCameraController::GetHaveAllVirtualCamera() const
+{
+	return std::vector<std::shared_ptr<VirtualCameraBase>>{m_rot_camera, m_zoom_in_camera, m_zoom_out_camera};
 }
 
 void RocketLauncherVirtualCameraController::SetupForRotCamera()
@@ -161,6 +182,8 @@ void RocketLauncherVirtualCameraController::CalcAimTransformForZoomOutCamera()
 {
 	if (!m_zoom_out_camera->IsActive()) { return; }
 
+	m_zoom_out_timer += m_zoom_out_camera->GetDeltaTime();
+
 	// TODO : 後に弾丸そのものを追尾するよう変更(銃の反動アニメーションを付けた際崩壊すると思われるため)
 	// 追跡するボーンから行列を取得
 	const auto	model_handle	= m_player.GetModeler()->GetModelHandle();
@@ -178,4 +201,11 @@ void RocketLauncherVirtualCameraController::CalcAimTransformForZoomOutCamera()
 	math::Decrease(m_zoom_out_speed, kZoomOutDeceleration * m_zoom_out_camera->GetDeltaTime(), kZoomOutMaxDeceleration);
 	m_follow_offset_for_zoom_out.z -= m_zoom_out_speed;
 	m_zoom_out_camera->GetBody()->SetFollowOffset(m_follow_offset_for_zoom_out);
+
+	if (IsEndZoomOut())
+	{
+		// 各オブザーバーへ通知
+		const Event<EndRocketLauncherCutsceneData> event = { EventKind::kEndRocketLauncherCutscene, {1.0f} };
+		m_subject->Notify(event);
+	}
 }

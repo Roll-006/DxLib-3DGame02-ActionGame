@@ -5,7 +5,6 @@
 #include "../Part/camera_aim.hpp"
 #include "../Part/camera_noise.hpp"
 
-#include "../Data/Kind/virtual_camera_kind.hpp"
 #include "../Data/Kind/blend_activation_policy_kind.hpp"
 
 class CameraManager;
@@ -15,7 +14,7 @@ class CameraManager;
 class VirtualCameraBase abstract : public ObjBase
 {
 public:
-	VirtualCameraBase(const std::string& name, const VirtualCameraKind camera_kind, const BlendActivationPolicyKind blend_policy_kind);
+	VirtualCameraBase(const std::string& name, const BlendActivationPolicyKind blend_policy_kind);
 	virtual ~VirtualCameraBase() = default;
 
 	void AddToObjManager() override;
@@ -27,7 +26,6 @@ public:
 	void SetPriority(const int priority);
 
 	[[nodiscard]] float							GetDeltaTime()					const override;
-	[[nodiscard]] VirtualCameraKind				GetCameraKind()					const { return m_camera_kind; }
 	[[nodiscard]] std::shared_ptr<CameraBody>	GetBody()						const { return m_body; }
 	[[nodiscard]] std::shared_ptr<CameraAim>	GetAim()						const { return m_aim; }
 	[[nodiscard]] std::shared_ptr<CameraNoise>	GetNoise()						const { return m_noise; }
@@ -48,6 +46,5 @@ protected:
 	BlendActivationPolicyKind		m_blend_activation_policy_kind;		// ブレンド時のアクティブ処理の方針
 
 private:
-	VirtualCameraKind				m_camera_kind;						// カメラの種類
 	int								m_priority;							// 優先度
 };

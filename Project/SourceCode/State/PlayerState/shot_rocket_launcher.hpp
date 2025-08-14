@@ -20,7 +20,7 @@ namespace player_state
 	private:
 		static constexpr float kShotWaitTime = 5.0f;	// ’eŠÛ‚ª”­ŽË‚³‚ê‚é‚Ü‚Å‚Ì‘Ò‚¿ŽžŠÔ
 
-		std::shared_ptr<RocketLauncherVirtualCameraController> m_camera_controller;
+		std::shared_ptr<RocketLauncherVirtualCameraController> m_rocket_launcher_camera_controller;
 		float m_wait_timer;
 		bool  m_was_shot;
 

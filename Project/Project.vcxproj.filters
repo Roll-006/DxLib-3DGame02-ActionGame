@@ -721,9 +721,6 @@
     <ClInclude Include="SourceCode\Data\Path\ui_graphic_path.hpp">
       <Filter>Data\Path</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Data\Kind\virtual_camera_kind.hpp">
-      <Filter>Data\Kind</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\Interface\i_state.hpp">
       <Filter>Interface</Filter>
     </ClInclude>

@@ -110,18 +110,6 @@ std::shared_ptr<VirtualCameraBase> CameraManager::GetVirtualCamera(const std::st
 	return nullptr;
 }
 
-std::shared_ptr<VirtualCameraBase> CameraManager::GetVirtualCamera(const VirtualCameraKind camra_kind) const
-{
-	for (const auto& camera : m_virtual_cameras)
-	{
-		if (camera.second->GetCameraKind() == camra_kind)
-		{
-			return camera.second;
-		}
-	}
-	return nullptr;
-}
-
 std::shared_ptr<IVirtualCameraController> CameraManager::GetVirtualCameraController(const int controller_handle) const
 {
 	for (const auto& controller : m_virtual_camera_controllers)

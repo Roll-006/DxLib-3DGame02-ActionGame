@@ -21,9 +21,10 @@ void player_state::AimGun::Update(Player* obj)
 
 void player_state::AimGun::LateUpdate(Player* obj)
 {
-	const auto gun		= std::static_pointer_cast<GunBase>(obj->GetCurrentHeldWeapon());
-	const auto camera	= ObjManager::GetInstance()->GetObj<ObjBase>(ObjName.MAIN_CAMERA);
-	const auto aim_dir	= camera->GetTransform()->GetForward(CoordinateKind::kWorld);
+	const auto gun			= std::static_pointer_cast<GunBase>(obj->GetCurrentHeldWeapon());
+	const auto camera		= ObjManager::GetInstance()->GetObj<ObjBase>(ObjName.MAIN_CAMERA);
+	const auto aim_dir		= camera->GetTransform()->GetForward(CoordinateKind::kWorld);
+	const auto offset_dir	= (gun->GetFirstShotPos() + gun->GetAimDir() * gun->GetRange()) - gun->GetMuzzleTransform()->GetPos(CoordinateKind::kWorld);
 
 	// ƒ{[ƒ“ˆÊ’u•â³
 	obj->GetBonePosCorrector()->CorrectAimPoseBonePos(obj->GetModeler()->GetModelHandle(), aim_dir);

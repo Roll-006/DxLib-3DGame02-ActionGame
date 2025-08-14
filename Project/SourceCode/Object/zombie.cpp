@@ -8,7 +8,7 @@ Zombie::Zombie() :
 
 	m_look_dir = VGet(0.0f, 0.0f, 1.0f);
 	m_transform->SetRot  (CoordinateKind::kWorld, m_look_dir);
-	m_transform->SetPos  (CoordinateKind::kWorld, VGet(100, 0, 100));
+	m_transform->SetPos  (CoordinateKind::kWorld, VGet(100, 500, 100));
 	m_modeler->ApplyMatrix();
 
 	// コライダー・トリガーを設定
