@@ -20,6 +20,7 @@ void player_state::SecondSideSlashKnife::Update(Player* obj)
 	//obj->CalcMoveOffsetSideSlashKnife();
 
 	obj->GetCurrentHeldWeapon()->Update();
+	obj->SideSlashKnifeOffsetMove();
 }
 
 void player_state::SecondSideSlashKnife::LateUpdate(Player* obj)

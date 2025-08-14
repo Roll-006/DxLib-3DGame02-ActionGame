@@ -70,7 +70,7 @@ void Player::Update()
 {
 	if (!IsActive()) { return; }
 
-	m_look_dir_offset_angle				= kLookDirOffsetAngle;
+	m_look_dir_offset_angle				= kLookDirOffsetAngle			* math::kDegToRad;
 	m_confirm_look_dir_threshold_angle	= kConfirmLookDirThresholdAngle * math::kDegToRad;
 
 	m_weapon_shortcut_selecter	->Update(this);
@@ -141,9 +141,9 @@ void Player::Draw() const
 
 	//DrawFormatString(500, 40, 0xffffff, "%f", m_velocity.y);
 	//
-	//const auto look_dir_current = m_look_dir.at(TimeKind::kCurrent);
+	const auto look_dir_current = m_look_dir.at(TimeKind::kCurrent);
 	//const auto look_dir_next	= m_look_dir.at(TimeKind::kNext);
-	//DrawFormatString(0,  80, 0xffffff, "look_dir_current : %f %f, %f", look_dir_current.x, look_dir_current.y, look_dir_current.z);
+	DrawFormatString(0,  80, 0xffffff, "look_dir_current : %f %f, %f", look_dir_current.x, look_dir_current.y, look_dir_current.z);
 	//DrawFormatString(0, 100, 0xffffff, "look_dir_next    : %f %f, %f", look_dir_next.x,    look_dir_next.y,    look_dir_next.z);
 	//
 	//const auto p = m_transform->GetPos(CoordinateKind::kWorld) + VGet(0, 40, 0);
@@ -151,9 +151,9 @@ void Player::Draw() const
 	//DrawLine3D(p, p + look_dir_next    * 100, 0xffffff);
 	//
 	//DrawFormatString(0,   20, 0xffffff, "m_current_remaining_bullet_num : %d", m_current_remaining_bullet_num);
-	//DrawFormatString(500, 20, 0xffffff, "move_speed       : %f", m_move_speed);
-	//DrawFormatString(500, 40, 0xffffff, "move_dir_next    : %f, %f ,%f", m_move_dir.at(TimeKind::kNext).x, m_move_dir.at(TimeKind::kNext).y, m_move_dir.at(TimeKind::kNext).z);
-	//DrawFormatString(500, 60, 0xffffff, "move_dir_current : %f, %f ,%f", m_move_dir.at(TimeKind::kCurrent).x, m_move_dir.at(TimeKind::kCurrent).y, m_move_dir.at(TimeKind::kCurrent).z);
+	DrawFormatString(500, 20, 0xffffff, "move_speed       : %f", m_move_speed);
+	DrawFormatString(500, 40, 0xffffff, "m_look_dir_offset_angle    : %f", m_look_dir_offset_angle * math::kRadToDeg);
+	DrawFormatString(500, 60, 0xffffff, "move_dir_current : %f, %f ,%f", m_move_dir.at(TimeKind::kCurrent).x, m_move_dir.at(TimeKind::kCurrent).y, m_move_dir.at(TimeKind::kCurrent).z);
 	//if(m_current_held_weapon)DrawFormatString(0, 20, 0xffffff, "%s", m_current_held_weapon->GetName().c_str());
 }
 
@@ -239,7 +239,7 @@ void Player::Move()
 
 void Player::SetLookDirOffsetValueForAim()
 {
-	m_look_dir_offset_angle				= kLookDirOffsetAngleForAim;
+	m_look_dir_offset_angle				= kLookDirOffsetAngleForAim			  * math::kDegToRad;
 	m_confirm_look_dir_threshold_angle	= kConfirmLookDirThresholdAngleForAim * math::kDegToRad;
 }
 
@@ -254,17 +254,6 @@ void Player::DirOfMovement()
 void Player::DirOfCameraForward()
 {
 	m_look_dir.at(TimeKind::kNext) = GetMoveForward();
-}
-
-void Player::CalcMoveSpeedStop()
-{
-	//if (   m_state->GetWeaponActionState(TimeKind::kCurrent)->GetStateKind() == static_cast<int>(player_state::WeaponActionStateKind::kFirstSideSlashKnife)
-	//	|| m_state->GetWeaponActionState(TimeKind::kCurrent)->GetStateKind() == static_cast<int>(player_state::WeaponActionStateKind::kSecondSideSlashKnife)) { return; }
-
-	// 速い状態から歩き状態に移行した場合、急速に減速させる
-	if (m_move_speed > kSlowWalkSpeed) { m_move_speed = kSlowWalkSpeed; }
-
-	math::Decrease(m_move_speed, kAcceleration, 0.0f);
 }
 
 void Player::CalcMoveSpeed()
@@ -291,15 +280,21 @@ void Player::CalcMoveSpeed()
 	math::Decrease(m_move_speed, kAcceleration, kWalkSpeed);
 }
 
-//void Player::CalcMoveSpeedCrouch()
-//{
-//	if (m_state->GetMoveState(TimeKind::kCurrent)->GetStateKind() == static_cast<int>(player_state::MoveStateKind::kMoveNull)) { return; }
-//
-//	// 速い状態から歩き状態に移行した場合、急速に減速させる
-//	if (m_move_speed > kSlowWalkSpeed) { m_move_speed = kSlowWalkSpeed; }
-//
-//	math::Decrease(m_move_speed, kAcceleration, kCrouchWalkSpeed);
-//}
+void Player::CalcMoveSpeedStop()
+{
+	const auto state = static_cast<player_state::WeaponActionStateKind>(m_state->GetWeaponActionState(TimeKind::kCurrent)->GetStateKind());
+
+	if (   state == player_state::WeaponActionStateKind::kFirstSideSlashKnife
+		|| state == player_state::WeaponActionStateKind::kSecondSideSlashKnife
+		|| state == player_state::WeaponActionStateKind::kSpinningSlashKnife) {
+		return;
+	}
+
+	// 速い状態から歩き状態に移行した場合、急速に減速させる
+	if (m_move_speed > kSlowWalkSpeed) { m_move_speed = kSlowWalkSpeed; }
+
+	math::Decrease(m_move_speed, kAcceleration, 0.0f);
+}
 
 void Player::CalcMoveSpeedRun()
 {
@@ -309,6 +304,23 @@ void Player::CalcMoveSpeedRun()
 	if (m_move_speed < kWalkSpeed) { m_move_speed = kWalkSpeed; }
 
 	math::Increase(m_move_speed, kAcceleration, kRunSpeed, false);
+
+	m_look_dir_offset_angle = 5.7f * math::kDegToRad;
+}
+
+void Player::SideSlashKnifeOffsetMove()
+{
+	m_look_dir.at(TimeKind::kNext)	= GetMoveForward();
+	m_move_dir[TimeKind::kNext]		= m_look_dir.at(TimeKind::kNext);
+
+	m_look_dir_offset_angle = 0.5f * math::kDegToRad;
+	m_move_speed = 30.0f;
+}
+
+void Player::SpinningSlashKnifeOffsetMove()
+{
+	m_move_dir[TimeKind::kNext] = m_look_dir.at(TimeKind::kCurrent);
+	m_move_speed = 50.0f;
 }
 
 //void Player::CalcMoveOffsetSideSlashKnife()
@@ -344,7 +356,6 @@ void Player::CalcInputSlopeFromPad()
 	const auto right_param		= input->GetInputParameter(pad::StickKind::kLSRight);
 
 	// 入力値を取得
-	m_input_slope = v3d::GetZeroV();
 	if (forward_param)	{ m_input_slope += forward * (forward_param	 - InputChecker::kStickDeadZone); }
 	if (backward_param) { m_input_slope += forward * (backward_param + InputChecker::kStickDeadZone); }
 	if (left_param)		{ m_input_slope += right   * (left_param	 + InputChecker::kStickDeadZone); }
@@ -421,8 +432,6 @@ void Player::CalcVelocity()
 
 void Player::CalcMoveDir()
 {
-	m_move_dir[TimeKind::kNext] = v3d::GetNormalizedV(m_input_slope);
-
 	// 現在のdirを目的とするdirに近づけていく
 	m_move_dir[TimeKind::kCurrent] = math::GetApproachedVector(
 		m_move_dir[TimeKind::kCurrent], 
@@ -432,7 +441,18 @@ void Player::CalcMoveDir()
 
 void Player::CalcLookDir()
 {
-	// FIXME : look_dirのY軸が0でないことがある
+	const auto move_state			= static_cast<player_state::MoveStateKind>		  (m_state->GetMoveState		(TimeKind::kCurrent)->GetStateKind());
+	const auto weapon_action_state	= static_cast<player_state::WeaponActionStateKind>(m_state->GetWeaponActionState(TimeKind::kCurrent)->GetStateKind());
+
+	if (   move_state		   != player_state::MoveStateKind::kMove
+		&& weapon_action_state != player_state::WeaponActionStateKind::kAimKnife
+		&& weapon_action_state != player_state::WeaponActionStateKind::kFirstSideSlashKnife
+		&& weapon_action_state != player_state::WeaponActionStateKind::kSecondSideSlashKnife
+		&& weapon_action_state != player_state::WeaponActionStateKind::kSpinningSlashKnife
+		&& weapon_action_state != player_state::WeaponActionStateKind::kAimGun)
+	{
+		return;
+	}
 
 	// ヨー角回転を取得し、-π～πで値を管理する
 	const VECTOR current_yaw = math::GetYawRotVector(m_look_dir.at(TimeKind::kCurrent));

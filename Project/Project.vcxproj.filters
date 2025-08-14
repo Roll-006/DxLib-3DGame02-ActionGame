@@ -1059,20 +1059,11 @@
     <Filter Include="Algorithm">
       <UniqueIdentifier>{b0890834-20a2-48aa-b030-750bd28f8af2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="State">
-      <UniqueIdentifier>{9a691bb4-740c-48d4-baec-fd67b8b9b808}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Interface">
       <UniqueIdentifier>{ca30a1cf-6f57-4e96-a660-dd84bdc29e45}</UniqueIdentifier>
     </Filter>
     <Filter Include="Input">
       <UniqueIdentifier>{6e63f400-6b05-4fc8-a6aa-4c6d33790181}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\PlayerState">
-      <UniqueIdentifier>{9ac7a4f2-56f9-4748-905d-6db02b36b09d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\EnemyState">
-      <UniqueIdentifier>{d2ef4260-3541-4500-92a8-03e820d5ca75}</UniqueIdentifier>
     </Filter>
     <Filter Include="Shape\3DShape">
       <UniqueIdentifier>{ac75a37e-b63a-4367-aa7b-75ba0c9cc8f7}</UniqueIdentifier>
@@ -1089,9 +1080,6 @@
     <Filter Include="Command">
       <UniqueIdentifier>{d5ed3af6-7b23-411d-ab3e-44150fb5ace3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="State\CameraState">
-      <UniqueIdentifier>{ff495161-2f03-4c6e-a508-ddbb081ecd2c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ShadowMap">
       <UniqueIdentifier>{42ae97fb-a9d7-47a3-b9b8-61b541d541e4}</UniqueIdentifier>
     </Filter>
@@ -1106,6 +1094,18 @@
     </Filter>
     <Filter Include="Manager">
       <UniqueIdentifier>{69894637-334e-46d6-be72-079330c80427}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State">
+      <UniqueIdentifier>{9a691bb4-740c-48d4-baec-fd67b8b9b808}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\PlayerState">
+      <UniqueIdentifier>{9ac7a4f2-56f9-4748-905d-6db02b36b09d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\EnemyState">
+      <UniqueIdentifier>{d2ef4260-3541-4500-92a8-03e820d5ca75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\CameraState">
+      <UniqueIdentifier>{ff495161-2f03-4c6e-a508-ddbb081ecd2c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -92,8 +92,10 @@ public:
 
 	void CalcMoveSpeed();
 	void CalcMoveSpeedStop();
-	void CalcMoveSpeedCrouch();
 	void CalcMoveSpeedRun();
+
+	void SideSlashKnifeOffsetMove();
+	void SpinningSlashKnifeOffsetMove();
 	#pragma endregion
 
 
@@ -107,6 +109,7 @@ public:
 	[[nodiscard]] std::shared_ptr<WeaponBase>				GetCurrentEquipWeapon()		const { return m_current_equip_weapon; }
 	[[nodiscard]] std::shared_ptr<KnifeBase>				GetCurrentEquipKnife()		const { return m_current_equip_knife; }
 	[[nodiscard]] std::shared_ptr<WeaponShortcutSelecter>	GetWeaponShortcutSelecter()	const { return m_weapon_shortcut_selecter; }
+	[[nodiscard]] float										GetMoveSpeed()				const { return m_move_speed; }
 	#pragma endregion
 
 private:
@@ -135,8 +138,8 @@ private:
 	static constexpr float kAcceleration						= 1.0f;					// 加速度(減速度も共通)
 
 	static constexpr float kMoveDirOffsetSpeed					= 5.0f;					// 移動方向の補正速度
-	static constexpr float kLookDirOffsetAngle					= 0.1f;					// 見る方向の補正角度
-	static constexpr float kLookDirOffsetAngleForAim			= 0.3f;					// エイミング時の見る方向を回転させる角度
+	static constexpr float kLookDirOffsetAngle					= 2.7f;					// 見る方向の補正角度
+	static constexpr float kLookDirOffsetAngleForAim			= 17.0f;				// エイミング時の見る方向を回転させる角度
 	static constexpr float kConfirmMoveDirThresholdDistance		= 0.08f;				// 目的の移動方向に到達したと判定する閾値
 	static constexpr float kConfirmLookDirThresholdAngle		= 10.0f;				// 目的の見る方向に到達したと判定する閾値
 	static constexpr float kConfirmLookDirThresholdAngleForAim	= 20.0f;				// エイミング時の目的の見る方向に到達したと判定する閾値
