@@ -7,6 +7,7 @@
 #include "rocket_launcher_shot_data.hpp"
 #include "on_shot_bullet_data.hpp"
 #include "on_hit_bullet_data.hpp"
+#include "start_rocket_launcher_cutscene_data.hpp"
 #include "end_rocket_launcher_cutscene_data.hpp"
 
 template <typename EventDataT>

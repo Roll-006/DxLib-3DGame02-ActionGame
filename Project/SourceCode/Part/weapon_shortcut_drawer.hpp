@@ -15,7 +15,7 @@ private:
 	void CreateShortcutIcon();
 
 private:
-	static constexpr Vector2D<int>	kCenterPos			= { static_cast<int>(Window::kWidth * 0.72f), Window::kHalfHeight };
+	static constexpr Vector2D<int>	kCenterPos			= { static_cast<int>(Window::kScreenSize.x * 0.72f), Window::kScreenHalfSize.y };
 	static constexpr int			kFirstIntervalPos	= 58;
 	static constexpr int			kIntervalPos		= 17;
 	static constexpr int			kIconWidth			= 145;

@@ -15,9 +15,6 @@ Player::Player() :
 	m_current_equip_knife				(nullptr),
 	m_weapon_shortcut_selecter			(std::make_shared<WeaponShortcutSelecter>())
 {
-	EffectManager  ::GetInstance()->AddToSubject<Player>(m_subject);
-	GameTimeManager::GetInstance()->GetTimeScaleController()->AddToSubject<Player>(m_subject);
-
 	m_modeler = std::make_shared<Modeler>(m_transform, ModelPath.SWAT, kBasicAngle, kBasicScale);
 	SetColliderModelHandle(m_modeler->GetModelHandle());
 
@@ -181,22 +178,6 @@ void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 	default:
 		break;
-	}
-}
-
-void Player::NotifyShotRocketLauncher()
-{
-	const auto roket_launcher = std::dynamic_pointer_cast<RocketLauncher>(m_current_held_weapon);
-
-	if (roket_launcher)
-	{
-		// 各オブザーバーへ通知
-		const RocketLauncherShotData data = { 
-			roket_launcher->GetOwnerName(),
-			roket_launcher->GetExhaustVentTransform(), 
-			0.01f };
-		const Event<RocketLauncherShotData> event ={ EventKind::kRocketLauncherShot, data };
-		m_subject->Notify(event);
 	}
 }
 

@@ -24,13 +24,13 @@ void TimeScaleController::Update()
 
 void TimeScaleController::OnNotify(const IEvent& event)
 {
-	// ロケットランチャーが弾丸を発射
-	if (event.GetType() == std::type_index(typeid(RocketLauncherShotData)))
+	// ロケットランチャー専用カットシーンの開始
+	if (event.GetType() == std::type_index(typeid(StartRocketLauncherCutsceneData)))
 	{
-		const auto& event_data = static_cast<const Event<RocketLauncherShotData>&>(event).data;
-		m_next_time_scale.at(LayerKind::kWorld)		= event_data.cutscene_time_scale;
-		m_next_time_scale.at(LayerKind::kPlayer)	= event_data.cutscene_time_scale;
-		m_next_time_scale.at(LayerKind::kEffect)	= event_data.cutscene_time_scale;
+		const auto& event_data = static_cast<const Event<StartRocketLauncherCutsceneData>&>(event).data;
+		m_next_time_scale.at(LayerKind::kWorld)		= event_data.world_time_scale;
+		m_next_time_scale.at(LayerKind::kPlayer)	= event_data.player_time_scale;
+		m_next_time_scale.at(LayerKind::kEffect)	= event_data.effect_time_scale;
 	}
 	// ロケットランチャー専用カットシーンの終了
 	if (event.GetType() == std::type_index(typeid(EndRocketLauncherCutsceneData)))

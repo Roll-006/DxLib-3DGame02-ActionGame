@@ -264,13 +264,7 @@ VECTOR math::GetLerpVector(const VECTOR& begin_v, const VECTOR& end_v, const flo
 
 Quaternion math::GetSlerpQuaternion(const Quaternion& begin_q, const Quaternion& end_q, const float t)
 {
-    // 一致していた場合は補間完了とする
-    if (quat::GetDot(begin_q, end_q) > kOneThreshold)
-    {
-        return end_q;
-    }
-
-    // 角度算出
+     // 角度算出用の内積を計算
     const float begin_size  = quat::GetSize(begin_q);
     const float end_size    = quat::GetSize(end_q);
 
@@ -280,11 +274,34 @@ Quaternion math::GetSlerpQuaternion(const Quaternion& begin_q, const Quaternion&
         return begin_q;
     }
 
-    const float cos_val = (begin_q.x * end_q.x + begin_q.y * end_q.y + begin_q.z * end_q.z + begin_q.w * end_q.w) / (begin_size * end_size);
-    const float w = acos(cos_val);
+    float dot = (begin_q.x * end_q.x + begin_q.y * end_q.y + begin_q.z * end_q.z + begin_q.w * end_q.w) / (begin_size * end_size);
 
-    // 球面線形補間
-    const float sin_w       = sin(w);
+    // 最短経路を選択するために、内積が負の場合は符号を反転
+    Quaternion target_q = end_q;
+    if (dot < 0.0f)
+    {
+        target_q.x = -end_q.x;
+        target_q.y = -end_q.y;
+        target_q.z = -end_q.z;
+        target_q.w = -end_q.w;
+        dot = -dot;
+    }
+
+    // 一致していた場合は補間完了とする
+    if (dot > kOneThreshold)
+    {
+        return target_q;
+    }
+
+    const float w = acos(fabs(dot));
+    const float sin_w = sin(w);
+
+    // sin_wが0に近い場合の処理
+    if (sin_w < 1e-6f)
+    {
+        return begin_q;
+    }
+
     const float sin_t_w     = sin(t * w);
     const float sin_inv_t_w = sin((1.0f - t) * w);
     const float mult_q1     = sin_inv_t_w / sin_w;
@@ -292,10 +309,10 @@ Quaternion math::GetSlerpQuaternion(const Quaternion& begin_q, const Quaternion&
 
     return Quaternion
     {
-        mult_q1 * begin_q.x + mult_q2 * end_q.x,
-        mult_q1 * begin_q.y + mult_q2 * end_q.y,
-        mult_q1 * begin_q.z + mult_q2 * end_q.z,
-        mult_q1 * begin_q.w + mult_q2 * end_q.w
+        mult_q1 * begin_q.x + mult_q2 * target_q.x,
+        mult_q1 * begin_q.y + mult_q2 * target_q.y,
+        mult_q1 * begin_q.z + mult_q2 * target_q.z,
+        mult_q1 * begin_q.w + mult_q2 * target_q.w
     };
 }
 

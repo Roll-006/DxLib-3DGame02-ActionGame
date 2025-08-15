@@ -231,13 +231,6 @@ namespace math
 		return normalized * static_cast<ReturnT>(new_max - new_min) + static_cast<ReturnT>(new_min);
 	}
 
-	/// @brief 補正後の行列を取得する
-	/// @param origin_m 補正前行列
-	/// @param offset_pos オフセット座標
-	/// @param offset_angle オフセット角度
-	/// @param offset_scale オフセットスケール
-	/// @return 補正後行列
-	[[nodiscard]] MATRIX GetCorrectedMatrix(const MATRIX& origin_m, const VECTOR& offset_pos, const VECTOR& offset_angle, const VECTOR& offset_scale);
 	#pragma endregion
 
 

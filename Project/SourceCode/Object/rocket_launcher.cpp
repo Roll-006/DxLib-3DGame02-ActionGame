@@ -17,7 +17,7 @@ RocketLauncher::RocketLauncher() :
 	m_initial_velocity		= kInitialVelocity;
 	m_deceleration			= kDeceleration;
 	m_shot_interval_time	= kShotIntervalTime;
-	m_recoil_data			= RecoilData(0.0f, 0.0f, 20.0f * math::kDegToRad, 0.0f, 0.5f, VGet(1.0f, 1.0f, 1.0f));
+	m_recoil_data			= RecoilData(0.0f, 0.0f, 0.0f, 20.0f * math::kDegToRad, 0.45f, VGet(1.0f, 1.0f, 1.0f));
 
 	// TODO : âºÇ≈íeêîÇê›íË
 	m_max_remaining_bullet_num		= 30;

@@ -67,7 +67,7 @@ std::shared_ptr<IState<Player>> player_state::AimGun::ChangeState(Player* obj)
 	// ショット
 	if (state_controller->TryPullTrigger(obj))
 	{
-		if (gun->IsShot())
+		if (gun->IsShot() && obj->GetAnimator()->GetBlendRate(AnimatorBase::BodyKind::kUpperBody) >= 1.0f)
 		{
 			// ロケットランチャーショット(必殺技)
 			if (gun->GetGunKind() == GunKind::kRocketLauncher)

@@ -1,14 +1,14 @@
 #pragma once
 #include "../Interface/i_ui_creator.hpp"
-//#include "../Object/player.hpp"
+#include "../Interface/i_observer.hpp"
 
-#include "../Part/weapon_shortcut_drawer.hpp"
+#include "../Part/cinema_scope_frame.hpp"
 
-class PlayerUICreator final : public IUICreator
+class ScreenFilterCreator final : public IUICreator, public IObserver
 {
 public:
-	PlayerUICreator(const std::shared_ptr<Player> player);
-	~PlayerUICreator()	override;
+	ScreenFilterCreator();
+	~ScreenFilterCreator()	override;
 
 	void LateUpdate()	override;
 	void OnDraw()		override;
@@ -17,6 +17,8 @@ public:
 	void Activate() 	override { m_is_active = true; }
 	/// @brief 非アクティブ化する(削除せずに機能を停止)
 	void Deactivate()	override { m_is_active = false; }
+
+	void OnNotify(const IEvent& event) override;
 
 	[[nodiscard]] std::string GetName()		const override { return m_name; }
 	[[nodiscard]] int		  GetPriority() const override { return m_priority; }
@@ -32,10 +34,5 @@ private:
 	int			m_priority;
 	bool		m_is_active;
 
-	std::shared_ptr<Player>					m_player;
-	std::shared_ptr<WeaponShortcutDrawer>	m_weapon_shortcut;
-
-
-	// 仮
-	//std::shared_ptr<ShapeBase>	m_2d_diffusion_shape;	// 二次元上の拡散範囲図形
+	std::shared_ptr<CinemaScopeFrame> m_cinema_scope_frame;
 };

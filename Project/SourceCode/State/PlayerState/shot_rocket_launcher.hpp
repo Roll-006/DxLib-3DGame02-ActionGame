@@ -3,6 +3,7 @@
 
 #include "../../Object/player.hpp"
 #include "../../Part/player_state_controller.hpp"
+
 namespace player_state
 {
 	class ShotRocketLauncher final : public WeaponActionStateBase<Player>
@@ -20,10 +21,9 @@ namespace player_state
 	private:
 		static constexpr float kShotWaitTime = 5.0f;	// ’eŠÛ‚ª”­ŽË‚³‚ê‚é‚Ü‚Å‚Ì‘Ò‚¿ŽžŠÔ
 
+		std::shared_ptr<Subject<ShotRocketLauncher>> m_subject;
 		std::shared_ptr<RocketLauncherVirtualCameraController> m_rocket_launcher_camera_controller;
 		float m_wait_timer;
 		bool  m_was_shot;
-
-		float test;
 	};
 }

@@ -30,5 +30,5 @@ private:
 	std::shared_ptr<Skydome>					m_skydome;
 	std::shared_ptr<RifleCartridgeObjectPool>	m_rifle_cartridge_object_pool;
 	std::shared_ptr<PlaySceneEffectObjectPool>  m_play_scene_effect_object_pool;
-	std::shared_ptr<PlayerUICreator>			m_player_ui_creator;
+	std::shared_ptr<IUICreator>					m_player_ui_creator;
 };

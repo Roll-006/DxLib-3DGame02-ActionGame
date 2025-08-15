@@ -3,6 +3,7 @@
 #include "virtual_camera.hpp"
 
 class CameraManager;
+class UIDrawer;
 class Player;
 
 class RocketLauncherVirtualCameraController final : public IVirtualCameraController

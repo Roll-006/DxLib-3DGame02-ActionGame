@@ -9,7 +9,7 @@ InputChecker::InputChecker():
 	SetUseDirectInputFlag(TRUE);
 	SetMouseDispFlag(FALSE);
 
-	m_mouse_data[TimeKind::kPrev].pos	    = m_mouse_data[TimeKind::kCurrent].pos		= Vector2D<int>(Window::kHalfWidth, Window::kHalfHeight);
+	m_mouse_data[TimeKind::kPrev].pos	    = m_mouse_data[TimeKind::kCurrent].pos		= Window::kCenterPos;
 	m_mouse_data[TimeKind::kPrev].dir		= m_mouse_data[TimeKind::kCurrent].dir		= Vector2D<float>(0.0f, 0.0f);
 	m_mouse_data[TimeKind::kPrev].velocity  = m_mouse_data[TimeKind::kCurrent].velocity = Vector2D<float>(0.0f, 0.0f);
 
@@ -65,9 +65,8 @@ void InputChecker::LockCursor()
 {
 	if (!m_is_lock_mouse_pos) { return; }
 
-	Vector2D<int> center_pos = Vector2D<int>(Window::kHalfWidth, Window::kHalfHeight);
-	m_mouse_data.at(TimeKind::kPrev).pos = m_mouse_data.at(TimeKind::kCurrent).pos = center_pos;
-	SetMousePoint(center_pos.x, center_pos.y);
+	m_mouse_data.at(TimeKind::kPrev).pos = m_mouse_data.at(TimeKind::kCurrent).pos = Window::kCenterPos;
+	SetMousePoint(m_mouse_data.at(TimeKind::kCurrent).pos.x, m_mouse_data.at(TimeKind::kCurrent).pos.y);
 }
 
 bool InputChecker::IsInput(const InputCode& input_code)

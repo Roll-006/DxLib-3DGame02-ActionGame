@@ -20,7 +20,7 @@ GameSystemSetter::~GameSystemSetter()
 void GameSystemSetter::SetUpGameSystem()
 {
 	// äÓñ{ê›íË
-	SetGraphMode(Window::kWidth, Window::kHeight, 32);
+	SetGraphMode(Window::kScreenSize.x, Window::kScreenSize.y, 32);
 	ChangeWindowMode(TRUE);
 	if (DxLib_Init() == -1) { exit(EXIT_FAILURE); }
 	SetDrawScreen(DX_SCREEN_BACK);

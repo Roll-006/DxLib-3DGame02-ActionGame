@@ -1,4 +1,5 @@
 #pragma once
+#include <algorithm>
 #include <unordered_map>
 
 #include "../Data/Kind/sort_kind.hpp"
@@ -15,7 +16,7 @@ namespace algorithm
 		return u_map;
 	}
 
-	/// @brief std::unorderd_map<key, value>をstd::vector<std::pair<key, value>>へ変換
+	/// @brief std::unorderd_map<key, value>をstd::vector<std::pair<first, second>>へ変換
 	/// @brief WARNING : 順番は保たれない
 	template<typename KeyT, typename ValueT>
 	[[nodiscard]] std::vector<std::pair<KeyT, ValueT>> ConvertUmapToPairs(const std::unordered_map<KeyT, ValueT>& u_map)
@@ -27,7 +28,7 @@ namespace algorithm
 
 
 	#pragma region ソート
-	/// @brief pairのsecondをソート
+	/// @brief std::vector<std::pair<first, second>>のsecondをソート
 	template<typename FirstT, typename SecondT>
 	[[nodiscard]] std::vector<std::pair<FirstT, SecondT>> Sort(const std::vector<std::pair<FirstT, SecondT>>& pairs, const SortKind sort_kind)
 	{
@@ -46,7 +47,7 @@ namespace algorithm
 		return sorted_pairs;
 	}
 
-	/// @brief pairのsecondをソート
+	/// @brief std::vector<std::pair<first, second>>のsecondをソート
 	/// @brief WARNING : main_pairsとsub_pairsは同じデータ型、同じ個数である必要あり
 	/// @brief WARNING : main_pairsとsub_pairsのfirstの並び順は一致している必要あり
 	/// @param main_pairs ソートされるpairs
@@ -85,27 +86,6 @@ namespace algorithm
 		});
 
 		return sorted_pairs;
-	}
-
-	/// @brief unorderd_mapのvalueをソート
-	template<typename KeyT, typename ValueT>
-	[[nodiscard]] std::unordered_map<KeyT, ValueT> Sort(const std::unordered_map<KeyT, ValueT>& u_map, const SortKind sort_kind)
-	{
-		std::vector<std::pair<KeyT, ValueT>> pairs = ConvertUmapToPairs(u_map);
-		return ConvertPairsToUmap(Sort(u_map, sort_kind));
-	}
-
-	/// @brief unorderd_mapのvalueをソート
-	/// @brief WARNING : main_u_mapとsub_u_mapは同じデータ型、同じ個数である必要あり
-	/// @brief WARNING : main_u_mapとsub_u_mapのkeyの並び順は一致している必要あり
-	/// @param main_u_map ソートされるunorderd_map
-	/// @param sub_u_map main_u_mapに同じvalueがあった場合、sub_u_mapでソートを行う
-	template<typename KeyT, typename ValueT>
-	[[nodiscard]] std::unordered_map<KeyT, ValueT> Sort(const std::unordered_map<KeyT, ValueT>& main_u_map, const std::unordered_map<KeyT, ValueT>& sub_u_map, const SortKind sort_kind)
-	{
-		std::vector<std::pair<KeyT, ValueT>> main_pairs = ConvertUmapToPairs(main_u_map);
-		std::vector<std::pair<KeyT, ValueT>> sub_pairs  = ConvertUmapToPairs(main_u_map);
-		return ConvertPairsToUmap(Sort(main_pairs, sub_pairs, sort_kind));
 	}
 	#pragma endregion
 }

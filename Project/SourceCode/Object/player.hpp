@@ -29,8 +29,6 @@ public:
 
 	void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) override;
 
-	void NotifyShotRocketLauncher();
-
 
 	#pragma region アイテム
 	/// @brief アイテムの所持登録 

@@ -1,5 +1,6 @@
 #include "rocket_launcher_virtual_camera_controller.hpp"
 #include "../Manager/camera_manager.hpp"
+#include "../UI/ui_drawer.hpp"
 #include "../Object/player.hpp"
 
 RocketLauncherVirtualCameraController::RocketLauncherVirtualCameraController(Player& player) :
@@ -26,12 +27,20 @@ RocketLauncherVirtualCameraController::RocketLauncherVirtualCameraController(Pla
 	SetupForZoomOutCamera();
 
 	const auto camera_manager = CameraManager::GetInstance();
+	camera_manager->GetVirtualCameraController(VirtualCameraControllerKind::kControl)->Deactivate();
 	camera_manager->SetBlendTime(1.4f);
 	camera_manager->AddVirtualCamera(m_rot_camera,		true);
 	camera_manager->AddVirtualCamera(m_zoom_in_camera,	false);
 	camera_manager->AddVirtualCamera(m_zoom_out_camera, false);
 
+	// オブザーバー登録
+	const auto screen_filter = UIDrawer::GetInstance()->GetUICreator(UICreatorName.SCREEN_FILTER_CREATOR);
+	m_subject->AddObserver(std::dynamic_pointer_cast<IObserver>(screen_filter));
 	GameTimeManager::GetInstance()->GetTimeScaleController()->AddToSubject(m_subject);
+
+	// 演出開始通知
+	const Event<StartRocketLauncherCutsceneData> event = { EventKind::kEndRocketLauncherCutscene, {0.0f, 0.01f, 0.0f} };
+	m_subject->Notify(event);
 }
 
 RocketLauncherVirtualCameraController::~RocketLauncherVirtualCameraController()
