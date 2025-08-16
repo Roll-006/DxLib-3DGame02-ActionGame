@@ -30,6 +30,12 @@ void player_state::Reload::Update(Player* obj)
 void player_state::Reload::LateUpdate(Player* obj)
 {
 	obj->GetCurrentHeldWeapon()->LateUpdate();
+
+	const auto rocket_launcher = std::dynamic_pointer_cast<RocketLauncher>(obj->GetCurrentHeldWeapon());
+	if (rocket_launcher)
+	{
+
+	}
 }
 
 void player_state::Reload::Enter(Player* obj)

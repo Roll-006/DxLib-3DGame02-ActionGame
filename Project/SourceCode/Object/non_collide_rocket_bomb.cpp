@@ -82,8 +82,9 @@ void NonCollildeRocketBomb::AddToObjManager()
 {
 	const auto physical_obj = std::dynamic_pointer_cast<PhysicalObjBase>(shared_from_this());
 
-	ObjManager		::GetInstance()->AddObj			(shared_from_this());
-	PhysicsManager	::GetInstance()->AddPhysicalObj	(physical_obj);
+	ObjManager		::GetInstance()->AddObj						 (shared_from_this());
+	PhysicsManager	::GetInstance()->AddPhysicalObj				 (physical_obj);
+	PhysicsManager	::GetInstance()->AddIgnoreObjPhysicalBehavior(GetObjHandle());
 }
 
 void NonCollildeRocketBomb::OnShot(GunBase& gun)
@@ -98,6 +99,16 @@ void NonCollildeRocketBomb::OnShot(GunBase& gun)
 	m_deceleration	= gun.GetDeceleration();
 }
 
+void NonCollildeRocketBomb::OnReload(const std::shared_ptr<Modeler> owner_modeler)
+{
+	m_owner_modeler = owner_modeler;
+}
+
+void NonCollildeRocketBomb::CompletedReload()
+{
+
+}
+
 float NonCollildeRocketBomb::GetDeltaTime() const
 {
 	const auto time_manager = GameTimeManager::GetInstance();
@@ -105,6 +116,11 @@ float NonCollildeRocketBomb::GetDeltaTime() const
 	return m_time_scale_owner_name == ObjName.PLAYER
 		? time_manager->GetDeltaTime(TimeScaleController::LayerKind::kPlayer)
 		: time_manager->GetDeltaTime(TimeScaleController::LayerKind::kWorld);
+}
+
+bool NonCollildeRocketBomb::IsReturnPool()
+{
+	return false;
 }
 
 void NonCollildeRocketBomb::ApplyMoveDirToRot()
@@ -131,6 +147,30 @@ void NonCollildeRocketBomb::Move()
 }
 
 void NonCollildeRocketBomb::CalcRayPos()
+{
+
+}
+
+void NonCollildeRocketBomb::TrackOwnerHand()
+{
+	if (!m_owner_modeler) { return; }
+	m_owner_modeler->ApplyMatrix();
+
+	// アタッチする部位の行列情報を取り出す
+	const auto owner_attach_frame_num = MV1SearchFrame(m_owner_modeler->GetModelHandle(), BonePath.LEFT_HAND);
+	const auto owner_attach_frame_mat = MV1GetFrameLocalWorldMatrix(m_owner_modeler->GetModelHandle(), owner_attach_frame_num);
+
+	// 武器をアタッチする部位に合わせて回転し、行列を取得
+	const auto offset_angle_mat = math::ConvertEulerAnglesToXYZRotMatrix(kHoldOffsetAngle);
+	const auto result_mat = offset_angle_mat * owner_attach_frame_mat;
+
+	// 情報を適用
+	m_transform->SetMatrix	(CoordinateKind::kWorld, result_mat);
+	m_transform->SetPos		(CoordinateKind::kLocal, m_transform->GetPos(CoordinateKind::kLocal) + VTransformSR(kHoldOffsetPos, result_mat));
+	m_transform->SetScale	(CoordinateKind::kWorld, kHoldOffsetScale);
+}
+
+void NonCollildeRocketBomb::TrackMuzzle()
 {
 
 }

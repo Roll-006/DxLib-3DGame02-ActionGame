@@ -20,8 +20,7 @@ RocketLauncher::RocketLauncher() :
 	m_shot_interval_time	= kShotIntervalTime;
 	m_recoil_data			= RecoilData(0.0f, 0.0f, 0.0f, 10.0f * math::kDegToRad, 0.3f, VGet(1.0f, 1.0f, 1.0f));
 
-	// TODO : âºÇ≈íeêîÇê›íË
-	m_max_remaining_bullet_num		= 30;
+	m_max_remaining_bullet_num		= kMaxRemainingBulletNum;
 	m_current_remaining_bullet_num	= m_max_remaining_bullet_num;
 
 	//AddCollider(std::make_shared<Collider>(ColliderKind::kRayCast, std::make_shared<Segment>(), this));
@@ -51,6 +50,8 @@ void RocketLauncher::LateUpdate()
 	TrackOwnerHand();
 	CalcMuzzleTransform();
 	CalcExhaustVentTransform();
+
+
 }
 
 void RocketLauncher::DrawToShadowMap() const

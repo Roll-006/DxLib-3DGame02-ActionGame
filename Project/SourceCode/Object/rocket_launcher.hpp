@@ -35,6 +35,8 @@ private:
 	static constexpr VECTOR kAttachOffsetAngle		= { 270.0f * math::kDegToRad,  90.0f * math::kDegToRad, 0.0f };
 	static constexpr float  kAttachOffsetScale		= 1.0f;
 
+	static constexpr int    kMaxRemainingBulletNum	= 1;
+
 	static constexpr VECTOR kMuzzleOffsetPos		= { 0.0f, 0.0f,  65.0f };
 	static constexpr VECTOR kExhaustVentOffsetPos	= { 0.0f, 0.0f, -70.0f };
 	static constexpr float  kScopeScale				= 2.0f;

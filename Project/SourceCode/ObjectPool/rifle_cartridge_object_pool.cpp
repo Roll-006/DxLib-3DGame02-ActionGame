@@ -3,12 +3,13 @@
 RifleCartridgeObjectPool::RifleCartridgeObjectPool() : 
 	ObjectPoolBase(ObjectPoolName.RIFLE_CARTRIDGE_POOL)
 {
-	m_pool_size[ObjName.BULLET]					= kBulletPoolSize;
-	m_pool_size[ObjName.SHELL_CASING_556x45]	= kShellCasingPoolSize;
-	m_pool_size[ObjName.ROCKET_BOMB]			= kRocketBombPoolSize;
+	m_pool_size[ObjName.BULLET]						= kBulletPoolSize;
+	m_pool_size[ObjName.SHELL_CASING_556x45]		= kShellCasingPoolSize;
+	m_pool_size[ObjName.ROCKET_BOMB]				= kRocketBombPoolSize;
+	m_pool_size[ObjName.NON_COLLIDE_ROCKET_BOMB]	= kNonCollideRocketBombPoolSize;
 
 	// 弾丸
-	for (int i = 0; i < m_pool_size.at(ObjName.BULLET); ++i)
+	for (size_t i = 0; i < m_pool_size.at(ObjName.BULLET); ++i)
 	{
 		const auto bullet = std::make_shared<Bullet>();
 
@@ -17,7 +18,7 @@ RifleCartridgeObjectPool::RifleCartridgeObjectPool() :
 	}
 
 	// 薬莢
-	for (int i = 0; i < m_pool_size.at(ObjName.SHELL_CASING_556x45); ++i)
+	for (size_t i = 0; i < m_pool_size.at(ObjName.SHELL_CASING_556x45); ++i)
 	{
 		const auto shell_casing = std::make_shared<ShellCasing>(ModelPath.SHELL_CASING_556x45);
 
@@ -26,9 +27,18 @@ RifleCartridgeObjectPool::RifleCartridgeObjectPool() :
 	}
 
 	// ロケット弾
-	for (int i = 0; i < m_pool_size.at(ObjName.ROCKET_BOMB); ++i)
+	for (size_t i = 0; i < m_pool_size.at(ObjName.ROCKET_BOMB); ++i)
 	{
 		const auto rocket_bomb = std::make_shared<RocketBomb>();
+
+		CreateObj(rocket_bomb);
+		rocket_bomb->AddToObjManager();
+	}
+
+	// 非衝突ロケット弾
+	for (size_t i = 0; i < m_pool_size.at(ObjName.NON_COLLIDE_ROCKET_BOMB); ++i)
+	{
+		const auto rocket_bomb = std::make_shared<NonCollildeRocketBomb>();
 
 		CreateObj(rocket_bomb);
 		rocket_bomb->AddToObjManager();
