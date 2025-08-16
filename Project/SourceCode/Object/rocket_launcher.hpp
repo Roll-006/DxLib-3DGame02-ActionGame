@@ -1,5 +1,6 @@
 #pragma once
 #include "../Base/gun_base.hpp"
+#include "non_collide_rocket_bomb.hpp"
 
 class RocketLauncher final : public GunBase
 {
@@ -31,10 +32,10 @@ private:
 	static constexpr VECTOR kHoldOffsetAngle		= { 270.0f * math::kDegToRad, 270.0f * math::kDegToRad, 0.0f };
 	static constexpr float  kHoldOffsetScale		= 1.0f;
 	static constexpr VECTOR kAttachOffsetPos		= { -17.0f, -7.0f, 0.0f };
-	static constexpr VECTOR kAttachOffsetAngle		= { 270.0f * math::kDegToRad, 90.0f * math::kDegToRad, 0.0f };
+	static constexpr VECTOR kAttachOffsetAngle		= { 270.0f * math::kDegToRad,  90.0f * math::kDegToRad, 0.0f };
 	static constexpr float  kAttachOffsetScale		= 1.0f;
 
-	static constexpr VECTOR kMuzzleOffsetPos		= { 0.0f, 0.0f, 65.0f };
+	static constexpr VECTOR kMuzzleOffsetPos		= { 0.0f, 0.0f,  65.0f };
 	static constexpr VECTOR kExhaustVentOffsetPos	= { 0.0f, 0.0f, -70.0f };
 	static constexpr float  kScopeScale				= 2.0f;
 	static constexpr float  kRange					= 5000.0f;
@@ -45,4 +46,5 @@ private:
 	static constexpr float  kDiffusionRadius		= 10.0f;		// ŠgŽU”ÍˆÍ‚Ì”¼Œa
 
 	std::shared_ptr<Transform> m_exhaust_vent_transform;
+	std::shared_ptr<NonCollildeRocketBomb> rocket_bomb;
 };

@@ -65,7 +65,7 @@ void AssaultRifle::Draw() const
 
 	m_modeler->Draw();
 
-	DrawSphere3D(GetMuzzleTransform()->GetPos(CoordinateKind::kWorld), 2, 8, 0xffffff, 0xffffff, FALSE);
+	DrawSphere3D(GetMuzzleTransform()	   ->GetPos(CoordinateKind::kWorld), 2, 8, 0xffffff, 0xffffff, FALSE);
 	DrawSphere3D(GetEjectionPortTransform()->GetPos(CoordinateKind::kWorld), 1, 8, 0xffffff, 0xffffff, FALSE);
 
 	//DrawFormatString(300,  0, 0xffffff, "Žc’e     : %d", m_current_remaining_bullet_num);

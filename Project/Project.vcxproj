@@ -182,6 +182,7 @@
     <ClCompile Include="SourceCode\Object\effect.cpp" />
     <ClCompile Include="SourceCode\Object\knife.cpp" />
     <ClCompile Include="SourceCode\Object\main_camera.cpp" />
+    <ClCompile Include="SourceCode\Object\non_collide_rocket_bomb.cpp" />
     <ClCompile Include="SourceCode\Object\rocket_bomb.cpp" />
     <ClCompile Include="SourceCode\Object\rocket_launcher.cpp" />
     <ClCompile Include="SourceCode\Object\zombie.cpp" />
@@ -391,6 +392,7 @@
     <ClInclude Include="SourceCode\Object\effect.hpp" />
     <ClInclude Include="SourceCode\Object\knife.hpp" />
     <ClInclude Include="SourceCode\Object\main_camera.hpp" />
+    <ClInclude Include="SourceCode\Object\non_collide_rocket_bomb.hpp" />
     <ClInclude Include="SourceCode\Object\rocket_bomb.hpp" />
     <ClInclude Include="SourceCode\Object\rocket_launcher.hpp" />
     <ClInclude Include="SourceCode\Object\zombie.hpp" />

@@ -374,6 +374,9 @@
     <ClCompile Include="SourceCode\Part\cinema_scope_frame.cpp">
       <Filter>Part</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\Object\non_collide_rocket_bomb.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\character_base.hpp">
@@ -999,6 +1002,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Part\cinema_scope_frame.hpp">
       <Filter>Part</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Object\non_collide_rocket_bomb.hpp">
+      <Filter>Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -2,7 +2,8 @@
 
 RocketLauncher::RocketLauncher() :
 	GunBase					(ObjName.ROCKET_LAUNCHER, GunKind::kRocketLauncher, HolsterKind::kRifle),
-	m_exhaust_vent_transform(std::make_shared<Transform>())
+	m_exhaust_vent_transform(std::make_shared<Transform>()),
+	rocket_bomb				(std::make_shared<NonCollildeRocketBomb>())
 {
 	m_modeler = std::make_shared<Modeler>(m_transform, ModelPath.ROCKET_LAUNCHER, kBasicAngle, kBasicScale);
 	SetColliderModelHandle(m_modeler->GetModelHandle());
@@ -17,7 +18,7 @@ RocketLauncher::RocketLauncher() :
 	m_initial_velocity		= kInitialVelocity;
 	m_deceleration			= kDeceleration;
 	m_shot_interval_time	= kShotIntervalTime;
-	m_recoil_data			= RecoilData(0.0f, 0.0f, 0.0f, 20.0f * math::kDegToRad, 0.45f, VGet(1.0f, 1.0f, 1.0f));
+	m_recoil_data			= RecoilData(0.0f, 0.0f, 0.0f, 10.0f * math::kDegToRad, 0.3f, VGet(1.0f, 1.0f, 1.0f));
 
 	// TODO : âºÇ≈íeêîÇê›íË
 	m_max_remaining_bullet_num		= 30;
