@@ -25,7 +25,7 @@ void player_state::FirstSideSlashKnife::Update(Player* obj)
 
 void player_state::FirstSideSlashKnife::LateUpdate(Player* obj)
 {
-	obj->GetCurrentHeldWeapon()->LateUpdate();
+	obj->GetCurrentHeldWeapon()->TrackOwnerHand();
 }
 
 void player_state::FirstSideSlashKnife::Enter(Player* obj)

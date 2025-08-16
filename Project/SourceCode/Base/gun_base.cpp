@@ -3,13 +3,13 @@
 GunBase::GunBase(const std::string& name, const GunKind gun_kind, const HolsterKind holster_kind) :
 	WeaponBase						(name, WeaponKind::kGun, holster_kind),
 	m_subject						(std::make_shared<Subject<GunBase>>()),
+	m_magazine						(nullptr),
 	m_diffusion_shape				(nullptr),
 	m_muzzle_transform				(std::make_shared<Transform>()),
 	m_ejection_port_transform		(nullptr),
+	m_load_transform				(std::make_shared<Transform>()),
 	m_aim_dir						(v3d::GetZeroV()),
 	m_target_pos					(v3d::GetZeroV()),
-	m_muzzle_offset_pos				(v3d::GetZeroV()),
-	m_ejection_port_offset_pos		(v3d::GetZeroV()),
 	m_point_on_ray					(v3d::GetZeroV()),
 	m_current_remaining_bullet_num	(0),
 	m_max_remaining_bullet_num		(0),
@@ -109,25 +109,15 @@ void GunBase::CalcShotTimer()
 	}
 }
 
-void GunBase::CalcMuzzleTransform()
+void GunBase::CalcTransform(std::shared_ptr<Transform>& transform, const VECTOR& offset)
 {
-	m_muzzle_transform->SetMatrix(CoordinateKind::kWorld, m_transform->GetMatrix(CoordinateKind::kWorld));
+	if (!transform) { transform = std::make_shared<Transform>(); }
 
-	const auto world_m			= m_transform->GetMatrix(CoordinateKind::kWorld);
-	const auto local_pos		= m_transform->GetPos(CoordinateKind::kLocal);
-	const auto pos				= VTransformSR(m_muzzle_offset_pos, world_m);
+	transform->SetMatrix(CoordinateKind::kWorld, m_transform->GetMatrix(CoordinateKind::kWorld));
 
-	m_muzzle_transform->SetPos(CoordinateKind::kWorld, local_pos + pos);
-}
+	const auto world_m		= m_transform->GetMatrix(CoordinateKind::kWorld);
+	const auto local_pos	= m_transform->GetPos(CoordinateKind::kLocal);
+	const auto pos			= VTransformSR(offset, world_m);
 
-void GunBase::CalcEjectionPortTransform()
-{
-	if (!m_ejection_port_transform) { m_ejection_port_transform = std::make_shared<Transform>(); }
-
-	m_ejection_port_transform->SetMatrix(CoordinateKind::kWorld, m_transform->GetMatrix(CoordinateKind::kWorld));
-
-	const auto world_m			= m_transform->GetMatrix(CoordinateKind::kWorld);
-	const auto local_pos		= m_transform->GetPos(CoordinateKind::kLocal);
-
-	m_ejection_port_transform->SetPos(CoordinateKind::kWorld, local_pos + VTransformSR(m_ejection_port_offset_pos, world_m));
+	transform->SetPos(CoordinateKind::kWorld, local_pos + pos);
 }

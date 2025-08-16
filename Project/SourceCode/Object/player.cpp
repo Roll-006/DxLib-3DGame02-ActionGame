@@ -67,6 +67,16 @@ void Player::Update()
 {
 	if (!IsActive()) { return; }
 
+	if (m_current_held_weapon) { m_current_held_weapon->Update(); }
+
+	for (const auto& attach_weapon : m_attach_weapons)
+	{
+		if (attach_weapon.second)
+		{
+			attach_weapon.second->Update();
+		}
+	}
+
 	m_look_dir_offset_angle				= kLookDirOffsetAngle			* math::kDegToRad;
 	m_confirm_look_dir_threshold_angle	= kConfirmLookDirThresholdAngle * math::kDegToRad;
 
@@ -89,11 +99,14 @@ void Player::LateUpdate()
 
 	m_state->LateUpdate(this);
 
+	if (m_current_held_weapon) { m_current_held_weapon->LateUpdate(); }
+
 	for (const auto& attach_weapon : m_attach_weapons)
 	{
 		if (attach_weapon.second)
 		{
 			attach_weapon.second->TrackOwnerHolster();
+			attach_weapon.second->LateUpdate();
 		}
 	}
 }

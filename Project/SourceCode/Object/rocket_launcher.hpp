@@ -22,9 +22,6 @@ public:
 	[[nodiscard]] std::shared_ptr<Transform> GetExhaustVentTransform() const { return m_exhaust_vent_transform; }
 
 private:
-	void CalcExhaustVentTransform();
-
-private:
 	static constexpr VECTOR kBasicAngle				= { 0.0f, 90.0f * math::kDegToRad, 0.0f };
 	static constexpr float  kBasicScale				= 1.2f;
 
@@ -38,6 +35,7 @@ private:
 	static constexpr int    kMaxRemainingBulletNum	= 1;
 
 	static constexpr VECTOR kMuzzleOffsetPos		= { 0.0f, 0.0f,  65.0f };
+	static constexpr VECTOR kLoadPortOffsetPos		= { 0.0f, 0.0f,  65.0f };
 	static constexpr VECTOR kExhaustVentOffsetPos	= { 0.0f, 0.0f, -70.0f };
 	static constexpr float  kScopeScale				= 2.0f;
 	static constexpr float  kRange					= 5000.0f;
@@ -48,5 +46,4 @@ private:
 	static constexpr float  kDiffusionRadius		= 10.0f;		// ŠgŽU”ÍˆÍ‚Ì”¼Œa
 
 	std::shared_ptr<Transform> m_exhaust_vent_transform;
-	std::shared_ptr<NonCollildeRocketBomb> rocket_bomb;
 };

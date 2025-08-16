@@ -1,5 +1,6 @@
 #pragma once
 #include "../Base/gun_base.hpp"
+#include "assault_rifle_magazine.hpp"
 
 class AssaultRifle final : public GunBase
 {
@@ -31,6 +32,7 @@ private:
 
 	static constexpr VECTOR kMuzzleOffsetPos		= { 0.0f, 10.0f, 48.0f };
 	static constexpr VECTOR kEjectionPortOffsetPos  = { 2.0f, 10.0f, 0.15f };
+	static constexpr VECTOR kLoadPortOffsetPos		= { 0.0f, -10.0f, 0.0f };
 	static constexpr float  kScopeScale				= 2.0f;
 	static constexpr float  kRange					= 2000.0f;
 	static constexpr float  kInitialVelocity		= 2500.0f;

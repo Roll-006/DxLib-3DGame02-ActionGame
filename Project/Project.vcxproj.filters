@@ -377,6 +377,12 @@
     <ClCompile Include="SourceCode\Object\non_collide_rocket_bomb.cpp">
       <Filter>Object</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\Object\assault_rifle (2).cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Object\assault_rifle_magazine.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\character_base.hpp">
@@ -1005,6 +1011,18 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Object\non_collide_rocket_bomb.hpp">
       <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Object\assault_rifle (2).hpp">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Object\assault_rifle_magazine.hpp">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Interface\i_loadable_ammo.hpp">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Interface\i_shooter.hpp">
+      <Filter>Interface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -29,7 +29,7 @@ void player_state::EquipGun::Update(Player* obj)
 
 void player_state::EquipGun::LateUpdate(Player* obj)
 {
-	obj->GetCurrentHeldWeapon()->LateUpdate();
+	obj->GetCurrentHeldWeapon()->TrackOwnerHand();
 }
 
 void player_state::EquipGun::Enter(Player* obj)

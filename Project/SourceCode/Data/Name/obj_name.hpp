@@ -35,8 +35,9 @@ static struct ObjName
 	#pragma region íeä€
 	const std::string BULLET									= "bullet";
 	const std::string ROCKET_BOMB								= "rocket_bomb";
-	const std::string NON_COLLIDE_ROCKET_BOMB					= "non_collide_rocket_bomb";
 	const std::string SHELL_CASING_556x45						= "shell_casing_556x45";
+	const std::string ASSAULT_RIFLE_MAGAZINE					= "assault_rifle_magazine";
+	const std::string NON_COLLIDE_ROCKET_BOMB					= "non_collide_rocket_bomb";
 	#pragma endregion
 
 

@@ -18,7 +18,7 @@ void player_state::DetachWeapon::Update(Player* obj)
 
 void player_state::DetachWeapon::LateUpdate(Player* obj)
 {
-	obj->GetCurrentHeldWeapon()->LateUpdate();
+	obj->GetCurrentHeldWeapon()->TrackOwnerHand();
 }
 
 void player_state::DetachWeapon::Enter(Player* obj)

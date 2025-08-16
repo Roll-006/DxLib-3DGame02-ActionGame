@@ -177,6 +177,8 @@
     <ClCompile Include="SourceCode\ObjectPool\play_scene_effect_object_pool.cpp" />
     <ClCompile Include="SourceCode\ObjectPool\object_pool_holder.cpp" />
     <ClCompile Include="SourceCode\ObjectPool\rifle_cartridge_object_pool.cpp" />
+    <ClCompile Include="SourceCode\Object\assault_rifle (2).cpp" />
+    <ClCompile Include="SourceCode\Object\assault_rifle_magazine.cpp" />
     <ClCompile Include="SourceCode\Object\assault_rifle.cpp" />
     <ClCompile Include="SourceCode\Object\bullet.cpp" />
     <ClCompile Include="SourceCode\Object\effect.cpp" />
@@ -365,12 +367,14 @@
     <ClInclude Include="SourceCode\Handle\handle_keeper.hpp" />
     <ClInclude Include="SourceCode\Handle\state_handler.hpp" />
     <ClInclude Include="SourceCode\Input\input_checker.hpp" />
+    <ClInclude Include="SourceCode\Interface\i_loadable_ammo.hpp" />
     <ClInclude Include="SourceCode\Interface\i_control_virtual_camera.hpp" />
     <ClInclude Include="SourceCode\Interface\i_event.hpp" />
     <ClInclude Include="SourceCode\Interface\i_bullet.hpp" />
     <ClInclude Include="SourceCode\Interface\i_item.hpp" />
     <ClInclude Include="SourceCode\Interface\i_observer.hpp" />
     <ClInclude Include="SourceCode\Interface\i_poolable.hpp" />
+    <ClInclude Include="SourceCode\Interface\i_shooter.hpp" />
     <ClInclude Include="SourceCode\Interface\i_state.hpp" />
     <ClInclude Include="SourceCode\Interface\i_virtual_camera_controller.hpp" />
     <ClInclude Include="SourceCode\Interface\i_ui_creator.hpp" />
@@ -387,6 +391,8 @@
     <ClInclude Include="SourceCode\ObjectPool\play_scene_effect_object_pool.hpp" />
     <ClInclude Include="SourceCode\ObjectPool\object_pool_holder.hpp" />
     <ClInclude Include="SourceCode\ObjectPool\rifle_cartridge_object_pool.hpp" />
+    <ClInclude Include="SourceCode\Object\assault_rifle (2).hpp" />
+    <ClInclude Include="SourceCode\Object\assault_rifle_magazine.hpp" />
     <ClInclude Include="SourceCode\Object\assault_rifle.hpp" />
     <ClInclude Include="SourceCode\Object\bullet.hpp" />
     <ClInclude Include="SourceCode\Object\effect.hpp" />

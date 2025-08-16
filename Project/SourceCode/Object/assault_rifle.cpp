@@ -3,6 +3,9 @@
 AssaultRifle::AssaultRifle() :
 	GunBase(ObjName.ASSAULT_RIFLE, GunKind::kSniperRifle, HolsterKind::kRifle)
 {
+	m_magazine = std::make_shared<AssaultRifleMagazine>(m_load_transform);
+	std::dynamic_pointer_cast<ObjBase>(m_magazine)->AddToObjManager();
+
 	m_modeler = std::make_shared<Modeler>(m_transform, ModelPath.ASSAULT_RIFLE, kBasicAngle, kBasicScale);	
 	SetColliderModelHandle(m_modeler->GetModelHandle());
 
@@ -12,8 +15,6 @@ AssaultRifle::AssaultRifle() :
 	m_diffusion_shape			= std::make_shared<Circle>();
 	m_scope_scale				= kScopeScale;
 	m_range						= kRange;
-	m_muzzle_offset_pos			= kMuzzleOffsetPos;
-	m_ejection_port_offset_pos	= kEjectionPortOffsetPos;
 	m_initial_velocity			= kInitialVelocity;
 	m_deceleration				= kDeceleration;
 	m_shot_interval_time		= kShotIntervalTime;
@@ -40,16 +41,19 @@ void AssaultRifle::Update()
 {
 	if (!IsActive()) { return; }
 
-	CalcShotTimer();
+	std::dynamic_pointer_cast<ObjBase>(m_magazine)->Update();
 }
 
 void AssaultRifle::LateUpdate()
 {
 	if (!IsActive()) { return; }
 
-	TrackOwnerHand();
-	CalcMuzzleTransform();
-	CalcEjectionPortTransform();
+	//TrackOwnerHand();
+	CalcTransform(m_muzzle_transform,		 kMuzzleOffsetPos);
+	CalcTransform(m_ejection_port_transform, kEjectionPortOffsetPos);
+	CalcTransform(m_load_transform,			 kLoadPortOffsetPos);
+
+	std::dynamic_pointer_cast<ObjBase>(m_magazine)->LateUpdate();
 }
 
 void AssaultRifle::DrawToShadowMap() const
@@ -57,6 +61,7 @@ void AssaultRifle::DrawToShadowMap() const
 	if (!IsActive()) { return; }
 
 	m_modeler->DrawToShadowMap();
+	std::dynamic_pointer_cast<ObjBase>(m_magazine)->DrawToShadowMap();
 }
 
 void AssaultRifle::Draw() const
@@ -64,9 +69,11 @@ void AssaultRifle::Draw() const
 	if (!IsActive()) { return; }
 
 	m_modeler->Draw();
+	std::dynamic_pointer_cast<ObjBase>(m_magazine)->Draw();
 
-	DrawSphere3D(GetMuzzleTransform()	   ->GetPos(CoordinateKind::kWorld), 2, 8, 0xffffff, 0xffffff, FALSE);
-	DrawSphere3D(GetEjectionPortTransform()->GetPos(CoordinateKind::kWorld), 1, 8, 0xffffff, 0xffffff, FALSE);
+	if(GetMuzzleTransform())	  DrawSphere3D(GetMuzzleTransform()		 ->GetPos(CoordinateKind::kWorld), 2, 8, 0xffffff, 0xffffff, FALSE);
+	if(GetEjectionPortTransform())DrawSphere3D(GetEjectionPortTransform()->GetPos(CoordinateKind::kWorld), 1, 8, 0xffffff, 0xffffff, FALSE);
+	if(GetLoadTransform())		  DrawSphere3D(GetLoadTransform()		 ->GetPos(CoordinateKind::kWorld), 1, 8, 0xffffff, 0xffffff, FALSE);
 
 	//DrawFormatString(300,  0, 0xffffff, "écíe     : %d", m_current_remaining_bullet_num);
 	//DrawFormatString(300, 20, 0xffffff, "ç≈ëÂécíe : %d", m_max_remaining_bullet_num);

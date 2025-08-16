@@ -1,8 +1,8 @@
-#include "non_collide_rocket_bomb.hpp"
+#include "assault_rifle_magazine.hpp"
 
-NonCollildeRocketBomb::NonCollildeRocketBomb(const std::shared_ptr<Transform> weapon_load_transform) :
-	ObjBase					(ObjName.NON_COLLIDE_ROCKET_BOMB, ObjTag.MAGAZINE),
-	m_modeler				(std::make_shared<Modeler>(m_transform, ModelPath.ROCKET_BOMB, kBasicAngle, kBasicScale)),
+AssaultRifleMagazine::AssaultRifleMagazine(const std::shared_ptr<Transform> weapon_load_transform) :
+	ObjBase					(ObjName.ASSAULT_RIFLE_MAGAZINE, ObjTag.MAGAZINE),
+	m_modeler				(std::make_shared<Modeler>(m_transform, ModelPath.ASSAULT_RIFLE_MAGAZINE, kBasicAngle, kBasicScale)),
 	m_owner_modeler			(nullptr),
 	m_weapon_load_transform	(weapon_load_transform),
 	m_on_reloading			(false)
@@ -10,71 +10,65 @@ NonCollildeRocketBomb::NonCollildeRocketBomb(const std::shared_ptr<Transform> we
 
 }
 
-NonCollildeRocketBomb::~NonCollildeRocketBomb()
+AssaultRifleMagazine::~AssaultRifleMagazine()
 {
 
 }
 
-void NonCollildeRocketBomb::Init()
+void AssaultRifleMagazine::Init()
 {
 
 }
 
-void NonCollildeRocketBomb::Update()
+void AssaultRifleMagazine::Update()
 {
 	if (!IsActive()) { return; }
 }
 
-void NonCollildeRocketBomb::LateUpdate()
+void AssaultRifleMagazine::LateUpdate()
 {
 	if (!IsActive()) { return; }
 
-	ApplyMoveDirToRot();
 	TrackOwnerHand();
 	TrackLoad();
 }
 
-void NonCollildeRocketBomb::DrawToShadowMap() const
+void AssaultRifleMagazine::DrawToShadowMap() const
 {
 	if (!IsActive()) { return; }
 
 	m_modeler->DrawToShadowMap();
 }
 
-void NonCollildeRocketBomb::Draw() const
+void AssaultRifleMagazine::Draw() const
 {
 	if (!IsActive()) { return; }
 
 	m_modeler->Draw();
 }
 
-void NonCollildeRocketBomb::AddToObjManager()
+void AssaultRifleMagazine::AddToObjManager()
 {
 	ObjManager::GetInstance()->AddObj(shared_from_this());
 }
 
-void NonCollildeRocketBomb::OnStartReload(const std::shared_ptr<Modeler> owner_modler)
+void AssaultRifleMagazine::OnStartReload(const std::shared_ptr<Modeler> owner_modler)
 {
 	m_on_reloading	= true;
 	m_owner_modeler = owner_modler;
 }
 
-void NonCollildeRocketBomb::OnReloaded()
+void AssaultRifleMagazine::OnReloaded()
 {
-	m_on_reloading	= false;
+	m_on_reloading = false;
 }
 
-float NonCollildeRocketBomb::GetDeltaTime() const
+float AssaultRifleMagazine::GetDeltaTime() const
 {
 	return GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleController::LayerKind::kWorld);
 }
 
-void NonCollildeRocketBomb::ApplyMoveDirToRot()
-{
-
-}
-
-void NonCollildeRocketBomb::TrackOwnerHand()
+void AssaultRifleMagazine::TrackOwnerHand()
 {
 	if (!m_on_reloading) { return; }
 
@@ -95,7 +89,7 @@ void NonCollildeRocketBomb::TrackOwnerHand()
 	m_transform->SetScale	(CoordinateKind::kWorld, kHoldOffsetScale);
 }
 
-void NonCollildeRocketBomb::TrackLoad()
+void AssaultRifleMagazine::TrackLoad()
 {
 	if (m_on_reloading) { return; }
 

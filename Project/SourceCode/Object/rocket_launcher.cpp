@@ -2,9 +2,11 @@
 
 RocketLauncher::RocketLauncher() :
 	GunBase					(ObjName.ROCKET_LAUNCHER, GunKind::kRocketLauncher, HolsterKind::kRifle),
-	m_exhaust_vent_transform(std::make_shared<Transform>()),
-	rocket_bomb				(std::make_shared<NonCollildeRocketBomb>())
+	m_exhaust_vent_transform(std::make_shared<Transform>())
 {
+	m_magazine = std::make_shared<NonCollildeRocketBomb>(m_load_transform);
+	std::dynamic_pointer_cast<ObjBase>(m_magazine)->AddToObjManager();
+
 	m_modeler = std::make_shared<Modeler>(m_transform, ModelPath.ROCKET_LAUNCHER, kBasicAngle, kBasicScale);
 	SetColliderModelHandle(m_modeler->GetModelHandle());
 
@@ -14,7 +16,6 @@ RocketLauncher::RocketLauncher() :
 	m_diffusion_shape		= std::make_shared<Circle>();
 	m_scope_scale			= kScopeScale;
 	m_range					= kRange;
-	m_muzzle_offset_pos		= kMuzzleOffsetPos;
 	m_initial_velocity		= kInitialVelocity;
 	m_deceleration			= kDeceleration;
 	m_shot_interval_time	= kShotIntervalTime;
@@ -40,18 +41,21 @@ void RocketLauncher::Update()
 {
 	if (!IsActive()) { return; }
 
-	CalcShotTimer();
+	//CalcShotTimer();
+
+	std::dynamic_pointer_cast<ObjBase>(m_magazine)->Update();
 }
 
 void RocketLauncher::LateUpdate()
 {
 	if (!IsActive()) { return; }
 
-	TrackOwnerHand();
-	CalcMuzzleTransform();
-	CalcExhaustVentTransform();
+	//TrackOwnerHand();
+	CalcTransform(m_muzzle_transform,		kMuzzleOffsetPos);
+	CalcTransform(m_load_transform,			kLoadPortOffsetPos);
+	CalcTransform(m_exhaust_vent_transform, kExhaustVentOffsetPos);
 
-
+	std::dynamic_pointer_cast<ObjBase>(m_magazine)->LateUpdate();
 }
 
 void RocketLauncher::DrawToShadowMap() const
@@ -59,6 +63,8 @@ void RocketLauncher::DrawToShadowMap() const
 	if (!IsActive()) { return; }
 
 	m_modeler->DrawToShadowMap();
+
+	std::dynamic_pointer_cast<ObjBase>(m_magazine)->DrawToShadowMap();
 }
 
 void RocketLauncher::Draw() const
@@ -66,8 +72,10 @@ void RocketLauncher::Draw() const
 	if (!IsActive()) { return; }
 
 	m_modeler->Draw();
+	std::dynamic_pointer_cast<ObjBase>(m_magazine)->Draw();
 
 	if(GetMuzzleTransform())DrawSphere3D(GetMuzzleTransform()->GetPos(CoordinateKind::kWorld), 2, 8, 0xffffff, 0xffffff, FALSE);
+	if(GetLoadTransform())  DrawSphere3D(GetLoadTransform()  ->GetPos(CoordinateKind::kWorld), 1, 8, 0xffffff, 0xffffff, FALSE);
 	DrawSphere3D(m_exhaust_vent_transform->GetPos(CoordinateKind::kWorld), 2, 8, 0xffffff, 0xffffff, FALSE);
 	//DrawSphere3D(GetEjectionPortPos(), 1, 8, 0xffffff, 0xffffff, FALSE);
 
@@ -93,14 +101,4 @@ void RocketLauncher::CalcDiffusionRange()
 void RocketLauncher::CalcTargetPos()
 {
 	m_target_pos = math::GetRandomPointInCircle(*std::dynamic_pointer_cast<Circle>(m_diffusion_shape));
-}
-
-void RocketLauncher::CalcExhaustVentTransform()
-{
-	m_exhaust_vent_transform->SetMatrix(CoordinateKind::kWorld, m_transform->GetMatrix(CoordinateKind::kWorld));
-
-	const auto world_m		= m_transform->GetMatrix(CoordinateKind::kWorld);
-	const auto local_pos	= m_transform->GetPos	(CoordinateKind::kLocal);
-
-	m_exhaust_vent_transform->SetPos(CoordinateKind::kWorld, local_pos + VTransformSR(kExhaustVentOffsetPos, world_m));
 }

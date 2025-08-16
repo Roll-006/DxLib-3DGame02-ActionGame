@@ -1,18 +1,14 @@
 #pragma once
-#include "../Base/physical_obj_base.hpp"
-#include "../Interface/i_bullet.hpp"
-#include "../Interface/i_poolable.hpp"
+#include "../Base/obj_base.hpp"
+#include "../Interface/i_loadable_ammo.hpp"
 
 #include "../Manager/obj_manager.hpp"
-#include "../Manager/collision_manager.hpp"
-#include "../Manager/physics_manager.hpp"
+#include "../GameTime/game_time_manager.hpp"
 
-#include "../Part/modeler.hpp"
-
-class NonCollildeRocketBomb final : public PhysicalObjBase, public IPoolable, public IBullet
+class NonCollildeRocketBomb final : public ObjBase, public ILoadableAmmo
 {
 public:
-	NonCollildeRocketBomb();
+	NonCollildeRocketBomb(const std::shared_ptr<Transform> weapon_load_transform);
 	~NonCollildeRocketBomb() override;
 
 	void Init()						override;
@@ -21,48 +17,33 @@ public:
 	void DrawToShadowMap()	const	override;
 	void Draw()				const	override;
 
-	void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) override;
-
 	void AddToObjManager()			override;
 
-	/// @brief 弾丸が発射された
-	void OnShot(GunBase& gun)		override;
-
-	/// @brief リロードさせた
-	void OnReload(const std::shared_ptr<Modeler> owner_modeler);
-
-	/// @brief リロードが完了した
-	void CompletedReload();
+	void OnStartReload(const std::shared_ptr<Modeler> owner_modler) override;
+	void OnReloaded() override;
+	void TrackLoad() override;
 
 	[[nodiscard]] float	GetDeltaTime() const override;
-	[[nodiscard]] bool  IsReturnPool() override;
 
 private:
 	/// @brief 移動方向を姿勢に適用する
 	void ApplyMoveDirToRot();
-	void Move();
-	void CalcRayPos() override;
 
-	void TrackOwnerHand();
-	void TrackMuzzle();
+	void TrackOwnerHand() override;
 
 private:
-	static constexpr VECTOR kBasicAngle = { 0.0f, 90.0f * math::kDegToRad, 0.0f };
-	static constexpr float  kBasicScale = 1.2f * 0.3f;
+	static constexpr VECTOR kBasicAngle			= { 0.0f, 90.0f * math::kDegToRad, 0.0f };
+	static constexpr float  kBasicScale			= 1.0f;
 
-	static constexpr VECTOR kHoldOffsetAngle	= {};			// 手に持たれる際のオフセット角度
-	static constexpr VECTOR kHoldOffsetPos		= {};			// 手に持たれる際のオフセット座標
-	static constexpr VECTOR kHoldOffsetScale	= {};			// 手に持たれる際のオフセットスケール
-	static constexpr VECTOR kMuzzleOffsetPos	= {};			// 銃口のオフセット座標
-	static constexpr VECTOR kMuzzleOffsetAngle	= {};			// 銃口のオフセット角度
-	static constexpr VECTOR kMuzzleOffsetScale	= {};			// 銃口のオフセットスケール
+	static constexpr VECTOR kHoldOffsetAngle	= { 0.0f, 270.0f * math::kDegToRad, 0.0f };		// 手に持たれる際のオフセット角度
+	static constexpr VECTOR kHoldOffsetPos		= { -4.0f, 8.0f, 0.0f };						// 手に持たれる際のオフセット座標
+	static constexpr float  kHoldOffsetScale	= 1.0f;											// 手に持たれる際のオフセットスケール
+	static constexpr VECTOR kLoadOffsetPos		= { 0.0f, 0.0f, -15.0f };						// 装填位置のオフセット座標
+	static constexpr VECTOR kLoadOffsetAngle	= { 0.0f, 0.0f, 0.0f };							// 装填位置のオフセット角度
+	static constexpr float  kLoadOffsetScale	= 1.0f;											// 装填位置のオフセットスケール
 
 	std::shared_ptr<Modeler>	m_modeler;
 	std::shared_ptr<Modeler>	m_owner_modeler;
-	std::string					m_time_scale_owner_name;
-
-	VECTOR m_move_dir;
-	VECTOR m_first_pos;					// 初期発射位置
-	float  m_move_speed;				// 移動速度
-	float  m_deceleration;				// 減速度
+	std::shared_ptr<Transform>  m_weapon_load_transform;
+	bool						m_on_reloading;
 };

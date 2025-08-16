@@ -31,7 +31,7 @@ void Knife::LateUpdate()
 {
 	if (!IsActive()) { return; }
 
-	TrackOwnerHand();
+	//TrackOwnerHand();
 	CalcAttackTriggerPos();
 }
 

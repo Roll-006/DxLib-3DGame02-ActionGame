@@ -15,7 +15,8 @@ void player_state::Shot::Update(Player* obj)
 {
 	obj->SetLookDirOffsetValueForAim();
 
-	obj->GetCurrentHeldWeapon()->Update();
+	const auto gun = std::static_pointer_cast<GunBase>(obj->GetCurrentHeldWeapon());
+	gun->CalcShotTimer();
 }
 
 void player_state::Shot::LateUpdate(Player* obj)
@@ -27,7 +28,7 @@ void player_state::Shot::LateUpdate(Player* obj)
 	// ƒ{[ƒ“ˆÊ’u•â³
 	obj->GetBonePosCorrector()->CorrectAimPoseBonePos(obj->GetModeler()->GetModelHandle(), aim_dir);
 
-	obj->GetCurrentHeldWeapon()->LateUpdate();
+	obj->GetCurrentHeldWeapon()->TrackOwnerHand();
 
 	gun->CalcDiffusionRange();
 	gun->CalcTargetPos();

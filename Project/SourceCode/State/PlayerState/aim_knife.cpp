@@ -27,7 +27,7 @@ void player_state::AimKnife::LateUpdate(Player* obj)
 	// ƒ{[ƒ“ˆÊ’u•â³
 	obj->GetBonePosCorrector()->CorrectAimPoseBonePos(obj->GetModeler()->GetModelHandle(), aim_dir);
 
-	obj->GetCurrentHeldWeapon()->LateUpdate();
+	obj->GetCurrentHeldWeapon()->TrackOwnerHand();
 }
 
 void player_state::AimKnife::Enter(Player* obj)

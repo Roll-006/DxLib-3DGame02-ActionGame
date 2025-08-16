@@ -22,7 +22,7 @@ void player_state::EquipKnife::Update(Player* obj)
 
 void player_state::EquipKnife::LateUpdate(Player* obj)
 {
-	obj->GetCurrentHeldWeapon()->LateUpdate();
+	obj->GetCurrentHeldWeapon()->TrackOwnerHand();
 }
 
 void player_state::EquipKnife::Enter(Player* obj)

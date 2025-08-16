@@ -21,6 +21,8 @@ void player_state::Reload::Update(Player* obj)
 	{
 		if (!m_is_reloaded)
 		{
+			gun->GetMagazine()->OnReloaded();
+
 			obj->SetRemainingBulletNum(gun->OnReload(obj->GetCurrentRemainingBulletNum()));
 			m_is_reloaded = true;
 		}
@@ -29,13 +31,7 @@ void player_state::Reload::Update(Player* obj)
 
 void player_state::Reload::LateUpdate(Player* obj)
 {
-	obj->GetCurrentHeldWeapon()->LateUpdate();
-
-	const auto rocket_launcher = std::dynamic_pointer_cast<RocketLauncher>(obj->GetCurrentHeldWeapon());
-	if (rocket_launcher)
-	{
-
-	}
+	obj->GetCurrentHeldWeapon()->TrackOwnerHand();
 }
 
 void player_state::Reload::Enter(Player* obj)
@@ -44,6 +40,9 @@ void player_state::Reload::Enter(Player* obj)
 
 	obj->DetachWeapon(obj->GetCurrentEquipWeapon());
 	obj->HoldWeapon(obj->GetCurrentEquipWeapon());
+
+	const auto gun = std::static_pointer_cast<GunBase>(obj->GetCurrentHeldWeapon());
+	gun->GetMagazine()->OnStartReload(obj->GetModeler());
 }
 
 void player_state::Reload::Exit(Player* obj)

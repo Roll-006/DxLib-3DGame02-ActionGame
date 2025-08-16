@@ -7,6 +7,7 @@
 #include "../Data/recoil_data.hpp"
 
 #include "../Manager/rifle_cartridge_manager.hpp"
+#include "../Interface/i_loadable_ammo.hpp"
 
 class GunBase abstract : public WeaponBase
 {
@@ -32,6 +33,8 @@ public:
 	/// @brief 射撃するターゲット座標を計算
 	virtual void CalcTargetPos() abstract;
 
+	void CalcShotTimer();
+
 	/// @brief レイキャスト用の線分を拡張した直線上にある点を設定する
 	/// @brief 操作キャラの場合はカメラの座標
 	/// @brief 非操作キャラの場合はターゲットの座標
@@ -41,9 +44,11 @@ public:
 
 	#pragma region Getter
 	[[nodiscard]] std::shared_ptr<Subject<GunBase>> GetSubject()		const { return m_subject; }
+	[[nodiscard]] std::shared_ptr<ILoadableAmmo>	GetMagazine()		const { return m_magazine; }
 	[[nodiscard]] std::shared_ptr<ShapeBase> GetDiffusionShape()		const { return m_diffusion_shape; }
 	[[nodiscard]] std::shared_ptr<Transform> GetMuzzleTransform()		const { return m_muzzle_transform; }
 	[[nodiscard]] std::shared_ptr<Transform> GetEjectionPortTransform()	const { return m_ejection_port_transform; }
+	[[nodiscard]] std::shared_ptr<Transform> GetLoadTransform()			const { return m_load_transform; }
 	[[nodiscard]] VECTOR	 GetAimDir()					const { return m_aim_dir; }
 	[[nodiscard]] VECTOR	 GetShotDir()					const;
 	[[nodiscard]] float		 GetScopeScale()				const { return m_scope_scale; }
@@ -66,23 +71,22 @@ public:
 	#pragma endregion
 
 protected:
-	void CalcShotTimer();
-	void CalcMuzzleTransform();
-	void CalcEjectionPortTransform();
+	void CalcTransform(std::shared_ptr<Transform>& transform, const VECTOR& offset);
 
 protected:
 	static constexpr float kDiffusionDistance = 1500.0f;		// 拡散範囲が位置する座標までの距離
 
 	std::shared_ptr<Subject<GunBase>>	m_subject;
 
+	std::shared_ptr<ILoadableAmmo>		m_magazine;
+
 	std::shared_ptr<ShapeBase>			m_diffusion_shape;		// 拡散範囲指定用の図形
 	std::shared_ptr<Transform>			m_muzzle_transform;
 	std::shared_ptr<Transform>			m_ejection_port_transform;
+	std::shared_ptr<Transform>			m_load_transform;
 
 	VECTOR		m_aim_dir;						// 狙う方向
 	VECTOR		m_target_pos;					// 狙う位置
-	VECTOR		m_muzzle_offset_pos;			// 銃口の座標を取得するためのオフセット
-	VECTOR		m_ejection_port_offset_pos;		// 薬莢を排出する開口部の座標を取得するためのオフセット
 	VECTOR		m_point_on_ray;					// レイキャスト用の線分を拡張した直線上にある点
 
 	int			m_current_remaining_bullet_num;	// 現在の残弾数

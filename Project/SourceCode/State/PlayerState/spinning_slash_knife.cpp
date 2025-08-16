@@ -25,7 +25,7 @@ void player_state::SpinningSlashKnife::Update(Player* obj)
 
 void player_state::SpinningSlashKnife::LateUpdate(Player* obj)
 {
-	obj->GetCurrentHeldWeapon()->LateUpdate();
+	obj->GetCurrentHeldWeapon()->TrackOwnerHand();
 }
 
 void player_state::SpinningSlashKnife::Enter(Player* obj)

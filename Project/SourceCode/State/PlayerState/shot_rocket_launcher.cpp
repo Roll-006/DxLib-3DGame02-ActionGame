@@ -23,7 +23,8 @@ void player_state::ShotRocketLauncher::Update(Player* obj)
 	obj->SetLookDirOffsetValueForAim();
 	//obj->DirOfCameraForward();
 
-	obj->GetCurrentHeldWeapon()->Update();
+	const auto gun = std::static_pointer_cast<GunBase>(obj->GetCurrentHeldWeapon());
+	gun->CalcShotTimer();
 }
 
 void player_state::ShotRocketLauncher::LateUpdate(Player* obj)
@@ -34,7 +35,7 @@ void player_state::ShotRocketLauncher::LateUpdate(Player* obj)
 	// ƒ{[ƒ“ˆÊ’u•â³
 	obj->GetBonePosCorrector()->CorrectAimPoseBonePos(obj->GetModeler()->GetModelHandle(), roket_launcher->GetAimDir());
 
-	obj->GetCurrentHeldWeapon()->LateUpdate();
+	obj->GetCurrentHeldWeapon()->TrackOwnerHand();
 
 	roket_launcher->CalcDiffusionRange();
 	roket_launcher->CalcTargetPos();

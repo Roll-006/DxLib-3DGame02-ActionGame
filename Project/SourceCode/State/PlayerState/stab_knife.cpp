@@ -20,7 +20,7 @@ void player_state::StabKnife::Update(Player* obj)
 
 void player_state::StabKnife::LateUpdate(Player* obj)
 {
-	obj->GetCurrentHeldWeapon()->LateUpdate();
+	obj->GetCurrentHeldWeapon()->TrackOwnerHand();
 }
 
 void player_state::StabKnife::Enter(Player* obj)
