@@ -264,26 +264,68 @@ VECTOR math::GetLerpVector(const VECTOR& begin_v, const VECTOR& end_v, const flo
 
 Quaternion math::GetSlerpQuaternion(const Quaternion& begin_q, const Quaternion& end_q, const float t)
 {
-     // 角度算出用の内積を計算
-    const float begin_size  = quat::GetSize(begin_q);
-    const float end_size    = quat::GetSize(end_q);
+    const auto normalized_begin_q   = quat::GetNormalizedQuaternion(begin_q);
+    const auto normalized_end_q     = quat::GetNormalizedQuaternion(end_q);
+
+    //// 相対回転を取得
+    //auto relative_q       = quat::GetConjugateQuaternion(normalized_begin_q) * normalized_end_q;
+    //auto relative_angle   = quat::GetAngle(relative_q);
+    //
+    //// 180°を超える場合は逆方向を選択
+    //if (relative_angle > DX_PI_F)
+    //{
+    //    relative_q.x   = -relative_q.x;
+    //    relative_q.y   = -relative_q.y;
+    //    relative_q.z   = -relative_q.z;
+    //    relative_q.w   = -relative_q.w;
+    //    relative_angle = DX_TWO_PI_F - relative_angle;
+    //}
+    //
+    //// 相対回転をt倍
+    //Quaternion interpolated_relative = quat::GetIdentityQuaternion();
+    //if (relative_angle > math::kEpsilonLow)
+    //{
+    //    const auto half_angle   = relative_angle * t * 0.5f;
+    //    const auto sin_half     = sin(half_angle);
+    //    const auto cos_half     = cos(half_angle);
+    //    const auto axis_length  = sqrt(relative_q.x * relative_q.x + relative_q.y * relative_q.y + relative_q.z * relative_q.z);
+    //
+    //    if (axis_length > math::kEpsilonLow)
+    //    {
+    //        const auto inverse_axis_lenght = sin_half / axis_length;
+    //        interpolated_relative.x = relative_q.x * inverse_axis_lenght;
+    //        interpolated_relative.y = relative_q.y * inverse_axis_lenght;
+    //        interpolated_relative.z = relative_q.z * inverse_axis_lenght;
+    //        interpolated_relative.w = cos_half;
+    //    }
+    //}
+    //
+    //return normalized_begin_q * interpolated_relative;
+
+    // 角度算出用の内積を計算
+    const float begin_size  = quat::GetSize(normalized_begin_q);
+    const float end_size    = quat::GetSize(normalized_end_q);
 
     // 不正なクォータニオンは処理を中断
     if (begin_size == 0.0f || end_size == 0.0f)
     {
-        return begin_q;
+        return normalized_begin_q;
     }
 
-    float dot = (begin_q.x * end_q.x + begin_q.y * end_q.y + begin_q.z * end_q.z + begin_q.w * end_q.w) / (begin_size * end_size);
+    float dot = (normalized_begin_q.x * normalized_end_q.x
+        + normalized_begin_q.y * normalized_end_q.y
+        + normalized_begin_q.z * normalized_end_q.z
+        + normalized_begin_q.w * normalized_end_q.w)
+        / (begin_size * end_size);
 
     // 最短経路を選択するために、内積が負の場合は符号を反転
-    Quaternion target_q = end_q;
+    Quaternion target_q = normalized_end_q;
     if (dot < 0.0f)
     {
-        target_q.x = -end_q.x;
-        target_q.y = -end_q.y;
-        target_q.z = -end_q.z;
-        target_q.w = -end_q.w;
+        target_q.x = -normalized_end_q.x;
+        target_q.y = -normalized_end_q.y;
+        target_q.z = -normalized_end_q.z;
+        target_q.w = -normalized_end_q.w;
         dot = -dot;
     }
 
@@ -299,7 +341,7 @@ Quaternion math::GetSlerpQuaternion(const Quaternion& begin_q, const Quaternion&
     // sin_wが0に近い場合の処理
     if (sin_w < 1e-6f)
     {
-        return begin_q;
+        return normalized_begin_q;
     }
 
     const float sin_t_w     = sin(t * w);
@@ -309,10 +351,10 @@ Quaternion math::GetSlerpQuaternion(const Quaternion& begin_q, const Quaternion&
 
     return Quaternion
     {
-        mult_q1 * begin_q.x + mult_q2 * target_q.x,
-        mult_q1 * begin_q.y + mult_q2 * target_q.y,
-        mult_q1 * begin_q.z + mult_q2 * target_q.z,
-        mult_q1 * begin_q.w + mult_q2 * target_q.w
+        mult_q1 * normalized_begin_q.x + mult_q2 * target_q.x,
+        mult_q1 * normalized_begin_q.y + mult_q2 * target_q.y,
+        mult_q1 * normalized_begin_q.z + mult_q2 * target_q.z,
+        mult_q1 * normalized_begin_q.w + mult_q2 * target_q.w
     };
 }
 

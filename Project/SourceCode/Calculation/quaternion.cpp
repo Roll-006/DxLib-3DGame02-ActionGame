@@ -46,6 +46,11 @@ float quat::GetDot(const Quaternion& q1, const Quaternion& q2)
 	return q1.x * q2.x + q1.y * q2.y + q1.z * q2.z + q1.w * q2.w;
 }
 
+float quat::GetAngle(const Quaternion& q)
+{
+	return 2.0f * acos(std::clamp(std::abs(q.w), 0.0f, 1.0f));
+}
+
 Quaternion quat::GetConjugateQuaternion(const Quaternion& q)
 {
 	return Quaternion(-q.x, -q.y, -q.z, q.w);

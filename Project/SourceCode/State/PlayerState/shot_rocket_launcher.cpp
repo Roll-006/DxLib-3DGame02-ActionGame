@@ -87,8 +87,8 @@ void player_state::ShotRocketLauncher::Exit(Player* obj)
 	}
 
 	// 演出終了後にリコイル処理
-	const auto gun = std::static_pointer_cast<GunBase>(obj->GetCurrentHeldWeapon());
-	std::static_pointer_cast<ControlVirtualCamerasController>(camera_control)->OnRecoil(*gun.get());
+	//const auto gun = std::static_pointer_cast<GunBase>(obj->GetCurrentHeldWeapon());
+	//std::static_pointer_cast<ControlVirtualCamerasController>(camera_control)->OnRecoil(*gun.get());
 
 	obj->ReleaseWeapon();
 	obj->AttachWeapon(obj->GetCurrentEquipWeapon());
@@ -99,7 +99,7 @@ std::shared_ptr<IState<Player>> player_state::ShotRocketLauncher::ChangeState(Pl
 	const auto state_controller = obj->GetStateController();
 
 	// 銃エイミング状態
-	if (m_rocket_launcher_camera_controller->IsEndZoomOut())
+	if (m_rocket_launcher_camera_controller->IsEndExitRot())
 	{
 		return state_controller->GetState<AimGun, Player>();
 	}

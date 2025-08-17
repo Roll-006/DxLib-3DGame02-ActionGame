@@ -39,17 +39,24 @@ private:
 	void CalcRayPos() override;
 
 private:
-	static constexpr VECTOR kBasicAngle	= { 0.0f, 90.0f * math::kDegToRad, 0.0f };
-	static constexpr float  kBasicScale = 1.2f * 0.3f;
+	static constexpr VECTOR kBasicAngle		= { 0.0f, 90.0f * math::kDegToRad, 0.0f };
+	static constexpr float  kBasicScale		= 0.3f;	// TODO : 後に武器所持者のスケールに依存するよう変更
+	static constexpr float  kGoStraightTime = 0.01f;
+	static constexpr float  kBlendTime		= 0.02f;
 
 	std::shared_ptr<Modeler>				m_modeler;
 	std::shared_ptr<Subject<RocketBomb>>	m_subject;
 	std::string								m_time_scale_owner_name;
 
+	VECTOR m_destination_dir;
+
+	float  m_blend_timer;
+	float  m_go_straight_timer;
+
 	VECTOR m_move_dir;
 	VECTOR m_prev_pos;
-	VECTOR m_first_pos;		// 初期発射位置
-	float  m_move_speed;	// 移動速度
-	float  m_deceleration;	// 減速度
-	float  m_range;			// 射程
+	VECTOR m_first_pos;			// 初期発射位置
+	float  m_move_speed;		// 移動速度
+	float  m_deceleration;		// 減速度
+	float  m_range;				// 射程
 };

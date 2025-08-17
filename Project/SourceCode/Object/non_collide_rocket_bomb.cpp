@@ -76,9 +76,9 @@ void NonCollildeRocketBomb::ApplyMoveDirToRot()
 
 void NonCollildeRocketBomb::TrackOwnerHand()
 {
-	if (!m_on_reloading) { return; }
-
+	if (!m_on_reloading)  { return; }
 	if (!m_owner_modeler) { return; }
+
 	m_owner_modeler->ApplyMatrix();
 
 	// アタッチする部位の行列情報を取り出す

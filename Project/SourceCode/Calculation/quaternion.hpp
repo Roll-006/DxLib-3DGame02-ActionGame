@@ -1,5 +1,6 @@
 #pragma once
 #include <cmath>
+#include <algorithm>
 #include <DxLib.h>
 #include "vector_3d.hpp"
 
@@ -28,6 +29,9 @@ namespace quat
 	[[nodiscard]] Quaternion GetNormalizedQuaternion(const Quaternion& q);
 
 	[[nodiscard]] float      GetDot					(const Quaternion& q1, const Quaternion& q2);
+	
+	// TODO : 未検証
+	[[nodiscard]] float		 GetAngle				(const Quaternion& q);
 
 	/// @brief 共役クォータニオンを取得
 	[[nodiscard]] Quaternion GetConjugateQuaternion	(const Quaternion& q);

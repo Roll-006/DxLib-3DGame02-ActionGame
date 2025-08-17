@@ -31,6 +31,8 @@ void RocketBomb::Init()
 	m_time_scale_owner_name = "";
 	m_velocity				= v3d::GetZeroV();
 	m_fall_velocity			= v3d::GetZeroV();
+	m_blend_timer			= 0.0f;
+	m_go_straight_timer		= 0.0f;
 }
 
 void RocketBomb::Update()
@@ -102,14 +104,15 @@ void RocketBomb::OnShot(GunBase& gun)
 {
 	m_time_scale_owner_name = gun.GetOwnerName();
 
-	m_transform->SetRot(CoordinateKind::kWorld, MGetIdent());
-	m_first_pos		= gun.GetFirstShotPos();
+	m_transform->SetMatrix(CoordinateKind::kWorld, gun.GetMuzzleTransform()->GetMatrix(CoordinateKind::kWorld));
+	m_first_pos			= m_transform->GetPos(CoordinateKind::kWorld) + gun.GetTransform()->GetForward(CoordinateKind::kWorld);
 	m_transform->SetPos(CoordinateKind::kWorld, m_first_pos);
-	m_prev_pos		= m_first_pos;
-	m_move_dir		= gun.GetShotDir();
-	m_move_speed	= gun.GetInitialVelocity();
-	m_deceleration	= gun.GetDeceleration();
-	m_range			= gun.GetRange();
+	m_prev_pos			= m_first_pos;
+	m_move_dir			= gun.GetTransform()->GetForward(CoordinateKind::kWorld);
+	m_destination_dir	= gun.GetShotDir();
+	m_move_speed		= gun.GetInitialVelocity();
+	m_deceleration		= gun.GetDeceleration();
+	m_range				= gun.GetRange();
 
 	const Event<OnShotBulletData> event = { EventKind::kOnShotBullet, { GetName(), gun.GetOwnerName(), GetObjHandle(), m_transform}};
 	m_subject->Notify(event);
@@ -152,7 +155,28 @@ void RocketBomb::ApplyMoveDirToRot()
 void RocketBomb::Move()
 {
 	math::Decrease(m_move_speed, m_deceleration, 0.0f);
-	m_velocity = m_move_dir * m_move_speed;
+
+	// ロケット弾がロケットランチャーから排出されるまでは直進
+	if (m_go_straight_timer < kGoStraightTime)
+	{
+		m_go_straight_timer += GetDeltaTime();
+
+		m_velocity = m_move_dir * m_move_speed;
+	}
+	// 排出されたら画面中央から撃たれた際の軌道に近づける
+	else if (m_blend_timer < kBlendTime)
+	{
+		m_blend_timer += GetDeltaTime();
+
+		const auto t			= math::GetUnitValue<float, float>(0.0f, kBlendTime, m_blend_timer);
+		const auto current_dir	= math::GetLerpVector(m_move_dir, m_destination_dir, t);
+		m_velocity = current_dir * m_move_speed;
+	}
+	// 画面中央から撃たれた際の軌道で移動
+	else
+	{
+		m_velocity = m_destination_dir * m_move_speed;
+	}
 }
 
 void RocketBomb::CalcRayPos()

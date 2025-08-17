@@ -54,6 +54,10 @@ void CameraManager::LateUpdate()
 	BlendVirtualCamera();
 
 	m_main_camera->LateUpdate();
+
+	// FIXME : 必殺技用カメラが終了した際のブレンドがうまくいっていない？
+	//		 : 終了位置はずれていない
+	printfDx("is_blending : %d\n", IsBlending());
 }
 
 void CameraManager::RemoveVirtualCamera(const int obj_handle)
@@ -65,7 +69,6 @@ void CameraManager::RemoveVirtualCamera(const int obj_handle)
 		return pair.first == obj_handle;
 	});
 	m_priority.erase(remove, m_priority.end());
-
 }
 
 
