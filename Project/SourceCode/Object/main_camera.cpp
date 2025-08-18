@@ -39,6 +39,18 @@ void MainCamera::DrawToShadowMap() const
 void MainCamera::Draw() const
 {
 	if (!IsActive()) { return; }
+
+	//const auto p		= m_transform->GetPos    (CoordinateKind::kWorld);
+	//const auto forward	= m_transform->GetForward(CoordinateKind::kWorld);
+	//const auto up		= m_transform->GetUp     (CoordinateKind::kWorld);
+	//const auto right	= m_transform->GetRight  (CoordinateKind::kWorld);
+
+	//DrawSphere3D  (p,					  5, 8, GetColor(255, 255, 255), GetColor(255, 255, 255), TRUE);
+	//DrawCylinder3D(p, p + forward	* 10, 1, 8, GetColor(  0,   0, 255), GetColor(  0,   0, 255), TRUE);
+	//DrawCylinder3D(p, p + up		* 10, 1, 8, GetColor(  0, 255,   0), GetColor(  0, 255,   0), TRUE);
+	//DrawCylinder3D(p, p + right		* 10, 1, 8, GetColor(255,   0,   0), GetColor(255,   0,   0), TRUE);
+
+	//DrawFormatString(600, 0, 0xffffff, "%f, %f, %f", p.x, p.y, p.z);
 }
 
 void MainCamera::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
@@ -82,6 +94,7 @@ void MainCamera::SetAim()
 	const VECTOR target_pos	= pos + m_transform->GetForward(CoordinateKind::kWorld);
 
 	SetCameraPositionAndTarget_UpVecY(pos, target_pos);
+	//SetCameraPositionAndTarget_UpVecY(VGet(0, 300, 0), VGet(0, -1, 0));
 }
 
 void MainCamera::CalcRayPos()

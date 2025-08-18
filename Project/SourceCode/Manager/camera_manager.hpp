@@ -27,6 +27,7 @@ class CameraManager final : public SingletonBase<CameraManager>
 public:
 	void Update();
 	void LateUpdate();
+	void Draw() const;
 
 	/// @brief —Dæ‡ˆÊ‚ğƒ\[ƒg‚·‚é
 	template<virtual_camera_concepts::VirtualCameraT VirtualCameraT>
@@ -49,6 +50,8 @@ public:
 	template<virtual_camera_concepts::VirtualCameraT VirtualCameraT>
 	void AddVirtualCamera(const std::shared_ptr<VirtualCameraT> virtual_camera, const bool is_active)
 	{
+		int a = 0;
+
 		if (!m_virtual_cameras.count(virtual_camera->GetObjHandle()))
 		{
 			m_virtual_cameras[virtual_camera->GetObjHandle()] = virtual_camera;

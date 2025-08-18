@@ -88,7 +88,7 @@ VirtualCameraControllerKind ControlVirtualCamerasController::GetVirtualCameraCon
 	return m_virtual_camera_controller_kind;
 }
 
-std::shared_ptr<VirtualCameraBase> ControlVirtualCamerasController::GetHaveVirtualCamera(std::string& name) const
+std::shared_ptr<VirtualCameraBase> ControlVirtualCamerasController::GetHaveVirtualCamera(const std::string& name) const
 {
 	const auto camera_manager = CameraManager::GetInstance();
 	const auto camera = camera_manager->GetVirtualCamera(name);
@@ -109,7 +109,7 @@ std::vector<std::shared_ptr<VirtualCameraBase>> ControlVirtualCamerasController:
 		
 void ControlVirtualCamerasController::SetupForRotCamera()
 {
-	m_rot_control_camera->SetPriority(4);
+	m_rot_control_camera->SetPriority(5);
 	m_rot_control_camera->AttachTarget(m_aim_transform);
 
 	const auto body = m_rot_control_camera->GetBody();
@@ -124,7 +124,7 @@ void ControlVirtualCamerasController::SetupForRotCamera()
 
 void ControlVirtualCamerasController::SetupForAimCamera()
 {
-	m_aim_control_camera->SetPriority(5);
+	m_aim_control_camera->SetPriority(4);
 	m_aim_control_camera->AttachTarget(m_aim_transform);
 
 	const auto body = m_aim_control_camera->GetBody();

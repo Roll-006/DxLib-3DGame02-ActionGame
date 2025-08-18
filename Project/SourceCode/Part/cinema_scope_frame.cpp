@@ -47,12 +47,6 @@ void CinemaScopeFrame::Draw() const
 		m_down_frame_down_right_pos.x,
 		m_down_frame_down_right_pos.y,
 		0x000000, TRUE);
-
-	DrawFormatString(0,  60, 0xffffff, "m_thickness : %d", m_thickness);
-	DrawFormatString(0,  80, 0xffffff, "m_up_frame_up_left_pos : %d, %d", m_up_frame_up_left_pos.x, m_up_frame_up_left_pos.y);
-	DrawFormatString(0, 100, 0xffffff, "m_up_frame_down_right_pos : %d, %d", m_up_frame_down_right_pos.x, m_up_frame_down_right_pos.y);
-	DrawFormatString(0, 120, 0xffffff, "m_down_frame_up_left_pos : %d, %d", m_down_frame_up_left_pos.x, m_down_frame_up_left_pos.y);
-	DrawFormatString(0, 140, 0xffffff, "m_down_frame_down_right_pos : %d, %d", m_down_frame_down_right_pos.x, m_down_frame_down_right_pos.y);
 }
 
 void CinemaScopeFrame::SetIncreaseThickness(const float speed)

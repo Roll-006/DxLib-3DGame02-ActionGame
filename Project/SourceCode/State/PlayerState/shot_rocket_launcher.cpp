@@ -62,6 +62,8 @@ void player_state::ShotRocketLauncher::Enter(Player* obj)
 	m_was_shot	 = false;
 
 	// 演出用カメラを生成
+	// MEMO : この段階で操作カメラのトランスフォーム情報が削除
+
 	const auto camera_manager = CameraManager::GetInstance();
 	m_rocket_launcher_camera_controller = std::make_shared<RocketLauncherVirtualCameraController>(*obj);
 	camera_manager->AddVirtualCameraController(m_rocket_launcher_camera_controller);
@@ -81,10 +83,7 @@ void player_state::ShotRocketLauncher::Exit(Player* obj)
 	const auto camera_control	  = CameraManager::GetInstance()->GetVirtualCameraController(VirtualCameraControllerKind::kControl);
 	const auto control_all_camra  = camera_control->GetHaveAllVirtualCamera();
 	camera_control->Activate();
-	for (const auto& camera : control_all_camra)
-	{
-		camera->Activate();
-	}
+	camera_control->GetHaveVirtualCamera(ObjName.ROT_CONTROL_VIRTUAL_CAMERA)->Activate();
 
 	// 演出終了後にリコイル処理
 	//const auto gun = std::static_pointer_cast<GunBase>(obj->GetCurrentHeldWeapon());

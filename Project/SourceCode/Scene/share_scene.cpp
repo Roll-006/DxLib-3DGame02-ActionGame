@@ -49,5 +49,6 @@ void ShareScene::DrawToShadowMap() const
 
 void ShareScene::Draw() const
 {
-	m_player->Draw();
+	m_player					->Draw();
+	CameraManager::GetInstance()->Draw();
 }

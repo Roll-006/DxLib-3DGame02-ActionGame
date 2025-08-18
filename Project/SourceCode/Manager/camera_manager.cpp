@@ -55,9 +55,23 @@ void CameraManager::LateUpdate()
 
 	m_main_camera->LateUpdate();
 
-	// FIXME : 必殺技用カメラが終了した際のブレンドがうまくいっていない？
-	//		 : 終了位置はずれていない
-	printfDx("is_blending : %d\n", IsBlending());
+
+
+	const auto m1 = GetVirtualCamera(ObjName.ROT_CONTROL_VIRTUAL_CAMERA)->GetTransform()->GetMatrix(CoordinateKind::kWorld);
+	matrix::Draw(  0, 0, m1);
+
+	const auto m2 = GetVirtualCamera(ObjName.AIM_CONTROL_VIRTUAL_CAMERA)->GetTransform()->GetMatrix(CoordinateKind::kWorld);
+	matrix::Draw(800, 0, m2);
+}
+
+void CameraManager::Draw() const
+{
+	for (const auto& camera : m_virtual_cameras)
+	{
+		camera.second->Draw();
+	}
+
+	m_main_camera->Draw();
 }
 
 void CameraManager::RemoveVirtualCamera(const int obj_handle)
@@ -211,9 +225,16 @@ void CameraManager::SetBlendTransform()
 	{
 		const auto camera = GetVirtualCamera(pr.first);
 
+		//if (camera->GetName() == ObjName.ROT_CONTROL_VIRTUAL_CAMERA)
+		//{
+		//	matrix::Draw(0, 200, camera->GetTransform()->GetMatrix(CoordinateKind::kWorld));
+		//	DrawFormatString(0, 180, 0xffffff, "%d", camera->IsActive());
+		//}
+
 		// アクティブであるかつ、ターゲットがまだ設定されていない場合、ターゲットを設定する
 		if (camera->IsActive() && !is_seted_target_transform)
 		{
+			// FIXME : カット演出から切り替わった際、操作カメラの行列が単位行列である場合がある
 			target_camera = camera;
 			m_blend_target_transform = target_camera->GetTransform();
 			ChangeTargetVirtualCamera(pr.first);
@@ -247,6 +268,8 @@ void CameraManager::SetBlendTransform()
 
 		if (is_seted_target_transform && is_seted_origin_transform) { break; }
 	}
+
+	//matrix::Draw(0, 400, m_blend_target_transform->GetMatrix(CoordinateKind::kWorld));
 
 	// ターゲットのブレンド方針に従ってターゲット以外のカメラのアクティブ状態を制御
 	DeactivateVirtualCamera(origin_camera, target_camera);

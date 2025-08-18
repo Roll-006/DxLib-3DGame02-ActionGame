@@ -151,19 +151,19 @@ void Player::Draw() const
 
 	//DrawFormatString(500, 40, 0xffffff, "%f", m_velocity.y);
 	//
-	const auto look_dir_current = m_look_dir.at(TimeKind::kCurrent);
+	//const auto look_dir_current = m_look_dir.at(TimeKind::kCurrent);
 	//const auto look_dir_next	= m_look_dir.at(TimeKind::kNext);
-	DrawFormatString(0,  80, 0xffffff, "look_dir_current : %f %f, %f", look_dir_current.x, look_dir_current.y, look_dir_current.z);
+	const auto p = m_transform->GetPos(CoordinateKind::kWorld) + VGet(0, 40, 0);
+	//DrawFormatString(0, 80, 0xffffff, "pos : %f %f, %f", p.x, p.y, p.z);
 	//DrawFormatString(0, 100, 0xffffff, "look_dir_next    : %f %f, %f", look_dir_next.x,    look_dir_next.y,    look_dir_next.z);
 	//
-	//const auto p = m_transform->GetPos(CoordinateKind::kWorld) + VGet(0, 40, 0);
 	//DrawLine3D(p, p + look_dir_current * 100, 0xff0000);
 	//DrawLine3D(p, p + look_dir_next    * 100, 0xffffff);
 	//
 	//DrawFormatString(0,   20, 0xffffff, "m_current_remaining_bullet_num : %d", m_current_remaining_bullet_num);
-	DrawFormatString(500, 20, 0xffffff, "move_speed       : %f", m_move_speed);
-	DrawFormatString(500, 40, 0xffffff, "m_look_dir_offset_angle    : %f", m_look_dir_offset_angle * math::kRadToDeg);
-	DrawFormatString(500, 60, 0xffffff, "move_dir_current : %f, %f ,%f", m_move_dir.at(TimeKind::kCurrent).x, m_move_dir.at(TimeKind::kCurrent).y, m_move_dir.at(TimeKind::kCurrent).z);
+	//DrawFormatString(500, 20, 0xffffff, "move_speed       : %f", m_move_speed);
+	//DrawFormatString(500, 40, 0xffffff, "m_look_dir_offset_angle    : %f", m_look_dir_offset_angle * math::kRadToDeg);
+	//DrawFormatString(500, 60, 0xffffff, "move_dir_current : %f, %f ,%f", m_move_dir.at(TimeKind::kCurrent).x, m_move_dir.at(TimeKind::kCurrent).y, m_move_dir.at(TimeKind::kCurrent).z);
 	//if(m_current_held_weapon)DrawFormatString(0, 20, 0xffffff, "%s", m_current_held_weapon->GetName().c_str());
 }
 

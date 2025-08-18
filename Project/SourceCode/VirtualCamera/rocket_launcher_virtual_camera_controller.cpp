@@ -31,12 +31,20 @@ RocketLauncherVirtualCameraController::RocketLauncherVirtualCameraController(Pla
 	SetupForExitRotCamera();
 
 	const auto camera_manager = CameraManager::GetInstance();
-	camera_manager->GetVirtualCameraController(VirtualCameraControllerKind::kControl)->Deactivate();
+
+	const auto control_camera = camera_manager->GetVirtualCameraController(VirtualCameraControllerKind::kControl);
+	control_camera->Deactivate();
 	camera_manager->SetBlendTime(1.4f);
 	camera_manager->AddVirtualCamera(m_enter_rot_camera,	true);
 	camera_manager->AddVirtualCamera(m_zoom_in_camera,		false);
 	camera_manager->AddVirtualCamera(m_zoom_out_camera,		false);
 	camera_manager->AddVirtualCamera(m_exit_rot_camera,		false);
+
+	// TODO : 仮で保存。後に削除
+	const auto rot_camera = control_camera->GetHaveVirtualCamera(ObjName.ROT_CONTROL_VIRTUAL_CAMERA);
+	const auto aim_camera = control_camera->GetHaveVirtualCamera(ObjName.AIM_CONTROL_VIRTUAL_CAMERA);
+	const auto t1 = camera_manager->GetVirtualCamera(ObjName.ROT_CONTROL_VIRTUAL_CAMERA)->GetTransform();
+	const auto t2 = camera_manager->GetVirtualCamera(ObjName.AIM_CONTROL_VIRTUAL_CAMERA)->GetTransform();
 
 	// オブザーバー登録
 	const auto screen_filter = UIDrawer::GetInstance()->GetUICreator(UICreatorName.SCREEN_FILTER_CREATOR);
@@ -46,6 +54,8 @@ RocketLauncherVirtualCameraController::RocketLauncherVirtualCameraController(Pla
 	// 演出開始通知
 	const Event<StartRocketLauncherCutsceneData> event = { EventKind::kEndRocketLauncherCutscene, {0.0f, 0.007f, 0.0f} };
 	m_subject->Notify(event);
+
+	// MEMO : この段階では操作カメラのトランスフォームの値は生存
 }
 
 RocketLauncherVirtualCameraController::~RocketLauncherVirtualCameraController()
@@ -84,7 +94,7 @@ VirtualCameraControllerKind RocketLauncherVirtualCameraController::GetVirtualCam
 	return m_virtual_camera_controller_kind;
 }
 
-std::shared_ptr<VirtualCameraBase> RocketLauncherVirtualCameraController::GetHaveVirtualCamera(std::string& name) const
+std::shared_ptr<VirtualCameraBase> RocketLauncherVirtualCameraController::GetHaveVirtualCamera(const std::string& name) const
 {
 	const auto camera_manager = CameraManager::GetInstance();
 	const auto camera = camera_manager->GetVirtualCamera(name);
@@ -262,8 +272,8 @@ void RocketLauncherVirtualCameraController::CalcAimTransformForExitRotCamera()
 	m_rot_camera_aim_transform->SetPos(CoordinateKind::kWorld, aim_pos);
 
 	// 回転量を計算
-	//const float acc = kExitRotAcceleration * m_exit_rot_camera->GetDeltaTime();
-	const float acc = 0.5f * m_exit_rot_camera->GetDeltaTime();
+	const float acc = kExitRotAcceleration * m_exit_rot_camera->GetDeltaTime();
+	//const float acc = 0.5f * m_exit_rot_camera->GetDeltaTime();
 	math::Decrease(m_rot_camera_angle.y, acc, -DX_TWO_PI_F);
 
 	// オフセット値を計算
@@ -277,7 +287,7 @@ void RocketLauncherVirtualCameraController::CalcAimTransformForExitRotCamera()
 		m_subject->Notify(event);
 
 		const auto camera_manager = CameraManager::GetInstance();
-		camera_manager->SetBlendTime(10.0f);
+		camera_manager->SetBlendTime(0.0f);
 	}
 }
 #pragma endregion
