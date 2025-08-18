@@ -272,8 +272,8 @@ void RocketLauncherVirtualCameraController::CalcAimTransformForExitRotCamera()
 	m_rot_camera_aim_transform->SetPos(CoordinateKind::kWorld, aim_pos);
 
 	// 回転量を計算
-	const float acc = kExitRotAcceleration * m_exit_rot_camera->GetDeltaTime();
-	//const float acc = 0.5f * m_exit_rot_camera->GetDeltaTime();
+	//const float acc = kExitRotAcceleration * m_exit_rot_camera->GetDeltaTime();
+	const float acc = 0.8f * m_exit_rot_camera->GetDeltaTime();
 	math::Decrease(m_rot_camera_angle.y, acc, -DX_TWO_PI_F);
 
 	// オフセット値を計算
