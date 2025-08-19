@@ -273,7 +273,7 @@ void RocketLauncherVirtualCameraController::CalcAimTransformForExitRotCamera()
 	math::Decrease(m_rot_camera_angle.y, acc, -DX_TWO_PI_F);
 
 	// オフセット値を計算
-	m_follow_offset_for_exit_rot.z -= 60.0f * m_exit_rot_camera->GetDeltaTime();
+	m_follow_offset_for_exit_rot.z -= 50.0f * m_exit_rot_camera->GetDeltaTime();
 	m_exit_rot_camera->GetBody()->SetFollowOffset(m_follow_offset_for_exit_rot);
 
 	if (IsEndExitRot())

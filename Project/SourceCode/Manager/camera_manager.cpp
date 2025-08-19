@@ -54,14 +54,6 @@ void CameraManager::LateUpdate()
 	BlendVirtualCamera();
 
 	m_main_camera->LateUpdate();
-
-
-
-	const auto m1 = GetVirtualCamera(ObjName.ROT_CONTROL_VIRTUAL_CAMERA)->GetTransform()->GetMatrix(CoordinateKind::kWorld);
-	matrix::Draw(  0, 0, m1);
-
-	const auto m2 = GetVirtualCamera(ObjName.AIM_CONTROL_VIRTUAL_CAMERA)->GetTransform()->GetMatrix(CoordinateKind::kWorld);
-	matrix::Draw(800, 0, m2);
 }
 
 void CameraManager::Draw() const

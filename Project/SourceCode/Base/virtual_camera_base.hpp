@@ -47,5 +47,4 @@ protected:
 
 private:
 	int								m_priority;							// —Dæ“x
-	bool							m_;
 };

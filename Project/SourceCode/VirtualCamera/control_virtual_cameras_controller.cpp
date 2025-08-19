@@ -22,7 +22,7 @@ ControlVirtualCamerasController::ControlVirtualCamerasController(Player& player)
 	// ƒpƒ‰ƒ[ƒ^Ý’è
 	SetupForRotCamera();
 	SetupForAimCamera();
-
+	
 	const auto camera_manager = CameraManager::GetInstance();
 	camera_manager->SetBlendTime(1.0f);
 	camera_manager->AddVirtualCamera(m_rot_control_camera, true);

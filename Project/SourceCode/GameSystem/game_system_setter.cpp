@@ -47,4 +47,6 @@ void GameSystemSetter::SetUpGameSystem()
 	SetFogColor(48, 49, 56);
 	SetFogStartEnd(200.f, 4500.0f);
 	SetFogDensity(0.1f);
+
+	SetFontUseAdjustSizeFlag(FALSE);
 }
