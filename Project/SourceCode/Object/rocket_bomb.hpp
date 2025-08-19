@@ -31,6 +31,7 @@ public:
 
 	[[nodiscard]] float	GetDeltaTime() const override;
 	[[nodiscard]] bool  IsReturnPool() override;
+	[[nodiscard]] std::string GetShotOwnerName() const override { return m_shot_owner_name; }
 
 private:
 	/// @brief ˆÚ“®•ûŒü‚ğp¨‚É“K—p‚·‚é
@@ -46,7 +47,7 @@ private:
 
 	std::shared_ptr<Modeler>				m_modeler;
 	std::shared_ptr<Subject<RocketBomb>>	m_subject;
-	std::string								m_time_scale_owner_name;
+	std::string								m_shot_owner_name;
 
 	VECTOR m_destination_dir;
 

@@ -30,6 +30,7 @@ public:
 
 	[[nodiscard]] float	GetDeltaTime() const override;
 	[[nodiscard]] bool  IsReturnPool() override;
+	[[nodiscard]] std::string GetShotOwnerName() const override { return m_shot_owner_name; }
 
 private:
 	void Move();
@@ -37,7 +38,7 @@ private:
 
 private:
 	std::shared_ptr<Subject<Bullet>> m_subject;
-	std::string m_time_scale_owner_name;
+	std::string m_shot_owner_name;
 
 	VECTOR m_move_dir;
 	VECTOR m_prev_pos;

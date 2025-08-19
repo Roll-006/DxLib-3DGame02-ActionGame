@@ -5,7 +5,7 @@
 Bullet::Bullet() :
 	PhysicalObjBase			(ObjName.BULLET, ObjTag.BULLET, MassKind::kLight),
 	m_subject				(std::make_shared<Subject<Bullet>>()),
-	m_time_scale_owner_name	(""),
+	m_shot_owner_name		(""),
 	m_move_dir				(v3d::GetZeroV()),
 	m_prev_pos				(v3d::GetZeroV()),
 	m_first_pos				(v3d::GetZeroV()),
@@ -25,7 +25,7 @@ Bullet::~Bullet()
 
 void Bullet::Init()
 {
-	m_time_scale_owner_name = "";
+	m_shot_owner_name		= "";
 	m_velocity				= v3d::GetZeroV();
 	m_fall_velocity			= v3d::GetZeroV();
 }
@@ -87,15 +87,15 @@ void Bullet::AddToObjManager()
 
 void Bullet::OnShot(GunBase& gun)
 {
-	m_time_scale_owner_name = gun.GetOwnerName();
+	m_shot_owner_name	= gun.GetOwnerName();
 
-	m_first_pos		= gun.GetFirstShotPos();
+	m_first_pos			= gun.GetFirstShotPos();
 	m_transform->SetPos(CoordinateKind::kWorld, m_first_pos);
-	m_prev_pos		= m_first_pos;
-	m_move_dir		= gun.GetShotDir();
-	m_move_speed	= gun.GetInitialVelocity();
-	m_deceleration	= gun.GetDeceleration();
-	m_range			= gun.GetRange();
+	m_prev_pos			= m_first_pos;
+	m_move_dir			= gun.GetShotDir();
+	m_move_speed		= gun.GetInitialVelocity();
+	m_deceleration		= gun.GetDeceleration();
+	m_range				= gun.GetRange();
 
 	const Event<OnShotBulletData> event = { EventKind::kOnShotBullet, { GetName(), gun.GetOwnerName(), GetObjHandle(), m_transform}};
 	m_subject->Notify(event);
@@ -105,7 +105,7 @@ float Bullet::GetDeltaTime() const
 {
 	const auto time_manager = GameTimeManager::GetInstance();
 
-	return m_time_scale_owner_name == ObjName.PLAYER
+	return m_shot_owner_name == ObjName.PLAYER
 		? time_manager->GetDeltaTime(TimeScaleController::LayerKind::kPlayer)
 		: time_manager->GetDeltaTime(TimeScaleController::LayerKind::kWorld);
 }

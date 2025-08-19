@@ -6,7 +6,7 @@ RocketBomb::RocketBomb() :
 	PhysicalObjBase			(ObjName.ROCKET_BOMB, ObjTag.BULLET, MassKind::kLight),
 	m_modeler				(std::make_shared<Modeler>(m_transform, ModelPath.ROCKET_BOMB, kBasicAngle, kBasicScale)),
 	m_subject				(std::make_shared<Subject<RocketBomb>>()),
-	m_time_scale_owner_name	(""),
+	m_shot_owner_name		(""),
 	m_move_dir				(v3d::GetZeroV()),
 	m_prev_pos				(v3d::GetZeroV()),
 	m_first_pos				(v3d::GetZeroV()),
@@ -28,7 +28,7 @@ RocketBomb::~RocketBomb()
 
 void RocketBomb::Init()
 {
-	m_time_scale_owner_name = "";
+	m_shot_owner_name		= "";
 	m_velocity				= v3d::GetZeroV();
 	m_fall_velocity			= v3d::GetZeroV();
 	m_blend_timer			= 0.0f;
@@ -102,7 +102,7 @@ void RocketBomb::AddToObjManager()
 
 void RocketBomb::OnShot(GunBase& gun)
 {
-	m_time_scale_owner_name = gun.GetOwnerName();
+	m_shot_owner_name	= gun.GetOwnerName();
 
 	m_transform->SetMatrix(CoordinateKind::kWorld, gun.GetMuzzleTransform()->GetMatrix(CoordinateKind::kWorld));
 	m_first_pos			= m_transform->GetPos(CoordinateKind::kWorld) + gun.GetTransform()->GetForward(CoordinateKind::kWorld);
@@ -122,7 +122,7 @@ float RocketBomb::GetDeltaTime() const
 {
 	const auto time_manager = GameTimeManager::GetInstance();
 
-	return m_time_scale_owner_name == ObjName.PLAYER
+	return m_shot_owner_name == ObjName.PLAYER
 		? time_manager->GetDeltaTime(TimeScaleController::LayerKind::kPlayer)
 		: time_manager->GetDeltaTime(TimeScaleController::LayerKind::kWorld);
 }
