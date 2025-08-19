@@ -77,14 +77,7 @@ void player_state::ShotRocketLauncher::Exit(Player* obj)
 	// 演出用カメラを削除
 	const auto camera_manager = CameraManager::GetInstance();
 	camera_manager->RemoveVirtualCameraController(m_rocket_launcher_camera_controller);
-	m_rocket_launcher_camera_controller->GetHaveVirtualCamera(ObjName.ROCKET_LAUNCHER_EXIT_ROT_VIRTUAL_CAMERA)->Deactivate();
 	m_rocket_launcher_camera_controller = nullptr;
-
-	// 操作カメラを復帰
-	const auto camera_control	  = CameraManager::GetInstance()->GetVirtualCameraController(VirtualCameraControllerKind::kControl);
-	const auto control_all_camra  = camera_control->GetHaveAllVirtualCamera();
-	camera_control->Activate();
-	camera_control->GetHaveVirtualCamera(ObjName.ROT_CONTROL_VIRTUAL_CAMERA)->Activate();
 
 	// 演出終了後にリコイル処理
 	//const auto gun = std::static_pointer_cast<GunBase>(obj->GetCurrentHeldWeapon());

@@ -40,12 +40,6 @@ RocketLauncherVirtualCameraController::RocketLauncherVirtualCameraController(Pla
 	camera_manager->AddVirtualCamera(m_zoom_out_camera,		false);
 	camera_manager->AddVirtualCamera(m_exit_rot_camera,		false);
 
-	// TODO : 仮で保存。後に削除
-	const auto rot_camera = control_camera->GetHaveVirtualCamera(ObjName.ROT_CONTROL_VIRTUAL_CAMERA);
-	const auto aim_camera = control_camera->GetHaveVirtualCamera(ObjName.AIM_CONTROL_VIRTUAL_CAMERA);
-	const auto t1 = camera_manager->GetVirtualCamera(ObjName.ROT_CONTROL_VIRTUAL_CAMERA)->GetTransform();
-	const auto t2 = camera_manager->GetVirtualCamera(ObjName.AIM_CONTROL_VIRTUAL_CAMERA)->GetTransform();
-
 	// オブザーバー登録
 	const auto screen_filter = UIDrawer::GetInstance()->GetUICreator(UICreatorName.SCREEN_FILTER_CREATOR);
 	m_subject->AddObserver(std::dynamic_pointer_cast<IObserver>(screen_filter));
@@ -64,6 +58,7 @@ RocketLauncherVirtualCameraController::~RocketLauncherVirtualCameraController()
 	camera_manager->RemoveVirtualCamera(m_enter_rot_camera	->GetObjHandle());
 	camera_manager->RemoveVirtualCamera(m_zoom_in_camera	->GetObjHandle());
 	camera_manager->RemoveVirtualCamera(m_zoom_out_camera	->GetObjHandle());
+	camera_manager->RemoveVirtualCamera(m_exit_rot_camera	->GetObjHandle());
 
 	// FIXME : ブレンドの起点にする必要があるため破棄できない。ブレンドが終了したら自動的にremoveする機能が必要な可能性あり
 	//camera_manager->RemoveVirtualCamera(m_exit_rot_camera	->GetObjHandle());
@@ -289,6 +284,13 @@ void RocketLauncherVirtualCameraController::CalcAimTransformForExitRotCamera()
 
 		const auto camera_manager = CameraManager::GetInstance();
 		camera_manager->SetBlendTime(1.0f);
+
+		m_exit_rot_camera->Deactivate();
+
+		// 操作カメラの復帰
+		const auto control_cameras_controller = camera_manager->GetVirtualCameraController(VirtualCameraControllerKind::kControl);
+		control_cameras_controller->Activate();
+		control_cameras_controller->GetHaveVirtualCamera(ObjName.ROT_CONTROL_VIRTUAL_CAMERA)->Activate();
 	}
 }
 #pragma endregion
