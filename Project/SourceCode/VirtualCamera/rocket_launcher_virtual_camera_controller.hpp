@@ -19,6 +19,8 @@ public:
 	void Activate()   override { m_is_active = true;  }
 	void Deactivate() override { m_is_active = false; }
 
+	void SetRocketBombTransform(const std::shared_ptr<Transform> rocket_bomb_transform) { m_rocket_bomb_transform = rocket_bomb_transform; }
+
 	[[nodiscard]] VirtualCameraControllerKind GetVirtualCameraControllerKind() const override;
 	[[nodiscard]] std::shared_ptr<VirtualCameraBase> GetHaveVirtualCamera(const std::string& name) const override;
 	[[nodiscard]] std::vector<std::shared_ptr<VirtualCameraBase>> GetHaveAllVirtualCamera()  const override;
@@ -60,7 +62,8 @@ private:
 	int								m_controller_handle;
 	bool							m_is_active;
 
-	Player& m_player;
+	Player&							m_player;
+	std::shared_ptr<Transform>		m_rocket_bomb_transform;
 	std::shared_ptr<Subject<RocketLauncherVirtualCameraController>> m_subject;
 
 	std::shared_ptr<VirtualCamera>	m_enter_rot_camera;
@@ -70,7 +73,6 @@ private:
 
 	std::shared_ptr<Transform>		m_rot_camera_aim_transform;
 	std::shared_ptr<Transform>		m_zoom_camera_aim_transform;
-	std::shared_ptr<Transform>		m_rocket_bomb_transform;
 
 	VECTOR	m_follow_offset_for_zoom_in;
 	VECTOR	m_follow_offset_for_zoom_out;

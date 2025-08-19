@@ -8,6 +8,7 @@ RocketLauncherVirtualCameraController::RocketLauncherVirtualCameraController(Pla
 	m_controller_handle				(HandleCreator::GetInstance()->CreateHandle()),
 	m_is_active						(true),
 	m_player						(player),
+	m_rocket_bomb_transform			(nullptr),
 	m_subject						(std::make_shared<Subject<RocketLauncherVirtualCameraController>>()),
 	m_enter_rot_camera				(std::make_shared<VirtualCamera>(ObjName.ROCKET_LAUNCHER_ENTER_ROT_VIRTUAL_CAMERA,	BlendActivationPolicyKind::kDeactivateAllCamera)),
 	m_zoom_in_camera				(std::make_shared<VirtualCamera>(ObjName.ROCKET_LAUNCHER_ZOOM_IN_VIRTUAL_CAMERA,	BlendActivationPolicyKind::kDeactivateAllCamera)),
@@ -15,7 +16,6 @@ RocketLauncherVirtualCameraController::RocketLauncherVirtualCameraController(Pla
 	m_exit_rot_camera				(std::make_shared<VirtualCamera>(ObjName.ROCKET_LAUNCHER_EXIT_ROT_VIRTUAL_CAMERA,	BlendActivationPolicyKind::kDeactivateAllCamera)),
 	m_rot_camera_aim_transform		(std::make_shared<Transform>()),
 	m_zoom_camera_aim_transform		(std::make_shared<Transform>()),
-	m_rocket_bomb_transform			(nullptr),
 	m_follow_offset_for_zoom_in		(kFirstFollowOffsetForZoomInCamera),
 	m_follow_offset_for_zoom_out	(v3d::GetZeroV()),
 	m_follow_offset_for_exit_rot	(v3d::GetZeroV()),
@@ -257,24 +257,21 @@ void RocketLauncherVirtualCameraController::CalcAimTransformForExitRotCamera()
 	if (!m_exit_rot_camera->IsActive()) { return; }
 
 	// 追跡するボーンから行列を取得
-	const auto	model_handle	= m_player.GetModeler()->GetModelHandle();
-	const auto	hand_index		= MV1SearchFrame(model_handle, BonePath.RIGHT_HAND);
-	auto		hand_world_m	= MV1GetFrameLocalWorldMatrix(model_handle, hand_index);
-	const auto	aim_pos			= MGetTranslateElem(hand_world_m);
-	const auto  offset_rot		= math::ConvertEulerAnglesToXYZRotMatrix(VGet(-90.0f * math::kDegToRad, -90.0f * math::kDegToRad, 0.0f));
-	auto		aim_rot			= math::ConvertEulerAnglesToXYZRotMatrix(m_rot_camera_angle) * offset_rot * MGetRotElem(hand_world_m);
+	auto aim_rot = math::ConvertEulerAnglesToXYZRotMatrix(m_rot_camera_angle) * m_rocket_bomb_transform->GetRotMatrix(CoordinateKind::kWorld);
 
 	// カメラの追跡対象となるトランスフォームの情報を更新
 	m_rot_camera_aim_transform->SetRot(CoordinateKind::kWorld, aim_rot);
-	m_rot_camera_aim_transform->SetPos(CoordinateKind::kWorld, aim_pos);
+	m_rot_camera_aim_transform->SetPos(CoordinateKind::kWorld, m_rocket_bomb_transform->GetPos(CoordinateKind::kWorld));
 
 	// 回転量を計算
-	const float acc = kExitRotAcceleration * m_exit_rot_camera->GetDeltaTime();
+	//const float acc = kExitRotAcceleration * m_exit_rot_camera->GetDeltaTime();
+	const float acc = 0.1f * m_exit_rot_camera->GetDeltaTime();
 	math::Decrease(m_rot_camera_angle.y, acc, -DX_TWO_PI_F);
 
 	// オフセット値を計算
-	m_follow_offset_for_exit_rot.z -= 50.0f * m_exit_rot_camera->GetDeltaTime();
-	m_exit_rot_camera->GetBody()->SetFollowOffset(m_follow_offset_for_exit_rot);
+	//m_follow_offset_for_exit_rot.z -= 50.0f * m_exit_rot_camera->GetDeltaTime();
+	//m_exit_rot_camera->GetBody()->SetFollowOffset(m_follow_offset_for_exit_rot);
+	m_exit_rot_camera->GetBody()->SetFollowOffset(VGet(0, 0, -50));
 
 	if (IsEndExitRot())
 	{

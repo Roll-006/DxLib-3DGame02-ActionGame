@@ -17,7 +17,7 @@ RocketBomb::RocketBomb() :
 	SetColliderModelHandle(m_modeler->GetModelHandle());
 
 	AddCollider(std::make_shared<Collider>(ColliderKind::kRayCast, std::make_shared<Segment>(), this));
-
+	
 	EffectManager::GetInstance()->AddToSubject<RocketBomb>(m_subject);
 }
 
@@ -66,6 +66,10 @@ void RocketBomb::Draw() const
 	m_modeler->Draw();
 
 	DrawSphere3D(m_transform->GetPos(CoordinateKind::kWorld), 2, 8, 0xffffff, 0xffffff, TRUE);
+
+	const auto axes = m_transform->GetAxes(CoordinateKind::kWorld);
+	const auto pos = m_transform->GetPos(CoordinateKind::kWorld);
+	axis::Draw(axes, pos, 100);
 	//std::dynamic_pointer_cast<Segment>(GetCollider(ColliderKind::kRayCast)->GetShape())->Draw(false, 0, 0xffffff);
 }
 
@@ -116,6 +120,20 @@ void RocketBomb::OnShot(GunBase& gun)
 
 	const Event<OnShotBulletData> event = { EventKind::kOnShotBullet, { GetName(), gun.GetOwnerName(), GetObjHandle(), m_transform}};
 	m_subject->Notify(event);
+
+	// 必殺技専用カメラにトランスフォーム情報を設定
+	// プレイヤーが撃った場合のみ設定
+	// TODO : 操作キャラクター用インターフェイスを継承したものにのみ反応しすシステムのほうが良い可能性あり
+	// MEMO : プレイヤーが一人の場合にしか対応していない
+	if (m_shot_owner_name == ObjName.PLAYER)
+	{
+		const auto camera_manager = CameraManager::GetInstance();
+		const auto camera_controller = std::dynamic_pointer_cast<RocketLauncherVirtualCameraController>(camera_manager->GetVirtualCameraController(VirtualCameraControllerKind::kRocketLauncherCutscene));
+		if (camera_controller)
+		{
+			camera_controller->SetRocketBombTransform(m_transform);
+		}
+	}
 }
 
 float RocketBomb::GetDeltaTime() const
