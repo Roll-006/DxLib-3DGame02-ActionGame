@@ -48,7 +48,7 @@ private:
 	static constexpr VECTOR kFirstAngleForEnterRotCamera				= { 0.0f, 0.0f * math::kDegToRad, 0.0f };
 
 	static constexpr float  kEnterRotAcceleration						= 0.7f;
-	static constexpr float  kExitRotAcceleration						= 2.5f;
+	static constexpr float  kExitRotAcceleration						= 1.5f;
 	static constexpr float  kZoomOutDeceleration						= 12.0f;
 	static constexpr float  kZoomOutMaxDeceleration						= 0.3f;
 	static constexpr float  kZoomOutInitialVelocity						= 1.0f;

@@ -1128,6 +1128,9 @@
     <Filter Include="Manager">
       <UniqueIdentifier>{69894637-334e-46d6-be72-079330c80427}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{6e63f400-6b05-4fc8-a6aa-4c6d33790181}</UniqueIdentifier>
+    </Filter>
     <Filter Include="State">
       <UniqueIdentifier>{9a691bb4-740c-48d4-baec-fd67b8b9b808}</UniqueIdentifier>
     </Filter>
@@ -1139,9 +1142,6 @@
     </Filter>
     <Filter Include="State\CameraState">
       <UniqueIdentifier>{ff495161-2f03-4c6e-a508-ddbb081ecd2c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Input">
-      <UniqueIdentifier>{6e63f400-6b05-4fc8-a6aa-4c6d33790181}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

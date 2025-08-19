@@ -64,7 +64,9 @@ RocketLauncherVirtualCameraController::~RocketLauncherVirtualCameraController()
 	camera_manager->RemoveVirtualCamera(m_enter_rot_camera	->GetObjHandle());
 	camera_manager->RemoveVirtualCamera(m_zoom_in_camera	->GetObjHandle());
 	camera_manager->RemoveVirtualCamera(m_zoom_out_camera	->GetObjHandle());
-	camera_manager->RemoveVirtualCamera(m_exit_rot_camera	->GetObjHandle());
+
+	// FIXME : ブレンドの起点にする必要があるため破棄できない。ブレンドが終了したら自動的にremoveする機能が必要な可能性あり
+	//camera_manager->RemoveVirtualCamera(m_exit_rot_camera	->GetObjHandle());
 }
 
 void RocketLauncherVirtualCameraController::Init()
@@ -272,12 +274,11 @@ void RocketLauncherVirtualCameraController::CalcAimTransformForExitRotCamera()
 	m_rot_camera_aim_transform->SetPos(CoordinateKind::kWorld, aim_pos);
 
 	// 回転量を計算
-	//const float acc = kExitRotAcceleration * m_exit_rot_camera->GetDeltaTime();
-	const float acc = 0.8f * m_exit_rot_camera->GetDeltaTime();
+	const float acc = kExitRotAcceleration * m_exit_rot_camera->GetDeltaTime();
 	math::Decrease(m_rot_camera_angle.y, acc, -DX_TWO_PI_F);
 
 	// オフセット値を計算
-	m_follow_offset_for_exit_rot.z -= 10.0f * m_exit_rot_camera->GetDeltaTime();
+	m_follow_offset_for_exit_rot.z -= 60.0f * m_exit_rot_camera->GetDeltaTime();
 	m_exit_rot_camera->GetBody()->SetFollowOffset(m_follow_offset_for_exit_rot);
 
 	if (IsEndExitRot())
@@ -287,7 +288,7 @@ void RocketLauncherVirtualCameraController::CalcAimTransformForExitRotCamera()
 		m_subject->Notify(event);
 
 		const auto camera_manager = CameraManager::GetInstance();
-		camera_manager->SetBlendTime(0.0f);
+		camera_manager->SetBlendTime(1.0f);
 	}
 }
 #pragma endregion

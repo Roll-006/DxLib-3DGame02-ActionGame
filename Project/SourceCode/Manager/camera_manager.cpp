@@ -187,10 +187,6 @@ void CameraManager::BlendVirtualCamera()
 
 	// メインカメラへ適用
 	m_main_camera->GetTransform()->SetMatrix(CoordinateKind::kWorld, m_blend_result_transform->GetMatrix(CoordinateKind::kWorld));
-
-	//if(m_blend_result_transform)matrix::Draw(  0,  40, m_blend_result_transform->GetMatrix(CoordinateKind::kWorld));
-	//if(m_blend_origin_transform)matrix::Draw(  0, 140, m_blend_origin_transform->GetMatrix(CoordinateKind::kWorld));
-	//if(m_blend_target_transform)matrix::Draw(700, 140, m_blend_target_transform->GetMatrix(CoordinateKind::kWorld));
 }
 
 void CameraManager::ChangeTargetVirtualCamera(const int obj_handle)
@@ -224,12 +220,6 @@ void CameraManager::SetBlendTransform()
 	for (const auto& pr : m_priority)
 	{
 		const auto camera = GetVirtualCamera(pr.first);
-
-		//if (camera->GetName() == ObjName.ROT_CONTROL_VIRTUAL_CAMERA)
-		//{
-		//	matrix::Draw(0, 200, camera->GetTransform()->GetMatrix(CoordinateKind::kWorld));
-		//	DrawFormatString(0, 180, 0xffffff, "%d", camera->IsActive());
-		//}
 
 		// アクティブであるかつ、ターゲットがまだ設定されていない場合、ターゲットを設定する
 		if (camera->IsActive() && !is_seted_target_transform)
@@ -268,8 +258,6 @@ void CameraManager::SetBlendTransform()
 
 		if (is_seted_target_transform && is_seted_origin_transform) { break; }
 	}
-
-	//matrix::Draw(0, 400, m_blend_target_transform->GetMatrix(CoordinateKind::kWorld));
 
 	// ターゲットのブレンド方針に従ってターゲット以外のカメラのアクティブ状態を制御
 	DeactivateVirtualCamera(origin_camera, target_camera);

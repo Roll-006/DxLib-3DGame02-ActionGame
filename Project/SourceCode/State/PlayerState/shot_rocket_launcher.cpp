@@ -77,6 +77,7 @@ void player_state::ShotRocketLauncher::Exit(Player* obj)
 	// 演出用カメラを削除
 	const auto camera_manager = CameraManager::GetInstance();
 	camera_manager->RemoveVirtualCameraController(m_rocket_launcher_camera_controller);
+	m_rocket_launcher_camera_controller->GetHaveVirtualCamera(ObjName.ROCKET_LAUNCHER_EXIT_ROT_VIRTUAL_CAMERA)->Deactivate();
 	m_rocket_launcher_camera_controller = nullptr;
 
 	// 操作カメラを復帰

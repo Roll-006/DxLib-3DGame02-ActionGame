@@ -636,7 +636,7 @@ bool collision::IsHitCapsuleAndModel        (const Capsule&     capsule,        
         distance.emplace_back(std::make_pair(i, math::GetDistanceTriangleToCapsule(hit_triangles.at(i), capsule)));
     }
 
-    // 距離が最も近い三角形との交点を取得
+    // 三角形を距離が近い順にソート
     distance = algorithm::Sort(distance, SortKind::kAscending);
     int loop_count = 0;
     for (const auto& dist : distance)
