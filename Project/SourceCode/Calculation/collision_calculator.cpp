@@ -273,6 +273,16 @@ bool collision::IsHitSegmentAndSquare       (const Segment&     segment,        
 //    return false;
 //}
 
+///// @brief 線分と球の衝突判定
+//bool collision::IsHitSegmentAndSphere       (const Segment&     segment,        const Sphere&       sphere,         std::optional<VECTOR>& intersection)
+//{
+//    return false;
+//}
+//bool collision::IsHitSegmentAndSphere       (const Segment&     segment,        const Sphere&       sphere)
+//{
+//    return false;
+//}
+
 /// @brief 線分とカプセルの衝突判定
 bool collision::IsHitSegmentAndCapsule      (const Segment&     segment,        const Capsule&      capsule,        std::optional<VECTOR>& intersection)
 {

@@ -28,7 +28,7 @@ GunBase::GunBase(const std::string& name, const GunKind gun_kind, const HolsterK
 
 void GunBase::OnShot()
 {
-	RifleCartridgeManager::GetInstance()->Shot(*this);
+	RifleCartridgeManager::GetInstance()->SearchValidRifleCartidge(*this);
 	--m_current_remaining_bullet_num;
 
 	const Event<WeaponShotData> event = { EventKind::kWeaponShot, { m_gun_kind, m_owner_name, m_muzzle_transform, m_ejection_port_transform } };

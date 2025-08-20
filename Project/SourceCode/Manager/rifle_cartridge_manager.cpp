@@ -86,7 +86,7 @@ void RifleCartridgeManager::Draw() const
 	}
 }
 
-void RifleCartridgeManager::Shot(GunBase& gun)
+void RifleCartridgeManager::SearchValidRifleCartidge(GunBase& gun)
 {
 	const auto pool = ObjectPoolHolder::GetInstance()->GetObjectPool(ObjectPoolName.RIFLE_CARTRIDGE_POOL);
 	std::shared_ptr<ObjBase>		bullet_obj		= nullptr;

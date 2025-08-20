@@ -87,6 +87,12 @@ namespace collision
     /// @brief ü•ª‚Æ‰~ü‚ÌÕ“Ë”»’è
     //[[nodiscard]] bool IsHitSegmentAndCircumference(const Segment*  segment,  const Circle*   circle);
 
+    /// @brief ü•ª‚Æ‹…‚ÌÕ“Ë”»’è
+    /// @param intersection –¢À‘•
+    /// @return true : Õ“Ë, false : ”ñÕ“Ë
+    [[nodiscard]] bool IsHitSegmentAndSphere        (const Segment&     segment,        const Sphere&       sphere,         std::optional<VECTOR>& intersection);
+    [[nodiscard]] bool IsHitSegmentAndSphere        (const Segment&     segment,        const Sphere&       sphere);
+    
     /// @brief ü•ª‚ÆƒJƒvƒZƒ‹‚ÌÕ“Ë”»’è
     /// @param intersection –¢À‘•
     /// @return true : Õ“Ë, false : ”ñÕ“Ë

@@ -14,7 +14,7 @@ public:
 	void Draw()				const;
 
 	/// @brief ’eŠÛ‚Ì”­Ë
-	void Shot(GunBase& gun);
+	void SearchValidRifleCartidge(GunBase& gun);
 
 	/// @brief g—pÏ‚İ’eŠÛ‚ğíœ
 	void DeleteBullet(std::shared_ptr<ObjBase> bullet);

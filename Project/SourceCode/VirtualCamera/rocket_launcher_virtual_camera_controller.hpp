@@ -41,21 +41,22 @@ private:
 
 private:
 	static constexpr VECTOR kFirstFollowOffsetForEnterRotCamera			= {  9.0f, 6.0f, -50.0f };
-	static constexpr VECTOR kFirstFollowOffsetForExitRotCamera			= {  9.0f, 6.0f, -50.0f };
 	static constexpr VECTOR kFirstFollowOffsetForZoomInCamera			= {  9.0f, 6.0f, -50.0f };
+	static constexpr VECTOR kFirstFollowOffsetForZoomOutCamera			= {  2.0f, 0.0f,   0.0f };
 	static constexpr VECTOR kDestinationFollowOffsetForZoomInCamera		= {  9.0f, 6.0f, -34.0f };
 	static constexpr VECTOR kTrackedObjOffsetForEnterRotCamera			= { -2.0f, 2.0f,   0.0f };
-	static constexpr VECTOR kTrackedObjOffsetForExitRotCamera			= { -2.0f, 2.0f,   0.0f };
-	static constexpr VECTOR kTrackedObjOffsetForZoomCamera				= { -2.0f, 2.0f,   0.0f };
+	static constexpr VECTOR kTrackedObjOffsetForZoomInCamera			= { -2.0f, 2.0f,   0.0f };
+	static constexpr VECTOR kTrackedObjOffsetForZoomOutCamera			= {  2.0f, 0.0f,   0.0f };
+	static constexpr VECTOR kTrackedObjOffsetForExitRotCamera			= {  0.0f, 0.0f,   0.0f };
 	static constexpr VECTOR kFirstAngleForEnterRotCamera				= { 0.0f, 0.0f * math::kDegToRad, 0.0f };
 
 	static constexpr float  kEnterRotAcceleration						= 0.7f;
 	static constexpr float  kExitRotAcceleration						= 1.5f;
-	static constexpr float  kZoomOutDeceleration						= 12.0f;
-	static constexpr float  kZoomOutMaxDeceleration						= 0.3f;
-	static constexpr float  kZoomOutInitialVelocity						= 1.0f;
+
+	static constexpr float  kZoomOutSpeed								= 0.1f;
 	static constexpr float  kZoomInDamping								= 0.5f;
-	static constexpr float  kZoomOutTime								= 2.0f;
+	static constexpr float  kZoomOutTime								= 4.0f;
+	static constexpr float  kExitRotLeaveSpeed							= 70.0f;
 
 private:
 	VirtualCameraControllerKind		m_virtual_camera_controller_kind;
@@ -79,6 +80,7 @@ private:
 	VECTOR	m_follow_offset_for_exit_rot;
 	VECTOR  m_rot_camera_angle;
 	float	m_zoom_in_wait_timer;
-	float   m_zoom_out_speed;
 	float   m_zoom_out_timer;
+
+	float m_timer;
 };
