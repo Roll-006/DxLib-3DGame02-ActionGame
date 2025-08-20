@@ -11,7 +11,7 @@
 #include "../Part/weapon_shortcut_selecter.hpp"
 #include "../Part/bone_pos_corrector.hpp"
 
-#include "../Manager/camera_manager.hpp"
+#include "../VirtualCamera/camera_brain.hpp"
 
 class PlayerStateController;
 

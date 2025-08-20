@@ -164,7 +164,6 @@
     <ClCompile Include="SourceCode\Handle\handle_keeper.cpp" />
     <ClCompile Include="SourceCode\Input\input_checker.cpp" />
     <ClCompile Include="SourceCode\main.cpp" />
-    <ClCompile Include="SourceCode\Manager\camera_manager.cpp" />
     <ClCompile Include="SourceCode\Manager\collision_manager.cpp" />
     <ClCompile Include="SourceCode\Manager\effect_manager.cpp" />
     <ClCompile Include="SourceCode\Manager\game_manager.cpp" />
@@ -262,6 +261,7 @@
     <ClCompile Include="SourceCode\UI\player_ui_creator.cpp" />
     <ClCompile Include="SourceCode\UI\screen_filter_creator.cpp" />
     <ClCompile Include="SourceCode\UI\ui_drawer.cpp" />
+    <ClCompile Include="SourceCode\VirtualCamera\camera_brain.cpp" />
     <ClCompile Include="SourceCode\VirtualCamera\control_virtual_cameras_controller.cpp" />
     <ClCompile Include="SourceCode\VirtualCamera\rocket_launcher_virtual_camera_controller.cpp" />
     <ClCompile Include="SourceCode\VirtualCamera\rot_control_virtual_camera.cpp" />
@@ -378,7 +378,6 @@
     <ClInclude Include="SourceCode\Interface\i_state.hpp" />
     <ClInclude Include="SourceCode\Interface\i_virtual_camera_controller.hpp" />
     <ClInclude Include="SourceCode\Interface\i_ui_creator.hpp" />
-    <ClInclude Include="SourceCode\Manager\camera_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\collision_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\effect_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\game_manager.hpp" />
@@ -477,6 +476,7 @@
     <ClInclude Include="SourceCode\UI\player_ui_creator.hpp" />
     <ClInclude Include="SourceCode\UI\screen_filter_creator.hpp" />
     <ClInclude Include="SourceCode\UI\ui_drawer.hpp" />
+    <ClInclude Include="SourceCode\VirtualCamera\camera_brain.hpp" />
     <ClInclude Include="SourceCode\VirtualCamera\control_virtual_cameras_controller.hpp" />
     <ClInclude Include="SourceCode\VirtualCamera\rocket_launcher_virtual_camera_controller.hpp" />
     <ClInclude Include="SourceCode\VirtualCamera\rot_control_virtual_camera.hpp" />

@@ -493,7 +493,7 @@ void Player::CalcLookDir()
 
 VECTOR Player::GetMoveForward()
 {
-	const auto camera = CameraManager::GetInstance()->GetMainCamera();
+	const auto camera = CameraBrain::GetInstance()->GetMainCamera();
 	auto forward = camera->GetTransform()->GetForward(CoordinateKind::kWorld);
 	forward.y = 0.0f;
 
@@ -502,7 +502,7 @@ VECTOR Player::GetMoveForward()
 
 VECTOR Player::GetMoveRight()
 {
-	const auto camera = CameraManager::GetInstance()->GetMainCamera();
+	const auto camera = CameraBrain::GetInstance()->GetMainCamera();
 	auto right = camera->GetTransform()->GetRight(CoordinateKind::kWorld);
 	right.y = 0.0f;
 	

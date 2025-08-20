@@ -11,8 +11,8 @@ ShareScene::ShareScene() :
 
 	UIDrawer::GetInstance()->AddUICreator(m_screen_filter_creator);
 
-	const auto camera_manager = CameraManager::GetInstance();
-	camera_manager->AddVirtualCameraController(std::make_shared<ControlVirtualCamerasController>(*m_player.get()));
+	const auto camera_brain = CameraBrain::GetInstance();
+	camera_brain->AddVirtualCameraController(std::make_shared<ControlVirtualCamerasController>(*m_player.get()));
 
 	ObjectPoolHolder::GetInstance()->AddObjectPool(m_share_scene_effect_object_pool);
 }
@@ -30,14 +30,14 @@ void ShareScene::Init()
 void ShareScene::Update()
 {
 	m_player					->Update();
-	CameraManager::GetInstance()->Update();
+	CameraBrain::GetInstance()->Update();
 	EffectManager::GetInstance()->Update();
 }
 
 void ShareScene::LateUpdate()
 {
 	m_player					->LateUpdate();
-	CameraManager::GetInstance()->LateUpdate();
+	CameraBrain::GetInstance()->LateUpdate();
 	EffectManager::GetInstance()->LateUpdate();
 	m_screen_filter_creator		->LateUpdate();
 }
@@ -50,5 +50,5 @@ void ShareScene::DrawToShadowMap() const
 void ShareScene::Draw() const
 {
 	m_player					->Draw();
-	CameraManager::GetInstance()->Draw();
+	CameraBrain::GetInstance()->Draw();
 }

@@ -2,7 +2,7 @@
 #include "../Interface/i_virtual_camera_controller.hpp"
 #include "virtual_camera.hpp"
 
-class CameraManager;
+class CameraBrain;
 class UIDrawer;
 class Player;
 
@@ -53,7 +53,7 @@ private:
 	static constexpr float  kEnterRotAcceleration						= 0.7f;
 	static constexpr float  kExitRotAcceleration						= 1.5f;
 
-	static constexpr float  kZoomOutSpeed								= 0.1f;
+	static constexpr float  kZoomOutSpeed								= 0.05f;
 	static constexpr float  kZoomInDamping								= 0.5f;
 	static constexpr float  kZoomOutTime								= 4.0f;
 	static constexpr float  kExitRotLeaveSpeed							= 70.0f;
@@ -82,5 +82,5 @@ private:
 	float	m_zoom_in_wait_timer;
 	float   m_zoom_out_timer;
 
-	float m_timer;
+	float   m_test_timer; // ‰¼
 };

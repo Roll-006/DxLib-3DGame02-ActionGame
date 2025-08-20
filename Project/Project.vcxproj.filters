@@ -161,9 +161,6 @@
     <ClCompile Include="SourceCode\Shape\2DShape\capsule2D.cpp">
       <Filter>Shape\2DShape</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Manager\camera_manager.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\Base\virtual_camera_base.cpp">
       <Filter>Base</Filter>
     </ClCompile>
@@ -381,6 +378,9 @@
       <Filter>Object</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Object\assault_rifle_magazine.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\VirtualCamera\camera_brain.cpp">
       <Filter>Object</Filter>
     </ClCompile>
   </ItemGroup>
@@ -681,9 +681,6 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Shape\2DShape\capsule2D.hpp">
       <Filter>Shape\2DShape</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Manager\camera_manager.hpp">
-      <Filter>Manager</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Base\virtual_camera_base.hpp">
       <Filter>Base</Filter>
@@ -1023,6 +1020,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Interface\i_shooter.hpp">
       <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\VirtualCamera\camera_brain.hpp">
+      <Filter>Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -4,7 +4,7 @@
 
 #include "../Data/recoil_data.hpp"
 
-class CameraManager;
+class CameraBrain;
 class Player;
 class GunBase;
 

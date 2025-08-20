@@ -53,7 +53,11 @@ namespace algorithm
 	/// @param main_pairs ソートされるpairs
 	/// @param sub_pairs main_pairsに同じsecondがあった場合、sub_pairsでソートを行う
 	template<typename FirstT, typename SecondT>
-	[[nodiscard]] std::vector<std::pair<FirstT, SecondT>> Sort(const std::vector<std::pair<FirstT, SecondT>>& main_pairs, const std::vector<std::pair<FirstT, SecondT>>& sub_pairs, const SortKind sort_kind)
+	[[nodiscard]] std::vector<std::pair<FirstT, SecondT>> Sort(
+		const std::vector<std::pair<FirstT, SecondT>>& main_pairs, 
+		const std::vector<std::pair<FirstT, SecondT>>& sub_pairs, 
+		const SortKind main_pairs_sort_kind, 
+		const SortKind sub_pairs_sort_kind)
 	{
 		auto sorted_pairs = main_pairs;
 
@@ -66,21 +70,33 @@ namespace algorithm
 
 		std::sort(sorted_pairs.begin(), sorted_pairs.end(), [&](const auto& a, const auto& b)
 		{
-			switch (sort_kind)
+			switch (main_pairs_sort_kind)
 			{
 			case SortKind::kAscending:
-				if (a.second != b.second) {
-					return a.second < b.second;
+				if (a.second != b.second) { return a.second < b.second; }
+				
+				switch (sub_pairs_sort_kind)
+				{
+				case SortKind::kAscending:
+					return sub_pairs[index_map.at(a.first)].second < sub_pairs[index_map.at(b.first)].second;
+
+				case SortKind::kDescending:
+					return sub_pairs[index_map.at(a.first)].second > sub_pairs[index_map.at(b.first)].second;
 				}
-				return sub_pairs[index_map.at(a.first)].second <
-					sub_pairs[index_map.at(b.first)].second;
+				return false;
 
 			case SortKind::kDescending:
-				if (a.second != b.second) {
-					return a.second > b.second;
+				if (a.second != b.second) { return a.second > b.second; }
+
+				switch (sub_pairs_sort_kind)
+				{
+				case SortKind::kAscending:
+					return sub_pairs[index_map.at(a.first)].second < sub_pairs[index_map.at(b.first)].second;
+
+				case SortKind::kDescending:
+					return sub_pairs[index_map.at(a.first)].second > sub_pairs[index_map.at(b.first)].second;
 				}
-				return sub_pairs[index_map.at(a.first)].second >
-					sub_pairs[index_map.at(b.first)].second;
+				return false;
 			}
 			return false;
 		});

@@ -975,7 +975,7 @@ VECTOR collision::PushBackCapsuleAndOBB     (const VECTOR& velocity, const Capsu
 
     // 現在の距離が近い順にソート
     // 距離が同じ場合は、同じもの同士で未来の座標が近い順にソート
-    current_distance = algorithm::Sort(current_distance, future_distance, SortKind::kAscending);
+    current_distance = algorithm::Sort(current_distance, future_distance, SortKind::kAscending, SortKind::kAscending);
 
     // 移動前の座標と距離が近い四角形から順番に押し戻す
     for (const auto& dist : current_distance)
@@ -1006,16 +1006,24 @@ VECTOR collision::PushBackCapsuleAndModel   (const VECTOR& velocity, const Capsu
     // 三角形との現在の距離を取得
     std::unordered_map<int, Triangle>   triangles;
     std::vector<std::pair<int, float>>  current_distance;
+    std::vector<std::pair<int, float>>  current_angle;
     for (int i = 0; i < hit_result.HitNum; ++i)
     {
         Triangle triangle(hit_result.Dim[i].Position[0], hit_result.Dim[i].Position[2], hit_result.Dim[i].Position[1]);
 
         triangles[i] = triangle;
         current_distance.emplace_back(std::make_pair(i, math::GetDistanceTriangleToCapsule(triangle, dynamic_capsule)));
+        current_angle   .emplace_back(std::make_pair(i, math::GetAngleBetweenTwoVector(v3d::GetNormalizedV(velocity), triangle.GetNormalVector())));
     }
 
     // 距離が近い順に押し戻す
-    current_distance = algorithm::Sort(current_distance, SortKind::kAscending);
+
+    if (current_distance.size() > 4)
+    {
+        int a = 0;
+    }
+
+    current_distance = algorithm::Sort(current_distance, current_angle, SortKind::kAscending, SortKind::kDescending);
     for (const auto& distance : current_distance)
     {
         valid_velocity = collision::PushBackCapsuleAndTriangle(valid_velocity, dynamic_capsule, triangles.at(distance.first), slope_difficulty_angle_threshold, max_slope_angle);

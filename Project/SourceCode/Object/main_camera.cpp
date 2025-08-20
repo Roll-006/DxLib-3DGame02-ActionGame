@@ -1,5 +1,5 @@
 #include "main_camera.hpp"
-#include "../Manager/camera_manager.hpp"
+#include "../VirtualCamera/camera_brain.hpp"
 #include "../Command/command_handler.hpp"
 
 MainCamera::MainCamera() : 
@@ -79,7 +79,7 @@ void MainCamera::AddToObjManager()
 	PhysicsManager	::GetInstance()->AddPhysicalObj		(physical_obj);
 	PhysicsManager	::GetInstance()->AddIgnoreObjGravity(this->GetObjHandle());
 
-	CameraManager::GetInstance()->SetMainCamera(std::static_pointer_cast<MainCamera>(shared_from_this()));
+	CameraBrain::GetInstance()->SetMainCamera(std::static_pointer_cast<MainCamera>(shared_from_this()));
 }
 
 float MainCamera::GetDeltaTime() const

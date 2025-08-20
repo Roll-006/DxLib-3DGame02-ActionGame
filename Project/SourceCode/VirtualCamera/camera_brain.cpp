@@ -1,7 +1,7 @@
-﻿#include "camera_manager.hpp"
+﻿#include "camera_brain.hpp"
 #include "../Object/player.hpp"
 
-CameraManager::CameraManager() :
+CameraBrain::CameraBrain() :
 	m_main_camera								(nullptr),
 	m_blend_origin_transform					(nullptr),
 	m_blend_target_transform					(nullptr),
@@ -18,12 +18,12 @@ CameraManager::CameraManager() :
 	SetupCamera_Perspective(kFOV * math::kDegToRad);
 }
 
-CameraManager::~CameraManager()
+CameraBrain::~CameraBrain()
 {
 
 }
 
-void CameraManager::Update()
+void CameraBrain::Update()
 {
 	// 非アクティブ化処理の遅延防止のため一度先行してトランスフォームを取得
 	SetBlendTransform();
@@ -39,7 +39,7 @@ void CameraManager::Update()
 	}
 }
 
-void CameraManager::LateUpdate()
+void CameraBrain::LateUpdate()
 {
 	for (const auto& camera_controller : m_virtual_camera_controllers)
 	{
@@ -56,7 +56,7 @@ void CameraManager::LateUpdate()
 	m_main_camera->LateUpdate();
 }
 
-void CameraManager::Draw() const
+void CameraBrain::Draw() const
 {
 	for (const auto& camera : m_virtual_cameras)
 	{
@@ -66,7 +66,7 @@ void CameraManager::Draw() const
 	m_main_camera->Draw();
 }
 
-void CameraManager::RemoveVirtualCamera(const int obj_handle)
+void CameraBrain::RemoveVirtualCamera(const int obj_handle)
 {
 	m_virtual_cameras.erase(obj_handle);
 
@@ -79,7 +79,7 @@ void CameraManager::RemoveVirtualCamera(const int obj_handle)
 
 
 #pragma region Setter
-void CameraManager::SetMainCamera(const std::shared_ptr<MainCamera> main_camera)
+void CameraBrain::SetMainCamera(const std::shared_ptr<MainCamera> main_camera)
 {
 	if (!m_main_camera)
 	{
@@ -87,7 +87,7 @@ void CameraManager::SetMainCamera(const std::shared_ptr<MainCamera> main_camera)
 	}
 }
 
-void CameraManager::SetBlendTime(const float blend_time)
+void CameraBrain::SetBlendTime(const float blend_time)
 {
 	float scale = 0.0f;
 	if (blend_time != 0.0f)
@@ -102,12 +102,12 @@ void CameraManager::SetBlendTime(const float blend_time)
 
 
 #pragma region Getter
-std::shared_ptr<VirtualCameraBase> CameraManager::GetVirtualCamera(const int obj_handle) const
+std::shared_ptr<VirtualCameraBase> CameraBrain::GetVirtualCamera(const int obj_handle) const
 {
 	return m_virtual_cameras.count(obj_handle) ? m_virtual_cameras.at(obj_handle) : nullptr;
 }
 
-std::shared_ptr<VirtualCameraBase> CameraManager::GetVirtualCamera(const std::string& obj_name) const
+std::shared_ptr<VirtualCameraBase> CameraBrain::GetVirtualCamera(const std::string& obj_name) const
 {
 	for (const auto& camera : m_virtual_cameras)
 	{
@@ -119,7 +119,7 @@ std::shared_ptr<VirtualCameraBase> CameraManager::GetVirtualCamera(const std::st
 	return nullptr;
 }
 
-std::shared_ptr<IVirtualCameraController> CameraManager::GetVirtualCameraController(const int controller_handle) const
+std::shared_ptr<IVirtualCameraController> CameraBrain::GetVirtualCameraController(const int controller_handle) const
 {
 	for (const auto& controller : m_virtual_camera_controllers)
 	{
@@ -131,7 +131,7 @@ std::shared_ptr<IVirtualCameraController> CameraManager::GetVirtualCameraControl
 	return nullptr;
 }
 
-std::shared_ptr<IVirtualCameraController> CameraManager::GetVirtualCameraController(const VirtualCameraControllerKind controller_kind) const
+std::shared_ptr<IVirtualCameraController> CameraBrain::GetVirtualCameraController(const VirtualCameraControllerKind controller_kind) const
 {
 	for (const auto& controller : m_virtual_camera_controllers)
 	{
@@ -146,7 +146,7 @@ std::shared_ptr<IVirtualCameraController> CameraManager::GetVirtualCameraControl
 
 
 #pragma region ブレンド関連処理
-void CameraManager::DeactivateVirtualCamera(const std::shared_ptr<VirtualCameraBase> origin_camera, const std::shared_ptr<VirtualCameraBase> target_camera)
+void CameraBrain::DeactivateVirtualCamera(const std::shared_ptr<VirtualCameraBase> origin_camera, const std::shared_ptr<VirtualCameraBase> target_camera)
 {
 	switch (target_camera->GetBlendActivationPolicyKind())
 	{
@@ -169,7 +169,7 @@ void CameraManager::DeactivateVirtualCamera(const std::shared_ptr<VirtualCameraB
 	}
 }
 
-void CameraManager::BlendVirtualCamera()
+void CameraBrain::BlendVirtualCamera()
 {
 	// ブレンドの起点とターゲットを設定
 	SetBlendTransform();
@@ -181,7 +181,7 @@ void CameraManager::BlendVirtualCamera()
 	m_main_camera->GetTransform()->SetMatrix(CoordinateKind::kWorld, m_blend_result_transform->GetMatrix(CoordinateKind::kWorld));
 }
 
-void CameraManager::ChangeTargetVirtualCamera(const int obj_handle)
+void CameraBrain::ChangeTargetVirtualCamera(const int obj_handle)
 {
 	m_target_virtual_camera_handle[TimeKind::kPrev]    = m_target_virtual_camera_handle[TimeKind::kCurrent];
 	m_target_virtual_camera_handle[TimeKind::kCurrent] = obj_handle;
@@ -199,10 +199,10 @@ void CameraManager::ChangeTargetVirtualCamera(const int obj_handle)
 	}
 }
 
-void CameraManager::SetBlendTransform()
+void CameraBrain::SetBlendTransform()
 {
-	// FIXME : ブレンドが開始した一瞬、別の地点が描画される現象発生中
-	// FIXME : originA➡targetBにブレンド中に、originB➡targetAに切り替わった場合、到達までの時間が早くなる不具合発生中
+	// FIXME : ブレンドが開始した一瞬、別の地点が描画される現象発生中。[追記]不具合が消えた可能性あり。消えた理由はわからない。要検証
+	// FIXME : originA➡targetBのブレンド中に、originB➡targetAに切り替わった場合、到達までの時間が早くなる不具合発生中
 	
 	bool is_seted_target_transform = false;
 	bool is_seted_origin_transform = false;
@@ -216,7 +216,6 @@ void CameraManager::SetBlendTransform()
 		// アクティブであるかつ、ターゲットがまだ設定されていない場合、ターゲットを設定する
 		if (camera->IsActive() && !is_seted_target_transform)
 		{
-			// FIXME : カット演出から切り替わった際、操作カメラの行列が単位行列である場合がある
 			target_camera = camera;
 			m_blend_target_transform = target_camera->GetTransform();
 			ChangeTargetVirtualCamera(pr.first);
@@ -255,7 +254,7 @@ void CameraManager::SetBlendTransform()
 	DeactivateVirtualCamera(origin_camera, target_camera);
 }
 
-void CameraManager::CalcBlendResuletTransform()
+void CameraBrain::CalcBlendResuletTransform()
 {
 	// バーチャルカメラが単独で存在していた場合、
 	// もしくはブレンドが完了済みの場合は、ターゲット自身を追尾する

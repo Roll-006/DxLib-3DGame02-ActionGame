@@ -3,7 +3,7 @@
 #include "../Manager/physics_manager.hpp"
 #include "../Manager/effect_manager.hpp"
 
-class CameraManager;
+class CameraBrain;
 
 class MainCamera final : public PhysicalObjBase
 {

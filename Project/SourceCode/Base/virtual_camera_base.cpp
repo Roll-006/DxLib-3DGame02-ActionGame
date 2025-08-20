@@ -1,5 +1,5 @@
 ﻿#include "virtual_camera_base.hpp"
-#include "../Manager/camera_manager.hpp"
+#include "../VirtualCamera/camera_brain.hpp"
 
 VirtualCameraBase::VirtualCameraBase(const std::string& name, const BlendActivationPolicyKind blend_policy_kind) :
 	ObjBase							(name, ObjTag.VIRTUAL_CAMERA),
@@ -38,7 +38,7 @@ void VirtualCameraBase::SetPriority(const int priority)
 {
 	m_priority = priority;
 
-	CameraManager::GetInstance()->SortPriority(std::static_pointer_cast<VirtualCameraBase>(shared_from_this()));
+	CameraBrain::GetInstance()->SortPriority(std::static_pointer_cast<VirtualCameraBase>(shared_from_this()));
 }
 
 float VirtualCameraBase::GetDeltaTime() const

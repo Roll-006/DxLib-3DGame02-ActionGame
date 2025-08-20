@@ -127,8 +127,8 @@ void RocketBomb::OnShot(GunBase& gun)
 	// MEMO : プレイヤーが一人の場合にしか対応していない
 	if (m_shot_owner_name == ObjName.PLAYER)
 	{
-		const auto camera_manager = CameraManager::GetInstance();
-		const auto camera_controller = std::dynamic_pointer_cast<RocketLauncherVirtualCameraController>(camera_manager->GetVirtualCameraController(VirtualCameraControllerKind::kRocketLauncherCutscene));
+		const auto camera_brain = CameraBrain::GetInstance();
+		const auto camera_controller = std::dynamic_pointer_cast<RocketLauncherVirtualCameraController>(camera_brain->GetVirtualCameraController(VirtualCameraControllerKind::kRocketLauncherCutscene));
 		if (camera_controller)
 		{
 			camera_controller->SetRocketBombTransform(m_transform);
