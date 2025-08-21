@@ -234,6 +234,17 @@ namespace math
 	#pragma endregion
 
 
+	#pragma region 比率
+	/// @brief 比率計算を行う
+	/// @brief base_numerator : base_denominator = return_num : pair_denominator
+	template<common_concepts::ArithmeticT ArithmeticT, common_concepts::FloatingPointT ReturnT>
+	[[nodiscard]] ReturnT GetRatio(const ArithmeticT base_numerator, const ArithmeticT base_denominator, const ArithmeticT pair_denominator)
+	{
+		return (base_numerator / base_denominator) * pair_denominator;
+	}
+	#pragma endregion
+
+
 	#pragma region 三平方の定理
 	/// @brief 直角二等辺三角形の底辺(又は高さ)の長さを取得
 	/// @param hypotenuse_length 斜辺の長さ
@@ -252,6 +263,16 @@ namespace math
 	/// @param adjacent_length 底辺の長さ
 	/// @param opposite_length 高さ
 	[[nodiscard]] float GetHypotenuseLengthRightTriangle(const float adjacent_length, const float opposite_length);
+
+	/// @brief 直角三角形の斜辺の長さを取得
+	/// @param adjacent_length 底辺の長さ
+	/// @param theta θ(なす角)
+	[[nodiscard]] float GetHypotenuseLengthRightTriangleFromAdjacent(const float adjacent_length, const float theta);
+
+	/// @brief 直角三角形の斜辺の長さを取得
+	/// @param opposite_length 高さ
+	/// @param theta θ(なす角)
+	[[nodiscard]] float GetHypotenuseLengthRightTriangleFromOpposite(const float opposite_length, const float theta);
 	#pragma endregion
 
 

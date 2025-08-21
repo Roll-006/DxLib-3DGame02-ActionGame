@@ -859,11 +859,21 @@ VECTOR collision::PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsu
     }
 
     // 未来の座標を取得
-    const Plane plane = Plane(static_triangle.GetCentroid(), static_triangle.GetNormalVector());
-    VECTOR future_pos = future_capsule.GetSegment().GetBeginPos();
+    const auto plane            = Plane(static_triangle.GetCentroid(), static_triangle.GetNormalVector());
+    auto       future_pos       = future_capsule.GetSegment().GetBeginPos();
 
     // 未来の座標と平面の距離を取得
-    const float future_distance_to_plane = math::GetDistancePointToPlane(future_pos, plane);
+    const auto future_distance_to_plane = math::GetDistancePointToPlane(future_pos, plane);
+
+    // 押し戻すvelocityを取得
+    const auto plane_y_cross    = math::GetNormalVector(plane.GetNormalVector(), axis::GetWorldYAxis());
+    const auto plane_z_cross    = math::GetNormalVector(plane.GetNormalVector(), plane_y_cross);
+    const auto angle            = math::GetAngleBetweenTwoVector(v3d::GetNormalizedV(velocity), plane_z_cross);
+    const auto sub_length       = math::GetHypotenuseLengthRightTriangleFromOpposite(future_distance_to_plane, angle);
+    const auto push_back_length = sub_length + math::GetRatio<float, float>(future_distance_to_plane, dynamic_capsule.GetRadius(), sub_length);
+
+    auto       valid_velocity       = velocity + v3d::GetNormalizedV(velocity) * -push_back_length;
+    auto       wall_slide_velocity  = math::GetProjectionVector(); plane_z_cross
 
     // 登れる角度である場合は壁ずりを行う
     //const float slope_angle = math::GetAngleBetweenTwoVector(static_triangle.GetNormalVector(), axis::GetWorldYAxis());

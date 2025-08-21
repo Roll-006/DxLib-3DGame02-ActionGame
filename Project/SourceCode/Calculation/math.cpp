@@ -555,6 +555,18 @@ float math::GetHypotenuseLengthRightTriangle(const float adjacent_length, const 
 {
     return sqrt(adjacent_length * adjacent_length + opposite_length * opposite_length);
 }
+
+float math::GetHypotenuseLengthRightTriangleFromAdjacent(const float adjacent_length, const float theta)
+{
+    if (theta == 0.0f) { return 0.0f; }
+    return adjacent_length / cos(theta);
+}
+
+float math::GetHypotenuseLengthRightTriangleFromOpposite(const float opposite_length, const float theta)
+{
+    if (theta == 0.0f) { return 0.0f; }
+    return opposite_length / sin(theta);
+}
 #pragma endregion
 
 
