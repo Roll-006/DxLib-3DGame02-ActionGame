@@ -10,7 +10,7 @@
 #include "../UI/ui_drawer.hpp"
 #include "../UI/screen_filter_creator.hpp"
 
-#include "../VirtualCamera/camera_brain.hpp"
+#include "../VirtualCamera/cinemachine_brain.hpp"
 
 class ShareScene final : public SceneBase
 {

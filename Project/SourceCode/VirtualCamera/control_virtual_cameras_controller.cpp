@@ -1,6 +1,6 @@
 #include "control_virtual_cameras_controller.hpp"
 
-#include "../VirtualCamera/camera_brain.hpp"
+#include "../VirtualCamera/cinemachine_brain.hpp"
 #include "../Object/player.hpp"
 #include "../Part/player_state_controller.hpp"
 
@@ -23,7 +23,7 @@ ControlVirtualCamerasController::ControlVirtualCamerasController(Player& player)
 	SetupForRotCamera();
 	SetupForAimCamera();
 	
-	const auto camera_brain = CameraBrain::GetInstance();
+	const auto camera_brain = CinemachineBrain::GetInstance();
 	camera_brain->SetBlendTime(1.0f);
 	camera_brain->AddVirtualCamera(m_rot_control_camera, true);
 	camera_brain->AddVirtualCamera(m_aim_control_camera, false);
@@ -31,7 +31,7 @@ ControlVirtualCamerasController::ControlVirtualCamerasController(Player& player)
 
 ControlVirtualCamerasController::~ControlVirtualCamerasController()
 {
-	const auto camera_brain = CameraBrain::GetInstance();
+	const auto camera_brain = CinemachineBrain::GetInstance();
 	camera_brain->RemoveVirtualCamera(m_rot_control_camera->GetObjHandle());
 	camera_brain->RemoveVirtualCamera(m_aim_control_camera->GetObjHandle());
 }
@@ -90,7 +90,7 @@ VirtualCameraControllerKind ControlVirtualCamerasController::GetVirtualCameraCon
 
 std::shared_ptr<VirtualCameraBase> ControlVirtualCamerasController::GetHaveVirtualCamera(const std::string& name) const
 {
-	const auto camera_brain = CameraBrain::GetInstance();
+	const auto camera_brain = CinemachineBrain::GetInstance();
 	const auto camera = camera_brain->GetVirtualCamera(name);
 
 	if (   camera == m_rot_control_camera

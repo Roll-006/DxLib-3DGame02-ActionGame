@@ -6,7 +6,7 @@
 #include "../Manager/obj_manager.hpp"
 #include "../Manager/collision_manager.hpp"
 #include "../Manager/physics_manager.hpp"
-#include "../VirtualCamera/camera_brain.hpp"
+#include "../VirtualCamera/cinemachine_brain.hpp"
 
 #include "../Part/modeler.hpp"
 #include "../Part/subject.hpp"

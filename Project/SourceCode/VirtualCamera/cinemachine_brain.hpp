@@ -22,7 +22,7 @@ namespace virtual_camera_concepts
 	concept VirtualCameraController = std::is_base_of_v<IVirtualCameraController, T>;
 }
 
-class CameraBrain final : public SingletonBase<CameraBrain>
+class CinemachineBrain final : public SingletonBase<CinemachineBrain>
 {
 public:
 	void Update();
@@ -126,8 +126,8 @@ public:
 	#pragma endregion
 
 private:
-	CameraBrain();
-	~CameraBrain() override;
+	CinemachineBrain();
+	~CinemachineBrain() override;
 	
 
 	#pragma region ƒuƒŒƒ“ƒhŠÖ˜Aˆ—
@@ -175,5 +175,5 @@ private:
 
 	std::vector<std::shared_ptr<IVirtualCameraController>> m_virtual_camera_controllers;
 
-	friend class SingletonBase<CameraBrain>;
+	friend class SingletonBase<CinemachineBrain>;
 };

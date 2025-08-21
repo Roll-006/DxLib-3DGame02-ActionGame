@@ -1,5 +1,5 @@
 #include "rocket_launcher_virtual_camera_controller.hpp"
-#include "../VirtualCamera/camera_brain.hpp"
+#include "../VirtualCamera/cinemachine_brain.hpp"
 #include "../UI/ui_drawer.hpp"
 #include "../Object/player.hpp"
 
@@ -30,7 +30,7 @@ RocketLauncherVirtualCameraController::RocketLauncherVirtualCameraController(Pla
 	SetupForZoomOutCamera();
 	SetupForExitRotCamera();
 
-	const auto camera_brain = CameraBrain::GetInstance();
+	const auto camera_brain = CinemachineBrain::GetInstance();
 
 	const auto control_camera = camera_brain->GetVirtualCameraController(VirtualCameraControllerKind::kControl);
 	control_camera->Deactivate();
@@ -54,7 +54,7 @@ RocketLauncherVirtualCameraController::RocketLauncherVirtualCameraController(Pla
 
 RocketLauncherVirtualCameraController::~RocketLauncherVirtualCameraController()
 {
-	const auto camera_brain = CameraBrain::GetInstance();
+	const auto camera_brain = CinemachineBrain::GetInstance();
 	camera_brain->RemoveVirtualCamera(m_enter_rot_camera	->GetObjHandle());
 	camera_brain->RemoveVirtualCamera(m_zoom_in_camera	->GetObjHandle());
 	camera_brain->RemoveVirtualCamera(m_zoom_out_camera	->GetObjHandle());
@@ -93,7 +93,7 @@ VirtualCameraControllerKind RocketLauncherVirtualCameraController::GetVirtualCam
 
 std::shared_ptr<VirtualCameraBase> RocketLauncherVirtualCameraController::GetHaveVirtualCamera(const std::string& name) const
 {
-	const auto camera_brain = CameraBrain::GetInstance();
+	const auto camera_brain = CinemachineBrain::GetInstance();
 	const auto camera = camera_brain->GetVirtualCamera(name);
 
 	if (   camera == m_enter_rot_camera
@@ -159,7 +159,7 @@ void RocketLauncherVirtualCameraController::CalcAimTransformForEnterRotCamera()
 		m_enter_rot_camera->Deactivate();
 		m_zoom_in_camera->Activate();
 
-		const auto camera_brain = CameraBrain::GetInstance();
+		const auto camera_brain = CinemachineBrain::GetInstance();
 		camera_brain->SetBlendTime(0.0f);
 	}
 
@@ -196,7 +196,7 @@ void RocketLauncherVirtualCameraController::CalcAimTransformForZoomInCamera()
 
 		m_follow_offset_for_zoom_out = VGet(0.0f, 0.0f, m_follow_offset_for_zoom_in.z);
 
-		const auto camera_brain = CameraBrain::GetInstance();
+		const auto camera_brain = CinemachineBrain::GetInstance();
 		camera_brain->SetBlendTime(2.0f);
 	}
 
@@ -235,7 +235,7 @@ void RocketLauncherVirtualCameraController::CalcAimTransformForZoomOutCamera()
 
 		m_follow_offset_for_exit_rot = m_follow_offset_for_zoom_out;
 
-		const auto camera_brain = CameraBrain::GetInstance();
+		const auto camera_brain = CinemachineBrain::GetInstance();
 		camera_brain->SetBlendTime(2.0f);
 	}
 
@@ -278,7 +278,7 @@ void RocketLauncherVirtualCameraController::CalcAimTransformForExitRotCamera()
 		m_subject->Notify(event);
 
 		// TODO : ブレンドが終了した際に、ブレンド速度を戻す処理が必要
-		const auto camera_brain = CameraBrain::GetInstance();
+		const auto camera_brain = CinemachineBrain::GetInstance();
 		camera_brain->SetBlendTime(0.75f);
 
 		m_exit_rot_camera->Deactivate();

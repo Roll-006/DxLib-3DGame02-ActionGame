@@ -37,7 +37,7 @@ void player_state::Shot::LateUpdate(Player* obj)
 	gun->OnShot();
 	
 	// ƒŠƒRƒCƒ‹ˆ—
-	const auto camera_controller = CameraBrain::GetInstance()->GetVirtualCameraController(VirtualCameraControllerKind::kControl);
+	const auto camera_controller = CinemachineBrain::GetInstance()->GetVirtualCameraController(VirtualCameraControllerKind::kControl);
 	std::static_pointer_cast<ControlVirtualCamerasController>(camera_controller)->OnRecoil(*gun.get());
 }
 

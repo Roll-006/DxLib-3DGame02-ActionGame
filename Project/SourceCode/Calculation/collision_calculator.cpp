@@ -865,15 +865,17 @@ VECTOR collision::PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsu
     // 未来の座標と平面の距離を取得
     const auto future_distance_to_plane = math::GetDistancePointToPlane(future_pos, plane);
 
-    // 押し戻すvelocityを取得
-    const auto plane_y_cross    = math::GetNormalVector(plane.GetNormalVector(), axis::GetWorldYAxis());
-    const auto plane_z_cross    = math::GetNormalVector(plane.GetNormalVector(), plane_y_cross);
-    const auto angle            = math::GetAngleBetweenTwoVector(v3d::GetNormalizedV(velocity), plane_z_cross);
-    const auto sub_length       = math::GetHypotenuseLengthRightTriangleFromOpposite(future_distance_to_plane, angle);
-    const auto push_back_length = sub_length + math::GetRatio<float, float>(future_distance_to_plane, dynamic_capsule.GetRadius(), sub_length);
 
-    auto       valid_velocity       = velocity + v3d::GetNormalizedV(velocity) * -push_back_length;
-    auto       wall_slide_velocity  = math::GetProjectionVector(); plane_z_cross
+
+    ////// 押し戻すvelocityを取得
+    const auto plane_cross_v1   = math::GetNormalVector(plane.GetNormalVector(), axis::GetWorldYAxis());
+    const auto plane_cross_v2   = math::GetNormalVector(plane.GetNormalVector(), plane_cross_v1);
+    ////const auto angle            = math::GetAngleBetweenTwoVector(v3d::GetNormalizedV(velocity), plane_z_cross);
+    ////const auto sub_length       = math::GetHypotenuseLengthRightTriangleFromOpposite(future_distance_to_plane, angle);
+    ////const auto push_back_length = sub_length + math::GetRatio<float, float>(future_distance_to_plane, dynamic_capsule.GetRadius(), sub_length);
+
+    ////auto       valid_velocity       = velocity + v3d::GetNormalizedV(velocity) * -push_back_length;
+    ////auto       wall_slide_velocity  = math::GetProjectionVector(); plane_z_cross
 
     // 登れる角度である場合は壁ずりを行う
     //const float slope_angle = math::GetAngleBetweenTwoVector(static_triangle.GetNormalVector(), axis::GetWorldYAxis());
@@ -1027,12 +1029,7 @@ VECTOR collision::PushBackCapsuleAndModel   (const VECTOR& velocity, const Capsu
     }
 
     // 距離が近い順に押し戻す
-
-    if (current_distance.size() > 4)
-    {
-        int a = 0;
-    }
-
+    // 距離が同じであればvelocityと法線の角度が大きい順に押し出す
     current_distance = algorithm::Sort(current_distance, current_angle, SortKind::kAscending, SortKind::kDescending);
     for (const auto& distance : current_distance)
     {

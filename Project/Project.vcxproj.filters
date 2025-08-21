@@ -380,8 +380,8 @@
     <ClCompile Include="SourceCode\Object\assault_rifle_magazine.cpp">
       <Filter>Object</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\VirtualCamera\camera_brain.cpp">
-      <Filter>Object</Filter>
+    <ClCompile Include="SourceCode\VirtualCamera\cinemachine_brain.cpp">
+      <Filter>VirtualCamera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1021,8 +1021,8 @@
     <ClInclude Include="SourceCode\Interface\i_shooter.hpp">
       <Filter>Interface</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\VirtualCamera\camera_brain.hpp">
-      <Filter>Object</Filter>
+    <ClInclude Include="SourceCode\VirtualCamera\cinemachine_brain.hpp">
+      <Filter>VirtualCamera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

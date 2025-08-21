@@ -64,7 +64,7 @@ void player_state::ShotRocketLauncher::Enter(Player* obj)
 	// 演出用カメラを生成
 	// MEMO : この段階で操作カメラのトランスフォーム情報が削除
 
-	const auto camera_brain = CameraBrain::GetInstance();
+	const auto camera_brain = CinemachineBrain::GetInstance();
 	m_rocket_launcher_camera_controller = std::make_shared<RocketLauncherVirtualCameraController>(*obj);
 	camera_brain->AddVirtualCameraController(m_rocket_launcher_camera_controller);
 
@@ -75,7 +75,7 @@ void player_state::ShotRocketLauncher::Enter(Player* obj)
 void player_state::ShotRocketLauncher::Exit(Player* obj)
 {
 	// 演出用カメラを削除
-	const auto camera_brain = CameraBrain::GetInstance();
+	const auto camera_brain = CinemachineBrain::GetInstance();
 	camera_brain->RemoveVirtualCameraController(m_rocket_launcher_camera_controller);
 	m_rocket_launcher_camera_controller = nullptr;
 

@@ -7,7 +7,7 @@
 
 #include "../Data/Kind/blend_activation_policy_kind.hpp"
 
-class CameraBrain;
+class CinemachineBrain;
 
 // TODO : 基底クラスの削除を検討。すべてのバーチャルカメラが同じ値を持つため基底クラスは不要である可能性あり
 

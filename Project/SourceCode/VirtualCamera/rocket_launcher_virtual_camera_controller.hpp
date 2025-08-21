@@ -2,7 +2,7 @@
 #include "../Interface/i_virtual_camera_controller.hpp"
 #include "virtual_camera.hpp"
 
-class CameraBrain;
+class CinemachineBrain;
 class UIDrawer;
 class Player;
 

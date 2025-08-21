@@ -1,29 +1,29 @@
-﻿#include "camera_brain.hpp"
+﻿#include "cinemachine_brain.hpp"
 #include "../Object/player.hpp"
 
-CameraBrain::CameraBrain() :
-	m_main_camera								(nullptr),
-	m_blend_origin_transform					(nullptr),
-	m_blend_target_transform					(nullptr),
-	m_blend_origin_result_transform				(nullptr),
-	m_blend_result_transform					(nullptr),
-	m_blend_time								(1.0f),
-	m_blend_timer								(0.0f),
-	m_blend_coefficient							(0.0f),
-	m_is_blending								(false),
-	m_is_invert_horizontal						(false),
-	m_is_invert_vertical						(false)
+CinemachineBrain::CinemachineBrain() :
+	m_main_camera					(nullptr),
+	m_blend_origin_transform		(nullptr),
+	m_blend_target_transform		(nullptr),
+	m_blend_origin_result_transform	(nullptr),
+	m_blend_result_transform		(nullptr),
+	m_blend_time					(1.0f),
+	m_blend_timer					(0.0f),
+	m_blend_coefficient				(0.0f),
+	m_is_blending					(false),
+	m_is_invert_horizontal			(false),
+	m_is_invert_vertical			(false)
 {
 	SetCameraNearFar(kNear, kFar);
 	SetupCamera_Perspective(kFOV * math::kDegToRad);
 }
 
-CameraBrain::~CameraBrain()
+CinemachineBrain::~CinemachineBrain()
 {
 
 }
 
-void CameraBrain::Update()
+void CinemachineBrain::Update()
 {
 	// 非アクティブ化処理の遅延防止のため一度先行してトランスフォームを取得
 	SetBlendTransform();
@@ -39,7 +39,7 @@ void CameraBrain::Update()
 	}
 }
 
-void CameraBrain::LateUpdate()
+void CinemachineBrain::LateUpdate()
 {
 	for (const auto& camera_controller : m_virtual_camera_controllers)
 	{
@@ -56,7 +56,7 @@ void CameraBrain::LateUpdate()
 	m_main_camera->LateUpdate();
 }
 
-void CameraBrain::Draw() const
+void CinemachineBrain::Draw() const
 {
 	for (const auto& camera : m_virtual_cameras)
 	{
@@ -66,7 +66,7 @@ void CameraBrain::Draw() const
 	m_main_camera->Draw();
 }
 
-void CameraBrain::RemoveVirtualCamera(const int obj_handle)
+void CinemachineBrain::RemoveVirtualCamera(const int obj_handle)
 {
 	m_virtual_cameras.erase(obj_handle);
 
@@ -79,7 +79,7 @@ void CameraBrain::RemoveVirtualCamera(const int obj_handle)
 
 
 #pragma region Setter
-void CameraBrain::SetMainCamera(const std::shared_ptr<MainCamera> main_camera)
+void CinemachineBrain::SetMainCamera(const std::shared_ptr<MainCamera> main_camera)
 {
 	if (!m_main_camera)
 	{
@@ -87,7 +87,7 @@ void CameraBrain::SetMainCamera(const std::shared_ptr<MainCamera> main_camera)
 	}
 }
 
-void CameraBrain::SetBlendTime(const float blend_time)
+void CinemachineBrain::SetBlendTime(const float blend_time)
 {
 	float scale = 0.0f;
 	if (blend_time != 0.0f)
@@ -102,12 +102,12 @@ void CameraBrain::SetBlendTime(const float blend_time)
 
 
 #pragma region Getter
-std::shared_ptr<VirtualCameraBase> CameraBrain::GetVirtualCamera(const int obj_handle) const
+std::shared_ptr<VirtualCameraBase> CinemachineBrain::GetVirtualCamera(const int obj_handle) const
 {
 	return m_virtual_cameras.count(obj_handle) ? m_virtual_cameras.at(obj_handle) : nullptr;
 }
 
-std::shared_ptr<VirtualCameraBase> CameraBrain::GetVirtualCamera(const std::string& obj_name) const
+std::shared_ptr<VirtualCameraBase> CinemachineBrain::GetVirtualCamera(const std::string& obj_name) const
 {
 	for (const auto& camera : m_virtual_cameras)
 	{
@@ -119,7 +119,7 @@ std::shared_ptr<VirtualCameraBase> CameraBrain::GetVirtualCamera(const std::stri
 	return nullptr;
 }
 
-std::shared_ptr<IVirtualCameraController> CameraBrain::GetVirtualCameraController(const int controller_handle) const
+std::shared_ptr<IVirtualCameraController> CinemachineBrain::GetVirtualCameraController(const int controller_handle) const
 {
 	for (const auto& controller : m_virtual_camera_controllers)
 	{
@@ -131,7 +131,7 @@ std::shared_ptr<IVirtualCameraController> CameraBrain::GetVirtualCameraControlle
 	return nullptr;
 }
 
-std::shared_ptr<IVirtualCameraController> CameraBrain::GetVirtualCameraController(const VirtualCameraControllerKind controller_kind) const
+std::shared_ptr<IVirtualCameraController> CinemachineBrain::GetVirtualCameraController(const VirtualCameraControllerKind controller_kind) const
 {
 	for (const auto& controller : m_virtual_camera_controllers)
 	{
@@ -146,7 +146,7 @@ std::shared_ptr<IVirtualCameraController> CameraBrain::GetVirtualCameraControlle
 
 
 #pragma region ブレンド関連処理
-void CameraBrain::DeactivateVirtualCamera(const std::shared_ptr<VirtualCameraBase> origin_camera, const std::shared_ptr<VirtualCameraBase> target_camera)
+void CinemachineBrain::DeactivateVirtualCamera(const std::shared_ptr<VirtualCameraBase> origin_camera, const std::shared_ptr<VirtualCameraBase> target_camera)
 {
 	switch (target_camera->GetBlendActivationPolicyKind())
 	{
@@ -169,7 +169,7 @@ void CameraBrain::DeactivateVirtualCamera(const std::shared_ptr<VirtualCameraBas
 	}
 }
 
-void CameraBrain::BlendVirtualCamera()
+void CinemachineBrain::BlendVirtualCamera()
 {
 	// ブレンドの起点とターゲットを設定
 	SetBlendTransform();
@@ -181,7 +181,7 @@ void CameraBrain::BlendVirtualCamera()
 	m_main_camera->GetTransform()->SetMatrix(CoordinateKind::kWorld, m_blend_result_transform->GetMatrix(CoordinateKind::kWorld));
 }
 
-void CameraBrain::ChangeTargetVirtualCamera(const int obj_handle)
+void CinemachineBrain::ChangeTargetVirtualCamera(const int obj_handle)
 {
 	m_target_virtual_camera_handle[TimeKind::kPrev]    = m_target_virtual_camera_handle[TimeKind::kCurrent];
 	m_target_virtual_camera_handle[TimeKind::kCurrent] = obj_handle;
@@ -199,7 +199,7 @@ void CameraBrain::ChangeTargetVirtualCamera(const int obj_handle)
 	}
 }
 
-void CameraBrain::SetBlendTransform()
+void CinemachineBrain::SetBlendTransform()
 {
 	// FIXME : ブレンドが開始した一瞬、別の地点が描画される現象発生中。[追記]不具合が消えた可能性あり。消えた理由はわからない。要検証
 	// FIXME : originA➡targetBのブレンド中に、originB➡targetAに切り替わった場合、到達までの時間が早くなる不具合発生中
@@ -254,7 +254,7 @@ void CameraBrain::SetBlendTransform()
 	DeactivateVirtualCamera(origin_camera, target_camera);
 }
 
-void CameraBrain::CalcBlendResuletTransform()
+void CinemachineBrain::CalcBlendResuletTransform()
 {
 	// バーチャルカメラが単独で存在していた場合、
 	// もしくはブレンドが完了済みの場合は、ターゲット自身を追尾する
