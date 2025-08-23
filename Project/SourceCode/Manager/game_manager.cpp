@@ -119,10 +119,14 @@ void GameManager::Run()
 		auto	   result_capsule		= fix_capsule;
 		result_capsule.Move(wall_slide_velocity);
 
+		const auto fix_velocity = result_capsule.GetSegment().GetBeginPos() - future_begin_pos;
+		const auto result_velocity = velocity + fix_velocity;
+
 
 		// ‰¼•`‰æ
 		DrawLine3D(current_capsule.GetSegment().GetBeginPos(), future_capsule.GetSegment().GetBeginPos(), 0xffffff);
 		DrawLine3D(current_capsule.GetSegment().GetBeginPos(), current_capsule.GetSegment().GetBeginPos() + plane_cross_v2 * 100, 0xff0000);
+		DrawLine3D(current_capsule.GetSegment().GetBeginPos(), current_capsule.GetSegment().GetBeginPos() + result_velocity, 0xff0000);
 		
 		triangle       .Draw(true, 200, 0xffffff);
 		current_capsule.Draw(true,   0, 0xffffff);
