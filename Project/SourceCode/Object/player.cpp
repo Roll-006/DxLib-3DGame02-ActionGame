@@ -15,6 +15,8 @@ Player::Player() :
 	m_current_equip_knife				(nullptr),
 	m_weapon_shortcut_selecter			(std::make_shared<WeaponShortcutSelecter>())
 {
+	m_hit_points[HitPointsPartKind::kMain] = std::make_shared<HitPoints>(100.0f);
+
 	m_modeler = std::make_shared<Modeler>(m_transform, ModelPath.SWAT, kBasicAngle, kBasicScale);
 	SetColliderModelHandle(m_modeler->GetModelHandle());
 

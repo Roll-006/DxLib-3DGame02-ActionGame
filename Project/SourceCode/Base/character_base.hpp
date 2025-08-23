@@ -1,6 +1,7 @@
 #pragma once
 #include "physical_obj_base.hpp"
 
+#include "../Part/hit_points.hpp"
 #include "../Part/modeler.hpp"
 #include "animator_base.hpp"
 
@@ -14,10 +15,6 @@ public:
 
 	void AddToObjManager() override;
 
-	/// @brief écíeêîÇê›íËÇ∑ÇÈ
-	/// @param remaining_bullet_num 
-	void SetRemainingBulletNum(const int remaining_bullet_num) { m_current_remaining_bullet_num = remaining_bullet_num; }
-
 
 	#pragma region Getter
 	[[nodiscard]] std::shared_ptr<Modeler>		GetModeler()					const { return m_modeler; }
@@ -26,7 +23,6 @@ public:
 	[[nodiscard]] WeaponKind					GetCurrentHeldWeaponKind();
 	[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentAttachWeapon		(const HolsterKind holster_kind) const;
 	[[nodiscard]] WeaponKind					GetCurrentAttachWeaponKind	(const HolsterKind holster_kind) const;
-	[[nodiscard]] int							GetCurrentRemainingBulletNum()	const { return m_current_remaining_bullet_num; }
 	#pragma endregion
 
 
@@ -103,6 +99,5 @@ protected:
 	float							m_capsule_length;
 	float							m_capsule_radius;
 
-	//float	m_hp;
-	int								m_current_remaining_bullet_num;		// écíeêî
+	std::unordered_map<HitPointsPartKind, std::shared_ptr<HitPoints>> m_hit_points;
 };

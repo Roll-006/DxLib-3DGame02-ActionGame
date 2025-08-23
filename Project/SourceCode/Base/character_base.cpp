@@ -8,8 +8,7 @@ CharacterBase::CharacterBase(const std::string& name, const std::string& tag, co
 	m_current_held_weapon			(nullptr),
 	m_capsule_collider				(nullptr),
 	m_capsule_length				(0.0f),
-	m_capsule_radius				(0.0f),
-	m_current_remaining_bullet_num	(0)
+	m_capsule_radius				(0.0f)
 {
 		
 }

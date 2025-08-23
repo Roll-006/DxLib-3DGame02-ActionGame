@@ -193,6 +193,7 @@
     <ClCompile Include="SourceCode\Object\selector.cpp" />
     <ClCompile Include="SourceCode\Object\shell_casing.cpp" />
     <ClCompile Include="SourceCode\Object\skydome.cpp" />
+    <ClCompile Include="SourceCode\Part\hit_points.cpp" />
     <ClCompile Include="SourceCode\Part\bone_pos_corrector.cpp" />
     <ClCompile Include="SourceCode\Part\camera_aim.cpp" />
     <ClCompile Include="SourceCode\Part\camera_body.cpp" />
@@ -200,7 +201,6 @@
     <ClCompile Include="SourceCode\Part\cinema_scope_frame.cpp" />
     <ClCompile Include="SourceCode\Part\collider.cpp" />
     <ClCompile Include="SourceCode\Part\graphicer.cpp" />
-    <ClCompile Include="SourceCode\Part\hit_points.cpp" />
     <ClCompile Include="SourceCode\Part\modeler.cpp" />
     <ClCompile Include="SourceCode\Part\player_animator.cpp" />
     <ClCompile Include="SourceCode\Part\player_state_controller.cpp" />
@@ -305,6 +305,7 @@
     <ClInclude Include="SourceCode\Concept\state_concepts.hpp" />
     <ClInclude Include="SourceCode\Concept\vector_concepts.hpp" />
     <ClInclude Include="SourceCode\Data\Event\start_rocket_launcher_cutscene_data.hpp" />
+    <ClInclude Include="SourceCode\Data\Kind\hit_points_part_kind.hpp" />
     <ClInclude Include="SourceCode\Data\recoil_data.hpp" />
     <ClInclude Include="SourceCode\Data\animator_data.hpp" />
     <ClInclude Include="SourceCode\Data\box_data.hpp" />
@@ -408,13 +409,13 @@
     <ClInclude Include="SourceCode\Object\selector.hpp" />
     <ClInclude Include="SourceCode\Object\shell_casing.hpp" />
     <ClInclude Include="SourceCode\Object\skydome.hpp" />
+    <ClInclude Include="SourceCode\Part\hit_points.hpp" />
     <ClInclude Include="SourceCode\Part\bone_pos_corrector.hpp" />
     <ClInclude Include="SourceCode\Part\camera_aim.hpp" />
     <ClInclude Include="SourceCode\Part\camera_body.hpp" />
     <ClInclude Include="SourceCode\Part\camera_noise.hpp" />
     <ClInclude Include="SourceCode\Part\collider.hpp" />
     <ClInclude Include="SourceCode\Part\graphicer.hpp" />
-    <ClInclude Include="SourceCode\Part\hit_points.hpp" />
     <ClInclude Include="SourceCode\Part\modeler.hpp" />
     <ClInclude Include="SourceCode\Part\player_animator.hpp" />
     <ClInclude Include="SourceCode\Part\player_state_controller.hpp" />

@@ -30,8 +30,8 @@ void WeaponShortcutDrawer::LateUpdate()
 
 void WeaponShortcutDrawer::Draw() const
 {
-	const auto current_select_shortcut	= m_player->GetWeaponShortcutSelecter()->GetCurrentSelectShortcut();
-	const auto current_center_pos		= m_center_pos.at(current_select_shortcut);
+	const WeaponShortcutPosKind current_select_shortcut	= m_player->GetWeaponShortcutSelecter()->GetCurrentSelectShortcut();
+	const Vector2D<int>			current_center_pos		= m_center_pos.at(current_select_shortcut);
 
 	for (const auto& shortcut_icon : m_weapon_shortcut_icons)
 	{
@@ -59,13 +59,13 @@ void WeaponShortcutDrawer::CreateShortcutIcon()
 
 		if (i % 2 == 0)
 		{
-			const int offset_y_size = i < 4 ? kIconHeight * 0.5f : kIconHeight * 1.5f + kIntervalPos;
+			const int offset_y_size = i < 4 ? static_cast<int>(kIconHeight * 0.5f) : static_cast<int>(kIconHeight * 1.5f) + kIntervalPos;
 			const int offset_y		= (0b00110011 >> i) & 1 ? -offset_y_size : offset_y_size;
 			center_pos.y += first_offset + offset_y;
 		}
 		else
 		{
-			const int offset_x_size = i < 4 ? kIconWidth * 0.5f : kIconWidth * 1.5f + kIntervalPos;
+			const int offset_x_size = i < 4 ? static_cast<int>(kIconWidth * 0.5f) : static_cast<int>(kIconWidth * 1.5f) + kIntervalPos;
 			const int offset_x		= (0b00110011 >> i) & 1 ? -offset_x_size : offset_x_size;
 			center_pos.x += first_offset + offset_x;
 		}

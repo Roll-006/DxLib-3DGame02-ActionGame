@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "../Base/character_base.hpp"
+#include "../Interface/i_shooter.hpp"
 
 #include "../GameTime/game_time_manager.hpp"
 #include "../Part/player_animator.hpp"
@@ -15,7 +16,7 @@
 
 class PlayerStateController;
 
-class Player final : public CharacterBase
+class Player final : public CharacterBase, public IShooter
 {
 public:
 	Player();
@@ -28,6 +29,8 @@ public:
 	void Draw()				const	override;
 
 	void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) override;
+
+	void SetRemainingBulletNum(const int remaining_bullet_num) { m_current_remaining_bullet_num = remaining_bullet_num; }
 
 
 	#pragma region アイテム
@@ -99,15 +102,16 @@ public:
 
 	#pragma region Getter
 	[[nodiscard]] float	GetDeltaTime() const override;
-	[[nodiscard]] std::shared_ptr<Subject<Player>>			GetSubject()				const { return m_subject; }
-	[[nodiscard]] std::shared_ptr<PlayerStateController>	GetStateController()		const { return m_state; }
-	[[nodiscard]] std::shared_ptr<BonePosCorrector>			GetBonePosCorrector()		const { return m_bone_pos_corrector; }
+	[[nodiscard]] std::shared_ptr<Subject<Player>>			GetSubject()					const { return m_subject; }
+	[[nodiscard]] std::shared_ptr<PlayerStateController>	GetStateController()			const { return m_state; }
+	[[nodiscard]] std::shared_ptr<BonePosCorrector>			GetBonePosCorrector()			const { return m_bone_pos_corrector; }
 	[[nodiscard]] std::vector<std::shared_ptr<IItem>>		GetCurrentHaveItem(const ItemKind item_kind) const { return m_items.at(item_kind); }
 	[[nodiscard]] WeaponKind								GetCurrentEquipWeaponKind();
-	[[nodiscard]] std::shared_ptr<WeaponBase>				GetCurrentEquipWeapon()		const { return m_current_equip_weapon; }
-	[[nodiscard]] std::shared_ptr<KnifeBase>				GetCurrentEquipKnife()		const { return m_current_equip_knife; }
-	[[nodiscard]] std::shared_ptr<WeaponShortcutSelecter>	GetWeaponShortcutSelecter()	const { return m_weapon_shortcut_selecter; }
-	[[nodiscard]] float										GetMoveSpeed()				const { return m_move_speed; }
+	[[nodiscard]] std::shared_ptr<WeaponBase>				GetCurrentEquipWeapon()			const { return m_current_equip_weapon; }
+	[[nodiscard]] std::shared_ptr<KnifeBase>				GetCurrentEquipKnife()			const { return m_current_equip_knife; }
+	[[nodiscard]] std::shared_ptr<WeaponShortcutSelecter>	GetWeaponShortcutSelecter()		const { return m_weapon_shortcut_selecter; }
+	[[nodiscard]] float										GetMoveSpeed()					const { return m_move_speed; }
+	[[nodiscard]] int										GetCurrentRemainingBulletNum()	const { return m_current_remaining_bullet_num; }
 	#pragma endregion
 
 private:
@@ -169,5 +173,6 @@ private:
 	std::unordered_map<ItemKind, std::vector<std::shared_ptr<IItem>>> m_items;			// 所持しているアイテム
 	std::shared_ptr<WeaponBase>					m_current_equip_weapon;					// 現在装備している武器(ナイフ以外)
 	std::shared_ptr<KnifeBase>					m_current_equip_knife;					// 現在装備しているナイフ
+	int											m_current_remaining_bullet_num;			// 残弾数
 	std::shared_ptr<WeaponShortcutSelecter>		m_weapon_shortcut_selecter;				// ショートカットに登録されている武器
 };

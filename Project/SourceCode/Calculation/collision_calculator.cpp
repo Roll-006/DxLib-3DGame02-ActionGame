@@ -665,7 +665,7 @@ bool collision::IsHitCapsuleAndModel        (const Capsule&     capsule,        
 }
 bool collision::IsHitCapsuleAndModel        (const Capsule&     capsule,        const int           model_handle,   MV1_COLL_RESULT_POLY_DIM& hit_result)
 {
-    const auto segment = capsule.GetSegment();
+    const Segment segment = capsule.GetSegment();
     hit_result = MV1CollCheck_Capsule(model_handle, -1, segment.GetBeginPos(), segment.GetEndPos(), capsule.GetRadius());
     return hit_result.HitNum;
 }

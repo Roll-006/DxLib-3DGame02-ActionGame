@@ -3,6 +3,14 @@
 Zombie::Zombie() :
 	EnemyBase(ObjName.ZOMBIE, MassKind::kMedium)
 {
+	m_hit_points[HitPointsPartKind::kMain]		= std::make_shared<HitPoints>(1684.0f);
+	m_hit_points[HitPointsPartKind::kHead]		= std::make_shared<HitPoints>(300.0f);
+	m_hit_points[HitPointsPartKind::kBody]		= std::make_shared<HitPoints>(500.0f);
+	m_hit_points[HitPointsPartKind::kLeftArm]	= std::make_shared<HitPoints>(300.0f);
+	m_hit_points[HitPointsPartKind::kRightArm]	= std::make_shared<HitPoints>(300.0f);
+	m_hit_points[HitPointsPartKind::kLeftLeg]	= std::make_shared<HitPoints>(300.0f);
+	m_hit_points[HitPointsPartKind::kRightLeg]	= std::make_shared<HitPoints>(300.0f);
+
 	m_modeler = std::make_shared<Modeler>(m_transform, ModelPath.ZOMBIE_05, kBasicAngle, kBasicScale);
 	SetColliderModelHandle(m_modeler->GetModelHandle());
 
