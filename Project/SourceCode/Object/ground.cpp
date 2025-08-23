@@ -9,10 +9,10 @@ Ground::Ground() :
 	m_transform->SetPos (CoordinateKind::kWorld, kPos);
 	m_modeler->ApplyMatrix();
 
-	//AddCollider(std::make_shared<Collider>(ColliderKind::kCollider, m_modeler->GetModelHandle(), this));
+	AddCollider(std::make_shared<Collider>(ColliderKind::kCollider, m_modeler->GetModelHandle(), this));
 
 	t = std::make_shared<Triangle>(VGet(300, -2000, 0), VGet(0, -2000, 300), VGet(-300, -2000, 0));
-	AddCollider(std::make_shared<Collider>(ColliderKind::kCollider, t, this));
+	//AddCollider(std::make_shared<Collider>(ColliderKind::kCollider, t, this));
 }
 
 Ground::~Ground()

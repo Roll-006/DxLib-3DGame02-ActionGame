@@ -200,6 +200,7 @@
     <ClCompile Include="SourceCode\Part\cinema_scope_frame.cpp" />
     <ClCompile Include="SourceCode\Part\collider.cpp" />
     <ClCompile Include="SourceCode\Part\graphicer.cpp" />
+    <ClCompile Include="SourceCode\Part\hit_points.cpp" />
     <ClCompile Include="SourceCode\Part\modeler.cpp" />
     <ClCompile Include="SourceCode\Part\player_animator.cpp" />
     <ClCompile Include="SourceCode\Part\player_state_controller.cpp" />
@@ -413,6 +414,7 @@
     <ClInclude Include="SourceCode\Part\camera_noise.hpp" />
     <ClInclude Include="SourceCode\Part\collider.hpp" />
     <ClInclude Include="SourceCode\Part\graphicer.hpp" />
+    <ClInclude Include="SourceCode\Part\hit_points.hpp" />
     <ClInclude Include="SourceCode\Part\modeler.hpp" />
     <ClInclude Include="SourceCode\Part\player_animator.hpp" />
     <ClInclude Include="SourceCode\Part\player_state_controller.hpp" />

@@ -34,11 +34,11 @@ RocketLauncherVirtualCameraController::RocketLauncherVirtualCameraController(Pla
 
 	const auto control_camera = camera_brain->GetVirtualCameraController(VirtualCameraControllerKind::kControl);
 	control_camera->Deactivate();
-	camera_brain->SetBlendTime(1.4f);
+	camera_brain->SetBlendTime(1.5f);
 	camera_brain->AddVirtualCamera(m_enter_rot_camera,	true);
-	camera_brain->AddVirtualCamera(m_zoom_in_camera,		false);
-	camera_brain->AddVirtualCamera(m_zoom_out_camera,		false);
-	camera_brain->AddVirtualCamera(m_exit_rot_camera,		false);
+	camera_brain->AddVirtualCamera(m_zoom_in_camera,	false);
+	camera_brain->AddVirtualCamera(m_zoom_out_camera,	false);
+	camera_brain->AddVirtualCamera(m_exit_rot_camera,	false);
 
 	// オブザーバー登録
 	const auto screen_filter = UIDrawer::GetInstance()->GetUICreator(UICreatorName.SCREEN_FILTER_CREATOR);

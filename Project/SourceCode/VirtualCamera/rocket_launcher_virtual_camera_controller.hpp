@@ -50,7 +50,7 @@ private:
 	static constexpr VECTOR kTrackedObjOffsetForExitRotCamera			= {  0.0f, 0.0f,   0.0f };
 	static constexpr VECTOR kFirstAngleForEnterRotCamera				= { 0.0f, 0.0f * math::kDegToRad, 0.0f };
 
-	static constexpr float  kEnterRotAcceleration						= 0.7f;
+	static constexpr float  kEnterRotAcceleration						= 1.3f;
 	static constexpr float  kExitRotAcceleration						= 1.5f;
 
 	static constexpr float  kZoomOutSpeed								= 0.05f;
