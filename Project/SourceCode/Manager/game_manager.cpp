@@ -34,7 +34,7 @@ GameManager::~GameManager()
 	ObjManager				::Delete();
 	CollisionManager		::Delete();
 	PhysicsManager			::Delete();
-	CinemachineBrain			::Delete();
+	CinemachineBrain		::Delete();
 	EffectManager			::Delete();
 	RifleCartridgeManager	::Delete();
 }

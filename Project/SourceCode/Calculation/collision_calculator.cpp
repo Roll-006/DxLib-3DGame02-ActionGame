@@ -856,18 +856,16 @@ VECTOR collision::PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsu
     }
 
     const auto  plane                           = Plane(static_triangle.GetCentroid(), static_triangle.GetNormalVector());
-
     const auto  future_begin_pos                = future_capsule.GetSegment().GetBeginPos();
     const auto  future_end_pos                  = future_capsule.GetSegment().GetEndPos();
     const auto  plane_to_begin_pos_distance     = math::GetDistancePointToPlane(future_begin_pos, plane);
-    const auto  plane_to_end_pos_distance       = math::GetDistancePointToPlane(future_end_pos, plane);
-
-    float       penetration_depth = 0.0f;
-    bool        is_begin_pos_ahead_of_plane     = math::IsPointAheadOfPlane(future_begin_pos, plane);
-    bool        is_end_pos_ahead_of_plane       = math::IsPointAheadOfPlane(future_end_pos, plane);
+    const auto  plane_to_end_pos_distance       = math::GetDistancePointToPlane(future_end_pos,   plane);
+    const auto  is_begin_pos_ahead_of_plane     = math::IsPointAheadOfPlane(future_begin_pos, plane);
+    const auto  is_end_pos_ahead_of_plane       = math::IsPointAheadOfPlane(future_end_pos,   plane);
 
     // めり込んだ距離を取得
-    // カプセルが回転しても対応できるよう距離を始点と終点で判定し直す
+    // カプセルが回転しても対応できるよう距離を始点と終点で区別し判定する
+    float penetration_depth = 0.0f;
     if (is_begin_pos_ahead_of_plane && is_end_pos_ahead_of_plane)
     {
         penetration_depth = min(plane_to_begin_pos_distance, plane_to_end_pos_distance);
@@ -898,17 +896,17 @@ VECTOR collision::PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsu
         angle = DX_PI_F - angle;
     }
 
-    const auto  sub_v           = v3d::GetNormalizedV(velocity) * push_back_length;
-    const auto  valid_velocity  = velocity - sub_v;
-    auto        fix_capsule     = dynamic_capsule;
+    const auto  sub_v               = v3d::GetNormalizedV(velocity) * push_back_length;
+    const auto  valid_velocity      = velocity - sub_v;
+    auto        fix_capsule         = dynamic_capsule;
     fix_capsule.Move(valid_velocity);
 
-    const auto wall_slide_velocity = math::GetProjectionVector(sub_v, plane_cross_v2);
-    auto       result_capsule = fix_capsule;
+    const auto  wall_slide_velocity = math::GetProjectionVector(sub_v, plane_cross_v2);
+    auto        result_capsule      = fix_capsule;
     result_capsule.Move(wall_slide_velocity);
 
-    const auto fix_velocity = result_capsule.GetSegment().GetBeginPos() - dynamic_capsule.GetSegment().GetBeginPos();
-    return fix_velocity;
+    const auto  fix_velocity        = result_capsule.GetSegment().GetBeginPos() - future_begin_pos;
+    return velocity + fix_velocity;
 }
 
 VECTOR collision::PushBackCapsuleAndSquare  (const VECTOR& velocity, const Capsule& dynamic_capsule, const Square&   static_square,
