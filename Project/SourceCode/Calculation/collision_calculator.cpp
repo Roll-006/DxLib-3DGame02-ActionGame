@@ -898,16 +898,17 @@ VECTOR collision::PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsu
         angle = DX_PI_F - angle;
     }
 
-    const auto  sub_v = v3d::GetNormalizedV(velocity) * push_back_length;
-    const auto  valid_velocity = velocity - sub_v;
-    auto        fix_capsule = future_capsule;
+    const auto  sub_v           = v3d::GetNormalizedV(velocity) * push_back_length;
+    const auto  valid_velocity  = velocity - sub_v;
+    auto        fix_capsule     = dynamic_capsule;
     fix_capsule.Move(valid_velocity);
 
     const auto wall_slide_velocity = math::GetProjectionVector(sub_v, plane_cross_v2);
     auto       result_capsule = fix_capsule;
     result_capsule.Move(wall_slide_velocity);
 
-    return result_capsule.GetSegment().GetBeginPos() - dynamic_capsule.GetSegment().GetBeginPos();
+    const auto fix_velocity = result_capsule.GetSegment().GetBeginPos() - dynamic_capsule.GetSegment().GetBeginPos();
+    return fix_velocity;
 }
 
 VECTOR collision::PushBackCapsuleAndSquare  (const VECTOR& velocity, const Capsule& dynamic_capsule, const Square&   static_square,
