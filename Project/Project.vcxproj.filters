@@ -392,6 +392,39 @@
     <ClCompile Include="SourceCode\Part\hit_points.cpp">
       <Filter>Part</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\State\ZombieState\patrol.cpp">
+      <Filter>State\ZombieState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\ZombieState\dead.cpp">
+      <Filter>State\ZombieState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\ZombieState\play_dead.cpp">
+      <Filter>State\ZombieState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\ZombieState\grab.cpp">
+      <Filter>State\ZombieState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\ZombieState\track.cpp">
+      <Filter>State\ZombieState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\ZombieState\alert.cpp">
+      <Filter>State\ZombieState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\ZombieState\search.cpp">
+      <Filter>State\ZombieState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\ZombieState\investigate.cpp">
+      <Filter>State\ZombieState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\ZombieState\action_null.cpp">
+      <Filter>State\ZombieState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\ZombieState\crouch_stun.cpp">
+      <Filter>State\ZombieState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\ZombieState\stand_stun.cpp">
+      <Filter>State\ZombieState</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\character_base.hpp">
@@ -1050,6 +1083,39 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Data\Kind\hit_points_part_kind.hpp">
       <Filter>Data\Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\ZombieState\patrol.hpp">
+      <Filter>State\ZombieState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\ZombieState\dead.hpp">
+      <Filter>State\ZombieState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\ZombieState\play_dead.hpp">
+      <Filter>State\ZombieState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\ZombieState\stand_stun.hpp">
+      <Filter>State\ZombieState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\ZombieState\grab.hpp">
+      <Filter>State\ZombieState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\ZombieState\track.hpp">
+      <Filter>State\ZombieState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\ZombieState\alert.hpp">
+      <Filter>State\ZombieState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\ZombieState\search.hpp">
+      <Filter>State\ZombieState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\ZombieState\investigate.hpp">
+      <Filter>State\ZombieState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\ZombieState\action_null.hpp">
+      <Filter>State\ZombieState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\ZombieState\crouch_stun.hpp">
+      <Filter>State\ZombieState</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

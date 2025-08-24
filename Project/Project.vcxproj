@@ -110,6 +110,7 @@
       <AdditionalIncludeDirectories>Library/Dxlib_h;Library/EffekseerForDXLib;Library/DxlibHelper_h;Library/nlohmann</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <ObjectFileName>$(IntDir)%(RelativeDir)%(Filename).obj</ObjectFileName>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -129,6 +130,7 @@
       <AdditionalIncludeDirectories>Library/Dxlib_h;Library/EffekseerForDXLib;Library/DxlibHelper_h;Library/nlohmann</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <ObjectFileName>$(IntDir)%(RelativeDir)%(Filename).obj</ObjectFileName>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -261,6 +263,17 @@
     <ClCompile Include="SourceCode\State\PlayerState\stealth_kill.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\suplex.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\turn_around.cpp" />
+    <ClCompile Include="SourceCode\State\ZombieState\crouch_stun.cpp" />
+    <ClCompile Include="SourceCode\State\ZombieState\dead.cpp" />
+    <ClCompile Include="SourceCode\State\ZombieState\play_dead.cpp" />
+    <ClCompile Include="SourceCode\State\ZombieState\grab.cpp" />
+    <ClCompile Include="SourceCode\State\ZombieState\stand_stun.cpp" />
+    <ClCompile Include="SourceCode\State\ZombieState\track.cpp" />
+    <ClCompile Include="SourceCode\State\ZombieState\alert.cpp" />
+    <ClCompile Include="SourceCode\State\ZombieState\search.cpp" />
+    <ClCompile Include="SourceCode\State\ZombieState\investigate.cpp" />
+    <ClCompile Include="SourceCode\State\ZombieState\action_null.cpp" />
+    <ClCompile Include="SourceCode\State\ZombieState\patrol.cpp" />
     <ClCompile Include="SourceCode\UI\player_ui_creator.cpp" />
     <ClCompile Include="SourceCode\UI\screen_filter_creator.cpp" />
     <ClCompile Include="SourceCode\UI\ui_drawer.cpp" />
@@ -482,6 +495,17 @@
     <ClInclude Include="SourceCode\State\PlayerState\stealth_kill.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\suplex.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\turn_around.hpp" />
+    <ClInclude Include="SourceCode\State\ZombieState\crouch_stun.hpp" />
+    <ClInclude Include="SourceCode\State\ZombieState\dead.hpp" />
+    <ClInclude Include="SourceCode\State\ZombieState\play_dead.hpp" />
+    <ClInclude Include="SourceCode\State\ZombieState\stand_stun.hpp" />
+    <ClInclude Include="SourceCode\State\ZombieState\grab.hpp" />
+    <ClInclude Include="SourceCode\State\ZombieState\track.hpp" />
+    <ClInclude Include="SourceCode\State\ZombieState\alert.hpp" />
+    <ClInclude Include="SourceCode\State\ZombieState\search.hpp" />
+    <ClInclude Include="SourceCode\State\ZombieState\investigate.hpp" />
+    <ClInclude Include="SourceCode\State\ZombieState\action_null.hpp" />
+    <ClInclude Include="SourceCode\State\ZombieState\patrol.hpp" />
     <ClInclude Include="SourceCode\UI\player_ui_creator.hpp" />
     <ClInclude Include="SourceCode\UI\screen_filter_creator.hpp" />
     <ClInclude Include="SourceCode\UI\ui_drawer.hpp" />

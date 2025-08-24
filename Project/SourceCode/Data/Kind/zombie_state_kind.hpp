@@ -4,14 +4,15 @@ namespace zombie_state
 {
 	enum class ActionStateKind
 	{
-		kIdle,			// IDLE
+		kActionNull,	// IDLE
 		kPatrol,		// „‰ñ
 		kInvestigate,	// ’²¸
 		kSearch,		// ‘{õ
 		kAlert,			// Œx‰ú
 		kTrack,			// ’ÇÕ
 		kGrab,			// ’Í‚İ
-		kStun,			// ƒ_ƒEƒ“
+		kStandStun,		// ‹¯‚İ(—§‚¿ó‘Ô)
+		kCrouchStun,	// ‹¯‚İ(‚µ‚á‚ª‚İó‘Ô)
 		kPlayDead,		// €‚ñ‚¾‚Ó‚è
 		kDead,			// €–S
 	};
