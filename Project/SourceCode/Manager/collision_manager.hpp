@@ -8,7 +8,7 @@
 class CollisionManager final : public SingletonBase<CollisionManager>
 {
 public:
-	void LateUpdate();
+	void Update();
 
 
 	#pragma region “o˜^E‰ğœ

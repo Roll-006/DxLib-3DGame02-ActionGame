@@ -27,9 +27,10 @@ SceneManager::~SceneManager()
 
 void SceneManager::Update()
 {
-	InputChecker  ::GetInstance()->Update();
-	CommandHandler::GetInstance()->Update();
-	PhysicsManager::GetInstance()->Update();
+	InputChecker	::GetInstance()->Update();
+	CommandHandler	::GetInstance()->Update();
+	CollisionManager::GetInstance()->Update();
+	PhysicsManager	::GetInstance()->Update();
 
 	for (const auto& scene : m_current_scene)
 	{
@@ -46,7 +47,6 @@ void SceneManager::LateUpdate()
 		scene.second->LateUpdate();
 	}
 
-	CollisionManager::GetInstance()->LateUpdate();
 	CommandHandler	::GetInstance()->LateUpdate();
 	InputChecker	::GetInstance()->LateUpdate();
 }
