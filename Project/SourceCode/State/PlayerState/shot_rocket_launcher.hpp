@@ -12,11 +12,11 @@ namespace player_state
 		ShotRocketLauncher();
 		~ShotRocketLauncher() override;
 
-		void Update		(Player* obj) override;
-		void LateUpdate	(Player* obj) override;
-		void Enter		(Player* obj) override;
-		void Exit		(Player* obj) override;
-		[[nodiscard]] std::shared_ptr<IState<Player>> ChangeState(Player* obj) override;
+		void Update		(std::shared_ptr<Player> obj) override;
+		void LateUpdate	(std::shared_ptr<Player> obj) override;
+		void Enter		(std::shared_ptr<Player> obj) override;
+		void Exit		(std::shared_ptr<Player> obj) override;
+		[[nodiscard]] std::shared_ptr<IState<Player>> ChangeState(std::shared_ptr<Player> obj) override;
 
 	private:
 		static constexpr float kShotWaitTime = 3.5f;	// ’eŠÛ‚ª”­ŽË‚³‚ê‚é‚Ü‚Å‚Ì‘Ò‚¿ŽžŠÔ

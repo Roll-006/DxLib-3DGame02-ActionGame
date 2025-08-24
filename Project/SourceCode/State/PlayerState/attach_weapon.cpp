@@ -11,29 +11,29 @@ player_state::AttachWeapon::~AttachWeapon()
 
 }
 
-void player_state::AttachWeapon::Update(Player* obj)
+void player_state::AttachWeapon::Update(std::shared_ptr<Player> obj)
 {
 	obj->GetCurrentHeldWeapon()->Update();
 }
 
-void player_state::AttachWeapon::LateUpdate(Player* obj)
+void player_state::AttachWeapon::LateUpdate(std::shared_ptr<Player> obj)
 {
 	obj->GetCurrentHeldWeapon()->TrackOwnerHand();
 }
 
-void player_state::AttachWeapon::Enter(Player* obj)
+void player_state::AttachWeapon::Enter(std::shared_ptr<Player> obj)
 {
 	obj->DetachWeapon(obj->GetCurrentEquipKnife());
 	obj->HoldWeapon(obj->GetCurrentEquipKnife());
 }
 
-void player_state::AttachWeapon::Exit(Player* obj)
+void player_state::AttachWeapon::Exit(std::shared_ptr<Player> obj)
 {
 	obj->ReleaseWeapon();
 	obj->AttachWeapon(obj->GetCurrentEquipKnife());
 }
 
-std::shared_ptr<IState<Player>> player_state::AttachWeapon::ChangeState(Player* obj)
+std::shared_ptr<IState<Player>> player_state::AttachWeapon::ChangeState(std::shared_ptr<Player> obj)
 {
 	return nullptr;
 }

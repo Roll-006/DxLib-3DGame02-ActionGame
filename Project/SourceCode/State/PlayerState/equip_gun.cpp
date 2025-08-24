@@ -12,7 +12,7 @@ player_state::EquipGun::~EquipGun()
 
 }
 
-void player_state::EquipGun::Update(Player* obj)
+void player_state::EquipGun::Update(std::shared_ptr<Player> obj)
 {
 	if (CommandHandler::GetInstance()->IsExecute(CommandKind::kAimGun, TimeKind::kCurrent))
 	{
@@ -27,12 +27,12 @@ void player_state::EquipGun::Update(Player* obj)
 	obj->GetCurrentHeldWeapon()->Update();
 }
 
-void player_state::EquipGun::LateUpdate(Player* obj)
+void player_state::EquipGun::LateUpdate(std::shared_ptr<Player> obj)
 {
 	obj->GetCurrentHeldWeapon()->TrackOwnerHand();
 }
 
-void player_state::EquipGun::Enter(Player* obj)
+void player_state::EquipGun::Enter(std::shared_ptr<Player> obj)
 {
 	m_possible_aim_timer = 0.0f;
 
@@ -40,13 +40,13 @@ void player_state::EquipGun::Enter(Player* obj)
 	obj->HoldWeapon(obj->GetCurrentEquipWeapon());
 }
 
-void player_state::EquipGun::Exit(Player* obj)
+void player_state::EquipGun::Exit(std::shared_ptr<Player> obj)
 {
 	obj->ReleaseWeapon();
 	obj->AttachWeapon(obj->GetCurrentEquipWeapon());
 }
 
-std::shared_ptr<IState<Player>> player_state::EquipGun::ChangeState(Player* obj)
+std::shared_ptr<IState<Player>> player_state::EquipGun::ChangeState(std::shared_ptr<Player> obj)
 {
 	const auto state_controller = obj->GetStateController();
 	const auto command			= CommandHandler::GetInstance();

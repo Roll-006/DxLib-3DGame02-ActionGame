@@ -383,6 +383,15 @@
     <ClCompile Include="SourceCode\VirtualCamera\cinemachine_brain.cpp">
       <Filter>VirtualCamera</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\Part\zombie_animator.cpp">
+      <Filter>Part</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Part\zombie_state_controller.cpp">
+      <Filter>Part</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Part\hit_points.cpp">
+      <Filter>Part</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\character_base.hpp">
@@ -1024,6 +1033,24 @@
     <ClInclude Include="SourceCode\VirtualCamera\cinemachine_brain.hpp">
       <Filter>VirtualCamera</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\Part\zombie_animator.hpp">
+      <Filter>Part</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Part\zombie_state_controller.hpp">
+      <Filter>Part</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\Kind\zombie_anim_kind.hpp">
+      <Filter>Data\Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\Kind\zombie_state_kind.hpp">
+      <Filter>Data\Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Part\hit_points.hpp">
+      <Filter>Part</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\Kind\hit_points_part_kind.hpp">
+      <Filter>Data\Kind</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Data">
@@ -1137,11 +1164,11 @@
     <Filter Include="State\PlayerState">
       <UniqueIdentifier>{9ac7a4f2-56f9-4748-905d-6db02b36b09d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="State\EnemyState">
-      <UniqueIdentifier>{d2ef4260-3541-4500-92a8-03e820d5ca75}</UniqueIdentifier>
-    </Filter>
     <Filter Include="State\CameraState">
       <UniqueIdentifier>{ff495161-2f03-4c6e-a508-ddbb081ecd2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ZombieState">
+      <UniqueIdentifier>{d2ef4260-3541-4500-92a8-03e820d5ca75}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

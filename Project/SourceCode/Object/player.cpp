@@ -22,7 +22,7 @@ Player::Player() :
 
 	// 初期pos・dirを設定
 	m_look_dir[TimeKind::kCurrent] = m_look_dir[TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);
-	m_transform->SetPos(CoordinateKind::kWorld, VGet(0, 1800, 0));
+	m_transform->SetPos(CoordinateKind::kWorld, VGet(0.0f, -54.0f, 0.0f));
 	m_transform->SetRot(CoordinateKind::kWorld, m_look_dir.at(TimeKind::kCurrent));
 
 	// コライダー・トリガーを設定
@@ -82,8 +82,8 @@ void Player::Update()
 	m_look_dir_offset_angle				= kLookDirOffsetAngle			* math::kDegToRad;
 	m_confirm_look_dir_threshold_angle	= kConfirmLookDirThresholdAngle * math::kDegToRad;
 
-	m_weapon_shortcut_selecter	->Update(this);
-	m_state						->Update(this);
+	m_weapon_shortcut_selecter	->Update(std::static_pointer_cast<Player>(shared_from_this()));
+	m_state						->Update(std::static_pointer_cast<Player>(shared_from_this()));
 	m_animator					->Update();
 
 	CalcMoveDir();
@@ -99,7 +99,7 @@ void Player::LateUpdate()
 {
 	if (!IsActive()) { return; }
 
-	m_state->LateUpdate(this);
+	m_state->LateUpdate(std::static_pointer_cast<Player>(shared_from_this()));
 
 	if (m_current_held_weapon) { m_current_held_weapon->LateUpdate(); }
 
@@ -150,23 +150,6 @@ void Player::Draw() const
 			shape->Draw(true, 0, 0xffffff);
 		}
 	}
-
-	//DrawFormatString(500, 40, 0xffffff, "%f", m_velocity.y);
-	//
-	//const auto look_dir_current = m_look_dir.at(TimeKind::kCurrent);
-	//const auto look_dir_next	= m_look_dir.at(TimeKind::kNext);
-	const auto p = m_transform->GetPos(CoordinateKind::kWorld) + VGet(0, 40, 0);
-	//DrawFormatString(0, 80, 0xffffff, "pos : %f %f, %f", p.x, p.y, p.z);
-	//DrawFormatString(0, 100, 0xffffff, "look_dir_next    : %f %f, %f", look_dir_next.x,    look_dir_next.y,    look_dir_next.z);
-	//
-	//DrawLine3D(p, p + look_dir_current * 100, 0xff0000);
-	//DrawLine3D(p, p + look_dir_next    * 100, 0xffffff);
-	//
-	//DrawFormatString(0,   20, 0xffffff, "m_current_remaining_bullet_num : %d", m_current_remaining_bullet_num);
-	//DrawFormatString(500, 20, 0xffffff, "move_speed       : %f", m_move_speed);
-	//DrawFormatString(500, 40, 0xffffff, "m_look_dir_offset_angle    : %f", m_look_dir_offset_angle * math::kRadToDeg);
-	//DrawFormatString(500, 60, 0xffffff, "move_dir_current : %f, %f ,%f", m_move_dir.at(TimeKind::kCurrent).x, m_move_dir.at(TimeKind::kCurrent).y, m_move_dir.at(TimeKind::kCurrent).z);
-	//if(m_current_held_weapon)DrawFormatString(0, 20, 0xffffff, "%s", m_current_held_weapon->GetName().c_str());
 }
 
 void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)

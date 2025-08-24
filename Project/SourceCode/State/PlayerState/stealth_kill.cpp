@@ -11,27 +11,27 @@ player_state::StealthKill::~StealthKill()
 
 }
 
-void player_state::StealthKill::Update(Player* obj)
+void player_state::StealthKill::Update(std::shared_ptr<Player> obj)
 {
 
 }
 
-void player_state::StealthKill::LateUpdate(Player* obj)
+void player_state::StealthKill::LateUpdate(std::shared_ptr<Player> obj)
 {
 
 }
 
-void player_state::StealthKill::Enter(Player* obj)
+void player_state::StealthKill::Enter(std::shared_ptr<Player> obj)
 {
 
 }
 
-void player_state::StealthKill::Exit(Player* obj)
+void player_state::StealthKill::Exit(std::shared_ptr<Player> obj)
 {
 
 }
 
-std::shared_ptr<IState<Player>> player_state::StealthKill::ChangeState(Player* obj)
+std::shared_ptr<IState<Player>> player_state::StealthKill::ChangeState(std::shared_ptr<Player> obj)
 {
 	return nullptr;
 }

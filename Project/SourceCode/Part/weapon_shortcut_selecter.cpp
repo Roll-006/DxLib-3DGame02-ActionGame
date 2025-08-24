@@ -15,7 +15,7 @@ WeaponShortcutSelecter::~WeaponShortcutSelecter()
 
 }
 
-void WeaponShortcutSelecter::Update(Player* player)
+void WeaponShortcutSelecter::Update(std::shared_ptr<Player> player)
 {
 	m_is_selected = false;
 
@@ -150,7 +150,7 @@ void WeaponShortcutSelecter::SelectWeaponRotate(const CommandKind command_kind)
 	command->SetInputMode(CommandKind::kSideChangeWeapon, input_mode_kind);
 }
 
-void WeaponShortcutSelecter::HoldWeapon(Player* player)
+void WeaponShortcutSelecter::HoldWeapon(std::shared_ptr<Player> player)
 {
 	const auto select_weapon = GetShortcutWeapon(m_current_select_shortcut);
 

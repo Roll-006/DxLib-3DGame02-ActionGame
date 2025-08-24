@@ -11,27 +11,27 @@ player_state::FrontKick::~FrontKick()
 
 }
 
-void player_state::FrontKick::Update(Player* obj)
+void player_state::FrontKick::Update(std::shared_ptr<Player> obj)
 {
 
 }
 
-void player_state::FrontKick::LateUpdate(Player* obj)
+void player_state::FrontKick::LateUpdate(std::shared_ptr<Player> obj)
 {
 
 }
 
-void player_state::FrontKick::Enter(Player* obj)
+void player_state::FrontKick::Enter(std::shared_ptr<Player> obj)
 {
 
 }
 
-void player_state::FrontKick::Exit(Player* obj)
+void player_state::FrontKick::Exit(std::shared_ptr<Player> obj)
 {
 
 }
 
-std::shared_ptr<IState<Player>> player_state::FrontKick::ChangeState(Player* obj)
+std::shared_ptr<IState<Player>> player_state::FrontKick::ChangeState(std::shared_ptr<Player> obj)
 {
 	return nullptr;
 }

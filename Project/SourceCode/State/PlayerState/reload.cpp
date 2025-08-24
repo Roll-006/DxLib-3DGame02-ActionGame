@@ -12,7 +12,7 @@ player_state::Reload::~Reload()
 
 }
 
-void player_state::Reload::Update(Player* obj)
+void player_state::Reload::Update(std::shared_ptr<Player> obj)
 {
 	obj->GetCurrentHeldWeapon()->Update();
 
@@ -29,12 +29,12 @@ void player_state::Reload::Update(Player* obj)
 	}
 }
 
-void player_state::Reload::LateUpdate(Player* obj)
+void player_state::Reload::LateUpdate(std::shared_ptr<Player> obj)
 {
 	obj->GetCurrentHeldWeapon()->TrackOwnerHand();
 }
 
-void player_state::Reload::Enter(Player* obj)
+void player_state::Reload::Enter(std::shared_ptr<Player> obj)
 {
 	m_is_reloaded = false;
 
@@ -45,13 +45,13 @@ void player_state::Reload::Enter(Player* obj)
 	gun->GetMagazine()->OnStartReload(obj->GetModeler());
 }
 
-void player_state::Reload::Exit(Player* obj)
+void player_state::Reload::Exit(std::shared_ptr<Player> obj)
 {
 	obj->ReleaseWeapon();
 	obj->AttachWeapon(obj->GetCurrentEquipWeapon());
 }
 
-std::shared_ptr<IState<Player>> player_state::Reload::ChangeState(Player* obj)
+std::shared_ptr<IState<Player>> player_state::Reload::ChangeState(std::shared_ptr<Player> obj)
 {
 	const auto state_controller = obj->GetStateController();
 	const auto command			= CommandHandler::GetInstance();

@@ -11,27 +11,27 @@ player_state::RoundhouseKick::~RoundhouseKick()
 
 }
 
-void player_state::RoundhouseKick::Update(Player* obj)
+void player_state::RoundhouseKick::Update(std::shared_ptr<Player> obj)
 {
 
 }
 
-void player_state::RoundhouseKick::LateUpdate(Player* obj)
+void player_state::RoundhouseKick::LateUpdate(std::shared_ptr<Player> obj)
 {
 
 }
 
-void player_state::RoundhouseKick::Enter(Player* obj)
+void player_state::RoundhouseKick::Enter(std::shared_ptr<Player> obj)
 {
 
 }
 
-void player_state::RoundhouseKick::Exit(Player* obj)
+void player_state::RoundhouseKick::Exit(std::shared_ptr<Player> obj)
 {
 
 }
 
-std::shared_ptr<IState<Player>> player_state::RoundhouseKick::ChangeState(Player* obj)
+std::shared_ptr<IState<Player>> player_state::RoundhouseKick::ChangeState(std::shared_ptr<Player> obj)
 {
 	return nullptr;
 }

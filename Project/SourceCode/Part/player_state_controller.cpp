@@ -19,7 +19,7 @@ PlayerStateController::~PlayerStateController()
 
 }
 
-void PlayerStateController::Update(Player* player)
+void PlayerStateController::Update(std::shared_ptr<Player> player)
 {
 	ChangeState(player);
 
@@ -29,7 +29,7 @@ void PlayerStateController::Update(Player* player)
 	m_special_state			.at(TimeKind::kCurrent)->Update(player);
 }
 
-void PlayerStateController::LateUpdate(Player* player)
+void PlayerStateController::LateUpdate(std::shared_ptr<Player> player)
 {
 	m_move_state			.at(TimeKind::kCurrent)->LateUpdate(player);
 	m_action_state			.at(TimeKind::kCurrent)->LateUpdate(player);
@@ -103,7 +103,7 @@ void PlayerStateController::AddCheckStopState()
 	m_check_stop_state_handles.emplace_back(m_states.at(typeid(player_state::Run))		->GetStateHandle());
 }
 
-void PlayerStateController::ChangeState(Player* player)
+void PlayerStateController::ChangeState(std::shared_ptr<Player> player)
 {
 	const auto change_state = CreateChangeState(player);
 
@@ -140,7 +140,7 @@ void PlayerStateController::ChangeState(Player* player)
 	}
 }
 
-std::vector<std::shared_ptr<IState<Player>>> PlayerStateController::CreateChangeState(Player* player)
+std::vector<std::shared_ptr<IState<Player>>> PlayerStateController::CreateChangeState(std::shared_ptr<Player> player)
 {
 	// 次変更予定のステート
 	std::vector<std::shared_ptr<IState<Player>>> next_state
@@ -343,7 +343,7 @@ bool PlayerStateController::TryRun()
 	return is_run;
 }
 
-bool PlayerStateController::TryEquipKnifeShortcut(Player* player)
+bool PlayerStateController::TryEquipKnifeShortcut(std::shared_ptr<Player> player)
 {
 	const auto weapon = player->GetCurrentHeldWeapon();
 
@@ -361,13 +361,13 @@ bool PlayerStateController::TrySpinningSlash()
 	return  is_run && CommandHandler::GetInstance()->IsExecute(CommandKind::kAttack, TimeKind::kCurrent);
 }
 
-bool PlayerStateController::TryEquipGun(Player* player)
+bool PlayerStateController::TryEquipGun(std::shared_ptr<Player> player)
 {
 	return player->GetCurrentEquipWeaponKind() == WeaponKind::kGun
 		&& CommandHandler::GetInstance()->IsExecute(CommandKind::kAimGun, TimeKind::kCurrent);
 }
 
-bool PlayerStateController::TryEquipGunShortcut(Player* player)
+bool PlayerStateController::TryEquipGunShortcut(std::shared_ptr<Player> player)
 {
 	const auto weapon = player->GetCurrentHeldWeapon();
 
@@ -378,7 +378,7 @@ bool PlayerStateController::TryEquipGunShortcut(Player* player)
 	return false;
 }
 
-bool PlayerStateController::TryPullTrigger(Player* player)
+bool PlayerStateController::TryPullTrigger(std::shared_ptr<Player> player)
 {
 	const auto gun = std::dynamic_pointer_cast<GunBase>(player->GetCurrentHeldWeapon());
 
@@ -398,7 +398,7 @@ bool PlayerStateController::TryPullTrigger(Player* player)
 	return false;
 }
 
-bool PlayerStateController::TryReload(Player* player)
+bool PlayerStateController::TryReload(std::shared_ptr<Player> player)
 {
 	const auto gun = std::dynamic_pointer_cast<GunBase>(player->GetCurrentEquipWeapon());
 

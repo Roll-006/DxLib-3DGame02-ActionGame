@@ -44,8 +44,8 @@ public:
 	PlayerStateController();
 	~PlayerStateController();
 
-	void Update		(Player* player);
-	void LateUpdate	(Player* player);
+	void Update		(std::shared_ptr<Player>);
+	void LateUpdate	(std::shared_ptr<Player>);
 
 	/// @brief ステートを取得
 	template<typename StateT, typename ObjT>
@@ -58,12 +58,12 @@ public:
 	#pragma region Try判定
 	[[nodiscard]] bool TryMove();
 	[[nodiscard]] bool TryRun();
-	[[nodiscard]] bool TryEquipKnifeShortcut(Player* player);
+	[[nodiscard]] bool TryEquipKnifeShortcut(std::shared_ptr<Player>);
 	[[nodiscard]] bool TrySpinningSlash();
-	[[nodiscard]] bool TryEquipGun(Player* player);
-	[[nodiscard]] bool TryEquipGunShortcut(Player* player);
-	[[nodiscard]] bool TryPullTrigger(Player* player);
-	[[nodiscard]] bool TryReload(Player* player);
+	[[nodiscard]] bool TryEquipGun(std::shared_ptr<Player>);
+	[[nodiscard]] bool TryEquipGunShortcut(std::shared_ptr<Player>);
+	[[nodiscard]] bool TryPullTrigger(std::shared_ptr<Player>);
+	[[nodiscard]] bool TryReload(std::shared_ptr<Player>);
 	#pragma endregion
 
 
@@ -80,10 +80,10 @@ private:
 	void AddCheckStopState();
 
 	/// @brief ステートを変更
-	void ChangeState(Player* player);
+	void ChangeState(std::shared_ptr<Player> player);
 
 	/// @brief 変更するステートを生成
-	[[nodiscard]] std::vector<std::shared_ptr<IState<Player>>> CreateChangeState(Player* player);
+	[[nodiscard]] std::vector<std::shared_ptr<IState<Player>>> CreateChangeState(std::shared_ptr<Player> player);
 
 	/// @brief 未来のステート構成を生成
 	[[nodiscard]] std::vector<std::shared_ptr<IState<Player>>> CreateFutureState(const std::vector<std::shared_ptr<IState<Player>>>& next_state);

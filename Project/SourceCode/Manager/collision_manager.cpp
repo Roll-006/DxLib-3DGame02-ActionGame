@@ -11,7 +11,7 @@ CollisionManager::~CollisionManager()
 	// 処理なし
 }
 
-void CollisionManager::LateUpdate()
+void CollisionManager::Update()
 {
 	for (const auto& obj : m_collide_objects)
 	{
@@ -149,6 +149,7 @@ std::vector<ColliderPairOneToManyData> CollisionManager::CreateHitColliderPairs(
 
 				// 非アクティブの場合はスキップ
 				if (!target_obj->IsActive()) { continue; }
+
 
 				for (const auto& target_obj_collider : target_obj->GetColliderAll())
 				{

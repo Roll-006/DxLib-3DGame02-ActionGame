@@ -111,6 +111,7 @@ void CharacterBase::CreateCapsuleCollider(const float capsule_radius)
 
 void CharacterBase::CreateLandingTrigger(const float sphere_radius)
 {
+	// TODO : カプセルのサイズの比率によってずらし量を自動で設定させるように変更
 	const auto pos = m_capsule_collider->GetSegment().GetBeginPos() - VGet(0.0f, 5.0f, 0.0f);
 	AddCollider(std::make_shared<Collider>(ColliderKind::kLandingTrigger, std::make_shared<Sphere>(pos, sphere_radius), this));
 }

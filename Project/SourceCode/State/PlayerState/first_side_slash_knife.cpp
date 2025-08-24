@@ -12,7 +12,7 @@ player_state::FirstSideSlashKnife::~FirstSideSlashKnife()
 
 }
 
-void player_state::FirstSideSlashKnife::Update(Player* obj)
+void player_state::FirstSideSlashKnife::Update(std::shared_ptr<Player> obj)
 {
 	const auto time_manager = GameTimeManager::GetInstance();
 	m_combo_timer += time_manager->GetDeltaTime(TimeScaleController::LayerKind::kWorld);
@@ -23,12 +23,12 @@ void player_state::FirstSideSlashKnife::Update(Player* obj)
 	obj->SideSlashKnifeOffsetMove();
 }
 
-void player_state::FirstSideSlashKnife::LateUpdate(Player* obj)
+void player_state::FirstSideSlashKnife::LateUpdate(std::shared_ptr<Player> obj)
 {
 	obj->GetCurrentHeldWeapon()->TrackOwnerHand();
 }
 
-void player_state::FirstSideSlashKnife::Enter(Player* obj)
+void player_state::FirstSideSlashKnife::Enter(std::shared_ptr<Player> obj)
 {
 	m_combo_timer = 0.0f;
 
@@ -36,13 +36,13 @@ void player_state::FirstSideSlashKnife::Enter(Player* obj)
 	obj->HoldWeapon(obj->GetCurrentEquipKnife());
 }
 
-void player_state::FirstSideSlashKnife::Exit(Player* obj)
+void player_state::FirstSideSlashKnife::Exit(std::shared_ptr<Player> obj)
 {
 	obj->ReleaseWeapon();
 	obj->AttachWeapon(obj->GetCurrentEquipKnife());
 }
 
-std::shared_ptr<IState<Player>> player_state::FirstSideSlashKnife::ChangeState(Player* obj)
+std::shared_ptr<IState<Player>> player_state::FirstSideSlashKnife::ChangeState(std::shared_ptr<Player> obj)
 {
 	const auto state_controller = obj->GetStateController();
 	const auto command			= CommandHandler::GetInstance();

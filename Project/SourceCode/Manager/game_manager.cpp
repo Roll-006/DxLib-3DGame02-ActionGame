@@ -15,7 +15,7 @@ GameManager::GameManager():
 	ObjManager				::Generate();
 	CollisionManager		::Generate();
 	PhysicsManager			::Generate();
-	CinemachineBrain			::Generate();
+	CinemachineBrain		::Generate();
 	EffectManager			::Generate();
 	RifleCartridgeManager	::Generate();
 
@@ -48,9 +48,6 @@ void GameManager::Run()
 
 		m_scene_manager->Update();
 		m_scene_manager->LateUpdate();
-
-		//SetCameraPositionAndTarget_UpVecY(VGet(0, -1800, 0), v3d::GetNormalizedV(VGet(0.000001, -1, 0)));
-
 		m_scene_manager->DrawToShadowMap();
 		m_scene_manager->Draw();
 

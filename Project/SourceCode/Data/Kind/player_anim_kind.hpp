@@ -5,17 +5,25 @@ enum class PlayerAnimKind
 	kNone = -1,
 
 
-	#pragma region UPPER BODY
+	#pragma region 汎用
+	kIdle,
+
+	kStabKnife,
+	kFirstSideSlashKnife,
+	kSecondSideSlashKnife,
+	kSpinningSlashKnife,
+
+	kMoveForwardRun,
+	#pragma endregion
+
+
+	#pragma region 上半身用
 	kAttachRifle,
 	kDetachRifle,
 	kAttachHandgun,
 	kDetachHandgun,
 	kEquipKnife,
 	kAimKnife,
-	kStabKnife,
-	kFirstSideSlashKnife,
-	kSecondSideSlashKnife,
-	kSpinningSlashKnife,
 	kParry,
 	kEquipGun,
 	kAimGun,
@@ -23,8 +31,7 @@ enum class PlayerAnimKind
 	#pragma endregion
 
 
-	#pragma region LOWER BODY
-	kIdle,
+	#pragma region 下半身用
 	kCrouch,
 
 	kMoveForward,
@@ -44,7 +51,5 @@ enum class PlayerAnimKind
 	kMoveForwardRightCrouch,
 	kMoveBackwardLeftCrouch,
 	kMoveBackwardRightCrouch,
-
-	kMoveForwardRun,
 	#pragma endregion
 };

@@ -11,7 +11,7 @@ Ground::Ground() :
 
 	AddCollider(std::make_shared<Collider>(ColliderKind::kCollider, m_modeler->GetModelHandle(), this));
 
-	t = std::make_shared<Triangle>(VGet(300, -2000, 0), VGet(0, -2000, 300), VGet(-300, -2000, 0));
+	t = std::make_shared<Triangle>(VGet(300, 0, 0), VGet(0, 0, 300), VGet(-300, 0, 0));
 	//AddCollider(std::make_shared<Collider>(ColliderKind::kCollider, t, this));
 }
 
@@ -40,6 +40,7 @@ void Ground::DrawToShadowMap() const
 	if (!IsActive()) { return; }
 
 	m_modeler->DrawToShadowMap();
+	t->Draw(true, 200, 0xffffff);
 }
 
 void Ground::Draw() const

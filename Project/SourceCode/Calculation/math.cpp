@@ -264,8 +264,10 @@ VECTOR math::GetLerpVector(const VECTOR& begin_v, const VECTOR& end_v, const flo
 
 Quaternion math::GetSlerpQuaternion(const Quaternion& begin_q, const Quaternion& end_q, const float t)
 {
+    // 安全性向上のため正規化・クランプ
     const auto normalized_begin_q   = quat::GetNormalizedQuaternion(begin_q);
     const auto normalized_end_q     = quat::GetNormalizedQuaternion(end_q);
+    const auto clamped_t            = std::clamp(t, 0.0f, 1.0f);
 
     ////// 相対回転を取得
     ////auto relative_q       = quat::GetConjugateQuaternion(normalized_begin_q) * normalized_end_q;
@@ -317,7 +319,7 @@ Quaternion math::GetSlerpQuaternion(const Quaternion& begin_q, const Quaternion&
     //    + normalized_begin_q.z * normalized_end_q.z
     //    + normalized_begin_q.w * normalized_end_q.w)
     //    / (begin_size * end_size);
-
+    //
     //// 最短経路を選択するために、内積が負の場合は符号を反転
     //Quaternion target_q = normalized_end_q;
     //if (dot < 0.0f)
@@ -328,27 +330,27 @@ Quaternion math::GetSlerpQuaternion(const Quaternion& begin_q, const Quaternion&
     //    target_q.w = -normalized_end_q.w;
     //    dot = -dot;
     //}
-
+    //
     //// 一致していた場合は補間完了とする
     //if (dot > kOneThreshold)
     //{
     //    return target_q;
     //}
-
+    //
     //const float w = acos(fabs(dot));
     //const float sin_w = sin(w);
-
+    //
     //// sin_wが0に近い場合の処理
     //if (sin_w < 1e-6f)
     //{
     //    return normalized_begin_q;
     //}
-
+    //
     //const float sin_t_w     = sin(t * w);
     //const float sin_inv_t_w = sin((1.0f - t) * w);
     //const float mult_q1     = sin_inv_t_w / sin_w;
     //const float mult_q2     = sin_t_w / sin_w;
-
+    //
     //return Quaternion
     //{
     //    mult_q1 * normalized_begin_q.x + mult_q2 * target_q.x,
@@ -358,28 +360,25 @@ Quaternion math::GetSlerpQuaternion(const Quaternion& begin_q, const Quaternion&
     //};
     
     // 内積を計算
-    float dot = normalized_begin_q.x * normalized_end_q.x + normalized_begin_q.y * normalized_end_q.y +
-                normalized_begin_q.z * normalized_end_q.z + normalized_begin_q.w * normalized_end_q.w;
+    float dot = 
+        normalized_begin_q.x * normalized_end_q.x + 
+        normalized_begin_q.y * normalized_end_q.y +
+        normalized_begin_q.z * normalized_end_q.z + 
+        normalized_begin_q.w * normalized_end_q.w;
     
     // 回転角度での最短経路を選択
-    // dot > 0: 鋭角（< 90度）、dot < 0: 鈍角（> 90度）
     Quaternion target_q = normalized_end_q;
     if (dot < 0.0f)
     {
-        // 鈍角の場合、符号を反転して鋭角にする
         target_q.x = -normalized_end_q.x;
         target_q.y = -normalized_end_q.y;
         target_q.z = -normalized_end_q.z;
         target_q.w = -normalized_end_q.w;
-        dot = -dot; // 内積も正にする
+        dot = -dot;
     }
     
-    // tの範囲をクランプ
-    const float clamped_t = std::clamp(t, 0.0f, 1.0f);
-    
     // ほぼ同じクォータニオンの場合は線形補間を使用
-    const float kOneThreshold = 0.9999f;
-    if (dot > kOneThreshold)
+    if (dot > math::kOneThreshold)
     {
         // 線形補間 + 正規化
         Quaternion result = {
@@ -392,22 +391,22 @@ Quaternion math::GetSlerpQuaternion(const Quaternion& begin_q, const Quaternion&
     }
     
     // 球面線形補間
-    // dotは既に[0,1]の範囲にクランプされている
-    const float theta = acos(std::clamp(dot, 0.0f, 1.0f));
-    const float sin_theta = sin(theta);
+    const float theta       = acos(std::clamp(dot, 0.0f, 1.0f));
+    const float sin_theta   = sin(theta);
     
-    // 数値安定性チェック（上記のthresholdで通常は回避済み）
-    if (sin_theta < 1e-6f)
+    // 数値安定性チェック
+    if (sin_theta < math::kEpsilonLow)
     {
         return normalized_begin_q;
     }
     
-    const float sin_t_theta = sin(clamped_t * theta);
+    const float sin_t_theta     = sin(clamped_t * theta);
     const float sin_inv_t_theta = sin((1.0f - clamped_t) * theta);
-    const float mult_q1 = sin_inv_t_theta / sin_theta;
-    const float mult_q2 = sin_t_theta / sin_theta;
+    const float mult_q1         = sin_inv_t_theta / sin_theta;
+    const float mult_q2         = sin_t_theta / sin_theta;
     
-    return Quaternion{
+    return Quaternion
+    {
         mult_q1 * normalized_begin_q.x + mult_q2 * target_q.x,
         mult_q1 * normalized_begin_q.y + mult_q2 * target_q.y,
         mult_q1 * normalized_begin_q.z + mult_q2 * target_q.z,
@@ -645,8 +644,9 @@ float math::GetAngleBetweenTwoVector(const VECTOR& v1, const VECTOR& v2)
 
     if (length1 == 0.0f || length2 == 0.0f) { return 0.0f; }
 
-    // 誤差を消し飛ばす
     float dot = VDot(v1, v2) / (length1 * length2);
+
+    // 誤差を消し飛ばす
     dot = std::clamp(dot, -1.0f, 1.0f);
 
     return acos(dot);

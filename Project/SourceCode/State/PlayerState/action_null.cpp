@@ -11,7 +11,7 @@ player_state::ActionNull::~ActionNull()
 
 }
 
-void player_state::ActionNull::Update(Player* obj)
+void player_state::ActionNull::Update(std::shared_ptr<Player> obj)
 {
 	const auto state_controller = obj->GetStateController();
 	if (state_controller->GetMoveState(TimeKind::kCurrent)->GetStateKind() == static_cast<int>(player_state::MoveStateKind::kMove))
@@ -20,22 +20,22 @@ void player_state::ActionNull::Update(Player* obj)
 	}
 }
 
-void player_state::ActionNull::LateUpdate(Player* obj)
+void player_state::ActionNull::LateUpdate(std::shared_ptr<Player> obj)
 {
 
 }
 
-void player_state::ActionNull::Enter(Player* obj)
+void player_state::ActionNull::Enter(std::shared_ptr<Player> obj)
 {
 
 }
 
-void player_state::ActionNull::Exit(Player* obj)
+void player_state::ActionNull::Exit(std::shared_ptr<Player> obj)
 {
 
 }
 
-std::shared_ptr<IState<Player>> player_state::ActionNull::ChangeState(Player* obj)
+std::shared_ptr<IState<Player>> player_state::ActionNull::ChangeState(std::shared_ptr<Player> obj)
 {
 	const auto state_controller = obj->GetStateController();
 

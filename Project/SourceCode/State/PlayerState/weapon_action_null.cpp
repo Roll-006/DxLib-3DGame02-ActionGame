@@ -11,17 +11,17 @@ player_state::WeaponActionNull::~WeaponActionNull()
 
 }
 
-void player_state::WeaponActionNull::Update(Player* obj)
+void player_state::WeaponActionNull::Update(std::shared_ptr<Player> obj)
 {
 	
 }
 
-void player_state::WeaponActionNull::LateUpdate(Player* obj)
+void player_state::WeaponActionNull::LateUpdate(std::shared_ptr<Player> obj)
 {
 
 }
 
-void player_state::WeaponActionNull::Enter(Player* obj)
+void player_state::WeaponActionNull::Enter(std::shared_ptr<Player> obj)
 {
 	if (obj->GetCurrentHeldWeapon())
 	{
@@ -29,12 +29,12 @@ void player_state::WeaponActionNull::Enter(Player* obj)
 	}
 }
 
-void player_state::WeaponActionNull::Exit(Player* obj)
+void player_state::WeaponActionNull::Exit(std::shared_ptr<Player> obj)
 {
 	
 }
 
-std::shared_ptr<IState<Player>> player_state::WeaponActionNull::ChangeState(Player* obj)
+std::shared_ptr<IState<Player>> player_state::WeaponActionNull::ChangeState(std::shared_ptr<Player> obj)
 {
 	const auto state_controller = obj->GetStateController();
 	const auto command			= CommandHandler::GetInstance();

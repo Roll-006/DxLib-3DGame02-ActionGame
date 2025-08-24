@@ -208,6 +208,8 @@
     <ClCompile Include="SourceCode\Part\weapon_shortcut_drawer.cpp" />
     <ClCompile Include="SourceCode\Part\weapon_shortcut_selecter.cpp" />
     <ClCompile Include="SourceCode\Part\weapon_shortcut_icon.cpp" />
+    <ClCompile Include="SourceCode\Part\zombie_animator.cpp" />
+    <ClCompile Include="SourceCode\Part\zombie_state_controller.cpp" />
     <ClCompile Include="SourceCode\Random\random_generator.cpp" />
     <ClCompile Include="SourceCode\Scene\game_clear_scene.cpp" />
     <ClCompile Include="SourceCode\Scene\game_over_scene.cpp" />
@@ -306,6 +308,8 @@
     <ClInclude Include="SourceCode\Concept\vector_concepts.hpp" />
     <ClInclude Include="SourceCode\Data\Event\start_rocket_launcher_cutscene_data.hpp" />
     <ClInclude Include="SourceCode\Data\Kind\hit_points_part_kind.hpp" />
+    <ClInclude Include="SourceCode\Data\Kind\zombie_anim_kind.hpp" />
+    <ClInclude Include="SourceCode\Data\Kind\zombie_state_kind.hpp" />
     <ClInclude Include="SourceCode\Data\recoil_data.hpp" />
     <ClInclude Include="SourceCode\Data\animator_data.hpp" />
     <ClInclude Include="SourceCode\Data\box_data.hpp" />
@@ -425,6 +429,8 @@
     <ClInclude Include="SourceCode\Part\weapon_shortcut_selecter.hpp" />
     <ClInclude Include="SourceCode\Part\weapon_shortcut_drawer.hpp" />
     <ClInclude Include="SourceCode\Part\weapon_shortcut_icon.hpp" />
+    <ClInclude Include="SourceCode\Part\zombie_animator.hpp" />
+    <ClInclude Include="SourceCode\Part\zombie_state_controller.hpp" />
     <ClInclude Include="SourceCode\Random\random_generator.hpp" />
     <ClInclude Include="SourceCode\Scene\game_clear_scene.hpp" />
     <ClInclude Include="SourceCode\Scene\game_over_scene.hpp" />

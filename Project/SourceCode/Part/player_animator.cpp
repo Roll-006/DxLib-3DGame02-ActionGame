@@ -73,7 +73,7 @@ void PlayerAnimator::LoadAnim()
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveBackwardLeftCrouch),	AnimPath.MOVE_BACKWARD_LEFT_CROUCH,		0, AnimTag.MOVE, 20.0f,  true);
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveBackwardRightCrouch),	AnimPath.MOVE_BACKWARD_RIGHT_CROUCH,	0, AnimTag.MOVE, 20.0f,  true);
 
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardRun),			AnimPath.MOVE_FORWARD_RUN,				0, AnimTag.MOVE, 27.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardRun),			AnimPath.MOVE_FORWARD_RUN_01,				0, AnimTag.MOVE, 27.0f,  true);
 }
 
 void PlayerAnimator::ChangeAnim()

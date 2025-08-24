@@ -11,14 +11,14 @@ player_state::StabKnife::~StabKnife()
 
 }
 
-void player_state::StabKnife::Update(Player* obj)
+void player_state::StabKnife::Update(std::shared_ptr<Player> obj)
 {
 	obj->SetLookDirOffsetValueForAim();
 
 	obj->GetCurrentHeldWeapon()->Update();
 }
 
-void player_state::StabKnife::LateUpdate(Player* obj)
+void player_state::StabKnife::LateUpdate(std::shared_ptr<Player> obj)
 {
 	//const auto camera		= ObjManager::GetInstance()->GetObj<ObjBase>(ObjName.MAIN_CAMERA);
 	//const auto aim_dir	= camera->GetTransform()->GetForward(CoordinateKind::kWorld);
@@ -29,19 +29,19 @@ void player_state::StabKnife::LateUpdate(Player* obj)
 	obj->GetCurrentHeldWeapon()->TrackOwnerHand();
 }
 
-void player_state::StabKnife::Enter(Player* obj)
+void player_state::StabKnife::Enter(std::shared_ptr<Player> obj)
 {
 	obj->DetachWeapon(obj->GetCurrentEquipKnife());
 	obj->HoldWeapon(obj->GetCurrentEquipKnife());
 }
 
-void player_state::StabKnife::Exit(Player* obj)
+void player_state::StabKnife::Exit(std::shared_ptr<Player> obj)
 {
 	obj->ReleaseWeapon();
 	obj->AttachWeapon(obj->GetCurrentEquipKnife());
 }
 
-std::shared_ptr<IState<Player>> player_state::StabKnife::ChangeState(Player* obj)
+std::shared_ptr<IState<Player>> player_state::StabKnife::ChangeState(std::shared_ptr<Player> obj)
 {
 	const auto state_controller = obj->GetStateController();
 

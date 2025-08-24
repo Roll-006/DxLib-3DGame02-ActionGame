@@ -29,17 +29,17 @@ void ShareScene::Init()
 
 void ShareScene::Update()
 {
-	m_player					->Update();
-	CinemachineBrain::GetInstance()->Update();
-	EffectManager::GetInstance()->Update();
+	m_player						->Update();
+	CinemachineBrain::GetInstance()	->Update();
+	EffectManager	::GetInstance()	->Update();
 }
 
 void ShareScene::LateUpdate()
 {
-	m_player					->LateUpdate();
-	CinemachineBrain::GetInstance()->LateUpdate();
-	EffectManager::GetInstance()->LateUpdate();
-	m_screen_filter_creator		->LateUpdate();
+	m_player						->LateUpdate();
+	CinemachineBrain::GetInstance()	->LateUpdate();
+	EffectManager	::GetInstance()	->LateUpdate();
+	m_screen_filter_creator			->LateUpdate();
 }
 
 void ShareScene::DrawToShadowMap() const

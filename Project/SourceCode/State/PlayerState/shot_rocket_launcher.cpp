@@ -16,7 +16,7 @@ player_state::ShotRocketLauncher::~ShotRocketLauncher()
 
 }
 
-void player_state::ShotRocketLauncher::Update(Player* obj)
+void player_state::ShotRocketLauncher::Update(std::shared_ptr<Player> obj)
 {
 	m_wait_timer += GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleController::LayerKind::kNoneScale);
 	
@@ -27,7 +27,7 @@ void player_state::ShotRocketLauncher::Update(Player* obj)
 	gun->CalcShotTimer();
 }
 
-void player_state::ShotRocketLauncher::LateUpdate(Player* obj)
+void player_state::ShotRocketLauncher::LateUpdate(std::shared_ptr<Player> obj)
 {
 	const auto roket_launcher = std::static_pointer_cast<RocketLauncher>(obj->GetCurrentHeldWeapon());
 	const auto camera		  = ObjManager::GetInstance()->GetObj<ObjBase>(ObjName.MAIN_CAMERA);
@@ -56,7 +56,7 @@ void player_state::ShotRocketLauncher::LateUpdate(Player* obj)
 	}
 }
 
-void player_state::ShotRocketLauncher::Enter(Player* obj)
+void player_state::ShotRocketLauncher::Enter(std::shared_ptr<Player> obj)
 {
 	m_wait_timer = 0.0f;
 	m_was_shot	 = false;
@@ -72,7 +72,7 @@ void player_state::ShotRocketLauncher::Enter(Player* obj)
 	obj->HoldWeapon(obj->GetCurrentEquipWeapon());
 }
 
-void player_state::ShotRocketLauncher::Exit(Player* obj)
+void player_state::ShotRocketLauncher::Exit(std::shared_ptr<Player> obj)
 {
 	// ‰‰o—pƒJƒƒ‰‚ðíœ
 	const auto camera_brain = CinemachineBrain::GetInstance();
@@ -87,7 +87,7 @@ void player_state::ShotRocketLauncher::Exit(Player* obj)
 	obj->AttachWeapon(obj->GetCurrentEquipWeapon());
 }
 
-std::shared_ptr<IState<Player>> player_state::ShotRocketLauncher::ChangeState(Player* obj)
+std::shared_ptr<IState<Player>> player_state::ShotRocketLauncher::ChangeState(std::shared_ptr<Player> obj)
 {
 	const auto state_controller = obj->GetStateController();
 

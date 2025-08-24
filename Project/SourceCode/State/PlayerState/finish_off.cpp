@@ -11,27 +11,27 @@ player_state::FinishOff::~FinishOff()
 
 }
 
-void player_state::FinishOff::Update(Player* obj)
+void player_state::FinishOff::Update(std::shared_ptr<Player> obj)
 {
 
 }
 
-void player_state::FinishOff::LateUpdate(Player* obj)
+void player_state::FinishOff::LateUpdate(std::shared_ptr<Player> obj)
 {
 
 }
 
-void player_state::FinishOff::Enter(Player* obj)
+void player_state::FinishOff::Enter(std::shared_ptr<Player> obj)
 {
 
 }
 
-void player_state::FinishOff::Exit(Player* obj)
+void player_state::FinishOff::Exit(std::shared_ptr<Player> obj)
 {
 
 }
 
-std::shared_ptr<IState<Player>> player_state::FinishOff::ChangeState(Player* obj)
+std::shared_ptr<IState<Player>> player_state::FinishOff::ChangeState(std::shared_ptr<Player> obj)
 {
 	return nullptr;
 }

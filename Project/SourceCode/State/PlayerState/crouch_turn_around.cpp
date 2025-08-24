@@ -11,27 +11,27 @@ player_state::CrouchTurnAround::~CrouchTurnAround()
 
 }
 
-void player_state::CrouchTurnAround::Update(Player* obj)
+void player_state::CrouchTurnAround::Update(std::shared_ptr<Player> obj)
 {
 
 }
 
-void player_state::CrouchTurnAround::LateUpdate(Player* obj)
+void player_state::CrouchTurnAround::LateUpdate(std::shared_ptr<Player> obj)
 {
 
 }
 
-void player_state::CrouchTurnAround::Enter(Player* obj)
+void player_state::CrouchTurnAround::Enter(std::shared_ptr<Player> obj)
 {
 
 }
 
-void player_state::CrouchTurnAround::Exit(Player* obj)
+void player_state::CrouchTurnAround::Exit(std::shared_ptr<Player> obj)
 {
 
 }
 
-std::shared_ptr<IState<Player>> player_state::CrouchTurnAround::ChangeState(Player* obj)
+std::shared_ptr<IState<Player>> player_state::CrouchTurnAround::ChangeState(std::shared_ptr<Player> obj)
 {
 	return nullptr;
 }

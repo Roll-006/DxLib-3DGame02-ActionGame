@@ -8,10 +8,10 @@ class IState abstract
 public:
 	virtual ~IState() = default;
 
-	virtual void Update		(ObjT* obj) abstract;
-	virtual void LateUpdate	(ObjT* obj) abstract;
-	virtual void Enter		(ObjT* obj) abstract;
-	virtual void Exit		(ObjT* obj) abstract;
+	virtual void Update		(std::shared_ptr<ObjT> obj) abstract;
+	virtual void LateUpdate	(std::shared_ptr<ObjT> obj) abstract;
+	virtual void Enter		(std::shared_ptr<ObjT> obj) abstract;
+	virtual void Exit		(std::shared_ptr<ObjT> obj) abstract;
 
 	/// @brief 停止させるステートを追加する
 	/// @param state_handle ステートハンドル
@@ -22,7 +22,7 @@ public:
 	/// @brief 非アクティブ化する
 	virtual void Deactivate() abstract;
 
-	[[nodiscard]] virtual std::shared_ptr<IState<ObjT>> ChangeState(ObjT* obj) abstract;
+	[[nodiscard]] virtual std::shared_ptr<IState<ObjT>> ChangeState(std::shared_ptr<ObjT> obj) abstract;
 	[[nodiscard]] virtual int  GetStateKind()   const abstract;
 	[[nodiscard]] virtual int  GetStateHandle() const abstract;
 	[[nodiscard]] virtual bool IsActive()		const abstract;

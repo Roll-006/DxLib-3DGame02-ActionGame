@@ -11,7 +11,7 @@ player_state::Shot::~Shot()
 
 }
 
-void player_state::Shot::Update(Player* obj)
+void player_state::Shot::Update(std::shared_ptr<Player> obj)
 {
 	obj->SetLookDirOffsetValueForAim();
 
@@ -19,7 +19,7 @@ void player_state::Shot::Update(Player* obj)
 	gun->CalcShotTimer();
 }
 
-void player_state::Shot::LateUpdate(Player* obj)
+void player_state::Shot::LateUpdate(std::shared_ptr<Player> obj)
 {
 	const auto gun		= std::static_pointer_cast<GunBase>(obj->GetCurrentHeldWeapon());
 	const auto camera	= ObjManager::GetInstance()->GetObj<ObjBase>(ObjName.MAIN_CAMERA);
@@ -41,19 +41,19 @@ void player_state::Shot::LateUpdate(Player* obj)
 	std::static_pointer_cast<ControlVirtualCamerasController>(camera_controller)->OnRecoil(*gun.get());
 }
 
-void player_state::Shot::Enter(Player* obj)
+void player_state::Shot::Enter(std::shared_ptr<Player> obj)
 {
 	obj->DetachWeapon(obj->GetCurrentEquipWeapon());
 	obj->HoldWeapon(obj->GetCurrentEquipWeapon());
 }
 
-void player_state::Shot::Exit(Player* obj)
+void player_state::Shot::Exit(std::shared_ptr<Player> obj)
 {
 	obj->ReleaseWeapon();
 	obj->AttachWeapon(obj->GetCurrentEquipWeapon());
 }
 
-std::shared_ptr<IState<Player>> player_state::Shot::ChangeState(Player* obj)
+std::shared_ptr<IState<Player>> player_state::Shot::ChangeState(std::shared_ptr<Player> obj)
 {
 	const auto state_controller = obj->GetStateController();
 	const auto command			= CommandHandler::GetInstance();
