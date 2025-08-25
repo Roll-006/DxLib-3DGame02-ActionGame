@@ -79,6 +79,7 @@ void GameManager::Run()
 		if (is_begin_pos_ahead_of_plane && is_end_pos_ahead_of_plane)
 		{
 			penetration_depth = min(plane_to_begin_pos_distance, plane_to_end_pos_distance);
+			is_ahead_of_plane = true;
 		}
 		// 始点・終点がどちらも平面の後方にある場合は遠い方を採用
 		else if (!is_begin_pos_ahead_of_plane && !is_end_pos_ahead_of_plane)
@@ -108,8 +109,15 @@ void GameManager::Run()
 			angle = DX_PI_F - angle;
 		}
 
-		const auto sub_length			= penetration_depth / sin(angle);
-		const auto push_back_length		= sub_length + (sub_length / penetration_depth) * current_capsule.GetRadius();
+		const auto sub_length	= penetration_depth / sin(angle);
+		auto add_length			= (sub_length / penetration_depth) * current_capsule.GetRadius();
+
+		if (is_ahead_of_plane)
+		{
+			add_length -= sub_length;
+		}
+
+		const auto push_back_length		= sub_length + add_length;
 
 		const auto  sub_v				= v3d::GetNormalizedV(velocity) * push_back_length;
 		const auto  valid_velocity		= velocity - sub_v;

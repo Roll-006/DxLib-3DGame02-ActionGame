@@ -16,7 +16,7 @@ Ground::Ground() :
 	//t3 = std::make_shared<Triangle>(VGet(, , ), VGet(, , ), VGet(, , ));
 	//t4 = std::make_shared<Triangle>(VGet(, , ), VGet(, , ), VGet(, , ));
 	//AddCollider(std::make_shared<Collider>(ColliderKind::kCollider, t1, this));
-	AddCollider(std::make_shared<Collider>(ColliderKind::kCollider, t2, this));
+	//AddCollider(std::make_shared<Collider>(ColliderKind::kCollider, t2, this));
 	//AddCollider(std::make_shared<Collider>(ColliderKind::kCollider, t3, this));
 	//AddCollider(std::make_shared<Collider>(ColliderKind::kCollider, t4, this));
 }
@@ -54,14 +54,14 @@ void Ground::Draw() const
 
 	m_modeler->Draw();
 
-	for (const auto& collider : m_collider)
-	{
-		const auto shape = collider->GetShape();
-		if (shape != nullptr)
-		{
-			shape->Draw(true, 200, 0xffffff);
-		}
-	}
+	//for (const auto& collider : m_collider)
+	//{
+	//	const auto shape = collider->GetShape();
+	//	if (shape != nullptr)
+	//	{
+	//		shape->Draw(true, 200, 0xffffff);
+	//	}
+	//}
 }
 
 void Ground::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
