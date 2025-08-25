@@ -287,7 +287,8 @@ namespace math
 	[[nodiscard]] bool IsAcuteAngle(const float radian);
 
 	/// @brief 二つのベクトルのなす角を取得
-	[[nodiscard]] float GetAngleBetweenTwoVector(const VECTOR& v1, const VECTOR& v2);
+	[[nodiscard]] float  GetAngleBetweenTwoVector (const VECTOR&   v1, const VECTOR&   v2);
+	[[nodiscard]] double GetAngleBetweenTwoVectorD(const VECTOR_D& v1, const VECTOR_D& v2);
 
 	/// @brief 二つのベクトルのヨー角(Y軸)回転のなす角を取得
 	[[nodiscard]] float GetYawBetweenTwoVector(const VECTOR& v1, const VECTOR& v2);

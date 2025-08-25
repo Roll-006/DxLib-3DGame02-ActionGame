@@ -509,14 +509,28 @@ bool math::IsAcuteAngle(const float radian)
 
 float math::GetAngleBetweenTwoVector(const VECTOR& v1, const VECTOR& v2)
 {
-    const float length1 = VSize(v1);
-    const float length2 = VSize(v2);
+    const auto length1 = VSize(v1);
+    const auto length2 = VSize(v2);
 
     if (length1 == 0.0f || length2 == 0.0f) { return 0.0f; }
 
     // 誤差を消し飛ばす
-    float dot = VDot(v1, v2) / (length1 * length2);
+    auto dot = VDot(v1, v2) / (length1 * length2);
     dot = std::clamp(dot, -1.0f, 1.0f);
+
+    return acos(dot);
+}
+
+double math::GetAngleBetweenTwoVectorD(const VECTOR_D& v1, const VECTOR_D& v2)
+{
+    const auto length1 = VSizeD(v1);
+    const auto length2 = VSizeD(v2);
+
+    if (length1 == 0.0f || length2 == 0.0f) { return 0.0f; }
+
+    // 誤差を消し飛ばす
+    auto dot = VDotD(v1, v2) / (length1 * length2);
+    dot = std::clamp(dot, -1.0, 1.0);
 
     return acos(dot);
 }

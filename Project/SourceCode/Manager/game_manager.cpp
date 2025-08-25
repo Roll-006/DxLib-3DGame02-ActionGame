@@ -57,12 +57,12 @@ void GameManager::Run()
 
 
 		// ‰¼ŽÀ‘•
-		const auto velocity						= VGet(50, -200, 100);
+		const auto velocity						= VGet(0, 0, 300);
 		
-		const auto current_capsule				= Capsule(VGet(-50, -20, -100) + VGet(0, 400, 100), VGet(-30, 0, -70) + VGet(0, 400, 100), 10);
+		const auto current_capsule				= Capsule(VGet(-50, -20, -100) + VGet(0, 200, 100), VGet(-30, 0, 100) + VGet(0, 200, 100), 10);
 		auto	   future_capsule				= current_capsule;
 		future_capsule.Move(velocity);
-		const auto triangle						= Triangle(VGet(100, 0, 200), VGet(0, 500, 0), VGet(-100, 0, 200));
+		const auto triangle						= Triangle(VGet(100, 0, 200), VGet(0, 500, 200), VGet(-100, 0, 200));
 		const auto plane						= Plane(triangle.GetCentroid(), triangle.GetNormalVector());
 
 		const auto  future_begin_pos			= future_capsule.GetSegment().GetBeginPos();
@@ -98,9 +98,9 @@ void GameManager::Run()
 		}
 
 		// velocity‚ÆŽOŠpŒ`‚É‰ˆ‚Á‚½ƒxƒNƒgƒ‹‚ÌŠp“x‚ðŽæ“¾
-		const auto  plane_cross_v1 = math::GetNormalVector(plane.GetNormalVector(), axis::GetWorldYAxis());
-		auto        plane_cross_v2 = math::GetNormalVector(plane.GetNormalVector(), plane_cross_v1);
-		auto        angle = math::GetAngleBetweenTwoVector(plane_cross_v2, v3d::GetNormalizedV(velocity));
+		const auto  plane_cross_v1		= math::GetNormalVector(plane.GetNormalVector(), axis::GetWorldYAxis());
+		auto        plane_cross_v2		= math::GetNormalVector(plane.GetNormalVector(), plane_cross_v1);
+		auto        angle				= 90.0f * math::kDegToRad - math::GetAngleBetweenTwoVector(-plane.GetNormalVector(), v3d::GetNormalizedV(velocity));
 
 		// Šp“x‚ª90‚ð’´‚¦‚Ä‚½ê‡A¡Œã“Š‰eæ‚ÉŽg‚¤ƒxƒNƒgƒ‹‚ð”½“]
 		if (angle > 90.0f * math::kDegToRad)
@@ -109,16 +109,12 @@ void GameManager::Run()
 			angle = DX_PI_F - angle;
 		}
 
-		const auto sub_length	= penetration_depth / sin(angle);
-		auto add_length			= (sub_length / penetration_depth) * current_capsule.GetRadius();
+		const auto sub_length			= penetration_depth / sin(angle);
+		auto add_length					= (sub_length / penetration_depth) * current_capsule.GetRadius();
 
-		if (is_ahead_of_plane)
-		{
-			add_length -= sub_length;
-		}
+		if (is_ahead_of_plane) { add_length -= sub_length; }
 
-		const auto push_back_length		= sub_length + add_length;
-
+		const auto	push_back_length	= sub_length + add_length;
 		const auto  sub_v				= v3d::GetNormalizedV(velocity) * push_back_length;
 		const auto  valid_velocity		= velocity - sub_v;
 		auto        fix_capsule			= current_capsule;
@@ -135,6 +131,12 @@ void GameManager::Run()
 
 
 		// ‰¼•`‰æ
+		const auto p1 = future_capsule.GetSegment().GetEndPos();
+		const auto p2 = p1 - v3d::GetNormalizedV(velocity) * sub_length;
+		const auto p3 = p2 - v3d::GetNormalizedV(velocity) * add_length;
+		DrawLine3D(p1, p2, 0x0091ff);
+		DrawLine3D(p2, p3, 0x0dff00);
+		DrawLine3D(future_capsule. GetSegment().GetEndPos(), future_capsule.GetSegment().GetEndPos() + triangle.GetNormalVector() * penetration_depth, 0x0091ff);
 		DrawLine3D(current_capsule.GetSegment().GetBeginPos(), future_capsule.GetSegment().GetBeginPos(), 0xffffff);
 		DrawLine3D(current_capsule.GetSegment().GetBeginPos(), current_capsule.GetSegment().GetBeginPos() + plane_cross_v2 * 100, 0xff0000);
 		DrawLine3D(current_capsule.GetSegment().GetBeginPos(), current_capsule.GetSegment().GetBeginPos() + result_velocity, 0xff0000);
