@@ -12,7 +12,7 @@ Ground::Ground() :
 	AddCollider(std::make_shared<Collider>(ColliderKind::kCollider, m_modeler->GetModelHandle(), this));
 
 	t = std::make_shared<Triangle>(VGet(300, 0, 0), VGet(0, 0, 300), VGet(-300, 0, 0));
-	//AddCollider(std::make_shared<Collider>(ColliderKind::kCollider, t, this));
+	AddCollider(std::make_shared<Collider>(ColliderKind::kCollider, t, this));
 }
 
 Ground::~Ground()

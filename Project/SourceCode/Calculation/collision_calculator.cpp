@@ -907,6 +907,7 @@ VECTOR collision::PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsu
     if (is_begin_pos_ahead_of_plane && is_end_pos_ahead_of_plane)
     {
         penetration_depth = min(plane_to_begin_pos_distance, plane_to_end_pos_distance);
+        is_ahead_of_plane = true;
     }
     // 始点・終点がどちらも平面の後方にある場合は遠い方を採用
     else if (!is_begin_pos_ahead_of_plane && !is_end_pos_ahead_of_plane)
@@ -927,17 +928,12 @@ VECTOR collision::PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsu
     // velocityと三角形に沿ったベクトルの角度を取得
     const auto  plane_cross_v1      = math::GetNormalVector(plane.GetNormalVector(), axis::GetWorldYAxis());
     auto        plane_cross_v2      = math::GetNormalVector(plane.GetNormalVector(), plane_cross_v1);
-    auto        angle               = math::GetAngleBetweenTwoVector(plane_cross_v2, v3d::GetNormalizedV(velocity));
-    
-    // 角度が90を超えてた場合、今後投影先に使うベクトルを反転
-    if (angle > 90.0f * math::kDegToRad)
-    {
-        plane_cross_v2 *= -1;
-        angle = DX_PI_F - angle;
-    }
-
+    const auto  angle               = 90.0f * math::kDegToRad - math::GetAngleBetweenTwoVector(-plane.GetNormalVector(), v3d::GetNormalizedV(velocity));
     const auto  sub_length          = math::GetHypotenuseLengthRightTriangleFromOpposite(penetration_depth, angle);
-    const auto  push_back_length    = sub_length + math::GetRatio<float, float>(sub_length, penetration_depth, dynamic_capsule.GetRadius());
+    auto        add_length          = math::GetRatio<float, float>(sub_length, penetration_depth, dynamic_capsule.GetRadius());
+    const auto  push_back_length    = sub_length + add_length;
+
+    //if (is_ahead_of_plane) { add_length -= sub_length; }
     
     const auto  sub_v               = v3d::GetNormalizedV(velocity) * push_back_length;
     const auto  valid_velocity      = velocity - sub_v;
