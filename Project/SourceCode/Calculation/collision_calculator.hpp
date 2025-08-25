@@ -239,6 +239,9 @@ namespace collision
     /// @param slope_difficulty_angle_threshold 登るのが困難になり始める角度
     /// @param max_slope_angle 登れる角度の最大値
     /// @return 有効な速度ベクトル
+    [[nodiscard]] VECTOR OldPushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsule& dynamic_capsule, const Triangle& static_triangle,
+        const float slope_difficulty_angle_threshold, const float max_slope_angle);
+
     [[nodiscard]] VECTOR PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsule& dynamic_capsule, const Triangle& static_triangle,
         const float slope_difficulty_angle_threshold, const float max_slope_angle);
 

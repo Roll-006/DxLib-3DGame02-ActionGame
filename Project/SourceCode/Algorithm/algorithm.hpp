@@ -5,7 +5,7 @@
 
 namespace algorithm
 {
-	#pragma region 変換
+#pragma region 変換
 	/// @brief std::vector<std::pair<key, value>>をstd::unorderd_map<key, value>へ変換
 	/// @brief WARNING : 順番は保たれない
 	template<typename KeyT, typename ValueT>
@@ -15,7 +15,7 @@ namespace algorithm
 		return u_map;
 	}
 
-	/// @brief std::unorderd_map<key, value>をstd::vector<std::pair<key, value>>へ変換
+	/// @brief std::unorderd_map<key, value>をstd::vector<std::pair<first, second>>へ変換
 	/// @brief WARNING : 順番は保たれない
 	template<typename KeyT, typename ValueT>
 	[[nodiscard]] std::vector<std::pair<KeyT, ValueT>> ConvertUmapToPairs(const std::unordered_map<KeyT, ValueT>& u_map)
@@ -23,36 +23,40 @@ namespace algorithm
 		std::vector<std::pair<KeyT, ValueT>> pairs(u_map.begin(), u_map.end());
 		return pairs;
 	}
-	#pragma endregion
+#pragma endregion
 
 
-	#pragma region ソート
-	/// @brief pairのsecondをソート
+#pragma region ソート
+	/// @brief std::vector<std::pair<first, second>>のsecondをソート
 	template<typename FirstT, typename SecondT>
 	[[nodiscard]] std::vector<std::pair<FirstT, SecondT>> Sort(const std::vector<std::pair<FirstT, SecondT>>& pairs, const SortKind sort_kind)
 	{
 		auto sorted_pairs = pairs;
 
 		std::sort(sorted_pairs.begin(), sorted_pairs.end(), [=](const auto& a, const auto& b)
-		{
-			switch (sort_kind)
 			{
-			case SortKind::kAscending:	return a.second < b.second; break;
-			case SortKind::kDescending:	return a.second > b.second;	break;
-			}
-			return false;
-		});
+				switch (sort_kind)
+				{
+				case SortKind::kAscending:	return a.second < b.second; break;
+				case SortKind::kDescending:	return a.second > b.second;	break;
+				}
+				return false;
+			});
 
 		return sorted_pairs;
 	}
 
-	/// @brief pairのsecondをソート
+	/// @brief std::vector<std::pair<first, second>>のsecondをソート
 	/// @brief WARNING : main_pairsとsub_pairsは同じデータ型、同じ個数である必要あり
 	/// @brief WARNING : main_pairsとsub_pairsのfirstの並び順は一致している必要あり
 	/// @param main_pairs ソートされるpairs
 	/// @param sub_pairs main_pairsに同じsecondがあった場合、sub_pairsでソートを行う
 	template<typename FirstT, typename SecondT>
-	[[nodiscard]] std::vector<std::pair<FirstT, SecondT>> Sort(const std::vector<std::pair<FirstT, SecondT>>& main_pairs, const std::vector<std::pair<FirstT, SecondT>>& sub_pairs, const SortKind sort_kind)
+	[[nodiscard]] std::vector<std::pair<FirstT, SecondT>> Sort(
+		const std::vector<std::pair<FirstT, SecondT>>& main_pairs,
+		const std::vector<std::pair<FirstT, SecondT>>& sub_pairs,
+		const SortKind main_pairs_sort_kind,
+		const SortKind sub_pairs_sort_kind)
 	{
 		auto sorted_pairs = main_pairs;
 
@@ -64,48 +68,39 @@ namespace algorithm
 		}
 
 		std::sort(sorted_pairs.begin(), sorted_pairs.end(), [&](const auto& a, const auto& b)
-		{
-			switch (sort_kind)
 			{
-			case SortKind::kAscending:
-				if (a.second != b.second) {
-					return a.second < b.second;
-				}
-				return sub_pairs[index_map.at(a.first)].second <
-					sub_pairs[index_map.at(b.first)].second;
+				switch (main_pairs_sort_kind)
+				{
+				case SortKind::kAscending:
+					if (a.second != b.second) { return a.second < b.second; }
 
-			case SortKind::kDescending:
-				if (a.second != b.second) {
-					return a.second > b.second;
+					switch (sub_pairs_sort_kind)
+					{
+					case SortKind::kAscending:
+						return sub_pairs[index_map.at(a.first)].second < sub_pairs[index_map.at(b.first)].second;
+
+					case SortKind::kDescending:
+						return sub_pairs[index_map.at(a.first)].second > sub_pairs[index_map.at(b.first)].second;
+					}
+					return false;
+
+				case SortKind::kDescending:
+					if (a.second != b.second) { return a.second > b.second; }
+
+					switch (sub_pairs_sort_kind)
+					{
+					case SortKind::kAscending:
+						return sub_pairs[index_map.at(a.first)].second < sub_pairs[index_map.at(b.first)].second;
+
+					case SortKind::kDescending:
+						return sub_pairs[index_map.at(a.first)].second > sub_pairs[index_map.at(b.first)].second;
+					}
+					return false;
 				}
-				return sub_pairs[index_map.at(a.first)].second >
-					sub_pairs[index_map.at(b.first)].second;
-			}
-			return false;
-		});
+				return false;
+			});
 
 		return sorted_pairs;
 	}
-
-	/// @brief unorderd_mapのvalueをソート
-	template<typename KeyT, typename ValueT>
-	[[nodiscard]] std::unordered_map<KeyT, ValueT> Sort(const std::unordered_map<KeyT, ValueT>& u_map, const SortKind sort_kind)
-	{
-		std::vector<std::pair<KeyT, ValueT>> pairs = ConvertUmapToPairs(u_map);
-		return ConvertPairsToUmap(Sort(u_map, sort_kind));
-	}
-
-	/// @brief unorderd_mapのvalueをソート
-	/// @brief WARNING : main_u_mapとsub_u_mapは同じデータ型、同じ個数である必要あり
-	/// @brief WARNING : main_u_mapとsub_u_mapのkeyの並び順は一致している必要あり
-	/// @param main_u_map ソートされるunorderd_map
-	/// @param sub_u_map main_u_mapに同じvalueがあった場合、sub_u_mapでソートを行う
-	template<typename KeyT, typename ValueT>
-	[[nodiscard]] std::unordered_map<KeyT, ValueT> Sort(const std::unordered_map<KeyT, ValueT>& main_u_map, const std::unordered_map<KeyT, ValueT>& sub_u_map, const SortKind sort_kind)
-	{
-		std::vector<std::pair<KeyT, ValueT>> main_pairs = ConvertUmapToPairs(main_u_map);
-		std::vector<std::pair<KeyT, ValueT>> sub_pairs  = ConvertUmapToPairs(main_u_map);
-		return ConvertPairsToUmap(Sort(main_pairs, sub_pairs, sort_kind));
-	}
-	#pragma endregion
+#pragma endregion
 }
