@@ -188,7 +188,8 @@ void PhysicsManager::PushBack(const std::shared_ptr<PhysicalObjBase> low_priorit
 	case ShapeKind::kSphere:  PushBackSphereAndTarget (low_priority_obj, high_priority_obj);  break;
 	case ShapeKind::kCapsule: PushBackCapsuleAndTarget(low_priority_obj, high_priority_obj);  break;
 
-	default: break;
+	default:
+		break;
 	}
 }
 
