@@ -175,6 +175,11 @@ void PhysicsManager::ExecutePushBackPairs()
 				high_priority_obj = obj_1;
 			}
 
+			if (low_priority_obj->GetName() == ObjName.PLAYER && high_priority_obj->GetName() == ObjName.GROUND)
+			{
+				int a = 0;
+			}
+
 			// âüÇµñﬂÇµèàóùÇé¿çs
 			PushBack(low_priority_obj, high_priority_obj);
 		}
@@ -195,10 +200,35 @@ void PhysicsManager::PushBack(const std::shared_ptr<PhysicalObjBase> low_priorit
 
 	switch (shape->GetShapeKind())
 	{
-	case ShapeKind::kSphere:  PushBackSphereAndTarget (low_priority_obj, high_priority_obj);  break;
-	case ShapeKind::kCapsule: PushBackCapsuleAndTarget(low_priority_obj, high_priority_obj);  break;
+	//case ShapeKind::kTriangle:  PushBackTriangleAndTarget(low_priority_obj, high_priority_obj);  break;
+	case ShapeKind::kSphere:	PushBackSphereAndTarget  (low_priority_obj, high_priority_obj);  break;
+	case ShapeKind::kCapsule:	PushBackCapsuleAndTarget (low_priority_obj, high_priority_obj);  break;
 
 	default: break;
+	}
+}
+
+void PhysicsManager::PushBackTriangleAndTarget(const std::shared_ptr<PhysicalObjBase> low_priority_obj, const std::shared_ptr<PhysicalObjBase> high_priority_obj)
+{
+	const auto* shape		= high_priority_obj->GetCollider(ColliderKind::kCollider)->GetShape().get();
+	const auto  velocity	= low_priority_obj->GetVelocity();
+	const auto  triangle	= *std::dynamic_pointer_cast<Triangle>(low_priority_obj->GetCollider(ColliderKind::kCollider)->GetShape());
+
+	// ê}å`ÇÃìoò^Ç™Ç≥ÇÍÇƒÇ¢Ç»Ç¢èÍçáÇÕÉÇÉfÉãÇ≈âüÇµñﬂÇµÇçsÇ§
+	if (shape == nullptr)
+	{
+		return;
+	}
+
+	switch (shape->GetShapeKind())
+	{
+	case ShapeKind::kCapsule:
+		const auto push_backed_velocity = collision::PushBackCapsuleAndTriangle(velocity, *static_cast<const Capsule*>(shape), triangle, kSlopeDifficultyAngleThreshold, kMaxSlopeAngle);
+		low_priority_obj->SetVelocity(push_backed_velocity);
+		break;
+
+	default:
+		break;
 	}
 }
 
@@ -219,7 +249,8 @@ void PhysicsManager::PushBackSphereAndTarget (const std::shared_ptr<PhysicalObjB
 
 	switch (shape->GetShapeKind())
 	{
-	default: break;
+	default:
+		break;
 	}
 }
 
@@ -242,7 +273,7 @@ void PhysicsManager::PushBackCapsuleAndTarget(const std::shared_ptr<PhysicalObjB
 	switch (shape->GetShapeKind())
 	{
 	case ShapeKind::kTriangle:
-		push_backed_velocity = collision::PushBackCapsuleAndTriangle(velocity, capsule, *static_cast<const Triangle*>(shape), kSlopeDifficultyAngleThreshold, kMaxSlopeAngle);  break;
+		push_backed_velocity = collision::PushBackCapsuleAndTriangle(velocity, capsule, *static_cast<const Triangle*>(shape), kSlopeDifficultyAngleThreshold, kMaxSlopeAngle);
 		low_priority_obj->SetVelocity(push_backed_velocity);
 		break;
 
