@@ -4,7 +4,7 @@
 #include "../Interface/i_state_controller.hpp"
 #include "../Data/Kind/zombie_state_kind.hpp"
 
-#include "../State/ZombieState/patrol.hpp"
+#include "../Object/zombie.hpp"
 
 class ZombieStateController final : public IStateController<Zombie>
 {

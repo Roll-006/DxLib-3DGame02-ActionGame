@@ -141,6 +141,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="SourceCode\AI\EnemyAI\alert.cpp" />
+    <ClCompile Include="SourceCode\AI\EnemyAI\battle.cpp" />
+    <ClCompile Include="SourceCode\AI\EnemyAI\investigate.cpp" />
+    <ClCompile Include="SourceCode\AI\EnemyAI\patrol.cpp" />
+    <ClCompile Include="SourceCode\AI\EnemyAI\search.cpp" />
+    <ClCompile Include="SourceCode\AI\EnemyAI\track.cpp" />
+    <ClCompile Include="SourceCode\AI\EnemyAI\wait.cpp" />
     <ClCompile Include="SourceCode\Algorithm\algorithm.cpp" />
     <ClCompile Include="SourceCode\Algorithm\a_star.cpp" />
     <ClCompile Include="SourceCode\Base\animator_base.cpp" />
@@ -268,12 +275,7 @@
     <ClCompile Include="SourceCode\State\ZombieState\play_dead.cpp" />
     <ClCompile Include="SourceCode\State\ZombieState\grab.cpp" />
     <ClCompile Include="SourceCode\State\ZombieState\stand_stun.cpp" />
-    <ClCompile Include="SourceCode\State\ZombieState\track.cpp" />
-    <ClCompile Include="SourceCode\State\ZombieState\alert.cpp" />
-    <ClCompile Include="SourceCode\State\ZombieState\search.cpp" />
-    <ClCompile Include="SourceCode\State\ZombieState\investigate.cpp" />
     <ClCompile Include="SourceCode\State\ZombieState\action_null.cpp" />
-    <ClCompile Include="SourceCode\State\ZombieState\patrol.cpp" />
     <ClCompile Include="SourceCode\UI\player_ui_creator.cpp" />
     <ClCompile Include="SourceCode\UI\screen_filter_creator.cpp" />
     <ClCompile Include="SourceCode\UI\ui_drawer.cpp" />
@@ -285,6 +287,13 @@
     <ClCompile Include="SourceCode\Window\window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="SourceCode\AI\EnemyAI\alert.hpp" />
+    <ClInclude Include="SourceCode\AI\EnemyAI\battle.hpp" />
+    <ClInclude Include="SourceCode\AI\EnemyAI\investigate.hpp" />
+    <ClInclude Include="SourceCode\AI\EnemyAI\patrol.hpp" />
+    <ClInclude Include="SourceCode\AI\EnemyAI\search.hpp" />
+    <ClInclude Include="SourceCode\AI\EnemyAI\track.hpp" />
+    <ClInclude Include="SourceCode\AI\EnemyAI\wait.hpp" />
     <ClInclude Include="SourceCode\Algorithm\algorithm.hpp" />
     <ClInclude Include="SourceCode\Algorithm\a_star.hpp" />
     <ClInclude Include="SourceCode\Base\action_state_base.hpp" />
@@ -388,6 +397,7 @@
     <ClInclude Include="SourceCode\Handle\state_handler.hpp" />
     <ClInclude Include="SourceCode\Input\input_checker.hpp" />
     <ClInclude Include="SourceCode\Interface\i_enemy.hpp" />
+    <ClInclude Include="SourceCode\Interface\i_enemy_ai_state.hpp" />
     <ClInclude Include="SourceCode\Interface\i_enemy_role.hpp" />
     <ClInclude Include="SourceCode\Interface\i_loadable_ammo.hpp" />
     <ClInclude Include="SourceCode\Interface\i_control_virtual_camera.hpp" />
@@ -446,6 +456,7 @@
     <ClInclude Include="SourceCode\Part\weapon_shortcut_selecter.hpp" />
     <ClInclude Include="SourceCode\Part\weapon_shortcut_drawer.hpp" />
     <ClInclude Include="SourceCode\Part\weapon_shortcut_icon.hpp" />
+    <ClInclude Include="SourceCode\Part\zombie_ai_controller.hpp" />
     <ClInclude Include="SourceCode\Part\zombie_animator.hpp" />
     <ClInclude Include="SourceCode\Part\zombie_state_controller.hpp" />
     <ClInclude Include="SourceCode\Random\random_generator.hpp" />
@@ -504,12 +515,7 @@
     <ClInclude Include="SourceCode\State\ZombieState\play_dead.hpp" />
     <ClInclude Include="SourceCode\State\ZombieState\stand_stun.hpp" />
     <ClInclude Include="SourceCode\State\ZombieState\grab.hpp" />
-    <ClInclude Include="SourceCode\State\ZombieState\track.hpp" />
-    <ClInclude Include="SourceCode\State\ZombieState\alert.hpp" />
-    <ClInclude Include="SourceCode\State\ZombieState\search.hpp" />
-    <ClInclude Include="SourceCode\State\ZombieState\investigate.hpp" />
     <ClInclude Include="SourceCode\State\ZombieState\action_null.hpp" />
-    <ClInclude Include="SourceCode\State\ZombieState\patrol.hpp" />
     <ClInclude Include="SourceCode\UI\player_ui_creator.hpp" />
     <ClInclude Include="SourceCode\UI\screen_filter_creator.hpp" />
     <ClInclude Include="SourceCode\UI\ui_drawer.hpp" />
