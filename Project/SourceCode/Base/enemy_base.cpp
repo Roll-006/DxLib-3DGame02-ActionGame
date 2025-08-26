@@ -16,10 +16,10 @@ void EnemyBase::CreateLegTrigger (const float up_leg_capsule_radius, const float
 	const auto right_down_leg_trigger	= std::make_shared<Capsule>(v3d::GetZeroV(), v3d::GetZeroV(), down_leg_capsule_radius);
 
 	// “o˜^
-	AddCollider(std::make_shared<Collider>(ColliderKind::kLeftUpLegTrigger,		left_up_leg_trigger,    std::static_pointer_cast<PhysicalObjBase>(shared_from_this())));
-	AddCollider(std::make_shared<Collider>(ColliderKind::kLeftDownLegTrigger,	left_down_leg_trigger,  std::static_pointer_cast<PhysicalObjBase>(shared_from_this())));
-	AddCollider(std::make_shared<Collider>(ColliderKind::kRightUpLegTrigger,	right_up_leg_trigger,   std::static_pointer_cast<PhysicalObjBase>(shared_from_this())));
-	AddCollider(std::make_shared<Collider>(ColliderKind::kRightDownLegTrigger,	right_down_leg_trigger, std::static_pointer_cast<PhysicalObjBase>(shared_from_this())));
+	AddCollider(std::make_shared<Collider>(ColliderKind::kLeftUpLegTrigger,		left_up_leg_trigger,    this));
+	AddCollider(std::make_shared<Collider>(ColliderKind::kLeftDownLegTrigger,	left_down_leg_trigger,  this));
+	AddCollider(std::make_shared<Collider>(ColliderKind::kRightUpLegTrigger,	right_up_leg_trigger,   this));
+	AddCollider(std::make_shared<Collider>(ColliderKind::kRightDownLegTrigger,	right_down_leg_trigger, this));
 
 	CalcLegTriggerPos();
 }
@@ -29,12 +29,12 @@ void EnemyBase::CreateHeadTrigger(const float sphere_radius)
 	MATRIX head_mat = MV1GetFrameLocalWorldMatrix(m_modeler->GetModelHandle(), MV1SearchFrame(m_modeler->GetModelHandle(), BonePath.HEAD));
 	const VECTOR head_pos = MGetTranslateElem(head_mat);
 
-	AddCollider(std::make_shared<Collider>(ColliderKind::kHeadTrigger, std::make_shared<Sphere>(head_pos, sphere_radius), std::static_pointer_cast<PhysicalObjBase>(shared_from_this())));
+	AddCollider(std::make_shared<Collider>(ColliderKind::kHeadTrigger, std::make_shared<Sphere>(head_pos, sphere_radius), this));
 }
 
 void EnemyBase::CreateBodyTrigger(const float capsule_radius)
 {
-	AddCollider(std::make_shared<Collider>(ColliderKind::kBodyTrigger, std::make_shared<Capsule>(v3d::GetZeroV(), v3d::GetZeroV(), capsule_radius), std::static_pointer_cast<PhysicalObjBase>(shared_from_this())));
+	AddCollider(std::make_shared<Collider>(ColliderKind::kBodyTrigger, std::make_shared<Capsule>(v3d::GetZeroV(), v3d::GetZeroV(), capsule_radius), this));
 
 	CalcBodyTriggerPos();
 }

@@ -11,7 +11,7 @@ ShellCasing::ShellCasing(const std::string& file_path) :
 {	
 	SetColliderModelHandle(m_modeler->GetModelHandle());
 
-	AddCollider(std::make_shared<Collider>(ColliderKind::kCollider,		  std::make_shared<Sphere>(v3d::GetZeroV(), kColliderRadius),       this));
+	AddCollider(std::make_shared<Collider>(ColliderKind::kCollider,		  std::make_shared<Sphere>(v3d::GetZeroV(), kColliderRadius),		this));
 	AddCollider(std::make_shared<Collider>(ColliderKind::kLandingTrigger, std::make_shared<Sphere>(v3d::GetZeroV(), kLandingTriggerRadius), this));
 }
 
