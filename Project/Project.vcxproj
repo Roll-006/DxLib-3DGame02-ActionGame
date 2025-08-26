@@ -395,6 +395,7 @@
     <ClInclude Include="SourceCode\Interface\i_poolable.hpp" />
     <ClInclude Include="SourceCode\Interface\i_shooter.hpp" />
     <ClInclude Include="SourceCode\Interface\i_state.hpp" />
+    <ClInclude Include="SourceCode\Interface\i_state_controller.hpp" />
     <ClInclude Include="SourceCode\Interface\i_virtual_camera_controller.hpp" />
     <ClInclude Include="SourceCode\Interface\i_ui_creator.hpp" />
     <ClInclude Include="SourceCode\Manager\collision_manager.hpp" />

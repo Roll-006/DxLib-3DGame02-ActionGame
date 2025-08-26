@@ -135,6 +135,9 @@ void Player::Draw() const
 
 	//DxLibHelper::DrawModelFrames(m_modeler->GetModelHandle(), "", 0.05f, 20.0f);
 
+	const auto p = m_transform->GetPos(CoordinateKind::kWorld);
+	DrawFormatString(0, 60, 0xffffff, "%f %f, %f", p.x, p.y, p.z);
+
 	if (m_current_held_weapon) { m_current_held_weapon->Draw(); }
 
 	for (const auto& attach_weapon : m_attach_weapons)

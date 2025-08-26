@@ -1,7 +1,7 @@
 #pragma once
 #include <typeindex>
 
-#include "../Concept/state_concepts.hpp"
+#include "../Interface/i_state_controller.hpp"
 #include "../Data/Kind/player_state_kind.hpp"
 
 #include "../State/PlayerState/move_null.hpp"
@@ -38,14 +38,14 @@
 #include "../State/PlayerState/finish_off.hpp"
 #include "../State/PlayerState/escape_with_knife.hpp"
 
-class PlayerStateController final
+class PlayerStateController final : public IStateController<Player>
 {
 public:
 	PlayerStateController();
-	~PlayerStateController();
+	~PlayerStateController() override;
 
-	void Update		(std::shared_ptr<Player>);
-	void LateUpdate	(std::shared_ptr<Player>);
+	void Update		(std::shared_ptr<Player>) override;
+	void LateUpdate	(std::shared_ptr<Player>) override;
 
 	/// @brief ステートを取得
 	template<typename StateT, typename ObjT>
@@ -76,21 +76,21 @@ public:
 	#pragma endregion
 
 private:
-	void CreateState();
-	void AddStopStatePair();
-	void AddCheckStopState();
+	void CreateState()			override;
+	void AddStopStatePair()		override;
+	void AddCheckStopState()	override;
 
 	/// @brief ステートを変更
-	void ChangeState(std::shared_ptr<Player> player);
+	void ChangeState(std::shared_ptr<Player> player) override;
 
 	/// @brief 変更するステートを生成
-	[[nodiscard]] std::vector<std::shared_ptr<IState<Player>>> CreateChangeState(std::shared_ptr<Player> player);
+	[[nodiscard]] std::vector<std::shared_ptr<IState<Player>>> CreateChangeState(std::shared_ptr<Player> player) override;
 
 	/// @brief 未来のステート構成を生成
-	[[nodiscard]] std::vector<std::shared_ptr<IState<Player>>> CreateFutureState(const std::vector<std::shared_ptr<IState<Player>>>& next_state);
+	[[nodiscard]] std::vector<std::shared_ptr<IState<Player>>> CreateFutureState(const std::vector<std::shared_ptr<IState<Player>>>& next_state) override;
 	
 	/// @brief ステートの停止処理
-	void StopState(std::vector<std::shared_ptr<IState<Player>>>& future_state, const std::shared_ptr<IState<Player>> stop_state);
+	void StopState(std::vector<std::shared_ptr<IState<Player>>>& future_state, const std::shared_ptr<IState<Player>> stop_state) override;
 
 	void JudgeDestinationMoveState			(std::shared_ptr<IState<Player>>& stop_state);
 	void JudgeDestinationActionState		(std::shared_ptr<IState<Player>>& stop_state);
