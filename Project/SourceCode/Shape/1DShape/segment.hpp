@@ -36,7 +36,7 @@ public:
 	[[nodiscard]] VECTOR GetCenterPos() const { return m_begin_pos + m_dir * m_length * 0.5f; }
 	[[nodiscard]] VECTOR GetDir()		const { return m_dir; }
 	[[nodiscard]] float  GetLength()	const { return m_length; }
-
+	
 private:
 	VECTOR m_begin_pos;
 	VECTOR m_end_pos;

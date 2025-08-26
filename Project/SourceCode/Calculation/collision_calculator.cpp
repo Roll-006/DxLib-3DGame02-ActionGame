@@ -921,82 +921,121 @@ VECTOR collision::OldPushBackCapsuleAndTriangle(const VECTOR& velocity, const Ca
 
 
 
+// 線分と球の交点判定
+// 線分: P0 + t*(P1 - P0), t in [0,1]
+// 球: center, radius
+// 交点があれば最小のtを返す（ない場合は nullopt）
+std::optional<double> IntersectSegmentSphere(const VECTOR& P0, const VECTOR& P1, const VECTOR& center, double radius) {
+    VECTOR d = P1 - P0;
+    VECTOR m = P0 - center;
 
+    double a = VDot(d, d);
+    double b = 2.0 * VDot(m, d);
+    double c = VDot(m, m) - radius * radius;
 
+    double discriminant = b * b - 4 * a * c;
+    if (discriminant < 0) return std::nullopt; // 交差なし
 
+    double sqrt_disc = std::sqrt(discriminant);
+    double t1 = (-b - sqrt_disc) / (2 * a);
+    double t2 = (-b + sqrt_disc) / (2 * a);
 
+    // t1,t2が線分区間に入っているかチェック
+    bool t1Valid = (t1 >= 0.0 && t1 <= 1.0);
+    bool t2Valid = (t2 >= 0.0 && t2 <= 1.0);
 
-
-// [0,1] 上の線形補間 c(t) = (1-t)*c0 + t*c1 が 0 以上となる t 区間を返す
-static inline bool NonNegativeInterval(float c0, float c1, float& tL, float& tR)
-{
-    tL = 0.0f; tR = 1.0f;
-    float dc = c1 - c0;
-
-    if (fabsf(dc) < 1e-8f) {
-        if (c0 >= 0.0f) return true;       // 常に非負
-        return false;                      // 常に負
-    }
-
-    // c(t) = 0 となる t*
-    float tStar = c0 / (c0 - c1);         // = c0 / (c0 - c1)
-
-    if (c0 >= 0.0f && c1 >= 0.0f) return true;         // [0,1]
-    if (c0 >= 0.0f && c1 <  0.0f) { tL = 0.0f; tR = max(0.0f, min(1.0f, tStar)); return tL <= tR; }
-    if (c0 <  0.0f && c1 >= 0.0f) { tL = max(0.0f, min(1.0f, tStar)); tR = 1.0f; return tL <= tR; }
-    return false; // 両端とも負
+    if (t1Valid && t2Valid) return min(t1, t2);
+    else if (t1Valid) return t1;
+    else if (t2Valid) return t2;
+    else return std::nullopt;
 }
 
-float CapsuleToTriangleNormalDistance_InteriorOnly(const Capsule& capsule, const Triangle& tri)
-{
-    const VECTOR A = tri.GetPos(0);
-    const VECTOR B = tri.GetPos(1);
-    const VECTOR C = tri.GetPos(2);
+// 線分と無限円柱の交点判定
+// 円柱軸: A-B, 半径 r
+// 線分: P0-P1
+// 交点のt（線分パラメータ）を返す可能性のある値を複数返す（最大2個）
+std::vector<double> IntersectSegmentInfiniteCylinder(const VECTOR& P0, const VECTOR& P1,
+    const VECTOR& A, const VECTOR& B, double r) {
+    VECTOR d = P1 - P0;
+    VECTOR m = P0 - A;
+    VECTOR n = B - A;
+    VECTOR n_norm = v3d::GetNormalizedV(n);
 
-    VECTOR n = VNorm(VCross(B - A, C - A));
-    if (VDot(n, n) < 1e-12f) return FLT_MAX; // 退化三角形
+    // 円柱軸に直交する方向のベクトルを作る
+    // d_perp = d - (d・n_norm) * n_norm
+    VECTOR d_perp = d - n_norm * VDot(d, n_norm);
+    VECTOR m_perp = m - n_norm * VDot(m, n_norm);
 
-    const VECTOR P0 = capsule.GetSegment().GetBeginPos();
-    const VECTOR P1 = capsule.GetSegment().GetEndPos();
-    const float  r = capsule.GetRadius();
+    double a = VDot(d_perp, d_perp);
+    double b = 2 * VDot(d_perp, m_perp);
+    double c = VDot(m_perp, m_perp) - r * r;
 
-    // サンプリング数（必要なら増やす）
-    const int NUM = 32;
-    float minDist = FLT_MAX;
+    std::vector<double> ts;
+    if (std::abs(a) < 1e-10) {
+        // d_perpが0に近い => 線分が円柱軸に平行 → 交差なし（または無限にあるが今回はなし扱い）
+        return ts;
+    }
 
-    for (int i = 0; i <= NUM; i++) {
-        float t = (float)i / NUM;
-        VECTOR P = VAdd(P0, VScale(P1 - P0, t)); // 中心線上の点
-        float d = VDot(P - A, n);                // 平面までの符号付き距離
-        VECTOR Q = P - d * n;                    // 射影点
+    double discriminant = b * b - 4 * a * c;
+    if (discriminant < 0) return ts;
 
-        // 射影点が三角形内部かチェック
-        VECTOR v0 = B - A;
-        VECTOR v1 = C - A;
-        VECTOR v2 = Q - A;
+    double sqrt_disc = std::sqrt(discriminant);
+    double t1 = (-b - sqrt_disc) / (2 * a);
+    double t2 = (-b + sqrt_disc) / (2 * a);
 
-        float d00 = VDot(v0, v0);
-        float d01 = VDot(v0, v1);
-        float d11 = VDot(v1, v1);
-        float d20 = VDot(v2, v0);
-        float d21 = VDot(v2, v1);
-        float denom = d00 * d11 - d01 * d01;
-        float u = (d11 * d20 - d01 * d21) / denom;
-        float v = (d00 * d21 - d01 * d20) / denom;
+    // tが線分区間内かつ、交点が円柱の有限長区間内かチェック
+    for (double t : {t1, t2}) {
+        if (t < 0.0 || t > 1.0) continue;
 
-        bool inside = (u >= 0.0f) && (v >= 0.0f) && (u + v <= 1.0f);
-
-        if (inside) {
-            float dist = 0.0f;
-            if (d > 0.0f) dist = max(0.0f, d - r);
-            else          dist = min(0.0f, d + r);
-
-            if (fabsf(dist) < fabsf(minDist)) minDist = dist;
+        VECTOR p = P0 + d * t;
+        // 円柱軸上の点の位置
+        double proj = VDot((p - A), n_norm);
+        if (proj >= 0.0 && proj <= VSize(n)) {
+            ts.push_back(t);
         }
     }
-
-    return minDist;
+    return ts;
 }
+
+// 線分とカプセルの交差判定と交点取得
+// 交点があればt（線分パラメータ）と座標を返す（最も近い交点）
+// なければnulloptを返す
+std::optional<std::pair<double, VECTOR>> IntersectSegmentCapsule(
+    const VECTOR& P0, const VECTOR& P1,
+    const VECTOR& A, const VECTOR& B, double r)
+{
+    std::vector<std::pair<double, VECTOR>> candidates;
+
+    // 1. 円柱部分との交点
+    auto ts_cylinder = IntersectSegmentInfiniteCylinder(P0, P1, A, B, r);
+    for (double t : ts_cylinder) {
+        VECTOR point = P0 + (P1 - P0) * t;
+        candidates.emplace_back(t, point);
+    }
+
+    // 2. 両端の半球部分との交点
+    auto t_sphere_A = IntersectSegmentSphere(P0, P1, A, r);
+    if (t_sphere_A) {
+        VECTOR point = P0 + (P1 - P0) * (*t_sphere_A);
+        candidates.emplace_back(*t_sphere_A, point);
+    }
+    auto t_sphere_B = IntersectSegmentSphere(P0, P1, B, r);
+    if (t_sphere_B) {
+        VECTOR point = P0 + (P1 - P0) * (*t_sphere_B);
+        candidates.emplace_back(*t_sphere_B, point);
+    }
+
+    if (candidates.empty()) return std::nullopt;
+
+    // 最も小さいt（線分の始点に近い）を選ぶ
+    auto min_it = candidates.begin();
+    for (auto it = candidates.begin(); it != candidates.end(); ++it) {
+        if (it->first < min_it->first) min_it = it;
+    }
+    return *min_it;
+}
+
+
 
 bool IsPointInsideTriangleProjected(const VECTOR& p, const Triangle& triangle)
 {
@@ -1130,14 +1169,18 @@ VECTOR collision::PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsu
     const auto p = is_closest_begin_pos ? result_capsule.GetSegment().GetBeginPos() : result_capsule.GetSegment().GetEndPos();
     if (!IsPointInsideTriangleProjected(p, static_triangle))
     {
-        plane_to_begin_pos_distance  = math::GetDistancePointToPlane(result_capsule.GetSegment().GetBeginPos(), plane);
-        plane_to_end_pos_distance    = math::GetDistancePointToPlane(result_capsule.GetSegment().GetEndPos(),   plane);
+        //plane_to_begin_pos_distance  = math::GetDistancePointToPlane(result_capsule.GetSegment().GetBeginPos(), plane);
+        //plane_to_end_pos_distance    = math::GetDistancePointToPlane(result_capsule.GetSegment().GetEndPos(),   plane);
 
-        const auto distance = CapsuleToTriangleNormalDistance_InteriorOnly(result_capsule, static_triangle);
+        //const auto closest_pos_on_edge1 = ;
+        //const auto closest_pos_on_edge2 = ;
+        //const auto closest_pos_on_edge3 = ;
 
-        result_velocity -= static_triangle.GetNormalVector() * distance;
+        //const auto distance = ;
 
-        DrawFormatString(500, 80, 0xffffff, "%f", distance);
+        //result_velocity -= static_triangle.GetNormalVector() * distance;
+
+        //DrawFormatString(500, 80, 0xffffff, "%f", distance);
     }
 
     return result_velocity;
