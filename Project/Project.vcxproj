@@ -320,6 +320,7 @@
     <ClInclude Include="SourceCode\Concept\state_concepts.hpp" />
     <ClInclude Include="SourceCode\Concept\vector_concepts.hpp" />
     <ClInclude Include="SourceCode\Data\Event\start_rocket_launcher_cutscene_data.hpp" />
+    <ClInclude Include="SourceCode\Data\Kind\enemy_role_kind.hpp" />
     <ClInclude Include="SourceCode\Data\Kind\hit_points_part_kind.hpp" />
     <ClInclude Include="SourceCode\Data\Kind\zombie_anim_kind.hpp" />
     <ClInclude Include="SourceCode\Data\Kind\zombie_state_kind.hpp" />
@@ -387,6 +388,7 @@
     <ClInclude Include="SourceCode\Handle\state_handler.hpp" />
     <ClInclude Include="SourceCode\Input\input_checker.hpp" />
     <ClInclude Include="SourceCode\Interface\i_enemy.hpp" />
+    <ClInclude Include="SourceCode\Interface\i_enemy_role.hpp" />
     <ClInclude Include="SourceCode\Interface\i_loadable_ammo.hpp" />
     <ClInclude Include="SourceCode\Interface\i_control_virtual_camera.hpp" />
     <ClInclude Include="SourceCode\Interface\i_event.hpp" />

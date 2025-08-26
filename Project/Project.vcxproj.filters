@@ -1123,6 +1123,12 @@
     <ClInclude Include="SourceCode\Interface\i_enemy.hpp">
       <Filter>Interface</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\Interface\i_enemy_role.hpp">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\Kind\enemy_role_kind.hpp">
+      <Filter>Data\Kind</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Data">
