@@ -1120,6 +1120,9 @@
     <ClInclude Include="SourceCode\Interface\i_state_controller.hpp">
       <Filter>Interface</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\Interface\i_enemy.hpp">
+      <Filter>Interface</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Data">

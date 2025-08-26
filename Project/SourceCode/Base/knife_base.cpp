@@ -12,7 +12,7 @@ void KnifeBase::CreateAttackTrigger(const VECTOR& trigger_offset_pos, const floa
 {
 	m_trigger_offset_pos = trigger_offset_pos;
 
-	AddCollider(std::make_shared<Collider>(ColliderKind::kAttackTrigger, std::make_shared<Sphere>(v3d::GetZeroV(), trigger_radius), this));
+	AddCollider(std::make_shared<Collider>(ColliderKind::kAttackTrigger, std::make_shared<Sphere>(v3d::GetZeroV(), trigger_radius), std::static_pointer_cast<PhysicalObjBase>(shared_from_this())));
 }
 
 void KnifeBase::CalcAttackTriggerPos()

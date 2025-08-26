@@ -9,9 +9,9 @@ class PhysicalObjBase;
 class Collider final
 {
 public:
-	Collider(const ColliderKind kind, const std::shared_ptr<ShapeBase> shape, PhysicalObjBase* owner_obj);
-	Collider(const ColliderKind kind, const std::shared_ptr<ShapeBase> shape, const bool is_closest_only_hit, PhysicalObjBase* owner_obj);
-	Collider(const ColliderKind kind, const int model_handle, PhysicalObjBase* owner_obj);
+	Collider(const ColliderKind kind, const std::shared_ptr<ShapeBase> shape, std::shared_ptr<PhysicalObjBase> owner_obj);
+	Collider(const ColliderKind kind, const std::shared_ptr<ShapeBase> shape, const bool is_closest_only_hit, std::shared_ptr<PhysicalObjBase> owner_obj);
+	Collider(const ColliderKind kind, const int model_handle, std::shared_ptr<PhysicalObjBase> owner_obj);
 	~Collider() { m_owner_obj = nullptr; }
 
 	/// @brief すべてのコライダーとの衝突判定を有効にする(レイキャストでのみ有効な関数)
@@ -50,7 +50,7 @@ public:
 	[[nodiscard]] ColliderKind										GetColliderKind()		const { return m_kind; }
 	[[nodiscard]] std::shared_ptr<ShapeBase>						GetShape()				const { return m_shape; }
 	[[nodiscard]] int												GetModelHandle()		const { return m_model_handle; }
-	[[nodiscard]] PhysicalObjBase*									GetOwnerObj()			const { return m_owner_obj; }
+	[[nodiscard]] std::shared_ptr<PhysicalObjBase>					GetOwnerObj()			const { return m_owner_obj; }
 	[[nodiscard]] std::vector<Triangle>								GetHitTriangles()		const { return m_hit_triangles; }
 	[[nodiscard]] std::unordered_map<int, std::vector<Triangle>>	GetHitModelTriangles()	const { return m_hit_model_triangles; }
 
@@ -63,11 +63,11 @@ private:
 	void JudgeValidShape();
 
 private:
-	ColliderKind				m_kind;
-	std::shared_ptr<ShapeBase>	m_shape;
-	int							m_model_handle;
-	bool						m_is_closest_only_hit;						// 自身と最も近いコライダーのみ衝突を許可する(レイキャストでのみ有効)
-	PhysicalObjBase*			m_owner_obj;
+	ColliderKind									m_kind;
+	std::shared_ptr<ShapeBase>						m_shape;
+	int												m_model_handle;
+	bool											m_is_closest_only_hit;	// 自身と最も近いコライダーのみ衝突を許可する(レイキャストでのみ有効)
+	std::shared_ptr<PhysicalObjBase>				m_owner_obj;
 
 	std::vector<Triangle>							m_hit_triangles;		// 衝突した三角形
 	std::unordered_map<int, std::vector<Triangle>>	m_hit_model_triangles;	// 衝突したモデルに含まれる衝突した三角形

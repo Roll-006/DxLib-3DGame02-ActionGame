@@ -1,6 +1,6 @@
 ﻿#include "collider.hpp"
 
-Collider::Collider(const ColliderKind kind, const std::shared_ptr<ShapeBase> shape, PhysicalObjBase* owner_obj) :
+Collider::Collider(const ColliderKind kind, const std::shared_ptr<ShapeBase> shape, std::shared_ptr<PhysicalObjBase> owner_obj) :
 	m_kind					(kind),
 	m_shape					(shape),
 	m_model_handle			(-1),
@@ -10,7 +10,7 @@ Collider::Collider(const ColliderKind kind, const std::shared_ptr<ShapeBase> sha
 	JudgeValidShape();
 }
 
-Collider::Collider(const ColliderKind kind, const std::shared_ptr<ShapeBase> shape, const bool is_closest_only_hit, PhysicalObjBase* owner_obj) :
+Collider::Collider(const ColliderKind kind, const std::shared_ptr<ShapeBase> shape, const bool is_closest_only_hit, std::shared_ptr<PhysicalObjBase> owner_obj) :
 	m_kind					(kind),
 	m_shape					(shape),
 	m_model_handle			(-1),
@@ -20,7 +20,7 @@ Collider::Collider(const ColliderKind kind, const std::shared_ptr<ShapeBase> sha
 	JudgeValidShape();
 }
 
-Collider::Collider(const ColliderKind kind, const int model_handle, PhysicalObjBase* owner_obj) :
+Collider::Collider(const ColliderKind kind, const int model_handle, std::shared_ptr<PhysicalObjBase> owner_obj) :
 	m_kind					(kind),
 	m_shape					(nullptr),
 	m_model_handle			(model_handle),

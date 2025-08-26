@@ -81,7 +81,7 @@ void CharacterBase::CreateCharaBasisCollider(const float capsule_radius, const f
 	CreateCapsuleCollider(capsule_radius);
 	CreateLandingTrigger (sphere_radius);
 
-	AddCollider(std::make_shared<Collider>(ColliderKind::kMeshTrigger, m_modeler->GetModelHandle(), this));
+	AddCollider(std::make_shared<Collider>(ColliderKind::kMeshTrigger, m_modeler->GetModelHandle(), std::static_pointer_cast<PhysicalObjBase>(shared_from_this())));
 }
 
 void CharacterBase::CalcCapsuleColliderLength()
@@ -106,14 +106,14 @@ void CharacterBase::CreateCapsuleCollider(const float capsule_radius)
 	const auto segment_length	= m_capsule_length - m_capsule_radius * 2.0f;
 	m_capsule_collider = std::make_shared<Capsule>(begin_pos, m_transform->GetUp(CoordinateKind::kWorld), segment_length, m_capsule_radius);
 
-	AddCollider(std::make_shared<Collider>(ColliderKind::kCollider, m_capsule_collider, this));
+	AddCollider(std::make_shared<Collider>(ColliderKind::kCollider, m_capsule_collider, std::static_pointer_cast<PhysicalObjBase>(shared_from_this())));
 }
 
 void CharacterBase::CreateLandingTrigger(const float sphere_radius)
 {
 	// TODO : カプセルのサイズの比率によってずらし量を自動で設定させるように変更
 	const auto pos = m_capsule_collider->GetSegment().GetBeginPos() - VGet(0.0f, 5.0f, 0.0f);
-	AddCollider(std::make_shared<Collider>(ColliderKind::kLandingTrigger, std::make_shared<Sphere>(pos, sphere_radius), this));
+	AddCollider(std::make_shared<Collider>(ColliderKind::kLandingTrigger, std::make_shared<Sphere>(pos, sphere_radius), std::static_pointer_cast<PhysicalObjBase>(shared_from_this())));
 }
 #pragma endregion
 
