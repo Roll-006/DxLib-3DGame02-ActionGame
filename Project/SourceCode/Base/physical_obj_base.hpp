@@ -16,6 +16,11 @@ public:
 
 	virtual void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) abstract;
 
+	/// @brief コライダーを追加
+	/// @brief 異なる種類であれば複数のコライダーの追加を許可
+	/// @brief 同種類コライダーであっても図形が異なれば上書きを許可
+	void AddCollider(const std::shared_ptr<Collider> collider);
+
 	/// @brief 衝突した三角形の登録を解除する
 	void RemoveHitTriangles();
 
@@ -49,13 +54,7 @@ public:
 	[[nodiscard]] VECTOR	GetFallVelocity()		 const { return m_fall_velocity; }
 	[[nodiscard]] MassKind	GetMassKind()			 const { return m_mass_kind; }
 	[[nodiscard]] std::shared_ptr<Collider> GetCollider(const ColliderKind kind) const;
-	[[nodiscard]] std::vector<std::shared_ptr<Collider>> GetColliderAll() const { return m_collider; }
-
-protected:
-	/// @brief コライダーを追加
-	/// @brief 異なる種類であれば複数のコライダーの追加を許可
-	/// @brief 同種類コライダーであっても図形が異なれば上書きを許可
-	void AddCollider(const std::shared_ptr<Collider> collider);
+	[[nodiscard]] std::unordered_map<ColliderKind, std::shared_ptr<Collider>> GetColliderAll() const { return m_collider; }
 
 protected:
 	VECTOR	 m_fall_velocity;
@@ -63,7 +62,7 @@ protected:
 	bool	 m_is_landing;
 	MassKind m_mass_kind;
 
-	std::vector<std::shared_ptr<Collider>> m_collider;
+	std::unordered_map<ColliderKind, std::shared_ptr<Collider>> m_collider;
 
 private:
 	int m_model_handle;

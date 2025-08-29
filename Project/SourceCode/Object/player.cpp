@@ -17,7 +17,9 @@ Player::Player() :
 {
 	m_hit_points[HitPointsPartKind::kMain] = std::make_shared<HitPoints>(100.0f);
 
-	m_modeler = std::make_shared<Modeler>(m_transform, ModelPath.SWAT, kBasicAngle, kBasicScale);
+	// モデル・アニメーションを設定
+	m_modeler  = std::make_shared<Modeler>(m_transform, ModelPath.SWAT, kBasicAngle, kBasicScale);
+	m_animator = std::make_shared<PlayerAnimator>(m_modeler, m_state, m_current_held_weapon, m_current_equip_weapon);
 	SetColliderModelHandle(m_modeler->GetModelHandle());
 
 	// 初期pos・dirを設定
@@ -26,10 +28,9 @@ Player::Player() :
 	m_transform->SetRot(CoordinateKind::kWorld, m_look_dir.at(TimeKind::kCurrent));
 
 	// コライダー・トリガーを設定
-	CreateCharaBasisCollider(kCapsuleRadius, kLandingTriggerRadius);
+	m_collider_creator->CreateCapsuleCollider	(this, m_modeler, kCapsuleRadius);
+	m_collider_creator->CreateLandingTrigger	(this, kLandingTriggerRadius);
 
-	// 各アニメーション追加
-	m_animator = std::make_shared<PlayerAnimator>(m_modeler, m_state, m_current_held_weapon, m_current_equip_weapon);
 
 	// TODO : 仮後に変更
 	{
@@ -90,7 +91,7 @@ void Player::Update()
 	CalcLookDir();
 	CalcVelocity();
 
-	CalcCapsuleColliderLength();
+	m_collider_creator->CalcCapsuleColliderLength(this, m_modeler);
 
 	ApplyLookDirToRot(m_look_dir.at(TimeKind::kCurrent));
 }
@@ -147,7 +148,7 @@ void Player::Draw() const
 
 	for (const auto& collider : m_collider)
 	{
-		const auto shape = collider->GetShape();
+		const auto shape = collider.second->GetShape();
 		if (shape != nullptr)
 		{
 			shape->Draw(true, 0, 0xffffff);

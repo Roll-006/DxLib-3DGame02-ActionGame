@@ -1,6 +1,7 @@
 #pragma once
 #include "physical_obj_base.hpp"
 
+#include "../Part/character_collider_creator.hpp"
 #include "../Part/hit_points.hpp"
 #include "../Part/modeler.hpp"
 #include "animator_base.hpp"
@@ -66,38 +67,16 @@ public:
 	#pragma endregion
 
 protected:
-	#pragma region コライダー
-	/// @brief キャラクターが標準的に持つコライダーを一括で作成する
-	/// @brief カプセル(コライダー), 球(着地判定用トリガー), メッシュトリガー
-	void CreateCharaBasisCollider(const float capsule_radius, const float sphere_radius);
-
-	/// @brief カプセルの長さを計算
-	void CalcCapsuleColliderLength();
-	#pragma endregion
-
-
 	/// @brief 見ている方向を回転に適用する
 	void ApplyLookDirToRot(const VECTOR& look_dir);
-
-private:
-	#pragma region コライダー
-	/// @brief カプセルコライダーを作成
-	void CreateCapsuleCollider(const float capsule_radius);
-
-	/// @brief 着地トリガーを作成
-	void CreateLandingTrigger(const float sphere_radius);
-	#pragma endregion
 
 protected:
 	std::shared_ptr<Modeler>		m_modeler;
 	std::shared_ptr<AnimatorBase>	m_animator;
+	std::shared_ptr<CharacterColliderCreator> m_collider_creator;
 
 	std::shared_ptr<WeaponBase>		m_current_held_weapon;							// 現在手に持っている武器
 	std::unordered_map<HolsterKind, std::shared_ptr<WeaponBase>> m_attach_weapons;	// 装着している武器
-
-	std::shared_ptr<Capsule>		m_capsule_collider;
-	float							m_capsule_length;
-	float							m_capsule_radius;
 
 	std::unordered_map<HitPointsPartKind, std::shared_ptr<HitPoints>> m_hit_points;
 };

@@ -182,9 +182,6 @@
     <ClCompile Include="SourceCode\VirtualCamera\rot_control_virtual_camera.cpp">
       <Filter>VirtualCamera</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Base\enemy_base.cpp">
-      <Filter>Base</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\Part\camera_aim.cpp">
       <Filter>Part</Filter>
     </ClCompile>
@@ -430,6 +427,9 @@
     </ClCompile>
     <ClCompile Include="SourceCode\AI\EnemyAI\wait.cpp">
       <Filter>AI\EnemyAI</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Part\character_collider_creator.cpp">
+      <Filter>Part</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -750,9 +750,6 @@
     </ClInclude>
     <ClInclude Include="SourceCode\VirtualCamera\rot_control_virtual_camera.hpp">
       <Filter>VirtualCamera</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Base\enemy_base.hpp">
-      <Filter>Base</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Data\Name\ui_creator_name.hpp">
       <Filter>Data\Name</Filter>
@@ -1145,6 +1142,9 @@
       <Filter>AI\EnemyAI</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Part\zombie_ai_controller.hpp">
+      <Filter>Part</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Part\character_collider_creator.hpp">
       <Filter>Part</Filter>
     </ClInclude>
   </ItemGroup>

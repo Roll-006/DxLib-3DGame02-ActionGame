@@ -140,7 +140,7 @@ std::vector<ColliderPairOneToManyData> CollisionManager::CreateHitColliderPairs(
 		for (const auto& owner_obj_collider : owner_obj->GetColliderAll())
 		{
 			// 衝突が許可されている場合のみ処理を続行
-			if (!IsApplyCollide(owner_obj->GetName(), owner_obj_collider->GetColliderKind())) { continue; }
+			if (!IsApplyCollide(owner_obj->GetName(), owner_obj_collider.first)) { continue; }
 
 			for (const auto& target_obj : m_collide_objects)
 			{
@@ -150,32 +150,31 @@ std::vector<ColliderPairOneToManyData> CollisionManager::CreateHitColliderPairs(
 				// 非アクティブの場合はスキップ
 				if (!target_obj->IsActive()) { continue; }
 
-
 				for (const auto& target_obj_collider : target_obj->GetColliderAll())
 				{
 					// 衝突が許可されている場合のみ処理を続行
-					if (!IsApplyCollide(target_obj->GetName(), target_obj_collider->GetColliderKind())) { continue; }
+					if (!IsApplyCollide(target_obj->GetName(), target_obj_collider.first)) { continue; }
 
 					// 衝突判定
 					std::optional<VECTOR> intersection;
-					if (IsHit(*owner_obj_collider, *target_obj_collider, intersection))
+					if (IsHit(*owner_obj_collider.second, *target_obj_collider.second, intersection))
 					{
 						// 指定のオーナーのデータコンテナがまだない場合は新たに作成
 						bool is_maked = std::any_of(collider_pairs.begin(), collider_pairs.end(), [=](const ColliderPairOneToManyData& data)
 						{
-							return data.owner_collider == owner_obj_collider;
+							return data.owner_collider == owner_obj_collider.second;
 						});
 						if (!is_maked)
 						{
-							collider_pairs.emplace_back(owner_obj_collider, std::vector<TargetColliderData>());
+							collider_pairs.emplace_back(owner_obj_collider.second, std::vector<TargetColliderData>());
 						}
 
 						// オーナーが同じデータへターゲットを追加
 						for (size_t i = 0; i < collider_pairs.size(); ++i)
 						{
-							if (collider_pairs.at(i).owner_collider == owner_obj_collider)
+							if (collider_pairs.at(i).owner_collider == owner_obj_collider.second)
 							{
-								collider_pairs.at(i).target_data.emplace_back(TargetColliderData(target_obj_collider, intersection));
+								collider_pairs.at(i).target_data.emplace_back(TargetColliderData(target_obj_collider.second, intersection));
 							}
 						}
 					}

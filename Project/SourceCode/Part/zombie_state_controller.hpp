@@ -30,7 +30,7 @@ public:
 
 
 	#pragma region Getter
-	[[nodiscard]] std::shared_ptr<ActionStateBase<Zombie>> GetActionState(const TimeKind time_kind)	const { return m_action_state.at(time_kind); }
+	//[[nodiscard]] std::shared_ptr<ActionStateBase<Zombie>> GetActionState(const TimeKind time_kind)	const { return m_action_state.at(time_kind); }
 	#pragma endregion
 
 private:
@@ -58,5 +58,5 @@ private:
 	std::unordered_map<std::type_index, std::shared_ptr<IState<Zombie>>>	m_states;						// 各ステート
 	std::vector<int>														m_check_stop_state_handles;		// ステートの停止
 
-	std::unordered_map<TimeKind, std::shared_ptr<ActionStateBase<Zombie>>>	m_action_state;					// 行動ステート
+	//std::unordered_map<TimeKind, std::shared_ptr<ActionStateBase<Zombie>>>	m_action_state;					// 行動ステート
 };

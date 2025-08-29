@@ -15,8 +15,8 @@ void PhysicalObjBase::RemoveHitTriangles()
 {
 	for (const auto& collider : m_collider)
 	{
-		collider->RemoveHitTriangle();
-		collider->RemoveHitModelTriangle();
+		collider.second->RemoveHitTriangle();
+		collider.second->RemoveHitModelTriangle();
 	}
 }
 
@@ -39,7 +39,7 @@ void PhysicalObjBase::ApplyVelocity()
 
 	for (const auto& collider : m_collider)
 	{
-		const auto shape = collider->GetShape();
+		const auto shape = collider.second->GetShape();
 		if (shape != nullptr)
 		{
 			shape->Move(m_velocity);
@@ -111,20 +111,13 @@ void PhysicalObjBase::ProjectionVelocity()
 
 std::shared_ptr<Collider> PhysicalObjBase::GetCollider(const ColliderKind kind) const
 {
-	for (const auto& collider : m_collider)
-	{
-		if (collider->GetColliderKind() == kind)
-		{
-			return collider;
-		}
-	}
-	return nullptr;
+	return m_collider.count(kind) ? m_collider.at(kind) : nullptr;
 }
 
 void PhysicalObjBase::AddCollider(const std::shared_ptr<Collider> collider)
 {
-	if (std::find(m_collider.begin(), m_collider.end(), collider) == m_collider.end())
+	if (!m_collider.count(collider->GetColliderKind()))
 	{
-		m_collider.emplace_back(collider);
+		m_collider[collider->GetColliderKind()] = collider;
 	}
 }

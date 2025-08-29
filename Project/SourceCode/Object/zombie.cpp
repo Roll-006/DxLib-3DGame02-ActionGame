@@ -1,7 +1,9 @@
 #include "zombie.hpp"
 
 Zombie::Zombie() :
-	EnemyBase(ObjName.ZOMBIE, MassKind::kMedium)
+	CharacterBase(ObjName.ZOMBIE, ObjTag.ENEMY, MassKind::kMedium),
+	m_move_dir(v3d::GetZeroV()),
+	m_look_dir(v3d::GetZeroV())
 {
 	m_hit_points[HitPointsPartKind::kMain]		= std::make_shared<HitPoints>(1684.0f);
 	m_hit_points[HitPointsPartKind::kHead]		= std::make_shared<HitPoints>(300.0f);
@@ -20,10 +22,12 @@ Zombie::Zombie() :
 	m_modeler->ApplyMatrix();
 
 	// コライダー・トリガーを設定
-	CreateCharaBasisCollider(kCapsuleRadius, kLandingTriggerRadius);
-	CreateHeadTrigger		(kHeadTriggerRadius);
-	CreateBodyTrigger		(kBodyTriggerRadius);
-	CreateLegTrigger		(kUpLegTriggerRadius, kDownLegTriggerRadius);
+	m_collider_creator->CreateCapsuleCollider	(this, m_modeler, kCapsuleRadius);
+	m_collider_creator->CreateLandingTrigger	(this, kLandingTriggerRadius);
+	m_collider_creator->CreateLegTrigger		(this, m_modeler, kUpLegTriggerRadius, kDownLegTriggerRadius);
+	m_collider_creator->CreateHeadTrigger		(this, m_modeler, kHeadTriggerRadius);
+	m_collider_creator->CreateBodyTrigger		(this, m_modeler, kBodyTriggerRadius);
+	m_collider_creator->CreateMeshTrigger		(this, m_modeler);
 }
 
 Zombie::~Zombie()
@@ -45,9 +49,9 @@ void Zombie::Update()
 
 	//m_animator->Update();
 
-	CalcCapsuleColliderLength();
-	CalcLegTriggerPos();
-	CalcBodyTriggerPos();
+	m_collider_creator->CalcCapsuleColliderLength(this, m_modeler);
+	m_collider_creator->CalcLegTriggerPos (m_modeler, m_collider);
+	m_collider_creator->CalcBodyTriggerPos(m_modeler, m_collider);
 }
 
 void Zombie::LateUpdate()
@@ -70,7 +74,7 @@ void Zombie::Draw() const
 
 	for (auto& collider : m_collider)
 	{
-		const auto shape = collider->GetShape();
+		const auto shape = collider.second->GetShape();
 		if (shape != nullptr)
 		{
 			shape->Draw(true, 0, 0xffffff);

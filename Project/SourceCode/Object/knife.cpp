@@ -50,7 +50,7 @@ void Knife::Draw() const
 
 	for (const auto& collider : m_collider)
 	{
-		const auto shape = collider->GetShape();
+		const auto shape = collider.second->GetShape();
 		if (shape != nullptr)
 		{
 			shape->Draw(true, 0, 0xffffff);
