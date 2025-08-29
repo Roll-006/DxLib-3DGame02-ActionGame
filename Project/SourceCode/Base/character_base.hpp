@@ -1,6 +1,7 @@
 #pragma once
 #include "physical_obj_base.hpp"
 
+#include "../Interface/i_state_controller.hpp"
 #include "../Part/character_collider_creator.hpp"
 #include "../Part/hit_points.hpp"
 #include "../Part/modeler.hpp"

@@ -431,6 +431,9 @@
     <ClCompile Include="SourceCode\Part\character_collider_creator.cpp">
       <Filter>Part</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\Part\zombie_ai_controller.cpp">
+      <Filter>Part</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\character_base.hpp">
@@ -1146,6 +1149,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Part\character_collider_creator.hpp">
       <Filter>Part</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\Kind\zombie_ai_state_kind.hpp">
+      <Filter>Data\Kind</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
