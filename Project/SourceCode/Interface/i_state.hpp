@@ -17,14 +17,8 @@ public:
 	/// @param state_handle ステートハンドル
 	virtual void AddStopState(const int state_handle) abstract;
 
-	/// @brief アクティブ化する
-	virtual void Activate()   abstract;
-	/// @brief 非アクティブ化する
-	virtual void Deactivate() abstract;
-
 	[[nodiscard]] virtual std::shared_ptr<IState<ObjT>> ChangeState(std::shared_ptr<ObjT> obj) abstract;
 	[[nodiscard]] virtual int  GetStateKind()   const abstract;
 	[[nodiscard]] virtual int  GetStateHandle() const abstract;
-	[[nodiscard]] virtual bool IsActive()		const abstract;
 	[[nodiscard]] virtual bool IsStop(const int state_handle) const abstract;
 };
