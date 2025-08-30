@@ -1,5 +1,6 @@
 #include "character_collider_creator.hpp"
 
+#pragma region コライダーの作成
 void CharacterColliderCreator::CreateCapsuleCollider(PhysicalObjBase* physical_obj, const std::shared_ptr<Modeler> modeler, const float capsule_radius)
 {
 	const auto transform		= physical_obj->GetTransform();
@@ -20,6 +21,21 @@ void CharacterColliderCreator::CreateLandingTrigger(PhysicalObjBase* physical_ob
 	physical_obj->AddCollider(std::make_shared<Collider>(ColliderKind::kLandingTrigger, std::make_shared<Sphere>(pos, sphere_radius), physical_obj));
 }
 
+void CharacterColliderCreator::CreateHeadTrigger(PhysicalObjBase* physical_obj, const std::shared_ptr<Modeler> modeler, const float sphere_radius)
+{
+	auto head_mat		= MV1GetFrameLocalWorldMatrix(modeler->GetModelHandle(), MV1SearchFrame(modeler->GetModelHandle(), BonePath.HEAD));
+	const auto head_pos = MGetTranslateElem(head_mat);
+
+	physical_obj->AddCollider(std::make_shared<Collider>(ColliderKind::kHeadTrigger, std::make_shared<Sphere>(head_pos, sphere_radius), physical_obj));
+}
+
+void CharacterColliderCreator::CreateBodyTrigger(PhysicalObjBase* physical_obj, const std::shared_ptr<Modeler> modeler, const float capsule_radius)
+{
+	physical_obj->AddCollider(std::make_shared<Collider>(ColliderKind::kBodyTrigger, std::make_shared<Capsule>(v3d::GetZeroV(), v3d::GetZeroV(), capsule_radius), physical_obj));
+
+	CalcBodyTriggerPos(modeler, physical_obj->GetColliderAll());
+}
+
 void CharacterColliderCreator::CreateLegTrigger(PhysicalObjBase* physical_obj, const std::shared_ptr<Modeler> modeler, const float up_leg_capsule_radius, const float down_leg_capsule_radius)
 {
 	const auto left_up_leg_trigger		= std::make_shared<Capsule>(v3d::GetZeroV(), v3d::GetZeroV(), up_leg_capsule_radius);
@@ -36,24 +52,42 @@ void CharacterColliderCreator::CreateLegTrigger(PhysicalObjBase* physical_obj, c
 	CalcLegTriggerPos(modeler, physical_obj->GetColliderAll());
 }
 
-void CharacterColliderCreator::CreateHeadTrigger(PhysicalObjBase* physical_obj, const std::shared_ptr<Modeler> modeler, const float sphere_radius)
-{
-	auto head_mat		= MV1GetFrameLocalWorldMatrix(modeler->GetModelHandle(), MV1SearchFrame(modeler->GetModelHandle(), BonePath.HEAD));
-	const auto head_pos = MGetTranslateElem(head_mat);
-
-	physical_obj->AddCollider(std::make_shared<Collider>(ColliderKind::kHeadTrigger, std::make_shared<Sphere>(head_pos, sphere_radius), physical_obj));
-}
-
-void CharacterColliderCreator::CreateBodyTrigger(PhysicalObjBase* physical_obj, const std::shared_ptr<Modeler> modeler, const float capsule_radius)
-{
-	physical_obj->AddCollider(std::make_shared<Collider>(ColliderKind::kBodyTrigger, std::make_shared<Capsule>(v3d::GetZeroV(), v3d::GetZeroV(), capsule_radius), physical_obj));
-
-	CalcBodyTriggerPos(modeler, physical_obj->GetColliderAll());
-}
-
 void CharacterColliderCreator::CreateMeshTrigger(PhysicalObjBase* phsyical_obj, const std::shared_ptr<Modeler> modeler)
 {
 	phsyical_obj->AddCollider(std::make_shared<Collider>(ColliderKind::kMeshTrigger, modeler->GetModelHandle(), phsyical_obj));
+}
+#pragma endregion
+
+
+#pragma region 位置計算
+void CharacterColliderCreator::CalcHeadTriggerPos(std::shared_ptr<Modeler> modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>> collider)
+{
+	modeler->ApplyMatrix();
+	const auto model_handle = modeler->GetModelHandle();
+
+	// 位置を取得
+	auto head_mat			= MV1GetFrameLocalWorldMatrix(modeler->GetModelHandle(), MV1SearchFrame(modeler->GetModelHandle(), BonePath.HEAD));
+	const auto head_pos		= MGetTranslateElem(head_mat);
+
+	std::static_pointer_cast<Sphere>(collider.at(ColliderKind::kHeadTrigger)->GetShape())->SetPos(head_pos);
+}
+
+void CharacterColliderCreator::CalcBodyTriggerPos(const std::shared_ptr<Modeler> modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>> collider)
+{
+	modeler->ApplyMatrix();
+	const auto model_handle = modeler->GetModelHandle();
+
+	// 行列情報を取得
+	auto spine2_mat			= MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, BonePath.SPINE_2));
+	auto hips_mat			= MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, BonePath.HIPS));
+
+	// 位置を取得
+	const auto spine2_pos	= MGetTranslateElem(spine2_mat);
+	const auto hips_pos		= MGetTranslateElem(hips_mat);
+
+	// 位置を適用
+	std::static_pointer_cast<Capsule>(collider.at(ColliderKind::kBodyTrigger)->GetShape())->SetSegmentBeginPos(spine2_pos,	true);
+	std::static_pointer_cast<Capsule>(collider.at(ColliderKind::kBodyTrigger)->GetShape())->SetSegmentEndPos  (hips_pos,	true);
 }
 
 void CharacterColliderCreator::CalcLegTriggerPos(const std::shared_ptr<Modeler> modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>> collider)
@@ -87,30 +121,14 @@ void CharacterColliderCreator::CalcLegTriggerPos(const std::shared_ptr<Modeler> 
 	std::static_pointer_cast<Capsule>(collider.at(ColliderKind::kRightDownLegTrigger)->GetShape())->SetSegmentBeginPos	(right_foot_pos,	true);
 	std::static_pointer_cast<Capsule>(collider.at(ColliderKind::kRightDownLegTrigger)->GetShape())->SetSegmentEndPos	(right_leg_pos,		true);
 }
+#pragma endregion
 
-void CharacterColliderCreator::CalcBodyTriggerPos(const std::shared_ptr<Modeler> modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>> collider)
-{
-	modeler->ApplyMatrix();
-	const auto model_handle = modeler->GetModelHandle();
-
-	// フレームの行列情報を取得
-	auto spine2_mat			= MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, BonePath.SPINE_2));
-	auto hips_mat			= MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, BonePath.HIPS));
-
-	// 位置を取得
-	const auto spine2_pos	= MGetTranslateElem(spine2_mat);
-	const auto hips_pos		= MGetTranslateElem(hips_mat);
-
-	// 位置を適用
-	std::static_pointer_cast<Capsule>(collider.at(ColliderKind::kBodyTrigger)->GetShape())->SetSegmentBeginPos(spine2_pos,	true);
-	std::static_pointer_cast<Capsule>(collider.at(ColliderKind::kBodyTrigger)->GetShape())->SetSegmentEndPos  (hips_pos,	true);
-}
 
 void CharacterColliderCreator::CalcCapsuleColliderLength(PhysicalObjBase* physical_obj, std::shared_ptr<Modeler> modeler)
 {
 	modeler->ApplyMatrix();
 
-	// 頭部ボーンの行列情報を取得
+	// 行列情報を取得
 	const auto model_handle		= modeler->GetModelHandle();
 	const auto frame_num		= MV1SearchFrame(model_handle, BonePath.HEAD_TOP_END);
 	auto	   frame_mat		= MV1GetFrameLocalWorldMatrix(model_handle, frame_num);

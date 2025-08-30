@@ -27,9 +27,9 @@ Zombie::Zombie() :
 	// コライダー・トリガーを設定
 	m_collider_creator->CreateCapsuleCollider	(this, m_modeler, kCapsuleRadius);
 	m_collider_creator->CreateLandingTrigger	(this, kLandingTriggerRadius);
-	m_collider_creator->CreateLegTrigger		(this, m_modeler, kUpLegTriggerRadius, kDownLegTriggerRadius);
 	m_collider_creator->CreateHeadTrigger		(this, m_modeler, kHeadTriggerRadius);
 	m_collider_creator->CreateBodyTrigger		(this, m_modeler, kBodyTriggerRadius);
+	m_collider_creator->CreateLegTrigger		(this, m_modeler, kUpLegTriggerRadius, kDownLegTriggerRadius);
 	m_collider_creator->CreateMeshTrigger		(this, m_modeler);
 }
 
@@ -55,8 +55,9 @@ void Zombie::Update()
 	ApplyLookDirToRot(m_look_dir);
 
 	m_collider_creator->CalcCapsuleColliderLength(this, m_modeler);
-	m_collider_creator->CalcLegTriggerPos (m_modeler, m_collider);
+	m_collider_creator->CalcHeadTriggerPos(m_modeler, m_collider);
 	m_collider_creator->CalcBodyTriggerPos(m_modeler, m_collider);
+	m_collider_creator->CalcLegTriggerPos (m_modeler, m_collider);
 }
 
 void Zombie::LateUpdate()
