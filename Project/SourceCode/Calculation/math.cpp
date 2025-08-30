@@ -881,15 +881,15 @@ float math::GetDistancePointToLine          (const VECTOR&      point,      cons
 
 float math::GetDistancePointToLine          (const VECTOR&      point,      const Line&     line,       VECTOR& h, float& t)
 {
-    const VECTOR v = line.GetDir();
+    const VECTOR dir = line.GetDir();
     t = 0.0f;
 
-    if (VDot(v, v) > 0.0f)
+    if (VDot(dir, dir) > 0.0f)
     {
-        t = VDot(v, (point - line.GetPos())) / VDot(v, v);
+        t = VDot(dir, (point - line.GetPos())) / VDot(dir, dir);
     }
 
-    h = line.GetPos() + v * t;
+    h = line.GetPos() + dir * t;
     return VSize(h - point);
 }
 
@@ -903,29 +903,26 @@ float math::GetDistancePointToSegment       (const VECTOR&      point,      cons
 float math::GetDistancePointToSegment       (const VECTOR&      point,      const Segment&  segment,    VECTOR& h, float& t)
 {
     // MEMO : 点が線分の端点から伸びる垂線の内側にある ➡ 点と直線の最短距離を求める
-    //                                      外側にある ➡ 端点までの距離を求める
+    //                                   外側にある ➡ 端点までの距離を求める
 
-    const VECTOR seg_dir    = segment.GetEndPos() - segment.GetBeginPos();
-    const Line   line       = Line(segment.GetBeginPos(), seg_dir);
+    const Line   line       = Line(segment.GetBeginPos(), segment.GetDir());
     const float  distance   = GetDistancePointToLine(point, line, h, t);
 
-    const VECTOR a = segment.GetBeginPos() - point;
-    const VECTOR b = segment.GetBeginPos() - segment.GetEndPos();
-    const VECTOR c = segment.GetEndPos() - point;
-    const VECTOR d = segment.GetEndPos() - segment.GetBeginPos();
+    const VECTOR begin_to_point = segment.GetBeginPos() - point;
+    const VECTOR begin_to_end   = segment.GetBeginPos() - segment.GetEndPos();
+    const VECTOR end_to_point   = segment.GetEndPos()   - point;
+    const VECTOR end_to_begin   = segment.GetEndPos()   - segment.GetBeginPos();
 
     // 始点側の外側であった場合
-    if (!math::IsAcuteAngle(a, b))
+    if (!math::IsAcuteAngle(begin_to_point, begin_to_end))
     {
-        h = segment.GetBeginPos();
-        return VSize(h - point);
+        return VSize(begin_to_point);
     }
 
     // 終点側の外側であった場合
-    if (!math::IsAcuteAngle(c, d))
+    if (!math::IsAcuteAngle(end_to_point, end_to_begin))
     {
-        h = segment.GetEndPos();
-        return VSize(h - point);
+        return VSize(end_to_point);
     }
 
     // 内側であった場合
