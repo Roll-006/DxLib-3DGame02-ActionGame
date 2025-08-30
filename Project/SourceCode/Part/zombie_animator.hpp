@@ -18,7 +18,13 @@ private:
 
 	void ChangeAnim();
 
+
+	#pragma region 状態の合成
+	/// @brief MoveNull(Idle)ステートに、行動ステートを合成
+	void CombineMoveNullWithAction();
+	/// @brief Moveステートに、行動ステートを合成
 	void CombineMoveWithAction();
+	#pragma endregion
 
 private:
 	std::shared_ptr<ZombieStateController> m_state;

@@ -4,7 +4,6 @@
 Zombie::Zombie() :
 	CharacterBase(ObjName.ZOMBIE, ObjTag.ENEMY, MassKind::kMedium),
 	m_state		(std::make_shared<ZombieStateController>()),
-	m_ai		(std::make_shared<ZombieAIController>()),
 	m_move_dir	(v3d::GetZeroV()),
 	m_look_dir	(v3d::GetZeroV())
 {

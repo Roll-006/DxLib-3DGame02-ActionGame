@@ -70,6 +70,7 @@ private:
 	void CombineAnim();
 
 	/// @brief アニメーションのアタッチが可能であるかを判定
+	[[nodiscard]] bool CanResultAttachAnim();
 	[[nodiscard]] bool CanAttachAnim(const int next_kind, const BodyKind body_kind);
 
 	[[nodiscard]] float GetDeltaTime() const;

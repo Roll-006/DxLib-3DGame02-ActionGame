@@ -2,7 +2,6 @@
 #include "../Base/character_base.hpp"
 #include "../Interface/i_enemy.hpp"
 
-#include "../Part/zombie_ai_controller.hpp"
 #include "../Part/zombie_animator.hpp"
 
 class ZombieStateController;
@@ -25,7 +24,6 @@ public:
 	#pragma region Getter
 	[[nodiscard]] float	GetDeltaTime() const override;
 	[[nodiscard]] std::shared_ptr<ZombieStateController>	GetStateController() const { return m_state; }
-	[[nodiscard]] std::shared_ptr<ZombieAIController>		GetAIController()	 const { return m_ai; }
 	#pragma endregion
 
 private:
@@ -44,7 +42,6 @@ private:
 
 private:
 	std::shared_ptr<ZombieStateController>	m_state;
-	std::shared_ptr<ZombieAIController>		m_ai;
 
 	VECTOR m_move_dir;
 	VECTOR m_look_dir;

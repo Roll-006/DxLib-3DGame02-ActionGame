@@ -407,32 +407,41 @@
     <ClCompile Include="SourceCode\State\ZombieState\stand_stun.cpp">
       <Filter>State\ZombieState</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\AI\EnemyAI\alert.cpp">
-      <Filter>AI\EnemyAI</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\AI\EnemyAI\battle.cpp">
-      <Filter>AI\EnemyAI</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\AI\EnemyAI\investigate.cpp">
-      <Filter>AI\EnemyAI</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\AI\EnemyAI\patrol.cpp">
-      <Filter>AI\EnemyAI</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\AI\EnemyAI\search.cpp">
-      <Filter>AI\EnemyAI</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\AI\EnemyAI\track.cpp">
-      <Filter>AI\EnemyAI</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\AI\EnemyAI\wait.cpp">
-      <Filter>AI\EnemyAI</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\Part\character_collider_creator.cpp">
       <Filter>Part</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Part\zombie_ai_controller.cpp">
-      <Filter>Part</Filter>
+    <ClCompile Include="SourceCode\State\ZombieState\alert.cpp">
+      <Filter>State\ZombieState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\ZombieState\battle.cpp">
+      <Filter>State\ZombieState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\ZombieState\investigate.cpp">
+      <Filter>State\ZombieState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\ZombieState\knockback.cpp">
+      <Filter>State\ZombieState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\ZombieState\patrol.cpp">
+      <Filter>State\ZombieState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\ZombieState\run.cpp">
+      <Filter>State\ZombieState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\ZombieState\search.cpp">
+      <Filter>State\ZombieState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\ZombieState\track.cpp">
+      <Filter>State\ZombieState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\ZombieState\wait.cpp">
+      <Filter>State\ZombieState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\ZombieState\move.cpp">
+      <Filter>State\ZombieState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\ZombieState\move_null.cpp">
+      <Filter>State\ZombieState</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -865,9 +874,6 @@
     <ClInclude Include="SourceCode\Base\special_state_base.hpp">
       <Filter>Base</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Base\weapon_action_state_base.hpp">
-      <Filter>Base</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\State\PlayerState\aim_knife.hpp">
       <Filter>State\PlayerState</Filter>
     </ClInclude>
@@ -1123,35 +1129,47 @@
     <ClInclude Include="SourceCode\Interface\i_enemy_ai_state.hpp">
       <Filter>Interface</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\AI\EnemyAI\alert.hpp">
-      <Filter>AI\EnemyAI</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\AI\EnemyAI\battle.hpp">
-      <Filter>AI\EnemyAI</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\AI\EnemyAI\investigate.hpp">
-      <Filter>AI\EnemyAI</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\AI\EnemyAI\patrol.hpp">
-      <Filter>AI\EnemyAI</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\AI\EnemyAI\search.hpp">
-      <Filter>AI\EnemyAI</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\AI\EnemyAI\track.hpp">
-      <Filter>AI\EnemyAI</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\AI\EnemyAI\wait.hpp">
-      <Filter>AI\EnemyAI</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Part\zombie_ai_controller.hpp">
-      <Filter>Part</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\Part\character_collider_creator.hpp">
       <Filter>Part</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Data\Kind\zombie_ai_state_kind.hpp">
-      <Filter>Data\Kind</Filter>
+    <ClInclude Include="SourceCode\Base\ai_state_base.hpp">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\ZombieState\alert.hpp">
+      <Filter>State\ZombieState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\ZombieState\battle.hpp">
+      <Filter>State\ZombieState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\ZombieState\investigate.hpp">
+      <Filter>State\ZombieState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\ZombieState\knockback.hpp">
+      <Filter>State\ZombieState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\ZombieState\patrol.hpp">
+      <Filter>State\ZombieState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\ZombieState\run.hpp">
+      <Filter>State\ZombieState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\ZombieState\search.hpp">
+      <Filter>State\ZombieState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\ZombieState\track.hpp">
+      <Filter>State\ZombieState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\ZombieState\wait.hpp">
+      <Filter>State\ZombieState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\ZombieState\move.hpp">
+      <Filter>State\ZombieState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Base\weapon_action_state_base.hpp">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\ZombieState\move_null.hpp">
+      <Filter>State\ZombieState</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1271,12 +1289,6 @@
     </Filter>
     <Filter Include="State\ZombieState">
       <UniqueIdentifier>{d2ef4260-3541-4500-92a8-03e820d5ca75}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="AI">
-      <UniqueIdentifier>{45d1a720-6f49-4830-a2ac-ddf364c9ee1d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="AI\EnemyAI">
-      <UniqueIdentifier>{85d9557e-5eb1-4194-ab16-116891f8b91f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

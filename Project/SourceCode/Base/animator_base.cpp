@@ -7,6 +7,9 @@ AnimatorBase::AnimatorBase(const std::shared_ptr<Modeler> modeler, const std::st
 	m_resource_modeler[BodyKind::kUpperBody] = std::make_shared<Modeler>(m_result_modeler->GetModelHandle());
 	m_resource_modeler[BodyKind::kLowerBody] = std::make_shared<Modeler>(m_result_modeler->GetModelHandle());
 
+	m_blend_rate[BodyKind::kUpperBody] = 1.0f;
+	m_blend_rate[BodyKind::kLowerBody] = 1.0f;
+
 	m_time_kind_data.emplace_back(std::make_tuple(BodyKind::kUpperBody, TimeKind::kPrev,	AnimTimeKindData()));
 	m_time_kind_data.emplace_back(std::make_tuple(BodyKind::kUpperBody, TimeKind::kCurrent, AnimTimeKindData()));
 	m_time_kind_data.emplace_back(std::make_tuple(BodyKind::kLowerBody, TimeKind::kPrev,	AnimTimeKindData()));
@@ -91,13 +94,12 @@ void AnimatorBase::AttachAnim(const int next_kind, const BodyKind body_kind)
 	}
 
 	// 前回のアニメーションが存在しない場合は、ブレンド済み(ブレンド率100%)とする
-	m_blend_rate[body_kind] = prev_time_data.attach_index > -1 ? 0.0f : 1.0f;
+	m_blend_rate.at(body_kind) = prev_time_data.attach_index > -1 ? 0.0f : 1.0f;
 }
 
 void AnimatorBase::AttachResultAnim(const int next_kind)
 {
-	// どちらかのブレンド率が1.0に到達していない場合はアタッチを許可しない
-	if (m_blend_rate[BodyKind::kUpperBody] != 1.0f || m_blend_rate[BodyKind::kLowerBody] != 1.0f){ return; }
+	if (!CanResultAttachAnim()){ return; }
 
 	AttachAnim(next_kind, BodyKind::kUpperBody);
 	AttachAnim(next_kind, BodyKind::kLowerBody);
@@ -170,7 +172,7 @@ void AnimatorBase::PlayAnim()
 		// アニメーションが有効であった場合のみ再生
 		if (data.attach_index > -1)
 		{
-			const float blend_rate	= time_kind == TimeKind::kCurrent ? m_blend_rate[body_kind] : 1.0f - m_blend_rate[body_kind];
+			const float blend_rate	= time_kind == TimeKind::kCurrent ? m_blend_rate.at(body_kind) : 1.0f - m_blend_rate.at(body_kind);
 			float play_speed		= m_anim_data.at(data.kind).play_speed * GetDeltaTime();
 			math::Increase(data.play_timer, play_speed, data.total_time, m_anim_data.at(data.kind).is_loop);
 
@@ -186,12 +188,12 @@ void AnimatorBase::PlayAnim()
 void AnimatorBase::BlendAnim()
 {
 	// ブレンド率100%まで増加させる
-	math::Increase(m_blend_rate[BodyKind::kUpperBody], kBlendSpeed * GetDeltaTime(), 1.0f, false);
-	math::Increase(m_blend_rate[BodyKind::kLowerBody], kBlendSpeed * GetDeltaTime(), 1.0f, false);
+	math::Increase(m_blend_rate.at(BodyKind::kUpperBody), kBlendSpeed * GetDeltaTime(), 1.0f, false);
+	math::Increase(m_blend_rate.at(BodyKind::kLowerBody), kBlendSpeed * GetDeltaTime(), 1.0f, false);
   
 	// ブレンドが完了した場合、PravAnimは不要なためデタッチする
-	if (m_blend_rate[BodyKind::kUpperBody] == 1.0f) { DetachAnim(TimeKind::kPrev, BodyKind::kUpperBody); }
-	if (m_blend_rate[BodyKind::kLowerBody] == 1.0f) { DetachAnim(TimeKind::kPrev, BodyKind::kLowerBody); }
+	if (m_blend_rate.at(BodyKind::kUpperBody) == 1.0f) { DetachAnim(TimeKind::kPrev, BodyKind::kUpperBody); }
+	if (m_blend_rate.at(BodyKind::kLowerBody) == 1.0f) { DetachAnim(TimeKind::kPrev, BodyKind::kLowerBody); }
 }
 
 void AnimatorBase::SetupStaticBone()
@@ -282,6 +284,17 @@ void AnimatorBase::CombineAnim()
 	}
 }
 
+bool AnimatorBase::CanResultAttachAnim()
+{
+	// どちらかのブレンド率が1.0に到達していない場合はアタッチを許可しない
+	if (m_blend_rate.at(BodyKind::kUpperBody) != 1.0f || m_blend_rate.at(BodyKind::kLowerBody) != 1.0f)
+	{
+		return false;
+	}
+
+	return true;
+}
+
 bool AnimatorBase::CanAttachAnim(const int next_kind, const BodyKind body_kind)
 {
 	// 指定のアニメーションが存在していなければ早期return
@@ -301,7 +314,7 @@ bool AnimatorBase::CanAttachAnim(const int next_kind, const BodyKind body_kind)
 	}
 
 	// ブレンドが完了していない場合はアタッチを許可しない
-	if (m_blend_rate[body_kind] != 1.0f)
+	if (m_blend_rate.at(body_kind) != 1.0f)
 	{
 		return false;
 	}

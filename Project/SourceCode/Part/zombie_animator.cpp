@@ -29,13 +29,36 @@ void ZombieAnimator::Update()
 
 void ZombieAnimator::LoadAnim()
 {
-	// 上半身
-	AddAnimHandle(static_cast<int>(ZombieAnimKind::kIdle),				AnimPath.ZOMBIE_IDLE_01,		1, AnimTag.NONE, 20.0f,  true);
-	AddAnimHandle(static_cast<int>(ZombieAnimKind::kMoveForwardWalk),	AnimPath.MOVE_FORWARD_WALK,		1, AnimTag.MOVE, 20.0f,  true);
-	AddAnimHandle(static_cast<int>(ZombieAnimKind::kMoveForwardRun),	AnimPath.MOVE_FORWARD_RUN_02,	1, AnimTag.MOVE, 20.0f,  true);
+	// 汎用
+	AddAnimHandle(static_cast<int>(ZombieAnimKind::kIdle),				AnimPath.ZOMBIE_IDLE_01,				0, AnimTag.NONE, 20.0f,  true);
+	AddAnimHandle(static_cast<int>(ZombieAnimKind::kMoveForwardWalk),	AnimPath.MOVE_FORWARD_WALK,				0, AnimTag.MOVE, 20.0f,  true);
+	AddAnimHandle(static_cast<int>(ZombieAnimKind::kMoveForwardRun),	AnimPath.MOVE_FORWARD_RUN_02,			0, AnimTag.MOVE, 20.0f,  true);
+
+	// 下半身用
+	AddAnimHandle(static_cast<int>(ZombieAnimKind::kCrouchStunLeft),	AnimPath.LEANING_FORWARD_CROUCH_LEFT,	0, AnimTag.MOVE, 0.0f,   true);
+	AddAnimHandle(static_cast<int>(ZombieAnimKind::kCrouchStunRight),	AnimPath.LEANING_FORWARD_CROUCH_RIGHT,	0, AnimTag.MOVE, 0.0f,   true);
 }
 
 void ZombieAnimator::ChangeAnim()
+{
+	switch (m_state->GetMoveState(TimeKind::kCurrent)->GetStateKind())
+	{
+	case static_cast<int>(zombie_state::MoveStateKind::kMoveNull):
+		CombineMoveNullWithAction();
+		break;
+
+	case static_cast<int>(zombie_state::MoveStateKind::kMove):
+		CombineMoveWithAction();
+		break;
+
+	default:
+		break;
+	}
+}
+
+
+#pragma region 状態の合成
+void ZombieAnimator::CombineMoveNullWithAction()
 {
 	switch (m_state->GetActionState(TimeKind::kCurrent)->GetStateKind())
 	{
@@ -43,15 +66,10 @@ void ZombieAnimator::ChangeAnim()
 		AttachResultAnim(static_cast<int>(ZombieAnimKind::kIdle));
 		break;
 
-	case static_cast<int>(zombie_state::ActionStateKind::kWalk):
-		AttachResultAnim(static_cast<int>(ZombieAnimKind::kMoveForwardWalk));
-		break;
-
-	case static_cast<int>(zombie_state::ActionStateKind::kRun):
-		AttachResultAnim(static_cast<int>(ZombieAnimKind::kMoveForwardRun));
-		break;
-
 	case static_cast<int>(zombie_state::ActionStateKind::kGrab):
+		break;
+
+	case static_cast<int>(zombie_state::ActionStateKind::kKnockback):
 		break;
 
 	case static_cast<int>(zombie_state::ActionStateKind::kStandStun):
@@ -71,7 +89,38 @@ void ZombieAnimator::ChangeAnim()
 	}
 }
 
+void ZombieAnimator::CombineMoveWithAction()
+{
+	switch (m_state->GetActionState(TimeKind::kCurrent)->GetStateKind())
+	{
+	case static_cast<int>(zombie_state::ActionStateKind::kActionNull):
+		AttachResultAnim(static_cast<int>(ZombieAnimKind::kMoveForwardWalk));
+		break;
 
-#pragma region 状態の合成
+	case static_cast<int>(zombie_state::ActionStateKind::kRun):
+		AttachResultAnim(static_cast<int>(ZombieAnimKind::kMoveForwardRun));
+		break;
 
+	case static_cast<int>(zombie_state::ActionStateKind::kGrab):
+		break;
+
+	case static_cast<int>(zombie_state::ActionStateKind::kKnockback):
+		break;
+
+	case static_cast<int>(zombie_state::ActionStateKind::kStandStun):
+		break;
+
+	case static_cast<int>(zombie_state::ActionStateKind::kCrouchStun):
+		break;
+
+	case static_cast<int>(zombie_state::ActionStateKind::kPlayDead):
+		break;
+
+	case static_cast<int>(zombie_state::ActionStateKind::kDead):
+		break;
+
+	default:
+		break;
+	}
+}
 #pragma endregion

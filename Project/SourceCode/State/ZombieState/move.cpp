@@ -1,0 +1,37 @@
+#include "move.hpp"
+
+zombie_state::Move::Move() :
+	MoveStateBase(static_cast<int>(zombie_state::MoveStateKind::kMove))
+{
+
+}
+
+zombie_state::Move::~Move()
+{
+
+}
+
+void zombie_state::Move::Update(std::shared_ptr<Zombie> obj)
+{
+	
+}
+
+void zombie_state::Move::LateUpdate(std::shared_ptr<Zombie> obj)
+{
+
+}
+
+void zombie_state::Move::Enter(std::shared_ptr<Zombie> obj)
+{
+
+}
+
+void zombie_state::Move::Exit(std::shared_ptr<Zombie> obj)
+{
+
+}
+
+std::shared_ptr<IState<Zombie>> zombie_state::Move::ChangeState(std::shared_ptr<Zombie> obj)
+{
+	return nullptr;
+}

@@ -7,6 +7,8 @@ ZombieStateController::ZombieStateController()
 	AddStopStatePair();
 
 	// 初期ステート
+	m_ai_state	  [TimeKind::kPrev] = m_ai_state	[TimeKind::kCurrent] = GetState<zombie_state::Wait,		  Zombie>();
+	m_move_state  [TimeKind::kPrev] = m_move_state	[TimeKind::kCurrent] = GetState<zombie_state::MoveNull,   Zombie>();
 	m_action_state[TimeKind::kPrev] = m_action_state[TimeKind::kCurrent] = GetState<zombie_state::ActionNull, Zombie>();
 }
 
@@ -29,8 +31,21 @@ void ZombieStateController::LateUpdate(std::shared_ptr<Zombie> zombie)
 
 void ZombieStateController::CreateState()
 {
+	m_states[typeid(zombie_state::Wait)]		= std::make_shared<zombie_state::Wait>();
+	m_states[typeid(zombie_state::Patrol)]		= std::make_shared<zombie_state::Patrol>();
+	m_states[typeid(zombie_state::Investigate)]	= std::make_shared<zombie_state::Investigate>();
+	m_states[typeid(zombie_state::Search)]		= std::make_shared<zombie_state::Search>();
+	m_states[typeid(zombie_state::Alert)]		= std::make_shared<zombie_state::Alert>();
+	m_states[typeid(zombie_state::Track)]		= std::make_shared<zombie_state::Track>();
+	m_states[typeid(zombie_state::Battle)]		= std::make_shared<zombie_state::Battle>();
+
+	m_states[typeid(zombie_state::MoveNull)]	= std::make_shared<zombie_state::MoveNull>();
+	m_states[typeid(zombie_state::Move)]		= std::make_shared<zombie_state::Move>();
+
 	m_states[typeid(zombie_state::ActionNull)]	= std::make_shared<zombie_state::ActionNull>();
+	m_states[typeid(zombie_state::Run)]			= std::make_shared<zombie_state::Run>();
 	m_states[typeid(zombie_state::Grab)]		= std::make_shared<zombie_state::Grab>();
+	m_states[typeid(zombie_state::Knockback)]	= std::make_shared<zombie_state::Knockback>();
 	m_states[typeid(zombie_state::StandStun)]	= std::make_shared<zombie_state::StandStun>();
 	m_states[typeid(zombie_state::CrouchStun)]	= std::make_shared<zombie_state::CrouchStun>();
 	m_states[typeid(zombie_state::PlayDead)]	= std::make_shared<zombie_state::PlayDead>();
@@ -139,17 +154,17 @@ void ZombieStateController::StopState(std::vector<std::shared_ptr<IState<Zombie>
 
 }
 
+void ZombieStateController::JudgeDestinationAIState(std::shared_ptr<IState<Zombie>>& stop_state)
+{
+
+}
+
 void ZombieStateController::JudgeDestinationMoveState(std::shared_ptr<IState<Zombie>>& stop_state)
 {
 
 }
 
 void ZombieStateController::JudgeDestinationActionState(std::shared_ptr<IState<Zombie>>& stop_state)
-{
-
-}
-
-void ZombieStateController::JudgeDestinationWeaponActionState(std::shared_ptr<IState<Zombie>>& stop_state)
 {
 
 }

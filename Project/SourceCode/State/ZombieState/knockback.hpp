@@ -6,11 +6,11 @@
 
 namespace zombie_state
 {
-	class ActionNull final : public ActionStateBase<Zombie>
+	class Knockback final : public ActionStateBase<Zombie>
 	{
 	public:
-		ActionNull();
-		~ActionNull() override;
+		Knockback();
+		~Knockback() override;
 
 		void Update		(std::shared_ptr<Zombie> obj) override;
 		void LateUpdate	(std::shared_ptr<Zombie> obj) override;
