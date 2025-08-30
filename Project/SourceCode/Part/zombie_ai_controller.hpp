@@ -6,6 +6,8 @@ public:
 	ZombieAIController();
 	~ZombieAIController();
 
+	void Update();
+
 private:
 
 };

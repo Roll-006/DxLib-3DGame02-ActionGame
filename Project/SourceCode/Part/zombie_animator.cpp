@@ -40,6 +40,15 @@ void ZombieAnimator::ChangeAnim()
 	switch (m_state->GetActionState(TimeKind::kCurrent)->GetStateKind())
 	{
 	case static_cast<int>(zombie_state::ActionStateKind::kActionNull):
+		AttachResultAnim(static_cast<int>(ZombieAnimKind::kIdle));
+		break;
+
+	case static_cast<int>(zombie_state::ActionStateKind::kWalk):
+		AttachResultAnim(static_cast<int>(ZombieAnimKind::kMoveForwardWalk));
+		break;
+
+	case static_cast<int>(zombie_state::ActionStateKind::kRun):
+		AttachResultAnim(static_cast<int>(ZombieAnimKind::kMoveForwardRun));
 		break;
 
 	case static_cast<int>(zombie_state::ActionStateKind::kGrab):
