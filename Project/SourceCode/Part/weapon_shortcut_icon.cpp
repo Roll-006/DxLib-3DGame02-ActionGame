@@ -32,8 +32,6 @@ void WeaponShortcutIcon::Draw() const
 		0xffffff, FALSE);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
-	DrawCircle(m_center_pos.x, m_center_pos.y, 4, 0xffffff, FALSE);
-
 	if (m_graphicer)
 	{
 		m_graphicer->Draw();

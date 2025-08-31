@@ -203,6 +203,7 @@
     <ClCompile Include="SourceCode\Part\cinema_scope_frame.cpp" />
     <ClCompile Include="SourceCode\Part\collider.cpp" />
     <ClCompile Include="SourceCode\Part\graphicer.cpp" />
+    <ClCompile Include="SourceCode\Part\screen_creator.cpp" />
     <ClCompile Include="SourceCode\Part\modeler.cpp" />
     <ClCompile Include="SourceCode\Part\player_animator.cpp" />
     <ClCompile Include="SourceCode\Part\player_state_controller.cpp" />
@@ -325,6 +326,7 @@
     <ClInclude Include="SourceCode\Concept\obj_concepts.hpp" />
     <ClInclude Include="SourceCode\Concept\state_concepts.hpp" />
     <ClInclude Include="SourceCode\Concept\vector_concepts.hpp" />
+    <ClInclude Include="SourceCode\Data\Event\aim_gun_data.hpp" />
     <ClInclude Include="SourceCode\Data\Event\start_rocket_launcher_cutscene_data.hpp" />
     <ClInclude Include="SourceCode\Data\Kind\enemy_role_kind.hpp" />
     <ClInclude Include="SourceCode\Data\Kind\hit_points_part_kind.hpp" />
@@ -445,6 +447,7 @@
     <ClInclude Include="SourceCode\Part\camera_noise.hpp" />
     <ClInclude Include="SourceCode\Part\collider.hpp" />
     <ClInclude Include="SourceCode\Part\graphicer.hpp" />
+    <ClInclude Include="SourceCode\Part\screen_creator.hpp" />
     <ClInclude Include="SourceCode\Part\modeler.hpp" />
     <ClInclude Include="SourceCode\Part\player_animator.hpp" />
     <ClInclude Include="SourceCode\Part\player_state_controller.hpp" />

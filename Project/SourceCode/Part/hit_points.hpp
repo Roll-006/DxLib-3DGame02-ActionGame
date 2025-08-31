@@ -20,6 +20,6 @@ public:
 	[[nodiscard]] bool	IsAlive()			  const { return m_current_hit_points > 0.0f; }
 
 private:
-	float				m_max_hit_points;
-	float				m_current_hit_points;
+	float m_max_hit_points;
+	float m_current_hit_points;
 };

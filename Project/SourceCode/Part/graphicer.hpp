@@ -3,7 +3,6 @@
 #include "../Calculation/vector_2d.hpp"
 #include "../Window/window.hpp"
 
-// TODO : çÏê¨íÜ
 class Graphicer final
 {
 public:
@@ -19,6 +18,7 @@ public:
 	void SetAngle			(const float angle)					{ m_angle					= angle; }
 	//void SetWidth			(const int width)					{ m_width					= width; }
 	//void SetHeigth		(const int height)					{ m_height					= height; }
+	void SetAlphaBlendNum	(const int alpha_blend_num)			{ m_alpha_blend_num			= alpha_blend_num; }
 	void SetInvertHorizontal(const bool is_invert_horizontal)	{ m_is_invert_horizontal	= is_invert_horizontal; }
 	void SetInvertVertical	(const bool is_invert_vertical)		{ m_is_invert_vertical		= is_invert_vertical; }
 
@@ -28,6 +28,7 @@ public:
 	[[nodiscard]] float				GetAngle()				const { return m_angle; }
 	[[nodiscard]] int				GetOriginWidth()		const { return m_origin_width; }
 	[[nodiscard]] int				GetOriginHeight()		const { return m_origin_height; }
+	[[nodiscard]] int				GetAlphaBlendNum()		const { return m_alpha_blend_num; }
 	[[nodiscard]] bool				IsInvertHorizontal()	const { return m_is_invert_horizontal; }
 	[[nodiscard]] bool				IsInvertVertical()		const { return m_is_invert_vertical; }
 
@@ -38,6 +39,7 @@ private:
 	float			m_angle;
 	int				m_origin_width;
 	int				m_origin_height;
+	int				m_alpha_blend_num;
 	bool			m_is_invert_horizontal;
 	bool			m_is_invert_vertical;
 };

@@ -30,15 +30,15 @@ RocketLauncherVirtualCameraController::RocketLauncherVirtualCameraController(Pla
 	SetupForZoomOutCamera();
 	SetupForExitRotCamera();
 
-	const auto camera_brain = CinemachineBrain::GetInstance();
+	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 
-	const auto control_camera = camera_brain->GetVirtualCameraController(VirtualCameraControllerKind::kControl);
+	const auto control_camera = cinemachine_brain->GetVirtualCameraController(VirtualCameraControllerKind::kControl);
 	control_camera->Deactivate();
-	camera_brain->SetBlendTime(1.5f);
-	camera_brain->AddVirtualCamera(m_enter_rot_camera,	true);
-	camera_brain->AddVirtualCamera(m_zoom_in_camera,	false);
-	camera_brain->AddVirtualCamera(m_zoom_out_camera,	false);
-	camera_brain->AddVirtualCamera(m_exit_rot_camera,	false);
+	cinemachine_brain->SetBlendTime(1.5f);
+	cinemachine_brain->AddVirtualCamera(m_enter_rot_camera,	true);
+	cinemachine_brain->AddVirtualCamera(m_zoom_in_camera,	false);
+	cinemachine_brain->AddVirtualCamera(m_zoom_out_camera,	false);
+	cinemachine_brain->AddVirtualCamera(m_exit_rot_camera,	false);
 
 	// オブザーバー登録
 	const auto screen_filter = UIDrawer::GetInstance()->GetUICreator(UICreatorName.SCREEN_FILTER_CREATOR);
@@ -54,14 +54,14 @@ RocketLauncherVirtualCameraController::RocketLauncherVirtualCameraController(Pla
 
 RocketLauncherVirtualCameraController::~RocketLauncherVirtualCameraController()
 {
-	const auto camera_brain = CinemachineBrain::GetInstance();
-	camera_brain->RemoveVirtualCamera(m_enter_rot_camera	->GetObjHandle());
-	camera_brain->RemoveVirtualCamera(m_zoom_in_camera	->GetObjHandle());
-	camera_brain->RemoveVirtualCamera(m_zoom_out_camera	->GetObjHandle());
-	camera_brain->RemoveVirtualCamera(m_exit_rot_camera	->GetObjHandle());
+	const auto cinemachine_brain = CinemachineBrain::GetInstance();
+	cinemachine_brain->RemoveVirtualCamera(m_enter_rot_camera	->GetObjHandle());
+	cinemachine_brain->RemoveVirtualCamera(m_zoom_in_camera	->GetObjHandle());
+	cinemachine_brain->RemoveVirtualCamera(m_zoom_out_camera	->GetObjHandle());
+	cinemachine_brain->RemoveVirtualCamera(m_exit_rot_camera	->GetObjHandle());
 
 	// FIXME : ブレンドの起点にする必要があるため破棄できない。ブレンドが終了したら自動的にremoveする機能が必要な可能性あり
-	//camera_brain->RemoveVirtualCamera(m_exit_rot_camera	->GetObjHandle());
+	//cinemachine_brain->RemoveVirtualCamera(m_exit_rot_camera	->GetObjHandle());
 }
 
 void RocketLauncherVirtualCameraController::Init()
@@ -93,8 +93,8 @@ VirtualCameraControllerKind RocketLauncherVirtualCameraController::GetVirtualCam
 
 std::shared_ptr<VirtualCameraBase> RocketLauncherVirtualCameraController::GetHaveVirtualCamera(const std::string& name) const
 {
-	const auto camera_brain = CinemachineBrain::GetInstance();
-	const auto camera = camera_brain->GetVirtualCamera(name);
+	const auto cinemachine_brain = CinemachineBrain::GetInstance();
+	const auto camera = cinemachine_brain->GetVirtualCamera(name);
 
 	if (   camera == m_enter_rot_camera
 		|| camera == m_zoom_in_camera
@@ -159,8 +159,8 @@ void RocketLauncherVirtualCameraController::CalcAimTransformForEnterRotCamera()
 		m_enter_rot_camera->Deactivate();
 		m_zoom_in_camera->Activate();
 
-		const auto camera_brain = CinemachineBrain::GetInstance();
-		camera_brain->SetBlendTime(0.0f);
+		const auto cinemachine_brain = CinemachineBrain::GetInstance();
+		cinemachine_brain->SetBlendTime(0.0f);
 	}
 
 	// TODO : 後に弾丸そのものを追尾するよう変更
@@ -196,8 +196,8 @@ void RocketLauncherVirtualCameraController::CalcAimTransformForZoomInCamera()
 
 		m_follow_offset_for_zoom_out = VGet(0.0f, 0.0f, m_follow_offset_for_zoom_in.z);
 
-		const auto camera_brain = CinemachineBrain::GetInstance();
-		camera_brain->SetBlendTime(2.0f);
+		const auto cinemachine_brain = CinemachineBrain::GetInstance();
+		cinemachine_brain->SetBlendTime(2.0f);
 	}
 
 	// 追跡するボーンから行列を取得
@@ -235,8 +235,8 @@ void RocketLauncherVirtualCameraController::CalcAimTransformForZoomOutCamera()
 
 		m_follow_offset_for_exit_rot = m_follow_offset_for_zoom_out;
 
-		const auto camera_brain = CinemachineBrain::GetInstance();
-		camera_brain->SetBlendTime(2.0f);
+		const auto cinemachine_brain = CinemachineBrain::GetInstance();
+		cinemachine_brain->SetBlendTime(2.0f);
 	}
 
 	// カメラの追跡対象となるトランスフォームの情報を更新
@@ -278,13 +278,13 @@ void RocketLauncherVirtualCameraController::CalcAimTransformForExitRotCamera()
 		m_subject->Notify(event);
 
 		// TODO : ブレンドが終了した際に、ブレンド速度を戻す処理が必要
-		const auto camera_brain = CinemachineBrain::GetInstance();
-		camera_brain->SetBlendTime(0.75f);
+		const auto cinemachine_brain = CinemachineBrain::GetInstance();
+		cinemachine_brain->SetBlendTime(0.75f);
 
 		m_exit_rot_camera->Deactivate();
 
 		// 操作カメラの復帰
-		const auto control_cameras_controller = camera_brain->GetVirtualCameraController(VirtualCameraControllerKind::kControl);
+		const auto control_cameras_controller = cinemachine_brain->GetVirtualCameraController(VirtualCameraControllerKind::kControl);
 		control_cameras_controller->Activate();
 		control_cameras_controller->GetHaveVirtualCamera(ObjName.ROT_CONTROL_VIRTUAL_CAMERA)->Activate();
 	}

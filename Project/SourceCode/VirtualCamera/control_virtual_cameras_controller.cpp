@@ -23,17 +23,17 @@ ControlVirtualCamerasController::ControlVirtualCamerasController(Player& player)
 	SetupForRotCamera();
 	SetupForAimCamera();
 	
-	const auto camera_brain = CinemachineBrain::GetInstance();
-	camera_brain->SetBlendTime(1.0f);
-	camera_brain->AddVirtualCamera(m_rot_control_camera, true);
-	camera_brain->AddVirtualCamera(m_aim_control_camera, false);
+	const auto cinemachine_brain = CinemachineBrain::GetInstance();
+	cinemachine_brain->SetBlendTime(1.0f);
+	cinemachine_brain->AddVirtualCamera(m_rot_control_camera, true);
+	cinemachine_brain->AddVirtualCamera(m_aim_control_camera, false);
 }
 
 ControlVirtualCamerasController::~ControlVirtualCamerasController()
 {
-	const auto camera_brain = CinemachineBrain::GetInstance();
-	camera_brain->RemoveVirtualCamera(m_rot_control_camera->GetObjHandle());
-	camera_brain->RemoveVirtualCamera(m_aim_control_camera->GetObjHandle());
+	const auto cinemachine_brain = CinemachineBrain::GetInstance();
+	cinemachine_brain->RemoveVirtualCamera(m_rot_control_camera->GetObjHandle());
+	cinemachine_brain->RemoveVirtualCamera(m_aim_control_camera->GetObjHandle());
 }
 
 void ControlVirtualCamerasController::Init()
@@ -90,8 +90,8 @@ VirtualCameraControllerKind ControlVirtualCamerasController::GetVirtualCameraCon
 
 std::shared_ptr<VirtualCameraBase> ControlVirtualCamerasController::GetHaveVirtualCamera(const std::string& name) const
 {
-	const auto camera_brain = CinemachineBrain::GetInstance();
-	const auto camera = camera_brain->GetVirtualCamera(name);
+	const auto cinemachine_brain = CinemachineBrain::GetInstance();
+	const auto camera = cinemachine_brain->GetVirtualCamera(name);
 
 	if (   camera == m_rot_control_camera
 		|| camera == m_aim_control_camera)
@@ -260,7 +260,7 @@ void ControlVirtualCamerasController::CalcRecoilAngle()
 	{
 		m_recoil_timer += delta_time;
 		const auto t = math::GetUnitValue<float, float>(0.0f, m_recoil_data.recoil_time, m_recoil_timer);
-		m_recoil_angle[TimeKind::kCurrent] = math::GetLerpVector(v3d::GetZeroV(), m_recoil_angle[TimeKind::kNext], t);
+		m_recoil_angle[TimeKind::kCurrent] = math::GetLerp(v3d::GetZeroV(), m_recoil_angle[TimeKind::kNext], t);
 
 		// •œ‹A‚ÖˆÚs
 		if (t >= 1.0f)

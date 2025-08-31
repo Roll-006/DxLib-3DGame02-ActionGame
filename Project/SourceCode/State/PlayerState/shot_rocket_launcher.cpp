@@ -64,9 +64,9 @@ void player_state::ShotRocketLauncher::Enter(std::shared_ptr<Player> obj)
 	// 演出用カメラを生成
 	// MEMO : この段階で操作カメラのトランスフォーム情報が削除
 
-	const auto camera_brain = CinemachineBrain::GetInstance();
+	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	m_rocket_launcher_camera_controller = std::make_shared<RocketLauncherVirtualCameraController>(*obj);
-	camera_brain->AddVirtualCameraController(m_rocket_launcher_camera_controller);
+	cinemachine_brain->AddVirtualCameraController(m_rocket_launcher_camera_controller);
 
 	obj->DetachWeapon(obj->GetCurrentEquipWeapon());
 	obj->HoldWeapon(obj->GetCurrentEquipWeapon());
@@ -75,8 +75,8 @@ void player_state::ShotRocketLauncher::Enter(std::shared_ptr<Player> obj)
 void player_state::ShotRocketLauncher::Exit(std::shared_ptr<Player> obj)
 {
 	// 演出用カメラを削除
-	const auto camera_brain = CinemachineBrain::GetInstance();
-	camera_brain->RemoveVirtualCameraController(m_rocket_launcher_camera_controller);
+	const auto cinemachine_brain = CinemachineBrain::GetInstance();
+	cinemachine_brain->RemoveVirtualCameraController(m_rocket_launcher_camera_controller);
 	m_rocket_launcher_camera_controller = nullptr;
 
 	// 演出終了後にリコイル処理

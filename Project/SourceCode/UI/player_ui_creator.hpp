@@ -1,8 +1,8 @@
 #pragma once
 #include "../Interface/i_ui_creator.hpp"
-//#include "../Object/player.hpp"
 
 #include "../Part/weapon_shortcut_drawer.hpp"
+#include "../Part/player_state_controller.hpp"
 
 class PlayerUICreator final : public IUICreator
 {
@@ -34,7 +34,6 @@ private:
 
 	std::shared_ptr<Player>					m_player;
 	std::shared_ptr<WeaponShortcutDrawer>	m_weapon_shortcut;
-
 
 	// ‰¼
 	//std::shared_ptr<ShapeBase>	m_2d_diffusion_shape;	// “ñŸŒ³ã‚ÌŠgU”ÍˆÍ}Œ`

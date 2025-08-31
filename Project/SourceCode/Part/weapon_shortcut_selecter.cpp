@@ -1,11 +1,12 @@
 #include "weapon_shortcut_selecter.hpp"
 
 #include "../Object/player.hpp"
+#include "../Part/player_state_controller.hpp"
 #include "../Command/command_handler.hpp"
 
 WeaponShortcutSelecter::WeaponShortcutSelecter() : 
 	m_current_select_shortcut	(WeaponShortcutPosKind::kInsideUp),
-	m_is_selected				(false)
+	m_is_selecting				(false)
 {
 	
 }
@@ -17,7 +18,13 @@ WeaponShortcutSelecter::~WeaponShortcutSelecter()
 
 void WeaponShortcutSelecter::Update(std::shared_ptr<Player> player)
 {
-	m_is_selected = false;
+	const auto state = player->GetStateController()->GetWeaponActionState(TimeKind::kCurrent);
+	if (state->GetStateKind() == static_cast<int>(player_state::WeaponActionStateKind::kShotRocketLauncher))
+	{
+		return;
+	}
+
+	m_is_selecting = false;
 
 	SelectWeaponByKey();
 	SelectWeaponByPad();
@@ -52,7 +59,7 @@ void WeaponShortcutSelecter::SelectWeaponByPad()
 			auto	   current_shortcut_num = static_cast<int>(m_current_select_shortcut);
 			const auto is_inside			= current_shortcut_num < 4;
 			const auto increase_value		= is_inside ? 4 : -4;
-			const auto offset				= is_inside ? 0 : 4;
+			const auto offset				= is_inside ? 0 :  4;
 			const auto is_select_same_dir	= current_shortcut_num == i + offset ? true : false;
 
 			// 既に入力した方向にいた場合は内側 / 外側の切り替えを行う
@@ -66,7 +73,7 @@ void WeaponShortcutSelecter::SelectWeaponByPad()
 			}
 
 			m_current_select_shortcut	= static_cast<WeaponShortcutPosKind>(current_shortcut_num);
-			m_is_selected				= true;
+			m_is_selecting				= true;
 			break;
 		}
 	}
@@ -86,7 +93,7 @@ void WeaponShortcutSelecter::SelectWeaponByKey()
 			const auto shortcut_num = static_cast<int>(WeaponShortcutPosKind::kInsideUp) + i;
 
 			m_current_select_shortcut	= static_cast<WeaponShortcutPosKind>(shortcut_num);
-			m_is_selected				= true;
+			m_is_selecting				= true;
 			break;
 		}
 	}
@@ -99,7 +106,7 @@ void WeaponShortcutSelecter::SelectWeaponByKey()
 		const auto result_shortcut		= current_shortcut_num + increase_value;
 
 		m_current_select_shortcut	= static_cast<WeaponShortcutPosKind>(result_shortcut);
-		m_is_selected				= true;
+		m_is_selecting				= true;
 	}
 
 	// 回転選択
@@ -143,7 +150,7 @@ void WeaponShortcutSelecter::SelectWeaponRotate(const CommandKind command_kind)
 		if (current_shortcut_num < min_select_num) { current_shortcut_num = max_select_num; }
 
 		m_current_select_shortcut	= static_cast<WeaponShortcutPosKind>(current_shortcut_num);
-		m_is_selected				= true;
+		m_is_selecting				= true;
 	}
 
 	// 内側 / 外側切り替えの入力モードを元の状態へ戻す
@@ -154,7 +161,7 @@ void WeaponShortcutSelecter::HoldWeapon(std::shared_ptr<Player> player)
 {
 	const auto select_weapon = GetShortcutWeapon(m_current_select_shortcut);
 
-	if (select_weapon && m_is_selected)
+	if (select_weapon && m_is_selecting)
 	{
 		// 現在手に持っている武器を装着する
 		const auto current_held_weapon = player->GetCurrentHeldWeapon();

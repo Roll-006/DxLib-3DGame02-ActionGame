@@ -253,16 +253,7 @@ VECTOR math::GetApproachedVector(const VECTOR& current_v, const VECTOR& end_v, c
     return result_v;
 }
 
-VECTOR math::GetLerpVector(const VECTOR& begin_v, const VECTOR& end_v, const float t)
-{
-    const auto dir              = v3d::GetNormalizedV(end_v - begin_v);
-    const auto total_distance   = VSize(end_v - begin_v);
-    const auto distance         = ConvertValueNewRange<float, float>(0.0f, 1.0f, 0.0f, total_distance, t);
-
-    return begin_v + dir * distance;
-}
-
-Quaternion math::GetSlerpQuaternion(const Quaternion& begin_q, const Quaternion& end_q, const float t)
+Quaternion math::GetSlerp(const Quaternion& begin_q, const Quaternion& end_q, const float t)
 {
     // 安全性向上のため正規化・クランプ
     const auto normalized_begin_q   = quat::GetNormalizedQuaternion(begin_q);
@@ -429,7 +420,7 @@ Transform& math::GetLerpTransform(
     {
         const auto begin_pos    = begin_transform.GetPos(CoordinateKind::kWorld);
         const auto end_pos      = end_transform  .GetPos(CoordinateKind::kWorld);
-        const auto result_pos   = GetLerpVector(begin_pos, end_pos, t);
+        const auto result_pos   = GetLerp(begin_pos, end_pos, t);
         result_transform.SetPos(CoordinateKind::kWorld, result_pos);
     }
 
@@ -438,7 +429,7 @@ Transform& math::GetLerpTransform(
     {
         const auto begin_scale  = begin_transform.GetScale(CoordinateKind::kWorld);
         const auto end_scale    = end_transform  .GetScale(CoordinateKind::kWorld);
-        const auto result_scale = GetLerpVector(begin_scale, end_scale, t);
+        const auto result_scale = GetLerp(begin_scale, end_scale, t);
         result_transform.SetScale(CoordinateKind::kWorld, result_scale);
     }
 
@@ -447,7 +438,7 @@ Transform& math::GetLerpTransform(
     {
         const auto begin_q  = begin_transform.GetQuaternion(CoordinateKind::kWorld);
         const auto end_q    = end_transform  .GetQuaternion(CoordinateKind::kWorld);
-        const auto result_q = GetSlerpQuaternion(begin_q, end_q, t);
+        const auto result_q = GetSlerp(begin_q, end_q, t);
         result_transform.SetRot(CoordinateKind::kWorld, result_q);
     }
 

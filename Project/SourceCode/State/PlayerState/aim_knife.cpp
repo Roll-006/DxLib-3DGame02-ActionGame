@@ -46,7 +46,13 @@ std::shared_ptr<IState<Player>> player_state::AimKnife::ChangeState(std::shared_
 {
 	const auto state_controller = obj->GetStateController();
 	const auto command			= CommandHandler::GetInstance();
+	const auto weapon_kind		= obj->GetCurrentHeldWeaponKind();
 
+	// e‘•”õó‘Ô
+	if (weapon_kind == WeaponKind::kGun)
+	{
+		return state_controller->GetState<EquipGun, Player>();
+	}
 	// ƒiƒCƒt‘•”õó‘Ô
 	if (!command->IsExecute(CommandKind::kAimKnife, TimeKind::kCurrent))
 	{

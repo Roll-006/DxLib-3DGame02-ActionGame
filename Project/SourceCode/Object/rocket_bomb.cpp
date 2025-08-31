@@ -127,8 +127,8 @@ void RocketBomb::OnShot(GunBase& gun)
 	// MEMO : プレイヤーが一人の場合にしか対応していない
 	if (m_shot_owner_name == ObjName.PLAYER)
 	{
-		const auto camera_brain = CinemachineBrain::GetInstance();
-		const auto camera_controller = std::dynamic_pointer_cast<RocketLauncherVirtualCameraController>(camera_brain->GetVirtualCameraController(VirtualCameraControllerKind::kRocketLauncherCutscene));
+		const auto cinemachine_brain = CinemachineBrain::GetInstance();
+		const auto camera_controller = std::dynamic_pointer_cast<RocketLauncherVirtualCameraController>(cinemachine_brain->GetVirtualCameraController(VirtualCameraControllerKind::kRocketLauncherCutscene));
 		if (camera_controller)
 		{
 			camera_controller->SetRocketBombTransform(m_transform);
@@ -187,7 +187,7 @@ void RocketBomb::Move()
 		m_blend_timer += GetDeltaTime();
 
 		const auto t			= math::GetUnitValue<float, float>(0.0f, kBlendTime, m_blend_timer);
-		const auto current_dir	= math::GetLerpVector(m_move_dir, m_destination_dir, t);
+		const auto current_dir	= math::GetLerp(m_move_dir, m_destination_dir, t);
 		m_velocity = current_dir * m_move_speed;
 	}
 	// 画面中央から撃たれた際の軌道で移動

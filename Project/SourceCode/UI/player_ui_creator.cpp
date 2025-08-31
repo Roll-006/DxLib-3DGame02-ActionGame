@@ -5,7 +5,9 @@ PlayerUICreator::PlayerUICreator(const std::shared_ptr<Player> player) :
 	m_priority			(1),
 	m_is_active			(true),
 	m_player			(player),
-	m_weapon_shortcut	(std::make_shared<WeaponShortcutDrawer>(player))
+	m_weapon_shortcut	(std::make_shared<WeaponShortcutDrawer>(
+							m_player->GetStateController()->GetWeaponActionState(), 
+							player->GetWeaponShortcutSelecter()))
 	//m_2d_diffusion_shape(nullptr)
 {
 

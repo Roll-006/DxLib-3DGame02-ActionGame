@@ -17,7 +17,8 @@ public:
 	void DetachShortcutWeapon(const WeaponShortcutPosKind pos_kind);
 
 	[[nodiscard]] std::shared_ptr<WeaponBase>	GetShortcutWeapon(const WeaponShortcutPosKind shortcut_pos_kind);
-	[[nodiscard]] WeaponShortcutPosKind			GetCurrentSelectShortcut() const { return m_current_select_shortcut; }
+	[[nodiscard]] WeaponShortcutPosKind			GetCurrentSelectShortcut()	const { return m_current_select_shortcut; }
+	[[nodiscard]] bool							isSelecting()				const { return m_is_selecting; }
 	
 private:
 	void SelectWeaponByPad();
@@ -30,5 +31,5 @@ private:
 private:
 	std::unordered_map<WeaponShortcutPosKind, std::shared_ptr<WeaponBase>>	m_shortcut_weapons;			// ショートカットに登録している武器
 	WeaponShortcutPosKind													m_current_select_shortcut;	// 現在選択しているショートカット
-	bool																	m_is_selected;
+	bool																	m_is_selecting;
 };

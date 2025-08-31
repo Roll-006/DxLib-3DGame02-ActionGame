@@ -11,8 +11,8 @@ ShareScene::ShareScene() :
 
 	UIDrawer::GetInstance()->AddUICreator(m_screen_filter_creator);
 
-	const auto camera_brain = CinemachineBrain::GetInstance();
-	camera_brain->AddVirtualCameraController(std::make_shared<ControlVirtualCamerasController>(*m_player.get()));
+	const auto cinemachine_brain = CinemachineBrain::GetInstance();
+	cinemachine_brain->AddVirtualCameraController(std::make_shared<ControlVirtualCamerasController>(*m_player.get()));
 
 	ObjectPoolHolder::GetInstance()->AddObjectPool(m_share_scene_effect_object_pool);
 }

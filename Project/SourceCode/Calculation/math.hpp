@@ -98,7 +98,7 @@ namespace math
 	/// @brief 値の平均を取得
 	/// @brief 呼び出す際は「GetAverageValue<戻り値型>(値1, 値2...);」とする
 	template<common_concepts::FloatingPointT ReturnT, common_concepts::ArithmeticT T, common_concepts::ArithmeticT... Args>
-	[[nodiscard]] inline ReturnT GetAverageValue(T first, Args... args)
+	inline [[nodiscard]] ReturnT GetAverageValue(T first, Args... args)
 	{
 		const int length = 1 + sizeof...(args);
 		const ReturnT sum = static_cast<ReturnT>(first) + (static_cast<ReturnT>(args) + ...);
@@ -150,19 +150,29 @@ namespace math
 	/// @return 移動後ベクトル
 	[[nodiscard]] VECTOR GetApproachedVector(const VECTOR& current_v, const VECTOR& end_v, const float speed);
 
-	/// @brief 2つのベクトルを線形補間で補間
+	/// @brief 2つの値を線形補間で補間
 	/// @param begin_v 開始地点
 	/// @param end_v 終了地点
 	/// @param t 補間係数(0.0～1.0)
 	/// @return 補間結果
-	[[nodiscard]] VECTOR GetLerpVector(const VECTOR& begin_v, const VECTOR& end_v, const float t);
+	template<typename T>
+	[[nodiscard]] T GetLerp(const T& begin_num, const T& end_num, const float t)
+	{
+		return (1 - t) * begin_num + t * end_num;
+	}
+
+	template<>
+	inline [[nodiscard]] VECTOR GetLerp(const VECTOR& begin_v, const VECTOR& end_v, const float t)
+	{
+		return begin_v + (end_v - begin_v) * t;
+	}
 
 	/// @brief 2つのクォータニオンを球面線形補間で補間
 	/// @param begin_q 開始地点となるクォータニオン
 	/// @param end_q 終了地点となるクォータニオン
 	/// @param t 補間係数(0.0～1.0)
 	/// @return 補間結果のクォータニオン
-	[[nodiscard]] Quaternion GetSlerpQuaternion(const Quaternion& begin_q, const Quaternion& end_q, const float t);
+	[[nodiscard]] Quaternion GetSlerp(const Quaternion& begin_q, const Quaternion& end_q, const float t);
 	
 	/// @brief 2つのトランスフォームを線形補間で補間
 	/// @brief 座標 : 線形補間, 回転 : 球面線形補間, スケール : 線形補間

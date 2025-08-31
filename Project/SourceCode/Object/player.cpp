@@ -83,9 +83,9 @@ void Player::Update()
 	m_look_dir_offset_angle				= kLookDirOffsetAngle			* math::kDegToRad;
 	m_confirm_look_dir_threshold_angle	= kConfirmLookDirThresholdAngle * math::kDegToRad;
 
-	m_weapon_shortcut_selecter	->Update(std::static_pointer_cast<Player>(shared_from_this()));
-	m_state						->Update(std::static_pointer_cast<Player>(shared_from_this()));
-	m_animator					->Update();
+	m_weapon_shortcut_selecter->Update(std::static_pointer_cast<Player>(shared_from_this()));
+	m_state					  ->Update(std::static_pointer_cast<Player>(shared_from_this()));
+	m_animator				  ->Update();
 
 	CalcMoveDir();
 	CalcLookDir();

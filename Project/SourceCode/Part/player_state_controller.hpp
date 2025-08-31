@@ -69,10 +69,14 @@ public:
 
 
 	#pragma region Getter
-	[[nodiscard]] std::shared_ptr<MoveStateBase<Player>>		 GetMoveState		 (const TimeKind time_kind)	const { return m_move_state.at(time_kind); }
-	[[nodiscard]] std::shared_ptr<ActionStateBase<Player>>		 GetActionState		 (const TimeKind time_kind)	const { return m_action_state.at(time_kind); }
-	[[nodiscard]] std::shared_ptr<WeaponActionStateBase<Player>> GetWeaponActionState(const TimeKind time_kind)	const { return m_weapon_action_state.at(time_kind); }
-	[[nodiscard]] std::shared_ptr<SpecialStateBase<Player>>		 GetSpecialState	 (const TimeKind time_kind)	const { return m_special_state.at(time_kind); }
+	[[nodiscard]] std::shared_ptr<MoveStateBase<Player>>			GetMoveState		(const TimeKind time_kind)	const { return m_move_state.at(time_kind); }
+	[[nodiscard]] std::shared_ptr<ActionStateBase<Player>>			GetActionState		(const TimeKind time_kind)	const { return m_action_state.at(time_kind); }
+	[[nodiscard]] std::shared_ptr<WeaponActionStateBase<Player>>	GetWeaponActionState(const TimeKind time_kind)	const { return m_weapon_action_state.at(time_kind); }
+	[[nodiscard]] std::shared_ptr<SpecialStateBase<Player>>			GetSpecialState		(const TimeKind time_kind)	const { return m_special_state.at(time_kind); }
+	[[nodiscard]] std::unordered_map<TimeKind, std::shared_ptr<MoveStateBase<Player>>>&			GetMoveState()			  { return m_move_state; }
+	[[nodiscard]] std::unordered_map<TimeKind, std::shared_ptr<ActionStateBase<Player>>>&		GetActionState()		  { return m_action_state; }
+	[[nodiscard]] std::unordered_map<TimeKind, std::shared_ptr<WeaponActionStateBase<Player>>>&	GetWeaponActionState()	  { return m_weapon_action_state; }
+	[[nodiscard]] std::unordered_map<TimeKind, std::shared_ptr<SpecialStateBase<Player>>>&		GetSpecialState()		  { return m_special_state; }
 	#pragma endregion
 
 private:

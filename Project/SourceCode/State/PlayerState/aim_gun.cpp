@@ -55,8 +55,8 @@ std::shared_ptr<IState<Player>> player_state::AimGun::ChangeState(std::shared_pt
 	const auto state_controller		= obj->GetStateController();
 	const auto command				= CommandHandler::GetInstance();
 	const auto gun					= std::static_pointer_cast<GunBase>(obj->GetCurrentHeldWeapon());
-	const auto camera_brain		= CinemachineBrain::GetInstance();
-	const auto camera_controller	= std::static_pointer_cast<ControlVirtualCamerasController>(camera_brain->GetVirtualCameraController(VirtualCameraControllerKind::kControl));
+	const auto cinemachine_brain	= CinemachineBrain::GetInstance();
+	const auto camera_controller	= std::static_pointer_cast<ControlVirtualCamerasController>(cinemachine_brain->GetVirtualCameraController(VirtualCameraControllerKind::kControl));
 
 	//DrawFormatString(0, 100, 0xffffff, "%d", camera_controller->IsReachedRecoilPeak());
 

@@ -443,6 +443,9 @@
     <ClCompile Include="SourceCode\State\ZombieState\move_null.cpp">
       <Filter>State\ZombieState</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\Part\screen_creator.cpp">
+      <Filter>Part</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\character_base.hpp">
@@ -1170,6 +1173,12 @@
     </ClInclude>
     <ClInclude Include="SourceCode\State\ZombieState\move_null.hpp">
       <Filter>State\ZombieState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Part\screen_creator.hpp">
+      <Filter>Part</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\Event\aim_gun_data.hpp">
+      <Filter>Data\Event</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
