@@ -2,8 +2,9 @@
 #include "../Base/character_base.hpp"
 #include "../Interface/i_enemy.hpp"
 
-#include "../AI/zombie_ai.hpp"
 #include "../Part/zombie_animator.hpp"
+
+class ZombieAI;
 
 class Zombie final : public CharacterBase, public IEnemy
 {

@@ -1,10 +1,9 @@
 #pragma once
 #include "../Interface/i_enemy_ai.hpp"
-#include "../Object/player.hpp"
-#include "../Object/zombie.hpp"
 
-template<obj_concepts::ObjT ObjT>
-class EnemyStateControllerBase;
+#include "../Part/zombie_state_controller.hpp"
+#include "../Object/zombie.hpp"
+#include "../Object/player.hpp"
 
 class ZombieAI final : public IEnemyAI<Zombie>
 {

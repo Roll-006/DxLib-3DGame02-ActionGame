@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 
 template<typename EnemyT>
 class IEnemyAI abstract

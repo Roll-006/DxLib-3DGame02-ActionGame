@@ -1,5 +1,4 @@
 #include "zombie_ai.hpp"
-#include "../Part/zombie_state_controller.hpp"
 
 ZombieAI::ZombieAI(const std::shared_ptr<Player> player) : 
 	m_state	(std::make_shared<ZombieStateController>()),

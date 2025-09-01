@@ -1,9 +1,9 @@
 #include "zombie.hpp"
-#include "../Part/zombie_state_controller.hpp"
+#include "../AI/zombie_ai.hpp"
 
 Zombie::Zombie() :
 	CharacterBase	(ObjName.ZOMBIE, ObjTag.ENEMY, MassKind::kMedium),
-	m_ai			(std::make_shared<ZombieAI>()),
+	m_ai			(std::make_shared<ZombieAI>(ObjManager::GetInstance()->GetObj<Player>(ObjName.PLAYER))),
 	m_move_dir		(v3d::GetZeroV()),
 	m_look_dir		(v3d::GetZeroV())
 {
@@ -16,7 +16,7 @@ Zombie::Zombie() :
 	m_hit_points[HitPointsPartKind::kRightLeg]	= std::make_shared<HitPoints>(300.0f);
 
 	m_modeler  = std::make_shared<Modeler>(m_transform, ModelPath.ZOMBIE_05, kBasicAngle, kBasicScale);
-	m_animator = std::make_shared<ZombieAnimator>(m_modeler, m_ai->GetStateController());
+	m_animator = std::make_shared<ZombieAnimator>(m_modeler, std::static_pointer_cast<ZombieStateController>(m_ai->GetStateController()));
 	SetColliderModelHandle(m_modeler->GetModelHandle());
 
 	m_look_dir = VGet(0.0f, 0.0f, 1.0f);

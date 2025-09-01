@@ -14,6 +14,8 @@ static struct AnimationPath
 	const std::string FIRST_SIDE_SLASH_KNIFE			= "Data/Animation/side_slash_knife_left_to_right.mv1";
 	const std::string SECOND_SIDE_SLASH_KNIFE			= "Data/Animation/side_slash_knife_right_to_left.mv1";
 	const std::string SPINNING_SLASH_KNIFE				= "Data/Animation/spinning_slash_knife.mv1";
+
+	const std::string BLOW_AWAY							= "Data/Animation/blow_away.mv1";
 	#pragma endregion
 
 

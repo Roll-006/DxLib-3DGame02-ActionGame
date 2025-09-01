@@ -452,6 +452,9 @@
     <ClCompile Include="SourceCode\AI\zombie_ai.cpp">
       <Filter>AI</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\Object\rocket_bomb_explosion_effect.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\character_base.hpp">
@@ -1197,6 +1200,12 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Interface\i_enemy_ai.hpp">
       <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Interface\i_effect.hpp">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Object\rocket_bomb_explosion_effect.hpp">
+      <Filter>Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

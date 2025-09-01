@@ -68,6 +68,21 @@ namespace algorithm
 			index_map[main_pairs[i].first] = i;
 		}
 
+		// サブソート用関数を定義
+		auto SubSort = [&](const auto& a, const auto& b)
+		{
+			switch (sub_pairs_sort_kind)
+			{
+			case SortKind::kAscending:
+				return sub_pairs[index_map.at(a.first)].second < sub_pairs[index_map.at(b.first)].second;
+
+			case SortKind::kDescending:
+				return sub_pairs[index_map.at(a.first)].second > sub_pairs[index_map.at(b.first)].second;
+			}
+			return false;
+		};
+
+		// メインソート
 		std::sort(sorted_pairs.begin(), sorted_pairs.end(), [&](const auto& a, const auto& b)
 		{
 			switch (main_pairs_sort_kind)
@@ -75,28 +90,12 @@ namespace algorithm
 			case SortKind::kAscending:
 				if (a.second != b.second) { return a.second < b.second; }
 				
-				switch (sub_pairs_sort_kind)
-				{
-				case SortKind::kAscending:
-					return sub_pairs[index_map.at(a.first)].second < sub_pairs[index_map.at(b.first)].second;
-
-				case SortKind::kDescending:
-					return sub_pairs[index_map.at(a.first)].second > sub_pairs[index_map.at(b.first)].second;
-				}
-				return false;
+				return SubSort(a, b);
 
 			case SortKind::kDescending:
 				if (a.second != b.second) { return a.second > b.second; }
 
-				switch (sub_pairs_sort_kind)
-				{
-				case SortKind::kAscending:
-					return sub_pairs[index_map.at(a.first)].second < sub_pairs[index_map.at(b.first)].second;
-
-				case SortKind::kDescending:
-					return sub_pairs[index_map.at(a.first)].second > sub_pairs[index_map.at(b.first)].second;
-				}
-				return false;
+				return SubSort(a, b);
 			}
 			return false;
 		});

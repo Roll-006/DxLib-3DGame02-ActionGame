@@ -52,7 +52,7 @@ private:
 	#pragma endregion
 
 private:
-	std::unordered_map<std::string, std::vector<std::shared_ptr<Effect>>> m_effects;
+	std::unordered_map<std::string, std::vector<std::shared_ptr<ObjBase>>> m_effects;
 
 	friend SingletonBase<EffectManager>;
 };

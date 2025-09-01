@@ -1,22 +1,25 @@
 #pragma once
-#include "../Base/obj_base.hpp"
+#include "../Base/physical_obj_base.hpp"
 #include "../Interface/i_effect.hpp"
 #include "../Interface/i_poolable.hpp"
 
 #include "../GameTime/game_time_manager.hpp"
 #include "../Manager/obj_manager.hpp"
+#include "../Manager/collision_manager.hpp"
 
-class Effect final : public ObjBase, public IEffect, public IPoolable
+class RocketBombExplosionEffect final : public PhysicalObjBase, public IEffect, public IPoolable
 {
 public:
-	Effect(const EffectData& data);
-	~Effect() override;
+	RocketBombExplosionEffect();
+	~RocketBombExplosionEffect() override;
 
 	void Init()						override;
 	void Update()					override;
 	void LateUpdate()				override;
 	void DrawToShadowMap()	const	override;
 	void Draw()				const	override;
+
+	void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) override;
 
 	void AddToObjManager()			override;
 
@@ -39,7 +42,7 @@ public:
 
 
 	#pragma region Setter
-	void SetOffsetPos  (const VECTOR& offset_pos)   override { m_offset_pos	 = offset_pos; }
+	void SetOffsetPos  (const VECTOR& offset_pos)   override { m_offset_pos	  = offset_pos; }
 	void SetOffsetAngle(const VECTOR& offset_angle) override { m_offset_angle = offset_angle; }
 	void SetOffsetScale(const VECTOR& offset_scale) override { m_offset_scale = offset_scale; }
 	void SetOffsetScale(const float   offset_scale) override { m_offset_scale = VGet(offset_scale, offset_scale, offset_scale); }
@@ -62,6 +65,8 @@ private:
 	[[nodiscard]] float	GetDeltaTime() const override;
 
 private:
+	static constexpr float kHitRadius = 100.0f;
+
 	int			m_origin_effect_handle;			// エフェクトハンドル
 	int			m_playing_effect_handle;		// 再生中のエフェクトハンドル
 

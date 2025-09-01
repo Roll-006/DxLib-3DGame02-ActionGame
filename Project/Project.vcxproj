@@ -183,6 +183,7 @@
     <ClCompile Include="SourceCode\Object\assault_rifle_magazine.cpp" />
     <ClCompile Include="SourceCode\Object\assault_rifle.cpp" />
     <ClCompile Include="SourceCode\Object\bullet.cpp" />
+    <ClCompile Include="SourceCode\Object\rocket_bomb_explosion_effect.cpp" />
     <ClCompile Include="SourceCode\Object\effect.cpp" />
     <ClCompile Include="SourceCode\Object\knife.cpp" />
     <ClCompile Include="SourceCode\Object\main_camera.cpp" />
@@ -399,6 +400,7 @@
     <ClInclude Include="SourceCode\Handle\handle_keeper.hpp" />
     <ClInclude Include="SourceCode\Handle\state_handler.hpp" />
     <ClInclude Include="SourceCode\Input\input_checker.hpp" />
+    <ClInclude Include="SourceCode\Interface\i_effect.hpp" />
     <ClInclude Include="SourceCode\Interface\i_enemy.hpp" />
     <ClInclude Include="SourceCode\Interface\i_enemy_ai.hpp" />
     <ClInclude Include="SourceCode\Interface\i_enemy_ai_state.hpp" />
@@ -432,6 +434,7 @@
     <ClInclude Include="SourceCode\Object\assault_rifle_magazine.hpp" />
     <ClInclude Include="SourceCode\Object\assault_rifle.hpp" />
     <ClInclude Include="SourceCode\Object\bullet.hpp" />
+    <ClInclude Include="SourceCode\Object\rocket_bomb_explosion_effect.hpp" />
     <ClInclude Include="SourceCode\Object\effect.hpp" />
     <ClInclude Include="SourceCode\Object\knife.hpp" />
     <ClInclude Include="SourceCode\Object\main_camera.hpp" />

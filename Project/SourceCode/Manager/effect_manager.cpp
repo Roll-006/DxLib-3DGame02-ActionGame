@@ -202,8 +202,6 @@ void EffectManager::OutputOnHitBulletEffect(const Event<OnHitBulletData>& event)
 			const auto effect = std::static_pointer_cast<Effect>(obj);
 			effect->GetTransform()->SetPos(CoordinateKind::kWorld, event.data.hit_pos);
 			effect->GetTransform()->SetRot(CoordinateKind::kWorld, event.data.move_dir);
-			effect->SetOffsetAngle(VGet(0.0f, 0.0f, 0.0f));
-			effect->SetOffsetScale(1.025f);
 			AddEffect(effect);
 		}
 	}
