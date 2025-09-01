@@ -15,7 +15,7 @@ WeaponShortcutDrawer::WeaponShortcutDrawer(
 {
 	CreateShortcutIcon();
 
-	m_screen_creator->GetGraphicer()->SetCenterPos(Vector2D<int>(Window::kScreenSize.x * 0.72f, Window::kScreenHalfSize.y));
+	m_screen_creator->GetGraphicer()->SetCenterPos(Vector2D<int>(static_cast<int>(Window::kScreenSize.x * 0.72f), Window::kScreenHalfSize.y));
 
 	m_weapon_graphic_pair[ObjName.ASSAULT_RIFLE]	= std::make_shared<Graphicer>(UIGraphicPath.ASSAULT_RIFLE);
 	m_weapon_graphic_pair[ObjName.ASSAULT_RIFLE]->SetScale(0.07f);
@@ -55,9 +55,6 @@ void WeaponShortcutDrawer::LateUpdate()
 
 void WeaponShortcutDrawer::Draw() const
 {
-	const auto state = m_state.at(TimeKind::kCurrent);
-	DrawFormatString(500, 0, 0xffffff, "%d", state->GetStateKind());
-
 	if (m_alpha_blend_num <= 0) { return; }
 
 	const WeaponShortcutPosKind current_select_shortcut	= m_weapon_shortcut_selecter->GetCurrentSelectShortcut();

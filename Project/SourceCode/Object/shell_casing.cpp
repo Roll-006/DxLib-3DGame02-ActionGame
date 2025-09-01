@@ -109,9 +109,6 @@ void ShellCasing::Eject(GunBase& gun)
 	m_transform->SetPos(CoordinateKind::kWorld, gun.GetEjectionPortTransform()->GetPos(CoordinateKind::kWorld));
 	m_transform->SetRot(CoordinateKind::kWorld, gun.GetTransform()->GetRotMatrix(CoordinateKind::kWorld));
 
-	//const auto angle = math::GetAngleBetweenTwoVector(gun.GetTransform()->GetUp(CoordinateKind::kWorld), axis::GetWorldYAxis());
-	//DrawFormatString(400, 0, 0xffffff, "%f", angle);
-
 	// e‚ðŠî€‚ÉˆÚ“®•ûŒü‚ðÝ’è
 	const auto gun_rot = gun.GetTransform()->GetRotMatrix(CoordinateKind::kWorld);
 	m_move_dir = VTransform(v3d::GetNormalizedV(kLocalFirstMoveDir), gun_rot);

@@ -1,4 +1,4 @@
-#include "move_null.hpp"
+#include "zombie_move_null.hpp"
 
 zombie_state::MoveNull::MoveNull() :
 	MoveStateBase(static_cast<int>(zombie_state::MoveStateKind::kMoveNull))

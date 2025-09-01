@@ -1,4 +1,4 @@
-#include "action_null.hpp"
+#include "zombie_action_null.hpp"
 
 zombie_state::ActionNull::ActionNull() :
 	ActionStateBase(static_cast<int>(zombie_state::ActionStateKind::kActionNull))

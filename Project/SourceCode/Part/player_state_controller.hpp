@@ -4,10 +4,10 @@
 #include "../Interface/i_state_controller.hpp"
 #include "../Data/Kind/player_state_kind.hpp"
 
-#include "../State/PlayerState/move_null.hpp"
-#include "../State/PlayerState/move.hpp"
+#include "../State/PlayerState/player_move_null.hpp"
+#include "../State/PlayerState/player_move.hpp"
 
-#include "../State/PlayerState/action_null.hpp"
+#include "../State/PlayerState/player_action_null.hpp"
 #include "../State/PlayerState/crouch.hpp"
 #include "../State/PlayerState/run.hpp"
 #include "../State/PlayerState/turn_around.hpp"

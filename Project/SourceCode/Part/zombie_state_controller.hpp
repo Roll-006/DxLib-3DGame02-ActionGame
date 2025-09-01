@@ -12,11 +12,11 @@
 #include "../State/ZombieState/track.hpp"
 #include "../State/ZombieState/battle.hpp"
 
-#include "../State/ZombieState/move_null.hpp"
-#include "../State/ZombieState/move.hpp"
+#include "../State/ZombieState/zombie_move_null.hpp"
+#include "../State/ZombieState/zombie_move.hpp"
 
-#include "../State/ZombieState/action_null.hpp"
-#include "../State/ZombieState/run.hpp"
+#include "../State/ZombieState/zombie_action_null.hpp"
+#include "../State/ZombieState/zombie_run.hpp"
 #include "../State/ZombieState/grab.hpp"
 #include "../State/ZombieState/knockback.hpp"
 #include "../State/ZombieState/stand_stun.hpp"

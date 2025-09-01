@@ -42,6 +42,9 @@ private:
 	void CalcMoveDirFromMouse();
 	void CalcMoveDirFromCommand();
 
+	void CalcOffsetFromRotCamera();
+	void CalcOffsetFromAimCamera();
+
 	void CalcAimPos();
 	void CalcInputAngle();
 	void CalcRecoilAngle();
@@ -53,10 +56,14 @@ private:
 	[[nodiscard]] bool IsTrackCameraOriginBone() const;
 
 private:
-	static constexpr VECTOR kFollowOffsetForRotCamera		= { 30.0f, 20.0f, -90.0f };
-	static constexpr VECTOR kFollowOffsetForAimCamera		= { 30.0f, 20.0f, -90.0f };
-	static constexpr VECTOR kTrackedObjOffsetForRotCamera	= { 10.0f, 10.0f,   0.0f };
-	static constexpr VECTOR kTrackedObjOffsetForAimCamera	= { 10.0f, 10.0f,   0.0f };
+	static constexpr VECTOR kFollowOffsetForRotCamera				= { 30.0f, 20.0f, -90.0f };
+	static constexpr VECTOR kFollowOffsetForRotCameraCrouch			= { 30.0f, 20.0f, -70.0f };
+	static constexpr VECTOR kFollowOffsetForAimCamera				= { 20.0f, 13.0f, -40.0f };
+	static constexpr VECTOR kFollowOffsetForAimCameraKnife			= { 30.0f, 20.0f, -70.0f };
+	static constexpr VECTOR kTrackedObjOffsetForRotCamera			= { 10.0f, 10.0f,   0.0f };
+	static constexpr VECTOR kTrackedObjOffsetForRotCameraCrouch		= { 10.0f, 10.0f,   0.0f };
+	static constexpr VECTOR kTrackedObjOffsetForAimCamera			= { 13.0f,  7.0f,   0.0f };
+	static constexpr VECTOR kTrackedObjOffsetForAimCameraKnife		= { 10.0f, 10.0f,   0.0f };
 
 	static constexpr VECTOR kBodyDampingForRotCamera		= { 0.015f, 0.015f, 0.0f };
 	static constexpr VECTOR kBodyDampingForAimCamera		= { 0.0f,   0.0f,   0.0f };

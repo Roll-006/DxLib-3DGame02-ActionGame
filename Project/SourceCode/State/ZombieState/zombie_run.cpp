@@ -1,4 +1,4 @@
-#include "run.hpp"
+#include "zombie_run.hpp"
 
 zombie_state::Run::Run() :
 	ActionStateBase(static_cast<int>(zombie_state::ActionStateKind::kRun))

@@ -1,4 +1,4 @@
-#include "move.hpp"
+#include "zombie_move.hpp"
 
 zombie_state::Move::Move() :
 	MoveStateBase(static_cast<int>(zombie_state::MoveStateKind::kMove))

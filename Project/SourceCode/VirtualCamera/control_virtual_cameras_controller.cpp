@@ -45,9 +45,8 @@ void ControlVirtualCamerasController::Update()
 {
 	if (!IsActive()) { return; }
 
-	m_move_dir = v3d::GetZeroV();
-	m_velocity = v3d::GetZeroV();
-
+	CalcOffsetFromRotCamera();
+	CalcOffsetFromAimCamera();
 	Move();
 }
 
@@ -119,7 +118,7 @@ void ControlVirtualCamerasController::SetupForRotCamera()
 	const auto aim  = m_rot_control_camera->GetAim();
 	aim->SetTrackedObjOffset(kTrackedObjOffsetForRotCamera);
 	aim->SetHorizontalDamping(kHorizontalDampingForRotCamera);
-	aim->SetVerticalDamping	(kVerticalDampingForRotCamera);
+	aim->SetVerticalDamping(kVerticalDampingForRotCamera);
 }
 
 void ControlVirtualCamerasController::SetupForAimCamera()
@@ -139,6 +138,9 @@ void ControlVirtualCamerasController::SetupForAimCamera()
 
 void ControlVirtualCamerasController::Move()
 {
+	m_move_dir = v3d::GetZeroV();
+	m_velocity = v3d::GetZeroV();
+
 	CalcMoveDirFromPad();
 	CalcMoveDirFromMouse();
 	CalcMoveDirFromCommand();
@@ -205,16 +207,95 @@ void ControlVirtualCamerasController::CalcMoveDirFromCommand()
 	}
 }
 
+void ControlVirtualCamerasController::CalcOffsetFromRotCamera()
+{
+	const auto state				= m_player.GetStateController();
+	const auto weapon_state_kind	= static_cast<player_state::WeaponActionStateKind>(state->GetWeaponActionState(TimeKind::kCurrent)->GetStateKind());
+	const auto gun					= std::static_pointer_cast<GunBase>(m_player.GetCurrentHeldWeapon());
+	const auto body					= m_aim_control_camera->GetBody();
+	const auto aim					= m_aim_control_camera->GetAim();
+
+	switch (weapon_state_kind)
+	{
+	case player_state::WeaponActionStateKind::kAimGun:
+	case player_state::WeaponActionStateKind::kShot:
+
+		switch (gun->GetGunKind())
+		{
+		case GunKind::kSniperRifle:
+			body->SetFollowOffset    (kFollowOffsetForAimCamera);
+			aim ->SetTrackedObjOffset(kTrackedObjOffsetForAimCamera);
+			break;
+
+		case GunKind::kRocketLauncher:
+			body->SetFollowOffset    (kFollowOffsetForAimCamera);
+			aim ->SetTrackedObjOffset(kTrackedObjOffsetForAimCamera);
+			break;
+
+		default:
+			break;
+		}
+
+		break;
+
+	case player_state::WeaponActionStateKind::kAimKnife:
+	case player_state::WeaponActionStateKind::kStabKnife:
+  		body->SetFollowOffset    (kFollowOffsetForAimCameraKnife);
+		aim ->SetTrackedObjOffset(kTrackedObjOffsetForAimCameraKnife);
+		break;
+
+	default:
+		break;
+	}
+}
+
+void ControlVirtualCamerasController::CalcOffsetFromAimCamera()
+{
+	const auto state				= m_player.GetStateController();
+	const auto action_state_kind	= static_cast<player_state::ActionStateKind>(state->GetActionState(TimeKind::kCurrent)->GetStateKind());;
+	const auto body					= m_rot_control_camera->GetBody();
+	const auto aim					= m_rot_control_camera->GetAim();
+
+	switch (action_state_kind)
+	{
+	case player_state::ActionStateKind::kCrouch:
+		body->SetFollowOffset    (kFollowOffsetForRotCameraCrouch);
+		aim ->SetTrackedObjOffset(kTrackedObjOffsetForRotCameraCrouch);
+		break;
+
+	default:
+		body->SetFollowOffset    (kFollowOffsetForRotCamera);
+		aim ->SetTrackedObjOffset(kTrackedObjOffsetForRotCamera);
+		break;
+	}
+}
+
 void ControlVirtualCamerasController::CalcAimPos()
 {
 	const auto modeler = m_player.GetModeler();
 	modeler->ApplyMatrix();
 
+	const TCHAR* bone_name;
+	const auto state				= m_player.GetStateController();
+	const auto weapon_state_kind	= static_cast<player_state::WeaponActionStateKind>(state->GetWeaponActionState(TimeKind::kCurrent)->GetStateKind());
+
+	// 状態によって追跡するボーンを変更
+	if (   weapon_state_kind == player_state::WeaponActionStateKind::kAimGun
+		|| weapon_state_kind == player_state::WeaponActionStateKind::kShot
+		|| weapon_state_kind == player_state::WeaponActionStateKind::kShotRocketLauncher)
+	{
+		bone_name = BonePath.NECK;
+	}
+	else
+	{
+		bone_name = BonePath.SPINE_2;
+	}
+
 	// 追跡するボーンから行列を取得
-	const auto	model_handle	= modeler->GetModelHandle();
-	const auto	fream_index		= MV1SearchFrame(model_handle, BonePath.SPINE_2);
-	auto		fream_world_m	= MV1GetFrameLocalWorldMatrix(model_handle, fream_index);
-	auto		aim_pos			= MGetTranslateElem(fream_world_m);
+	const auto	model_handle		= modeler->GetModelHandle();
+	const auto	bone_index			= MV1SearchFrame(model_handle, bone_name);
+	auto		bone_world_m		= MV1GetFrameLocalWorldMatrix(model_handle, bone_index);
+	auto		aim_pos				= MGetTranslateElem(bone_world_m);
 
 	if (!IsTrackCameraOriginBone())
 	{
