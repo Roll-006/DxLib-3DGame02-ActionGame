@@ -58,7 +58,7 @@ private:
 private:
 	static constexpr VECTOR kFollowOffsetForRotCamera				= { 30.0f, 20.0f, -90.0f };
 	static constexpr VECTOR kFollowOffsetForRotCameraCrouch			= { 30.0f, 20.0f, -70.0f };
-	static constexpr VECTOR kFollowOffsetForAimCamera				= { 20.0f, 13.0f, -40.0f };
+	static constexpr VECTOR kFollowOffsetForAimCamera				= { 20.0f, 10.0f, -40.0f };
 	static constexpr VECTOR kFollowOffsetForAimCameraKnife			= { 30.0f, 20.0f, -70.0f };
 	static constexpr VECTOR kTrackedObjOffsetForRotCamera			= { 10.0f, 10.0f,   0.0f };
 	static constexpr VECTOR kTrackedObjOffsetForRotCameraCrouch		= { 10.0f, 10.0f,   0.0f };

@@ -1,7 +1,5 @@
 #pragma once
-#include <typeindex>
-
-#include "../Interface/i_state_controller.hpp"
+#include "../Base/enemy_state_controller_base.hpp"
 #include "../Data/Kind/zombie_state_kind.hpp"
 
 #include "../State/ZombieState/wait.hpp"
@@ -24,7 +22,7 @@
 #include "../State/ZombieState/play_dead.hpp"
 #include "../State/ZombieState/dead.hpp"
 
-class ZombieStateController final : public IStateController<Zombie>
+class ZombieStateController final : public EnemyStateControllerBase<Zombie>
 {
 public:
 	ZombieStateController();

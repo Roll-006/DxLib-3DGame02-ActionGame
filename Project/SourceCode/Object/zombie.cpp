@@ -2,10 +2,10 @@
 #include "../Part/zombie_state_controller.hpp"
 
 Zombie::Zombie() :
-	CharacterBase(ObjName.ZOMBIE, ObjTag.ENEMY, MassKind::kMedium),
-	m_state		(std::make_shared<ZombieStateController>()),
-	m_move_dir	(v3d::GetZeroV()),
-	m_look_dir	(v3d::GetZeroV())
+	CharacterBase	(ObjName.ZOMBIE, ObjTag.ENEMY, MassKind::kMedium),
+	m_ai			(std::make_shared<ZombieAI>()),
+	m_move_dir		(v3d::GetZeroV()),
+	m_look_dir		(v3d::GetZeroV())
 {
 	m_hit_points[HitPointsPartKind::kMain]		= std::make_shared<HitPoints>(1684.0f);
 	m_hit_points[HitPointsPartKind::kHead]		= std::make_shared<HitPoints>(300.0f);
@@ -16,7 +16,7 @@ Zombie::Zombie() :
 	m_hit_points[HitPointsPartKind::kRightLeg]	= std::make_shared<HitPoints>(300.0f);
 
 	m_modeler  = std::make_shared<Modeler>(m_transform, ModelPath.ZOMBIE_05, kBasicAngle, kBasicScale);
-	m_animator = std::make_shared<ZombieAnimator>(m_modeler, m_state);
+	m_animator = std::make_shared<ZombieAnimator>(m_modeler, m_ai->GetStateController());
 	SetColliderModelHandle(m_modeler->GetModelHandle());
 
 	m_look_dir = VGet(0.0f, 0.0f, 1.0f);
@@ -49,7 +49,7 @@ void Zombie::Update()
 
 	Move();
 
-	m_state->Update(std::static_pointer_cast<Zombie>(shared_from_this()));
+	m_ai->Update(std::static_pointer_cast<Zombie>(shared_from_this()));
 	m_animator->Update();
 
 	ApplyLookDirToRot(m_look_dir);
@@ -64,7 +64,7 @@ void Zombie::LateUpdate()
 {
 	if (!IsActive()) { return; }
 
-	m_state->LateUpdate(std::static_pointer_cast<Zombie>(shared_from_this()));
+	m_ai->LateUpdate(std::static_pointer_cast<Zombie>(shared_from_this()));
 }
 
 void Zombie::DrawToShadowMap() const

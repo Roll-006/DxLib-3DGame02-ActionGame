@@ -22,7 +22,7 @@ RocketLauncherVirtualCameraController::RocketLauncherVirtualCameraController(Pla
 	m_rot_camera_angle				(kFirstAngleForEnterRotCamera),
 	m_zoom_in_wait_timer			(0.0f),
 	m_zoom_out_timer				(0.0f),
-	m_test_timer							(0.0f)
+	m_test_timer					(0.0f)
 {
 	// ƒpƒ‰ƒ[ƒ^İ’è
 	SetupForEnterRotCamera();

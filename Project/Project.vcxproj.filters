@@ -446,6 +446,12 @@
     <ClCompile Include="SourceCode\Part\screen_creator.cpp">
       <Filter>Part</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\Manager\enemy_manager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\AI\zombie_ai.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\character_base.hpp">
@@ -1180,6 +1186,18 @@
     <ClInclude Include="SourceCode\Data\Event\aim_gun_data.hpp">
       <Filter>Data\Event</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\Manager\enemy_manager.hpp">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\AI\zombie_ai.hpp">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Base\enemy_state_controller_base.hpp">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Interface\i_enemy_ai.hpp">
+      <Filter>Interface</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Data">
@@ -1298,6 +1316,9 @@
     </Filter>
     <Filter Include="State\ZombieState">
       <UniqueIdentifier>{d2ef4260-3541-4500-92a8-03e820d5ca75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AI">
+      <UniqueIdentifier>{30ef3376-ac8a-4c4d-bf0b-795c46bf7b9a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

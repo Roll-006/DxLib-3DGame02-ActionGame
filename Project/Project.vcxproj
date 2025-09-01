@@ -141,6 +141,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="SourceCode\AI\zombie_ai.cpp" />
     <ClCompile Include="SourceCode\Algorithm\algorithm.cpp" />
     <ClCompile Include="SourceCode\Algorithm\a_star.cpp" />
     <ClCompile Include="SourceCode\Base\animator_base.cpp" />
@@ -167,6 +168,7 @@
     <ClCompile Include="SourceCode\main.cpp" />
     <ClCompile Include="SourceCode\Manager\collision_manager.cpp" />
     <ClCompile Include="SourceCode\Manager\effect_manager.cpp" />
+    <ClCompile Include="SourceCode\Manager\enemy_manager.cpp" />
     <ClCompile Include="SourceCode\Manager\game_manager.cpp" />
     <ClCompile Include="SourceCode\Manager\obj_manager.cpp" />
     <ClCompile Include="SourceCode\Manager\physics_manager.cpp" />
@@ -292,10 +294,12 @@
     <ClCompile Include="SourceCode\Window\window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="SourceCode\AI\zombie_ai.hpp" />
     <ClInclude Include="SourceCode\Algorithm\algorithm.hpp" />
     <ClInclude Include="SourceCode\Algorithm\a_star.hpp" />
     <ClInclude Include="SourceCode\Base\action_state_base.hpp" />
     <ClInclude Include="SourceCode\Base\ai_state_base.hpp" />
+    <ClInclude Include="SourceCode\Base\enemy_state_controller_base.hpp" />
     <ClInclude Include="SourceCode\Base\knife_base.hpp" />
     <ClInclude Include="SourceCode\Base\move_state_base.hpp" />
     <ClInclude Include="SourceCode\Base\special_state_base.hpp" />
@@ -396,6 +400,7 @@
     <ClInclude Include="SourceCode\Handle\state_handler.hpp" />
     <ClInclude Include="SourceCode\Input\input_checker.hpp" />
     <ClInclude Include="SourceCode\Interface\i_enemy.hpp" />
+    <ClInclude Include="SourceCode\Interface\i_enemy_ai.hpp" />
     <ClInclude Include="SourceCode\Interface\i_enemy_ai_state.hpp" />
     <ClInclude Include="SourceCode\Interface\i_enemy_role.hpp" />
     <ClInclude Include="SourceCode\Interface\i_loadable_ammo.hpp" />
@@ -412,6 +417,7 @@
     <ClInclude Include="SourceCode\Interface\i_ui_creator.hpp" />
     <ClInclude Include="SourceCode\Manager\collision_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\effect_manager.hpp" />
+    <ClInclude Include="SourceCode\Manager\enemy_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\game_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\obj_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\physics_manager.hpp" />

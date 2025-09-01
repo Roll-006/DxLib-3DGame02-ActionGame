@@ -2,9 +2,8 @@
 #include "../Base/character_base.hpp"
 #include "../Interface/i_enemy.hpp"
 
+#include "../AI/zombie_ai.hpp"
 #include "../Part/zombie_animator.hpp"
-
-class ZombieStateController;
 
 class Zombie final : public CharacterBase, public IEnemy
 {
@@ -23,7 +22,6 @@ public:
 
 	#pragma region Getter
 	[[nodiscard]] float	GetDeltaTime() const override;
-	[[nodiscard]] std::shared_ptr<ZombieStateController>	GetStateController() const { return m_state; }
 	#pragma endregion
 
 private:
@@ -41,7 +39,7 @@ private:
 	static constexpr float kDownLegTriggerRadius	= 2.5f;
 
 private:
-	std::shared_ptr<ZombieStateController>	m_state;
+	std::shared_ptr<ZombieAI> m_ai;
 
 	VECTOR m_move_dir;
 	VECTOR m_look_dir;
