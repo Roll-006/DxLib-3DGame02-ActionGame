@@ -65,22 +65,22 @@ private:
 	static constexpr VECTOR kTrackedObjOffsetForAimCamera			= { 13.0f,  7.0f,   0.0f };
 	static constexpr VECTOR kTrackedObjOffsetForAimCameraKnife		= { 10.0f, 10.0f,   0.0f };
 
-	static constexpr VECTOR kBodyDampingForRotCamera		= { 0.015f, 0.015f, 0.0f };
-	static constexpr VECTOR kBodyDampingForAimCamera		= { 0.0f,   0.0f,   0.0f };
-	static constexpr float  kHorizontalDampingForRotCamera	= 0.05f;
-	static constexpr float  kHorizontalDampingForAimCamera	= 0.0f;
-	static constexpr float  kVerticalDampingForRotCamera	= 0.0f;
-	static constexpr float  kVerticalDampingForAimCamera	= 0.0f;
+	static constexpr VECTOR kBodyDampingForRotCamera				= { 0.015f, 0.015f, 0.0f };
+	static constexpr VECTOR kBodyDampingForAimCamera				= { 0.0f,   0.0f,   0.0f };
+	static constexpr float  kHorizontalDampingForRotCamera			= 0.05f;
+	static constexpr float  kHorizontalDampingForAimCamera			= 0.0f;
+	static constexpr float  kVerticalDampingForRotCamera			= 0.0f;
+	static constexpr float  kVerticalDampingForAimCamera			= 0.0f;
 
-	static constexpr float  kCameraAimOffsetBasicSpeed		= 40.0f;
+	static constexpr float  kCameraAimOffsetBasicSpeed				= 40.0f;
 
-	static constexpr float  kMaxVerticalInputAngle			= 60.0f;
-	static constexpr float  kMinVerticalInputAngle			= -60.0f;
-	static constexpr float	kMoveSpeedWithStick				= 2.5f;
-	static constexpr float	kMoveSpeedWithMouse				= 0.1f;
-	static constexpr float	kMoveSpeedWithButton			= 2.0f;
+	static constexpr float  kMaxVerticalInputAngle					= 60.0f;
+	static constexpr float  kMinVerticalInputAngle					= -60.0f;
+	static constexpr float	kMoveSpeedWithStick						= 2.5f;
+	static constexpr float	kMoveSpeedWithMouse						= 0.1f;
+	static constexpr float	kMoveSpeedWithButton					= 2.0f;
 
-	static constexpr float  kRecoilEndThreshold				= 0.002f;
+	static constexpr float  kRecoilEndThreshold						= 0.002f;
 
 private:
 	VirtualCameraControllerKind				m_virtual_camera_controller_kind;
