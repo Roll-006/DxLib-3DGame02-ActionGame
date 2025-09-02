@@ -20,9 +20,12 @@ public:
 
 	void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) override;
 
+	[[nodiscard]] bool IsTargetInSight(const VECTOR& target_pos) override;
+
 
 	#pragma region Getter
 	[[nodiscard]] float	GetDeltaTime() const override;
+	[[nodiscard]] std::shared_ptr<ZombieStateController> GetStateController() const { return m_state; }
 	#pragma endregion
 
 private:

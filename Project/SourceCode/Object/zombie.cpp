@@ -124,6 +124,22 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	}
 }
 
+bool Zombie::IsTargetInSight(const VECTOR& target_pos)
+{
+	// “ª•”‚ðŠî€‚ÉŽ‹ŠE‚ðì‚èo‚·
+	auto	   head_mat		= MV1GetFrameLocalWorldMatrix(m_modeler->GetModelHandle(), MV1SearchFrame(m_modeler->GetModelHandle(), BonePath.HEAD));
+	const auto head_pos		= MGetTranslateElem(head_mat);
+	const auto head_axes	= math::ConvertRotMatrixToAxes(head_mat);
+
+	const auto fov			= 60.0f * math::kDegToRad;
+	const auto max_distance = 200.0f;
+	const auto distance_v	= target_pos - head_pos;
+	const auto distance		= VSize(distance_v);
+	const auto dir			= v3d::GetNormalizedV(distance_v);
+
+	return (VDot(dir, -head_axes.z_axis) > cos(fov * 0.5f)) && (distance < max_distance);
+}
+
 float Zombie::GetDeltaTime() const
 {
 	const auto time_manager = GameTimeManager::GetInstance();

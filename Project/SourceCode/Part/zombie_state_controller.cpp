@@ -1,8 +1,9 @@
 #include "zombie_state_controller.hpp"
 
-ZombieStateController::ZombieStateController() :
-	m_player(ObjManager::GetInstance()->GetObj<Player>(ObjName.PLAYER))
+ZombieStateController::ZombieStateController()
 {
+	AttachTarget(ObjManager::GetInstance()->GetObj<CharacterBase>(ObjName.PLAYER));
+
 	CreateState();
 	AddCheckStopState();
 	AddStopStatePair();
@@ -22,13 +23,46 @@ void ZombieStateController::Update(std::shared_ptr<Zombie> zombie)
 {
 	ChangeState(zombie);
 
-	m_action_state.at(TimeKind::kCurrent)->Update(zombie);
+	m_ai_state		.at(TimeKind::kCurrent)->Update(zombie);
+	m_move_state	.at(TimeKind::kCurrent)->Update(zombie);
+	m_action_state	.at(TimeKind::kCurrent)->Update(zombie);
 }
 
 void ZombieStateController::LateUpdate(std::shared_ptr<Zombie> zombie)
 {
-	m_action_state.at(TimeKind::kCurrent)->LateUpdate(zombie);
+	m_ai_state		.at(TimeKind::kCurrent)->LateUpdate(zombie);
+	m_move_state	.at(TimeKind::kCurrent)->LateUpdate(zombie);
+	m_action_state	.at(TimeKind::kCurrent)->LateUpdate(zombie);
 }
+
+
+#pragma region Try判定
+bool ZombieStateController::TryTrack(std::shared_ptr<Zombie> zombie)
+{
+	// TODO : 後に音などの判定も含める
+
+	if (!m_target_character) { return false; }
+
+	const auto target_modele_handle = m_target_character->GetModeler()->GetModelHandle();
+	auto	   target_head_mat		= MV1GetFrameLocalWorldMatrix(target_modele_handle, MV1SearchFrame(target_modele_handle, BonePath.HEAD));
+	const auto target_head_pos		= MGetTranslateElem(target_head_mat);
+	const auto is_in_sight			= zombie->IsTargetInSight(target_head_pos);
+
+	return is_in_sight;
+}
+
+bool ZombieStateController::TryRun(std::shared_ptr<Zombie> zombie)
+{
+	if (!m_target_character) { return false; }
+
+	const auto pos			= zombie->GetTransform()->GetPos(CoordinateKind::kWorld);
+	const auto target_pos	= m_target_character->GetTransform()->GetPos(CoordinateKind::kWorld);
+	const auto distance		= VSize(pos - target_pos);
+
+	return false;
+}
+#pragma endregion
+
 
 void ZombieStateController::CreateState()
 {
@@ -69,8 +103,24 @@ void ZombieStateController::ChangeState(std::shared_ptr<Zombie> zombie)
 
 	if (change_state.at(0))
 	{
+		m_ai_state.at(TimeKind::kPrev)			= m_ai_state.at(TimeKind::kCurrent);
+		m_ai_state.at(TimeKind::kCurrent)		= std::static_pointer_cast<AIStateBase<Zombie>>(change_state.at(0));
+		m_ai_state.at(TimeKind::kPrev)			->Exit(zombie);
+		m_ai_state.at(TimeKind::kCurrent)		->Enter(zombie);
+	}
+
+	if (change_state.at(1))
+	{
+		m_move_state.at(TimeKind::kPrev)		= m_move_state.at(TimeKind::kCurrent);
+		m_move_state.at(TimeKind::kCurrent)		= std::static_pointer_cast<MoveStateBase<Zombie>>(change_state.at(1));
+		m_move_state.at(TimeKind::kPrev)		->Exit(zombie);
+		m_move_state.at(TimeKind::kCurrent)		->Enter(zombie);
+	}
+
+	if (change_state.at(2))
+	{
 		m_action_state.at(TimeKind::kPrev)		= m_action_state.at(TimeKind::kCurrent);
-		m_action_state.at(TimeKind::kCurrent)	= std::static_pointer_cast<ActionStateBase<Zombie>>(change_state.at(0));
+		m_action_state.at(TimeKind::kCurrent)	= std::static_pointer_cast<ActionStateBase<Zombie>>(change_state.at(2));
 		m_action_state.at(TimeKind::kPrev)		->Exit(zombie);
 		m_action_state.at(TimeKind::kCurrent)	->Enter(zombie);
 	}
@@ -81,7 +131,9 @@ std::vector<std::shared_ptr<IState<Zombie>>> ZombieStateController::CreateChange
 	// 次変更予定のステート
 	std::vector<std::shared_ptr<IState<Zombie>>> next_state
 	{
-		m_action_state.at(TimeKind::kCurrent)->ChangeState(zombie)
+		m_ai_state		.at(TimeKind::kCurrent)->ChangeState(zombie),
+		m_move_state	.at(TimeKind::kCurrent)->ChangeState(zombie),
+		m_action_state	.at(TimeKind::kCurrent)->ChangeState(zombie)
 	};
 
 	std::vector<int> check_stop_state_index;
@@ -137,7 +189,9 @@ std::vector<std::shared_ptr<IState<Zombie>>> ZombieStateController::CreateChange
 	// 変更がない場合はnullptr
 	return std::vector<std::shared_ptr<IState<Zombie>>>
 	{
-		future_state.at(0) == m_action_state.at(TimeKind::kCurrent) ? nullptr : future_state.at(0)
+		future_state.at(0) == m_ai_state	.at(TimeKind::kCurrent) ? nullptr : future_state.at(0),
+		future_state.at(1) == m_move_state	.at(TimeKind::kCurrent) ? nullptr : future_state.at(1),
+		future_state.at(2) == m_action_state.at(TimeKind::kCurrent) ? nullptr : future_state.at(2)
 	};
 }
 
@@ -146,7 +200,9 @@ std::vector<std::shared_ptr<IState<Zombie>>> ZombieStateController::CreateFuture
 	// 変更があったステートは置き換える
 	return std::vector<std::shared_ptr<IState<Zombie>>>
 	{
-		next_state.at(0) == nullptr ? m_action_state.at(TimeKind::kCurrent) : next_state.at(0)
+		next_state.at(0) == nullptr ? m_ai_state	.at(TimeKind::kCurrent) : next_state.at(0),
+		next_state.at(1) == nullptr ? m_move_state	.at(TimeKind::kCurrent) : next_state.at(1),
+		next_state.at(2) == nullptr ? m_action_state.at(TimeKind::kCurrent) : next_state.at(2)
 	};
 }
 

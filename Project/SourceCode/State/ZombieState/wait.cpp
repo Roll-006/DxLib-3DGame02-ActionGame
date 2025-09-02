@@ -33,5 +33,13 @@ void zombie_state::Wait::Exit(std::shared_ptr<Zombie> obj)
 
 std::shared_ptr<IState<Zombie>> zombie_state::Wait::ChangeState(std::shared_ptr<Zombie> obj)
 {
+	const auto state_controller = obj->GetStateController();
+
+	// ’ÇÕ
+	if (state_controller->TryTrack(obj))
+	{
+		return state_controller->GetState<Track, Zombie>();
+	}
+
 	return nullptr;
 }
