@@ -15,7 +15,7 @@ RocketBombExplosionEffect::RocketBombExplosionEffect() :
 	m_play_wait_timer			(0.0f),
 	m_trigger_dead_timer		(0.0f)
 {
-	AddCollider(std::make_shared<Collider>(ColliderKind::kAttackTrigger, std::make_shared<Sphere>(v3d::GetZeroV(), kHitRadius), this));
+	
 }
 
 RocketBombExplosionEffect::~RocketBombExplosionEffect()
@@ -36,6 +36,8 @@ void RocketBombExplosionEffect::Init()
 	m_play_count					= 0;
 	m_play_wait_timer				= 0.0f;
 	m_trigger_dead_timer			= 0.0f;
+
+	AddCollider(std::make_shared<Collider>(ColliderKind::kAttackTrigger, std::make_shared<Sphere>(v3d::GetZeroV(), kHitRadius), this));
 
 	// Effekseer上で無限生成がオンかつループ再生がtrueの場合は
 	// プールから取り出された段階で再生する

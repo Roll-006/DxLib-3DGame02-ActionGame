@@ -54,6 +54,7 @@ public:
 
 	[[nodiscard]] int		GetColliderModelHandle() const { return m_model_handle; }
 	[[nodiscard]] VECTOR	GetVelocity()			 const { return m_velocity; }
+	[[nodiscard]] VECTOR	GetMoveVelocity()		 const { return m_move_velocity; }
 	[[nodiscard]] VECTOR	GetFallVelocity()		 const { return m_fall_velocity; }
 	[[nodiscard]] MassKind	GetMassKind()			 const { return m_mass_kind; }
 	[[nodiscard]] std::shared_ptr<Collider> GetCollider(const ColliderKind kind) const;
@@ -61,8 +62,8 @@ public:
 
 protected:
 	VECTOR	 m_velocity;
+	VECTOR   m_move_velocity;
 	VECTOR	 m_fall_velocity;
-	VECTOR   m_add_velocity;
 	bool	 m_is_landing;
 	MassKind m_mass_kind;
 

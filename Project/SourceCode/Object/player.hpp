@@ -120,7 +120,7 @@ private:
 
 	void CalcMoveDir();
 	void CalcLookDir();
-	void CalcVelocity();
+	void CalcMoveVelocity();
 
 	/// @brief カメラのforwardをもとにした進行方向ベクトルを取得する
 	/// @return カメラのforwardのY軸を消し飛ばしたベクトル

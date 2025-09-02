@@ -21,7 +21,7 @@ Zombie::Zombie() :
 
 	m_look_dir = VGet(0.0f, 0.0f, 1.0f);
 	m_transform->SetRot(CoordinateKind::kWorld, m_look_dir);
-	m_transform->SetPos(CoordinateKind::kWorld, VGet(434.0f, -83.0f, 655.0f));
+	m_transform->SetPos(CoordinateKind::kWorld, VGet(136.0f, -74.0f, 70.0f));
 	m_modeler->ApplyMatrix();
 
 	// コライダー・トリガーを設定
@@ -65,6 +65,8 @@ void Zombie::LateUpdate()
 	if (!IsActive()) { return; }
 
 	m_state->LateUpdate(std::static_pointer_cast<Zombie>(shared_from_this()));
+
+	m_velocity = v3d::GetZeroV();
 }
 
 void Zombie::DrawToShadowMap() const
@@ -100,6 +102,14 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 {
 	switch (hit_collider_pair.owner_collider->GetColliderKind())
 	{
+	case ColliderKind::kCollider:
+		// ロケット弾着弾時の爆発エフェクトとの衝突
+		if (hit_collider_pair.target_collider->GetOwnerObj()->GetName() == ObjName.ROCKET_BOMB_HIT_EXPLOSION_EFFECT)
+		{
+			OnCollideWithExpolsion(std::static_pointer_cast<Sphere>(hit_collider_pair.target_collider->GetShape()));
+		}
+		break;
+
 	case ColliderKind::kLandingTrigger:
 		m_is_landing = true;
 		break;
@@ -117,5 +127,15 @@ float Zombie::GetDeltaTime() const
 
 void Zombie::Move()
 {
-	m_velocity = v3d::GetZeroV();
+	m_move_velocity = v3d::GetZeroV();
+}
+
+void Zombie::OnCollideWithExpolsion(const std::shared_ptr<Sphere> sphere)
+{
+	const auto pos				= m_transform->GetPos(CoordinateKind::kWorld) + VGet(0, 50, 0);
+	const auto explosion_pos	= sphere->GetPos();
+	const auto distance			= pos - explosion_pos;
+	const auto dir				= v3d::GetNormalizedV(VGet(distance.x, 0.0f, distance.z));
+
+	m_velocity += (dir + VGet(0, 1, 0)) * (sphere->GetRadius() - VSize(distance)) * 500.0f;
 }

@@ -28,6 +28,8 @@ public:
 private:
 	void Move();
 
+	void OnCollideWithExpolsion(const std::shared_ptr<Sphere> sphere);
+
 private:
 	static constexpr VECTOR kBasicAngle				= { 0.0f, DX_PI_F, 0.0f };
 	static constexpr float  kBasicScale				= 0.25f;

@@ -89,7 +89,7 @@ void Player::Update()
 
 	CalcMoveDir();
 	CalcLookDir();
-	CalcVelocity();
+	CalcMoveVelocity();
 
 	m_collider_creator->CalcCapsuleColliderLength(this, m_modeler);
 
@@ -112,6 +112,8 @@ void Player::LateUpdate()
 			attach_weapon.second->LateUpdate();
 		}
 	}
+
+	m_velocity = v3d::GetZeroV();
 }
 
 void Player::DrawToShadowMap() const
@@ -408,9 +410,10 @@ void Player::CalcInputSlopeFromCommand()
 	m_move_dir[TimeKind::kNext] = v3d::GetNormalizedV(m_input_slope);
 }
 
-void Player::CalcVelocity()
+void Player::CalcMoveVelocity()
 {
-	m_velocity = m_move_dir[TimeKind::kCurrent] * m_move_speed;
+	m_move_velocity = m_move_dir[TimeKind::kCurrent] * m_move_speed;
+	m_velocity += m_move_velocity;
 }
 
 void Player::CalcMoveDir()

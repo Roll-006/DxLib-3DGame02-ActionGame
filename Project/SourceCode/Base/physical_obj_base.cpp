@@ -3,6 +3,7 @@
 PhysicalObjBase::PhysicalObjBase(const std::string& name, const std::string& tag, MassKind mass_level_kind) :
 	ObjBase			(name, tag),
 	m_velocity		(v3d::GetZeroV()),
+	m_move_velocity (v3d::GetZeroV()),
 	m_fall_velocity	(v3d::GetZeroV()),
 	m_is_landing	(false),
 	m_mass_kind		(mass_level_kind),
