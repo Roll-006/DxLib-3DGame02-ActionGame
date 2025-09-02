@@ -6,7 +6,10 @@ CharacterBase::CharacterBase(const std::string& name, const std::string& tag, co
 	m_modeler						(nullptr),
 	m_animator						(nullptr),
 	m_collider_creator				(std::make_shared<CharacterColliderCreator>()),
-	m_current_held_weapon			(nullptr)
+	m_current_held_weapon			(nullptr),
+	m_invincible_time				(0.0f),
+	m_invincible_timer				(0.0f),
+	m_is_invincible					(false)
 {
 		
 }
@@ -78,4 +81,19 @@ void CharacterBase::DetachWeapon(const HolsterKind holster_kind)
 void CharacterBase::ApplyLookDirToRot(const VECTOR& look_dir)
 {
 	m_transform->SetRot  (CoordinateKind::kWorld, look_dir);
+}
+
+void CharacterBase::OnDamage()
+{
+	m_invincible_timer	= m_invincible_time;
+	m_is_invincible		= true;
+}
+
+void CharacterBase::JudgeInvincible()
+{
+	math::Decrease(m_invincible_timer, GetDeltaTime(), 0.0f);
+	if (m_invincible_timer <= 0.0f)
+	{
+		m_is_invincible = false;
+	}
 }

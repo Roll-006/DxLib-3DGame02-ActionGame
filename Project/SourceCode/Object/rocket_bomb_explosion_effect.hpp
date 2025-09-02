@@ -67,7 +67,8 @@ private:
 	[[nodiscard]] float	GetDeltaTime() const override;
 
 private:
-	static constexpr float kHitRadius		= 50.0f;
+	static constexpr float kScale			= 1.03f;
+	static constexpr float kHitRadius		= 110.0f;
 	static constexpr float kTriggerDeadTime = 1.5f;
 
 	int			m_origin_effect_handle;			// エフェクトハンドル

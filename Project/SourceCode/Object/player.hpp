@@ -133,6 +133,8 @@ private:
 	static constexpr VECTOR kBasicAngle							= { 0.0f, DX_PI_F, 0.0f };
 	static constexpr float  kBasicScale							= 0.3f;
 
+	static constexpr float kInvincibleTime						= 0.5f;
+
 	//static constexpr float kCrouchWalkSpeed						= 10.0f;
 	static constexpr float kSlowWalkSpeed						= 17.0f;
 	static constexpr float kWalkSpeed							= 50.0f;

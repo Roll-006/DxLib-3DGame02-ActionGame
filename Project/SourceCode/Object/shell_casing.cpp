@@ -23,7 +23,7 @@ ShellCasing::~ShellCasing()
 void ShellCasing::Init()
 {
 	m_time_scale_owner_name = "";
-	m_velocity				= v3d::GetZeroV();
+	m_move_velocity			= v3d::GetZeroV();
 	m_fall_velocity			= v3d::GetZeroV();
 	m_alive_timer			= 0.0f;
 	m_move_speed			= kInitialVelocity;
@@ -85,7 +85,7 @@ void ShellCasing::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 		// TODO : 自身との着地判定は避ける。のちに衝突マネージャーで管理
 		if (hit_collider_pair.target_collider->GetOwnerObj()->GetName() != ObjName.SHELL_CASING_556x45)
 		{
-			m_move_dir = v3d::GetNormalizedV(m_velocity);
+			m_move_dir = v3d::GetNormalizedV(m_move_velocity);
 			m_is_landing = true;
 		}
 		break;
@@ -127,12 +127,8 @@ bool ShellCasing::IsReturnPool()
 void ShellCasing::Move()
 {
 	math::Decrease(m_move_speed, kDeceleration, 0.0f);
-	m_velocity = m_move_dir * m_move_speed;
-
-	if (m_velocity == v3d::GetZeroV())
-	{
-		int a = 0;
-	}
+	m_move_velocity = m_move_dir * m_move_speed;
+	m_velocity += m_move_velocity;
 }
 
 void ShellCasing::CalcColliderPos()

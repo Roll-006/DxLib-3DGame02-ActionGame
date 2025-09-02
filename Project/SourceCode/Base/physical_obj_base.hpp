@@ -46,6 +46,8 @@ public:
 	/// @brief 速度ベクトルを接している面に投影する
 	void ProjectionVelocity();
 
+	void ApplyKnockbackVelocity();
+
 	/// @brief 着地判定を解除する
 	void ReleaseLanding() { m_is_landing = false; }
 
@@ -64,6 +66,10 @@ protected:
 	VECTOR	 m_velocity;
 	VECTOR   m_move_velocity;
 	VECTOR	 m_fall_velocity;
+	VECTOR   m_knockback_velocity;
+	float    m_knockback_speed;
+	float	 m_knockback_deceleration;
+
 	bool	 m_is_landing;
 	MassKind m_mass_kind;
 

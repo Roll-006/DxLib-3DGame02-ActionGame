@@ -19,6 +19,8 @@ Zombie::Zombie() :
 	m_animator = std::make_shared<ZombieAnimator>(m_modeler, m_state);
 	SetColliderModelHandle(m_modeler->GetModelHandle());
 
+	m_invincible_time = kInvincibleTime;
+
 	m_look_dir = VGet(0.0f, 0.0f, 1.0f);
 	m_transform->SetRot(CoordinateKind::kWorld, m_look_dir);
 	m_transform->SetPos(CoordinateKind::kWorld, VGet(136.0f, -74.0f, 70.0f));
@@ -47,6 +49,8 @@ void Zombie::Update()
 {
 	if (!IsActive()) { return; }
 
+	JudgeInvincible();
+
 	Move();
 
 	m_state->Update(std::static_pointer_cast<Zombie>(shared_from_this()));
@@ -65,8 +69,6 @@ void Zombie::LateUpdate()
 	if (!IsActive()) { return; }
 
 	m_state->LateUpdate(std::static_pointer_cast<Zombie>(shared_from_this()));
-
-	m_velocity = v3d::GetZeroV();
 }
 
 void Zombie::DrawToShadowMap() const
@@ -106,7 +108,10 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 		// ロケット弾着弾時の爆発エフェクトとの衝突
 		if (hit_collider_pair.target_collider->GetOwnerObj()->GetName() == ObjName.ROCKET_BOMB_HIT_EXPLOSION_EFFECT)
 		{
+			if (m_is_invincible) { return; }
+			
 			OnCollideWithExpolsion(std::static_pointer_cast<Sphere>(hit_collider_pair.target_collider->GetShape()));
+			OnDamage();
 		}
 		break;
 
@@ -128,14 +133,23 @@ float Zombie::GetDeltaTime() const
 void Zombie::Move()
 {
 	m_move_velocity = v3d::GetZeroV();
+	m_velocity += m_move_velocity;
 }
 
 void Zombie::OnCollideWithExpolsion(const std::shared_ptr<Sphere> sphere)
 {
+	// TODO : 後にエフェクト側に処理内容を委ねる
+
 	const auto pos				= m_transform->GetPos(CoordinateKind::kWorld) + VGet(0, 50, 0);
 	const auto explosion_pos	= sphere->GetPos();
 	const auto distance			= pos - explosion_pos;
-	const auto dir				= v3d::GetNormalizedV(VGet(distance.x, 0.0f, distance.z));
 
-	m_velocity += (dir + VGet(0, 1, 0)) * (sphere->GetRadius() - VSize(distance)) * 500.0f;
+	if (VSize(distance) > sphere->GetRadius()) { return; }
+
+	const auto dir_xz			= v3d::GetNormalizedV(VGet(distance.x, 0.0f, distance.z));
+	const auto dir				= v3d::GetNormalizedV(dir_xz + VGet(0.0f, 0.5f, 0.0f));
+
+	m_knockback_speed			= 100.0f;
+	m_knockback_deceleration	= 5.0f;
+	m_knockback_velocity		= dir * m_knockback_speed;
 }

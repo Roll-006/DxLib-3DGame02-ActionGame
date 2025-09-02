@@ -3,15 +3,15 @@
 #include "../Base/gun_base.hpp"
 
 Bullet::Bullet() :
-	PhysicalObjBase			(ObjName.BULLET, ObjTag.BULLET, MassKind::kLight),
-	m_subject				(std::make_shared<Subject<Bullet>>()),
-	m_shot_owner_name		(""),
-	m_move_dir				(v3d::GetZeroV()),
-	m_prev_pos				(v3d::GetZeroV()),
-	m_first_pos				(v3d::GetZeroV()),
-	m_move_speed			(0.0f),
-	m_deceleration			(0.0f),
-	m_range					(0.0f)
+	PhysicalObjBase		(ObjName.BULLET, ObjTag.BULLET, MassKind::kLight),
+	m_subject			(std::make_shared<Subject<Bullet>>()),
+	m_shot_owner_name	(""),
+	m_move_dir			(v3d::GetZeroV()),
+	m_prev_pos			(v3d::GetZeroV()),
+	m_first_pos			(v3d::GetZeroV()),
+	m_move_speed		(0.0f),
+	m_deceleration		(0.0f),
+	m_range				(0.0f)
 {
 	AddCollider(std::make_shared<Collider>(ColliderKind::kRayCast, std::make_shared<Segment>(), this));
 
@@ -26,7 +26,7 @@ Bullet::~Bullet()
 void Bullet::Init()
 {
 	m_shot_owner_name		= "";
-	m_velocity				= v3d::GetZeroV();
+	m_move_velocity			= v3d::GetZeroV();
 	m_fall_velocity			= v3d::GetZeroV();
 }
 
@@ -121,7 +121,8 @@ bool Bullet::IsReturnPool()
 void Bullet::Move()
 {
 	math::Decrease(m_move_speed, m_deceleration, 0.0f);
-	m_velocity = m_move_dir * m_move_speed;
+	m_move_velocity = m_move_dir * m_move_speed;
+	m_velocity += m_move_velocity;
 }
 
 void Bullet::CalcRayPos()

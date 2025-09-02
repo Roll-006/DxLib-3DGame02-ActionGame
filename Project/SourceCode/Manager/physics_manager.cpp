@@ -17,7 +17,8 @@ void PhysicsManager::Update()
 		// d—Íˆ—‚ª‹–‰Â‚³‚ê‚Ä‚¢‚éê‡‚Ì‚Ýd—Í‚ð—^‚¦‚é
 		if (IsApplyGravity(obj) && obj->IsActive())
 		{
-			obj->ApplyGravity(kGravityAcceleration, kMaxGravity);		
+			obj->ApplyKnockbackVelocity();
+			obj->ApplyGravity(kGravityAcceleration, kMaxGravity);
 		}
 	}
 }
@@ -44,10 +45,10 @@ void PhysicsManager::LateUpdate()
 		obj->ApplyVelocity();
 	}
 
-	for (const auto& obj : m_physical_objects)
-	{
-		ProjectionPos(obj);
-	}
+	//for (const auto& obj : m_physical_objects)
+	//{
+	//	ProjectionPos(obj);
+	//}
 }
 
 

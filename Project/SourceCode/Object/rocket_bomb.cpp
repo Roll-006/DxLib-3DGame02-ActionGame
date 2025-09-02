@@ -29,7 +29,7 @@ RocketBomb::~RocketBomb()
 void RocketBomb::Init()
 {
 	m_shot_owner_name		= "";
-	m_velocity				= v3d::GetZeroV();
+	m_move_velocity			= v3d::GetZeroV();
 	m_fall_velocity			= v3d::GetZeroV();
 	m_blend_timer			= 0.0f;
 	m_go_straight_timer		= 0.0f;
@@ -155,9 +155,9 @@ bool RocketBomb::IsReturnPool()
 
 void RocketBomb::ApplyMoveDirToRot()
 {
-	if (m_velocity != v3d::GetZeroV())
+	if (m_move_velocity != v3d::GetZeroV())
 	{
-		const auto forward = v3d::GetNormalizedV(m_velocity);
+		const auto forward = v3d::GetNormalizedV(m_move_velocity);
 
 		if (forward != axis::GetWorldYAxis() && forward != -axis::GetWorldYAxis())
 		{
@@ -179,7 +179,7 @@ void RocketBomb::Move()
 	{
 		m_go_straight_timer += GetDeltaTime();
 
-		m_velocity = m_move_dir * m_move_speed;
+		m_move_velocity = m_move_dir * m_move_speed;
 	}
 	// ”ro‚³‚ê‚½‚ç‰æ–Ê’†‰›‚©‚çŒ‚‚½‚ê‚½Û‚Ì‹O“¹‚É‹ß‚Ã‚¯‚é
 	else if (m_blend_timer < kBlendTime)
@@ -188,13 +188,15 @@ void RocketBomb::Move()
 
 		const auto t			= math::GetUnitValue<float, float>(0.0f, kBlendTime, m_blend_timer);
 		const auto current_dir	= math::GetLerp(m_move_dir, m_destination_dir, t);
-		m_velocity = current_dir * m_move_speed;
+		m_move_velocity = current_dir * m_move_speed;
 	}
 	// ‰æ–Ê’†‰›‚©‚çŒ‚‚½‚ê‚½Û‚Ì‹O“¹‚ÅˆÚ“®
 	else
 	{
-		m_velocity = m_destination_dir * m_move_speed;
+		m_move_velocity = m_destination_dir * m_move_speed;
 	}
+
+	m_velocity += m_move_velocity;
 }
 
 void RocketBomb::CalcRayPos()

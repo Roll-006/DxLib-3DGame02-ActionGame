@@ -34,6 +34,8 @@ private:
 	static constexpr VECTOR kBasicAngle				= { 0.0f, DX_PI_F, 0.0f };
 	static constexpr float  kBasicScale				= 0.25f;
 
+	static constexpr float kInvincibleTime			= 0.5f;
+
 	static constexpr float kCapsuleRadius			= 8.0f;
 	static constexpr float kHeadTriggerRadius		= 4.5f;
 	static constexpr float kBodyTriggerRadius		= 6.0f;

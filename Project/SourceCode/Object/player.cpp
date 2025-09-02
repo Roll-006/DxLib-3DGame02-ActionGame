@@ -22,6 +22,8 @@ Player::Player() :
 	m_animator = std::make_shared<PlayerAnimator>(m_modeler, m_state, m_current_held_weapon, m_current_equip_weapon);
 	SetColliderModelHandle(m_modeler->GetModelHandle());
 
+	m_invincible_time = kInvincibleTime;
+
 	// ‰ŠúposEdir‚ðÝ’è
 	m_look_dir[TimeKind::kCurrent] = m_look_dir[TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);
 	m_transform->SetPos(CoordinateKind::kWorld, VGet(0.0f, -54.0f, 0.0f));
@@ -70,6 +72,8 @@ void Player::Update()
 {
 	if (!IsActive()) { return; }
 
+	JudgeInvincible();
+
 	if (m_current_held_weapon) { m_current_held_weapon->Update(); }
 
 	for (const auto& attach_weapon : m_attach_weapons)
@@ -112,8 +116,6 @@ void Player::LateUpdate()
 			attach_weapon.second->LateUpdate();
 		}
 	}
-
-	m_velocity = v3d::GetZeroV();
 }
 
 void Player::DrawToShadowMap() const

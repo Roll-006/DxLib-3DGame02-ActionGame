@@ -19,9 +19,10 @@ public:
 
 
 	#pragma region Getter
-	[[nodiscard]] std::shared_ptr<Modeler>		GetModeler()					const { return m_modeler; }
-	[[nodiscard]] std::shared_ptr<AnimatorBase>	GetAnimator()					const { return m_animator; }
-	[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentHeldWeapon()			const { return m_current_held_weapon; }
+	[[nodiscard]] bool							IsInvincible()				const { return m_is_invincible; }
+	[[nodiscard]] std::shared_ptr<Modeler>		GetModeler()				const { return m_modeler; }
+	[[nodiscard]] std::shared_ptr<AnimatorBase>	GetAnimator()				const { return m_animator; }
+	[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentHeldWeapon()		const { return m_current_held_weapon; }
 	[[nodiscard]] WeaponKind					GetCurrentHeldWeaponKind();
 	[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentAttachWeapon		(const HolsterKind holster_kind) const;
 	[[nodiscard]] WeaponKind					GetCurrentAttachWeaponKind	(const HolsterKind holster_kind) const;
@@ -71,6 +72,9 @@ protected:
 	/// @brief Œ©‚Ä‚¢‚é•ûŒü‚ğ‰ñ“]‚É“K—p‚·‚é
 	void ApplyLookDirToRot(const VECTOR& look_dir);
 
+	void OnDamage();
+	void JudgeInvincible();
+
 protected:
 	std::shared_ptr<Modeler>		m_modeler;
 	std::shared_ptr<AnimatorBase>	m_animator;
@@ -80,4 +84,8 @@ protected:
 	std::unordered_map<HolsterKind, std::shared_ptr<WeaponBase>> m_attach_weapons;	// ‘•’…‚µ‚Ä‚¢‚é•Ší
 
 	std::unordered_map<HitPointsPartKind, std::shared_ptr<HitPoints>> m_hit_points;
+
+	float m_invincible_time;
+	float m_invincible_timer;
+	bool  m_is_invincible;
 };

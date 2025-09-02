@@ -9,7 +9,7 @@ RocketBombExplosionEffect::RocketBombExplosionEffect() :
 	m_return_pool_trigger_handle(-1),
 	m_offset_pos				(v3d::GetZeroV()),
 	m_offset_angle				(v3d::GetZeroV()),
-	m_offset_scale				(VGet(1.025f, 1.025f, 1.025f)),
+	m_offset_scale				(VGet(kScale, kScale, kScale)),
 	m_data						(EffectData(ObjName.ROCKET_BOMB_HIT_EXPLOSION_EFFECT, EffectPath.ROCKET_BOMB_HIT_EXPLOSION, 50.0f, 0.0f, false)),
 	m_play_count				(0),
 	m_play_wait_timer			(0.0f),

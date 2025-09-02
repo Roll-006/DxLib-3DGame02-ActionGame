@@ -1,13 +1,16 @@
 #include "physical_obj_base.hpp"
 
 PhysicalObjBase::PhysicalObjBase(const std::string& name, const std::string& tag, MassKind mass_level_kind) :
-	ObjBase			(name, tag),
-	m_velocity		(v3d::GetZeroV()),
-	m_move_velocity (v3d::GetZeroV()),
-	m_fall_velocity	(v3d::GetZeroV()),
-	m_is_landing	(false),
-	m_mass_kind		(mass_level_kind),
-	m_model_handle	(-1)
+	ObjBase						(name, tag),
+	m_velocity					(v3d::GetZeroV()),
+	m_move_velocity				(v3d::GetZeroV()),
+	m_fall_velocity				(v3d::GetZeroV()),
+	m_knockback_velocity		(v3d::GetZeroV()),
+	m_knockback_speed			(0.0f),
+	m_knockback_deceleration	(0.0f),
+	m_is_landing				(false),
+	m_mass_kind					(mass_level_kind),
+	m_model_handle				(-1)
 {
 
 }
@@ -46,6 +49,8 @@ void PhysicalObjBase::ApplyVelocity()
 			shape->Move(m_velocity);
 		}
 	}
+
+	m_velocity = v3d::GetZeroV();
 }
 
 void PhysicalObjBase::ProjectionVelocity()
@@ -108,6 +113,13 @@ void PhysicalObjBase::ProjectionVelocity()
 		m_velocity			= math::GetProjectionVector(m_velocity, base_v);
 		return;
 	}
+}
+
+void PhysicalObjBase::ApplyKnockbackVelocity()
+{
+	math::Decrease(m_knockback_speed, m_knockback_deceleration, 0.0f);
+	m_knockback_velocity = v3d::GetNormalizedV(m_knockback_velocity) * m_knockback_speed;
+	m_velocity += m_knockback_velocity;
 }
 
 std::shared_ptr<Collider> PhysicalObjBase::GetCollider(const ColliderKind kind) const
