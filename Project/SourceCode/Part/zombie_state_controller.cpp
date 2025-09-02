@@ -35,35 +35,6 @@ void ZombieStateController::LateUpdate(std::shared_ptr<Zombie> zombie)
 	m_action_state	.at(TimeKind::kCurrent)->LateUpdate(zombie);
 }
 
-
-#pragma region Try”»’è
-bool ZombieStateController::TryTrack(std::shared_ptr<Zombie> zombie)
-{
-	// TODO : Œã‚É‰¹‚È‚Ç‚Ì”»’è‚àŠÜ‚ß‚é
-
-	if (!m_target_character) { return false; }
-
-	const auto target_modele_handle = m_target_character->GetModeler()->GetModelHandle();
-	auto	   target_head_mat		= MV1GetFrameLocalWorldMatrix(target_modele_handle, MV1SearchFrame(target_modele_handle, BonePath.HEAD));
-	const auto target_head_pos		= MGetTranslateElem(target_head_mat);
-	const auto is_in_sight			= zombie->IsTargetInSight(target_head_pos);
-
-	return is_in_sight;
-}
-
-bool ZombieStateController::TryRun(std::shared_ptr<Zombie> zombie)
-{
-	if (!m_target_character) { return false; }
-
-	const auto pos			= zombie->GetTransform()->GetPos(CoordinateKind::kWorld);
-	const auto target_pos	= m_target_character->GetTransform()->GetPos(CoordinateKind::kWorld);
-	const auto distance		= VSize(pos - target_pos);
-
-	return false;
-}
-#pragma endregion
-
-
 void ZombieStateController::CreateState()
 {
 	m_states[typeid(zombie_state::Wait)]		= std::make_shared<zombie_state::Wait>();
@@ -225,3 +196,40 @@ void ZombieStateController::JudgeDestinationActionState(std::shared_ptr<IState<Z
 {
 
 }
+
+
+#pragma region Try”»’è
+bool ZombieStateController::TryTrack(std::shared_ptr<Zombie> zombie)
+{
+	// TODO : Œã‚É‰¹‚È‚Ç‚Ì”»’è‚àŠÜ‚ß‚é
+
+	if (!m_target_character) { return false; }
+
+	const auto target_modele_handle = m_target_character->GetModeler()->GetModelHandle();
+	auto	   target_head_mat		= MV1GetFrameLocalWorldMatrix(target_modele_handle, MV1SearchFrame(target_modele_handle, BonePath.HEAD));
+	const auto target_head_pos		= MGetTranslateElem(target_head_mat);
+	const auto is_in_sight			= zombie->IsTargetInSight(target_head_pos);
+
+	return is_in_sight;
+}
+
+bool ZombieStateController::TryRun(std::shared_ptr<Zombie> zombie)
+{
+	if (!m_target_character) { return false; }
+
+	const auto pos			= zombie->GetTransform()->GetPos(CoordinateKind::kWorld);
+	const auto target_pos	= m_target_character->GetTransform()->GetPos(CoordinateKind::kWorld);
+	const auto distance		= VSize(pos - target_pos);
+
+	return distance > 150.0f;
+}
+
+bool ZombieStateController::TryMove()
+{
+	const auto ai_state_kind = static_cast<zombie_state::AIStateKind>(GetAIState(TimeKind::kCurrent)->GetStateKind());
+
+	const auto is_track = ai_state_kind == zombie_state::AIStateKind::kTrack ? true : false;
+
+	return is_track;
+}
+#pragma endregion

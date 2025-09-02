@@ -33,5 +33,13 @@ void zombie_state::Run::Exit(std::shared_ptr<Zombie> obj)
 
 std::shared_ptr<IState<Zombie>> zombie_state::Run::ChangeState(std::shared_ptr<Zombie> obj)
 {
+	const auto state_controller = obj->GetStateController();
+
+	// NULL
+	if (!state_controller->TryRun(obj))
+	{
+		return state_controller->GetState<ActionNull, Zombie>();
+	}
+
 	return nullptr;
 }

@@ -13,7 +13,9 @@ zombie_state::Move::~Move()
 
 void zombie_state::Move::Update(std::shared_ptr<Zombie> obj)
 {
-	
+	const auto state_controller = obj->GetStateController();
+
+
 }
 
 void zombie_state::Move::LateUpdate(std::shared_ptr<Zombie> obj)
@@ -33,5 +35,13 @@ void zombie_state::Move::Exit(std::shared_ptr<Zombie> obj)
 
 std::shared_ptr<IState<Zombie>> zombie_state::Move::ChangeState(std::shared_ptr<Zombie> obj)
 {
+	const auto state_controller = obj->GetStateController();
+
+	// IDLE
+	if (!state_controller->TryMove())
+	{
+		return state_controller->GetState<MoveNull, Zombie>();
+	}
+
 	return nullptr;
 }
