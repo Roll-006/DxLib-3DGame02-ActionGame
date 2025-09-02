@@ -65,7 +65,7 @@ private:
 	[[nodiscard]] float	GetDeltaTime() const override;
 
 private:
-	static constexpr float kHitRadius = 100.0f;
+	static constexpr float kHitRadius = 50.0f;
 
 	int			m_origin_effect_handle;			// エフェクトハンドル
 	int			m_playing_effect_handle;		// 再生中のエフェクトハンドル

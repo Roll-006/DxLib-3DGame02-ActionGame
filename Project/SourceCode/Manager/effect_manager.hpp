@@ -16,6 +16,8 @@ public:
 	void Update();
 	void LateUpdate();
 
+	void Draw() const;
+
 	template<typename T>
 	void AddToSubject(const std::shared_ptr<Subject<T>> subject)
 	{

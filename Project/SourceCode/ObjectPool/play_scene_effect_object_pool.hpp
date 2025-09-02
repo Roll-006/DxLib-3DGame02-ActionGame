@@ -1,6 +1,7 @@
 #pragma once
 #include "../Base/object_pool_base.hpp"
 #include "../Object/effect.hpp"
+#include "../Object/rocket_bomb_explosion_effect.hpp"
 
 class PlaySceneEffectObjectPool : public ObjectPoolBase
 {

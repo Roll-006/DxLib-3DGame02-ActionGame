@@ -55,6 +55,17 @@ void EffectManager::LateUpdate()
 	}
 }
 
+void EffectManager::Draw() const
+{
+	for (const auto& effect : m_effects)
+	{
+		for (const auto& e : effect.second)
+		{
+			e->Draw();
+		}
+	}
+}
+
 void EffectManager::OnNotify(const IEvent& event)
 {
 	// •Ší‚ª’eŠÛ‚ğ”­Ë

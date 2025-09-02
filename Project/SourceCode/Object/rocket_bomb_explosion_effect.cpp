@@ -14,7 +14,7 @@ RocketBombExplosionEffect::RocketBombExplosionEffect() :
 	m_play_count				(0),
 	m_play_wait_timer			(0.0f)
 {
-	AddCollider(std::make_shared<Collider>(ColliderKind::kCollider, std::make_shared<Sphere>(v3d::GetZeroV(), kHitRadius), this));
+	AddCollider(std::make_shared<Collider>(ColliderKind::kAttackTrigger, std::make_shared<Sphere>(v3d::GetZeroV(), kHitRadius), this));
 }
 
 RocketBombExplosionEffect::~RocketBombExplosionEffect()
@@ -58,16 +58,31 @@ void RocketBombExplosionEffect::LateUpdate()
 	ApplyPlaySpeed();
 
 	PlayEffect();
+
+	const auto sphere = std::dynamic_pointer_cast<Sphere>(GetCollider(ColliderKind::kAttackTrigger)->GetShape());
+	if (sphere)
+	{
+		sphere->SetPos(m_transform->GetPos(CoordinateKind::kWorld));
+	}
 }
 
 void RocketBombExplosionEffect::DrawToShadowMap() const
 {
-
+	if (!IsActive()) { return; }
 }
 
 void RocketBombExplosionEffect::Draw() const
 {
 	if (!IsActive()) { return; }
+
+	for (auto& collider : m_collider)
+	{
+		const auto shape = collider.second->GetShape();
+		if (shape != nullptr)
+		{
+			shape->Draw(true, 0, 0xffffff);
+		}
+	}
 }
 
 void RocketBombExplosionEffect::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)

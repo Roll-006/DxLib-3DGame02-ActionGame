@@ -49,6 +49,7 @@ void ShareScene::DrawToShadowMap() const
 
 void ShareScene::Draw() const
 {
-	m_player					->Draw();
-	CinemachineBrain::GetInstance()->Draw();
+	m_player						->Draw();
+	CinemachineBrain::GetInstance()	->Draw();
+	EffectManager	::GetInstance()	->Draw();
 }
