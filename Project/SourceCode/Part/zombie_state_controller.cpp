@@ -1,6 +1,7 @@
 #include "zombie_state_controller.hpp"
 
-ZombieStateController::ZombieStateController()
+ZombieStateController::ZombieStateController() :
+	m_player(ObjManager::GetInstance()->GetObj<Player>(ObjName.PLAYER))
 {
 	CreateState();
 	AddCheckStopState();

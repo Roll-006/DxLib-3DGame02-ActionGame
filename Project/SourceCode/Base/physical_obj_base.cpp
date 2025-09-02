@@ -2,8 +2,8 @@
 
 PhysicalObjBase::PhysicalObjBase(const std::string& name, const std::string& tag, MassKind mass_level_kind) :
 	ObjBase			(name, tag),
-	m_fall_velocity	(v3d::GetZeroV()),
 	m_velocity		(v3d::GetZeroV()),
+	m_fall_velocity	(v3d::GetZeroV()),
 	m_is_landing	(false),
 	m_mass_kind		(mass_level_kind),
 	m_model_handle	(-1)
@@ -120,4 +120,9 @@ void PhysicalObjBase::AddCollider(const std::shared_ptr<Collider> collider)
 	{
 		m_collider[collider->GetColliderKind()] = collider;
 	}
+}
+
+void PhysicalObjBase::RemoveCollider(const ColliderKind collider_kind)
+{
+	m_collider.erase(collider_kind);
 }

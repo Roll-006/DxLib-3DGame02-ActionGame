@@ -22,6 +22,8 @@
 #include "../State/ZombieState/play_dead.hpp"
 #include "../State/ZombieState/dead.hpp"
 
+#include "../Object/player.hpp"
+
 class ZombieStateController final : public EnemyStateControllerBase<Zombie>
 {
 public:
@@ -73,6 +75,8 @@ private:
 	void JudgeDestinationActionState(std::shared_ptr<IState<Zombie>>& stop_state);
 
 private:
+	std::shared_ptr<Player> m_player;
+
 	std::unordered_map<std::type_index, std::shared_ptr<IState<Zombie>>>			m_states;						// 各ステート
 	std::vector<int>																m_check_stop_state_handles;		// ステートの停止
 

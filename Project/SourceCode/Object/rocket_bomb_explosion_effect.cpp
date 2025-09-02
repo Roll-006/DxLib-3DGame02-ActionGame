@@ -12,7 +12,8 @@ RocketBombExplosionEffect::RocketBombExplosionEffect() :
 	m_offset_scale				(VGet(1.025f, 1.025f, 1.025f)),
 	m_data						(EffectData(ObjName.ROCKET_BOMB_HIT_EXPLOSION_EFFECT, EffectPath.ROCKET_BOMB_HIT_EXPLOSION, 50.0f, 0.0f, false)),
 	m_play_count				(0),
-	m_play_wait_timer			(0.0f)
+	m_play_wait_timer			(0.0f),
+	m_trigger_dead_timer		(0.0f)
 {
 	AddCollider(std::make_shared<Collider>(ColliderKind::kAttackTrigger, std::make_shared<Sphere>(v3d::GetZeroV(), kHitRadius), this));
 }
@@ -34,6 +35,7 @@ void RocketBombExplosionEffect::Init()
 
 	m_play_count					= 0;
 	m_play_wait_timer				= 0.0f;
+	m_trigger_dead_timer			= 0.0f;
 
 	// Effekseer上で無限生成がオンかつループ再生がtrueの場合は
 	// プールから取り出された段階で再生する
@@ -47,7 +49,13 @@ void RocketBombExplosionEffect::Update()
 {
 	if (!IsActive()) { return; }
 
-	m_play_wait_timer += GetDeltaTime();
+	m_play_wait_timer	 += GetDeltaTime();
+	m_trigger_dead_timer += GetDeltaTime();
+
+	if (m_trigger_dead_timer > kTriggerDeadTime)
+	{
+		RemoveCollider(ColliderKind::kAttackTrigger);
+	}
 }
 
 void RocketBombExplosionEffect::LateUpdate()
@@ -59,11 +67,7 @@ void RocketBombExplosionEffect::LateUpdate()
 
 	PlayEffect();
 
-	const auto sphere = std::dynamic_pointer_cast<Sphere>(GetCollider(ColliderKind::kAttackTrigger)->GetShape());
-	if (sphere)
-	{
-		sphere->SetPos(m_transform->GetPos(CoordinateKind::kWorld));
-	}
+	CalcTriggerPos();
 }
 
 void RocketBombExplosionEffect::DrawToShadowMap() const
@@ -198,6 +202,21 @@ void RocketBombExplosionEffect::PlayEffect()
 	{
 		m_playing_effect_handle = PlayEffekseer3DEffect(m_origin_effect_handle);
 		++m_play_count;
+	}
+}
+
+void RocketBombExplosionEffect::CalcTriggerPos()
+{
+	const auto trigger = GetCollider(ColliderKind::kAttackTrigger);
+
+	if (trigger)
+	{
+		const auto sphere = std::dynamic_pointer_cast<Sphere>(trigger->GetShape());
+
+		if (sphere)
+		{
+			sphere->SetPos(m_transform->GetPos(CoordinateKind::kWorld));
+		}
 	}
 }
 

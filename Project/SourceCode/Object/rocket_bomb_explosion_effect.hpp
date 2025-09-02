@@ -62,10 +62,13 @@ private:
 
 	void PlayEffect() override;
 
+	void CalcTriggerPos();
+
 	[[nodiscard]] float	GetDeltaTime() const override;
 
 private:
-	static constexpr float kHitRadius = 50.0f;
+	static constexpr float kHitRadius		= 50.0f;
+	static constexpr float kTriggerDeadTime = 1.5f;
 
 	int			m_origin_effect_handle;			// エフェクトハンドル
 	int			m_playing_effect_handle;		// 再生中のエフェクトハンドル
@@ -81,4 +84,5 @@ private:
 	EffectData	m_data;
 	int			m_play_count;
 	float		m_play_wait_timer;				// 再生開始を待つ時間を計測
+	float		m_trigger_dead_timer;
 };

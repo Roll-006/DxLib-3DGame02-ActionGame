@@ -18,7 +18,7 @@ PlaySceneEffectObjectPool::PlaySceneEffectObjectPool() :
 	}
 
 	// ÉçÉPÉbÉgíeÇÃâå
-	data = { ObjName.ROCKET_BOMB_SMOKE_EFFECT, EffectPath.ROCKET_BOMB_SMOKE, 60.0f, 0.0f, true };
+	data = { ObjName.ROCKET_BOMB_SMOKE_EFFECT, EffectPath.ROCKET_BOMB_SMOKE, 60.0f, 1.0f, true };
 	for (int i = 0; i < m_pool_size.at(ObjName.ROCKET_BOMB_SMOKE_EFFECT); ++i)
 	{
 		const auto effect = std::make_shared<Effect>(data);

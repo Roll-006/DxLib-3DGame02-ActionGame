@@ -4,7 +4,7 @@
 
 #include "../Part/zombie_animator.hpp"
 
-class ZombieAI;
+class ZombieStateController;
 
 class Zombie final : public CharacterBase, public IEnemy
 {
@@ -40,7 +40,7 @@ private:
 	static constexpr float kDownLegTriggerRadius	= 2.5f;
 
 private:
-	std::shared_ptr<ZombieAI> m_ai;
+	std::shared_ptr<ZombieStateController> m_state;
 
 	VECTOR m_move_dir;
 	VECTOR m_look_dir;
