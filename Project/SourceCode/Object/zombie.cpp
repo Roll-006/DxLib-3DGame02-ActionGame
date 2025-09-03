@@ -111,7 +111,7 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 		{
 			if (m_is_invincible) { return; }
 			
-			OnCollideWithExpolsion(std::static_pointer_cast<Sphere>(hit_collider_pair.target_collider->GetShape()));
+			OnCollideWithExplosion(std::static_pointer_cast<Sphere>(hit_collider_pair.target_collider->GetShape()));
 			OnDamage();
 		}
 		break;
@@ -154,7 +154,6 @@ void Zombie::Move()
 
 void Zombie::TrackMove(const VECTOR& pos)
 {
-	// TODO : 仮で速度を設定。のちに削除
 	m_move_dir = v3d::GetNormalizedV(pos - m_transform->GetPos(CoordinateKind::kWorld));
 }
 
@@ -168,7 +167,7 @@ void Zombie::CalcMoveSpeedRun()
 	m_move_speed = kRunSpeed;
 }
 
-void Zombie::OnCollideWithExpolsion(const std::shared_ptr<Sphere> sphere)
+void Zombie::OnCollideWithExplosion(const std::shared_ptr<Sphere> sphere)
 {
 	// TODO : 後にエフェクト側に処理内容を委ねる
 

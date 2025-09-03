@@ -39,7 +39,7 @@ public:
 	#pragma endregion
 
 private:
-	void OnCollideWithExpolsion(const std::shared_ptr<Sphere> sphere);
+	void OnCollideWithExplosion(const std::shared_ptr<Sphere> sphere);
 
 	void CalcLookDir();
 	void CalcMoveVelocity();
