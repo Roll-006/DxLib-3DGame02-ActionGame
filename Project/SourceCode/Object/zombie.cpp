@@ -51,17 +51,18 @@ void Zombie::Update()
 
 	JudgeInvincible();
 
-	Move();
+	m_state		->Update(std::static_pointer_cast<Zombie>(shared_from_this()));
+	m_animator	->Update();
 
-	m_state->Update(std::static_pointer_cast<Zombie>(shared_from_this()));
-	m_animator->Update();
-
-	ApplyLookDirToRot(m_look_dir);
+	CalcLookDir();
+	CalcMoveVelocity();
 
 	m_collider_creator->CalcCapsuleColliderLength(this, m_modeler);
 	m_collider_creator->CalcHeadTriggerPos(m_modeler, m_collider);
 	m_collider_creator->CalcBodyTriggerPos(m_modeler, m_collider);
 	m_collider_creator->CalcLegTriggerPos (m_modeler, m_collider);
+
+	ApplyLookDirToRot(m_look_dir);
 }
 
 void Zombie::LateUpdate()
@@ -148,8 +149,27 @@ float Zombie::GetDeltaTime() const
 
 void Zombie::Move()
 {
-	m_move_velocity = v3d::GetZeroV();
-	m_velocity += m_move_velocity;
+
+}
+
+void Zombie::TrackMove(const VECTOR& pos)
+{
+	// TODO : ‰¼‚Å‘¬“x‚ðÝ’èB‚Ì‚¿‚Éíœ
+	
+	m_move_dir = v3d::GetNormalizedV(pos - m_transform->GetPos(CoordinateKind::kWorld));
+
+	//CalcLookDir();
+	//CalcMoveVelocity();
+}
+
+void Zombie::CalcMoveSpeed()
+{
+	m_move_speed = kWalkSpeed;
+}
+
+void Zombie::CalcMoveSpeedRun()
+{
+	m_move_speed = kRunSpeed;
 }
 
 void Zombie::OnCollideWithExpolsion(const std::shared_ptr<Sphere> sphere)
@@ -168,4 +188,15 @@ void Zombie::OnCollideWithExpolsion(const std::shared_ptr<Sphere> sphere)
 	m_knockback_speed			= 100.0f;
 	m_knockback_deceleration	= 5.0f;
 	m_knockback_velocity		= dir * m_knockback_speed;
+}
+
+void Zombie::CalcLookDir()
+{
+	m_look_dir = m_move_dir;
+}
+
+void Zombie::CalcMoveVelocity()
+{
+	m_move_velocity = m_move_dir * m_move_speed;
+	m_velocity += m_move_velocity;
 }

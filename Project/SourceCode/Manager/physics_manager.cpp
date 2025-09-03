@@ -33,6 +33,7 @@ void PhysicsManager::LateUpdate()
 
 			// velocityが浮かないよう張り付ける
 			obj->ProjectionVelocity();
+
 		}
 	}
 
@@ -44,11 +45,6 @@ void PhysicsManager::LateUpdate()
 		// velocityをオブジェクトに適用
 		obj->ApplyVelocity();
 	}
-
-	//for (const auto& obj : m_physical_objects)
-	//{
-	//	ProjectionPos(obj);
-	//}
 }
 
 
@@ -164,6 +160,11 @@ void PhysicsManager::ExecutePushBackPairs()
 			{
 				low_priority_obj  = obj_2;
 				high_priority_obj = obj_1;
+			}
+
+			if (low_priority_obj->GetName() == ObjName.ZOMBIE)
+			{
+				int a = 0;
 			}
 
 			// 押し戻し処理を実行

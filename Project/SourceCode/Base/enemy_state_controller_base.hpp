@@ -20,6 +20,8 @@ public:
 	void AttachTarget(const std::shared_ptr<CharacterBase> target_character) { if (!m_target_character) { m_target_character = target_character; } }
 	void DetachTarget() { m_target_character = nullptr; }
 
+	[[nodiscard]] std::shared_ptr<CharacterBase> GetTargetCharacter() const { return m_target_character; }
+
 protected:
 	std::shared_ptr<CharacterBase> m_target_character;
 };

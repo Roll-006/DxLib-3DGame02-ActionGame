@@ -14,8 +14,15 @@ zombie_state::Move::~Move()
 void zombie_state::Move::Update(std::shared_ptr<Zombie> obj)
 {
 	const auto state_controller = obj->GetStateController();
+	const auto ai_state			= static_cast<zombie_state::AIStateKind>(state_controller->GetAIState(TimeKind::kCurrent)->GetStateKind());
+	const auto target_pos		= state_controller->GetTargetCharacter()->GetTransform()->GetPos(CoordinateKind::kWorld);
 
+	obj->CalcMoveSpeed();
 
+	if (ai_state == zombie_state::AIStateKind::kTrack)
+	{
+		obj->TrackMove(target_pos);
+	}
 }
 
 void zombie_state::Move::LateUpdate(std::shared_ptr<Zombie> obj)

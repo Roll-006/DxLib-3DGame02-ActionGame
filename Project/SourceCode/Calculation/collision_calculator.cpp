@@ -899,6 +899,7 @@ VECTOR collision::PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsu
     // 平面に向かって移動していない場合は処理しない
     if (dot >= math::kEpsilonLow) { return velocity; }
 
+    // FIXME : 0で割っている
     // 押し戻し距離を計算（法線方向への最小移動距離）
     const auto push_back_distance   = penetration_depth / abs(dot);
     const auto push_back_vector     = move_dir * push_back_distance;

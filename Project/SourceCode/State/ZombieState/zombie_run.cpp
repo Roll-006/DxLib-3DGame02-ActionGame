@@ -13,7 +13,7 @@ zombie_state::Run::~Run()
 
 void zombie_state::Run::Update(std::shared_ptr<Zombie> obj)
 {
-	
+	obj->CalcMoveSpeedRun();
 }
 
 void zombie_state::Run::LateUpdate(std::shared_ptr<Zombie> obj)
