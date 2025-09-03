@@ -162,11 +162,6 @@ void PhysicsManager::ExecutePushBackPairs()
 				high_priority_obj = obj_1;
 			}
 
-			if (low_priority_obj->GetName() == ObjName.ZOMBIE)
-			{
-				int a = 0;
-			}
-
 			// ‰Ÿ‚µ–ß‚µˆ—‚ğÀs
 			PushBack(low_priority_obj, high_priority_obj);
 		}

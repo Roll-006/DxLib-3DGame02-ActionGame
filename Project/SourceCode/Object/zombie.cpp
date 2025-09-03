@@ -23,7 +23,7 @@ Zombie::Zombie() :
 
 	m_look_dir = VGet(0.0f, 0.0f, 1.0f);
 	m_transform->SetRot(CoordinateKind::kWorld, m_look_dir);
-	m_transform->SetPos(CoordinateKind::kWorld, VGet(136.0f, -74.0f, 70.0f));
+	m_transform->SetPos(CoordinateKind::kWorld, VGet(140.0f, -73.0f, 96.0f));
 	m_modeler->ApplyMatrix();
 
 	// コライダー・トリガーを設定
@@ -155,11 +155,7 @@ void Zombie::Move()
 void Zombie::TrackMove(const VECTOR& pos)
 {
 	// TODO : 仮で速度を設定。のちに削除
-	
 	m_move_dir = v3d::GetNormalizedV(pos - m_transform->GetPos(CoordinateKind::kWorld));
-
-	//CalcLookDir();
-	//CalcMoveVelocity();
 }
 
 void Zombie::CalcMoveSpeed()

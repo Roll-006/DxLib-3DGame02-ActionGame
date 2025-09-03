@@ -845,6 +845,11 @@ VECTOR collision::PushBackSphereAndModel    (const VECTOR& velocity, const Spher
 VECTOR collision::PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsule& dynamic_capsule, const Triangle& static_triangle,
     const float slope_difficulty_angle_threshold, const float max_slope_angle)
 {
+    if (VSize(velocity) <= math::kEpsilonHigh)
+    {
+        return velocity;
+    }
+
     // 未来のカプセルを取得
     auto future_capsule = dynamic_capsule;
     future_capsule.Move(velocity);
@@ -861,8 +866,8 @@ VECTOR collision::PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsu
     // カプセルの線分の両端点を取得
     const auto current_begin_pos            = dynamic_capsule.GetSegment().GetBeginPos();
     const auto current_end_pos              = dynamic_capsule.GetSegment().GetEndPos();
-    const auto future_begin_pos             = future_capsule.GetSegment().GetBeginPos();
-    const auto future_end_pos               = future_capsule.GetSegment().GetEndPos();
+    const auto future_begin_pos             = future_capsule .GetSegment().GetBeginPos();
+    const auto future_end_pos               = future_capsule .GetSegment().GetEndPos();
 
     // 各点から平面への距離を計算
     const auto plane_to_begin_pos_distance  = math::GetDistancePointToPlane(future_begin_pos,   plane);
@@ -893,13 +898,15 @@ VECTOR collision::PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsu
     if (penetration_depth <= math::kEpsilonLow) { return velocity; }
 
     // 移動方向と平面法線の関係を確認
-    const auto move_dir = v3d::GetNormalizedV(velocity);
-    const auto dot = VDot(move_dir, plane.GetNormalVector());
+    const auto move_dir             = v3d::GetNormalizedV(velocity);
+    const auto dot                  = VDot(move_dir, plane.GetNormalVector());
 
     // 平面に向かって移動していない場合は処理しない
-    if (dot >= math::kEpsilonLow) { return velocity; }
+    if (dot >= math::kEpsilonLow)
+    {
+        return velocity;
+    }
 
-    // FIXME : 0で割っている
     // 押し戻し距離を計算（法線方向への最小移動距離）
     const auto push_back_distance   = penetration_depth / abs(dot);
     const auto push_back_vector     = move_dir * push_back_distance;
