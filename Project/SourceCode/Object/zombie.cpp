@@ -5,7 +5,8 @@ Zombie::Zombie() :
 	CharacterBase	(ObjName.ZOMBIE, ObjTag.ENEMY, MassKind::kMedium),
 	m_state			(std::make_shared<ZombieStateController>()),
 	m_move_dir		(v3d::GetZeroV()),
-	m_look_dir		(v3d::GetZeroV())
+	m_look_dir		(v3d::GetZeroV()),
+	m_move_speed	(kWalkSpeed)
 {
 	m_hit_points[HitPointsPartKind::kMain]		= std::make_shared<HitPoints>(1684.0f);
 	m_hit_points[HitPointsPartKind::kHead]		= std::make_shared<HitPoints>(300.0f);
@@ -23,7 +24,7 @@ Zombie::Zombie() :
 
 	m_look_dir = VGet(0.0f, 0.0f, 1.0f);
 	m_transform->SetRot(CoordinateKind::kWorld, m_look_dir);
-	m_transform->SetPos(CoordinateKind::kWorld, VGet(140.0f, -73.0f, 96.0f));
+	m_transform->SetPos(CoordinateKind::kWorld, VGet(0.0f, -54.0f, 0.0f));
 	m_modeler->ApplyMatrix();
 
 	// コライダー・トリガーを設定
@@ -63,6 +64,8 @@ void Zombie::Update()
 	m_collider_creator->CalcLegTriggerPos (m_modeler, m_collider);
 
 	ApplyLookDirToRot(m_look_dir);
+
+	auto pos = m_transform->GetScale(CoordinateKind::kWorld);
 }
 
 void Zombie::LateUpdate()
@@ -99,6 +102,8 @@ void Zombie::Draw() const
 	DrawLine3D(pos, pos + axes.x_axis * 100, 0xff0000);
 	DrawLine3D(pos, pos + axes.y_axis * 100, 0x00ff22);
 	DrawLine3D(pos, pos + axes.z_axis * 100, 0x0077ff);
+
+	DrawFormatString(800, 0, 0xffffff, "%f, %f, %f", pos.x, pos.y, pos.z);
 }
 
 void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
@@ -162,6 +167,11 @@ void Zombie::CalcMoveSpeed()
 	m_move_speed = kWalkSpeed;
 }
 
+void Zombie::CalcMoveSpeedStop()
+{
+	m_move_speed = 0.0f;
+}
+
 void Zombie::CalcMoveSpeedRun()
 {
 	m_move_speed = kRunSpeed;
@@ -187,7 +197,10 @@ void Zombie::OnCollideWithExplosion(const std::shared_ptr<Sphere> sphere)
 
 void Zombie::CalcLookDir()
 {
-	m_look_dir = m_move_dir;
+	if (m_move_dir != v3d::GetZeroV())
+	{
+		m_look_dir = m_move_dir;
+	}
 }
 
 void Zombie::CalcMoveVelocity()

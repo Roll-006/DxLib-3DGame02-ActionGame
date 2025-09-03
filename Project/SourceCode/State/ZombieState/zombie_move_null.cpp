@@ -13,7 +13,7 @@ zombie_state::MoveNull::~MoveNull()
 
 void zombie_state::MoveNull::Update(std::shared_ptr<Zombie> obj)
 {
-	
+	obj->CalcMoveSpeedStop();
 }
 
 void zombie_state::MoveNull::LateUpdate(std::shared_ptr<Zombie> obj)

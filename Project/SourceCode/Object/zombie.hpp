@@ -28,6 +28,7 @@ public:
 	void TrackMove(const VECTOR& pos);
 
 	void CalcMoveSpeed();
+	void CalcMoveSpeedStop();
 	void CalcMoveSpeedRun();
 	#pragma endregion
 
@@ -50,8 +51,8 @@ private:
 
 	static constexpr float kInvincibleTime			= 0.5f;
 
-	static constexpr float kWalkSpeed			= 40.0f;
-	static constexpr float kRunSpeed 			= 70.0f;
+	static constexpr float kWalkSpeed				= 40.0f;
+	static constexpr float kRunSpeed 				= 70.0f;
 
 	static constexpr float kCapsuleRadius			= 8.0f;
 	static constexpr float kHeadTriggerRadius		= 4.5f;
