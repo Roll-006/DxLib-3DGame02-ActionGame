@@ -105,6 +105,7 @@ void Zombie::Draw() const
 
 	DrawFormatString(800,  0, 0xffffff, "%f, %f, %f", pos.x, pos.y, pos.z);
 	DrawFormatString(800, 20, 0xffffff, "%d", m_hit_collider.size());
+	DrawFormatString(800, 40, 0xffffff, "%f", m_move_speed);
 }
 
 void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)

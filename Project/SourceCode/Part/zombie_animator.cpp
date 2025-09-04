@@ -34,6 +34,9 @@ void ZombieAnimator::LoadAnim()
 	AddAnimHandle(static_cast<int>(ZombieAnimKind::kMoveForwardWalk),	AnimPath.MOVE_FORWARD_WALK,				0, AnimTag.MOVE, 20.0f,  true);
 	AddAnimHandle(static_cast<int>(ZombieAnimKind::kMoveForwardRun),	AnimPath.MOVE_FORWARD_RUN_02,			0, AnimTag.MOVE, 20.0f,  true);
 
+	// 上半身用
+	AddAnimHandle(static_cast<int>(ZombieAnimKind::kGrab),				AnimPath.GRAB,							1, AnimTag.NONE, 10.0f,  true);
+
 	// 下半身用
 	AddAnimHandle(static_cast<int>(ZombieAnimKind::kCrouchStunLeft),	AnimPath.LEANING_FORWARD_CROUCH_LEFT,	0, AnimTag.MOVE, 0.0f,   true);
 	AddAnimHandle(static_cast<int>(ZombieAnimKind::kCrouchStunRight),	AnimPath.LEANING_FORWARD_CROUCH_RIGHT,	0, AnimTag.MOVE, 0.0f,   true);
@@ -98,10 +101,12 @@ void ZombieAnimator::CombineMoveWithAction()
 		break;
 
 	case static_cast<int>(zombie_state::ActionStateKind::kRun):
-		AttachResultAnim(static_cast<int>(ZombieAnimKind::kMoveForwardRun));
+		//AttachResultAnim(static_cast<int>(ZombieAnimKind::kMoveForwardRun));
+		AttachAnim(static_cast<int>(ZombieAnimKind::kMoveForwardRun),	BodyKind::kLowerBody);
+		AttachAnim(static_cast<int>(ZombieAnimKind::kGrab),				BodyKind::kUpperBody);
 		break;
 
-	case static_cast<int>(zombie_state::ActionStateKind::kGrab):
+	case static_cast<int>(zombie_state::ActionStateKind::kGrabRun):
 		break;
 
 	case static_cast<int>(zombie_state::ActionStateKind::kKnockback):

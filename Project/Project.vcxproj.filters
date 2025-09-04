@@ -245,7 +245,7 @@
     <ClCompile Include="SourceCode\State\PlayerState\roundhouse_kick.cpp">
       <Filter>State\PlayerState</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\State\PlayerState\run.cpp">
+    <ClCompile Include="SourceCode\State\PlayerState\player_run.cpp">
       <Filter>State\PlayerState</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\State\PlayerState\shot.cpp">
@@ -413,9 +413,6 @@
     <ClCompile Include="SourceCode\State\ZombieState\alert.cpp">
       <Filter>State\ZombieState</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\State\ZombieState\battle.cpp">
-      <Filter>State\ZombieState</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\State\ZombieState\investigate.cpp">
       <Filter>State\ZombieState</Filter>
     </ClCompile>
@@ -457,6 +454,18 @@
     </ClCompile>
     <ClCompile Include="SourceCode\State\ZombieState\grab_run.cpp">
       <Filter>State\ZombieState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\ZombieState\close_range_attack.cpp">
+      <Filter>State\ZombieState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\ZombieState\long_range_attack.cpp">
+      <Filter>State\ZombieState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\ZombieState\run_attack.cpp">
+      <Filter>State\ZombieState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Part\patrol_route_supporter.cpp">
+      <Filter>Part</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -850,7 +859,7 @@
     <ClInclude Include="SourceCode\State\PlayerState\roundhouse_kick.hpp">
       <Filter>State\PlayerState</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\State\PlayerState\run.hpp">
+    <ClInclude Include="SourceCode\State\PlayerState\player_run.hpp">
       <Filter>State\PlayerState</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\State\PlayerState\shot.hpp">
@@ -1153,9 +1162,6 @@
     <ClInclude Include="SourceCode\State\ZombieState\alert.hpp">
       <Filter>State\ZombieState</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\State\ZombieState\battle.hpp">
-      <Filter>State\ZombieState</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\State\ZombieState\investigate.hpp">
       <Filter>State\ZombieState</Filter>
     </ClInclude>
@@ -1212,6 +1218,18 @@
     </ClInclude>
     <ClInclude Include="SourceCode\State\ZombieState\grab_run.hpp">
       <Filter>State\ZombieState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\ZombieState\close_range_attack.hpp">
+      <Filter>State\ZombieState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\ZombieState\long_range_attack.hpp">
+      <Filter>State\ZombieState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\ZombieState\run_attack.hpp">
+      <Filter>State\ZombieState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Part\patrol_route_supporter.hpp">
+      <Filter>Part</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

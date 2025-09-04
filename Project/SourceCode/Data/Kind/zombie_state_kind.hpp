@@ -4,13 +4,15 @@ namespace zombie_state
 {
 	enum class AIStateKind
 	{
-		kWait,			// 待機
-		kPatrol,		// 巡回
-		kInvestigate,	// 調査
-		kSearch,		// 捜索
-		kAlert,			// 警戒
-		kTrack,			// 追跡
-		kBattle,		// 戦闘
+		kWait,					// 待機
+		kPatrol,				// 巡回
+		kInvestigate,			// 調査
+		kSearch,				// 捜索
+		kAlert,					// 警戒
+		kTrack,					// 追跡
+		kRunAttack,				// ダッシュ攻撃
+		kCloseRangeAttack,		// 近接攻撃
+		kLongRangeAttack,		// 遠距離攻撃
 	};
 
 	enum class MoveStateKind
@@ -21,14 +23,14 @@ namespace zombie_state
 
 	enum class ActionStateKind
 	{
-		kActionNull,	// NULL
-		kRun,			// ダッシュ
-		kGrab,			// 掴み
-		kGrabRun,		// 掴みダッシュ
-		kKnockback,		// ノックバック
-		kStandStun,		// 怯み(立ち状態)
-		kCrouchStun,	// 怯み(しゃがみ状態)
-		kPlayDead,		// 死んだふり
-		kDead,			// 死亡
+		kActionNull,			// NULL
+		kRun,					// ダッシュ
+		kGrab,					// 掴み
+		kGrabRun,				// 掴みダッシュ
+		kKnockback,				// ノックバック
+		kStandStun,				// 怯み(立ち状態)
+		kCrouchStun,			// 怯み(しゃがみ状態)
+		kPlayDead,				// 死んだふり
+		kDead,					// 死亡
 	};
 }

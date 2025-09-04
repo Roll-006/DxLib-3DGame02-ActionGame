@@ -37,25 +37,28 @@ void ZombieStateController::LateUpdate(std::shared_ptr<Zombie> zombie)
 
 void ZombieStateController::CreateState()
 {
-	m_states[typeid(zombie_state::Wait)]		= std::make_shared<zombie_state::Wait>();
-	m_states[typeid(zombie_state::Patrol)]		= std::make_shared<zombie_state::Patrol>();
-	m_states[typeid(zombie_state::Investigate)]	= std::make_shared<zombie_state::Investigate>();
-	m_states[typeid(zombie_state::Search)]		= std::make_shared<zombie_state::Search>();
-	m_states[typeid(zombie_state::Alert)]		= std::make_shared<zombie_state::Alert>();
-	m_states[typeid(zombie_state::Track)]		= std::make_shared<zombie_state::Track>();
-	m_states[typeid(zombie_state::Battle)]		= std::make_shared<zombie_state::Battle>();
+	m_states[typeid(zombie_state::Wait)]				= std::make_shared<zombie_state::Wait>();
+	m_states[typeid(zombie_state::Patrol)]				= std::make_shared<zombie_state::Patrol>();
+	m_states[typeid(zombie_state::Investigate)]			= std::make_shared<zombie_state::Investigate>();
+	m_states[typeid(zombie_state::Search)]				= std::make_shared<zombie_state::Search>();
+	m_states[typeid(zombie_state::Alert)]				= std::make_shared<zombie_state::Alert>();
+	m_states[typeid(zombie_state::Track)]				= std::make_shared<zombie_state::Track>();
+	m_states[typeid(zombie_state::RunAttack)]			= std::make_shared<zombie_state::RunAttack>();
+	m_states[typeid(zombie_state::CloseRangeAttack)]	= std::make_shared<zombie_state::CloseRangeAttack>();
+	m_states[typeid(zombie_state::LongRangeAttack)]		= std::make_shared<zombie_state::LongRangeAttack>();
 
-	m_states[typeid(zombie_state::MoveNull)]	= std::make_shared<zombie_state::MoveNull>();
-	m_states[typeid(zombie_state::Move)]		= std::make_shared<zombie_state::Move>();
+	m_states[typeid(zombie_state::MoveNull)]			= std::make_shared<zombie_state::MoveNull>();
+	m_states[typeid(zombie_state::Move)]				= std::make_shared<zombie_state::Move>();
 
-	m_states[typeid(zombie_state::ActionNull)]	= std::make_shared<zombie_state::ActionNull>();
-	m_states[typeid(zombie_state::Run)]			= std::make_shared<zombie_state::Run>();
-	m_states[typeid(zombie_state::Grab)]		= std::make_shared<zombie_state::Grab>();
-	m_states[typeid(zombie_state::Knockback)]	= std::make_shared<zombie_state::Knockback>();
-	m_states[typeid(zombie_state::StandStun)]	= std::make_shared<zombie_state::StandStun>();
-	m_states[typeid(zombie_state::CrouchStun)]	= std::make_shared<zombie_state::CrouchStun>();
-	m_states[typeid(zombie_state::PlayDead)]	= std::make_shared<zombie_state::PlayDead>();
-	m_states[typeid(zombie_state::Dead)]		= std::make_shared<zombie_state::Dead>();
+	m_states[typeid(zombie_state::ActionNull)]			= std::make_shared<zombie_state::ActionNull>();
+	m_states[typeid(zombie_state::Run)]					= std::make_shared<zombie_state::Run>();
+	m_states[typeid(zombie_state::Grab)]				= std::make_shared<zombie_state::Grab>();
+	m_states[typeid(zombie_state::GrabRun)]				= std::make_shared<zombie_state::Grab>();
+	m_states[typeid(zombie_state::Knockback)]			= std::make_shared<zombie_state::Knockback>();
+	m_states[typeid(zombie_state::StandStun)]			= std::make_shared<zombie_state::StandStun>();
+	m_states[typeid(zombie_state::CrouchStun)]			= std::make_shared<zombie_state::CrouchStun>();
+	m_states[typeid(zombie_state::PlayDead)]			= std::make_shared<zombie_state::PlayDead>();
+	m_states[typeid(zombie_state::Dead)]				= std::make_shared<zombie_state::Dead>();
 }
 
 void ZombieStateController::AddStopStatePair()

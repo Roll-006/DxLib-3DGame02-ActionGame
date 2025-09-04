@@ -8,7 +8,9 @@
 #include "../State/ZombieState/search.hpp"
 #include "../State/ZombieState/alert.hpp"
 #include "../State/ZombieState/track.hpp"
-#include "../State/ZombieState/battle.hpp"
+#include "../State/ZombieState/run_attack.hpp"
+#include "../State/ZombieState/close_range_attack.hpp"
+#include "../State/ZombieState/long_range_attack.hpp"
 
 #include "../State/ZombieState/zombie_move_null.hpp"
 #include "../State/ZombieState/zombie_move.hpp"

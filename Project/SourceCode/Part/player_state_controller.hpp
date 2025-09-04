@@ -9,7 +9,7 @@
 
 #include "../State/PlayerState/player_action_null.hpp"
 #include "../State/PlayerState/crouch.hpp"
-#include "../State/PlayerState/run.hpp"
+#include "../State/PlayerState/player_run.hpp"
 #include "../State/PlayerState/turn_around.hpp"
 #include "../State/PlayerState/crouch_turn_around.hpp"
 

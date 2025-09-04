@@ -6,11 +6,11 @@
 
 namespace zombie_state
 {
-	class Battle final : public AIStateBase<Zombie>
+	class LongRangeAttack final : public AIStateBase<Zombie>
 	{
 	public:
-		Battle();
-		~Battle() override;
+		LongRangeAttack();
+		~LongRangeAttack() override;
 
 		void Update		(std::shared_ptr<Zombie> obj) override;
 		void LateUpdate	(std::shared_ptr<Zombie> obj) override;
