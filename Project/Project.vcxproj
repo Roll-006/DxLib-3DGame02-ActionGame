@@ -267,6 +267,7 @@
     <ClCompile Include="SourceCode\State\PlayerState\stealth_kill.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\suplex.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\turn_around.cpp" />
+    <ClCompile Include="SourceCode\State\ZombieState\grab_run.cpp" />
     <ClCompile Include="SourceCode\State\ZombieState\zombie_move_null.cpp" />
     <ClCompile Include="SourceCode\State\ZombieState\alert.cpp" />
     <ClCompile Include="SourceCode\State\ZombieState\battle.cpp" />
@@ -519,6 +520,7 @@
     <ClInclude Include="SourceCode\State\PlayerState\stealth_kill.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\suplex.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\turn_around.hpp" />
+    <ClInclude Include="SourceCode\State\ZombieState\grab_run.hpp" />
     <ClInclude Include="SourceCode\State\ZombieState\zombie_move_null.hpp" />
     <ClInclude Include="SourceCode\State\ZombieState\alert.hpp" />
     <ClInclude Include="SourceCode\State\ZombieState\battle.hpp" />

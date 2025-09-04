@@ -24,6 +24,7 @@ namespace zombie_state
 		kActionNull,	// NULL
 		kRun,			// ダッシュ
 		kGrab,			// 掴み
+		kGrabRun,		// 掴みダッシュ
 		kKnockback,		// ノックバック
 		kStandStun,		// 怯み(立ち状態)
 		kCrouchStun,	// 怯み(しゃがみ状態)

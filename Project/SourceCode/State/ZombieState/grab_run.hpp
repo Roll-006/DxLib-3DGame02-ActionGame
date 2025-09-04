@@ -6,11 +6,11 @@
 
 namespace zombie_state
 {
-	class Grab final : public ActionStateBase<Zombie>
+	class GrabRun final : public ActionStateBase<Zombie>
 	{
 	public:
-		Grab();
-		~Grab() override;
+		GrabRun();
+		~GrabRun() override;
 
 		void Update		(std::shared_ptr<Zombie> obj) override;
 		void LateUpdate	(std::shared_ptr<Zombie> obj) override;

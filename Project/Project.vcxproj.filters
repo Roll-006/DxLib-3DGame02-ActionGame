@@ -455,6 +455,9 @@
     <ClCompile Include="SourceCode\Object\rocket_bomb_explosion_effect.cpp">
       <Filter>Object</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\State\ZombieState\grab_run.cpp">
+      <Filter>State\ZombieState</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\character_base.hpp">
@@ -1206,6 +1209,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Object\rocket_bomb_explosion_effect.hpp">
       <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\ZombieState\grab_run.hpp">
+      <Filter>State\ZombieState</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

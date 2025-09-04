@@ -1,7 +1,7 @@
 #include "grab.hpp"
 
 zombie_state::Grab::Grab() :
-	ActionStateBase(static_cast<int>(zombie_state::ActionStateKind::kActionNull))
+	ActionStateBase(static_cast<int>(zombie_state::ActionStateKind::kGrab))
 {
 
 }
