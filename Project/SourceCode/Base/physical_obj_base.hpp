@@ -28,6 +28,7 @@ public:
 	void RemoveHitTriangles();
 
 	void RemoveHitCollider();
+	void RemoveHitCollider(const std::shared_ptr<Collider> collider);
 
 	/// @brief 重力を与える(適用させる)
 	/// @brief 物理管理クラスから適用される

@@ -1,4 +1,5 @@
 ﻿#include "collider.hpp"
+#include "../Base/physical_obj_base.hpp"
 
 Collider::Collider(const ColliderKind kind, const std::shared_ptr<ShapeBase> shape, PhysicalObjBase* owner_obj) :
 	m_kind					(kind),
@@ -31,6 +32,14 @@ Collider::Collider(const ColliderKind kind, const int model_handle, PhysicalObjB
 	m_owner_obj				(owner_obj)
 {
 	JudgeValidShape();
+}
+
+Collider::~Collider()
+{
+
+	// FIXME : デストラクタが通っていない
+	m_owner_obj->RemoveHitCollider(shared_from_this());
+	m_owner_obj = nullptr;
 }
 
 

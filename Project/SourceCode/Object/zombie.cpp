@@ -103,7 +103,8 @@ void Zombie::Draw() const
 	DrawLine3D(pos, pos + axes.y_axis * 100, 0x00ff22);
 	DrawLine3D(pos, pos + axes.z_axis * 100, 0x0077ff);
 
-	DrawFormatString(800, 0, 0xffffff, "%f, %f, %f", pos.x, pos.y, pos.z);
+	DrawFormatString(800,  0, 0xffffff, "%f, %f, %f", pos.x, pos.y, pos.z);
+	DrawFormatString(800, 20, 0xffffff, "%d", m_hit_collider.size());
 }
 
 void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)

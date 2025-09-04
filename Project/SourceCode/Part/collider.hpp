@@ -6,13 +6,13 @@
 
 class PhysicalObjBase;
 
-class Collider final
+class Collider final : public std::enable_shared_from_this<Collider>
 {
 public:
 	Collider(const ColliderKind kind, const std::shared_ptr<ShapeBase> shape, PhysicalObjBase* owner_obj);
 	Collider(const ColliderKind kind, const std::shared_ptr<ShapeBase> shape, const bool is_closest_only_hit, PhysicalObjBase* owner_obj);
 	Collider(const ColliderKind kind, const int model_handle, PhysicalObjBase* owner_obj);
-	~Collider() { m_owner_obj = nullptr; }
+	~Collider();
 
 	/// @brief すべてのコライダーとの衝突判定を有効にする(レイキャストでのみ有効な関数)
 	void EnableAllRayCastHit();

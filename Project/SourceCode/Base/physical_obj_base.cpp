@@ -39,6 +39,11 @@ void PhysicalObjBase::RemoveHitCollider()
 	}
 }
 
+void PhysicalObjBase::RemoveHitCollider(const std::shared_ptr<Collider> collider)
+{
+	m_hit_collider.erase(collider);
+}
+
 void PhysicalObjBase::ApplyGravity(const float gravity_acceleration, const float max_gravity)
 {
 	// ’n–Ê‚É‚¢‚éê‡‚Íd—Í‚ğ—^‚¦‚È‚¢
