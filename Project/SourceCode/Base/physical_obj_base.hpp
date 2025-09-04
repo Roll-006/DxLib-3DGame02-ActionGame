@@ -27,6 +27,8 @@ public:
 	/// @brief 衝突した三角形の登録を解除する
 	void RemoveHitTriangles();
 
+	void RemoveHitCollider();
+
 	/// @brief 重力を与える(適用させる)
 	/// @brief 物理管理クラスから適用される
 	/// @param gravity_acceleration 重力加速度 (デルタタイム適用前)
@@ -74,7 +76,8 @@ protected:
 	MassKind m_mass_kind;
 
 	std::unordered_map<ColliderKind, std::shared_ptr<Collider>> m_collider;
+	std::unordered_map<std::shared_ptr<Collider>, bool> m_hit_collider;
 
 private:
-	int m_model_handle;
+	int		m_model_handle;
 };

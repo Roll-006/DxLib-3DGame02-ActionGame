@@ -55,7 +55,8 @@ public:
 	[[nodiscard]] std::unordered_map<int, std::vector<Triangle>>	GetHitModelTriangles()	const { return m_hit_model_triangles; }
 
 	/// @brief 最も近いコライダーとのみ衝突を許可するかを判定(レイキャストでのみ有効な関数)
-	[[nodiscard]] bool IsClosestOnlyHit() const { return m_is_closest_only_hit; }
+	[[nodiscard]] bool												IsClosestOnlyHit()		const { return m_is_closest_only_hit; }
+	[[nodiscard]] bool												IsOneCollision()		const { return m_is_one_collision; }
 	#pragma endregion
 
 private:
@@ -67,6 +68,7 @@ private:
 	std::shared_ptr<ShapeBase>	m_shape;
 	int							m_model_handle;
 	bool						m_is_closest_only_hit;						// 自身と最も近いコライダーのみ衝突を許可する(レイキャストでのみ有効)
+	bool						m_is_one_collision;							// 衝突判定を一度のみ許可する
 	PhysicalObjBase*			m_owner_obj;
 
 	std::vector<Triangle>							m_hit_triangles;		// 衝突した三角形

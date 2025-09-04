@@ -114,6 +114,9 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 		// ロケット弾着弾時の爆発エフェクトとの衝突
 		if (hit_collider_pair.target_collider->GetOwnerObj()->GetName() == ObjName.ROCKET_BOMB_HIT_EXPLOSION_EFFECT)
 		{
+			if (m_hit_collider.count(hit_collider_pair.target_collider)) { return; }
+			m_hit_collider[hit_collider_pair.target_collider] = hit_collider_pair.target_collider->IsOneCollision();
+
 			if (m_is_invincible) { return; }
 			
 			OnCollideWithExplosion(std::static_pointer_cast<Sphere>(hit_collider_pair.target_collider->GetShape()));
@@ -137,8 +140,8 @@ bool Zombie::IsTargetInSight(const VECTOR& target_pos)
 	const auto head_pos		= MGetTranslateElem(head_mat);
 	const auto head_axes	= math::ConvertRotMatrixToAxes(head_mat);
 
-	const auto fov			= 60.0f * math::kDegToRad;
-	const auto max_distance = 200.0f;
+	const auto fov			= 80.0f * math::kDegToRad;
+	const auto max_distance = 300.0f;
 	const auto distance_v	= target_pos - head_pos;
 	const auto distance		= VSize(distance_v);
 	const auto dir			= v3d::GetNormalizedV(distance_v);

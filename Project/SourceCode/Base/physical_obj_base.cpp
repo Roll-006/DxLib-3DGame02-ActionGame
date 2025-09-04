@@ -24,6 +24,21 @@ void PhysicalObjBase::RemoveHitTriangles()
 	}
 }
 
+void PhysicalObjBase::RemoveHitCollider()
+{
+	for (auto itr = m_hit_collider.begin(); itr != m_hit_collider.end(); )
+	{
+		if (!itr->second)
+		{
+			itr = m_hit_collider.erase(itr);
+		}
+		else
+		{
+			++itr;
+		}
+	}
+}
+
 void PhysicalObjBase::ApplyGravity(const float gravity_acceleration, const float max_gravity)
 {
 	// ’n–Ê‚É‚¢‚éê‡‚Íd—Í‚ğ—^‚¦‚È‚¢

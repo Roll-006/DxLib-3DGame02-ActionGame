@@ -17,6 +17,7 @@ void CollisionManager::Update()
 	{
 		obj->ReleaseLanding();
 		obj->RemoveHitTriangles();
+		obj->RemoveHitCollider();
 	}
 
 	const auto collider_pairs = CreateHitColliderPairs();

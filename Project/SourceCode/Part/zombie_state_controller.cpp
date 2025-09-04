@@ -216,6 +216,7 @@ bool ZombieStateController::TryTrack(std::shared_ptr<Zombie> zombie)
 bool ZombieStateController::TryRun(std::shared_ptr<Zombie> zombie)
 {
 	if (!m_target_character) { return false; }
+	if (m_move_state.at(TimeKind::kCurrent)->GetStateKind() != static_cast<int>(zombie_state::MoveStateKind::kMove)) { return false; }
 
 	const auto pos			= zombie->GetTransform()->GetPos(CoordinateKind::kWorld);
 	const auto target_pos	= m_target_character->GetTransform()->GetPos(CoordinateKind::kWorld);
