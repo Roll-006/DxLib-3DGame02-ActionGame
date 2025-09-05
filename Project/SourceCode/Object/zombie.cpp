@@ -31,9 +31,9 @@ Zombie::Zombie() :
 	m_collider_creator->CreateCapsuleCollider	(this, m_modeler, kCapsuleRadius);
 	m_collider_creator->CreateLandingTrigger	(this, kLandingTriggerRadius);
 	m_collider_creator->CreateHeadTrigger		(this, m_modeler, kHeadTriggerRadius);
-	m_collider_creator->CreateBodyTrigger		(this, m_modeler, kBodyTriggerRadius);
+	m_collider_creator->CreateBodyTrigger		(this, m_modeler, kUpBodyTriggerRadius, kDownBodyTriggerRadius);
+	m_collider_creator->CreateArmTrigger		(this, m_modeler, kUpperArmTriggerRadius, kForearmTriggerRadius, kHandTriggerRadius);
 	m_collider_creator->CreateLegTrigger		(this, m_modeler, kUpLegTriggerRadius, kDownLegTriggerRadius);
-	m_collider_creator->CreateMeshTrigger		(this, m_modeler);
 }
 
 Zombie::~Zombie()
@@ -61,6 +61,7 @@ void Zombie::Update()
 	m_collider_creator->CalcCapsuleColliderLength(this, m_modeler);
 	m_collider_creator->CalcHeadTriggerPos(m_modeler, m_collider);
 	m_collider_creator->CalcBodyTriggerPos(m_modeler, m_collider);
+	m_collider_creator->CalcArmTriggerPos (m_modeler, m_collider);
 	m_collider_creator->CalcLegTriggerPos (m_modeler, m_collider);
 
 	ApplyLookDirToRot(m_look_dir);
@@ -125,6 +126,10 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 {
 	switch (hit_collider_pair.owner_collider->GetColliderKind())
 	{
+	case ColliderKind::kLandingTrigger:
+		m_is_landing = true;
+		break;
+
 	case ColliderKind::kCollider:
 		// ƒƒPƒbƒg’e’…’eŽž‚Ì”š”­ƒGƒtƒFƒNƒg‚Æ‚ÌÕ“Ë
 		if (hit_collider_pair.target_collider->GetOwnerObj()->GetName() == ObjName.ROCKET_BOMB_HIT_EXPLOSION_EFFECT)
@@ -139,8 +144,19 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 		}
 		break;
 
-	case ColliderKind::kLandingTrigger:
-		m_is_landing = true;
+	case ColliderKind::kHeadTrigger:
+		break;
+
+	case ColliderKind::kUpBodyTrigger:
+	case ColliderKind::kDownBodyTrigger:
+		break;
+
+	case ColliderKind::kLeftUpLegTrigger:
+	case ColliderKind::kLeftDownLegTrigger:
+		break;
+
+	case ColliderKind::kRightUpLegTrigger:
+	case ColliderKind::kRightDownLegTrigger:
 		break;
 
 	default:
@@ -150,7 +166,7 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 bool Zombie::IsTargetInSight(const VECTOR& target_pos)
 {
-	// “ª•”‚ðŠî€‚ÉŽ‹ŠE‚ðì‚èo‚·
+	// “ª•”‚ðŠî€‚É‰~ó‚ÌŽ‹ŠE‚ðì‚èo‚·
 	auto	   head_mat		= MV1GetFrameLocalWorldMatrix(m_modeler->GetModelHandle(), MV1SearchFrame(m_modeler->GetModelHandle(), BonePath.HEAD));
 	const auto head_pos		= MGetTranslateElem(head_mat);
 	const auto head_axes	= math::ConvertRotMatrixToAxes(head_mat);

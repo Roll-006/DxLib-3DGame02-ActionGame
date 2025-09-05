@@ -361,6 +361,13 @@ namespace math
 	/// @return 線分と平面が同一平面上にある場合は不定値(受け取り側でstd::isfinite()を使用する必要あり)
 	[[nodiscard]] std::optional<VECTOR> GetIntersectionSegmentAndPlane(const Segment& segment, const Plane& plane);
 
+	/// @brief 線分とカプセルの交点を取得
+	/// @brief 受け取り側で、戻り値がnulloptである場合と不定値である場合を考慮する必要あり
+	/// @return 一点で交差する場合は交点
+	/// @return 該当する値がない場合はnullopt(if(戻り値){}で判定する必要あり)
+	/// @return 線分と平面が同一平面上にある場合は不定値(受け取り側でstd::isfinite()を使用する必要あり)
+	//[[nodiscard]] std::optional<VECTOR> GetIntersectionSegmentAndCapsule(const Segment& segment, const Capsule& capsule);
+
 	/// @brief 二直線が同一直線上にあるかを判定
 	[[nodiscard]] bool IsSameLine(const Line& line1, const Line& line2);
 
@@ -392,11 +399,11 @@ namespace math
 	#pragma region 最短距離
 	/// @brief 点と直線の最短距離を取得
 	[[nodiscard]] float GetDistancePointToLine			(const VECTOR&		point,		const Line&		line);
-	float               GetDistancePointToLine			(const VECTOR&		point,		const Line&		line,		VECTOR& h, float& t);
+	[[nodiscard]] float GetDistancePointToLine			(const VECTOR&		point,		const Line&		line,		VECTOR& h, float& t);
 
 	/// @brief 点と線分の最短距離を取得
 	[[nodiscard]] float GetDistancePointToSegment		(const VECTOR&		point,		const Segment&	segment);
-	float               GetDistancePointToSegment		(const VECTOR&		point,		const Segment&	segment,	VECTOR& h, float& t);
+	[[nodiscard]] float GetDistancePointToSegment		(const VECTOR&		point,		const Segment&	segment,	VECTOR& h, float& t);
 
 	/// @brief 点と平面(無限に広がる面)の最短距離を取得
 	[[nodiscard]] float GetDistancePointToPlane			(const VECTOR&		point,		const Plane&	plane);
@@ -409,11 +416,11 @@ namespace math
 
 	/// @brief 直線と直線の最短距離を取得
 	[[nodiscard]] float GetDistanceLineToLine			(const Line&		line1,		const Line&		line2);
-	float               GetDistanceLineToLine			(const Line&		line1,		const Line&		line2,		VECTOR& h1, VECTOR& h2, float& t1, float& t2);
+	[[nodiscard]] float GetDistanceLineToLine			(const Line&		line1,		const Line&		line2,		VECTOR& h1, VECTOR& h2, float& t1, float& t2);
 
 	/// @brief 線分と線分の最短距離を取得
 	[[nodiscard]] float GetDistanceSegmentToSegment		(const Segment&		segment1,	const Segment&	segment2);
-	float               GetDistanceSegmentToSegment		(const Segment&		segment1,	const Segment&	segment2,	VECTOR& h1, VECTOR& h2, float& t1, float& t2);
+	[[nodiscard]] float GetDistanceSegmentToSegment		(const Segment&		segment1,	const Segment&	segment2,	VECTOR& h1, VECTOR& h2, float& t1, float& t2);
 
 	/// @brief 線分と平面(無限に広がる面)の最短距離を取得
 	[[nodiscard]] float GetDistanceSegmentToPlane		(const Segment&		segment,	const Plane&	plane);

@@ -7,24 +7,27 @@
 class CharacterColliderCreator
 {
 public:
-	#pragma region コライダーの作成
-	/// @brief カプセルコライダーを作成
+	#pragma region コライダーの生成
+	/// @brief カプセルコライダーを生成
 	void CreateCapsuleCollider	(PhysicalObjBase* physical_obj, const std::shared_ptr<Modeler> modeler, const float capsule_radius);
 
-	/// @brief 着地トリガーを作成
-	/// @brief WARNING : カプセルコライダーが作成された後に呼び出す必要あり
+	/// @brief 着地トリガーを生成
+	/// @brief WARNING : カプセルコライダーが生成された後に呼び出す必要あり
 	void CreateLandingTrigger	(PhysicalObjBase* physical_obj, const float sphere_radius);
 	
-	/// @brief 頭部トリガーを作成
+	/// @brief 頭部トリガーを生成
 	void CreateHeadTrigger		(PhysicalObjBase* physical_obj, const std::shared_ptr<Modeler> modeler, const float sphere_radius);
 	
-	/// @brief 胴体トリガーを作成
-	void CreateBodyTrigger		(PhysicalObjBase* physical_obj, const std::shared_ptr<Modeler> modeler, const float capsule_radius);
+	/// @brief 胴体トリガーを生成
+	void CreateBodyTrigger		(PhysicalObjBase* physical_obj, const std::shared_ptr<Modeler> modeler, const float up_body_capsule_radius, const float down_body_capsule_radius);
 	
-	/// @brief 脚部トリガーを作成
+	/// @brief 腕部トリガーを生成
+	void CreateArmTrigger		(PhysicalObjBase* physical_obj, const std::shared_ptr<Modeler> modeler, const float up_arm_capsule_radius, const float down_arm_capsule_radius, const float hand_capsule_radius);
+
+	/// @brief 脚部トリガーを生成
 	void CreateLegTrigger		(PhysicalObjBase* physical_obj, const std::shared_ptr<Modeler> modeler, const float up_leg_capsule_radius, const float down_leg_capsule_radius);
 	
-	/// @brief メッシュトリガーを作成
+	/// @brief メッシュトリガーを生成
 	void CreateMeshTrigger		(PhysicalObjBase* phsyical_obj, const std::shared_ptr<Modeler> modeler);
 	#pragma endregion
 
@@ -37,6 +40,10 @@ public:
 	/// @brief 胴体トリガーの位置を計算
 	/// @brief WARNING : トリガーがカプセルであることを前提としている(軽量化を優先)
 	void CalcBodyTriggerPos(std::shared_ptr<Modeler> modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>> collider);
+
+	/// @brief 腕部トリガーの位置を計算
+	/// @brief WARNING : トリガーがカプセルであることを前提としている(軽量化を優先)
+	void CalcArmTriggerPos (std::shared_ptr<Modeler> modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>> collider);
 
 	/// @brief 脚部トリガーの位置を計算
 	/// @brief WARNING : トリガーがカプセルであることを前提としている(軽量化を優先)

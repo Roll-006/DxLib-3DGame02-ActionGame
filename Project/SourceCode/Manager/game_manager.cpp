@@ -51,6 +51,23 @@ void GameManager::Run()
 		m_scene_manager->DrawToShadowMap();
 		m_scene_manager->Draw();
 
+
+
+		Capsule c = Capsule(VGet(0, 0,   0), VGet(0, 80,  0), 20);
+		Segment s = Segment(VGet(0, 0, -40), VGet(0, 40, 40));
+		VECTOR h1, h2;
+		float t1, t2;
+
+		float dist = math::GetDistanceSegmentToSegment(c.GetSegment(), s, h1, h2, t1, t2);
+
+		c.Draw(true, 0, 0xffffff);
+		s.Draw(true, 0, 0xff0000);
+		DrawSphere3D(h1, 3, 8, 0xffffff, 0xffffff, TRUE);
+		//DrawSphere3D(h2, 3, 8, 0xff0000, 0xff0000, TRUE);
+		DrawLine3D(h1, h2, 0xffffff);
+
+
+
 		GameTimeManager::GetInstance()->Draw();
 		GameTimeManager::GetInstance()->WaitTime();
 		ScreenFlip();

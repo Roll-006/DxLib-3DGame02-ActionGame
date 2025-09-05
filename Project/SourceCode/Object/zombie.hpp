@@ -57,9 +57,13 @@ private:
 	static constexpr float kRunSpeed 				= 70.0f;
 
 	static constexpr float kCapsuleRadius			= 8.0f;
-	static constexpr float kHeadTriggerRadius		= 4.5f;
-	static constexpr float kBodyTriggerRadius		= 6.0f;
 	static constexpr float kLandingTriggerRadius	= 6.0f;
+	static constexpr float kHeadTriggerRadius		= 5.0f;
+	static constexpr float kUpBodyTriggerRadius		= 6.0f;
+	static constexpr float kDownBodyTriggerRadius	= 6.0f;
+	static constexpr float kUpperArmTriggerRadius	= 2.5f;
+	static constexpr float kForearmTriggerRadius	= 2.2f;
+	static constexpr float kHandTriggerRadius		= 2.0f;
 	static constexpr float kUpLegTriggerRadius		= 3.5f;
 	static constexpr float kDownLegTriggerRadius	= 2.5f;
 
