@@ -53,6 +53,7 @@ public:
 	[[nodiscard]] int	GetOriginEffectHandle()		 const override { return m_origin_effect_handle; }
 	[[nodiscard]] int	GetPlayingEffectHandle()	 const override { return m_playing_effect_handle; }
 	[[nodiscard]] int   GetReturnPoolTriggerHandle() const override { return m_return_pool_trigger_handle; }
+	[[nodiscard]] float GetPower()					 const			{ return kPower; }
 	[[nodiscard]] bool	IsReturnPool() override;
 	#pragma endregion
 
@@ -70,6 +71,7 @@ private:
 	static constexpr float kScale			= 1.03f;
 	static constexpr float kHitRadius		= 110.0f;
 	static constexpr float kTriggerDeadTime = 1.5f;
+	static constexpr float kPower			= 3000.0f;
 
 	int			m_origin_effect_handle;			// エフェクトハンドル
 	int			m_playing_effect_handle;		// 再生中のエフェクトハンドル

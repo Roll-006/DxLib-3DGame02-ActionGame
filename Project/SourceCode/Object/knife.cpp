@@ -10,6 +10,8 @@ Knife::Knife() :
 			  kAttachOffsetPos, kAttachOffsetAngle, kAttachOffsetScale);
 
 	CreateAttackTrigger(kTriggerOffsetPos, kTriggerRadius);
+
+	m_power = kPower;
 }
 
 Knife::~Knife()

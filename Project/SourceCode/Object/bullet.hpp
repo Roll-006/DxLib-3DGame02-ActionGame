@@ -28,9 +28,10 @@ public:
 	/// @brief ’eŠÛ‚ª”­ŽË‚³‚ê‚½
 	void OnShot(GunBase& gun) override;
 
-	[[nodiscard]] float	GetDeltaTime() const override;
-	[[nodiscard]] bool  IsReturnPool() override;
-	[[nodiscard]] std::string GetShotOwnerName() const override { return m_shot_owner_name; }
+	[[nodiscard]] float			GetDeltaTime()		const	override;
+	[[nodiscard]] float			GetPower()			const	override { return m_power; }
+	[[nodiscard]] std::string	GetShotOwnerName()	const	override { return m_shot_owner_name; }
+	[[nodiscard]] bool			IsReturnPool()				override;
 
 private:
 	void Move();
@@ -46,4 +47,5 @@ private:
 	float  m_move_speed;	// ˆÚ“®‘¬“x
 	float  m_deceleration;	// Œ¸‘¬“x
 	float  m_range;			// ŽË’ö
+	float  m_power;
 };

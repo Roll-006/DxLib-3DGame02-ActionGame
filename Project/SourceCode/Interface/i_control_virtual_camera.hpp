@@ -17,7 +17,7 @@ public:
 	#pragma endregion
 
 	/// @brief 視点リセット中かを取得
-	virtual [[nodiscard]] bool IsInitAiming() const abstract;
+	[[nodiscard]] virtual bool IsInitAiming() const abstract;
 
 protected:
 	virtual void InitMove()					abstract;

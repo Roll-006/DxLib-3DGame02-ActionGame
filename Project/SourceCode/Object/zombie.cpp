@@ -120,10 +120,21 @@ void Zombie::Draw() const
 	DrawFormatString(800,  0, 0xffffff, "%f, %f, %f", pos.x, pos.y, pos.z);
 	DrawFormatString(800, 20, 0xffffff, "%d", m_hit_collider.size());
 	DrawFormatString(800, 40, 0xffffff, "%f", m_move_speed);
+
+	DrawFormatString(800,  80, 0xffffff, "main HP		: %f", m_hit_points.at(HitPointsPartKind::kMain)->GetCurrentHitPoints());
+	DrawFormatString(800, 100, 0xffffff, "head HP		: %f", m_hit_points.at(HitPointsPartKind::kHead)->GetCurrentHitPoints());
+	DrawFormatString(800, 120, 0xffffff, "body HP		: %f", m_hit_points.at(HitPointsPartKind::kBody)->GetCurrentHitPoints());
+	DrawFormatString(800, 140, 0xffffff, "left arm HP	: %f", m_hit_points.at(HitPointsPartKind::kLeftArm)->GetCurrentHitPoints());
+	DrawFormatString(800, 160, 0xffffff, "right arm HP  : %f", m_hit_points.at(HitPointsPartKind::kRightArm)->GetCurrentHitPoints());
+	DrawFormatString(800, 180, 0xffffff, "left leg HP	: %f", m_hit_points.at(HitPointsPartKind::kLeftLeg)->GetCurrentHitPoints());
+	DrawFormatString(800, 200, 0xffffff, "right leg HP	: %f", m_hit_points.at(HitPointsPartKind::kRightLeg)->GetCurrentHitPoints());
+	DrawFormatString(800, 220, 0xffffff, "is_invincible	: %d", m_is_invincible);
 }
 
 void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 {
+	PhysicalObjBase* target_obj = hit_collider_pair.target_collider->GetOwnerObj();
+
 	switch (hit_collider_pair.owner_collider->GetColliderKind())
 	{
 	case ColliderKind::kLandingTrigger:
@@ -132,7 +143,7 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 	case ColliderKind::kCollider:
 		// ロケット弾着弾時の爆発エフェクトとの衝突
-		if (hit_collider_pair.target_collider->GetOwnerObj()->GetName() == ObjName.ROCKET_BOMB_HIT_EXPLOSION_EFFECT)
+		if (target_obj->GetName() == ObjName.ROCKET_BOMB_HIT_EXPLOSION_EFFECT)
 		{
 			if (m_hit_collider.count(hit_collider_pair.target_collider)) { return; }
 			m_hit_collider[hit_collider_pair.target_collider] = hit_collider_pair.target_collider->IsOneCollision();
@@ -140,23 +151,63 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 			if (m_is_invincible) { return; }
 			
 			OnCollideWithExplosion(std::static_pointer_cast<Sphere>(hit_collider_pair.target_collider->GetShape()));
-			OnDamage();
+			
 		}
 		break;
 
 	case ColliderKind::kHeadTrigger:
+		if (target_obj->GetName() == ObjName.BULLET)
+		{
+			OnDamage(HitPointsPartKind::kHead,		dynamic_cast<Bullet*>(target_obj)->GetPower());
+			OnDamage(HitPointsPartKind::kMain,		dynamic_cast<Bullet*>(target_obj)->GetPower());
+		}
 		break;
 
 	case ColliderKind::kUpBodyTrigger:
 	case ColliderKind::kDownBodyTrigger:
+		if (target_obj->GetName() == ObjName.BULLET)
+		{
+			OnDamage(HitPointsPartKind::kBody,		dynamic_cast<Bullet*>(target_obj)->GetPower());
+			OnDamage(HitPointsPartKind::kMain,		dynamic_cast<Bullet*>(target_obj)->GetPower());
+		}
+		break;
+
+	case ColliderKind::kLeftUpperArmTrigger:
+	case ColliderKind::kLeftForearmTrigger:
+	case ColliderKind::kLeftHandTrigger:
+		if (target_obj->GetName() == ObjName.BULLET)
+		{
+			OnDamage(HitPointsPartKind::kLeftArm,	dynamic_cast<Bullet*>(target_obj)->GetPower());
+			OnDamage(HitPointsPartKind::kMain,		dynamic_cast<Bullet*>(target_obj)->GetPower());
+		}
+		break;
+
+	case ColliderKind::kRightUpperArmTrigger:
+	case ColliderKind::kRightForearmTrigger:
+	case ColliderKind::kRightHandTrigger:
+		if (target_obj->GetName() == ObjName.BULLET)
+		{
+			OnDamage(HitPointsPartKind::kRightArm,	dynamic_cast<Bullet*>(target_obj)->GetPower());
+			OnDamage(HitPointsPartKind::kMain,		dynamic_cast<Bullet*>(target_obj)->GetPower());
+		}
 		break;
 
 	case ColliderKind::kLeftUpLegTrigger:
 	case ColliderKind::kLeftDownLegTrigger:
+		if (target_obj->GetName() == ObjName.BULLET)
+		{
+			OnDamage(HitPointsPartKind::kLeftLeg,	dynamic_cast<Bullet*>(target_obj)->GetPower());
+			OnDamage(HitPointsPartKind::kMain,		dynamic_cast<Bullet*>(target_obj)->GetPower());
+		}
 		break;
 
 	case ColliderKind::kRightUpLegTrigger:
 	case ColliderKind::kRightDownLegTrigger:
+		if (target_obj->GetName() == ObjName.BULLET)
+		{
+			OnDamage(HitPointsPartKind::kRightLeg,	dynamic_cast<Bullet*>(target_obj)->GetPower());
+			OnDamage(HitPointsPartKind::kMain,		dynamic_cast<Bullet*>(target_obj)->GetPower());
+		}
 		break;
 
 	default:

@@ -40,6 +40,7 @@ public:
 
 private:
 	void OnCollideWithExplosion(const std::shared_ptr<Sphere> sphere);
+	void OnCollideWithBullet();
 
 	void CalcLookDir();
 	void CalcMoveVelocity();

@@ -32,6 +32,7 @@ public:
 
 	[[nodiscard]] float						GetDeltaTime()	 const override;
 	[[nodiscard]] std::shared_ptr<Modeler>	GetModeler()	 const			{ return m_modeler; }
+	[[nodiscard]] float						GetPower()		 const			{ return m_power; }
 	[[nodiscard]] std::string				GetOwnerName()	 const			{ return m_owner_name; }
 	[[nodiscard]] ItemKind					GetItemKind()	 const override	{ return m_item_kind; }
 	[[nodiscard]] WeaponKind				GetWeaponKind()	 const			{ return m_weapon_kind; }
@@ -64,6 +65,7 @@ protected:
 	std::shared_ptr<Modeler> m_modeler;
 	std::shared_ptr<Modeler> m_owner_modeler;	// 武器の持ち主であるオブジェクトのモデラー
 	std::string				 m_owner_name;
+	float					 m_power;
 	
 private:
 	VECTOR m_hold_offset_pos;		// 手に持たれる際のオフセット座標

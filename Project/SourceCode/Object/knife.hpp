@@ -26,6 +26,8 @@ private:
 	static constexpr VECTOR kAttachOffsetAngle	= { 270.0f * math::kDegToRad, 90.0f * math::kDegToRad, 0.0f };
 	static constexpr float  kAttachOffsetScale	= 0.6f;
 
+	static constexpr float  kPower				= 30.0f;
+
 	static constexpr VECTOR kTriggerOffsetPos	= { 0.0f, 0.0f, 15.0f };
 	static constexpr float  kTriggerRadius		= 5.0f;
 };

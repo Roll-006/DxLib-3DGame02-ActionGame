@@ -7,7 +7,9 @@ public:
 	virtual ~IBullet() = default;
 
 	virtual void OnShot(GunBase& gun) abstract;
-	virtual [[nodiscard]] std::string GetShotOwnerName() const abstract;
+
+	[[nodiscard]] virtual float			GetPower()			const abstract;
+	[[nodiscard]] virtual std::string	GetShotOwnerName()	const abstract;
 
 protected:
 	virtual void CalcRayPos() abstract;

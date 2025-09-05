@@ -12,7 +12,8 @@ RocketBomb::RocketBomb() :
 	m_first_pos				(v3d::GetZeroV()),
 	m_move_speed			(0.0f),
 	m_deceleration			(0.0f),
-	m_range					(0.0f)
+	m_range					(0.0f),
+	m_power					(0.0f)
 {
 	SetColliderModelHandle(m_modeler->GetModelHandle());
 
@@ -117,6 +118,7 @@ void RocketBomb::OnShot(GunBase& gun)
 	m_move_speed		= gun.GetInitialVelocity();
 	m_deceleration		= gun.GetDeceleration();
 	m_range				= gun.GetRange();
+	m_power				= gun.GetPower();
 
 	const Event<OnShotBulletData> event = { EventKind::kOnShotBullet, { GetName(), gun.GetOwnerName(), GetObjHandle(), m_transform}};
 	m_subject->Notify(event);

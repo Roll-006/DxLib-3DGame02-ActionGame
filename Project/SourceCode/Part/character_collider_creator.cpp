@@ -99,23 +99,25 @@ void CharacterColliderCreator::CalcBodyTriggerPos(const std::shared_ptr<Modeler>
 	const auto model_handle = modeler->GetModelHandle();
 
 	// 行列情報を取得
-	auto neck_m				= MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, BonePath.NECK));
+	auto left_shoulder_m	= MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, BonePath.LEFT_SHOULDER));
+	auto right_shoulder_m	= MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, BonePath.RIGHT_SHOULDER));
 	auto spine2_m			= MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, BonePath.SPINE_2));
 	auto hips_m				= MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, BonePath.HIPS));
 
 	// 位置を取得
-	const auto neck_pos		= MGetTranslateElem(neck_m);
-	const auto spine2_pos	= MGetTranslateElem(spine2_m);
-	const auto hips_pos		= MGetTranslateElem(hips_m);
+	const auto left_shoulder_pos	= MGetTranslateElem(left_shoulder_m);
+	const auto right_shoulder_pos	= MGetTranslateElem(right_shoulder_m);
+	const auto spine2_pos			= MGetTranslateElem(spine2_m);
+	const auto hips_pos				= MGetTranslateElem(hips_m);
 
 	// 位置を適用
 	const auto up_body_capsule	 = std::static_pointer_cast<Capsule>(collider.at(ColliderKind::kUpBodyTrigger)  ->GetShape());
 	const auto down_body_capsule = std::static_pointer_cast<Capsule>(collider.at(ColliderKind::kDownBodyTrigger)->GetShape());
 
-	up_body_capsule  ->SetSegmentBeginPos(neck_pos,		true);
-	up_body_capsule  ->SetSegmentEndPos  (spine2_pos,	true);
-	down_body_capsule->SetSegmentBeginPos(spine2_pos,	true);
-	down_body_capsule->SetSegmentEndPos  (hips_pos,		true);
+	up_body_capsule  ->SetSegmentBeginPos(left_shoulder_pos,	true);
+	up_body_capsule  ->SetSegmentEndPos  (right_shoulder_pos,	true);
+	down_body_capsule->SetSegmentBeginPos(spine2_pos,			true);
+	down_body_capsule->SetSegmentEndPos  (hips_pos,				true);
 }
 
 void CharacterColliderCreator::CalcArmTriggerPos(std::shared_ptr<Modeler> modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>> collider)
@@ -204,6 +206,7 @@ void CharacterColliderCreator::CalcLegTriggerPos(const std::shared_ptr<Modeler> 
 #pragma endregion
 
 
+#pragma region その他計算
 void CharacterColliderCreator::CalcCapsuleColliderLength(PhysicalObjBase* physical_obj, std::shared_ptr<Modeler> modeler)
 {
 	modeler->ApplyMatrix();
@@ -218,3 +221,4 @@ void CharacterColliderCreator::CalcCapsuleColliderLength(PhysicalObjBase* physic
 	const auto capsule			= std::static_pointer_cast<Capsule>(physical_obj->GetCollider(ColliderKind::kCollider)->GetShape());
 	capsule->SetCapsuleLength(capsule_length);
 }
+#pragma endregion

@@ -15,9 +15,9 @@ public:
 	/// @brief 非アクティブ化する(削除せずに機能を停止)
 	virtual void Deactivate() abstract;
 
-	virtual [[nodiscard]] VirtualCameraControllerKind GetVirtualCameraControllerKind() const abstract;
-	virtual [[nodiscard]] std::shared_ptr<VirtualCameraBase> GetHaveVirtualCamera(const std::string& name) const abstract;
-	virtual [[nodiscard]] std::vector<std::shared_ptr<VirtualCameraBase>> GetHaveAllVirtualCamera()  const abstract;
-	virtual [[nodiscard]] int GetControllerHandle() const abstract;
-	virtual [[nodiscard]] bool IsActive() const abstract;
+	[[nodiscard]] virtual VirtualCameraControllerKind GetVirtualCameraControllerKind() const abstract;
+	[[nodiscard]] virtual std::shared_ptr<VirtualCameraBase> GetHaveVirtualCamera(const std::string& name) const abstract;
+	[[nodiscard]] virtual std::vector<std::shared_ptr<VirtualCameraBase>> GetHaveAllVirtualCamera()  const abstract;
+	[[nodiscard]] virtual int GetControllerHandle() const abstract;
+	[[nodiscard]] virtual bool IsActive() const abstract;
 };

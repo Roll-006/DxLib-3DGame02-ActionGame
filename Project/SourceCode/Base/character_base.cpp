@@ -83,8 +83,11 @@ void CharacterBase::ApplyLookDirToRot(const VECTOR& look_dir)
 	m_transform->SetRot  (CoordinateKind::kWorld, look_dir);
 }
 
-void CharacterBase::OnDamage()
+void CharacterBase::OnDamage(const HitPointsPartKind part_kind, const float damage)
 {
+	if (!m_hit_points.count(part_kind)) { return; }
+
+	m_hit_points.at(part_kind)->OnDamage(damage);
 	m_invincible_timer	= m_invincible_time;
 	m_is_invincible		= true;
 }

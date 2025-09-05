@@ -72,7 +72,7 @@ protected:
 	/// @brief Œ©‚Ä‚¢‚é•ûŒü‚ð‰ñ“]‚É“K—p‚·‚é
 	void ApplyLookDirToRot(const VECTOR& look_dir);
 
-	void OnDamage();
+	void OnDamage(const HitPointsPartKind part_kind, const float damage);
 	void JudgeInvincible();
 
 protected:

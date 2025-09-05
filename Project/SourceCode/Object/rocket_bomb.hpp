@@ -30,9 +30,10 @@ public:
 	/// @brief 弾丸が発射された
 	void OnShot(GunBase& gun)		override;
 
-	[[nodiscard]] float	GetDeltaTime() const override;
-	[[nodiscard]] bool  IsReturnPool() override;
-	[[nodiscard]] std::string GetShotOwnerName() const override { return m_shot_owner_name; }
+	[[nodiscard]] float			GetDeltaTime()		const	override;
+	[[nodiscard]] float			GetPower()			const	override { return m_power; }
+	[[nodiscard]] std::string	GetShotOwnerName()	const	override { return m_shot_owner_name; }
+	[[nodiscard]] bool			IsReturnPool()				override;
 
 private:
 	/// @brief 移動方向を姿勢に適用する
@@ -61,4 +62,5 @@ private:
 	float  m_move_speed;		// 移動速度
 	float  m_deceleration;		// 減速度
 	float  m_range;				// 射程
+	float  m_power;
 };

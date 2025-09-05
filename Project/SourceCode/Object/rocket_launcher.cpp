@@ -16,6 +16,7 @@ RocketLauncher::RocketLauncher() :
 	m_diffusion_shape		= std::make_shared<Circle>();
 	m_scope_scale			= kScopeScale;
 	m_range					= kRange;
+	m_power					= kPower;
 	m_initial_velocity		= kInitialVelocity;
 	m_deceleration			= kDeceleration;
 	m_shot_interval_time	= kShotIntervalTime;

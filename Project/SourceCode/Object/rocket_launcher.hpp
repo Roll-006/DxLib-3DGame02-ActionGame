@@ -33,6 +33,7 @@ private:
 	static constexpr float  kAttachOffsetScale		= 1.0f;
 
 	static constexpr int    kMaxRemainingBulletNum	= 1;
+	static constexpr float  kPower					= 3000.0f;
 
 	static constexpr VECTOR kMuzzleOffsetPos		= { 0.0f, 0.0f,  65.0f };
 	static constexpr VECTOR kLoadPortOffsetPos		= { 0.0f, 0.0f,  65.0f };

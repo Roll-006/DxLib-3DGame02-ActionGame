@@ -14,7 +14,7 @@ public:
 	/// @brief 非アクティブ化する(削除せずに機能を停止)
 	virtual void Deactivate()	abstract;
 
-	virtual [[nodiscard]] std::string GetName()		const abstract;
-	virtual [[nodiscard]] int		  GetPriority() const abstract;
-	virtual [[nodiscard]] bool		  IsActive()	const abstract;
+	[[nodiscard]] virtual std::string GetName()		const abstract;
+	[[nodiscard]] virtual int		  GetPriority() const abstract;
+	[[nodiscard]] virtual bool		  IsActive()	const abstract;
 };
