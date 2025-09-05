@@ -21,5 +21,7 @@ namespace zombie_state
 
 	private:
 
+
+		float m_in_sight_timer;
 	};
 }

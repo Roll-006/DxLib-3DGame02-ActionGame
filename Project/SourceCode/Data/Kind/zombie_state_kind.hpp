@@ -5,11 +5,11 @@ namespace zombie_state
 	enum class AIStateKind
 	{
 		kWait,					// ‘Ò‹@
-		kPatrol,				// „‰ñ
-		kInvestigate,			// ’²¸
-		kSearch,				// ‘{õ
-		kAlert,					// Œx‰ú
-		kTrack,					// ’ÇÕ
+		kPatrol,				// „‰ñ(“Á’è‚Ìƒ‹[ƒg‚ğˆÚ“®‚·‚é)
+		kInvestigate,			// ’²¸(‘ÎÛ‚ğŒ©¸‚Á‚½êŠ‚ğ’²¸‚·‚é)
+		kSearch,				// ‘{õ(’²¸‚Å‘ÎÛ‚ğ”­Œ©‚Å‚«‚È‚©‚Á‚½ÛA‚³‚ç‚ÉL”ÍˆÍ‚ğ‘{õ‚·‚é)
+		kAlert,					// Œx‰ú(‰¹‚â‹C”z‚ÉŒx‰ú‚µ‚Äü‚è‚ğŒ©“n‚·)
+		kTrack,					// ’ÇÕ(‘ÎÛ‚ğ’Ç”ö‚·‚é)
 		kRunAttack,				// ƒ_ƒbƒVƒ…UŒ‚
 		kCloseRangeAttack,		// ‹ßÚUŒ‚
 		kLongRangeAttack,		// ‰“‹——£UŒ‚

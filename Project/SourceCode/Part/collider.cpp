@@ -5,7 +5,7 @@ Collider::Collider(const ColliderKind kind, const std::shared_ptr<ShapeBase> sha
 	m_kind					(kind),
 	m_shape					(shape),
 	m_model_handle			(-1),
-	m_is_closest_only_hit	(kind == ColliderKind::kRayCast ? true : false),
+	m_is_closest_only_hit	(kind == ColliderKind::kRayCast		  ? true : false),
 	m_is_one_collision		(kind == ColliderKind::kAttackTrigger ? true : false),
 	m_owner_obj				(owner_obj)
 {
@@ -37,9 +37,6 @@ Collider::Collider(const ColliderKind kind, const int model_handle, PhysicalObjB
 Collider::~Collider()
 {
 
-	// FIXME : デストラクタが通っていない
-	m_owner_obj->RemoveHitCollider(shared_from_this());
-	m_owner_obj = nullptr;
 }
 
 

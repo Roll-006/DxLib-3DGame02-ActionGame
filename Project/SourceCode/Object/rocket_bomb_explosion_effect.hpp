@@ -11,7 +11,7 @@ class RocketBombExplosionEffect final : public PhysicalObjBase, public IEffect, 
 {
 public:
 	RocketBombExplosionEffect();
-	~RocketBombExplosionEffect() override;
+	~RocketBombExplosionEffect()	override;
 
 	void Init()						override;
 	void Update()					override;

@@ -35,7 +35,6 @@ public:
 
 	#pragma region Getter
 	[[nodiscard]] float	GetDeltaTime() const override;
-	[[nodiscard]] 
 	[[nodiscard]] std::shared_ptr<ZombieStateController> GetStateController() const { return m_state; }
 	#pragma endregion
 
@@ -48,6 +47,9 @@ private:
 private:
 	static constexpr VECTOR kBasicAngle				= { 0.0f, DX_PI_F, 0.0f };
 	static constexpr float  kBasicScale				= 0.25f;
+
+	static constexpr float kFOV						= 80.0f;
+	static constexpr float kVisibleDistance			= 300.0f;
 
 	static constexpr float kInvincibleTime			= 0.5f;
 

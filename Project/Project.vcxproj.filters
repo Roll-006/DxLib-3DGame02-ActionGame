@@ -919,7 +919,7 @@
     <ClInclude Include="SourceCode\Command\command_handler.hpp">
       <Filter>Command</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Handle\state_handler.hpp">
+    <ClInclude Include="SourceCode\Handle\handle_creator.hpp">
       <Filter>Handle</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Data\Kind\camera_state_kind.hpp">

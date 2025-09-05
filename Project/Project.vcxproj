@@ -402,7 +402,7 @@
     <ClInclude Include="SourceCode\GameTime\game_time_manager.hpp" />
     <ClInclude Include="SourceCode\GameTime\time_scale_controller.hpp" />
     <ClInclude Include="SourceCode\Handle\handle_keeper.hpp" />
-    <ClInclude Include="SourceCode\Handle\state_handler.hpp" />
+    <ClInclude Include="SourceCode\Handle\handle_creator.hpp" />
     <ClInclude Include="SourceCode\Input\input_checker.hpp" />
     <ClInclude Include="SourceCode\Interface\i_effect.hpp" />
     <ClInclude Include="SourceCode\Interface\i_enemy.hpp" />

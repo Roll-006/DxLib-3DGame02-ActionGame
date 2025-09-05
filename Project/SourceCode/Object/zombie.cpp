@@ -103,6 +103,19 @@ void Zombie::Draw() const
 	DrawLine3D(pos, pos + axes.y_axis * 100, 0x00ff22);
 	DrawLine3D(pos, pos + axes.z_axis * 100, 0x0077ff);
 
+	auto	   head_mat = MV1GetFrameLocalWorldMatrix(m_modeler->GetModelHandle(), MV1SearchFrame(m_modeler->GetModelHandle(), BonePath.HEAD));
+	const auto head_pos = MGetTranslateElem(head_mat);
+	auto rot_y = MGetRotY(kFOV * 0.5f * math::kDegToRad);
+	auto rot_x1 = math::GetRotatedPos(axes.z_axis, quat::CreateQuaternion(axes.x_axis, kFOV * 0.5f * math::kDegToRad));
+	auto rot_x2 = math::GetRotatedPos(axes.z_axis, quat::CreateQuaternion(axes.x_axis, -kFOV * 0.5f * math::kDegToRad));
+	auto dir1 = VTransform(axes.z_axis, rot_y);
+	auto dir2 = VTransform(axes.z_axis, MInverse(rot_y));
+
+	DrawLine3D(head_pos, head_pos + dir1 * kVisibleDistance, 0xffffff);
+	DrawLine3D(head_pos, head_pos + dir2 * kVisibleDistance, 0xffffff);
+	DrawLine3D(head_pos, head_pos + rot_x1 * kVisibleDistance, 0xffffff);
+	DrawLine3D(head_pos, head_pos + rot_x2 * kVisibleDistance, 0xffffff);
+
 	DrawFormatString(800,  0, 0xffffff, "%f, %f, %f", pos.x, pos.y, pos.z);
 	DrawFormatString(800, 20, 0xffffff, "%d", m_hit_collider.size());
 	DrawFormatString(800, 40, 0xffffff, "%f", m_move_speed);
@@ -142,8 +155,8 @@ bool Zombie::IsTargetInSight(const VECTOR& target_pos)
 	const auto head_pos		= MGetTranslateElem(head_mat);
 	const auto head_axes	= math::ConvertRotMatrixToAxes(head_mat);
 
-	const auto fov			= 80.0f * math::kDegToRad;
-	const auto max_distance = 300.0f;
+	const auto fov			= kFOV * math::kDegToRad;
+	const auto max_distance = kVisibleDistance;
 	const auto distance_v	= target_pos - head_pos;
 	const auto distance		= VSize(distance_v);
 	const auto dir			= v3d::GetNormalizedV(distance_v);

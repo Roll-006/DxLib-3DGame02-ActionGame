@@ -101,12 +101,12 @@ void ZombieAnimator::CombineMoveWithAction()
 		break;
 
 	case static_cast<int>(zombie_state::ActionStateKind::kRun):
-		//AttachResultAnim(static_cast<int>(ZombieAnimKind::kMoveForwardRun));
-		AttachAnim(static_cast<int>(ZombieAnimKind::kMoveForwardRun),	BodyKind::kLowerBody);
-		AttachAnim(static_cast<int>(ZombieAnimKind::kGrab),				BodyKind::kUpperBody);
+		AttachResultAnim(static_cast<int>(ZombieAnimKind::kMoveForwardRun));
 		break;
 
 	case static_cast<int>(zombie_state::ActionStateKind::kGrabRun):
+		AttachAnim(static_cast<int>(ZombieAnimKind::kMoveForwardRun),	BodyKind::kLowerBody);
+		AttachAnim(static_cast<int>(ZombieAnimKind::kGrab),				BodyKind::kUpperBody);
 		break;
 
 	case static_cast<int>(zombie_state::ActionStateKind::kKnockback):
