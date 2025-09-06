@@ -34,7 +34,7 @@ RocketLauncherVirtualCameraController::RocketLauncherVirtualCameraController(Pla
 
 	const auto control_camera = cinemachine_brain->GetVirtualCameraController(VirtualCameraControllerKind::kControl);
 	control_camera->Deactivate();
-	cinemachine_brain->SetBlendTime(1.5f);
+	cinemachine_brain->SetBlendTime(1.0f);
 	cinemachine_brain->AddVirtualCamera(m_enter_rot_camera,	true);
 	cinemachine_brain->AddVirtualCamera(m_zoom_in_camera,	false);
 	cinemachine_brain->AddVirtualCamera(m_zoom_out_camera,	false);
@@ -236,7 +236,7 @@ void RocketLauncherVirtualCameraController::CalcAimTransformForZoomOutCamera()
 		m_follow_offset_for_exit_rot = m_follow_offset_for_zoom_out;
 
 		const auto cinemachine_brain = CinemachineBrain::GetInstance();
-		cinemachine_brain->SetBlendTime(2.0f);
+		cinemachine_brain->SetBlendTime(1.0f);
 	}
 
 	// カメラの追跡対象となるトランスフォームの情報を更新
