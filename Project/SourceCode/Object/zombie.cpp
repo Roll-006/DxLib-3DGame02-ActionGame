@@ -304,7 +304,7 @@ void Zombie::CalcLookDir()
 	VECTOR distance = next_yaw - current_yaw;
 	distance.y = math::ConnectMinusPiToPi(distance.y);
 
-	// âº
+	// TODO : å„Ç…ïœçX
 	float angle1 = 2.7f * math::kDegToRad;
 	float threshold = 10.0f * math::kDegToRad;
 
