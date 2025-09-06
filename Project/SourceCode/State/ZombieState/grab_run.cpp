@@ -13,7 +13,7 @@ zombie_state::GrabRun::~GrabRun()
 
 void zombie_state::GrabRun::Update(std::shared_ptr<Zombie> obj)
 {
-
+	obj->CalcMoveSpeedRunGrab();
 }
 
 void zombie_state::GrabRun::LateUpdate(std::shared_ptr<Zombie> obj)

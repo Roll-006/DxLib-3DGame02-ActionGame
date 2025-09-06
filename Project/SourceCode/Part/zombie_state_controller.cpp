@@ -53,7 +53,7 @@ void ZombieStateController::CreateState()
 	m_states[typeid(zombie_state::ActionNull)]			= std::make_shared<zombie_state::ActionNull>();
 	m_states[typeid(zombie_state::Run)]					= std::make_shared<zombie_state::Run>();
 	m_states[typeid(zombie_state::Grab)]				= std::make_shared<zombie_state::Grab>();
-	m_states[typeid(zombie_state::GrabRun)]				= std::make_shared<zombie_state::Grab>();
+	m_states[typeid(zombie_state::GrabRun)]				= std::make_shared<zombie_state::GrabRun>();
 	m_states[typeid(zombie_state::Knockback)]			= std::make_shared<zombie_state::Knockback>();
 	m_states[typeid(zombie_state::StandStun)]			= std::make_shared<zombie_state::StandStun>();
 	m_states[typeid(zombie_state::CrouchStun)]			= std::make_shared<zombie_state::CrouchStun>();
@@ -216,6 +216,16 @@ bool ZombieStateController::TryTrack(std::shared_ptr<Zombie> zombie)
 	return is_in_sight;
 }
 
+bool ZombieStateController::TryMove()
+{
+	const auto ai_state_kind	= static_cast<zombie_state::AIStateKind>(GetAIState(TimeKind::kCurrent)->GetStateKind());
+
+	const auto is_track			= ai_state_kind == zombie_state::AIStateKind::kTrack	 ? true : false;
+	const auto is_run_attack	= ai_state_kind == zombie_state::AIStateKind::kRunAttack ? true : false;
+
+	return is_track || is_run_attack;
+}
+
 bool ZombieStateController::TryRun(std::shared_ptr<Zombie> zombie)
 {
 	if (!m_target_character) { return false; }
@@ -228,12 +238,12 @@ bool ZombieStateController::TryRun(std::shared_ptr<Zombie> zombie)
 	return distance > 150.0f;
 }
 
-bool ZombieStateController::TryMove()
+bool ZombieStateController::TryGrabRun()
 {
 	const auto ai_state_kind = static_cast<zombie_state::AIStateKind>(GetAIState(TimeKind::kCurrent)->GetStateKind());
 
-	const auto is_track = ai_state_kind == zombie_state::AIStateKind::kTrack ? true : false;
+	const auto is_run_attack = ai_state_kind == zombie_state::AIStateKind::kRunAttack ? true : false;
 
-	return is_track;
+	return is_run_attack;
 }
 #pragma endregion

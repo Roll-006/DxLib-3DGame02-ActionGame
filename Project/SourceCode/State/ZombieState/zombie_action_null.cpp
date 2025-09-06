@@ -35,6 +35,11 @@ std::shared_ptr<IState<Zombie>> zombie_state::ActionNull::ChangeState(std::share
 {
 	const auto state_controller = obj->GetStateController();
 
+	// TODO : 仮。後に削除。
+	if (state_controller->TryGrabRun())
+	{
+		return state_controller->GetState<GrabRun, Zombie>();
+	}
 	// ダッシュ
 	if (state_controller->TryRun(obj))
 	{

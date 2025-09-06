@@ -35,6 +35,11 @@ std::shared_ptr<IState<Zombie>> zombie_state::Wait::ChangeState(std::shared_ptr<
 {
 	const auto state_controller = obj->GetStateController();
 
+	// TODO : ‰¼‚Å‚Â‚©‚Ýˆ—‚ð‹­§BŒã‚ÉíœB
+	if (state_controller->TryTrack(obj))
+	{
+		return state_controller->GetState<RunAttack, Zombie>();
+	}
 	// ’ÇÕ
 	if (state_controller->TryTrack(obj))
 	{

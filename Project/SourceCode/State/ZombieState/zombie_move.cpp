@@ -19,7 +19,8 @@ void zombie_state::Move::Update(std::shared_ptr<Zombie> obj)
 
 	obj->CalcMoveSpeed();
 
-	if (ai_state == zombie_state::AIStateKind::kTrack)
+	if (   ai_state == zombie_state::AIStateKind::kTrack
+		|| ai_state == zombie_state::AIStateKind::kRunAttack)
 	{
 		obj->TrackMove(target_pos);
 	}

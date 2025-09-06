@@ -1,7 +1,6 @@
 #pragma once
 #include "../Base/virtual_camera_base.hpp"
 
-/// @brief 回転コントロールカメラ
 class VirtualCamera final : public VirtualCameraBase
 {
 public:
