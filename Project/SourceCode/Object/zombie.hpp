@@ -30,6 +30,7 @@ public:
 	void CalcMoveSpeed();
 	void CalcMoveSpeedStop();
 	void CalcMoveSpeedRun();
+	void CalcMoveSpeedRunGrab();
 	#pragma endregion
 
 
@@ -55,7 +56,8 @@ private:
 	static constexpr float kInvincibleTime			= 0.5f;
 
 	static constexpr float kWalkSpeed				= 30.0f;
-	static constexpr float kRunSpeed 				= 70.0f;
+	static constexpr float kRunSpeed				= 70.0f;
+	static constexpr float kRunGrabSpeed			= 80.0f;
 
 	static constexpr float kCapsuleRadius			= 8.0f;
 	static constexpr float kLandingTriggerRadius	= 6.0f;
@@ -70,9 +72,6 @@ private:
 
 private:
 	std::shared_ptr<ZombieStateController> m_state;
-
-	VECTOR m_move_dir;
-	VECTOR m_look_dir;
 
 	float m_move_speed;
 };

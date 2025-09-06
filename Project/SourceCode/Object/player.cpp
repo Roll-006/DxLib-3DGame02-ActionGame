@@ -214,7 +214,6 @@ void Player::UnequipKnife()
 #pragma region State
 void Player::Move()
 {
-	m_move_dir[TimeKind::kPrev] = m_move_dir[TimeKind::kCurrent];
 	m_move_dir[TimeKind::kNext] = v3d::GetZeroV();
 	m_input_slope = v3d::GetZeroV();
 
@@ -416,15 +415,6 @@ void Player::CalcMoveVelocity()
 {
 	m_move_velocity = m_move_dir[TimeKind::kCurrent] * m_move_speed;
 	m_velocity += m_move_velocity;
-}
-
-void Player::CalcMoveDir()
-{
-	// åªç›ÇÃdirÇñ⁄ìIÇ∆Ç∑ÇÈdirÇ…ãﬂÇ√ÇØÇƒÇ¢Ç≠
-	m_move_dir[TimeKind::kCurrent] = math::GetApproachedVector(
-		m_move_dir[TimeKind::kCurrent], 
-		m_move_dir[TimeKind::kNext], 
-		kMoveDirOffsetSpeed);
 }
 
 void Player::CalcLookDir()

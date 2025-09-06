@@ -118,7 +118,6 @@ private:
 	void CalcInputSlopeFromPad();
 	void CalcInputSlopeFromCommand();
 
-	void CalcMoveDir();
 	void CalcLookDir();
 	void CalcMoveVelocity();
 
@@ -141,7 +140,6 @@ private:
 	static constexpr float kRunSpeed							= 80.0f;
 	static constexpr float kAcceleration						= 1.0f;					// 加速度(減速度も共通)
 
-	static constexpr float kMoveDirOffsetSpeed					= 5.0f;					// 移動方向の補正速度
 	static constexpr float kLookDirOffsetAngle					= 2.7f;					// 見る方向の補正角度
 	static constexpr float kLookDirOffsetAngleForAim			= 17.0f;				// エイミング時の見る方向を回転させる角度
 	static constexpr float kConfirmMoveDirThresholdDistance		= 0.08f;				// 目的の移動方向に到達したと判定する閾値
@@ -165,8 +163,6 @@ private:
 	std::shared_ptr<BonePosCorrector>			m_bone_pos_corrector;
 
 	VECTOR										m_input_slope;
-	std::unordered_map<TimeKind, VECTOR>		m_move_dir;								// 移動方向(TODO : 長さが1未満である時がある場合があるため命名を変更すべき)
-	std::unordered_map<TimeKind, VECTOR>		m_look_dir;								// 向いている方向
 	float										m_move_speed;
 
 	float										m_look_dir_offset_angle;				// 見る方向の補正角度

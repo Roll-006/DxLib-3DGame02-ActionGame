@@ -60,8 +60,11 @@ void CommandHandler::InitKeyCommand()
 	AddInputCode(CommandKind::kPause,						KEY_INPUT_TAB);
 
 	AddInputCode(CommandKind::kAimGun,						mouse::ButtonKind::kRight);
+	AddInputCode(CommandKind::kAimGun,						KEY_INPUT_L);	// ‰¼
 	AddInputCode(CommandKind::kAttack,						mouse::ButtonKind::kLeft);
+	AddInputCode(CommandKind::kAttack,						KEY_INPUT_J);	// ‰¼
 	AddInputCode(CommandKind::kPullTrigger,					mouse::ButtonKind::kLeft);
+	AddInputCode(CommandKind::kPullTrigger,					KEY_INPUT_J);	// ‰¼
 	AddInputCode(CommandKind::kAimKnife,					KEY_INPUT_SPACE);
 	AddInputCode(CommandKind::kInvestigate,					KEY_INPUT_F);
 	AddInputCode(CommandKind::kMelee,						KEY_INPUT_F);

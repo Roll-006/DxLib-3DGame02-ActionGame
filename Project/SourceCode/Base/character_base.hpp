@@ -72,20 +72,28 @@ protected:
 	/// @brief Œ©‚Ä‚¢‚é•ûŒü‚ğ‰ñ“]‚É“K—p‚·‚é
 	void ApplyLookDirToRot(const VECTOR& look_dir);
 
+	void CalcMoveDir();
+
 	void OnDamage(const HitPointsPartKind part_kind, const float damage);
 	void JudgeInvincible();
 
 protected:
-	std::shared_ptr<Modeler>		m_modeler;
-	std::shared_ptr<AnimatorBase>	m_animator;
-	std::shared_ptr<CharacterColliderCreator> m_collider_creator;
+	std::shared_ptr<Modeler>					m_modeler;
+	std::shared_ptr<AnimatorBase>				m_animator;
+	std::shared_ptr<CharacterColliderCreator>	m_collider_creator;
 
-	std::shared_ptr<WeaponBase>		m_current_held_weapon;							// Œ»İè‚É‚Á‚Ä‚¢‚é•Ší
-	std::unordered_map<HolsterKind, std::shared_ptr<WeaponBase>> m_attach_weapons;	// ‘•’…‚µ‚Ä‚¢‚é•Ší
+	std::unordered_map<TimeKind, VECTOR>		m_move_dir;				// ˆÚ“®•ûŒü(WARNING : ’·‚³‚Í0`1‚Ì”ÍˆÍ‚ğæ‚é)
+	std::unordered_map<TimeKind, VECTOR>		m_look_dir;				// Œü‚¢‚Ä‚¢‚é•ûŒü
+	
+	std::shared_ptr<WeaponBase>											m_current_held_weapon;	// Œ»İè‚É‚Á‚Ä‚¢‚é•Ší
+	std::unordered_map<HolsterKind, std::shared_ptr<WeaponBase>>		m_attach_weapons;		// ‘•’…‚µ‚Ä‚¢‚é•Ší
 
-	std::unordered_map<HitPointsPartKind, std::shared_ptr<HitPoints>> m_hit_points;
+	std::unordered_map<HitPointsPartKind, std::shared_ptr<HitPoints>>	m_hit_points;
 
 	float m_invincible_time;
 	float m_invincible_timer;
 	bool  m_is_invincible;
+
+private:
+	static constexpr float kMoveDirOffsetSpeed = 5.0f;					// ˆÚ“®•ûŒü‚Ì•â³‘¬“x
 };

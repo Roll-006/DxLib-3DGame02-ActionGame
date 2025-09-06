@@ -83,6 +83,15 @@ void CharacterBase::ApplyLookDirToRot(const VECTOR& look_dir)
 	m_transform->SetRot  (CoordinateKind::kWorld, look_dir);
 }
 
+void CharacterBase::CalcMoveDir()
+{
+	// Œ»İ‚Ìdir‚ğ–Ú“I‚Æ‚·‚édir‚É‹ß‚Ã‚¯‚Ä‚¢‚­
+	m_move_dir[TimeKind::kCurrent] = math::GetApproachedVector(
+		m_move_dir[TimeKind::kCurrent],
+		m_move_dir[TimeKind::kNext],
+		kMoveDirOffsetSpeed);
+}
+
 void CharacterBase::OnDamage(const HitPointsPartKind part_kind, const float damage)
 {
 	if (!m_hit_points.count(part_kind)) { return; }

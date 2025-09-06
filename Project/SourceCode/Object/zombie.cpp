@@ -4,8 +4,6 @@
 Zombie::Zombie() :
 	CharacterBase	(ObjName.ZOMBIE, ObjTag.ENEMY, MassKind::kMedium),
 	m_state			(std::make_shared<ZombieStateController>()),
-	m_move_dir		(v3d::GetZeroV()),
-	m_look_dir		(v3d::GetZeroV()),
 	m_move_speed	(kWalkSpeed)
 {
 	m_hit_points[HitPointsPartKind::kMain]		= std::make_shared<HitPoints>(1684.0f);
@@ -22,9 +20,10 @@ Zombie::Zombie() :
 
 	m_invincible_time = kInvincibleTime;
 
-	m_look_dir = VGet(0.0f, 0.0f, 1.0f);
-	m_transform->SetRot(CoordinateKind::kWorld, m_look_dir);
+	// 初期pos・dirを設定
+	m_look_dir[TimeKind::kCurrent] = m_look_dir[TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);
 	m_transform->SetPos(CoordinateKind::kWorld, VGet(0.0f, -54.0f, 0.0f));
+	m_transform->SetRot(CoordinateKind::kWorld, m_look_dir.at(TimeKind::kCurrent));
 	m_modeler->ApplyMatrix();
 
 	// コライダー・トリガーを設定
@@ -55,6 +54,7 @@ void Zombie::Update()
 	m_state		->Update(std::static_pointer_cast<Zombie>(shared_from_this()));
 	m_animator	->Update();
 
+	CalcMoveDir();
 	CalcLookDir();
 	CalcMoveVelocity();
 
@@ -64,7 +64,7 @@ void Zombie::Update()
 	m_collider_creator->CalcArmTriggerPos (m_modeler, m_collider);
 	m_collider_creator->CalcLegTriggerPos (m_modeler, m_collider);
 
-	ApplyLookDirToRot(m_look_dir);
+	ApplyLookDirToRot(m_look_dir.at(TimeKind::kCurrent));
 
 	auto pos = m_transform->GetScale(CoordinateKind::kWorld);
 }
@@ -152,6 +152,12 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 			
 			OnCollideWithExplosion(std::static_pointer_cast<Sphere>(hit_collider_pair.target_collider->GetShape()));
 			
+		}
+		break;
+
+		if (target_obj->GetName() == ObjName.BULLET)
+		{
+			OnDamage(HitPointsPartKind::kMain, dynamic_cast<Bullet*>(target_obj)->GetPower());
 		}
 		break;
 
@@ -244,7 +250,7 @@ void Zombie::Move()
 
 void Zombie::TrackMove(const VECTOR& pos)
 {
-	m_move_dir = v3d::GetNormalizedV(pos - m_transform->GetPos(CoordinateKind::kWorld));
+	m_move_dir[TimeKind::kNext] = v3d::GetNormalizedV(pos - m_transform->GetPos(CoordinateKind::kWorld));
 }
 
 void Zombie::CalcMoveSpeed()
@@ -260,6 +266,11 @@ void Zombie::CalcMoveSpeedStop()
 void Zombie::CalcMoveSpeedRun()
 {
 	m_move_speed = kRunSpeed;
+}
+
+void Zombie::CalcMoveSpeedRunGrab()
+{
+	m_move_speed = kRunGrabSpeed;
 }
 
 void Zombie::OnCollideWithExplosion(const std::shared_ptr<Sphere> sphere)
@@ -282,14 +293,37 @@ void Zombie::OnCollideWithExplosion(const std::shared_ptr<Sphere> sphere)
 
 void Zombie::CalcLookDir()
 {
-	if (m_move_dir != v3d::GetZeroV())
+	if (m_move_dir[TimeKind::kCurrent] != v3d::GetZeroV())
 	{
-		m_look_dir = m_move_dir;
+		m_look_dir.at(TimeKind::kNext) = m_move_dir[TimeKind::kCurrent];
+	}
+
+	// ヨー角回転を取得し、-π～πで値を管理する
+	const VECTOR current_yaw	= math::GetYawRotVector(m_look_dir.at(TimeKind::kCurrent));
+	const VECTOR next_yaw		= math::GetYawRotVector(m_look_dir.at(TimeKind::kNext));
+	VECTOR distance = next_yaw - current_yaw;
+	distance.y = math::ConnectMinusPiToPi(distance.y);
+
+	// 仮
+	float angle1 = 2.7f * math::kDegToRad;
+	float threshold = 10.0f * math::kDegToRad;
+
+	// カメラを基準にして右側であった場合は反転
+	if (distance.y > 0) { angle1 *= -1; }
+
+	// 回転を適用
+	const Quaternion rot_q = quat::CreateQuaternion(axis::GetWorldYAxis(), -angle1);
+	m_look_dir.at(TimeKind::kCurrent) = math::GetRotatedPos(m_look_dir.at(TimeKind::kCurrent), rot_q);
+
+	const float angle = math::GetYawBetweenTwoVector(m_look_dir.at(TimeKind::kNext), m_look_dir.at(TimeKind::kCurrent));
+	if (angle < threshold)
+	{
+		m_look_dir.at(TimeKind::kCurrent) = m_look_dir.at(TimeKind::kNext);
 	}
 }
 
 void Zombie::CalcMoveVelocity()
 {
-	m_move_velocity = m_move_dir * m_move_speed;
+	m_move_velocity = m_move_dir[TimeKind::kCurrent] * m_move_speed;
 	m_velocity += m_move_velocity;
 }
