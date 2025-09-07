@@ -173,7 +173,7 @@ void AnimatorBase::PlayAnim()
 		if (data.attach_index > -1)
 		{
 			const float blend_rate	= time_kind == TimeKind::kCurrent ? m_blend_rate.at(body_kind) : 1.0f - m_blend_rate.at(body_kind);
-			const bool  is_loop		= m_anim_data.at(data.kind).is_loop ^ m_anim_data.at(data.kind).is_self_blend;
+			const bool  is_loop		= m_anim_data.at(data.kind).is_loop && !m_anim_data.at(data.kind).is_self_blend ? true : false;
 			float play_speed		= m_anim_data.at(data.kind).play_speed * GetDeltaTime();
 			math::Increase(data.play_timer, play_speed, data.total_time, is_loop);
 

@@ -17,6 +17,8 @@ public:
 
 	void AddToObjManager() override;
 
+	void CalcCorrectMoveDir();
+
 
 	#pragma region Getter
 	[[nodiscard]] bool							IsInvincible()				const { return m_is_invincible; }
@@ -84,10 +86,12 @@ protected:
 	std::shared_ptr<AnimatorBase>				m_animator;
 	std::shared_ptr<CharacterColliderCreator>	m_collider_creator;
 
+	float										m_move_speed;
 	std::unordered_map<TimeKind, VECTOR>		m_move_dir;					// ˆÚ“®•ûŒü(WARNING : ’·‚³‚Í0`1‚Ì”ÍˆÍ‚ğæ‚é)
 	std::unordered_map<TimeKind, VECTOR>		m_look_dir;					// Œü‚¢‚Ä‚¢‚é•ûŒü
 	float										m_move_dir_offset_speed;	// ˆÚ“®•ûŒü‚ğ•â³‚·‚é‘¬“x
-	
+	VECTOR										m_destination_pos;			// •â³æÀ•W
+
 	std::shared_ptr<WeaponBase>											m_current_held_weapon;	// Œ»İè‚É‚Á‚Ä‚¢‚é•Ší
 	std::unordered_map<HolsterKind, std::shared_ptr<WeaponBase>>		m_attach_weapons;		// ‘•’…‚µ‚Ä‚¢‚é•Ší
 

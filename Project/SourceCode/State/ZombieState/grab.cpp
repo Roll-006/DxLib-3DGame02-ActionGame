@@ -29,7 +29,7 @@ void zombie_state::Grab::Enter(std::shared_ptr<Zombie> obj)
 
 	if (player)
 	{
-		player->OnGrabbed(obj->GetCurrentLookDir());
+		player->OnGrabbed(obj->GetTransform()->GetPos(CoordinateKind::kWorld), obj->GetCurrentLookDir());
 	}
 }
 

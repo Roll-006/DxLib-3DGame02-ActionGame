@@ -6,7 +6,9 @@ CharacterBase::CharacterBase(const std::string& name, const std::string& tag, co
 	m_modeler						(nullptr),
 	m_animator						(nullptr),
 	m_collider_creator				(std::make_shared<CharacterColliderCreator>()),
+	m_move_speed					(0.0f),
 	m_move_dir_offset_speed			(0.0f),
+	m_destination_pos				(v3d::GetZeroV()),
 	m_current_held_weapon			(nullptr),
 	m_invincible_time				(0.0f),
 	m_invincible_timer				(0.0f),
@@ -22,6 +24,22 @@ void CharacterBase::AddToObjManager()
 	ObjManager		::GetInstance()->AddObj			(shared_from_this());
 	CollisionManager::GetInstance()->AddCollideObj	(physical_obj);
 	PhysicsManager	::GetInstance()->AddPhysicalObj	(physical_obj);
+}
+
+void CharacterBase::CalcCorrectMoveDir()
+{
+	const auto destination_pos_y0	= VGet(m_destination_pos.x, 0.0f, m_destination_pos.z);
+	const auto current_pos			= m_transform->GetPos(CoordinateKind::kWorld);
+	const auto current_pos_y0		= VGet(current_pos.x, 0.0f, current_pos.z);
+
+	if (VSize(destination_pos_y0 - current_pos_y0) < 1.0f)
+	{
+		m_move_dir[TimeKind::kNext] = v3d::GetZeroV();
+	}
+	else
+	{
+		m_move_dir[TimeKind::kNext] = v3d::GetNormalizedV(destination_pos_y0 - current_pos_y0);
+	}
 }
 
 
@@ -56,8 +74,11 @@ void CharacterBase::HoldWeapon(const int obj_handle)
 
 void CharacterBase::ReleaseWeapon()
 {
-	m_current_held_weapon->DetachOwner();
-	m_current_held_weapon = nullptr;
+	if (m_current_held_weapon)
+	{
+		m_current_held_weapon->DetachOwner();
+		m_current_held_weapon = nullptr;
+	}
 }
 
 void CharacterBase::AttachWeapon(const int obj_handle)

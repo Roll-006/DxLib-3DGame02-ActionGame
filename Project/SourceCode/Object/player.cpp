@@ -8,7 +8,6 @@ Player::Player() :
 	m_state								(std::make_shared<PlayerStateController>()),
 	m_bone_pos_corrector				(std::make_shared<BonePosCorrector>()),
 	m_input_slope						(v3d::GetZeroV()),
-	m_move_speed						(0.0f),
 	m_look_dir_offset_angle				(0.0f),
 	m_confirm_look_dir_threshold_angle	(0.0f),
 	m_is_grabbed						(false),
@@ -145,7 +144,10 @@ void Player::Draw() const
 	//DxLibHelper::DrawModelFrames(m_modeler->GetModelHandle(), "", 0.05f, 20.0f);
 
 	const auto p = m_transform->GetPos(CoordinateKind::kWorld);
-	DrawFormatString(0, 60, 0xffffff, "%f %f, %f", p.x, p.y, p.z);
+	DrawFormatString(0,  60, 0xffffff, "%f, %f, %f", m_move_velocity.x, m_move_velocity.y, m_move_velocity.z);
+	DrawFormatString(0,  80, 0xffffff, "%f, %f, %f", m_move_dir.at(TimeKind::kCurrent).x, m_move_dir.at(TimeKind::kCurrent).y, m_move_dir.at(TimeKind::kCurrent).z);
+	DrawFormatString(0, 100, 0xffffff, "%f, %f, %f", m_move_dir.at(TimeKind::kNext).x, m_move_dir.at(TimeKind::kNext).y, m_move_dir.at(TimeKind::kNext).z);
+	DrawFormatString(0, 120, 0xffffff, "%f", m_move_speed);
 
 	if (m_current_held_weapon) { m_current_held_weapon->Draw(); }
 
@@ -191,10 +193,12 @@ void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	}
 }
 
-void Player::OnGrabbed(const VECTOR& brabber_dir)
+void Player::OnGrabbed(const VECTOR& brabber_pos, const VECTOR& brabber_dir)
 {
 	m_is_grabbed = true;
+
 	m_look_dir.at(TimeKind::kNext) = -brabber_dir;
+	m_destination_pos = brabber_pos + brabber_dir * 35.0f;
 }
 
 //void Player::CalcMoveDirFirstFrame()
@@ -250,6 +254,15 @@ void Player::DirOfMovement()
 void Player::DirOfCameraForward()
 {
 	m_look_dir.at(TimeKind::kNext) = GetMoveForward();
+}
+
+void Player::UpdateGrabbed()
+{
+	m_move_speed = 20.0f;
+
+	CalcCorrectMoveDir();
+
+	ReleaseWeapon();
 }
 
 void Player::CalcMoveSpeed()

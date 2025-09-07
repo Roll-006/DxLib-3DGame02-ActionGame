@@ -13,7 +13,7 @@ player_state::Grabbed::~Grabbed()
 
 void player_state::Grabbed::Update(std::shared_ptr<Player> obj)
 {
-
+	obj->UpdateGrabbed();
 }
 
 void player_state::Grabbed::LateUpdate(std::shared_ptr<Player> obj)

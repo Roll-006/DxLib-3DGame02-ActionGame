@@ -73,36 +73,63 @@ void PlayerStateController::CreateState()
 
 void PlayerStateController::AddStopStatePair()
 {
-	m_states.at(typeid(player_state::AimKnife))				->AddStopState(m_states.at(typeid(player_state::Crouch))->GetStateHandle());
-	m_states.at(typeid(player_state::AimKnife))				->AddStopState(m_states.at(typeid(player_state::Run))	->GetStateHandle());
-	m_states.at(typeid(player_state::StabKnife))			->AddStopState(m_states.at(typeid(player_state::Move))	->GetStateHandle());
-	m_states.at(typeid(player_state::StabKnife))			->AddStopState(m_states.at(typeid(player_state::Crouch))->GetStateHandle());
-	m_states.at(typeid(player_state::StabKnife))			->AddStopState(m_states.at(typeid(player_state::Run))	->GetStateHandle());
-	m_states.at(typeid(player_state::FirstSideSlashKnife))	->AddStopState(m_states.at(typeid(player_state::Move))	->GetStateHandle());
-	m_states.at(typeid(player_state::FirstSideSlashKnife))	->AddStopState(m_states.at(typeid(player_state::Crouch))->GetStateHandle());
-	m_states.at(typeid(player_state::FirstSideSlashKnife))	->AddStopState(m_states.at(typeid(player_state::Run))	->GetStateHandle());
-	m_states.at(typeid(player_state::SecondSideSlashKnife))	->AddStopState(m_states.at(typeid(player_state::Move))	->GetStateHandle());
-	m_states.at(typeid(player_state::SecondSideSlashKnife))	->AddStopState(m_states.at(typeid(player_state::Crouch))->GetStateHandle());
-	m_states.at(typeid(player_state::SecondSideSlashKnife))	->AddStopState(m_states.at(typeid(player_state::Run))	->GetStateHandle());
-	m_states.at(typeid(player_state::SpinningSlashKnife))	->AddStopState(m_states.at(typeid(player_state::Move))	->GetStateHandle());
-	m_states.at(typeid(player_state::SpinningSlashKnife))	->AddStopState(m_states.at(typeid(player_state::Crouch))->GetStateHandle());
-	m_states.at(typeid(player_state::SpinningSlashKnife))	->AddStopState(m_states.at(typeid(player_state::Run))	->GetStateHandle());
-	m_states.at(typeid(player_state::Parry))				->AddStopState(m_states.at(typeid(player_state::Crouch))->GetStateHandle());
-	m_states.at(typeid(player_state::Parry))				->AddStopState(m_states.at(typeid(player_state::Run))	->GetStateHandle());
-	m_states.at(typeid(player_state::AimGun))				->AddStopState(m_states.at(typeid(player_state::Crouch))->GetStateHandle());
-	m_states.at(typeid(player_state::AimGun))				->AddStopState(m_states.at(typeid(player_state::Run))	->GetStateHandle());
-	m_states.at(typeid(player_state::Shot))					->AddStopState(m_states.at(typeid(player_state::Crouch))->GetStateHandle());
-	m_states.at(typeid(player_state::Shot))					->AddStopState(m_states.at(typeid(player_state::Run))	->GetStateHandle());
-	m_states.at(typeid(player_state::ShotRocketLauncher))	->AddStopState(m_states.at(typeid(player_state::Move))	->GetStateHandle());
-	m_states.at(typeid(player_state::ShotRocketLauncher))	->AddStopState(m_states.at(typeid(player_state::Crouch))->GetStateHandle());
-	m_states.at(typeid(player_state::ShotRocketLauncher))	->AddStopState(m_states.at(typeid(player_state::Run))	->GetStateHandle());
+	m_states.at(typeid(player_state::Grabbed))				->AddStopState(m_states.at(typeid(player_state::EquipKnife))			->GetStateHandle());
+	m_states.at(typeid(player_state::Grabbed))				->AddStopState(m_states.at(typeid(player_state::AimKnife))				->GetStateHandle());
+	m_states.at(typeid(player_state::Grabbed))				->AddStopState(m_states.at(typeid(player_state::StabKnife))				->GetStateHandle());
+	m_states.at(typeid(player_state::Grabbed))				->AddStopState(m_states.at(typeid(player_state::FirstSideSlashKnife))	->GetStateHandle());
+	m_states.at(typeid(player_state::Grabbed))				->AddStopState(m_states.at(typeid(player_state::SecondSideSlashKnife))	->GetStateHandle());
+	m_states.at(typeid(player_state::Grabbed))				->AddStopState(m_states.at(typeid(player_state::SpinningSlashKnife))	->GetStateHandle());
+	m_states.at(typeid(player_state::Grabbed))				->AddStopState(m_states.at(typeid(player_state::Parry))					->GetStateHandle());
+	m_states.at(typeid(player_state::Grabbed))				->AddStopState(m_states.at(typeid(player_state::EquipGun))				->GetStateHandle());
+	m_states.at(typeid(player_state::Grabbed))				->AddStopState(m_states.at(typeid(player_state::AimGun))				->GetStateHandle());
+	m_states.at(typeid(player_state::Grabbed))				->AddStopState(m_states.at(typeid(player_state::Shot))					->GetStateHandle());
+	m_states.at(typeid(player_state::Grabbed))				->AddStopState(m_states.at(typeid(player_state::ShotRocketLauncher))	->GetStateHandle());
+	m_states.at(typeid(player_state::Grabbed))				->AddStopState(m_states.at(typeid(player_state::Reload))				->GetStateHandle());
+	
+	m_states.at(typeid(player_state::AimKnife))				->AddStopState(m_states.at(typeid(player_state::Crouch))				->GetStateHandle());
+	m_states.at(typeid(player_state::AimKnife))				->AddStopState(m_states.at(typeid(player_state::Run))					->GetStateHandle());
+	m_states.at(typeid(player_state::StabKnife))			->AddStopState(m_states.at(typeid(player_state::Move))					->GetStateHandle());
+	m_states.at(typeid(player_state::StabKnife))			->AddStopState(m_states.at(typeid(player_state::Crouch))				->GetStateHandle());
+	m_states.at(typeid(player_state::StabKnife))			->AddStopState(m_states.at(typeid(player_state::Run))					->GetStateHandle());
+	m_states.at(typeid(player_state::FirstSideSlashKnife))	->AddStopState(m_states.at(typeid(player_state::Move))					->GetStateHandle());
+	m_states.at(typeid(player_state::FirstSideSlashKnife))	->AddStopState(m_states.at(typeid(player_state::Crouch))				->GetStateHandle());
+	m_states.at(typeid(player_state::FirstSideSlashKnife))	->AddStopState(m_states.at(typeid(player_state::Run))					->GetStateHandle());
+	m_states.at(typeid(player_state::SecondSideSlashKnife))	->AddStopState(m_states.at(typeid(player_state::Move))					->GetStateHandle());
+	m_states.at(typeid(player_state::SecondSideSlashKnife))	->AddStopState(m_states.at(typeid(player_state::Crouch))				->GetStateHandle());
+	m_states.at(typeid(player_state::SecondSideSlashKnife))	->AddStopState(m_states.at(typeid(player_state::Run))					->GetStateHandle());
+	m_states.at(typeid(player_state::SpinningSlashKnife))	->AddStopState(m_states.at(typeid(player_state::Move))					->GetStateHandle());
+	m_states.at(typeid(player_state::SpinningSlashKnife))	->AddStopState(m_states.at(typeid(player_state::Crouch))				->GetStateHandle());
+	m_states.at(typeid(player_state::SpinningSlashKnife))	->AddStopState(m_states.at(typeid(player_state::Run))					->GetStateHandle());
+	m_states.at(typeid(player_state::Parry))				->AddStopState(m_states.at(typeid(player_state::Crouch))				->GetStateHandle());
+	m_states.at(typeid(player_state::Parry))				->AddStopState(m_states.at(typeid(player_state::Run))					->GetStateHandle());
+	m_states.at(typeid(player_state::AimGun))				->AddStopState(m_states.at(typeid(player_state::Crouch))				->GetStateHandle());
+	m_states.at(typeid(player_state::AimGun))				->AddStopState(m_states.at(typeid(player_state::Run))					->GetStateHandle());
+	m_states.at(typeid(player_state::Shot))					->AddStopState(m_states.at(typeid(player_state::Crouch))				->GetStateHandle());
+	m_states.at(typeid(player_state::Shot))					->AddStopState(m_states.at(typeid(player_state::Run))					->GetStateHandle());
+	m_states.at(typeid(player_state::ShotRocketLauncher))	->AddStopState(m_states.at(typeid(player_state::Move))					->GetStateHandle());
+	m_states.at(typeid(player_state::ShotRocketLauncher))	->AddStopState(m_states.at(typeid(player_state::Crouch))				->GetStateHandle());
+	m_states.at(typeid(player_state::ShotRocketLauncher))	->AddStopState(m_states.at(typeid(player_state::Run))					->GetStateHandle());
 }
 
 void PlayerStateController::AddCheckStopState()
 {
-	m_check_stop_state_handles.emplace_back(m_states.at(typeid(player_state::Move))		->GetStateHandle());
-	m_check_stop_state_handles.emplace_back(m_states.at(typeid(player_state::Crouch))	->GetStateHandle());
-	m_check_stop_state_handles.emplace_back(m_states.at(typeid(player_state::Run))		->GetStateHandle());
+	m_check_stop_state_handles.emplace_back(m_states.at(typeid(player_state::Move))					->GetStateHandle());
+	
+	m_check_stop_state_handles.emplace_back(m_states.at(typeid(player_state::Crouch))				->GetStateHandle());
+	m_check_stop_state_handles.emplace_back(m_states.at(typeid(player_state::Run))					->GetStateHandle());
+
+	m_check_stop_state_handles.emplace_back(m_states.at(typeid(player_state::EquipKnife))			->GetStateHandle());
+	m_check_stop_state_handles.emplace_back(m_states.at(typeid(player_state::AimKnife))				->GetStateHandle());
+	m_check_stop_state_handles.emplace_back(m_states.at(typeid(player_state::StabKnife))			->GetStateHandle());
+	m_check_stop_state_handles.emplace_back(m_states.at(typeid(player_state::FirstSideSlashKnife))	->GetStateHandle());
+	m_check_stop_state_handles.emplace_back(m_states.at(typeid(player_state::SecondSideSlashKnife))	->GetStateHandle());
+	m_check_stop_state_handles.emplace_back(m_states.at(typeid(player_state::SpinningSlashKnife))	->GetStateHandle());
+	m_check_stop_state_handles.emplace_back(m_states.at(typeid(player_state::Parry))				->GetStateHandle());
+	m_check_stop_state_handles.emplace_back(m_states.at(typeid(player_state::EquipGun))				->GetStateHandle());
+	m_check_stop_state_handles.emplace_back(m_states.at(typeid(player_state::AimGun))				->GetStateHandle());
+	m_check_stop_state_handles.emplace_back(m_states.at(typeid(player_state::Shot))					->GetStateHandle());
+	m_check_stop_state_handles.emplace_back(m_states.at(typeid(player_state::ShotRocketLauncher))	->GetStateHandle());
+	m_check_stop_state_handles.emplace_back(m_states.at(typeid(player_state::Reload))				->GetStateHandle());
 }
 
 void PlayerStateController::ChangeState(std::shared_ptr<Player> player)
@@ -291,6 +318,21 @@ void PlayerStateController::JudgeDestinationWeaponActionState(std::shared_ptr<IS
 {
 	switch (static_cast<player_state::WeaponActionStateKind>(stop_state->GetStateKind()))
 	{
+	case player_state::WeaponActionStateKind::kEquipKnife:
+	case player_state::WeaponActionStateKind::kAimKnife:
+	case player_state::WeaponActionStateKind::kStabKnife:
+	case player_state::WeaponActionStateKind::kFirstSideSlashKnife:
+	case player_state::WeaponActionStateKind::kSecondSideSlashKnife:
+	case player_state::WeaponActionStateKind::kSpinningSlashKnife:
+	case player_state::WeaponActionStateKind::kParry:
+	case player_state::WeaponActionStateKind::kEquipGun:
+	case player_state::WeaponActionStateKind::kAimGun:
+	case player_state::WeaponActionStateKind::kShot:
+	case player_state::WeaponActionStateKind::kShotRocketLauncher:
+	case player_state::WeaponActionStateKind::kReload:
+		stop_state = m_states.at(typeid(player_state::WeaponActionNull));
+		break;
+
 	default:
 		break;
 	}

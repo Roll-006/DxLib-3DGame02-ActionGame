@@ -30,7 +30,7 @@ public:
 	void Draw()				const	override;
 
 	void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) override;
-	void OnGrabbed(const VECTOR& brabber_dir) override;
+	void OnGrabbed(const VECTOR& brabber_pos, const VECTOR& brabber_dir) override;
 
 	void SetRemainingBulletNum(const int remaining_bullet_num) override { m_current_remaining_bullet_num = remaining_bullet_num; }
 
@@ -92,6 +92,8 @@ public:
 	void DirOfMovement();
 	/// @brief カメラのforward(Y軸は0)方向を向く
 	void DirOfCameraForward();
+
+	void UpdateGrabbed();
 
 	void CalcMoveSpeed();
 	void CalcMoveSpeedStop();
@@ -167,7 +169,6 @@ private:
 	std::shared_ptr<BonePosCorrector>			m_bone_pos_corrector;
 
 	VECTOR										m_input_slope;
-	float										m_move_speed;
 
 	float										m_look_dir_offset_angle;				// 見る方向の補正角度
 	float										m_confirm_look_dir_threshold_angle;		// 目的の見る方向に到達したと判定する閾値

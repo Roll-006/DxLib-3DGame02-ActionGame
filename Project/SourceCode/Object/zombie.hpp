@@ -79,7 +79,6 @@ private:
 private:
 	std::shared_ptr<ZombieStateController> m_state;
 
-	float m_move_speed;
 	float m_attack_interval_timer;
 	bool  m_can_grab_target;
 };

@@ -4,7 +4,6 @@
 Zombie::Zombie() :
 	CharacterBase			(ObjName.ZOMBIE, ObjTag.ENEMY, MassKind::kMedium),
 	m_state					(std::make_shared<ZombieStateController>()),
-	m_move_speed			(kWalkSpeed),
 	m_attack_interval_timer	(0.0f),
 	m_can_grab_target		(false)
 {
