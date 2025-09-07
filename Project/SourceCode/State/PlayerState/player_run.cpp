@@ -38,6 +38,11 @@ std::shared_ptr<IState<Player>> player_state::Run::ChangeState(std::shared_ptr<P
 	const auto command			= CommandHandler::GetInstance();
 	const auto command_mode		= command->GetInstance()->GetInputModeKind(CommandKind::kRun);
 
+	// •ß‚Ü‚ê‚é
+	if (state_controller->TryGrabbed(obj))
+	{
+		return state_controller->GetState<Grabbed, Player>();
+	}
 	// NULL
 	if (!state_controller->TryRun())
 	{

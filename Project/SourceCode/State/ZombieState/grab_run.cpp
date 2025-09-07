@@ -16,7 +16,7 @@ void zombie_state::GrabRun::Update(std::shared_ptr<Zombie> obj)
 {
 	m_track_timer += obj->GetDeltaTime();
 
-	obj->CalcMoveSpeedRunGrab();
+	obj->UpdateGrabRun();
 }
 
 void zombie_state::GrabRun::LateUpdate(std::shared_ptr<Zombie> obj)

@@ -6,6 +6,7 @@ CharacterBase::CharacterBase(const std::string& name, const std::string& tag, co
 	m_modeler						(nullptr),
 	m_animator						(nullptr),
 	m_collider_creator				(std::make_shared<CharacterColliderCreator>()),
+	m_move_dir_offset_speed			(0.0f),
 	m_current_held_weapon			(nullptr),
 	m_invincible_time				(0.0f),
 	m_invincible_timer				(0.0f),
@@ -89,7 +90,7 @@ void CharacterBase::CalcMoveDir()
 	m_move_dir[TimeKind::kCurrent] = math::GetApproachedVector(
 		m_move_dir[TimeKind::kCurrent],
 		m_move_dir[TimeKind::kNext],
-		kMoveDirOffsetSpeed);
+		m_move_dir_offset_speed);
 }
 
 void CharacterBase::OnDamage(const HitPointsPartKind part_kind, const float damage)

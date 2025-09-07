@@ -389,7 +389,7 @@
     <ClCompile Include="SourceCode\Part\hit_points.cpp">
       <Filter>Part</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\State\ZombieState\dead.cpp">
+    <ClCompile Include="SourceCode\State\ZombieState\zombie_dead.cpp">
       <Filter>State\ZombieState</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\State\ZombieState\play_dead.cpp">
@@ -466,6 +466,12 @@
     </ClCompile>
     <ClCompile Include="SourceCode\Part\patrol_route_supporter.cpp">
       <Filter>Part</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\PlayerState\player_dead.cpp">
+      <Filter>State\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\PlayerState\grabbed.cpp">
+      <Filter>State\PlayerState</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1120,7 +1126,7 @@
     <ClInclude Include="SourceCode\Data\Kind\hit_points_part_kind.hpp">
       <Filter>Data\Kind</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\State\ZombieState\dead.hpp">
+    <ClInclude Include="SourceCode\State\ZombieState\zombie_dead.hpp">
       <Filter>State\ZombieState</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\State\ZombieState\play_dead.hpp">
@@ -1230,6 +1236,15 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Part\patrol_route_supporter.hpp">
       <Filter>Part</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\PlayerState\player_dead.hpp">
+      <Filter>State\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\PlayerState\grabbed.hpp">
+      <Filter>State\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Interface\i_grabbable.hpp">
+      <Filter>Interface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

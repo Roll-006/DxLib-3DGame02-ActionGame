@@ -1,4 +1,5 @@
 #include "grab.hpp"
+#include "../../Object/player.hpp"
 
 zombie_state::Grab::Grab() :
 	ActionStateBase(static_cast<int>(zombie_state::ActionStateKind::kGrab))
@@ -23,7 +24,13 @@ void zombie_state::Grab::LateUpdate(std::shared_ptr<Zombie> obj)
 
 void zombie_state::Grab::Enter(std::shared_ptr<Zombie> obj)
 {
+	const auto state_controller = obj->GetStateController();
+	const auto player			= std::dynamic_pointer_cast<Player>(state_controller->GetTargetCharacter());
 
+	if (player)
+	{
+		player->OnGrabbed(obj->GetCurrentLookDir());
+	}
 }
 
 void zombie_state::Grab::Exit(std::shared_ptr<Zombie> obj)

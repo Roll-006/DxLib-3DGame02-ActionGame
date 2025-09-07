@@ -35,8 +35,8 @@ public:
 	/// @param アタッチするアニメーションの種類
 	void AttachResultAnim(const int next_kind);
 
-	void AddAnimHandle(const int kind, const std::string& file_path, const int index, const std::string& tag, const float play_speed, const bool is_loop);
-	void AddAnimHandle(const int kind, const int anim_handle,		 const int index, const std::string& tag, const float play_speed, const bool is_loop);
+	void AddAnimHandle(const int kind, const std::string& file_path, const int index, const std::string& tag, const float play_speed, const bool is_loop, const bool is_self_blend = false);
+	void AddAnimHandle(const int kind, const int anim_handle,		 const int index, const std::string& tag, const float play_speed, const bool is_loop, const bool is_self_blend = false);
 
 	/// @brief FIXME : ボーンが突然切り替わり不自然なため一時的に初期設定のみでの仕様にとどめる(private化)
 	/// @brief 上半身と下半身の境目のボーンを設定する

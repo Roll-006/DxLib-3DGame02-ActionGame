@@ -29,10 +29,11 @@ public:
 	void Move();
 	void TrackMove(const VECTOR& pos);
 
+	void UpdateGrabRun();
+
 	void CalcMoveSpeed();
 	void CalcMoveSpeedStop();
 	void CalcMoveSpeedRun();
-	void CalcMoveSpeedRunGrab();
 	#pragma endregion
 
 
@@ -50,7 +51,7 @@ private:
 
 private:
 	static constexpr VECTOR kBasicAngle				= { 0.0f, DX_PI_F, 0.0f };
-	static constexpr float  kBasicScale				= 0.3f;
+	static constexpr float  kBasicScale				= 0.31f;
 
 	static constexpr float kFOV						= 80.0f;
 	static constexpr float kVisibleDistance			= 300.0f;
@@ -61,6 +62,8 @@ private:
 	static constexpr float kWalkSpeed				= 30.0f;
 	static constexpr float kRunSpeed				= 70.0f;
 	static constexpr float kRunGrabSpeed			= 80.0f;
+
+	static constexpr float kMoveDirOffsetSpeed		= 5.0f;					// à⁄ìÆï˚å¸ÇÃï‚ê≥ë¨ìx
 
 	static constexpr float kCapsuleRadius			= 8.0f;
 	static constexpr float kLandingTriggerRadius	= 6.0f;

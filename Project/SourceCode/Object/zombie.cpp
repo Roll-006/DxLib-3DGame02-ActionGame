@@ -200,7 +200,7 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 			OnDamage(HitPointsPartKind::kMain,		dynamic_cast<Bullet*>(target_obj)->GetPower());
 		}
 
-		if (target_collider_kind == GetStateController()->GetTargetCharacter()->GetCollider(ColliderKind::kCollider)->GetColliderKind())
+		if (target_obj == GetStateController()->GetTargetCharacter().get() && target_collider_kind == ColliderKind::kCollider)
 		{
 			m_can_grab_target = true;
 		}
@@ -222,7 +222,7 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 			OnDamage(HitPointsPartKind::kMain, dynamic_cast<Bullet*>(target_obj)->GetPower());
 		}
 
-		if (target_collider_kind == GetStateController()->GetTargetCharacter()->GetCollider(ColliderKind::kCollider)->GetColliderKind())
+		if (target_obj == GetStateController()->GetTargetCharacter().get() && target_collider_kind == ColliderKind::kCollider)
 		{
 			m_can_grab_target = true;
 		}
@@ -278,12 +278,18 @@ float Zombie::GetDeltaTime() const
 
 void Zombie::Move()
 {
-
+	m_move_dir_offset_speed = kMoveDirOffsetSpeed;
 }
 
 void Zombie::TrackMove(const VECTOR& pos)
 {
 	m_move_dir[TimeKind::kNext] = v3d::GetNormalizedV(pos - m_transform->GetPos(CoordinateKind::kWorld));
+}
+
+void Zombie::UpdateGrabRun()
+{
+	m_move_dir_offset_speed = 0.5f;
+	m_move_speed = kRunGrabSpeed;
 }
 
 void Zombie::CalcMoveSpeed()
@@ -299,11 +305,6 @@ void Zombie::CalcMoveSpeedStop()
 void Zombie::CalcMoveSpeedRun()
 {
 	m_move_speed = kRunSpeed;
-}
-
-void Zombie::CalcMoveSpeedRunGrab()
-{
-	m_move_speed = kRunGrabSpeed;
 }
 
 void Zombie::OnCollideWithExplosion(const std::shared_ptr<Sphere> sphere)

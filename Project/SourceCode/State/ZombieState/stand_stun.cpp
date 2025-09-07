@@ -1,7 +1,7 @@
 #include "stand_stun.hpp"
 
 zombie_state::StandStun::StandStun() :
-	ActionStateBase(static_cast<int>(zombie_state::ActionStateKind::kActionNull))
+	ActionStateBase(static_cast<int>(zombie_state::ActionStateKind::kStandStun))
 {
 
 }

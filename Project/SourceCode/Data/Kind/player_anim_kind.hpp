@@ -8,6 +8,8 @@ enum class PlayerAnimKind
 	#pragma region 汎用
 	kIdle,
 
+	kGrabbed,
+
 	kStabKnife,
 	kFirstSideSlashKnife,
 	kSecondSideSlashKnife,

@@ -17,6 +17,7 @@ static struct AnimationPath
 
 	const std::string BLOW_AWAY							= "Data/Animation/blow_away.mv1";
 	const std::string NECK_BITE							= "Data/Animation/neck_bite.mv1";
+	const std::string GRABBED							= "Data/Animation/grabbed.mv1";
 	#pragma endregion
 
 

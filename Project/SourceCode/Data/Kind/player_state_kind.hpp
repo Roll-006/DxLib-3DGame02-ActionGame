@@ -15,6 +15,8 @@ namespace player_state
 		kRun,
 		kTurnAround,
 		kCrouchTurnAround,
+		kGrabbed,
+		kDead,
 	};
 
 	enum class WeaponActionStateKind

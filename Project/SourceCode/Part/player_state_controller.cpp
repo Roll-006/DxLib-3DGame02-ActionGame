@@ -46,6 +46,8 @@ void PlayerStateController::CreateState()
 	m_states[typeid(player_state::Run)]					 = std::make_shared<player_state::Run>();
 	m_states[typeid(player_state::TurnAround)]			 = std::make_shared<player_state::TurnAround>();
 	m_states[typeid(player_state::CrouchTurnAround)]	 = std::make_shared<player_state::CrouchTurnAround>();
+	m_states[typeid(player_state::Grabbed)]				 = std::make_shared<player_state::Grabbed>();
+	m_states[typeid(player_state::Dead)]				 = std::make_shared<player_state::Dead>();
 	m_states[typeid(player_state::WeaponActionNull)]	 = std::make_shared<player_state::WeaponActionNull>();
 	m_states[typeid(player_state::EquipKnife)]			 = std::make_shared<player_state::EquipKnife>();
 	m_states[typeid(player_state::AimKnife)]			 = std::make_shared<player_state::AimKnife>();
@@ -341,6 +343,11 @@ bool PlayerStateController::TryRun()
 	if (is_trigger) { command->SetInputMode(CommandKind::kRun, InputModeKind::kTrigger); }
 
 	return is_run;
+}
+
+bool PlayerStateController::TryGrabbed(std::shared_ptr<Player> player)
+{
+	return player->IsGrabbed();
 }
 
 bool PlayerStateController::TryEquipKnifeShortcut(std::shared_ptr<Player> player)

@@ -35,24 +35,31 @@ void PlayerAnimator::Update()
 
 void PlayerAnimator::LoadAnim()
 {
-	// 上半身
+	// 汎用
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdle),						AnimPath.IDLE,							0, AnimTag.NONE, 20.0f,  true);
+
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kGrabbed),					AnimPath.GRABBED,						1, AnimTag.NONE, 30.0f,  true, true);
+
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kStabKnife),					AnimPath.STAB_KNIFE,					1, AnimTag.NONE, 100.0f, false);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kFirstSideSlashKnife),		AnimPath.FIRST_SIDE_SLASH_KNIFE,		0, AnimTag.NONE, 100.0f, false);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kSecondSideSlashKnife),		AnimPath.SECOND_SIDE_SLASH_KNIFE,		0, AnimTag.NONE, 70.0f,  false);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kSpinningSlashKnife),		AnimPath.SPINNING_SLASH_KNIFE,			1, AnimTag.NONE, 70.0f,  false);
+
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardRun),			AnimPath.MOVE_FORWARD_RUN_01,			0, AnimTag.MOVE, 27.0f,  true);
+
+	// 上半身用
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kAttachRifle),				AnimPath.ATTACH_RIFLE,					1, AnimTag.NONE, 20.0f,  false);
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kDetachRifle),				AnimPath.DETACH_RIFLE,					1, AnimTag.NONE, 20.0f,  false);
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kAttachHandgun),				AnimPath.ATTACH_HANDGUN,				1, AnimTag.NONE, 20.0f,  false);
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kDetachHandgun),				AnimPath.DETACH_HANDGUN,				1, AnimTag.NONE, 20.0f,  false);
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kEquipKnife),				AnimPath.EQUIP_KNIFE,					0, AnimTag.NONE, 20.0f,  true);
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kAimKnife),					AnimPath.AIM_KNIFE,						1, AnimTag.NONE, 20.0f,  true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kStabKnife),					AnimPath.STAB_KNIFE,					1, AnimTag.NONE, 100.0f, false);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kFirstSideSlashKnife),		AnimPath.FIRST_SIDE_SLASH_KNIFE,		0, AnimTag.NONE, 100.0f, false);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kSecondSideSlashKnife),		AnimPath.SECOND_SIDE_SLASH_KNIFE,		0, AnimTag.NONE, 70.0f,  false);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kSpinningSlashKnife),		AnimPath.SPINNING_SLASH_KNIFE,			1, AnimTag.NONE, 70.0f,  false);
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kParry),						AnimPath.PARRY,							0, AnimTag.NONE, 20.0f,  false);
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kEquipGun),					AnimPath.EQUIP_GUN,						0, AnimTag.NONE, 20.0f,  true);
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kAimGun),					AnimPath.AIM_GUN,						0, AnimTag.NONE, 20.0f,  true);
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kReload),					AnimPath.RELOAD,						1, AnimTag.NONE, 100.0f, false);
 
-	// 下半身
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdle),						AnimPath.IDLE,							0, AnimTag.NONE, 20.0f,  true);
+	// 下半身用
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kCrouch),					AnimPath.CROUCH,						0, AnimTag.NONE, 20.0f,  true);
 
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForward),				AnimPath.MOVE_FORWARD,					0, AnimTag.MOVE, 20.0f,  true);
@@ -72,8 +79,6 @@ void PlayerAnimator::LoadAnim()
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardRightCrouch),	AnimPath.MOVE_FORWARD_RIGHT_CROUCH,		0, AnimTag.MOVE, 20.0f,  true);
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveBackwardLeftCrouch),	AnimPath.MOVE_BACKWARD_LEFT_CROUCH,		0, AnimTag.MOVE, 20.0f,  true);
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveBackwardRightCrouch),	AnimPath.MOVE_BACKWARD_RIGHT_CROUCH,	0, AnimTag.MOVE, 20.0f,  true);
-
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardRun),			AnimPath.MOVE_FORWARD_RUN_01,			0, AnimTag.MOVE, 27.0f,  true);
 }
 
 void PlayerAnimator::ChangeAnim()
@@ -113,6 +118,10 @@ void PlayerAnimator::CombineMoveNullWithAction()
 
 	case static_cast<int>(player_state::ActionStateKind::kCrouchTurnAround):
 		CombineMoveNullCrouchTurnAroundWithWeaponAction();
+		break;
+
+	case static_cast<int>(player_state::ActionStateKind::kGrabbed):
+		AttachResultAnim(static_cast<int>(PlayerAnimKind::kGrabbed));
 		break;
 
 	default:

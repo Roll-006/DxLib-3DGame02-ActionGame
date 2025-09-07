@@ -9,11 +9,14 @@ struct AnimTimeKindData
 	float total_time		= 0.0f;
 };
 
+/// @brief アニメーションの個々のデータ
+/// @brief is_self_blend 自分自身でブレンドを行うかを判定(最初と最後がループしていないアニメーションで使用)
 struct AnimKindData
 {
-	int			anim_handle	= -1;
-	int			index		= 0;
-	std::string tag			= "";
-	float		play_speed	= 0.0f;
-	bool		is_loop		= true;
+	int			anim_handle		= -1;
+	int			index			= 0;
+	std::string tag				= "";
+	float		play_speed		= 0.0f;
+	bool		is_loop			= true;
+	bool		is_self_blend	= false;
 };

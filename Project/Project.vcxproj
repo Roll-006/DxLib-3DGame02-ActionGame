@@ -240,6 +240,8 @@
     <ClCompile Include="SourceCode\Shape\3DShape\sphere.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\aim_gun.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\aim_knife.cpp" />
+    <ClCompile Include="SourceCode\State\PlayerState\player_dead.cpp" />
+    <ClCompile Include="SourceCode\State\PlayerState\grabbed.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\shot_rocket_launcher.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\spinning_slash_knife.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\first_side_slash_knife.cpp" />
@@ -275,7 +277,7 @@
     <ClCompile Include="SourceCode\State\ZombieState\zombie_move_null.cpp" />
     <ClCompile Include="SourceCode\State\ZombieState\alert.cpp" />
     <ClCompile Include="SourceCode\State\ZombieState\crouch_stun.cpp" />
-    <ClCompile Include="SourceCode\State\ZombieState\dead.cpp" />
+    <ClCompile Include="SourceCode\State\ZombieState\zombie_dead.cpp" />
     <ClCompile Include="SourceCode\State\ZombieState\investigate.cpp" />
     <ClCompile Include="SourceCode\State\ZombieState\knockback.cpp" />
     <ClCompile Include="SourceCode\State\ZombieState\patrol.cpp" />
@@ -404,6 +406,7 @@
     <ClInclude Include="SourceCode\Handle\handle_keeper.hpp" />
     <ClInclude Include="SourceCode\Handle\handle_creator.hpp" />
     <ClInclude Include="SourceCode\Input\input_checker.hpp" />
+    <ClInclude Include="SourceCode\Interface\i_grabbable.hpp" />
     <ClInclude Include="SourceCode\Interface\i_effect.hpp" />
     <ClInclude Include="SourceCode\Interface\i_enemy.hpp" />
     <ClInclude Include="SourceCode\Interface\i_enemy_ai.hpp" />
@@ -496,6 +499,8 @@
     <ClInclude Include="SourceCode\Shape\3DShape\sphere.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\aim_gun.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\aim_knife.hpp" />
+    <ClInclude Include="SourceCode\State\PlayerState\player_dead.hpp" />
+    <ClInclude Include="SourceCode\State\PlayerState\grabbed.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\shot_rocket_launcher.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\spinning_slash_knife.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\first_side_slash_knife.hpp" />
@@ -531,7 +536,7 @@
     <ClInclude Include="SourceCode\State\ZombieState\zombie_move_null.hpp" />
     <ClInclude Include="SourceCode\State\ZombieState\alert.hpp" />
     <ClInclude Include="SourceCode\State\ZombieState\crouch_stun.hpp" />
-    <ClInclude Include="SourceCode\State\ZombieState\dead.hpp" />
+    <ClInclude Include="SourceCode\State\ZombieState\zombie_dead.hpp" />
     <ClInclude Include="SourceCode\State\ZombieState\investigate.hpp" />
     <ClInclude Include="SourceCode\State\ZombieState\knockback.hpp" />
     <ClInclude Include="SourceCode\State\ZombieState\patrol.hpp" />

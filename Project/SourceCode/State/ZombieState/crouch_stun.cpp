@@ -1,7 +1,7 @@
 #include "crouch_stun.hpp"
 
 zombie_state::CrouchStun::CrouchStun() :
-	ActionStateBase(static_cast<int>(zombie_state::ActionStateKind::kActionNull))
+	ActionStateBase(static_cast<int>(zombie_state::ActionStateKind::kCrouchStun))
 {
 
 }

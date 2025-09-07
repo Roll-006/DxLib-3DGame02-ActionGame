@@ -11,6 +11,7 @@ Player::Player() :
 	m_move_speed						(0.0f),
 	m_look_dir_offset_angle				(0.0f),
 	m_confirm_look_dir_threshold_angle	(0.0f),
+	m_is_grabbed						(false),
 	m_current_equip_weapon				(nullptr),
 	m_current_equip_knife				(nullptr),
 	m_weapon_shortcut_selecter			(std::make_shared<WeaponShortcutSelecter>())
@@ -84,6 +85,7 @@ void Player::Update()
 		}
 	}
 
+	m_move_dir_offset_speed				= kMoveDirOffsetSpeed;
 	m_look_dir_offset_angle				= kLookDirOffsetAngle			* math::kDegToRad;
 	m_confirm_look_dir_threshold_angle	= kConfirmLookDirThresholdAngle * math::kDegToRad;
 
@@ -98,6 +100,8 @@ void Player::Update()
 	m_collider_creator->CalcCapsuleColliderLength(this, m_modeler);
 
 	ApplyLookDirToRot(m_look_dir.at(TimeKind::kCurrent));
+
+	m_is_grabbed = false;
 }
 
 void Player::LateUpdate()
@@ -185,6 +189,12 @@ void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	default:
 		break;
 	}
+}
+
+void Player::OnGrabbed(const VECTOR& brabber_dir)
+{
+	m_is_grabbed = true;
+	m_look_dir.at(TimeKind::kNext) = -brabber_dir;
 }
 
 //void Player::CalcMoveDirFirstFrame()
@@ -420,9 +430,11 @@ void Player::CalcMoveVelocity()
 void Player::CalcLookDir()
 {
 	const auto move_state			= static_cast<player_state::MoveStateKind>		  (m_state->GetMoveState		(TimeKind::kCurrent)->GetStateKind());
+	const auto action_state			= static_cast<player_state::ActionStateKind>	  (m_state->GetActionState		(TimeKind::kCurrent)->GetStateKind());
 	const auto weapon_action_state	= static_cast<player_state::WeaponActionStateKind>(m_state->GetWeaponActionState(TimeKind::kCurrent)->GetStateKind());
 
-	if (   move_state		   != player_state::MoveStateKind::kMove
+	if (   move_state		   != player_state::MoveStateKind		 ::kMove
+		&& action_state		   != player_state::ActionStateKind		 ::kGrabbed
 		&& weapon_action_state != player_state::WeaponActionStateKind::kAimKnife
 		&& weapon_action_state != player_state::WeaponActionStateKind::kFirstSideSlashKnife
 		&& weapon_action_state != player_state::WeaponActionStateKind::kSecondSideSlashKnife

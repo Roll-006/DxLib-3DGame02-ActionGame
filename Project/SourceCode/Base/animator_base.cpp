@@ -27,7 +27,7 @@ AnimatorBase::~AnimatorBase()
 	}
 }
 
-void AnimatorBase::AddAnimHandle(const int kind, const std::string& file_path, const int index, const std::string& tag, const float play_speed, const bool is_loop)
+void AnimatorBase::AddAnimHandle(const int kind, const std::string& file_path, const int index, const std::string& tag, const float play_speed, const bool is_loop, const bool is_self_blend)
 {
 	// 上書き不可
 	if (m_anim_data.count(kind)) { return; }
@@ -35,18 +35,18 @@ void AnimatorBase::AddAnimHandle(const int kind, const std::string& file_path, c
 	int anim_handle = HandleKeeper::GetInstance()->LoadHandle(HandleKind::kAnim, file_path);
 	if (anim_handle != -1)
 	{
-		m_anim_data[kind] = AnimKindData(anim_handle, index, tag, play_speed, is_loop);
+		m_anim_data[kind] = AnimKindData(anim_handle, index, tag, play_speed, is_loop, is_self_blend);
 	}
 }
 
-void AnimatorBase::AddAnimHandle(const int kind, const int anim_handle, const int index, const std::string& tag, const float play_speed, const bool is_loop)
+void AnimatorBase::AddAnimHandle(const int kind, const int anim_handle, const int index, const std::string& tag, const float play_speed, const bool is_loop, const bool is_self_blend)
 {
 	// 上書き不可
 	if (m_anim_data.count(kind)) { return; }
 
 	if (anim_handle != -1)
 	{
-		m_anim_data[kind] = AnimKindData(anim_handle, index, tag, play_speed, is_loop);
+		m_anim_data[kind] = AnimKindData(anim_handle, index, tag, play_speed, is_loop, is_self_blend);
 	}
 }
 
@@ -173,8 +173,9 @@ void AnimatorBase::PlayAnim()
 		if (data.attach_index > -1)
 		{
 			const float blend_rate	= time_kind == TimeKind::kCurrent ? m_blend_rate.at(body_kind) : 1.0f - m_blend_rate.at(body_kind);
+			const bool  is_loop		= m_anim_data.at(data.kind).is_loop ^ m_anim_data.at(data.kind).is_self_blend;
 			float play_speed		= m_anim_data.at(data.kind).play_speed * GetDeltaTime();
-			math::Increase(data.play_timer, play_speed, data.total_time, m_anim_data.at(data.kind).is_loop);
+			math::Increase(data.play_timer, play_speed, data.total_time, is_loop);
 
 			// 再生位置・ブレンド率を適用
 			MV1SetAttachAnimTime     (m_resource_modeler.at(body_kind)->GetModelHandle(), data.attach_index, data.play_timer);
@@ -309,7 +310,10 @@ bool AnimatorBase::CanAttachAnim(const int next_kind, const BodyKind body_kind)
 	{
 		if (body == body_kind && time == TimeKind::kCurrent && data.kind == next_kind)
 		{
-			return false;
+			if (!(m_anim_data.at(next_kind).is_self_blend && IsPlayEnd(body_kind)))
+			{
+				return false;
+			}
 		}
 	}
 

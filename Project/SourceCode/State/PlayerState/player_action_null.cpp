@@ -39,6 +39,11 @@ std::shared_ptr<IState<Player>> player_state::ActionNull::ChangeState(std::share
 {
 	const auto state_controller = obj->GetStateController();
 
+	// •ß‚Ü‚ê‚é
+	if (state_controller->TryGrabbed(obj))
+	{
+		return state_controller->GetState<Grabbed, Player>();
+	}
 	// ƒ_ƒbƒVƒ…
 	if (state_controller->TryRun())
 	{

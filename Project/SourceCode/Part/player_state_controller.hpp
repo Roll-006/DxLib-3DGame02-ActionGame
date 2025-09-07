@@ -12,6 +12,8 @@
 #include "../State/PlayerState/player_run.hpp"
 #include "../State/PlayerState/turn_around.hpp"
 #include "../State/PlayerState/crouch_turn_around.hpp"
+#include "../State/PlayerState/grabbed.hpp"
+#include "../State/PlayerState/player_dead.hpp"
 
 #include "../State/PlayerState/weapon_action_null.hpp"
 #include "../State/PlayerState/attach_weapon.hpp"
@@ -57,14 +59,15 @@ public:
 
 
 	#pragma region Try”»’è
-	[[nodiscard]] bool TryMove();
-	[[nodiscard]] bool TryRun();
-	[[nodiscard]] bool TryEquipKnifeShortcut(std::shared_ptr<Player>);
-	[[nodiscard]] bool TrySpinningSlash();
-	[[nodiscard]] bool TryEquipGun(std::shared_ptr<Player>);
-	[[nodiscard]] bool TryEquipGunShortcut(std::shared_ptr<Player>);
-	[[nodiscard]] bool TryPullTrigger(std::shared_ptr<Player>);
-	[[nodiscard]] bool TryReload(std::shared_ptr<Player>);
+	[[nodiscard]] bool TryMove				();
+	[[nodiscard]] bool TryRun				();
+	[[nodiscard]] bool TryGrabbed			(std::shared_ptr<Player> player);
+	[[nodiscard]] bool TryEquipKnifeShortcut(std::shared_ptr<Player> player);
+	[[nodiscard]] bool TrySpinningSlash		();
+	[[nodiscard]] bool TryEquipGun			(std::shared_ptr<Player> player);
+	[[nodiscard]] bool TryEquipGunShortcut	(std::shared_ptr<Player> player);
+	[[nodiscard]] bool TryPullTrigger		(std::shared_ptr<Player> player);
+	[[nodiscard]] bool TryReload			(std::shared_ptr<Player> player);
 	#pragma endregion
 
 

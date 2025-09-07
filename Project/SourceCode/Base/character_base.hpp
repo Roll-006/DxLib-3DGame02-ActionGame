@@ -22,6 +22,8 @@ public:
 	[[nodiscard]] bool							IsInvincible()				const { return m_is_invincible; }
 	[[nodiscard]] std::shared_ptr<Modeler>		GetModeler()				const { return m_modeler; }
 	[[nodiscard]] std::shared_ptr<AnimatorBase>	GetAnimator()				const { return m_animator; }
+	[[nodiscard]] VECTOR						GetCurrentMoveDir()			const { return m_move_dir.at(TimeKind::kCurrent); }
+	[[nodiscard]] VECTOR						GetCurrentLookDir()			const { return m_look_dir.at(TimeKind::kCurrent); }
 	[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentHeldWeapon()		const { return m_current_held_weapon; }
 	[[nodiscard]] WeaponKind					GetCurrentHeldWeaponKind();
 	[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentAttachWeapon		(const HolsterKind holster_kind) const;
@@ -82,8 +84,9 @@ protected:
 	std::shared_ptr<AnimatorBase>				m_animator;
 	std::shared_ptr<CharacterColliderCreator>	m_collider_creator;
 
-	std::unordered_map<TimeKind, VECTOR>		m_move_dir;				// ˆÚ“®•ûŒü(WARNING : ’·‚³‚Í0`1‚Ì”ÍˆÍ‚ğæ‚é)
-	std::unordered_map<TimeKind, VECTOR>		m_look_dir;				// Œü‚¢‚Ä‚¢‚é•ûŒü
+	std::unordered_map<TimeKind, VECTOR>		m_move_dir;					// ˆÚ“®•ûŒü(WARNING : ’·‚³‚Í0`1‚Ì”ÍˆÍ‚ğæ‚é)
+	std::unordered_map<TimeKind, VECTOR>		m_look_dir;					// Œü‚¢‚Ä‚¢‚é•ûŒü
+	float										m_move_dir_offset_speed;	// ˆÚ“®•ûŒü‚ğ•â³‚·‚é‘¬“x
 	
 	std::shared_ptr<WeaponBase>											m_current_held_weapon;	// Œ»İè‚É‚Á‚Ä‚¢‚é•Ší
 	std::unordered_map<HolsterKind, std::shared_ptr<WeaponBase>>		m_attach_weapons;		// ‘•’…‚µ‚Ä‚¢‚é•Ší
@@ -93,7 +96,4 @@ protected:
 	float m_invincible_time;
 	float m_invincible_timer;
 	bool  m_is_invincible;
-
-private:
-	static constexpr float kMoveDirOffsetSpeed = 5.0f;					// ˆÚ“®•ûŒü‚Ì•â³‘¬“x
 };

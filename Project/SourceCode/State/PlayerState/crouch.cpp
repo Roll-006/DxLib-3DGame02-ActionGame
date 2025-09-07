@@ -38,6 +38,11 @@ std::shared_ptr<IState<Player>> player_state::Crouch::ChangeState(std::shared_pt
 	const auto command			= CommandHandler::GetInstance();
 	const auto command_mode		= command->GetInstance()->GetInputModeKind(CommandKind::kCrouch);
 
+	// •ß‚Ü‚ê‚é
+	if (state_controller->TryGrabbed(obj))
+	{
+		return state_controller->GetState<Grabbed, Player>();
+	}
 	// NULL
 	if (!command->IsExecute(CommandKind::kCrouch, TimeKind::kCurrent))
 	{

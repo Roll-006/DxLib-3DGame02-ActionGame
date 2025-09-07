@@ -7,7 +7,7 @@ public:
 
 	/// @brief c’e”‚ğİ’è‚·‚é
 	/// @param remaining_bullet_num 
-	void SetRemainingBulletNum(const int remaining_bullet_num);
+	virtual void SetRemainingBulletNum(const int remaining_bullet_num) abstract;
 
-	[[nodiscard]] int GetCurrentRemainingBulletNum() const;
+	[[nodiscard]] virtual int GetCurrentRemainingBulletNum() const abstract;
 };

@@ -23,7 +23,7 @@
 #include "../State/ZombieState/stand_stun.hpp"
 #include "../State/ZombieState/crouch_stun.hpp"
 #include "../State/ZombieState/play_dead.hpp"
-#include "../State/ZombieState/dead.hpp"
+#include "../State/ZombieState/zombie_dead.hpp"
 
 class ZombieStateController final : public EnemyStateControllerBase<Zombie>
 {
