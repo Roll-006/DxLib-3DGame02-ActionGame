@@ -10,10 +10,7 @@ class EnemyStateControllerBase abstract : public IStateController<ObjT>
 {
 public:
 	EnemyStateControllerBase() :
-		m_target_character(nullptr)
-	{
-
-	}
+		m_target_character(nullptr)	{ }
 
 	virtual ~EnemyStateControllerBase() = default;
 

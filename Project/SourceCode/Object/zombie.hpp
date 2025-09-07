@@ -20,7 +20,9 @@ public:
 
 	void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) override;
 
-	[[nodiscard]] bool IsTargetInSight(const VECTOR& target_pos) override;
+	[[nodiscard]] bool IsTargetInSight(const int target_model_handle) override;
+	[[nodiscard]] bool CanAttack() const override { return m_attack_interval_timer > kAttackIntervalTime; }
+	[[nodiscard]] bool CanGrabTraget() const { return m_can_grab_target; }
 
 
 	#pragma region State
@@ -48,11 +50,12 @@ private:
 
 private:
 	static constexpr VECTOR kBasicAngle				= { 0.0f, DX_PI_F, 0.0f };
-	static constexpr float  kBasicScale				= 0.25f;
+	static constexpr float  kBasicScale				= 0.3f;
 
 	static constexpr float kFOV						= 80.0f;
 	static constexpr float kVisibleDistance			= 300.0f;
 
+	static constexpr float kAttackIntervalTime		= 3.0f;
 	static constexpr float kInvincibleTime			= 0.5f;
 
 	static constexpr float kWalkSpeed				= 30.0f;
@@ -74,4 +77,6 @@ private:
 	std::shared_ptr<ZombieStateController> m_state;
 
 	float m_move_speed;
+	float m_attack_interval_timer;
+	bool  m_can_grab_target;
 };

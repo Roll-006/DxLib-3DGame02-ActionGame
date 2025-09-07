@@ -10,6 +10,8 @@ enum class ZombieAnimKind
 
 	kMoveForwardWalk,
 	kMoveForwardRun,
+
+	kNeckBite,
 	#pragma endregion
 
 

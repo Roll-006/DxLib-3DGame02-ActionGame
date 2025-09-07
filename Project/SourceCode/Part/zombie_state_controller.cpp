@@ -63,12 +63,12 @@ void ZombieStateController::CreateState()
 
 void ZombieStateController::AddStopStatePair()
 {
-
+	m_states.at(typeid(zombie_state::Grab))->AddStopState(m_states.at(typeid(zombie_state::Move))->GetStateHandle());
 }
 
 void ZombieStateController::AddCheckStopState()
 {
-
+	m_check_stop_state_handles.emplace_back(m_states.at(typeid(zombie_state::Move))->GetStateHandle());
 }
 
 void ZombieStateController::ChangeState(std::shared_ptr<Zombie> zombie)
@@ -182,22 +182,59 @@ std::vector<std::shared_ptr<IState<Zombie>>> ZombieStateController::CreateFuture
 
 void ZombieStateController::StopState(std::vector<std::shared_ptr<IState<Zombie>>>& future_state, const std::shared_ptr<IState<Zombie>> stop_state)
 {
+	for (size_t i = 0; i < future_state.size(); ++i)
+	{
+		if (future_state.at(i) == stop_state)
+		{
+			switch (i)
+			{
+			case 0:
+				JudgeDestinationAIState(future_state.at(i));
+				break;
 
+			case 1:
+				JudgeDestinationMoveState(future_state.at(i));
+				break;
+
+			case 2:
+				JudgeDestinationActionState(future_state.at(i));
+				break;
+			}
+
+			return;
+		}
+	}
 }
 
 void ZombieStateController::JudgeDestinationAIState(std::shared_ptr<IState<Zombie>>& stop_state)
 {
-
+	switch (static_cast<zombie_state::AIStateKind>(stop_state->GetStateKind()))
+	{
+	default:
+		break;
+	}
 }
 
 void ZombieStateController::JudgeDestinationMoveState(std::shared_ptr<IState<Zombie>>& stop_state)
 {
+	switch (static_cast<zombie_state::MoveStateKind>(stop_state->GetStateKind()))
+	{
+	case zombie_state::MoveStateKind::kMove:
+		stop_state = m_states.at(typeid(zombie_state::MoveNull));
+		break;
 
+	default:
+		break;
+	}
 }
 
 void ZombieStateController::JudgeDestinationActionState(std::shared_ptr<IState<Zombie>>& stop_state)
 {
-
+	switch (static_cast<zombie_state::ActionStateKind>(stop_state->GetStateKind()))
+	{
+	default:
+		break;
+	}
 }
 
 
@@ -208,10 +245,16 @@ bool ZombieStateController::TryTrack(std::shared_ptr<Zombie> zombie)
 
 	if (!m_target_character) { return false; }
 
-	const auto target_modele_handle = m_target_character->GetModeler()->GetModelHandle();
-	auto	   target_head_mat		= MV1GetFrameLocalWorldMatrix(target_modele_handle, MV1SearchFrame(target_modele_handle, BonePath.HEAD));
-	const auto target_head_pos		= MGetTranslateElem(target_head_mat);
-	const auto is_in_sight			= zombie->IsTargetInSight(target_head_pos);
+	const auto is_in_sight = zombie->IsTargetInSight(m_target_character->GetModeler()->GetModelHandle());
+
+	return is_in_sight;
+}
+
+bool ZombieStateController::TryRunAttack(std::shared_ptr<Zombie> zombie)
+{
+	if (!m_target_character) { return false; }
+
+	const auto is_in_sight = zombie->IsTargetInSight(m_target_character->GetModeler()->GetModelHandle());
 
 	return is_in_sight;
 }
@@ -226,6 +269,18 @@ bool ZombieStateController::TryMove()
 	return is_track || is_run_attack;
 }
 
+bool ZombieStateController::TryWalk(std::shared_ptr<Zombie> zombie)
+{
+	if (!m_target_character) { return false; }
+	if (m_move_state.at(TimeKind::kCurrent)->GetStateKind() != static_cast<int>(zombie_state::MoveStateKind::kMove)) { return false; }
+
+	const auto pos			= zombie->GetTransform()->GetPos(CoordinateKind::kWorld);
+	const auto target_pos	= m_target_character->GetTransform()->GetPos(CoordinateKind::kWorld);
+	const auto distance		= VSize(pos - target_pos);
+
+	return distance < 140.0f;
+}
+
 bool ZombieStateController::TryRun(std::shared_ptr<Zombie> zombie)
 {
 	if (!m_target_character) { return false; }
@@ -235,7 +290,7 @@ bool ZombieStateController::TryRun(std::shared_ptr<Zombie> zombie)
 	const auto target_pos	= m_target_character->GetTransform()->GetPos(CoordinateKind::kWorld);
 	const auto distance		= VSize(pos - target_pos);
 
-	return distance > 150.0f;
+	return distance > 160.0f;
 }
 
 bool ZombieStateController::TryGrabRun()

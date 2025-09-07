@@ -2,9 +2,11 @@
 #include "../Part/zombie_state_controller.hpp"
 
 Zombie::Zombie() :
-	CharacterBase	(ObjName.ZOMBIE, ObjTag.ENEMY, MassKind::kMedium),
-	m_state			(std::make_shared<ZombieStateController>()),
-	m_move_speed	(kWalkSpeed)
+	CharacterBase			(ObjName.ZOMBIE, ObjTag.ENEMY, MassKind::kMedium),
+	m_state					(std::make_shared<ZombieStateController>()),
+	m_move_speed			(kWalkSpeed),
+	m_attack_interval_timer	(0.0f),
+	m_can_grab_target		(false)
 {
 	m_hit_points[HitPointsPartKind::kMain]		= std::make_shared<HitPoints>(1684.0f);
 	m_hit_points[HitPointsPartKind::kHead]		= std::make_shared<HitPoints>(300.0f);
@@ -74,6 +76,8 @@ void Zombie::LateUpdate()
 	if (!IsActive()) { return; }
 
 	m_state->LateUpdate(std::static_pointer_cast<Zombie>(shared_from_this()));
+
+	m_can_grab_target = false;
 }
 
 void Zombie::DrawToShadowMap() const
@@ -133,7 +137,9 @@ void Zombie::Draw() const
 
 void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 {
-	PhysicalObjBase* target_obj = hit_collider_pair.target_collider->GetOwnerObj();
+	PhysicalObjBase*	target_obj				= hit_collider_pair.target_collider->GetOwnerObj();
+	const auto			target_name				= target_obj->GetName();
+	const auto			target_collider_kind	= hit_collider_pair.target_collider->GetColliderKind();
 
 	switch (hit_collider_pair.owner_collider->GetColliderKind())
 	{
@@ -143,7 +149,7 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 	case ColliderKind::kCollider:
 		// ロケット弾着弾時の爆発エフェクトとの衝突
-		if (target_obj->GetName() == ObjName.ROCKET_BOMB_HIT_EXPLOSION_EFFECT)
+		if (target_name == ObjName.ROCKET_BOMB_HIT_EXPLOSION_EFFECT)
 		{
 			if (m_hit_collider.count(hit_collider_pair.target_collider)) { return; }
 			m_hit_collider[hit_collider_pair.target_collider] = hit_collider_pair.target_collider->IsOneCollision();
@@ -155,14 +161,14 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 		}
 		break;
 
-		if (target_obj->GetName() == ObjName.BULLET)
+		if (target_name == ObjName.BULLET)
 		{
-			OnDamage(HitPointsPartKind::kMain, dynamic_cast<Bullet*>(target_obj)->GetPower());
+			OnDamage(HitPointsPartKind::kMain,		dynamic_cast<Bullet*>(target_obj)->GetPower());
 		}
 		break;
 
 	case ColliderKind::kHeadTrigger:
-		if (target_obj->GetName() == ObjName.BULLET)
+		if (target_name == ObjName.BULLET)
 		{
 			OnDamage(HitPointsPartKind::kHead,		dynamic_cast<Bullet*>(target_obj)->GetPower());
 			OnDamage(HitPointsPartKind::kMain,		dynamic_cast<Bullet*>(target_obj)->GetPower());
@@ -171,7 +177,7 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 	case ColliderKind::kUpBodyTrigger:
 	case ColliderKind::kDownBodyTrigger:
-		if (target_obj->GetName() == ObjName.BULLET)
+		if (target_name == ObjName.BULLET)
 		{
 			OnDamage(HitPointsPartKind::kBody,		dynamic_cast<Bullet*>(target_obj)->GetPower());
 			OnDamage(HitPointsPartKind::kMain,		dynamic_cast<Bullet*>(target_obj)->GetPower());
@@ -180,27 +186,51 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 	case ColliderKind::kLeftUpperArmTrigger:
 	case ColliderKind::kLeftForearmTrigger:
+		if (target_name == ObjName.BULLET)
+		{
+			OnDamage(HitPointsPartKind::kLeftArm, dynamic_cast<Bullet*>(target_obj)->GetPower());
+			OnDamage(HitPointsPartKind::kMain, dynamic_cast<Bullet*>(target_obj)->GetPower());
+		}
+		break;
+
 	case ColliderKind::kLeftHandTrigger:
-		if (target_obj->GetName() == ObjName.BULLET)
+		if (target_name == ObjName.BULLET)
 		{
 			OnDamage(HitPointsPartKind::kLeftArm,	dynamic_cast<Bullet*>(target_obj)->GetPower());
 			OnDamage(HitPointsPartKind::kMain,		dynamic_cast<Bullet*>(target_obj)->GetPower());
+		}
+
+		if (target_collider_kind == GetStateController()->GetTargetCharacter()->GetCollider(ColliderKind::kCollider)->GetColliderKind())
+		{
+			m_can_grab_target = true;
 		}
 		break;
 
 	case ColliderKind::kRightUpperArmTrigger:
 	case ColliderKind::kRightForearmTrigger:
-	case ColliderKind::kRightHandTrigger:
-		if (target_obj->GetName() == ObjName.BULLET)
+		if (target_name == ObjName.BULLET)
 		{
 			OnDamage(HitPointsPartKind::kRightArm,	dynamic_cast<Bullet*>(target_obj)->GetPower());
 			OnDamage(HitPointsPartKind::kMain,		dynamic_cast<Bullet*>(target_obj)->GetPower());
 		}
 		break;
 
+	case ColliderKind::kRightHandTrigger:
+		if (target_name == ObjName.BULLET)
+		{
+			OnDamage(HitPointsPartKind::kRightArm, dynamic_cast<Bullet*>(target_obj)->GetPower());
+			OnDamage(HitPointsPartKind::kMain, dynamic_cast<Bullet*>(target_obj)->GetPower());
+		}
+
+		if (target_collider_kind == GetStateController()->GetTargetCharacter()->GetCollider(ColliderKind::kCollider)->GetColliderKind())
+		{
+			m_can_grab_target = true;
+		}
+		break;
+
 	case ColliderKind::kLeftUpLegTrigger:
 	case ColliderKind::kLeftDownLegTrigger:
-		if (target_obj->GetName() == ObjName.BULLET)
+		if (target_name == ObjName.BULLET)
 		{
 			OnDamage(HitPointsPartKind::kLeftLeg,	dynamic_cast<Bullet*>(target_obj)->GetPower());
 			OnDamage(HitPointsPartKind::kMain,		dynamic_cast<Bullet*>(target_obj)->GetPower());
@@ -209,7 +239,7 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 	case ColliderKind::kRightUpLegTrigger:
 	case ColliderKind::kRightDownLegTrigger:
-		if (target_obj->GetName() == ObjName.BULLET)
+		if (target_name == ObjName.BULLET)
 		{
 			OnDamage(HitPointsPartKind::kRightLeg,	dynamic_cast<Bullet*>(target_obj)->GetPower());
 			OnDamage(HitPointsPartKind::kMain,		dynamic_cast<Bullet*>(target_obj)->GetPower());
@@ -221,8 +251,11 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	}
 }
 
-bool Zombie::IsTargetInSight(const VECTOR& target_pos)
+bool Zombie::IsTargetInSight(const int target_model_handle)
 {
+	auto	   target_head_mat = MV1GetFrameLocalWorldMatrix(target_model_handle, MV1SearchFrame(target_model_handle, BonePath.HEAD));
+	const auto target_head_pos = MGetTranslateElem(target_head_mat);
+
 	// 頭部を基準に円錐状の視界を作り出す
 	auto	   head_mat		= MV1GetFrameLocalWorldMatrix(m_modeler->GetModelHandle(), MV1SearchFrame(m_modeler->GetModelHandle(), BonePath.HEAD));
 	const auto head_pos		= MGetTranslateElem(head_mat);
@@ -230,7 +263,7 @@ bool Zombie::IsTargetInSight(const VECTOR& target_pos)
 
 	const auto fov			= kFOV * math::kDegToRad;
 	const auto max_distance = kVisibleDistance;
-	const auto distance_v	= target_pos - head_pos;
+	const auto distance_v	= target_head_pos - head_pos;
 	const auto distance		= VSize(distance_v);
 	const auto dir			= v3d::GetNormalizedV(distance_v);
 
@@ -305,7 +338,7 @@ void Zombie::CalcLookDir()
 	distance.y = math::ConnectMinusPiToPi(distance.y);
 
 	// TODO : 後に変更
-	float angle1 = 2.7f * math::kDegToRad;
+	float angle1	= 1.7f * math::kDegToRad;
 	float threshold = 10.0f * math::kDegToRad;
 
 	// カメラを基準にして右側であった場合は反転

@@ -16,6 +16,7 @@ namespace zombie_state
 		void LateUpdate	(std::shared_ptr<Zombie> obj) override;
 		void Enter		(std::shared_ptr<Zombie> obj) override;
 		void Exit		(std::shared_ptr<Zombie> obj) override;
+
 		[[nodiscard]] std::shared_ptr<IState<Zombie>> ChangeState(std::shared_ptr<Zombie> obj) override;
 
 	private:
