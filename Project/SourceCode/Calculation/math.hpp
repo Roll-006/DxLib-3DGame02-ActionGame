@@ -357,6 +357,8 @@ namespace math
 	/// @brief 点が球の表面にあるかを判定
 	/// TODO : 正しく機能するか試していないため検証が必要
 	[[nodiscard]] bool IsPointOnSphereSurface(const VECTOR& point, const Sphere& sphere);
+
+	[[nodiscard]] bool IsPointInsideCapsule(const VECTOR& point, const Capsule& capsule);
 	#pragma endregion
 
 

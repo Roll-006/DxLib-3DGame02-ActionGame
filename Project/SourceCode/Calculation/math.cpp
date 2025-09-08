@@ -732,6 +732,17 @@ bool math::IsPointOnSphereSurface(const VECTOR& point, const Sphere& sphere)
 {
     return VDot(point - sphere.GetPos(), point - sphere.GetPos()) == sqrt(sphere.GetRadius());
 }
+
+bool math::IsPointInsideCapsule(const VECTOR& point, const Capsule& capsule)
+{
+    const auto ab = capsule.GetSegment().GetEndPos() - capsule.GetSegment().GetBeginPos();
+    const auto dot_ab_ab = VDot(ab, ab);
+    const auto t = std::clamp(VDot(point - capsule.GetSegment().GetBeginPos(), ab) / dot_ab_ab, 0.0f, 1.0f);
+    const auto closest = capsule.GetSegment().GetBeginPos() + ab * t;
+    const auto distance = VDot(point - closest, point - closest);
+
+    return distance <= capsule.GetRadius() * capsule.GetRadius();
+}
 #pragma endregion
 
 

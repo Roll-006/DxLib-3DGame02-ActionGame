@@ -278,8 +278,105 @@ bool collision::IsHitSegmentAndCapsule      (const Segment&     segment,        
 {
     intersection = std::nullopt;
 
-    const float distance = math::GetDistanceSegmentToSegment(segment, capsule.GetSegment());
-    return distance <= capsule.GetRadius();
+    const auto ab = capsule.GetSegment().GetEndPos() - capsule.GetSegment().GetBeginPos();
+    const auto a0 = segment.GetBeginPos() - capsule.GetSegment().GetBeginPos();
+    const auto dot_ab_ab = VDot(ab, ab);
+    const auto dot_ab_dir = VDot(ab, segment.GetDir());
+    const auto dot_ab_a0 = VDot(ab, a0);
+    const auto dot_a0_dir = VDot(a0, segment.GetDir());
+    const auto dot_a0_a0 = VDot(a0, a0);
+    const auto a = dot_ab_ab * 1.0f - dot_ab_dir * dot_ab_dir;
+    const auto b = dot_ab_ab * dot_a0_dir - dot_ab_dir * dot_ab_a0;
+    const auto c = dot_ab_ab * dot_a0_a0 - dot_ab_a0 * dot_ab_a0 - capsule.GetRadius() * capsule.GetRadius() * dot_ab_ab;
+
+    const auto is_begin_inside = math::IsPointInsideCapsule(segment.GetBeginPos(), capsule);
+    const auto is_end_inside = math::IsPointInsideCapsule(segment.GetEndPos(), capsule);
+
+    std::vector<std::pair<float, VECTOR>> candidates;
+
+    // --- 円柱部 ---
+    const float disc = b * b - a * c;
+    if (disc >= 0.0f && fabs(a) > 1e-6f)
+    {
+        const float sqrtDisc = sqrtf(disc);
+        const float t1 = (-b - sqrtDisc) / a;
+        const float t2 = (-b + sqrtDisc) / a;
+
+        auto CheckAndAdd = [&](float t)
+            {
+                if (t < 0.0f || t > segment.GetLength()) return;
+                VECTOR pos = segment.GetBeginPos() + segment.GetDir() * t;
+                float proj = VDot(pos - capsule.GetSegment().GetBeginPos(), ab) / dot_ab_ab;
+                if (proj >= 0.0f && proj <= 1.0f) {
+                    candidates.emplace_back(t, pos);
+                }
+            };
+
+        CheckAndAdd(t1);
+        CheckAndAdd(t2);
+    }
+
+    // --- 球部 ---
+    auto IntersectSphere = [&](const Sphere& sphere)
+        {
+            VECTOR diff = segment.GetBeginPos() - sphere.GetPos();
+            float b = VDot(diff, segment.GetDir());
+            float c = VDot(diff, diff) - sphere.GetRadius() * sphere.GetRadius();
+            float disc = b * b - c;
+            if (disc < 0.0f) return;
+
+            float sqrtDisc = sqrtf(disc);
+            float t1 = -b - sqrtDisc;
+            float t2 = -b + sqrtDisc;
+
+            auto CheckAndAdd = [&](float t)
+                {
+                    if (t >= 0.0f && t <= segment.GetLength()) {
+                        VECTOR pos = segment.GetBeginPos() + segment.GetDir() * t;
+                        candidates.emplace_back(t, pos);
+                    }
+                };
+
+            CheckAndAdd(t1);
+            CheckAndAdd(t2);
+        };
+
+    IntersectSphere(Sphere(capsule.GetSegment().GetBeginPos(), capsule.GetRadius()));
+    IntersectSphere(Sphere(capsule.GetSegment().GetEndPos(), capsule.GetRadius()));
+
+    if (candidates.empty())
+    {
+        // 内部にある場合もヒット扱い
+        const auto is_hit = is_begin_inside || is_end_inside;
+
+        if (is_hit)
+        {
+            DrawFormatString(900, 500, 0xffffff, "衝突");
+        }
+        else
+        {
+            DrawFormatString(900, 500, 0xffffff, "非衝突");
+        }
+
+        return is_hit;
+    }
+
+    if (is_begin_inside)
+    {
+        // 出口（t が最大）
+        auto it = std::max_element(candidates.begin(), candidates.end(),
+            [](auto& lhs, auto& rhs) { return lhs.first < rhs.first; });
+        intersection = it->second;
+    }
+    else
+    {
+        // 入口（t が最小）
+        auto it = std::min_element(candidates.begin(), candidates.end(),
+            [](auto& lhs, auto& rhs) { return lhs.first < rhs.first; });
+        intersection = it->second;
+    }
+    DrawFormatString(900, 500, 0xffffff, "衝突");
+    return true;
 }
 bool collision::IsHitSegmentAndCapsule      (const Segment&     segment,        const Capsule&      capsule)
 {
@@ -1169,18 +1266,33 @@ VECTOR collision::PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsu
     const auto p = is_closest_begin_pos ? result_capsule.GetSegment().GetBeginPos() : result_capsule.GetSegment().GetEndPos();
     if (!IsPointInsideTriangleProjected(p, static_triangle))
     {
-        //plane_to_begin_pos_distance  = math::GetDistancePointToPlane(result_capsule.GetSegment().GetBeginPos(), plane);
-        //plane_to_end_pos_distance    = math::GetDistancePointToPlane(result_capsule.GetSegment().GetEndPos(),   plane);
+        // MEMO : 「tmp」と名前が付いた変数はその場で破棄され使用用途はない
+        float tmp_t1, tmp_t2;
+        VECTOR tmp_h, closest_pos_on_edge1, closest_pos_on_edge2, closest_pos_on_edge3;
+        std::vector<std::pair<VECTOR, float>> closest_pos;
 
-        //const auto closest_pos_on_edge1 = ;
-        //const auto closest_pos_on_edge2 = ;
-        //const auto closest_pos_on_edge3 = ;
+        // 各辺上のカプセルに最も近い座標を取得
+        const auto distance1 = math::GetDistanceSegmentToSegment(result_capsule.GetSegment(), static_triangle.GetEdge(0), tmp_h, closest_pos_on_edge1, tmp_t1, tmp_t2);
+        const auto distance2 = math::GetDistanceSegmentToSegment(result_capsule.GetSegment(), static_triangle.GetEdge(1), tmp_h, closest_pos_on_edge2, tmp_t1, tmp_t2);
+        const auto distance3 = math::GetDistanceSegmentToSegment(result_capsule.GetSegment(), static_triangle.GetEdge(2), tmp_h, closest_pos_on_edge3, tmp_t1, tmp_t2);
+        closest_pos.emplace_back(std::make_pair(closest_pos_on_edge1, distance1));
+        closest_pos.emplace_back(std::make_pair(closest_pos_on_edge2, distance2));
+        closest_pos.emplace_back(std::make_pair(closest_pos_on_edge3, distance3));
+        closest_pos = algorithm::Sort(closest_pos, SortKind::kAscending);
 
-        //const auto distance = ;
+        const auto segment = Segment(closest_pos.at(0).first, static_triangle.GetNormalVector(), dynamic_capsule.GetSegment().GetLength());
 
-        //result_velocity -= static_triangle.GetNormalVector() * distance;
+        std::optional<VECTOR> intersection = std::nullopt;
+        const auto tmp_is_hit = IsHitSegmentAndCapsule(segment, dynamic_capsule, intersection);
 
-        //DrawFormatString(500, 80, 0xffffff, "%f", distance);
+        DrawLine3D(segment.GetBeginPos(), segment.GetEndPos(), 0xffffff);
+
+        if (intersection)
+        {
+            DrawSphere3D(*intersection, 1, 8, 0xffffff, 0xffffff, TRUE);
+            const auto offset = VSize(*intersection - segment.GetBeginPos());
+            result_velocity -= static_triangle.GetNormalVector() * offset;
+        }
     }
 
     return result_velocity;
