@@ -6,7 +6,7 @@
 
 namespace algorithm
 {
-	#pragma region 変換
+#pragma region 変換
 	/// @brief std::vector<std::pair<key, value>>をstd::unorderd_map<key, value>へ変換
 	/// @brief WARNING : 順番は保たれない
 	template<typename KeyT, typename ValueT>
@@ -24,10 +24,14 @@ namespace algorithm
 		std::vector<std::pair<KeyT, ValueT>> pairs(u_map.begin(), u_map.end());
 		return pairs;
 	}
-	#pragma endregion
+#pragma endregion
 
 
+<<<<<<< HEAD
 	#pragma region ソート
+=======
+#pragma region ソート
+>>>>>>> test/push-back
 	/// @brief std::vector<std::pair<first, second>>のsecondをソート
 	template<typename FirstT, typename SecondT>
 	[[nodiscard]] std::vector<std::pair<FirstT, SecondT>> Sort(const std::vector<std::pair<FirstT, SecondT>>& pairs, const SortKind sort_kind)
@@ -35,14 +39,14 @@ namespace algorithm
 		auto sorted_pairs = pairs;
 
 		std::sort(sorted_pairs.begin(), sorted_pairs.end(), [=](const auto& a, const auto& b)
-		{
-			switch (sort_kind)
 			{
-			case SortKind::kAscending:	return a.second < b.second; break;
-			case SortKind::kDescending:	return a.second > b.second;	break;
-			}
-			return false;
-		});
+				switch (sort_kind)
+				{
+				case SortKind::kAscending:	return a.second < b.second; break;
+				case SortKind::kDescending:	return a.second > b.second;	break;
+				}
+				return false;
+			});
 
 		return sorted_pairs;
 	}
@@ -54,9 +58,15 @@ namespace algorithm
 	/// @param sub_pairs main_pairsに同じsecondがあった場合、sub_pairsでソートを行う
 	template<typename FirstT, typename SecondT>
 	[[nodiscard]] std::vector<std::pair<FirstT, SecondT>> Sort(
+<<<<<<< HEAD
 		const std::vector<std::pair<FirstT, SecondT>>& main_pairs, 
 		const std::vector<std::pair<FirstT, SecondT>>& sub_pairs, 
 		const SortKind main_pairs_sort_kind, 
+=======
+		const std::vector<std::pair<FirstT, SecondT>>& main_pairs,
+		const std::vector<std::pair<FirstT, SecondT>>& sub_pairs,
+		const SortKind main_pairs_sort_kind,
+>>>>>>> test/push-back
 		const SortKind sub_pairs_sort_kind)
 	{
 		auto sorted_pairs = main_pairs;
@@ -68,6 +78,7 @@ namespace algorithm
 			index_map[main_pairs[i].first] = i;
 		}
 
+<<<<<<< HEAD
 		// サブソート用関数を定義
 		auto SubSort = [&](const auto& a, const auto& b)
 		{
@@ -103,4 +114,42 @@ namespace algorithm
 		return sorted_pairs;
 	}
 	#pragma endregion
+=======
+		std::sort(sorted_pairs.begin(), sorted_pairs.end(), [&](const auto& a, const auto& b)
+			{
+				switch (main_pairs_sort_kind)
+				{
+				case SortKind::kAscending:
+					if (a.second != b.second) { return a.second < b.second; }
+
+					switch (sub_pairs_sort_kind)
+					{
+					case SortKind::kAscending:
+						return sub_pairs[index_map.at(a.first)].second < sub_pairs[index_map.at(b.first)].second;
+
+					case SortKind::kDescending:
+						return sub_pairs[index_map.at(a.first)].second > sub_pairs[index_map.at(b.first)].second;
+					}
+					return false;
+
+				case SortKind::kDescending:
+					if (a.second != b.second) { return a.second > b.second; }
+
+					switch (sub_pairs_sort_kind)
+					{
+					case SortKind::kAscending:
+						return sub_pairs[index_map.at(a.first)].second < sub_pairs[index_map.at(b.first)].second;
+
+					case SortKind::kDescending:
+						return sub_pairs[index_map.at(a.first)].second > sub_pairs[index_map.at(b.first)].second;
+					}
+					return false;
+				}
+				return false;
+			});
+
+		return sorted_pairs;
+	}
+#pragma endregion
+>>>>>>> test/push-back
 }

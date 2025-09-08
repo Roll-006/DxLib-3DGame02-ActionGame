@@ -311,7 +311,8 @@ namespace math
 	[[nodiscard]] bool IsAcuteAngle(const float radian);
 
 	/// @brief 二つのベクトルのなす角を取得
-	[[nodiscard]] float GetAngleBetweenTwoVector(const VECTOR& v1, const VECTOR& v2);
+	[[nodiscard]] float  GetAngleBetweenTwoVector (const VECTOR&   v1, const VECTOR&   v2);
+	[[nodiscard]] double GetAngleBetweenTwoVectorD(const VECTOR_D& v1, const VECTOR_D& v2);
 
 	/// @brief 二つのベクトルのヨー角(Y軸)回転のなす角を取得
 	[[nodiscard]] float GetYawBetweenTwoVector(const VECTOR& v1, const VECTOR& v2);
@@ -385,6 +386,9 @@ namespace math
 	/// @brief 平面に最も近い線分上の座標を取得
 	[[nodiscard]] VECTOR GetClosestPosOnSegmentFromPlane(const Segment& segment, const Plane& plane);
 
+	/// @brief 線分に最も近い線分上の座標を取得
+	[[nodiscard]] VECTOR GetClosestPosOnSegmentFromSegment(const Segment& segment1, const Segment& target_segmen);
+
 	/// @brief 点が平面の前方にあるかを判定
 	/// @return 前方 : true, 後方もしくは平面に含まれる : false
 	[[nodiscard]] bool IsPointAheadOfPlane(const VECTOR& point, const Plane& plane);
@@ -393,7 +397,10 @@ namespace math
 	/// TODO : 正しく機能するか試していないため検証が必要
 	[[nodiscard]] bool IsPointOnSphereSurface(const VECTOR& point, const Sphere& sphere);
 
+<<<<<<< HEAD
 	/// @brief 点がカプセル内にあるかを判定
+=======
+>>>>>>> test/push-back
 	[[nodiscard]] bool IsPointInsideCapsule(const VECTOR& point, const Capsule& capsule);
 	#pragma endregion
 

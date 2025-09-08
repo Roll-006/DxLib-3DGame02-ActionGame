@@ -288,6 +288,7 @@ bool collision::IsHitSegmentAndCapsule(const Segment& segment, const Capsule& ca
 {
     intersection = std::nullopt;
 
+<<<<<<< HEAD
     const auto ab               = capsule.GetSegment().GetEndPos() - capsule.GetSegment().GetBeginPos();
     const auto a0               = segment.GetBeginPos() - capsule.GetSegment().GetBeginPos();
     const auto dot_ab_ab        = VDot(ab, ab);
@@ -301,6 +302,21 @@ bool collision::IsHitSegmentAndCapsule(const Segment& segment, const Capsule& ca
 
     const auto is_begin_inside  = math::IsPointInsideCapsule(segment.GetBeginPos(), capsule);
     const auto is_end_inside    = math::IsPointInsideCapsule(segment.GetEndPos(),   capsule);
+=======
+    const auto ab = capsule.GetSegment().GetEndPos() - capsule.GetSegment().GetBeginPos();
+    const auto a0 = segment.GetBeginPos() - capsule.GetSegment().GetBeginPos();
+    const auto dot_ab_ab = VDot(ab, ab);
+    const auto dot_ab_dir = VDot(ab, segment.GetDir());
+    const auto dot_ab_a0 = VDot(ab, a0);
+    const auto dot_a0_dir = VDot(a0, segment.GetDir());
+    const auto dot_a0_a0 = VDot(a0, a0);
+    const auto a = dot_ab_ab * 1.0f - dot_ab_dir * dot_ab_dir;
+    const auto b = dot_ab_ab * dot_a0_dir - dot_ab_dir * dot_ab_a0;
+    const auto c = dot_ab_ab * dot_a0_a0 - dot_ab_a0 * dot_ab_a0 - capsule.GetRadius() * capsule.GetRadius() * dot_ab_ab;
+
+    const auto is_begin_inside = math::IsPointInsideCapsule(segment.GetBeginPos(), capsule);
+    const auto is_end_inside = math::IsPointInsideCapsule(segment.GetEndPos(), capsule);
+>>>>>>> test/push-back
 
     std::vector<std::pair<float, VECTOR>> candidates;
 
@@ -313,6 +329,7 @@ bool collision::IsHitSegmentAndCapsule(const Segment& segment, const Capsule& ca
         const float t2 = (-b + sqrtDisc) / a;
 
         auto CheckAndAdd = [&](float t)
+<<<<<<< HEAD
         {
             if (t < 0.0f || t > segment.GetLength()) return;
             VECTOR pos = segment.GetBeginPos() + segment.GetDir() * t;
@@ -321,6 +338,16 @@ bool collision::IsHitSegmentAndCapsule(const Segment& segment, const Capsule& ca
                 candidates.emplace_back(t, pos);
             }
         };
+=======
+            {
+                if (t < 0.0f || t > segment.GetLength()) return;
+                VECTOR pos = segment.GetBeginPos() + segment.GetDir() * t;
+                float proj = VDot(pos - capsule.GetSegment().GetBeginPos(), ab) / dot_ab_ab;
+                if (proj >= 0.0f && proj <= 1.0f) {
+                    candidates.emplace_back(t, pos);
+                }
+            };
+>>>>>>> test/push-back
 
         CheckAndAdd(t1);
         CheckAndAdd(t2);
@@ -328,6 +355,7 @@ bool collision::IsHitSegmentAndCapsule(const Segment& segment, const Capsule& ca
 
     // --- 球部 ---
     auto IntersectSphere = [&](const Sphere& sphere)
+<<<<<<< HEAD
     {
         VECTOR diff = segment.GetBeginPos() - sphere.GetPos();
         float b = VDot(diff, segment.GetDir());
@@ -350,6 +378,30 @@ bool collision::IsHitSegmentAndCapsule(const Segment& segment, const Capsule& ca
         CheckAndAdd(t1);
         CheckAndAdd(t2);
     };
+=======
+        {
+            VECTOR diff = segment.GetBeginPos() - sphere.GetPos();
+            float b = VDot(diff, segment.GetDir());
+            float c = VDot(diff, diff) - sphere.GetRadius() * sphere.GetRadius();
+            float disc = b * b - c;
+            if (disc < 0.0f) return;
+
+            float sqrtDisc = sqrtf(disc);
+            float t1 = -b - sqrtDisc;
+            float t2 = -b + sqrtDisc;
+
+            auto CheckAndAdd = [&](float t)
+                {
+                    if (t >= 0.0f && t <= segment.GetLength()) {
+                        VECTOR pos = segment.GetBeginPos() + segment.GetDir() * t;
+                        candidates.emplace_back(t, pos);
+                    }
+                };
+
+            CheckAndAdd(t1);
+            CheckAndAdd(t2);
+        };
+>>>>>>> test/push-back
 
     IntersectSphere(Sphere(capsule.GetSegment().GetBeginPos(), capsule.GetRadius()));
     IntersectSphere(Sphere(capsule.GetSegment().GetEndPos(), capsule.GetRadius()));
@@ -456,20 +508,6 @@ bool collision::IsHitPlaneAndCapsule        (const Plane&       plane,          
     return IsHitPlaneAndCapsule(plane, capsule, intersection);
 }
 
-/// @brief 三角形と球の衝突判定
-bool collision::IsHitTriangleAndSphere      (const Triangle&    triangle,       const Sphere&       sphere,         std::optional<VECTOR>& intersection)
-{
-    intersection = std::nullopt;
-
-    return math::GetDistancePointToTriangle(sphere.GetPos(), triangle) <= sphere.GetRadius();
-}
-bool collision::IsHitTriangleAndSphere      (const Triangle&    triangle,       const Sphere&       sphere)
-{
-    std::optional<VECTOR> intersection = std::nullopt;
-
-    return IsHitTriangleAndSphere(triangle, sphere, intersection);
-}
-
 /// @brief 三角形と三角形の衝突判定
 bool collision::IsHitTriangleAndTriangle    (const Triangle&    triangle1,      const Triangle&     triangle2,      std::optional<VECTOR>& intersection)
 {
@@ -482,6 +520,20 @@ bool collision::IsHitTriangleAndTriangle    (const Triangle&    triangle1,      
     std::optional<VECTOR> intersection = std::nullopt;
 
     return IsHitTriangleAndTriangle(triangle1, triangle2, intersection);
+}
+
+/// @brief 三角形と球の衝突判定
+bool collision::IsHitTriangleAndSphere      (const Triangle&    triangle,       const Sphere&       sphere,         std::optional<VECTOR>& intersection)
+{
+    intersection = std::nullopt;
+
+    return math::GetDistancePointToTriangle(sphere.GetPos(), triangle) <= sphere.GetRadius();
+}
+bool collision::IsHitTriangleAndSphere      (const Triangle&    triangle,       const Sphere&       sphere)
+{
+    std::optional<VECTOR> intersection = std::nullopt;
+
+    return IsHitTriangleAndSphere(triangle, sphere, intersection);
 }
 
 /// @brief 三角形とカプセルの衝突判定
@@ -939,13 +991,18 @@ VECTOR collision::PushBackSphereAndModel    (const VECTOR& velocity, const Spher
     return valid_velocity;
 }
 
-VECTOR collision::PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsule& dynamic_capsule, const Triangle& static_triangle,
+VECTOR collision::OldPushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsule& dynamic_capsule, const Triangle& static_triangle,
     const float slope_difficulty_angle_threshold, const float max_slope_angle)
 {
+<<<<<<< HEAD
     if (VSize(velocity) <= math::kEpsilonHigh)
     {
         return velocity;
     }
+=======
+    //const float slope_threshold_agl = slope_difficulty_angle_threshold  * math::kDegToRad;
+    //const float max_slope_agl       = max_slope_angle                   * math::kDegToRad;
+>>>>>>> test/push-back
 
     // 未来のカプセルを取得
     auto future_capsule = dynamic_capsule;
@@ -957,6 +1014,7 @@ VECTOR collision::PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsu
         return velocity;
     }
 
+<<<<<<< HEAD
     // 三角形の平面を定義
     const auto plane = Plane(static_triangle.GetCentroid(), static_triangle.GetNormalVector());
 
@@ -1031,6 +1089,358 @@ VECTOR collision::PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsu
         break;
     }
 
+=======
+    // 登れる角度である場合は壁ずりを行う
+    //const float slope_angle = math::GetAngleBetweenTwoVector(static_triangle.GetNormalVector(), axis::GetWorldYAxis());
+    //if (slope_angle < slope_threshold_agl || slope_angle >= 90.0f * math::kDegToRad)
+    
+    // 三角形を平面に拡張
+    const Plane  plane              = Plane(static_triangle.GetCentroid(), static_triangle.GetNormalVector());
+    const float  angle              = math::GetAngleBetweenTwoVector(axis::GetWorldYAxis(), plane.GetNormalVector());
+    VECTOR       future_begin_pos   = future_capsule.GetSegment().GetBeginPos();
+    VECTOR       future_origin_pos  = future_begin_pos;
+
+    // 三角形が下を向いている場合、終点を基準に押し戻す
+    if (angle > 90.0f * math::kDegToRad)
+    {
+        future_origin_pos = future_capsule.GetSegment().GetEndPos();
+    }
+
+    // 線分の位置からどちら側に位置修正するべきか
+    VECTOR closest_dir = plane.GetNormalVector();
+    if (math::IsPointAheadOfPlane(future_origin_pos, plane))
+    {
+        closest_dir *= -1;
+    }
+
+    // 本来の到達地点を取得
+    const float future_distance_to_plane = math::GetDistancePointToPlane(future_origin_pos, plane);
+    future_begin_pos += closest_dir * future_distance_to_plane;
+    future_begin_pos += plane.GetNormalVector() * dynamic_capsule.GetRadius();
+    
+    // 登るのが困難な角度・登れない角度の場合は、「三角形の法線～ワールドX軸に対して平行」の範囲内の方向に押し戻す
+    // 押し戻す方向は三角形の角度が上がるほどワールドX軸に向かう
+    //else 
+    //{
+    //    // 平面の法線を、ワールドX軸に対して水平にする
+    //    VECTOR horizontal_v = plane.GetNormalVector();
+    //    horizontal_v.y = 0.0f;
+    //    horizontal_v = v3d::GetNormalizedV(horizontal_v);
+    //
+    //    // 押し戻す方向を取得
+    //    const float  angle_range        =  math::GetAngleBetweenTwoVector(plane.GetNormalVector(), horizontal_v);
+    //    // FIXME : 角度がマイナスになる場合がある
+    //    float  push_back_angle          = -math::ConvertValueNewRange<float, float>(slope_threshold_agl, max_slope_agl, -angle_range, 0.0f, slope_angle);
+    //    if (slope_angle >= max_slope_agl) { push_back_angle = 0.0f; }
+    //    const VECTOR v1                 =  math::GetNormalVector(plane.GetNormalVector(), axis::GetWorldYAxis());
+    //    // FIXME : 回転方向を決める必要がある可能性あり
+    //    const VECTOR push_back_dir      =  math::GetRotatedPos(horizontal_v, quat::CreateQuaternion(v1, push_back_angle));
+    //
+    //    //printfDx("push_back_angle : %f\n", push_back_angle);
+    //
+    //    // 押し戻しベクトルの長さを取得
+    //    const VECTOR v2                 = math::GetNormalVector(plane.GetNormalVector(), v1);
+    //    const float  angle1             = math::GetAngleBetweenTwoVector(v2, horizontal_v);
+    //    const float  angle2             = 90.0f * math::kDegToRad - angle1;
+    //    const float  angle3             = push_back_angle - angle2;
+    //    const float  back_length        = cos(angle3) / future_distance_to_plane;
+    //    const float  front_length       = cos(angle3) / dynamic_capsule.GetRadius();
+    //
+    //    // 本来の到達地点を取得
+    //    future_pos += push_back_dir * (back_length + front_length);
+    //}
+
+    // 本来の到達地点までのvelocityを取得
+    return future_begin_pos - dynamic_capsule.GetSegment().GetBeginPos();
+}
+
+
+
+
+
+
+
+
+
+
+// 線分と球の交点判定
+// 線分: P0 + t*(P1 - P0), t in [0,1]
+// 球: center, radius
+// 交点があれば最小のtを返す（ない場合は nullopt）
+std::optional<double> IntersectSegmentSphere(const VECTOR& P0, const VECTOR& P1, const VECTOR& center, double radius) {
+    VECTOR d = P1 - P0;
+    VECTOR m = P0 - center;
+
+    double a = VDot(d, d);
+    double b = 2.0 * VDot(m, d);
+    double c = VDot(m, m) - radius * radius;
+
+    double discriminant = b * b - 4 * a * c;
+    if (discriminant < 0) return std::nullopt; // 交差なし
+
+    double sqrt_disc = std::sqrt(discriminant);
+    double t1 = (-b - sqrt_disc) / (2 * a);
+    double t2 = (-b + sqrt_disc) / (2 * a);
+
+    // t1,t2が線分区間に入っているかチェック
+    bool t1Valid = (t1 >= 0.0 && t1 <= 1.0);
+    bool t2Valid = (t2 >= 0.0 && t2 <= 1.0);
+
+    if (t1Valid && t2Valid) return min(t1, t2);
+    else if (t1Valid) return t1;
+    else if (t2Valid) return t2;
+    else return std::nullopt;
+}
+
+// 線分と無限円柱の交点判定
+// 円柱軸: A-B, 半径 r
+// 線分: P0-P1
+// 交点のt（線分パラメータ）を返す可能性のある値を複数返す（最大2個）
+std::vector<double> IntersectSegmentInfiniteCylinder(const VECTOR& P0, const VECTOR& P1,
+    const VECTOR& A, const VECTOR& B, double r) {
+    VECTOR d = P1 - P0;
+    VECTOR m = P0 - A;
+    VECTOR n = B - A;
+    VECTOR n_norm = v3d::GetNormalizedV(n);
+
+    // 円柱軸に直交する方向のベクトルを作る
+    // d_perp = d - (d・n_norm) * n_norm
+    VECTOR d_perp = d - n_norm * VDot(d, n_norm);
+    VECTOR m_perp = m - n_norm * VDot(m, n_norm);
+
+    double a = VDot(d_perp, d_perp);
+    double b = 2 * VDot(d_perp, m_perp);
+    double c = VDot(m_perp, m_perp) - r * r;
+
+    std::vector<double> ts;
+    if (std::abs(a) < 1e-10) {
+        // d_perpが0に近い => 線分が円柱軸に平行 → 交差なし（または無限にあるが今回はなし扱い）
+        return ts;
+    }
+
+    double discriminant = b * b - 4 * a * c;
+    if (discriminant < 0) return ts;
+
+    double sqrt_disc = std::sqrt(discriminant);
+    double t1 = (-b - sqrt_disc) / (2 * a);
+    double t2 = (-b + sqrt_disc) / (2 * a);
+
+    // tが線分区間内かつ、交点が円柱の有限長区間内かチェック
+    for (double t : {t1, t2}) {
+        if (t < 0.0 || t > 1.0) continue;
+
+        VECTOR p = P0 + d * t;
+        // 円柱軸上の点の位置
+        double proj = VDot((p - A), n_norm);
+        if (proj >= 0.0 && proj <= VSize(n)) {
+            ts.push_back(t);
+        }
+    }
+    return ts;
+}
+
+// 線分とカプセルの交差判定と交点取得
+// 交点があればt（線分パラメータ）と座標を返す（最も近い交点）
+// なければnulloptを返す
+std::optional<std::pair<double, VECTOR>> IntersectSegmentCapsule(
+    const VECTOR& P0, const VECTOR& P1,
+    const VECTOR& A, const VECTOR& B, double r)
+{
+    std::vector<std::pair<double, VECTOR>> candidates;
+
+    // 1. 円柱部分との交点
+    auto ts_cylinder = IntersectSegmentInfiniteCylinder(P0, P1, A, B, r);
+    for (double t : ts_cylinder) {
+        VECTOR point = P0 + (P1 - P0) * t;
+        candidates.emplace_back(t, point);
+    }
+
+    // 2. 両端の半球部分との交点
+    auto t_sphere_A = IntersectSegmentSphere(P0, P1, A, r);
+    if (t_sphere_A) {
+        VECTOR point = P0 + (P1 - P0) * (*t_sphere_A);
+        candidates.emplace_back(*t_sphere_A, point);
+    }
+    auto t_sphere_B = IntersectSegmentSphere(P0, P1, B, r);
+    if (t_sphere_B) {
+        VECTOR point = P0 + (P1 - P0) * (*t_sphere_B);
+        candidates.emplace_back(*t_sphere_B, point);
+    }
+
+    if (candidates.empty()) return std::nullopt;
+
+    // 最も小さいt（線分の始点に近い）を選ぶ
+    auto min_it = candidates.begin();
+    for (auto it = candidates.begin(); it != candidates.end(); ++it) {
+        if (it->first < min_it->first) min_it = it;
+    }
+    return *min_it;
+}
+
+
+
+bool IsPointInsideTriangleProjected(const VECTOR& p, const Triangle& triangle)
+{
+    VECTOR n  = VCross(triangle.GetPos(1) - triangle.GetPos(0), triangle.GetPos(2) - triangle.GetPos(0));
+    float  nn = VDot(n, n);
+
+    if (nn < math::kEpsilonLow) return false; // 退化
+
+    float  t = VDot(p - triangle.GetPos(0), n) / nn;
+    VECTOR Q = p - n * t;
+
+    float s1 = VDot(n, VCross(triangle.GetPos(1) - triangle.GetPos(0), Q - triangle.GetPos(0)));
+    float s2 = VDot(n, VCross(triangle.GetPos(2) - triangle.GetPos(1), Q - triangle.GetPos(1)));
+    float s3 = VDot(n, VCross(triangle.GetPos(0) - triangle.GetPos(2), Q - triangle.GetPos(2)));
+
+    // 法線長に応じた許容値（スケール対応）
+    float tol = -nn * math::kEpsilonLow;  // 例：-1e-6 * |n|^2
+
+    if ((s1 >=  tol && s2 >=  tol && s3 >=  tol) ||
+        (s1 <= -tol && s2 <= -tol && s3 <= -tol))
+    {
+        return true;
+    }
+    return false;
+}
+
+
+VECTOR collision::PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsule& dynamic_capsule, const Triangle& static_triangle,
+    const float slope_difficulty_angle_threshold, const float max_slope_angle)
+{
+    // 未来のカプセルを取得
+    auto future_capsule = dynamic_capsule;
+    future_capsule.Move(velocity);
+
+    // 未来の座標と衝突しているかを判定
+    if (!IsHitTriangleAndCapsule(static_triangle, future_capsule))
+    {
+        return velocity;
+    }
+
+    // 三角形の平面を定義
+    const auto plane = Plane(static_triangle.GetCentroid(), static_triangle.GetNormalVector());
+
+    // カプセルの線分の両端点を取得
+    const auto current_begin_pos            = dynamic_capsule.GetSegment().GetBeginPos();
+    const auto current_end_pos              = dynamic_capsule.GetSegment().GetEndPos();
+    const auto future_begin_pos             = future_capsule .GetSegment().GetBeginPos();
+    const auto future_end_pos               = future_capsule .GetSegment().GetEndPos();
+
+    // 各点から平面への距離を計算
+    auto       plane_to_begin_pos_distance  = math::GetDistancePointToPlane(future_begin_pos, plane);
+    auto       plane_to_end_pos_distance    = math::GetDistancePointToPlane(future_end_pos,   plane);
+    const auto is_begin_pos_ahead_of_plane  = math::IsPointAheadOfPlane(future_begin_pos, plane);
+    const auto is_end_pos_ahead_of_plane    = math::IsPointAheadOfPlane(future_end_pos, plane);
+
+    float penetration_depth         = 0.0f;
+    float result_penetration_depth  = 0.0f;
+    if (is_begin_pos_ahead_of_plane && is_end_pos_ahead_of_plane)
+    {
+        penetration_depth           = min(plane_to_begin_pos_distance, plane_to_end_pos_distance);
+        result_penetration_depth    = dynamic_capsule.GetRadius() - penetration_depth;
+    }
+    else if (!is_begin_pos_ahead_of_plane && !is_end_pos_ahead_of_plane)
+    {
+        penetration_depth           = max(plane_to_begin_pos_distance, plane_to_end_pos_distance);
+        result_penetration_depth    = dynamic_capsule.GetRadius() + penetration_depth;
+    }
+    else if (is_begin_pos_ahead_of_plane && !is_end_pos_ahead_of_plane)
+    {
+        penetration_depth           = plane_to_end_pos_distance;
+        result_penetration_depth    = dynamic_capsule.GetRadius() + penetration_depth;
+    }
+    else
+    {
+        penetration_depth           = plane_to_begin_pos_distance;
+        result_penetration_depth    = dynamic_capsule.GetRadius() + penetration_depth;
+    }
+
+    // 始点と終点のどちらが近かったかを判定
+    const auto is_closest_begin_pos = result_penetration_depth == plane_to_begin_pos_distance ? true : false;
+
+    // 貫通していない場合は元のvelocityを返す
+    if (result_penetration_depth <= 0.0f)
+    {
+        return velocity;
+    }
+
+    // 移動方向と平面法線の関係を確認
+    const auto move_dir = v3d::GetNormalizedV(velocity);
+    const auto dot = VDot(move_dir, plane.GetNormalVector());
+
+    // 平面に向かって移動していない場合は処理しない
+    if (dot >= 0.0f)
+    {
+        return velocity;
+    }
+
+    // 押し戻し距離を計算（法線方向への最小移動距離）
+    const auto push_back_distance   = result_penetration_depth / abs(dot);
+    const auto push_back_vector     = move_dir * push_back_distance;
+
+    // 押し戻し後の有効な移動ベクトル
+    const auto valid_velocity       = velocity - push_back_vector;
+
+    // 壁滑り処理
+    // 押し戻されたベクトルを平面に投影して滑りベクトルを作成
+    const auto slide_vector         = push_back_vector - plane.GetNormalVector() * VDot(push_back_vector, plane.GetNormalVector());
+
+    // 最終的な移動ベクトル = 有効な移動 + 滑り移動
+    auto result_velocity            = valid_velocity + slide_vector;
+    const auto additional_pushback  = plane.GetNormalVector() * (dynamic_capsule.GetRadius() * 0.01f); // 1%のマージン
+
+    // 結果の検証：最終位置で衝突が解消されているか確認
+    auto result_capsule             = dynamic_capsule;
+    result_capsule.Move(result_velocity);
+
+
+    for (int i = 0; i < 3; ++i)
+    {
+        // まだ衝突している場合は追加の調整
+        if (IsHitTriangleAndCapsule(static_triangle, result_capsule))
+        {
+            result_velocity += additional_pushback;
+            result_capsule.Move(result_velocity);
+            continue;
+        }
+        break;
+    }
+
+    //平面に近い点を三角形がある平面上に投影し三角形に含まれていない場合、カプセルを沈める
+    const auto p = is_closest_begin_pos ? result_capsule.GetSegment().GetBeginPos() : result_capsule.GetSegment().GetEndPos();
+    if (!IsPointInsideTriangleProjected(p, static_triangle))
+    {
+        // MEMO : 「tmp」と名前が付いた変数はその場で破棄され使用用途はない
+        float tmp_t1, tmp_t2;
+        VECTOR tmp_h, closest_pos_on_edge1, closest_pos_on_edge2, closest_pos_on_edge3;
+        std::vector<std::pair<VECTOR, float>> closest_pos;
+
+        // 各辺上のカプセルに最も近い座標を取得
+        const auto distance1 = math::GetDistanceSegmentToSegment(result_capsule.GetSegment(), static_triangle.GetEdge(0), tmp_h, closest_pos_on_edge1, tmp_t1, tmp_t2);
+        const auto distance2 = math::GetDistanceSegmentToSegment(result_capsule.GetSegment(), static_triangle.GetEdge(1), tmp_h, closest_pos_on_edge2, tmp_t1, tmp_t2);
+        const auto distance3 = math::GetDistanceSegmentToSegment(result_capsule.GetSegment(), static_triangle.GetEdge(2), tmp_h, closest_pos_on_edge3, tmp_t1, tmp_t2);
+        closest_pos.emplace_back(std::make_pair(closest_pos_on_edge1, distance1));
+        closest_pos.emplace_back(std::make_pair(closest_pos_on_edge2, distance2));
+        closest_pos.emplace_back(std::make_pair(closest_pos_on_edge3, distance3));
+        closest_pos = algorithm::Sort(closest_pos, SortKind::kAscending);
+
+        const auto segment = Segment(closest_pos.at(0).first, static_triangle.GetNormalVector(), dynamic_capsule.GetSegment().GetLength());
+
+        std::optional<VECTOR> intersection = std::nullopt;
+        const auto tmp_is_hit = IsHitSegmentAndCapsule(segment, result_capsule, intersection);
+
+        DrawLine3D(segment.GetBeginPos(), segment.GetEndPos(), 0xffffff);
+
+        if (intersection)
+        {
+            DrawSphere3D(*intersection, 1, 8, 0xffffff, 0xffffff, TRUE);
+            const auto offset = VSize(*intersection - segment.GetBeginPos());
+            result_velocity -= static_triangle.GetNormalVector() * offset;
+        }
+    }
+
+>>>>>>> test/push-back
     return result_velocity;
 }
 
@@ -1121,13 +1531,19 @@ VECTOR collision::PushBackCapsuleAndModel   (const VECTOR& velocity, const Capsu
     // ヒットしたポリゴンから三角形を生成
     // 三角形との現在の距離を取得
     std::unordered_map<int, Triangle>   triangles;
+<<<<<<< HEAD
     std::vector<std::pair<int, float>>  current_distance;
     std::vector<std::pair<int, float>>  current_angle;
+=======
+    std::vector<std::pair<int, float>>  angle;
+    std::vector<std::pair<int, float>>  distance;
+>>>>>>> test/push-back
     for (int i = 0; i < hit_result.HitNum; ++i)
     {
         Triangle triangle(hit_result.Dim[i].Position[0], hit_result.Dim[i].Position[2], hit_result.Dim[i].Position[1]);
 
         triangles[i] = triangle;
+<<<<<<< HEAD
         current_distance.emplace_back(std::make_pair(i, math::GetDistanceTriangleToCapsule(triangle, dynamic_capsule)));
         current_angle   .emplace_back(std::make_pair(i, math::GetAngleBetweenTwoVector(v3d::GetNormalizedV(velocity), triangle.GetNormalVector())));
     }
@@ -1136,8 +1552,17 @@ VECTOR collision::PushBackCapsuleAndModel   (const VECTOR& velocity, const Capsu
     // 距離が同じであればvelocityと法線の角度が大きい順に押し出す
     current_distance = algorithm::Sort(current_distance, current_angle, SortKind::kAscending, SortKind::kDescending);
     for (const auto& distance : current_distance)
+=======
+        distance.emplace_back(std::make_pair(i, math::GetDistanceTriangleToCapsule(triangle, dynamic_capsule)));
+        angle   .emplace_back(std::make_pair(i, math::GetAngleBetweenTwoVector(triangle.GetNormalVector(), v3d::GetNormalizedV(velocity))));
+    }
+
+    // 角度が低い順に押し出す
+    const auto sorted = algorithm::Sort(distance, angle, SortKind::kAscending, SortKind::kDescending);
+    for (const auto& sorted : sorted)
+>>>>>>> test/push-back
     {
-        valid_velocity = collision::PushBackCapsuleAndTriangle(valid_velocity, dynamic_capsule, triangles.at(distance.first), slope_difficulty_angle_threshold, max_slope_angle);
+        valid_velocity = collision::PushBackCapsuleAndTriangle(valid_velocity, dynamic_capsule, triangles.at(sorted.first), slope_difficulty_angle_threshold, max_slope_angle);
     }
 
     return valid_velocity;

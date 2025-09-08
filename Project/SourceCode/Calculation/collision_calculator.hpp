@@ -1,4 +1,5 @@
 #pragma once
+#include <limits>
 #include "math.hpp"
 #include "../Data/IncludeList/shape.hpp"
 
@@ -112,17 +113,17 @@ namespace collision
     [[nodiscard]] bool IsHitPlaneAndCapsule         (const Plane&       plane,          const Capsule&      capsule,        std::optional<VECTOR>& intersection);
     [[nodiscard]] bool IsHitPlaneAndCapsule         (const Plane&       plane,          const Capsule&      capsule);
 
-    /// @brief 三角形と球の衝突判定
-    /// @param intersection 未実装
-    /// @return true : 衝突, false : 非衝突
-    [[nodiscard]] bool IsHitTriangleAndSphere       (const Triangle&    triangle,       const Sphere&       sphere,         std::optional<VECTOR>& intersection);
-    [[nodiscard]] bool IsHitTriangleAndSphere       (const Triangle&    triangle,       const Sphere&       sphere);
-
     /// @brief 三角形と三角形の衝突判定
     /// @param intersection 未実装
     /// @return true : 衝突, false : 非衝突
     [[nodiscard]] bool IsHitTriangleAndTriangle     (const Triangle&    triangle1,      const Triangle&     triangle2,      std::optional<VECTOR>& intersection);
     [[nodiscard]] bool IsHitTriangleAndTriangle     (const Triangle&    triangle1,      const Triangle&     triangle2);
+
+    /// @brief 三角形と球の衝突判定
+    /// @param intersection 未実装
+    /// @return true : 衝突, false : 非衝突
+    [[nodiscard]] bool IsHitTriangleAndSphere       (const Triangle&    triangle,       const Sphere&       sphere,         std::optional<VECTOR>& intersection);
+    [[nodiscard]] bool IsHitTriangleAndSphere       (const Triangle&    triangle,       const Sphere&       sphere);
 
     /// @brief 三角形とカプセルの衝突判定
     /// @param intersection 未実装
@@ -211,7 +212,7 @@ namespace collision
     /// @brief 球(移動オブジェクト)と三角形(固定オブジェクト)が衝突する際の有効な速度ベクトルを取得
     /// @brief 高速移動対応
     /// @brief WARNING : この関数は現在衝突対象にめり込んでいないことを前提としている
-    /// @brief WARNING : 法線の裏側を考慮していない
+    /// @brief WARNING : 法線の裏側を考慮しないものとする
     /// @param velocity 速度ベクトル
     /// @param dynamic_sphere 球(移動オブジェクト)
     /// @param static_triangle 三角形(固定オブジェクト)
@@ -226,7 +227,7 @@ namespace collision
     /// @brief 球(移動オブジェクト)とモデル(固定オブジェクト)が衝突した際の有効な速度ベクトルを取得
     /// @brief 高速移動対応
     /// @brief WARNING : この関数は現在衝突対象にめり込んでいないことを前提としている
-    /// @brief WARNING : 法線の裏側を考慮していない
+    /// @brief WARNING : 法線の裏側を考慮しないものとする
     /// @param velocity 速度ベクトル
     /// @param dynamic_sphere 球(移動オブジェクト)
     /// @param model_handle モデルハンドル(固定オブジェクトなモデルのハンドル)
@@ -238,20 +239,23 @@ namespace collision
 
     /// @brief カプセル(移動オブジェクト)と三角形(固定オブジェクト)が衝突する際の有効な速度ベクトルを取得
     /// @brief WARNING : この関数は現在衝突対象にめり込んでいないことを前提としている
-    /// @brief WARNING : 法線の裏側を考慮していない
+    /// @brief WARNING : 法線の裏側を考慮しないものとする
     /// @param velocity 速度ベクトル
     /// @param dynamic_capsule カプセル(移動オブジェクト)
     /// @param static_triangle 三角形(固定オブジェクト)
     /// @param slope_difficulty_angle_threshold 登るのが困難になり始める角度
     /// @param max_slope_angle 登れる角度の最大値
     /// @return 有効な速度ベクトル
+    [[nodiscard]] VECTOR OldPushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsule& dynamic_capsule, const Triangle& static_triangle,
+        const float slope_difficulty_angle_threshold, const float max_slope_angle);
+
     [[nodiscard]] VECTOR PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsule& dynamic_capsule, const Triangle& static_triangle,
         const float slope_difficulty_angle_threshold, const float max_slope_angle);
 
     /// @brief カプセル(移動オブジェクト)と四角形(固定オブジェクト)が衝突する際の有効な速度ベクトルを取得
     /// @brief TODO : 角度制限未実装
     /// @brief WARNING : この関数は現在衝突対象にめり込んでいないことを前提としている
-    /// @brief WARNING : 法線の裏側を考慮していない
+    /// @brief WARNING : 法線の裏側を考慮しないものとする
     /// @param velocity 速度ベクトル
     /// @param dynamic_capsule カプセル(移動オブジェクト)
     /// @param static_square 四角形(固定オブジェクト)
@@ -275,7 +279,7 @@ namespace collision
 
     /// @brief カプセル(移動オブジェクト)とモデル(固定オブジェクト)が衝突した際の有効な速度ベクトルを取得
     /// @brief WARNING : この関数は現在衝突対象にめり込んでいないことを前提としている
-    /// @brief WARNING : 法線の裏側を考慮していない
+    /// @brief WARNING : 法線の裏側を考慮しないものとする
     /// @param velocity 速度ベクトル
     /// @param dynamic_capsule カプセル(移動オブジェクト)
     /// @param model_handle モデルハンドル(固定オブジェクトなモデルのハンドル)

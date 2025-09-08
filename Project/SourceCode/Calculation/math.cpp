@@ -611,7 +611,7 @@ VECTOR math::GetProjectionVector(const VECTOR& projected_v, const VECTOR& base_v
 
     const float dot         = VDot(base_v, projected_v);
     const float square_base = VSquareSize(base_v);
-    return (dot / square_base) * base_v;
+    return square_base != 0.0f ? (dot / square_base) * base_v : v3d::GetZeroV();
 }
 #pragma endregion
 
@@ -630,15 +630,34 @@ bool math::IsAcuteAngle(const float radian)
 
 float math::GetAngleBetweenTwoVector(const VECTOR& v1, const VECTOR& v2)
 {
-    const float length1 = VSize(v1);
-    const float length2 = VSize(v2);
+    const auto length1 = VSize(v1);
+    const auto length2 = VSize(v2);
 
     if (length1 == 0.0f || length2 == 0.0f) { return 0.0f; }
 
+<<<<<<< HEAD
     float dot = VDot(v1, v2) / (length1 * length2);
 
     // 誤差を消し飛ばす
+=======
+    // 誤差を消し飛ばす
+    auto dot = VDot(v1, v2) / (length1 * length2);
+>>>>>>> test/push-back
     dot = std::clamp(dot, -1.0f, 1.0f);
+
+    return acos(dot);
+}
+
+double math::GetAngleBetweenTwoVectorD(const VECTOR_D& v1, const VECTOR_D& v2)
+{
+    const auto length1 = VSizeD(v1);
+    const auto length2 = VSizeD(v2);
+
+    if (length1 == 0.0f || length2 == 0.0f) { return 0.0f; }
+
+    // 誤差を消し飛ばす
+    auto dot = VDotD(v1, v2) / (length1 * length2);
+    dot = std::clamp(dot, -1.0, 1.0);
 
     return acos(dot);
 }
@@ -963,7 +982,7 @@ bool math::IsPointAheadOfPlane(const VECTOR& point, const Plane& plane)
     const VECTOR v = point - plane.GetPos();
     const float angle = GetAngleBetweenTwoVector(plane.GetNormalVector(), v);
 
-    return angle < 90 * kDegToRad;
+    return angle < 90.0f * kDegToRad;
 }
 
 bool math::IsPointOnSphereSurface(const VECTOR& point, const Sphere& sphere)
@@ -973,11 +992,19 @@ bool math::IsPointOnSphereSurface(const VECTOR& point, const Sphere& sphere)
 
 bool math::IsPointInsideCapsule(const VECTOR& point, const Capsule& capsule)
 {
+<<<<<<< HEAD
     const auto ab        = capsule.GetSegment().GetEndPos() - capsule.GetSegment().GetBeginPos();
     const auto dot_ab_ab = VDot(ab, ab);
     const auto t         = std::clamp(VDot(point - capsule.GetSegment().GetBeginPos(), ab) / dot_ab_ab, 0.0f, 1.0f);
     const auto closest   = capsule.GetSegment().GetBeginPos() + ab * t;
     const auto distance  = VDot(point - closest, point - closest);
+=======
+    const auto ab = capsule.GetSegment().GetEndPos() - capsule.GetSegment().GetBeginPos();
+    const auto dot_ab_ab = VDot(ab, ab);
+    const auto t = std::clamp(VDot(point - capsule.GetSegment().GetBeginPos(), ab) / dot_ab_ab, 0.0f, 1.0f);
+    const auto closest = capsule.GetSegment().GetBeginPos() + ab * t;
+    const auto distance = VDot(point - closest, point - closest);
+>>>>>>> test/push-back
 
     return distance <= capsule.GetRadius() * capsule.GetRadius();
 }
