@@ -24,7 +24,7 @@ Player::Player() :
 
 	// 初期pos・dirを設定
 	m_look_dir[TimeKind::kCurrent] = m_look_dir[TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);
-	m_transform->SetPos(CoordinateKind::kWorld, VGet(15.6884f, 2.157957f, -47.0803f));
+	m_transform->SetPos(CoordinateKind::kWorld, VGet(15.6884f, 2.157957f, 47.0803f));
 	m_transform->SetRot(CoordinateKind::kWorld, m_look_dir.at(TimeKind::kCurrent));
 
 	// コライダー・トリガーを設定

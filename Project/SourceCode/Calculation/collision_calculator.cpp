@@ -1283,7 +1283,7 @@ VECTOR collision::PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsu
         const auto segment = Segment(closest_pos.at(0).first, static_triangle.GetNormalVector(), dynamic_capsule.GetSegment().GetLength());
 
         std::optional<VECTOR> intersection = std::nullopt;
-        const auto tmp_is_hit = IsHitSegmentAndCapsule(segment, dynamic_capsule, intersection);
+        const auto tmp_is_hit = IsHitSegmentAndCapsule(segment, result_capsule, intersection);
 
         DrawLine3D(segment.GetBeginPos(), segment.GetEndPos(), 0xffffff);
 
