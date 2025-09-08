@@ -67,15 +67,6 @@ Modeler::~Modeler()
 }
 #pragma endregion
 
-
-void Modeler::DrawToShadowMap() const
-{
-	ApplyOpacity();
-	ApplyMatrix();
-
-	MV1DrawModel(m_model_handle);
-}
-
 void Modeler::Draw() const
 {
 	ApplyOpacity();

@@ -57,7 +57,7 @@ void RocketBomb::DrawToShadowMap() const
 {
 	if (!IsActive()) { return; }
 
-	m_modeler->DrawToShadowMap();
+	m_modeler->Draw();
 }
 
 void RocketBomb::Draw() const

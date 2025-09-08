@@ -53,18 +53,18 @@ void GameManager::Run()
 
 
 
-		Capsule c = Capsule(VGet(0, 0,   0), VGet(0, 80,  0), 20);
-		Segment s = Segment(VGet(0, 0, -40), VGet(0, 40, 40));
-		VECTOR h1, h2;
-		float t1, t2;
+		//Capsule c = Capsule(VGet(20, 0, 0), VGet(0, 50, 0), 20);
+		//Segment s = Segment(VGet(50, -10, 10), VGet(0, 10, 10));
 
-		float dist = math::GetDistanceSegmentToSegment(c.GetSegment(), s, h1, h2, t1, t2);
+		//std::optional<VECTOR> p = std::nullopt;
+		//collision::IsHitSegmentAndCapsule(s, c, p);
 
-		c.Draw(true, 0, 0xffffff);
-		s.Draw(true, 0, 0xff0000);
-		DrawSphere3D(h1, 3, 8, 0xffffff, 0xffffff, TRUE);
-		//DrawSphere3D(h2, 3, 8, 0xff0000, 0xff0000, TRUE);
-		DrawLine3D(h1, h2, 0xffffff);
+		//c.Draw(true, 0, 0xffffff);
+		//s.Draw(true, 0, 0xff0000);
+		//if (p)
+		//{
+		//	DrawSphere3D(*p, 3, 8, 0xffffff, 0xffffff, TRUE);
+		//}
 
 
 

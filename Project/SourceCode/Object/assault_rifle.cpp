@@ -61,7 +61,7 @@ void AssaultRifle::DrawToShadowMap() const
 {
 	if (!IsActive()) { return; }
 
-	m_modeler->DrawToShadowMap();
+	m_modeler->Draw();
 	std::dynamic_pointer_cast<ObjBase>(m_magazine)->DrawToShadowMap();
 }
 

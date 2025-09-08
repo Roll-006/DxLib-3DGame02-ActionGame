@@ -31,9 +31,9 @@ Zombie::Zombie() :
 	m_collider_creator->CreateCapsuleCollider	(this, m_modeler, kCapsuleRadius);
 	m_collider_creator->CreateLandingTrigger	(this, kLandingTriggerRadius);
 	m_collider_creator->CreateHeadTrigger		(this, m_modeler, kHeadTriggerRadius);
-	m_collider_creator->CreateBodyTrigger		(this, m_modeler, kUpBodyTriggerRadius, kDownBodyTriggerRadius);
-	m_collider_creator->CreateArmTrigger		(this, m_modeler, kUpperArmTriggerRadius, kForearmTriggerRadius, kHandTriggerRadius);
-	m_collider_creator->CreateLegTrigger		(this, m_modeler, kUpLegTriggerRadius, kDownLegTriggerRadius);
+	//m_collider_creator->CreateBodyTrigger		(this, m_modeler, kUpBodyTriggerRadius, kDownBodyTriggerRadius);
+	//m_collider_creator->CreateArmTrigger		(this, m_modeler, kUpperArmTriggerRadius, kForearmTriggerRadius, kHandTriggerRadius);
+	//m_collider_creator->CreateLegTrigger		(this, m_modeler, kUpLegTriggerRadius, kDownLegTriggerRadius);
 }
 
 Zombie::~Zombie()
@@ -59,13 +59,13 @@ void Zombie::Update()
 	CalcLookDir();
 	CalcMoveVelocity();
 
+	ApplyLookDirToRot(m_look_dir.at(TimeKind::kCurrent));
+
 	m_collider_creator->CalcCapsuleColliderLength(this, m_modeler);
 	m_collider_creator->CalcHeadTriggerPos(m_modeler, m_collider);
-	m_collider_creator->CalcBodyTriggerPos(m_modeler, m_collider);
-	m_collider_creator->CalcArmTriggerPos (m_modeler, m_collider);
-	m_collider_creator->CalcLegTriggerPos (m_modeler, m_collider);
-
-	ApplyLookDirToRot(m_look_dir.at(TimeKind::kCurrent));
+	//m_collider_creator->CalcBodyTriggerPos(m_modeler, m_collider);
+	//m_collider_creator->CalcArmTriggerPos (m_modeler, m_collider);
+	//m_collider_creator->CalcLegTriggerPos (m_modeler, m_collider);
 
 	auto pos = m_transform->GetScale(CoordinateKind::kWorld);
 }
@@ -83,7 +83,7 @@ void Zombie::DrawToShadowMap() const
 {
 	if (!IsActive()) { return; }
 
-	m_modeler->DrawToShadowMap();
+	m_modeler->Draw();
 }
 
 void Zombie::Draw() const
@@ -157,12 +157,6 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 			
 			OnCollideWithExplosion(std::static_pointer_cast<Sphere>(hit_collider_pair.target_collider->GetShape()));
 			
-		}
-		break;
-
-		if (target_name == ObjName.BULLET)
-		{
-			OnDamage(HitPointsPartKind::kMain,		dynamic_cast<Bullet*>(target_obj)->GetPower());
 		}
 		break;
 

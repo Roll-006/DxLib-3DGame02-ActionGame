@@ -361,6 +361,14 @@ namespace math
 	/// @return 線分と平面が同一平面上にある場合は不定値(受け取り側でstd::isfinite()を使用する必要あり)
 	[[nodiscard]] std::optional<VECTOR> GetIntersectionSegmentAndPlane(const Segment& segment, const Plane& plane);
 
+	/// @brief 線分と球の交点を取得
+	/// @return 交点が2つある場合は始点に近い交点
+	/// @return 線分が球に含まれる場合は交点なし
+	[[nodiscard]] std::optional<VECTOR> GetIntersectionSegmentAndSphere(const Segment& segment, const Sphere& sphere);
+
+	/// @brief 線分とカプセルの交点を取得
+	[[nodiscard]] std::optional<VECTOR> GetIntersectionSegmentAndCapsule(const Segment& segment, const Capsule& capsule);
+
 	/// @brief 線分とカプセルの交点を取得
 	/// @brief 受け取り側で、戻り値がnulloptである場合と不定値である場合を考慮する必要あり
 	/// @return 一点で交差する場合は交点
@@ -384,6 +392,9 @@ namespace math
 	/// @brief 点が球の表面にあるかを判定
 	/// TODO : 正しく機能するか試していないため検証が必要
 	[[nodiscard]] bool IsPointOnSphereSurface(const VECTOR& point, const Sphere& sphere);
+
+	/// @brief 点がカプセル内にあるかを判定
+	[[nodiscard]] bool IsPointInsideCapsule(const VECTOR& point, const Capsule& capsule);
 	#pragma endregion
 
 

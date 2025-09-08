@@ -16,7 +16,6 @@ public:
 	Modeler(const int model_handle);
 	~Modeler();
 
-	void DrawToShadowMap()	const;
 	void Draw()				const;
 
 	/// @brief •s“§–¾“x‚ğİ’è

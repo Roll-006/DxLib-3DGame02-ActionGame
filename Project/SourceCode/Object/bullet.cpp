@@ -131,6 +131,8 @@ void Bullet::CalcRayPos()
 {
 	// Œõü‚ÌˆÊ’u‚ğŒvZ
 	auto ray = std::dynamic_pointer_cast<Segment>(GetCollider(ColliderKind::kRayCast)->GetShape());
-	ray->SetBeginPos(m_prev_pos, true);
-	ray->SetEndPos	(m_transform->GetPos(CoordinateKind::kWorld), true);
+	//ray->SetBeginPos(m_prev_pos, true);
+	//ray->SetEndPos	(m_transform->GetPos(CoordinateKind::kWorld), true);
+	ray->SetBeginPos(VGet(50, -30, 0), true);
+	ray->SetEndPos(VGet(-50, -30, 0), true);
 }

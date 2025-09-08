@@ -125,7 +125,7 @@ void Player::DrawToShadowMap() const
 {
 	if (!IsActive()) { return; }
 
-	m_modeler->DrawToShadowMap();
+	m_modeler->Draw();
 
 	if (m_current_held_weapon) { m_current_held_weapon->DrawToShadowMap(); }
 

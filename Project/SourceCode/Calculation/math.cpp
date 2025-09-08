@@ -499,7 +499,7 @@ VECTOR math::GetDampedValueOnAxes(const VECTOR& current_value, const VECTOR& tar
 
     return damped_value;
 }
-#pragma endregion}
+#pragma endregion
 
 
 #pragma region 修正
@@ -777,6 +777,136 @@ std::optional<VECTOR> math::GetIntersectionSegmentAndPlane(const Segment& segmen
     return std::nullopt;
 }
 
+std::optional<VECTOR> math::GetIntersectionSegmentAndSphere(const Segment& segment, const Sphere& sphere)
+{
+    const auto diff     = segment.GetBeginPos() - sphere.GetPos();
+    const auto dot_proj = VDot(diff, segment.GetDir());
+
+    // 負なら球内部に含まれる
+    const auto diff_pos = VSquareSize(diff) - sphere.GetRadius() * sphere.GetRadius();
+
+    const auto distance = dot_proj * dot_proj - diff_pos;
+    if (distance < math::kEpsilonLow) { return std::nullopt; }
+
+    const auto sqrt_distance = sqrt(distance);
+    const auto t1 = -dot_proj - sqrt_distance;      // 入口
+    const auto t2 = -dot_proj + sqrt_distance;      // 出口
+
+    // 始点が球に含まれない場合、入口側の貫通点を採用
+    if (t1 >= 0.0f && t1 <= segment.GetLength())
+    {
+        return segment.GetBeginPos() + segment.GetDir() * t1;
+    }
+    // 始点が球に含まれる場合、出口側の貫通点を採用する
+    if (t2 >= 0.0f && t2 <= segment.GetLength())
+    {
+        return segment.GetBeginPos() + segment.GetDir() * t2;
+    }
+
+    return std::nullopt;
+}
+
+std::optional<VECTOR> math::GetIntersectionSegmentAndCapsule(const Segment& segment, const Capsule& capsule)
+{
+    const auto ab           = capsule.GetSegment().GetEndPos() - capsule.GetSegment().GetBeginPos();
+    const auto a0           = VSub(segment.GetBeginPos(), capsule.GetSegment().GetBeginPos());
+
+    const auto dot_ab_ab    = VDot(ab, ab);
+    const auto dot_ab_dir   = VDot(ab, segment.GetDir());
+    const auto dot_ab_a0    = VDot(ab, a0);
+    const auto dot_a0_dir   = VDot(a0, segment.GetDir());
+    const auto dot_a0_a0    = VDot(a0, a0);
+
+    const auto a            = dot_ab_ab * 1.0f       - dot_ab_dir * dot_ab_dir;
+    const auto b            = dot_ab_ab * dot_a0_dir - dot_ab_dir * dot_ab_a0;
+    const auto c            = dot_ab_ab * dot_a0_a0  - dot_ab_a0  * dot_ab_a0 - capsule.GetRadius() * capsule.GetRadius() * dot_ab_ab;
+
+    // 始点がカプセル内か判定
+    const auto is_inside = IsPointInsideCapsule(segment.GetBeginPos(), capsule);
+
+    // 交点候補
+    std::vector<std::pair<float, VECTOR>> intersection_candidates;
+
+    // --- 円柱部分 ---
+    const auto distance = b * b - a * c;
+    if (distance >= 0.0f && fabs(a) > 1e-6f)
+    {
+        const auto sqrtDisc = sqrtf(distance);
+        const auto t1 = (-b - sqrtDisc) / a;
+        const auto t2 = (-b + sqrtDisc) / a;
+
+        auto CheckAndAdd = [&](float t)
+        {
+            if (t < 0.0f || t > segment.GetLength()) { return; }
+
+            const auto pos = segment.GetBeginPos() + segment.GetDir() * t;
+            const auto proj = VDot(pos - capsule.GetSegment().GetBeginPos(), ab) / dot_ab_ab;
+            if (proj >= 0.0f && proj <= 1.0f)
+            {
+                intersection_candidates.emplace_back(t, pos);
+            }
+        };
+
+        CheckAndAdd(t1);
+        CheckAndAdd(t2);
+    }
+
+    // --- 球部分 ---
+    auto IntersectSphere = [&](const Sphere& sphere)
+    {
+        const auto diff     = segment.GetBeginPos() - sphere.GetPos();
+        const auto b        = VDot(diff, segment.GetDir());
+        const auto c        = VDot(diff, diff) - sphere.GetRadius() * sphere.GetRadius();
+        const auto distance = b * b - c;
+
+        if (distance < 0.0f) { return; }
+
+        const auto sqrtDisc = sqrtf(distance);
+        const auto t1       = -b - sqrtDisc;
+        const auto t2       = -b + sqrtDisc;
+
+        auto CheckAndAdd = [&](float t)
+        {
+            if (t >= 0.0f && t <= segment.GetLength())
+            {
+                const auto pos = segment.GetBeginPos() + segment.GetDir() * t;
+                intersection_candidates.emplace_back(t, pos);
+            }
+        };
+
+        CheckAndAdd(t1);
+        CheckAndAdd(t2);
+    };
+
+    IntersectSphere(Sphere(capsule.GetSegment().GetBeginPos(),  capsule.GetRadius()));
+    IntersectSphere(Sphere(capsule.GetSegment().GetEndPos(),    capsule.GetRadius()));
+
+    if (intersection_candidates.empty()) { return std::nullopt; }
+
+    // inside/outside に応じて選択
+    if (is_inside)
+    {
+        // 出口 → 最大の t
+        auto it = std::max_element(intersection_candidates.begin(), intersection_candidates.end(), [](auto& lhs, auto& rhs)
+        {
+            return lhs.first < rhs.first;
+        });
+
+        return it->second;
+    }
+    else
+    {
+        // 入口 → 最小の正の t
+        auto it = std::min_element(intersection_candidates.begin(), intersection_candidates.end(), [](auto& lhs, auto& rhs)
+        {
+            return lhs.first < rhs.first;
+        });
+
+        return it->second;
+    }
+
+    return std::nullopt;
+}
 bool math::IsSameLine(const Line& line1, const Line& line2)
 {
     if (!IsHorizontal(line1.GetDir(), line2.GetDir())) { return false; }
@@ -839,6 +969,17 @@ bool math::IsPointAheadOfPlane(const VECTOR& point, const Plane& plane)
 bool math::IsPointOnSphereSurface(const VECTOR& point, const Sphere& sphere)
 {
     return VDot(point - sphere.GetPos(), point - sphere.GetPos()) == sqrt(sphere.GetRadius());
+}
+
+bool math::IsPointInsideCapsule(const VECTOR& point, const Capsule& capsule)
+{
+    const auto ab        = capsule.GetSegment().GetEndPos() - capsule.GetSegment().GetBeginPos();
+    const auto dot_ab_ab = VDot(ab, ab);
+    const auto t         = std::clamp(VDot(point - capsule.GetSegment().GetBeginPos(), ab) / dot_ab_ab, 0.0f, 1.0f);
+    const auto closest   = capsule.GetSegment().GetBeginPos() + ab * t;
+    const auto distance  = VDot(point - closest, point - closest);
+
+    return distance <= capsule.GetRadius() * capsule.GetRadius();
 }
 #pragma endregion
 

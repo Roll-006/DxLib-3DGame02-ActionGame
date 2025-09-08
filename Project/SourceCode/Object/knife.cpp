@@ -41,7 +41,7 @@ void Knife::DrawToShadowMap() const
 {
 	if (!IsActive()) { return; }
 
-	m_modeler->DrawToShadowMap();
+	m_modeler->Draw();
 }
 
 void Knife::Draw() const

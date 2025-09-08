@@ -37,7 +37,7 @@ void AssaultRifleMagazine::DrawToShadowMap() const
 {
 	if (!IsActive()) { return; }
 
-	m_modeler->DrawToShadowMap();
+	m_modeler->Draw();
 }
 
 void AssaultRifleMagazine::Draw() const

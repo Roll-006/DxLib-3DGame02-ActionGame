@@ -36,7 +36,7 @@ void Ground::DrawToShadowMap() const
 {
 	if (!IsActive()) { return; }
 
-	m_modeler->DrawToShadowMap();
+	m_modeler->Draw();
 }
 
 void Ground::Draw() const
