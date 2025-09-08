@@ -237,18 +237,6 @@ namespace collision
     [[nodiscard]] VECTOR PushBackSphereAndModel(const VECTOR& velocity, const Sphere& dynamic_sphere, const int model_handle,
         const float slope_difficulty_angle_threshold, const float max_slope_angle);
 
-    /// @brief カプセル(移動オブジェクト)と三角形(固定オブジェクト)が衝突する際の有効な速度ベクトルを取得
-    /// @brief WARNING : この関数は現在衝突対象にめり込んでいないことを前提としている
-    /// @brief WARNING : 法線の裏側を考慮しないものとする
-    /// @param velocity 速度ベクトル
-    /// @param dynamic_capsule カプセル(移動オブジェクト)
-    /// @param static_triangle 三角形(固定オブジェクト)
-    /// @param slope_difficulty_angle_threshold 登るのが困難になり始める角度
-    /// @param max_slope_angle 登れる角度の最大値
-    /// @return 有効な速度ベクトル
-    [[nodiscard]] VECTOR OldPushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsule& dynamic_capsule, const Triangle& static_triangle,
-        const float slope_difficulty_angle_threshold, const float max_slope_angle);
-
     [[nodiscard]] VECTOR PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsule& dynamic_capsule, const Triangle& static_triangle,
         const float slope_difficulty_angle_threshold, const float max_slope_angle);
 

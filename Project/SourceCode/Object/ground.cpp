@@ -9,16 +9,7 @@ Ground::Ground() :
 	m_transform->SetPos (CoordinateKind::kWorld, kPos);
 	m_modeler->ApplyMatrix();
 
-	//AddCollider(std::make_shared<Collider>(ColliderKind::kCollider, m_modeler->GetModelHandle(), this));
-
-	//t1 = std::make_shared<Triangle>(VGet(200, 0, 0), VGet(0, 0, 200), VGet(-100, 0, -500));
-	t2 = std::make_shared<Triangle>(VGet(100, 0, 0), VGet(-50, 0, 200), VGet(-1000, 0, -500));
-	//t3 = std::make_shared<Triangle>(VGet(, , ), VGet(, , ), VGet(, , ));
-	//t4 = std::make_shared<Triangle>(VGet(, , ), VGet(, , ), VGet(, , ));
-	//AddCollider(std::make_shared<Collider>(ColliderKind::kCollider, t1, this));
-	AddCollider(std::make_shared<Collider>(ColliderKind::kCollider, t2, this));
-	//AddCollider(std::make_shared<Collider>(ColliderKind::kCollider, t3, this));
-	//AddCollider(std::make_shared<Collider>(ColliderKind::kCollider, t4, this));
+	AddCollider(std::make_shared<Collider>(ColliderKind::kCollider, m_modeler->GetModelHandle(), this));
 }
 
 Ground::~Ground()
@@ -56,7 +47,7 @@ void Ground::Draw() const
 
 	for (const auto& collider : m_collider)
 	{
-		const auto shape = collider->GetShape();
+		const auto shape = collider.second->GetShape();
 		if (shape != nullptr)
 		{
 			shape->Draw(true, 200, 0xffffff);

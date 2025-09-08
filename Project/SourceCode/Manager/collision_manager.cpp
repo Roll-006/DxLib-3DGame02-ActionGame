@@ -232,19 +232,10 @@ bool CollisionManager::IsHitLineAndTarget		(Collider& owner_collider, const Coll
 	switch (target_shape->GetShapeKind())
 	{
 	case ShapeKind::kLine:
-<<<<<<< HEAD
-		return collision::IsHitLineAndLine (*std::dynamic_pointer_cast<Line>(owner_collider.GetShape()), *std::dynamic_pointer_cast<Line> (shape), intersection);
-
-	case ShapeKind::kPlane:
-		return collision::IsHitLineAndPlane(*std::dynamic_pointer_cast<Line>(owner_collider.GetShape()), *std::dynamic_pointer_cast<Plane>(shape), intersection);
-=======
 		return collision::IsHitLineAndLine (owner_shape, *std::static_pointer_cast<Line> (target_shape), intersection);
-		break;
 
 	case ShapeKind::kPlane:
 		return collision::IsHitLineAndPlane(owner_shape, *std::static_pointer_cast<Plane>(target_shape), intersection);
-		break;
->>>>>>> test/push-back
 
 	default:
 		break;
@@ -275,40 +266,19 @@ bool CollisionManager::IsHitSegmentAndTarget	(Collider& owner_collider, const Co
 	switch (target_shape->GetShapeKind())
 	{
 	case ShapeKind::kSegment:
-<<<<<<< HEAD
-		return collision::IsHitSegmentAndSegment (*std::dynamic_pointer_cast<Segment>(owner_collider.GetShape()), *std::dynamic_pointer_cast<Segment> (shape), intersection);
-
-	case ShapeKind::kPlane:
-		return collision::IsHitSegmentAndPlane	 (*std::dynamic_pointer_cast<Segment>(owner_collider.GetShape()), *std::dynamic_pointer_cast<Plane>	  (shape), intersection);
-
-	case ShapeKind::kTriangle:
-		return collision::IsHitSegmentAndTriangle(*std::dynamic_pointer_cast<Segment>(owner_collider.GetShape()), *std::dynamic_pointer_cast<Triangle>(shape), intersection);
-
-	case ShapeKind::kSquare:
-		return collision::IsHitSegmentAndSquare	 (*std::dynamic_pointer_cast<Segment>(owner_collider.GetShape()), *std::dynamic_pointer_cast<Square>  (shape), intersection);
-
-	case ShapeKind::kCapsule:
-		return collision::IsHitSegmentAndCapsule (*std::dynamic_pointer_cast<Segment>(owner_collider.GetShape()), *std::dynamic_pointer_cast<Capsule> (shape), intersection);
-=======
 		return collision::IsHitSegmentAndSegment (owner_shape, *std::static_pointer_cast<Segment> (target_shape), intersection);
-		break;
 
 	case ShapeKind::kPlane:
 		return collision::IsHitSegmentAndPlane	 (owner_shape, *std::static_pointer_cast<Plane>   (target_shape), intersection);
-		break;
 
 	case ShapeKind::kTriangle:
 		return collision::IsHitSegmentAndTriangle(owner_shape, *std::static_pointer_cast<Triangle>(target_shape), intersection);
-		break;
 
 	case ShapeKind::kSquare:
 		return collision::IsHitSegmentAndSquare	 (owner_shape, *std::static_pointer_cast<Square>  (target_shape), intersection);
-		break;
 
 	case ShapeKind::kCapsule:
 		return collision::IsHitSegmentAndCapsule (owner_shape, *std::static_pointer_cast<Capsule> (target_shape), intersection);
-		break;
->>>>>>> test/push-back
 
 	default:
 		break;
@@ -331,12 +301,7 @@ bool CollisionManager::IsHitPlaneAndTarget		(Collider& owner_collider, const Col
 	switch (target_shape->GetShapeKind())
 	{
 	case ShapeKind::kCapsule:
-<<<<<<< HEAD
-		return collision::IsHitPlaneAndCapsule(*std::dynamic_pointer_cast<Plane>(owner_collider.GetShape()), *std::dynamic_pointer_cast<Capsule>(shape), intersection);
-=======
 		return collision::IsHitPlaneAndCapsule(owner_shape, *std::static_pointer_cast<Capsule>(target_shape), intersection);
-		break;
->>>>>>> test/push-back
 
 	default:
 		break;
@@ -367,17 +332,8 @@ bool CollisionManager::IsHitTriangleAndTarget	(Collider& owner_collider, const C
 
 	switch (target_shape->GetShapeKind())
 	{
-	case ShapeKind::kTriangle:
-		return collision::IsHitTriangleAndSphere (owner_shape, *std::static_pointer_cast<Sphere> (target_shape), intersection);
-		break;
-
 	case ShapeKind::kCapsule:
-<<<<<<< HEAD
-		return collision::IsHitTriangleAndCapsule(*std::dynamic_pointer_cast<Triangle>(owner_collider.GetShape()), *std::dynamic_pointer_cast<Capsule>(shape), intersection);
-=======
 		return collision::IsHitTriangleAndCapsule(owner_shape, *std::static_pointer_cast<Capsule>(target_shape), intersection);
-		break;
->>>>>>> test/push-back
 
 	default:
 		break;
@@ -400,12 +356,7 @@ bool CollisionManager::IsHitSquareAndTarget		(Collider& owner_collider, const Co
 	switch (target_shape->GetShapeKind())
 	{
 	case ShapeKind::kCapsule:
-<<<<<<< HEAD
-		return collision::IsHitSquareAndCapsule(*std::dynamic_pointer_cast<Square>(owner_collider.GetShape()), *std::dynamic_pointer_cast<Capsule>(shape), intersection);
-=======
 		return collision::IsHitSquareAndCapsule(owner_shape, *std::static_pointer_cast<Capsule>(target_shape), intersection);
-		break;
->>>>>>> test/push-back
 
 	default:
 		break;
@@ -458,19 +409,10 @@ bool CollisionManager::IsHitSphereAndTarget		(Collider& owner_collider, const Co
 		break;
 
 	case ShapeKind::kSphere:
-<<<<<<< HEAD
-		return collision::IsHitSphereAndSphere (*std::dynamic_pointer_cast<Sphere>(owner_collider.GetShape()), *std::dynamic_pointer_cast<Sphere> (shape), intersection);
+		return collision::IsHitSphereAndSphere (owner_shape, *std::dynamic_pointer_cast<Sphere>(target_shape), intersection);
 	
 	case ShapeKind::kCapsule:
-		return collision::IsHitSphereAndCapsule(*std::dynamic_pointer_cast<Sphere>(owner_collider.GetShape()), *std::dynamic_pointer_cast<Capsule>(shape), intersection);
-=======
-		is_hit = collision::IsHitSphereAndSphere  (*std::static_pointer_cast<Sphere>(owner_collider.GetShape()), *std::static_pointer_cast<Sphere> (target_shape), intersection);
-		break;
-	
-	case ShapeKind::kCapsule:
-		is_hit = collision::IsHitSphereAndCapsule (*std::static_pointer_cast<Sphere>(owner_collider.GetShape()), *std::static_pointer_cast<Capsule>(target_shape), intersection);
-		break;
->>>>>>> test/push-back
+		return collision::IsHitSphereAndCapsule(owner_shape, *std::static_pointer_cast<Capsule>(target_shape), intersection);
 
 	default:
 		break;
@@ -501,15 +443,10 @@ bool CollisionManager::IsHitCapsuleAndTarget	(Collider& owner_collider, const Co
 	switch (target_shape->GetShapeKind())
 	{
 	case ShapeKind::kSegment:
-		return collision::IsHitSegmentAndCapsule(*std::dynamic_pointer_cast<Segment>(shape), *std::dynamic_pointer_cast<Capsule>(owner_collider.GetShape()), intersection);
+		return collision::IsHitSegmentAndCapsule(*std::dynamic_pointer_cast<Segment>(target_shape), owner_shape, intersection);
 
 	case ShapeKind::kCapsule:
-<<<<<<< HEAD
-		return collision::IsHitCapsuleAndCapsule(*std::dynamic_pointer_cast<Capsule>(owner_collider.GetShape()), *std::dynamic_pointer_cast<Capsule>(shape), intersection);
-=======
 		return collision::IsHitCapsuleAndCapsule(owner_shape, *std::static_pointer_cast<Capsule>(target_shape), intersection);
-		break;
->>>>>>> test/push-back
 
 	default:
 		break;

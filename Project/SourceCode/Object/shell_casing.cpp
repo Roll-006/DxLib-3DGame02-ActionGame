@@ -127,12 +127,9 @@ bool ShellCasing::IsReturnPool()
 void ShellCasing::Move()
 {
 	math::Decrease(m_move_speed, kDeceleration, 0.0f);
-<<<<<<< HEAD
+
 	m_move_velocity = m_move_dir * m_move_speed;
 	m_velocity += m_move_velocity;
-=======
-	m_velocity = m_move_dir * m_move_speed;
->>>>>>> test/push-back
 }
 
 void ShellCasing::CalcColliderPos()

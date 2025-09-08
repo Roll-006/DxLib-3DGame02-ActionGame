@@ -26,11 +26,7 @@ Player::Player() :
 
 	// 初期pos・dirを設定
 	m_look_dir[TimeKind::kCurrent] = m_look_dir[TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);
-<<<<<<< HEAD
 	m_transform->SetPos(CoordinateKind::kWorld, VGet(0.0f, -54.0f, 0.0f));
-=======
-	m_transform->SetPos(CoordinateKind::kWorld, VGet(15.6884f, 2.157957f, 47.0803f));
->>>>>>> test/push-back
 	m_transform->SetRot(CoordinateKind::kWorld, m_look_dir.at(TimeKind::kCurrent));
 
 	// コライダー・トリガーを設定
@@ -144,10 +140,6 @@ void Player::Draw() const
 	if (!IsActive()) { return; }
 
 	m_modeler->Draw();
-
-	const auto p = m_transform->GetPos(CoordinateKind::kWorld);
-	DrawFormatString(500, 60, 0xffffff, "%f, %f, %f", m_velocity.x, m_velocity.y, m_velocity.z);
-	DrawFormatString(500, 80, 0xffffff, "%f, %f, %f", p.x, p.y, p.z);
 
 	const auto p = m_transform->GetPos(CoordinateKind::kWorld);
 	DrawFormatString(0,  60, 0xffffff, "%f, %f, %f", m_move_velocity.x, m_move_velocity.y, m_move_velocity.z);

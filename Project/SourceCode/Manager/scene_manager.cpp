@@ -47,12 +47,7 @@ void SceneManager::LateUpdate()
 		scene.second->LateUpdate();
 	}
 
-<<<<<<< HEAD
 	InputChecker::GetInstance()->LateUpdate();
-=======
-	CommandHandler	::GetInstance()->LateUpdate();
-	InputChecker	::GetInstance()->LateUpdate();
->>>>>>> test/push-back
 }
 
 void SceneManager::DrawToShadowMap() const

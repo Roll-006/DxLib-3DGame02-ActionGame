@@ -397,10 +397,7 @@ namespace math
 	/// TODO : 正しく機能するか試していないため検証が必要
 	[[nodiscard]] bool IsPointOnSphereSurface(const VECTOR& point, const Sphere& sphere);
 
-<<<<<<< HEAD
 	/// @brief 点がカプセル内にあるかを判定
-=======
->>>>>>> test/push-back
 	[[nodiscard]] bool IsPointInsideCapsule(const VECTOR& point, const Capsule& capsule);
 	#pragma endregion
 

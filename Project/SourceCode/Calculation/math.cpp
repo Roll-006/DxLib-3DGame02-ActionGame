@@ -635,14 +635,7 @@ float math::GetAngleBetweenTwoVector(const VECTOR& v1, const VECTOR& v2)
 
     if (length1 == 0.0f || length2 == 0.0f) { return 0.0f; }
 
-<<<<<<< HEAD
-    float dot = VDot(v1, v2) / (length1 * length2);
-
-    // 誤差を消し飛ばす
-=======
-    // 誤差を消し飛ばす
     auto dot = VDot(v1, v2) / (length1 * length2);
->>>>>>> test/push-back
     dot = std::clamp(dot, -1.0f, 1.0f);
 
     return acos(dot);
@@ -992,19 +985,11 @@ bool math::IsPointOnSphereSurface(const VECTOR& point, const Sphere& sphere)
 
 bool math::IsPointInsideCapsule(const VECTOR& point, const Capsule& capsule)
 {
-<<<<<<< HEAD
     const auto ab        = capsule.GetSegment().GetEndPos() - capsule.GetSegment().GetBeginPos();
     const auto dot_ab_ab = VDot(ab, ab);
     const auto t         = std::clamp(VDot(point - capsule.GetSegment().GetBeginPos(), ab) / dot_ab_ab, 0.0f, 1.0f);
     const auto closest   = capsule.GetSegment().GetBeginPos() + ab * t;
     const auto distance  = VDot(point - closest, point - closest);
-=======
-    const auto ab = capsule.GetSegment().GetEndPos() - capsule.GetSegment().GetBeginPos();
-    const auto dot_ab_ab = VDot(ab, ab);
-    const auto t = std::clamp(VDot(point - capsule.GetSegment().GetBeginPos(), ab) / dot_ab_ab, 0.0f, 1.0f);
-    const auto closest = capsule.GetSegment().GetBeginPos() + ab * t;
-    const auto distance = VDot(point - closest, point - closest);
->>>>>>> test/push-back
 
     return distance <= capsule.GetRadius() * capsule.GetRadius();
 }
