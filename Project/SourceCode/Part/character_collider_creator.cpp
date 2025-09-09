@@ -9,7 +9,7 @@ void CharacterColliderCreator::CreateCapsuleCollider(PhysicalObjBase* physical_o
 
 	physical_obj->AddCollider(std::make_shared<Collider>(ColliderKind::kCollider, capsule_collider, physical_obj));
 
-	CalcCapsuleColliderPos(modeler, physical_obj->GetColliderAll(), transform);
+	CalcCapsuleColliderDirAndLength(modeler, physical_obj->GetColliderAll(), transform);
 }
 
 void CharacterColliderCreator::CreateLandingTrigger(PhysicalObjBase* physical_obj, const float sphere_radius)
@@ -83,22 +83,6 @@ void CharacterColliderCreator::CreateMeshTrigger(PhysicalObjBase* phsyical_obj, 
 
 
 #pragma region 位置計算
-void CharacterColliderCreator::CalcCapsuleColliderPos(std::shared_ptr<Modeler> modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>> collider, const std::shared_ptr<Transform> transform)
-{
-	modeler->ApplyMatrix();
-
-	// 行列情報を取得
-	const auto model_handle = modeler->GetModelHandle();
-	const auto frame_num = MV1SearchFrame(model_handle, BonePath.HEAD_TOP_END);
-	auto	   frame_m = MV1GetFrameLocalWorldMatrix(model_handle, frame_num);
-
-	// 始点から頭部までの長さを取得
-	const auto capsule_length = VSize(transform->GetPos(CoordinateKind::kWorld) - MGetTranslateElem(frame_m));
-	const auto capsule = std::static_pointer_cast<Capsule>(collider.at(ColliderKind::kCollider)->GetShape());
-	capsule->SetCapsuleLength(capsule_length);
-	capsule->SetDir(transform->GetUp(CoordinateKind::kWorld));
-}
-
 void CharacterColliderCreator::CalcHeadTriggerPos(std::shared_ptr<Modeler> modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>> collider)
 {
 	modeler->ApplyMatrix();
@@ -220,5 +204,24 @@ void CharacterColliderCreator::CalcLegTriggerPos(const std::shared_ptr<Modeler> 
 	right_up_leg_capsule  ->SetSegmentEndPos	(right_up_leg_pos,	true);
 	right_down_leg_capsule->SetSegmentBeginPos	(right_foot_pos,	true);
 	right_down_leg_capsule->SetSegmentEndPos	(right_leg_pos,		true);
+}
+#pragma endregion
+
+
+#pragma region その他計算
+void CharacterColliderCreator::CalcCapsuleColliderDirAndLength(std::shared_ptr<Modeler> modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>> collider, const std::shared_ptr<Transform> transform)
+{
+	modeler->ApplyMatrix();
+
+	// 行列情報を取得
+	const auto model_handle = modeler->GetModelHandle();
+	const auto frame_num = MV1SearchFrame(model_handle, BonePath.HEAD_TOP_END);
+	auto	   frame_m = MV1GetFrameLocalWorldMatrix(model_handle, frame_num);
+
+	// 始点から頭部までの長さを取得
+	const auto capsule_length = VSize(transform->GetPos(CoordinateKind::kWorld) - MGetTranslateElem(frame_m));
+	const auto capsule = std::static_pointer_cast<Capsule>(collider.at(ColliderKind::kCollider)->GetShape());
+	capsule->SetCapsuleLength(capsule_length);
+	capsule->SetDir(transform->GetUp(CoordinateKind::kWorld));
 }
 #pragma endregion

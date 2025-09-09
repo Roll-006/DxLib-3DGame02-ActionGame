@@ -120,6 +120,8 @@ void RocketBomb::OnShot(GunBase& gun)
 	m_range				= gun.GetRange();
 	m_power				= gun.GetPower();
 
+	CalcRayPos();
+
 	const Event<OnShotBulletData> event = { EventKind::kOnShotBullet, { GetName(), gun.GetOwnerName(), GetObjHandle(), m_transform}};
 	m_subject->Notify(event);
 

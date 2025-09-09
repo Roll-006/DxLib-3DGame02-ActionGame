@@ -71,8 +71,11 @@ void Bullet::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	case ColliderKind::kRayCast:
 		if (hit_collider_pair.intersection)
 		{
-			RifleCartridgeManager::GetInstance()->DeleteBullet(shared_from_this());
-			RifleCartridgeManager::GetInstance()->AddHitPos(*hit_collider_pair.intersection);
+			if (target_collider_kind != ColliderKind::kCollider)
+			{
+				RifleCartridgeManager::GetInstance()->DeleteBullet(shared_from_this());
+				RifleCartridgeManager::GetInstance()->AddHitPos(*hit_collider_pair.intersection);
+			}
 		}
 		break;
 
@@ -102,6 +105,8 @@ void Bullet::OnShot(GunBase& gun)
 	m_deceleration		= gun.GetDeceleration();
 	m_range				= gun.GetRange();
 	m_power				= gun.GetPower();
+
+	CalcRayPos();
 
 	const Event<OnShotBulletData> event = { EventKind::kOnShotBullet, { GetName(), gun.GetOwnerName(), GetObjHandle(), m_transform}};
 	m_subject->Notify(event);

@@ -33,10 +33,6 @@ public:
 
 
 	#pragma region 位置計算
-	/// @brief カプセルコライダーの位置を計算
-	/// @brief WARNING : コライダーがカプセルであることを前提としている(軽量化を優先)
-	void CalcCapsuleColliderPos	(std::shared_ptr<Modeler> modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>> collider, const std::shared_ptr<Transform> transform);
-
 	/// @brief 頭部トリガーの位置を計算
 	/// @brief WARNING : トリガーがカプセルであることを前提としている(軽量化を優先)
 	void CalcHeadTriggerPos		(std::shared_ptr<Modeler> modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>> collider);
@@ -52,5 +48,12 @@ public:
 	/// @brief 脚部トリガーの位置を計算
 	/// @brief WARNING : トリガーがカプセルであることを前提としている(軽量化を優先)
 	void CalcLegTriggerPos		(std::shared_ptr<Modeler> modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>> collider);
+	#pragma endregion
+
+
+	#pragma region その他計算
+	/// @brief カプセルコライダーの向きと長さを計算
+	/// @brief WARNING : コライダーがカプセルであることを前提としている(軽量化を優先)
+	void CalcCapsuleColliderDirAndLength(std::shared_ptr<Modeler> modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>> collider, const std::shared_ptr<Transform> transform);
 	#pragma endregion
 };

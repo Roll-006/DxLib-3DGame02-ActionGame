@@ -51,23 +51,6 @@ void GameManager::Run()
 		m_scene_manager->DrawToShadowMap();
 		m_scene_manager->Draw();
 
-
-
-		//Capsule c = Capsule(VGet(20, 0, 0), VGet(0, 50, 0), 20);
-		//Segment s = Segment(VGet(50, -10, 10), VGet(0, 10, 10));
-
-		//std::optional<VECTOR> p = std::nullopt;
-		//collision::IsHitSegmentAndCapsule(s, c, p);
-
-		//c.Draw(true, 0, 0xffffff);
-		//s.Draw(true, 0, 0xff0000);
-		//if (p)
-		//{
-		//	DrawSphere3D(*p, 3, 8, 0xffffff, 0xffffff, TRUE);
-		//}
-
-
-
 		GameTimeManager::GetInstance()->Draw();
 		GameTimeManager::GetInstance()->WaitTime();
 		ScreenFlip();

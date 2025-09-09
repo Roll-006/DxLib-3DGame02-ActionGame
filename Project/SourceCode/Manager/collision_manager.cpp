@@ -157,7 +157,7 @@ std::vector<ColliderPairOneToManyData> CollisionManager::CreateHitColliderPairs(
 					if (!IsApplyCollide(target_obj->GetName(), target_obj_collider.first)) { continue; }
 
 					if (owner_obj_collider.second->GetColliderKind() == ColliderKind::kRayCast
-						&& target_obj_collider.second->GetColliderKind() == ColliderKind::kHeadTrigger)
+						&& target_obj_collider.second->GetColliderKind() == ColliderKind::kCollider)
 					{
 						int aa = 1;
 					}

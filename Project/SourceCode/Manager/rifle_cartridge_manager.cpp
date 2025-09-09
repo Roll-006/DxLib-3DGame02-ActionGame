@@ -81,7 +81,7 @@ void RifleCartridgeManager::Draw() const
 	std::queue<VECTOR> temp = m_hit_pos;
 	while (!temp.empty())
 	{
-		DrawSphere3D(temp.front(), 5, 16, 0xff0000, 0xff0000, TRUE);
+		DrawSphere3D(temp.front(), 2, 16, 0xff0000, 0xff0000, TRUE);
 		temp.pop();
 	}
 }
