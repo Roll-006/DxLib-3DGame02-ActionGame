@@ -993,6 +993,31 @@ bool math::IsPointInsideCapsule(const VECTOR& point, const Capsule& capsule)
 
     return distance <= capsule.GetRadius() * capsule.GetRadius();
 }
+
+bool math::IsProjectedPointInTriangle(const VECTOR& point, const Triangle& triangle)
+{
+    const auto n            = triangle.GetNormalVector();
+    const auto square_size  = VSquareSize(n);
+
+    // 退化
+    if (square_size < math::kEpsilonLow) { return false; }
+
+    // 投影
+    const auto t            = VDot(point - triangle.GetPos(0), n) / square_size;
+    const auto projected    = point - n * t;
+
+    // 投影点が三角形の内側にあるかを判定するための符号付き面積
+    const auto s1 = VDot(n, VCross(triangle.GetPos(1) - triangle.GetPos(0), projected - triangle.GetPos(0)));
+    const auto s2 = VDot(n, VCross(triangle.GetPos(2) - triangle.GetPos(1), projected - triangle.GetPos(1)));
+    const auto s3 = VDot(n, VCross(triangle.GetPos(0) - triangle.GetPos(2), projected - triangle.GetPos(2)));
+
+    // 法線長に応じた許容値
+    const auto tolerance = -square_size * math::kEpsilonLow;
+
+    // すべて同じ符号なら三角形内に存在する
+    return ((s1 >=  tolerance && s2 >=  tolerance && s3 >=  tolerance)
+         || (s1 <= -tolerance && s2 <= -tolerance && s3 <= -tolerance));
+}
 #pragma endregion
 
 

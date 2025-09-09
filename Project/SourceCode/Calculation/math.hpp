@@ -399,6 +399,9 @@ namespace math
 
 	/// @brief 点がカプセル内にあるかを判定
 	[[nodiscard]] bool IsPointInsideCapsule(const VECTOR& point, const Capsule& capsule);
+
+	/// @brief 点を三角形が存在する平面に投影した際、三角形の内部に存在するかを判定
+	[[nodiscard]] bool IsProjectedPointInTriangle(const VECTOR& point, const Triangle& triangle);
 	#pragma endregion
 
 

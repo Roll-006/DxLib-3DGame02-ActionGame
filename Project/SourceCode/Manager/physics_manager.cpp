@@ -221,7 +221,7 @@ void PhysicsManager::PushBackTriangleAndTarget(const std::shared_ptr<PhysicalObj
 	switch (shape->GetShapeKind())
 	{
 	case ShapeKind::kCapsule:
-		const auto push_backed_velocity = collision::PushBackCapsuleAndTriangle(velocity, *static_cast<const Capsule*>(shape), triangle, kSlopeDifficultyAngleThreshold, kMaxSlopeAngle);
+		const auto push_backed_velocity = collision::PushBackCapsuleAndTriangle(velocity, *static_cast<const Capsule*>(shape), triangle);
 		low_priority_obj->SetVelocity(push_backed_velocity);
 		break;
 
@@ -240,7 +240,7 @@ void PhysicsManager::PushBackSphereAndTarget (const std::shared_ptr<PhysicalObjB
 	if (shape == nullptr)
 	{
 		const auto model_handle			= high_priority_obj->GetColliderModelHandle();
-		const auto push_backed_velocity = collision::PushBackSphereAndModel(velocity, sphere, model_handle, kSlopeDifficultyAngleThreshold, kMaxSlopeAngle);
+		const auto push_backed_velocity = collision::PushBackSphereAndModel(velocity, sphere, model_handle);
 		low_priority_obj->SetVelocity(push_backed_velocity);
 		return;
 	}
@@ -263,7 +263,7 @@ void PhysicsManager::PushBackCapsuleAndTarget(const std::shared_ptr<PhysicalObjB
 	if (shape == nullptr)
 	{
 		const auto model_handle	= high_priority_obj->GetColliderModelHandle();
-		push_backed_velocity	= collision::PushBackCapsuleAndModel(velocity, capsule, model_handle, kSlopeDifficultyAngleThreshold, kMaxSlopeAngle);
+		push_backed_velocity	= collision::PushBackCapsuleAndModel(velocity, capsule, model_handle);
 		low_priority_obj->SetVelocity(push_backed_velocity);
 		return;
 	}
@@ -271,7 +271,7 @@ void PhysicsManager::PushBackCapsuleAndTarget(const std::shared_ptr<PhysicalObjB
 	switch (shape->GetShapeKind())
 	{
 	case ShapeKind::kTriangle:
-		push_backed_velocity = collision::PushBackCapsuleAndTriangle(velocity, capsule, *static_cast<const Triangle*>(shape), kSlopeDifficultyAngleThreshold, kMaxSlopeAngle);
+		push_backed_velocity = collision::PushBackCapsuleAndTriangle(velocity, capsule, *static_cast<const Triangle*>(shape));
 		low_priority_obj->SetVelocity(push_backed_velocity);
 		break;
 

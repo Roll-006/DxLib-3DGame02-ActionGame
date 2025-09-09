@@ -208,7 +208,6 @@ namespace collision
 
     #pragma region 押し戻し(衝突時の有効な速度ベクトルを取得)
     /// @brief TODO : 正しく機能するか確認していないため要検証
-    /// @brief TODO : 角度制限未実装
     /// @brief 球(移動オブジェクト)と三角形(固定オブジェクト)が衝突する際の有効な速度ベクトルを取得
     /// @brief 高速移動対応
     /// @brief WARNING : この関数は現在衝突対象にめり込んでいないことを前提としている
@@ -216,14 +215,10 @@ namespace collision
     /// @param velocity 速度ベクトル
     /// @param dynamic_sphere 球(移動オブジェクト)
     /// @param static_triangle 三角形(固定オブジェクト)
-    /// @param slope_difficulty_angle_threshold 登るのが困難になり始める角度
-    /// @param max_slope_angle 登れる角度の最大値
     /// @return 有効な速度ベクトル
-    [[nodiscard]] VECTOR PushBackSphereAndTriangle(const VECTOR& velocity, const Sphere& dynamic_sphere, const Triangle& static_triangle, 
-        const float slope_difficulty_angle_threshold, const float max_slope_angle);
+    [[nodiscard]] VECTOR PushBackSphereAndTriangle(const VECTOR& velocity, const Sphere& dynamic_sphere, const Triangle& static_triangle);
 
     /// @brief TODO : 正しく機能するか確認していないため要検証
-    /// @brief TODO : 角度制限未実装
     /// @brief 球(移動オブジェクト)とモデル(固定オブジェクト)が衝突した際の有効な速度ベクトルを取得
     /// @brief 高速移動対応
     /// @brief WARNING : この関数は現在衝突対象にめり込んでいないことを前提としている
@@ -231,39 +226,27 @@ namespace collision
     /// @param velocity 速度ベクトル
     /// @param dynamic_sphere 球(移動オブジェクト)
     /// @param model_handle モデルハンドル(固定オブジェクトなモデルのハンドル)
-    /// @param slope_difficulty_angle_threshold 登るのが困難になり始める角度
-    /// @param max_slope_angle 登れる角度の最大値
     /// @return 有効な速度ベクトル
-    [[nodiscard]] VECTOR PushBackSphereAndModel(const VECTOR& velocity, const Sphere& dynamic_sphere, const int model_handle,
-        const float slope_difficulty_angle_threshold, const float max_slope_angle);
+    [[nodiscard]] VECTOR PushBackSphereAndModel(const VECTOR& velocity, const Sphere& dynamic_sphere, const int model_handle);
 
-    [[nodiscard]] VECTOR PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsule& dynamic_capsule, const Triangle& static_triangle,
-        const float slope_difficulty_angle_threshold, const float max_slope_angle);
+    [[nodiscard]] VECTOR PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsule& dynamic_capsule, const Triangle& static_triangle);
 
     /// @brief カプセル(移動オブジェクト)と四角形(固定オブジェクト)が衝突する際の有効な速度ベクトルを取得
-    /// @brief TODO : 角度制限未実装
     /// @brief WARNING : この関数は現在衝突対象にめり込んでいないことを前提としている
     /// @brief WARNING : 法線の裏側を考慮しないものとする
     /// @param velocity 速度ベクトル
     /// @param dynamic_capsule カプセル(移動オブジェクト)
     /// @param static_square 四角形(固定オブジェクト)
-    /// @param slope_difficulty_angle_threshold 登るのが困難になり始める角度
-    /// @param max_slope_angle 登れる角度の最大値
     /// @return 有効な速度ベクトル
-    [[nodiscard]] VECTOR PushBackCapsuleAndSquare(const VECTOR& velocity, const Capsule& dynamic_capsule, const Square& static_square,
-        const float slope_difficulty_angle_threshold, const float max_slope_angle);
+    [[nodiscard]] VECTOR PushBackCapsuleAndSquare(const VECTOR& velocity, const Capsule& dynamic_capsule, const Square& static_square);
 
     /// @brief FIXME : 欠陥あり。角でバグ発生中。
-    /// @brief TODO : 角度制限未実装
     /// @brief カプセル(移動オブジェクト)とOBB(固定オブジェクト)が衝突した際の有効な速度ベクトルを取得
     /// @param velocity 速度ベクトル
     /// @param dynamic_capsule カプセル(移動オブジェクト)
     /// @param static_obb OBB(固定オブジェクト)
-    /// @param slope_difficulty_angle_threshold 登るのが困難になり始める角度
-    /// @param max_slope_angle 登れる角度の最大値
     /// @return 有効な速度ベクトル
-    [[nodiscard]] VECTOR PushBackCapsuleAndOBB(const VECTOR& velocity, const Capsule& dynamic_capsule, const OBB& static_obb,
-        const float slope_difficulty_angle_threshold, const float max_slope_angle);
+    [[nodiscard]] VECTOR PushBackCapsuleAndOBB(const VECTOR& velocity, const Capsule& dynamic_capsule, const OBB& static_obb);
 
     /// @brief カプセル(移動オブジェクト)とモデル(固定オブジェクト)が衝突した際の有効な速度ベクトルを取得
     /// @brief WARNING : この関数は現在衝突対象にめり込んでいないことを前提としている
@@ -271,10 +254,7 @@ namespace collision
     /// @param velocity 速度ベクトル
     /// @param dynamic_capsule カプセル(移動オブジェクト)
     /// @param model_handle モデルハンドル(固定オブジェクトなモデルのハンドル)
-    /// @param slope_difficulty_angle_threshold 登るのが困難になり始める角度
-    /// @param max_slope_angle 登れる角度の最大値
     /// @return 有効な速度ベクトル
-    [[nodiscard]] VECTOR PushBackCapsuleAndModel(const VECTOR& velocity, const Capsule& dynamic_capsule, const int model_handle,
-        const float slope_difficulty_angle_threshold, const float max_slope_angle);
+    [[nodiscard]] VECTOR PushBackCapsuleAndModel(const VECTOR& velocity, const Capsule& dynamic_capsule, const int model_handle);
     #pragma endregion
 };

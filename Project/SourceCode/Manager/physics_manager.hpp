@@ -81,8 +81,6 @@ private:
 private:
 	static constexpr float kGravityAcceleration				= 180.0f;	// 重力加速度(デルタタイム適用前)
 	static constexpr float kMaxGravity						= 140.0f;	// 最大重力(デルタタイム適用後の最大値)
-	static constexpr float kSlopeDifficultyAngleThreshold	= 50.0f;	// 登るのが困難になり始める角度
-	static constexpr float kMaxSlopeAngle					= 75.0f;	// 登れる角度の最大値
 
 	std::vector<std::shared_ptr<PhysicalObjBase>> m_physical_objects;	// 物理的挙動を行うオブジェクト
 	std::vector<int> m_ignore_physical_behavior_obj_handle;				// 物理的な挙動全般を無視するオブジェクト
