@@ -273,18 +273,57 @@ bool collision::IsHitSegmentAndSquare       (const Segment&     segment,        
 //    return false;
 //}
 
-///// @brief 線分と球の衝突判定
-//bool collision::IsHitSegmentAndSphere       (const Segment&     segment,        const Sphere&       sphere,         std::optional<VECTOR>& intersection)
-//{
-//    return false;
-//}
-//bool collision::IsHitSegmentAndSphere       (const Segment&     segment,        const Sphere&       sphere)
-//{
-//    return false;
-//}
+/// @brief 線分と球の衝突判定
+bool collision::IsHitSegmentAndSphere(const Segment& segment, const Sphere& sphere, std::optional<VECTOR>& intersection)
+{
+    intersection = std::nullopt;
+
+    const auto diff     = segment.GetBeginPos() - sphere.GetPos();
+    const auto dot_proj = VDot(diff, segment.GetDir());
+    const auto diff_pos = VSquareSize(diff) - sphere.GetRadius() * sphere.GetRadius();
+
+    const auto discriminant = dot_proj * dot_proj - diff_pos;
+    if (discriminant < 0.0f)
+    {
+        return false;
+    }
+
+    const auto sqrt_d = sqrt(discriminant);
+    const auto t1 = -dot_proj - sqrt_d; // 入口
+    const auto t2 = -dot_proj + sqrt_d; // 出口
+
+    const bool isInside = VSquareSize(diff) < sphere.GetRadius() * sphere.GetRadius();
+
+    if (isInside)
+    {
+        // 内部なら出口側を採用
+        if (t2 >= 0.0f && t2 <= segment.GetLength())
+        {
+            intersection = segment.GetBeginPos() + segment.GetDir() * t2;
+        }
+        return true;
+    }
+    else
+    {
+        // 外部なら入口側を採用
+        if (t1 >= 0.0f && t1 <= segment.GetLength())
+        {
+            intersection = segment.GetBeginPos() + segment.GetDir() * t1;
+            return true;
+        }
+    }
+
+    return false;
+}
+bool collision::IsHitSegmentAndSphere       (const Segment&     segment,        const Sphere&       sphere)
+{
+    std::optional<VECTOR> intersection = std::nullopt;
+
+    return IsHitSegmentAndSphere(segment, sphere, intersection);
+}
 
 /// @brief 線分とカプセルの衝突判定
-bool collision::IsHitSegmentAndCapsule(const Segment& segment, const Capsule& capsule, std::optional<VECTOR>& intersection)
+bool collision::IsHitSegmentAndCapsule      (const Segment&     segment,        const Capsule&      capsule,        std::optional<VECTOR>& intersection)
 {
     intersection = std::nullopt;
 
@@ -1063,6 +1102,9 @@ VECTOR collision::PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsu
     //
     //    if (intersection)
     //    {
+    //        DrawSphere3D(*intersection, 0.5f, 8, 0xffffff, 0xffffff, TRUE);
+    //        DrawLine3D(segment.GetBeginPos(), segment.GetEndPos(), 0xffffff);
+
     //        const auto offset = VSize(*intersection - segment.GetBeginPos());
     //        result_velocity -= static_triangle.GetNormalVector() * offset;
     //    }

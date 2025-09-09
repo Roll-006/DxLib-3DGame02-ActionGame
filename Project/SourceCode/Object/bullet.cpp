@@ -62,6 +62,10 @@ void Bullet::Draw() const
 
 void Bullet::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 {
+	PhysicalObjBase* target_obj				= hit_collider_pair.target_collider->GetOwnerObj();
+	const auto		 target_name			= target_obj->GetName();
+	const auto		 target_collider_kind	= hit_collider_pair.target_collider->GetColliderKind();
+
 	switch (hit_collider_pair.owner_collider->GetColliderKind())
 	{
 	case ColliderKind::kRayCast:
@@ -131,8 +135,6 @@ void Bullet::CalcRayPos()
 {
 	// Œõü‚ÌˆÊ’u‚ğŒvZ
 	auto ray = std::dynamic_pointer_cast<Segment>(GetCollider(ColliderKind::kRayCast)->GetShape());
-	//ray->SetBeginPos(m_prev_pos, true);
-	//ray->SetEndPos	(m_transform->GetPos(CoordinateKind::kWorld), true);
-	ray->SetBeginPos(VGet(50, -30, 0), true);
-	ray->SetEndPos(VGet(-50, -30, 0), true);
+	ray->SetBeginPos(m_prev_pos, true);
+	ray->SetEndPos	(m_transform->GetPos(CoordinateKind::kWorld), true);
 }

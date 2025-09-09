@@ -25,6 +25,11 @@ public:
 	/// @param end_pos 終点
 	/// @param is_alone 終点を単独で設定するか(true : 始点の変化なし、長さの変化あり, false : 始点の変化あり、長さの変化なし)
 	void SetEndPos  (const VECTOR& end_pos,   const bool is_alone);
+
+	/// @brief 向きを設定
+	/// @brief 始点は変更されず終点が変化する
+	void SetDir		(const VECTOR& dir);
+
 	void SetLength  (const float length);
 
 	/// @brief 直線上の点を取得

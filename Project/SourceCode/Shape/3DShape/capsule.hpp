@@ -27,6 +27,10 @@ public:
     /// @param is_alone 終点を単独で設定するか(true : 始点の変化なし、長さの変化あり, false : 始点の変化あり、長さの変化なし)
     void SetSegmentEndPos(const VECTOR& segment_end_pos, const bool is_alone) { m_segment.SetEndPos(segment_end_pos, is_alone); }
 
+    /// @brief 向きを設定
+    /// @brief 始点は変更されず終点が変化する
+    void SetDir(const VECTOR& dir) { m_segment.SetDir(dir); }
+
     /// @brief カプセルの長さを設定
     /// @param length カプセルの長さ
     void SetCapsuleLength(const float capsule_length) { m_segment.SetLength(capsule_length - m_radius * 2.0f); }

@@ -365,10 +365,7 @@ namespace math
 	/// @brief 線分と球の交点を取得
 	/// @return 交点が2つある場合は始点に近い交点
 	/// @return 線分が球に含まれる場合は交点なし
-	[[nodiscard]] std::optional<VECTOR> GetIntersectionSegmentAndSphere(const Segment& segment, const Sphere& sphere);
-
-	/// @brief 線分とカプセルの交点を取得
-	[[nodiscard]] std::optional<VECTOR> GetIntersectionSegmentAndCapsule(const Segment& segment, const Capsule& capsule);
+	//[[nodiscard]] std::optional<VECTOR> GetIntersectionSegmentAndSphere(const Segment& segment, const Sphere& sphere);
 
 	/// @brief 線分とカプセルの交点を取得
 	/// @brief 受け取り側で、戻り値がnulloptである場合と不定値である場合を考慮する必要あり

@@ -91,8 +91,8 @@ namespace collision
     /// @brief ü•ª‚Æ‹…‚ÌÕ“Ë”»’è
     /// @param intersection –¢À‘•
     /// @return true : Õ“Ë, false : ”ñÕ“Ë
-    //[[nodiscard]] bool IsHitSegmentAndSphere        (const Segment&     segment,        const Sphere&       sphere,         std::optional<VECTOR>& intersection);
-    //[[nodiscard]] bool IsHitSegmentAndSphere        (const Segment&     segment,        const Sphere&       sphere);
+    [[nodiscard]] bool IsHitSegmentAndSphere        (const Segment&     segment,        const Sphere&       sphere,         std::optional<VECTOR>& intersection);
+    [[nodiscard]] bool IsHitSegmentAndSphere        (const Segment&     segment,        const Sphere&       sphere);
     
     /// @brief ü•ª‚ÆƒJƒvƒZƒ‹‚ÌÕ“Ë”»’è
     /// @param intersection –¢À‘•

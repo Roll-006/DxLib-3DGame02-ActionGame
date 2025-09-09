@@ -51,7 +51,11 @@ void Segment::SetBeginPos(const VECTOR& begin_pos, const bool is_alone)
 {
 	if (is_alone)
 	{
+		const auto distance_v = m_end_pos - m_begin_pos;
+
 		m_begin_pos = begin_pos;
+		m_length	= VSize(distance_v);
+		m_dir		= v3d::GetNormalizedV(distance_v);
 	}
 	else
 	{
@@ -64,13 +68,23 @@ void Segment::SetEndPos(const VECTOR& end_pos, const bool is_alone)
 {
 	if (is_alone)
 	{
-		m_end_pos = end_pos;
+		const auto distance_v = m_end_pos - m_begin_pos;
+
+		m_end_pos	= end_pos;
+		m_length	= VSize(distance_v);
+		m_dir		= v3d::GetNormalizedV(distance_v);
 	}
 	else
 	{
 		m_end_pos   = end_pos;
 		m_begin_pos = m_end_pos - m_dir * m_length;
 	}
+}
+
+void Segment::SetDir(const VECTOR& dir)
+{
+	m_dir = dir;
+	m_end_pos = m_begin_pos + m_dir * m_length;
 }
 
 void Segment::SetLength(const float length)

@@ -96,7 +96,7 @@ void Player::Update()
 	CalcLookDir();
 	CalcMoveVelocity();
 
-	m_collider_creator->CalcCapsuleColliderLength(this, m_modeler);
+	m_collider_creator->CalcCapsuleColliderPos(m_modeler, m_collider, m_transform);
 
 	ApplyLookDirToRot(m_look_dir.at(TimeKind::kCurrent));
 

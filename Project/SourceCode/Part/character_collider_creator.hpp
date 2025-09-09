@@ -33,27 +33,24 @@ public:
 
 
 	#pragma region 位置計算
+	/// @brief カプセルコライダーの位置を計算
+	/// @brief WARNING : コライダーがカプセルであることを前提としている(軽量化を優先)
+	void CalcCapsuleColliderPos	(std::shared_ptr<Modeler> modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>> collider, const std::shared_ptr<Transform> transform);
+
 	/// @brief 頭部トリガーの位置を計算
 	/// @brief WARNING : トリガーがカプセルであることを前提としている(軽量化を優先)
-	void CalcHeadTriggerPos(std::shared_ptr<Modeler> modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>> collider);
+	void CalcHeadTriggerPos		(std::shared_ptr<Modeler> modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>> collider);
 
 	/// @brief 胴体トリガーの位置を計算
 	/// @brief WARNING : トリガーがカプセルであることを前提としている(軽量化を優先)
-	void CalcBodyTriggerPos(std::shared_ptr<Modeler> modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>> collider);
+	void CalcBodyTriggerPos		(std::shared_ptr<Modeler> modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>> collider);
 
 	/// @brief 腕部トリガーの位置を計算
 	/// @brief WARNING : トリガーがカプセルであることを前提としている(軽量化を優先)
-	void CalcArmTriggerPos (std::shared_ptr<Modeler> modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>> collider);
+	void CalcArmTriggerPos		(std::shared_ptr<Modeler> modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>> collider);
 
 	/// @brief 脚部トリガーの位置を計算
 	/// @brief WARNING : トリガーがカプセルであることを前提としている(軽量化を優先)
-	void CalcLegTriggerPos (std::shared_ptr<Modeler> modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>> collider);
-	#pragma endregion
-
-
-	#pragma region その他計算
-	/// @brief カプセルコライダーの長さを計算
-	/// @brief WARNING : トリガーがカプセルであることを前提としている(軽量化を優先)
-	void CalcCapsuleColliderLength(PhysicalObjBase* physical_obj, std::shared_ptr<Modeler> modeler);
+	void CalcLegTriggerPos		(std::shared_ptr<Modeler> modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>> collider);
 	#pragma endregion
 };
