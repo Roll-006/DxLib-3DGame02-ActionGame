@@ -33,5 +33,13 @@ void player_state::Grabbed::Exit(std::shared_ptr<Player> obj)
 
 std::shared_ptr<IState<Player>> player_state::Grabbed::ChangeState(std::shared_ptr<Player> obj)
 {
+	const auto state_controller = obj->GetStateController();
+
+	// —£‚³‚ê‚é
+	if (!state_controller->TryGrabbed(obj))
+	{
+		return state_controller->GetState<ActionNull, Player>();
+	}
+
 	return nullptr;
 }

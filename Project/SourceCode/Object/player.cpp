@@ -99,8 +99,6 @@ void Player::Update()
 	m_collider_creator->CalcCapsuleColliderDirAndLength(m_modeler, m_collider, m_transform);
 
 	ApplyLookDirToRot(m_look_dir.at(TimeKind::kCurrent));
-
-	m_is_grabbed = false;
 }
 
 void Player::LateUpdate()
@@ -146,6 +144,7 @@ void Player::Draw() const
 	DrawFormatString(0,  80, 0xffffff, "%f, %f, %f", m_move_dir.at(TimeKind::kCurrent).x, m_move_dir.at(TimeKind::kCurrent).y, m_move_dir.at(TimeKind::kCurrent).z);
 	DrawFormatString(0, 100, 0xffffff, "%f, %f, %f", m_move_dir.at(TimeKind::kNext).x, m_move_dir.at(TimeKind::kNext).y, m_move_dir.at(TimeKind::kNext).z);
 	DrawFormatString(0, 120, 0xffffff, "%f", m_move_speed);
+	DrawFormatString(0, 140, 0xffffff, "HP : %f", m_hit_points.at(HitPointsPartKind::kMain)->GetCurrentHitPoints());
 
 	if (m_current_held_weapon) { m_current_held_weapon->Draw(); }
 
@@ -172,19 +171,6 @@ void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	{
 	case ColliderKind::kLandingTrigger:
 		m_is_landing = true;
-		DrawFormatString(500, 0, 0xffffff, "’…’n’†");
-		
-		shape = hit_collider_pair.target_collider->GetShape();
-
-		// }Œ`‚Ì“o˜^‚ª‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Íƒ‚ƒfƒ‹‚Å”»’è‚ğs‚¤
-		if (shape == nullptr)
-		{
-			
-		}
-		else
-		{
-			
-		}
 		break;
 
 	default:
@@ -198,6 +184,16 @@ void Player::OnGrabbed(const VECTOR& brabber_pos, const VECTOR& brabber_dir)
 
 	m_look_dir.at(TimeKind::kNext) = -brabber_dir;
 	m_destination_pos = brabber_pos + brabber_dir * 35.0f;
+}
+
+void Player::OnRelease()
+{
+	m_is_grabbed = false;
+}
+
+void Player::OnGrabbedDamage(const float damage)
+{
+	OnDamage(HitPointsPartKind::kMain, damage);
 }
 
 //void Player::CalcMoveDirFirstFrame()

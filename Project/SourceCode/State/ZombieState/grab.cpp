@@ -14,7 +14,14 @@ zombie_state::Grab::~Grab()
 
 void zombie_state::Grab::Update(std::shared_ptr<Zombie> obj)
 {
+	const auto state_controller = obj->GetStateController();
+	const auto player			= std::dynamic_pointer_cast<Player>(state_controller->GetTargetCharacter());
 
+	if (player)
+	{
+		// TODO : 仮ダメージ。のちに変更。
+		player->OnGrabbedDamage(100.0f * obj->GetDeltaTime());
+	}
 }
 
 void zombie_state::Grab::LateUpdate(std::shared_ptr<Zombie> obj)
@@ -35,7 +42,13 @@ void zombie_state::Grab::Enter(std::shared_ptr<Zombie> obj)
 
 void zombie_state::Grab::Exit(std::shared_ptr<Zombie> obj)
 {
+	const auto state_controller = obj->GetStateController();
+	const auto player			= std::dynamic_pointer_cast<Player>(state_controller->GetTargetCharacter());
 
+	if (player)
+	{
+		player->OnRelease();
+	}
 }
 
 std::shared_ptr<IState<Zombie>> zombie_state::Grab::ChangeState(std::shared_ptr<Zombie> obj)

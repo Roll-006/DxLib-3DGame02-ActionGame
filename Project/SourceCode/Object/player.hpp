@@ -31,6 +31,8 @@ public:
 
 	void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) override;
 	void OnGrabbed(const VECTOR& brabber_pos, const VECTOR& brabber_dir) override;
+	void OnRelease() override;
+	void OnGrabbedDamage(const float damage) override;
 
 	void SetRemainingBulletNum(const int remaining_bullet_num) override { m_current_remaining_bullet_num = remaining_bullet_num; }
 

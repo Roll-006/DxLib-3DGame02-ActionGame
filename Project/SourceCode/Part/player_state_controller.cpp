@@ -73,6 +73,7 @@ void PlayerStateController::CreateState()
 
 void PlayerStateController::AddStopStatePair()
 {
+	m_states.at(typeid(player_state::Grabbed))				->AddStopState(m_states.at(typeid(player_state::Move))					->GetStateHandle());
 	m_states.at(typeid(player_state::Grabbed))				->AddStopState(m_states.at(typeid(player_state::EquipKnife))			->GetStateHandle());
 	m_states.at(typeid(player_state::Grabbed))				->AddStopState(m_states.at(typeid(player_state::AimKnife))				->GetStateHandle());
 	m_states.at(typeid(player_state::Grabbed))				->AddStopState(m_states.at(typeid(player_state::StabKnife))				->GetStateHandle());

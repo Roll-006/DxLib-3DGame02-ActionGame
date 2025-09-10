@@ -143,6 +143,8 @@ void CollisionManager::SetIgnoreColliderPairs()
 
 bool CollisionManager::CanCollideObjAndObj(const std::shared_ptr<PhysicalObjBase> owner_obj, const std::shared_ptr<PhysicalObjBase> target_obj)
 {
+	// TODO : オブジェクトを球で囲み、表面上の距離で距離計算を行う
+
 	// 静的オブジェクト同士は無視(地面と家など)
 	if (owner_obj->GetMassKind() == MassKind::kStatic && target_obj->GetMassKind() == MassKind::kStatic) { return false; }
 
@@ -210,7 +212,6 @@ bool CollisionManager::CanCollideColliderAndCollider(const std::shared_ptr<Colli
 //	// オブジェクトが持つすべてのコライダーの衝突判定を行う
 //	// 
 //	// TODO : 軽量化
-//	//	・着地用トリガーと頭部トリガーの衝突は無視するなど、ありえない組み合わせは無視
 //	//	・遠いオブジェクト同士は無視(移動速度は考慮)
 //	//	・二つのオブジェクトの関係において、前フレームと現在のフレームで座標が同じであった場合は無視
 //	//
@@ -452,7 +453,7 @@ bool CollisionManager::IsCollidedTriangleAndTarget	(Collider& owner_collider, co
 	return false;
 }
 
-bool CollisionManager::IsCollidedSquareAndTarget		(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection)
+bool CollisionManager::IsCollidedSquareAndTarget	(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection)
 {
 	const auto target_shape = target_collider.GetShape();
 	const auto owner_shape	= *std::static_pointer_cast<Square>(owner_collider.GetShape());
@@ -485,7 +486,7 @@ bool CollisionManager::IsCollidedOBBAndTarget		(Collider& owner_collider, const 
 	return false;
 }
 
-bool CollisionManager::IsCollidedSphereAndTarget		(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection)
+bool CollisionManager::IsCollidedSphereAndTarget	(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection)
 {
 	const auto target_shape	= target_collider.GetShape();
 	const auto owner_shape	= *std::static_pointer_cast<Sphere>(owner_collider.GetShape());
