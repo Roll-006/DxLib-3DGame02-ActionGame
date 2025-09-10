@@ -384,7 +384,7 @@ namespace math
 	[[nodiscard]] VECTOR GetClosestPosOnSegmentFromPlane(const Segment& segment, const Plane& plane);
 
 	/// @brief 線分に最も近い線分上の座標を取得
-	[[nodiscard]] VECTOR GetClosestPosOnSegmentFromSegment(const Segment& segment1, const Segment& target_segmen);
+	//[[nodiscard]] VECTOR GetClosestPosOnSegmentFromSegment(const Segment& segment1, const Segment& target_segmen);
 
 	/// @brief 点が平面の前方にあるかを判定
 	/// @return 前方 : true, 後方もしくは平面に含まれる : false

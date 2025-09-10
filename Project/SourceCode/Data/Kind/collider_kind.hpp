@@ -2,11 +2,15 @@
 
 enum class ColliderKind
 {
+	kNone = -1,
+
 	kCollider,				// コライダー(押し戻し用)
 	kMeshTrigger,			// モデルが持つメッシュをトリガーに利用
 	kRayCast,				// レイキャスト
 	kAttackTrigger,			// 攻撃判定用トリガー
 	kLandingTrigger,		// 着地判定用トリガー
+
+	kReactionTrigger,		// リアクショントリガー
 
 	kHeadTrigger,			// 頭部トリガー
 	kUpBodyTrigger,			// 胴体の上側トリガー

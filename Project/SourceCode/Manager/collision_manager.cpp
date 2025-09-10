@@ -3,7 +3,7 @@
 CollisionManager::CollisionManager() : 
 	m_handle_create_count(-1)
 {
-	// 処理なし
+	SetIgnoreColliderPairs();
 }
 
 CollisionManager::~CollisionManager()
@@ -83,88 +83,184 @@ void CollisionManager::RemoveCollideObj(const std::string& obj_name)
 	}
 }
 
-void CollisionManager::AddIgnoreCollider(const std::string& obj_name, const ColliderKind kind)
+void CollisionManager::AddIgnoreColliderPair(const ColliderData& owner_collider_data, const ColliderData& target_collider_data)
 {
-	if (std::find(m_ignore_collide_collider[obj_name].begin(), m_ignore_collide_collider[obj_name].end(), kind) == m_ignore_collide_collider[obj_name].end())
+	if (std::find(m_ignore_collide_collider_pairs[owner_collider_data].begin(), m_ignore_collide_collider_pairs[owner_collider_data].end(), target_collider_data) == m_ignore_collide_collider_pairs[owner_collider_data].end())
 	{
-		m_ignore_collide_collider[obj_name].emplace_back(kind);
+		m_ignore_collide_collider_pairs[owner_collider_data].emplace_back(target_collider_data);
+	}
+
+	if (std::find(m_ignore_collide_collider_pairs[target_collider_data].begin(), m_ignore_collide_collider_pairs[target_collider_data].end(), owner_collider_data) == m_ignore_collide_collider_pairs[target_collider_data].end())
+	{
+		m_ignore_collide_collider_pairs[target_collider_data].emplace_back(owner_collider_data);
 	}
 }
 
-void CollisionManager::RemoveIgnoreCollider(const std::string& obj_name, const ColliderKind kind)
+void CollisionManager::RemoveIgnoreColliderPair(const ColliderData& owner_collider_data, const ColliderData& target_collider_data)
 {
-	if (std::find(m_ignore_collide_collider[obj_name].begin(), m_ignore_collide_collider[obj_name].end(), kind) != m_ignore_collide_collider[obj_name].end())
+	if (std::find(m_ignore_collide_collider_pairs[owner_collider_data].begin(), m_ignore_collide_collider_pairs[owner_collider_data].end(), target_collider_data) != m_ignore_collide_collider_pairs[owner_collider_data].end())
 	{
-		erase(m_ignore_collide_collider[obj_name], kind);
+		erase(m_ignore_collide_collider_pairs[owner_collider_data],  target_collider_data);
+	}
+
+	if (std::find(m_ignore_collide_collider_pairs[target_collider_data].begin(), m_ignore_collide_collider_pairs[target_collider_data].end(), owner_collider_data) != m_ignore_collide_collider_pairs[target_collider_data].end())
+	{
+		erase(m_ignore_collide_collider_pairs[target_collider_data], owner_collider_data);
 	}
 }
 #pragma endregion
 
 
-bool CollisionManager::IsApplyCollide(const std::shared_ptr<PhysicalObjBase> collide_obj, const ColliderKind kind) const
+void CollisionManager::SetIgnoreColliderPairs()
 {
-	return IsApplyCollide(collide_obj->GetName(), kind);
+	const ColliderData bullet_data		{ ObjTag.BULLET,		ColliderKind::kNone				};
+	const ColliderData shell_casing_data{ ObjTag.SHELL_CASING,	ColliderKind::kNone				};
+	const ColliderData landing_data		{ "",					ColliderKind::kLandingTrigger	};
+	
+	// 弾丸系統が無視するコライダー
+	AddIgnoreColliderPair(bullet_data, bullet_data);
+	AddIgnoreColliderPair(bullet_data,			{ "",				ColliderKind::kLandingTrigger	});
+	AddIgnoreColliderPair(bullet_data,			{ "",				ColliderKind::kAttackTrigger	});
+	AddIgnoreColliderPair(bullet_data,			{ "",				ColliderKind::kRayCast			});
+	AddIgnoreColliderPair(bullet_data,			{ ObjTag.PLAYER,	ColliderKind::kCollider			});
+	AddIgnoreColliderPair(bullet_data,			{ ObjTag.ENEMY,		ColliderKind::kCollider			});
+
+	// 薬莢系統が無視するコライダー
+	AddIgnoreColliderPair(shell_casing_data, shell_casing_data);
+	AddIgnoreColliderPair(shell_casing_data,	{ "",				ColliderKind::kAttackTrigger	});
+	AddIgnoreColliderPair(shell_casing_data,	{ ObjTag.PLAYER,	ColliderKind::kNone				});
+	AddIgnoreColliderPair(shell_casing_data,	{ ObjTag.ENEMY,		ColliderKind::kNone				});
 }
 
-bool CollisionManager::IsApplyCollide(const std::string& obj_name, const ColliderKind kind) const
+bool CollisionManager::CanCollideObjAndObj(const std::shared_ptr<PhysicalObjBase> owner_obj, const std::shared_ptr<PhysicalObjBase> target_obj)
 {
-	// 無視するリストに登録されていれば適用しない
-	for (const auto& [ignore_name, ignore_collider] : m_ignore_collide_collider)
+	// 静的オブジェクト同士は無視(地面と家など)
+	if (owner_obj->GetMassKind() == MassKind::kStatic && target_obj->GetMassKind() == MassKind::kStatic) { return false; }
+
+	// 無視リストに登録されているオブジェクトは無視
+	const ColliderData owner_data { owner_obj ->GetTag(), ColliderKind::kNone };
+	if (m_ignore_collide_collider_pairs.count(owner_data))
 	{
-		const auto itr = std::find(ignore_collider.begin(), ignore_collider.end(), kind);
-		if (itr != ignore_collider.end() && obj_name == ignore_name)
+		for (const auto& ignore_pairs : m_ignore_collide_collider_pairs.at(owner_data))
 		{
-			return false;
+			if (ignore_pairs == ColliderData(target_obj->GetTag(), ColliderKind::kNone))
+			{
+				return false;
+			}
 		}
 	}
 
 	return true;
 }
 
+bool CollisionManager::CanCollideColliderAndCollider(const std::shared_ptr<Collider> owner_collider, const std::shared_ptr<Collider> target_collider)
+{
+	const auto owner_obj	= owner_collider ->GetOwnerObj();
+	const auto target_obj	= target_collider->GetOwnerObj();
+
+	const std::vector<ColliderData> owner_data
+	{
+		{ owner_obj->GetTag(), owner_collider->GetColliderKind() },
+		{ owner_obj->GetTag(), ColliderKind::kNone },
+		{ "",				   owner_collider->GetColliderKind() }
+	};
+
+	const std::vector<ColliderData> target_data
+	{
+		{ target_obj->GetTag(), target_collider->GetColliderKind() },
+		{ target_obj->GetTag(), ColliderKind::kNone },
+		{ "",				    target_collider->GetColliderKind() }
+	};
+
+	// 無視リストに登録されているオブジェクトは無視
+	for (const auto& owner : owner_data)
+	{
+		if (m_ignore_collide_collider_pairs.count(owner))
+		{
+			for (const auto& ignore_pairs : m_ignore_collide_collider_pairs.at(owner))
+			{
+				for (const auto& target : target_data)
+				{
+					if (ignore_pairs == target)
+					{
+						return false;
+					}
+				}
+			}
+		}
+	}
+
+	return true;
+}
+
+//bool CollisionManager::CanCollide(const std::shared_ptr<Collider> owner_collider, const std::shared_ptr<Collider> target_collider)
+//{
+//	const auto owner_obj	= owner_collider ->GetOwnerObj();
+//	const auto target_obj	= target_collider->GetOwnerObj();
+//
+//	const ColliderData owner_data1	= owner_collider ->GetColliderData();
+//
+//	const ColliderData target_data1	= target_collider->GetColliderData();
+//
+//
+//	// オブジェクトが持つすべてのコライダーの衝突判定を行う
+//	// 
+//	// TODO : 軽量化
+//	//	・着地用トリガーと頭部トリガーの衝突は無視するなど、ありえない組み合わせは無視
+//	//	・遠いオブジェクト同士は無視(移動速度は考慮)
+//	//	・二つのオブジェクトの関係において、前フレームと現在のフレームで座標が同じであった場合は無視
+//	//
+//	
+//
+//
+//	// 無視リストに登録されているコライダーは無視
+//	for (const auto& [owner_d, target_d_list] : m_ignore_collide_collider_pairs)
+//	{
+//		for (const auto& target_d : target_d_list)
+//		{
+//			if (  ((owner_d.owner_tag	== owner_data.owner_tag   || owner_d.owner_tag	 == "")
+//				&& (owner_d.kind		== owner_data.kind		  || owner_d.kind		 == ColliderKind::kNone))
+//				&&((target_d.owner_tag	== target_data.owner_tag  || target_d.owner_tag	 == "")
+//				&& (target_d.kind		== target_data.kind		  || target_d.kind		 == ColliderKind::kNone)))
+//			{
+//				return false;
+//			}
+//		}
+//	}
+//
+//	return true;
+//}
+
 std::vector<ColliderPairOneToManyData> CollisionManager::CreateHitColliderPairs()
 {
 	std::vector<ColliderPairOneToManyData> collider_pairs;
 
-	// オブジェクトが持つすべてのコライダーの衝突判定を行う
-	// 
-	// TODO : 軽量化
-	//	・着地用トリガーと頭部トリガーの衝突は無視するなど、ありえない組み合わせは無視
-	//	・遠いオブジェクト同士は無視(移動速度は考慮)
-	//	・二つのオブジェクトの関係において、前フレームと現在のフレームで座標が同じであった場合は無視
-	//	・静的オブジェクト同士は無視(地面と家など)
-	//
 	for (const auto& owner_obj : m_collide_objects)
 	{
 		// 非アクティブの場合はスキップ
 		if (!owner_obj->IsActive()) { continue; }
 
-		for (const auto& owner_obj_collider : owner_obj->GetColliderAll())
+		for (const auto& target_obj : m_collide_objects)
 		{
-			// 衝突が許可されている場合のみ処理を続行
-			if (!IsApplyCollide(owner_obj->GetName(), owner_obj_collider.first)) { continue; }
+			// 自身との当たり判定は避ける
+			if (owner_obj == target_obj) { continue; }
 
-			for (const auto& target_obj : m_collide_objects)
+			// 非アクティブの場合はスキップ
+			if (!target_obj->IsActive()) { continue; }
+
+			// 衝突不可の場合はスキップ
+			if (!CanCollideObjAndObj(owner_obj, target_obj)) { continue; }
+
+			for (const auto& owner_obj_collider : owner_obj->GetColliderAll())
 			{
-				// 自身との当たり判定は避ける
-				if (owner_obj == target_obj) { continue; }
-
-				// 非アクティブの場合はスキップ
-				if (!target_obj->IsActive()) { continue; }
-
 				for (const auto& target_obj_collider : target_obj->GetColliderAll())
 				{
-					// 衝突が許可されている場合のみ処理を続行
-					if (!IsApplyCollide(target_obj->GetName(), target_obj_collider.first)) { continue; }
-
-					if (owner_obj_collider.second->GetColliderKind() == ColliderKind::kRayCast
-						&& target_obj_collider.second->GetColliderKind() == ColliderKind::kCollider)
-					{
-						int aa = 1;
-					}
+					// 衝突不可の場合はスキップ
+					if (!CanCollideColliderAndCollider(owner_obj_collider.second, target_obj_collider.second)) { continue; }
 
 					// 衝突判定
-					std::optional<VECTOR> intersection;
-					if (IsHit(*owner_obj_collider.second, *target_obj_collider.second, intersection))
+					std::optional<VECTOR> intersection = std::nullopt;
+					if (IsCollided(*owner_obj_collider.second, *target_obj_collider.second, intersection))
 					{
 						// 指定のオーナーのデータコンテナがまだない場合は新たに作成
 						bool is_maked = std::any_of(collider_pairs.begin(), collider_pairs.end(), [=](const ColliderPairOneToManyData& data)
@@ -176,7 +272,7 @@ std::vector<ColliderPairOneToManyData> CollisionManager::CreateHitColliderPairs(
 							collider_pairs.emplace_back(owner_obj_collider.second, std::vector<TargetColliderData>());
 						}
 
-						// オーナーが同じデータへターゲットを追加
+						// オーナーが同じデータにターゲットを追加
 						for (size_t i = 0; i < collider_pairs.size(); ++i)
 						{
 							if (collider_pairs.at(i).owner_collider == owner_obj_collider.second)
@@ -195,27 +291,27 @@ std::vector<ColliderPairOneToManyData> CollisionManager::CreateHitColliderPairs(
 
 
 #pragma region 衝突判定
-bool CollisionManager::IsHit					(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection)
+bool CollisionManager::IsCollided					(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection)
 {
 	const auto shape = owner_collider.GetShape();
 
 	// 図形の登録がされていない場合はモデルで判定を行う
 	if (shape == nullptr)
 	{
-		return IsHitModelAndTarget(owner_collider, target_collider, intersection);
+		return IsCollidedModelAndTarget(owner_collider, target_collider, intersection);
 	}
 
 	switch (shape->GetShapeKind())
 	{
-	case ShapeKind::kLine:		return IsHitLineAndTarget		(owner_collider, target_collider, intersection);
-	case ShapeKind::kSegment:	return IsHitSegmentAndTarget	(owner_collider, target_collider, intersection);
-	case ShapeKind::kPlane:		return IsHitPlaneAndTarget		(owner_collider, target_collider, intersection);
-	case ShapeKind::kTriangle:	return IsHitTriangleAndTarget	(owner_collider, target_collider, intersection);
-	case ShapeKind::kSquare:	return IsHitSquareAndTarget		(owner_collider, target_collider, intersection);
-	case ShapeKind::kAABB:		return IsHitAABBAndTarget		(owner_collider, target_collider, intersection);
-	case ShapeKind::kOBB:		return IsHitOBBAndTarget		(owner_collider, target_collider, intersection);
-	case ShapeKind::kSphere:	return IsHitSphereAndTarget		(owner_collider, target_collider, intersection);
-	case ShapeKind::kCapsule:	return IsHitCapsuleAndTarget	(owner_collider, target_collider, intersection);
+	case ShapeKind::kLine:		return IsCollidedLineAndTarget		(owner_collider, target_collider, intersection);
+	case ShapeKind::kSegment:	return IsCollidedSegmentAndTarget	(owner_collider, target_collider, intersection);
+	case ShapeKind::kPlane:		return IsCollidedPlaneAndTarget		(owner_collider, target_collider, intersection);
+	case ShapeKind::kTriangle:	return IsCollidedTriangleAndTarget	(owner_collider, target_collider, intersection);
+	case ShapeKind::kSquare:	return IsCollidedSquareAndTarget		(owner_collider, target_collider, intersection);
+	case ShapeKind::kAABB:		return IsCollidedAABBAndTarget		(owner_collider, target_collider, intersection);
+	case ShapeKind::kOBB:		return IsCollidedOBBAndTarget		(owner_collider, target_collider, intersection);
+	case ShapeKind::kSphere:	return IsCollidedSphereAndTarget		(owner_collider, target_collider, intersection);
+	case ShapeKind::kCapsule:	return IsCollidedCapsuleAndTarget	(owner_collider, target_collider, intersection);
 
 	default:
 		break;
@@ -224,7 +320,7 @@ bool CollisionManager::IsHit					(Collider& owner_collider, const Collider& targ
 	return false;
 }
 
-bool CollisionManager::IsHitLineAndTarget		(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection)
+bool CollisionManager::IsCollidedLineAndTarget		(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection)
 {
 	const auto target_shape = target_collider.GetShape();
 	const auto owner_shape	= *std::static_pointer_cast<Line>(owner_collider.GetShape());
@@ -238,10 +334,10 @@ bool CollisionManager::IsHitLineAndTarget		(Collider& owner_collider, const Coll
 	switch (target_shape->GetShapeKind())
 	{
 	case ShapeKind::kLine:
-		return collision::IsHitLineAndLine (owner_shape, *std::static_pointer_cast<Line> (target_shape), intersection);
+		return collision::IsCollidedLineAndLine (owner_shape, *std::static_pointer_cast<Line> (target_shape), intersection);
 
 	case ShapeKind::kPlane:
-		return collision::IsHitLineAndPlane(owner_shape, *std::static_pointer_cast<Plane>(target_shape), intersection);
+		return collision::IsCollidedLineAndPlane(owner_shape, *std::static_pointer_cast<Plane>(target_shape), intersection);
 
 	default:
 		break;
@@ -250,7 +346,7 @@ bool CollisionManager::IsHitLineAndTarget		(Collider& owner_collider, const Coll
 	return false;
 }
 
-bool CollisionManager::IsHitSegmentAndTarget	(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection)
+bool CollisionManager::IsCollidedSegmentAndTarget	(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection)
 {
 	const auto target_shape = target_collider.GetShape();
 	const auto owner_shape	= *std::static_pointer_cast<Segment>(owner_collider.GetShape());
@@ -259,7 +355,7 @@ bool CollisionManager::IsHitSegmentAndTarget	(Collider& owner_collider, const Co
 	if (target_shape == nullptr)
 	{
 		std::vector<Triangle> hit_triangles;
-		const bool is_hit = collision::IsHitSegmentAndModel(owner_shape, target_collider.GetModelHandle(), intersection, hit_triangles);
+		const bool is_hit = collision::IsCollidedSegmentAndModel(owner_shape, target_collider.GetModelHandle(), intersection, hit_triangles);
 		
 		if (is_hit && target_collider.GetColliderKind() == ColliderKind::kCollider)
 		{
@@ -272,23 +368,23 @@ bool CollisionManager::IsHitSegmentAndTarget	(Collider& owner_collider, const Co
 	switch (target_shape->GetShapeKind())
 	{
 	case ShapeKind::kSegment:
-		return collision::IsHitSegmentAndSegment (owner_shape, *std::static_pointer_cast<Segment> (target_shape), intersection);
+		return collision::IsCollidedSegmentAndSegment (owner_shape, *std::static_pointer_cast<Segment> (target_shape), intersection);
 
 	case ShapeKind::kPlane:
-		return collision::IsHitSegmentAndPlane	 (owner_shape, *std::static_pointer_cast<Plane>   (target_shape), intersection);
+		return collision::IsCollidedSegmentAndPlane	 (owner_shape, *std::static_pointer_cast<Plane>   (target_shape), intersection);
 
 	case ShapeKind::kTriangle:
-		return collision::IsHitSegmentAndTriangle(owner_shape, *std::static_pointer_cast<Triangle>(target_shape), intersection);
+		return collision::IsCollidedSegmentAndTriangle(owner_shape, *std::static_pointer_cast<Triangle>(target_shape), intersection);
 
 	case ShapeKind::kSquare:
-		return collision::IsHitSegmentAndSquare	 (owner_shape, *std::static_pointer_cast<Square>  (target_shape), intersection);
+		return collision::IsCollidedSegmentAndSquare	 (owner_shape, *std::static_pointer_cast<Square>  (target_shape), intersection);
 
 	case ShapeKind::kSphere:
-		return collision::IsHitSegmentAndSphere  (owner_shape, *std::static_pointer_cast<Sphere>  (target_shape), intersection);
+		return collision::IsCollidedSegmentAndSphere  (owner_shape, *std::static_pointer_cast<Sphere>  (target_shape), intersection);
 
 
 	case ShapeKind::kCapsule:
-		return collision::IsHitSegmentAndCapsule (owner_shape, *std::static_pointer_cast<Capsule> (target_shape), intersection);
+		return collision::IsCollidedSegmentAndCapsule (owner_shape, *std::static_pointer_cast<Capsule> (target_shape), intersection);
 
 	default:
 		break;
@@ -297,7 +393,7 @@ bool CollisionManager::IsHitSegmentAndTarget	(Collider& owner_collider, const Co
 	return false;
 }
 
-bool CollisionManager::IsHitPlaneAndTarget		(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection)
+bool CollisionManager::IsCollidedPlaneAndTarget		(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection)
 {
 	const auto target_shape = target_collider.GetShape();
 	const auto owner_shape	= *std::static_pointer_cast<Plane>(owner_collider.GetShape());
@@ -311,7 +407,7 @@ bool CollisionManager::IsHitPlaneAndTarget		(Collider& owner_collider, const Col
 	switch (target_shape->GetShapeKind())
 	{
 	case ShapeKind::kCapsule:
-		return collision::IsHitPlaneAndCapsule(owner_shape, *std::static_pointer_cast<Capsule>(target_shape), intersection);
+		return collision::IsCollidedPlaneAndCapsule(owner_shape, *std::static_pointer_cast<Capsule>(target_shape), intersection);
 
 	default:
 		break;
@@ -320,7 +416,7 @@ bool CollisionManager::IsHitPlaneAndTarget		(Collider& owner_collider, const Col
 	return false;
 }
 
-bool CollisionManager::IsHitTriangleAndTarget	(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection)
+bool CollisionManager::IsCollidedTriangleAndTarget	(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection)
 {
 	const auto target_shape = target_collider.GetShape();
 	const auto owner_shape	= *std::static_pointer_cast<Triangle>(owner_collider.GetShape());
@@ -329,7 +425,7 @@ bool CollisionManager::IsHitTriangleAndTarget	(Collider& owner_collider, const C
 	if (target_shape == nullptr)
 	{
 		std::vector<Triangle> hit_triangles;
-		const bool is_hit = collision::IsHitTriangleAndModel(owner_shape, target_collider.GetModelHandle(), intersection, hit_triangles);
+		const bool is_hit = collision::IsCollidedTriangleAndModel(owner_shape, target_collider.GetModelHandle(), intersection, hit_triangles);
 		
 		// 衝突対象がコライダーであった場合は三角形情報を追加する
 		if (is_hit && target_collider.GetColliderKind() == ColliderKind::kCollider)
@@ -343,7 +439,7 @@ bool CollisionManager::IsHitTriangleAndTarget	(Collider& owner_collider, const C
 	switch (target_shape->GetShapeKind())
 	{
 	case ShapeKind::kCapsule:
-		return collision::IsHitTriangleAndCapsule(owner_shape, *std::static_pointer_cast<Capsule>(target_shape), intersection);
+		return collision::IsCollidedTriangleAndCapsule(owner_shape, *std::static_pointer_cast<Capsule>(target_shape), intersection);
 
 	default:
 		break;
@@ -352,7 +448,7 @@ bool CollisionManager::IsHitTriangleAndTarget	(Collider& owner_collider, const C
 	return false;
 }
 
-bool CollisionManager::IsHitSquareAndTarget		(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection)
+bool CollisionManager::IsCollidedSquareAndTarget		(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection)
 {
 	const auto target_shape = target_collider.GetShape();
 	const auto owner_shape	= *std::static_pointer_cast<Square>(owner_collider.GetShape());
@@ -366,7 +462,7 @@ bool CollisionManager::IsHitSquareAndTarget		(Collider& owner_collider, const Co
 	switch (target_shape->GetShapeKind())
 	{
 	case ShapeKind::kCapsule:
-		return collision::IsHitSquareAndCapsule(owner_shape, *std::static_pointer_cast<Capsule>(target_shape), intersection);
+		return collision::IsCollidedSquareAndCapsule(owner_shape, *std::static_pointer_cast<Capsule>(target_shape), intersection);
 
 	default:
 		break;
@@ -375,17 +471,17 @@ bool CollisionManager::IsHitSquareAndTarget		(Collider& owner_collider, const Co
 	return false;
 }
 
-bool CollisionManager::IsHitAABBAndTarget		(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection)
+bool CollisionManager::IsCollidedAABBAndTarget		(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection)
 {
 	return false;
 }
 
-bool CollisionManager::IsHitOBBAndTarget		(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection)
+bool CollisionManager::IsCollidedOBBAndTarget		(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection)
 {
 	return false;
 }
 
-bool CollisionManager::IsHitSphereAndTarget		(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection)
+bool CollisionManager::IsCollidedSphereAndTarget		(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection)
 {
 	const auto target_shape	= target_collider.GetShape();
 	const auto owner_shape	= *std::static_pointer_cast<Sphere>(owner_collider.GetShape());
@@ -395,7 +491,7 @@ bool CollisionManager::IsHitSphereAndTarget		(Collider& owner_collider, const Co
 	// 図形の登録がされていない場合はモデルで判定を行う
 	if (target_shape == nullptr)
 	{
-		is_hit = collision::IsHitSphereAndModel(owner_shape, target_collider.GetModelHandle(), intersection, hit_triangles);
+		is_hit = collision::IsCollidedSphereAndModel(owner_shape, target_collider.GetModelHandle(), intersection, hit_triangles);
 		
 		// 衝突対象がコライダーであった場合は三角形情報を追加する
 		if (is_hit && target_collider.GetColliderKind() == ColliderKind::kCollider)
@@ -409,7 +505,7 @@ bool CollisionManager::IsHitSphereAndTarget		(Collider& owner_collider, const Co
 	switch (target_shape->GetShapeKind())
 	{
 	case ShapeKind::kTriangle:
-		is_hit = collision::IsHitTriangleAndSphere(*std::static_pointer_cast<Triangle>(target_shape), owner_shape, intersection);
+		is_hit = collision::IsCollidedTriangleAndSphere(*std::static_pointer_cast<Triangle>(target_shape), owner_shape, intersection);
 
 		// 衝突対象がコライダーであった場合は三角形情報を追加する
 		if (is_hit && target_collider.GetColliderKind() == ColliderKind::kCollider)
@@ -419,10 +515,10 @@ bool CollisionManager::IsHitSphereAndTarget		(Collider& owner_collider, const Co
 		break;
 
 	case ShapeKind::kSphere:
-		return collision::IsHitSphereAndSphere (owner_shape, *std::dynamic_pointer_cast<Sphere>(target_shape), intersection);
+		return collision::IsCollidedSphereAndSphere (owner_shape, *std::dynamic_pointer_cast<Sphere>(target_shape), intersection);
 	
 	case ShapeKind::kCapsule:
-		return collision::IsHitSphereAndCapsule(owner_shape, *std::static_pointer_cast<Capsule>(target_shape), intersection);
+		return collision::IsCollidedSphereAndCapsule(owner_shape, *std::static_pointer_cast<Capsule>(target_shape), intersection);
 
 	default:
 		break;
@@ -431,7 +527,7 @@ bool CollisionManager::IsHitSphereAndTarget		(Collider& owner_collider, const Co
 	return is_hit;
 }
 
-bool CollisionManager::IsHitCapsuleAndTarget	(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection)
+bool CollisionManager::IsCollidedCapsuleAndTarget	(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection)
 {
 	const auto target_shape = target_collider.GetShape();
 	const auto owner_shape	= *std::static_pointer_cast<Capsule>(owner_collider.GetShape());
@@ -440,7 +536,7 @@ bool CollisionManager::IsHitCapsuleAndTarget	(Collider& owner_collider, const Co
 	if (target_shape == nullptr)
 	{
 		std::vector<Triangle> hit_triangles;
-		const bool is_hit = collision::IsHitCapsuleAndModel(owner_shape, target_collider.GetModelHandle(), intersection, hit_triangles);
+		const bool is_hit = collision::IsCollidedCapsuleAndModel(owner_shape, target_collider.GetModelHandle(), intersection, hit_triangles);
 		
 		// 衝突対象がコライダーであった場合は三角形情報を追加する
 		if (is_hit && target_collider.GetColliderKind() == ColliderKind::kCollider)
@@ -453,10 +549,10 @@ bool CollisionManager::IsHitCapsuleAndTarget	(Collider& owner_collider, const Co
 	switch (target_shape->GetShapeKind())
 	{
 	//case ShapeKind::kSegment:
-		//return collision::IsHitSegmentAndCapsule(*std::dynamic_pointer_cast<Segment>(target_shape), owner_shape, intersection);
+		//return collision::IsCollidedSegmentAndCapsule(*std::dynamic_pointer_cast<Segment>(target_shape), owner_shape, intersection);
 
 	case ShapeKind::kCapsule:
-		return collision::IsHitCapsuleAndCapsule(owner_shape, *std::static_pointer_cast<Capsule>(target_shape), intersection);
+		return collision::IsCollidedCapsuleAndCapsule(owner_shape, *std::static_pointer_cast<Capsule>(target_shape), intersection);
 
 	default:
 		break;
@@ -465,7 +561,7 @@ bool CollisionManager::IsHitCapsuleAndTarget	(Collider& owner_collider, const Co
 	return false;
 }
 
-bool CollisionManager::IsHitModelAndTarget		(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection)
+bool CollisionManager::IsCollidedModelAndTarget		(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection)
 {
 	return false;
 }

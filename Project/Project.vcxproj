@@ -337,6 +337,7 @@
     <ClInclude Include="SourceCode\Concept\obj_concepts.hpp" />
     <ClInclude Include="SourceCode\Concept\state_concepts.hpp" />
     <ClInclude Include="SourceCode\Concept\vector_concepts.hpp" />
+    <ClInclude Include="SourceCode\Data\collider_data.hpp" />
     <ClInclude Include="SourceCode\Data\Event\aim_gun_data.hpp" />
     <ClInclude Include="SourceCode\Data\Event\start_rocket_launcher_cutscene_data.hpp" />
     <ClInclude Include="SourceCode\Data\Kind\enemy_role_kind.hpp" />

@@ -71,11 +71,8 @@ void Bullet::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	case ColliderKind::kRayCast:
 		if (hit_collider_pair.intersection)
 		{
-			if (target_collider_kind != ColliderKind::kCollider)
-			{
-				RifleCartridgeManager::GetInstance()->DeleteBullet(shared_from_this());
-				RifleCartridgeManager::GetInstance()->AddHitPos(*hit_collider_pair.intersection);
-			}
+			RifleCartridgeManager::GetInstance()->DeleteBullet(shared_from_this());
+			RifleCartridgeManager::GetInstance()->AddHitPos(*hit_collider_pair.intersection);
 		}
 		break;
 

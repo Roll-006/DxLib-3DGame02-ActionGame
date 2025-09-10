@@ -2,6 +2,8 @@
 #include "../Base/singleton_base.hpp"
 #include "../Base/physical_obj_base.hpp"
 
+#include "../Data/collider_data.hpp"
+
 #include "../Manager/obj_manager.hpp"
 #include "../Calculation/collision_calculator.hpp"
 
@@ -13,45 +15,52 @@ public:
 
 	#pragma region 登録・解除
 	/// @brief 衝突判定を行うオブジェクトを追加
-	void AddCollideObj			(const std::shared_ptr<PhysicalObjBase> collide_obj);
+	void AddCollideObj	 (const std::shared_ptr<PhysicalObjBase> collide_obj);
 	/// @brief 衝突判定を行うオブジェクトから除外
-	void RemoveCollideObj		(const std::string& obj_name);
+	void RemoveCollideObj(const std::string& obj_name);
 
-	/// @brief 衝突判定を無視するコライダーを追加
-	void AddIgnoreCollider	 (const std::string& obj_name, const ColliderKind kind);
-	/// @brief 衝突判定を無視するコライダーから除外
-	void RemoveIgnoreCollider(const std::string& obj_name, const ColliderKind kind);
+	/// @brief 衝突判定を無視するコライダーのペアを追加
+	/// @brief owner_tagに[""]を指定すると指定なしで無視リストに登録される
+	/// @brief ColliderKindに[kNone]を指定すると指定なしで無視リストに登録される
+	/// @brief 例) 着地トリガーと攻撃判定用トリガーの判定を無視したい場合、
+	/// @brief [ColliderData("", ColliderKind::kLandingTrigger), ColliderData("", ColliderKind::kAttackTrigger)]とする
+	void AddIgnoreColliderPair	 (const ColliderData& owner_collider_data, const ColliderData& target_collider_data);
+	/// @brief 衝突判定を無視するコライダーのペアから除外
+	void RemoveIgnoreColliderPair(const ColliderData& owner_collider_data, const ColliderData& target_collider_data);
 	#pragma endregion
-
-
-	/// @brief 衝突判定を適用させる
-	[[nodiscard]] bool IsApplyCollide(const std::shared_ptr<PhysicalObjBase> collide_obj, const ColliderKind kind) const;
-	[[nodiscard]] bool IsApplyCollide(const std::string& obj_name, const ColliderKind kind) const;
 
 private:
 	CollisionManager();
 	~CollisionManager() override;
 
+	/// @brief 衝突判定を無視するペアを設定する
+	/// @brief 汎用性が高いペアをマネージャー側で追加する
+	void SetIgnoreColliderPairs();
+
+	/// @brief 衝突可能かを判定
+	[[nodiscard]] bool CanCollideObjAndObj			(const std::shared_ptr<PhysicalObjBase> owner_obj, const std::shared_ptr<PhysicalObjBase> target_obj);
+	[[nodiscard]] bool CanCollideColliderAndCollider(const std::shared_ptr<Collider> owner_collider, const std::shared_ptr<Collider> target_collider);
+
 	/// @brief 衝突判定を起こしたコライダーの組み合わせを生成
 	std::vector<ColliderPairOneToManyData> CreateHitColliderPairs();
 
 	#pragma region 衝突判定
-	bool IsHit					(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection);
-	bool IsHitLineAndTarget		(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection);
-	bool IsHitSegmentAndTarget	(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection);
-	bool IsHitPlaneAndTarget	(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection);
-	bool IsHitTriangleAndTarget	(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection);
-	bool IsHitSquareAndTarget	(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection);
-	bool IsHitAABBAndTarget		(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection);
-	bool IsHitOBBAndTarget		(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection);
-	bool IsHitSphereAndTarget	(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection);
-	bool IsHitCapsuleAndTarget	(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection);
-	bool IsHitModelAndTarget	(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection);
+	bool IsCollided					(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection);
+	bool IsCollidedLineAndTarget	(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection);
+	bool IsCollidedSegmentAndTarget	(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection);
+	bool IsCollidedPlaneAndTarget	(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection);
+	bool IsCollidedTriangleAndTarget(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection);
+	bool IsCollidedSquareAndTarget	(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection);
+	bool IsCollidedAABBAndTarget	(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection);
+	bool IsCollidedOBBAndTarget		(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection);
+	bool IsCollidedSphereAndTarget	(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection);
+	bool IsCollidedCapsuleAndTarget	(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection);
+	bool IsCollidedModelAndTarget	(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection);
 	#pragma endregion
 
 private:
-	std::vector<std::shared_ptr<PhysicalObjBase>>				m_collide_objects;			// 衝突判定を行うオブジェクト
-	std::unordered_map<std::string, std::vector<ColliderKind>>	m_ignore_collide_collider;	// 衝突判定を無視するコライダー
+	std::vector<std::shared_ptr<PhysicalObjBase>>				m_collide_objects;					// 衝突判定を行うオブジェクト
+	std::unordered_map<ColliderData, std::vector<ColliderData>>	m_ignore_collide_collider_pairs;	// 衝突判定を無視するコライダーのペア
 	int m_handle_create_count;
 
 	friend SingletonBase<CollisionManager>;

@@ -129,7 +129,7 @@ void PhysicsManager::ProjectionPos(const std::shared_ptr<PhysicalObjBase> physic
 	//
 	//	if (!target_shape)
 	//	{
-	//		collision::IsHitCapsuleAndModel(*std::dynamic_pointer_cast<Capsule>(collider_shape), target_collider->GetModelHandle(), hit_result);
+	//		collision::IsCollidedCapsuleAndModel(*std::dynamic_pointer_cast<Capsule>(collider_shape), target_collider->GetModelHandle(), hit_result);
 	//	}
 	//
 	//}
