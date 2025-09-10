@@ -1,4 +1,6 @@
 #pragma once
+#include <unordered_set>
+
 #include "../Base/singleton_base.hpp"
 #include "../Base/physical_obj_base.hpp"
 
@@ -19,9 +21,15 @@ public:
 	/// @brief 衝突判定を行うオブジェクトから除外
 	void RemoveCollideObj(const std::string& obj_name);
 
+	/// @brief 衝突判定を無視するコライダーを追加
+	void AddIgnoreCollider	 (const std::string& obj_name, const ColliderKind kind);
+	/// @brief 衝突判定を無視するコライダーから除外
+	void RemoveIgnoreCollider(const std::string& obj_name, const ColliderKind kind);
+
 	/// @brief 衝突判定を無視するコライダーのペアを追加
-	/// @brief owner_tagに[""]を指定すると指定なしで無視リストに登録される
-	/// @brief ColliderKindに[kNone]を指定すると指定なしで無視リストに登録される
+	/// @brief ・owner_tagに[""]を指定すると指定なしで登録
+	/// @brief ・ColliderKindに[kNone]を指定すると指定なしで登録
+	/// @brief ・owner_tagとColliderKindがどちらも指定なしの場合、AddIgnoreCollider関数を使用することとする
 	/// @brief 例) 着地トリガーと攻撃判定用トリガーの判定を無視したい場合、
 	/// @brief [ColliderData("", ColliderKind::kLandingTrigger), ColliderData("", ColliderKind::kAttackTrigger)]とする
 	void AddIgnoreColliderPair	 (const ColliderData& owner_collider_data, const ColliderData& target_collider_data);
@@ -44,6 +52,7 @@ private:
 	/// @brief 衝突判定を起こしたコライダーの組み合わせを生成
 	std::vector<ColliderPairOneToManyData> CreateHitColliderPairs();
 
+
 	#pragma region 衝突判定
 	bool IsCollided					(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection);
 	bool IsCollidedLineAndTarget	(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection);
@@ -59,8 +68,9 @@ private:
 	#pragma endregion
 
 private:
-	std::vector<std::shared_ptr<PhysicalObjBase>>				m_collide_objects;					// 衝突判定を行うオブジェクト
-	std::unordered_map<ColliderData, std::vector<ColliderData>>	m_ignore_collide_collider_pairs;	// 衝突判定を無視するコライダーのペア
+	std::vector<std::shared_ptr<PhysicalObjBase>>						m_collide_objects;					// 衝突判定を行うオブジェクト
+	std::unordered_map<std::string,  std::unordered_set<ColliderKind>>	m_ignore_collide_colliders;			// 衝突判定を無視するコライダー
+	std::unordered_map<ColliderData, std::unordered_set<ColliderData>>	m_ignore_collide_collider_pairs;	// 衝突判定を無視するコライダーのペア
 	int m_handle_create_count;
 
 	friend SingletonBase<CollisionManager>;

@@ -83,29 +83,38 @@ void CollisionManager::RemoveCollideObj(const std::string& obj_name)
 	}
 }
 
+void CollisionManager::AddIgnoreCollider(const std::string& obj_name, const ColliderKind kind)
+{
+	m_ignore_collide_colliders[obj_name].insert(kind);
+}
+
+void CollisionManager::RemoveIgnoreCollider(const std::string& obj_name, const ColliderKind kind)
+{
+	auto itr = m_ignore_collide_colliders.find(obj_name);
+	if (itr != m_ignore_collide_colliders.end())
+	{
+		itr->second.erase(kind);
+	}
+}
+
 void CollisionManager::AddIgnoreColliderPair(const ColliderData& owner_collider_data, const ColliderData& target_collider_data)
 {
-	if (std::find(m_ignore_collide_collider_pairs[owner_collider_data].begin(), m_ignore_collide_collider_pairs[owner_collider_data].end(), target_collider_data) == m_ignore_collide_collider_pairs[owner_collider_data].end())
-	{
-		m_ignore_collide_collider_pairs[owner_collider_data].emplace_back(target_collider_data);
-	}
-
-	if (std::find(m_ignore_collide_collider_pairs[target_collider_data].begin(), m_ignore_collide_collider_pairs[target_collider_data].end(), owner_collider_data) == m_ignore_collide_collider_pairs[target_collider_data].end())
-	{
-		m_ignore_collide_collider_pairs[target_collider_data].emplace_back(owner_collider_data);
-	}
+	m_ignore_collide_collider_pairs[owner_collider_data]. insert(target_collider_data);
+	m_ignore_collide_collider_pairs[target_collider_data].insert(owner_collider_data);
 }
 
 void CollisionManager::RemoveIgnoreColliderPair(const ColliderData& owner_collider_data, const ColliderData& target_collider_data)
 {
-	if (std::find(m_ignore_collide_collider_pairs[owner_collider_data].begin(), m_ignore_collide_collider_pairs[owner_collider_data].end(), target_collider_data) != m_ignore_collide_collider_pairs[owner_collider_data].end())
+	auto itr = m_ignore_collide_collider_pairs.find(owner_collider_data);
+	if (itr != m_ignore_collide_collider_pairs.end())
 	{
-		erase(m_ignore_collide_collider_pairs[owner_collider_data],  target_collider_data);
+		itr->second.erase(target_collider_data);
 	}
 
-	if (std::find(m_ignore_collide_collider_pairs[target_collider_data].begin(), m_ignore_collide_collider_pairs[target_collider_data].end(), owner_collider_data) != m_ignore_collide_collider_pairs[target_collider_data].end())
+	itr = m_ignore_collide_collider_pairs.find(target_collider_data);
+	if (itr != m_ignore_collide_collider_pairs.end())
 	{
-		erase(m_ignore_collide_collider_pairs[target_collider_data], owner_collider_data);
+		itr->second.erase(owner_collider_data);
 	}
 }
 #pragma endregion
@@ -141,12 +150,10 @@ bool CollisionManager::CanCollideObjAndObj(const std::shared_ptr<PhysicalObjBase
 	const ColliderData owner_data { owner_obj ->GetTag(), ColliderKind::kNone };
 	if (m_ignore_collide_collider_pairs.count(owner_data))
 	{
-		for (const auto& ignore_pairs : m_ignore_collide_collider_pairs.at(owner_data))
+		const ColliderData target_data{ target_obj->GetTag(), ColliderKind::kNone };
+		if (m_ignore_collide_collider_pairs.at(owner_data).count(target_data))
 		{
-			if (ignore_pairs == ColliderData(target_obj->GetTag(), ColliderKind::kNone))
-			{
-				return false;
-			}
+			return false;
 		}
 	}
 
@@ -172,19 +179,16 @@ bool CollisionManager::CanCollideColliderAndCollider(const std::shared_ptr<Colli
 		{ "",				    target_collider->GetColliderKind() }
 	};
 
-	// 無視リストに登録されているオブジェクトは無視
+	// 無視リストに登録されているコライダーは無視
 	for (const auto& owner : owner_data)
 	{
 		if (m_ignore_collide_collider_pairs.count(owner))
 		{
-			for (const auto& ignore_pairs : m_ignore_collide_collider_pairs.at(owner))
+			for (const auto& target : target_data)
 			{
-				for (const auto& target : target_data)
+				if (m_ignore_collide_collider_pairs.at(owner).count(target))
 				{
-					if (ignore_pairs == target)
-					{
-						return false;
-					}
+					return false;
 				}
 			}
 		}
