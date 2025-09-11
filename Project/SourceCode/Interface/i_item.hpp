@@ -1,5 +1,5 @@
 #pragma once
-#include "../Data/Kind/item_kind.hpp"
+#include "../Kind/item_kind.hpp"
 
 class IItem abstract
 {

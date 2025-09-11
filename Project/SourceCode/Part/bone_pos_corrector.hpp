@@ -3,8 +3,8 @@
 #include <unordered_map>
 #include <DxLib.h>
 
-#include "../Data/Kind/time_kind.hpp"
-#include "../Data/Path/bone_path.hpp"
+#include "../Kind/time_kind.hpp"
+#include "../Path/bone_path.hpp"
 #include "../Calculation/math.hpp"
 
 class BonePosCorrector

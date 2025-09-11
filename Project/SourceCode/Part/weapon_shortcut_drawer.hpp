@@ -4,7 +4,7 @@
 
 #include "../Object/player.hpp"
 #include "../Base/weapon_action_state_base.hpp"
-#include "../Data/Kind/player_state_kind.hpp"
+#include "../Kind/player_state_kind.hpp"
 
 class WeaponShortcutDrawer final
 {

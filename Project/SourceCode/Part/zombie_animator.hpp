@@ -1,6 +1,6 @@
 #pragma once
 #include "../Base/animator_base.hpp"
-#include "../Data/Kind/zombie_anim_kind.hpp"
+#include "../Kind/zombie_anim_kind.hpp"
 
 class ZombieStateController;
 

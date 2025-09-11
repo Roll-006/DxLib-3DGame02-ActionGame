@@ -2,7 +2,7 @@
 #include <memory>
 #include <DxLib.h>
 
-#include "../Data/Kind/shape_kind.hpp"
+#include "../Kind/shape_kind.hpp"
 #include "../Calculation/math.hpp"
 
 class ShapeBase abstract

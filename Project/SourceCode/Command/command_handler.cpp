@@ -324,11 +324,14 @@ void CommandHandler::TryExecuteCommand(const std::vector<std::pair<CommandKind, 
 			if (std::find(executed_command.begin(), executed_command.end(), code.first) == executed_command.end())
 			{
 				// 特殊コマンドのトリガー方式であった場合、入力回数をカウント
-				if (m_input_mode.at(code.first) == InputModeKind::kTrigger && input->GetInputState(code.second) == InputState::kSingle)
+				if (m_input_mode.at(code.first) == InputModeKind::kTrigger)
 				{
-					++m_trigger_count[TimeKind::kCurrent][code.first];
-				}
+					if (input->GetInputState(code.second) == InputState::kSingle)
+					{
 
+						++m_trigger_count[TimeKind::kCurrent][code.first];
+					}
+				}
 				executed_command.emplace_back(code.first);
 				m_execute_command[TimeKind::kCurrent].emplace_back(code.first);
 			}

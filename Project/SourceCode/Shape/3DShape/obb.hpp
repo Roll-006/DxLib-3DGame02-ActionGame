@@ -1,7 +1,7 @@
 #pragma once
 #include "../2DShape/square.hpp"
 #include "../../Data/box_data.hpp"
-#include "../../Data/Kind/box_kind.hpp"
+#include "../../Kind/box_kind.hpp"
 
 class OBB : public ShapeBase
 {

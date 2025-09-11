@@ -2,7 +2,7 @@
 #include <algorithm>
 #include <unordered_map>
 
-#include "../Data/Kind/sort_kind.hpp"
+#include "../Kind/sort_kind.hpp"
 
 namespace algorithm
 {

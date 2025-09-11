@@ -1,7 +1,7 @@
 #pragma once
 #include <limits>
 #include "math.hpp"
-#include "../Data/IncludeList/shape.hpp"
+#include "../IncludeList/shape.hpp"
 
 namespace collision
 {

@@ -15,7 +15,7 @@ Player::Player() :
 	m_current_equip_knife				(nullptr),
 	m_weapon_shortcut_selecter			(std::make_shared<WeaponShortcutSelecter>())
 {
-	m_hit_points[HitPointsPartKind::kMain] = std::make_shared<HitPoints>(2000.0f);
+	m_hit_points[HitPointsPartKind::kMain] = std::make_shared<HitPoints>(2000.0f, 2000.0f);
 
 	// モデル・アニメーションを設定
 	m_modeler  = std::make_shared<Modeler>(m_transform, ModelPath.SWAT, kBasicAngle, kBasicScale);
@@ -145,6 +145,8 @@ void Player::Draw() const
 	DrawFormatString(0, 100, 0xffffff, "%f, %f, %f", m_move_dir.at(TimeKind::kNext).x, m_move_dir.at(TimeKind::kNext).y, m_move_dir.at(TimeKind::kNext).z);
 	DrawFormatString(0, 120, 0xffffff, "%f", m_move_speed);
 	DrawFormatString(0, 140, 0xffffff, "HP : %f", m_hit_points.at(HitPointsPartKind::kMain)->GetCurrentHitPoints());
+	
+	DrawFormatString(0, 160, 0xffffff, "%d", CommandHandler::GetInstance()->GetCurrentTriggerCount(CommandKind::kCrouch));
 
 	if (m_current_held_weapon) { m_current_held_weapon->Draw(); }
 

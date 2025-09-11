@@ -1,6 +1,6 @@
 #pragma once
 #include "../Part/transform.hpp"
-#include "../Data/Path/effect_path.hpp"
+#include "../Path/effect_path.hpp"
 #include "../Data/effect_data.hpp"
 #include "../Handle/handle_keeper.hpp"
 

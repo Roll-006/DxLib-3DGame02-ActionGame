@@ -2,7 +2,7 @@
 #include <string>
 #include <functional>
 
-#include "Kind/collider_kind.hpp"
+#include "../Kind/collider_kind.hpp"
 
 struct ColliderData
 {

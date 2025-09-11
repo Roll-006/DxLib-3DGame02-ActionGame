@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
 #include "../Interface/i_enemy.hpp"
-#include "../Data/Kind/enemy_role_kind.hpp"
+#include "../Kind/enemy_role_kind.hpp"
 
 class IEnemyRole abstract
 {

@@ -5,7 +5,7 @@
 #include "../Part/camera_aim.hpp"
 #include "../Part/camera_noise.hpp"
 
-#include "../Data/Kind/blend_activation_policy_kind.hpp"
+#include "../Kind/blend_activation_policy_kind.hpp"
 
 class CinemachineBrain;
 

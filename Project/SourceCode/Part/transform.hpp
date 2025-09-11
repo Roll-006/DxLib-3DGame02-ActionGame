@@ -2,7 +2,7 @@
 #include <string>
 #include <memory>
 
-#include "../Data/Kind/coordinate_kind.hpp"
+#include "../Kind/coordinate_kind.hpp"
 #include "../Calculation/math.hpp"
 
 class Transform final

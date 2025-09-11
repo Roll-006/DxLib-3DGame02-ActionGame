@@ -1,5 +1,5 @@
 #pragma once
-#include "../../Interface/i_event.hpp"
+#include "../Interface/i_event.hpp"
 
 #include "../Kind/event_kind.hpp"
 

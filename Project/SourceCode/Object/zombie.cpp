@@ -7,13 +7,13 @@ Zombie::Zombie() :
 	m_attack_interval_timer	(0.0f),
 	m_can_grab_target		(false)
 {
-	m_hit_points[HitPointsPartKind::kMain]		= std::make_shared<HitPoints>(1684.0f);
-	m_hit_points[HitPointsPartKind::kHead]		= std::make_shared<HitPoints>(300.0f);
-	m_hit_points[HitPointsPartKind::kBody]		= std::make_shared<HitPoints>(500.0f);
-	m_hit_points[HitPointsPartKind::kLeftArm]	= std::make_shared<HitPoints>(300.0f);
-	m_hit_points[HitPointsPartKind::kRightArm]	= std::make_shared<HitPoints>(300.0f);
-	m_hit_points[HitPointsPartKind::kLeftLeg]	= std::make_shared<HitPoints>(300.0f);
-	m_hit_points[HitPointsPartKind::kRightLeg]	= std::make_shared<HitPoints>(300.0f);
+	m_hit_points[HitPointsPartKind::kMain]		= std::make_shared<HitPoints>(1684.0f, 1684.0f);
+	m_hit_points[HitPointsPartKind::kHead]		= std::make_shared<HitPoints>(300.0f, 300.0f);
+	m_hit_points[HitPointsPartKind::kBody]		= std::make_shared<HitPoints>(500.0f, 500.0f);
+	m_hit_points[HitPointsPartKind::kLeftArm]	= std::make_shared<HitPoints>(300.0f, 300.0f);
+	m_hit_points[HitPointsPartKind::kRightArm]	= std::make_shared<HitPoints>(300.0f, 300.0f);
+	m_hit_points[HitPointsPartKind::kLeftLeg]	= std::make_shared<HitPoints>(300.0f, 300.0f);
+	m_hit_points[HitPointsPartKind::kRightLeg]	= std::make_shared<HitPoints>(300.0f, 300.0f);
 
 	m_modeler  = std::make_shared<Modeler>(m_transform, ModelPath.ZOMBIE_05, kBasicAngle, kBasicScale);
 	m_animator = std::make_shared<ZombieAnimator>(m_modeler, m_state);
@@ -302,7 +302,7 @@ void Zombie::CalcMoveSpeedRun()
 
 void Zombie::OnCollideWithExplosion(const std::shared_ptr<Sphere> sphere)
 {
-	// TODO : 後にエフェクト側に処理内容を委ねる
+	// TODO : のちに爆発クラス側に処理内容を委ねる
 
 	const auto pos				= m_transform->GetPos(CoordinateKind::kWorld) + VGet(0, 50, 0);
 	const auto explosion_pos	= sphere->GetPos();
@@ -313,7 +313,7 @@ void Zombie::OnCollideWithExplosion(const std::shared_ptr<Sphere> sphere)
 	const auto dir_xz			= v3d::GetNormalizedV(VGet(distance.x, 0.0f, distance.z));
 	const auto dir				= v3d::GetNormalizedV(dir_xz + VGet(0.0f, 0.5f, 0.0f));
 
-	m_knockback_speed			= 100.0f;
+	m_knockback_speed			= 400.0f;
 	m_knockback_deceleration	= 5.0f;
 	m_knockback_velocity		= dir * m_knockback_speed;
 }

@@ -1,7 +1,7 @@
 //#pragma once
 //#include "../Interface/i_enemy_ai.hpp"
 //
-//#include "../Part/zombie_state_controller.hpp"
+//#include "../../Part/zombie_state_controller.hpp"
 //#include "../Object/zombie.hpp"
 //#include "../Object/player.hpp"
 //

@@ -1,7 +1,7 @@
 #pragma once
 #include "../Base/weapon_base.hpp"
-#include "../Data/Kind/weapon_shortcut_pos_kind.hpp"
-#include "../Data/Kind/command_kind.hpp"
+#include "../Kind/weapon_shortcut_pos_kind.hpp"
+#include "../Kind/command_kind.hpp"
 
 class Player;
 

@@ -1,11 +1,11 @@
 #pragma once
 #include "../Calculation/math.hpp"
-#include "../Data/Kind/hit_points_part_kind.hpp"
+#include "../Kind/hit_points_part_kind.hpp"
 
 class HitPoints final
 {
 public:
-	HitPoints(const float max_hit_points);
+	HitPoints(const float max_hit_points, const float max_current_hit_points);
 	~HitPoints();
 
 	/// @brief 回複する
@@ -14,12 +14,14 @@ public:
 	/// @brief ダメージを受けた
 	void OnDamage(const float damage);
 
-	void SetMaxHitPoints(const float max_hit_points) { m_max_hit_points = max_hit_points; }
+	/// @brief 現在の上限値を設定する
+	void SetCurrentMaxHitPoints(const float current_max_hit_points);
 
 	[[nodiscard]] float	GetCurrentHitPoints() const { return m_current_hit_points; }
 	[[nodiscard]] bool	IsAlive()			  const { return m_current_hit_points > 0.0f; }
 
 private:
-	float m_max_hit_points;
 	float m_current_hit_points;
+	float m_current_max_hit_points;
+	float m_max_hit_points;
 };

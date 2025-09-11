@@ -1,8 +1,8 @@
 #pragma once
 #include <cassert>
 
-#include "../Data/Kind/collider_kind.hpp"
-#include "../Data/IncludeList/shape.hpp"
+#include "../Kind/collider_kind.hpp"
+#include "../IncludeList/shape.hpp"
 
 class PhysicalObjBase;
 

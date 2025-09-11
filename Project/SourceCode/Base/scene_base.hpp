@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
 
-#include "../Data/Kind/scene_kind.hpp"
+#include "../Kind/scene_kind.hpp"
 
 class SceneBase abstract
 {

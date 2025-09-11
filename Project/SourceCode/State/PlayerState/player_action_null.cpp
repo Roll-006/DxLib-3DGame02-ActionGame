@@ -38,6 +38,7 @@ void player_state::ActionNull::Exit(std::shared_ptr<Player> obj)
 std::shared_ptr<IState<Player>> player_state::ActionNull::ChangeState(std::shared_ptr<Player> obj)
 {
 	const auto state_controller = obj->GetStateController();
+	const auto command			= CommandHandler::GetInstance();
 
 	// •ß‚Ü‚ê‚é
 	if (state_controller->TryGrabbed(obj))
@@ -50,7 +51,7 @@ std::shared_ptr<IState<Player>> player_state::ActionNull::ChangeState(std::share
 		return state_controller->GetState<Run, Player>();
 	}
 	// ‚µ‚á‚ª‚Þ
-	if (CommandHandler::GetInstance()->IsExecute(CommandKind::kCrouch, TimeKind::kCurrent))
+	if (command->IsExecute(CommandKind::kCrouch, TimeKind::kCurrent))
 	{
 		return state_controller->GetState<Crouch, Player>();
 	}

@@ -6,8 +6,8 @@
 #include "../GameTime/game_time_manager.hpp"
 
 #include "../Data/animator_data.hpp"
-#include "../Data/Tag/animation_tag.hpp"
-#include "../Data/Name/obj_name.hpp"
+#include "../Tag/animation_tag.hpp"
+#include "../Name/obj_name.hpp"
 //#include "../Concept/common_concepts.hpp"
 
 class AnimatorBase abstract

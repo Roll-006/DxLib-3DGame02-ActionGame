@@ -2,7 +2,7 @@
 #include <queue>
 
 #include "obj_base.hpp"
-#include "../Data/Name/object_pool_name.hpp"
+#include "../Name/object_pool_name.hpp"
 
 class ObjectPoolBase abstract
 {

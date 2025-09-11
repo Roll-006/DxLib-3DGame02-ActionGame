@@ -2,7 +2,7 @@
 #include <typeindex>
 
 #include "../Interface/i_state_controller.hpp"
-#include "../Data/Kind/player_state_kind.hpp"
+#include "../Kind/player_state_kind.hpp"
 
 #include "../State/PlayerState/player_move_null.hpp"
 #include "../State/PlayerState/player_move.hpp"

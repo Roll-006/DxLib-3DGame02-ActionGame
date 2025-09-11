@@ -1,6 +1,6 @@
 #pragma once
 #include "graphicer.hpp"
-#include "../Data/Path/ui_graphic_path.hpp"
+#include "../Path/ui_graphic_path.hpp"
 #include "../Shape/2DShape/square.hpp"
 
 class WeaponShortcutIcon final

@@ -6,9 +6,9 @@
 
 #include "../Base/singleton_base.hpp"
 
-//#include "../Data/Path/graphic_path.hpp"
-#include "../Data/Path/model_path.hpp"
-#include "../Data/Path/animation_path.hpp"
+//#include "../Path/graphic_path.hpp"
+#include "../Path/model_path.hpp"
+#include "../Path/animation_path.hpp"
 
 enum class HandleKind
 {

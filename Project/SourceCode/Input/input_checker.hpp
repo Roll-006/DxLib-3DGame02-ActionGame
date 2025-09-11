@@ -8,13 +8,13 @@
 #include "../GameTime/game_time_manager.hpp"
 #include "../Window/window.hpp"
 
-#include "../Data/CSV/csv.hpp"
+#include "../CSV/csv.hpp"
 #include "../Data/input_data.hpp"
-#include "../Data/Kind/time_kind.hpp"
-#include "../Data/Kind/device_kind.hpp"
+#include "../Kind/time_kind.hpp"
+#include "../Kind/device_kind.hpp"
 #include "../Concept/input_concepts.hpp"
 
-#include "../Data/IncludeList/vector.hpp"
+#include "../IncludeList/vector.hpp"
 
 /// @brief 役割 : 入力デバイスの検出, 入力状態の取得, 入力時間の計測
 class InputChecker final : public SingletonBase<InputChecker>

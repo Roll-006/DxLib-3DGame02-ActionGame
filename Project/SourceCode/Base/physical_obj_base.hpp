@@ -2,7 +2,7 @@
 #include <queue>
 #include "../Base/obj_base.hpp"
 
-#include "../Data/Kind/mass_kind.hpp"
+#include "../Kind/mass_kind.hpp"
 #include "../Part/collider.hpp"
 #include "../Data/collider_pair_data.hpp"
 #include "../GameTime/game_time_manager.hpp"

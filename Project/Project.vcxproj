@@ -107,7 +107,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>Library/Dxlib_h;Library/EffekseerForDXLib;Library/DxlibHelper_h;Library/nlohmann</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Library;Library/Dxlib_h;Library/EffekseerForDXLib;Library/DxlibHelper_h;</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <ObjectFileName>$(IntDir)</ObjectFileName>
@@ -115,7 +115,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>Library/Dxlib_h;Library/EffekseerForDXLib;Library/DxlibHelper_h;Library/nlohmann</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>Library;Library/Dxlib_h;Library/EffekseerForDXLib;Library/DxlibHelper_h;</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -127,7 +127,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>Library/Dxlib_h;Library/EffekseerForDXLib;Library/DxlibHelper_h;Library/nlohmann</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Library;Library/Dxlib_h;Library/EffekseerForDXLib;Library/DxlibHelper_h;</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <ObjectFileName>$(IntDir)</ObjectFileName>
@@ -137,7 +137,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>Library/Dxlib_h;Library/EffekseerForDXLib;Library/DxlibHelper_h;Library/nlohmann</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>Library;Library/Dxlib_h;Library/EffekseerForDXLib;Library/DxlibHelper_h;</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -165,6 +165,7 @@
     <ClCompile Include="SourceCode\GameTime\time_scale_controller.cpp" />
     <ClCompile Include="SourceCode\Handle\handle_keeper.cpp" />
     <ClCompile Include="SourceCode\Input\input_checker.cpp" />
+    <ClCompile Include="SourceCode\JSON\json_loader.cpp" />
     <ClCompile Include="SourceCode\main.cpp" />
     <ClCompile Include="SourceCode\Manager\collision_manager.cpp" />
     <ClCompile Include="SourceCode\Manager\effect_manager.cpp" />
@@ -206,6 +207,7 @@
     <ClCompile Include="SourceCode\Part\cinema_scope_frame.cpp" />
     <ClCompile Include="SourceCode\Part\collider.cpp" />
     <ClCompile Include="SourceCode\Part\graphicer.cpp" />
+    <ClCompile Include="SourceCode\Part\hit_points_gauge.cpp" />
     <ClCompile Include="SourceCode\Part\patrol_route_supporter.cpp" />
     <ClCompile Include="SourceCode\Part\screen_creator.cpp" />
     <ClCompile Include="SourceCode\Part\modeler.cpp" />
@@ -337,75 +339,35 @@
     <ClInclude Include="SourceCode\Concept\obj_concepts.hpp" />
     <ClInclude Include="SourceCode\Concept\state_concepts.hpp" />
     <ClInclude Include="SourceCode\Concept\vector_concepts.hpp" />
+    <ClInclude Include="SourceCode\CSV\csv.hpp" />
     <ClInclude Include="SourceCode\Data\collider_data.hpp" />
-    <ClInclude Include="SourceCode\Data\Event\aim_gun_data.hpp" />
-    <ClInclude Include="SourceCode\Data\Event\start_rocket_launcher_cutscene_data.hpp" />
-    <ClInclude Include="SourceCode\Data\Kind\enemy_role_kind.hpp" />
-    <ClInclude Include="SourceCode\Data\Kind\hit_points_part_kind.hpp" />
-    <ClInclude Include="SourceCode\Data\Kind\zombie_anim_kind.hpp" />
-    <ClInclude Include="SourceCode\Data\Kind\zombie_state_kind.hpp" />
     <ClInclude Include="SourceCode\Data\recoil_data.hpp" />
     <ClInclude Include="SourceCode\Data\animator_data.hpp" />
     <ClInclude Include="SourceCode\Data\box_data.hpp" />
     <ClInclude Include="SourceCode\Data\camera_data.hpp" />
     <ClInclude Include="SourceCode\Data\collider_pair_data.hpp" />
     <ClInclude Include="SourceCode\Data\control_virtual_camera_data.hpp" />
-    <ClInclude Include="SourceCode\Data\CSV\csv.hpp" />
     <ClInclude Include="SourceCode\Data\effect_data.hpp" />
-    <ClInclude Include="SourceCode\Data\Event\end_rocket_launcher_cutscene_data.hpp" />
-    <ClInclude Include="SourceCode\Data\Event\rocket_launcher_shot_data.hpp" />
-    <ClInclude Include="SourceCode\Data\Event\on_hit_bullet_data.hpp" />
-    <ClInclude Include="SourceCode\Data\Event\on_shot_bullet_data.hpp" />
-    <ClInclude Include="SourceCode\Data\Event\weapon_shot_data.hpp" />
-    <ClInclude Include="SourceCode\Data\Event\event.hpp" />
-    <ClInclude Include="SourceCode\Data\IncludeList\input.hpp" />
-    <ClInclude Include="SourceCode\Data\IncludeList\shape.hpp" />
-    <ClInclude Include="SourceCode\Data\IncludeList\vector.hpp" />
     <ClInclude Include="SourceCode\Data\input_data.hpp" />
-    <ClInclude Include="SourceCode\Data\Kind\blend_activation_policy_kind.hpp" />
-    <ClInclude Include="SourceCode\Data\Kind\box_kind.hpp" />
-    <ClInclude Include="SourceCode\Data\Kind\camera_state_kind.hpp" />
-    <ClInclude Include="SourceCode\Data\Kind\collider_kind.hpp" />
-    <ClInclude Include="SourceCode\Data\Kind\command_kind.hpp" />
-    <ClInclude Include="SourceCode\Data\Kind\coordinate_kind.hpp" />
-    <ClInclude Include="SourceCode\Data\Kind\device_kind.hpp" />
-    <ClInclude Include="SourceCode\Data\Kind\event_kind.hpp" />
-    <ClInclude Include="SourceCode\Data\Kind\gun_kind.hpp" />
-    <ClInclude Include="SourceCode\Data\Kind\holster_kind.hpp" />
-    <ClInclude Include="SourceCode\Data\Kind\input_kind.hpp" />
-    <ClInclude Include="SourceCode\Data\Kind\item_kind.hpp" />
-    <ClInclude Include="SourceCode\Data\Kind\knife_kind.hpp" />
-    <ClInclude Include="SourceCode\Data\Kind\mass_kind.hpp" />
-    <ClInclude Include="SourceCode\Data\Kind\mouse_kind.hpp" />
-    <ClInclude Include="SourceCode\Data\Kind\pad_kind.hpp" />
-    <ClInclude Include="SourceCode\Data\Kind\player_anim_kind.hpp" />
-    <ClInclude Include="SourceCode\Data\Kind\player_state_kind.hpp" />
-    <ClInclude Include="SourceCode\Data\Kind\scene_kind.hpp" />
-    <ClInclude Include="SourceCode\Data\Kind\shape_kind.hpp" />
-    <ClInclude Include="SourceCode\Data\Kind\sort_kind.hpp" />
-    <ClInclude Include="SourceCode\Data\Kind\texture_kind.hpp" />
-    <ClInclude Include="SourceCode\Data\Kind\time_kind.hpp" />
-    <ClInclude Include="SourceCode\Data\Kind\virtual_camera_controller_kind.hpp" />
-    <ClInclude Include="SourceCode\Data\Kind\weapon_kind.hpp" />
-    <ClInclude Include="SourceCode\Data\Kind\weapon_shortcut_pos_kind.hpp" />
-    <ClInclude Include="SourceCode\Data\Name\object_pool_name.hpp" />
-    <ClInclude Include="SourceCode\Data\Name\obj_name.hpp" />
-    <ClInclude Include="SourceCode\Data\Name\ui_creator_name.hpp" />
-    <ClInclude Include="SourceCode\Data\Path\effect_path.hpp" />
-    <ClInclude Include="SourceCode\Data\Path\animation_path.hpp" />
-    <ClInclude Include="SourceCode\Data\Path\bone_path.hpp" />
-    <ClInclude Include="SourceCode\Data\Path\ui_graphic_path.hpp" />
-    <ClInclude Include="SourceCode\Data\Path\model_path.hpp" />
-    <ClInclude Include="SourceCode\Data\Tag\animation_tag.hpp" />
-    <ClInclude Include="SourceCode\Data\Tag\obj_tag.hpp" />
     <ClInclude Include="SourceCode\Debugger\debugger.hpp" />
     <ClInclude Include="SourceCode\Drawer\drawer.hpp" />
+    <ClInclude Include="SourceCode\Event\aim_gun_data.hpp" />
+    <ClInclude Include="SourceCode\Event\end_rocket_launcher_cutscene_data.hpp" />
+    <ClInclude Include="SourceCode\Event\event.hpp" />
+    <ClInclude Include="SourceCode\Event\on_hit_bullet_data.hpp" />
+    <ClInclude Include="SourceCode\Event\on_shot_bullet_data.hpp" />
+    <ClInclude Include="SourceCode\Event\rocket_launcher_shot_data.hpp" />
+    <ClInclude Include="SourceCode\Event\start_rocket_launcher_cutscene_data.hpp" />
+    <ClInclude Include="SourceCode\Event\weapon_shot_data.hpp" />
     <ClInclude Include="SourceCode\GameSystem\game_system_setter.hpp" />
     <ClInclude Include="SourceCode\GameTime\fps.hpp" />
     <ClInclude Include="SourceCode\GameTime\game_time_manager.hpp" />
     <ClInclude Include="SourceCode\GameTime\time_scale_controller.hpp" />
     <ClInclude Include="SourceCode\Handle\handle_keeper.hpp" />
     <ClInclude Include="SourceCode\Handle\handle_creator.hpp" />
+    <ClInclude Include="SourceCode\IncludeList\input.hpp" />
+    <ClInclude Include="SourceCode\IncludeList\shape.hpp" />
+    <ClInclude Include="SourceCode\IncludeList\vector.hpp" />
     <ClInclude Include="SourceCode\Input\input_checker.hpp" />
     <ClInclude Include="SourceCode\Interface\i_grabbable.hpp" />
     <ClInclude Include="SourceCode\Interface\i_effect.hpp" />
@@ -425,6 +387,37 @@
     <ClInclude Include="SourceCode\Interface\i_state_controller.hpp" />
     <ClInclude Include="SourceCode\Interface\i_virtual_camera_controller.hpp" />
     <ClInclude Include="SourceCode\Interface\i_ui_creator.hpp" />
+    <ClInclude Include="SourceCode\JSON\json_loader.hpp" />
+    <ClInclude Include="SourceCode\Kind\blend_activation_policy_kind.hpp" />
+    <ClInclude Include="SourceCode\Kind\box_kind.hpp" />
+    <ClInclude Include="SourceCode\Kind\camera_state_kind.hpp" />
+    <ClInclude Include="SourceCode\Kind\collider_kind.hpp" />
+    <ClInclude Include="SourceCode\Kind\command_kind.hpp" />
+    <ClInclude Include="SourceCode\Kind\coordinate_kind.hpp" />
+    <ClInclude Include="SourceCode\Kind\device_kind.hpp" />
+    <ClInclude Include="SourceCode\Kind\enemy_role_kind.hpp" />
+    <ClInclude Include="SourceCode\Kind\event_kind.hpp" />
+    <ClInclude Include="SourceCode\Kind\gun_kind.hpp" />
+    <ClInclude Include="SourceCode\Kind\hit_points_part_kind.hpp" />
+    <ClInclude Include="SourceCode\Kind\holster_kind.hpp" />
+    <ClInclude Include="SourceCode\Kind\input_kind.hpp" />
+    <ClInclude Include="SourceCode\Kind\item_kind.hpp" />
+    <ClInclude Include="SourceCode\Kind\knife_kind.hpp" />
+    <ClInclude Include="SourceCode\Kind\mass_kind.hpp" />
+    <ClInclude Include="SourceCode\Kind\mouse_kind.hpp" />
+    <ClInclude Include="SourceCode\Kind\pad_kind.hpp" />
+    <ClInclude Include="SourceCode\Kind\player_anim_kind.hpp" />
+    <ClInclude Include="SourceCode\Kind\player_state_kind.hpp" />
+    <ClInclude Include="SourceCode\Kind\scene_kind.hpp" />
+    <ClInclude Include="SourceCode\Kind\shape_kind.hpp" />
+    <ClInclude Include="SourceCode\Kind\sort_kind.hpp" />
+    <ClInclude Include="SourceCode\Kind\texture_kind.hpp" />
+    <ClInclude Include="SourceCode\Kind\time_kind.hpp" />
+    <ClInclude Include="SourceCode\Kind\virtual_camera_controller_kind.hpp" />
+    <ClInclude Include="SourceCode\Kind\weapon_kind.hpp" />
+    <ClInclude Include="SourceCode\Kind\weapon_shortcut_pos_kind.hpp" />
+    <ClInclude Include="SourceCode\Kind\zombie_anim_kind.hpp" />
+    <ClInclude Include="SourceCode\Kind\zombie_state_kind.hpp" />
     <ClInclude Include="SourceCode\Manager\collision_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\effect_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\enemy_manager.hpp" />
@@ -434,6 +427,9 @@
     <ClInclude Include="SourceCode\Manager\rifle_cartridge_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\scene_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\weapon_manager.hpp" />
+    <ClInclude Include="SourceCode\Name\object_pool_name.hpp" />
+    <ClInclude Include="SourceCode\Name\obj_name.hpp" />
+    <ClInclude Include="SourceCode\Name\ui_creator_name.hpp" />
     <ClInclude Include="SourceCode\ObjectPool\share_scene_effect_object_pool.hpp" />
     <ClInclude Include="SourceCode\ObjectPool\play_scene_effect_object_pool.hpp" />
     <ClInclude Include="SourceCode\ObjectPool\object_pool_holder.hpp" />
@@ -457,6 +453,7 @@
     <ClInclude Include="SourceCode\Object\shell_casing.hpp" />
     <ClInclude Include="SourceCode\Object\skydome.hpp" />
     <ClInclude Include="SourceCode\Part\character_collider_creator.hpp" />
+    <ClInclude Include="SourceCode\Part\hit_points_gauge.hpp" />
     <ClInclude Include="SourceCode\Part\patrol_route_supporter.hpp" />
     <ClInclude Include="SourceCode\Part\hit_points.hpp" />
     <ClInclude Include="SourceCode\Part\bone_pos_corrector.hpp" />
@@ -477,6 +474,11 @@
     <ClInclude Include="SourceCode\Part\weapon_shortcut_icon.hpp" />
     <ClInclude Include="SourceCode\Part\zombie_animator.hpp" />
     <ClInclude Include="SourceCode\Part\zombie_state_controller.hpp" />
+    <ClInclude Include="SourceCode\Path\animation_path.hpp" />
+    <ClInclude Include="SourceCode\Path\bone_path.hpp" />
+    <ClInclude Include="SourceCode\Path\effect_path.hpp" />
+    <ClInclude Include="SourceCode\Path\model_path.hpp" />
+    <ClInclude Include="SourceCode\Path\ui_graphic_path.hpp" />
     <ClInclude Include="SourceCode\Random\random_generator.hpp" />
     <ClInclude Include="SourceCode\Scene\game_clear_scene.hpp" />
     <ClInclude Include="SourceCode\Scene\game_over_scene.hpp" />
@@ -550,6 +552,8 @@
     <ClInclude Include="SourceCode\State\ZombieState\track.hpp" />
     <ClInclude Include="SourceCode\State\ZombieState\wait.hpp" />
     <ClInclude Include="SourceCode\State\ZombieState\zombie_move.hpp" />
+    <ClInclude Include="SourceCode\Tag\animation_tag.hpp" />
+    <ClInclude Include="SourceCode\Tag\obj_tag.hpp" />
     <ClInclude Include="SourceCode\UI\player_ui_creator.hpp" />
     <ClInclude Include="SourceCode\UI\screen_filter_creator.hpp" />
     <ClInclude Include="SourceCode\UI\ui_drawer.hpp" />

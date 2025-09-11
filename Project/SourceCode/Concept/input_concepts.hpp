@@ -1,6 +1,6 @@
 #pragma once
 #include <concepts>
-#include "../Data/IncludeList/input.hpp"
+#include "../IncludeList/input.hpp"
 
 namespace input_concepts
 {

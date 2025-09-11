@@ -1,7 +1,7 @@
 #pragma once
 #include <unordered_map>
-#include "../Data/IncludeList/vector.hpp"
-#include "../Data/Kind/input_kind.hpp"
+#include "../IncludeList/vector.hpp"
+#include "../Kind/input_kind.hpp"
 
 struct InputCode
 {

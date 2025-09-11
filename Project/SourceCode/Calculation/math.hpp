@@ -12,8 +12,8 @@
 #include "matrix.hpp"
 #include "quaternion.hpp"
 
-#include "../Data/Kind/time_kind.hpp"
-#include "../Data/IncludeList/vector.hpp"
+#include "../Kind/time_kind.hpp"
+#include "../IncludeList/vector.hpp"
 #include "../GameTime/fps.hpp"
 
 class Line;

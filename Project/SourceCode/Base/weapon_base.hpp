@@ -4,8 +4,8 @@
 
 #include "../Part/modeler.hpp"
 
-#include "../Data/Kind/weapon_kind.hpp"
-#include "../Data/Kind/holster_kind.hpp"
+#include "../Kind/weapon_kind.hpp"
+#include "../Kind/holster_kind.hpp"
 
 #include "../Manager/obj_manager.hpp"
 #include "../Manager/collision_manager.hpp"

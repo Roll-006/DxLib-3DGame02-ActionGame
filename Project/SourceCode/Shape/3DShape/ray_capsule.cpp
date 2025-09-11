@@ -69,7 +69,7 @@ void RayCapsule::SetSegmentBeginPos(const VECTOR& segment_begin_pos, const bool 
 	}
 
 	// 線分の始点間の向きを取得
-	v3d::GetNormalizedV(m_end_capsule.GetSegment().GetBeginPos() - m_begin_capsule.GetSegment().GetBeginPos());
+	m_dir = v3d::GetNormalizedV(m_end_capsule.GetSegment().GetBeginPos() - m_begin_capsule.GetSegment().GetBeginPos());
 }
 
 void RayCapsule::SetSegmentEndPos(const VECTOR& segment_end_pos, const bool is_set_begin_capsule, const bool is_alone)
@@ -88,7 +88,7 @@ void RayCapsule::SetSegmentEndPos(const VECTOR& segment_end_pos, const bool is_s
 	}
 
 	// 線分の始点間の向きを取得
-	v3d::GetNormalizedV(m_end_capsule.GetSegment().GetBeginPos() - m_begin_capsule.GetSegment().GetBeginPos());
+	m_dir = v3d::GetNormalizedV(m_end_capsule.GetSegment().GetBeginPos() - m_begin_capsule.GetSegment().GetBeginPos());
 }
 
 void RayCapsule::SetCapsuleLength(const float capsule_length)

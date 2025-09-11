@@ -473,6 +473,12 @@
     <ClCompile Include="SourceCode\State\PlayerState\grabbed.cpp">
       <Filter>State\PlayerState</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\Part\hit_points_gauge.cpp">
+      <Filter>Part</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\JSON\json_loader.cpp">
+      <Filter>JSON</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\character_base.hpp">
@@ -540,90 +546,6 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Concept\vector_concepts.hpp">
       <Filter>Concept</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\CSV\csv.hpp">
-      <Filter>Data\CSV</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\IncludeList\input.hpp">
-      <Filter>Data\IncludeList</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\IncludeList\shape.hpp">
-      <Filter>Data\IncludeList</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\IncludeList\vector.hpp">
-      <Filter>Data\IncludeList</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\Kind\box_kind.hpp">
-      <Filter>Data\Kind</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\Kind\collider_kind.hpp">
-      <Filter>Data\Kind</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\Kind\command_kind.hpp">
-      <Filter>Data\Kind</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\Kind\coordinate_kind.hpp">
-      <Filter>Data\Kind</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\Kind\device_kind.hpp">
-      <Filter>Data\Kind</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\Kind\gun_kind.hpp">
-      <Filter>Data\Kind</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\Kind\input_kind.hpp">
-      <Filter>Data\Kind</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\Kind\knife_kind.hpp">
-      <Filter>Data\Kind</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\Kind\mass_kind.hpp">
-      <Filter>Data\Kind</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\Kind\mouse_kind.hpp">
-      <Filter>Data\Kind</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\Kind\pad_kind.hpp">
-      <Filter>Data\Kind</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\Kind\player_anim_kind.hpp">
-      <Filter>Data\Kind</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\Kind\scene_kind.hpp">
-      <Filter>Data\Kind</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\Kind\shape_kind.hpp">
-      <Filter>Data\Kind</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\Kind\sort_kind.hpp">
-      <Filter>Data\Kind</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\Kind\texture_kind.hpp">
-      <Filter>Data\Kind</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\Kind\time_kind.hpp">
-      <Filter>Data\Kind</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\Name\obj_name.hpp">
-      <Filter>Data\Name</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\Name\object_pool_name.hpp">
-      <Filter>Data\Name</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\Path\animation_path.hpp">
-      <Filter>Data\Path</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\Path\bone_path.hpp">
-      <Filter>Data\Path</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\Path\model_path.hpp">
-      <Filter>Data\Path</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\Tag\animation_tag.hpp">
-      <Filter>Data\Tag</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\Tag\obj_tag.hpp">
-      <Filter>Data\Tag</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Data\animator_data.hpp">
       <Filter>Data</Filter>
@@ -793,9 +715,6 @@
     <ClInclude Include="SourceCode\VirtualCamera\rot_control_virtual_camera.hpp">
       <Filter>VirtualCamera</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Data\Name\ui_creator_name.hpp">
-      <Filter>Data\Name</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\Part\camera_aim.hpp">
       <Filter>Part</Filter>
     </ClInclude>
@@ -813,9 +732,6 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Part\graphicer.hpp">
       <Filter>Part</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\Path\ui_graphic_path.hpp">
-      <Filter>Data\Path</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Interface\i_state.hpp">
       <Filter>Interface</Filter>
@@ -928,26 +844,11 @@
     <ClInclude Include="SourceCode\Handle\handle_creator.hpp">
       <Filter>Handle</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Data\Kind\camera_state_kind.hpp">
-      <Filter>Data\Kind</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\Kind\player_state_kind.hpp">
-      <Filter>Data\Kind</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\Kind\weapon_kind.hpp">
-      <Filter>Data\Kind</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\Interface\i_item.hpp">
       <Filter>Interface</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Data\Kind\item_kind.hpp">
-      <Filter>Data\Kind</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\Object\knife.hpp">
       <Filter>Object</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\Kind\holster_kind.hpp">
-      <Filter>Data\Kind</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\State\PlayerState\first_side_slash_knife.hpp">
       <Filter>State\PlayerState</Filter>
@@ -963,9 +864,6 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Part\weapon_shortcut_selecter.hpp">
       <Filter>Part</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\Kind\weapon_shortcut_pos_kind.hpp">
-      <Filter>Data\Kind</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Base\knife_base.hpp">
       <Filter>Base</Filter>
@@ -985,17 +883,11 @@
     <ClInclude Include="SourceCode\Interface\i_poolable.hpp">
       <Filter>Interface</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Data\Path\effect_path.hpp">
-      <Filter>Data\Path</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\Interface\i_observer.hpp">
       <Filter>Interface</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Part\subject.hpp">
       <Filter>Part</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\Kind\event_kind.hpp">
-      <Filter>Data\Kind</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\ShadowMap\shadow_map.hpp">
       <Filter>ShadowMap</Filter>
@@ -1027,24 +919,6 @@
     <ClInclude Include="SourceCode\Data\effect_data.hpp">
       <Filter>Data</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Data\Event\end_rocket_launcher_cutscene_data.hpp">
-      <Filter>Data\Event</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\Event\rocket_launcher_shot_data.hpp">
-      <Filter>Data\Event</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\Event\on_hit_bullet_data.hpp">
-      <Filter>Data\Event</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\Event\on_shot_bullet_data.hpp">
-      <Filter>Data\Event</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\Event\weapon_shot_data.hpp">
-      <Filter>Data\Event</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\Event\event.hpp">
-      <Filter>Data\Event</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\Interface\i_event.hpp">
       <Filter>Interface</Filter>
     </ClInclude>
@@ -1066,14 +940,8 @@
     <ClInclude Include="SourceCode\Interface\i_virtual_camera_controller.hpp">
       <Filter>Interface</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Data\Kind\virtual_camera_controller_kind.hpp">
-      <Filter>Data\Kind</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\State\PlayerState\shot_rocket_launcher.hpp">
       <Filter>State\PlayerState</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\Kind\blend_activation_policy_kind.hpp">
-      <Filter>Data\Kind</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Data\recoil_data.hpp">
       <Filter>Data</Filter>
@@ -1083,9 +951,6 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Interface\i_ui_creator.hpp">
       <Filter>Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\Event\start_rocket_launcher_cutscene_data.hpp">
-      <Filter>Data\Event</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Part\cinema_scope_frame.hpp">
       <Filter>Part</Filter>
@@ -1114,17 +979,8 @@
     <ClInclude Include="SourceCode\Part\zombie_state_controller.hpp">
       <Filter>Part</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Data\Kind\zombie_anim_kind.hpp">
-      <Filter>Data\Kind</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\Kind\zombie_state_kind.hpp">
-      <Filter>Data\Kind</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\Part\hit_points.hpp">
       <Filter>Part</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\Kind\hit_points_part_kind.hpp">
-      <Filter>Data\Kind</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\State\ZombieState\zombie_dead.hpp">
       <Filter>State\ZombieState</Filter>
@@ -1152,9 +1008,6 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Interface\i_enemy_role.hpp">
       <Filter>Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\Kind\enemy_role_kind.hpp">
-      <Filter>Data\Kind</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Interface\i_enemy_ai_state.hpp">
       <Filter>Interface</Filter>
@@ -1201,9 +1054,6 @@
     <ClInclude Include="SourceCode\Part\screen_creator.hpp">
       <Filter>Part</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Data\Event\aim_gun_data.hpp">
-      <Filter>Data\Event</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\Manager\enemy_manager.hpp">
       <Filter>Manager</Filter>
     </ClInclude>
@@ -1246,34 +1096,181 @@
     <ClInclude Include="SourceCode\Interface\i_grabbable.hpp">
       <Filter>Interface</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\Part\hit_points_gauge.hpp">
+      <Filter>Part</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Tag\animation_tag.hpp">
+      <Filter>Tag</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Tag\obj_tag.hpp">
+      <Filter>Tag</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Path\animation_path.hpp">
+      <Filter>Path</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Path\bone_path.hpp">
+      <Filter>Path</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Path\effect_path.hpp">
+      <Filter>Path</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Path\model_path.hpp">
+      <Filter>Path</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Path\ui_graphic_path.hpp">
+      <Filter>Path</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Name\obj_name.hpp">
+      <Filter>Name</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Name\object_pool_name.hpp">
+      <Filter>Name</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Name\ui_creator_name.hpp">
+      <Filter>Name</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Kind\blend_activation_policy_kind.hpp">
+      <Filter>Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Kind\box_kind.hpp">
+      <Filter>Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Kind\camera_state_kind.hpp">
+      <Filter>Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Kind\collider_kind.hpp">
+      <Filter>Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Kind\command_kind.hpp">
+      <Filter>Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Kind\coordinate_kind.hpp">
+      <Filter>Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Kind\device_kind.hpp">
+      <Filter>Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Kind\enemy_role_kind.hpp">
+      <Filter>Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Kind\event_kind.hpp">
+      <Filter>Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Kind\gun_kind.hpp">
+      <Filter>Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Kind\hit_points_part_kind.hpp">
+      <Filter>Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Kind\holster_kind.hpp">
+      <Filter>Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Kind\input_kind.hpp">
+      <Filter>Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Kind\item_kind.hpp">
+      <Filter>Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Kind\knife_kind.hpp">
+      <Filter>Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Kind\mass_kind.hpp">
+      <Filter>Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Kind\mouse_kind.hpp">
+      <Filter>Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Kind\pad_kind.hpp">
+      <Filter>Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Kind\player_anim_kind.hpp">
+      <Filter>Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Kind\player_state_kind.hpp">
+      <Filter>Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Kind\scene_kind.hpp">
+      <Filter>Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Kind\shape_kind.hpp">
+      <Filter>Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Kind\sort_kind.hpp">
+      <Filter>Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Kind\texture_kind.hpp">
+      <Filter>Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Kind\time_kind.hpp">
+      <Filter>Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Kind\virtual_camera_controller_kind.hpp">
+      <Filter>Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Kind\weapon_kind.hpp">
+      <Filter>Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Kind\weapon_shortcut_pos_kind.hpp">
+      <Filter>Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Kind\zombie_anim_kind.hpp">
+      <Filter>Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Kind\zombie_state_kind.hpp">
+      <Filter>Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\CSV\csv.hpp">
+      <Filter>CSV</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\aim_gun_data.hpp">
+      <Filter>Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\end_rocket_launcher_cutscene_data.hpp">
+      <Filter>Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\event.hpp">
+      <Filter>Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\on_hit_bullet_data.hpp">
+      <Filter>Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\on_shot_bullet_data.hpp">
+      <Filter>Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\rocket_launcher_shot_data.hpp">
+      <Filter>Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\start_rocket_launcher_cutscene_data.hpp">
+      <Filter>Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\weapon_shot_data.hpp">
+      <Filter>Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\IncludeList\input.hpp">
+      <Filter>IncludeList</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\IncludeList\shape.hpp">
+      <Filter>IncludeList</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\IncludeList\vector.hpp">
+      <Filter>IncludeList</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\collider_data.hpp">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\JSON\json_loader.hpp">
+      <Filter>JSON</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Data">
       <UniqueIdentifier>{5a2c6f1c-a568-4987-8934-7f3f80ed2bd5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Data\Name">
-      <UniqueIdentifier>{c3148a31-6123-4086-b761-3edd4fe5f420}</UniqueIdentifier>
     </Filter>
     <Filter Include="Base">
       <UniqueIdentifier>{56ace882-0c19-4d74-887a-e7b8e785f829}</UniqueIdentifier>
     </Filter>
     <Filter Include="Concept">
       <UniqueIdentifier>{a9c774d0-5df2-4b66-8aa2-945d950db781}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Data\Json">
-      <UniqueIdentifier>{3eab40b7-60e6-487a-879b-9b1e3022aeb9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Data\CSV">
-      <UniqueIdentifier>{aa18a683-8198-4225-be40-2831c615d11f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Data\Path">
-      <UniqueIdentifier>{ce592a38-5a0e-4681-97e6-ec115ff7e61a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Data\Kind">
-      <UniqueIdentifier>{72135338-3c4c-44c1-a81b-ef11a7ace830}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Data\Tag">
-      <UniqueIdentifier>{cd4f92e3-b298-4e4a-9752-61379ba99845}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scene">
       <UniqueIdentifier>{47238515-00d6-486e-bcf4-f6f55f21cce5}</UniqueIdentifier>
@@ -1286,9 +1283,6 @@
     </Filter>
     <Filter Include="Shape\2DShape">
       <UniqueIdentifier>{4b13d9b8-f21f-434a-aa12-561611daf8ca}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Data\IncludeList">
-      <UniqueIdentifier>{a9b5adeb-15db-4ac4-822d-1b42782f9731}</UniqueIdentifier>
     </Filter>
     <Filter Include="Calculation">
       <UniqueIdentifier>{3983031e-056b-4d1a-a00f-c1acc90bf560}</UniqueIdentifier>
@@ -1341,9 +1335,6 @@
     <Filter Include="Drawer">
       <UniqueIdentifier>{0ad1cdd1-f9f1-4f0c-8cec-bf613a662d11}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Data\Event">
-      <UniqueIdentifier>{f5b974f8-f979-4048-b2ca-49cde3426995}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GameTime">
       <UniqueIdentifier>{2bb7eee7-c5b3-48ad-a6f8-72c884dfb3b2}</UniqueIdentifier>
     </Filter>
@@ -1367,6 +1358,30 @@
     </Filter>
     <Filter Include="AI">
       <UniqueIdentifier>{30ef3376-ac8a-4c4d-bf0b-795c46bf7b9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CSV">
+      <UniqueIdentifier>{aa18a683-8198-4225-be40-2831c615d11f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Event">
+      <UniqueIdentifier>{f5b974f8-f979-4048-b2ca-49cde3426995}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="IncludeList">
+      <UniqueIdentifier>{a9b5adeb-15db-4ac4-822d-1b42782f9731}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="JSON">
+      <UniqueIdentifier>{3eab40b7-60e6-487a-879b-9b1e3022aeb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Kind">
+      <UniqueIdentifier>{72135338-3c4c-44c1-a81b-ef11a7ace830}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Name">
+      <UniqueIdentifier>{c3148a31-6123-4086-b761-3edd4fe5f420}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Path">
+      <UniqueIdentifier>{ce592a38-5a0e-4681-97e6-ec115ff7e61a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tag">
+      <UniqueIdentifier>{cd4f92e3-b298-4e4a-9752-61379ba99845}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

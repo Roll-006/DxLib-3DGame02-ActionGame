@@ -1,6 +1,6 @@
 #pragma once
 #include "weapon_base.hpp"
-#include "../Data/Kind/gun_kind.hpp"
+#include "../Kind/gun_kind.hpp"
 
 #include "../Object/main_camera.hpp"
 #include "../Part/subject.hpp"

@@ -1,5 +1,5 @@
 #pragma once
-#include "../Data/Kind/command_kind.hpp"
+#include "../Kind/command_kind.hpp"
 #include "../Base/singleton_base.hpp"
 #include "../Input/input_checker.hpp"
 

@@ -65,12 +65,6 @@ public:
     }
     #pragma endregion
 
-
-    #pragma region ‘‚«‚İ
-    // void Write1DCSV(std::string file_path);
-    // void Write2DCSV(std::string file_path);
-    #pragma endregion
-
 private:
     template<typename ContainerT>
     void AddData(ContainerT& container, const std::string& line)

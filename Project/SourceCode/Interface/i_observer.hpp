@@ -1,5 +1,5 @@
 #pragma once
-#include "../Data/Event/event.hpp"
+#include "../Event/event.hpp"
 
 class IObserver abstract
 {

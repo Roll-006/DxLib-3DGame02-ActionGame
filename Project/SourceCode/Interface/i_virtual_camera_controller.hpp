@@ -1,5 +1,5 @@
 #pragma once
-#include "../Data/Kind/virtual_camera_controller_kind.hpp"
+#include "../Kind/virtual_camera_controller_kind.hpp"
 #include "../Base/virtual_camera_base.hpp"
 
 class IVirtualCameraController abstract

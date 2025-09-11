@@ -1,6 +1,6 @@
 #pragma once
-#include "../Data/Name/obj_name.hpp"
-#include "../Data/Tag/obj_tag.hpp"
+#include "../Name/obj_name.hpp"
+#include "../Tag/obj_tag.hpp"
 
 #include "../Part/transform.hpp"
 

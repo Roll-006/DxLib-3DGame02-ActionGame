@@ -1,6 +1,6 @@
 #pragma once
 #include "../Data/control_virtual_camera_data.hpp"
-#include "../Data/Kind/input_kind.hpp"
+#include "../Kind/input_kind.hpp"
 
 class IControlVirtualCamera abstract
 {

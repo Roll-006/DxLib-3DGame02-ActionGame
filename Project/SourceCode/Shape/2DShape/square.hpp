@@ -2,7 +2,7 @@
 #include <string>
 #include <array>
 
-#include "../../Data/Kind/texture_kind.hpp"
+#include "../../Kind/texture_kind.hpp"
 #include "triangle.hpp"
 
 class Square final : public ShapeBase

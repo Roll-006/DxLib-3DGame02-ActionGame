@@ -2,7 +2,7 @@
 #include <dxlib_helper.h>
 
 #include "../Handle/handle_keeper.hpp"
-#include "../Data/Path/bone_path.hpp"
+#include "../Path/bone_path.hpp"
 #include "transform.hpp"
 
 class Modeler final

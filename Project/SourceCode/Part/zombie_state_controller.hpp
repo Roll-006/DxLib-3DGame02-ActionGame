@@ -1,6 +1,6 @@
 #pragma once
 #include "../Base/enemy_state_controller_base.hpp"
-#include "../Data/Kind/zombie_state_kind.hpp"
+#include "../Kind/zombie_state_kind.hpp"
 
 #include "../State/ZombieState/wait.hpp"
 #include "../State/ZombieState/patrol.hpp"

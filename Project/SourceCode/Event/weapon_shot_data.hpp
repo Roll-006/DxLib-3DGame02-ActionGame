@@ -1,6 +1,6 @@
 #pragma once
 #include "../Kind/gun_kind.hpp"
-#include "../../Part/transform.hpp"
+#include "../Part/transform.hpp"
 
 /// @brief •Ší‚ª’eŠÛ‚ğ”­Ë‚µ‚½
 struct WeaponShotData

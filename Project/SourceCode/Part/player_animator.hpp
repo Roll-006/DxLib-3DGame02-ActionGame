@@ -1,6 +1,6 @@
 #pragma once
 #include "../Base/animator_base.hpp"
-#include "../Data/Kind/player_anim_kind.hpp"
+#include "../Kind/player_anim_kind.hpp"
 
 class PlayerStateController;
 

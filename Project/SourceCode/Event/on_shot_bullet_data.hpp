@@ -1,5 +1,5 @@
 #pragma once
-#include "../../Part/transform.hpp"
+#include "../Part/transform.hpp"
 
 /// @brief ’eŠÛ‚ª”­ŽË‚³‚ê‚½
 struct OnShotBulletData
