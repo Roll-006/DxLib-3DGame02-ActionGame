@@ -17,8 +17,10 @@ public:
 	/// @brief Œ»Ý‚ÌãŒÀ’l‚ðÝ’è‚·‚é
 	void SetCurrentMaxHitPoints(const float current_max_hit_points);
 
-	[[nodiscard]] float	GetCurrentHitPoints() const { return m_current_hit_points; }
-	[[nodiscard]] bool	IsAlive()			  const { return m_current_hit_points > 0.0f; }
+	[[nodiscard]] float	GetCurrentHitPoints()		const { return m_current_hit_points; }
+	[[nodiscard]] float	GetCurrentMaxHitPoints()	const { return m_current_max_hit_points; }
+	[[nodiscard]] float	GetMaxHitPoints()			const { return m_max_hit_points; }
+	[[nodiscard]] bool	IsAlive()					const { return m_current_hit_points > 0.0f; }
 
 private:
 	float m_current_hit_points;

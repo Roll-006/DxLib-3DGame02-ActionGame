@@ -7,6 +7,7 @@ Zombie::Zombie() :
 	m_attack_interval_timer	(0.0f),
 	m_can_grab_target		(false)
 {
+	// TODO : JSONŽw’è
 	m_hit_points[HitPointsPartKind::kMain]		= std::make_shared<HitPoints>(1684.0f, 1684.0f);
 	m_hit_points[HitPointsPartKind::kHead]		= std::make_shared<HitPoints>(300.0f, 300.0f);
 	m_hit_points[HitPointsPartKind::kBody]		= std::make_shared<HitPoints>(500.0f, 500.0f);

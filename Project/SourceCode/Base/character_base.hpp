@@ -28,8 +28,9 @@ public:
 	[[nodiscard]] VECTOR						GetCurrentLookDir()			const { return m_look_dir.at(TimeKind::kCurrent); }
 	[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentHeldWeapon()		const { return m_current_held_weapon; }
 	[[nodiscard]] WeaponKind					GetCurrentHeldWeaponKind();
-	[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentAttachWeapon		(const HolsterKind holster_kind) const;
-	[[nodiscard]] WeaponKind					GetCurrentAttachWeaponKind	(const HolsterKind holster_kind) const;
+	[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentAttachWeapon		(const HolsterKind holster_kind)	const;
+	[[nodiscard]] WeaponKind					GetCurrentAttachWeaponKind	(const HolsterKind holster_kind)	const;
+	[[nodiscard]] std::shared_ptr<HitPoints>&	GetHitPoints				(const HitPointsPartKind kind);
 	#pragma endregion
 
 

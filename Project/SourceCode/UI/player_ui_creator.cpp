@@ -10,7 +10,7 @@ PlayerUICreator::PlayerUICreator(const std::shared_ptr<Player> player) :
 							player->GetWeaponShortcutSelecter()))
 	//m_2d_diffusion_shape(nullptr)
 {
-
+	m_sample_hit_points_gauge = std::make_shared<HitPointsGauge>(m_player->GetHitPoints(HitPointsPartKind::kMain));
 }
 
 PlayerUICreator::~PlayerUICreator()
@@ -20,13 +20,15 @@ PlayerUICreator::~PlayerUICreator()
 
 void PlayerUICreator::LateUpdate()
 {
-	m_weapon_shortcut->LateUpdate();
+	m_weapon_shortcut			->LateUpdate();
+	m_sample_hit_points_gauge	->LateUpdate();
 	//CreateCrossHair();
 }
 
 void PlayerUICreator::OnDraw()
 {
-	m_weapon_shortcut->Draw();
+	m_weapon_shortcut			->Draw();
+	m_sample_hit_points_gauge	->Draw();
 
 	//if (!m_2d_diffusion_shape) { return; }
 	//if (!std::dynamic_pointer_cast<GunBase>(m_player->GetCurrentAttachWeapon())->IsAiming()) { return; }

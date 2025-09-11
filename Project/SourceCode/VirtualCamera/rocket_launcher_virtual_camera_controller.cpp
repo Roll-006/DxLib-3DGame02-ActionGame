@@ -3,6 +3,8 @@
 #include "../UI/ui_drawer.hpp"
 #include "../Object/player.hpp"
 
+// FIXME : ロケット弾が演出中に着弾した際、カメラが不具合を起こすため修正が必要
+
 RocketLauncherVirtualCameraController::RocketLauncherVirtualCameraController(Player& player) :
 	m_virtual_camera_controller_kind(VirtualCameraControllerKind::kRocketLauncherCutscene),
 	m_controller_handle				(HandleCreator::GetInstance()->CreateHandle()),

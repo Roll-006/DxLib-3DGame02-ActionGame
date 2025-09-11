@@ -302,12 +302,6 @@
     <ClCompile Include="SourceCode\State\PlayerState\second_side_slash_knife.cpp">
       <Filter>State\PlayerState</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Part\weapon_shortcut_icon.cpp">
-      <Filter>Part</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\Part\weapon_shortcut_drawer.cpp">
-      <Filter>Part</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\Part\weapon_shortcut_selecter.cpp">
       <Filter>Part</Filter>
     </ClCompile>
@@ -473,11 +467,23 @@
     <ClCompile Include="SourceCode\State\PlayerState\grabbed.cpp">
       <Filter>State\PlayerState</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Part\hit_points_gauge.cpp">
-      <Filter>Part</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\JSON\json_loader.cpp">
       <Filter>JSON</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\VirtualCamera\grab_virtual_camera_controller.cpp">
+      <Filter>VirtualCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\UI\hit_points_gauge.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\UI\weapon_shortcut_drawer.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\UI\weapon_shortcut_icon.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\UI\status_ui.cpp">
+      <Filter>UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -856,12 +862,6 @@
     <ClInclude Include="SourceCode\State\PlayerState\second_side_slash_knife.hpp">
       <Filter>State\PlayerState</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Part\weapon_shortcut_icon.hpp">
-      <Filter>Part</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Part\weapon_shortcut_drawer.hpp">
-      <Filter>Part</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\Part\weapon_shortcut_selecter.hpp">
       <Filter>Part</Filter>
     </ClInclude>
@@ -1096,9 +1096,6 @@
     <ClInclude Include="SourceCode\Interface\i_grabbable.hpp">
       <Filter>Interface</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Part\hit_points_gauge.hpp">
-      <Filter>Part</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\Tag\animation_tag.hpp">
       <Filter>Tag</Filter>
     </ClInclude>
@@ -1260,6 +1257,21 @@
     </ClInclude>
     <ClInclude Include="SourceCode\JSON\json_loader.hpp">
       <Filter>JSON</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\VirtualCamera\grab_virtual_camera_controller.hpp">
+      <Filter>VirtualCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\UI\hit_points_gauge.hpp">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\UI\weapon_shortcut_drawer.hpp">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\UI\weapon_shortcut_icon.hpp">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\UI\status_ui.hpp">
+      <Filter>UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

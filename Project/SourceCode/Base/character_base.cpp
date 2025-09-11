@@ -58,6 +58,11 @@ WeaponKind CharacterBase::GetCurrentAttachWeaponKind(const HolsterKind holster_k
 {
 	return m_attach_weapons.count(holster_kind) ? m_attach_weapons.at(holster_kind)->GetWeaponKind() : WeaponKind::kNone;
 }
+
+std::shared_ptr<HitPoints>& CharacterBase::GetHitPoints(const HitPointsPartKind kind)
+{
+	return m_hit_points.at(kind);
+}
 #pragma endregion
 
 
