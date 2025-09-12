@@ -3,6 +3,9 @@
 
 #include "../../Object/player.hpp"
 #include "../../Part/player_state_controller.hpp"
+#include "../../Part/subject.hpp"
+
+#include "../../VirtualCamera/grab_virtual_camera_controller.hpp"
 
 namespace player_state
 {
@@ -20,6 +23,7 @@ namespace player_state
 		[[nodiscard]] std::shared_ptr<IState<Player>> ChangeState(std::shared_ptr<Player> obj) override;
 
 	private:
-
+		std::shared_ptr<Subject<Grabbed>>				m_subject;
+		std::shared_ptr<GrabVirtualCameraController>	m_grab_camera_controller;
 	};
 }

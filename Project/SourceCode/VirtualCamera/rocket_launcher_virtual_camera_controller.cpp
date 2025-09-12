@@ -58,7 +58,7 @@ RocketLauncherVirtualCameraController::~RocketLauncherVirtualCameraController()
 {
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	cinemachine_brain->RemoveVirtualCamera(m_enter_rot_camera	->GetObjHandle());
-	cinemachine_brain->RemoveVirtualCamera(m_zoom_in_camera	->GetObjHandle());
+	cinemachine_brain->RemoveVirtualCamera(m_zoom_in_camera		->GetObjHandle());
 	cinemachine_brain->RemoveVirtualCamera(m_zoom_out_camera	->GetObjHandle());
 	cinemachine_brain->RemoveVirtualCamera(m_exit_rot_camera	->GetObjHandle());
 

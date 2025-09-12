@@ -1,8 +1,8 @@
 #pragma once
 #include "../Interface/i_ui_creator.hpp"
 
+#include "status_icons.hpp"
 #include "weapon_shortcut_drawer.hpp"
-#include "hit_points_gauge.hpp"
 
 #include "../Part/player_state_controller.hpp"
 
@@ -35,11 +35,8 @@ private:
 	bool		m_is_active;
 
 	std::shared_ptr<Player>					m_player;
+	std::shared_ptr<StatusIcons>			m_status_icons;
 	std::shared_ptr<WeaponShortcutDrawer>	m_weapon_shortcut;
 
-	// ‰¼
-	std::shared_ptr<HitPointsGauge> m_sample_hit_points_gauge;
-
-	// ‰¼
 	//std::shared_ptr<ShapeBase>	m_2d_diffusion_shape;	// “ñŸŒ³ã‚ÌŠgU”ÍˆÍ}Œ`
 };

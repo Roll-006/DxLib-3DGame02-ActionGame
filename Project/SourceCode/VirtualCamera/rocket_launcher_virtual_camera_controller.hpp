@@ -13,8 +13,8 @@ public:
 	~RocketLauncherVirtualCameraController();
 
 	void Init();
-	void Update();
-	void LateUpdate();
+	void Update()		override;
+	void LateUpdate()	override;
 
 	void Activate()   override { m_is_active = true;  }
 	void Deactivate() override { m_is_active = false; }

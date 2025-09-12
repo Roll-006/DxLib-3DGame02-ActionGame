@@ -3,7 +3,7 @@
 #include <fstream>
 #include <sstream>
 
-class CSV
+class CSVLoader final
 {
 public:
     #pragma region 読み込み
@@ -15,7 +15,7 @@ public:
     /// @param is_ignore_first_row 最初の行を無視するかを判定
     /// @return データ読み込み後のコンテナ
     template<typename ContainerT>
-    [[nodiscard]] ContainerT Read1DCSV(const std::string& file_path, const bool is_ignore_first_row)
+    [[nodiscard]] ContainerT Load1DCSV(const std::string& file_path, const bool is_ignore_first_row)
     {
         ContainerT container;
         std::ifstream ifile(file_path.c_str(), std::ios::in);
@@ -43,7 +43,7 @@ public:
     /// @param is_ignore_first_col 最初の列を無視するかを判定
     /// @return データ読み込み後のコンテナ
     template<typename ContainerT>
-    [[nodiscard]] ContainerT Read2DCSV (std::string& file_path, bool is_ignore_first_col)
+    [[nodiscard]] ContainerT Load2DCSV (std::string& file_path, bool is_ignore_first_col)
     {
         ContainerT container;
         std::ifstream ifile(file_path.c_str(), std::ios::in);

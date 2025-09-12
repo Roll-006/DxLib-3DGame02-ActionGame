@@ -1,7 +1,7 @@
 #include "input_checker.hpp"
 
 InputChecker::InputChecker():
-	m_csv					(std::make_unique<CSV>()),
+	m_csv					(std::make_unique<CSVLoader>()),
 	m_xinput				(-1),
 	m_current_device		(DeviceKind::kKeyboard),
 	m_is_lock_mouse_pos		(true)
@@ -15,7 +15,7 @@ InputChecker::InputChecker():
 
 	LockCursor();
 
-	m_key_code = m_csv->Read1DCSV<std::vector<int>>("Data/CSV/key_number.csv", false);
+	m_key_code = m_csv->Load1DCSV<std::vector<int>>("Data/CSV/key_number.csv", false);
 	for (auto& code : m_key_code)
 	{
 		m_input_data.emplace_back(InputCode(InputKind::kKey, code), TimeKind::kPrev,	 InputData());

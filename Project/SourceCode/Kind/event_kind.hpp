@@ -8,4 +8,6 @@ enum class EventKind
 	kOnShotBullet,					// 弾丸が発射された
 	kOnHitBullet,					// 弾丸が衝突した
 	kEndRocketLauncherCutscene,		// ロケットランチャー発射時の演出が終了した
+	kGrab,							// 掴んだ
+	kGrabbed,						// 掴まれた
 };

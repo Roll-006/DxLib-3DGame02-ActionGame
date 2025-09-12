@@ -5,6 +5,7 @@
 #include "../VirtualCamera/rot_control_virtual_camera.hpp"
 #include "../VirtualCamera/control_virtual_cameras_controller.hpp"
 #include "../VirtualCamera/rocket_launcher_virtual_camera_controller.hpp"
+#include "../VirtualCamera/grab_virtual_camera_controller.hpp"
 
 #include "../Input/input_checker.hpp"
 #include "../GameTime/game_time_manager.hpp"

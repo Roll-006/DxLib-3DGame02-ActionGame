@@ -15,8 +15,8 @@ public:
 	~ControlVirtualCamerasController();
 
 	void Init();
-	void Update();
-	void LateUpdate();
+	void Update()		override;
+	void LateUpdate()	override;
 
 	/// @brief e‚ªŒ‚‚½‚ê‚½Û‚ÌƒŠƒRƒCƒ‹ˆ—
 	void OnRecoil(const GunBase& gun);

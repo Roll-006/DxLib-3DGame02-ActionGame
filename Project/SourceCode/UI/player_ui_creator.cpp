@@ -5,12 +5,13 @@ PlayerUICreator::PlayerUICreator(const std::shared_ptr<Player> player) :
 	m_priority			(1),
 	m_is_active			(true),
 	m_player			(player),
+	m_status_icons		(std::make_shared<StatusIcons>(player)),
 	m_weapon_shortcut	(std::make_shared<WeaponShortcutDrawer>(
-							m_player->GetStateController()->GetWeaponActionState(), 
+							player->GetStateController()->GetWeaponActionState(),
 							player->GetWeaponShortcutSelecter()))
 	//m_2d_diffusion_shape(nullptr)
 {
-	m_sample_hit_points_gauge = std::make_shared<HitPointsGauge>(m_player->GetHitPoints(HitPointsPartKind::kMain));
+
 }
 
 PlayerUICreator::~PlayerUICreator()
@@ -20,15 +21,15 @@ PlayerUICreator::~PlayerUICreator()
 
 void PlayerUICreator::LateUpdate()
 {
-	m_weapon_shortcut			->LateUpdate();
-	m_sample_hit_points_gauge	->LateUpdate();
+	m_weapon_shortcut	->LateUpdate();
+	m_status_icons		->LateUpdate();
 	//CreateCrossHair();
 }
 
 void PlayerUICreator::OnDraw()
 {
-	m_weapon_shortcut			->Draw();
-	m_sample_hit_points_gauge	->Draw();
+	m_weapon_shortcut	->Draw();
+	m_status_icons		->Draw();
 
 	//if (!m_2d_diffusion_shape) { return; }
 	//if (!std::dynamic_pointer_cast<GunBase>(m_player->GetCurrentAttachWeapon())->IsAiming()) { return; }

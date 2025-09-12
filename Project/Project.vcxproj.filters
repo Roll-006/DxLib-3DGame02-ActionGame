@@ -482,7 +482,7 @@
     <ClCompile Include="SourceCode\UI\weapon_shortcut_icon.cpp">
       <Filter>UI</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\UI\status_ui.cpp">
+    <ClCompile Include="SourceCode\UI\status_icons.cpp">
       <Filter>UI</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1216,7 +1216,7 @@
     <ClInclude Include="SourceCode\Kind\zombie_state_kind.hpp">
       <Filter>Kind</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\CSV\csv.hpp">
+    <ClInclude Include="SourceCode\CSV\csv_loader.hpp">
       <Filter>CSV</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Event\aim_gun_data.hpp">
@@ -1270,8 +1270,14 @@
     <ClInclude Include="SourceCode\UI\weapon_shortcut_icon.hpp">
       <Filter>UI</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\UI\status_ui.hpp">
+    <ClInclude Include="SourceCode\UI\status_icons.hpp">
       <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\grab_data.hpp">
+      <Filter>Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\grabbed_data.hpp">
+      <Filter>Event</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -3,6 +3,9 @@
 
 #include "../../Object/zombie.hpp"
 #include "../../Part/zombie_state_controller.hpp"
+#include "../../Part/subject.hpp"
+
+#include "../../VirtualCamera/grab_virtual_camera_controller.hpp"
 
 namespace zombie_state
 {
@@ -20,6 +23,7 @@ namespace zombie_state
 		[[nodiscard]] std::shared_ptr<IState<Zombie>> ChangeState(std::shared_ptr<Zombie> obj) override;
 
 	private:
-		
+		std::shared_ptr<Subject<Grab>>					m_subject;
+		std::shared_ptr<GrabVirtualCameraController>	m_grab_camera_controller;
 	};
 }
