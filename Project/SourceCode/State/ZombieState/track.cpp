@@ -35,6 +35,11 @@ std::shared_ptr<IState<Zombie>> zombie_state::Track::ChangeState(std::shared_ptr
 {
 	const auto state_controller = obj->GetStateController();
 
+	// ダッシュ攻撃
+	if (state_controller->TryRunAttack(obj))
+	{
+		return state_controller->GetState<RunAttack, Zombie>();
+	}
 	// 待機
 	if (!state_controller->TryTrack(obj) && !state_controller->TryGrabRun())
 	{

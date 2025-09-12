@@ -59,7 +59,6 @@ void Zombie::Update()
 	CalcMoveDir();
 	CalcLookDir();
 	CalcMoveVelocity();
-	CalcAttackIntervalTime();
 
 	ApplyLookDirToRot(m_look_dir.at(TimeKind::kCurrent));
 
@@ -102,9 +101,6 @@ void Zombie::Draw() const
 			shape->Draw(true, 0, 0xffffff);
 		}
 	}
-
-	DrawFormatString(0, 60, 0xffffff, "%d", CanAttack());
-	DrawFormatString(0, 80, 0xffffff, "%f", m_attack_interval_timer);
 
 	auto pos  = m_transform->GetPos (CoordinateKind::kWorld);
 	auto axes = m_transform->GetAxes(CoordinateKind::kWorld);

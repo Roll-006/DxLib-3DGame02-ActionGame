@@ -13,7 +13,7 @@ zombie_state::StandStun::~StandStun()
 
 void zombie_state::StandStun::Update(std::shared_ptr<Zombie> obj)
 {
-
+	obj->CalcAttackIntervalTime();
 }
 
 void zombie_state::StandStun::LateUpdate(std::shared_ptr<Zombie> obj)

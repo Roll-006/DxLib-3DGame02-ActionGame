@@ -62,7 +62,7 @@ bool GameManager::IsContinueLoop()
 	if (ProcessMessage()  != 0) { return false; }
 	if (ClearDrawScreen() != 0) { return false; }
 
-	#ifdef _DEBUG
+	//#ifdef _DEBUG
 	// TODO : Œã‚ÉƒRƒ}ƒ“ƒh‰»
 	if (InputChecker::GetInstance()->IsInput(KEY_INPUT_ESCAPE)) { return false; }
 
@@ -75,7 +75,7 @@ bool GameManager::IsContinueLoop()
 	{
 		return false;
 	}
-	#endif
+	//#endif
 
 	return true;
 }

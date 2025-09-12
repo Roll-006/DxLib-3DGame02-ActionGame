@@ -63,7 +63,7 @@ private:
 
 	static constexpr float kWalkSpeed				= 30.0f;
 	static constexpr float kRunSpeed				= 70.0f;
-	static constexpr float kRunGrabSpeed			= 10.0f;
+	static constexpr float kRunGrabSpeed			= 80.0f;
 
 	static constexpr float kMoveDirOffsetSpeed		= 5.0f;					// ˆÚ“®•ûŒü‚Ì•â³‘¬“x
 

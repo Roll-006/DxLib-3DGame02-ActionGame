@@ -13,7 +13,7 @@ zombie_state::ActionNull::~ActionNull()
 
 void zombie_state::ActionNull::Update(std::shared_ptr<Zombie> obj)
 {
-	
+	obj->CalcAttackIntervalTime();
 }
 
 void zombie_state::ActionNull::LateUpdate(std::shared_ptr<Zombie> obj)

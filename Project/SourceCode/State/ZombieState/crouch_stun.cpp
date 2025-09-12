@@ -13,7 +13,7 @@ zombie_state::CrouchStun::~CrouchStun()
 
 void zombie_state::CrouchStun::Update(std::shared_ptr<Zombie> obj)
 {
-
+	obj->CalcAttackIntervalTime();
 }
 
 void zombie_state::CrouchStun::LateUpdate(std::shared_ptr<Zombie> obj)

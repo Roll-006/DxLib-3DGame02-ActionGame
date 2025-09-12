@@ -50,6 +50,8 @@ void zombie_state::Grab::Enter(std::shared_ptr<Zombie> obj)
 	{
 		player->OnGrabbed(obj->GetTransform()->GetPos(CoordinateKind::kWorld), obj->GetCurrentLookDir());
 	}
+
+	obj->SetAttackIntervalTime();
 }
 
 void zombie_state::Grab::Exit(std::shared_ptr<Zombie> obj)
@@ -66,8 +68,6 @@ void zombie_state::Grab::Exit(std::shared_ptr<Zombie> obj)
 	{
 		player->OnRelease();
 	}
-
-	obj->SetAttackIntervalTime();
 }
 
 std::shared_ptr<IState<Zombie>> zombie_state::Grab::ChangeState(std::shared_ptr<Zombie> obj)
