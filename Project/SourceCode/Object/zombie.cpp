@@ -59,6 +59,7 @@ void Zombie::Update()
 	CalcMoveDir();
 	CalcLookDir();
 	CalcMoveVelocity();
+	CalcAttackIntervalTime();
 
 	ApplyLookDirToRot(m_look_dir.at(TimeKind::kCurrent));
 
@@ -102,6 +103,9 @@ void Zombie::Draw() const
 		}
 	}
 
+	DrawFormatString(0, 60, 0xffffff, "%d", CanAttack());
+	DrawFormatString(0, 80, 0xffffff, "%f", m_attack_interval_timer);
+
 	auto pos  = m_transform->GetPos (CoordinateKind::kWorld);
 	auto axes = m_transform->GetAxes(CoordinateKind::kWorld);
 	DrawLine3D(pos, pos + axes.x_axis * 100, 0xff0000);
@@ -120,19 +124,6 @@ void Zombie::Draw() const
 	DrawLine3D(head_pos, head_pos + dir2 * kVisibleDistance, 0xffffff);
 	DrawLine3D(head_pos, head_pos + rot_x1 * kVisibleDistance, 0xffffff);
 	DrawLine3D(head_pos, head_pos + rot_x2 * kVisibleDistance, 0xffffff);
-
-	DrawFormatString(800,  0, 0xffffff, "%f, %f, %f", pos.x, pos.y, pos.z);
-	DrawFormatString(800, 20, 0xffffff, "%d", m_hit_collider.size());
-	DrawFormatString(800, 40, 0xffffff, "%f", m_move_speed);
-
-	DrawFormatString(800,  80, 0xffffff, "main HP		: %f", m_hit_points.at(HitPointsPartKind::kMain)->GetCurrentHitPoints());
-	DrawFormatString(800, 100, 0xffffff, "head HP		: %f", m_hit_points.at(HitPointsPartKind::kHead)->GetCurrentHitPoints());
-	DrawFormatString(800, 120, 0xffffff, "body HP		: %f", m_hit_points.at(HitPointsPartKind::kBody)->GetCurrentHitPoints());
-	DrawFormatString(800, 140, 0xffffff, "left arm HP	: %f", m_hit_points.at(HitPointsPartKind::kLeftArm)->GetCurrentHitPoints());
-	DrawFormatString(800, 160, 0xffffff, "right arm HP  : %f", m_hit_points.at(HitPointsPartKind::kRightArm)->GetCurrentHitPoints());
-	DrawFormatString(800, 180, 0xffffff, "left leg HP	: %f", m_hit_points.at(HitPointsPartKind::kLeftLeg)->GetCurrentHitPoints());
-	DrawFormatString(800, 200, 0xffffff, "right leg HP	: %f", m_hit_points.at(HitPointsPartKind::kRightLeg)->GetCurrentHitPoints());
-	DrawFormatString(800, 220, 0xffffff, "is_invincible	: %d", m_is_invincible);
 }
 
 void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
@@ -243,6 +234,16 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	default:
 		break;
 	}
+}
+
+void Zombie::SetAttackIntervalTime()
+{
+	m_attack_interval_timer = kAttackIntervalTime;
+}
+
+void Zombie::CalcAttackIntervalTime()
+{
+	math::Decrease(m_attack_interval_timer, GetDeltaTime(), 0.0f);
 }
 
 bool Zombie::IsTargetInSight(const int target_model_handle)

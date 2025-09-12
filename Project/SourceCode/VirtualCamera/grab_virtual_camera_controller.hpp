@@ -33,8 +33,8 @@ private:
 	void CalcAimTransform();
 
 private:
-	static constexpr VECTOR kFollowOffset		= {  9.0f, 6.0f, -50.0f };
-	static constexpr VECTOR kTrackedObjOffset	= { -2.0f, 2.0f,   0.0f };
+	static constexpr VECTOR kFollowOffset		= { 0.0f, -10.0f, -50.0f };
+	static constexpr VECTOR kTrackedObjOffset	= { 5.0f,   0.0f,   0.0f };
 
 private:
 	VirtualCameraControllerKind		m_virtual_camera_controller_kind;

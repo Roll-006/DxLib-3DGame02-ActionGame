@@ -35,7 +35,7 @@ std::shared_ptr<IState<Zombie>> zombie_state::Wait::ChangeState(std::shared_ptr<
 {
 	const auto state_controller = obj->GetStateController();
 
-	// TODO : 仮でつかみ処理を強制。後に削除。
+	// ダッシュ攻撃
 	if (state_controller->TryRunAttack(obj))
 	{
 		return state_controller->GetState<RunAttack, Zombie>();

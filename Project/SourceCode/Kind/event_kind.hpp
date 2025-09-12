@@ -10,4 +10,5 @@ enum class EventKind
 	kEndRocketLauncherCutscene,		// ロケットランチャー発射時の演出が終了した
 	kGrab,							// 掴んだ
 	kGrabbed,						// 掴まれた
+	kEndGrabCutscene,				// 掴まれた際の演出が終了した
 };

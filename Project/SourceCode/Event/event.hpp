@@ -11,6 +11,7 @@
 #include "end_rocket_launcher_cutscene_data.hpp"
 #include "grab_data.hpp"
 #include "grabbed_data.hpp"
+#include "end_grab_cutscene_data.hpp"
 
 template <typename EventDataT>
 struct Event : public IEvent

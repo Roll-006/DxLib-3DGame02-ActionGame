@@ -139,15 +139,6 @@ void Player::Draw() const
 
 	m_modeler->Draw();
 
-	const auto p = m_transform->GetPos(CoordinateKind::kWorld);
-	DrawFormatString(0,  60, 0xffffff, "%f, %f, %f", m_move_velocity.x, m_move_velocity.y, m_move_velocity.z);
-	DrawFormatString(0,  80, 0xffffff, "%f, %f, %f", m_move_dir.at(TimeKind::kCurrent).x, m_move_dir.at(TimeKind::kCurrent).y, m_move_dir.at(TimeKind::kCurrent).z);
-	DrawFormatString(0, 100, 0xffffff, "%f, %f, %f", m_move_dir.at(TimeKind::kNext).x, m_move_dir.at(TimeKind::kNext).y, m_move_dir.at(TimeKind::kNext).z);
-	DrawFormatString(0, 120, 0xffffff, "%f", m_move_speed);
-	DrawFormatString(0, 140, 0xffffff, "HP : %f", m_hit_points.at(HitPointsPartKind::kMain)->GetCurrentHitPoints());
-	
-	DrawFormatString(0, 160, 0xffffff, "%d", CommandHandler::GetInstance()->GetCurrentTriggerCount(CommandKind::kCrouch));
-
 	if (m_current_held_weapon) { m_current_held_weapon->Draw(); }
 
 	for (const auto& attach_weapon : m_attach_weapons)

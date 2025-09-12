@@ -1,14 +1,15 @@
 #pragma once
 #include "../Interface/i_virtual_camera_controller.hpp"
-#include "virtual_camera.hpp"
+#include "../Interface/i_observer.hpp"
 
+#include "virtual_camera.hpp"
 #include "../Data/recoil_data.hpp"
 
 class CinemachineBrain;
 class Player;
 class GunBase;
 
-class ControlVirtualCamerasController final : public IVirtualCameraController
+class ControlVirtualCamerasController final : public IVirtualCameraController, public IObserver
 {
 public:
 	ControlVirtualCamerasController(Player& player);
@@ -23,6 +24,8 @@ public:
 
 	void Activate()   override { m_is_active = true; }
 	void Deactivate() override { m_is_active = false; }
+
+	void OnNotify(const IEvent& event) override;
 
 	[[nodiscard]] VirtualCameraControllerKind GetVirtualCameraControllerKind() const override;
 	[[nodiscard]] std::shared_ptr<VirtualCameraBase> GetHaveVirtualCamera(const std::string& name) const override;

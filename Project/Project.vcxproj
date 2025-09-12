@@ -354,6 +354,7 @@
     <ClInclude Include="SourceCode\Debugger\debugger.hpp" />
     <ClInclude Include="SourceCode\Drawer\drawer.hpp" />
     <ClInclude Include="SourceCode\Event\aim_gun_data.hpp" />
+    <ClInclude Include="SourceCode\Event\end_grab_cutscene_data.hpp" />
     <ClInclude Include="SourceCode\Event\end_rocket_launcher_cutscene_data.hpp" />
     <ClInclude Include="SourceCode\Event\event.hpp" />
     <ClInclude Include="SourceCode\Event\grabbed_data.hpp" />

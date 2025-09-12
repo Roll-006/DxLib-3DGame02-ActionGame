@@ -214,12 +214,11 @@ void CharacterColliderCreator::CalcCapsuleColliderDirAndLength(std::shared_ptr<M
 	modeler->ApplyMatrix();
 
 	// s—ñî•ñ‚ðŽæ“¾
-	const auto model_handle = modeler->GetModelHandle();
-	const auto frame_num = MV1SearchFrame(model_handle, BonePath.HEAD_TOP_END);
-	auto	   frame_m = MV1GetFrameLocalWorldMatrix(model_handle, frame_num);
+	const auto model_handle		= modeler->GetModelHandle();
+	auto	   head_top_m		= MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, BonePath.HEAD_TOP_END));
 
 	// Žn“_‚©‚ç“ª•”‚Ü‚Å‚Ì’·‚³‚ðŽæ“¾
-	const auto capsule_length = VSize(transform->GetPos(CoordinateKind::kWorld) - MGetTranslateElem(frame_m));
+	const auto capsule_length = VSize(transform->GetPos(CoordinateKind::kWorld) - MGetTranslateElem(head_top_m));
 	const auto capsule = std::static_pointer_cast<Capsule>(collider.at(ColliderKind::kCollider)->GetShape());
 	capsule->SetCapsuleLength(capsule_length);
 	capsule->SetDir(transform->GetUp(CoordinateKind::kWorld));

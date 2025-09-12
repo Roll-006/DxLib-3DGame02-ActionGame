@@ -1279,6 +1279,9 @@
     <ClInclude Include="SourceCode\Event\grabbed_data.hpp">
       <Filter>Event</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\Event\end_grab_cutscene_data.hpp">
+      <Filter>Event</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Data">

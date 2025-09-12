@@ -82,6 +82,22 @@ void ControlVirtualCamerasController::OnRecoil(const GunBase& gun)
 	m_recoil_angle[TimeKind::kNext] = VGet(-recoil_pitch, recoil_yaw, 0.0f);
 }
 
+void ControlVirtualCamerasController::OnNotify(const IEvent& event)
+{
+	// 掴まれた際の演出が終了した
+	if (event.GetType() == std::type_index(typeid(EndGrabCutsceneData)))
+	{
+		// カメラをリセット
+		// TODO : 視点リセット関数を作成
+		m_input_angle[TimeKind::kCurrent] = v3d::GetZeroV();
+		m_recoil_angle[TimeKind::kCurrent] = v3d::GetZeroV();
+		m_result_angle = v3d::GetZeroV();
+
+		const auto forward = m_player.GetTransform()->GetForward(CoordinateKind::kWorld);
+		m_aim_transform->SetRot(CoordinateKind::kWorld, forward);
+	}
+}
+
 VirtualCameraControllerKind ControlVirtualCamerasController::GetVirtualCameraControllerKind() const
 {
 	return m_virtual_camera_controller_kind;
@@ -108,7 +124,7 @@ std::vector<std::shared_ptr<VirtualCameraBase>> ControlVirtualCamerasController:
 		
 void ControlVirtualCamerasController::SetupForRotCamera()
 {
-	m_rot_control_camera->SetPriority(5);
+	m_rot_control_camera->SetPriority(1);
 	m_rot_control_camera->AttachTarget(m_aim_transform);
 
 	const auto body = m_rot_control_camera->GetBody();
@@ -123,7 +139,7 @@ void ControlVirtualCamerasController::SetupForRotCamera()
 
 void ControlVirtualCamerasController::SetupForAimCamera()
 {
-	m_aim_control_camera->SetPriority(4);
+	m_aim_control_camera->SetPriority(0);
 	m_aim_control_camera->AttachTarget(m_aim_transform);
 
 	const auto body = m_aim_control_camera->GetBody();

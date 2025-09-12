@@ -254,9 +254,10 @@ bool ZombieStateController::TryRunAttack(std::shared_ptr<Zombie> zombie)
 {
 	if (!m_target_character) { return false; }
 
-	const auto is_in_sight = zombie->IsTargetInSight(m_target_character->GetModeler()->GetModelHandle());
+	const auto is_in_sight	= zombie->IsTargetInSight(m_target_character->GetModeler()->GetModelHandle());
+	const auto can_attack	= zombie->CanAttack();
 
-	return is_in_sight;
+	return is_in_sight && can_attack;
 }
 
 bool ZombieStateController::TryMove()

@@ -19,9 +19,11 @@ public:
 	void Draw()				const	override;
 
 	void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) override;
+	void SetAttackIntervalTime() override;
+	void CalcAttackIntervalTime() override;
 
 	[[nodiscard]] bool IsTargetInSight(const int target_model_handle) override;
-	[[nodiscard]] bool CanAttack() const override { return m_attack_interval_timer > kAttackIntervalTime; }
+	[[nodiscard]] bool CanAttack() const override { return m_attack_interval_timer <= 0.0f; }
 	[[nodiscard]] bool CanGrabTraget() const { return m_can_grab_target; }
 
 

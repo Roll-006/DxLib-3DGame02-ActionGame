@@ -90,7 +90,7 @@ void CinemachineBrain::SetMainCamera(const std::shared_ptr<MainCamera> main_came
 void CinemachineBrain::SetBlendTime(const float blend_time)
 {
 	float scale = 0.0f;
-	if (blend_time != 0.0f)
+	if (m_blend_timer < m_blend_time && blend_time != 0.0f)
 	{
 		scale = blend_time / m_blend_time;
 	}
@@ -229,20 +229,18 @@ void CinemachineBrain::SetBlendTransform()
 
 			if (m_origin_virtual_camera_handle[TimeKind::kCurrent] == pr.first)
 			{
-				// ブレンド結果が格納されていればブレンド結果を起点とする
-				// FIXME : originA➡targetBにブレンド中に、originB➡targetAに切り替わった場合、到達までの時間が早くなる不具合発生中
-				if (m_blend_origin_result_transform != nullptr /*
-					&& m_target_virtual_camera_handle[TimeKind::kPrev] != m_origin_virtual_camera_handle*/)
-				{
-					m_blend_origin_transform = m_blend_origin_result_transform;
-				}
-				// ブレンド結果がない場合はバーチャルカメラのトランスフォームを直接起点とする
-				else
+				if (m_blend_origin_result_transform == nullptr)
 				{
 					origin_camera = camera;
 					m_blend_origin_transform = origin_camera->GetTransform();
 				}
 
+				is_seted_origin_transform = true;
+			}
+			// カメラを直接指定できない場合は、ブレンド結果を起点とする
+			else if(m_blend_origin_result_transform != nullptr)
+			{
+				m_blend_origin_transform = m_blend_origin_result_transform;
 				is_seted_origin_transform = true;
 			}
 		}
@@ -265,7 +263,7 @@ void CinemachineBrain::CalcBlendResuletTransform()
 	}
 
 	// トランスフォーム間の補間
-	const auto time_manager = GameTimeManager::GetInstance();
+	const auto time_manager		= GameTimeManager::GetInstance();
 	math::Increase(m_blend_timer, time_manager->GetDeltaTime(TimeScaleController::LayerKind::kCamera), m_blend_time, false);
 	m_blend_coefficient			= m_blend_time != 0.0f ? math::GetUnitValue<float, float>(0.0f, m_blend_time, m_blend_timer) : 1.0f;
 	auto blended_transform		= math::GetLerpTransform(*m_blend_origin_transform, *m_blend_target_transform, m_blend_coefficient, true, false, true);

@@ -118,7 +118,7 @@ std::vector<std::shared_ptr<VirtualCameraBase>> RocketLauncherVirtualCameraContr
 #pragma region ƒJƒƒ‰Ý’è
 void RocketLauncherVirtualCameraController::SetupForEnterRotCamera()
 {
-	m_enter_rot_camera->SetPriority(8);
+	m_enter_rot_camera->SetPriority(10);
 	m_enter_rot_camera->AttachTarget(m_rot_camera_aim_transform);
 	m_enter_rot_camera->GetBody()->SetFollowOffset(kFirstFollowOffsetForEnterRotCamera);
 	m_enter_rot_camera->GetAim()->SetTrackedObjOffset(kTrackedObjOffsetForEnterRotCamera);
@@ -126,7 +126,7 @@ void RocketLauncherVirtualCameraController::SetupForEnterRotCamera()
 
 void RocketLauncherVirtualCameraController::SetupForZoomInCamera()
 {
-	m_zoom_in_camera->SetPriority(9);
+	m_zoom_in_camera->SetPriority(11);
 	m_zoom_in_camera->AttachTarget(m_zoom_camera_aim_transform);
 	m_zoom_in_camera->GetBody()->SetFollowOffset(m_follow_offset_for_zoom_in);
 	m_zoom_in_camera->GetAim()->SetTrackedObjOffset(kTrackedObjOffsetForZoomInCamera);
@@ -134,7 +134,7 @@ void RocketLauncherVirtualCameraController::SetupForZoomInCamera()
 
 void RocketLauncherVirtualCameraController::SetupForZoomOutCamera()
 {
-	m_zoom_out_camera->SetPriority(10);
+	m_zoom_out_camera->SetPriority(12);
 	m_zoom_out_camera->AttachTarget(m_zoom_camera_aim_transform);
 	m_zoom_out_camera->GetBody()->SetFollowOffset(m_follow_offset_for_zoom_out);
 	m_zoom_out_camera->GetAim()->SetTrackedObjOffset(kTrackedObjOffsetForZoomOutCamera);
@@ -142,7 +142,7 @@ void RocketLauncherVirtualCameraController::SetupForZoomOutCamera()
 
 void RocketLauncherVirtualCameraController::SetupForExitRotCamera()
 {
-	m_exit_rot_camera->SetPriority(11);
+	m_exit_rot_camera->SetPriority(13);
 	m_exit_rot_camera->AttachTarget(m_rot_camera_aim_transform);
 	m_exit_rot_camera->GetBody()->SetFollowOffset(m_follow_offset_for_exit_rot);
 	m_exit_rot_camera->GetAim()->SetTrackedObjOffset(kTrackedObjOffsetForExitRotCamera);
