@@ -365,31 +365,29 @@ bool PlayerStateController::TryRun()
 	const auto command			= CommandHandler::GetInstance();
 	const auto input			= InputChecker::GetInstance();
 	const auto move_state_kind	= static_cast<player_state::MoveStateKind>(m_move_state.at(TimeKind::kCurrent)->GetStateKind());
-	auto	   is_run			= false;
 
-	// IDLEであった場合、入力モードを強制的にホールド方式に変更
-	if (move_state_kind == player_state::MoveStateKind::kIdle)
+	if (move_state_kind == player_state::MoveStateKind::kMove)
 	{
-		const bool is_trigger = command->GetInputModeKind(CommandKind::kRun) == InputModeKind::kTrigger ? true : false;
-
-		command->SetInputMode(CommandKind::kRun, InputModeKind::kHold);
 		if (command->IsExecute(CommandKind::kRun, TimeKind::kCurrent))
 		{
-			is_run = true;
+			return true;
 		}
+	}
+	// IDLEであった場合、次フレームのためにトリガーカウントを増やしておく
+	else
+	{
+		// 現在の入力方式を保存する
+		const bool is_trigger = command->GetInputModeKind(CommandKind::kRun) == InputModeKind::kTrigger ? true : false;
+
+		// 入力モードを強制的にホールド方式に変更
+		command->SetInputMode(CommandKind::kRun, InputModeKind::kHold);
+		const auto tmp_is_execute = command->IsExecute(CommandKind::kRun, TimeKind::kCurrent);
 
 		// もともとトリガー方式であれば元に戻す
 		if (is_trigger) { command->SetInputMode(CommandKind::kRun, InputModeKind::kTrigger); }
 	}
-	else
-	{
-		if (command->IsExecute(CommandKind::kRun, TimeKind::kCurrent))
-		{
-			is_run = true;
-		}
-	}
 
-	return is_run;
+	return false;
 }
 
 bool PlayerStateController::TryGrabbed(std::shared_ptr<Player> player)
