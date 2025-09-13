@@ -10,7 +10,7 @@ ZombieStateController::ZombieStateController()
 
 	// 初期ステート
 	m_ai_state	  [TimeKind::kPrev] = m_ai_state	[TimeKind::kCurrent] = GetState<zombie_state::Wait,		  Zombie>();
-	m_move_state  [TimeKind::kPrev] = m_move_state	[TimeKind::kCurrent] = GetState<zombie_state::MoveNull,   Zombie>();
+	m_move_state  [TimeKind::kPrev] = m_move_state	[TimeKind::kCurrent] = GetState<zombie_state::Idle,   Zombie>();
 	m_action_state[TimeKind::kPrev] = m_action_state[TimeKind::kCurrent] = GetState<zombie_state::ActionNull, Zombie>();
 }
 
@@ -47,7 +47,7 @@ void ZombieStateController::CreateState()
 	m_states[typeid(zombie_state::CloseRangeAttack)]	= std::make_shared<zombie_state::CloseRangeAttack>();
 	m_states[typeid(zombie_state::LongRangeAttack)]		= std::make_shared<zombie_state::LongRangeAttack>();
 
-	m_states[typeid(zombie_state::MoveNull)]			= std::make_shared<zombie_state::MoveNull>();
+	m_states[typeid(zombie_state::Idle)]			= std::make_shared<zombie_state::Idle>();
 	m_states[typeid(zombie_state::Move)]				= std::make_shared<zombie_state::Move>();
 
 	m_states[typeid(zombie_state::ActionNull)]			= std::make_shared<zombie_state::ActionNull>();
@@ -220,7 +220,7 @@ void ZombieStateController::JudgeDestinationMoveState(std::shared_ptr<IState<Zom
 	switch (static_cast<zombie_state::MoveStateKind>(stop_state->GetStateKind()))
 	{
 	case zombie_state::MoveStateKind::kMove:
-		stop_state = m_states.at(typeid(zombie_state::MoveNull));
+		stop_state = m_states.at(typeid(zombie_state::Idle));
 		break;
 
 	default:

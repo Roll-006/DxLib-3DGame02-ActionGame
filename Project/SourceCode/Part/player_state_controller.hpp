@@ -4,7 +4,7 @@
 #include "../Interface/i_state_controller.hpp"
 #include "../Kind/player_state_kind.hpp"
 
-#include "../State/PlayerState/player_move_null.hpp"
+#include "../State/PlayerState/player_idle.hpp"
 #include "../State/PlayerState/player_move.hpp"
 
 #include "../State/PlayerState/player_action_null.hpp"

@@ -4,7 +4,7 @@ namespace player_state
 {
 	enum class MoveStateKind
 	{
-		kMoveNull,
+		kIdle,
 		kMove,
 	};
 

@@ -227,7 +227,7 @@
     <ClCompile Include="SourceCode\State\PlayerState\equip_gun.cpp">
       <Filter>State\PlayerState</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\State\PlayerState\player_move_null.cpp">
+    <ClCompile Include="SourceCode\State\PlayerState\player_idle.cpp">
       <Filter>State\PlayerState</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\State\PlayerState\equip_knife.cpp">
@@ -431,7 +431,7 @@
     <ClCompile Include="SourceCode\State\ZombieState\zombie_move.cpp">
       <Filter>State\ZombieState</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\State\ZombieState\zombie_move_null.cpp">
+    <ClCompile Include="SourceCode\State\ZombieState\zombie_idle.cpp">
       <Filter>State\ZombieState</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Part\screen_creator.cpp">
@@ -772,7 +772,7 @@
     <ClInclude Include="SourceCode\State\PlayerState\equip_gun.hpp">
       <Filter>State\PlayerState</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\State\PlayerState\player_move_null.hpp">
+    <ClInclude Include="SourceCode\State\PlayerState\player_idle.hpp">
       <Filter>State\PlayerState</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\State\PlayerState\equip_knife.hpp">
@@ -1051,7 +1051,7 @@
     <ClInclude Include="SourceCode\Base\weapon_action_state_base.hpp">
       <Filter>Base</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\State\ZombieState\zombie_move_null.hpp">
+    <ClInclude Include="SourceCode\State\ZombieState\zombie_idle.hpp">
       <Filter>State\ZombieState</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Part\screen_creator.hpp">

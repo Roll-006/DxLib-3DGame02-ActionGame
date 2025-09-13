@@ -139,6 +139,8 @@ void Player::Draw() const
 
 	m_modeler->Draw();
 
+	DrawFormatString(800, 0, 0xffffff, "run_count : %d", CommandHandler::GetInstance()->GetCurrentTriggerCount(CommandKind::kRun));
+
 	if (m_current_held_weapon) { m_current_held_weapon->Draw(); }
 
 	for (const auto& attach_weapon : m_attach_weapons)
@@ -295,7 +297,7 @@ void Player::CalcMoveSpeedStop()
 
 void Player::CalcMoveSpeedRun()
 {
-	if (m_state->GetMoveState(TimeKind::kCurrent)->GetStateKind() == static_cast<int>(player_state::MoveStateKind::kMoveNull)) { return; }
+	if (m_state->GetMoveState(TimeKind::kCurrent)->GetStateKind() == static_cast<int>(player_state::MoveStateKind::kIdle)) { return; }
 
 	// 遅い状態からダッシュ状態に移行した場合、急速に加速させる
 	if (m_move_speed < kWalkSpeed) { m_move_speed = kWalkSpeed; }

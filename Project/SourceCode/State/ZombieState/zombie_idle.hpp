@@ -6,11 +6,11 @@
 
 namespace zombie_state
 {
-	class MoveNull final : public MoveStateBase<Zombie>
+	class Idle final : public MoveStateBase<Zombie>
 	{
 	public:
-		MoveNull();
-		~MoveNull() override;
+		Idle();
+		~Idle() override;
 
 		void Update		(std::shared_ptr<Zombie> obj) override;
 		void LateUpdate	(std::shared_ptr<Zombie> obj) override;

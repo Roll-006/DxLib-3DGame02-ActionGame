@@ -8,7 +8,7 @@ PlayerStateController::PlayerStateController() :
 	AddStopStatePair();
 
 	// 初期ステート
-	m_move_state		 [TimeKind::kPrev] = m_move_state		  [TimeKind::kCurrent] = GetState<player_state::MoveNull,			Player>();
+	m_move_state		 [TimeKind::kPrev] = m_move_state		  [TimeKind::kCurrent] = GetState<player_state::Idle,			Player>();
 	m_action_state		 [TimeKind::kPrev] = m_action_state		  [TimeKind::kCurrent] = GetState<player_state::ActionNull,			Player>();
 	m_weapon_action_state[TimeKind::kPrev] = m_weapon_action_state[TimeKind::kCurrent] = GetState<player_state::WeaponActionNull,	Player>();
 	m_special_state		 [TimeKind::kPrev] = m_special_state	  [TimeKind::kCurrent] = GetState<player_state::SpecialNull,		Player>();
@@ -39,7 +39,7 @@ void PlayerStateController::LateUpdate(std::shared_ptr<Player> player)
 
 void PlayerStateController::CreateState()
 {
-	m_states[typeid(player_state::MoveNull)]			 = std::make_shared<player_state::MoveNull>();
+	m_states[typeid(player_state::Idle)]			 = std::make_shared<player_state::Idle>();
 	m_states[typeid(player_state::Move)]				 = std::make_shared<player_state::Move>();
 	m_states[typeid(player_state::ActionNull)]			 = std::make_shared<player_state::ActionNull>();
 	m_states[typeid(player_state::Crouch)]				 = std::make_shared<player_state::Crouch>();
@@ -288,7 +288,7 @@ void PlayerStateController::JudgeDestinationMoveState(std::shared_ptr<IState<Pla
 	switch (static_cast<player_state::MoveStateKind>(stop_state->GetStateKind()))
 	{
 	case player_state::MoveStateKind::kMove:
-		stop_state = m_states.at(typeid(player_state::MoveNull));
+		stop_state = m_states.at(typeid(player_state::Idle));
 		break;
 
 	default:
@@ -362,28 +362,32 @@ bool PlayerStateController::TryMove()
 
 bool PlayerStateController::TryRun()
 {
-	const auto command		= CommandHandler::GetInstance();
-	const auto input		= InputChecker::GetInstance();
-	const auto is_trigger	= command->GetInputModeKind(CommandKind::kRun) == InputModeKind::kTrigger ? true : false;
+	const auto command			= CommandHandler::GetInstance();
+	const auto input			= InputChecker::GetInstance();
+	const auto move_state_kind	= static_cast<player_state::MoveStateKind>(m_move_state.at(TimeKind::kCurrent)->GetStateKind());
+	auto	   is_run			= false;
 
-	// IDLEであった場合、ホールド方式に変更して判定を行う
-	if (m_move_state.at(TimeKind::kCurrent)->GetStateKind() == static_cast<int>(player_state::MoveStateKind::kMoveNull))
+	// IDLEであった場合、入力モードを強制的にホールド方式に変更
+	if (move_state_kind == player_state::MoveStateKind::kIdle)
 	{
+		const bool is_trigger = command->GetInputModeKind(CommandKind::kRun) == InputModeKind::kTrigger ? true : false;
+
 		command->SetInputMode(CommandKind::kRun, InputModeKind::kHold);
+		if (command->IsExecute(CommandKind::kRun, TimeKind::kCurrent))
+		{
+			is_run = true;
+		}
+
+		// もともとトリガー方式であれば元に戻す
+		if (is_trigger) { command->SetInputMode(CommandKind::kRun, InputModeKind::kTrigger); }
 	}
-
-	// 実行判定
-	auto is_run = command->IsExecute(CommandKind::kRun, TimeKind::kCurrent);
-
-	// IDLEであるかつ現在ダッシュ状態である場合、ダッシュ状態を解除する
-	if (   m_move_state  .at(TimeKind::kCurrent)->GetStateKind() == static_cast<int>(player_state::MoveStateKind::kMoveNull)
-		&& m_action_state.at(TimeKind::kCurrent)->GetStateKind() == static_cast<int>(player_state::ActionStateKind::kRun))
+	else
 	{
-		is_run = false;
+		if (command->IsExecute(CommandKind::kRun, TimeKind::kCurrent))
+		{
+			is_run = true;
+		}
 	}
-
-	// もともとトリガー方式であれば元に戻す
-	if (is_trigger) { command->SetInputMode(CommandKind::kRun, InputModeKind::kTrigger); }
 
 	return is_run;
 }

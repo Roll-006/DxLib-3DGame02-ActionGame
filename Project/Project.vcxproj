@@ -257,7 +257,7 @@
     <ClCompile Include="SourceCode\State\PlayerState\finish_off.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\front_kick.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\equip_gun.cpp" />
-    <ClCompile Include="SourceCode\State\PlayerState\player_move_null.cpp" />
+    <ClCompile Include="SourceCode\State\PlayerState\player_idle.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\equip_knife.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\player_move.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\parry.cpp" />
@@ -274,7 +274,7 @@
     <ClCompile Include="SourceCode\State\ZombieState\grab_run.cpp" />
     <ClCompile Include="SourceCode\State\ZombieState\long_range_attack.cpp" />
     <ClCompile Include="SourceCode\State\ZombieState\run_attack.cpp" />
-    <ClCompile Include="SourceCode\State\ZombieState\zombie_move_null.cpp" />
+    <ClCompile Include="SourceCode\State\ZombieState\zombie_idle.cpp" />
     <ClCompile Include="SourceCode\State\ZombieState\alert.cpp" />
     <ClCompile Include="SourceCode\State\ZombieState\crouch_stun.cpp" />
     <ClCompile Include="SourceCode\State\ZombieState\zombie_dead.cpp" />
@@ -523,7 +523,7 @@
     <ClInclude Include="SourceCode\State\PlayerState\finish_off.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\front_kick.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\equip_gun.hpp" />
-    <ClInclude Include="SourceCode\State\PlayerState\player_move_null.hpp" />
+    <ClInclude Include="SourceCode\State\PlayerState\player_idle.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\equip_knife.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\player_move.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\parry.hpp" />
@@ -540,7 +540,7 @@
     <ClInclude Include="SourceCode\State\ZombieState\grab_run.hpp" />
     <ClInclude Include="SourceCode\State\ZombieState\long_range_attack.hpp" />
     <ClInclude Include="SourceCode\State\ZombieState\run_attack.hpp" />
-    <ClInclude Include="SourceCode\State\ZombieState\zombie_move_null.hpp" />
+    <ClInclude Include="SourceCode\State\ZombieState\zombie_idle.hpp" />
     <ClInclude Include="SourceCode\State\ZombieState\alert.hpp" />
     <ClInclude Include="SourceCode\State\ZombieState\crouch_stun.hpp" />
     <ClInclude Include="SourceCode\State\ZombieState\zombie_dead.hpp" />

@@ -49,7 +49,7 @@ std::shared_ptr<IState<Zombie>> zombie_state::Move::ChangeState(std::shared_ptr<
 	// IDLE
 	if (!state_controller->TryMove())
 	{
-		return state_controller->GetState<MoveNull, Zombie>();
+		return state_controller->GetState<Idle, Zombie>();
 	}
 
 	return nullptr;

@@ -39,7 +39,7 @@ std::shared_ptr<IState<Player>> player_state::Move::ChangeState(std::shared_ptr<
 	// IDLE
 	if (!obj->GetStateController()->TryMove())
 	{
-		return obj->GetStateController()->GetState<MoveNull, Player>();
+		return obj->GetStateController()->GetState<Idle, Player>();
 	}
 
 	return nullptr;

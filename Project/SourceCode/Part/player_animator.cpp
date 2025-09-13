@@ -85,7 +85,7 @@ void PlayerAnimator::ChangeAnim()
 {
 	switch (m_state->GetMoveState(TimeKind::kCurrent)->GetStateKind())
 	{
-	case static_cast<int>(player_state::MoveStateKind::kMoveNull):
+	case static_cast<int>(player_state::MoveStateKind::kIdle):
 		CombineMoveNullWithAction();
 		break;
 

@@ -12,7 +12,7 @@
 #include "../State/ZombieState/close_range_attack.hpp"
 #include "../State/ZombieState/long_range_attack.hpp"
 
-#include "../State/ZombieState/zombie_move_null.hpp"
+#include "../State/ZombieState/zombie_idle.hpp"
 #include "../State/ZombieState/zombie_move.hpp"
 
 #include "../State/ZombieState/zombie_action_null.hpp"

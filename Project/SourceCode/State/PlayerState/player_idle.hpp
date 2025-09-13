@@ -6,11 +6,11 @@
 
 namespace player_state
 {
-	class MoveNull final : public MoveStateBase<Player>
+	class Idle final : public MoveStateBase<Player>
 	{
 	public:
-		MoveNull();
-		~MoveNull() override;
+		Idle();
+		~Idle() override;
 
 		void Update		(std::shared_ptr<Player> obj) override;
 		void LateUpdate	(std::shared_ptr<Player> obj) override;
