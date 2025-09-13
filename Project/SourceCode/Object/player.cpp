@@ -15,7 +15,7 @@ Player::Player() :
 	m_current_equip_knife				(nullptr),
 	m_weapon_shortcut_selecter			(std::make_shared<WeaponShortcutSelecter>())
 {
-	m_hit_points[HitPointsPartKind::kMain] = std::make_shared<HitPoints>(2000.0f, 1500.0f);
+	m_health[HealthPartKind::kMain] = std::make_shared<Health>(2000.0f, 1500.0f);
 
 	// モデル・アニメーションを設定
 	m_modeler  = std::make_shared<Modeler>(m_transform, ModelPath.SWAT, kBasicAngle, kBasicScale);
@@ -186,7 +186,7 @@ void Player::OnRelease()
 
 void Player::OnGrabbedDamage(const float damage)
 {
-	OnDamage(HitPointsPartKind::kMain, damage);
+	OnDamage(HealthPartKind::kMain, damage);
 }
 
 //void Player::CalcMoveDirFirstFrame()

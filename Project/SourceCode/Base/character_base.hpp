@@ -3,7 +3,7 @@
 
 #include "../Interface/i_state_controller.hpp"
 #include "../Part/character_collider_creator.hpp"
-#include "../Part/hit_points.hpp"
+#include "../Part/health.hpp"
 #include "../Part/modeler.hpp"
 #include "animator_base.hpp"
 
@@ -30,7 +30,7 @@ public:
 	[[nodiscard]] WeaponKind					GetCurrentHeldWeaponKind();
 	[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentAttachWeapon		(const HolsterKind holster_kind)	const;
 	[[nodiscard]] WeaponKind					GetCurrentAttachWeaponKind	(const HolsterKind holster_kind)	const;
-	[[nodiscard]] std::shared_ptr<HitPoints>&	GetHitPoints				(const HitPointsPartKind kind);
+	[[nodiscard]] std::shared_ptr<Health>&	GetHealth				(const HealthPartKind kind);
 	#pragma endregion
 
 
@@ -79,7 +79,7 @@ protected:
 
 	void CalcMoveDir();
 
-	void OnDamage(const HitPointsPartKind part_kind, const float damage);
+	void OnDamage(const HealthPartKind part_kind, const float damage);
 	void JudgeInvincible();
 
 protected:
@@ -96,7 +96,7 @@ protected:
 	std::shared_ptr<WeaponBase>											m_current_held_weapon;	// Œ»İè‚É‚Á‚Ä‚¢‚é•Ší
 	std::unordered_map<HolsterKind, std::shared_ptr<WeaponBase>>		m_attach_weapons;		// ‘•’…‚µ‚Ä‚¢‚é•Ší
 
-	std::unordered_map<HitPointsPartKind, std::shared_ptr<HitPoints>>	m_hit_points;
+	std::unordered_map<HealthPartKind, std::shared_ptr<Health>>	m_health;
 
 	float m_invincible_time;
 	float m_invincible_timer;

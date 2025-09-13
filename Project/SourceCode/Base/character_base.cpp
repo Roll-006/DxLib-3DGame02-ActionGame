@@ -59,9 +59,9 @@ WeaponKind CharacterBase::GetCurrentAttachWeaponKind(const HolsterKind holster_k
 	return m_attach_weapons.count(holster_kind) ? m_attach_weapons.at(holster_kind)->GetWeaponKind() : WeaponKind::kNone;
 }
 
-std::shared_ptr<HitPoints>& CharacterBase::GetHitPoints(const HitPointsPartKind kind)
+std::shared_ptr<Health>& CharacterBase::GetHealth(const HealthPartKind kind)
 {
-	return m_hit_points.at(kind);
+	return m_health.at(kind);
 }
 #pragma endregion
 
@@ -119,11 +119,11 @@ void CharacterBase::CalcMoveDir()
 		m_move_dir_offset_speed);
 }
 
-void CharacterBase::OnDamage(const HitPointsPartKind part_kind, const float damage)
+void CharacterBase::OnDamage(const HealthPartKind part_kind, const float damage)
 {
-	if (!m_hit_points.count(part_kind)) { return; }
+	if (!m_health.count(part_kind)) { return; }
 
-	m_hit_points.at(part_kind)->OnDamage(damage);
+	m_health.at(part_kind)->OnDamage(damage);
 	m_invincible_timer	= m_invincible_time;
 	m_is_invincible		= true;
 }

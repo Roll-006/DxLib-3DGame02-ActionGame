@@ -8,13 +8,13 @@ Zombie::Zombie() :
 	m_can_grab_target		(false)
 {
 	// TODO : JSONŽw’è
-	m_hit_points[HitPointsPartKind::kMain]		= std::make_shared<HitPoints>(1684.0f, 1684.0f);
-	m_hit_points[HitPointsPartKind::kHead]		= std::make_shared<HitPoints>(300.0f, 300.0f);
-	m_hit_points[HitPointsPartKind::kBody]		= std::make_shared<HitPoints>(500.0f, 500.0f);
-	m_hit_points[HitPointsPartKind::kLeftArm]	= std::make_shared<HitPoints>(300.0f, 300.0f);
-	m_hit_points[HitPointsPartKind::kRightArm]	= std::make_shared<HitPoints>(300.0f, 300.0f);
-	m_hit_points[HitPointsPartKind::kLeftLeg]	= std::make_shared<HitPoints>(300.0f, 300.0f);
-	m_hit_points[HitPointsPartKind::kRightLeg]	= std::make_shared<HitPoints>(300.0f, 300.0f);
+	m_health[HealthPartKind::kMain]		= std::make_shared<Health>(1684.0f, 1684.0f);
+	m_health[HealthPartKind::kHead]		= std::make_shared<Health>(300.0f, 300.0f);
+	m_health[HealthPartKind::kBody]		= std::make_shared<Health>(500.0f, 500.0f);
+	m_health[HealthPartKind::kLeftArm]	= std::make_shared<Health>(300.0f, 300.0f);
+	m_health[HealthPartKind::kRightArm]	= std::make_shared<Health>(300.0f, 300.0f);
+	m_health[HealthPartKind::kLeftLeg]	= std::make_shared<Health>(300.0f, 300.0f);
+	m_health[HealthPartKind::kRightLeg]	= std::make_shared<Health>(300.0f, 300.0f);
 
 	m_modeler  = std::make_shared<Modeler>(m_transform, ModelPath.ZOMBIE_05, kBasicAngle, kBasicScale);
 	m_animator = std::make_shared<ZombieAnimator>(m_modeler, m_state);
@@ -151,8 +151,8 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	case ColliderKind::kHeadTrigger:
 		if (target_name == ObjName.BULLET)
 		{
-			OnDamage(HitPointsPartKind::kHead,		dynamic_cast<Bullet*>(target_obj)->GetPower());
-			OnDamage(HitPointsPartKind::kMain,		dynamic_cast<Bullet*>(target_obj)->GetPower());
+			OnDamage(HealthPartKind::kHead,		dynamic_cast<Bullet*>(target_obj)->GetPower());
+			OnDamage(HealthPartKind::kMain,		dynamic_cast<Bullet*>(target_obj)->GetPower());
 		}
 		break;
 
@@ -160,8 +160,8 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	case ColliderKind::kDownBodyTrigger:
 		if (target_name == ObjName.BULLET)
 		{
-			OnDamage(HitPointsPartKind::kBody,		dynamic_cast<Bullet*>(target_obj)->GetPower());
-			OnDamage(HitPointsPartKind::kMain,		dynamic_cast<Bullet*>(target_obj)->GetPower());
+			OnDamage(HealthPartKind::kBody,		dynamic_cast<Bullet*>(target_obj)->GetPower());
+			OnDamage(HealthPartKind::kMain,		dynamic_cast<Bullet*>(target_obj)->GetPower());
 		}
 		break;
 
@@ -169,16 +169,16 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	case ColliderKind::kLeftForearmTrigger:
 		if (target_name == ObjName.BULLET)
 		{
-			OnDamage(HitPointsPartKind::kLeftArm, dynamic_cast<Bullet*>(target_obj)->GetPower());
-			OnDamage(HitPointsPartKind::kMain, dynamic_cast<Bullet*>(target_obj)->GetPower());
+			OnDamage(HealthPartKind::kLeftArm, dynamic_cast<Bullet*>(target_obj)->GetPower());
+			OnDamage(HealthPartKind::kMain, dynamic_cast<Bullet*>(target_obj)->GetPower());
 		}
 		break;
 
 	case ColliderKind::kLeftHandTrigger:
 		if (target_name == ObjName.BULLET)
 		{
-			OnDamage(HitPointsPartKind::kLeftArm,	dynamic_cast<Bullet*>(target_obj)->GetPower());
-			OnDamage(HitPointsPartKind::kMain,		dynamic_cast<Bullet*>(target_obj)->GetPower());
+			OnDamage(HealthPartKind::kLeftArm,	dynamic_cast<Bullet*>(target_obj)->GetPower());
+			OnDamage(HealthPartKind::kMain,		dynamic_cast<Bullet*>(target_obj)->GetPower());
 		}
 
 		if (target_obj == GetStateController()->GetTargetCharacter().get() && target_collider_kind == ColliderKind::kCollider)
@@ -191,16 +191,16 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	case ColliderKind::kRightForearmTrigger:
 		if (target_name == ObjName.BULLET)
 		{
-			OnDamage(HitPointsPartKind::kRightArm,	dynamic_cast<Bullet*>(target_obj)->GetPower());
-			OnDamage(HitPointsPartKind::kMain,		dynamic_cast<Bullet*>(target_obj)->GetPower());
+			OnDamage(HealthPartKind::kRightArm,	dynamic_cast<Bullet*>(target_obj)->GetPower());
+			OnDamage(HealthPartKind::kMain,		dynamic_cast<Bullet*>(target_obj)->GetPower());
 		}
 		break;
 
 	case ColliderKind::kRightHandTrigger:
 		if (target_name == ObjName.BULLET)
 		{
-			OnDamage(HitPointsPartKind::kRightArm, dynamic_cast<Bullet*>(target_obj)->GetPower());
-			OnDamage(HitPointsPartKind::kMain, dynamic_cast<Bullet*>(target_obj)->GetPower());
+			OnDamage(HealthPartKind::kRightArm, dynamic_cast<Bullet*>(target_obj)->GetPower());
+			OnDamage(HealthPartKind::kMain, dynamic_cast<Bullet*>(target_obj)->GetPower());
 		}
 
 		if (target_obj == GetStateController()->GetTargetCharacter().get() && target_collider_kind == ColliderKind::kCollider)
@@ -213,8 +213,8 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	case ColliderKind::kLeftDownLegTrigger:
 		if (target_name == ObjName.BULLET)
 		{
-			OnDamage(HitPointsPartKind::kLeftLeg,	dynamic_cast<Bullet*>(target_obj)->GetPower());
-			OnDamage(HitPointsPartKind::kMain,		dynamic_cast<Bullet*>(target_obj)->GetPower());
+			OnDamage(HealthPartKind::kLeftLeg,	dynamic_cast<Bullet*>(target_obj)->GetPower());
+			OnDamage(HealthPartKind::kMain,		dynamic_cast<Bullet*>(target_obj)->GetPower());
 		}
 		break;
 
@@ -222,8 +222,8 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	case ColliderKind::kRightDownLegTrigger:
 		if (target_name == ObjName.BULLET)
 		{
-			OnDamage(HitPointsPartKind::kRightLeg,	dynamic_cast<Bullet*>(target_obj)->GetPower());
-			OnDamage(HitPointsPartKind::kMain,		dynamic_cast<Bullet*>(target_obj)->GetPower());
+			OnDamage(HealthPartKind::kRightLeg,	dynamic_cast<Bullet*>(target_obj)->GetPower());
+			OnDamage(HealthPartKind::kMain,		dynamic_cast<Bullet*>(target_obj)->GetPower());
 		}
 		break;
 

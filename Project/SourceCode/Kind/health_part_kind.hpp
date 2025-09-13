@@ -1,6 +1,6 @@
 #pragma once
 
-enum class HitPointsPartKind
+enum class HealthPartKind
 {
 	kMain,		// ƒƒCƒ“HP
 	kHead,		// “ª•”HP

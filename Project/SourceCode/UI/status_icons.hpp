@@ -1,6 +1,6 @@
 #pragma once
 #include "../Object/player.hpp"
-#include "hit_points_gauge.hpp"
+#include "health_gauge.hpp"
 
 class StatusIcons final
 {
@@ -12,5 +12,12 @@ public:
 	void Draw() const;
 
 private:
-	std::shared_ptr<HitPointsGauge> m_hit_points_gauge;
+	void CreateScreen();
+
+private:
+	static constexpr Vector2D<int>	kScreenSize = { 300, 300 };
+
+	std::shared_ptr<ScreenCreator>	m_screen_creator;
+	std::shared_ptr<HealthGauge>	m_health_gauge;
+	std::shared_ptr<Graphicer>		m_health_gauge_graphic;
 };
