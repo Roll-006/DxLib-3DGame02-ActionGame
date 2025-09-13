@@ -233,9 +233,9 @@ void CinemachineBrain::SetBlendTransform()
 				{
 					origin_camera = camera;
 					m_blend_origin_transform = origin_camera->GetTransform();
+					is_seted_origin_transform = true;
 				}
 
-				is_seted_origin_transform = true;
 			}
 			// カメラを直接指定できない場合は、ブレンド結果を起点とする
 			else if(m_blend_origin_result_transform != nullptr)
