@@ -5,11 +5,12 @@ class ScreenCreator final
 {
 public:
 	ScreenCreator(const Vector2D<int> screen_size);
+	ScreenCreator(const Vector2D<int> screen_size, const Vector2D<int> center_pos);
 	~ScreenCreator();
 
 	/// @brief 生成したスクリーンを使用する
 	/// @brief この関数を呼び出した後にスクリーンに反映する画像・図形を描画する
-	void UseScreen();
+	void UseScreen(const bool is_clear_screen);
 
 	/// @brief 生成したスクリーンの使用を終了する
 	/// @brief スクリーンに反映する画像・図形を描画した後にこの関数を呼び出す

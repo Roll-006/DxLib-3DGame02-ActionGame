@@ -84,9 +84,13 @@ void Player::Update()
 		}
 	}
 
-	if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_0) == InputState::kSingle)
+	if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_1) == InputState::kSingle)
 	{
 		m_health.at(HealthPartKind::kMain)->Recover(400);
+	}
+	if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_2) == InputState::kSingle)
+	{
+		m_health.at(HealthPartKind::kMain)->OnDamage(100);
 	}
 
 	m_move_dir_offset_speed				= kMoveDirOffsetSpeed;
