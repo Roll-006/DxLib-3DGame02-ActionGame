@@ -503,15 +503,6 @@ VECTOR math::GetDampedValueOnAxes(const VECTOR& current_value, const VECTOR& tar
 
 
 #pragma region 修正
-float math::ConnectMinusPiToPi(const float angle)
-{
-    // -π～πの値をループ
-    float connected_angle = angle;
-    if (connected_angle <= -DX_PI_F) { connected_angle += DX_TWO_PI_F; }
-    if (connected_angle >=  DX_PI_F) { connected_angle -= DX_TWO_PI_F; }
-    return connected_angle;
-}
-
 //MATRIX math::GetCorrectedMatrix(const MATRIX& origin_m, const VECTOR& offset_pos, const VECTOR& offset_angle, const VECTOR& offset_scale)
 //{
 //    const auto offset_angle_mat = math::ConvertEulerAnglesToXYZRotMatrix(offset_angle);

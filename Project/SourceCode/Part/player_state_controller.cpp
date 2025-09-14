@@ -381,7 +381,6 @@ bool PlayerStateController::TryRun()
 
 		// 入力モードを強制的にホールド方式に変更
 		command->SetInputMode(CommandKind::kRun, InputModeKind::kHold);
-		const auto tmp_is_execute = command->IsExecute(CommandKind::kRun, TimeKind::kCurrent);
 
 		// もともとトリガー方式であれば元に戻す
 		if (is_trigger) { command->SetInputMode(CommandKind::kRun, InputModeKind::kTrigger); }

@@ -16,8 +16,6 @@ public:
 	void SetScale			(const Vector2D<float>& scale)		{ m_scale					= scale; }
 	void SetScale			(const float scale)					{ m_scale					= Vector2D<float>(scale, scale); }
 	void SetAngle			(const float angle)					{ m_angle					= angle; }
-	//void SetWidth			(const int width)					{ m_width					= width; }
-	//void SetHeigth		(const int height)					{ m_height					= height; }
 	void SetAlphaBlendNum	(const int alpha_blend_num)			{ m_alpha_blend_num			= alpha_blend_num; }
 	void SetInvertHorizontal(const bool is_invert_horizontal)	{ m_is_invert_horizontal	= is_invert_horizontal; }
 	void SetInvertVertical	(const bool is_invert_vertical)		{ m_is_invert_vertical		= is_invert_vertical; }
@@ -26,8 +24,7 @@ public:
 	[[nodiscard]] Vector2D<int>		GetCenterPos()			const { return m_center_pos; }
 	[[nodiscard]] Vector2D<float>	GetScale()				const { return m_scale; }
 	[[nodiscard]] float				GetAngle()				const { return m_angle; }
-	[[nodiscard]] int				GetOriginWidth()		const { return m_origin_width; }
-	[[nodiscard]] int				GetOriginHeight()		const { return m_origin_height; }
+	[[nodiscard]] Vector2D<int>		GetOriginSize()			const { return Vector2D<int>(m_origin_width, m_origin_height); }
 	[[nodiscard]] int				GetAlphaBlendNum()		const { return m_alpha_blend_num; }
 	[[nodiscard]] bool				IsInvertHorizontal()	const { return m_is_invert_horizontal; }
 	[[nodiscard]] bool				IsInvertVertical()		const { return m_is_invert_vertical; }

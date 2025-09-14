@@ -339,7 +339,7 @@ void ControlVirtualCamerasController::CalcInputAngle()
 	if (command->IsExecute(CommandKind::kMoveLeftCamera,	TimeKind::kCurrent)) { m_input_angle[TimeKind::kCurrent].y += m_velocity.y; }
 	if (command->IsExecute(CommandKind::kMoveRightCamera,	TimeKind::kCurrent)) { m_input_angle[TimeKind::kCurrent].y += m_velocity.y; }
 
-	m_input_angle[TimeKind::kCurrent].y = math::ConnectMinusPiToPi(m_input_angle[TimeKind::kCurrent].y);
+	m_input_angle[TimeKind::kCurrent].y = math::ConnectMinusValueToValue(m_input_angle[TimeKind::kCurrent].y, DX_PI_F);
 
 	// äpìxêßå¿
 	if (m_input_angle[TimeKind::kCurrent].x < kMinVerticalInputAngle * math::kDegToRad) { m_input_angle[TimeKind::kCurrent].x = kMinVerticalInputAngle * math::kDegToRad; }

@@ -4,7 +4,8 @@
 zombie_state::Grab::Grab() :
 	ActionStateBase			(static_cast<int>(zombie_state::ActionStateKind::kGrab)),
 	m_subject				(std::make_shared<Subject<Grab>>()),
-	m_grab_camera_controller(nullptr)
+	m_grab_camera_controller(nullptr),
+	m_damage_interval_timer	(0.0f)
 {
 
 }
@@ -19,10 +20,12 @@ void zombie_state::Grab::Update(std::shared_ptr<Zombie> obj)
 	const auto state_controller = obj->GetStateController();
 	const auto player			= std::dynamic_pointer_cast<Player>(state_controller->GetTargetCharacter());
 
-	if (player)
+	// ダメージ処理
+	math::Increase(m_damage_interval_timer, obj->GetDeltaTime(), kDamageIntervalTime, true);
+	if (m_damage_interval_timer == 0.0f)
 	{
-		// TODO : 仮ダメージ。のちに変更。
-		player->OnGrabbedDamage(40.0f * obj->GetDeltaTime());
+		// TODO : 攻撃力からダメージ量を計算
+		player->OnGrabbedDamage(50.0f);
 	}
 }
 
@@ -33,6 +36,8 @@ void zombie_state::Grab::LateUpdate(std::shared_ptr<Zombie> obj)
 
 void zombie_state::Grab::Enter(std::shared_ptr<Zombie> obj)
 {
+	m_damage_interval_timer = 0.0f;
+
 	// 演出用カメラを生成
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	m_grab_camera_controller = std::make_shared<GrabVirtualCameraController>();

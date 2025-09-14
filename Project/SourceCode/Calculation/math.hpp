@@ -210,8 +210,15 @@ namespace math
 
 
 	#pragma region 値の修正
-	/// @brief 角度が-π～πの値をループするように繋ぎ合わせる
-	float ConnectMinusPiToPi(const float angle);
+	/// @brief 値が指定の[-value～value]をループするように繋ぎ合わせる
+	template<typename T>
+	T ConnectMinusValueToValue(const T current_value, const T connect_value)
+	{
+		T connected_value = current_value;
+		if (connected_value <= -connect_value) { connected_value += connect_value * 2; }
+		if (connected_value >=  connect_value) { connected_value -= connect_value * 2; }
+		return connected_value;
+	}
 
 	/// @brief 0～1の間に変換した値を取得
 	/// @tparam T 変換対象の型

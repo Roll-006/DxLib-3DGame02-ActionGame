@@ -84,6 +84,11 @@ void Player::Update()
 		}
 	}
 
+	if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_0) == InputState::kSingle)
+	{
+		m_health.at(HealthPartKind::kMain)->Recover(400);
+	}
+
 	m_move_dir_offset_speed				= kMoveDirOffsetSpeed;
 	m_look_dir_offset_angle				= kLookDirOffsetAngle			* math::kDegToRad;
 	m_confirm_look_dir_threshold_angle	= kConfirmLookDirThresholdAngle * math::kDegToRad;
@@ -138,8 +143,6 @@ void Player::Draw() const
 	if (!IsActive()) { return; }
 
 	m_modeler->Draw();
-
-	DrawFormatString(800, 0, 0xffffff, "run_count : %d", CommandHandler::GetInstance()->GetCurrentTriggerCount(CommandKind::kRun));
 
 	if (m_current_held_weapon) { m_current_held_weapon->Draw(); }
 
@@ -451,7 +454,7 @@ void Player::CalcLookDir()
 	const VECTOR current_yaw = math::GetYawRotVector(m_look_dir.at(TimeKind::kCurrent));
 	const VECTOR next_yaw	 = math::GetYawRotVector(m_look_dir.at(TimeKind::kNext));
 	VECTOR distance = next_yaw - current_yaw;
-	distance.y = math::ConnectMinusPiToPi(distance.y);
+	distance.y = math::ConnectMinusValueToValue(distance.y, DX_PI_F);
 
 	// ƒJƒƒ‰‚ðŠî€‚É‚µ‚Ä‰E‘¤‚Å‚ ‚Á‚½ê‡‚Í”½“]
 	if (distance.y > 0) { m_look_dir_offset_angle *= -1; }

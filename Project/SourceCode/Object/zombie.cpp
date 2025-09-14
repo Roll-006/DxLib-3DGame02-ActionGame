@@ -327,7 +327,7 @@ void Zombie::CalcLookDir()
 	const VECTOR current_yaw	= math::GetYawRotVector(m_look_dir.at(TimeKind::kCurrent));
 	const VECTOR next_yaw		= math::GetYawRotVector(m_look_dir.at(TimeKind::kNext));
 	VECTOR distance = next_yaw - current_yaw;
-	distance.y = math::ConnectMinusPiToPi(distance.y);
+	distance.y = math::ConnectMinusValueToValue(distance.y, DX_PI_F);
 
 	// TODO : å„Ç…ïœçX
 	float angle1	= 1.7f * math::kDegToRad;
