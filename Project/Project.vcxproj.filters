@@ -365,7 +365,7 @@
     <ClCompile Include="SourceCode\Object\non_collide_rocket_bomb.cpp">
       <Filter>Object</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Object\assault_rifle (2).cpp">
+    <ClCompile Include="SourceCode\Object\rifle_cartridge_box.cpp">
       <Filter>Object</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Object\assault_rifle_magazine.cpp">
@@ -961,7 +961,7 @@
     <ClInclude Include="SourceCode\Object\non_collide_rocket_bomb.hpp">
       <Filter>Object</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Object\assault_rifle (2).hpp">
+    <ClInclude Include="SourceCode\Object\rifle_cartridge_box.hpp">
       <Filter>Object</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Object\assault_rifle_magazine.hpp">

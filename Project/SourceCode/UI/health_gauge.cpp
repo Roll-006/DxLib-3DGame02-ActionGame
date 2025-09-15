@@ -263,10 +263,10 @@ void HealthGauge::CalcGaugePercent()
 		// ゲージ回復中にダメージを受けた場合、強制的に回復演出を終了
 		if (m_health->GetCurrentHealth() < m_prev_health)
 		{
-			m_current_health_gauge_virtual_percent = m_current_health_gauge_actual_percent;
-			m_recover_gauge_percent = 0.0f;
-			m_damage_gauge_percent = m_prev_health_gauge_actual_percent;
-			m_is_recover_gauge = false;
+			m_current_health_gauge_virtual_percent	= m_current_health_gauge_actual_percent;
+			m_recover_gauge_percent					= 0.0f;
+			m_damage_gauge_percent					= m_prev_health_gauge_actual_percent;
+			m_is_recover_gauge						= false;
 		}
 	}
 

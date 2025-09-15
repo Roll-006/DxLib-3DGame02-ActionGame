@@ -3,6 +3,6 @@
 enum class ItemKind
 {
 	kWeapon,
-	kBullet,
+	kRifleCartridge,
 	kPotion,
 };
