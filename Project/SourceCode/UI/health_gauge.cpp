@@ -1,89 +1,86 @@
 #include "health_gauge.hpp"
 
-// TODO : 後に最適化
 HealthGauge::HealthGauge(std::shared_ptr<Health>& health) : 
-	m_health								(health),
-	m_current_health_gauge_graphic			(std::make_shared<Graphicer>(UIGraphicPath.CURRENT_HEALTH_GAUGE)),
-	m_damage_gauge_graphic					(std::make_shared<Graphicer>(UIGraphicPath.DAMAGE_GAUGE)),
-	m_recover_gauge_graphic					(std::make_shared<Graphicer>(UIGraphicPath.RECOVER_GAUGE)),
-	m_warning_circle_graphic				(std::make_shared<Graphicer>(UIGraphicPath.WARNING_CIRCLE)),
-	m_basis_circle_screen					(std::make_shared<ScreenCreator>(kScreenSize)),
-	m_warning_circle_screen					(std::make_shared<ScreenCreator>(kScreenSize)),
-	m_current_max_health_frame_circle_screen(std::make_shared<ScreenCreator>(kScreenSize)),
-	m_max_health_frame_circle_screen		(std::make_shared<ScreenCreator>(kScreenSize)),
-	m_current_health_gauge_screen			(std::make_shared<ScreenCreator>(kScreenSize)),
-	m_damage_gauge_screen					(std::make_shared<ScreenCreator>(kScreenSize)),
-	m_recover_gauge_screen					(std::make_shared<ScreenCreator>(kScreenSize)),
-	m_gauge_screen							(std::make_shared<ScreenCreator>(kScreenSize, kCenterPos)),
-	m_result_screen							(std::make_shared<ScreenCreator>(kScreenSize)),
-	m_current_health_mask_screen			(std::make_shared<ScreenCreator>(m_current_health_gauge_graphic->GetOriginSize(), kCenterPos)),
-	m_damage_mask_screen					(std::make_shared<ScreenCreator>(m_damage_gauge_graphic->GetOriginSize(), kCenterPos)),
-	m_recover_mask_screen					(std::make_shared<ScreenCreator>(m_recover_gauge_graphic->GetOriginSize(), kCenterPos)),
-	m_warning_gauge_screen					(nullptr),
-	m_mask_creator							(std::make_shared<MaskCreator>()),
-	m_current_health_gauge_virtual_percent			(0.0f),
-	m_prev_health_gauge_virtual_percent				(0.0f),
-	m_current_max_health_gauge_virtual_percent		(0.0f),
-	m_damage_gauge_percent					(0.0f),
-	m_recover_gauge_percent					(0.0f),
-	m_prev_health							(m_health->GetCurrentHealth()),
-	m_prev_max_health						(m_health->GetCurrentMaxHealth()),
-	m_is_recover_gauge						(false),
-	m_gauge_hue								(kMaxHue),
-	m_prev_gauge_hue						(m_gauge_hue),
-	m_blinking_sin							(0.0f),
-	m_blinking_alpha_blend_num				(0)
+	m_health									(health),
+	m_current_health_gauge_graphic				(std::make_shared<Graphicer>(UIGraphicPath.CURRENT_HEALTH_GAUGE)),
+	m_gauge_particle_graphic					(std::make_shared<Graphicer>(UIGraphicPath.HEALTH_GAUGE_PARTICLE)),
+	m_damage_particle_graphic					(std::make_shared<Graphicer>(UIGraphicPath.DAMAGE_GAUGE_PARTICLE)),
+	m_frame_particle_graphic					(std::make_shared<Graphicer>(UIGraphicPath.GAUGE_FRAME_PARTICLE)),
+	m_warning_circle_graphic					(std::make_shared<Graphicer>(UIGraphicPath.WARNING_CIRCLE)),
+	m_basis_circle_screen						(std::make_shared<ScreenCreator>(kScreenSize)),
+	m_warning_circle_screen						(std::make_shared<ScreenCreator>(kScreenSize)),
+	m_current_max_health_frame_circle_screen	(std::make_shared<ScreenCreator>(kScreenSize)),
+	m_max_health_frame_circle_screen			(std::make_shared<ScreenCreator>(kScreenSize)),
+	m_current_health_gauge_screen				(std::make_shared<ScreenCreator>(kScreenSize)),
+	m_damage_gauge_screen						(std::make_shared<ScreenCreator>(kScreenSize)),
+	m_recover_gauge_screen						(std::make_shared<ScreenCreator>(kScreenSize)),
+	m_max_health_frame_gauge_screen				(std::make_shared<ScreenCreator>(kScreenSize)),
+	m_gauge_screen								(std::make_shared<ScreenCreator>(kScreenSize, kCenterPos)),
+	m_result_screen								(std::make_shared<ScreenCreator>(kScreenSize)),
+	m_current_health_mask_screen				(std::make_shared<ScreenCreator>(m_current_health_gauge_graphic->GetOriginSize(), kCenterPos)),
+	m_warning_gauge_screen						(nullptr),
+	m_mask_creator								(std::make_shared<MaskCreator>()),
+	m_current_health_gauge_virtual_percent		(0.0f),
+	m_prev_health_gauge_virtual_percent			(0.0f),
+	m_current_max_health_gauge_virtual_percent	(0.0f),
+	m_damage_gauge_percent						(0.0f),
+	m_recover_gauge_percent						(0.0f),
+	m_prev_health								(m_health->GetCurrentHealth()),
+	m_prev_max_health							(m_health->GetCurrentMaxHealth()),
+	m_is_recover_gauge							(false),
+	m_gauge_hue									(kMaxHue),
+	m_prev_gauge_hue							(m_gauge_hue),
+	m_gauge_particle_angle						(0.0f),
+	m_blinking_sin								(0.0f),
+	m_blinking_alpha_blend_num					(0)
 {
 	// ゲージに使用する円をスクリーン化
-	m_basis_circle_screen->UseScreen(false);
+	m_basis_circle_screen->UseScreen();
 	DrawCircle(kCenterPos.x, kCenterPos.y, kRadius, kBaseGaugeColor, TRUE, kBasisGaugeThickness);
 	m_basis_circle_screen->UnuseScreen();
 
-	m_warning_circle_screen->UseScreen(false);
+	m_warning_circle_screen->UseScreen();
 	DrawCircle(kCenterPos.x, kCenterPos.y, kRadius, kWarningGaugeColor, TRUE, kWarningGaugeThickness);
 	m_warning_circle_screen->UnuseScreen();
 
-	m_current_max_health_frame_circle_screen->UseScreen(false);
+	m_current_max_health_frame_circle_screen->UseScreen();
 	DrawCircle(kCenterPos.x, kCenterPos.y, kRadius, 0xffffff, TRUE, kBasisGaugeThickness + 2);
 	m_current_max_health_frame_circle_screen->UnuseScreen();
 
-	m_max_health_frame_circle_screen->UseScreen(false);
+	m_max_health_frame_circle_screen->UseScreen();
 	DrawCircle(
 		kCenterPos.x, kCenterPos.y, 
 		static_cast<int>(kRadius - kBasisGaugeThickness * 0.5f + kMaxHealthFrameThickness * 0.5f),
 		0xffffff, FALSE, kMaxHealthFrameThickness);
 	m_max_health_frame_circle_screen->UnuseScreen();
 
+	m_max_health_frame_gauge_screen->UseScreen();
+	DrawCircleGauge(kCenterPos.x, kCenterPos.y, 75.0, m_max_health_frame_circle_screen->GetScreenHandle(), 0.0, 1.0);
+	m_max_health_frame_gauge_screen->UnuseScreen();
+
 
 	// 中心座標を設定
 	m_current_health_gauge_graphic	->SetCenterPos(kCenterPos);
-	m_damage_gauge_graphic			->SetCenterPos(kCenterPos);
-	m_recover_gauge_graphic			->SetCenterPos(kCenterPos);
+	m_gauge_particle_graphic		->SetCenterPos(kCenterPos);
+	m_damage_particle_graphic		->SetCenterPos(kCenterPos);
+	m_frame_particle_graphic		->SetCenterPos(kCenterPos);
 	m_warning_circle_graphic		->SetCenterPos(kCenterPos);
 
 	m_warning_circle_graphic->SetAlphaBlendNum(0);
 
 
 	// マスク用スクリーンを生成
-	m_current_health_mask_screen->UseScreen(false);
+	m_current_health_mask_screen->UseScreen();
 	m_current_health_gauge_graphic->Draw();
 	m_current_health_mask_screen->UnuseScreen();
 	GraphFilter(m_current_health_mask_screen->GetScreenHandle(), DX_GRAPH_FILTER_HSB, 0, m_gauge_hue, 0, 0);
-
-	m_damage_mask_screen->UseScreen(false);
-	m_damage_gauge_graphic->Draw();
-	m_damage_mask_screen->UnuseScreen();
-
-	m_recover_mask_screen->UseScreen(false);
-	m_recover_gauge_graphic->Draw();
-	m_recover_mask_screen->UnuseScreen();
 
 
 	// ゲージ率
 	CalcGaugePercent();
 	m_current_max_health_gauge_virtual_percent	= m_current_health_gauge_virtual_percent;
-	m_damage_gauge_percent				= m_current_health_gauge_virtual_percent;
-	m_recover_gauge_percent				= m_current_health_gauge_virtual_percent;
+	m_damage_gauge_percent	= m_current_health_gauge_virtual_percent;
+	m_recover_gauge_percent	= m_current_health_gauge_virtual_percent;
 }
 
 HealthGauge::~HealthGauge()
@@ -95,6 +92,7 @@ void HealthGauge::LateUpdate()
 {
 	CalcGaugePercent();
 	CalcBlinkingAlphaBlendNum();
+	CalcGaugeParticleAngle();
 	ChangeGaugeColor();
 
 	CreateCurrentHealthGaugeScreen();
@@ -114,7 +112,7 @@ void HealthGauge::LateUpdate()
 #pragma region スクリーン生成
 void HealthGauge::CreateCurrentHealthGaugeScreen()
 {
-	m_current_health_gauge_screen->UseScreen(true);
+	m_current_health_gauge_screen->UseScreen();
 
 	DrawCircleGauge(
 		kCenterPos.x, kCenterPos.y,
@@ -126,9 +124,10 @@ void HealthGauge::CreateCurrentHealthGaugeScreen()
 
 void HealthGauge::CreateWarningGaugeScreen()
 {
+	// TODO : のちに最適化
 	m_warning_gauge_screen = std::make_shared<ScreenCreator>(kScreenSize, kCenterPos);
 
-	m_warning_gauge_screen->UseScreen(false);
+	m_warning_gauge_screen->UseScreen();
 	
 	DrawCircleGauge(
 		kCenterPos.x, kCenterPos.y,
@@ -142,7 +141,7 @@ void HealthGauge::CreateWarningGaugeScreen()
 
 void HealthGauge::CreateDamageGaugeScreen()
 {
-	m_damage_gauge_screen->UseScreen(true);
+	m_damage_gauge_screen->UseScreen();
 
 	DrawCircleGauge(
 		kCenterPos.x, kCenterPos.y,
@@ -154,7 +153,7 @@ void HealthGauge::CreateDamageGaugeScreen()
 
 void HealthGauge::CreateRecoverGaugeScreen()
 {
-	m_recover_gauge_screen->UseScreen(true);
+	m_recover_gauge_screen->UseScreen();
 
 	DrawCircleGauge(
 		kCenterPos.x, kCenterPos.y,
@@ -166,17 +165,16 @@ void HealthGauge::CreateRecoverGaugeScreen()
 
 void HealthGauge::CreateHealthGaugeScreen()
 {
-	m_gauge_screen->UseScreen(true);
+	m_gauge_screen->UseScreen();
 
 	// 警告ゲージ
 	m_warning_gauge_screen->GetGraphicer()->SetAlphaBlendNum(m_blinking_alpha_blend_num);
 	m_warning_gauge_screen->Draw();
 
-	// 警告サークル
-	m_warning_circle_graphic->Draw();
-
 	// 最大HPフレーム
-	DrawCircleGauge(kCenterPos.x, kCenterPos.y, 75.0, m_max_health_frame_circle_screen->GetScreenHandle(), 0.0, 1.0);
+	m_mask_creator->UseMask(m_max_health_frame_gauge_screen->GetScreenHandle(), true);
+	m_frame_particle_graphic->Draw();
+	m_mask_creator->UnuseMask();
 
 	// 現在の最大HPフレーム
 	DrawCircleGauge(
@@ -192,12 +190,24 @@ void HealthGauge::CreateHealthGaugeScreen()
 
 	// 回復した際のゲージ
 	m_mask_creator->UseMask(m_recover_gauge_screen->GetScreenHandle(), true);
-	m_recover_mask_screen->Draw();
+	DrawBox(
+		static_cast<int>(kCenterPos.x - kScreenSize.x * 0.5f), 
+		static_cast<int>(kCenterPos.y - kScreenSize.y * 0.5f), 
+		static_cast<int>(kCenterPos.x + kScreenSize.x * 0.5f), 
+		static_cast<int>(kCenterPos.y + kScreenSize.y * 0.5f), 
+		0x48f075, TRUE);
+	m_gauge_particle_graphic->Draw();
 	m_mask_creator->UnuseMask();
 
 	// ダメージを受けた際のゲージ
 	m_mask_creator->UseMask(m_damage_gauge_screen->GetScreenHandle(), true);
-	m_damage_mask_screen->Draw();
+	DrawBox(
+		static_cast<int>(kCenterPos.x - kScreenSize.x * 0.5f),
+		static_cast<int>(kCenterPos.y - kScreenSize.y * 0.5f),
+		static_cast<int>(kCenterPos.x + kScreenSize.x * 0.5f),
+		static_cast<int>(kCenterPos.y + kScreenSize.y * 0.5f),
+		0xf04848, TRUE);
+	m_damage_particle_graphic->Draw();
 	m_mask_creator->UnuseMask();
 
 	m_gauge_screen->UnuseScreen();
@@ -205,13 +215,18 @@ void HealthGauge::CreateHealthGaugeScreen()
 
 void HealthGauge::CreateResultScreen()
 {
-	m_result_screen->UseScreen(true);
+	m_result_screen->UseScreen();
 
+	// 警告サークル
+	m_warning_circle_graphic->Draw();
+
+	// 各ゲージ
 	m_gauge_screen->Draw();
 
 	// ゲージ画像を現在のHP分だけ描画
 	m_mask_creator->UseMask(m_current_health_gauge_screen->GetScreenHandle(), true);
 	m_current_health_mask_screen->Draw();
+	m_gauge_particle_graphic->Draw();
 	m_mask_creator->UnuseMask();
 
 	m_result_screen->UnuseScreen();
@@ -238,10 +253,19 @@ void HealthGauge::CalcGaugePercent()
 
 		// 現在のHPのゲージ率を、徐々に回復ゲージ率に近づける
 		m_recover_gauge_percent = m_current_health_gauge_actual_percent;
-		math::Increase(m_current_health_gauge_virtual_percent, kIncreaseSpeed * delta_time, m_recover_gauge_percent, false);
+		math::Increase(m_current_health_gauge_virtual_percent, kGaugeIncreaseSpeed * delta_time, m_recover_gauge_percent, false);
 		
 		if (m_recover_gauge_percent == m_current_health_gauge_virtual_percent)
 		{
+			m_is_recover_gauge = false;
+		}
+
+		// ゲージ回復中にダメージを受けた場合、強制的に回復演出を終了
+		if (m_health->GetCurrentHealth() < m_prev_health)
+		{
+			m_current_health_gauge_virtual_percent = m_current_health_gauge_actual_percent;
+			m_recover_gauge_percent = 0.0f;
+			m_damage_gauge_percent = m_prev_health_gauge_actual_percent;
 			m_is_recover_gauge = false;
 		}
 	}
@@ -250,7 +274,14 @@ void HealthGauge::CalcGaugePercent()
 	m_current_max_health_gauge_virtual_percent	= m_health->GetCurrentMaxHealth() / max_health * kMaxGaugePercent;
 
 	// ダメージを受けた際の減少ゲージ率
-	math::Decrease(m_damage_gauge_percent, kIncreaseSpeed * delta_time, m_current_health_gauge_virtual_percent);
+	if (m_is_recover_gauge)
+	{
+		m_damage_gauge_percent = m_current_health_gauge_virtual_percent;
+	}
+	else
+	{
+		math::Decrease(m_damage_gauge_percent, kGaugeIncreaseSpeed * delta_time, m_current_health_gauge_virtual_percent);
+	}
 }
 
 void HealthGauge::CalcBlinkingAlphaBlendNum()
@@ -263,7 +294,7 @@ void HealthGauge::CalcBlinkingAlphaBlendNum()
 	{
 		if (m_prev_health_gauge_actual_percent >= 12.5f)
 		{
-			m_blinking_sin = 0;
+			m_blinking_sin = 0.0f;
 		}
 
 		is_loop = true;
@@ -271,15 +302,15 @@ void HealthGauge::CalcBlinkingAlphaBlendNum()
 	// ダメージを受けた場合、sinを0にして点滅を再開させる
 	else if (m_health->GetCurrentHealth() < m_prev_health)
 	{
-		m_blinking_sin = 0;
+		m_blinking_sin = 0.0f;
 	}
 	else if (m_health->GetCurrentHealth() > m_prev_health)
 	{
 		m_blinking_sin = DX_PI_F;
 	}
 
-	math::Increase(m_blinking_sin, 6.0f * delta_time, DX_PI_F, is_loop);
-	m_blinking_alpha_blend_num = sin(m_blinking_sin) * 255;
+	math::Increase(m_blinking_sin, kBlinkingSpeed * delta_time, DX_PI_F, is_loop);
+	m_blinking_alpha_blend_num = (sin(m_blinking_sin) * 0.5f + 0.5f) * 255;
 
 	// 警告サークルは形状が不変であるため即座に適用
 	// HPが12.5%以下の場合のみ警告点滅を描画
@@ -291,6 +322,16 @@ void HealthGauge::CalcBlinkingAlphaBlendNum()
 	{
 		m_warning_circle_graphic->SetAlphaBlendNum(0);
 	}
+}
+
+void HealthGauge::CalcGaugeParticleAngle()
+{
+	const auto delta_time = GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleController::LayerKind::kUI);
+	
+	m_gauge_particle_angle += 10.0f * math::kDegToRad * delta_time;
+	m_gauge_particle_graphic	->SetAngle( m_gauge_particle_angle);
+	m_damage_particle_graphic	->SetAngle(-m_gauge_particle_angle);
+	m_frame_particle_graphic	->SetAngle( m_gauge_particle_angle);
 }
 
 void HealthGauge::ChangeGaugeColor()
@@ -329,7 +370,7 @@ void HealthGauge::ChangeGaugeColor()
 	m_current_health_mask_screen = std::make_shared<ScreenCreator>(m_current_health_gauge_graphic->GetOriginSize(), kCenterPos);
 
 	// スクリーン生成
-	m_current_health_mask_screen->UseScreen(false);
+	m_current_health_mask_screen->UseScreen();
 	m_current_health_gauge_graphic->Draw();
 	m_current_health_mask_screen->UnuseScreen();
 	GraphFilter(m_current_health_mask_screen->GetScreenHandle(), DX_GRAPH_FILTER_HSB, 0, m_gauge_hue, 0, 0);

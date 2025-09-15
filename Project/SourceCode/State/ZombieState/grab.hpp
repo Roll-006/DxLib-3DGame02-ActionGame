@@ -23,7 +23,7 @@ namespace zombie_state
 		[[nodiscard]] std::shared_ptr<IState<Zombie>> ChangeState(std::shared_ptr<Zombie> obj) override;
 
 	private:
-		static constexpr float kDamageIntervalTime = 0.5f;
+		static constexpr float kDamageIntervalTime = 0.8f;
 
 		std::shared_ptr<Subject<Grab>>					m_subject;
 		std::shared_ptr<GrabVirtualCameraController>	m_grab_camera_controller;

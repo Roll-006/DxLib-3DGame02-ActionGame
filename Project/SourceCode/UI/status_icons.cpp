@@ -32,7 +32,7 @@ void StatusIcons::Draw() const
 
 void StatusIcons::CreateScreen()
 {
-	m_screen_creator->UseScreen(true);
+	m_screen_creator->UseScreen();
 	m_health_gauge_graphic->Draw();
 	m_screen_creator->UnuseScreen();
 }

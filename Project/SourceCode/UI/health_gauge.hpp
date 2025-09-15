@@ -32,6 +32,9 @@ private:
 	/// @brief 警告透過値を計算する
 	void CalcBlinkingAlphaBlendNum();
 
+	/// @brief ゲージの粒子の角度を計算する
+	void CalcGaugeParticleAngle();
+
 	/// @brief ゲージの色を変更する
 	void ChangeGaugeColor();
 
@@ -39,41 +42,43 @@ private:
 	static constexpr Vector2D<int>	kScreenSize					= { 256, 256 };
 	static constexpr Vector2D<int>	kCenterPos					= { static_cast<int>(kScreenSize.x * 0.5f), static_cast<int>(kScreenSize.y * 0.5f) };
 	static constexpr float			kMaxGaugePercent			= 75.0f;
-	static constexpr int			kBaseGaugeColor				= 0x404040;
+	static constexpr int			kBaseGaugeColor				= 0x363636;
 	static constexpr int			kWarningGaugeColor			= 0xe32d2d;
 	static constexpr int			kRadius						= 71;
 	static constexpr int			kBasisGaugeThickness		= 9;
 	static constexpr int			kWarningGaugeThickness		= 46;
 	static constexpr int			kMaxHealthFrameThickness	= 2;
 	static constexpr int			kMaxHue						= 0;
-	static constexpr int			kMiddleHue					= -70;
-	static constexpr int			kMinHue						= -120;
+	static constexpr int			kMiddleHue					= -90;
+	static constexpr int			kMinHue						= -170;
 
-	static constexpr float			kIncreaseSpeed				= 8.0f;
+	static constexpr float			kGaugeIncreaseSpeed			= 8.0f;
+	static constexpr float			kBlinkingSpeed				= 6.0f;
 
 private:
 	std::shared_ptr<Health>&		m_health;
 
 	std::shared_ptr<Graphicer>		m_current_health_gauge_graphic;
-	std::shared_ptr<Graphicer>		m_damage_gauge_graphic;
-	std::shared_ptr<Graphicer>		m_recover_gauge_graphic;
+	std::shared_ptr<Graphicer>		m_gauge_particle_graphic;
+	std::shared_ptr<Graphicer>		m_damage_particle_graphic;
+	std::shared_ptr<Graphicer>		m_frame_particle_graphic;
 	std::shared_ptr<Graphicer>		m_warning_circle_graphic;
 
-	std::shared_ptr<ScreenCreator>	m_basis_circle_screen;				// ゲージに使用する円を描画するスクリーン
-	std::shared_ptr<ScreenCreator>	m_warning_circle_screen;			// 警告ゲージに使用する円を描画するスクリーン
+	std::shared_ptr<ScreenCreator>	m_basis_circle_screen;						// ゲージに使用する円を描画するスクリーン
+	std::shared_ptr<ScreenCreator>	m_warning_circle_screen;					// 警告ゲージに使用する円を描画するスクリーン
 	std::shared_ptr<ScreenCreator>	m_current_max_health_frame_circle_screen;
 	std::shared_ptr<ScreenCreator>	m_max_health_frame_circle_screen;
 	
-	std::shared_ptr<ScreenCreator>	m_current_health_gauge_screen;		// 現在のHPを描画するスクリーン
-	std::shared_ptr<ScreenCreator>	m_damage_gauge_screen;				// ダメージ量を描画するスクリーン
-	std::shared_ptr<ScreenCreator>	m_recover_gauge_screen;				// 回復量を描画するスクリーン
-	std::shared_ptr<ScreenCreator>	m_warning_gauge_screen;				// ダメージを受けたことを警告するゲージを描画するスクリーン
-	std::shared_ptr<ScreenCreator>	m_gauge_screen;						// 現在のHPゲージを除くゲージを描画するスクリーン
-	std::shared_ptr<ScreenCreator>	m_result_screen;					// 最終的な描画結果を描画するスクリーン
+	std::shared_ptr<ScreenCreator>	m_current_health_gauge_screen;				// 現在のHPを描画するスクリーン
+	std::shared_ptr<ScreenCreator>	m_damage_gauge_screen;						// ダメージ量を描画するスクリーン
+	std::shared_ptr<ScreenCreator>	m_recover_gauge_screen;						// 回復量を描画するスクリーン
+	std::shared_ptr<ScreenCreator>	m_max_health_frame_gauge_screen;
+	std::shared_ptr<ScreenCreator>	m_warning_gauge_screen;						// ダメージを受けたことを警告するゲージを描画するスクリーン
+	std::shared_ptr<ScreenCreator>	m_gauge_screen;								// 現在のHPゲージを除くゲージを描画するスクリーン
+	
+	std::shared_ptr<ScreenCreator>	m_result_screen;							// 最終的な描画結果を描画するスクリーン
 	
 	std::shared_ptr<ScreenCreator>	m_current_health_mask_screen;
-	std::shared_ptr<ScreenCreator>	m_damage_mask_screen;
-	std::shared_ptr<ScreenCreator>	m_recover_mask_screen;
 	std::shared_ptr<MaskCreator>	m_mask_creator;
 
 	float m_current_health_gauge_actual_percent;			// 現在のHPゲージのパーセント(実際の値)
@@ -91,6 +96,7 @@ private:
 	int	  m_gauge_hue;										// ゲージの色相
 	int   m_prev_gauge_hue;
 
+	float m_gauge_particle_angle;
 	float m_blinking_sin;
 	int	  m_blinking_alpha_blend_num;
 };

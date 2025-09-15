@@ -60,7 +60,7 @@ void WeaponShortcutDrawer::Draw() const
 	const WeaponShortcutPosKind current_select_shortcut	= m_weapon_shortcut_selecter->GetCurrentSelectShortcut();
 	const Vector2D<int>			current_center_pos		= m_center_pos.at(current_select_shortcut);
 
-	m_screen_creator->UseScreen(false);
+	m_screen_creator->UseScreen();
 
 	for (const auto& icon : m_weapon_shortcut_icons)
 	{
