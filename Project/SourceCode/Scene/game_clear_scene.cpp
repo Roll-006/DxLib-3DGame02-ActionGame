@@ -1,6 +1,7 @@
 #include "game_clear_scene.hpp"
 
-GameClearScene::GameClearScene()
+GameClearScene::GameClearScene() : 
+	m_is_active(true)
 {
 
 }
@@ -33,4 +34,9 @@ void GameClearScene::DrawToShadowMap() const
 void GameClearScene::Draw() const
 {
 
+}
+
+std::shared_ptr<IScene> GameClearScene::ChangeScene()
+{
+	return nullptr;
 }

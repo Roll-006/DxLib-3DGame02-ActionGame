@@ -1,6 +1,7 @@
 #include "title_scene.hpp"
 
-TitleScene::TitleScene()
+TitleScene::TitleScene() : 
+	m_is_active(true)
 {
 
 }
@@ -33,4 +34,9 @@ void TitleScene::DrawToShadowMap() const
 void TitleScene::Draw() const
 {
 
+}
+
+std::shared_ptr<IScene> TitleScene::ChangeScene()
+{
+	return nullptr;
 }

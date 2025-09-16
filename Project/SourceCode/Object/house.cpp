@@ -58,6 +58,15 @@ void House::AddToObjManager()
 	PhysicsManager	::GetInstance()->AddPhysicalObj	(std::dynamic_pointer_cast<PhysicalObjBase>(shared_from_this()));
 }
 
+void House::RemoveToObjManager()
+{
+	const auto obj_handle = GetObjHandle();
+
+	ObjManager		::GetInstance()->RemoveObj		  (obj_handle);
+	CollisionManager::GetInstance()->RemoveCollideObj (obj_handle);
+	PhysicsManager	::GetInstance()->RemovePhysicalObj(obj_handle);
+}
+
 float House::GetDeltaTime() const
 {
 	const auto time_manager = GameTimeManager::GetInstance();

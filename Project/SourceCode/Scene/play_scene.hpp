@@ -1,5 +1,5 @@
 #pragma once
-#include "../Base/scene_base.hpp"
+#include "../Interface/i_scene.hpp"
 
 #include "../Object/zombie.hpp"
 #include "../Object/house.hpp"
@@ -11,7 +11,7 @@
 
 #include "../ObjectPool/play_scene_effect_object_pool.hpp"
 
-class PlayScene final : public SceneBase
+class PlayScene final : public IScene
 {
 public:
 	PlayScene();
@@ -23,7 +23,15 @@ public:
 	void DrawToShadowMap()	const	override;
 	void Draw()				const	override;
 
+	void Activate()		override { m_is_active = true; }
+	void Deactivate()	override { m_is_active = false; }
+
+	[[nodiscard]] bool IsActive() const override { return m_is_active; }
+	[[nodiscard]] std::shared_ptr<IScene> ChangeScene() override;
+
 private:
+	bool m_is_active;
+
 	std::shared_ptr<Zombie>						m_zombie;
 	std::shared_ptr<House>						m_house;
 	std::shared_ptr<Ground>						m_ground;

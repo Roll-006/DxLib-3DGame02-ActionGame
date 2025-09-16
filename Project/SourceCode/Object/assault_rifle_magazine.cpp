@@ -52,6 +52,11 @@ void AssaultRifleMagazine::AddToObjManager()
 	ObjManager::GetInstance()->AddObj(shared_from_this());
 }
 
+void AssaultRifleMagazine::RemoveToObjManager()
+{
+	ObjManager::GetInstance()->RemoveObj(GetObjHandle());
+}
+
 void AssaultRifleMagazine::OnStartReload(const std::shared_ptr<Modeler> owner_modler)
 {
 	m_on_reloading	= true;

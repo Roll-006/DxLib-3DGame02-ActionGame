@@ -1,22 +1,11 @@
 #include "scene_manager.hpp"
 
 SceneManager::SceneManager() : 
-	m_drawer(nullptr)
+	m_share_scene	(std::make_shared<ShareScene>()),
+	m_current_scene	(std::make_shared<PlayScene>()),
+	m_drawer		(std::make_unique<Drawer>(ObjManager::GetInstance()->GetObj<ObjBase>(ObjName.MAIN_CAMERA)->GetTransform()))
 {
-	m_scene_list[SceneKind::kShare]		= std::make_shared<ShareScene>();
-	m_scene_list[SceneKind::kTitle]		= std::make_shared<TitleScene>();
-	m_scene_list[SceneKind::kPlay]		= std::make_shared<PlayScene>();
-	m_scene_list[SceneKind::kGameClear]	= std::make_shared<GameClearScene>();
-	m_scene_list[SceneKind::kGameOver]	= std::make_shared<GameOverScene>();
-	m_scene_list[SceneKind::kLoad]		= std::make_shared<LoadScene>();
 
-	m_drawer = std::make_unique<Drawer>(ObjManager::GetInstance()->GetObj<ObjBase>(ObjName.MAIN_CAMERA)->GetTransform());
-
-	// ‹¤—LƒV[ƒ“‚Íí‚É—¬‚·
-	AttachCurrentScene(SceneKind::kShare);
-
-	// TEST : ‰¼
-	AttachCurrentScene(SceneKind::kPlay);
 }
 
 SceneManager::~SceneManager()
@@ -32,53 +21,37 @@ void SceneManager::Update()
 	CollisionManager::GetInstance()->Update();
 	PhysicsManager	::GetInstance()->Update();
 
-	for (const auto& scene : m_current_scene)
-	{
-		scene.second->Update();
-	}
+	ChangeScene();
+
+	m_share_scene	->Update();
+	m_current_scene	->Update();
 }
 
 void SceneManager::LateUpdate()
 {
 	PhysicsManager::GetInstance()->LateUpdate();
 
-	for (const auto& scene : m_current_scene)
-	{
-		scene.second->LateUpdate();
-	}
+	m_share_scene	->LateUpdate();
+	m_current_scene	->LateUpdate();
 
 	InputChecker::GetInstance()->LateUpdate();
 }
 
 void SceneManager::DrawToShadowMap() const
 {
-	m_drawer->DrawToShadowMap(m_current_scene);
+	m_drawer->DrawToShadowMap(m_share_scene, m_current_scene);
 }
 
 void SceneManager::Draw() const
 {
-	m_drawer->Draw(m_current_scene);
+	m_drawer->Draw(m_share_scene, m_current_scene);
 }
 
-std::vector<SceneKind> SceneManager::GetCurrentSceneKind() const
+void SceneManager::ChangeScene()
 {
-	std::vector<SceneKind> current_scene_kind;
-
-	for (const auto& scene : m_current_scene)
+	const auto next_scene = m_current_scene->ChangeScene();
+	if (next_scene)
 	{
-		current_scene_kind.emplace_back(scene.first);
+		m_current_scene = next_scene;
 	}
-	return current_scene_kind;
-}
-
-void SceneManager::AttachCurrentScene(const SceneKind scene_kind)
-{
-	m_current_scene[scene_kind] = m_scene_list.at(scene_kind);
-
-	m_current_scene.at(scene_kind)->Init();
-}
-
-void SceneManager::DetachCurrentScene(const SceneKind scene_kind)
-{
-	m_current_scene.erase(scene_kind);
 }

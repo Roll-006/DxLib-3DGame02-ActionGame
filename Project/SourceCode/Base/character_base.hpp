@@ -15,7 +15,8 @@ public:
 	CharacterBase(const std::string& name, const std::string& tag, const MassKind mass_level_kind);
 	virtual ~CharacterBase() = default;
 
-	void AddToObjManager() override;
+	void AddToObjManager()		override;
+	void RemoveToObjManager()	override;
 
 	void CalcCorrectMoveDir();
 

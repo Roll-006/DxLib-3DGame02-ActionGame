@@ -56,23 +56,40 @@ void CinemachineBrain::LateUpdate()
 	m_main_camera->LateUpdate();
 }
 
-void CinemachineBrain::Draw() const
+void CinemachineBrain::SortPriority(const std::shared_ptr<VirtualCamera> virtual_camera)
 {
-	for (const auto& camera : m_virtual_cameras)
+	if (m_virtual_cameras.count(virtual_camera->GetCameraHandle()))
 	{
-		camera.second->Draw();
+		m_priority.emplace_back(std::make_pair(virtual_camera->GetCameraHandle(), virtual_camera->GetPriority()));
+		m_priority = algorithm::Sort(m_priority, SortKind::kDescending);
 	}
-
-	m_main_camera->Draw();
 }
 
-void CinemachineBrain::RemoveVirtualCamera(const int obj_handle)
+void CinemachineBrain::AddVirtualCamera(const std::shared_ptr<VirtualCamera> virtual_camera, const bool is_active)
 {
-	m_virtual_cameras.erase(obj_handle);
+	if (!m_virtual_cameras.count(virtual_camera->GetCameraHandle()))
+	{
+		m_virtual_cameras[virtual_camera->GetCameraHandle()] = virtual_camera;
+		SortPriority(virtual_camera);
+
+		if (is_active)
+		{
+			virtual_camera->Activate();
+		}
+		else
+		{
+			virtual_camera->Deactivate();
+		}
+	}
+}
+
+void CinemachineBrain::RemoveVirtualCamera(const int camera_handle)
+{
+	m_virtual_cameras.erase(camera_handle);
 
 	const auto remove = std::remove_if(m_priority.begin(), m_priority.end(), [=](const std::pair<int, int>& pair)
 	{
-		return pair.first == obj_handle;
+		return pair.first == camera_handle;
 	});
 	m_priority.erase(remove, m_priority.end());
 }
@@ -102,12 +119,12 @@ void CinemachineBrain::SetBlendTime(const float blend_time)
 
 
 #pragma region Getter
-std::shared_ptr<VirtualCameraBase> CinemachineBrain::GetVirtualCamera(const int obj_handle) const
+std::shared_ptr<VirtualCamera> CinemachineBrain::GetVirtualCamera(const int camera_handle) const
 {
-	return m_virtual_cameras.count(obj_handle) ? m_virtual_cameras.at(obj_handle) : nullptr;
+	return m_virtual_cameras.count(camera_handle) ? m_virtual_cameras.at(camera_handle) : nullptr;
 }
 
-std::shared_ptr<VirtualCameraBase> CinemachineBrain::GetVirtualCamera(const std::string& obj_name) const
+std::shared_ptr<VirtualCamera> CinemachineBrain::GetVirtualCamera(const std::string& obj_name) const
 {
 	for (const auto& camera : m_virtual_cameras)
 	{
@@ -146,7 +163,7 @@ std::shared_ptr<IVirtualCameraController> CinemachineBrain::GetVirtualCameraCont
 
 
 #pragma region ブレンド関連処理
-void CinemachineBrain::DeactivateVirtualCamera(const std::shared_ptr<VirtualCameraBase> origin_camera, const std::shared_ptr<VirtualCameraBase> target_camera)
+void CinemachineBrain::DeactivateVirtualCamera(const std::shared_ptr<VirtualCamera> origin_camera, const std::shared_ptr<VirtualCamera> target_camera)
 {
 	switch (target_camera->GetBlendActivationPolicyKind())
 	{
@@ -181,10 +198,10 @@ void CinemachineBrain::BlendVirtualCamera()
 	m_main_camera->GetTransform()->SetMatrix(CoordinateKind::kWorld, m_blend_result_transform->GetMatrix(CoordinateKind::kWorld));
 }
 
-void CinemachineBrain::ChangeTargetVirtualCamera(const int obj_handle)
+void CinemachineBrain::ChangeTargetVirtualCamera(const int camera_handle)
 {
 	m_target_virtual_camera_handle[TimeKind::kPrev]    = m_target_virtual_camera_handle[TimeKind::kCurrent];
-	m_target_virtual_camera_handle[TimeKind::kCurrent] = obj_handle;
+	m_target_virtual_camera_handle[TimeKind::kCurrent] = camera_handle;
 
 	if (m_target_virtual_camera_handle[TimeKind::kPrev] != m_target_virtual_camera_handle[TimeKind::kCurrent])
 	{
@@ -206,8 +223,8 @@ void CinemachineBrain::SetBlendTransform()
 	
 	bool is_seted_target_transform = false;
 	bool is_seted_origin_transform = false;
-	std::shared_ptr<VirtualCameraBase> origin_camera = nullptr;
-	std::shared_ptr<VirtualCameraBase> target_camera = nullptr;
+	std::shared_ptr<VirtualCamera> origin_camera = nullptr;
+	std::shared_ptr<VirtualCamera> target_camera = nullptr;
 
 	for (const auto& pr : m_priority)
 	{

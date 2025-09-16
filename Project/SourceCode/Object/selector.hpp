@@ -15,6 +15,7 @@ public:
 	void Draw()				const	override;
 
 	void AddToObjManager()			override;
+	void RemoveToObjManager()		override;
 
 	[[nodiscard]] float	GetDeltaTime() const override;
 

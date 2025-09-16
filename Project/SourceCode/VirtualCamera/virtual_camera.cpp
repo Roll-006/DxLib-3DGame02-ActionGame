@@ -1,7 +1,18 @@
 #include "virtual_camera.hpp"
+#include "cinemachine_brain.hpp"
+#include "../Handle/handle_creator.hpp"
 
-VirtualCamera::VirtualCamera(const std::string& name, const BlendActivationPolicyKind blend_policy_kind) :
-	VirtualCameraBase(name, blend_policy_kind)
+VirtualCamera::VirtualCamera(const std::string& name, const BlendActivationPolicyKind blend_policy_kind) : 
+	m_name							(name),
+	m_camera_handle					(HandleCreator::GetInstance()->CreateHandle()),
+	m_priority						(0),
+	m_is_active						(true),
+	m_transform						(std::make_shared<Transform>()),
+	m_body							(std::make_shared<CameraBody> (m_transform)),
+	m_aim							(std::make_shared<CameraAim>  (m_transform)),
+	m_noise							(std::make_shared<CameraNoise>(m_transform)),
+	m_target_transform				(nullptr),
+	m_blend_activation_policy_kind	(blend_policy_kind)
 {
 
 }
@@ -28,12 +39,40 @@ void VirtualCamera::LateUpdate()
 	CalcTransform();
 }
 
-void VirtualCamera::DrawToShadowMap() const
+void VirtualCamera::AttachTarget(const std::shared_ptr<Transform> target_transform)
 {
-	if (!IsActive()) { return; }
+	m_target_transform = target_transform;
+
+	m_body	->AttachTarget(m_target_transform);
+	m_aim	->AttachTarget(m_target_transform);
 }
 
-void VirtualCamera::Draw() const
+void VirtualCamera::DetachTarget()
 {
-	if (!IsActive()) { return; }
+	m_target_transform = nullptr;
+
+	m_body	->DetachTarget();
+	m_aim	->DetachTarget();
+}
+
+
+void VirtualCamera::SetPriority(const int priority)
+{
+	m_priority = priority;
+
+	CinemachineBrain::GetInstance()->SortPriority(std::static_pointer_cast<VirtualCamera>(shared_from_this()));
+}
+
+float VirtualCamera::GetDeltaTime() const
+{
+	const auto time_manager = GameTimeManager::GetInstance();
+	return time_manager->GetDeltaTime(TimeScaleController::LayerKind::kCamera);
+}
+
+void VirtualCamera::CalcTransform()
+{
+	m_body	->CalcPos();
+	m_aim	->CalcRot();
+	m_body	->CalcDampedPos();
+	m_aim	->CalcDampedRot();
 }

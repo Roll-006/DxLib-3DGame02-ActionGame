@@ -82,6 +82,16 @@ void MainCamera::AddToObjManager()
 	CinemachineBrain::GetInstance()->SetMainCamera(std::static_pointer_cast<MainCamera>(shared_from_this()));
 }
 
+void MainCamera::RemoveToObjManager()
+{
+	const auto obj_handle = GetObjHandle();
+
+	ObjManager		::GetInstance()->RemoveObj				(obj_handle);
+	CollisionManager::GetInstance()->RemoveCollideObj		(obj_handle);
+	PhysicsManager	::GetInstance()->RemovePhysicalObj		(obj_handle);
+	PhysicsManager	::GetInstance()->RemoveIgnoreObjGravity	(obj_handle);
+}
+
 float MainCamera::GetDeltaTime() const
 {
 	const auto time_manager = GameTimeManager::GetInstance();

@@ -18,7 +18,8 @@ public:
 	WeaponBase(const std::string& name, const WeaponKind weapon_kind, const HolsterKind holster_kind);
 	virtual ~WeaponBase() = default;
 
-	void AddToObjManager() override;
+	void AddToObjManager()		override;
+	void RemoveToObjManager()	override;
 
 	/// @brief 装備する持ち主をアタッチする
 	void AttachOwner(const std::shared_ptr<Modeler> owner_modeler, const std::string& owner_name);

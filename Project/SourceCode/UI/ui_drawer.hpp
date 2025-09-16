@@ -28,7 +28,7 @@ public:
 		m_draw_priority.emplace_back(std::make_pair(ui_creator->GetName(), ui_creator->GetPriority()));
 		m_draw_priority = algorithm::Sort(m_draw_priority, SortKind::kAscending);
 	}
-	void Remove(const std::string& name);
+	void RemoveUICreator(const std::string& name);
 
 	void Draw();
 

@@ -1,6 +1,7 @@
 #include "share_scene.hpp"
 
 ShareScene::ShareScene() : 
+	m_is_active						(true),
 	m_main_camera					(std::make_shared<MainCamera>()),
 	m_player						(std::make_shared<Player>()),
 	m_share_scene_effect_object_pool(std::make_shared<ShareSceneEffectObjectPool>()),
@@ -50,6 +51,10 @@ void ShareScene::DrawToShadowMap() const
 void ShareScene::Draw() const
 {
 	m_player						->Draw();
-	CinemachineBrain::GetInstance()	->Draw();
 	EffectManager	::GetInstance()	->Draw();
+}
+
+std::shared_ptr<IScene> ShareScene::ChangeScene()
+{
+	return nullptr;
 }

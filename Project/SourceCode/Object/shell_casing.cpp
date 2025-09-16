@@ -104,6 +104,15 @@ void ShellCasing::AddToObjManager()
 	PhysicsManager	::GetInstance()->AddPhysicalObj	(physical_obj);
 }
 
+void ShellCasing::RemoveToObjManager()
+{
+	const auto obj_handle = GetObjHandle();
+
+	ObjManager		::GetInstance()->RemoveObj		  (obj_handle);
+	CollisionManager::GetInstance()->RemoveCollideObj (obj_handle);
+	PhysicsManager	::GetInstance()->RemovePhysicalObj(obj_handle);
+}
+
 void ShellCasing::Eject(GunBase& gun)
 {
 	m_time_scale_owner_name = gun.GetOwnerName();

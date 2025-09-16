@@ -1,6 +1,7 @@
 #include "load_scene.hpp"
 
-LoadScene::LoadScene()
+LoadScene::LoadScene() : 
+	m_is_active(true)
 {
 
 }
@@ -33,4 +34,9 @@ void LoadScene::DrawToShadowMap() const
 void LoadScene::Draw() const
 {
 
+}
+
+std::shared_ptr<IScene> LoadScene::ChangeScene()
+{
+	return nullptr;
 }

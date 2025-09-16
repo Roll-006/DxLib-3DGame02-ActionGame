@@ -18,6 +18,7 @@ public:
 	void Draw()				const	override;
 
 	void AddToObjManager()			override;
+	void RemoveToObjManager()		override;
 
 	void OnStartReload(const std::shared_ptr<Modeler> owner_modler) override;
 	void OnReloaded() override;

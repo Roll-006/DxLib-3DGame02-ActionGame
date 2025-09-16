@@ -3,7 +3,7 @@
 //#include "../Interface/i_control_virtual_camera.hpp"
 //
 ///// @brief 回転コントロールカメラ
-//class RotControlVirtualCamera final : public VirtualCameraBase, public IControlVirtualCamera
+//class RotControlVirtualCamera final : public VirtualCamera, public IControlVirtualCamera
 //{
 //public:
 //	RotControlVirtualCamera();

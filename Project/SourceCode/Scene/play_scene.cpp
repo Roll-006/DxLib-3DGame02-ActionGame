@@ -1,6 +1,7 @@
 #include "play_scene.hpp"
 
-PlayScene::PlayScene():
+PlayScene::PlayScene() :
+	m_is_active						(true),
 	m_zombie						(std::make_shared<Zombie>()),
 	m_house							(std::make_shared<House>()),
 	m_ground						(std::make_shared<Ground>()),
@@ -13,14 +14,24 @@ PlayScene::PlayScene():
 	m_house ->AddToObjManager();
 	m_ground->AddToObjManager();
 
-	ObjectPoolHolder::GetInstance()->AddObjectPool (m_rifle_cartridge_object_pool);
-	ObjectPoolHolder::GetInstance()->AddObjectPool (m_play_scene_effect_object_pool);
-	UIDrawer		::GetInstance()->AddUICreator  (m_player_ui_creator);
+	const auto pool_holder = ObjectPoolHolder::GetInstance();
+	pool_holder->AddObjectPool(m_rifle_cartridge_object_pool);
+	pool_holder->AddObjectPool(m_play_scene_effect_object_pool);
+
+	UIDrawer::GetInstance()->AddUICreator(m_player_ui_creator);
 }
 
 PlayScene::~PlayScene()
 {
+	m_zombie->AddToObjManager();
+	m_house	->AddToObjManager();
+	m_ground->AddToObjManager();
 
+	const auto pool_holder = ObjectPoolHolder::GetInstance();
+	pool_holder->RemoveObjectPool(m_rifle_cartridge_object_pool	 ->GetName());
+	pool_holder->RemoveObjectPool(m_play_scene_effect_object_pool->GetName());
+
+	UIDrawer::GetInstance()->RemoveUICreator(m_player_ui_creator->GetName());
 }
 
 void PlayScene::Init()
@@ -62,4 +73,9 @@ void PlayScene::Draw() const
 	m_house								->Draw();
 	m_ground							->Draw();
 	m_skydome							->Draw();
+}
+
+std::shared_ptr<IScene> PlayScene::ChangeScene()
+{
+	return nullptr;
 }

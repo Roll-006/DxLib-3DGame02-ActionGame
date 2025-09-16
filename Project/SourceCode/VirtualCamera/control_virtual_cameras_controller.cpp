@@ -32,8 +32,8 @@ ControlVirtualCamerasController::ControlVirtualCamerasController(Player& player)
 ControlVirtualCamerasController::~ControlVirtualCamerasController()
 {
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
-	cinemachine_brain->RemoveVirtualCamera(m_rot_control_camera->GetObjHandle());
-	cinemachine_brain->RemoveVirtualCamera(m_aim_control_camera->GetObjHandle());
+	cinemachine_brain->RemoveVirtualCamera(m_rot_control_camera->GetCameraHandle());
+	cinemachine_brain->RemoveVirtualCamera(m_aim_control_camera->GetCameraHandle());
 }
 
 void ControlVirtualCamerasController::Init()
@@ -103,7 +103,7 @@ VirtualCameraControllerKind ControlVirtualCamerasController::GetVirtualCameraCon
 	return m_virtual_camera_controller_kind;
 }
 
-std::shared_ptr<VirtualCameraBase> ControlVirtualCamerasController::GetHaveVirtualCamera(const std::string& name) const
+std::shared_ptr<VirtualCamera> ControlVirtualCamerasController::GetHaveVirtualCamera(const std::string& name) const
 {
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	const auto camera = cinemachine_brain->GetVirtualCamera(name);
@@ -117,9 +117,9 @@ std::shared_ptr<VirtualCameraBase> ControlVirtualCamerasController::GetHaveVirtu
 	return nullptr;
 }
 
-std::vector<std::shared_ptr<VirtualCameraBase>> ControlVirtualCamerasController::GetHaveAllVirtualCamera() const
+std::vector<std::shared_ptr<VirtualCamera>> ControlVirtualCamerasController::GetHaveAllVirtualCamera() const
 {
-	return std::vector<std::shared_ptr<VirtualCameraBase>>{m_rot_control_camera, m_aim_control_camera};
+	return std::vector<std::shared_ptr<VirtualCamera>>{m_rot_control_camera, m_aim_control_camera};
 }
 		
 void ControlVirtualCamerasController::SetupForRotCamera()

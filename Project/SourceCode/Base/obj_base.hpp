@@ -20,6 +20,7 @@ public:
 
 	/// @brief 各マネージャーに自身を登録する
 	virtual void AddToObjManager()			abstract;
+	virtual void RemoveToObjManager()		abstract;
 
 	/// @brief オブジェクトをアクティブ化する
 	void Activate()   { m_is_active = true; }

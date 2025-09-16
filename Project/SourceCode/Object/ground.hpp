@@ -22,6 +22,7 @@ public:
 	void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) override;
 
 	void AddToObjManager()			override;
+	void RemoveToObjManager()		override;
 
 	[[nodiscard]] float	GetDeltaTime() const override;
 	[[nodiscard]] std::shared_ptr<Modeler> GetModeler() const { return m_modeler; }

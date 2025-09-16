@@ -21,6 +21,7 @@ public:
 	void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) override;
 
 	void AddToObjManager()			override;
+	void RemoveToObjManager()		override;
 
 	/// @brief –òä°‚ğ”ro‚·‚é
 	void Eject(GunBase& gun);

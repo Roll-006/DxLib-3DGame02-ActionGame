@@ -22,8 +22,8 @@ public:
 	void OnNotify(const IEvent& event) override;
 
 	[[nodiscard]] VirtualCameraControllerKind GetVirtualCameraControllerKind() const override;
-	[[nodiscard]] std::shared_ptr<VirtualCameraBase> GetHaveVirtualCamera(const std::string& name) const override;
-	[[nodiscard]] std::vector<std::shared_ptr<VirtualCameraBase>> GetHaveAllVirtualCamera()  const override;
+	[[nodiscard]] std::shared_ptr<VirtualCamera> GetHaveVirtualCamera(const std::string& name) const override;
+	[[nodiscard]] std::vector<std::shared_ptr<VirtualCamera>> GetHaveAllVirtualCamera()  const override;
 	[[nodiscard]] int  GetControllerHandle() const override { return m_controller_handle; }
 	[[nodiscard]] bool IsActive()			 const override { return m_is_active; }
 

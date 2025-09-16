@@ -41,6 +41,11 @@ void Selector::AddToObjManager()
 
 }
 
+void Selector::RemoveToObjManager()
+{
+
+}
+
 float Selector::GetDeltaTime() const
 {
 	const auto time_manager = GameTimeManager::GetInstance();

@@ -57,10 +57,10 @@ RocketLauncherVirtualCameraController::RocketLauncherVirtualCameraController(Pla
 RocketLauncherVirtualCameraController::~RocketLauncherVirtualCameraController()
 {
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
-	cinemachine_brain->RemoveVirtualCamera(m_enter_rot_camera	->GetObjHandle());
-	cinemachine_brain->RemoveVirtualCamera(m_zoom_in_camera		->GetObjHandle());
-	cinemachine_brain->RemoveVirtualCamera(m_zoom_out_camera	->GetObjHandle());
-	cinemachine_brain->RemoveVirtualCamera(m_exit_rot_camera	->GetObjHandle());
+	cinemachine_brain->RemoveVirtualCamera(m_enter_rot_camera	->GetCameraHandle());
+	cinemachine_brain->RemoveVirtualCamera(m_zoom_in_camera		->GetCameraHandle());
+	cinemachine_brain->RemoveVirtualCamera(m_zoom_out_camera	->GetCameraHandle());
+	cinemachine_brain->RemoveVirtualCamera(m_exit_rot_camera	->GetCameraHandle());
 
 	// FIXME : ブレンドの起点にする必要があるため破棄できない。ブレンドが終了したら自動的にremoveする機能が必要な可能性あり
 	//cinemachine_brain->RemoveVirtualCamera(m_exit_rot_camera	->GetObjHandle());
@@ -93,7 +93,7 @@ VirtualCameraControllerKind RocketLauncherVirtualCameraController::GetVirtualCam
 	return m_virtual_camera_controller_kind;
 }
 
-std::shared_ptr<VirtualCameraBase> RocketLauncherVirtualCameraController::GetHaveVirtualCamera(const std::string& name) const
+std::shared_ptr<VirtualCamera> RocketLauncherVirtualCameraController::GetHaveVirtualCamera(const std::string& name) const
 {
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	const auto camera = cinemachine_brain->GetVirtualCamera(name);
@@ -109,9 +109,9 @@ std::shared_ptr<VirtualCameraBase> RocketLauncherVirtualCameraController::GetHav
 	return nullptr;
 }
 
-std::vector<std::shared_ptr<VirtualCameraBase>> RocketLauncherVirtualCameraController::GetHaveAllVirtualCamera() const
+std::vector<std::shared_ptr<VirtualCamera>> RocketLauncherVirtualCameraController::GetHaveAllVirtualCamera() const
 {
-	return std::vector<std::shared_ptr<VirtualCameraBase>>{m_enter_rot_camera, m_zoom_in_camera, m_zoom_out_camera};
+	return std::vector<std::shared_ptr<VirtualCamera>>{m_enter_rot_camera, m_zoom_in_camera, m_zoom_out_camera};
 }
 
 

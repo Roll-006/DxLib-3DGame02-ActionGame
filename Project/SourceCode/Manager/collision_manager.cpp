@@ -73,9 +73,9 @@ void CollisionManager::AddCollideObj(const std::shared_ptr<PhysicalObjBase> coll
 	}
 }
 
-void CollisionManager::RemoveCollideObj(const std::string& obj_name)
+void CollisionManager::RemoveCollideObj(const int obj_handle)
 {
-	const auto physical_obj = ObjManager::GetInstance()->GetObj<PhysicalObjBase>(obj_name);
+	const auto physical_obj = ObjManager::GetInstance()->GetObj<PhysicalObjBase>(obj_handle);
 
 	if (std::find(m_collide_objects.begin(), m_collide_objects.end(), physical_obj) != m_collide_objects.end())
 	{

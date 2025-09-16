@@ -26,6 +26,15 @@ void CharacterBase::AddToObjManager()
 	PhysicsManager	::GetInstance()->AddPhysicalObj	(physical_obj);
 }
 
+void CharacterBase::RemoveToObjManager()
+{
+	const auto obj_handle = GetObjHandle();
+
+	ObjManager		::GetInstance()->RemoveObj		  (obj_handle);
+	CollisionManager::GetInstance()->RemoveCollideObj (obj_handle);
+	PhysicsManager	::GetInstance()->RemovePhysicalObj(obj_handle);
+}
+
 void CharacterBase::CalcCorrectMoveDir()
 {
 	const auto destination_pos_y0	= VGet(m_destination_pos.x, 0.0f, m_destination_pos.z);

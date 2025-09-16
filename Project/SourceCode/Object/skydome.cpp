@@ -48,6 +48,11 @@ void Skydome::AddToObjManager()
 
 }
 
+void Skydome::RemoveToObjManager()
+{
+
+}
+
 float Skydome::GetDeltaTime() const
 {
 	const auto time_manager = GameTimeManager::GetInstance();

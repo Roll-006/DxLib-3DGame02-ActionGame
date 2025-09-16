@@ -2,7 +2,7 @@
 #include <EffekseerForDXLib.h>
 
 #include "../Base/one_instance_singleton_base.hpp"
-#include "../Base/scene_base.hpp"
+#include "../Interface/i_scene.hpp"
 
 #include "../UI/ui_drawer.hpp"
 #include "../ShadowMap/shadow_map.hpp"
@@ -13,8 +13,8 @@ public:
 	Drawer(const std::shared_ptr<Transform> camera_transform);
 	~Drawer();
 
-	void DrawToShadowMap(std::unordered_map<SceneKind, std::shared_ptr<SceneBase>> current_scene) const;
-	void Draw			(std::unordered_map<SceneKind, std::shared_ptr<SceneBase>> current_scene) const;
+	void DrawToShadowMap(const std::shared_ptr<IScene> share_scene, const std::shared_ptr<IScene> current_scene) const;
+	void Draw			(const std::shared_ptr<IScene> share_scene, const std::shared_ptr<IScene> current_scene) const;
 
 private:
 	std::unique_ptr<ShadowMap> m_shadow_map;

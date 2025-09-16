@@ -112,6 +112,14 @@ void RocketBombExplosionEffect::AddToObjManager()
 	CollisionManager::GetInstance()->AddCollideObj(physical_obj);
 }
 
+void RocketBombExplosionEffect::RemoveToObjManager()
+{
+	const auto obj_handle = GetObjHandle();
+
+	ObjManager		::GetInstance()->RemoveObj		 (obj_handle);
+	CollisionManager::GetInstance()->RemoveCollideObj(obj_handle);
+}
+
 
 #pragma region Attach / Detach
 void RocketBombExplosionEffect::AttachOwnerTransform(const std::shared_ptr<Transform> owner_transform)

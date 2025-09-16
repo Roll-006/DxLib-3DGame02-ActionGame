@@ -19,7 +19,7 @@ public:
 	/// @brief 衝突判定を行うオブジェクトを追加
 	void AddCollideObj	 (const std::shared_ptr<PhysicalObjBase> collide_obj);
 	/// @brief 衝突判定を行うオブジェクトから除外
-	void RemoveCollideObj(const std::string& obj_name);
+	void RemoveCollideObj(const int obj_handle);
 
 	/// @brief 衝突判定を無視するコライダーを追加
 	void AddIgnoreCollider	 (const std::string& obj_name, const ColliderKind kind);

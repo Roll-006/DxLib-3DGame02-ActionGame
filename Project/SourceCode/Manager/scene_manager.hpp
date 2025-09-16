@@ -1,6 +1,4 @@
 #pragma once
-#include <unordered_map>
-
 #include "../Drawer/drawer.hpp"
 
 #include "../Scene/share_scene.hpp"
@@ -21,18 +19,12 @@ public:
 	void DrawToShadowMap()	const;
 	void Draw()				const;
 
-	/// @brief 現在のシーンの種類を取得
-	[[nodiscard]] std::vector<SceneKind> GetCurrentSceneKind() const;
+private:
+	void ChangeScene();
 
 private:
-	/// @brief 実行中のシーンに追加
-	void AttachCurrentScene(const SceneKind scene_kind);
-	/// @brief 実行中のシーンから除外
-	void DetachCurrentScene(const SceneKind scene_kind);
-
-private:
-	std::unordered_map<SceneKind, std::shared_ptr<SceneBase>> m_scene_list;		// すべてのシーン
-	std::unordered_map<SceneKind, std::shared_ptr<SceneBase>> m_current_scene;	// 現在(実行中)のシーン
+	std::shared_ptr<IScene> m_share_scene;
+	std::shared_ptr<IScene> m_current_scene;
 
 	std::unique_ptr<Drawer> m_drawer;
 };

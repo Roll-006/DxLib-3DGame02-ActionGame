@@ -29,7 +29,7 @@ GrabVirtualCameraController::GrabVirtualCameraController() :
 GrabVirtualCameraController::~GrabVirtualCameraController()
 {
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
-	cinemachine_brain->RemoveVirtualCamera(m_camera->GetObjHandle());
+	cinemachine_brain->RemoveVirtualCamera(m_camera->GetCameraHandle());
 
 	// ‘€ìƒJƒƒ‰‚ð•œ‹A‚³‚¹‚é
 	const auto control_cameras_controller = cinemachine_brain->GetVirtualCameraController(VirtualCameraControllerKind::kControl);
@@ -80,7 +80,7 @@ VirtualCameraControllerKind GrabVirtualCameraController::GetVirtualCameraControl
 	return m_virtual_camera_controller_kind;
 }
 
-std::shared_ptr<VirtualCameraBase> GrabVirtualCameraController::GetHaveVirtualCamera(const std::string& name) const
+std::shared_ptr<VirtualCamera> GrabVirtualCameraController::GetHaveVirtualCamera(const std::string& name) const
 {
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	const auto camera = cinemachine_brain->GetVirtualCamera(name);
@@ -93,9 +93,9 @@ std::shared_ptr<VirtualCameraBase> GrabVirtualCameraController::GetHaveVirtualCa
 	return nullptr;
 }
 
-std::vector<std::shared_ptr<VirtualCameraBase>> GrabVirtualCameraController::GetHaveAllVirtualCamera() const
+std::vector<std::shared_ptr<VirtualCamera>> GrabVirtualCameraController::GetHaveAllVirtualCamera() const
 {
-	return std::vector<std::shared_ptr<VirtualCameraBase>>{ m_camera };
+	return std::vector<std::shared_ptr<VirtualCamera>>{ m_camera };
 }
 
 

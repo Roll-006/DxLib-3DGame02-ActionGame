@@ -1,7 +1,7 @@
 #pragma once
-#include "../Base/scene_base.hpp"
+#include "../Interface/i_scene.hpp"
 
-class TitleScene final : public SceneBase
+class TitleScene final : public IScene
 {
 public:
 	TitleScene();
@@ -13,6 +13,12 @@ public:
 	void DrawToShadowMap()	const	override;
 	void Draw()				const	override;
 
-private:
+	void Activate()		override { m_is_active = true; }
+	void Deactivate()	override { m_is_active = false; }
 
+	[[nodiscard]] bool IsActive() const override { return m_is_active; }
+	[[nodiscard]] std::shared_ptr<IScene> ChangeScene() override;
+
+private:
+	bool m_is_active;
 };

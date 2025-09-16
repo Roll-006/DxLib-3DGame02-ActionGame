@@ -75,6 +75,11 @@ void Effect::AddToObjManager()
 	ObjManager::GetInstance()->AddObj(shared_from_this());
 }
 
+void Effect::RemoveToObjManager()
+{
+	ObjManager::GetInstance()->RemoveObj(GetObjHandle());
+}
+
 
 #pragma region Attach / Detach
 void Effect::AttachOwnerTransform(const std::shared_ptr<Transform> owner_transform)

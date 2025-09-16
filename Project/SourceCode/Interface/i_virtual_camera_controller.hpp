@@ -1,6 +1,6 @@
 #pragma once
 #include "../Kind/virtual_camera_controller_kind.hpp"
-#include "../Base/virtual_camera_base.hpp"
+#include "../VirtualCamera/virtual_camera.hpp"
 
 class IVirtualCameraController abstract
 {
@@ -16,8 +16,8 @@ public:
 	virtual void Deactivate() abstract;
 
 	[[nodiscard]] virtual VirtualCameraControllerKind GetVirtualCameraControllerKind() const abstract;
-	[[nodiscard]] virtual std::shared_ptr<VirtualCameraBase> GetHaveVirtualCamera(const std::string& name) const abstract;
-	[[nodiscard]] virtual std::vector<std::shared_ptr<VirtualCameraBase>> GetHaveAllVirtualCamera()  const abstract;
+	[[nodiscard]] virtual std::shared_ptr<VirtualCamera> GetHaveVirtualCamera(const std::string& name) const abstract;
+	[[nodiscard]] virtual std::vector<std::shared_ptr<VirtualCamera>> GetHaveAllVirtualCamera()  const abstract;
 	[[nodiscard]] virtual int GetControllerHandle() const abstract;
 	[[nodiscard]] virtual bool IsActive() const abstract;
 };

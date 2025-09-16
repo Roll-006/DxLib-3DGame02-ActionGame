@@ -17,6 +17,7 @@ public:
 	void Draw()				const	override;
 
 	void AddToObjManager()			override;
+	void RemoveToObjManager()		override;
 
 	[[nodiscard]] float	GetDeltaTime() const override;
 	[[nodiscard]] std::shared_ptr<Modeler> GetModeler() { return m_modeler; }

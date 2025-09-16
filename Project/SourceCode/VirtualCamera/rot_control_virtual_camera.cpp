@@ -2,7 +2,7 @@
 //#include "../Command/command_handler.hpp"
 //
 //RotControlVirtualCamera::RotControlVirtualCamera() :
-//	VirtualCameraBase	(ObjName.ROT_CONTROL_VIRTUAL_CAMERA, VirtualCameraKind::kControl, BlendActivationPolicyKind::kKeepOriginCamera),
+//	VirtualCamera	(ObjName.ROT_CONTROL_VIRTUAL_CAMERA, VirtualCameraKind::kControl, BlendActivationPolicyKind::kKeepOriginCamera),
 //	m_data				(ControlVirtualCameraData())
 //{
 //	m_aim->SetTrackedObjOffset	(VGet(10.0f, 10.0f, 0.0f));

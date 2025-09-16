@@ -19,6 +19,7 @@ public:
 	void Draw()				const	override;
 
 	void AddToObjManager()			override;
+	void RemoveToObjManager()		override;
 
 
 	#pragma region Attach / Detach

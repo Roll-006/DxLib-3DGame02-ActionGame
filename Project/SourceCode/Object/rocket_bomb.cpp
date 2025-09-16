@@ -105,6 +105,15 @@ void RocketBomb::AddToObjManager()
 	PhysicsManager	::GetInstance()->AddPhysicalObj	(physical_obj);
 }
 
+void RocketBomb::RemoveToObjManager()
+{
+	const auto obj_handle = GetObjHandle();
+
+	ObjManager		::GetInstance()->RemoveObj		  (obj_handle);
+	CollisionManager::GetInstance()->RemoveCollideObj (obj_handle);
+	PhysicsManager	::GetInstance()->RemovePhysicalObj(obj_handle);
+}
+
 void RocketBomb::OnShot(GunBase& gun)
 {
 	m_shot_owner_name	= gun.GetOwnerName();

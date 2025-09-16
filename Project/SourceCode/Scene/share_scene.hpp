@@ -1,5 +1,5 @@
 #pragma once
-#include "../Base/scene_base.hpp"
+#include "../Interface/i_scene.hpp"
 
 #include "../Object/main_camera.hpp"
 #include "../Object/player.hpp"
@@ -12,7 +12,7 @@
 
 #include "../VirtualCamera/cinemachine_brain.hpp"
 
-class ShareScene final : public SceneBase
+class ShareScene final : public IScene
 {
 public:
 	ShareScene();
@@ -24,7 +24,15 @@ public:
 	void DrawToShadowMap()	const	override;
 	void Draw()				const	override;
 
+	void Activate()		override { m_is_active = true; }
+	void Deactivate()	override { m_is_active = false; }
+
+	[[nodiscard]] bool IsActive() const override { return m_is_active; }
+	[[nodiscard]] std::shared_ptr<IScene> ChangeScene() override;
+
 private:
+	bool m_is_active;
+
 	std::shared_ptr<MainCamera>					m_main_camera;
 	std::shared_ptr<Player>						m_player;
 	std::shared_ptr<ShareSceneEffectObjectPool>	m_share_scene_effect_object_pool;

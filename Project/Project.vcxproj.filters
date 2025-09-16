@@ -161,9 +161,6 @@
     <ClCompile Include="SourceCode\Shape\2DShape\capsule2D.cpp">
       <Filter>Shape\2DShape</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Base\virtual_camera_base.cpp">
-      <Filter>Base</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\VirtualCamera\virtual_camera.cpp">
       <Filter>VirtualCamera</Filter>
     </ClCompile>
@@ -508,9 +505,6 @@
     <ClInclude Include="SourceCode\Base\physical_obj_base.hpp">
       <Filter>Base</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Base\scene_base.hpp">
-      <Filter>Base</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\Base\shape_base.hpp">
       <Filter>Base</Filter>
     </ClInclude>
@@ -702,9 +696,6 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Shape\2DShape\capsule2D.hpp">
       <Filter>Shape\2DShape</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Base\virtual_camera_base.hpp">
-      <Filter>Base</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\VirtualCamera\virtual_camera.hpp">
       <Filter>VirtualCamera</Filter>
@@ -1066,9 +1057,6 @@
     <ClInclude Include="SourceCode\Base\enemy_state_controller_base.hpp">
       <Filter>Base</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Interface\i_enemy_ai.hpp">
-      <Filter>Interface</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\Interface\i_effect.hpp">
       <Filter>Interface</Filter>
     </ClInclude>
@@ -1287,6 +1275,12 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Part\mask_creator.hpp">
       <Filter>Part</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Interface\i_scene.hpp">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Concept\scene_concepts.hpp">
+      <Filter>Concept</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

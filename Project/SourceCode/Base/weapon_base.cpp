@@ -25,6 +25,14 @@ void WeaponBase::AddToObjManager()
 	CollisionManager::GetInstance()->AddCollideObj	(std::dynamic_pointer_cast<PhysicalObjBase>(shared_from_this()));
 }
 
+void WeaponBase::RemoveToObjManager()
+{
+	const auto obj_handle = GetObjHandle();
+
+	ObjManager		::GetInstance()->RemoveObj		 (obj_handle);
+	CollisionManager::GetInstance()->RemoveCollideObj(obj_handle);
+}
+
 /// @brief 装備する持ち主をアタッチする
 void WeaponBase::AttachOwner(const std::shared_ptr<Modeler> owner_modeler, const std::string& owner_name)
 {
