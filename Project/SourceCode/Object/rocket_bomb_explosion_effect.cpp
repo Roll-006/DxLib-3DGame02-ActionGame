@@ -20,7 +20,7 @@ RocketBombExplosionEffect::RocketBombExplosionEffect() :
 
 RocketBombExplosionEffect::~RocketBombExplosionEffect()
 {
-	DeleteEffekseerEffect(m_origin_effect_handle);
+	// MEMO : 画像のDelete処理は行わず、ハンドル保管クラスから再利用する
 }
 
 void RocketBombExplosionEffect::Init()
@@ -116,8 +116,8 @@ void RocketBombExplosionEffect::RemoveToObjManager()
 {
 	const auto obj_handle = GetObjHandle();
 
-	ObjManager		::GetInstance()->RemoveObj		 (obj_handle);
 	CollisionManager::GetInstance()->RemoveCollideObj(obj_handle);
+	ObjManager		::GetInstance()->RemoveObj		 (obj_handle);
 }
 
 
@@ -235,6 +235,6 @@ float RocketBombExplosionEffect::GetDeltaTime() const
 	const auto time_manager = GameTimeManager::GetInstance();
 
 	return m_time_scale_owner_name == ObjName.PLAYER
-		? time_manager->GetDeltaTime(TimeScaleController::LayerKind::kPlayer)
-		: time_manager->GetDeltaTime(TimeScaleController::LayerKind::kEffect);
+		? time_manager->GetDeltaTime(TimeScaleLayerKind::kPlayer)
+		: time_manager->GetDeltaTime(TimeScaleLayerKind::kEffect);
 }

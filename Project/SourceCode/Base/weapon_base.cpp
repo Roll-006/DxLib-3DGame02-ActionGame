@@ -29,8 +29,8 @@ void WeaponBase::RemoveToObjManager()
 {
 	const auto obj_handle = GetObjHandle();
 
-	ObjManager		::GetInstance()->RemoveObj		 (obj_handle);
 	CollisionManager::GetInstance()->RemoveCollideObj(obj_handle);
+	ObjManager		::GetInstance()->RemoveObj		 (obj_handle);
 }
 
 /// @brief 装備する持ち主をアタッチする
@@ -114,8 +114,8 @@ float WeaponBase::GetDeltaTime() const
 	const auto time_manager = GameTimeManager::GetInstance();
 
 	return m_owner_name == ObjName.PLAYER
-		? time_manager->GetDeltaTime(TimeScaleController::LayerKind::kPlayer)
-		: time_manager->GetDeltaTime(TimeScaleController::LayerKind::kWorld);
+		? time_manager->GetDeltaTime(TimeScaleLayerKind::kPlayer)
+		: time_manager->GetDeltaTime(TimeScaleLayerKind::kWorld);
 }
 
 void WeaponBase::SetOffset(

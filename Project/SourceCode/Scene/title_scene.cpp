@@ -1,4 +1,5 @@
 #include "title_scene.hpp"
+#include "../Manager/scene_manager.hpp"
 
 TitleScene::TitleScene() : 
 	m_is_active(true)
@@ -38,5 +39,12 @@ void TitleScene::Draw() const
 
 std::shared_ptr<IScene> TitleScene::ChangeScene()
 {
+	const auto command = CommandHandler::GetInstance();
+
+	if (command->IsExecute(CommandKind::kDecide, TimeKind::kCurrent))
+	{
+		return std::make_shared<PlayScene>();
+	}
+
 	return nullptr;
 }

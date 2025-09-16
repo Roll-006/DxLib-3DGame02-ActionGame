@@ -84,14 +84,14 @@ void Zombie::DrawToShadowMap() const
 {
 	if (!IsActive()) { return; }
 
-	//m_modeler->Draw();
+	m_modeler->Draw();
 }
 
 void Zombie::Draw() const
 {
 	if (!IsActive()) { return; }
 
-	//m_modeler->Draw();
+	m_modeler->Draw();
 
 	for (auto& collider : m_collider)
 	{
@@ -264,7 +264,7 @@ bool Zombie::IsTargetInSight(const int target_model_handle)
 float Zombie::GetDeltaTime() const
 {
 	const auto time_manager = GameTimeManager::GetInstance();
-	return time_manager->GetDeltaTime(TimeScaleController::LayerKind::kWorld);
+	return time_manager->GetDeltaTime(TimeScaleLayerKind::kWorld);
 }
 
 void Zombie::Move()

@@ -109,9 +109,9 @@ void RocketBomb::RemoveToObjManager()
 {
 	const auto obj_handle = GetObjHandle();
 
-	ObjManager		::GetInstance()->RemoveObj		  (obj_handle);
 	CollisionManager::GetInstance()->RemoveCollideObj (obj_handle);
 	PhysicsManager	::GetInstance()->RemovePhysicalObj(obj_handle);
+	ObjManager		::GetInstance()->RemoveObj		  (obj_handle);
 }
 
 void RocketBomb::OnShot(GunBase& gun)
@@ -154,8 +154,8 @@ float RocketBomb::GetDeltaTime() const
 	const auto time_manager = GameTimeManager::GetInstance();
 
 	return m_shot_owner_name == ObjName.PLAYER
-		? time_manager->GetDeltaTime(TimeScaleController::LayerKind::kPlayer)
-		: time_manager->GetDeltaTime(TimeScaleController::LayerKind::kWorld);
+		? time_manager->GetDeltaTime(TimeScaleLayerKind::kPlayer)
+		: time_manager->GetDeltaTime(TimeScaleLayerKind::kWorld);
 }
 
 bool RocketBomb::IsReturnPool()

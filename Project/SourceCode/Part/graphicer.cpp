@@ -30,7 +30,7 @@ Graphicer::Graphicer(const int graphic_handle) :
 
 Graphicer::~Graphicer()
 {
-	DeleteGraph(m_graphic_handle);
+	// MEMO : 画像のDelete処理は行わず、ハンドル保管クラスから再利用する
 }
 
 void Graphicer::Draw() const

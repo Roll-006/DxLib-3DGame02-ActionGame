@@ -8,7 +8,7 @@
 #include "../GameTime/game_time_manager.hpp"
 #include "../Window/window.hpp"
 
-#include "../CSV/csv_loader.hpp"
+#include "../JSON/json_loader.hpp"
 #include "../Data/input_data.hpp"
 #include "../Kind/time_kind.hpp"
 #include "../Kind/device_kind.hpp"
@@ -150,11 +150,9 @@ private:
 	static constexpr int			kPadTriggerNum		= 2;
 	static constexpr int			kPadStickNum		= 8;
 
-	std::unique_ptr<CSVLoader>			m_csv;
 	XINPUT_STATE					m_xinput;	// TODO : 複数コントローラーに対応できるよう後にコンテナ化
 	DeviceKind						m_current_device;
 	bool							m_is_lock_mouse_pos;
-	std::vector<int>				m_key_code;
 
 	std::vector<std::tuple<InputCode, TimeKind, InputData>> m_input_data;
 	std::unordered_map<TimeKind, MouseData> m_mouse_data;

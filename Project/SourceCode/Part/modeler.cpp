@@ -21,26 +21,6 @@ Modeler::Modeler(const std::shared_ptr<Transform> transform, const std::string& 
 	MV1SetupCollInfo(m_model_handle);
 }
 
-Modeler::Modeler(const std::shared_ptr<Transform> transform, const int model_handle, const VECTOR& basic_angle, const float basic_scale) :
-	m_model_handle	(HandleKeeper::GetInstance()->ReloadHnadle(HandleKind::kModel, model_handle)),
-	m_opacity		(1.0f),
-	m_transform		(transform),
-	m_basic_angle	(basic_angle),
-	m_basic_scale	(VGet(basic_scale, basic_scale, basic_scale))
-{
-	MV1SetupCollInfo(m_model_handle);
-}
-
-Modeler::Modeler(const std::shared_ptr<Transform> transform, const int model_handle) :
-	m_model_handle	(HandleKeeper::GetInstance()->ReloadHnadle(HandleKind::kModel, model_handle)),
-	m_opacity		(1.0f),
-	m_transform		(transform),
-	m_basic_angle	(v3d::GetZeroV()),
-	m_basic_scale	(VGet(1.0f, 1.0f, 1.0f))
-{
-	MV1SetupCollInfo(m_model_handle);
-}
-
 Modeler::Modeler(const std::string& file_path) :
 	m_model_handle	(HandleKeeper::GetInstance()->LoadHandle(HandleKind::kModel, file_path)),
 	m_opacity		(1.0f),
@@ -63,7 +43,11 @@ Modeler::Modeler(const int model_handle) :
 
 Modeler::~Modeler()
 {
-	MV1DeleteModel(m_model_handle);
+	if (m_model_handle != -1)
+	{
+		MV1DeleteModel(m_model_handle);
+		m_model_handle = -1;
+	}
 }
 #pragma endregion
 

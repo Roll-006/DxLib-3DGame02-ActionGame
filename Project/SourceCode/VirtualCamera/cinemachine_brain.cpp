@@ -65,6 +65,8 @@ void CinemachineBrain::SortPriority(const std::shared_ptr<VirtualCamera> virtual
 	}
 }
 
+
+#pragma region 登録 / 解除
 void CinemachineBrain::AddVirtualCamera(const std::shared_ptr<VirtualCamera> virtual_camera, const bool is_active)
 {
 	if (!m_virtual_cameras.count(virtual_camera->GetCameraHandle()))
@@ -93,6 +95,22 @@ void CinemachineBrain::RemoveVirtualCamera(const int camera_handle)
 	});
 	m_priority.erase(remove, m_priority.end());
 }
+
+void CinemachineBrain::RemoveVirtualCameraController(const VirtualCameraControllerKind kind)
+{
+	for (auto itr = m_virtual_camera_controllers.begin(); itr != m_virtual_camera_controllers.end(); )
+	{
+		if (itr->get()->GetVirtualCameraControllerKind() == kind)
+		{
+			itr = m_virtual_camera_controllers.erase(itr);
+		}
+		else
+		{
+			++itr;
+		}
+	}
+}
+#pragma endregion
 
 
 #pragma region Setter
@@ -195,6 +213,7 @@ void CinemachineBrain::BlendVirtualCamera()
 	CalcBlendResuletTransform();
 
 	// メインカメラへ適用
+	if (!m_blend_result_transform) { m_blend_result_transform = std::make_shared<Transform>(); }
 	m_main_camera->GetTransform()->SetMatrix(CoordinateKind::kWorld, m_blend_result_transform->GetMatrix(CoordinateKind::kWorld));
 }
 
@@ -266,7 +285,7 @@ void CinemachineBrain::SetBlendTransform()
 	}
 
 	// ターゲットのブレンド方針に従ってターゲット以外のカメラのアクティブ状態を制御
-	DeactivateVirtualCamera(origin_camera, target_camera);
+	if (target_camera) { DeactivateVirtualCamera(origin_camera, target_camera); }
 }
 
 void CinemachineBrain::CalcBlendResuletTransform()
@@ -281,7 +300,7 @@ void CinemachineBrain::CalcBlendResuletTransform()
 
 	// トランスフォーム間の補間
 	const auto time_manager		= GameTimeManager::GetInstance();
-	math::Increase(m_blend_timer, time_manager->GetDeltaTime(TimeScaleController::LayerKind::kCamera), m_blend_time, false);
+	math::Increase(m_blend_timer, time_manager->GetDeltaTime(TimeScaleLayerKind::kCamera), m_blend_time, false);
 	m_blend_coefficient			= m_blend_time != 0.0f ? math::GetUnitValue<float, float>(0.0f, m_blend_time, m_blend_timer) : 1.0f;
 	auto blended_transform		= math::GetLerpTransform(*m_blend_origin_transform, *m_blend_target_transform, m_blend_coefficient, true, false, true);
 	m_blend_result_transform	= std::make_shared<Transform>(blended_transform);

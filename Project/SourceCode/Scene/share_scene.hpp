@@ -2,7 +2,6 @@
 #include "../Interface/i_scene.hpp"
 
 #include "../Object/main_camera.hpp"
-#include "../Object/player.hpp"
 #include "../Object/selector.hpp"
 
 #include "../Command/command_handler.hpp"
@@ -34,7 +33,6 @@ private:
 	bool m_is_active;
 
 	std::shared_ptr<MainCamera>					m_main_camera;
-	std::shared_ptr<Player>						m_player;
 	std::shared_ptr<ShareSceneEffectObjectPool>	m_share_scene_effect_object_pool;
 	std::shared_ptr<IUICreator>					m_screen_filter_creator;
 };

@@ -17,7 +17,7 @@ void player_state::EquipGun::Update(std::shared_ptr<Player> obj)
 	if (CommandHandler::GetInstance()->IsExecute(CommandKind::kAimGun, TimeKind::kCurrent))
 	{
 		const auto time_manager = GameTimeManager::GetInstance();
-		m_possible_aim_timer += time_manager->GetDeltaTime(TimeScaleController::LayerKind::kPlayer);
+		m_possible_aim_timer += time_manager->GetDeltaTime(TimeScaleLayerKind::kPlayer);
 	}
 	else
 	{

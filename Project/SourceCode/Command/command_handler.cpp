@@ -211,17 +211,31 @@ bool CommandHandler::IsExecute(const CommandKind command_kind, const TimeKind ti
 	switch (m_input_mode.at(command_kind))
 	{
 	case InputModeKind::kSingle:
-		for (const auto& code : codes)
+		for (const auto& [kind, input_codes] : codes)
 		{
-			if (code.first == command_kind)
+			if (kind == command_kind)
 			{
 				if (time_kind == TimeKind::kCurrent)
 				{
-					return input->GetInputState(code.second) == InputState::kSingle;
+					for (const auto& code : input_codes)
+					{
+						if (input->GetInputState(code) == InputState::kSingle)
+						{
+							return true;
+						}
+					}
+					return false;
 				}
 				else if (time_kind == TimeKind::kPrev)
 				{
-					return input->GetInputState(code.second) == InputState::kPrev;
+					for (const auto& code : input_codes)
+					{
+						if (input->GetInputState(code) == InputState::kPrev)
+						{
+							return true;
+						}
+					}
+					return false;
 				}
 			}			
 		}	
@@ -244,7 +258,7 @@ void CommandHandler::AddInputCode(const CommandKind kind, const input_concepts::
 {
 	const auto input	= InputChecker::GetInstance();
 	const auto code		= input->ConvertInputTemplateToInputCode(input_code);
-	std::vector<std::pair<CommandKind, InputCode>>* codes = nullptr;
+	std::unordered_map<CommandKind, std::unordered_set<InputCode>>* codes = nullptr;
 	
 	switch (input->GetInputKind(input_code))
 	{
@@ -263,22 +277,15 @@ void CommandHandler::AddInputCode(const CommandKind kind, const input_concepts::
 	}
 
 	// 新規データのみ追加する
-	const auto add = std::find_if(codes->begin(), codes->end(), [=](const std::pair<CommandKind, InputCode> p)
-	{
-		return p.first == kind && p.second.kind == code.kind && p.second.code == code.code;
-	});
-
-	if (add == codes->end())
-	{
-		codes->emplace_back(std::make_pair(kind, code));
-	}
+	auto& set = (*codes)[kind];
+	set.insert(code);
 }
 
 void CommandHandler::RemoveInputCode(const CommandKind kind, const input_concepts::InputT auto& input_code)
 {
 	const auto input = InputChecker::GetInstance();
 	const auto code  = input->ConvertInputTemplateToInputCode(input_code);
-	std::vector<std::pair<CommandKind, InputCode>>* codes = nullptr;
+	std::unordered_map<CommandKind, std::unordered_set<InputCode>>* codes = nullptr;
 
 	switch (input->GetInputKind(input_code))
 	{
@@ -296,44 +303,46 @@ void CommandHandler::RemoveInputCode(const CommandKind kind, const input_concept
 		break;
 	}
 
-	// 削除する入力コードを検索
-	const auto remove = std::find_if(codes->begin(), codes->end(), [=](const std::pair<CommandKind, InputCode> p)
+	// 削除
+	auto itr = codes->find(kind);
+	if (itr != codes->end())
 	{
-		return p.first == kind && p.second.kind == code.kind && p.second.code == code.code;
-	});
-
-	// 一致する入力コードを削除
-	if (remove != codes->end())
-	{
-		codes->erase(remove);
+		itr->second.erase(code);
+		if (itr->second.empty())
+		{
+			codes->erase(itr);
+		}
 	}
 }
 
-void CommandHandler::TryExecuteCommand(const std::vector<std::pair<CommandKind, InputCode>>& codes)
+void CommandHandler::TryExecuteCommand(const std::unordered_map<CommandKind, std::unordered_set<InputCode>>& codes)
 {
 	const auto input = InputChecker::GetInstance();
 
 	// 入力された情報を保存
 	std::vector<CommandKind> executed_command;
 
-	for (const auto& code : codes)
+	for (const auto& [kind, input_codes] : codes)
 	{
-		if (input->IsInput(code.second))
+		for (const auto& code : input_codes)
 		{
-			// 入力されていないコマンドのみ格納
-			if (std::find(executed_command.begin(), executed_command.end(), code.first) == executed_command.end())
+			if (input->IsInput(code))
 			{
-				// 特殊コマンドのトリガー方式であった場合、入力回数をカウント
-				if (m_input_mode.at(code.first) == InputModeKind::kTrigger)
+				// 入力されていないコマンドのみ格納
+				if (std::find(executed_command.begin(), executed_command.end(), kind) == executed_command.end())
 				{
-					if (input->GetInputState(code.second) == InputState::kSingle)
+					// 特殊コマンドのトリガー方式であった場合、入力回数をカウント
+					if (m_input_mode.at(kind) == InputModeKind::kTrigger)
 					{
+						if (input->GetInputState(code) == InputState::kSingle)
+						{
 
-						++m_trigger_count[TimeKind::kCurrent][code.first];
+							++m_trigger_count[TimeKind::kCurrent][kind];
+						}
 					}
+					executed_command.emplace_back(kind);
+					m_execute_command[TimeKind::kCurrent].emplace_back(kind);
 				}
-				executed_command.emplace_back(code.first);
-				m_execute_command[TimeKind::kCurrent].emplace_back(code.first);
 			}
 		}
 	}

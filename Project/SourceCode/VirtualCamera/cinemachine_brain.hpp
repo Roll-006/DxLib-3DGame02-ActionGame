@@ -30,8 +30,6 @@ public:
 
 	#pragma region 登録 / 解除
 	/// @brief バーチャルカメラを登録する
-	
-	/// @brief バーチャルカメラを登録する
 	/// @param virtual_camera 登録するバーチャルカメラ
 	/// @param is_active アクティブ化するかどうか
 	void AddVirtualCamera(const std::shared_ptr<VirtualCamera> virtual_camera, const bool is_active);
@@ -40,7 +38,7 @@ public:
 
 	/// @brief バーチャルカメラコントローラーを登録する
 	template<camera_controllder_concepts::VirtualCameraController ControllerT>
-	void AddVirtualCameraController(std::shared_ptr<ControllerT> virtual_camera_controller)
+	void AddVirtualCameraController(const std::shared_ptr<ControllerT> virtual_camera_controller)
 	{
 		if (std::find(m_virtual_camera_controllers.begin(), m_virtual_camera_controllers.end(), virtual_camera_controller) == m_virtual_camera_controllers.end())
 		{
@@ -50,13 +48,15 @@ public:
 
 	/// @brief バーチャルカメラコントローラーの登録を解除する
 	template<camera_controllder_concepts::VirtualCameraController ControllerT>
-	void RemoveVirtualCameraController(std::shared_ptr<ControllerT> virtual_camera_controller)
+	void RemoveVirtualCameraController(const std::shared_ptr<ControllerT> virtual_camera_controller)
 	{
 		if (std::find(m_virtual_camera_controllers.begin(), m_virtual_camera_controllers.end(), virtual_camera_controller) != m_virtual_camera_controllers.end())
 		{
 			erase(m_virtual_camera_controllers, virtual_camera_controller);
 		}
 	}
+
+	void RemoveVirtualCameraController(const VirtualCameraControllerKind kind);
 	#pragma endregion
 
 

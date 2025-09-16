@@ -66,7 +66,7 @@ void VirtualCamera::SetPriority(const int priority)
 float VirtualCamera::GetDeltaTime() const
 {
 	const auto time_manager = GameTimeManager::GetInstance();
-	return time_manager->GetDeltaTime(TimeScaleController::LayerKind::kCamera);
+	return time_manager->GetDeltaTime(TimeScaleLayerKind::kCamera);
 }
 
 void VirtualCamera::CalcTransform()

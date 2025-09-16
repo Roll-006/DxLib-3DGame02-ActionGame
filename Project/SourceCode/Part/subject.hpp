@@ -5,9 +5,6 @@ template <typename T>
 class Subject final
 {
 public:
-	Subject() {}
-	~Subject() {}
-
 	void AddObserver(std::shared_ptr<IObserver> observer)
 	{
 		if (std::find(m_observers.begin(), m_observers.end(), observer) == m_observers.end())

@@ -60,7 +60,38 @@ private:
 
 	VECTOR m_damping;				// 各座標の減衰値
 	//float  m_damping_yaw;			// ヨーの減衰値
-	//float  m_damping_pitch;			// ピッチの減衰値
+	//float  m_damping_pitch;		// ピッチの減衰値
 
 	bool   m_is_track;				// 追尾を行うかを判定
+
+	friend void from_json	(const nlohmann::json& data, CameraBody& body);
+	friend void to_json		(nlohmann::json& data, const CameraBody& body);
 };
+
+
+#pragma region from / to JSON
+inline void from_json(const nlohmann::json& data, CameraBody& body)
+{
+	data.at("owner_transform")	.get_to(*body.m_owner_transform.get());
+	data.at("target_transform")	.get_to(*body.m_target_transform.get());
+	data.at("destination_pos")	.get_to(body.m_destination_pos);
+	data.at("current_pos")		.get_to(body.m_current_pos);
+	data.at("follow_offset")	.get_to(body.m_follow_offset);
+	data.at("damping")			.get_to(body.m_damping);
+	data.at("is_track")			.get_to(body.m_is_track);
+}
+
+inline void to_json(nlohmann::json& data, const CameraBody& body)
+{
+	data = nlohmann::json
+	{
+		{ "owner_transform",	*body.m_owner_transform.get() },
+		{ "target_transform",	*body.m_target_transform.get() },
+		{ "destination_pos",	body.m_destination_pos },
+		{ "current_pos",		body.m_current_pos },
+		{ "follow_offset",		body.m_follow_offset },
+		{ "damping",			body.m_damping },
+		{ "is_track",			body.m_is_track }
+	};
+}
+#pragma endregion

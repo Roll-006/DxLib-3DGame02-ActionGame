@@ -28,7 +28,7 @@ void GameTimeManager::WaitTime()
 	m_fps->Wait();
 }
 
-float GameTimeManager::GetDeltaTime(const TimeScaleController::LayerKind scale_layer_kind) const
+float GameTimeManager::GetDeltaTime(const TimeScaleLayerKind scale_layer_kind) const
 {
 	return m_fps->GetDeltaTime() * m_time_scale_controller->GetTimeScale(scale_layer_kind);
 }

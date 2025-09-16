@@ -1,4 +1,6 @@
 #pragma once
+#include <unordered_set>
+
 #include "../Kind/command_kind.hpp"
 #include "../Base/singleton_base.hpp"
 #include "../Input/input_checker.hpp"
@@ -40,12 +42,12 @@ private:
 	void RemoveInputCode(const CommandKind kind, const input_concepts::InputT auto& input_code);
 
 	/// @brief コマンドの実行判定
-	void TryExecuteCommand(const std::vector<std::pair<CommandKind, InputCode>>& codes);
+	void TryExecuteCommand(const std::unordered_map<CommandKind, std::unordered_set<InputCode>>& codes);
 
 private:
 	std::unordered_map<TimeKind, std::vector<CommandKind>>				m_execute_command;		// 現在実行中のコマンド
-	std::vector<std::pair<CommandKind, InputCode>>						m_key_codes;
-	std::vector<std::pair<CommandKind, InputCode>>						m_pad_codes;
+	std::unordered_map<CommandKind, std::unordered_set<InputCode>>		m_key_codes;
+	std::unordered_map<CommandKind, std::unordered_set<InputCode>>		m_pad_codes;
 
 	std::unordered_map<CommandKind, InputModeKind>						m_input_mode;			// 入力モード
 	std::unordered_map<TimeKind, std::unordered_map<CommandKind, int>>	m_trigger_count;		// トリガー方式入力カウント

@@ -1,4 +1,5 @@
 #include "game_over_scene.hpp"
+#include "../Manager/scene_manager.hpp"
 
 GameOverScene::GameOverScene() : 
 	m_is_active(true)

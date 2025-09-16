@@ -15,8 +15,8 @@ void Drawer::DrawToShadowMap(const std::shared_ptr<IScene> share_scene, const st
 {
 	m_shadow_map->SetupDrawShadowMap();
 
-	share_scene		->DrawToShadowMap();
 	current_scene	->DrawToShadowMap();
+	share_scene		->DrawToShadowMap();
 
 	m_shadow_map->EndDrawShadowMap();
 }
@@ -25,8 +25,8 @@ void Drawer::Draw(const std::shared_ptr<IScene> share_scene, const std::shared_p
 {
 	m_shadow_map->UseShadowMap();
 
-	share_scene		->Draw();
 	current_scene	->Draw();
+	share_scene		->Draw();
 
 	m_shadow_map->UnuseShadowMap();
 

@@ -26,7 +26,7 @@ void ScreenFilterCreator::OnDraw()
 
 void ScreenFilterCreator::OnNotify(const IEvent& event)
 {
-	const float delta_time = GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleController::LayerKind::kUI);
+	const float delta_time = GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kUI);
 
 	// ロケットランチャー専用カットシーンの開始
 	if (event.GetType() == std::type_index(typeid(StartRocketLauncherCutsceneData)))

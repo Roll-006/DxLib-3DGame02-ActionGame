@@ -43,7 +43,7 @@ void CameraAim::CalcDampedAimPos()
 	const VECTOR damping	= { m_horizontal_damping, m_vertical_damping, 0.0f };
 
 	m_current_aim_pos = math::GetDampedValueOnAxes(m_current_aim_pos, m_destination_aim_pos, damping, 
-		owner_axes, time_manager->GetDeltaTime(TimeScaleController::LayerKind::kCamera));
+		owner_axes, time_manager->GetDeltaTime(TimeScaleLayerKind::kCamera));
 
 	//DrawSphere3D(m_current_aim_pos, 3, 8, 0xffffff, 0xffffff, TRUE);
 }

@@ -26,4 +26,27 @@ private:
 	float m_current_health;
 	float m_current_max_health;
 	float m_max_health;
+
+	friend void from_json	(const nlohmann::json& data, Health& health);
+	friend void to_json		(nlohmann::json& data, const Health& health);
 };
+
+
+#pragma region from / to JSON
+inline void from_json(const nlohmann::json& data, Health& health)
+{
+	data.at("current_health")		.get_to(health.m_current_health);
+	data.at("current_max_health")	.get_to(health.m_current_max_health);
+	data.at("max_health")			.get_to(health.m_max_health);
+}
+
+inline void to_json(nlohmann::json& data, const Health& health)
+{
+	data = nlohmann::json
+	{
+		{ "current_health",		health.m_current_health },
+		{ "current_max_health",	health.m_current_max_health },
+		{ "max_health",			health.m_max_health }
+	};
+}
+#pragma endregion

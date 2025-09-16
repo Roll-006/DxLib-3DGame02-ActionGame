@@ -47,5 +47,7 @@ RifleCartridgeObjectPool::RifleCartridgeObjectPool() :
 
 RifleCartridgeObjectPool::~RifleCartridgeObjectPool()
 {
-
+	DestroyObjects(ObjName.BULLET);
+	DestroyObjects(ObjName.SHELL_CASING_556x45);
+	DestroyObjects(ObjName.ROCKET_BOMB);
 }

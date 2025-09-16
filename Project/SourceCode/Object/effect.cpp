@@ -19,7 +19,7 @@ Effect::Effect(const EffectData& data) :
 
 Effect::~Effect()
 {
-	DeleteEffekseerEffect(m_origin_effect_handle);
+	// MEMO : 画像のDelete処理は行わず、ハンドル保管クラスから再利用する
 }
 
 void Effect::Init()
@@ -180,6 +180,6 @@ float Effect::GetDeltaTime() const
 	const auto time_manager = GameTimeManager::GetInstance();
 
 	return m_time_scale_owner_name == ObjName.PLAYER
-		? time_manager->GetDeltaTime(TimeScaleController::LayerKind::kPlayer)
-		: time_manager->GetDeltaTime(TimeScaleController::LayerKind::kEffect);
+		? time_manager->GetDeltaTime(TimeScaleLayerKind::kPlayer)
+		: time_manager->GetDeltaTime(TimeScaleLayerKind::kEffect);
 }

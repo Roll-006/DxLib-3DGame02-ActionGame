@@ -15,7 +15,7 @@ player_state::EquipKnife::~EquipKnife()
 void player_state::EquipKnife::Update(std::shared_ptr<Player> obj)
 {
 	const auto time_manager = GameTimeManager::GetInstance();
-	m_elapsed_time += time_manager->GetDeltaTime(TimeScaleController::LayerKind::kPlayer);
+	m_elapsed_time += time_manager->GetDeltaTime(TimeScaleLayerKind::kPlayer);
 
 	obj->GetCurrentHeldWeapon()->Update();
 }

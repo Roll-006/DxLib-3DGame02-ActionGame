@@ -102,8 +102,8 @@ void HealthGauge::LateUpdate()
 	CreateHealthGaugeScreen();
 	CreateResultScreen();
 
-	m_prev_health				= m_health->GetCurrentHealth();
-	m_prev_max_health			= m_health->GetCurrentMaxHealth();
+	m_prev_health						= m_health->GetCurrentHealth();
+	m_prev_max_health					= m_health->GetCurrentMaxHealth();
 	m_prev_health_gauge_actual_percent	= m_current_health_gauge_actual_percent;
 	m_prev_health_gauge_virtual_percent = m_current_health_gauge_virtual_percent;
 }
@@ -236,7 +236,7 @@ void HealthGauge::CreateResultScreen()
 
 void HealthGauge::CalcGaugePercent()
 {
-	const auto delta_time = GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleController::LayerKind::kUI);
+	const auto delta_time = GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kUI);
 	const auto max_health = m_health->GetMaxHealth();
 
 	// ŽÀÛ‚Ì’l‚ðŽæ“¾
@@ -286,7 +286,7 @@ void HealthGauge::CalcGaugePercent()
 
 void HealthGauge::CalcBlinkingAlphaBlendNum()
 {
-	const auto delta_time = GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleController::LayerKind::kUI);
+	const auto delta_time = GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kUI);
 	auto is_loop = false;
 
 	// HP‚ª12.5%ˆÈ‰º‚Ìê‡Aí‚É“_–Å‚³‚¹‚é
@@ -326,7 +326,7 @@ void HealthGauge::CalcBlinkingAlphaBlendNum()
 
 void HealthGauge::CalcGaugeParticleAngle()
 {
-	const auto delta_time = GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleController::LayerKind::kUI);
+	const auto delta_time = GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kUI);
 	
 	m_gauge_particle_angle += 10.0f * math::kDegToRad * delta_time;
 	m_gauge_particle_graphic	->SetAngle( m_gauge_particle_angle);

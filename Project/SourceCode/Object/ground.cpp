@@ -71,13 +71,13 @@ void Ground::RemoveToObjManager()
 {
 	const auto obj_handle = GetObjHandle();
 
-	ObjManager		::GetInstance()->RemoveObj		  (obj_handle);
 	CollisionManager::GetInstance()->RemoveCollideObj (obj_handle);
 	PhysicsManager	::GetInstance()->RemovePhysicalObj(obj_handle);
+	ObjManager		::GetInstance()->RemoveObj		  (obj_handle);
 }
 
 float Ground::GetDeltaTime() const
 {
 	const auto time_manager = GameTimeManager::GetInstance();
-	return time_manager->GetDeltaTime(TimeScaleController::LayerKind::kWorld);
+	return time_manager->GetDeltaTime(TimeScaleLayerKind::kWorld);
 }

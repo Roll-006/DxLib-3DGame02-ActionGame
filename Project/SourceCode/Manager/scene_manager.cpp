@@ -2,7 +2,7 @@
 
 SceneManager::SceneManager() : 
 	m_share_scene	(std::make_shared<ShareScene>()),
-	m_current_scene	(std::make_shared<PlayScene>()),
+	m_current_scene	(std::make_shared<TitleScene>()),
 	m_drawer		(std::make_unique<Drawer>(ObjManager::GetInstance()->GetObj<ObjBase>(ObjName.MAIN_CAMERA)->GetTransform()))
 {
 
@@ -23,16 +23,16 @@ void SceneManager::Update()
 
 	ChangeScene();
 
-	m_share_scene	->Update();
 	m_current_scene	->Update();
+	m_share_scene	->Update();
 }
 
 void SceneManager::LateUpdate()
 {
 	PhysicsManager::GetInstance()->LateUpdate();
 
-	m_share_scene	->LateUpdate();
 	m_current_scene	->LateUpdate();
+	m_share_scene	->LateUpdate();
 
 	InputChecker::GetInstance()->LateUpdate();
 }

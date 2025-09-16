@@ -23,8 +23,15 @@ AnimatorBase::~AnimatorBase()
 {
 	for (auto& data : m_anim_data)
 	{
-		MV1DeleteModel(data.second.anim_handle);
+		if (data.second.anim_handle != -1)
+		{
+			MV1DeleteModel(data.second.anim_handle);
+			data.second.anim_handle = -1;
+		}
 	}
+
+	m_resource_modeler.erase(BodyKind::kLowerBody);
+	m_resource_modeler.erase(BodyKind::kUpperBody);
 }
 
 void AnimatorBase::AddAnimHandle(const int kind, const std::string& file_path, const int index, const std::string& tag, const float play_speed, const bool is_loop, const bool is_self_blend)
@@ -331,6 +338,6 @@ float AnimatorBase::GetDeltaTime() const
 	const auto time_manager = GameTimeManager::GetInstance();
 
 	return m_obj_name == ObjName.PLAYER
-		? time_manager->GetDeltaTime(TimeScaleController::LayerKind::kPlayer)
-		: time_manager->GetDeltaTime(TimeScaleController::LayerKind::kWorld);
+		? time_manager->GetDeltaTime(TimeScaleLayerKind::kPlayer)
+		: time_manager->GetDeltaTime(TimeScaleLayerKind::kWorld);
 }

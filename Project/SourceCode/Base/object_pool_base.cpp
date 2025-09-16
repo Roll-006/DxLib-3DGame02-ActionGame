@@ -15,8 +15,17 @@ void ObjectPoolBase::ReturnObj(const std::shared_ptr<ObjBase> obj)
 	m_objects[obj->GetName()].push(obj);
 }
 
-void ObjectPoolBase::DestroyObj(const std::string& obj_name)
+void ObjectPoolBase::DestroyObjects(const std::string& obj_name)
 {
+	while (!m_objects.at(obj_name).empty())
+	{
+		const auto effect = m_objects.at(obj_name).front();
+		auto i = effect.use_count();
+		effect->RemoveToObjManager();
+		i = effect.use_count();
+		m_objects.at(obj_name).pop();
+	}
+
 	m_objects.erase(obj_name);
 }
 

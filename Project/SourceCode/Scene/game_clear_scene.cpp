@@ -1,4 +1,5 @@
 #include "game_clear_scene.hpp"
+#include "../Manager/scene_manager.hpp"
 
 GameClearScene::GameClearScene() : 
 	m_is_active(true)

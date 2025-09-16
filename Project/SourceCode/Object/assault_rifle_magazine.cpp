@@ -70,7 +70,7 @@ void AssaultRifleMagazine::OnReloaded()
 
 float AssaultRifleMagazine::GetDeltaTime() const
 {
-	return GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleController::LayerKind::kWorld);
+	return GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kWorld);
 }
 
 void AssaultRifleMagazine::TrackOwnerHand()

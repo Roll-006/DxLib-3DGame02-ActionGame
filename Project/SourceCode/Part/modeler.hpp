@@ -10,8 +10,6 @@ class Modeler final
 public:
 	Modeler(const std::shared_ptr<Transform> transform, const std::string& file_path, const VECTOR& basic_angle, const float basic_scale);
 	Modeler(const std::shared_ptr<Transform> transform, const std::string& file_path);
-	Modeler(const std::shared_ptr<Transform> transform, const int model_handle,		  const VECTOR& basic_angle, const float basic_scale);
-	Modeler(const std::shared_ptr<Transform> transform, const int model_handle);
 	Modeler(const std::string& file_path);
 	Modeler(const int model_handle);
 	~Modeler();

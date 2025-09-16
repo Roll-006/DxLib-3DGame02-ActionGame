@@ -1,7 +1,9 @@
 #pragma once
 #include <cmath>
 #include <algorithm>
+#include <nlohmann/json.hpp>
 #include <DxLib.h>
+
 #include "vector_3d.hpp"
 
 struct Quaternion;

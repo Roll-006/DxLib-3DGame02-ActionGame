@@ -1,4 +1,5 @@
 #include "load_scene.hpp"
+#include "../Manager/scene_manager.hpp"
 
 LoadScene::LoadScene() : 
 	m_is_active(true)

@@ -106,7 +106,7 @@ void WeaponShortcutDrawer::CreateShortcutIcon()
 
 void WeaponShortcutDrawer::UpdateAnim()
 {
-	const auto delta_time	= GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleController::LayerKind::kUI);
+	const auto delta_time	= GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kUI);
 	const auto graphicer	= m_screen_creator->GetGraphicer();
 	float t = 0.0f;
 

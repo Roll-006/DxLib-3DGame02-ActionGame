@@ -90,4 +90,47 @@ private:
 	Vector2D<float> m_bias;						// デッドゾーンおよびソフトゾーンのずらし量
 
 	bool			m_is_track;					// 追尾を行うかを判定
+
+	friend void from_json	(const nlohmann::json& data, CameraAim& aim);
+	friend void to_json		(nlohmann::json& data, const CameraAim& aim);
 };
+
+
+#pragma region from / to JSON
+inline void from_json(const nlohmann::json& data, CameraAim& aim)
+{
+	data.at("owner_transform")		.get_to(*aim.m_owner_transform.get());
+	data.at("target_transform")		.get_to(*aim.m_target_transform.get());
+	data.at("rot_matrix")			.get_to(aim.m_rot_matrix);
+	data.at("destination_aim_pos")	.get_to(aim.m_destination_aim_pos);
+	data.at("current_aim_pos")		.get_to(aim.m_current_aim_pos);
+	data.at("tracked_obj_offset")	.get_to(aim.m_tracked_obj_offset);
+	data.at("horizontal_damping")	.get_to(aim.m_horizontal_damping);
+	data.at("vertical_damping")		.get_to(aim.m_vertical_damping);
+	data.at("screen")				.get_to(aim.m_screen);
+	data.at("dead_zone")			.get_to(aim.m_dead_zone);
+	data.at("soft_zone")			.get_to(aim.m_soft_zone);
+	data.at("bias")					.get_to(aim.m_bias);
+	data.at("is_track")				.get_to(aim.m_is_track);
+}
+
+inline void to_json(nlohmann::json& data, const CameraAim& aim)
+{
+	data = nlohmann::json
+	{
+		{ "owner_transform",		*aim.m_owner_transform.get() },
+		{ "target_transform",		*aim.m_target_transform.get() },
+		{ "rot_matrix",				aim.m_rot_matrix },
+		{ "destination_aim_pos",	aim.m_destination_aim_pos },
+		{ "current_aim_pos",		aim.m_current_aim_pos },
+		{ "tracked_obj_offset",		aim.m_tracked_obj_offset },
+		{ "horizontal_damping",		aim.m_horizontal_damping },
+		{ "vertical_damping",		aim.m_vertical_damping },
+		{ "screen",					aim.m_screen },
+		{ "dead_zone",				aim.m_dead_zone },
+		{ "soft_zone",				aim.m_soft_zone },
+		{ "bias",					aim.m_bias },
+		{ "is_track",				aim.m_is_track }
+	};
+}
+#pragma endregion

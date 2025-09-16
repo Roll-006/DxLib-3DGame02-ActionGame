@@ -330,7 +330,7 @@ void ControlVirtualCamerasController::CalcAimPos()
 void ControlVirtualCamerasController::CalcInputAngle()
 {
 	const auto time_manager = GameTimeManager::GetInstance();
-	m_velocity *= time_manager->GetDeltaTime(TimeScaleController::LayerKind::kCamera);
+	m_velocity *= time_manager->GetDeltaTime(TimeScaleLayerKind::kCamera);
 
 	// 角度を取得
 	const auto command = CommandHandler::GetInstance();
@@ -350,7 +350,7 @@ void ControlVirtualCamerasController::CalcRecoilAngle()
 {
 	if (!m_is_recoiling) { return; }
 
-	const auto delta_time = GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleController::LayerKind::kCamera);
+	const auto delta_time = GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kCamera);
 
 	// リコイル処理
 	if (!m_is_reached_recoil_peak)
@@ -415,7 +415,7 @@ void ControlVirtualCamerasController::CalcResultAngle()
 //
 //	// 目的地に遠いほど速く移動させる
 //	const auto time_manager = GameTimeManager::GetInstance();
-//	m_input_angle[TimeKind::kCurrent] += dir * distance * m_init_angle_speed * time_manager->GetDeltaTime(TimeScaleController::LayerKind::kCamera);
+//	m_input_angle[TimeKind::kCurrent] += dir * distance * m_init_angle_speed * time_manager->GetDeltaTime(TimeScaleLayerKind::kCamera);
 //
 //	// 終了判定
 //	distance = VSize(m_data.input_angle[TimeKind::kNext] - m_data.input_angle[TimeKind::kCurrent]);

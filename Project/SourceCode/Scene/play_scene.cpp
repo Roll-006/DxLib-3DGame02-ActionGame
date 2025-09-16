@@ -1,16 +1,22 @@
 #include "play_scene.hpp"
+#include "../Manager/scene_manager.hpp"
 
 PlayScene::PlayScene() :
 	m_is_active						(true),
-	m_zombie						(std::make_shared<Zombie>()),
+	m_player						(std::make_shared<Player>()),
+	m_zombie						(nullptr),
 	m_house							(std::make_shared<House>()),
 	m_ground						(std::make_shared<Ground>()),
 	m_skydome						(std::make_shared<Skydome>(ObjManager::GetInstance()->GetObj<MainCamera>(ObjName.MAIN_CAMERA))),
 	m_rifle_cartridge_object_pool	(std::make_shared<RifleCartridgeObjectPool>()),
 	m_play_scene_effect_object_pool (std::make_shared<PlaySceneEffectObjectPool>()),
-	m_player_ui_creator				(std::make_shared<PlayerUICreator>(ObjManager::GetInstance()->GetObj<Player>(ObjName.PLAYER)))
+	m_player_ui_creator				(std::make_shared<PlayerUICreator>(m_player))
 {
+	m_player->AddToObjManager();
+
+	m_zombie = std::make_shared<Zombie>();
 	m_zombie->AddToObjManager();
+
 	m_house ->AddToObjManager();
 	m_ground->AddToObjManager();
 
@@ -18,18 +24,25 @@ PlayScene::PlayScene() :
 	pool_holder->AddObjectPool(m_rifle_cartridge_object_pool);
 	pool_holder->AddObjectPool(m_play_scene_effect_object_pool);
 
+	const auto cinemachine_brain = CinemachineBrain::GetInstance();
+	cinemachine_brain->AddVirtualCameraController(std::make_shared<ControlVirtualCamerasController>(*m_player.get()));
+
 	UIDrawer::GetInstance()->AddUICreator(m_player_ui_creator);
 }
 
 PlayScene::~PlayScene()
 {
-	m_zombie->AddToObjManager();
-	m_house	->AddToObjManager();
-	m_ground->AddToObjManager();
+	m_player->RemoveToObjManager();
+	m_zombie->RemoveToObjManager();
+	m_house	->RemoveToObjManager();
+	m_ground->RemoveToObjManager();
 
 	const auto pool_holder = ObjectPoolHolder::GetInstance();
 	pool_holder->RemoveObjectPool(m_rifle_cartridge_object_pool	 ->GetName());
 	pool_holder->RemoveObjectPool(m_play_scene_effect_object_pool->GetName());
+
+	const auto cinemachine_brain = CinemachineBrain::GetInstance();
+	cinemachine_brain->RemoveVirtualCameraController(VirtualCameraControllerKind::kControl);
 
 	UIDrawer::GetInstance()->RemoveUICreator(m_player_ui_creator->GetName());
 }
@@ -41,6 +54,7 @@ void PlayScene::Init()
 
 void PlayScene::Update()
 {
+	m_player							->Update();
 	m_zombie							->Update();
 	RifleCartridgeManager::GetInstance()->Update();
 	m_house								->Update();
@@ -50,6 +64,7 @@ void PlayScene::Update()
 
 void PlayScene::LateUpdate()
 {
+	m_player							->LateUpdate();
 	m_zombie							->LateUpdate();
 	RifleCartridgeManager::GetInstance()->LateUpdate();
 	m_house								->LateUpdate();
@@ -60,6 +75,7 @@ void PlayScene::LateUpdate()
 
 void PlayScene::DrawToShadowMap() const
 {
+	m_player							->DrawToShadowMap();
 	m_zombie							->DrawToShadowMap();
 	RifleCartridgeManager::GetInstance()->DrawToShadowMap();
 	m_house								->DrawToShadowMap();
@@ -68,6 +84,7 @@ void PlayScene::DrawToShadowMap() const
 
 void PlayScene::Draw() const
 {
+	m_player							->Draw();
 	m_zombie							->Draw();
 	RifleCartridgeManager::GetInstance()->Draw();
 	m_house								->Draw();
@@ -77,5 +94,12 @@ void PlayScene::Draw() const
 
 std::shared_ptr<IScene> PlayScene::ChangeScene()
 {
+	const auto command = CommandHandler::GetInstance();
+
+	if (command->IsExecute(CommandKind::kPause, TimeKind::kCurrent))
+	{
+		return std::make_shared<TitleScene>();
+	}
+
 	return nullptr;
 }

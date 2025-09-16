@@ -1,6 +1,7 @@
 #pragma once
 #include "../Interface/i_scene.hpp"
 
+#include "../Object/player.hpp"
 #include "../Object/zombie.hpp"
 #include "../Object/house.hpp"
 #include "../Object/ground.hpp"
@@ -32,6 +33,7 @@ public:
 private:
 	bool m_is_active;
 
+	std::shared_ptr<Player>						m_player;
 	std::shared_ptr<Zombie>						m_zombie;
 	std::shared_ptr<House>						m_house;
 	std::shared_ptr<Ground>						m_ground;

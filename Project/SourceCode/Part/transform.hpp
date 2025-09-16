@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <memory>
+#include <nlohmann/json.hpp>
 
 #include "../Kind/coordinate_kind.hpp"
 #include "../Calculation/math.hpp"
@@ -39,6 +40,9 @@ public:
 
 
 	#pragma region Getter
+	[[nodiscard]] int GetTransformHandle() const { return m_transform_handle; }
+	[[nodiscard]] std::shared_ptr<Transform> GetParentTransform() const { return m_parent_transform; }
+
 	[[nodiscard]] MATRIX	 GetMatrix		(const CoordinateKind coord_kind);
 	[[nodiscard]] VECTOR	 GetPos			(const CoordinateKind coord_kind);
 	[[nodiscard]] MATRIX	 GetRotMatrix	(const CoordinateKind coord_kind);
@@ -57,6 +61,32 @@ public:
 	[[nodiscard]] bool HasParent() const { return m_parent_transform != nullptr; }
 
 private:
+	int m_transform_handle;
+	int m_parent_transform_handle;
+
 	MATRIX m_local_matrix;
 	std::shared_ptr<Transform> m_parent_transform;
+
+	friend void from_json	(const nlohmann::json& data, Transform& transform);
+	friend void to_json		(nlohmann::json& data, const Transform& transform);
 };
+
+
+#pragma region from / to JSON
+inline void from_json(const nlohmann::json& data, Transform& transform)
+{
+	data.at("transform_handle")			.get_to(transform.m_transform_handle);
+	data.at("parent_transform_handle")	.get_to(transform.m_parent_transform_handle);
+	data.at("local_matrix")				.get_to(transform.m_local_matrix);
+}
+
+inline void to_json(nlohmann::json& data, const Transform& transform)
+{
+	data = nlohmann::json
+	{
+		{ "transform_handle",			transform.m_transform_handle },
+		{ "parent_transform_handle",	transform.m_parent_transform_handle },
+		{ "local_matrix",				transform.m_local_matrix }
+	};
+}
+#pragma endregion

@@ -61,9 +61,6 @@ RocketLauncherVirtualCameraController::~RocketLauncherVirtualCameraController()
 	cinemachine_brain->RemoveVirtualCamera(m_zoom_in_camera		->GetCameraHandle());
 	cinemachine_brain->RemoveVirtualCamera(m_zoom_out_camera	->GetCameraHandle());
 	cinemachine_brain->RemoveVirtualCamera(m_exit_rot_camera	->GetCameraHandle());
-
-	// FIXME : ブレンドの起点にする必要があるため破棄できない。ブレンドが終了したら自動的にremoveする機能が必要な可能性あり
-	//cinemachine_brain->RemoveVirtualCamera(m_exit_rot_camera	->GetObjHandle());
 }
 
 void RocketLauncherVirtualCameraController::Init()
@@ -173,6 +170,9 @@ void RocketLauncherVirtualCameraController::CalcAimTransformForEnterRotCamera()
 	const auto	aim_pos			= MGetTranslateElem(hand_world_m);
 	const auto  offset_rot		= math::ConvertEulerAnglesToXYZRotMatrix(VGet(-90.0f * math::kDegToRad, -90.0f * math::kDegToRad, 0.0f));
 	auto		aim_rot			= math::ConvertEulerAnglesToXYZRotMatrix(m_rot_camera_angle) * offset_rot * MGetRotElem(hand_world_m);
+
+	const auto  axes = math::ConvertRotMatrixToAxes(aim_rot);
+	axis::Draw(axes, aim_pos, 100);
 
 	// カメラの追跡対象となるトランスフォームの情報を更新
 	m_rot_camera_aim_transform->SetRot(CoordinateKind::kWorld, aim_rot);

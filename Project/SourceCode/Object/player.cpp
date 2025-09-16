@@ -60,7 +60,13 @@ Player::Player() :
 
 Player::~Player()
 {
-
+	for (const auto& item : m_items)
+	{
+		for (const auto& i : item.second)
+		{
+			std::dynamic_pointer_cast<ObjBase>(i)->RemoveToObjManager();
+		}
+	}
 }
 
 void Player::Init()
@@ -339,7 +345,7 @@ void Player::SpinningSlashKnifeOffsetMove()
 float Player::GetDeltaTime() const
 {
 	const auto time_manager = GameTimeManager::GetInstance();
-	return time_manager->GetDeltaTime(TimeScaleController::LayerKind::kPlayer);
+	return time_manager->GetDeltaTime(TimeScaleLayerKind::kPlayer);
 }
 
 WeaponKind Player::GetCurrentEquipWeaponKind()

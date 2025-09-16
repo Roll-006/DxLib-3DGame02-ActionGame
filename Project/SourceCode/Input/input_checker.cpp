@@ -1,7 +1,6 @@
 #include "input_checker.hpp"
 
 InputChecker::InputChecker():
-	m_csv					(std::make_unique<CSVLoader>()),
 	m_xinput				(-1),
 	m_current_device		(DeviceKind::kKeyboard),
 	m_is_lock_mouse_pos		(true)
@@ -15,12 +14,17 @@ InputChecker::InputChecker():
 
 	LockCursor();
 
-	m_key_code = m_csv->Load1DCSV<std::vector<int>>("Data/CSV/key_number.csv", false);
-	for (auto& code : m_key_code)
+	JSONLoader json;
+	nlohmann::json data;
+	if (json.Load("Data/JSON/key_number.json", data))
 	{
-		m_input_data.emplace_back(InputCode(InputKind::kKey, code), TimeKind::kPrev,	 InputData());
-		m_input_data.emplace_back(InputCode(InputKind::kKey, code), TimeKind::kCurrent, InputData());
+		for (auto& code : data["key_number"])
+		{
+			m_input_data.emplace_back(InputCode(InputKind::kKey, code), TimeKind::kPrev, InputData());
+			m_input_data.emplace_back(InputCode(InputKind::kKey, code), TimeKind::kCurrent, InputData());
+		}
 	}
+
 	AddInputData(InputKind::kMouseButton, kMouseButtonNum);
 	AddInputData(InputKind::kMouseWheel,  kMouseWheelNum);
 	AddInputData(InputKind::kMouseSlide,  kMouseSlideNum);
@@ -220,7 +224,7 @@ void InputChecker::CountInputTimeAll()
 		if (data.is_input)
 		{
 			const auto time_manager = GameTimeManager::GetInstance();
-			data.input_time += time_manager->GetDeltaTime(TimeScaleController::LayerKind::kNoneScale);
+			data.input_time += time_manager->GetDeltaTime(TimeScaleLayerKind::kNoneScale);
 			continue;
 		}
 		data.input_time = 0.0f;

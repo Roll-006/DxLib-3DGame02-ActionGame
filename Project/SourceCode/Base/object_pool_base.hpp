@@ -16,7 +16,8 @@ public:
 
 	/// @brief オブジェクトをプール内から破棄する
 	/// @brief オブジェクト名を指定し、一致するオブジェクトをすべて破棄
-	void DestroyObj(const std::string& obj_name);
+	/// @brief WARNING : 各マネージャーの登録も解除される(RemoveToObjManagerが呼ばれる)
+	void DestroyObjects(const std::string& obj_name);
 
 	/// @brief 使用可能なオブジェクトを取得する
 	/// @return 初期化・アクティブ化されたオブジェクト(使用可能なオブジェクトがない場合はnullptr)

@@ -46,5 +46,8 @@ PlaySceneEffectObjectPool::PlaySceneEffectObjectPool() :
 
 PlaySceneEffectObjectPool::~PlaySceneEffectObjectPool()
 {
-
+	DestroyObjects(ObjName.LIGHT_ROCKET_LAUNCHER_EXHAUST_VENT_EFFECT);
+	DestroyObjects(ObjName.EXPANDING_SMOKE_EFFECT);
+	DestroyObjects(ObjName.ROCKET_BOMB_HIT_EXPLOSION_EFFECT);
+	DestroyObjects(ObjName.ROCKET_BOMB_SMOKE_EFFECT);
 }

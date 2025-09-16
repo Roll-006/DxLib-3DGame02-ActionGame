@@ -1,5 +1,7 @@
 #pragma once
 #include <cmath>
+#include <nlohmann/json.hpp>
+
 #include "../Concept/vector_concepts.hpp"
 
 template<typename ElemT>
@@ -33,6 +35,7 @@ inline auto operator* (const ScaleT scale,                  const v2d_concepts::
 inline bool operator==(const v2d_concepts::ValidT auto& v1, const v2d_concepts::ValidT auto& v2){ return v1.x == v2.x && v1.y == v2.y; }
 inline bool operator!=(const v2d_concepts::ValidT auto& v1, const v2d_concepts::ValidT auto& v2){ return !(v1 == v2); }
 
+
 namespace v2d
 {
 	template<typename CastT>
@@ -63,3 +66,23 @@ namespace v2d
 		return size != 0 ? VecT(v.x / size, v.y / size) : v;
 	}
 }
+
+
+#pragma region from / to JSON
+template<v2d_concepts::ValidT VecT>
+inline void from_json(const nlohmann::json& data, VecT& vector)
+{
+	data.at("x").get_to(vector.x);
+	data.at("y").get_to(vector.y);
+}
+
+template<v2d_concepts::ValidT VecT>
+inline void to_json(nlohmann::json& data, const VecT& vector)
+{
+	data = nlohmann::json
+	{
+		{ "x",	vector.x },
+		{ "y",	vector.y }
+	};
+}
+#pragma endregion

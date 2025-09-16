@@ -1,12 +1,11 @@
 #pragma once
+#include <nlohmann/json.hpp>
 #include <DxLib.h>
 
 inline MATRIX operator+ (const MATRIX& m1, const MATRIX& m2)	{ return MAdd(m1, m2); }
 inline MATRIX operator* (const MATRIX& m1, const MATRIX& m2)	{ return MMult(m1, m2); }
 
-//template<typename ScaleT>
 inline MATRIX operator* (const MATRIX& m, const float scale)	{ return MScale(m, scale); }
-//template<typename ScaleT>
 inline MATRIX operator* (const float scale, const MATRIX& m)	{ return MScale(m, scale); }
 
 inline MATRIX operator+=(MATRIX& m1, const MATRIX& m2)			{ m1 = m1 + m2; return m1; }
@@ -53,3 +52,35 @@ namespace matrix
 		}
 	}
 }
+
+
+#pragma region from / to JSON
+namespace DxLib
+{
+	inline void from_json(const nlohmann::json& data, MATRIX& matrix)
+	{
+		auto m = data.get<std::array<std::array<float, 4>, 4>>();
+		for (int i = 0; i < 4; ++i)
+		{
+			for (int j = 0; j < 4; ++j)
+			{
+				matrix.m[i][j] = m[i][j];
+			}
+		}
+	}
+
+	inline void to_json(nlohmann::json& data, const MATRIX& matrix)
+	{
+		std::array<std::array<float, 4>, 4> m{};
+		for (int i = 0; i < 4; ++i)
+		{
+			for (int j = 0; j < 4; ++j)
+			{
+				m[i][j] = matrix.m[i][j];
+			}
+		}
+
+		data = m;
+	}
+}
+#pragma endregion

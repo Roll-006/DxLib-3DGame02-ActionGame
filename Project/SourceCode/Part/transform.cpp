@@ -1,25 +1,38 @@
 #include "transform.hpp"
 #include "../Manager/obj_manager.hpp"
+#include "../Handle/handle_creator.hpp"
 
-Transform::Transform() :
-	m_local_matrix		(MGetIdent()),
-	m_parent_transform	(nullptr)
+Transform::Transform() : 
+	m_transform_handle			(HandleCreator::GetInstance()->CreateHandle()),
+	m_parent_transform_handle	(-1),
+	m_local_matrix				(MGetIdent()),
+	m_parent_transform			(nullptr)
 {
 	// 処理なし
 }
 
-Transform::Transform(Transform& transform) :
-	m_local_matrix		(transform.GetMatrix(CoordinateKind::kLocal)),
-	m_parent_transform	(nullptr)
+Transform::Transform(Transform& transform) : 
+	m_transform_handle			(transform.GetTransformHandle()),
+	m_parent_transform_handle	(-1),
+	m_local_matrix				(transform.GetMatrix(CoordinateKind::kLocal)),
+	m_parent_transform			(transform.GetParentTransform())
 {
-	// 処理なし
+	if (m_parent_transform)
+	{
+		m_parent_transform_handle = m_parent_transform->GetParentTransform()->GetTransformHandle();
+	}
 }
 
-Transform::Transform(Transform* transform) :
-	m_local_matrix		(transform->GetMatrix(CoordinateKind::kLocal)),
-	m_parent_transform	(nullptr)
+Transform::Transform(Transform* transform) : 
+	m_transform_handle			(transform->GetTransformHandle()),
+	m_parent_transform_handle	(-1),
+	m_local_matrix				(transform->GetMatrix(CoordinateKind::kLocal)),
+	m_parent_transform			(transform->GetParentTransform())
 {
-	// 処理なし
+	if (m_parent_transform)
+	{
+		m_parent_transform_handle = m_parent_transform->GetParentTransform()->GetTransformHandle();
+	}
 }
 
 Transform::~Transform()
@@ -39,8 +52,9 @@ void Transform::AttachParent(const std::shared_ptr<Transform> parent_transform)
 	// 親がいない場合のみアタッチ
 	if (m_parent_transform) { return; }
 
-	m_parent_transform	= parent_transform;
-	m_local_matrix		= m_local_matrix * MInverse(m_parent_transform->GetMatrix(CoordinateKind::kWorld));
+	m_parent_transform			= parent_transform;
+	m_parent_transform_handle	= m_parent_transform->GetParentTransform()->GetTransformHandle();
+	m_local_matrix				= m_local_matrix * MInverse(m_parent_transform->GetMatrix(CoordinateKind::kWorld));
 }
 
 void Transform::AttachParent(const std::string& parent_obj_name)
@@ -59,8 +73,9 @@ void Transform::DetachParent()
 	// 親がいる場合のみデタッチ
 	if (!m_parent_transform) { return; }
 
-	m_local_matrix = GetMatrix(CoordinateKind::kWorld);
-	m_parent_transform = nullptr;
+	m_local_matrix				= GetMatrix(CoordinateKind::kWorld);
+	m_parent_transform			= nullptr;
+	m_parent_transform_handle	= -1;
 }
 #pragma endregion
 

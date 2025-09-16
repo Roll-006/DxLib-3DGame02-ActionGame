@@ -71,7 +71,7 @@ void NonCollildeRocketBomb::OnReloaded()
 
 float NonCollildeRocketBomb::GetDeltaTime() const
 {
-	return GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleController::LayerKind::kWorld);
+	return GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kWorld);
 }
 
 void NonCollildeRocketBomb::ApplyMoveDirToRot()

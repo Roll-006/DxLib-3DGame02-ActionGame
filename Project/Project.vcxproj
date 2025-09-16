@@ -141,7 +141,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="SourceCode\AI\zombie_ai.cpp" />
     <ClCompile Include="SourceCode\Algorithm\algorithm.cpp" />
     <ClCompile Include="SourceCode\Algorithm\a_star.cpp" />
     <ClCompile Include="SourceCode\Base\animator_base.cpp" />
@@ -300,12 +299,10 @@
     <ClCompile Include="SourceCode\VirtualCamera\control_virtual_cameras_controller.cpp" />
     <ClCompile Include="SourceCode\VirtualCamera\grab_virtual_camera_controller.cpp" />
     <ClCompile Include="SourceCode\VirtualCamera\rocket_launcher_virtual_camera_controller.cpp" />
-    <ClCompile Include="SourceCode\VirtualCamera\rot_control_virtual_camera.cpp" />
     <ClCompile Include="SourceCode\VirtualCamera\virtual_camera.cpp" />
     <ClCompile Include="SourceCode\Window\window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SourceCode\AI\zombie_ai.hpp" />
     <ClInclude Include="SourceCode\Algorithm\algorithm.hpp" />
     <ClInclude Include="SourceCode\Algorithm\a_star.hpp" />
     <ClInclude Include="SourceCode\Base\action_state_base.hpp" />
@@ -567,9 +564,11 @@
     <ClInclude Include="SourceCode\VirtualCamera\control_virtual_cameras_controller.hpp" />
     <ClInclude Include="SourceCode\VirtualCamera\grab_virtual_camera_controller.hpp" />
     <ClInclude Include="SourceCode\VirtualCamera\rocket_launcher_virtual_camera_controller.hpp" />
-    <ClInclude Include="SourceCode\VirtualCamera\rot_control_virtual_camera.hpp" />
     <ClInclude Include="SourceCode\VirtualCamera\virtual_camera.hpp" />
     <ClInclude Include="SourceCode\Window\window.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Data\JSON\key_number.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

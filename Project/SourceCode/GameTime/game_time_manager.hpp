@@ -10,7 +10,7 @@ public:
 	void Draw();
 	void WaitTime();
 
-	[[nodiscard]] float GetDeltaTime(const TimeScaleController::LayerKind scale_layer_kind) const;
+	[[nodiscard]] float GetDeltaTime(const TimeScaleLayerKind scale_layer_kind) const;
 
 	[[nodiscard]] std::shared_ptr<TimeScaleController> GetTimeScaleController() const
 	{
