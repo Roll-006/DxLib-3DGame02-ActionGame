@@ -193,7 +193,6 @@
     <ClCompile Include="SourceCode\Object\ground.cpp" />
     <ClCompile Include="SourceCode\Object\house.cpp" />
     <ClCompile Include="SourceCode\Object\player.cpp" />
-    <ClCompile Include="SourceCode\Object\selector.cpp" />
     <ClCompile Include="SourceCode\Object\shell_casing.cpp" />
     <ClCompile Include="SourceCode\Object\skydome.cpp" />
     <ClCompile Include="SourceCode\Part\character_collider_creator.cpp" />
@@ -356,6 +355,10 @@
     <ClInclude Include="SourceCode\Event\end_grab_cutscene_data.hpp" />
     <ClInclude Include="SourceCode\Event\end_rocket_launcher_cutscene_data.hpp" />
     <ClInclude Include="SourceCode\Event\event.hpp" />
+    <ClInclude Include="SourceCode\Event\on_select_cinematic_filter_data.hpp" />
+    <ClInclude Include="SourceCode\Event\on_select_retro_filter_data.hpp" />
+    <ClInclude Include="SourceCode\Event\on_select_normal_filter_data.hpp" />
+    <ClInclude Include="SourceCode\Event\event_system.hpp" />
     <ClInclude Include="SourceCode\Event\grabbed_data.hpp" />
     <ClInclude Include="SourceCode\Event\grab_data.hpp" />
     <ClInclude Include="SourceCode\Event\on_hit_bullet_data.hpp" />
@@ -453,7 +456,6 @@
     <ClInclude Include="SourceCode\Object\ground.hpp" />
     <ClInclude Include="SourceCode\Object\house.hpp" />
     <ClInclude Include="SourceCode\Object\player.hpp" />
-    <ClInclude Include="SourceCode\Object\selector.hpp" />
     <ClInclude Include="SourceCode\Object\shell_casing.hpp" />
     <ClInclude Include="SourceCode\Object\skydome.hpp" />
     <ClInclude Include="SourceCode\Part\character_collider_creator.hpp" />

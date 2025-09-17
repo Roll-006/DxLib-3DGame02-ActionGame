@@ -232,6 +232,15 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	}
 }
 
+void Zombie::OnDamage(const HealthPartKind part_kind, const float damage)
+{
+	if (!m_health.count(part_kind)) { return; }
+
+	m_health.at(part_kind)->OnDamage(damage);
+	m_invincible_timer	= m_invincible_time;
+	m_is_invincible		= true;
+}
+
 void Zombie::SetAttackIntervalTime()
 {
 	m_attack_interval_timer = kAttackIntervalTime;

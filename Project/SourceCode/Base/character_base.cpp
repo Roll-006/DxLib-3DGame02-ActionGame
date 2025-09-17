@@ -128,15 +128,6 @@ void CharacterBase::CalcMoveDir()
 		m_move_dir_offset_speed);
 }
 
-void CharacterBase::OnDamage(const HealthPartKind part_kind, const float damage)
-{
-	if (!m_health.count(part_kind)) { return; }
-
-	m_health.at(part_kind)->OnDamage(damage);
-	m_invincible_timer	= m_invincible_time;
-	m_is_invincible		= true;
-}
-
 void CharacterBase::JudgeInvincible()
 {
 	math::Decrease(m_invincible_timer, GetDeltaTime(), 0.0f);

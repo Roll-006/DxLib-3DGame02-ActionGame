@@ -10,6 +10,7 @@ GameManager::GameManager():
 	UIDrawer				::Generate();
 	CommandHandler			::Generate();
 	ObjectPoolHolder		::Generate();
+	EventSystem				::Generate();
 
 	GameTimeManager			::Generate();
 	ObjManager				::Generate();
@@ -29,6 +30,7 @@ GameManager::~GameManager()
 	UIDrawer				::Delete();
 	CommandHandler			::Delete();
 	ObjectPoolHolder		::Delete();
+	EventSystem				::Delete();
 
 	GameTimeManager			::Delete();
 	ObjManager				::Delete();

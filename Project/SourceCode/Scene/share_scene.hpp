@@ -2,7 +2,6 @@
 #include "../Interface/i_scene.hpp"
 
 #include "../Object/main_camera.hpp"
-#include "../Object/selector.hpp"
 
 #include "../Command/command_handler.hpp"
 

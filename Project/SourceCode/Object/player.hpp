@@ -4,8 +4,9 @@
 #include "../Interface/i_grabbable.hpp"
 
 #include "../GameTime/game_time_manager.hpp"
-#include "../Part/player_animator.hpp"
+#include "../Event/event_system.hpp"
 #include "../Part/subject.hpp"
+#include "../Part/player_animator.hpp"
 
 #include "assault_rifle.hpp"
 #include "rocket_launcher.hpp"
@@ -30,6 +31,7 @@ public:
 	void Draw()				const	override;
 
 	void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) override;
+	void OnDamage(const HealthPartKind part_kind, const float damage) override;
 	void OnGrabbed(const VECTOR& brabber_pos, const VECTOR& brabber_dir) override;
 	void OnRelease() override;
 	void OnGrabbedDamage(const float damage) override;

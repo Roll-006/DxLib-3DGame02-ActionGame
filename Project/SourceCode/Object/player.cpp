@@ -97,7 +97,7 @@ void Player::Update()
 	}
 	if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_2) == InputState::kSingle)
 	{
-		m_health.at(HealthPartKind::kMain)->OnDamage(100);
+		OnDamage(HealthPartKind::kMain, 100);
 	}
 
 	m_move_dir_offset_speed				= kMoveDirOffsetSpeed;
@@ -184,6 +184,27 @@ void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 	default:
 		break;
+	}
+}
+
+void Player::OnDamage(const HealthPartKind part_kind, const float damage)
+{
+	if (!m_health.count(part_kind)) { return; }
+
+	m_health.at(part_kind)->OnDamage(damage);
+	m_invincible_timer	= m_invincible_time;
+	m_is_invincible		= true;
+
+	if (part_kind == HealthPartKind::kMain)
+	{
+		// •m€ó‘Ô‚É“Ë“ü‚µ‚Ä‚¢‚é‚©‚ÂA
+		const auto parcent = (m_health.at(part_kind)->GetMaxHealth() / 270.0f) * 45;
+		if (   m_health.at(part_kind)->GetCurrentHealth() <  parcent
+			&& m_health.at(part_kind)->GetPrevHealth()    >= parcent)
+		{
+			EnterNearDeathData event{};
+			EventSystem::GetInstance()->Publish(event);
+		}
 	}
 }
 

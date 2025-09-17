@@ -13,6 +13,9 @@
 #include "grabbed_data.hpp"
 #include "end_grab_cutscene_data.hpp"
 #include "enter_near_death_data.hpp"
+#include "on_select_normal_filter_data.hpp"
+#include "on_select_cinematic_filter_data.hpp"
+#include "on_select_retro_filter_data.hpp"
 
 template <typename EventDataT>
 struct Event : public IEvent

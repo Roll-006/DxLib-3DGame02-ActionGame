@@ -1,5 +1,8 @@
 #include "health_gauge.hpp"
 
+// MEMO : パラメーターでゲージサイズや太さの変更を可能にするために
+//		　スクリーン生成およびマスクを使用しゲージを生成する
+
 HealthGauge::HealthGauge(std::shared_ptr<Health>& health) : 
 	m_health									(health),
 	m_current_health_gauge_graphic				(std::make_shared<Graphicer>(UIGraphicPath.CURRENT_HEALTH_GAUGE)),
@@ -289,7 +292,7 @@ void HealthGauge::CalcBlinkingAlphaBlendNum()
 	const auto delta_time = GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kUI);
 	auto is_loop = false;
 
-	// HPが12.5%以下の場合、常に点滅させる
+	// HPが12.5%未満の場合、常に点滅させる
 	if (m_current_health_gauge_actual_percent < 12.5f)
 	{
 		if (m_prev_health_gauge_actual_percent >= 12.5f)

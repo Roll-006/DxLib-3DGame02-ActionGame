@@ -19,6 +19,7 @@ public:
 	void Draw()				const	override;
 
 	void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) override;
+	void OnDamage(const HealthPartKind part_kind, const float damage) override;
 	void SetAttackIntervalTime() override;
 	void CalcAttackIntervalTime() override;
 

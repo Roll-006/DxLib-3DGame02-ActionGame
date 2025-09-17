@@ -80,7 +80,7 @@ protected:
 
 	void CalcMoveDir();
 
-	void OnDamage(const HealthPartKind part_kind, const float damage);
+	virtual void OnDamage(const HealthPartKind part_kind, const float damage) abstract;
 	void JudgeInvincible();
 
 protected:

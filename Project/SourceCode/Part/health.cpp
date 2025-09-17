@@ -2,9 +2,9 @@
 
 Health::Health(const float max_health, const float max_current_health) :
 	m_current_health	(max_current_health),
+	m_prev_health		(max_current_health),
 	m_current_max_health(max_current_health),
-	m_max_health		(max_health),
-	m_subject			(std::make_shared<Subject<Health>>())
+	m_max_health		(max_health)
 {
 
 }
@@ -21,6 +21,7 @@ void Health::Recover(const float recover_points)
 
 void Health::OnDamage(const float damage)
 {
+	m_prev_health = m_current_health;
 	math::Decrease(m_current_health, damage, 0.0f);
 }
 

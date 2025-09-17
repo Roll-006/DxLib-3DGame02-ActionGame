@@ -70,9 +70,6 @@
     <ClCompile Include="SourceCode\Object\player.cpp">
       <Filter>SourceCode\Object</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Object\selector.cpp">
-      <Filter>SourceCode\Object</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\Object\shell_casing.cpp">
       <Filter>SourceCode\Object</Filter>
     </ClCompile>
@@ -607,9 +604,6 @@
       <Filter>SourceCode\Object</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Object\player.hpp">
-      <Filter>SourceCode\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Object\selector.hpp">
       <Filter>SourceCode\Object</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Object\shell_casing.hpp">
@@ -1285,6 +1279,18 @@
       <Filter>SourceCode\Part</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Event\enter_near_death_data.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\event_system.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\on_select_cinematic_filter_data.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\on_select_retro_filter_data.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\on_select_normal_filter_data.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
   </ItemGroup>
