@@ -302,6 +302,7 @@ void Zombie::OnCollideWithExplosion(const std::shared_ptr<Sphere> sphere)
 {
 	// TODO : のちに爆発クラス側に処理内容を委ねる
 
+	// TODO : 座標をモデル依存に変更
 	const auto pos				= m_transform->GetPos(CoordinateKind::kWorld) + VGet(0, 50, 0);
 	const auto explosion_pos	= sphere->GetPos();
 	const auto distance			= pos - explosion_pos;

@@ -2,7 +2,7 @@
 #include "../Interface/i_ui_creator.hpp"
 #include "../Interface/i_observer.hpp"
 
-#include "../Part/cinema_scope_frame.hpp"
+#include "cinema_scope_frame.hpp"
 
 // FIXME : UI‚Æ‚Í•Ê‚Ì‚½‚ß•ª—£‚Ì•K—v‚ ‚è
 

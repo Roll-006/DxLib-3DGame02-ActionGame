@@ -44,6 +44,11 @@ void ScreenCreator::UseScreen()
 
 	SetDrawScreen(m_screen_graphic_handle);
 	ClearDrawScreen();
+
+	// ƒJƒƒ‰î•ñ‚Ì•œŒ³
+	SetCameraNearFar(m_prev_camera_near, m_prev_camera_far);
+	SetupCamera_Perspective(m_prev_camera_fov);
+	SetCameraPositionAndTarget_UpVecY(m_prev_camera_pos, m_prev_camera_target);
 }
 
 void ScreenCreator::UnuseScreen()

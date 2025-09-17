@@ -34,7 +34,7 @@ void GameOverScene::DrawToShadowMap() const
 
 void GameOverScene::Draw() const
 {
-
+	DrawFormatString(0, 40, 0xffffff, "GAME OVER");
 }
 
 std::shared_ptr<IScene> GameOverScene::ChangeScene()

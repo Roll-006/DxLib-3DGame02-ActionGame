@@ -202,7 +202,6 @@
     <ClCompile Include="SourceCode\Part\camera_aim.cpp" />
     <ClCompile Include="SourceCode\Part\camera_body.cpp" />
     <ClCompile Include="SourceCode\Part\camera_noise.cpp" />
-    <ClCompile Include="SourceCode\Part\cinema_scope_frame.cpp" />
     <ClCompile Include="SourceCode\Part\collider.cpp" />
     <ClCompile Include="SourceCode\Part\graphicer.cpp" />
     <ClCompile Include="SourceCode\Part\mask_creator.cpp" />
@@ -288,6 +287,8 @@
     <ClCompile Include="SourceCode\State\ZombieState\track.cpp" />
     <ClCompile Include="SourceCode\State\ZombieState\wait.cpp" />
     <ClCompile Include="SourceCode\State\ZombieState\zombie_move.cpp" />
+    <ClCompile Include="SourceCode\UI\cinema_scope_frame.cpp" />
+    <ClCompile Include="SourceCode\UI\fade.cpp" />
     <ClCompile Include="SourceCode\UI\health_gauge.cpp" />
     <ClCompile Include="SourceCode\UI\player_ui_creator.cpp" />
     <ClCompile Include="SourceCode\UI\screen_filter_creator.cpp" />
@@ -469,7 +470,6 @@
     <ClInclude Include="SourceCode\Part\player_state_controller.hpp" />
     <ClInclude Include="SourceCode\Part\subject.hpp" />
     <ClInclude Include="SourceCode\Part\transform.hpp" />
-    <ClInclude Include="SourceCode\Part\cinema_scope_frame.hpp" />
     <ClInclude Include="SourceCode\Part\weapon_shortcut_selecter.hpp" />
     <ClInclude Include="SourceCode\Part\zombie_animator.hpp" />
     <ClInclude Include="SourceCode\Part\zombie_state_controller.hpp" />
@@ -553,6 +553,8 @@
     <ClInclude Include="SourceCode\State\ZombieState\zombie_move.hpp" />
     <ClInclude Include="SourceCode\Tag\animation_tag.hpp" />
     <ClInclude Include="SourceCode\Tag\obj_tag.hpp" />
+    <ClInclude Include="SourceCode\UI\cinema_scope_frame.hpp" />
+    <ClInclude Include="SourceCode\UI\fade.hpp" />
     <ClInclude Include="SourceCode\UI\health_gauge.hpp" />
     <ClInclude Include="SourceCode\UI\player_ui_creator.hpp" />
     <ClInclude Include="SourceCode\UI\screen_filter_creator.hpp" />

@@ -34,7 +34,7 @@ void TitleScene::DrawToShadowMap() const
 
 void TitleScene::Draw() const
 {
-
+	DrawFormatString(0, 40, 0xffffff, "TITLE");
 }
 
 std::shared_ptr<IScene> TitleScene::ChangeScene()

@@ -352,9 +352,6 @@
     <ClCompile Include="SourceCode\UI\screen_filter_creator.cpp">
       <Filter>SourceCode\UI</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Part\cinema_scope_frame.cpp">
-      <Filter>SourceCode\Part</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\Object\non_collide_rocket_bomb.cpp">
       <Filter>SourceCode\Object</Filter>
     </ClCompile>
@@ -480,6 +477,12 @@
     </ClCompile>
     <ClCompile Include="SourceCode\main.cpp">
       <Filter>SourceCode</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\UI\cinema_scope_frame.cpp">
+      <Filter>SourceCode\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\UI\fade.cpp">
+      <Filter>SourceCode\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -939,9 +942,6 @@
     <ClInclude Include="SourceCode\Interface\i_ui_creator.hpp">
       <Filter>SourceCode\Interface</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Part\cinema_scope_frame.hpp">
-      <Filter>SourceCode\Part</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\Object\non_collide_rocket_bomb.hpp">
       <Filter>SourceCode\Object</Filter>
     </ClInclude>
@@ -1271,6 +1271,12 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Concept\scene_concepts.hpp">
       <Filter>SourceCode\Concept</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\UI\cinema_scope_frame.hpp">
+      <Filter>SourceCode\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\UI\fade.hpp">
+      <Filter>SourceCode\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

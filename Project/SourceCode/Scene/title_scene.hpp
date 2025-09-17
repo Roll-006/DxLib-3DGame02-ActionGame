@@ -21,4 +21,6 @@ public:
 
 private:
 	bool m_is_active;
+
+
 };
