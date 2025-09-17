@@ -48,5 +48,9 @@ void GameSystemSetter::SetUpGameSystem()
 	SetFogStartEnd(200.f, 4500.0f);
 	SetFogDensity(0.1f);
 
+	// フォント
 	SetFontUseAdjustSizeFlag(FALSE);
+
+	// スクリーン
+	//SetUseSetDrawScreenSettingReset(FALSE);
 }

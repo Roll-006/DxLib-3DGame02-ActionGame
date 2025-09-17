@@ -210,6 +210,7 @@
     <ClCompile Include="SourceCode\Part\modeler.cpp" />
     <ClCompile Include="SourceCode\Part\player_animator.cpp" />
     <ClCompile Include="SourceCode\Part\player_state_controller.cpp" />
+    <ClCompile Include="SourceCode\Part\screen_filter.cpp" />
     <ClCompile Include="SourceCode\Part\transform.cpp" />
     <ClCompile Include="SourceCode\Part\weapon_shortcut_selecter.cpp" />
     <ClCompile Include="SourceCode\Part\zombie_animator.cpp" />
@@ -351,6 +352,7 @@
     <ClInclude Include="SourceCode\Debugger\debugger.hpp" />
     <ClInclude Include="SourceCode\Drawer\drawer.hpp" />
     <ClInclude Include="SourceCode\Event\aim_gun_data.hpp" />
+    <ClInclude Include="SourceCode\Event\enter_near_death_data.hpp" />
     <ClInclude Include="SourceCode\Event\end_grab_cutscene_data.hpp" />
     <ClInclude Include="SourceCode\Event\end_rocket_launcher_cutscene_data.hpp" />
     <ClInclude Include="SourceCode\Event\event.hpp" />
@@ -469,6 +471,7 @@
     <ClInclude Include="SourceCode\Part\player_animator.hpp" />
     <ClInclude Include="SourceCode\Part\player_state_controller.hpp" />
     <ClInclude Include="SourceCode\Part\subject.hpp" />
+    <ClInclude Include="SourceCode\Part\screen_filter.hpp" />
     <ClInclude Include="SourceCode\Part\transform.hpp" />
     <ClInclude Include="SourceCode\Part\weapon_shortcut_selecter.hpp" />
     <ClInclude Include="SourceCode\Part\zombie_animator.hpp" />

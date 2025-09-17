@@ -16,6 +16,7 @@ Player::Player() :
 	m_weapon_shortcut_selecter			(std::make_shared<WeaponShortcutSelecter>())
 {
 	m_health[HealthPartKind::kMain] = std::make_shared<Health>(2000.0f, 1500.0f);
+	//m_health[HealthPartKind::kMain]->GetSubject()->AddObserver();
 
 	// モデル・アニメーションを設定
 	m_modeler  = std::make_shared<Modeler>(m_transform, ModelPath.SWAT, kBasicAngle, kBasicScale);

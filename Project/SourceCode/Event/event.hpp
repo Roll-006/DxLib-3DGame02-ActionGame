@@ -12,6 +12,7 @@
 #include "grab_data.hpp"
 #include "grabbed_data.hpp"
 #include "end_grab_cutscene_data.hpp"
+#include "enter_near_death_data.hpp"
 
 template <typename EventDataT>
 struct Event : public IEvent

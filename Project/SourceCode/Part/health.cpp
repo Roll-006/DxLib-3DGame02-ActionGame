@@ -3,7 +3,8 @@
 Health::Health(const float max_health, const float max_current_health) :
 	m_current_health	(max_current_health),
 	m_current_max_health(max_current_health),
-	m_max_health		(max_health)
+	m_max_health		(max_health),
+	m_subject			(std::make_shared<Subject<Health>>())
 {
 
 }

@@ -484,6 +484,9 @@
     <ClCompile Include="SourceCode\UI\fade.cpp">
       <Filter>SourceCode\UI</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\Part\screen_filter.cpp">
+      <Filter>SourceCode\Part</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\character_base.hpp">
@@ -1277,6 +1280,12 @@
     </ClInclude>
     <ClInclude Include="SourceCode\UI\fade.hpp">
       <Filter>SourceCode\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Part\screen_filter.hpp">
+      <Filter>SourceCode\Part</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\enter_near_death_data.hpp">
+      <Filter>SourceCode\Event</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

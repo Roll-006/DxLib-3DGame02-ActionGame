@@ -11,4 +11,5 @@ enum class EventKind
 	kGrab,							// ’Í‚ñ‚¾
 	kGrabbed,						// ’Í‚Ü‚ê‚½
 	kEndGrabCutscene,				// ’Í‚Ü‚ê‚½Û‚Ì‰‰o‚ªI—¹‚µ‚½
+	kEnterNearDeath,
 };

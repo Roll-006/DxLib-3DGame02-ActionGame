@@ -6,7 +6,7 @@
 
 #include "../UI/ui_drawer.hpp"
 #include "../ShadowMap/shadow_map.hpp"
-#include "../Part/screen_creator.hpp"
+#include "../Part/screen_filter.hpp"
 
 class Drawer final : public OneInstanceSingletonBase<Drawer>
 {
@@ -19,5 +19,5 @@ public:
 
 private:
 	std::unique_ptr<ShadowMap>		m_shadow_map;
-	std::unique_ptr<ScreenCreator>	m_screen_creator;
+	std::shared_ptr<ScreenFilter>	m_screen_filter;
 };
