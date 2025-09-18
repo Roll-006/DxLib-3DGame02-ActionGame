@@ -11,7 +11,6 @@ RocketLauncherVirtualCameraController::RocketLauncherVirtualCameraController(Pla
 	m_is_active						(true),
 	m_player						(player),
 	m_rocket_bomb_transform			(nullptr),
-	m_subject						(std::make_shared<Subject<RocketLauncherVirtualCameraController>>()),
 	m_enter_rot_camera				(std::make_shared<VirtualCamera>(ObjName.ROCKET_LAUNCHER_ENTER_ROT_VIRTUAL_CAMERA,	BlendActivationPolicyKind::kDeactivateAllCamera)),
 	m_zoom_in_camera				(std::make_shared<VirtualCamera>(ObjName.ROCKET_LAUNCHER_ZOOM_IN_VIRTUAL_CAMERA,	BlendActivationPolicyKind::kDeactivateAllCamera)),
 	m_zoom_out_camera				(std::make_shared<VirtualCamera>(ObjName.ROCKET_LAUNCHER_ZOOM_OUT_VIRTUAL_CAMERA,	BlendActivationPolicyKind::kDeactivateAllCamera)),
@@ -42,14 +41,9 @@ RocketLauncherVirtualCameraController::RocketLauncherVirtualCameraController(Pla
 	cinemachine_brain->AddVirtualCamera(m_zoom_out_camera,	false);
 	cinemachine_brain->AddVirtualCamera(m_exit_rot_camera,	false);
 
-	// オブザーバー登録
-	const auto screen_filter = UIDrawer::GetInstance()->GetUICreator(UICreatorName.SCREEN_FILTER_CREATOR);
-	m_subject->AddObserver(std::dynamic_pointer_cast<IObserver>(screen_filter));
-	GameTimeManager::GetInstance()->GetTimeScaleController()->AddToSubject(m_subject);
-
 	// 演出開始通知
-	const Event<StartRocketLauncherCutsceneData> event = { EventKind::kEndRocketLauncherCutscene, {0.0f, 0.005f, 0.0f} };
-	m_subject->Notify(event);
+	const StartRocketLauncherCutsceneEvent event{ 0.0f, 0.005f, 0.0f };
+	EventSystem::GetInstance()->Publish(event);
 
 	// MEMO : この段階では操作カメラのトランスフォームの値は生存
 }
@@ -275,9 +269,9 @@ void RocketLauncherVirtualCameraController::CalcAimTransformForExitRotCamera()
 
 	if (IsEndExitRot())
 	{
-		// 各オブザーバーへ通知
-		const Event<EndRocketLauncherCutsceneData> event = { EventKind::kEndRocketLauncherCutscene, {1.0f} };
-		m_subject->Notify(event);
+		// 通知
+		const EndRocketLauncherCutsceneEvent event{ 1.0f };
+		EventSystem::GetInstance()->Publish(event);
 
 		// TODO : ブレンドが終了した際に、ブレンド速度を戻す処理が必要
 		const auto cinemachine_brain = CinemachineBrain::GetInstance();

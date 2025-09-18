@@ -4,19 +4,19 @@
 
 #include "../Base/singleton_base.hpp"
 
-#include "weapon_shot_data.hpp"
-#include "rocket_launcher_shot_data.hpp"
-#include "on_shot_bullet_data.hpp"
-#include "on_hit_bullet_data.hpp"
-#include "start_rocket_launcher_cutscene_data.hpp"
-#include "end_rocket_launcher_cutscene_data.hpp"
-#include "grab_data.hpp"
-#include "grabbed_data.hpp"
-#include "end_grab_cutscene_data.hpp"
-#include "enter_near_death_data.hpp"
-#include "on_select_normal_filter_data.hpp"
-#include "on_select_cinematic_filter_data.hpp"
-#include "on_select_retro_filter_data.hpp"
+#include "weapon_shot_event.hpp"
+#include "rocket_launcher_shot_event.hpp"
+#include "on_shot_bullet_event.hpp"
+#include "on_hit_bullet_event.hpp"
+#include "start_rocket_launcher_cutscene_event.hpp"
+#include "end_rocket_launcher_cutscene_event.hpp"
+#include "grab_event.hpp"
+#include "grabbed_event.hpp"
+#include "end_grab_cutscene_event.hpp"
+#include "enter_near_death_event.hpp"
+#include "on_select_normal_filter_event.hpp"
+#include "on_select_cinematic_filter_event.hpp"
+#include "on_select_retro_filter_event.hpp"
 
 class EventSystem final : public SingletonBase<EventSystem>
 {

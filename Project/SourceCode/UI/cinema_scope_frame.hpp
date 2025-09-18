@@ -15,10 +15,14 @@ public:
 	/// @param speed 増加速度(デルタタイム補正後)
 	void SetIncreaseThickness(const float speed);
 
+	void EnterFrame	(const StartRocketLauncherCutsceneEvent& event);
+	void ExitFrame	(const EndRocketLauncherCutsceneEvent&   event);
+
 private:
 	void CalcPos();
 
 private:
+	static constexpr float kIncreaseSpeed = 200.0f;
 	static constexpr Vector2D<int> kFrameSize = { 
 		Window::kScreenSize.x, 
 		static_cast<int>((Window::kScreenSize.y - Window::kScreenSize.x / Window::kCinemaScopeRatio.x) * 0.5f) };

@@ -2,7 +2,6 @@
 
 GunBase::GunBase(const std::string& name, const GunKind gun_kind, const HolsterKind holster_kind) :
 	WeaponBase						(name, WeaponKind::kGun, holster_kind),
-	m_subject						(std::make_shared<Subject<GunBase>>()),
 	m_magazine						(nullptr),
 	m_diffusion_shape				(nullptr),
 	m_muzzle_transform				(std::make_shared<Transform>()),
@@ -23,7 +22,7 @@ GunBase::GunBase(const std::string& name, const GunKind gun_kind, const HolsterK
 	m_on_pull_trigger				(false),
 	m_gun_kind						(gun_kind)
 {
-	EffectManager::GetInstance()->AddToSubject<GunBase>(m_subject);
+
 }
 
 void GunBase::OnShot()
@@ -31,8 +30,8 @@ void GunBase::OnShot()
 	RifleCartridgeManager::GetInstance()->SearchValidRifleCartidge(*this);
 	--m_current_remaining_bullet_num;
 
-	const Event<WeaponShotData> event = { EventKind::kWeaponShot, { m_gun_kind, m_owner_name, m_muzzle_transform, m_ejection_port_transform } };
-	m_subject->Notify(event);
+	const WeaponShotEvent event{ m_gun_kind, m_owner_name, m_muzzle_transform, m_ejection_port_transform };
+	EventSystem::GetInstance()->Publish(event);
 }
 
 int GunBase::OnReload(const int have_bullets)

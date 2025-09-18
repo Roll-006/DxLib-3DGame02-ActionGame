@@ -3,7 +3,7 @@
 #include "../Part/transform.hpp"
 
 /// @brief •Ší‚ª’eŠÛ‚ğ”­Ë‚µ‚½
-struct WeaponShotData
+struct WeaponShotEvent
 {
 	GunKind						gun_kind				= static_cast<GunKind>(0);
 	std::string					weapon_owner_name		= "";

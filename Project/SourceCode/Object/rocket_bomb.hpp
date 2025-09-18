@@ -49,7 +49,6 @@ private:
 	static constexpr float  kBlendTime		= 0.02f;
 
 	std::shared_ptr<Modeler>				m_modeler;
-	std::shared_ptr<Subject<RocketBomb>>	m_subject;
 	std::string								m_shot_owner_name;
 
 	VECTOR m_destination_dir;

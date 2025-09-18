@@ -5,7 +5,6 @@
 RocketBomb::RocketBomb() :
 	PhysicalObjBase			(ObjName.ROCKET_BOMB, ObjTag.BULLET, MassKind::kLight),
 	m_modeler				(std::make_shared<Modeler>(m_transform, ModelPath.ROCKET_BOMB, kBasicAngle, kBasicScale)),
-	m_subject				(std::make_shared<Subject<RocketBomb>>()),
 	m_shot_owner_name		(""),
 	m_move_dir				(v3d::GetZeroV()),
 	m_prev_pos				(v3d::GetZeroV()),
@@ -18,8 +17,6 @@ RocketBomb::RocketBomb() :
 	SetColliderModelHandle(m_modeler->GetModelHandle());
 
 	AddCollider(std::make_shared<Collider>(ColliderKind::kRayCast, std::make_shared<Segment>(), this));
-	
-	EffectManager::GetInstance()->AddToSubject<RocketBomb>(m_subject);
 }
 
 RocketBomb::~RocketBomb()
@@ -84,8 +81,8 @@ void RocketBomb::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 			RifleCartridgeManager::GetInstance()->DeleteBullet(shared_from_this());
 			RifleCartridgeManager::GetInstance()->AddHitPos(*hit_collider_pair.intersection);
 
-			const Event<OnHitBulletData> event = { EventKind::kOnHitBullet, { GetName(), *hit_collider_pair.intersection, m_move_dir } };
-			m_subject->Notify(event);
+			const OnHitBulletEvent event{ GetName(), *hit_collider_pair.intersection, m_move_dir };
+			EventSystem::GetInstance()->Publish(event);
 
 			EffectManager::GetInstance()->ForciblyReturnPoolEffect(GetObjHandle());
 		}
@@ -131,8 +128,8 @@ void RocketBomb::OnShot(GunBase& gun)
 
 	CalcRayPos();
 
-	const Event<OnShotBulletData> event = { EventKind::kOnShotBullet, { GetName(), gun.GetOwnerName(), GetObjHandle(), m_transform}};
-	m_subject->Notify(event);
+	const OnShotBulletEvent event{ GetName(), gun.GetOwnerName(), GetObjHandle(), m_transform };
+	EventSystem::GetInstance()->Publish(event);
 
 	// 必殺技専用カメラにトランスフォーム情報を設定
 	// プレイヤーが撃った場合のみ設定

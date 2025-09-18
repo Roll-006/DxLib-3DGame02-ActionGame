@@ -11,19 +11,19 @@ ScreenFilter::ScreenFilter() :
 	m_near_death_blinking_sin	(0.0f)
 {
 	// ƒCƒxƒ“ƒg“o˜^
-	EventSystem::GetInstance()->Subscribe<EnterNearDeathData>			([this](const EnterNearDeathData&			event)
+	EventSystem::GetInstance()->Subscribe<EnterNearDeathEvent>			([this](const EnterNearDeathEvent&			event)
 	{
 		SetNearDeathFilter(event);
 	});
-	EventSystem::GetInstance()->Subscribe<OnSelectNormalFilterData>		([this](const OnSelectNormalFilterData&		event)
+	EventSystem::GetInstance()->Subscribe<OnSelectNormalFilterEvent>	([this](const OnSelectNormalFilterEvent&		event)
 	{
 		SetNormalFilter(event);
 	});
-	EventSystem::GetInstance()->Subscribe<OnSelectCinematicFilterData>	([this](const OnSelectCinematicFilterData&	event)
+	EventSystem::GetInstance()->Subscribe<OnSelectCinematicFilterEvent>	([this](const OnSelectCinematicFilterEvent&	event)
 	{
 		SetCinematicFilter(event);
 	});
-	EventSystem::GetInstance()->Subscribe<OnSelectRetroFilterData>		([this](const OnSelectRetroFilterData&		event)
+	EventSystem::GetInstance()->Subscribe<OnSelectRetroFilterEvent>		([this](const OnSelectRetroFilterEvent&		event)
 	{
 		SetRetroFilter(event);
 	});
@@ -65,25 +65,25 @@ void ScreenFilter::Draw()
 
 
 #pragma region Event
-void ScreenFilter::SetNearDeathFilter(const EnterNearDeathData& event)
+void ScreenFilter::SetNearDeathFilter(const EnterNearDeathEvent& event)
 {
 	m_is_using_near_death_filter	= true;
 	m_near_death_blinking_sin		= 0.0f;
 }
 
-void ScreenFilter::SetNormalFilter(const OnSelectNormalFilterData& event)
+void ScreenFilter::SetNormalFilter(const OnSelectNormalFilterEvent& event)
 {
 	m_current_basis_filter = m_basis_filters.at(BasisFilterKind::kNormal);
 	m_basis_alpha_blend_num = 255;
 }
 
-void ScreenFilter::SetCinematicFilter(const OnSelectCinematicFilterData& event)
+void ScreenFilter::SetCinematicFilter(const OnSelectCinematicFilterEvent& event)
 {
 	m_current_basis_filter = m_basis_filters.at(BasisFilterKind::kCinematic);
 	m_basis_alpha_blend_num = 255;
 }
 
-void ScreenFilter::SetRetroFilter(const OnSelectRetroFilterData& event)
+void ScreenFilter::SetRetroFilter(const OnSelectRetroFilterEvent& event)
 {
 	m_current_basis_filter = m_basis_filters.at(BasisFilterKind::kRetro);
 	m_basis_alpha_blend_num = 255;
@@ -109,6 +109,8 @@ void ScreenFilter::UseRetroFilter()
 
 void ScreenFilter::DrawBasisFilter()
 {
+	if (!m_current_basis_filter) { return; }
+
 	m_basis_filter_screen->UseScreen();
 	m_main_screen->Draw();
 	m_basis_filter_screen->UnuseScreen();

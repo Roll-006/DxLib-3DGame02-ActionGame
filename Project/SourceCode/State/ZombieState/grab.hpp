@@ -3,7 +3,6 @@
 
 #include "../../Object/zombie.hpp"
 #include "../../Part/zombie_state_controller.hpp"
-#include "../../Part/subject.hpp"
 
 #include "../../VirtualCamera/grab_virtual_camera_controller.hpp"
 
@@ -25,7 +24,6 @@ namespace zombie_state
 	private:
 		static constexpr float kDamageIntervalTime = 0.8f;
 
-		std::shared_ptr<Subject<Grab>>					m_subject;
 		std::shared_ptr<GrabVirtualCameraController>	m_grab_camera_controller;
 
 		float m_damage_interval_timer;

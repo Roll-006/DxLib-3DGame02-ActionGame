@@ -1,7 +1,7 @@
 #pragma once
 
 /// @brief シネマティックフィルターが選択された
-struct OnSelectCinematicFilterData
+struct OnSelectCinematicFilterEvent
 {
 
 };

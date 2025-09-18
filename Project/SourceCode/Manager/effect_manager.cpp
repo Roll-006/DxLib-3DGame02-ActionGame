@@ -4,7 +4,23 @@
 
 EffectManager::EffectManager()
 {
-
+	// ÉCÉxÉìÉgìoò^
+	EventSystem::GetInstance()->Subscribe<WeaponShotEvent>			([this](const WeaponShotEvent&			event)
+	{
+		OutputWeaponShotEffect(event);
+	});
+	EventSystem::GetInstance()->Subscribe<RocketLauncherShotEvent>	([this](const RocketLauncherShotEvent&	event)
+	{
+		OutputRocketLauncherShotEffect(event);
+	});
+	EventSystem::GetInstance()->Subscribe<OnShotBulletEvent>		([this](const OnShotBulletEvent&		event)
+	{
+		OutputOnShotBulletEffect(event);
+	});
+	EventSystem::GetInstance()->Subscribe<OnHitBulletEvent>			([this](const OnHitBulletEvent&			event)
+	{
+		OutputOnHitBulletEffect(event);
+	});
 }
 
 EffectManager::~EffectManager()
@@ -66,34 +82,6 @@ void EffectManager::Draw() const
 	}
 }
 
-void EffectManager::OnNotify(const IEvent& event)
-{
-	// ïêäÌÇ™íeä€Çî≠éÀ
-	if (event.GetType() == std::type_index(typeid(WeaponShotData)))
-	{
-		const auto& weapon_shot	= static_cast<const Event<WeaponShotData>&>(event);
-		OutputWeaponShotEffect(weapon_shot);
-	}
-	// ÉçÉPÉbÉgÉâÉìÉ`ÉÉÅ[Ç™íeä€Çî≠éÀ
-	if (event.GetType() == std::type_index(typeid(RocketLauncherShotData)))
-	{
-		const auto& rocket_launcher_shot = static_cast<const Event<RocketLauncherShotData>&>(event);
-		OutputRocketLauncherShotEffect(rocket_launcher_shot);
-	}
-	// íeä€Ç™î≠éÀÇ≥ÇÍÇΩ
-	if (event.GetType() == std::type_index(typeid(OnShotBulletData)))
-	{
-		const auto& on_shot_bullet = static_cast<const Event<OnShotBulletData>&>(event);
-		OutputOnShotBulletEffect(on_shot_bullet);
-	}
-	// íeä€Ç™è’ìÀÇµÇΩ
-	if (event.GetType() == std::type_index(typeid(OnHitBulletData)))
-	{
-		const auto& on_hit_bullet = static_cast<const Event<OnHitBulletData>&>(event);
-		OutputOnHitBulletEffect(on_hit_bullet);
-	}
-}
-
 void EffectManager::ForciblyReturnPoolEffect(std::shared_ptr<Effect> effect)
 {
 	if (std::find(m_effects[effect->GetName()].begin(), m_effects[effect->GetName()].end(), effect) != m_effects[effect->GetName()].end())
@@ -126,20 +114,14 @@ void EffectManager::ForciblyReturnPoolEffect(const int return_trigger_handle)
 	}
 }
 
-void EffectManager::AddEffect(const std::shared_ptr<Effect> effect)
-{
-	if (std::find(m_effects[effect->GetName()].begin(), m_effects[effect->GetName()].end(), effect) == m_effects[effect->GetName()].end())
-	{
-		m_effects[effect->GetName()].emplace_back(effect);
-	}
-}
 
-void EffectManager::OutputWeaponShotEffect(const Event<WeaponShotData>& event)
+#pragma region Event
+void EffectManager::OutputWeaponShotEffect(const WeaponShotEvent& event)
 {
 	const auto pool = ObjectPoolHolder::GetInstance()->GetObjectPool(ObjectPoolName.PLAY_SCENE_EFFECT_POOL);
 	std::shared_ptr<ObjBase> obj = nullptr;
 
-	switch (event.data.gun_kind)
+	switch (event.gun_kind)
 	{
 	case GunKind::kSniperRifle:
 		break;
@@ -149,8 +131,8 @@ void EffectManager::OutputWeaponShotEffect(const Event<WeaponShotData>& event)
 		if (obj)
 		{
 			const auto effect = std::static_pointer_cast<Effect>(obj);
-			effect->AttachOwnerTransform(event.data.muzzle_transform);
-			effect->AddTimeScaleOwner(event.data.weapon_owner_name);
+			effect->AttachOwnerTransform(event.muzzle_transform);
+			effect->AddTimeScaleOwner(event.weapon_owner_name);
 			effect->SetOffsetAngle(VGet(270.0f * math::kDegToRad, 0.0f, 0.0f));
 			effect->SetOffsetScale(3.0f);
 			AddEffect(effect);
@@ -162,7 +144,7 @@ void EffectManager::OutputWeaponShotEffect(const Event<WeaponShotData>& event)
 	}
 }
 
-void EffectManager::OutputRocketLauncherShotEffect(const Event<RocketLauncherShotData>& event)
+void EffectManager::OutputRocketLauncherShotEffect(const RocketLauncherShotEvent& event)
 {
 	const auto pool = ObjectPoolHolder::GetInstance()->GetObjectPool(ObjectPoolName.PLAY_SCENE_EFFECT_POOL);
 	std::shared_ptr<ObjBase> obj = nullptr;
@@ -171,28 +153,28 @@ void EffectManager::OutputRocketLauncherShotEffect(const Event<RocketLauncherSho
 	if (obj)
 	{
 		const auto effect = std::static_pointer_cast<Effect>(obj);
-		effect->AttachOwnerTransform(event.data.ejection_port_transform);
-		effect->AddTimeScaleOwner(event.data.weapon_owner_name);
+		effect->AttachOwnerTransform(event.ejection_port_transform);
+		effect->AddTimeScaleOwner(event.weapon_owner_name);
 		effect->SetOffsetAngle(VGet(270.0f * math::kDegToRad, 0.0f, 0.0f));
 		effect->SetOffsetScale(1.0f);
 		AddEffect(effect);
 	}
 }
 
-void EffectManager::OutputOnShotBulletEffect(const Event<OnShotBulletData>& event)
+void EffectManager::OutputOnShotBulletEffect(const OnShotBulletEvent& event)
 {
 	const auto pool = ObjectPoolHolder::GetInstance()->GetObjectPool(ObjectPoolName.PLAY_SCENE_EFFECT_POOL);
 	std::shared_ptr<ObjBase> obj = nullptr;
 
-	if (event.data.bullet_name == ObjName.ROCKET_BOMB)
+	if (event.bullet_name == ObjName.ROCKET_BOMB)
 	{
 		obj = pool->GetObj(ObjName.ROCKET_BOMB_SMOKE_EFFECT);
 		if (obj)
 		{
 			const auto effect = std::static_pointer_cast<Effect>(obj);
-			effect->AttachOwnerTransform(event.data.bullet_transform);
-			effect->AddTimeScaleOwner(event.data.weapon_owner_name);
-			effect->AddReturnPoolTriggerHandle(event.data.obj_handle);
+			effect->AttachOwnerTransform(event.bullet_transform);
+			effect->AddTimeScaleOwner(event.weapon_owner_name);
+			effect->AddReturnPoolTriggerHandle(event.obj_handle);
 			effect->SetOffsetAngle(VGet(0.0f, DX_PI_F, 0.0f));
 			effect->SetOffsetScale(2.5f);
 			AddEffect(effect);
@@ -200,20 +182,30 @@ void EffectManager::OutputOnShotBulletEffect(const Event<OnShotBulletData>& even
 	}
 }
 
-void EffectManager::OutputOnHitBulletEffect(const Event<OnHitBulletData>& event)
+void EffectManager::OutputOnHitBulletEffect(const OnHitBulletEvent& event)
 {
 	const auto pool = ObjectPoolHolder::GetInstance()->GetObjectPool(ObjectPoolName.PLAY_SCENE_EFFECT_POOL);
 	std::shared_ptr<ObjBase> obj = nullptr;
 
-	if (event.data.bullet_name == ObjName.ROCKET_BOMB)
+	if (event.bullet_name == ObjName.ROCKET_BOMB)
 	{
 		obj = pool->GetObj(ObjName.ROCKET_BOMB_HIT_EXPLOSION_EFFECT);
 		if (obj)
 		{
 			const auto effect = std::static_pointer_cast<Effect>(obj);
-			effect->GetTransform()->SetPos(CoordinateKind::kWorld, event.data.hit_pos);
-			effect->GetTransform()->SetRot(CoordinateKind::kWorld, event.data.move_dir);
+			effect->GetTransform()->SetPos(CoordinateKind::kWorld, event.hit_pos);
+			effect->GetTransform()->SetRot(CoordinateKind::kWorld, event.move_dir);
 			AddEffect(effect);
 		}
+	}
+}
+#pragma endregion
+
+
+void EffectManager::AddEffect(const std::shared_ptr<Effect> effect)
+{
+	if (std::find(m_effects[effect->GetName()].begin(), m_effects[effect->GetName()].end(), effect) == m_effects[effect->GetName()].end())
+	{
+		m_effects[effect->GetName()].emplace_back(effect);
 	}
 }

@@ -4,7 +4,6 @@
 
 Player::Player() :
 	CharacterBase(ObjName.PLAYER, ObjTag.PLAYER, MassKind::kMedium),
-	m_subject							(std::make_shared<Subject<Player>>()),
 	m_state								(std::make_shared<PlayerStateController>()),
 	m_bone_pos_corrector				(std::make_shared<BonePosCorrector>()),
 	m_input_slope						(v3d::GetZeroV()),
@@ -197,12 +196,12 @@ void Player::OnDamage(const HealthPartKind part_kind, const float damage)
 
 	if (part_kind == HealthPartKind::kMain)
 	{
-		// •mŽ€ó‘Ô‚É“Ë“ü‚µ‚Ä‚¢‚é‚©‚ÂA
+		// •mŽ€ó‘Ô‚É“Ë“ü‚µ‚Ä‚¢‚é‚©‚ÂAˆË‘R‚Í•mŽ€‚Å‚È‚©‚Á‚½ê‡’Ê’m‚ð‘—‚é
 		const auto parcent = (m_health.at(part_kind)->GetMaxHealth() / 270.0f) * 45;
 		if (   m_health.at(part_kind)->GetCurrentHealth() <  parcent
 			&& m_health.at(part_kind)->GetPrevHealth()    >= parcent)
 		{
-			EnterNearDeathData event{};
+			const EnterNearDeathEvent event{};
 			EventSystem::GetInstance()->Publish(event);
 		}
 	}

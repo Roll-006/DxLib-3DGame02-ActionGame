@@ -3,7 +3,6 @@
 #include "../Kind/gun_kind.hpp"
 
 #include "../Object/main_camera.hpp"
-#include "../Part/subject.hpp"
 #include "../Data/recoil_data.hpp"
 
 #include "../Manager/rifle_cartridge_manager.hpp"
@@ -43,7 +42,6 @@ public:
 
 
 	#pragma region Getter
-	[[nodiscard]] std::shared_ptr<Subject<GunBase>> GetSubject()		const { return m_subject; }
 	[[nodiscard]] std::shared_ptr<ILoadableAmmo>	GetMagazine()		const { return m_magazine; }
 	[[nodiscard]] std::shared_ptr<ShapeBase> GetDiffusionShape()		const { return m_diffusion_shape; }
 	[[nodiscard]] std::shared_ptr<Transform> GetMuzzleTransform()		const { return m_muzzle_transform; }
@@ -75,8 +73,6 @@ protected:
 
 protected:
 	static constexpr float kDiffusionDistance = 1500.0f;		// ŠgU”ÍˆÍ‚ªˆÊ’u‚·‚éÀ•W‚Ü‚Å‚Ì‹——£
-
-	std::shared_ptr<Subject<GunBase>>	m_subject;
 
 	std::shared_ptr<ILoadableAmmo>		m_magazine;
 

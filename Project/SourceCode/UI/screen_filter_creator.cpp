@@ -23,19 +23,3 @@ void ScreenFilterCreator::OnDraw()
 {
 	m_cinema_scope_frame->Draw();
 }
-
-void ScreenFilterCreator::OnNotify(const IEvent& event)
-{
-	const float delta_time = GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kUI);
-
-	// ロケットランチャー専用カットシーンの開始
-	if (event.GetType() == std::type_index(typeid(StartRocketLauncherCutsceneData)))
-	{
-		m_cinema_scope_frame->SetIncreaseThickness(200.0f * delta_time);
-	}
-	// ロケットランチャー専用カットシーンの終了
-	if (event.GetType() == std::type_index(typeid(EndRocketLauncherCutsceneData)))
-	{
-		m_cinema_scope_frame->SetIncreaseThickness(-200.0f * delta_time);
-	}
-}

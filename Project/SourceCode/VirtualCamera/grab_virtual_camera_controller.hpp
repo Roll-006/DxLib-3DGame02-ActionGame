@@ -1,12 +1,10 @@
 #pragma once
 #include "../Interface/i_virtual_camera_controller.hpp"
-#include "../Interface/i_observer.hpp"
-
 #include "virtual_camera.hpp"
 
 class CinemachineBrain;
 
-class GrabVirtualCameraController final : public IVirtualCameraController, public IObserver
+class GrabVirtualCameraController final : public IVirtualCameraController
 {
 public:
 	GrabVirtualCameraController();
@@ -19,7 +17,12 @@ public:
 	void Activate()   override { m_is_active = true;  }
 	void Deactivate() override { m_is_active = false; }
 
-	void OnNotify(const IEvent& event) override;
+
+	#pragma region Event
+	void SetGrabberModelHandle(const GrabEvent&		event);
+	void SetGrabbedModelHandle(const GrabbedEvent&	event);
+	#pragma endregion
+
 
 	[[nodiscard]] VirtualCameraControllerKind GetVirtualCameraControllerKind() const override;
 	[[nodiscard]] std::shared_ptr<VirtualCamera> GetHaveVirtualCamera(const std::string& name) const override;
@@ -40,8 +43,6 @@ private:
 	VirtualCameraControllerKind		m_virtual_camera_controller_kind;
 	int								m_controller_handle;
 	bool							m_is_active;
-
-	std::shared_ptr<Subject<GrabVirtualCameraController>> m_subject;
 
 	int								m_grabber_model_handle;		// 掴む側のモデルハンドル
 	int								m_grabbed_model_handle;		// 掴まれる側のモデルハンドル

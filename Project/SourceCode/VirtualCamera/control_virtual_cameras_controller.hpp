@@ -1,6 +1,5 @@
 #pragma once
 #include "../Interface/i_virtual_camera_controller.hpp"
-#include "../Interface/i_observer.hpp"
 
 #include "virtual_camera.hpp"
 #include "../Data/recoil_data.hpp"
@@ -9,7 +8,7 @@ class CinemachineBrain;
 class Player;
 class GunBase;
 
-class ControlVirtualCamerasController final : public IVirtualCameraController, public IObserver
+class ControlVirtualCamerasController final : public IVirtualCameraController
 {
 public:
 	ControlVirtualCamerasController(Player& player);
@@ -22,10 +21,14 @@ public:
 	/// @brief e‚ªŒ‚‚½‚ê‚½Û‚ÌƒŠƒRƒCƒ‹ˆ—
 	void OnRecoil(const GunBase& gun);
 
+
+	#pragma region Event
+	void EndGrabCutscene(const EndGrabCutsceneEvent& event);
+	#pragma endregion
+
+
 	void Activate()   override { m_is_active = true; }
 	void Deactivate() override { m_is_active = false; }
-
-	void OnNotify(const IEvent& event) override;
 
 	[[nodiscard]] VirtualCameraControllerKind GetVirtualCameraControllerKind() const override;
 	[[nodiscard]] std::shared_ptr<VirtualCamera> GetHaveVirtualCamera(const std::string& name) const override;

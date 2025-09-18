@@ -6,21 +6,26 @@ GrabVirtualCameraController::GrabVirtualCameraController() :
 	m_virtual_camera_controller_kind(VirtualCameraControllerKind::kGrabCutscene),
 	m_controller_handle				(HandleCreator::GetInstance()->CreateHandle()),
 	m_is_active						(true),
-	m_subject						(std::make_shared<Subject<GrabVirtualCameraController>>()),
 	m_grabber_model_handle			(-1),
 	m_grabbed_model_handle			(-1),
 	m_camera						(std::make_shared<VirtualCamera>(ObjName.ROCKET_LAUNCHER_ENTER_ROT_VIRTUAL_CAMERA,	BlendActivationPolicyKind::kDeactivateAllCamera)),
 	m_aim_transform					(std::make_shared<Transform>())
 {
+	// イベント登録
+	EventSystem::GetInstance()->Subscribe<GrabEvent>([this](const GrabEvent& event)
+	{
+		SetGrabberModelHandle(event);
+	});
+	EventSystem::GetInstance()->Subscribe<GrabbedEvent>([this](const GrabbedEvent& event)
+	{
+		SetGrabbedModelHandle(event);
+	});
+
 	// パラメータ設定
-	SetupCamera();
-	
+	SetupCamera();	
+
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
-
-	// オブザーバーを追加
 	const auto control_camera = std::dynamic_pointer_cast<ControlVirtualCamerasController>(cinemachine_brain->GetVirtualCameraController(VirtualCameraControllerKind::kControl));
-	m_subject->AddObserver(control_camera);
-
 	control_camera->Deactivate();
 	cinemachine_brain->SetBlendTime(0.5f);
 	cinemachine_brain->AddVirtualCamera(m_camera, true);
@@ -38,8 +43,8 @@ GrabVirtualCameraController::~GrabVirtualCameraController()
 	control_cameras_controller->GetHaveVirtualCamera(ObjName.ROT_CONTROL_VIRTUAL_CAMERA)->Activate();
 
 	// 演出が終了したことを通知
-	const Event<EndGrabCutsceneData> event = { EventKind::kEndGrabCutscene, {} };
-	m_subject->Notify(event);
+	const EndGrabCutsceneEvent event{};
+	EventSystem::GetInstance()->Publish(event);
 }
 
 void GrabVirtualCameraController::Init()
@@ -59,21 +64,19 @@ void GrabVirtualCameraController::LateUpdate()
 	CalcAimTransform();
 }
 
-void GrabVirtualCameraController::OnNotify(const IEvent& event)
+
+#pragma region Event
+void GrabVirtualCameraController::SetGrabberModelHandle(const GrabEvent& event)
 {
-	// 掴んだ
-	if (event.GetType() == std::type_index(typeid(GrabData)))
-	{
-		const auto& grab_event = static_cast<const Event<GrabData>&>(event);
-		m_grabber_model_handle = grab_event.data.model_handle;
-	}
-	// 掴まれた
-	if (event.GetType() == std::type_index(typeid(GrabbedData)))
-	{
-		const auto& grabbed_event = static_cast<const Event<GrabbedData>&>(event);
-		m_grabbed_model_handle = grabbed_event.data.model_handle;
-	}
+	m_grabber_model_handle = event.model_handle;
 }
+
+void GrabVirtualCameraController::SetGrabbedModelHandle(const GrabbedEvent& event)
+{
+	m_grabbed_model_handle = event.model_handle;
+}
+#pragma endregion
+
 
 VirtualCameraControllerKind GrabVirtualCameraController::GetVirtualCameraControllerKind() const
 {

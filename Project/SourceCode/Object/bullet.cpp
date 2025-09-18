@@ -4,7 +4,6 @@
 
 Bullet::Bullet() :
 	PhysicalObjBase		(ObjName.BULLET, ObjTag.BULLET, MassKind::kLight),
-	m_subject			(std::make_shared<Subject<Bullet>>()),
 	m_shot_owner_name	(""),
 	m_move_dir			(v3d::GetZeroV()),
 	m_prev_pos			(v3d::GetZeroV()),
@@ -15,8 +14,6 @@ Bullet::Bullet() :
 	m_power				(0.0f)
 {
 	AddCollider(std::make_shared<Collider>(ColliderKind::kRayCast, std::make_shared<Segment>(), this));
-
-	EffectManager::GetInstance()->AddToSubject<Bullet>(m_subject);
 }
 
 Bullet::~Bullet()
@@ -114,8 +111,8 @@ void Bullet::OnShot(GunBase& gun)
 
 	CalcRayPos();
 
-	const Event<OnShotBulletData> event = { EventKind::kOnShotBullet, { GetName(), gun.GetOwnerName(), GetObjHandle(), m_transform}};
-	m_subject->Notify(event);
+	const OnShotBulletEvent event{ GetName(), gun.GetOwnerName(), GetObjHandle(), m_transform };
+	EventSystem::GetInstance()->Publish(event);
 }
 
 float Bullet::GetDeltaTime() const

@@ -3,7 +3,7 @@
 #include <DxLib.h>
 
 /// @brief íeä€Ç™è’ìÀÇµÇΩ
-struct OnHitBulletData
+struct OnHitBulletEvent
 {
 	std::string	bullet_name	= "";
 	VECTOR		hit_pos		= {};

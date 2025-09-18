@@ -2,7 +2,7 @@
 #include "../Part/transform.hpp"
 
 /// @brief ’eŠÛ‚ª”­ŽË‚³‚ê‚½
-struct OnShotBulletData
+struct OnShotBulletEvent
 {
 	std::string					bullet_name			= "";
 	std::string					weapon_owner_name	= "";

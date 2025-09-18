@@ -2,13 +2,11 @@
 
 player_state::ShotRocketLauncher::ShotRocketLauncher() :
 	WeaponActionStateBase				(static_cast<int>(player_state::WeaponActionStateKind::kShotRocketLauncher)),
-	m_subject							(std::make_shared<Subject<ShotRocketLauncher>>()),
 	m_rocket_launcher_camera_controller	(nullptr),
 	m_wait_timer						(0.0f),
 	m_was_shot							(false)
 {
-	EffectManager  ::GetInstance()->AddToSubject<ShotRocketLauncher>(m_subject);
-	GameTimeManager::GetInstance()->GetTimeScaleController()->AddToSubject<ShotRocketLauncher>(m_subject);
+	
 }
 
 player_state::ShotRocketLauncher::~ShotRocketLauncher()
@@ -47,10 +45,9 @@ void player_state::ShotRocketLauncher::LateUpdate(std::shared_ptr<Player> obj)
 	{
 		roket_launcher->OnShot();
 		
-		// 各オブザーバーへ通知
-		const RocketLauncherShotData		data  = {roket_launcher->GetOwnerName(), roket_launcher->GetExhaustVentTransform()};
-		const Event<RocketLauncherShotData> event = { EventKind::kRocketLauncherShot, data };
-		m_subject->Notify(event);
+		// 通知
+		const RocketLauncherShotEvent event{ roket_launcher->GetOwnerName(), roket_launcher->GetExhaustVentTransform() };
+		EventSystem::GetInstance()->Publish(event);
 
 		m_was_shot = true;
 	}

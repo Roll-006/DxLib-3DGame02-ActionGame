@@ -1,7 +1,7 @@
 #pragma once
 
-/// @brief ’Í‚ñ‚¾
-struct GrabData
+/// @brief ’Í‚Ü‚ê‚½
+struct GrabbedEvent
 {
 	int model_handle = -1;
 };

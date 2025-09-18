@@ -1197,28 +1197,28 @@
     <ClInclude Include="SourceCode\CSV\csv_loader.hpp">
       <Filter>SourceCode\CSV</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Event\aim_gun_data.hpp">
+    <ClInclude Include="SourceCode\Event\aim_gun_event.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Event\end_rocket_launcher_cutscene_data.hpp">
+    <ClInclude Include="SourceCode\Event\end_rocket_launcher_cutscene_event.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Event\event.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Event\on_hit_bullet_data.hpp">
+    <ClInclude Include="SourceCode\Event\on_hit_bullet_event.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Event\on_shot_bullet_data.hpp">
+    <ClInclude Include="SourceCode\Event\on_shot_bullet_event.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Event\rocket_launcher_shot_data.hpp">
+    <ClInclude Include="SourceCode\Event\rocket_launcher_shot_event.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Event\start_rocket_launcher_cutscene_data.hpp">
+    <ClInclude Include="SourceCode\Event\start_rocket_launcher_cutscene_event.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Event\weapon_shot_data.hpp">
+    <ClInclude Include="SourceCode\Event\weapon_shot_event.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\IncludeList\input.hpp">
@@ -1251,13 +1251,13 @@
     <ClInclude Include="SourceCode\UI\status_icons.hpp">
       <Filter>SourceCode\UI</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Event\grab_data.hpp">
+    <ClInclude Include="SourceCode\Event\grab_event.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Event\grabbed_data.hpp">
+    <ClInclude Include="SourceCode\Event\grabbed_event.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Event\end_grab_cutscene_data.hpp">
+    <ClInclude Include="SourceCode\Event\end_grab_cutscene_event.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Part\mask_creator.hpp">
@@ -1278,19 +1278,19 @@
     <ClInclude Include="SourceCode\Part\screen_filter.hpp">
       <Filter>SourceCode\Part</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Event\enter_near_death_data.hpp">
+    <ClInclude Include="SourceCode\Event\enter_near_death_event.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Event\event_system.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Event\on_select_cinematic_filter_data.hpp">
+    <ClInclude Include="SourceCode\Event\on_select_cinematic_filter_event.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Event\on_select_retro_filter_data.hpp">
+    <ClInclude Include="SourceCode\Event\on_select_retro_filter_event.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Event\on_select_normal_filter_data.hpp">
+    <ClInclude Include="SourceCode\Event\on_select_normal_filter_event.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
   </ItemGroup>

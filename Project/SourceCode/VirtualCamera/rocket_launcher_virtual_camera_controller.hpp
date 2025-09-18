@@ -65,7 +65,6 @@ private:
 
 	Player&							m_player;
 	std::shared_ptr<Transform>		m_rocket_bomb_transform;
-	std::shared_ptr<Subject<RocketLauncherVirtualCameraController>> m_subject;
 
 	std::shared_ptr<VirtualCamera>	m_enter_rot_camera;
 	std::shared_ptr<VirtualCamera>	m_zoom_in_camera;

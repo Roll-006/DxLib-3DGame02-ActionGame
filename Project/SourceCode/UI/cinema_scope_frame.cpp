@@ -6,9 +6,17 @@ CinemaScopeFrame::CinemaScopeFrame() :
 	m_down_frame_up_left_pos	(v2d::GetZeroV<Vector2D<int>>()),
 	m_down_frame_down_right_pos	(v2d::GetZeroV<Vector2D<int>>()),
 	m_thickness					(0),
-	m_increase					(0.0f)
+	m_increase					(0)
 {
-
+	// ƒCƒxƒ“ƒg“o˜^
+	EventSystem::GetInstance()->Subscribe<StartRocketLauncherCutsceneEvent>([this](const StartRocketLauncherCutsceneEvent& event)
+	{
+		EnterFrame(event);
+	});
+	EventSystem::GetInstance()->Subscribe<EndRocketLauncherCutsceneEvent>([this](const EndRocketLauncherCutsceneEvent& event)
+	{
+		ExitFrame(event);
+	});
 }
 
 CinemaScopeFrame::~CinemaScopeFrame()
@@ -18,13 +26,15 @@ CinemaScopeFrame::~CinemaScopeFrame()
 
 void CinemaScopeFrame::LateUpdate()
 {
+	const auto delta_time = GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kUI);
+
 	if (m_increase > 0)
 	{
-		math::Increase(m_thickness, static_cast<int>(m_increase), kFrameSize.y, false);
+		math::Increase(m_thickness, static_cast<int>( m_increase * delta_time), kFrameSize.y, false);
 	}
 	else
 	{
-		math::Decrease(m_thickness, static_cast<int>(-m_increase), 0);
+		math::Decrease(m_thickness, static_cast<int>(-m_increase * delta_time), 0);
 	}
 
 	CalcPos();
@@ -49,15 +59,20 @@ void CinemaScopeFrame::Draw() const
 		0x000000, TRUE);
 }
 
-void CinemaScopeFrame::SetIncreaseThickness(const float speed)
-{
-	m_increase = speed;
-}
-
 void CinemaScopeFrame::CalcPos()
 {
 	m_up_frame_up_left_pos		= { 0, 0 };
 	m_up_frame_down_right_pos	= { Window::kScreenSize.x, m_thickness };
 	m_down_frame_up_left_pos	= { 0, Window::kScreenSize.y - m_thickness };
 	m_down_frame_down_right_pos = { Window::kScreenSize.x, Window::kScreenSize.y };
+}
+
+void CinemaScopeFrame::EnterFrame(const StartRocketLauncherCutsceneEvent& event)
+{
+	m_increase = kIncreaseSpeed;
+}
+
+void CinemaScopeFrame::ExitFrame(const EndRocketLauncherCutsceneEvent& event)
+{
+	m_increase = -kIncreaseSpeed;
 }

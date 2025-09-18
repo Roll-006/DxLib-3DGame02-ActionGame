@@ -27,10 +27,10 @@ public:
 
 
 	#pragma region Event
-	void SetNearDeathFilter	(const EnterNearDeathData&			event);
-	void SetNormalFilter	(const OnSelectNormalFilterData&	event);
-	void SetCinematicFilter	(const OnSelectCinematicFilterData& event);
-	void SetRetroFilter		(const OnSelectRetroFilterData&		event);
+	void SetNearDeathFilter	(const EnterNearDeathEvent&			event);
+	void SetNormalFilter	(const OnSelectNormalFilterEvent&	event);
+	void SetCinematicFilter	(const OnSelectCinematicFilterEvent& event);
+	void SetRetroFilter		(const OnSelectRetroFilterEvent&		event);
 	#pragma endregion
 
 private:

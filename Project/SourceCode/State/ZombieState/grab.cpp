@@ -3,7 +3,6 @@
 
 zombie_state::Grab::Grab() :
 	ActionStateBase			(static_cast<int>(zombie_state::ActionStateKind::kGrab)),
-	m_subject				(std::make_shared<Subject<Grab>>()),
 	m_grab_camera_controller(nullptr),
 	m_damage_interval_timer	(0.0f)
 {
@@ -42,11 +41,10 @@ void zombie_state::Grab::Enter(std::shared_ptr<Zombie> obj)
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	m_grab_camera_controller = std::make_shared<GrabVirtualCameraController>();
 	cinemachine_brain->AddVirtualCameraController(m_grab_camera_controller);
-	m_subject->AddObserver(m_grab_camera_controller);
 
 	// 掴んだことを演出カメラに通知
-	const Event<GrabData> event = { EventKind::kGrab, { obj->GetModeler()->GetModelHandle() } };
-	m_subject->Notify(event);
+	const GrabEvent event{ obj->GetModeler()->GetModelHandle() };
+	EventSystem::GetInstance()->Publish(event);
 
 	// プレイヤーの掴まれた関数を呼び出す
 	const auto state_controller = obj->GetStateController();
@@ -64,7 +62,6 @@ void zombie_state::Grab::Exit(std::shared_ptr<Zombie> obj)
 	// 演出用カメラを削除
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	cinemachine_brain->RemoveVirtualCameraController(m_grab_camera_controller);
-	m_subject->RemoveObserver(m_grab_camera_controller);
 	m_grab_camera_controller = nullptr;
 
 	const auto state_controller = obj->GetStateController();

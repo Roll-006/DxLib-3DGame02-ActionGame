@@ -19,6 +19,12 @@ ControlVirtualCamerasController::ControlVirtualCamerasController(Player& player)
 	m_is_recoiling					(false),
 	m_is_reached_recoil_peak		(true)
 {
+	// イベント登録
+	EventSystem::GetInstance()->Subscribe<EndGrabCutsceneEvent>([this](const EndGrabCutsceneEvent& event)
+	{
+		EndGrabCutscene(event);
+	});
+
 	// パラメータ設定
 	SetupForRotCamera();
 	SetupForAimCamera();
@@ -82,21 +88,21 @@ void ControlVirtualCamerasController::OnRecoil(const GunBase& gun)
 	m_recoil_angle[TimeKind::kNext] = VGet(-recoil_pitch, recoil_yaw, 0.0f);
 }
 
-void ControlVirtualCamerasController::OnNotify(const IEvent& event)
-{
-	// 掴まれた際の演出が終了した
-	if (event.GetType() == std::type_index(typeid(EndGrabCutsceneData)))
-	{
-		// カメラをリセット
-		// TODO : 視点リセット関数を作成
-		m_input_angle[TimeKind::kCurrent] = v3d::GetZeroV();
-		m_recoil_angle[TimeKind::kCurrent] = v3d::GetZeroV();
-		m_result_angle = v3d::GetZeroV();
 
-		const auto forward = m_player.GetTransform()->GetForward(CoordinateKind::kWorld);
-		m_aim_transform->SetRot(CoordinateKind::kWorld, forward);
-	}
+#pragma region Event
+void ControlVirtualCamerasController::EndGrabCutscene(const EndGrabCutsceneEvent& event)
+{
+	// カメラをリセット
+	// TODO : 視点リセット関数を作成
+	m_input_angle[TimeKind::kCurrent]	= v3d::GetZeroV();
+	m_recoil_angle[TimeKind::kCurrent]	= v3d::GetZeroV();
+	m_result_angle						= v3d::GetZeroV();
+
+	const auto forward = m_player.GetTransform()->GetForward(CoordinateKind::kWorld);
+	m_aim_transform->SetRot(CoordinateKind::kWorld, forward);
 }
+#pragma endregion
+
 
 VirtualCameraControllerKind ControlVirtualCamerasController::GetVirtualCameraControllerKind() const
 {
