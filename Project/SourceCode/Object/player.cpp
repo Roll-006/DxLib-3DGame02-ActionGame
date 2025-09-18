@@ -19,7 +19,7 @@ Player::Player() :
 	m_prev_health = m_health.at(HealthPartKind::kMain)->GetCurrentHealth();
 
 	// モデル・アニメーションを設定
-	m_modeler  = std::make_shared<Modeler>(m_transform, ModelPath.SWAT, kBasicAngle, kBasicScale);
+	m_modeler  = std::make_shared<Modeler>(m_transform, ModelPath.SWAT_02, kBasicAngle, kBasicScale);
 	m_animator = std::make_shared<PlayerAnimator>(m_modeler, m_state, m_current_held_weapon, m_current_equip_weapon);
 	SetColliderModelHandle(m_modeler->GetModelHandle());
 

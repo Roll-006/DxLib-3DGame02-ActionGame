@@ -16,7 +16,7 @@ Zombie::Zombie() :
 	m_health[HealthPartKind::kLeftLeg]	= std::make_shared<Health>(300.0f, 300.0f);
 	m_health[HealthPartKind::kRightLeg]	= std::make_shared<Health>(300.0f, 300.0f);
 
-	m_modeler  = std::make_shared<Modeler>(m_transform, ModelPath.ZOMBIE_05, kBasicAngle, kBasicScale);
+	m_modeler  = std::make_shared<Modeler>(m_transform, ModelPath.SWAT_01, kBasicAngle, kBasicScale);
 	m_animator = std::make_shared<ZombieAnimator>(m_modeler, m_state);
 	SetColliderModelHandle(m_modeler->GetModelHandle());
 

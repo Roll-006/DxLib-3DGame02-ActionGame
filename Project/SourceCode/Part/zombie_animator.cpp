@@ -33,10 +33,11 @@ void ZombieAnimator::LoadAnim()
 	AddAnimHandle(static_cast<int>(ZombieAnimKind::kIdle),				AnimPath.ZOMBIE_IDLE_01,				0, AnimTag.NONE, 20.0f,  true);
 	AddAnimHandle(static_cast<int>(ZombieAnimKind::kMoveForwardWalk),	AnimPath.MOVE_FORWARD_WALK,				0, AnimTag.MOVE, 20.0f,  true);
 	AddAnimHandle(static_cast<int>(ZombieAnimKind::kMoveForwardRun),	AnimPath.MOVE_FORWARD_RUN_02,			0, AnimTag.MOVE, 20.0f,  true);
-	AddAnimHandle(static_cast<int>(ZombieAnimKind::kNeckBite),			AnimPath.NECK_BITE,						1, AnimTag.NONE, 20.0f,  false);
+	AddAnimHandle(static_cast<int>(ZombieAnimKind::kEnterNeckBite),		AnimPath.ENTER_NECK_BITE,				0, AnimTag.NONE, 20.0f,  true, true);
+	AddAnimHandle(static_cast<int>(ZombieAnimKind::kEnterNeckBite),		AnimPath.EXIT_NECK_BITE,				0, AnimTag.NONE, 20.0f,  false);
 
 	// 上半身用
-	AddAnimHandle(static_cast<int>(ZombieAnimKind::kGrab),				AnimPath.GRAB,							1, AnimTag.NONE, 10.0f,  true);
+	AddAnimHandle(static_cast<int>(ZombieAnimKind::kGrab),				AnimPath.GRAB,							0, AnimTag.NONE, 10.0f,  true);
 
 	// 下半身用
 	AddAnimHandle(static_cast<int>(ZombieAnimKind::kCrouchStunLeft),	AnimPath.LEANING_FORWARD_CROUCH_LEFT,	0, AnimTag.MOVE, 0.0f,   true);
@@ -71,7 +72,7 @@ void ZombieAnimator::CombineMoveNullWithAction()
 		break;
 
 	case static_cast<int>(zombie_state::ActionStateKind::kGrab):
-		AttachResultAnim(static_cast<int>(ZombieAnimKind::kNeckBite));
+		AttachResultAnim(static_cast<int>(ZombieAnimKind::kEnterNeckBite));
 		break;
 
 	case static_cast<int>(zombie_state::ActionStateKind::kKnockback):
