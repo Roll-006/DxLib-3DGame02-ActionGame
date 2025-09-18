@@ -10,11 +10,6 @@ public:
 	void LateUpdate();
 	void Draw() const;
 
-	/// @brief フレームの太さを増加させる変更する
-	/// @brief シネスコ比率を超えることはない
-	/// @param speed 増加速度(デルタタイム補正後)
-	void SetIncreaseThickness(const float speed);
-
 	void EnterFrame	(const StartRocketLauncherCutsceneEvent& event);
 	void ExitFrame	(const EndRocketLauncherCutsceneEvent&   event);
 

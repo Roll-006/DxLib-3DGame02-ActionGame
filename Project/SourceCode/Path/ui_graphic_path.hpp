@@ -18,4 +18,7 @@ static struct UIGraphicPath
 	const std::string WARNING_CIRCLE		= "Data/Graphic/UI/HealthGauge/warning.png";
 	#pragma endregion
 
+
+	const std::string DAMAGE_FILTER			= "Data/Graphic/UI/Damage/filter.png";
+
 }UIGraphicPath;

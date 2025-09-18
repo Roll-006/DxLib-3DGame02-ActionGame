@@ -287,6 +287,7 @@
     <ClCompile Include="SourceCode\State\ZombieState\track.cpp" />
     <ClCompile Include="SourceCode\State\ZombieState\wait.cpp" />
     <ClCompile Include="SourceCode\State\ZombieState\zombie_move.cpp" />
+    <ClCompile Include="SourceCode\UI\damage_filter.cpp" />
     <ClCompile Include="SourceCode\UI\cinema_scope_frame.cpp" />
     <ClCompile Include="SourceCode\UI\fade.cpp" />
     <ClCompile Include="SourceCode\UI\health_gauge.cpp" />
@@ -351,10 +352,12 @@
     <ClInclude Include="SourceCode\Debugger\debugger.hpp" />
     <ClInclude Include="SourceCode\Drawer\drawer.hpp" />
     <ClInclude Include="SourceCode\Event\aim_gun_event.hpp" />
+    <ClInclude Include="SourceCode\Event\near_death_event.hpp" />
     <ClInclude Include="SourceCode\Event\enter_near_death_event.hpp" />
     <ClInclude Include="SourceCode\Event\end_grab_cutscene_event.hpp" />
     <ClInclude Include="SourceCode\Event\end_rocket_launcher_cutscene_event.hpp" />
     <ClInclude Include="SourceCode\Event\event.hpp" />
+    <ClInclude Include="SourceCode\Event\on_damage_event.hpp" />
     <ClInclude Include="SourceCode\Event\on_select_cinematic_filter_event.hpp" />
     <ClInclude Include="SourceCode\Event\on_select_retro_filter_event.hpp" />
     <ClInclude Include="SourceCode\Event\on_select_normal_filter_event.hpp" />
@@ -558,6 +561,7 @@
     <ClInclude Include="SourceCode\State\ZombieState\zombie_move.hpp" />
     <ClInclude Include="SourceCode\Tag\animation_tag.hpp" />
     <ClInclude Include="SourceCode\Tag\obj_tag.hpp" />
+    <ClInclude Include="SourceCode\UI\damage_filter.hpp" />
     <ClInclude Include="SourceCode\UI\cinema_scope_frame.hpp" />
     <ClInclude Include="SourceCode\UI\fade.hpp" />
     <ClInclude Include="SourceCode\UI\health_gauge.hpp" />

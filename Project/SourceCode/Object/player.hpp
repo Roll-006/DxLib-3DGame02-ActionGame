@@ -128,6 +128,8 @@ private:
 	void CalcLookDir();
 	void CalcMoveVelocity();
 
+	void NotifyHealth();
+
 	/// @brief カメラのforwardをもとにした進行方向ベクトルを取得する
 	/// @return カメラのforwardのY軸を消し飛ばしたベクトル
 	[[nodiscard]] VECTOR GetMoveForward();
@@ -173,6 +175,7 @@ private:
 	float										m_look_dir_offset_angle;				// 見る方向の補正角度
 	float										m_confirm_look_dir_threshold_angle;		// 目的の見る方向に到達したと判定する閾値
 
+	float										m_prev_health;
 	bool										m_is_grabbed;							// 捕まれたかを判定
 
 	std::unordered_map<ItemKind, std::vector<std::shared_ptr<IItem>>> m_items;			// 所持しているアイテム

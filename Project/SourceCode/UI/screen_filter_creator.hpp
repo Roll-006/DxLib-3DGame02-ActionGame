@@ -2,6 +2,7 @@
 #include "../Interface/i_ui_creator.hpp"
 
 #include "cinema_scope_frame.hpp"
+#include "damage_filter.hpp"
 
 // FIXME : UI‚Æ‚Í•Ê‚Ì‚½‚ß•ª—£‚Ì•K—v‚ ‚è
 
@@ -28,5 +29,6 @@ private:
 	int			m_priority;
 	bool		m_is_active;
 
-	std::shared_ptr<CinemaScopeFrame> m_cinema_scope_frame;
+	std::shared_ptr<CinemaScopeFrame>	m_cinema_scope_frame;
+	std::shared_ptr<DamageFilter>		m_damage_filter;
 };

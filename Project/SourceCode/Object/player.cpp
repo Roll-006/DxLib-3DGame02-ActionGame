@@ -9,13 +9,14 @@ Player::Player() :
 	m_input_slope						(v3d::GetZeroV()),
 	m_look_dir_offset_angle				(0.0f),
 	m_confirm_look_dir_threshold_angle	(0.0f),
+	m_prev_health						(0.0f),
 	m_is_grabbed						(false),
 	m_current_equip_weapon				(nullptr),
 	m_current_equip_knife				(nullptr),
 	m_weapon_shortcut_selecter			(std::make_shared<WeaponShortcutSelecter>())
 {
 	m_health[HealthPartKind::kMain] = std::make_shared<Health>(2000.0f, 1500.0f);
-	//m_health[HealthPartKind::kMain]->GetSubject()->AddObserver();
+	m_prev_health = m_health.at(HealthPartKind::kMain)->GetCurrentHealth();
 
 	// モデル・アニメーションを設定
 	m_modeler  = std::make_shared<Modeler>(m_transform, ModelPath.SWAT, kBasicAngle, kBasicScale);
@@ -78,6 +79,16 @@ void Player::Update()
 {
 	if (!IsActive()) { return; }
 
+	if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_1) == InputState::kSingle)
+	{
+		m_health.at(HealthPartKind::kMain)->Recover(400);
+	}
+	if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_2) == InputState::kSingle)
+	{
+		OnDamage(HealthPartKind::kMain, 100);
+	}
+
+	NotifyHealth();
 	JudgeInvincible();
 
 	if (m_current_held_weapon) { m_current_held_weapon->Update(); }
@@ -88,15 +99,6 @@ void Player::Update()
 		{
 			attach_weapon.second->Update();
 		}
-	}
-
-	if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_1) == InputState::kSingle)
-	{
-		m_health.at(HealthPartKind::kMain)->Recover(400);
-	}
-	if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_2) == InputState::kSingle)
-	{
-		OnDamage(HealthPartKind::kMain, 100);
 	}
 
 	m_move_dir_offset_speed				= kMoveDirOffsetSpeed;
@@ -194,16 +196,12 @@ void Player::OnDamage(const HealthPartKind part_kind, const float damage)
 	m_invincible_timer	= m_invincible_time;
 	m_is_invincible		= true;
 
+	// 通知処理
 	if (part_kind == HealthPartKind::kMain)
 	{
-		// 瀕死状態に突入しているかつ、依然は瀕死でなかった場合通知を送る
-		const auto parcent = (m_health.at(part_kind)->GetMaxHealth() / 270.0f) * 45;
-		if (   m_health.at(part_kind)->GetCurrentHealth() <  parcent
-			&& m_health.at(part_kind)->GetPrevHealth()    >= parcent)
-		{
-			const EnterNearDeathEvent event{};
-			EventSystem::GetInstance()->Publish(event);
-		}
+		// ダメージ通知
+		const OnDamageEvent event{ damage, damage / m_health.at(part_kind)->GetMaxHealth() };
+		EventSystem::GetInstance()->Publish(event);
 	}
 }
 
@@ -462,6 +460,26 @@ void Player::CalcMoveVelocity()
 {
 	m_move_velocity = m_move_dir[TimeKind::kCurrent] * m_move_speed;
 	m_velocity += m_move_velocity;
+}
+
+void Player::NotifyHealth()
+{
+	// 瀕死状態通知
+	const auto parcent = (m_health.at(HealthPartKind::kMain)->GetMaxHealth() / 270.0f) * 45;
+	if (m_health.at(HealthPartKind::kMain)->GetCurrentHealth() < parcent)
+	{
+		// 瀕死状態突入通知
+		if (m_prev_health >= parcent)
+		{
+			const EnterNearDeathEvent event{};
+			EventSystem::GetInstance()->Publish(event);
+		}
+
+		const NearDeathEvent event{};
+		EventSystem::GetInstance()->Publish(event);
+	}
+
+	m_prev_health = m_health.at(HealthPartKind::kMain)->GetCurrentHealth();
 }
 
 void Player::CalcLookDir()
