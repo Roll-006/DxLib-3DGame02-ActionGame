@@ -102,6 +102,14 @@ void Zombie::Draw() const
 		}
 	}
 
+	DrawFormatString(100, 100, 0xffffff, "MainHP     : %f", m_health.at(HealthPartKind::kMain)->GetCurrentHealth());
+	DrawFormatString(100, 120, 0xffffff, "HeadHP     : %f", m_health.at(HealthPartKind::kHead)->GetCurrentHealth());
+	DrawFormatString(100, 140, 0xffffff, "BodyHP	 : %f", m_health.at(HealthPartKind::kBody)->GetCurrentHealth());
+	DrawFormatString(100, 160, 0xffffff, "LeftArmHP  : %f", m_health.at(HealthPartKind::kLeftArm)->GetCurrentHealth());
+	DrawFormatString(100, 180, 0xffffff, "RightArmHP : %f", m_health.at(HealthPartKind::kRightArm)->GetCurrentHealth());
+	DrawFormatString(100, 200, 0xffffff, "LeftLegHP  : %f", m_health.at(HealthPartKind::kLeftLeg)->GetCurrentHealth());
+	DrawFormatString(100, 220, 0xffffff, "RightLegHP : %f", m_health.at(HealthPartKind::kRightLeg)->GetCurrentHealth());
+
 	auto pos  = m_transform->GetPos (CoordinateKind::kWorld);
 	auto axes = m_transform->GetAxes(CoordinateKind::kWorld);
 	DrawLine3D(pos, pos + axes.x_axis * 100, 0xff0000);

@@ -12,11 +12,11 @@ GrabVirtualCameraController::GrabVirtualCameraController() :
 	m_aim_transform					(std::make_shared<Transform>())
 {
 	// ƒCƒxƒ“ƒg“o˜^
-	EventSystem::GetInstance()->Subscribe<GrabEvent>([this](const GrabEvent& event)
+	EventSystem::GetInstance()->Subscribe<GrabEvent>	([this](const GrabEvent&	event)
 	{
 		SetGrabberModelHandle(event);
 	});
-	EventSystem::GetInstance()->Subscribe<GrabbedEvent>([this](const GrabbedEvent& event)
+	EventSystem::GetInstance()->Subscribe<GrabbedEvent>	([this](const GrabbedEvent& event)
 	{
 		SetGrabbedModelHandle(event);
 	});

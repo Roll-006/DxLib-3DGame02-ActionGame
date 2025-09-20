@@ -94,12 +94,14 @@ void ControlVirtualCamerasController::EndGrabCutscene(const EndGrabCutsceneEvent
 {
 	// カメラをリセット
 	// TODO : 視点リセット関数を作成
-	m_input_angle[TimeKind::kCurrent]	= v3d::GetZeroV();
-	m_recoil_angle[TimeKind::kCurrent]	= v3d::GetZeroV();
-	m_result_angle						= v3d::GetZeroV();
-
-	const auto forward = m_player.GetTransform()->GetForward(CoordinateKind::kWorld);
+	const auto transform	= m_player.GetTransform();
+	const auto forward		= transform->GetForward(CoordinateKind::kWorld);
 	m_aim_transform->SetRot(CoordinateKind::kWorld, forward);
+
+	//const auto angle					= m_aim_transform->GetEulerAngles(CoordinateKind::kWorld);
+	m_input_angle [TimeKind::kCurrent]	= v3d::GetZeroV();
+	m_recoil_angle[TimeKind::kCurrent]	= v3d::GetZeroV();
+	CalcResultAngle();
 }
 #pragma endregion
 

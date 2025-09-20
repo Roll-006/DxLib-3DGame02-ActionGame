@@ -21,7 +21,8 @@
 #include "../State/ZombieState/grab_run.hpp"
 #include "../State/ZombieState/knockback.hpp"
 #include "../State/ZombieState/stand_stun.hpp"
-#include "../State/ZombieState/crouch_stun.hpp"
+#include "../State/ZombieState/crouch_left_stun.hpp"
+#include "../State/ZombieState/crouch_right_stun.hpp"
 #include "../State/ZombieState/play_dead.hpp"
 #include "../State/ZombieState/zombie_dead.hpp"
 
@@ -44,12 +45,16 @@ public:
 
 
 	#pragma region Try”»’è
-	[[nodiscard]] bool TryTrack		(std::shared_ptr<Zombie> zombie);
-	[[nodiscard]] bool TryRunAttack	(std::shared_ptr<Zombie> zombie);
-	[[nodiscard]] bool TryMove		();
-	[[nodiscard]] bool TryWalk		(std::shared_ptr<Zombie> zombie);
-	[[nodiscard]] bool TryRun		(std::shared_ptr<Zombie> zombie);
-	[[nodiscard]] bool TryGrabRun	();
+	[[nodiscard]] bool TryTrack				(std::shared_ptr<Zombie> zombie);
+	[[nodiscard]] bool TryRunAttack			(std::shared_ptr<Zombie> zombie);
+	[[nodiscard]] bool TryMove				();
+	[[nodiscard]] bool TryWalk				(std::shared_ptr<Zombie> zombie);
+	[[nodiscard]] bool TryRun				(std::shared_ptr<Zombie> zombie);
+	[[nodiscard]] bool TryGrabRun			();
+	[[nodiscard]] bool TryDead				(std::shared_ptr<Zombie> zombie);
+	[[nodiscard]] bool TryLeftCrouchStun	(std::shared_ptr<Zombie> zombie);
+	[[nodiscard]] bool TryRightCrouchStun	(std::shared_ptr<Zombie> zombie);
+	[[nodiscard]] bool TryStandStun			(std::shared_ptr<Zombie> zombie);
 	#pragma endregion
 
 

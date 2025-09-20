@@ -14,6 +14,11 @@ Health::~Health()
 
 }
 
+void Health::RecoverMax()
+{
+	m_current_health = m_current_max_health;
+}
+
 void Health::Recover(const float recover_points)
 {
 	math::Increase(m_current_health, recover_points, m_current_max_health, false);

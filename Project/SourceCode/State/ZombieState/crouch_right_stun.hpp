@@ -6,11 +6,11 @@
 
 namespace zombie_state
 {
-	class CrouchStun final : public ActionStateBase<Zombie>
+	class CrouchRightStun final : public ActionStateBase<Zombie>
 	{
 	public:
-		CrouchStun();
-		~CrouchStun() override;
+		CrouchRightStun();
+		~CrouchRightStun() override;
 
 		void Update		(std::shared_ptr<Zombie> obj) override;
 		void LateUpdate	(std::shared_ptr<Zombie> obj) override;

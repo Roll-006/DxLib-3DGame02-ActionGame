@@ -35,6 +35,11 @@ std::shared_ptr<IState<Zombie>> zombie_state::ActionNull::ChangeState(std::share
 {
 	const auto state_controller = obj->GetStateController();
 
+	// Ž€–S
+	if (state_controller->TryDead(obj))
+	{
+		return state_controller->GetState<Dead, Zombie>();
+	}
 	// ƒ_ƒbƒVƒ…’Í‚Ý
 	if (state_controller->TryGrabRun())
 	{

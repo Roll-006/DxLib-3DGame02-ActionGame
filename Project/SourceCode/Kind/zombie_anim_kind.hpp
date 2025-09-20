@@ -13,6 +13,9 @@ enum class ZombieAnimKind
 
 	kEnterNeckBite,
 	kExitNeckBite,
+
+	kDead,
+	kCrouchDead,
 	#pragma endregion
 
 

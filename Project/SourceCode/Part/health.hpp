@@ -11,6 +11,9 @@ public:
 	/// @brief 回複する
 	void Recover(const float recover_points);
 
+	/// @brief 最大値まで回復する
+	void RecoverMax();
+
 	/// @brief ダメージを受けた
 	void OnDamage(const float damage);
 

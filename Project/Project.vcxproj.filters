@@ -382,7 +382,7 @@
     <ClCompile Include="SourceCode\State\ZombieState\zombie_action_null.cpp">
       <Filter>SourceCode\State\ZombieState</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\State\ZombieState\crouch_stun.cpp">
+    <ClCompile Include="SourceCode\State\ZombieState\crouch_left_stun.cpp">
       <Filter>SourceCode\State\ZombieState</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\State\ZombieState\stand_stun.cpp">
@@ -486,6 +486,9 @@
     </ClCompile>
     <ClCompile Include="SourceCode\UI\damage_filter.cpp">
       <Filter>SourceCode\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\ZombieState\crouch_right_stun.cpp">
+      <Filter>SourceCode\State\ZombieState</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -984,7 +987,7 @@
     <ClInclude Include="SourceCode\State\ZombieState\zombie_action_null.hpp">
       <Filter>SourceCode\State\ZombieState</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\State\ZombieState\crouch_stun.hpp">
+    <ClInclude Include="SourceCode\State\ZombieState\crouch_left_stun.hpp">
       <Filter>SourceCode\State\ZombieState</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Interface\i_state_controller.hpp">
@@ -1305,6 +1308,9 @@
     <ClInclude Include="SourceCode\Event\near_death_event.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\State\ZombieState\crouch_right_stun.hpp">
+      <Filter>SourceCode\State\ZombieState</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="SourceCode">
@@ -1360,9 +1366,6 @@
     </Filter>
     <Filter Include="SourceCode\JSON">
       <UniqueIdentifier>{3eab40b7-60e6-487a-879b-9b1e3022aeb9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCode\Kind">
-      <UniqueIdentifier>{72135338-3c4c-44c1-a81b-ef11a7ace830}</UniqueIdentifier>
     </Filter>
     <Filter Include="SourceCode\Manager">
       <UniqueIdentifier>{69894637-334e-46d6-be72-079330c80427}</UniqueIdentifier>
@@ -1429,6 +1432,9 @@
     </Filter>
     <Filter Include="JSON">
       <UniqueIdentifier>{644deba4-75e9-4125-a24c-8d5a78fed6e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCode\Kind">
+      <UniqueIdentifier>{72135338-3c4c-44c1-a81b-ef11a7ace830}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

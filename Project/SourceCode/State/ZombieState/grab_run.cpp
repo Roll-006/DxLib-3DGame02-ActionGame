@@ -40,6 +40,11 @@ std::shared_ptr<IState<Zombie>> zombie_state::GrabRun::ChangeState(std::shared_p
 {
 	const auto state_controller = obj->GetStateController();
 
+	// €–S
+	if (state_controller->TryDead(obj))
+	{
+		return state_controller->GetState<Dead, Zombie>();
+	}
 	// ’Í‚İ
 	if (obj->CanGrabTraget())
 	{

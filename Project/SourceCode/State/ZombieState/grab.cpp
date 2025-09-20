@@ -80,6 +80,12 @@ std::shared_ptr<IState<Zombie>> zombie_state::Grab::ChangeState(std::shared_ptr<
 {
 	const auto state_controller = obj->GetStateController();
 
+	// €–S
+	if (state_controller->TryDead(obj))
+	{
+		return state_controller->GetState<Dead, Zombie>();
+	}
+	// NULL
 	if (m_grab_timer > kMaxGrabTime)
 	{
 		return state_controller->GetState<ActionNull, Zombie>();
