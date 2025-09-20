@@ -19,6 +19,8 @@ static struct AnimationPath
 	const std::string ENTER_NECK_BITE					= "Data/Animation/enter_neck_bite.mv1";
 	const std::string EXIT_NECK_BITE					= "Data/Animation/exit_neck_bite.mv1";
 	const std::string GRABBED							= "Data/Animation/grabbed.mv1";
+	const std::string FRONT_KICK						= "Data/Animation/front_kick.mv1";
+	const std::string ROUNDHOUSE_KICK					= "Data/Animation/roundhouse_kick.mv1";
 	#pragma endregion
 
 

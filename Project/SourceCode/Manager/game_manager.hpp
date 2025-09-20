@@ -1,9 +1,8 @@
 #pragma once
-
 #include "../GameSystem/game_system_setter.hpp"
-#include "../Window/window.hpp"
 #include "../GameTime/game_time_manager.hpp"
-#include "../Event/event_system.hpp"
+#include "../Window/window.hpp"
+#include "../Debugger/debugger.hpp"
 
 #include "scene_manager.hpp"
 #include "obj_manager.hpp"

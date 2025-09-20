@@ -5,7 +5,8 @@ WeaponShortcutDrawer::WeaponShortcutDrawer(
 	const std::shared_ptr<WeaponShortcutSelecter> weapon_shortcut_selecter) :
 	m_state						(state),
 	m_weapon_shortcut_selecter	(weapon_shortcut_selecter),
-	m_screen_creator			(std::make_shared<ScreenCreator>(kScreenSize)),
+	m_screen_creator			(std::make_shared<ScreenCreator>(kScreenSize, Vector2D<int>(static_cast<int>(Window::kScreenSize.x * 0.72f), Window::kScreenHalfSize.y))),
+	m_mask_creator				(std::make_shared<MaskCreator>()),
 	m_alpha_blend_num			(0),
 	m_end_draw_time				(kDrawEndTime),
 	m_end_draw_timer			(0.0f),
@@ -14,8 +15,6 @@ WeaponShortcutDrawer::WeaponShortcutDrawer(
 	m_is_selected				(false)
 {
 	CreateShortcutIcon();
-
-	m_screen_creator->GetGraphicer()->SetCenterPos(Vector2D<int>(static_cast<int>(Window::kScreenSize.x * 0.72f), Window::kScreenHalfSize.y));
 
 	m_weapon_graphic_pair[ObjName.ASSAULT_RIFLE]	= std::make_shared<Graphicer>(UIGraphicPath.ASSAULT_RIFLE);
 	m_weapon_graphic_pair[ObjName.ASSAULT_RIFLE]->SetScale(0.07f);
@@ -53,7 +52,7 @@ void WeaponShortcutDrawer::LateUpdate()
 	UpdateAnim();
 }
 
-void WeaponShortcutDrawer::Draw() const
+void WeaponShortcutDrawer::Draw(const int main_screen_handle) const
 {
 	if (m_alpha_blend_num <= 0) { return; }
 
@@ -75,6 +74,19 @@ void WeaponShortcutDrawer::Draw() const
 		0xffffff, FALSE);
 
 	m_screen_creator->UnuseScreen();
+
+	// ‰¼
+	//GraphFilter(main_screen_handle, DX_GRAPH_FILTER_GAUSS, 32, 1400);
+	//m_mask_creator->UseMask(m_screen_creator->GetScreenHandle(), true);
+	//DrawRotaGraph3(
+	//	static_cast<int>(Window::kScreenSize.x * 0.72f),
+	//	Window::kScreenHalfSize.y,
+	//	kScreenSize.x, kScreenSize.y,
+	//	m_screen_creator->GetGraphicer()->GetScale().x,
+	//	m_screen_creator->GetGraphicer()->GetScale().y,
+	//	0.0, main_screen_handle, TRUE, FALSE, FALSE);
+	//m_mask_creator->UnuseMask();
+
 	m_screen_creator->Draw();
 }
 

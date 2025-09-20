@@ -210,7 +210,7 @@ void Player::OnGrabbed(const VECTOR& brabber_pos, const VECTOR& brabber_dir)
 	m_is_grabbed = true;
 
 	m_look_dir.at(TimeKind::kNext) = -brabber_dir;
-	m_destination_pos = brabber_pos + brabber_dir * 35.0f;
+	m_destination_pos = brabber_pos + brabber_dir * 17.0f;
 }
 
 void Player::OnRelease()

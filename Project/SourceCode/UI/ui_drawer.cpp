@@ -28,13 +28,13 @@ void UIDrawer::RemoveUICreator(const std::string& name)
 	}
 }
 
-void UIDrawer::Draw()
+void UIDrawer::Draw(const int main_screen_handle)
 {
 	for (const auto& priority : m_draw_priority)
 	{
 		if (m_ui_creators.at(priority.first)->IsActive())
 		{
-			m_ui_creators.at(priority.first)->OnDraw();
+			m_ui_creators.at(priority.first)->OnDraw(main_screen_handle);
 		}
 	}
 }

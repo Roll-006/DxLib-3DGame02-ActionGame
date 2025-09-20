@@ -12,8 +12,8 @@ public:
 	ScreenFilterCreator();
 	~ScreenFilterCreator()	override;
 
-	void LateUpdate()	override;
-	void OnDraw()		override;
+	void LateUpdate() override;
+	void OnDraw(const int main_screen_handle) override;
 
 	/// @brief アクティブ化する
 	void Activate() 	override { m_is_active = true; }

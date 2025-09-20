@@ -1,6 +1,7 @@
 #pragma once
 #include "weapon_shortcut_icon.hpp"
 #include "../Part/screen_creator.hpp"
+#include "../Part/mask_creator.hpp"
 
 #include "../Object/player.hpp"
 #include "../Base/weapon_action_state_base.hpp"
@@ -16,7 +17,7 @@ public:
 	~WeaponShortcutDrawer();
 
 	void LateUpdate();
-	void Draw() const;
+	void Draw(const int main_screen_handle) const;
 
 private:
 	void CreateShortcutIcon();
@@ -40,6 +41,7 @@ private:
 	std::unordered_map<std::string, std::shared_ptr<Graphicer>>						m_weapon_graphic_pair;
 	std::unordered_map<WeaponShortcutPosKind, Vector2D<int>>						m_center_pos;
 	std::shared_ptr<ScreenCreator>													m_screen_creator;
+	std::shared_ptr<MaskCreator>													m_mask_creator;
 
 	int		m_alpha_blend_num;
 	float   m_scale;

@@ -30,7 +30,7 @@ public:
 	}
 	void RemoveUICreator(const std::string& name);
 
-	void Draw();
+	void Draw(const int main_screen_handle);
 
 	/// @brief オブジェクトをアクティブ化する
 	void Activate  (const std::string& name);

@@ -3,9 +3,9 @@
 ScreenFilter::ScreenFilter() : 
 	m_current_basis_filter		(nullptr),
 	m_basis_alpha_blend_num		(255),
-	m_main_screen				(std::make_unique<ScreenCreator>(Window::kScreenSize, Window::kCenterPos)),
-	m_basis_filter_screen		(std::make_unique<ScreenCreator>(Window::kScreenSize, Window::kCenterPos)),
-	m_near_death_filter_screen	(std::make_unique<ScreenCreator>(Window::kScreenSize, Window::kCenterPos)),
+	m_main_screen				(std::make_shared<ScreenCreator>(Window::kScreenSize, Window::kCenterPos)),
+	m_basis_filter_screen		(std::make_shared<ScreenCreator>(Window::kScreenSize, Window::kCenterPos)),
+	m_near_death_filter_screen	(std::make_shared<ScreenCreator>(Window::kScreenSize, Window::kCenterPos)),
 	m_is_using_basis_filter		(false),
 	m_is_using_near_death_filter(false),
 	m_near_death_blinking_sin	(0.0f)
@@ -29,7 +29,7 @@ ScreenFilter::ScreenFilter() :
 	});
 
 	// Šî‘bƒtƒBƒ‹ƒ^[“o˜^
-	m_basis_filters[BasisFilterKind::kNormal]	 = [this]() { UseNormalFilter();		};
+	m_basis_filters[BasisFilterKind::kNormal]	 = [this]() { UseNormalFilter();	};
 	m_basis_filters[BasisFilterKind::kCinematic] = [this]() { UseCinematicFilter();	};
 	m_basis_filters[BasisFilterKind::kRetro]	 = [this]() { UseRetroFilter();		};
 	m_current_basis_filter = m_basis_filters.at(BasisFilterKind::kNormal);
@@ -128,6 +128,7 @@ void ScreenFilter::DrawNearDeathFilter()
 	math::Increase(m_near_death_blinking_sin, kBlinkingSpeed * delta_time, DX_PI_F, false);
 	const auto blend_alpha_num = (sin(m_near_death_blinking_sin) * 0.5f + 0.5f) * 255;
 
+	// •mŽ€ƒtƒBƒ‹ƒ^[‰ðœ”»’è
 	if (m_near_death_blinking_sin >= DX_PI_F)
 	{
 		m_is_using_near_death_filter = false;

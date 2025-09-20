@@ -60,11 +60,8 @@ void CommandHandler::InitKeyCommand()
 	AddInputCode(CommandKind::kPause,						KEY_INPUT_TAB);
 
 	AddInputCode(CommandKind::kAimGun,						mouse::ButtonKind::kRight);
-	AddInputCode(CommandKind::kAimGun,						KEY_INPUT_L);	// ‰¼
 	AddInputCode(CommandKind::kAttack,						mouse::ButtonKind::kLeft);
-	AddInputCode(CommandKind::kAttack,						KEY_INPUT_J);	// ‰¼
 	AddInputCode(CommandKind::kPullTrigger,					mouse::ButtonKind::kLeft);
-	AddInputCode(CommandKind::kPullTrigger,					KEY_INPUT_J);	// ‰¼
 	AddInputCode(CommandKind::kAimKnife,					KEY_INPUT_SPACE);
 	AddInputCode(CommandKind::kInvestigate,					KEY_INPUT_F);
 	AddInputCode(CommandKind::kMelee,						KEY_INPUT_F);
@@ -98,6 +95,10 @@ void CommandHandler::InitKeyCommand()
 	AddInputCode(CommandKind::kSelectWeaponRotateLeft,		mouse::WheelKind ::kUp);
 	AddInputCode(CommandKind::kSelectWeaponRotateRight,		mouse::WheelKind ::kDown);
 	AddInputCode(CommandKind::kSideChangeWeapon,			mouse::ButtonKind::kMiddle);
+
+	AddInputCode(CommandKind::kChangeDebugMode,				KEY_INPUT_RETURN);
+	AddInputCode(CommandKind::kDebugTrigger1,				KEY_INPUT_LSHIFT);
+	AddInputCode(CommandKind::kDebugTrigger2,				KEY_INPUT_D);
 }
 
 void CommandHandler::InitPadCommand()
@@ -144,6 +145,10 @@ void CommandHandler::InitPadCommand()
 	AddInputCode(CommandKind::kSelectWeaponUp,		pad::ButtonKind	::kUp);
 	AddInputCode(CommandKind::kSelectWeaponRight,	pad::ButtonKind	::kRight);
 	AddInputCode(CommandKind::kSelectWeaponDown,	pad::ButtonKind	::kDown);
+
+	AddInputCode(CommandKind::kChangeDebugMode,		pad::ButtonKind	::kBack);
+	AddInputCode(CommandKind::kDebugTrigger1,		pad::TriggerKind::kLT);
+	AddInputCode(CommandKind::kDebugTrigger2,		pad::TriggerKind::kRT);
 }
 
 void CommandHandler::InitInputMode()
@@ -190,6 +195,10 @@ void CommandHandler::InitInputMode()
 	m_input_mode[CommandKind::kSelectWeaponUp]				= InputModeKind::kSingle;
 	m_input_mode[CommandKind::kSelectWeaponRight]			= InputModeKind::kSingle;
 	m_input_mode[CommandKind::kSelectWeaponDown]			= InputModeKind::kSingle;
+
+	m_input_mode[CommandKind::kChangeDebugMode]				= InputModeKind::kTrigger;
+	m_input_mode[CommandKind::kDebugTrigger1]				= InputModeKind::kHold;
+	m_input_mode[CommandKind::kDebugTrigger2]				= InputModeKind::kHold;
 }
 
 void CommandHandler::InitCurrentTriggerInputCount(const CommandKind kind)

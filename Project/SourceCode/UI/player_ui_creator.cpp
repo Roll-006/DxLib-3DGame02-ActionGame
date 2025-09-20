@@ -26,9 +26,9 @@ void PlayerUICreator::LateUpdate()
 	//CreateCrossHair();
 }
 
-void PlayerUICreator::OnDraw()
+void PlayerUICreator::OnDraw(const int main_screen_handle)
 {
-	m_weapon_shortcut	->Draw();
+	m_weapon_shortcut	->Draw(main_screen_handle);
 	m_status_icons		->Draw();
 
 	//if (!m_2d_diffusion_shape) { return; }

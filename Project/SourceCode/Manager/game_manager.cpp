@@ -5,12 +5,13 @@ GameManager::GameManager():
 	m_window			(std::make_unique<Window>()),
 	m_scene_manager		(nullptr)
 {
-	HandleKeeper			::Generate();
 	HandleCreator			::Generate();
-	UIDrawer				::Generate();
+	HandleKeeper			::Generate();
 	CommandHandler			::Generate();
-	ObjectPoolHolder		::Generate();
+	Debugger				::Generate();
 	EventSystem				::Generate();
+	ObjectPoolHolder		::Generate();
+	UIDrawer				::Generate();
 
 	GameTimeManager			::Generate();
 	ObjManager				::Generate();
@@ -25,12 +26,13 @@ GameManager::GameManager():
 
 GameManager::~GameManager()
 {	
-	HandleKeeper			::Delete();
 	HandleCreator			::Delete();
-	UIDrawer				::Delete();
+	HandleKeeper			::Delete();
 	CommandHandler			::Delete();
-	ObjectPoolHolder		::Delete();
+	Debugger				::Delete();
 	EventSystem				::Delete();
+	ObjectPoolHolder		::Delete();
+	UIDrawer				::Delete();
 
 	GameTimeManager			::Delete();
 	ObjManager				::Delete();
