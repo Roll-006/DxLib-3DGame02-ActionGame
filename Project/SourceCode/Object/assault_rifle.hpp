@@ -30,7 +30,7 @@ private:
 	static constexpr VECTOR kAttachOffsetAngle		= { 45.0f * math::kDegToRad, 270.0f * math::kDegToRad, 0.0f };
 	static constexpr float  kAttachOffsetScale		= 1.0f;
 
-	static constexpr float  kPower					= 5.0f;
+	static constexpr float  kPower					= 15.0f;
 
 	static constexpr VECTOR kMuzzleOffsetPos		= { 0.0f, 10.0f, 48.0f };
 	static constexpr VECTOR kEjectionPortOffsetPos  = { 2.0f, 10.0f, 0.15f };

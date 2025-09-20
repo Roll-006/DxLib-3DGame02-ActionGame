@@ -40,6 +40,16 @@ std::shared_ptr<IState<Zombie>> zombie_state::ActionNull::ChangeState(std::share
 	{
 		return state_controller->GetState<Dead, Zombie>();
 	}
+	// 左足ダウン
+	if (state_controller->TryLeftCrouchStun(obj))
+	{
+		return state_controller->GetState<CrouchLeftStun, Zombie>();
+	}
+	// 右足ダウン
+	if (state_controller->TryRightCrouchStun(obj))
+	{
+		return state_controller->GetState<CrouchRightStun, Zombie>();
+	}
 	// ダッシュ掴み
 	if (state_controller->TryGrabRun())
 	{
