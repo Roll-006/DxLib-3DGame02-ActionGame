@@ -18,8 +18,10 @@ namespace player_state
 		void Exit		(std::shared_ptr<Player> obj) override;
 
 		[[nodiscard]] std::shared_ptr<IState<Player>> ChangeState(std::shared_ptr<Player> obj) override;
+		[[nodiscard]] bool IsAllStop() const override { return m_is_all_stop; }
 
 	private:
 		bool m_is_reloaded;
+		bool m_is_all_stop;
 	};
 }

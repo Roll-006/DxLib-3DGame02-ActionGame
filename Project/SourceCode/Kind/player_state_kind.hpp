@@ -15,8 +15,16 @@ namespace player_state
 		kRun,
 		kTurnAround,
 		kCrouchTurnAround,
-		kGrabbed,
 		kDead,
+
+		kGrabbed,
+		kFrontKick,
+		kRoundhouseKick,
+		kSuplex,
+		kEscape,		// TODO : íœŒó•âBGrabbed‚ÉˆÏ‚Ë‚é
+		kStealthKill,
+		kFinishOff,
+		kEscapeWithKnife,
 	};
 
 	enum class WeaponActionStateKind
@@ -36,17 +44,5 @@ namespace player_state
 		kShot,
 		kShotRocketLauncher,
 		kReload,
-	};
-
-	enum class SpecialStateKind
-	{
-		kSpecialNull,
-		kRoundhouseKick,
-		kFrontKick,
-		kSuplex,
-		kEscape,
-		kStealthKill,
-		kFinishOff,
-		kEscapeWithKnife,
 	};
 }

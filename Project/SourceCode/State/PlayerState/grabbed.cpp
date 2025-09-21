@@ -1,7 +1,8 @@
 #include "grabbed.hpp"
 
 player_state::Grabbed::Grabbed() :
-	ActionStateBase(static_cast<int>(player_state::ActionStateKind::kGrabbed))
+	ActionStateBase	(static_cast<int>(player_state::ActionStateKind::kGrabbed)),
+	m_is_all_stop	(true)
 {
 
 }

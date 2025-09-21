@@ -1,7 +1,8 @@
 #include "turn_around.hpp"
 
 player_state::TurnAround::TurnAround() :
-	ActionStateBase(static_cast<int>(player_state::ActionStateKind::kTurnAround))
+	ActionStateBase	(static_cast<int>(player_state::ActionStateKind::kTurnAround)),
+	m_is_all_stop	(false)
 {
 
 }

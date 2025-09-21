@@ -39,6 +39,8 @@ void PlayerAnimator::LoadAnim()
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdle),						AnimPath.IDLE,							0, AnimTag.NONE, 20.0f,  true);
 
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kGrabbed),					AnimPath.GRABBED,						0, AnimTag.NONE, 30.0f,  true,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kFrontKick),					AnimPath.FRONT_KICK,					0, AnimTag.NONE, 30.0f,  false);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kRoundhouseKick),			AnimPath.ROUNDHOUSE_KICK,				0, AnimTag.NONE, 30.0f,  false);
 
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kStabKnife),					AnimPath.STAB_KNIFE,					0, AnimTag.NONE, 100.0f, false);
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kFirstSideSlashKnife),		AnimPath.FIRST_SIDE_SLASH_KNIFE,		0, AnimTag.NONE, 50.0f,  false);
@@ -122,6 +124,14 @@ void PlayerAnimator::CombineMoveNullWithAction()
 
 	case static_cast<int>(player_state::ActionStateKind::kGrabbed):
 		AttachResultAnim(static_cast<int>(PlayerAnimKind::kGrabbed));
+		break;
+
+	case static_cast<int>(player_state::ActionStateKind::kFrontKick):
+		AttachResultAnim(static_cast<int>(PlayerAnimKind::kFrontKick));
+		break;
+
+	case static_cast<int>(player_state::ActionStateKind::kRoundhouseKick):
+		AttachResultAnim(static_cast<int>(PlayerAnimKind::kRoundhouseKick));
 		break;
 
 	default:
@@ -421,6 +431,8 @@ void PlayerAnimator::AttachAnimEightDir(const int forward_anim_kind)
 	const auto command = CommandHandler::GetInstance();
 
 	// forwardのアニメーションを基準とし、enum classの値をずらしてアタッチ
+	// WARNING : enum依存なため順番の入れ替えには注意
+	
 	// 左前方
 	if (command->IsExecute(CommandKind::kMoveUpPlayer, TimeKind::kCurrent)
 		&& command->IsExecute(CommandKind::kMoveLeftPlayer, TimeKind::kCurrent))

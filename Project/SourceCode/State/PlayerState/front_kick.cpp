@@ -1,7 +1,8 @@
 #include "front_kick.hpp"
 
 player_state::FrontKick::FrontKick() :
-	SpecialStateBase(static_cast<int>(player_state::SpecialStateKind::kFrontKick))
+	ActionStateBase	(static_cast<int>(player_state::ActionStateKind::kFrontKick)),
+	m_is_all_stop	(true)
 {
 
 }

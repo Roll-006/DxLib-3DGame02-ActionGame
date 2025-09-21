@@ -4,7 +4,8 @@ player_state::ShotRocketLauncher::ShotRocketLauncher() :
 	WeaponActionStateBase				(static_cast<int>(player_state::WeaponActionStateKind::kShotRocketLauncher)),
 	m_rocket_launcher_camera_controller	(nullptr),
 	m_wait_timer						(0.0f),
-	m_was_shot							(false)
+	m_was_shot							(false),
+	m_is_all_stop						(false)
 {
 	
 }

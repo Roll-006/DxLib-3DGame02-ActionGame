@@ -1,7 +1,8 @@
 #include "patrol.hpp"
 
 zombie_state::Patrol::Patrol() :
-	AIStateBase(static_cast<int>(zombie_state::AIStateKind::kPatrol))
+	AIStateBase		(static_cast<int>(zombie_state::AIStateKind::kPatrol)),
+	m_is_all_stop	(false)
 {
 
 }

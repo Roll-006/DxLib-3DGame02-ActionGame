@@ -18,10 +18,12 @@ namespace player_state
 		void Exit		(std::shared_ptr<Player> obj) override;
 
 		[[nodiscard]] std::shared_ptr<IState<Player>> ChangeState(std::shared_ptr<Player> obj) override;
+		[[nodiscard]] bool IsAllStop() const override { return m_is_all_stop; }
 
 	private:
 		static constexpr float kReleaseKinfeForciblyTime = 5.0f;	// ナイフを手に持った状態を強制的に解除するまでの時間
 
 		float m_elapsed_time;
+		bool  m_is_all_stop;
 	};
 }

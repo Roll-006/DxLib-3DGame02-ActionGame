@@ -1,7 +1,8 @@
 #include "detach_weapon.hpp"
 
 player_state::DetachWeapon::DetachWeapon() :
-	WeaponActionStateBase(static_cast<int>(player_state::WeaponActionStateKind::kStabKnife))
+	WeaponActionStateBase	(static_cast<int>(player_state::WeaponActionStateKind::kStabKnife)),
+	m_is_all_stop			(false)
 {
 
 }

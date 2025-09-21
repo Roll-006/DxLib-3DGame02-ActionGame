@@ -14,7 +14,10 @@ public:
 	/// @brief 着地トリガーを生成
 	/// @brief WARNING : カプセルコライダーが生成された後に呼び出す必要あり
 	void CreateLandingTrigger	(PhysicalObjBase* physical_obj, const float sphere_radius);
-	
+
+	/// @brief 視界用トリガーを生成
+	void CreateVisionTrigger	(PhysicalObjBase* physical_obj, const std::shared_ptr<Modeler> modeler, const float lenfth, const float fov);
+
 	/// @brief 頭部トリガーを生成
 	void CreateHeadTrigger		(PhysicalObjBase* physical_obj, const std::shared_ptr<Modeler> modeler, const float sphere_radius);
 	
@@ -33,6 +36,10 @@ public:
 
 
 	#pragma region 位置計算
+	/// @brief 視界用トリガーの位置を計算
+	/// @brief WARNING : トリガーが円錐であることを前提としている(軽量化を優先)
+	void CalcVisionTriggerPos	(std::shared_ptr<Modeler> modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>> collider);
+
 	/// @brief 頭部トリガーの位置を計算
 	/// @brief WARNING : トリガーがカプセルであることを前提としている(軽量化を優先)
 	void CalcHeadTriggerPos		(std::shared_ptr<Modeler> modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>> collider);

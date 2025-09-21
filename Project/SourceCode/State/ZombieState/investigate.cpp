@@ -1,7 +1,8 @@
 #include "investigate.hpp"
 
 zombie_state::Investigate::Investigate() :
-	AIStateBase(static_cast<int>(zombie_state::AIStateKind::kInvestigate))
+	AIStateBase		(static_cast<int>(zombie_state::AIStateKind::kInvestigate)),
+	m_is_all_stop	(false)
 {
 
 }

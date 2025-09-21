@@ -1,5 +1,6 @@
 #pragma once
 
+/// @brief コライダーおよびトリガーの種類
 enum class ColliderKind
 {
 	kNone = -1,
@@ -7,8 +8,10 @@ enum class ColliderKind
 	kCollider,				// コライダー(押し戻し用)
 	kMeshTrigger,			// モデルが持つメッシュをトリガーに利用
 	kRayCast,				// レイキャスト
+
 	kAttackTrigger,			// 攻撃判定用トリガー
 	kLandingTrigger,		// 着地判定用トリガー
+	kVisionTrigger,			// 視界判定用トリガー
 
 	kReactionTrigger,		// リアクショントリガー
 

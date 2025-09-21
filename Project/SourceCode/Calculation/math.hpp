@@ -25,6 +25,7 @@ class Circle;
 class Sphere;
 class Capsule;
 class OBB;
+class Cone;
 
 class Transform;
 

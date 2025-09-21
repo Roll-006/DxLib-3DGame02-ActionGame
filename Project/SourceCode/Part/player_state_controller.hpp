@@ -12,8 +12,15 @@
 #include "../State/PlayerState/player_run.hpp"
 #include "../State/PlayerState/turn_around.hpp"
 #include "../State/PlayerState/crouch_turn_around.hpp"
-#include "../State/PlayerState/grabbed.hpp"
 #include "../State/PlayerState/player_dead.hpp"
+#include "../State/PlayerState/grabbed.hpp"
+#include "../State/PlayerState/roundhouse_kick.hpp"
+#include "../State/PlayerState/front_kick.hpp"
+#include "../State/PlayerState/suplex.hpp"
+#include "../State/PlayerState/escape.hpp"
+#include "../State/PlayerState/stealth_kill.hpp"
+#include "../State/PlayerState/finish_off.hpp"
+#include "../State/PlayerState/escape_with_knife.hpp"
 
 #include "../State/PlayerState/weapon_action_null.hpp"
 #include "../State/PlayerState/attach_weapon.hpp"
@@ -30,15 +37,6 @@
 #include "../State/PlayerState/shot.hpp"
 #include "../State/PlayerState/shot_rocket_launcher.hpp"
 #include "../State/PlayerState/reload.hpp"
-
-#include "../State/PlayerState/special_null.hpp"
-#include "../State/PlayerState/roundhouse_kick.hpp"
-#include "../State/PlayerState/front_kick.hpp"
-#include "../State/PlayerState/suplex.hpp"
-#include "../State/PlayerState/escape.hpp"
-#include "../State/PlayerState/stealth_kill.hpp"
-#include "../State/PlayerState/finish_off.hpp"
-#include "../State/PlayerState/escape_with_knife.hpp"
 
 class PlayerStateController final : public IStateController<Player>
 {
@@ -75,11 +73,9 @@ public:
 	[[nodiscard]] std::shared_ptr<MoveStateBase<Player>>			GetMoveState		(const TimeKind time_kind)	const { return m_move_state.at(time_kind); }
 	[[nodiscard]] std::shared_ptr<ActionStateBase<Player>>			GetActionState		(const TimeKind time_kind)	const { return m_action_state.at(time_kind); }
 	[[nodiscard]] std::shared_ptr<WeaponActionStateBase<Player>>	GetWeaponActionState(const TimeKind time_kind)	const { return m_weapon_action_state.at(time_kind); }
-	[[nodiscard]] std::shared_ptr<SpecialStateBase<Player>>			GetSpecialState		(const TimeKind time_kind)	const { return m_special_state.at(time_kind); }
 	[[nodiscard]] std::unordered_map<TimeKind, std::shared_ptr<MoveStateBase<Player>>>&			GetMoveState()			  { return m_move_state; }
 	[[nodiscard]] std::unordered_map<TimeKind, std::shared_ptr<ActionStateBase<Player>>>&		GetActionState()		  { return m_action_state; }
 	[[nodiscard]] std::unordered_map<TimeKind, std::shared_ptr<WeaponActionStateBase<Player>>>&	GetWeaponActionState()	  { return m_weapon_action_state; }
-	[[nodiscard]] std::unordered_map<TimeKind, std::shared_ptr<SpecialStateBase<Player>>>&		GetSpecialState()		  { return m_special_state; }
 	#pragma endregion
 
 private:
@@ -102,7 +98,6 @@ private:
 	void JudgeDestinationMoveState			(std::shared_ptr<IState<Player>>& stop_state);
 	void JudgeDestinationActionState		(std::shared_ptr<IState<Player>>& stop_state);
 	void JudgeDestinationWeaponActionState	(std::shared_ptr<IState<Player>>& stop_state);
-	void JudgeDestinationSpecialState		(std::shared_ptr<IState<Player>>& stop_state);
 
 private:
 	std::unordered_map<std::type_index, std::shared_ptr<IState<Player>>>			m_states;						// 各ステート
@@ -111,7 +106,6 @@ private:
 	std::unordered_map<TimeKind, std::shared_ptr<MoveStateBase<Player>>>			m_move_state;					// 移動ステート
 	std::unordered_map<TimeKind, std::shared_ptr<ActionStateBase<Player>>>			m_action_state;					// 行動ステート
 	std::unordered_map<TimeKind, std::shared_ptr<WeaponActionStateBase<Player>>>	m_weapon_action_state;			// 武器に関するステート
-	std::unordered_map<TimeKind, std::shared_ptr<SpecialStateBase<Player>>>			m_special_state;				// 特殊ステート
 
 	std::shared_ptr<WeaponActionStateBase<Player>>									m_change_weapon_after_state;	// 武器を取り換えた後に実行されるステート
 };

@@ -1,7 +1,8 @@
 #include "shot.hpp"
 
 player_state::Shot::Shot() :
-	WeaponActionStateBase(static_cast<int>(player_state::WeaponActionStateKind::kShot))
+	WeaponActionStateBase	(static_cast<int>(player_state::WeaponActionStateKind::kShot)),
+	m_is_all_stop			(false)
 {
 
 }

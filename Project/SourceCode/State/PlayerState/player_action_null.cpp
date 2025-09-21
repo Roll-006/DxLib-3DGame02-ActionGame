@@ -1,7 +1,8 @@
 #include "player_action_null.hpp"
 
 player_state::ActionNull::ActionNull() : 
-	ActionStateBase(static_cast<int>(player_state::ActionStateKind::kActionNull))
+	ActionStateBase	(static_cast<int>(player_state::ActionStateKind::kActionNull)),
+	m_is_all_stop	(false)
 {
 
 }

@@ -1,7 +1,8 @@
 #include "zombie_run.hpp"
 
 zombie_state::Run::Run() :
-	ActionStateBase(static_cast<int>(zombie_state::ActionStateKind::kRun))
+	ActionStateBase	(static_cast<int>(zombie_state::ActionStateKind::kRun)),
+	m_is_all_stop	(false)
 {
 
 }

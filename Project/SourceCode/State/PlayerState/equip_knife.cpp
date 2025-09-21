@@ -2,7 +2,8 @@
 
 player_state::EquipKnife::EquipKnife() :
 	WeaponActionStateBase	(static_cast<int>(player_state::WeaponActionStateKind::kEquipKnife)),
-	m_elapsed_time			(0.0f)
+	m_elapsed_time			(0.0f),
+	m_is_all_stop			(false)
 {
 
 }

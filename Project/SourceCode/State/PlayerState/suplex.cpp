@@ -1,7 +1,8 @@
 #include "suplex.hpp"
 
 player_state::Suplex::Suplex() :
-	SpecialStateBase(static_cast<int>(player_state::SpecialStateKind::kSuplex))
+	ActionStateBase(static_cast<int>(player_state::ActionStateKind::kSuplex)),
+	m_is_all_stop	(false)
 {
 
 }

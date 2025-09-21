@@ -1,7 +1,8 @@
 #include "aim_knife.hpp"
 
 player_state::AimKnife::AimKnife() :
-	WeaponActionStateBase(static_cast<int>(player_state::WeaponActionStateKind::kAimKnife))
+	WeaponActionStateBase	(static_cast<int>(player_state::WeaponActionStateKind::kAimKnife)),
+	m_is_all_stop			(false)
 {
 
 }

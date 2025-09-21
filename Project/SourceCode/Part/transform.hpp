@@ -43,17 +43,18 @@ public:
 	[[nodiscard]] int GetTransformHandle() const { return m_transform_handle; }
 	[[nodiscard]] std::shared_ptr<Transform> GetParentTransform() const { return m_parent_transform; }
 
-	[[nodiscard]] MATRIX	 GetMatrix		(const CoordinateKind coord_kind);
-	[[nodiscard]] VECTOR	 GetPos			(const CoordinateKind coord_kind);
-	[[nodiscard]] MATRIX	 GetRotMatrix	(const CoordinateKind coord_kind);
-	[[nodiscard]] Quaternion GetQuaternion	(const CoordinateKind coord_kind);
-	[[nodiscard]] VECTOR	 GetScale		(const CoordinateKind coord_kind);
-	[[nodiscard]] MATRIX	 GetScaleMatrix	(const CoordinateKind coord_kind);
-	[[nodiscard]] Axes		 GetAxes		(const CoordinateKind coord_kind);
-	[[nodiscard]] VECTOR	 GetRight		(const CoordinateKind coord_kind);
-	[[nodiscard]] VECTOR	 GetUp			(const CoordinateKind coord_kind);
-	[[nodiscard]] VECTOR	 GetForward		(const CoordinateKind coord_kind);
-	[[nodiscard]] VECTOR	 GetEulerAngles	(const CoordinateKind coord_kind);
+	[[nodiscard]] MATRIX	 GetMatrix			(const CoordinateKind coord_kind);
+	[[nodiscard]] VECTOR	 GetPos				(const CoordinateKind coord_kind);
+	[[nodiscard]] MATRIX	 GetRotMatrix		(const CoordinateKind coord_kind);
+	[[nodiscard]] Quaternion GetQuaternion		(const CoordinateKind coord_kind);
+	[[nodiscard]] VECTOR	 GetScale			(const CoordinateKind coord_kind);
+	[[nodiscard]] MATRIX	 GetScaleMatrix		(const CoordinateKind coord_kind);
+	[[nodiscard]] Axes		 GetAxes			(const CoordinateKind coord_kind);
+	[[nodiscard]] VECTOR	 GetRight			(const CoordinateKind coord_kind);
+	[[nodiscard]] VECTOR	 GetUp				(const CoordinateKind coord_kind);
+	[[nodiscard]] VECTOR	 GetForward			(const CoordinateKind coord_kind);
+	[[nodiscard]] VECTOR	 GetXYZEulerAngles	(const CoordinateKind coord_kind);
+	[[nodiscard]] VECTOR	 GetZXYEulerAngles	(const CoordinateKind coord_kind);
 	#pragma endregion
 
 

@@ -2,7 +2,8 @@
 
 player_state::FirstSideSlashKnife::FirstSideSlashKnife() :
 	WeaponActionStateBase	(static_cast<int>(player_state::WeaponActionStateKind::kFirstSideSlashKnife)),
-	m_combo_timer			(0.0f)
+	m_combo_timer			(0.0f),
+	m_is_all_stop			(false)
 {
 
 }

@@ -1,7 +1,8 @@
 #include "long_range_attack.hpp"
 
 zombie_state::LongRangeAttack::LongRangeAttack() :
-	AIStateBase(static_cast<int>(zombie_state::AIStateKind::kLongRangeAttack))
+	AIStateBase		(static_cast<int>(zombie_state::AIStateKind::kLongRangeAttack)),
+	m_is_all_stop	(false)
 {
 
 }

@@ -2,7 +2,8 @@
 
 player_state::EquipGun::EquipGun() :
 	WeaponActionStateBase	(static_cast<int>(player_state::WeaponActionStateKind::kEquipGun)),
-	m_possible_aim_timer	(0.0f)
+	m_possible_aim_timer	(0.0f),
+	m_is_all_stop			(false)
 {
 
 }

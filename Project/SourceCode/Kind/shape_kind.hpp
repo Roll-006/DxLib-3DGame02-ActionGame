@@ -16,4 +16,5 @@ enum class ShapeKind
 	kSphere,		// 球
 	kCapsule,		// カプセル
 	kRayCapsule,	// 光線カプセル
+	kCone,			// 円錐
 };

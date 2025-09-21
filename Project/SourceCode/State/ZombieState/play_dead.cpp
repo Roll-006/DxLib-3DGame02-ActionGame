@@ -1,7 +1,8 @@
 #include "play_dead.hpp"
 
 zombie_state::PlayDead::PlayDead() :
-	ActionStateBase(static_cast<int>(zombie_state::ActionStateKind::kPlayDead))
+	ActionStateBase	(static_cast<int>(zombie_state::ActionStateKind::kPlayDead)),
+	m_is_all_stop	(false)
 {
 
 }

@@ -2,7 +2,8 @@
 
 zombie_state::CrouchLeftStun::CrouchLeftStun() :
 	ActionStateBase	(static_cast<int>(zombie_state::ActionStateKind::kCrouchLeftStun)),
-	m_stun_timer	(0.0f)
+	m_stun_timer	(0.0f),
+	m_is_all_stop	(false)
 {
 
 }

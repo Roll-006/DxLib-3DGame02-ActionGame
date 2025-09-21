@@ -1,7 +1,8 @@
 #include "player_dead.hpp"
 
 player_state::Dead::Dead() :
-	ActionStateBase(static_cast<int>(player_state::ActionStateKind::kDead))
+	ActionStateBase	(static_cast<int>(player_state::ActionStateKind::kDead)),
+	m_is_all_stop	(false)
 {
 
 }

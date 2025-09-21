@@ -1,7 +1,8 @@
 #include "attach_weapon.hpp"
 
 player_state::AttachWeapon::AttachWeapon() :
-	WeaponActionStateBase(static_cast<int>(player_state::WeaponActionStateKind::kAttachWeapon))
+	WeaponActionStateBase	(static_cast<int>(player_state::WeaponActionStateKind::kAttachWeapon)),
+	m_is_all_stop			(false)
 {
 
 }

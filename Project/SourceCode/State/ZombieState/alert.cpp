@@ -1,7 +1,8 @@
 #include "alert.hpp"
 
 zombie_state::Alert::Alert() :
-	AIStateBase(static_cast<int>(zombie_state::AIStateKind::kAlert))
+	AIStateBase		(static_cast<int>(zombie_state::AIStateKind::kAlert)),
+	m_is_all_stop	(false)
 {
 
 }

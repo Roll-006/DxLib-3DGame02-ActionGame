@@ -123,7 +123,7 @@ std::vector<std::shared_ptr<IState<Zombie>>> ZombieStateController::CreateChange
 		// 停止判定
 		for (auto itr = check_stop_state_index.begin(); itr != check_stop_state_index.end(); )
 		{
-			if (future_state.at(i)->IsStop(future_state.at(*itr)->GetStateHandle()))
+			if (future_state.at(i)->IsStop(future_state.at(*itr)->GetStateHandle()) || future_state.at(i)->IsAllStop())
 			{
 				// ステートを停止させ未来のステートに反映
 				StopState(future_state, future_state.at(*itr));
@@ -149,7 +149,7 @@ std::vector<std::shared_ptr<IState<Zombie>>> ZombieStateController::CreateChange
 		// 停止判定
 		for (auto itr = check_stop_state_index.begin(); itr != check_stop_state_index.end(); )
 		{
-			if (future_state.at(i)->IsStop(future_state.at(*itr)->GetStateHandle()))
+			if (future_state.at(i)->IsStop(future_state.at(*itr)->GetStateHandle()) || future_state.at(i)->IsAllStop())
 			{
 				// ステートを停止させ未来のステートに反映
 				StopState(future_state, future_state.at(*itr));

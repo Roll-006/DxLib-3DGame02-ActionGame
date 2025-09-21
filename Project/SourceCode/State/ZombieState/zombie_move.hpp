@@ -18,8 +18,9 @@ namespace zombie_state
 		void Exit		(std::shared_ptr<Zombie> obj) override;
 
 		[[nodiscard]] std::shared_ptr<IState<Zombie>> ChangeState(std::shared_ptr<Zombie> obj) override;
+		[[nodiscard]] bool IsAllStop() const override { return m_is_all_stop; }
 
 	private:
-		
+		bool m_is_all_stop;
 	};
 }

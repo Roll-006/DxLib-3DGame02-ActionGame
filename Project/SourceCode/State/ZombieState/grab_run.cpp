@@ -2,7 +2,8 @@
 
 zombie_state::GrabRun::GrabRun() :
 	ActionStateBase	(static_cast<int>(zombie_state::ActionStateKind::kGrabRun)),
-	m_track_timer	(0.0f)
+	m_track_timer	(0.0f),
+	m_is_all_stop	(false)
 {
 
 }

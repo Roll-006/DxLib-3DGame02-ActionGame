@@ -1,7 +1,8 @@
 #include "roundhouse_kick.hpp"
 
 player_state::RoundhouseKick::RoundhouseKick() :
-	SpecialStateBase(static_cast<int>(player_state::SpecialStateKind::kRoundhouseKick))
+	ActionStateBase	(static_cast<int>(player_state::ActionStateKind::kRoundhouseKick)),
+	m_is_all_stop	(true)
 {
 
 }

@@ -1,7 +1,8 @@
 #include "zombie_move.hpp"
 
 zombie_state::Move::Move() :
-	MoveStateBase(static_cast<int>(zombie_state::MoveStateKind::kMove))
+	MoveStateBase(static_cast<int>(zombie_state::MoveStateKind::kMove)),
+	m_is_all_stop(false)
 {
 
 }

@@ -31,6 +31,7 @@ Zombie::Zombie() :
 	// コライダー・トリガーを設定
 	m_collider_creator->CreateCapsuleCollider	(this, m_modeler, kCapsuleRadius);
 	m_collider_creator->CreateLandingTrigger	(this, kLandingTriggerRadius);
+	m_collider_creator->CreateVisionTrigger		(this, m_modeler, 300, kFOV * math::kDegToRad);
 	m_collider_creator->CreateHeadTrigger		(this, m_modeler, kHeadTriggerRadius);
 	m_collider_creator->CreateBodyTrigger		(this, m_modeler, kUpBodyTriggerRadius, kDownBodyTriggerRadius);
 	m_collider_creator->CreateArmTrigger		(this, m_modeler, kUpperArmTriggerRadius, kForearmTriggerRadius, kHandTriggerRadius);
@@ -63,6 +64,7 @@ void Zombie::Update()
 	ApplyLookDirToRot(m_look_dir.at(TimeKind::kCurrent));
 
 	m_collider_creator->CalcCapsuleColliderDirAndLength	(m_modeler, m_collider, m_transform);
+	m_collider_creator->CalcVisionTriggerPos(m_modeler, m_collider);
 	m_collider_creator->CalcHeadTriggerPos	(m_modeler, m_collider);
 	m_collider_creator->CalcBodyTriggerPos	(m_modeler, m_collider);
 	m_collider_creator->CalcArmTriggerPos	(m_modeler, m_collider);
@@ -115,19 +117,6 @@ void Zombie::Draw() const
 	DrawLine3D(pos, pos + axes.x_axis * 100, 0xff0000);
 	DrawLine3D(pos, pos + axes.y_axis * 100, 0x00ff22);
 	DrawLine3D(pos, pos + axes.z_axis * 100, 0x0077ff);
-
-	auto	   head_mat = MV1GetFrameLocalWorldMatrix(m_modeler->GetModelHandle(), MV1SearchFrame(m_modeler->GetModelHandle(), BonePath.HEAD));
-	const auto head_pos = MGetTranslateElem(head_mat);
-	auto rot_y = MGetRotY(kFOV * 0.5f * math::kDegToRad);
-	auto rot_x1 = math::GetRotatedPos(axes.z_axis, quat::CreateQuaternion(axes.x_axis, kFOV * 0.5f * math::kDegToRad));
-	auto rot_x2 = math::GetRotatedPos(axes.z_axis, quat::CreateQuaternion(axes.x_axis, -kFOV * 0.5f * math::kDegToRad));
-	auto dir1 = VTransform(axes.z_axis, rot_y);
-	auto dir2 = VTransform(axes.z_axis, MInverse(rot_y));
-
-	DrawLine3D(head_pos, head_pos + dir1 * kVisibleDistance, 0xffffff);
-	DrawLine3D(head_pos, head_pos + dir2 * kVisibleDistance, 0xffffff);
-	DrawLine3D(head_pos, head_pos + rot_x1 * kVisibleDistance, 0xffffff);
-	DrawLine3D(head_pos, head_pos + rot_x2 * kVisibleDistance, 0xffffff);
 }
 
 void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)

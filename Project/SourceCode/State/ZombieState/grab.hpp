@@ -20,6 +20,7 @@ namespace zombie_state
 		void Exit		(std::shared_ptr<Zombie> obj) override;
 
 		[[nodiscard]] std::shared_ptr<IState<Zombie>> ChangeState(std::shared_ptr<Zombie> obj) override;
+		[[nodiscard]] bool IsAllStop() const override { return m_is_all_stop; }
 
 	private:
 		static constexpr float kDamageIntervalTime	= 0.8f;
@@ -29,5 +30,6 @@ namespace zombie_state
 
 		float m_damage_interval_timer;
 		float m_grab_timer;
+		bool  m_is_all_stop;
 	};
 }

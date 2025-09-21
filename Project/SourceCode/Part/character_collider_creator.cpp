@@ -21,6 +21,17 @@ void CharacterColliderCreator::CreateLandingTrigger(PhysicalObjBase* physical_ob
 	physical_obj->AddCollider(std::make_shared<Collider>(ColliderKind::kLandingTrigger, std::make_shared<Sphere>(pos, sphere_radius), physical_obj));
 }
 
+void CharacterColliderCreator::CreateVisionTrigger(PhysicalObjBase* physical_obj, const std::shared_ptr<Modeler> modeler, const float lenfth, const float fov)
+{
+	auto head_m = MV1GetFrameLocalWorldMatrix(modeler->GetModelHandle(), MV1SearchFrame(modeler->GetModelHandle(), BonePath.HEAD));
+	const auto head_pos  = MGetTranslateElem(head_m);
+	const auto head_axes = math::ConvertRotMatrixToAxes(head_m);
+
+	physical_obj->AddCollider(std::make_shared<Collider>(ColliderKind::kVisionTrigger, std::make_shared<Cone>(head_pos, -head_axes.z_axis, lenfth, fov), physical_obj));
+
+	CalcVisionTriggerPos(modeler, physical_obj->GetColliderAll());
+}
+
 void CharacterColliderCreator::CreateHeadTrigger(PhysicalObjBase* physical_obj, const std::shared_ptr<Modeler> modeler, const float sphere_radius)
 {
 	auto head_m		= MV1GetFrameLocalWorldMatrix(modeler->GetModelHandle(), MV1SearchFrame(modeler->GetModelHandle(), BonePath.HEAD));
@@ -83,6 +94,21 @@ void CharacterColliderCreator::CreateMeshTrigger(PhysicalObjBase* phsyical_obj, 
 
 
 #pragma region à íuåvéZ
+void CharacterColliderCreator::CalcVisionTriggerPos(std::shared_ptr<Modeler> modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>> collider)
+{
+	modeler->ApplyMatrix();
+	const auto model_handle = modeler->GetModelHandle();
+
+	// à íuÇéÊìæ
+	auto head_m = MV1GetFrameLocalWorldMatrix(modeler->GetModelHandle(), MV1SearchFrame(modeler->GetModelHandle(), BonePath.HEAD));
+	const auto head_pos	 = MGetTranslateElem(head_m);
+	const auto head_axes = math::ConvertRotMatrixToAxes(head_m);
+
+	const auto cone = std::static_pointer_cast<Cone>(collider.at(ColliderKind::kVisionTrigger)->GetShape());
+	cone->SetDir(-head_axes.z_axis);
+	cone->SetVertex(head_pos);
+}
+
 void CharacterColliderCreator::CalcHeadTriggerPos(std::shared_ptr<Modeler> modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>> collider)
 {
 	modeler->ApplyMatrix();

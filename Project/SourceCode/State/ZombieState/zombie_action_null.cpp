@@ -1,7 +1,8 @@
 #include "zombie_action_null.hpp"
 
 zombie_state::ActionNull::ActionNull() :
-	ActionStateBase(static_cast<int>(zombie_state::ActionStateKind::kActionNull))
+	ActionStateBase	(static_cast<int>(zombie_state::ActionStateKind::kActionNull)),
+	m_is_all_stop	(false)
 {
 
 }

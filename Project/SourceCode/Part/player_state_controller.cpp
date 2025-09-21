@@ -8,10 +8,9 @@ PlayerStateController::PlayerStateController() :
 	AddStopStatePair();
 
 	// 初期ステート
-	m_move_state		 [TimeKind::kPrev] = m_move_state		  [TimeKind::kCurrent] = GetState<player_state::Idle,			Player>();
+	m_move_state		 [TimeKind::kPrev] = m_move_state		  [TimeKind::kCurrent] = GetState<player_state::Idle,				Player>();
 	m_action_state		 [TimeKind::kPrev] = m_action_state		  [TimeKind::kCurrent] = GetState<player_state::ActionNull,			Player>();
 	m_weapon_action_state[TimeKind::kPrev] = m_weapon_action_state[TimeKind::kCurrent] = GetState<player_state::WeaponActionNull,	Player>();
-	m_special_state		 [TimeKind::kPrev] = m_special_state	  [TimeKind::kCurrent] = GetState<player_state::SpecialNull,		Player>();
 }
 
 PlayerStateController::~PlayerStateController()
@@ -26,7 +25,6 @@ void PlayerStateController::Update(std::shared_ptr<Player> player)
 	m_move_state			.at(TimeKind::kCurrent)->Update(player);
 	m_action_state			.at(TimeKind::kCurrent)->Update(player);
 	m_weapon_action_state	.at(TimeKind::kCurrent)->Update(player);
-	m_special_state			.at(TimeKind::kCurrent)->Update(player);
 }
 
 void PlayerStateController::LateUpdate(std::shared_ptr<Player> player)
@@ -34,20 +32,28 @@ void PlayerStateController::LateUpdate(std::shared_ptr<Player> player)
 	m_move_state			.at(TimeKind::kCurrent)->LateUpdate(player);
 	m_action_state			.at(TimeKind::kCurrent)->LateUpdate(player);
 	m_weapon_action_state	.at(TimeKind::kCurrent)->LateUpdate(player);
-	m_special_state			.at(TimeKind::kCurrent)->LateUpdate(player);
 }
 
 void PlayerStateController::CreateState()
 {
-	m_states[typeid(player_state::Idle)]			 = std::make_shared<player_state::Idle>();
+	m_states[typeid(player_state::Idle)]				 = std::make_shared<player_state::Idle>();
 	m_states[typeid(player_state::Move)]				 = std::make_shared<player_state::Move>();
+
 	m_states[typeid(player_state::ActionNull)]			 = std::make_shared<player_state::ActionNull>();
 	m_states[typeid(player_state::Crouch)]				 = std::make_shared<player_state::Crouch>();
 	m_states[typeid(player_state::Run)]					 = std::make_shared<player_state::Run>();
 	m_states[typeid(player_state::TurnAround)]			 = std::make_shared<player_state::TurnAround>();
 	m_states[typeid(player_state::CrouchTurnAround)]	 = std::make_shared<player_state::CrouchTurnAround>();
-	m_states[typeid(player_state::Grabbed)]				 = std::make_shared<player_state::Grabbed>();
 	m_states[typeid(player_state::Dead)]				 = std::make_shared<player_state::Dead>();
+	m_states[typeid(player_state::Grabbed)]				 = std::make_shared<player_state::Grabbed>();
+	m_states[typeid(player_state::RoundhouseKick)]		 = std::make_shared<player_state::RoundhouseKick>();
+	m_states[typeid(player_state::FrontKick)]			 = std::make_shared<player_state::FrontKick>();
+	m_states[typeid(player_state::Suplex)]				 = std::make_shared<player_state::Suplex>();
+	m_states[typeid(player_state::Escape)]				 = std::make_shared<player_state::Escape>();
+	m_states[typeid(player_state::StealthKill)]			 = std::make_shared<player_state::StealthKill>();
+	m_states[typeid(player_state::FinishOff)]			 = std::make_shared<player_state::FinishOff>();
+	m_states[typeid(player_state::EscapeWithKnife)]		 = std::make_shared<player_state::EscapeWithKnife>();
+
 	m_states[typeid(player_state::WeaponActionNull)]	 = std::make_shared<player_state::WeaponActionNull>();
 	m_states[typeid(player_state::EquipKnife)]			 = std::make_shared<player_state::EquipKnife>();
 	m_states[typeid(player_state::AimKnife)]			 = std::make_shared<player_state::AimKnife>();
@@ -61,32 +67,10 @@ void PlayerStateController::CreateState()
 	m_states[typeid(player_state::Shot)]				 = std::make_shared<player_state::Shot>();
 	m_states[typeid(player_state::ShotRocketLauncher)]	 = std::make_shared<player_state::ShotRocketLauncher>();
 	m_states[typeid(player_state::Reload)]				 = std::make_shared<player_state::Reload>();
-	m_states[typeid(player_state::SpecialNull)]			 = std::make_shared<player_state::SpecialNull>();
-	m_states[typeid(player_state::RoundhouseKick)]		 = std::make_shared<player_state::RoundhouseKick>();
-	m_states[typeid(player_state::FrontKick)]			 = std::make_shared<player_state::FrontKick>();
-	m_states[typeid(player_state::Suplex)]				 = std::make_shared<player_state::Suplex>();
-	m_states[typeid(player_state::Escape)]				 = std::make_shared<player_state::Escape>();
-	m_states[typeid(player_state::StealthKill)]			 = std::make_shared<player_state::StealthKill>();
-	m_states[typeid(player_state::FinishOff)]			 = std::make_shared<player_state::FinishOff>();
-	m_states[typeid(player_state::EscapeWithKnife)]		 = std::make_shared<player_state::EscapeWithKnife>();
 }
 
 void PlayerStateController::AddStopStatePair()
 {
-	m_states.at(typeid(player_state::Grabbed))				->AddStopState(m_states.at(typeid(player_state::Move))					->GetStateHandle());
-	m_states.at(typeid(player_state::Grabbed))				->AddStopState(m_states.at(typeid(player_state::EquipKnife))			->GetStateHandle());
-	m_states.at(typeid(player_state::Grabbed))				->AddStopState(m_states.at(typeid(player_state::AimKnife))				->GetStateHandle());
-	m_states.at(typeid(player_state::Grabbed))				->AddStopState(m_states.at(typeid(player_state::StabKnife))				->GetStateHandle());
-	m_states.at(typeid(player_state::Grabbed))				->AddStopState(m_states.at(typeid(player_state::FirstSideSlashKnife))	->GetStateHandle());
-	m_states.at(typeid(player_state::Grabbed))				->AddStopState(m_states.at(typeid(player_state::SecondSideSlashKnife))	->GetStateHandle());
-	m_states.at(typeid(player_state::Grabbed))				->AddStopState(m_states.at(typeid(player_state::SpinningSlashKnife))	->GetStateHandle());
-	m_states.at(typeid(player_state::Grabbed))				->AddStopState(m_states.at(typeid(player_state::Parry))					->GetStateHandle());
-	m_states.at(typeid(player_state::Grabbed))				->AddStopState(m_states.at(typeid(player_state::EquipGun))				->GetStateHandle());
-	m_states.at(typeid(player_state::Grabbed))				->AddStopState(m_states.at(typeid(player_state::AimGun))				->GetStateHandle());
-	m_states.at(typeid(player_state::Grabbed))				->AddStopState(m_states.at(typeid(player_state::Shot))					->GetStateHandle());
-	m_states.at(typeid(player_state::Grabbed))				->AddStopState(m_states.at(typeid(player_state::ShotRocketLauncher))	->GetStateHandle());
-	m_states.at(typeid(player_state::Grabbed))				->AddStopState(m_states.at(typeid(player_state::Reload))				->GetStateHandle());
-	
 	m_states.at(typeid(player_state::AimKnife))				->AddStopState(m_states.at(typeid(player_state::Crouch))				->GetStateHandle());
 	m_states.at(typeid(player_state::AimKnife))				->AddStopState(m_states.at(typeid(player_state::Run))					->GetStateHandle());
 	m_states.at(typeid(player_state::StabKnife))			->AddStopState(m_states.at(typeid(player_state::Move))					->GetStateHandle());
@@ -160,14 +144,6 @@ void PlayerStateController::ChangeState(std::shared_ptr<Player> player)
 		m_weapon_action_state	.at(TimeKind::kPrev)	->Exit (player);
 		m_weapon_action_state	.at(TimeKind::kCurrent) ->Enter(player);
 	}
-
-	if (change_state.at(3))
-	{
-		m_special_state			.at(TimeKind::kPrev)	= m_special_state.at(TimeKind::kCurrent);
-		m_special_state			.at(TimeKind::kCurrent) = std::static_pointer_cast<SpecialStateBase<Player>>(change_state.at(3));
-		m_special_state			.at(TimeKind::kPrev)	->Exit (player);
-		m_special_state			.at(TimeKind::kCurrent) ->Enter(player);
-	}
 }
 
 std::vector<std::shared_ptr<IState<Player>>> PlayerStateController::CreateChangeState(std::shared_ptr<Player> player)
@@ -177,8 +153,7 @@ std::vector<std::shared_ptr<IState<Player>>> PlayerStateController::CreateChange
 	{
 		m_move_state		 .at(TimeKind::kCurrent)->ChangeState(player),
 		m_action_state		 .at(TimeKind::kCurrent)->ChangeState(player),
-		m_weapon_action_state.at(TimeKind::kCurrent)->ChangeState(player),
-		m_special_state		 .at(TimeKind::kCurrent)->ChangeState(player)
+		m_weapon_action_state.at(TimeKind::kCurrent)->ChangeState(player)
 	};
 
 	std::vector<int> check_stop_state_index;
@@ -190,7 +165,7 @@ std::vector<std::shared_ptr<IState<Player>>> PlayerStateController::CreateChange
 		// 停止判定
 		for (auto itr = check_stop_state_index.begin(); itr != check_stop_state_index.end(); )
 		{
-			if (future_state.at(i)->IsStop(future_state.at(*itr)->GetStateHandle()))
+			if (future_state.at(i)->IsStop(future_state.at(*itr)->GetStateHandle()) || future_state.at(i)->IsAllStop())
 			{
 				// ステートを停止させ未来のステートに反映
 				StopState(future_state, future_state.at(*itr));
@@ -216,7 +191,7 @@ std::vector<std::shared_ptr<IState<Player>>> PlayerStateController::CreateChange
 		// 停止判定
 		for (auto itr = check_stop_state_index.begin(); itr != check_stop_state_index.end(); )
 		{
-			if (future_state.at(i)->IsStop(future_state.at(*itr)->GetStateHandle()))
+			if (future_state.at(i)->IsStop(future_state.at(*itr)->GetStateHandle()) || future_state.at(i)->IsAllStop())
 			{
 				// ステートを停止させ未来のステートに反映
 				StopState(future_state, future_state.at(*itr));
@@ -236,8 +211,7 @@ std::vector<std::shared_ptr<IState<Player>>> PlayerStateController::CreateChange
 	{
 		future_state.at(0) == m_move_state			.at(TimeKind::kCurrent) ? nullptr : future_state.at(0),
 		future_state.at(1) == m_action_state		.at(TimeKind::kCurrent) ? nullptr : future_state.at(1),
-		future_state.at(2) == m_weapon_action_state	.at(TimeKind::kCurrent) ? nullptr : future_state.at(2),
-		future_state.at(3) == m_special_state		.at(TimeKind::kCurrent) ? nullptr : future_state.at(3)
+		future_state.at(2) == m_weapon_action_state	.at(TimeKind::kCurrent) ? nullptr : future_state.at(2)
 	};
 }
 
@@ -248,8 +222,7 @@ std::vector<std::shared_ptr<IState<Player>>> PlayerStateController::CreateFuture
 	{
 		next_state.at(0) == nullptr ? m_move_state			.at(TimeKind::kCurrent) : next_state.at(0),
 		next_state.at(1) == nullptr ? m_action_state		.at(TimeKind::kCurrent) : next_state.at(1),
-		next_state.at(2) == nullptr ? m_weapon_action_state	.at(TimeKind::kCurrent) : next_state.at(2),
-		next_state.at(3) == nullptr ? m_special_state		.at(TimeKind::kCurrent) : next_state.at(3)
+		next_state.at(2) == nullptr ? m_weapon_action_state	.at(TimeKind::kCurrent) : next_state.at(2)
 	};
 }
 
@@ -271,10 +244,6 @@ void PlayerStateController::StopState(std::vector<std::shared_ptr<IState<Player>
 
 			case 2:
 				JudgeDestinationWeaponActionState(future_state.at(i));
-				break;
-
-			case 3:
-				JudgeDestinationSpecialState(future_state.at(i));
 				break;
 			}
 
@@ -334,15 +303,6 @@ void PlayerStateController::JudgeDestinationWeaponActionState(std::shared_ptr<IS
 		stop_state = m_states.at(typeid(player_state::WeaponActionNull));
 		break;
 
-	default:
-		break;
-	}
-}
-
-void PlayerStateController::JudgeDestinationSpecialState(std::shared_ptr<IState<Player>>& stop_state)
-{
-	switch (static_cast<player_state::SpecialStateKind>(stop_state->GetStateKind()))
-	{
 	default:
 		break;
 	}

@@ -2,7 +2,8 @@
 
 player_state::SpinningSlashKnife::SpinningSlashKnife() :
 	WeaponActionStateBase	(static_cast<int>(player_state::WeaponActionStateKind::kSpinningSlashKnife)),
-	m_combo_timer			(0.0f)
+	m_combo_timer			(0.0f),
+	m_is_all_stop			(false)
 {
 
 }

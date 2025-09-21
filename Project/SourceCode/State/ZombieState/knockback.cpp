@@ -1,7 +1,8 @@
 #include "knockback.hpp"
 
 zombie_state::Knockback::Knockback() :
-	ActionStateBase(static_cast<int>(zombie_state::ActionStateKind::kKnockback))
+	ActionStateBase	(static_cast<int>(zombie_state::ActionStateKind::kKnockback)),
+	m_is_all_stop	(false)
 {
 
 }

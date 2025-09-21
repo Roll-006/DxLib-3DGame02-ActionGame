@@ -234,6 +234,7 @@
     <ClCompile Include="SourceCode\Shape\3DShape\capsule.cpp" />
     <ClCompile Include="SourceCode\Shape\3DShape\obb.cpp" />
     <ClCompile Include="SourceCode\Shape\3DShape\ray_capsule.cpp" />
+    <ClCompile Include="SourceCode\Shape\3DShape\cone.cpp" />
     <ClCompile Include="SourceCode\Shape\3DShape\sphere.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\aim_gun.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\aim_knife.cpp" />
@@ -243,7 +244,6 @@
     <ClCompile Include="SourceCode\State\PlayerState\spinning_slash_knife.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\first_side_slash_knife.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\second_side_slash_knife.cpp" />
-    <ClCompile Include="SourceCode\State\PlayerState\special_null.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\crouch_turn_around.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\detach_weapon.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\attach_weapon.cpp" />
@@ -313,7 +313,6 @@
     <ClInclude Include="SourceCode\Base\enemy_state_controller_base.hpp" />
     <ClInclude Include="SourceCode\Base\knife_base.hpp" />
     <ClInclude Include="SourceCode\Base\move_state_base.hpp" />
-    <ClInclude Include="SourceCode\Base\special_state_base.hpp" />
     <ClInclude Include="SourceCode\Base\animator_base.hpp" />
     <ClInclude Include="SourceCode\Base\character_base.hpp" />
     <ClInclude Include="SourceCode\Base\gun_base.hpp" />
@@ -507,6 +506,7 @@
     <ClInclude Include="SourceCode\Shape\3DShape\capsule.hpp" />
     <ClInclude Include="SourceCode\Shape\3DShape\obb.hpp" />
     <ClInclude Include="SourceCode\Shape\3DShape\ray_capsule.hpp" />
+    <ClInclude Include="SourceCode\Shape\3DShape\cone.hpp" />
     <ClInclude Include="SourceCode\Shape\3DShape\sphere.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\aim_gun.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\aim_knife.hpp" />
@@ -516,7 +516,6 @@
     <ClInclude Include="SourceCode\State\PlayerState\spinning_slash_knife.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\first_side_slash_knife.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\second_side_slash_knife.hpp" />
-    <ClInclude Include="SourceCode\State\PlayerState\special_null.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\crouch_turn_around.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\detach_weapon.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\attach_weapon.hpp" />

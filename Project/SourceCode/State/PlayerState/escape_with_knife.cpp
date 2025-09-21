@@ -1,7 +1,8 @@
 #include "escape_with_knife.hpp"
 
 player_state::EscapeWithKnife::EscapeWithKnife() :
-	SpecialStateBase(static_cast<int>(player_state::SpecialStateKind::kEscapeWithKnife))
+	ActionStateBase(static_cast<int>(player_state::ActionStateKind::kEscapeWithKnife)),
+	m_is_all_stop	(false)
 {
 
 }

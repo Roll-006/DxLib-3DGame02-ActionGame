@@ -256,9 +256,6 @@
     <ClCompile Include="SourceCode\State\PlayerState\turn_around.cpp">
       <Filter>SourceCode\State\PlayerState</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\State\PlayerState\special_null.cpp">
-      <Filter>SourceCode\State\PlayerState</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\Part\player_state_controller.cpp">
       <Filter>SourceCode\Part</Filter>
     </ClCompile>
@@ -489,6 +486,9 @@
     </ClCompile>
     <ClCompile Include="SourceCode\State\ZombieState\crouch_right_stun.cpp">
       <Filter>SourceCode\State\ZombieState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Shape\3DShape\cone.cpp">
+      <Filter>SourceCode\Shape\3DShape</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -801,9 +801,6 @@
     <ClInclude Include="SourceCode\State\PlayerState\turn_around.hpp">
       <Filter>SourceCode\State\PlayerState</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\State\PlayerState\special_null.hpp">
-      <Filter>SourceCode\State\PlayerState</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\Concept\state_concepts.hpp">
       <Filter>SourceCode\Concept</Filter>
     </ClInclude>
@@ -814,9 +811,6 @@
       <Filter>SourceCode\Base</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Base\move_state_base.hpp">
-      <Filter>SourceCode\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Base\special_state_base.hpp">
       <Filter>SourceCode\Base</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\State\PlayerState\aim_knife.hpp">
@@ -1310,6 +1304,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Part\zombie_state_controller.hpp">
       <Filter>SourceCode\Part</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Shape\3DShape\cone.hpp">
+      <Filter>SourceCode\Shape\3DShape</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

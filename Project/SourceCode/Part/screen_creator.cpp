@@ -29,7 +29,7 @@ ScreenCreator::ScreenCreator(const Vector2D<int> screen_size, const Vector2D<int
 
 ScreenCreator::~ScreenCreator()
 {
-	// MEMO : ‰æ‘œ‚Ìíœˆ—‚ÍGraphicer‚ÉˆÏ‚Ë‚é
+	DeleteGraph(m_screen_graphic_handle);
 }
 
 void ScreenCreator::UseScreen()

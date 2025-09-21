@@ -2,7 +2,8 @@
 
 player_state::Idle::Idle() : 
 	MoveStateBase	(static_cast<int>(player_state::MoveStateKind::kIdle)),
-	m_non_move_time	(0.0f)
+	m_non_move_time	(0.0f),
+	m_is_all_stop	(false)
 {
 
 }

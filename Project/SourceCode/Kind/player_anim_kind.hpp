@@ -9,6 +9,8 @@ enum class PlayerAnimKind
 	kIdle,
 
 	kGrabbed,
+	kFrontKick,
+	kRoundhouseKick,
 
 	kStabKnife,
 	kFirstSideSlashKnife,

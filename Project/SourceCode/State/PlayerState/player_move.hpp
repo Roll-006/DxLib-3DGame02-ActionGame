@@ -19,8 +19,10 @@ namespace player_state
 		void Exit		(std::shared_ptr<Player> obj) override;
 
 		[[nodiscard]] std::shared_ptr<IState<Player>> ChangeState(std::shared_ptr<Player> obj) override;
+		[[nodiscard]] bool IsAllStop() const override { return m_is_all_stop; }
 
 	private:
 		bool m_is_first_move_frame;		// 移動を開始して最初のフレームであるかを判定
+		bool m_is_all_stop;
 	};
 }

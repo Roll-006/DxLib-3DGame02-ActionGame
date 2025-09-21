@@ -5,7 +5,8 @@ zombie_state::Grab::Grab() :
 	ActionStateBase			(static_cast<int>(zombie_state::ActionStateKind::kGrab)),
 	m_grab_camera_controller(nullptr),
 	m_damage_interval_timer	(0.0f),
-	m_grab_timer			(0.0f)
+	m_grab_timer			(0.0f),
+	m_is_all_stop			(false)
 {
 
 }

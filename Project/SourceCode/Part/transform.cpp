@@ -239,8 +239,13 @@ Axes Transform::GetAxes(const CoordinateKind coord_kind)
 	return math::ConvertRotMatrixToAxes(GetRotMatrix(coord_kind));
 }
 
-VECTOR Transform::GetEulerAngles(const CoordinateKind coord_kind)
+VECTOR Transform::GetXYZEulerAngles(const CoordinateKind coord_kind)
 {
 	return math::ConvertXYZRotMatrixToEulerAngles(GetRotMatrix(coord_kind));
+}
+
+VECTOR Transform::GetZXYEulerAngles(const CoordinateKind coord_kind)
+{
+	return math::ConvertZXYRotMatrixToEulerAngles(GetRotMatrix(coord_kind));
 }
 #pragma endregion

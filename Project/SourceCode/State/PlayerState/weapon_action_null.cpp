@@ -1,7 +1,8 @@
 #include "weapon_action_null.hpp"
 
 player_state::WeaponActionNull::WeaponActionNull() :
-	WeaponActionStateBase(static_cast<int>(player_state::WeaponActionStateKind::kWeaponActionNull))
+	WeaponActionStateBase	(static_cast<int>(player_state::WeaponActionStateKind::kWeaponActionNull)),
+	m_is_all_stop			(false)
 {
 
 }
