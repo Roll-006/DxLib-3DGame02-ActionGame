@@ -146,11 +146,37 @@ bool collision::IsCollidedPointAndCone           (const Point&       point,     
 }
 bool collision::IsCollidedPointAndCone           (const VECTOR&      point,          const Cone&         cone,           std::optional<VECTOR>& intersection)
 {
-    const auto distance_v = point - cone.GetVertex();
-    const auto distance = VSize(distance_v);
-    const auto dir = v3d::GetNormalizedV(distance_v);
+    // 頂点から点へのベクトル
+    const auto vertex_to_point = point - cone.GetVertex();
 
-    return (VDot(dir, cone.GetDir()) > cos(cone.GetFOV() * 0.5f)) && (distance < cone.GetLength());
+    // 軸方向への投影距離を計算
+    const auto projection_length = VDot(vertex_to_point, cone.GetDir());
+
+    if (projection_length < 0.0f)               { return false; }   // 円錐の後方にある場合
+    if (projection_length > cone.GetLength())   { return false; }   // 円錐の長さを超えている場合
+
+    // 頂点付近の特別処理（数値誤差回避）
+    if (projection_length < math::kEpsilonLow)
+    {
+        intersection = point;
+        return true;
+    }
+
+    // その高さでの円錐半径を線形補間で計算
+    const auto radius_at_height = (projection_length / cone.GetLength()) * cone.GetRadius();
+
+    // 軸からの距離の二乗を計算（平方根を避ける）
+    const auto axis_projection = cone.GetDir() * projection_length;
+    const auto radial_vector = vertex_to_point - axis_projection;
+    const auto distance_from_axis_sq = VSquareSize(radial_vector);
+
+    // 半径の二乗と比較（平方根計算を回避）
+    const auto radius_at_height_sq = radius_at_height * radius_at_height;
+
+    bool is_inside = distance_from_axis_sq <= radius_at_height_sq;
+    if (is_inside && intersection) { intersection = point; }
+
+    return is_inside;
 }
 bool collision::IsCollidedPointAndCone           (const VECTOR&      point,          const Cone&         cone)
 {

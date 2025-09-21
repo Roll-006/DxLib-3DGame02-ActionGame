@@ -23,6 +23,7 @@
 class EventSystem final : public SingletonBase<EventSystem>
 {
 public:
+    /// @brief イベントを登録
     template<typename EventT, typename ClassT>
     void Subscribe(ClassT* instance, void(ClassT::*method)(const EventT&))
     {
@@ -38,6 +39,7 @@ public:
         });
     }
 
+    /// @brief イベントの登録を解除
     template<typename EventT, typename ClassT>
     void Unsubscribe(ClassT* instance, void(ClassT::*method)(const EventT&))
     {
@@ -56,6 +58,7 @@ public:
         }
     }
 
+    /// @brief イベントを通知
     template<typename EventT>
     void Publish(const EventT& event)
     {
