@@ -9,24 +9,19 @@ DamageFilter::DamageFilter() :
 	m_is_near_death					(false)
 {
 	// ƒCƒxƒ“ƒg“o˜^
-	EventSystem::GetInstance()->Subscribe<OnDamageEvent>([this](const OnDamageEvent& event)
-	{
-		StartDamageBlinking(event);
-	});
-	EventSystem::GetInstance()->Subscribe<NearDeathEvent>([this](const NearDeathEvent& event)
-	{
-		StartNearDeathBlinking(event);
-	});
-	EventSystem::GetInstance()->Subscribe<EnterNearDeathEvent>([this](const EnterNearDeathEvent& event)
-	{
-		StartEnterNearDeathBlinking(event);
-	});
+	EventSystem::GetInstance()->Subscribe<OnDamageEvent>		(this, &DamageFilter::StartDamageBlinking);
+	EventSystem::GetInstance()->Subscribe<NearDeathEvent>		(this, &DamageFilter::StartNearDeathBlinking);
+	EventSystem::GetInstance()->Subscribe<EnterNearDeathEvent>	(this, &DamageFilter::StartEnterNearDeathBlinking);
+
 	m_graphicer->SetCenterPos(Window::kCenterPos);
 }
 
 DamageFilter::~DamageFilter()
 {
-
+	// ƒCƒxƒ“ƒg‚Ì“o˜^‰ðœ
+	EventSystem::GetInstance()->Unsubscribe<OnDamageEvent>		(this, &DamageFilter::StartDamageBlinking);
+	EventSystem::GetInstance()->Unsubscribe<NearDeathEvent>		(this, &DamageFilter::StartNearDeathBlinking);
+	EventSystem::GetInstance()->Unsubscribe<EnterNearDeathEvent>(this, &DamageFilter::StartEnterNearDeathBlinking);
 }
 
 void DamageFilter::LateUpdate()

@@ -2,7 +2,7 @@
 #include "../Interface/i_scene.hpp"
 
 #include "../Object/player.hpp"
-#include "../Object/zombie.hpp"
+#include "../Manager/enemy_manager.hpp"
 #include "../Object/house.hpp"
 #include "../Object/ground.hpp"
 #include "../Object/skydome.hpp"
@@ -34,7 +34,7 @@ private:
 	bool m_is_active;
 
 	std::shared_ptr<Player>						m_player;
-	std::shared_ptr<Zombie>						m_zombie;
+	std::shared_ptr<EnemyManager>				m_enemy_manager;
 	std::shared_ptr<House>						m_house;
 	std::shared_ptr<Ground>						m_ground;
 	std::shared_ptr<Skydome>					m_skydome;

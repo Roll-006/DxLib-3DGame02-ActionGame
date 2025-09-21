@@ -1,5 +1,5 @@
 #pragma once
-#include "../Base/one_instance_singleton_base.hpp"
+#include "../Base/single_instance_base.hpp"
 #include "../Event/event_system.hpp"
 
 enum class TimeScaleLayerKind
@@ -13,7 +13,7 @@ enum class TimeScaleLayerKind
 	kCamera,	// ÉJÉÅÉâ
 };
 
-class TimeScaleController final : public OneInstanceSingletonBase<TimeScaleController>
+class TimeScaleController final : public SingleInstanceBase<TimeScaleController>
 {
 public:
 	TimeScaleController();

@@ -4,7 +4,7 @@
 PlayScene::PlayScene() :
 	m_is_active						(true),
 	m_player						(std::make_shared<Player>()),
-	m_zombie						(nullptr),
+	m_enemy_manager					(std::make_shared<EnemyManager>()),
 	m_house							(std::make_shared<House>()),
 	m_ground						(std::make_shared<Ground>()),
 	m_skydome						(std::make_shared<Skydome>(ObjManager::GetInstance()->GetObj<MainCamera>(ObjName.MAIN_CAMERA))),
@@ -12,13 +12,12 @@ PlayScene::PlayScene() :
 	m_play_scene_effect_object_pool (std::make_shared<PlaySceneEffectObjectPool>()),
 	m_player_ui_creator				(std::make_shared<PlayerUICreator>(m_player))
 {
-	m_player->AddToObjManager();
+	m_player		->AddToObjManager();
+	m_enemy_manager	->AddToObjManager();
+	m_house			->AddToObjManager();
+	m_ground		->AddToObjManager();
 
-	m_zombie = std::make_shared<Zombie>();
-	m_zombie->AddToObjManager();
-
-	m_house ->AddToObjManager();
-	m_ground->AddToObjManager();
+	m_enemy_manager->AttachTarget(m_player);
 
 	const auto pool_holder = ObjectPoolHolder::GetInstance();
 	pool_holder->AddObjectPool(m_rifle_cartridge_object_pool);
@@ -32,10 +31,10 @@ PlayScene::PlayScene() :
 
 PlayScene::~PlayScene()
 {
-	m_player->RemoveToObjManager();
-	m_zombie->RemoveToObjManager();
-	m_house	->RemoveToObjManager();
-	m_ground->RemoveToObjManager();
+	m_player		->RemoveToObjManager();
+	m_enemy_manager	->RemoveToObjManager();
+	m_house			->RemoveToObjManager();
+	m_ground		->RemoveToObjManager();
 
 	const auto pool_holder = ObjectPoolHolder::GetInstance();
 	pool_holder->RemoveObjectPool(m_rifle_cartridge_object_pool	 ->GetName());
@@ -55,7 +54,7 @@ void PlayScene::Init()
 void PlayScene::Update()
 {
 	m_player							->Update();
-	m_zombie							->Update();
+	m_enemy_manager						->Update();
 	RifleCartridgeManager::GetInstance()->Update();
 	m_house								->Update();
 	m_ground							->Update();
@@ -65,7 +64,7 @@ void PlayScene::Update()
 void PlayScene::LateUpdate()
 {
 	m_player							->LateUpdate();
-	m_zombie							->LateUpdate();
+	m_enemy_manager						->LateUpdate();
 	RifleCartridgeManager::GetInstance()->LateUpdate();
 	m_house								->LateUpdate();
 	m_ground							->LateUpdate();
@@ -76,7 +75,7 @@ void PlayScene::LateUpdate()
 void PlayScene::DrawToShadowMap() const
 {
 	m_player							->DrawToShadowMap();
-	m_zombie							->DrawToShadowMap();
+	m_enemy_manager						->DrawToShadowMap();
 	RifleCartridgeManager::GetInstance()->DrawToShadowMap();
 	m_house								->DrawToShadowMap();
 	m_ground							->DrawToShadowMap();
@@ -85,7 +84,7 @@ void PlayScene::DrawToShadowMap() const
 void PlayScene::Draw() const
 {
 	m_player							->Draw();
-	m_zombie							->Draw();
+	m_enemy_manager						->Draw();
 	RifleCartridgeManager::GetInstance()->Draw();
 	m_house								->Draw();
 	m_ground							->Draw();

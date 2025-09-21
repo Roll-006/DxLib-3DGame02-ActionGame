@@ -9,12 +9,11 @@ template<obj_concepts::ObjT ObjT>
 class EnemyStateControllerBase abstract : public IStateController<ObjT>
 {
 public:
-	EnemyStateControllerBase() :
-		m_target_character(nullptr)	{ }
+	EnemyStateControllerBase() : m_target_character(nullptr){}
 
 	virtual ~EnemyStateControllerBase() = default;
 
-	void AttachTarget(const std::shared_ptr<CharacterBase> target_character) { if (!m_target_character) { m_target_character = target_character; } }
+	void AttachTarget(const std::shared_ptr<CharacterBase> target_character) { m_target_character = target_character; }
 	void DetachTarget() { m_target_character = nullptr; }
 
 	[[nodiscard]] std::shared_ptr<CharacterBase> GetTargetCharacter() const { return m_target_character; }

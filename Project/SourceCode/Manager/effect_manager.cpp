@@ -5,27 +5,19 @@
 EffectManager::EffectManager()
 {
 	// ƒCƒxƒ“ƒg“o˜^
-	EventSystem::GetInstance()->Subscribe<WeaponShotEvent>			([this](const WeaponShotEvent&			event)
-	{
-		OutputWeaponShotEffect(event);
-	});
-	EventSystem::GetInstance()->Subscribe<RocketLauncherShotEvent>	([this](const RocketLauncherShotEvent&	event)
-	{
-		OutputRocketLauncherShotEffect(event);
-	});
-	EventSystem::GetInstance()->Subscribe<OnShotBulletEvent>		([this](const OnShotBulletEvent&		event)
-	{
-		OutputOnShotBulletEffect(event);
-	});
-	EventSystem::GetInstance()->Subscribe<OnHitBulletEvent>			([this](const OnHitBulletEvent&			event)
-	{
-		OutputOnHitBulletEffect(event);
-	});
+	EventSystem::GetInstance()->Subscribe<WeaponShotEvent>			(this, &EffectManager::OutputWeaponShotEffect);
+	EventSystem::GetInstance()->Subscribe<RocketLauncherShotEvent>	(this, &EffectManager::OutputRocketLauncherShotEffect);
+	EventSystem::GetInstance()->Subscribe<OnShotBulletEvent>		(this, &EffectManager::OutputOnShotBulletEffect);
+	EventSystem::GetInstance()->Subscribe<OnHitBulletEvent>			(this, &EffectManager::OutputOnHitBulletEffect);
 }
 
 EffectManager::~EffectManager()
 {
-
+	// ƒCƒxƒ“ƒg‚Ì“o˜^‰ðœ
+	EventSystem::GetInstance()->Unsubscribe<WeaponShotEvent>		(this, &EffectManager::OutputWeaponShotEffect);
+	EventSystem::GetInstance()->Unsubscribe<RocketLauncherShotEvent>(this, &EffectManager::OutputRocketLauncherShotEffect);
+	EventSystem::GetInstance()->Unsubscribe<OnShotBulletEvent>		(this, &EffectManager::OutputOnShotBulletEffect);
+	EventSystem::GetInstance()->Unsubscribe<OnHitBulletEvent>		(this, &EffectManager::OutputOnHitBulletEffect);
 }
 
 void EffectManager::Update()

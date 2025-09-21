@@ -1,12 +1,11 @@
 #pragma once
-#include "../Base/character_base.hpp"
-#include "../Interface/i_enemy.hpp"
+#include "../Base/enemy_base.hpp"
 
 #include "../Part/zombie_animator.hpp"
 
 class ZombieStateController;
 
-class Zombie final : public CharacterBase, public IEnemy
+class Zombie final : public EnemyBase
 {
 public:
 	Zombie();
@@ -20,12 +19,9 @@ public:
 
 	void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) override;
 	void OnDamage(const HealthPartKind part_kind, const float damage) override;
-	void SetAttackIntervalTime() override;
-	void CalcAttackIntervalTime() override;
 
-	[[nodiscard]] bool IsTargetInSight() const override { return m_is_target_in_sight; }
-	[[nodiscard]] bool CanAttack() const override { return m_attack_interval_timer <= 0.0f; }
-	[[nodiscard]] bool CanGrabTraget() const { return m_can_grab_target; }
+	void AttachTarget(const std::shared_ptr<CharacterBase> target_character) override;
+	void DetachTarget() override;
 
 
 	#pragma region State
@@ -43,6 +39,7 @@ public:
 	#pragma region Getter
 	[[nodiscard]] float	GetDeltaTime() const override;
 	[[nodiscard]] std::shared_ptr<ZombieStateController> GetStateController() const { return m_state; }
+	[[nodiscard]] bool CanGrabTraget()		const			{ return m_can_grab_target; }
 	#pragma endregion
 
 private:
@@ -66,7 +63,7 @@ private:
 	static constexpr float kRunSpeed				= 70.0f;
 	static constexpr float kRunGrabSpeed			= 80.0f;
 
-	static constexpr float kMoveDirOffsetSpeed		= 5.0f;					// ˆÚ“®•ûŒü‚Ì•â³‘¬“x
+	static constexpr float kMoveDirOffsetSpeed		= 5.0f;			// ˆÚ“®•ûŒü‚Ì•â³‘¬“x
 
 	static constexpr float kCapsuleRadius			= 8.0f;
 	static constexpr float kLandingTriggerRadius	= 6.0f;
@@ -82,7 +79,5 @@ private:
 private:
 	std::shared_ptr<ZombieStateController> m_state;
 
-	float m_attack_interval_timer;
 	bool  m_can_grab_target;
-	bool  m_is_target_in_sight;
 };

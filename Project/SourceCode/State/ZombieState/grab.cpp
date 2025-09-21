@@ -48,7 +48,7 @@ void zombie_state::Grab::Enter(std::shared_ptr<Zombie> obj)
 	cinemachine_brain->AddVirtualCameraController(m_grab_camera_controller);
 
 	// 掴んだことを演出カメラに通知
-	const GrabEvent event{ obj->GetModeler()->GetModelHandle() };
+	const GrabEvent event{ obj->GetModeler() };
 	EventSystem::GetInstance()->Publish(event);
 
 	// プレイヤーの掴まれた関数を呼び出す

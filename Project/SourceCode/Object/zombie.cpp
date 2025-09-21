@@ -2,10 +2,9 @@
 #include "../Part/zombie_state_controller.hpp"
 
 Zombie::Zombie() :
-	CharacterBase			(ObjName.ZOMBIE, ObjTag.ENEMY, MassKind::kMedium),
-	m_state					(std::make_shared<ZombieStateController>()),
-	m_attack_interval_timer	(0.0f),
-	m_can_grab_target		(false)
+	EnemyBase			(ObjName.ZOMBIE, MassKind::kMedium),
+	m_state				(std::make_shared<ZombieStateController>()),
+	m_can_grab_target	(false)
 {
 	// TODO : JSON指定
 	m_health[HealthPartKind::kMain]		= std::make_shared<Health>(1684.0f, 1684.0f);
@@ -20,7 +19,8 @@ Zombie::Zombie() :
 	m_animator = std::make_shared<ZombieAnimator>(m_modeler, m_state);
 	SetColliderModelHandle(m_modeler->GetModelHandle());
 
-	m_invincible_time = kInvincibleTime;
+	m_invincible_time		= kInvincibleTime;
+	m_attack_interval_time	= kAttackIntervalTime;
 
 	// 初期pos・dirを設定
 	m_look_dir[TimeKind::kCurrent] = m_look_dir[TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);
@@ -138,6 +138,7 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 		{
 			m_is_target_in_sight = true;
 		}
+		break;
 
 	case ColliderKind::kCollider:
 		// ロケット弾着弾時の爆発エフェクトとの衝突
@@ -263,14 +264,14 @@ void Zombie::OnDamage(const HealthPartKind part_kind, const float damage)
 	m_is_invincible		= true;
 }
 
-void Zombie::SetAttackIntervalTime()
+void Zombie::AttachTarget(const std::shared_ptr<CharacterBase> target_character)
 {
-	m_attack_interval_timer = kAttackIntervalTime;
+	m_state->AttachTarget(target_character);
 }
 
-void Zombie::CalcAttackIntervalTime()
+void Zombie::DetachTarget()
 {
-	math::Decrease(m_attack_interval_timer, GetDeltaTime(), 0.0f);
+	m_state->DetachTarget();
 }
 
 float Zombie::GetDeltaTime() const

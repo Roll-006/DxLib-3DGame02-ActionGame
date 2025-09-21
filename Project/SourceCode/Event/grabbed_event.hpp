@@ -1,7 +1,8 @@
 #pragma once
+#include "../Part/modeler.hpp"
 
 /// @brief �͂܂ꂽ
 struct GrabbedEvent
 {
-	int model_handle = -1;
+	std::shared_ptr<Modeler> modeler = nullptr;
 };

@@ -9,19 +9,15 @@ CinemaScopeFrame::CinemaScopeFrame() :
 	m_increase					(0)
 {
 	// ƒCƒxƒ“ƒg“o˜^
-	EventSystem::GetInstance()->Subscribe<StartRocketLauncherCutsceneEvent>([this](const StartRocketLauncherCutsceneEvent& event)
-	{
-		EnterFrame(event);
-	});
-	EventSystem::GetInstance()->Subscribe<EndRocketLauncherCutsceneEvent>([this](const EndRocketLauncherCutsceneEvent& event)
-	{
-		ExitFrame(event);
-	});
+	EventSystem::GetInstance()->Subscribe<StartRocketLauncherCutsceneEvent>	(this, &CinemaScopeFrame::EnterFrame);
+	EventSystem::GetInstance()->Subscribe<EndRocketLauncherCutsceneEvent>	(this, &CinemaScopeFrame::ExitFrame);
 }
 
 CinemaScopeFrame::~CinemaScopeFrame()
 {
-
+	// ƒCƒxƒ“ƒg‚Ì“o˜^‰ðœ
+	EventSystem::GetInstance()->Unsubscribe<StartRocketLauncherCutsceneEvent>	(this, &CinemaScopeFrame::EnterFrame);
+	EventSystem::GetInstance()->Unsubscribe<EndRocketLauncherCutsceneEvent>		(this, &CinemaScopeFrame::ExitFrame);
 }
 
 void CinemaScopeFrame::LateUpdate()

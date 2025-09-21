@@ -1,10 +1,10 @@
 #pragma once
 #include <DxLib.h>
-#include "../Base/one_instance_singleton_base.hpp"
+#include "../Base/single_instance_base.hpp"
 
 #include "../Part/transform.hpp"
 
-class ShadowMap final : public OneInstanceSingletonBase<ShadowMap>
+class ShadowMap final : public SingleInstanceBase<ShadowMap>
 {
 public:
 	ShadowMap(const std::shared_ptr<Transform> camera_transform);
@@ -25,5 +25,5 @@ private:
 	int m_shadow_map_handle;
 	std::shared_ptr<Transform> m_camera_transform;
 
-	friend OneInstanceSingletonBase<ShadowMap>;
+	friend SingleInstanceBase<ShadowMap>;
 };

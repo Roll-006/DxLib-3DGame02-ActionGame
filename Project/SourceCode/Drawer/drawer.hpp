@@ -1,14 +1,14 @@
 #pragma once
 #include <EffekseerForDXLib.h>
 
-#include "../Base/one_instance_singleton_base.hpp"
+#include "../Base/single_instance_base.hpp"
 #include "../Interface/i_scene.hpp"
 
 #include "../UI/ui_drawer.hpp"
 #include "../ShadowMap/shadow_map.hpp"
 #include "../Part/screen_filter.hpp"
 
-class Drawer final : public OneInstanceSingletonBase<Drawer>
+class Drawer final : public SingleInstanceBase<Drawer>
 {
 public:
 	Drawer(const std::shared_ptr<Transform> camera_transform);

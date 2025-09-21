@@ -1,8 +1,8 @@
 #pragma once
 #include <DxLib.h>
-#include "../Base/one_instance_singleton_base.hpp"
+#include "../Base/single_instance_base.hpp"
 
-class FPS final : public OneInstanceSingletonBase<FPS>
+class FPS final : public SingleInstanceBase<FPS>
 {
 public:
 	FPS();

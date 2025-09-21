@@ -2,12 +2,12 @@
 #include <cassert>
 #include <DxLib.h>
 
-#include "../Base/one_instance_singleton_base.hpp"
+#include "../Base/single_instance_base.hpp"
 
 #include "../GameTime/fps.hpp"
 #include "../Input/input_checker.hpp"
 
-class Window final : public OneInstanceSingletonBase<Window>
+class Window final : public SingleInstanceBase<Window>
 {
 public:
 	Window();

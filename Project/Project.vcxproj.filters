@@ -493,6 +493,9 @@
     <ClCompile Include="SourceCode\Shape\1DShape\point.cpp">
       <Filter>SourceCode\Shape\1DShape</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\Base\enemy_base.cpp">
+      <Filter>SourceCode\Base</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\character_base.hpp">
@@ -507,7 +510,7 @@
     <ClInclude Include="SourceCode\Base\object_pool_base.hpp">
       <Filter>SourceCode\Base</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Base\one_instance_singleton_base.hpp">
+    <ClInclude Include="SourceCode\Base\single_instance_base.hpp">
       <Filter>SourceCode\Base</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Base\physical_obj_base.hpp">
@@ -987,9 +990,6 @@
     <ClInclude Include="SourceCode\Interface\i_state_controller.hpp">
       <Filter>SourceCode\Interface</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Interface\i_enemy.hpp">
-      <Filter>SourceCode\Interface</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\Interface\i_enemy_role.hpp">
       <Filter>SourceCode\Interface</Filter>
     </ClInclude>
@@ -1313,6 +1313,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Shape\1DShape\point.hpp">
       <Filter>SourceCode\Shape\1DShape</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Base\enemy_base.hpp">
+      <Filter>SourceCode\Base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

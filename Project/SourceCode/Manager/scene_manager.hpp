@@ -8,7 +8,7 @@
 #include "../Scene/game_over_scene.hpp"
 #include "../Scene/load_scene.hpp"
 
-class SceneManager final : public OneInstanceSingletonBase<SceneManager>
+class SceneManager final : public SingleInstanceBase<SceneManager>
 {
 public:
 	SceneManager();

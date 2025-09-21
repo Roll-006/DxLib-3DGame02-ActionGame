@@ -44,8 +44,8 @@ private:
 	int								m_controller_handle;
 	bool							m_is_active;
 
-	int								m_grabber_model_handle;		// 掴む側のモデルハンドル
-	int								m_grabbed_model_handle;		// 掴まれる側のモデルハンドル
+	std::shared_ptr<Modeler>		m_grabber_modeler;		// 掴む側のモデルハンドル
+	std::shared_ptr<Modeler>		m_grabbed_modeler;		// 掴まれる側のモデルハンドル
 
 	std::shared_ptr<VirtualCamera>	m_camera;
 	std::shared_ptr<Transform>		m_aim_transform;

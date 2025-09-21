@@ -31,7 +31,7 @@ public:
 	[[nodiscard]] WeaponKind					GetCurrentHeldWeaponKind();
 	[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentAttachWeapon		(const HolsterKind holster_kind)	const;
 	[[nodiscard]] WeaponKind					GetCurrentAttachWeaponKind	(const HolsterKind holster_kind)	const;
-	[[nodiscard]] std::shared_ptr<Health>&	GetHealth				(const HealthPartKind kind);
+	[[nodiscard]] std::shared_ptr<Health>&		GetHealth					(const HealthPartKind kind);
 	#pragma endregion
 
 

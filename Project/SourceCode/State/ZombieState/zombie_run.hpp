@@ -4,6 +4,8 @@
 #include "../../Object/zombie.hpp"
 #include "../../Part/zombie_state_controller.hpp"
 
+class Zombie;
+
 namespace zombie_state
 {
 	class Run final : public ActionStateBase<Zombie>

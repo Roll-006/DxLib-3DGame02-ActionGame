@@ -1,19 +1,18 @@
 #pragma once
 #include <cassert>
 
-/// @brief インスタンスの生成が1つに限られるシングルトンの基底クラス
-/// @brief GetInstanceを禁止
+/// @brief インスタンスの生成が1つに制限する基底クラス
 template<typename T>
-class OneInstanceSingletonBase abstract
+class SingleInstanceBase abstract
 {
 public:
-	OneInstanceSingletonBase()
+	SingleInstanceBase()
 	{
 		assert(m_instance == nullptr);
 		m_instance = static_cast<T*>(this);
 	}
 	
-	~OneInstanceSingletonBase()
+	~SingleInstanceBase()
 	{
 		if (m_instance != nullptr)
 		{
@@ -27,4 +26,4 @@ private:
 };
 
 template<typename T>
-T* OneInstanceSingletonBase<T>::m_instance = nullptr;
+T* SingleInstanceBase<T>::m_instance = nullptr;

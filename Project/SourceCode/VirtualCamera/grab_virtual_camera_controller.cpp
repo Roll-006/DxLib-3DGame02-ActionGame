@@ -4,22 +4,16 @@
 
 GrabVirtualCameraController::GrabVirtualCameraController() :
 	m_virtual_camera_controller_kind(VirtualCameraControllerKind::kGrabCutscene),
-	m_controller_handle				(HandleCreator::GetInstance()->CreateHandle()),
-	m_is_active						(true),
-	m_grabber_model_handle			(-1),
-	m_grabbed_model_handle			(-1),
-	m_camera						(std::make_shared<VirtualCamera>(ObjName.ROCKET_LAUNCHER_ENTER_ROT_VIRTUAL_CAMERA,	BlendActivationPolicyKind::kDeactivateAllCamera)),
-	m_aim_transform					(std::make_shared<Transform>())
+	m_controller_handle	(HandleCreator::GetInstance()->CreateHandle()),
+	m_is_active			(true),
+	m_grabber_modeler	(nullptr),
+	m_grabbed_modeler	(nullptr),
+	m_camera			(std::make_shared<VirtualCamera>(ObjName.ROCKET_LAUNCHER_ENTER_ROT_VIRTUAL_CAMERA,	BlendActivationPolicyKind::kDeactivateAllCamera)),
+	m_aim_transform		(std::make_shared<Transform>())
 {
 	// イベント登録
-	EventSystem::GetInstance()->Subscribe<GrabEvent>	([this](const GrabEvent&	event)
-	{
-		SetGrabberModelHandle(event);
-	});
-	EventSystem::GetInstance()->Subscribe<GrabbedEvent>	([this](const GrabbedEvent& event)
-	{
-		SetGrabbedModelHandle(event);
-	});
+	EventSystem::GetInstance()->Subscribe<GrabEvent>	(this, &GrabVirtualCameraController::SetGrabberModelHandle);
+	EventSystem::GetInstance()->Subscribe<GrabbedEvent>	(this, &GrabVirtualCameraController::SetGrabbedModelHandle);
 
 	// パラメータ設定
 	SetupCamera();	
@@ -33,6 +27,10 @@ GrabVirtualCameraController::GrabVirtualCameraController() :
 
 GrabVirtualCameraController::~GrabVirtualCameraController()
 {
+	// イベントの登録解除
+	EventSystem::GetInstance()->Unsubscribe<GrabEvent>		(this, &GrabVirtualCameraController::SetGrabberModelHandle);
+	EventSystem::GetInstance()->Unsubscribe<GrabbedEvent>	(this, &GrabVirtualCameraController::SetGrabbedModelHandle);
+
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	cinemachine_brain->RemoveVirtualCamera(m_camera->GetCameraHandle());
 
@@ -41,6 +39,9 @@ GrabVirtualCameraController::~GrabVirtualCameraController()
 	cinemachine_brain->SetBlendTime(1.0f);
 	control_cameras_controller->Activate();
 	control_cameras_controller->GetHaveVirtualCamera(ObjName.ROT_CONTROL_VIRTUAL_CAMERA)->Activate();
+
+	m_grabber_modeler = nullptr;
+	m_grabbed_modeler = nullptr;
 
 	// 演出が終了したことを通知
 	const EndGrabCutsceneEvent event{};
@@ -68,12 +69,12 @@ void GrabVirtualCameraController::LateUpdate()
 #pragma region Event
 void GrabVirtualCameraController::SetGrabberModelHandle(const GrabEvent& event)
 {
-	m_grabber_model_handle = event.model_handle;
+	m_grabber_modeler = event.modeler;
 }
 
 void GrabVirtualCameraController::SetGrabbedModelHandle(const GrabbedEvent& event)
 {
-	m_grabbed_model_handle = event.model_handle;
+	m_grabbed_modeler = event.modeler;
 }
 #pragma endregion
 
@@ -116,10 +117,10 @@ void GrabVirtualCameraController::SetupCamera()
 #pragma region 起点トランスフォームの計算
 void GrabVirtualCameraController::CalcAimTransform()
 {
-	if (m_grabber_model_handle == -1 || m_grabbed_model_handle == -1) { return; }
+	if (!m_grabber_modeler || !m_grabbed_modeler) { return; }
 
-	auto	   grabber_m	= MV1GetFrameLocalWorldMatrix(m_grabber_model_handle, MV1SearchFrame(m_grabber_model_handle, BonePath.HEAD_TOP_END));
-	auto	   grabbed_m	= MV1GetFrameLocalWorldMatrix(m_grabbed_model_handle, MV1SearchFrame(m_grabber_model_handle, BonePath.HEAD_TOP_END));
+	auto	   grabber_m	= MV1GetFrameLocalWorldMatrix(m_grabber_modeler->GetModelHandle(), MV1SearchFrame(m_grabber_modeler->GetModelHandle(), BonePath.HEAD_TOP_END));
+	auto	   grabbed_m	= MV1GetFrameLocalWorldMatrix(m_grabbed_modeler->GetModelHandle(), MV1SearchFrame(m_grabbed_modeler->GetModelHandle(), BonePath.HEAD_TOP_END));
 	const auto grabber_pos	= MGetTranslateElem(grabber_m);
 	const auto grabbed_pos	= MGetTranslateElem(grabbed_m);
 	const auto grabbed_axes = math::ConvertRotMatrixToAxes(grabbed_m);

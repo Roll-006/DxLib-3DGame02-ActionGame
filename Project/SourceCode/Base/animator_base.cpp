@@ -244,7 +244,7 @@ void AnimatorBase::DivideBone(const TCHAR* upper_body_end_bone)
 
 	// 上半身のボーンを設定
 	const auto begin_upper_body_bone_num = MV1SearchFrame(model_handle, upper_body_end_bone);
-	const auto   end_upper_body_bone_num = MV1SearchFrame(model_handle, BonePath.HEAD_TOP_END);
+	const auto   end_upper_body_bone_num = MV1SearchFrame(model_handle, BonePath.HEAD_TOP_END_END);
 	for (int i = begin_upper_body_bone_num; i <= end_upper_body_bone_num; ++i)
 	{
 		m_bone_numbers[BodyKind::kUpperBody][MV1GetFrameName(model_handle, i)] = i;

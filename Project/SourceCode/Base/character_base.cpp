@@ -2,17 +2,17 @@
 
 #pragma region ïêäÌ
 CharacterBase::CharacterBase(const std::string& name, const std::string& tag, const MassKind mass_level_kind) : 
-	PhysicalObjBase					(name, tag, mass_level_kind),
-	m_modeler						(nullptr),
-	m_animator						(nullptr),
-	m_collider_creator				(std::make_shared<CharacterColliderCreator>()),
-	m_move_speed					(0.0f),
-	m_move_dir_offset_speed			(0.0f),
-	m_destination_pos				(v3d::GetZeroV()),
-	m_current_held_weapon			(nullptr),
-	m_invincible_time				(0.0f),
-	m_invincible_timer				(0.0f),
-	m_is_invincible					(false)
+	PhysicalObjBase			(name, tag, mass_level_kind),
+	m_modeler				(nullptr),
+	m_animator				(nullptr),
+	m_collider_creator		(std::make_shared<CharacterColliderCreator>()),
+	m_move_speed			(0.0f),
+	m_move_dir_offset_speed	(0.0f),
+	m_destination_pos		(v3d::GetZeroV()),
+	m_current_held_weapon	(nullptr),
+	m_invincible_time		(0.0f),
+	m_invincible_timer		(0.0f),
+	m_is_invincible			(false)
 {
 		
 }

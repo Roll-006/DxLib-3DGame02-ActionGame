@@ -1,10 +1,12 @@
 #pragma once
 #include <vector>
-#include "../Interface/i_enemy.hpp"
+
+#include "../Event/event_system.hpp"
+#include "../Object/zombie.hpp"
 
 // MEMO : 「責務」
 // 掴み中は他エネミーに行動停止命令を送る
-// 
+// ターゲットの設定
 
 class EnemyManager final
 {
@@ -12,6 +14,21 @@ public:
 	EnemyManager();
 	~EnemyManager();
 
+	void Init();
+	void Update();
+	void LateUpdate();
+	void DrawToShadowMap()	const;
+	void Draw()				const;
+
+	void AddToObjManager();
+	void RemoveToObjManager();
+
+	void AttachTarget(const std::shared_ptr<CharacterBase> target_character);
+	void DetachTarget();
+	
 private:
-	std::vector<IEnemy> m_enemies;
+	void NotifyStopActionForcibly();
+
+private:
+	std::vector<std::shared_ptr<EnemyBase>> m_enemies;
 };

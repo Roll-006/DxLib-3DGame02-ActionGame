@@ -12,19 +12,15 @@ TimeScaleController::TimeScaleController() :
 	m_current_time_scale = m_next_time_scale;
 
 	// ƒCƒxƒ“ƒg“o˜^
-	EventSystem::GetInstance()->Subscribe<StartRocketLauncherCutsceneEvent>([this](const StartRocketLauncherCutsceneEvent& event)
-	{
-		SetStartRocketLauncherCutsceneTimeScale(event);
-	});
-	EventSystem::GetInstance()->Subscribe<EndRocketLauncherCutsceneEvent>  ([this](const EndRocketLauncherCutsceneEvent&   event)
-	{
-		SetEndRocketLauncherCutsceneTimeScale(event);
-	});
+	EventSystem::GetInstance()->Subscribe<StartRocketLauncherCutsceneEvent>	(this, &TimeScaleController::SetStartRocketLauncherCutsceneTimeScale);
+	EventSystem::GetInstance()->Subscribe<EndRocketLauncherCutsceneEvent>	(this, &TimeScaleController::SetEndRocketLauncherCutsceneTimeScale);
 }
 
 TimeScaleController::~TimeScaleController()
 {
-
+	// ƒCƒxƒ“ƒg‚Ì“o˜^‰ðœ
+	EventSystem::GetInstance()->Unsubscribe<StartRocketLauncherCutsceneEvent>	(this, &TimeScaleController::SetStartRocketLauncherCutsceneTimeScale);
+	EventSystem::GetInstance()->Unsubscribe<EndRocketLauncherCutsceneEvent>		(this, &TimeScaleController::SetEndRocketLauncherCutsceneTimeScale);
 }
 
 void TimeScaleController::Update()

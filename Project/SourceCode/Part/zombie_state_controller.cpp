@@ -2,8 +2,6 @@
 
 ZombieStateController::ZombieStateController()
 {
-	AttachTarget(ObjManager::GetInstance()->GetObj<CharacterBase>(ObjName.PLAYER));
-
 	CreateState();
 	AddCheckStopState();
 	AddStopStatePair();
@@ -295,6 +293,7 @@ bool ZombieStateController::TryRun(std::shared_ptr<Zombie> zombie)
 	const auto target_pos	= m_target_character->GetTransform()->GetPos(CoordinateKind::kWorld);
 	const auto distance		= VSize(pos - target_pos);
 
+	// TODO : Œã‚É’è”‰»
 	return distance > 160.0f;
 }
 

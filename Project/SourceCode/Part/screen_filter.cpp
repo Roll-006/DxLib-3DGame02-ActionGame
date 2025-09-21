@@ -11,22 +11,10 @@ ScreenFilter::ScreenFilter() :
 	m_near_death_blinking_sin	(0.0f)
 {
 	// ƒCƒxƒ“ƒg“o˜^
-	EventSystem::GetInstance()->Subscribe<EnterNearDeathEvent>			([this](const EnterNearDeathEvent&			event)
-	{
-		SetNearDeathFilter(event);
-	});
-	EventSystem::GetInstance()->Subscribe<OnSelectNormalFilterEvent>	([this](const OnSelectNormalFilterEvent&		event)
-	{
-		SetNormalFilter(event);
-	});
-	EventSystem::GetInstance()->Subscribe<OnSelectCinematicFilterEvent>	([this](const OnSelectCinematicFilterEvent&	event)
-	{
-		SetCinematicFilter(event);
-	});
-	EventSystem::GetInstance()->Subscribe<OnSelectRetroFilterEvent>		([this](const OnSelectRetroFilterEvent&		event)
-	{
-		SetRetroFilter(event);
-	});
+	EventSystem::GetInstance()->Subscribe<EnterNearDeathEvent>			(this, &ScreenFilter::SetNearDeathFilter);
+	EventSystem::GetInstance()->Subscribe<OnSelectNormalFilterEvent>	(this, &ScreenFilter::SetNormalFilter);
+	EventSystem::GetInstance()->Subscribe<OnSelectCinematicFilterEvent>	(this, &ScreenFilter::SetCinematicFilter);
+	EventSystem::GetInstance()->Subscribe<OnSelectRetroFilterEvent>		(this, &ScreenFilter::SetRetroFilter);
 
 	// Šî‘bƒtƒBƒ‹ƒ^[“o˜^
 	m_basis_filters[BasisFilterKind::kNormal]	 = [this]() { UseNormalFilter();	};
@@ -37,7 +25,11 @@ ScreenFilter::ScreenFilter() :
 
 ScreenFilter::~ScreenFilter()
 {
-
+	// ƒCƒxƒ“ƒg‚Ì“o˜^‰ðœ
+	EventSystem::GetInstance()->Unsubscribe<EnterNearDeathEvent>			(this, &ScreenFilter::SetNearDeathFilter);
+	EventSystem::GetInstance()->Unsubscribe<OnSelectNormalFilterEvent>		(this, &ScreenFilter::SetNormalFilter);
+	EventSystem::GetInstance()->Unsubscribe<OnSelectCinematicFilterEvent>	(this, &ScreenFilter::SetCinematicFilter);
+	EventSystem::GetInstance()->Unsubscribe<OnSelectRetroFilterEvent>		(this, &ScreenFilter::SetRetroFilter);
 }
 
 void ScreenFilter::Update()
