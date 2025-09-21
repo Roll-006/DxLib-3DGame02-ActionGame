@@ -79,7 +79,8 @@ void Zombie::LateUpdate()
 
 	m_state->LateUpdate(std::static_pointer_cast<Zombie>(shared_from_this()));
 
-	m_can_grab_target = false;
+	m_can_grab_target	 = false;
+	m_is_target_in_sight = false;
 }
 
 void Zombie::DrawToShadowMap() const
@@ -131,6 +132,12 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	case ColliderKind::kLandingTrigger:
 		m_is_landing = true;
 		break;
+
+	case ColliderKind::kVisionTrigger:
+		if (target_collider_kind == ColliderKind::kVisibleTrigger)
+		{
+			m_is_target_in_sight = true;
+		}
 
 	case ColliderKind::kCollider:
 		// ロケット弾着弾時の爆発エフェクトとの衝突
@@ -264,25 +271,6 @@ void Zombie::SetAttackIntervalTime()
 void Zombie::CalcAttackIntervalTime()
 {
 	math::Decrease(m_attack_interval_timer, GetDeltaTime(), 0.0f);
-}
-
-bool Zombie::IsTargetInSight(const int target_model_handle)
-{
-	auto	   target_head_mat = MV1GetFrameLocalWorldMatrix(target_model_handle, MV1SearchFrame(target_model_handle, BonePath.HEAD));
-	const auto target_head_pos = MGetTranslateElem(target_head_mat);
-
-	// 頭部を基準に円錐状の視界を作り出す
-	auto	   head_mat		= MV1GetFrameLocalWorldMatrix(m_modeler->GetModelHandle(), MV1SearchFrame(m_modeler->GetModelHandle(), BonePath.HEAD));
-	const auto head_pos		= MGetTranslateElem(head_mat);
-	const auto head_axes	= math::ConvertRotMatrixToAxes(head_mat);
-
-	const auto fov			= kFOV * math::kDegToRad;
-	const auto max_distance = kVisibleDistance;
-	const auto distance_v	= target_head_pos - head_pos;
-	const auto distance		= VSize(distance_v);
-	const auto dir			= v3d::GetNormalizedV(distance_v);
-
-	return (VDot(dir, -head_axes.z_axis) > cos(fov * 0.5f)) && (distance < max_distance);
 }
 
 float Zombie::GetDeltaTime() const

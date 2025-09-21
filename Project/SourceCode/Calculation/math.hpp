@@ -16,6 +16,7 @@
 #include "../IncludeList/vector.hpp"
 #include "../GameTime/fps.hpp"
 
+class Point;
 class Line;
 class Segment;
 class Plane;

@@ -1,4 +1,5 @@
 #pragma once
+#include "../Shape/1DShape/point.hpp"
 #include "../Shape/1DShape/line.hpp"
 #include "../Shape/1DShape/segment.hpp"
 #include "../Shape/2DShape/plane.hpp"

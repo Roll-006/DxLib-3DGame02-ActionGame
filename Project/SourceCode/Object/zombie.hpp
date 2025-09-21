@@ -23,7 +23,7 @@ public:
 	void SetAttackIntervalTime() override;
 	void CalcAttackIntervalTime() override;
 
-	[[nodiscard]] bool IsTargetInSight(const int target_model_handle) override;
+	[[nodiscard]] bool IsTargetInSight() const override { return m_is_target_in_sight; }
 	[[nodiscard]] bool CanAttack() const override { return m_attack_interval_timer <= 0.0f; }
 	[[nodiscard]] bool CanGrabTraget() const { return m_can_grab_target; }
 
@@ -84,4 +84,5 @@ private:
 
 	float m_attack_interval_timer;
 	bool  m_can_grab_target;
+	bool  m_is_target_in_sight;
 };

@@ -13,6 +13,7 @@ namespace collision
     /// @brief WARNING : 完全な点なため誤差が生じる可能性あり
     /// @param intersection 交点を格納
     /// @return true : 衝突, false : 非衝突
+    [[nodiscard]] bool IsCollidedPointAndLine            (const Point&       point,          const Line&         line,           std::optional<VECTOR>& intersection);
     [[nodiscard]] bool IsCollidedPointAndLine            (const VECTOR&      point,          const Line&         line,           std::optional<VECTOR>& intersection);
     [[nodiscard]] bool IsCollidedPointAndLine            (const VECTOR&      point,          const Line&         line);
 
@@ -20,6 +21,7 @@ namespace collision
     /// @brief WARNING : 完全な点なため誤差が生じる可能性あり
     /// @param intersection 交点を格納
     /// @return true : 衝突, false : 非衝突
+    [[nodiscard]] bool IsCollidedPointAndSegment         (const Point&       point,          const Segment&      segment,        std::optional<VECTOR>& intersection);
     [[nodiscard]] bool IsCollidedPointAndSegment         (const VECTOR&      point,          const Segment&      segment,        std::optional<VECTOR>& intersection);
     [[nodiscard]] bool IsCollidedPointAndSegment         (const VECTOR&      point,          const Segment&      segment);
 
@@ -27,6 +29,7 @@ namespace collision
     /// @brief WARNING : 完全な点なため誤差が生じる可能性あり
     /// @param intersection 交点を格納
     /// @return true : 衝突, false : 非衝突
+    [[nodiscard]] bool IsCollidedPointAndPlane           (const Point&      point,          const Plane&        plane,          std::optional<VECTOR>& intersection);
     [[nodiscard]] bool IsCollidedPointAndPlane           (const VECTOR&      point,          const Plane&        plane,          std::optional<VECTOR>& intersection);
     [[nodiscard]] bool IsCollidedPointAndPlane           (const VECTOR&      point,          const Plane&        plane);
 
@@ -34,20 +37,30 @@ namespace collision
     /// @brief WARNING : 完全な点なため誤差が生じる可能性あり
     /// @param intersection 交点を格納
     /// @return true : 衝突, false : 非衝突
+    [[nodiscard]] bool IsCollidedPointAndTriangle        (const Point&       point,          const Triangle&     triangle,       std::optional<VECTOR>& intersection);
     [[nodiscard]] bool IsCollidedPointAndTriangle        (const VECTOR&      point,          const Triangle&     triangle,       std::optional<VECTOR>& intersection);
     [[nodiscard]] bool IsCollidedPointAndTriangle        (const VECTOR&      point,          const Triangle&     triangle);
 
     /// @brief 点と四角形の衝突判定
     /// @param intersection 交点を格納
     /// @return true : 衝突, false : 非衝突
+    [[nodiscard]] bool IsCollidedPointAndSquare          (const Point&       point,          const Square&       square,         std::optional<VECTOR>& intersection);
     [[nodiscard]] bool IsCollidedPointAndSquare          (const VECTOR&      point,          const Square&       square,         std::optional<VECTOR>& intersection);
     [[nodiscard]] bool IsCollidedPointAndSquare          (const VECTOR&      point,          const Square&       square);
 
     /// @brief 点とカプセルの衝突判定
     /// @param intersection 交点を格納
     /// @return true : 衝突, false : 非衝突
+    [[nodiscard]] bool IsCollidedPointAndCapsule         (const Point&       point,          const Capsule&      capsule,        std::optional<VECTOR>& intersection);
     [[nodiscard]] bool IsCollidedPointAndCapsule         (const VECTOR&      point,          const Capsule&      capsule,        std::optional<VECTOR>& intersection);
     [[nodiscard]] bool IsCollidedPointAndCapsule         (const VECTOR&      point,          const Capsule&      capsule);
+
+    /// @brief 点と円錐の衝突判定(内包する場合も含む)
+    /// @param intersection 交点を格納
+    /// @return true : 衝突, false : 非衝突
+    [[nodiscard]] bool IsCollidedPointAndCone            (const Point&       point,          const Cone&         cone,           std::optional<VECTOR>& intersection);
+    [[nodiscard]] bool IsCollidedPointAndCone            (const VECTOR&      point,          const Cone&         cone,           std::optional<VECTOR>& intersection);
+    [[nodiscard]] bool IsCollidedPointAndCone            (const VECTOR&      point,          const Cone&         cone);
 
     /// @brief 直線と直線の衝突判定
     /// @param intersection 未実装

@@ -2,6 +2,10 @@
 
 #pragma region 衝突判定
 /// @brief 点と直線の衝突判定
+bool collision::IsCollidedPointAndLine           (const Point&       point,          const Line&         line,           std::optional<VECTOR>& intersection)
+{
+    return IsCollidedPointAndLine(point.GetPos(), line, intersection);
+}
 bool collision::IsCollidedPointAndLine           (const VECTOR&      point,          const Line&         line,           std::optional<VECTOR>& intersection)
 {
     const bool is_hit = math::GetDistancePointToLine(point, line) < math::kEpsilonLow;
@@ -18,6 +22,10 @@ bool collision::IsCollidedPointAndLine           (const VECTOR&      point,     
 }
 
 /// @brief 点と線分の衝突判定
+bool collision::IsCollidedPointAndSegment        (const Point&       point,          const Segment&      segment,        std::optional<VECTOR>& intersection)
+{
+    return IsCollidedPointAndSegment(point.GetPos(), segment, intersection);
+}
 bool collision::IsCollidedPointAndSegment        (const VECTOR&      point,          const Segment&      segment,        std::optional<VECTOR>& intersection)
 {
     const bool is_hit = math::GetDistancePointToSegment(point, segment) < math::kEpsilonLow;
@@ -34,6 +42,10 @@ bool collision::IsCollidedPointAndSegment        (const VECTOR&      point,     
 }
 
 /// @brief 点と平面(無限に広がる面)の衝突判定
+bool collision::IsCollidedPointAndPlane          (const Point&       point,          const Plane&        plane,          std::optional<VECTOR>& intersection)
+{
+    return IsCollidedPointAndPlane(point.GetPos(), plane, intersection);
+}
 bool collision::IsCollidedPointAndPlane          (const VECTOR&      point,          const Plane&        plane,          std::optional<VECTOR>& intersection)
 {
     const bool is_hit = math::GetDistancePointToPlane(point, plane) < math::kEpsilonLow;
@@ -50,6 +62,10 @@ bool collision::IsCollidedPointAndPlane          (const VECTOR&      point,     
 }
 
 /// @brief 点と三角形の衝突判定
+bool collision::IsCollidedPointAndTriangle       (const Point&       point,          const Triangle&     triangle,       std::optional<VECTOR>& intersection)
+{
+    return IsCollidedPointAndTriangle(point.GetPos(), triangle, intersection);
+}
 bool collision::IsCollidedPointAndTriangle       (const VECTOR&      point,          const Triangle&     triangle,       std::optional<VECTOR>& intersection)
 {
     const Plane plane = Plane(triangle.GetCentroid(), triangle.GetNormalVector());
@@ -83,6 +99,10 @@ bool collision::IsCollidedPointAndTriangle       (const VECTOR&      point,     
 }
 
 /// @brief 点と四角形の衝突判定
+bool collision::IsCollidedPointAndSquare         (const Point&       point,          const Square&       square,         std::optional<VECTOR>& intersection)
+{
+    return IsCollidedPointAndSquare(point.GetPos(), square, intersection);
+}
 bool collision::IsCollidedPointAndSquare         (const VECTOR&      point,          const Square&       square,         std::optional<VECTOR>& intersection)
 {
     const bool is_hit = IsCollidedPointAndTriangle(point, square.GetTriangle(0)) || IsCollidedPointAndTriangle(point, square.GetTriangle(1));
@@ -98,6 +118,11 @@ bool collision::IsCollidedPointAndSquare         (const VECTOR&      point,     
     return IsCollidedPointAndSquare(point, square, intersection);
 }
 
+/// @brief 点とカプセルの衝突判定
+bool collision::IsCollidedPointAndCapsule        (const Point&       point,          const Capsule&      capsule,        std::optional<VECTOR>& intersection)
+{
+    return IsCollidedPointAndCapsule(point.GetPos(), capsule, intersection);
+}
 bool collision::IsCollidedPointAndCapsule        (const VECTOR&      point,          const Capsule&      capsule,        std::optional<VECTOR>& intersection)
 {
     const float distance = math::GetDistancePointToSegment(point, capsule.GetSegment());
@@ -112,6 +137,26 @@ bool collision::IsCollidedPointAndCapsule        (const VECTOR&      point,     
     std::optional<VECTOR> intersection = std::nullopt;
 
     return IsCollidedPointAndCapsule(point, capsule, intersection);
+}
+
+/// @brief 点と円錐の衝突判定
+bool collision::IsCollidedPointAndCone           (const Point&       point,          const Cone&         cone,           std::optional<VECTOR>& intersection)
+{
+    return IsCollidedPointAndCone(point.GetPos(), cone, intersection);
+}
+bool collision::IsCollidedPointAndCone           (const VECTOR&      point,          const Cone&         cone,           std::optional<VECTOR>& intersection)
+{
+    const auto distance_v = point - cone.GetVertex();
+    const auto distance = VSize(distance_v);
+    const auto dir = v3d::GetNormalizedV(distance_v);
+
+    return (VDot(dir, cone.GetDir()) > cos(cone.GetFOV() * 0.5f)) && (distance < cone.GetLength());
+}
+bool collision::IsCollidedPointAndCone           (const VECTOR&      point,          const Cone&         cone)
+{
+    std::optional<VECTOR> intersection = std::nullopt;
+
+    return IsCollidedPointAndCone(point, cone, intersection);
 }
 
 /// @brief 直線と直線の衝突判定

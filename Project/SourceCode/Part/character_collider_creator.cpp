@@ -32,6 +32,16 @@ void CharacterColliderCreator::CreateVisionTrigger(PhysicalObjBase* physical_obj
 	CalcVisionTriggerPos(modeler, physical_obj->GetColliderAll());
 }
 
+void CharacterColliderCreator::CreateVisibleTrigger(PhysicalObjBase* physical_obj, const std::shared_ptr<Modeler> modeler)
+{
+	auto head_m = MV1GetFrameLocalWorldMatrix(modeler->GetModelHandle(), MV1SearchFrame(modeler->GetModelHandle(), BonePath.HEAD));
+	const auto head_pos = MGetTranslateElem(head_m);
+
+	physical_obj->AddCollider(std::make_shared<Collider>(ColliderKind::kVisibleTrigger, std::make_shared<Point>(head_pos), physical_obj));
+
+	CalcVisibleTriggerPos(modeler, physical_obj->GetColliderAll());
+}
+
 void CharacterColliderCreator::CreateHeadTrigger(PhysicalObjBase* physical_obj, const std::shared_ptr<Modeler> modeler, const float sphere_radius)
 {
 	auto head_m		= MV1GetFrameLocalWorldMatrix(modeler->GetModelHandle(), MV1SearchFrame(modeler->GetModelHandle(), BonePath.HEAD));
@@ -107,6 +117,19 @@ void CharacterColliderCreator::CalcVisionTriggerPos(std::shared_ptr<Modeler> mod
 	const auto cone = std::static_pointer_cast<Cone>(collider.at(ColliderKind::kVisionTrigger)->GetShape());
 	cone->SetDir(-head_axes.z_axis);
 	cone->SetVertex(head_pos);
+}
+
+void CharacterColliderCreator::CalcVisibleTriggerPos(std::shared_ptr<Modeler> modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>> collider)
+{
+	modeler->ApplyMatrix();
+	const auto model_handle = modeler->GetModelHandle();
+
+	// ˆÊ’u‚ðŽæ“¾
+	auto head_m = MV1GetFrameLocalWorldMatrix(modeler->GetModelHandle(), MV1SearchFrame(modeler->GetModelHandle(), BonePath.HEAD));
+	const auto head_pos = MGetTranslateElem(head_m);
+
+	const auto cone = std::static_pointer_cast<Point>(collider.at(ColliderKind::kVisibleTrigger)->GetShape());
+	cone->SetPos(head_pos);
 }
 
 void CharacterColliderCreator::CalcHeadTriggerPos(std::shared_ptr<Modeler> modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>> collider)

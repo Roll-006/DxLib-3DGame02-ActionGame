@@ -222,6 +222,7 @@
     <ClCompile Include="SourceCode\Scene\share_scene.cpp" />
     <ClCompile Include="SourceCode\Scene\title_scene.cpp" />
     <ClCompile Include="SourceCode\ShadowMap\shadow_map.cpp" />
+    <ClCompile Include="SourceCode\Shape\1DShape\point.cpp" />
     <ClCompile Include="SourceCode\Shape\1DShape\line.cpp" />
     <ClCompile Include="SourceCode\Shape\1DShape\segment.cpp" />
     <ClCompile Include="SourceCode\Shape\2DShape\capsule2D.cpp" />
@@ -494,6 +495,7 @@
     <ClInclude Include="SourceCode\Scene\share_scene.hpp" />
     <ClInclude Include="SourceCode\Scene\title_scene.hpp" />
     <ClInclude Include="SourceCode\ShadowMap\shadow_map.hpp" />
+    <ClInclude Include="SourceCode\Shape\1DShape\point.hpp" />
     <ClInclude Include="SourceCode\Shape\1DShape\line.hpp" />
     <ClInclude Include="SourceCode\Shape\1DShape\segment.hpp" />
     <ClInclude Include="SourceCode\Shape\2DShape\capsule2D.hpp" />

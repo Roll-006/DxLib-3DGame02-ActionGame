@@ -55,6 +55,7 @@ private:
 
 	#pragma region è’ìÀîªíË
 	bool IsCollided					(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection);
+	bool IsCollidedPointAndTarget	(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection);
 	bool IsCollidedLineAndTarget	(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection);
 	bool IsCollidedSegmentAndTarget	(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection);
 	bool IsCollidedPlaneAndTarget	(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection);

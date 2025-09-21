@@ -490,6 +490,9 @@
     <ClCompile Include="SourceCode\Shape\3DShape\cone.cpp">
       <Filter>SourceCode\Shape\3DShape</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\Shape\1DShape\point.cpp">
+      <Filter>SourceCode\Shape\1DShape</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\character_base.hpp">
@@ -1307,6 +1310,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Shape\3DShape\cone.hpp">
       <Filter>SourceCode\Shape\3DShape</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Shape\1DShape\point.hpp">
+      <Filter>SourceCode\Shape\1DShape</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

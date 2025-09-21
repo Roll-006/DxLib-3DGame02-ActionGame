@@ -18,6 +18,9 @@ public:
 	/// @brief 視界用トリガーを生成
 	void CreateVisionTrigger	(PhysicalObjBase* physical_obj, const std::shared_ptr<Modeler> modeler, const float lenfth, const float fov);
 
+	/// @brief 視認判定を受けるトリガーを生成
+	void CreateVisibleTrigger	(PhysicalObjBase* physical_obj, const std::shared_ptr<Modeler> modeler);
+
 	/// @brief 頭部トリガーを生成
 	void CreateHeadTrigger		(PhysicalObjBase* physical_obj, const std::shared_ptr<Modeler> modeler, const float sphere_radius);
 	
@@ -39,6 +42,10 @@ public:
 	/// @brief 視界用トリガーの位置を計算
 	/// @brief WARNING : トリガーが円錐であることを前提としている(軽量化を優先)
 	void CalcVisionTriggerPos	(std::shared_ptr<Modeler> modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>> collider);
+
+	/// @brief 視認判定を受けるトリガーの位置を計算
+	/// @brief WARNING : トリガーが点であることを前提としている(軽量化を優先)
+	void CalcVisibleTriggerPos	(std::shared_ptr<Modeler> modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>> collider);
 
 	/// @brief 頭部トリガーの位置を計算
 	/// @brief WARNING : トリガーがカプセルであることを前提としている(軽量化を優先)

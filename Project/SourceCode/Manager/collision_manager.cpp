@@ -128,17 +128,17 @@ void CollisionManager::SetIgnoreColliderPairs()
 	
 	// íeä€ånìùÇ™ñ≥éãÇ∑ÇÈÉRÉâÉCÉ_Å[
 	AddIgnoreColliderPair(bullet_data, bullet_data);
-	AddIgnoreColliderPair(bullet_data,			{ "",				ColliderKind::kLandingTrigger	});
-	AddIgnoreColliderPair(bullet_data,			{ "",				ColliderKind::kAttackTrigger	});
-	AddIgnoreColliderPair(bullet_data,			{ "",				ColliderKind::kRayCast			});
-	AddIgnoreColliderPair(bullet_data,			{ ObjTag.PLAYER,	ColliderKind::kCollider			});
-	AddIgnoreColliderPair(bullet_data,			{ ObjTag.ENEMY,		ColliderKind::kCollider			});
+	AddIgnoreColliderPair(bullet_data,	{ "",				ColliderKind::kLandingTrigger	});
+	AddIgnoreColliderPair(bullet_data,	{ "",				ColliderKind::kAttackTrigger	});
+	AddIgnoreColliderPair(bullet_data,	{ "",				ColliderKind::kRayCast			});
+	AddIgnoreColliderPair(bullet_data,	{ ObjTag.PLAYER,	ColliderKind::kCollider			});
+	AddIgnoreColliderPair(bullet_data,	{ ObjTag.ENEMY,		ColliderKind::kCollider			});
 
 	// ñÚ‰∞ånìùÇ™ñ≥éãÇ∑ÇÈÉRÉâÉCÉ_Å[
 	AddIgnoreColliderPair(shell_casing_data, shell_casing_data);
-	AddIgnoreColliderPair(shell_casing_data,	{ "",				ColliderKind::kAttackTrigger	});
-	AddIgnoreColliderPair(shell_casing_data,	{ ObjTag.PLAYER,	ColliderKind::kNone				});
-	AddIgnoreColliderPair(shell_casing_data,	{ ObjTag.ENEMY,		ColliderKind::kNone				});
+	AddIgnoreColliderPair(shell_casing_data,{ "",				ColliderKind::kAttackTrigger	});
+	AddIgnoreColliderPair(shell_casing_data,{ ObjTag.PLAYER,	ColliderKind::kNone				});
+	AddIgnoreColliderPair(shell_casing_data,{ ObjTag.ENEMY,		ColliderKind::kNone				});
 }
 
 bool CollisionManager::CanCollideObjAndObj(const std::shared_ptr<PhysicalObjBase> owner_obj, const std::shared_ptr<PhysicalObjBase> target_obj)
@@ -308,15 +308,57 @@ bool CollisionManager::IsCollided					(Collider& owner_collider, const Collider&
 
 	switch (shape->GetShapeKind())
 	{
+	case ShapeKind::kPoint:		return IsCollidedPointAndTarget		(owner_collider, target_collider, intersection);
 	case ShapeKind::kLine:		return IsCollidedLineAndTarget		(owner_collider, target_collider, intersection);
 	case ShapeKind::kSegment:	return IsCollidedSegmentAndTarget	(owner_collider, target_collider, intersection);
 	case ShapeKind::kPlane:		return IsCollidedPlaneAndTarget		(owner_collider, target_collider, intersection);
 	case ShapeKind::kTriangle:	return IsCollidedTriangleAndTarget	(owner_collider, target_collider, intersection);
-	case ShapeKind::kSquare:	return IsCollidedSquareAndTarget		(owner_collider, target_collider, intersection);
+	case ShapeKind::kSquare:	return IsCollidedSquareAndTarget	(owner_collider, target_collider, intersection);
 	case ShapeKind::kAABB:		return IsCollidedAABBAndTarget		(owner_collider, target_collider, intersection);
 	case ShapeKind::kOBB:		return IsCollidedOBBAndTarget		(owner_collider, target_collider, intersection);
-	case ShapeKind::kSphere:	return IsCollidedSphereAndTarget		(owner_collider, target_collider, intersection);
+	case ShapeKind::kSphere:	return IsCollidedSphereAndTarget	(owner_collider, target_collider, intersection);
 	case ShapeKind::kCapsule:	return IsCollidedCapsuleAndTarget	(owner_collider, target_collider, intersection);
+
+	default:
+		break;
+	}
+
+	return false;
+}
+
+bool CollisionManager::IsCollidedPointAndTarget		(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection)
+{
+	const auto target_shape = target_collider.GetShape();
+	const auto owner_shape	= *std::static_pointer_cast<Point>(owner_collider.GetShape());
+
+	// ê}å`ÇÃìoò^Ç™Ç≥ÇÍÇƒÇ¢Ç»Ç¢èÍçáÇÕÉÇÉfÉãÇ≈îªíËÇçsÇ§
+	if (target_shape == nullptr)
+	{
+		return false;
+	}
+
+	switch (target_shape->GetShapeKind())
+	{
+	case ShapeKind::kLine:
+		return collision::IsCollidedPointAndLine	(owner_shape, *std::static_pointer_cast<Line>		(target_shape), intersection);
+
+	case ShapeKind::kSegment:
+		return collision::IsCollidedPointAndSegment	(owner_shape, *std::static_pointer_cast<Segment>	(target_shape), intersection);
+
+	case ShapeKind::kPlane:
+		return collision::IsCollidedPointAndPlane	(owner_shape, *std::static_pointer_cast<Plane>		(target_shape), intersection);
+
+	case ShapeKind::kTriangle:
+		return collision::IsCollidedPointAndTriangle(owner_shape, *std::static_pointer_cast<Triangle>	(target_shape), intersection);
+
+	case ShapeKind::kSquare:
+		return collision::IsCollidedPointAndSquare	(owner_shape, *std::static_pointer_cast<Square>		(target_shape), intersection);
+
+	case ShapeKind::kCapsule:
+		return collision::IsCollidedPointAndCapsule	(owner_shape, *std::static_pointer_cast<Capsule>	(target_shape), intersection);
+
+	case ShapeKind::kCone:
+		return collision::IsCollidedPointAndCone	(owner_shape, *std::static_pointer_cast<Cone>		(target_shape), intersection);
 
 	default:
 		break;

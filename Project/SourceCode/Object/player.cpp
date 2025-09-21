@@ -33,6 +33,7 @@ Player::Player() :
 	// コライダー・トリガーを設定
 	m_collider_creator->CreateCapsuleCollider	(this, m_modeler, kCapsuleRadius);
 	m_collider_creator->CreateLandingTrigger	(this, kLandingTriggerRadius);
+	m_collider_creator->CreateVisibleTrigger	(this, m_modeler);
 
 
 	// TODO : 仮後に変更
@@ -113,7 +114,8 @@ void Player::Update()
 	CalcLookDir();
 	CalcMoveVelocity();
 
-	m_collider_creator->CalcCapsuleColliderDirAndLength(m_modeler, m_collider, m_transform);
+	m_collider_creator->CalcCapsuleColliderDirAndLength	(m_modeler, m_collider, m_transform);
+	m_collider_creator->CalcVisibleTriggerPos			(m_modeler, m_collider);
 
 	ApplyLookDirToRot(m_look_dir.at(TimeKind::kCurrent));
 }
