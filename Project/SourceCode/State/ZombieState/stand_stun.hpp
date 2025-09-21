@@ -20,6 +20,8 @@ namespace zombie_state
 		[[nodiscard]] std::shared_ptr<IState<Zombie>> ChangeState(std::shared_ptr<Zombie> obj) override;
 
 	private:
-		
+		static constexpr float kStunTime = 5.0f;
+
+		float m_stun_timer;
 	};
 }

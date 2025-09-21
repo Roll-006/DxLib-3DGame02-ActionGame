@@ -966,9 +966,6 @@
     <ClInclude Include="SourceCode\Part\zombie_animator.hpp">
       <Filter>SourceCode\Part</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Part\zombie_state_controller.hpp">
-      <Filter>SourceCode\Part</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\Part\health.hpp">
       <Filter>SourceCode\Part</Filter>
     </ClInclude>
@@ -1310,6 +1307,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\State\ZombieState\crouch_right_stun.hpp">
       <Filter>SourceCode\State\ZombieState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Part\zombie_state_controller.hpp">
+      <Filter>SourceCode\Part</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

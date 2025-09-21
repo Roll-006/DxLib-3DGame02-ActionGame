@@ -39,6 +39,7 @@ static struct AnimationPath
 	const std::string AIM_GUN							= "Data/Animation/idle_aim_gun.mv1";
 	const std::string RELOAD							= "Data/Animation/crouch_reload.mv1";
 	const std::string GRAB								= "Data/Animation/move_forward_walk_zombie.mv1";
+	const std::string STAND_STUN						= "Data/Animation/move_backward_run_dizzy.mv1";
 	#pragma endregion
 
 

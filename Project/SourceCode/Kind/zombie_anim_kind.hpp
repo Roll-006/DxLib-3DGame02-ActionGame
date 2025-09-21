@@ -21,6 +21,7 @@ enum class ZombieAnimKind
 
 	#pragma region 上半身用
 	kGrab,
+	kStandStun,
 	#pragma endregion
 
 

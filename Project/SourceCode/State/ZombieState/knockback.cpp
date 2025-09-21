@@ -50,6 +50,11 @@ std::shared_ptr<IState<Zombie>> zombie_state::Knockback::ChangeState(std::shared
 	{
 		return state_controller->GetState<CrouchRightStun, Zombie>();
 	}
+	// —§‚¿ƒ_ƒEƒ“
+	if (state_controller->TryStandStun(obj))
+	{
+		return state_controller->GetState<StandStun, Zombie>();
+	}
 
 	return nullptr;
 }

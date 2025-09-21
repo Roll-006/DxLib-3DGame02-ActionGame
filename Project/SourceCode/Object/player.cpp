@@ -289,10 +289,13 @@ void Player::UpdateGrabbed()
 
 void Player::CalcMoveSpeed()
 {
-	const auto current_action_state_kind = m_state->GetActionState(TimeKind::kCurrent)->GetStateKind();
+	const auto current_action_state_kind = static_cast<player_state::ActionStateKind>(m_state->GetActionState(TimeKind::kCurrent)->GetStateKind());
 
-	if (   current_action_state_kind != static_cast<int>(player_state::ActionStateKind::kActionNull)
-		&& current_action_state_kind != static_cast<int>(player_state::ActionStateKind::kCrouch)) { return; }
+	if (   current_action_state_kind != player_state::ActionStateKind::kActionNull
+		&& current_action_state_kind != player_state::ActionStateKind::kCrouch)
+	{
+		return;
+	}
 
 	if (VSize(m_input_slope) <= kWalkStickSlopeLimit - InputChecker::kStickDeadZone)
 	{

@@ -95,6 +95,11 @@ std::shared_ptr<IState<Zombie>> zombie_state::Grab::ChangeState(std::shared_ptr<
 	{
 		return state_controller->GetState<CrouchRightStun, Zombie>();
 	}
+	// —§‚¿ƒ_ƒEƒ“
+	if (state_controller->TryStandStun(obj))
+	{
+		return state_controller->GetState<StandStun, Zombie>();
+	}
 	// NULL
 	if (m_grab_timer > kMaxGrabTime)
 	{

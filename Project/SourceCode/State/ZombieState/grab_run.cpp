@@ -55,6 +55,11 @@ std::shared_ptr<IState<Zombie>> zombie_state::GrabRun::ChangeState(std::shared_p
 	{
 		return state_controller->GetState<CrouchRightStun, Zombie>();
 	}
+	// —§‚¿ƒ_ƒEƒ“
+	if (state_controller->TryStandStun(obj))
+	{
+		return state_controller->GetState<StandStun, Zombie>();
+	}
 	// ’Í‚İ
 	if (obj->CanGrabTraget())
 	{

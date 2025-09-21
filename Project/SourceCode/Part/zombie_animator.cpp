@@ -40,6 +40,7 @@ void ZombieAnimator::LoadAnim()
 
 	// 上半身用
 	AddAnimHandle(static_cast<int>(ZombieAnimKind::kGrab),				AnimPath.GRAB,							0, AnimTag.NONE, 10.0f,  true);
+	AddAnimHandle(static_cast<int>(ZombieAnimKind::kStandStun),			AnimPath.STAND_STUN,					0, AnimTag.NONE, 2.0f,   true);
 
 	// 下半身用
 	AddAnimHandle(static_cast<int>(ZombieAnimKind::kCrouchLeftStun),	AnimPath.LEANING_FORWARD_CROUCH_LEFT,	0, AnimTag.MOVE, 0.0f,   true);
@@ -81,6 +82,8 @@ void ZombieAnimator::CombineMoveNullWithAction()
 		break;
 
 	case static_cast<int>(zombie_state::ActionStateKind::kStandStun):
+		AttachAnim(static_cast<int>(ZombieAnimKind::kIdle),			BodyKind::kLowerBody);
+		AttachAnim(static_cast<int>(ZombieAnimKind::kStandStun),	BodyKind::kUpperBody);
 		break;
 
 	case static_cast<int>(zombie_state::ActionStateKind::kCrouchLeftStun):
@@ -121,9 +124,6 @@ void ZombieAnimator::CombineMoveWithAction()
 		break;
 
 	case static_cast<int>(zombie_state::ActionStateKind::kKnockback):
-		break;
-
-	case static_cast<int>(zombie_state::ActionStateKind::kStandStun):
 		break;
 
 	default:

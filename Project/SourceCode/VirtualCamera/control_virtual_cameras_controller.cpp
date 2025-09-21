@@ -98,10 +98,9 @@ void ControlVirtualCamerasController::EndGrabCutscene(const EndGrabCutsceneEvent
 	const auto forward		= transform->GetForward(CoordinateKind::kWorld);
 	m_aim_transform->SetRot(CoordinateKind::kWorld, forward);
 
-	//const auto angle					= m_aim_transform->GetEulerAngles(CoordinateKind::kWorld);
-	m_input_angle [TimeKind::kCurrent]	= v3d::GetZeroV();
+	const auto angle = math::ConvertZXYRotMatrixToEulerAngles(m_aim_transform->GetRotMatrix(CoordinateKind::kWorld));
+	m_input_angle [TimeKind::kCurrent]	= angle;
 	m_recoil_angle[TimeKind::kCurrent]	= v3d::GetZeroV();
-	CalcResultAngle();
 }
 #pragma endregion
 

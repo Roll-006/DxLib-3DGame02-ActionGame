@@ -9,12 +9,12 @@ Zombie::Zombie() :
 {
 	// TODO : JSON指定
 	m_health[HealthPartKind::kMain]		= std::make_shared<Health>(1684.0f, 1684.0f);
-	m_health[HealthPartKind::kHead]		= std::make_shared<Health>(300.0f, 300.0f);
+	m_health[HealthPartKind::kHead]		= std::make_shared<Health>(80.0f,  80.0f);
 	m_health[HealthPartKind::kBody]		= std::make_shared<Health>(500.0f, 500.0f);
-	m_health[HealthPartKind::kLeftArm]	= std::make_shared<Health>(300.0f, 300.0f);
-	m_health[HealthPartKind::kRightArm]	= std::make_shared<Health>(300.0f, 300.0f);
-	m_health[HealthPartKind::kLeftLeg]	= std::make_shared<Health>(300.0f, 300.0f);
-	m_health[HealthPartKind::kRightLeg]	= std::make_shared<Health>(300.0f, 300.0f);
+	m_health[HealthPartKind::kLeftArm]	= std::make_shared<Health>(100.0f, 100.0f);
+	m_health[HealthPartKind::kRightArm]	= std::make_shared<Health>(100.0f, 100.0f);
+	m_health[HealthPartKind::kLeftLeg]	= std::make_shared<Health>(100.0f, 100.0f);
+	m_health[HealthPartKind::kRightLeg]	= std::make_shared<Health>(100.0f, 100.0f);
 
 	m_modeler  = std::make_shared<Modeler>(m_transform, ModelPath.ZOMBIE_01, kBasicAngle, kBasicScale);
 	m_animator = std::make_shared<ZombieAnimator>(m_modeler, m_state);
@@ -135,6 +135,7 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	PhysicalObjBase*	target_obj				= hit_collider_pair.target_collider->GetOwnerObj();
 	const auto			target_name				= target_obj->GetName();
 	const auto			target_collider_kind	= hit_collider_pair.target_collider->GetColliderKind();
+	const auto			action_state_kind		= static_cast<zombie_state::ActionStateKind>(m_state->GetActionState(TimeKind::kCurrent)->GetStateKind());
 
 	switch (hit_collider_pair.owner_collider->GetColliderKind())
 	{
@@ -159,7 +160,12 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	case ColliderKind::kHeadTrigger:
 		if (target_name == ObjName.BULLET)
 		{
-			OnDamage(HealthPartKind::kHead,		dynamic_cast<Bullet*>(target_obj)->GetPower());
+			// ダウン中は部位HPは減少させない
+			if (action_state_kind != zombie_state::ActionStateKind::kStandStun)
+			{
+				OnDamage(HealthPartKind::kHead, dynamic_cast<Bullet*>(target_obj)->GetPower());
+			}
+
 			OnDamage(HealthPartKind::kMain,		dynamic_cast<Bullet*>(target_obj)->GetPower());
 		}
 		break;
@@ -177,8 +183,8 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	case ColliderKind::kLeftForearmTrigger:
 		if (target_name == ObjName.BULLET)
 		{
-			OnDamage(HealthPartKind::kLeftArm, dynamic_cast<Bullet*>(target_obj)->GetPower());
-			OnDamage(HealthPartKind::kMain, dynamic_cast<Bullet*>(target_obj)->GetPower());
+			OnDamage(HealthPartKind::kLeftArm,	dynamic_cast<Bullet*>(target_obj)->GetPower());
+			OnDamage(HealthPartKind::kMain,		dynamic_cast<Bullet*>(target_obj)->GetPower());
 		}
 		break;
 
@@ -208,7 +214,7 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 		if (target_name == ObjName.BULLET)
 		{
 			OnDamage(HealthPartKind::kRightArm, dynamic_cast<Bullet*>(target_obj)->GetPower());
-			OnDamage(HealthPartKind::kMain, dynamic_cast<Bullet*>(target_obj)->GetPower());
+			OnDamage(HealthPartKind::kMain,		dynamic_cast<Bullet*>(target_obj)->GetPower());
 		}
 
 		if (target_obj == GetStateController()->GetTargetCharacter().get() && target_collider_kind == ColliderKind::kCollider)
@@ -221,7 +227,13 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	case ColliderKind::kLeftDownLegTrigger:
 		if (target_name == ObjName.BULLET)
 		{
-			OnDamage(HealthPartKind::kLeftLeg,	dynamic_cast<Bullet*>(target_obj)->GetPower());
+			// ダウン中は部位HPは減少させない
+			if (   action_state_kind != zombie_state::ActionStateKind::kCrouchLeftStun
+				&& action_state_kind != zombie_state::ActionStateKind::kCrouchRightStun)
+			{
+				OnDamage(HealthPartKind::kLeftLeg, dynamic_cast<Bullet*>(target_obj)->GetPower());
+			}
+
 			OnDamage(HealthPartKind::kMain,		dynamic_cast<Bullet*>(target_obj)->GetPower());
 		}
 		break;
@@ -230,7 +242,13 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	case ColliderKind::kRightDownLegTrigger:
 		if (target_name == ObjName.BULLET)
 		{
-			OnDamage(HealthPartKind::kRightLeg,	dynamic_cast<Bullet*>(target_obj)->GetPower());
+			// ダウン中は部位HPは減少させない
+			if (   action_state_kind != zombie_state::ActionStateKind::kCrouchLeftStun
+				&& action_state_kind != zombie_state::ActionStateKind::kCrouchRightStun)
+			{
+				OnDamage(HealthPartKind::kRightLeg, dynamic_cast<Bullet*>(target_obj)->GetPower());
+			}
+
 			OnDamage(HealthPartKind::kMain,		dynamic_cast<Bullet*>(target_obj)->GetPower());
 		}
 		break;
