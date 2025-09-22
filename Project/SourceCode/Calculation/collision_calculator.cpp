@@ -345,7 +345,7 @@ bool collision::IsCollidedSegmentAndSquare       (const Segment&     segment,   
 //}
 
 /// @brief 線分と球の衝突判定
-bool collision::IsCollidedSegmentAndSphere(const Segment& segment, const Sphere& sphere, std::optional<VECTOR>& intersection)
+bool collision::IsCollidedSegmentAndSphere       (const Segment&     segment,        const Sphere&       sphere,         std::optional<VECTOR>& intersection)
 {
     intersection = std::nullopt;
 

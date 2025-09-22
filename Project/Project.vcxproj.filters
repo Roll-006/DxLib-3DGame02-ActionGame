@@ -1447,5 +1447,8 @@
     <None Include="Data\JSON\key_number.json">
       <Filter>JSON</Filter>
     </None>
+    <None Include="Data\JSON\enemy_pos.json">
+      <Filter>JSON</Filter>
+    </None>
   </ItemGroup>
 </Project>
