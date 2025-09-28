@@ -14,7 +14,10 @@ zombie_state::Knockback::~Knockback()
 
 void zombie_state::Knockback::Update(std::shared_ptr<Zombie> obj)
 {
-	obj->CalcAttackIntervalTime();
+	if (obj->CanAction())
+	{
+		obj->CalcAttackIntervalTime();
+	}
 }
 
 void zombie_state::Knockback::LateUpdate(std::shared_ptr<Zombie> obj)

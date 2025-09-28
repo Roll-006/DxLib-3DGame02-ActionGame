@@ -81,4 +81,39 @@ protected:
 
 private:
 	int		m_model_handle;
+
+	friend void from_json	(const nlohmann::json& data, PhysicalObjBase& physical_obj_base);
+	friend void to_json		(nlohmann::json& data, const PhysicalObjBase& physical_obj_base);
 };
+
+
+#pragma region from / to JSON
+inline void from_json(const nlohmann::json& data, PhysicalObjBase& physical_obj_base)
+{
+	data.at("velocity")					.get_to(physical_obj_base.m_velocity);
+	data.at("move_velocity")			.get_to(physical_obj_base.m_move_velocity);
+	data.at("fall_velocity")			.get_to(physical_obj_base.m_fall_velocity);
+	data.at("knockback_velocity")		.get_to(physical_obj_base.m_knockback_velocity);
+	data.at("knockback_speed")			.get_to(physical_obj_base.m_knockback_speed);
+	data.at("knockback_deceleration")	.get_to(physical_obj_base.m_knockback_deceleration);
+	data.at("is_landing")				.get_to(physical_obj_base.m_is_landing);
+	data.at("mass_kind")				.get_to(physical_obj_base.m_mass_kind);
+	data.at("model_handle")				.get_to(physical_obj_base.m_model_handle);
+}
+
+inline void to_json(nlohmann::json& data, const PhysicalObjBase& physical_obj_base)
+{
+	data = nlohmann::json
+	{
+		{ "velocity",				physical_obj_base.m_velocity },
+		{ "move_velocity",			physical_obj_base.m_move_velocity },
+		{ "fall_velocity",			physical_obj_base.m_fall_velocity },
+		{ "knockback_velocity",		physical_obj_base.m_knockback_velocity },
+		{ "knockback_speed",		physical_obj_base.m_knockback_speed },
+		{ "knockback_deceleration",	physical_obj_base.m_knockback_deceleration },
+		{ "is_landing",				physical_obj_base.m_is_landing },
+		{ "mass_kind",				physical_obj_base.m_mass_kind },
+		{ "model_handle",			physical_obj_base.m_model_handle }
+	};
+}
+#pragma endregion

@@ -44,6 +44,7 @@ void ShareScene::DrawToShadowMap() const
 void ShareScene::Draw() const
 {
 	EffectManager::GetInstance()->Draw();
+	m_main_camera				->Draw();
 }
 
 std::shared_ptr<IScene> ShareScene::ChangeScene()

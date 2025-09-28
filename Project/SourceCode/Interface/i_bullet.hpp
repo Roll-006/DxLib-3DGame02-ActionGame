@@ -13,5 +13,5 @@ public:
 	[[nodiscard]] virtual std::string	GetShotOwnerName()	const abstract;
 
 protected:
-	virtual void CalcRayPos() abstract;
+	virtual void CalcRayCastPos() abstract;
 };

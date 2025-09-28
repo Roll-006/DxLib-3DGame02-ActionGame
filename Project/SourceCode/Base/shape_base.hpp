@@ -24,4 +24,23 @@ public:
 
 private:
 	ShapeKind m_shape_kind;
+
+	friend void from_json	(const nlohmann::json& data, ShapeBase& shape_base);
+	friend void to_json		(nlohmann::json& data, const ShapeBase& shape_base);
 };
+
+
+#pragma region from / to JSON
+inline void from_json(const nlohmann::json& data, ShapeBase& shape_base)
+{
+	data.at("m_shape_kind").get_to(shape_base.m_shape_kind);
+}
+
+inline void to_json(nlohmann::json& data, const ShapeBase& shape_base)
+{
+	data = nlohmann::json
+	{
+		{ "m_shape_kind", shape_base.m_shape_kind }
+	};
+}
+#pragma endregion

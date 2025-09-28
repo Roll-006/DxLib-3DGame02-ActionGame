@@ -47,4 +47,33 @@ private:
 	VECTOR m_end_pos;
 	VECTOR m_dir;
 	float  m_length;
+
+	friend void from_json	(const nlohmann::json& data, Segment& segment);
+	friend void to_json		(nlohmann::json& data, const Segment& segment);
 };
+
+
+//#pragma region from / to JSON
+//inline void from_json(const nlohmann::json& data, Segment& segment)
+//{
+//	to_json(data, static_cast<const ShapeBase&>(segment));
+//
+//	data.at("begin_pos").get_to(segment.m_begin_pos);
+//	data.at("end_pos")	.get_to(segment.m_end_pos);
+//	data.at("dir")		.get_to(segment.m_dir);
+//	data.at("length")	.get_to(segment.m_length);
+//}
+//
+//inline void to_json(nlohmann::json& data, const Segment& segment)
+//{
+//	from_json(data, static_cast<ShapeBase&>(segment));
+//
+//	data = nlohmann::json
+//	{
+//		{ "begin_pos",	segment.m_begin_pos },
+//		{ "end_pos",	segment.m_end_pos },
+//		{ "dir",		segment.m_dir },
+//		{ "length",		segment.m_length }
+//	};
+//}
+//#pragma endregion

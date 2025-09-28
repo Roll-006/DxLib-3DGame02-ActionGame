@@ -77,3 +77,25 @@ inline auto operator* (const ScaleT scale, const Quaternion& q) { return q * sca
 
 inline bool operator==(const Quaternion& q1, const Quaternion& q2) { return q1.x == q2.x && q1.y == q2.y && q1.z == q2.z && q1.w == q2.w; }
 inline bool operator!=(const Quaternion& q1, const Quaternion& q2) { return !(q1 == q2); }
+
+
+#pragma region from / to JSON
+inline void from_json(const nlohmann::json& data, Quaternion& q)
+{
+	data.at("x").get_to(q.x);
+	data.at("y").get_to(q.y);
+	data.at("z").get_to(q.z);
+	data.at("w").get_to(q.w);
+}
+
+inline void to_json(nlohmann::json& data, const Quaternion& q)
+{
+	data = nlohmann::json
+	{
+		{ "x",	q.x },
+		{ "y",	q.y },
+		{ "z",	q.z },
+		{ "w",	q.w }
+	};
+}
+#pragma endregion

@@ -53,6 +53,7 @@ void CinemachineBrain::LateUpdate()
 
 	BlendVirtualCamera();
 
+	m_main_camera->SetAimPos(m_blend_result_aim_pos);
 	m_main_camera->LateUpdate();
 }
 
@@ -214,7 +215,8 @@ void CinemachineBrain::BlendVirtualCamera()
 
 	// メインカメラへ適用
 	if (!m_blend_result_transform) { m_blend_result_transform = std::make_shared<Transform>(); }
-	m_main_camera->GetTransform()->SetMatrix(CoordinateKind::kWorld, m_blend_result_transform->GetMatrix(CoordinateKind::kWorld));
+	const auto result_m = m_blend_result_transform->GetMatrix(CoordinateKind::kWorld);
+	m_main_camera->ApplyMatrix(result_m);
 }
 
 void CinemachineBrain::ChangeTargetVirtualCamera(const int camera_handle)
@@ -242,8 +244,8 @@ void CinemachineBrain::SetBlendTransform()
 	
 	bool is_seted_target_transform = false;
 	bool is_seted_origin_transform = false;
-	std::shared_ptr<VirtualCamera> origin_camera = nullptr;
-	std::shared_ptr<VirtualCamera> target_camera = nullptr;
+	m_origin_virtual_camera = nullptr;
+	m_target_virtual_camera = nullptr;
 
 	for (const auto& pr : m_priority)
 	{
@@ -252,8 +254,8 @@ void CinemachineBrain::SetBlendTransform()
 		// アクティブであるかつ、ターゲットがまだ設定されていない場合、ターゲットを設定する
 		if (camera->IsActive() && !is_seted_target_transform)
 		{
-			target_camera = camera;
-			m_blend_target_transform = target_camera->GetTransform();
+			m_target_virtual_camera = camera;
+			m_blend_target_transform = m_target_virtual_camera->GetTransform();
 			ChangeTargetVirtualCamera(pr.first);
 
 			is_seted_target_transform = true;
@@ -267,8 +269,8 @@ void CinemachineBrain::SetBlendTransform()
 			{
 				if (m_blend_origin_result_transform == nullptr)
 				{
-					origin_camera = camera;
-					m_blend_origin_transform = origin_camera->GetTransform();
+					m_origin_virtual_camera = camera;
+					m_blend_origin_transform = m_origin_virtual_camera->GetTransform();
 					is_seted_origin_transform = true;
 				}
 
@@ -285,7 +287,7 @@ void CinemachineBrain::SetBlendTransform()
 	}
 
 	// ターゲットのブレンド方針に従ってターゲット以外のカメラのアクティブ状態を制御
-	if (target_camera) { DeactivateVirtualCamera(origin_camera, target_camera); }
+	if (m_target_virtual_camera) { DeactivateVirtualCamera(m_origin_virtual_camera, m_target_virtual_camera); }
 }
 
 void CinemachineBrain::CalcBlendResuletTransform()
@@ -304,6 +306,10 @@ void CinemachineBrain::CalcBlendResuletTransform()
 	m_blend_coefficient			= m_blend_time != 0.0f ? math::GetUnitValue<float, float>(0.0f, m_blend_time, m_blend_timer) : 1.0f;
 	auto blended_transform		= math::GetLerpTransform(*m_blend_origin_transform, *m_blend_target_transform, m_blend_coefficient, true, false, true);
 	m_blend_result_transform	= std::make_shared<Transform>(blended_transform);
+
+	// 見る座標間の補間
+	const auto origin_aim_pos = m_origin_virtual_camera ? m_origin_virtual_camera->GetAim()->GetAimPos() : v3d::GetZeroV();
+	m_blend_result_aim_pos = math::GetLerp(origin_aim_pos, m_target_virtual_camera->GetAim()->GetAimPos(), m_blend_coefficient);
 
 	// ブレンド完了判定
 	if (m_blend_coefficient >= 1.0f)

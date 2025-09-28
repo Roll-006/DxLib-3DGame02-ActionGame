@@ -15,7 +15,11 @@ zombie_state::Run::~Run()
 void zombie_state::Run::Update(std::shared_ptr<Zombie> obj)
 {
 	obj->CalcMoveSpeedRun();
-	obj->CalcAttackIntervalTime();
+
+	if (obj->CanAction())
+	{
+		obj->CalcAttackIntervalTime();
+	}
 }
 
 void zombie_state::Run::LateUpdate(std::shared_ptr<Zombie> obj)
@@ -37,6 +41,11 @@ std::shared_ptr<IState<Zombie>> zombie_state::Run::ChangeState(std::shared_ptr<Z
 {
 	const auto state_controller = obj->GetStateController();
 
+	// ‹­§NULL
+	if (state_controller->TryActionNullForcibly(obj))
+	{
+		return state_controller->GetState<ActionNull, Zombie>();
+	}
 	// Ž€–S
 	if (state_controller->TryDead(obj))
 	{

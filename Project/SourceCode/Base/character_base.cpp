@@ -7,6 +7,8 @@ CharacterBase::CharacterBase(const std::string& name, const std::string& tag, co
 	m_animator				(nullptr),
 	m_collider_creator		(std::make_shared<CharacterColliderCreator>()),
 	m_move_speed			(0.0f),
+	m_move_dir				{ {TimeKind::kCurrent, v3d::GetZeroV()},{TimeKind::kNext, v3d::GetZeroV()} },
+	m_look_dir				{ {TimeKind::kCurrent, v3d::GetZeroV()},{TimeKind::kNext, v3d::GetZeroV()} },
 	m_move_dir_offset_speed	(0.0f),
 	m_destination_pos		(v3d::GetZeroV()),
 	m_current_held_weapon	(nullptr),
@@ -43,11 +45,11 @@ void CharacterBase::CalcCorrectMoveDir()
 
 	if (VSize(destination_pos_y0 - current_pos_y0) < 1.0f)
 	{
-		m_move_dir[TimeKind::kNext] = v3d::GetZeroV();
+		m_move_dir.at(TimeKind::kNext) = v3d::GetZeroV();
 	}
 	else
 	{
-		m_move_dir[TimeKind::kNext] = v3d::GetNormalizedV(destination_pos_y0 - current_pos_y0);
+		m_move_dir.at(TimeKind::kNext) = v3d::GetNormalizedV(destination_pos_y0 - current_pos_y0);
 	}
 }
 
@@ -122,9 +124,9 @@ void CharacterBase::ApplyLookDirToRot(const VECTOR& look_dir)
 void CharacterBase::CalcMoveDir()
 {
 	// Œ»Ý‚Ìdir‚ð–Ú“I‚Æ‚·‚édir‚É‹ß‚Ã‚¯‚Ä‚¢‚­
-	m_move_dir[TimeKind::kCurrent] = math::GetApproachedVector(
-		m_move_dir[TimeKind::kCurrent],
-		m_move_dir[TimeKind::kNext],
+	m_move_dir.at(TimeKind::kCurrent) = math::GetApproachedVector(
+		m_move_dir.at(TimeKind::kCurrent),
+		m_move_dir.at(TimeKind::kNext),
 		m_move_dir_offset_speed);
 }
 

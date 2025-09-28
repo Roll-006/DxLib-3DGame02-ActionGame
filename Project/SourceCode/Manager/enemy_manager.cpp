@@ -2,12 +2,30 @@
 
 EnemyManager::EnemyManager()
 {
-	m_enemies.emplace_back(std::make_shared<Zombie>());
+	// イベント登録
+	EventSystem::GetInstance()->Subscribe<ReleaseEvent>	(this, &EnemyManager::NotifyAllowAction);
+	EventSystem::GetInstance()->Subscribe<GrabEvent>	(this, &EnemyManager::NotifyStopActionForcibly);
+
+	// 初期位置・向きを設定
+	JSONLoader json_loader;
+	nlohmann::json data;
+	if (json_loader.Load("Data/JSON/enemy_data.json", data))
+	{
+		for (int i = 0; i < 3; ++i)
+		{
+			const auto enemy	= data ["enemies"][std::to_string(i + 1)];
+			const auto pos		= enemy["position"];
+			const auto look_dir	= enemy["direction"];
+			m_enemies.emplace_back(std::make_shared<Zombie>(pos, look_dir));
+		}
+	}
 }
 
 EnemyManager::~EnemyManager()
 {
-
+	// イベントの登録解除
+	EventSystem::GetInstance()->Unsubscribe<ReleaseEvent>	(this, &EnemyManager::NotifyAllowAction);
+	EventSystem::GetInstance()->Unsubscribe<GrabEvent>		(this, &EnemyManager::NotifyStopActionForcibly);
 }
 
 void EnemyManager::Init()
@@ -82,7 +100,26 @@ void EnemyManager::DetachTarget()
 	}
 }
 
-void EnemyManager::NotifyStopActionForcibly()
+void EnemyManager::NotifyAllowAction(const ReleaseEvent& event)
 {
+	for (const auto& enemy : m_enemies)
+	{
+		// 離した本人以外の敵の行動をすべて復帰させる
+		if (event.enemy_handle != enemy->GetEnemyHandle())
+		{
+			enemy->OnAllowAction();
+		}
+	}
+}
 
+void EnemyManager::NotifyStopActionForcibly(const GrabEvent& event)
+{
+	for (const auto& enemy : m_enemies)
+	{
+		// 掴んだ本人以外の敵の行動はすべて停止させる
+		if(event.enemy_handle != enemy->GetEnemyHandle())
+		{
+			enemy->OnStopActionForcibly();
+		}
+	}
 }

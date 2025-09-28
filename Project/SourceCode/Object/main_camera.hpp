@@ -22,12 +22,24 @@ public:
 	void AddToObjManager()			override;
 	void RemoveToObjManager()		override;
 
-	[[nodiscard]] float	GetDeltaTime() const override;
+	void ApplyMatrix(const MATRIX& matrix);
+	void SetAimPos(const VECTOR& aim_pos) { m_aim_pos = aim_pos; }
+
+	[[nodiscard]] float	GetDeltaTime()  const override;
 
 private:
 	/// @brief 見る方向を設定
 	void SetAim();
 
 	/// @brief レイキャストトリガーの位置を計算
-	void CalcRayPos();
+	void CalcRayCastPos();
+	void CalcVisionTriggerPos();
+
+private:
+	static constexpr float kMeleeDistance	= 150.0f;
+	static constexpr float kMeleeFOV		= 60.0f;
+
+	VECTOR	m_aim_pos;
+	VECTOR	m_origin_pos;	// レイキャス処理が実行される前の生の座標
+	bool	m_is_changing_pos;
 };

@@ -13,8 +13,8 @@ HandleKeeper::~HandleKeeper()
 int HandleKeeper::LoadHandle(const HandleKind handle_kind, const std::string& file_path, const float scale)
 {
 	// 既にロード済みの場合は早急にハンドルを返す
-	int handle = ReloadHandle(handle_kind, file_path);
-	if (handle > -1) { return handle; };
+	int handle = -1; //ReloadHandle(handle_kind, file_path);
+	//if (handle > -1) { return handle; };
 
 	// 種類別にロード
 	switch (handle_kind)
@@ -45,15 +45,12 @@ int HandleKeeper::ReloadHnadle(const HandleKind handle_kind, const int handle)
 	{
 		switch (handle_kind)
 		{
-		case HandleKind::kGraphic:
-			if (hdl == handle) { result_handle = handle; }
-			break;
-
 		case HandleKind::kModel:
-		case HandleKind::kAnim:
 			if (hdl == handle) { result_handle = MV1DuplicateModel(handle); }
 			break;
 
+		case HandleKind::kGraphic:
+		case HandleKind::kAnim:
 		case HandleKind::kEffect:
 			if (hdl == handle) { result_handle = handle; }
 			break;
@@ -65,21 +62,16 @@ int HandleKeeper::ReloadHnadle(const HandleKind handle_kind, const int handle)
 
 int HandleKeeper::ReloadHandle(const HandleKind handle_kind, const std::string& file_path)
 {
-	// FIXME : おそらくエラーの原因。モデルおよび画像の消失
-
 	for (auto& [kind, path, handle] : m_handles)
 	{
 		switch (handle_kind)
 		{
-		case HandleKind::kGraphic:
-			if (path == file_path) { return handle; }
-			break;
-
 		case HandleKind::kModel:
-		case HandleKind::kAnim:
 			if (path == file_path) { return MV1DuplicateModel(handle); }
 			break;
 
+		case HandleKind::kGraphic:
+		case HandleKind::kAnim:
 		case HandleKind::kEffect:
 			if (path == file_path) { return handle; }
 			break;

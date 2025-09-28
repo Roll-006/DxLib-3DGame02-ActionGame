@@ -13,11 +13,17 @@ public:
 	void SetAttackIntervalTime();
 	void CalcAttackIntervalTime();
 
+	/// @brief リスポーンさせられる
+	void OnRespawn(const VECTOR& pos, const VECTOR& look_dir);
+
 	/// @brief 行動を起こすを許可される
-	void OnAllowAction()		{ m_can_action = true; }
+	/// @brief また、同時に攻撃インターバル時間が1/4未満の場合、
+	/// @brief 1/2の時間が付与される
+	void OnAllowAction();
 	/// @brief 行動が強制的に停止させられる
 	void OnStopActionForcibly() { m_can_action = false; }
 
+	[[nodiscard]] int  GetEnemyHandle()  const { return m_enemy_handle; }
 	[[nodiscard]] bool IsTargetInSight() const { return m_is_target_in_sight; }
 	[[nodiscard]] bool CanAttack()		 const { return m_attack_interval_timer <= 0.0f; }
 	[[nodiscard]] bool CanAction()		 const { return m_can_action; }
@@ -27,4 +33,7 @@ protected:
 	float m_attack_interval_timer;
 	bool  m_can_action;
 	bool  m_is_target_in_sight;
+
+private:
+	int	  m_enemy_handle;
 };

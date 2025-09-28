@@ -241,6 +241,11 @@ void ZombieStateController::JudgeDestinationActionState(std::shared_ptr<IState<Z
 
 
 #pragma region Try”»’è
+bool ZombieStateController::TryWaitForcibly(std::shared_ptr<Zombie> zombie)
+{
+	return !zombie->CanAction();
+}
+
 bool ZombieStateController::TryTrack(std::shared_ptr<Zombie> zombie)
 {
 	// TODO : Œã‚É‰¹‚È‚Ç‚Ì”»’è‚àŠÜ‚ß‚é
@@ -270,6 +275,11 @@ bool ZombieStateController::TryMove()
 	const auto is_run_attack	= ai_state_kind == zombie_state::AIStateKind::kRunAttack ? true : false;
 
 	return is_track || is_run_attack;
+}
+
+bool ZombieStateController::TryActionNullForcibly(std::shared_ptr<Zombie> zombie)
+{
+	return !zombie->CanAction();
 }
 
 bool ZombieStateController::TryWalk(std::shared_ptr<Zombie> zombie)

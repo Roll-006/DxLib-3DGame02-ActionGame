@@ -320,6 +320,7 @@ namespace math
 	[[nodiscard]] bool IsAcuteAngle(const float radian);
 
 	/// @brief 二つのベクトルのなす角を取得
+	/// @return 0°～180°の範囲をラジアンで返す
 	[[nodiscard]] float  GetAngleBetweenTwoVector (const VECTOR&   v1, const VECTOR&   v2);
 	[[nodiscard]] double GetAngleBetweenTwoVectorD(const VECTOR_D& v1, const VECTOR_D& v2);
 

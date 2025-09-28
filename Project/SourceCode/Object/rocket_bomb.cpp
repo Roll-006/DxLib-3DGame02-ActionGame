@@ -47,7 +47,7 @@ void RocketBomb::LateUpdate()
 
 	ApplyMoveDirToRot();
 	Move();
-	CalcRayPos();
+	CalcRayCastPos();
 }
 
 void RocketBomb::DrawToShadowMap() const
@@ -126,7 +126,7 @@ void RocketBomb::OnShot(GunBase& gun)
 	m_range				= gun.GetRange();
 	m_power				= gun.GetPower();
 
-	CalcRayPos();
+	CalcRayCastPos();
 
 	const OnShotBulletEvent event{ GetName(), gun.GetOwnerName(), GetObjHandle(), m_transform };
 	EventSystem::GetInstance()->Publish(event);
@@ -209,7 +209,7 @@ void RocketBomb::Move()
 	m_velocity += m_move_velocity;
 }
 
-void RocketBomb::CalcRayPos()
+void RocketBomb::CalcRayCastPos()
 {
 	// Œõü‚ÌˆÊ’u‚ğŒvZ
 	auto ray = std::dynamic_pointer_cast<Segment>(GetCollider(ColliderKind::kRayCast)->GetShape());

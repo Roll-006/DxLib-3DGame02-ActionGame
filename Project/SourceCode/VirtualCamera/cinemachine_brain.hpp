@@ -121,24 +121,28 @@ private:
 	static constexpr float kFar			= 4000.0f;
 	static constexpr float kFOV			= 25.0f;
 
-	std::shared_ptr<MainCamera>									m_main_camera;			// バーチャルカメラを適用させるメインカメラ
-	std::unordered_map<int, std::shared_ptr<VirtualCamera>>		m_virtual_cameras;		// 登録されているバーチャルカメラ
-	std::vector<std::pair<int, int>>							m_priority;				// 優先順位<オブジェクトハンドル, 優先度>
+	std::shared_ptr<MainCamera>									m_main_camera;				// バーチャルカメラを適用させるメインカメラ
+	std::shared_ptr<VirtualCamera>								m_origin_virtual_camera;	// 起点とするバーチャルカメラ
+	std::shared_ptr<VirtualCamera>								m_target_virtual_camera;	// ターゲットとするバーチャルカメラ
+	std::unordered_map<int, std::shared_ptr<VirtualCamera>>		m_virtual_cameras;			// 登録されているバーチャルカメラ
+	std::vector<std::pair<int, int>>							m_priority;					// 優先順位<オブジェクトハンドル, 優先度>
 
-	std::shared_ptr<Transform>			m_blend_origin_transform;						// ブレンドの起点とするトランスフォーム
-	std::shared_ptr<Transform>			m_blend_target_transform;						// ブレンドのターゲットとするトランスフォーム
-	std::shared_ptr<Transform>			m_blend_origin_result_transform;				// ブレンドの起点に利用するブレンド結果トランスフォーム
-	std::shared_ptr<Transform>			m_blend_result_transform;						// ブレンド結果トランスフォーム
+	std::shared_ptr<Transform>			m_blend_origin_transform;							// ブレンドの起点とするトランスフォーム
+	std::shared_ptr<Transform>			m_blend_target_transform;							// ブレンドのターゲットとするトランスフォーム
+	std::shared_ptr<Transform>			m_blend_origin_result_transform;					// ブレンドの起点に利用するブレンド結果トランスフォーム
+	std::shared_ptr<Transform>			m_blend_result_transform;							// ブレンド結果トランスフォーム
 
-	std::unordered_map<TimeKind, int>	m_origin_virtual_camera_handle;					// ブレンドの起点とするバーチャルカメラのハンドル
-	std::unordered_map<TimeKind, int>	m_target_virtual_camera_handle;					// ブレンドのターゲットとするバーチャルカメラのハンドル
+	VECTOR								m_blend_result_aim_pos;
+
+	std::unordered_map<TimeKind, int>	m_origin_virtual_camera_handle;						// ブレンドの起点とするバーチャルカメラのハンドル
+	std::unordered_map<TimeKind, int>	m_target_virtual_camera_handle;						// ブレンドのターゲットとするバーチャルカメラのハンドル
 
 	float m_blend_time;
-	float m_blend_timer;																// ブレンドにかける時間を計測
-	float m_blend_coefficient;															// ブレンド係数
-	bool  m_is_blending;																// ブレンド中かを判定
-	bool  m_is_invert_horizontal;														// 操作時に左右反転を行うかを判定
-	bool  m_is_invert_vertical;															// 操作時に上下反転を行うかを判定
+	float m_blend_timer;																	// ブレンドにかける時間を計測
+	float m_blend_coefficient;																// ブレンド係数
+	bool  m_is_blending;																	// ブレンド中かを判定
+	bool  m_is_invert_horizontal;															// 操作時に左右反転を行うかを判定
+	bool  m_is_invert_vertical;																// 操作時に上下反転を行うかを判定
 
 	std::vector<std::shared_ptr<IVirtualCameraController>> m_virtual_camera_controllers;
 

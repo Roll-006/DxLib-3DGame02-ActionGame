@@ -46,4 +46,31 @@ private:
 
 	bool m_is_active;
 	int  m_obj_handle;
+
+	friend void from_json	(const nlohmann::json& data, ObjBase& obj_base);
+	friend void to_json		(nlohmann::json& data, const ObjBase& obj_base);
 };
+
+
+#pragma region from / to JSON
+inline void from_json(const nlohmann::json& data, ObjBase& obj_base)
+{
+	data.at("transform")	.get_to(*obj_base.m_transform.get());
+	data.at("name")			.get_to(obj_base.m_name);
+	data.at("tag")			.get_to(obj_base.m_tag);
+	data.at("is_active")	.get_to(obj_base.m_is_active);
+	data.at("obj_handle")	.get_to(obj_base.m_obj_handle);
+}
+
+inline void to_json(nlohmann::json& data, const ObjBase& obj_base)
+{
+	data = nlohmann::json
+	{
+		{ "transform",	*obj_base.m_transform.get() },
+		{ "name",		obj_base.m_name },
+		{ "tag",		obj_base.m_tag },
+		{ "is_active",	obj_base.m_is_active },
+		{ "obj_handle",	obj_base.m_obj_handle }
+	};
+}
+#pragma endregion

@@ -13,12 +13,14 @@
 #include "end_rocket_launcher_cutscene_event.hpp"
 #include "grab_event.hpp"
 #include "grabbed_event.hpp"
+#include "release_event.hpp"
 #include "end_grab_cutscene_event.hpp"
 #include "enter_near_death_event.hpp"
 #include "near_death_event.hpp"
 #include "on_select_normal_filter_event.hpp"
 #include "on_select_cinematic_filter_event.hpp"
 #include "on_select_retro_filter_event.hpp"
+#include "on_downed_enemy_spotted_event.hpp"
 
 class EventSystem final : public SingletonBase<EventSystem>
 {

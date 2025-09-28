@@ -34,7 +34,7 @@ public:
 
 private:
 	void Move();
-	void CalcRayPos() override;
+	void CalcRayCastPos() override;
 
 private:
 	std::string m_shot_owner_name;

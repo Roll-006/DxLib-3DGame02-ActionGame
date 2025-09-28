@@ -24,3 +24,23 @@ namespace axis
 		DrawLine3D(begin_pos, begin_pos + axes.z_axis * length, GetColor(  0,   0, 255));
 	};
 }
+
+
+#pragma region from / to JSON
+inline void from_json(const nlohmann::json& data, Axes& axes)
+{
+	data.at("x_axis").get_to(axes.x_axis);
+	data.at("y_axis").get_to(axes.y_axis);
+	data.at("z_axis").get_to(axes.z_axis);
+}
+
+inline void to_json(nlohmann::json& data, const Axes& axes)
+{
+	data = nlohmann::json
+	{
+		{ "x_axis",	axes.x_axis },
+		{ "y_axis",	axes.y_axis },
+		{ "z_axis",	axes.z_axis }
+	};
+}
+#pragma endregion

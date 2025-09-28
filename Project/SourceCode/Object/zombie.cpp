@@ -1,11 +1,16 @@
 #include "zombie.hpp"
 #include "../Part/zombie_state_controller.hpp"
 
-Zombie::Zombie() :
-	EnemyBase			(ObjName.ZOMBIE, MassKind::kMedium),
-	m_state				(std::make_shared<ZombieStateController>()),
-	m_can_grab_target	(false)
+Zombie::Zombie(const VECTOR& pos, const VECTOR& look_dir) :
+	EnemyBase				(ObjName.ZOMBIE, MassKind::kMedium),
+	m_state					(std::make_shared<ZombieStateController>()),
+	m_look_dir_offset_speed	(kLookDirOffsetSpeed),
+	m_can_grab_target		(false)
 {
+	m_transform->SetPos(CoordinateKind::kWorld, pos);
+	m_look_dir.at(TimeKind::kNext) = m_look_dir.at(TimeKind::kCurrent) = v3d::GetNormalizedV(look_dir);
+	ApplyLookDirToRot(m_look_dir.at(TimeKind::kCurrent));
+
 	// TODO : JSON指定
 	m_health[HealthPartKind::kMain]		= std::make_shared<Health>(1684.0f, 1684.0f);
 	m_health[HealthPartKind::kHead]		= std::make_shared<Health>(80.0f,  80.0f);
@@ -22,16 +27,10 @@ Zombie::Zombie() :
 	m_invincible_time		= kInvincibleTime;
 	m_attack_interval_time	= kAttackIntervalTime;
 
-	// 初期pos・dirを設定
-	m_look_dir[TimeKind::kCurrent] = m_look_dir[TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);
-	m_transform->SetPos(CoordinateKind::kWorld, VGet(0.0f, -54.0f, 0.0f));
-	m_transform->SetRot(CoordinateKind::kWorld, m_look_dir.at(TimeKind::kCurrent));
-	m_modeler->ApplyMatrix();
-
-	// コライダー・トリガーを設定
 	m_collider_creator->CreateCapsuleCollider	(this, m_modeler, kCapsuleRadius);
 	m_collider_creator->CreateLandingTrigger	(this, kLandingTriggerRadius);
 	m_collider_creator->CreateVisionTrigger		(this, m_modeler, 300, kFOV * math::kDegToRad);
+	m_collider_creator->CreateVisibleTrigger	(this, m_modeler);
 	m_collider_creator->CreateHeadTrigger		(this, m_modeler, kHeadTriggerRadius);
 	m_collider_creator->CreateBodyTrigger		(this, m_modeler, kUpBodyTriggerRadius, kDownBodyTriggerRadius);
 	m_collider_creator->CreateArmTrigger		(this, m_modeler, kUpperArmTriggerRadius, kForearmTriggerRadius, kHandTriggerRadius);
@@ -64,11 +63,12 @@ void Zombie::Update()
 	ApplyLookDirToRot(m_look_dir.at(TimeKind::kCurrent));
 
 	m_collider_creator->CalcCapsuleColliderDirAndLength	(m_modeler, m_collider, m_transform);
-	m_collider_creator->CalcVisionTriggerPos(m_modeler, m_collider);
-	m_collider_creator->CalcHeadTriggerPos	(m_modeler, m_collider);
-	m_collider_creator->CalcBodyTriggerPos	(m_modeler, m_collider);
-	m_collider_creator->CalcArmTriggerPos	(m_modeler, m_collider);
-	m_collider_creator->CalcLegTriggerPos	(m_modeler, m_collider);
+	m_collider_creator->CalcVisionTriggerPos	(m_modeler, m_collider);
+	m_collider_creator->CalcVisibleTriggerPos	(m_modeler, m_collider);
+	m_collider_creator->CalcHeadTriggerPos		(m_modeler, m_collider);
+	m_collider_creator->CalcBodyTriggerPos		(m_modeler, m_collider);
+	m_collider_creator->CalcArmTriggerPos		(m_modeler, m_collider);
+	m_collider_creator->CalcLegTriggerPos		(m_modeler, m_collider);
 
 	auto pos = m_transform->GetScale(CoordinateKind::kWorld);
 }
@@ -124,6 +124,7 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 {
 	PhysicalObjBase*	target_obj				= hit_collider_pair.target_collider->GetOwnerObj();
 	const auto			target_name				= target_obj->GetName();
+	const auto			target_tag				= target_obj->GetTag();
 	const auto			target_collider_kind	= hit_collider_pair.target_collider->GetColliderKind();
 	const auto			action_state_kind		= static_cast<zombie_state::ActionStateKind>(m_state->GetActionState(TimeKind::kCurrent)->GetStateKind());
 
@@ -134,7 +135,7 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 		break;
 
 	case ColliderKind::kVisionTrigger:
-		if (target_collider_kind == ColliderKind::kVisibleTrigger)
+		if (target_collider_kind == ColliderKind::kVisibleTrigger && target_tag == ObjTag.PLAYER)
 		{
 			m_is_target_in_sight = true;
 		}
@@ -274,20 +275,42 @@ void Zombie::DetachTarget()
 	m_state->DetachTarget();
 }
 
+
+#pragma region Getter
 float Zombie::GetDeltaTime() const
 {
 	const auto time_manager = GameTimeManager::GetInstance();
 	return time_manager->GetDeltaTime(TimeScaleLayerKind::kWorld);
 }
 
+bool Zombie::IsStandStun() const
+{
+	const auto action_state = static_cast<zombie_state::ActionStateKind>(m_state->GetActionState(TimeKind::kCurrent)->GetStateKind());
+	
+	return action_state == zombie_state::ActionStateKind::kStandStun;
+}
+
+bool Zombie::IsCrouchStun() const
+{
+	const auto action_state = static_cast<zombie_state::ActionStateKind>(m_state->GetActionState(TimeKind::kCurrent)->GetStateKind());
+
+	return(action_state == zombie_state::ActionStateKind::kCrouchLeftStun
+		|| action_state == zombie_state::ActionStateKind::kCrouchRightStun);
+}
+#pragma endregion
+
+
 void Zombie::Move()
 {
 	m_move_dir_offset_speed = kMoveDirOffsetSpeed;
 }
 
-void Zombie::TrackMove(const VECTOR& pos)
+void Zombie::TrackMove(const VECTOR& target_pos)
 {
-	m_move_dir[TimeKind::kNext] = v3d::GetNormalizedV(pos - m_transform->GetPos(CoordinateKind::kWorld));
+	const auto pos				= m_transform->GetPos(CoordinateKind::kWorld);
+	const auto pos_y0			= VGet(pos.x, 0.0f, pos.z);
+	const auto target_pos_y0	= VGet(target_pos.x, 0.0f, target_pos.z);
+	m_move_dir.at(TimeKind::kNext) = v3d::GetNormalizedV(target_pos_y0 - pos_y0);
 }
 
 void Zombie::UpdateGrabRun()
@@ -332,9 +355,9 @@ void Zombie::OnCollideWithExplosion(const std::shared_ptr<Sphere> sphere)
 
 void Zombie::CalcLookDir()
 {
-	if (m_move_dir[TimeKind::kCurrent] != v3d::GetZeroV())
+	if (m_move_dir.at(TimeKind::kCurrent) != v3d::GetZeroV())
 	{
-		m_look_dir.at(TimeKind::kNext) = m_move_dir[TimeKind::kCurrent];
+		m_look_dir.at(TimeKind::kNext) = m_move_dir.at(TimeKind::kCurrent);
 	}
 
 	// ヨー角回転を取得し、-π～πで値を管理する
@@ -343,19 +366,18 @@ void Zombie::CalcLookDir()
 	VECTOR distance = next_yaw - current_yaw;
 	distance.y = math::ConnectMinusValueToValue(distance.y, DX_PI_F);
 
-	// TODO : 後に変更
-	float angle1	= 1.7f * math::kDegToRad;
-	float threshold = 10.0f * math::kDegToRad;
-
 	// カメラを基準にして右側であった場合は反転
-	if (distance.y > 0) { angle1 *= -1; }
+	if (distance.y > 0) { m_look_dir_offset_speed *= -1; }
 
 	// 回転を適用
-	const Quaternion rot_q = quat::CreateQuaternion(axis::GetWorldYAxis(), -angle1);
+	const auto look_dir_offset_speed = -m_look_dir_offset_speed * GetDeltaTime();
+	const Quaternion rot_q = quat::CreateQuaternion(axis::GetWorldYAxis(), look_dir_offset_speed);
 	m_look_dir.at(TimeKind::kCurrent) = math::GetRotatedPos(m_look_dir.at(TimeKind::kCurrent), rot_q);
 
-	const float angle = math::GetYawBetweenTwoVector(m_look_dir.at(TimeKind::kNext), m_look_dir.at(TimeKind::kCurrent));
-	if (angle < threshold)
+	// 終了判定
+	const auto angle = math::GetYawBetweenTwoVector(m_look_dir.at(TimeKind::kNext), m_look_dir.at(TimeKind::kCurrent));
+	const auto dynamic_threshold = std::abs(look_dir_offset_speed * math::kStopThreshold);
+	if (angle < dynamic_threshold)
 	{
 		m_look_dir.at(TimeKind::kCurrent) = m_look_dir.at(TimeKind::kNext);
 	}
@@ -363,6 +385,6 @@ void Zombie::CalcLookDir()
 
 void Zombie::CalcMoveVelocity()
 {
-	m_move_velocity = m_move_dir[TimeKind::kCurrent] * m_move_speed;
+	m_move_velocity = m_move_dir.at(TimeKind::kCurrent) * m_move_speed;
 	m_velocity += m_move_velocity;
 }

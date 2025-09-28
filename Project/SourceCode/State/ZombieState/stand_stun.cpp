@@ -15,7 +15,10 @@ zombie_state::StandStun::~StandStun()
 
 void zombie_state::StandStun::Update(std::shared_ptr<Zombie> obj)
 {
-	m_stun_timer += obj->GetDeltaTime();
+	if (obj->CanAction())
+	{
+		m_stun_timer += obj->GetDeltaTime();
+	}
 
 	//obj->CalcAttackIntervalTime();
 }

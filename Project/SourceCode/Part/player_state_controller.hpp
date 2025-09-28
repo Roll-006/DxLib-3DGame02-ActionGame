@@ -60,6 +60,8 @@ public:
 	[[nodiscard]] bool TryMove				();
 	[[nodiscard]] bool TryRun				();
 	[[nodiscard]] bool TryGrabbed			(std::shared_ptr<Player> player);
+	[[nodiscard]] bool TryRoundhouseKick	(std::shared_ptr<Player> player);
+	[[nodiscard]] bool TryFrontKick			(std::shared_ptr<Player> player);
 	[[nodiscard]] bool TryEquipKnifeShortcut(std::shared_ptr<Player> player);
 	[[nodiscard]] bool TrySpinningSlash		();
 	[[nodiscard]] bool TryEquipGun			(std::shared_ptr<Player> player);

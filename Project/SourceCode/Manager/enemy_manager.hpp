@@ -26,8 +26,8 @@ public:
 	void AttachTarget(const std::shared_ptr<CharacterBase> target_character);
 	void DetachTarget();
 	
-private:
-	void NotifyStopActionForcibly();
+	void NotifyAllowAction		 (const ReleaseEvent&	event);
+	void NotifyStopActionForcibly(const GrabEvent&		event);
 
 private:
 	std::vector<std::shared_ptr<EnemyBase>> m_enemies;

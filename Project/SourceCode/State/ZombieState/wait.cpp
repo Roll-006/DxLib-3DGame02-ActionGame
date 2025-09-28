@@ -36,6 +36,11 @@ std::shared_ptr<IState<Zombie>> zombie_state::Wait::ChangeState(std::shared_ptr<
 {
 	const auto state_controller = obj->GetStateController();
 
+	// 強制待機
+	if (state_controller->TryWaitForcibly(obj))
+	{
+		return nullptr;
+	}
 	// ダッシュ攻撃
 	if (state_controller->TryRunAttack(obj))
 	{

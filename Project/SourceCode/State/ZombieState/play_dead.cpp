@@ -14,7 +14,10 @@ zombie_state::PlayDead::~PlayDead()
 
 void zombie_state::PlayDead::Update(std::shared_ptr<Zombie> obj)
 {
-	obj->CalcAttackIntervalTime();
+	if (obj->CanAction())
+	{
+		obj->CalcAttackIntervalTime();
+	}
 }
 
 void zombie_state::PlayDead::LateUpdate(std::shared_ptr<Zombie> obj)

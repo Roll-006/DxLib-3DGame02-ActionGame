@@ -41,7 +41,7 @@ void Bullet::LateUpdate()
 	if (!IsActive()) { return; }
 
 	Move();
-	CalcRayPos();
+	CalcRayCastPos();
 }
 
 void Bullet::DrawToShadowMap() const
@@ -109,7 +109,7 @@ void Bullet::OnShot(GunBase& gun)
 	m_range				= gun.GetRange();
 	m_power				= gun.GetPower();
 
-	CalcRayPos();
+	CalcRayCastPos();
 
 	const OnShotBulletEvent event{ GetName(), gun.GetOwnerName(), GetObjHandle(), m_transform };
 	EventSystem::GetInstance()->Publish(event);
@@ -139,7 +139,7 @@ void Bullet::Move()
 	m_velocity += m_move_velocity;
 }
 
-void Bullet::CalcRayPos()
+void Bullet::CalcRayCastPos()
 {
 	// Œõü‚ÌˆÊ’u‚ğŒvZ
 	auto ray = std::dynamic_pointer_cast<Segment>(GetCollider(ColliderKind::kRayCast)->GetShape());

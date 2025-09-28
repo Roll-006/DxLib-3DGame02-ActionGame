@@ -1,11 +1,23 @@
 #include "main_camera.hpp"
 #include "../VirtualCamera/cinemachine_brain.hpp"
 #include "../Command/command_handler.hpp"
+#include "../Interface/i_melee_hittable.hpp"
+#include "../Base/enemy_base.hpp"
 
 MainCamera::MainCamera() : 
-	PhysicalObjBase(ObjName.MAIN_CAMERA, ObjTag.CAMERA, MassKind::kLight)
+	PhysicalObjBase		(ObjName.MAIN_CAMERA, ObjTag.CAMERA, MassKind::kLight),
+	m_aim_pos			(v3d::GetZeroV()),
+	m_origin_pos		(v3d::GetZeroV()),
+	m_is_changing_pos	(false)
 {
-	//AddCollider(std::make_shared<Collider>(ColliderKind::kRayCast, std::make_shared<Segment>(), this));
+	AddCollider(std::make_shared<Collider>(ColliderKind::kRayCast,		 std::make_shared<Segment>(), this));
+	AddCollider(std::make_shared<Collider>(ColliderKind::kVisionTrigger, std::make_shared<Cone>(v3d::GetZeroV(), v3d::GetZeroV(), kMeleeDistance, kMeleeFOV), this));
+
+	// カメラが無視するコライダー
+	const auto collision_manager = CollisionManager::GetInstance();
+	const ColliderData camera_data{ ObjTag.CAMERA, ColliderKind::kRayCast };
+	collision_manager->AddIgnoreColliderPair(camera_data, { ObjTag.PLAYER, ColliderKind::kNone });
+	collision_manager->AddIgnoreColliderPair(camera_data, { ObjTag.ENEMY,  ColliderKind::kNone });
 }
 
 MainCamera::~MainCamera()
@@ -27,41 +39,74 @@ void MainCamera::LateUpdate()
 {
 	if (!IsActive()) { return; }
 
-	SetAim();
-	CalcRayPos();
+	if (!m_is_changing_pos)
+	{
+		SetAim();
+	}
+
+	CalcRayCastPos();
+	CalcVisionTriggerPos();
+
+	m_is_changing_pos = false;
 }
 
 void MainCamera::DrawToShadowMap() const
 {
-
+	if (!IsActive()) { return; }
 }
 
 void MainCamera::Draw() const
 {
 	if (!IsActive()) { return; }
 
-	//const auto p		= m_transform->GetPos    (CoordinateKind::kWorld);
-	//const auto forward	= m_transform->GetForward(CoordinateKind::kWorld);
-	//const auto up		= m_transform->GetUp     (CoordinateKind::kWorld);
-	//const auto right	= m_transform->GetRight  (CoordinateKind::kWorld);
-
-	//DrawSphere3D  (p,					  5, 8, GetColor(255, 255, 255), GetColor(255, 255, 255), TRUE);
-	//DrawCylinder3D(p, p + forward	* 10, 1, 8, GetColor(  0,   0, 255), GetColor(  0,   0, 255), TRUE);
-	//DrawCylinder3D(p, p + up		* 10, 1, 8, GetColor(  0, 255,   0), GetColor(  0, 255,   0), TRUE);
-	//DrawCylinder3D(p, p + right		* 10, 1, 8, GetColor(255,   0,   0), GetColor(255,   0,   0), TRUE);
-
-	//DrawFormatString(600, 0, 0xffffff, "%f, %f, %f", p.x, p.y, p.z);
+	for (const auto& collider : m_collider)
+	{
+		const auto shape = collider.second->GetShape();
+		if (shape != nullptr)
+		{
+			shape->Draw(true, 0, 0xffffff);
+		}
+	}
 }
 
 void MainCamera::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 {
+	PhysicalObjBase*	target_obj				= hit_collider_pair.target_collider->GetOwnerObj();
+	const auto			target_name				= target_obj->GetName();
+	const auto			target_tag				= target_obj->GetTag();
+	const auto			target_collider_kind	= hit_collider_pair.target_collider->GetColliderKind();
+
 	switch (hit_collider_pair.owner_collider->GetColliderKind())
 	{
 	case ColliderKind::kRayCast:
 		if (hit_collider_pair.intersection)
 		{
+			m_is_changing_pos = true;
+
+			m_origin_pos = m_transform->GetPos(CoordinateKind::kWorld);
 			m_transform->SetPos(CoordinateKind::kWorld, *hit_collider_pair.intersection);
 			SetAim();
+		}
+		break;
+
+	case ColliderKind::kVisionTrigger:
+		// メレー可能な状態のキャラクターが視界判定トリガー内に入ったことを通知
+		if (target_collider_kind == ColliderKind::kVisibleTrigger)
+		{
+			const auto melee_hittable = dynamic_cast<IMeleeHittable*>(target_obj);
+			if (melee_hittable)
+			{
+				if (melee_hittable->IsStandStun() || melee_hittable->IsCrouchStun())
+				{
+					const auto owner_pos		= m_transform->GetPos(CoordinateKind::kWorld);
+					const auto target_transform = target_obj->GetTransform();
+					const auto target_pos		= target_transform->GetPos(CoordinateKind::kWorld);
+					const auto angle			= math::GetAngleBetweenTwoVector(m_transform->GetForward(CoordinateKind::kWorld), v3d::GetNormalizedV(target_pos - owner_pos));
+
+					const OnDownedEnemySpottedEvent event{ target_obj->GetObjHandle(), angle };
+					EventSystem::GetInstance()->Publish(event);
+				}
+			}
 		}
 		break;
 
@@ -77,7 +122,7 @@ void MainCamera::AddToObjManager()
 	ObjManager		::GetInstance()->AddObj				(shared_from_this());
 	CollisionManager::GetInstance()->AddCollideObj		(physical_obj);
 	PhysicsManager	::GetInstance()->AddPhysicalObj		(physical_obj);
-	PhysicsManager	::GetInstance()->AddIgnoreObjGravity(this->GetObjHandle());
+	PhysicsManager	::GetInstance()->AddIgnoreObjGravity(GetObjHandle());
 
 	CinemachineBrain::GetInstance()->SetMainCamera(std::static_pointer_cast<MainCamera>(shared_from_this()));
 }
@@ -92,6 +137,14 @@ void MainCamera::RemoveToObjManager()
 	ObjManager		::GetInstance()->RemoveObj				(obj_handle);
 }
 
+void MainCamera::ApplyMatrix(const MATRIX& matrix)
+{
+	auto m = matrix;
+
+	m_transform->SetMatrix(CoordinateKind::kWorld, m);
+	m_origin_pos = MGetTranslateElem(m);
+}
+
 float MainCamera::GetDeltaTime() const
 {
 	const auto time_manager = GameTimeManager::GetInstance();
@@ -104,13 +157,19 @@ void MainCamera::SetAim()
 	const VECTOR target_pos	= pos + m_transform->GetForward(CoordinateKind::kWorld);
 
 	SetCameraPositionAndTarget_UpVecY(pos, target_pos);
-	//SetCameraPositionAndTarget_UpVecY(VGet(0, 300, 0), VGet(0, -1, 0));
 }
 
-void MainCamera::CalcRayPos()
+void MainCamera::CalcRayCastPos()
 {
 	// 光線の座標を計算
-	//auto ray = std::dynamic_pointer_cast<Segment>(GetCollider(ColliderKind::kRayCast)->GetShape());
-	//ray->SetBeginPos(GetLookPos(), true);
-	//ray->SetEndPos	(m_transform->GetPos(CoordinateKind::kWorld), true);
+	auto ray = std::static_pointer_cast<Segment>(GetCollider(ColliderKind::kRayCast)->GetShape());
+	ray->SetBeginPos(m_aim_pos,	   true);
+	ray->SetEndPos	(m_origin_pos, true);
+}
+
+void MainCamera::CalcVisionTriggerPos()
+{
+	const auto cone = std::static_pointer_cast<Cone>(GetCollider(ColliderKind::kVisionTrigger)->GetShape());
+	cone->SetVertex	(m_transform->GetPos	(CoordinateKind::kWorld));
+	cone->SetDir	(m_transform->GetForward(CoordinateKind::kWorld));
 }

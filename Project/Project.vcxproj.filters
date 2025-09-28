@@ -496,6 +496,9 @@
     <ClCompile Include="SourceCode\Base\enemy_base.cpp">
       <Filter>SourceCode\Base</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\Part\melee_target_selecter.cpp">
+      <Filter>SourceCode\Part</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\character_base.hpp">
@@ -1317,6 +1320,24 @@
     <ClInclude Include="SourceCode\Base\enemy_base.hpp">
       <Filter>SourceCode\Base</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\Event\release_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Interface\i_melee_attackable.hpp">
+      <Filter>SourceCode\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\on_downed_enemy_spotted_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Interface\i_melee_hittable.hpp">
+      <Filter>SourceCode\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\melee_candidate_data.hpp">
+      <Filter>SourceCode\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Part\melee_target_selecter.hpp">
+      <Filter>SourceCode\Part</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="SourceCode">
@@ -1370,9 +1391,6 @@
     <Filter Include="SourceCode\Interface">
       <UniqueIdentifier>{ca30a1cf-6f57-4e96-a660-dd84bdc29e45}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCode\JSON">
-      <UniqueIdentifier>{3eab40b7-60e6-487a-879b-9b1e3022aeb9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SourceCode\Manager">
       <UniqueIdentifier>{69894637-334e-46d6-be72-079330c80427}</UniqueIdentifier>
     </Filter>
@@ -1384,9 +1402,6 @@
     </Filter>
     <Filter Include="SourceCode\ObjectPool">
       <UniqueIdentifier>{babb64c0-15ce-4652-be32-4fda876508c4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCode\Part">
-      <UniqueIdentifier>{c6964f06-9b8c-446a-8f44-3299598a3b7f}</UniqueIdentifier>
     </Filter>
     <Filter Include="SourceCode\Path">
       <UniqueIdentifier>{ce592a38-5a0e-4681-97e6-ec115ff7e61a}</UniqueIdentifier>
@@ -1442,12 +1457,18 @@
     <Filter Include="SourceCode\Kind">
       <UniqueIdentifier>{72135338-3c4c-44c1-a81b-ef11a7ace830}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SourceCode\JSON">
+      <UniqueIdentifier>{3eab40b7-60e6-487a-879b-9b1e3022aeb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCode\Part">
+      <UniqueIdentifier>{c6964f06-9b8c-446a-8f44-3299598a3b7f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\JSON\key_number.json">
       <Filter>JSON</Filter>
     </None>
-    <None Include="Data\JSON\enemy_pos.json">
+    <None Include="Data\JSON\enemy_data.json">
       <Filter>JSON</Filter>
     </None>
   </ItemGroup>

@@ -14,7 +14,10 @@ zombie_state::ActionNull::~ActionNull()
 
 void zombie_state::ActionNull::Update(std::shared_ptr<Zombie> obj)
 {
-	obj->CalcAttackIntervalTime();
+	if (obj->CanAction())
+	{
+		obj->CalcAttackIntervalTime();
+	}
 }
 
 void zombie_state::ActionNull::LateUpdate(std::shared_ptr<Zombie> obj)
@@ -36,6 +39,11 @@ std::shared_ptr<IState<Zombie>> zombie_state::ActionNull::ChangeState(std::share
 {
 	const auto state_controller = obj->GetStateController();
 
+	// ‹­§NULL
+	if (state_controller->TryActionNullForcibly(obj))
+	{
+		return nullptr;
+	}
 	// Ž€–S
 	if (state_controller->TryDead(obj))
 	{

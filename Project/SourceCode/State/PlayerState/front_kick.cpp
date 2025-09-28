@@ -34,5 +34,13 @@ void player_state::FrontKick::Exit(std::shared_ptr<Player> obj)
 
 std::shared_ptr<IState<Player>> player_state::FrontKick::ChangeState(std::shared_ptr<Player> obj)
 {
+	const auto state_controller = obj->GetStateController();
+
+	// NULL
+	if (obj->GetAnimator()->IsPlayEnd(AnimatorBase::BodyKind::kUpperBody))
+	{
+		return state_controller->GetState<ActionNull, Player>();
+	}
+
 	return nullptr;
 }

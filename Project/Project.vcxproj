@@ -196,6 +196,7 @@
     <ClCompile Include="SourceCode\Object\player.cpp" />
     <ClCompile Include="SourceCode\Object\shell_casing.cpp" />
     <ClCompile Include="SourceCode\Object\skydome.cpp" />
+    <ClCompile Include="SourceCode\Part\melee_target_selecter.cpp" />
     <ClCompile Include="SourceCode\Part\character_collider_creator.cpp" />
     <ClCompile Include="SourceCode\Part\health.cpp" />
     <ClCompile Include="SourceCode\Part\bone_pos_corrector.cpp" />
@@ -347,6 +348,7 @@
     <ClInclude Include="SourceCode\Concept\vector_concepts.hpp" />
     <ClInclude Include="SourceCode\CSV\csv_loader.hpp" />
     <ClInclude Include="SourceCode\Data\collider_data.hpp" />
+    <ClInclude Include="SourceCode\Data\melee_candidate_data.hpp" />
     <ClInclude Include="SourceCode\Data\recoil_data.hpp" />
     <ClInclude Include="SourceCode\Data\animator_data.hpp" />
     <ClInclude Include="SourceCode\Data\box_data.hpp" />
@@ -358,6 +360,8 @@
     <ClInclude Include="SourceCode\Debugger\debugger.hpp" />
     <ClInclude Include="SourceCode\Drawer\drawer.hpp" />
     <ClInclude Include="SourceCode\Event\aim_gun_event.hpp" />
+    <ClInclude Include="SourceCode\Event\on_downed_enemy_spotted_event.hpp" />
+    <ClInclude Include="SourceCode\Event\release_event.hpp" />
     <ClInclude Include="SourceCode\Event\near_death_event.hpp" />
     <ClInclude Include="SourceCode\Event\enter_near_death_event.hpp" />
     <ClInclude Include="SourceCode\Event\end_grab_cutscene_event.hpp" />
@@ -394,6 +398,8 @@
     <ClInclude Include="SourceCode\Interface\i_event.hpp" />
     <ClInclude Include="SourceCode\Interface\i_bullet.hpp" />
     <ClInclude Include="SourceCode\Interface\i_item.hpp" />
+    <ClInclude Include="SourceCode\Interface\i_melee_attackable.hpp" />
+    <ClInclude Include="SourceCode\Interface\i_melee_hittable.hpp" />
     <ClInclude Include="SourceCode\Interface\i_observer.hpp" />
     <ClInclude Include="SourceCode\Interface\i_poolable.hpp" />
     <ClInclude Include="SourceCode\Interface\i_shooter.hpp" />
@@ -468,6 +474,7 @@
     <ClInclude Include="SourceCode\Object\skydome.hpp" />
     <ClInclude Include="SourceCode\Part\character_collider_creator.hpp" />
     <ClInclude Include="SourceCode\Part\mask_creator.hpp" />
+    <ClInclude Include="SourceCode\Part\melee_target_selecter.hpp" />
     <ClInclude Include="SourceCode\Part\patrol_route_supporter.hpp" />
     <ClInclude Include="SourceCode\Part\health.hpp" />
     <ClInclude Include="SourceCode\Part\bone_pos_corrector.hpp" />
@@ -586,7 +593,7 @@
     <ClInclude Include="SourceCode\Window\window.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Data\JSON\enemy_pos.json" />
+    <None Include="Data\JSON\enemy_data.json" />
     <None Include="Data\JSON\key_number.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

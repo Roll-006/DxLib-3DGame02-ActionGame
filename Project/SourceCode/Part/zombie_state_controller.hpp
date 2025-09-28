@@ -45,9 +45,11 @@ public:
 
 
 	#pragma region Try”»’è
+	[[nodiscard]] bool TryWaitForcibly		(std::shared_ptr<Zombie> zombie);
 	[[nodiscard]] bool TryTrack				(std::shared_ptr<Zombie> zombie);
 	[[nodiscard]] bool TryRunAttack			(std::shared_ptr<Zombie> zombie);
 	[[nodiscard]] bool TryMove				();
+	[[nodiscard]] bool TryActionNullForcibly(std::shared_ptr<Zombie> zombie);
 	[[nodiscard]] bool TryWalk				(std::shared_ptr<Zombie> zombie);
 	[[nodiscard]] bool TryRun				(std::shared_ptr<Zombie> zombie);
 	[[nodiscard]] bool TryGrabRun			();

@@ -15,7 +15,10 @@ zombie_state::CrouchRightStun::~CrouchRightStun()
 
 void zombie_state::CrouchRightStun::Update(std::shared_ptr<Zombie> obj)
 {
-	m_stun_timer += obj->GetDeltaTime();
+	if (obj->CanAction())
+	{
+		m_stun_timer += obj->GetDeltaTime();
+	}
 
 	//obj->CalcAttackIntervalTime();
 }

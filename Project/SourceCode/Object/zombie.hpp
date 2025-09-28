@@ -1,14 +1,15 @@
 #pragma once
 #include "../Base/enemy_base.hpp"
+#include "../Interface/i_melee_hittable.hpp"
 
 #include "../Part/zombie_animator.hpp"
 
 class ZombieStateController;
 
-class Zombie final : public EnemyBase
+class Zombie final : public EnemyBase, public IMeleeHittable
 {
 public:
-	Zombie();
+	Zombie(const VECTOR& pos, const VECTOR& look_dir);
 	~Zombie() override;
 
 	void Init()						override;
@@ -26,7 +27,7 @@ public:
 
 	#pragma region State
 	void Move();
-	void TrackMove(const VECTOR& pos);
+	void TrackMove(const VECTOR& target_pos);
 
 	void UpdateGrabRun();
 
@@ -37,9 +38,11 @@ public:
 
 
 	#pragma region Getter
-	[[nodiscard]] float	GetDeltaTime() const override;
+	[[nodiscard]] float	GetDeltaTime()  const override;
 	[[nodiscard]] std::shared_ptr<ZombieStateController> GetStateController() const { return m_state; }
-	[[nodiscard]] bool CanGrabTraget()		const			{ return m_can_grab_target; }
+	[[nodiscard]] bool  CanGrabTraget() const { return m_can_grab_target; }
+	[[nodiscard]] bool  IsStandStun()	const override;
+	[[nodiscard]] bool  IsCrouchStun()	const override;
 	#pragma endregion
 
 private:
@@ -64,6 +67,7 @@ private:
 	static constexpr float kRunGrabSpeed			= 80.0f;
 
 	static constexpr float kMoveDirOffsetSpeed		= 5.0f;			// ˆÚ“®•ûŒü‚Ì•â³‘¬“x
+	static constexpr float kLookDirOffsetSpeed		= 2.0f;			// Œ©‚é•ûŒü‚Ì•â³Šp“x
 
 	static constexpr float kCapsuleRadius			= 8.0f;
 	static constexpr float kLandingTriggerRadius	= 6.0f;
@@ -79,5 +83,6 @@ private:
 private:
 	std::shared_ptr<ZombieStateController> m_state;
 
-	bool  m_can_grab_target;
+	float	m_look_dir_offset_speed;			// Œ©‚é•ûŒü‚Ì•â³‘¬“x
+	bool	m_can_grab_target;
 };

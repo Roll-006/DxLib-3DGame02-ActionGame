@@ -2,6 +2,7 @@
 #include "../Base/character_base.hpp"
 #include "../Interface/i_shooter.hpp"
 #include "../Interface/i_grabbable.hpp"
+#include "../Interface/i_melee_attackable.hpp"
 
 #include "../GameTime/game_time_manager.hpp"
 #include "../Event/event_system.hpp"
@@ -12,12 +13,13 @@
 #include "knife.hpp"
 #include "../Part/weapon_shortcut_selecter.hpp"
 #include "../Part/bone_pos_corrector.hpp"
+#include "../Part/melee_target_selecter.hpp"
 
 #include "../VirtualCamera/cinemachine_brain.hpp"
 
 class PlayerStateController;
 
-class Player final : public CharacterBase, public IShooter, public IGrabbable
+class Player final : public CharacterBase, public IShooter, public IGrabbable, public IMeleeAttackable
 {
 public:
 	Player();
@@ -36,6 +38,11 @@ public:
 	void OnGrabbedDamage(const float damage) override;
 
 	void SetRemainingBulletNum(const int remaining_bullet_num) override { m_current_remaining_bullet_num = remaining_bullet_num; }
+	
+	
+	#pragma region Event
+	void AddMeleeCandidate(const OnDownedEnemySpottedEvent& event) override;
+	#pragma endregion
 
 
 	#pragma region アイテム
@@ -119,9 +126,13 @@ public:
 	[[nodiscard]] float										GetMoveSpeed()					const			{ return m_move_speed; }
 	[[nodiscard]] int										GetCurrentRemainingBulletNum()	const override	{ return m_current_remaining_bullet_num; }
 	[[nodiscard]] bool										IsGrabbed()						const override	{ return m_is_grabbed; }
+	[[nodiscard]] std::vector<MeleeCandidateData>			GetMeleeCandidate()				const override  { return m_melee_candidate; }
 	#pragma endregion
 
 private:
+	void RemoveMeleeCandidate() override;
+	void DecisionMeleeTarget()  override;
+
 	void CalcInputSlopeFromPad();
 	void CalcInputSlopeFromCommand();
 
@@ -150,11 +161,11 @@ private:
 	static constexpr float kAcceleration						= 1.0f;					// 加速度(減速度も共通)
 
 	static constexpr float kMoveDirOffsetSpeed					= 5.0f;					// 移動方向の補正速度
-	static constexpr float kLookDirOffsetAngle					= 2.7f;					// 見る方向の補正角度
-	static constexpr float kLookDirOffsetAngleForAim			= 17.0f;				// エイミング時の見る方向を回転させる角度
+	static constexpr float kLookDirOffsetSpeed					= 2.0f;					// 見る方向の補正角度
+	static constexpr float kLookDirOffsetSpeedForRun			= 4.0f;					// ダッシュ時の見る方向の補正角度
+	static constexpr float kLookDirOffsetSpeedForAim			= 5.0f;					// エイミング時の見る方向を回転させる角度
+	static constexpr float kLookDirOffsetSpeedForSideSlash		= 0.5f;					// 切り裂き攻撃時の見る方向を回転させる角度
 	static constexpr float kConfirmMoveDirThresholdDistance		= 0.08f;				// 目的の移動方向に到達したと判定する閾値
-	static constexpr float kConfirmLookDirThresholdAngle		= 10.0f;				// 目的の見る方向に到達したと判定する閾値
-	static constexpr float kConfirmLookDirThresholdAngleForAim	= 20.0f;				// エイミング時の目的の見る方向に到達したと判定する閾値
 
 	static constexpr int   kWalkStickSlopeLimit					= 15000;				// 歩き状態とするスティック傾きの上限
 	//static constexpr float kTurnAroundStickAngle				= 30.0f;				// 振り向きを行うスティックの入力角度
@@ -172,8 +183,7 @@ private:
 
 	VECTOR										m_input_slope;
 
-	float										m_look_dir_offset_angle;				// 見る方向の補正角度
-	float										m_confirm_look_dir_threshold_angle;		// 目的の見る方向に到達したと判定する閾値
+	float										m_look_dir_offset_speed;				// 見る方向の補正速度
 
 	float										m_prev_health;
 	bool										m_is_grabbed;							// 捕まれたかを判定
@@ -183,4 +193,5 @@ private:
 	std::shared_ptr<KnifeBase>					m_current_equip_knife;					// 現在装備しているナイフ
 	int											m_current_remaining_bullet_num;			// 残弾数
 	std::shared_ptr<WeaponShortcutSelecter>		m_weapon_shortcut_selecter;				// ショートカットに登録されている武器
+	std::vector<MeleeCandidateData>				m_melee_candidate;						// メレーの候補者リスト
 };

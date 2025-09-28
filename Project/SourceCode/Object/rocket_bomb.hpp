@@ -40,7 +40,7 @@ private:
 	/// @brief ˆÚ“®•ûŒü‚ğp¨‚É“K—p‚·‚é
 	void ApplyMoveDirToRot();
 	void Move();
-	void CalcRayPos() override;
+	void CalcRayCastPos() override;
 
 private:
 	static constexpr VECTOR kBasicAngle		= { 0.0f, 90.0f * math::kDegToRad, 0.0f };
