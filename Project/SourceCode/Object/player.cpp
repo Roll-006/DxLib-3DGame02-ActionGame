@@ -98,8 +98,8 @@ void Player::Update()
 		}
 	}
 
-	m_move_dir_offset_speed				= kMoveDirOffsetSpeed;
-	m_look_dir_offset_speed				= kLookDirOffsetSpeed;
+	m_move_dir_offset_speed	= kMoveDirOffsetSpeed;
+	m_look_dir_offset_speed	= kLookDirOffsetSpeed;
 
 	m_weapon_shortcut_selecter->Update(std::static_pointer_cast<Player>(shared_from_this()));
 	m_state					  ->Update(std::static_pointer_cast<Player>(shared_from_this()));
@@ -222,6 +222,35 @@ void Player::OnGrabbedDamage(const float damage)
 	OnDamage(HealthPartKind::kMain, damage);
 }
 
+void Player::AttackFrontMelee(const VECTOR& target_pos, const VECTOR& target_dir)
+{
+	// front kick
+
+	m_look_dir.at(TimeKind::kNext) = -target_dir;
+	m_destination_pos = target_pos + target_dir * 24.0f;
+}
+
+void Player::AttackBackMelee(const VECTOR& target_pos, const VECTOR& target_dir)
+{
+	// suplex
+
+	m_look_dir.at(TimeKind::kNext) = target_dir;
+	m_destination_pos = target_pos - target_dir * 24.0f;
+}
+
+void Player::AttackVersatilityMelee(const VECTOR& target_pos, const VECTOR& target_dir)
+{
+	// roundhouse kick
+
+	const auto pos				= m_transform->GetPos(CoordinateKind::kWorld);
+	const auto pos_y0			= VGet(pos.x, 0.0f, pos.z);
+	const auto target_pos_y0	= VGet(target_pos.x, 0.0f, target_pos.z);
+	const auto dir				= v3d::GetNormalizedV(target_pos_y0 - pos_y0);
+
+	m_look_dir.at(TimeKind::kNext) = dir;
+	m_destination_pos = target_pos - dir * 24.0f;
+}
+
 
 #pragma region Event
 void Player::AddMeleeCandidate(const OnDownedEnemySpottedEvent& event)
@@ -292,6 +321,13 @@ void Player::UpdateGrabbed()
 	CalcCorrectMoveDir();
 
 	ReleaseWeapon();
+}
+
+void Player::UpdateMelee()
+{
+	m_move_speed = 20.0f;
+
+	CalcCorrectMoveDir();
 }
 
 void Player::CalcMoveSpeed()
@@ -511,8 +547,13 @@ void Player::CalcLookDir()
 	const auto action_state			= static_cast<player_state::ActionStateKind>	  (m_state->GetActionState		(TimeKind::kCurrent)->GetStateKind());
 	const auto weapon_action_state	= static_cast<player_state::WeaponActionStateKind>(m_state->GetWeaponActionState(TimeKind::kCurrent)->GetStateKind());
 
+	// TODO : LookDir•â³©‘Ì‚Ì‹““®‚ÍCharaBase‹¤’Ê‚È‚½‚ßAğŒ•ª‚ğ‚Ì‚¿‚ÉC³
+	// CalcLookDirŠÖ”‚ğCharaBase‚ÉˆÚs
 	if (   move_state		   != player_state::MoveStateKind		 ::kMove
 		&& action_state		   != player_state::ActionStateKind		 ::kGrabbed
+		&& action_state		   != player_state::ActionStateKind		 ::kRoundhouseKick
+		&& action_state		   != player_state::ActionStateKind		 ::kFrontKick
+		&& action_state		   != player_state::ActionStateKind		 ::kSuplex
 		&& weapon_action_state != player_state::WeaponActionStateKind::kAimKnife
 		&& weapon_action_state != player_state::WeaponActionStateKind::kFirstSideSlashKnife
 		&& weapon_action_state != player_state::WeaponActionStateKind::kSecondSideSlashKnife

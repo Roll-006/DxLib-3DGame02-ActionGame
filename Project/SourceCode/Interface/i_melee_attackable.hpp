@@ -8,6 +8,15 @@ class IMeleeAttackable abstract
 public:
 	virtual ~IMeleeAttackable() = default;
 
+	virtual void UpdateMelee() abstract;
+
+	/// @brief 対象の前方で行うメレーを実行する
+	virtual void AttackFrontMelee		(const VECTOR& target_pos, const VECTOR& target_dir) abstract;
+	/// @brief 対象の後方で行うメレーを実行する
+	virtual void AttackBackMelee		(const VECTOR& target_pos, const VECTOR& target_dir) abstract;
+	/// @brief 対象に対してどの位置からでも行えるメレーを実行する
+	virtual void AttackVersatilityMelee	(const VECTOR& target_pos, const VECTOR& target_dir) abstract;
+
 	/// @brief メレー候補をイベントにより追加する
 	virtual void AddMeleeCandidate(const OnDownedEnemySpottedEvent& event) abstract;
 

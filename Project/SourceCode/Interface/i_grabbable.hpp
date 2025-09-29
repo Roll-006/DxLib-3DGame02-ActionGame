@@ -6,6 +6,8 @@ class IGrabbable abstract
 public:
 	virtual ~IGrabbable() = default;
 
+	virtual void UpdateGrabbed() abstract;
+
 	virtual void OnGrabbed(const VECTOR& brabber_pos, const VECTOR& brabber_dir) abstract;
 	virtual void OnRelease() abstract;
 

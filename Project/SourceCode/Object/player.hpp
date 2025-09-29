@@ -39,6 +39,9 @@ public:
 
 	void SetRemainingBulletNum(const int remaining_bullet_num) override { m_current_remaining_bullet_num = remaining_bullet_num; }
 	
+	void AttackFrontMelee		(const VECTOR& target_pos, const VECTOR& target_dir) override;
+	void AttackBackMelee		(const VECTOR& target_pos, const VECTOR& target_dir) override;
+	void AttackVersatilityMelee	(const VECTOR& target_pos, const VECTOR& target_dir) override;
 	
 	#pragma region Event
 	void AddMeleeCandidate(const OnDownedEnemySpottedEvent& event) override;
@@ -103,7 +106,8 @@ public:
 	/// @brief カメラのforward(Y軸は0)方向を向く
 	void DirOfCameraForward();
 
-	void UpdateGrabbed();
+	void UpdateGrabbed() override;
+	void UpdateMelee()	 override;
 
 	void CalcMoveSpeed();
 	void CalcMoveSpeedStop();

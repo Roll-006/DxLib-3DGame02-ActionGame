@@ -14,7 +14,7 @@ player_state::FrontKick::~FrontKick()
 
 void player_state::FrontKick::Update(std::shared_ptr<Player> obj)
 {
-
+	obj->UpdateMelee();
 }
 
 void player_state::FrontKick::LateUpdate(std::shared_ptr<Player> obj)
@@ -24,7 +24,10 @@ void player_state::FrontKick::LateUpdate(std::shared_ptr<Player> obj)
 
 void player_state::FrontKick::Enter(std::shared_ptr<Player> obj)
 {
+	const auto target_obj		= ObjManager::GetInstance()->GetObj<ObjBase>(obj->GetMeleeCandidate().front().target_obj_handle);
+	const auto target_transform = target_obj->GetTransform();
 
+	obj->AttackFrontMelee(target_transform->GetPos(CoordinateKind::kWorld), target_transform->GetForward(CoordinateKind::kWorld));
 }
 
 void player_state::FrontKick::Exit(std::shared_ptr<Player> obj)

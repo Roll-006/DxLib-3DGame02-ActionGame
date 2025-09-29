@@ -14,7 +14,7 @@ player_state::RoundhouseKick::~RoundhouseKick()
 
 void player_state::RoundhouseKick::Update(std::shared_ptr<Player> obj)
 {
-
+	obj->UpdateMelee();
 }
 
 void player_state::RoundhouseKick::LateUpdate(std::shared_ptr<Player> obj)
@@ -24,7 +24,10 @@ void player_state::RoundhouseKick::LateUpdate(std::shared_ptr<Player> obj)
 
 void player_state::RoundhouseKick::Enter(std::shared_ptr<Player> obj)
 {
+	const auto target_obj		= ObjManager::GetInstance()->GetObj<ObjBase>(obj->GetMeleeCandidate().front().target_obj_handle);
+	const auto target_transform = target_obj->GetTransform();
 
+	obj->AttackVersatilityMelee(target_transform->GetPos(CoordinateKind::kWorld), target_transform->GetForward(CoordinateKind::kWorld));
 }
 
 void player_state::RoundhouseKick::Exit(std::shared_ptr<Player> obj)
@@ -35,7 +38,7 @@ void player_state::RoundhouseKick::Exit(std::shared_ptr<Player> obj)
 std::shared_ptr<IState<Player>> player_state::RoundhouseKick::ChangeState(std::shared_ptr<Player> obj)
 {
 	const auto state_controller = obj->GetStateController();
-
+	
 	// NULL
 	if (obj->GetAnimator()->IsPlayEnd(AnimatorBase::BodyKind::kUpperBody))
 	{

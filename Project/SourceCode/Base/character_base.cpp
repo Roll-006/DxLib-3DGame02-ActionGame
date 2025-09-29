@@ -39,9 +39,9 @@ void CharacterBase::RemoveToObjManager()
 
 void CharacterBase::CalcCorrectMoveDir()
 {
-	const auto destination_pos_y0	= VGet(m_destination_pos.x, 0.0f, m_destination_pos.z);
 	const auto current_pos			= m_transform->GetPos(CoordinateKind::kWorld);
 	const auto current_pos_y0		= VGet(current_pos.x, 0.0f, current_pos.z);
+	const auto destination_pos_y0	= VGet(m_destination_pos.x, 0.0f, m_destination_pos.z);
 
 	if (VSize(destination_pos_y0 - current_pos_y0) < 1.0f)
 	{

@@ -14,7 +14,7 @@ player_state::Suplex::~Suplex()
 
 void player_state::Suplex::Update(std::shared_ptr<Player> obj)
 {
-
+	obj->UpdateMelee();
 }
 
 void player_state::Suplex::LateUpdate(std::shared_ptr<Player> obj)
