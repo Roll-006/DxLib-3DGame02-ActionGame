@@ -7,6 +7,7 @@ CinemachineBrain::CinemachineBrain() :
 	m_blend_target_transform		(nullptr),
 	m_blend_origin_result_transform	(nullptr),
 	m_blend_result_transform		(nullptr),
+	m_blend_result_aim_pos			(v3d::GetZeroV()),
 	m_blend_time					(1.0f),
 	m_blend_timer					(0.0f),
 	m_blend_coefficient				(0.0f),
@@ -211,7 +212,8 @@ void CinemachineBrain::BlendVirtualCamera()
 	SetBlendTransform();
 
 	// ブレンド結果を計算
-	CalcBlendResuletTransform();
+	CalcBlendResultTransform();
+	CalcBlendResultAimPos();
 
 	// メインカメラへ適用
 	if (!m_blend_result_transform) { m_blend_result_transform = std::make_shared<Transform>(); }
@@ -290,7 +292,7 @@ void CinemachineBrain::SetBlendTransform()
 	if (m_target_virtual_camera) { DeactivateVirtualCamera(m_origin_virtual_camera, m_target_virtual_camera); }
 }
 
-void CinemachineBrain::CalcBlendResuletTransform()
+void CinemachineBrain::CalcBlendResultTransform()
 {
 	// バーチャルカメラが単独で存在していた場合、
 	// もしくはブレンドが完了済みの場合は、ターゲット自身を追尾する
@@ -307,15 +309,22 @@ void CinemachineBrain::CalcBlendResuletTransform()
 	auto blended_transform		= math::GetLerpTransform(*m_blend_origin_transform, *m_blend_target_transform, m_blend_coefficient, true, false, true);
 	m_blend_result_transform	= std::make_shared<Transform>(blended_transform);
 
-	// 見る座標間の補間
-	const auto origin_aim_pos = m_origin_virtual_camera ? m_origin_virtual_camera->GetAim()->GetAimPos() : v3d::GetZeroV();
-	m_blend_result_aim_pos = math::GetLerp(origin_aim_pos, m_target_virtual_camera->GetAim()->GetAimPos(), m_blend_coefficient);
-
 	// ブレンド完了判定
 	if (m_blend_coefficient >= 1.0f)
 	{
 		m_blend_origin_result_transform = nullptr;
 		m_is_blending					= false;
+	}
+}
+
+void CinemachineBrain::CalcBlendResultAimPos()
+{
+	if (m_target_virtual_camera)
+	{
+		const auto target_aim_pos = m_target_virtual_camera->GetAim()->GetAimPos();
+		const auto origin_aim_pos = m_origin_virtual_camera ? m_origin_virtual_camera->GetAim()->GetAimPos() : target_aim_pos;
+		
+		m_blend_result_aim_pos = math::GetLerp(origin_aim_pos, target_aim_pos, m_blend_coefficient);
 	}
 }
 #pragma endregion

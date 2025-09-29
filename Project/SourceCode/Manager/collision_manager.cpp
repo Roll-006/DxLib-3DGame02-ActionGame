@@ -11,7 +11,7 @@ CollisionManager::~CollisionManager()
 	// ˆ—‚È‚µ
 }
 
-void CollisionManager::Update()
+void CollisionManager::LateUpdate()
 {
 	for (const auto& obj : m_collide_objects)
 	{

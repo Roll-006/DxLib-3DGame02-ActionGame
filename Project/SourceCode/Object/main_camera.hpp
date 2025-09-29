@@ -40,6 +40,4 @@ private:
 	static constexpr float kMeleeFOV		= 60.0f;
 
 	VECTOR	m_aim_pos;
-	VECTOR	m_origin_pos;	// レイキャス処理が実行される前の生の座標
-	bool	m_is_changing_pos;
 };

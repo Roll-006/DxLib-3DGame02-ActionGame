@@ -170,11 +170,6 @@ void Player::Draw() const
 			shape->Draw(true, 0, 0xffffff);
 		}
 	}
-
-	const auto p = m_transform->GetPos(CoordinateKind::kWorld);
-	DrawFormatString(0, 40, 0xffffff, "%.2f, %.2f, %.2f", p.x, p.y, p.z);
-	DrawFormatString(0, 60, 0xffffff, "%.2f, %.2f, %.2f", m_move_dir.at(TimeKind::kCurrent).x, m_move_dir.at(TimeKind::kCurrent).y, m_move_dir.at(TimeKind::kCurrent).z);
-	DrawLine3D(p, p + m_move_dir.at(TimeKind::kCurrent) * 200, 0xff0000);
 }
 
 void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)

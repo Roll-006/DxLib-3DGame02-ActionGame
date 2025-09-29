@@ -112,7 +112,9 @@ private:
 	void SetBlendTransform();
 
 	/// @brief ブレンド結果行列トランスフォームを計算
-	void CalcBlendResuletTransform();
+	void CalcBlendResultTransform();
+
+	void CalcBlendResultAimPos();
 	#pragma endregion
 
 

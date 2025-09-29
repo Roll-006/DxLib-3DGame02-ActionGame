@@ -34,7 +34,8 @@ void TitleScene::DrawToShadowMap() const
 
 void TitleScene::Draw() const
 {
-	DrawFormatString(0, 40, 0xffffff, "TITLE");
+	DrawFormatString(0, 40, 0xffffff, "Current Scene : TITLE");
+	DrawFormatString(0, 60, 0xffffff, "SPACE / A でゲームスタート");
 }
 
 std::shared_ptr<IScene> TitleScene::ChangeScene()

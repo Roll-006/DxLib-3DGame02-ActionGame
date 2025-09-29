@@ -42,8 +42,6 @@ void RocketLauncher::Update()
 {
 	if (!IsActive()) { return; }
 
-	//CalcShotTimer();
-
 	std::dynamic_pointer_cast<ObjBase>(m_magazine)->Update();
 }
 
@@ -51,7 +49,6 @@ void RocketLauncher::LateUpdate()
 {
 	if (!IsActive()) { return; }
 
-	//TrackOwnerHand();
 	CalcTransform(m_muzzle_transform,		kMuzzleOffsetPos);
 	CalcTransform(m_load_transform,			kLoadPortOffsetPos);
 	CalcTransform(m_exhaust_vent_transform, kExhaustVentOffsetPos);

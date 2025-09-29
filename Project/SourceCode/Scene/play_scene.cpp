@@ -89,6 +89,9 @@ void PlayScene::Draw() const
 	m_house								->Draw();
 	m_ground							->Draw();
 	m_skydome							->Draw();
+
+	DrawFormatString(0, 40, 0xffffff, "Current Scene : PLAY");
+	DrawFormatString(0, 60, 0xffffff, "TAB / Start ‚Åƒ^ƒCƒgƒ‹‚É–ß‚é");
 }
 
 std::shared_ptr<IScene> PlayScene::ChangeScene()

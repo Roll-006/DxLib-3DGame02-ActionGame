@@ -18,23 +18,24 @@ void SceneManager::Update()
 {
 	InputChecker	::GetInstance()->Update();
 	CommandHandler	::GetInstance()->Update();
-	CollisionManager::GetInstance()->Update();
-	PhysicsManager	::GetInstance()->Update();
 
 	ChangeScene();
 
 	m_current_scene	->Update();
 	m_share_scene	->Update();
+
+	PhysicsManager	::GetInstance()->Update();
 }
 
 void SceneManager::LateUpdate()
 {
-	PhysicsManager::GetInstance()->LateUpdate();
+	PhysicsManager	::GetInstance()->LateUpdate();
 
 	m_current_scene	->LateUpdate();
 	m_share_scene	->LateUpdate();
 
-	InputChecker::GetInstance()->LateUpdate();
+	CollisionManager::GetInstance()->LateUpdate();
+	InputChecker	::GetInstance()->LateUpdate();
 }
 
 void SceneManager::DrawToShadowMap() const

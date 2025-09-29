@@ -7,11 +7,12 @@ EnemyManager::EnemyManager()
 	EventSystem::GetInstance()->Subscribe<GrabEvent>	(this, &EnemyManager::NotifyStopActionForcibly);
 
 	// 初期位置・向きを設定
+	// TODO : 仮で2体配置。のちに変更。
 	JSONLoader json_loader;
 	nlohmann::json data;
 	if (json_loader.Load("Data/JSON/enemy_data.json", data))
 	{
-		for (int i = 0; i < 3; ++i)
+		for (int i = 0; i < 2; ++i)
 		{
 			const auto enemy	= data ["enemies"][std::to_string(i + 1)];
 			const auto pos		= enemy["position"];

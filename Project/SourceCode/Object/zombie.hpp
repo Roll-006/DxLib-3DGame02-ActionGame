@@ -67,7 +67,7 @@ private:
 	static constexpr float kRunGrabSpeed			= 80.0f;
 
 	static constexpr float kMoveDirOffsetSpeed		= 5.0f;			// ˆÚ“®•ûŒü‚Ì•â³‘¬“x
-	static constexpr float kLookDirOffsetSpeed		= 2.0f;			// Œ©‚é•ûŒü‚Ì•â³Šp“x
+	static constexpr float kLookDirOffsetSpeed		= 4.0f;			// Œ©‚é•ûŒü‚Ì•â³Šp“x
 
 	static constexpr float kCapsuleRadius			= 8.0f;
 	static constexpr float kLandingTriggerRadius	= 6.0f;

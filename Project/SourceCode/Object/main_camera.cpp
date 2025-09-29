@@ -6,9 +6,7 @@
 
 MainCamera::MainCamera() : 
 	PhysicalObjBase		(ObjName.MAIN_CAMERA, ObjTag.CAMERA, MassKind::kLight),
-	m_aim_pos			(v3d::GetZeroV()),
-	m_origin_pos		(v3d::GetZeroV()),
-	m_is_changing_pos	(false)
+	m_aim_pos			(v3d::GetZeroV())
 {
 	AddCollider(std::make_shared<Collider>(ColliderKind::kRayCast,		 std::make_shared<Segment>(), this));
 	AddCollider(std::make_shared<Collider>(ColliderKind::kVisionTrigger, std::make_shared<Cone>(v3d::GetZeroV(), v3d::GetZeroV(), kMeleeDistance, kMeleeFOV), this));
@@ -16,8 +14,9 @@ MainCamera::MainCamera() :
 	// カメラが無視するコライダー
 	const auto collision_manager = CollisionManager::GetInstance();
 	const ColliderData camera_data{ ObjTag.CAMERA, ColliderKind::kRayCast };
-	collision_manager->AddIgnoreColliderPair(camera_data, { ObjTag.PLAYER, ColliderKind::kNone });
-	collision_manager->AddIgnoreColliderPair(camera_data, { ObjTag.ENEMY,  ColliderKind::kNone });
+	collision_manager->AddIgnoreColliderPair(camera_data, { ObjTag.PLAYER,	ColliderKind::kNone });
+	collision_manager->AddIgnoreColliderPair(camera_data, { ObjTag.ENEMY,	ColliderKind::kNone });
+	collision_manager->AddIgnoreColliderPair(camera_data, { "",				ColliderKind::kAttackTrigger });
 }
 
 MainCamera::~MainCamera()
@@ -39,15 +38,10 @@ void MainCamera::LateUpdate()
 {
 	if (!IsActive()) { return; }
 
-	if (!m_is_changing_pos)
-	{
-		SetAim();
-	}
+	SetAim();
 
 	CalcRayCastPos();
 	CalcVisionTriggerPos();
-
-	m_is_changing_pos = false;
 }
 
 void MainCamera::DrawToShadowMap() const
@@ -81,9 +75,6 @@ void MainCamera::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	case ColliderKind::kRayCast:
 		if (hit_collider_pair.intersection)
 		{
-			m_is_changing_pos = true;
-
-			m_origin_pos = m_transform->GetPos(CoordinateKind::kWorld);
 			m_transform->SetPos(CoordinateKind::kWorld, *hit_collider_pair.intersection);
 			SetAim();
 		}
@@ -139,10 +130,7 @@ void MainCamera::RemoveToObjManager()
 
 void MainCamera::ApplyMatrix(const MATRIX& matrix)
 {
-	auto m = matrix;
-
-	m_transform->SetMatrix(CoordinateKind::kWorld, m);
-	m_origin_pos = MGetTranslateElem(m);
+	m_transform->SetMatrix(CoordinateKind::kWorld, matrix);
 }
 
 float MainCamera::GetDeltaTime() const
@@ -163,8 +151,8 @@ void MainCamera::CalcRayCastPos()
 {
 	// 光線の座標を計算
 	auto ray = std::static_pointer_cast<Segment>(GetCollider(ColliderKind::kRayCast)->GetShape());
-	ray->SetBeginPos(m_aim_pos,	   true);
-	ray->SetEndPos	(m_origin_pos, true);
+	ray->SetBeginPos(m_aim_pos, true);
+	ray->SetEndPos	(m_transform->GetPos(CoordinateKind::kWorld), true);
 }
 
 void MainCamera::CalcVisionTriggerPos()
