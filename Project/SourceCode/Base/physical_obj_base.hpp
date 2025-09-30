@@ -16,6 +16,12 @@ public:
 
 	virtual void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) abstract;
 
+	/// @brief ノックバックを受けた
+	/// @param dir 飛ばされる方向
+	/// @param initial_velocity 初速
+	/// @param deceleration 減速度
+	void OnKnockback(const VECTOR& dir, const float initial_velocity, const float deceleration);
+
 	/// @brief コライダーを登録
 	/// @brief 異なる種類であれば複数のコライダーの追加を許可
 	/// @brief 同種類コライダーであっても図形が異なれば上書きを許可
@@ -28,7 +34,7 @@ public:
 	void RemoveHitTriangles();
 
 	void RemoveHitCollider();
-	void RemoveHitCollider(const int collider_handle);
+	//void RemoveHitCollider(const int collider_handle);
 
 	/// @brief 重力を与える(適用させる)
 	/// @brief 物理管理クラスから適用される
@@ -74,6 +80,7 @@ protected:
 	float	 m_knockback_deceleration;
 
 	bool	 m_is_landing;
+	bool	 m_use_projection_velocity;	// velocityを地面に張り付けるかを判定
 	MassKind m_mass_kind;
 
 	std::unordered_map<ColliderKind, std::shared_ptr<Collider>> m_collider;

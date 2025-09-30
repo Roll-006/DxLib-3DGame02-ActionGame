@@ -37,6 +37,10 @@ public:
 	void OnRelease() override;
 	void OnGrabbedDamage(const float damage) override;
 
+	void OnCollideFrontMelee		(PhysicalObjBase* target_obj) override;
+	void OnCollideBackMelee			(PhysicalObjBase* target_obj) override;
+	void OnCollideVersatilityMelee	(PhysicalObjBase* target_obj) override;
+
 	void SetRemainingBulletNum(const int remaining_bullet_num) override { m_current_remaining_bullet_num = remaining_bullet_num; }
 	
 	void AttackFrontMelee		(const VECTOR& target_pos, const VECTOR& target_dir) override;
@@ -51,7 +55,7 @@ public:
 	#pragma region アイテム
 	/// @brief アイテムの所持登録 
 	template<obj_concepts::ItemT ItemT>
-	void AddItem(const std::shared_ptr<ItemT> item)
+	void AddItem(const std::shared_ptr<ItemT>& item)
 	{
 		const auto item_kind = item->GetItemKind();
 
@@ -62,7 +66,7 @@ public:
 	}
 	/// @brief アイテムの所持登録を解除
 	template<obj_concepts::ItemT ItemT>
-	void RemoveItem(const std::shared_ptr<ItemT> item)
+	void RemoveItem(const std::shared_ptr<ItemT>& item)
 	{
 		const auto item_kind = item->GetItemKind();
 
@@ -75,7 +79,7 @@ public:
 	/// @brief 武器を装備させる
 	/// @brief ナイフの登録は許可しない
 	template<obj_concepts::WeaponT WeaponT>
-	void EquipWeapon(const std::shared_ptr<WeaponT> weapon)
+	void EquipWeapon(const std::shared_ptr<WeaponT>& weapon)
 	{
 		if (weapon->GetWeaponKind() == WeaponKind::kKnife) { return; }
 
@@ -86,7 +90,7 @@ public:
 
 	/// @brief ナイフを装備させる
 	template<obj_concepts::KnifeT KnifeT>
-	void EquipKnife(const std::shared_ptr<KnifeT> knife)
+	void EquipKnife(const std::shared_ptr<KnifeT>& knife)
 	{
 		m_current_equip_knife = knife;
 	}

@@ -81,8 +81,9 @@ void Zombie::LateUpdate()
 
 	m_state->LateUpdate(std::static_pointer_cast<Zombie>(shared_from_this()));
 
-	m_can_grab_target	 = false;
-	m_is_target_in_sight = false;
+	m_can_grab_target			= false;
+	m_is_target_in_sight		= false;
+	m_use_projection_velocity	= true;
 }
 
 void Zombie::DrawToShadowMap() const

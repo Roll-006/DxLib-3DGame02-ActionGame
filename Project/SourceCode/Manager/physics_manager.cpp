@@ -33,7 +33,6 @@ void PhysicsManager::LateUpdate()
 
 			// velocityが浮かないよう張り付ける
 			obj->ProjectionVelocity();
-
 		}
 	}
 
@@ -42,18 +41,8 @@ void PhysicsManager::LateUpdate()
 
 	for (const auto& obj : m_physical_objects)
 	{
-		if (std::isnan(obj->GetVelocity().x))
-		{
-			int a = 0;
-		}
-
 		// velocityをオブジェクトに適用
 		obj->ApplyVelocity();
-
-		if (std::isnan(obj->GetVelocity().x))
-		{
-			int a = 0;
-		}
 	}
 }
 

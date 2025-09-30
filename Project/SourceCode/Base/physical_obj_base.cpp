@@ -9,10 +9,21 @@ PhysicalObjBase::PhysicalObjBase(const std::string& name, const std::string& tag
 	m_knockback_speed			(0.0f),
 	m_knockback_deceleration	(0.0f),
 	m_is_landing				(false),
+	m_use_projection_velocity	(true),
 	m_mass_kind					(mass_level_kind),
 	m_model_handle				(-1)
 {
 
+}
+
+void PhysicalObjBase::OnKnockback(const VECTOR& dir, const float initial_velocity, const float deceleration)
+{
+	m_knockback_speed			= initial_velocity;
+	m_knockback_deceleration	= deceleration;
+	m_knockback_velocity		= dir * m_knockback_speed;
+
+	// ノックバック時はvelocityの貼り付けを行わない
+	m_use_projection_velocity	= false;
 }
 
 void PhysicalObjBase::RemoveHitTriangles()
@@ -85,6 +96,8 @@ void PhysicalObjBase::ApplyVelocity()
 
 void PhysicalObjBase::ProjectionVelocity()
 {
+	if (!m_use_projection_velocity) { return; }
+
 	const auto landing_trigger = GetCollider(ColliderKind::kLandingTrigger);
 
 	if (!landing_trigger) { return; }
@@ -136,21 +149,11 @@ void PhysicalObjBase::ProjectionVelocity()
 	distance = algorithm::Sort(distance, SortKind::kAscending);
 	for (const auto& dist : distance)
 	{
-		if (std::isnan(m_velocity.x))
-		{
-			int a = 0;
-		}
-
 		// 斜面に投影
 		const auto cross_x	= math::GetNormalVector(triangles.at(dist.first).GetNormalVector(), axis::GetWorldYAxis());
 		auto base_v			= math::GetNormalVector(triangles.at(dist.first).GetNormalVector(), cross_x);
 		base_v				= v3d::GetNormalizedV(VGet(m_velocity.x, base_v.y, m_velocity.z));
 		m_velocity			= math::GetProjectionVector(m_velocity, base_v);
-
-		if (std::isnan(m_velocity.x))
-		{
-			int a = 0;
-		}
 
 		return;
 	}

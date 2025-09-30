@@ -174,13 +174,27 @@ void Player::Draw() const
 
 void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 {
-	std::shared_ptr<ShapeBase> shape = nullptr;
+	PhysicalObjBase*	target_obj				= hit_collider_pair.target_collider->GetOwnerObj();
+	const auto			target_name				= target_obj->GetName();
+	const auto			target_tag				= target_obj->GetTag();
+	const auto			target_collider_kind	= hit_collider_pair.target_collider->GetColliderKind();
+	const auto			action_state_kind		= static_cast<player_state::ActionStateKind>(m_state->GetActionState(TimeKind::kCurrent)->GetStateKind());
 
 	switch (hit_collider_pair.owner_collider->GetColliderKind())
 	{
 	case ColliderKind::kLandingTrigger:
 		m_is_landing = true;
 		break;
+
+	case ColliderKind::kAttackTrigger:
+		if (action_state_kind == player_state::ActionStateKind::kFrontKick)
+		{
+			OnCollideFrontMelee(target_obj);
+		}
+		else if (action_state_kind == player_state::ActionStateKind::kRoundhouseKick)
+		{
+			OnCollideVersatilityMelee(target_obj);
+		}
 
 	default:
 		break;
@@ -220,6 +234,27 @@ void Player::OnRelease()
 void Player::OnGrabbedDamage(const float damage)
 {
 	OnDamage(HealthPartKind::kMain, damage);
+}
+
+void Player::OnCollideFrontMelee(PhysicalObjBase* target_obj)
+{
+	// front kick
+
+	const auto dir = v3d::GetNormalizedV(m_transform->GetForward(CoordinateKind::kWorld) + VGet(0.0f, 0.5f, 0.0f));
+	target_obj->OnKnockback(dir, 170.0f, 5.0f);
+}
+
+void Player::OnCollideBackMelee(PhysicalObjBase* target_obj)
+{
+
+}
+
+void Player::OnCollideVersatilityMelee(PhysicalObjBase* target_obj)
+{
+	// roundhouse kick
+
+	const auto dir = v3d::GetNormalizedV(m_transform->GetForward(CoordinateKind::kWorld) + VGet(0.0f, 0.5f, 0.0f));
+	target_obj->OnKnockback(dir, 170.0f, 5.0f);
 }
 
 void Player::AttackFrontMelee(const VECTOR& target_pos, const VECTOR& target_dir)

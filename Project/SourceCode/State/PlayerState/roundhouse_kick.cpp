@@ -21,7 +21,7 @@ void player_state::RoundhouseKick::Update(std::shared_ptr<Player> obj)
 	// UŒ‚”»’è—pƒgƒŠƒK[‚ð’Ç‰Á
 	if (!m_has_trigger_created)
 	{
-		if (obj->GetAnimator()->GetPlayRate(AnimatorBase::BodyKind::kUpperBody) > 0.3f)
+		if (obj->GetAnimator()->GetPlayRate(AnimatorBase::BodyKind::kUpperBody) > 0.35f)
 		{
 			obj->AddCollider(std::make_shared<Collider>(ColliderKind::kAttackTrigger, std::make_shared<Capsule>(v3d::GetZeroV(), v3d::GetZeroV(), kAttackTriggerRadius), obj.get()));
 			m_has_trigger_created = true;
