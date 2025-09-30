@@ -41,7 +41,7 @@ public:
 	
 	void AttackFrontMelee		(const VECTOR& target_pos, const VECTOR& target_dir) override;
 	void AttackBackMelee		(const VECTOR& target_pos, const VECTOR& target_dir) override;
-	void AttackVersatilityMelee	(const VECTOR& target_pos, const VECTOR& target_dir) override;
+	void AttackVersatilityMelee	(const VECTOR& target_pos) override;
 	
 	#pragma region Event
 	void AddMeleeCandidate(const OnDownedEnemySpottedEvent& event) override;

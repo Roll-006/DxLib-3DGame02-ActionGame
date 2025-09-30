@@ -373,7 +373,7 @@ bool PlayerStateController::TryRoundhouseKick(std::shared_ptr<Player> player)
 	// プレイヤーの入力に即座に対応できるようにmove_dirを基準になす角を取得
 	const auto player_move_dir	= player->GetCurrentMoveDir();
 	const auto player_dir		= player_move_dir != v3d::GetZeroV() ? player_move_dir : player->GetCurrentLookDir();
-	const auto forward_angle	= math::GetAngleBetweenTwoVector(target_obj->GetTransform()->GetForward(CoordinateKind::kWorld), player->GetTransform()->GetForward(CoordinateKind::kWorld));
+	const auto forward_angle	= math::GetAngleBetweenTwoVector(target_obj->GetTransform()->GetForward(CoordinateKind::kWorld), player_dir);
 
 	// メレー対象が立ち状態で怯んでいた場合、
 	// もしくはしゃがみ状態で怯んでおり横から蹴った場合にステートを遷移
@@ -397,10 +397,17 @@ bool PlayerStateController::TryFrontKick(std::shared_ptr<Player> player)
 	// 怯み中(しゃがみ)でない場合は遷移を許可しない
 	if (!melee_target->IsCrouchStun()) { return false; }
 
+	// プレイヤーがターゲットの前方にいない場合は遷移を許可しない
+	const auto target_forward = target_obj->GetTransform()->GetForward(CoordinateKind::kWorld);
+	auto dir = player->GetTransform()->GetPos(CoordinateKind::kWorld) - target_obj->GetTransform()->GetPos(CoordinateKind::kWorld);
+	dir.y = 0.0f;
+	dir = v3d::GetNormalizedV(dir);
+	if (math::GetAngleBetweenTwoVector(target_forward, dir) > 45.0f * math::kDegToRad) { return false; }
+
 	// プレイヤーの入力に即座に対応できるようにmove_dirを基準になす角を取得
 	const auto player_move_dir	= player->GetCurrentMoveDir();
 	const auto player_dir		= player_move_dir != v3d::GetZeroV() ? player_move_dir : player->GetCurrentLookDir();
-	const auto forward_angle	= math::GetAngleBetweenTwoVector(target_obj->GetTransform()->GetForward(CoordinateKind::kWorld), player->GetTransform()->GetForward(CoordinateKind::kWorld));
+	const auto forward_angle	= math::GetAngleBetweenTwoVector(target_forward, player_dir);
 
 	// 正面から蹴った場合にステートを遷移
 	return forward_angle >= 135.0f * math::kDegToRad;

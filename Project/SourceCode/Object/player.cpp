@@ -36,7 +36,7 @@ Player::Player() :
 	m_collider_creator->CreateCapsuleCollider	(this, m_modeler, kCapsuleRadius);
 	m_collider_creator->CreateLandingTrigger	(this, kLandingTriggerRadius);
 	m_collider_creator->CreateVisibleTrigger	(this, m_modeler);
-
+	
 	// TODO : ‰¼Œã‚É•ÏX
 	{
 		// •Šíİ’è
@@ -238,7 +238,7 @@ void Player::AttackBackMelee(const VECTOR& target_pos, const VECTOR& target_dir)
 	m_destination_pos = target_pos - target_dir * 24.0f;
 }
 
-void Player::AttackVersatilityMelee(const VECTOR& target_pos, const VECTOR& target_dir)
+void Player::AttackVersatilityMelee(const VECTOR& target_pos)
 {
 	// roundhouse kick
 

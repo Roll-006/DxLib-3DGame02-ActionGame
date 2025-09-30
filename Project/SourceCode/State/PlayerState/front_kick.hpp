@@ -21,6 +21,10 @@ namespace player_state
 		[[nodiscard]] bool IsAllStop() const override { return m_is_all_stop; }
 
 	private:
+		static constexpr float kAttackTriggerRadius = 10.0f;
+
 		bool m_is_all_stop;
+		bool m_has_trigger_created;
+		bool m_has_trigger_deleted;
 	};
 }
