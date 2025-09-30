@@ -20,6 +20,11 @@ public:
 
 	void CalcCorrectMoveDir();
 
+	/// @brief ‹­§“I‚É–³“Gó‘Ô‚É‚·‚é
+	void ActivateInvincibleForcibly()	{ m_is_invincible = true; }
+	/// @brief ‹­§“I‚É–³“Gó‘Ô‚ğ‰ğœ‚·‚é
+	void DeactivateInvincibleForcibly() { m_is_invincible = false; }
+
 
 	#pragma region Getter
 	[[nodiscard]] bool							IsInvincible()				const { return m_is_invincible; }

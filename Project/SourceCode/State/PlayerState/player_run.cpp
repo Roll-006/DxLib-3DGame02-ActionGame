@@ -39,15 +39,15 @@ std::shared_ptr<IState<Player>> player_state::Run::ChangeState(std::shared_ptr<P
 	const auto command			= CommandHandler::GetInstance();
 	const auto command_mode		= command->GetInstance()->GetInputModeKind(CommandKind::kRun);
 
-	// ƒƒŒ[(‰ñ‚µR‚è)
-	if (state_controller->TryRoundhouseKick(obj))
-	{
-		return state_controller->GetState<RoundhouseKick, Player>();
-	}
 	// ƒƒŒ[(³–ÊR‚è)
 	if (state_controller->TryFrontKick(obj))
 	{
 		return state_controller->GetState<FrontKick, Player>();
+	}
+	// ƒƒŒ[(‰ñ‚µR‚è)
+	if (state_controller->TryRoundhouseKick(obj))
+	{
+		return state_controller->GetState<RoundhouseKick, Player>();
 	}
 	// •ß‚Ü‚ê‚é
 	if (state_controller->TryGrabbed(obj))

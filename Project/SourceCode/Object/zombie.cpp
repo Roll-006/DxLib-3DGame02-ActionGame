@@ -189,7 +189,11 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 		if (target_obj == GetStateController()->GetTargetCharacter().get() && target_collider_kind == ColliderKind::kCollider)
 		{
-			m_can_grab_target = true;
+			// –³“Gó‘Ô‚Å‚È‚¢ê‡‚Ì‚Ý’Í‚Ý”»’è‚ð‹–‰Â‚·‚é
+			if (!GetStateController()->GetTargetCharacter()->IsInvincible())
+			{
+				m_can_grab_target = true;
+			}
 		}
 		break;
 
@@ -211,7 +215,11 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 		if (target_obj == GetStateController()->GetTargetCharacter().get() && target_collider_kind == ColliderKind::kCollider)
 		{
-			m_can_grab_target = true;
+			// –³“Gó‘Ô‚Å‚È‚¢ê‡‚Ì‚Ý’Í‚Ý”»’è‚ð‹–‰Â‚·‚é
+			if (!GetStateController()->GetTargetCharacter()->IsInvincible())
+			{
+				m_can_grab_target = true;
+			}
 		}
 		break;
 
@@ -226,7 +234,7 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 				OnDamage(HealthPartKind::kLeftLeg, dynamic_cast<Bullet*>(target_obj)->GetPower());
 			}
 
-			OnDamage(HealthPartKind::kMain,		dynamic_cast<Bullet*>(target_obj)->GetPower());
+			OnDamage(HealthPartKind::kMain, dynamic_cast<Bullet*>(target_obj)->GetPower());
 		}
 		break;
 
@@ -241,7 +249,7 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 				OnDamage(HealthPartKind::kRightLeg, dynamic_cast<Bullet*>(target_obj)->GetPower());
 			}
 
-			OnDamage(HealthPartKind::kMain,		dynamic_cast<Bullet*>(target_obj)->GetPower());
+			OnDamage(HealthPartKind::kMain, dynamic_cast<Bullet*>(target_obj)->GetPower());
 		}
 		break;
 

@@ -36,15 +36,15 @@ std::shared_ptr<IState<Player>> player_state::TurnAround::ChangeState(std::share
 {
 	const auto state_controller = obj->GetStateController();
 
-	// ƒƒŒ[(‰ñ‚µR‚è)
-	if (state_controller->TryRoundhouseKick(obj))
-	{
-		return state_controller->GetState<RoundhouseKick, Player>();
-	}
 	// ƒƒŒ[(³–ÊR‚è)
 	if (state_controller->TryFrontKick(obj))
 	{
 		return state_controller->GetState<FrontKick, Player>();
+	}
+	// ƒƒŒ[(‰ñ‚µR‚è)
+	if (state_controller->TryRoundhouseKick(obj))
+	{
+		return state_controller->GetState<RoundhouseKick, Player>();
 	}
 	// •ß‚Ü‚ê‚é
 	if (state_controller->TryGrabbed(obj))

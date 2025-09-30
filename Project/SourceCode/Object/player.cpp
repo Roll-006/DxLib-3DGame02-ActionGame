@@ -328,6 +328,9 @@ void Player::UpdateMelee()
 	m_move_speed = 20.0f;
 
 	CalcCorrectMoveDir();
+
+	// ‹­§“I‚É–³“Gó‘Ô‚É‚·‚é
+	ActivateInvincibleForcibly();
 }
 
 void Player::CalcMoveSpeed()

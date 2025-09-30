@@ -355,36 +355,6 @@ bool PlayerStateController::TryGrabbed(std::shared_ptr<Player> player)
 	return player->IsGrabbed();
 }
 
-bool PlayerStateController::TryRoundhouseKick(std::shared_ptr<Player> player)
-{
-	if (player->GetMeleeCandidate().empty())												{ return false; }
-	if (!CommandHandler::GetInstance()->IsExecute(CommandKind::kMelee, TimeKind::kCurrent)) { return false; }
-
-	// ターゲットをメレー対象となるインターフェイスに変更
-	const auto target_obj		= ObjManager::GetInstance()->GetObj<ObjBase>(player->GetMeleeCandidate().front().target_obj_handle);
-	const auto melee_target		= std::dynamic_pointer_cast<IMeleeHittable>(target_obj);
-	
-	const auto is_stand_stun	= melee_target->IsStandStun();
-	const auto is_crouch_stun	= melee_target->IsCrouchStun();
-
-	// 怯み中でない場合は遷移を許可しない
-	if (!is_stand_stun && !is_crouch_stun) { return false; }
-	
-	// プレイヤーの入力に即座に対応できるようにmove_dirを基準になす角を取得
-	const auto player_move_dir	= player->GetCurrentMoveDir();
-	const auto player_dir		= player_move_dir != v3d::GetZeroV() ? player_move_dir : player->GetCurrentLookDir();
-	const auto forward_angle	= math::GetAngleBetweenTwoVector(target_obj->GetTransform()->GetForward(CoordinateKind::kWorld), player_dir);
-
-	// メレー対象が立ち状態で怯んでいた場合、
-	// もしくはしゃがみ状態で怯んでおり横から蹴った場合にステートを遷移
-	return is_stand_stun
-		|| (is_crouch_stun && forward_angle >= 45.0f  * math::kDegToRad && forward_angle < 135.0f * math::kDegToRad)
-		
-		// TODO : ベリィトゥベリィに匹敵するアニメーションが用意できるまでは回し蹴りで代用
-		// 下記はベリィトィベリィの条件文
-		|| (is_crouch_stun && forward_angle <  45.0f * math::kDegToRad);
-}
-
 bool PlayerStateController::TryFrontKick(std::shared_ptr<Player> player)
 {
 	if (player->GetMeleeCandidate().empty())												{ return false; }
@@ -411,6 +381,18 @@ bool PlayerStateController::TryFrontKick(std::shared_ptr<Player> player)
 
 	// 正面から蹴った場合にステートを遷移
 	return forward_angle >= 135.0f * math::kDegToRad;
+}
+
+bool PlayerStateController::TryRoundhouseKick(std::shared_ptr<Player> player)
+{
+	if (player->GetMeleeCandidate().empty())												{ return false; }
+	if (!CommandHandler::GetInstance()->IsExecute(CommandKind::kMelee, TimeKind::kCurrent)) { return false; }
+
+	// ターゲットをメレー対象となるインターフェイスに変更
+	const auto target_obj		= ObjManager::GetInstance()->GetObj<ObjBase>(player->GetMeleeCandidate().front().target_obj_handle);
+	const auto melee_target		= std::dynamic_pointer_cast<IMeleeHittable>(target_obj);
+	
+	return melee_target->IsStandStun() || melee_target->IsCrouchStun();
 }
 
 bool PlayerStateController::TryEquipKnifeShortcut(std::shared_ptr<Player> player)
