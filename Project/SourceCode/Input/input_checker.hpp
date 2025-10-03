@@ -16,6 +16,8 @@
 
 #include "../IncludeList/vector.hpp"
 
+// TODO : 必須。CheckHitKeyが重いため、Commandに登録されているキー以外の入力の啓作は避ける
+
 using InputKey		= std::pair<InputCode, TimeKind>;
 using InputValue	= InputData;
 
