@@ -159,7 +159,7 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 				OnDamage(HealthPartKind::kHead, dynamic_cast<Bullet*>(target_obj)->GetPower());
 			}
 
-			OnDamage(HealthPartKind::kMain,		dynamic_cast<Bullet*>(target_obj)->GetPower());
+			OnDamage(HealthPartKind::kMain, dynamic_cast<Bullet*>(target_obj)->GetPower());
 		}
 		break;
 
@@ -268,7 +268,7 @@ void Zombie::OnDamage(const HealthPartKind part_kind, const float damage)
 	m_is_invincible		= true;
 }
 
-void Zombie::AttachTarget(const std::shared_ptr<CharacterBase> target_character)
+void Zombie::AttachTarget(const std::shared_ptr<CharacterBase>& target_character)
 {
 	m_state->AttachTarget(target_character);
 }

@@ -13,7 +13,7 @@ zombie_state::CrouchLeftStun::~CrouchLeftStun()
 
 }
 
-void zombie_state::CrouchLeftStun::Update(std::shared_ptr<Zombie> obj)
+void zombie_state::CrouchLeftStun::Update(std::shared_ptr<Zombie>& obj)
 {
 	if (obj->CanAction())
 	{
@@ -23,24 +23,24 @@ void zombie_state::CrouchLeftStun::Update(std::shared_ptr<Zombie> obj)
 	//obj->CalcAttackIntervalTime();
 }
 
-void zombie_state::CrouchLeftStun::LateUpdate(std::shared_ptr<Zombie> obj)
+void zombie_state::CrouchLeftStun::LateUpdate(std::shared_ptr<Zombie>& obj)
 {
 
 }
 
-void zombie_state::CrouchLeftStun::Enter(std::shared_ptr<Zombie> obj)
+void zombie_state::CrouchLeftStun::Enter(std::shared_ptr<Zombie>& obj)
 {
 	m_stun_timer = 0.0f;
 
 	obj->GetHealth(HealthPartKind::kLeftLeg)->RecoverMax();
 }
 
-void zombie_state::CrouchLeftStun::Exit(std::shared_ptr<Zombie> obj)
+void zombie_state::CrouchLeftStun::Exit(std::shared_ptr<Zombie>& obj)
 {
 
 }
 
-std::shared_ptr<IState<Zombie>> zombie_state::CrouchLeftStun::ChangeState(std::shared_ptr<Zombie> obj)
+std::shared_ptr<IState<Zombie>> zombie_state::CrouchLeftStun::ChangeState(std::shared_ptr<Zombie>& obj)
 {
 	const auto state_controller = obj->GetStateController();
 

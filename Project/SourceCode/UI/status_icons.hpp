@@ -5,7 +5,7 @@
 class StatusIcons final
 {
 public:
-	StatusIcons(const std::shared_ptr<Player> player);
+	StatusIcons(const std::shared_ptr<Player>& player);
 	~StatusIcons();
 
 	void LateUpdate();

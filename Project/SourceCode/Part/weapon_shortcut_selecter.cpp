@@ -16,7 +16,7 @@ WeaponShortcutSelecter::~WeaponShortcutSelecter()
 
 }
 
-void WeaponShortcutSelecter::Update(std::shared_ptr<Player> player)
+void WeaponShortcutSelecter::Update(const std::shared_ptr<Player>& player)
 {
 	const auto state = player->GetStateController()->GetWeaponActionState(TimeKind::kCurrent);
 	if (state->GetStateKind() == static_cast<int>(player_state::WeaponActionStateKind::kShotRocketLauncher))
@@ -32,7 +32,7 @@ void WeaponShortcutSelecter::Update(std::shared_ptr<Player> player)
 	HoldWeapon(player);
 }
 
-void WeaponShortcutSelecter::AttachShortcutWeapon(const WeaponShortcutPosKind shortcut_pos_kind, const std::shared_ptr<WeaponBase> weapon)
+void WeaponShortcutSelecter::AttachShortcutWeapon(const WeaponShortcutPosKind shortcut_pos_kind, const std::shared_ptr<WeaponBase>& weapon)
 {
 	m_shortcut_weapons[shortcut_pos_kind] = weapon;
 }
@@ -171,7 +171,7 @@ void WeaponShortcutSelecter::HoldWeapon(std::shared_ptr<Player> player)
 		}
 
 		player->DetachWeapon(select_weapon);
-		player->EquipWeapon	(select_weapon);
+		player->EquipWeapon	(select_weapon, WeaponSlotKind::kMain);
 		player->HoldWeapon	(select_weapon);
 	}
 }

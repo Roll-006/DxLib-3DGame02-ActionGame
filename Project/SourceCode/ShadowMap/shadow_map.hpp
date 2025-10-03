@@ -7,7 +7,7 @@
 class ShadowMap final : public SingleInstanceBase<ShadowMap>
 {
 public:
-	ShadowMap(const std::shared_ptr<Transform> camera_transform);
+	ShadowMap(const std::shared_ptr<Transform>& camera_transform);
 	~ShadowMap();
 
 	void SetupDrawShadowMap();

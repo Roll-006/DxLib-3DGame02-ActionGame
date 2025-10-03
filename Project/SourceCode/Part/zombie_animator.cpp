@@ -1,7 +1,7 @@
 ﻿#include "zombie_state_controller.hpp"
 #include "zombie_animator.hpp"
 
-ZombieAnimator::ZombieAnimator(const std::shared_ptr<Modeler> modeler,const std::shared_ptr<ZombieStateController> state) :
+ZombieAnimator::ZombieAnimator(const std::shared_ptr<Modeler>& modeler,const std::shared_ptr<ZombieStateController>& state) :
 	AnimatorBase	(modeler, ObjName.ZOMBIE),
 	m_state			(state)
 {

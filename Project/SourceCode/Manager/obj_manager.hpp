@@ -12,7 +12,7 @@ class ObjManager final : public SingletonBase<ObjManager>
 {
 public:
 	template<obj_concepts::ObjT ObjT>
-	void AddObj(const std::shared_ptr<ObjT> obj)
+	void AddObj(const std::shared_ptr<ObjT>& obj)
 	{
 		// ã‘‚«•s‰Â
 		if (!m_objects.count(obj->GetObjHandle()))

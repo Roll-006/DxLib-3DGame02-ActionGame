@@ -13,7 +13,7 @@ zombie_state::StandStun::~StandStun()
 
 }
 
-void zombie_state::StandStun::Update(std::shared_ptr<Zombie> obj)
+void zombie_state::StandStun::Update(std::shared_ptr<Zombie>& obj)
 {
 	if (obj->CanAction())
 	{
@@ -23,24 +23,24 @@ void zombie_state::StandStun::Update(std::shared_ptr<Zombie> obj)
 	//obj->CalcAttackIntervalTime();
 }
 
-void zombie_state::StandStun::LateUpdate(std::shared_ptr<Zombie> obj)
+void zombie_state::StandStun::LateUpdate(std::shared_ptr<Zombie>& obj)
 {
 
 }
 
-void zombie_state::StandStun::Enter(std::shared_ptr<Zombie> obj)
+void zombie_state::StandStun::Enter(std::shared_ptr<Zombie>& obj)
 {
 	m_stun_timer = 0.0f;
 
 	obj->GetHealth(HealthPartKind::kHead)->RecoverMax();
 }
 
-void zombie_state::StandStun::Exit(std::shared_ptr<Zombie> obj)
+void zombie_state::StandStun::Exit(std::shared_ptr<Zombie>& obj)
 {
 
 }
 
-std::shared_ptr<IState<Zombie>> zombie_state::StandStun::ChangeState(std::shared_ptr<Zombie> obj)
+std::shared_ptr<IState<Zombie>> zombie_state::StandStun::ChangeState(std::shared_ptr<Zombie>& obj)
 {
 	const auto state_controller = obj->GetStateController();
 

@@ -9,8 +9,8 @@ class PhysicalObjBase;
 class Collider final
 {
 public:
-	Collider(const ColliderKind kind, const std::shared_ptr<ShapeBase> shape, PhysicalObjBase* owner_obj);
-	Collider(const ColliderKind kind, const std::shared_ptr<ShapeBase> shape, const bool is_closest_only_hit, PhysicalObjBase* owner_obj);
+	Collider(const ColliderKind kind, const std::shared_ptr<ShapeBase>& shape, PhysicalObjBase* owner_obj);
+	Collider(const ColliderKind kind, const std::shared_ptr<ShapeBase>& shape, const bool is_closest_only_hit, PhysicalObjBase* owner_obj);
 	Collider(const ColliderKind kind, const int model_handle, PhysicalObjBase* owner_obj);
 	~Collider();
 

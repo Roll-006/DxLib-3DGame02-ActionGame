@@ -25,20 +25,20 @@ public:
 	void LateUpdate();
 
 	/// @brief 優先順位をソートする
-	void SortPriority(const std::shared_ptr<VirtualCamera> virtual_camera);
+	void SortPriority(const std::shared_ptr<VirtualCamera>& virtual_camera);
 
 
 	#pragma region 登録 / 解除
 	/// @brief バーチャルカメラを登録する
 	/// @param virtual_camera 登録するバーチャルカメラ
 	/// @param is_active アクティブ化するかどうか
-	void AddVirtualCamera(const std::shared_ptr<VirtualCamera> virtual_camera, const bool is_active);
+	void AddVirtualCamera(const std::shared_ptr<VirtualCamera>& virtual_camera, const bool is_active);
 	/// @brief バーチャルカメラの登録を解除する
 	void RemoveVirtualCamera(const int camera_handle);
 
 	/// @brief バーチャルカメラコントローラーを登録する
 	template<camera_controllder_concepts::VirtualCameraController ControllerT>
-	void AddVirtualCameraController(const std::shared_ptr<ControllerT> virtual_camera_controller)
+	void AddVirtualCameraController(const std::shared_ptr<ControllerT>& virtual_camera_controller)
 	{
 		if (std::find(m_virtual_camera_controllers.begin(), m_virtual_camera_controllers.end(), virtual_camera_controller) == m_virtual_camera_controllers.end())
 		{
@@ -48,7 +48,7 @@ public:
 
 	/// @brief バーチャルカメラコントローラーの登録を解除する
 	template<camera_controllder_concepts::VirtualCameraController ControllerT>
-	void RemoveVirtualCameraController(const std::shared_ptr<ControllerT> virtual_camera_controller)
+	void RemoveVirtualCameraController(const std::shared_ptr<ControllerT>& virtual_camera_controller)
 	{
 		if (std::find(m_virtual_camera_controllers.begin(), m_virtual_camera_controllers.end(), virtual_camera_controller) != m_virtual_camera_controllers.end())
 		{
@@ -62,7 +62,7 @@ public:
 
 	#pragma region Setter
 	/// @brief メインカメラを設定する
-	void SetMainCamera(const std::shared_ptr<MainCamera> main_camera);
+	void SetMainCamera(const std::shared_ptr<MainCamera>& main_camera);
 
 	/// @brief ブレンドにかける時間を設定する
 	void SetBlendTime(const float blend_time);
@@ -100,7 +100,7 @@ private:
 	#pragma region ブレンド関連処理
 	/// @brief ターゲットバーチャルカメラによって自身以外のバーチャルカメラを非アクティブ化させる
 	/// @brief 非アクティブ化条件はターゲットバーチャルカメラが保持
-	void DeactivateVirtualCamera(const std::shared_ptr<VirtualCamera> origin_camera, const std::shared_ptr<VirtualCamera> target_camera);
+	void DeactivateVirtualCamera(const std::shared_ptr<VirtualCamera>& origin_camera, const std::shared_ptr<VirtualCamera>& target_camera);
 
 	/// @brief バーチャルカメラ間のブレンドを行う
 	void BlendVirtualCamera();

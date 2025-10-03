@@ -26,9 +26,14 @@ struct MouseData
 };
 
 
-inline bool operator==(const InputCode& lhs, const InputCode& rhs)
+inline bool operator==(const InputCode& code1, const InputCode& code2)
 {
-    return lhs.kind == rhs.kind && lhs.code == rhs.code;
+    return code1.kind == code2.kind && code1.code == code2.code;
+}
+
+inline bool operator==(const InputData& data1, const InputData& data2)
+{
+    return data1.is_input == data2.is_input && data1.input_time == data2.input_time;
 }
 
 namespace std
@@ -41,6 +46,23 @@ namespace std
             // 適当なハッシュ結合
             std::size_t h1 = std::hash<InputKind>{}(code.kind);
             std::size_t h2 = std::hash<int>{}(code.code);
+
+            // 結合方法：XORとシフト
+            return h1 ^ (h2 << 1);
+        }
+    };
+}
+
+namespace std
+{
+    template <>
+    struct hash<InputData>
+    {
+        std::size_t operator()(const InputData& data) const noexcept
+        {
+            // 適当なハッシュ結合
+            std::size_t h1 = std::hash<bool>{}(data.is_input);
+            std::size_t h2 = std::hash<float>{}(data.input_time);
 
             // 結合方法：XORとシフト
             return h1 ^ (h2 << 1);

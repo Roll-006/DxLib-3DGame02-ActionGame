@@ -12,7 +12,7 @@ public:
 
 	/// @brief 使用後のオブジェクトを返却する
 	/// @brief 自動的に非アクティブ化される
-	void ReturnObj(const std::shared_ptr<ObjBase> obj);
+	void ReturnObj(const std::shared_ptr<ObjBase>& obj);
 
 	/// @brief オブジェクトをプール内から破棄する
 	/// @brief オブジェクト名を指定し、一致するオブジェクトをすべて破棄

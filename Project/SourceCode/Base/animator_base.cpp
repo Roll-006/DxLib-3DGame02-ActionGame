@@ -1,6 +1,6 @@
 ﻿#include "animator_base.hpp"
 
-AnimatorBase::AnimatorBase(const std::shared_ptr<Modeler> modeler, const std::string& obj_name) :
+AnimatorBase::AnimatorBase(const std::shared_ptr<Modeler>& modeler, const std::string& obj_name) :
 	m_obj_name		(obj_name),
 	m_result_modeler(modeler)
 {

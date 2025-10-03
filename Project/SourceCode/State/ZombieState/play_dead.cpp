@@ -12,7 +12,7 @@ zombie_state::PlayDead::~PlayDead()
 
 }
 
-void zombie_state::PlayDead::Update(std::shared_ptr<Zombie> obj)
+void zombie_state::PlayDead::Update(std::shared_ptr<Zombie>& obj)
 {
 	if (obj->CanAction())
 	{
@@ -20,22 +20,22 @@ void zombie_state::PlayDead::Update(std::shared_ptr<Zombie> obj)
 	}
 }
 
-void zombie_state::PlayDead::LateUpdate(std::shared_ptr<Zombie> obj)
+void zombie_state::PlayDead::LateUpdate(std::shared_ptr<Zombie>& obj)
 {
 
 }
 
-void zombie_state::PlayDead::Enter(std::shared_ptr<Zombie> obj)
+void zombie_state::PlayDead::Enter(std::shared_ptr<Zombie>& obj)
 {
 
 }
 
-void zombie_state::PlayDead::Exit(std::shared_ptr<Zombie> obj)
+void zombie_state::PlayDead::Exit(std::shared_ptr<Zombie>& obj)
 {
 
 }
 
-std::shared_ptr<IState<Zombie>> zombie_state::PlayDead::ChangeState(std::shared_ptr<Zombie> obj)
+std::shared_ptr<IState<Zombie>> zombie_state::PlayDead::ChangeState(std::shared_ptr<Zombie>& obj)
 {
 	const auto state_controller = obj->GetStateController();
 

@@ -17,7 +17,7 @@ public:
 	void SearchValidRifleCartidge(GunBase& gun);
 
 	/// @brief g—pÏ‚İ’eŠÛ‚ğíœ
-	void DeleteBullet(std::shared_ptr<ObjBase> bullet);
+	void DeleteBullet(const std::shared_ptr<ObjBase>& bullet);
 
 
 	// TODO : ‰¼À‘•B‚Ì‚¿‚Éíœ
@@ -34,7 +34,7 @@ private:
 	RifleCartridgeManager();
 	~RifleCartridgeManager() override;
 
-	void AddRifleCartridge(const std::shared_ptr<ObjBase> rifle_cartridge);
+	void AddRifleCartridge(const std::shared_ptr<ObjBase>& rifle_cartridge);
 
 private:
 	std::unordered_map<std::string, std::vector<std::shared_ptr<ObjBase>>> m_rifle_cartridge;

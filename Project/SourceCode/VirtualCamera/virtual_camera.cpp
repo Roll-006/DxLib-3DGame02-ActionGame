@@ -39,7 +39,7 @@ void VirtualCamera::LateUpdate()
 	CalcTransform();
 }
 
-void VirtualCamera::AttachTarget(const std::shared_ptr<Transform> target_transform)
+void VirtualCamera::AttachTarget(const std::shared_ptr<Transform>& target_transform)
 {
 	m_target_transform = target_transform;
 

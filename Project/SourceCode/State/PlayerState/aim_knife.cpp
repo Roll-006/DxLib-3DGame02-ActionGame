@@ -12,7 +12,7 @@ player_state::AimKnife::~AimKnife()
 
 }
 
-void player_state::AimKnife::Update(std::shared_ptr<Player> obj)
+void player_state::AimKnife::Update(std::shared_ptr<Player>& obj)
 {
 	obj->SetLookDirOffsetValueForAim();
 	obj->DirOfCameraForward();
@@ -20,7 +20,7 @@ void player_state::AimKnife::Update(std::shared_ptr<Player> obj)
 	obj->GetCurrentHeldWeapon()->Update();
 }
 
-void player_state::AimKnife::LateUpdate(std::shared_ptr<Player> obj)
+void player_state::AimKnife::LateUpdate(std::shared_ptr<Player>& obj)
 {
 	const auto camera	= ObjManager::GetInstance()->GetObj<ObjBase>(ObjName.MAIN_CAMERA);
 	const auto aim_dir	= camera->GetTransform()->GetForward(CoordinateKind::kWorld);
@@ -31,18 +31,18 @@ void player_state::AimKnife::LateUpdate(std::shared_ptr<Player> obj)
 	obj->GetCurrentHeldWeapon()->TrackOwnerHand();
 }
 
-void player_state::AimKnife::Enter(std::shared_ptr<Player> obj)
+void player_state::AimKnife::Enter(std::shared_ptr<Player>& obj)
 {
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	const auto camera_controller = std::static_pointer_cast<ControlVirtualCamerasController>(cinemachine_brain->GetVirtualCameraController(VirtualCameraControllerKind::kControl));
 	camera_controller->GetHaveVirtualCamera(ObjName.ROT_CONTROL_VIRTUAL_CAMERA)->Deactivate();
 	camera_controller->GetHaveVirtualCamera(ObjName.AIM_CONTROL_VIRTUAL_CAMERA)->Activate();
 	
-	obj->DetachWeapon(obj->GetCurrentEquipKnife());
-	obj->HoldWeapon(obj->GetCurrentEquipKnife());
+	obj->DetachWeapon(obj->GetCurrentEquipWeapon(WeaponSlotKind::kSub));
+	obj->HoldWeapon(obj->GetCurrentEquipWeapon(WeaponSlotKind::kSub));
 }
 
-void player_state::AimKnife::Exit(std::shared_ptr<Player> obj)
+void player_state::AimKnife::Exit(std::shared_ptr<Player>& obj)
 {
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	const auto camera_controller = std::static_pointer_cast<ControlVirtualCamerasController>(cinemachine_brain->GetVirtualCameraController(VirtualCameraControllerKind::kControl));
@@ -51,10 +51,10 @@ void player_state::AimKnife::Exit(std::shared_ptr<Player> obj)
 	camera_controller->GetHaveVirtualCamera(ObjName.AIM_CONTROL_VIRTUAL_CAMERA)->Deactivate();
 	
 	obj->ReleaseWeapon();
-	obj->AttachWeapon(obj->GetCurrentEquipKnife());
+	obj->AttachWeapon(obj->GetCurrentEquipWeapon(WeaponSlotKind::kSub));
 }
 
-std::shared_ptr<IState<Player>> player_state::AimKnife::ChangeState(std::shared_ptr<Player> obj)
+std::shared_ptr<IState<Player>> player_state::AimKnife::ChangeState(std::shared_ptr<Player>& obj)
 {
 	const auto state_controller = obj->GetStateController();
 	const auto command			= CommandHandler::GetInstance();

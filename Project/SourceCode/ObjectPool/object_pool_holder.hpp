@@ -13,7 +13,7 @@ class ObjectPoolHolder final : public SingletonBase<ObjectPoolHolder>
 {
 public:
 	template<object_pool_concepts::ObjectPoolT ObjectPoolT>
-	void AddObjectPool(const std::shared_ptr<ObjectPoolT> object_pool)
+	void AddObjectPool(const std::shared_ptr<ObjectPoolT>& object_pool)
 	{
 		if (!m_object_pools.count(object_pool->GetName()))
 		{

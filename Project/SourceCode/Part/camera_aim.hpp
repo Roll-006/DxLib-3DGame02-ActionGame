@@ -9,7 +9,7 @@
 class CameraAim final
 {
 public:
-	CameraAim(const std::shared_ptr<Transform> owner_transform);
+	CameraAim(const std::shared_ptr<Transform>& owner_transform);
 	~CameraAim();
 
 	void CalcRot();
@@ -23,7 +23,7 @@ public:
 
 	#pragma region Attach / Detach
 	/// @brief ターゲットをアタッチする(上書き可)
-	void AttachTarget(const std::shared_ptr<Transform> target_transform);
+	void AttachTarget(const std::shared_ptr<Transform>& target_transform);
 	void DetachTarget();
 	#pragma endregion
 

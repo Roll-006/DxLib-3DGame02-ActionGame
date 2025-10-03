@@ -7,7 +7,7 @@
 class CameraBody final
 {
 public:
-	CameraBody(const std::shared_ptr<Transform> owner_transform);
+	CameraBody(const std::shared_ptr<Transform>& owner_transform);
 	~CameraBody();
 
 	void CalcPos();
@@ -21,7 +21,7 @@ public:
 
 	#pragma region Attach / Detach
 	/// @brief ターゲットをアタッチする(上書き可)
-	void AttachTarget(const std::shared_ptr<Transform> target_transform);
+	void AttachTarget(const std::shared_ptr<Transform>& target_transform);
 	void DetachTarget();
 	#pragma endregion
 

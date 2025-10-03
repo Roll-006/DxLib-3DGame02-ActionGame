@@ -85,7 +85,7 @@ void EnemyManager::RemoveToObjManager()
 	}
 }
 
-void EnemyManager::AttachTarget(const std::shared_ptr<CharacterBase> target_character)
+void EnemyManager::AttachTarget(const std::shared_ptr<CharacterBase>& target_character)
 {
 	for (const auto& enemy : m_enemies)
 	{

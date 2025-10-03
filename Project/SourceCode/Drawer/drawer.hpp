@@ -11,7 +11,7 @@
 class Drawer final : public SingleInstanceBase<Drawer>
 {
 public:
-	Drawer(const std::shared_ptr<Transform> camera_transform);
+	Drawer(const std::shared_ptr<Transform>& camera_transform);
 	~Drawer();
 
 	void DrawToShadowMap(const std::shared_ptr<IScene> current_scene, const std::shared_ptr<IScene> share_scene) const;

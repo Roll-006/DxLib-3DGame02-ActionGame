@@ -21,7 +21,7 @@ public:
 	void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) override;
 	void OnDamage(const HealthPartKind part_kind, const float damage) override;
 
-	void AttachTarget(const std::shared_ptr<CharacterBase> target_character) override;
+	void AttachTarget(const std::shared_ptr<CharacterBase>& target_character) override;
 	void DetachTarget() override;
 
 

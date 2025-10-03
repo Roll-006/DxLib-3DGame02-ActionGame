@@ -3,7 +3,7 @@
 #include <unordered_map>
 #include <DxLib.h>
 
-#include "Kind/time_kind.hpp"
+#include "../Kind/time_kind.hpp"
 
 struct ControlVirtualCameraData
 {

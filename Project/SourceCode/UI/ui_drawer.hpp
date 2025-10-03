@@ -18,7 +18,7 @@ class UIDrawer final : public SingletonBase<UIDrawer>
 {
 public:
 	template<ui_concepts::UICeratorT UICreatorT>
-	void AddUICreator(const std::shared_ptr<UICreatorT> ui_creator)
+	void AddUICreator(const std::shared_ptr<UICreatorT>& ui_creator)
 	{
 		if (m_ui_creators.count(ui_creator->GetName())) { return; }
 

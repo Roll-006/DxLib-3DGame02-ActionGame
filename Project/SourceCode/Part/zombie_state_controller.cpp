@@ -73,7 +73,7 @@ void ZombieStateController::AddCheckStopState()
 	m_check_stop_state_handles.emplace_back(m_states.at(typeid(zombie_state::Move))->GetStateHandle());
 }
 
-void ZombieStateController::ChangeState(std::shared_ptr<Zombie> zombie)
+void ZombieStateController::ChangeState(std::shared_ptr<Zombie>& zombie)
 {
 	const auto change_state = CreateChangeState(zombie);
 
@@ -102,7 +102,7 @@ void ZombieStateController::ChangeState(std::shared_ptr<Zombie> zombie)
 	}
 }
 
-std::vector<std::shared_ptr<IState<Zombie>>> ZombieStateController::CreateChangeState(std::shared_ptr<Zombie> zombie)
+std::vector<std::shared_ptr<IState<Zombie>>> ZombieStateController::CreateChangeState(std::shared_ptr<Zombie>& zombie)
 {
 	// 次変更予定のステート
 	std::vector<std::shared_ptr<IState<Zombie>>> next_state
@@ -182,7 +182,7 @@ std::vector<std::shared_ptr<IState<Zombie>>> ZombieStateController::CreateFuture
 	};
 }
 
-void ZombieStateController::StopState(std::vector<std::shared_ptr<IState<Zombie>>>& future_state, const std::shared_ptr<IState<Zombie>> stop_state)
+void ZombieStateController::StopState(std::vector<std::shared_ptr<IState<Zombie>>>& future_state, const std::shared_ptr<IState<Zombie>>& stop_state)
 {
 	for (size_t i = 0; i < future_state.size(); ++i)
 	{
@@ -241,12 +241,12 @@ void ZombieStateController::JudgeDestinationActionState(std::shared_ptr<IState<Z
 
 
 #pragma region Try判定
-bool ZombieStateController::TryWaitForcibly(std::shared_ptr<Zombie> zombie)
+bool ZombieStateController::TryWaitForcibly(std::shared_ptr<Zombie>& zombie)
 {
 	return !zombie->CanAction();
 }
 
-bool ZombieStateController::TryTrack(std::shared_ptr<Zombie> zombie)
+bool ZombieStateController::TryTrack(std::shared_ptr<Zombie>& zombie)
 {
 	// TODO : 後に音などの判定も含める
 
@@ -257,7 +257,7 @@ bool ZombieStateController::TryTrack(std::shared_ptr<Zombie> zombie)
 	return is_in_sight;
 }
 
-bool ZombieStateController::TryRunAttack(std::shared_ptr<Zombie> zombie)
+bool ZombieStateController::TryRunAttack(std::shared_ptr<Zombie>& zombie)
 {
 	if (!m_target_character) { return false; }
 
@@ -277,12 +277,12 @@ bool ZombieStateController::TryMove()
 	return is_track || is_run_attack;
 }
 
-bool ZombieStateController::TryActionNullForcibly(std::shared_ptr<Zombie> zombie)
+bool ZombieStateController::TryActionNullForcibly(std::shared_ptr<Zombie>& zombie)
 {
 	return !zombie->CanAction();
 }
 
-bool ZombieStateController::TryWalk(std::shared_ptr<Zombie> zombie)
+bool ZombieStateController::TryWalk(std::shared_ptr<Zombie>& zombie)
 {
 	if (!m_target_character) { return false; }
 	if (m_move_state.at(TimeKind::kCurrent)->GetStateKind() != static_cast<int>(zombie_state::MoveStateKind::kMove)) { return false; }
@@ -294,7 +294,7 @@ bool ZombieStateController::TryWalk(std::shared_ptr<Zombie> zombie)
 	return distance < 140.0f;
 }
 
-bool ZombieStateController::TryRun(std::shared_ptr<Zombie> zombie)
+bool ZombieStateController::TryRun(std::shared_ptr<Zombie>& zombie)
 {
 	if (!m_target_character) { return false; }
 	if (m_move_state.at(TimeKind::kCurrent)->GetStateKind() != static_cast<int>(zombie_state::MoveStateKind::kMove)) { return false; }
@@ -316,22 +316,22 @@ bool ZombieStateController::TryGrabRun()
 	return is_run_attack;
 }
 
-bool ZombieStateController::TryDead(std::shared_ptr<Zombie> zombie)
+bool ZombieStateController::TryDead(std::shared_ptr<Zombie>& zombie)
 {
 	return zombie->GetHealth(HealthPartKind::kMain)->GetCurrentHealth() <= 0.0f;
 }
 
-bool ZombieStateController::TryLeftCrouchStun(std::shared_ptr<Zombie> zombie)
+bool ZombieStateController::TryLeftCrouchStun(std::shared_ptr<Zombie>& zombie)
 {
 	return zombie->GetHealth(HealthPartKind::kLeftLeg)->GetCurrentHealth() <= 0.0f;
 }
 
-bool ZombieStateController::TryRightCrouchStun(std::shared_ptr<Zombie> zombie)
+bool ZombieStateController::TryRightCrouchStun(std::shared_ptr<Zombie>& zombie)
 {
 	return zombie->GetHealth(HealthPartKind::kRightLeg)->GetCurrentHealth() <= 0.0f;
 }
 
-bool ZombieStateController::TryStandStun(std::shared_ptr<Zombie> zombie)
+bool ZombieStateController::TryStandStun(std::shared_ptr<Zombie>& zombie)
 {
 	return zombie->GetHealth(HealthPartKind::kHead)->GetCurrentHealth() <= 0.0f;;
 }

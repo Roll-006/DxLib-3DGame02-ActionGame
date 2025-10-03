@@ -26,7 +26,7 @@ public:
 
 
 	#pragma region Attach / Detach
-	void AttachOwnerTransform(const std::shared_ptr<Transform> owner_transform) override;
+	void AttachOwnerTransform(const std::shared_ptr<Transform>& owner_transform) override;
 	void DetachOwnerTransform() override;
 	#pragma endregion
 

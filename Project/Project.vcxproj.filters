@@ -499,6 +499,9 @@
     <ClCompile Include="SourceCode\Part\melee_target_selecter.cpp">
       <Filter>SourceCode\Part</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\UI\equip_weapon_icon.cpp">
+      <Filter>SourceCode\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\character_base.hpp">
@@ -960,7 +963,7 @@
     <ClInclude Include="SourceCode\Interface\i_loadable_ammo.hpp">
       <Filter>SourceCode\Interface</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Interface\i_shooter.hpp">
+    <ClInclude Include="SourceCode\Interface\i_fireable.hpp">
       <Filter>SourceCode\Interface</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\VirtualCamera\cinemachine_brain.hpp">
@@ -1337,6 +1340,12 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Part\melee_target_selecter.hpp">
       <Filter>SourceCode\Part</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\UI\equip_weapon_icon.hpp">
+      <Filter>SourceCode\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Interface\i_weapon_equippable.hpp">
+      <Filter>SourceCode\Interface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

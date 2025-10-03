@@ -6,12 +6,12 @@
 class WeaponShortcutIcon final
 {
 public:
-	WeaponShortcutIcon(const Vector2D<int> center_pos, const int width, const int height);
+	WeaponShortcutIcon(const Vector2D<int>& center_pos, const int width, const int height);
 	~WeaponShortcutIcon();
 
 	void Draw() const;
 
-	void AttachGraphic(std::shared_ptr<Graphicer> graphicer);
+	void AttachGraphic(const std::shared_ptr<Graphicer>& graphicer);
 	void DetachGraphic()
 	{
 		m_graphicer = nullptr;

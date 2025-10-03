@@ -14,7 +14,7 @@ player_state::FrontKick::~FrontKick()
 
 }
 
-void player_state::FrontKick::Update(std::shared_ptr<Player> obj)
+void player_state::FrontKick::Update(std::shared_ptr<Player>& obj)
 {
 	obj->UpdateMelee();
 
@@ -60,12 +60,12 @@ void player_state::FrontKick::Update(std::shared_ptr<Player> obj)
 	}
 }
 
-void player_state::FrontKick::LateUpdate(std::shared_ptr<Player> obj)
+void player_state::FrontKick::LateUpdate(std::shared_ptr<Player>& obj)
 {
 
 }
 
-void player_state::FrontKick::Enter(std::shared_ptr<Player> obj)
+void player_state::FrontKick::Enter(std::shared_ptr<Player>& obj)
 {
 	m_has_trigger_created = false;
 	m_has_trigger_deleted = false;
@@ -76,12 +76,12 @@ void player_state::FrontKick::Enter(std::shared_ptr<Player> obj)
 	obj->AttackFrontMelee(target_transform->GetPos(CoordinateKind::kWorld), target_transform->GetForward(CoordinateKind::kWorld));
 }
 
-void player_state::FrontKick::Exit(std::shared_ptr<Player> obj)
+void player_state::FrontKick::Exit(std::shared_ptr<Player>& obj)
 {
 
 }
 
-std::shared_ptr<IState<Player>> player_state::FrontKick::ChangeState(std::shared_ptr<Player> obj)
+std::shared_ptr<IState<Player>> player_state::FrontKick::ChangeState(std::shared_ptr<Player>& obj)
 {
 	const auto state_controller = obj->GetStateController();
 

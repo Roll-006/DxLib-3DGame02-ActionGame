@@ -126,7 +126,7 @@ void RifleCartridgeManager::SearchValidRifleCartidge(GunBase& gun)
 	}
 }
 
-void RifleCartridgeManager::DeleteBullet(std::shared_ptr<ObjBase> bullet)
+void RifleCartridgeManager::DeleteBullet(const std::shared_ptr<ObjBase>& bullet)
 {
 	// Žw’è‚Ì’eŠÛ‚ðíœ
 	const auto remove_bullet = std::find_if(m_rifle_cartridge[bullet->GetName()].begin(), m_rifle_cartridge[bullet->GetName()].end(), [=](const std::shared_ptr<ObjBase> obj)
@@ -141,7 +141,7 @@ void RifleCartridgeManager::DeleteBullet(std::shared_ptr<ObjBase> bullet)
 	}
 }
 
-void RifleCartridgeManager::AddRifleCartridge(const std::shared_ptr<ObjBase> rifle_cartridge)
+void RifleCartridgeManager::AddRifleCartridge(const std::shared_ptr<ObjBase>& rifle_cartridge)
 {
 	if (std::find(m_rifle_cartridge[rifle_cartridge->GetName()].begin(), m_rifle_cartridge[rifle_cartridge->GetName()].end(), rifle_cartridge) == m_rifle_cartridge[rifle_cartridge->GetName()].end())
 	{

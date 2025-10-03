@@ -45,18 +45,18 @@ public:
 
 
 	#pragma region Try判定
-	[[nodiscard]] bool TryWaitForcibly		(std::shared_ptr<Zombie> zombie);
-	[[nodiscard]] bool TryTrack				(std::shared_ptr<Zombie> zombie);
-	[[nodiscard]] bool TryRunAttack			(std::shared_ptr<Zombie> zombie);
+	[[nodiscard]] bool TryWaitForcibly		(std::shared_ptr<Zombie>& zombie);
+	[[nodiscard]] bool TryTrack				(std::shared_ptr<Zombie>& zombie);
+	[[nodiscard]] bool TryRunAttack			(std::shared_ptr<Zombie>& zombie);
 	[[nodiscard]] bool TryMove				();
-	[[nodiscard]] bool TryActionNullForcibly(std::shared_ptr<Zombie> zombie);
-	[[nodiscard]] bool TryWalk				(std::shared_ptr<Zombie> zombie);
-	[[nodiscard]] bool TryRun				(std::shared_ptr<Zombie> zombie);
+	[[nodiscard]] bool TryActionNullForcibly(std::shared_ptr<Zombie>& zombie);
+	[[nodiscard]] bool TryWalk				(std::shared_ptr<Zombie>& zombie);
+	[[nodiscard]] bool TryRun				(std::shared_ptr<Zombie>& zombie);
 	[[nodiscard]] bool TryGrabRun			();
-	[[nodiscard]] bool TryDead				(std::shared_ptr<Zombie> zombie);
-	[[nodiscard]] bool TryLeftCrouchStun	(std::shared_ptr<Zombie> zombie);
-	[[nodiscard]] bool TryRightCrouchStun	(std::shared_ptr<Zombie> zombie);
-	[[nodiscard]] bool TryStandStun			(std::shared_ptr<Zombie> zombie);
+	[[nodiscard]] bool TryDead				(std::shared_ptr<Zombie>& zombie);
+	[[nodiscard]] bool TryLeftCrouchStun	(std::shared_ptr<Zombie>& zombie);
+	[[nodiscard]] bool TryRightCrouchStun	(std::shared_ptr<Zombie>& zombie);
+	[[nodiscard]] bool TryStandStun			(std::shared_ptr<Zombie>& zombie);
 	#pragma endregion
 
 
@@ -72,16 +72,16 @@ private:
 	void AddCheckStopState()	override;
 
 	/// @brief ステートを変更
-	void ChangeState(std::shared_ptr<Zombie> zombie) override;
+	void ChangeState(std::shared_ptr<Zombie>& zombie) override;
 
 	/// @brief 変更するステートを生成
-	[[nodiscard]] std::vector<std::shared_ptr<IState<Zombie>>> CreateChangeState(std::shared_ptr<Zombie> zombie) override;
+	[[nodiscard]] std::vector<std::shared_ptr<IState<Zombie>>> CreateChangeState(std::shared_ptr<Zombie>& zombie) override;
 
 	/// @brief 未来のステート構成を生成
 	[[nodiscard]] std::vector<std::shared_ptr<IState<Zombie>>> CreateFutureState(const std::vector<std::shared_ptr<IState<Zombie>>>& next_state) override;
 	
 	/// @brief ステートの停止処理
-	void StopState(std::vector<std::shared_ptr<IState<Zombie>>>& future_state, const std::shared_ptr<IState<Zombie>> stop_state) override;
+	void StopState(std::vector<std::shared_ptr<IState<Zombie>>>& future_state, const std::shared_ptr<IState<Zombie>>& stop_state) override;
 
 	void JudgeDestinationAIState	(std::shared_ptr<IState<Zombie>>& stop_state);
 	void JudgeDestinationMoveState	(std::shared_ptr<IState<Zombie>>& stop_state);

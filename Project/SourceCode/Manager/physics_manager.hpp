@@ -15,7 +15,7 @@ public:
 	#pragma region 登録・解除
 	/// @brief 物理的挙動を行うオブジェクトを追加
 	template<obj_concepts::PhysicalObjT PhysicalObjT>
-	void AddPhysicalObj   (const std::shared_ptr<PhysicalObjT> physical_obj)
+	void AddPhysicalObj   (const std::shared_ptr<PhysicalObjT>& physical_obj)
 	{
 		// 上書き不可
 		if (std::find(m_physical_objects.begin(), m_physical_objects.end(), physical_obj) == m_physical_objects.end())
@@ -42,7 +42,7 @@ public:
 
 	/// @brief 物理的な挙動を適用するかを判定する
 	template<obj_concepts::PhysicalObjT PhysicalObjT>
-	[[nodiscard]] bool IsApplyPhysicalBehavior(const std::shared_ptr<PhysicalObjT> physical_obj) const
+	[[nodiscard]] bool IsApplyPhysicalBehavior(const std::shared_ptr<PhysicalObjT>& physical_obj) const
 	{
 		const auto itr = std::find(m_ignore_physical_behavior_obj_handle.begin(), m_ignore_physical_behavior_obj_handle.end(), physical_obj->GetObjHandle());
 
@@ -54,7 +54,7 @@ public:
 
 	/// @brief 重力を適用するかを判定する
 	template<obj_concepts::PhysicalObjT PhysicalObjT>
-	[[nodiscard]] bool IsApplyGravity(const std::shared_ptr<PhysicalObjT> physical_obj) const
+	[[nodiscard]] bool IsApplyGravity(const std::shared_ptr<PhysicalObjT>& physical_obj) const
 	{
 		const auto itr = std::find(m_ignore_gravity_obj_handle.begin(), m_ignore_gravity_obj_handle.end(), physical_obj->GetObjHandle());
 
@@ -72,10 +72,10 @@ private:
 	void ExecutePushBackPairs();
 
 	#pragma region 押し戻し
-	void PushBack				  (const std::shared_ptr<PhysicalObjBase> low_priority_obj, const std::shared_ptr<PhysicalObjBase> high_priority_obj);
-	void PushBackTriangleAndTarget(const std::shared_ptr<PhysicalObjBase> low_priority_obj, const std::shared_ptr<PhysicalObjBase> high_priority_obj);
-	void PushBackSphereAndTarget  (const std::shared_ptr<PhysicalObjBase> low_priority_obj, const std::shared_ptr<PhysicalObjBase> high_priority_obj);
-	void PushBackCapsuleAndTarget (const std::shared_ptr<PhysicalObjBase> low_priority_obj, const std::shared_ptr<PhysicalObjBase> high_priority_obj);
+	void PushBack				  (const std::shared_ptr<PhysicalObjBase>& low_priority_obj, const std::shared_ptr<PhysicalObjBase>& high_priority_obj);
+	void PushBackTriangleAndTarget(const std::shared_ptr<PhysicalObjBase>& low_priority_obj, const std::shared_ptr<PhysicalObjBase>& high_priority_obj);
+	void PushBackSphereAndTarget  (const std::shared_ptr<PhysicalObjBase>& low_priority_obj, const std::shared_ptr<PhysicalObjBase>& high_priority_obj);
+	void PushBackCapsuleAndTarget (const std::shared_ptr<PhysicalObjBase>& low_priority_obj, const std::shared_ptr<PhysicalObjBase>& high_priority_obj);
 	#pragma endregion
 
 private:

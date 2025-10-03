@@ -12,28 +12,28 @@ player_state::Crouch::~Crouch()
 
 }
 
-void player_state::Crouch::Update(std::shared_ptr<Player> obj)
+void player_state::Crouch::Update(std::shared_ptr<Player>& obj)
 {
 	//obj->CalcMoveSpeedCrouch();
 	obj->DirOfCameraForward();
 }
 
-void player_state::Crouch::LateUpdate(std::shared_ptr<Player> obj)
+void player_state::Crouch::LateUpdate(std::shared_ptr<Player>& obj)
 {
 
 }
 
-void player_state::Crouch::Enter(std::shared_ptr<Player> obj)
+void player_state::Crouch::Enter(std::shared_ptr<Player>& obj)
 {
 
 }
 
-void player_state::Crouch::Exit(std::shared_ptr<Player> obj)
+void player_state::Crouch::Exit(std::shared_ptr<Player>& obj)
 {
 	CommandHandler::GetInstance()->InitCurrentTriggerInputCount(CommandKind::kCrouch);
 }
 
-std::shared_ptr<IState<Player>> player_state::Crouch::ChangeState(std::shared_ptr<Player> obj)
+std::shared_ptr<IState<Player>> player_state::Crouch::ChangeState(std::shared_ptr<Player>& obj)
 {
 	const auto state_controller = obj->GetStateController();
 	const auto command			= CommandHandler::GetInstance();

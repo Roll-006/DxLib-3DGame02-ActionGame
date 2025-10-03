@@ -2,7 +2,7 @@
 
 WeaponShortcutDrawer::WeaponShortcutDrawer(
 	std::unordered_map<TimeKind, std::shared_ptr<WeaponActionStateBase<Player>>>& state,
-	const std::shared_ptr<WeaponShortcutSelecter> weapon_shortcut_selecter) :
+	const std::shared_ptr<WeaponShortcutSelecter>& weapon_shortcut_selecter) :
 	m_state						(state),
 	m_weapon_shortcut_selecter	(weapon_shortcut_selecter),
 	m_screen_creator			(std::make_shared<ScreenCreator>(kScreenSize, Vector2D<int>(static_cast<int>(Window::kScreenSize.x * 0.72f), Window::kScreenHalfSize.y))),

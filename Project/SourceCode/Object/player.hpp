@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "../Base/character_base.hpp"
-#include "../Interface/i_shooter.hpp"
+#include "../Interface/i_weapon_equippable.hpp"
+#include "../Interface/i_fireable.hpp"
 #include "../Interface/i_grabbable.hpp"
 #include "../Interface/i_melee_attackable.hpp"
 
@@ -19,7 +20,7 @@
 
 class PlayerStateController;
 
-class Player final : public CharacterBase, public IShooter, public IGrabbable, public IMeleeAttackable
+class Player final : public CharacterBase, public IWeaponEquippable, public IFireable, public IGrabbable, public IMeleeAttackable
 {
 public:
 	Player();
@@ -76,26 +77,17 @@ public:
 
 
 	#pragma region 武器
-	/// @brief 武器を装備させる
-	/// @brief ナイフの登録は許可しない
-	template<obj_concepts::WeaponT WeaponT>
-	void EquipWeapon(const std::shared_ptr<WeaponT>& weapon)
-	{
-		if (weapon->GetWeaponKind() == WeaponKind::kKnife) { return; }
+	void EquipWeapon	(const std::shared_ptr<WeaponBase>& weapon, const WeaponSlotKind slot_kind)	override;
+	void UnequipWeapon	(const WeaponSlotKind slot_kind)			override;
 
-		m_current_equip_weapon = weapon;
-	}
-	/// @brief 武器の装備を解除
-	void UnequipWeapon();
+	void HoldWeapon		(const std::shared_ptr<WeaponBase>& weapon)	override;
+	void HoldWeapon		(const int obj_handle)						override;
+	void ReleaseWeapon	()											override;
 
-	/// @brief ナイフを装備させる
-	template<obj_concepts::KnifeT KnifeT>
-	void EquipKnife(const std::shared_ptr<KnifeT>& knife)
-	{
-		m_current_equip_knife = knife;
-	}
-	/// @brief ナイフの装備を解除
-	void UnequipKnife();
+	void AttachWeapon	(const std::shared_ptr<WeaponBase>& weapon)	override;
+	void AttachWeapon	(const int obj_handle)						override;
+	void DetachWeapon	(const std::shared_ptr<WeaponBase>& weapon)	override;
+	void DetachWeapon	(const HolsterKind holster_kind)			override;
 	#pragma endregion
 
 
@@ -123,18 +115,21 @@ public:
 
 
 	#pragma region Getter
-	[[nodiscard]] float										GetDeltaTime()					const override;
-	[[nodiscard]] std::shared_ptr<PlayerStateController>	GetStateController()			const			{ return m_state; }
-	[[nodiscard]] std::shared_ptr<BonePosCorrector>			GetBonePosCorrector()			const			{ return m_bone_pos_corrector; }
-	[[nodiscard]] std::vector<std::shared_ptr<IItem>>		GetCurrentHaveItem(const ItemKind item_kind) const { return m_items.at(item_kind); }
-	[[nodiscard]] WeaponKind								GetCurrentEquipWeaponKind();
-	[[nodiscard]] std::shared_ptr<WeaponBase>				GetCurrentEquipWeapon()			const			{ return m_current_equip_weapon; }
-	[[nodiscard]] std::shared_ptr<KnifeBase>				GetCurrentEquipKnife()			const			{ return m_current_equip_knife; }
-	[[nodiscard]] std::shared_ptr<WeaponShortcutSelecter>	GetWeaponShortcutSelecter()		const			{ return m_weapon_shortcut_selecter; }
-	[[nodiscard]] float										GetMoveSpeed()					const			{ return m_move_speed; }
+	[[nodiscard]] float										GetDeltaTime				()	const override;
+	[[nodiscard]] std::shared_ptr<PlayerStateController>	GetStateController			()	const			{ return m_state; }
+	[[nodiscard]] std::shared_ptr<BonePosCorrector>			GetBonePosCorrector			()	const			{ return m_bone_pos_corrector; }
+	[[nodiscard]] std::vector<std::shared_ptr<IItem>>		GetCurrentHaveItem			(const ItemKind item_kind) const { return m_items.at(item_kind); }
+	[[nodiscard]] std::shared_ptr<WeaponBase>				GetCurrentEquipWeapon		(const WeaponSlotKind slot_kind) const override;
+	[[nodiscard]] std::shared_ptr<WeaponBase>				GetCurrentHeldWeapon		()	override;
+	[[nodiscard]] std::shared_ptr<WeaponBase>				GetCurrentAttachWeapon		(const HolsterKind holster_kind) const override;
+	[[nodiscard]] WeaponKind								GetCurrentEquipWeaponKind	(const WeaponSlotKind slot_kind) override;
+	[[nodiscard]] WeaponKind								GetCurrentHeldWeaponKind	()	override;
+	[[nodiscard]] WeaponKind								GetCurrentAttachWeaponKind	(const HolsterKind holster_kind) const override;
+	[[nodiscard]] std::shared_ptr<WeaponShortcutSelecter>	GetWeaponShortcutSelecter	()	const			{ return m_weapon_shortcut_selecter; }
+	[[nodiscard]] float										GetMoveSpeed				()	const			{ return m_move_speed; }
 	[[nodiscard]] int										GetCurrentRemainingBulletNum()	const override	{ return m_current_remaining_bullet_num; }
-	[[nodiscard]] bool										IsGrabbed()						const override	{ return m_is_grabbed; }
-	[[nodiscard]] std::vector<MeleeCandidateData>			GetMeleeCandidate()				const override  { return m_melee_candidate; }
+	[[nodiscard]] bool										IsGrabbed					()	const override	{ return m_is_grabbed; }
+	[[nodiscard]] std::vector<MeleeCandidateData>			GetMeleeCandidate			()	const override  { return m_melee_candidate; }
 	#pragma endregion
 
 private:
@@ -196,10 +191,11 @@ private:
 	float										m_prev_health;
 	bool										m_is_grabbed;							// 捕まれたかを判定
 
-	std::unordered_map<ItemKind, std::vector<std::shared_ptr<IItem>>> m_items;			// 所持しているアイテム
-	std::shared_ptr<WeaponBase>					m_current_equip_weapon;					// 現在装備している武器(ナイフ以外)
-	std::shared_ptr<KnifeBase>					m_current_equip_knife;					// 現在装備しているナイフ
-	int											m_current_remaining_bullet_num;			// 残弾数
-	std::shared_ptr<WeaponShortcutSelecter>		m_weapon_shortcut_selecter;				// ショートカットに登録されている武器
-	std::vector<MeleeCandidateData>				m_melee_candidate;						// メレーの候補者リスト
+	std::unordered_map<ItemKind, std::vector<std::shared_ptr<IItem>>>	m_items;							// 所持しているアイテム
+	std::unordered_map<WeaponSlotKind, std::shared_ptr<WeaponBase>>		m_current_equip_weapon;				// 現在装備している武器
+	std::shared_ptr<WeaponBase>											m_current_held_weapon;				// 現在手に持っている武器
+	std::unordered_map<HolsterKind, std::shared_ptr<WeaponBase>>		m_attach_weapons;					// 装着している武器
+	int																	m_current_remaining_bullet_num;		// 残弾数
+	std::shared_ptr<WeaponShortcutSelecter>								m_weapon_shortcut_selecter;			// ショートカットに登録されている武器
+	std::vector<MeleeCandidateData>										m_melee_candidate;					// メレーの候補者リスト
 };

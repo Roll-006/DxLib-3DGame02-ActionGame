@@ -23,7 +23,7 @@ public:
 	void AddToObjManager();
 	void RemoveToObjManager();
 
-	void AttachTarget(const std::shared_ptr<CharacterBase> target_character);
+	void AttachTarget(const std::shared_ptr<CharacterBase>& target_character);
 	void DetachTarget();
 	
 	void NotifyAllowAction		 (const ReleaseEvent&	event);

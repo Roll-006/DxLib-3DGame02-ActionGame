@@ -7,7 +7,7 @@ class ZombieStateController;
 class ZombieAnimator final : public AnimatorBase
 {
 public:
-	ZombieAnimator(const std::shared_ptr<Modeler> modeler,  const std::shared_ptr<ZombieStateController> state);
+	ZombieAnimator(const std::shared_ptr<Modeler>& modeler,  const std::shared_ptr<ZombieStateController>& state);
 	~ZombieAnimator();
 
 	void Init()		override;

@@ -12,7 +12,7 @@ zombie_state::Move::~Move()
 
 }
 
-void zombie_state::Move::Update(std::shared_ptr<Zombie> obj)
+void zombie_state::Move::Update(std::shared_ptr<Zombie>& obj)
 {
 	const auto state_controller = obj->GetStateController();
 	const auto ai_state			= static_cast<zombie_state::AIStateKind>(state_controller->GetAIState(TimeKind::kCurrent)->GetStateKind());
@@ -28,22 +28,22 @@ void zombie_state::Move::Update(std::shared_ptr<Zombie> obj)
 	}
 }
 
-void zombie_state::Move::LateUpdate(std::shared_ptr<Zombie> obj)
+void zombie_state::Move::LateUpdate(std::shared_ptr<Zombie>& obj)
 {
 
 }
 
-void zombie_state::Move::Enter(std::shared_ptr<Zombie> obj)
+void zombie_state::Move::Enter(std::shared_ptr<Zombie>& obj)
 {
 
 }
 
-void zombie_state::Move::Exit(std::shared_ptr<Zombie> obj)
+void zombie_state::Move::Exit(std::shared_ptr<Zombie>& obj)
 {
 
 }
 
-std::shared_ptr<IState<Zombie>> zombie_state::Move::ChangeState(std::shared_ptr<Zombie> obj)
+std::shared_ptr<IState<Zombie>> zombie_state::Move::ChangeState(std::shared_ptr<Zombie>& obj)
 {
 	const auto state_controller = obj->GetStateController();
 

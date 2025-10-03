@@ -1,6 +1,6 @@
 #include "shadow_map.hpp"
 
-ShadowMap::ShadowMap(const std::shared_ptr<Transform> camera_transform) :
+ShadowMap::ShadowMap(const std::shared_ptr<Transform>& camera_transform) :
 	m_shadow_map_handle	(MakeShadowMap(kSizeX, kSizeY)),
 	m_camera_transform	(camera_transform)
 {

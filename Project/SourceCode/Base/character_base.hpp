@@ -27,56 +27,16 @@ public:
 
 
 	#pragma region Getter
-	[[nodiscard]] bool							IsInvincible()				const { return m_is_invincible; }
-	[[nodiscard]] std::shared_ptr<Modeler>		GetModeler()				const { return m_modeler; }
-	[[nodiscard]] std::shared_ptr<AnimatorBase>	GetAnimator()				const { return m_animator; }
-	[[nodiscard]] VECTOR						GetCurrentMoveDir()			const { return m_move_dir.at(TimeKind::kCurrent); }
-	[[nodiscard]] VECTOR						GetCurrentLookDir()			const { return m_look_dir.at(TimeKind::kCurrent); }
-	[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentHeldWeapon()		const { return m_current_held_weapon; }
-	[[nodiscard]] WeaponKind					GetCurrentHeldWeaponKind();
-	[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentAttachWeapon		(const HolsterKind holster_kind)	const;
-	[[nodiscard]] WeaponKind					GetCurrentAttachWeaponKind	(const HolsterKind holster_kind)	const;
-	[[nodiscard]] std::shared_ptr<Health>&		GetHealth					(const HealthPartKind kind);
-	#pragma endregion
-
-
-	#pragma region •Ší
-	/// @brief •Ší‚ğè‚É‚½‚¹‚é
-	template<obj_concepts::WeaponT WeaponObjT>
-	void HoldWeapon(const std::shared_ptr<WeaponObjT> weapon)
-	{
-		m_current_held_weapon = weapon;
-		m_current_held_weapon->AttachOwner(m_modeler, GetName());
-	}
-	void HoldWeapon(const int obj_handle);
-
-	/// @brief è‚É‚Á‚Ä‚¢‚é•Ší‚ğ•ú‚·
-	void ReleaseWeapon();
-
-	/// @brief •Ší‚ğ‘•’…‚·‚é
-	template<obj_concepts::WeaponT WeaponObjT>
-	void AttachWeapon(const std::shared_ptr<WeaponObjT> weapon)
-	{
-		m_attach_weapons[weapon->GetHolsterKind()] = weapon;
-		m_attach_weapons[weapon->GetHolsterKind()]->AttachOwner(m_modeler, GetName());
-	}
-	void AttachWeapon(const int obj_handle);
-
-	/// @brief •Ší‚Ì’…’E‚·‚é
-	template<obj_concepts::WeaponT WeaponObjT>
-	void DetachWeapon(const std::shared_ptr<WeaponObjT> weapon)
-	{
-		// ©g‚ª‘•’…‚³‚ê‚Ä‚¢‚ê‚Î’…’E‚·‚é
-		if (m_attach_weapons.count(weapon->GetHolsterKind()))
-		{
-			if (m_attach_weapons[weapon->GetHolsterKind()] == weapon)
-			{
-				m_attach_weapons[weapon->GetHolsterKind()]->DetachOwner();
-				m_attach_weapons[weapon->GetHolsterKind()] = nullptr;
-			}
-		}
-	}
-	void DetachWeapon(const HolsterKind holster_kind);
+	[[nodiscard]] bool							IsInvincible()				const		{ return m_is_invincible; }
+	[[nodiscard]] std::shared_ptr<Modeler>		GetModeler()				const		{ return m_modeler; }
+	[[nodiscard]] std::shared_ptr<AnimatorBase>	GetAnimator()				const		{ return m_animator; }
+	[[nodiscard]] VECTOR						GetCurrentMoveDir()			const		{ return m_move_dir.at(TimeKind::kCurrent); }
+	[[nodiscard]] VECTOR						GetCurrentLookDir()			const		{ return m_look_dir.at(TimeKind::kCurrent); }
+	//[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentHeldWeapon()		const { return m_current_held_weapon; }
+	//[[nodiscard]] WeaponKind					GetCurrentHeldWeaponKind();
+	//[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentAttachWeapon		(const HolsterKind holster_kind)	const;
+	//[[nodiscard]] WeaponKind					GetCurrentAttachWeaponKind	(const HolsterKind holster_kind)	const;
+	[[nodiscard]] std::shared_ptr<Health>&		GetHealth(const HealthPartKind kind)	{ return m_health.at(kind); }
 	#pragma endregion
 
 protected:

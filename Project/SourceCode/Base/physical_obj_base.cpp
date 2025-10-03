@@ -171,7 +171,7 @@ std::shared_ptr<Collider> PhysicalObjBase::GetCollider(const ColliderKind kind) 
 	return m_collider.count(kind) ? m_collider.at(kind) : nullptr;
 }
 
-void PhysicalObjBase::AddCollider(const std::shared_ptr<Collider> collider)
+void PhysicalObjBase::AddCollider(const std::shared_ptr<Collider>& collider)
 {
 	if (!m_collider.count(collider->GetColliderKind()))
 	{

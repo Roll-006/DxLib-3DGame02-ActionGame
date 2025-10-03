@@ -4,8 +4,8 @@
 class ScreenCreator final
 {
 public:
-	ScreenCreator(const Vector2D<int> screen_size);
-	ScreenCreator(const Vector2D<int> screen_size, const Vector2D<int> center_pos);
+	ScreenCreator(const Vector2D<int>& screen_size);
+	ScreenCreator(const Vector2D<int>& screen_size, const Vector2D<int>& center_pos);
 	~ScreenCreator();
 
 	/// @brief 生成したスクリーンを使用する

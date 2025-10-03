@@ -58,7 +58,7 @@ void NonCollildeRocketBomb::RemoveToObjManager()
 	ObjManager::GetInstance()->RemoveObj(GetObjHandle());
 }
 
-void NonCollildeRocketBomb::OnStartReload(const std::shared_ptr<Modeler> owner_modler)
+void NonCollildeRocketBomb::OnStartReload(const std::shared_ptr<Modeler>& owner_modler)
 {
 	m_on_reloading	= true;
 	m_owner_modeler = owner_modler;

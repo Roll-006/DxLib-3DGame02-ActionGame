@@ -1,7 +1,7 @@
 #include "character_collider_creator.hpp"
 
 #pragma region コライダーの生成
-void CharacterColliderCreator::CreateCapsuleCollider(PhysicalObjBase* physical_obj, const std::shared_ptr<Modeler> modeler, const float capsule_radius)
+void CharacterColliderCreator::CreateCapsuleCollider(PhysicalObjBase* physical_obj, std::shared_ptr<Modeler>& modeler, const float capsule_radius)
 {
 	const auto transform		= physical_obj->GetTransform();
 	const auto begin_pos		= transform->GetPos(CoordinateKind::kWorld) + VGet(0.0f, capsule_radius, 0.0f);
@@ -12,7 +12,7 @@ void CharacterColliderCreator::CreateCapsuleCollider(PhysicalObjBase* physical_o
 	CalcCapsuleColliderDirAndLength(modeler, physical_obj->GetColliderAll(), transform);
 }
 
-void CharacterColliderCreator::CreateLandingTrigger(PhysicalObjBase* physical_obj, const float sphere_radius)
+void CharacterColliderCreator::CreateLandingTrigger	(PhysicalObjBase* physical_obj, const float sphere_radius)
 {
 	// TODO : カプセルのサイズの比率によってずらし量を自動で設定させるように変更
 	const auto capsule		= std::static_pointer_cast<Capsule>(physical_obj->GetCollider(ColliderKind::kCollider)->GetShape());
@@ -21,7 +21,7 @@ void CharacterColliderCreator::CreateLandingTrigger(PhysicalObjBase* physical_ob
 	physical_obj->AddCollider(std::make_shared<Collider>(ColliderKind::kLandingTrigger, std::make_shared<Sphere>(pos, sphere_radius), physical_obj));
 }
 
-void CharacterColliderCreator::CreateVisionTrigger(PhysicalObjBase* physical_obj, const std::shared_ptr<Modeler> modeler, const float lenfth, const float fov)
+void CharacterColliderCreator::CreateVisionTrigger	(PhysicalObjBase* physical_obj, std::shared_ptr<Modeler>& modeler, const float lenfth, const float fov)
 {
 	auto head_m = MV1GetFrameLocalWorldMatrix(modeler->GetModelHandle(), MV1SearchFrame(modeler->GetModelHandle(), BonePath.HEAD));
 	const auto head_pos  = MGetTranslateElem(head_m);
@@ -32,7 +32,7 @@ void CharacterColliderCreator::CreateVisionTrigger(PhysicalObjBase* physical_obj
 	CalcVisionTriggerPos(modeler, physical_obj->GetColliderAll());
 }
 
-void CharacterColliderCreator::CreateVisibleTrigger(PhysicalObjBase* physical_obj, const std::shared_ptr<Modeler> modeler)
+void CharacterColliderCreator::CreateVisibleTrigger	(PhysicalObjBase* physical_obj, std::shared_ptr<Modeler>& modeler)
 {
 	auto head_m = MV1GetFrameLocalWorldMatrix(modeler->GetModelHandle(), MV1SearchFrame(modeler->GetModelHandle(), BonePath.HEAD));
 	const auto head_pos = MGetTranslateElem(head_m);
@@ -42,7 +42,7 @@ void CharacterColliderCreator::CreateVisibleTrigger(PhysicalObjBase* physical_ob
 	CalcVisibleTriggerPos(modeler, physical_obj->GetColliderAll());
 }
 
-void CharacterColliderCreator::CreateHeadTrigger(PhysicalObjBase* physical_obj, const std::shared_ptr<Modeler> modeler, const float sphere_radius)
+void CharacterColliderCreator::CreateHeadTrigger	(PhysicalObjBase* physical_obj, std::shared_ptr<Modeler>& modeler, const float sphere_radius)
 {
 	auto head_m		= MV1GetFrameLocalWorldMatrix(modeler->GetModelHandle(), MV1SearchFrame(modeler->GetModelHandle(), BonePath.HEAD));
 	const auto head_pos = MGetTranslateElem(head_m);
@@ -52,7 +52,7 @@ void CharacterColliderCreator::CreateHeadTrigger(PhysicalObjBase* physical_obj, 
 	CalcHeadTriggerPos(modeler, physical_obj->GetColliderAll());
 }
 
-void CharacterColliderCreator::CreateBodyTrigger(PhysicalObjBase* physical_obj, const std::shared_ptr<Modeler> modeler, const float up_body_capsule_radius, const float down_body_capsule_radius)
+void CharacterColliderCreator::CreateBodyTrigger	(PhysicalObjBase* physical_obj, std::shared_ptr<Modeler>& modeler, const float up_body_capsule_radius, const float down_body_capsule_radius)
 {
 	physical_obj->AddCollider(std::make_shared<Collider>(ColliderKind::kUpBodyTrigger,	 std::make_shared<Capsule>(v3d::GetZeroV(), v3d::GetZeroV(), up_body_capsule_radius),   physical_obj));
 	physical_obj->AddCollider(std::make_shared<Collider>(ColliderKind::kDownBodyTrigger, std::make_shared<Capsule>(v3d::GetZeroV(), v3d::GetZeroV(), down_body_capsule_radius), physical_obj));
@@ -60,7 +60,7 @@ void CharacterColliderCreator::CreateBodyTrigger(PhysicalObjBase* physical_obj, 
 	CalcBodyTriggerPos(modeler, physical_obj->GetColliderAll());
 }
 
-void CharacterColliderCreator::CreateArmTrigger(PhysicalObjBase* physical_obj, const std::shared_ptr<Modeler> modeler, const float upper_arm_capsule_radius, const float forearm_capsule_radius, const float hand_capsule_radius)
+void CharacterColliderCreator::CreateArmTrigger		(PhysicalObjBase* physical_obj, std::shared_ptr<Modeler>& modeler, const float upper_arm_capsule_radius, const float forearm_capsule_radius, const float hand_capsule_radius)
 {
 	const auto left_upper_arm_trigger	= std::make_shared<Capsule>(v3d::GetZeroV(), v3d::GetZeroV(), upper_arm_capsule_radius);
 	const auto left_forearm_trigger		= std::make_shared<Capsule>(v3d::GetZeroV(), v3d::GetZeroV(), forearm_capsule_radius);
@@ -80,7 +80,7 @@ void CharacterColliderCreator::CreateArmTrigger(PhysicalObjBase* physical_obj, c
 	CalcArmTriggerPos(modeler, physical_obj->GetColliderAll());
 }
 
-void CharacterColliderCreator::CreateLegTrigger(PhysicalObjBase* physical_obj, const std::shared_ptr<Modeler> modeler, const float up_leg_capsule_radius, const float down_leg_capsule_radius)
+void CharacterColliderCreator::CreateLegTrigger		(PhysicalObjBase* physical_obj, std::shared_ptr<Modeler>& modeler, const float up_leg_capsule_radius, const float down_leg_capsule_radius)
 {
 	const auto left_up_leg_trigger		= std::make_shared<Capsule>(v3d::GetZeroV(), v3d::GetZeroV(), up_leg_capsule_radius);
 	const auto left_down_leg_trigger	= std::make_shared<Capsule>(v3d::GetZeroV(), v3d::GetZeroV(), down_leg_capsule_radius);
@@ -96,7 +96,7 @@ void CharacterColliderCreator::CreateLegTrigger(PhysicalObjBase* physical_obj, c
 	CalcLegTriggerPos(modeler, physical_obj->GetColliderAll());
 }
 
-void CharacterColliderCreator::CreateMeshTrigger(PhysicalObjBase* phsyical_obj, const std::shared_ptr<Modeler> modeler)
+void CharacterColliderCreator::CreateMeshTrigger	(PhysicalObjBase* phsyical_obj, std::shared_ptr<Modeler>& modeler)
 {
 	phsyical_obj->AddCollider(std::make_shared<Collider>(ColliderKind::kMeshTrigger, modeler->GetModelHandle(), phsyical_obj));
 }
@@ -104,7 +104,7 @@ void CharacterColliderCreator::CreateMeshTrigger(PhysicalObjBase* phsyical_obj, 
 
 
 #pragma region 位置計算
-void CharacterColliderCreator::CalcVisionTriggerPos(std::shared_ptr<Modeler> modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>> collider)
+void CharacterColliderCreator::CalcVisionTriggerPos	(std::shared_ptr<Modeler>& modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>>& collider)
 {
 	modeler->ApplyMatrix();
 	const auto model_handle = modeler->GetModelHandle();
@@ -119,7 +119,7 @@ void CharacterColliderCreator::CalcVisionTriggerPos(std::shared_ptr<Modeler> mod
 	cone->SetVertex(head_pos);
 }
 
-void CharacterColliderCreator::CalcVisibleTriggerPos(std::shared_ptr<Modeler> modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>> collider)
+void CharacterColliderCreator::CalcVisibleTriggerPos(std::shared_ptr<Modeler>& modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>>& collider)
 {
 	modeler->ApplyMatrix();
 	const auto model_handle = modeler->GetModelHandle();
@@ -132,7 +132,7 @@ void CharacterColliderCreator::CalcVisibleTriggerPos(std::shared_ptr<Modeler> mo
 	cone->SetPos(spine1_pos);
 }
 
-void CharacterColliderCreator::CalcHeadTriggerPos(std::shared_ptr<Modeler> modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>> collider)
+void CharacterColliderCreator::CalcHeadTriggerPos	(std::shared_ptr<Modeler>& modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>>& collider)
 {
 	modeler->ApplyMatrix();
 	const auto model_handle = modeler->GetModelHandle();
@@ -144,7 +144,7 @@ void CharacterColliderCreator::CalcHeadTriggerPos(std::shared_ptr<Modeler> model
 	std::static_pointer_cast<Sphere>(collider.at(ColliderKind::kHeadTrigger)->GetShape())->SetPos(head_pos);
 }
 
-void CharacterColliderCreator::CalcBodyTriggerPos(const std::shared_ptr<Modeler> modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>> collider)
+void CharacterColliderCreator::CalcBodyTriggerPos	(std::shared_ptr<Modeler>& modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>>& collider)
 {
 	modeler->ApplyMatrix();
 	const auto model_handle = modeler->GetModelHandle();
@@ -171,7 +171,7 @@ void CharacterColliderCreator::CalcBodyTriggerPos(const std::shared_ptr<Modeler>
 	down_body_capsule->SetSegmentEndPos  (hips_pos,				true);
 }
 
-void CharacterColliderCreator::CalcArmTriggerPos(std::shared_ptr<Modeler> modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>> collider)
+void CharacterColliderCreator::CalcArmTriggerPos	(std::shared_ptr<Modeler>& modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>>& collider)
 {
 	modeler->ApplyMatrix();
 	const auto model_handle = modeler->GetModelHandle();
@@ -218,7 +218,7 @@ void CharacterColliderCreator::CalcArmTriggerPos(std::shared_ptr<Modeler> modele
 	right_hand_capsule		->SetSegmentEndPos	(right_hand_pos,		 true);
 }
 
-void CharacterColliderCreator::CalcLegTriggerPos(const std::shared_ptr<Modeler> modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>> collider)
+void CharacterColliderCreator::CalcLegTriggerPos	(std::shared_ptr<Modeler>& modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>>& collider)
 {
 	modeler->ApplyMatrix();
 	const auto model_handle		= modeler->GetModelHandle();
@@ -258,7 +258,7 @@ void CharacterColliderCreator::CalcLegTriggerPos(const std::shared_ptr<Modeler> 
 
 
 #pragma region その他計算
-void CharacterColliderCreator::CalcCapsuleColliderDirAndLength(std::shared_ptr<Modeler> modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>> collider, const std::shared_ptr<Transform> transform)
+void CharacterColliderCreator::CalcCapsuleColliderDirAndLength(std::shared_ptr<Modeler>& modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>>& collider, const std::shared_ptr<Transform>& transform)
 {
 	modeler->ApplyMatrix();
 

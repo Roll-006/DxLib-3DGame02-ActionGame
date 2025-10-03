@@ -12,17 +12,17 @@ player_state::WeaponActionNull::~WeaponActionNull()
 
 }
 
-void player_state::WeaponActionNull::Update(std::shared_ptr<Player> obj)
+void player_state::WeaponActionNull::Update(std::shared_ptr<Player>& obj)
 {
 	
 }
 
-void player_state::WeaponActionNull::LateUpdate(std::shared_ptr<Player> obj)
+void player_state::WeaponActionNull::LateUpdate(std::shared_ptr<Player>& obj)
 {
 
 }
 
-void player_state::WeaponActionNull::Enter(std::shared_ptr<Player> obj)
+void player_state::WeaponActionNull::Enter(std::shared_ptr<Player>& obj)
 {
 	if (obj->GetCurrentHeldWeapon())
 	{
@@ -30,12 +30,12 @@ void player_state::WeaponActionNull::Enter(std::shared_ptr<Player> obj)
 	}
 }
 
-void player_state::WeaponActionNull::Exit(std::shared_ptr<Player> obj)
+void player_state::WeaponActionNull::Exit(std::shared_ptr<Player>& obj)
 {
 	
 }
 
-std::shared_ptr<IState<Player>> player_state::WeaponActionNull::ChangeState(std::shared_ptr<Player> obj)
+std::shared_ptr<IState<Player>> player_state::WeaponActionNull::ChangeState(std::shared_ptr<Player>& obj)
 {
 	const auto state_controller = obj->GetStateController();
 	const auto command			= CommandHandler::GetInstance();
@@ -51,7 +51,7 @@ std::shared_ptr<IState<Player>> player_state::WeaponActionNull::ChangeState(std:
 		return state_controller->GetState<EquipGun, Player>();
 	}
 	// ナイフエイミング状態
-	if (command->IsExecute(CommandKind::kAimKnife, TimeKind::kCurrent) && obj->GetCurrentEquipKnife())
+	if (command->IsExecute(CommandKind::kAimKnife, TimeKind::kCurrent) && obj->GetCurrentEquipWeapon(WeaponSlotKind::kSub))
 	{
 		return state_controller->GetState<AimKnife, Player>();
 	}

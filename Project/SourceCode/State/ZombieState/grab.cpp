@@ -16,7 +16,7 @@ zombie_state::Grab::~Grab()
 
 }
 
-void zombie_state::Grab::Update(std::shared_ptr<Zombie> obj)
+void zombie_state::Grab::Update(std::shared_ptr<Zombie>& obj)
 {
 	const auto state_controller = obj->GetStateController();
 	const auto player			= std::dynamic_pointer_cast<Player>(state_controller->GetTargetCharacter());
@@ -32,12 +32,12 @@ void zombie_state::Grab::Update(std::shared_ptr<Zombie> obj)
 	}
 }
 
-void zombie_state::Grab::LateUpdate(std::shared_ptr<Zombie> obj)
+void zombie_state::Grab::LateUpdate(std::shared_ptr<Zombie>& obj)
 {
 
 }
 
-void zombie_state::Grab::Enter(std::shared_ptr<Zombie> obj)
+void zombie_state::Grab::Enter(std::shared_ptr<Zombie>& obj)
 {
 	m_damage_interval_timer = 0.0f;
 	m_grab_timer			= 0.0f;
@@ -62,7 +62,7 @@ void zombie_state::Grab::Enter(std::shared_ptr<Zombie> obj)
 	obj->SetAttackIntervalTime();
 }
 
-void zombie_state::Grab::Exit(std::shared_ptr<Zombie> obj)
+void zombie_state::Grab::Exit(std::shared_ptr<Zombie>& obj)
 {
 	// —£‚µ‚½‚±‚Æ‚ğ‰‰oƒJƒƒ‰‚É’Ê’m
 	const ReleaseEvent event{ obj->GetEnemyHandle() };
@@ -81,7 +81,7 @@ void zombie_state::Grab::Exit(std::shared_ptr<Zombie> obj)
 	}
 }
 
-std::shared_ptr<IState<Zombie>> zombie_state::Grab::ChangeState(std::shared_ptr<Zombie> obj)
+std::shared_ptr<IState<Zombie>> zombie_state::Grab::ChangeState(std::shared_ptr<Zombie>& obj)
 {
 	const auto state_controller = obj->GetStateController();
 

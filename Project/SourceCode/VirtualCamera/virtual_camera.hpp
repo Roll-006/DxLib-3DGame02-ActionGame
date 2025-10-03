@@ -18,7 +18,7 @@ public:
 	void Update();
 	void LateUpdate();
 
-	void AttachTarget(const std::shared_ptr<Transform> target_transform);
+	void AttachTarget(const std::shared_ptr<Transform>& target_transform);
 	void DetachTarget();
 
 	void SetPriority(const int priority);

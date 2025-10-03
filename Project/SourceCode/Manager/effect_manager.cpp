@@ -74,7 +74,7 @@ void EffectManager::Draw() const
 	}
 }
 
-void EffectManager::ForciblyReturnPoolEffect(std::shared_ptr<Effect> effect)
+void EffectManager::ForciblyReturnPoolEffect(std::shared_ptr<Effect>& effect)
 {
 	if (std::find(m_effects[effect->GetName()].begin(), m_effects[effect->GetName()].end(), effect) != m_effects[effect->GetName()].end())
 	{

@@ -1,6 +1,6 @@
 #include "weapon_shortcut_icon.hpp"
 
-WeaponShortcutIcon::WeaponShortcutIcon(const Vector2D<int> center_pos, const int width, const int height) :
+WeaponShortcutIcon::WeaponShortcutIcon(const Vector2D<int>& center_pos, const int width, const int height) :
 	m_center_pos	(center_pos),
 	m_icon_width	(width),
 	m_icon_height	(height),
@@ -38,7 +38,7 @@ void WeaponShortcutIcon::Draw() const
 	}
 }
 
-void WeaponShortcutIcon::AttachGraphic(std::shared_ptr<Graphicer> graphicer)
+void WeaponShortcutIcon::AttachGraphic(const std::shared_ptr<Graphicer>& graphicer)
 {
 	// è„èëÇ´ïsâ¬
 	if (m_graphicer) { return; }

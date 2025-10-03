@@ -7,7 +7,7 @@ public:
 	EnemyBase(const std::string& name, const MassKind mass_level_kind);
 	virtual ~EnemyBase() = default;
 
-	virtual void AttachTarget(const std::shared_ptr<CharacterBase> target_character) abstract;
+	virtual void AttachTarget(const std::shared_ptr<CharacterBase>& target_character) abstract;
 	virtual void DetachTarget() abstract;
 
 	void SetAttackIntervalTime();

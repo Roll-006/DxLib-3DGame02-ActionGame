@@ -11,9 +11,9 @@ public:
 	WeaponShortcutSelecter();
 	~WeaponShortcutSelecter();
 
-	void Update(std::shared_ptr<Player> player);
+	void Update(const std::shared_ptr<Player>& player);
 
-	void AttachShortcutWeapon(const WeaponShortcutPosKind pos_kind, const std::shared_ptr<WeaponBase> weapon);
+	void AttachShortcutWeapon(const WeaponShortcutPosKind pos_kind, const std::shared_ptr<WeaponBase>& weapon);
 	void DetachShortcutWeapon(const WeaponShortcutPosKind pos_kind);
 
 	[[nodiscard]] std::shared_ptr<WeaponBase>	GetShortcutWeapon(const WeaponShortcutPosKind shortcut_pos_kind);

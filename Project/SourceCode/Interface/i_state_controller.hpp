@@ -18,14 +18,14 @@ protected:
 	virtual void AddCheckStopState()	abstract;
 
 	/// @brief ステートを変更
-	virtual void ChangeState(std::shared_ptr<ObjT> obj) abstract;
+	virtual void ChangeState(std::shared_ptr<ObjT>& obj) abstract;
 
 	/// @brief 変更するステートを生成
-	[[nodiscard]] virtual std::vector<std::shared_ptr<IState<ObjT>>> CreateChangeState(std::shared_ptr<ObjT> obj) abstract;
+	[[nodiscard]] virtual std::vector<std::shared_ptr<IState<ObjT>>> CreateChangeState(std::shared_ptr<ObjT>& obj) abstract;
 
 	/// @brief 未来のステート構成を生成
 	[[nodiscard]] virtual std::vector<std::shared_ptr<IState<ObjT>>> CreateFutureState(const std::vector<std::shared_ptr<IState<ObjT>>>& next_state) abstract;
 
 	/// @brief ステートの停止処理
-	virtual void StopState(std::vector<std::shared_ptr<IState<ObjT>>>& future_state, const std::shared_ptr<IState<ObjT>> stop_state) abstract;
+	virtual void StopState(std::vector<std::shared_ptr<IState<ObjT>>>& future_state, const std::shared_ptr<IState<ObjT>>& stop_state) abstract;
 };

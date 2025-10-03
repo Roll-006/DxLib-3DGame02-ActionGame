@@ -9,7 +9,7 @@
 class PlayerUICreator final : public IUICreator
 {
 public:
-	PlayerUICreator(const std::shared_ptr<Player> player);
+	PlayerUICreator(const std::shared_ptr<Player>& player);
 	~PlayerUICreator()	override;
 
 	void LateUpdate() override;

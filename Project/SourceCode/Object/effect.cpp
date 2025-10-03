@@ -82,7 +82,7 @@ void Effect::RemoveToObjManager()
 
 
 #pragma region Attach / Detach
-void Effect::AttachOwnerTransform(const std::shared_ptr<Transform> owner_transform)
+void Effect::AttachOwnerTransform(const std::shared_ptr<Transform>& owner_transform)
 {
 	m_owner_transform = owner_transform;
 }

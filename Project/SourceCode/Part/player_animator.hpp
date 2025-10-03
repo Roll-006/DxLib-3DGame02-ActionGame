@@ -8,10 +8,10 @@ class PlayerAnimator final : public AnimatorBase
 {
 public:
 	PlayerAnimator(
-		const std::shared_ptr<Modeler>					modeler, 
-		const std::shared_ptr<PlayerStateController>	state,
-		const std::shared_ptr<WeaponBase>				held_weapon,
-		const std::shared_ptr<WeaponBase>				equip_weapon);
+		const std::shared_ptr<Modeler>&					modeler, 
+		const std::shared_ptr<PlayerStateController>&	state,
+		const std::shared_ptr<WeaponBase>&				held_weapon,
+		const std::shared_ptr<WeaponBase>&				equip_weapon);
 
 	~PlayerAnimator();
 

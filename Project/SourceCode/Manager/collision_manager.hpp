@@ -17,7 +17,7 @@ public:
 
 	#pragma region 登録・解除
 	/// @brief 衝突判定を行うオブジェクトを追加
-	void AddCollideObj	 (const std::shared_ptr<PhysicalObjBase> collide_obj);
+	void AddCollideObj	 (const std::shared_ptr<PhysicalObjBase>& collide_obj);
 	/// @brief 衝突判定を行うオブジェクトから除外
 	void RemoveCollideObj(const int obj_handle);
 
@@ -46,8 +46,9 @@ private:
 	void SetIgnoreColliderPairs();
 
 	/// @brief 衝突可能かを判定
-	[[nodiscard]] bool CanCollideObjAndObj			(const std::shared_ptr<PhysicalObjBase> owner_obj, const std::shared_ptr<PhysicalObjBase> target_obj);
-	[[nodiscard]] bool CanCollideColliderAndCollider(const std::shared_ptr<Collider> owner_collider, const std::shared_ptr<Collider> target_collider);
+	[[nodiscard]] bool CanCollideObjAndObj			(const std::shared_ptr<PhysicalObjBase>& owner_obj, const std::shared_ptr<PhysicalObjBase>& target_obj);
+	[[nodiscard]] bool CanCollideObjAndCollider		(const std::shared_ptr<PhysicalObjBase>& owner_obj, const std::shared_ptr<Collider>& target_collider);
+	[[nodiscard]] bool CanCollideColliderAndCollider(const std::shared_ptr<Collider>& owner_collider, const std::shared_ptr<Collider>& target_collider);
 
 	/// @brief 衝突判定を起こしたコライダーの組み合わせを生成
 	std::vector<ColliderPairOneToManyData> CreateHitColliderPairs();

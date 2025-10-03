@@ -1,7 +1,7 @@
 #include "modeler.hpp"
 
 #pragma region コンストラクタ / デストラクタ
-Modeler::Modeler(const std::shared_ptr<Transform> transform, const std::string& file_path, const VECTOR& basic_angle, const float basic_scale) :
+Modeler::Modeler(const std::shared_ptr<Transform>& transform, const std::string& file_path, const VECTOR& basic_angle, const float basic_scale) :
 	m_model_handle	(HandleKeeper::GetInstance()->LoadHandle(HandleKind::kModel, file_path)),
 	m_opacity		(1.0f),
 	m_transform		(transform),
@@ -11,7 +11,7 @@ Modeler::Modeler(const std::shared_ptr<Transform> transform, const std::string& 
 	MV1SetupCollInfo(m_model_handle);
 }
 
-Modeler::Modeler(const std::shared_ptr<Transform> transform, const std::string& file_path) :
+Modeler::Modeler(const std::shared_ptr<Transform>& transform, const std::string& file_path) :
 	m_model_handle	(HandleKeeper::GetInstance()->LoadHandle(HandleKind::kModel, file_path)),
 	m_opacity		(1.0f),
 	m_transform		(transform),

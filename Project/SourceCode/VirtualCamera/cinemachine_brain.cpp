@@ -58,7 +58,7 @@ void CinemachineBrain::LateUpdate()
 	m_main_camera->LateUpdate();
 }
 
-void CinemachineBrain::SortPriority(const std::shared_ptr<VirtualCamera> virtual_camera)
+void CinemachineBrain::SortPriority(const std::shared_ptr<VirtualCamera>& virtual_camera)
 {
 	if (m_virtual_cameras.count(virtual_camera->GetCameraHandle()))
 	{
@@ -69,7 +69,7 @@ void CinemachineBrain::SortPriority(const std::shared_ptr<VirtualCamera> virtual
 
 
 #pragma region 登録 / 解除
-void CinemachineBrain::AddVirtualCamera(const std::shared_ptr<VirtualCamera> virtual_camera, const bool is_active)
+void CinemachineBrain::AddVirtualCamera(const std::shared_ptr<VirtualCamera>& virtual_camera, const bool is_active)
 {
 	if (!m_virtual_cameras.count(virtual_camera->GetCameraHandle()))
 	{
@@ -116,7 +116,7 @@ void CinemachineBrain::RemoveVirtualCameraController(const VirtualCameraControll
 
 
 #pragma region Setter
-void CinemachineBrain::SetMainCamera(const std::shared_ptr<MainCamera> main_camera)
+void CinemachineBrain::SetMainCamera(const std::shared_ptr<MainCamera>& main_camera)
 {
 	if (!m_main_camera)
 	{
@@ -183,7 +183,7 @@ std::shared_ptr<IVirtualCameraController> CinemachineBrain::GetVirtualCameraCont
 
 
 #pragma region ブレンド関連処理
-void CinemachineBrain::DeactivateVirtualCamera(const std::shared_ptr<VirtualCamera> origin_camera, const std::shared_ptr<VirtualCamera> target_camera)
+void CinemachineBrain::DeactivateVirtualCamera(const std::shared_ptr<VirtualCamera>& origin_camera, const std::shared_ptr<VirtualCamera>& target_camera)
 {
 	switch (target_camera->GetBlendActivationPolicyKind())
 	{

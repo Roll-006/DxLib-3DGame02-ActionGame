@@ -12,28 +12,28 @@ player_state::Run::~Run()
 
 }
 
-void player_state::Run::Update(std::shared_ptr<Player> obj)
+void player_state::Run::Update(std::shared_ptr<Player>& obj)
 {
 	obj->CalcMoveSpeedRun();
 	obj->DirOfMovement();
 }
 
-void player_state::Run::LateUpdate(std::shared_ptr<Player> obj)
+void player_state::Run::LateUpdate(std::shared_ptr<Player>& obj)
 {
 
 }
 
-void player_state::Run::Enter(std::shared_ptr<Player> obj)
+void player_state::Run::Enter(std::shared_ptr<Player>& obj)
 {
 
 }
 
-void player_state::Run::Exit(std::shared_ptr<Player> obj)
+void player_state::Run::Exit(std::shared_ptr<Player>& obj)
 {
 	CommandHandler::GetInstance()->InitCurrentTriggerInputCount(CommandKind::kRun);
 }
 
-std::shared_ptr<IState<Player>> player_state::Run::ChangeState(std::shared_ptr<Player> obj)
+std::shared_ptr<IState<Player>> player_state::Run::ChangeState(std::shared_ptr<Player>& obj)
 {
 	const auto state_controller = obj->GetStateController();
 	const auto command			= CommandHandler::GetInstance();

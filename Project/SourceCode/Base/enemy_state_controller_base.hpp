@@ -13,7 +13,7 @@ public:
 
 	virtual ~EnemyStateControllerBase() = default;
 
-	void AttachTarget(const std::shared_ptr<CharacterBase> target_character) { m_target_character = target_character; }
+	void AttachTarget(const std::shared_ptr<CharacterBase>& target_character) { m_target_character = target_character; }
 	void DetachTarget() { m_target_character = nullptr; }
 
 	[[nodiscard]] std::shared_ptr<CharacterBase> GetTargetCharacter() const { return m_target_character; }

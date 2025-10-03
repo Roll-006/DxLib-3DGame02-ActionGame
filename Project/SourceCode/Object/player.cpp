@@ -10,8 +10,6 @@ Player::Player() :
 	m_look_dir_offset_speed				(0.0f),
 	m_prev_health						(0.0f),
 	m_is_grabbed						(false),
-	m_current_equip_weapon				(nullptr),
-	m_current_equip_knife				(nullptr),
 	m_weapon_shortcut_selecter			(std::make_shared<WeaponShortcutSelecter>())
 {
 	// イベントの登録
@@ -22,7 +20,7 @@ Player::Player() :
 
 	// モデル・アニメーションを設定
 	m_modeler  = std::make_shared<Modeler>(m_transform, ModelPath.SWAT_02, kBasicAngle, kBasicScale);
-	m_animator = std::make_shared<PlayerAnimator>(m_modeler, m_state, m_current_held_weapon, m_current_equip_weapon);
+	m_animator = std::make_shared<PlayerAnimator>(m_modeler, m_state, m_current_held_weapon, m_current_equip_weapon[WeaponSlotKind::kMain]);
 	SetColliderModelHandle(m_modeler->GetModelHandle());
 
 	m_invincible_time = kInvincibleTime;
@@ -50,9 +48,9 @@ Player::Player() :
 		AddItem(assault_rifle);
 		AddItem(rocket_launcher);
 		AddItem(knife);
-		EquipWeapon(assault_rifle);
-		EquipWeapon(rocket_launcher);
-		EquipKnife (knife);
+		EquipWeapon(assault_rifle,		WeaponSlotKind::kMain);
+		EquipWeapon(rocket_launcher,	WeaponSlotKind::kMain);
+		EquipWeapon(knife,				WeaponSlotKind::kSub);
 		AttachWeapon(assault_rifle);
 		AttachWeapon(rocket_launcher);
 		AttachWeapon(knife);
@@ -307,14 +305,81 @@ void Player::AddMeleeCandidate(const OnDownedEnemySpottedEvent& event)
 
 
 #pragma region 武器
-void Player::UnequipWeapon()
+void Player::EquipWeapon(const std::shared_ptr<WeaponBase>& weapon, const WeaponSlotKind slot_kind)
 {
-	m_current_equip_weapon = nullptr;
+	m_current_equip_weapon[slot_kind] = weapon;
+	m_current_equip_weapon[slot_kind]->AttachOwner(m_modeler, GetName());
 }
 
-void Player::UnequipKnife()
+void Player::UnequipWeapon(const WeaponSlotKind slot_kind)
 {
-	m_current_equip_knife = nullptr;
+	if (m_current_equip_weapon.count(slot_kind))
+	{
+		m_current_equip_weapon.at(slot_kind)->DetachOwner();
+		m_current_equip_weapon.at(slot_kind) = nullptr;
+	}
+}
+
+void Player::HoldWeapon(const std::shared_ptr<WeaponBase>& weapon)
+{
+	m_current_held_weapon = weapon;
+	m_current_held_weapon->AttachOwner(m_modeler, GetName());
+}
+
+void Player::HoldWeapon(const int obj_handle)
+{
+	auto weapon = ObjManager::GetInstance()->GetObj<WeaponBase>(obj_handle);
+
+	if (weapon)
+	{
+		m_current_held_weapon = weapon;
+		m_current_held_weapon->AttachOwner(m_modeler, GetName());
+	}
+}
+
+void Player::ReleaseWeapon()
+{
+	if (m_current_held_weapon)
+	{
+		m_current_held_weapon->DetachOwner();
+		m_current_held_weapon = nullptr;
+	}
+}
+
+void Player::AttachWeapon(const std::shared_ptr<WeaponBase>& weapon)
+{
+	m_attach_weapons[weapon->GetHolsterKind()] = weapon;
+	m_attach_weapons[weapon->GetHolsterKind()]->AttachOwner(m_modeler, GetName());
+}
+
+void Player::AttachWeapon(const int obj_handle)
+{
+	auto weapon = ObjManager::GetInstance()->GetObj<WeaponBase>(obj_handle);
+
+	if (weapon)
+	{
+		m_attach_weapons[weapon->GetHolsterKind()] = weapon;
+		m_attach_weapons[weapon->GetHolsterKind()]->AttachOwner(m_modeler, GetName());
+	}
+}
+
+void Player::DetachWeapon(const std::shared_ptr<WeaponBase>& weapon)
+{
+	// 自身が装着されていれば着脱する
+	if (m_attach_weapons.count(weapon->GetHolsterKind()))
+	{
+		if (m_attach_weapons[weapon->GetHolsterKind()] == weapon)
+		{
+			m_attach_weapons[weapon->GetHolsterKind()]->DetachOwner();
+			m_attach_weapons[weapon->GetHolsterKind()] = nullptr;
+		}
+	}
+}
+
+void Player::DetachWeapon(const HolsterKind holster_kind)
+{
+	m_attach_weapons[holster_kind]->DetachOwner();
+	m_attach_weapons.erase(holster_kind);
 }
 #pragma endregion
 
@@ -445,16 +510,44 @@ void Player::SpinningSlashKnifeOffsetMove()
 #pragma endregion
 
 
+#pragma region Getter
 float Player::GetDeltaTime() const
 {
 	const auto time_manager = GameTimeManager::GetInstance();
 	return time_manager->GetDeltaTime(TimeScaleLayerKind::kPlayer);
 }
 
-WeaponKind Player::GetCurrentEquipWeaponKind()
+std::shared_ptr<WeaponBase> Player::GetCurrentEquipWeapon(const WeaponSlotKind slot_kind) const
 {
-	return m_current_equip_weapon ? m_current_equip_weapon->GetWeaponKind() : WeaponKind::kNone;
+	return m_current_equip_weapon.count(slot_kind) ? m_current_equip_weapon.at(slot_kind) : nullptr;
 }
+
+std::shared_ptr<WeaponBase> Player::GetCurrentHeldWeapon()
+{
+	return m_current_held_weapon;
+}
+
+std::shared_ptr<WeaponBase> Player::GetCurrentAttachWeapon(const HolsterKind holster_kind) const
+{
+	return m_attach_weapons.count(holster_kind) ? m_attach_weapons.at(holster_kind) : nullptr;
+}
+
+WeaponKind Player::GetCurrentEquipWeaponKind(const WeaponSlotKind slot_kind)
+{
+	return m_current_equip_weapon.count(slot_kind) ? m_current_equip_weapon.at(slot_kind)->GetWeaponKind() : WeaponKind::kNone;
+}
+
+WeaponKind Player::GetCurrentHeldWeaponKind()
+{
+	return m_current_held_weapon ? m_current_held_weapon->GetWeaponKind() : WeaponKind::kNone;
+}
+
+WeaponKind Player::GetCurrentAttachWeaponKind(const HolsterKind holster_kind) const
+{
+	return m_attach_weapons.count(holster_kind) ? m_attach_weapons.at(holster_kind)->GetWeaponKind() : WeaponKind::kNone;
+}
+#pragma endregion
+
 
 void Player::RemoveMeleeCandidate()
 {

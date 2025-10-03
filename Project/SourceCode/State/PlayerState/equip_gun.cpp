@@ -13,7 +13,7 @@ player_state::EquipGun::~EquipGun()
 
 }
 
-void player_state::EquipGun::Update(std::shared_ptr<Player> obj)
+void player_state::EquipGun::Update(std::shared_ptr<Player>& obj)
 {
 	if (CommandHandler::GetInstance()->IsExecute(CommandKind::kAimGun, TimeKind::kCurrent))
 	{
@@ -28,26 +28,26 @@ void player_state::EquipGun::Update(std::shared_ptr<Player> obj)
 	obj->GetCurrentHeldWeapon()->Update();
 }
 
-void player_state::EquipGun::LateUpdate(std::shared_ptr<Player> obj)
+void player_state::EquipGun::LateUpdate(std::shared_ptr<Player>& obj)
 {
 	obj->GetCurrentHeldWeapon()->TrackOwnerHand();
 }
 
-void player_state::EquipGun::Enter(std::shared_ptr<Player> obj)
+void player_state::EquipGun::Enter(std::shared_ptr<Player>& obj)
 {
 	m_possible_aim_timer = 0.0f;
 
-	obj->DetachWeapon(obj->GetCurrentEquipWeapon());
-	obj->HoldWeapon(obj->GetCurrentEquipWeapon());
+	obj->DetachWeapon(obj->GetCurrentEquipWeapon(WeaponSlotKind::kMain));
+	obj->HoldWeapon(obj->GetCurrentEquipWeapon(WeaponSlotKind::kMain));
 }
 
-void player_state::EquipGun::Exit(std::shared_ptr<Player> obj)
+void player_state::EquipGun::Exit(std::shared_ptr<Player>& obj)
 {
 	obj->ReleaseWeapon();
-	obj->AttachWeapon(obj->GetCurrentEquipWeapon());
+	obj->AttachWeapon(obj->GetCurrentEquipWeapon(WeaponSlotKind::kMain));
 }
 
-std::shared_ptr<IState<Player>> player_state::EquipGun::ChangeState(std::shared_ptr<Player> obj)
+std::shared_ptr<IState<Player>> player_state::EquipGun::ChangeState(std::shared_ptr<Player>& obj)
 {
 	const auto state_controller = obj->GetStateController();
 	const auto command			= CommandHandler::GetInstance();
@@ -66,7 +66,7 @@ std::shared_ptr<IState<Player>> player_state::EquipGun::ChangeState(std::shared_
 		return state_controller->GetState<Reload, Player>();
 	}
 	// ナイフエイミング状態
-	if (command->IsExecute(CommandKind::kAimKnife, TimeKind::kCurrent) && obj->GetCurrentEquipKnife())
+	if (command->IsExecute(CommandKind::kAimKnife, TimeKind::kCurrent) && obj->GetCurrentEquipWeapon(WeaponSlotKind::kSub))
 	{
 		return state_controller->GetState<AimKnife, Player>();
 	}

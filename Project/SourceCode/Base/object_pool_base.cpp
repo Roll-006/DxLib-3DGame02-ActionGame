@@ -6,7 +6,7 @@ ObjectPoolBase::ObjectPoolBase(const std::string& name) :
 
 }
 
-void ObjectPoolBase::ReturnObj(const std::shared_ptr<ObjBase> obj)
+void ObjectPoolBase::ReturnObj(const std::shared_ptr<ObjBase>& obj)
 {
 	if (!m_objects.count(obj->GetName())) { return; }
 

@@ -174,7 +174,7 @@ void PhysicsManager::ExecutePushBackPairs()
 
 
 #pragma region ‰Ÿ‚µ–ß‚µ
-void PhysicsManager::PushBack(const std::shared_ptr<PhysicalObjBase> low_priority_obj, const std::shared_ptr<PhysicalObjBase> high_priority_obj)
+void PhysicsManager::PushBack(const std::shared_ptr<PhysicalObjBase>& low_priority_obj, const std::shared_ptr<PhysicalObjBase>& high_priority_obj)
 {
 	const auto* shape = low_priority_obj->GetCollider(ColliderKind::kCollider)->GetShape().get();
 
@@ -195,7 +195,7 @@ void PhysicsManager::PushBack(const std::shared_ptr<PhysicalObjBase> low_priorit
 	}
 }
 
-void PhysicsManager::PushBackTriangleAndTarget(const std::shared_ptr<PhysicalObjBase> low_priority_obj, const std::shared_ptr<PhysicalObjBase> high_priority_obj)
+void PhysicsManager::PushBackTriangleAndTarget(const std::shared_ptr<PhysicalObjBase>& low_priority_obj, const std::shared_ptr<PhysicalObjBase>& high_priority_obj)
 {
 	const auto* shape		= high_priority_obj->GetCollider(ColliderKind::kCollider)->GetShape().get();
 	const auto  velocity	= low_priority_obj->GetVelocity();
@@ -219,7 +219,7 @@ void PhysicsManager::PushBackTriangleAndTarget(const std::shared_ptr<PhysicalObj
 	}
 }
 
-void PhysicsManager::PushBackSphereAndTarget (const std::shared_ptr<PhysicalObjBase> low_priority_obj, const std::shared_ptr<PhysicalObjBase> high_priority_obj)
+void PhysicsManager::PushBackSphereAndTarget (const std::shared_ptr<PhysicalObjBase>& low_priority_obj, const std::shared_ptr<PhysicalObjBase>& high_priority_obj)
 {
 	const auto* shape		= high_priority_obj->GetCollider(ColliderKind::kCollider)->GetShape().get();
 	const auto  velocity	= low_priority_obj->GetVelocity();
@@ -241,7 +241,7 @@ void PhysicsManager::PushBackSphereAndTarget (const std::shared_ptr<PhysicalObjB
 	}
 }
 
-void PhysicsManager::PushBackCapsuleAndTarget(const std::shared_ptr<PhysicalObjBase> low_priority_obj, const std::shared_ptr<PhysicalObjBase> high_priority_obj)
+void PhysicsManager::PushBackCapsuleAndTarget(const std::shared_ptr<PhysicalObjBase>& low_priority_obj, const std::shared_ptr<PhysicalObjBase>& high_priority_obj)
 {
 	const auto* shape		= high_priority_obj->GetCollider(ColliderKind::kCollider)->GetShape().get();
 	const auto  velocity	= low_priority_obj->GetVelocity();

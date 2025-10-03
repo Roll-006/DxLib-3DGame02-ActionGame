@@ -118,7 +118,7 @@ void PlayerStateController::AddCheckStopState()
 	m_check_stop_state_handles.emplace_back(m_states.at(typeid(player_state::Reload))				->GetStateHandle());
 }
 
-void PlayerStateController::ChangeState(std::shared_ptr<Player> player)
+void PlayerStateController::ChangeState(std::shared_ptr<Player>& player)
 {
 	const auto change_state = CreateChangeState(player);
 
@@ -147,7 +147,7 @@ void PlayerStateController::ChangeState(std::shared_ptr<Player> player)
 	}
 }
 
-std::vector<std::shared_ptr<IState<Player>>> PlayerStateController::CreateChangeState(std::shared_ptr<Player> player)
+std::vector<std::shared_ptr<IState<Player>>> PlayerStateController::CreateChangeState(std::shared_ptr<Player>& player)
 {
 	// 次変更予定のステート
 	std::vector<std::shared_ptr<IState<Player>>> next_state
@@ -227,7 +227,7 @@ std::vector<std::shared_ptr<IState<Player>>> PlayerStateController::CreateFuture
 	};
 }
 
-void PlayerStateController::StopState(std::vector<std::shared_ptr<IState<Player>>>& future_state, const std::shared_ptr<IState<Player>> stop_state)
+void PlayerStateController::StopState(std::vector<std::shared_ptr<IState<Player>>>& future_state, const std::shared_ptr<IState<Player>>& stop_state)
 {
 	for (size_t i = 0; i < future_state.size(); ++i)
 	{
@@ -350,12 +350,12 @@ bool PlayerStateController::TryRun()
 	return false;
 }
 
-bool PlayerStateController::TryGrabbed(std::shared_ptr<Player> player)
+bool PlayerStateController::TryGrabbed(std::shared_ptr<Player>& player)
 {
 	return player->IsGrabbed();
 }
 
-bool PlayerStateController::TryFrontKick(std::shared_ptr<Player> player)
+bool PlayerStateController::TryFrontKick(std::shared_ptr<Player>& player)
 {
 	if (player->GetMeleeCandidate().empty())												{ return false; }
 	if (!CommandHandler::GetInstance()->IsExecute(CommandKind::kMelee, TimeKind::kCurrent)) { return false; }
@@ -383,7 +383,7 @@ bool PlayerStateController::TryFrontKick(std::shared_ptr<Player> player)
 	return forward_angle >= 135.0f * math::kDegToRad;
 }
 
-bool PlayerStateController::TryRoundhouseKick(std::shared_ptr<Player> player)
+bool PlayerStateController::TryRoundhouseKick(std::shared_ptr<Player>& player)
 {
 	if (player->GetMeleeCandidate().empty())												{ return false; }
 	if (!CommandHandler::GetInstance()->IsExecute(CommandKind::kMelee, TimeKind::kCurrent)) { return false; }
@@ -395,7 +395,7 @@ bool PlayerStateController::TryRoundhouseKick(std::shared_ptr<Player> player)
 	return melee_target->IsStandStun() || melee_target->IsCrouchStun();
 }
 
-bool PlayerStateController::TryEquipKnifeShortcut(std::shared_ptr<Player> player)
+bool PlayerStateController::TryEquipKnifeShortcut(std::shared_ptr<Player>& player)
 {
 	const auto weapon = player->GetCurrentHeldWeapon();
 
@@ -413,13 +413,13 @@ bool PlayerStateController::TrySpinningSlash()
 	return  is_run && CommandHandler::GetInstance()->IsExecute(CommandKind::kAttack, TimeKind::kCurrent);
 }
 
-bool PlayerStateController::TryEquipGun(std::shared_ptr<Player> player)
+bool PlayerStateController::TryEquipGun(std::shared_ptr<Player>& player)
 {
-	return player->GetCurrentEquipWeaponKind() == WeaponKind::kGun
+	return player->GetCurrentEquipWeaponKind(WeaponSlotKind::kMain) == WeaponKind::kGun
 		&& CommandHandler::GetInstance()->IsExecute(CommandKind::kAimGun, TimeKind::kCurrent);
 }
 
-bool PlayerStateController::TryEquipGunShortcut(std::shared_ptr<Player> player)
+bool PlayerStateController::TryEquipGunShortcut(std::shared_ptr<Player>& player)
 {
 	const auto weapon = player->GetCurrentHeldWeapon();
 
@@ -430,7 +430,7 @@ bool PlayerStateController::TryEquipGunShortcut(std::shared_ptr<Player> player)
 	return false;
 }
 
-bool PlayerStateController::TryPullTrigger(std::shared_ptr<Player> player)
+bool PlayerStateController::TryPullTrigger(std::shared_ptr<Player>& player)
 {
 	const auto gun = std::dynamic_pointer_cast<GunBase>(player->GetCurrentHeldWeapon());
 
@@ -450,9 +450,9 @@ bool PlayerStateController::TryPullTrigger(std::shared_ptr<Player> player)
 	return false;
 }
 
-bool PlayerStateController::TryReload(std::shared_ptr<Player> player)
+bool PlayerStateController::TryReload(std::shared_ptr<Player>& player)
 {
-	const auto gun = std::dynamic_pointer_cast<GunBase>(player->GetCurrentEquipWeapon());
+	const auto gun = std::dynamic_pointer_cast<GunBase>(player->GetCurrentEquipWeapon(WeaponSlotKind::kMain));
 
 	if (gun)
 	{
@@ -464,7 +464,7 @@ bool PlayerStateController::TryReload(std::shared_ptr<Player> player)
 
 //bool PlayerStateController::TryAimGun(Player* obj)
 //{
-//	return obj->GetCurrentEquipWeaponKind() == WeaponKind::kGun && CommandHandler::GetInstance()->IsExecuting(CommandKind::kAimGun);
+//	return obj->GetCurrentEquipWeaponKind(WeaponSlotKind::kMain) == WeaponKind::kGun && CommandHandler::GetInstance()->IsExecuting(CommandKind::kAimGun);
 //}
 #pragma endregion
 	

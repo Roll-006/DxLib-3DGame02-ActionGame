@@ -1,6 +1,6 @@
 #include "status_icons.hpp"
 
-StatusIcons::StatusIcons(const std::shared_ptr<Player> player) : 
+StatusIcons::StatusIcons(const std::shared_ptr<Player>& player) : 
 	m_screen_creator		(std::make_shared<ScreenCreator>(kScreenSize)),
 	m_health_gauge			(std::make_shared<HealthGauge>(player->GetHealth(HealthPartKind::kMain))),
 	m_health_gauge_graphic	(std::make_shared<Graphicer>(m_health_gauge->GetScreenHandle()))

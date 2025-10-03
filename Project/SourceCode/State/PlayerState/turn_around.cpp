@@ -12,27 +12,27 @@ player_state::TurnAround::~TurnAround()
 
 }
 
-void player_state::TurnAround::Update(std::shared_ptr<Player> obj)
+void player_state::TurnAround::Update(std::shared_ptr<Player>& obj)
 {
 
 }
 
-void player_state::TurnAround::LateUpdate(std::shared_ptr<Player> obj)
+void player_state::TurnAround::LateUpdate(std::shared_ptr<Player>& obj)
 {
 
 }
 
-void player_state::TurnAround::Enter(std::shared_ptr<Player> obj)
+void player_state::TurnAround::Enter(std::shared_ptr<Player>& obj)
 {
 
 }
 
-void player_state::TurnAround::Exit(std::shared_ptr<Player> obj)
+void player_state::TurnAround::Exit(std::shared_ptr<Player>& obj)
 {
 
 }
 
-std::shared_ptr<IState<Player>> player_state::TurnAround::ChangeState(std::shared_ptr<Player> obj)
+std::shared_ptr<IState<Player>> player_state::TurnAround::ChangeState(std::shared_ptr<Player>& obj)
 {
 	const auto state_controller = obj->GetStateController();
 

@@ -1,6 +1,6 @@
 #include "screen_creator.hpp"
 
-ScreenCreator::ScreenCreator(const Vector2D<int> screen_size) :
+ScreenCreator::ScreenCreator(const Vector2D<int>& screen_size) :
 	m_screen_size			(screen_size),
 	m_screen_graphic_handle	(MakeScreen(screen_size.x, screen_size.y, TRUE)),
 	m_graphicer				(nullptr),
@@ -13,7 +13,7 @@ ScreenCreator::ScreenCreator(const Vector2D<int> screen_size) :
 	m_graphicer = std::make_shared<Graphicer>(m_screen_graphic_handle);
 }
 
-ScreenCreator::ScreenCreator(const Vector2D<int> screen_size, const Vector2D<int> center_pos) :
+ScreenCreator::ScreenCreator(const Vector2D<int>& screen_size, const Vector2D<int>& center_pos) :
 	m_screen_size			(screen_size),
 	m_screen_graphic_handle	(MakeScreen(screen_size.x, screen_size.y, TRUE)),
 	m_graphicer				(nullptr),

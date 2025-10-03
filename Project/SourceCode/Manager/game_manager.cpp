@@ -68,17 +68,17 @@ bool GameManager::IsContinueLoop()
 
 	//#ifdef _DEBUG
 	// TODO : Œã‚ÉƒRƒ}ƒ“ƒh‰»
-	if (InputChecker::GetInstance()->IsInput(KEY_INPUT_ESCAPE)) { return false; }
+	//if (InputChecker::GetInstance()->IsInput(KEY_INPUT_ESCAPE)) { return false; }
 
-	if (   InputChecker::GetInstance()->IsInput(pad::ButtonKind ::kLB)
-		&& InputChecker::GetInstance()->IsInput(pad::ButtonKind ::kRB)
-		&& InputChecker::GetInstance()->IsInput(pad::ButtonKind ::kLSPush)
-		&& InputChecker::GetInstance()->IsInput(pad::ButtonKind ::kRSPush)
-		&& InputChecker::GetInstance()->IsInput(pad::TriggerKind::kRT)
-		&& InputChecker::GetInstance()->IsInput(pad::TriggerKind::kRT))
-	{
-		return false;
-	}
+	//if (   InputChecker::GetInstance()->IsInput(pad::ButtonKind ::kLB)
+	//	&& InputChecker::GetInstance()->IsInput(pad::ButtonKind ::kRB)
+	//	&& InputChecker::GetInstance()->IsInput(pad::ButtonKind ::kLSPush)
+	//	&& InputChecker::GetInstance()->IsInput(pad::ButtonKind ::kRSPush)
+	//	&& InputChecker::GetInstance()->IsInput(pad::TriggerKind::kRT)
+	//	&& InputChecker::GetInstance()->IsInput(pad::TriggerKind::kRT))
+	//{
+	//	return false;
+	//}
 	//#endif
 
 	return true;

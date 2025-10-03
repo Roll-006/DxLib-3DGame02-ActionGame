@@ -12,12 +12,12 @@ namespace player_state
 		StabKnife();
 		~StabKnife() override;
 
-		void Update		(std::shared_ptr<Player> obj) override;
-		void LateUpdate	(std::shared_ptr<Player> obj) override;
-		void Enter		(std::shared_ptr<Player> obj) override;
-		void Exit		(std::shared_ptr<Player> obj) override;
+		void Update		(std::shared_ptr<Player>& obj) override;
+		void LateUpdate	(std::shared_ptr<Player>& obj) override;
+		void Enter		(std::shared_ptr<Player>& obj) override;
+		void Exit		(std::shared_ptr<Player>& obj) override;
 
-		[[nodiscard]] std::shared_ptr<IState<Player>> ChangeState(std::shared_ptr<Player> obj) override;
+		[[nodiscard]] std::shared_ptr<IState<Player>> ChangeState(std::shared_ptr<Player>& obj) override;
 		[[nodiscard]] bool IsAllStop() const override { return m_is_all_stop; }
 
 	private:

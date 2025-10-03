@@ -19,10 +19,12 @@ void Window::Update()
 
 void Window::SetWindowMode()
 {
+	const auto input = InputChecker::GetInstance();
+
 	// [ALT + ENTER]
 	const bool is_change = 
-		InputChecker::GetInstance()->IsInput(KEY_INPUT_LALT) &&
-		InputChecker::GetInstance()->GetInputState(KEY_INPUT_RETURN) == InputState::kSingle;
+		input->IsInput(KEY_INPUT_LALT) &&
+		input->GetInputState(KEY_INPUT_RETURN) == InputState::kSingle;
 
 	if (is_change)
 	{

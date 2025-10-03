@@ -18,7 +18,7 @@ public:
 
 
 	#pragma region 親のアタッチ/デタッチ
-	void AttachParent(const std::shared_ptr<Transform> parent_transform);
+	void AttachParent(const std::shared_ptr<Transform>& parent_transform);
 	void AttachParent(const std::string& parent_obj_name);
 	void DetachParent();
 	#pragma endregion

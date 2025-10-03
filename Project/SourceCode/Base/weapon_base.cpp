@@ -34,7 +34,7 @@ void WeaponBase::RemoveToObjManager()
 }
 
 /// @brief 装備する持ち主をアタッチする
-void WeaponBase::AttachOwner(const std::shared_ptr<Modeler> owner_modeler, const std::string& owner_name)
+void WeaponBase::AttachOwner(const std::shared_ptr<Modeler>& owner_modeler, const std::string& owner_name)
 {
 	if (!m_owner_modeler)
 	{

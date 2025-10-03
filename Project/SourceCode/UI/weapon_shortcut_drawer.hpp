@@ -12,7 +12,7 @@ class WeaponShortcutDrawer final
 public:
 	WeaponShortcutDrawer(
 		std::unordered_map<TimeKind, std::shared_ptr<WeaponActionStateBase<Player>>>& state,
-		const std::shared_ptr<WeaponShortcutSelecter> weapon_shortcut_selecter);
+		const std::shared_ptr<WeaponShortcutSelecter>& weapon_shortcut_selecter);
 
 	~WeaponShortcutDrawer();
 

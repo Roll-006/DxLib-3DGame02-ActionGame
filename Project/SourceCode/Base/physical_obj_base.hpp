@@ -25,7 +25,7 @@ public:
 	/// @brief コライダーを登録
 	/// @brief 異なる種類であれば複数のコライダーの追加を許可
 	/// @brief 同種類コライダーであっても図形が異なれば上書きを許可
-	void AddCollider(const std::shared_ptr<Collider> collider);
+	void AddCollider(const std::shared_ptr<Collider>& collider);
 
 	/// @brief コライダーの登録を解除
 	void RemoveCollider(const ColliderKind collider_kind);

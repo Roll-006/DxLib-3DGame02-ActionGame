@@ -53,69 +53,6 @@ void CharacterBase::CalcCorrectMoveDir()
 	}
 }
 
-
-#pragma region Getter
-WeaponKind CharacterBase::GetCurrentHeldWeaponKind()
-{
-	return m_current_held_weapon ? m_current_held_weapon->GetWeaponKind() : WeaponKind::kNone;
-}
-
-std::shared_ptr<WeaponBase> CharacterBase::GetCurrentAttachWeapon(const HolsterKind holster_kind) const
-{
-	return m_attach_weapons.count(holster_kind) ? m_attach_weapons.at(holster_kind) : nullptr;
-}
-
-WeaponKind CharacterBase::GetCurrentAttachWeaponKind(const HolsterKind holster_kind) const
-{
-	return m_attach_weapons.count(holster_kind) ? m_attach_weapons.at(holster_kind)->GetWeaponKind() : WeaponKind::kNone;
-}
-
-std::shared_ptr<Health>& CharacterBase::GetHealth(const HealthPartKind kind)
-{
-	return m_health.at(kind);
-}
-#pragma endregion
-
-
-void CharacterBase::HoldWeapon(const int obj_handle)
-{
-	auto weapon = ObjManager::GetInstance()->GetObj<WeaponBase>(obj_handle);
-
-	if (weapon)
-	{
-		m_current_held_weapon = weapon;
-		m_current_held_weapon->AttachOwner(m_modeler, GetName());
-	}
-}
-
-void CharacterBase::ReleaseWeapon()
-{
-	if (m_current_held_weapon)
-	{
-		m_current_held_weapon->DetachOwner();
-		m_current_held_weapon = nullptr;
-	}
-}
-
-void CharacterBase::AttachWeapon(const int obj_handle)
-{
-	auto weapon = ObjManager::GetInstance()->GetObj<WeaponBase>(obj_handle);
-
-	if (weapon)
-	{
-		m_attach_weapons[weapon->GetHolsterKind()] = weapon;
-		m_attach_weapons[weapon->GetHolsterKind()]->AttachOwner(m_modeler, GetName());
-	}
-}
-
-void CharacterBase::DetachWeapon(const HolsterKind holster_kind)
-{
-	m_attach_weapons[holster_kind]->DetachOwner();
-	m_attach_weapons.erase(holster_kind);
-}
-#pragma endregion
-
-
 void CharacterBase::ApplyLookDirToRot(const VECTOR& look_dir)
 {
 	m_transform->SetRot  (CoordinateKind::kWorld, look_dir);

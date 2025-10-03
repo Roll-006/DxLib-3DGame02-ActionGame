@@ -2,10 +2,10 @@
 #include "player_animator.hpp"
 
 PlayerAnimator::PlayerAnimator(
-	const std::shared_ptr<Modeler>					modeler,
-	const std::shared_ptr<PlayerStateController>	state,
-	const std::shared_ptr<WeaponBase>				held_weapon,
-	const std::shared_ptr<WeaponBase>				equip_weapon) :
+	const std::shared_ptr<Modeler>&					modeler,
+	const std::shared_ptr<PlayerStateController>&	state,
+	const std::shared_ptr<WeaponBase>&				held_weapon,
+	const std::shared_ptr<WeaponBase>&				equip_weapon) :
 	AnimatorBase	(modeler, ObjName.PLAYER),
 	m_state			(state),
 	m_held_weapon	(held_weapon),

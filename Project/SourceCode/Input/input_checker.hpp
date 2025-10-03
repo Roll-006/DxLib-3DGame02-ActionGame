@@ -16,6 +16,27 @@
 
 #include "../IncludeList/vector.hpp"
 
+using InputKey		= std::pair<InputCode, TimeKind>;
+using InputValue	= InputData;
+
+struct KeyHash
+{
+	std::size_t operator()(const InputKey& input_key) const noexcept
+	{
+		auto h1 = std::hash<InputCode>{}(static_cast<InputCode>(input_key.first));
+		auto h2 = std::hash<TimeKind>{}(static_cast<TimeKind>(input_key.second));
+		return h1 ^ (h2 << 1);
+	}
+};
+
+struct KeyEq
+{
+	bool operator()(const InputKey& input_key1, const InputKey& input_key2) const noexcept
+	{
+		return input_key1 == input_key2;
+	}
+};
+
 /// @brief 役割 : 入力デバイスの検出, 入力状態の取得, 入力時間の計測
 class InputChecker final : public SingletonBase<InputChecker>
 {
@@ -30,17 +51,15 @@ public:
 	template<input_concepts::InputT InputT>
 	[[nodiscard]] InputCode ConvertInputTemplateToInputCode(const InputT& input_t)
 	{
-		InputCode code;
+		if (std::is_same_v<int,					InputT>) { return InputCode(InputKind::kKey,		static_cast<int>(input_t)); }
+		if (std::is_same_v<mouse::ButtonKind,	InputT>) { return InputCode(InputKind::kMouseButton,static_cast<int>(input_t)); }
+		if (std::is_same_v<mouse::WheelKind,	InputT>) { return InputCode(InputKind::kMouseWheel, static_cast<int>(input_t)); }
+		if (std::is_same_v<mouse::SlideDirKind, InputT>) { return InputCode(InputKind::kMouseSlide, static_cast<int>(input_t)); }
+		if (std::is_same_v<pad::ButtonKind,		InputT>) { return InputCode(InputKind::kPadButton,	static_cast<int>(input_t)); }
+		if (std::is_same_v<pad::TriggerKind,	InputT>) { return InputCode(InputKind::kPadTrigger, static_cast<int>(input_t)); }
+		if (std::is_same_v<pad::StickKind,		InputT>) { return InputCode(InputKind::kPadStick,	static_cast<int>(input_t)); }
 
-		if (std::is_same_v<int,					InputT>) { code = InputCode(InputKind::kKey,		static_cast<int>(input_t)); }
-		if (std::is_same_v<mouse::ButtonKind,	InputT>) { code = InputCode(InputKind::kMouseButton,static_cast<int>(input_t)); }
-		if (std::is_same_v<mouse::WheelKind,	InputT>) { code = InputCode(InputKind::kMouseWheel, static_cast<int>(input_t)); }
-		if (std::is_same_v<mouse::SlideDirKind, InputT>) { code = InputCode(InputKind::kMouseSlide, static_cast<int>(input_t)); }
-		if (std::is_same_v<pad::ButtonKind,		InputT>) { code = InputCode(InputKind::kPadButton,	static_cast<int>(input_t)); }
-		if (std::is_same_v<pad::TriggerKind,	InputT>) { code = InputCode(InputKind::kPadTrigger, static_cast<int>(input_t)); }
-		if (std::is_same_v<pad::StickKind,		InputT>) { code = InputCode(InputKind::kPadStick,	static_cast<int>(input_t)); }
-
-		return code;
+		return InputCode();
 	}
 
 	#pragma region マウス情報
@@ -90,17 +109,15 @@ public:
 	template<input_concepts::InputT InputT>
 	[[nodiscard]] InputKind GetInputKind(const InputT& input_code)
 	{
-		InputKind kind;
+		if (std::is_same_v<int,					InputT>) { return InputKind::kKey;			}
+		if (std::is_same_v<mouse::ButtonKind,	InputT>) { return InputKind::kMouseButton;	}
+		if (std::is_same_v<mouse::WheelKind,	InputT>) { return InputKind::kMouseWheel;	}
+		if (std::is_same_v<mouse::SlideDirKind, InputT>) { return InputKind::kMouseSlide;	}
+		if (std::is_same_v<pad::ButtonKind,		InputT>) { return InputKind::kPadButton;	}
+		if (std::is_same_v<pad::TriggerKind,	InputT>) { return InputKind::kPadTrigger;	}
+		if (std::is_same_v<pad::StickKind,		InputT>) { return InputKind::kPadStick;		}
 
-		if (std::is_same_v<int,					InputT>) { kind = InputKind::kKey;			}
-		if (std::is_same_v<mouse::ButtonKind,	InputT>) { kind = InputKind::kMouseButton;	}
-		if (std::is_same_v<mouse::WheelKind,	InputT>) { kind = InputKind::kMouseWheel;	}
-		if (std::is_same_v<mouse::SlideDirKind, InputT>) { kind = InputKind::kMouseSlide;	}
-		if (std::is_same_v<pad::ButtonKind,		InputT>) { kind = InputKind::kPadButton;	}
-		if (std::is_same_v<pad::TriggerKind,	InputT>) { kind = InputKind::kPadTrigger;	}
-		if (std::is_same_v<pad::StickKind,		InputT>) { kind = InputKind::kPadStick;		}
-
-		return kind;
+		return InputKind::kKey;
 	}
 
 	/// @brief 現在の入力デバイスを取得	
@@ -154,7 +171,7 @@ private:
 	DeviceKind						m_current_device;
 	bool							m_is_lock_mouse_pos;
 
-	std::vector<std::tuple<InputCode, TimeKind, InputData>> m_input_data;
+	std::unordered_map<InputKey, InputValue, KeyHash, KeyEq> m_input_data;
 	std::unordered_map<TimeKind, MouseData> m_mouse_data;
 	
 	friend SingletonBase<InputChecker>;

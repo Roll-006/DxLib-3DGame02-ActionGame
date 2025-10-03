@@ -10,7 +10,7 @@ public:
 	virtual ~IEffect() = default;
 
 	#pragma region Attach / Detach
-	virtual void AttachOwnerTransform(const std::shared_ptr<Transform> owner_transform) abstract;
+	virtual void AttachOwnerTransform(const std::shared_ptr<Transform>& owner_transform) abstract;
 	virtual void DetachOwnerTransform() abstract;
 	#pragma endregion
 

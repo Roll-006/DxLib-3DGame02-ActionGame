@@ -65,7 +65,7 @@ void CollisionManager::LateUpdate()
 
 
 #pragma region 登録・解除
-void CollisionManager::AddCollideObj(const std::shared_ptr<PhysicalObjBase> collide_obj)
+void CollisionManager::AddCollideObj(const std::shared_ptr<PhysicalObjBase>& collide_obj)
 {
 	if (std::find(m_collide_objects.begin(), m_collide_objects.end(), collide_obj) == m_collide_objects.end())
 	{
@@ -122,9 +122,18 @@ void CollisionManager::RemoveIgnoreColliderPair(const ColliderData& owner_collid
 
 void CollisionManager::SetIgnoreColliderPairs()
 {
+	const ColliderData player_data		{ ObjTag.PLAYER,		ColliderKind::kNone				};
+	const ColliderData enemy_data		{ ObjTag.ENEMY,			ColliderKind::kNone				};
 	const ColliderData bullet_data		{ ObjTag.BULLET,		ColliderKind::kNone				};
 	const ColliderData shell_casing_data{ ObjTag.SHELL_CASING,	ColliderKind::kNone				};
 	const ColliderData landing_data		{ "",					ColliderKind::kLandingTrigger	};
+
+	// 着地判定トリガーが無視するコライダー
+	AddIgnoreColliderPair(landing_data, player_data);
+	AddIgnoreColliderPair(landing_data, enemy_data);
+	AddIgnoreColliderPair(landing_data, { "", ColliderKind::kAttackTrigger });
+	AddIgnoreColliderPair(landing_data, { "", ColliderKind::kVisionTrigger });
+	AddIgnoreColliderPair(landing_data, { "", ColliderKind::kReactionTrigger });
 	
 	// 弾丸系統が無視するコライダー
 	AddIgnoreColliderPair(bullet_data, bullet_data);
@@ -136,12 +145,12 @@ void CollisionManager::SetIgnoreColliderPairs()
 
 	// 薬莢系統が無視するコライダー
 	AddIgnoreColliderPair(shell_casing_data, shell_casing_data);
-	AddIgnoreColliderPair(shell_casing_data,{ "",				ColliderKind::kAttackTrigger	});
-	AddIgnoreColliderPair(shell_casing_data,{ ObjTag.PLAYER,	ColliderKind::kNone				});
-	AddIgnoreColliderPair(shell_casing_data,{ ObjTag.ENEMY,		ColliderKind::kNone				});
+	AddIgnoreColliderPair(shell_casing_data, player_data);
+	AddIgnoreColliderPair(shell_casing_data, enemy_data);
+	AddIgnoreColliderPair(shell_casing_data, { "", ColliderKind::kAttackTrigger });
 }
 
-bool CollisionManager::CanCollideObjAndObj(const std::shared_ptr<PhysicalObjBase> owner_obj, const std::shared_ptr<PhysicalObjBase> target_obj)
+bool CollisionManager::CanCollideObjAndObj(const std::shared_ptr<PhysicalObjBase>& owner_obj, const std::shared_ptr<PhysicalObjBase>& target_obj)
 {
 	// TODO : オブジェクトを球で囲み、表面上の距離で距離計算を行う
 
@@ -162,22 +171,47 @@ bool CollisionManager::CanCollideObjAndObj(const std::shared_ptr<PhysicalObjBase
 	return true;
 }
 
-bool CollisionManager::CanCollideColliderAndCollider(const std::shared_ptr<Collider> owner_collider, const std::shared_ptr<Collider> target_collider)
+bool CollisionManager::CanCollideObjAndCollider(const std::shared_ptr<PhysicalObjBase>& owner_obj, const std::shared_ptr<Collider>& target_collider)
 {
-	const auto owner_obj	= owner_collider ->GetOwnerObj();
+	const auto target_obj = target_collider->GetOwnerObj();
+
+	const std::vector<ColliderData> target_data
+	{
+		{ target_obj->GetTag(), target_collider->GetColliderKind() },
+		{ "",				    target_collider->GetColliderKind() }
+	};
+
+	// 無視リストに登録されているコライダーは無視
+	const ColliderData owner_data{ owner_obj->GetTag(), ColliderKind::kNone };
+	if (m_ignore_collide_collider_pairs.count(owner_data))
+	{
+		for (const auto& target : target_data)
+		{
+			if (m_ignore_collide_collider_pairs.at(owner_data).count(target))
+			{
+				return false;
+			}
+		}
+	}
+
+	return true;
+}
+
+bool CollisionManager::CanCollideColliderAndCollider(const std::shared_ptr<Collider>& owner_collider, const std::shared_ptr<Collider>& target_collider)
+{
+	// 無視リストに登録されているオブジェクトは無視
+	const auto owner_obj	= owner_collider->GetOwnerObj();
 	const auto target_obj	= target_collider->GetOwnerObj();
 
 	const std::vector<ColliderData> owner_data
 	{
 		{ owner_obj->GetTag(), owner_collider->GetColliderKind() },
-		{ owner_obj->GetTag(), ColliderKind::kNone },
 		{ "",				   owner_collider->GetColliderKind() }
 	};
 
 	const std::vector<ColliderData> target_data
 	{
 		{ target_obj->GetTag(), target_collider->GetColliderKind() },
-		{ target_obj->GetTag(), ColliderKind::kNone },
 		{ "",				    target_collider->GetColliderKind() }
 	};
 
@@ -258,10 +292,15 @@ std::vector<ColliderPairOneToManyData> CollisionManager::CreateHitColliderPairs(
 
 			for (const auto& owner_obj_collider : owner_obj->GetColliderAll())
 			{
+				// 衝突不可の場合はスキップ
+				if (!CanCollideObjAndCollider(target_obj, owner_obj_collider.second)) { continue; }
+
 				for (const auto& target_obj_collider : target_obj->GetColliderAll())
 				{
 					// 衝突不可の場合はスキップ
-					if (!CanCollideColliderAndCollider(owner_obj_collider.second, target_obj_collider.second)) { continue; }
+					// TODO : 無視判定のループ回数が多いため改善を検討
+					if (!CanCollideObjAndCollider		(owner_obj, target_obj_collider.second))				 { continue; }
+					if (!CanCollideColliderAndCollider	(owner_obj_collider.second, target_obj_collider.second)) { continue; }
 
 					// 衝突判定
 					std::optional<VECTOR> intersection = std::nullopt;

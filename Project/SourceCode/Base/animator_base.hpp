@@ -20,7 +20,7 @@ public:
 	};
 
 public:
-	AnimatorBase(const std::shared_ptr<Modeler> modeler, const std::string& obj_name);
+	AnimatorBase(const std::shared_ptr<Modeler>& modeler, const std::string& obj_name);
 	~AnimatorBase();
 
 	virtual void Init()		abstract;

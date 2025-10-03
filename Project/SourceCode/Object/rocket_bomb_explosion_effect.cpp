@@ -122,7 +122,7 @@ void RocketBombExplosionEffect::RemoveToObjManager()
 
 
 #pragma region Attach / Detach
-void RocketBombExplosionEffect::AttachOwnerTransform(const std::shared_ptr<Transform> owner_transform)
+void RocketBombExplosionEffect::AttachOwnerTransform(const std::shared_ptr<Transform>& owner_transform)
 {
 	m_owner_transform = owner_transform;
 }

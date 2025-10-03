@@ -1,6 +1,6 @@
 ﻿#include "camera_body.hpp"
 
-CameraBody::CameraBody(const std::shared_ptr<Transform> owner_transform) :
+CameraBody::CameraBody(const std::shared_ptr<Transform>& owner_transform) :
 	m_owner_transform	(owner_transform),
 	m_target_transform	(nullptr),
 	m_destination_pos	(v3d::GetZeroV()),
@@ -46,7 +46,7 @@ void CameraBody::CalcDampedPos()
 
 
 #pragma region Attach / Detach
-void CameraBody::AttachTarget(const std::shared_ptr<Transform> target_transform)
+void CameraBody::AttachTarget(const std::shared_ptr<Transform>& target_transform)
 {
 	m_target_transform		= target_transform;
 	m_is_track				= true;

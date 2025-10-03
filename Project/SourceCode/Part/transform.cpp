@@ -47,7 +47,7 @@ void Transform::Move(const CoordinateKind coord_kind, const VECTOR& velocity)
 
 
 #pragma region Attach / Detach
-void Transform::AttachParent(const std::shared_ptr<Transform> parent_transform)
+void Transform::AttachParent(const std::shared_ptr<Transform>& parent_transform)
 {
 	// 親がいない場合のみアタッチ
 	if (m_parent_transform) { return; }

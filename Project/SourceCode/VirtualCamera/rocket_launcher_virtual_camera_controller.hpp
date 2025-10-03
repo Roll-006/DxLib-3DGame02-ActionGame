@@ -19,7 +19,7 @@ public:
 	void Activate()   override { m_is_active = true;  }
 	void Deactivate() override { m_is_active = false; }
 
-	void SetRocketBombTransform(const std::shared_ptr<Transform> rocket_bomb_transform) { m_rocket_bomb_transform = rocket_bomb_transform; }
+	void SetRocketBombTransform(const std::shared_ptr<Transform>& rocket_bomb_transform) { m_rocket_bomb_transform = rocket_bomb_transform; }
 
 	[[nodiscard]] VirtualCameraControllerKind GetVirtualCameraControllerKind() const override;
 	[[nodiscard]] std::shared_ptr<VirtualCamera> GetHaveVirtualCamera(const std::string& name) const override;

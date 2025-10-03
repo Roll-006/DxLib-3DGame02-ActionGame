@@ -15,7 +15,7 @@ player_state::ShotRocketLauncher::~ShotRocketLauncher()
 
 }
 
-void player_state::ShotRocketLauncher::Update(std::shared_ptr<Player> obj)
+void player_state::ShotRocketLauncher::Update(std::shared_ptr<Player>& obj)
 {
 	m_wait_timer += GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kNoneScale);
 	
@@ -26,7 +26,7 @@ void player_state::ShotRocketLauncher::Update(std::shared_ptr<Player> obj)
 	gun->CalcShotTimer();
 }
 
-void player_state::ShotRocketLauncher::LateUpdate(std::shared_ptr<Player> obj)
+void player_state::ShotRocketLauncher::LateUpdate(std::shared_ptr<Player>& obj)
 {
 	const auto roket_launcher = std::static_pointer_cast<RocketLauncher>(obj->GetCurrentHeldWeapon());
 	const auto camera		  = ObjManager::GetInstance()->GetObj<ObjBase>(ObjName.MAIN_CAMERA);
@@ -54,7 +54,7 @@ void player_state::ShotRocketLauncher::LateUpdate(std::shared_ptr<Player> obj)
 	}
 }
 
-void player_state::ShotRocketLauncher::Enter(std::shared_ptr<Player> obj)
+void player_state::ShotRocketLauncher::Enter(std::shared_ptr<Player>& obj)
 {
 	m_wait_timer = 0.0f;
 	m_was_shot	 = false;
@@ -66,11 +66,11 @@ void player_state::ShotRocketLauncher::Enter(std::shared_ptr<Player> obj)
 	m_rocket_launcher_camera_controller = std::make_shared<RocketLauncherVirtualCameraController>(*obj.get());
 	cinemachine_brain->AddVirtualCameraController(m_rocket_launcher_camera_controller);
 
-	obj->DetachWeapon(obj->GetCurrentEquipWeapon());
-	obj->HoldWeapon(obj->GetCurrentEquipWeapon());
+	obj->DetachWeapon(obj->GetCurrentEquipWeapon(WeaponSlotKind::kMain));
+	obj->HoldWeapon(obj->GetCurrentEquipWeapon(WeaponSlotKind::kMain));
 }
 
-void player_state::ShotRocketLauncher::Exit(std::shared_ptr<Player> obj)
+void player_state::ShotRocketLauncher::Exit(std::shared_ptr<Player>& obj)
 {
 	// ââèoópÉJÉÅÉâÇçÌèú
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
@@ -82,10 +82,10 @@ void player_state::ShotRocketLauncher::Exit(std::shared_ptr<Player> obj)
 	//std::static_pointer_cast<ControlVirtualCamerasController>(camera_control)->OnRecoil(*gun.get());
 
 	obj->ReleaseWeapon();
-	obj->AttachWeapon(obj->GetCurrentEquipWeapon());
+	obj->AttachWeapon(obj->GetCurrentEquipWeapon(WeaponSlotKind::kMain));
 }
 
-std::shared_ptr<IState<Player>> player_state::ShotRocketLauncher::ChangeState(std::shared_ptr<Player> obj)
+std::shared_ptr<IState<Player>> player_state::ShotRocketLauncher::ChangeState(std::shared_ptr<Player>& obj)
 {
 	const auto state_controller = obj->GetStateController();
 

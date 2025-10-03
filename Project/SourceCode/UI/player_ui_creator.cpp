@@ -1,6 +1,6 @@
 #include "player_ui_creator.hpp"
 
-PlayerUICreator::PlayerUICreator(const std::shared_ptr<Player> player) : 
+PlayerUICreator::PlayerUICreator(const std::shared_ptr<Player>& player) : 
 	m_name				(UICreatorName.PLAYER_UI_CREATOR),
 	m_priority			(10),
 	m_is_active			(true),

@@ -1,6 +1,6 @@
 ﻿#include "camera_aim.hpp"
 
-CameraAim::CameraAim(const std::shared_ptr<Transform> owner_transform) :
+CameraAim::CameraAim(const std::shared_ptr<Transform>& owner_transform) :
 	m_owner_transform		(owner_transform),
 	m_target_transform		(nullptr),
 	m_rot_matrix			(MGetIdent()),
@@ -72,7 +72,7 @@ void CameraAim::CalcDampedRot()
 
 
 #pragma region Attach / Detach
-void CameraAim::AttachTarget(const std::shared_ptr<Transform> target_transform)
+void CameraAim::AttachTarget(const std::shared_ptr<Transform>& target_transform)
 {
 	m_target_transform		= target_transform;
 	m_is_track				= true;

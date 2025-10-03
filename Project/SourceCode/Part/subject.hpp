@@ -5,7 +5,7 @@ template <typename T>
 class Subject final
 {
 public:
-	void AddObserver(std::shared_ptr<IObserver> observer)
+	void AddObserver(std::shared_ptr<IObserver>& observer)
 	{
 		if (std::find(m_observers.begin(), m_observers.end(), observer) == m_observers.end())
 		{
@@ -13,7 +13,7 @@ public:
 		}
 	}
 
-	void RemoveObserver(std::shared_ptr<IObserver> observer)
+	void RemoveObserver(std::shared_ptr<IObserver>& observer)
 	{
 		if (std::find(m_observers.begin(), m_observers.end(), observer) != m_observers.end())
 		{

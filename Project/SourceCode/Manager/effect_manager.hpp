@@ -17,7 +17,7 @@ public:
 	void Draw() const;
 
 	/// @brief エフェクトを強制的にプールに戻す
-	void ForciblyReturnPoolEffect(std::shared_ptr<Effect> effect);
+	void ForciblyReturnPoolEffect(std::shared_ptr<Effect>& effect);
 	void ForciblyReturnPoolEffect(const int return_trigger_handle);
 
 

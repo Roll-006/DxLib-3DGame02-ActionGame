@@ -7,7 +7,7 @@
 class CameraNoise final
 {
 public:
-	CameraNoise(const std::shared_ptr<Transform> camera_transform);
+	CameraNoise(const std::shared_ptr<Transform>& camera_transform);
 	~CameraNoise();
 
 private:

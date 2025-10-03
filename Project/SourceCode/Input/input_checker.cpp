@@ -20,8 +20,8 @@ InputChecker::InputChecker():
 	{
 		for (auto& code : data["key_number"])
 		{
-			m_input_data.emplace_back(InputCode(InputKind::kKey, code), TimeKind::kPrev, InputData());
-			m_input_data.emplace_back(InputCode(InputKind::kKey, code), TimeKind::kCurrent, InputData());
+			m_input_data[{ InputCode(InputKind::kKey, code), TimeKind::kPrev	}] = InputData();
+			m_input_data[{ InputCode(InputKind::kKey, code), TimeKind::kCurrent }] = InputData();
 		}
 	}
 
@@ -159,14 +159,7 @@ int InputChecker::GetInputParameter(const InputCode& input_code) const
 
 float InputChecker::GetInputTime(const InputCode& input_code, const TimeKind time_kind)
 {
-	for (const auto& [input_c, state_t, data] : m_input_data)
-	{
-		if (input_c.kind == input_code.kind && input_c.code == input_code.code && state_t == time_kind)
-		{
-			return data.input_time;
-		}
-	}
-	return 0.0f;
+	return m_input_data.at({ input_code, time_kind }).input_time;
 }
 
 InputState InputChecker::GetInputState(const InputCode& input_code)
@@ -174,18 +167,18 @@ InputState InputChecker::GetInputState(const InputCode& input_code)
 	bool prev_is_input	  = false;
 	bool current_is_input = false;
 
-	for (const auto& [input_c, state_t, data] : m_input_data)
+	// prev を検索
+	if (m_input_data.count({ input_code, TimeKind::kPrev }))
 	{
-		if (input_c.kind == input_code.kind && input_c.code == input_code.code)
-		{
-			switch (state_t)
-			{
-			case TimeKind::kPrev:		prev_is_input	 = data.is_input;	break;
-			case TimeKind::kCurrent:	current_is_input = data.is_input;	break;
-			}
-		}
+		prev_is_input = m_input_data.at({ input_code, TimeKind::kPrev }).is_input;
+	}
+	// current を検索
+	if (m_input_data.count({ input_code, TimeKind::kCurrent }))
+	{
+		current_is_input = m_input_data.at({ input_code, TimeKind::kCurrent }).is_input;
 	}
 
+	// 状態を判定
 	if (current_is_input)
 	{
 		return prev_is_input ? InputState::kHold : InputState::kSingle;
@@ -198,8 +191,8 @@ void InputChecker::AddInputData(const InputKind kind, const int input_code_num)
 	for (int i = 0; i < input_code_num; ++i)
 	{
 		// 中身は空で追加
-		m_input_data.emplace_back(InputCode(kind, i), TimeKind::kPrev,		InputData());
-		m_input_data.emplace_back(InputCode(kind, i), TimeKind::kCurrent,	InputData());
+		m_input_data[{ InputCode(kind, i), TimeKind::kPrev	  }] = InputData();
+		m_input_data[{ InputCode(kind, i), TimeKind::kCurrent }] = InputData();
 	}
 }
 
@@ -216,56 +209,58 @@ void InputChecker::CalcMouseVelocity()
 
 void InputChecker::CountInputTimeAll()
 {
-	for (auto& [input_c, state_t, data] : m_input_data)
+	const auto delta_time = GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kNoneScale);
+
+	for (auto& [key, data] : m_input_data)
 	{
-		// 現在の入力時間のみ変更
-		if (state_t == TimeKind::kPrev) { continue; }
+		// 過去フレームはスキップ
+		if (key.second == TimeKind::kPrev) { continue; }
 
 		if (data.is_input)
 		{
-			const auto time_manager = GameTimeManager::GetInstance();
-			data.input_time += time_manager->GetDeltaTime(TimeScaleLayerKind::kNoneScale);
-			continue;
+			data.input_time += delta_time;
 		}
-		data.input_time = 0.0f;
+		else
+		{
+			data.input_time = 0.0f;
+		}
 	}
 }
 
 void InputChecker::CheckInputAll()
 {
-	for (auto& [input_c, state_t, data] : m_input_data)
+	for (auto& [key, data] : m_input_data)
 	{
-		// 現在の入力のみ判定
-		if (state_t == TimeKind::kPrev) { continue; }
+		if (key.second != TimeKind::kCurrent) { continue; }
 
-		switch (input_c.kind)
+		switch (key.first.kind)
 		{
 		case InputKind::kKey:
-			data.is_input = IsInput(input_c.code)										? true : false;
+			data.is_input = IsInput(key.first.code) ? true : false;
 			break;
 
 		case InputKind::kMouseButton:
-			data.is_input = IsInput(static_cast<mouse::ButtonKind>(input_c.code))		? true : false;
+			data.is_input = IsInput(static_cast<mouse::ButtonKind>(key.first.code))		? true : false;
 			break;
 
 		case InputKind::kMouseWheel:
-			data.is_input = IsInput(static_cast<mouse::WheelKind>(input_c.code))		? true : false;
+			data.is_input = IsInput(static_cast<mouse::WheelKind>(key.first.code))		? true : false;
 			break;
 
 		case InputKind::kMouseSlide:
-			data.is_input = IsInput(static_cast<mouse::SlideDirKind>(input_c.code))		? true : false;
+			data.is_input = IsInput(static_cast<mouse::SlideDirKind>(key.first.code))	? true : false;
 			break;
 
 		case InputKind::kPadButton:
-			data.is_input = IsInput(static_cast<pad::ButtonKind>(input_c.code))			? true : false;
+			data.is_input = IsInput(static_cast<pad::ButtonKind>(key.first.code))		? true : false;
 			break;
 
 		case InputKind::kPadTrigger:
-			data.is_input = IsInput(static_cast<pad::TriggerKind>(input_c.code))		? true : false;
+			data.is_input = IsInput(static_cast<pad::TriggerKind>(key.first.code))		? true : false;
 			break;
 
 		case InputKind::kPadStick:
-			data.is_input = IsInput(static_cast<pad::StickKind>(input_c.code))			? true : false;
+			data.is_input = IsInput(static_cast<pad::StickKind>(key.first.code))		? true : false;
 			break;
 		}
 	}
@@ -273,44 +268,43 @@ void InputChecker::CheckInputAll()
 
 void InputChecker::ShiftDataCureentToPrev()
 {
-	// 入力情報のシフト
+	// マウス入力はそのままシフト
 	m_mouse_data.at(TimeKind::kPrev) = m_mouse_data.at(TimeKind::kCurrent);
 
-	for (const auto& [current_input_c, current_state_t, current_data] : m_input_data)
+	// キーボード / パッド入力のシフト
+	for (auto& [key, data] : m_input_data)
 	{
-		// 1フレーム前の情報であった場合はスキップ
-		if (current_state_t == TimeKind::kPrev) { continue; }
+		if (key.second != TimeKind::kCurrent) continue;
 
-		for (auto& [prev_input_c, prev_state_t, prev_data] : m_input_data)
-		{
-			// 現在のフレームの情報であった場合はスキップ
-			if (prev_state_t == TimeKind::kCurrent) { continue; }
-
-			if (prev_input_c.kind == current_input_c.kind && prev_input_c.code == current_input_c.code)
-			{
-				prev_data = current_data;
-			}
-		}
+		// Prev 側を直接参照してコピー
+		m_input_data.at({ key.first, TimeKind::kPrev }) = data;
 	}
 }
 
 void InputChecker::DetectCurrentInputDevice()
 {
-	for (const auto& [input_c, state_t, data] : m_input_data)
+	for (const auto& [key, data] : m_input_data)
 	{
-		if (state_t == TimeKind::kPrev) { continue; }
-		if (!data.is_input)				 { continue; }
+		// 今フレームの入力だけ見る
+		if (key.second != TimeKind::kCurrent)	{ continue; }
+		if (!data.is_input)						{ continue; }
 
-		// マウスをスライドさせただけでは入力デバイスに影響を与えない
-		if (input_c.kind == InputKind::kKey || input_c.kind == InputKind::kMouseButton || input_c.kind == InputKind::kMouseWheel)
+		switch (key.first.kind)
 		{
+		case InputKind::kKey:
+		case InputKind::kMouseButton:
+		case InputKind::kMouseWheel:
 			m_current_device = DeviceKind::kKeyboard;
 			return;
-		}
-		if (input_c.kind == InputKind::kPadButton || input_c.kind == InputKind::kPadTrigger || input_c.kind == InputKind::kPadStick)
-		{
+
+		case InputKind::kPadButton:
+		case InputKind::kPadTrigger:
+		case InputKind::kPadStick:
 			m_current_device = DeviceKind::kPad;
 			return;
+
+		default:
+			break;
 		}
 	}
 }
