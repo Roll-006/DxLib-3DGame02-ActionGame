@@ -10,7 +10,7 @@ enum class WeaponSlotKind
 class IWeaponEquippable abstract
 {
 public:
-	/// @brief 武器を装備させる(プレイヤーはナイフ系統のみ例外的に処理する)
+	/// @brief 武器を装備させる
 	virtual void EquipWeapon(const std::shared_ptr<WeaponBase>& weapon , const WeaponSlotKind slot_kind) abstract;
 	/// @brief 武器の装備を解除
 	virtual void UnequipWeapon(const WeaponSlotKind slot_kind)				abstract;

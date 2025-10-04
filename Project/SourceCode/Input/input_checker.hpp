@@ -16,7 +16,7 @@
 
 #include "../IncludeList/vector.hpp"
 
-// TODO : 必須。CheckHitKeyが重いため、Commandに登録されているキー以外の入力の啓作は避ける
+// TODO : 必須。CheckHitKeyが重いため、Commandに登録されているキー以外の入力の検索は避ける
 
 using InputKey		= std::pair<InputCode, TimeKind>;
 using InputValue	= InputData;
@@ -31,7 +31,7 @@ struct KeyHash
 	}
 };
 
-struct KeyEq
+struct KeyEquality
 {
 	bool operator()(const InputKey& input_key1, const InputKey& input_key2) const noexcept
 	{
@@ -173,7 +173,7 @@ private:
 	DeviceKind						m_current_device;
 	bool							m_is_lock_mouse_pos;
 
-	std::unordered_map<InputKey, InputValue, KeyHash, KeyEq> m_input_data;
+	std::unordered_map<InputKey, InputValue, KeyHash, KeyEquality> m_input_data;
 	std::unordered_map<TimeKind, MouseData> m_mouse_data;
 	
 	friend SingletonBase<InputChecker>;

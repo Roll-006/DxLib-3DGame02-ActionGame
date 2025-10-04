@@ -1466,11 +1466,11 @@
     <Filter Include="SourceCode\Kind">
       <UniqueIdentifier>{72135338-3c4c-44c1-a81b-ef11a7ace830}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCode\JSON">
-      <UniqueIdentifier>{3eab40b7-60e6-487a-879b-9b1e3022aeb9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SourceCode\Part">
       <UniqueIdentifier>{c6964f06-9b8c-446a-8f44-3299598a3b7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCode\JSON">
+      <UniqueIdentifier>{3eab40b7-60e6-487a-879b-9b1e3022aeb9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

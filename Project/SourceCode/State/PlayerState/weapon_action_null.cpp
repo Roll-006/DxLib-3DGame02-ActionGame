@@ -50,6 +50,11 @@ std::shared_ptr<IState<Player>> player_state::WeaponActionNull::ChangeState(std:
 	{
 		return state_controller->GetState<EquipGun, Player>();
 	}
+	// リロード
+	if (state_controller->TryReload(obj))
+	{
+		return state_controller->GetState<Reload, Player>();
+	}
 	// ナイフエイミング状態
 	if (command->IsExecute(CommandKind::kAimKnife, TimeKind::kCurrent) && obj->GetCurrentEquipWeapon(WeaponSlotKind::kSub))
 	{

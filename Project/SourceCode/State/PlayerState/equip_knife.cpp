@@ -75,6 +75,11 @@ std::shared_ptr<IState<Player>> player_state::EquipKnife::ChangeState(std::share
 	{
 		return state_controller->GetState<EquipGun, Player>();
 	}
+	// ƒŠƒ[ƒh
+	if (state_controller->TryReload(obj))
+	{
+		return state_controller->GetState<Reload, Player>();
+	}
 	// NULL
 	if (m_elapsed_time > kReleaseKinfeForciblyTime)
 	{
