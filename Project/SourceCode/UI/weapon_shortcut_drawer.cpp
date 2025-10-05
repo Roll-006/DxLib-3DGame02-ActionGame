@@ -5,6 +5,7 @@ WeaponShortcutDrawer::WeaponShortcutDrawer(
 	const std::shared_ptr<WeaponShortcutSelecter>& weapon_shortcut_selecter) :
 	m_state						(state),
 	m_weapon_shortcut_selecter	(weapon_shortcut_selecter),
+	m_weapon_graphic			(std::make_shared<WeaponGraphicGetter>()),
 	m_screen_creator			(std::make_shared<ScreenCreator>(kScreenSize, Vector2D<int>(static_cast<int>(Window::kScreenSize.x * 0.72f), Window::kScreenHalfSize.y))),
 	m_mask_creator				(std::make_shared<MaskCreator>()),
 	m_alpha_blend_num			(0),
@@ -15,12 +16,6 @@ WeaponShortcutDrawer::WeaponShortcutDrawer(
 	m_is_selected				(false)
 {
 	CreateShortcutIcon();
-
-	m_weapon_graphic_pair[ObjName.ASSAULT_RIFLE]	= std::make_shared<Graphicer>(UIGraphicPath.ASSAULT_RIFLE);
-	m_weapon_graphic_pair[ObjName.ASSAULT_RIFLE]->SetScale(0.07f);
-
-	m_weapon_graphic_pair[ObjName.ROCKET_LAUNCHER]	= std::make_shared<Graphicer>(UIGraphicPath.ROCKET_LAUNCHER);
-	m_weapon_graphic_pair[ObjName.ROCKET_LAUNCHER]->SetScale(0.05f);
 }
 
 WeaponShortcutDrawer::~WeaponShortcutDrawer()
@@ -36,7 +31,7 @@ void WeaponShortcutDrawer::LateUpdate()
 		const auto weapon = m_weapon_shortcut_selecter->GetShortcutWeapon(icon.first);
 		if (!weapon) { continue; }
 
-		icon.second->AttachGraphic(m_weapon_graphic_pair[weapon->GetName()]);
+		icon.second->AttachGraphic(m_weapon_graphic->GetWeaponGraphicer(weapon->GetName()));
 	}
 
 	const auto state = m_state.at(TimeKind::kCurrent);

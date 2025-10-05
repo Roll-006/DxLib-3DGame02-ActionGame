@@ -256,8 +256,8 @@ void CinemachineBrain::SetBlendTransform()
 		// アクティブであるかつ、ターゲットがまだ設定されていない場合、ターゲットを設定する
 		if (camera->IsActive() && !is_seted_target_transform)
 		{
-			m_target_virtual_camera = camera;
-			m_blend_target_transform = m_target_virtual_camera->GetTransform();
+			m_target_virtual_camera		= camera;
+			m_blend_target_transform	= m_target_virtual_camera->GetTransform();
 			ChangeTargetVirtualCamera(pr.first);
 
 			is_seted_target_transform = true;
@@ -271,17 +271,17 @@ void CinemachineBrain::SetBlendTransform()
 			{
 				if (m_blend_origin_result_transform == nullptr)
 				{
-					m_origin_virtual_camera = camera;
-					m_blend_origin_transform = m_origin_virtual_camera->GetTransform();
-					is_seted_origin_transform = true;
+					m_origin_virtual_camera		= camera;
+					m_blend_origin_transform	= m_origin_virtual_camera->GetTransform();
+					is_seted_origin_transform	= true;
 				}
 
 			}
 			// カメラを直接指定できない場合は、ブレンド結果を起点とする
 			else if(m_blend_origin_result_transform != nullptr)
 			{
-				m_blend_origin_transform = m_blend_origin_result_transform;
-				is_seted_origin_transform = true;
+				m_blend_origin_transform	= m_blend_origin_result_transform;
+				is_seted_origin_transform	= true;
 			}
 		}
 

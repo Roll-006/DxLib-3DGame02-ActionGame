@@ -82,6 +82,11 @@ void Player::Update()
 {
 	if (!IsActive()) { return; }
 
+	if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_0) == InputState::kSingle)
+	{
+		m_health.at(HealthPartKind::kMain)->Recover(500.0f);
+	}
+
 	NotifyHealth();
 	JudgeInvincible();
 	DecisionMeleeTarget();

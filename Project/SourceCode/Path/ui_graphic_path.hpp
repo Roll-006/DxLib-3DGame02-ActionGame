@@ -6,6 +6,7 @@ static struct UIGraphicPath
 	#pragma region ïêäÌ
 	const std::string ASSAULT_RIFLE			= "Data/Graphic/UI/Weapon/assault_rifle.png";
 	const std::string ROCKET_LAUNCHER		= "Data/Graphic/UI/Weapon/rocket_launcher.png";
+	const std::string KNIFE					= "Data/Graphic/UI/Weapon/knife.png";
 	const std::string GRENADE				= "Data/Graphic/UI/Weapon/grenade.png";
 	#pragma endregion
 

@@ -502,6 +502,9 @@
     <ClCompile Include="SourceCode\UI\equip_weapon_icon.cpp">
       <Filter>SourceCode\UI</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\Part\weapon_graphic_getter.cpp">
+      <Filter>SourceCode\Part</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\character_base.hpp">
@@ -1346,6 +1349,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Interface\i_weapon_equippable.hpp">
       <Filter>SourceCode\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Part\weapon_graphic_getter.hpp">
+      <Filter>SourceCode\Part</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

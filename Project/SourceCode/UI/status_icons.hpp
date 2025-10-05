@@ -1,6 +1,7 @@
 #pragma once
 #include "../Object/player.hpp"
 #include "health_gauge.hpp"
+#include "equip_weapon_icon.hpp"
 
 class StatusIcons final
 {
@@ -15,9 +16,11 @@ private:
 	void CreateScreen();
 
 private:
-	static constexpr Vector2D<int>	kScreenSize = { 300, 300 };
+	static constexpr Vector2D<int>	kScreenSize = { 500, 500 };
 
-	std::shared_ptr<ScreenCreator>	m_screen_creator;
-	std::shared_ptr<HealthGauge>	m_health_gauge;
-	std::shared_ptr<Graphicer>		m_health_gauge_graphic;
+	std::shared_ptr<ScreenCreator>		m_screen_creator;
+	std::shared_ptr<HealthGauge>		m_health_gauge;
+	std::shared_ptr<EquipWeaponIcon>	m_equip_weapon_icon;
+	std::shared_ptr<Graphicer>			m_health_gauge_graphic;
+	std::shared_ptr<Graphicer>			m_equip_weapon_icon_graphic;
 };

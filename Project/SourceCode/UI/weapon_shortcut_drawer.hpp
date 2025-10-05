@@ -6,6 +6,7 @@
 #include "../Object/player.hpp"
 #include "../Base/weapon_action_state_base.hpp"
 #include "../Kind/player_state_kind.hpp"
+#include "../Part/weapon_graphic_getter.hpp"
 
 class WeaponShortcutDrawer final
 {
@@ -38,7 +39,7 @@ private:
 	std::shared_ptr<WeaponShortcutSelecter>											m_weapon_shortcut_selecter;
 
 	std::unordered_map<WeaponShortcutPosKind, std::shared_ptr<WeaponShortcutIcon>>	m_weapon_shortcut_icons;
-	std::unordered_map<std::string, std::shared_ptr<Graphicer>>						m_weapon_graphic_pair;
+	std::shared_ptr<WeaponGraphicGetter>											m_weapon_graphic;
 	std::unordered_map<WeaponShortcutPosKind, Vector2D<int>>						m_center_pos;
 	std::shared_ptr<ScreenCreator>													m_screen_creator;
 	std::shared_ptr<MaskCreator>													m_mask_creator;

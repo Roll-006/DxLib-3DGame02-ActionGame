@@ -115,21 +115,22 @@ public:
 
 
 	#pragma region Getter
-	[[nodiscard]] float										GetDeltaTime				()	const override;
-	[[nodiscard]] std::shared_ptr<PlayerStateController>	GetStateController			()	const			{ return m_state; }
-	[[nodiscard]] std::shared_ptr<BonePosCorrector>			GetBonePosCorrector			()	const			{ return m_bone_pos_corrector; }
-	[[nodiscard]] std::vector<std::shared_ptr<IItem>>		GetCurrentHaveItem			(const ItemKind item_kind) const { return m_items.at(item_kind); }
-	[[nodiscard]] std::shared_ptr<WeaponBase>				GetCurrentEquipWeapon		(const WeaponSlotKind slot_kind) const override;
-	[[nodiscard]] std::shared_ptr<WeaponBase>				GetCurrentHeldWeapon		()	override;
-	[[nodiscard]] std::shared_ptr<WeaponBase>				GetCurrentAttachWeapon		(const HolsterKind holster_kind) const override;
-	[[nodiscard]] WeaponKind								GetCurrentEquipWeaponKind	(const WeaponSlotKind slot_kind) override;
-	[[nodiscard]] WeaponKind								GetCurrentHeldWeaponKind	()	override;
-	[[nodiscard]] WeaponKind								GetCurrentAttachWeaponKind	(const HolsterKind holster_kind) const override;
-	[[nodiscard]] std::shared_ptr<WeaponShortcutSelecter>	GetWeaponShortcutSelecter	()	const			{ return m_weapon_shortcut_selecter; }
-	[[nodiscard]] float										GetMoveSpeed				()	const			{ return m_move_speed; }
-	[[nodiscard]] int										GetCurrentRemainingBulletNum()	const override	{ return m_current_remaining_bullet_num; }
-	[[nodiscard]] bool										IsGrabbed					()	const override	{ return m_is_grabbed; }
-	[[nodiscard]] std::vector<MeleeCandidateData>			GetMeleeCandidate			()	const override  { return m_melee_candidate; }
+	[[nodiscard]] float																GetDeltaTime				()	const override;
+	[[nodiscard]] std::shared_ptr<PlayerStateController>							GetStateController			()	const			{ return m_state; }
+	[[nodiscard]] std::shared_ptr<BonePosCorrector>									GetBonePosCorrector			()	const			{ return m_bone_pos_corrector; }
+	[[nodiscard]] std::vector<std::shared_ptr<IItem>>								GetCurrentHaveItem			(const ItemKind item_kind) const { return m_items.at(item_kind); }
+	[[nodiscard]] std::unordered_map<WeaponSlotKind, std::shared_ptr<WeaponBase>>&	GetCurrentEquipWeapons		()					{ return m_current_equip_weapon; }
+	[[nodiscard]] std::shared_ptr<WeaponBase>										GetCurrentEquipWeapon		(const WeaponSlotKind slot_kind) const override;
+	[[nodiscard]] std::shared_ptr<WeaponBase>										GetCurrentHeldWeapon		()	override;
+	[[nodiscard]] std::shared_ptr<WeaponBase>										GetCurrentAttachWeapon		(const HolsterKind holster_kind) const override;
+	[[nodiscard]] WeaponKind														GetCurrentEquipWeaponKind	(const WeaponSlotKind slot_kind) override;
+	[[nodiscard]] WeaponKind														GetCurrentHeldWeaponKind	()	override;
+	[[nodiscard]] WeaponKind														GetCurrentAttachWeaponKind	(const HolsterKind holster_kind) const override;
+	[[nodiscard]] std::shared_ptr<WeaponShortcutSelecter>							GetWeaponShortcutSelecter	()	const			{ return m_weapon_shortcut_selecter; }
+	[[nodiscard]] float																GetMoveSpeed				()	const			{ return m_move_speed; }
+	[[nodiscard]] int																GetCurrentRemainingBulletNum()	const override	{ return m_current_remaining_bullet_num; }
+	[[nodiscard]] bool																IsGrabbed					()	const override	{ return m_is_grabbed; }
+	[[nodiscard]] std::vector<MeleeCandidateData>									GetMeleeCandidate			()	const override  { return m_melee_candidate; }
 	#pragma endregion
 
 private:
