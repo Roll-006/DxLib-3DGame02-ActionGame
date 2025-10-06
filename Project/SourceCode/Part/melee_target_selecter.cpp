@@ -9,7 +9,7 @@ void MeleeTargetSelecter::SelectMeleeTarget(const VECTOR& forward, std::vector<M
 
 	// MEMO : 画面中央に近い位置にいる場合は、カメラに距離が近い順にソート
 	//		  そうでない場合は、カメラのforwardに近い順でソート
-	//		  最終的にもっとも優先度が高いメレー対象のみを残す
+	//		  最終的に最も優先度が高いメレー対象のみを残す
 	for (const auto& candidate : melee_candidate)
 	{
 		if (candidate.camera_diff_angle < kPrioritySwitchAngle * math::kDegToRad)
