@@ -106,49 +106,49 @@ void CommandHandler::InitPadCommand()
 	m_pad_codes.clear();
 
 	// TODO : 後にJson化
-	AddInputCode(CommandKind::kDecide,				CommandSlotKind::kStatic1, pad::ButtonKind	::kA);
-	AddInputCode(CommandKind::kBack,				CommandSlotKind::kStatic1, pad::ButtonKind	::kB);
-	AddInputCode(CommandKind::kSelectUp,			CommandSlotKind::kStatic1, pad::ButtonKind	::kUp);
-	AddInputCode(CommandKind::kSelectUp,			CommandSlotKind::kStatic1, pad::StickKind	::kLSUp);
-	AddInputCode(CommandKind::kSelectDown,			CommandSlotKind::kStatic1, pad::ButtonKind	::kDown);
-	AddInputCode(CommandKind::kSelectDown,			CommandSlotKind::kStatic1, pad::StickKind	::kLSDown);
-	AddInputCode(CommandKind::kSelectLeft,			CommandSlotKind::kStatic1, pad::ButtonKind	::kLeft);
-	AddInputCode(CommandKind::kSelectLeft,			CommandSlotKind::kStatic1, pad::StickKind	::kLSLeft);
-	AddInputCode(CommandKind::kSelectRight,			CommandSlotKind::kStatic1, pad::ButtonKind	::kRight);
-	AddInputCode(CommandKind::kSelectRight,			CommandSlotKind::kStatic1, pad::StickKind	::kLSRight);
-	AddInputCode(CommandKind::kPause,				CommandSlotKind::kStatic1, pad::ButtonKind	::kStart);
+	AddInputCode(CommandKind::kSelectUp,					CommandSlotKind::kStatic1,	pad::ButtonKind	::kUp);
+	AddInputCode(CommandKind::kBack,						CommandSlotKind::kStatic1,	pad::ButtonKind	::kB);
+	AddInputCode(CommandKind::kDecide,						CommandSlotKind::kStatic1,	pad::ButtonKind	::kA);
+	AddInputCode(CommandKind::kSelectUp,					CommandSlotKind::kStatic1,	pad::StickKind	::kLSUp);
+	AddInputCode(CommandKind::kSelectDown,					CommandSlotKind::kStatic1,	pad::ButtonKind	::kDown);
+	AddInputCode(CommandKind::kSelectDown,					CommandSlotKind::kStatic1,	pad::StickKind	::kLSDown);
+	AddInputCode(CommandKind::kSelectLeft,					CommandSlotKind::kStatic1,	pad::ButtonKind	::kLeft);
+	AddInputCode(CommandKind::kSelectLeft,					CommandSlotKind::kStatic1,	pad::StickKind	::kLSLeft);
+	AddInputCode(CommandKind::kSelectRight,					CommandSlotKind::kStatic1,	pad::ButtonKind	::kRight);
+	AddInputCode(CommandKind::kSelectRight,					CommandSlotKind::kStatic1,	pad::StickKind	::kLSRight);
+	AddInputCode(CommandKind::kPause,						CommandSlotKind::kStatic1,	pad::ButtonKind	::kStart);
 
-	AddInputCode(CommandKind::kAimGun,				CommandSlotKind::kStatic1, pad::TriggerKind	::kLT);
-	AddInputCode(CommandKind::kAttack,				CommandSlotKind::kStatic1, pad::TriggerKind	::kRT);
-	AddInputCode(CommandKind::kPullTrigger,			CommandSlotKind::kStatic1, pad::TriggerKind	::kRT);
-	AddInputCode(CommandKind::kAimKnife,			CommandSlotKind::kStatic1, pad::ButtonKind	::kLB);
-	AddInputCode(CommandKind::kInvestigate,			CommandSlotKind::kStatic1, pad::ButtonKind	::kA);
-	AddInputCode(CommandKind::kMelee,				CommandSlotKind::kStatic1, pad::ButtonKind	::kA);
-	AddInputCode(CommandKind::kReload,				CommandSlotKind::kStatic1, pad::ButtonKind	::kX);
-	AddInputCode(CommandKind::kScope,				CommandSlotKind::kStatic1, pad::ButtonKind	::kLSPush);
-	AddInputCode(CommandKind::kMoveUpPlayer,		CommandSlotKind::kStatic1, pad::StickKind	::kLSUp);
-	AddInputCode(CommandKind::kMoveDownPlayer,		CommandSlotKind::kStatic1, pad::StickKind	::kLSDown);
-	AddInputCode(CommandKind::kMoveLeftPlayer,		CommandSlotKind::kStatic1, pad::StickKind	::kLSLeft);
-	AddInputCode(CommandKind::kMoveRightPlayer,		CommandSlotKind::kStatic1, pad::StickKind	::kLSRight);
-	AddInputCode(CommandKind::kRun,					CommandSlotKind::kStatic1, pad::ButtonKind	::kLSPush);
-	AddInputCode(CommandKind::kRun,					CommandSlotKind::kStatic1, pad::ButtonKind	::kRB);
-	AddInputCode(CommandKind::kCrouch,				CommandSlotKind::kStatic1, pad::ButtonKind	::kB);
-	AddInputCode(CommandKind::kQuickTurn,			CommandSlotKind::kStatic1, pad::ButtonKind	::kRB);
+	AddInputCode(CommandKind::kAimGun,						CommandSlotKind::kStatic1,	pad::TriggerKind	::kLT);
+	AddInputCode(CommandKind::kAttack,						CommandSlotKind::kStatic1,	pad::TriggerKind	::kRT);
+	AddInputCode(CommandKind::kPullTrigger,					CommandSlotKind::kStatic1,	pad::TriggerKind	::kRT);
+	AddInputCode(CommandKind::kAimKnife,					CommandSlotKind::kStatic1,	pad::ButtonKind	::kLB);
+	AddInputCode(CommandKind::kInvestigate,					CommandSlotKind::kStatic1,	pad::ButtonKind	::kA);
+	AddInputCode(CommandKind::kMelee,						CommandSlotKind::kStatic1,	pad::ButtonKind	::kA);
+	AddInputCode(CommandKind::kReload,						CommandSlotKind::kStatic1,	pad::ButtonKind	::kX);
+	AddInputCode(CommandKind::kScope,						CommandSlotKind::kStatic1,	pad::ButtonKind	::kLSPush);
+	AddInputCode(CommandKind::kMoveUpPlayer,				CommandSlotKind::kStatic1,	pad::StickKind	::kLSUp);
+	AddInputCode(CommandKind::kMoveDownPlayer,				CommandSlotKind::kStatic1,	pad::StickKind	::kLSDown);
+	AddInputCode(CommandKind::kMoveLeftPlayer,				CommandSlotKind::kStatic1,	pad::StickKind	::kLSLeft);
+	AddInputCode(CommandKind::kMoveRightPlayer,				CommandSlotKind::kStatic1,	pad::StickKind	::kLSRight);
+	AddInputCode(CommandKind::kRun,							CommandSlotKind::kStatic1,	pad::ButtonKind	::kLSPush);
+	AddInputCode(CommandKind::kRun,							CommandSlotKind::kStatic1,	pad::ButtonKind	::kRB);
+	AddInputCode(CommandKind::kCrouch,						CommandSlotKind::kStatic1,	pad::ButtonKind	::kB);
+	AddInputCode(CommandKind::kQuickTurn,					CommandSlotKind::kStatic1,	pad::ButtonKind	::kRB);
 
-	AddInputCode(CommandKind::kMoveUpCamera,		CommandSlotKind::kStatic1, pad::StickKind	::kRSUp);
-	AddInputCode(CommandKind::kMoveDownCamera,		CommandSlotKind::kStatic1, pad::StickKind	::kRSDown);
-	AddInputCode(CommandKind::kMoveLeftCamera,		CommandSlotKind::kStatic1, pad::StickKind	::kRSLeft);
-	AddInputCode(CommandKind::kMoveRightCamera,		CommandSlotKind::kStatic1, pad::StickKind	::kRSRight);
-	AddInputCode(CommandKind::kInitAim,				CommandSlotKind::kStatic1, pad::ButtonKind	::kRB);
+	AddInputCode(CommandKind::kMoveUpCamera,				CommandSlotKind::kStatic1,	pad::StickKind	::kRSUp);
+	AddInputCode(CommandKind::kMoveDownCamera,				CommandSlotKind::kStatic1,	pad::StickKind	::kRSDown);
+	AddInputCode(CommandKind::kMoveLeftCamera,				CommandSlotKind::kStatic1,	pad::StickKind	::kRSLeft);
+	AddInputCode(CommandKind::kMoveRightCamera,				CommandSlotKind::kStatic1,	pad::StickKind	::kRSRight);
+	AddInputCode(CommandKind::kInitAim,						CommandSlotKind::kStatic1,	pad::ButtonKind	::kRB);
 
-	AddInputCode(CommandKind::kSelectWeaponLeft,	CommandSlotKind::kStatic1, pad::ButtonKind	::kLeft);
-	AddInputCode(CommandKind::kSelectWeaponUp,		CommandSlotKind::kStatic1, pad::ButtonKind	::kUp);
-	AddInputCode(CommandKind::kSelectWeaponRight,	CommandSlotKind::kStatic1, pad::ButtonKind	::kRight);
-	AddInputCode(CommandKind::kSelectWeaponDown,	CommandSlotKind::kStatic1, pad::ButtonKind	::kDown);
+	AddInputCode(CommandKind::kSelectWeaponLeft,			CommandSlotKind::kStatic1,	pad::ButtonKind	::kLeft);
+	AddInputCode(CommandKind::kSelectWeaponUp,				CommandSlotKind::kStatic1,	pad::ButtonKind	::kUp);
+	AddInputCode(CommandKind::kSelectWeaponRight,			CommandSlotKind::kStatic1,	pad::ButtonKind	::kRight);
+	AddInputCode(CommandKind::kSelectWeaponDown,			CommandSlotKind::kStatic1,	pad::ButtonKind	::kDown);
 
-	AddInputCode(CommandKind::kChangeDebugMode,		CommandSlotKind::kStatic1, pad::ButtonKind	::kBack);
-	AddInputCode(CommandKind::kDebugTrigger1,		CommandSlotKind::kStatic1, pad::TriggerKind	::kLT);
-	AddInputCode(CommandKind::kDebugTrigger2,		CommandSlotKind::kStatic1, pad::TriggerKind	::kRT);
+	AddInputCode(CommandKind::kChangeDebugMode,				CommandSlotKind::kStatic1,	pad::ButtonKind	::kBack);
+	AddInputCode(CommandKind::kDebugTrigger1,				CommandSlotKind::kStatic1,	pad::TriggerKind	::kLT);
+	AddInputCode(CommandKind::kDebugTrigger2,				CommandSlotKind::kStatic1,	pad::TriggerKind	::kRT);
 }
 
 void CommandHandler::InitInputMode()
@@ -206,9 +206,26 @@ void CommandHandler::InitCurrentTriggerInputCount(const CommandKind kind)
 	m_trigger_count.at(TimeKind::kCurrent).at(kind) = 0;
 }
 
+
+#pragma region Getter
+InputModeKind CommandHandler::GetInputModeKind(const CommandKind kind) const
+{
+	return m_input_mode.at(kind);
+}
+
 int CommandHandler::GetCurrentTriggerCount(const CommandKind kind) const
 {
 	return m_trigger_count.at(TimeKind::kCurrent).at(kind);
+}
+
+InputCode CommandHandler::GetKeyInputCode(const CommandKind kind, const CommandSlotKind slot) const
+{
+	return m_key_codes.at(kind).at(slot);
+}
+
+InputCode CommandHandler::GetPadInputCode(const CommandKind kind, const CommandSlotKind slot) const
+{
+	return m_pad_codes.at(kind).at(slot);
 }
 
 bool CommandHandler::IsExecute(const CommandKind command_kind, const TimeKind time_kind)
@@ -262,6 +279,8 @@ bool CommandHandler::IsExecute(const CommandKind command_kind, const TimeKind ti
 
 	return false;
 }
+#pragma endregion
+
 
 void CommandHandler::AddInputCode(const CommandKind kind, const CommandSlotKind slot, const input_concepts::InputT auto& input_code)
 {
@@ -287,7 +306,7 @@ void CommandHandler::AddInputCode(const CommandKind kind, const CommandSlotKind 
 
 	// 新規データのみ追加する
 	auto& set = (*codes)[kind];
-	set.insert(code);
+	set.insert({ slot, code });
 }
 
 void CommandHandler::RemoveInputCode(const CommandKind kind, const CommandSlotKind slot, const input_concepts::InputT auto& input_code)

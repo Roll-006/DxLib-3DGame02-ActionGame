@@ -8,7 +8,6 @@
 #include "../GameTime/game_time_manager.hpp"
 #include "../Window/window.hpp"
 
-#include "../JSON/json_loader.hpp"
 #include "../Data/input_data.hpp"
 #include "../Kind/time_kind.hpp"
 #include "../Kind/device_kind.hpp"
@@ -16,7 +15,7 @@
 
 #include "../IncludeList/vector.hpp"
 
-// TODO : 必須。CheckHitKeyが重いため、Commandに登録されているキー以外の入力の検索は避ける
+class CommandHandler;
 
 using InputKey		= std::pair<InputCode, TimeKind>;
 using InputValue	= InputData;

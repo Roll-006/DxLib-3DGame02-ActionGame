@@ -8,6 +8,7 @@ GameManager::GameManager():
 	HandleCreator			::Generate();
 	HandleKeeper			::Generate();
 	CommandHandler			::Generate();
+	InputChecker			::Generate();
 	Debugger				::Generate();
 	EventSystem				::Generate();
 	ObjectPoolHolder		::Generate();
@@ -29,6 +30,7 @@ GameManager::~GameManager()
 	HandleCreator			::Delete();
 	HandleKeeper			::Delete();
 	CommandHandler			::Delete();
+	InputChecker			::Delete();
 	Debugger				::Delete();
 	EventSystem				::Delete();
 	ObjectPoolHolder		::Delete();

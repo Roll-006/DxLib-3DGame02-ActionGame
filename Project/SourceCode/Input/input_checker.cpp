@@ -1,4 +1,5 @@
 #include "input_checker.hpp"
+#include "../Command/command_handler.hpp"
 
 InputChecker::InputChecker():
 	m_xinput				(-1),
@@ -14,14 +15,13 @@ InputChecker::InputChecker():
 
 	LockCursor();
 
-	JSONLoader json;
-	nlohmann::json data;
-	if (json.Load("Data/JSON/key_number.json", data))
+	const auto key_codes = CommandHandler::GetInstance()->GetKeyInputCodes();
+	for (const auto& [kind, input_codes] : key_codes)
 	{
-		for (auto& code : data["key_number"])
+		for (const auto& code : input_codes)
 		{
-			m_input_data[{ InputCode(InputKind::kKey, code), TimeKind::kPrev	}] = InputData();
-			m_input_data[{ InputCode(InputKind::kKey, code), TimeKind::kCurrent }] = InputData();
+			m_input_data[{ code.second, TimeKind::kPrev		}]	= InputData();
+			m_input_data[{ code.second, TimeKind::kCurrent	}]	= InputData();
 		}
 	}
 

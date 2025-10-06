@@ -3,6 +3,7 @@
 
 #include "../Event/event_system.hpp"
 #include "../Object/zombie.hpp"
+#include "../JSON/json_loader.hpp"
 
 // MEMO : 「責務」
 // 掴み中は他エネミーに行動停止命令を送る

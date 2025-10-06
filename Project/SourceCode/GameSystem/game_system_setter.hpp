@@ -5,7 +5,6 @@
 #include "../Base/single_instance_base.hpp"
 
 #include "../Window/window.hpp"
-#include "../Input/input_checker.hpp"
 #include "../Random/random_generator.hpp"
 
 class GameSystemSetter final : public SingleInstanceBase<GameSystemSetter>

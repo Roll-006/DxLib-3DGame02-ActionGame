@@ -5,13 +5,11 @@ GameSystemSetter::GameSystemSetter()
 	SetUpGameSystem();
 
 	RandomGenerator	::Generate();
-	InputChecker	::Generate();
 }
 
 GameSystemSetter::~GameSystemSetter()
 {
 	RandomGenerator	::Delete();
-	InputChecker	::Delete();
 
 	Effkseer_End();
 	DxLib_End();

@@ -23,13 +23,20 @@ public:
 	/// @param input_mode 入力モード
 	void SetInputMode(const CommandKind kind, const InputModeKind input_mode) { m_input_mode.at(kind) = input_mode; }
 
-	[[nodiscard]] InputModeKind GetInputModeKind(const CommandKind kind) const { return m_input_mode.at(kind); }
-	[[nodiscard]] int			GetCurrentTriggerCount (const CommandKind kind) const;
+
+	#pragma region Getter
+	[[nodiscard]] InputModeKind GetInputModeKind		(const CommandKind kind) const;
+	[[nodiscard]] int			GetCurrentTriggerCount	(const CommandKind kind) const;
+	[[nodiscard]] std::unordered_map<CommandKind, std::unordered_map<CommandSlotKind, InputCode>> GetKeyInputCodes() const { return m_key_codes; }
+	[[nodiscard]] std::unordered_map<CommandKind, std::unordered_map<CommandSlotKind, InputCode>> GetPadInputCodes() const { return m_pad_codes; }
+	[[nodiscard]] InputCode		GetKeyInputCode			(const CommandKind kind, const CommandSlotKind slot) const;
+	[[nodiscard]] InputCode		GetPadInputCode			(const CommandKind kind, const CommandSlotKind slot) const;
 
 	/// @brief 指定のコマンドが実行状況を判定
 	/// @brief command_kind 判定するコマンド
 	/// @brief time_kind kCurrent : 現在実行中, kPrev : 1フレーム前に実行
 	[[nodiscard]] bool IsExecute(const CommandKind command_kind, const TimeKind time_kind);
+	#pragma endregion
 
 private:
 	CommandHandler();
