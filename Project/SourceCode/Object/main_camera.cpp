@@ -94,7 +94,7 @@ void MainCamera::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 					const auto target_pos		= target_transform->GetPos(CoordinateKind::kWorld);
 					const auto angle			= math::GetAngleBetweenTwoVector(m_transform->GetForward(CoordinateKind::kWorld), v3d::GetNormalizedV(target_pos - owner_pos));
 
-					const OnDownedEnemySpottedEvent event{ target_obj->GetObjHandle(), angle };
+					const OnDownedEnemySpottedEvent event{ target_obj->GetObjHandle(), angle, VSize(target_pos - owner_pos)};
 					EventSystem::GetInstance()->Publish(event);
 				}
 			}

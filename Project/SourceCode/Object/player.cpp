@@ -293,7 +293,7 @@ void Player::AttackVersatilityMelee(const VECTOR& target_pos)
 #pragma region Event
 void Player::AddMeleeCandidate(const OnDownedEnemySpottedEvent& event)
 {
-	m_melee_candidate.emplace_back(MeleeCandidateData(event.target_obj_handle, event.camera_diff_angle));
+	m_melee_candidate.emplace_back(MeleeCandidateData(event.target_obj_handle, event.camera_diff_angle, event.distance_to_camera));
 }
 #pragma endregion
 
