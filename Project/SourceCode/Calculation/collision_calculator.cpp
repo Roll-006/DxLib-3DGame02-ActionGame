@@ -1208,6 +1208,39 @@ VECTOR collision::PushBackCapsuleAndSquare  (const VECTOR& velocity, const Capsu
     return future_pos - dynamic_capsule.GetSegment().GetBeginPos();
 }
 
+VECTOR collision::PushBackCapsuleAndCapsule(const VECTOR& velocity, const Capsule& dynamic_capsule, const Capsule& static_capsule)
+{
+    // 未来のカプセルを取得
+    Capsule future_capsule = dynamic_capsule;
+    future_capsule.Move(velocity);
+
+    // 未来のカプセルと衝突しているかを判定
+    if (!IsCollidedCapsuleAndCapsule(future_capsule, static_capsule))
+    {
+        return velocity;
+    }
+
+    VECTOR h1, h2;
+    float tmp_t1, tmp_t2;
+    const auto tmp_distance = math::GetDistanceSegmentToSegment(dynamic_capsule.GetSegment(), static_capsule.GetSegment(), h1, h2, tmp_t1, tmp_t2);
+    
+    const auto distance_v       = h1 - h2;
+    const auto distance_square  = VDot(distance_v, distance_v);
+    const auto distance         = sqrt(distance_square);
+    const auto normalized_v     = distance > 0.0f ? v3d::GetNormalizedV(distance_v) : VGet(0.0f, 1.0f, 0.0f);
+
+    // 押し戻しベクトル
+    const auto penetration = dynamic_capsule.GetRadius() + static_capsule.GetRadius() - distance;
+    const auto push_back_v = normalized_v * penetration;
+
+    // 押し戻したあとの有効な移動ベクトル (スライド)
+    const auto vn = VDot(velocity, normalized_v);
+
+    // velocityからめり込み成分を削除する
+    // vn >= 0 の場合は衝突面から離れているためそのまま返す
+    return vn < 0.0f ? velocity - normalized_v * vn : velocity;
+}
+
 VECTOR collision::PushBackCapsuleAndOBB     (const VECTOR& velocity, const Capsule& dynamic_capsule, const OBB&      static_obb)
 {
     VECTOR valid_velocity = velocity;

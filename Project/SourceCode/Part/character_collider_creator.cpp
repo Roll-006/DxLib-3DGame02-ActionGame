@@ -260,6 +260,8 @@ void CharacterColliderCreator::CalcLegTriggerPos	(std::shared_ptr<Modeler>& mode
 #pragma region ‚»‚Ì‘¼ŒvZ
 void CharacterColliderCreator::CalcCapsuleColliderDirAndLength(std::shared_ptr<Modeler>& modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>>& collider, const std::shared_ptr<Transform>& transform)
 {
+	if (!collider.count(ColliderKind::kCollider)) { return; }
+
 	modeler->ApplyMatrix();
 
 	// s—ñî•ñ‚ğæ“¾

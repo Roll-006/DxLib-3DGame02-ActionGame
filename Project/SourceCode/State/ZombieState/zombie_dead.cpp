@@ -24,7 +24,7 @@ void zombie_state::Dead::LateUpdate(std::shared_ptr<Zombie>& obj)
 
 void zombie_state::Dead::Enter(std::shared_ptr<Zombie>& obj)
 {
-
+	obj->RemoveCollider(ColliderKind::kCollider);
 }
 
 void zombie_state::Dead::Exit(std::shared_ptr<Zombie>& obj)

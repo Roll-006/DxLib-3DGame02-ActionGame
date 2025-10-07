@@ -222,9 +222,6 @@ namespace collision
     /// @brief 高速移動対応
     /// @brief WARNING : この関数は現在衝突対象にめり込んでいないことを前提としている
     /// @brief WARNING : 法線の裏側を考慮しないものとする
-    /// @param velocity 速度ベクトル
-    /// @param dynamic_sphere 球(移動オブジェクト)
-    /// @param static_triangle 三角形(固定オブジェクト)
     /// @return 有効な速度ベクトル
     [[nodiscard]] VECTOR PushBackSphereAndTriangle(const VECTOR& velocity, const Sphere& dynamic_sphere, const Triangle& static_triangle);
 
@@ -233,44 +230,34 @@ namespace collision
     /// @brief 高速移動対応
     /// @brief WARNING : この関数は現在衝突対象にめり込んでいないことを前提としている
     /// @brief WARNING : 法線の裏側を考慮しないものとする
-    /// @param velocity 速度ベクトル
-    /// @param dynamic_sphere 球(移動オブジェクト)
-    /// @param model_handle モデルハンドル(固定オブジェクトなモデルのハンドル)
     /// @return 有効な速度ベクトル
     [[nodiscard]] VECTOR PushBackSphereAndModel(const VECTOR& velocity, const Sphere& dynamic_sphere, const int model_handle);
 
     /// @brief カプセル(移動オブジェクト)と三角形(固定オブジェクト)が衝突する際の有効な速度ベクトルを取得
-    /// @param velocity 速度ベクトル
     /// @brief WARNING : この関数は現在衝突対象にめり込んでいないことを前提としている
     /// @brief WARNING : 法線の裏側を考慮しないものとする
-    /// @param dynamic_capsule カプセル(移動オブジェクト)
-    /// @param static_triangle 三角形(固定オブジェクト)
     /// @return 有効な速度ベクトル
     [[nodiscard]] VECTOR PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsule& dynamic_capsule, const Triangle& static_triangle);
 
     /// @brief カプセル(移動オブジェクト)と四角形(固定オブジェクト)が衝突する際の有効な速度ベクトルを取得
     /// @brief WARNING : この関数は現在衝突対象にめり込んでいないことを前提としている
     /// @brief WARNING : 法線の裏側を考慮しないものとする
-    /// @param velocity 速度ベクトル
-    /// @param dynamic_capsule カプセル(移動オブジェクト)
-    /// @param static_square 四角形(固定オブジェクト)
     /// @return 有効な速度ベクトル
     [[nodiscard]] VECTOR PushBackCapsuleAndSquare(const VECTOR& velocity, const Capsule& dynamic_capsule, const Square& static_square);
 
+    /// @brief カプセル(移動オブジェクト)とカプセル(固定オブジェクト)が衝突する際の有効な速度ベクトルを取得
+    /// @brief WARNING : この関数は現在衝突対象にめり込んでいないことを前提としている
+    /// @return 有効な速度ベクトル
+    [[nodiscard]] VECTOR PushBackCapsuleAndCapsule(const VECTOR& velocity, const Capsule& dynamic_capsule, const Capsule& static_capsule);
+
     /// @brief FIXME : 欠陥あり。角でバグ発生中。
     /// @brief カプセル(移動オブジェクト)とOBB(固定オブジェクト)が衝突した際の有効な速度ベクトルを取得
-    /// @param velocity 速度ベクトル
-    /// @param dynamic_capsule カプセル(移動オブジェクト)
-    /// @param static_obb OBB(固定オブジェクト)
     /// @return 有効な速度ベクトル
     [[nodiscard]] VECTOR PushBackCapsuleAndOBB(const VECTOR& velocity, const Capsule& dynamic_capsule, const OBB& static_obb);
 
     /// @brief カプセル(移動オブジェクト)とモデル(固定オブジェクト)が衝突した際の有効な速度ベクトルを取得
     /// @brief WARNING : この関数は現在衝突対象にめり込んでいないことを前提としている
     /// @brief WARNING : 法線の裏側を考慮しないものとする
-    /// @param velocity 速度ベクトル
-    /// @param dynamic_capsule カプセル(移動オブジェクト)
-    /// @param model_handle モデルハンドル(固定オブジェクトなモデルのハンドル)
     /// @return 有効な速度ベクトル
     [[nodiscard]] VECTOR PushBackCapsuleAndModel(const VECTOR& velocity, const Capsule& dynamic_capsule, const int model_handle);
     #pragma endregion
