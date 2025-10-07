@@ -14,6 +14,7 @@ enum class ColliderKind
 	kVisionTrigger,			// 視界判定用トリガー
 	kVisibleTrigger,		// 視認判定を受けるトリガー
 
+	kCollisionAreaTrigger,	// 衝突判定を許可するエリアに利用するトリガー
 	kReactionTrigger,		// リアクショントリガー
 
 	kHeadTrigger,			// 頭部トリガー

@@ -4,6 +4,7 @@ CollisionManager::CollisionManager() :
 	m_handle_create_count(-1)
 {
 	SetIgnoreColliderPairs();
+	AddIgnoreCollider(ColliderKind::kCollisionAreaTrigger);
 }
 
 CollisionManager::~CollisionManager()
@@ -83,18 +84,30 @@ void CollisionManager::RemoveCollideObj(const int obj_handle)
 	}
 }
 
-void CollisionManager::AddIgnoreCollider(const std::string& obj_name, const ColliderKind kind)
+void CollisionManager::AddIgnoreCollider(const int obj_handle, const ColliderKind kind)
 {
-	m_ignore_collide_colliders[obj_name].insert(kind);
+	m_ignore_collide_colliders[obj_handle].insert(kind);
 }
 
-void CollisionManager::RemoveIgnoreCollider(const std::string& obj_name, const ColliderKind kind)
+void CollisionManager::AddIgnoreCollider(const ColliderKind kind)
 {
-	auto itr = m_ignore_collide_colliders.find(obj_name);
+	// 指定なしは-2で追加させる
+	AddIgnoreCollider(-2, kind);
+}
+
+void CollisionManager::RemoveIgnoreCollider(const int obj_handle, const ColliderKind kind)
+{
+	auto itr = m_ignore_collide_colliders.find(obj_handle);
 	if (itr != m_ignore_collide_colliders.end())
 	{
 		itr->second.erase(kind);
 	}
+}
+
+void CollisionManager::RemoveIgnoreCollider(const ColliderKind kind)
+{
+	// 指定なしは-2で追加させる
+	RemoveIgnoreCollider(-2, kind);
 }
 
 void CollisionManager::AddIgnoreColliderPair(const ColliderData& owner_collider_data, const ColliderData& target_collider_data)
@@ -292,11 +305,31 @@ std::vector<ColliderPairOneToManyData> CollisionManager::CreateHitColliderPairs(
 
 			for (const auto& owner_obj_collider : owner_obj->GetColliderAll())
 			{
+				// 単独で無視リストに登録されていた場合は無視
+				const auto itr = m_ignore_collide_colliders.find(owner_obj->GetObjHandle());
+				if (itr != m_ignore_collide_colliders.end())
+				{
+					if (itr->second.count(owner_obj_collider.second->GetColliderKind()))
+					{
+						continue;
+					}
+				}
+
 				// 衝突不可の場合はスキップ
 				if (!CanCollideObjAndCollider(target_obj, owner_obj_collider.second)) { continue; }
 
 				for (const auto& target_obj_collider : target_obj->GetColliderAll())
 				{
+					// 単独で無視リストに登録されていた場合は無視
+					const auto itr = m_ignore_collide_colliders.find(target_obj->GetObjHandle());
+					if (itr != m_ignore_collide_colliders.end())
+					{
+						if (itr->second.count(target_obj_collider.second->GetColliderKind()))
+						{
+							continue;
+						}
+					}
+
 					// 衝突不可の場合はスキップ
 					// TODO : 無視判定のループ回数が多いため改善を検討
 					if (!CanCollideObjAndCollider		(owner_obj, target_obj_collider.second))				 { continue; }

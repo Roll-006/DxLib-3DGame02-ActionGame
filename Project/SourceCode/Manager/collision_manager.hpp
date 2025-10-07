@@ -22,9 +22,11 @@ public:
 	void RemoveCollideObj(const int obj_handle);
 
 	/// @brief 衝突判定を無視するコライダーを追加
-	void AddIgnoreCollider	 (const std::string& obj_name, const ColliderKind kind);
+	void AddIgnoreCollider	 (const int obj_handle, const ColliderKind kind);
+	void AddIgnoreCollider	 (const ColliderKind kind);
 	/// @brief 衝突判定を無視するコライダーから除外
-	void RemoveIgnoreCollider(const std::string& obj_name, const ColliderKind kind);
+	void RemoveIgnoreCollider(const int obj_handle, const ColliderKind kind);
+	void RemoveIgnoreCollider(const ColliderKind kind);
 
 	/// @brief 衝突判定を無視するコライダーのペアを追加
 	/// @brief ・owner_tagに[""]を指定すると指定なしで登録
@@ -71,7 +73,7 @@ private:
 
 private:
 	std::vector<std::shared_ptr<PhysicalObjBase>>						m_collide_objects;					// 衝突判定を行うオブジェクト
-	std::unordered_map<std::string,  std::unordered_set<ColliderKind>>	m_ignore_collide_colliders;			// 衝突判定を無視するコライダー
+	std::unordered_map<int,  std::unordered_set<ColliderKind>>			m_ignore_collide_colliders;			// 衝突判定を無視するコライダー
 	std::unordered_map<ColliderData, std::unordered_set<ColliderData>>	m_ignore_collide_collider_pairs;	// 衝突判定を無視するコライダーのペア
 	int m_handle_create_count;
 
