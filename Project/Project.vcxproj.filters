@@ -508,6 +508,15 @@
     <ClCompile Include="SourceCode\State\ZombieState\stand_up.cpp">
       <Filter>SourceCode\State\ZombieState</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\Part\button_graphic_getter.cpp">
+      <Filter>SourceCode\Part</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\UI\melee_target_icon.cpp">
+      <Filter>SourceCode\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\UI\enemy_ui_creator.cpp">
+      <Filter>SourceCode\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\character_base.hpp">
@@ -1358,6 +1367,15 @@
     </ClInclude>
     <ClInclude Include="SourceCode\State\ZombieState\stand_up.hpp">
       <Filter>SourceCode\State\ZombieState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Part\button_graphic_getter.hpp">
+      <Filter>SourceCode\Part</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\UI\melee_target_icon.hpp">
+      <Filter>SourceCode\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\UI\enemy_ui_creator.hpp">
+      <Filter>SourceCode\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -22,4 +22,10 @@ static struct UIGraphicPath
 
 	const std::string DAMAGE_FILTER			= "Data/Graphic/UI/Damage/filter.png";
 
+
+	#pragma region ƒ{ƒ^ƒ“
+	const std::string KEY_F					= "Data/Graphic/UI/Button/Key/F.png";
+	const std::string PAD_A					= "Data/Graphic/UI/Button/Pad/A.png";
+	#pragma endregion
+
 }UIGraphicPath;
