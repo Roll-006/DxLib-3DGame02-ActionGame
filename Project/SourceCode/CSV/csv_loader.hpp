@@ -3,7 +3,6 @@
 #include <fstream>
 #include <sstream>
 
-// MEMO : 基本的にはJSONを使用する
 class CSVLoader final
 {
 public:

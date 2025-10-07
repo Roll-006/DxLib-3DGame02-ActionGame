@@ -36,7 +36,7 @@ Zombie::Zombie(const VECTOR& pos, const VECTOR& look_dir) :
 	m_collider_creator->CreateArmTrigger		(this, m_modeler, kUpperArmTriggerRadius, kForearmTriggerRadius, kHandTriggerRadius);
 	m_collider_creator->CreateLegTrigger		(this, m_modeler, kUpLegTriggerRadius, kDownLegTriggerRadius);
 
-	AddCollider(std::make_shared<Collider>(ColliderKind::kCollisionAreaTrigger, std::make_shared<Sphere>(pos, 40.0f), this));
+	AddCollider(std::make_shared<Collider>(ColliderKind::kCollisionAreaTrigger, std::make_shared<Sphere>(pos + kCollisionAreaOffset, kCollisionAreaRadius), this));
 }
 
 Zombie::~Zombie()

@@ -165,10 +165,22 @@ void CollisionManager::SetIgnoreColliderPairs()
 
 bool CollisionManager::CanCollideObjAndObj(const std::shared_ptr<PhysicalObjBase>& owner_obj, const std::shared_ptr<PhysicalObjBase>& target_obj)
 {
-	// TODO : オブジェクトを球で囲み、表面上の距離で距離計算を行う
-
 	// 静的オブジェクト同士は無視(地面と家など)
 	if (owner_obj->GetMassKind() == MassKind::kStatic && target_obj->GetMassKind() == MassKind::kStatic) { return false; }
+
+	// 距離が遠いオブジェクト同士は無視
+	const auto owner_collision_area		= owner_obj->GetCollider (ColliderKind::kCollisionAreaTrigger);
+	const auto target_collision_area	= target_obj->GetCollider(ColliderKind::kCollisionAreaTrigger);
+	if (owner_collision_area && target_collision_area)
+	{
+		const auto sphere1 = std::static_pointer_cast<Sphere>(owner_collision_area ->GetShape());
+		const auto sphere2 = std::static_pointer_cast<Sphere>(target_collision_area->GetShape());
+
+		if (math::GetDistanceSphereToSphere(*sphere1.get(), *sphere2.get()) > kIgnoreDistance)
+		{
+			return false;
+		}
+	}
 
 	// 無視リストに登録されているオブジェクトは無視
 	const ColliderData owner_data { owner_obj ->GetTag(), ColliderKind::kNone };
@@ -306,7 +318,15 @@ std::vector<ColliderPairOneToManyData> CollisionManager::CreateHitColliderPairs(
 			for (const auto& owner_obj_collider : owner_obj->GetColliderAll())
 			{
 				// 単独で無視リストに登録されていた場合は無視
-				const auto itr = m_ignore_collide_colliders.find(owner_obj->GetObjHandle());
+				auto itr = m_ignore_collide_colliders.find(owner_obj->GetObjHandle());
+				if (itr != m_ignore_collide_colliders.end())
+				{
+					if (itr->second.count(owner_obj_collider.second->GetColliderKind()))
+					{
+						continue;
+					}
+				}
+				itr = m_ignore_collide_colliders.find(-2);
 				if (itr != m_ignore_collide_colliders.end())
 				{
 					if (itr->second.count(owner_obj_collider.second->GetColliderKind()))
@@ -321,7 +341,15 @@ std::vector<ColliderPairOneToManyData> CollisionManager::CreateHitColliderPairs(
 				for (const auto& target_obj_collider : target_obj->GetColliderAll())
 				{
 					// 単独で無視リストに登録されていた場合は無視
-					const auto itr = m_ignore_collide_colliders.find(target_obj->GetObjHandle());
+					auto itr = m_ignore_collide_colliders.find(target_obj->GetObjHandle());
+					if (itr != m_ignore_collide_colliders.end())
+					{
+						if (itr->second.count(target_obj_collider.second->GetColliderKind()))
+						{
+							continue;
+						}
+					}
+					itr = m_ignore_collide_colliders.find(-2);
 					if (itr != m_ignore_collide_colliders.end())
 					{
 						if (itr->second.count(target_obj_collider.second->GetColliderKind()))

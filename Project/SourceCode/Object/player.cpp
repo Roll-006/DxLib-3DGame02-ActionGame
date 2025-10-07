@@ -35,6 +35,9 @@ Player::Player() :
 	m_collider_creator->CreateCapsuleCollider	(this, m_modeler, kCapsuleRadius);
 	m_collider_creator->CreateLandingTrigger	(this, kLandingTriggerRadius);
 	m_collider_creator->CreateVisibleTrigger	(this, m_modeler);
+
+	const auto pos = m_transform->GetPos(CoordinateKind::kWorld);
+	AddCollider(std::make_shared<Collider>(ColliderKind::kCollisionAreaTrigger, std::make_shared<Sphere>(pos + kCollisionAreaOffset, kCollisionAreaRadius), this));
 	
 	// TODO : ‰¼Œã‚É•ÏX
 	{

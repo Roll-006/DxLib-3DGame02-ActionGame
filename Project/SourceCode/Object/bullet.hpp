@@ -37,6 +37,8 @@ private:
 	void CalcRayCastPos() override;
 
 private:
+	static constexpr float kCollisionAreaRadius	= 5.0f;
+
 	std::string m_shot_owner_name;
 
 	VECTOR m_move_dir;

@@ -180,6 +180,8 @@ private:
 	//static constexpr float kTurnAroundStickAngle				= 30.0f;				// 振り向きを行うスティックの入力角度
 
 	static constexpr float kCapsuleRadius						= 8.0f;
+	static constexpr float kCollisionAreaRadius					= 37.0f;
+	static constexpr VECTOR kCollisionAreaOffset				= { 0.0f, 26.0f, 0.0f };
 	static constexpr float kLandingTriggerRadius				= 6.0f;
 
 	static constexpr float kCameraAimOffsetBasicSpeed			= 40.0f;

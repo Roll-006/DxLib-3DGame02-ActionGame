@@ -118,9 +118,9 @@ void CommandHandler::InitPadCommand()
 	AddInputCode(CommandKind::kSelectRight,					CommandSlotKind::kStatic1,	pad::StickKind	::kLSRight);
 	AddInputCode(CommandKind::kPause,						CommandSlotKind::kStatic1,	pad::ButtonKind	::kStart);
 
-	AddInputCode(CommandKind::kAimGun,						CommandSlotKind::kStatic1,	pad::TriggerKind	::kLT);
-	AddInputCode(CommandKind::kAttack,						CommandSlotKind::kStatic1,	pad::TriggerKind	::kRT);
-	AddInputCode(CommandKind::kPullTrigger,					CommandSlotKind::kStatic1,	pad::TriggerKind	::kRT);
+	AddInputCode(CommandKind::kAimGun,						CommandSlotKind::kStatic1,	pad::TriggerKind::kLT);
+	AddInputCode(CommandKind::kAttack,						CommandSlotKind::kStatic1,	pad::TriggerKind::kRT);
+	AddInputCode(CommandKind::kPullTrigger,					CommandSlotKind::kStatic1,	pad::TriggerKind::kRT);
 	AddInputCode(CommandKind::kAimKnife,					CommandSlotKind::kStatic1,	pad::ButtonKind	::kLB);
 	AddInputCode(CommandKind::kInvestigate,					CommandSlotKind::kStatic1,	pad::ButtonKind	::kA);
 	AddInputCode(CommandKind::kMelee,						CommandSlotKind::kStatic1,	pad::ButtonKind	::kA);
@@ -147,8 +147,8 @@ void CommandHandler::InitPadCommand()
 	AddInputCode(CommandKind::kSelectWeaponDown,			CommandSlotKind::kStatic1,	pad::ButtonKind	::kDown);
 
 	AddInputCode(CommandKind::kChangeDebugMode,				CommandSlotKind::kStatic1,	pad::ButtonKind	::kBack);
-	AddInputCode(CommandKind::kDebugTrigger1,				CommandSlotKind::kStatic1,	pad::TriggerKind	::kLT);
-	AddInputCode(CommandKind::kDebugTrigger2,				CommandSlotKind::kStatic1,	pad::TriggerKind	::kRT);
+	AddInputCode(CommandKind::kDebugTrigger1,				CommandSlotKind::kStatic1,	pad::TriggerKind::kLT);
+	AddInputCode(CommandKind::kDebugTrigger2,				CommandSlotKind::kStatic1,	pad::TriggerKind::kRT);
 }
 
 void CommandHandler::InitInputMode()

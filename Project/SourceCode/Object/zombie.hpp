@@ -70,6 +70,8 @@ private:
 	static constexpr float kLookDirOffsetSpeed		= 4.0f;			// Œ©‚é•ûŒü‚Ì•â³Šp“x
 
 	static constexpr float kCapsuleRadius			= 8.0f;
+	static constexpr float kCollisionAreaRadius		= 40.0f;
+	static constexpr VECTOR kCollisionAreaOffset	= { 0.0f, 30.0f, 0.0f };
 	static constexpr float kLandingTriggerRadius	= 6.0f;
 	static constexpr float kHeadTriggerRadius		= 5.0f;
 	static constexpr float kUpBodyTriggerRadius		= 6.0f;

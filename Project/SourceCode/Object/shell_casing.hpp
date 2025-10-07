@@ -46,6 +46,8 @@ private:
 	static constexpr float  kDeceleration				= 2.0f;						// Œ¸‘¬“x
 
 	static constexpr float  kColliderRadius				= 0.9f;
+	static constexpr float  kCollisionAreaRadius		= 6.0f;
+	static constexpr VECTOR kCollisionAreaOffset		= { 0.0f, 0.0f, 0.0f };
 	static constexpr float  kLandingTriggerRadius		= 0.9f;
 	static constexpr VECTOR kLandingTriggerOffsetPos	= { 0.0f, -1.5f, 0.0f };
 

@@ -474,7 +474,10 @@ namespace math
 	/// @brief 四角形と四角形の最短距離を取得
 	[[nodiscard]] float GetDistanceSquareToSquare		(const Square&		square1,	const Square&	square2);
 
-	/// @brief 四角形とカプセルの最短距離
+	/// @brief 四角形とカプセルの最短距離を取得
 	[[nodiscard]] float GetDistanceSquareToCapsule		(const Square&		square,		const Capsule&	capsule);
+
+	/// @brief 球と球の最短距離を取得
+	[[nodiscard]] float GetDistanceSphereToSphere		(const Sphere&		sphere1,	const Sphere&	sphere2);
 	#pragma endregion
 }

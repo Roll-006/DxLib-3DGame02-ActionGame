@@ -13,6 +13,8 @@ ShellCasing::ShellCasing(const std::string& file_path) :
 
 	AddCollider(std::make_shared<Collider>(ColliderKind::kCollider,		  std::make_shared<Sphere>(v3d::GetZeroV(), kColliderRadius),		this));
 	AddCollider(std::make_shared<Collider>(ColliderKind::kLandingTrigger, std::make_shared<Sphere>(v3d::GetZeroV(), kLandingTriggerRadius), this));
+	AddCollider(std::make_shared<Collider>(ColliderKind::kCollisionAreaTrigger, std::make_shared<Sphere>(v3d::GetZeroV(), kCollisionAreaRadius), this));
+
 }
 
 ShellCasing::~ShellCasing()
@@ -59,27 +61,20 @@ void ShellCasing::Draw() const
 	//GetCollider(ColliderKind::kCollider)	  ->GetShape()->Draw(false, 255, 0xffffff);
 	//GetCollider(ColliderKind::kLandingTrigger)->GetShape()->Draw(false,   0, 0xff0000);
 
-	//for (auto& collider : m_collider)
-	//{
-	//	const auto shape = collider.second->GetShape();
-	//	if (shape != nullptr)
-	//	{
-	//		shape->Draw(true, 0, 0xffffff);
-	//	}
-	//}
+	for (auto& collider : m_colliders)
+	{
+		const auto shape = collider.second->GetShape();
+		if (shape != nullptr)
+		{
+			shape->Draw(true, 0, 0xffffff);
+		}
+	}
 }
 
 void ShellCasing::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 {
 	switch (hit_collider_pair.owner_collider->GetColliderKind())
 	{
-	case ColliderKind::kCollider:
-		if (hit_collider_pair.target_collider->GetColliderKind() == ColliderKind::kCollider)
-		{
-
-		}
-		break;
-
 	case ColliderKind::kLandingTrigger:
 		// 地形の影響を受けるようにvelocityをdirに保存
 		// TODO : 自身との着地判定は避ける。のちに衝突マネージャーで管理
@@ -146,11 +141,15 @@ void ShellCasing::CalcColliderPos()
 	const auto pos = m_transform->GetPos(CoordinateKind::kWorld);
 
 	// 押し戻し用コライダー
-	auto collider_sphere = std::dynamic_pointer_cast<Sphere>(GetCollider(ColliderKind::kCollider)->GetShape());
+	auto collider_sphere = std::static_pointer_cast<Sphere>(GetCollider(ColliderKind::kCollider)->GetShape());
 	collider_sphere->SetPos(pos);
 
+	// 衝突判定を許可するエリアに利用するトリガー
+	auto collision_area_sphere = std::static_pointer_cast<Sphere>(GetCollider(ColliderKind::kCollisionAreaTrigger)->GetShape());
+	collision_area_sphere->SetPos(pos);
+
 	// 着地用トリガー
-	auto landing_sphere = std::dynamic_pointer_cast<Sphere>(GetCollider(ColliderKind::kLandingTrigger)->GetShape());
+	auto landing_sphere = std::static_pointer_cast<Sphere>(GetCollider(ColliderKind::kLandingTrigger)->GetShape());
 	landing_sphere->SetPos(pos + kLandingTriggerOffsetPos);
 }
 

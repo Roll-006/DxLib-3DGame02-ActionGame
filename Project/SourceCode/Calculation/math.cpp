@@ -1309,4 +1309,11 @@ float math::GetDistanceSquareToCapsule      (const Square&      square,     cons
     const float distance = GetDistanceSegmentToSquare(capsule.GetSegment(), square) - capsule.GetRadius();
     return distance < 0.0f ? 0.0f : distance;
 }
+
+float math::GetDistanceSphereToSphere(const Sphere& sphere1, const Sphere& sphere2)
+{
+    const float radius_sum  = sphere1.GetRadius() + sphere2.GetRadius();
+    const float distance    = VSize(sphere1.GetPos() - sphere2.GetPos()) - radius_sum;
+    return distance <= radius_sum ? 0.0f : distance;
+}
 #pragma endregion

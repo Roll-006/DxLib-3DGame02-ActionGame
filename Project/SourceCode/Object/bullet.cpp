@@ -14,6 +14,7 @@ Bullet::Bullet() :
 	m_power				(0.0f)
 {
 	AddCollider(std::make_shared<Collider>(ColliderKind::kRayCast, std::make_shared<Segment>(), this));
+	AddCollider(std::make_shared<Collider>(ColliderKind::kCollisionAreaTrigger, std::make_shared<Sphere>(v3d::GetZeroV(), kCollisionAreaRadius), this));
 }
 
 Bullet::~Bullet()
@@ -53,8 +54,14 @@ void Bullet::Draw() const
 {
 	if (!IsActive()) { return; }
 
-	DrawSphere3D(m_transform->GetPos(CoordinateKind::kWorld), 2, 8, 0xffffff, 0xffffff, TRUE);
-	std::dynamic_pointer_cast<Segment>(GetCollider(ColliderKind::kRayCast)->GetShape())->Draw(false, 0, 0xffffff);
+	for (auto& collider : m_colliders)
+	{
+		const auto shape = collider.second->GetShape();
+		if (shape != nullptr)
+		{
+			shape->Draw(true, 0, 0xffffff);
+		}
+	}
 }
 
 void Bullet::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
@@ -110,6 +117,10 @@ void Bullet::OnShot(GunBase& gun)
 	m_power				= gun.GetPower();
 
 	CalcRayCastPos();
+
+	// 衝突判定を許可するエリアに利用するトリガー
+	auto collision_area_sphere = std::static_pointer_cast<Sphere>(GetCollider(ColliderKind::kCollisionAreaTrigger)->GetShape());
+	collision_area_sphere->SetPos(m_first_pos);
 
 	const OnShotBulletEvent event{ GetName(), gun.GetOwnerName(), GetObjHandle(), m_transform };
 	EventSystem::GetInstance()->Publish(event);
