@@ -166,7 +166,7 @@ std::vector<std::shared_ptr<IState<Player>>> PlayerStateController::CreateChange
 		// 停止判定
 		for (auto itr = check_stop_state_index.begin(); itr != check_stop_state_index.end(); )
 		{
-			if (future_state.at(i)->IsStop(future_state.at(*itr)->GetStateHandle()) || future_state.at(i)->IsAllStop())
+			if (future_state.at(i)->IsStop(future_state.at(*itr)->GetStateHandle()) || future_state.at(i)->IsStopAllState())
 			{
 				// ステートを停止させ未来のステートに反映
 				StopState(future_state, future_state.at(*itr));
@@ -192,7 +192,7 @@ std::vector<std::shared_ptr<IState<Player>>> PlayerStateController::CreateChange
 		// 停止判定
 		for (auto itr = check_stop_state_index.begin(); itr != check_stop_state_index.end(); )
 		{
-			if (future_state.at(i)->IsStop(future_state.at(*itr)->GetStateHandle()) || future_state.at(i)->IsAllStop())
+			if (future_state.at(i)->IsStop(future_state.at(*itr)->GetStateHandle()) || future_state.at(i)->IsStopAllState())
 			{
 				// ステートを停止させ未来のステートに反映
 				StopState(future_state, future_state.at(*itr));
@@ -357,12 +357,12 @@ bool PlayerStateController::TryGrabbed(std::shared_ptr<Player>& player)
 
 bool PlayerStateController::TryFrontKick(std::shared_ptr<Player>& player)
 {
-	if (player->GetMeleeCandidate().empty())												{ return false; }
+	if (!player->GetMeleeTarget())															{ return false; }
 	if (!CommandHandler::GetInstance()->IsExecute(CommandKind::kMelee, TimeKind::kCurrent)) { return false; }
 
 	// ターゲットをメレー対象となるインターフェイスに変更
-	const auto target_obj		= ObjManager::GetInstance()->GetObj<ObjBase>(player->GetMeleeCandidate().front().target_obj_handle);
-	const auto melee_target		= std::dynamic_pointer_cast<IMeleeHittable>(target_obj);
+	const auto melee_target		= player->GetMeleeTarget();
+	const auto target_obj		= std::dynamic_pointer_cast<ObjBase>(player->GetMeleeTarget());
 
 	// 怯み中(しゃがみ)でない場合は遷移を許可しない
 	if (!melee_target->IsCrouchStun()) { return false; }
@@ -385,12 +385,12 @@ bool PlayerStateController::TryFrontKick(std::shared_ptr<Player>& player)
 
 bool PlayerStateController::TryRoundhouseKick(std::shared_ptr<Player>& player)
 {
-	if (player->GetMeleeCandidate().empty())												{ return false; }
+	if (!player->GetMeleeTarget())															{ return false; }
 	if (!CommandHandler::GetInstance()->IsExecute(CommandKind::kMelee, TimeKind::kCurrent)) { return false; }
 
 	// ターゲットをメレー対象となるインターフェイスに変更
-	const auto target_obj		= ObjManager::GetInstance()->GetObj<ObjBase>(player->GetMeleeCandidate().front().target_obj_handle);
-	const auto melee_target		= std::dynamic_pointer_cast<IMeleeHittable>(target_obj);
+	const auto melee_target = player->GetMeleeTarget();
+	const auto target_obj	= std::dynamic_pointer_cast<ObjBase>(player->GetMeleeTarget());
 	
 	return melee_target->IsStandStun() || melee_target->IsCrouchStun();
 }

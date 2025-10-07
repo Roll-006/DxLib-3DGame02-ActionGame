@@ -1,8 +1,8 @@
 #include "wait.hpp"
 
 zombie_state::Wait::Wait() : 
-	AIStateBase		(static_cast<int>(zombie_state::AIStateKind::kWait)),
-	m_is_all_stop	(false)
+	AIStateBase			(static_cast<int>(zombie_state::AIStateKind::kWait)),
+	m_is_stop_all_state	(false)
 {
 
 }

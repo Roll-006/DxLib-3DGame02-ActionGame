@@ -47,7 +47,10 @@ public:
 	void AttackFrontMelee		(const VECTOR& target_pos, const VECTOR& target_dir) override;
 	void AttackBackMelee		(const VECTOR& target_pos, const VECTOR& target_dir) override;
 	void AttackVersatilityMelee	(const VECTOR& target_pos) override;
-	
+
+	void AddMeleeTarget(const int target_obj_handle) override;
+
+
 	#pragma region Event
 	void AddMeleeCandidate(const OnDownedEnemySpottedEvent& event) override;
 	#pragma endregion
@@ -131,10 +134,12 @@ public:
 	[[nodiscard]] int																GetCurrentRemainingBulletNum()	const override	{ return m_current_remaining_bullet_num; }
 	[[nodiscard]] bool																IsGrabbed					()	const override	{ return m_is_grabbed; }
 	[[nodiscard]] std::vector<MeleeCandidateData>									GetMeleeCandidate			()	const override  { return m_melee_candidate; }
+	[[nodiscard]] std::shared_ptr<IMeleeHittable>									GetMeleeTarget				()	const override	{ return m_melee_target; }
 	#pragma endregion
 
 private:
 	void RemoveMeleeCandidate() override;
+	void RemoveMeleeTarget()	override;
 	void DecisionMeleeTarget()  override;
 
 	void CalcInputSlopeFromPad();
@@ -199,4 +204,5 @@ private:
 	int																	m_current_remaining_bullet_num;		// 残弾数
 	std::shared_ptr<WeaponShortcutSelecter>								m_weapon_shortcut_selecter;			// ショートカットに登録されている武器
 	std::vector<MeleeCandidateData>										m_melee_candidate;					// メレーの候補者リスト
+	std::shared_ptr<IMeleeHittable>										m_melee_target;
 };

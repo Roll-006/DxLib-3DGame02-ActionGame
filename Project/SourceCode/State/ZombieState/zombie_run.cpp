@@ -1,8 +1,8 @@
 #include "zombie_run.hpp"
 
 zombie_state::Run::Run() :
-	ActionStateBase	(static_cast<int>(zombie_state::ActionStateKind::kRun)),
-	m_is_all_stop	(false)
+	ActionStateBase		(static_cast<int>(zombie_state::ActionStateKind::kRun)),
+	m_is_stop_all_state	(false)
 {
 
 }
@@ -45,6 +45,11 @@ std::shared_ptr<IState<Zombie>> zombie_state::Run::ChangeState(std::shared_ptr<Z
 	if (state_controller->TryActionNullForcibly(obj))
 	{
 		return state_controller->GetState<ActionNull, Zombie>();
+	}
+	// ノックバック
+	if (state_controller->TryKnockback(obj))
+	{
+		return state_controller->GetState<Knockback, Zombie>();
 	}
 	// 死亡
 	if (state_controller->TryDead(obj))

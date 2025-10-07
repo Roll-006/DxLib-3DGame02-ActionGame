@@ -81,7 +81,7 @@ void RocketBombExplosionEffect::Draw() const
 {
 	if (!IsActive()) { return; }
 
-	for (auto& collider : m_collider)
+	for (auto& collider : m_colliders)
 	{
 		const auto shape = collider.second->GetShape();
 		if (shape != nullptr)

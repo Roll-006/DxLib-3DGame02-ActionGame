@@ -2,7 +2,7 @@
 
 player_state::Parry::Parry() :
 	WeaponActionStateBase	(static_cast<int>(player_state::WeaponActionStateKind::kParry)),
-	m_is_all_stop			(false)
+	m_is_stop_all_state		(false)
 {
 
 }

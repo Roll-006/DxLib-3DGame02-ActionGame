@@ -3,7 +3,7 @@
 player_state::Reload::Reload() :
 	WeaponActionStateBase	(static_cast<int>(player_state::WeaponActionStateKind::kReload)),
 	m_is_reloaded			(false),
-	m_is_all_stop			(false)
+	m_is_stop_all_state		(false)
 {
 
 }

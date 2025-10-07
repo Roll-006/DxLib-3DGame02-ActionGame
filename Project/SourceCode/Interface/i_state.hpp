@@ -21,5 +21,5 @@ public:
 	[[nodiscard]] virtual int  GetStateKind()   const abstract;
 	[[nodiscard]] virtual int  GetStateHandle() const abstract;
 	[[nodiscard]] virtual bool IsStop(const int state_handle) const abstract;
-	[[nodiscard]] virtual bool IsAllStop() const abstract;
+	[[nodiscard]] virtual bool IsStopAllState() const abstract;
 };

@@ -2,11 +2,11 @@
 #include "../../Object/player.hpp"
 
 zombie_state::Grab::Grab() :
-	ActionStateBase			(static_cast<int>(zombie_state::ActionStateKind::kGrab)),
-	m_grab_camera_controller(nullptr),
-	m_damage_interval_timer	(0.0f),
-	m_grab_timer			(0.0f),
-	m_is_all_stop			(false)
+	ActionStateBase				(static_cast<int>(zombie_state::ActionStateKind::kGrab)),
+	m_grab_camera_controller	(nullptr),
+	m_damage_interval_timer		(0.0f),
+	m_grab_timer				(0.0f),
+	m_is_stop_all_state			(false)
 {
 
 }
@@ -89,6 +89,11 @@ std::shared_ptr<IState<Zombie>> zombie_state::Grab::ChangeState(std::shared_ptr<
 	if (state_controller->TryActionNullForcibly(obj))
 	{
 		return state_controller->GetState<ActionNull, Zombie>();
+	}
+	// ノックバック
+	if (state_controller->TryKnockback(obj))
+	{
+		return state_controller->GetState<Knockback, Zombie>();
 	}
 	// 死亡
 	if (state_controller->TryDead(obj))

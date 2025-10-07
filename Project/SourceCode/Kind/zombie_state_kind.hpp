@@ -28,6 +28,7 @@ namespace zombie_state
 		kGrab,					// 掴み
 		kGrabRun,				// 掴みダッシュ
 		kKnockback,				// ノックバック
+		kStandUp,				// 立ち上がる
 		kStandStun,				// 怯み(立ち状態)
 		kCrouchLeftStun,		// 怯み(左足しゃがみ状態)
 		kCrouchRightStun,		// 怯み(右足しゃがみ状態)

@@ -1,8 +1,8 @@
 #include "knockback.hpp"
 
 zombie_state::Knockback::Knockback() :
-	ActionStateBase	(static_cast<int>(zombie_state::ActionStateKind::kKnockback)),
-	m_is_all_stop	(false)
+	ActionStateBase		(static_cast<int>(zombie_state::ActionStateKind::kKnockback)),
+	m_is_stop_all_state	(true)
 {
 
 }
@@ -39,25 +39,31 @@ std::shared_ptr<IState<Zombie>> zombie_state::Knockback::ChangeState(std::shared
 {
 	const auto state_controller = obj->GetStateController();
 
-	// 死亡
-	if (state_controller->TryDead(obj))
+	if (obj->GetKnockBackSpeed() < math::kEpsilonLow)
 	{
-		return state_controller->GetState<Dead, Zombie>();
-	}
-	// 左足ダウン
-	if (state_controller->TryLeftCrouchStun(obj))
-	{
-		return state_controller->GetState<CrouchLeftStun, Zombie>();
-	}
-	// 右足ダウン
-	if (state_controller->TryRightCrouchStun(obj))
-	{
-		return state_controller->GetState<CrouchRightStun, Zombie>();
-	}
-	// 立ちダウン
-	if (state_controller->TryStandStun(obj))
-	{
-		return state_controller->GetState<StandStun, Zombie>();
+		// 死亡
+		if (state_controller->TryDead(obj))
+		{
+			return state_controller->GetState<Dead, Zombie>();
+		}
+		// 左足ダウン
+		if (state_controller->TryLeftCrouchStun(obj))
+		{
+			return state_controller->GetState<CrouchLeftStun, Zombie>();
+		}
+		// 右足ダウン
+		if (state_controller->TryRightCrouchStun(obj))
+		{
+			return state_controller->GetState<CrouchRightStun, Zombie>();
+		}
+		// 立ちダウン
+		if (state_controller->TryStandStun(obj))
+		{
+			return state_controller->GetState<StandStun, Zombie>();
+		}
+
+		// 立ち上がる
+		return state_controller->GetState<StandUp, Zombie>();
 	}
 
 	return nullptr;

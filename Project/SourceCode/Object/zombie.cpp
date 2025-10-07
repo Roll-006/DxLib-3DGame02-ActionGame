@@ -64,13 +64,13 @@ void Zombie::Update()
 
 	ApplyLookDirToRot(m_look_dir.at(TimeKind::kCurrent));
 
-	m_collider_creator->CalcCapsuleColliderDirAndLength	(m_modeler, m_collider, m_transform);
-	m_collider_creator->CalcVisionTriggerPos	(m_modeler, m_collider);
-	m_collider_creator->CalcVisibleTriggerPos	(m_modeler, m_collider);
-	m_collider_creator->CalcHeadTriggerPos		(m_modeler, m_collider);
-	m_collider_creator->CalcBodyTriggerPos		(m_modeler, m_collider);
-	m_collider_creator->CalcArmTriggerPos		(m_modeler, m_collider);
-	m_collider_creator->CalcLegTriggerPos		(m_modeler, m_collider);
+	m_collider_creator->CalcCapsuleColliderDirAndLength	(m_modeler, m_colliders, m_transform);
+	m_collider_creator->CalcVisionTriggerPos	(m_modeler, m_colliders);
+	m_collider_creator->CalcVisibleTriggerPos	(m_modeler, m_colliders);
+	m_collider_creator->CalcHeadTriggerPos		(m_modeler, m_colliders);
+	m_collider_creator->CalcBodyTriggerPos		(m_modeler, m_colliders);
+	m_collider_creator->CalcArmTriggerPos		(m_modeler, m_colliders);
+	m_collider_creator->CalcLegTriggerPos		(m_modeler, m_colliders);
 
 	auto pos = m_transform->GetScale(CoordinateKind::kWorld);
 }
@@ -99,7 +99,7 @@ void Zombie::Draw() const
 
 	m_modeler->Draw();
 
-	for (auto& collider : m_collider)
+	for (auto& collider : m_colliders)
 	{
 		const auto shape = collider.second->GetShape();
 		if (shape != nullptr)
@@ -140,8 +140,8 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 		// ロケット弾着弾時の爆発エフェクトとの衝突
 		if (target_name == ObjName.ROCKET_BOMB_HIT_EXPLOSION_EFFECT)
 		{
-			if (m_hit_collider.count(hit_collider_pair.target_collider)) { return; }
-			m_hit_collider[hit_collider_pair.target_collider] = hit_collider_pair.target_collider->IsOneCollision();
+			if (m_hit_colliders.count(hit_collider_pair.target_collider)) { return; }
+			m_hit_colliders[hit_collider_pair.target_collider] = hit_collider_pair.target_collider->IsOneCollision();
 
 			if (m_is_invincible) { return; }
 			

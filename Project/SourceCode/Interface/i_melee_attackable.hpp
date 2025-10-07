@@ -2,6 +2,7 @@
 #include "../Event/on_downed_enemy_spotted_event.hpp"
 #include "../Data/melee_candidate_data.hpp"
 #include "../Base/physical_obj_base.hpp"
+#include "i_melee_hittable.hpp"
 
 /// @brief メレー攻撃を行う側
 class IMeleeAttackable abstract
@@ -25,11 +26,14 @@ public:
 	/// @brief メレー候補をイベントにより追加する
 	virtual void AddMeleeCandidate(const OnDownedEnemySpottedEvent& event) abstract;
 
-	virtual [[nodiscard]] std::vector<MeleeCandidateData> GetMeleeCandidate() const abstract;
+	virtual void AddMeleeTarget(const int target_obj_handle) abstract;
+	
+	virtual [[nodiscard]] std::vector<MeleeCandidateData>	GetMeleeCandidate()	const abstract;
+	virtual [[nodiscard]] std::shared_ptr<IMeleeHittable>	GetMeleeTarget()	const abstract;
 	
 protected:
-	/// @brief メレー候補の登録を解除する
 	virtual void RemoveMeleeCandidate() abstract;
+	virtual void RemoveMeleeTarget()	abstract;
 
 	/// @brief メレー対象を決定する
 	virtual void DecisionMeleeTarget()  abstract;

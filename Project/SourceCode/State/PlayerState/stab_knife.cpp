@@ -2,7 +2,7 @@
 
 player_state::StabKnife::StabKnife() :
 	WeaponActionStateBase	(static_cast<int>(player_state::WeaponActionStateKind::kStabKnife)),
-	m_is_all_stop			(false)
+	m_is_stop_all_state		(false)
 {
 
 }

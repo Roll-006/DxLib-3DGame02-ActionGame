@@ -5,7 +5,7 @@ player_state::ShotRocketLauncher::ShotRocketLauncher() :
 	m_rocket_launcher_camera_controller	(nullptr),
 	m_wait_timer						(0.0f),
 	m_was_shot							(false),
-	m_is_all_stop						(false)
+	m_is_stop_all_state					(false)
 {
 	
 }

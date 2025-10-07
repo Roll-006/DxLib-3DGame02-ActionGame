@@ -53,6 +53,7 @@ void ZombieStateController::CreateState()
 	m_states[typeid(zombie_state::Grab)]				= std::make_shared<zombie_state::Grab>();
 	m_states[typeid(zombie_state::GrabRun)]				= std::make_shared<zombie_state::GrabRun>();
 	m_states[typeid(zombie_state::Knockback)]			= std::make_shared<zombie_state::Knockback>();
+	m_states[typeid(zombie_state::StandUp)]				= std::make_shared<zombie_state::StandUp>();
 	m_states[typeid(zombie_state::StandStun)]			= std::make_shared<zombie_state::StandStun>();
 	m_states[typeid(zombie_state::CrouchLeftStun)]		= std::make_shared<zombie_state::CrouchLeftStun>();
 	m_states[typeid(zombie_state::CrouchRightStun)]		= std::make_shared<zombie_state::CrouchRightStun>();
@@ -121,7 +122,7 @@ std::vector<std::shared_ptr<IState<Zombie>>> ZombieStateController::CreateChange
 		// 停止判定
 		for (auto itr = check_stop_state_index.begin(); itr != check_stop_state_index.end(); )
 		{
-			if (future_state.at(i)->IsStop(future_state.at(*itr)->GetStateHandle()) || future_state.at(i)->IsAllStop())
+			if (future_state.at(i)->IsStop(future_state.at(*itr)->GetStateHandle()) || future_state.at(i)->IsStopAllState())
 			{
 				// ステートを停止させ未来のステートに反映
 				StopState(future_state, future_state.at(*itr));
@@ -147,7 +148,7 @@ std::vector<std::shared_ptr<IState<Zombie>>> ZombieStateController::CreateChange
 		// 停止判定
 		for (auto itr = check_stop_state_index.begin(); itr != check_stop_state_index.end(); )
 		{
-			if (future_state.at(i)->IsStop(future_state.at(*itr)->GetStateHandle()) || future_state.at(i)->IsAllStop())
+			if (future_state.at(i)->IsStop(future_state.at(*itr)->GetStateHandle()) || future_state.at(i)->IsStopAllState())
 			{
 				// ステートを停止させ未来のステートに反映
 				StopState(future_state, future_state.at(*itr));
@@ -314,6 +315,11 @@ bool ZombieStateController::TryGrabRun()
 	const auto is_run_attack = ai_state_kind == zombie_state::AIStateKind::kRunAttack ? true : false;
 
 	return is_run_attack;
+}
+
+bool ZombieStateController::TryKnockback(std::shared_ptr<Zombie>& zombie)
+{
+	return zombie->GetKnockBackSpeed() > 0.0f;
 }
 
 bool ZombieStateController::TryDead(std::shared_ptr<Zombie>& zombie)

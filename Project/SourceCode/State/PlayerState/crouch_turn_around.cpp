@@ -1,8 +1,8 @@
 #include "crouch_turn_around.hpp"
 
 player_state::CrouchTurnAround::CrouchTurnAround() :
-	ActionStateBase	(static_cast<int>(player_state::ActionStateKind::kCrouchTurnAround)),
-	m_is_all_stop	(false)
+	ActionStateBase		(static_cast<int>(player_state::ActionStateKind::kCrouchTurnAround)),
+	m_is_stop_all_state	(false)
 {
 
 }

@@ -30,21 +30,24 @@ void ZombieAnimator::Update()
 void ZombieAnimator::LoadAnim()
 {
 	// 汎用
-	AddAnimHandle(static_cast<int>(ZombieAnimKind::kIdle),				AnimPath.ZOMBIE_IDLE_01,				0, AnimTag.NONE, 20.0f,  true);
-	AddAnimHandle(static_cast<int>(ZombieAnimKind::kMoveForwardWalk),	AnimPath.MOVE_FORWARD_WALK,				0, AnimTag.MOVE, 20.0f,  true);
-	AddAnimHandle(static_cast<int>(ZombieAnimKind::kMoveForwardRun),	AnimPath.MOVE_FORWARD_RUN_02,			0, AnimTag.MOVE, 20.0f,  true);
-	AddAnimHandle(static_cast<int>(ZombieAnimKind::kEnterNeckBite),		AnimPath.ENTER_NECK_BITE,				0, AnimTag.NONE, 20.0f,  true, true);
-	AddAnimHandle(static_cast<int>(ZombieAnimKind::kEnterNeckBite),		AnimPath.EXIT_NECK_BITE,				0, AnimTag.NONE, 20.0f,  false);
-	AddAnimHandle(static_cast<int>(ZombieAnimKind::kDead),				AnimPath.DEAD,							0, AnimTag.NONE, 40.0f,  false);
-	AddAnimHandle(static_cast<int>(ZombieAnimKind::kCrouchDead),		AnimPath.CROUCH_DEAD,					0, AnimTag.NONE, 20.0f,  false);
+	AddAnimHandle(static_cast<int>(ZombieAnimKind::kIdle),					AnimPath.ZOMBIE_IDLE_01,				0, AnimTag.NONE, 20.0f,  true);
+	AddAnimHandle(static_cast<int>(ZombieAnimKind::kMoveForwardWalk),		AnimPath.MOVE_FORWARD_WALK,				0, AnimTag.MOVE, 20.0f,  true);
+	AddAnimHandle(static_cast<int>(ZombieAnimKind::kMoveForwardRun),		AnimPath.MOVE_FORWARD_RUN_02,			0, AnimTag.MOVE, 40.0f,  true);
+	AddAnimHandle(static_cast<int>(ZombieAnimKind::kEnterNeckBite),			AnimPath.ENTER_NECK_BITE,				0, AnimTag.NONE, 20.0f,  true, true);
+	AddAnimHandle(static_cast<int>(ZombieAnimKind::kEnterNeckBite),			AnimPath.EXIT_NECK_BITE,				0, AnimTag.NONE, 20.0f,  false);
+	AddAnimHandle(static_cast<int>(ZombieAnimKind::kDead),					AnimPath.DEAD,							0, AnimTag.NONE, 60.0f,  false);
+	AddAnimHandle(static_cast<int>(ZombieAnimKind::kCrouchDead),			AnimPath.CROUCH_DEAD,					0, AnimTag.NONE, 20.0f,  false);
+	AddAnimHandle(static_cast<int>(ZombieAnimKind::kFlyingKnockbackUp),		AnimPath.FLYING_KNOCKBACK_UP,			0, AnimTag.NONE, 35.0f,  false);
+	AddAnimHandle(static_cast<int>(ZombieAnimKind::kFlyingKnockbackDown),	AnimPath.FLYING_KNOCKBACK_DOWN,			0, AnimTag.NONE, 35.0f,	 false);
+	AddAnimHandle(static_cast<int>(ZombieAnimKind::kStandUp),				AnimPath.STAND_UP_ZOMBIE,				0, AnimTag.NONE, 35.0f,  false);
 
 	// 上半身用
-	AddAnimHandle(static_cast<int>(ZombieAnimKind::kGrab),				AnimPath.GRAB,							0, AnimTag.NONE, 10.0f,  true);
-	AddAnimHandle(static_cast<int>(ZombieAnimKind::kStandStun),			AnimPath.STAND_STUN,					0, AnimTag.NONE, 2.0f,   true);
+	AddAnimHandle(static_cast<int>(ZombieAnimKind::kGrab),					AnimPath.GRAB,							0, AnimTag.NONE, 10.0f,  true);
+	AddAnimHandle(static_cast<int>(ZombieAnimKind::kStandStun),				AnimPath.STAND_STUN,					0, AnimTag.NONE, 2.0f,   true);
 
 	// 下半身用
-	AddAnimHandle(static_cast<int>(ZombieAnimKind::kCrouchLeftStun),	AnimPath.LEANING_FORWARD_CROUCH_LEFT,	0, AnimTag.MOVE, 0.0f,   true);
-	AddAnimHandle(static_cast<int>(ZombieAnimKind::kCrouchRightStun),	AnimPath.LEANING_FORWARD_CROUCH_RIGHT,	0, AnimTag.MOVE, 0.0f,   true);
+	AddAnimHandle(static_cast<int>(ZombieAnimKind::kCrouchLeftStun),		AnimPath.LEANING_FORWARD_CROUCH_LEFT,	0, AnimTag.MOVE, 0.0f,   true);
+	AddAnimHandle(static_cast<int>(ZombieAnimKind::kCrouchRightStun),		AnimPath.LEANING_FORWARD_CROUCH_RIGHT,	0, AnimTag.MOVE, 0.0f,   true);
 }
 
 void ZombieAnimator::ChangeAnim()
@@ -79,6 +82,11 @@ void ZombieAnimator::CombineMoveNullWithAction()
 		break;
 
 	case static_cast<int>(zombie_state::ActionStateKind::kKnockback):
+		AttachResultAnim(static_cast<int>(ZombieAnimKind::kFlyingKnockbackDown));
+		break;
+
+	case static_cast<int>(zombie_state::ActionStateKind::kStandUp):
+		AttachResultAnim(static_cast<int>(ZombieAnimKind::kStandUp));
 		break;
 
 	case static_cast<int>(zombie_state::ActionStateKind::kStandStun):
@@ -121,9 +129,6 @@ void ZombieAnimator::CombineMoveWithAction()
 	case static_cast<int>(zombie_state::ActionStateKind::kGrabRun):
 		AttachAnim(static_cast<int>(ZombieAnimKind::kMoveForwardRun),	BodyKind::kLowerBody);
 		AttachAnim(static_cast<int>(ZombieAnimKind::kGrab),				BodyKind::kUpperBody);
-		break;
-
-	case static_cast<int>(zombie_state::ActionStateKind::kKnockback):
 		break;
 
 	default:

@@ -1,8 +1,8 @@
 #include "finish_off.hpp"
 
 player_state::FinishOff::FinishOff() :
-	ActionStateBase	(static_cast<int>(player_state::ActionStateKind::kFinishOff)),
-	m_is_all_stop	(false)
+	ActionStateBase		(static_cast<int>(player_state::ActionStateKind::kFinishOff)),
+	m_is_stop_all_state	(false)
 {
 
 }

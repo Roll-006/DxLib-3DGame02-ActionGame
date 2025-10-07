@@ -1,8 +1,8 @@
 #include "escape.hpp"
 
 player_state::Escape::Escape() :
-	ActionStateBase(static_cast<int>(player_state::ActionStateKind::kEscape)),
-	m_is_all_stop	(false)
+	ActionStateBase		(static_cast<int>(player_state::ActionStateKind::kEscape)),
+	m_is_stop_all_state	(false)
 {
 
 }

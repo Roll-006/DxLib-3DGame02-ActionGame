@@ -63,13 +63,14 @@ public:
 	void SetColliderModelHandle(const int model_handle) { m_model_handle = model_handle; }
 	void SetVelocity(const VECTOR& velocity) { m_velocity = velocity; }
 
-	[[nodiscard]] int		GetColliderModelHandle() const { return m_model_handle; }
-	[[nodiscard]] VECTOR	GetVelocity()			 const { return m_velocity; }
-	[[nodiscard]] VECTOR	GetMoveVelocity()		 const { return m_move_velocity; }
-	[[nodiscard]] VECTOR	GetFallVelocity()		 const { return m_fall_velocity; }
-	[[nodiscard]] MassKind	GetMassKind()			 const { return m_mass_kind; }
+	[[nodiscard]] int		GetColliderModelHandle()	const { return m_model_handle; }
+	[[nodiscard]] float		GetKnockBackSpeed()			const { return m_knockback_speed; }
+	[[nodiscard]] VECTOR	GetVelocity()				const { return m_velocity; }
+	[[nodiscard]] VECTOR	GetMoveVelocity()			const { return m_move_velocity; }
+	[[nodiscard]] VECTOR	GetFallVelocity()			const { return m_fall_velocity; }
+	[[nodiscard]] MassKind	GetMassKind()				const { return m_mass_kind; }
 	[[nodiscard]] std::shared_ptr<Collider> GetCollider(const ColliderKind kind) const;
-	[[nodiscard]] std::unordered_map<ColliderKind, std::shared_ptr<Collider>> GetColliderAll() const { return m_collider; }
+	[[nodiscard]] std::unordered_map<ColliderKind, std::shared_ptr<Collider>> GetColliderAll() const { return m_colliders; }
 
 protected:
 	VECTOR	 m_velocity;
@@ -83,8 +84,8 @@ protected:
 	bool	 m_use_projection_velocity;	// velocity‚ð’n–Ê‚É’£‚è•t‚¯‚é‚©‚ð”»’è
 	MassKind m_mass_kind;
 
-	std::unordered_map<ColliderKind, std::shared_ptr<Collider>> m_collider;
-	std::unordered_map<std::shared_ptr<Collider>, bool> m_hit_collider;
+	std::unordered_map<ColliderKind, std::shared_ptr<Collider>> m_colliders;
+	std::unordered_map<std::shared_ptr<Collider>, bool> m_hit_colliders;
 
 private:
 	int		m_model_handle;

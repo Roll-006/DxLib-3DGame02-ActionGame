@@ -1,8 +1,8 @@
 #include "zombie_idle.hpp"
 
 zombie_state::Idle::Idle() :
-	MoveStateBase(static_cast<int>(zombie_state::MoveStateKind::kMoveNull)),
-	m_is_all_stop(false)
+	MoveStateBase		(static_cast<int>(zombie_state::MoveStateKind::kMoveNull)),
+	m_is_stop_all_state	(false)
 {
 
 }

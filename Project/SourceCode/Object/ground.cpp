@@ -45,7 +45,7 @@ void Ground::Draw() const
 
 	m_modeler->Draw();
 
-	for (const auto& collider : m_collider)
+	for (const auto& collider : m_colliders)
 	{
 		const auto shape = collider.second->GetShape();
 		if (shape != nullptr)

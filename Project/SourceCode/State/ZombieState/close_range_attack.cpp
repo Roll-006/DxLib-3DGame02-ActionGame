@@ -1,8 +1,8 @@
 #include "close_range_attack.hpp"
 
 zombie_state::CloseRangeAttack::CloseRangeAttack() :
-	AIStateBase		(static_cast<int>(zombie_state::AIStateKind::kCloseRangeAttack)),
-	m_is_all_stop	(false)
+	AIStateBase			(static_cast<int>(zombie_state::AIStateKind::kCloseRangeAttack)),
+	m_is_stop_all_state	(false)
 {
 
 }

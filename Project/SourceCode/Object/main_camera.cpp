@@ -53,7 +53,7 @@ void MainCamera::Draw() const
 {
 	if (!IsActive()) { return; }
 
-	for (const auto& collider : m_collider)
+	for (const auto& collider : m_colliders)
 	{
 		const auto shape = collider.second->GetShape();
 		if (shape != nullptr)

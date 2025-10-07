@@ -4,15 +4,13 @@
 #include "../../Object/zombie.hpp"
 #include "../../Part/zombie_state_controller.hpp"
 
-class Zombie;
-
 namespace zombie_state
 {
-	class Run final : public ActionStateBase<Zombie>
+	class StandUp final : public ActionStateBase<Zombie>
 	{
 	public:
-		Run();
-		~Run() override;
+		StandUp();
+		~StandUp() override;
 
 		void Update		(std::shared_ptr<Zombie>& obj) override;
 		void LateUpdate	(std::shared_ptr<Zombie>& obj) override;

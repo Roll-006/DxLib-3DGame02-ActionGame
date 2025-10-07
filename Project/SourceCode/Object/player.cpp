@@ -10,7 +10,8 @@ Player::Player() :
 	m_look_dir_offset_speed				(0.0f),
 	m_prev_health						(0.0f),
 	m_is_grabbed						(false),
-	m_weapon_shortcut_selecter			(std::make_shared<WeaponShortcutSelecter>())
+	m_weapon_shortcut_selecter			(std::make_shared<WeaponShortcutSelecter>()),
+	m_melee_target						(nullptr)
 {
 	// ƒCƒxƒ“ƒg‚Ì“o˜^
 	EventSystem::GetInstance()->Subscribe<OnDownedEnemySpottedEvent>(this, &Player::AddMeleeCandidate);
@@ -112,8 +113,8 @@ void Player::Update()
 	CalcLookDir();
 	CalcMoveVelocity();
 
-	m_collider_creator->CalcCapsuleColliderDirAndLength	(m_modeler, m_collider, m_transform);
-	m_collider_creator->CalcVisibleTriggerPos			(m_modeler, m_collider);
+	m_collider_creator->CalcCapsuleColliderDirAndLength	(m_modeler, m_colliders, m_transform);
+	m_collider_creator->CalcVisibleTriggerPos			(m_modeler, m_colliders);
 
 	ApplyLookDirToRot(m_look_dir.at(TimeKind::kCurrent));
 }
@@ -134,8 +135,6 @@ void Player::LateUpdate()
 			attach_weapon.second->LateUpdate();
 		}
 	}
-
-	RemoveMeleeCandidate();
 }
 
 void Player::DrawToShadowMap() const
@@ -165,7 +164,7 @@ void Player::Draw() const
 		if (attach_weapon.second) { attach_weapon.second->Draw(); }
 	}
 
-	for (const auto& collider : m_collider)
+	for (const auto& collider : m_colliders)
 	{
 		const auto shape = collider.second->GetShape();
 		if (shape != nullptr)
@@ -198,6 +197,7 @@ void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 		{
 			OnCollideVersatilityMelee(target_obj);
 		}
+		break;
 
 	default:
 		break;
@@ -266,6 +266,8 @@ void Player::AttackFrontMelee(const VECTOR& target_pos, const VECTOR& target_dir
 
 	m_look_dir.at(TimeKind::kNext) = -target_dir;
 	m_destination_pos = target_pos + target_dir * 24.0f;
+
+	RemoveMeleeTarget();
 }
 
 void Player::AttackBackMelee(const VECTOR& target_pos, const VECTOR& target_dir)
@@ -274,6 +276,8 @@ void Player::AttackBackMelee(const VECTOR& target_pos, const VECTOR& target_dir)
 
 	m_look_dir.at(TimeKind::kNext) = target_dir;
 	m_destination_pos = target_pos - target_dir * 24.0f;
+
+	RemoveMeleeTarget();
 }
 
 void Player::AttackVersatilityMelee(const VECTOR& target_pos)
@@ -287,6 +291,24 @@ void Player::AttackVersatilityMelee(const VECTOR& target_pos)
 
 	m_look_dir.at(TimeKind::kNext) = dir;
 	m_destination_pos = target_pos - dir * 24.0f;
+
+	RemoveMeleeTarget();
+}
+
+void Player::RemoveMeleeCandidate()
+{
+	m_melee_candidate.clear();
+}
+
+void Player::AddMeleeTarget(const int target_obj_handle)
+{
+	const auto target_obj = ObjManager::GetInstance()->GetObj<ObjBase>(target_obj_handle);
+	m_melee_target = std::dynamic_pointer_cast<IMeleeHittable>(target_obj);
+}
+
+void Player::RemoveMeleeTarget()
+{
+	m_melee_target = nullptr;
 }
 
 
@@ -554,17 +576,14 @@ WeaponKind Player::GetCurrentAttachWeaponKind(const HolsterKind holster_kind) co
 #pragma endregion
 
 
-void Player::RemoveMeleeCandidate()
-{
-	m_melee_candidate.clear();
-}
-
 void Player::DecisionMeleeTarget()
 {
 	if (m_melee_candidate.empty()) { return; }
 
 	MeleeTargetSelecter target_selecter;
-	target_selecter.SelectMeleeTarget(m_transform->GetForward(CoordinateKind::kWorld), m_melee_candidate);
+	auto melee_attacker = std::dynamic_pointer_cast<IMeleeAttackable>(shared_from_this());
+	target_selecter.SelectMeleeTarget(m_transform->GetForward(CoordinateKind::kWorld), melee_attacker);
+	RemoveMeleeCandidate();
 }
 
 void Player::CalcInputSlopeFromPad()

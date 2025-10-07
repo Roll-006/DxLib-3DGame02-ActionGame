@@ -274,6 +274,7 @@
     <ClCompile Include="SourceCode\State\ZombieState\close_range_attack.cpp" />
     <ClCompile Include="SourceCode\State\ZombieState\crouch_right_stun.cpp" />
     <ClCompile Include="SourceCode\State\ZombieState\grab_run.cpp" />
+    <ClCompile Include="SourceCode\State\ZombieState\stand_up.cpp" />
     <ClCompile Include="SourceCode\State\ZombieState\long_range_attack.cpp" />
     <ClCompile Include="SourceCode\State\ZombieState\run_attack.cpp" />
     <ClCompile Include="SourceCode\State\ZombieState\zombie_idle.cpp" />
@@ -559,6 +560,7 @@
     <ClInclude Include="SourceCode\State\ZombieState\close_range_attack.hpp" />
     <ClInclude Include="SourceCode\State\ZombieState\crouch_right_stun.hpp" />
     <ClInclude Include="SourceCode\State\ZombieState\grab_run.hpp" />
+    <ClInclude Include="SourceCode\State\ZombieState\stand_up.hpp" />
     <ClInclude Include="SourceCode\State\ZombieState\long_range_attack.hpp" />
     <ClInclude Include="SourceCode\State\ZombieState\run_attack.hpp" />
     <ClInclude Include="SourceCode\State\ZombieState\zombie_idle.hpp" />

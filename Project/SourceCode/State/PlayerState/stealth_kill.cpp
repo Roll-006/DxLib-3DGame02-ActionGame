@@ -1,8 +1,8 @@
 #include "stealth_kill.hpp"
 
 player_state::StealthKill::StealthKill() :
-	ActionStateBase(static_cast<int>(player_state::ActionStateKind::kStealthKill)),
-	m_is_all_stop	(false)
+	ActionStateBase		(static_cast<int>(player_state::ActionStateKind::kStealthKill)),
+	m_is_stop_all_state	(false)
 {
 
 }

@@ -2,7 +2,7 @@
 
 player_state::Shot::Shot() :
 	WeaponActionStateBase	(static_cast<int>(player_state::WeaponActionStateKind::kShot)),
-	m_is_all_stop			(false)
+	m_is_stop_all_state		(false)
 {
 
 }

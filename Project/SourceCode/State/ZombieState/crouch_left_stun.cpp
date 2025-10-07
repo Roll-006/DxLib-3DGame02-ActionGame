@@ -1,9 +1,9 @@
 #include "crouch_left_stun.hpp"
 
 zombie_state::CrouchLeftStun::CrouchLeftStun() :
-	ActionStateBase	(static_cast<int>(zombie_state::ActionStateKind::kCrouchLeftStun)),
-	m_stun_timer	(0.0f),
-	m_is_all_stop	(false)
+	ActionStateBase		(static_cast<int>(zombie_state::ActionStateKind::kCrouchLeftStun)),
+	m_stun_timer		(0.0f),
+	m_is_stop_all_state	(false)
 {
 
 }
@@ -44,6 +44,11 @@ std::shared_ptr<IState<Zombie>> zombie_state::CrouchLeftStun::ChangeState(std::s
 {
 	const auto state_controller = obj->GetStateController();
 
+	// ノックバック
+	if (state_controller->TryKnockback(obj))
+	{
+		return state_controller->GetState<Knockback, Zombie>();
+	}
 	// 死亡
 	if (state_controller->TryDead(obj))
 	{

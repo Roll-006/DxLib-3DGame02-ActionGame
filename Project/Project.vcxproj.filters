@@ -505,6 +505,9 @@
     <ClCompile Include="SourceCode\Part\weapon_graphic_getter.cpp">
       <Filter>SourceCode\Part</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\State\ZombieState\stand_up.cpp">
+      <Filter>SourceCode\State\ZombieState</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\character_base.hpp">
@@ -1314,9 +1317,6 @@
     <ClInclude Include="SourceCode\State\ZombieState\crouch_right_stun.hpp">
       <Filter>SourceCode\State\ZombieState</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Part\zombie_state_controller.hpp">
-      <Filter>SourceCode\Part</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\Shape\3DShape\cone.hpp">
       <Filter>SourceCode\Shape\3DShape</Filter>
     </ClInclude>
@@ -1352,6 +1352,12 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Part\weapon_graphic_getter.hpp">
       <Filter>SourceCode\Part</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Part\zombie_state_controller.hpp">
+      <Filter>SourceCode\Part</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\ZombieState\stand_up.hpp">
+      <Filter>SourceCode\State\ZombieState</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

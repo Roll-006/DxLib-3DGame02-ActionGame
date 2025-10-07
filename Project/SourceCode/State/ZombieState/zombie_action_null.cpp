@@ -1,8 +1,8 @@
 #include "zombie_action_null.hpp"
 
 zombie_state::ActionNull::ActionNull() :
-	ActionStateBase	(static_cast<int>(zombie_state::ActionStateKind::kActionNull)),
-	m_is_all_stop	(false)
+	ActionStateBase		(static_cast<int>(zombie_state::ActionStateKind::kActionNull)),
+	m_is_stop_all_state	(false)
 {
 
 }
@@ -43,6 +43,11 @@ std::shared_ptr<IState<Zombie>> zombie_state::ActionNull::ChangeState(std::share
 	if (state_controller->TryActionNullForcibly(obj))
 	{
 		return nullptr;
+	}
+	// ノックバック
+	if (state_controller->TryKnockback(obj))
+	{
+		return state_controller->GetState<Knockback, Zombie>();
 	}
 	// 死亡
 	if (state_controller->TryDead(obj))

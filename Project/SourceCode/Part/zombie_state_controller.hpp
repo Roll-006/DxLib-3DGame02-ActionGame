@@ -20,6 +20,7 @@
 #include "../State/ZombieState/grab.hpp"
 #include "../State/ZombieState/grab_run.hpp"
 #include "../State/ZombieState/knockback.hpp"
+#include "../State/ZombieState/stand_up.hpp"
 #include "../State/ZombieState/stand_stun.hpp"
 #include "../State/ZombieState/crouch_left_stun.hpp"
 #include "../State/ZombieState/crouch_right_stun.hpp"
@@ -53,6 +54,7 @@ public:
 	[[nodiscard]] bool TryWalk				(std::shared_ptr<Zombie>& zombie);
 	[[nodiscard]] bool TryRun				(std::shared_ptr<Zombie>& zombie);
 	[[nodiscard]] bool TryGrabRun			();
+	[[nodiscard]] bool TryKnockback			(std::shared_ptr<Zombie>& zombie);
 	[[nodiscard]] bool TryDead				(std::shared_ptr<Zombie>& zombie);
 	[[nodiscard]] bool TryLeftCrouchStun	(std::shared_ptr<Zombie>& zombie);
 	[[nodiscard]] bool TryRightCrouchStun	(std::shared_ptr<Zombie>& zombie);

@@ -18,9 +18,9 @@ namespace player_state
 		void Exit		(std::shared_ptr<Player>& obj) override;
 
 		[[nodiscard]] std::shared_ptr<IState<Player>> ChangeState(std::shared_ptr<Player>& obj) override;
-		[[nodiscard]] bool IsAllStop() const override { return m_is_all_stop; }
+		[[nodiscard]] bool IsStopAllState() const override { return m_is_stop_all_state; }
 		
 	private:
-		bool m_is_all_stop;
+		bool m_is_stop_all_state;
 	};
 }

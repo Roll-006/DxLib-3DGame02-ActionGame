@@ -1,9 +1,9 @@
 #include "stand_stun.hpp"
 
 zombie_state::StandStun::StandStun() :
-	ActionStateBase	(static_cast<int>(zombie_state::ActionStateKind::kStandStun)),
-	m_stun_timer	(0.0f),
-	m_is_all_stop	(false)
+	ActionStateBase		(static_cast<int>(zombie_state::ActionStateKind::kStandStun)),
+	m_stun_timer		(0.0f),
+	m_is_stop_all_state	(false)
 {
 
 }
@@ -44,6 +44,11 @@ std::shared_ptr<IState<Zombie>> zombie_state::StandStun::ChangeState(std::shared
 {
 	const auto state_controller = obj->GetStateController();
 
+	// ノックバック
+	if (state_controller->TryKnockback(obj))
+	{
+		return state_controller->GetState<Knockback, Zombie>();
+	}
 	// 死亡
 	if (state_controller->TryDead(obj))
 	{

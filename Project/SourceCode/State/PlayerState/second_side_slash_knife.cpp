@@ -3,7 +3,7 @@
 player_state::SecondSideSlashKnife::SecondSideSlashKnife() :
 	WeaponActionStateBase	(static_cast<int>(player_state::WeaponActionStateKind::kSecondSideSlashKnife)),
 	m_combo_timer			(0.0f),
-	m_is_all_stop			(false)
+	m_is_stop_all_state		(false)
 {
 
 }

@@ -2,7 +2,7 @@
 
 player_state::RoundhouseKick::RoundhouseKick() :
 	ActionStateBase			(static_cast<int>(player_state::ActionStateKind::kRoundhouseKick)),
-	m_is_all_stop			(true),
+	m_is_stop_all_state		(true),
 	m_has_trigger_created	(false),
 	m_has_trigger_deleted	(false)
 {
@@ -70,7 +70,7 @@ void player_state::RoundhouseKick::Enter(std::shared_ptr<Player>& obj)
 	m_has_trigger_created = false;
 	m_has_trigger_deleted = false;
 
-	const auto target_obj		= ObjManager::GetInstance()->GetObj<ObjBase>(obj->GetMeleeCandidate().front().target_obj_handle);
+	const auto target_obj		= std::dynamic_pointer_cast<ObjBase>(obj->GetMeleeTarget());
 	const auto target_transform = target_obj->GetTransform();
 
 	obj->AttackVersatilityMelee(target_transform->GetPos(CoordinateKind::kWorld));

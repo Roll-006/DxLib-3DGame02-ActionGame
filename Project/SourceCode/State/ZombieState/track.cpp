@@ -1,8 +1,8 @@
 #include "track.hpp"
 
 zombie_state::Track::Track() :
-	AIStateBase		(static_cast<int>(zombie_state::AIStateKind::kTrack)),
-	m_is_all_stop	(false)
+	AIStateBase			(static_cast<int>(zombie_state::AIStateKind::kTrack)),
+	m_is_stop_all_state	(false)
 {
 
 }

@@ -1,8 +1,8 @@
 #include "run_attack.hpp"
 
 zombie_state::RunAttack::RunAttack() :
-	AIStateBase		(static_cast<int>(zombie_state::AIStateKind::kRunAttack)),
-	m_is_all_stop	(false)
+	AIStateBase			(static_cast<int>(zombie_state::AIStateKind::kRunAttack)),
+	m_is_stop_all_state	(false)
 {
 
 }

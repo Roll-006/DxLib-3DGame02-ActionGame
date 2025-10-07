@@ -3,7 +3,7 @@
 player_state::Move::Move() :
 	MoveStateBase			(static_cast<int>(player_state::MoveStateKind::kMove)),
 	m_is_first_move_frame	(false),
-	m_is_all_stop			(false)
+	m_is_stop_all_state		(false)
 {
 
 }

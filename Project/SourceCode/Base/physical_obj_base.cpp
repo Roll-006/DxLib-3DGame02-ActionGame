@@ -28,7 +28,7 @@ void PhysicalObjBase::OnKnockback(const VECTOR& dir, const float initial_velocit
 
 void PhysicalObjBase::RemoveHitTriangles()
 {
-	for (const auto& collider : m_collider)
+	for (const auto& collider : m_colliders)
 	{
 		collider.second->RemoveHitTriangle();
 		collider.second->RemoveHitModelTriangle();
@@ -37,11 +37,11 @@ void PhysicalObjBase::RemoveHitTriangles()
 
 void PhysicalObjBase::RemoveHitCollider()
 {
-	for (auto itr = m_hit_collider.begin(); itr != m_hit_collider.end(); )
+	for (auto itr = m_hit_colliders.begin(); itr != m_hit_colliders.end(); )
 	{
 		if (!itr->second)
 		{
-			itr = m_hit_collider.erase(itr);
+			itr = m_hit_colliders.erase(itr);
 		}
 		else
 		{
@@ -82,7 +82,7 @@ void PhysicalObjBase::ApplyVelocity()
 {
 	m_transform->Move(CoordinateKind::kWorld, m_velocity);
 
-	for (const auto& collider : m_collider)
+	for (const auto& collider : m_colliders)
 	{
 		const auto shape = collider.second->GetShape();
 		if (shape != nullptr)
@@ -168,18 +168,18 @@ void PhysicalObjBase::ApplyKnockbackVelocity()
 
 std::shared_ptr<Collider> PhysicalObjBase::GetCollider(const ColliderKind kind) const
 {
-	return m_collider.count(kind) ? m_collider.at(kind) : nullptr;
+	return m_colliders.count(kind) ? m_colliders.at(kind) : nullptr;
 }
 
 void PhysicalObjBase::AddCollider(const std::shared_ptr<Collider>& collider)
 {
-	if (!m_collider.count(collider->GetColliderKind()))
+	if (!m_colliders.count(collider->GetColliderKind()))
 	{
-		m_collider[collider->GetColliderKind()] = collider;
+		m_colliders[collider->GetColliderKind()] = collider;
 	}
 }
 
 void PhysicalObjBase::RemoveCollider(const ColliderKind collider_kind)
 {
-	m_collider.erase(collider_kind);
+	m_colliders.erase(collider_kind);
 }

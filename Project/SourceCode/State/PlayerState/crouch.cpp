@@ -1,8 +1,8 @@
 #include "crouch.hpp"
 
 player_state::Crouch::Crouch() :
-	ActionStateBase	(static_cast<int>(player_state::ActionStateKind::kCrouch)),
-	m_is_all_stop	(false)
+	ActionStateBase		(static_cast<int>(player_state::ActionStateKind::kCrouch)),
+	m_is_stop_all_state	(false)
 {
 
 }
