@@ -134,7 +134,7 @@ public:
 	[[nodiscard]] int																GetCurrentRemainingBulletNum()	const override	{ return m_current_remaining_bullet_num; }
 	[[nodiscard]] bool																IsGrabbed					()	const override	{ return m_is_grabbed; }
 	[[nodiscard]] std::vector<MeleeCandidateData>									GetMeleeCandidate			()	const override  { return m_melee_candidate; }
-	[[nodiscard]] std::shared_ptr<IMeleeHittable>									GetMeleeTarget				()	const override	{ return m_melee_target; }
+	[[nodiscard]] std::shared_ptr<IMeleeHittable>&									GetMeleeTarget				()  override		{ return m_melee_target; }
 	#pragma endregion
 
 private:

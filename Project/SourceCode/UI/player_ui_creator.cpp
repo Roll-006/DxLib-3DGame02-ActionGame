@@ -5,6 +5,7 @@ PlayerUICreator::PlayerUICreator(const std::shared_ptr<Player>& player) :
 	m_priority			(10),
 	m_is_active			(true),
 	m_player			(player),
+	m_melee_target_icon	(std::make_shared<MeleeTargetIcon>(player->GetMeleeTarget())),
 	m_status_icons		(std::make_shared<StatusIcons>(player)),
 	m_weapon_shortcut	(std::make_shared<WeaponShortcutDrawer>(
 							player->GetStateController()->GetWeaponActionState(),
@@ -21,6 +22,7 @@ PlayerUICreator::~PlayerUICreator()
 
 void PlayerUICreator::LateUpdate()
 {
+	m_melee_target_icon	->LateUpdate();
 	m_weapon_shortcut	->LateUpdate();
 	m_status_icons		->LateUpdate();
 	//CreateCrossHair();
@@ -28,6 +30,7 @@ void PlayerUICreator::LateUpdate()
 
 void PlayerUICreator::OnDraw(const int main_screen_handle)
 {
+	m_melee_target_icon	->Draw();
 	m_weapon_shortcut	->Draw(main_screen_handle);
 	m_status_icons		->Draw();
 

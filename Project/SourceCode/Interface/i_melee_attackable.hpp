@@ -29,7 +29,7 @@ public:
 	virtual void AddMeleeTarget(const int target_obj_handle) abstract;
 	
 	virtual [[nodiscard]] std::vector<MeleeCandidateData>	GetMeleeCandidate()	const abstract;
-	virtual [[nodiscard]] std::shared_ptr<IMeleeHittable>	GetMeleeTarget()	const abstract;
+	virtual [[nodiscard]] std::shared_ptr<IMeleeHittable>&	GetMeleeTarget()		  abstract;
 	
 protected:
 	virtual void RemoveMeleeCandidate() abstract;
