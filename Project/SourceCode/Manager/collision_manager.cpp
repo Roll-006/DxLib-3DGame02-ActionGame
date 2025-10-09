@@ -141,11 +141,26 @@ void CollisionManager::SetIgnoreColliderPairs()
 	const ColliderData shell_casing_data{ ObjTag.SHELL_CASING,	ColliderKind::kNone				};
 	const ColliderData landing_data		{ "",					ColliderKind::kLandingTrigger	};
 
+	// 敵系統が無視するコライダー
+	AddIgnoreColliderPair(enemy_data, { "", ColliderKind::kHeadTrigger			});
+	AddIgnoreColliderPair(enemy_data, { "", ColliderKind::kUpBodyTrigger		});
+	AddIgnoreColliderPair(enemy_data, { "", ColliderKind::kDownBodyTrigger		});
+	AddIgnoreColliderPair(enemy_data, { "", ColliderKind::kLeftUpperArmTrigger	});
+	AddIgnoreColliderPair(enemy_data, { "", ColliderKind::kLeftForearmTrigger	});
+	AddIgnoreColliderPair(enemy_data, { "", ColliderKind::kLeftHandTrigger		});
+	AddIgnoreColliderPair(enemy_data, { "", ColliderKind::kRightUpperArmTrigger });
+	AddIgnoreColliderPair(enemy_data, { "", ColliderKind::kRightForearmTrigger	});
+	AddIgnoreColliderPair(enemy_data, { "", ColliderKind::kRightHandTrigger		});
+	AddIgnoreColliderPair(enemy_data, { "", ColliderKind::kLeftUpLegTrigger		});
+	AddIgnoreColliderPair(enemy_data, { "", ColliderKind::kRightUpLegTrigger	});
+	AddIgnoreColliderPair(enemy_data, { "", ColliderKind::kLeftDownLegTrigger	});
+	AddIgnoreColliderPair(enemy_data, { "", ColliderKind::kRightDownLegTrigger	});
+
 	// 着地判定トリガーが無視するコライダー
 	AddIgnoreColliderPair(landing_data, player_data);
 	AddIgnoreColliderPair(landing_data, enemy_data);
-	AddIgnoreColliderPair(landing_data, { "", ColliderKind::kAttackTrigger });
-	AddIgnoreColliderPair(landing_data, { "", ColliderKind::kVisionTrigger });
+	AddIgnoreColliderPair(landing_data, { "", ColliderKind::kAttackTrigger	 });
+	AddIgnoreColliderPair(landing_data, { "", ColliderKind::kVisionTrigger	 });
 	AddIgnoreColliderPair(landing_data, { "", ColliderKind::kReactionTrigger });
 	
 	// 弾丸系統が無視するコライダー

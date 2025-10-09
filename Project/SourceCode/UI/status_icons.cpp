@@ -7,7 +7,6 @@ StatusIcons::StatusIcons(const std::shared_ptr<Player>& player) :
 	m_health_gauge_graphic		(std::make_shared<Graphicer>(m_health_gauge->GetScreenHandle())),
 	m_equip_weapon_icon_graphic	(std::make_shared<Graphicer>(m_equip_weapon_icon->GetScreenHandle()))
 {
-	// TODO : ’è”‰»
 	m_screen_creator->GetGraphicer()->SetCenterPos(Vector2D<int>(
 		static_cast<int>(Window::kScreenSize.x * 0.891f), 
 		static_cast<int>(Window::kScreenSize.y * 0.81f)));

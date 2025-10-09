@@ -54,14 +54,7 @@ void Bullet::Draw() const
 {
 	if (!IsActive()) { return; }
 
-	for (auto& collider : m_colliders)
-	{
-		const auto shape = collider.second->GetShape();
-		if (shape != nullptr)
-		{
-			shape->Draw(true, 0, 0xffffff);
-		}
-	}
+	DrawColliders();
 }
 
 void Bullet::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)

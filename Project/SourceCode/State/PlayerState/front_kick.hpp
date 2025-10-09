@@ -10,8 +10,8 @@ namespace player_state
 	{
 	public:
 		FrontKick();
-		~FrontKick() override
-			;
+		~FrontKick() override;
+
 		void Update		(std::shared_ptr<Player>& obj) override;
 		void LateUpdate	(std::shared_ptr<Player>& obj) override;
 		void Enter		(std::shared_ptr<Player>& obj) override;

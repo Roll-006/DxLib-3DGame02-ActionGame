@@ -19,8 +19,5 @@ void MeleeTargetIcon::LateUpdate()
 
 void MeleeTargetIcon::Draw() const
 {
-	if (m_melee_target)
-	{
-		DrawFormatString(300, 0, 0xffffff, "%d", m_melee_target->IsCrouchStun());
-	}
+
 }

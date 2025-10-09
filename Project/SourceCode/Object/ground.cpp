@@ -45,14 +45,7 @@ void Ground::Draw() const
 
 	m_modeler->Draw();
 
-	for (const auto& collider : m_colliders)
-	{
-		const auto shape = collider.second->GetShape();
-		if (shape != nullptr)
-		{
-			shape->Draw(true, 200, 0xffffff);
-		}
-	}
+	DrawColliders();
 }
 
 void Ground::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)

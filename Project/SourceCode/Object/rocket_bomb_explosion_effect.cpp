@@ -81,14 +81,7 @@ void RocketBombExplosionEffect::Draw() const
 {
 	if (!IsActive()) { return; }
 
-	for (auto& collider : m_colliders)
-	{
-		const auto shape = collider.second->GetShape();
-		if (shape != nullptr)
-		{
-			shape->Draw(true, 0, 0xffffff);
-		}
-	}
+	DrawColliders();
 }
 
 void RocketBombExplosionEffect::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)

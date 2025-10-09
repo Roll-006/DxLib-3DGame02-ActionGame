@@ -62,13 +62,6 @@ void RocketBomb::Draw() const
 	if (!IsActive()) { return; }
 
 	m_modeler->Draw();
-
-	DrawSphere3D(m_transform->GetPos(CoordinateKind::kWorld), 2, 8, 0xffffff, 0xffffff, TRUE);
-
-	const auto axes = m_transform->GetAxes(CoordinateKind::kWorld);
-	const auto pos = m_transform->GetPos(CoordinateKind::kWorld);
-	axis::Draw(axes, pos, 100);
-	//std::dynamic_pointer_cast<Segment>(GetCollider(ColliderKind::kRayCast)->GetShape())->Draw(false, 0, 0xffffff);
 }
 
 void RocketBomb::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)

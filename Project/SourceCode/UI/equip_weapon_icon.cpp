@@ -12,7 +12,7 @@ EquipWeaponIcon::EquipWeaponIcon(std::unordered_map<WeaponSlotKind, std::shared_
 
 	m_main_weapon_graphic->SetCenterPos(kCenterPos);
 	m_sub_weapon_graphic ->SetCenterPos(kSubWeaponDrawPos);
-	m_sub_weapon_graphic ->SetScale(0.063f);
+	m_sub_weapon_graphic ->SetScale(0.08f);
 }
 
 EquipWeaponIcon::~EquipWeaponIcon()
@@ -59,7 +59,7 @@ void EquipWeaponIcon::SetWeaponGraphic(const WeaponSlotKind equip_weapon_slot, s
 
 		case WeaponSlotKind::kSub:
 			weapon_graphic->SetCenterPos(kSubWeaponDrawPos);
-			weapon_graphic->SetScale	(0.063f);
+			weapon_graphic->SetScale	(0.08f);
 			break;
 		}
 	}

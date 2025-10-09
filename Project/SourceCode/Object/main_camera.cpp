@@ -53,14 +53,7 @@ void MainCamera::Draw() const
 {
 	if (!IsActive()) { return; }
 
-	for (const auto& collider : m_colliders)
-	{
-		const auto shape = collider.second->GetShape();
-		if (shape != nullptr)
-		{
-			shape->Draw(true, 0, 0xffffff);
-		}
-	}
+	DrawColliders();
 }
 
 void MainCamera::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)

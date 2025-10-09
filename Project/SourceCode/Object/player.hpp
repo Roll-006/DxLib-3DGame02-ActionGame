@@ -164,9 +164,9 @@ private:
 	static constexpr float kInvincibleTime						= 0.5f;
 
 	//static constexpr float kCrouchWalkSpeed						= 10.0f;
-	static constexpr float kSlowWalkSpeed						= 17.0f;
-	static constexpr float kWalkSpeed							= 30.0f;
-	static constexpr float kRunSpeed							= 80.0f;
+	static constexpr float kSlowWalkSpeed						= 30.0f;
+	static constexpr float kWalkSpeed							= 60.0f;
+	static constexpr float kRunSpeed							= 100.0f;
 	static constexpr float kAcceleration						= 1.0f;					// 加速度(減速度も共通)
 
 	static constexpr float kMoveDirOffsetSpeed					= 5.0f;					// 移動方向の補正速度

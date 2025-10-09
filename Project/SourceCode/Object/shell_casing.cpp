@@ -61,14 +61,7 @@ void ShellCasing::Draw() const
 	//GetCollider(ColliderKind::kCollider)	  ->GetShape()->Draw(false, 255, 0xffffff);
 	//GetCollider(ColliderKind::kLandingTrigger)->GetShape()->Draw(false,   0, 0xff0000);
 
-	for (auto& collider : m_colliders)
-	{
-		const auto shape = collider.second->GetShape();
-		if (shape != nullptr)
-		{
-			shape->Draw(true, 0, 0xffffff);
-		}
-	}
+	DrawColliders();
 }
 
 void ShellCasing::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)

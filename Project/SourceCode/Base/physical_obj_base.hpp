@@ -14,6 +14,8 @@ public:
 	PhysicalObjBase(const std::string& name, const std::string& tag, MassKind mass_level_kind);
 	virtual ~PhysicalObjBase() = default;
 
+	void DrawColliders() const;
+
 	virtual void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) abstract;
 
 	/// @brief ノックバックを受けた

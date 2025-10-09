@@ -44,9 +44,9 @@ private:
 	static constexpr float			kMaxGaugePercent			= 75.0f;
 	static constexpr int			kBaseGaugeColor				= 0x363636;
 	static constexpr int			kWarningGaugeColor			= 0xe32d2d;
-	static constexpr int			kRadius						= 71;
-	static constexpr int			kBasisGaugeThickness		= 9;
-	static constexpr int			kWarningGaugeThickness		= 46;
+	static constexpr int			kRadius						= 90;
+	static constexpr int			kBasisGaugeThickness		= 11;
+	static constexpr int			kWarningGaugeThickness		= 50;
 	static constexpr int			kMaxHealthFrameThickness	= 2;
 	static constexpr int			kMaxHue						= 0;
 	static constexpr int			kMiddleHue					= -90;

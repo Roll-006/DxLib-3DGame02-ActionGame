@@ -36,7 +36,7 @@ void PlayerAnimator::Update()
 void PlayerAnimator::LoadAnim()
 {
 	// 汎用
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdle),						AnimPath.IDLE,							0, AnimTag.NONE, 20.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdle),						AnimPath.IDLE,							0, AnimTag.NONE, 50.0f,  true);
 
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kGrabbed),					AnimPath.GRABBED,						0, AnimTag.NONE, 30.0f,  true,  true);
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kFrontKick),					AnimPath.FRONT_KICK,					0, AnimTag.NONE, 50.0f,  false);
@@ -64,23 +64,23 @@ void PlayerAnimator::LoadAnim()
 	// 下半身用
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kCrouch),					AnimPath.CROUCH,						0, AnimTag.NONE, 20.0f,  true);
 
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForward),				AnimPath.MOVE_FORWARD,					0, AnimTag.MOVE, 20.0f,  true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveBackward),				AnimPath.MOVE_BACKWARD,					0, AnimTag.MOVE, 20.0f,  true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveLeft),					AnimPath.MOVE_LEFT,						0, AnimTag.MOVE, 20.0f,  true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveRight),					AnimPath.MOVE_RIGHT,					0, AnimTag.MOVE, 30.0f,  true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardLeft),			AnimPath.MOVE_FORWARD_LEFT,				0, AnimTag.MOVE, 20.0f,  true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardRight),			AnimPath.MOVE_FORWARD_RIGHT,			0, AnimTag.MOVE, 20.0f,  true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveBackwardLeft),			AnimPath.MOVE_BACKWARD_LEFT,			0, AnimTag.MOVE, 20.0f,  true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveBackwardRight),			AnimPath.MOVE_BACKWARD_RIGHT,			0, AnimTag.MOVE, 20.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForward),				AnimPath.MOVE_FORWARD,					0, AnimTag.MOVE, 50.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveBackward),				AnimPath.MOVE_BACKWARD,					0, AnimTag.MOVE, 50.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveLeft),					AnimPath.MOVE_LEFT,						0, AnimTag.MOVE, 50.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveRight),					AnimPath.MOVE_RIGHT,					0, AnimTag.MOVE, 50.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardLeft),			AnimPath.MOVE_FORWARD_LEFT,				0, AnimTag.MOVE, 50.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardRight),			AnimPath.MOVE_FORWARD_RIGHT,			0, AnimTag.MOVE, 50.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveBackwardLeft),			AnimPath.MOVE_BACKWARD_LEFT,			0, AnimTag.MOVE, 50.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveBackwardRight),			AnimPath.MOVE_BACKWARD_RIGHT,			0, AnimTag.MOVE, 50.0f,  true);
 
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardCrouch),			AnimPath.MOVE_FORWARD_CROUCH,			0, AnimTag.MOVE, 20.0f,  true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveBackwardCrouch),		AnimPath.MOVE_BACKWARD_CROUCH,			0, AnimTag.MOVE, 20.0f,  true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveLeftCrouch),			AnimPath.MOVE_LEFT_CROUCH,				0, AnimTag.MOVE, 20.0f,  true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveRightCrouch),			AnimPath.MOVE_RIGHT_CROUCH,				0, AnimTag.MOVE, 20.0f,  true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardLeftCrouch),		AnimPath.MOVE_FORWARD_LEFT_CROUCH,		0, AnimTag.MOVE, 20.0f,  true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardRightCrouch),	AnimPath.MOVE_FORWARD_RIGHT_CROUCH,		0, AnimTag.MOVE, 20.0f,  true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveBackwardLeftCrouch),	AnimPath.MOVE_BACKWARD_LEFT_CROUCH,		0, AnimTag.MOVE, 20.0f,  true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveBackwardRightCrouch),	AnimPath.MOVE_BACKWARD_RIGHT_CROUCH,	0, AnimTag.MOVE, 20.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardCrouch),			AnimPath.MOVE_FORWARD_CROUCH,			0, AnimTag.MOVE, 50.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveBackwardCrouch),		AnimPath.MOVE_BACKWARD_CROUCH,			0, AnimTag.MOVE, 50.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveLeftCrouch),			AnimPath.MOVE_LEFT_CROUCH,				0, AnimTag.MOVE, 50.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveRightCrouch),			AnimPath.MOVE_RIGHT_CROUCH,				0, AnimTag.MOVE, 50.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardLeftCrouch),		AnimPath.MOVE_FORWARD_LEFT_CROUCH,		0, AnimTag.MOVE, 50.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardRightCrouch),	AnimPath.MOVE_FORWARD_RIGHT_CROUCH,		0, AnimTag.MOVE, 50.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveBackwardLeftCrouch),	AnimPath.MOVE_BACKWARD_LEFT_CROUCH,		0, AnimTag.MOVE, 50.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveBackwardRightCrouch),	AnimPath.MOVE_BACKWARD_RIGHT_CROUCH,	0, AnimTag.MOVE, 50.0f,  true);
 }
 
 void PlayerAnimator::ChangeAnim()

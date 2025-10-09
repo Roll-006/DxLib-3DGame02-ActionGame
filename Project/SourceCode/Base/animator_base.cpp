@@ -234,18 +234,18 @@ void AnimatorBase::DivideBone(const TCHAR* upper_body_end_bone)
 	const int model_handle = m_result_modeler->GetModelHandle();
 
 	// 下半身のボーンを設定
-	const auto begin_lower_body_bone_num = MV1SearchFrame(model_handle, BonePath.HIPS);
-	const auto   end_lower_body_bone_num = MV1SearchFrame(model_handle, upper_body_end_bone) - 1;
-	for (int i = begin_lower_body_bone_num; i <= end_lower_body_bone_num; ++i)
+	const auto begin_lower_body_bone_index = MV1SearchFrame(model_handle, BonePath.HIPS);
+	const auto   end_lower_body_bone_index = MV1SearchFrame(model_handle, upper_body_end_bone) - 1;
+	for (int i = begin_lower_body_bone_index; i <= end_lower_body_bone_index; ++i)
 	{
 		m_bone_numbers[BodyKind::kLowerBody][MV1GetFrameName(model_handle, i)] = i;
 		m_bone_numbers[BodyKind::kUpperBody].erase(MV1GetFrameName(model_handle, i));
 	}
 
 	// 上半身のボーンを設定
-	const auto begin_upper_body_bone_num = MV1SearchFrame(model_handle, upper_body_end_bone);
-	const auto   end_upper_body_bone_num = MV1SearchFrame(model_handle, BonePath.HEAD_TOP_END_END);
-	for (int i = begin_upper_body_bone_num; i <= end_upper_body_bone_num; ++i)
+	const auto begin_upper_body_bone_index = MV1SearchFrame(model_handle, upper_body_end_bone);
+	const auto   end_upper_body_bone_index = MV1SearchFrame(model_handle, BonePath.HEAD_TOP_END_END);
+	for (int i = begin_upper_body_bone_index; i <= end_upper_body_bone_index; ++i)
 	{
 		m_bone_numbers[BodyKind::kUpperBody][MV1GetFrameName(model_handle, i)] = i;
 	}

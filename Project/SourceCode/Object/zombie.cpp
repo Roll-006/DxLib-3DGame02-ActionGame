@@ -101,14 +101,7 @@ void Zombie::Draw() const
 
 	m_modeler->Draw();
 
-	for (auto& collider : m_colliders)
-	{
-		const auto shape = collider.second->GetShape();
-		if (shape != nullptr)
-		{
-			shape->Draw(true, 0, 0xffffff);
-		}
-	}
+	DrawColliders();
 
 	auto pos  = m_transform->GetPos (CoordinateKind::kWorld);
 	auto axes = m_transform->GetAxes(CoordinateKind::kWorld);

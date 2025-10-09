@@ -86,11 +86,6 @@ void Player::Update()
 {
 	if (!IsActive()) { return; }
 
-	if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_0) == InputState::kSingle)
-	{
-		m_health.at(HealthPartKind::kMain)->Recover(500.0f);
-	}
-
 	NotifyHealth();
 	JudgeInvincible();
 	DecisionMeleeTarget();
@@ -167,14 +162,7 @@ void Player::Draw() const
 		if (attach_weapon.second) { attach_weapon.second->Draw(); }
 	}
 
-	for (const auto& collider : m_colliders)
-	{
-		const auto shape = collider.second->GetShape();
-		if (shape != nullptr)
-		{
-			shape->Draw(true, 0, 0xffffff);
-		}
-	}
+	DrawColliders();
 }
 
 void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
