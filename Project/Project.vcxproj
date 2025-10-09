@@ -366,6 +366,7 @@
     <ClInclude Include="SourceCode\Debugger\debugger.hpp" />
     <ClInclude Include="SourceCode\Drawer\drawer.hpp" />
     <ClInclude Include="SourceCode\Event\aim_gun_event.hpp" />
+    <ClInclude Include="SourceCode\Event\on_melee_target_lost_event.hpp" />
     <ClInclude Include="SourceCode\Event\on_downed_enemy_spotted_event.hpp" />
     <ClInclude Include="SourceCode\Event\release_event.hpp" />
     <ClInclude Include="SourceCode\Event\near_death_event.hpp" />

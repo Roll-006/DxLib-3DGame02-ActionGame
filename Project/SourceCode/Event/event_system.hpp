@@ -21,6 +21,7 @@
 #include "on_select_cinematic_filter_event.hpp"
 #include "on_select_retro_filter_event.hpp"
 #include "on_downed_enemy_spotted_event.hpp"
+#include "on_melee_target_lost_event.hpp"
 
 class EventSystem final : public SingletonBase<EventSystem>
 {

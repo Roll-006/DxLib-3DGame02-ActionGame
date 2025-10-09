@@ -1377,6 +1377,9 @@
     <ClInclude Include="SourceCode\UI\enemy_ui_creator.hpp">
       <Filter>SourceCode\UI</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\Event\on_melee_target_lost_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="SourceCode">

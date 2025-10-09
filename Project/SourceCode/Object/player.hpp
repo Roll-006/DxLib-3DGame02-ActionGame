@@ -52,7 +52,8 @@ public:
 
 
 	#pragma region Event
-	void AddMeleeCandidate(const OnDownedEnemySpottedEvent& event) override;
+	void AddMeleeCandidate(const OnDownedEnemySpottedEvent& event)	override;
+	void RemoveMeleeTarget(const OnMeleeTargetLostEvent& event)		override;
 	#pragma endregion
 
 
@@ -161,7 +162,7 @@ private:
 	static constexpr VECTOR kBasicAngle							= { 0.0f, DX_PI_F, 0.0f };
 	static constexpr float  kBasicScale							= 0.3f;
 
-	static constexpr float kInvincibleTime						= 0.5f;
+	static constexpr float  kInvincibleTime						= 0.5f;
 
 	//static constexpr float kCrouchWalkSpeed						= 10.0f;
 	static constexpr float kSlowWalkSpeed						= 30.0f;
@@ -179,10 +180,10 @@ private:
 	static constexpr int   kWalkStickSlopeLimit					= 15000;				// 歩き状態とするスティック傾きの上限
 	//static constexpr float kTurnAroundStickAngle				= 30.0f;				// 振り向きを行うスティックの入力角度
 
-	static constexpr float kCapsuleRadius						= 8.0f;
-	static constexpr float kCollisionAreaRadius					= 37.0f;
+	static constexpr float  kCapsuleRadius						= 8.0f;
+	static constexpr float  kCollisionAreaRadius				= 37.0f;
 	static constexpr VECTOR kCollisionAreaOffset				= { 0.0f, 26.0f, 0.0f };
-	static constexpr float kLandingTriggerRadius				= 6.0f;
+	static constexpr float  kLandingTriggerRadius				= 6.0f;
 
 	static constexpr float kCameraAimOffsetBasicSpeed			= 40.0f;
 	

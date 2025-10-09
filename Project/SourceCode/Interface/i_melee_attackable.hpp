@@ -24,7 +24,8 @@ public:
 	virtual void OnCollideVersatilityMelee	(PhysicalObjBase* target_obj) abstract;
 
 	/// @brief メレー候補をイベントにより追加する
-	virtual void AddMeleeCandidate(const OnDownedEnemySpottedEvent& event) abstract;
+	virtual void AddMeleeCandidate(const OnDownedEnemySpottedEvent& event)	abstract;
+	virtual void RemoveMeleeTarget(const OnMeleeTargetLostEvent& event)		abstract;
 
 	virtual void AddMeleeTarget(const int target_obj_handle) abstract;
 	

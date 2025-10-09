@@ -74,9 +74,9 @@ void MainCamera::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 		break;
 
 	case ColliderKind::kVisionTrigger:
-		// メレー可能な状態のキャラクターが視界判定トリガー内に入ったことを通知
 		if (target_collider_kind == ColliderKind::kVisibleTrigger)
 		{
+			// メレー可能な状態のキャラクターが視界判定トリガー内に入ったことを通知
 			const auto melee_hittable = dynamic_cast<IMeleeHittable*>(target_obj);
 			if (melee_hittable)
 			{

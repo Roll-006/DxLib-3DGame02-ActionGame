@@ -82,7 +82,7 @@ private:
 
 	static constexpr float  kMaxVerticalInputAngle					= 60.0f;
 	static constexpr float  kMinVerticalInputAngle					= -60.0f;
-	static constexpr float	kMoveSpeedWithStick						= 2.5f;
+	static constexpr float	kMoveSpeedWithStick						= 1.5f;
 	static constexpr float	kMoveSpeedWithMouse						= 0.1f;
 	static constexpr float	kMoveSpeedWithButton					= 2.0f;
 
