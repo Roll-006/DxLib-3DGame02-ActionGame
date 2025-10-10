@@ -20,12 +20,22 @@ static struct UIGraphicPath
 	#pragma endregion
 
 
+	#pragma region フィルター
 	const std::string DAMAGE_FILTER			= "Data/Graphic/UI/Damage/filter.png";
+	#pragma endregion
 
 
 	#pragma region ボタン
 	const std::string KEY_F					= "Data/Graphic/UI/Button/Key/F.png";
 	const std::string PAD_A					= "Data/Graphic/UI/Button/Pad/A.png";
+	#pragma endregion
+
+
+	#pragma region 矢印
+	const std::string CURSOR_01				= "Data/Graphic/UI/Cursor/cursor_01.png";
+	const std::string CURSOR_02				= "Data/Graphic/UI/Cursor/cursor_02.png";
+	const std::string CURSOR_03				= "Data/Graphic/UI/Cursor/cursor_03.png";
+	const std::string CURSOR_04				= "Data/Graphic/UI/Cursor/cursor_04.png";
 	#pragma endregion
 
 }UIGraphicPath;
