@@ -1129,7 +1129,6 @@ VECTOR collision::PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsu
     auto result_capsule             = dynamic_capsule;
     result_capsule.Move(result_velocity);
 
-
     for (int i = 0; i < 3; ++i)
     {
         // まだ衝突している場合は追加の調整
@@ -1169,7 +1168,7 @@ VECTOR collision::PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsu
     //    {
     //        DrawSphere3D(*intersection, 0.5f, 8, 0xffffff, 0xffffff, TRUE);
     //        DrawLine3D(segment.GetBeginPos(), segment.GetEndPos(), 0xffffff);
-
+    //
     //        const auto offset = VSize(*intersection - segment.GetBeginPos());
     //        result_velocity -= static_triangle.GetNormalVector() * offset;
     //    }

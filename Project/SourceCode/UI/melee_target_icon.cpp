@@ -1,6 +1,8 @@
 #include "melee_target_icon.hpp"
+
 #include "../Base/character_base.hpp"
 #include "../Command/command_handler.hpp"
+#include "../VirtualCamera/cinemachine_brain.hpp"
 
 MeleeTargetIcon::MeleeTargetIcon(std::shared_ptr<IMeleeHittable>& melee_target) : 
 	m_melee_target				(melee_target),
@@ -9,6 +11,7 @@ MeleeTargetIcon::MeleeTargetIcon(std::shared_ptr<IMeleeHittable>& melee_target) 
 	m_cursor_graphic			(std::make_shared<Graphicer>(UIGraphicPath.CURSOR_01)),
 	m_result_screen				(std::make_shared<ScreenCreator>(kScreenSize)),
 	m_icon_pos					(v3d::GetZeroV()),
+	m_icon_size					(0.0f),
 	m_is_draw_icon				(false)
 {
 	m_cursor_graphic->SetCenterPos(kScreenCenterPos + kCursorOffset);
@@ -54,7 +57,8 @@ void MeleeTargetIcon::LateUpdate()
 		break;
 	}
 
-	CreateIcon();
+	CalcIcconSize();
+	CreateResultScreen();
 }
 
 void MeleeTargetIcon::Draw() const
@@ -65,7 +69,12 @@ void MeleeTargetIcon::Draw() const
 	}
 }
 
-void MeleeTargetIcon::CreateIcon()
+void MeleeTargetIcon::CalcIcconSize()
+{
+
+}
+
+void MeleeTargetIcon::CreateResultScreen()
 {
 	m_result_screen->UseScreen();
 

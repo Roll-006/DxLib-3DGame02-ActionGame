@@ -15,11 +15,12 @@ public:
 	void Draw() const;
 
 private:
-	void CreateIcon();
+	void CalcIcconSize();
+	void CreateResultScreen();
 
 private:
 	static constexpr VECTOR			kOffset				= { 0.0f, 9.0f, 0.0f };
-	static constexpr float			kIconSize			= 20.0f;
+	static constexpr float			kIconSize			= 18.0f;
 	static constexpr Vector2D<int>	kScreenSize			= { 500, 500 };
 	static constexpr Vector2D<int>	kScreenCenterPos	= { static_cast<int>(kScreenSize.x * 0.5f), static_cast<int>(kScreenSize.y * 0.5f) };
 	static constexpr Vector2D<int>	kCursorOffset		= { 0, 100 };
@@ -31,5 +32,6 @@ private:
 	std::shared_ptr<ScreenCreator>			m_result_screen;
 
 	VECTOR									m_icon_pos;
+	float									m_icon_size;
 	bool									m_is_draw_icon;
 };

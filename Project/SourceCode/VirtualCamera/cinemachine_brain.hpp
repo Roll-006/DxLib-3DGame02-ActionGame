@@ -90,6 +90,10 @@ public:
 
 	/// @brief バーチャルカメラをブレンド中であるかを判定
 	[[nodiscard]] bool IsBlending() const { return m_is_blending; }
+
+	[[nodiscard]] float GetNear()	const { return kNear;	}
+	[[nodiscard]] float GetFar()	const { return kFar;	}
+	[[nodiscard]] float GetFOV()	const { return kFOV;	}
 	#pragma endregion
 
 private:
