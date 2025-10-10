@@ -9,7 +9,7 @@ DamageFilter::DamageFilter() :
 	m_is_near_death					(false)
 {
 	// ƒCƒxƒ“ƒg“o˜^
-	EventSystem::GetInstance()->Subscribe<OnDamageEvent>		(this, &DamageFilter::StartDamageBlinking);
+	EventSystem::GetInstance()->Subscribe<OnDamageToPlayerEvent>		(this, &DamageFilter::StartDamageBlinking);
 	EventSystem::GetInstance()->Subscribe<NearDeathEvent>		(this, &DamageFilter::StartNearDeathBlinking);
 	EventSystem::GetInstance()->Subscribe<EnterNearDeathEvent>	(this, &DamageFilter::StartEnterNearDeathBlinking);
 
@@ -19,7 +19,7 @@ DamageFilter::DamageFilter() :
 DamageFilter::~DamageFilter()
 {
 	// ƒCƒxƒ“ƒg‚Ì“o˜^‰ðœ
-	EventSystem::GetInstance()->Unsubscribe<OnDamageEvent>		(this, &DamageFilter::StartDamageBlinking);
+	EventSystem::GetInstance()->Unsubscribe<OnDamageToPlayerEvent>		(this, &DamageFilter::StartDamageBlinking);
 	EventSystem::GetInstance()->Unsubscribe<NearDeathEvent>		(this, &DamageFilter::StartNearDeathBlinking);
 	EventSystem::GetInstance()->Unsubscribe<EnterNearDeathEvent>(this, &DamageFilter::StartEnterNearDeathBlinking);
 }
@@ -57,7 +57,7 @@ void DamageFilter::Draw() const
 
 
 #pragma region Event
-void DamageFilter::StartDamageBlinking(const OnDamageEvent& event)
+void DamageFilter::StartDamageBlinking(const OnDamageToPlayerEvent& event)
 {
 	if (!m_is_loop_blinking)
 	{

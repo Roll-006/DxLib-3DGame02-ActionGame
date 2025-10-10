@@ -366,6 +366,7 @@
     <ClInclude Include="SourceCode\Debugger\debugger.hpp" />
     <ClInclude Include="SourceCode\Drawer\drawer.hpp" />
     <ClInclude Include="SourceCode\Event\aim_gun_event.hpp" />
+    <ClInclude Include="SourceCode\Event\on_damage_event.hpp" />
     <ClInclude Include="SourceCode\Event\on_melee_target_lost_event.hpp" />
     <ClInclude Include="SourceCode\Event\on_downed_enemy_spotted_event.hpp" />
     <ClInclude Include="SourceCode\Event\release_event.hpp" />
@@ -374,7 +375,7 @@
     <ClInclude Include="SourceCode\Event\end_grab_cutscene_event.hpp" />
     <ClInclude Include="SourceCode\Event\end_rocket_launcher_cutscene_event.hpp" />
     <ClInclude Include="SourceCode\Event\event.hpp" />
-    <ClInclude Include="SourceCode\Event\on_damage_event.hpp" />
+    <ClInclude Include="SourceCode\Event\on_damage_to_player_event.hpp" />
     <ClInclude Include="SourceCode\Event\on_select_cinematic_filter_event.hpp" />
     <ClInclude Include="SourceCode\Event\on_select_retro_filter_event.hpp" />
     <ClInclude Include="SourceCode\Event\on_select_normal_filter_event.hpp" />

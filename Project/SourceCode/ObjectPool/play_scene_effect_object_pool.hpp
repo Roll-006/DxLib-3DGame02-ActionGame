@@ -14,4 +14,6 @@ private:
 	static constexpr int kRocketBombSmokePoolSize					= 10;
 	static constexpr int kRocketBombHitExplosionPoolSize			= 5;
 	static constexpr int kExpandingSmokePoolSize					= 10;
+	static constexpr int kShotFirePoolSize							= 10;
+	static constexpr int kBloodPoolSize								= 10;
 };

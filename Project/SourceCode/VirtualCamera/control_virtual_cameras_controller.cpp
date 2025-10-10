@@ -244,7 +244,7 @@ void ControlVirtualCamerasController::CalcOffsetFromRotCamera()
 
 		switch (gun->GetGunKind())
 		{
-		case GunKind::kSniperRifle:
+		case GunKind::kSubmachineGun:
 			body->SetFollowOffset    (kFollowOffsetForAimCamera);
 			aim ->SetTrackedObjOffset(kTrackedObjOffsetForAimCamera);
 			break;

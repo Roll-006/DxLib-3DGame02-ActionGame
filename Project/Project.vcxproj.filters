@@ -1314,7 +1314,7 @@
     <ClInclude Include="SourceCode\Event\on_select_normal_filter_event.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Event\on_damage_event.hpp">
+    <ClInclude Include="SourceCode\Event\on_damage_to_player_event.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\UI\damage_filter.hpp">
@@ -1378,6 +1378,9 @@
       <Filter>SourceCode\UI</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Event\on_melee_target_lost_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\on_damage_event.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
   </ItemGroup>

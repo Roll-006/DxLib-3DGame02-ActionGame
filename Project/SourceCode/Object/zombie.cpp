@@ -118,6 +118,7 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	const auto			target_collider_kind	= hit_collider_pair.target_collider->GetColliderKind();
 	const auto			action_state_kind		= static_cast<zombie_state::ActionStateKind>(m_state->GetActionState(TimeKind::kCurrent)->GetStateKind());
 
+
 	switch (hit_collider_pair.owner_collider->GetColliderKind())
 	{
 	case ColliderKind::kLandingTrigger:
@@ -148,13 +149,17 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	case ColliderKind::kHeadTrigger:
 		if (target_name == ObjName.BULLET)
 		{
+			const auto damage = dynamic_cast<Bullet*>(target_obj)->GetPower();
+
 			// ダウン中は部位HPは減少させない
 			if (action_state_kind != zombie_state::ActionStateKind::kStandStun)
 			{
-				OnDamage(HealthPartKind::kHead, dynamic_cast<Bullet*>(target_obj)->GetPower());
+				OnDamage(HealthPartKind::kHead, damage);
 			}
 
-			OnDamage(HealthPartKind::kMain, dynamic_cast<Bullet*>(target_obj)->GetPower());
+			OnDamage(HealthPartKind::kMain, damage);
+
+			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxHealth()));
 		}
 		break;
 
@@ -162,8 +167,12 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	case ColliderKind::kDownBodyTrigger:
 		if (target_name == ObjName.BULLET)
 		{
-			OnDamage(HealthPartKind::kBody,		dynamic_cast<Bullet*>(target_obj)->GetPower());
-			OnDamage(HealthPartKind::kMain,		dynamic_cast<Bullet*>(target_obj)->GetPower());
+			const auto damage = dynamic_cast<Bullet*>(target_obj)->GetPower();
+
+			OnDamage(HealthPartKind::kBody,	damage);
+			OnDamage(HealthPartKind::kMain,	damage);
+
+			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxHealth()));
 		}
 		break;
 
@@ -171,16 +180,24 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	case ColliderKind::kLeftForearmTrigger:
 		if (target_name == ObjName.BULLET)
 		{
-			OnDamage(HealthPartKind::kLeftArm,	dynamic_cast<Bullet*>(target_obj)->GetPower());
-			OnDamage(HealthPartKind::kMain,		dynamic_cast<Bullet*>(target_obj)->GetPower());
+			const auto damage = dynamic_cast<Bullet*>(target_obj)->GetPower();
+
+			OnDamage(HealthPartKind::kLeftArm,	damage);
+			OnDamage(HealthPartKind::kMain,		damage);
+
+			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxHealth()));
 		}
 		break;
 
 	case ColliderKind::kLeftHandTrigger:
 		if (target_name == ObjName.BULLET)
 		{
-			OnDamage(HealthPartKind::kLeftArm,	dynamic_cast<Bullet*>(target_obj)->GetPower());
-			OnDamage(HealthPartKind::kMain,		dynamic_cast<Bullet*>(target_obj)->GetPower());
+			const auto damage = dynamic_cast<Bullet*>(target_obj)->GetPower();
+
+			OnDamage(HealthPartKind::kLeftArm,	damage);
+			OnDamage(HealthPartKind::kMain,		damage);
+
+			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxHealth()));
 		}
 
 		if (target_obj == GetStateController()->GetTargetCharacter().get() && target_collider_kind == ColliderKind::kCollider)
@@ -197,16 +214,24 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	case ColliderKind::kRightForearmTrigger:
 		if (target_name == ObjName.BULLET)
 		{
-			OnDamage(HealthPartKind::kRightArm,	dynamic_cast<Bullet*>(target_obj)->GetPower());
-			OnDamage(HealthPartKind::kMain,		dynamic_cast<Bullet*>(target_obj)->GetPower());
+			const auto damage = dynamic_cast<Bullet*>(target_obj)->GetPower();
+
+			OnDamage(HealthPartKind::kRightArm, damage);
+			OnDamage(HealthPartKind::kMain,		damage);
+
+			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxHealth()));
 		}
 		break;
 
 	case ColliderKind::kRightHandTrigger:
 		if (target_name == ObjName.BULLET)
 		{
-			OnDamage(HealthPartKind::kRightArm, dynamic_cast<Bullet*>(target_obj)->GetPower());
-			OnDamage(HealthPartKind::kMain,		dynamic_cast<Bullet*>(target_obj)->GetPower());
+			const auto damage = dynamic_cast<Bullet*>(target_obj)->GetPower();
+
+			OnDamage(HealthPartKind::kRightArm, damage);
+			OnDamage(HealthPartKind::kMain,		damage);
+
+			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxHealth()));
 		}
 
 		if (target_obj == GetStateController()->GetTargetCharacter().get() && target_collider_kind == ColliderKind::kCollider)
@@ -223,14 +248,18 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	case ColliderKind::kLeftDownLegTrigger:
 		if (target_name == ObjName.BULLET)
 		{
+			const auto damage = dynamic_cast<Bullet*>(target_obj)->GetPower();
+
 			// ダウン中は部位HPは減少させない
 			if (   action_state_kind != zombie_state::ActionStateKind::kCrouchLeftStun
 				&& action_state_kind != zombie_state::ActionStateKind::kCrouchRightStun)
 			{
-				OnDamage(HealthPartKind::kLeftLeg, dynamic_cast<Bullet*>(target_obj)->GetPower());
+				OnDamage(HealthPartKind::kLeftLeg, damage);
 			}
 
-			OnDamage(HealthPartKind::kMain, dynamic_cast<Bullet*>(target_obj)->GetPower());
+			OnDamage(HealthPartKind::kMain, damage);
+
+			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxHealth()));
 		}
 		break;
 
@@ -238,14 +267,18 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	case ColliderKind::kRightDownLegTrigger:
 		if (target_name == ObjName.BULLET)
 		{
+			const auto damage = dynamic_cast<Bullet*>(target_obj)->GetPower();
+
 			// ダウン中は部位HPは減少させない
 			if (   action_state_kind != zombie_state::ActionStateKind::kCrouchLeftStun
 				&& action_state_kind != zombie_state::ActionStateKind::kCrouchRightStun)
 			{
-				OnDamage(HealthPartKind::kRightLeg, dynamic_cast<Bullet*>(target_obj)->GetPower());
+				OnDamage(HealthPartKind::kRightLeg, damage);
 			}
 
-			OnDamage(HealthPartKind::kMain, dynamic_cast<Bullet*>(target_obj)->GetPower());
+			OnDamage(HealthPartKind::kMain, damage);
+
+			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxHealth()));
 		}
 		break;
 

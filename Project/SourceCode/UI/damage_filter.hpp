@@ -13,7 +13,7 @@ public:
 
 
 	#pragma region Event
-	void StartDamageBlinking		(const OnDamageEvent&  event);
+	void StartDamageBlinking		(const OnDamageToPlayerEvent&  event);
 	void StartNearDeathBlinking		(const NearDeathEvent& event);
 	void StartEnterNearDeathBlinking(const EnterNearDeathEvent& event);
 	#pragma endregion

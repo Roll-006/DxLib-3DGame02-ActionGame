@@ -72,7 +72,6 @@ void RocketBomb::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 		if (hit_collider_pair.intersection)
 		{
 			RifleCartridgeManager::GetInstance()->DeleteBullet(shared_from_this());
-			RifleCartridgeManager::GetInstance()->AddHitPos(*hit_collider_pair.intersection);
 
 			const OnHitBulletEvent event{ GetName(), *hit_collider_pair.intersection, m_move_dir };
 			EventSystem::GetInstance()->Publish(event);

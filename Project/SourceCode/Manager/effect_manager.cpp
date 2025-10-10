@@ -9,6 +9,7 @@ EffectManager::EffectManager()
 	EventSystem::GetInstance()->Subscribe<RocketLauncherShotEvent>	(this, &EffectManager::OutputRocketLauncherShotEffect);
 	EventSystem::GetInstance()->Subscribe<OnShotBulletEvent>		(this, &EffectManager::OutputOnShotBulletEffect);
 	EventSystem::GetInstance()->Subscribe<OnHitBulletEvent>			(this, &EffectManager::OutputOnHitBulletEffect);
+	EventSystem::GetInstance()->Subscribe<OnDamageEvent>			(this, &EffectManager::OutputOnDamageEffect);
 }
 
 EffectManager::~EffectManager()
@@ -18,6 +19,7 @@ EffectManager::~EffectManager()
 	EventSystem::GetInstance()->Unsubscribe<RocketLauncherShotEvent>(this, &EffectManager::OutputRocketLauncherShotEffect);
 	EventSystem::GetInstance()->Unsubscribe<OnShotBulletEvent>		(this, &EffectManager::OutputOnShotBulletEffect);
 	EventSystem::GetInstance()->Unsubscribe<OnHitBulletEvent>		(this, &EffectManager::OutputOnHitBulletEffect);
+	EventSystem::GetInstance()->Unsubscribe<OnDamageEvent>			(this, &EffectManager::OutputOnDamageEffect);
 }
 
 void EffectManager::Update()
@@ -115,7 +117,16 @@ void EffectManager::OutputWeaponShotEffect(const WeaponShotEvent& event)
 
 	switch (event.gun_kind)
 	{
-	case GunKind::kSniperRifle:
+	case GunKind::kSubmachineGun:
+		obj = pool->GetObj(ObjName.SHOT_FIRE_EFFECT);
+		if (obj)
+		{
+			const auto effect = std::static_pointer_cast<Effect>(obj);
+			effect->AttachOwnerTransform(event.muzzle_transform);
+			effect->SetOffsetAngle(VGet(90.0f * math::kDegToRad, 0.0f, 0.0f));
+			effect->SetOffsetScale(2.5f);
+			AddEffect(effect);
+		}
 		break;
 
 	case GunKind::kRocketLauncher:
@@ -189,6 +200,20 @@ void EffectManager::OutputOnHitBulletEffect(const OnHitBulletEvent& event)
 			effect->GetTransform()->SetRot(CoordinateKind::kWorld, event.move_dir);
 			AddEffect(effect);
 		}
+	}
+}
+
+void EffectManager::OutputOnDamageEffect(const OnDamageEvent& event)
+{
+	const auto pool = ObjectPoolHolder::GetInstance()->GetObjectPool(ObjectPoolName.PLAY_SCENE_EFFECT_POOL);
+	std::shared_ptr<ObjBase> obj = nullptr;
+
+	obj = pool->GetObj(ObjName.BLOOD_EFFECT);
+	if (obj)
+	{
+		const auto effect = std::static_pointer_cast<Effect>(obj);
+		effect->GetTransform()->SetPos(CoordinateKind::kWorld, event.hit_pos);
+		AddEffect(effect);
 	}
 }
 #pragma endregion

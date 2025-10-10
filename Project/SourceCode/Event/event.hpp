@@ -8,6 +8,7 @@
 #include "on_shot_bullet_event.hpp"
 #include "on_hit_bullet_event.hpp"
 #include "on_damage_event.hpp"
+#include "on_damage_to_player_event.hpp"
 #include "start_rocket_launcher_cutscene_event.hpp"
 #include "end_rocket_launcher_cutscene_event.hpp"
 #include "grab_event.hpp"

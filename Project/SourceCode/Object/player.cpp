@@ -209,7 +209,7 @@ void Player::OnDamage(const HealthPartKind part_kind, const float damage)
 	if (part_kind == HealthPartKind::kMain)
 	{
 		// ダメージ通知
-		const OnDamageEvent event{ damage, damage / m_health.at(part_kind)->GetMaxHealth() };
+		const OnDamageToPlayerEvent event{ damage, damage / m_health.at(part_kind)->GetMaxHealth() };
 		EventSystem::GetInstance()->Publish(event);
 	}
 }
@@ -764,8 +764,11 @@ void Player::CalcLookDir()
 
 VECTOR Player::GetMoveForward()
 {
-	const auto camera = CinemachineBrain::GetInstance()->GetMainCamera();
-	auto forward = camera->GetTransform()->GetForward(CoordinateKind::kWorld);
+	//const auto camera = CinemachineBrain::GetInstance()->GetMainCamera();
+	//auto forward = camera->GetTransform()->GetForward(CoordinateKind::kWorld);
+
+	// MEMO : cinemachine brainを介するよりDxLib既存の関数を使用したほうが取得が早い
+	auto forward = GetCameraFrontVector();
 	forward.y = 0.0f;
 
 	return v3d::GetNormalizedV(forward);
@@ -773,8 +776,10 @@ VECTOR Player::GetMoveForward()
 
 VECTOR Player::GetMoveRight()
 {
-	const auto camera = CinemachineBrain::GetInstance()->GetMainCamera();
-	auto right = camera->GetTransform()->GetRight(CoordinateKind::kWorld);
+	//const auto camera = CinemachineBrain::GetInstance()->GetMainCamera();
+	//auto right = camera->GetTransform()->GetRight(CoordinateKind::kWorld);
+
+	auto right = GetCameraRightVector();
 	right.y = 0.0f;
 	
 	return v3d::GetNormalizedV(right);

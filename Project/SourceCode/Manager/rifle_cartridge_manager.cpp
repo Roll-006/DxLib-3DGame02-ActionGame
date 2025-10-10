@@ -77,13 +77,6 @@ void RifleCartridgeManager::Draw() const
 	//DrawFormatString(0, 100, 0xffffff, "shell_casing_pool_size    : %d", pool->GetPoolSize(ObjName.SHELL_CASING));
 	//DrawFormatString(0, 120, 0xffffff, "bullet_manager_size       : %d", m_rifle_cartridge.at(ObjName.BULLET).size());
 	//DrawFormatString(0, 140, 0xffffff, "shell_casing_manager_size : %d", m_rifle_cartridge.at(ObjName.SHELL_CASING).size());
-
-	std::queue<VECTOR> temp = m_hit_pos;
-	while (!temp.empty())
-	{
-		DrawSphere3D(temp.front(), 2, 16, 0xff0000, 0xff0000, TRUE);
-		temp.pop();
-	}
 }
 
 void RifleCartridgeManager::SearchValidRifleCartidge(GunBase& gun)
@@ -96,7 +89,7 @@ void RifleCartridgeManager::SearchValidRifleCartidge(GunBase& gun)
 	// ƒv[ƒ‹‚©‚ç’eŠÛE–òä°‚ðŽæ“¾
 	switch (gun.GetGunKind())
 	{
-	case GunKind::kSniperRifle:
+	case GunKind::kSubmachineGun:
 		bullet_obj		= pool->GetObj(ObjName.BULLET);
 		bullet			= std::static_pointer_cast<Bullet>(bullet_obj);
 		shell_casing	= std::static_pointer_cast<ShellCasing>(pool->GetObj(ObjName.SHELL_CASING_556x45));

@@ -2,7 +2,6 @@
 
 #include "../Base/character_base.hpp"
 #include "../Command/command_handler.hpp"
-#include "../VirtualCamera/cinemachine_brain.hpp"
 
 MeleeTargetIcon::MeleeTargetIcon(std::shared_ptr<IMeleeHittable>& melee_target) : 
 	m_melee_target				(melee_target),
@@ -65,14 +64,18 @@ void MeleeTargetIcon::Draw() const
 {
 	if (m_is_draw_icon)
 	{
-		m_result_screen->Draw();
+		DrawBillboard3D(m_icon_pos, 0.5f, 0.5f, m_icon_size, 0.0f, m_result_screen->GetScreenHandle() ,TRUE);
 	}
 }
 
 void MeleeTargetIcon::CalcResultScreenCenterPos()
 {
-	const auto pos = ConvWorldPosToScreenPos(m_icon_pos);
-	m_result_screen->GetGraphicer()->SetCenterPos(Vector2D<int>(pos.x, pos.y));
+	const auto camera_pos	= GetCameraPosition();
+	const auto distance		= VSize(m_icon_pos - camera_pos);
+
+	// DrawBillboard3D関数は距離に応じて描画サイズが変更されるため
+	// 距離に応じて拡大する
+	m_icon_size = kIconSize * distance * 0.01f;
 }
 
 void MeleeTargetIcon::CreateResultScreen()

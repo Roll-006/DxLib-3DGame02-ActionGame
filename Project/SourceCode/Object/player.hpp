@@ -16,8 +16,6 @@
 #include "../Part/bone_pos_corrector.hpp"
 #include "../Part/melee_target_selecter.hpp"
 
-#include "../VirtualCamera/cinemachine_brain.hpp"
-
 class PlayerStateController;
 
 class Player final : public CharacterBase, public IWeaponEquippable, public IFireable, public IGrabbable, public IMeleeAttackable

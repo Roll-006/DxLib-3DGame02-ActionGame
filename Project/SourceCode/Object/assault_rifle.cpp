@@ -1,7 +1,10 @@
 #include "assault_rifle.hpp"
 
+// MEMO : 見た目上はアサルトライフルとして実装するが、挙動はバイオRE:4のサブマシンガンとする
+//		  そのため、GunKindはサブマシンガンとして扱う
+
 AssaultRifle::AssaultRifle() :
-	GunBase(ObjName.ASSAULT_RIFLE, GunKind::kSniperRifle, HolsterKind::kRifle)
+	GunBase(ObjName.ASSAULT_RIFLE, GunKind::kSubmachineGun, HolsterKind::kRifle)
 {
 	m_magazine = std::make_shared<AssaultRifleMagazine>(m_load_transform);
 	std::dynamic_pointer_cast<ObjBase>(m_magazine)->AddToObjManager();

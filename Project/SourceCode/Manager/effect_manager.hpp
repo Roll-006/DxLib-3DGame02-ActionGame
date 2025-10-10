@@ -30,6 +30,8 @@ public:
 	void OutputOnShotBulletEffect		(const OnShotBulletEvent& event);
 	/// @brief 弾丸が衝突した際のエフェクトを出力
 	void OutputOnHitBulletEffect		(const OnHitBulletEvent& event);
+	/// @brief ダメージを受けた際のエフェクトを出力
+	void OutputOnDamageEffect			(const OnDamageEvent& event);
 	#pragma endregion
 
 private:
