@@ -19,10 +19,10 @@ private:
 
 private:
 	static constexpr VECTOR			kOffset				= { 0.0f, 9.0f, 0.0f };
-	static constexpr float			kIconSize			= 7.0f;
-	static constexpr Vector2D<int>	kScreenSize			= { 1000, 1000 };
+	static constexpr float			kIconSize			= 20.0f;
+	static constexpr Vector2D<int>	kScreenSize			= { 500, 500 };
 	static constexpr Vector2D<int>	kScreenCenterPos	= { static_cast<int>(kScreenSize.x * 0.5f), static_cast<int>(kScreenSize.y * 0.5f) };
-	static constexpr Vector2D<int>	kCursorOffset		= { 0, -150 };
+	static constexpr Vector2D<int>	kCursorOffset		= { 0, 100 };
 
 	std::shared_ptr<IMeleeHittable>&		m_melee_target;
 	std::shared_ptr<ButtonGraphicGetter>	m_button_graphic_resource;

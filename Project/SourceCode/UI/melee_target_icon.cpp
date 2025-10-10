@@ -12,7 +12,7 @@ MeleeTargetIcon::MeleeTargetIcon(std::shared_ptr<IMeleeHittable>& melee_target) 
 	m_is_draw_icon				(false)
 {
 	m_cursor_graphic->SetCenterPos(kScreenCenterPos + kCursorOffset);
-	m_cursor_graphic->SetScale(2.0f);
+	m_cursor_graphic->SetScale(0.5f);
 }
 
 MeleeTargetIcon::~MeleeTargetIcon()
@@ -44,13 +44,13 @@ void MeleeTargetIcon::LateUpdate()
 	case DeviceKind::kKeyboard:
 		m_button_icon_graphic = m_button_graphic_resource->GetWeaponGraphicer(command->GetKeyInputCode(CommandKind::kMelee, CommandSlotKind::kMain));
 		m_button_icon_graphic->SetCenterPos(kScreenCenterPos);
-		m_button_icon_graphic->SetScale(2.0f);
+		m_button_icon_graphic->SetScale(0.5f);
 		break;
 
 	case DeviceKind::kPad:
 		m_button_icon_graphic = m_button_graphic_resource->GetWeaponGraphicer(command->GetPadInputCode(CommandKind::kMelee, CommandSlotKind::kStatic1));
 		m_button_icon_graphic->SetCenterPos(kScreenCenterPos);
-		m_button_icon_graphic->SetScale(2.0f);
+		m_button_icon_graphic->SetScale(0.5f);
 		break;
 	}
 
