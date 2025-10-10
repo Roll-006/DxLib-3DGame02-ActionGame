@@ -15,7 +15,7 @@ MeleeTargetIcon::MeleeTargetIcon(std::shared_ptr<IMeleeHittable>& melee_target) 
 	m_is_draw_icon				(false)
 {
 	m_cursor_graphic->SetCenterPos(kScreenCenterPos + kCursorOffset);
-	m_cursor_graphic->SetScale(0.5f);
+	m_cursor_graphic->SetScale(0.2f);
 }
 
 MeleeTargetIcon::~MeleeTargetIcon()
@@ -36,7 +36,7 @@ void MeleeTargetIcon::LateUpdate()
 			const auto	model_handle = std::dynamic_pointer_cast<CharacterBase>(m_melee_target)->GetModeler()->GetModelHandle();
 			auto		head_m		 = MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, BonePath.HEAD));
 			
-			m_icon_pos = MGetTranslateElem(head_m);
+			m_icon_pos = MGetTranslateElem(head_m) + kIconOffset;
 		}
 	}
 
@@ -47,17 +47,17 @@ void MeleeTargetIcon::LateUpdate()
 	case DeviceKind::kKeyboard:
 		m_button_icon_graphic = m_button_graphic_resource->GetWeaponGraphicer(command->GetKeyInputCode(CommandKind::kMelee, CommandSlotKind::kMain));
 		m_button_icon_graphic->SetCenterPos(kScreenCenterPos);
-		m_button_icon_graphic->SetScale(0.5f);
+		m_button_icon_graphic->SetScale(0.2f);
 		break;
 
 	case DeviceKind::kPad:
 		m_button_icon_graphic = m_button_graphic_resource->GetWeaponGraphicer(command->GetPadInputCode(CommandKind::kMelee, CommandSlotKind::kStatic1));
 		m_button_icon_graphic->SetCenterPos(kScreenCenterPos);
-		m_button_icon_graphic->SetScale(0.5f);
+		m_button_icon_graphic->SetScale(0.2f);
 		break;
 	}
 
-	CalcIcconSize();
+	CalcResultScreenCenterPos();
 	CreateResultScreen();
 }
 
@@ -65,13 +65,14 @@ void MeleeTargetIcon::Draw() const
 {
 	if (m_is_draw_icon)
 	{
-		DrawBillboard3D(m_icon_pos + kOffset, 0.5f, 0.5f, kIconSize, 0.0f, m_result_screen->GetScreenHandle(), TRUE);
+		m_result_screen->Draw();
 	}
 }
 
-void MeleeTargetIcon::CalcIcconSize()
+void MeleeTargetIcon::CalcResultScreenCenterPos()
 {
-
+	const auto pos = ConvWorldPosToScreenPos(m_icon_pos);
+	m_result_screen->GetGraphicer()->SetCenterPos(Vector2D<int>(pos.x, pos.y));
 }
 
 void MeleeTargetIcon::CreateResultScreen()

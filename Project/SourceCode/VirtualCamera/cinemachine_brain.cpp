@@ -241,7 +241,6 @@ void CinemachineBrain::ChangeTargetVirtualCamera(const int camera_handle)
 
 void CinemachineBrain::SetBlendTransform()
 {
-	// FIXME : ブレンドが開始した一瞬、別の地点が描画される現象発生中。[追記]不具合が消えた可能性あり。消えた理由はわからない。要検証
 	// FIXME : originA➡targetBのブレンド中に、originB➡targetAに切り替わった場合、到達までの時間が早くなる不具合発生中
 	
 	bool is_seted_target_transform = false;

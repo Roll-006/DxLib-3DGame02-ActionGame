@@ -15,15 +15,15 @@ public:
 	void Draw() const;
 
 private:
-	void CalcIcconSize();
+	void CalcResultScreenCenterPos();
 	void CreateResultScreen();
 
 private:
-	static constexpr VECTOR			kOffset				= { 0.0f, 9.0f, 0.0f };
+	static constexpr VECTOR			kIconOffset			= { 0.0f, 10.0f, 0.0f };
 	static constexpr float			kIconSize			= 18.0f;
 	static constexpr Vector2D<int>	kScreenSize			= { 500, 500 };
 	static constexpr Vector2D<int>	kScreenCenterPos	= { static_cast<int>(kScreenSize.x * 0.5f), static_cast<int>(kScreenSize.y * 0.5f) };
-	static constexpr Vector2D<int>	kCursorOffset		= { 0, 100 };
+	static constexpr Vector2D<int>	kCursorOffset		= { 0, 60 };
 
 	std::shared_ptr<IMeleeHittable>&		m_melee_target;
 	std::shared_ptr<ButtonGraphicGetter>	m_button_graphic_resource;
