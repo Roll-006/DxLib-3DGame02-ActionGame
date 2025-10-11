@@ -36,15 +36,15 @@ public:
 	void OnRelease() override;
 	void OnGrabbedDamage(const float damage) override;
 
-	void OnCollideFrontMelee		(CharacterBase* target) override;
-	void OnCollideBackMelee			(CharacterBase* target) override;
-	void OnCollideVersatilityMelee	(CharacterBase* target) override;
+	void AttackFrontMelee		(CharacterBase* target) override;
+	void AttackBackMelee		(CharacterBase* target) override;
+	void AttackVersatilityMelee	(CharacterBase* target) override;
 
 	void SetRemainingBulletNum(const int remaining_bullet_num) override { m_current_remaining_bullet_num = remaining_bullet_num; }
 	
-	void AttackFrontMelee		(const VECTOR& target_pos, const VECTOR& target_dir) override;
-	void AttackBackMelee		(const VECTOR& target_pos, const VECTOR& target_dir) override;
-	void AttackVersatilityMelee	(const VECTOR& target_pos) override;
+	void SetupFrontMelee		(const VECTOR& target_pos, const VECTOR& target_dir) override;
+	void SetupBackMelee			(const VECTOR& target_pos, const VECTOR& target_dir) override;
+	void SetupVersatilityMelee	(const VECTOR& target_pos) override;
 
 	void AddMeleeTarget(const int target_obj_handle) override;
 

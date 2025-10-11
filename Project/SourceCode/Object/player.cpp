@@ -189,11 +189,11 @@ void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 			{
 				if (action_state_kind == player_state::ActionStateKind::kFrontKick)
 				{
-					OnCollideFrontMelee(character);
+					AttackFrontMelee(character);
 				}
 				else if (action_state_kind == player_state::ActionStateKind::kRoundhouseKick)
 				{
-					OnCollideVersatilityMelee(character);
+					AttackVersatilityMelee(character);
 				}
 			}
 		}
@@ -239,7 +239,7 @@ void Player::OnGrabbedDamage(const float damage)
 	OnDamage(HealthPartKind::kMain, damage);
 }
 
-void Player::OnCollideFrontMelee(CharacterBase* target)
+void Player::AttackFrontMelee(CharacterBase* target)
 {
 	// front kick
 
@@ -253,12 +253,12 @@ void Player::OnCollideFrontMelee(CharacterBase* target)
 	time_manager->SetTimeScale(TimeScaleLayerKind::kEffect, 0.07f, 0.4f);
 }
 
-void Player::OnCollideBackMelee(CharacterBase* target)
+void Player::AttackBackMelee(CharacterBase* target)
 {
 
 }
 
-void Player::OnCollideVersatilityMelee(CharacterBase* target)
+void Player::AttackVersatilityMelee(CharacterBase* target)
 {
 	// roundhouse kick
 
@@ -272,7 +272,7 @@ void Player::OnCollideVersatilityMelee(CharacterBase* target)
 	time_manager->SetTimeScale(TimeScaleLayerKind::kEffect, 0.07f, 0.4f);
 }
 
-void Player::AttackFrontMelee(const VECTOR& target_pos, const VECTOR& target_dir)
+void Player::SetupFrontMelee(const VECTOR& target_pos, const VECTOR& target_dir)
 {
 	// front kick
 
@@ -282,7 +282,7 @@ void Player::AttackFrontMelee(const VECTOR& target_pos, const VECTOR& target_dir
 	RemoveMeleeTarget();
 }
 
-void Player::AttackBackMelee(const VECTOR& target_pos, const VECTOR& target_dir)
+void Player::SetupBackMelee(const VECTOR& target_pos, const VECTOR& target_dir)
 {
 	// suplex
 
@@ -292,7 +292,7 @@ void Player::AttackBackMelee(const VECTOR& target_pos, const VECTOR& target_dir)
 	RemoveMeleeTarget();
 }
 
-void Player::AttackVersatilityMelee(const VECTOR& target_pos)
+void Player::SetupVersatilityMelee(const VECTOR& target_pos)
 {
 	// roundhouse kick
 

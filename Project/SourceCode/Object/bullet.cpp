@@ -69,6 +69,10 @@ void Bullet::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 		if (hit_collider_pair.intersection)
 		{
 			RifleCartridgeManager::GetInstance()->DeleteBullet(shared_from_this());
+
+			const OnHitBulletEvent event{ GetName(), *hit_collider_pair.intersection, m_move_dir };
+			EventSystem::GetInstance()->Publish(event);
+
 		}
 		break;
 

@@ -1212,7 +1212,7 @@
     <ClInclude Include="SourceCode\CSV\csv_loader.hpp">
       <Filter>SourceCode\CSV</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Event\aim_gun_event.hpp">
+    <ClInclude Include="SourceCode\Event\b.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Event\end_rocket_launcher_cutscene_event.hpp">
@@ -1375,6 +1375,9 @@
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Event\on_damage_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\a.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
   </ItemGroup>

@@ -73,7 +73,7 @@ void player_state::RoundhouseKick::Enter(std::shared_ptr<Player>& obj)
 	const auto target_obj		= std::dynamic_pointer_cast<ObjBase>(obj->GetMeleeTarget());
 	const auto target_transform = target_obj->GetTransform();
 
-	obj->AttackVersatilityMelee(target_transform->GetPos(CoordinateKind::kWorld));
+	obj->SetupVersatilityMelee(target_transform->GetPos(CoordinateKind::kWorld));
 }
 
 void player_state::RoundhouseKick::Exit(std::shared_ptr<Player>& obj)

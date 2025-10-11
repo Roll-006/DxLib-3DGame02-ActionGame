@@ -201,6 +201,19 @@ void EffectManager::OutputOnHitBulletEffect(const OnHitBulletEvent& event)
 			AddEffect(effect);
 		}
 	}
+
+	if (event.bullet_name == ObjName.BULLET)
+	{
+		obj = pool->GetObj(ObjName.SHOT_FIRE_EFFECT);
+		if (obj)
+		{
+			//const auto effect = std::static_pointer_cast<Effect>(obj);
+			//effect->GetTransform()->SetPos(CoordinateKind::kWorld, event.hit_pos);
+			////effect->GetTransform()->SetRot(CoordinateKind::kWorld, event.move_dir);
+			//effect->SetOffsetAngle(VGet(270.0f * math::kDegToRad, 0.0f, 0.0f));
+			//AddEffect(effect);
+		}
+	}
 }
 
 void EffectManager::OutputOnDamageEffect(const OnDamageEvent& event)

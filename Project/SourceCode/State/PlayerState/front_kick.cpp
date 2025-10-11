@@ -73,7 +73,7 @@ void player_state::FrontKick::Enter(std::shared_ptr<Player>& obj)
 	const auto target_obj		= std::dynamic_pointer_cast<ObjBase>(obj->GetMeleeTarget());
 	const auto target_transform = target_obj->GetTransform();
 
-	obj->AttackFrontMelee(target_transform->GetPos(CoordinateKind::kWorld), target_transform->GetForward(CoordinateKind::kWorld));
+	obj->SetupFrontMelee(target_transform->GetPos(CoordinateKind::kWorld), target_transform->GetForward(CoordinateKind::kWorld));
 }
 
 void player_state::FrontKick::Exit(std::shared_ptr<Player>& obj)

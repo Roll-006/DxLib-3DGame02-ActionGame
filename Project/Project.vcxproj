@@ -364,7 +364,8 @@
     <ClInclude Include="SourceCode\Data\input_data.hpp" />
     <ClInclude Include="SourceCode\Debugger\debugger.hpp" />
     <ClInclude Include="SourceCode\Drawer\drawer.hpp" />
-    <ClInclude Include="SourceCode\Event\aim_gun_event.hpp" />
+    <ClInclude Include="SourceCode\Event\b.hpp" />
+    <ClInclude Include="SourceCode\Event\a.hpp" />
     <ClInclude Include="SourceCode\Event\on_damage_event.hpp" />
     <ClInclude Include="SourceCode\Event\on_melee_target_lost_event.hpp" />
     <ClInclude Include="SourceCode\Event\on_downed_enemy_spotted_event.hpp" />
