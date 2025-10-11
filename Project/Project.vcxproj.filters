@@ -334,9 +334,6 @@
     <ClCompile Include="SourceCode\GameTime\fps.cpp">
       <Filter>SourceCode\GameTime</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\GameTime\time_scale_controller.cpp">
-      <Filter>SourceCode\GameTime</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\GameTime\game_time_manager.cpp">
       <Filter>SourceCode\GameTime</Filter>
     </ClCompile>
@@ -943,9 +940,6 @@
       <Filter>SourceCode\Data</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\GameTime\fps.hpp">
-      <Filter>SourceCode\GameTime</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\GameTime\time_scale_controller.hpp">
       <Filter>SourceCode\GameTime</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\GameTime\game_time_manager.hpp">

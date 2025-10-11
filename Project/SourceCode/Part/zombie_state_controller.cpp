@@ -64,6 +64,7 @@ void ZombieStateController::CreateState()
 void ZombieStateController::AddStopStatePair()
 {
 	m_states.at(typeid(zombie_state::Grab))				->AddStopState(m_states.at(typeid(zombie_state::Move))->GetStateHandle());
+	m_states.at(typeid(zombie_state::StandStun))		->AddStopState(m_states.at(typeid(zombie_state::Move))->GetStateHandle());
 	m_states.at(typeid(zombie_state::CrouchLeftStun))	->AddStopState(m_states.at(typeid(zombie_state::Move))->GetStateHandle());
 	m_states.at(typeid(zombie_state::CrouchRightStun))	->AddStopState(m_states.at(typeid(zombie_state::Move))->GetStateHandle());
 	m_states.at(typeid(zombie_state::Dead))				->AddStopState(m_states.at(typeid(zombie_state::Move))->GetStateHandle());
@@ -324,21 +325,21 @@ bool ZombieStateController::TryKnockback(std::shared_ptr<Zombie>& zombie)
 
 bool ZombieStateController::TryDead(std::shared_ptr<Zombie>& zombie)
 {
-	return zombie->GetHealth(HealthPartKind::kMain)->GetCurrentHealth() <= 0.0f;
+	return zombie->GetHealth(HealthPartKind::kMain)->GetCurrentValue() <= 0.0f;
 }
 
 bool ZombieStateController::TryLeftCrouchStun(std::shared_ptr<Zombie>& zombie)
 {
-	return zombie->GetHealth(HealthPartKind::kLeftLeg)->GetCurrentHealth() <= 0.0f;
+	return zombie->GetHealth(HealthPartKind::kLeftLeg)->GetCurrentValue() <= 0.0f;
 }
 
 bool ZombieStateController::TryRightCrouchStun(std::shared_ptr<Zombie>& zombie)
 {
-	return zombie->GetHealth(HealthPartKind::kRightLeg)->GetCurrentHealth() <= 0.0f;
+	return zombie->GetHealth(HealthPartKind::kRightLeg)->GetCurrentValue() <= 0.0f;
 }
 
 bool ZombieStateController::TryStandStun(std::shared_ptr<Zombie>& zombie)
 {
-	return zombie->GetHealth(HealthPartKind::kHead)->GetCurrentHealth() <= 0.0f;;
+	return zombie->GetHealth(HealthPartKind::kHead)->GetCurrentValue() <= 0.0f;;
 }
 #pragma endregion

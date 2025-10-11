@@ -3,6 +3,7 @@
 
 #include "virtual_camera.hpp"
 #include "../Data/recoil_data.hpp"
+#include "../Event/event_system.hpp"
 
 class CinemachineBrain;
 class Player;

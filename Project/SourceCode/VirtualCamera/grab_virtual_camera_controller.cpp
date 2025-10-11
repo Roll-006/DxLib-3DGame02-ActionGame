@@ -1,4 +1,5 @@
 #include "grab_virtual_camera_controller.hpp"
+
 #include "../VirtualCamera/cinemachine_brain.hpp"
 #include "../Object/player.hpp"
 
@@ -16,7 +17,7 @@ GrabVirtualCameraController::GrabVirtualCameraController() :
 	EventSystem::GetInstance()->Subscribe<GrabbedEvent>	(this, &GrabVirtualCameraController::SetGrabbedModelHandle);
 
 	// ƒpƒ‰ƒ[ƒ^İ’è
-	SetupCamera();	
+	SetupCamera();
 
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	const auto control_camera = std::dynamic_pointer_cast<ControlVirtualCamerasController>(cinemachine_brain->GetVirtualCameraController(VirtualCameraControllerKind::kControl));

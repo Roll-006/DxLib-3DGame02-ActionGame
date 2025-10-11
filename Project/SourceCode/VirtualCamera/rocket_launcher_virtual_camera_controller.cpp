@@ -42,8 +42,13 @@ RocketLauncherVirtualCameraController::RocketLauncherVirtualCameraController(Pla
 	cinemachine_brain->AddVirtualCamera(m_exit_rot_camera,	false);
 
 	// 演出開始通知
-	const StartRocketLauncherCutsceneEvent event{ 0.0f, 0.005f, 0.0f };
+	const StartRocketLauncherCutsceneEvent event{};
 	EventSystem::GetInstance()->Publish(event);
+
+	const auto time_manager = GameTimeManager::GetInstance();
+	time_manager->SetTimeScale(TimeScaleLayerKind::kWorld,	0.0f);
+	time_manager->SetTimeScale(TimeScaleLayerKind::kPlayer,	0.005f);
+	time_manager->SetTimeScale(TimeScaleLayerKind::kEffect,	0.0f);
 
 	// MEMO : この段階では操作カメラのトランスフォームの値は生存
 }
@@ -270,8 +275,11 @@ void RocketLauncherVirtualCameraController::CalcAimTransformForExitRotCamera()
 	if (IsEndExitRot())
 	{
 		// 通知
-		const EndRocketLauncherCutsceneEvent event{ 1.0f };
+		const EndRocketLauncherCutsceneEvent event{};
 		EventSystem::GetInstance()->Publish(event);
+
+		const auto time_manager = GameTimeManager::GetInstance();
+		time_manager->InitTimeScale();
 
 		// TODO : ブレンドが終了した際に、ブレンド速度を戻す処理が必要
 		const auto cinemachine_brain = CinemachineBrain::GetInstance();

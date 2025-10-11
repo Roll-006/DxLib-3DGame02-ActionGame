@@ -5,5 +5,5 @@
 /// @brief ロケットランチャー専用カットシーンが終了した
 struct EndRocketLauncherCutsceneEvent
 {
-	float time_scale = 1.0f;
+	
 };

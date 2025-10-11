@@ -3,7 +3,7 @@
 // MEMO : パラメーターでゲージサイズや太さの変更を可能にするために
 //		　スクリーン生成およびマスクを使用しゲージを生成する
 
-HealthGauge::HealthGauge(std::shared_ptr<Health>& health) : 
+HealthGauge::HealthGauge(std::shared_ptr<Gauge>& health) : 
 	m_health									(health),
 	m_current_health_gauge_graphic				(std::make_shared<Graphicer>(UIGraphicPath.CURRENT_HEALTH_GAUGE)),
 	m_gauge_particle_graphic					(std::make_shared<Graphicer>(UIGraphicPath.HEALTH_GAUGE_PARTICLE)),
@@ -28,8 +28,8 @@ HealthGauge::HealthGauge(std::shared_ptr<Health>& health) :
 	m_current_max_health_gauge_virtual_percent	(0.0f),
 	m_damage_gauge_percent						(0.0f),
 	m_recover_gauge_percent						(0.0f),
-	m_prev_health								(m_health->GetCurrentHealth()),
-	m_prev_max_health							(m_health->GetCurrentMaxHealth()),
+	m_prev_health								(m_health->GetCurrentValue()),
+	m_prev_max_health							(m_health->GetCurrentMaxValue()),
 	m_is_recover_gauge							(false),
 	m_gauge_hue									(kMaxHue),
 	m_prev_gauge_hue							(m_gauge_hue),
@@ -105,8 +105,8 @@ void HealthGauge::LateUpdate()
 	CreateHealthGaugeScreen();
 	CreateResultScreen();
 
-	m_prev_health						= m_health->GetCurrentHealth();
-	m_prev_max_health					= m_health->GetCurrentMaxHealth();
+	m_prev_health						= m_health->GetCurrentValue();
+	m_prev_max_health					= m_health->GetCurrentMaxValue();
 	m_prev_health_gauge_actual_percent	= m_current_health_gauge_actual_percent;
 	m_prev_health_gauge_virtual_percent = m_current_health_gauge_virtual_percent;
 }
@@ -240,12 +240,12 @@ void HealthGauge::CreateResultScreen()
 void HealthGauge::CalcGaugePercent()
 {
 	const auto delta_time = GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kUI);
-	const auto max_health = m_health->GetMaxHealth();
+	const auto max_health = m_health->GetMaxValue();
 
 	// 実際の値を取得
-	m_current_health_gauge_actual_percent = m_health->GetCurrentHealth() / max_health * kMaxGaugePercent;
+	m_current_health_gauge_actual_percent = m_health->GetCurrentValue() / max_health * kMaxGaugePercent;
 
-	if (m_health->GetCurrentHealth() <= m_prev_health && !m_is_recover_gauge)
+	if (m_health->GetCurrentValue() <= m_prev_health && !m_is_recover_gauge)
 	{
 		m_current_health_gauge_virtual_percent = m_current_health_gauge_actual_percent;
 		m_recover_gauge_percent = 0.0f;
@@ -264,7 +264,7 @@ void HealthGauge::CalcGaugePercent()
 		}
 
 		// ゲージ回復中にダメージを受けた場合、強制的に回復演出を終了
-		if (m_health->GetCurrentHealth() < m_prev_health)
+		if (m_health->GetCurrentValue() < m_prev_health)
 		{
 			m_current_health_gauge_virtual_percent	= m_current_health_gauge_actual_percent;
 			m_recover_gauge_percent					= 0.0f;
@@ -274,7 +274,7 @@ void HealthGauge::CalcGaugePercent()
 	}
 
 	// 最大HPのゲージ率
-	m_current_max_health_gauge_virtual_percent	= m_health->GetCurrentMaxHealth() / max_health * kMaxGaugePercent;
+	m_current_max_health_gauge_virtual_percent	= m_health->GetCurrentMaxValue() / max_health * kMaxGaugePercent;
 
 	// ダメージを受けた際の減少ゲージ率
 	if (m_is_recover_gauge)
@@ -303,11 +303,11 @@ void HealthGauge::CalcBlinkingAlphaBlendNum()
 		is_loop = true;
 	}
 	// ダメージを受けた場合、sinを0にして点滅を再開させる
-	else if (m_health->GetCurrentHealth() < m_prev_health)
+	else if (m_health->GetCurrentValue() < m_prev_health)
 	{
 		m_blinking_sin = 0.0f;
 	}
-	else if (m_health->GetCurrentHealth() > m_prev_health)
+	else if (m_health->GetCurrentValue() > m_prev_health)
 	{
 		m_blinking_sin = DX_PI_F;
 	}
@@ -339,7 +339,7 @@ void HealthGauge::CalcGaugeParticleAngle()
 
 void HealthGauge::ChangeGaugeColor()
 {
-	if (m_prev_health == m_health->GetCurrentHealth() && !m_is_recover_gauge) { return; }
+	if (m_prev_health == m_health->GetCurrentValue() && !m_is_recover_gauge) { return; }
 
 	// 真円を100%とた時、12.5%未満の場合
 	if (m_current_health_gauge_virtual_percent < 12.5f)

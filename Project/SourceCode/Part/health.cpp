@@ -1,40 +1,40 @@
 #include "health.hpp"
 
-Health::Health(const float max_health, const float max_current_health) :
-	m_current_health	(max_current_health),
-	m_prev_health		(max_current_health),
-	m_current_max_health(max_current_health),
-	m_max_health		(max_health)
+Gauge::Gauge(const float max_health, const float max_current_health) :
+	m_current_value	(max_current_health),
+	m_prev_value		(max_current_health),
+	m_current_max_value(max_current_health),
+	m_max_value		(max_health)
 {
 
 }
 
-Health::~Health()
+Gauge::~Gauge()
 {
 
 }
 
-void Health::RecoverMax()
+void Gauge::IncreaseMax()
 {
-	m_current_health = m_current_max_health;
+	m_current_value = m_current_max_value;
 }
 
-void Health::Recover(const float recover_points)
+void Gauge::Increase(const float increase_value)
 {
-	math::Increase(m_current_health, recover_points, m_current_max_health, false);
+	math::Increase(m_current_value, increase_value, m_current_max_value, false);
 }
 
-void Health::OnDamage(const float damage)
+void Gauge::Decrease(const float decrease_value)
 {
-	m_prev_health = m_current_health;
-	math::Decrease(m_current_health, damage, 0.0f);
+	m_prev_value = m_current_value;
+	math::Decrease(m_current_value, decrease_value, 0.0f);
 }
 
-void Health::SetCurrentMaxHealth(const float current_max_health)
+void Gauge::SetCurrentMaxValue(const float current_max_health)
 {
-	m_current_max_health = current_max_health;
-	if (m_current_max_health > m_max_health)
+	m_current_max_value = current_max_health;
+	if (m_current_max_value > m_max_value)
 	{
-		m_current_max_health = m_max_health;
+		m_current_max_value = m_max_value;
 	}
 }

@@ -17,8 +17,8 @@ Player::Player() :
 	EventSystem::GetInstance()->Subscribe<OnDownedEnemySpottedEvent>(this, &Player::AddMeleeCandidate);
 	EventSystem::GetInstance()->Subscribe<OnMeleeTargetLostEvent>	(this, &Player::RemoveMeleeTarget);
 
-	m_health[HealthPartKind::kMain] = std::make_shared<Health>(2000.0f, 1500.0f);
-	m_prev_health = m_health.at(HealthPartKind::kMain)->GetCurrentHealth();
+	m_health[HealthPartKind::kMain] = std::make_shared<Gauge>(2000.0f, 1500.0f);
+	m_prev_health = m_health.at(HealthPartKind::kMain)->GetCurrentValue();
 
 	// モデル・アニメーションを設定
 	m_modeler  = std::make_shared<Modeler>(m_transform, ModelPath.SWAT_02, kBasicAngle, kBasicScale);
@@ -180,15 +180,22 @@ void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	case ColliderKind::kLandingTrigger:
 		m_is_landing = true;
 		break;
-
+		 
 	case ColliderKind::kAttackTrigger:
-		if (action_state_kind == player_state::ActionStateKind::kFrontKick)
+		if (target_tag == ObjTag.ENEMY)
 		{
-			OnCollideFrontMelee(target_obj);
-		}
-		else if (action_state_kind == player_state::ActionStateKind::kRoundhouseKick)
-		{
-			OnCollideVersatilityMelee(target_obj);
+			const auto character = dynamic_cast<CharacterBase*>(target_obj);
+			if (!character->IsInvincible())
+			{
+				if (action_state_kind == player_state::ActionStateKind::kFrontKick)
+				{
+					OnCollideFrontMelee(character);
+				}
+				else if (action_state_kind == player_state::ActionStateKind::kRoundhouseKick)
+				{
+					OnCollideVersatilityMelee(character);
+				}
+			}
 		}
 		break;
 
@@ -201,7 +208,7 @@ void Player::OnDamage(const HealthPartKind part_kind, const float damage)
 {
 	if (!m_health.count(part_kind)) { return; }
 
-	m_health.at(part_kind)->OnDamage(damage);
+	m_health.at(part_kind)->Decrease(damage);
 	m_invincible_timer	= m_invincible_time;
 	m_is_invincible		= true;
 
@@ -209,7 +216,7 @@ void Player::OnDamage(const HealthPartKind part_kind, const float damage)
 	if (part_kind == HealthPartKind::kMain)
 	{
 		// ダメージ通知
-		const OnDamageToPlayerEvent event{ damage, damage / m_health.at(part_kind)->GetMaxHealth() };
+		const OnDamageToPlayerEvent event{ damage, damage / m_health.at(part_kind)->GetMaxValue() };
 		EventSystem::GetInstance()->Publish(event);
 	}
 }
@@ -232,25 +239,37 @@ void Player::OnGrabbedDamage(const float damage)
 	OnDamage(HealthPartKind::kMain, damage);
 }
 
-void Player::OnCollideFrontMelee(PhysicalObjBase* target_obj)
+void Player::OnCollideFrontMelee(CharacterBase* target)
 {
 	// front kick
 
 	const auto dir = v3d::GetNormalizedV(m_transform->GetForward(CoordinateKind::kWorld) + VGet(0.0f, 0.5f, 0.0f));
-	target_obj->OnKnockback(dir, 170.0f, 5.0f);
+	target->OnDamage(HealthPartKind::kMain, 100.0f);
+	target->OnKnockback(dir, 170.0f, 5.0f);
+
+	const auto time_manager = GameTimeManager::GetInstance();
+	time_manager->SetTimeScale(TimeScaleLayerKind::kWorld,  0.07f, 0.4f);
+	time_manager->SetTimeScale(TimeScaleLayerKind::kPlayer, 0.07f, 0.4f);
+	time_manager->SetTimeScale(TimeScaleLayerKind::kEffect, 0.07f, 0.4f);
 }
 
-void Player::OnCollideBackMelee(PhysicalObjBase* target_obj)
+void Player::OnCollideBackMelee(CharacterBase* target)
 {
 
 }
 
-void Player::OnCollideVersatilityMelee(PhysicalObjBase* target_obj)
+void Player::OnCollideVersatilityMelee(CharacterBase* target)
 {
 	// roundhouse kick
 
 	const auto dir = v3d::GetNormalizedV(m_transform->GetForward(CoordinateKind::kWorld) + VGet(0.0f, 0.5f, 0.0f));
-	target_obj->OnKnockback(dir, 170.0f, 5.0f);
+	target->OnDamage(HealthPartKind::kMain, 100.0f);
+	target->OnKnockback(dir, 170.0f, 5.0f);
+
+	const auto time_manager = GameTimeManager::GetInstance();
+	time_manager->SetTimeScale(TimeScaleLayerKind::kWorld,  0.07f, 0.4f);
+	time_manager->SetTimeScale(TimeScaleLayerKind::kPlayer, 0.07f, 0.4f);
+	time_manager->SetTimeScale(TimeScaleLayerKind::kEffect, 0.07f, 0.4f);
 }
 
 void Player::AttackFrontMelee(const VECTOR& target_pos, const VECTOR& target_dir)
@@ -677,8 +696,8 @@ void Player::CalcMoveVelocity()
 void Player::NotifyHealth()
 {
 	// 瀕死状態通知
-	const auto parcent = (m_health.at(HealthPartKind::kMain)->GetMaxHealth() / 270.0f) * 45;
-	if (m_health.at(HealthPartKind::kMain)->GetCurrentHealth() < parcent)
+	const auto parcent = (m_health.at(HealthPartKind::kMain)->GetMaxValue() / 270.0f) * 45;
+	if (m_health.at(HealthPartKind::kMain)->GetCurrentValue() < parcent)
 	{
 		// 瀕死状態突入通知
 		if (m_prev_health >= parcent)
@@ -691,7 +710,7 @@ void Player::NotifyHealth()
 		EventSystem::GetInstance()->Publish(event);
 	}
 
-	m_prev_health = m_health.at(HealthPartKind::kMain)->GetCurrentHealth();
+	m_prev_health = m_health.at(HealthPartKind::kMain)->GetCurrentValue();
 }
 
 void Player::CalcLookDir()

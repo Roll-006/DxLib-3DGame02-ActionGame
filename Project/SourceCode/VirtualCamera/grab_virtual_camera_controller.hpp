@@ -1,6 +1,8 @@
 #pragma once
 #include "../Interface/i_virtual_camera_controller.hpp"
 #include "virtual_camera.hpp"
+#include "../Event/grab_event.hpp"
+#include "../Event/grabbed_event.hpp"
 
 class CinemachineBrain;
 

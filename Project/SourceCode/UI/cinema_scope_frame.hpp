@@ -1,5 +1,6 @@
 #pragma once
 #include "../Window/window.hpp"
+#include "../Event/event_system.hpp"
 
 class CinemaScopeFrame final
 {

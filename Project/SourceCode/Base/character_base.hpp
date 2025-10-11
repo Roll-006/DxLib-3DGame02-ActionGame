@@ -8,6 +8,7 @@
 #include "animator_base.hpp"
 
 #include "gun_base.hpp"
+#include "../Kind/health_part_kind.hpp"
 
 class CharacterBase abstract : public PhysicalObjBase
 {
@@ -25,6 +26,7 @@ public:
 	/// @brief ‹­§“I‚É–³“Gó‘Ô‚ğ‰ğœ‚·‚é
 	void DeactivateInvincibleForcibly() { m_is_invincible = false; }
 
+	virtual void OnDamage(const HealthPartKind part_kind, const float damage) abstract;
 
 	#pragma region Getter
 	[[nodiscard]] bool							IsInvincible()				const		{ return m_is_invincible; }
@@ -36,7 +38,7 @@ public:
 	//[[nodiscard]] WeaponKind					GetCurrentHeldWeaponKind();
 	//[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentAttachWeapon		(const HolsterKind holster_kind)	const;
 	//[[nodiscard]] WeaponKind					GetCurrentAttachWeaponKind	(const HolsterKind holster_kind)	const;
-	[[nodiscard]] std::shared_ptr<Health>&		GetHealth(const HealthPartKind kind)	{ return m_health.at(kind); }
+	[[nodiscard]] std::shared_ptr<Gauge>&		GetHealth(const HealthPartKind kind)	{ return m_health.at(kind); }
 	#pragma endregion
 
 protected:
@@ -45,7 +47,6 @@ protected:
 
 	void CalcMoveDir();
 
-	virtual void OnDamage(const HealthPartKind part_kind, const float damage) abstract;
 	void JudgeInvincible();
 
 protected:
@@ -62,7 +63,7 @@ protected:
 	std::shared_ptr<WeaponBase>											m_current_held_weapon;	// Œ»İè‚É‚Á‚Ä‚¢‚é•Ší
 	std::unordered_map<HolsterKind, std::shared_ptr<WeaponBase>>		m_attach_weapons;		// ‘•’…‚µ‚Ä‚¢‚é•Ší
 
-	std::unordered_map<HealthPartKind, std::shared_ptr<Health>>	m_health;
+	std::unordered_map<HealthPartKind, std::shared_ptr<Gauge>>	m_health;
 
 	float m_invincible_time;
 	float m_invincible_timer;

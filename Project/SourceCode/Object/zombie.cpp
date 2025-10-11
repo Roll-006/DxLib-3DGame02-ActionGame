@@ -12,13 +12,13 @@ Zombie::Zombie(const VECTOR& pos, const VECTOR& look_dir) :
 	ApplyLookDirToRot(m_look_dir.at(TimeKind::kCurrent));
 
 	// TODO : JSONŽw’è
-	m_health[HealthPartKind::kMain]		= std::make_shared<Health>(1684.0f, 1684.0f);
-	m_health[HealthPartKind::kHead]		= std::make_shared<Health>(80.0f,  80.0f);
-	m_health[HealthPartKind::kBody]		= std::make_shared<Health>(500.0f, 500.0f);
-	m_health[HealthPartKind::kLeftArm]	= std::make_shared<Health>(100.0f, 100.0f);
-	m_health[HealthPartKind::kRightArm]	= std::make_shared<Health>(100.0f, 100.0f);
-	m_health[HealthPartKind::kLeftLeg]	= std::make_shared<Health>(100.0f, 100.0f);
-	m_health[HealthPartKind::kRightLeg]	= std::make_shared<Health>(100.0f, 100.0f);
+	m_health[HealthPartKind::kMain]		= std::make_shared<Gauge>(1684.0f, 1684.0f);
+	m_health[HealthPartKind::kHead]		= std::make_shared<Gauge>(80.0f,  80.0f);
+	m_health[HealthPartKind::kBody]		= std::make_shared<Gauge>(500.0f, 500.0f);
+	m_health[HealthPartKind::kLeftArm]	= std::make_shared<Gauge>(100.0f, 100.0f);
+	m_health[HealthPartKind::kRightArm]	= std::make_shared<Gauge>(100.0f, 100.0f);
+	m_health[HealthPartKind::kLeftLeg]	= std::make_shared<Gauge>(100.0f, 100.0f);
+	m_health[HealthPartKind::kRightLeg]	= std::make_shared<Gauge>(100.0f, 100.0f);
 
 	m_modeler  = std::make_shared<Modeler>(m_transform, ModelPath.ZOMBIE_01, kBasicAngle, kBasicScale);
 	m_animator = std::make_shared<ZombieAnimator>(m_modeler, m_state);
@@ -159,7 +159,7 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 			OnDamage(HealthPartKind::kMain, damage);
 
-			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxHealth()));
+			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue()));
 		}
 		break;
 
@@ -172,7 +172,7 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 			OnDamage(HealthPartKind::kBody,	damage);
 			OnDamage(HealthPartKind::kMain,	damage);
 
-			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxHealth()));
+			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue()));
 		}
 		break;
 
@@ -185,7 +185,7 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 			OnDamage(HealthPartKind::kLeftArm,	damage);
 			OnDamage(HealthPartKind::kMain,		damage);
 
-			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxHealth()));
+			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue()));
 		}
 		break;
 
@@ -197,7 +197,7 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 			OnDamage(HealthPartKind::kLeftArm,	damage);
 			OnDamage(HealthPartKind::kMain,		damage);
 
-			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxHealth()));
+			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue()));
 		}
 
 		if (target_obj == GetStateController()->GetTargetCharacter().get() && target_collider_kind == ColliderKind::kCollider)
@@ -219,7 +219,7 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 			OnDamage(HealthPartKind::kRightArm, damage);
 			OnDamage(HealthPartKind::kMain,		damage);
 
-			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxHealth()));
+			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue()));
 		}
 		break;
 
@@ -231,7 +231,7 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 			OnDamage(HealthPartKind::kRightArm, damage);
 			OnDamage(HealthPartKind::kMain,		damage);
 
-			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxHealth()));
+			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue()));
 		}
 
 		if (target_obj == GetStateController()->GetTargetCharacter().get() && target_collider_kind == ColliderKind::kCollider)
@@ -259,7 +259,7 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 			OnDamage(HealthPartKind::kMain, damage);
 
-			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxHealth()));
+			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue()));
 		}
 		break;
 
@@ -278,7 +278,7 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 			OnDamage(HealthPartKind::kMain, damage);
 
-			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxHealth()));
+			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue()));
 		}
 		break;
 
@@ -291,7 +291,7 @@ void Zombie::OnDamage(const HealthPartKind part_kind, const float damage)
 {
 	if (!m_health.count(part_kind)) { return; }
 
-	m_health.at(part_kind)->OnDamage(damage);
+	m_health.at(part_kind)->Decrease(damage);
 	m_invincible_timer	= m_invincible_time;
 	m_is_invincible		= true;
 }

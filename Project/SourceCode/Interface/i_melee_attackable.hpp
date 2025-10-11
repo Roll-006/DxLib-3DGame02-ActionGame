@@ -1,8 +1,11 @@
 #pragma once
-#include "../Event/on_downed_enemy_spotted_event.hpp"
-#include "../Data/melee_candidate_data.hpp"
-#include "../Base/physical_obj_base.hpp"
 #include "i_melee_hittable.hpp"
+
+#include "../Event/on_downed_enemy_spotted_event.hpp"
+#include "../Event/on_melee_target_lost_event.hpp"
+
+#include "../Data/melee_candidate_data.hpp"
+#include "../Base/character_base.hpp"
 
 /// @brief メレー攻撃を行う側
 class IMeleeAttackable abstract
@@ -19,9 +22,9 @@ public:
 	/// @brief 対象に対してどの位置からでも行えるメレーを実行する
 	virtual void AttackVersatilityMelee	(const VECTOR& target_pos) abstract;
 
-	virtual void OnCollideFrontMelee		(PhysicalObjBase* target_obj) abstract;
-	virtual void OnCollideBackMelee			(PhysicalObjBase* target_obj) abstract;
-	virtual void OnCollideVersatilityMelee	(PhysicalObjBase* target_obj) abstract;
+	virtual void OnCollideFrontMelee		(CharacterBase* target) abstract;
+	virtual void OnCollideBackMelee			(CharacterBase* target) abstract;
+	virtual void OnCollideVersatilityMelee	(CharacterBase* target) abstract;
 
 	/// @brief メレー候補をイベントにより追加する
 	virtual void AddMeleeCandidate(const OnDownedEnemySpottedEvent& event)	abstract;

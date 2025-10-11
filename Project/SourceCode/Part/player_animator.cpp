@@ -39,8 +39,8 @@ void PlayerAnimator::LoadAnim()
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdle),						AnimPath.IDLE,							0, AnimTag.NONE, 50.0f,  true);
 
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kGrabbed),					AnimPath.GRABBED,						0, AnimTag.NONE, 30.0f,  true,  true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kFrontKick),					AnimPath.FRONT_KICK,					0, AnimTag.NONE, 50.0f,  false);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kRoundhouseKick),			AnimPath.ROUNDHOUSE_KICK,				0, AnimTag.NONE, 60.0f,  false);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kFrontKick),					AnimPath.FRONT_KICK,					0, AnimTag.NONE, 80.0f,  false);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kRoundhouseKick),			AnimPath.ROUNDHOUSE_KICK,				0, AnimTag.NONE, 80.0f,  false);
 
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kStabKnife),					AnimPath.STAB_KNIFE,					0, AnimTag.NONE, 100.0f, false);
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kFirstSideSlashKnife),		AnimPath.FIRST_SIDE_SLASH_KNIFE,		0, AnimTag.NONE, 50.0f,  false);

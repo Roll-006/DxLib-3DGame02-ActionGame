@@ -36,9 +36,9 @@ public:
 	void OnRelease() override;
 	void OnGrabbedDamage(const float damage) override;
 
-	void OnCollideFrontMelee		(PhysicalObjBase* target_obj) override;
-	void OnCollideBackMelee			(PhysicalObjBase* target_obj) override;
-	void OnCollideVersatilityMelee	(PhysicalObjBase* target_obj) override;
+	void OnCollideFrontMelee		(CharacterBase* target) override;
+	void OnCollideBackMelee			(CharacterBase* target) override;
+	void OnCollideVersatilityMelee	(CharacterBase* target) override;
 
 	void SetRemainingBulletNum(const int remaining_bullet_num) override { m_current_remaining_bullet_num = remaining_bullet_num; }
 	
