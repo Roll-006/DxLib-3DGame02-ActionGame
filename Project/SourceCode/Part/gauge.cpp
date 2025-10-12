@@ -1,10 +1,19 @@
-#include "health.hpp"
+#include "gauge.hpp"
 
-Gauge::Gauge(const float max_health, const float max_current_health) :
-	m_current_value	(max_current_health),
-	m_prev_value		(max_current_health),
-	m_current_max_value(max_current_health),
-	m_max_value		(max_health)
+Gauge::Gauge(const float max_value, const float current_max_value) :
+	m_current_value		(current_max_value),
+	m_prev_value		(current_max_value),
+	m_current_max_value	(current_max_value),
+	m_max_value			(max_value)
+{
+
+}
+
+Gauge::Gauge(const float max_value) :
+	m_current_value		(max_value),
+	m_prev_value		(max_value),
+	m_current_max_value	(max_value),
+	m_max_value			(max_value)
 {
 
 }
@@ -14,9 +23,14 @@ Gauge::~Gauge()
 
 }
 
-void Gauge::IncreaseMax()
+void Gauge::IncreaseCurrentMax()
 {
 	m_current_value = m_current_max_value;
+}
+
+void Gauge::DecreaseZero()
+{
+	m_current_value = 0.0f;
 }
 
 void Gauge::Increase(const float increase_value)

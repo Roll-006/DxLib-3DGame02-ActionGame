@@ -32,7 +32,7 @@ void zombie_state::CrouchRightStun::Enter(std::shared_ptr<Zombie>& obj)
 {
 	m_stun_timer = 0.0f;
 
-	obj->GetHealth(HealthPartKind::kRightLeg)->IncreaseMax();
+	obj->GetHealth(HealthPartKind::kRightLeg)->IncreaseCurrentMax();
 }
 
 void zombie_state::CrouchRightStun::Exit(std::shared_ptr<Zombie>& obj)

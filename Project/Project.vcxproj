@@ -199,7 +199,7 @@
     <ClCompile Include="SourceCode\Part\weapon_graphic_getter.cpp" />
     <ClCompile Include="SourceCode\Part\melee_target_selecter.cpp" />
     <ClCompile Include="SourceCode\Part\character_collider_creator.cpp" />
-    <ClCompile Include="SourceCode\Part\health.cpp" />
+    <ClCompile Include="SourceCode\Part\gauge.cpp" />
     <ClCompile Include="SourceCode\Part\bone_pos_corrector.cpp" />
     <ClCompile Include="SourceCode\Part\camera_aim.cpp" />
     <ClCompile Include="SourceCode\Part\camera_body.cpp" />
@@ -295,6 +295,7 @@
     <ClCompile Include="SourceCode\State\ZombieState\zombie_move.cpp" />
     <ClCompile Include="SourceCode\UI\damage_filter.cpp" />
     <ClCompile Include="SourceCode\UI\cinema_scope_frame.cpp" />
+    <ClCompile Include="SourceCode\UI\escape_icon.cpp" />
     <ClCompile Include="SourceCode\UI\melee_target_icon.cpp" />
     <ClCompile Include="SourceCode\UI\fade.cpp" />
     <ClCompile Include="SourceCode\UI\health_gauge.cpp" />
@@ -396,6 +397,7 @@
     <ClInclude Include="SourceCode\IncludeList\shape.hpp" />
     <ClInclude Include="SourceCode\IncludeList\vector.hpp" />
     <ClInclude Include="SourceCode\Input\input_checker.hpp" />
+    <ClInclude Include="SourceCode\Interface\i_grabber.hpp" />
     <ClInclude Include="SourceCode\Interface\i_weapon_equippable.hpp" />
     <ClInclude Include="SourceCode\Interface\i_grabbable.hpp" />
     <ClInclude Include="SourceCode\Interface\i_effect.hpp" />
@@ -486,7 +488,7 @@
     <ClInclude Include="SourceCode\Part\mask_creator.hpp" />
     <ClInclude Include="SourceCode\Part\melee_target_selecter.hpp" />
     <ClInclude Include="SourceCode\Part\patrol_route_supporter.hpp" />
-    <ClInclude Include="SourceCode\Part\health.hpp" />
+    <ClInclude Include="SourceCode\Part\gauge.hpp" />
     <ClInclude Include="SourceCode\Part\bone_pos_corrector.hpp" />
     <ClInclude Include="SourceCode\Part\camera_aim.hpp" />
     <ClInclude Include="SourceCode\Part\camera_body.hpp" />
@@ -588,6 +590,7 @@
     <ClInclude Include="SourceCode\Tag\obj_tag.hpp" />
     <ClInclude Include="SourceCode\UI\damage_filter.hpp" />
     <ClInclude Include="SourceCode\UI\cinema_scope_frame.hpp" />
+    <ClInclude Include="SourceCode\UI\escape_icon.hpp" />
     <ClInclude Include="SourceCode\UI\melee_target_icon.hpp" />
     <ClInclude Include="SourceCode\UI\fade.hpp" />
     <ClInclude Include="SourceCode\UI\health_gauge.hpp" />

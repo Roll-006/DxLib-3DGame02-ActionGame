@@ -16,7 +16,7 @@ public:
 	void OnDraw(const int main_screen_handle) override;
 
 	/// @brief アクティブ化する
-	void Activate() 	override { m_is_active = true; }
+	void Activate() 	override { m_is_active = true;  }
 	/// @brief 非アクティブ化する(削除せずに機能を停止)
 	void Deactivate()	override { m_is_active = false; }
 

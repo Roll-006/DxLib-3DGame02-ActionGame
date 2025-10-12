@@ -1,0 +1,40 @@
+#pragma once
+#include "../Interface/i_grabbable.hpp"
+#include "../Part/button_graphic_getter.hpp"
+#include "../Part/screen_creator.hpp"
+
+class EscapeIcon final
+{
+public:
+	EscapeIcon(std::shared_ptr<IGrabbable> grab_target);
+	~EscapeIcon();
+
+	void LateUpdate();
+	void Draw() const;
+
+private:
+	void CalcGaugePercent();
+	void CalcIconScale();
+	void SetIconGraphic();
+
+private:
+	static constexpr Vector2D<int>	kScreenSize			= { 256, 256 };
+	static constexpr Vector2D<int>	kScreenCenterPos	= { static_cast<int>(kScreenSize.x * 0.5f), static_cast<int>(kScreenSize.y * 0.5f) };
+	static constexpr int			kGaugeRadius		= 40;
+	static constexpr int			kGaugeThickness		= 11;
+	static constexpr int			kBaseGaugeColor		= 0x363636;
+	static constexpr int			kEscapeGaugeColor	= 0xe32d2d;
+	
+private:
+	std::shared_ptr<IGrabbable>				m_grab_target;
+
+	std::shared_ptr<ScreenCreator>			m_basis_circle_screen;
+	std::shared_ptr<ScreenCreator>			m_escape_circle_screen;
+
+	std::shared_ptr<ButtonGraphicGetter>	m_button_graphic_resource;
+	std::shared_ptr<Graphicer>				m_button_icon_graphic;
+
+	double									m_escape_gauge_percent;
+	float									m_icon_scale;
+	float									m_scale_sin;
+};

@@ -72,6 +72,8 @@ float GameTimeManager::GetDeltaTime(const TimeScaleLayerKind scale_layer_kind) c
 
 void GameTimeManager::CalcTimeScaleChangeTime()
 {
+	const auto delta_time = GetDeltaTime(TimeScaleLayerKind::kNoneScale);
+
 	for (auto& timer : m_change_timer)
 	{
 		// w’èŠÔ‚ªİ’è‚³‚ê‚Ä‚¢‚È‚¢ê‡‚ÍŠÔ‚ği‚ß‚È‚¢
@@ -83,6 +85,6 @@ void GameTimeManager::CalcTimeScaleChangeTime()
 			m_change_time.at(timer.first) = -1;
 		}
 
-		timer.second += GetDeltaTime(TimeScaleLayerKind::kNoneScale);
+		timer.second += delta_time;
 	}
 }

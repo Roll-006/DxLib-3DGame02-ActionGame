@@ -23,11 +23,16 @@ namespace zombie_state
 		[[nodiscard]] bool IsStopAllState() const override { return m_is_stop_all_state; }
 
 	private:
-		static constexpr float kDamageIntervalTime	= 0.8f;
-		static constexpr float kMaxGrabTime			= 4.0f;
+		void DamageOverTime(std::shared_ptr<Zombie>& obj);
+
+	private:
+		static constexpr float kDamageOverTimeStartTime = 1.0f;		// 継続ダメージが開始するまでの時間
+		static constexpr float kDamageIntervalTime		= 0.8f;
+		static constexpr float kMaxGrabTime				= 6.6f;
 
 		std::shared_ptr<GrabVirtualCameraController>	m_grab_camera_controller;
 
+		float m_damage_over_time_start_timer;
 		float m_damage_interval_timer;
 		float m_grab_timer;
 		bool  m_is_stop_all_state;

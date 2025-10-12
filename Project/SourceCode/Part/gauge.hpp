@@ -1,20 +1,20 @@
 #pragma once
+#include <nlohmann/json.hpp>
 #include "../Calculation/math.hpp"
 
 class Gauge final
 {
 public:
-	Gauge(const float max_health, const float max_current_health);
+	Gauge(const float max_value, const float current_max_value);
+	Gauge(const float max_value);
 	~Gauge();
 
-	/// @brief 回複する
 	void Increase(const float increase_value);
-
-	/// @brief 最大値まで回復する
-	void IncreaseMax();
-
-	/// @brief ダメージを受けた
 	void Decrease(const float decrease_value);
+
+	/// @brief 現在の最大値まで増加させる
+	void IncreaseCurrentMax();
+	void DecreaseZero();
 
 	/// @brief 現在の上限値を設定する
 	void SetCurrentMaxValue(const float current_max_value);
@@ -30,6 +30,8 @@ public:
 	[[nodiscard]] float	GetCurrentMaxValue()	const { return m_current_max_value; }
 	[[nodiscard]] float	GetMaxValue()			const { return m_max_value; }
 	[[nodiscard]] bool	IsAlive()				const { return m_current_value > 0.0f; }
+	[[nodiscard]] bool	IsCurrentMax()			const { return m_current_value >= m_current_max_value; }
+	[[nodiscard]] bool	IsMax()					const { return m_current_value >= m_max_value; }
 	#pragma endregion
 
 private:
@@ -61,5 +63,5 @@ inline void to_json(nlohmann::json& data, const Gauge& gauge)
 		{ "current_max_value",	gauge.m_current_max_value },
 		{ "max_value",			gauge.m_max_value }
 	};
-}
+ }
 #pragma endregion

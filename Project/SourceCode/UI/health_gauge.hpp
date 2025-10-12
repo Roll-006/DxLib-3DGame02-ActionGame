@@ -1,7 +1,7 @@
 #pragma once
 #include "../Part/screen_creator.hpp"
 #include "../Part/mask_creator.hpp"
-#include "../Part/health.hpp"
+#include "../Part/gauge.hpp"
 
 #include "../Path/ui_graphic_path.hpp"
 
@@ -56,7 +56,7 @@ private:
 	static constexpr float			kBlinkingSpeed				= 6.0f;
 
 private:
-	std::shared_ptr<Gauge>&		m_health;
+	std::shared_ptr<Gauge>&			m_health;
 
 	std::shared_ptr<Graphicer>		m_current_health_gauge_graphic;
 	std::shared_ptr<Graphicer>		m_gauge_particle_graphic;

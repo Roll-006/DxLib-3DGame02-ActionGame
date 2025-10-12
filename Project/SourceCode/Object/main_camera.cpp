@@ -16,6 +16,7 @@ MainCamera::MainCamera() :
 	const ColliderData camera_data{ ObjTag.CAMERA, ColliderKind::kRayCast };
 	collision_manager->AddIgnoreColliderPair(camera_data, { ObjTag.PLAYER,	ColliderKind::kNone });
 	collision_manager->AddIgnoreColliderPair(camera_data, { ObjTag.ENEMY,	ColliderKind::kNone });
+	collision_manager->AddIgnoreColliderPair(camera_data, { ObjTag.BULLET,	ColliderKind::kNone });
 	collision_manager->AddIgnoreColliderPair(camera_data, { "",				ColliderKind::kAttackTrigger });
 }
 

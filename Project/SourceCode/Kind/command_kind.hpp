@@ -17,6 +17,7 @@ enum class CommandKind
 	kAimKnife,							// ナイフを構える / (パリィ)
 	kInvestigate,						// 調べる / (拾う)
 	kMelee,								// メレー
+	kEscape,							// 脱出
 	kReload,							// リロード
 	kScope,								// スコープ倍率変更
 	kMoveUpPlayer,						// プレイヤー上移動

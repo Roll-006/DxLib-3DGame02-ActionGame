@@ -361,7 +361,7 @@
     <ClCompile Include="SourceCode\Part\zombie_state_controller.cpp">
       <Filter>SourceCode\Part</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Part\health.cpp">
+    <ClCompile Include="SourceCode\Part\gauge.cpp">
       <Filter>SourceCode\Part</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\State\ZombieState\zombie_dead.cpp">
@@ -512,6 +512,9 @@
       <Filter>SourceCode\UI</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\UI\enemy_ui_creator.cpp">
+      <Filter>SourceCode\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\UI\escape_icon.cpp">
       <Filter>SourceCode\UI</Filter>
     </ClCompile>
   </ItemGroup>
@@ -981,7 +984,7 @@
     <ClInclude Include="SourceCode\Part\zombie_animator.hpp">
       <Filter>SourceCode\Part</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Part\health.hpp">
+    <ClInclude Include="SourceCode\Part\gauge.hpp">
       <Filter>SourceCode\Part</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\State\ZombieState\zombie_dead.hpp">
@@ -1379,6 +1382,12 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Event\a.hpp">
       <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Interface\i_grabber.hpp">
+      <Filter>SourceCode\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\UI\escape_icon.hpp">
+      <Filter>SourceCode\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

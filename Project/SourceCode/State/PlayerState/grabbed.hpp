@@ -21,6 +21,14 @@ namespace player_state
 		[[nodiscard]] bool IsStopAllState() const override { return m_is_stop_all_state; }
 
 	private:
-		bool m_is_stop_all_state;
+		void Escape(std::shared_ptr<Player>& obj);
+
+	private:
+		static constexpr float kEscapeStartTime = 1.0f;		// ’Eo‚ğŠJn‚·‚é‚Ü‚Å‚ÌŠÔ
+		static constexpr float kEscapeMinTime	= 1.8f;		// ’Eo‚ÌÅ’ZŠÔ
+		static constexpr int   kEscapeInputNum	= 16;		// ˜A‘Å’Eo‚Ì“ü—Í‰ñ”
+
+		bool					m_is_stop_all_state;
+		float					m_escape_start_timer;
 	};
 }

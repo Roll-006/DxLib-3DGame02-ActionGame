@@ -18,18 +18,12 @@ zombie_state::Grab::~Grab()
 
 void zombie_state::Grab::Update(std::shared_ptr<Zombie>& obj)
 {
-	const auto state_controller = obj->GetStateController();
-	const auto player			= std::dynamic_pointer_cast<Player>(state_controller->GetTargetCharacter());
+	const auto delta_time		= obj->GetDeltaTime();
 
-	m_grab_timer += obj->GetDeltaTime();
+	m_damage_over_time_start_timer	+= delta_time;
+	m_grab_timer					+= delta_time;
 
-	// ダメージ処理
-	math::Increase(m_damage_interval_timer, obj->GetDeltaTime(), kDamageIntervalTime, true);
-	if (m_damage_interval_timer == 0.0f)
-	{
-		// TODO : 攻撃力からダメージ量を計算
-		player->OnGrabbedDamage(50.0f);
-	}
+	DamageOverTime(obj);
 }
 
 void zombie_state::Grab::LateUpdate(std::shared_ptr<Zombie>& obj)
@@ -39,46 +33,26 @@ void zombie_state::Grab::LateUpdate(std::shared_ptr<Zombie>& obj)
 
 void zombie_state::Grab::Enter(std::shared_ptr<Zombie>& obj)
 {
-	m_damage_interval_timer = 0.0f;
-	m_grab_timer			= 0.0f;
+	m_damage_over_time_start_timer	= 0.0f;
+	m_damage_interval_timer			= 0.0f;
+	m_grab_timer					= 0.0f;
 
 	// 演出用カメラを生成
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	m_grab_camera_controller = std::make_shared<GrabVirtualCameraController>();
 	cinemachine_brain->AddVirtualCameraController(m_grab_camera_controller);
 
-	// 掴んだことを演出カメラに通知
-	const GrabEvent event{ obj->GetEnemyHandle(), obj->GetModeler() };
-	EventSystem::GetInstance()->Publish(event);
-
-	// プレイヤーの掴まれた関数を呼び出す
-	const auto state_controller = obj->GetStateController();
-	const auto player			= std::dynamic_pointer_cast<Player>(state_controller->GetTargetCharacter());
-	if (player)
-	{
-		player->OnGrabbed(obj->GetTransform()->GetPos(CoordinateKind::kWorld), obj->GetCurrentLookDir());
-	}
-
-	obj->SetAttackIntervalTime();
+	obj->Grab();
 }
 
 void zombie_state::Grab::Exit(std::shared_ptr<Zombie>& obj)
 {
-	// 離したことを演出カメラに通知
-	const ReleaseEvent event{ obj->GetEnemyHandle() };
-	EventSystem::GetInstance()->Publish(event);
-
 	// 演出用カメラを削除
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	cinemachine_brain->RemoveVirtualCameraController(m_grab_camera_controller);
 	m_grab_camera_controller = nullptr;
 
-	const auto state_controller = obj->GetStateController();
-	const auto player			= std::dynamic_pointer_cast<Player>(state_controller->GetTargetCharacter());
-	if (player)
-	{
-		player->OnRelease();
-	}
+	obj->Release();
 }
 
 std::shared_ptr<IState<Zombie>> zombie_state::Grab::ChangeState(std::shared_ptr<Zombie>& obj)
@@ -116,10 +90,26 @@ std::shared_ptr<IState<Zombie>> zombie_state::Grab::ChangeState(std::shared_ptr<
 		return state_controller->GetState<StandStun, Zombie>();
 	}
 	// NULL
-	if (m_grab_timer > kMaxGrabTime)
+	if (m_grab_timer > kMaxGrabTime || obj->IsRelease())
 	{
 		return state_controller->GetState<ActionNull, Zombie>();
 	}
 
 	return nullptr;
+}
+
+void zombie_state::Grab::DamageOverTime(std::shared_ptr<Zombie>& obj)
+{
+	if (m_damage_over_time_start_timer < kDamageOverTimeStartTime) { return; }
+
+	const auto state_controller = obj->GetStateController();
+	const auto player			= std::dynamic_pointer_cast<Player>(state_controller->GetTargetCharacter());
+
+	// ダメージ処理
+	math::Increase(m_damage_interval_timer, obj->GetDeltaTime(), kDamageIntervalTime, true);
+	if (m_damage_interval_timer == 0.0f)
+	{
+		// TODO : 攻撃力からダメージ量を計算
+		player->OnDamage(HealthPartKind::kMain, 50.0f);
+	}
 }

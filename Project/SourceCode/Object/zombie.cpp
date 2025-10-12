@@ -1,24 +1,26 @@
 #include "zombie.hpp"
+#include "player.hpp"
 #include "../Part/zombie_state_controller.hpp"
 
 Zombie::Zombie(const VECTOR& pos, const VECTOR& look_dir) :
 	EnemyBase				(ObjName.ZOMBIE, MassKind::kMedium),
 	m_state					(std::make_shared<ZombieStateController>()),
 	m_look_dir_offset_speed	(kLookDirOffsetSpeed),
-	m_can_grab_target		(false)
+	m_can_grab_target		(false),
+	m_is_release			(false)
 {
 	m_transform->SetPos(CoordinateKind::kWorld, pos);
 	m_look_dir.at(TimeKind::kNext) = m_look_dir.at(TimeKind::kCurrent) = v3d::GetNormalizedV(look_dir);
 	ApplyLookDirToRot(m_look_dir.at(TimeKind::kCurrent));
 
 	// TODO : JSON指定
-	m_health[HealthPartKind::kMain]		= std::make_shared<Gauge>(1684.0f, 1684.0f);
-	m_health[HealthPartKind::kHead]		= std::make_shared<Gauge>(80.0f,  80.0f);
-	m_health[HealthPartKind::kBody]		= std::make_shared<Gauge>(500.0f, 500.0f);
-	m_health[HealthPartKind::kLeftArm]	= std::make_shared<Gauge>(100.0f, 100.0f);
-	m_health[HealthPartKind::kRightArm]	= std::make_shared<Gauge>(100.0f, 100.0f);
-	m_health[HealthPartKind::kLeftLeg]	= std::make_shared<Gauge>(100.0f, 100.0f);
-	m_health[HealthPartKind::kRightLeg]	= std::make_shared<Gauge>(100.0f, 100.0f);
+	m_health[HealthPartKind::kMain]		= std::make_shared<Gauge>(1684.0f);
+	m_health[HealthPartKind::kHead]		= std::make_shared<Gauge>(80.0f);
+	m_health[HealthPartKind::kBody]		= std::make_shared<Gauge>(500.0f);
+	m_health[HealthPartKind::kLeftArm]	= std::make_shared<Gauge>(100.0f);
+	m_health[HealthPartKind::kRightArm]	= std::make_shared<Gauge>(100.0f);
+	m_health[HealthPartKind::kLeftLeg]	= std::make_shared<Gauge>(100.0f);
+	m_health[HealthPartKind::kRightLeg]	= std::make_shared<Gauge>(100.0f);
 
 	m_modeler  = std::make_shared<Modeler>(m_transform, ModelPath.ZOMBIE_01, kBasicAngle, kBasicScale);
 	m_animator = std::make_shared<ZombieAnimator>(m_modeler, m_state);
@@ -304,6 +306,40 @@ void Zombie::AttachTarget(const std::shared_ptr<CharacterBase>& target_character
 void Zombie::DetachTarget()
 {
 	m_state->DetachTarget();
+}
+
+void Zombie::Grab()
+{
+	m_is_release = false;
+
+	// 掴んだことを演出カメラに通知
+	const GrabEvent event{ GetEnemyHandle(), m_modeler };
+	EventSystem::GetInstance()->Publish(event);
+
+	// プレイヤーの掴まれた関数を呼び出す
+	const auto player = std::dynamic_pointer_cast<Player>(m_state->GetTargetCharacter());
+	if (player)
+	{
+		const auto grabber = std::dynamic_pointer_cast<IGrabber>(shared_from_this());
+
+		player->OnGrabbed(grabber, m_transform->GetPos(CoordinateKind::kWorld), m_look_dir.at(TimeKind::kCurrent));
+		player->OnDamage (HealthPartKind::kMain, 80.0f);
+	}
+
+	SetAttackIntervalTime();
+}
+
+void Zombie::Release()
+{
+	// 離したことを演出カメラに通知
+	const ReleaseEvent event{ GetEnemyHandle() };
+	EventSystem::GetInstance()->Publish(event);
+
+	const auto player = std::dynamic_pointer_cast<Player>(m_state->GetTargetCharacter());
+	if (player)
+	{
+		player->OnRelease();
+	}
 }
 
 

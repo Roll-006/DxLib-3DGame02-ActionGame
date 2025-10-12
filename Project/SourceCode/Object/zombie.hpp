@@ -1,12 +1,13 @@
 #pragma once
 #include "../Base/enemy_base.hpp"
 #include "../Interface/i_melee_hittable.hpp"
+#include "../Interface/i_grabber.hpp"
 
 #include "../Part/zombie_animator.hpp"
 
 class ZombieStateController;
 
-class Zombie final : public EnemyBase, public IMeleeHittable
+class Zombie final : public EnemyBase, public IMeleeHittable, public IGrabber
 {
 public:
 	Zombie(const VECTOR& pos, const VECTOR& look_dir);
@@ -23,6 +24,11 @@ public:
 
 	void AttachTarget(const std::shared_ptr<CharacterBase>& target_character) override;
 	void DetachTarget() override;
+	
+	void Grab()				override;
+	void Release()			override;
+	void ReleaseForcibly()	override { m_is_release = true; }
+
 
 
 	#pragma region State
@@ -43,6 +49,7 @@ public:
 	[[nodiscard]] bool  CanGrabTraget() const { return m_can_grab_target; }
 	[[nodiscard]] bool  IsStandStun()	const override;
 	[[nodiscard]] bool  IsCrouchStun()	const override;
+	[[nodiscard]] bool  IsRelease()		const override { return m_is_release; }
 	#pragma endregion
 
 private:
@@ -87,4 +94,5 @@ private:
 
 	float	m_look_dir_offset_speed;			// å©ÇÈï˚å¸ÇÃï‚ê≥ë¨ìx
 	bool	m_can_grab_target;
+	bool	m_is_release;
 };

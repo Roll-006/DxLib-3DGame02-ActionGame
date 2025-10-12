@@ -2,6 +2,7 @@
 #include "../Interface/i_ui_creator.hpp"
 
 #include "melee_target_icon.hpp"
+#include "escape_icon.hpp"
 #include "status_icons.hpp"
 #include "weapon_shortcut_drawer.hpp"
 
@@ -35,8 +36,8 @@ private:
 	int			m_priority;
 	bool		m_is_active;
 
-	std::shared_ptr<Player>					m_player;
 	std::shared_ptr<MeleeTargetIcon>		m_melee_target_icon;
+	std::shared_ptr<EscapeIcon>				m_escape_icon;
 	std::shared_ptr<StatusIcons>			m_status_icons;
 	std::shared_ptr<WeaponShortcutDrawer>	m_weapon_shortcut;
 

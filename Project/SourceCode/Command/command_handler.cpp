@@ -65,6 +65,7 @@ void CommandHandler::InitKeyCommand()
 	AddInputCode(CommandKind::kAimKnife,					CommandSlotKind::kMain,		KEY_INPUT_SPACE);
 	AddInputCode(CommandKind::kInvestigate,					CommandSlotKind::kMain,		KEY_INPUT_F);
 	AddInputCode(CommandKind::kMelee,						CommandSlotKind::kMain,		KEY_INPUT_F);
+	AddInputCode(CommandKind::kEscape,						CommandSlotKind::kMain,		KEY_INPUT_F);
 	AddInputCode(CommandKind::kReload,						CommandSlotKind::kMain,		KEY_INPUT_R);
 	AddInputCode(CommandKind::kScope,						CommandSlotKind::kMain,		KEY_INPUT_LALT);
 	AddInputCode(CommandKind::kMoveUpPlayer,				CommandSlotKind::kMain,		KEY_INPUT_W);
@@ -124,6 +125,7 @@ void CommandHandler::InitPadCommand()
 	AddInputCode(CommandKind::kAimKnife,					CommandSlotKind::kStatic1,	pad::ButtonKind	::kLB);
 	AddInputCode(CommandKind::kInvestigate,					CommandSlotKind::kStatic1,	pad::ButtonKind	::kA);
 	AddInputCode(CommandKind::kMelee,						CommandSlotKind::kStatic1,	pad::ButtonKind	::kA);
+	AddInputCode(CommandKind::kEscape,						CommandSlotKind::kStatic1,	pad::ButtonKind	::kA);
 	AddInputCode(CommandKind::kReload,						CommandSlotKind::kStatic1,	pad::ButtonKind	::kX);
 	AddInputCode(CommandKind::kScope,						CommandSlotKind::kStatic1,	pad::ButtonKind	::kLSPush);
 	AddInputCode(CommandKind::kMoveUpPlayer,				CommandSlotKind::kStatic1,	pad::StickKind	::kLSUp);
@@ -166,6 +168,7 @@ void CommandHandler::InitInputMode()
 	m_input_mode[CommandKind::kAimKnife]					= InputModeKind::kHold;
 	m_input_mode[CommandKind::kInvestigate]					= InputModeKind::kSingle;
 	m_input_mode[CommandKind::kMelee]						= InputModeKind::kSingle;
+	m_input_mode[CommandKind::kEscape]						= InputModeKind::kSingle;
 	m_input_mode[CommandKind::kReload]						= InputModeKind::kSingle;
 	m_input_mode[CommandKind::kScope]						= InputModeKind::kSingle;
 	m_input_mode[CommandKind::kMoveUpPlayer]				= InputModeKind::kHold;

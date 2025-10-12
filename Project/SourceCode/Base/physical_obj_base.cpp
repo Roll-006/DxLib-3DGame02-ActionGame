@@ -173,7 +173,7 @@ void PhysicalObjBase::ProjectionVelocity()
 
 void PhysicalObjBase::ApplyKnockbackVelocity()
 {
-	math::Decrease(m_knockback_speed, m_knockback_deceleration, 0.0f);
+	math::Decrease(m_knockback_speed, m_knockback_deceleration * GetDeltaTime(), 0.0f);
 	m_knockback_velocity = v3d::GetNormalizedV(m_knockback_velocity) * m_knockback_speed;
 	m_velocity += m_knockback_velocity;
 }

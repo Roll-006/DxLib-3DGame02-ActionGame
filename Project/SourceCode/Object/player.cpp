@@ -11,7 +11,9 @@ Player::Player() :
 	m_prev_health						(0.0f),
 	m_is_grabbed						(false),
 	m_weapon_shortcut_selecter			(std::make_shared<WeaponShortcutSelecter>()),
-	m_melee_target						(nullptr)
+	m_melee_target						(nullptr),
+	m_grabber							(nullptr),
+	m_escape_gauge						(std::make_shared<Gauge>(100.0f))
 {
 	// ƒCƒxƒ“ƒg‚Ì“o˜^
 	EventSystem::GetInstance()->Subscribe<OnDownedEnemySpottedEvent>(this, &Player::AddMeleeCandidate);
@@ -221,9 +223,10 @@ void Player::OnDamage(const HealthPartKind part_kind, const float damage)
 	}
 }
 
-void Player::OnGrabbed(const VECTOR& brabber_pos, const VECTOR& brabber_dir)
+void Player::OnGrabbed(const std::shared_ptr<IGrabber> grabber, const VECTOR& brabber_pos, const VECTOR& brabber_dir)
 {
-	m_is_grabbed = true;
+	m_is_grabbed	= true;
+	m_grabber		= grabber;
 
 	m_look_dir.at(TimeKind::kNext) = -brabber_dir;
 	m_destination_pos = brabber_pos + brabber_dir * 17.0f;
@@ -231,12 +234,8 @@ void Player::OnGrabbed(const VECTOR& brabber_pos, const VECTOR& brabber_dir)
 
 void Player::OnRelease()
 {
-	m_is_grabbed = false;
-}
-
-void Player::OnGrabbedDamage(const float damage)
-{
-	OnDamage(HealthPartKind::kMain, damage);
+	m_is_grabbed	= false;
+	m_grabber		= nullptr;
 }
 
 void Player::AttackFrontMelee(CharacterBase* target)
@@ -245,7 +244,7 @@ void Player::AttackFrontMelee(CharacterBase* target)
 
 	const auto dir = v3d::GetNormalizedV(m_transform->GetForward(CoordinateKind::kWorld) + VGet(0.0f, 0.5f, 0.0f));
 	target->OnDamage(HealthPartKind::kMain, 100.0f);
-	target->OnKnockback(dir, 170.0f, 5.0f);
+	target->OnKnockback(dir, 170.0f, 100.0f);
 
 	const auto time_manager = GameTimeManager::GetInstance();
 	time_manager->SetTimeScale(TimeScaleLayerKind::kWorld,  0.07f, 0.4f);
@@ -264,7 +263,7 @@ void Player::AttackVersatilityMelee(CharacterBase* target)
 
 	const auto dir = v3d::GetNormalizedV(m_transform->GetForward(CoordinateKind::kWorld) + VGet(0.0f, 0.5f, 0.0f));
 	target->OnDamage(HealthPartKind::kMain, 100.0f);
-	target->OnKnockback(dir, 170.0f, 5.0f);
+	target->OnKnockback(dir, 170.0f, 100.0f);
 
 	const auto time_manager = GameTimeManager::GetInstance();
 	time_manager->SetTimeScale(TimeScaleLayerKind::kWorld,  0.07f, 0.4f);
@@ -463,7 +462,6 @@ void Player::UpdateGrabbed()
 	m_move_speed = 20.0f;
 
 	CalcCorrectMoveDir();
-
 	ReleaseWeapon();
 }
 

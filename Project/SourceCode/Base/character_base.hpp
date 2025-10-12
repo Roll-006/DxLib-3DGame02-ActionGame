@@ -3,7 +3,7 @@
 
 #include "../Interface/i_state_controller.hpp"
 #include "../Part/character_collider_creator.hpp"
-#include "../Part/health.hpp"
+#include "../Part/gauge.hpp"
 #include "../Part/modeler.hpp"
 #include "animator_base.hpp"
 

@@ -32,9 +32,8 @@ public:
 
 	void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) override;
 	void OnDamage(const HealthPartKind part_kind, const float damage) override;
-	void OnGrabbed(const VECTOR& brabber_pos, const VECTOR& brabber_dir) override;
+	void OnGrabbed(const std::shared_ptr<IGrabber> grabber, const VECTOR& brabber_pos, const VECTOR& brabber_dir) override;
 	void OnRelease() override;
-	void OnGrabbedDamage(const float damage) override;
 
 	void AttackFrontMelee		(CharacterBase* target) override;
 	void AttackBackMelee		(CharacterBase* target) override;
@@ -134,6 +133,8 @@ public:
 	[[nodiscard]] bool																IsGrabbed					()	const override	{ return m_is_grabbed; }
 	[[nodiscard]] std::vector<MeleeCandidateData>									GetMeleeCandidate			()	const override  { return m_melee_candidate; }
 	[[nodiscard]] std::shared_ptr<IMeleeHittable>&									GetMeleeTarget				()  override		{ return m_melee_target; }
+	[[nodiscard]] std::shared_ptr<IGrabber>											GetGrabber					()  const override	{ return m_grabber; }
+	[[nodiscard]] std::shared_ptr<Gauge>											GetEscapeGauge				()	const override	{ return m_escape_gauge; }
 	#pragma endregion
 
 private:
@@ -206,4 +207,6 @@ private:
 	std::shared_ptr<WeaponShortcutSelecter>								m_weapon_shortcut_selecter;			// ショートカットに登録されている武器
 	std::vector<MeleeCandidateData>										m_melee_candidate;					// メレーの候補者リスト
 	std::shared_ptr<IMeleeHittable>										m_melee_target;
+	std::shared_ptr<IGrabber>											m_grabber;
+	std::shared_ptr<Gauge>												m_escape_gauge;
 };
