@@ -37,6 +37,7 @@ void PlayerAnimator::LoadAnim()
 {
 	// 汎用
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdle),						AnimPath.IDLE,							0, AnimTag.NONE, 50.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kDead),						AnimPath.DEAD_02,						0, AnimTag.NONE, 50.0f,  false);
 
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kGrabbed),					AnimPath.GRABBED,						0, AnimTag.NONE, 30.0f,  true,  true);
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kFrontKick),					AnimPath.FRONT_KICK,					0, AnimTag.NONE, 80.0f,  false);
@@ -121,6 +122,10 @@ void PlayerAnimator::CombineMoveNullWithAction()
 
 	case static_cast<int>(player_state::ActionStateKind::kCrouchTurnAround):
 		CombineMoveNullCrouchTurnAroundWithWeaponAction();
+		break;
+
+	case static_cast<int>(player_state::ActionStateKind::kDead):
+		AttachResultAnim(static_cast<int>(PlayerAnimKind::kDead));
 		break;
 
 	case static_cast<int>(player_state::ActionStateKind::kGrabbed):

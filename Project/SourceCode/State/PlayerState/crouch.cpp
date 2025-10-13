@@ -39,6 +39,11 @@ std::shared_ptr<IState<Player>> player_state::Crouch::ChangeState(std::shared_pt
 	const auto command			= CommandHandler::GetInstance();
 	const auto command_mode		= command->GetInstance()->GetInputModeKind(CommandKind::kCrouch);
 
+	// Ž€–S
+	if (state_controller->TryDead(obj))
+	{
+		return state_controller->GetState<Dead, Player>();
+	}
 	// ƒƒŒ[(³–ÊR‚è)
 	if (state_controller->TryFrontKick(obj))
 	{

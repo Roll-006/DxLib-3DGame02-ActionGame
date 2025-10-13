@@ -147,9 +147,6 @@ private:
 	void CalcInputSlopeFromPad();
 	void CalcInputSlopeFromCommand();
 
-	void CalcLookDir();
-	void CalcMoveVelocity();
-
 	void NotifyHealth();
 
 	/// @brief カメラのforwardをもとにした進行方向ベクトルを取得する
@@ -195,8 +192,6 @@ private:
 	std::shared_ptr<BonePosCorrector>			m_bone_pos_corrector;
 
 	VECTOR										m_input_slope;
-
-	float										m_look_dir_offset_speed;				// 見る方向の補正速度
 
 	float										m_prev_health;
 	bool										m_is_grabbed;							// 捕まれたかを判定

@@ -14,6 +14,7 @@ player_state::AimKnife::~AimKnife()
 
 void player_state::AimKnife::Update(std::shared_ptr<Player>& obj)
 {
+	obj->AllowCalcLookDir();
 	obj->SetLookDirOffsetValueForAim();
 	obj->DirOfCameraForward();
 

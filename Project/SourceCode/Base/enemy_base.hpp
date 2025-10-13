@@ -21,7 +21,7 @@ public:
 	/// @brief 1/2ÇÃéûä‘Ç™ïtó^Ç≥ÇÍÇÈ
 	void OnAllowAction();
 	/// @brief çsìÆÇ™ã≠êßìIÇ…í‚é~Ç≥ÇπÇÁÇÍÇÈ
-	void OnStopActionForcibly() { m_can_action = false; }
+	void OnStopActionForcibly() { m_is_stop_action_forcibly = true; }
 
 	[[nodiscard]] int  GetEnemyHandle()  const { return m_enemy_handle; }
 	[[nodiscard]] bool IsTargetInSight() const { return m_is_target_in_sight; }
@@ -29,9 +29,13 @@ public:
 	[[nodiscard]] bool CanAction()		 const { return m_can_action; }
 
 protected:
+	virtual void JudgeAction() abstract;
+
+protected:
 	float m_attack_interval_time;
 	float m_attack_interval_timer;
 	bool  m_can_action;
+	bool  m_is_stop_action_forcibly;
 	bool  m_is_target_in_sight;
 
 private:

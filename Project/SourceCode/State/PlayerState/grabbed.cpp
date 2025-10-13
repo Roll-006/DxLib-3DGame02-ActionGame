@@ -38,6 +38,11 @@ std::shared_ptr<IState<Player>> player_state::Grabbed::ChangeState(std::shared_p
 {
 	const auto state_controller = obj->GetStateController();
 
+	// Ž€–S
+	if (state_controller->TryDead(obj))
+	{
+		return state_controller->GetState<Dead, Player>();
+	}
 	// ’Eo
 	if (obj->IsEscape())
 	{

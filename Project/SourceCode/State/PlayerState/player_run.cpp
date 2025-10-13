@@ -39,6 +39,11 @@ std::shared_ptr<IState<Player>> player_state::Run::ChangeState(std::shared_ptr<P
 	const auto command			= CommandHandler::GetInstance();
 	const auto command_mode		= command->GetInstance()->GetInputModeKind(CommandKind::kRun);
 
+	// Ž€–S
+	if (state_controller->TryDead(obj))
+	{
+		return state_controller->GetState<Dead, Player>();
+	}
 	// ƒƒŒ[(³–ÊR‚è)
 	if (state_controller->TryFrontKick(obj))
 	{

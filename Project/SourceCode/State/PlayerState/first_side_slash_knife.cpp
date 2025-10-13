@@ -20,6 +20,7 @@ void player_state::FirstSideSlashKnife::Update(std::shared_ptr<Player>& obj)
 
 	//obj->CalcMoveOffsetSideSlashKnife();
 
+	obj->AllowCalcLookDir();
 	obj->GetCurrentHeldWeapon()->Update();
 	obj->SideSlashKnifeOffsetMove();
 }

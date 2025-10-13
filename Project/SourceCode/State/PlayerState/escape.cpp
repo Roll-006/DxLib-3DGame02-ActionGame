@@ -14,7 +14,7 @@ player_state::Escape::~Escape()
 
 void player_state::Escape::Update(std::shared_ptr<Player>& obj)
 {
-
+	obj->ActivateInvincibleForcibly();
 }
 
 void player_state::Escape::LateUpdate(std::shared_ptr<Player>& obj)

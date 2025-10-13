@@ -169,7 +169,7 @@
     <ClCompile Include="SourceCode\VirtualCamera\control_virtual_cameras_controller.cpp">
       <Filter>SourceCode\VirtualCamera</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\VirtualCamera\rocket_launcher_virtual_camera_controller.cpp">
+    <ClCompile Include="SourceCode\VirtualCamera\rocket_launcher_virtual_cameras_controller.cpp">
       <Filter>SourceCode\VirtualCamera</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Part\camera_aim.cpp">
@@ -520,6 +520,9 @@
     <ClCompile Include="SourceCode\State\ZombieState\backward_knockback.cpp">
       <Filter>SourceCode\State\ZombieState</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\VirtualCamera\dead_virtual_cameras_controller.cpp">
+      <Filter>SourceCode\VirtualCamera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\character_base.hpp">
@@ -741,7 +744,7 @@
     <ClInclude Include="SourceCode\VirtualCamera\control_virtual_cameras_controller.hpp">
       <Filter>SourceCode\VirtualCamera</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\VirtualCamera\rocket_launcher_virtual_camera_controller.hpp">
+    <ClInclude Include="SourceCode\VirtualCamera\rocket_launcher_virtual_cameras_controller.hpp">
       <Filter>SourceCode\VirtualCamera</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Part\camera_aim.hpp">
@@ -1394,6 +1397,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\State\ZombieState\backward_knockback.hpp">
       <Filter>SourceCode\State\ZombieState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\VirtualCamera\dead_virtual_cameras_controller.hpp">
+      <Filter>SourceCode\VirtualCamera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

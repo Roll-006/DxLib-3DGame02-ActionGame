@@ -5,7 +5,6 @@
 Zombie::Zombie(const VECTOR& pos, const VECTOR& look_dir) :
 	EnemyBase				(ObjName.ZOMBIE, MassKind::kMedium),
 	m_state					(std::make_shared<ZombieStateController>()),
-	m_look_dir_offset_speed	(kLookDirOffsetSpeed),
 	m_can_grab_target		(false),
 	m_is_target_escaped		(false)
 {
@@ -28,6 +27,7 @@ Zombie::Zombie(const VECTOR& pos, const VECTOR& look_dir) :
 
 	m_invincible_time		= kInvincibleTime;
 	m_attack_interval_time	= kAttackIntervalTime;
+	m_is_calc_look_dir		= true;
 
 	m_collider_creator->CreateCapsuleCollider	(this, m_modeler, kCapsuleRadius);
 	m_collider_creator->CreateLandingTrigger	(this, kLandingTriggerRadius);
@@ -55,12 +55,18 @@ void Zombie::Update()
 {
 	if (!IsActive()) { return; }
 
+	JudgeAction();
 	JudgeInvincible();
 
 	m_look_dir_offset_speed = kLookDirOffsetSpeed;
 
 	m_state		->Update(std::static_pointer_cast<Zombie>(shared_from_this()));
 	m_animator	->Update();
+
+	if (m_move_dir.at(TimeKind::kCurrent) != v3d::GetZeroV())
+	{
+		m_look_dir.at(TimeKind::kNext) = m_move_dir.at(TimeKind::kCurrent);
+	}
 
 	CalcMoveDir();
 	CalcLookDir();
@@ -75,8 +81,6 @@ void Zombie::Update()
 	m_collider_creator->CalcBodyTriggerPos		(m_modeler, m_colliders);
 	m_collider_creator->CalcArmTriggerPos		(m_modeler, m_colliders);
 	m_collider_creator->CalcLegTriggerPos		(m_modeler, m_colliders);
-
-	auto pos = m_transform->GetScale(CoordinateKind::kWorld);
 }
 
 void Zombie::LateUpdate()
@@ -400,6 +404,12 @@ void Zombie::CalcMoveSpeedRun()
 	m_move_speed = kRunSpeed;
 }
 
+void Zombie::JudgeAction()
+{
+	const auto is_alive_target = m_state->GetTargetCharacter()->GetHealth(HealthPartKind::kMain)->IsAlive();
+	m_can_action = is_alive_target && !m_is_stop_action_forcibly;
+}
+
 void Zombie::OnCollideWithExplosion(const std::shared_ptr<Sphere> sphere)
 {
 	// TODO : のちに爆発クラス側に処理内容を委ねる
@@ -417,40 +427,4 @@ void Zombie::OnCollideWithExplosion(const std::shared_ptr<Sphere> sphere)
 	m_knockback_speed			= 400.0f;
 	m_knockback_deceleration	= 5.0f;
 	m_knockback_velocity		= dir * m_knockback_speed;
-}
-
-void Zombie::CalcLookDir()
-{
-	if (m_move_dir.at(TimeKind::kCurrent) != v3d::GetZeroV())
-	{
-		m_look_dir.at(TimeKind::kNext) = m_move_dir.at(TimeKind::kCurrent);
-	}
-
-	// ヨー角回転を取得し、-π～πで値を管理する
-	const VECTOR current_yaw	= math::GetYawRotVector(m_look_dir.at(TimeKind::kCurrent));
-	const VECTOR next_yaw		= math::GetYawRotVector(m_look_dir.at(TimeKind::kNext));
-	VECTOR distance = next_yaw - current_yaw;
-	distance.y = math::ConnectMinusValueToValue(distance.y, DX_PI_F);
-
-	// カメラを基準にして右側であった場合は反転
-	if (distance.y > 0) { m_look_dir_offset_speed *= -1; }
-
-	// 回転を適用
-	const auto look_dir_offset_speed = -m_look_dir_offset_speed * GetDeltaTime();
-	const Quaternion rot_q = quat::CreateQuaternion(axis::GetWorldYAxis(), look_dir_offset_speed);
-	m_look_dir.at(TimeKind::kCurrent) = math::GetRotatedPos(m_look_dir.at(TimeKind::kCurrent), rot_q);
-
-	// 終了判定
-	const auto angle = math::GetYawBetweenTwoVector(m_look_dir.at(TimeKind::kNext), m_look_dir.at(TimeKind::kCurrent));
-	const auto dynamic_threshold = std::abs(look_dir_offset_speed * math::kStopThreshold);
-	if (angle < dynamic_threshold)
-	{
-		m_look_dir.at(TimeKind::kCurrent) = m_look_dir.at(TimeKind::kNext);
-	}
-}
-
-void Zombie::CalcMoveVelocity()
-{
-	m_move_velocity = m_move_dir.at(TimeKind::kCurrent) * m_move_speed;
-	m_velocity += m_move_velocity;
 }

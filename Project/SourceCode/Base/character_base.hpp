@@ -20,6 +20,7 @@ public:
 	void RemoveToObjManager()	override;
 
 	void CalcCorrectMoveDir();
+	void AllowCalcLookDir() { m_is_calc_look_dir = true; }
 
 	/// @brief 強制的に無敵状態にする
 	void ActivateInvincibleForcibly()	{ m_is_invincible = true; }
@@ -29,15 +30,11 @@ public:
 	virtual void OnDamage(const HealthPartKind part_kind, const float damage) abstract;
 
 	#pragma region Getter
-	[[nodiscard]] bool							IsInvincible()				const		{ return m_is_invincible; }
-	[[nodiscard]] std::shared_ptr<Modeler>		GetModeler()				const		{ return m_modeler; }
-	[[nodiscard]] std::shared_ptr<AnimatorBase>	GetAnimator()				const		{ return m_animator; }
-	[[nodiscard]] VECTOR						GetCurrentMoveDir()			const		{ return m_move_dir.at(TimeKind::kCurrent); }
-	[[nodiscard]] VECTOR						GetCurrentLookDir()			const		{ return m_look_dir.at(TimeKind::kCurrent); }
-	//[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentHeldWeapon()		const { return m_current_held_weapon; }
-	//[[nodiscard]] WeaponKind					GetCurrentHeldWeaponKind();
-	//[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentAttachWeapon		(const HolsterKind holster_kind)	const;
-	//[[nodiscard]] WeaponKind					GetCurrentAttachWeaponKind	(const HolsterKind holster_kind)	const;
+	[[nodiscard]] bool							IsInvincible()		const				{ return m_is_invincible; }
+	[[nodiscard]] std::shared_ptr<Modeler>		GetModeler()		const				{ return m_modeler; }
+	[[nodiscard]] std::shared_ptr<AnimatorBase>	GetAnimator()		const				{ return m_animator; }
+	[[nodiscard]] VECTOR						GetCurrentMoveDir()	const				{ return m_move_dir.at(TimeKind::kCurrent); }
+	[[nodiscard]] VECTOR						GetCurrentLookDir()	const				{ return m_look_dir.at(TimeKind::kCurrent); }
 	[[nodiscard]] std::shared_ptr<Gauge>&		GetHealth(const HealthPartKind kind)	{ return m_health.at(kind); }
 	#pragma endregion
 
@@ -46,6 +43,8 @@ protected:
 	void ApplyLookDirToRot(const VECTOR& look_dir);
 
 	void CalcMoveDir();
+	void CalcLookDir();
+	void CalcMoveVelocity();
 
 	void JudgeInvincible();
 
@@ -54,11 +53,13 @@ protected:
 	std::shared_ptr<AnimatorBase>				m_animator;
 	std::shared_ptr<CharacterColliderCreator>	m_collider_creator;
 
-	float										m_move_speed;
 	std::unordered_map<TimeKind, VECTOR>		m_move_dir;					// 移動方向(WARNING : 長さは0～1の範囲を取る)
 	std::unordered_map<TimeKind, VECTOR>		m_look_dir;					// 向いている方向
-	float										m_move_dir_offset_speed;	// 移動方向を補正する速度
 	VECTOR										m_destination_pos;			// 補正先座標
+	float										m_move_speed;
+	float										m_move_dir_offset_speed;	// 移動方向を補正する速度
+	float										m_look_dir_offset_speed;	// 見る方向の補正速度
+	bool										m_is_calc_look_dir;
 
 	std::shared_ptr<WeaponBase>											m_current_held_weapon;	// 現在手に持っている武器
 	std::unordered_map<HolsterKind, std::shared_ptr<WeaponBase>>		m_attach_weapons;		// 装着している武器

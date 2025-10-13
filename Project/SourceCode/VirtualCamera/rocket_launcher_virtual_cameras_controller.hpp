@@ -6,17 +6,17 @@ class CinemachineBrain;
 class UIDrawer;
 class Player;
 
-class RocketLauncherVirtualCameraController final : public IVirtualCameraController
+class RocketLauncherVirtualCamerasController final : public IVirtualCameraController
 {
 public:
-	RocketLauncherVirtualCameraController(Player& player);
-	~RocketLauncherVirtualCameraController();
+	RocketLauncherVirtualCamerasController(Player& player);
+	~RocketLauncherVirtualCamerasController();
 
 	void Init();
 	void Update()		override;
 	void LateUpdate()	override;
 
-	void Activate()   override { m_is_active = true;  }
+	void Activate()   override { m_is_active = true; }
 	void Deactivate() override { m_is_active = false; }
 
 	void SetRocketBombTransform(const std::shared_ptr<Transform>& rocket_bomb_transform) { m_rocket_bomb_transform = rocket_bomb_transform; }
@@ -25,7 +25,7 @@ public:
 	[[nodiscard]] std::shared_ptr<VirtualCamera> GetHaveVirtualCamera(const std::string& name) const override;
 	[[nodiscard]] std::vector<std::shared_ptr<VirtualCamera>> GetHaveAllVirtualCamera()  const override;
 	[[nodiscard]] int  GetControllerHandle() const override { return m_controller_handle; }
-	[[nodiscard]] bool IsEndExitRot()		 const			{ return m_rot_camera_angle.y == -DX_TWO_PI_F; }
+	[[nodiscard]] bool IsEndExitRot()		 const { return m_rot_camera_angle.y == -DX_TWO_PI_F; }
 	[[nodiscard]] bool IsActive()			 const override { return m_is_active; }
 
 private:
@@ -40,30 +40,30 @@ private:
 	void CalcAimTransformForExitRotCamera();
 
 private:
-	static constexpr VECTOR kFirstFollowOffsetForEnterRotCamera			= {  9.0f, 6.0f, -50.0f };
-	static constexpr VECTOR kFirstFollowOffsetForZoomInCamera			= {  9.0f, 6.0f, -50.0f };
-	static constexpr VECTOR kFirstFollowOffsetForZoomOutCamera			= {  2.0f, 0.0f,   0.0f };
-	static constexpr VECTOR kDestinationFollowOffsetForZoomInCamera		= {  9.0f, 6.0f, -34.0f };
-	static constexpr VECTOR kTrackedObjOffsetForEnterRotCamera			= { -2.0f, 2.0f,   0.0f };
-	static constexpr VECTOR kTrackedObjOffsetForZoomInCamera			= { -2.0f, 2.0f,   0.0f };
-	static constexpr VECTOR kTrackedObjOffsetForZoomOutCamera			= {  2.0f, 0.0f,   0.0f };
-	static constexpr VECTOR kTrackedObjOffsetForExitRotCamera			= {  0.0f, 0.0f,   0.0f };
-	static constexpr VECTOR kFirstAngleForEnterRotCamera				= { 0.0f, 0.0f * math::kDegToRad, 0.0f };
+	static constexpr VECTOR kFirstFollowOffsetForEnterRotCamera = { 9.0f, 6.0f, -50.0f };
+	static constexpr VECTOR kFirstFollowOffsetForZoomInCamera = { 9.0f, 6.0f, -50.0f };
+	static constexpr VECTOR kFirstFollowOffsetForZoomOutCamera = { 2.0f, 0.0f,   0.0f };
+	static constexpr VECTOR kDestinationFollowOffsetForZoomInCamera = { 9.0f, 6.0f, -34.0f };
+	static constexpr VECTOR kTrackedObjOffsetForEnterRotCamera = { -2.0f, 2.0f,   0.0f };
+	static constexpr VECTOR kTrackedObjOffsetForZoomInCamera = { -2.0f, 2.0f,   0.0f };
+	static constexpr VECTOR kTrackedObjOffsetForZoomOutCamera = { 2.0f, 0.0f,   0.0f };
+	static constexpr VECTOR kTrackedObjOffsetForExitRotCamera = { 0.0f, 0.0f,   0.0f };
+	static constexpr VECTOR kFirstAngleForEnterRotCamera = { 0.0f, 0.0f * math::kDegToRad, 0.0f };
 
-	static constexpr float  kEnterRotAcceleration						= 1.5f;
-	static constexpr float  kExitRotAcceleration						= 2.0f;
+	static constexpr float  kEnterRotAcceleration = 1.5f;
+	static constexpr float  kExitRotAcceleration = 2.0f;
 
-	static constexpr float  kZoomOutSpeed								= 0.09f;
-	static constexpr float  kZoomInDamping								= 0.2f;
-	static constexpr float  kZoomOutTime								= 3.0f;
-	static constexpr float  kExitRotLeaveSpeed							= 70.0f;
+	static constexpr float  kZoomOutSpeed = 0.09f;
+	static constexpr float  kZoomInDamping = 0.2f;
+	static constexpr float  kZoomOutTime = 3.0f;
+	static constexpr float  kExitRotLeaveSpeed = 70.0f;
 
 private:
 	VirtualCameraControllerKind		m_virtual_camera_controller_kind;
 	int								m_controller_handle;
 	bool							m_is_active;
 
-	Player&							m_player;
+	Player& m_player;
 	std::shared_ptr<Transform>		m_rocket_bomb_transform;
 
 	std::shared_ptr<VirtualCamera>	m_enter_rot_camera;

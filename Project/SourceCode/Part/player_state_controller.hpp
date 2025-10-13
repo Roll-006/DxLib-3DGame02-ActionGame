@@ -59,6 +59,7 @@ public:
 	#pragma region Try判定
 	[[nodiscard]] bool TryMove				();
 	[[nodiscard]] bool TryRun				();
+	[[nodiscard]] bool TryDead				(std::shared_ptr<Player>& player);
 	[[nodiscard]] bool TryGrabbed			(std::shared_ptr<Player>& player);
 
 	/// @brief WARNING : TryRoundhouseKickより前に呼び出す必要あり

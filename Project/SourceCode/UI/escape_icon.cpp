@@ -36,18 +36,19 @@ void EscapeIcon::LateUpdate()
 {
 	CalcGaugePercent();
 
-	if (!m_grab_target->CanEscape())
+	if (m_grab_target->CanEscape())
+	{
+		CalcIconScale();
+		CalcBlurCircleParameter();
+		SetIconGraphic();
+
+		m_delete_wait_timer = 0.0f;
+	}
+	else
 	{
 		const auto delta_time = GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kUI);
 		m_delete_wait_timer += delta_time;
-		return;
 	}
-
-	CalcIconScale();
-	CalcBlurCircleParameter();
-	SetIconGraphic();
-
-	m_delete_wait_timer = 0.0f;
 }
 
 void EscapeIcon::Draw() const

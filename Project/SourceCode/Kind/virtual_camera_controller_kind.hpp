@@ -3,6 +3,7 @@
 enum class VirtualCameraControllerKind
 {
 	kControl,
+	kDead,
 	kRocketLauncherCutscene,
 	kGrabCutscene,
 };

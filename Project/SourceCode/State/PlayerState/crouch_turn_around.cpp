@@ -36,6 +36,11 @@ std::shared_ptr<IState<Player>> player_state::CrouchTurnAround::ChangeState(std:
 {
 	const auto state_controller = obj->GetStateController();
 
+	// Ž€–S
+	if (state_controller->TryDead(obj))
+	{
+		return state_controller->GetState<Dead, Player>();
+	}
 	// ƒƒŒ[(³–ÊR‚è)
 	if (state_controller->TryFrontKick(obj))
 	{

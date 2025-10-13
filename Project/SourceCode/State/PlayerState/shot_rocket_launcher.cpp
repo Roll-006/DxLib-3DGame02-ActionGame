@@ -63,7 +63,7 @@ void player_state::ShotRocketLauncher::Enter(std::shared_ptr<Player>& obj)
 	// MEMO : この段階で操作カメラのトランスフォーム情報が削除
 
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
-	m_rocket_launcher_camera_controller = std::make_shared<RocketLauncherVirtualCameraController>(*obj.get());
+	m_rocket_launcher_camera_controller = std::make_shared<RocketLauncherVirtualCamerasController>(*obj.get());
 	cinemachine_brain->AddVirtualCameraController(m_rocket_launcher_camera_controller);
 
 	obj->DetachWeapon(obj->GetCurrentEquipWeapon(WeaponSlotKind::kMain));

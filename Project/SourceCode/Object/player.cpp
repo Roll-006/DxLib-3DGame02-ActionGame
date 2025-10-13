@@ -7,7 +7,6 @@ Player::Player() :
 	m_state								(std::make_shared<PlayerStateController>()),
 	m_bone_pos_corrector				(std::make_shared<BonePosCorrector>()),
 	m_input_slope						(v3d::GetZeroV()),
-	m_look_dir_offset_speed				(0.0f),
 	m_prev_health						(0.0f),
 	m_is_grabbed						(false),
 	m_is_escape							(false),
@@ -95,6 +94,8 @@ void Player::Update()
 	NotifyHealth();
 	JudgeInvincible();
 	DecisionMeleeTarget();
+
+	m_is_calc_look_dir = false;
 
 	if (m_current_held_weapon) { m_current_held_weapon->Update(); }
 
@@ -446,6 +447,7 @@ void Player::Move()
 	CalcInputSlopeFromCommand();
 
 	CalcMoveSpeed();
+	AllowCalcLookDir();
 }
 
 void Player::SetLookDirOffsetValueForAim()
@@ -470,6 +472,7 @@ void Player::UpdateGrabbed()
 {
 	m_move_speed = 20.0f;
 
+	AllowCalcLookDir();
 	CalcCorrectMoveDir();
 	ReleaseWeapon();
 
@@ -514,6 +517,7 @@ void Player::UpdateMelee()
 {
 	m_move_speed = 20.0f;
 
+	AllowCalcLookDir();
 	CalcCorrectMoveDir();
 
 	// ã≠êßìIÇ…ñ≥ìGèÛë‘Ç…Ç∑ÇÈ
@@ -735,12 +739,6 @@ void Player::CalcInputSlopeFromCommand()
 	m_move_dir.at(TimeKind::kNext) = v3d::GetNormalizedV(m_input_slope);
 }
 
-void Player::CalcMoveVelocity()
-{
-	m_move_velocity = m_move_dir.at(TimeKind::kCurrent) * m_move_speed;
-	m_velocity += m_move_velocity;
-}
-
 void Player::NotifyHealth()
 {
 	// ïméÄèÛë‘í ím
@@ -759,51 +757,6 @@ void Player::NotifyHealth()
 	}
 
 	m_prev_health = m_health.at(HealthPartKind::kMain)->GetCurrentValue();
-}
-
-void Player::CalcLookDir()
-{
-	const auto move_state			= static_cast<player_state::MoveStateKind>		  (m_state->GetMoveState		(TimeKind::kCurrent)->GetStateKind());
-	const auto action_state			= static_cast<player_state::ActionStateKind>	  (m_state->GetActionState		(TimeKind::kCurrent)->GetStateKind());
-	const auto weapon_action_state	= static_cast<player_state::WeaponActionStateKind>(m_state->GetWeaponActionState(TimeKind::kCurrent)->GetStateKind());
-
-	// TODO : LookDirï‚ê≥é©ëÃÇÃãììÆÇÕCharaBaseã§í Ç»ÇΩÇﬂÅAèåèï™ÇÇÃÇøÇ…èCê≥
-	// CalcLookDirä÷êîÇCharaBaseÇ…à⁄çs
-	if (   move_state		   != player_state::MoveStateKind		 ::kMove
-		&& action_state		   != player_state::ActionStateKind		 ::kGrabbed
-		&& action_state		   != player_state::ActionStateKind		 ::kRoundhouseKick
-		&& action_state		   != player_state::ActionStateKind		 ::kFrontKick
-		&& action_state		   != player_state::ActionStateKind		 ::kSuplex
-		&& weapon_action_state != player_state::WeaponActionStateKind::kAimKnife
-		&& weapon_action_state != player_state::WeaponActionStateKind::kFirstSideSlashKnife
-		&& weapon_action_state != player_state::WeaponActionStateKind::kSecondSideSlashKnife
-		&& weapon_action_state != player_state::WeaponActionStateKind::kSpinningSlashKnife
-		&& weapon_action_state != player_state::WeaponActionStateKind::kAimGun)
-	{
-		return;
-	}
-
-	// ÉàÅ[äpâÒì]ÇéÊìæÇµÅA-ÉŒÅ`ÉŒÇ≈ílÇä«óùÇ∑ÇÈ
-	const auto current_yaw	= math::GetYawRotVector(m_look_dir.at(TimeKind::kCurrent));
-	const auto next_yaw		= math::GetYawRotVector(m_look_dir.at(TimeKind::kNext));
-	auto distance = next_yaw - current_yaw;
-	distance.y = math::ConnectMinusValueToValue(distance.y, DX_PI_F);
-
-	// ÉJÉÅÉâÇäÓèÄÇ…ÇµÇƒâEë§Ç≈Ç†Ç¡ÇΩèÍçáÇÕîΩì]
-	if (distance.y > 0) { m_look_dir_offset_speed *= -1; }
-
-	// âÒì]ÇìKóp
-	const auto look_dir_offset_speed = -m_look_dir_offset_speed * GetDeltaTime();
-	const auto rot_q = quat::CreateQuaternion(axis::GetWorldYAxis(), look_dir_offset_speed);
-	m_look_dir.at(TimeKind::kCurrent) = math::GetRotatedPos(m_look_dir.at(TimeKind::kCurrent), rot_q);
-
-	// èIóπîªíË
-	const auto angle = math::GetYawBetweenTwoVector(m_look_dir.at(TimeKind::kNext), m_look_dir.at(TimeKind::kCurrent));
-	const auto dynamic_threshold = std::abs(look_dir_offset_speed * math::kStopThreshold);
-	if (angle < dynamic_threshold)
-	{
-		m_look_dir.at(TimeKind::kCurrent) = m_look_dir.at(TimeKind::kNext);
-	}
 }
 
 //void Player::CalcCameraAimPos()

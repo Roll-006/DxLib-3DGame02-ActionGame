@@ -1,11 +1,11 @@
-#include "rocket_launcher_virtual_camera_controller.hpp"
+#include "rocket_launcher_virtual_cameras_controller.hpp"
 #include "../VirtualCamera/cinemachine_brain.hpp"
 #include "../UI/ui_drawer.hpp"
 #include "../Object/player.hpp"
 
 // FIXME : ロケット弾が演出中に着弾した際、カメラが不具合を起こすため修正が必要
 
-RocketLauncherVirtualCameraController::RocketLauncherVirtualCameraController(Player& player) :
+RocketLauncherVirtualCamerasController::RocketLauncherVirtualCamerasController(Player& player) :
 	m_virtual_camera_controller_kind(VirtualCameraControllerKind::kRocketLauncherCutscene),
 	m_controller_handle				(HandleCreator::GetInstance()->CreateHandle()),
 	m_is_active						(true),
@@ -53,7 +53,7 @@ RocketLauncherVirtualCameraController::RocketLauncherVirtualCameraController(Pla
 	// MEMO : この段階では操作カメラのトランスフォームの値は生存
 }
 
-RocketLauncherVirtualCameraController::~RocketLauncherVirtualCameraController()
+RocketLauncherVirtualCamerasController::~RocketLauncherVirtualCamerasController()
 {
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	cinemachine_brain->RemoveVirtualCamera(m_enter_rot_camera	->GetCameraHandle());
@@ -62,17 +62,17 @@ RocketLauncherVirtualCameraController::~RocketLauncherVirtualCameraController()
 	cinemachine_brain->RemoveVirtualCamera(m_exit_rot_camera	->GetCameraHandle());
 }
 
-void RocketLauncherVirtualCameraController::Init()
+void RocketLauncherVirtualCamerasController::Init()
 {
 	
 }
 
-void RocketLauncherVirtualCameraController::Update()
+void RocketLauncherVirtualCamerasController::Update()
 {
 	if (!IsActive()) { return; }
 }
 
-void RocketLauncherVirtualCameraController::LateUpdate()
+void RocketLauncherVirtualCamerasController::LateUpdate()
 {
 	if (!IsActive()) { return; }
 
@@ -84,12 +84,12 @@ void RocketLauncherVirtualCameraController::LateUpdate()
 	CalcAimTransformForExitRotCamera();
 }
 
-VirtualCameraControllerKind RocketLauncherVirtualCameraController::GetVirtualCameraControllerKind() const
+VirtualCameraControllerKind RocketLauncherVirtualCamerasController::GetVirtualCameraControllerKind() const
 {
 	return m_virtual_camera_controller_kind;
 }
 
-std::shared_ptr<VirtualCamera> RocketLauncherVirtualCameraController::GetHaveVirtualCamera(const std::string& name) const
+std::shared_ptr<VirtualCamera> RocketLauncherVirtualCamerasController::GetHaveVirtualCamera(const std::string& name) const
 {
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	const auto camera = cinemachine_brain->GetVirtualCamera(name);
@@ -105,14 +105,14 @@ std::shared_ptr<VirtualCamera> RocketLauncherVirtualCameraController::GetHaveVir
 	return nullptr;
 }
 
-std::vector<std::shared_ptr<VirtualCamera>> RocketLauncherVirtualCameraController::GetHaveAllVirtualCamera() const
+std::vector<std::shared_ptr<VirtualCamera>> RocketLauncherVirtualCamerasController::GetHaveAllVirtualCamera() const
 {
 	return std::vector<std::shared_ptr<VirtualCamera>>{m_enter_rot_camera, m_zoom_in_camera, m_zoom_out_camera};
 }
 
 
 #pragma region カメラ設定
-void RocketLauncherVirtualCameraController::SetupForEnterRotCamera()
+void RocketLauncherVirtualCamerasController::SetupForEnterRotCamera()
 {
 	m_enter_rot_camera->SetPriority(10);
 	m_enter_rot_camera->AttachTarget(m_rot_camera_aim_transform);
@@ -120,7 +120,7 @@ void RocketLauncherVirtualCameraController::SetupForEnterRotCamera()
 	m_enter_rot_camera->GetAim()->SetTrackedObjOffset(kTrackedObjOffsetForEnterRotCamera);
 }
 
-void RocketLauncherVirtualCameraController::SetupForZoomInCamera()
+void RocketLauncherVirtualCamerasController::SetupForZoomInCamera()
 {
 	m_zoom_in_camera->SetPriority(11);
 	m_zoom_in_camera->AttachTarget(m_zoom_camera_aim_transform);
@@ -128,7 +128,7 @@ void RocketLauncherVirtualCameraController::SetupForZoomInCamera()
 	m_zoom_in_camera->GetAim()->SetTrackedObjOffset(kTrackedObjOffsetForZoomInCamera);
 }
 
-void RocketLauncherVirtualCameraController::SetupForZoomOutCamera()
+void RocketLauncherVirtualCamerasController::SetupForZoomOutCamera()
 {
 	m_zoom_out_camera->SetPriority(12);
 	m_zoom_out_camera->AttachTarget(m_zoom_camera_aim_transform);
@@ -136,7 +136,7 @@ void RocketLauncherVirtualCameraController::SetupForZoomOutCamera()
 	m_zoom_out_camera->GetAim()->SetTrackedObjOffset(kTrackedObjOffsetForZoomOutCamera);
 }
 
-void RocketLauncherVirtualCameraController::SetupForExitRotCamera()
+void RocketLauncherVirtualCamerasController::SetupForExitRotCamera()
 {
 	m_exit_rot_camera->SetPriority(13);
 	m_exit_rot_camera->AttachTarget(m_rot_camera_aim_transform);
@@ -147,7 +147,7 @@ void RocketLauncherVirtualCameraController::SetupForExitRotCamera()
 
 
 #pragma region 起点トランスフォームの計算
-void RocketLauncherVirtualCameraController::CalcAimTransformForEnterRotCamera()
+void RocketLauncherVirtualCamerasController::CalcAimTransformForEnterRotCamera()
 {
 	if (!m_enter_rot_camera->IsActive()) { return; }
 
@@ -182,7 +182,7 @@ void RocketLauncherVirtualCameraController::CalcAimTransformForEnterRotCamera()
 	math::Decrease(m_rot_camera_angle.y, acc, -DX_PI_F);
 }
 
-void RocketLauncherVirtualCameraController::CalcAimTransformForZoomInCamera()
+void RocketLauncherVirtualCamerasController::CalcAimTransformForZoomInCamera()
 {
 	if (!m_zoom_in_camera->IsActive()) { return; }
 
@@ -221,7 +221,7 @@ void RocketLauncherVirtualCameraController::CalcAimTransformForZoomInCamera()
 	}
 }
 
-void RocketLauncherVirtualCameraController::CalcAimTransformForZoomOutCamera()
+void RocketLauncherVirtualCamerasController::CalcAimTransformForZoomOutCamera()
 {
 	if (!m_zoom_out_camera->IsActive()) { return; }
 
@@ -255,7 +255,7 @@ void RocketLauncherVirtualCameraController::CalcAimTransformForZoomOutCamera()
 	m_zoom_out_camera->GetBody()->SetFollowOffset(m_follow_offset_for_zoom_out);
 }
 
-void RocketLauncherVirtualCameraController::CalcAimTransformForExitRotCamera()
+void RocketLauncherVirtualCamerasController::CalcAimTransformForExitRotCamera()
 {
 	if (!m_exit_rot_camera->IsActive()) { return; }
 

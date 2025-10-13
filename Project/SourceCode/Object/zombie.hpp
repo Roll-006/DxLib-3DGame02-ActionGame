@@ -53,11 +53,10 @@ public:
 	#pragma endregion
 
 private:
-	void OnCollideWithExplosion(const std::shared_ptr<Sphere> sphere);
-	//void OnCollideWithBullet();
+	void JudgeAction() override;
 
-	void CalcLookDir();
-	void CalcMoveVelocity();
+	void OnCollideWithExplosion(const std::shared_ptr<Sphere> sphere);
+	//void OnCollideWithBullet();;
 
 private:
 	static constexpr VECTOR kBasicAngle				= { 0.0f, DX_PI_F, 0.0f };
@@ -93,7 +92,6 @@ private:
 
 private:
 	std::shared_ptr<ZombieStateController> m_state;
-	float	m_look_dir_offset_speed;			// å©ÇÈï˚å¸ÇÃï‚ê≥ë¨ìx
 
 	bool	m_can_grab_target;
 	bool	m_is_target_escaped;

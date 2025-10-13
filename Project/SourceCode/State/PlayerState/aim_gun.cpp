@@ -14,6 +14,7 @@ player_state::AimGun::~AimGun()
 
 void player_state::AimGun::Update(std::shared_ptr<Player>& obj)
 {
+	obj->AllowCalcLookDir();
 	obj->SetLookDirOffsetValueForAim();
 	obj->DirOfCameraForward();
 

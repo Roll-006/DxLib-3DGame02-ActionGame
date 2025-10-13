@@ -130,7 +130,7 @@ void RocketBomb::OnShot(GunBase& gun)
 	if (m_shot_owner_name == ObjName.PLAYER)
 	{
 		const auto cinemachine_brain = CinemachineBrain::GetInstance();
-		const auto camera_controller = std::dynamic_pointer_cast<RocketLauncherVirtualCameraController>(cinemachine_brain->GetVirtualCameraController(VirtualCameraControllerKind::kRocketLauncherCutscene));
+		const auto camera_controller = std::dynamic_pointer_cast<RocketLauncherVirtualCamerasController>(cinemachine_brain->GetVirtualCameraController(VirtualCameraControllerKind::kRocketLauncherCutscene));
 		if (camera_controller)
 		{
 			camera_controller->SetRocketBombTransform(m_transform);
