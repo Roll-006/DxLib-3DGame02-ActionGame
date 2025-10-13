@@ -2,7 +2,7 @@
 
 Ground::Ground() : 
 	PhysicalObjBase	(ObjName.GROUND, ObjTag.GROUND, MassKind::kStatic),
-	m_modeler		(std::make_shared<Modeler>(m_transform, ModelPath.GROUND_01, kBasicAngle, kBasicScale))
+	m_modeler		(std::make_shared<Modeler>(m_transform, ModelPath.GROUND, kBasicAngle, kBasicScale))
 {	
 	SetColliderModelHandle(m_modeler->GetModelHandle());
 

@@ -10,6 +10,8 @@ Player::Player() :
 	m_look_dir_offset_speed				(0.0f),
 	m_prev_health						(0.0f),
 	m_is_grabbed						(false),
+	m_is_escape							(false),
+	m_escape_start_timer				(0.0f),
 	m_weapon_shortcut_selecter			(std::make_shared<WeaponShortcutSelecter>()),
 	m_melee_target						(nullptr),
 	m_grabber							(nullptr),
@@ -31,7 +33,7 @@ Player::Player() :
 
 	// 初期pos・dirを設定
 	m_look_dir[TimeKind::kCurrent] = m_look_dir[TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);
-	m_transform->SetPos(CoordinateKind::kWorld, VGet(0.0f, -54.0f, 0.0f));
+	m_transform->SetPos(CoordinateKind::kWorld, VGet(0.0f, -78.52f, 0.0f));
 	m_transform->SetRot(CoordinateKind::kWorld, m_look_dir.at(TimeKind::kCurrent));
 
 	// コライダー・トリガーを設定
@@ -167,6 +169,9 @@ void Player::Draw() const
 	}
 
 	DrawColliders();
+
+	//const auto p = m_transform->GetPos(CoordinateKind::kWorld);
+	//printfDx("%f, %f, %f\n", p.x, p.y, p.z);
 }
 
 void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
@@ -226,10 +231,14 @@ void Player::OnDamage(const HealthPartKind part_kind, const float damage)
 void Player::OnGrabbed(const std::shared_ptr<IGrabber> grabber, const VECTOR& brabber_pos, const VECTOR& brabber_dir)
 {
 	m_is_grabbed	= true;
+	m_is_escape		= false;
 	m_grabber		= grabber;
 
 	m_look_dir.at(TimeKind::kNext) = -brabber_dir;
 	m_destination_pos = brabber_pos + brabber_dir * 17.0f;
+
+	m_escape_start_timer = 0.0f;
+	m_escape_gauge->DecreaseZero();
 }
 
 void Player::OnRelease()
@@ -463,6 +472,42 @@ void Player::UpdateGrabbed()
 
 	CalcCorrectMoveDir();
 	ReleaseWeapon();
+
+	const auto delta_time = GetDeltaTime();
+	m_escape_start_timer += delta_time;
+
+	if (m_escape_start_timer >= m_grabber->GetDamageOverTimeStartTime())
+	{
+		const auto command		= CommandHandler::GetInstance();
+		const auto input_mode	= command->GetInputModeKind(CommandKind::kEscape);
+		auto	   increase		= 0.0f;
+
+		switch (input_mode)
+		{
+		case InputModeKind::kSingle:
+			increase = m_escape_gauge->GetMaxValue() / 16;
+			break;
+
+		case InputModeKind::kHold:
+			increase = m_escape_gauge->GetMaxValue() / 1.8f * delta_time;
+			break;
+
+		default:
+			break;
+		}
+
+		if (command->IsExecute(CommandKind::kEscape, TimeKind::kCurrent))
+		{
+			m_escape_gauge->Increase(increase);
+		}
+
+		// 脱出
+		if (m_escape_gauge->IsMax())
+		{
+			m_grabber->OnEscape();
+			m_is_escape = true;
+		}
+	}
 }
 
 void Player::UpdateMelee()
@@ -587,6 +632,11 @@ WeaponKind Player::GetCurrentHeldWeaponKind()
 WeaponKind Player::GetCurrentAttachWeaponKind(const HolsterKind holster_kind) const
 {
 	return m_attach_weapons.count(holster_kind) ? m_attach_weapons.at(holster_kind)->GetWeaponKind() : WeaponKind::kNone;
+}
+
+bool Player::CanEscape() const
+{
+	return m_grabber ? m_escape_start_timer >= m_grabber->GetDamageOverTimeStartTime() : false;
 }
 #pragma endregion
 
@@ -781,9 +831,6 @@ void Player::CalcLookDir()
 
 VECTOR Player::GetMoveForward()
 {
-	//const auto camera = CinemachineBrain::GetInstance()->GetMainCamera();
-	//auto forward = camera->GetTransform()->GetForward(CoordinateKind::kWorld);
-
 	// MEMO : cinemachine brainを介するよりDxLib既存の関数を使用したほうが取得が早い
 	auto forward = GetCameraFrontVector();
 	forward.y = 0.0f;
@@ -793,9 +840,6 @@ VECTOR Player::GetMoveForward()
 
 VECTOR Player::GetMoveRight()
 {
-	//const auto camera = CinemachineBrain::GetInstance()->GetMainCamera();
-	//auto right = camera->GetTransform()->GetRight(CoordinateKind::kWorld);
-
 	auto right = GetCameraRightVector();
 	right.y = 0.0f;
 	

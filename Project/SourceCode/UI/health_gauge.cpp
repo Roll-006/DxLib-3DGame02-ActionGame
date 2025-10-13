@@ -9,7 +9,7 @@ HealthGauge::HealthGauge(std::shared_ptr<Gauge>& health) :
 	m_gauge_particle_graphic					(std::make_shared<Graphicer>(UIGraphicPath.HEALTH_GAUGE_PARTICLE)),
 	m_damage_particle_graphic					(std::make_shared<Graphicer>(UIGraphicPath.DAMAGE_GAUGE_PARTICLE)),
 	m_frame_particle_graphic					(std::make_shared<Graphicer>(UIGraphicPath.GAUGE_FRAME_PARTICLE)),
-	m_warning_circle_graphic					(std::make_shared<Graphicer>(UIGraphicPath.WARNING_CIRCLE)),
+	m_warning_circle_graphic					(std::make_shared<Graphicer>(UIGraphicPath.CIRCLE_BLUR_RED)),
 	m_basis_circle_screen						(std::make_shared<ScreenCreator>(kScreenSize)),
 	m_warning_circle_screen						(std::make_shared<ScreenCreator>(kScreenSize)),
 	m_current_max_health_frame_circle_screen	(std::make_shared<ScreenCreator>(kScreenSize)),

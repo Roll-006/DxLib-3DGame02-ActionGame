@@ -3,6 +3,12 @@
 
 static struct UIGraphicPath
 {
+	#pragma region îƒóp
+	const std::string CIRCLE_BLUR_RED		= "Data/Graphic/UI/Common/circle_blur_red.png";
+	const std::string CIRCLE_BLUR_WHITE		= "Data/Graphic/UI/Common/circle_blur_white.png";
+	#pragma endregion
+
+
 	#pragma region ïêäÌ
 	const std::string ASSAULT_RIFLE			= "Data/Graphic/UI/Weapon/assault_rifle.png";
 	const std::string ROCKET_LAUNCHER		= "Data/Graphic/UI/Weapon/rocket_launcher.png";
@@ -16,7 +22,6 @@ static struct UIGraphicPath
 	const std::string HEALTH_GAUGE_PARTICLE	= "Data/Graphic/UI/HealthGauge/particle.png";
 	const std::string DAMAGE_GAUGE_PARTICLE	= "Data/Graphic/UI/HealthGauge/damage_particle.png";
 	const std::string GAUGE_FRAME_PARTICLE	= "Data/Graphic/UI/HealthGauge/frame_particle.png";
-	const std::string WARNING_CIRCLE		= "Data/Graphic/UI/HealthGauge/warning.png";
 	#pragma endregion
 
 

@@ -7,7 +7,8 @@ public:
 
 	virtual void Grab()				abstract;
 	virtual void Release()			abstract;
-	virtual void ReleaseForcibly()	abstract;
+	virtual void OnEscape()			abstract;
 
-	[[nodiscard]] virtual bool IsRelease() const abstract;
+	[[nodiscard]] virtual float GetDamageOverTimeStartTime()	const abstract;
+	[[nodiscard]] virtual bool	IsTargetEscaped()				const abstract;
 };

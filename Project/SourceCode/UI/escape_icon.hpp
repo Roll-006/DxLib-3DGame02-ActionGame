@@ -15,6 +15,7 @@ public:
 private:
 	void CalcGaugePercent();
 	void CalcIconScale();
+	void CalcBlurCircleParameter();
 	void SetIconGraphic();
 
 private:
@@ -33,8 +34,12 @@ private:
 
 	std::shared_ptr<ButtonGraphicGetter>	m_button_graphic_resource;
 	std::shared_ptr<Graphicer>				m_button_icon_graphic;
+	std::shared_ptr<Graphicer>				m_blur_circle_graphic;
 
 	double									m_escape_gauge_percent;
 	float									m_icon_scale;
 	float									m_scale_sin;
+	int										m_blur_circle_alpha_num;
+	float									m_blur_circle_scale;
+	float									m_delete_wait_timer;
 };

@@ -39,6 +39,7 @@ void ZombieAnimator::LoadAnim()
 	AddAnimHandle(static_cast<int>(ZombieAnimKind::kCrouchDead),			AnimPath.CROUCH_DEAD,					0, AnimTag.NONE, 20.0f,  false);
 	AddAnimHandle(static_cast<int>(ZombieAnimKind::kFlyingKnockbackUp),		AnimPath.FLYING_KNOCKBACK_UP,			0, AnimTag.NONE, 35.0f,  false);
 	AddAnimHandle(static_cast<int>(ZombieAnimKind::kFlyingKnockbackDown),	AnimPath.FLYING_KNOCKBACK_DOWN,			0, AnimTag.NONE, 35.0f,	 false);
+	AddAnimHandle(static_cast<int>(ZombieAnimKind::kBackwardKnockback),		AnimPath.BACKWARD_KNOCKBACK,			0, AnimTag.NONE, 30.0f,	 false);
 	AddAnimHandle(static_cast<int>(ZombieAnimKind::kStandUp),				AnimPath.STAND_UP_ZOMBIE,				0, AnimTag.NONE, 35.0f,  false);
 
 	// 上半身用
@@ -83,6 +84,10 @@ void ZombieAnimator::CombineMoveNullWithAction()
 
 	case static_cast<int>(zombie_state::ActionStateKind::kKnockback):
 		AttachResultAnim(static_cast<int>(ZombieAnimKind::kFlyingKnockbackDown));
+		break;
+
+	case static_cast<int>(zombie_state::ActionStateKind::kBackwardKnockback):
+		AttachResultAnim(static_cast<int>(ZombieAnimKind::kBackwardKnockback));
 		break;
 
 	case static_cast<int>(zombie_state::ActionStateKind::kStandUp):

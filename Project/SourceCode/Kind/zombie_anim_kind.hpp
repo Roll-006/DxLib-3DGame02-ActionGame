@@ -18,6 +18,7 @@ enum class ZombieAnimKind
 	kCrouchDead,
 	kFlyingKnockbackUp,
 	kFlyingKnockbackDown,
+	kBackwardKnockback,
 	kStandUp,
 	#pragma endregion
 

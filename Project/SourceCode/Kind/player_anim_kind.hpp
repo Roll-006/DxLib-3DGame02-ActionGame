@@ -11,6 +11,7 @@ enum class PlayerAnimKind
 	kGrabbed,
 	kFrontKick,
 	kRoundhouseKick,
+	kEscapeKick,
 
 	kStabKnife,
 	kFirstSideSlashKnife,

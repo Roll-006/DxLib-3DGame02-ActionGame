@@ -517,6 +517,9 @@
     <ClCompile Include="SourceCode\UI\escape_icon.cpp">
       <Filter>SourceCode\UI</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\State\ZombieState\backward_knockback.cpp">
+      <Filter>SourceCode\State\ZombieState</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\character_base.hpp">
@@ -1388,6 +1391,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\UI\escape_icon.hpp">
       <Filter>SourceCode\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\ZombieState\backward_knockback.hpp">
+      <Filter>SourceCode\State\ZombieState</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

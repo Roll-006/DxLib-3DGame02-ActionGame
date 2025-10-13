@@ -12,7 +12,7 @@ EnemyManager::EnemyManager()
 	nlohmann::json data;
 	if (json_loader.Load("Data/JSON/enemy_data.json", data))
 	{
-		for (int i = 0; i < 2; ++i)
+		for (int i = 0; i < 3; ++i)
 		{
 			const auto enemy	= data ["enemies"][std::to_string(i + 1)];
 			const auto pos		= enemy["position"];

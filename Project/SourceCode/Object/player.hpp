@@ -130,7 +130,9 @@ public:
 	[[nodiscard]] std::shared_ptr<WeaponShortcutSelecter>							GetWeaponShortcutSelecter	()	const			{ return m_weapon_shortcut_selecter; }
 	[[nodiscard]] float																GetMoveSpeed				()	const			{ return m_move_speed; }
 	[[nodiscard]] int																GetCurrentRemainingBulletNum()	const override	{ return m_current_remaining_bullet_num; }
+	[[nodiscard]] bool																CanEscape					()	const override;
 	[[nodiscard]] bool																IsGrabbed					()	const override	{ return m_is_grabbed; }
+	[[nodiscard]] bool																IsEscape					()	const override	{ return m_is_escape; }
 	[[nodiscard]] std::vector<MeleeCandidateData>									GetMeleeCandidate			()	const override  { return m_melee_candidate; }
 	[[nodiscard]] std::shared_ptr<IMeleeHittable>&									GetMeleeTarget				()  override		{ return m_melee_target; }
 	[[nodiscard]] std::shared_ptr<IGrabber>											GetGrabber					()  const override	{ return m_grabber; }
@@ -198,6 +200,8 @@ private:
 
 	float										m_prev_health;
 	bool										m_is_grabbed;							// 捕まれたかを判定
+	bool										m_is_escape;
+	float										m_escape_start_timer;
 
 	std::unordered_map<ItemKind, std::vector<std::shared_ptr<IItem>>>	m_items;							// 所持しているアイテム
 	std::unordered_map<WeaponSlotKind, std::shared_ptr<WeaponBase>>		m_current_equip_weapon;				// 現在装備している武器

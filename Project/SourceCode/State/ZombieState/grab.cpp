@@ -89,8 +89,14 @@ std::shared_ptr<IState<Zombie>> zombie_state::Grab::ChangeState(std::shared_ptr<
 	{
 		return state_controller->GetState<StandStun, Zombie>();
 	}
+	// ノックバック(後ろ)
+	if (obj->IsTargetEscaped())
+	{
+		obj->OnKnockback(-obj->GetCurrentLookDir(), 70.0f, 60.0f);
+		return state_controller->GetState<BackwardKnockback, Zombie>();
+	}
 	// NULL
-	if (m_grab_timer > kMaxGrabTime || obj->IsRelease())
+	if (m_grab_timer > kMaxGrabTime)
 	{
 		return state_controller->GetState<ActionNull, Zombie>();
 	}

@@ -20,6 +20,7 @@
 #include "../State/ZombieState/grab.hpp"
 #include "../State/ZombieState/grab_run.hpp"
 #include "../State/ZombieState/knockback.hpp"
+#include "../State/ZombieState/backward_knockback.hpp"
 #include "../State/ZombieState/stand_up.hpp"
 #include "../State/ZombieState/stand_stun.hpp"
 #include "../State/ZombieState/crouch_left_stun.hpp"

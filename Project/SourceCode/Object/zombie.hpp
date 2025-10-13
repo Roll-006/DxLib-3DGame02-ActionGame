@@ -27,8 +27,7 @@ public:
 	
 	void Grab()				override;
 	void Release()			override;
-	void ReleaseForcibly()	override { m_is_release = true; }
-
+	void OnEscape()			override;
 
 
 	#pragma region State
@@ -44,12 +43,13 @@ public:
 
 
 	#pragma region Getter
-	[[nodiscard]] float	GetDeltaTime()  const override;
+	[[nodiscard]] float	GetDeltaTime()					const override;
 	[[nodiscard]] std::shared_ptr<ZombieStateController> GetStateController() const { return m_state; }
-	[[nodiscard]] bool  CanGrabTraget() const { return m_can_grab_target; }
-	[[nodiscard]] bool  IsStandStun()	const override;
-	[[nodiscard]] bool  IsCrouchStun()	const override;
-	[[nodiscard]] bool  IsRelease()		const override { return m_is_release; }
+	[[nodiscard]] float GetDamageOverTimeStartTime()	const override	{ return kDamageOverTimeStartTime; }
+	[[nodiscard]] bool  CanGrabTraget()					const			{ return m_can_grab_target; }
+	[[nodiscard]] bool  IsStandStun()					const override;
+	[[nodiscard]] bool  IsCrouchStun()					const override;
+	[[nodiscard]] bool	IsTargetEscaped()				const override  { return m_is_target_escaped; }
 	#pragma endregion
 
 private:
@@ -76,23 +76,25 @@ private:
 	static constexpr float kMoveDirOffsetSpeed		= 5.0f;			// à⁄ìÆï˚å¸ÇÃï‚ê≥ë¨ìx
 	static constexpr float kLookDirOffsetSpeed		= 4.0f;			// å©ÇÈï˚å¸ÇÃï‚ê≥äpìx
 
-	static constexpr float kCapsuleRadius			= 8.0f;
-	static constexpr float kCollisionAreaRadius		= 40.0f;
+	static constexpr float  kCapsuleRadius			= 8.0f;
+	static constexpr float  kCollisionAreaRadius	= 40.0f;
 	static constexpr VECTOR kCollisionAreaOffset	= { 0.0f, 30.0f, 0.0f };
-	static constexpr float kLandingTriggerRadius	= 6.0f;
-	static constexpr float kHeadTriggerRadius		= 5.0f;
-	static constexpr float kUpBodyTriggerRadius		= 6.0f;
-	static constexpr float kDownBodyTriggerRadius	= 6.0f;
-	static constexpr float kUpperArmTriggerRadius	= 2.5f;
-	static constexpr float kForearmTriggerRadius	= 2.2f;
-	static constexpr float kHandTriggerRadius		= 2.0f;
-	static constexpr float kUpLegTriggerRadius		= 3.5f;
-	static constexpr float kDownLegTriggerRadius	= 2.5f;
+	static constexpr float  kLandingTriggerRadius	= 6.0f;
+	static constexpr float  kHeadTriggerRadius		= 5.0f;
+	static constexpr float  kUpBodyTriggerRadius	= 6.0f;
+	static constexpr float  kDownBodyTriggerRadius	= 6.0f;
+	static constexpr float  kUpperArmTriggerRadius	= 2.5f;
+	static constexpr float  kForearmTriggerRadius	= 2.2f;
+	static constexpr float  kHandTriggerRadius		= 2.0f;
+	static constexpr float  kUpLegTriggerRadius		= 3.5f;
+	static constexpr float  kDownLegTriggerRadius	= 2.5f;
+
+	static constexpr float kDamageOverTimeStartTime = 1.0f;
 
 private:
 	std::shared_ptr<ZombieStateController> m_state;
-
 	float	m_look_dir_offset_speed;			// å©ÇÈï˚å¸ÇÃï‚ê≥ë¨ìx
+
 	bool	m_can_grab_target;
-	bool	m_is_release;
+	bool	m_is_target_escaped;
 };

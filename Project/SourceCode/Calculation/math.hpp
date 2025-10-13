@@ -117,12 +117,12 @@ namespace math
 	/// @param max_value 最大値
 	/// @param is_loop ループ判定
 	template<common_concepts::ArithmeticT T>
-	void Increase(T& value, const T& increase_value, const T& max_value, const bool is_loop)
+	void Increase(T& value, const T& increase_value, const T& max_value, const bool is_loop, const T& loop_value = 0)
 	{
 		value += increase_value;
 		if (value > max_value)
 		{
-			value = is_loop ? 0 : max_value;
+			value = is_loop ? loop_value : max_value;
 		}
 	}
 
@@ -223,13 +223,13 @@ namespace math
 	}
 
 	/// @brief 0～1の間に変換した値を取得
-	/// @tparam T 変換対象の型
-	/// @tparam ReturnValue 戻り値の型(浮動小数点数型である必要有り)
+	/// @tparam TargetT 変換対象の型
+	/// @tparam ReturnValue 戻り値の型
 	/// @param min 値の最小値(この値を0とする)
 	/// @param max 値の最大値(この値を1とする)
 	/// @param value 変換対象の値
-	template<typename T, common_concepts::FloatingPointT ReturnT>
-	[[nodiscard]] ReturnT GetUnitValue(const T min, const T max, const T value)
+	template<common_concepts::ArithmeticT TargetT, common_concepts::FloatingPointT ReturnT>
+	[[nodiscard]] ReturnT GetUnitValue(const TargetT min, const TargetT max, const TargetT value)
 	{
 		return static_cast<ReturnT>(value - min) / (max - min);
 	}
@@ -247,7 +247,7 @@ namespace math
 		ReturnT normalized = GetUnitValue<TargetT, ReturnT>(old_min, old_max, value);
 
 		// 新しい範囲にスケール
-		return normalized * static_cast<ReturnT>(new_max - new_min) + static_cast<ReturnT>(new_min);
+		return static_cast<ReturnT>(new_min + (new_max - new_min) * normalized);
 	}
 
 	#pragma endregion
