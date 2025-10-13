@@ -11,7 +11,6 @@ SceneManager::SceneManager() :
 SceneManager::~SceneManager()
 {
 	// ˆ—‚È‚µ
-	// FIXME : ‚±‚Ì’n“_‚ğ”²‚¯‚éÛ‚É—áŠO‚ª”­¶‚·‚é
 }
 
 void SceneManager::Update()
@@ -56,3 +55,4 @@ void SceneManager::ChangeScene()
 		m_current_scene = next_scene;
 	}
 }
+ 

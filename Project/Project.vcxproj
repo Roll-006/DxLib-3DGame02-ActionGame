@@ -219,7 +219,6 @@
     <ClCompile Include="SourceCode\Part\zombie_state_controller.cpp" />
     <ClCompile Include="SourceCode\Random\random_generator.cpp" />
     <ClCompile Include="SourceCode\Scene\game_clear_scene.cpp" />
-    <ClCompile Include="SourceCode\Scene\game_over_scene.cpp" />
     <ClCompile Include="SourceCode\Scene\load_scene.cpp" />
     <ClCompile Include="SourceCode\Scene\play_scene.cpp" />
     <ClCompile Include="SourceCode\Scene\share_scene.cpp" />
@@ -514,7 +513,6 @@
     <ClInclude Include="SourceCode\Path\ui_graphic_path.hpp" />
     <ClInclude Include="SourceCode\Random\random_generator.hpp" />
     <ClInclude Include="SourceCode\Scene\game_clear_scene.hpp" />
-    <ClInclude Include="SourceCode\Scene\game_over_scene.hpp" />
     <ClInclude Include="SourceCode\Scene\load_scene.hpp" />
     <ClInclude Include="SourceCode\Scene\play_scene.hpp" />
     <ClInclude Include="SourceCode\Scene\share_scene.hpp" />

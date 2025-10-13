@@ -91,9 +91,6 @@
     <ClCompile Include="SourceCode\Scene\game_clear_scene.cpp">
       <Filter>SourceCode\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Scene\game_over_scene.cpp">
-      <Filter>SourceCode\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\Scene\load_scene.cpp">
       <Filter>SourceCode\Scene</Filter>
     </ClCompile>
@@ -664,9 +661,6 @@
       <Filter>SourceCode\Part</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Scene\game_clear_scene.hpp">
-      <Filter>SourceCode\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Scene\game_over_scene.hpp">
       <Filter>SourceCode\Scene</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Scene\load_scene.hpp">
