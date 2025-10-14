@@ -3,6 +3,7 @@
 
 PlayScene::PlayScene() :
 	m_is_active						(true),
+	m_scene_kind					(SceneKind::kPlay),
 	m_player						(std::make_shared<Player>()),
 	m_enemy_manager					(std::make_shared<EnemyManager>()),
 	m_house							(std::make_shared<House>()),
@@ -48,7 +49,8 @@ PlayScene::~PlayScene()
 
 void PlayScene::Init()
 {
-
+	const auto game_time_manager = GameTimeManager::GetInstance();
+	game_time_manager->InitTimeScale();
 }
 
 void PlayScene::Update()

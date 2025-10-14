@@ -520,6 +520,12 @@
     <ClCompile Include="SourceCode\VirtualCamera\dead_virtual_cameras_controller.cpp">
       <Filter>SourceCode\VirtualCamera</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\Part\selector.cpp">
+      <Filter>SourceCode\Part</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Base\tab_base.cpp">
+      <Filter>SourceCode\Base</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\character_base.hpp">
@@ -1215,9 +1221,6 @@
     <ClInclude Include="SourceCode\CSV\csv_loader.hpp">
       <Filter>SourceCode\CSV</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Event\b.hpp">
-      <Filter>SourceCode\Event</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\Event\end_rocket_launcher_cutscene_event.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
@@ -1380,9 +1383,6 @@
     <ClInclude Include="SourceCode\Event\on_damage_event.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Event\a.hpp">
-      <Filter>SourceCode\Event</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\Interface\i_grabber.hpp">
       <Filter>SourceCode\Interface</Filter>
     </ClInclude>
@@ -1394,6 +1394,19 @@
     </ClInclude>
     <ClInclude Include="SourceCode\VirtualCamera\dead_virtual_cameras_controller.hpp">
       <Filter>SourceCode\VirtualCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\dead_player_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\IncludeList\event.hpp">
+      <Filter>SourceCode\IncludeList</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\change_scene.hpp" />
+    <ClInclude Include="SourceCode\Part\selector.hpp">
+      <Filter>SourceCode\Part</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Base\tab_base.hpp">
+      <Filter>SourceCode\Base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

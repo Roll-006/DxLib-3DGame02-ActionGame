@@ -1,17 +1,22 @@
 #include "screen_filter.hpp"
 
 ScreenFilter::ScreenFilter() : 
-	m_current_basis_filter		(nullptr),
-	m_basis_alpha_blend_num		(255),
-	m_main_screen				(std::make_shared<ScreenCreator>(Window::kScreenSize, Window::kCenterPos)),
-	m_basis_filter_screen		(std::make_shared<ScreenCreator>(Window::kScreenSize, Window::kCenterPos)),
-	m_near_death_filter_screen	(std::make_shared<ScreenCreator>(Window::kScreenSize, Window::kCenterPos)),
-	m_is_using_basis_filter		(false),
-	m_is_using_near_death_filter(false),
-	m_near_death_blinking_sin	(0.0f)
+	m_current_basis_filter			(nullptr),
+	m_basis_alpha_blend_num			(255),
+	m_main_screen					(std::make_shared<ScreenCreator>(Window::kScreenSize, Window::kCenterPos)),
+	m_basis_filter_screen			(std::make_shared<ScreenCreator>(Window::kScreenSize, Window::kCenterPos)),
+	m_near_death_filter_screen		(std::make_shared<ScreenCreator>(Window::kScreenSize, Window::kCenterPos)),
+	m_death_filter_screen			(std::make_shared<ScreenCreator>(Window::kScreenSize, Window::kCenterPos)),
+	m_is_using_basis_filter			(false),
+	m_is_using_near_death_filter	(false),
+	m_is_using_death_filter			(false),
+	m_near_death_blinking_sin		(0.0f),
+	m_death_filter_alpha_blend_num	(0)
 {
 	// ƒCƒxƒ“ƒg“o˜^
+	EventSystem::GetInstance()->Subscribe<ChangeSceneEvent>				(this, &ScreenFilter::Init);
 	EventSystem::GetInstance()->Subscribe<EnterNearDeathEvent>			(this, &ScreenFilter::SetNearDeathFilter);
+	EventSystem::GetInstance()->Subscribe<DeadPlayerEvent>				(this, &ScreenFilter::SetDeathFilter);
 	EventSystem::GetInstance()->Subscribe<OnSelectNormalFilterEvent>	(this, &ScreenFilter::SetNormalFilter);
 	EventSystem::GetInstance()->Subscribe<OnSelectCinematicFilterEvent>	(this, &ScreenFilter::SetCinematicFilter);
 	EventSystem::GetInstance()->Subscribe<OnSelectRetroFilterEvent>		(this, &ScreenFilter::SetRetroFilter);
@@ -26,10 +31,18 @@ ScreenFilter::ScreenFilter() :
 ScreenFilter::~ScreenFilter()
 {
 	// ƒCƒxƒ“ƒg‚Ì“o˜^‰ðœ
+	EventSystem::GetInstance()->Unsubscribe<ChangeSceneEvent>				(this, &ScreenFilter::Init);
 	EventSystem::GetInstance()->Unsubscribe<EnterNearDeathEvent>			(this, &ScreenFilter::SetNearDeathFilter);
+	EventSystem::GetInstance()->Unsubscribe<DeadPlayerEvent>				(this, &ScreenFilter::SetDeathFilter);
 	EventSystem::GetInstance()->Unsubscribe<OnSelectNormalFilterEvent>		(this, &ScreenFilter::SetNormalFilter);
 	EventSystem::GetInstance()->Unsubscribe<OnSelectCinematicFilterEvent>	(this, &ScreenFilter::SetCinematicFilter);
 	EventSystem::GetInstance()->Unsubscribe<OnSelectRetroFilterEvent>		(this, &ScreenFilter::SetRetroFilter);
+}
+
+void ScreenFilter::Init()
+{
+	m_is_using_near_death_filter	= false;
+	m_is_using_death_filter			= false;
 }
 
 void ScreenFilter::Update()
@@ -53,14 +66,26 @@ void ScreenFilter::Draw()
 
 	DrawBasisFilter();
 	DrawNearDeathFilter();
+	DrawDeathFilter();
 }
 
 
 #pragma region Event
+void ScreenFilter::Init(const ChangeSceneEvent& event)
+{
+	Init();
+}
+
 void ScreenFilter::SetNearDeathFilter(const EnterNearDeathEvent& event)
 {
 	m_is_using_near_death_filter	= true;
 	m_near_death_blinking_sin		= 0.0f;
+}
+
+void ScreenFilter::SetDeathFilter(const DeadPlayerEvent& event)
+{
+	m_is_using_death_filter			= true;
+	m_death_filter_alpha_blend_num	= 0;
 }
 
 void ScreenFilter::SetNormalFilter(const OnSelectNormalFilterEvent& event)
@@ -133,4 +158,20 @@ void ScreenFilter::DrawNearDeathFilter()
 
 	GraphFilter(m_near_death_filter_screen->GetScreenHandle(), DX_GRAPH_FILTER_MONO, 0, 0);
 	m_near_death_filter_screen->Draw();
+}
+
+void ScreenFilter::DrawDeathFilter()
+{
+	if (!m_is_using_death_filter) { return; }
+
+	const auto delta_time = GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kUI);
+	math::Increase(m_death_filter_alpha_blend_num, static_cast<int>(100.0f * delta_time), 255, false);
+
+	m_death_filter_screen->UseScreen();
+	m_main_screen->Draw();
+	m_death_filter_screen->UnuseScreen();
+	m_death_filter_screen->GetGraphicer()->SetAlphaBlendNum(m_death_filter_alpha_blend_num);
+
+	GraphFilter(m_death_filter_screen->GetScreenHandle(), DX_GRAPH_FILTER_MONO, 0, 0);
+	m_death_filter_screen->Draw();
 }

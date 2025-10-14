@@ -48,6 +48,9 @@ void EscapeIcon::LateUpdate()
 	{
 		const auto delta_time = GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kUI);
 		m_delete_wait_timer += delta_time;
+
+		m_blur_circle_alpha_num = 0;
+		m_blur_circle_scale		= 0.9f;
 	}
 }
 

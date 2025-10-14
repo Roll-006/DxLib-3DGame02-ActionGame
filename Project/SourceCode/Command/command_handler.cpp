@@ -168,7 +168,7 @@ void CommandHandler::InitInputMode()
 	m_input_mode[CommandKind::kAimKnife]					= InputModeKind::kHold;
 	m_input_mode[CommandKind::kInvestigate]					= InputModeKind::kSingle;
 	m_input_mode[CommandKind::kMelee]						= InputModeKind::kSingle;
-	m_input_mode[CommandKind::kEscape]						= InputModeKind::kSingle;
+	m_input_mode[CommandKind::kEscape]						= InputModeKind::kHold;
 	m_input_mode[CommandKind::kReload]						= InputModeKind::kSingle;
 	m_input_mode[CommandKind::kScope]						= InputModeKind::kSingle;
 	m_input_mode[CommandKind::kMoveUpPlayer]				= InputModeKind::kHold;

@@ -16,11 +16,11 @@ public:
 	void Activate()		override { m_is_active = true; }
 	void Deactivate()	override { m_is_active = false; }
 
-	[[nodiscard]] bool IsActive() const override { return m_is_active; }
-	[[nodiscard]] std::shared_ptr<IScene> ChangeScene() override;
+	[[nodiscard]] bool						IsActive()		const	override { return m_is_active; }
+	[[nodiscard]] std::shared_ptr<IScene>	ChangeScene()			override;
+	[[nodiscard]] virtual SceneKind			GetSceneKind()	const	override { return m_scene_kind; }
 
 private:
-	bool m_is_active;
-
-
+	bool		m_is_active;
+	SceneKind	m_scene_kind;
 };

@@ -19,6 +19,7 @@ public:
 	ScreenFilter();
 	~ScreenFilter();
 
+	void Init();
 	void Update();
 	void UseFilter();
 	void UnuseFilter();
@@ -27,9 +28,11 @@ public:
 
 
 	#pragma region Event
-	void SetNearDeathFilter	(const EnterNearDeathEvent&			event);
-	void SetNormalFilter	(const OnSelectNormalFilterEvent&	event);
-	void SetCinematicFilter	(const OnSelectCinematicFilterEvent& event);
+	void Init				(const ChangeSceneEvent&				event);
+	void SetNearDeathFilter	(const EnterNearDeathEvent&				event);
+	void SetDeathFilter		(const DeadPlayerEvent&					event);
+	void SetNormalFilter	(const OnSelectNormalFilterEvent&		event);
+	void SetCinematicFilter	(const OnSelectCinematicFilterEvent&	event);
 	void SetRetroFilter		(const OnSelectRetroFilterEvent&		event);
 	#pragma endregion
 
@@ -45,6 +48,7 @@ private:
 
 	void DrawBasisFilter();
 	void DrawNearDeathFilter();
+	void DrawDeathFilter();
 
 private:
 	static constexpr float kBlinkingSpeed = 2.0f;
@@ -56,9 +60,12 @@ private:
 	std::shared_ptr<ScreenCreator> m_main_screen;
 	std::shared_ptr<ScreenCreator> m_basis_filter_screen;
 	std::shared_ptr<ScreenCreator> m_near_death_filter_screen;
+	std::shared_ptr<ScreenCreator> m_death_filter_screen;
 
 	bool  m_is_using_basis_filter;			// 基礎フィルターを使用しているかを判定
 	bool  m_is_using_near_death_filter;		// 瀕死フィルターを使用しているかを判定
+	bool  m_is_using_death_filter;			// 死亡フィルターを使用しているかを判定
 
 	float m_near_death_blinking_sin;
+	int	  m_death_filter_alpha_blend_num;
 };

@@ -2,7 +2,8 @@
 #include "../Manager/scene_manager.hpp"
 
 LoadScene::LoadScene() : 
-	m_is_active(true)
+	m_is_active	(true),
+	m_scene_kind(SceneKind::kLoad)
 {
 
 }

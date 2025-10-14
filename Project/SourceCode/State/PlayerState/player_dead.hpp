@@ -21,7 +21,9 @@ namespace player_state
 		[[nodiscard]] bool IsStopAllState() const override { return m_is_stop_all_state; }
 
 	private:
-		bool m_is_stop_all_state;
+		bool	m_is_stop_all_state;
+		float	m_elapsed_time;
+		bool	m_is_seted_time_scale;
 		std::shared_ptr<DeadVirtualCamerasController> m_dead_cameras_controller;
 	};
 }

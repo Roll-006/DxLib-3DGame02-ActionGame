@@ -151,6 +151,7 @@
     <ClCompile Include="SourceCode\Base\object_pool_base.cpp" />
     <ClCompile Include="SourceCode\Base\obj_base.cpp" />
     <ClCompile Include="SourceCode\Base\physical_obj_base.cpp" />
+    <ClCompile Include="SourceCode\Base\tab_base.cpp" />
     <ClCompile Include="SourceCode\Base\weapon_base.cpp" />
     <ClCompile Include="SourceCode\Calculation\collision_calculator.cpp" />
     <ClCompile Include="SourceCode\Calculation\math.cpp" />
@@ -196,6 +197,7 @@
     <ClCompile Include="SourceCode\Object\shell_casing.cpp" />
     <ClCompile Include="SourceCode\Object\skydome.cpp" />
     <ClCompile Include="SourceCode\Part\button_graphic_getter.cpp" />
+    <ClCompile Include="SourceCode\Part\selector.cpp" />
     <ClCompile Include="SourceCode\Part\weapon_graphic_getter.cpp" />
     <ClCompile Include="SourceCode\Part\melee_target_selecter.cpp" />
     <ClCompile Include="SourceCode\Part\character_collider_creator.cpp" />
@@ -336,6 +338,7 @@
     <ClInclude Include="SourceCode\Base\physical_obj_base.hpp" />
     <ClInclude Include="SourceCode\Base\shape_base.hpp" />
     <ClInclude Include="SourceCode\Base\singleton_base.hpp" />
+    <ClInclude Include="SourceCode\Base\tab_base.hpp" />
     <ClInclude Include="SourceCode\Base\weapon_action_state_base.hpp" />
     <ClInclude Include="SourceCode\Base\weapon_base.hpp" />
     <ClInclude Include="SourceCode\Calculation\axes.hpp" />
@@ -366,8 +369,8 @@
     <ClInclude Include="SourceCode\Data\input_data.hpp" />
     <ClInclude Include="SourceCode\Debugger\debugger.hpp" />
     <ClInclude Include="SourceCode\Drawer\drawer.hpp" />
-    <ClInclude Include="SourceCode\Event\b.hpp" />
-    <ClInclude Include="SourceCode\Event\a.hpp" />
+    <ClInclude Include="SourceCode\Event\change_scene.hpp" />
+    <ClInclude Include="SourceCode\Event\dead_player_event.hpp" />
     <ClInclude Include="SourceCode\Event\on_damage_event.hpp" />
     <ClInclude Include="SourceCode\Event\on_melee_target_lost_event.hpp" />
     <ClInclude Include="SourceCode\Event\on_downed_enemy_spotted_event.hpp" />
@@ -394,6 +397,7 @@
     <ClInclude Include="SourceCode\GameTime\game_time_manager.hpp" />
     <ClInclude Include="SourceCode\Handle\handle_keeper.hpp" />
     <ClInclude Include="SourceCode\Handle\handle_creator.hpp" />
+    <ClInclude Include="SourceCode\IncludeList\event.hpp" />
     <ClInclude Include="SourceCode\IncludeList\input.hpp" />
     <ClInclude Include="SourceCode\IncludeList\shape.hpp" />
     <ClInclude Include="SourceCode\IncludeList\vector.hpp" />
@@ -485,6 +489,7 @@
     <ClInclude Include="SourceCode\Object\skydome.hpp" />
     <ClInclude Include="SourceCode\Part\character_collider_creator.hpp" />
     <ClInclude Include="SourceCode\Part\button_graphic_getter.hpp" />
+    <ClInclude Include="SourceCode\Part\selector.hpp" />
     <ClInclude Include="SourceCode\Part\weapon_graphic_getter.hpp" />
     <ClInclude Include="SourceCode\Part\mask_creator.hpp" />
     <ClInclude Include="SourceCode\Part\melee_target_selecter.hpp" />

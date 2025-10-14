@@ -52,7 +52,10 @@ void SceneManager::ChangeScene()
 	const auto next_scene = m_current_scene->ChangeScene();
 	if (next_scene)
 	{
+		const ChangeSceneEvent event{ m_current_scene->GetSceneKind() };
+		EventSystem::GetInstance()->Publish(event);
+
 		m_current_scene = next_scene;
+		m_current_scene->Init();
 	}
 }
- 
