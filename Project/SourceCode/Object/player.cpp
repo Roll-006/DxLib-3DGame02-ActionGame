@@ -91,6 +91,11 @@ void Player::Update()
 {
 	if (!IsActive()) { return; }
 
+	if (CheckHitKey(KEY_INPUT_0))
+	{
+		m_health.at(HealthPartKind::kMain)->Decrease(500.0f);
+	}
+
 	NotifyHealth();
 	JudgeInvincible();
 	DecisionMeleeTarget();

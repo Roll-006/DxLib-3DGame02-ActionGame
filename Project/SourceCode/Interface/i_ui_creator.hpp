@@ -6,6 +6,7 @@ class IUICreator abstract
 public:
 	virtual ~IUICreator() = default;
 
+	virtual void Init() abstract;
 	virtual void LateUpdate() abstract;
 	virtual void OnDraw(const int main_screen_handle) abstract;
 

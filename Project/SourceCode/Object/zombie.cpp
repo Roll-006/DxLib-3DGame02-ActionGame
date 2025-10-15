@@ -58,6 +58,7 @@ void Zombie::Update()
 
 	JudgeAction();
 	JudgeInvincible();
+	JudgeLostTarget();
 
 	m_look_dir_offset_speed = kLookDirOffsetSpeed;
 
@@ -101,7 +102,7 @@ void Zombie::LateUpdate()
 	m_state->LateUpdate(std::static_pointer_cast<Zombie>(shared_from_this()));
 
 	m_can_grab_target				= false;
-	m_is_target_in_sight			= false;
+	m_on_collided_vision_trigger			= false;
 	m_has_obstacle_between_target	= false;
 	m_use_projection_velocity		= true;
 }
@@ -152,7 +153,7 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	case ColliderKind::kVisionTrigger:
 		if (target_collider_kind == ColliderKind::kVisibleTrigger && target_tag == ObjTag.PLAYER)
 		{
-			m_is_target_in_sight = true;
+			m_on_collided_vision_trigger = true;
 		}
 		break;
 

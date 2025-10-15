@@ -47,10 +47,9 @@ void player_state::SpinningSlashKnife::Exit(std::shared_ptr<Player>& obj)
 std::shared_ptr<IState<Player>> player_state::SpinningSlashKnife::ChangeState(std::shared_ptr<Player>& obj)
 {
 	const auto state_controller = obj->GetStateController();
-	const auto command			= CommandHandler::GetInstance();
 
 	// Ø‚è—ô‚­(‘æˆê’iŠK)
-	if (m_combo_timer > kComboValidTime && command->IsExecute(CommandKind::kAttack, TimeKind::kCurrent))
+	if (m_combo_timer > kComboValidTime && state_controller->TryFirstSideSlashKnife(obj))
 	{
 		return state_controller->GetState<SecondSideSlashKnife, Player>();
 	}

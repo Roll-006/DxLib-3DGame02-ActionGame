@@ -46,9 +46,9 @@ void ScreenCreator::UseScreen()
 	ClearDrawScreen();
 
 	// ƒJƒƒ‰î•ñ‚Ì•œŒ³
-	SetCameraNearFar(m_prev_camera_near, m_prev_camera_far);
-	SetupCamera_Perspective(m_prev_camera_fov);
-	SetCameraPositionAndTarget_UpVecY(m_prev_camera_pos, m_prev_camera_target);
+	SetCameraNearFar					(m_prev_camera_near, m_prev_camera_far);
+	SetupCamera_Perspective				(m_prev_camera_fov);
+	SetCameraPositionAndTarget_UpVecY	(m_prev_camera_pos, m_prev_camera_target);
 }
 
 void ScreenCreator::UnuseScreen()
@@ -56,9 +56,9 @@ void ScreenCreator::UnuseScreen()
 	SetDrawScreen(DX_SCREEN_BACK);
 
 	// ƒJƒƒ‰î•ñ‚Ì•œŒ³
-	SetCameraNearFar(m_prev_camera_near, m_prev_camera_far);
-	SetupCamera_Perspective(m_prev_camera_fov);
-	SetCameraPositionAndTarget_UpVecY(m_prev_camera_pos, m_prev_camera_target);
+	SetCameraNearFar					(m_prev_camera_near, m_prev_camera_far);
+	SetupCamera_Perspective				(m_prev_camera_fov);
+	SetCameraPositionAndTarget_UpVecY	(m_prev_camera_pos, m_prev_camera_target);
 }
 
 void ScreenCreator::Draw() const

@@ -38,7 +38,6 @@ void player_state::WeaponActionNull::Exit(std::shared_ptr<Player>& obj)
 std::shared_ptr<IState<Player>> player_state::WeaponActionNull::ChangeState(std::shared_ptr<Player>& obj)
 {
 	const auto state_controller = obj->GetStateController();
-	const auto command			= CommandHandler::GetInstance();
 
 	// 銃装備状態
 	if (state_controller->TryEquipGunShortcut(obj))
@@ -56,7 +55,7 @@ std::shared_ptr<IState<Player>> player_state::WeaponActionNull::ChangeState(std:
 		return state_controller->GetState<Reload, Player>();
 	}
 	// ナイフエイミング状態
-	if (command->IsExecute(CommandKind::kAimKnife, TimeKind::kCurrent) && obj->GetCurrentEquipWeapon(WeaponSlotKind::kSub))
+	if (state_controller->TryAimKnife(obj))
 	{
 		return state_controller->GetState<AimKnife, Player>();
 	}
@@ -66,7 +65,7 @@ std::shared_ptr<IState<Player>> player_state::WeaponActionNull::ChangeState(std:
 		return state_controller->GetState<SpinningSlashKnife, Player>();
 	}
 	// 切り裂く(第一段階)
-	if (command->IsExecute(CommandKind::kAttack, TimeKind::kCurrent))
+	if (state_controller->TryFirstSideSlashKnife(obj))
 	{
 		return state_controller->GetState<FirstSideSlashKnife, Player>();
 	}

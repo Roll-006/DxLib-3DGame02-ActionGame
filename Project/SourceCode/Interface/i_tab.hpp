@@ -5,5 +5,9 @@ class ITab abstract
 public:
 	virtual ~ITab() = default;
 
-	virtual bool IsDraw() const abstract;
+	virtual void Init()			abstract;
+	virtual void Update()		abstract;
+	virtual void OnDraw() const abstract;
+
+	[[nodiscard]] virtual bool IsDraw() const abstract;
 };

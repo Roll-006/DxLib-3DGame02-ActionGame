@@ -31,6 +31,7 @@ public:
 
 	#pragma region Getter
 	[[nodiscard]] bool							IsInvincible()		const				{ return m_is_invincible; }
+	[[nodiscard]] bool							IsAlive()			const				{ return m_health.at(HealthPartKind::kMain)->IsAlive(); }
 	[[nodiscard]] std::shared_ptr<Modeler>		GetModeler()		const				{ return m_modeler; }
 	[[nodiscard]] std::shared_ptr<AnimatorBase>	GetAnimator()		const				{ return m_animator; }
 	[[nodiscard]] VECTOR						GetCurrentMoveDir()	const				{ return m_move_dir.at(TimeKind::kCurrent); }

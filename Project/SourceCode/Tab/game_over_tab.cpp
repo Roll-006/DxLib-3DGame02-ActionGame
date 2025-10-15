@@ -20,3 +20,8 @@ void GameOverTab::Update()
 {
 
 }
+
+void GameOverTab::OnDraw() const
+{
+
+}

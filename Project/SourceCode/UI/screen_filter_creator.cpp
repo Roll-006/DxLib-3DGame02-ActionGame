@@ -15,6 +15,11 @@ ScreenFilterCreator::~ScreenFilterCreator()
 
 }
 
+void ScreenFilterCreator::Init()
+{
+
+}
+
 void ScreenFilterCreator::LateUpdate()
 {
 	m_cinema_scope_frame->LateUpdate();

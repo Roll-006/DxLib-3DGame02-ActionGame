@@ -12,6 +12,7 @@ public:
 	ScreenFilterCreator();
 	~ScreenFilterCreator()	override;
 
+	void Init() override;
 	void LateUpdate() override;
 	void OnDraw(const int main_screen_handle) override;
 

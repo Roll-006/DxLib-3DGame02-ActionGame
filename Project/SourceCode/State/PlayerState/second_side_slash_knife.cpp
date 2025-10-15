@@ -50,7 +50,7 @@ std::shared_ptr<IState<Player>> player_state::SecondSideSlashKnife::ChangeState(
 	const auto command = CommandHandler::GetInstance();
 
 	// Ø‚è—ô‚­(‘æˆê’iŠK)
-	if (m_combo_timer > kComboValidTime && command->IsExecute(CommandKind::kAttack, TimeKind::kCurrent))
+	if (m_combo_timer > kComboValidTime && state_controller->TryFirstSideSlashKnife(obj))
 	{
 		return state_controller->GetState<FirstSideSlashKnife, Player>();
 	}

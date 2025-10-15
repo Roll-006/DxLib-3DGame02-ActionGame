@@ -57,22 +57,24 @@ public:
 
 
 	#pragma region Try判定
-	[[nodiscard]] bool TryMove				();
-	[[nodiscard]] bool TryRun				();
-	[[nodiscard]] bool TryDead				(std::shared_ptr<Player>& player);
-	[[nodiscard]] bool TryGrabbed			(std::shared_ptr<Player>& player);
+	[[nodiscard]] bool TryMove					();
+	[[nodiscard]] bool TryRun					();
+	[[nodiscard]] bool TryDead					(std::shared_ptr<Player>& player);
+	[[nodiscard]] bool TryGrabbed				(std::shared_ptr<Player>& player);
 
 	/// @brief WARNING : TryRoundhouseKickより前に呼び出す必要あり
-	[[nodiscard]] bool TryFrontKick			(std::shared_ptr<Player>& player);
+	[[nodiscard]] bool TryFrontKick				(std::shared_ptr<Player>& player);
 	/// @brief WARNING : TryFrontKickより後に呼び出す必要あり
-	[[nodiscard]] bool TryRoundhouseKick	(std::shared_ptr<Player>& player);
+	[[nodiscard]] bool TryRoundhouseKick		(std::shared_ptr<Player>& player);
 
-	[[nodiscard]] bool TryEquipKnifeShortcut(std::shared_ptr<Player>& player);
-	[[nodiscard]] bool TrySpinningSlash		();
-	[[nodiscard]] bool TryEquipGun			(std::shared_ptr<Player>& player);
-	[[nodiscard]] bool TryEquipGunShortcut	(std::shared_ptr<Player>& player);
-	[[nodiscard]] bool TryPullTrigger		(std::shared_ptr<Player>& player);
-	[[nodiscard]] bool TryReload			(std::shared_ptr<Player>& player);
+	[[nodiscard]] bool TryEquipKnifeShortcut	(std::shared_ptr<Player>& player);
+	[[nodiscard]] bool TryAimKnife				(std::shared_ptr<Player>& player);
+	[[nodiscard]] bool TryFirstSideSlashKnife	(std::shared_ptr<Player>& player);
+	[[nodiscard]] bool TrySpinningSlash			();
+	[[nodiscard]] bool TryEquipGun				(std::shared_ptr<Player>& player);
+	[[nodiscard]] bool TryEquipGunShortcut		(std::shared_ptr<Player>& player);
+	[[nodiscard]] bool TryPullTrigger			(std::shared_ptr<Player>& player);
+	[[nodiscard]] bool TryReload				(std::shared_ptr<Player>& player);
 	#pragma endregion
 
 

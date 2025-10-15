@@ -6,8 +6,9 @@ EnemyBase::EnemyBase(const std::string& name, const MassKind mass_level_kind) :
 	m_attack_interval_timer			(0.0f),
 	m_can_action					(true),
 	m_is_stop_action_forcibly		(false),
-	m_is_target_in_sight			(false),
+	m_on_collided_vision_trigger			(false),
 	m_has_obstacle_between_target	(false),
+	m_is_lost_target				(true),
 	m_enemy_handle					(HandleCreator::GetInstance()->CreateHandle(HandleCreator::Kind::kEnemy))
 {
 
@@ -40,5 +41,13 @@ void EnemyBase::OnAllowAction()
 	if (m_attack_interval_timer < m_attack_interval_time * 0.25f)
 	{
 		m_attack_interval_timer = m_attack_interval_time * 0.5f;
+	}
+}
+
+void EnemyBase::JudgeLostTarget()
+{
+	if (m_on_collided_vision_trigger && !m_has_obstacle_between_target)
+	{
+		m_is_lost_target = false;
 	}
 }

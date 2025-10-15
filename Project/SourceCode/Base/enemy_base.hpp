@@ -23,21 +23,24 @@ public:
 	/// @brief çsìÆÇ™ã≠êßìIÇ…í‚é~Ç≥ÇπÇÁÇÍÇÈ
 	void OnStopActionForcibly() { m_is_stop_action_forcibly = true; }
 
-	[[nodiscard]] int  GetEnemyHandle()  const { return m_enemy_handle; }
-	[[nodiscard]] bool IsTargetInSight() const { return m_is_target_in_sight && !m_has_obstacle_between_target; }
-	[[nodiscard]] bool CanAttack()		 const { return m_attack_interval_timer <= 0.0f; }
-	[[nodiscard]] bool CanAction()		 const { return m_can_action; }
+	[[nodiscard]] int  GetEnemyHandle()		const { return m_enemy_handle; }
+	[[nodiscard]] bool IsTargetInSight()	const { return !m_is_lost_target; }
+	[[nodiscard]] bool CanAttack()			const { return m_attack_interval_timer <= 0.0f; }
+	[[nodiscard]] bool CanAction()			const { return m_can_action; }
 
 protected:
 	virtual void JudgeAction() abstract;
+	void JudgeLostTarget();
 
 protected:
 	float m_attack_interval_time;
 	float m_attack_interval_timer;
 	bool  m_can_action;
 	bool  m_is_stop_action_forcibly;
-	bool  m_is_target_in_sight;
+
+	bool  m_on_collided_vision_trigger;
 	bool  m_has_obstacle_between_target;
+	bool  m_is_lost_target;
 
 private:
 	int	  m_enemy_handle;

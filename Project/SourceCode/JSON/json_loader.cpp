@@ -16,7 +16,6 @@ bool JSONLoader::Save(const std::string_view& file_path, const nlohmann::json& d
     }
     catch (...)
     {
-        // ó·äOî≠ê∂
         return false;
     }
 
@@ -39,7 +38,6 @@ bool JSONLoader::Load(const std::string_view& file_path, nlohmann::json& data)
     }
     catch (...)
     {
-        // ó·äOî≠ê∂
         return false;
     }
 

@@ -2,17 +2,20 @@
 #include "../Interface/i_tab.hpp"
 #include "../Event/event_system.hpp"
 
-class GameOverTab final
+class GameOverTab final : public ITab
 {
 public:
 	GameOverTab();
-	~GameOverTab();
+	~GameOverTab() override;
 
-	void Init();
-	void Update();
+	void Init()			override;
+	void Update()		override;
+	void OnDraw() const override;
 
-	[[nodiscard]] bool IsDraw() const { return m_is_draw; }
+	[[nodiscard]] bool IsDraw() const override { return m_is_draw; }
 
 private:
 	bool m_is_draw;
+
+	//std::shared_ptr<>
 };

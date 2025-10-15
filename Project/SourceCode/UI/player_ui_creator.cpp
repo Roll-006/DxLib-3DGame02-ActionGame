@@ -11,16 +11,25 @@ PlayerUICreator::PlayerUICreator(const std::shared_ptr<Player>& player) :
 							player->GetStateController()->GetWeaponActionState(),
 							player->GetWeaponShortcutSelecter()))
 {
-
+	// ƒCƒxƒ“ƒg“o˜^
+	EventSystem::GetInstance()->Subscribe<DeadPlayerEvent>(this, &PlayerUICreator::Deactivate);
 }
 
 PlayerUICreator::~PlayerUICreator()
 {
+	// ƒCƒxƒ“ƒg‚Ì“o˜^‰ðœ
+	EventSystem::GetInstance()->Unsubscribe<DeadPlayerEvent>(this, &PlayerUICreator::Deactivate);
+}
 
+void PlayerUICreator::Init()
+{
+	m_is_active = true;
 }
 
 void PlayerUICreator::LateUpdate()
 {
+	if (!m_is_active) { return; }
+
 	m_melee_target_icon	->LateUpdate();
 	m_escape_icon		->LateUpdate();
 	m_weapon_shortcut	->LateUpdate();
@@ -29,6 +38,8 @@ void PlayerUICreator::LateUpdate()
 
 void PlayerUICreator::OnDraw(const int main_screen_handle)
 {
+	if (!m_is_active) { return; }
+
 	m_melee_target_icon	->Draw();
 	m_escape_icon		->Draw();
 	m_weapon_shortcut	->Draw(main_screen_handle);
@@ -45,6 +56,15 @@ void PlayerUICreator::OnDraw(const int main_screen_handle)
 	//	static_cast<int>(shape->GetRadius()), 
 	//	0xffffff, FALSE);
 }
+
+
+#pragma region Event
+void PlayerUICreator::Deactivate(const DeadPlayerEvent& event)
+{
+	m_is_active = false;
+}
+#pragma endregion
+
 
 //void PlayerUICreator::CreateCrossHair()
 //{

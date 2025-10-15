@@ -1544,9 +1544,6 @@
     <Filter Include="SourceCode\State">
       <UniqueIdentifier>{9a691bb4-740c-48d4-baec-fd67b8b9b808}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCode\State\PlayerState">
-      <UniqueIdentifier>{9ac7a4f2-56f9-4748-905d-6db02b36b09d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SourceCode\State\CameraState">
       <UniqueIdentifier>{ff495161-2f03-4c6e-a508-ddbb081ecd2c}</UniqueIdentifier>
     </Filter>
@@ -1582,6 +1579,9 @@
     </Filter>
     <Filter Include="SourceCode\Tab">
       <UniqueIdentifier>{c43d7595-f22c-4fda-a769-0e8ed1099fb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCode\State\PlayerState">
+      <UniqueIdentifier>{9ac7a4f2-56f9-4748-905d-6db02b36b09d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

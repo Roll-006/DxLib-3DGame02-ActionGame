@@ -18,8 +18,12 @@ WeaponShortcutSelecter::~WeaponShortcutSelecter()
 
 void WeaponShortcutSelecter::Update(const std::shared_ptr<Player>& player)
 {
-	const auto state = player->GetStateController()->GetWeaponActionState(TimeKind::kCurrent);
-	if (state->GetStateKind() == static_cast<int>(player_state::WeaponActionStateKind::kShotRocketLauncher))
+	const auto state_controller		= player->GetStateController();
+	const auto weapon_action_state	= state_controller->GetWeaponActionState(TimeKind::kCurrent);
+	const auto action_state			= state_controller->GetActionState(TimeKind::kCurrent);
+
+	if (   weapon_action_state	->GetStateKind() == static_cast<int>(player_state::WeaponActionStateKind::kShotRocketLauncher)
+		|| action_state			->GetStateKind() == static_cast<int>(player_state::ActionStateKind		::kDead))
 	{
 		return;
 	}

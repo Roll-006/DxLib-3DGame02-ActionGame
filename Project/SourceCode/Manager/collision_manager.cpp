@@ -713,8 +713,8 @@ bool CollisionManager::IsCollidedCapsuleAndTarget	(Collider& owner_collider, con
 
 	switch (target_shape->GetShapeKind())
 	{
-	case ShapeKind::kSegment:
-		return collision::IsCollidedSegmentAndCapsule(*std::dynamic_pointer_cast<Segment>(target_shape), owner_shape, intersection);
+	//case ShapeKind::kSegment:
+	//	return collision::IsCollidedSegmentAndCapsule(*std::dynamic_pointer_cast<Segment>(target_shape), owner_shape, intersection);
 
 	case ShapeKind::kCapsule:
 		return collision::IsCollidedCapsuleAndCapsule(owner_shape, *std::static_pointer_cast<Capsule>(target_shape), intersection);

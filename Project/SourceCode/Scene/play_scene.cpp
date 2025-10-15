@@ -52,6 +52,8 @@ void PlayScene::Init()
 {
 	const auto game_time_manager = GameTimeManager::GetInstance();
 	game_time_manager->InitTimeScale();
+
+	m_player_ui_creator->Init();
 }
 
 void PlayScene::Update()

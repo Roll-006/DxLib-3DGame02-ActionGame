@@ -7,7 +7,7 @@ EnemyManager::EnemyManager()
 	EventSystem::GetInstance()->Subscribe<GrabEvent>	(this, &EnemyManager::NotifyStopActionForcibly);
 
 	// 初期位置・向きを設定
-	// TODO : 仮で2体配置。のちに変更。
+	// TODO : 仮で3体配置。のちに変更。
 	JSONLoader json_loader;
 	nlohmann::json data;
 	if (json_loader.Load("Data/JSON/enemy_data.json", data))
