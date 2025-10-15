@@ -9,6 +9,7 @@
 
 #include "../UI/ui_drawer.hpp"
 #include "../UI/player_ui_creator.hpp"
+#include "../Tab/game_over_tab.hpp"
 
 #include "../ObjectPool/play_scene_effect_object_pool.hpp"
 
@@ -43,4 +44,5 @@ private:
 	std::shared_ptr<RifleCartridgeObjectPool>	m_rifle_cartridge_object_pool;
 	std::shared_ptr<PlaySceneEffectObjectPool>  m_play_scene_effect_object_pool;
 	std::shared_ptr<IUICreator>					m_player_ui_creator;
+	std::shared_ptr<GameOverTab>				m_game_over_tab;
 };

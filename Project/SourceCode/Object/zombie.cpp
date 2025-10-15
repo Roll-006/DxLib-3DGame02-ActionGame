@@ -38,6 +38,7 @@ Zombie::Zombie(const VECTOR& pos, const VECTOR& look_dir) :
 	m_collider_creator->CreateArmTrigger		(this, m_modeler, kUpperArmTriggerRadius, kForearmTriggerRadius, kHandTriggerRadius);
 	m_collider_creator->CreateLegTrigger		(this, m_modeler, kUpLegTriggerRadius, kDownLegTriggerRadius);
 
+	AddCollider(std::make_shared<Collider>(ColliderKind::kRayCast, std::make_shared<Segment>(), this));
 	AddCollider(std::make_shared<Collider>(ColliderKind::kCollisionAreaTrigger, std::make_shared<Sphere>(pos + kCollisionAreaOffset, kCollisionAreaRadius), this));
 }
 
@@ -87,11 +88,22 @@ void Zombie::LateUpdate()
 {
 	if (!IsActive()) { return; }
 
+	// TODO : å„Ç…ä÷êîâª
+	auto ray = std::static_pointer_cast<Segment>(GetCollider(ColliderKind::kRayCast)->GetShape());
+	const auto target_model_handle = m_state->GetTargetCharacter()->GetModeler()->GetModelHandle();
+	auto head_m		= MV1GetFrameLocalWorldMatrix(m_modeler->GetModelHandle(), MV1SearchFrame(m_modeler->GetModelHandle(), BonePath.HEAD));
+	auto spine2_m	= MV1GetFrameLocalWorldMatrix(target_model_handle, MV1SearchFrame(target_model_handle, BonePath.SPINE_2));
+	const auto head_pos		= MGetTranslateElem(head_m);
+	const auto spine2_pos = MGetTranslateElem(spine2_m);
+	ray->SetBeginPos(head_pos, true);
+	ray->SetEndPos(spine2_pos, true);
+
 	m_state->LateUpdate(std::static_pointer_cast<Zombie>(shared_from_this()));
 
-	m_can_grab_target			= false;
-	m_is_target_in_sight		= false;
-	m_use_projection_velocity	= true;
+	m_can_grab_target				= false;
+	m_is_target_in_sight			= false;
+	m_has_obstacle_between_target	= false;
+	m_use_projection_velocity		= true;
 }
 
 void Zombie::DrawToShadowMap() const
@@ -124,11 +136,17 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	const auto			target_collider_kind	= hit_collider_pair.target_collider->GetColliderKind();
 	const auto			action_state_kind		= static_cast<zombie_state::ActionStateKind>(m_state->GetActionState(TimeKind::kCurrent)->GetStateKind());
 
-
 	switch (hit_collider_pair.owner_collider->GetColliderKind())
 	{
 	case ColliderKind::kLandingTrigger:
 		m_is_landing = true;
+		break;
+
+	case ColliderKind::kRayCast:
+		if (dynamic_cast<PhysicalObjBase*>(m_state->GetTargetCharacter().get()) != target_obj)
+		{
+			m_has_obstacle_between_target = true;
+		}
 		break;
 
 	case ColliderKind::kVisionTrigger:

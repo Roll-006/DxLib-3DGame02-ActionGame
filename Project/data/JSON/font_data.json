@@ -1,0 +1,24 @@
+{
+  "font_data": {
+    "change_scene_name": {
+      "font_path": "ＭＳ ゴシック",
+      "size": 24,
+      "thick": 2,
+      "type": -1,
+      "char_set": -1,
+      "edge_size": -1,
+      "italic": false,
+      "handle": -1
+    },
+    "test": {
+      "font_path": "ＭＳ ゴシック",
+      "size": 24,
+      "thick": 2,
+      "type": -1,
+      "char_set": -1,
+      "edge_size": -1,
+      "italic": false,
+      "handle": -1
+    }
+  }
+}

@@ -3,6 +3,7 @@
 #include "../GameTime/game_time_manager.hpp"
 #include "../Window/window.hpp"
 #include "../Debugger/debugger.hpp"
+#include "../Font/font_handler.hpp"
 
 #include "scene_manager.hpp"
 #include "obj_manager.hpp"

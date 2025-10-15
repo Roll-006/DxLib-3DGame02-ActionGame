@@ -396,20 +396,22 @@ bool collision::IsCollidedSegmentAndSphere       (const Segment&     segment,   
 /// @brief 線分とカプセルの衝突判定
 bool collision::IsCollidedSegmentAndCapsule      (const Segment&     segment,        const Capsule&      capsule,        std::optional<VECTOR>& intersection)
 {
+    // TODO : 見やすく変更
+
     intersection = std::nullopt;
 
-    const auto ab = capsule.GetSegment().GetEndPos() - capsule.GetSegment().GetBeginPos();
-    const auto a0 = segment.GetBeginPos() - capsule.GetSegment().GetBeginPos();
-    const auto dot_ab_ab = VDot(ab, ab);
-    const auto dot_ab_dir = VDot(ab, segment.GetDir());
-    const auto dot_ab_a0 = VDot(ab, a0);
-    const auto dot_a0_dir = VDot(a0, segment.GetDir());
-    const auto dot_a0_a0 = VDot(a0, a0);
+    const auto ab           = capsule.GetSegment().GetEndPos() - capsule.GetSegment().GetBeginPos();
+    const auto a0           = segment.GetBeginPos() - capsule.GetSegment().GetBeginPos();
+    const auto dot_ab_ab    = VDot(ab, ab);
+    const auto dot_ab_dir   = VDot(ab, segment.GetDir());
+    const auto dot_ab_a0    = VDot(ab, a0);
+    const auto dot_a0_dir   = VDot(a0, segment.GetDir());
+    const auto dot_a0_a0    = VDot(a0, a0);
 
-    // --- 2次方程式係数（円柱部との交差）---
+    // 2次方程式係数（円柱部との交差）
     const float a = dot_ab_ab - dot_ab_dir * dot_ab_dir;
     const float b = dot_ab_ab * dot_a0_dir - dot_ab_dir * dot_ab_a0;
-    const float c = dot_ab_ab * dot_a0_a0 - dot_ab_a0 * dot_ab_a0
+    const float c = dot_ab_ab * dot_a0_a0  - dot_ab_a0  * dot_ab_a0
         - capsule.GetRadius() * capsule.GetRadius() * dot_ab_ab;
 
     const auto is_begin_inside = math::IsPointInsideCapsule(segment.GetBeginPos(), capsule);
@@ -417,54 +419,55 @@ bool collision::IsCollidedSegmentAndCapsule      (const Segment&     segment,   
 
     std::vector<std::pair<float, VECTOR>> candidates;
 
-    // --- 円柱部 ---
+    // 円柱部
     const float disc = b * b - a * c;
     if (disc >= 0.0f && fabs(a) > 1e-6f)
     {
-        const float sqrtDisc = sqrtf(disc);
-        const float t1 = (-b - sqrtDisc) / a;
-        const float t2 = (-b + sqrtDisc) / a;
+        const auto sqrtDisc = sqrt(disc);
+        const auto t1 = (-b - sqrtDisc) / a;
+        const auto t2 = (-b + sqrtDisc) / a;
 
         auto CheckAndAdd = [&](float t)
-            {
-                if (t < 0.0f || t > segment.GetLength()) return;
-                VECTOR pos = segment.GetBeginPos() + segment.GetDir() * t;
+        {
+                if (t < 0.0f || t > segment.GetLength()) { return; }
+            VECTOR pos = segment.GetBeginPos() + segment.GetDir() * t;
 
-                // カプセル軸方向への射影を確認
-                float proj = VDot(pos - capsule.GetSegment().GetBeginPos(), ab) / dot_ab_ab;
-                if (proj >= 0.0f && proj <= 1.0f) {
-                    candidates.emplace_back(t, pos);
-                }
-            };
+            // カプセル軸方向への射影を確認
+            float proj = VDot(pos - capsule.GetSegment().GetBeginPos(), ab) / dot_ab_ab;
+            if (proj >= 0.0f && proj <= 1.0f)
+            {
+                candidates.emplace_back(t, pos);
+            }
+        };
 
         CheckAndAdd(t1);
         CheckAndAdd(t2);
     }
 
-    // --- 球部（両端の半球）---
+    // 球部
     auto IntersectSphere = [&](const Sphere& sphere)
+    {
+        const auto diff = segment.GetBeginPos() - sphere.GetPos();
+        const auto b = VDot(diff, segment.GetDir());            // (diff·dir)
+        const auto c = VDot(diff, diff) - sphere.GetRadius() * sphere.GetRadius();
+        const auto disc = b * b - c;
+        if (disc < 0.0f) { return; }
+
+        const auto sqrtDisc = sqrtf(disc);
+        const auto t1 = -b - sqrtDisc;
+        const auto t2 = -b + sqrtDisc;
+
+        auto CheckAndAdd = [&](float t)
         {
-            VECTOR diff = segment.GetBeginPos() - sphere.GetPos();
-            float b = VDot(diff, segment.GetDir());            // (diff·dir)
-            float c = VDot(diff, diff) - sphere.GetRadius() * sphere.GetRadius();
-            float disc = b * b - c;
-            if (disc < 0.0f) return;
-
-            float sqrtDisc = sqrtf(disc);
-            float t1 = -b - sqrtDisc;
-            float t2 = -b + sqrtDisc;
-
-            auto CheckAndAdd = [&](float t)
-                {
-                    if (t >= 0.0f && t <= segment.GetLength()) {
-                        VECTOR pos = segment.GetBeginPos() + segment.GetDir() * t;
-                        candidates.emplace_back(t, pos);
-                    }
-                };
-
-            CheckAndAdd(t1);
-            CheckAndAdd(t2);
+            if (t >= 0.0f && t <= segment.GetLength()) {
+                VECTOR pos = segment.GetBeginPos() + segment.GetDir() * t;
+                candidates.emplace_back(t, pos);
+            }
         };
+
+        CheckAndAdd(t1);
+        CheckAndAdd(t2);
+    };
 
     IntersectSphere(Sphere(capsule.GetSegment().GetBeginPos(), capsule.GetRadius()));
     IntersectSphere(Sphere(capsule.GetSegment().GetEndPos(), capsule.GetRadius()));
@@ -478,15 +481,19 @@ bool collision::IsCollidedSegmentAndCapsule      (const Segment&     segment,   
     if (is_begin_inside)
     {
         // 内部から出る：t が最大の交点を取る
-        auto it = std::max_element(candidates.begin(), candidates.end(),
-            [](auto& lhs, auto& rhs) { return lhs.first < rhs.first; });
+        auto it = std::max_element(candidates.begin(), candidates.end(), [](auto& lhs, auto& rhs)
+        {
+            return lhs.first < rhs.first;
+        });
         intersection = it->second;
     }
     else
     {
         // 外部から入る：t が最小の交点を取る
-        auto it = std::min_element(candidates.begin(), candidates.end(),
-            [](auto& lhs, auto& rhs) { return lhs.first < rhs.first; });
+        auto it = std::min_element(candidates.begin(), candidates.end(), [](auto& lhs, auto& rhs)
+        {
+             return lhs.first < rhs.first;
+        });
         intersection = it->second;
     }
 

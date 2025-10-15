@@ -11,7 +11,8 @@ PlayScene::PlayScene() :
 	m_skydome						(std::make_shared<Skydome>(ObjManager::GetInstance()->GetObj<MainCamera>(ObjName.MAIN_CAMERA))),
 	m_rifle_cartridge_object_pool	(std::make_shared<RifleCartridgeObjectPool>()),
 	m_play_scene_effect_object_pool (std::make_shared<PlaySceneEffectObjectPool>()),
-	m_player_ui_creator				(std::make_shared<PlayerUICreator>(m_player))
+	m_player_ui_creator				(std::make_shared<PlayerUICreator>(m_player)),
+	m_game_over_tab					(std::make_shared<GameOverTab>())
 {
 	m_player		->AddToObjManager();
 	m_enemy_manager	->AddToObjManager();
@@ -61,6 +62,7 @@ void PlayScene::Update()
 	m_house								->Update();
 	m_ground							->Update();
 	m_skydome							->Update();
+	m_game_over_tab						->Update();
 }
 
 void PlayScene::LateUpdate()

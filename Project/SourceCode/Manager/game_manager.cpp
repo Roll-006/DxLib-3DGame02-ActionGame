@@ -13,6 +13,7 @@ GameManager::GameManager():
 	EventSystem				::Generate();
 	ObjectPoolHolder		::Generate();
 	UIDrawer				::Generate();
+	FontHandler				::Generate();
 
 	GameTimeManager			::Generate();
 	ObjManager				::Generate();
@@ -35,6 +36,7 @@ GameManager::~GameManager()
 	EventSystem				::Delete();
 	ObjectPoolHolder		::Delete();
 	UIDrawer				::Delete();
+	FontHandler				::Delete();
 
 	GameTimeManager			::Delete();
 	ObjManager				::Delete();

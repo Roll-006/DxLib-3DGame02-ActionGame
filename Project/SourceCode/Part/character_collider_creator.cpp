@@ -125,11 +125,11 @@ void CharacterColliderCreator::CalcVisibleTriggerPos(std::shared_ptr<Modeler>& m
 	const auto model_handle = modeler->GetModelHandle();
 
 	// ˆÊ’u‚ðŽæ“¾
-	auto spine1_m = MV1GetFrameLocalWorldMatrix(modeler->GetModelHandle(), MV1SearchFrame(modeler->GetModelHandle(), BonePath.SPINE_1));
-	const auto spine1_pos = MGetTranslateElem(spine1_m);
+	auto spine2_m = MV1GetFrameLocalWorldMatrix(modeler->GetModelHandle(), MV1SearchFrame(modeler->GetModelHandle(), BonePath.SPINE_2));
+	const auto spine2_pos = MGetTranslateElem(spine2_m);
 
 	const auto cone = std::static_pointer_cast<Point>(collider.at(ColliderKind::kVisibleTrigger)->GetShape());
-	cone->SetPos(spine1_pos);
+	cone->SetPos(spine2_pos);
 }
 
 void CharacterColliderCreator::CalcHeadTriggerPos	(std::shared_ptr<Modeler>& modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>>& collider)

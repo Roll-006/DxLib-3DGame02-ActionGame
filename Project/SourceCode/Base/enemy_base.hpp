@@ -24,7 +24,7 @@ public:
 	void OnStopActionForcibly() { m_is_stop_action_forcibly = true; }
 
 	[[nodiscard]] int  GetEnemyHandle()  const { return m_enemy_handle; }
-	[[nodiscard]] bool IsTargetInSight() const { return m_is_target_in_sight; }
+	[[nodiscard]] bool IsTargetInSight() const { return m_is_target_in_sight && !m_has_obstacle_between_target; }
 	[[nodiscard]] bool CanAttack()		 const { return m_attack_interval_timer <= 0.0f; }
 	[[nodiscard]] bool CanAction()		 const { return m_can_action; }
 
@@ -37,6 +37,7 @@ protected:
 	bool  m_can_action;
 	bool  m_is_stop_action_forcibly;
 	bool  m_is_target_in_sight;
+	bool  m_has_obstacle_between_target;
 
 private:
 	int	  m_enemy_handle;

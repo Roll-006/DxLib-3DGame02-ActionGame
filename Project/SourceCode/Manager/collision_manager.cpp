@@ -378,6 +378,7 @@ std::vector<ColliderPairOneToManyData> CollisionManager::CreateHitColliderPairs(
 					if (!CanCollideObjAndCollider		(owner_obj, target_obj_collider.second))				 { continue; }
 					if (!CanCollideColliderAndCollider	(owner_obj_collider.second, target_obj_collider.second)) { continue; }
 
+
 					// è’ìÀîªíË
 					std::optional<VECTOR> intersection = std::nullopt;
 					if (IsCollided(*owner_obj_collider.second, *target_obj_collider.second, intersection))
@@ -530,23 +531,22 @@ bool CollisionManager::IsCollidedSegmentAndTarget	(Collider& owner_collider, con
 	switch (target_shape->GetShapeKind())
 	{
 	case ShapeKind::kSegment:
-		return collision::IsCollidedSegmentAndSegment (owner_shape, *std::static_pointer_cast<Segment> (target_shape), intersection);
+		return collision::IsCollidedSegmentAndSegment	(owner_shape, *std::static_pointer_cast<Segment> (target_shape), intersection);
 
 	case ShapeKind::kPlane:
-		return collision::IsCollidedSegmentAndPlane	 (owner_shape, *std::static_pointer_cast<Plane>   (target_shape), intersection);
+		return collision::IsCollidedSegmentAndPlane		(owner_shape, *std::static_pointer_cast<Plane>   (target_shape), intersection);
 
 	case ShapeKind::kTriangle:
-		return collision::IsCollidedSegmentAndTriangle(owner_shape, *std::static_pointer_cast<Triangle>(target_shape), intersection);
+		return collision::IsCollidedSegmentAndTriangle	(owner_shape, *std::static_pointer_cast<Triangle>(target_shape), intersection);
 
 	case ShapeKind::kSquare:
-		return collision::IsCollidedSegmentAndSquare	 (owner_shape, *std::static_pointer_cast<Square>  (target_shape), intersection);
+		return collision::IsCollidedSegmentAndSquare	(owner_shape, *std::static_pointer_cast<Square>  (target_shape), intersection);
 
 	case ShapeKind::kSphere:
-		return collision::IsCollidedSegmentAndSphere  (owner_shape, *std::static_pointer_cast<Sphere>  (target_shape), intersection);
-
+		return collision::IsCollidedSegmentAndSphere	(owner_shape, *std::static_pointer_cast<Sphere>  (target_shape), intersection);
 
 	case ShapeKind::kCapsule:
-		return collision::IsCollidedSegmentAndCapsule (owner_shape, *std::static_pointer_cast<Capsule> (target_shape), intersection);
+		return collision::IsCollidedSegmentAndCapsule	(owner_shape, *std::static_pointer_cast<Capsule> (target_shape), intersection);
 
 	default:
 		break;
@@ -666,6 +666,9 @@ bool CollisionManager::IsCollidedSphereAndTarget	(Collider& owner_collider, cons
 
 	switch (target_shape->GetShapeKind())
 	{
+	//case ShapeKind::kSegment:
+	//	return collision::IsCollidedSegmentAndSphere(*std::dynamic_pointer_cast<Segment>(target_shape), owner_shape, intersection);
+
 	case ShapeKind::kTriangle:
 		is_hit = collision::IsCollidedTriangleAndSphere(*std::static_pointer_cast<Triangle>(target_shape), owner_shape, intersection);
 
@@ -710,8 +713,8 @@ bool CollisionManager::IsCollidedCapsuleAndTarget	(Collider& owner_collider, con
 
 	switch (target_shape->GetShapeKind())
 	{
-	//case ShapeKind::kSegment:
-		//return collision::IsCollidedSegmentAndCapsule(*std::dynamic_pointer_cast<Segment>(target_shape), owner_shape, intersection);
+	case ShapeKind::kSegment:
+		return collision::IsCollidedSegmentAndCapsule(*std::dynamic_pointer_cast<Segment>(target_shape), owner_shape, intersection);
 
 	case ShapeKind::kCapsule:
 		return collision::IsCollidedCapsuleAndCapsule(owner_shape, *std::static_pointer_cast<Capsule>(target_shape), intersection);

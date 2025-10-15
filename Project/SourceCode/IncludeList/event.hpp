@@ -19,4 +19,4 @@
 #include "../Event/on_select_retro_filter_event.hpp"
 #include "../Event/on_downed_enemy_spotted_event.hpp"
 #include "../Event/on_melee_target_lost_event.hpp"
-#include "../Event/change_scene.hpp"
+#include "../Event/change_scene_event.hpp"

@@ -1,13 +1,14 @@
 #include "enemy_base.hpp"
 
 EnemyBase::EnemyBase(const std::string& name, const MassKind mass_level_kind) :
-	CharacterBase				(name, ObjTag.ENEMY, mass_level_kind),
-	m_attack_interval_time		(0.0f),
-	m_attack_interval_timer		(0.0f),
-	m_can_action				(true),
-	m_is_stop_action_forcibly	(false),
-	m_is_target_in_sight		(false),
-	m_enemy_handle				(HandleCreator::GetInstance()->CreateHandle(HandleCreator::Kind::kEnemy))
+	CharacterBase					(name, ObjTag.ENEMY, mass_level_kind),
+	m_attack_interval_time			(0.0f),
+	m_attack_interval_timer			(0.0f),
+	m_can_action					(true),
+	m_is_stop_action_forcibly		(false),
+	m_is_target_in_sight			(false),
+	m_has_obstacle_between_target	(false),
+	m_enemy_handle					(HandleCreator::GetInstance()->CreateHandle(HandleCreator::Kind::kEnemy))
 {
 
 }

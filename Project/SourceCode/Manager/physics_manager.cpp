@@ -152,6 +152,17 @@ void PhysicsManager::ExecutePushBackPairs()
 			// 互いに静的オブジェクトであった場合は以降の処理をスキップ
 			if (obj_1->GetMassKind() == MassKind::kStatic && obj_2->GetMassKind() == MassKind::kStatic) { continue; }
 
+			// 距離が遠いオブジェクト同士は無視
+			const auto owner_collision_area		= obj_1->GetCollider(ColliderKind::kCollisionAreaTrigger);
+			const auto target_collision_area	= obj_2->GetCollider(ColliderKind::kCollisionAreaTrigger);
+			if (owner_collision_area && target_collision_area)
+			{
+				const auto sphere1 = std::static_pointer_cast<Sphere>(owner_collision_area->GetShape());
+				const auto sphere2 = std::static_pointer_cast<Sphere>(target_collision_area->GetShape());
+
+				if (math::GetDistanceSphereToSphere(*sphere1.get(), *sphere2.get()) > kIgnoreDistance) { continue; }
+			}
+
 			// 質量を考慮して押し戻される側を判定
 			std::shared_ptr<PhysicalObjBase> low_priority_obj  = obj_1;
 			std::shared_ptr<PhysicalObjBase> high_priority_obj = obj_2;

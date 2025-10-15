@@ -159,6 +159,7 @@
     <ClCompile Include="SourceCode\Command\command_handler.cpp" />
     <ClCompile Include="SourceCode\Debugger\debugger.cpp" />
     <ClCompile Include="SourceCode\Drawer\drawer.cpp" />
+    <ClCompile Include="SourceCode\Font\font_handler.cpp" />
     <ClCompile Include="SourceCode\GameSystem\game_system_setter.cpp" />
     <ClCompile Include="SourceCode\GameTime\fps.cpp" />
     <ClCompile Include="SourceCode\GameTime\game_time_manager.cpp" />
@@ -295,6 +296,7 @@
     <ClCompile Include="SourceCode\State\ZombieState\track.cpp" />
     <ClCompile Include="SourceCode\State\ZombieState\wait.cpp" />
     <ClCompile Include="SourceCode\State\ZombieState\zombie_move.cpp" />
+    <ClCompile Include="SourceCode\Tab\game_over_tab.cpp" />
     <ClCompile Include="SourceCode\UI\damage_filter.cpp" />
     <ClCompile Include="SourceCode\UI\cinema_scope_frame.cpp" />
     <ClCompile Include="SourceCode\UI\escape_icon.cpp" />
@@ -306,7 +308,10 @@
     <ClCompile Include="SourceCode\UI\screen_filter_creator.cpp" />
     <ClCompile Include="SourceCode\UI\equip_weapon_icon.cpp" />
     <ClCompile Include="SourceCode\UI\status_icons.cpp" />
+    <ClCompile Include="SourceCode\UI\ui_button.cpp" />
     <ClCompile Include="SourceCode\UI\ui_drawer.cpp" />
+    <ClCompile Include="SourceCode\UI\ui_selector.cpp" />
+    <ClCompile Include="SourceCode\UI\ui_slider.cpp" />
     <ClCompile Include="SourceCode\UI\weapon_shortcut_drawer.cpp" />
     <ClCompile Include="SourceCode\UI\weapon_shortcut_icon.cpp" />
     <ClCompile Include="SourceCode\VirtualCamera\cinemachine_brain.cpp" />
@@ -357,6 +362,7 @@
     <ClInclude Include="SourceCode\Concept\state_concepts.hpp" />
     <ClInclude Include="SourceCode\Concept\vector_concepts.hpp" />
     <ClInclude Include="SourceCode\CSV\csv_loader.hpp" />
+    <ClInclude Include="SourceCode\Data\font_data.hpp" />
     <ClInclude Include="SourceCode\Data\collider_data.hpp" />
     <ClInclude Include="SourceCode\Data\melee_candidate_data.hpp" />
     <ClInclude Include="SourceCode\Data\recoil_data.hpp" />
@@ -369,7 +375,7 @@
     <ClInclude Include="SourceCode\Data\input_data.hpp" />
     <ClInclude Include="SourceCode\Debugger\debugger.hpp" />
     <ClInclude Include="SourceCode\Drawer\drawer.hpp" />
-    <ClInclude Include="SourceCode\Event\change_scene.hpp" />
+    <ClInclude Include="SourceCode\Event\change_scene_event.hpp" />
     <ClInclude Include="SourceCode\Event\dead_player_event.hpp" />
     <ClInclude Include="SourceCode\Event\on_damage_event.hpp" />
     <ClInclude Include="SourceCode\Event\on_melee_target_lost_event.hpp" />
@@ -392,6 +398,7 @@
     <ClInclude Include="SourceCode\Event\rocket_launcher_shot_event.hpp" />
     <ClInclude Include="SourceCode\Event\start_rocket_launcher_cutscene_event.hpp" />
     <ClInclude Include="SourceCode\Event\weapon_shot_event.hpp" />
+    <ClInclude Include="SourceCode\Font\font_handler.hpp" />
     <ClInclude Include="SourceCode\GameSystem\game_system_setter.hpp" />
     <ClInclude Include="SourceCode\GameTime\fps.hpp" />
     <ClInclude Include="SourceCode\GameTime\game_time_manager.hpp" />
@@ -402,7 +409,9 @@
     <ClInclude Include="SourceCode\IncludeList\shape.hpp" />
     <ClInclude Include="SourceCode\IncludeList\vector.hpp" />
     <ClInclude Include="SourceCode\Input\input_checker.hpp" />
+    <ClInclude Include="SourceCode\Interface\i_tab.hpp" />
     <ClInclude Include="SourceCode\Interface\i_grabber.hpp" />
+    <ClInclude Include="SourceCode\Interface\i_ui_element.hpp" />
     <ClInclude Include="SourceCode\Interface\i_weapon_equippable.hpp" />
     <ClInclude Include="SourceCode\Interface\i_grabbable.hpp" />
     <ClInclude Include="SourceCode\Interface\i_effect.hpp" />
@@ -463,6 +472,7 @@
     <ClInclude Include="SourceCode\Manager\rifle_cartridge_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\scene_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\weapon_manager.hpp" />
+    <ClInclude Include="SourceCode\Name\font_name.hpp" />
     <ClInclude Include="SourceCode\Name\object_pool_name.hpp" />
     <ClInclude Include="SourceCode\Name\obj_name.hpp" />
     <ClInclude Include="SourceCode\Name\ui_creator_name.hpp" />
@@ -592,6 +602,7 @@
     <ClInclude Include="SourceCode\State\ZombieState\track.hpp" />
     <ClInclude Include="SourceCode\State\ZombieState\wait.hpp" />
     <ClInclude Include="SourceCode\State\ZombieState\zombie_move.hpp" />
+    <ClInclude Include="SourceCode\Tab\game_over_tab.hpp" />
     <ClInclude Include="SourceCode\Tag\animation_tag.hpp" />
     <ClInclude Include="SourceCode\Tag\obj_tag.hpp" />
     <ClInclude Include="SourceCode\UI\damage_filter.hpp" />
@@ -605,7 +616,10 @@
     <ClInclude Include="SourceCode\UI\screen_filter_creator.hpp" />
     <ClInclude Include="SourceCode\UI\equip_weapon_icon.hpp" />
     <ClInclude Include="SourceCode\UI\status_icons.hpp" />
+    <ClInclude Include="SourceCode\UI\ui_button.hpp" />
     <ClInclude Include="SourceCode\UI\ui_drawer.hpp" />
+    <ClInclude Include="SourceCode\UI\ui_selector.hpp" />
+    <ClInclude Include="SourceCode\UI\ui_slider.hpp" />
     <ClInclude Include="SourceCode\UI\weapon_shortcut_drawer.hpp" />
     <ClInclude Include="SourceCode\UI\weapon_shortcut_icon.hpp" />
     <ClInclude Include="SourceCode\VirtualCamera\cinemachine_brain.hpp" />
@@ -618,6 +632,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\JSON\enemy_data.json" />
+    <None Include="Data\JSON\font_data.json" />
     <None Include="Data\JSON\key_number.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

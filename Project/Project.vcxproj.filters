@@ -526,6 +526,21 @@
     <ClCompile Include="SourceCode\Base\tab_base.cpp">
       <Filter>SourceCode\Base</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\Font\font_handler.cpp">
+      <Filter>SourceCode\Font</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Tab\game_over_tab.cpp">
+      <Filter>SourceCode\Tab</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\UI\ui_button.cpp">
+      <Filter>SourceCode\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\UI\ui_selector.cpp">
+      <Filter>SourceCode\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\UI\ui_slider.cpp">
+      <Filter>SourceCode\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\character_base.hpp">
@@ -1401,12 +1416,41 @@
     <ClInclude Include="SourceCode\IncludeList\event.hpp">
       <Filter>SourceCode\IncludeList</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Event\change_scene.hpp" />
     <ClInclude Include="SourceCode\Part\selector.hpp">
       <Filter>SourceCode\Part</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Base\tab_base.hpp">
       <Filter>SourceCode\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Interface\i_tab.hpp">
+      <Filter>SourceCode\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\change_scene_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\font_data.hpp">
+      <Filter>SourceCode\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Font\font_handler.hpp">
+      <Filter>SourceCode\Font</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Name\font_name.hpp">
+      <Filter>SourceCode\Name</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Tab\game_over_tab.hpp">
+      <Filter>SourceCode\Tab</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Interface\i_ui_element.hpp">
+      <Filter>SourceCode\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\UI\ui_button.hpp">
+      <Filter>SourceCode\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\UI\ui_selector.hpp">
+      <Filter>SourceCode\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\UI\ui_slider.hpp">
+      <Filter>SourceCode\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1533,12 +1577,21 @@
     <Filter Include="SourceCode\JSON">
       <UniqueIdentifier>{3eab40b7-60e6-487a-879b-9b1e3022aeb9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SourceCode\Font">
+      <UniqueIdentifier>{7880147d-1fd2-415a-9cd5-5d89b1d5bf9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCode\Tab">
+      <UniqueIdentifier>{c43d7595-f22c-4fda-a769-0e8ed1099fb4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\JSON\key_number.json">
       <Filter>JSON</Filter>
     </None>
     <None Include="Data\JSON\enemy_data.json">
+      <Filter>JSON</Filter>
+    </None>
+    <None Include="Data\JSON\font_data.json">
       <Filter>JSON</Filter>
     </None>
   </ItemGroup>

@@ -72,7 +72,7 @@ private:
 	#pragma endregion
 
 private:
-	static constexpr float kIgnoreDistance = 100.0f;
+	static constexpr float kIgnoreDistance = 200.0f;
 
 	std::vector<std::shared_ptr<PhysicalObjBase>>						m_collide_objects;					// 衝突判定を行うオブジェクト
 	std::unordered_map<int,  std::unordered_set<ColliderKind>>			m_ignore_collide_colliders;			// 衝突判定を無視するコライダー
