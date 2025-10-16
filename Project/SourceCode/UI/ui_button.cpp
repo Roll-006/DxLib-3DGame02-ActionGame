@@ -18,5 +18,10 @@ void UIButton::Init()
 
 void UIButton::Update()
 {
+	if (!m_is_active) { return; }
+}
+
+void UIButton::Draw() const
+{
 
 }

@@ -52,3 +52,10 @@ void Gauge::SetCurrentMaxValue(const float current_max_health)
 		m_current_max_value = m_max_value;
 	}
 }
+
+void Gauge::SetCurrentValue(const float current_value)
+{
+	m_current_value = current_value;
+	if (m_current_value > m_current_max_value)	{ m_current_value = m_current_max_value; }
+	if (m_current_value < 0.0f)					{ m_current_value = 0.0f; }
+}

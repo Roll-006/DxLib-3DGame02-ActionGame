@@ -17,8 +17,8 @@ public:
 	void DecreaseZero();
 
 	/// @brief Œ»İ‚ÌãŒÀ’l‚ğİ’è‚·‚é
-	void SetCurrentMaxValue(const float current_max_value);
-
+	void SetCurrentMaxValue	(const float current_max_value);
+	void SetCurrentValue	(const float current_value);
 
 	#pragma region Getter
 	[[nodiscard]] float	GetCurrentValue()		const { return m_current_value; }

@@ -1,6 +1,8 @@
 #pragma once
 #include "../Interface/i_tab.hpp"
 #include "../Event/event_system.hpp"
+#include "../Font/font_handler.hpp"
+#include "../UI/ui_selector.hpp"
 
 class GameOverTab final : public ITab
 {
@@ -16,6 +18,5 @@ public:
 
 private:
 	bool m_is_draw;
-
-	//std::shared_ptr<>
+	std::shared_ptr<UISelector> m_ui_selector;
 };

@@ -110,13 +110,14 @@ void CommandHandler::InitPadCommand()
 	AddInputCode(CommandKind::kSelectUp,					CommandSlotKind::kStatic1,	pad::ButtonKind	::kUp);
 	AddInputCode(CommandKind::kBack,						CommandSlotKind::kStatic1,	pad::ButtonKind	::kB);
 	AddInputCode(CommandKind::kDecide,						CommandSlotKind::kStatic1,	pad::ButtonKind	::kA);
-	AddInputCode(CommandKind::kSelectUp,					CommandSlotKind::kStatic1,	pad::StickKind	::kLSUp);
+	AddInputCode(CommandKind::kSelectUp,					CommandSlotKind::kStatic1,	pad::ButtonKind	::kUp);
+	AddInputCode(CommandKind::kSelectUp,					CommandSlotKind::kStatic2,	pad::StickKind	::kLSUp);
 	AddInputCode(CommandKind::kSelectDown,					CommandSlotKind::kStatic1,	pad::ButtonKind	::kDown);
-	AddInputCode(CommandKind::kSelectDown,					CommandSlotKind::kStatic1,	pad::StickKind	::kLSDown);
+	AddInputCode(CommandKind::kSelectDown,					CommandSlotKind::kStatic2,	pad::StickKind	::kLSDown);
 	AddInputCode(CommandKind::kSelectLeft,					CommandSlotKind::kStatic1,	pad::ButtonKind	::kLeft);
-	AddInputCode(CommandKind::kSelectLeft,					CommandSlotKind::kStatic1,	pad::StickKind	::kLSLeft);
+	AddInputCode(CommandKind::kSelectLeft,					CommandSlotKind::kStatic2,	pad::StickKind	::kLSLeft);
 	AddInputCode(CommandKind::kSelectRight,					CommandSlotKind::kStatic1,	pad::ButtonKind	::kRight);
-	AddInputCode(CommandKind::kSelectRight,					CommandSlotKind::kStatic1,	pad::StickKind	::kLSRight);
+	AddInputCode(CommandKind::kSelectRight,					CommandSlotKind::kStatic2,	pad::StickKind	::kLSRight);
 	AddInputCode(CommandKind::kPause,						CommandSlotKind::kStatic1,	pad::ButtonKind	::kStart);
 
 	AddInputCode(CommandKind::kAimGun,						CommandSlotKind::kStatic1,	pad::TriggerKind::kLT);
@@ -157,10 +158,10 @@ void CommandHandler::InitInputMode()
 {
 	m_input_mode[CommandKind::kDecide]						= InputModeKind::kSingle;
 	m_input_mode[CommandKind::kBack]						= InputModeKind::kSingle;
-	m_input_mode[CommandKind::kSelectUp]					= InputModeKind::kSingle;
-	m_input_mode[CommandKind::kSelectDown]					= InputModeKind::kSingle;
-	m_input_mode[CommandKind::kSelectLeft]					= InputModeKind::kSingle;
-	m_input_mode[CommandKind::kSelectRight]					= InputModeKind::kSingle;
+	m_input_mode[CommandKind::kSelectUp]					= InputModeKind::kHold;
+	m_input_mode[CommandKind::kSelectDown]					= InputModeKind::kHold;
+	m_input_mode[CommandKind::kSelectLeft]					= InputModeKind::kHold;
+	m_input_mode[CommandKind::kSelectRight]					= InputModeKind::kHold;
 	m_input_mode[CommandKind::kPause]						= InputModeKind::kSingle;
 	m_input_mode[CommandKind::kAimGun]						= InputModeKind::kHold;
 	m_input_mode[CommandKind::kAttack]						= InputModeKind::kSingle;
@@ -168,7 +169,7 @@ void CommandHandler::InitInputMode()
 	m_input_mode[CommandKind::kAimKnife]					= InputModeKind::kHold;
 	m_input_mode[CommandKind::kInvestigate]					= InputModeKind::kSingle;
 	m_input_mode[CommandKind::kMelee]						= InputModeKind::kSingle;
-	m_input_mode[CommandKind::kEscape]						= InputModeKind::kHold;
+	m_input_mode[CommandKind::kEscape]						= InputModeKind::kSingle;
 	m_input_mode[CommandKind::kReload]						= InputModeKind::kSingle;
 	m_input_mode[CommandKind::kScope]						= InputModeKind::kSingle;
 	m_input_mode[CommandKind::kMoveUpPlayer]				= InputModeKind::kHold;

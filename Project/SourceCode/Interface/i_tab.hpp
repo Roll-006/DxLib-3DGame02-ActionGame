@@ -1,4 +1,6 @@
 #pragma once
+#include "../UI/ui_button.hpp"
+#include "../UI/ui_slider.hpp"
 
 class ITab abstract
 {
