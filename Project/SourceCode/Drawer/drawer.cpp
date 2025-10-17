@@ -36,5 +36,6 @@ void Drawer::Draw(const std::shared_ptr<IScene> current_scene, const std::shared
 	m_screen_filter->Draw();
 
 	// TODO : 仮で画像ハンドルを渡す。のちに変更の可能性あり
-	UIDrawer::GetInstance()->Draw(m_screen_filter->GetMainScreen()->GetScreenHandle());
+	UIDrawer ::GetInstance()->Draw(m_screen_filter->GetMainScreen()->GetScreenHandle());
+	TabDrawer::GetInstance()->Draw();
 }

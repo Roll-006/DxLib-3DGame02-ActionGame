@@ -1,6 +1,9 @@
 #pragma once
 #include "../Interface/i_scene.hpp"
 
+#include "../Tab/tab_drawer.hpp"
+#include "../Tab/title_tab.hpp"
+
 class TitleScene final : public IScene
 {
 public:
@@ -23,4 +26,6 @@ public:
 private:
 	bool		m_is_active;
 	SceneKind	m_scene_kind;
+
+	std::shared_ptr<TitleTab> m_title_tab;
 };

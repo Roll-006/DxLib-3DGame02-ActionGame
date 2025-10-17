@@ -532,14 +532,35 @@
     <ClCompile Include="SourceCode\Tab\game_over_tab.cpp">
       <Filter>SourceCode\Tab</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\UI\ui_button.cpp">
-      <Filter>SourceCode\UI</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\UI\ui_selector.cpp">
       <Filter>SourceCode\UI</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\UI\ui_slider.cpp">
-      <Filter>SourceCode\UI</Filter>
+    <ClCompile Include="SourceCode\Tab\game_over_tab (2).cpp">
+      <Filter>SourceCode\Tab</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Tab\game_over_tab (3).cpp">
+      <Filter>SourceCode\Tab</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Tab\game_over_tab (4).cpp">
+      <Filter>SourceCode\Tab</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Tab\game_over_tab (5).cpp">
+      <Filter>SourceCode\Tab</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Tab\title_tab.cpp">
+      <Filter>SourceCode\Tab</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Tab\tab_drawer.cpp">
+      <Filter>SourceCode\Tab</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Base\ui_button_base.cpp">
+      <Filter>SourceCode\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Base\ui_slider_base.cpp">
+      <Filter>SourceCode\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\UIButton\select_button.cpp">
+      <Filter>SourceCode\UIButton</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1443,14 +1464,38 @@
     <ClInclude Include="SourceCode\Interface\i_ui_element.hpp">
       <Filter>SourceCode\Interface</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\UI\ui_button.hpp">
-      <Filter>SourceCode\UI</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\UI\ui_selector.hpp">
       <Filter>SourceCode\UI</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\UI\ui_slider.hpp">
-      <Filter>SourceCode\UI</Filter>
+    <ClInclude Include="SourceCode\Tab\game_over_tab (2).hpp">
+      <Filter>SourceCode\Tab</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Tab\game_over_tab (3).hpp">
+      <Filter>SourceCode\Tab</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Tab\game_over_tab (4).hpp">
+      <Filter>SourceCode\Tab</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Tab\game_over_tab (5).hpp">
+      <Filter>SourceCode\Tab</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Tab\title_tab.hpp">
+      <Filter>SourceCode\Tab</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Tab\tab_drawer.hpp">
+      <Filter>SourceCode\Tab</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Base\ui_button_base.hpp">
+      <Filter>SourceCode\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Base\ui_slider_base.hpp">
+      <Filter>SourceCode\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\UIButton\select_button.hpp">
+      <Filter>SourceCode\UIButton</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\exit_game_event.hpp">
+      <Filter>SourceCode\Event</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1582,6 +1627,9 @@
     </Filter>
     <Filter Include="SourceCode\State\PlayerState">
       <UniqueIdentifier>{9ac7a4f2-56f9-4748-905d-6db02b36b09d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCode\UIButton">
+      <UniqueIdentifier>{5c774e95-fc40-46b2-8a87-d4bed14414fb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -28,7 +28,8 @@ PlayScene::PlayScene() :
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	cinemachine_brain->AddVirtualCameraController(std::make_shared<ControlVirtualCamerasController>(*m_player.get()));
 
-	UIDrawer::GetInstance()->AddUICreator(m_player_ui_creator);
+	TabDrawer::GetInstance()->AddTab		(m_game_over_tab);
+	UIDrawer ::GetInstance()->AddUICreator	(m_player_ui_creator);
 }
 
 PlayScene::~PlayScene()
@@ -45,7 +46,8 @@ PlayScene::~PlayScene()
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	cinemachine_brain->RemoveVirtualCameraController(VirtualCameraControllerKind::kControl);
 
-	UIDrawer::GetInstance()->RemoveUICreator(m_player_ui_creator->GetName());
+	TabDrawer::GetInstance()->RemoveTab			(typeid(GameOverTab));
+	UIDrawer ::GetInstance()->RemoveUICreator	(m_player_ui_creator->GetName());
 }
 
 void PlayScene::Init()
@@ -104,6 +106,7 @@ std::shared_ptr<IScene> PlayScene::ChangeScene()
 {
 	const auto command = CommandHandler::GetInstance();
 
+	// ƒ^ƒCƒgƒ‹
 	if (command->IsExecute(CommandKind::kPause, TimeKind::kCurrent))
 	{
 		return std::make_shared<TitleScene>();

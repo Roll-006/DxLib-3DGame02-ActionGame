@@ -1,6 +1,6 @@
 #pragma once
-#include "../UI/ui_button.hpp"
-#include "../UI/ui_slider.hpp"
+#include "../Base/ui_button_base.hpp"
+#include "../Base/ui_slider_base.hpp"
 
 class ITab abstract
 {
@@ -11,5 +11,12 @@ public:
 	virtual void Update()		abstract;
 	virtual void OnDraw() const abstract;
 
-	[[nodiscard]] virtual bool IsDraw() const abstract;
+	virtual void Activate() 	abstract;
+	virtual void Deactivate()	abstract;
+
+	virtual void AllowSelect()  abstract;
+	virtual void StopSelect()	abstract;
+
+	[[nodiscard]] virtual int	GetPriority()	const abstract;
+	[[nodiscard]] virtual bool	IsActive()		const abstract;
 };

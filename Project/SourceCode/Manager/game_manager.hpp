@@ -16,6 +16,8 @@ public:
 
 	void Run();
 
+	void ExitGame(const ExitGameEvent& event);
+
 private:
 	/// @brief ƒQ[ƒ€ƒ‹[ƒv‚ğŒp‘±‚·‚é‚©‚ğ”»’è
 	[[nodiscard]] bool IsContinueLoop();
@@ -24,4 +26,6 @@ private:
 	std::unique_ptr<GameSystemSetter>	m_game_system_setter;
 	std::unique_ptr<Window>				m_window;
 	std::unique_ptr<SceneManager>		m_scene_manager;
+
+	bool m_is_exit_game;
 };

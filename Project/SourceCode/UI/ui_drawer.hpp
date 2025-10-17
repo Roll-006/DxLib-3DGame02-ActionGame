@@ -25,7 +25,7 @@ public:
 		m_ui_creators[ui_creator->GetName()] = ui_creator;
 
 		// 優先順位を追加・ソート
-		m_draw_priority.emplace_back(std::make_pair(ui_creator->GetName(), ui_creator->GetPriority()));
+		m_draw_priority.emplace_back(ui_creator->GetName(), ui_creator->GetPriority());
 		m_draw_priority = algorithm::Sort(m_draw_priority, SortKind::kAscending);
 	}
 	void RemoveUICreator(const std::string& name);

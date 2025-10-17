@@ -5,6 +5,7 @@
 #include "../Interface/i_scene.hpp"
 
 #include "../UI/ui_drawer.hpp"
+#include "../Tab/tab_drawer.hpp"
 #include "../ShadowMap/shadow_map.hpp"
 #include "../Part/screen_filter.hpp"
 

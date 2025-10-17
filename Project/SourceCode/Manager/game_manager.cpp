@@ -3,7 +3,8 @@
 GameManager::GameManager():
 	m_game_system_setter(std::make_unique<GameSystemSetter>()),
 	m_window			(std::make_unique<Window>()),
-	m_scene_manager		(nullptr)
+	m_scene_manager		(nullptr),
+	m_is_exit_game		(false)
 {
 	HandleCreator			::Generate();
 	HandleKeeper			::Generate();
@@ -13,6 +14,7 @@ GameManager::GameManager():
 	EventSystem				::Generate();
 	ObjectPoolHolder		::Generate();
 	UIDrawer				::Generate();
+	TabDrawer				::Generate();
 	FontHandler				::Generate();
 
 	GameTimeManager			::Generate();
@@ -24,10 +26,16 @@ GameManager::GameManager():
 	RifleCartridgeManager	::Generate();
 
 	m_scene_manager = std::make_unique<SceneManager>();
+
+	// ƒCƒxƒ“ƒg“o˜^
+	EventSystem::GetInstance()->Subscribe<ExitGameEvent>(this, &GameManager::ExitGame);
 }
 
 GameManager::~GameManager()
 {	
+	// ƒCƒxƒ“ƒg‚Ì“o˜^‰ğœ
+	EventSystem::GetInstance()->Unsubscribe<ExitGameEvent>(this, &GameManager::ExitGame);
+
 	HandleCreator			::Delete();
 	HandleKeeper			::Delete();
 	CommandHandler			::Delete();
@@ -36,6 +44,7 @@ GameManager::~GameManager()
 	EventSystem				::Delete();
 	ObjectPoolHolder		::Delete();
 	UIDrawer				::Delete();
+	TabDrawer				::Delete();
 	FontHandler				::Delete();
 
 	GameTimeManager			::Delete();
@@ -65,25 +74,16 @@ void GameManager::Run()
 	}
 }
 
+void GameManager::ExitGame(const ExitGameEvent& event)
+{
+	m_is_exit_game = true;
+}
+
 bool GameManager::IsContinueLoop()
 {
 	if (ProcessMessage()  != 0) { return false; }
 	if (ClearDrawScreen() != 0) { return false; }
-
-	//#ifdef _DEBUG
-	// TODO : Œã‚ÉƒRƒ}ƒ“ƒh‰»
-	//if (InputChecker::GetInstance()->IsInput(KEY_INPUT_ESCAPE)) { return false; }
-
-	//if (   InputChecker::GetInstance()->IsInput(pad::ButtonKind ::kLB)
-	//	&& InputChecker::GetInstance()->IsInput(pad::ButtonKind ::kRB)
-	//	&& InputChecker::GetInstance()->IsInput(pad::ButtonKind ::kLSPush)
-	//	&& InputChecker::GetInstance()->IsInput(pad::ButtonKind ::kRSPush)
-	//	&& InputChecker::GetInstance()->IsInput(pad::TriggerKind::kRT)
-	//	&& InputChecker::GetInstance()->IsInput(pad::TriggerKind::kRT))
-	//{
-	//	return false;
-	//}
-	//#endif
+	if (m_is_exit_game)			{ return false; }
 
 	return true;
 }

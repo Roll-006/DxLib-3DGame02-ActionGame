@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
-#include "ui_button.hpp"
-#include "ui_slider.hpp"
+#include "../Base/ui_button_base.hpp"
+#include "../Base/ui_slider_base.hpp"
 
 class UISelector final
 {
@@ -20,12 +20,12 @@ private:
 	void CalcButtonIndex();
 
 private:
-	static constexpr float kSelectIntervalTime	= 1.0f;
-	static constexpr float kFirstSelectStopTime = 3.0f;
+	static constexpr float kSelectIntervalTime	= 0.2f;
+	static constexpr float kFirstSelectStopTime = 0.7f;
 
 	std::vector<std::shared_ptr<IUIElement>> m_ui_buttons;
+
 	int   m_init_button_index;
-	int   m_prev_button_index;
 	int   m_current_button_index;
 	float m_select_timer;
 	bool  m_is_first_stop_select;	// Å‰‚Ì‘I‘ğ‚Éˆêu’â~‚·‚é‚©‚ğ”»’è
