@@ -3,6 +3,7 @@
 GameOverTab::GameOverTab() : 
 	m_priority		(0),
 	m_is_active		(false),
+	m_can_select	(true),
 	m_ui_selector	(std::make_shared<UISelector>(0, true, true))
 {
 

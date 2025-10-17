@@ -12,8 +12,8 @@
     },
     "select_text": {
       "font_path": "Microsoft PhagsPa",
-      "size": 24,
-      "thick": 2,
+      "size": 70,
+      "thick": 6,
       "type": -1,
       "char_set": -1,
       "edge_size": -1,

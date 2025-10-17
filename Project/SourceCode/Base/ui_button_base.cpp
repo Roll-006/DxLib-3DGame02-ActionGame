@@ -2,8 +2,7 @@
 
 UIButtonBase::UIButtonBase(std::function<void()> exeute_function) :
 	m_is_active			(false),
-	m_exeute_function	(exeute_function),
-	m_graphic			(nullptr)
+	m_exeute_function	(exeute_function)
 {
 
 }

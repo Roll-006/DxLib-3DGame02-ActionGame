@@ -33,8 +33,18 @@ Graphicer::~Graphicer()
 	// MEMO : 画像のDelete処理は行わず、ハンドル保管クラスから再利用する
 }
 
-void Graphicer::Draw() const
+void Graphicer::Draw(const bool is_draw_graphic_frame) const
 {
+	if (is_draw_graphic_frame)
+	{
+		DrawBox(
+			static_cast<int>(m_center_pos.x - m_origin_width  * 0.5f * m_scale.x),
+			static_cast<int>(m_center_pos.y - m_origin_height * 0.5f * m_scale.y),
+			static_cast<int>(m_center_pos.x + m_origin_width  * 0.5f * m_scale.x),
+			static_cast<int>(m_center_pos.y + m_origin_height * 0.5f * m_scale.y),
+			0xff0000, FALSE);
+	}
+
 	if (m_alpha_blend_num <= 0) { return; }
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_alpha_blend_num);
@@ -47,7 +57,8 @@ void Graphicer::Draw() const
 		static_cast<double>(m_scale.x), 
 		static_cast<double>(m_scale.y), 
 		m_angle, 
-		m_graphic_handle,TRUE, 
+		m_graphic_handle,
+		TRUE, 
 		m_is_invert_horizontal, 
 		m_is_invert_vertical);
 

@@ -15,12 +15,9 @@ public:
 
 	void Exeute();
 
-	void SetGraphicer(const std::shared_ptr<Graphicer> graphic) { m_graphic = graphic; }
-
-	[[nodiscard]] bool IsActive() const override { return m_is_active; }
+	[[nodiscard]] bool IsActive()	const override { return m_is_active; }
 
 protected:
-	bool m_is_active;
-	std::shared_ptr<Graphicer>	m_graphic;
-	std::function<void()>		m_exeute_function;
+	bool					m_is_active;
+	std::function<void()>	m_exeute_function;
 };

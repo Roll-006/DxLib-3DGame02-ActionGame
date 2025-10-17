@@ -18,11 +18,12 @@ public:
 
 	/// @brief •`‰æ(GetGraphicer()->Draw()‚Æ“¯“™‚ÌŒø‰Ê)
 	/// @brief UnuseScreen‚ğŒÄ‚Ño‚µ‚½Œã‚ÉŒÄ‚Ño‚·
-	void Draw() const;
+	void Draw(const bool is_draw_graphic_frame = false) const;
 
-	[[nodiscard]] std::shared_ptr<Graphicer> GetGraphicer()		const { return m_graphicer; }
-	[[nodiscard]] Vector2D<int>				 GetScreenSize()	const { return m_screen_size; }
-	[[nodiscard]] int						 GetScreenHandle()	const { return m_screen_graphic_handle; }
+	[[nodiscard]] std::shared_ptr<Graphicer> GetGraphicer()			const { return m_graphicer; }
+	[[nodiscard]] Vector2D<int>				 GetScreenSize()		const { return m_screen_size; }
+	[[nodiscard]] Vector2D<int>				 GetHalfScreenSize()	const { return Vector2D<int>(m_screen_size.x * 0.5f, m_screen_size.y * 0.5f); }
+	[[nodiscard]] int						 GetScreenHandle()		const { return m_screen_graphic_handle; }
 
 private:
 	std::shared_ptr<Graphicer>	m_graphicer;

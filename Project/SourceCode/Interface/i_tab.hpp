@@ -19,4 +19,5 @@ public:
 
 	[[nodiscard]] virtual int	GetPriority()	const abstract;
 	[[nodiscard]] virtual bool	IsActive()		const abstract;
+	[[nodiscard]] virtual bool  CanSelect()		const abstract;
 };

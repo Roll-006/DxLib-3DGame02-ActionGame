@@ -3,6 +3,7 @@
 
 #include "../Tab/tab_drawer.hpp"
 #include "../Tab/title_tab.hpp"
+#include "../Tab/warning_tab.hpp"
 
 class TitleScene final : public IScene
 {
@@ -27,5 +28,6 @@ private:
 	bool		m_is_active;
 	SceneKind	m_scene_kind;
 
-	std::shared_ptr<TitleTab> m_title_tab;
+	std::shared_ptr<TitleTab>	m_title_tab;
+	std::shared_ptr<WarningTab> m_warning_tab;
 };

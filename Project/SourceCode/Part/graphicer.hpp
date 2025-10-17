@@ -10,7 +10,7 @@ public:
 	Graphicer(const int graphic_handle);
 	~Graphicer();
 
-	void Draw() const;
+	void Draw(const bool is_draw_graphic_frame = false) const;
 
 	void SetCenterPos		(const Vector2D<int>& pos)			{ m_center_pos				= pos; }
 	void SetScale			(const Vector2D<float>& scale)		{ m_scale					= scale; }

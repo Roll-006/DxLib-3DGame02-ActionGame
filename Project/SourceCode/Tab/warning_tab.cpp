@@ -2,12 +2,19 @@
 
 WarningTab::WarningTab() :
 	m_priority		(10),
-	m_is_active		(true),
+	m_is_active		(false),
+	m_can_select	(true),
 	m_back			(false),
 	m_ui_selector	(std::make_shared<UISelector>(1, true, true))
 {
-	m_ui_selector->AddUIButton(std::make_shared<SelectButton>([this]() { ExecuteDecide(); }));
-	m_ui_selector->AddUIButton(std::make_shared<SelectButton>([this]() { ExecuteBack();	}));
+	std::vector<Vector2D<int>> center_pos;
+	for (int i = 0; i < 3; ++i)
+	{
+		center_pos.emplace_back(kFirstButtonCenterPos + Vector2D<int>(0, kButtonPosInterval * i));
+	}
+
+	m_ui_selector->AddUIButton(std::make_shared<SubMenuSelectButton>(SubMenuSelectButton::ButtonKind::kDecide,	center_pos.at(0), [this]() { ExecuteDecide(); }));
+	m_ui_selector->AddUIButton(std::make_shared<SubMenuSelectButton>(SubMenuSelectButton::ButtonKind::kBack,	center_pos.at(1), [this]() { ExecuteBack();	}));
 }
 
 WarningTab::~WarningTab()
@@ -26,7 +33,7 @@ void WarningTab::Update()
 {
 	if (!m_is_active) { return; }
 
-	m_ui_selector->Update();
+	if (m_can_select) { m_ui_selector->Update(); }
 }
 
 void WarningTab::OnDraw() const

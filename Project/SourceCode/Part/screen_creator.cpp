@@ -61,7 +61,7 @@ void ScreenCreator::UnuseScreen()
 	SetCameraPositionAndTarget_UpVecY	(m_prev_camera_pos, m_prev_camera_target);
 }
 
-void ScreenCreator::Draw() const
+void ScreenCreator::Draw(const bool is_draw_graphic_frame) const
 {
-	m_graphicer->Draw();
+	m_graphicer->Draw(is_draw_graphic_frame);
 }

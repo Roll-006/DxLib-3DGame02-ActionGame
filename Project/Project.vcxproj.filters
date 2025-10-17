@@ -544,9 +544,6 @@
     <ClCompile Include="SourceCode\Tab\game_over_tab (4).cpp">
       <Filter>SourceCode\Tab</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Tab\game_over_tab (5).cpp">
-      <Filter>SourceCode\Tab</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\Tab\title_tab.cpp">
       <Filter>SourceCode\Tab</Filter>
     </ClCompile>
@@ -559,7 +556,13 @@
     <ClCompile Include="SourceCode\Base\ui_slider_base.cpp">
       <Filter>SourceCode\Base</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\UIButton\select_button.cpp">
+    <ClCompile Include="SourceCode\UIButton\main_menu_select_button.cpp">
+      <Filter>SourceCode\UIButton</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Tab\warning_tab.cpp">
+      <Filter>SourceCode\Tab</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\UIButton\sub_menu_select_button.cpp">
       <Filter>SourceCode\UIButton</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1476,9 +1479,6 @@
     <ClInclude Include="SourceCode\Tab\game_over_tab (4).hpp">
       <Filter>SourceCode\Tab</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Tab\game_over_tab (5).hpp">
-      <Filter>SourceCode\Tab</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\Tab\title_tab.hpp">
       <Filter>SourceCode\Tab</Filter>
     </ClInclude>
@@ -1491,11 +1491,17 @@
     <ClInclude Include="SourceCode\Base\ui_slider_base.hpp">
       <Filter>SourceCode\Base</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\UIButton\select_button.hpp">
+    <ClInclude Include="SourceCode\UIButton\main_menu_select_button.hpp">
       <Filter>SourceCode\UIButton</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Event\exit_game_event.hpp">
       <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Tab\warning_tab.hpp">
+      <Filter>SourceCode\Tab</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\UIButton\sub_menu_select_button.hpp">
+      <Filter>SourceCode\UIButton</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
