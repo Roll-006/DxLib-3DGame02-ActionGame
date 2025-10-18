@@ -95,12 +95,12 @@ void SubMenuSelectButton::CalcAlphaBlendNum()
 	if (m_is_active)
 	{
 		m_destination_alpha_blend_num = 255;
-		math::Increase(m_current_alpha_blend_num, 500.0f * delta_time, m_destination_alpha_blend_num, false);
+		math::Increase(m_current_alpha_blend_num, static_cast<int>(500.0f * delta_time), m_destination_alpha_blend_num, false);
 	}
 	else
 	{
 		m_destination_alpha_blend_num = 0;
-		math::Decrease(m_current_alpha_blend_num, 300.0f * delta_time, m_destination_alpha_blend_num);
+		math::Decrease(m_current_alpha_blend_num, static_cast<int>(300.0f * delta_time), m_destination_alpha_blend_num);
 	}
 
 	m_selecting_button_graphic->SetAlphaBlendNum(m_current_alpha_blend_num);

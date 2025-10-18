@@ -43,8 +43,8 @@ private:
 	std::string						m_text;
 	Vector2D<int>					m_center_pos;
 	Vector2D<int>					m_font_size;
-	float							m_current_alpha_blend_num;
-	float							m_destination_alpha_blend_num;
+	int								m_current_alpha_blend_num;
+	int								m_destination_alpha_blend_num;
 
 	std::shared_ptr<Graphicer>		m_button_frame_dark_graphic;
 	std::shared_ptr<Graphicer>		m_button_frame_light_graphic;
