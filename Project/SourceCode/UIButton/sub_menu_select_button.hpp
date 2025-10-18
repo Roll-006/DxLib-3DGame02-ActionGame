@@ -59,11 +59,10 @@ private:
 
 	std::shared_ptr<Graphicer>		m_button_frame_dark_graphic;
 	std::shared_ptr<Graphicer>		m_button_frame_light_graphic;
-	std::shared_ptr<Graphicer>		m_selecting_button_graphic;
 	std::shared_ptr<MoviePlayer>	m_selecting_button_movie;
-	std::shared_ptr<MaskCreator>	m_selecting_button_movie_mask;
-	std::shared_ptr<ScreenCreator>	m_selecting_graphic_screen;
+	std::shared_ptr<MaskCreator>	m_mask_creator;
 
-	std::shared_ptr<ScreenCreator>  m_selecting_button_screen;
-	std::shared_ptr<ScreenCreator>  m_screen;
+	std::shared_ptr<ScreenCreator>	m_selecting_button_screen;
+	std::shared_ptr<ScreenCreator>  m_applied_mask_screen;
+	std::shared_ptr<ScreenCreator>  m_selecting_button_basic_screen;
 };

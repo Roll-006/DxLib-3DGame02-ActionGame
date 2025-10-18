@@ -13,22 +13,24 @@ SubMenuSelectButton::SubMenuSelectButton(const ButtonKind button_kind, const Vec
 	m_destination_selecting_center_pos	(center_pos),
 	m_button_frame_dark_graphic			(std::make_shared<Graphicer>(UIGraphicPath.SUB_MENU_BUTTON_FRAME_DARK)),
 	m_button_frame_light_graphic		(std::make_shared<Graphicer>(UIGraphicPath.SUB_MENU_BUTTON_FRAME_LIGHT)),
-	m_selecting_button_graphic			(std::make_shared<Graphicer>(UIGraphicPath.SUB_MENU_SELECTING_BUTTON)),
 	m_selecting_button_movie			(std::make_shared<MoviePlayer>(MoviePath.SUB_MENU_SELECT_BUTTON_SMOKE, MoviePlayer::BackColorKind::kBlack, true)),
-	m_selecting_button_movie_mask		(std::make_shared<MaskCreator>()),
-	m_selecting_graphic_screen			(std::make_shared<ScreenCreator>(m_button_frame_dark_graphic->GetOriginSize(), center_pos)),
-	m_selecting_button_screen			(std::make_shared<ScreenCreator>(m_button_frame_dark_graphic->GetOriginSize())),
-	m_screen							(std::make_shared<ScreenCreator>(m_button_frame_dark_graphic->GetOriginSize(), m_selecting_graphic_screen->GetHalfScreenSize()))
+	m_mask_creator						(std::make_shared<MaskCreator>()),
+	m_selecting_button_screen			(std::make_shared<ScreenCreator>(m_button_frame_dark_graphic->GetOriginSize(), center_pos)),
+	m_applied_mask_screen				(std::make_shared<ScreenCreator>(m_button_frame_dark_graphic->GetOriginSize(), m_selecting_button_screen->GetHalfScreenSize())),
+	m_selecting_button_basic_screen		(std::make_shared<ScreenCreator>(m_button_frame_dark_graphic->GetOriginSize()))
 {
-	m_selecting_button_graphic->SetCenterPos(m_selecting_button_screen->GetHalfScreenSize());
 
-	m_selecting_button_screen->UseScreen();
-	m_selecting_button_graphic->Draw();
-	m_selecting_button_screen->UnuseScreen();
+	// 画像をスクリーンに変換
+	m_selecting_button_basic_screen->UseScreen();
+	const auto selecting_button_graphic = std::make_shared<Graphicer>(UIGraphicPath.SUB_MENU_SELECTING_BUTTON);
+	selecting_button_graphic->SetCenterPos(m_selecting_button_basic_screen->GetHalfScreenSize());
+	selecting_button_graphic->Draw();
+	m_selecting_button_basic_screen->UnuseScreen();
 
+	// 中心座標を設定
 	m_button_frame_dark_graphic ->SetCenterPos(center_pos);
-	m_button_frame_light_graphic->SetCenterPos(m_selecting_graphic_screen->GetHalfScreenSize());
-	m_selecting_button_movie	->GetResultGraphicer()->SetCenterPos(m_selecting_button_screen->GetHalfScreenSize());
+	m_button_frame_light_graphic->SetCenterPos(m_selecting_button_screen->GetHalfScreenSize());
+	m_selecting_button_movie	->GetResultGraphicer()->SetCenterPos(m_selecting_button_basic_screen->GetHalfScreenSize());
 
 	const auto  font_handler = FontHandler::GetInstance();
 
@@ -95,7 +97,7 @@ void SubMenuSelectButton::Update()
 void SubMenuSelectButton::Draw() const
 {
 	m_button_frame_dark_graphic->Draw();
-	m_selecting_graphic_screen ->Draw();
+	m_selecting_button_screen ->Draw();
 }
 
 void SubMenuSelectButton::CreateSelectingGraphicScreen()
@@ -103,28 +105,26 @@ void SubMenuSelectButton::CreateSelectingGraphicScreen()
 	m_selecting_button_movie->CreateMovieScreen();
 
 	// 動画にマスクを適用
-	m_screen->UseScreen();
-	m_selecting_button_movie_mask->CreateMask();
-	m_selecting_button_movie_mask->UseMask(m_selecting_button_screen->GetScreenHandle(), true);
+	m_applied_mask_screen->UseScreen();
+	m_mask_creator->CreateMask();
+	m_mask_creator->UseMask(m_selecting_button_basic_screen->GetScreenHandle(), true);
 	m_selecting_button_movie->Play();
-	m_selecting_button_movie_mask->UnuseMask();
-	m_selecting_button_movie_mask->DeleteMask();
-	m_screen->UnuseScreen();
+	m_mask_creator->UnuseMask();
+	m_mask_creator->DeleteMask();
+	m_applied_mask_screen->UnuseScreen();
 
 	// 選択した際に浮き上がる画像・テキストを一枚の画像に結合
-	m_selecting_graphic_screen->UseScreen();
+	m_selecting_button_screen->UseScreen();
 
-	//m_selecting_button_screen	->Draw();
-	//m_selecting_button_graphic->Draw();
-	m_screen					->Draw();
+	m_applied_mask_screen		->Draw();
 	m_button_frame_light_graphic->Draw();
 
 	DrawStringToHandle(
-		static_cast<int>((m_selecting_graphic_screen->GetScreenSize().x - m_font_size.x) * 0.5f),
-		static_cast<int>((m_selecting_graphic_screen->GetScreenSize().y - m_font_size.y) * 0.5f),
+		static_cast<int>((m_selecting_button_screen->GetScreenSize().x - m_font_size.x) * 0.5f),
+		static_cast<int>((m_selecting_button_screen->GetScreenSize().y - m_font_size.y) * 0.5f),
 		m_text.c_str(), 0xffffff, m_font_handle);
 
-	m_selecting_graphic_screen->UnuseScreen();
+	m_selecting_button_screen->UnuseScreen();
 }
 
 void SubMenuSelectButton::CalcAlphaBlendNum()
@@ -142,8 +142,7 @@ void SubMenuSelectButton::CalcAlphaBlendNum()
 		math::Decrease(m_current_alpha_blend_num, static_cast<int>(600.0f * delta_time),  m_destination_alpha_blend_num);
 	}
 
-	m_selecting_button_graphic	->SetAlphaBlendNum(m_current_alpha_blend_num);
-	m_screen->GetGraphicer()	->SetAlphaBlendNum(m_current_alpha_blend_num);
+	m_applied_mask_screen->GetGraphicer()	->SetAlphaBlendNum(m_current_alpha_blend_num);
 	m_button_frame_light_graphic->SetAlphaBlendNum(m_current_alpha_blend_num);
 }
 
@@ -165,5 +164,5 @@ void SubMenuSelectButton::CalcSelectingButtonPos()
 
 	current_pos						= math::GetApproachedVector(current_pos, destination_pos, kMoveSpeed * delta_time);
 	m_current_selecting_center_pos	= Vector2D<int>(current_pos.x, current_pos.y);
-	m_selecting_graphic_screen->GetGraphicer()->SetCenterPos(m_current_selecting_center_pos);
+	m_selecting_button_screen->GetGraphicer()->SetCenterPos(m_current_selecting_center_pos);
 }
