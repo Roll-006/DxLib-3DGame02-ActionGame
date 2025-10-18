@@ -27,9 +27,9 @@ MoviePlayer::~MoviePlayer()
 
 }
 
-void MoviePlayer::Draw() const
+void MoviePlayer::Play(const bool is_draw_graphic_frame) const
 {
-	m_result_screen->Draw();
+	m_result_screen->Draw(is_draw_graphic_frame);
 }
 
 void MoviePlayer::CreateMovieScreen() const
@@ -41,17 +41,5 @@ void MoviePlayer::CreateMovieScreen() const
 	m_movie_graphic->Draw();
 	m_result_screen->UnuseScreen();
 
-	switch (m_back_color_kind)
-	{
-	case MoviePlayer::BackColorKind::kBlack:
-		GraphFilter(m_result_screen->GetScreenHandle(), DX_GRAPH_FILTER_BRIGHT_CLIP, DX_CMP_LESS,	  10, TRUE, GetColor(0, 0, 0), 0);
-		break;
-
-	case MoviePlayer::BackColorKind::kWhite:
-		GraphFilter(m_result_screen->GetScreenHandle(), DX_GRAPH_FILTER_BRIGHT_CLIP, DX_CMP_GREATER, 245, TRUE, GetColor(0, 0, 0), 0);
-		break;
-
-	default:
-		break;
-	}
+	GraphFilter(m_result_screen->GetScreenHandle(), DX_GRAPH_FILTER_REPLACEMENT, 0, 255, 0, 255, 0, 0, 0, 0);
 }

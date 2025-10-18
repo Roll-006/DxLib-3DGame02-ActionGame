@@ -25,6 +25,7 @@ public:
 	[[nodiscard]] Vector2D<float>	GetScale()				const { return m_scale; }
 	[[nodiscard]] float				GetAngle()				const { return m_angle; }
 	[[nodiscard]] Vector2D<int>		GetOriginSize()			const { return Vector2D<int>(m_origin_width, m_origin_height); }
+	[[nodiscard]] Vector2D<int>		GetHalfOriginSize()		const { return Vector2D<int>(m_origin_width * 0.5f, m_origin_height * 0.5f); }
 	[[nodiscard]] int				GetAlphaBlendNum()		const { return m_alpha_blend_num; }
 	[[nodiscard]] bool				IsInvertHorizontal()	const { return m_is_invert_horizontal; }
 	[[nodiscard]] bool				IsInvertVertical()		const { return m_is_invert_vertical; }

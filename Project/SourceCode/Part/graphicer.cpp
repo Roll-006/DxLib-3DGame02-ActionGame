@@ -35,6 +35,26 @@ Graphicer::~Graphicer()
 
 void Graphicer::Draw(const bool is_draw_graphic_frame) const
 {
+	if (m_alpha_blend_num > 0)
+	{
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_alpha_blend_num);
+
+		DrawRotaGraph3(
+			m_center_pos.x,
+			m_center_pos.y,
+			static_cast<int>(m_origin_width * 0.5f),
+			static_cast<int>(m_origin_height * 0.5f),
+			static_cast<double>(m_scale.x),
+			static_cast<double>(m_scale.y),
+			m_angle,
+			m_graphic_handle,
+			TRUE,
+			m_is_invert_horizontal,
+			m_is_invert_vertical);
+
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	}
+
 	if (is_draw_graphic_frame)
 	{
 		DrawBox(
@@ -44,23 +64,4 @@ void Graphicer::Draw(const bool is_draw_graphic_frame) const
 			static_cast<int>(m_center_pos.y + m_origin_height * 0.5f * m_scale.y),
 			0xff0000, FALSE);
 	}
-
-	if (m_alpha_blend_num <= 0) { return; }
-
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_alpha_blend_num);
-
-	DrawRotaGraph3(
-		m_center_pos.x,
-		m_center_pos.y,
-		static_cast<int>(m_origin_width  * 0.5f),
-		static_cast<int>(m_origin_height * 0.5f),
-		static_cast<double>(m_scale.x), 
-		static_cast<double>(m_scale.y), 
-		m_angle, 
-		m_graphic_handle,
-		TRUE, 
-		m_is_invert_horizontal, 
-		m_is_invert_vertical);
-
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }

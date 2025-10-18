@@ -20,7 +20,7 @@ public:
 	~MoviePlayer();
 
 	void CreateMovieScreen() const;
-	void Draw() const;
+	void Play(const bool is_draw_graphic_frame = false) const;
 
 	[[nodiscard]] std::shared_ptr<Graphicer>	 GetResourceMovieGraphicer() const { return m_movie_graphic; }
 	[[nodiscard]] std::shared_ptr<Graphicer>	 GetResultGraphicer()		 const { return m_result_screen->GetGraphicer(); }

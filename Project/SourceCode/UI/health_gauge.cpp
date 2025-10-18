@@ -175,9 +175,11 @@ void HealthGauge::CreateHealthGaugeScreen()
 	m_warning_gauge_screen->Draw();
 
 	// 最大HPフレーム
+	m_mask_creator->CreateMask();
 	m_mask_creator->UseMask(m_max_health_frame_gauge_screen->GetScreenHandle(), true);
 	m_frame_particle_graphic->Draw();
 	m_mask_creator->UnuseMask();
+	m_mask_creator->DeleteMask();
 
 	// 現在の最大HPフレーム
 	DrawCircleGauge(
@@ -192,6 +194,7 @@ void HealthGauge::CreateHealthGaugeScreen()
 		m_basis_circle_screen->GetScreenHandle(), 0.0, 1.0);
 
 	// 回復した際のゲージ
+	m_mask_creator->CreateMask();
 	m_mask_creator->UseMask(m_recover_gauge_screen->GetScreenHandle(), true);
 	DrawBox(
 		static_cast<int>(kCenterPos.x - kScreenSize.x * 0.5f), 
@@ -212,13 +215,14 @@ void HealthGauge::CreateHealthGaugeScreen()
 		0xf04848, TRUE);
 	m_damage_particle_graphic->Draw();
 	m_mask_creator->UnuseMask();
+	m_mask_creator->DeleteMask();
 
 	m_gauge_screen->UnuseScreen();
 }
 
 void HealthGauge::CreateResultScreen()
 {
-	m_result_screen->UseScreen();
+	m_result_screen	->UseScreen();
 
 	// 警告サークル
 	m_warning_circle_graphic->Draw();
@@ -227,12 +231,14 @@ void HealthGauge::CreateResultScreen()
 	m_gauge_screen->Draw();
 
 	// ゲージ画像を現在のHP分だけ描画
+	m_mask_creator->CreateMask();
 	m_mask_creator->UseMask(m_current_health_gauge_screen->GetScreenHandle(), true);
 	m_current_health_mask_screen->Draw();
-	m_gauge_particle_graphic->Draw();
+	m_gauge_particle_graphic	->Draw();
 	m_mask_creator->UnuseMask();
+	m_mask_creator->DeleteMask();
 
-	m_result_screen->UnuseScreen();
+	m_result_screen	->UnuseScreen();
 }
 #pragma endregion
 

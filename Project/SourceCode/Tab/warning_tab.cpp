@@ -4,11 +4,11 @@ WarningTab::WarningTab() :
 	m_priority		(10),
 	m_is_active		(false),
 	m_can_select	(true),
-	m_is_back			(false),
+	m_is_back		(false),
 	m_ui_selector	(std::make_shared<UISelector>(1, true, true))
 {
 	std::vector<Vector2D<int>> center_pos;
-	for (int i = 0; i < 3; ++i)
+	for (int i = 0; i < 2; ++i)
 	{
 		center_pos.emplace_back(kFirstButtonCenterPos + Vector2D<int>(0, kButtonPosInterval * i));
 	}

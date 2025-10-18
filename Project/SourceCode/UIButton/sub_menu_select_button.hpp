@@ -65,4 +65,5 @@ private:
 	std::shared_ptr<ScreenCreator>	m_selecting_graphic_screen;
 
 	std::shared_ptr<ScreenCreator>  m_selecting_button_screen;
+	std::shared_ptr<ScreenCreator>  m_screen;
 };

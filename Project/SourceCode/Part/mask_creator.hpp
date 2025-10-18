@@ -4,6 +4,9 @@
 class MaskCreator final
 {
 public:
+	void CreateMask();
+	void DeleteMask();
+
 	/// @brief マスクを使用する
 	/// @brief この関数を呼び出した後にスクリーンに反映する画像・図形を描画する
 	/// @param is_invert_mask マスクをかける位置を反転させるかどうか
