@@ -1,6 +1,6 @@
 #include "main_menu_select_button.hpp"
 
-MainMenuSelectButton::MainMenuSelectButton(const ButtonKind button_kind, const Vector2D<int>& center_pos, std::function<void()> exeute_function) :
+MainMenuSelectButton::MainMenuSelectButton(const ButtonKind button_kind, const Vector2D<int>& center_pos, const std::function<void()> exeute_function, const bool is_init_selected) :
 	UIButtonBase				(exeute_function),
 	m_button_kind				(button_kind),
 	m_alpha_blend_num			(kNonSelectAlphaBlendNum),
@@ -43,6 +43,16 @@ MainMenuSelectButton::MainMenuSelectButton(const ButtonKind button_kind, const V
 		static_cast<int>((screen_height - font_height) * 0.5f),
 		text.c_str(), 0xffffff, font_handle);
 	m_button_screen->UnuseScreen();
+
+	// Å‰‚©‚ç‘I‘ğ‚³‚ê‚Ä‚¢‚éê‡‚Ìˆ—
+	if (is_init_selected)
+	{
+		m_alpha_blend_num		= 255;
+		m_current_graphic_scale = kSelectScale;
+	}
+
+	CalcAlphaBlendNum();
+	CalcGraphicScale();
 }
 
 MainMenuSelectButton::~MainMenuSelectButton()

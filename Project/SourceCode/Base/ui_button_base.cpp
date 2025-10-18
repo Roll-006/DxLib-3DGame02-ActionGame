@@ -1,6 +1,6 @@
 #include "ui_button_base.hpp"
 
-UIButtonBase::UIButtonBase(std::function<void()> exeute_function) :
+UIButtonBase::UIButtonBase(const std::function<void()> exeute_function) :
 	m_is_active			(false),
 	m_exeute_function	(exeute_function)
 {

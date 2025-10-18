@@ -29,14 +29,16 @@ void TitleScene::Update()
 
 	if (m_title_tab->IsActivateWarningTab())
 	{
-		m_warning_tab->Activate();
-		m_title_tab->StopSelect();
+		m_warning_tab	->Activate();
+		m_title_tab		->StopSelect();
+		m_title_tab		->InitActivateWarningTab();
 	}
 
 	if (m_warning_tab->IsBack())
 	{
-		m_warning_tab->Deactivate();
-		m_title_tab->AllowSelect();
+		m_warning_tab	->InitBack();
+		m_warning_tab	->Deactivate();
+		m_title_tab		->AllowSelect();
 	}
 }
 

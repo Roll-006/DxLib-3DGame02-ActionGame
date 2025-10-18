@@ -565,6 +565,9 @@
     <ClCompile Include="SourceCode\UIButton\sub_menu_select_button.cpp">
       <Filter>SourceCode\UIButton</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\Part\movie_player.cpp">
+      <Filter>SourceCode\Part</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\character_base.hpp">
@@ -1502,6 +1505,12 @@
     </ClInclude>
     <ClInclude Include="SourceCode\UIButton\sub_menu_select_button.hpp">
       <Filter>SourceCode\UIButton</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Part\movie_player.hpp">
+      <Filter>SourceCode\Part</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Path\movie_path.hpp">
+      <Filter>SourceCode\Path</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

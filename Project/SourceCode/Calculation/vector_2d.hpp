@@ -65,6 +65,12 @@ namespace v2d
 		float size = GetSize(v);
 		return size != 0 ? VecT(v.x / size, v.y / size) : v;
 	}
+	
+	template<v2d_concepts::ValidT VecT>
+	[[nodiscard]] inline float GetDot(const VecT& v1, const VecT& v2)
+	{
+		return v1.x * v2.x + v1.y * v2.y;
+	}
 }
 
 

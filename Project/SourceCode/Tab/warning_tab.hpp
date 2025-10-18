@@ -15,6 +15,8 @@ public:
 	void Update()		override;
 	void OnDraw() const override;
 
+	void InitBack() { m_is_back = false; }
+
 	void Activate() 	override { m_is_active = true; }
 	void Deactivate()	override { m_is_active = false; }
 
@@ -24,7 +26,7 @@ public:
 	[[nodiscard]] int  GetPriority()	const override	{ return m_priority; }
 	[[nodiscard]] bool IsActive()		const override	{ return m_is_active; }
 	[[nodiscard]] bool CanSelect()		const override	{ return m_can_select; }
-	[[nodiscard]] bool IsBack()			const			{ return m_back; }
+	[[nodiscard]] bool IsBack()			const			{ return m_is_back; }
 
 private:
 	void ExecuteDecide();
@@ -32,11 +34,11 @@ private:
 
 private:
 	static constexpr Vector2D<int>	kFirstButtonCenterPos	= { Window::kCenterPos.x, Window::kCenterPos.y + 50 };
-	static constexpr int			kButtonPosInterval		= 80;
+	static constexpr int			kButtonPosInterval		= 130;
 
 	int	 m_priority;
 	bool m_is_active;
 	bool m_can_select;
-	bool m_back;
+	bool m_is_back;
 	std::shared_ptr<UISelector> m_ui_selector;
 };

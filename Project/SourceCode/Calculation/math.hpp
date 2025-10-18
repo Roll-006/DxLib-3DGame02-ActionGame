@@ -151,7 +151,7 @@ namespace math
 	/// @param speed 移動速度(デルタタイム適用後)
 	/// @return 移動後ベクトル
 	[[nodiscard]] VECTOR GetApproachedVector(const VECTOR& current_v, const VECTOR& end_v, const float speed);
-
+	
 	/// @brief 2つの値を線形補間で補間
 	/// @param begin_v 開始地点
 	/// @param end_v 終了地点

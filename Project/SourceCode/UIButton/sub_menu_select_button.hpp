@@ -5,6 +5,8 @@
 #include "../Calculation/math.hpp"
 #include "../Font/font_handler.hpp"
 #include "../Path/ui_graphic_path.hpp"
+#include "../Part/movie_player.hpp"
+#include "../Part/mask_creator.hpp"
 
 class SubMenuSelectButton final : public UIButtonBase
 {
@@ -18,7 +20,12 @@ public:
 	};
 
 public:
-	SubMenuSelectButton(const ButtonKind button_kind, const Vector2D<int>& center_pos, std::function<void()> exeute_function);
+	SubMenuSelectButton(
+		const ButtonKind			button_kind, 
+		const Vector2D<int>&		center_pos, 
+		const std::function<void()> exeute_function, 
+		const bool					is_init_selected);
+
 	~SubMenuSelectButton() override;
 
 	void Init()			override;
@@ -29,7 +36,7 @@ private:
 	void CreateSelectingGraphicScreen();
 
 	void CalcAlphaBlendNum();
-	//void Calc
+	void CalcSelectingButtonPos();
 	void CalcGraphicScale();
 
 private:
@@ -37,6 +44,8 @@ private:
 	static constexpr float kNonSelectScale			= 0.8f;
 	static constexpr float kSelectScale				= 1.0f;
 	static constexpr float kScaleChangeSpeed		= 5.0f;
+	static constexpr float kSelectingButtonDistance = 10.0f;
+	static constexpr float kMoveSpeed				= 500.0f;
 
 	ButtonKind						m_button_kind;
 	int								m_font_handle;
@@ -45,9 +54,15 @@ private:
 	Vector2D<int>					m_font_size;
 	int								m_current_alpha_blend_num;
 	int								m_destination_alpha_blend_num;
+	Vector2D<int>					m_current_selecting_center_pos;
+	Vector2D<int>					m_destination_selecting_center_pos;
 
 	std::shared_ptr<Graphicer>		m_button_frame_dark_graphic;
 	std::shared_ptr<Graphicer>		m_button_frame_light_graphic;
 	std::shared_ptr<Graphicer>		m_selecting_button_graphic;
+	std::shared_ptr<MoviePlayer>	m_selecting_button_movie;
+	std::shared_ptr<MaskCreator>	m_selecting_button_movie_mask;
 	std::shared_ptr<ScreenCreator>	m_selecting_graphic_screen;
+
+	std::shared_ptr<ScreenCreator>  m_selecting_button_screen;
 };

@@ -1,22 +1,27 @@
 #include "sub_menu_select_button.hpp"
 
-SubMenuSelectButton::SubMenuSelectButton(const ButtonKind button_kind, const Vector2D<int>& center_pos, std::function<void()> exeute_function) :
-	UIButtonBase					(exeute_function),
-	m_button_kind					(button_kind),
-	m_font_handle					(-1),
-	m_text							(""),
-	m_center_pos					(center_pos),
-	m_font_size						(v2d::GetZeroV<Vector2D<int>>()),
-	m_current_alpha_blend_num		(0),
-	m_destination_alpha_blend_num	(0),
-	m_button_frame_dark_graphic		(std::make_shared<Graphicer>(UIGraphicPath.SUB_MENU_BUTTON_FRAME_DARK)),
-	m_button_frame_light_graphic	(std::make_shared<Graphicer>(UIGraphicPath.SUB_MENU_BUTTON_FRAME_LIGHT)),
-	m_selecting_button_graphic		(std::make_shared<Graphicer>(UIGraphicPath.SUB_MENU_SELECTING_BUTTON)),
-	m_selecting_graphic_screen		(std::make_shared<ScreenCreator>(m_button_frame_dark_graphic->GetOriginSize(), center_pos))
+SubMenuSelectButton::SubMenuSelectButton(const ButtonKind button_kind, const Vector2D<int>& center_pos, const std::function<void()> exeute_function, const bool	is_init_selected) :
+	UIButtonBase						(exeute_function),
+	m_button_kind						(button_kind),
+	m_font_handle						(-1),
+	m_text								(""),
+	m_center_pos						(center_pos),
+	m_font_size							(v2d::GetZeroV<Vector2D<int>>()),
+	m_current_alpha_blend_num			(0),
+	m_destination_alpha_blend_num		(0),
+	m_current_selecting_center_pos		(center_pos),
+	m_destination_selecting_center_pos	(center_pos),
+	m_button_frame_dark_graphic			(std::make_shared<Graphicer>(UIGraphicPath.SUB_MENU_BUTTON_FRAME_DARK)),
+	m_button_frame_light_graphic		(std::make_shared<Graphicer>(UIGraphicPath.SUB_MENU_BUTTON_FRAME_LIGHT)),
+	m_selecting_button_graphic			(std::make_shared<Graphicer>(UIGraphicPath.SUB_MENU_SELECTING_BUTTON)),
+	m_selecting_button_movie			(std::make_shared<MoviePlayer>(MoviePath.SUB_MENU_SELECT_BUTTON_SMOKE, MoviePlayer::BackColorKind::kBlack, true)),
+	m_selecting_button_movie_mask		(std::make_shared<MaskCreator>()),
+	m_selecting_graphic_screen			(std::make_shared<ScreenCreator>(Window::kScreenSize, center_pos)),
+	m_selecting_button_screen			(std::make_shared<ScreenCreator>(Window::kScreenSize, m_selecting_graphic_screen->GetHalfScreenSize()))
 {
 	m_button_frame_dark_graphic ->SetCenterPos(center_pos);
 	m_button_frame_light_graphic->SetCenterPos(m_selecting_graphic_screen->GetHalfScreenSize());
-	m_selecting_button_graphic  ->SetCenterPos(m_selecting_graphic_screen->GetHalfScreenSize());
+	//m_selecting_button_graphic  ->SetCenterPos(m_selecting_graphic_screen->GetHalfScreenSize());
 
 	const auto  font_handler = FontHandler::GetInstance();
 
@@ -47,6 +52,18 @@ SubMenuSelectButton::SubMenuSelectButton(const ButtonKind button_kind, const Vec
 	m_font_size.y = GetFontSizeToHandle(m_font_handle);
 
 	CreateSelectingGraphicScreen();
+
+	// 最初から選択されている場合の処理
+	if (is_init_selected)
+	{
+		m_current_alpha_blend_num			= 255;
+		m_destination_selecting_center_pos	= v2d::ConvertVecType<int>(m_center_pos + v2d::GetNormalizedV<Vector2D<float>>(Vector2D<float>(-1.0f, -1.0f)) * kSelectingButtonDistance);
+		m_current_selecting_center_pos		= m_destination_selecting_center_pos;
+	}
+
+	CalcAlphaBlendNum();
+	CalcSelectingButtonPos();
+	CreateSelectingGraphicScreen();
 }
 
 SubMenuSelectButton::~SubMenuSelectButton()
@@ -62,6 +79,7 @@ void SubMenuSelectButton::Init()
 void SubMenuSelectButton::Update()
 {
 	CalcAlphaBlendNum();
+	CalcSelectingButtonPos();
 	CreateSelectingGraphicScreen();
 
 	Exeute();
@@ -75,11 +93,26 @@ void SubMenuSelectButton::Draw() const
 
 void SubMenuSelectButton::CreateSelectingGraphicScreen()
 {
+	// TODO : 後で変える
+	m_selecting_button_movie->GetResultGraphicer()->SetCenterPos(Window::kCenterPos);
+	m_selecting_button_movie->CreateMovieScreen();
+
+	//m_selecting_button_screen->UseScreen();
+	//m_selecting_button_screen->UnuseScreen();
+	//m_selecting_button_screen	->Draw();
+
+
+
+
+
 	// 選択した際に浮き上がる画像・テキストを一枚の画像に結合
 	m_selecting_graphic_screen->UseScreen();
 
-	m_selecting_button_graphic	->Draw();
+	m_selecting_button_movie_mask	->UseMask(m_selecting_button_graphic->GetGraphicHandle(), false);
+	m_selecting_button_movie		->Draw();
+	m_selecting_button_movie_mask	->UnuseMask();
 	m_button_frame_light_graphic->Draw();
+
 	DrawStringToHandle(
 		static_cast<int>((m_selecting_graphic_screen->GetScreenSize().x - m_font_size.x) * 0.5f),
 		static_cast<int>((m_selecting_graphic_screen->GetScreenSize().y - m_font_size.y) * 0.5f),
@@ -95,13 +128,36 @@ void SubMenuSelectButton::CalcAlphaBlendNum()
 	if (m_is_active)
 	{
 		m_destination_alpha_blend_num = 255;
-		math::Increase(m_current_alpha_blend_num, static_cast<int>(500.0f * delta_time), m_destination_alpha_blend_num, false);
+		math::Increase(m_current_alpha_blend_num, static_cast<int>(1000.0f * delta_time), m_destination_alpha_blend_num, false);
 	}
 	else
 	{
 		m_destination_alpha_blend_num = 0;
-		math::Decrease(m_current_alpha_blend_num, static_cast<int>(300.0f * delta_time), m_destination_alpha_blend_num);
+		math::Decrease(m_current_alpha_blend_num, static_cast<int>(600.0f * delta_time), m_destination_alpha_blend_num);
 	}
 
-	m_selecting_button_graphic->SetAlphaBlendNum(m_current_alpha_blend_num);
+	m_selecting_button_graphic	->SetAlphaBlendNum(m_current_alpha_blend_num);
+	m_selecting_button_movie	->GetResultGraphicer()->SetAlphaBlendNum(m_current_alpha_blend_num);
+	m_button_frame_light_graphic->SetAlphaBlendNum(m_current_alpha_blend_num);
+}
+
+void SubMenuSelectButton::CalcSelectingButtonPos()
+{
+	const auto delta_time = GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kUI);
+
+	if (m_is_active)
+	{
+		m_destination_selecting_center_pos = v2d::ConvertVecType<int>(m_center_pos + v2d::GetNormalizedV<Vector2D<float>>(Vector2D<float>(-1.0f, -1.0f)) * kSelectingButtonDistance);
+	}
+	else
+	{
+		m_destination_selecting_center_pos = m_center_pos;
+	}
+
+	VECTOR			current_pos		= { m_current_selecting_center_pos.x, m_current_selecting_center_pos.y, 0.0f };
+	const VECTOR	destination_pos = { m_destination_selecting_center_pos.x, m_destination_selecting_center_pos.y, 0.0f };
+
+	current_pos						= math::GetApproachedVector(current_pos, destination_pos, kMoveSpeed * delta_time);
+	m_current_selecting_center_pos	= Vector2D<int>(current_pos.x, current_pos.y);
+	m_selecting_graphic_screen->GetGraphicer()->SetCenterPos(m_current_selecting_center_pos);
 }

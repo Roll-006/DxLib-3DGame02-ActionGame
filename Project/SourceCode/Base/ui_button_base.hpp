@@ -7,7 +7,7 @@
 class UIButtonBase abstract : public IUIElement
 {
 public:
-	UIButtonBase(std::function<void()> exeute_function);
+	UIButtonBase(const std::function<void()> exeute_function);
 	~UIButtonBase() override;
 
 	void Activate() 	override { m_is_active = true;  }

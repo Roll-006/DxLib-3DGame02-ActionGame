@@ -15,6 +15,8 @@ public:
 	void Update()		override;
 	void OnDraw() const override;
 
+	void InitActivateWarningTab() { m_is_activate_warning_tab = false; }
+
 	void Activate() 	override { m_is_active = true;  }
 	void Deactivate()	override { m_is_active = false; }
 

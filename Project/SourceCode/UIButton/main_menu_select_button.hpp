@@ -16,7 +16,12 @@ public:
 	};
 
 public:
-	MainMenuSelectButton(const ButtonKind button_kind, const Vector2D<int>& center_pos, std::function<void()> exeute_function);
+	MainMenuSelectButton(
+		const ButtonKind			button_kind, 
+		const Vector2D<int>&		center_pos, 
+		const std::function<void()> exeute_function, 
+		const bool					is_init_selected);
+	
 	~MainMenuSelectButton() override;
 
 	void Init()			override;
