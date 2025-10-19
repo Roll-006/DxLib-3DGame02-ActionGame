@@ -3,11 +3,12 @@
 
 static struct ModelPath
 {
+	const std::string TITLE_CHARACTER			= "Data/Model/Character/Zombie/02/mesh.mv1";
 	const std::string ZOMBIE_01					= "Data/Model/Character/Zombie/01/mesh.mv1";
-	const std::string ZOMBIE_02					= "Data/Model/Character/Zombie/02/mesh.mv1";
-	const std::string ZOMBIE_03					= "Data/Model/Character/Zombie/03/mesh.mv1";
-	const std::string ZOMBIE_04					= "Data/Model/Character/Zombie/04/mesh.mv1";
-	const std::string ZOMBIE_05					= "Data/Model/Character/Zombie/05/mesh.mv1";
+	//const std::string ZOMBIE_02					= "Data/Model/Character/Zombie/02/mesh.mv1";
+	//const std::string ZOMBIE_03					= "Data/Model/Character/Zombie/03/mesh.mv1";
+	//const std::string ZOMBIE_04					= "Data/Model/Character/Zombie/04/mesh.mv1";
+	//const std::string ZOMBIE_05					= "Data/Model/Character/Zombie/05/mesh.mv1";
 	const std::string SWAT_01					= "Data/Model/Character/SWAT/01/mesh.mv1";
 	const std::string SWAT_02					= "Data/Model/Character/SWAT/02/mesh.mv1";
 

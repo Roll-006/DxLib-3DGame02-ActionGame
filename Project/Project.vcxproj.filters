@@ -577,6 +577,18 @@
     <ClCompile Include="SourceCode\ObjectPool\title_scene_effect_object_pool.cpp">
       <Filter>SourceCode\ObjectPool</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\Light\light_holder.cpp">
+      <Filter>SourceCode\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Light\directional_light.cpp">
+      <Filter>SourceCode\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Light\spot_light.cpp">
+      <Filter>SourceCode\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Light\point_light.cpp">
+      <Filter>SourceCode\Light</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\character_base.hpp">
@@ -1536,6 +1548,30 @@
     <ClInclude Include="SourceCode\ObjectPool\title_scene_effect_object_pool.hpp">
       <Filter>SourceCode\ObjectPool</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\Light\light_holder.hpp">
+      <Filter>SourceCode\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Light\directional_light.hpp">
+      <Filter>SourceCode\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Kind\light_kind.hpp">
+      <Filter>SourceCode\Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Light\spot_light.hpp">
+      <Filter>SourceCode\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Light\point_light.hpp">
+      <Filter>SourceCode\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Interface\i_light.hpp">
+      <Filter>SourceCode\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\light_range_attenuation_data.hpp">
+      <Filter>SourceCode\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Name\light_name.hpp">
+      <Filter>SourceCode\Name</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="SourceCode">
@@ -1669,6 +1705,9 @@
     </Filter>
     <Filter Include="SourceCode\UIButton">
       <UniqueIdentifier>{5c774e95-fc40-46b2-8a87-d4bed14414fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCode\Light">
+      <UniqueIdentifier>{4fba4c18-e475-45c5-861d-5ac0fe65551f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

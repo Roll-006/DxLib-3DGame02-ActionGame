@@ -28,6 +28,10 @@ PlayScene::PlayScene() :
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	cinemachine_brain->AddVirtualCameraController(std::make_shared<ControlVirtualCamerasController>(*m_player.get()));
 
+	// ライトの設定
+	const auto light_holder = LightHolder::GetInstance();
+	light_holder->CreateLight(std::make_shared<DirectionalLight>(LightName.MOONLIGHT, 0, v3d::GetNormalizedV(VGet(0.5f, -0.5f, 0.5f))));
+
 	TabDrawer::GetInstance()->AddTab		(m_game_over_tab);
 	UIDrawer ::GetInstance()->AddUICreator	(m_player_ui_creator);
 
@@ -47,6 +51,10 @@ PlayScene::~PlayScene()
 
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	cinemachine_brain->RemoveVirtualCameraController(VirtualCameraControllerKind::kControl);
+
+	// ライトの削除
+	const auto light_holder = LightHolder::GetInstance();
+	light_holder->DeleteLight(LightName.MOONLIGHT);
 
 	TabDrawer::GetInstance()->RemoveTab			(typeid(GameOverTab));
 	UIDrawer ::GetInstance()->RemoveUICreator	(m_player_ui_creator->GetName());

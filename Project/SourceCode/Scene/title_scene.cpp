@@ -12,13 +12,23 @@ TitleScene::TitleScene() :
 	m_title_camera					(std::make_shared<VirtualCamera>(ObjName.TITLE_CAMERA, BlendActivationPolicyKind::kDeactivateAllCamera)),
 	m_aim_transform					(std::make_shared<Transform>()),
 	m_smoke_transform				(std::make_shared<Transform>()),
-	m_sin							(90.0f * math::kDegToRad)
+	m_sin							(90.0f * math::kDegToRad),
+	m_smoke_delete_handle			(HandleCreator::GetInstance()->CreateHandle(HandleCreator::Kind::kNone))
 {
 	// マネージャー登録
 	m_title_character->AddToObjManager();
 
 	const auto pool_holder = ObjectPoolHolder::GetInstance();
 	pool_holder->AddObjectPool(m_title_scene_effect_object_pool);
+
+	// ライトの設定
+	const auto light_holder			= LightHolder::GetInstance();
+	const auto pos					= VGet(-2.6f, 45.0f, -13.f);
+	const auto dir					= v3d::GetNormalizedV(VGet(0.0f, 1.5f, 1.0f));
+	const auto angle				= 45.0f * math::kDegToRad;
+	const auto attenuation_angle	= 30.0f * math::kDegToRad;
+	const auto range_attenuation	= LightRangeAttenuationData(100.0f, 0.2f, 0.001f, 0.000001f);
+	light_holder->CreateLight(std::make_shared<SpotLight>(LightName.TITLE_LIGHT, 0, pos, dir, angle, attenuation_angle, range_attenuation));
 
 	// カメラの設定
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
@@ -30,12 +40,11 @@ TitleScene::TitleScene() :
 	const auto aim = m_title_camera->GetAim();
 	aim->SetTrackedObjOffset({ -3.0f, 0.0f, 0.0f });
 
-	// タブの登録
 	TabDrawer::GetInstance()->AddTab(m_title_tab);
 	TabDrawer::GetInstance()->AddTab(m_warning_tab);
 
 	// タイトルシーンに入ったことを通知
-	const OnChangeTitleSceneEvent event{ m_smoke_transform };
+	const OnChangeTitleSceneEvent event{ m_smoke_transform, m_smoke_delete_handle };
 	EventSystem::GetInstance()->Publish(event);
 
 	Init();
@@ -48,6 +57,10 @@ TitleScene::~TitleScene()
 	const auto pool_holder = ObjectPoolHolder::GetInstance();
 	pool_holder->RemoveObjectPool(m_title_scene_effect_object_pool->GetName());
 
+	// ライトの削除
+	const auto light_holder = LightHolder::GetInstance();
+	light_holder->DeleteLight(LightName.TITLE_LIGHT);
+
 	// タブの登録を解除
 	TabDrawer::GetInstance()->RemoveTab(typeid(TitleTab));
 	TabDrawer::GetInstance()->RemoveTab(typeid(WarningTab));
@@ -55,13 +68,16 @@ TitleScene::~TitleScene()
 	// カメラの登録を解除
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	cinemachine_brain->RemoveVirtualCamera(m_title_camera->GetCameraHandle());
+
+	EffectManager::GetInstance()->ForciblyReturnPoolEffect(m_smoke_delete_handle);
 }
 
 void TitleScene::Init()
 {
+	// タブの登録
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	cinemachine_brain->SetNear(1.0f);
-	cinemachine_brain->SetFar (100.0f);
+	cinemachine_brain->SetFar (50.0f);
 	cinemachine_brain->SetFOV (25.0f);
 }
 
@@ -85,6 +101,8 @@ void TitleScene::Update()
 		m_title_tab		->AllowSelect();
 	}
 
+	// TODO : 後に別クラス化
+
 	// 基準となるトランスフォームを設定
 	const auto model_handle = m_title_character->GetModeler()->GetModelHandle();
 	auto	   spine2_m		= MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, BonePath.SPINE_2));
@@ -95,13 +113,46 @@ void TitleScene::Update()
 
 	// エフェクト
 	const auto delta_time = GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kUI);
-	math::Increase(m_sin, 0.1f * delta_time, DX_PI_F, true);
+	math::Increase(m_sin, 0.5f * delta_time, DX_PI_F, true);
 	const auto num = sin(m_sin);
 	const auto deg = math::ConvertValueNewRange<float, float>(0.0f, 1.0f, -60.0f, -30.0f, num);
 	MATRIX rot_m = MGetIdent();
 	CreateRotationXYZMatrix(&rot_m, 0.0f, -90.0f * math::kDegToRad, deg * math::kDegToRad);
-	m_smoke_transform->SetPos(CoordinateKind::kWorld, VGet(40, 25, 0));
+	m_smoke_transform->SetPos(CoordinateKind::kWorld, VGet(20, 45, 0));
 	m_smoke_transform->SetRot(CoordinateKind::kWorld, MGetRotElem(rot_m));
+
+
+	const auto light_holder = LightHolder::GetInstance();
+	auto light = std::dynamic_pointer_cast<SpotLight>(light_holder->GetLight(LightName.TITLE_LIGHT));
+	auto pos = light->GetPos();
+	if (CheckHitKey(KEY_INPUT_D))
+	{
+		pos.x += 0.1;
+	}
+	if (CheckHitKey(KEY_INPUT_A))
+	{
+		pos.x -= 0.1;
+	}
+	if (CheckHitKey(KEY_INPUT_W))
+	{
+		pos.y += 0.1;
+	}
+	if (CheckHitKey(KEY_INPUT_S))
+	{
+		pos.y -= 0.1;
+	}
+	if (CheckHitKey(KEY_INPUT_E))
+	{
+		pos.z += 0.1;
+	}
+	if (CheckHitKey(KEY_INPUT_Q))
+	{
+		pos.z -= 0.1;
+	}
+	light->SetPos(pos);
+
+	const auto p = std::dynamic_pointer_cast<SpotLight>(light_holder->GetLight(LightName.TITLE_LIGHT))->GetPos();
+	DrawFormatString(0, 80, 0xffffff, "%f, %f, %f", p.x, p.y, p.z);
 }
 
 void TitleScene::LateUpdate()
@@ -117,6 +168,8 @@ void TitleScene::DrawToShadowMap() const
 void TitleScene::Draw() const
 {
 	m_title_character->Draw();
+
+	DrawSphere3D(VGet(0.0f, -10.0f, -60.0f), 10, 8, 0xffffff, 0xffffff, FALSE);
 
 	DrawFormatString(0, 40, 0xffffff, "Current Scene : TITLE");
 	DrawFormatString(0, 60, 0xffffff, "SPACE / A でゲームスタート");

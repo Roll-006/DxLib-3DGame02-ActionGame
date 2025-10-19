@@ -7,6 +7,8 @@ ShadowMap::ShadowMap() :
 	m_max_offset_pos	(v3d::GetZeroV()),
 	m_shadow_map_handle	(MakeShadowMap(kSizeX, kSizeY))
 {
+	SetShadowMapLightDirection(m_shadow_map_handle, v3d::GetNormalizedV(VGet(0.0f, 1.5f, 1.0f)));
+
 	// ÉCÉxÉìÉgìoò^
 	EventSystem::GetInstance()->Subscribe<ChangeSceneEvent>(this, &ShadowMap::CreateShadowMap);
 }
@@ -56,11 +58,13 @@ void ShadowMap::CreateShadowMap(const ChangeSceneEvent& event)
 	case SceneKind::kTitle:
 		m_min_offset_pos = { -50.0f,  0.0f, -50.0f };
 		m_max_offset_pos = {  50.0f, 30.0f,  50.0f };
+		SetShadowMapLightDirection(m_shadow_map_handle, v3d::GetNormalizedV(VGet(0.0f, 1.5f, 1.0f)));
 		break;
 
 	case SceneKind::kPlay:
 		m_min_offset_pos = { -700.0f, -10.0f, -700.0f };
 		m_max_offset_pos = {  700.0f, 300.0f,  700.0f };
+		SetShadowMapLightDirection(m_shadow_map_handle, v3d::GetNormalizedV(VGet(0.5f, -0.5f, 0.5f)));
 		break;
 
 	default:
@@ -68,5 +72,4 @@ void ShadowMap::CreateShadowMap(const ChangeSceneEvent& event)
 	}
 
 	// TODO : å„Ç…ç≈Ç‡ã≠Ç¢åıåπÇ…âeãøÇéÛÇØÇÈÇÊÇ§Ç…ïœçX
-	SetShadowMapLightDirection(m_shadow_map_handle, VGet(0.5f, -0.5f, 0.5f));
 }

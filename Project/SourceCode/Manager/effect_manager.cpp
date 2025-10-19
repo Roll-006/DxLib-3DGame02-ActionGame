@@ -242,7 +242,7 @@ void EffectManager::OutputTitleSceneEffect(const OnChangeTitleSceneEvent& event)
 	{
 		const auto effect = std::static_pointer_cast<Effect>(obj);
 		effect->AttachOwnerTransform(event.smoke_transform);
-		//effect->SetOffsetAngle(VGet(0.0f, DX_PI_F, 0.0f));
+		effect->AddReturnPoolTriggerHandle(event.smoke_delete_handle);
 		effect->SetOffsetScale(2.5f);
 		AddEffect(effect);
 	}

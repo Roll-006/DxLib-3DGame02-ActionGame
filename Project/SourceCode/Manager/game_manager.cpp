@@ -16,6 +16,7 @@ GameManager::GameManager():
 	UIDrawer				::Generate();
 	TabDrawer				::Generate();
 	FontHandler				::Generate();
+	LightHolder				::Generate();
 
 	GameTimeManager			::Generate();
 	ObjManager				::Generate();
@@ -46,6 +47,7 @@ GameManager::~GameManager()
 	UIDrawer				::Delete();
 	TabDrawer				::Delete();
 	FontHandler				::Delete();
+	LightHolder				::Delete();
 
 	GameTimeManager			::Delete();
 	ObjManager				::Delete();

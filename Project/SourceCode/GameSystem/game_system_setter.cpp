@@ -32,13 +32,6 @@ void GameSystemSetter::SetUpGameSystem()
 	SetUseZBuffer3D  (TRUE);
 	SetWriteZBuffer3D(TRUE);
 
-	// ライト
-	SetUseLighting(TRUE);
-	//SetGlobalAmbientLight();
-	//SetLightDirection();
-	//SetLightDifColor();
-	//SetLightAmbColor();
-
 	// フォグ
 	SetFogEnable(TRUE);
 	SetFogMode(DX_FOGMODE_LINEAR);

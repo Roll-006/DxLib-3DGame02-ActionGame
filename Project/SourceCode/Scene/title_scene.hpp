@@ -3,6 +3,8 @@
 
 #include "../Object/title_character.hpp"
 #include "../ObjectPool/title_scene_effect_object_pool.hpp"
+
+#include "../Light/light_holder.hpp"
 #include "../VirtualCamera/virtual_camera.hpp"
 
 #include "../Tab/tab_drawer.hpp"
@@ -41,4 +43,5 @@ private:
 	std::shared_ptr<Transform>					m_aim_transform;
 	std::shared_ptr<Transform>					m_smoke_transform;
 	float m_sin;
+	int m_smoke_delete_handle;
 };

@@ -168,6 +168,10 @@
     <ClCompile Include="SourceCode\Handle\handle_keeper.cpp" />
     <ClCompile Include="SourceCode\Input\input_checker.cpp" />
     <ClCompile Include="SourceCode\JSON\json_loader.cpp" />
+    <ClCompile Include="SourceCode\Light\spot_light.cpp" />
+    <ClCompile Include="SourceCode\Light\point_light.cpp" />
+    <ClCompile Include="SourceCode\Light\directional_light.cpp" />
+    <ClCompile Include="SourceCode\Light\light_holder.cpp" />
     <ClCompile Include="SourceCode\main.cpp" />
     <ClCompile Include="SourceCode\Manager\collision_manager.cpp" />
     <ClCompile Include="SourceCode\Manager\effect_manager.cpp" />
@@ -376,6 +380,7 @@
     <ClInclude Include="SourceCode\Concept\state_concepts.hpp" />
     <ClInclude Include="SourceCode\Concept\vector_concepts.hpp" />
     <ClInclude Include="SourceCode\CSV\csv_loader.hpp" />
+    <ClInclude Include="SourceCode\Data\light_range_attenuation_data.hpp" />
     <ClInclude Include="SourceCode\Data\font_data.hpp" />
     <ClInclude Include="SourceCode\Data\collider_data.hpp" />
     <ClInclude Include="SourceCode\Data\melee_candidate_data.hpp" />
@@ -425,6 +430,7 @@
     <ClInclude Include="SourceCode\IncludeList\shape.hpp" />
     <ClInclude Include="SourceCode\IncludeList\vector.hpp" />
     <ClInclude Include="SourceCode\Input\input_checker.hpp" />
+    <ClInclude Include="SourceCode\Interface\i_light.hpp" />
     <ClInclude Include="SourceCode\Interface\i_tab.hpp" />
     <ClInclude Include="SourceCode\Interface\i_grabber.hpp" />
     <ClInclude Include="SourceCode\Interface\i_ui_element.hpp" />
@@ -455,6 +461,7 @@
     <ClInclude Include="SourceCode\Kind\collider_kind.hpp" />
     <ClInclude Include="SourceCode\Kind\command_kind.hpp" />
     <ClInclude Include="SourceCode\Kind\coordinate_kind.hpp" />
+    <ClInclude Include="SourceCode\Kind\light_kind.hpp" />
     <ClInclude Include="SourceCode\Kind\device_kind.hpp" />
     <ClInclude Include="SourceCode\Kind\enemy_role_kind.hpp" />
     <ClInclude Include="SourceCode\Kind\event_kind.hpp" />
@@ -480,6 +487,10 @@
     <ClInclude Include="SourceCode\Kind\title_character_anim_kind.hpp" />
     <ClInclude Include="SourceCode\Kind\zombie_anim_kind.hpp" />
     <ClInclude Include="SourceCode\Kind\zombie_state_kind.hpp" />
+    <ClInclude Include="SourceCode\Light\spot_light.hpp" />
+    <ClInclude Include="SourceCode\Light\point_light.hpp" />
+    <ClInclude Include="SourceCode\Light\directional_light.hpp" />
+    <ClInclude Include="SourceCode\Light\light_holder.hpp" />
     <ClInclude Include="SourceCode\Manager\collision_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\effect_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\enemy_manager.hpp" />
@@ -489,6 +500,7 @@
     <ClInclude Include="SourceCode\Manager\rifle_cartridge_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\scene_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\weapon_manager.hpp" />
+    <ClInclude Include="SourceCode\Name\light_name.hpp" />
     <ClInclude Include="SourceCode\Name\font_name.hpp" />
     <ClInclude Include="SourceCode\Name\object_pool_name.hpp" />
     <ClInclude Include="SourceCode\Name\obj_name.hpp" />

@@ -11,6 +11,7 @@
 #include "../UI/player_ui_creator.hpp"
 #include "../Tab/tab_drawer.hpp"
 #include "../Tab/game_over_tab.hpp"
+#include "../Light/light_holder.hpp"
 
 #include "../ObjectPool/play_scene_effect_object_pool.hpp"
 
