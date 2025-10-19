@@ -178,6 +178,7 @@
     <ClCompile Include="SourceCode\Manager\rifle_cartridge_manager.cpp" />
     <ClCompile Include="SourceCode\Manager\scene_manager.cpp" />
     <ClCompile Include="SourceCode\Manager\weapon_manager.cpp" />
+    <ClCompile Include="SourceCode\ObjectPool\title_scene_effect_object_pool.cpp" />
     <ClCompile Include="SourceCode\ObjectPool\share_scene_effect_object_pool.cpp" />
     <ClCompile Include="SourceCode\ObjectPool\play_scene_effect_object_pool.cpp" />
     <ClCompile Include="SourceCode\ObjectPool\object_pool_holder.cpp" />
@@ -193,6 +194,7 @@
     <ClCompile Include="SourceCode\Object\non_collide_rocket_bomb.cpp" />
     <ClCompile Include="SourceCode\Object\rocket_bomb.cpp" />
     <ClCompile Include="SourceCode\Object\rocket_launcher.cpp" />
+    <ClCompile Include="SourceCode\Object\title_character.cpp" />
     <ClCompile Include="SourceCode\Object\zombie.cpp" />
     <ClCompile Include="SourceCode\Object\ground.cpp" />
     <ClCompile Include="SourceCode\Object\house.cpp" />
@@ -221,6 +223,7 @@
     <ClCompile Include="SourceCode\Part\screen_filter.cpp" />
     <ClCompile Include="SourceCode\Part\transform.cpp" />
     <ClCompile Include="SourceCode\Part\weapon_shortcut_selecter.cpp" />
+    <ClCompile Include="SourceCode\Part\title_character_animator.cpp" />
     <ClCompile Include="SourceCode\Part\zombie_animator.cpp" />
     <ClCompile Include="SourceCode\Part\zombie_state_controller.cpp" />
     <ClCompile Include="SourceCode\Random\random_generator.cpp" />
@@ -386,6 +389,7 @@
     <ClInclude Include="SourceCode\Data\input_data.hpp" />
     <ClInclude Include="SourceCode\Debugger\debugger.hpp" />
     <ClInclude Include="SourceCode\Drawer\drawer.hpp" />
+    <ClInclude Include="SourceCode\Event\on_change_title_scene_event.hpp" />
     <ClInclude Include="SourceCode\Event\exit_game_event.hpp" />
     <ClInclude Include="SourceCode\Event\change_scene_event.hpp" />
     <ClInclude Include="SourceCode\Event\dead_player_event.hpp" />
@@ -473,6 +477,7 @@
     <ClInclude Include="SourceCode\Kind\virtual_camera_controller_kind.hpp" />
     <ClInclude Include="SourceCode\Kind\weapon_kind.hpp" />
     <ClInclude Include="SourceCode\Kind\weapon_shortcut_pos_kind.hpp" />
+    <ClInclude Include="SourceCode\Kind\title_character_anim_kind.hpp" />
     <ClInclude Include="SourceCode\Kind\zombie_anim_kind.hpp" />
     <ClInclude Include="SourceCode\Kind\zombie_state_kind.hpp" />
     <ClInclude Include="SourceCode\Manager\collision_manager.hpp" />
@@ -488,6 +493,7 @@
     <ClInclude Include="SourceCode\Name\object_pool_name.hpp" />
     <ClInclude Include="SourceCode\Name\obj_name.hpp" />
     <ClInclude Include="SourceCode\Name\ui_creator_name.hpp" />
+    <ClInclude Include="SourceCode\ObjectPool\title_scene_effect_object_pool.hpp" />
     <ClInclude Include="SourceCode\ObjectPool\share_scene_effect_object_pool.hpp" />
     <ClInclude Include="SourceCode\ObjectPool\play_scene_effect_object_pool.hpp" />
     <ClInclude Include="SourceCode\ObjectPool\object_pool_holder.hpp" />
@@ -503,6 +509,7 @@
     <ClInclude Include="SourceCode\Object\non_collide_rocket_bomb.hpp" />
     <ClInclude Include="SourceCode\Object\rocket_bomb.hpp" />
     <ClInclude Include="SourceCode\Object\rocket_launcher.hpp" />
+    <ClInclude Include="SourceCode\Object\title_character.hpp" />
     <ClInclude Include="SourceCode\Object\zombie.hpp" />
     <ClInclude Include="SourceCode\Object\ground.hpp" />
     <ClInclude Include="SourceCode\Object\house.hpp" />
@@ -532,6 +539,7 @@
     <ClInclude Include="SourceCode\Part\screen_filter.hpp" />
     <ClInclude Include="SourceCode\Part\transform.hpp" />
     <ClInclude Include="SourceCode\Part\weapon_shortcut_selecter.hpp" />
+    <ClInclude Include="SourceCode\Part\title_character_animator.hpp" />
     <ClInclude Include="SourceCode\Part\zombie_animator.hpp" />
     <ClInclude Include="SourceCode\Part\zombie_state_controller.hpp" />
     <ClInclude Include="SourceCode\Path\animation_path.hpp" />

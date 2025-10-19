@@ -8,6 +8,7 @@ static struct ObjTag
 
 	const std::string PLAYER			= "player";
 	const std::string ENEMY				= "enemy";
+	const std::string OBJ_CHARACTER		= "obj_character";
 
 	const std::string BUILDING			= "building";
 	const std::string GROUND			= "ground";

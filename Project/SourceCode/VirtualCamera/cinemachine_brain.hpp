@@ -68,6 +68,10 @@ public:
 
 	/// @brief ブレンドにかける時間を設定する
 	void SetBlendTime(const float blend_time);
+
+	void SetNear(const float camera_near);
+	void SetFar (const float camera_far);
+	void SetFOV (const float camera_fov);
 	#pragma endregion
 
 
@@ -93,9 +97,9 @@ public:
 	/// @brief バーチャルカメラをブレンド中であるかを判定
 	[[nodiscard]] bool IsBlending() const { return m_is_blending; }
 
-	[[nodiscard]] float GetNear()	const { return kNear;	}
-	[[nodiscard]] float GetFar()	const { return kFar;	}
-	[[nodiscard]] float GetFOV()	const { return kFOV;	}
+	[[nodiscard]] float GetNear()	const { return m_near;	}
+	[[nodiscard]] float GetFar()	const { return m_far;	}
+	[[nodiscard]] float GetFOV()	const { return m_fov;	}
 	#pragma endregion
 
 private:
@@ -125,9 +129,9 @@ private:
 
 
 private:
-	static constexpr float kNear		= 10.0f;
-	static constexpr float kFar			= 4000.0f;
-	static constexpr float kFOV			= 25.0f;
+	float m_near;
+	float m_far;
+	float m_fov;
 
 	std::shared_ptr<MainCamera>									m_main_camera;				// バーチャルカメラを適用させるメインカメラ
 	std::shared_ptr<VirtualCamera>								m_origin_virtual_camera;	// 起点とするバーチャルカメラ

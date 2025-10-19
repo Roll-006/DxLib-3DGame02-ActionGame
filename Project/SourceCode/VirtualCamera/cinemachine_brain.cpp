@@ -2,6 +2,9 @@
 #include "../Object/player.hpp"
 
 CinemachineBrain::CinemachineBrain() :
+	m_near							(0.0f),
+	m_far							(0.0f),
+	m_fov							(0.0f),
 	m_main_camera					(nullptr),
 	m_blend_origin_transform		(nullptr),
 	m_blend_target_transform		(nullptr),
@@ -15,8 +18,8 @@ CinemachineBrain::CinemachineBrain() :
 	m_is_invert_horizontal			(false),
 	m_is_invert_vertical			(false)
 {
-	SetCameraNearFar(kNear, kFar);
-	SetupCamera_Perspective(kFOV * math::kDegToRad);
+	SetCameraNearFar(m_near, m_far);
+	SetupCamera_Perspective(m_fov * math::kDegToRad);
 }
 
 CinemachineBrain::~CinemachineBrain()
@@ -134,6 +137,24 @@ void CinemachineBrain::SetBlendTime(const float blend_time)
 
 	m_blend_time = blend_time;
 	m_blend_timer *= scale;
+}
+
+void CinemachineBrain::SetNear(const float camera_near)
+{
+	m_near = camera_near;
+	SetCameraNearFar(m_near, m_far);
+}
+
+void CinemachineBrain::SetFar(const float camera_far)
+{
+	m_far = camera_far;
+	SetCameraNearFar(m_near, m_far);
+}
+
+void CinemachineBrain::SetFOV(const float camera_fov)
+{
+	m_fov = camera_fov;
+	SetupCamera_Perspective(m_fov * math::kDegToRad);
 }
 #pragma endregion
 

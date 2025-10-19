@@ -20,4 +20,5 @@
 #include "../Event/on_downed_enemy_spotted_event.hpp"
 #include "../Event/on_melee_target_lost_event.hpp"
 #include "../Event/change_scene_event.hpp"
+#include "../Event/on_change_title_scene_event.hpp"
 #include "../Event/exit_game_event.hpp"

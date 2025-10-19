@@ -3,7 +3,7 @@
 SceneManager::SceneManager() : 
 	m_share_scene	(std::make_shared<ShareScene>()),
 	m_current_scene	(std::make_shared<TitleScene>()),
-	m_drawer		(std::make_unique<Drawer>(ObjManager::GetInstance()->GetObj<ObjBase>(ObjName.MAIN_CAMERA)->GetTransform()))
+	m_drawer		(std::make_unique<Drawer>())
 {
 
 }
@@ -52,7 +52,7 @@ void SceneManager::ChangeScene()
 	const auto next_scene = m_current_scene->ChangeScene();
 	if (next_scene)
 	{
-		const ChangeSceneEvent event{ m_current_scene->GetSceneKind() };
+		const ChangeSceneEvent event{ m_current_scene->GetSceneKind(), next_scene->GetSceneKind() };
 		EventSystem::GetInstance()->Publish(event);
 
 		m_current_scene = next_scene;

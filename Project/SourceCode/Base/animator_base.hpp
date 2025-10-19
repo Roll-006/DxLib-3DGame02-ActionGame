@@ -55,7 +55,8 @@ protected:
 	void BlendAnim();
 
 private:
-	virtual void LoadAnim() abstract;
+	virtual void LoadAnim()		abstract;
+	virtual void ChangeAnim()	abstract;
 
 	void DetachAnim(const TimeKind time_kind, const BodyKind body_kind);
 

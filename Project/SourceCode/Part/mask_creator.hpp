@@ -4,7 +4,13 @@
 class MaskCreator final
 {
 public:
+	/// @brief マスクスクリーンを生成する
+	/// @brief UseMaskを使用する前にこの関数を使用する必要あり
 	void CreateMask();
+
+	/// @brief マスクスクリーンを削除する
+	/// @brief 同スクリーンで複数回マスクを使用する場合、
+	/// @brief 最後のマスクの使用が終了した後にこの関数を使用する
 	void DeleteMask();
 
 	/// @brief マスクを使用する

@@ -568,6 +568,15 @@
     <ClCompile Include="SourceCode\Part\movie_player.cpp">
       <Filter>SourceCode\Part</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\Object\title_character.cpp">
+      <Filter>SourceCode\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Part\title_character_animator.cpp">
+      <Filter>SourceCode\Part</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\ObjectPool\title_scene_effect_object_pool.cpp">
+      <Filter>SourceCode\ObjectPool</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\character_base.hpp">
@@ -1511,6 +1520,21 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Path\movie_path.hpp">
       <Filter>SourceCode\Path</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Object\title_character.hpp">
+      <Filter>SourceCode\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Part\title_character_animator.hpp">
+      <Filter>SourceCode\Part</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Kind\title_character_anim_kind.hpp">
+      <Filter>SourceCode\Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\on_change_title_scene_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\ObjectPool\title_scene_effect_object_pool.hpp">
+      <Filter>SourceCode\ObjectPool</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -14,9 +14,8 @@ public:
 	void Update()	override;
 
 private:
-	void LoadAnim() override;
-
-	void ChangeAnim();
+	void LoadAnim()		override;
+	void ChangeAnim()	override;
 
 
 	#pragma region ó‘Ô‚Ì‡¬

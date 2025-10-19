@@ -30,6 +30,8 @@ PlayScene::PlayScene() :
 
 	TabDrawer::GetInstance()->AddTab		(m_game_over_tab);
 	UIDrawer ::GetInstance()->AddUICreator	(m_player_ui_creator);
+
+	Init();
 }
 
 PlayScene::~PlayScene()
@@ -54,6 +56,12 @@ void PlayScene::Init()
 {
 	const auto game_time_manager = GameTimeManager::GetInstance();
 	game_time_manager->InitTimeScale();
+
+	// ƒJƒƒ‰‰Šú‰»
+	const auto cinemachine_brain = CinemachineBrain::GetInstance();
+	cinemachine_brain->SetNear(10.0f);
+	cinemachine_brain->SetFar (4000.0f);
+	cinemachine_brain->SetFOV (25.0f);
 
 	m_player_ui_creator->Init();
 }

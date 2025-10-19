@@ -198,16 +198,13 @@ void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 		if (target_tag == ObjTag.ENEMY)
 		{
 			const auto character = dynamic_cast<CharacterBase*>(target_obj);
-			if (!character->IsInvincible())
+			if (action_state_kind == player_state::ActionStateKind::kFrontKick)
 			{
-				if (action_state_kind == player_state::ActionStateKind::kFrontKick)
-				{
-					AttackFrontMelee(character);
-				}
-				else if (action_state_kind == player_state::ActionStateKind::kRoundhouseKick)
-				{
-					AttackVersatilityMelee(character);
-				}
+				AttackFrontMelee(character);
+			}
+			else if (action_state_kind == player_state::ActionStateKind::kRoundhouseKick)
+			{
+				AttackVersatilityMelee(character);
 			}
 		}
 		break;
@@ -256,6 +253,7 @@ void Player::OnRelease()
 void Player::AttackFrontMelee(CharacterBase* target)
 {
 	// front kick
+	if (target->IsInvincible()) { return; }
 
 	const auto dir = v3d::GetNormalizedV(m_transform->GetForward(CoordinateKind::kWorld) + VGet(0.0f, 0.5f, 0.0f));
 	target->OnDamage(HealthPartKind::kMain, 100.0f);
@@ -269,12 +267,13 @@ void Player::AttackFrontMelee(CharacterBase* target)
 
 void Player::AttackBackMelee(CharacterBase* target)
 {
-
+	if (target->IsInvincible()) { return; }
 }
 
 void Player::AttackVersatilityMelee(CharacterBase* target)
 {
 	// roundhouse kick
+	if (target->IsInvincible()) { return; }
 
 	const auto dir = v3d::GetNormalizedV(m_transform->GetForward(CoordinateKind::kWorld) + VGet(0.0f, 0.5f, 0.0f));
 	target->OnDamage(HealthPartKind::kMain, 100.0f);
@@ -712,29 +711,6 @@ void Player::CalcInputSlopeFromCommand()
 	}
 	m_input_slope = v3d::GetNormalizedV(current_input_slope) * InputChecker::kStickMaxSlope;
 
-	//// 継続して入力されているvelocityを取得
-	//if (   command->IsExecute(CommandKind::kMoveUpPlayer,	 TimeKind::kCurrent)
-	//	&& command->IsExecute(CommandKind::kMoveUpPlayer,    TimeKind::kPrev))
-	//{
-	//	continue_input_slope += forward;
-	//}
-	//if (   command->IsExecute(CommandKind::kMoveDownPlayer,  TimeKind::kCurrent)
-	//	&& command->IsExecute(CommandKind::kMoveDownPlayer,  TimeKind::kPrev))
-	//{
-	//	continue_input_slope -= forward;
-	//}
-	//if (   command->IsExecute(CommandKind::kMoveLeftPlayer,  TimeKind::kCurrent)
-	//	&& command->IsExecute(CommandKind::kMoveLeftPlayer,  TimeKind::kPrev))
-	//{
-	//	continue_input_slope -= right;
-	//}
-	//if (   command->IsExecute(CommandKind::kMoveRightPlayer, TimeKind::kCurrent)
-	//	&& command->IsExecute(CommandKind::kMoveRightPlayer, TimeKind::kPrev))
-	//{
-	//	continue_input_slope += right;
-	//}
-	//continue_input_slope = v3d::GetNormalizedV(continue_input_slope) * (InputChecker::kStickMaxSlope - InputChecker::kStickDeadZone);
-
 	// 継続して入力されていたvelocityが、現在のvelocityと逆を向いていた場合現在のvelocityを縮める
 	if (std::abs(math::GetAngleBetweenTwoVector(m_input_slope, continue_input_slope) - DX_PI_F) < math::kEpsilonLow)
 	{
@@ -763,29 +739,6 @@ void Player::NotifyHealth()
 
 	m_prev_health = m_health.at(HealthPartKind::kMain)->GetCurrentValue();
 }
-
-//void Player::CalcCameraAimPos()
-//{
-//	m_modeler->ApplyMatrix();
-//
-//	// 追跡するボーンから行列を取得
-//	const auto	model_handle	= m_modeler->GetModelHandle();
-//	const auto	frame_num		= MV1SearchFrame(model_handle, BonePath.SPINE_2);
-//	auto		frame_mat		= MV1GetFrameLocalWorldMatrix(model_handle, frame_num);
-//	auto		aim_pos			= MGetTranslateElem(frame_mat);
-//	
-//	if (!IsTrackCameraOriginBone())
-//	{
-//		// ボーンと同じ高さの位置を追跡
-//		const auto begin_pos	= m_transform->GetPos(CoordinateKind::kWorld);
-//		const auto distance		= begin_pos - aim_pos;
-//		aim_pos					= begin_pos + m_transform->GetUp(CoordinateKind::kWorld) * VSize(distance);
-//	}
-//
-//	m_current_camera_aim_pos = math::GetApproachedVector(m_current_camera_aim_pos, aim_pos, kCameraAimOffsetBasicSpeed * VSize(aim_pos - m_current_camera_aim_pos));
-//
-//	m_camera_aim_transform->SetPos(CoordinateKind::kWorld, m_current_camera_aim_pos);
-//}
 
 VECTOR Player::GetMoveForward()
 {

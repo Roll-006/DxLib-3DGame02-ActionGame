@@ -5,6 +5,7 @@ static struct ObjName
 {
 	#pragma region カメラ
 	const std::string MAIN_CAMERA								= "main_camera";
+	const std::string TITLE_CAMERA								= "title_camera";
 	const std::string ROT_CONTROL_VIRTUAL_CAMERA				= "rot_control_virtual_camera";
 	const std::string AIM_CONTROL_VIRTUAL_CAMERA				= "aim_control_virtual_camera";
 	const std::string ROCKET_LAUNCHER_ENTER_ROT_VIRTUAL_CAMERA	= "rocket_launcher_enter_rot_virtual_camera";
@@ -17,6 +18,7 @@ static struct ObjName
 	#pragma region キャラクター
 	const std::string PLAYER									= "player";
 	const std::string ZOMBIE									= "zombie";
+	const std::string TITLE_CHARACTER							= "title_character";
 	#pragma endregion
 
 
@@ -48,6 +50,7 @@ static struct ObjName
 
 
 	#pragma region エフェクト
+	const std::string TITLE_SMOKE								= "title_smoke";
 	const std::string LIGHT_ROCKET_LAUNCHER_EXHAUST_VENT_EFFECT = "light_rocket_launcher_exhaust_vent_effect";
 	const std::string EXPANDING_SMOKE_EFFECT					= "expanding_smoke_effect";
 	const std::string ROCKET_BOMB_HIT_EXPLOSION_EFFECT			= "rocket_bomb_hit_explosion_effect";

@@ -75,7 +75,7 @@ void MainMenuSelectButton::Update()
 
 void MainMenuSelectButton::Draw() const
 {
-	m_button_screen->Draw(true);
+	m_button_screen->Draw();
 }
 
 void MainMenuSelectButton::CalcAlphaBlendNum()

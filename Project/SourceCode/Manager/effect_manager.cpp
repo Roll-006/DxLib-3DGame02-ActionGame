@@ -10,6 +10,7 @@ EffectManager::EffectManager()
 	EventSystem::GetInstance()->Subscribe<OnShotBulletEvent>		(this, &EffectManager::OutputOnShotBulletEffect);
 	EventSystem::GetInstance()->Subscribe<OnHitBulletEvent>			(this, &EffectManager::OutputOnHitBulletEffect);
 	EventSystem::GetInstance()->Subscribe<OnDamageEvent>			(this, &EffectManager::OutputOnDamageEffect);
+	EventSystem::GetInstance()->Subscribe<OnChangeTitleSceneEvent>	(this, &EffectManager::OutputTitleSceneEffect);
 }
 
 EffectManager::~EffectManager()
@@ -20,6 +21,7 @@ EffectManager::~EffectManager()
 	EventSystem::GetInstance()->Unsubscribe<OnShotBulletEvent>		(this, &EffectManager::OutputOnShotBulletEffect);
 	EventSystem::GetInstance()->Unsubscribe<OnHitBulletEvent>		(this, &EffectManager::OutputOnHitBulletEffect);
 	EventSystem::GetInstance()->Unsubscribe<OnDamageEvent>			(this, &EffectManager::OutputOnDamageEffect);
+	EventSystem::GetInstance()->Unsubscribe<OnChangeTitleSceneEvent>(this, &EffectManager::OutputTitleSceneEffect);
 }
 
 void EffectManager::Update()
@@ -226,6 +228,22 @@ void EffectManager::OutputOnDamageEffect(const OnDamageEvent& event)
 	{
 		const auto effect = std::static_pointer_cast<Effect>(obj);
 		effect->GetTransform()->SetPos(CoordinateKind::kWorld, event.hit_pos);
+		AddEffect(effect);
+	}
+}
+
+void EffectManager::OutputTitleSceneEffect(const OnChangeTitleSceneEvent& event)
+{
+	const auto pool = ObjectPoolHolder::GetInstance()->GetObjectPool(ObjectPoolName.TITLE_SCENE_EFFECT_POOL);
+	std::shared_ptr<ObjBase> obj = nullptr;
+
+	obj = pool->GetObj(ObjName.TITLE_SMOKE);
+	if (obj)
+	{
+		const auto effect = std::static_pointer_cast<Effect>(obj);
+		effect->AttachOwnerTransform(event.smoke_transform);
+		//effect->SetOffsetAngle(VGet(0.0f, DX_PI_F, 0.0f));
+		effect->SetOffsetScale(2.5f);
 		AddEffect(effect);
 	}
 }

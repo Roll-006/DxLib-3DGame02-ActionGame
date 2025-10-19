@@ -4,5 +4,6 @@
 /// @brief シーンが変更された
 struct ChangeSceneEvent
 {
-	SceneKind prev_scene_kind = SceneKind::kNone;
+	SceneKind current_scene_kind	= SceneKind::kNone;		// 現在のシーン
+	SceneKind next_scene_kind		= SceneKind::kNone;		// 移行先シーン
 };

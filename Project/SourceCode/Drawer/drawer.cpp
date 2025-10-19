@@ -1,7 +1,7 @@
 #include "drawer.hpp"
 
-Drawer::Drawer(const std::shared_ptr<Transform>& camera_transform) :
-	m_shadow_map	(std::make_unique<ShadowMap>(camera_transform)),
+Drawer::Drawer() :
+	m_shadow_map	(std::make_unique<ShadowMap>()),
 	m_screen_filter	(std::make_shared<ScreenFilter>())
 {
 	

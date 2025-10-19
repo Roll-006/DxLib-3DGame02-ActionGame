@@ -33,6 +33,8 @@ public:
 	void OutputOnHitBulletEffect		(const OnHitBulletEvent& event);
 	/// @brief ダメージを受けた際のエフェクトを出力
 	void OutputOnDamageEffect			(const OnDamageEvent& event);
+	/// @brief タイトルシーンに遷移した際のエフェクトを出力
+	void OutputTitleSceneEffect			(const OnChangeTitleSceneEvent& event);
 	#pragma endregion
 
 private:
