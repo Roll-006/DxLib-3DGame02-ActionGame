@@ -44,7 +44,7 @@ void WarningTab::Update()
 {
 	if (!m_is_active) { return; }
 
-	m_can_select = m_result_screen->GetGraphicer()->GetAlphaBlendNum() >= 255 ? true : false;
+	m_can_select = m_result_screen->GetGraphicer()->GetBlendNum() >= 255 ? true : false;
 
 	if (m_can_select) { m_ui_selector->Update(); }
 
@@ -56,7 +56,7 @@ void WarningTab::OnDraw(const int main_screen_handle) const
 {
 	if (!m_is_active) { return; }
 
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_result_screen->GetGraphicer()->GetAlphaBlendNum());
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_result_screen->GetGraphicer()->GetBlendNum());
 	DrawGraph(0, 0, main_screen_handle, TRUE);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
@@ -86,7 +86,7 @@ void WarningTab::CalcAlphaBlendNum()
 		math::Increase(m_alpha_blend_num, static_cast<int>(kFadeSpeed * delta_time), 255, false);
 	}
 
-	m_result_screen->GetGraphicer()->SetAlphaBlendNum(m_alpha_blend_num);
+	m_result_screen->GetGraphicer()->SetBlendNum(m_alpha_blend_num);
 }
 
 void WarningTab::CreateResultScreen()

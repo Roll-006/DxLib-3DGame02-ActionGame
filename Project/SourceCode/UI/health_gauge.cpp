@@ -69,7 +69,7 @@ HealthGauge::HealthGauge(std::shared_ptr<Gauge>& health) :
 	m_frame_particle_graphic		->SetCenterPos(kCenterPos);
 	m_warning_circle_graphic		->SetCenterPos(kCenterPos);
 
-	m_warning_circle_graphic->SetAlphaBlendNum(0);
+	m_warning_circle_graphic->SetBlendNum(0);
 
 
 	// マスク用スクリーンを生成
@@ -171,7 +171,7 @@ void HealthGauge::CreateHealthGaugeScreen()
 	m_gauge_screen->UseScreen();
 
 	// 警告ゲージ
-	m_warning_gauge_screen->GetGraphicer()->SetAlphaBlendNum(m_blinking_alpha_blend_num);
+	m_warning_gauge_screen->GetGraphicer()->SetBlendNum(m_blinking_alpha_blend_num);
 	m_warning_gauge_screen->Draw();
 
 	// 最大HPフレーム
@@ -325,11 +325,11 @@ void HealthGauge::CalcBlinkingAlphaBlendNum()
 	// HPが12.5%以下の場合のみ警告点滅を描画
 	if (m_current_health_gauge_actual_percent < 12.5f)
 	{
-		m_warning_circle_graphic->SetAlphaBlendNum(m_blinking_alpha_blend_num);
+		m_warning_circle_graphic->SetBlendNum(m_blinking_alpha_blend_num);
 	}
 	else
 	{
-		m_warning_circle_graphic->SetAlphaBlendNum(0);
+		m_warning_circle_graphic->SetBlendNum(0);
 	}
 }
 

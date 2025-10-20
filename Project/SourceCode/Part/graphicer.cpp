@@ -7,7 +7,8 @@ Graphicer::Graphicer(const std::string& file_path) :
 	m_angle					(0.0f),
 	m_origin_width			(0),
 	m_origin_height			(0),
-	m_alpha_blend_num		(255),
+	m_blend_mode			(DX_BLENDMODE_ALPHA),
+	m_blend_num				(255),
 	m_is_invert_horizontal	(false),
 	m_is_invert_vertical	(false)
 {
@@ -21,7 +22,8 @@ Graphicer::Graphicer(const int graphic_handle) :
 	m_angle					(0.0f),
 	m_origin_width			(0),
 	m_origin_height			(0),
-	m_alpha_blend_num		(255),
+	m_blend_mode			(DX_BLENDMODE_ALPHA),
+	m_blend_num				(255),
 	m_is_invert_horizontal	(false),
 	m_is_invert_vertical	(false)
 {
@@ -35,9 +37,9 @@ Graphicer::~Graphicer()
 
 void Graphicer::Draw(const bool is_draw_graphic_frame) const
 {
-	if (m_alpha_blend_num > 0)
+	if (m_blend_num > 0)
 	{
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_alpha_blend_num);
+		SetDrawBlendMode(m_blend_mode, m_blend_num);
 
 		DrawRotaGraph3(
 			m_center_pos.x,

@@ -24,7 +24,7 @@ public:
 	[[nodiscard]] int  GetPriority()	const override	{ return m_priority; }
 	[[nodiscard]] bool IsActive()		const override	{ return m_is_active; }
 	[[nodiscard]] bool CanSelect()		const override	{ return m_can_select; }
-	[[nodiscard]] bool IsBack()			const			{ return m_is_execute_back && m_result_screen->GetGraphicer()->GetAlphaBlendNum() <= 0; }
+	[[nodiscard]] bool IsBack()			const			{ return m_is_execute_back && m_result_screen->GetGraphicer()->GetBlendNum() <= 0; }
 
 private:
 	void ExecuteDecide();

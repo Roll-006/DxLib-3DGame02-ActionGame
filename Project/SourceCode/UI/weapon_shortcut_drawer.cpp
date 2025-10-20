@@ -6,6 +6,9 @@ WeaponShortcutDrawer::WeaponShortcutDrawer(
 	m_state						(state),
 	m_weapon_shortcut_selecter	(weapon_shortcut_selecter),
 	m_weapon_graphic			(std::make_shared<WeaponGraphicGetter>()),
+	m_square_graphic			(std::make_shared<Graphicer>(UIGraphicPath.SQUARE_BLUR_WHITE)),
+	m_vertical_circle_graphic	(std::make_shared<Graphicer>(UIGraphicPath.VERTICAL_CIRCLE_BLUR_WHITE)),
+	m_horizontal_circle_graphic	(std::make_shared<Graphicer>(UIGraphicPath.HORIZONTAL_CIRCLE_BLUR_WHITE)),
 	m_icons_screen				(std::make_shared<ScreenCreator>(kScreenSize, Vector2D<int>(static_cast<int>(Window::kScreenSize.x * 0.72f), Window::kScreenHalfSize.y))),
 	m_mask_resource_icons_screen(std::make_shared<ScreenCreator>(kScreenSize, Vector2D<int>(static_cast<int>(Window::kScreenSize.x * 0.72f), Window::kScreenHalfSize.y))),
 	m_mask_screen				(std::make_shared<ScreenCreator>(Window::kScreenSize, Window::kCenterPos)),
@@ -17,6 +20,13 @@ WeaponShortcutDrawer::WeaponShortcutDrawer(
 	m_exit_scale_timer			(0.0f),
 	m_is_selected				(false)
 {
+	m_square_graphic			->SetBlendMode(DX_BLENDMODE_ADD);
+	m_vertical_circle_graphic	->SetBlendMode(DX_BLENDMODE_ADD);
+	m_horizontal_circle_graphic	->SetBlendMode(DX_BLENDMODE_ADD);
+	m_square_graphic			->SetBlendNum (200);
+	m_vertical_circle_graphic	->SetBlendNum (200);
+	m_horizontal_circle_graphic	->SetBlendNum (200);
+
 	CreateShortcutIcon();
 }
 
@@ -27,6 +37,9 @@ WeaponShortcutDrawer::~WeaponShortcutDrawer()
 
 void WeaponShortcutDrawer::LateUpdate()
 {
+	m_current_select_shortcut	= m_weapon_shortcut_selecter->GetCurrentSelectShortcut();
+	m_current_center_pos		= m_center_pos.at(m_current_select_shortcut);
+
 	// 描画する画像をアタッチ
 	for (const auto& icon : m_weapon_shortcut_icons)
 	{
@@ -46,8 +59,10 @@ void WeaponShortcutDrawer::LateUpdate()
 		m_end_draw_time = kDrawEndTime;
 	}
 
+	CalcBlurGraphicPos();
 	UpdateAnim();
-	CreateIconsCreen();
+	CreateIconsScreen();
+	CreateMaskResourceIconsScreen();
 }
 
 void WeaponShortcutDrawer::Draw(const int main_screen_handle) const
@@ -65,6 +80,45 @@ void WeaponShortcutDrawer::Draw(const int main_screen_handle) const
 	m_mask_creator->DeleteMask();
 
 	m_icons_screen->Draw();
+}
+
+void WeaponShortcutDrawer::CreateIconsScreen()
+{
+	m_icons_screen->UseScreen();
+
+	if (static_cast<int>(m_current_select_shortcut) % 2 == 0)
+	{
+		m_vertical_circle_graphic->Draw();
+	}
+	else
+	{
+		m_horizontal_circle_graphic->Draw();
+	}
+
+	m_square_graphic->Draw();
+
+	for (const auto& icon : m_weapon_shortcut_icons) { icon.second->Draw(); }
+
+	DrawBox(
+		static_cast<int>(m_current_center_pos.x - kIconWidth  * 0.5f),
+		static_cast<int>(m_current_center_pos.y - kIconHeight * 0.5f),
+		static_cast<int>(m_current_center_pos.x + kIconWidth  * 0.5f),
+		static_cast<int>(m_current_center_pos.y + kIconHeight * 0.5f),
+		0xffffff, FALSE);
+
+	m_icons_screen->UnuseScreen();
+}
+
+void WeaponShortcutDrawer::CreateMaskResourceIconsScreen()
+{
+	m_mask_resource_icons_screen->UseScreen();
+
+	for (const auto& icon : m_weapon_shortcut_icons)
+	{
+		icon.second->DrawToMaskResource();
+	}
+
+	m_mask_resource_icons_screen->UnuseScreen();
 }
 
 void WeaponShortcutDrawer::CreateShortcutIcon()
@@ -93,24 +147,32 @@ void WeaponShortcutDrawer::CreateShortcutIcon()
 	}
 }
 
-void WeaponShortcutDrawer::CreateIconsCreen()
+void WeaponShortcutDrawer::CalcBlurGraphicPos()
 {
-	const WeaponShortcutPosKind current_select_shortcut = m_weapon_shortcut_selecter->GetCurrentSelectShortcut();
-	const Vector2D<int>			current_center_pos = m_center_pos.at(current_select_shortcut);
+	m_square_graphic->SetCenterPos(m_current_center_pos);
 
-	m_icons_screen->UseScreen();
-	for (const auto& icon : m_weapon_shortcut_icons) { icon.second->Draw(); }
-	DrawBox(
-		static_cast<int>(current_center_pos.x - kIconWidth  * 0.5f),
-		static_cast<int>(current_center_pos.y - kIconHeight * 0.5f),
-		static_cast<int>(current_center_pos.x + kIconWidth  * 0.5f),
-		static_cast<int>(current_center_pos.y + kIconHeight * 0.5f),
-		0xffffff, FALSE);
-	m_icons_screen->UnuseScreen();
+	switch (m_current_select_shortcut)
+	{
+	case WeaponShortcutPosKind::kInsideUp:
+	case WeaponShortcutPosKind::kOutsideUp:
+		m_vertical_circle_graphic->SetCenterPos(kCenterPos + Vector2D<int>(0, static_cast<int>(-kFirstIntervalPos - kIconHeight - kIntervalPos * 0.5f)));
+		break;
 
-	m_mask_resource_icons_screen->UseScreen();
-	for (const auto& icon : m_weapon_shortcut_icons) { icon.second->DrawToMaskResource(); }
-	m_mask_resource_icons_screen->UnuseScreen();
+	case WeaponShortcutPosKind::kInsideLeft:
+	case WeaponShortcutPosKind::kOutsideLeft:
+		m_horizontal_circle_graphic->SetCenterPos(kCenterPos + Vector2D<int>(static_cast<int>(-kFirstIntervalPos - kIconWidth - kIntervalPos * 0.5f), 0));
+		break;
+
+	case WeaponShortcutPosKind::kInsideDown:
+	case WeaponShortcutPosKind::kOutsideDown:
+		m_vertical_circle_graphic->SetCenterPos(kCenterPos + Vector2D<int>(0, static_cast<int>(kFirstIntervalPos + kIconHeight + kIntervalPos * 0.5f)));
+		break;
+
+	case WeaponShortcutPosKind::kInsideRight:
+	case WeaponShortcutPosKind::kOutsideRight:
+		m_horizontal_circle_graphic->SetCenterPos(kCenterPos + Vector2D<int>(static_cast<int>(kFirstIntervalPos + kIconWidth + kIntervalPos * 0.5f), 0));
+		break;
+	}
 }
 
 void WeaponShortcutDrawer::UpdateAnim()
@@ -154,8 +216,8 @@ void WeaponShortcutDrawer::UpdateAnim()
 	m_alpha_blend_num	= math::GetLerp(0, 255, t);
 	m_scale				= math::GetLerp(0.5f, 1.0f, t);
 
-	m_icons_screen->GetGraphicer()->SetAlphaBlendNum(m_alpha_blend_num);
+	m_icons_screen->GetGraphicer()->SetBlendNum(m_alpha_blend_num);
 	m_icons_screen->GetGraphicer()->SetScale(m_scale);
-	m_mask_resource_icons_screen->GetGraphicer()->SetAlphaBlendNum(m_alpha_blend_num);
+	m_mask_resource_icons_screen->GetGraphicer()->SetBlendNum(m_alpha_blend_num);
 	m_mask_resource_icons_screen->GetGraphicer()->SetScale(m_scale);
 }

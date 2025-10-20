@@ -81,7 +81,7 @@ void MainMenuSelectButton::Draw() const
 void MainMenuSelectButton::CalcAlphaBlendNum()
 {
 	m_alpha_blend_num = m_is_active ? 255 : kNonSelectAlphaBlendNum;
-	m_button_screen->GetGraphicer()->SetAlphaBlendNum(m_alpha_blend_num);
+	m_button_screen->GetGraphicer()->SetBlendNum(m_alpha_blend_num);
 }
 
 void MainMenuSelectButton::CalcGraphicScale()

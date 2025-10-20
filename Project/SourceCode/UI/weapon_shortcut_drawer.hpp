@@ -21,8 +21,11 @@ public:
 	void Draw(const int main_screen_handle) const;
 
 private:
+	void CreateIconsScreen();
+	void CreateMaskResourceIconsScreen();
+
 	void CreateShortcutIcon();
-	void CreateIconsCreen();
+	void CalcBlurGraphicPos();
 	void UpdateAnim();
 
 private:
@@ -36,12 +39,19 @@ private:
 	static constexpr float			kExitAnimTime		= 0.2f;
 	static constexpr float			kDrawEndTime		= 2.0f;
 
+private:
 	std::unordered_map<TimeKind, std::shared_ptr<WeaponActionStateBase<Player>>>&	m_state;
 	std::shared_ptr<WeaponShortcutSelecter>											m_weapon_shortcut_selecter;
 
 	std::unordered_map<WeaponShortcutPosKind, std::shared_ptr<WeaponShortcutIcon>>	m_weapon_shortcut_icons;
 	std::shared_ptr<WeaponGraphicGetter>											m_weapon_graphic;
 	std::unordered_map<WeaponShortcutPosKind, Vector2D<int>>						m_center_pos;
+	WeaponShortcutPosKind															m_current_select_shortcut;
+	Vector2D<int>																	m_current_center_pos;
+
+	std::shared_ptr<Graphicer>														m_square_graphic;
+	std::shared_ptr<Graphicer>														m_vertical_circle_graphic;
+	std::shared_ptr<Graphicer>														m_horizontal_circle_graphic;
 	std::shared_ptr<ScreenCreator>													m_icons_screen;
 	std::shared_ptr<ScreenCreator>													m_mask_resource_icons_screen;
 	std::shared_ptr<ScreenCreator>													m_mask_screen;

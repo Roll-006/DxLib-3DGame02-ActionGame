@@ -32,7 +32,7 @@ void DamageFilter::LateUpdate()
 	const auto delta_time = GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kUI);
 	math::Increase(m_blinking_sin, kBlinkingSpeed * delta_time, DX_PI_F, m_is_loop_blinking);
 	const auto blend_alpha_num = (sin(m_blinking_sin) * 0.5f + 0.5f) * m_max_alpha_blend_num;
-	m_graphicer->SetAlphaBlendNum(blend_alpha_num);
+	m_graphicer->SetBlendNum(blend_alpha_num);
 
 	// •m€‰Šú“_–Å‚ğ‰ğœ
 	if (m_is_near_death_first_blinking && m_blinking_sin == 0.0f)

@@ -138,8 +138,8 @@ void SubMenuSelectButton::CalcAlphaBlendNum()
 		math::Decrease(m_current_alpha_blend_num, static_cast<int>(600.0f * delta_time),  m_destination_alpha_blend_num);
 	}
 
-	m_applied_mask_screen->GetGraphicer()	->SetAlphaBlendNum(m_current_alpha_blend_num);
-	m_button_frame_light_graphic->SetAlphaBlendNum(m_current_alpha_blend_num);
+	m_applied_mask_screen->GetGraphicer()	->SetBlendNum(m_current_alpha_blend_num);
+	m_button_frame_light_graphic->SetBlendNum(m_current_alpha_blend_num);
 }
 
 void SubMenuSelectButton::CalcSelectingButtonPos()

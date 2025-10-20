@@ -123,7 +123,7 @@ void EscapeIcon::CalcBlurCircleParameter()
 
 	// スケールに依存してアルファ値を計算
 	m_blur_circle_alpha_num = math::ConvertValueNewRange<float, float>(0.0f, 1.0f, 255, 80, m_blur_circle_scale);
-	m_blur_circle_graphic->SetAlphaBlendNum(m_blur_circle_alpha_num);
+	m_blur_circle_graphic->SetBlendNum(m_blur_circle_alpha_num);
 }
 
 void EscapeIcon::SetIconGraphic()

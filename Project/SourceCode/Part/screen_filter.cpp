@@ -131,7 +131,7 @@ void ScreenFilter::DrawBasisFilter()
 	m_basis_filter_screen->UseScreen();
 	m_main_screen->Draw();
 	m_basis_filter_screen->UnuseScreen();
-	m_basis_filter_screen->GetGraphicer()->SetAlphaBlendNum(m_basis_alpha_blend_num);
+	m_basis_filter_screen->GetGraphicer()->SetBlendNum(m_basis_alpha_blend_num);
 
 	m_current_basis_filter();
 	m_basis_filter_screen->Draw();
@@ -154,7 +154,7 @@ void ScreenFilter::DrawNearDeathFilter()
 	m_near_death_filter_screen->UseScreen();
 	m_main_screen->Draw();
 	m_near_death_filter_screen->UnuseScreen();
-	m_near_death_filter_screen->GetGraphicer()->SetAlphaBlendNum(blend_alpha_num);
+	m_near_death_filter_screen->GetGraphicer()->SetBlendNum(blend_alpha_num);
 
 	GraphFilter(m_near_death_filter_screen->GetScreenHandle(), DX_GRAPH_FILTER_MONO, 0, 0);
 	m_near_death_filter_screen->Draw();
@@ -170,7 +170,7 @@ void ScreenFilter::DrawDeathFilter()
 	m_death_filter_screen->UseScreen();
 	m_main_screen->Draw();
 	m_death_filter_screen->UnuseScreen();
-	m_death_filter_screen->GetGraphicer()->SetAlphaBlendNum(m_death_filter_alpha_blend_num);
+	m_death_filter_screen->GetGraphicer()->SetBlendNum(m_death_filter_alpha_blend_num);
 
 	GraphFilter(m_death_filter_screen->GetScreenHandle(), DX_GRAPH_FILTER_MONO, 0, 0);
 	m_death_filter_screen->Draw();

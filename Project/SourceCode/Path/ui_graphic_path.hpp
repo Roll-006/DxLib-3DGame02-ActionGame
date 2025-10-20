@@ -15,6 +15,9 @@ static struct UIGraphicPath
 	const std::string ROCKET_LAUNCHER				= "Data/Graphic/UI/Weapon/rocket_launcher.png";
 	const std::string KNIFE							= "Data/Graphic/UI/Weapon/knife.png";
 	const std::string GRENADE						= "Data/Graphic/UI/Weapon/grenade.png";
+	const std::string SQUARE_BLUR_WHITE				= "Data/Graphic/UI/Weapon/square_blur_white.png";
+	const std::string VERTICAL_CIRCLE_BLUR_WHITE	= "Data/Graphic/UI/Weapon/vertical_circle_blur_white.png";
+	const std::string HORIZONTAL_CIRCLE_BLUR_WHITE	= "Data/Graphic/UI/Weapon/horizontal_circle_blur_white.png";
 	#pragma endregion
 
 
