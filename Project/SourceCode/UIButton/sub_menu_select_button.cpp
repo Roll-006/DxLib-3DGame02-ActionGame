@@ -60,7 +60,7 @@ SubMenuSelectButton::SubMenuSelectButton(const ButtonKind button_kind, const Vec
 	m_font_size.x = GetDrawStringWidthToHandle(m_text.c_str(), -1, m_font_handle);
 	m_font_size.y = GetFontSizeToHandle(m_font_handle);
 
-	CreateSelectingGraphicScreen();
+	//CreateSelectingGraphicScreen();
 
 	// 最初から選択されている場合の処理
 	if (is_init_selected)
@@ -72,7 +72,7 @@ SubMenuSelectButton::SubMenuSelectButton(const ButtonKind button_kind, const Vec
 
 	CalcAlphaBlendNum();
 	CalcSelectingButtonPos();
-	CreateSelectingGraphicScreen();
+	//CreateSelectingGraphicScreen();
 }
 
 SubMenuSelectButton::~SubMenuSelectButton()
@@ -89,25 +89,26 @@ void SubMenuSelectButton::Update()
 {
 	CalcAlphaBlendNum();
 	CalcSelectingButtonPos();
-	CreateSelectingGraphicScreen();
+	CreateSelectingGraphicScreen(-1);
+	m_selecting_button_movie->CreateMovieScreen();
 
 	Exeute();
 }
 
-void SubMenuSelectButton::Draw() const
+void SubMenuSelectButton::Draw(const int main_screen_handle) const
 {
-	m_button_frame_dark_graphic->Draw();
-	m_selecting_button_screen ->Draw();
+
+	m_button_frame_dark_graphic	->Draw();
+	m_selecting_button_screen	->Draw();
 }
 
-void SubMenuSelectButton::CreateSelectingGraphicScreen()
+void SubMenuSelectButton::CreateSelectingGraphicScreen(const int main_screen_handle) const
 {
-	m_selecting_button_movie->CreateMovieScreen();
-
 	// 動画にマスクを適用
 	m_applied_mask_screen->UseScreen();
 	m_mask_creator->CreateMask();
 	m_mask_creator->UseMask(m_selecting_button_basic_screen->GetScreenHandle(), true);
+	//DrawGraph(0, 0, main_screen_handle, TRUE);
 	m_selecting_button_movie->Play();
 	m_mask_creator->UnuseMask();
 	m_mask_creator->DeleteMask();

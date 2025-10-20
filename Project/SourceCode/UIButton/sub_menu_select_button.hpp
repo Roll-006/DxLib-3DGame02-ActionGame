@@ -30,10 +30,10 @@ public:
 
 	void Init()			override;
 	void Update()		override;
-	void Draw() const	override;
+	void Draw(const int main_screen_handle) const override;
 
 private:
-	void CreateSelectingGraphicScreen();
+	void CreateSelectingGraphicScreen(const int main_screen_handle) const;
 
 	void CalcAlphaBlendNum();
 	void CalcSelectingButtonPos();

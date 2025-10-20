@@ -2,8 +2,7 @@
 #include <DxLib.h>
 
 #include "../Base/singleton_base.hpp"
-#include "../Window/window.hpp"
-#include "../Calculation/math.hpp"
+#include "screen_fader.hpp"
 
 /// @brief シーン間のフェードアウト・フェードインを行う
 class SceneFader final : public SingletonBase<SceneFader>
@@ -17,8 +16,8 @@ public:
 	/// @param fade_speed フェード速度
 	void StartFade(const int destination_alpha_blend_num, const float fade_speed);
 
-	[[nodiscard]] int	GetAlphaBlendNum()	const { return m_alpha_blend_num; }
-	[[nodiscard]] bool	IsFading()			const { return m_alpha_blend_num != m_destination_alpha_blend_num; }
+	[[nodiscard]] int	GetAlphaBlendNum()	const { return m_fader->GetAlphaBlendNum(); }
+	[[nodiscard]] bool	IsFading()			const { return m_fader->IsFading(); }
 
 private:
 	SceneFader();
@@ -27,9 +26,7 @@ private:
 private:
 	static constexpr unsigned int kFadeColor = 0x000000;
 
-	int		m_alpha_blend_num;
-	int		m_destination_alpha_blend_num;
-	float	m_fade_speed;
+	std::unique_ptr<ScreenFader> m_fader;
 
 	friend SingletonBase<SceneFader>;
 };

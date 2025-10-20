@@ -39,13 +39,13 @@ void TitleTab::Update()
 	if (m_can_select) { m_ui_selector->Update(); }
 }
 
-void TitleTab::OnDraw() const
+void TitleTab::OnDraw(const int main_screen_handle) const
 {
 	if (!m_is_active) { return; }
 
 	for (const auto& button : m_ui_selector->GetUIButtons())
 	{
-		button->Draw();
+		button->Draw(main_screen_handle);
 	}
 }
 

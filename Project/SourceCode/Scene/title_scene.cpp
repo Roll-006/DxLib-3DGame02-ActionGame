@@ -106,7 +106,7 @@ void TitleScene::Update()
 
 	if (m_warning_tab->IsBack())
 	{
-		m_warning_tab	->InitBack();
+		m_warning_tab	->Init();
 		m_warning_tab	->Deactivate();
 		m_title_tab		->AllowSelect();
 	}

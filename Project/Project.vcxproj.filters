@@ -469,9 +469,6 @@
     <ClCompile Include="SourceCode\UI\cinema_scope_frame.cpp">
       <Filter>SourceCode\UI</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\UI\fade.cpp">
-      <Filter>SourceCode\UI</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\Part\screen_filter.cpp">
       <Filter>SourceCode\Part</Filter>
     </ClCompile>
@@ -506,9 +503,6 @@
       <Filter>SourceCode\Part</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\UI\melee_target_icon.cpp">
-      <Filter>SourceCode\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\UI\enemy_ui_creator.cpp">
       <Filter>SourceCode\UI</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\UI\escape_icon.cpp">
@@ -589,7 +583,7 @@
     <ClCompile Include="SourceCode\Light\point_light.cpp">
       <Filter>SourceCode\Light</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Part\fader.cpp">
+    <ClCompile Include="SourceCode\Part\screen_fader.cpp">
       <Filter>SourceCode\Part</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Part\scene_fader.cpp">
@@ -1362,9 +1356,6 @@
     <ClInclude Include="SourceCode\UI\cinema_scope_frame.hpp">
       <Filter>SourceCode\UI</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\UI\fade.hpp">
-      <Filter>SourceCode\UI</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\Part\screen_filter.hpp">
       <Filter>SourceCode\Part</Filter>
     </ClInclude>
@@ -1441,9 +1432,6 @@
       <Filter>SourceCode\Part</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\UI\melee_target_icon.hpp">
-      <Filter>SourceCode\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\UI\enemy_ui_creator.hpp">
       <Filter>SourceCode\UI</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Event\on_melee_target_lost_event.hpp">
@@ -1578,7 +1566,7 @@
     <ClInclude Include="SourceCode\Name\light_name.hpp">
       <Filter>SourceCode\Name</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Part\fader.hpp">
+    <ClInclude Include="SourceCode\Part\screen_fader.hpp">
       <Filter>SourceCode\Part</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Part\scene_fader.hpp">

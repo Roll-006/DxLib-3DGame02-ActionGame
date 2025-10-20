@@ -6,6 +6,7 @@ static struct UIGraphicPath
 	#pragma region ”Ä—p
 	const std::string CIRCLE_BLUR_RED				= "Data/Graphic/UI/Common/circle_blur_red.png";
 	const std::string CIRCLE_BLUR_WHITE				= "Data/Graphic/UI/Common/circle_blur_white.png";
+	const std::string WARNING_ICON					= "Data/Graphic/UI/Common/warning_icon.png";
 	#pragma endregion
 
 

@@ -31,7 +31,7 @@ public:
 	}
 	void RemoveTab(const std::type_index& type);
 
-	void Draw() const;
+	void Draw(const int main_screen_handle) const;
 
 	/// @brief オブジェクトをアクティブ化する
 	void Activate  (const std::type_index& type);

@@ -18,7 +18,7 @@ UISelector::~UISelector()
 
 void UISelector::Init()
 {
-	
+	m_current_button_index = m_init_button_index;
 }
 
 void UISelector::Update()

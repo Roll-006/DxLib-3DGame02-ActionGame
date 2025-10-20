@@ -13,7 +13,7 @@ public:
 
 	void Init()			override;
 	void Update()		override;
-	void OnDraw() const override;
+	void OnDraw(const int main_screen_handle) const override;
 
 	void Activate() 	override { m_is_active = true;  }
 	void Deactivate()	override { m_is_active = false; }

@@ -13,7 +13,7 @@ public:
 
 	void Init()			override;
 	void Update()		override;
-	void OnDraw() const override;
+	void OnDraw(const int main_screen_handle) const override;
 
 	void InitActivateWarningTab() { m_is_activate_warning_tab = false; }
 

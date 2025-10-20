@@ -28,13 +28,13 @@ void TabDrawer::RemoveTab(const std::type_index& type)
 	}
 }
 
-void TabDrawer::Draw() const
+void TabDrawer::Draw(const int main_screen_handle) const
 {
 	for (const auto& priority : m_draw_priority)
 	{
 		if (m_tabs.at(priority.first)->IsActive())
 		{
-			m_tabs.at(priority.first)->OnDraw();
+			m_tabs.at(priority.first)->OnDraw(main_screen_handle);
 		}
 	}
 }
