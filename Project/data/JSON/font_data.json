@@ -11,9 +11,9 @@
       "handle": -1
     },
     "select_text": {
-      "font_path": "Microsoft PhagsPa",
-      "size": 70,
-      "thick": 6,
+      "font_path": "Yu Gothic UI",
+      "size": 120,
+      "thick": 7,
       "type": -1,
       "char_set": -1,
       "edge_size": -1,

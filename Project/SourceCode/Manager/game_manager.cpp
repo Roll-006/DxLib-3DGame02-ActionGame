@@ -17,6 +17,7 @@ GameManager::GameManager():
 	TabDrawer				::Generate();
 	FontHandler				::Generate();
 	LightHolder				::Generate();
+	SceneFader				::Generate();
 
 	GameTimeManager			::Generate();
 	ObjManager				::Generate();
@@ -48,6 +49,7 @@ GameManager::~GameManager()
 	TabDrawer				::Delete();
 	FontHandler				::Delete();
 	LightHolder				::Delete();
+	SceneFader				::Delete();
 
 	GameTimeManager			::Delete();
 	ObjManager				::Delete();

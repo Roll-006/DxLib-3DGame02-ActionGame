@@ -206,6 +206,8 @@
     <ClCompile Include="SourceCode\Object\shell_casing.cpp" />
     <ClCompile Include="SourceCode\Object\skydome.cpp" />
     <ClCompile Include="SourceCode\Part\button_graphic_getter.cpp" />
+    <ClCompile Include="SourceCode\Part\fader.cpp" />
+    <ClCompile Include="SourceCode\Part\scene_fader.cpp" />
     <ClCompile Include="SourceCode\Part\movie_player.cpp" />
     <ClCompile Include="SourceCode\Part\selector.cpp" />
     <ClCompile Include="SourceCode\Part\weapon_graphic_getter.cpp" />
@@ -530,6 +532,8 @@
     <ClInclude Include="SourceCode\Object\skydome.hpp" />
     <ClInclude Include="SourceCode\Part\character_collider_creator.hpp" />
     <ClInclude Include="SourceCode\Part\button_graphic_getter.hpp" />
+    <ClInclude Include="SourceCode\Part\fader.hpp" />
+    <ClInclude Include="SourceCode\Part\scene_fader.hpp" />
     <ClInclude Include="SourceCode\Part\movie_player.hpp" />
     <ClInclude Include="SourceCode\Part\selector.hpp" />
     <ClInclude Include="SourceCode\Part\weapon_graphic_getter.hpp" />

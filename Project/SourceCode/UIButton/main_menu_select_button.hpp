@@ -33,7 +33,7 @@ private:
 	void CalcGraphicScale();
 
 private:
-	static constexpr int   kScreenWidth				= 500;
+	static constexpr int   kScreenWidth				= 600;
 	static constexpr int   kScreenHeightOffset		= 20;
 	static constexpr int   kNonSelectAlphaBlendNum	= 100;
 	static constexpr float kNonSelectScale			= 0.8f;

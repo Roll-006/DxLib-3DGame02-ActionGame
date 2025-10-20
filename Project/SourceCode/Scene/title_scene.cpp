@@ -86,10 +86,18 @@ void TitleScene::Init()
 
 void TitleScene::Update()
 {
+	const auto fader = SceneFader::GetInstance();
+	fader->StartFade(0, 70.0f);
+
+
 	m_title_tab			->Update();
 	m_warning_tab		->Update();
 	m_title_character	->Update();
 
+
+
+
+	// TODO : のちに位置を変更
 	if (m_title_tab->IsActivateWarningTab())
 	{
 		m_warning_tab	->Activate();
@@ -103,6 +111,9 @@ void TitleScene::Update()
 		m_warning_tab	->Deactivate();
 		m_title_tab		->AllowSelect();
 	}
+
+
+
 
 	// TODO : 後に別クラス化
 
@@ -123,39 +134,6 @@ void TitleScene::Update()
 	CreateRotationXYZMatrix(&rot_m, 0.0f, -90.0f * math::kDegToRad, deg * math::kDegToRad);
 	m_smoke_transform->SetPos(CoordinateKind::kWorld, VGet(20, 45, 0));
 	m_smoke_transform->SetRot(CoordinateKind::kWorld, MGetRotElem(rot_m));
-
-
-	const auto light_holder = LightHolder::GetInstance();
-	auto light = std::dynamic_pointer_cast<SpotLight>(light_holder->GetLight(LightName.TITLE_LIGHT));
-	auto pos = light->GetPos();
-	if (CheckHitKey(KEY_INPUT_D))
-	{
-		pos.x += 0.1;
-	}
-	if (CheckHitKey(KEY_INPUT_A))
-	{
-		pos.x -= 0.1;
-	}
-	if (CheckHitKey(KEY_INPUT_W))
-	{
-		pos.y += 0.1;
-	}
-	if (CheckHitKey(KEY_INPUT_S))
-	{
-		pos.y -= 0.1;
-	}
-	if (CheckHitKey(KEY_INPUT_E))
-	{
-		pos.z += 0.1;
-	}
-	if (CheckHitKey(KEY_INPUT_Q))
-	{
-		pos.z -= 0.1;
-	}
-	light->SetPos(pos);
-
-	const auto p = std::dynamic_pointer_cast<SpotLight>(light_holder->GetLight(LightName.TITLE_LIGHT))->GetPos();
-	DrawFormatString(0, 80, 0xffffff, "%f, %f, %f", p.x, p.y, p.z);
 }
 
 void TitleScene::LateUpdate()

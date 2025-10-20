@@ -8,6 +8,7 @@
 #include "../Tab/tab_drawer.hpp"
 #include "../ShadowMap/shadow_map.hpp"
 #include "../Part/screen_filter.hpp"
+#include "../Part/scene_fader.hpp"
 
 class Drawer final : public SingleInstanceBase<Drawer>
 {

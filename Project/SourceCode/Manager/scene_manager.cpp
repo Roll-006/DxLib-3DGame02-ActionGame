@@ -23,6 +23,7 @@ void SceneManager::Update()
 	m_current_scene	->Update();
 	m_share_scene	->Update();
 
+	SceneFader		::GetInstance()->Update();
 	PhysicsManager	::GetInstance()->Update();
 }
 

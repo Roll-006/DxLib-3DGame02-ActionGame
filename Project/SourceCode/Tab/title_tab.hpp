@@ -34,8 +34,8 @@ private:
 	void ExecuteExit();
 
 private:
-	static constexpr Vector2D<int>	kFirstButtonCenterPos	= { 350, 200 };
-	static constexpr int			kButtonPosInterval		= 80;
+	static constexpr Vector2D<int>	kFirstButtonCenterPos	= { 390, 300 };
+	static constexpr int			kButtonPosInterval		= 110;
 
 	int	 m_priority;
 	bool m_is_active;

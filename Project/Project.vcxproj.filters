@@ -589,6 +589,12 @@
     <ClCompile Include="SourceCode\Light\point_light.cpp">
       <Filter>SourceCode\Light</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\Part\fader.cpp">
+      <Filter>SourceCode\Part</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Part\scene_fader.cpp">
+      <Filter>SourceCode\Part</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\character_base.hpp">
@@ -1571,6 +1577,12 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Name\light_name.hpp">
       <Filter>SourceCode\Name</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Part\fader.hpp">
+      <Filter>SourceCode\Part</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Part\scene_fader.hpp">
+      <Filter>SourceCode\Part</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
