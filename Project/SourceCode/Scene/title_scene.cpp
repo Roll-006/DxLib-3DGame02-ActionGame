@@ -50,6 +50,9 @@ TitleScene::TitleScene() :
 	const auto game_time_manager = GameTimeManager::GetInstance();
 	game_time_manager->InitTimeScale();
 
+	const auto fader = SceneFader::GetInstance();
+	fader->StartFade(0, 80.0f);
+
 	Init();
 }
 
@@ -86,10 +89,6 @@ void TitleScene::Init()
 
 void TitleScene::Update()
 {
-	const auto fader = SceneFader::GetInstance();
-	fader->StartFade(0, 70.0f);
-
-
 	m_title_tab			->Update();
 	m_warning_tab		->Update();
 	m_title_character	->Update();
