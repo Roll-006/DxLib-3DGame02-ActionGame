@@ -22,6 +22,7 @@ public:
 
 private:
 	void CreateShortcutIcon();
+	void CreateIconsCreen();
 	void UpdateAnim();
 
 private:
@@ -41,7 +42,9 @@ private:
 	std::unordered_map<WeaponShortcutPosKind, std::shared_ptr<WeaponShortcutIcon>>	m_weapon_shortcut_icons;
 	std::shared_ptr<WeaponGraphicGetter>											m_weapon_graphic;
 	std::unordered_map<WeaponShortcutPosKind, Vector2D<int>>						m_center_pos;
-	std::shared_ptr<ScreenCreator>													m_screen_creator;
+	std::shared_ptr<ScreenCreator>													m_icons_screen;
+	std::shared_ptr<ScreenCreator>													m_mask_resource_icons_screen;
+	std::shared_ptr<ScreenCreator>													m_mask_screen;
 	std::shared_ptr<MaskCreator>													m_mask_creator;
 
 	int		m_alpha_blend_num;

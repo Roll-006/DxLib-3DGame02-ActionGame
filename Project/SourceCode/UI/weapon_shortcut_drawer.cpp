@@ -6,7 +6,9 @@ WeaponShortcutDrawer::WeaponShortcutDrawer(
 	m_state						(state),
 	m_weapon_shortcut_selecter	(weapon_shortcut_selecter),
 	m_weapon_graphic			(std::make_shared<WeaponGraphicGetter>()),
-	m_screen_creator			(std::make_shared<ScreenCreator>(kScreenSize, Vector2D<int>(static_cast<int>(Window::kScreenSize.x * 0.72f), Window::kScreenHalfSize.y))),
+	m_icons_screen				(std::make_shared<ScreenCreator>(kScreenSize, Vector2D<int>(static_cast<int>(Window::kScreenSize.x * 0.72f), Window::kScreenHalfSize.y))),
+	m_mask_resource_icons_screen(std::make_shared<ScreenCreator>(kScreenSize, Vector2D<int>(static_cast<int>(Window::kScreenSize.x * 0.72f), Window::kScreenHalfSize.y))),
+	m_mask_screen				(std::make_shared<ScreenCreator>(Window::kScreenSize, Window::kCenterPos)),
 	m_mask_creator				(std::make_shared<MaskCreator>()),
 	m_alpha_blend_num			(0),
 	m_end_draw_time				(kDrawEndTime),
@@ -45,44 +47,24 @@ void WeaponShortcutDrawer::LateUpdate()
 	}
 
 	UpdateAnim();
+	CreateIconsCreen();
 }
 
 void WeaponShortcutDrawer::Draw(const int main_screen_handle) const
 {
 	if (m_alpha_blend_num <= 0) { return; }
 
-	const WeaponShortcutPosKind current_select_shortcut	= m_weapon_shortcut_selecter->GetCurrentSelectShortcut();
-	const Vector2D<int>			current_center_pos		= m_center_pos.at(current_select_shortcut);
+	m_mask_screen ->UseScreen();
+	m_mask_resource_icons_screen->Draw();
+	m_mask_screen ->UnuseScreen();
 
-	m_screen_creator->UseScreen();
+	m_mask_creator->CreateMask();
+	m_mask_creator->UseMask(m_mask_screen->GetScreenHandle(), true);
+	DrawGraph(0, 0, main_screen_handle, TRUE);
+	m_mask_creator->UnuseMask();
+	m_mask_creator->DeleteMask();
 
-	for (const auto& icon : m_weapon_shortcut_icons)
-	{
-		icon.second->Draw();
-	}
-
-	DrawBox(
-		static_cast<int>(current_center_pos.x - kIconWidth  * 0.5f),
-		static_cast<int>(current_center_pos.y - kIconHeight * 0.5f),
-		static_cast<int>(current_center_pos.x + kIconWidth  * 0.5f),
-		static_cast<int>(current_center_pos.y + kIconHeight * 0.5f),
-		0xffffff, FALSE);
-
-	m_screen_creator->UnuseScreen();
-
-	// ‰¼
-	//GraphFilter(main_screen_handle, DX_GRAPH_FILTER_GAUSS, 32, 1400);
-	//m_mask_creator->UseMask(m_screen_creator->GetScreenHandle(), true);
-	//DrawRotaGraph3(
-	//	static_cast<int>(Window::kScreenSize.x * 0.72f),
-	//	Window::kScreenHalfSize.y,
-	//	kScreenSize.x, kScreenSize.y,
-	//	m_screen_creator->GetGraphicer()->GetScale().x,
-	//	m_screen_creator->GetGraphicer()->GetScale().y,
-	//	0.0, main_screen_handle, TRUE, FALSE, FALSE);
-	//m_mask_creator->UnuseMask();
-
-	m_screen_creator->Draw();
+	m_icons_screen->Draw();
 }
 
 void WeaponShortcutDrawer::CreateShortcutIcon()
@@ -111,10 +93,29 @@ void WeaponShortcutDrawer::CreateShortcutIcon()
 	}
 }
 
+void WeaponShortcutDrawer::CreateIconsCreen()
+{
+	const WeaponShortcutPosKind current_select_shortcut = m_weapon_shortcut_selecter->GetCurrentSelectShortcut();
+	const Vector2D<int>			current_center_pos = m_center_pos.at(current_select_shortcut);
+
+	m_icons_screen->UseScreen();
+	for (const auto& icon : m_weapon_shortcut_icons) { icon.second->Draw(); }
+	DrawBox(
+		static_cast<int>(current_center_pos.x - kIconWidth  * 0.5f),
+		static_cast<int>(current_center_pos.y - kIconHeight * 0.5f),
+		static_cast<int>(current_center_pos.x + kIconWidth  * 0.5f),
+		static_cast<int>(current_center_pos.y + kIconHeight * 0.5f),
+		0xffffff, FALSE);
+	m_icons_screen->UnuseScreen();
+
+	m_mask_resource_icons_screen->UseScreen();
+	for (const auto& icon : m_weapon_shortcut_icons) { icon.second->DrawToMaskResource(); }
+	m_mask_resource_icons_screen->UnuseScreen();
+}
+
 void WeaponShortcutDrawer::UpdateAnim()
 {
-	const auto delta_time	= GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kUI);
-	const auto graphicer	= m_screen_creator->GetGraphicer();
+	const auto delta_time = GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kUI);
 	float t = 0.0f;
 
 	if (m_weapon_shortcut_selecter->isSelecting())
@@ -153,6 +154,8 @@ void WeaponShortcutDrawer::UpdateAnim()
 	m_alpha_blend_num	= math::GetLerp(0, 255, t);
 	m_scale				= math::GetLerp(0.5f, 1.0f, t);
 
-	graphicer->SetAlphaBlendNum(m_alpha_blend_num);
-	graphicer->SetScale(m_scale);
+	m_icons_screen->GetGraphicer()->SetAlphaBlendNum(m_alpha_blend_num);
+	m_icons_screen->GetGraphicer()->SetScale(m_scale);
+	m_mask_resource_icons_screen->GetGraphicer()->SetAlphaBlendNum(m_alpha_blend_num);
+	m_mask_resource_icons_screen->GetGraphicer()->SetScale(m_scale);
 }

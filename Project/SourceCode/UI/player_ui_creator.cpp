@@ -44,17 +44,6 @@ void PlayerUICreator::OnDraw(const int main_screen_handle)
 	m_escape_icon		->Draw();
 	m_weapon_shortcut	->Draw(main_screen_handle);
 	m_status_icons		->Draw();
-
-	//if (!m_2d_diffusion_shape) { return; }
-	//if (!std::dynamic_pointer_cast<GunBase>(m_player->GetCurrentAttachWeapon())->IsAiming()) { return; }
-	//
-	//const auto shape = std::dynamic_pointer_cast<Circle>(m_2d_diffusion_shape);
-	//
-	//DrawCircle(
-	//	static_cast<int>(shape->GetPos().x), 
-	//	static_cast<int>(shape->GetPos().y), 
-	//	static_cast<int>(shape->GetRadius()), 
-	//	0xffffff, FALSE);
 }
 
 

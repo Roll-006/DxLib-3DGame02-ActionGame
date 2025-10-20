@@ -10,6 +10,7 @@ public:
 	~WeaponShortcutIcon();
 
 	void Draw() const;
+	void DrawToMaskResource() const;
 
 	void AttachGraphic(const std::shared_ptr<Graphicer>& graphicer);
 	void DetachGraphic()

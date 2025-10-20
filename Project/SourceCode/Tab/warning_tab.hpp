@@ -31,7 +31,7 @@ private:
 	void ExecuteBack();
 
 	void CalcAlphaBlendNum();
-	void CreateResultScreen(const int main_screen_handle) const;
+	void CreateResultScreen();
 
 private:
 	static constexpr Vector2D<int>	kFirstButtonCenterPos	= { Window::kCenterPos.x, Window::kCenterPos.y + 50 };

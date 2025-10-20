@@ -73,7 +73,7 @@ void MainMenuSelectButton::Update()
 	Exeute();
 }
 
-void MainMenuSelectButton::Draw(const int main_screen_handle) const
+void MainMenuSelectButton::Draw() const
 {
 	m_button_screen->Draw();
 }

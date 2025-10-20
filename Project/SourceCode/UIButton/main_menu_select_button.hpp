@@ -26,7 +26,7 @@ public:
 
 	void Init()			override;
 	void Update()		override;
-	void Draw(const int main_screen_handle) const override;
+	void Draw() const	override;
 
 private:
 	void CalcAlphaBlendNum();

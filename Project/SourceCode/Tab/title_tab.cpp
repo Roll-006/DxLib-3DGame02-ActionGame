@@ -45,7 +45,7 @@ void TitleTab::OnDraw(const int main_screen_handle) const
 
 	for (const auto& button : m_ui_selector->GetUIButtons())
 	{
-		button->Draw(main_screen_handle);
+		button->Draw();
 	}
 }
 

@@ -48,6 +48,7 @@ void WarningTab::Update()
 
 	if (m_can_select) { m_ui_selector->Update(); }
 
+	CreateResultScreen();
 	CalcAlphaBlendNum();
 }
 
@@ -55,7 +56,10 @@ void WarningTab::OnDraw(const int main_screen_handle) const
 {
 	if (!m_is_active) { return; }
 
-	CreateResultScreen(main_screen_handle);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_result_screen->GetGraphicer()->GetAlphaBlendNum());
+	DrawGraph(0, 0, main_screen_handle, TRUE);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
 	m_result_screen->Draw();
 }
 
@@ -85,7 +89,7 @@ void WarningTab::CalcAlphaBlendNum()
 	m_result_screen->GetGraphicer()->SetAlphaBlendNum(m_alpha_blend_num);
 }
 
-void WarningTab::CreateResultScreen(const int main_screen_handle) const
+void WarningTab::CreateResultScreen()
 {
 	m_result_screen->UseScreen();
 
@@ -95,7 +99,7 @@ void WarningTab::CreateResultScreen(const int main_screen_handle) const
 
 	for (const auto& button : m_ui_selector->GetUIButtons())
 	{
-		button->Draw(main_screen_handle);
+		button->Draw();
 	}
 
 	m_warning_icon_graphic->Draw();

@@ -8,7 +8,7 @@ public:
 
 	virtual void Init()			abstract;
 	virtual void Update()		abstract;
-	virtual void Draw(const int main_screen_handle) const abstract;
+	virtual void Draw() const	abstract;
 
 	virtual void Activate() 	abstract;
 	virtual void Deactivate()	abstract;
