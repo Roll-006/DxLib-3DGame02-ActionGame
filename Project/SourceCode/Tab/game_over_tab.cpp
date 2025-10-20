@@ -6,7 +6,14 @@ GameOverTab::GameOverTab() :
 	m_can_select	(true),
 	m_ui_selector	(std::make_shared<UISelector>(0, true, true))
 {
+	std::vector<Vector2D<int>> center_pos;
+	for (int i = 0; i < 2; ++i)
+	{
+		center_pos.emplace_back(kFirstButtonCenterPos + Vector2D<int>(0, kButtonPosInterval * i));
+	}
 
+	m_ui_selector->AddUIButton(std::make_shared<SubMenuSelectButton>(SubMenuSelectButton::ButtonKind::kContinue, center_pos.at(0), [this]() { ExecuteContinue(); }, true));
+	m_ui_selector->AddUIButton(std::make_shared<SubMenuSelectButton>(SubMenuSelectButton::ButtonKind::kQuitGame, center_pos.at(1), [this]() { ExecuteQuitGame(); }, false));
 }
 
 GameOverTab::~GameOverTab()
@@ -34,4 +41,14 @@ void GameOverTab::OnDraw() const
 	{
 		button->Draw();
 	}
+}
+
+void GameOverTab::ExecuteContinue()
+{
+
+}
+
+void GameOverTab::ExecuteQuitGame()
+{
+
 }

@@ -3,6 +3,8 @@
 #include "../Event/event_system.hpp"
 #include "../UI/ui_selector.hpp"
 
+#include "../UIButton/sub_menu_select_button.hpp"
+
 class GameOverTab final : public ITab
 {
 public:
@@ -24,6 +26,13 @@ public:
 	[[nodiscard]] bool	CanSelect()		const override { return m_can_select; }
 
 private:
+	void ExecuteContinue();
+	void ExecuteQuitGame();
+
+private:
+	static constexpr Vector2D<int>	kFirstButtonCenterPos	= { Window::kCenterPos.x, Window::kCenterPos.y + 50 };
+	static constexpr int			kButtonPosInterval		= 130;
+
 	int	 m_priority;
 	bool m_is_active;
 	bool m_can_select;

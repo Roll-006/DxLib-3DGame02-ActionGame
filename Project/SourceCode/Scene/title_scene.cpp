@@ -47,6 +47,9 @@ TitleScene::TitleScene() :
 	const OnChangeTitleSceneEvent event{ m_smoke_transform, m_smoke_delete_handle };
 	EventSystem::GetInstance()->Publish(event);
 
+	const auto game_time_manager = GameTimeManager::GetInstance();
+	game_time_manager->InitTimeScale();
+
 	Init();
 }
 
