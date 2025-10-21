@@ -36,7 +36,7 @@ void GameSystemSetter::SetUpGameSystem()
 	SetFogEnable(TRUE);
 	SetFogMode(DX_FOGMODE_LINEAR);
 	SetFogColor(48, 49, 56);
-	SetFogStartEnd(200.f, 1800.0f);
+	SetFogStartEnd(200.f, 1700.0f);
 	SetFogDensity(0.1f);
 
 	// ƒtƒHƒ“ƒg

@@ -22,8 +22,9 @@ namespace player_state
 
 	private:
 		bool	m_is_stop_all_state;
+
 		float	m_elapsed_time;
 		bool	m_is_seted_time_scale;
-		std::shared_ptr<DeadVirtualCamerasController> m_dead_cameras_controller;
+		std::shared_ptr<DeadVirtualCamerasController>	m_dead_cameras_controller;
 	};
 }

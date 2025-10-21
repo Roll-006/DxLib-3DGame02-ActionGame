@@ -42,7 +42,7 @@ void player_state::Dead::Enter(std::shared_ptr<Player>& obj)
 	m_elapsed_time			= 0.0f;
 	m_is_seted_time_scale	= false;
 
-	const DeadPlayerEvent event{};
+	const DeadPlayerEvent event{ obj->GetModeler()->GetModelHandle() };
 	EventSystem::GetInstance()->Publish(event);
 
 	const auto cinemachine_brain	= CinemachineBrain::GetInstance();

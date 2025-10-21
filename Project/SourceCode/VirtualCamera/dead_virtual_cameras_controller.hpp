@@ -18,7 +18,7 @@ public:
 
 
 	#pragma region Event
-	
+	void ActiveDeadCamera(const DeadPlayerEvent& event);
 	#pragma endregion
 
 
@@ -32,13 +32,20 @@ public:
 	[[nodiscard]] bool IsActive()			 const override { return m_is_active; }
 
 private:
+	void SetupCamera();
 
+	void CalcAimTransform();
 
 private:
-
+	static constexpr VECTOR kFollowOffset		= { 0.0f, 0.0f, 100.0f };
+	static constexpr VECTOR kTrackedObjOffset	= { 0.0f, 0.0f, 0.0f };
 
 private:
 	VirtualCameraControllerKind				m_virtual_camera_controller_kind;
 	int										m_controller_handle;
 	bool									m_is_active;
+
+	std::shared_ptr<VirtualCamera>			m_dead_control_camera;
+	std::shared_ptr<Transform>				m_aim_transform;
+	int										m_model_handle;
 };
