@@ -34,6 +34,27 @@ ScreenCreator::~ScreenCreator()
 
 void ScreenCreator::UseScreen()
 {
+	SaveCamera();
+
+	SetDrawScreen(m_screen_graphic_handle);
+	ClearDrawScreen();
+
+	RestoreCamera();
+}
+
+void ScreenCreator::UnuseScreen()
+{
+	SetDrawScreen(DX_SCREEN_BACK);
+	RestoreCamera();
+}
+
+void ScreenCreator::Draw(const bool is_draw_graphic_frame) const
+{
+	m_graphicer->Draw(is_draw_graphic_frame);
+}
+
+void ScreenCreator::SaveCamera()
+{
 	// SetDrawScreenを使用した際に、カメラの設定が破棄されるため
 	// 復元するためにカメラ情報を保存
 	m_prev_camera_near		= GetCameraNear();
@@ -41,27 +62,12 @@ void ScreenCreator::UseScreen()
 	m_prev_camera_fov		= GetCameraFov();
 	m_prev_camera_pos		= GetCameraPosition();
 	m_prev_camera_target	= GetCameraTarget();
+}
 
-	SetDrawScreen(m_screen_graphic_handle);
-	ClearDrawScreen();
-
+void ScreenCreator::RestoreCamera()
+{
 	// カメラ情報の復元
 	SetCameraNearFar					(m_prev_camera_near, m_prev_camera_far);
 	SetupCamera_Perspective				(m_prev_camera_fov);
 	SetCameraPositionAndTarget_UpVecY	(m_prev_camera_pos, m_prev_camera_target);
-}
-
-void ScreenCreator::UnuseScreen()
-{
-	SetDrawScreen(DX_SCREEN_BACK);
-
-	// カメラ情報の復元
-	SetCameraNearFar					(m_prev_camera_near, m_prev_camera_far);
-	SetupCamera_Perspective				(m_prev_camera_fov);
-	SetCameraPositionAndTarget_UpVecY	(m_prev_camera_pos, m_prev_camera_target);
-}
-
-void ScreenCreator::Draw(const bool is_draw_graphic_frame) const
-{
-	m_graphicer->Draw(is_draw_graphic_frame);
 }

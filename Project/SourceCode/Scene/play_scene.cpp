@@ -14,6 +14,9 @@ PlayScene::PlayScene() :
 	m_player_ui_creator				(std::make_shared<PlayerUICreator>(m_player)),
 	m_game_over_tab					(std::make_shared<GameOverTab>())
 {
+	const auto fader = SceneFader::GetInstance();
+	fader->StartFade(0, 40.0f);
+
 	m_player		->AddToObjManager();
 	m_enemy_manager	->AddToObjManager();
 	m_house			->AddToObjManager();
@@ -71,7 +74,7 @@ void PlayScene::Init()
 	// ƒJƒƒ‰‰Šú‰»
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	cinemachine_brain->SetNear(10.0f);
-	cinemachine_brain->SetFar (4000.0f);
+	cinemachine_brain->SetFar (2000.0f);
 	cinemachine_brain->SetFOV (25.0f);
 
 	m_player_ui_creator->Init();

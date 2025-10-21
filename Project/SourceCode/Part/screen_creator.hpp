@@ -26,6 +26,10 @@ public:
 	[[nodiscard]] int						 GetScreenHandle()		const { return m_screen_graphic_handle; }
 
 private:
+	void SaveCamera();
+	void RestoreCamera();
+
+private:
 	std::shared_ptr<Graphicer>	m_graphicer;
 	Vector2D<int>				m_screen_size;
 	int							m_screen_graphic_handle;

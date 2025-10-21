@@ -4,7 +4,7 @@
 class LoadScene final : public IScene
 {
 public:
-	LoadScene();
+	LoadScene(const SceneKind next_scene_kind);
 	~LoadScene() override;
 
 	void Init()						override;
@@ -23,4 +23,5 @@ public:
 private:
 	bool		m_is_active;
 	SceneKind	m_scene_kind;
+	SceneKind	m_next_scene_kind;
 };

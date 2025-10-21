@@ -4,6 +4,7 @@
 #include "../Event/event_system.hpp"
 #include "../UI/ui_selector.hpp"
 #include "../UIButton/main_menu_select_button.hpp"
+#include "../Part/scene_fader.hpp"
 
 class TitleTab final : public ITab
 {

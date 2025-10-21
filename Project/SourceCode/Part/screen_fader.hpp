@@ -18,8 +18,9 @@ public:
 	/// @param fade_speed フェード速度
 	void StartFade(const int destination_alpha_blend_num, const float fade_speed);
 
-	[[nodiscard]] int	GetAlphaBlendNum()	const { return m_alpha_blend_num; }
-	[[nodiscard]] bool	IsFading()			const { return m_alpha_blend_num != m_destination_alpha_blend_num; }
+	[[nodiscard]] int	GetAlphaBlendNum()				const { return m_alpha_blend_num; }
+	[[nodiscard]] int	GetDestinationAlphaBlendNum()	const { return m_destination_alpha_blend_num; }
+	[[nodiscard]] bool	IsFading()						const { return m_alpha_blend_num != m_destination_alpha_blend_num; }
 
 private:
 	static constexpr unsigned int kFadeColor = 0x000000;

@@ -275,6 +275,11 @@ void PhysicsManager::PushBackCapsuleAndTarget(const std::shared_ptr<PhysicalObjB
 		low_priority_obj->SetVelocity(push_backed_velocity);
 		break;
 
+	//case ShapeKind::kSphere:
+	//	push_backed_velocity = collision::PushBackCapsuleAndSphere(velocity, capsule, *static_cast<const Sphere*>(shape));
+	//	low_priority_obj->SetVelocity(push_backed_velocity);
+	//	break;
+
 	case ShapeKind::kCapsule:
 		push_backed_velocity = collision::PushBackCapsuleAndCapsule(velocity, capsule, *static_cast<const Capsule*>(shape));
 		low_priority_obj->SetVelocity(push_backed_velocity);

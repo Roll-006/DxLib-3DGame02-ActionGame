@@ -52,6 +52,7 @@ void TitleTab::OnDraw(const int main_screen_handle) const
 void TitleTab::ExecuteGameStart()
 {
 	m_is_game_start = true;
+	SceneFader::GetInstance()->StartFade(255, 300.0f);
 }
 
 void TitleTab::ExecuteExit()

@@ -60,6 +60,8 @@ TitleScene::~TitleScene()
 {
 	m_title_character->RemoveToObjManager();
 
+	// エフェクトの登録を解除
+	EffectManager::GetInstance()->ForciblyReturnPoolEffect(m_smoke_delete_handle, ObjectPoolName.TITLE_SCENE_EFFECT_POOL);
 	const auto pool_holder = ObjectPoolHolder::GetInstance();
 	pool_holder->RemoveObjectPool(m_title_scene_effect_object_pool->GetName());
 
@@ -74,8 +76,6 @@ TitleScene::~TitleScene()
 	// カメラの登録を解除
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	cinemachine_brain->RemoveVirtualCamera(m_title_camera->GetCameraHandle());
-
-	EffectManager::GetInstance()->ForciblyReturnPoolEffect(m_smoke_delete_handle);
 }
 
 void TitleScene::Init()
@@ -110,6 +110,7 @@ void TitleScene::Update()
 		m_warning_tab	->Deactivate();
 		m_title_tab		->AllowSelect();
 	}
+
 
 
 
@@ -157,12 +158,12 @@ void TitleScene::Draw() const
 
 std::shared_ptr<IScene> TitleScene::ChangeScene()
 {
-	const auto command = CommandHandler::GetInstance();
+	const auto fader = SceneFader::GetInstance();
 
-	// プレイ
-	if (m_title_tab->IsGameStart())
+	// ロード(プレイ)
+	if (m_title_tab->IsGameStart() && !fader->IsFading())
 	{
-		return std::make_shared<PlayScene>();
+		return std::make_shared<LoadScene>(SceneKind::kPlay);
 	}
 
 	return nullptr;

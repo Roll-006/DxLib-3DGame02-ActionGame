@@ -1214,6 +1214,60 @@ VECTOR collision::PushBackCapsuleAndSquare  (const VECTOR& velocity, const Capsu
     return future_pos - dynamic_capsule.GetSegment().GetBeginPos();
 }
 
+//VECTOR collision::PushBackCapsuleAndSphere(const VECTOR& velocity, const Capsule& dynamic_capsule, const Sphere& static_sphere)
+//{
+//    // 未来のカプセルを取得
+//    Capsule future_capsule = dynamic_capsule;
+//    future_capsule.Move(velocity);
+//
+//    // 未来の座標と衝突しているかを判定
+//    if (!IsCollidedSphereAndCapsule(static_sphere, future_capsule))
+//    {
+//        return velocity;
+//    }
+//
+//    const auto begin            = future_capsule.GetSegment().GetBeginPos();
+//    const auto center           = static_sphere.GetPos();
+//    const auto begin_to_end     = future_capsule.GetSegment().GetEndPos() - begin;
+//    const auto begin_to_center  = center - begin;
+//
+//    // begin_to_endベクトルに対する最近点の割合
+//    auto t = VDot(begin, begin_to_end) / VDot(begin_to_end, begin_to_end);
+//    t = std::clamp(t, 0.0f, 1.0f);
+//
+//    // 球の中心とカプセル内線分との距離
+//    const auto closest_pos      = begin + t * begin_to_end;
+//    const auto distance_v       = closest_pos - center;
+//
+//    const auto squared_distance = VDot(distance_v, distance_v);
+//    const auto sum_radius       = dynamic_capsule.GetRadius() + static_sphere.GetRadius();
+//
+//    if (squared_distance < sum_radius * sum_radius)
+//    {
+//        const auto distance         = VSize(distance_v);
+//
+//        // めり込み量
+//        const auto penetration      = sum_radius - distance;
+//
+//        // めり込み方向
+//        const auto push_back_dir    = distance > math::kEpsilonLow ? distance_v * (1.0f / distance) : VGet(0.0f, 1.0f, 0.0f);
+//
+//        // めり込み量修正
+//        const auto push_back_dot    = VDot(velocity, push_back_dir);
+//        if (push_back_dot < 0.0f)
+//        {
+//            const auto correction = push_back_dir * push_back_dot;
+//            return velocity - correction;
+//        }
+//        else
+//        {
+//            return push_back_dir * penetration;
+//        }
+//    }
+//
+//    return velocity;
+//}
+
 VECTOR collision::PushBackCapsuleAndCapsule(const VECTOR& velocity, const Capsule& dynamic_capsule, const Capsule& static_capsule)
 {
     // 未来のカプセルを取得

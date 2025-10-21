@@ -19,7 +19,7 @@ public:
 
 	/// @brief エフェクトを強制的にプールに戻す
 	void ForciblyReturnPoolEffect(std::shared_ptr<Effect>& effect);
-	void ForciblyReturnPoolEffect(const int return_trigger_handle);
+	void ForciblyReturnPoolEffect(const int return_trigger_handle, const std::string& object_pool_name);
 
 
 	#pragma region Event

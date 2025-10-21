@@ -5,24 +5,33 @@
 #include "../Base/enemy_base.hpp"
 
 MainCamera::MainCamera() : 
-	PhysicalObjBase		(ObjName.MAIN_CAMERA, ObjTag.CAMERA, MassKind::kLight),
-	m_aim_pos			(v3d::GetZeroV())
+	PhysicalObjBase				(ObjName.MAIN_CAMERA, ObjTag.CAMERA, MassKind::kStatic),
+	m_aim_pos					(v3d::GetZeroV()),
+	m_collider_radius			(0.0f),
+	m_is_active_grab_collider	(false)
 {
+	//// イベント登録
+	//EventSystem::GetInstance()->Subscribe<GrabEvent>	(this, &MainCamera::CreateGrabCollider);
+	//EventSystem::GetInstance()->Subscribe<ReleaseEvent>	(this, &MainCamera::DeleteGrabCollider);
+
 	AddCollider(std::make_shared<Collider>(ColliderKind::kRayCast,		 std::make_shared<Segment>(), this));
 	AddCollider(std::make_shared<Collider>(ColliderKind::kVisionTrigger, std::make_shared<Cone>(v3d::GetZeroV(), v3d::GetZeroV(), kMeleeDistance, kMeleeFOV), this));
 
 	// カメラが無視するコライダー
 	const auto collision_manager = CollisionManager::GetInstance();
-	const ColliderData camera_data{ ObjTag.CAMERA, ColliderKind::kRayCast };
-	collision_manager->AddIgnoreColliderPair(camera_data, { ObjTag.PLAYER,	ColliderKind::kNone });
-	collision_manager->AddIgnoreColliderPair(camera_data, { ObjTag.ENEMY,	ColliderKind::kNone });
-	collision_manager->AddIgnoreColliderPair(camera_data, { ObjTag.BULLET,	ColliderKind::kNone });
-	collision_manager->AddIgnoreColliderPair(camera_data, { "",				ColliderKind::kAttackTrigger });
+	const ColliderData ray_cast_data{ ObjTag.CAMERA, ColliderKind::kRayCast };
+	collision_manager->AddIgnoreCollider(GetObjHandle(), ColliderKind::kCollider);
+	collision_manager->AddIgnoreColliderPair(ray_cast_data, { ObjTag.PLAYER,	ColliderKind::kNone });
+	collision_manager->AddIgnoreColliderPair(ray_cast_data, { ObjTag.ENEMY,		ColliderKind::kNone });
+	collision_manager->AddIgnoreColliderPair(ray_cast_data, { ObjTag.BULLET,	ColliderKind::kNone });
+	collision_manager->AddIgnoreColliderPair(ray_cast_data, { "",				ColliderKind::kAttackTrigger });
 }
 
 MainCamera::~MainCamera()
 {
-	// 処理なし
+	//// イベントの登録解除
+	//EventSystem::GetInstance()->Unsubscribe<GrabEvent>		(this, &MainCamera::CreateGrabCollider);
+	//EventSystem::GetInstance()->Unsubscribe<ReleaseEvent>	(this, &MainCamera::DeleteGrabCollider);
 }
 
 void MainCamera::Init()
@@ -43,6 +52,7 @@ void MainCamera::LateUpdate()
 
 	CalcRayCastPos();
 	CalcVisionTriggerPos();
+	CalcGrabColliderPosAndRadius();
 }
 
 void MainCamera::DrawToShadowMap() const
@@ -127,11 +137,33 @@ void MainCamera::ApplyMatrix(const MATRIX& matrix)
 	m_transform->SetMatrix(CoordinateKind::kWorld, matrix);
 }
 
+
+#pragma region Event
+void MainCamera::CreateGrabCollider(const GrabEvent&	event)
+{
+	m_collider_radius			= 0.0f;
+	m_is_active_grab_collider	= true;
+
+	AddCollider(std::make_shared<Collider>(ColliderKind::kCollider, std::make_shared<Sphere>(m_aim_pos, m_collider_radius), this));
+}
+
+void MainCamera::DeleteGrabCollider(const ReleaseEvent& event)
+{
+	m_is_active_grab_collider	= false;
+
+	RemoveCollider(ColliderKind::kCollider);
+}
+#pragma endregion
+
+
+#pragma region Getter
 float MainCamera::GetDeltaTime() const
 {
 	const auto time_manager = GameTimeManager::GetInstance();
 	return time_manager->GetDeltaTime(TimeScaleLayerKind::kCamera);
 }
+#pragma endregion
+
 
 void MainCamera::SetAim()
 {
@@ -154,4 +186,15 @@ void MainCamera::CalcVisionTriggerPos()
 	const auto cone = std::static_pointer_cast<Cone>(GetCollider(ColliderKind::kVisionTrigger)->GetShape());
 	cone->SetVertex	(m_transform->GetPos	(CoordinateKind::kWorld));
 	cone->SetDir	(m_transform->GetForward(CoordinateKind::kWorld));
+}
+
+void MainCamera::CalcGrabColliderPosAndRadius()
+{
+	if (!m_is_active_grab_collider) { return; }
+
+	m_collider_radius += 20.0f * GetDeltaTime();
+
+	const auto sphere = std::static_pointer_cast<Sphere>(GetCollider(ColliderKind::kCollider)->GetShape());
+	sphere->SetPos		(m_aim_pos);
+	sphere->SetRadius	(m_collider_radius);
 }

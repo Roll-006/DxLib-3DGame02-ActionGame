@@ -16,7 +16,8 @@ public:
 
     void Move(const VECTOR& velocity) override;
 
-    void SetPos(const VECTOR& pos) { m_pos = pos; }
+    void SetPos     (const VECTOR& pos)  { m_pos = pos; }
+    void SetRadius  (const float radius) { m_radius = radius; }
 
     [[nodiscard]] VECTOR GetPos()    const { return m_pos; }
     [[nodiscard]] float  GetRadius() const { return m_radius; }

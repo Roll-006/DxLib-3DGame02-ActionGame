@@ -10,6 +10,7 @@
 #include "../Part/screen_filter.hpp"
 #include "../Part/scene_fader.hpp"
 
+// MEMO : DXLib‚Ì–½–¼‚É‡‚í‚¹‚ÄRender‚Å‚Í‚È‚­Drawer‚Æ‚·‚é
 class Drawer final : public SingleInstanceBase<Drawer>
 {
 public:

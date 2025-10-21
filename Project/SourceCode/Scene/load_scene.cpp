@@ -1,9 +1,10 @@
 #include "load_scene.hpp"
 #include "../Manager/scene_manager.hpp"
 
-LoadScene::LoadScene() : 
-	m_is_active	(true),
-	m_scene_kind(SceneKind::kLoad)
+LoadScene::LoadScene(const SceneKind next_scene_kind) :
+	m_is_active			(true),
+	m_scene_kind		(SceneKind::kLoad),
+	m_next_scene_kind	(next_scene_kind)
 {
 
 }
@@ -40,5 +41,11 @@ void LoadScene::Draw() const
 
 std::shared_ptr<IScene> LoadScene::ChangeScene()
 {
+	// ƒvƒŒƒC
+	if (m_next_scene_kind == SceneKind::kPlay)
+	{
+		return std::make_shared<PlayScene>();
+	}
+
 	return nullptr;
 }

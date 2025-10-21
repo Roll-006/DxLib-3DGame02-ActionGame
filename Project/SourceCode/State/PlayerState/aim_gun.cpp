@@ -101,11 +101,14 @@ std::shared_ptr<IState<Player>> player_state::AimGun::ChangeState(std::shared_pt
 	{
 		return state_controller->GetState<Reload, Player>();
 	}
-	//// リロード
-	//if (gun->GetCurrentRemainingBulletNum() == 0 && command->IsExecuting(CommandKind::kPullTrigger))
-	//{
-	//	return state_controller->GetState<Reload, Player>();
-	//}
+	// リロード
+	if (gun->GetCurrentRemainingBulletNum() == 0)
+	{
+		if (!command->IsExecute(CommandKind::kPullTrigger, TimeKind::kPrev) && command->IsExecute(CommandKind::kPullTrigger, TimeKind::kCurrent))
+		{
+			return state_controller->GetState<Reload, Player>();
+		}
+	}
 
 	return nullptr;
 }
