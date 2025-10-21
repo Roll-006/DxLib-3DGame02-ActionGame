@@ -26,7 +26,6 @@ public:
 
 	void Draw();
 
-
 	#pragma region Event
 	void Init				(const ChangeSceneEvent&				event);
 	void SetNearDeathFilter	(const EnterNearDeathEvent&				event);
@@ -38,7 +37,7 @@ public:
 
 
 	#pragma region Getter
-	[[nodiscard]] std::shared_ptr<ScreenCreator> GetMainScreen() const { return m_main_screen; }
+	[[nodiscard]] int GetScreenHandle() const { return m_result_screen->GetScreenHandle(); }
 	#pragma endregion
 	
 private:
@@ -46,9 +45,10 @@ private:
 	void UseCinematicFilter();
 	void UseRetroFilter();
 
-	void DrawBasisFilter();
-	void DrawNearDeathFilter();
-	void DrawDeathFilter();
+	void CreateFilter();
+	void CreateBasisFilter();
+	void CreateNearDeathFilter();
+	void CreateDeathFilter();
 
 private:
 	static constexpr float kBlinkingSpeed = 2.0f;
@@ -57,7 +57,8 @@ private:
 	std::function<void()> m_current_basis_filter;
 	int m_basis_alpha_blend_num;
 
-	std::shared_ptr<ScreenCreator> m_main_screen;
+	std::shared_ptr<ScreenCreator> m_resource_screen;
+	std::shared_ptr<ScreenCreator> m_result_screen;
 	std::shared_ptr<ScreenCreator> m_basis_filter_screen;
 	std::shared_ptr<ScreenCreator> m_near_death_filter_screen;
 	std::shared_ptr<ScreenCreator> m_death_filter_screen;

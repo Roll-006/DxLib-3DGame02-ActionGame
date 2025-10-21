@@ -41,8 +41,7 @@ void FPS::Update()
 
 void FPS::Draw() const
 {
-    DrawFormatString(0,  0, 0xffffff, "FPS          : %f", m_average_fps);
-    DrawFormatString(0, 20, 0xffffff, "Elapsed Time : %f", m_elapsed_time);
+    DrawFormatString(0,  0, 0xffffff, "FPS : %f", m_average_fps);
 }
 
 void FPS::Wait() const

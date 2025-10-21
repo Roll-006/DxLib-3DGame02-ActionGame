@@ -15,7 +15,7 @@ TitleTab::TitleTab() :
 	}
 
 	m_ui_selector->AddUIButton(std::make_shared<MainMenuSelectButton>(MainMenuSelectButton::ButtonKind::kGameStart, center_pos.at(0), [this]() { ExecuteGameStart(); }, true));
-	m_ui_selector->AddUIButton(std::make_shared<MainMenuSelectButton>(MainMenuSelectButton::ButtonKind::kOption,	center_pos.at(1), [this]() { ExecuteGameStart(); }, true));
+	m_ui_selector->AddUIButton(std::make_shared<MainMenuSelectButton>(MainMenuSelectButton::ButtonKind::kOption,	center_pos.at(1), [this]() { ExecuteGameStart(); }, false));
 	m_ui_selector->AddUIButton(std::make_shared<MainMenuSelectButton>(MainMenuSelectButton::ButtonKind::kExit,		center_pos.at(2), [this]() { ExecuteExit();	},		false));
 }
 
@@ -51,8 +51,10 @@ void TitleTab::OnDraw(const int main_screen_handle) const
 
 void TitleTab::ExecuteGameStart()
 {
-	m_is_game_start = true;
 	SceneFader::GetInstance()->StartFade(255, 300.0f);
+
+	m_is_game_start = true;
+	m_can_select	= false;
 }
 
 void TitleTab::ExecuteExit()

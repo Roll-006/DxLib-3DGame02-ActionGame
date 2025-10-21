@@ -52,3 +52,8 @@ std::shared_ptr<IScene> ShareScene::ChangeScene()
 {
 	return nullptr;
 }
+
+void ShareScene::StartFadeIn()
+{
+
+}

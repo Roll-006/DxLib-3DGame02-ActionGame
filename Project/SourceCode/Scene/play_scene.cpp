@@ -4,19 +4,18 @@
 PlayScene::PlayScene() :
 	m_is_active						(true),
 	m_scene_kind					(SceneKind::kPlay),
+	m_elapsed_time					(0.0f),
+	m_can_fade_in					(true),
 	m_player						(std::make_shared<Player>()),
 	m_enemy_manager					(std::make_shared<EnemyManager>()),
 	m_house							(std::make_shared<House>()),
 	m_ground						(std::make_shared<Ground>()),
-	m_skydome						(std::make_shared<Skydome>(ObjManager::GetInstance()->GetObj<MainCamera>(ObjName.MAIN_CAMERA))),
+	m_skydome						(std::make_shared<Skydome>()),
 	m_rifle_cartridge_object_pool	(std::make_shared<RifleCartridgeObjectPool>()),
 	m_play_scene_effect_object_pool (std::make_shared<PlaySceneEffectObjectPool>()),
 	m_player_ui_creator				(std::make_shared<PlayerUICreator>(m_player)),
 	m_game_over_tab					(std::make_shared<GameOverTab>())
 {
-	const auto fader = SceneFader::GetInstance();
-	fader->StartFade(0, 40.0f);
-
 	m_player		->AddToObjManager();
 	m_enemy_manager	->AddToObjManager();
 	m_house			->AddToObjManager();
@@ -55,9 +54,6 @@ PlayScene::~PlayScene()
 	pool_holder->RemoveObjectPool(m_rifle_cartridge_object_pool	 ->GetName());
 	pool_holder->RemoveObjectPool(m_play_scene_effect_object_pool->GetName());
 
-	const auto cinemachine_brain = CinemachineBrain::GetInstance();
-	cinemachine_brain->RemoveVirtualCameraController(VirtualCameraControllerKind::kControl);
-
 	// ライトの削除
 	const auto light_holder = LightHolder::GetInstance();
 	light_holder->DeleteLight(LightName.MOONLIGHT);
@@ -82,6 +78,10 @@ void PlayScene::Init()
 
 void PlayScene::Update()
 {
+	StartFadeIn();
+
+	if (SceneFader::GetInstance()->GetAlphaBlendNum() >= 255) { return; }
+
 	m_player							->Update();
 	m_enemy_manager						->Update();
 	RifleCartridgeManager::GetInstance()->Update();
@@ -93,6 +93,8 @@ void PlayScene::Update()
 
 void PlayScene::LateUpdate()
 {
+	if (SceneFader::GetInstance()->GetAlphaBlendNum() >= 255) { return; }
+
 	m_player							->LateUpdate();
 	m_enemy_manager						->LateUpdate();
 	RifleCartridgeManager::GetInstance()->LateUpdate();
@@ -104,6 +106,8 @@ void PlayScene::LateUpdate()
 
 void PlayScene::DrawToShadowMap() const
 {
+	if (SceneFader::GetInstance()->GetAlphaBlendNum() >= 255) { return; }
+
 	m_player							->DrawToShadowMap();
 	m_enemy_manager						->DrawToShadowMap();
 	RifleCartridgeManager::GetInstance()->DrawToShadowMap();
@@ -113,6 +117,8 @@ void PlayScene::DrawToShadowMap() const
 
 void PlayScene::Draw() const
 {
+	if (SceneFader::GetInstance()->GetAlphaBlendNum() >= 255) { return; }
+
 	m_player							->Draw();
 	m_enemy_manager						->Draw();
 	RifleCartridgeManager::GetInstance()->Draw();
@@ -126,13 +132,29 @@ void PlayScene::Draw() const
 
 std::shared_ptr<IScene> PlayScene::ChangeScene()
 {
-	const auto command = CommandHandler::GetInstance();
-
 	// タイトル
-	if (command->IsExecute(CommandKind::kPause, TimeKind::kCurrent))
+	if (m_game_over_tab->IsQuitGame())
 	{
 		return std::make_shared<TitleScene>();
 	}
+	// プレイ
+	if (m_game_over_tab->IsContinue())
+	{
+		Init();
+	}
 
 	return nullptr;
+}
+
+void PlayScene::StartFadeIn()
+{
+	if (!m_can_fade_in) { return; }
+
+	m_elapsed_time += GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kNoneScale);
+	if (m_elapsed_time > 15.0f)
+	{
+		const auto fader = SceneFader::GetInstance();
+		fader->StartFade(0, 120.0f);
+		m_can_fade_in = false;
+	}
 }

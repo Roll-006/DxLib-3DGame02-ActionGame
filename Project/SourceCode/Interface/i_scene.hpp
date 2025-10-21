@@ -22,4 +22,7 @@ public:
 	[[nodiscard]] virtual bool						IsActive()		const	abstract;
 	[[nodiscard]] virtual std::shared_ptr<IScene>	ChangeScene()			abstract;
 	[[nodiscard]] virtual SceneKind					GetSceneKind()	const	abstract;
+
+protected:
+	virtual void StartFadeIn() abstract;
 };

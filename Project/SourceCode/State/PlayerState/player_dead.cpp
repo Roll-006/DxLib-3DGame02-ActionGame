@@ -12,7 +12,13 @@ player_state::Dead::Dead() :
 
 player_state::Dead::~Dead()
 {
-
+	if (m_dead_cameras_controller)
+	{
+		// ‰‰o—pƒJƒƒ‰‚ðíœ
+		const auto cinemachine_brain = CinemachineBrain::GetInstance();
+		cinemachine_brain->RemoveVirtualCameraController(m_dead_cameras_controller);
+		m_dead_cameras_controller = nullptr;
+	}
 }
 
 void player_state::Dead::Update(std::shared_ptr<Player>& obj)
@@ -21,7 +27,7 @@ void player_state::Dead::Update(std::shared_ptr<Player>& obj)
 	const auto delta_time			= game_time_manager->GetDeltaTime(TimeScaleLayerKind::kNoneScale);
 	m_elapsed_time += delta_time;
 
-	if (m_elapsed_time > 5.0f && !m_is_seted_time_scale)
+	if (m_elapsed_time > 6.5f && !m_is_seted_time_scale)
 	{
 		m_is_seted_time_scale = true;
 
@@ -42,12 +48,12 @@ void player_state::Dead::Enter(std::shared_ptr<Player>& obj)
 	m_elapsed_time			= 0.0f;
 	m_is_seted_time_scale	= false;
 
-	const DeadPlayerEvent event{ obj->GetModeler()->GetModelHandle() };
-	EventSystem::GetInstance()->Publish(event);
-
 	const auto cinemachine_brain	= CinemachineBrain::GetInstance();
 	m_dead_cameras_controller		= std::make_shared<DeadVirtualCamerasController>();
 	cinemachine_brain->AddVirtualCameraController(m_dead_cameras_controller);
+
+	const DeadPlayerEvent event{ obj->GetModeler()->GetModelHandle() };
+	EventSystem::GetInstance()->Publish(event);
 }
 
 void player_state::Dead::Exit(std::shared_ptr<Player>& obj)

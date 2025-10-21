@@ -7,7 +7,7 @@
 class Skydome final : public ObjBase
 {
 public:
-	Skydome(std::shared_ptr<MainCamera> camera);
+	Skydome();
 	~Skydome() override;
 
 	void Init()						override;
@@ -27,6 +27,5 @@ private:
 	static constexpr float  kBasicScale = 17.0f;
 
 private:
-	std::shared_ptr<Modeler>   m_modeler;
-	std::shared_ptr<Transform> m_camera_transform;
+	std::shared_ptr<Modeler> m_modeler;
 };

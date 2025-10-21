@@ -5,8 +5,13 @@ GameOverTab::GameOverTab() :
 	m_is_active			(false),
 	m_can_select		(true),
 	m_can_calc_wait_time(false),
+	m_is_continue		(false),
+	m_is_quit_game		(false),
 	m_active_wait_timer	(0.0f),
-	m_ui_selector		(std::make_shared<UISelector>(0, true, true))
+	m_alpha_blend_num	(0),
+	m_ui_selector		(std::make_shared<UISelector>(0, true, true)),
+	m_filter_graphic	(std::make_shared<Graphicer>(UIGraphicPath.GAME_OVER_TAB_FILTER)),
+	m_result_screen		(std::make_shared<ScreenCreator>(Window::kScreenSize, Window::kCenterPos))
 {
 	// ƒCƒxƒ“ƒg“o˜^
 	EventSystem::GetInstance()->Subscribe<DeadPlayerEvent>(this, &GameOverTab::Activate);
@@ -19,6 +24,10 @@ GameOverTab::GameOverTab() :
 
 	m_ui_selector->AddUIButton(std::make_shared<SubMenuSelectButton>(SubMenuSelectButton::ButtonKind::kContinue, center_pos.at(0), [this]() { ExecuteContinue(); }, true));
 	m_ui_selector->AddUIButton(std::make_shared<SubMenuSelectButton>(SubMenuSelectButton::ButtonKind::kQuitGame, center_pos.at(1), [this]() { ExecuteQuitGame(); }, false));
+
+	m_filter_graphic->SetCenterPos(Window::kCenterPos);
+
+	CalcAlphaBlendNum();
 }
 
 GameOverTab::~GameOverTab()
@@ -38,7 +47,10 @@ void GameOverTab::Update()
 
 	if (!m_is_active) { return; }
 
-	m_ui_selector->Update();
+	if (m_can_select) { m_ui_selector->Update(); }
+
+	CreateResultScreen();
+	CalcAlphaBlendNum();
 }
 
 void GameOverTab::OnDraw(const int main_screen_handle) const
@@ -49,6 +61,12 @@ void GameOverTab::OnDraw(const int main_screen_handle) const
 	{
 		button->Draw();
 	}
+
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_result_screen->GetGraphicer()->GetBlendNum());
+	DrawGraph(0, 0, main_screen_handle, TRUE);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+	m_result_screen->Draw();
 }
 
 void GameOverTab::Activate(const DeadPlayerEvent& event)
@@ -58,12 +76,18 @@ void GameOverTab::Activate(const DeadPlayerEvent& event)
 
 void GameOverTab::ExecuteContinue()
 {
+	SceneFader::GetInstance()->StartFade(255, 200.0f);
 
+	m_is_continue	= true;
+	m_can_select	= false;
 }
 
 void GameOverTab::ExecuteQuitGame()
 {
+	SceneFader::GetInstance()->StartFade(255, 200.0f);
 
+	m_is_quit_game	= true;
+	m_can_select	= false;
 }
 
 void GameOverTab::JudgeActive()
@@ -78,4 +102,30 @@ void GameOverTab::JudgeActive()
 	{
 		m_is_active = true;
 	}
+}
+
+void GameOverTab::CalcAlphaBlendNum()
+{
+	if (m_alpha_blend_num >= 255) { return; }
+
+	const auto delta_time = GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kUI);
+	math::Increase(m_alpha_blend_num, static_cast<int>(kFadeSpeed * delta_time), 255, false);
+	m_result_screen->GetGraphicer()->SetBlendNum(m_alpha_blend_num);
+}
+
+void GameOverTab::CreateResultScreen()
+{
+	m_result_screen->UseScreen();
+
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 220);
+	DrawBox(0, 0, Window::kScreenSize.x, Window::kScreenSize.y, 0x000000, TRUE);
+	m_filter_graphic->Draw();
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+	for (const auto& button : m_ui_selector->GetUIButtons())
+	{
+		button->Draw();
+	}
+
+	m_result_screen->UnuseScreen();
 }

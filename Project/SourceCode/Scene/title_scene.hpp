@@ -31,6 +31,9 @@ public:
 	[[nodiscard]] virtual SceneKind			GetSceneKind()	const	override { return m_scene_kind; }
 
 private:
+	void StartFadeIn() override;
+
+private:
 	bool		m_is_active;
 	SceneKind	m_scene_kind;
 
@@ -39,9 +42,10 @@ private:
 	std::shared_ptr<WarningTab>					m_warning_tab;
 	std::shared_ptr<TitleSceneEffectObjectPool>	m_title_scene_effect_object_pool;
 
+	// TODO : ‚Ì‚¿‚É•ÊƒNƒ‰ƒX‚ÖˆÚs
 	std::shared_ptr<VirtualCamera>				m_title_camera;
 	std::shared_ptr<Transform>					m_aim_transform;
 	std::shared_ptr<Transform>					m_smoke_transform;
-	float m_sin;
-	int m_smoke_delete_handle;
+	float										m_sin;
+	int											m_smoke_delete_handle;
 };

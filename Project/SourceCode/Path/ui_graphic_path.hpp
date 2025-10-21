@@ -30,7 +30,8 @@ static struct UIGraphicPath
 
 
 	#pragma region フィルター
-	const std::string DAMAGE_FILTER					= "Data/Graphic/UI/Damage/filter.png";
+	const std::string DAMAGE_FILTER					= "Data/Graphic/UI/Filter/damage_filter.png";
+	const std::string GAME_OVER_TAB_FILTER			= "Data/Graphic/UI/Filter/game_over_tab_filter.png";
 	#pragma endregion
 
 

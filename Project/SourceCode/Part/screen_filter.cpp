@@ -3,7 +3,8 @@
 ScreenFilter::ScreenFilter() : 
 	m_current_basis_filter			(nullptr),
 	m_basis_alpha_blend_num			(255),
-	m_main_screen					(std::make_shared<ScreenCreator>(Window::kScreenSize, Window::kCenterPos)),
+	m_resource_screen				(std::make_shared<ScreenCreator>(Window::kScreenSize, Window::kCenterPos)),
+	m_result_screen					(std::make_shared<ScreenCreator>(Window::kScreenSize, Window::kCenterPos)),
 	m_basis_filter_screen			(std::make_shared<ScreenCreator>(Window::kScreenSize, Window::kCenterPos)),
 	m_near_death_filter_screen		(std::make_shared<ScreenCreator>(Window::kScreenSize, Window::kCenterPos)),
 	m_death_filter_screen			(std::make_shared<ScreenCreator>(Window::kScreenSize, Window::kCenterPos)),
@@ -52,21 +53,34 @@ void ScreenFilter::Update()
 
 void ScreenFilter::UseFilter()
 {
-	m_main_screen->UseScreen();
+	m_resource_screen->UseScreen();
 }
 
 void ScreenFilter::UnuseFilter()
 {
-	m_main_screen->UnuseScreen();
+	m_resource_screen->UnuseScreen();
 }
 
 void ScreenFilter::Draw()
 {
-	m_main_screen->Draw();
+	CreateFilter();
 
-	DrawBasisFilter();
-	DrawNearDeathFilter();
-	DrawDeathFilter();
+	m_result_screen->UseScreen();
+
+	m_resource_screen->Draw();
+	if (m_current_basis_filter)			{ m_basis_filter_screen		->Draw(); }
+	if (m_is_using_near_death_filter)	{ m_near_death_filter_screen->Draw(); }
+	if (m_is_using_death_filter)		{ m_death_filter_screen		->Draw(); }
+
+	m_result_screen->UnuseScreen();
+	m_result_screen->Draw();
+}
+
+void ScreenFilter::CreateFilter()
+{
+	CreateBasisFilter();
+	CreateNearDeathFilter();
+	CreateDeathFilter();
 }
 
 
@@ -124,20 +138,19 @@ void ScreenFilter::UseRetroFilter()
 
 }
 
-void ScreenFilter::DrawBasisFilter()
+void ScreenFilter::CreateBasisFilter()
 {
 	if (!m_current_basis_filter) { return; }
 
 	m_basis_filter_screen->UseScreen();
-	m_main_screen->Draw();
+	m_resource_screen->Draw();
 	m_basis_filter_screen->UnuseScreen();
 	m_basis_filter_screen->GetGraphicer()->SetBlendNum(m_basis_alpha_blend_num);
 
 	m_current_basis_filter();
-	m_basis_filter_screen->Draw();
 }
 
-void ScreenFilter::DrawNearDeathFilter()
+void ScreenFilter::CreateNearDeathFilter()
 {
 	if (!m_is_using_near_death_filter) { return; }
 
@@ -152,15 +165,14 @@ void ScreenFilter::DrawNearDeathFilter()
 	}
 
 	m_near_death_filter_screen->UseScreen();
-	m_main_screen->Draw();
+	m_resource_screen->Draw();
 	m_near_death_filter_screen->UnuseScreen();
 	m_near_death_filter_screen->GetGraphicer()->SetBlendNum(blend_alpha_num);
 
 	GraphFilter(m_near_death_filter_screen->GetScreenHandle(), DX_GRAPH_FILTER_MONO, 0, 0);
-	m_near_death_filter_screen->Draw();
 }
 
-void ScreenFilter::DrawDeathFilter()
+void ScreenFilter::CreateDeathFilter()
 {
 	if (!m_is_using_death_filter) { return; }
 
@@ -168,10 +180,9 @@ void ScreenFilter::DrawDeathFilter()
 	math::Increase(m_death_filter_alpha_blend_num, static_cast<int>(100.0f * delta_time), 255, false);
 
 	m_death_filter_screen->UseScreen();
-	m_main_screen->Draw();
+	m_resource_screen->Draw();
 	m_death_filter_screen->UnuseScreen();
 	m_death_filter_screen->GetGraphicer()->SetBlendNum(m_death_filter_alpha_blend_num);
 
 	GraphFilter(m_death_filter_screen->GetScreenHandle(), DX_GRAPH_FILTER_MONO, 0, 0);
-	m_death_filter_screen->Draw();
 }

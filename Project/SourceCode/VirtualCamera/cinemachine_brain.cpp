@@ -27,6 +27,12 @@ CinemachineBrain::~CinemachineBrain()
 
 }
 
+void CinemachineBrain::Init()
+{
+	m_virtual_cameras.clear();
+	m_virtual_camera_controllers.clear();
+}
+
 void CinemachineBrain::Update()
 {
 	// 非アクティブ化処理の遅延防止のため一度先行してトランスフォームを取得
@@ -101,6 +107,11 @@ void CinemachineBrain::RemoveVirtualCamera(const int camera_handle)
 	m_priority.erase(remove, m_priority.end());
 }
 
+void CinemachineBrain::RemoveAllVirtualCamera()
+{
+	m_virtual_cameras.clear();
+}
+
 void CinemachineBrain::RemoveVirtualCameraController(const VirtualCameraControllerKind kind)
 {
 	for (auto itr = m_virtual_camera_controllers.begin(); itr != m_virtual_camera_controllers.end(); )
@@ -114,6 +125,11 @@ void CinemachineBrain::RemoveVirtualCameraController(const VirtualCameraControll
 			++itr;
 		}
 	}
+}
+
+void CinemachineBrain::RemoveAllVirtualCameraController()
+{
+	m_virtual_camera_controllers.clear();
 }
 #pragma endregion
 

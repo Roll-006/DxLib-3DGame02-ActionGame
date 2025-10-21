@@ -38,11 +38,11 @@ private:
 	static constexpr int			kButtonPosInterval		= 130;
 	static constexpr float			kFadeSpeed				= 600.0f;
 
-	int	 m_priority;
-	bool m_is_active;
-	bool m_can_select;
-	bool m_is_execute_back;
-	int  m_alpha_blend_num;
+	int								m_priority;
+	bool							m_is_active;
+	bool							m_can_select;
+	bool							m_is_execute_back;
+	int								m_alpha_blend_num;
 	std::shared_ptr<UISelector>		m_ui_selector;
 	std::shared_ptr<Graphicer>		m_warning_icon_graphic;
 	std::shared_ptr<ScreenCreator>	m_result_screen;

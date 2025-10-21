@@ -47,4 +47,5 @@ private:
 	static constexpr float  kDiffusionRadius		= 10.0f;		// ŠgŽU”ÍˆÍ‚Ì”¼Œa
 
 	std::shared_ptr<Transform> m_exhaust_vent_transform;
+	bool m_is_draw_magazine;
 };

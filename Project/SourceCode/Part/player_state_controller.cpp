@@ -16,7 +16,9 @@ PlayerStateController::PlayerStateController() :
 
 PlayerStateController::~PlayerStateController()
 {
-
+	m_move_state		 [TimeKind::kPrev] = m_move_state		  [TimeKind::kCurrent] = nullptr;
+	m_action_state		 [TimeKind::kPrev] = m_action_state		  [TimeKind::kCurrent] = nullptr;
+	m_weapon_action_state[TimeKind::kPrev] = m_weapon_action_state[TimeKind::kCurrent] = nullptr;
 }
 
 void PlayerStateController::Update(std::shared_ptr<Player> player)

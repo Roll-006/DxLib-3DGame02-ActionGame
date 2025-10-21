@@ -49,3 +49,8 @@ std::shared_ptr<IScene> LoadScene::ChangeScene()
 
 	return nullptr;
 }
+
+void LoadScene::StartFadeIn()
+{
+
+}

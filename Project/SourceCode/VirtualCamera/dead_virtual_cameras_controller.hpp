@@ -37,7 +37,7 @@ private:
 	void CalcAimTransform();
 
 private:
-	static constexpr VECTOR kFollowOffset		= { 0.0f, 0.0f, 100.0f };
+	static constexpr VECTOR kFollowOffset		= { 0.0f, 0.0f, -100.0f };
 	static constexpr VECTOR kTrackedObjOffset	= { 0.0f, 0.0f, 0.0f };
 
 private:
@@ -45,7 +45,7 @@ private:
 	int										m_controller_handle;
 	bool									m_is_active;
 
-	std::shared_ptr<VirtualCamera>			m_dead_control_camera;
+	std::shared_ptr<VirtualCamera>			m_dead_camera;
 	std::shared_ptr<Transform>				m_aim_transform;
 	int										m_model_handle;
 };

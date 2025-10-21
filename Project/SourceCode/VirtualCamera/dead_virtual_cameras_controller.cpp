@@ -1,12 +1,11 @@
 #include "dead_virtual_cameras_controller.hpp"
-
 #include "../VirtualCamera/cinemachine_brain.hpp"
 
 DeadVirtualCamerasController::DeadVirtualCamerasController() :
 	m_virtual_camera_controller_kind(VirtualCameraControllerKind::kDead),
 	m_controller_handle				(HandleCreator::GetInstance()->CreateHandle()),
 	m_is_active						(true),
-	m_dead_control_camera			(std::make_shared<VirtualCamera>(ObjName.DEAD_VIRTUAL_CAMERA, BlendActivationPolicyKind::kDeactivateAllCamera)),
+	m_dead_camera					(std::make_shared<VirtualCamera>(ObjName.DEAD_VIRTUAL_CAMERA, BlendActivationPolicyKind::kDeactivateAllCamera)),
 	m_aim_transform					(std::make_shared<Transform>()),
 	m_model_handle					(-1)
 {
@@ -17,8 +16,8 @@ DeadVirtualCamerasController::DeadVirtualCamerasController() :
 	SetupCamera();
 
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
-	cinemachine_brain->SetBlendTime(0.4f);
-	cinemachine_brain->AddVirtualCamera(m_dead_control_camera, true);
+	cinemachine_brain->SetBlendTime(3.0f);
+	cinemachine_brain->AddVirtualCamera(m_dead_camera, true);
 }
 
 DeadVirtualCamerasController::~DeadVirtualCamerasController()
@@ -28,7 +27,7 @@ DeadVirtualCamerasController::~DeadVirtualCamerasController()
 
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	cinemachine_brain->SetBlendTime(1.0f);
-	cinemachine_brain->RemoveVirtualCamera(m_dead_control_camera->GetCameraHandle());
+	cinemachine_brain->RemoveVirtualCamera(m_dead_camera->GetCameraHandle());
 }
 
 void DeadVirtualCamerasController::Init()
@@ -55,25 +54,33 @@ void DeadVirtualCamerasController::ActiveDeadCamera(const DeadPlayerEvent& event
 
 VirtualCameraControllerKind DeadVirtualCamerasController::GetVirtualCameraControllerKind() const
 {
-	return VirtualCameraControllerKind();
+	return m_virtual_camera_controller_kind;
 }
 
 std::shared_ptr<VirtualCamera> DeadVirtualCamerasController::GetHaveVirtualCamera(const std::string& name) const
 {
-	return std::shared_ptr<VirtualCamera>();
+	const auto cinemachine_brain = CinemachineBrain::GetInstance();
+	const auto camera = cinemachine_brain->GetVirtualCamera(name);
+
+	if (camera == m_dead_camera)
+	{
+		return camera;
+	}
+
+	return nullptr;
 }
 
 std::vector<std::shared_ptr<VirtualCamera>> DeadVirtualCamerasController::GetHaveAllVirtualCamera() const
 {
-	return std::vector<std::shared_ptr<VirtualCamera>>();
+	return std::vector<std::shared_ptr<VirtualCamera>>{ m_dead_camera };
 }
 
 void DeadVirtualCamerasController::SetupCamera()
 {
-	m_dead_control_camera->SetPriority(10);
-	m_dead_control_camera->AttachTarget(m_aim_transform);
-	m_dead_control_camera->GetBody()->SetFollowOffset(kFollowOffset);
-	m_dead_control_camera->GetAim() ->SetTrackedObjOffset(kTrackedObjOffset);
+	m_dead_camera->SetPriority(10);
+	m_dead_camera->AttachTarget(m_aim_transform);
+	m_dead_camera->GetBody()->SetFollowOffset(kFollowOffset);
+	m_dead_camera->GetAim() ->SetTrackedObjOffset(kTrackedObjOffset);
 }
 
 void DeadVirtualCamerasController::CalcAimTransform()

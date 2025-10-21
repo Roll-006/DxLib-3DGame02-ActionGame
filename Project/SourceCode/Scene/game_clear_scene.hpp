@@ -21,6 +21,9 @@ public:
 	[[nodiscard]] virtual SceneKind			GetSceneKind()	const	override { return m_scene_kind; }
 
 private:
+	void StartFadeIn() override;
+
+private:
 	bool		m_is_active;
 	SceneKind	m_scene_kind;
 };

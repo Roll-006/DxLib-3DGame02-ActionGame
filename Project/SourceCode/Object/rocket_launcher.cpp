@@ -2,7 +2,8 @@
 
 RocketLauncher::RocketLauncher() :
 	GunBase					(ObjName.ROCKET_LAUNCHER, GunKind::kRocketLauncher, HolsterKind::kRifle),
-	m_exhaust_vent_transform(std::make_shared<Transform>())
+	m_exhaust_vent_transform(std::make_shared<Transform>()),
+	m_is_draw_magazine		(true)
 {
 	m_magazine = std::make_shared<NonCollildeRocketBomb>(m_load_transform);
 	std::dynamic_pointer_cast<ObjBase>(m_magazine)->AddToObjManager();
@@ -70,11 +71,11 @@ void RocketLauncher::Draw() const
 	if (!IsActive()) { return; }
 
 	m_modeler->Draw();
-	std::dynamic_pointer_cast<ObjBase>(m_magazine)->Draw();
 
-	//if(GetMuzzleTransform())DrawSphere3D(GetMuzzleTransform()->GetPos(CoordinateKind::kWorld), 2, 8, 0xffffff, 0xffffff, FALSE);
-	//if(GetLoadTransform())  DrawSphere3D(GetLoadTransform()  ->GetPos(CoordinateKind::kWorld), 1, 8, 0xffffff, 0xffffff, FALSE);
-	//DrawSphere3D(m_exhaust_vent_transform->GetPos(CoordinateKind::kWorld), 2, 8, 0xffffff, 0xffffff, FALSE);
+	//if (m_is_draw_magazine)
+	{
+		std::dynamic_pointer_cast<ObjBase>(m_magazine)->Draw();
+	}
 }
 
 void RocketLauncher::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)

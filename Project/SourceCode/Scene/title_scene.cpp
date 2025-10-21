@@ -32,6 +32,7 @@ TitleScene::TitleScene() :
 
 	// ƒJƒƒ‰‚ÌÝ’è
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
+	cinemachine_brain->RemoveAllVirtualCameraController();
 	cinemachine_brain->AddVirtualCamera(m_title_camera, true);
 	m_title_camera->SetPriority(0);
 	m_title_camera->AttachTarget(m_aim_transform);
@@ -50,9 +51,7 @@ TitleScene::TitleScene() :
 	const auto game_time_manager = GameTimeManager::GetInstance();
 	game_time_manager->InitTimeScale();
 
-	const auto fader = SceneFader::GetInstance();
-	fader->StartFade(0, 80.0f);
-
+	StartFadeIn();
 	Init();
 }
 
@@ -75,6 +74,7 @@ TitleScene::~TitleScene()
 
 	// ƒJƒƒ‰‚Ì“o˜^‚ð‰ðœ
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
+	cinemachine_brain->SetBlendTime(1.0f);
 	cinemachine_brain->RemoveVirtualCamera(m_title_camera->GetCameraHandle());
 }
 
@@ -82,6 +82,7 @@ void TitleScene::Init()
 {
 	// ƒ^ƒu‚Ì“o˜^
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
+	cinemachine_brain->SetBlendTime(0.0f);
 	cinemachine_brain->SetNear(1.0f);
 	cinemachine_brain->SetFar (50.0f);
 	cinemachine_brain->SetFOV (25.0f);
@@ -107,7 +108,6 @@ void TitleScene::Update()
 	if (m_warning_tab->IsBack())
 	{
 		m_warning_tab	->Init();
-		m_warning_tab	->Deactivate();
 		m_title_tab		->AllowSelect();
 	}
 
@@ -161,10 +161,16 @@ std::shared_ptr<IScene> TitleScene::ChangeScene()
 	const auto fader = SceneFader::GetInstance();
 
 	// ƒ[ƒh(ƒvƒŒƒC)
-	if (m_title_tab->IsGameStart() && !fader->IsFading())
+	if (m_title_tab->IsGameStart())
 	{
 		return std::make_shared<LoadScene>(SceneKind::kPlay);
 	}
 
 	return nullptr;
+}
+
+void TitleScene::StartFadeIn()
+{
+	const auto fader = SceneFader::GetInstance();
+	fader->StartFade(0, 70.0f);
 }

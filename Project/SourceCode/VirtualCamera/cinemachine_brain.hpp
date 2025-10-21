@@ -23,6 +23,7 @@ namespace camera_controllder_concepts
 class CinemachineBrain final : public SingletonBase<CinemachineBrain>
 {
 public:
+	void Init();
 	void Update();
 	void LateUpdate();
 
@@ -37,6 +38,7 @@ public:
 	void AddVirtualCamera(const std::shared_ptr<VirtualCamera>& virtual_camera, const bool is_active);
 	/// @brief バーチャルカメラの登録を解除する
 	void RemoveVirtualCamera(const int camera_handle);
+	void RemoveAllVirtualCamera();
 
 	/// @brief バーチャルカメラコントローラーを登録する
 	template<camera_controllder_concepts::VirtualCameraController ControllerT>
@@ -57,8 +59,8 @@ public:
 			erase(m_virtual_camera_controllers, virtual_camera_controller);
 		}
 	}
-
 	void RemoveVirtualCameraController(const VirtualCameraControllerKind kind);
+	void RemoveAllVirtualCameraController();
 	#pragma endregion
 
 
@@ -95,11 +97,12 @@ public:
 	[[nodiscard]] std::shared_ptr<IVirtualCameraController> GetVirtualCameraController(const VirtualCameraControllerKind controller_kind) const;
 
 	/// @brief バーチャルカメラをブレンド中であるかを判定
-	[[nodiscard]] bool IsBlending() const { return m_is_blending; }
+	[[nodiscard]] bool  IsBlending()	const { return m_is_blending; }
+	[[nodiscard]] float GetBlendTime()	const { return m_blend_time; }
 
-	[[nodiscard]] float GetNear()	const { return m_near;	}
-	[[nodiscard]] float GetFar()	const { return m_far;	}
-	[[nodiscard]] float GetFOV()	const { return m_fov;	}
+	[[nodiscard]] float GetNear()		const { return m_near;	}
+	[[nodiscard]] float GetFar()		const { return m_far;	}
+	[[nodiscard]] float GetFOV()		const { return m_fov;	}
 	#pragma endregion
 
 private:

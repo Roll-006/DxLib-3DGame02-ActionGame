@@ -42,3 +42,8 @@ std::shared_ptr<IScene> GameClearScene::ChangeScene()
 {
 	return nullptr;
 }
+
+void GameClearScene::StartFadeIn()
+{
+
+}
