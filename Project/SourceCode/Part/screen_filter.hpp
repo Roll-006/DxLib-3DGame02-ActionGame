@@ -24,6 +24,7 @@ public:
 	void UseFilter();
 	void UnuseFilter();
 
+	void CreateScreen();
 	void Draw();
 
 	#pragma region Event

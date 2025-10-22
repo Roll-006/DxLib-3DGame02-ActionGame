@@ -1,8 +1,8 @@
 #include "screen_creator.hpp"
 
-ScreenCreator::ScreenCreator(const Vector2D<int>& screen_size) :
+ScreenCreator::ScreenCreator(const Vector2D<int>& screen_size, const bool is_ransparent) :
 	m_screen_size			(screen_size),
-	m_screen_graphic_handle	(MakeScreen(screen_size.x, screen_size.y, TRUE)),
+	m_screen_graphic_handle	(MakeScreen(screen_size.x, screen_size.y, is_ransparent)),
 	m_graphicer				(nullptr),
 	m_prev_camera_pos		(v3d::GetZeroV()),
 	m_prev_camera_target	(v3d::GetZeroV()),
@@ -13,9 +13,9 @@ ScreenCreator::ScreenCreator(const Vector2D<int>& screen_size) :
 	m_graphicer = std::make_shared<Graphicer>(m_screen_graphic_handle);
 }
 
-ScreenCreator::ScreenCreator(const Vector2D<int>& screen_size, const Vector2D<int>& center_pos) :
+ScreenCreator::ScreenCreator(const Vector2D<int>& screen_size, const Vector2D<int>& center_pos, const bool is_ransparent) :
 	m_screen_size			(screen_size),
-	m_screen_graphic_handle	(MakeScreen(screen_size.x, screen_size.y, TRUE)),
+	m_screen_graphic_handle	(MakeScreen(screen_size.x, screen_size.y, is_ransparent)),
 	m_graphicer				(nullptr),
 	m_prev_camera_pos		(v3d::GetZeroV()),
 	m_prev_camera_target	(v3d::GetZeroV()),

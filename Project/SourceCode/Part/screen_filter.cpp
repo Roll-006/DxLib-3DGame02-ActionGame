@@ -3,8 +3,8 @@
 ScreenFilter::ScreenFilter() : 
 	m_current_basis_filter			(nullptr),
 	m_basis_alpha_blend_num			(255),
-	m_resource_screen				(std::make_shared<ScreenCreator>(Window::kScreenSize, Window::kCenterPos)),
-	m_result_screen					(std::make_shared<ScreenCreator>(Window::kScreenSize, Window::kCenterPos)),
+	m_resource_screen				(std::make_shared<ScreenCreator>(Window::kScreenSize, Window::kCenterPos, false)),
+	m_result_screen					(std::make_shared<ScreenCreator>(Window::kScreenSize, Window::kCenterPos, false)),
 	m_basis_filter_screen			(std::make_shared<ScreenCreator>(Window::kScreenSize, Window::kCenterPos)),
 	m_near_death_filter_screen		(std::make_shared<ScreenCreator>(Window::kScreenSize, Window::kCenterPos)),
 	m_death_filter_screen			(std::make_shared<ScreenCreator>(Window::kScreenSize, Window::kCenterPos)),
@@ -61,7 +61,7 @@ void ScreenFilter::UnuseFilter()
 	m_resource_screen->UnuseScreen();
 }
 
-void ScreenFilter::Draw()
+void ScreenFilter::CreateScreen()
 {
 	CreateFilter();
 
@@ -73,6 +73,10 @@ void ScreenFilter::Draw()
 	if (m_is_using_death_filter)		{ m_death_filter_screen		->Draw(); }
 
 	m_result_screen->UnuseScreen();
+}
+
+void ScreenFilter::Draw()
+{
 	m_result_screen->Draw();
 }
 
