@@ -37,6 +37,8 @@ void zombie_state::PlayDead::Exit(std::shared_ptr<Zombie>& obj)
 
 std::shared_ptr<IState<Zombie>> zombie_state::PlayDead::ChangeState(std::shared_ptr<Zombie>& obj)
 {
+	if (obj->GetDeltaTime() <= 0.0f) { return nullptr; }
+
 	const auto state_controller = obj->GetStateController();
 
 	// Ž€–S

@@ -66,6 +66,8 @@ void player_state::Shot::Exit(std::shared_ptr<Player>& obj)
 
 std::shared_ptr<IState<Player>> player_state::Shot::ChangeState(std::shared_ptr<Player>& obj)
 {
+	if (obj->GetDeltaTime() <= 0.0f) { return nullptr; }
+
 	const auto state_controller = obj->GetStateController();
 	const auto command			= CommandHandler::GetInstance();
 

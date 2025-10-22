@@ -34,6 +34,8 @@ void zombie_state::Alert::Exit(std::shared_ptr<Zombie>& obj)
 
 std::shared_ptr<IState<Zombie>> zombie_state::Alert::ChangeState(std::shared_ptr<Zombie>& obj)
 {
+	if (obj->GetDeltaTime() <= 0.0f) { return nullptr; }
+
 	const auto state_controller = obj->GetStateController();
 
 	// ã≠êßë“ã@

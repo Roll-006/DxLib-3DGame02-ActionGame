@@ -496,10 +496,5 @@ bool PlayerStateController::TryReload(std::shared_ptr<Player>& player)
 
 	return false;
 }
-
-//bool PlayerStateController::TryAimGun(Player* obj)
-//{
-//	return obj->GetCurrentEquipWeaponKind(WeaponSlotKind::kMain) == WeaponKind::kGun && CommandHandler::GetInstance()->IsExecuting(CommandKind::kAimGun);
-//}
 #pragma endregion
 	

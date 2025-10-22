@@ -39,6 +39,8 @@ void zombie_state::GrabRun::Exit(std::shared_ptr<Zombie>& obj)
 
 std::shared_ptr<IState<Zombie>> zombie_state::GrabRun::ChangeState(std::shared_ptr<Zombie>& obj)
 {
+	if (obj->GetDeltaTime() <= 0.0f) { return nullptr; }
+
 	const auto state_controller = obj->GetStateController();
 
 	// ‹­§NULL

@@ -37,6 +37,8 @@ void player_state::Idle::Exit(std::shared_ptr<Player>& obj)
 
 std::shared_ptr<IState<Player>> player_state::Idle::ChangeState(std::shared_ptr<Player>& obj)
 {
+	if (obj->GetDeltaTime() <= 0.0f) { return nullptr; }
+
 	// “ü—Í‚ª‚ ‚Á‚½ê‡AMove‚ÖˆÚs
 	if (obj->GetStateController()->TryMove())
 	{

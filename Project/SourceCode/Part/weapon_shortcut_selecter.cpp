@@ -18,6 +18,8 @@ WeaponShortcutSelecter::~WeaponShortcutSelecter()
 
 void WeaponShortcutSelecter::Update(const std::shared_ptr<Player>& player)
 {
+	if (player->GetDeltaTime() == 0.0f) { return; }
+
 	const auto state_controller		= player->GetStateController();
 	const auto weapon_action_state	= state_controller->GetWeaponActionState(TimeKind::kCurrent);
 	const auto action_state			= state_controller->GetActionState(TimeKind::kCurrent);

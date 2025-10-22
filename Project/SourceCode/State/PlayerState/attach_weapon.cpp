@@ -36,5 +36,7 @@ void player_state::AttachWeapon::Exit(std::shared_ptr<Player>& obj)
 
 std::shared_ptr<IState<Player>> player_state::AttachWeapon::ChangeState(std::shared_ptr<Player>& obj)
 {
+	if (obj->GetDeltaTime() <= 0.0f) { return nullptr; }
+
 	return nullptr;
 }

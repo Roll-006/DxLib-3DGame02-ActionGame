@@ -142,7 +142,7 @@ void PauseTab::CreateResultScreen()
 {
 	m_result_screen->UseScreen();
 
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 220);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 180);
 	DrawBox(0, 0, Window::kScreenSize.x, Window::kScreenSize.y, 0x000000, TRUE);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 

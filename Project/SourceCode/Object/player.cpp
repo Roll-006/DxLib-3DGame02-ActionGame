@@ -503,7 +503,8 @@ void Player::UpdateGrabbed()
 			break;
 		}
 
-		if (command->IsExecute(CommandKind::kEscape, TimeKind::kCurrent))
+		// 入力されたかつデルタタイムが有効な場合のみ値を増加
+		if (delta_time > 0.0f && command->IsExecute(CommandKind::kEscape, TimeKind::kCurrent))
 		{
 			m_escape_gauge->Increase(increase);
 		}

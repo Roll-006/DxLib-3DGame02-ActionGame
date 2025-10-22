@@ -66,6 +66,8 @@ void player_state::Dead::Exit(std::shared_ptr<Player>& obj)
 
 std::shared_ptr<IState<Player>> player_state::Dead::ChangeState(std::shared_ptr<Player>& obj)
 {
+	if (obj->GetDeltaTime() <= 0.0f) { return nullptr; }
+
 	// €–S‚©‚ç‚Ì‘JˆÚ‚Í‚È‚¢
 	return nullptr;
 }
