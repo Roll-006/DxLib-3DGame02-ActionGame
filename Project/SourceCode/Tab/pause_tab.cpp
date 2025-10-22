@@ -58,6 +58,7 @@ void PauseTab::Update()
 	if (!m_is_active) { return; }
 
 	JudgeDeactivate();
+	BackTab();
 
 	m_can_select = m_result_screen->GetGraphicer()->GetBlendNum() >= 255 ? true : false;
 
@@ -151,4 +152,14 @@ void PauseTab::CreateResultScreen()
 	}
 
 	m_result_screen->UnuseScreen();
+}
+
+void PauseTab::BackTab()
+{
+	if (m_result_screen->GetGraphicer()->GetBlendNum() < 255) { return; }
+
+	if (CommandHandler::GetInstance()->IsExecute(CommandKind::kPause, TimeKind::kCurrent))
+	{
+		m_is_execute_return_to_game = true;
+	}
 }
