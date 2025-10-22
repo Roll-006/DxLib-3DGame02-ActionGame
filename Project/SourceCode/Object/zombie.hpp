@@ -55,9 +55,6 @@ public:
 private:
 	void JudgeAction() override;
 
-	void OnCollideWithExplosion(const std::shared_ptr<Sphere> sphere);
-	//void OnCollideWithBullet();;
-
 private:
 	static constexpr VECTOR kBasicAngle				= { 0.0f, DX_PI_F, 0.0f };
 	static constexpr float  kBasicScale				= 0.31f;

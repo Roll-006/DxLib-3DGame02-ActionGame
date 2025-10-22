@@ -226,7 +226,7 @@ void RocketLauncherVirtualCamerasController::CalcAimTransformForZoomOutCamera()
 	if (!m_zoom_out_camera->IsActive()) { return; }
 
 	m_zoom_out_timer += m_zoom_out_camera->GetDeltaTime();
-	m_test_timer			 += m_zoom_out_camera->GetDeltaTime();
+	m_test_timer	 += m_zoom_out_camera->GetDeltaTime();
 
 	// •œ‹A‰ñ“]ƒJƒƒ‰‚ÖˆÚs
 	if (m_zoom_out_timer >= kZoomOutTime)

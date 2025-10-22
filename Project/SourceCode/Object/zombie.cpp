@@ -152,17 +152,6 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 		break;
 
 	case ColliderKind::kCollider:
-		// ロケット弾着弾時の爆発エフェクトとの衝突
-		if (target_name == ObjName.ROCKET_BOMB_HIT_EXPLOSION_EFFECT)
-		{
-			if (m_hit_colliders.count(hit_collider_pair.target_collider)) { return; }
-			m_hit_colliders[hit_collider_pair.target_collider] = hit_collider_pair.target_collider->IsOneCollision();
-
-			if (m_is_invincible) { return; }
-			
-			OnCollideWithExplosion(std::static_pointer_cast<Sphere>(hit_collider_pair.target_collider->GetShape()));
-			
-		}
 		break;
 
 	case ColliderKind::kHeadTrigger:
@@ -421,23 +410,4 @@ void Zombie::JudgeAction()
 {
 	const auto is_alive_target = m_state->GetTargetCharacter()->GetHealth(HealthPartKind::kMain)->IsAlive();
 	m_can_action = is_alive_target && !m_is_stop_action_forcibly;
-}
-
-void Zombie::OnCollideWithExplosion(const std::shared_ptr<Sphere> sphere)
-{
-	// TODO : のちに爆発クラス側に処理内容を委ねる
-
-	// TODO : 座標をモデル依存に変更
-	const auto pos				= m_transform->GetPos(CoordinateKind::kWorld) + VGet(0, 50, 0);
-	const auto explosion_pos	= sphere->GetPos();
-	const auto distance			= pos - explosion_pos;
-
-	if (VSize(distance) > sphere->GetRadius()) { return; }
-
-	const auto dir_xz			= v3d::GetNormalizedV(VGet(distance.x, 0.0f, distance.z));
-	const auto dir				= v3d::GetNormalizedV(dir_xz + VGet(0.0f, 0.5f, 0.0f));
-
-	m_knockback_speed			= 400.0f;
-	m_knockback_deceleration	= 5.0f;
-	m_knockback_velocity		= dir * m_knockback_speed;
 }

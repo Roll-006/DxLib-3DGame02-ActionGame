@@ -17,7 +17,7 @@ player_state::ShotRocketLauncher::~ShotRocketLauncher()
 
 void player_state::ShotRocketLauncher::Update(std::shared_ptr<Player>& obj)
 {
-	m_wait_timer += GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kNoneScale);
+	m_wait_timer += GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kCamera);
 	
 	obj->SetLookDirOffsetValueForAim();
 	//obj->DirOfCameraForward();

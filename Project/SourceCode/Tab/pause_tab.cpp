@@ -49,6 +49,11 @@ void PauseTab::Init()
 
 	const auto game_time_manager = GameTimeManager::GetInstance();
 	game_time_manager->InitTimeScale();
+
+	game_time_manager->SetTimeScale(TimeScaleLayerKind::kWorld,  m_prev_time_scale.at(TimeScaleLayerKind::kWorld));
+	game_time_manager->SetTimeScale(TimeScaleLayerKind::kPlayer, m_prev_time_scale.at(TimeScaleLayerKind::kPlayer));
+	game_time_manager->SetTimeScale(TimeScaleLayerKind::kEffect, m_prev_time_scale.at(TimeScaleLayerKind::kEffect));
+	game_time_manager->SetTimeScale(TimeScaleLayerKind::kCamera, m_prev_time_scale.at(TimeScaleLayerKind::kCamera));
 }
 
 void PauseTab::Update()
@@ -111,7 +116,13 @@ void PauseTab::JudgeActive()
 		m_is_active = true;
 
 		const auto game_time_manager = GameTimeManager::GetInstance();
-		game_time_manager->SetTimeScale(TimeScaleLayerKind::kWorld, 0.0f);
+
+		m_prev_time_scale[TimeScaleLayerKind::kWorld]  = game_time_manager->GetTimeScale(TimeScaleLayerKind::kWorld);
+		m_prev_time_scale[TimeScaleLayerKind::kPlayer] = game_time_manager->GetTimeScale(TimeScaleLayerKind::kPlayer);
+		m_prev_time_scale[TimeScaleLayerKind::kEffect] = game_time_manager->GetTimeScale(TimeScaleLayerKind::kEffect);
+		m_prev_time_scale[TimeScaleLayerKind::kCamera] = game_time_manager->GetTimeScale(TimeScaleLayerKind::kCamera);
+
+		game_time_manager->SetTimeScale(TimeScaleLayerKind::kWorld,  0.0f);
 		game_time_manager->SetTimeScale(TimeScaleLayerKind::kPlayer, 0.0f);
 		game_time_manager->SetTimeScale(TimeScaleLayerKind::kEffect, 0.0f);
 		game_time_manager->SetTimeScale(TimeScaleLayerKind::kCamera, 0.0f);

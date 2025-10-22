@@ -1,4 +1,5 @@
 #include "rocket_bomb_explosion_effect.hpp"
+#include "../Base/character_base.hpp"
 
 RocketBombExplosionEffect::RocketBombExplosionEffect() :
 	PhysicalObjBase				(ObjName.ROCKET_BOMB_HIT_EXPLOSION_EFFECT, ObjTag.EFFECT, MassKind::kLight),
@@ -86,10 +87,19 @@ void RocketBombExplosionEffect::Draw() const
 
 void RocketBombExplosionEffect::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 {
+	PhysicalObjBase*	target_obj				= hit_collider_pair.target_collider->GetOwnerObj();
+	const auto			target_name				= target_obj->GetName();
+	const auto			target_tag				= target_obj->GetTag();
+	const auto			target_collider_kind	= hit_collider_pair.target_collider->GetColliderKind();
+
 	switch (hit_collider_pair.owner_collider->GetColliderKind())
 	{
-	case ColliderKind::kLandingTrigger:
-		m_is_landing = true;
+	case ColliderKind::kAttackTrigger:
+		if (target_tag == ObjTag.ENEMY)
+		{
+			const auto character = dynamic_cast<CharacterBase*>(target_obj);
+			Attack(character);
+		}
 		break;
 
 	default:
@@ -221,6 +231,24 @@ void RocketBombExplosionEffect::CalcTriggerPos()
 			sphere->SetPos(m_transform->GetPos(CoordinateKind::kWorld));
 		}
 	}
+}
+
+void RocketBombExplosionEffect::Attack(CharacterBase* target_character)
+{
+	const auto model_handle		= target_character->GetModeler()->GetModelHandle();
+	auto hips_m					= MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, BonePath.HIPS));
+	const auto hips_pos			= MGetTranslateElem(hips_m);
+	const auto explosion_sphere = std::static_pointer_cast<Sphere>(GetCollider(ColliderKind::kAttackTrigger)->GetShape());
+	const auto explosion_pos	= explosion_sphere->GetPos();
+	const auto distance			= hips_pos - explosion_pos;
+
+
+	if (VSize(distance) > explosion_sphere->GetRadius()) { return; }
+
+	const auto dir_xz = v3d::GetNormalizedV(VGet(distance.x, 0.0f, distance.z));
+	const auto dir = v3d::GetNormalizedV(dir_xz + VGet(0.0f, 0.5f, 0.0f));
+
+	target_character->OnKnockback(dir, 400.0f, 200.0f);
 }
 
 float RocketBombExplosionEffect::GetDeltaTime() const

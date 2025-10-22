@@ -18,6 +18,7 @@ enum class PlayerAnimKind
 	kFirstSideSlashKnife,
 	kSecondSideSlashKnife,
 	kSpinningSlashKnife,
+	kStealthKill,
 
 	kMoveForwardRun,
 	#pragma endregion

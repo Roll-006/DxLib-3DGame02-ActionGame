@@ -32,6 +32,7 @@ public:
 	void SetTimeScale(const TimeScaleLayerKind layer_kind, const float time_scale, const float change_time = -1.0f);
 
 	[[nodiscard]] float GetDeltaTime(const TimeScaleLayerKind scale_layer_kind) const;
+	[[nodiscard]] float GetTimeScale(const TimeScaleLayerKind scale_layer_kind) const { return m_time_scale.at(scale_layer_kind); }
 
 private:
 	GameTimeManager();

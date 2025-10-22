@@ -65,4 +65,6 @@ private:
 	int								m_font_handle;
 	std::string						m_text;
 	Vector2D<int>					m_font_size;
+
+	std::unordered_map<TimeScaleLayerKind, float> m_prev_time_scale;
 };

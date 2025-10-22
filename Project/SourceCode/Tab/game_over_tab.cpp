@@ -26,6 +26,7 @@ GameOverTab::GameOverTab() :
 	m_ui_selector->AddUIButton(std::make_shared<SubMenuSelectButton>(SubMenuSelectButton::ButtonKind::kQuitGame, center_pos.at(1), [this]() { ExecuteQuitGame(); }, false));
 
 	m_filter_graphic->SetCenterPos(Window::kCenterPos);
+	m_filter_graphic->SetBlendNum(220);
 
 	CalcAlphaBlendNum();
 }
@@ -119,8 +120,9 @@ void GameOverTab::CreateResultScreen()
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 220);
 	DrawBox(0, 0, Window::kScreenSize.x, Window::kScreenSize.y, 0x000000, TRUE);
-	m_filter_graphic->Draw();
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+	m_filter_graphic->Draw();
 
 	for (const auto& button : m_ui_selector->GetUIButtons())
 	{

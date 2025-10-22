@@ -7,6 +7,8 @@
 #include "../Manager/obj_manager.hpp"
 #include "../Manager/collision_manager.hpp"
 
+class CharacterBase;
+
 class RocketBombExplosionEffect final : public PhysicalObjBase, public IEffect, public IPoolable
 {
 public:
@@ -51,10 +53,11 @@ public:
 
 
 	#pragma region Getter
-	[[nodiscard]] int	GetOriginEffectHandle()		 const override { return m_origin_effect_handle; }
-	[[nodiscard]] int	GetPlayingEffectHandle()	 const override { return m_playing_effect_handle; }
-	[[nodiscard]] int   GetReturnPoolTriggerHandle() const override { return m_return_pool_trigger_handle; }
-	[[nodiscard]] float GetPower()					 const			{ return kPower; }
+	[[nodiscard]] float	GetDeltaTime()					const override;
+	[[nodiscard]] int	GetOriginEffectHandle()			const override	{ return m_origin_effect_handle; }
+	[[nodiscard]] int	GetPlayingEffectHandle()		const override	{ return m_playing_effect_handle; }
+	[[nodiscard]] int   GetReturnPoolTriggerHandle()	const override	{ return m_return_pool_trigger_handle; }
+	[[nodiscard]] float GetPower()						const			{ return kPower; }
 	[[nodiscard]] bool	IsReturnPool() override;
 	#pragma endregion
 
@@ -65,8 +68,7 @@ private:
 	void PlayEffect() override;
 
 	void CalcTriggerPos();
-
-	[[nodiscard]] float	GetDeltaTime() const override;
+	void Attack(CharacterBase* target_character);
 
 private:
 	static constexpr float kScale			= 1.03f;

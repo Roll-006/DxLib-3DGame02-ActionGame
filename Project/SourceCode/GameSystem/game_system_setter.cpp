@@ -41,7 +41,4 @@ void GameSystemSetter::SetUpGameSystem()
 
 	// フォント
 	SetFontUseAdjustSizeFlag(FALSE);
-
-	// スクリーン
-	//SetUseSetDrawScreenSettingReset(FALSE);
 }
