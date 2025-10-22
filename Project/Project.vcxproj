@@ -310,7 +310,7 @@
     <ClCompile Include="SourceCode\State\ZombieState\zombie_move.cpp" />
     <ClCompile Include="SourceCode\Tab\game_over_tab (2).cpp" />
     <ClCompile Include="SourceCode\Tab\game_over_tab (3).cpp" />
-    <ClCompile Include="SourceCode\Tab\game_over_tab (4).cpp" />
+    <ClCompile Include="SourceCode\Tab\pause_tab.cpp" />
     <ClCompile Include="SourceCode\Tab\title_tab.cpp" />
     <ClCompile Include="SourceCode\Tab\game_over_tab.cpp" />
     <ClCompile Include="SourceCode\Tab\tab_drawer.cpp" />
@@ -640,7 +640,7 @@
     <ClInclude Include="SourceCode\State\ZombieState\zombie_move.hpp" />
     <ClInclude Include="SourceCode\Tab\game_over_tab (2).hpp" />
     <ClInclude Include="SourceCode\Tab\game_over_tab (3).hpp" />
-    <ClInclude Include="SourceCode\Tab\game_over_tab (4).hpp" />
+    <ClInclude Include="SourceCode\Tab\pause_tab.hpp" />
     <ClInclude Include="SourceCode\Tab\title_tab.hpp" />
     <ClInclude Include="SourceCode\Tab\game_over_tab.hpp" />
     <ClInclude Include="SourceCode\Tab\tab_drawer.hpp" />

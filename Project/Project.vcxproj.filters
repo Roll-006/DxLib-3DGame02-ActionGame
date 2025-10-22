@@ -535,7 +535,7 @@
     <ClCompile Include="SourceCode\Tab\game_over_tab (3).cpp">
       <Filter>SourceCode\Tab</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Tab\game_over_tab (4).cpp">
+    <ClCompile Include="SourceCode\Tab\pause_tab.cpp">
       <Filter>SourceCode\Tab</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Tab\title_tab.cpp">
@@ -1494,7 +1494,7 @@
     <ClInclude Include="SourceCode\Tab\game_over_tab (3).hpp">
       <Filter>SourceCode\Tab</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Tab\game_over_tab (4).hpp">
+    <ClInclude Include="SourceCode\Tab\pause_tab.hpp">
       <Filter>SourceCode\Tab</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Tab\title_tab.hpp">

@@ -15,8 +15,8 @@ MainMenuSelectButton::MainMenuSelectButton(const ButtonKind button_kind, const V
 
 	switch (m_button_kind)
 	{
-	case ButtonKind::kGameStart:
-		text = "GAME START";
+	case ButtonKind::kStartGame:
+		text = "START GAME";
 		break;
 
 	case ButtonKind::kReturnToGame:

@@ -57,7 +57,6 @@ void CommandHandler::InitKeyCommand()
 	AddInputCode(CommandKind::kSelectRight,					CommandSlotKind::kStatic1,	KEY_INPUT_D);
 	AddInputCode(CommandKind::kSelectRight,					CommandSlotKind::kStatic2,	KEY_INPUT_RIGHT);
 	AddInputCode(CommandKind::kPause,						CommandSlotKind::kStatic1,	KEY_INPUT_ESCAPE);
-	AddInputCode(CommandKind::kPause,						CommandSlotKind::kStatic2,	KEY_INPUT_TAB);
 
 	AddInputCode(CommandKind::kAimGun,						CommandSlotKind::kMain,		mouse::ButtonKind::kRight);
 	AddInputCode(CommandKind::kAttack,						CommandSlotKind::kMain,		mouse::ButtonKind::kLeft);

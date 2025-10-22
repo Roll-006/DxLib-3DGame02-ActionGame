@@ -9,9 +9,10 @@ DamageFilter::DamageFilter() :
 	m_is_near_death					(false)
 {
 	// ƒCƒxƒ“ƒg“o˜^
-	EventSystem::GetInstance()->Subscribe<OnDamageToPlayerEvent>		(this, &DamageFilter::StartDamageBlinking);
+	EventSystem::GetInstance()->Subscribe<OnDamageToPlayerEvent>(this, &DamageFilter::StartDamageBlinking);
 	EventSystem::GetInstance()->Subscribe<NearDeathEvent>		(this, &DamageFilter::StartNearDeathBlinking);
 	EventSystem::GetInstance()->Subscribe<EnterNearDeathEvent>	(this, &DamageFilter::StartEnterNearDeathBlinking);
+	EventSystem::GetInstance()->Subscribe<ChangeSceneEvent>		(this, &DamageFilter::StopNearDeathBlinkind);
 
 	m_graphicer->SetCenterPos(Window::kCenterPos);
 }
@@ -19,9 +20,10 @@ DamageFilter::DamageFilter() :
 DamageFilter::~DamageFilter()
 {
 	// ƒCƒxƒ“ƒg‚Ì“o˜^‰ðœ
-	EventSystem::GetInstance()->Unsubscribe<OnDamageToPlayerEvent>		(this, &DamageFilter::StartDamageBlinking);
-	EventSystem::GetInstance()->Unsubscribe<NearDeathEvent>		(this, &DamageFilter::StartNearDeathBlinking);
-	EventSystem::GetInstance()->Unsubscribe<EnterNearDeathEvent>(this, &DamageFilter::StartEnterNearDeathBlinking);
+	EventSystem::GetInstance()->Unsubscribe<OnDamageToPlayerEvent>	(this, &DamageFilter::StartDamageBlinking);
+	EventSystem::GetInstance()->Unsubscribe<NearDeathEvent>			(this, &DamageFilter::StartNearDeathBlinking);
+	EventSystem::GetInstance()->Unsubscribe<EnterNearDeathEvent>	(this, &DamageFilter::StartEnterNearDeathBlinking);
+	EventSystem::GetInstance()->Unsubscribe<ChangeSceneEvent>		(this, &DamageFilter::StopNearDeathBlinkind);
 }
 
 void DamageFilter::LateUpdate()
@@ -97,5 +99,10 @@ void DamageFilter::StartEnterNearDeathBlinking(const EnterNearDeathEvent& event)
 	m_blinking_sin					= 0.0f;
 	m_max_alpha_blend_num			= kEnterNearDeathAlphaBlendNum;
 	m_is_near_death_first_blinking	= true;
+}
+
+void DamageFilter::StopNearDeathBlinkind(const ChangeSceneEvent& event)
+{
+	m_is_near_death_first_blinking = false;
 }
 #pragma endregion

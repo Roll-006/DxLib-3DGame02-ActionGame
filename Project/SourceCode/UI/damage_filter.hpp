@@ -14,9 +14,10 @@ public:
 
 
 	#pragma region Event
-	void StartDamageBlinking		(const OnDamageToPlayerEvent&  event);
-	void StartNearDeathBlinking		(const NearDeathEvent& event);
-	void StartEnterNearDeathBlinking(const EnterNearDeathEvent& event);
+	void StartDamageBlinking		(const OnDamageToPlayerEvent&	event);
+	void StartNearDeathBlinking		(const NearDeathEvent&			event);
+	void StartEnterNearDeathBlinking(const EnterNearDeathEvent&		event);
+	void StopNearDeathBlinkind		(const ChangeSceneEvent&		event);
 	#pragma endregion
 
 private:

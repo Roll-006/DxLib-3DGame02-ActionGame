@@ -1,0 +1,68 @@
+#pragma once
+#include "../Interface/i_tab.hpp"
+
+#include "../Event/event_system.hpp"
+#include "../UI/ui_selector.hpp"
+#include "../UIButton/main_menu_select_button.hpp"
+#include "../Path/ui_graphic_path.hpp"
+#include "../Part/scene_fader.hpp"
+
+class PauseTab final : public ITab
+{
+public:
+	PauseTab();
+	~PauseTab() override;
+
+	void Init()			override;
+	void Update()		override;
+	void OnDraw(const int main_screen_handle) const override;
+
+	void Activate() 	override { m_is_active = true; }
+	void Deactivate()	override { m_is_active = false; }
+
+	void AllowSelect()  override { m_can_select = true; }
+	void StopSelect()	override { m_can_select = false; }
+
+	void Deactivate(const DeadPlayerEvent& event);
+
+	[[nodiscard]] int  GetPriority()	const override	{ return m_priority; }
+	[[nodiscard]] bool IsActive()		const override	{ return m_is_active; }
+	[[nodiscard]] bool CanSelect()		const override	{ return m_can_select; }
+	[[nodiscard]] bool IsReturnToGame() const			{ return m_is_execute_return_to_game && m_result_screen->GetGraphicer()->GetBlendNum() <= 0;; }
+	[[nodiscard]] bool IsOption()		const			{ return m_is_option; }
+	[[nodiscard]] bool IsQuitGame()		const			{ return m_is_quit_game && !SceneFader::GetInstance()->IsFading();; }
+
+private:
+	void ExecuteReturnToGame();
+	void ExecuteOption();
+	void ExecuteQuitGame();
+
+	void JudgeActive();
+	void JudgeDeactivate();
+	void CalcAlphaBlendNum();
+	void CreateResultScreen();
+
+	/// @brief タブを閉じる
+	/// @brief UIボタンからではなくタブを開くコマンドから閉じる
+	void BackTab();
+
+private:
+	static constexpr Vector2D<int>	kFirstButtonCenterPos	= { 440, 300 };
+	static constexpr int			kButtonPosInterval		= 110;
+	static constexpr float			kFadeSpeed = 600.0f;
+
+	int								m_priority;
+	bool							m_is_active;
+	bool							m_is_deactivate_forcibly;
+	bool							m_can_select;
+	bool							m_is_execute_return_to_game;
+	bool							m_is_option;
+	bool							m_is_quit_game;
+	int								m_alpha_blend_num;
+	std::shared_ptr<UISelector>		m_ui_selector;
+	std::shared_ptr<ScreenCreator>	m_result_screen;
+
+	int								m_font_handle;
+	std::string						m_text;
+	Vector2D<int>					m_font_size;
+};

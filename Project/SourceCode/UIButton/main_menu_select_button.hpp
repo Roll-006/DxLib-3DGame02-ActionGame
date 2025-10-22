@@ -2,13 +2,15 @@
 #include "../Base/ui_button_base.hpp"
 #include "../Calculation/math.hpp"
 #include "../Font/font_handler.hpp"
+#include "../Part/mask_creator.hpp"
+#include "../Part/screen_creator.hpp"
 
 class MainMenuSelectButton final : public UIButtonBase
 {
 public:
 	enum class ButtonKind
 	{
-		kGameStart,		// ゲームを開始する
+		kStartGame,		// ゲームを開始する
 		kReturnToGame,	// ゲームに戻る
 		kOption,		// オプション
 		kQuitGame,		// ゲームを終了する
@@ -33,7 +35,7 @@ private:
 	void CalcGraphicScale();
 
 private:
-	static constexpr int   kScreenWidth				= 600;
+	static constexpr int   kScreenWidth				= 720;
 	static constexpr int   kScreenHeightOffset		= 20;
 	static constexpr int   kNonSelectAlphaBlendNum	= 100;
 	static constexpr float kNonSelectScale			= 0.8f;

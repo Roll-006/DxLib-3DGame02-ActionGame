@@ -14,7 +14,8 @@ PlayScene::PlayScene() :
 	m_rifle_cartridge_object_pool	(std::make_shared<RifleCartridgeObjectPool>()),
 	m_play_scene_effect_object_pool (std::make_shared<PlaySceneEffectObjectPool>()),
 	m_player_ui_creator				(std::make_shared<PlayerUICreator>(m_player)),
-	m_game_over_tab					(std::make_shared<GameOverTab>())
+	m_game_over_tab					(std::make_shared<GameOverTab>()),
+	m_pause_tab						(std::make_shared<PauseTab>())
 {
 	m_player		->AddToObjManager();
 	m_enemy_manager	->AddToObjManager();
@@ -38,6 +39,7 @@ PlayScene::PlayScene() :
 	game_time_manager->InitTimeScale();
 
 	TabDrawer::GetInstance()->AddTab		(m_game_over_tab);
+	TabDrawer::GetInstance()->AddTab		(m_pause_tab);
 	UIDrawer ::GetInstance()->AddUICreator	(m_player_ui_creator);
 
 	Init();
@@ -59,6 +61,7 @@ PlayScene::~PlayScene()
 	light_holder->DeleteLight(LightName.MOONLIGHT);
 
 	TabDrawer::GetInstance()->RemoveTab			(typeid(GameOverTab));
+	TabDrawer::GetInstance()->RemoveTab			(typeid(PauseTab));
 	UIDrawer ::GetInstance()->RemoveUICreator	(m_player_ui_creator->GetName());
 }
 
@@ -89,6 +92,7 @@ void PlayScene::Update()
 	m_ground							->Update();
 	m_skydome							->Update();
 	m_game_over_tab						->Update();
+	m_pause_tab							->Update();
 }
 
 void PlayScene::LateUpdate()
@@ -133,7 +137,7 @@ void PlayScene::Draw() const
 std::shared_ptr<IScene> PlayScene::ChangeScene()
 {
 	// ƒ^ƒCƒgƒ‹
-	if (m_game_over_tab->IsQuitGame())
+	if (m_game_over_tab->IsQuitGame() || m_pause_tab->IsQuitGame())
 	{
 		return std::make_shared<TitleScene>();
 	}
