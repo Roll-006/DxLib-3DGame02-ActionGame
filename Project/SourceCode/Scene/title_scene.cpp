@@ -12,7 +12,7 @@ TitleScene::TitleScene() :
 	m_aim_transform					(std::make_shared<Transform>()),
 	m_smoke_transform				(std::make_shared<Transform>()),
 	m_sin							(90.0f * math::kDegToRad),
-	m_smoke_delete_handle			(HandleCreator::GetInstance()->CreateHandle(HandleCreator::Kind::kNone))
+	m_smoke_delete_handle			(HandleCreator::GetInstance()->CreateHandle())
 {
 	// ƒ}ƒl[ƒWƒƒ[“o˜^
 	m_title_character->AddToObjManager();
@@ -67,7 +67,7 @@ TitleScene::~TitleScene()
 	light_holder->DeleteLight(LightName.TITLE_LIGHT);
 
 	// ƒ^ƒu‚Ì“o˜^‚ğ‰ğœ
-	TabDrawer::GetInstance()->RemoveTab(typeid(TitleTab));
+	TabDrawer::GetInstance()->RemoveTab(m_title_tab->GetTabHandle());
 
 	// ƒJƒƒ‰‚Ì“o˜^‚ğ‰ğœ
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();

@@ -10,16 +10,16 @@ TabDrawer::~TabDrawer()
 
 }
 
-void TabDrawer::RemoveTab(const std::type_index& type)
+void TabDrawer::RemoveTab(const int tab_handle)
 {
-	if (!m_tabs.count(type)) { return; }
+	if (!m_tabs.count(tab_handle)) { return; }
 
-	m_tabs.erase(type);
+	m_tabs.erase(tab_handle);
 
 	// —Dæ‡ˆÊ‚à“¯‚Éíœ
-	const auto remove = std::find_if(m_draw_priority.begin(), m_draw_priority.end(), [=](const std::pair<std::type_index, int> p)
+	const auto remove = std::find_if(m_draw_priority.begin(), m_draw_priority.end(), [=](const std::pair<int, int> p)
 	{
-		return p.first == type;
+		return p.first == tab_handle;
 	});
 
 	if (remove != m_draw_priority.end())
@@ -39,22 +39,22 @@ void TabDrawer::Draw(const int main_screen_handle) const
 	}
 }
 
-void TabDrawer::Activate(const std::type_index& type)
+void TabDrawer::Activate(const int tab_handle)
 {
 	for (const auto& ui : m_tabs)
 	{
-		if (ui.first == type)
+		if (ui.first == tab_handle)
 		{
 			ui.second->Activate();
 		}
 	}
 }
 
-void TabDrawer::Deactivate(const std::type_index& type)
+void TabDrawer::Deactivate(const int tab_handle)
 {
 	for (const auto& ui : m_tabs)
 	{
-		if (ui.first == type)
+		if (ui.first == tab_handle)
 		{
 			ui.second->Deactivate();
 		}

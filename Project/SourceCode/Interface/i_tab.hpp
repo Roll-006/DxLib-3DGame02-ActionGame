@@ -2,6 +2,8 @@
 #include "../Base/ui_button_base.hpp"
 #include "../Base/ui_slider_base.hpp"
 
+#include "../Handle/handle_creator.hpp"
+
 class ITab abstract
 {
 public:
@@ -17,6 +19,7 @@ public:
 	virtual void AllowSelect()  abstract;
 	virtual void StopSelect()	abstract;
 
+	[[nodiscard]] virtual int   GetTabHandle()  const abstract;
 	[[nodiscard]] virtual int	GetPriority()	const abstract;
 	[[nodiscard]] virtual bool	IsActive()		const abstract;
 	[[nodiscard]] virtual bool  CanSelect()		const abstract;

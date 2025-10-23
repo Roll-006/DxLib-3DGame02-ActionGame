@@ -40,6 +40,4 @@ void MoviePlayer::CreateMovieScreen() const
 	PlayMovieToGraph(m_movie_graphic->GetGraphicHandle(), play_type);
 	m_movie_graphic->Draw();
 	m_result_screen->UnuseScreen();
-
-	GraphFilter(m_result_screen->GetScreenHandle(), DX_GRAPH_FILTER_REPLACEMENT, 0, 255, 0, 255, 0, 0, 0, 0);
 }

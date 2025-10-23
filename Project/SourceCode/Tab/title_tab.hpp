@@ -7,7 +7,7 @@
 #include "../Part/scene_fader.hpp"
 
 #include "tab_drawer.hpp"
-#include "warning_exit_tab.hpp"
+#include "warning_tab.hpp"
 
 class TitleTab final : public ITab
 {
@@ -25,25 +25,27 @@ public:
 	void AllowSelect()  override { m_can_select = true; }
 	void StopSelect()	override { m_can_select = false; }
 
-	[[nodiscard]] int  GetPriority()			const override	{ return m_priority; }
-	[[nodiscard]] bool IsActive()				const override	{ return m_is_active; }
-	[[nodiscard]] bool CanSelect()				const override	{ return m_can_select; }
-	[[nodiscard]] bool IsGameStart()			const			{ return m_is_game_start && !SceneFader::GetInstance()->IsFading(); }
-	[[nodiscard]] bool IsActivateWarningTab()	const			{ return m_is_exit; }
+	[[nodiscard]] int  GetTabHandle()	const override	{ return m_tab_handle; }
+	[[nodiscard]] int  GetPriority()	const override	{ return m_priority; }
+	[[nodiscard]] bool IsActive()		const override	{ return m_is_active; }
+	[[nodiscard]] bool CanSelect()		const override	{ return m_can_select; }
+	[[nodiscard]] bool IsGameStart()	const			{ return m_is_game_start && !SceneFader::GetInstance()->IsFading(); }
 
 private:
 	void ExecuteGameStart();
+	void ExecuteOption();
 	void ExecuteExit();
 
 private:
 	static constexpr Vector2D<int>	kFirstButtonCenterPos	= { 440, 300 };
 	static constexpr int			kButtonPosInterval		= 110;
 
-	int	 m_priority;
-	bool m_is_active;
-	bool m_can_select;
-	bool m_is_game_start;
-	bool m_is_exit;
+	int								m_tab_handle;
+	int								m_priority;
+	bool							m_is_active;
+	bool							m_can_select;
+	bool							m_is_game_start;
+	bool							m_is_exit;
 	std::shared_ptr<UISelector>		m_ui_selector;
-	std::shared_ptr<WarningExitTab>	m_warning_exit_tab;
+	std::shared_ptr<WarningTab>		m_warning_exit_tab;
 };

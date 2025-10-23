@@ -8,7 +8,7 @@
 #include "../Part/scene_fader.hpp"
 
 #include "tab_drawer.hpp"
-#include "warning_quit_game_tab.hpp"
+#include "warning_tab.hpp"
 
 class PauseTab final : public ITab
 {
@@ -28,15 +28,18 @@ public:
 
 	void Deactivate(const DeadPlayerEvent& event);
 
+	[[nodiscard]] int  GetTabHandle()	const override	{ return m_tab_handle; }
 	[[nodiscard]] int  GetPriority()	const override	{ return m_priority; }
 	[[nodiscard]] bool IsActive()		const override	{ return m_is_active; }
 	[[nodiscard]] bool CanSelect()		const override	{ return m_can_select; }
 	[[nodiscard]] bool IsReturnToGame() const			{ return m_is_execute_return_to_game && m_result_screen->GetGraphicer()->GetBlendNum() <= 0;; }
+	[[nodiscard]] bool IsRestart()		const			{ return m_is_restart && !SceneFader::GetInstance()->IsFading(); }
 	[[nodiscard]] bool IsOption()		const			{ return m_is_option; }
-	[[nodiscard]] bool IsQuitGame()		const			{ return m_is_quit_game && !SceneFader::GetInstance()->IsFading();; }
+	[[nodiscard]] bool IsQuitGame()		const			{ return m_is_quit_game && !SceneFader::GetInstance()->IsFading(); }
 
 private:
 	void ExecuteReturnToGame();
+	void ExecuteRestart();
 	void ExecuteOption();
 	void ExecuteQuitGame();
 
@@ -56,21 +59,21 @@ private:
 	static constexpr int			kButtonPosInterval		= 110;
 	static constexpr float			kFadeSpeed = 600.0f;
 
+	int								m_tab_handle;
 	int								m_priority;
 	bool							m_is_active;
 	bool							m_is_deactivate_forcibly;
 	bool							m_can_select;
 	bool							m_is_execute_return_to_game;
+	bool							m_is_restart;
 	bool							m_is_option;
 	bool							m_is_quit_game;
 	int								m_alpha_blend_num;
 	std::shared_ptr<UISelector>		m_ui_selector;
 	std::shared_ptr<ScreenCreator>	m_result_screen;
 
-	int								m_font_handle;
-	std::string						m_text;
-	Vector2D<int>					m_font_size;
-
 	std::unordered_map<TimeScaleLayerKind, float>	m_prev_time_scale;
-	std::shared_ptr<WarningQuitGameTab>				m_warning_quit_game_tab;
+	//std::shared_ptr<WarningQuitGameTab>				m_warning_quit_game_tab;
+	std::shared_ptr<WarningTab>						m_warning_restart_tab;
+	std::shared_ptr<WarningTab>						m_warning_quit_game_tab;
 };

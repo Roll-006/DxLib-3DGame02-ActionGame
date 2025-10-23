@@ -1,18 +1,19 @@
-#include "warning_quit_game_tab.hpp"
+#include "warning_tab.hpp"
 
-WarningQuitGameTab::WarningQuitGameTab() :
+WarningTab::WarningTab(const WarningKind kind) :
+	m_tab_handle			(HandleCreator::GetInstance()->CreateHandle()),
 	m_priority				(10),
 	m_is_active				(false),
 	m_can_select			(true),
-	m_is_execute_decide		(false),
+	m_is_decide				(false),
 	m_is_execute_back		(false),
 	m_alpha_blend_num		(0),
 	m_ui_selector			(std::make_shared<UISelector>(1, true, true)),
 	m_warning_icon_graphic	(std::make_shared<Graphicer>(UIGraphicPath.WARNING_ICON)),
 	m_result_screen			(std::make_shared<ScreenCreator>(Window::kScreenSize, Window::kCenterPos)),
 	m_font_handle			(FontHandler::GetInstance()->GetFontHandle(FontName.EXPLANATORY_TEXT)),
-	m_text					("ゲームを終了しますか？"),
-	m_font_size				(Vector2D<int>(GetDrawStringWidthToHandle(m_text.c_str(), -1, m_font_handle), GetFontSizeToHandle(m_font_handle)))
+	m_text					(""),
+	m_font_size				(v2d::GetZeroV<Vector2D<int>>())
 {
 	std::vector<Vector2D<int>> center_pos;
 	for (int i = 0; i < 2; ++i)
@@ -20,59 +21,83 @@ WarningQuitGameTab::WarningQuitGameTab() :
 		center_pos.emplace_back(kFirstButtonCenterPos + Vector2D<int>(0, kButtonPosInterval * i));
 	}
 
-	m_ui_selector->AddUIButton(std::make_shared<SubMenuSelectButton>(SubMenuSelectButton::ButtonKind::kDecide, center_pos.at(0), [this]() { ExecuteDecide(); }, false));
-	m_ui_selector->AddUIButton(std::make_shared<SubMenuSelectButton>(SubMenuSelectButton::ButtonKind::kBack, center_pos.at(1), [this]() { ExecuteBack();	}, true));
+	m_ui_selector->AddUIButton(std::make_shared<SubMenuSelectButton>(SubMenuSelectButton::ButtonKind::kDecide,	center_pos.at(0), [this]() { ExecuteDecide(); },	false));
+	m_ui_selector->AddUIButton(std::make_shared<SubMenuSelectButton>(SubMenuSelectButton::ButtonKind::kBack,	center_pos.at(1), [this]() { ExecuteBack();	},		true));
 
 	m_warning_icon_graphic->SetCenterPos(Window::kCenterPos + Vector2D<int>(0, -200));
 	m_warning_icon_graphic->SetScale(0.1f);
 	CalcAlphaBlendNum();
+
+	switch (kind)
+	{
+	case WarningKind::kRestart:
+		m_text = "ゲームをやり直しますか？";
+		break;
+
+	case WarningKind::kQuitGame:
+	case WarningKind::kExit:
+		m_text = "ゲームを終了しますか？";
+		break;
+	}
+
+	m_font_size = Vector2D<int>(GetDrawStringWidthToHandle(m_text.c_str(), -1, m_font_handle), GetFontSizeToHandle(m_font_handle));
 }
 
-WarningQuitGameTab::~WarningQuitGameTab()
+WarningTab::~WarningTab()
 {
 
 }
 
-void WarningQuitGameTab::Init()
+void WarningTab::Init()
 {
 	m_ui_selector->Init();
 
 	m_is_active			= false;
-	m_is_execute_decide = false;
 	m_is_execute_back	= false;
 }
 
-void WarningQuitGameTab::Update()
+void WarningTab::Update()
 {
 	if (!m_is_active) { return; }
 
-	m_can_select = m_result_screen->GetGraphicer()->GetBlendNum() >= 255 ? true : false;
+	JudgeSelect();
 	BackTab();
 
-	if (m_can_select) { m_ui_selector->Update(); }
+	if (m_can_select)
+	{
+		m_ui_selector->Update();
+	}
 
 	CreateResultScreen();
 	CalcAlphaBlendNum();
 }
 
-void WarningQuitGameTab::OnDraw(const int main_screen_handle) const
+void WarningTab::OnDraw(const int main_screen_handle) const
 {
 	if (!m_is_active) { return; }
 
 	m_result_screen->Draw();
 }
 
-void WarningQuitGameTab::ExecuteDecide()
+void WarningTab::ExecuteDecide()
 {
-	m_is_execute_decide = true;
+	m_is_decide = true;
 }
 
-void WarningQuitGameTab::ExecuteBack()
+void WarningTab::ExecuteBack()
 {
 	m_is_execute_back = true;
 }
 
-void WarningQuitGameTab::CalcAlphaBlendNum()
+void WarningTab::JudgeSelect()
+{
+	const auto is_max_blend_num = m_result_screen->GetGraphicer()->GetBlendNum() >= 255;
+	const auto is_fading		= SceneFader::GetInstance()->IsFading();
+
+	m_can_select = is_max_blend_num && !is_fading ? true : false;
+}
+
+void WarningTab::CalcAlphaBlendNum()
 {
 	const auto delta_time = GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kUI);
 	if (m_is_execute_back)
@@ -87,7 +112,7 @@ void WarningQuitGameTab::CalcAlphaBlendNum()
 	m_result_screen->GetGraphicer()->SetBlendNum(m_alpha_blend_num);
 }
 
-void WarningQuitGameTab::CreateResultScreen()
+void WarningTab::CreateResultScreen()
 {
 	m_result_screen->UseScreen();
 
@@ -110,7 +135,7 @@ void WarningQuitGameTab::CreateResultScreen()
 	m_result_screen->UnuseScreen();
 }
 
-void WarningQuitGameTab::BackTab()
+void WarningTab::BackTab()
 {
 	if (m_result_screen->GetGraphicer()->GetBlendNum() < 255) { return; }
 

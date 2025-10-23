@@ -23,6 +23,10 @@ MainMenuSelectButton::MainMenuSelectButton(const ButtonKind button_kind, const V
 		text = "RETURN TO GAME";
 		break;
 
+	case ButtonKind::kRestart:
+		text = "RESTART";
+		break;
+
 	case ButtonKind::kOption:
 		text = "OPTION";
 		break;

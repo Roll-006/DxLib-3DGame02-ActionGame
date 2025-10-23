@@ -65,8 +65,8 @@ PlayScene::~PlayScene()
 	const auto light_holder = LightHolder::GetInstance();
 	light_holder->DeleteLight(LightName.MOONLIGHT);
 
-	TabDrawer::GetInstance()->RemoveTab			(typeid(GameOverTab));
-	TabDrawer::GetInstance()->RemoveTab			(typeid(PauseTab));
+	TabDrawer::GetInstance()->RemoveTab			(m_game_over_tab->GetTabHandle());
+	TabDrawer::GetInstance()->RemoveTab			(m_pause_tab	->GetTabHandle());
 	UIDrawer ::GetInstance()->RemoveUICreator	(m_player_ui_creator->GetName());
 }
 
@@ -147,7 +147,7 @@ std::shared_ptr<IScene> PlayScene::ChangeScene()
 		return std::make_shared<TitleScene>();
 	}
 	// ロード(プレイ)
-	if (m_game_over_tab->IsContinue())
+	if (m_game_over_tab->IsContinue() || m_pause_tab->IsRestart())
 	{
 		return std::make_shared<LoadScene>(SceneKind::kPlay);
 	}

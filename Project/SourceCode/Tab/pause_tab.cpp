@@ -1,35 +1,37 @@
 #include "pause_tab.hpp"
 
 PauseTab::PauseTab() :
+	m_tab_handle				(HandleCreator::GetInstance()->CreateHandle()),
 	m_priority					(0),
 	m_is_active					(false),
 	m_is_deactivate_forcibly	(false),
 	m_can_select				(true),
 	m_is_execute_return_to_game	(false),
+	m_is_restart				(false),
 	m_is_option					(false),
 	m_is_quit_game				(false),
 	m_alpha_blend_num			(0),
 	m_ui_selector				(std::make_shared<UISelector>(0, true, true)),
 	m_result_screen				(std::make_shared<ScreenCreator>(Window::kScreenSize, Window::kCenterPos)),
-	m_font_handle				(FontHandler::GetInstance()->GetFontHandle(FontName.EXPLANATORY_TEXT)),
-	m_text						("ÉQÅ[ÉÄÇèIóπÇµÇ‹Ç∑Ç©ÅH"),
-	m_font_size					(Vector2D<int>(GetDrawStringWidthToHandle(m_text.c_str(), -1, m_font_handle), GetFontSizeToHandle(m_font_handle))),
-	m_warning_quit_game_tab		(std::make_shared<WarningQuitGameTab>())
+	m_warning_restart_tab		(std::make_shared<WarningTab>(WarningTab::WarningKind::kRestart)),
+	m_warning_quit_game_tab		(std::make_shared<WarningTab>(WarningTab::WarningKind::kQuitGame))
 {
 	// ÉCÉxÉìÉgìoò^
 	EventSystem::GetInstance()->Subscribe<DeadPlayerEvent>(this, &PauseTab::Deactivate);
 
+	TabDrawer::GetInstance()->AddTab(m_warning_restart_tab);
 	TabDrawer::GetInstance()->AddTab(m_warning_quit_game_tab);
 
 	std::vector<Vector2D<int>> center_pos;
-	for (int i = 0; i < 3; ++i)
+	for (int i = 0; i < 4; ++i)
 	{
 		center_pos.emplace_back(kFirstButtonCenterPos + Vector2D<int>(0, kButtonPosInterval * i));
 	}
 
 	m_ui_selector->AddUIButton(std::make_shared<MainMenuSelectButton>(MainMenuSelectButton::ButtonKind::kReturnToGame,	center_pos.at(0), [this]() { ExecuteReturnToGame(); },	true));
-	m_ui_selector->AddUIButton(std::make_shared<MainMenuSelectButton>(MainMenuSelectButton::ButtonKind::kOption,		center_pos.at(1), [this]() { ExecuteOption(); },		false));
-	m_ui_selector->AddUIButton(std::make_shared<MainMenuSelectButton>(MainMenuSelectButton::ButtonKind::kQuitGame,		center_pos.at(2), [this]() { ExecuteQuitGame();	},		false));
+	m_ui_selector->AddUIButton(std::make_shared<MainMenuSelectButton>(MainMenuSelectButton::ButtonKind::kRestart,		center_pos.at(1), [this]() { ExecuteRestart(); },		false));
+	m_ui_selector->AddUIButton(std::make_shared<MainMenuSelectButton>(MainMenuSelectButton::ButtonKind::kOption,		center_pos.at(2), [this]() { ExecuteOption(); },		false));
+	m_ui_selector->AddUIButton(std::make_shared<MainMenuSelectButton>(MainMenuSelectButton::ButtonKind::kQuitGame,		center_pos.at(3), [this]() { ExecuteQuitGame();	},		false));
 
 	CalcAlphaBlendNum();
 }
@@ -39,7 +41,8 @@ PauseTab::~PauseTab()
 	// ÉCÉxÉìÉgÇÃìoò^âèú
 	EventSystem::GetInstance()->Unsubscribe<DeadPlayerEvent>(this, &PauseTab::Deactivate);
 
-	TabDrawer::GetInstance()->RemoveTab(typeid(WarningQuitGameTab));
+	TabDrawer::GetInstance()->RemoveTab(m_warning_restart_tab	->GetTabHandle());
+	TabDrawer::GetInstance()->RemoveTab(m_warning_quit_game_tab	->GetTabHandle());
 }
 
 void PauseTab::Init()
@@ -76,7 +79,20 @@ void PauseTab::Update()
 	CreateResultScreen();
 	CalcAlphaBlendNum();
 
-	m_warning_quit_game_tab->Update();
+	m_warning_restart_tab	->Update();
+	m_warning_quit_game_tab	->Update();
+
+	if (m_warning_restart_tab->IsDecide())
+	{
+		const auto fader = SceneFader::GetInstance();
+		fader->StartFade(255, 150.0f);
+
+		m_is_restart = true;
+	}
+	else if (m_warning_restart_tab->IsBack())
+	{
+		m_warning_restart_tab->Init();
+	}
 
 	if (m_warning_quit_game_tab->IsDecide())
 	{
@@ -110,6 +126,11 @@ void PauseTab::Deactivate(const DeadPlayerEvent& event)
 void PauseTab::ExecuteReturnToGame()
 {
 	m_is_execute_return_to_game = true;
+}
+
+void PauseTab::ExecuteRestart()
+{
+	m_warning_restart_tab->Activate();
 }
 
 void PauseTab::ExecuteOption()
@@ -151,7 +172,10 @@ void PauseTab::JudgeDeactivate()
 
 void PauseTab::JudgeSelect()
 {
-	m_can_select = m_result_screen->GetGraphicer()->GetBlendNum() >= 255 && !m_warning_quit_game_tab->IsActive() ? true : false;
+	const auto is_active_warning_tag	= m_warning_quit_game_tab->IsActive() || m_warning_restart_tab->IsActive();
+	const auto is_max_blend_num			= m_result_screen->GetGraphicer()->GetBlendNum() >= 255;
+
+	m_can_select = is_max_blend_num && !is_active_warning_tag ? true : false;
 }
 
 void PauseTab::CalcAlphaBlendNum()
@@ -187,7 +211,12 @@ void PauseTab::CreateResultScreen()
 
 void PauseTab::BackTab()
 {
-	if (m_result_screen->GetGraphicer()->GetBlendNum() < 255 || m_warning_quit_game_tab->IsActive()) { return; }
+	if (m_result_screen->GetGraphicer()->GetBlendNum() < 255
+		|| m_warning_quit_game_tab->IsActive()
+		|| m_warning_restart_tab->IsActive())
+	{
+		return;
+	}
 
 	if (CommandHandler::GetInstance()->IsExecute(CommandKind::kPause, TimeKind::kCurrent))
 	{

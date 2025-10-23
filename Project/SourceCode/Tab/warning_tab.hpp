@@ -4,12 +4,21 @@
 #include "../Event/event_system.hpp"
 #include "../UI/ui_selector.hpp"
 #include "../UIButton/sub_menu_select_button.hpp"
+#include "../Part/scene_fader.hpp"
 
-class WarningExitTab final : public ITab
+class WarningTab final : public ITab
 {
 public:
-	WarningExitTab();
-	~WarningExitTab() override;
+	enum class WarningKind
+	{
+		kRestart,
+		kQuitGame,
+		kExit,
+	};
+
+public:
+	WarningTab(const WarningKind kind);
+	~WarningTab() override;
 
 	void Init()			override;
 	void Update()		override;
@@ -21,14 +30,18 @@ public:
 	void AllowSelect()  override { m_can_select = true; }
 	void StopSelect()	override { m_can_select = false; }
 
+	[[nodiscard]] int  GetTabHandle()	const override	{ return m_tab_handle; }
 	[[nodiscard]] int  GetPriority()	const override	{ return m_priority; }
 	[[nodiscard]] bool IsActive()		const override	{ return m_is_active; }
 	[[nodiscard]] bool CanSelect()		const override	{ return m_can_select; }
+	[[nodiscard]] bool IsDecide()		const			{ return m_is_decide; }
 	[[nodiscard]] bool IsBack()			const			{ return m_is_execute_back && m_result_screen->GetGraphicer()->GetBlendNum() <= 0; }
 
 private:
 	void ExecuteDecide();
 	void ExecuteBack();
+
+	void JudgeSelect();
 
 	void CalcAlphaBlendNum();
 	void CreateResultScreen();
@@ -42,9 +55,11 @@ private:
 	static constexpr int			kButtonPosInterval		= 130;
 	static constexpr float			kFadeSpeed				= 600.0f;
 
+	int								m_tab_handle;
 	int								m_priority;
 	bool							m_is_active;
 	bool							m_can_select;
+	bool							m_is_decide;
 	bool							m_is_execute_back;
 	int								m_alpha_blend_num;
 	std::shared_ptr<UISelector>		m_ui_selector;

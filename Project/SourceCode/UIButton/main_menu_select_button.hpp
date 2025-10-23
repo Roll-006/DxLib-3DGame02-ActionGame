@@ -12,6 +12,7 @@ public:
 	{
 		kStartGame,		// ゲームを開始する
 		kReturnToGame,	// ゲームに戻る
+		kRestart,		// 最初から始める
 		kOption,		// オプション
 		kQuitGame,		// ゲームを終了する
 		kExit,			// ソフトを終了する

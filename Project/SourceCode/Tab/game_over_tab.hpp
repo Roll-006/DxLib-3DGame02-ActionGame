@@ -24,11 +24,12 @@ public:
 
 	void Activate(const DeadPlayerEvent& event);
 
-	[[nodiscard]] int  GetPriority()	const override { return m_priority; }
-	[[nodiscard]] bool IsActive()		const override { return m_is_active; }
-	[[nodiscard]] bool CanSelect()		const override { return m_can_select; }
-	[[nodiscard]] bool IsContinue()		const { return m_is_continue  && !SceneFader::GetInstance()->IsFading(); }
-	[[nodiscard]] bool IsQuitGame()		const { return m_is_quit_game && !SceneFader::GetInstance()->IsFading(); }
+	[[nodiscard]] int  GetTabHandle()	const override	{ return m_tab_handle; }
+	[[nodiscard]] int  GetPriority()	const override	{ return m_priority; }
+	[[nodiscard]] bool IsActive()		const override	{ return m_is_active; }
+	[[nodiscard]] bool CanSelect()		const override	{ return m_can_select; }
+	[[nodiscard]] bool IsContinue()		const			{ return m_is_continue  && !SceneFader::GetInstance()->IsFading(); }
+	[[nodiscard]] bool IsQuitGame()		const			{ return m_is_quit_game && !SceneFader::GetInstance()->IsFading(); }
 
 private:
 	void ExecuteContinue();
@@ -44,6 +45,7 @@ private:
 	static constexpr float			kActiveWaitTime			= 6.0f;
 	static constexpr float			kFadeSpeed				= 400.0f;
 
+	int								m_tab_handle;
 	int								m_priority;
 	bool							m_is_active;
 

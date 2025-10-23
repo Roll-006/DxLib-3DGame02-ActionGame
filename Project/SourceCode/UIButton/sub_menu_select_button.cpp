@@ -19,7 +19,6 @@ SubMenuSelectButton::SubMenuSelectButton(const ButtonKind button_kind, const Vec
 	m_applied_mask_screen				(std::make_shared<ScreenCreator>(m_button_frame_dark_graphic->GetOriginSize(), m_selecting_button_screen->GetHalfScreenSize())),
 	m_selecting_button_basic_screen		(std::make_shared<ScreenCreator>(m_button_frame_dark_graphic->GetOriginSize()))
 {
-
 	// ‰æ‘œ‚ðƒXƒNƒŠ[ƒ“‚É•ÏŠ·
 	m_selecting_button_basic_screen->UseScreen();
 	const auto selecting_button_graphic = std::make_shared<Graphicer>(UIGraphicPath.SUB_MENU_SELECTING_BUTTON);
@@ -86,10 +85,13 @@ void SubMenuSelectButton::Update()
 {
 	CalcAlphaBlendNum();
 	CalcSelectingButtonPos();
-	CreateSelectingGraphicScreen();
+
 	m_selecting_button_movie->CreateMovieScreen();
+	CreateSelectingGraphicScreen();
 
 	Exeute();
+
+	printfDx("screen : %d\n", m_selecting_button_screen->GetGraphicer()->GetBlendNum());
 }
 
 void SubMenuSelectButton::Draw() const
@@ -138,8 +140,8 @@ void SubMenuSelectButton::CalcAlphaBlendNum()
 		math::Decrease(m_current_alpha_blend_num, static_cast<int>(600.0f * delta_time),  m_destination_alpha_blend_num);
 	}
 
-	m_applied_mask_screen->GetGraphicer()	->SetBlendNum(m_current_alpha_blend_num);
-	m_button_frame_light_graphic->SetBlendNum(m_current_alpha_blend_num);
+	m_applied_mask_screen->GetGraphicer()->SetBlendNum(m_current_alpha_blend_num);
+	m_button_frame_light_graphic		 ->SetBlendNum(m_current_alpha_blend_num);
 }
 
 void SubMenuSelectButton::CalcSelectingButtonPos()

@@ -1,6 +1,7 @@
 #include "game_over_tab.hpp"
 
 GameOverTab::GameOverTab() : 
+	m_tab_handle		(HandleCreator::GetInstance()->CreateHandle()),
 	m_priority			(0),
 	m_is_active			(false),
 	m_can_select		(true),

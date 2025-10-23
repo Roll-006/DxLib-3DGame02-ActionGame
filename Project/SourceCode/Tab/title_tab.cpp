@@ -1,13 +1,14 @@
 #include "title_tab.hpp"
 
 TitleTab::TitleTab() :
+	m_tab_handle				(HandleCreator::GetInstance()->CreateHandle()),
 	m_priority					(0),
 	m_is_active					(true),
 	m_can_select				(true),
 	m_is_game_start				(false),
-	m_is_exit	(false),
+	m_is_exit					(false),
 	m_ui_selector				(std::make_shared<UISelector>(0, true, true)),
-	m_warning_exit_tab			(std::make_shared<WarningExitTab>())
+	m_warning_exit_tab			(std::make_shared<WarningTab>(WarningTab::WarningKind::kExit))
 {
 	std::vector<Vector2D<int>> center_pos;
 	for (int i = 0; i < 3; ++i)
@@ -16,7 +17,7 @@ TitleTab::TitleTab() :
 	}
 
 	m_ui_selector->AddUIButton(std::make_shared<MainMenuSelectButton>(MainMenuSelectButton::ButtonKind::kStartGame, center_pos.at(0), [this]() { ExecuteGameStart(); }, true));
-	m_ui_selector->AddUIButton(std::make_shared<MainMenuSelectButton>(MainMenuSelectButton::ButtonKind::kOption,	center_pos.at(1), [this]() { ExecuteGameStart(); }, false));
+	m_ui_selector->AddUIButton(std::make_shared<MainMenuSelectButton>(MainMenuSelectButton::ButtonKind::kOption,	center_pos.at(1), [this]() { ExecuteOption(); },	false));
 	m_ui_selector->AddUIButton(std::make_shared<MainMenuSelectButton>(MainMenuSelectButton::ButtonKind::kExit,		center_pos.at(2), [this]() { ExecuteExit();	},		false));
 
 	TabDrawer::GetInstance()->AddTab(m_warning_exit_tab);
@@ -24,7 +25,7 @@ TitleTab::TitleTab() :
 
 TitleTab::~TitleTab()
 {
-	TabDrawer::GetInstance()->RemoveTab(typeid(WarningExitTab));
+	TabDrawer::GetInstance()->RemoveTab(m_warning_exit_tab->GetTabHandle());
 }
 
 void TitleTab::Init()
@@ -49,7 +50,13 @@ void TitleTab::Update()
 		m_can_select	= false;
 		m_is_exit		= false;
 	}
-	if (m_warning_exit_tab->IsBack())
+
+	if (m_warning_exit_tab->IsDecide())
+	{
+		const ExitGameEvent event{};
+		EventSystem::GetInstance()->Publish(event);
+	}
+	else if (m_warning_exit_tab->IsBack())
 	{
 		m_warning_exit_tab->Init();
 		m_can_select = true;
@@ -72,6 +79,11 @@ void TitleTab::ExecuteGameStart()
 
 	m_is_game_start = true;
 	m_can_select	= false;
+}
+
+void TitleTab::ExecuteOption()
+{
+
 }
 
 void TitleTab::ExecuteExit()
