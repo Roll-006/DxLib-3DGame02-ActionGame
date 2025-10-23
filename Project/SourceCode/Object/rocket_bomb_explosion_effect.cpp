@@ -242,13 +242,13 @@ void RocketBombExplosionEffect::Attack(CharacterBase* target_character)
 	const auto explosion_pos	= explosion_sphere->GetPos();
 	const auto distance			= hips_pos - explosion_pos;
 
-
 	if (VSize(distance) > explosion_sphere->GetRadius()) { return; }
 
 	const auto dir_xz = v3d::GetNormalizedV(VGet(distance.x, 0.0f, distance.z));
 	const auto dir = v3d::GetNormalizedV(dir_xz + VGet(0.0f, 0.5f, 0.0f));
 
 	target_character->OnKnockback(dir, 400.0f, 200.0f);
+	target_character->OnDamage(HealthPartKind::kMain, 5000.0f);
 }
 
 float RocketBombExplosionEffect::GetDeltaTime() const

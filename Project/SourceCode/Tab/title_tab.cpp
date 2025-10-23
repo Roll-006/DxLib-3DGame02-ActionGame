@@ -5,8 +5,9 @@ TitleTab::TitleTab() :
 	m_is_active					(true),
 	m_can_select				(true),
 	m_is_game_start				(false),
-	m_is_activate_warning_tab	(false),
-	m_ui_selector				(std::make_shared<UISelector>(0, true, true))
+	m_is_exit	(false),
+	m_ui_selector				(std::make_shared<UISelector>(0, true, true)),
+	m_warning_exit_tab			(std::make_shared<WarningExitTab>())
 {
 	std::vector<Vector2D<int>> center_pos;
 	for (int i = 0; i < 3; ++i)
@@ -17,11 +18,13 @@ TitleTab::TitleTab() :
 	m_ui_selector->AddUIButton(std::make_shared<MainMenuSelectButton>(MainMenuSelectButton::ButtonKind::kStartGame, center_pos.at(0), [this]() { ExecuteGameStart(); }, true));
 	m_ui_selector->AddUIButton(std::make_shared<MainMenuSelectButton>(MainMenuSelectButton::ButtonKind::kOption,	center_pos.at(1), [this]() { ExecuteGameStart(); }, false));
 	m_ui_selector->AddUIButton(std::make_shared<MainMenuSelectButton>(MainMenuSelectButton::ButtonKind::kExit,		center_pos.at(2), [this]() { ExecuteExit();	},		false));
+
+	TabDrawer::GetInstance()->AddTab(m_warning_exit_tab);
 }
 
 TitleTab::~TitleTab()
 {
-
+	TabDrawer::GetInstance()->RemoveTab(typeid(WarningExitTab));
 }
 
 void TitleTab::Init()
@@ -29,7 +32,7 @@ void TitleTab::Init()
 	m_ui_selector->Init();
 
 	m_is_game_start				= false;
-	m_is_activate_warning_tab	= false;
+	m_is_exit	= false;
 }
 
 void TitleTab::Update()
@@ -37,6 +40,20 @@ void TitleTab::Update()
 	if (!m_is_active) { return; }
 
 	if (m_can_select) { m_ui_selector->Update(); }
+
+	m_warning_exit_tab->Update();
+
+	if (m_is_exit)
+	{
+		m_warning_exit_tab->Activate();
+		m_can_select	= false;
+		m_is_exit		= false;
+	}
+	if (m_warning_exit_tab->IsBack())
+	{
+		m_warning_exit_tab->Init();
+		m_can_select = true;
+	}
 }
 
 void TitleTab::OnDraw(const int main_screen_handle) const
@@ -59,6 +76,6 @@ void TitleTab::ExecuteGameStart()
 
 void TitleTab::ExecuteExit()
 {
-	m_is_activate_warning_tab	= true;
-	m_can_select				= false;
+	m_is_exit		= true;
+	m_can_select	= false;
 }

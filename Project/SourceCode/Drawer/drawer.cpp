@@ -38,7 +38,6 @@ void Drawer::Draw(const std::shared_ptr<IScene> current_scene, const std::shared
 
 	GraphFilter(m_screen_filter->GetScreenHandle(), DX_GRAPH_FILTER_GAUSS, 32, 1400);
 
-	// TODO : 仮で画像ハンドルを渡す。のちに変更の可能性あり
 	UIDrawer  ::GetInstance()->Draw(m_screen_filter->GetScreenHandle());
 	TabDrawer ::GetInstance()->Draw(m_screen_filter->GetScreenHandle());
 	SceneFader::GetInstance()->Draw();

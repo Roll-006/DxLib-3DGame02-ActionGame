@@ -6,6 +6,9 @@
 #include "../UIButton/main_menu_select_button.hpp"
 #include "../Part/scene_fader.hpp"
 
+#include "tab_drawer.hpp"
+#include "warning_exit_tab.hpp"
+
 class TitleTab final : public ITab
 {
 public:
@@ -15,8 +18,6 @@ public:
 	void Init()			override;
 	void Update()		override;
 	void OnDraw(const int main_screen_handle) const override;
-
-	void InitActivateWarningTab() { m_is_activate_warning_tab = false; }
 
 	void Activate() 	override { m_is_active = true;  }
 	void Deactivate()	override { m_is_active = false; }
@@ -28,7 +29,7 @@ public:
 	[[nodiscard]] bool IsActive()				const override	{ return m_is_active; }
 	[[nodiscard]] bool CanSelect()				const override	{ return m_can_select; }
 	[[nodiscard]] bool IsGameStart()			const			{ return m_is_game_start && !SceneFader::GetInstance()->IsFading(); }
-	[[nodiscard]] bool IsActivateWarningTab()	const			{ return m_is_activate_warning_tab; }
+	[[nodiscard]] bool IsActivateWarningTab()	const			{ return m_is_exit; }
 
 private:
 	void ExecuteGameStart();
@@ -42,6 +43,7 @@ private:
 	bool m_is_active;
 	bool m_can_select;
 	bool m_is_game_start;
-	bool m_is_activate_warning_tab;
-	std::shared_ptr<UISelector> m_ui_selector;
+	bool m_is_exit;
+	std::shared_ptr<UISelector>		m_ui_selector;
+	std::shared_ptr<WarningExitTab>	m_warning_exit_tab;
 };

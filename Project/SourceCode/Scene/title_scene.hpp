@@ -7,9 +7,7 @@
 #include "../Light/light_holder.hpp"
 #include "../VirtualCamera/virtual_camera.hpp"
 
-#include "../Tab/tab_drawer.hpp"
 #include "../Tab/title_tab.hpp"
-#include "../Tab/warning_exit_tab.hpp"
 
 class TitleScene final : public IScene
 {
@@ -39,7 +37,6 @@ private:
 
 	std::shared_ptr<TitleCharacter>				m_title_character;
 	std::shared_ptr<TitleTab>					m_title_tab;
-	std::shared_ptr<WarningExitTab>				m_warning_exit_tab;
 	std::shared_ptr<TitleSceneEffectObjectPool>	m_title_scene_effect_object_pool;
 
 	// TODO : ‚Ì‚¿‚É•ÊƒNƒ‰ƒX‚ÖˆÚs

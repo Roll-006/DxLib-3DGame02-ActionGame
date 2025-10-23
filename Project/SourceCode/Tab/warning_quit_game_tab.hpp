@@ -34,6 +34,10 @@ private:
 	void CalcAlphaBlendNum();
 	void CreateResultScreen();
 
+	/// @brief タブを閉じる
+	/// @brief UIボタンからではなくタブを開くコマンドから閉じる
+	void BackTab();
+
 private:
 	static constexpr Vector2D<int>	kFirstButtonCenterPos = { Window::kCenterPos.x, Window::kCenterPos.y + 50 };
 	static constexpr int			kButtonPosInterval = 130;

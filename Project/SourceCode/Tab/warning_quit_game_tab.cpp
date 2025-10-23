@@ -47,6 +47,7 @@ void WarningQuitGameTab::Update()
 	if (!m_is_active) { return; }
 
 	m_can_select = m_result_screen->GetGraphicer()->GetBlendNum() >= 255 ? true : false;
+	BackTab();
 
 	if (m_can_select) { m_ui_selector->Update(); }
 
@@ -107,4 +108,14 @@ void WarningQuitGameTab::CreateResultScreen()
 		m_text.c_str(), 0xffffff, m_font_handle);
 
 	m_result_screen->UnuseScreen();
+}
+
+void WarningQuitGameTab::BackTab()
+{
+	if (m_result_screen->GetGraphicer()->GetBlendNum() < 255) { return; }
+
+	if (CommandHandler::GetInstance()->IsExecute(CommandKind::kPause, TimeKind::kCurrent))
+	{
+		m_is_execute_back = true;
+	}
 }

@@ -195,7 +195,7 @@ void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 		break;
 		 
 	case ColliderKind::kAttackTrigger:
-		if (target_tag == ObjTag.ENEMY)
+		if (target_tag == ObjTag.ENEMY && target_collider_kind == ColliderKind::kCollider)
 		{
 			const auto character = dynamic_cast<CharacterBase*>(target_obj);
 			if (action_state_kind == player_state::ActionStateKind::kFrontKick)
@@ -257,7 +257,7 @@ void Player::AttackFrontMelee(CharacterBase* target)
 
 	const auto dir = v3d::GetNormalizedV(m_transform->GetForward(CoordinateKind::kWorld) + VGet(0.0f, 0.5f, 0.0f));
 	target->OnDamage(HealthPartKind::kMain, 100.0f);
-	target->OnKnockback(dir, 170.0f, 100.0f);
+	target->OnKnockback(dir, 170.0f, 1000.0f);
 
 	const auto time_manager = GameTimeManager::GetInstance();
 	time_manager->SetTimeScale(TimeScaleLayerKind::kWorld,  0.07f, 0.4f);
@@ -277,7 +277,7 @@ void Player::AttackVersatilityMelee(CharacterBase* target)
 
 	const auto dir = v3d::GetNormalizedV(m_transform->GetForward(CoordinateKind::kWorld) + VGet(0.0f, 0.5f, 0.0f));
 	target->OnDamage(HealthPartKind::kMain, 100.0f);
-	target->OnKnockback(dir, 170.0f, 100.0f);
+	target->OnKnockback(dir, 170.0f, 1000.0f);
 
 	const auto time_manager = GameTimeManager::GetInstance();
 	time_manager->SetTimeScale(TimeScaleLayerKind::kWorld,  0.07f, 0.4f);

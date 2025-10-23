@@ -68,9 +68,8 @@ void PauseTab::Update()
 	if (!m_is_active) { return; }
 
 	JudgeDeactivate();
+	JudgeSelect();
 	BackTab();
-
-	m_can_select = m_result_screen->GetGraphicer()->GetBlendNum() >= 255 ? true : false;
 
 	if (m_can_select) { m_ui_selector->Update(); }
 
@@ -79,10 +78,16 @@ void PauseTab::Update()
 
 	m_warning_quit_game_tab->Update();
 
-	if (m_warning_quit_game_tab->IsBack())
+	if (m_warning_quit_game_tab->IsDecide())
+	{
+		const auto fader = SceneFader::GetInstance();
+		fader->StartFade(255, 150.0f);
+
+		m_is_quit_game = true;
+	}
+	else if (m_warning_quit_game_tab->IsBack())
 	{
 		m_warning_quit_game_tab->Init();
-		m_can_select = true;
 	}
 }
 
@@ -115,12 +120,6 @@ void PauseTab::ExecuteOption()
 void PauseTab::ExecuteQuitGame()
 {
 	m_warning_quit_game_tab->Activate();
-	m_can_select = false;
-
-	//const auto fader = SceneFader::GetInstance();
-	//fader->StartFade(255, 150.0f);
-
-	//m_is_quit_game = true;
 }
 
 void PauseTab::JudgeActive()
@@ -148,6 +147,11 @@ void PauseTab::JudgeActive()
 void PauseTab::JudgeDeactivate()
 {
 	if (m_is_deactivate_forcibly || IsReturnToGame()) { Init(); }
+}
+
+void PauseTab::JudgeSelect()
+{
+	m_can_select = m_result_screen->GetGraphicer()->GetBlendNum() >= 255 && !m_warning_quit_game_tab->IsActive() ? true : false;
 }
 
 void PauseTab::CalcAlphaBlendNum()
@@ -183,7 +187,7 @@ void PauseTab::CreateResultScreen()
 
 void PauseTab::BackTab()
 {
-	if (m_result_screen->GetGraphicer()->GetBlendNum() < 255) { return; }
+	if (m_result_screen->GetGraphicer()->GetBlendNum() < 255 || m_warning_quit_game_tab->IsActive()) { return; }
 
 	if (CommandHandler::GetInstance()->IsExecute(CommandKind::kPause, TimeKind::kCurrent))
 	{

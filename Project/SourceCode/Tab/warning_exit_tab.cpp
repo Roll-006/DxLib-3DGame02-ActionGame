@@ -45,6 +45,7 @@ void WarningExitTab::Update()
 	if (!m_is_active) { return; }
 
 	m_can_select = m_result_screen->GetGraphicer()->GetBlendNum() >= 255 ? true : false;
+	BackTab();
 
 	if (m_can_select) { m_ui_selector->Update(); }
 
@@ -55,10 +56,6 @@ void WarningExitTab::Update()
 void WarningExitTab::OnDraw(const int main_screen_handle) const
 {
 	if (!m_is_active) { return; }
-
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_result_screen->GetGraphicer()->GetBlendNum());
-	DrawGraph(0, 0, main_screen_handle, TRUE);
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	m_result_screen->Draw();
 }
@@ -110,4 +107,14 @@ void WarningExitTab::CreateResultScreen()
 		m_text.c_str(), 0xffffff, m_font_handle);
 
 	m_result_screen->UnuseScreen();
+}
+
+void WarningExitTab::BackTab()
+{
+	if (m_result_screen->GetGraphicer()->GetBlendNum() < 255) { return; }
+
+	if (CommandHandler::GetInstance()->IsExecute(CommandKind::kPause, TimeKind::kCurrent))
+	{
+		m_is_execute_back = true;
+	}
 }

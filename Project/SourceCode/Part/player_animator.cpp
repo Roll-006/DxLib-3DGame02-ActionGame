@@ -88,13 +88,13 @@ void PlayerAnimator::LoadAnim()
 
 void PlayerAnimator::ChangeAnim()
 {
-	switch (m_state->GetMoveState(TimeKind::kCurrent)->GetStateKind())
+	switch (static_cast<player_state::MoveStateKind>(m_state->GetMoveState(TimeKind::kCurrent)->GetStateKind()))
 	{
-	case static_cast<int>(player_state::MoveStateKind::kIdle):
+	case player_state::MoveStateKind::kIdle:
 		CombineMoveNullWithAction();
 		break;
 
-	case static_cast<int>(player_state::MoveStateKind::kMove):
+	case player_state::MoveStateKind::kMove:
 		CombineMoveWithAction();
 		break;
 
@@ -107,41 +107,41 @@ void PlayerAnimator::ChangeAnim()
 #pragma region 状態の合成
 void PlayerAnimator::CombineMoveNullWithAction()
 {
-	switch (m_state->GetActionState(TimeKind::kCurrent)->GetStateKind())
+	switch (static_cast<player_state::ActionStateKind>(m_state->GetActionState(TimeKind::kCurrent)->GetStateKind()))
 	{
-	case static_cast<int>(player_state::ActionStateKind::kActionNull):
+	case player_state::ActionStateKind::kActionNull:
 		CombineMoveNullActionNullWithWeaponAction();
 		break;
 
-	case static_cast<int>(player_state::ActionStateKind::kCrouch):
+	case player_state::ActionStateKind::kCrouch:
 		CombineMoveNullCrouchWithWeaponAction();
 		break;
 
-	case static_cast<int>(player_state::ActionStateKind::kTurnAround):
+	case player_state::ActionStateKind::kTurnAround:
 		CombineMoveNullTurnAroundWithWeaponAction();
 		break;
 
-	case static_cast<int>(player_state::ActionStateKind::kCrouchTurnAround):
+	case player_state::ActionStateKind::kCrouchTurnAround:
 		CombineMoveNullCrouchTurnAroundWithWeaponAction();
 		break;
 
-	case static_cast<int>(player_state::ActionStateKind::kDead):
+	case player_state::ActionStateKind::kDead:
 		AttachResultAnim(static_cast<int>(PlayerAnimKind::kDead));
 		break;
 
-	case static_cast<int>(player_state::ActionStateKind::kGrabbed):
+	case player_state::ActionStateKind::kGrabbed:
 		AttachResultAnim(static_cast<int>(PlayerAnimKind::kGrabbed));
 		break;
 
-	case static_cast<int>(player_state::ActionStateKind::kFrontKick):
+	case player_state::ActionStateKind::kFrontKick:
 		AttachResultAnim(static_cast<int>(PlayerAnimKind::kFrontKick));
 		break;
 
-	case static_cast<int>(player_state::ActionStateKind::kRoundhouseKick):
+	case player_state::ActionStateKind::kRoundhouseKick:
 		AttachResultAnim(static_cast<int>(PlayerAnimKind::kRoundhouseKick));
 		break;
 
-	case static_cast<int>(player_state::ActionStateKind::kEscape):
+	case player_state::ActionStateKind::kEscape:
 		AttachResultAnim(static_cast<int>(PlayerAnimKind::kEscapeKick));
 		break;
 
@@ -152,17 +152,17 @@ void PlayerAnimator::CombineMoveNullWithAction()
 
 void PlayerAnimator::CombineMoveWithAction()
 {
-	switch (m_state->GetActionState(TimeKind::kCurrent)->GetStateKind())
+	switch (static_cast<player_state::ActionStateKind>(m_state->GetActionState(TimeKind::kCurrent)->GetStateKind()))
 	{
-	case static_cast<int>(player_state::ActionStateKind::kActionNull):
+	case player_state::ActionStateKind::kActionNull:
 		CombineMoveActionNullWithWeaponAction();
 		break;
 
-	case static_cast<int>(player_state::ActionStateKind::kCrouch):
+	case player_state::ActionStateKind::kCrouch:
 		CombineMoveCrouchWithWeaponAction();
 		break;
 
-	case static_cast<int>(player_state::ActionStateKind::kRun):
+	case player_state::ActionStateKind::kRun:
 		CombineMoveRunWithWeaponAction();
 		break;
 
@@ -173,68 +173,68 @@ void PlayerAnimator::CombineMoveWithAction()
 
 void PlayerAnimator::CombineMoveNullActionNullWithWeaponAction()
 {
-	switch (m_state->GetWeaponActionState(TimeKind::kCurrent)->GetStateKind())
+	switch (static_cast<player_state::WeaponActionStateKind>(m_state->GetWeaponActionState(TimeKind::kCurrent)->GetStateKind()))
 	{
-	case static_cast<int>(player_state::WeaponActionStateKind::kWeaponActionNull):
+	case player_state::WeaponActionStateKind::kWeaponActionNull:
 		AttachResultAnim(static_cast<int>(PlayerAnimKind::kIdle));
 		break;
 
-	case static_cast<int>(player_state::WeaponActionStateKind::kAttachWeapon):
+	case player_state::WeaponActionStateKind::kAttachWeapon:
 		AttachAnim(static_cast<int>(PlayerAnimKind::kIdle),							BodyKind::kLowerBody);
 		AttachAnim(static_cast<int>(PlayerAnimKind::kAttachHandgun),				BodyKind::kUpperBody);
 		break;
 
-	case static_cast<int>(player_state::WeaponActionStateKind::kDetachWeapon):
+	case player_state::WeaponActionStateKind::kDetachWeapon:
 		AttachAnim(static_cast<int>(PlayerAnimKind::kIdle),							BodyKind::kLowerBody);
 		AttachAnim(static_cast<int>(PlayerAnimKind::kDetachHandgun),				BodyKind::kUpperBody);
 		break;
 
-	case static_cast<int>(player_state::WeaponActionStateKind::kEquipKnife):
+	case player_state::WeaponActionStateKind::kEquipKnife:
 		AttachAnim(static_cast<int>(PlayerAnimKind::kIdle),							BodyKind::kLowerBody);
 		AttachAnim(static_cast<int>(PlayerAnimKind::kEquipKnife),					BodyKind::kUpperBody);
 		break;
 
-	case static_cast<int>(player_state::WeaponActionStateKind::kAimKnife):
+	case player_state::WeaponActionStateKind::kAimKnife:
 		DivideBone(BonePath.HIPS);
 		AttachAnim(static_cast<int>(PlayerAnimKind::kIdle),							BodyKind::kLowerBody);
 		AttachAnim(static_cast<int>(PlayerAnimKind::kAimKnife),						BodyKind::kUpperBody);
 		break;
 
-	case static_cast<int>(player_state::WeaponActionStateKind::kStabKnife):
+	case player_state::WeaponActionStateKind::kStabKnife:
 		AttachResultAnim(static_cast<int>(PlayerAnimKind::kStabKnife));
 		break;
 
-	case static_cast<int>(player_state::WeaponActionStateKind::kFirstSideSlashKnife):
+	case player_state::WeaponActionStateKind::kFirstSideSlashKnife:
 		AttachResultAnim(static_cast<int>(PlayerAnimKind::kFirstSideSlashKnife));
 		break;
 
-	case static_cast<int>(player_state::WeaponActionStateKind::kSecondSideSlashKnife):
+	case player_state::WeaponActionStateKind::kSecondSideSlashKnife:
 		AttachResultAnim(static_cast<int>(PlayerAnimKind::kSecondSideSlashKnife));
 		break;
 
-	case static_cast<int>(player_state::WeaponActionStateKind::kSpinningSlashKnife):
+	case player_state::WeaponActionStateKind::kSpinningSlashKnife:
 		AttachResultAnim(static_cast<int>(PlayerAnimKind::kSpinningSlashKnife));
 		break;
 
-	case static_cast<int>(player_state::WeaponActionStateKind::kParry):
+	case player_state::WeaponActionStateKind::kParry:
 		AttachAnim(static_cast<int>(PlayerAnimKind::kIdle),							BodyKind::kLowerBody);
 		AttachAnim(static_cast<int>(PlayerAnimKind::kParry),						BodyKind::kUpperBody);
 		break;
 
-	case static_cast<int>(player_state::WeaponActionStateKind::kEquipGun):
+	case player_state::WeaponActionStateKind::kEquipGun:
 		AttachAnim(static_cast<int>(PlayerAnimKind::kIdle),							BodyKind::kLowerBody);
 		AttachAnim(static_cast<int>(PlayerAnimKind::kEquipGun),						BodyKind::kUpperBody);
 		break;
 
-	case static_cast<int>(player_state::WeaponActionStateKind::kAimGun):
-	case static_cast<int>(player_state::WeaponActionStateKind::kShot):
-	case static_cast<int>(player_state::WeaponActionStateKind::kShotRocketLauncher):
+	case player_state::WeaponActionStateKind::kAimGun:
+	case player_state::WeaponActionStateKind::kShot:
+	case player_state::WeaponActionStateKind::kShotRocketLauncher:
 		DivideBone(BonePath.HIPS);
 		AttachAnim(static_cast<int>(PlayerAnimKind::kIdle),							BodyKind::kLowerBody);
 		AttachAnim(static_cast<int>(PlayerAnimKind::kAimGun),						BodyKind::kUpperBody);
 		break;
 
-	case static_cast<int>(player_state::WeaponActionStateKind::kReload):
+	case player_state::WeaponActionStateKind::kReload:
 		AttachAnim(static_cast<int>(PlayerAnimKind::kIdle),							BodyKind::kLowerBody);
 		AttachAnim(static_cast<int>(PlayerAnimKind::kReload),						BodyKind::kUpperBody);
 		break;
@@ -248,30 +248,30 @@ void PlayerAnimator::CombineMoveNullCrouchWithWeaponAction()
 {
 	AttachAnim(static_cast<int>(PlayerAnimKind::kCrouch), BodyKind::kLowerBody);
 
-	switch (m_state->GetWeaponActionState(TimeKind::kCurrent)->GetStateKind())
+	switch (static_cast<player_state::WeaponActionStateKind>(m_state->GetWeaponActionState(TimeKind::kCurrent)->GetStateKind()))
 	{
-	case static_cast<int>(player_state::WeaponActionStateKind::kWeaponActionNull):
+	case player_state::WeaponActionStateKind::kWeaponActionNull:
 		AttachAnim(static_cast<int>(PlayerAnimKind::kIdle),				BodyKind::kUpperBody);
 		break;
 
-	case static_cast<int>(player_state::WeaponActionStateKind::kAttachWeapon):
+	case player_state::WeaponActionStateKind::kAttachWeapon:
 		AttachAnim(static_cast<int>(PlayerAnimKind::kAttachHandgun),	BodyKind::kUpperBody);
 		break;
 
-	case static_cast<int>(player_state::WeaponActionStateKind::kDetachWeapon):
+	case player_state::WeaponActionStateKind::kDetachWeapon:
 		AttachAnim(static_cast<int>(PlayerAnimKind::kDetachHandgun),	BodyKind::kUpperBody);
 		break;
 
 
-	case static_cast<int>(player_state::WeaponActionStateKind::kEquipKnife):
+	case player_state::WeaponActionStateKind::kEquipKnife:
 		AttachAnim(static_cast<int>(PlayerAnimKind::kEquipKnife),		BodyKind::kUpperBody);
 		break;
 
-	case static_cast<int>(player_state::WeaponActionStateKind::kEquipGun):
+	case player_state::WeaponActionStateKind::kEquipGun:
 		AttachAnim(static_cast<int>(PlayerAnimKind::kEquipGun),			BodyKind::kUpperBody);
 		break;
 
-	case static_cast<int>(player_state::WeaponActionStateKind::kReload):
+	case player_state::WeaponActionStateKind::kReload:
 		AttachAnim(static_cast<int>(PlayerAnimKind::kReload),			BodyKind::kUpperBody);
 		break;
 
@@ -282,15 +282,15 @@ void PlayerAnimator::CombineMoveNullCrouchWithWeaponAction()
 
 void PlayerAnimator::CombineMoveNullTurnAroundWithWeaponAction()
 {
-	switch (m_state->GetWeaponActionState(TimeKind::kCurrent)->GetStateKind())
+	switch (static_cast<player_state::WeaponActionStateKind>(m_state->GetWeaponActionState(TimeKind::kCurrent)->GetStateKind()))
 	{
-	case static_cast<int>(player_state::WeaponActionStateKind::kWeaponActionNull):
+	case player_state::WeaponActionStateKind::kWeaponActionNull:
 		break;
 
-	case static_cast<int>(player_state::WeaponActionStateKind::kEquipKnife):
+	case player_state::WeaponActionStateKind::kEquipKnife:
 		break;
 
-	case static_cast<int>(player_state::WeaponActionStateKind::kEquipGun):
+	case player_state::WeaponActionStateKind::kEquipGun:
 		break;
 
 	default:
@@ -300,15 +300,15 @@ void PlayerAnimator::CombineMoveNullTurnAroundWithWeaponAction()
 
 void PlayerAnimator::CombineMoveNullCrouchTurnAroundWithWeaponAction()
 {
-	switch (m_state->GetWeaponActionState(TimeKind::kCurrent)->GetStateKind())
+	switch (static_cast<player_state::WeaponActionStateKind>(m_state->GetWeaponActionState(TimeKind::kCurrent)->GetStateKind()))
 	{
-	case static_cast<int>(player_state::WeaponActionStateKind::kWeaponActionNull):
+	case player_state::WeaponActionStateKind::kWeaponActionNull:
 		break;
 
-	case static_cast<int>(player_state::WeaponActionStateKind::kEquipKnife):
+	case player_state::WeaponActionStateKind::kEquipKnife:
 		break;
 
-	case static_cast<int>(player_state::WeaponActionStateKind::kEquipGun):
+	case player_state::WeaponActionStateKind::kEquipGun:
 		break;
 
 	default:
@@ -320,41 +320,41 @@ void PlayerAnimator::CombineMoveActionNullWithWeaponAction()
 {
 	AttachAnimEightDir(static_cast<int>(PlayerAnimKind::kMoveForward));
 
-	switch (m_state->GetWeaponActionState(TimeKind::kCurrent)->GetStateKind())
+	switch (static_cast<player_state::WeaponActionStateKind>(m_state->GetWeaponActionState(TimeKind::kCurrent)->GetStateKind()))
 	{
-	case static_cast<int>(player_state::WeaponActionStateKind::kWeaponActionNull):
+	case player_state::WeaponActionStateKind::kWeaponActionNull:
 		AttachAnim(static_cast<int>(PlayerAnimKind::kIdle),				BodyKind::kUpperBody);
 		break;
 
-	case static_cast<int>(player_state::WeaponActionStateKind::kAttachWeapon):
+	case player_state::WeaponActionStateKind::kAttachWeapon:
 		AttachAnim(static_cast<int>(PlayerAnimKind::kAttachHandgun),	BodyKind::kUpperBody);
 		break;
 
-	case static_cast<int>(player_state::WeaponActionStateKind::kDetachWeapon):
+	case player_state::WeaponActionStateKind::kDetachWeapon:
 		AttachAnim(static_cast<int>(PlayerAnimKind::kDetachHandgun),	BodyKind::kUpperBody);
 		break;
 
-	case static_cast<int>(player_state::WeaponActionStateKind::kEquipKnife):
+	case player_state::WeaponActionStateKind::kEquipKnife:
 		AttachAnim(static_cast<int>(PlayerAnimKind::kEquipKnife),		BodyKind::kUpperBody);
 		break;
 
-	case static_cast<int>(player_state::WeaponActionStateKind::kAimKnife):
+	case player_state::WeaponActionStateKind::kAimKnife:
 		DivideBone(BonePath.HIPS);
 		AttachAnim(static_cast<int>(PlayerAnimKind::kAimKnife),			BodyKind::kUpperBody);
 		break;
 
-	case static_cast<int>(player_state::WeaponActionStateKind::kEquipGun):
+	case player_state::WeaponActionStateKind::kEquipGun:
 		AttachAnim(static_cast<int>(PlayerAnimKind::kEquipGun),			BodyKind::kUpperBody);
 		break;
 
-	case static_cast<int>(player_state::WeaponActionStateKind::kAimGun):
-	case static_cast<int>(player_state::WeaponActionStateKind::kShot):
-	case static_cast<int>(player_state::WeaponActionStateKind::kShotRocketLauncher):
+	case player_state::WeaponActionStateKind::kAimGun:
+	case player_state::WeaponActionStateKind::kShot:
+	case player_state::WeaponActionStateKind::kShotRocketLauncher:
 		DivideBone(BonePath.HIPS);
 		AttachAnim(static_cast<int>(PlayerAnimKind::kAimGun),			BodyKind::kUpperBody);
 		break;
 
-	case static_cast<int>(player_state::WeaponActionStateKind::kReload):
+	case player_state::WeaponActionStateKind::kReload:
 		AttachAnim(static_cast<int>(PlayerAnimKind::kReload),			BodyKind::kUpperBody);
 		break;
 
@@ -367,29 +367,29 @@ void PlayerAnimator::CombineMoveCrouchWithWeaponAction()
 {
 	AttachAnimEightDir(static_cast<int>(PlayerAnimKind::kMoveForwardCrouch));
 
-	switch (m_state->GetWeaponActionState(TimeKind::kCurrent)->GetStateKind())
+	switch (static_cast<player_state::WeaponActionStateKind>(m_state->GetWeaponActionState(TimeKind::kCurrent)->GetStateKind()))
 	{
-	case static_cast<int>(player_state::WeaponActionStateKind::kWeaponActionNull):
+	case player_state::WeaponActionStateKind::kWeaponActionNull:
 		AttachAnim(static_cast<int>(PlayerAnimKind::kIdle),				BodyKind::kUpperBody);
 		break;
 
-	case static_cast<int>(player_state::WeaponActionStateKind::kAttachWeapon):
+	case player_state::WeaponActionStateKind::kAttachWeapon:
 		AttachAnim(static_cast<int>(PlayerAnimKind::kAttachHandgun),	BodyKind::kUpperBody);
 		break;
 
-	case static_cast<int>(player_state::WeaponActionStateKind::kDetachWeapon):
+	case player_state::WeaponActionStateKind::kDetachWeapon:
 		AttachAnim(static_cast<int>(PlayerAnimKind::kDetachHandgun),	BodyKind::kUpperBody);
 		break;
 
-	case static_cast<int>(player_state::WeaponActionStateKind::kEquipKnife):
+	case player_state::WeaponActionStateKind::kEquipKnife:
 		AttachAnim(static_cast<int>(PlayerAnimKind::kEquipKnife),		BodyKind::kUpperBody);
 		break;
 
-	case static_cast<int>(player_state::WeaponActionStateKind::kEquipGun):
+	case player_state::WeaponActionStateKind::kEquipGun:
 		AttachAnim(static_cast<int>(PlayerAnimKind::kEquipGun),			BodyKind::kUpperBody);
 		break;
 
-	case static_cast<int>(player_state::WeaponActionStateKind::kReload):
+	case player_state::WeaponActionStateKind::kReload:
 		AttachAnim(static_cast<int>(PlayerAnimKind::kReload),			BodyKind::kUpperBody);
 		break;
 
@@ -400,32 +400,32 @@ void PlayerAnimator::CombineMoveCrouchWithWeaponAction()
 
 void PlayerAnimator::CombineMoveRunWithWeaponAction()
 {
-	switch (m_state->GetWeaponActionState(TimeKind::kCurrent)->GetStateKind())
+	switch (static_cast<player_state::WeaponActionStateKind>(m_state->GetWeaponActionState(TimeKind::kCurrent)->GetStateKind()))
 	{
-	case static_cast<int>(player_state::WeaponActionStateKind::kWeaponActionNull):
+	case player_state::WeaponActionStateKind::kWeaponActionNull:
 		AttachResultAnim(static_cast<int>(PlayerAnimKind::kMoveForwardRun));
 		break;
 
-	case static_cast<int>(player_state::WeaponActionStateKind::kAttachWeapon):
+	case player_state::WeaponActionStateKind::kAttachWeapon:
 		AttachAnim(static_cast<int>(PlayerAnimKind::kMoveForwardRun),	BodyKind::kLowerBody);
 		AttachAnim(static_cast<int>(PlayerAnimKind::kAttachHandgun),	BodyKind::kUpperBody);
 		break;
 
-	case static_cast<int>(player_state::WeaponActionStateKind::kDetachWeapon):
+	case player_state::WeaponActionStateKind::kDetachWeapon:
 		AttachAnim(static_cast<int>(PlayerAnimKind::kMoveForwardRun),	BodyKind::kLowerBody);
 		AttachAnim(static_cast<int>(PlayerAnimKind::kDetachHandgun),	BodyKind::kUpperBody);
 		break;
 
-	case static_cast<int>(player_state::WeaponActionStateKind::kEquipKnife):
+	case player_state::WeaponActionStateKind::kEquipKnife:
 		AttachResultAnim(static_cast<int>(PlayerAnimKind::kMoveForwardRun));
 		break;
 
-	case static_cast<int>(player_state::WeaponActionStateKind::kEquipGun):
+	case player_state::WeaponActionStateKind::kEquipGun:
 		AttachAnim(static_cast<int>(PlayerAnimKind::kMoveForwardRun),	BodyKind::kLowerBody);
 		AttachAnim(static_cast<int>(PlayerAnimKind::kEquipGun),			BodyKind::kUpperBody);
 		break;
 
-	case static_cast<int>(player_state::WeaponActionStateKind::kReload):
+	case player_state::WeaponActionStateKind::kReload:
 		AttachAnim(static_cast<int>(PlayerAnimKind::kMoveForwardRun),	BodyKind::kLowerBody);
 		AttachAnim(static_cast<int>(PlayerAnimKind::kReload),			BodyKind::kUpperBody);
 		break;

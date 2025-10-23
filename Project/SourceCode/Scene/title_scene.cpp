@@ -6,7 +6,6 @@ TitleScene::TitleScene() :
 	m_scene_kind					(SceneKind::kTitle),
 	m_title_character				(std::make_shared<TitleCharacter>()),
 	m_title_tab						(std::make_shared<TitleTab>()),
-	m_warning_exit_tab					(std::make_shared<WarningExitTab>()),
 	m_title_scene_effect_object_pool(std::make_shared<TitleSceneEffectObjectPool>()),
 
 	m_title_camera					(std::make_shared<VirtualCamera>(ObjName.TITLE_CAMERA, BlendActivationPolicyKind::kDeactivateAllCamera)),
@@ -42,7 +41,6 @@ TitleScene::TitleScene() :
 	aim->SetTrackedObjOffset({ -3.0f, 0.0f, 0.0f });
 
 	TabDrawer::GetInstance()->AddTab(m_title_tab);
-	TabDrawer::GetInstance()->AddTab(m_warning_exit_tab);
 
 	// タイトルシーンに入ったことを通知
 	const OnChangeTitleSceneEvent event{ m_smoke_transform, m_smoke_delete_handle };
@@ -70,7 +68,6 @@ TitleScene::~TitleScene()
 
 	// タブの登録を解除
 	TabDrawer::GetInstance()->RemoveTab(typeid(TitleTab));
-	TabDrawer::GetInstance()->RemoveTab(typeid(WarningExitTab));
 
 	// カメラの登録を解除
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
@@ -91,25 +88,7 @@ void TitleScene::Init()
 void TitleScene::Update()
 {
 	m_title_tab			->Update();
-	m_warning_exit_tab		->Update();
 	m_title_character	->Update();
-
-
-
-
-	// TODO : のちに位置を変更
-	if (m_title_tab->IsActivateWarningTab())
-	{
-		m_warning_exit_tab	->Activate();
-		m_title_tab		->StopSelect();
-		m_title_tab		->InitActivateWarningTab();
-	}
-
-	if (m_warning_exit_tab->IsBack())
-	{
-		m_warning_exit_tab	->Init();
-		m_title_tab		->AllowSelect();
-	}
 
 
 

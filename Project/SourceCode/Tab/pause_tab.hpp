@@ -42,6 +42,8 @@ private:
 
 	void JudgeActive();
 	void JudgeDeactivate();
+	void JudgeSelect();
+
 	void CalcAlphaBlendNum();
 	void CreateResultScreen();
 
