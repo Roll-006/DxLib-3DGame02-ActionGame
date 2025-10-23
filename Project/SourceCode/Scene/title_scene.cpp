@@ -90,8 +90,10 @@ void TitleScene::Update()
 	m_title_tab			->Update();
 	m_title_character	->Update();
 
-
-
+	if (ObjManager::GetInstance()->GetObj<ObjBase>(ObjName.PLAYER))
+	{
+		int a = 0;
+	}
 
 
 	// TODO : Œã‚É•ÊƒNƒ‰ƒX‰»

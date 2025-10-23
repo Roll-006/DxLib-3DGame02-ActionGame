@@ -316,6 +316,7 @@
     <ClCompile Include="SourceCode\Tab\warning_tab.cpp" />
     <ClCompile Include="SourceCode\UIButton\sub_menu_select_button.cpp" />
     <ClCompile Include="SourceCode\UIButton\main_menu_select_button.cpp" />
+    <ClCompile Include="SourceCode\UI\cross_hair.cpp" />
     <ClCompile Include="SourceCode\UI\damage_filter.cpp" />
     <ClCompile Include="SourceCode\UI\cinema_scope_frame.cpp" />
     <ClCompile Include="SourceCode\UI\escape_icon.cpp" />
@@ -430,6 +431,8 @@
     <ClInclude Include="SourceCode\IncludeList\vector.hpp" />
     <ClInclude Include="SourceCode\Input\input_checker.hpp" />
     <ClInclude Include="SourceCode\Interface\i_light.hpp" />
+    <ClInclude Include="SourceCode\Interface\i_stealth_killable.hpp" />
+    <ClInclude Include="SourceCode\Interface\i_stealth_killer.hpp" />
     <ClInclude Include="SourceCode\Interface\i_tab.hpp" />
     <ClInclude Include="SourceCode\Interface\i_grabber.hpp" />
     <ClInclude Include="SourceCode\Interface\i_ui_element.hpp" />
@@ -647,6 +650,7 @@
     <ClInclude Include="SourceCode\Tag\obj_tag.hpp" />
     <ClInclude Include="SourceCode\UIButton\sub_menu_select_button.hpp" />
     <ClInclude Include="SourceCode\UIButton\main_menu_select_button.hpp" />
+    <ClInclude Include="SourceCode\UI\cross_hair.hpp" />
     <ClInclude Include="SourceCode\UI\damage_filter.hpp" />
     <ClInclude Include="SourceCode\UI\cinema_scope_frame.hpp" />
     <ClInclude Include="SourceCode\UI\escape_icon.hpp" />

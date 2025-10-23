@@ -74,3 +74,13 @@ void Circle::SetPos(const VECTOR& pos)
 		m_triangles.at(i) = Triangle(pos1, pos2, m_pos);
 	}
 }
+
+void Circle::SetNormalVector(const VECTOR& normal_vector)
+{
+	m_normal_vector = v3d::GetNormalizedV(normal_vector);
+}
+
+void Circle::SetRadius(const float	radius)
+{
+	m_radius = radius;
+}

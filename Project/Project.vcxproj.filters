@@ -586,6 +586,9 @@
     <ClCompile Include="SourceCode\Part\scene_fader.cpp">
       <Filter>SourceCode\Part</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\UI\cross_hair.cpp">
+      <Filter>SourceCode\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\character_base.hpp">
@@ -1565,6 +1568,15 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Part\scene_fader.hpp">
       <Filter>SourceCode\Part</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Interface\i_stealth_killer.hpp">
+      <Filter>SourceCode\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Interface\i_stealth_killable.hpp">
+      <Filter>SourceCode\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\UI\cross_hair.hpp">
+      <Filter>SourceCode\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

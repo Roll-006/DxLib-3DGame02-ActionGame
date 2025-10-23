@@ -26,6 +26,7 @@ static struct AnimationPath
 	
 	const std::string DEAD_01							= "Data/Animation/death_01.mv1";
 	const std::string DEAD_02							= "Data/Animation/death_02.mv1";
+	const std::string DEAD_03							= "Data/Animation/death_03.mv1";
 	const std::string CROUCH_DEAD						= "Data/Animation/crouch_death.mv1";
 	const std::string FLYING_KNOCKBACK_UP				= "Data/Animation/flying_knockback_up.mv1";
 	const std::string FLYING_KNOCKBACK_DOWN				= "Data/Animation/flying_knockback_down.mv1";

@@ -20,7 +20,9 @@ public:
 
 	void Move(const VECTOR& velocity) override;
 
-	void SetPos(const VECTOR& pos);
+	void SetPos			(const VECTOR&	pos);
+	void SetNormalVector(const VECTOR&	normal_vector);
+	void SetRadius		(const float	radius);
 
 	[[nodiscard]] VECTOR GetPos()			const { return m_pos; }
 	[[nodiscard]] VECTOR GetNormalVector()	const { return m_normal_vector; }

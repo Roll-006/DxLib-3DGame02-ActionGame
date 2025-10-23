@@ -5,13 +5,14 @@
 #include "escape_icon.hpp"
 #include "status_icons.hpp"
 #include "weapon_shortcut_drawer.hpp"
+#include "cross_hair.hpp"
 
 #include "../Part/player_state_controller.hpp"
 
 class PlayerUICreator final : public IUICreator
 {
 public:
-	PlayerUICreator(const std::shared_ptr<Player>& player);
+	PlayerUICreator(std::shared_ptr<Player>& player);
 	~PlayerUICreator()	override;
 
 	void Init() override;
@@ -46,6 +47,7 @@ private:
 	std::shared_ptr<MeleeTargetIcon>		m_melee_target_icon;
 	std::shared_ptr<EscapeIcon>				m_escape_icon;
 	std::shared_ptr<StatusIcons>			m_status_icons;
+	std::shared_ptr<CrossHair>				m_cross_hair;
 	std::shared_ptr<WeaponShortcutDrawer>	m_weapon_shortcut;
 
 	//std::shared_ptr<ShapeBase>	m_2d_diffusion_shape;	// “ñŸŒ³ã‚ÌŠgU”ÍˆÍ}Œ`
