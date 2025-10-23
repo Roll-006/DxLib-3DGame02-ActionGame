@@ -85,7 +85,7 @@ void AssaultRifle::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 }
 
-void AssaultRifle::CalcCrossHairRange()
+void AssaultRifle::CalcCrossHairRange(const VECTOR& owner_velocity)
 {
 	// ŠgŽU”ÍˆÍ‚ðŽw’è
 	const auto circle = std::static_pointer_cast<Circle>(m_cross_hair_shape);
@@ -93,6 +93,8 @@ void AssaultRifle::CalcCrossHairRange()
 	circle->SetPos			(GetFirstShotPos() + m_aim_dir * kCrossHairDistance);
 	circle->SetRadius		(kCrossHairMaxRadius);
 	circle->SetNormalVector	(m_aim_dir);
+
+
 }
 
 void AssaultRifle::CalcTargetPos()

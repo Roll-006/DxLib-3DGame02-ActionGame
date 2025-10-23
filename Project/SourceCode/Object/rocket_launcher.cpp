@@ -83,7 +83,7 @@ void RocketLauncher::OnCollide(const ColliderPairOneToOneData& hit_collider_pair
 
 }
 
-void RocketLauncher::CalcCrossHairRange()
+void RocketLauncher::CalcCrossHairRange(const VECTOR& owner_velocity)
 {
 	// ŠgŽU”ÍˆÍ‚ðŽw’è
 	const auto circle = std::static_pointer_cast<Circle>(m_cross_hair_shape);

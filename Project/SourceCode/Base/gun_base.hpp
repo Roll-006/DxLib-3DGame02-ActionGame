@@ -27,7 +27,7 @@ public:
 	[[nodiscard]] int OnReload(const int have_bullets);
 
 	/// @brief ŠgU”ÍˆÍ‚ğŒvZ
-	virtual void CalcCrossHairRange() abstract;
+	virtual void CalcCrossHairRange(const VECTOR& owner_velocity) abstract;
 
 	/// @brief ËŒ‚‚·‚éƒ^[ƒQƒbƒgÀ•W‚ğŒvZ
 	virtual void CalcTargetPos() abstract;
