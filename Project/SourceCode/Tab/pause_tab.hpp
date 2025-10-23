@@ -7,6 +7,9 @@
 #include "../Path/ui_graphic_path.hpp"
 #include "../Part/scene_fader.hpp"
 
+#include "tab_drawer.hpp"
+#include "warning_quit_game_tab.hpp"
+
 class PauseTab final : public ITab
 {
 public:
@@ -66,5 +69,6 @@ private:
 	std::string						m_text;
 	Vector2D<int>					m_font_size;
 
-	std::unordered_map<TimeScaleLayerKind, float> m_prev_time_scale;
+	std::unordered_map<TimeScaleLayerKind, float>	m_prev_time_scale;
+	std::shared_ptr<WarningQuitGameTab>				m_warning_quit_game_tab;
 };

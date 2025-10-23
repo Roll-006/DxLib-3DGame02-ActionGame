@@ -5,11 +5,11 @@
 #include "../UI/ui_selector.hpp"
 #include "../UIButton/sub_menu_select_button.hpp"
 
-class WarningTab final : public ITab
+class WarningExitTab final : public ITab
 {
 public:
-	WarningTab();
-	~WarningTab() override;
+	WarningExitTab();
+	~WarningExitTab() override;
 
 	void Init()			override;
 	void Update()		override;

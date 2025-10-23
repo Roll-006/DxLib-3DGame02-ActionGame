@@ -532,7 +532,7 @@
     <ClCompile Include="SourceCode\Tab\game_over_tab (2).cpp">
       <Filter>SourceCode\Tab</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Tab\game_over_tab (3).cpp">
+    <ClCompile Include="SourceCode\Tab\warning_quit_game_tab.cpp">
       <Filter>SourceCode\Tab</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Tab\pause_tab.cpp">
@@ -553,7 +553,7 @@
     <ClCompile Include="SourceCode\UIButton\main_menu_select_button.cpp">
       <Filter>SourceCode\UIButton</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Tab\warning_tab.cpp">
+    <ClCompile Include="SourceCode\Tab\warning_exit_tab.cpp">
       <Filter>SourceCode\Tab</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\UIButton\sub_menu_select_button.cpp">
@@ -1491,7 +1491,7 @@
     <ClInclude Include="SourceCode\Tab\game_over_tab (2).hpp">
       <Filter>SourceCode\Tab</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Tab\game_over_tab (3).hpp">
+    <ClInclude Include="SourceCode\Tab\warning_quit_game_tab.hpp">
       <Filter>SourceCode\Tab</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Tab\pause_tab.hpp">
@@ -1515,7 +1515,7 @@
     <ClInclude Include="SourceCode\Event\exit_game_event.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Tab\warning_tab.hpp">
+    <ClInclude Include="SourceCode\Tab\warning_exit_tab.hpp">
       <Filter>SourceCode\Tab</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\UIButton\sub_menu_select_button.hpp">

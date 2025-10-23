@@ -53,13 +53,13 @@ void ZombieAnimator::LoadAnim()
 
 void ZombieAnimator::ChangeAnim()
 {
-	switch (m_state->GetMoveState(TimeKind::kCurrent)->GetStateKind())
+	switch (static_cast<zombie_state::MoveStateKind>(m_state->GetMoveState(TimeKind::kCurrent)->GetStateKind()))
 	{
-	case static_cast<int>(zombie_state::MoveStateKind::kMoveNull):
+	case zombie_state::MoveStateKind::kMoveNull:
 		CombineMoveNullWithAction();
 		break;
 
-	case static_cast<int>(zombie_state::MoveStateKind::kMove):
+	case zombie_state::MoveStateKind::kMove:
 		CombineMoveWithAction();
 		break;
 
@@ -72,46 +72,52 @@ void ZombieAnimator::ChangeAnim()
 #pragma region 状態の合成
 void ZombieAnimator::CombineMoveNullWithAction()
 {
-	switch (m_state->GetActionState(TimeKind::kCurrent)->GetStateKind())
+	const auto current_action_state_kind	= static_cast<zombie_state::ActionStateKind>(m_state->GetActionState(TimeKind::kCurrent)->GetStateKind());
+	const auto prev_action_state_kind		= static_cast<zombie_state::ActionStateKind>(m_state->GetActionState(TimeKind::kPrev)	->GetStateKind());
+
+	switch (current_action_state_kind)
 	{
-	case static_cast<int>(zombie_state::ActionStateKind::kActionNull):
+	case zombie_state::ActionStateKind::kActionNull:
 		AttachResultAnim(static_cast<int>(ZombieAnimKind::kIdle));
 		break;
 
-	case static_cast<int>(zombie_state::ActionStateKind::kGrab):
+	case zombie_state::ActionStateKind::kGrab:
 		AttachResultAnim(static_cast<int>(ZombieAnimKind::kEnterNeckBite));
 		break;
 
-	case static_cast<int>(zombie_state::ActionStateKind::kKnockback):
+	case zombie_state::ActionStateKind::kKnockback:
 		AttachResultAnim(static_cast<int>(ZombieAnimKind::kFlyingKnockbackDown));
 		break;
 
-	case static_cast<int>(zombie_state::ActionStateKind::kBackwardKnockback):
+	case zombie_state::ActionStateKind::kBackwardKnockback:
 		AttachResultAnim(static_cast<int>(ZombieAnimKind::kBackwardKnockback));
 		break;
 
-	case static_cast<int>(zombie_state::ActionStateKind::kStandUp):
+	case zombie_state::ActionStateKind::kStandUp:
 		AttachResultAnim(static_cast<int>(ZombieAnimKind::kStandUp));
 		break;
 
-	case static_cast<int>(zombie_state::ActionStateKind::kStandStun):
+	case zombie_state::ActionStateKind::kStandStun:
 		AttachAnim(static_cast<int>(ZombieAnimKind::kIdle),			BodyKind::kLowerBody);
 		AttachAnim(static_cast<int>(ZombieAnimKind::kStandStun),	BodyKind::kUpperBody);
 		break;
 
-	case static_cast<int>(zombie_state::ActionStateKind::kCrouchLeftStun):
+	case zombie_state::ActionStateKind::kCrouchLeftStun:
 		AttachResultAnim(static_cast<int>(ZombieAnimKind::kCrouchLeftStun));
 		break;
 
-	case static_cast<int>(zombie_state::ActionStateKind::kCrouchRightStun):
+	case zombie_state::ActionStateKind::kCrouchRightStun:
 		AttachResultAnim(static_cast<int>(ZombieAnimKind::kCrouchRightStun));
 		break;
 
-	case static_cast<int>(zombie_state::ActionStateKind::kPlayDead):
+	case zombie_state::ActionStateKind::kPlayDead:
 		break;
 
-	case static_cast<int>(zombie_state::ActionStateKind::kDead):
-		AttachResultAnim(static_cast<int>(ZombieAnimKind::kDead));
+	case zombie_state::ActionStateKind::kDead:
+		if (prev_action_state_kind != zombie_state::ActionStateKind::kKnockback)
+		{
+			AttachResultAnim(static_cast<int>(ZombieAnimKind::kDead));
+		}
 		break;
 
 	default:
@@ -121,17 +127,17 @@ void ZombieAnimator::CombineMoveNullWithAction()
 
 void ZombieAnimator::CombineMoveWithAction()
 {
-	switch (m_state->GetActionState(TimeKind::kCurrent)->GetStateKind())
+	switch (static_cast<zombie_state::ActionStateKind>(m_state->GetActionState(TimeKind::kCurrent)->GetStateKind()))
 	{
-	case static_cast<int>(zombie_state::ActionStateKind::kActionNull):
+	case zombie_state::ActionStateKind::kActionNull:
 		AttachResultAnim(static_cast<int>(ZombieAnimKind::kMoveForwardWalk));
 		break;
 
-	case static_cast<int>(zombie_state::ActionStateKind::kRun):
+	case zombie_state::ActionStateKind::kRun:
 		AttachResultAnim(static_cast<int>(ZombieAnimKind::kMoveForwardRun));
 		break;
 
-	case static_cast<int>(zombie_state::ActionStateKind::kGrabRun):
+	case zombie_state::ActionStateKind::kGrabRun:
 		AttachAnim(static_cast<int>(ZombieAnimKind::kMoveForwardRun),	BodyKind::kLowerBody);
 		AttachAnim(static_cast<int>(ZombieAnimKind::kGrab),				BodyKind::kUpperBody);
 		break;

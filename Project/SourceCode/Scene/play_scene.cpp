@@ -52,9 +52,14 @@ PlayScene::~PlayScene()
 	m_house			->RemoveToObjManager();
 	m_ground		->RemoveToObjManager();
 
+	m_enemy_manager->DetachTarget();
+
 	const auto pool_holder = ObjectPoolHolder::GetInstance();
 	pool_holder->RemoveObjectPool(m_rifle_cartridge_object_pool	 ->GetName());
 	pool_holder->RemoveObjectPool(m_play_scene_effect_object_pool->GetName());
+
+	const auto cinemachine_brain = CinemachineBrain::GetInstance();
+	cinemachine_brain->RemoveVirtualCameraController(VirtualCameraControllerKind::kControl);
 
 	// ライトの削除
 	const auto light_holder = LightHolder::GetInstance();
@@ -141,10 +146,10 @@ std::shared_ptr<IScene> PlayScene::ChangeScene()
 	{
 		return std::make_shared<TitleScene>();
 	}
-	// プレイ
+	// ロード(プレイ)
 	if (m_game_over_tab->IsContinue())
 	{
-		Init();
+		return std::make_shared<LoadScene>(SceneKind::kPlay);
 	}
 
 	return nullptr;

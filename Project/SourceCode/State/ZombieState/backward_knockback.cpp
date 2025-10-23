@@ -45,21 +45,6 @@ std::shared_ptr<IState<Zombie>> zombie_state::BackwardKnockback::ChangeState(std
 		{
 			return state_controller->GetState<Dead, Zombie>();
 		}
-		// 左足ダウン
-		if (state_controller->TryLeftCrouchStun(obj))
-		{
-			return state_controller->GetState<CrouchLeftStun, Zombie>();
-		}
-		// 右足ダウン
-		if (state_controller->TryRightCrouchStun(obj))
-		{
-			return state_controller->GetState<CrouchRightStun, Zombie>();
-		}
-		// 立ちダウン
-		if (state_controller->TryStandStun(obj))
-		{
-			return state_controller->GetState<StandStun, Zombie>();
-		}
 
 		// NULL
 		return state_controller->GetState<ActionNull, Zombie>();

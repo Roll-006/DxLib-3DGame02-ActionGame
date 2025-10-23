@@ -13,10 +13,13 @@ PauseTab::PauseTab() :
 	m_result_screen				(std::make_shared<ScreenCreator>(Window::kScreenSize, Window::kCenterPos)),
 	m_font_handle				(FontHandler::GetInstance()->GetFontHandle(FontName.EXPLANATORY_TEXT)),
 	m_text						("ÉQÅ[ÉÄÇèIóπÇµÇ‹Ç∑Ç©ÅH"),
-	m_font_size					(Vector2D<int>(GetDrawStringWidthToHandle(m_text.c_str(), -1, m_font_handle), GetFontSizeToHandle(m_font_handle)))
+	m_font_size					(Vector2D<int>(GetDrawStringWidthToHandle(m_text.c_str(), -1, m_font_handle), GetFontSizeToHandle(m_font_handle))),
+	m_warning_quit_game_tab		(std::make_shared<WarningQuitGameTab>())
 {
 	// ÉCÉxÉìÉgìoò^
 	EventSystem::GetInstance()->Subscribe<DeadPlayerEvent>(this, &PauseTab::Deactivate);
+
+	TabDrawer::GetInstance()->AddTab(m_warning_quit_game_tab);
 
 	std::vector<Vector2D<int>> center_pos;
 	for (int i = 0; i < 3; ++i)
@@ -35,6 +38,8 @@ PauseTab::~PauseTab()
 {
 	// ÉCÉxÉìÉgÇÃìoò^âèú
 	EventSystem::GetInstance()->Unsubscribe<DeadPlayerEvent>(this, &PauseTab::Deactivate);
+
+	TabDrawer::GetInstance()->RemoveTab(typeid(WarningQuitGameTab));
 }
 
 void PauseTab::Init()
@@ -71,6 +76,14 @@ void PauseTab::Update()
 
 	CreateResultScreen();
 	CalcAlphaBlendNum();
+
+	m_warning_quit_game_tab->Update();
+
+	if (m_warning_quit_game_tab->IsBack())
+	{
+		m_warning_quit_game_tab->Init();
+		m_can_select = true;
+	}
 }
 
 void PauseTab::OnDraw(const int main_screen_handle) const
@@ -101,10 +114,13 @@ void PauseTab::ExecuteOption()
 
 void PauseTab::ExecuteQuitGame()
 {
-	const auto fader = SceneFader::GetInstance();
-	fader->StartFade(255, 150.0f);
+	m_warning_quit_game_tab->Activate();
+	m_can_select = false;
 
-	m_is_quit_game = true;
+	//const auto fader = SceneFader::GetInstance();
+	//fader->StartFade(255, 150.0f);
+
+	//m_is_quit_game = true;
 }
 
 void PauseTab::JudgeActive()

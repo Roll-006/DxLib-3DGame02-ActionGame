@@ -1,6 +1,6 @@
-#include "warning_tab.hpp"
+#include "warning_exit_tab.hpp"
 
-WarningTab::WarningTab() :
+WarningExitTab::WarningExitTab() :
 	m_priority				(10),
 	m_is_active				(false),
 	m_can_select			(true),
@@ -27,12 +27,12 @@ WarningTab::WarningTab() :
 	CalcAlphaBlendNum();
 }
 
-WarningTab::~WarningTab()
+WarningExitTab::~WarningExitTab()
 {
 
 }
 
-void WarningTab::Init()
+void WarningExitTab::Init()
 {
 	m_ui_selector->Init();
 
@@ -40,7 +40,7 @@ void WarningTab::Init()
 	m_is_execute_back	= false;
 }
 
-void WarningTab::Update()
+void WarningExitTab::Update()
 {
 	if (!m_is_active) { return; }
 
@@ -52,7 +52,7 @@ void WarningTab::Update()
 	CalcAlphaBlendNum();
 }
 
-void WarningTab::OnDraw(const int main_screen_handle) const
+void WarningExitTab::OnDraw(const int main_screen_handle) const
 {
 	if (!m_is_active) { return; }
 
@@ -63,18 +63,18 @@ void WarningTab::OnDraw(const int main_screen_handle) const
 	m_result_screen->Draw();
 }
 
-void WarningTab::ExecuteDecide()
+void WarningExitTab::ExecuteDecide()
 {
 	const ExitGameEvent event{};
 	EventSystem::GetInstance()->Publish(event);
 }
 
-void WarningTab::ExecuteBack()
+void WarningExitTab::ExecuteBack()
 {
 	m_is_execute_back = true;
 }
 
-void WarningTab::CalcAlphaBlendNum()
+void WarningExitTab::CalcAlphaBlendNum()
 {
 	const auto delta_time = GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kUI);
 	if (m_is_execute_back)
@@ -89,7 +89,7 @@ void WarningTab::CalcAlphaBlendNum()
 	m_result_screen->GetGraphicer()->SetBlendNum(m_alpha_blend_num);
 }
 
-void WarningTab::CreateResultScreen()
+void WarningExitTab::CreateResultScreen()
 {
 	m_result_screen->UseScreen();
 
