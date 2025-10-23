@@ -256,7 +256,7 @@ void Player::AttackFrontMelee(CharacterBase* target)
 	if (target->IsInvincible()) { return; }
 
 	const auto dir = v3d::GetNormalizedV(m_transform->GetForward(CoordinateKind::kWorld) + VGet(0.0f, 0.5f, 0.0f));
-	target->OnDamage(HealthPartKind::kMain, 100.0f);
+	target->OnDamage(HealthPartKind::kMain, 1000.0f);
 	target->OnKnockback(dir, 170.0f, 100.0f);
 
 	const auto time_manager = GameTimeManager::GetInstance();
@@ -276,7 +276,7 @@ void Player::AttackVersatilityMelee(CharacterBase* target)
 	if (target->IsInvincible()) { return; }
 
 	const auto dir = v3d::GetNormalizedV(m_transform->GetForward(CoordinateKind::kWorld) + VGet(0.0f, 0.5f, 0.0f));
-	target->OnDamage(HealthPartKind::kMain, 100.0f);
+	target->OnDamage(HealthPartKind::kMain, 1000.0f);
 	target->OnKnockback(dir, 170.0f, 100.0f);
 
 	const auto time_manager = GameTimeManager::GetInstance();

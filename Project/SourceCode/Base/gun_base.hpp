@@ -27,7 +27,7 @@ public:
 	[[nodiscard]] int OnReload(const int have_bullets);
 
 	/// @brief ŠgU”ÍˆÍ‚ğŒvZ
-	virtual void CalcDiffusionRange() abstract;
+	virtual void CalcCrossHairRange() abstract;
 
 	/// @brief ËŒ‚‚·‚éƒ^[ƒQƒbƒgÀ•W‚ğŒvZ
 	virtual void CalcTargetPos() abstract;
@@ -43,7 +43,7 @@ public:
 
 	#pragma region Getter
 	[[nodiscard]] std::shared_ptr<ILoadableAmmo>	GetMagazine()		const { return m_magazine; }
-	[[nodiscard]] std::shared_ptr<ShapeBase> GetDiffusionShape()		const { return m_diffusion_shape; }
+	[[nodiscard]] std::shared_ptr<ShapeBase> GetDiffusionShape()		const { return m_cross_hair_shape; }
 	[[nodiscard]] std::shared_ptr<Transform> GetMuzzleTransform()		const { return m_muzzle_transform; }
 	[[nodiscard]] std::shared_ptr<Transform> GetEjectionPortTransform()	const { return m_ejection_port_transform; }
 	[[nodiscard]] std::shared_ptr<Transform> GetLoadTransform()			const { return m_load_transform; }
@@ -72,11 +72,11 @@ protected:
 	void CalcTransform(std::shared_ptr<Transform>& transform, const VECTOR& offset);
 
 protected:
-	static constexpr float kDiffusionDistance = 1500.0f;		// ŠgU”ÍˆÍ‚ªˆÊ’u‚·‚éÀ•W‚Ü‚Å‚Ì‹——£
+	static constexpr float kCrossHairDistance = 1500.0f;		// ŠgU”ÍˆÍ‚ªˆÊ’u‚·‚éÀ•W‚Ü‚Å‚Ì‹——£
 
 	std::shared_ptr<ILoadableAmmo>		m_magazine;
 
-	std::shared_ptr<ShapeBase>			m_diffusion_shape;		// ŠgU”ÍˆÍw’è—p‚Ì}Œ`
+	std::shared_ptr<ShapeBase>			m_cross_hair_shape;		// ŠgU”ÍˆÍw’è—p‚Ì}Œ`
 	std::shared_ptr<Transform>			m_muzzle_transform;
 	std::shared_ptr<Transform>			m_ejection_port_transform;
 	std::shared_ptr<Transform>			m_load_transform;

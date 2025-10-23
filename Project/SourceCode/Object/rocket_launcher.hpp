@@ -16,7 +16,7 @@ public:
 
 	void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) override;
 
-	void CalcDiffusionRange() override;
+	void CalcCrossHairRange() override;
 	void CalcTargetPos()	  override;
 
 	[[nodiscard]] std::shared_ptr<Transform> GetExhaustVentTransform() const { return m_exhaust_vent_transform; }
@@ -44,7 +44,7 @@ private:
 	static constexpr float  kDeceleration			= 0.2f;
 	static constexpr float  kShotIntervalTime		= 1.5f;
 
-	static constexpr float  kDiffusionRadius		= 10.0f;		// ŠgŽU”ÍˆÍ‚Ì”¼Œa
+	static constexpr float  kCrossHairMaxRadius		= 10.0f;		// ŠgŽU”ÍˆÍ‚Ì”¼Œa
 
 	std::shared_ptr<Transform> m_exhaust_vent_transform;
 	bool m_is_draw_magazine;

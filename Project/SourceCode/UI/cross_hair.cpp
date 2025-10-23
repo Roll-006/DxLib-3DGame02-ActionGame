@@ -21,9 +21,12 @@ CrossHair::~CrossHair()
 
 void CrossHair::LateUpdate()
 {
-	const auto weapon_action_state = static_cast<player_state::WeaponActionStateKind>(m_player->GetStateController()->GetWeaponActionState(TimeKind::kCurrent)->GetStateKind());
-	
-	m_is_aiming					= weapon_action_state == player_state::WeaponActionStateKind::kAimGun || weapon_action_state == player_state::WeaponActionStateKind::kAimKnife;
+	const auto weapon_action_state	= static_cast<player_state::WeaponActionStateKind>(m_player->GetStateController()->GetWeaponActionState(TimeKind::kCurrent)->GetStateKind());
+	const auto is_aiming_gun		= weapon_action_state == player_state::WeaponActionStateKind::kAimGun;
+	const auto is_aiming_knife		= weapon_action_state == player_state::WeaponActionStateKind::kAimKnife;
+	const auto is_shot				= weapon_action_state == player_state::WeaponActionStateKind::kShot;
+
+	m_is_aiming					= is_aiming_gun || is_aiming_knife || is_shot;
 	m_current_hold_weapon_kind	= m_player->GetCurrentHeldWeaponKind();
 
 	if (m_current_hold_weapon_kind == WeaponKind::kGun)
@@ -89,6 +92,7 @@ void CrossHair::DrawGunCrossHair() const
 		break;
 
 	case GunKind::kRocketLauncher:
+		RocketLauncher();
 		break;
 
 	case GunKind::kShotgun:
@@ -114,6 +118,17 @@ void CrossHair::DrawSubmachineGunCrossHair() const
 	DrawLine(center_x + radius, center_y,		   center_x + radius + kSubmachineGunWidth, center_y,								  0xffffff, kThickness);
 	DrawLine(center_x - radius, center_y,		   center_x - radius - kSubmachineGunWidth, center_y,								  0xffffff, kThickness);
 	DrawLine(center_x,			center_y + radius, center_x,								center_y + radius + kSubmachineGunHeight, 0xffffff, kThickness);
+}
+
+void CrossHair::RocketLauncher() const
+{
+	const auto center_x = m_circle_cross_hair->GetPos().x;
+	const auto center_y = m_circle_cross_hair->GetPos().y;
+	const auto radius	= m_circle_cross_hair->GetRadius();
+
+	DrawCircle(center_x, center_y, radius, 0xffffff, FALSE, kThickness);
+	DrawLine(center_x - radius, center_y, center_x + radius, center_y, 0xffffff, kThickness);
+	DrawLine(center_x, center_y - radius, center_x, center_y + radius, 0xffffff, kThickness);
 }
 #pragma endregion
 
@@ -147,6 +162,8 @@ void CrossHair::CalcAlphaBlendNum()
 	}
 	else
 	{
-		math::Decrease(m_alpha_blend_num, static_cast<int>(kAlphaBlendDecreaseSpeed * delta_time), 0);
+		// TODO : のちにグラデーションで描画を消すように変更
+		m_alpha_blend_num = 0;
+		//math::Decrease(m_alpha_blend_num, static_cast<int>(kAlphaBlendDecreaseSpeed * delta_time), 0);
 	}
 }

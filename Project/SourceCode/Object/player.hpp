@@ -171,7 +171,7 @@ private:
 	static constexpr float kMoveDirOffsetSpeed					= 5.0f;					// 移動方向の補正速度
 	static constexpr float kLookDirOffsetSpeed					= 2.0f;					// 見る方向の補正角度
 	static constexpr float kLookDirOffsetSpeedForRun			= 4.0f;					// ダッシュ時の見る方向の補正角度
-	static constexpr float kLookDirOffsetSpeedForAim			= 5.0f;					// エイミング時の見る方向を回転させる角度
+	static constexpr float kLookDirOffsetSpeedForAim			= 10.0f;					// エイミング時の見る方向を回転させる角度
 	static constexpr float kLookDirOffsetSpeedForSideSlash		= 0.5f;					// 切り裂き攻撃時の見る方向を回転させる角度
 	static constexpr float kConfirmMoveDirThresholdDistance		= 0.08f;				// 目的の移動方向に到達したと判定する閾値
 

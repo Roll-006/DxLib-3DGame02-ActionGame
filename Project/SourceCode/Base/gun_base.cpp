@@ -3,7 +3,7 @@
 GunBase::GunBase(const std::string& name, const GunKind gun_kind, const HolsterKind holster_kind) :
 	WeaponBase						(name, WeaponKind::kGun, holster_kind),
 	m_magazine						(nullptr),
-	m_diffusion_shape				(nullptr),
+	m_cross_hair_shape				(nullptr),
 	m_muzzle_transform				(std::make_shared<Transform>()),
 	m_ejection_port_transform		(nullptr),
 	m_load_transform				(std::make_shared<Transform>()),

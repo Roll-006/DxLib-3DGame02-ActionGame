@@ -16,7 +16,7 @@ public:
 
 	void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) override;
 
-	void CalcDiffusionRange() override;
+	void CalcCrossHairRange() override;
 	void CalcTargetPos()	  override;
 
 private:
@@ -41,5 +41,5 @@ private:
 	static constexpr float  kDeceleration			= 0.1f;
 	static constexpr float  kShotIntervalTime		= 0.1f;
 
-	static constexpr float  kDiffusionRadius		= 40.0f;		// ŠgŽU”ÍˆÍ‚Ì”¼Œa
+	static constexpr float  kCrossHairMaxRadius		= 40.0f;		// ŠgŽU”ÍˆÍ‚Ì”¼Œa
 };

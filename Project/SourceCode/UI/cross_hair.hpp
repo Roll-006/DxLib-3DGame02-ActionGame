@@ -14,6 +14,7 @@ private:
 	#pragma region Draw
 	void DrawGunCrossHair() const;
 	void DrawSubmachineGunCrossHair() const;
+	void RocketLauncher() const;
 	#pragma endregion
 
 	void CreateCircleCrossHair();

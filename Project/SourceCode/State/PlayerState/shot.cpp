@@ -31,7 +31,7 @@ void player_state::Shot::LateUpdate(std::shared_ptr<Player>& obj)
 
 	obj->GetCurrentHeldWeapon()->TrackOwnerHand();
 
-	gun->CalcDiffusionRange();
+	gun->CalcCrossHairRange();
 	gun->CalcTargetPos();
 	gun->SetAimDir  (aim_dir);
 	gun->SetPosOnRay(camera->GetTransform()->GetPos(CoordinateKind::kWorld));

@@ -15,7 +15,7 @@ AssaultRifle::AssaultRifle() :
 	SetOffset(kHoldOffsetPos,   kHoldOffsetAngle,   kHoldOffsetScale, 
 			  kAttachOffsetPos, kAttachOffsetAngle, kAttachOffsetScale);
 
-	m_diffusion_shape			= std::make_shared<Circle>();
+	m_cross_hair_shape			= std::make_shared<Circle>();
 	m_scope_scale				= kScopeScale;
 	m_range						= kRange;
 	m_power						= kPower;
@@ -85,14 +85,17 @@ void AssaultRifle::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 }
 
-void AssaultRifle::CalcDiffusionRange()
+void AssaultRifle::CalcCrossHairRange()
 {
 	// ŠgŽU”ÍˆÍ‚ðŽw’è
-	m_diffusion_shape = std::make_shared<Circle>(m_aim_dir, kDiffusionRadius);
-	std::dynamic_pointer_cast<Circle>(m_diffusion_shape)->SetPos(GetFirstShotPos() + m_aim_dir * kDiffusionDistance);
+	const auto circle = std::static_pointer_cast<Circle>(m_cross_hair_shape);
+
+	circle->SetPos			(GetFirstShotPos() + m_aim_dir * kCrossHairDistance);
+	circle->SetRadius		(kCrossHairMaxRadius);
+	circle->SetNormalVector	(m_aim_dir);
 }
 
 void AssaultRifle::CalcTargetPos()
 {
-	m_target_pos = math::GetRandomPointInCircle(*std::dynamic_pointer_cast<Circle>(m_diffusion_shape));
+	m_target_pos = math::GetRandomPointInCircle(*std::static_pointer_cast<Circle>(m_cross_hair_shape));
 }
