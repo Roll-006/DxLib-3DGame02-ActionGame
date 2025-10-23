@@ -35,6 +35,8 @@ void CinemachineBrain::Init()
 
 void CinemachineBrain::Update()
 {
+	if (GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kCamera) <= 0.0f) { return; }
+
 	// 非アクティブ化処理の遅延防止のため一度先行してトランスフォームを取得
 	SetBlendTransform();
 
@@ -51,6 +53,8 @@ void CinemachineBrain::Update()
 
 void CinemachineBrain::LateUpdate()
 {
+	if (GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kCamera) <= 0.0f) { return; }
+
 	for (const auto& camera_controller : m_virtual_camera_controllers)
 	{
 		camera_controller->LateUpdate();
@@ -254,7 +258,7 @@ void CinemachineBrain::BlendVirtualCamera()
 
 	// メインカメラへ適用
 	if (!m_blend_result_transform) { m_blend_result_transform = std::make_shared<Transform>(); }
-	const auto result_m = m_blend_result_transform->GetMatrix(CoordinateKind::kWorld);
+	auto result_m = m_blend_result_transform->GetMatrix(CoordinateKind::kWorld);
 	m_main_camera->ApplyMatrix(result_m);
 }
 
