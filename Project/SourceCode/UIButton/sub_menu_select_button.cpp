@@ -91,7 +91,7 @@ void SubMenuSelectButton::Update()
 
 	Exeute();
 
-	printfDx("screen : %d\n", m_selecting_button_screen->GetGraphicer()->GetBlendNum());
+	//printfDx("screen : %d\n", m_selecting_button_screen->GetGraphicer()->GetBlendNum());
 }
 
 void SubMenuSelectButton::Draw() const

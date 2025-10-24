@@ -132,9 +132,6 @@ void TitleScene::Draw() const
 	m_title_character->Draw();
 
 	DrawSphere3D(VGet(0.0f, -10.0f, -60.0f), 10, 8, 0xffffff, 0xffffff, FALSE);
-
-	DrawFormatString(0, 40, 0xffffff, "Current Scene : TITLE");
-	DrawFormatString(0, 60, 0xffffff, "SPACE / A でゲームスタート");
 }
 
 std::shared_ptr<IScene> TitleScene::ChangeScene()

@@ -83,13 +83,30 @@ void RocketLauncher::OnCollide(const ColliderPairOneToOneData& hit_collider_pair
 
 }
 
-void RocketLauncher::CalcCrossHairRange(const VECTOR& owner_velocity)
+void RocketLauncher::InitCrossHairRange()
+{
+
+}
+
+void RocketLauncher::CalcCrossHairRange(const VECTOR& owner_move_velocity)
+{
+	// ŠgŽU”ÍˆÍ‚ðŽw’è
+	const auto circle = std::static_pointer_cast<Circle>(m_cross_hair_shape);
+
+	circle->SetRadius(kCrossHairMaxRadius);
+}
+
+void RocketLauncher::CalcCrossHairRangeShot()
+{
+
+}
+
+void RocketLauncher::CalcCrossHairPos()
 {
 	// ŠgŽU”ÍˆÍ‚ðŽw’è
 	const auto circle = std::static_pointer_cast<Circle>(m_cross_hair_shape);
 
 	circle->SetPos(GetFirstShotPos() + m_aim_dir * kCrossHairDistance);
-	circle->SetRadius(kCrossHairMaxRadius);
 	circle->SetNormalVector(m_aim_dir);
 }
 

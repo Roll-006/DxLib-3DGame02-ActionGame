@@ -31,6 +31,7 @@ public:
 	void Activate()   override { m_is_active = true; }
 	void Deactivate() override { m_is_active = false; }
 
+	[[nodiscard]] VECTOR GetVelocity()		 const			{ return m_velocity; }
 	[[nodiscard]] VirtualCameraControllerKind GetVirtualCameraControllerKind() const override;
 	[[nodiscard]] std::shared_ptr<VirtualCamera> GetHaveVirtualCamera(const std::string& name) const override;
 	[[nodiscard]] std::vector<std::shared_ptr<VirtualCamera>> GetHaveAllVirtualCamera()  const override;

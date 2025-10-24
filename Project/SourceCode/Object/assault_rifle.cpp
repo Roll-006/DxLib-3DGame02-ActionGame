@@ -85,16 +85,71 @@ void AssaultRifle::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 }
 
-void AssaultRifle::CalcCrossHairRange(const VECTOR& owner_velocity)
+void AssaultRifle::InitCrossHairRange()
+{
+	m_cross_hair_radius = kCrossHairMaxRadius;
+}
+
+void AssaultRifle::CalcCrossHairRange(const VECTOR& owner_move_velocity)
 {
 	// ŠgU”ÍˆÍ‚ğw’è
 	const auto circle = std::static_pointer_cast<Circle>(m_cross_hair_shape);
 
-	circle->SetPos			(GetFirstShotPos() + m_aim_dir * kCrossHairDistance);
-	circle->SetRadius		(kCrossHairMaxRadius);
-	circle->SetNormalVector	(m_aim_dir);
+	// ƒJƒƒ‰‚Ìvelocity‚ğæ“¾
+	const auto cinemachine_brain	= CinemachineBrain::GetInstance();
+	const auto camera_controller	= std::static_pointer_cast<ControlVirtualCamerasController>(cinemachine_brain->GetVirtualCameraController(VirtualCameraControllerKind::kControl));
+	const auto camera_velocity		= camera_controller->GetVelocity();
+		
+	if (owner_move_velocity != v3d::GetZeroV() || camera_velocity != v3d::GetZeroV())
+	{
+		if (m_cross_hair_radius < kCrossHairMiddleRadius)
+		{
+			math::Increase(m_cross_hair_radius, 600.0f * GetDeltaTime(), kCrossHairMiddleRadius, false);
+		}
+		else
+		{
+			math::Increase(m_cross_hair_radius, 90.0f * GetDeltaTime(), kCrossHairMaxRadius,	false);
+		}
+	}
+	else
+	{
+		if (m_cross_hair_radius > kCrossHairMiddleRadius)
+		{
+			math::Decrease(m_cross_hair_radius, 20.0f * GetDeltaTime(), kCrossHairMiddleRadius);
+		}
+		else
+		{
+			math::Decrease(m_cross_hair_radius, 300.0f * GetDeltaTime(), kCrossHairMinRadius);
+		}
+	}
 
+	circle->SetRadius(m_cross_hair_radius);
+}
 
+void AssaultRifle::CalcCrossHairRangeShot()
+{
+	// ŠgU”ÍˆÍ‚ğw’è
+	const auto circle = std::static_pointer_cast<Circle>(m_cross_hair_shape);
+
+	if (m_cross_hair_radius < kCrossHairMiddleRadius)
+	{
+		m_cross_hair_radius = kCrossHairMiddleRadius;
+	}
+	else
+	{
+		math::Increase(m_cross_hair_radius, 100.0f * GetDeltaTime(), kCrossHairMaxRadius, false);
+	}
+
+	circle->SetRadius(m_cross_hair_radius);
+}
+
+void AssaultRifle::CalcCrossHairPos()
+{
+	// ŠgU”ÍˆÍ‚ğw’è
+	const auto circle = std::static_pointer_cast<Circle>(m_cross_hair_shape);
+
+	circle->SetPos(GetFirstShotPos() + m_aim_dir * kCrossHairDistance);
+	circle->SetNormalVector(m_aim_dir);
 }
 
 void AssaultRifle::CalcTargetPos()

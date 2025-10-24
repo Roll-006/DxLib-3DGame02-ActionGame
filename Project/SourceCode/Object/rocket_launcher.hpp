@@ -16,8 +16,11 @@ public:
 
 	void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) override;
 
-	void CalcCrossHairRange(const VECTOR& owner_velocity) override;
-	void CalcTargetPos()	  override;
+	void InitCrossHairRange() override;
+	void CalcCrossHairRange(const VECTOR& owner_move_velocity) override;
+	void CalcCrossHairRangeShot() override;
+	void CalcCrossHairPos() override;
+	void CalcTargetPos() override;
 
 	[[nodiscard]] std::shared_ptr<Transform> GetExhaustVentTransform() const { return m_exhaust_vent_transform; }
 

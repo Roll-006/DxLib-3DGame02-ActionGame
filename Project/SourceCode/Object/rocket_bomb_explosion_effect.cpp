@@ -95,7 +95,7 @@ void RocketBombExplosionEffect::OnCollide(const ColliderPairOneToOneData& hit_co
 	switch (hit_collider_pair.owner_collider->GetColliderKind())
 	{
 	case ColliderKind::kAttackTrigger:
-		if (target_tag == ObjTag.ENEMY)
+		if (target_tag == ObjTag.ENEMY && target_collider_kind == ColliderKind::kCollider)
 		{
 			const auto character = dynamic_cast<CharacterBase*>(target_obj);
 			Attack(character);

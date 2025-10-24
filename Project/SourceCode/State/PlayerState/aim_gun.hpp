@@ -21,6 +21,9 @@ namespace player_state
 		[[nodiscard]] bool IsStopAllState() const override { return m_is_stop_all_state; }
 
 	private:
-		bool m_is_stop_all_state;
+		static constexpr float kWaitTime = 0.2f;
+
+		bool	m_is_stop_all_state;
+		float	m_elapsed_time;
 	};
 }

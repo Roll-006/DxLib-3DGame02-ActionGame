@@ -16,8 +16,11 @@ public:
 
 	void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) override;
 
-	void CalcCrossHairRange(const VECTOR& owner_velocity) override;
-	void CalcTargetPos()	  override;
+	void InitCrossHairRange() override;
+	void CalcCrossHairRange(const VECTOR& owner_move_velocity) override;
+	void CalcCrossHairRangeShot() override;
+	void CalcCrossHairPos() override;
+	void CalcTargetPos() override;
 
 private:
 	static constexpr VECTOR kBasicAngle				= { 0.0f, 0.0f, 0.0f };
@@ -41,8 +44,9 @@ private:
 	static constexpr float  kDeceleration			= 0.1f;
 	static constexpr float  kShotIntervalTime		= 0.1f;
 
-	static constexpr float  kCrossHairMaxRadius		= 40.0f;		// ŠgŽU”ÍˆÍ‚Ì”¼Œa
-	static constexpr float  kCrossHairMinRadius		= 20.0f;		// ŠgŽU”ÍˆÍ‚Ì”¼Œa
+	static constexpr float  kCrossHairMaxRadius		= 45.0f;		// ŠgŽU”ÍˆÍ‚Ì”¼Œa
+	static constexpr float  kCrossHairMiddleRadius	= 30.0f;		// ŠgŽU”ÍˆÍ‚Ì”¼Œa
+	static constexpr float  kCrossHairMinRadius		= 10.0f;		// ŠgŽU”ÍˆÍ‚Ì”¼Œa
 
 private:
 	float m_cross_hair_radius;

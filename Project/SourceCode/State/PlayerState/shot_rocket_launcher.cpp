@@ -36,7 +36,8 @@ void player_state::ShotRocketLauncher::LateUpdate(std::shared_ptr<Player>& obj)
 
 	obj->GetCurrentHeldWeapon()->TrackOwnerHand();
 
-	roket_launcher->CalcCrossHairRange(obj->GetVelocity());
+	roket_launcher->CalcCrossHairPos();
+	roket_launcher->CalcCrossHairRangeShot();
 	roket_launcher->CalcTargetPos();
 	roket_launcher->SetAimDir  (roket_launcher->GetAimDir());
 	roket_launcher->SetPosOnRay(camera->GetTransform()->GetPos(CoordinateKind::kWorld));

@@ -2,7 +2,8 @@
 
 player_state::AimGun::AimGun() :
 	WeaponActionStateBase	(static_cast<int>(player_state::WeaponActionStateKind::kAimGun)),
-	m_is_stop_all_state		(false)
+	m_is_stop_all_state		(false),
+	m_elapsed_time			(0.0f)
 {
 	m_stop_states.emplace_back();
 }
@@ -14,6 +15,8 @@ player_state::AimGun::~AimGun()
 
 void player_state::AimGun::Update(std::shared_ptr<Player>& obj)
 {
+	m_elapsed_time += obj->GetDeltaTime();
+
 	obj->AllowCalcLookDir();
 	obj->SetLookDirOffsetValueForAim();
 	obj->DirOfCameraForward();
@@ -34,7 +37,21 @@ void player_state::AimGun::LateUpdate(std::shared_ptr<Player>& obj)
 
 	obj->GetCurrentHeldWeapon()->TrackOwnerHand();
 
-	gun->CalcCrossHairRange(obj->GetVelocity());
+	// 以前のステートがショット状態であった場合、拡散範囲の設定を一定時間待つ
+	const auto weapon_action_state = static_cast<player_state::WeaponActionStateKind>(obj->GetStateController()->GetWeaponActionState(TimeKind::kPrev)->GetStateKind());
+	if (weapon_action_state == player_state::WeaponActionStateKind::kShot)
+	{
+		if (m_elapsed_time > kWaitTime)
+		{
+			gun->CalcCrossHairRange(obj->GetMoveVelocity());
+		}
+	}
+	else
+	{
+		gun->CalcCrossHairRange(obj->GetMoveVelocity());
+	}
+
+	gun->CalcCrossHairPos();
 	gun->CalcTargetPos();
 	gun->SetAimDir  (aim_dir);
 	gun->SetPosOnRay(camera->GetTransform()->GetPos(CoordinateKind::kWorld));
@@ -42,6 +59,8 @@ void player_state::AimGun::LateUpdate(std::shared_ptr<Player>& obj)
 
 void player_state::AimGun::Enter(std::shared_ptr<Player>& obj)
 {
+	m_elapsed_time = 0.0f;
+
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	const auto camera_controller = std::static_pointer_cast<ControlVirtualCamerasController>(cinemachine_brain->GetVirtualCameraController(VirtualCameraControllerKind::kControl));
 	cinemachine_brain->SetBlendTime(0.3f);
@@ -50,6 +69,13 @@ void player_state::AimGun::Enter(std::shared_ptr<Player>& obj)
 
 	obj->DetachWeapon(obj->GetCurrentEquipWeapon(WeaponSlotKind::kMain));
 	obj->HoldWeapon	 (obj->GetCurrentEquipWeapon(WeaponSlotKind::kMain));
+
+	const auto weapon_action_state = static_cast<player_state::WeaponActionStateKind>(obj->GetStateController()->GetWeaponActionState(TimeKind::kPrev)->GetStateKind());
+	if (weapon_action_state != player_state::WeaponActionStateKind::kShot)
+	{
+		const auto gun = std::static_pointer_cast<GunBase>(obj->GetCurrentHeldWeapon());
+		gun->InitCrossHairRange();
+	}
 }
 
 void player_state::AimGun::Exit(std::shared_ptr<Player>& obj)

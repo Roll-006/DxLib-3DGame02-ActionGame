@@ -8,8 +8,8 @@ CrossHair::CrossHair(std::shared_ptr<Player>& player) :
 	m_current_hold_gun_kind		(GunKind::kHandgun),
 	m_alpha_blend_num			(0),
 	m_is_aiming					(false),
-	m_circle_cross_hair			(nullptr),
-	m_square_cross_hair			(nullptr)
+	m_circle_cross_hair			(std::make_shared<Circle>()),
+	m_square_cross_hair			(std::make_shared<Square>())
 {
 
 }
@@ -135,12 +135,12 @@ void CrossHair::RocketLauncher() const
 
 void CrossHair::CreateCircleCrossHair()
 {
-	m_circle_cross_hair = std::static_pointer_cast<Circle>(m_current_hold_gun->GetDiffusionShape());
-	
+	const auto circle = std::static_pointer_cast<Circle>(m_current_hold_gun->GetDiffusionShape());
+
 	// 三次元空間の円を二次元空間に変換
-	const auto point_on_circle_world	= m_circle_cross_hair->GetPos() + math::GetNormalVector(-m_circle_cross_hair->GetNormalVector(), axis::GetWorldYAxis()) * m_circle_cross_hair->GetRadius();
+	const auto point_on_circle_world	= circle->GetPos() + math::GetNormalVector(-circle->GetNormalVector(), axis::GetWorldYAxis()) * circle->GetRadius();
 	const auto point_on_circle_screen	= ConvWorldPosToScreenPos(point_on_circle_world);
-	const auto center_pos_screen		= ConvWorldPosToScreenPos(m_circle_cross_hair->GetPos());
+	const auto center_pos_screen		= ConvWorldPosToScreenPos(circle->GetPos());
 	
 	m_circle_cross_hair->SetPos(VECTOR(static_cast<float>(Window::kCenterPos.x), static_cast<float>(Window::kCenterPos.y), 0.0f));
 	m_circle_cross_hair->SetRadius(VSize(center_pos_screen - point_on_circle_screen));
@@ -162,8 +162,6 @@ void CrossHair::CalcAlphaBlendNum()
 	}
 	else
 	{
-		// TODO : のちにグラデーションで描画を消すように変更
-		m_alpha_blend_num = 0;
-		//math::Decrease(m_alpha_blend_num, static_cast<int>(kAlphaBlendDecreaseSpeed * delta_time), 0);
+		math::Decrease(m_alpha_blend_num, static_cast<int>(kAlphaBlendDecreaseSpeed * delta_time), 0);
 	}
 }

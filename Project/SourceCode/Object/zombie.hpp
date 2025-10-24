@@ -57,7 +57,7 @@ private:
 
 private:
 	static constexpr VECTOR kBasicAngle				= { 0.0f, DX_PI_F, 0.0f };
-	static constexpr float  kBasicScale				= 0.31f;
+	static constexpr float  kBasicScale				= 0.3f;
 
 	static constexpr float kFOV						= 80.0f;
 	static constexpr float kVisibleDistance			= 300.0f;

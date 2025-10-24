@@ -31,7 +31,8 @@ void player_state::Shot::LateUpdate(std::shared_ptr<Player>& obj)
 
 	obj->GetCurrentHeldWeapon()->TrackOwnerHand();
 
-	gun->CalcCrossHairRange(obj->GetVelocity());
+	gun->CalcCrossHairPos();
+	gun->CalcCrossHairRangeShot();
 	gun->CalcTargetPos();
 	gun->SetAimDir  (aim_dir);
 	gun->SetPosOnRay(camera->GetTransform()->GetPos(CoordinateKind::kWorld));
@@ -69,7 +70,6 @@ std::shared_ptr<IState<Player>> player_state::Shot::ChangeState(std::shared_ptr<
 	if (obj->GetDeltaTime() <= 0.0f) { return nullptr; }
 
 	const auto state_controller = obj->GetStateController();
-	const auto command			= CommandHandler::GetInstance();
 
 	// 銃エイミング状態
 	return state_controller->GetState<AimGun, Player>();

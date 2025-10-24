@@ -36,7 +36,7 @@ void LoadScene::DrawToShadowMap() const
 
 void LoadScene::Draw() const
 {
-	DrawFormatString(0, 40, 0xffffff, "LOAD");
+	
 }
 
 std::shared_ptr<IScene> LoadScene::ChangeScene()

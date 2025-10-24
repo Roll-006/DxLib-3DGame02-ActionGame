@@ -26,8 +26,12 @@ public:
 	/// @return ‘•“U‚µ‚½•ª‚ªˆø‚©‚ê‚½c’e”
 	[[nodiscard]] int OnReload(const int have_bullets);
 
+	virtual void InitCrossHairRange() abstract;
+
 	/// @brief ŠgU”ÍˆÍ‚ğŒvZ
-	virtual void CalcCrossHairRange(const VECTOR& owner_velocity) abstract;
+	virtual void CalcCrossHairRange(const VECTOR& owner_move_velocity) abstract;
+	virtual void CalcCrossHairRangeShot() abstract;
+	virtual void CalcCrossHairPos() abstract;
 
 	/// @brief ËŒ‚‚·‚éƒ^[ƒQƒbƒgÀ•W‚ğŒvZ
 	virtual void CalcTargetPos() abstract;

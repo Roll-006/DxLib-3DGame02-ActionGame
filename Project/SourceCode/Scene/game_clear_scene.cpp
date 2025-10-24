@@ -35,7 +35,7 @@ void GameClearScene::DrawToShadowMap() const
 
 void GameClearScene::Draw() const
 {
-	DrawFormatString(0, 40, 0xffffff, "GAME CLEAR");
+	
 }
 
 std::shared_ptr<IScene> GameClearScene::ChangeScene()
