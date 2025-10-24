@@ -9,7 +9,8 @@ CrossHair::CrossHair(std::shared_ptr<Player>& player) :
 	m_alpha_blend_num			(0),
 	m_is_aiming					(false),
 	m_circle_cross_hair			(std::make_shared<Circle>()),
-	m_square_cross_hair			(std::make_shared<Square>())
+	m_square_cross_hair			(std::make_shared<Square>()),
+	m_cross_hair_screen			(std::make_shared<ScreenCreator>(kScreenSize, Window::kCenterPos))
 {
 
 }
@@ -25,39 +26,30 @@ void CrossHair::LateUpdate()
 	const auto is_aiming_gun		= weapon_action_state == player_state::WeaponActionStateKind::kAimGun;
 	const auto is_aiming_knife		= weapon_action_state == player_state::WeaponActionStateKind::kAimKnife;
 	const auto is_shot				= weapon_action_state == player_state::WeaponActionStateKind::kShot;
+	const auto is_stab_knife		= weapon_action_state == player_state::WeaponActionStateKind::kStabKnife;
 
-	m_is_aiming					= is_aiming_gun || is_aiming_knife || is_shot;
+	m_is_aiming					= is_aiming_gun || is_aiming_knife || is_shot || is_stab_knife;
 	m_current_hold_weapon_kind	= m_player->GetCurrentHeldWeaponKind();
 
-	if (m_current_hold_weapon_kind == WeaponKind::kGun)
+	switch (m_current_hold_weapon_kind)
 	{
-		m_current_hold_gun		= std::static_pointer_cast<GunBase>(m_player->GetCurrentHeldWeapon());
-		m_current_hold_gun_kind = m_current_hold_gun->GetGunKind();
+	case WeaponKind::kGun:
+		CreateGunCrossHairScreen();
+		break;
 
-		switch (m_current_hold_gun_kind)
-		{
-		case GunKind::kHandgun:
-		case GunKind::kSniperRifle:
-		case GunKind::kSubmachineGun:
-		case GunKind::kRocketLauncher:
-			CreateCircleCrossHair();
-			break;
+	case WeaponKind::kKnife:
+		CreateKnifeCrossHairScreen();
+		break;
 
-		case GunKind::kShotgun:
-		case GunKind::kBoltThrower:
-		case GunKind::kMagnum:
-			CreateSquareCrossHair();
-			break;
-		}
-	}
+	default:
+		break;
+	}	
 
 	CalcAlphaBlendNum();
 }
 
 void CrossHair::Draw() const
 {
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_alpha_blend_num);
-
 	switch (m_current_hold_weapon_kind)
 	{
 	case WeaponKind::kGun:
@@ -65,20 +57,57 @@ void CrossHair::Draw() const
 		break;
 
 	case WeaponKind::kKnife:
-		DrawCircle(Window::kCenterPos.x, Window::kCenterPos.y, 2, 0xffffff, TRUE);
+		DrawKnifePoint();
 		break;
 
 	default:
 		break;
 	}
-
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
 
 #pragma region Draw
+void CrossHair::DrawKnifePoint() const
+{
+	m_cross_hair_screen->Draw();
+}
+
 void CrossHair::DrawGunCrossHair() const
 {
+	switch (m_current_hold_gun_kind)
+	{
+	case GunKind::kHandgun:
+	case GunKind::kSubmachineGun:
+	case GunKind::kRocketLauncher:
+	case GunKind::kShotgun:
+	case GunKind::kBoltThrower:
+	case GunKind::kMagnum:
+		m_cross_hair_screen->Draw();
+		break;
+
+	case GunKind::kSniperRifle:
+		break;
+
+	default:
+		break;
+	}
+}
+#pragma endregion
+
+
+#pragma region ƒXƒNƒŠ[ƒ“¶¬
+void CrossHair::CreateKnifeCrossHairScreen()
+{
+	m_cross_hair_screen->UseScreen();
+	DrawCircle(kScreenCenterSize.x, kScreenCenterSize.y, 2, 0xffffff, TRUE);
+	m_cross_hair_screen->UnuseScreen();
+}
+
+void CrossHair::CreateGunCrossHairScreen()
+{
+	m_current_hold_gun		= std::static_pointer_cast<GunBase>(m_player->GetCurrentHeldWeapon());
+	m_current_hold_gun_kind = m_current_hold_gun->GetGunKind();
+
 	switch (m_current_hold_gun_kind)
 	{
 	case GunKind::kHandgun:
@@ -88,11 +117,11 @@ void CrossHair::DrawGunCrossHair() const
 		break;
 
 	case GunKind::kSubmachineGun:
-		DrawSubmachineGunCrossHair();
+		CreateSubmachineGunCrossHairScreen();
 		break;
 
 	case GunKind::kRocketLauncher:
-		RocketLauncher();
+		CreateRocketLauncherCrossScreen();
 		break;
 
 	case GunKind::kShotgun:
@@ -103,32 +132,52 @@ void CrossHair::DrawGunCrossHair() const
 
 	case GunKind::kMagnum:
 		break;
-
-	default:
-		break;
 	}
 }
 
-void CrossHair::DrawSubmachineGunCrossHair() const
+void CrossHair::CreateSubmachineGunCrossHairScreen()
 {
-	const auto center_x	= m_circle_cross_hair->GetPos().x;
-	const auto center_y = m_circle_cross_hair->GetPos().y;
+	CreateCircleCrossHair();
+
+	const auto center_x	= kScreenCenterSize.x;
+	const auto center_y = kScreenCenterSize.y;
 	const auto radius	= m_circle_cross_hair->GetRadius();
 
+	m_cross_hair_screen->UseScreen();
 	DrawLine(center_x + radius, center_y,		   center_x + radius + kSubmachineGunWidth, center_y,								  0xffffff, kThickness);
 	DrawLine(center_x - radius, center_y,		   center_x - radius - kSubmachineGunWidth, center_y,								  0xffffff, kThickness);
 	DrawLine(center_x,			center_y + radius, center_x,								center_y + radius + kSubmachineGunHeight, 0xffffff, kThickness);
+	m_cross_hair_screen->UnuseScreen();
 }
 
-void CrossHair::RocketLauncher() const
+void CrossHair::CreateRocketLauncherCrossScreen()
 {
-	const auto center_x = m_circle_cross_hair->GetPos().x;
-	const auto center_y = m_circle_cross_hair->GetPos().y;
-	const auto radius	= m_circle_cross_hair->GetRadius();
+	CreateCircleCrossHair();
 
+	const auto center_x		= kScreenCenterSize.x;
+	const auto center_y		= kScreenCenterSize.y;
+	const auto radius		= m_circle_cross_hair->GetRadius();
+	const auto length		= 16;
+	const auto half_length	= static_cast<int>(length * 0.5f);
+	const auto left_pos		= center_x - radius - half_length;
+	const auto right_pos	= center_x + radius + half_length;
+	const auto up_pos		= center_y - radius - half_length;
+	const auto down_pos		= center_y + radius + half_length;
+
+	m_cross_hair_screen->UseScreen();
+
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
 	DrawCircle(center_x, center_y, radius, 0xffffff, FALSE, kThickness);
-	DrawLine(center_x - radius, center_y, center_x + radius, center_y, 0xffffff, kThickness);
-	DrawLine(center_x, center_y - radius, center_x, center_y + radius, 0xffffff, kThickness);
+	DrawLine(left_pos, center_y, right_pos, center_y, 0xffffff, kThickness);
+	DrawLine(center_x, up_pos,	 center_x,  down_pos, 0xffffff, kThickness);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+	DrawLine(left_pos,  center_y, left_pos  + length, center_y,			 0xffffff, kThickness);
+	DrawLine(right_pos, center_y, right_pos - length, center_y,			 0xffffff, kThickness);
+	DrawLine(center_x,  up_pos,   center_x,			  up_pos   + length, 0xffffff, kThickness);
+	DrawLine(center_x,  down_pos, center_x,			  down_pos - length, 0xffffff, kThickness);
+
+	m_cross_hair_screen->UnuseScreen();
 }
 #pragma endregion
 
@@ -142,7 +191,7 @@ void CrossHair::CreateCircleCrossHair()
 	const auto point_on_circle_screen	= ConvWorldPosToScreenPos(point_on_circle_world);
 	const auto center_pos_screen		= ConvWorldPosToScreenPos(circle->GetPos());
 	
-	m_circle_cross_hair->SetPos(VECTOR(static_cast<float>(Window::kCenterPos.x), static_cast<float>(Window::kCenterPos.y), 0.0f));
+	m_circle_cross_hair->SetPos(VECTOR(static_cast<float>(kScreenCenterSize.x), static_cast<float>(kScreenCenterSize.y), 0.0f));
 	m_circle_cross_hair->SetRadius(VSize(center_pos_screen - point_on_circle_screen));
 	m_circle_cross_hair->SetNormalVector(axis::GetWorldZAxis());
 }
@@ -164,4 +213,6 @@ void CrossHair::CalcAlphaBlendNum()
 	{
 		math::Decrease(m_alpha_blend_num, static_cast<int>(kAlphaBlendDecreaseSpeed * delta_time), 0);
 	}
+
+	m_cross_hair_screen->GetGraphicer()->SetBlendNum(m_alpha_blend_num);
 }
