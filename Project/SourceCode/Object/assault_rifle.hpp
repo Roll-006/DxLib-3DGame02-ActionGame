@@ -40,8 +40,8 @@ private:
 	static constexpr VECTOR kLoadPortOffsetPos		= { 0.0f, -10.0f, 0.0f };
 	static constexpr float  kScopeScale				= 2.0f;
 	static constexpr float  kRange					= 2000.0f;
-	static constexpr float  kInitialVelocity		= 2500.0f;
-	static constexpr float  kDeceleration			= 0.1f;
+	static constexpr float  kInitialVelocity		= 3000.0f;
+	static constexpr float  kDeceleration			= 0.05;
 	static constexpr float  kShotIntervalTime		= 0.1f;
 
 	static constexpr float  kCrossHairMaxRadius		= 45.0f;		// ŠgŽU”ÍˆÍ‚Ì”¼Œa

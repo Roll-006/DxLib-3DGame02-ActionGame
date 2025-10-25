@@ -23,6 +23,7 @@ public:
 private:
 	void CreateIconsScreen();
 	void CreateMaskResourceIconsScreen();
+	void CreateMaskScreen();
 
 	void CreateShortcutIcon();
 	void CalcBlurGraphicPos();

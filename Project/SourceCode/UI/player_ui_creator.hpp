@@ -26,7 +26,9 @@ public:
 
 
 	#pragma region Event
-	void Deactivate(const DeadPlayerEvent& event);
+	void Deactivate			(const DeadPlayerEvent& event);
+	void ActivateCutscene	(const StartRocketLauncherCutsceneEvent& event);
+	void DeactivateCutscene	(const EndRocketLauncherCutsceneEvent& event);
 	#pragma endregion
 
 
@@ -35,14 +37,12 @@ public:
 	[[nodiscard]] bool		  IsActive()	const override { return m_is_active; }
 
 private:
-	///// @brief e‚ÌƒNƒƒXƒwƒA‚ğ¶¬‚·‚é
-	//void CreateCrossHair();
-	//void CreateSniperRifleCrossHair();
+	void CalcAlphaBlendNum();
 
 private:
-	std::string m_name;
-	int			m_priority;
-	bool		m_is_active;
+	std::string								m_name;
+	int										m_priority;
+	bool									m_is_active;
 
 	std::shared_ptr<MeleeTargetIcon>		m_melee_target_icon;
 	std::shared_ptr<EscapeIcon>				m_escape_icon;
@@ -50,5 +50,7 @@ private:
 	std::shared_ptr<CrossHair>				m_cross_hair;
 	std::shared_ptr<WeaponShortcutDrawer>	m_weapon_shortcut;
 
-	//std::shared_ptr<ShapeBase>	m_2d_diffusion_shape;	// “ñŸŒ³ã‚ÌŠgU”ÍˆÍ}Œ`
+	std::shared_ptr<ScreenCreator>			m_result_screen;
+	int										m_alpha_blend_num;
+	bool									m_is_active_cutscene;
 };

@@ -63,15 +63,12 @@ void WeaponShortcutDrawer::LateUpdate()
 	UpdateAnim();
 	CreateIconsScreen();
 	CreateMaskResourceIconsScreen();
+	CreateMaskScreen();
 }
 
 void WeaponShortcutDrawer::Draw(const int main_screen_handle) const
 {
 	if (m_alpha_blend_num <= 0) { return; }
-
-	m_mask_screen ->UseScreen();
-	m_mask_resource_icons_screen->Draw();
-	m_mask_screen ->UnuseScreen();
 
 	m_mask_creator->CreateMask();
 	m_mask_creator->UseMask(m_mask_screen->GetScreenHandle(), true);
@@ -119,6 +116,13 @@ void WeaponShortcutDrawer::CreateMaskResourceIconsScreen()
 	}
 
 	m_mask_resource_icons_screen->UnuseScreen();
+}
+
+void WeaponShortcutDrawer::CreateMaskScreen()
+{
+	m_mask_screen->UseScreen();
+	m_mask_resource_icons_screen->Draw();
+	m_mask_screen->UnuseScreen();
 }
 
 void WeaponShortcutDrawer::CreateShortcutIcon()

@@ -74,10 +74,6 @@ void AssaultRifle::Draw() const
 
 	m_modeler->Draw();
 	std::dynamic_pointer_cast<ObjBase>(m_magazine)->Draw();
-
-	//if(GetMuzzleTransform())	  DrawSphere3D(GetMuzzleTransform()		 ->GetPos(CoordinateKind::kWorld), 2, 8, 0xffffff, 0xffffff, FALSE);
-	//if(GetEjectionPortTransform())DrawSphere3D(GetEjectionPortTransform()->GetPos(CoordinateKind::kWorld), 1, 8, 0xffffff, 0xffffff, FALSE);
-	//if(GetLoadTransform())		  DrawSphere3D(GetLoadTransform()		 ->GetPos(CoordinateKind::kWorld), 1, 8, 0xffffff, 0xffffff, FALSE);
 }
 
 void AssaultRifle::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
