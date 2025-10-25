@@ -199,9 +199,13 @@ void MainCamera::CalcRayCastPos()
 
 void MainCamera::CalcVisionTriggerPos()
 {
-	const auto cone = std::static_pointer_cast<Cone>(GetCollider(ColliderKind::kNearVisionTrigger)->GetShape());
-	cone->SetVertex	(m_transform->GetPos	(CoordinateKind::kWorld));
-	cone->SetDir	(m_transform->GetForward(CoordinateKind::kWorld));
+	const auto near_cone = std::static_pointer_cast<Cone>(GetCollider(ColliderKind::kNearVisionTrigger)->GetShape());
+	near_cone->SetVertex(m_transform->GetPos	(CoordinateKind::kWorld));
+	near_cone->SetDir	(m_transform->GetForward(CoordinateKind::kWorld));
+
+	const auto far_cone = std::static_pointer_cast<Cone>(GetCollider(ColliderKind::kFarVisionTrigger)->GetShape());
+	far_cone->SetVertex	(m_transform->GetPos	(CoordinateKind::kWorld));
+	far_cone->SetDir	(m_transform->GetForward(CoordinateKind::kWorld));
 }
 
 void MainCamera::CalcGrabColliderPosAndRadius()

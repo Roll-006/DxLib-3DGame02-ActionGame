@@ -41,7 +41,7 @@ private:
 	static constexpr float  kScopeScale				= 2.0f;
 	static constexpr float  kRange					= 2000.0f;
 	static constexpr float  kInitialVelocity		= 3000.0f;
-	static constexpr float  kDeceleration			= 0.05;
+	static constexpr float  kDeceleration			= 0.05f;
 	static constexpr float  kShotIntervalTime		= 0.1f;
 
 	static constexpr float  kCrossHairMaxRadius		= 45.0f;		// ŠgŽU”ÍˆÍ‚Ì”¼Œa

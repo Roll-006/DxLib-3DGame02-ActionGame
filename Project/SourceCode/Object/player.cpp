@@ -103,6 +103,7 @@ void Player::Update()
 	JudgeInvincible();
 	DecisionMeleeTarget();
 	DecisionTopPriorityVisibleDownedCharacter();
+	printfDx("%d , %d\n", m_visible_downed_character.empty(), m_melee_candidate.empty());
 	RemoveVisibleDownedCharacter();
 	RemoveMeleeCandidate();
 
@@ -350,17 +351,6 @@ void Player::AddMeleeCandidate(const OnDownedNearEnemySpottedEvent& event)
 	m_melee_candidate.emplace_back(MeleeCandidateData(event.target_obj_handle, event.camera_diff_angle, event.distance_to_camera));
 }
 #pragma endregion
-
-
-//void Player::CalcMoveDirFirstFrame()
-//{
-//	// Ç»Ç∑äpÇ™90Åãà»è„ÇÃèÍçáÇÕà⁄ìÆï˚å¸Çï€ë∂ÇµÇ»Ç¢
-//	const float angle = math::GetAngleBetweenTwoVector(m_move_dir.at(TimeKind::kCurrent), m_move_dir.at(TimeKind::kNext));
-//	if (angle >= 90.0f * math::kDegreesToRadian)
-//	{
-//		m_move_dir.at(TimeKind::kCurrent) = v3d::GetZeroV();
-//	}
-//}
 
 
 #pragma region ïêäÌ
@@ -649,7 +639,7 @@ bool Player::CanEscape() const
 
 void Player::DecisionTopPriorityVisibleDownedCharacter()
 {
-	if (m_visible_downed_character.empty() || m_melee_target) { return; }
+	if (!(!m_visible_downed_character.empty() && m_melee_candidate.empty())) { return; }
 
 	MeleeTargetSelecter target_selecter;
 	auto melee_attacker = std::dynamic_pointer_cast<IMeleeAttackable>(shared_from_this());

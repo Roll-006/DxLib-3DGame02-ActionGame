@@ -54,13 +54,10 @@ void MeleeTargetIcon::CreateMeleeIconScreen()
 {
 	if (!m_melee_target) { return; }
 
-	if (m_melee_target->IsStandStun() || m_melee_target->IsCrouchStun())
-	{
-		const auto	model_handle = std::dynamic_pointer_cast<CharacterBase>(m_melee_target)->GetModeler()->GetModelHandle();
-		auto		head_m		 = MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, BonePath.HEAD));
+	const auto	model_handle = std::dynamic_pointer_cast<CharacterBase>(m_melee_target)->GetModeler()->GetModelHandle();
+	auto		head_m		 = MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, BonePath.HEAD));
 
-		m_icon_pos = MGetTranslateElem(head_m) + kIconOffset;
-	}
+	m_icon_pos = MGetTranslateElem(head_m) + kIconOffset;
 
 	// 入力デバイスおよびキー割り当てに対応した画像を取得
 	const auto command = CommandHandler::GetInstance();
@@ -89,13 +86,10 @@ void MeleeTargetIcon::CreateDownIconScreen()
 {
 	if (!m_visible_downed_character) { return; }
 
-	if (m_visible_downed_character->IsStandStun() || m_visible_downed_character->IsCrouchStun())
-	{
-		const auto	model_handle = std::dynamic_pointer_cast<CharacterBase>(m_visible_downed_character)->GetModeler()->GetModelHandle();
-		auto		head_m = MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, BonePath.HEAD));
+	const auto	model_handle = std::dynamic_pointer_cast<CharacterBase>(m_visible_downed_character)->GetModeler()->GetModelHandle();
+	auto		head_m = MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, BonePath.HEAD));
 
-		m_icon_pos = MGetTranslateElem(head_m) + kIconOffset;
-	}
+	m_icon_pos = MGetTranslateElem(head_m) + kIconOffset;
 
 	m_melee_icon_screen		->UseScreen();
 	m_down_cursor_graphic	->Draw();
