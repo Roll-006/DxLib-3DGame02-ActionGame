@@ -8,7 +8,7 @@
 class MeleeTargetIcon final
 {
 public:
-	MeleeTargetIcon(std::shared_ptr<IMeleeHittable>& melee_target);
+	MeleeTargetIcon(std::shared_ptr<IMeleeHittable>& melee_target, std::shared_ptr<IMeleeHittable>& visible_downed_character);
 	~MeleeTargetIcon();
 
 	void LateUpdate();
@@ -16,7 +16,8 @@ public:
 
 private:
 	void CalcResultScreenCenterPos();
-	void CreateResultScreen();
+	void CreateMeleeIconScreen();
+	void CreateDownIconScreen();
 
 private:
 	static constexpr VECTOR			kIconOffset			= { 0.0f, 10.0f, 0.0f };
@@ -26,12 +27,13 @@ private:
 	static constexpr Vector2D<int>	kCursorOffset		= { 0, 60 };
 
 	std::shared_ptr<IMeleeHittable>&		m_melee_target;
+	std::shared_ptr<IMeleeHittable>&		m_visible_downed_character;
 	std::shared_ptr<ButtonGraphicGetter>	m_button_graphic_resource;
 	std::shared_ptr<Graphicer>				m_button_icon_graphic;
-	std::shared_ptr<Graphicer>				m_cursor_graphic;
-	std::shared_ptr<ScreenCreator>			m_result_screen;
+	std::shared_ptr<Graphicer>				m_melee_cursor_graphic;
+	std::shared_ptr<Graphicer>				m_down_cursor_graphic;
+	std::shared_ptr<ScreenCreator>			m_melee_icon_screen;
 
 	VECTOR									m_icon_pos;
 	float									m_icon_size;
-	bool									m_is_draw_icon;
 };

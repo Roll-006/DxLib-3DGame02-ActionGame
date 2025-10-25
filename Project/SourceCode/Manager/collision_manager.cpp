@@ -160,7 +160,7 @@ void CollisionManager::SetIgnoreColliderPairs()
 	AddIgnoreColliderPair(landing_data, player_data);
 	AddIgnoreColliderPair(landing_data, enemy_data);
 	AddIgnoreColliderPair(landing_data, { "", ColliderKind::kAttackTrigger	 });
-	AddIgnoreColliderPair(landing_data, { "", ColliderKind::kVisionTrigger	 });
+	AddIgnoreColliderPair(landing_data, { "", ColliderKind::kNearVisionTrigger	 });
 	AddIgnoreColliderPair(landing_data, { "", ColliderKind::kReactionTrigger });
 	
 	// 弾丸系統が無視するコライダー

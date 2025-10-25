@@ -3,18 +3,22 @@
 #include "../Base/character_base.hpp"
 #include "../Command/command_handler.hpp"
 
-MeleeTargetIcon::MeleeTargetIcon(std::shared_ptr<IMeleeHittable>& melee_target) : 
+MeleeTargetIcon::MeleeTargetIcon(std::shared_ptr<IMeleeHittable>& melee_target, std::shared_ptr<IMeleeHittable>& visible_downed_character) :
 	m_melee_target				(melee_target),
+	m_visible_downed_character	(visible_downed_character),
 	m_button_graphic_resource	(std::make_shared<ButtonGraphicGetter>()),
 	m_button_icon_graphic		(nullptr),
-	m_cursor_graphic			(std::make_shared<Graphicer>(UIGraphicPath.CURSOR_01)),
-	m_result_screen				(std::make_shared<ScreenCreator>(kScreenSize)),
+	m_melee_cursor_graphic		(std::make_shared<Graphicer>(UIGraphicPath.CURSOR_01)),
+	m_down_cursor_graphic		(std::make_shared<Graphicer>(UIGraphicPath.CURSOR_02)),
+	m_melee_icon_screen			(std::make_shared<ScreenCreator>(kScreenSize)),
 	m_icon_pos					(v3d::GetZeroV()),
-	m_icon_size					(0.0f),
-	m_is_draw_icon				(false)
+	m_icon_size					(0.0f)
 {
-	m_cursor_graphic->SetCenterPos(kScreenCenterPos + kCursorOffset);
-	m_cursor_graphic->SetScale(0.2f);
+	m_melee_cursor_graphic->SetCenterPos(kScreenCenterPos + kCursorOffset);
+	m_melee_cursor_graphic->SetScale(0.2f);
+
+	m_down_cursor_graphic->SetCenterPos(kScreenCenterPos);
+	m_down_cursor_graphic->SetScale(0.2f);
 }
 
 MeleeTargetIcon::~MeleeTargetIcon()
@@ -24,19 +28,38 @@ MeleeTargetIcon::~MeleeTargetIcon()
 
 void MeleeTargetIcon::LateUpdate()
 {
-	m_is_draw_icon = false;
+	CalcResultScreenCenterPos();
+	CreateMeleeIconScreen();
+	CreateDownIconScreen();
+}
 
-	if (m_melee_target)
+void MeleeTargetIcon::Draw() const
+{
+	if (!m_melee_target && !m_visible_downed_character) { return; }
+
+	DrawBillboard3D(m_icon_pos, 0.5f, 0.5f, m_icon_size, 0.0f, m_melee_icon_screen->GetScreenHandle() ,TRUE);
+}
+
+void MeleeTargetIcon::CalcResultScreenCenterPos()
+{
+	const auto camera_pos	= GetCameraPosition();
+	const auto distance		= VSize(m_icon_pos - camera_pos);
+
+	// DrawBillboard3D関数は距離に応じて描画サイズが変更されるため
+	// 距離に応じて拡大する
+	m_icon_size = kIconSize * distance * 0.01f;
+}
+
+void MeleeTargetIcon::CreateMeleeIconScreen()
+{
+	if (!m_melee_target) { return; }
+
+	if (m_melee_target->IsStandStun() || m_melee_target->IsCrouchStun())
 	{
-		if (m_melee_target->IsStandStun() || m_melee_target->IsCrouchStun())
-		{
-			m_is_draw_icon = true;
+		const auto	model_handle = std::dynamic_pointer_cast<CharacterBase>(m_melee_target)->GetModeler()->GetModelHandle();
+		auto		head_m		 = MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, BonePath.HEAD));
 
-			const auto	model_handle = std::dynamic_pointer_cast<CharacterBase>(m_melee_target)->GetModeler()->GetModelHandle();
-			auto		head_m		 = MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, BonePath.HEAD));
-			
-			m_icon_pos = MGetTranslateElem(head_m) + kIconOffset;
-		}
+		m_icon_pos = MGetTranslateElem(head_m) + kIconOffset;
 	}
 
 	// 入力デバイスおよびキー割り当てに対応した画像を取得
@@ -56,34 +79,25 @@ void MeleeTargetIcon::LateUpdate()
 		break;
 	}
 
-	CalcResultScreenCenterPos();
-	CreateResultScreen();
+	m_melee_icon_screen		->UseScreen();
+	m_button_icon_graphic	->Draw();
+	m_melee_cursor_graphic	->Draw();
+	m_melee_icon_screen		->UnuseScreen();
 }
 
-void MeleeTargetIcon::Draw() const
+void MeleeTargetIcon::CreateDownIconScreen()
 {
-	if (m_is_draw_icon)
+	if (!m_visible_downed_character) { return; }
+
+	if (m_visible_downed_character->IsStandStun() || m_visible_downed_character->IsCrouchStun())
 	{
-		DrawBillboard3D(m_icon_pos, 0.5f, 0.5f, m_icon_size, 0.0f, m_result_screen->GetScreenHandle() ,TRUE);
+		const auto	model_handle = std::dynamic_pointer_cast<CharacterBase>(m_visible_downed_character)->GetModeler()->GetModelHandle();
+		auto		head_m = MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, BonePath.HEAD));
+
+		m_icon_pos = MGetTranslateElem(head_m) + kIconOffset;
 	}
-}
 
-void MeleeTargetIcon::CalcResultScreenCenterPos()
-{
-	const auto camera_pos	= GetCameraPosition();
-	const auto distance		= VSize(m_icon_pos - camera_pos);
-
-	// DrawBillboard3D関数は距離に応じて描画サイズが変更されるため
-	// 距離に応じて拡大する
-	m_icon_size = kIconSize * distance * 0.01f;
-}
-
-void MeleeTargetIcon::CreateResultScreen()
-{
-	m_result_screen->UseScreen();
-
-	m_button_icon_graphic->Draw();
-	m_cursor_graphic->Draw();
-
-	m_result_screen->UnuseScreen();
+	m_melee_icon_screen		->UseScreen();
+	m_down_cursor_graphic	->Draw();
+	m_melee_icon_screen		->UnuseScreen();
 }

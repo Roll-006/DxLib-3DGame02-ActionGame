@@ -1,7 +1,8 @@
 #pragma once
 #include "i_melee_hittable.hpp"
 
-#include "../Event/on_downed_enemy_spotted_event.hpp"
+#include "../Event/on_downed_far_enemy_spotted_event.hpp"
+#include "../Event/on_downed_near_enemy_spotted_event.hpp"
 
 #include "../Data/melee_candidate_data.hpp"
 #include "../Base/character_base.hpp"
@@ -26,17 +27,26 @@ public:
 	virtual void AttackVersatilityMelee	(CharacterBase* target) abstract;
 
 	/// @brief メレー候補をイベントにより追加する
-	virtual void AddMeleeCandidate(const OnDownedEnemySpottedEvent& event)	abstract;
+	virtual void AddVisibleDownedCharacter	(const OnDownedFarEnemySpottedEvent&  event) abstract;
+	virtual void AddMeleeCandidate			(const OnDownedNearEnemySpottedEvent& event) abstract;
 
 	virtual void AddMeleeTarget(const int target_obj_handle) abstract;
+	virtual void AddTopPriorityVisibleDownedCharacter(const int target_obj_handle) abstract;
 	
-	virtual [[nodiscard]] std::vector<MeleeCandidateData>	GetMeleeCandidate()	const abstract;
-	virtual [[nodiscard]] std::shared_ptr<IMeleeHittable>&	GetMeleeTarget()		  abstract;
+	virtual [[nodiscard]] std::vector<MeleeCandidateData>	GetVisibleDownedCharacter()				const abstract;
+	virtual [[nodiscard]] std::vector<MeleeCandidateData>	GetMeleeCandidate()						const abstract;
+	virtual [[nodiscard]] std::shared_ptr<IMeleeHittable>&	GetTopPriorityVisibleDownedCharacter()		  abstract;
+	virtual [[nodiscard]] std::shared_ptr<IMeleeHittable>&	GetMeleeTarget()							  abstract;
 	
 protected:
-	virtual void RemoveMeleeCandidate() abstract;
-	virtual void RemoveMeleeTarget()	abstract;
+	virtual void RemoveVisibleDownedCharacter()				abstract;
+	virtual void RemoveTopPriorityVisibleDownedCharacter()	abstract;
+	virtual void RemoveMeleeCandidate()						abstract;
+	virtual void RemoveMeleeTarget()						abstract;
+
+	/// @brief 最優先の見えているダウン中のキャラクターを決定する
+	virtual void DecisionTopPriorityVisibleDownedCharacter() abstract;
 
 	/// @brief メレー対象を決定する
-	virtual void DecisionMeleeTarget()  abstract;
+	virtual void DecisionMeleeTarget() abstract;
 };

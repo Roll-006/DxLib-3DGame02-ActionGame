@@ -4,20 +4,22 @@
 
 Player::Player() :
 	CharacterBase(ObjName.PLAYER, ObjTag.PLAYER, MassKind::kMedium),
-	m_state								(std::make_shared<PlayerStateController>()),
-	m_bone_pos_corrector				(std::make_shared<BonePosCorrector>()),
-	m_input_slope						(v3d::GetZeroV()),
-	m_prev_health						(0.0f),
-	m_is_grabbed						(false),
-	m_is_escape							(false),
-	m_escape_start_timer				(0.0f),
-	m_weapon_shortcut_selecter			(std::make_shared<WeaponShortcutSelecter>()),
-	m_melee_target						(nullptr),
-	m_grabber							(nullptr),
-	m_escape_gauge						(std::make_shared<Gauge>(100.0f))
+	m_state									(std::make_shared<PlayerStateController>()),
+	m_bone_pos_corrector					(std::make_shared<BonePosCorrector>()),
+	m_input_slope							(v3d::GetZeroV()),
+	m_prev_health							(0.0f),
+	m_is_grabbed							(false),
+	m_is_escape								(false),
+	m_escape_start_timer					(0.0f),
+	m_weapon_shortcut_selecter				(std::make_shared<WeaponShortcutSelecter>()),
+	m_melee_target							(nullptr),
+	m_top_priority_visible_downed_character	(nullptr),
+	m_grabber								(nullptr),
+	m_escape_gauge							(std::make_shared<Gauge>(100.0f))
 {
 	// ƒCƒxƒ“ƒg‚Ì“o˜^
-	EventSystem::GetInstance()->Subscribe<OnDownedEnemySpottedEvent>(this, &Player::AddMeleeCandidate);
+	EventSystem::GetInstance()->Subscribe<OnDownedFarEnemySpottedEvent>	(this, &Player::AddVisibleDownedCharacter);
+	EventSystem::GetInstance()->Subscribe<OnDownedNearEnemySpottedEvent>(this, &Player::AddMeleeCandidate);
 
 	m_health[HealthPartKind::kMain] = std::make_shared<Gauge>(2000.0f, 1500.0f);
 	m_prev_health = m_health.at(HealthPartKind::kMain)->GetCurrentValue();
@@ -69,7 +71,8 @@ Player::Player() :
 Player::~Player()
 {
 	// ƒCƒxƒ“ƒg‚Ì“o˜^‰ðœ
-	EventSystem::GetInstance()->Unsubscribe<OnDownedEnemySpottedEvent>	(this, &Player::AddMeleeCandidate);
+	EventSystem::GetInstance()->Unsubscribe<OnDownedFarEnemySpottedEvent>	(this, &Player::AddVisibleDownedCharacter);
+	EventSystem::GetInstance()->Unsubscribe<OnDownedNearEnemySpottedEvent>	(this, &Player::AddMeleeCandidate);
 
 	for (const auto& item : m_items)
 	{
@@ -89,18 +92,21 @@ void Player::Update()
 {
 	if (!IsActive()) { return; }
 
-	m_melee_target = nullptr;
-
 	if (CheckHitKey(KEY_INPUT_0))
 	{
 		m_health.at(HealthPartKind::kMain)->Decrease(500.0f);
 	}
 
+	RemoveTopPriorityVisibleDownedCharacter();
+	RemoveMeleeTarget();
 	NotifyHealth();
 	JudgeInvincible();
 	DecisionMeleeTarget();
+	DecisionTopPriorityVisibleDownedCharacter();
+	RemoveVisibleDownedCharacter();
+	RemoveMeleeCandidate();
 
-	m_is_calc_look_dir = false;
+	m_is_calc_look_dir	= false;
 
 	if (m_current_held_weapon) { m_current_held_weapon->Update(); }
 
@@ -320,25 +326,26 @@ void Player::SetupVersatilityMelee(const VECTOR& target_pos)
 	RemoveMeleeTarget();
 }
 
-void Player::RemoveMeleeCandidate()
-{
-	m_melee_candidate.clear();
-}
-
 void Player::AddMeleeTarget(const int target_obj_handle)
 {
 	const auto target_obj = ObjManager::GetInstance()->GetObj<ObjBase>(target_obj_handle);
 	m_melee_target = std::dynamic_pointer_cast<IMeleeHittable>(target_obj);
 }
 
-void Player::RemoveMeleeTarget()
+void Player::AddTopPriorityVisibleDownedCharacter(const int target_obj_handle)
 {
-	m_melee_target = nullptr;
+	const auto target_obj = ObjManager::GetInstance()->GetObj<ObjBase>(target_obj_handle);
+	m_top_priority_visible_downed_character = std::dynamic_pointer_cast<IMeleeHittable>(target_obj);
 }
 
 
 #pragma region Event
-void Player::AddMeleeCandidate(const OnDownedEnemySpottedEvent& event)
+void Player::AddVisibleDownedCharacter(const OnDownedFarEnemySpottedEvent& event)
+{
+	m_visible_downed_character.emplace_back(MeleeCandidateData(event.target_obj_handle, event.camera_diff_angle, event.distance_to_camera));
+}
+
+void Player::AddMeleeCandidate(const OnDownedNearEnemySpottedEvent& event)
 {
 	m_melee_candidate.emplace_back(MeleeCandidateData(event.target_obj_handle, event.camera_diff_angle, event.distance_to_camera));
 }
@@ -593,11 +600,6 @@ void Player::SpinningSlashKnifeOffsetMove()
 	m_move_dir.at(TimeKind::kNext) = m_look_dir.at(TimeKind::kCurrent);
 	m_move_speed = 50.0f;
 }
-
-//void Player::CalcMoveOffsetSideSlashKnife()
-//{
-//	math::Increase(m_move_speed, 10 * FPS::GetDeltaTime(), 10.0f);
-//}
 #pragma endregion
 
 
@@ -645,14 +647,22 @@ bool Player::CanEscape() const
 #pragma endregion
 
 
+void Player::DecisionTopPriorityVisibleDownedCharacter()
+{
+	if (m_visible_downed_character.empty() || m_melee_target) { return; }
+
+	MeleeTargetSelecter target_selecter;
+	auto melee_attacker = std::dynamic_pointer_cast<IMeleeAttackable>(shared_from_this());
+	target_selecter.SelectDownedCharacter(melee_attacker);
+}
+
 void Player::DecisionMeleeTarget()
 {
 	if (m_melee_candidate.empty()) { return; }
 
 	MeleeTargetSelecter target_selecter;
 	auto melee_attacker = std::dynamic_pointer_cast<IMeleeAttackable>(shared_from_this());
-	target_selecter.SelectMeleeTarget(m_transform->GetForward(CoordinateKind::kWorld), melee_attacker);
-	RemoveMeleeCandidate();
+	target_selecter.SelectMeleeTarget(melee_attacker);
 }
 
 void Player::CalcInputSlopeFromPad()

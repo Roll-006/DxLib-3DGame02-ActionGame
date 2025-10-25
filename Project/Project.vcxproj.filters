@@ -1404,7 +1404,7 @@
     <ClInclude Include="SourceCode\Interface\i_melee_attackable.hpp">
       <Filter>SourceCode\Interface</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Event\on_downed_enemy_spotted_event.hpp">
+    <ClInclude Include="SourceCode\Event\on_downed_near_enemy_spotted_event.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Interface\i_melee_hittable.hpp">
@@ -1580,6 +1580,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\State\ZombieState\stealth_killed.hpp">
       <Filter>SourceCode\State\ZombieState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\on_downed_far_enemy_spotted_event.hpp">
+      <Filter>SourceCode\Event</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

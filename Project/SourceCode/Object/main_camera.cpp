@@ -10,12 +10,9 @@ MainCamera::MainCamera() :
 	m_collider_radius			(0.0f),
 	m_is_active_grab_collider	(false)
 {
-	//// イベント登録
-	//EventSystem::GetInstance()->Subscribe<GrabEvent>	(this, &MainCamera::CreateGrabCollider);
-	//EventSystem::GetInstance()->Subscribe<ReleaseEvent>	(this, &MainCamera::DeleteGrabCollider);
-
-	AddCollider(std::make_shared<Collider>(ColliderKind::kRayCast,		 std::make_shared<Segment>(), this));
-	AddCollider(std::make_shared<Collider>(ColliderKind::kVisionTrigger, std::make_shared<Cone>(v3d::GetZeroV(), v3d::GetZeroV(), kMeleeDistance, kMeleeFOV), this));
+	AddCollider(std::make_shared<Collider>(ColliderKind::kRayCast,			 std::make_shared<Segment>(), this));
+	AddCollider(std::make_shared<Collider>(ColliderKind::kNearVisionTrigger, std::make_shared<Cone>(v3d::GetZeroV(), v3d::GetZeroV(), kMeleeCandidateDistance,	kMeleeFOV), this));
+	AddCollider(std::make_shared<Collider>(ColliderKind::kFarVisionTrigger,  std::make_shared<Cone>(v3d::GetZeroV(), v3d::GetZeroV(), kMeleeTargetDistance,		kMeleeFOV), this));
 
 	// カメラが無視するコライダー
 	const auto collision_manager = CollisionManager::GetInstance();
@@ -29,9 +26,7 @@ MainCamera::MainCamera() :
 
 MainCamera::~MainCamera()
 {
-	//// イベントの登録解除
-	//EventSystem::GetInstance()->Unsubscribe<GrabEvent>		(this, &MainCamera::CreateGrabCollider);
-	//EventSystem::GetInstance()->Unsubscribe<ReleaseEvent>	(this, &MainCamera::DeleteGrabCollider);
+
 }
 
 void MainCamera::Init()
@@ -84,7 +79,7 @@ void MainCamera::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 		}
 		break;
 
-	case ColliderKind::kVisionTrigger:
+	case ColliderKind::kNearVisionTrigger:
 		if (target_collider_kind == ColliderKind::kVisibleTrigger)
 		{
 			// メレー可能な状態のキャラクターが視界判定トリガー内に入ったことを通知
@@ -98,7 +93,28 @@ void MainCamera::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 					const auto target_pos		= target_transform->GetPos(CoordinateKind::kWorld);
 					const auto angle			= math::GetAngleBetweenTwoVector(m_transform->GetForward(CoordinateKind::kWorld), v3d::GetNormalizedV(target_pos - owner_pos));
 
-					const OnDownedEnemySpottedEvent event{ target_obj->GetObjHandle(), angle, VSize(target_pos - owner_pos)};
+					const OnDownedNearEnemySpottedEvent event{ target_obj->GetObjHandle(), angle, VSize(target_pos - owner_pos)};
+					EventSystem::GetInstance()->Publish(event);
+				}
+			}
+		}
+		break;
+
+	case ColliderKind::kFarVisionTrigger:
+		if (target_collider_kind == ColliderKind::kVisibleTrigger)
+		{
+			// メレー可能な状態のキャラクターが視界判定トリガー内に入ったことを通知
+			const auto melee_hittable = dynamic_cast<IMeleeHittable*>(target_obj);
+			if (melee_hittable)
+			{
+				if (melee_hittable->IsStandStun() || melee_hittable->IsCrouchStun())
+				{
+					const auto owner_pos		= m_transform->GetPos(CoordinateKind::kWorld);
+					const auto target_transform = target_obj->GetTransform();
+					const auto target_pos		= target_transform->GetPos(CoordinateKind::kWorld);
+					const auto angle			= math::GetAngleBetweenTwoVector(m_transform->GetForward(CoordinateKind::kWorld), v3d::GetNormalizedV(target_pos - owner_pos));
+
+					const OnDownedFarEnemySpottedEvent event{ target_obj->GetObjHandle(), angle, VSize(target_pos - owner_pos) };
 					EventSystem::GetInstance()->Publish(event);
 				}
 			}
@@ -183,7 +199,7 @@ void MainCamera::CalcRayCastPos()
 
 void MainCamera::CalcVisionTriggerPos()
 {
-	const auto cone = std::static_pointer_cast<Cone>(GetCollider(ColliderKind::kVisionTrigger)->GetShape());
+	const auto cone = std::static_pointer_cast<Cone>(GetCollider(ColliderKind::kNearVisionTrigger)->GetShape());
 	cone->SetVertex	(m_transform->GetPos	(CoordinateKind::kWorld));
 	cone->SetDir	(m_transform->GetForward(CoordinateKind::kWorld));
 }

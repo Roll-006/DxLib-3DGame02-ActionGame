@@ -47,10 +47,12 @@ public:
 	void SetupVersatilityMelee	(const VECTOR& target_pos) override;
 
 	void AddMeleeTarget(const int target_obj_handle) override;
+	void AddTopPriorityVisibleDownedCharacter(const int target_obj_handle) override;
 
 
 	#pragma region Event
-	void AddMeleeCandidate(const OnDownedEnemySpottedEvent& event) override;
+	void AddVisibleDownedCharacter	(const OnDownedFarEnemySpottedEvent&  event) override;
+	void AddMeleeCandidate			(const OnDownedNearEnemySpottedEvent& event) override;
 	#pragma endregion
 
 
@@ -135,14 +137,19 @@ public:
 	[[nodiscard]] bool																IsEscape					()	const override	{ return m_is_escape; }
 	[[nodiscard]] std::vector<MeleeCandidateData>									GetMeleeCandidate			()	const override  { return m_melee_candidate; }
 	[[nodiscard]] std::shared_ptr<IMeleeHittable>&									GetMeleeTarget				()  override		{ return m_melee_target; }
+	[[nodiscard]] std::vector<MeleeCandidateData>									GetVisibleDownedCharacter()		const override	{ return m_visible_downed_character; }
+	[[nodiscard]] std::shared_ptr<IMeleeHittable>&									GetTopPriorityVisibleDownedCharacter()override	{ return m_top_priority_visible_downed_character; }
 	[[nodiscard]] std::shared_ptr<IGrabber>											GetGrabber					()  const override	{ return m_grabber; }
 	[[nodiscard]] std::shared_ptr<Gauge>											GetEscapeGauge				()	const override	{ return m_escape_gauge; }
 	#pragma endregion
 
 private:
-	void RemoveMeleeCandidate() override;
-	void RemoveMeleeTarget()	override;
-	void DecisionMeleeTarget()  override;
+	void RemoveVisibleDownedCharacter()					override { m_visible_downed_character.clear(); }
+	void RemoveTopPriorityVisibleDownedCharacter()		override { m_top_priority_visible_downed_character = nullptr; }
+	void RemoveMeleeCandidate()							override { m_melee_candidate.clear(); }
+	void RemoveMeleeTarget()							override { m_melee_target = nullptr; }
+	void DecisionTopPriorityVisibleDownedCharacter()	override;
+	void DecisionMeleeTarget()							override;
 
 	void CalcInputSlopeFromPad();
 	void CalcInputSlopeFromCommand();
@@ -205,7 +212,9 @@ private:
 	int																	m_current_remaining_bullet_num;		// 残弾数
 	std::shared_ptr<WeaponShortcutSelecter>								m_weapon_shortcut_selecter;			// ショートカットに登録されている武器
 	std::vector<MeleeCandidateData>										m_melee_candidate;					// メレーの候補者リスト
+	std::vector<MeleeCandidateData>										m_visible_downed_character;			// ダウンしている見えている敵
 	std::shared_ptr<IMeleeHittable>										m_melee_target;
+	std::shared_ptr<IMeleeHittable>										m_top_priority_visible_downed_character;
 	std::shared_ptr<IGrabber>											m_grabber;
 	std::shared_ptr<Gauge>												m_escape_gauge;
 };

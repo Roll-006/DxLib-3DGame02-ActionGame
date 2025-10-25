@@ -144,7 +144,7 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 		}
 		break;
 
-	case ColliderKind::kVisionTrigger:
+	case ColliderKind::kNearVisionTrigger:
 		if (target_collider_kind == ColliderKind::kVisibleTrigger && target_tag == ObjTag.PLAYER)
 		{
 			m_on_collided_vision_trigger = true;
