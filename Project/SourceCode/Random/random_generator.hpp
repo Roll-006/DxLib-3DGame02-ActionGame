@@ -16,7 +16,7 @@ public:
 		// ®”Œ^‚Å‚ ‚éê‡
 		if constexpr (std::is_integral_v<ArithmeticT>)
 		{
-			std::uniform_int_distribution<ArithmeticT>  rand(min, max);
+			std::uniform_int_distribution<ArithmeticT>  rand(min, max - 1);
 			return rand(m_rand_generator);
 		}
 		// •‚“®¬”“_”Œ^‚Å‚ ‚éê‡
@@ -37,8 +37,8 @@ public:
 		// ®”Œ^‚Å‚ ‚éê‡
 		if constexpr (std::is_integral_v<ArithmeticT>)
 		{
-			std::uniform_int_distribution<ArithmeticT>  rand(-max, -min);
-			return -rand(m_rand_generator);
+			std::uniform_int_distribution<ArithmeticT>  rand(min + 1, max);
+			return rand(m_rand_generator);
 		}
 		// •‚“®¬”“_”Œ^‚Å‚ ‚éê‡
 		if constexpr (std::is_floating_point_v<ArithmeticT>)

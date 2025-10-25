@@ -1016,14 +1016,14 @@ bool math::IsProjectedPointInTriangle(const VECTOR& point, const Triangle& trian
 #pragma region 図形
 VECTOR math::GetRandomPointInCircle(const Circle& circle)
 {
+    // 半径ゼロなら乱数生成しない
+    if (circle.GetRadius() <= 0.0f) { return circle.GetPos(); }
+
     const auto rand_gen = RandomGenerator::GetInstance();
 
     // 角度・距離を乱数で設定
     float angle     = DX_TWO_PI_F * (rand_gen->GetRandOpenClosed<float>(0.0f, DX_TWO_PI_F) / DX_TWO_PI_F);
     float distance  = circle.GetRadius() * (rand_gen->GetRandOpenClosed<float>(0.0f, circle.GetRadius()) / circle.GetRadius());
-
-    //DrawFormatString(0,  0, 0xffffff, "angle    : %f", angle);
-    //DrawFormatString(0, 20, 0xffffff, "distance : %f", distance);
 
     // 座標を距離分移動させ、回転させる
     VECTOR pos = circle.GetPos() + math::GetNormalVector(-circle.GetNormalVector(), axis::GetWorldYAxis()) * distance;

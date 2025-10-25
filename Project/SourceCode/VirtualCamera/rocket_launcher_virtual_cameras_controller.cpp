@@ -3,14 +3,12 @@
 #include "../UI/ui_drawer.hpp"
 #include "../Object/player.hpp"
 
-// FIXME : ロケット弾が演出中に着弾した際、カメラが不具合を起こすため修正が必要
-
 RocketLauncherVirtualCamerasController::RocketLauncherVirtualCamerasController(Player& player) :
 	m_virtual_camera_controller_kind(VirtualCameraControllerKind::kRocketLauncherCutscene),
 	m_controller_handle				(HandleCreator::GetInstance()->CreateHandle()),
 	m_is_active						(true),
 	m_player						(player),
-	m_rocket_bomb_transform			(nullptr),
+	m_rocket_bomb					(nullptr),
 	m_enter_rot_camera				(std::make_shared<VirtualCamera>(ObjName.ROCKET_LAUNCHER_ENTER_ROT_VIRTUAL_CAMERA,	BlendActivationPolicyKind::kDeactivateAllCamera)),
 	m_zoom_in_camera				(std::make_shared<VirtualCamera>(ObjName.ROCKET_LAUNCHER_ZOOM_IN_VIRTUAL_CAMERA,	BlendActivationPolicyKind::kDeactivateAllCamera)),
 	m_zoom_out_camera				(std::make_shared<VirtualCamera>(ObjName.ROCKET_LAUNCHER_ZOOM_OUT_VIRTUAL_CAMERA,	BlendActivationPolicyKind::kDeactivateAllCamera)),
@@ -161,7 +159,6 @@ void RocketLauncherVirtualCamerasController::CalcAimTransformForEnterRotCamera()
 		cinemachine_brain->SetBlendTime(0.0f);
 	}
 
-	// TODO : 後に弾丸そのものを追尾するよう変更
 	// 追跡するボーンから行列を取得
 	const auto	model_handle	= m_player.GetModeler()->GetModelHandle();
 	const auto	hand_index		= MV1SearchFrame(model_handle, BonePath.RIGHT_HAND);
@@ -225,6 +222,13 @@ void RocketLauncherVirtualCamerasController::CalcAimTransformForZoomOutCamera()
 {
 	if (!m_zoom_out_camera->IsActive()) { return; }
 
+	// 演出中に弾丸が消失した場合は即座に演出を中止
+	if (!m_rocket_bomb->IsActive())
+	{
+		Exit();
+		return;
+	}
+
 	m_zoom_out_timer += m_zoom_out_camera->GetDeltaTime();
 	m_test_timer	 += m_zoom_out_camera->GetDeltaTime();
 
@@ -241,9 +245,10 @@ void RocketLauncherVirtualCamerasController::CalcAimTransformForZoomOutCamera()
 	}
 
 	// カメラの追跡対象となるトランスフォームの情報を更新
-	auto aim_rot = math::ConvertEulerAnglesToXYZRotMatrix(m_rot_camera_angle) * m_rocket_bomb_transform->GetRotMatrix(CoordinateKind::kWorld);
+	const auto tarnsform = m_rocket_bomb->GetTransform();
+	auto aim_rot = math::ConvertEulerAnglesToXYZRotMatrix(m_rot_camera_angle) * tarnsform->GetRotMatrix(CoordinateKind::kWorld);
 	m_zoom_camera_aim_transform->SetRot(CoordinateKind::kWorld, aim_rot);
-	m_zoom_camera_aim_transform->SetPos(CoordinateKind::kWorld, m_rocket_bomb_transform->GetPos(CoordinateKind::kWorld));
+	m_zoom_camera_aim_transform->SetPos(CoordinateKind::kWorld, tarnsform->GetPos(CoordinateKind::kWorld));
 
 	if (m_test_timer > 1.0f)
 	{
@@ -259,10 +264,18 @@ void RocketLauncherVirtualCamerasController::CalcAimTransformForExitRotCamera()
 {
 	if (!m_exit_rot_camera->IsActive()) { return; }
 
+	// 演出中に弾丸が消失した場合は即座に演出を中止
+	if (!m_rocket_bomb->IsActive())
+	{
+		Exit();
+		return;
+	}
+
 	// カメラの追跡対象となるトランスフォームの情報を更新
-	auto aim_rot = math::ConvertEulerAnglesToXYZRotMatrix(m_rot_camera_angle) * m_rocket_bomb_transform->GetRotMatrix(CoordinateKind::kWorld);
+	const auto tarnsform = m_rocket_bomb->GetTransform();
+	auto aim_rot = math::ConvertEulerAnglesToXYZRotMatrix(m_rot_camera_angle) * tarnsform->GetRotMatrix(CoordinateKind::kWorld);
 	m_rot_camera_aim_transform->SetRot(CoordinateKind::kWorld, aim_rot);
-	m_rot_camera_aim_transform->SetPos(CoordinateKind::kWorld, m_rocket_bomb_transform->GetPos(CoordinateKind::kWorld));
+	m_rot_camera_aim_transform->SetPos(CoordinateKind::kWorld, tarnsform->GetPos(CoordinateKind::kWorld));
 
 	// 回転量を計算
 	const float acc = kExitRotAcceleration * m_exit_rot_camera->GetDeltaTime();
@@ -274,23 +287,33 @@ void RocketLauncherVirtualCamerasController::CalcAimTransformForExitRotCamera()
 
 	if (IsEndExitRot())
 	{
-		// 通知
-		const EndRocketLauncherCutsceneEvent event{};
-		EventSystem::GetInstance()->Publish(event);
-
-		const auto time_manager = GameTimeManager::GetInstance();
-		time_manager->InitTimeScale();
-
-		// TODO : ブレンドが終了した際に、ブレンド速度を戻す処理が必要
-		const auto cinemachine_brain = CinemachineBrain::GetInstance();
-		cinemachine_brain->SetBlendTime(0.75f);
-
-		m_exit_rot_camera->Deactivate();
-
-		// 操作カメラの復帰
-		const auto control_cameras_controller = cinemachine_brain->GetVirtualCameraController(VirtualCameraControllerKind::kControl);
-		control_cameras_controller->Activate();
-		control_cameras_controller->GetHaveVirtualCamera(ObjName.ROT_CONTROL_VIRTUAL_CAMERA)->Activate();
+		Exit();
 	}
 }
 #pragma endregion
+
+
+void RocketLauncherVirtualCamerasController::Exit()
+{
+	// 通知
+	const EndRocketLauncherCutsceneEvent event{};
+	EventSystem::GetInstance()->Publish(event);
+
+	const auto time_manager = GameTimeManager::GetInstance();
+	time_manager->InitTimeScale();
+
+	const auto cinemachine_brain = CinemachineBrain::GetInstance();
+	cinemachine_brain->SetBlendTime(0.75f);
+
+	m_enter_rot_camera->Deactivate();
+	m_zoom_in_camera  ->Deactivate();
+	m_zoom_out_camera ->Deactivate();
+	m_exit_rot_camera ->Deactivate();
+
+	// 操作カメラの復帰
+	const auto control_cameras_controller = cinemachine_brain->GetVirtualCameraController(VirtualCameraControllerKind::kControl);
+	control_cameras_controller->Activate();
+	control_cameras_controller->GetHaveVirtualCamera(ObjName.ROT_CONTROL_VIRTUAL_CAMERA)->Activate();
+
+	m_rot_camera_angle.y = -DX_TWO_PI_F;
+}

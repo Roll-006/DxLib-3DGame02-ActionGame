@@ -1,6 +1,7 @@
 #pragma once
 #include "../Interface/i_virtual_camera_controller.hpp"
 #include "virtual_camera.hpp"
+#include "../Base/obj_base.hpp"
 
 class CinemachineBrain;
 class UIDrawer;
@@ -19,7 +20,7 @@ public:
 	void Activate()   override { m_is_active = true; }
 	void Deactivate() override { m_is_active = false; }
 
-	void SetRocketBombTransform(const std::shared_ptr<Transform>& rocket_bomb_transform) { m_rocket_bomb_transform = rocket_bomb_transform; }
+	void SetRocketBomb(const std::shared_ptr<ObjBase>& rocket_bomb) { m_rocket_bomb = rocket_bomb; }
 
 	[[nodiscard]] VirtualCameraControllerKind GetVirtualCameraControllerKind() const override;
 	[[nodiscard]] std::shared_ptr<VirtualCamera> GetHaveVirtualCamera(const std::string& name) const override;
@@ -38,6 +39,8 @@ private:
 	void CalcAimTransformForZoomInCamera();
 	void CalcAimTransformForZoomOutCamera();
 	void CalcAimTransformForExitRotCamera();
+
+	void Exit();
 
 private:
 	static constexpr VECTOR kFirstFollowOffsetForEnterRotCamera = { 9.0f, 6.0f, -50.0f };
@@ -64,7 +67,7 @@ private:
 	bool							m_is_active;
 
 	Player& m_player;
-	std::shared_ptr<Transform>		m_rocket_bomb_transform;
+	std::shared_ptr<ObjBase>		m_rocket_bomb;
 
 	std::shared_ptr<VirtualCamera>	m_enter_rot_camera;
 	std::shared_ptr<VirtualCamera>	m_zoom_in_camera;

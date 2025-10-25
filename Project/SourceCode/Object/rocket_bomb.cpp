@@ -135,7 +135,7 @@ void RocketBomb::OnShot(GunBase& gun)
 		const auto camera_controller = std::dynamic_pointer_cast<RocketLauncherVirtualCamerasController>(cinemachine_brain->GetVirtualCameraController(VirtualCameraControllerKind::kRocketLauncherCutscene));
 		if (camera_controller)
 		{
-			camera_controller->SetRocketBombTransform(m_transform);
+			camera_controller->SetRocketBomb(shared_from_this());
 		}
 	}
 }
