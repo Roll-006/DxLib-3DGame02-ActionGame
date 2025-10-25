@@ -14,6 +14,7 @@ enum class ZombieAnimKind
 	kEnterNeckBite,
 	kExitNeckBite,
 
+	kStealthKilled,
 	kDead,
 	kCrouchDead,
 	kFlyingKnockbackUp,

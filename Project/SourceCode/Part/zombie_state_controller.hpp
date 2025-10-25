@@ -17,6 +17,7 @@
 
 #include "../State/ZombieState/zombie_action_null.hpp"
 #include "../State/ZombieState/zombie_run.hpp"
+#include "../State/ZombieState/stealth_killed.hpp"
 #include "../State/ZombieState/grab.hpp"
 #include "../State/ZombieState/grab_run.hpp"
 #include "../State/ZombieState/knockback.hpp"

@@ -589,6 +589,9 @@
     <ClCompile Include="SourceCode\UI\cross_hair.cpp">
       <Filter>SourceCode\UI</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\State\ZombieState\stealth_killed.cpp">
+      <Filter>SourceCode\State\ZombieState</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\character_base.hpp">
@@ -1434,9 +1437,6 @@
     <ClInclude Include="SourceCode\UI\melee_target_icon.hpp">
       <Filter>SourceCode\UI</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Event\on_melee_target_lost_event.hpp">
-      <Filter>SourceCode\Event</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\Event\on_damage_event.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
@@ -1577,6 +1577,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\UI\cross_hair.hpp">
       <Filter>SourceCode\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\ZombieState\stealth_killed.hpp">
+      <Filter>SourceCode\State\ZombieState</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

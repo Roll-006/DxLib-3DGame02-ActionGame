@@ -2,7 +2,6 @@
 #include "i_melee_hittable.hpp"
 
 #include "../Event/on_downed_enemy_spotted_event.hpp"
-#include "../Event/on_melee_target_lost_event.hpp"
 
 #include "../Data/melee_candidate_data.hpp"
 #include "../Base/character_base.hpp"
@@ -28,7 +27,6 @@ public:
 
 	/// @brief メレー候補をイベントにより追加する
 	virtual void AddMeleeCandidate(const OnDownedEnemySpottedEvent& event)	abstract;
-	virtual void RemoveMeleeTarget(const OnMeleeTargetLostEvent& event)		abstract;
 
 	virtual void AddMeleeTarget(const int target_obj_handle) abstract;
 	

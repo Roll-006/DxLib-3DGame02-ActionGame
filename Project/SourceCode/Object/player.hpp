@@ -4,6 +4,7 @@
 #include "../Interface/i_fireable.hpp"
 #include "../Interface/i_grabbable.hpp"
 #include "../Interface/i_melee_attackable.hpp"
+#include "../Interface/i_stealth_killer.hpp"
 
 #include "../GameTime/game_time_manager.hpp"
 #include "../Event/event_system.hpp"
@@ -18,7 +19,7 @@
 
 class PlayerStateController;
 
-class Player final : public CharacterBase, public IWeaponEquippable, public IFireable, public IGrabbable, public IMeleeAttackable
+class Player final : public CharacterBase, public IWeaponEquippable, public IFireable, public IGrabbable, public IMeleeAttackable, public IStealthKiller
 {
 public:
 	Player();
@@ -49,8 +50,7 @@ public:
 
 
 	#pragma region Event
-	void AddMeleeCandidate(const OnDownedEnemySpottedEvent& event)	override;
-	void RemoveMeleeTarget(const OnMeleeTargetLostEvent& event)		override;
+	void AddMeleeCandidate(const OnDownedEnemySpottedEvent& event) override;
 	#pragma endregion
 
 

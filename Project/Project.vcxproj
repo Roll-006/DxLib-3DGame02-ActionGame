@@ -289,6 +289,7 @@
     <ClCompile Include="SourceCode\State\ZombieState\crouch_right_stun.cpp" />
     <ClCompile Include="SourceCode\State\ZombieState\backward_knockback.cpp" />
     <ClCompile Include="SourceCode\State\ZombieState\grab_run.cpp" />
+    <ClCompile Include="SourceCode\State\ZombieState\stealth_killed.cpp" />
     <ClCompile Include="SourceCode\State\ZombieState\stand_up.cpp" />
     <ClCompile Include="SourceCode\State\ZombieState\long_range_attack.cpp" />
     <ClCompile Include="SourceCode\State\ZombieState\run_attack.cpp" />
@@ -399,7 +400,6 @@
     <ClInclude Include="SourceCode\Event\change_scene_event.hpp" />
     <ClInclude Include="SourceCode\Event\dead_player_event.hpp" />
     <ClInclude Include="SourceCode\Event\on_damage_event.hpp" />
-    <ClInclude Include="SourceCode\Event\on_melee_target_lost_event.hpp" />
     <ClInclude Include="SourceCode\Event\on_downed_enemy_spotted_event.hpp" />
     <ClInclude Include="SourceCode\Event\release_event.hpp" />
     <ClInclude Include="SourceCode\Event\near_death_event.hpp" />
@@ -621,6 +621,7 @@
     <ClInclude Include="SourceCode\State\ZombieState\crouch_right_stun.hpp" />
     <ClInclude Include="SourceCode\State\ZombieState\backward_knockback.hpp" />
     <ClInclude Include="SourceCode\State\ZombieState\grab_run.hpp" />
+    <ClInclude Include="SourceCode\State\ZombieState\stealth_killed.hpp" />
     <ClInclude Include="SourceCode\State\ZombieState\stand_up.hpp" />
     <ClInclude Include="SourceCode\State\ZombieState\long_range_attack.hpp" />
     <ClInclude Include="SourceCode\State\ZombieState\run_attack.hpp" />

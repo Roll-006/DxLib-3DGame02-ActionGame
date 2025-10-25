@@ -27,6 +27,7 @@ namespace zombie_state
 		kRun,					// ダッシュ
 		kGrab,					// 掴み
 		kGrabRun,				// 掴みダッシュ
+		kStealthKilled,			// ステルスキルされた
 		kKnockback,				// ノックバック
 		kBackwardKnockback,		// ノックバック(後ろ)
 		kStandUp,				// 立ち上がる

@@ -50,6 +50,7 @@ void ZombieStateController::CreateState()
 
 	m_states[typeid(zombie_state::ActionNull)]			= std::make_shared<zombie_state::ActionNull>();
 	m_states[typeid(zombie_state::Run)]					= std::make_shared<zombie_state::Run>();
+	m_states[typeid(zombie_state::StealthKilled)]		= std::make_shared<zombie_state::StealthKilled>();
 	m_states[typeid(zombie_state::Grab)]				= std::make_shared<zombie_state::Grab>();
 	m_states[typeid(zombie_state::GrabRun)]				= std::make_shared<zombie_state::GrabRun>();
 	m_states[typeid(zombie_state::Knockback)]			= std::make_shared<zombie_state::Knockback>();

@@ -2,12 +2,13 @@
 #include "../Base/enemy_base.hpp"
 #include "../Interface/i_melee_hittable.hpp"
 #include "../Interface/i_grabber.hpp"
+#include "../Interface/i_stealth_killable.hpp"
 
 #include "../Part/zombie_animator.hpp"
 
 class ZombieStateController;
 
-class Zombie final : public EnemyBase, public IMeleeHittable, public IGrabber
+class Zombie final : public EnemyBase, public IMeleeHittable, public IGrabber, public IStealthKillable
 {
 public:
 	Zombie(const VECTOR& pos, const VECTOR& look_dir);

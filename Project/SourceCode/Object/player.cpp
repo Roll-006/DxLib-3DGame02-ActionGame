@@ -18,7 +18,6 @@ Player::Player() :
 {
 	// ƒCƒxƒ“ƒg‚Ì“o˜^
 	EventSystem::GetInstance()->Subscribe<OnDownedEnemySpottedEvent>(this, &Player::AddMeleeCandidate);
-	EventSystem::GetInstance()->Subscribe<OnMeleeTargetLostEvent>	(this, &Player::RemoveMeleeTarget);
 
 	m_health[HealthPartKind::kMain] = std::make_shared<Gauge>(2000.0f, 1500.0f);
 	m_prev_health = m_health.at(HealthPartKind::kMain)->GetCurrentValue();
@@ -71,7 +70,6 @@ Player::~Player()
 {
 	// ƒCƒxƒ“ƒg‚Ì“o˜^‰ðœ
 	EventSystem::GetInstance()->Unsubscribe<OnDownedEnemySpottedEvent>	(this, &Player::AddMeleeCandidate);
-	EventSystem::GetInstance()->Unsubscribe<OnMeleeTargetLostEvent>		(this, &Player::RemoveMeleeTarget);
 
 	for (const auto& item : m_items)
 	{
@@ -90,6 +88,8 @@ void Player::Init()
 void Player::Update()
 {
 	if (!IsActive()) { return; }
+
+	m_melee_target = nullptr;
 
 	if (CheckHitKey(KEY_INPUT_0))
 	{
@@ -341,11 +341,6 @@ void Player::RemoveMeleeTarget()
 void Player::AddMeleeCandidate(const OnDownedEnemySpottedEvent& event)
 {
 	m_melee_candidate.emplace_back(MeleeCandidateData(event.target_obj_handle, event.camera_diff_angle, event.distance_to_camera));
-}
-
-void Player::RemoveMeleeTarget(const OnMeleeTargetLostEvent& event)
-{
-	m_melee_target = nullptr;
 }
 #pragma endregion
 
