@@ -222,7 +222,7 @@ void HealthGauge::CreateHealthGaugeScreen()
 
 void HealthGauge::CreateResultScreen()
 {
-	m_result_screen	->UseScreen();
+	m_result_screen->UseScreen();
 
 	// ŒxƒT[ƒNƒ‹
 	m_warning_circle_graphic->Draw();
@@ -238,7 +238,7 @@ void HealthGauge::CreateResultScreen()
 	m_mask_creator->UnuseMask();
 	m_mask_creator->DeleteMask();
 
-	m_result_screen	->UnuseScreen();
+	m_result_screen->UnuseScreen();
 }
 #pragma endregion
 

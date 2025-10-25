@@ -26,18 +26,13 @@ public:
 
 
 	#pragma region Event
-	void Deactivate			(const DeadPlayerEvent& event);
-	void ActivateCutscene	(const StartRocketLauncherCutsceneEvent& event);
-	void DeactivateCutscene	(const EndRocketLauncherCutsceneEvent& event);
+	void Deactivate(const DeadPlayerEvent& event);
 	#pragma endregion
 
 
 	[[nodiscard]] std::string GetName()		const override { return m_name; }
 	[[nodiscard]] int		  GetPriority() const override { return m_priority; }
 	[[nodiscard]] bool		  IsActive()	const override { return m_is_active; }
-
-private:
-	void CalcAlphaBlendNum();
 
 private:
 	std::string								m_name;
@@ -49,8 +44,4 @@ private:
 	std::shared_ptr<StatusIcons>			m_status_icons;
 	std::shared_ptr<CrossHair>				m_cross_hair;
 	std::shared_ptr<WeaponShortcutDrawer>	m_weapon_shortcut;
-
-	std::shared_ptr<ScreenCreator>			m_result_screen;
-	int										m_alpha_blend_num;
-	bool									m_is_active_cutscene;
 };
