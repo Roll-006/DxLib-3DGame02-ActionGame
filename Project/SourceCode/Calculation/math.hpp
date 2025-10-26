@@ -23,9 +23,9 @@ class Plane;
 class Triangle;
 class Square;
 class Circle;
+class OBB;
 class Sphere;
 class Capsule;
-class OBB;
 class Cone;
 
 class Transform;
@@ -160,7 +160,7 @@ namespace math
 	template<typename T>
 	[[nodiscard]] T GetLerp(const T& begin_num, const T& end_num, const float t)
 	{
-		return (1 - t) * begin_num + t * end_num;
+		return static_cast<T>((1 - t) * begin_num + t * end_num);
 	}
 
 	template<>
@@ -358,13 +358,11 @@ namespace math
 
 
 	#pragma region 図形同士の関係
-	/// @brief TODO : 衝突判定との合成を検討
 	/// @brief 直線と直線の交点を取得
 	/// @return 一点で交差する場合は交点
 	/// @return 該当する値がない場合、もしくは二直線が同一直線上にある場合はnullopt(if(戻り値)で判定する必要あり)
 	[[nodiscard]] std::optional<VECTOR> GetIntersectionLineAndLine(const Line& line1, const Line& line2);
 
-	/// @brief TODO : 衝突判定との合成を検討
 	/// @brief 線分と平面(無限に広がる面)の交点を取得
 	/// @brief 受け取り側で、戻り値がnulloptである場合と不定値である場合を考慮する必要あり
 	/// @return 一点で交差する場合は交点
@@ -397,7 +395,7 @@ namespace math
 	//[[nodiscard]] VECTOR GetClosestPosOnSegmentFromSegment(const Segment& segment1, const Segment& target_segmen);
 
 	/// @brief 点が平面の前方にあるかを判定
-	/// @return 前方 : true, 後方もしくは平面に含まれる : false
+	/// @return true : 前方, false : 後方もしくは平面に含まれる
 	[[nodiscard]] bool IsPointAheadOfPlane(const VECTOR& point, const Plane& plane);
 
 	/// @brief 点が球の表面にあるかを判定

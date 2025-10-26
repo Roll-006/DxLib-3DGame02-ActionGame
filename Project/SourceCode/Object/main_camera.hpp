@@ -48,7 +48,8 @@ private:
 private:
 	static constexpr float kMeleeTargetDistance		= 400.0f;
 	static constexpr float kMeleeCandidateDistance	= 150.0f;
-	static constexpr float kMeleeFOV				= 60.0f;
+	static constexpr float kMeleeTargetFOV			= 35.0f;
+	static constexpr float kMeleeCandidateFOV		= 40.0f;
 
 	VECTOR	m_aim_pos;
 	float	m_collider_radius;

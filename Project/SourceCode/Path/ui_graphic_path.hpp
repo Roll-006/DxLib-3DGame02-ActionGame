@@ -44,6 +44,11 @@ static struct UIGraphicPath
 	#pragma endregion
 
 
+	#pragma region ƒ{ƒ^ƒ“
+	const std::string MELEE_EXPLANATORY_TEXT_BOX	= "Data/Graphic/UI/Melee/explanatory_text_box.png";
+	#pragma endregion
+
+
 	#pragma region –îˆó
 	const std::string CURSOR_01						= "Data/Graphic/UI/Cursor/cursor_01.png";
 	const std::string CURSOR_02						= "Data/Graphic/UI/Cursor/cursor_02.png";

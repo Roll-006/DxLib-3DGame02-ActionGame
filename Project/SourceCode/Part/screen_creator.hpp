@@ -22,7 +22,7 @@ public:
 
 	[[nodiscard]] std::shared_ptr<Graphicer> GetGraphicer()			const { return m_graphicer; }
 	[[nodiscard]] Vector2D<int>				 GetScreenSize()		const { return m_screen_size; }
-	[[nodiscard]] Vector2D<int>				 GetHalfScreenSize()	const { return Vector2D<int>(m_screen_size.x * 0.5f, m_screen_size.y * 0.5f); }
+	[[nodiscard]] Vector2D<int>				 GetHalfScreenSize()	const { return Vector2D<int>(static_cast<int>(m_screen_size.x * 0.5f), static_cast<int>(m_screen_size.y * 0.5f)); }
 	[[nodiscard]] int						 GetScreenHandle()		const { return m_screen_graphic_handle; }
 
 private:

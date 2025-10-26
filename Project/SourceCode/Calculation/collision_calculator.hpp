@@ -29,7 +29,7 @@ namespace collision
     /// @brief WARNING : 完全な点なため誤差が生じる可能性あり
     /// @param intersection 交点を格納
     /// @return true : 衝突, false : 非衝突
-    [[nodiscard]] bool IsCollidedPointAndPlane           (const Point&      point,          const Plane&        plane,          std::optional<VECTOR>& intersection);
+    [[nodiscard]] bool IsCollidedPointAndPlane           (const Point&       point,          const Plane&        plane,          std::optional<VECTOR>& intersection);
     [[nodiscard]] bool IsCollidedPointAndPlane           (const VECTOR&      point,          const Plane&        plane,          std::optional<VECTOR>& intersection);
     [[nodiscard]] bool IsCollidedPointAndPlane           (const VECTOR&      point,          const Plane&        plane);
 
@@ -47,6 +47,13 @@ namespace collision
     [[nodiscard]] bool IsCollidedPointAndSquare          (const Point&       point,          const Square&       square,         std::optional<VECTOR>& intersection);
     [[nodiscard]] bool IsCollidedPointAndSquare          (const VECTOR&      point,          const Square&       square,         std::optional<VECTOR>& intersection);
     [[nodiscard]] bool IsCollidedPointAndSquare          (const VECTOR&      point,          const Square&       square);
+
+    /// @brief 点とOBBの衝突判定(OBB内に点がある場合も含む)
+    /// @param intersection 交点を格納
+    /// @return true : 衝突, false : 非衝突
+    [[nodiscard]] bool IsCollidedPointAndOBB             (const Point&       point,          const OBB&          obb,            std::optional<VECTOR>& intersection);
+    [[nodiscard]] bool IsCollidedPointAndOBB             (const VECTOR&      point,          const OBB&          obb,            std::optional<VECTOR>& intersection);
+    [[nodiscard]] bool IsCollidedPointAndOBB             (const VECTOR&      point,          const OBB&          obb);
 
     /// @brief 点とカプセルの衝突判定
     /// @param intersection 交点を格納

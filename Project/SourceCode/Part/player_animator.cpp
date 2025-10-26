@@ -50,7 +50,7 @@ void PlayerAnimator::LoadAnim()
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kSpinningSlashKnife),		AnimPath.SPINNING_SLASH_KNIFE,			0, AnimTag.NONE, 50.0f,  false);
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kStealthKill),				AnimPath.STEALTH_KILL,					0, AnimTag.NONE, 70.0f,  false);
 
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardRun),			AnimPath.MOVE_FORWARD_RUN_01,			0, AnimTag.MOVE, 37.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardRun),			AnimPath.MOVE_FORWARD_RUN_01,			0, AnimTag.MOVE, 45.0f,  true);
 
 	// 上半身用
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kAttachRifle),				AnimPath.ATTACH_RIFLE,					0, AnimTag.NONE, 20.0f,  false);

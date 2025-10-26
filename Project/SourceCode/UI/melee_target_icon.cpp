@@ -11,6 +11,10 @@ MeleeTargetIcon::MeleeTargetIcon(std::shared_ptr<IMeleeHittable>& melee_target, 
 	m_melee_cursor_graphic		(std::make_shared<Graphicer>(UIGraphicPath.CURSOR_01)),
 	m_down_cursor_graphic		(std::make_shared<Graphicer>(UIGraphicPath.CURSOR_02)),
 	m_melee_icon_screen			(std::make_shared<ScreenCreator>(kScreenSize)),
+	m_mask_graphic				(std::make_shared<Graphicer>(UIGraphicPath.MELEE_EXPLANATORY_TEXT_BOX)),
+	m_mask_screen				(std::make_shared<ScreenCreator>(Window::kScreenSize, Window::kCenterPos)),
+	m_explanatory_text_screen	(std::make_shared<ScreenCreator>(kScreenSize)),
+	m_mask_creator				(std::make_shared<MaskCreator>()),
 	m_icon_pos					(v3d::GetZeroV()),
 	m_icon_size					(0.0f)
 {
@@ -19,6 +23,12 @@ MeleeTargetIcon::MeleeTargetIcon(std::shared_ptr<IMeleeHittable>& melee_target, 
 
 	m_down_cursor_graphic->SetCenterPos(kScreenCenterPos);
 	m_down_cursor_graphic->SetScale(0.2f);
+
+	//m_mask_graphic->SetScale(1.0f);
+
+	//m_mask_screen->UseScreen();
+	//m_mask_graphic->Draw();
+	//m_mask_screen->UnuseScreen();
 }
 
 MeleeTargetIcon::~MeleeTargetIcon()
@@ -33,11 +43,25 @@ void MeleeTargetIcon::LateUpdate()
 	CreateDownIconScreen();
 }
 
-void MeleeTargetIcon::Draw() const
+void MeleeTargetIcon::Draw(const int main_screen_handle) const
 {
-	if (!m_melee_target && !m_visible_downed_character) { return; }
+	if (m_melee_target)
+	{
+		//m_explanatory_text_screen->UseScreen();
+		//m_mask_creator->CreateMask();
+		//m_mask_creator->UseMask(m_mask_screen->GetScreenHandle(), true);
+		//DrawGraph(0, 0, main_screen_handle, TRUE);
+		//m_mask_creator->UnuseMask();
+		//m_mask_creator->DeleteMask();
+		//m_explanatory_text_screen->UnuseScreen();
 
-	DrawBillboard3D(m_icon_pos, 0.5f, 0.5f, m_icon_size, 0.0f, m_melee_icon_screen->GetScreenHandle() ,TRUE);
+		//DrawBillboard3D(m_icon_pos, 0.5f, 0.5f, m_icon_size, 0.0f, m_explanatory_text_screen->GetScreenHandle(), TRUE);
+		DrawBillboard3D(m_icon_pos, 0.5f, 0.5f, m_icon_size, 0.0f, m_melee_icon_screen->GetScreenHandle(), TRUE);
+	}
+	else if (m_visible_downed_character)
+	{
+		DrawBillboard3D(m_icon_pos, 0.5f, 0.5f, m_icon_size, 0.0f, m_melee_icon_screen->GetScreenHandle(), TRUE);
+	}
 }
 
 void MeleeTargetIcon::CalcResultScreenCenterPos()
@@ -76,10 +100,10 @@ void MeleeTargetIcon::CreateMeleeIconScreen()
 		break;
 	}
 
-	m_melee_icon_screen		->UseScreen();
-	m_button_icon_graphic	->Draw();
-	m_melee_cursor_graphic	->Draw();
-	m_melee_icon_screen		->UnuseScreen();
+	m_melee_icon_screen->UseScreen();
+	m_button_icon_graphic ->Draw();
+	m_melee_cursor_graphic->Draw();
+	m_melee_icon_screen->UnuseScreen();
 }
 
 void MeleeTargetIcon::CreateDownIconScreen()
@@ -91,7 +115,7 @@ void MeleeTargetIcon::CreateDownIconScreen()
 
 	m_icon_pos = MGetTranslateElem(head_m) + kIconOffset;
 
-	m_melee_icon_screen		->UseScreen();
-	m_down_cursor_graphic	->Draw();
-	m_melee_icon_screen		->UnuseScreen();
+	m_melee_icon_screen->UseScreen();
+	m_down_cursor_graphic->Draw();
+	m_melee_icon_screen->UnuseScreen();
 }

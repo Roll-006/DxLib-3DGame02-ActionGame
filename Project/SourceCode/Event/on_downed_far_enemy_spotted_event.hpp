@@ -1,6 +1,6 @@
 #pragma once
 
-/// @brief ダウン中の敵がカメラの視界に入った
+/// @brief 遠距離のダウン中の敵がカメラの視界に入った
 struct OnDownedFarEnemySpottedEvent
 {
 	int	  target_obj_handle		= -1;

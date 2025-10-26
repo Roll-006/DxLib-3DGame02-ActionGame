@@ -141,7 +141,7 @@ void CrossHair::CreateSubmachineGunCrossHairScreen()
 
 	const auto center_x	= kScreenCenterSize.x;
 	const auto center_y = kScreenCenterSize.y;
-	const auto radius	= m_circle_cross_hair->GetRadius();
+	const auto radius	= static_cast<int>(m_circle_cross_hair->GetRadius());
 
 	m_cross_hair_screen->UseScreen();
 	DrawLine(center_x + radius, center_y,		   center_x + radius + kSubmachineGunWidth, center_y,								  0xffffff, kThickness);
@@ -156,7 +156,7 @@ void CrossHair::CreateRocketLauncherCrossScreen()
 
 	const auto center_x		= kScreenCenterSize.x;
 	const auto center_y		= kScreenCenterSize.y;
-	const auto radius		= m_circle_cross_hair->GetRadius();
+	const auto radius		= static_cast<int>(m_circle_cross_hair->GetRadius());
 	const auto length		= 16;
 	const auto half_length	= static_cast<int>(length * 0.5f);
 	const auto left_pos		= center_x - radius - half_length;

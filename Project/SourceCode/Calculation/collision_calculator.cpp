@@ -118,6 +118,34 @@ bool collision::IsCollidedPointAndSquare         (const VECTOR&      point,     
     return IsCollidedPointAndSquare(point, square, intersection);
 }
 
+/// @brief 点とOBBの衝突判定(OBB内に点がある場合も含む)
+bool collision::IsCollidedPointAndOBB            (const Point&       point,          const OBB&          obb,            std::optional<VECTOR>& intersection)
+{
+    return IsCollidedPointAndOBB(point.GetPos(), obb, intersection);
+}
+bool collision::IsCollidedPointAndOBB            (const VECTOR&      point,          const OBB&          obb,            std::optional<VECTOR>& intersection)
+{
+    for (int i = 0; i < 6; ++i)
+    {
+        const auto square   = obb.GetSquare(static_cast<box::SquareKind>(i));
+        const auto plane    = Plane(square.GetCentroid(), square.GetNormalVector());
+        if(math::IsPointAheadOfPlane(point, plane))
+        {
+            intersection = std::nullopt;
+            return false;
+        }
+    }
+
+    intersection = std::optional<VECTOR>(point);
+    return true;
+}
+bool collision::IsCollidedPointAndOBB            (const VECTOR&      point,          const OBB&          obb)
+{
+    std::optional<VECTOR> intersection = std::nullopt;
+
+    return IsCollidedPointAndOBB(point, obb, intersection);
+}
+
 /// @brief 点とカプセルの衝突判定
 bool collision::IsCollidedPointAndCapsule        (const Point&       point,          const Capsule&      capsule,        std::optional<VECTOR>& intersection)
 {

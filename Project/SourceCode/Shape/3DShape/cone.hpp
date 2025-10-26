@@ -4,7 +4,6 @@
 class Cone final : public ShapeBase
 {
 public:
-    //Cone(const VECTOR& vertex, const VECTOR& dir, const float length, const float circle_radius);
     Cone(const VECTOR& vertex, const VECTOR& dir, const float length, const float fov);
     Cone();
     ~Cone() override;

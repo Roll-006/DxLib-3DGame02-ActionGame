@@ -14,6 +14,7 @@ Player::Player() :
 	m_weapon_shortcut_selecter				(std::make_shared<WeaponShortcutSelecter>()),
 	m_melee_target							(nullptr),
 	m_top_priority_visible_downed_character	(nullptr),
+	m_stealth_kill_target					(nullptr),
 	m_grabber								(nullptr),
 	m_escape_gauge							(std::make_shared<Gauge>(100.0f))
 {
@@ -103,7 +104,6 @@ void Player::Update()
 	JudgeInvincible();
 	DecisionMeleeTarget();
 	DecisionTopPriorityVisibleDownedCharacter();
-	printfDx("%d , %d\n", m_visible_downed_character.empty(), m_melee_candidate.empty());
 	RemoveVisibleDownedCharacter();
 	RemoveMeleeCandidate();
 
@@ -121,6 +121,8 @@ void Player::Update()
 
 	m_move_dir_offset_speed	= kMoveDirOffsetSpeed;
 	m_look_dir_offset_speed	= kLookDirOffsetSpeed;
+
+	printfDx("%d\n", m_stealth_kill_target != nullptr);
 
 	m_weapon_shortcut_selecter->Update(std::static_pointer_cast<Player>(shared_from_this()));
 	m_state					  ->Update(std::static_pointer_cast<Player>(shared_from_this()));
@@ -641,7 +643,7 @@ void Player::DecisionTopPriorityVisibleDownedCharacter()
 {
 	if (!(!m_visible_downed_character.empty() && m_melee_candidate.empty())) { return; }
 
-	MeleeTargetSelecter target_selecter;
+	MeleeTargetSearcher target_selecter;
 	auto melee_attacker = std::dynamic_pointer_cast<IMeleeAttackable>(shared_from_this());
 	target_selecter.SelectDownedCharacter(melee_attacker);
 }
@@ -650,7 +652,7 @@ void Player::DecisionMeleeTarget()
 {
 	if (m_melee_candidate.empty()) { return; }
 
-	MeleeTargetSelecter target_selecter;
+	MeleeTargetSearcher target_selecter;
 	auto melee_attacker = std::dynamic_pointer_cast<IMeleeAttackable>(shared_from_this());
 	target_selecter.SelectMeleeTarget(melee_attacker);
 }

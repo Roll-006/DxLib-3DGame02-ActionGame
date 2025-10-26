@@ -1,7 +1,9 @@
 #include "main_camera.hpp"
+
 #include "../VirtualCamera/cinemachine_brain.hpp"
 #include "../Command/command_handler.hpp"
 #include "../Interface/i_melee_hittable.hpp"
+#include "../Interface/i_stealth_killable.hpp"
 #include "../Base/enemy_base.hpp"
 
 MainCamera::MainCamera() : 
@@ -10,9 +12,9 @@ MainCamera::MainCamera() :
 	m_collider_radius			(0.0f),
 	m_is_active_grab_collider	(false)
 {
-	AddCollider(std::make_shared<Collider>(ColliderKind::kRayCast,			 std::make_shared<Segment>(), this));
-	AddCollider(std::make_shared<Collider>(ColliderKind::kNearVisionTrigger, std::make_shared<Cone>(v3d::GetZeroV(), v3d::GetZeroV(), kMeleeCandidateDistance,	kMeleeFOV), this));
-	AddCollider(std::make_shared<Collider>(ColliderKind::kFarVisionTrigger,  std::make_shared<Cone>(v3d::GetZeroV(), v3d::GetZeroV(), kMeleeTargetDistance,		kMeleeFOV), this));
+	AddCollider(std::make_shared<Collider>(ColliderKind::kRayCast,				std::make_shared<Segment>(), this));
+	AddCollider(std::make_shared<Collider>(ColliderKind::kNearVisionTrigger,	std::make_shared<Cone>(v3d::GetZeroV(), v3d::GetZeroV(), kMeleeCandidateDistance,	kMeleeCandidateFOV * math::kDegToRad), this));
+	AddCollider(std::make_shared<Collider>(ColliderKind::kFarVisionTrigger,		std::make_shared<Cone>(v3d::GetZeroV(), v3d::GetZeroV(), kMeleeTargetDistance,		kMeleeTargetFOV	   * math::kDegToRad), this));
 
 	// カメラが無視するコライダー
 	const auto collision_manager = CollisionManager::GetInstance();
@@ -96,6 +98,19 @@ void MainCamera::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 					const OnDownedNearEnemySpottedEvent event{ target_obj->GetObjHandle(), angle, VSize(target_pos - owner_pos)};
 					EventSystem::GetInstance()->Publish(event);
 				}
+			}
+
+			// ステルスキル可能なキャラクターが視界判定トリガー内に入ったことを通知
+			const auto stealth_killable = dynamic_cast<IStealthKillable*>(target_obj);
+			if (stealth_killable)
+			{
+				const auto owner_pos		= m_transform->GetPos(CoordinateKind::kWorld);
+				const auto target_transform = target_obj->GetTransform();
+				const auto target_pos		= target_transform->GetPos(CoordinateKind::kWorld);
+				const auto angle			= math::GetAngleBetweenTwoVector(m_transform->GetForward(CoordinateKind::kWorld), v3d::GetNormalizedV(target_pos - owner_pos));
+
+				const OnNearEnemySpottedEvent event{ target_obj->GetObjHandle(), angle, VSize(target_pos - owner_pos) };
+				EventSystem::GetInstance()->Publish(event);
 			}
 		}
 		break;

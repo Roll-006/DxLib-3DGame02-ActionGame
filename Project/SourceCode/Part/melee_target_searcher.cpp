@@ -1,6 +1,6 @@
-﻿#include "melee_target_selecter.hpp"
+﻿#include "melee_target_searcher.hpp"
 
-void MeleeTargetSelecter::SelectMeleeTarget(std::shared_ptr<IMeleeAttackable>& melee_attacker)
+void MeleeTargetSearcher::SelectMeleeTarget(std::shared_ptr<IMeleeAttackable>& melee_attacker)
 {
 	if (melee_attacker->GetMeleeCandidate().empty()) { return; }
 
@@ -35,7 +35,7 @@ void MeleeTargetSelecter::SelectMeleeTarget(std::shared_ptr<IMeleeAttackable>& m
 	melee_attacker->AddMeleeTarget(angle.front().target_obj_handle);
 }
 
-void MeleeTargetSelecter::SelectDownedCharacter(std::shared_ptr<IMeleeAttackable>& melee_attacker)
+void MeleeTargetSearcher::SelectDownedCharacter(std::shared_ptr<IMeleeAttackable>& melee_attacker)
 {
 	if (melee_attacker->GetVisibleDownedCharacter().empty()) { return; }
 

@@ -17,8 +17,8 @@ StatusIcons::StatusIcons(const std::shared_ptr<Player>& player) :
 		static_cast<int>(Window::kScreenSize.x * 0.891f), 
 		static_cast<int>(Window::kScreenSize.y * 0.81f)));
 
-	m_health_gauge_graphic		->SetCenterPos(Vector2D<int>(kScreenSize.x * 0.5f, kScreenSize.y * 0.5f));
-	m_equip_weapon_icon_graphic	->SetCenterPos(Vector2D<int>(kScreenSize.x * 0.5f, kScreenSize.y * 0.5f));
+	m_health_gauge_graphic		->SetCenterPos(Vector2D<int>(static_cast<int>(kScreenSize.x * 0.5f), static_cast<int>(kScreenSize.y * 0.5f)));
+	m_equip_weapon_icon_graphic	->SetCenterPos(Vector2D<int>(static_cast<int>(kScreenSize.x * 0.5f), static_cast<int>(kScreenSize.y * 0.5f)));
 }
 
 StatusIcons::~StatusIcons()

@@ -487,7 +487,7 @@
     <ClCompile Include="SourceCode\Base\enemy_base.cpp">
       <Filter>SourceCode\Base</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Part\melee_target_selecter.cpp">
+    <ClCompile Include="SourceCode\Part\melee_target_searcher.cpp">
       <Filter>SourceCode\Part</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\UI\equip_weapon_icon.cpp">
@@ -592,6 +592,9 @@
     <ClCompile Include="SourceCode\State\ZombieState\stealth_killed.cpp">
       <Filter>SourceCode\State\ZombieState</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\Part\stealth_kill_target_searcher.cpp">
+      <Filter>SourceCode\Part</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\character_base.hpp">
@@ -663,7 +666,7 @@
     <ClInclude Include="SourceCode\Data\box_data.hpp">
       <Filter>SourceCode\Data</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Data\camera_data.hpp">
+    <ClInclude Include="SourceCode\Data\stealth_kill_candidate_data.hpp">
       <Filter>SourceCode\Data</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Data\collider_pair_data.hpp">
@@ -1413,7 +1416,7 @@
     <ClInclude Include="SourceCode\Data\melee_candidate_data.hpp">
       <Filter>SourceCode\Data</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Part\melee_target_selecter.hpp">
+    <ClInclude Include="SourceCode\Part\melee_target_searcher.hpp">
       <Filter>SourceCode\Part</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\UI\equip_weapon_icon.hpp">
@@ -1582,6 +1585,12 @@
       <Filter>SourceCode\State\ZombieState</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Event\on_downed_far_enemy_spotted_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Part\stealth_kill_target_searcher.hpp">
+      <Filter>SourceCode\Part</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\on_near_enemy_spotted_event.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
   </ItemGroup>

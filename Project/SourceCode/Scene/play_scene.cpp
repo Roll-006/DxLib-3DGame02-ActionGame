@@ -11,6 +11,7 @@ PlayScene::PlayScene() :
 	m_house							(std::make_shared<House>()),
 	m_ground						(std::make_shared<Ground>()),
 	m_skydome						(std::make_shared<Skydome>()),
+	m_stealth_kill_target_searcher	(std::make_shared<StealthKillTargetSearcher>(m_player)),
 	m_rifle_cartridge_object_pool	(std::make_shared<RifleCartridgeObjectPool>()),
 	m_play_scene_effect_object_pool (std::make_shared<PlaySceneEffectObjectPool>()),
 	m_player_ui_creator				(std::make_shared<PlayerUICreator>(m_player)),
@@ -96,6 +97,7 @@ void PlayScene::Update()
 	m_house								->Update();
 	m_ground							->Update();
 	m_skydome							->Update();
+	m_stealth_kill_target_searcher		->Update();
 	m_game_over_tab						->Update();
 	m_pause_tab							->Update();
 }

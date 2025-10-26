@@ -160,7 +160,7 @@ void CollisionManager::SetIgnoreColliderPairs()
 	AddIgnoreColliderPair(landing_data, player_data);
 	AddIgnoreColliderPair(landing_data, enemy_data);
 	AddIgnoreColliderPair(landing_data, { "", ColliderKind::kAttackTrigger	 });
-	AddIgnoreColliderPair(landing_data, { "", ColliderKind::kNearVisionTrigger	 });
+	AddIgnoreColliderPair(landing_data, { "", ColliderKind::kMiddleVisionTrigger	 });
 	AddIgnoreColliderPair(landing_data, { "", ColliderKind::kReactionTrigger });
 	
 	// 弾丸系統が無視するコライダー
@@ -469,6 +469,9 @@ bool CollisionManager::IsCollidedPointAndTarget		(Collider& owner_collider, cons
 
 	case ShapeKind::kSquare:
 		return collision::IsCollidedPointAndSquare	(owner_shape, *std::static_pointer_cast<Square>		(target_shape), intersection);
+	
+	case ShapeKind::kOBB:
+		return collision::IsCollidedPointAndOBB		(owner_shape, *std::static_pointer_cast<OBB>		(target_shape), intersection);
 
 	case ShapeKind::kCapsule:
 		return collision::IsCollidedPointAndCapsule	(owner_shape, *std::static_pointer_cast<Capsule>	(target_shape), intersection);

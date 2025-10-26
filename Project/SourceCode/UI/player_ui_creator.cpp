@@ -42,7 +42,7 @@ void PlayerUICreator::OnDraw(const int main_screen_handle)
 {
 	if (!m_is_active) { return; }
 
-	m_melee_target_icon	->Draw();
+	m_melee_target_icon	->Draw(main_screen_handle);
 	m_escape_icon		->Draw();
 	m_status_icons		->Draw();
 	m_cross_hair		->Draw();

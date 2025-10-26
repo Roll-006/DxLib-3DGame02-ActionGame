@@ -82,18 +82,18 @@ const Segment& OBB::GetEdge(const box::EdgeKind edge_kind) const
 {
 	switch (edge_kind)
 	{
-	case box::EdgeKind::kBottomFront:		return m_box.squares.at(static_cast<int>(box::SquareKind::kBottom)).	GetEdge(1); break;
-	case box::EdgeKind::kBottomBack:		return m_box.squares.at(static_cast<int>(box::SquareKind::kBottom)).	GetEdge(3); break;
-	case box::EdgeKind::kBottomRight:		return m_box.squares.at(static_cast<int>(box::SquareKind::kBottom)).	GetEdge(2); break;
-	case box::EdgeKind::kBottomLeft:		return m_box.squares.at(static_cast<int>(box::SquareKind::kBottom)).	GetEdge(0); break;
-	case box::EdgeKind::kTopFront:			return m_box.squares.at(static_cast<int>(box::SquareKind::kTop)).		GetEdge(1); break;
-	case box::EdgeKind::kTopBack:			return m_box.squares.at(static_cast<int>(box::SquareKind::kTop)).		GetEdge(3); break;
-	case box::EdgeKind::kTopRight:			return m_box.squares.at(static_cast<int>(box::SquareKind::kTop)).		GetEdge(0); break;
-	case box::EdgeKind::kTopLeft:			return m_box.squares.at(static_cast<int>(box::SquareKind::kTop)).		GetEdge(2); break;
-	case box::EdgeKind::kCenterRightBack:	return m_box.squares.at(static_cast<int>(box::SquareKind::kBack)).		GetEdge(0); break;
-	case box::EdgeKind::kCenterRightFront:	return m_box.squares.at(static_cast<int>(box::SquareKind::kRight)).		GetEdge(0); break;
-	case box::EdgeKind::kCenterLeftFront:	return m_box.squares.at(static_cast<int>(box::SquareKind::kFront)).		GetEdge(0); break;
-	case box::EdgeKind::kCenterLeftBack:	return m_box.squares.at(static_cast<int>(box::SquareKind::kLeft)).		GetEdge(0); break;
+	case box::EdgeKind::kBottomFront:		return m_box.squares.at(static_cast<int>(box::SquareKind::kBottom)).	GetEdge(1);
+	case box::EdgeKind::kBottomBack:		return m_box.squares.at(static_cast<int>(box::SquareKind::kBottom)).	GetEdge(3);
+	case box::EdgeKind::kBottomRight:		return m_box.squares.at(static_cast<int>(box::SquareKind::kBottom)).	GetEdge(2);
+	case box::EdgeKind::kBottomLeft:		return m_box.squares.at(static_cast<int>(box::SquareKind::kBottom)).	GetEdge(0);
+	case box::EdgeKind::kTopFront:			return m_box.squares.at(static_cast<int>(box::SquareKind::kTop)).		GetEdge(1);
+	case box::EdgeKind::kTopBack:			return m_box.squares.at(static_cast<int>(box::SquareKind::kTop)).		GetEdge(3);
+	case box::EdgeKind::kTopRight:			return m_box.squares.at(static_cast<int>(box::SquareKind::kTop)).		GetEdge(0);
+	case box::EdgeKind::kTopLeft:			return m_box.squares.at(static_cast<int>(box::SquareKind::kTop)).		GetEdge(2);
+	case box::EdgeKind::kCenterRightBack:	return m_box.squares.at(static_cast<int>(box::SquareKind::kBack)).		GetEdge(0);
+	case box::EdgeKind::kCenterRightFront:	return m_box.squares.at(static_cast<int>(box::SquareKind::kRight)).		GetEdge(0);
+	case box::EdgeKind::kCenterLeftFront:	return m_box.squares.at(static_cast<int>(box::SquareKind::kFront)).		GetEdge(0);
+	case box::EdgeKind::kCenterLeftBack:	return m_box.squares.at(static_cast<int>(box::SquareKind::kLeft)).		GetEdge(0);
 
 	default:
 		break;

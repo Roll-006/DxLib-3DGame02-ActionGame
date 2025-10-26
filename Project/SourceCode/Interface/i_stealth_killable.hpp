@@ -5,4 +5,6 @@ class IStealthKillable abstract
 {
 public:
 	virtual ~IStealthKillable() = default;
+
+	[[nodiscard]] virtual bool IsStealthKillerInSight() const abstract;
 };

@@ -1,7 +1,7 @@
 #pragma once
 
-/// @brief 近距離のダウン中の敵がカメラの視界に入った
-struct OnDownedNearEnemySpottedEvent
+/// @brief 近距離の敵がカメラの視界に入った
+struct OnNearEnemySpottedEvent
 {
 	int	  target_obj_handle		= -1;
 	float camera_diff_angle		= 0.0f;		// カメラのforwardからの角度の差

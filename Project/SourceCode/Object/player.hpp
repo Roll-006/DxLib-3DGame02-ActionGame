@@ -15,7 +15,7 @@
 #include "knife.hpp"
 #include "../Part/weapon_shortcut_selecter.hpp"
 #include "../Part/bone_pos_corrector.hpp"
-#include "../Part/melee_target_selecter.hpp"
+#include "../Part/melee_target_searcher.hpp"
 
 class PlayerStateController;
 
@@ -49,6 +49,8 @@ public:
 	void AddMeleeTarget(const int target_obj_handle) override;
 	void AddTopPriorityVisibleDownedCharacter(const int target_obj_handle) override;
 
+	void AddStealthKillTarget(const std::shared_ptr<IStealthKillable>& stealth_kill_target) override { m_stealth_kill_target = stealth_kill_target; }
+	void RemoveStealthKillTarget() override { m_stealth_kill_target = nullptr; }
 
 	#pragma region Event
 	void AddVisibleDownedCharacter	(const OnDownedFarEnemySpottedEvent&  event) override;
@@ -215,6 +217,7 @@ private:
 	std::vector<MeleeCandidateData>										m_visible_downed_character;			// ダウンしている見えている敵
 	std::shared_ptr<IMeleeHittable>										m_melee_target;
 	std::shared_ptr<IMeleeHittable>										m_top_priority_visible_downed_character;
+	std::shared_ptr<IStealthKillable>									m_stealth_kill_target;
 	std::shared_ptr<IGrabber>											m_grabber;
 	std::shared_ptr<Gauge>												m_escape_gauge;
 };

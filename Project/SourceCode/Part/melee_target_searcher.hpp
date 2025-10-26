@@ -6,7 +6,7 @@
 #include "../Interface/i_melee_attackable.hpp"
 #include "../Calculation/math.hpp"
 
-class MeleeTargetSelecter final
+class MeleeTargetSearcher final
 {
 public:
 	void SelectMeleeTarget		(std::shared_ptr<IMeleeAttackable>& melee_attacker);

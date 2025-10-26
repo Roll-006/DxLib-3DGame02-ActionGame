@@ -11,8 +11,9 @@ enum class ColliderKind
 
 	kAttackTrigger,			// 攻撃判定用トリガー
 	kLandingTrigger,		// 着地判定用トリガー
-	kNearVisionTrigger,		// 視界判定用トリガー(近い)
-	kFarVisionTrigger,		// 視界判定用トリガー(遠い)
+	kNearVisionTrigger,		// 視界判定用トリガー(近距離)
+	kMiddleVisionTrigger,	// 視界判定用トリガー(中距離)
+	kFarVisionTrigger,		// 視界判定用トリガー(遠距離)
 	kVisibleTrigger,		// 視認判定を受けるトリガー
 
 	kCollisionAreaTrigger,	// 衝突判定を許可するエリアに利用するトリガー

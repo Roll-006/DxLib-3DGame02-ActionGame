@@ -51,6 +51,7 @@ public:
 	[[nodiscard]] bool  IsStandStun()					const override;
 	[[nodiscard]] bool  IsCrouchStun()					const override;
 	[[nodiscard]] bool	IsTargetEscaped()				const override  { return m_is_target_escaped; }
+	[[nodiscard]] bool  IsStealthKillerInSight()		const override	{ return IsTargetInSight(); }
 	#pragma endregion
 
 private:

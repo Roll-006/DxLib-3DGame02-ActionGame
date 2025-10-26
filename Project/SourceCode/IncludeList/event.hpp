@@ -17,6 +17,7 @@
 #include "../Event/on_select_normal_filter_event.hpp"
 #include "../Event/on_select_cinematic_filter_event.hpp"
 #include "../Event/on_select_retro_filter_event.hpp"
+#include "../Event/on_near_enemy_spotted_event.hpp"
 #include "../Event/on_downed_near_enemy_spotted_event.hpp"
 #include "../Event/on_downed_far_enemy_spotted_event.hpp"
 #include "../Event/change_scene_event.hpp"

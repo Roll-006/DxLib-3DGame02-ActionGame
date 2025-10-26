@@ -27,7 +27,7 @@ void CharacterColliderCreator::CreateVisionTrigger	(PhysicalObjBase* physical_ob
 	const auto head_pos  = MGetTranslateElem(head_m);
 	const auto head_axes = math::ConvertRotMatrixToAxes(head_m);
 
-	physical_obj->AddCollider(std::make_shared<Collider>(ColliderKind::kNearVisionTrigger, std::make_shared<Cone>(head_pos, -head_axes.z_axis, lenfth, fov), physical_obj));
+	physical_obj->AddCollider(std::make_shared<Collider>(ColliderKind::kMiddleVisionTrigger, std::make_shared<Cone>(head_pos, -head_axes.z_axis, lenfth, fov), physical_obj));
 
 	CalcVisionTriggerPos(modeler, physical_obj->GetColliderAll());
 }
@@ -114,7 +114,7 @@ void CharacterColliderCreator::CalcVisionTriggerPos	(std::shared_ptr<Modeler>& m
 	const auto head_pos	 = MGetTranslateElem(head_m);
 	const auto head_axes = math::ConvertRotMatrixToAxes(head_m);
 
-	const auto cone = std::static_pointer_cast<Cone>(collider.at(ColliderKind::kNearVisionTrigger)->GetShape());
+	const auto cone = std::static_pointer_cast<Cone>(collider.at(ColliderKind::kMiddleVisionTrigger)->GetShape());
 	cone->SetDir(-head_axes.z_axis);
 	cone->SetVertex(head_pos);
 }
