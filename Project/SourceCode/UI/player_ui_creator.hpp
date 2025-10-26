@@ -2,6 +2,7 @@
 #include "../Interface/i_ui_creator.hpp"
 
 #include "melee_target_icon.hpp"
+#include "stealth_kill_target_icon.hpp"
 #include "escape_icon.hpp"
 #include "status_icons.hpp"
 #include "weapon_shortcut_drawer.hpp"
@@ -40,6 +41,7 @@ private:
 	bool									m_is_active;
 
 	std::shared_ptr<MeleeTargetIcon>		m_melee_target_icon;
+	std::shared_ptr<StealthKillTargetIcon>	m_stealth_kill_target_icon;
 	std::shared_ptr<EscapeIcon>				m_escape_icon;
 	std::shared_ptr<StatusIcons>			m_status_icons;
 	std::shared_ptr<CrossHair>				m_cross_hair;

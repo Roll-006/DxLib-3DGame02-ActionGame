@@ -322,6 +322,7 @@
     <ClCompile Include="SourceCode\UI\damage_filter.cpp" />
     <ClCompile Include="SourceCode\UI\cinema_scope_frame.cpp" />
     <ClCompile Include="SourceCode\UI\escape_icon.cpp" />
+    <ClCompile Include="SourceCode\UI\stealth_kill_target_icon.cpp" />
     <ClCompile Include="SourceCode\UI\melee_target_icon.cpp" />
     <ClCompile Include="SourceCode\UI\health_gauge.cpp" />
     <ClCompile Include="SourceCode\UI\player_ui_creator.cpp" />
@@ -659,6 +660,7 @@
     <ClInclude Include="SourceCode\UI\damage_filter.hpp" />
     <ClInclude Include="SourceCode\UI\cinema_scope_frame.hpp" />
     <ClInclude Include="SourceCode\UI\escape_icon.hpp" />
+    <ClInclude Include="SourceCode\UI\stealth_kill_target_icon.hpp" />
     <ClInclude Include="SourceCode\UI\melee_target_icon.hpp" />
     <ClInclude Include="SourceCode\UI\health_gauge.hpp" />
     <ClInclude Include="SourceCode\UI\player_ui_creator.hpp" />

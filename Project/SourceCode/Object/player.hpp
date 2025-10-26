@@ -139,8 +139,9 @@ public:
 	[[nodiscard]] bool																IsEscape					()	const override	{ return m_is_escape; }
 	[[nodiscard]] std::vector<MeleeCandidateData>									GetMeleeCandidate			()	const override  { return m_melee_candidate; }
 	[[nodiscard]] std::shared_ptr<IMeleeHittable>&									GetMeleeTarget				()  override		{ return m_melee_target; }
-	[[nodiscard]] std::vector<MeleeCandidateData>									GetVisibleDownedCharacter()		const override	{ return m_visible_downed_character; }
+	[[nodiscard]] std::vector<MeleeCandidateData>									GetVisibleDownedCharacter	()	const override	{ return m_visible_downed_character; }
 	[[nodiscard]] std::shared_ptr<IMeleeHittable>&									GetTopPriorityVisibleDownedCharacter()override	{ return m_top_priority_visible_downed_character; }
+	[[nodiscard]] std::shared_ptr<IStealthKillable>&								GetStealthKillTarget		()	override		{ return m_stealth_kill_target; }
 	[[nodiscard]] std::shared_ptr<IGrabber>											GetGrabber					()  const override	{ return m_grabber; }
 	[[nodiscard]] std::shared_ptr<Gauge>											GetEscapeGauge				()	const override	{ return m_escape_gauge; }
 	#pragma endregion

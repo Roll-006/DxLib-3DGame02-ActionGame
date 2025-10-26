@@ -595,6 +595,9 @@
     <ClCompile Include="SourceCode\Part\stealth_kill_target_searcher.cpp">
       <Filter>SourceCode\Part</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\UI\stealth_kill_target_icon.cpp">
+      <Filter>SourceCode\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\character_base.hpp">
@@ -1592,6 +1595,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Event\on_near_enemy_spotted_event.hpp">
       <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\UI\stealth_kill_target_icon.hpp">
+      <Filter>SourceCode\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

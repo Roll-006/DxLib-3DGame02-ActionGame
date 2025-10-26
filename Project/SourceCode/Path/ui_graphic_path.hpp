@@ -38,13 +38,18 @@ static struct UIGraphicPath
 	#pragma region ボタン
 	const std::string KEY_F							= "Data/Graphic/UI/Button/Key/F.png";
 	const std::string PAD_A							= "Data/Graphic/UI/Button/Pad/A.png";
+	const std::string PAD_RT						= "Data/Graphic/UI/Button/Pad/RT.png";
+	const std::string MOUSE_NONE					= "Data/Graphic/UI/Button/Mouse/none.png";
+	const std::string MOUSE_LEFT					= "Data/Graphic/UI/Button/Mouse/left.png";
+	const std::string MOUSE_MIDDLE					= "Data/Graphic/UI/Button/Mouse/middle.png";
+	const std::string MOUSE_RIGHT					= "Data/Graphic/UI/Button/Mouse/right.png";
 	const std::string SUB_MENU_BUTTON_FRAME_DARK	= "Data/Graphic/UI/Button/Frame/frame_dark.png";
 	const std::string SUB_MENU_BUTTON_FRAME_LIGHT	= "Data/Graphic/UI/Button/Frame/frame_light.png";
 	const std::string SUB_MENU_SELECTING_BUTTON		= "Data/Graphic/UI/Button/Frame/selecting_button.png";
 	#pragma endregion
 
 
-	#pragma region ボタン
+	#pragma region メレー
 	const std::string MELEE_EXPLANATORY_TEXT_BOX	= "Data/Graphic/UI/Melee/explanatory_text_box.png";
 	#pragma endregion
 
