@@ -4,7 +4,7 @@ StealthKillTargetSearcher::StealthKillTargetSearcher(std::shared_ptr<Player>& pl
 	m_player(player)
 {
 	// イベントの登録
-	EventSystem::GetInstance()->Subscribe<OnNearEnemySpottedEvent>(this, &StealthKillTargetSearcher::AddStealthKillCandidate);
+	EventSystem::GetInstance()->Subscribe<OnNearEnemySpottedEvent>	(this, &StealthKillTargetSearcher::AddStealthKillCandidate);
 }
 
 StealthKillTargetSearcher::~StealthKillTargetSearcher()
@@ -16,8 +16,10 @@ StealthKillTargetSearcher::~StealthKillTargetSearcher()
 void StealthKillTargetSearcher::Update()
 {
 	m_player->RemoveStealthKillTarget();
+
 	SearchTarget();
-	RemoveStealthKillCandidate();
+
+	m_stealth_kill_candidate.clear();
 }
 
 void StealthKillTargetSearcher::AddStealthKillCandidate(const OnNearEnemySpottedEvent& event)
@@ -27,7 +29,7 @@ void StealthKillTargetSearcher::AddStealthKillCandidate(const OnNearEnemySpotted
 
 void StealthKillTargetSearcher::SearchTarget()
 {
-	if (m_stealth_kill_candidate.empty()) { return; }
+	if (m_stealth_kill_candidate.empty() || !m_player->CanSearchStealthKillTarget()) { return; }
 
 	// ステルスキル対象とならない候補者を除外
 	for (auto itr = m_stealth_kill_candidate.begin(); itr != m_stealth_kill_candidate.end(); )

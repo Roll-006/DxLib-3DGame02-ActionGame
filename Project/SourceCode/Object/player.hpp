@@ -33,28 +33,39 @@ public:
 
 	void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) override;
 	void OnDamage(const HealthPartKind part_kind, const float damage) override;
-	void OnGrabbed(const std::shared_ptr<IGrabber> grabber, const VECTOR& brabber_pos, const VECTOR& brabber_dir) override;
-	void OnRelease() override;
-
-	void AttackFrontMelee		(CharacterBase* target) override;
-	void AttackBackMelee		(CharacterBase* target) override;
-	void AttackVersatilityMelee	(CharacterBase* target) override;
 
 	void SetRemainingBulletNum(const int remaining_bullet_num) override { m_current_remaining_bullet_num = remaining_bullet_num; }
-	
+
+
+	#pragma region 掴み
+	void OnGrabbed(const std::shared_ptr<IGrabber> grabber, const VECTOR& brabber_pos, const VECTOR& brabber_dir) override;
+	void OnRelease() override;
+	#pragma endregion
+
+
+	#pragma region メレー
+	void StopSearchMeleeTarget() override { m_can_search_melee_target = false; }
+
 	void SetupFrontMelee		(const VECTOR& target_pos, const VECTOR& target_dir) override;
 	void SetupBackMelee			(const VECTOR& target_pos, const VECTOR& target_dir) override;
 	void SetupVersatilityMelee	(const VECTOR& target_pos) override;
 
-	void AddMeleeTarget(const int target_obj_handle) override;
-	void AddTopPriorityVisibleDownedCharacter(const int target_obj_handle) override;
+	void AttackFrontMelee		(CharacterBase* target) override;
+	void AttackBackMelee		(CharacterBase* target) override;
+	void AttackVersatilityMelee	(CharacterBase* target) override;
+	
+	void AddTopPriorityDownedChara	(const std::shared_ptr<IMeleeHittable>& downed_character)	override { m_top_priority_downed_chara = downed_character; }
+	void AddMeleeTarget				(const std::shared_ptr<IMeleeHittable>& melee_target)		override { m_melee_target = melee_target; }
+	void RemoveTopPriorityDownedChara()	override { m_top_priority_downed_chara = nullptr; }
+	void RemoveMeleeTarget()			override { m_melee_target = nullptr; }
+	#pragma endregion
+
+
+	#pragma region ステルスキル
+	void StopSearchStealthKillTarget() override { m_can_search_stealth_kill_target = false; }
 
 	void AddStealthKillTarget(const std::shared_ptr<IStealthKillable>& stealth_kill_target) override { m_stealth_kill_target = stealth_kill_target; }
 	void RemoveStealthKillTarget() override { m_stealth_kill_target = nullptr; }
-
-	#pragma region Event
-	void AddVisibleDownedCharacter	(const OnDownedFarEnemySpottedEvent&  event) override;
-	void AddMeleeCandidate			(const OnDownedNearEnemySpottedEvent& event) override;
 	#pragma endregion
 
 
@@ -137,23 +148,16 @@ public:
 	[[nodiscard]] bool																CanEscape					()	const override;
 	[[nodiscard]] bool																IsGrabbed					()	const override	{ return m_is_grabbed; }
 	[[nodiscard]] bool																IsEscape					()	const override	{ return m_is_escape; }
-	[[nodiscard]] std::vector<MeleeCandidateData>									GetMeleeCandidate			()	const override  { return m_melee_candidate; }
 	[[nodiscard]] std::shared_ptr<IMeleeHittable>&									GetMeleeTarget				()  override		{ return m_melee_target; }
-	[[nodiscard]] std::vector<MeleeCandidateData>									GetVisibleDownedCharacter	()	const override	{ return m_visible_downed_character; }
-	[[nodiscard]] std::shared_ptr<IMeleeHittable>&									GetTopPriorityVisibleDownedCharacter()override	{ return m_top_priority_visible_downed_character; }
+	[[nodiscard]] std::shared_ptr<IMeleeHittable>&									GetTopPriorityDownedChara	()	override		{ return m_top_priority_downed_chara; }
 	[[nodiscard]] std::shared_ptr<IStealthKillable>&								GetStealthKillTarget		()	override		{ return m_stealth_kill_target; }
+	[[nodiscard]] bool																CanSearchStealthKillTarget	()	const override	{ return m_can_search_stealth_kill_target; }
+	[[nodiscard]] bool																CanSearchMeleeTarget		()	const override	{ return m_can_search_melee_target; }
 	[[nodiscard]] std::shared_ptr<IGrabber>											GetGrabber					()  const override	{ return m_grabber; }
 	[[nodiscard]] std::shared_ptr<Gauge>											GetEscapeGauge				()	const override	{ return m_escape_gauge; }
 	#pragma endregion
 
 private:
-	void RemoveVisibleDownedCharacter()					override { m_visible_downed_character.clear(); }
-	void RemoveTopPriorityVisibleDownedCharacter()		override { m_top_priority_visible_downed_character = nullptr; }
-	void RemoveMeleeCandidate()							override { m_melee_candidate.clear(); }
-	void RemoveMeleeTarget()							override { m_melee_target = nullptr; }
-	void DecisionTopPriorityVisibleDownedCharacter()	override;
-	void DecisionMeleeTarget()							override;
-
 	void CalcInputSlopeFromPad();
 	void CalcInputSlopeFromCommand();
 
@@ -207,6 +211,8 @@ private:
 	bool										m_is_grabbed;							// 捕まれたかを判定
 	bool										m_is_escape;
 	float										m_escape_start_timer;
+	bool										m_can_search_stealth_kill_target;
+	bool										m_can_search_melee_target;
 
 	std::unordered_map<ItemKind, std::vector<std::shared_ptr<IItem>>>	m_items;							// 所持しているアイテム
 	std::unordered_map<WeaponSlotKind, std::shared_ptr<WeaponBase>>		m_current_equip_weapon;				// 現在装備している武器
@@ -214,10 +220,8 @@ private:
 	std::unordered_map<HolsterKind, std::shared_ptr<WeaponBase>>		m_attach_weapons;					// 装着している武器
 	int																	m_current_remaining_bullet_num;		// 残弾数
 	std::shared_ptr<WeaponShortcutSelecter>								m_weapon_shortcut_selecter;			// ショートカットに登録されている武器
-	std::vector<MeleeCandidateData>										m_melee_candidate;					// メレーの候補者リスト
-	std::vector<MeleeCandidateData>										m_visible_downed_character;			// ダウンしている見えている敵
 	std::shared_ptr<IMeleeHittable>										m_melee_target;
-	std::shared_ptr<IMeleeHittable>										m_top_priority_visible_downed_character;
+	std::shared_ptr<IMeleeHittable>										m_top_priority_downed_chara;
 	std::shared_ptr<IStealthKillable>									m_stealth_kill_target;
 	std::shared_ptr<IGrabber>											m_grabber;
 	std::shared_ptr<Gauge>												m_escape_gauge;

@@ -24,7 +24,7 @@ private:
 	static constexpr float			kIconSize			= 18.0f;
 	static constexpr Vector2D<int>	kScreenSize			= { 400, 400 };
 	static constexpr Vector2D<int>	kScreenCenterPos	= { static_cast<int>(kScreenSize.x * 0.5f), static_cast<int>(kScreenSize.y * 0.5f) };
-	static constexpr Vector2D<int>	kOffset				= { 35, 0 };
+	static constexpr Vector2D<int>	kGraphicOffset		= { 35, 0 };
 
 	std::shared_ptr<IStealthKillable>&		m_stealth_kill_target;
 	std::shared_ptr<ButtonGraphicGetter>	m_button_graphic_resource;

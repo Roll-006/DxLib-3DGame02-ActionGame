@@ -14,6 +14,8 @@ player_state::Shot::~Shot()
 
 void player_state::Shot::Update(std::shared_ptr<Player>& obj)
 {
+	obj->StopSearchStealthKillTarget();
+	obj->StopSearchMeleeTarget();
 	obj->SetLookDirOffsetValueForAim();
 
 	const auto gun = std::static_pointer_cast<GunBase>(obj->GetCurrentHeldWeapon());

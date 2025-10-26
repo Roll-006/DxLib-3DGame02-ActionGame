@@ -11,14 +11,16 @@ public:
 	void Update();
 
 private:
+	#pragma region Event
 	void AddStealthKillCandidate(const OnNearEnemySpottedEvent& event);
-	void RemoveStealthKillCandidate() { m_stealth_kill_candidate.clear(); }
+	#pragma endregion
+
 
 	void SearchTarget();
 
 private:
 	static constexpr float kPrioritySwitchAngle = 30.0f;
 
-	std::shared_ptr<Player>& m_player;
-	std::vector<StealthKillCandidateData> m_stealth_kill_candidate;
+	std::shared_ptr<Player>&				m_player;
+	std::vector<StealthKillCandidateData>	m_stealth_kill_candidate;
 };

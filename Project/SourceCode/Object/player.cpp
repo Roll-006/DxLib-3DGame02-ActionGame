@@ -11,17 +11,15 @@ Player::Player() :
 	m_is_grabbed							(false),
 	m_is_escape								(false),
 	m_escape_start_timer					(0.0f),
+	m_can_search_stealth_kill_target		(true),
+	m_can_search_melee_target				(true),
 	m_weapon_shortcut_selecter				(std::make_shared<WeaponShortcutSelecter>()),
 	m_melee_target							(nullptr),
-	m_top_priority_visible_downed_character	(nullptr),
+	m_top_priority_downed_chara				(nullptr),
 	m_stealth_kill_target					(nullptr),
 	m_grabber								(nullptr),
 	m_escape_gauge							(std::make_shared<Gauge>(100.0f))
 {
-	// ƒCƒxƒ“ƒg‚Ì“o˜^
-	EventSystem::GetInstance()->Subscribe<OnDownedFarEnemySpottedEvent>	(this, &Player::AddVisibleDownedCharacter);
-	EventSystem::GetInstance()->Subscribe<OnDownedNearEnemySpottedEvent>(this, &Player::AddMeleeCandidate);
-
 	m_health[HealthPartKind::kMain] = std::make_shared<Gauge>(2000.0f, 1500.0f);
 	m_prev_health = m_health.at(HealthPartKind::kMain)->GetCurrentValue();
 
@@ -71,10 +69,6 @@ Player::Player() :
 
 Player::~Player()
 {
-	// ƒCƒxƒ“ƒg‚Ì“o˜^‰ðœ
-	EventSystem::GetInstance()->Unsubscribe<OnDownedFarEnemySpottedEvent>	(this, &Player::AddVisibleDownedCharacter);
-	EventSystem::GetInstance()->Unsubscribe<OnDownedNearEnemySpottedEvent>	(this, &Player::AddMeleeCandidate);
-
 	for (const auto& item : m_items)
 	{
 		for (const auto& i : item.second)
@@ -98,14 +92,8 @@ void Player::Update()
 		m_health.at(HealthPartKind::kMain)->Decrease(500.0f);
 	}
 
-	RemoveTopPriorityVisibleDownedCharacter();
-	RemoveMeleeTarget();
 	NotifyHealth();
 	JudgeInvincible();
-	DecisionMeleeTarget();
-	DecisionTopPriorityVisibleDownedCharacter();
-	RemoveVisibleDownedCharacter();
-	RemoveMeleeCandidate();
 
 	m_is_calc_look_dir	= false;
 
@@ -119,10 +107,10 @@ void Player::Update()
 		}
 	}
 
-	m_move_dir_offset_speed	= kMoveDirOffsetSpeed;
-	m_look_dir_offset_speed	= kLookDirOffsetSpeed;
-
-	printfDx("%d\n", m_stealth_kill_target != nullptr);
+	m_move_dir_offset_speed				= kMoveDirOffsetSpeed;
+	m_look_dir_offset_speed				= kLookDirOffsetSpeed;
+	m_can_search_stealth_kill_target	= true;
+	m_can_search_melee_target			= true;
 
 	m_weapon_shortcut_selecter->Update(std::static_pointer_cast<Player>(shared_from_this()));
 	m_state					  ->Update(std::static_pointer_cast<Player>(shared_from_this()));
@@ -240,6 +228,8 @@ void Player::OnDamage(const HealthPartKind part_kind, const float damage)
 	}
 }
 
+
+#pragma region ’Í‚Ý
 void Player::OnGrabbed(const std::shared_ptr<IGrabber> grabber, const VECTOR& brabber_pos, const VECTOR& brabber_dir)
 {
 	m_is_grabbed	= true;
@@ -258,42 +248,10 @@ void Player::OnRelease()
 	m_is_grabbed	= false;
 	m_grabber		= nullptr;
 }
+#pragma endregion
 
-void Player::AttackFrontMelee(CharacterBase* target)
-{
-	// front kick
-	if (target->IsInvincible()) { return; }
 
-	const auto dir = v3d::GetNormalizedV(m_transform->GetForward(CoordinateKind::kWorld) + VGet(0.0f, 0.5f, 0.0f));
-	target->OnDamage(HealthPartKind::kMain, 1000.0f);
-	target->OnKnockback(dir, 170.0f, 100.0f);
-
-	const auto time_manager = GameTimeManager::GetInstance();
-	time_manager->SetTimeScale(TimeScaleLayerKind::kWorld,  0.07f, 0.4f);
-	time_manager->SetTimeScale(TimeScaleLayerKind::kPlayer, 0.07f, 0.4f);
-	time_manager->SetTimeScale(TimeScaleLayerKind::kEffect, 0.07f, 0.4f);
-}
-
-void Player::AttackBackMelee(CharacterBase* target)
-{
-	if (target->IsInvincible()) { return; }
-}
-
-void Player::AttackVersatilityMelee(CharacterBase* target)
-{
-	// roundhouse kick
-	if (target->IsInvincible()) { return; }
-
-	const auto dir = v3d::GetNormalizedV(m_transform->GetForward(CoordinateKind::kWorld) + VGet(0.0f, 0.5f, 0.0f));
-	target->OnDamage(HealthPartKind::kMain, 1000.0f);
-	target->OnKnockback(dir, 170.0f, 100.0f);
-
-	const auto time_manager = GameTimeManager::GetInstance();
-	time_manager->SetTimeScale(TimeScaleLayerKind::kWorld,  0.07f, 0.4f);
-	time_manager->SetTimeScale(TimeScaleLayerKind::kPlayer, 0.07f, 0.4f);
-	time_manager->SetTimeScale(TimeScaleLayerKind::kEffect, 0.07f, 0.4f);
-}
-
+#pragma region ƒƒŒ[
 void Player::SetupFrontMelee(const VECTOR& target_pos, const VECTOR& target_dir)
 {
 	// front kick
@@ -329,28 +287,39 @@ void Player::SetupVersatilityMelee(const VECTOR& target_pos)
 	RemoveMeleeTarget();
 }
 
-void Player::AddMeleeTarget(const int target_obj_handle)
+void Player::AttackFrontMelee(CharacterBase* target)
 {
-	const auto target_obj = ObjManager::GetInstance()->GetObj<ObjBase>(target_obj_handle);
-	m_melee_target = std::dynamic_pointer_cast<IMeleeHittable>(target_obj);
+	// front kick
+	if (target->IsInvincible()) { return; }
+
+	const auto dir = v3d::GetNormalizedV(m_transform->GetForward(CoordinateKind::kWorld) + VGet(0.0f, 0.5f, 0.0f));
+	target->OnDamage(HealthPartKind::kMain, 1000.0f);
+	target->OnKnockback(dir, 170.0f, 100.0f);
+
+	const auto time_manager = GameTimeManager::GetInstance();
+	time_manager->SetTimeScale(TimeScaleLayerKind::kWorld,  0.07f, 0.4f);
+	time_manager->SetTimeScale(TimeScaleLayerKind::kPlayer, 0.07f, 0.4f);
+	time_manager->SetTimeScale(TimeScaleLayerKind::kEffect, 0.07f, 0.4f);
 }
 
-void Player::AddTopPriorityVisibleDownedCharacter(const int target_obj_handle)
+void Player::AttackBackMelee(CharacterBase* target)
 {
-	const auto target_obj = ObjManager::GetInstance()->GetObj<ObjBase>(target_obj_handle);
-	m_top_priority_visible_downed_character = std::dynamic_pointer_cast<IMeleeHittable>(target_obj);
+	if (target->IsInvincible()) { return; }
 }
 
-
-#pragma region Event
-void Player::AddVisibleDownedCharacter(const OnDownedFarEnemySpottedEvent& event)
+void Player::AttackVersatilityMelee(CharacterBase* target)
 {
-	m_visible_downed_character.emplace_back(MeleeCandidateData(event.target_obj_handle, event.camera_diff_angle, event.distance_to_camera));
-}
+	// roundhouse kick
+	if (target->IsInvincible()) { return; }
 
-void Player::AddMeleeCandidate(const OnDownedNearEnemySpottedEvent& event)
-{
-	m_melee_candidate.emplace_back(MeleeCandidateData(event.target_obj_handle, event.camera_diff_angle, event.distance_to_camera));
+	const auto dir = v3d::GetNormalizedV(m_transform->GetForward(CoordinateKind::kWorld) + VGet(0.0f, 0.5f, 0.0f));
+	target->OnDamage(HealthPartKind::kMain, 1000.0f);
+	target->OnKnockback(dir, 170.0f, 100.0f);
+
+	const auto time_manager = GameTimeManager::GetInstance();
+	time_manager->SetTimeScale(TimeScaleLayerKind::kWorld,  0.07f, 0.4f);
+	time_manager->SetTimeScale(TimeScaleLayerKind::kPlayer, 0.07f, 0.4f);
+	time_manager->SetTimeScale(TimeScaleLayerKind::kEffect, 0.07f, 0.4f);
 }
 #pragma endregion
 
@@ -638,24 +607,6 @@ bool Player::CanEscape() const
 }
 #pragma endregion
 
-
-void Player::DecisionTopPriorityVisibleDownedCharacter()
-{
-	if (!(!m_visible_downed_character.empty() && m_melee_candidate.empty())) { return; }
-
-	MeleeTargetSearcher target_selecter;
-	auto melee_attacker = std::dynamic_pointer_cast<IMeleeAttackable>(shared_from_this());
-	target_selecter.SelectDownedCharacter(melee_attacker);
-}
-
-void Player::DecisionMeleeTarget()
-{
-	if (m_melee_candidate.empty()) { return; }
-
-	MeleeTargetSearcher target_selecter;
-	auto melee_attacker = std::dynamic_pointer_cast<IMeleeAttackable>(shared_from_this());
-	target_selecter.SelectMeleeTarget(melee_attacker);
-}
 
 void Player::CalcInputSlopeFromPad()
 {

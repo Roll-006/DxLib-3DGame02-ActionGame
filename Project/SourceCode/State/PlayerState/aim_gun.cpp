@@ -17,6 +17,8 @@ void player_state::AimGun::Update(std::shared_ptr<Player>& obj)
 {
 	m_elapsed_time += obj->GetDeltaTime();
 
+	obj->StopSearchStealthKillTarget();
+	obj->StopSearchMeleeTarget();
 	obj->AllowCalcLookDir();
 	obj->SetLookDirOffsetValueForAim();
 	obj->DirOfCameraForward();
