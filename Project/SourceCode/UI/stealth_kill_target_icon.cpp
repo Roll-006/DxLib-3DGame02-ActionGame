@@ -29,10 +29,19 @@ void StealthKillTargetIcon::LateUpdate()
 
 void StealthKillTargetIcon::Draw(const int main_screen_handle) const
 {
+	// ‰¼
 	if (m_stealth_kill_target)
 	{
-		DrawBillboard3D(m_icon_pos, 0.5f, 0.5f, m_icon_size, 0.0f, m_stealth_kill_icon_screen->GetScreenHandle(), TRUE);
+		const auto screen_pos = ConvWorldPosToScreenPos(m_icon_pos);
+
+		m_stealth_kill_icon_screen->GetGraphicer()->SetCenterPos(Vector2D<int>(screen_pos.x, screen_pos.y));
+		m_stealth_kill_icon_screen->Draw(true);
 	}
+
+	//if (m_stealth_kill_target)
+	//{
+	//	DrawBillboard3D(m_icon_pos, 0.5f, 0.5f, m_icon_size, 0.0f, m_stealth_kill_icon_screen->GetScreenHandle(), TRUE);
+	//}
 }
 
 void StealthKillTargetIcon::CalcResultScreenCenterPos()
