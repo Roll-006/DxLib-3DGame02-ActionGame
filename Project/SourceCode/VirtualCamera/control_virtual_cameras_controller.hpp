@@ -36,7 +36,7 @@ public:
 
 private:
 	#pragma region Event
-	void EndGrabCutscene(const EndGrabCutsceneEvent& event);
+	void EndGrabCutscene(const EndCutsceneEvent& event);
 	#pragma endregion
 
 

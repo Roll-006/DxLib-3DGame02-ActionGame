@@ -398,6 +398,8 @@
     <ClInclude Include="SourceCode\Data\input_data.hpp" />
     <ClInclude Include="SourceCode\Debugger\debugger.hpp" />
     <ClInclude Include="SourceCode\Drawer\drawer.hpp" />
+    <ClInclude Include="SourceCode\Event\on_stealth_kill_event.hpp" />
+    <ClInclude Include="SourceCode\Event\stealth_kill_event.hpp" />
     <ClInclude Include="SourceCode\Event\on_change_title_scene_event.hpp" />
     <ClInclude Include="SourceCode\Event\exit_game_event.hpp" />
     <ClInclude Include="SourceCode\Event\change_scene_event.hpp" />
@@ -409,7 +411,7 @@
     <ClInclude Include="SourceCode\Event\release_event.hpp" />
     <ClInclude Include="SourceCode\Event\near_death_event.hpp" />
     <ClInclude Include="SourceCode\Event\enter_near_death_event.hpp" />
-    <ClInclude Include="SourceCode\Event\end_grab_cutscene_event.hpp" />
+    <ClInclude Include="SourceCode\Event\end_cutscene_event.hpp" />
     <ClInclude Include="SourceCode\Event\end_rocket_launcher_cutscene_event.hpp" />
     <ClInclude Include="SourceCode\Event\event.hpp" />
     <ClInclude Include="SourceCode\Event\on_damage_to_player_event.hpp" />
@@ -417,7 +419,7 @@
     <ClInclude Include="SourceCode\Event\on_select_retro_filter_event.hpp" />
     <ClInclude Include="SourceCode\Event\on_select_normal_filter_event.hpp" />
     <ClInclude Include="SourceCode\Event\event_system.hpp" />
-    <ClInclude Include="SourceCode\Event\grabbed_event.hpp" />
+    <ClInclude Include="SourceCode\Event\on_grab_event.hpp" />
     <ClInclude Include="SourceCode\Event\grab_event.hpp" />
     <ClInclude Include="SourceCode\Event\on_hit_bullet_event.hpp" />
     <ClInclude Include="SourceCode\Event\on_shot_bullet_event.hpp" />

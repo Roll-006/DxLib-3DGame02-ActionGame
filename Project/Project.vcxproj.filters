@@ -1347,10 +1347,10 @@
     <ClInclude Include="SourceCode\Event\grab_event.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Event\grabbed_event.hpp">
+    <ClInclude Include="SourceCode\Event\on_grab_event.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Event\end_grab_cutscene_event.hpp">
+    <ClInclude Include="SourceCode\Event\end_cutscene_event.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Part\mask_creator.hpp">
@@ -1604,6 +1604,12 @@
     </ClInclude>
     <ClInclude Include="SourceCode\VirtualCamera\stealth_kill_virtual_camera_controller.hpp">
       <Filter>SourceCode\VirtualCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\stealth_kill_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\on_stealth_kill_event.hpp">
+      <Filter>SourceCode\Event</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

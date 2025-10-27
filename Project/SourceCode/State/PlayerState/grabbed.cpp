@@ -25,7 +25,7 @@ void player_state::Grabbed::LateUpdate(std::shared_ptr<Player>& obj)
 void player_state::Grabbed::Enter(std::shared_ptr<Player>& obj)
 {
 	// ’Í‚Ü‚ê‚½‚±‚Æ‚ğ‰‰oƒJƒƒ‰‚É’Ê’m
-	const GrabbedEvent event{ obj->GetModeler() };
+	const OnGrabEvent event{ obj->GetModeler() };
 	EventSystem::GetInstance()->Publish(event);
 }
 

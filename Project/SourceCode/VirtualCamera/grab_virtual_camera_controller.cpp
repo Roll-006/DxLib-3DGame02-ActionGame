@@ -9,12 +9,12 @@ GrabVirtualCameraController::GrabVirtualCameraController() :
 	m_is_active			(true),
 	m_grabber_modeler	(nullptr),
 	m_grabbed_modeler	(nullptr),
-	m_camera			(std::make_shared<VirtualCamera>(ObjName.ROCKET_LAUNCHER_ENTER_ROT_VIRTUAL_CAMERA,	BlendActivationPolicyKind::kDeactivateAllCamera)),
+	m_camera			(std::make_shared<VirtualCamera>(ObjName.GRAB_VIRTUAL_CAMERA, BlendActivationPolicyKind::kDeactivateAllCamera)),
 	m_aim_transform		(std::make_shared<Transform>())
 {
 	// イベント登録
 	EventSystem::GetInstance()->Subscribe<GrabEvent>	(this, &GrabVirtualCameraController::SetGrabberModelHandle);
-	EventSystem::GetInstance()->Subscribe<GrabbedEvent>	(this, &GrabVirtualCameraController::SetGrabbedModelHandle);
+	EventSystem::GetInstance()->Subscribe<OnGrabEvent>	(this, &GrabVirtualCameraController::SetGrabbedModelHandle);
 
 	// パラメータ設定
 	SetupCamera();
@@ -30,7 +30,7 @@ GrabVirtualCameraController::~GrabVirtualCameraController()
 {
 	// イベントの登録解除
 	EventSystem::GetInstance()->Unsubscribe<GrabEvent>		(this, &GrabVirtualCameraController::SetGrabberModelHandle);
-	EventSystem::GetInstance()->Unsubscribe<GrabbedEvent>	(this, &GrabVirtualCameraController::SetGrabbedModelHandle);
+	EventSystem::GetInstance()->Unsubscribe<OnGrabEvent>	(this, &GrabVirtualCameraController::SetGrabbedModelHandle);
 
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	cinemachine_brain->RemoveVirtualCamera(m_camera->GetCameraHandle());
@@ -45,7 +45,7 @@ GrabVirtualCameraController::~GrabVirtualCameraController()
 	m_grabbed_modeler = nullptr;
 
 	// 演出が終了したことを通知
-	const EndGrabCutsceneEvent event{};
+	const EndCutsceneEvent event{};
 	EventSystem::GetInstance()->Publish(event);
 }
 
@@ -96,7 +96,7 @@ void GrabVirtualCameraController::SetGrabberModelHandle(const GrabEvent& event)
 	m_grabber_modeler = event.modeler;
 }
 
-void GrabVirtualCameraController::SetGrabbedModelHandle(const GrabbedEvent& event)
+void GrabVirtualCameraController::SetGrabbedModelHandle(const OnGrabEvent& event)
 {
 	m_grabbed_modeler = event.modeler;
 }
@@ -127,7 +127,6 @@ void GrabVirtualCameraController::CalcAimTransform()
 
 	// 基準となるトランスフォームを設定
 	const auto center_pos	= (grabber_pos + grabbed_pos) * 0.5f;
-	const auto distance		= VSize(grabber_pos - grabbed_pos);
 	m_aim_transform->SetPos(CoordinateKind::kWorld, center_pos);
 	m_aim_transform->SetRot(CoordinateKind::kWorld, grabbed_axes.x_axis);
 }

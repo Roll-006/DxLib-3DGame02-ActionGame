@@ -1,8 +1,9 @@
 #include "stealth_kill.hpp"
 
 player_state::StealthKill::StealthKill() :
-	ActionStateBase		(static_cast<int>(player_state::ActionStateKind::kStealthKill)),
-	m_is_stop_all_state	(true)
+	ActionStateBase					(static_cast<int>(player_state::ActionStateKind::kStealthKill)),
+	m_is_stop_all_state				(true),
+	m_stealth_kill_camera_controller(nullptr)
 {
 
 }
@@ -24,11 +25,21 @@ void player_state::StealthKill::LateUpdate(std::shared_ptr<Player>& obj)
 
 void player_state::StealthKill::Enter(std::shared_ptr<Player>& obj)
 {
+	// 演出用カメラを生成
+	const auto cinemachine_brain = CinemachineBrain::GetInstance();
+	m_stealth_kill_camera_controller = std::make_shared<StealthKillVirtualCameraController>();
+	cinemachine_brain->AddVirtualCameraController(m_stealth_kill_camera_controller);
+
 	obj->SetupStealthKill();
 }
 
 void player_state::StealthKill::Exit(std::shared_ptr<Player>& obj)
 {
+	// 演出用カメラを削除
+	const auto cinemachine_brain = CinemachineBrain::GetInstance();
+	cinemachine_brain->RemoveVirtualCameraController(m_stealth_kill_camera_controller);
+	m_stealth_kill_camera_controller = nullptr;
+
 	obj->ReleaseWeapon();
 	obj->AttachWeapon(obj->GetCurrentEquipWeapon(WeaponSlotKind::kSub));
 }

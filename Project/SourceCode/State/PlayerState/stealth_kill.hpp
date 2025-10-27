@@ -3,6 +3,7 @@
 
 #include "../../Object/player.hpp"
 #include "../../Part/player_state_controller.hpp"
+#include "../../VirtualCamera/stealth_kill_virtual_camera_controller.hpp"
 
 namespace player_state
 {
@@ -22,5 +23,7 @@ namespace player_state
 
 	private:
 		bool m_is_stop_all_state;
+
+		std::shared_ptr<StealthKillVirtualCameraController>	m_stealth_kill_camera_controller;
 	};
 }

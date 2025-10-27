@@ -2,7 +2,7 @@
 #include "../Part/modeler.hpp"
 
 /// @brief �͂܂ꂽ
-struct GrabbedEvent
+struct OnGrabEvent
 {
 	std::shared_ptr<Modeler> modeler = nullptr;
 };

@@ -20,7 +20,7 @@ ControlVirtualCamerasController::ControlVirtualCamerasController(Player& player)
 	m_is_reached_recoil_peak		(true)
 {
 	// イベント登録
-	EventSystem::GetInstance()->Subscribe<EndGrabCutsceneEvent>(this, &ControlVirtualCamerasController::EndGrabCutscene);
+	EventSystem::GetInstance()->Subscribe<EndCutsceneEvent>(this, &ControlVirtualCamerasController::EndGrabCutscene);
 
 	// パラメータ設定
 	SetupForRotCamera();
@@ -35,7 +35,7 @@ ControlVirtualCamerasController::ControlVirtualCamerasController(Player& player)
 ControlVirtualCamerasController::~ControlVirtualCamerasController()
 {
 	// イベントの登録解除
-	EventSystem::GetInstance()->Unsubscribe<EndGrabCutsceneEvent>(this, &ControlVirtualCamerasController::EndGrabCutscene);
+	EventSystem::GetInstance()->Unsubscribe<EndCutsceneEvent>(this, &ControlVirtualCamerasController::EndGrabCutscene);
 
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	cinemachine_brain->RemoveVirtualCamera(m_rot_control_camera->GetCameraHandle());
@@ -90,7 +90,7 @@ void ControlVirtualCamerasController::OnRecoil(const GunBase& gun)
 
 
 #pragma region Event
-void ControlVirtualCamerasController::EndGrabCutscene(const EndGrabCutsceneEvent& event)
+void ControlVirtualCamerasController::EndGrabCutscene(const EndCutsceneEvent& event)
 {
 	// カメラをリセット
 	// TODO : 視点リセット関数を作成

@@ -6,4 +6,5 @@ enum class VirtualCameraControllerKind
 	kDead,
 	kRocketLauncherCutscene,
 	kGrabCutscene,
+	kStealthKillCutscene,
 };

@@ -425,7 +425,11 @@ void Player::SetupStealthKill()
 	m_destination_pos = target_pos - target_forward * 20.0f;
 
 	m_stealth_kill_target->OnStealthKill();
-	target_character->OnDamage(HealthPartKind::kMain, 2000.0f);
+	//target_character->OnDamage(HealthPartKind::kMain, 2000.0f);
+
+	// ’Í‚ñ‚¾‚±‚Æ‚ğ‰‰oƒJƒƒ‰‚É’Ê’m
+	const StealthKillEvent event{ m_modeler };
+	EventSystem::GetInstance()->Publish(event);
 }
 #pragma endregion
 
