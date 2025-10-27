@@ -5,13 +5,11 @@ ShareScene::ShareScene() :
 	m_is_active						(true),
 	m_scene_kind					(SceneKind::kShare),
 	m_main_camera					(std::make_shared<MainCamera>()),
-	m_share_scene_effect_object_pool(std::make_shared<ShareSceneEffectObjectPool>()),
 	m_screen_filter_creator			(std::make_shared<ScreenFilterCreator>())
 {
 	m_main_camera->AddToObjManager();
 
 	UIDrawer::GetInstance()->AddUICreator(m_screen_filter_creator);
-	ObjectPoolHolder::GetInstance()->AddObjectPool(m_share_scene_effect_object_pool);
 }
 
 ShareScene::~ShareScene()

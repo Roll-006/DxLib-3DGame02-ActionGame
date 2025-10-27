@@ -295,9 +295,6 @@
     <ClCompile Include="SourceCode\ObjectPool\play_scene_effect_object_pool.cpp">
       <Filter>SourceCode\ObjectPool</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\ObjectPool\share_scene_effect_object_pool.cpp">
-      <Filter>SourceCode\ObjectPool</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\Manager\effect_manager.cpp">
       <Filter>SourceCode\Manager</Filter>
     </ClCompile>
@@ -597,6 +594,9 @@
     </ClCompile>
     <ClCompile Include="SourceCode\UI\stealth_kill_target_icon.cpp">
       <Filter>SourceCode\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\ObjectPool\enemy_object_pool.cpp">
+      <Filter>SourceCode\ObjectPool</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -961,9 +961,6 @@
       <Filter>SourceCode\Base</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\ObjectPool\play_scene_effect_object_pool.hpp">
-      <Filter>SourceCode\ObjectPool</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\ObjectPool\share_scene_effect_object_pool.hpp">
       <Filter>SourceCode\ObjectPool</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Manager\effect_manager.hpp">
@@ -1598,6 +1595,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\UI\stealth_kill_target_icon.hpp">
       <Filter>SourceCode\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\ObjectPool\enemy_object_pool.hpp">
+      <Filter>SourceCode\ObjectPool</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

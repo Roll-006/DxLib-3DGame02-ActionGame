@@ -182,8 +182,8 @@
     <ClCompile Include="SourceCode\Manager\rifle_cartridge_manager.cpp" />
     <ClCompile Include="SourceCode\Manager\scene_manager.cpp" />
     <ClCompile Include="SourceCode\Manager\weapon_manager.cpp" />
+    <ClCompile Include="SourceCode\ObjectPool\enemy_object_pool.cpp" />
     <ClCompile Include="SourceCode\ObjectPool\title_scene_effect_object_pool.cpp" />
-    <ClCompile Include="SourceCode\ObjectPool\share_scene_effect_object_pool.cpp" />
     <ClCompile Include="SourceCode\ObjectPool\play_scene_effect_object_pool.cpp" />
     <ClCompile Include="SourceCode\ObjectPool\object_pool_holder.cpp" />
     <ClCompile Include="SourceCode\ObjectPool\rifle_cartridge_object_pool.cpp" />
@@ -511,8 +511,8 @@
     <ClInclude Include="SourceCode\Name\object_pool_name.hpp" />
     <ClInclude Include="SourceCode\Name\obj_name.hpp" />
     <ClInclude Include="SourceCode\Name\ui_creator_name.hpp" />
+    <ClInclude Include="SourceCode\ObjectPool\enemy_object_pool.hpp" />
     <ClInclude Include="SourceCode\ObjectPool\title_scene_effect_object_pool.hpp" />
-    <ClInclude Include="SourceCode\ObjectPool\share_scene_effect_object_pool.hpp" />
     <ClInclude Include="SourceCode\ObjectPool\play_scene_effect_object_pool.hpp" />
     <ClInclude Include="SourceCode\ObjectPool\object_pool_holder.hpp" />
     <ClInclude Include="SourceCode\ObjectPool\rifle_cartridge_object_pool.hpp" />

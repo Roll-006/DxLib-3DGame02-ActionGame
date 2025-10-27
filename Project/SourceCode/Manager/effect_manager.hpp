@@ -4,7 +4,6 @@
 
 #include "../ObjectPool/object_pool_holder.hpp"
 #include "../ObjectPool/play_scene_effect_object_pool.hpp"
-#include "../ObjectPool/share_scene_effect_object_pool.hpp"
 #include "../Event/event_system.hpp"
 
 class GunBase;
