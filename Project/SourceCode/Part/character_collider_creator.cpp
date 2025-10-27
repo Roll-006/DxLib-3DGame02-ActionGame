@@ -104,6 +104,27 @@ void CharacterColliderCreator::CreateMeshTrigger	(PhysicalObjBase* phsyical_obj,
 
 
 #pragma region à íuåvéZ
+void CharacterColliderCreator::CalcCapsuleColliderPos(std::shared_ptr<Modeler>& modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>>& collider)
+{
+	if (!collider.count(ColliderKind::kCollider)) { return; }
+
+	modeler->ApplyMatrix();
+	const auto model_handle = modeler->GetModelHandle();
+	const auto transform	= modeler->GetTransform();
+
+	// à íuÇéÊìæ
+	auto	   hips_m		= MV1GetFrameLocalWorldMatrix(modeler->GetModelHandle(), MV1SearchFrame(modeler->GetModelHandle(), BonePath.HIPS));
+	auto	   head_top_m	= MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, BonePath.HEAD_TOP_END));
+	const auto hips_pos		= MGetTranslateElem(hips_m);
+	const auto pos			= transform->GetPos(CoordinateKind::kWorld);
+
+	const auto capsule			= std::static_pointer_cast<Capsule>(collider.at(ColliderKind::kCollider)->GetShape());
+	const auto begin_pos		= VECTOR(hips_pos.x, pos.y + capsule->GetRadius(), hips_pos.z);
+	const auto capsule_length	= VSize(pos - MGetTranslateElem(head_top_m)) - capsule->GetRadius() * 2.0f;
+	capsule->SetSegmentBeginPos(begin_pos, true);
+	capsule->SetSegmentEndPos  (begin_pos + transform->GetUp(CoordinateKind::kWorld) * capsule_length, true);
+}
+
 void CharacterColliderCreator::CalcVisionTriggerPos	(std::shared_ptr<Modeler>& modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>>& collider)
 {
 	modeler->ApplyMatrix();

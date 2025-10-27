@@ -45,11 +45,6 @@ void Bullet::LateUpdate()
 	CalcRayCastPos();
 }
 
-void Bullet::DrawToShadowMap() const
-{
-	// ˆ—‚È‚µ
-}
-
 void Bullet::Draw() const
 {
 	if (!IsActive()) { return; }

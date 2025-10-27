@@ -79,7 +79,7 @@ void Zombie::Update()
 
 	ApplyLookDirToRot(m_look_dir.at(TimeKind::kCurrent));
 
-	m_collider_creator->CalcCapsuleColliderDirAndLength	(m_modeler, m_colliders, m_transform);
+	m_collider_creator->CalcCapsuleColliderPos	(m_modeler, m_colliders);
 	m_collider_creator->CalcVisionTriggerPos	(m_modeler, m_colliders);
 	m_collider_creator->CalcVisibleTriggerPos	(m_modeler, m_colliders);
 	m_collider_creator->CalcHeadTriggerPos		(m_modeler, m_colliders);
@@ -107,14 +107,7 @@ void Zombie::LateUpdate()
 	m_can_grab_target				= false;
 	m_on_collided_vision_trigger	= false;
 	m_has_obstacle_between_target	= false;
-	m_use_projection_velocity		= true;
-}
-
-void Zombie::DrawToShadowMap() const
-{
-	if (!IsActive()) { return; }
-
-	m_modeler->Draw();
+	m_is_using_projection_velocity		= true;
 }
 
 void Zombie::Draw() const

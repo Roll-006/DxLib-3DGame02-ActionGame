@@ -34,13 +34,6 @@ void NonCollildeRocketBomb::LateUpdate()
 	TrackLoad();
 }
 
-void NonCollildeRocketBomb::DrawToShadowMap() const
-{
-	if (!IsActive()) { return; }
-
-	m_modeler->Draw();
-}
-
 void NonCollildeRocketBomb::Draw() const
 {
 	if (!IsActive()) { return; }

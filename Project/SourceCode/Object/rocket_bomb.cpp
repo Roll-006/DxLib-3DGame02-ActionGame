@@ -50,13 +50,6 @@ void RocketBomb::LateUpdate()
 	CalcRayCastPos();
 }
 
-void RocketBomb::DrawToShadowMap() const
-{
-	if (!IsActive()) { return; }
-
-	m_modeler->Draw();
-}
-
 void RocketBomb::Draw() const
 {
 	if (!IsActive()) { return; }

@@ -28,6 +28,7 @@ static struct ObjName
 	#pragma region Œš•¨
 	const std::string HOUSE										= "house";
 	const std::string GROUND									= "ground";
+	const std::string TREES										= "trees";
 	#pragma endregion
 
 

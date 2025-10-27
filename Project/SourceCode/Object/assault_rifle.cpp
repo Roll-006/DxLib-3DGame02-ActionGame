@@ -60,14 +60,6 @@ void AssaultRifle::LateUpdate()
 	std::dynamic_pointer_cast<ObjBase>(m_magazine)->LateUpdate();
 }
 
-void AssaultRifle::DrawToShadowMap() const
-{
-	if (!IsActive()) { return; }
-
-	m_modeler->Draw();
-	std::dynamic_pointer_cast<ObjBase>(m_magazine)->DrawToShadowMap();
-}
-
 void AssaultRifle::Draw() const
 {
 	if (!IsActive()) { return; }

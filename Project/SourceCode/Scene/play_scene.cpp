@@ -10,6 +10,7 @@ PlayScene::PlayScene() :
 	m_enemy_manager					(std::make_shared<EnemyManager>()),
 	m_house							(std::make_shared<House>()),
 	m_ground						(std::make_shared<Ground>()),
+	//m_trees							(std::make_shared<Trees>()),
 	m_skydome						(std::make_shared<Skydome>()),
 	m_stealth_kill_target_searcher	(std::make_shared<StealthKillTargetSearcher>(m_player)),
 	m_melee_target_searcher			(std::make_shared<MeleeTargetSearcher>(m_player)),
@@ -23,6 +24,7 @@ PlayScene::PlayScene() :
 	m_enemy_manager	->AddToObjManager();
 	m_house			->AddToObjManager();
 	m_ground		->AddToObjManager();
+	//m_trees			->AddToObjManager();
 
 	m_enemy_manager->AttachTarget(m_player);
 
@@ -53,6 +55,7 @@ PlayScene::~PlayScene()
 	m_enemy_manager	->RemoveToObjManager();
 	m_house			->RemoveToObjManager();
 	m_ground		->RemoveToObjManager();
+	//m_trees			->RemoveToObjManager();
 
 	m_enemy_manager->DetachTarget();
 
@@ -97,6 +100,7 @@ void PlayScene::Update()
 	RifleCartridgeManager::GetInstance()->Update();
 	m_house								->Update();
 	m_ground							->Update();
+	//m_trees								->Update();
 	m_skydome							->Update();
 	m_stealth_kill_target_searcher		->Update();
 	m_melee_target_searcher				->Update();
@@ -113,6 +117,7 @@ void PlayScene::LateUpdate()
 	RifleCartridgeManager::GetInstance()->LateUpdate();
 	m_house								->LateUpdate();
 	m_ground							->LateUpdate();
+	//m_trees								->LateUpdate();
 	m_skydome							->LateUpdate();
 	m_player_ui_creator					->LateUpdate();
 }
@@ -121,11 +126,12 @@ void PlayScene::DrawToShadowMap() const
 {
 	if (SceneFader::GetInstance()->GetAlphaBlendNum() >= 255) { return; }
 
-	m_player							->DrawToShadowMap();
-	m_enemy_manager						->DrawToShadowMap();
-	RifleCartridgeManager::GetInstance()->DrawToShadowMap();
-	m_house								->DrawToShadowMap();
-	m_ground							->DrawToShadowMap();
+	m_player							->Draw();
+	m_enemy_manager						->Draw();
+	RifleCartridgeManager::GetInstance()->Draw();
+	m_house								->Draw();
+	m_ground							->Draw();
+	//m_trees								->Draw();
 }
 
 void PlayScene::Draw() const
@@ -137,6 +143,7 @@ void PlayScene::Draw() const
 	RifleCartridgeManager::GetInstance()->Draw();
 	m_house								->Draw();
 	m_ground							->Draw();
+	//m_trees								->Draw();
 	m_skydome							->Draw();
 }
 

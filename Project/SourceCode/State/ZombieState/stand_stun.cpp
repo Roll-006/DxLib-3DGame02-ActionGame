@@ -20,7 +20,6 @@ void zombie_state::StandStun::Update(std::shared_ptr<Zombie>& obj)
 		m_stun_timer += obj->GetDeltaTime();
 	}
 
-	obj->DisallowStealthKill();
 	//obj->CalcAttackIntervalTime();
 }
 

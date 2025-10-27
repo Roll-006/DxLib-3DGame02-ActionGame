@@ -37,13 +37,6 @@ void Knife::LateUpdate()
 	CalcAttackTriggerPos();
 }
 
-void Knife::DrawToShadowMap() const
-{
-	if (!IsActive()) { return; }
-
-	m_modeler->Draw();
-}
-
 void Knife::Draw() const
 {
 	if (!IsActive()) { return; }

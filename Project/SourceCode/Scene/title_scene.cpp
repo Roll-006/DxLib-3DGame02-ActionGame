@@ -124,14 +124,12 @@ void TitleScene::LateUpdate()
 
 void TitleScene::DrawToShadowMap() const
 {
-	m_title_character->DrawToShadowMap();
+	m_title_character->Draw();
 }
 
 void TitleScene::Draw() const
 {
 	m_title_character->Draw();
-
-	DrawSphere3D(VGet(0.0f, -10.0f, -60.0f), 10, 8, 0xffffff, 0xffffff, FALSE);
 }
 
 std::shared_ptr<IScene> TitleScene::ChangeScene()

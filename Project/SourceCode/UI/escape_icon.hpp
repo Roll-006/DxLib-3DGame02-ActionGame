@@ -2,6 +2,7 @@
 #include "../Interface/i_grabbable.hpp"
 #include "../Part/button_graphic_getter.hpp"
 #include "../Part/screen_creator.hpp"
+#include "../Font/font_handler.hpp"
 
 class EscapeIcon final
 {
@@ -42,4 +43,10 @@ private:
 	int										m_blur_circle_alpha_num;
 	float									m_blur_circle_scale;
 	float									m_delete_wait_timer;
+
+	int										m_font_handle;
+	std::string								m_escape_text;
+	std::string								m_hold_text;
+	Vector2D<int>							m_escape_font_size;
+	Vector2D<int>							m_hold_font_size;
 };

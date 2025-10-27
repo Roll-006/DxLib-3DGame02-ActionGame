@@ -18,8 +18,7 @@ public:
 	void Init();
 	void Update();
 	void LateUpdate();
-	void DrawToShadowMap()	const;
-	void Draw()				const;
+	void Draw() const;
 
 	void AddToObjManager();
 	void RemoveToObjManager();

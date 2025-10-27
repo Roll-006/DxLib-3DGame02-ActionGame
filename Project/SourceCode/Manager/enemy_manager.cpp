@@ -53,14 +53,6 @@ void EnemyManager::LateUpdate()
 	}
 }
 
-void EnemyManager::DrawToShadowMap() const
-{
-	for (const auto& enemy : m_enemies)
-	{
-		enemy->DrawToShadowMap();
-	}
-}
-
 void EnemyManager::Draw() const
 {
 	for (const auto& enemy : m_enemies)

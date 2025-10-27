@@ -83,7 +83,7 @@ protected:
 	float	 m_knockback_deceleration;
 
 	bool	 m_is_landing;
-	bool	 m_use_projection_velocity;	// velocityを地面に張り付けるかを判定
+	bool	 m_is_using_projection_velocity;	// velocityを地面に張り付けるかを判定
 	MassKind m_mass_kind;
 
 	std::unordered_map<ColliderKind, std::shared_ptr<Collider>> m_colliders;

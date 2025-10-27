@@ -51,17 +51,6 @@ void RifleCartridgeManager::LateUpdate()
 	}
 }
 
-void RifleCartridgeManager::DrawToShadowMap() const
-{
-	for (const auto& rifle_cartridge : m_rifle_cartridge)
-	{
-		for (const auto& part : rifle_cartridge.second)
-		{
-			part->DrawToShadowMap();
-		}
-	}
-}
-
 void RifleCartridgeManager::Draw() const
 {
 	for (const auto& rifle_cartridge : m_rifle_cartridge)
@@ -71,12 +60,6 @@ void RifleCartridgeManager::Draw() const
 			part->Draw();
 		}
 	}
-
-	//const auto pool = ObjectPoolHolder::GetInstance()->GetObjectPool(ObjectPoolName.RIFLE_CARTRIDGE_POOL);
-	//DrawFormatString(0,  80, 0xffffff, "bullet_pool_size          : %d", pool->GetPoolSize(ObjName.BULLET));
-	//DrawFormatString(0, 100, 0xffffff, "shell_casing_pool_size    : %d", pool->GetPoolSize(ObjName.SHELL_CASING));
-	//DrawFormatString(0, 120, 0xffffff, "bullet_manager_size       : %d", m_rifle_cartridge.at(ObjName.BULLET).size());
-	//DrawFormatString(0, 140, 0xffffff, "shell_casing_manager_size : %d", m_rifle_cartridge.at(ObjName.SHELL_CASING).size());
 }
 
 void RifleCartridgeManager::SearchValidRifleCartidge(GunBase& gun)

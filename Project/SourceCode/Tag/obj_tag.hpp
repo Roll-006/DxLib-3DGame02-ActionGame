@@ -12,6 +12,7 @@ static struct ObjTag
 
 	const std::string BUILDING			= "building";
 	const std::string GROUND			= "ground";
+	const std::string TREES				= "trees";
 
 	const std::string WEAPON			= "weapon";
 	const std::string BULLET			= "bullet";

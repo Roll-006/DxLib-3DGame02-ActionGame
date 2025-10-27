@@ -13,7 +13,12 @@ EscapeIcon::EscapeIcon(std::shared_ptr<IGrabbable> grab_target) :
 	m_scale_sin					(0.0f),
 	m_blur_circle_alpha_num		(255),
 	m_blur_circle_scale			(0.0f),
-	m_delete_wait_timer			(1.0f)
+	m_delete_wait_timer			(1.0f),
+	m_font_handle				(FontHandler::GetInstance()->GetFontHandle(FontName.EXPLANATORY_TEXT)),
+	m_escape_text				("脱出"),
+	m_hold_text					("HOLD"),
+	m_escape_font_size			(Vector2D<int>(GetDrawStringWidthToHandle(m_escape_text.c_str(), -1, m_font_handle), GetFontSizeToHandle(m_font_handle))),
+	m_hold_font_size			(Vector2D<int>(GetDrawStringWidthToHandle(m_hold_text  .c_str(), -1, m_font_handle), GetFontSizeToHandle(m_font_handle)))
 {
 	m_basis_circle_screen->UseScreen();
 	DrawCircle(kScreenCenterPos.x, kScreenCenterPos.y, kGaugeRadius, kBaseGaugeColor, TRUE, kGaugeThickness);
@@ -69,6 +74,16 @@ void EscapeIcon::Draw() const
 
 	// ボタンアイコン
 	m_button_icon_graphic->Draw();
+
+	DrawStringToHandle(
+		static_cast<int>((Window::kCenterPos.x - m_escape_font_size.x) * 0.5f),
+		static_cast<int>((Window::kCenterPos.y - m_escape_font_size.y) * 0.5f),
+		m_escape_text.c_str(), 0xffffff, m_font_handle);
+
+	DrawStringToHandle(
+		static_cast<int>((Window::kCenterPos.x - m_hold_font_size.x) * 0.5f),
+		static_cast<int>((Window::kCenterPos.y - m_hold_font_size.y) * 0.5f),
+		m_hold_text.c_str(), 0xffffff, m_font_handle);
 }
 
 void EscapeIcon::CalcGaugePercent()

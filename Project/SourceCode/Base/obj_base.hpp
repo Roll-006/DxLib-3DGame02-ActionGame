@@ -15,7 +15,6 @@ public:
 	virtual void Init()						abstract;
 	virtual void Update()					abstract;
 	virtual void LateUpdate()				abstract;
-	virtual void DrawToShadowMap()	const	abstract;
 	virtual void Draw()				const	abstract;
 
 	/// @brief 各マネージャーに自身を登録する

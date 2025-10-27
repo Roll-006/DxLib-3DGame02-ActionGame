@@ -5,6 +5,7 @@
 #include "../Manager/enemy_manager.hpp"
 #include "../Object/house.hpp"
 #include "../Object/ground.hpp"
+#include "../Object/trees.hpp"
 #include "../Object/skydome.hpp"
 #include "../Part/stealth_kill_target_searcher.hpp"
 #include "../Part/melee_target_searcher.hpp"
@@ -50,6 +51,7 @@ private:
 	std::shared_ptr<EnemyManager>				m_enemy_manager;
 	std::shared_ptr<House>						m_house;
 	std::shared_ptr<Ground>						m_ground;
+	//std::shared_ptr<Trees>						m_trees;
 	std::shared_ptr<Skydome>					m_skydome;
 	std::shared_ptr<StealthKillTargetSearcher>	m_stealth_kill_target_searcher;
 	std::shared_ptr<MeleeTargetSearcher>		m_melee_target_searcher;

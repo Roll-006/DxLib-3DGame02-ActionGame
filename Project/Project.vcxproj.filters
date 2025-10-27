@@ -601,6 +601,9 @@
     <ClCompile Include="SourceCode\VirtualCamera\stealth_kill_virtual_camera_controller.cpp">
       <Filter>SourceCode\VirtualCamera</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\Object\trees.cpp">
+      <Filter>SourceCode\Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\character_base.hpp">
@@ -1610,6 +1613,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Event\on_stealth_kill_event.hpp">
       <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Object\trees.hpp">
+      <Filter>SourceCode\Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

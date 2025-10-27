@@ -73,11 +73,6 @@ void RocketBombExplosionEffect::LateUpdate()
 	CalcTriggerPos();
 }
 
-void RocketBombExplosionEffect::DrawToShadowMap() const
-{
-	if (!IsActive()) { return; }
-}
-
 void RocketBombExplosionEffect::Draw() const
 {
 	if (!IsActive()) { return; }

@@ -14,7 +14,6 @@ public:
 	void Init()						override;
 	void Update()					override;
 	void LateUpdate()				override;
-	void DrawToShadowMap()	const	override;
 	void Draw()				const	override;
 
 	void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) override;

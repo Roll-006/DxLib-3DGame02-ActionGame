@@ -33,13 +33,6 @@ void AssaultRifleMagazine::LateUpdate()
 	TrackLoad();
 }
 
-void AssaultRifleMagazine::DrawToShadowMap() const
-{
-	if (!IsActive()) { return; }
-
-	m_modeler->Draw();
-}
-
 void AssaultRifleMagazine::Draw() const
 {
 	if (!IsActive()) { return; }

@@ -29,11 +29,6 @@ void Skydome::LateUpdate()
 	m_transform->SetPos(CoordinateKind::kWorld, GetCameraPosition());
 }
 
-void Skydome::DrawToShadowMap() const
-{
-	// ˆ—‚È‚µ
-}
-
 void Skydome::Draw() const
 {
 	if (!IsActive()) { return; }

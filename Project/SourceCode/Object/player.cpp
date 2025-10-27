@@ -32,7 +32,7 @@ Player::Player() :
 
 	// 初期pos・dirを設定
 	m_look_dir[TimeKind::kCurrent] = m_look_dir[TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);
-	m_transform->SetPos(CoordinateKind::kWorld, VGet(0.0f, -78.52f, 0.0f));
+	m_transform->SetPos(CoordinateKind::kWorld, VGet(362.0f, -102.0f, 109.0f));
 	m_transform->SetRot(CoordinateKind::kWorld, m_look_dir.at(TimeKind::kCurrent));
 
 	// コライダー・トリガーを設定
@@ -120,8 +120,8 @@ void Player::Update()
 	CalcLookDir();
 	CalcMoveVelocity();
 
-	m_collider_creator->CalcCapsuleColliderDirAndLength	(m_modeler, m_colliders, m_transform);
-	m_collider_creator->CalcVisibleTriggerPos			(m_modeler, m_colliders);
+	m_collider_creator->CalcCapsuleColliderPos	(m_modeler, m_colliders);
+	m_collider_creator->CalcVisibleTriggerPos	(m_modeler, m_colliders);
 
 	ApplyLookDirToRot(m_look_dir.at(TimeKind::kCurrent));
 }
@@ -141,20 +141,6 @@ void Player::LateUpdate()
 			attach_weapon.second->TrackOwnerHolster();
 			attach_weapon.second->LateUpdate();
 		}
-	}
-}
-
-void Player::DrawToShadowMap() const
-{
-	if (!IsActive()) { return; }
-
-	m_modeler->Draw();
-
-	if (m_current_held_weapon) { m_current_held_weapon->DrawToShadowMap(); }
-
-	for (const auto& attach_weapon : m_attach_weapons)
-	{
-		if (attach_weapon.second) { attach_weapon.second->DrawToShadowMap(); }
 	}
 }
 
@@ -425,7 +411,7 @@ void Player::SetupStealthKill()
 	m_destination_pos = target_pos - target_forward * 20.0f;
 
 	m_stealth_kill_target->OnStealthKill();
-	//target_character->OnDamage(HealthPartKind::kMain, 2000.0f);
+	target_character->OnDamage(HealthPartKind::kMain, 2000.0f);
 
 	// 掴んだことを演出カメラに通知
 	const StealthKillEvent event{ m_modeler };

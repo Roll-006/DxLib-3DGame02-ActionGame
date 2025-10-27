@@ -29,13 +29,6 @@ void TitleCharacter::LateUpdate()
 
 }
 
-void TitleCharacter::DrawToShadowMap() const
-{
-	if (!IsActive()) { return; }
-
-	m_modeler->Draw();
-}
-
 void TitleCharacter::Draw() const
 {
 	if (!IsActive()) { return; }

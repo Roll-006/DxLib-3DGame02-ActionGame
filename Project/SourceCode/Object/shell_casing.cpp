@@ -45,21 +45,11 @@ void ShellCasing::LateUpdate()
 	m_alive_timer += GetDeltaTime();
 }
 
-void ShellCasing::DrawToShadowMap() const
-{
-	if (!IsActive()) { return; }
-
-	m_modeler->Draw();
-}
-
 void ShellCasing::Draw() const
 {
 	if (!IsActive()) { return; }
 
 	m_modeler->Draw();
-
-	//GetCollider(ColliderKind::kCollider)	  ->GetShape()->Draw(false, 255, 0xffffff);
-	//GetCollider(ColliderKind::kLandingTrigger)->GetShape()->Draw(false,   0, 0xff0000);
 
 	DrawColliders();
 }

@@ -16,7 +16,6 @@ public:
 	void Init()						override;
 	void Update()					override;
 	void LateUpdate()				override;
-	void DrawToShadowMap()	const	override;
 	void Draw()				const	override;
 
 	void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) override;
@@ -30,7 +29,9 @@ public:
 private:
 	std::shared_ptr<Modeler> m_modeler;
 
-	static constexpr VECTOR kBasicAngle = { 0.0f, 0.0f, 0.0f };
-	static constexpr float  kBasicScale = 0.3f;
-	static constexpr VECTOR kPos		= { 0.0f, -200.0f, 1000.0f };
+	static constexpr VECTOR kBasicAngle				= { 0.0f, 0.0f, 0.0f };
+	static constexpr float  kBasicScale				= 0.27f;
+	static constexpr VECTOR kPos					= { 615.0f, -90.0f, 372.0f };
+	static constexpr VECTOR kCollisionAreaOffset	= { 0.0f, 150.0f, 0.0f };
+	static constexpr float  kCollisionAreaRadius	= 250.0f;
 };
