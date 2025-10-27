@@ -25,15 +25,14 @@ public:
 	/// @brief 非アクティブ化する(削除せずに機能を停止)
 	void Deactivate()	override { m_is_active = false; }
 
-
-	#pragma region Event
-	void Deactivate(const DeadPlayerEvent& event);
-	#pragma endregion
-
-
 	[[nodiscard]] std::string GetName()		const override { return m_name; }
 	[[nodiscard]] int		  GetPriority() const override { return m_priority; }
 	[[nodiscard]] bool		  IsActive()	const override { return m_is_active; }
+
+private:
+	#pragma region Event
+	void Deactivate(const DeadPlayerEvent& event);
+	#pragma endregion
 
 private:
 	std::string								m_name;

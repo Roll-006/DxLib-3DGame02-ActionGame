@@ -56,11 +56,11 @@ void MeleeTargetIcon::Draw(const int main_screen_handle) const
 		//m_explanatory_text_screen->UnuseScreen();
 
 		//DrawBillboard3D(m_icon_pos, 0.5f, 0.5f, m_icon_size, 0.0f, m_explanatory_text_screen->GetScreenHandle(), TRUE);
-		DrawBillboard3D(m_icon_pos, 0.5f, 0.5f, m_icon_size, 0.0f, m_melee_icon_screen->GetScreenHandle(), TRUE);
+		m_melee_icon_screen->Draw();
 	}
 	else if (m_visible_downed_character)
 	{
-		DrawBillboard3D(m_icon_pos, 0.5f, 0.5f, m_icon_size, 0.0f, m_melee_icon_screen->GetScreenHandle(), TRUE);
+		m_melee_icon_screen->Draw();
 	}
 }
 
@@ -72,6 +72,10 @@ void MeleeTargetIcon::CalcResultScreenCenterPos()
 	// DrawBillboard3D関数は距離に応じて描画サイズが変更されるため
 	// 距離に応じて拡大する
 	m_icon_size = kIconSize * distance * 0.01f;
+
+	// 3D座標をスクリーン上に変換し適用
+	const auto screen_pos = ConvWorldPosToScreenPos(m_icon_pos);
+	m_melee_icon_screen->GetGraphicer()->SetCenterPos(Vector2D<int>(screen_pos.x, screen_pos.y));
 }
 
 void MeleeTargetIcon::CreateMeleeIconScreen()

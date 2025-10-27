@@ -29,19 +29,10 @@ void StealthKillTargetIcon::LateUpdate()
 
 void StealthKillTargetIcon::Draw(const int main_screen_handle) const
 {
-	// 仮
 	if (m_stealth_kill_target)
 	{
-		const auto screen_pos = ConvWorldPosToScreenPos(m_icon_pos);
-
-		m_stealth_kill_icon_screen->GetGraphicer()->SetCenterPos(Vector2D<int>(screen_pos.x, screen_pos.y));
 		m_stealth_kill_icon_screen->Draw(true);
 	}
-
-	//if (m_stealth_kill_target)
-	//{
-	//	DrawBillboard3D(m_icon_pos, 0.5f, 0.5f, m_icon_size, 0.0f, m_stealth_kill_icon_screen->GetScreenHandle(), TRUE);
-	//}
 }
 
 void StealthKillTargetIcon::CalcResultScreenCenterPos()
@@ -52,6 +43,10 @@ void StealthKillTargetIcon::CalcResultScreenCenterPos()
 	// DrawBillboard3D関数は距離に応じて描画サイズが変更されるため
 	// 距離に応じて拡大する
 	m_icon_size = kIconSize * distance * 0.01f;
+
+	// 3D座標をスクリーン上に変換し適用
+	const auto screen_pos = ConvWorldPosToScreenPos(m_icon_pos);
+	m_stealth_kill_icon_screen->GetGraphicer()->SetCenterPos(Vector2D<int>(screen_pos.x, screen_pos.y));
 }
 
 void StealthKillTargetIcon::CreateStealthKillIconScreen()

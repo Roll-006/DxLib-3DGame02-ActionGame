@@ -27,6 +27,12 @@ public:
 	void CreateScreen();
 	void Draw();
 
+
+	#pragma region Getter
+	[[nodiscard]] int GetScreenHandle() const { return m_result_screen->GetScreenHandle(); }
+	#pragma endregion
+	
+private:
 	#pragma region Event
 	void Init				(const ChangeSceneEvent&				event);
 	void SetNearDeathFilter	(const EnterNearDeathEvent&				event);
@@ -37,11 +43,6 @@ public:
 	#pragma endregion
 
 
-	#pragma region Getter
-	[[nodiscard]] int GetScreenHandle() const { return m_result_screen->GetScreenHandle(); }
-	#pragma endregion
-	
-private:
 	void UseNormalFilter();
 	void UseCinematicFilter();
 	void UseRetroFilter();

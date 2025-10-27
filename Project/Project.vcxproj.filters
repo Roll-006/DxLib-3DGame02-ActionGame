@@ -598,6 +598,9 @@
     <ClCompile Include="SourceCode\ObjectPool\enemy_object_pool.cpp">
       <Filter>SourceCode\ObjectPool</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\VirtualCamera\stealth_kill_virtual_camera_controller.cpp">
+      <Filter>SourceCode\VirtualCamera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\character_base.hpp">
@@ -1598,6 +1601,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\ObjectPool\enemy_object_pool.hpp">
       <Filter>SourceCode\ObjectPool</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\VirtualCamera\stealth_kill_virtual_camera_controller.hpp">
+      <Filter>SourceCode\VirtualCamera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

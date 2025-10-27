@@ -66,20 +66,6 @@ void GrabVirtualCameraController::LateUpdate()
 	CalcAimTransform();
 }
 
-
-#pragma region Event
-void GrabVirtualCameraController::SetGrabberModelHandle(const GrabEvent& event)
-{
-	m_grabber_modeler = event.modeler;
-}
-
-void GrabVirtualCameraController::SetGrabbedModelHandle(const GrabbedEvent& event)
-{
-	m_grabbed_modeler = event.modeler;
-}
-#pragma endregion
-
-
 VirtualCameraControllerKind GrabVirtualCameraController::GetVirtualCameraControllerKind() const
 {
 	return m_virtual_camera_controller_kind;
@@ -102,6 +88,19 @@ std::vector<std::shared_ptr<VirtualCamera>> GrabVirtualCameraController::GetHave
 {
 	return std::vector<std::shared_ptr<VirtualCamera>>{ m_camera };
 }
+
+
+#pragma region Event
+void GrabVirtualCameraController::SetGrabberModelHandle(const GrabEvent& event)
+{
+	m_grabber_modeler = event.modeler;
+}
+
+void GrabVirtualCameraController::SetGrabbedModelHandle(const GrabbedEvent& event)
+{
+	m_grabbed_modeler = event.modeler;
+}
+#pragma endregion
 
 
 #pragma region ÉJÉÅÉâê›íË

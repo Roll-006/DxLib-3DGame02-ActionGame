@@ -12,7 +12,7 @@ public:
 	void LateUpdate();
 	void Draw() const;
 
-
+private:
 	#pragma region Event
 	void StartDamageBlinking		(const OnDamageToPlayerEvent&	event);
 	void StartNearDeathBlinking		(const NearDeathEvent&			event);

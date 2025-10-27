@@ -19,13 +19,6 @@ public:
 	void Activate()   override { m_is_active = true;  }
 	void Deactivate() override { m_is_active = false; }
 
-
-	#pragma region Event
-	void SetGrabberModelHandle(const GrabEvent&		event);
-	void SetGrabbedModelHandle(const GrabbedEvent&	event);
-	#pragma endregion
-
-
 	[[nodiscard]] VirtualCameraControllerKind GetVirtualCameraControllerKind() const override;
 	[[nodiscard]] std::shared_ptr<VirtualCamera> GetHaveVirtualCamera(const std::string& name) const override;
 	[[nodiscard]] std::vector<std::shared_ptr<VirtualCamera>> GetHaveAllVirtualCamera()  const override;
@@ -33,6 +26,12 @@ public:
 	[[nodiscard]] bool IsActive()			 const override { return m_is_active; }
 
 private:
+	#pragma region Event
+	void SetGrabberModelHandle(const GrabEvent&		event);
+	void SetGrabbedModelHandle(const GrabbedEvent&	event);
+	#pragma endregion
+
+
 	void SetupCamera();
 
 	void CalcAimTransform();

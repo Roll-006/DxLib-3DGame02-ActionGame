@@ -16,12 +16,6 @@ public:
 	void Update()		override;
 	void LateUpdate()	override;
 
-
-	#pragma region Event
-	void ActiveDeadCamera(const DeadPlayerEvent& event);
-	#pragma endregion
-
-
 	void Activate()   override { m_is_active = true; }
 	void Deactivate() override { m_is_active = false; }
 
@@ -32,6 +26,11 @@ public:
 	[[nodiscard]] bool IsActive()			 const override { return m_is_active; }
 
 private:
+	#pragma region Event
+	void ActiveDeadCamera(const DeadPlayerEvent& event);
+	#pragma endregion
+
+
 	void SetupCamera();
 
 	void CalcAimTransform();

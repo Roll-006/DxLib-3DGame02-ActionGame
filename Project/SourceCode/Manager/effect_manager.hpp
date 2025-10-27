@@ -20,6 +20,10 @@ public:
 	void ForciblyReturnPoolEffect(std::shared_ptr<Effect>& effect);
 	void ForciblyReturnPoolEffect(const int return_trigger_handle, const std::string& object_pool_name);
 
+private:
+	EffectManager();
+	~EffectManager();
+
 
 	#pragma region Event
 	/// @brief 武器が弾丸を発射した際のエフェクトを出力
@@ -36,9 +40,6 @@ public:
 	void OutputTitleSceneEffect			(const OnChangeTitleSceneEvent& event);
 	#pragma endregion
 
-private:
-	EffectManager();
-	~EffectManager();
 
 	void AddEffect(const std::shared_ptr<Effect> effect);
 

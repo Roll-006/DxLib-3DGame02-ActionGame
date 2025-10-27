@@ -26,17 +26,17 @@ public:
 	void SetAimPos(const VECTOR& aim_pos) { m_aim_pos = aim_pos; }
 
 
+	#pragma region Getter
+	[[nodiscard]] float	GetDeltaTime()  const override;
+	#pragma endregion
+
+private:
 	#pragma region Event
 	void CreateGrabCollider(const GrabEvent&	event);
 	void DeleteGrabCollider(const ReleaseEvent& event);
 	#pragma endregion
 
 
-	#pragma region Getter
-	[[nodiscard]] float	GetDeltaTime()  const override;
-	#pragma endregion
-
-private:
 	/// @brief Œ©‚é•ûŒü‚ğİ’è
 	void SetAim();
 

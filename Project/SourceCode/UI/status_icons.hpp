@@ -13,14 +13,13 @@ public:
 	void LateUpdate();
 	void Draw() const;
 
-
+private:
 	#pragma region Event
-	void ActivateCutscene(const StartRocketLauncherCutsceneEvent& event);
-	void DeactivateCutscene(const EndRocketLauncherCutsceneEvent& event);
+	void ActivateCutscene	(const StartRocketLauncherCutsceneEvent& event);
+	void DeactivateCutscene	(const EndRocketLauncherCutsceneEvent&	 event);
 	#pragma endregion
 
 
-private:
 	void CreateScreen();
 	void CalcResultScreenAlphaBlendNum();
 

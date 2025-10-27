@@ -22,12 +22,6 @@ public:
 	/// @brief e‚ªŒ‚‚½‚ê‚½Û‚ÌƒŠƒRƒCƒ‹ˆ—
 	void OnRecoil(const GunBase& gun);
 
-
-	#pragma region Event
-	void EndGrabCutscene(const EndGrabCutsceneEvent& event);
-	#pragma endregion
-
-
 	void Activate()   override { m_is_active = true; }
 	void Deactivate() override { m_is_active = false; }
 
@@ -41,6 +35,11 @@ public:
 	[[nodiscard]] bool IsActive()			 const override { return m_is_active; }
 
 private:
+	#pragma region Event
+	void EndGrabCutscene(const EndGrabCutsceneEvent& event);
+	#pragma endregion
+
+
 	void SetupForRotCamera();
 	void SetupForAimCamera();
 
