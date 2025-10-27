@@ -53,6 +53,11 @@ std::shared_ptr<IState<Player>> player_state::CrouchTurnAround::ChangeState(std:
 	{
 		return state_controller->GetState<RoundhouseKick, Player>();
 	}
+	// ステルスキル
+	if (state_controller->TryStealthKill(obj))
+	{
+		return state_controller->GetState<StealthKill, Player>();
+	}
 	// 捕まれる
 	if (state_controller->TryGrabbed(obj))
 	{

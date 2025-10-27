@@ -58,6 +58,11 @@ std::shared_ptr<IState<Player>> player_state::ActionNull::ChangeState(std::share
 	{
 		return state_controller->GetState<RoundhouseKick, Player>();
 	}
+	// ステルスキル
+	if (state_controller->TryStealthKill(obj))
+	{
+		return state_controller->GetState<StealthKill, Player>();
+	}
 	// 捕まれる
 	if (state_controller->TryGrabbed(obj))
 	{

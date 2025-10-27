@@ -75,14 +75,10 @@ void PlayerStateController::CreateState()
 void PlayerStateController::AddStopStatePair()
 {
 	m_states.at(typeid(player_state::Dead))					->AddStopState(m_states.at(typeid(player_state::Move))					->GetStateHandle());
-	//m_states.at(typeid(player_state::Dead))					->AddStopState(m_states.at(typeid(player_state::AimKnife))				->GetStateHandle());
-	//m_states.at(typeid(player_state::Dead))					->AddStopState(m_states.at(typeid(player_state::StabKnife))				->GetStateHandle());
-	//m_states.at(typeid(player_state::Dead))					->AddStopState(m_states.at(typeid(player_state::FirstSideSlashKnife))	->GetStateHandle());
-	//m_states.at(typeid(player_state::Dead))					->AddStopState(m_states.at(typeid(player_state::SecondSideSlashKnife))	->GetStateHandle());
-	//m_states.at(typeid(player_state::Dead))					->AddStopState(m_states.at(typeid(player_state::SpinningSlashKnife))	->GetStateHandle());
-	//m_states.at(typeid(player_state::Dead))					->AddStopState(m_states.at(typeid(player_state::Parry))					->GetStateHandle());
-	//m_states.at(typeid(player_state::Dead))					->AddStopState(m_states.at(typeid(player_state::AimGun))				->GetStateHandle());
-	//m_states.at(typeid(player_state::Dead))					->AddStopState(m_states.at(typeid(player_state::Reload))				->GetStateHandle());
+	//m_states.at(typeid(player_state::StealthKill))			->AddStopState(m_states.at(typeid(player_state::Move))					->GetStateHandle());
+	//m_states.at(typeid(player_state::StealthKill))			->AddStopState(m_states.at(typeid(player_state::FirstSideSlashKnife))					->GetStateHandle());
+	//m_states.at(typeid(player_state::StealthKill))			->AddStopState(m_states.at(typeid(player_state::SecondSideSlashKnife))					->GetStateHandle());
+	//m_states.at(typeid(player_state::StealthKill))			->AddStopState(m_states.at(typeid(player_state::SpinningSlashKnife))					->GetStateHandle());
 
 	m_states.at(typeid(player_state::AimKnife))				->AddStopState(m_states.at(typeid(player_state::Crouch))				->GetStateHandle());
 	m_states.at(typeid(player_state::AimKnife))				->AddStopState(m_states.at(typeid(player_state::Run))					->GetStateHandle());
@@ -410,6 +406,14 @@ bool PlayerStateController::TryRoundhouseKick(std::shared_ptr<Player>& player)
 	const auto target_obj	= std::dynamic_pointer_cast<ObjBase>(player->GetMeleeTarget());
 	
 	return melee_target->IsStandStun() || melee_target->IsCrouchStun();
+}
+
+bool PlayerStateController::TryStealthKill(std::shared_ptr<Player>& player)
+{
+	if (!player->GetStealthKillTarget())														{ return false; }
+	if (!CommandHandler::GetInstance()->IsExecute(CommandKind::kAttack, TimeKind::kCurrent))	{ return false; }
+
+	return true;
 }
 
 bool PlayerStateController::TryEquipKnifeShortcut(std::shared_ptr<Player>& player)

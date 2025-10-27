@@ -67,6 +67,7 @@ public:
 	/// @brief WARNING : TryFrontKick‚æ‚èŒã‚ÉŒÄ‚Ño‚·•K—v‚ ‚è
 	[[nodiscard]] bool TryRoundhouseKick		(std::shared_ptr<Player>& player);
 
+	[[nodiscard]] bool TryStealthKill			(std::shared_ptr<Player>& player);
 	[[nodiscard]] bool TryEquipKnifeShortcut	(std::shared_ptr<Player>& player);
 	[[nodiscard]] bool TryAimKnife				(std::shared_ptr<Player>& player);
 	[[nodiscard]] bool TryFirstSideSlashKnife	(std::shared_ptr<Player>& player);

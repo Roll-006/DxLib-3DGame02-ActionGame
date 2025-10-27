@@ -8,7 +8,11 @@ class IStealthKiller abstract
 public:
 	virtual ~IStealthKiller() = default;
 
+	virtual void UpdateStealthKill() abstract;
+
 	virtual void StopSearchStealthKillTarget() abstract;
+
+	virtual void SetupStealthKill() abstract;
 
 	virtual void AddStealthKillTarget(const std::shared_ptr<IStealthKillable>& stealth_kill_target) abstract;
 	virtual void RemoveStealthKillTarget() abstract;

@@ -38,12 +38,14 @@ public:
 
 
 	#pragma region 掴み
+	void UpdateGrabbed() override;
 	void OnGrabbed(const std::shared_ptr<IGrabber> grabber, const VECTOR& brabber_pos, const VECTOR& brabber_dir) override;
 	void OnRelease() override;
 	#pragma endregion
 
 
 	#pragma region メレー
+	void UpdateMelee()	 override;
 	void StopSearchMeleeTarget() override { m_can_search_melee_target = false; }
 
 	void SetupFrontMelee		(const VECTOR& target_pos, const VECTOR& target_dir) override;
@@ -62,7 +64,9 @@ public:
 
 
 	#pragma region ステルスキル
+	void UpdateStealthKill() override;
 	void StopSearchStealthKillTarget() override { m_can_search_stealth_kill_target = false; }
+	void SetupStealthKill() override;
 
 	void AddStealthKillTarget(const std::shared_ptr<IStealthKillable>& stealth_kill_target) override { m_stealth_kill_target = stealth_kill_target; }
 	void RemoveStealthKillTarget() override { m_stealth_kill_target = nullptr; }
@@ -117,9 +121,6 @@ public:
 	void DirOfMovement();
 	/// @brief カメラのforward(Y軸は0)方向を向く
 	void DirOfCameraForward();
-
-	void UpdateGrabbed() override;
-	void UpdateMelee()	 override;
 
 	void CalcMoveSpeed();
 	void CalcMoveSpeedStop();

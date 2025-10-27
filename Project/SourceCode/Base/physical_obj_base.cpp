@@ -18,14 +18,14 @@ PhysicalObjBase::PhysicalObjBase(const std::string& name, const std::string& tag
 
 void PhysicalObjBase::DrawColliders() const
 {
-	for (const auto& collider : m_colliders)
-	{
-		const auto shape = collider.second->GetShape();
-		if (shape != nullptr)
-		{
-			shape->Draw(true, 0, 0xffffff);
-		}
-	}
+	//for (const auto& collider : m_colliders)
+	//{
+	//	const auto shape = collider.second->GetShape();
+	//	if (shape != nullptr)
+	//	{
+	//		shape->Draw(true, 0, 0xffffff);
+	//	}
+	//}
 }
 
 void PhysicalObjBase::OnKnockback(const VECTOR& dir, const float initial_velocity, const float deceleration)
@@ -61,21 +61,6 @@ void PhysicalObjBase::RemoveHitCollider()
 		}
 	}
 }
-
-//void PhysicalObjBase::RemoveHitCollider(const int collider_handle)
-//{
-//	for (auto itr = m_hit_collider.begin(); itr != m_hit_collider.end(); )
-//	{
-//		if (itr->first->GetColliderHandle() == collider_handle)
-//		{
-//			itr = m_hit_collider.erase(itr);
-//		}
-//		else
-//		{
-//			++itr;
-//		}
-//	}
-//}
 
 void PhysicalObjBase::ApplyGravity(const float gravity_acceleration, const float max_gravity)
 {

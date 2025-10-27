@@ -145,6 +145,10 @@ void PlayerAnimator::CombineMoveNullWithAction()
 		AttachResultAnim(static_cast<int>(PlayerAnimKind::kEscapeKick));
 		break;
 
+	case player_state::ActionStateKind::kStealthKill:
+		AttachResultAnim(static_cast<int>(PlayerAnimKind::kStealthKill));
+		break;
+
 	default:
 		break;
 	}

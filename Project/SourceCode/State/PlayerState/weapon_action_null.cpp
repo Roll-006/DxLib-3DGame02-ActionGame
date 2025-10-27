@@ -56,6 +56,11 @@ std::shared_ptr<IState<Player>> player_state::WeaponActionNull::ChangeState(std:
 	{
 		return state_controller->GetState<Reload, Player>();
 	}
+	// ナイフ装備状態
+	if (static_cast<player_state::ActionStateKind>(state_controller->GetActionState(TimeKind::kPrev)->GetStateKind()) == player_state::ActionStateKind::kStealthKill)
+	{
+		return state_controller->GetState<EquipKnife, Player>();
+	}
 	// ナイフエイミング状態
 	if (state_controller->TryAimKnife(obj))
 	{

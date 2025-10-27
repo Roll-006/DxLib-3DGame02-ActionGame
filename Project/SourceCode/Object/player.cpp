@@ -230,6 +230,52 @@ void Player::OnDamage(const HealthPartKind part_kind, const float damage)
 
 
 #pragma region 掴み
+void Player::UpdateGrabbed()
+{
+	m_move_speed = 20.0f;
+
+	AllowCalcLookDir();
+	CalcCorrectMoveDir();
+	ReleaseWeapon();
+
+	const auto delta_time = GetDeltaTime();
+	m_escape_start_timer += delta_time;
+
+	if (m_escape_start_timer >= m_grabber->GetDamageOverTimeStartTime())
+	{
+		const auto command		= CommandHandler::GetInstance();
+		const auto input_mode	= command->GetInputModeKind(CommandKind::kEscape);
+		auto	   increase		= 0.0f;
+
+		switch (input_mode)
+		{
+		case InputModeKind::kSingle:
+			increase = m_escape_gauge->GetMaxValue() / 16;
+			break;
+
+		case InputModeKind::kHold:
+			increase = m_escape_gauge->GetMaxValue() / 1.8f * delta_time;
+			break;
+
+		default:
+			break;
+		}
+
+		// 入力されたかつデルタタイムが有効な場合のみ値を増加
+		if (delta_time > 0.0f && command->IsExecute(CommandKind::kEscape, TimeKind::kCurrent))
+		{
+			m_escape_gauge->Increase(increase);
+		}
+
+		// 脱出
+		if (m_escape_gauge->IsMax())
+		{
+			m_grabber->OnEscape();
+			m_is_escape = true;
+		}
+	}
+}
+
 void Player::OnGrabbed(const std::shared_ptr<IGrabber> grabber, const VECTOR& brabber_pos, const VECTOR& brabber_dir)
 {
 	m_is_grabbed	= true;
@@ -252,6 +298,18 @@ void Player::OnRelease()
 
 
 #pragma region メレー
+void Player::UpdateMelee()
+{
+	m_move_speed			= 40.0f;
+	m_look_dir_offset_speed = 7.0f;
+
+	AllowCalcLookDir();
+	CalcCorrectMoveDir();
+
+	// 強制的に無敵状態にする
+	ActivateInvincibleForcibly();
+}
+
 void Player::SetupFrontMelee(const VECTOR& target_pos, const VECTOR& target_dir)
 {
 	// front kick
@@ -320,6 +378,35 @@ void Player::AttackVersatilityMelee(CharacterBase* target)
 	time_manager->SetTimeScale(TimeScaleLayerKind::kWorld,  0.07f, 0.4f);
 	time_manager->SetTimeScale(TimeScaleLayerKind::kPlayer, 0.07f, 0.4f);
 	time_manager->SetTimeScale(TimeScaleLayerKind::kEffect, 0.07f, 0.4f);
+}
+#pragma endregion
+
+
+#pragma region ステルスキル
+void Player::UpdateStealthKill()
+{
+	m_move_speed			= 50.0f;
+	m_look_dir_offset_speed = 8.0f;
+
+	AllowCalcLookDir();
+	CalcCorrectMoveDir();
+
+	// 強制的に無敵状態にする
+	ActivateInvincibleForcibly();
+
+	DetachWeapon(GetCurrentEquipWeapon(WeaponSlotKind::kSub));
+	HoldWeapon	(GetCurrentEquipWeapon(WeaponSlotKind::kSub));
+}
+
+void Player::SetupStealthKill()
+{
+	const auto target_obj		= std::dynamic_pointer_cast<ObjBase>(m_stealth_kill_target);
+	const auto target_transform = target_obj->GetTransform();
+	const auto target_pos		= target_transform->GetPos(CoordinateKind::kWorld);
+	const auto target_forward	= target_transform->GetForward(CoordinateKind::kWorld);
+
+	m_look_dir.at(TimeKind::kNext) = target_forward;
+	m_destination_pos = target_pos - target_forward * 24.0f;
 }
 #pragma endregion
 
@@ -433,63 +520,6 @@ void Player::DirOfMovement()
 void Player::DirOfCameraForward()
 {
 	m_look_dir.at(TimeKind::kNext) = GetMoveForward();
-}
-
-void Player::UpdateGrabbed()
-{
-	m_move_speed = 20.0f;
-
-	AllowCalcLookDir();
-	CalcCorrectMoveDir();
-	ReleaseWeapon();
-
-	const auto delta_time = GetDeltaTime();
-	m_escape_start_timer += delta_time;
-
-	if (m_escape_start_timer >= m_grabber->GetDamageOverTimeStartTime())
-	{
-		const auto command		= CommandHandler::GetInstance();
-		const auto input_mode	= command->GetInputModeKind(CommandKind::kEscape);
-		auto	   increase		= 0.0f;
-
-		switch (input_mode)
-		{
-		case InputModeKind::kSingle:
-			increase = m_escape_gauge->GetMaxValue() / 16;
-			break;
-
-		case InputModeKind::kHold:
-			increase = m_escape_gauge->GetMaxValue() / 1.8f * delta_time;
-			break;
-
-		default:
-			break;
-		}
-
-		// 入力されたかつデルタタイムが有効な場合のみ値を増加
-		if (delta_time > 0.0f && command->IsExecute(CommandKind::kEscape, TimeKind::kCurrent))
-		{
-			m_escape_gauge->Increase(increase);
-		}
-
-		// 脱出
-		if (m_escape_gauge->IsMax())
-		{
-			m_grabber->OnEscape();
-			m_is_escape = true;
-		}
-	}
-}
-
-void Player::UpdateMelee()
-{
-	m_move_speed = 20.0f;
-
-	AllowCalcLookDir();
-	CalcCorrectMoveDir();
-
-	// 強制的に無敵状態にする
-	ActivateInvincibleForcibly();
 }
 
 void Player::CalcMoveSpeed()
