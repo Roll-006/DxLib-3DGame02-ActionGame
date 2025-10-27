@@ -23,8 +23,8 @@ StealthKillTargetIcon::~StealthKillTargetIcon()
 
 void StealthKillTargetIcon::LateUpdate()
 {
-	CalcResultScreenCenterPos();
 	CreateStealthKillIconScreen();
+	CalcResultScreenCenterPos();
 }
 
 void StealthKillTargetIcon::Draw(const int main_screen_handle) const

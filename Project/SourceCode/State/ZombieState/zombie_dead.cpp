@@ -14,7 +14,7 @@ zombie_state::Dead::~Dead()
 
 void zombie_state::Dead::Update(std::shared_ptr<Zombie>& obj)
 {
-
+	obj->DisallowStealthKill();
 }
 
 void zombie_state::Dead::LateUpdate(std::shared_ptr<Zombie>& obj)

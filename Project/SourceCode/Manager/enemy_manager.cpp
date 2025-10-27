@@ -4,7 +4,7 @@ EnemyManager::EnemyManager()
 {
 	// イベント登録
 	EventSystem::GetInstance()->Subscribe<ReleaseEvent>	(this, &EnemyManager::NotifyAllowAction);
-	EventSystem::GetInstance()->Subscribe<GrabEvent>	(this, &EnemyManager::NotifyStopActionForcibly);
+	EventSystem::GetInstance()->Subscribe<GrabEvent>	(this, &EnemyManager::NotifyDisallowActionForcibly);
 
 	// 初期位置・向きを設定
 	// TODO : 仮で3体配置。のちに変更。
@@ -26,7 +26,7 @@ EnemyManager::~EnemyManager()
 {
 	// イベントの登録解除
 	EventSystem::GetInstance()->Unsubscribe<ReleaseEvent>	(this, &EnemyManager::NotifyAllowAction);
-	EventSystem::GetInstance()->Unsubscribe<GrabEvent>		(this, &EnemyManager::NotifyStopActionForcibly);
+	EventSystem::GetInstance()->Unsubscribe<GrabEvent>		(this, &EnemyManager::NotifyDisallowActionForcibly);
 }
 
 void EnemyManager::Init()
@@ -113,14 +113,14 @@ void EnemyManager::NotifyAllowAction(const ReleaseEvent& event)
 	}
 }
 
-void EnemyManager::NotifyStopActionForcibly(const GrabEvent& event)
+void EnemyManager::NotifyDisallowActionForcibly(const GrabEvent& event)
 {
 	for (const auto& enemy : m_enemies)
 	{
 		// 掴んだ本人以外の敵の行動はすべて停止させる
 		if(event.enemy_handle != enemy->GetEnemyHandle())
 		{
-			enemy->OnStopActionForcibly();
+			enemy->OnDisallowActionForcibly();
 		}
 	}
 }

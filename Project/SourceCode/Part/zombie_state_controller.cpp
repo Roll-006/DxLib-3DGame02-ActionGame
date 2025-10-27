@@ -311,6 +311,11 @@ bool ZombieStateController::TryRun(std::shared_ptr<Zombie>& zombie)
 	return distance > 160.0f;
 }
 
+bool ZombieStateController::TryStealthKilled(std::shared_ptr<Zombie>& zombie)
+{
+	return zombie->IsStealthKilled();
+}
+
 bool ZombieStateController::TryGrabRun()
 {
 	const auto ai_state_kind = static_cast<zombie_state::AIStateKind>(GetAIState(TimeKind::kCurrent)->GetStateKind());

@@ -38,9 +38,9 @@ MeleeTargetIcon::~MeleeTargetIcon()
 
 void MeleeTargetIcon::LateUpdate()
 {
-	CalcResultScreenCenterPos();
 	CreateMeleeIconScreen();
 	CreateDownIconScreen();
+	CalcResultScreenCenterPos();
 }
 
 void MeleeTargetIcon::Draw(const int main_screen_handle) const

@@ -18,6 +18,8 @@ void zombie_state::Knockback::Update(std::shared_ptr<Zombie>& obj)
 	{
 		obj->CalcAttackIntervalTime();
 	}
+
+	obj->DisallowStealthKill();
 }
 
 void zombie_state::Knockback::LateUpdate(std::shared_ptr<Zombie>& obj)

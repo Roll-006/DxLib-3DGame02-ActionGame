@@ -38,6 +38,13 @@ void StealthKillTargetSearcher::SearchTarget()
 		const auto candidate_obj	= ObjManager::GetInstance()->GetObj<ObjBase>(itr->target_obj_handle);
 		const auto stealth_killable = std::dynamic_pointer_cast<IStealthKillable>(candidate_obj);
 
+		// ステルスキルが許可されていない場合は除外
+		if (!stealth_killable->IsAllowStealthKill())
+		{
+			itr = m_stealth_kill_candidate.erase(itr);
+			continue;
+		}
+
 		// メレー対象かつ背後にいる場合は残す
 		if (std::dynamic_pointer_cast<ObjBase>(m_player->GetMeleeTarget()) == candidate_obj)
 		{

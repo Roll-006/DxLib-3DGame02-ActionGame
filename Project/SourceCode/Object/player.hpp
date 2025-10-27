@@ -41,6 +41,12 @@ public:
 	void UpdateGrabbed() override;
 	void OnGrabbed(const std::shared_ptr<IGrabber> grabber, const VECTOR& brabber_pos, const VECTOR& brabber_dir) override;
 	void OnRelease() override;
+
+	[[nodiscard]] std::shared_ptr<IGrabber> GetGrabber()		const override	{ return m_grabber; }
+	[[nodiscard]] std::shared_ptr<Gauge>	GetEscapeGauge()	const override	{ return m_escape_gauge; }
+	[[nodiscard]] bool						CanEscape()			const override;
+	[[nodiscard]] bool						IsGrabbed()			const override	{ return m_is_grabbed; }
+	[[nodiscard]] bool						IsEscape()			const override	{ return m_is_escape; }
 	#pragma endregion
 
 
@@ -48,9 +54,9 @@ public:
 	void UpdateMelee()	 override;
 	void StopSearchMeleeTarget() override { m_can_search_melee_target = false; }
 
-	void SetupFrontMelee		(const VECTOR& target_pos, const VECTOR& target_dir) override;
-	void SetupBackMelee			(const VECTOR& target_pos, const VECTOR& target_dir) override;
-	void SetupVersatilityMelee	(const VECTOR& target_pos) override;
+	void SetupFrontMelee()			override;
+	void SetupBackMelee	()			override;
+	void SetupVersatilityMelee()	override;
 
 	void AttackFrontMelee		(CharacterBase* target) override;
 	void AttackBackMelee		(CharacterBase* target) override;
@@ -60,6 +66,10 @@ public:
 	void AddMeleeTarget				(const std::shared_ptr<IMeleeHittable>& melee_target)		override { m_melee_target = melee_target; }
 	void RemoveTopPriorityDownedChara()	override { m_top_priority_downed_chara = nullptr; }
 	void RemoveMeleeTarget()			override { m_melee_target = nullptr; }
+
+	[[nodiscard]] std::shared_ptr<IMeleeHittable>&	GetMeleeTarget()					override	{ return m_melee_target; }
+	[[nodiscard]] std::shared_ptr<IMeleeHittable>&	GetTopPriorityDownedChara()			override	{ return m_top_priority_downed_chara; }
+	[[nodiscard]] bool								CanSearchMeleeTarget()		const	override	{ return m_can_search_melee_target; }
 	#pragma endregion
 
 
@@ -70,6 +80,9 @@ public:
 
 	void AddStealthKillTarget(const std::shared_ptr<IStealthKillable>& stealth_kill_target) override { m_stealth_kill_target = stealth_kill_target; }
 	void RemoveStealthKillTarget() override { m_stealth_kill_target = nullptr; }
+
+	[[nodiscard]] std::shared_ptr<IStealthKillable>&	GetStealthKillTarget()					override	{ return m_stealth_kill_target; }
+	[[nodiscard]] bool									CanSearchStealthKillTarget()	const	override	{ return m_can_search_stealth_kill_target; }
 	#pragma endregion
 
 
@@ -108,6 +121,13 @@ public:
 	void AttachWeapon	(const int obj_handle)						override;
 	void DetachWeapon	(const std::shared_ptr<WeaponBase>& weapon)	override;
 	void DetachWeapon	(const HolsterKind holster_kind)			override;
+
+	[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentEquipWeapon		(const WeaponSlotKind slot_kind) const override;
+	[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentHeldWeapon		()	override;
+	[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentAttachWeapon		(const HolsterKind holster_kind) const override;
+	[[nodiscard]] WeaponKind					GetCurrentEquipWeaponKind	(const WeaponSlotKind slot_kind) override;
+	[[nodiscard]] WeaponKind					GetCurrentHeldWeaponKind	()	override;
+	[[nodiscard]] WeaponKind					GetCurrentAttachWeaponKind	(const HolsterKind holster_kind) const override;
 	#pragma endregion
 
 
@@ -137,25 +157,9 @@ public:
 	[[nodiscard]] std::shared_ptr<BonePosCorrector>									GetBonePosCorrector			()	const			{ return m_bone_pos_corrector; }
 	[[nodiscard]] std::vector<std::shared_ptr<IItem>>								GetCurrentHaveItem			(const ItemKind item_kind) const { return m_items.at(item_kind); }
 	[[nodiscard]] std::unordered_map<WeaponSlotKind, std::shared_ptr<WeaponBase>>&	GetCurrentEquipWeapons		()					{ return m_current_equip_weapon; }
-	[[nodiscard]] std::shared_ptr<WeaponBase>										GetCurrentEquipWeapon		(const WeaponSlotKind slot_kind) const override;
-	[[nodiscard]] std::shared_ptr<WeaponBase>										GetCurrentHeldWeapon		()	override;
-	[[nodiscard]] std::shared_ptr<WeaponBase>										GetCurrentAttachWeapon		(const HolsterKind holster_kind) const override;
-	[[nodiscard]] WeaponKind														GetCurrentEquipWeaponKind	(const WeaponSlotKind slot_kind) override;
-	[[nodiscard]] WeaponKind														GetCurrentHeldWeaponKind	()	override;
-	[[nodiscard]] WeaponKind														GetCurrentAttachWeaponKind	(const HolsterKind holster_kind) const override;
 	[[nodiscard]] std::shared_ptr<WeaponShortcutSelecter>							GetWeaponShortcutSelecter	()	const			{ return m_weapon_shortcut_selecter; }
 	[[nodiscard]] float																GetMoveSpeed				()	const			{ return m_move_speed; }
 	[[nodiscard]] int																GetCurrentRemainingBulletNum()	const override	{ return m_current_remaining_bullet_num; }
-	[[nodiscard]] bool																CanEscape					()	const override;
-	[[nodiscard]] bool																IsGrabbed					()	const override	{ return m_is_grabbed; }
-	[[nodiscard]] bool																IsEscape					()	const override	{ return m_is_escape; }
-	[[nodiscard]] std::shared_ptr<IMeleeHittable>&									GetMeleeTarget				()  override		{ return m_melee_target; }
-	[[nodiscard]] std::shared_ptr<IMeleeHittable>&									GetTopPriorityDownedChara	()	override		{ return m_top_priority_downed_chara; }
-	[[nodiscard]] std::shared_ptr<IStealthKillable>&								GetStealthKillTarget		()	override		{ return m_stealth_kill_target; }
-	[[nodiscard]] bool																CanSearchStealthKillTarget	()	const override	{ return m_can_search_stealth_kill_target; }
-	[[nodiscard]] bool																CanSearchMeleeTarget		()	const override	{ return m_can_search_melee_target; }
-	[[nodiscard]] std::shared_ptr<IGrabber>											GetGrabber					()  const override	{ return m_grabber; }
-	[[nodiscard]] std::shared_ptr<Gauge>											GetEscapeGauge				()	const override	{ return m_escape_gauge; }
 	#pragma endregion
 
 private:

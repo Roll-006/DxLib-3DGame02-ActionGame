@@ -26,9 +26,32 @@ public:
 	void AttachTarget(const std::shared_ptr<CharacterBase>& target_character) override;
 	void DetachTarget() override;
 	
-	void Grab()				override;
-	void Release()			override;
-	void OnEscape()			override;
+
+	#pragma region 掴み
+	void Grab()			override;
+	void Release()		override;
+	void OnEscape()		override;
+
+	[[nodiscard]] float GetDamageOverTimeStartTime()	const override	{ return kDamageOverTimeStartTime; }
+	[[nodiscard]] bool	IsTargetEscaped()				const override  { return m_is_target_escaped; }
+	#pragma endregion
+
+
+	#pragma region メレー
+	[[nodiscard]] bool  IsStandStun()  const override;
+	[[nodiscard]] bool  IsCrouchStun() const override;
+	#pragma endregion
+
+
+	#pragma region ステルスキル
+	void OnStealthKill()		override;
+	void ExitStealthKilled()	override;
+	void DisallowStealthKill()	override { m_is_allow_stealth_kill = false; }
+
+	[[nodiscard]] bool IsAllowStealthKill()		const override	{ return m_is_allow_stealth_kill; }
+	[[nodiscard]] bool IsStealthKillerInSight()	const override	{ return IsTargetInSight(); }
+	[[nodiscard]] bool IsStealthKilled()		const override	{ return m_on_stealth_kill; }
+	#pragma endregion
 
 
 	#pragma region State
@@ -44,14 +67,9 @@ public:
 
 
 	#pragma region Getter
-	[[nodiscard]] float	GetDeltaTime()					const override;
-	[[nodiscard]] std::shared_ptr<ZombieStateController> GetStateController() const { return m_state; }
-	[[nodiscard]] float GetDamageOverTimeStartTime()	const override	{ return kDamageOverTimeStartTime; }
-	[[nodiscard]] bool  CanGrabTraget()					const			{ return m_can_grab_target; }
-	[[nodiscard]] bool  IsStandStun()					const override;
-	[[nodiscard]] bool  IsCrouchStun()					const override;
-	[[nodiscard]] bool	IsTargetEscaped()				const override  { return m_is_target_escaped; }
-	[[nodiscard]] bool  IsStealthKillerInSight()		const override	{ return IsTargetInSight(); }
+	[[nodiscard]] float										GetDeltaTime()			const override;
+	[[nodiscard]] std::shared_ptr<ZombieStateController>	GetStateController()	const	{ return m_state; }
+	[[nodiscard]] bool										CanGrabTraget()			const	{ return m_can_grab_target; }
 	#pragma endregion
 
 private:
@@ -92,6 +110,8 @@ private:
 private:
 	std::shared_ptr<ZombieStateController> m_state;
 
-	bool	m_can_grab_target;
-	bool	m_is_target_escaped;
+	bool m_can_grab_target;
+	bool m_is_target_escaped;
+	bool m_is_allow_stealth_kill;
+	bool m_on_stealth_kill;
 };

@@ -21,7 +21,7 @@ public:
 	/// @brief 1/2ÇÃéûä‘Ç™ïtó^Ç≥ÇÍÇÈ
 	void OnAllowAction();
 	/// @brief çsìÆÇ™ã≠êßìIÇ…í‚é~Ç≥ÇπÇÁÇÍÇÈ
-	void OnStopActionForcibly() { m_is_stop_action_forcibly = true; }
+	void OnDisallowActionForcibly() { m_is_disallow_action_forcibly = true; }
 
 	[[nodiscard]] int  GetEnemyHandle()		const { return m_enemy_handle; }
 	[[nodiscard]] bool IsTargetInSight()	const { return !m_is_lost_target; }
@@ -36,7 +36,7 @@ protected:
 	float m_attack_interval_time;
 	float m_attack_interval_timer;
 	bool  m_can_action;
-	bool  m_is_stop_action_forcibly;
+	bool  m_is_disallow_action_forcibly;
 
 	bool  m_on_collided_vision_trigger;
 	bool  m_has_obstacle_between_target;

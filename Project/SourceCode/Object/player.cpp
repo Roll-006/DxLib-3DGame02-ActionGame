@@ -173,8 +173,8 @@ void Player::Draw() const
 
 	DrawColliders();
 
-	//const auto p = m_transform->GetPos(CoordinateKind::kWorld);
-	//printfDx("%f, %f, %f\n", p.x, p.y, p.z);
+	const auto p = m_transform->GetPos(CoordinateKind::kWorld);
+	printfDx("%f, %f, %f\n", p.x, p.y, p.z);
 }
 
 void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
@@ -294,6 +294,11 @@ void Player::OnRelease()
 	m_is_grabbed	= false;
 	m_grabber		= nullptr;
 }
+
+bool Player::CanEscape() const
+{
+	return m_grabber ? m_escape_start_timer >= m_grabber->GetDamageOverTimeStartTime() : false;
+}
 #pragma endregion
 
 
@@ -310,29 +315,40 @@ void Player::UpdateMelee()
 	ActivateInvincibleForcibly();
 }
 
-void Player::SetupFrontMelee(const VECTOR& target_pos, const VECTOR& target_dir)
+void Player::SetupFrontMelee()
 {
 	// front kick
+	const auto target_obj		= std::dynamic_pointer_cast<ObjBase>(m_melee_target);
+	const auto target_transform = target_obj->GetTransform();
+	const auto target_pos		= target_transform->GetPos(CoordinateKind::kWorld);
+	const auto target_forward	= target_transform->GetForward(CoordinateKind::kWorld);
 
-	m_look_dir.at(TimeKind::kNext) = -target_dir;
-	m_destination_pos = target_pos + target_dir * 24.0f;
+	m_look_dir.at(TimeKind::kNext) = -target_forward;
+	m_destination_pos = target_pos + target_forward * 24.0f;
 
 	RemoveMeleeTarget();
 }
 
-void Player::SetupBackMelee(const VECTOR& target_pos, const VECTOR& target_dir)
+void Player::SetupBackMelee()
 {
 	// suplex
+	const auto target_obj		= std::dynamic_pointer_cast<ObjBase>(m_melee_target);
+	const auto target_transform = target_obj->GetTransform();
+	const auto target_pos		= target_transform->GetPos(CoordinateKind::kWorld);
+	const auto target_forward	= target_transform->GetForward(CoordinateKind::kWorld);
 
-	m_look_dir.at(TimeKind::kNext) = target_dir;
-	m_destination_pos = target_pos - target_dir * 24.0f;
+	m_look_dir.at(TimeKind::kNext) = target_forward;
+	m_destination_pos = target_pos - target_forward * 24.0f;
 
 	RemoveMeleeTarget();
 }
 
-void Player::SetupVersatilityMelee(const VECTOR& target_pos)
+void Player::SetupVersatilityMelee()
 {
 	// roundhouse kick
+	const auto target_obj		= std::dynamic_pointer_cast<ObjBase>(m_melee_target);
+	const auto target_transform = target_obj->GetTransform();
+	const auto target_pos		= target_transform->GetPos(CoordinateKind::kWorld);
 
 	const auto pos				= m_transform->GetPos(CoordinateKind::kWorld);
 	const auto pos_y0			= VGet(pos.x, 0.0f, pos.z);
@@ -385,7 +401,7 @@ void Player::AttackVersatilityMelee(CharacterBase* target)
 #pragma region ステルスキル
 void Player::UpdateStealthKill()
 {
-	m_move_speed			= 50.0f;
+	m_move_speed			= 60.0f;
 	m_look_dir_offset_speed = 8.0f;
 
 	AllowCalcLookDir();
@@ -400,13 +416,16 @@ void Player::UpdateStealthKill()
 
 void Player::SetupStealthKill()
 {
-	const auto target_obj		= std::dynamic_pointer_cast<ObjBase>(m_stealth_kill_target);
-	const auto target_transform = target_obj->GetTransform();
+	const auto target_character	= std::dynamic_pointer_cast<CharacterBase>(m_stealth_kill_target);
+	const auto target_transform = target_character->GetTransform();
 	const auto target_pos		= target_transform->GetPos(CoordinateKind::kWorld);
 	const auto target_forward	= target_transform->GetForward(CoordinateKind::kWorld);
 
 	m_look_dir.at(TimeKind::kNext) = target_forward;
-	m_destination_pos = target_pos - target_forward * 24.0f;
+	m_destination_pos = target_pos - target_forward * 20.0f;
+
+	m_stealth_kill_target->OnStealthKill();
+	target_character->OnDamage(HealthPartKind::kMain, 2000.0f);
 }
 #pragma endregion
 
@@ -487,6 +506,36 @@ void Player::DetachWeapon(const HolsterKind holster_kind)
 {
 	m_attach_weapons[holster_kind]->DetachOwner();
 	m_attach_weapons.erase(holster_kind);
+}
+
+std::shared_ptr<WeaponBase> Player::GetCurrentEquipWeapon(const WeaponSlotKind slot_kind) const
+{
+	return m_current_equip_weapon.count(slot_kind) ? m_current_equip_weapon.at(slot_kind) : nullptr;
+}
+
+std::shared_ptr<WeaponBase> Player::GetCurrentHeldWeapon()
+{
+	return m_current_held_weapon;
+}
+
+std::shared_ptr<WeaponBase> Player::GetCurrentAttachWeapon(const HolsterKind holster_kind) const
+{
+	return m_attach_weapons.count(holster_kind) ? m_attach_weapons.at(holster_kind) : nullptr;
+}
+
+WeaponKind Player::GetCurrentEquipWeaponKind(const WeaponSlotKind slot_kind)
+{
+	return m_current_equip_weapon.count(slot_kind) ? m_current_equip_weapon.at(slot_kind)->GetWeaponKind() : WeaponKind::kNone;
+}
+
+WeaponKind Player::GetCurrentHeldWeaponKind()
+{
+	return m_current_held_weapon ? m_current_held_weapon->GetWeaponKind() : WeaponKind::kNone;
+}
+
+WeaponKind Player::GetCurrentAttachWeaponKind(const HolsterKind holster_kind) const
+{
+	return m_attach_weapons.count(holster_kind) ? m_attach_weapons.at(holster_kind)->GetWeaponKind() : WeaponKind::kNone;
 }
 #pragma endregion
 
@@ -599,41 +648,6 @@ float Player::GetDeltaTime() const
 {
 	const auto time_manager = GameTimeManager::GetInstance();
 	return time_manager->GetDeltaTime(TimeScaleLayerKind::kPlayer);
-}
-
-std::shared_ptr<WeaponBase> Player::GetCurrentEquipWeapon(const WeaponSlotKind slot_kind) const
-{
-	return m_current_equip_weapon.count(slot_kind) ? m_current_equip_weapon.at(slot_kind) : nullptr;
-}
-
-std::shared_ptr<WeaponBase> Player::GetCurrentHeldWeapon()
-{
-	return m_current_held_weapon;
-}
-
-std::shared_ptr<WeaponBase> Player::GetCurrentAttachWeapon(const HolsterKind holster_kind) const
-{
-	return m_attach_weapons.count(holster_kind) ? m_attach_weapons.at(holster_kind) : nullptr;
-}
-
-WeaponKind Player::GetCurrentEquipWeaponKind(const WeaponSlotKind slot_kind)
-{
-	return m_current_equip_weapon.count(slot_kind) ? m_current_equip_weapon.at(slot_kind)->GetWeaponKind() : WeaponKind::kNone;
-}
-
-WeaponKind Player::GetCurrentHeldWeaponKind()
-{
-	return m_current_held_weapon ? m_current_held_weapon->GetWeaponKind() : WeaponKind::kNone;
-}
-
-WeaponKind Player::GetCurrentAttachWeaponKind(const HolsterKind holster_kind) const
-{
-	return m_attach_weapons.count(holster_kind) ? m_attach_weapons.at(holster_kind)->GetWeaponKind() : WeaponKind::kNone;
-}
-
-bool Player::CanEscape() const
-{
-	return m_grabber ? m_escape_start_timer >= m_grabber->GetDamageOverTimeStartTime() : false;
 }
 #pragma endregion
 

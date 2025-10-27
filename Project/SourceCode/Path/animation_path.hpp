@@ -31,7 +31,8 @@ static struct AnimationPath
 	const std::string FLYING_KNOCKBACK_UP				= "Data/Animation/flying_knockback_up.mv1";
 	const std::string FLYING_KNOCKBACK_DOWN				= "Data/Animation/flying_knockback_down.mv1";
 	const std::string BACKWARD_KNOCKBACK				= "Data/Animation/backward_knockback.mv1";
-	const std::string STAND_UP_ZOMBIE					= "Data/Animation/stand_up_zombie.mv1";
+	const std::string STAND_UP_ZOMBIE_01				= "Data/Animation/stand_up_zombie_01.mv1";
+	const std::string STAND_UP_ZOMBIE_02				= "Data/Animation/stand_up_zombie_02.mv1";
 	#pragma endregion
 
 

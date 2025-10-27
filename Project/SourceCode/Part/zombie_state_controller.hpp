@@ -55,6 +55,7 @@ public:
 	[[nodiscard]] bool TryActionNullForcibly(std::shared_ptr<Zombie>& zombie);
 	[[nodiscard]] bool TryWalk				(std::shared_ptr<Zombie>& zombie);
 	[[nodiscard]] bool TryRun				(std::shared_ptr<Zombie>& zombie);
+	[[nodiscard]] bool TryStealthKilled		(std::shared_ptr<Zombie>& zombie);
 	[[nodiscard]] bool TryGrabRun			();
 	[[nodiscard]] bool TryKnockback			(std::shared_ptr<Zombie>& zombie);
 	[[nodiscard]] bool TryDead				(std::shared_ptr<Zombie>& zombie);

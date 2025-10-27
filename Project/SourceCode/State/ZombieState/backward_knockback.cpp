@@ -14,7 +14,7 @@ zombie_state::BackwardKnockback::~BackwardKnockback()
 
 void zombie_state::BackwardKnockback::Update(std::shared_ptr<Zombie>& obj)
 {
-
+	obj->DisallowStealthKill();
 }
 
 void zombie_state::BackwardKnockback::LateUpdate(std::shared_ptr<Zombie>& obj)

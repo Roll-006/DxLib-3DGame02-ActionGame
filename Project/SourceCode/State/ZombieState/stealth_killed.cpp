@@ -14,7 +14,7 @@ zombie_state::StealthKilled::~StealthKilled()
 
 void zombie_state::StealthKilled::Update(std::shared_ptr<Zombie>& obj)
 {
-
+	obj->DisallowStealthKill();
 }
 
 void zombie_state::StealthKilled::LateUpdate(std::shared_ptr<Zombie>& obj)
@@ -29,7 +29,7 @@ void zombie_state::StealthKilled::Enter(std::shared_ptr<Zombie>& obj)
 
 void zombie_state::StealthKilled::Exit(std::shared_ptr<Zombie>& obj)
 {
-
+	obj->ExitStealthKilled();
 }
 
 std::shared_ptr<IState<Zombie>> zombie_state::StealthKilled::ChangeState(std::shared_ptr<Zombie>& obj)

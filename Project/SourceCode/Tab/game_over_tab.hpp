@@ -19,8 +19,8 @@ public:
 	void Activate() 	override { m_is_active = true;  }
 	void Deactivate()	override { m_is_active = false; }
 
-	void AllowSelect()  override { m_can_select = true; }
-	void StopSelect()	override { m_can_select = false; }
+	void AllowSelect()		override { m_can_select = true; }
+	void DisallowSelect()	override { m_can_select = false; }
 
 	void Activate(const DeadPlayerEvent& event);
 

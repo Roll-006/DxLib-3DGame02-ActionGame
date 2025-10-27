@@ -16,8 +16,8 @@ public:
 	virtual void Activate() 	abstract;
 	virtual void Deactivate()	abstract;
 
-	virtual void AllowSelect()  abstract;
-	virtual void StopSelect()	abstract;
+	virtual void AllowSelect()		abstract;
+	virtual void DisallowSelect()	abstract;
 
 	[[nodiscard]] virtual int   GetTabHandle()  const abstract;
 	[[nodiscard]] virtual int	GetPriority()	const abstract;

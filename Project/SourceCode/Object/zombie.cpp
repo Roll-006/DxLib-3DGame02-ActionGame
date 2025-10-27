@@ -6,7 +6,9 @@ Zombie::Zombie(const VECTOR& pos, const VECTOR& look_dir) :
 	EnemyBase				(ObjName.ZOMBIE, MassKind::kMedium),
 	m_state					(std::make_shared<ZombieStateController>()),
 	m_can_grab_target		(false),
-	m_is_target_escaped		(false)
+	m_is_target_escaped		(false),
+	m_is_allow_stealth_kill	(true),
+	m_on_stealth_kill		(false)
 {
 	m_transform->SetPos(CoordinateKind::kWorld, pos);
 	m_look_dir.at(TimeKind::kNext) = m_look_dir.at(TimeKind::kCurrent) = v3d::GetNormalizedV(look_dir);
@@ -61,6 +63,7 @@ void Zombie::Update()
 	JudgeLostTarget();
 
 	m_look_dir_offset_speed = kLookDirOffsetSpeed;
+	m_is_allow_stealth_kill = true;
 
 	m_state		->Update(std::static_pointer_cast<Zombie>(shared_from_this()));
 	m_animator	->Update();
@@ -102,7 +105,7 @@ void Zombie::LateUpdate()
 	m_state->LateUpdate(std::static_pointer_cast<Zombie>(shared_from_this()));
 
 	m_can_grab_target				= false;
-	m_on_collided_vision_trigger			= false;
+	m_on_collided_vision_trigger	= false;
 	m_has_obstacle_between_target	= false;
 	m_use_projection_velocity		= true;
 }
@@ -346,6 +349,16 @@ void Zombie::OnEscape()
 	m_is_target_escaped = true;
 }
 
+void Zombie::OnStealthKill()
+{
+	m_on_stealth_kill = true;
+}
+
+void Zombie::ExitStealthKilled()
+{
+	m_on_stealth_kill = false;
+}
+
 
 #pragma region Getter
 float Zombie::GetDeltaTime() const
@@ -409,5 +422,5 @@ void Zombie::CalcMoveSpeedRun()
 void Zombie::JudgeAction()
 {
 	const auto is_alive_target = m_state->GetTargetCharacter()->GetHealth(HealthPartKind::kMain)->IsAlive();
-	m_can_action = is_alive_target && !m_is_stop_action_forcibly;
+	m_can_action = is_alive_target && !m_is_disallow_action_forcibly;
 }

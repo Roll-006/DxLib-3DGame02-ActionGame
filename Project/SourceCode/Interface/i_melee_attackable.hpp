@@ -18,11 +18,11 @@ public:
 	virtual void StopSearchMeleeTarget() abstract;
 
 	/// @brief 対象の前方で行うメレーを実行する
-	virtual void SetupFrontMelee		(const VECTOR& target_pos, const VECTOR& target_dir) abstract;
+	virtual void SetupFrontMelee()			abstract;
 	/// @brief 対象の後方で行うメレーを実行する
-	virtual void SetupBackMelee			(const VECTOR& target_pos, const VECTOR& target_dir) abstract;
+	virtual void SetupBackMelee()			abstract;
 	/// @brief 対象に対してどの位置からでも行えるメレーを実行する
-	virtual void SetupVersatilityMelee	(const VECTOR& target_pos) abstract;
+	virtual void SetupVersatilityMelee()	abstract;
 
 	virtual void AttackFrontMelee		(CharacterBase* target) abstract;
 	virtual void AttackBackMelee		(CharacterBase* target) abstract;

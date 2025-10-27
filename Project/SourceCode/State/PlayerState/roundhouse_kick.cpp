@@ -70,10 +70,7 @@ void player_state::RoundhouseKick::Enter(std::shared_ptr<Player>& obj)
 	m_has_trigger_created = false;
 	m_has_trigger_deleted = false;
 
-	const auto target_obj		= std::dynamic_pointer_cast<ObjBase>(obj->GetMeleeTarget());
-	const auto target_transform = target_obj->GetTransform();
-
-	obj->SetupVersatilityMelee(target_transform->GetPos(CoordinateKind::kWorld));
+	obj->SetupVersatilityMelee();
 }
 
 void player_state::RoundhouseKick::Exit(std::shared_ptr<Player>& obj)

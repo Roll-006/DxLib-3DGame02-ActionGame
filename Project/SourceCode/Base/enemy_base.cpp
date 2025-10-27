@@ -5,7 +5,7 @@ EnemyBase::EnemyBase(const std::string& name, const MassKind mass_level_kind) :
 	m_attack_interval_time			(0.0f),
 	m_attack_interval_timer			(0.0f),
 	m_can_action					(true),
-	m_is_stop_action_forcibly		(false),
+	m_is_disallow_action_forcibly		(false),
 	m_on_collided_vision_trigger			(false),
 	m_has_obstacle_between_target	(false),
 	m_is_lost_target				(true),
@@ -35,7 +35,7 @@ void EnemyBase::OnRespawn(const VECTOR& pos, const VECTOR& look_dir)
 
 void EnemyBase::OnAllowAction()
 {
-	m_is_stop_action_forcibly = false;
+	m_is_disallow_action_forcibly = false;
 
 	// 残りの攻撃インターバル時間が短すぎる場合は本来の時間の1/2の時間を与える
 	if (m_attack_interval_timer < m_attack_interval_time * 0.25f)
