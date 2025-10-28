@@ -26,9 +26,12 @@ private:
 	static constexpr int			kGaugeThickness		= 11;
 	static constexpr int			kBaseGaugeColor		= 0x363636;
 	static constexpr int			kEscapeGaugeColor	= 0xe32d2d;
+	static constexpr Vector2D<int>	kEscapeTextOffset	= { 100, 0 };
+	static constexpr Vector2D<int>	kHoldTextOffset		= { 0, -90 };
 	
 private:
 	std::shared_ptr<IGrabbable>				m_grab_target;
+	InputModeKind							m_current_input_mode_kind;
 
 	std::shared_ptr<ScreenCreator>			m_basis_circle_screen;
 	std::shared_ptr<ScreenCreator>			m_escape_circle_screen;

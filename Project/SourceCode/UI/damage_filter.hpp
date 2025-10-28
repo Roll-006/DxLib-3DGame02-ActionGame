@@ -1,6 +1,7 @@
 #pragma once
-#include "../Part/graphicer.hpp"
+#include "../Part/screen_creator.hpp"
 #include "../Path/ui_graphic_path.hpp"
+#include "../Part/mask_creator.hpp"
 #include "../Event/event_system.hpp"
 
 class DamageFilter final
@@ -10,7 +11,7 @@ public:
 	~DamageFilter();
 
 	void LateUpdate();
-	void Draw() const;
+	void Draw(const int main_screen_handle) const;
 
 private:
 	#pragma region Event
@@ -29,7 +30,10 @@ private:
 	static constexpr float	kDamageMinParcent				= 0.0625;
 	static constexpr float	kBlinkingSpeed					= 2.0f;
 
-	std::unique_ptr<Graphicer> m_graphicer;
+	std::unique_ptr<Graphicer>		m_graphicer;
+	std::unique_ptr<ScreenCreator>	m_mask_screen;
+	std::unique_ptr<MaskCreator>	m_mask_creator;
+
 	float m_blinking_sin;
 	int   m_max_alpha_blend_num;
 	bool  m_is_loop_blinking;

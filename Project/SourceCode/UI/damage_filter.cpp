@@ -2,6 +2,8 @@
 
 DamageFilter::DamageFilter() : 
 	m_graphicer						(std::make_unique<Graphicer>(UIGraphicPath.DAMAGE_FILTER)),
+	m_mask_screen					(std::make_unique<ScreenCreator>(Window::kScreenSize)),
+	m_mask_creator					(std::make_unique<MaskCreator>()),
 	m_blinking_sin					(DX_PI_F),
 	m_max_alpha_blend_num			(255),
 	m_is_loop_blinking				(false),
@@ -15,6 +17,10 @@ DamageFilter::DamageFilter() :
 	EventSystem::GetInstance()->Subscribe<ChangeSceneEvent>		(this, &DamageFilter::StopNearDeathBlinkind);
 
 	m_graphicer->SetCenterPos(Window::kCenterPos);
+	
+	m_mask_screen->UseScreen();
+	m_graphicer->Draw();
+	m_mask_screen->UnuseScreen();
 }
 
 DamageFilter::~DamageFilter()
@@ -50,9 +56,15 @@ void DamageFilter::LateUpdate()
 	m_is_near_death = false;
 }
 
-void DamageFilter::Draw() const
+void DamageFilter::Draw(const int main_screen_handle) const
 {
 	if (m_blinking_sin >= DX_PI_F) { return; }
+
+	m_mask_creator->CreateMask();
+	m_mask_creator->UseMask(m_mask_screen->GetScreenHandle(), true);
+	DrawGraph(0, 0, main_screen_handle, TRUE);
+	m_mask_creator->UnuseMask();
+	m_mask_creator->DeleteMask();
 
 	m_graphicer->Draw();
 }

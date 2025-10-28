@@ -29,5 +29,5 @@ void ScreenFilterCreator::LateUpdate()
 void ScreenFilterCreator::OnDraw(const int main_screen_handle)
 {
 	m_cinema_scope_frame->Draw();
-	m_damage_filter		->Draw();
+	m_damage_filter		->Draw(main_screen_handle);
 }

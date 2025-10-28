@@ -1,8 +1,9 @@
 ﻿#include "escape_icon.hpp"
 #include "../Command/command_handler.hpp"
 
-EscapeIcon::EscapeIcon(std::shared_ptr<IGrabbable> grab_target) : 
+EscapeIcon::EscapeIcon(std::shared_ptr<IGrabbable> grab_target) :
 	m_grab_target				(grab_target),
+	m_current_input_mode_kind	(InputModeKind::kSingle),
 	m_basis_circle_screen		(std::make_shared<ScreenCreator>(kScreenSize)),
 	m_escape_circle_screen		(std::make_shared<ScreenCreator>(kScreenSize)),
 	m_button_graphic_resource	(std::make_shared<ButtonGraphicGetter>()),
@@ -56,6 +57,9 @@ void EscapeIcon::LateUpdate()
 
 		m_blur_circle_alpha_num = 0;
 		m_blur_circle_scale		= 0.9f;
+		m_icon_scale			= 1.0f;
+
+		if (m_button_icon_graphic) { m_button_icon_graphic->SetScale(0.22f * m_icon_scale); }
 	}
 }
 
@@ -75,15 +79,20 @@ void EscapeIcon::Draw() const
 	// ボタンアイコン
 	m_button_icon_graphic->Draw();
 
+	// 脱出テキスト
 	DrawStringToHandle(
-		static_cast<int>((Window::kCenterPos.x - m_escape_font_size.x) * 0.5f),
-		static_cast<int>((Window::kCenterPos.y - m_escape_font_size.y) * 0.5f),
+		static_cast<int>((Window::kScreenSize.x - m_escape_font_size.x) * 0.5f) + kEscapeTextOffset.x,
+		static_cast<int>((Window::kScreenSize.y - m_escape_font_size.y) * 0.5f) + kEscapeTextOffset.y,
 		m_escape_text.c_str(), 0xffffff, m_font_handle);
 
-	DrawStringToHandle(
-		static_cast<int>((Window::kCenterPos.x - m_hold_font_size.x) * 0.5f),
-		static_cast<int>((Window::kCenterPos.y - m_hold_font_size.y) * 0.5f),
-		m_hold_text.c_str(), 0xffffff, m_font_handle);
+	// HOLDテキスト
+	if (m_current_input_mode_kind == InputModeKind::kHold)
+	{
+		DrawStringToHandle(
+			static_cast<int>((Window::kScreenSize.x - m_hold_font_size.x) * 0.5f) + kHoldTextOffset.x,
+			static_cast<int>((Window::kScreenSize.y - m_hold_font_size.y) * 0.5f) + kHoldTextOffset.y,
+			m_hold_text.c_str(), 0xffffff, m_font_handle);
+	}
 }
 
 void EscapeIcon::CalcGaugePercent()
@@ -94,12 +103,12 @@ void EscapeIcon::CalcGaugePercent()
 
 void EscapeIcon::CalcIconScale()
 {
-	const auto	delta_time	= GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kUI);
-	const auto	input_mode	= CommandHandler ::GetInstance()->GetInputModeKind(CommandKind::kEscape);
-	auto		sin_num		= 0.0f;
-	auto		rate		= 0.0f;
+	m_current_input_mode_kind	= CommandHandler ::GetInstance()->GetInputModeKind(CommandKind::kEscape);
+	const auto	delta_time		= GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kUI);
+	auto		sin_num			= 0.0f;
+	auto		rate			= 0.0f;
 
-	switch (input_mode)
+	switch (m_current_input_mode_kind)
 	{
 	case InputModeKind::kSingle:
 		math::Increase(m_scale_sin, 20.0f * delta_time, DX_TWO_PI_F, true);
