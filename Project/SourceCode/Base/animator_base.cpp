@@ -179,14 +179,21 @@ void AnimatorBase::PlayAnim()
 		// アニメーションが有効であった場合のみ再生
 		if (data.attach_index > -1)
 		{
-			const float blend_rate	= time_kind == TimeKind::kCurrent ? m_blend_rate.at(body_kind) : 1.0f - m_blend_rate.at(body_kind);
-			const bool  is_loop		= m_anim_data.at(data.kind).is_loop && !m_anim_data.at(data.kind).is_self_blend ? true : false;
-			float play_speed		= m_anim_data.at(data.kind).play_speed * GetDeltaTime();
+			const auto blend_rate		= time_kind == TimeKind::kCurrent ? m_blend_rate.at(body_kind) : 1.0f - m_blend_rate.at(body_kind);
+			const auto is_self_blend	= m_anim_data.at(data.kind).is_self_blend;
+			const auto is_loop			= m_anim_data.at(data.kind).is_loop && !is_self_blend ? true : false;
+			float play_speed			= m_anim_data.at(data.kind).play_speed * GetDeltaTime();
 			math::Increase(data.play_timer, play_speed, data.total_time, is_loop);
 
 			// 再生位置・ブレンド率を適用
 			MV1SetAttachAnimTime     (m_resource_modeler.at(body_kind)->GetModelHandle(), data.attach_index, data.play_timer);
 			MV1SetAttachAnimBlendRate(m_resource_modeler.at(body_kind)->GetModelHandle(), data.attach_index, blend_rate);
+
+		}
+
+		if (body_kind == BodyKind::kLowerBody && time_kind == TimeKind::kCurrent && m_obj_name == ObjName.PLAYER)
+		{
+			printfDx("index : %d, timer : %f, time : %f\n", data.attach_index, data.play_timer, data.total_time);
 		}
 	}
 
@@ -258,12 +265,17 @@ void AnimatorBase::SetPlayStartTime(AnimTimeKindData* current_time_kind_data, co
 		const std::string prev_tag		= m_anim_data.at(prev_time_kind_data    .kind).tag;
 		const std::string current_tag	= m_anim_data.at(current_time_kind_data->kind).tag;
 
+		if (m_anim_data.at(current_time_kind_data->kind).is_self_blend)
+		{
+			current_time_kind_data->play_timer = 0.0f;
+			return;
+		}
+
 		// 同類アニメーションであった場合は再生率を引き継ぐ
 		if (prev_tag == current_tag && prev_tag != AnimTag.NONE && current_tag != AnimTag.NONE)
 		{
 			m_prev_anim_play_rate[body_kind]   = prev_time_kind_data.play_timer / prev_time_kind_data.total_time;
 			current_time_kind_data->play_timer = current_time_kind_data->total_time * m_prev_anim_play_rate[body_kind];
-
 			return;
 		}
 	}
@@ -281,7 +293,7 @@ void AnimatorBase::CombineAnim()
 		for (const auto& [name, bone_num] : bone_numbers)
 		{
 			const auto m = MV1GetFrameLocalMatrix(m_resource_modeler.at(body_kind)->GetModelHandle(), bone_num);
-			matrix.emplace_back(std::make_tuple(body_kind, bone_num, m));
+			matrix.emplace_back(body_kind, bone_num, m);
 		}
 	}
 

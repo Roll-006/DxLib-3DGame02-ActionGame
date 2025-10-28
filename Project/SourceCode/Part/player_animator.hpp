@@ -19,6 +19,8 @@ public:
 	void Update()	override;
 
 private:
+	void ActivateNearDeathAnimation(const NearDeathEvent& event);
+
 	void LoadAnim()		override;
 	void ChangeAnim()	override;
 
@@ -49,10 +51,12 @@ private:
 
 	/// @brief 8方向移動を行うアニメーションのアタッチを行う
 	/// @param forward_anim_kind 前方に移動するアニメーション
-	void AttachAnimEightDir(const int forward_anim_kind);
+	void AttachAnimEightDir(const int forward_anim_kind, const bool is_result_attach);
 
 private:
 	std::shared_ptr<PlayerStateController>	m_state;
 	std::shared_ptr<WeaponBase>				m_held_weapon;
 	std::shared_ptr<WeaponBase>				m_equip_weapon;
+
+	bool m_is_near_death;
 };

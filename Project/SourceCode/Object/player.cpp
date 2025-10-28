@@ -89,7 +89,7 @@ void Player::Update()
 
 	if (CheckHitKey(KEY_INPUT_0))
 	{
-		m_health.at(HealthPartKind::kMain)->Decrease(500.0f);
+		m_health.at(HealthPartKind::kMain)->Decrease(10.0f);
 	}
 
 	NotifyHealth();
@@ -159,8 +159,8 @@ void Player::Draw() const
 
 	DrawColliders();
 
-	const auto p = m_transform->GetPos(CoordinateKind::kWorld);
-	printfDx("%f, %f, %f\n", p.x, p.y, p.z);
+	//const auto p = m_transform->GetPos(CoordinateKind::kWorld);
+	//printfDx("%f, %f, %f\n", p.x, p.y, p.z);
 }
 
 void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)

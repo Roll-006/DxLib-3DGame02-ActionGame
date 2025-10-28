@@ -7,6 +7,7 @@ enum class PlayerAnimKind
 
 	#pragma region 汎用
 	kIdle,
+	kIdleInjured,
 	kDead,
 
 	kGrabbed,
@@ -21,6 +22,7 @@ enum class PlayerAnimKind
 	kStealthKill,
 
 	kMoveForwardRun,
+	kMoveForwardRunInjured,
 	#pragma endregion
 
 
@@ -49,6 +51,15 @@ enum class PlayerAnimKind
 	kMoveForwardRight,
 	kMoveBackwardLeft,
 	kMoveBackwardRight,
+
+	kMoveForwardInjured,
+	kMoveBackwardInjured,
+	kMoveLeftInjured,
+	kMoveRightInjured,
+	kMoveForwardLeftInjured,
+	kMoveForwardRightInjured,
+	kMoveBackwardLeftInjured,
+	kMoveBackwardRightInjured,
 
 	kMoveForwardCrouch,
 	kMoveBackwardCrouch,

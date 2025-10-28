@@ -5,10 +5,12 @@ static struct AnimationPath
 {
 	#pragma region ”Ä—p
 	const std::string IDLE								= "Data/Animation/idle.mv1";
+	const std::string IDLE_INJURED						= "Data/Animation/idle_injured.mv1";
 	const std::string ZOMBIE_IDLE_01					= "Data/Animation/zombie_idle_01.mv1";
 	const std::string MOVE_FORWARD_RUN_01				= "Data/Animation/move_forward_run_01.mv1";
 	const std::string MOVE_FORWARD_RUN_02				= "Data/Animation/move_forward_run_02.mv1";
 	const std::string MOVE_FORWARD_WALK					= "Data/Animation/move_forward_walk.mv1";
+	const std::string MOVE_FORWARD_RUN_INJURED			= "Data/Animation/move_forward_run_injured.mv1";
 
 	const std::string STAB_KNIFE						= "Data/Animation/stab_knife.mv1";
 	const std::string FIRST_SIDE_SLASH_KNIFE			= "Data/Animation/side_slash_knife_left_to_right.mv1";
@@ -65,6 +67,15 @@ static struct AnimationPath
 	const std::string MOVE_FORWARD_RIGHT				= "Data/Animation/move_forward_right_aim_gun.mv1";
 	const std::string MOVE_BACKWARD_LEFT				= "Data/Animation/move_backward_left_aim_gun.mv1";
 	const std::string MOVE_BACKWARD_RIGHT				= "Data/Animation/move_backward_right_aim_gun.mv1";
+
+	const std::string MOVE_FORWARD_INJURED				= "Data/Animation/move_forward_injured.mv1";
+	const std::string MOVE_BACKWARD_INJURED				= "Data/Animation/move_backward_injured.mv1";
+	const std::string MOVE_LEFT_INJURED					= "Data/Animation/move_left_injured.mv1";
+	const std::string MOVE_RIGHT_INJURED				= "Data/Animation/move_right_injured.mv1";
+	const std::string MOVE_FORWARD_LEFT_INJURED			= "Data/Animation/move_forward_left_injured.mv1";
+	const std::string MOVE_FORWARD_RIGHT_INJURED		= "Data/Animation/move_forward_right_injured.mv1";
+	const std::string MOVE_BACKWARD_LEFT_INJURED		= "Data/Animation/move_backward_left_injured.mv1";
+	const std::string MOVE_BACKWARD_RIGHT_INJURED		= "Data/Animation/move_backward_right_injured.mv1";
 
 	const std::string MOVE_FORWARD_CROUCH				= "Data/Animation/move_forward_crouch_aim_gun.mv1";
 	const std::string MOVE_BACKWARD_CROUCH				= "Data/Animation/move_backward_crouch_aim_gun.mv1";
