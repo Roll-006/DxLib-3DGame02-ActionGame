@@ -4,19 +4,23 @@
 #include "../Command/command_handler.hpp"
 
 MeleeTargetIcon::MeleeTargetIcon(std::shared_ptr<IMeleeHittable>& melee_target, std::shared_ptr<IMeleeHittable>& visible_downed_character) :
-	m_melee_target				(melee_target),
-	m_visible_downed_character	(visible_downed_character),
-	m_button_graphic_resource	(std::make_shared<ButtonGraphicGetter>()),
-	m_button_icon_graphic		(nullptr),
-	m_melee_cursor_graphic		(std::make_shared<Graphicer>(UIGraphicPath.CURSOR_01)),
-	m_down_cursor_graphic		(std::make_shared<Graphicer>(UIGraphicPath.CURSOR_02)),
-	m_melee_icon_screen			(std::make_shared<ScreenCreator>(kScreenSize)),
-	m_mask_graphic				(std::make_shared<Graphicer>(UIGraphicPath.MELEE_EXPLANATORY_TEXT_BOX)),
-	m_mask_screen				(std::make_shared<ScreenCreator>(Window::kScreenSize, Window::kCenterPos)),
-	m_explanatory_text_screen	(std::make_shared<ScreenCreator>(kScreenSize)),
-	m_mask_creator				(std::make_shared<MaskCreator>()),
-	m_icon_pos					(v3d::GetZeroV()),
-	m_icon_size					(0.0f)
+	m_melee_target						(melee_target),
+	m_visible_downed_character			(visible_downed_character),
+	m_button_graphic_resource			(std::make_shared<ButtonGraphicGetter>()),
+	m_button_icon_graphic				(nullptr),
+	m_melee_cursor_graphic				(std::make_shared<Graphicer>(UIGraphicPath.CURSOR_01)),
+	m_down_cursor_graphic				(std::make_shared<Graphicer>(UIGraphicPath.CURSOR_02)),
+	m_explanatory_text_box_blur_graphic	(std::make_shared<Graphicer>(UIGraphicPath.MELEE_EXPLANATORY_TEXT_BOX_BLUR)),
+	m_melee_icon_screen					(std::make_shared<ScreenCreator>(kScreenSize)),
+	m_mask_graphic						(std::make_shared<Graphicer>(UIGraphicPath.MELEE_EXPLANATORY_TEXT_BOX)),
+	m_mask_screen						(std::make_shared<ScreenCreator>(Window::kScreenSize)),
+	m_explanatory_text_screen			(std::make_shared<ScreenCreator>(kScreenSize)),
+	m_mask_creator						(std::make_shared<MaskCreator>()),
+	m_icon_pos							(v3d::GetZeroV()),
+	m_icon_size							(0.0f),
+	m_font_handle						(FontHandler::GetInstance()->GetFontHandle(FontName.EXPLANATORY_TEXT)),
+	m_text								("メレー"),
+	m_font_size							(Vector2D<int>(GetDrawStringWidthToHandle(m_text.c_str(), -1, m_font_handle), GetFontSizeToHandle(m_font_handle)))
 {
 	m_melee_cursor_graphic->SetCenterPos(kScreenCenterPos + kCursorOffset);
 	m_melee_cursor_graphic->SetScale(0.2f);
@@ -24,11 +28,8 @@ MeleeTargetIcon::MeleeTargetIcon(std::shared_ptr<IMeleeHittable>& melee_target, 
 	m_down_cursor_graphic->SetCenterPos(kScreenCenterPos);
 	m_down_cursor_graphic->SetScale(0.2f);
 
-	//m_mask_graphic->SetScale(1.0f);
-
-	//m_mask_screen->UseScreen();
-	//m_mask_graphic->Draw();
-	//m_mask_screen->UnuseScreen();
+	m_mask_graphic->SetScale(0.7f);
+	m_explanatory_text_box_blur_graphic->SetScale(0.7f);
 }
 
 MeleeTargetIcon::~MeleeTargetIcon()
@@ -47,15 +48,22 @@ void MeleeTargetIcon::Draw(const int main_screen_handle) const
 {
 	if (m_melee_target)
 	{
-		//m_explanatory_text_screen->UseScreen();
-		//m_mask_creator->CreateMask();
-		//m_mask_creator->UseMask(m_mask_screen->GetScreenHandle(), true);
-		//DrawGraph(0, 0, main_screen_handle, TRUE);
-		//m_mask_creator->UnuseMask();
-		//m_mask_creator->DeleteMask();
-		//m_explanatory_text_screen->UnuseScreen();
+		m_mask_screen->UseScreen();
+		m_mask_graphic->Draw();
+		m_mask_screen->UnuseScreen();
 
-		//DrawBillboard3D(m_icon_pos, 0.5f, 0.5f, m_icon_size, 0.0f, m_explanatory_text_screen->GetScreenHandle(), TRUE);
+		m_mask_creator->CreateMask();
+		m_mask_creator->UseMask(m_mask_screen->GetScreenHandle(), true);
+		DrawGraph(0, 0, main_screen_handle, TRUE);
+		m_explanatory_text_box_blur_graphic->Draw();
+		m_mask_creator->UnuseMask();
+		m_mask_creator->DeleteMask();
+
+		DrawStringToHandle(
+			static_cast<int>(m_explanatory_text_box_blur_graphic->GetCenterPos().x - m_font_size.x * 0.5f) - 30,
+			static_cast<int>(m_explanatory_text_box_blur_graphic->GetCenterPos().y - m_font_size.y * 0.5f),
+			m_text.c_str(), 0xffffff, m_font_handle);
+
 		m_melee_icon_screen->Draw();
 	}
 	else if (m_visible_downed_character)
@@ -74,8 +82,12 @@ void MeleeTargetIcon::CalcResultScreenCenterPos()
 	m_icon_size = kIconSize * distance * 0.01f;
 
 	// 3D座標をスクリーン上に変換し適用
-	const auto screen_pos = ConvWorldPosToScreenPos(m_icon_pos);
-	m_melee_icon_screen->GetGraphicer()->SetCenterPos(Vector2D<int>(screen_pos.x, screen_pos.y));
+	const auto screen_pos_v3d = ConvWorldPosToScreenPos(m_icon_pos);
+	const auto screen_pos_v2d = Vector2D<int>(screen_pos_v3d.x, screen_pos_v3d.y);
+	m_melee_icon_screen->GetGraphicer()->SetCenterPos(screen_pos_v2d);
+
+	m_mask_graphic->SetCenterPos(screen_pos_v2d + Vector2D<int>(110, 0));
+	m_explanatory_text_box_blur_graphic->SetCenterPos(screen_pos_v2d + Vector2D<int>(110, 0));
 }
 
 void MeleeTargetIcon::CreateMeleeIconScreen()

@@ -219,8 +219,15 @@ void PlayerAnimator::CombineMoveNullActionNullWithWeaponAction()
 		break;
 
 	case player_state::WeaponActionStateKind::kEquipKnife:
-		AttachAnim(idle_anim, BodyKind::kLowerBody);
-		AttachAnim(static_cast<int>(PlayerAnimKind::kEquipKnife),					BodyKind::kUpperBody);
+		if (m_is_near_death)
+		{
+			AttachResultAnim(idle_anim);
+		}
+		else
+		{
+			AttachAnim(idle_anim, BodyKind::kLowerBody);
+			AttachAnim(static_cast<int>(PlayerAnimKind::kEquipKnife),				BodyKind::kUpperBody);
+		}
 		break;
 
 	case player_state::WeaponActionStateKind::kAimKnife:

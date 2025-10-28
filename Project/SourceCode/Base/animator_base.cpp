@@ -188,12 +188,6 @@ void AnimatorBase::PlayAnim()
 			// 再生位置・ブレンド率を適用
 			MV1SetAttachAnimTime     (m_resource_modeler.at(body_kind)->GetModelHandle(), data.attach_index, data.play_timer);
 			MV1SetAttachAnimBlendRate(m_resource_modeler.at(body_kind)->GetModelHandle(), data.attach_index, blend_rate);
-
-		}
-
-		if (body_kind == BodyKind::kLowerBody && time_kind == TimeKind::kCurrent && m_obj_name == ObjName.PLAYER)
-		{
-			printfDx("index : %d, timer : %f, time : %f\n", data.attach_index, data.play_timer, data.total_time);
 		}
 	}
 

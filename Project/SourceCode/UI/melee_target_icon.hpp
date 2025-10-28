@@ -5,6 +5,7 @@
 #include "../Part/button_graphic_getter.hpp"
 #include "../Part/screen_creator.hpp"
 #include "../Part/mask_creator.hpp"
+#include "../Font/font_handler.hpp"
 
 class MeleeTargetIcon final
 {
@@ -33,6 +34,7 @@ private:
 	std::shared_ptr<Graphicer>				m_button_icon_graphic;
 	std::shared_ptr<Graphicer>				m_melee_cursor_graphic;
 	std::shared_ptr<Graphicer>				m_down_cursor_graphic;
+	std::shared_ptr<Graphicer>				m_explanatory_text_box_blur_graphic;
 	std::shared_ptr<ScreenCreator>			m_melee_icon_screen;
 
 	std::shared_ptr<Graphicer>				m_mask_graphic;
@@ -42,4 +44,8 @@ private:
 
 	VECTOR									m_icon_pos;
 	float									m_icon_size;
+
+	int										m_font_handle;
+	std::string								m_text;
+	Vector2D<int>							m_font_size;
 };

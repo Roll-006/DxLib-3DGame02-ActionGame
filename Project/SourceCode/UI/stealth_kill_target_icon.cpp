@@ -9,11 +9,16 @@ StealthKillTargetIcon::StealthKillTargetIcon(std::shared_ptr<IStealthKillable>& 
 	m_button_icon_graphic		(nullptr),
 	m_knife_graphic				(std::make_shared<Graphicer>(UIGraphicPath.KNIFE)),
 	m_stealth_kill_icon_screen	(std::make_shared<ScreenCreator>(kScreenSize)),
+	m_mask_graphic				(std::make_shared<Graphicer>(UIGraphicPath.STEALTH_KILL_CIRCLE_BLUR)),
+	m_mask_screen				(std::make_shared<ScreenCreator>(Window::kScreenSize)),
+	m_mask_creator				(std::make_shared<MaskCreator>()),
 	m_icon_pos					(v3d::GetZeroV()),
 	m_icon_size					(0.0f)
 {
 	m_knife_graphic->SetCenterPos(kScreenCenterPos - kGraphicOffset);
 	m_knife_graphic->SetScale(0.12f);
+
+	m_mask_graphic->SetScale(1.4f);
 }
 
 StealthKillTargetIcon::~StealthKillTargetIcon()
@@ -31,7 +36,20 @@ void StealthKillTargetIcon::Draw(const int main_screen_handle) const
 {
 	if (m_stealth_kill_target)
 	{
-		m_stealth_kill_icon_screen->Draw(true);
+		m_mask_screen->UseScreen();
+		m_mask_graphic->Draw();
+		m_mask_screen->UnuseScreen();
+
+		m_mask_creator->CreateMask();
+		m_mask_creator->UseMask(m_mask_screen->GetScreenHandle(), true);
+		DrawGraph(0, 0, main_screen_handle, TRUE);
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 150);
+		DrawBox(0, 0, m_mask_screen->GetScreenSize().x, m_mask_screen->GetScreenSize().y, 0x000000, TRUE);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+		m_mask_creator->UnuseMask();
+		m_mask_creator->DeleteMask();
+
+		m_stealth_kill_icon_screen->Draw();
 	}
 }
 
@@ -45,8 +63,11 @@ void StealthKillTargetIcon::CalcResultScreenCenterPos()
 	m_icon_size = kIconSize * distance * 0.01f;
 
 	// 3D座標をスクリーン上に変換し適用
-	const auto screen_pos = ConvWorldPosToScreenPos(m_icon_pos);
-	m_stealth_kill_icon_screen->GetGraphicer()->SetCenterPos(Vector2D<int>(screen_pos.x, screen_pos.y));
+	const auto screen_pos_v3d = ConvWorldPosToScreenPos(m_icon_pos);
+	const auto screen_pos_v2d = Vector2D<int>(screen_pos_v3d.x, screen_pos_v3d.y);
+	m_stealth_kill_icon_screen->GetGraphicer()->SetCenterPos(screen_pos_v2d);
+
+	m_mask_graphic->SetCenterPos(screen_pos_v2d - kGraphicOffset);
 }
 
 void StealthKillTargetIcon::CreateStealthKillIconScreen()

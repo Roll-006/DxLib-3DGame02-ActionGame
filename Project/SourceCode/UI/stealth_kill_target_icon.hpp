@@ -32,6 +32,10 @@ private:
 	std::shared_ptr<Graphicer>				m_knife_graphic;
 	std::shared_ptr<ScreenCreator>			m_stealth_kill_icon_screen;
 
+	std::shared_ptr<Graphicer>				m_mask_graphic;
+	std::shared_ptr<ScreenCreator>			m_mask_screen;
+	std::shared_ptr<MaskCreator>			m_mask_creator;
+
 	VECTOR									m_icon_pos;
 	float									m_icon_size;
 };
