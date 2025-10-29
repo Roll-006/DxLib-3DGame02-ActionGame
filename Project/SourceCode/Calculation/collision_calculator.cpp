@@ -1103,6 +1103,7 @@ VECTOR collision::PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsu
     const auto is_begin_pos_ahead_of_plane  = math::IsPointAheadOfPlane(future_begin_pos, plane);
     const auto is_end_pos_ahead_of_plane    = math::IsPointAheadOfPlane(future_end_pos, plane);
 
+    // 始点と終点のどちらを基準にするかを判定
     float penetration_depth         = 0.0f;
     float result_penetration_depth  = 0.0f;
     if (is_begin_pos_ahead_of_plane && is_end_pos_ahead_of_plane)

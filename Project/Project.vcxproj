@@ -207,6 +207,7 @@
     <ClCompile Include="SourceCode\Object\shell_casing.cpp" />
     <ClCompile Include="SourceCode\Object\skydome.cpp" />
     <ClCompile Include="SourceCode\Part\button_graphic_getter.cpp" />
+    <ClCompile Include="SourceCode\Part\patrol_route_giver.cpp" />
     <ClCompile Include="SourceCode\Part\stealth_kill_target_searcher.cpp" />
     <ClCompile Include="SourceCode\Part\screen_fader.cpp" />
     <ClCompile Include="SourceCode\Part\scene_fader.cpp" />
@@ -541,6 +542,7 @@
     <ClInclude Include="SourceCode\Object\skydome.hpp" />
     <ClInclude Include="SourceCode\Part\character_collider_creator.hpp" />
     <ClInclude Include="SourceCode\Part\button_graphic_getter.hpp" />
+    <ClInclude Include="SourceCode\Part\patrol_route_giver.hpp" />
     <ClInclude Include="SourceCode\Part\stealth_kill_target_searcher.hpp" />
     <ClInclude Include="SourceCode\Part\screen_fader.hpp" />
     <ClInclude Include="SourceCode\Part\scene_fader.hpp" />
@@ -686,7 +688,7 @@
     <ClInclude Include="SourceCode\Window\window.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Data\JSON\enemy_data.json" />
+    <None Include="Data\JSON\patrol_route.json" />
     <None Include="Data\JSON\font_data.json" />
     <None Include="Data\JSON\key_number.json" />
     <None Include="Data\JSON\points.json" />

@@ -229,4 +229,6 @@ private:
 	std::shared_ptr<IStealthKillable>									m_stealth_kill_target;
 	std::shared_ptr<IGrabber>											m_grabber;
 	std::shared_ptr<Gauge>												m_escape_gauge;
+
+	int test;
 };

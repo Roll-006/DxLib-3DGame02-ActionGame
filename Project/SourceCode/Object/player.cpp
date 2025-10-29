@@ -42,6 +42,8 @@ Player::Player() :
 	m_collider_creator->CreateLandingTrigger	(this, kLandingTriggerRadius);
 	m_collider_creator->CreateVisibleTrigger	(this, m_modeler);
 
+	test = 0;
+
 	const auto pos = m_transform->GetPos(CoordinateKind::kWorld);
 	AddCollider(std::make_shared<Collider>(ColliderKind::kCollisionAreaTrigger, std::make_shared<Sphere>(pos + kCollisionAreaOffset, kCollisionAreaRadius), this));
 	
@@ -145,18 +147,21 @@ void Player::LateUpdate()
 		}
 	}
 
-	//if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_SPACE) == InputState::kSingle)
-	//{
-	//	JSONLoader json_loader;
-	//	nlohmann::json data;
-	//	if (json_loader.Load("Data/JSON/points.json", data))
-	//	{
-	//		data["position"] .emplace_back(m_transform->GetPos(CoordinateKind::kWorld));
-	//		data["direction"].emplace_back(m_look_dir.at(TimeKind::kCurrent));
 
-	//		json_loader.Save("Data/JSON/points.json", data);
-	//	}
-	//}
+	// ‰¼
+	if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_SPACE) == InputState::kSingle)
+	{
+		++test;
+		
+		JSONLoader json_loader;
+		nlohmann::json data;
+		if (json_loader.Load("Data/JSON/patrol_route.json", data))
+		{
+			data["patrol_route"][std::to_string(2)][std::to_string(test)].emplace_back(m_transform->GetPos(CoordinateKind::kWorld));
+
+			json_loader.Save("Data/JSON/patrol_route.json", data);
+		}
+	}
 }
 
 void Player::Draw() const

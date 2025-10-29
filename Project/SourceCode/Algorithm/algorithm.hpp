@@ -35,14 +35,14 @@ namespace algorithm
 		auto sorted_pairs = pairs;
 
 		std::sort(sorted_pairs.begin(), sorted_pairs.end(), [=](const auto& a, const auto& b)
+		{
+			switch (sort_kind)
 			{
-				switch (sort_kind)
-				{
-				case SortKind::kAscending:	return a.second < b.second; break;
-				case SortKind::kDescending:	return a.second > b.second;	break;
-				}
-				return false;
-			});
+			case SortKind::kAscending:	return a.second < b.second;
+			case SortKind::kDescending:	return a.second > b.second;
+			}
+			return false;
+		});
 
 		return sorted_pairs;
 	}
