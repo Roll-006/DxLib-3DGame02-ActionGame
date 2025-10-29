@@ -21,14 +21,14 @@ PatrolRouteGiver::PatrolRouteGiver(const PatrolKind patrol_kind, const std::stri
 				const auto step_size = data["patrol_route"][std::to_string(i)].size();
 				for (size_t j = 0; j < step_size; ++j)
 				{
-					const auto pos = data["patrol_route"][std::to_string(i)][std::to_string(j)];
+					const auto pos = data["patrol_route"][std::to_string(i)][std::to_string(j)].get<VECTOR>();
 					m_routes[std::to_string(i)][j] = pos;
 				}
 			}
 		}
 	}
 
-	m_max_step = static_cast<int>(m_routes.at(route_id).size());
+	m_max_step = static_cast<int>(m_routes.at(route_id).size()) - 1;
 }
 
 PatrolRouteGiver::~PatrolRouteGiver()
@@ -38,6 +38,8 @@ PatrolRouteGiver::~PatrolRouteGiver()
 
 bool PatrolRouteGiver::ChangeDestination(VECTOR& destination_pos, const VECTOR& current_pos)
 {
+	printfDx("%f\n", VSize(destination_pos - current_pos));
+
 	if (VSize(destination_pos - current_pos) < kChangeThresholdDistance)
 	{
 		switch (m_patrol_kind)
@@ -53,15 +55,16 @@ bool PatrolRouteGiver::ChangeDestination(VECTOR& destination_pos, const VECTOR& 
 		}
 	}
 
+	destination_pos = m_routes.at(m_route_id).at(m_current_step);
 	return false;
 }
 
 bool PatrolRouteGiver::LoopParolRoute(VECTOR& destination_pos)
 {
 	// 終点の場合は始点に戻す
-	m_current_step = m_current_step >= m_max_step ? 1 : m_current_step + 1;
+	m_current_step = m_current_step >= m_max_step ? 0 : m_current_step + 1;
 
-	std::clamp(m_current_step, 1, m_max_step);
+	m_current_step = std::clamp(m_current_step, 0, m_max_step);
 	destination_pos = m_routes.at(m_route_id).at(m_current_step);
 	return true;
 }
@@ -71,9 +74,9 @@ bool PatrolRouteGiver::BackParolRoute(VECTOR& destination_pos)
 	if (m_is_back)
 	{
 		// 始点に到達した場合、バックを終了し前進させる
-		if (m_current_step <= 1)
+		if (m_current_step <= 0)
 		{
-			m_current_step	= 2;
+			m_current_step	= 1;
 			m_is_back		= false;
 		}
 		else
@@ -95,7 +98,7 @@ bool PatrolRouteGiver::BackParolRoute(VECTOR& destination_pos)
 		}
 	}
 
-	std::clamp(m_current_step, 1, m_max_step);
+	m_current_step = std::clamp(m_current_step, 0, m_max_step);
 	destination_pos = m_routes.at(m_route_id).at(m_current_step);
 	return true;
 }
@@ -107,7 +110,7 @@ bool PatrolRouteGiver::StopParolRoute(VECTOR& destination_pos)
 
 	++m_current_step;
 
-	std::clamp(m_current_step, 1, m_max_step);
+	m_current_step = std::clamp(m_current_step, 0, m_max_step);
 	destination_pos = m_routes.at(m_route_id).at(m_current_step);
 	return true;
 }

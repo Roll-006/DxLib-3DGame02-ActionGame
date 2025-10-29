@@ -23,7 +23,7 @@ public:
 	/// @param destination_pos 目的地(変更があった場合は結果を代入)
 	/// @param current_pos 現在の座標
 	/// @return true : 目的の変更あり, false : 目的地の変更なし
-	[[nodiscard]] bool ChangeDestination(VECTOR& destination_pos, const VECTOR& current_pos);
+	bool ChangeDestination(VECTOR& destination_pos, const VECTOR& current_pos);
 
 private:
 	[[nodiscard]] bool LoopParolRoute(VECTOR& destination_pos);
@@ -31,7 +31,7 @@ private:
 	[[nodiscard]] bool StopParolRoute(VECTOR& destination_pos);
 
 private:
-	static constexpr float kChangeThresholdDistance = 1.0f;
+	static constexpr float kChangeThresholdDistance = 10.0f;
 
 	static std::unordered_map<std::string, std::unordered_map<int, VECTOR>> m_routes;
 	

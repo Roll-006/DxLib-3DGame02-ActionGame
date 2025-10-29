@@ -27,10 +27,11 @@ public:
 	/// @brief çsìÆÇ™ã≠êßìIÇ…í‚é~Ç≥ÇπÇÁÇÍÇÈ
 	void OnDisallowActionForcibly() { m_is_disallow_action_forcibly = true; }
 
-	[[nodiscard]] int  GetEnemyHandle()		const { return m_enemy_handle; }
-	[[nodiscard]] bool IsTargetInSight()	const { return !m_is_lost_target; }
-	[[nodiscard]] bool CanAttack()			const { return m_attack_interval_timer <= 0.0f; }
-	[[nodiscard]] bool CanAction()			const { return m_can_action; }
+	[[nodiscard]] int								GetEnemyHandle()		const { return m_enemy_handle; }
+	[[nodiscard]] std::shared_ptr<PatrolRouteGiver> GetPatrolRouteGiver()	const { return m_patrol_route_giver; }
+	[[nodiscard]] bool								IsTargetInSight()		const { return !m_is_lost_target; }
+	[[nodiscard]] bool								CanAttack()				const { return m_attack_interval_timer <= 0.0f; }
+	[[nodiscard]] bool								CanAction()				const { return m_can_action; }
 
 protected:
 	virtual void JudgeAction() abstract;
@@ -38,6 +39,7 @@ protected:
 
 protected:
 	std::shared_ptr<PatrolRouteGiver> m_patrol_route_giver;
+	VECTOR m_patrol_destination_pos;
 
 	float m_attack_interval_time;
 	float m_attack_interval_timer;

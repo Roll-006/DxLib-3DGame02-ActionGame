@@ -142,9 +142,6 @@
     <ClCompile Include="SourceCode\Debugger\debugger.cpp">
       <Filter>SourceCode\Debugger</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Part\player_animator.cpp">
-      <Filter>SourceCode\Part</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\Base\animator_base.cpp">
       <Filter>SourceCode\Base</Filter>
     </ClCompile>
@@ -348,9 +345,6 @@
     </ClCompile>
     <ClCompile Include="SourceCode\VirtualCamera\cinemachine_brain.cpp">
       <Filter>SourceCode\VirtualCamera</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\Part\zombie_animator.cpp">
-      <Filter>SourceCode\Part</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Part\zombie_state_controller.cpp">
       <Filter>SourceCode\Part</Filter>
@@ -604,6 +598,15 @@
     <ClCompile Include="SourceCode\Object\trees.cpp">
       <Filter>SourceCode\Object</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\Part\patrol_route_giver.cpp">
+      <Filter>SourceCode\Part</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Animator\player_animator.cpp">
+      <Filter>SourceCode\Animator</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Animator\zombie_animator.cpp">
+      <Filter>SourceCode\Animator</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\character_base.hpp">
@@ -797,9 +800,6 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Debugger\debugger.hpp">
       <Filter>SourceCode\Debugger</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Part\player_animator.hpp">
-      <Filter>SourceCode\Part</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Base\animator_base.hpp">
       <Filter>SourceCode\Base</Filter>
@@ -1061,9 +1061,6 @@
     </ClInclude>
     <ClInclude Include="SourceCode\VirtualCamera\cinemachine_brain.hpp">
       <Filter>SourceCode\VirtualCamera</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Part\zombie_animator.hpp">
-      <Filter>SourceCode\Part</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Part\gauge.hpp">
       <Filter>SourceCode\Part</Filter>
@@ -1617,6 +1614,15 @@
     <ClInclude Include="SourceCode\Object\trees.hpp">
       <Filter>SourceCode\Object</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\Part\patrol_route_giver.hpp">
+      <Filter>SourceCode\Part</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Animator\player_animator.hpp">
+      <Filter>SourceCode\Animator</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Animator\zombie_animator.hpp">
+      <Filter>SourceCode\Animator</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="SourceCode">
@@ -1754,18 +1760,21 @@
     <Filter Include="SourceCode\Light">
       <UniqueIdentifier>{4fba4c18-e475-45c5-861d-5ac0fe65551f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SourceCode\Animator">
+      <UniqueIdentifier>{46e62084-03bc-49de-85b0-0989e7e3f1af}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\JSON\key_number.json">
-      <Filter>JSON</Filter>
-    </None>
-    <None Include="Data\JSON\enemy_data.json">
       <Filter>JSON</Filter>
     </None>
     <None Include="Data\JSON\font_data.json">
       <Filter>JSON</Filter>
     </None>
     <None Include="Data\JSON\points.json">
+      <Filter>JSON</Filter>
+    </None>
+    <None Include="Data\JSON\patrol_route.json">
       <Filter>JSON</Filter>
     </None>
   </ItemGroup>

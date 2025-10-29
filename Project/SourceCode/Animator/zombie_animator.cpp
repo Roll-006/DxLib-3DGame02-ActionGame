@@ -1,4 +1,4 @@
-﻿#include "zombie_state_controller.hpp"
+﻿#include "../Part/zombie_state_controller.hpp"
 #include "zombie_animator.hpp"
 
 ZombieAnimator::ZombieAnimator(const std::shared_ptr<Modeler>& modeler,const std::shared_ptr<ZombieStateController>& state) :

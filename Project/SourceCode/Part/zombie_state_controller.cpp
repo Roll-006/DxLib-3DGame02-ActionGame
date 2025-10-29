@@ -8,7 +8,7 @@ ZombieStateController::ZombieStateController()
 
 	// 初期ステート
 	m_ai_state	  [TimeKind::kPrev] = m_ai_state	[TimeKind::kCurrent] = GetState<zombie_state::Wait,		  Zombie>();
-	m_move_state  [TimeKind::kPrev] = m_move_state	[TimeKind::kCurrent] = GetState<zombie_state::Idle,   Zombie>();
+	m_move_state  [TimeKind::kPrev] = m_move_state	[TimeKind::kCurrent] = GetState<zombie_state::Idle,		  Zombie>();
 	m_action_state[TimeKind::kPrev] = m_action_state[TimeKind::kCurrent] = GetState<zombie_state::ActionNull, Zombie>();
 }
 
@@ -250,6 +250,14 @@ bool ZombieStateController::TryWaitForcibly(std::shared_ptr<Zombie>& zombie)
 	return !zombie->CanAction();
 }
 
+bool ZombieStateController::TryPatrol(std::shared_ptr<Zombie>& zombie)
+{
+	if (!zombie->GetPatrolRouteGiver()) { return false; }
+	if (zombie->IsTargetInSight())		{ return false; }
+
+	return true;
+}
+
 bool ZombieStateController::TryTrack(std::shared_ptr<Zombie>& zombie)
 {
 	// TODO : 後に音などの判定も含める
@@ -275,10 +283,11 @@ bool ZombieStateController::TryMove()
 {
 	const auto ai_state_kind	= static_cast<zombie_state::AIStateKind>(GetAIState(TimeKind::kCurrent)->GetStateKind());
 
+	const auto is_patrol		= ai_state_kind == zombie_state::AIStateKind::kPatrol	 ? true : false;
 	const auto is_track			= ai_state_kind == zombie_state::AIStateKind::kTrack	 ? true : false;
 	const auto is_run_attack	= ai_state_kind == zombie_state::AIStateKind::kRunAttack ? true : false;
 
-	return is_track || is_run_attack;
+	return is_track || is_run_attack || is_patrol;
 }
 
 bool ZombieStateController::TryActionNullForcibly(std::shared_ptr<Zombie>& zombie)
@@ -300,7 +309,8 @@ bool ZombieStateController::TryWalk(std::shared_ptr<Zombie>& zombie)
 
 bool ZombieStateController::TryRun(std::shared_ptr<Zombie>& zombie)
 {
-	if (!m_target_character) { return false; }
+	if (!zombie->IsTargetInSight()) { return false; }
+	if (!m_target_character)		{ return false; }
 	if (m_move_state.at(TimeKind::kCurrent)->GetStateKind() != static_cast<int>(zombie_state::MoveStateKind::kMove)) { return false; }
 
 	const auto pos			= zombie->GetTransform()->GetPos(CoordinateKind::kWorld);

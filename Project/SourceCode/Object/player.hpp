@@ -8,7 +8,7 @@
 
 #include "../GameTime/game_time_manager.hpp"
 #include "../Event/event_system.hpp"
-#include "../Part/player_animator.hpp"
+#include "../Animator/player_animator.hpp"
 
 #include "assault_rifle.hpp"
 #include "rocket_launcher.hpp"

@@ -22,6 +22,16 @@ EnemyManager::EnemyManager() :
 
 			m_active_enemies.emplace_back(enemy);
 			enemy->OnRespawn(pos.at(i), dir.at(i));
+
+			// TODO : ‰¼
+			if (i == 0)
+			{
+				enemy->CreatePatrolPos(PatrolRouteGiver::PatrolKind::kLoop, "0");
+			}
+			//else if (i == 1)
+			//{
+			//	enemy->CreatePatrolPos(PatrolRouteGiver::PatrolKind::kLoop, "1");
+			//}
 		}
 	}
 }

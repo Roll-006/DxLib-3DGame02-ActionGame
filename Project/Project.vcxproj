@@ -143,6 +143,8 @@
   <ItemGroup>
     <ClCompile Include="SourceCode\Algorithm\algorithm.cpp" />
     <ClCompile Include="SourceCode\Algorithm\a_star.cpp" />
+    <ClCompile Include="SourceCode\Animator\player_animator.cpp" />
+    <ClCompile Include="SourceCode\Animator\zombie_animator.cpp" />
     <ClCompile Include="SourceCode\Base\animator_base.cpp" />
     <ClCompile Include="SourceCode\Base\character_base.cpp" />
     <ClCompile Include="SourceCode\Base\enemy_base.cpp" />
@@ -227,13 +229,11 @@
     <ClCompile Include="SourceCode\Part\patrol_route_supporter.cpp" />
     <ClCompile Include="SourceCode\Part\screen_creator.cpp" />
     <ClCompile Include="SourceCode\Part\modeler.cpp" />
-    <ClCompile Include="SourceCode\Part\player_animator.cpp" />
     <ClCompile Include="SourceCode\Part\player_state_controller.cpp" />
     <ClCompile Include="SourceCode\Part\screen_filter.cpp" />
     <ClCompile Include="SourceCode\Part\transform.cpp" />
     <ClCompile Include="SourceCode\Part\weapon_shortcut_selecter.cpp" />
     <ClCompile Include="SourceCode\Part\title_character_animator.cpp" />
-    <ClCompile Include="SourceCode\Part\zombie_animator.cpp" />
     <ClCompile Include="SourceCode\Part\zombie_state_controller.cpp" />
     <ClCompile Include="SourceCode\Random\random_generator.cpp" />
     <ClCompile Include="SourceCode\Scene\game_clear_scene.cpp" />
@@ -347,6 +347,8 @@
   <ItemGroup>
     <ClInclude Include="SourceCode\Algorithm\algorithm.hpp" />
     <ClInclude Include="SourceCode\Algorithm\a_star.hpp" />
+    <ClInclude Include="SourceCode\Animator\player_animator.hpp" />
+    <ClInclude Include="SourceCode\Animator\zombie_animator.hpp" />
     <ClInclude Include="SourceCode\Base\action_state_base.hpp" />
     <ClInclude Include="SourceCode\Base\ai_state_base.hpp" />
     <ClInclude Include="SourceCode\Base\enemy_state_controller_base.hpp" />
@@ -561,14 +563,12 @@
     <ClInclude Include="SourceCode\Part\graphicer.hpp" />
     <ClInclude Include="SourceCode\Part\screen_creator.hpp" />
     <ClInclude Include="SourceCode\Part\modeler.hpp" />
-    <ClInclude Include="SourceCode\Part\player_animator.hpp" />
     <ClInclude Include="SourceCode\Part\player_state_controller.hpp" />
     <ClInclude Include="SourceCode\Part\subject.hpp" />
     <ClInclude Include="SourceCode\Part\screen_filter.hpp" />
     <ClInclude Include="SourceCode\Part\transform.hpp" />
     <ClInclude Include="SourceCode\Part\weapon_shortcut_selecter.hpp" />
     <ClInclude Include="SourceCode\Part\title_character_animator.hpp" />
-    <ClInclude Include="SourceCode\Part\zombie_animator.hpp" />
     <ClInclude Include="SourceCode\Part\zombie_state_controller.hpp" />
     <ClInclude Include="SourceCode\Path\animation_path.hpp" />
     <ClInclude Include="SourceCode\Path\bone_path.hpp" />

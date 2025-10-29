@@ -149,19 +149,19 @@ void Player::LateUpdate()
 
 
 	// ‰¼
-	if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_SPACE) == InputState::kSingle)
-	{
-		++test;
-		
-		JSONLoader json_loader;
-		nlohmann::json data;
-		if (json_loader.Load("Data/JSON/patrol_route.json", data))
-		{
-			data["patrol_route"][std::to_string(2)][std::to_string(test)].emplace_back(m_transform->GetPos(CoordinateKind::kWorld));
+	//if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_SPACE) == InputState::kSingle)
+	//{
+	//	++test;
+	//	
+	//	JSONLoader json_loader;
+	//	nlohmann::json data;
+	//	if (json_loader.Load("Data/JSON/patrol_route.json", data))
+	//	{
+	//		data["patrol_route"][std::to_string(2)][std::to_string(test)].emplace_back(m_transform->GetPos(CoordinateKind::kWorld));
 
-			json_loader.Save("Data/JSON/patrol_route.json", data);
-		}
-	}
+	//		json_loader.Save("Data/JSON/patrol_route.json", data);
+	//	}
+	//}
 }
 
 void Player::Draw() const

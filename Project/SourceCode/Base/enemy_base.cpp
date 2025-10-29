@@ -3,6 +3,7 @@
 EnemyBase::EnemyBase(const std::string& name, const MassKind mass_level_kind) :
 	CharacterBase					(name, ObjTag.ENEMY, mass_level_kind),
 	m_patrol_route_giver			(nullptr),
+	m_patrol_destination_pos		(v3d::GetZeroV()),
 	m_attack_interval_time			(0.0f),
 	m_attack_interval_timer			(0.0f),
 	m_can_action					(true),
@@ -35,7 +36,12 @@ void EnemyBase::ChangePatrolDestination()
 	if (!m_patrol_route_giver) { return; }
 
 	const auto pos = m_transform->GetPos(CoordinateKind::kWorld);
-	m_patrol_route_giver->ChangeDestination(m_destination_pos, pos);
+	m_patrol_route_giver->ChangeDestination(m_patrol_destination_pos, pos);
+
+	const auto pos_y0			= VGet(pos.x, 0.0f, pos.z);
+	const auto target_pos_y0	= VGet(m_patrol_destination_pos.x, 0.0f, m_patrol_destination_pos.z);
+	
+	m_move_dir.at(TimeKind::kNext) = v3d::GetNormalizedV(target_pos_y0 - pos_y0);
 }
 
 void EnemyBase::OnAllowAction()
