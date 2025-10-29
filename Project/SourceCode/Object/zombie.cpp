@@ -107,7 +107,7 @@ void Zombie::LateUpdate()
 	m_can_grab_target				= false;
 	m_on_collided_vision_trigger	= false;
 	m_has_obstacle_between_target	= false;
-	m_is_using_projection_velocity		= true;
+	m_is_using_projection_velocity	= true;
 }
 
 void Zombie::Draw() const

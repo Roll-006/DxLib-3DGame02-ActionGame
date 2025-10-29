@@ -5,7 +5,7 @@
 #include "../JSON/json_loader.hpp"
 
 Player::Player() :
-	CharacterBase(ObjName.PLAYER, ObjTag.PLAYER, MassKind::kLight),
+	CharacterBase(ObjName.PLAYER, ObjTag.PLAYER, MassKind::kMedium),
 	m_state									(std::make_shared<PlayerStateController>()),
 	m_bone_pos_corrector					(std::make_shared<BonePosCorrector>()),
 	m_input_slope							(v3d::GetZeroV()),

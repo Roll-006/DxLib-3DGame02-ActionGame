@@ -74,9 +74,9 @@ void CharacterBase::CalcLookDir()
 	if (!m_is_calc_look_dir) { return; }
 
 	// ƒˆ[Šp‰ñ“]‚ğæ“¾‚µA-ƒÎ`ƒÎ‚Å’l‚ğŠÇ—‚·‚é
-	const auto current_yaw = math::GetYawRotVector(m_look_dir.at(TimeKind::kCurrent));
-	const auto next_yaw = math::GetYawRotVector(m_look_dir.at(TimeKind::kNext));
-	auto distance = next_yaw - current_yaw;
+	const auto current_yaw	= math::GetYawRotVector(m_look_dir.at(TimeKind::kCurrent));
+	const auto next_yaw		= math::GetYawRotVector(m_look_dir.at(TimeKind::kNext));
+	auto	   distance		= next_yaw - current_yaw;
 	distance.y = math::ConnectMinusValueToValue(distance.y, DX_PI_F);
 
 	// ƒJƒƒ‰‚ğŠî€‚É‚µ‚Ä‰E‘¤‚Å‚ ‚Á‚½ê‡‚Í”½“]

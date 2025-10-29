@@ -1,20 +1,25 @@
 #include "damage_filter.hpp"
 
 DamageFilter::DamageFilter() : 
+	m_result_screen					(std::make_unique<ScreenCreator>(Window::kScreenSize, Window::kCenterPos)),
 	m_graphicer						(std::make_unique<Graphicer>(UIGraphicPath.DAMAGE_FILTER)),
 	m_mask_screen					(std::make_unique<ScreenCreator>(Window::kScreenSize)),
 	m_mask_creator					(std::make_unique<MaskCreator>()),
 	m_blinking_sin					(DX_PI_F),
+	m_result_screen_alpha_blend_num	(255),
 	m_max_alpha_blend_num			(255),
 	m_is_loop_blinking				(false),
 	m_is_near_death_first_blinking	(false),
-	m_is_near_death					(false)
+	m_is_near_death					(false),
+	m_is_active_cutscene			(false)
 {
 	// イベント登録
-	EventSystem::GetInstance()->Subscribe<OnDamageToPlayerEvent>(this, &DamageFilter::StartDamageBlinking);
-	EventSystem::GetInstance()->Subscribe<NearDeathEvent>		(this, &DamageFilter::StartNearDeathBlinking);
-	EventSystem::GetInstance()->Subscribe<EnterNearDeathEvent>	(this, &DamageFilter::StartEnterNearDeathBlinking);
-	EventSystem::GetInstance()->Subscribe<ChangeSceneEvent>		(this, &DamageFilter::StopNearDeathBlinkind);
+	EventSystem::GetInstance()->Subscribe<OnDamageToPlayerEvent>			(this, &DamageFilter::StartDamageBlinking);
+	EventSystem::GetInstance()->Subscribe<NearDeathEvent>					(this, &DamageFilter::StartNearDeathBlinking);
+	EventSystem::GetInstance()->Subscribe<EnterNearDeathEvent>				(this, &DamageFilter::StartEnterNearDeathBlinking);
+	EventSystem::GetInstance()->Subscribe<ChangeSceneEvent>					(this, &DamageFilter::StopNearDeathBlinkind);
+	EventSystem::GetInstance()->Subscribe<StartRocketLauncherCutsceneEvent>	(this, &DamageFilter::ActivateCutscene);
+	EventSystem::GetInstance()->Subscribe<EndRocketLauncherCutsceneEvent>	(this, &DamageFilter::DeactivateCutscene);
 
 	m_graphicer->SetCenterPos(Window::kCenterPos);
 	
@@ -26,10 +31,12 @@ DamageFilter::DamageFilter() :
 DamageFilter::~DamageFilter()
 {
 	// イベントの登録解除
-	EventSystem::GetInstance()->Unsubscribe<OnDamageToPlayerEvent>	(this, &DamageFilter::StartDamageBlinking);
-	EventSystem::GetInstance()->Unsubscribe<NearDeathEvent>			(this, &DamageFilter::StartNearDeathBlinking);
-	EventSystem::GetInstance()->Unsubscribe<EnterNearDeathEvent>	(this, &DamageFilter::StartEnterNearDeathBlinking);
-	EventSystem::GetInstance()->Unsubscribe<ChangeSceneEvent>		(this, &DamageFilter::StopNearDeathBlinkind);
+	EventSystem::GetInstance()->Unsubscribe<OnDamageToPlayerEvent>				(this, &DamageFilter::StartDamageBlinking);
+	EventSystem::GetInstance()->Unsubscribe<NearDeathEvent>						(this, &DamageFilter::StartNearDeathBlinking);
+	EventSystem::GetInstance()->Unsubscribe<EnterNearDeathEvent>				(this, &DamageFilter::StartEnterNearDeathBlinking);
+	EventSystem::GetInstance()->Unsubscribe<ChangeSceneEvent>					(this, &DamageFilter::StopNearDeathBlinkind);
+	EventSystem::GetInstance()->Unsubscribe<StartRocketLauncherCutsceneEvent>	(this, &DamageFilter::ActivateCutscene);
+	EventSystem::GetInstance()->Unsubscribe<EndRocketLauncherCutsceneEvent>		(this, &DamageFilter::DeactivateCutscene);
 }
 
 void DamageFilter::LateUpdate()
@@ -54,11 +61,15 @@ void DamageFilter::LateUpdate()
 		m_is_loop_blinking = false;
 	}
 	m_is_near_death = false;
+
+	CalcResultScreenAlphaBlendNum();
 }
 
 void DamageFilter::Draw(const int main_screen_handle) const
 {
 	if (m_blinking_sin >= DX_PI_F) { return; }
+
+	m_result_screen->UseScreen();
 
 	m_mask_creator->CreateMask();
 	m_mask_creator->UseMask(m_mask_screen->GetScreenHandle(), true);
@@ -67,10 +78,23 @@ void DamageFilter::Draw(const int main_screen_handle) const
 	m_mask_creator->DeleteMask();
 
 	m_graphicer->Draw();
+	m_result_screen->UnuseScreen();
+
+	m_result_screen->Draw();
 }
 
 
 #pragma region Event
+void DamageFilter::ActivateCutscene(const StartRocketLauncherCutsceneEvent& event)
+{
+	m_is_active_cutscene = true;
+}
+
+void DamageFilter::DeactivateCutscene(const EndRocketLauncherCutsceneEvent& event)
+{
+	m_is_active_cutscene = false;
+}
+
 void DamageFilter::StartDamageBlinking(const OnDamageToPlayerEvent& event)
 {
 	if (!m_is_loop_blinking)
@@ -118,3 +142,21 @@ void DamageFilter::StopNearDeathBlinkind(const ChangeSceneEvent& event)
 	m_is_near_death_first_blinking = false;
 }
 #pragma endregion
+
+
+void DamageFilter::CalcResultScreenAlphaBlendNum()
+{
+	// TODO : マジックナンバーの削除
+	const auto delta_time = GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kUI);
+
+	if (m_is_active_cutscene)
+	{
+		math::Decrease(m_result_screen_alpha_blend_num, static_cast<int>(700.0f * delta_time), 0);
+	}
+	else
+	{
+		math::Increase(m_result_screen_alpha_blend_num, static_cast<int>(700.0f * delta_time), 255, false);
+	}
+
+	m_result_screen->GetGraphicer()->SetBlendNum(m_result_screen_alpha_blend_num);
+}

@@ -1,7 +1,7 @@
 #include "status_icons.hpp"
 
 StatusIcons::StatusIcons(const std::shared_ptr<Player>& player) : 
-	m_result_screen			(std::make_shared<ScreenCreator>(kScreenSize)),
+	m_result_screen				(std::make_shared<ScreenCreator>(kScreenSize)),
 	m_health_gauge				(std::make_shared<HealthGauge>(player->GetHealth(HealthPartKind::kMain))),
 	m_equip_weapon_icon			(std::make_shared<EquipWeaponIcon>(player->GetCurrentEquipWeapons())),
 	m_health_gauge_graphic		(std::make_shared<Graphicer>(m_health_gauge->GetScreenHandle())),
@@ -69,7 +69,6 @@ void StatusIcons::CreateScreen()
 void StatusIcons::CalcResultScreenAlphaBlendNum()
 {
 	// TODO : マジックナンバーの削除
-
 	const auto delta_time = GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kUI);
 
 	if (m_is_active_cutscene)
