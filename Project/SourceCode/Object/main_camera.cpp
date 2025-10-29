@@ -57,6 +57,9 @@ void MainCamera::Draw() const
 	if (!IsActive()) { return; }
 
 	DrawColliders();
+
+	const auto p = m_transform->GetPos(CoordinateKind::kWorld);
+	printfDx("%f, %f, %f\n", p.x, p.y, p.z);
 }
 
 void MainCamera::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)

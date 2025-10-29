@@ -15,7 +15,7 @@ EnemyManager::EnemyManager() :
 		const auto dir		= data.at("direction").get<std::vector<VECTOR>>();
 		const auto count	= min(pos.size(), dir.size());
 
-		for (size_t i = 0; i < count; ++i)
+		for (size_t i = 0; i < 3; ++i)
 		{
 			const auto enemy = std::static_pointer_cast<EnemyBase>(m_object_pool->GetObj(ObjName.ZOMBIE));
 

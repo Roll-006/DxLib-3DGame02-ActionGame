@@ -35,34 +35,36 @@ void CinemachineBrain::Init()
 
 void CinemachineBrain::Update()
 {
-	if (GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kCamera) <= 0.0f) { return; }
-
-	// 非アクティブ化処理の遅延防止のため一度先行してトランスフォームを取得
-	SetBlendTransform();
-
-	for (const auto& camera_controller : m_virtual_camera_controllers)
+	if (GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kCamera) > 0.0f)
 	{
-		camera_controller->Update();
-	}
+		// 非アクティブ化処理の遅延防止のため一度先行してトランスフォームを取得
+		SetBlendTransform();
 
-	for (const auto& camera : m_virtual_cameras)
-	{
-		camera.second->Update();
+		for (const auto& camera_controller : m_virtual_camera_controllers)
+		{
+			camera_controller->Update();
+		}
+
+		for (const auto& camera : m_virtual_cameras)
+		{
+			camera.second->Update();
+		}
 	}
 }
 
 void CinemachineBrain::LateUpdate()
 {
-	if (GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kCamera) <= 0.0f) { return; }
-
-	for (const auto& camera_controller : m_virtual_camera_controllers)
+	if (GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kCamera) > 0.0f)
 	{
-		camera_controller->LateUpdate();
-	}
+		for (const auto& camera_controller : m_virtual_camera_controllers)
+		{
+			camera_controller->LateUpdate();
+		}
 
-	for (const auto& camera : m_virtual_cameras)
-	{
-		camera.second->LateUpdate();
+		for (const auto& camera : m_virtual_cameras)
+		{
+			camera.second->LateUpdate();
+		}
 	}
 
 	BlendVirtualCamera();
