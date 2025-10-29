@@ -3,6 +3,7 @@
 
 #include "../../Object/zombie.hpp"
 #include "../../Part/zombie_state_controller.hpp"
+#include "../../Part/patrol_route_giver.hpp"
 
 namespace zombie_state
 {

@@ -36,6 +36,7 @@ public:
 	[[nodiscard]] std::shared_ptr<AnimatorBase>	GetAnimator()		const				{ return m_animator; }
 	[[nodiscard]] VECTOR						GetCurrentMoveDir()	const				{ return m_move_dir.at(TimeKind::kCurrent); }
 	[[nodiscard]] VECTOR						GetCurrentLookDir()	const				{ return m_look_dir.at(TimeKind::kCurrent); }
+	[[nodiscard]]
 	[[nodiscard]] std::shared_ptr<Gauge>&		GetHealth(const HealthPartKind kind)	{ return m_health.at(kind); }
 	#pragma endregion
 

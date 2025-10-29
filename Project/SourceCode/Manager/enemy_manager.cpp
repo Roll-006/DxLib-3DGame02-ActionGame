@@ -7,6 +7,7 @@ EnemyManager::EnemyManager() :
 	EventSystem::GetInstance()->Subscribe<ReleaseEvent>	(this, &EnemyManager::NotifyAllowAction);
 	EventSystem::GetInstance()->Subscribe<GrabEvent>	(this, &EnemyManager::NotifyDisallowActionForcibly);
 
+	// ‰Šú‚Ì“G‚ğ¶¬
 	JSONLoader json_loader;
 	nlohmann::json data;
 	if (json_loader.Load("Data/JSON/points.json", data))

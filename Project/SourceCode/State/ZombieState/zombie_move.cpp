@@ -26,6 +26,10 @@ void zombie_state::Move::Update(std::shared_ptr<Zombie>& obj)
 	{
 		obj->TrackMove(target_pos);
 	}
+	else if (ai_state == zombie_state::AIStateKind::kPatrol)
+	{
+		obj->ChangePatrolDestination();
+	}
 }
 
 void zombie_state::Move::LateUpdate(std::shared_ptr<Zombie>& obj)

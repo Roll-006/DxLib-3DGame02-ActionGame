@@ -1,5 +1,6 @@
 #pragma once
 #include "character_base.hpp"
+#include "../Part/patrol_route_giver.hpp"
 
 class EnemyBase abstract : public CharacterBase
 {
@@ -12,6 +13,9 @@ public:
 
 	void SetAttackIntervalTime();
 	void CalcAttackIntervalTime();
+
+	void CreatePatrolPos(const PatrolRouteGiver::PatrolKind patrol_kind, const std::string& route_id);
+	void ChangePatrolDestination();
 
 	/// @brief ÉäÉXÉ|Å[ÉìÇ≥ÇπÇÁÇÍÇÈ
 	virtual void OnRespawn(const VECTOR& pos, const VECTOR& look_dir) abstract;
@@ -33,6 +37,8 @@ protected:
 	void JudgeLostTarget();
 
 protected:
+	std::shared_ptr<PatrolRouteGiver> m_patrol_route_giver;
+
 	float m_attack_interval_time;
 	float m_attack_interval_timer;
 	bool  m_can_action;

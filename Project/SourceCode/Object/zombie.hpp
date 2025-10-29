@@ -109,7 +109,7 @@ private:
 	static constexpr float kDamageOverTimeStartTime = 1.0f;
 
 private:
-	std::shared_ptr<ZombieStateController> m_state;
+	std::shared_ptr<ZombieStateController>	m_state;
 
 	bool m_can_grab_target;
 	bool m_is_target_escaped;
