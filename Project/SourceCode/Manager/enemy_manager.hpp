@@ -2,7 +2,7 @@
 #include <vector>
 
 #include "../Event/event_system.hpp"
-#include "../Object/zombie.hpp"
+#include "../ObjectPool/enemy_object_pool.hpp"
 #include "../JSON/json_loader.hpp"
 
 // MEMO : Åuê”ñ±Åv
@@ -30,5 +30,6 @@ public:
 	void NotifyDisallowActionForcibly(const GrabEvent&		event);
 
 private:
-	std::vector<std::shared_ptr<EnemyBase>> m_enemies;
+	std::shared_ptr<EnemyObjectPool>		m_object_pool;
+	std::vector<std::shared_ptr<EnemyBase>> m_active_enemies;
 };

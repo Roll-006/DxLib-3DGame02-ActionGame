@@ -321,14 +321,6 @@ std::vector<ColliderPairOneToManyData> CollisionManager::CreateHitColliderPairs(
 
 		for (const auto& target_obj : m_collide_objects)
 		{
-			if (owner_obj->GetName() == ObjName.MAIN_CAMERA && target_obj->GetName() == ObjName.HOUSE)
-			{
-				int a = 0;
-			}
-			if (target_obj->GetName() == ObjName.MAIN_CAMERA && owner_obj->GetName() == ObjName.HOUSE)
-			{
-				int a = 0;
-			}
 			// ©g‚Æ‚Ì“–‚½‚è”»’è‚Í”ğ‚¯‚é
 			if (owner_obj == target_obj) { continue; }
 

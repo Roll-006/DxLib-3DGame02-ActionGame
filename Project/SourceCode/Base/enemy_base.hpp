@@ -14,7 +14,7 @@ public:
 	void CalcAttackIntervalTime();
 
 	/// @brief リスポーンさせられる
-	void OnRespawn(const VECTOR& pos, const VECTOR& look_dir);
+	virtual void OnRespawn(const VECTOR& pos, const VECTOR& look_dir) abstract;
 
 	/// @brief 行動を起こすを許可される
 	/// @brief また、同時に攻撃インターバル時間が1/4未満の場合、

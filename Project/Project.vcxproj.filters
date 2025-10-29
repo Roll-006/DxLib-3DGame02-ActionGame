@@ -1765,5 +1765,8 @@
     <None Include="Data\JSON\font_data.json">
       <Filter>JSON</Filter>
     </None>
+    <None Include="Data\JSON\points.json">
+      <Filter>JSON</Filter>
+    </None>
   </ItemGroup>
 </Project>

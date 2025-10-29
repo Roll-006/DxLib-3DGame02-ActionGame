@@ -11,7 +11,7 @@ class ZombieStateController;
 class Zombie final : public EnemyBase, public IMeleeHittable, public IGrabber, public IStealthKillable
 {
 public:
-	Zombie(const VECTOR& pos, const VECTOR& look_dir);
+	Zombie();
 	~Zombie() override;
 
 	void Init()						override;
@@ -24,6 +24,8 @@ public:
 
 	void AttachTarget(const std::shared_ptr<CharacterBase>& target_character) override;
 	void DetachTarget() override;
+
+	void OnRespawn(const VECTOR& pos, const VECTOR& look_dir) override;
 	
 
 	#pragma region ’Í‚İ
@@ -84,9 +86,9 @@ private:
 	static constexpr float kAttackIntervalTime		= 3.0f;
 	static constexpr float kInvincibleTime			= 0.5f;
 
-	static constexpr float kWalkSpeed				= 30.0f;
-	static constexpr float kRunSpeed				= 70.0f;
-	static constexpr float kRunGrabSpeed			= 80.0f;
+	static constexpr float kWalkSpeed				= 60.0f;
+	static constexpr float kRunSpeed				= 100.0f;
+	static constexpr float kRunGrabSpeed			= 110.0f;
 
 	static constexpr float kMoveDirOffsetSpeed		= 5.0f;			// ˆÚ“®•ûŒü‚Ì•â³‘¬“x
 	static constexpr float kLookDirOffsetSpeed		= 4.0f;			// Œ©‚é•ûŒü‚Ì•â³Šp“x

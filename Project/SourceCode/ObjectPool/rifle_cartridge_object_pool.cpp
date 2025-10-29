@@ -6,7 +6,6 @@ RifleCartridgeObjectPool::RifleCartridgeObjectPool() :
 	m_pool_size[ObjName.BULLET]						= kBulletPoolSize;
 	m_pool_size[ObjName.SHELL_CASING_556x45]		= kShellCasingPoolSize;
 	m_pool_size[ObjName.ROCKET_BOMB]				= kRocketBombPoolSize;
-	//m_pool_size[ObjName.NON_COLLIDE_ROCKET_BOMB]	= kNonCollideRocketBombPoolSize;
 
 	// 弾丸
 	for (size_t i = 0; i < m_pool_size.at(ObjName.BULLET); ++i)
@@ -34,15 +33,6 @@ RifleCartridgeObjectPool::RifleCartridgeObjectPool() :
 		CreateObj(rocket_bomb);
 		rocket_bomb->AddToObjManager();
 	}
-
-	//// 非衝突ロケット弾
-	//for (size_t i = 0; i < m_pool_size.at(ObjName.NON_COLLIDE_ROCKET_BOMB); ++i)
-	//{
-	//	const auto rocket_bomb = std::make_shared<NonCollildeRocketBomb>();
-	//
-	//	CreateObj(rocket_bomb);
-	//	rocket_bomb->AddToObjManager();
-	//}
 }
 
 RifleCartridgeObjectPool::~RifleCartridgeObjectPool()

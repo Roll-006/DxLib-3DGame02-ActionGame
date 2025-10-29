@@ -125,6 +125,20 @@ void CharacterColliderCreator::CalcCapsuleColliderPos(std::shared_ptr<Modeler>& 
 	capsule->SetSegmentEndPos  (begin_pos + transform->GetUp(CoordinateKind::kWorld) * capsule_length, true);
 }
 
+void CharacterColliderCreator::CalcLandingTriggerPos(std::shared_ptr<Modeler>& modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>>& collider)
+{
+	if (!collider.count(ColliderKind::kCollider)) { return; }
+
+	modeler->ApplyMatrix();
+	const auto model_handle = modeler->GetModelHandle();
+
+	const auto sphere		= std::static_pointer_cast<Sphere> (collider.at(ColliderKind::kLandingTrigger)->GetShape());
+	const auto capsule		= std::static_pointer_cast<Capsule>(collider.at(ColliderKind::kCollider)->GetShape());
+	const auto pos			= capsule->GetSegment().GetBeginPos() - VGet(0.0f, 5.0f, 0.0f);
+
+	sphere->SetPos(pos);
+}
+
 void CharacterColliderCreator::CalcVisionTriggerPos	(std::shared_ptr<Modeler>& modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>>& collider)
 {
 	modeler->ApplyMatrix();

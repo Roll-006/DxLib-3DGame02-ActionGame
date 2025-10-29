@@ -24,15 +24,6 @@ void EnemyBase::CalcAttackIntervalTime()
 	math::Decrease(m_attack_interval_timer, GetDeltaTime(), 0.0f);
 }
 
-void EnemyBase::OnRespawn(const VECTOR& pos, const VECTOR& look_dir)
-{
-	// TODO : Initˆ—‚ð“ü‚ê‚é
-	m_transform->SetPos(CoordinateKind::kWorld, pos);
-
-	m_look_dir.at(TimeKind::kNext) = m_look_dir.at(TimeKind::kCurrent) = v3d::GetNormalizedV(look_dir);
-	ApplyLookDirToRot(m_look_dir.at(TimeKind::kCurrent));
-}
-
 void EnemyBase::OnAllowAction()
 {
 	m_is_disallow_action_forcibly = false;

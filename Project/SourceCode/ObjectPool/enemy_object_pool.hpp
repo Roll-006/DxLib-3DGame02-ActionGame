@@ -9,5 +9,5 @@ public:
 	~EnemyObjectPool() override;
 
 private:
-	static constexpr int kPoolSize = 30;
+	static constexpr int kPoolSize = 20;
 };

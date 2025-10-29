@@ -5,14 +5,14 @@ EnemyObjectPool::EnemyObjectPool() :
 {
 	m_pool_size[ObjName.ZOMBIE] = kPoolSize;
 
-	//// ゾンビ
-	//for (size_t i = 0; i < m_pool_size.at(ObjName.ZOMBIE); ++i)
-	//{
-	//	const auto zombie = std::make_shared<Zombie>();
+	// ゾンビ
+	for (size_t i = 0; i < m_pool_size.at(ObjName.ZOMBIE); ++i)
+	{
+		const auto zombie = std::make_shared<Zombie>();
 
-	//	CreateObj(zombie);
-	//	zombie->AddToObjManager();
-	//}
+		CreateObj(zombie);
+		zombie->AddToObjManager();
+	}
 }
 
 EnemyObjectPool::~EnemyObjectPool()

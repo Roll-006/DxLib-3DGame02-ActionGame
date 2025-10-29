@@ -40,7 +40,12 @@ public:
 
 	#pragma region 位置計算
 	/// @brief カプセルコライダーの位置を計算
-	void CalcCapsuleColliderPos(std::shared_ptr<Modeler>& modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>>& collider);
+	void CalcCapsuleColliderPos	(std::shared_ptr<Modeler>& modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>>& collider);
+
+	/// @brief 着地トリガーの位置を計算
+	/// @brief カプセルコライダーに依存して位置が計算される
+	/// @brief カプセルが消失した場合、計算は行われない
+	void CalcLandingTriggerPos	(std::shared_ptr<Modeler>& modeler, const std::unordered_map<ColliderKind, std::shared_ptr<Collider>>& collider);
 
 	/// @brief 視界用トリガーの位置を計算
 	/// @brief WARNING : トリガーが円錐であることを前提としている(軽量化を優先)

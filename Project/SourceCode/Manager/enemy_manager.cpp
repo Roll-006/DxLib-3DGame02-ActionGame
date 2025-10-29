@@ -1,23 +1,26 @@
 #include "enemy_manager.hpp"
 
-EnemyManager::EnemyManager()
+EnemyManager::EnemyManager() :
+	m_object_pool(std::make_shared<EnemyObjectPool>())
 {
 	// イベント登録
 	EventSystem::GetInstance()->Subscribe<ReleaseEvent>	(this, &EnemyManager::NotifyAllowAction);
 	EventSystem::GetInstance()->Subscribe<GrabEvent>	(this, &EnemyManager::NotifyDisallowActionForcibly);
 
-	// 初期位置・向きを設定
-	// TODO : 仮で3体配置。のちに変更。
 	JSONLoader json_loader;
 	nlohmann::json data;
-	if (json_loader.Load("Data/JSON/enemy_data.json", data))
+	if (json_loader.Load("Data/JSON/points.json", data))
 	{
-		for (int i = 0; i < 3; ++i)
+		const auto pos		= data.at("position") .get<std::vector<VECTOR>>();
+		const auto dir		= data.at("direction").get<std::vector<VECTOR>>();
+		const auto count	= min(pos.size(), dir.size());
+
+		for (size_t i = 0; i < count; ++i)
 		{
-			const auto enemy	= data ["enemies"][std::to_string(i + 1)];
-			const auto pos		= enemy["position"];
-			const auto look_dir	= enemy["direction"];
-			m_enemies.emplace_back(std::make_shared<Zombie>(pos, look_dir));
+			const auto enemy = std::static_pointer_cast<EnemyBase>(m_object_pool->GetObj(ObjName.ZOMBIE));
+
+			m_active_enemies.emplace_back(enemy);
+			enemy->OnRespawn(pos.at(i), dir.at(i));
 		}
 	}
 }
@@ -31,7 +34,7 @@ EnemyManager::~EnemyManager()
 
 void EnemyManager::Init()
 {
-	for (const auto& enemy : m_enemies)
+	for (const auto& enemy : m_active_enemies)
 	{
 		enemy->Init();
 	}
@@ -39,7 +42,7 @@ void EnemyManager::Init()
 
 void EnemyManager::Update()
 {
-	for (const auto& enemy : m_enemies)
+	for (const auto& enemy : m_active_enemies)
 	{
 		enemy->Update();
 	}
@@ -47,7 +50,7 @@ void EnemyManager::Update()
 
 void EnemyManager::LateUpdate()
 {
-	for (const auto& enemy : m_enemies)
+	for (const auto& enemy : m_active_enemies)
 	{
 		enemy->LateUpdate();
 	}
@@ -55,7 +58,7 @@ void EnemyManager::LateUpdate()
 
 void EnemyManager::Draw() const
 {
-	for (const auto& enemy : m_enemies)
+	for (const auto& enemy : m_active_enemies)
 	{
 		enemy->Draw();
 	}
@@ -63,23 +66,23 @@ void EnemyManager::Draw() const
 
 void EnemyManager::AddToObjManager()
 {
-	for (const auto& enemy : m_enemies)
-	{
-		enemy->AddToObjManager();
-	}
+	//for (const auto& enemy : m_active_enemies)
+	//{
+	//	enemy->AddToObjManager();
+	//}
 }
 
 void EnemyManager::RemoveToObjManager()
 {
-	for (const auto& enemy : m_enemies)
-	{
-		enemy->RemoveToObjManager();
-	}
+	//for (const auto& enemy : m_active_enemies)
+	//{
+	//	enemy->RemoveToObjManager();
+	//}
 }
 
 void EnemyManager::AttachTarget(const std::shared_ptr<CharacterBase>& target_character)
 {
-	for (const auto& enemy : m_enemies)
+	for (const auto& enemy : m_active_enemies)
 	{
 		enemy->AttachTarget(target_character);
 	}
@@ -87,7 +90,7 @@ void EnemyManager::AttachTarget(const std::shared_ptr<CharacterBase>& target_cha
 
 void EnemyManager::DetachTarget()
 {
-	for (const auto& enemy : m_enemies)
+	for (const auto& enemy : m_active_enemies)
 	{
 		enemy->DetachTarget();
 	}
@@ -95,7 +98,7 @@ void EnemyManager::DetachTarget()
 
 void EnemyManager::NotifyAllowAction(const ReleaseEvent& event)
 {
-	for (const auto& enemy : m_enemies)
+	for (const auto& enemy : m_active_enemies)
 	{
 		// 離した本人以外の敵の行動をすべて復帰させる
 		if (event.enemy_handle != enemy->GetEnemyHandle())
@@ -107,7 +110,7 @@ void EnemyManager::NotifyAllowAction(const ReleaseEvent& event)
 
 void EnemyManager::NotifyDisallowActionForcibly(const GrabEvent& event)
 {
-	for (const auto& enemy : m_enemies)
+	for (const auto& enemy : m_active_enemies)
 	{
 		// 掴んだ本人以外の敵の行動はすべて停止させる
 		if(event.enemy_handle != enemy->GetEnemyHandle())

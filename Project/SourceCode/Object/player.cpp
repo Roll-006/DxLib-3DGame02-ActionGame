@@ -2,8 +2,10 @@
 #include "../Command/command_handler.hpp"
 #include "../Part/player_state_controller.hpp"
 
+#include "../JSON/json_loader.hpp"
+
 Player::Player() :
-	CharacterBase(ObjName.PLAYER, ObjTag.PLAYER, MassKind::kMedium),
+	CharacterBase(ObjName.PLAYER, ObjTag.PLAYER, MassKind::kLight),
 	m_state									(std::make_shared<PlayerStateController>()),
 	m_bone_pos_corrector					(std::make_shared<BonePosCorrector>()),
 	m_input_slope							(v3d::GetZeroV()),
@@ -32,7 +34,7 @@ Player::Player() :
 
 	// 初期pos・dirを設定
 	m_look_dir[TimeKind::kCurrent] = m_look_dir[TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);
-	m_transform->SetPos(CoordinateKind::kWorld, VGet(362.0f, -102.0f, 109.0f));
+	m_transform->SetPos(CoordinateKind::kWorld, VGet(-146.2f, 95.0f, -756.0f));
 	m_transform->SetRot(CoordinateKind::kWorld, m_look_dir.at(TimeKind::kCurrent));
 
 	// コライダー・トリガーを設定
@@ -142,6 +144,19 @@ void Player::LateUpdate()
 			attach_weapon.second->LateUpdate();
 		}
 	}
+
+	//if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_SPACE) == InputState::kSingle)
+	//{
+	//	JSONLoader json_loader;
+	//	nlohmann::json data;
+	//	if (json_loader.Load("Data/JSON/points.json", data))
+	//	{
+	//		data["position"] .emplace_back(m_transform->GetPos(CoordinateKind::kWorld));
+	//		data["direction"].emplace_back(m_look_dir.at(TimeKind::kCurrent));
+
+	//		json_loader.Save("Data/JSON/points.json", data);
+	//	}
+	//}
 }
 
 void Player::Draw() const

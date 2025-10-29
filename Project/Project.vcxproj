@@ -689,6 +689,7 @@
     <None Include="Data\JSON\enemy_data.json" />
     <None Include="Data\JSON\font_data.json" />
     <None Include="Data\JSON\key_number.json" />
+    <None Include="Data\JSON\points.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

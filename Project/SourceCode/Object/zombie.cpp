@@ -2,7 +2,7 @@
 #include "player.hpp"
 #include "../Part/zombie_state_controller.hpp"
 
-Zombie::Zombie(const VECTOR& pos, const VECTOR& look_dir) :
+Zombie::Zombie() :
 	EnemyBase				(ObjName.ZOMBIE, MassKind::kMedium),
 	m_state					(std::make_shared<ZombieStateController>()),
 	m_can_grab_target		(false),
@@ -10,8 +10,8 @@ Zombie::Zombie(const VECTOR& pos, const VECTOR& look_dir) :
 	m_is_allow_stealth_kill	(true),
 	m_on_stealth_kill		(false)
 {
-	m_transform->SetPos(CoordinateKind::kWorld, pos);
-	m_look_dir.at(TimeKind::kNext) = m_look_dir.at(TimeKind::kCurrent) = v3d::GetNormalizedV(look_dir);
+	m_transform->SetPos(CoordinateKind::kWorld, v3d::GetZeroV());
+	m_look_dir.at(TimeKind::kNext) = m_look_dir.at(TimeKind::kCurrent) = VGet(0.0f, 0.0f, 1.0);
 	ApplyLookDirToRot(m_look_dir.at(TimeKind::kCurrent));
 
 	// TODO : JSON指定
@@ -41,7 +41,7 @@ Zombie::Zombie(const VECTOR& pos, const VECTOR& look_dir) :
 	m_collider_creator->CreateLegTrigger		(this, m_modeler, kUpLegTriggerRadius, kDownLegTriggerRadius);
 
 	AddCollider(std::make_shared<Collider>(ColliderKind::kRayCast, std::make_shared<Segment>(), this));
-	AddCollider(std::make_shared<Collider>(ColliderKind::kCollisionAreaTrigger, std::make_shared<Sphere>(pos + kCollisionAreaOffset, kCollisionAreaRadius), this));
+	AddCollider(std::make_shared<Collider>(ColliderKind::kCollisionAreaTrigger, std::make_shared<Sphere>(v3d::GetZeroV() + kCollisionAreaOffset, kCollisionAreaRadius), this));
 }
 
 Zombie::~Zombie()
@@ -308,6 +308,21 @@ void Zombie::AttachTarget(const std::shared_ptr<CharacterBase>& target_character
 void Zombie::DetachTarget()
 {
 	m_state->DetachTarget();
+}
+
+void Zombie::OnRespawn(const VECTOR& pos, const VECTOR& look_dir)
+{
+	m_transform->SetPos(CoordinateKind::kWorld, pos);
+
+	m_look_dir.at(TimeKind::kNext) = m_look_dir.at(TimeKind::kCurrent) = v3d::GetNormalizedV(look_dir);
+	ApplyLookDirToRot(m_look_dir.at(TimeKind::kCurrent));
+
+	// コライダーの位置を修正
+	m_collider_creator->CalcCapsuleColliderPos(m_modeler, m_colliders);
+	m_collider_creator->CalcLandingTriggerPos (m_modeler, m_colliders);
+
+	const auto sphere = std::static_pointer_cast<Sphere>(GetCollider(ColliderKind::kCollisionAreaTrigger)->GetShape());
+	sphere->SetPos(pos + kCollisionAreaOffset);
 }
 
 void Zombie::Grab()

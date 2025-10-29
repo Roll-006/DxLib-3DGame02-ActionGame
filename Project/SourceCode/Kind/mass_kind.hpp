@@ -5,5 +5,6 @@ enum class MassKind
 {
 	kLight,
 	kMedium,
+	kHeavy,
 	kStatic,	// •s“®
 };

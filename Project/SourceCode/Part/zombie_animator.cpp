@@ -31,8 +31,8 @@ void ZombieAnimator::LoadAnim()
 {
 	// 汎用
 	AddAnimHandle(static_cast<int>(ZombieAnimKind::kIdle),							AnimPath.ZOMBIE_IDLE_01,				0, AnimTag.NONE, 20.0f,  true);
-	AddAnimHandle(static_cast<int>(ZombieAnimKind::kMoveForwardWalk),				AnimPath.MOVE_FORWARD_WALK,				0, AnimTag.MOVE, 20.0f,  true);
-	AddAnimHandle(static_cast<int>(ZombieAnimKind::kMoveForwardRun),				AnimPath.MOVE_FORWARD_RUN_02,			0, AnimTag.MOVE, 40.0f,  true);
+	AddAnimHandle(static_cast<int>(ZombieAnimKind::kMoveForwardWalk),				AnimPath.MOVE_FORWARD_WALK,				0, AnimTag.MOVE, 55.0f,  true);
+	AddAnimHandle(static_cast<int>(ZombieAnimKind::kMoveForwardRun),				AnimPath.MOVE_FORWARD_RUN_02,			0, AnimTag.MOVE, 60.0f,  true);
 	AddAnimHandle(static_cast<int>(ZombieAnimKind::kEnterNeckBite),					AnimPath.ENTER_NECK_BITE,				0, AnimTag.NONE, 20.0f,  true, true);
 	AddAnimHandle(static_cast<int>(ZombieAnimKind::kEnterNeckBite),					AnimPath.EXIT_NECK_BITE,				0, AnimTag.NONE, 20.0f,  false);
 	AddAnimHandle(static_cast<int>(ZombieAnimKind::kStealthKilled),					AnimPath.DEAD_03,						0, AnimTag.NONE, 60.0f,  false);
