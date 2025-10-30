@@ -171,7 +171,7 @@ private:
 	XINPUT_STATE					m_xinput;	// TODO : 複数コントローラーに対応できるよう後にコンテナ化
 	DeviceKind						m_current_device;
 	bool							m_is_lock_mouse_pos;
-	char							m_key_input[256];
+	int								m_key_input[256];
 
 	std::unordered_map<InputKey, InputValue, KeyHash, KeyEquality> m_input_data;
 	std::unordered_map<TimeKind, MouseData> m_mouse_data;

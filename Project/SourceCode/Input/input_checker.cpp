@@ -4,7 +4,8 @@
 InputChecker::InputChecker():
 	m_xinput				(-1),
 	m_current_device		(DeviceKind::kKeyboard),
-	m_is_lock_mouse_pos		(true)
+	m_is_lock_mouse_pos		(true),
+	m_key_input				(0)
 {	
 	SetUseDirectInputFlag(TRUE);
 	SetMouseDispFlag(FALSE);
@@ -78,11 +79,11 @@ bool InputChecker::IsInput(const InputCode& input_code)
 	switch (input_code.kind)
 	{
 	case InputKind::kKey:
-		return m_key_input[static_cast<int>(input_code.code)];
+		return m_key_input[input_code.code] >= 1;
 		break;
 
 	case InputKind::kMouseButton:
-		return (GetMouseInput() & static_cast<int>(input_code.code)) != 0;
+		return (GetMouseInput() & input_code.code) != 0;
 		break;
 
 	case InputKind::kMouseWheel:
@@ -100,7 +101,7 @@ bool InputChecker::IsInput(const InputCode& input_code)
 		break;
 
 	case InputKind::kPadButton:
-		return m_xinput.Buttons[static_cast<int>(input_code.code)];
+		return m_xinput.Buttons[input_code.code];
 		break;
 
 	case InputKind::kPadTrigger:
@@ -164,6 +165,27 @@ float InputChecker::GetInputTime(const InputCode& input_code, const TimeKind tim
 
 InputState InputChecker::GetInputState(const InputCode& input_code)
 {
+	// キー入力の場合はDxLib既存関数を使用する
+	if (input_code.kind == InputKind::kKey)
+	{
+		if (m_key_input[input_code.code] == 0)
+		{
+			return InputState::kNone;
+		}
+		else if (m_key_input[input_code.code] == 1)
+		{
+			return InputState::kSingle;
+		}
+		else if (m_key_input[input_code.code] >= 2)
+		{
+			return InputState::kHold;
+		}
+		else
+		{
+			return InputState::kPrev;
+		}
+	}
+
 	bool prev_is_input	  = false;
 	bool current_is_input = false;
 
@@ -229,7 +251,7 @@ void InputChecker::CountInputTimeAll()
 
 void InputChecker::CheckInputAll()
 {
-	GetHitKeyStateAll(m_key_input);
+	GetHitKeyStateAllEx(m_key_input);
 
 	for (auto& [key, data] : m_input_data)
 	{
