@@ -17,6 +17,8 @@ public:
 
 	void Draw()				const;
 
+	void InitMaterial();
+
 	/// @brief 不透明度を設定
 	void SetOpacity(const float opacity) { m_opacity = opacity; }
 
@@ -30,7 +32,6 @@ public:
 	[[nodiscard]] int						 GetModelHandle()		const { return m_model_handle; }
 	[[nodiscard]] float						 GetOpacity()			const { return m_opacity; }
 	[[nodiscard]] VECTOR					 GetBasicAngle()		const { return m_basic_angle; }
-	[[nodiscard]] MaterialData				 GetInitMaterialData()	const { return m_init_material; }
 	[[nodiscard]] std::shared_ptr<Transform> GetTransform()			const { return m_transform; }
 
 private:
@@ -38,7 +39,6 @@ private:
 	float			m_opacity;			// モデルの不透明度(0.0f～1.0f)
 	VECTOR			m_basic_angle;		// モデルの基礎回転値(モデルが元から持つ回転を修正するための回転値)
 	VECTOR			m_basic_scale;		// モデルの基礎スケール
-	MaterialData	m_init_material;
 
 	std::shared_ptr<Transform> m_transform;
 };

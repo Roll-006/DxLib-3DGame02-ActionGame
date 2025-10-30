@@ -52,7 +52,7 @@ void zombie_state::Dead::Enter(std::shared_ptr<Zombie>& obj)
 {
 	m_elapsed_time_end_anim		= 0.0f;
 	m_change_color_wait_time	= 0.0f;
-	m_current_material			= obj->GetModeler()->GetInitMaterialData();
+	m_current_material			= MaterialData();
 
 	obj->RemoveCollider(ColliderKind::kCollider);
 }

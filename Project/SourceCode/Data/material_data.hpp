@@ -3,8 +3,8 @@
 
 struct MaterialData
 {
-	COLOR_F diffuse_color	= {};
-	COLOR_F specular_color	= {};
-	COLOR_F emissive_color	= {};
-	COLOR_F ambient_color	= {};
+	COLOR_F diffuse_color	= { 1.0f, 1.0f, 1.0f, 1.0f };
+	COLOR_F specular_color	= { 1.0f, 1.0f, 1.0f, 1.0f };
+	COLOR_F emissive_color	= { 1.0f, 1.0f, 1.0f, 1.0f };
+	COLOR_F ambient_color	= { 1.0f, 1.0f, 1.0f, 1.0f };
 };

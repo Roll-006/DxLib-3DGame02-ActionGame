@@ -46,7 +46,7 @@ Zombie::Zombie() :
 
 Zombie::~Zombie()
 {
-
+	m_modeler->InitMaterial();
 }
 
 void Zombie::Init()

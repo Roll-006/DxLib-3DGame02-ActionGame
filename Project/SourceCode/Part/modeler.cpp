@@ -6,12 +6,7 @@ Modeler::Modeler(const std::shared_ptr<Transform>& transform, const std::string&
 	m_opacity		(1.0f),
 	m_transform		(transform),
 	m_basic_angle	(basic_angle),
-	m_basic_scale	(VGet(basic_scale, basic_scale, basic_scale)),
-	m_init_material		(
-		MV1GetDifColorScale(m_model_handle),
-		MV1GetSpcColorScale(m_model_handle),
-		MV1GetEmiColorScale(m_model_handle),
-		MV1GetAmbColorScale(m_model_handle))
+	m_basic_scale	(VGet(basic_scale, basic_scale, basic_scale))
 {
 	MV1SetupCollInfo(m_model_handle);
 }
@@ -21,12 +16,7 @@ Modeler::Modeler(const std::shared_ptr<Transform>& transform, const std::string&
 	m_opacity		(1.0f),
 	m_transform		(transform),
 	m_basic_angle	(v3d::GetZeroV()),
-	m_basic_scale	(VGet(1.0f, 1.0f, 1.0f)),
-	m_init_material		(
-		MV1GetDifColorScale(m_model_handle),
-		MV1GetSpcColorScale(m_model_handle),
-		MV1GetEmiColorScale(m_model_handle),
-		MV1GetAmbColorScale(m_model_handle))
+	m_basic_scale	(VGet(1.0f, 1.0f, 1.0f))
 {
 	MV1SetupCollInfo(m_model_handle);
 }
@@ -36,12 +26,7 @@ Modeler::Modeler(const std::string& file_path) :
 	m_opacity		(1.0f),
 	m_transform		(nullptr),
 	m_basic_angle	(v3d::GetZeroV()),
-	m_basic_scale	(VGet(1.0f, 1.0f, 1.0f)),
-	m_init_material		(
-		MV1GetDifColorScale(m_model_handle),
-		MV1GetSpcColorScale(m_model_handle),
-		MV1GetEmiColorScale(m_model_handle),
-		MV1GetAmbColorScale(m_model_handle))
+	m_basic_scale	(VGet(1.0f, 1.0f, 1.0f))
 {
 	MV1SetupCollInfo(m_model_handle);
 }
@@ -51,12 +36,7 @@ Modeler::Modeler(const int model_handle) :
 	m_opacity		(1.0f),
 	m_transform		(nullptr),
 	m_basic_angle	(v3d::GetZeroV()),
-	m_basic_scale	(VGet(1.0f, 1.0f, 1.0f)),
-	m_init_material		(
-		MV1GetDifColorScale(m_model_handle), 
-		MV1GetSpcColorScale(m_model_handle), 
-		MV1GetEmiColorScale(m_model_handle), 
-		MV1GetAmbColorScale(m_model_handle))
+	m_basic_scale	(VGet(1.0f, 1.0f, 1.0f))
 {
 	MV1SetupCollInfo(m_model_handle);
 }
@@ -77,6 +57,14 @@ void Modeler::Draw() const
 	ApplyMatrix();
 
 	MV1DrawModel(m_model_handle);
+}
+
+void Modeler::InitMaterial()
+{
+	MV1SetDifColorScale(m_model_handle, COLOR_F(1.0f, 1.0f, 1.0f, 1.0f));
+	MV1SetSpcColorScale(m_model_handle, COLOR_F(1.0f, 1.0f, 1.0f, 1.0f));
+	MV1SetEmiColorScale(m_model_handle, COLOR_F(1.0f, 1.0f, 1.0f, 1.0f));
+	MV1SetAmbColorScale(m_model_handle, COLOR_F(1.0f, 1.0f, 1.0f, 1.0f));
 }
 
 void Modeler::ApplyOpacity() const
