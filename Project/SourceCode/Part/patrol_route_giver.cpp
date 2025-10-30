@@ -7,7 +7,8 @@ PatrolRouteGiver::PatrolRouteGiver(const PatrolKind patrol_kind, const std::stri
 	m_route_id		(route_id),
 	m_current_step	(1),
 	m_max_step		(0),
-	m_is_back		(false)
+	m_is_back		(false),
+	m_is_end		(false)
 {
 	if (m_routes.empty())
 	{
@@ -38,7 +39,7 @@ PatrolRouteGiver::~PatrolRouteGiver()
 
 bool PatrolRouteGiver::ChangeDestination(VECTOR& destination_pos, const VECTOR& current_pos)
 {
-	printfDx("%f\n", VSize(destination_pos - current_pos));
+	if (m_is_end) { return false; }
 
 	if (VSize(destination_pos - current_pos) < kChangeThresholdDistance)
 	{
@@ -106,7 +107,11 @@ bool PatrolRouteGiver::BackParolRoute(VECTOR& destination_pos)
 bool PatrolRouteGiver::StopParolRoute(VECTOR& destination_pos)
 {
 	// すでに終点の場合は早期return
-	if (m_current_step >= m_max_step) { return false; }
+	if (m_current_step >= m_max_step)
+	{
+		m_is_end = true;
+		return false;
+	}
 
 	++m_current_step;
 

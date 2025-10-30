@@ -26,7 +26,7 @@ EnemyManager::EnemyManager() :
 			// TODO : ‰¼
 			if (i == 0)
 			{
-				enemy->CreatePatrolPos(PatrolRouteGiver::PatrolKind::kLoop, "0");
+				enemy->CreatePatrolPos(PatrolRouteGiver::PatrolKind::kStop, "0");
 			}
 			//else if (i == 1)
 			//{

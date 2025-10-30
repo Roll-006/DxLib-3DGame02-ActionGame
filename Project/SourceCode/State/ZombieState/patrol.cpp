@@ -43,6 +43,11 @@ std::shared_ptr<IState<Zombie>> zombie_state::Patrol::ChangeState(std::shared_pt
 	{
 		return state_controller->GetState<Wait, Zombie>();
 	}
+	// 待機
+	if (obj->GetPatrolRouteGiver()->IsEnd())
+	{
+		return state_controller->GetState<Wait, Zombie>();
+	}
 	// ダッシュ攻撃
 	if (state_controller->TryRunAttack(obj))
 	{

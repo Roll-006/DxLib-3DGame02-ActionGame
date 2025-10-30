@@ -25,6 +25,10 @@ public:
 	/// @return true : 目的の変更あり, false : 目的地の変更なし
 	bool ChangeDestination(VECTOR& destination_pos, const VECTOR& current_pos);
 
+	/// @brief 巡回が終了したかを判定
+	/// @brief PatrolKindがkStopの場合しか意味を持たない
+	[[nodiscard]] bool IsEnd() const { return m_is_end; }
+
 private:
 	[[nodiscard]] bool LoopParolRoute(VECTOR& destination_pos);
 	[[nodiscard]] bool BackParolRoute(VECTOR& destination_pos);
@@ -40,4 +44,5 @@ private:
 	int			m_current_step;
 	int			m_max_step;
 	bool		m_is_back;
+	bool		m_is_end;
 };

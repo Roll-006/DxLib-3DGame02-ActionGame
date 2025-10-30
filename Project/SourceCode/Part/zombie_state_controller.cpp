@@ -252,8 +252,11 @@ bool ZombieStateController::TryWaitForcibly(std::shared_ptr<Zombie>& zombie)
 
 bool ZombieStateController::TryPatrol(std::shared_ptr<Zombie>& zombie)
 {
-	if (!zombie->GetPatrolRouteGiver()) { return false; }
-	if (zombie->IsTargetInSight())		{ return false; }
+	const auto route_giver = zombie->GetPatrolRouteGiver();
+
+	if (!route_giver)				{ return false; }
+	if (route_giver->IsEnd())		{ return false; }
+	if (zombie->IsTargetInSight())	{ return false; }
 
 	return true;
 }
