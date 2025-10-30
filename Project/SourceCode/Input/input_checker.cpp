@@ -78,7 +78,7 @@ bool InputChecker::IsInput(const InputCode& input_code)
 	switch (input_code.kind)
 	{
 	case InputKind::kKey:
-		return CheckHitKey(static_cast<int>(input_code.code));
+		return m_key_input[static_cast<int>(input_code.code)];
 		break;
 
 	case InputKind::kMouseButton:
@@ -229,6 +229,8 @@ void InputChecker::CountInputTimeAll()
 
 void InputChecker::CheckInputAll()
 {
+	GetHitKeyStateAll(m_key_input);
+
 	for (auto& [key, data] : m_input_data)
 	{
 		if (key.second != TimeKind::kCurrent) { continue; }
