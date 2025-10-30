@@ -1,6 +1,4 @@
 #pragma once
-#include <dxlib_helper.h>
-
 #include "../Handle/handle_keeper.hpp"
 #include "../Path/bone_path.hpp"
 #include "../Data/material_data.hpp"
@@ -10,12 +8,10 @@ class Modeler final
 {
 public:
 	Modeler(const std::shared_ptr<Transform>& transform, const std::string& file_path, const VECTOR& basic_angle, const float basic_scale);
-	Modeler(const std::shared_ptr<Transform>& transform, const std::string& file_path);
-	Modeler(const std::string& file_path);
 	Modeler(const int model_handle);
 	~Modeler();
 
-	void Draw()				const;
+	void Draw() const;
 
 	void InitMaterial();
 
@@ -41,4 +37,27 @@ private:
 	VECTOR			m_basic_scale;		// モデルの基礎スケール
 
 	std::shared_ptr<Transform> m_transform;
+
+	friend void from_json(const nlohmann::json& data, Modeler& modeler);
+	friend void to_json  (nlohmann::json& data, const Modeler& modeler);
 };
+
+
+#pragma region from / to JSON
+inline void from_json(const nlohmann::json& data, Modeler& modeler)
+{
+	data.at("opacity")		.get_to(modeler.m_opacity);
+	data.at("basic_angle")	.get_to(modeler.m_basic_angle);
+	data.at("basic_scale")	.get_to(modeler.m_basic_scale);
+}
+
+inline void to_json(nlohmann::json& data, const Modeler& modeler)
+{
+	data = nlohmann::json
+	{
+		{ "opacity",		modeler.m_opacity },
+		{ "basic_angle",	modeler.m_basic_angle },
+		{ "basic_scale",	modeler.m_basic_scale }
+	};
+}
+#pragma endregion

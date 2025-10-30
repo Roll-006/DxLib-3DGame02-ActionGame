@@ -100,6 +100,8 @@ private:
 #pragma region from / to JSON
 inline void from_json(const nlohmann::json& data, PhysicalObjBase& physical_obj_base)
 {
+	from_json(data, static_cast<ObjBase&>(physical_obj_base));
+
 	data.at("velocity")					.get_to(physical_obj_base.m_velocity);
 	data.at("move_velocity")			.get_to(physical_obj_base.m_move_velocity);
 	data.at("fall_velocity")			.get_to(physical_obj_base.m_fall_velocity);
@@ -113,7 +115,10 @@ inline void from_json(const nlohmann::json& data, PhysicalObjBase& physical_obj_
 
 inline void to_json(nlohmann::json& data, const PhysicalObjBase& physical_obj_base)
 {
-	data = nlohmann::json
+	nlohmann::json base_json;
+	to_json(base_json, static_cast<const ObjBase&>(physical_obj_base));
+
+	nlohmann::json derived_json =
 	{
 		{ "velocity",				physical_obj_base.m_velocity },
 		{ "move_velocity",			physical_obj_base.m_move_velocity },
@@ -125,5 +130,8 @@ inline void to_json(nlohmann::json& data, const PhysicalObjBase& physical_obj_ba
 		{ "mass_kind",				physical_obj_base.m_mass_kind },
 		{ "model_handle",			physical_obj_base.m_model_handle }
 	};
+
+	data = base_json;
+	data.update(derived_json);
 }
 #pragma endregion

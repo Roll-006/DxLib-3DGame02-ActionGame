@@ -3,7 +3,7 @@
 
 #include "../Object/player.hpp"
 #include "../Manager/enemy_manager.hpp"
-#include "../Object/house.hpp"
+#include "../Object/houses.hpp"
 #include "../Object/ground.hpp"
 #include "../Object/trees.hpp"
 #include "../Object/skydome.hpp"
@@ -49,9 +49,8 @@ private:
 
 	std::shared_ptr<Player>						m_player;
 	std::shared_ptr<EnemyManager>				m_enemy_manager;
-	std::shared_ptr<House>						m_house;
+	std::shared_ptr<Houses>						m_houses;
 	std::shared_ptr<Ground>						m_ground;
-	//std::shared_ptr<Trees>						m_trees;
 	std::shared_ptr<Skydome>					m_skydome;
 	std::shared_ptr<StealthKillTargetSearcher>	m_stealth_kill_target_searcher;
 	std::shared_ptr<MeleeTargetSearcher>		m_melee_target_searcher;

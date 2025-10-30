@@ -505,9 +505,6 @@
     <ClCompile Include="SourceCode\VirtualCamera\dead_virtual_cameras_controller.cpp">
       <Filter>SourceCode\VirtualCamera</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Part\selector.cpp">
-      <Filter>SourceCode\Part</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\Base\tab_base.cpp">
       <Filter>SourceCode\Base</Filter>
     </ClCompile>
@@ -606,6 +603,9 @@
     </ClCompile>
     <ClCompile Include="SourceCode\Animator\zombie_animator.cpp">
       <Filter>SourceCode\Animator</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Object\houses.cpp">
+      <Filter>SourceCode\Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1464,9 +1464,6 @@
     <ClInclude Include="SourceCode\IncludeList\event.hpp">
       <Filter>SourceCode\IncludeList</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Part\selector.hpp">
-      <Filter>SourceCode\Part</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\Base\tab_base.hpp">
       <Filter>SourceCode\Base</Filter>
     </ClInclude>
@@ -1626,6 +1623,9 @@
     <ClInclude Include="SourceCode\Data\material_data.hpp">
       <Filter>SourceCode\Data</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\Object\houses.hpp">
+      <Filter>SourceCode\Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="SourceCode">
@@ -1778,6 +1778,9 @@
       <Filter>JSON</Filter>
     </None>
     <None Include="Data\JSON\patrol_route.json">
+      <Filter>JSON</Filter>
+    </None>
+    <None Include="data\JSON\houses.json">
       <Filter>JSON</Filter>
     </None>
   </ItemGroup>

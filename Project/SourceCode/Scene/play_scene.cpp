@@ -8,7 +8,7 @@ PlayScene::PlayScene() :
 	m_can_fade_in					(true),
 	m_player						(std::make_shared<Player>()),
 	m_enemy_manager					(std::make_shared<EnemyManager>()),
-	m_house							(std::make_shared<House>()),
+	m_houses						(std::make_shared<Houses>()),
 	m_ground						(std::make_shared<Ground>()),
 	//m_trees							(std::make_shared<Trees>()),
 	m_skydome						(std::make_shared<Skydome>()),
@@ -22,7 +22,6 @@ PlayScene::PlayScene() :
 {
 	m_player		->AddToObjManager();
 	m_enemy_manager	->AddToObjManager();
-	m_house			->AddToObjManager();
 	m_ground		->AddToObjManager();
 	//m_trees			->AddToObjManager();
 
@@ -53,7 +52,6 @@ PlayScene::~PlayScene()
 {
 	m_player		->RemoveToObjManager();
 	m_enemy_manager	->RemoveToObjManager();
-	m_house			->RemoveToObjManager();
 	m_ground		->RemoveToObjManager();
 	//m_trees			->RemoveToObjManager();
 
@@ -98,7 +96,7 @@ void PlayScene::Update()
 	m_player							->Update();
 	m_enemy_manager						->Update();
 	RifleCartridgeManager::GetInstance()->Update();
-	m_house								->Update();
+	m_houses							->Update();
 	m_ground							->Update();
 	//m_trees								->Update();
 	m_skydome							->Update();
@@ -115,7 +113,7 @@ void PlayScene::LateUpdate()
 	m_player							->LateUpdate();
 	m_enemy_manager						->LateUpdate();
 	RifleCartridgeManager::GetInstance()->LateUpdate();
-	m_house								->LateUpdate();
+	m_houses							->LateUpdate();
 	m_ground							->LateUpdate();
 	//m_trees								->LateUpdate();
 	m_skydome							->LateUpdate();
@@ -129,7 +127,7 @@ void PlayScene::DrawToShadowMap() const
 	m_player							->Draw();
 	m_enemy_manager						->Draw();
 	RifleCartridgeManager::GetInstance()->Draw();
-	m_house								->Draw();
+	m_houses							->Draw();
 	m_ground							->Draw();
 	//m_trees								->Draw();
 }
@@ -141,7 +139,7 @@ void PlayScene::Draw() const
 	m_player							->Draw();
 	m_enemy_manager						->Draw();
 	RifleCartridgeManager::GetInstance()->Draw();
-	m_house								->Draw();
+	m_houses							->Draw();
 	m_ground							->Draw();
 	//m_trees								->Draw();
 	m_skydome							->Draw();

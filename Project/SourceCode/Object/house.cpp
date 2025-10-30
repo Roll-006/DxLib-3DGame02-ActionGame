@@ -1,16 +1,44 @@
 #include "house.hpp"
 
-House::House() :
-	PhysicalObjBase	(ObjName.HOUSE, ObjTag.BUILDING, MassKind::kStatic),
-	m_modeler		(std::make_shared<Modeler>(m_transform, ModelPath.HOUSE_01, kBasicAngle, kBasicScale))
+House::House(const std::string& house_id) :
+	PhysicalObjBase			(ObjName.HOUSE, ObjTag.BUILDING, MassKind::kStatic),
+	m_modeler				(nullptr),
+	m_collision_modeler		(nullptr),
+	m_model_path			(""),
+	m_collision_model_path	(""),
+	m_pos					(v3d::GetZeroV()),
+	m_angle					(v3d::GetZeroV()),
+	m_basic_scale			(1.0f),
+	m_collision_area_offset	(v3d::GetZeroV()),
+	m_collision_area_radius	(0.0f)
 {
-	SetColliderModelHandle(m_modeler->GetModelHandle());
+	JSONLoader json_loader;
+	nlohmann::json data;
+	if (json_loader.Load("Data/JSON/houses.json", data))
+	{
+		m_model_path			= data.at("houses").at(house_id).at("model_path");
+		m_collision_model_path	= data.at("houses").at(house_id).at("collision_model_path");
+		m_pos					= data.at("houses").at(house_id).at("position")	.get<VECTOR>();
+		m_angle					= data.at("houses").at(house_id).at("angle")	.get<VECTOR>();
+		m_basic_scale			= data.at("houses").at(house_id).at("basic_scale");
+		m_collision_area_offset = data.at("houses").at(house_id).at("collision_area_offset").get<VECTOR>();
+		m_collision_area_radius = data.at("houses").at(house_id).at("collision_area_radius");
+	}
 
-	m_transform->SetPos(CoordinateKind::kWorld, kPos);
-	m_modeler->ApplyMatrix();
+	m_modeler			= std::make_shared<Modeler>(m_transform, m_model_path,			 v3d::GetZeroV(), m_basic_scale);
+	m_collision_modeler = std::make_shared<Modeler>(m_transform, m_collision_model_path, v3d::GetZeroV(), m_basic_scale);
 
-	AddCollider(std::make_shared<Collider>(ColliderKind::kCollisionAreaTrigger, std::make_shared<Sphere>(kPos + kCollisionAreaOffset, kCollisionAreaRadius), this));
-	AddCollider(std::make_shared<Collider>(ColliderKind::kCollider, m_modeler->GetModelHandle(), this));
+	SetColliderModelHandle(m_collision_modeler->GetModelHandle());
+
+	m_transform->SetPos		(CoordinateKind::kWorld, m_pos);
+	m_transform->SetRot		(CoordinateKind::kWorld, math::ConvertEulerAnglesToXYZRotMatrix(m_angle));
+	m_modeler			->ApplyMatrix();
+	m_collision_modeler	->ApplyMatrix();
+
+	AddCollider(std::make_shared<Collider>(ColliderKind::kCollisionAreaTrigger, std::make_shared<Sphere>(m_pos + m_collision_area_offset, m_collision_area_radius), this));
+	AddCollider(std::make_shared<Collider>(ColliderKind::kCollider,				m_collision_modeler->GetModelHandle(), this));
+
+	// âºÇ≈ÉfÅ[É^ÇèëÇ´çûÇﬁ
 }
 
 House::~House()

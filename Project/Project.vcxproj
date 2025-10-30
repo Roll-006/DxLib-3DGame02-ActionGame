@@ -189,6 +189,7 @@
     <ClCompile Include="SourceCode\ObjectPool\play_scene_effect_object_pool.cpp" />
     <ClCompile Include="SourceCode\ObjectPool\object_pool_holder.cpp" />
     <ClCompile Include="SourceCode\ObjectPool\rifle_cartridge_object_pool.cpp" />
+    <ClCompile Include="SourceCode\Object\houses.cpp" />
     <ClCompile Include="SourceCode\Object\trees.cpp" />
     <ClCompile Include="SourceCode\Object\rifle_cartridge_box.cpp" />
     <ClCompile Include="SourceCode\Object\assault_rifle_magazine.cpp" />
@@ -214,7 +215,6 @@
     <ClCompile Include="SourceCode\Part\screen_fader.cpp" />
     <ClCompile Include="SourceCode\Part\scene_fader.cpp" />
     <ClCompile Include="SourceCode\Part\movie_player.cpp" />
-    <ClCompile Include="SourceCode\Part\selector.cpp" />
     <ClCompile Include="SourceCode\Part\weapon_graphic_getter.cpp" />
     <ClCompile Include="SourceCode\Part\melee_target_searcher.cpp" />
     <ClCompile Include="SourceCode\Part\character_collider_creator.cpp" />
@@ -524,6 +524,7 @@
     <ClInclude Include="SourceCode\ObjectPool\play_scene_effect_object_pool.hpp" />
     <ClInclude Include="SourceCode\ObjectPool\object_pool_holder.hpp" />
     <ClInclude Include="SourceCode\ObjectPool\rifle_cartridge_object_pool.hpp" />
+    <ClInclude Include="SourceCode\Object\houses.hpp" />
     <ClInclude Include="SourceCode\Object\trees.hpp" />
     <ClInclude Include="SourceCode\Object\rifle_cartridge_box.hpp" />
     <ClInclude Include="SourceCode\Object\assault_rifle_magazine.hpp" />
@@ -550,7 +551,6 @@
     <ClInclude Include="SourceCode\Part\screen_fader.hpp" />
     <ClInclude Include="SourceCode\Part\scene_fader.hpp" />
     <ClInclude Include="SourceCode\Part\movie_player.hpp" />
-    <ClInclude Include="SourceCode\Part\selector.hpp" />
     <ClInclude Include="SourceCode\Part\weapon_graphic_getter.hpp" />
     <ClInclude Include="SourceCode\Part\mask_creator.hpp" />
     <ClInclude Include="SourceCode\Part\melee_target_searcher.hpp" />
@@ -689,6 +689,7 @@
     <ClInclude Include="SourceCode\Window\window.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="data\JSON\houses.json" />
     <None Include="Data\JSON\patrol_route.json" />
     <None Include="Data\JSON\font_data.json" />
     <None Include="Data\JSON\key_number.json" />
