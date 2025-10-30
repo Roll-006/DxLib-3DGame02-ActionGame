@@ -1623,6 +1623,9 @@
     <ClInclude Include="SourceCode\Animator\zombie_animator.hpp">
       <Filter>SourceCode\Animator</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\Data\material_data.hpp">
+      <Filter>SourceCode\Data</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="SourceCode">

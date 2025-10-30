@@ -6,7 +6,12 @@ Modeler::Modeler(const std::shared_ptr<Transform>& transform, const std::string&
 	m_opacity		(1.0f),
 	m_transform		(transform),
 	m_basic_angle	(basic_angle),
-	m_basic_scale	(VGet(basic_scale, basic_scale, basic_scale))
+	m_basic_scale	(VGet(basic_scale, basic_scale, basic_scale)),
+	m_init_material		(
+		MV1GetDifColorScale(m_model_handle),
+		MV1GetSpcColorScale(m_model_handle),
+		MV1GetEmiColorScale(m_model_handle),
+		MV1GetAmbColorScale(m_model_handle))
 {
 	MV1SetupCollInfo(m_model_handle);
 }
@@ -16,7 +21,12 @@ Modeler::Modeler(const std::shared_ptr<Transform>& transform, const std::string&
 	m_opacity		(1.0f),
 	m_transform		(transform),
 	m_basic_angle	(v3d::GetZeroV()),
-	m_basic_scale	(VGet(1.0f, 1.0f, 1.0f))
+	m_basic_scale	(VGet(1.0f, 1.0f, 1.0f)),
+	m_init_material		(
+		MV1GetDifColorScale(m_model_handle),
+		MV1GetSpcColorScale(m_model_handle),
+		MV1GetEmiColorScale(m_model_handle),
+		MV1GetAmbColorScale(m_model_handle))
 {
 	MV1SetupCollInfo(m_model_handle);
 }
@@ -26,7 +36,12 @@ Modeler::Modeler(const std::string& file_path) :
 	m_opacity		(1.0f),
 	m_transform		(nullptr),
 	m_basic_angle	(v3d::GetZeroV()),
-	m_basic_scale	(VGet(1.0f, 1.0f, 1.0f))
+	m_basic_scale	(VGet(1.0f, 1.0f, 1.0f)),
+	m_init_material		(
+		MV1GetDifColorScale(m_model_handle),
+		MV1GetSpcColorScale(m_model_handle),
+		MV1GetEmiColorScale(m_model_handle),
+		MV1GetAmbColorScale(m_model_handle))
 {
 	MV1SetupCollInfo(m_model_handle);
 }
@@ -36,7 +51,12 @@ Modeler::Modeler(const int model_handle) :
 	m_opacity		(1.0f),
 	m_transform		(nullptr),
 	m_basic_angle	(v3d::GetZeroV()),
-	m_basic_scale	(VGet(1.0f, 1.0f, 1.0f))
+	m_basic_scale	(VGet(1.0f, 1.0f, 1.0f)),
+	m_init_material		(
+		MV1GetDifColorScale(m_model_handle), 
+		MV1GetSpcColorScale(m_model_handle), 
+		MV1GetEmiColorScale(m_model_handle), 
+		MV1GetAmbColorScale(m_model_handle))
 {
 	MV1SetupCollInfo(m_model_handle);
 }

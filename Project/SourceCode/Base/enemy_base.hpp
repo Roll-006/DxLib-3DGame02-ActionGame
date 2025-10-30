@@ -20,6 +20,8 @@ public:
 	/// @brief リスポーンさせられる
 	virtual void OnRespawn(const VECTOR& pos, const VECTOR& look_dir) abstract;
 
+	void Disappear();
+
 	/// @brief 行動を起こすを許可される
 	/// @brief また、同時に攻撃インターバル時間が1/4未満の場合、
 	/// @brief 1/2の時間が付与される

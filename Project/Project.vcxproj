@@ -388,6 +388,7 @@
     <ClInclude Include="SourceCode\Concept\state_concepts.hpp" />
     <ClInclude Include="SourceCode\Concept\vector_concepts.hpp" />
     <ClInclude Include="SourceCode\CSV\csv_loader.hpp" />
+    <ClInclude Include="SourceCode\Data\material_data.hpp" />
     <ClInclude Include="SourceCode\Data\light_range_attenuation_data.hpp" />
     <ClInclude Include="SourceCode\Data\font_data.hpp" />
     <ClInclude Include="SourceCode\Data\collider_data.hpp" />

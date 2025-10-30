@@ -3,6 +3,7 @@
 
 #include "../Handle/handle_keeper.hpp"
 #include "../Path/bone_path.hpp"
+#include "../Data/material_data.hpp"
 #include "transform.hpp"
 
 class Modeler final
@@ -26,16 +27,18 @@ public:
 	/// @brief MEMO : 通常描画時に適用されるが、武器などがモデルの行列情報を基準とするため先行して適用
 	void ApplyMatrix() const;
 
-	[[nodiscard]] int						 GetModelHandle()	const { return m_model_handle; }
-	[[nodiscard]] float						 GetOpacity()		const { return m_opacity; }
-	[[nodiscard]] VECTOR					 GetBasicAngle()	const { return m_basic_angle; }
-	[[nodiscard]] std::shared_ptr<Transform> GetTransform()		const { return m_transform; }
+	[[nodiscard]] int						 GetModelHandle()		const { return m_model_handle; }
+	[[nodiscard]] float						 GetOpacity()			const { return m_opacity; }
+	[[nodiscard]] VECTOR					 GetBasicAngle()		const { return m_basic_angle; }
+	[[nodiscard]] MaterialData				 GetInitMaterialData()	const { return m_init_material; }
+	[[nodiscard]] std::shared_ptr<Transform> GetTransform()			const { return m_transform; }
 
 private:
-	int	   m_model_handle;
-	float  m_opacity;			// モデルの不透明度(0.0f～1.0f)
-	VECTOR m_basic_angle;		// モデルの基礎回転値(モデルが元から持つ回転を修正するための回転値)
-	VECTOR m_basic_scale;		// モデルの基礎スケール
+	int				m_model_handle;
+	float			m_opacity;			// モデルの不透明度(0.0f～1.0f)
+	VECTOR			m_basic_angle;		// モデルの基礎回転値(モデルが元から持つ回転を修正するための回転値)
+	VECTOR			m_basic_scale;		// モデルの基礎スケール
+	MaterialData	m_init_material;
 
 	std::shared_ptr<Transform> m_transform;
 };

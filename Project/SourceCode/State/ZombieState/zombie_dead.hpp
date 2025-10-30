@@ -21,6 +21,16 @@ namespace zombie_state
 		[[nodiscard]] bool IsStopAllState() const override { return m_is_stop_all_state; }
 
 	private:
-		bool m_is_stop_all_state;
+		void ChangeMaterial(const auto model_handle, const float change_speed);
+
+	private:
+		static constexpr float kReturnPoolTime		= 3.0f;
+		static constexpr float kChangeColorWaitTime = 1.0f;
+
+		bool	m_is_stop_all_state;
+		float	m_elapsed_time_end_anim;	// アニメーションの再生が終了してからの時間
+		float   m_change_color_wait_time;
+
+		MaterialData m_current_material;
 	};
 }

@@ -47,6 +47,14 @@ void EnemyBase::ChangePatrolDestination()
 	m_move_dir.at(TimeKind::kNext) = v3d::GetNormalizedV(destination_pos_y0 - pos_y0);
 }
 
+void EnemyBase::Disappear()
+{
+	m_is_calc_look_dir = false;
+
+	m_move_dir.at(TimeKind::kNext) = m_move_dir.at(TimeKind::kCurrent) = VGet(0.0f, -1.0f, 0.0f);
+	m_move_speed = 0.05f;
+}
+
 void EnemyBase::OnAllowAction()
 {
 	m_is_disallow_action_forcibly = false;
