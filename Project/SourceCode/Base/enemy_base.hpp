@@ -40,8 +40,11 @@ protected:
 	void JudgeLostTarget();
 
 protected:
-	std::shared_ptr<PatrolRouteGiver> m_patrol_route_giver;
-	VECTOR m_patrol_destination_pos;
+	bool								m_use_patrol;
+	std::shared_ptr<PatrolRouteGiver>	m_patrol_route_giver;
+	PatrolRouteGiver::PatrolKind		m_patrol_kind;
+	std::string							m_route_id;
+	VECTOR								m_patrol_destination_pos;
 
 	float m_attack_interval_time;
 	float m_attack_interval_timer;
@@ -52,6 +55,35 @@ protected:
 	bool  m_has_obstacle_between_target;
 	bool  m_is_lost_target;
 
-private:
 	int	  m_enemy_handle;
+
+private:
+	friend void from_json(const nlohmann::json& data, EnemyBase& enemy_base);
+	friend void to_json  (nlohmann::json& data, const EnemyBase& enemy_base);
 };
+
+
+#pragma region from / to JSON
+inline void from_json(const nlohmann::json& data, EnemyBase& enemy_base)
+{
+	from_json(data, static_cast<CharacterBase&>(enemy_base));
+
+	data.at("attack_interval_time")	.get_to(enemy_base.m_attack_interval_time);
+	data.at("enemy_handle")			.get_to(enemy_base.m_enemy_handle);
+}
+
+inline void to_json(nlohmann::json& data, const EnemyBase& enemy_base)
+{
+	nlohmann::json base_json;
+	to_json(base_json, static_cast<const CharacterBase&>(enemy_base));
+
+	nlohmann::json derived_json =
+	{
+		{ "attack_interval_time",	enemy_base.m_attack_interval_time },
+		{ "enemy_handle",			enemy_base.m_enemy_handle }
+	};
+
+	data = base_json;
+	data.update(derived_json);
+}
+#pragma endregion

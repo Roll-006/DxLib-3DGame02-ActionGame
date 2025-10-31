@@ -11,7 +11,7 @@ EnemyBase::EnemyBase(const std::string& name, const MassKind mass_level_kind) :
 	m_on_collided_vision_trigger	(false),
 	m_has_obstacle_between_target	(false),
 	m_is_lost_target				(true),
-	m_enemy_handle					(HandleCreator::GetInstance()->CreateHandle(HandleCreator::Kind::kEnemy))
+	m_enemy_handle					(-1)
 {
 
 }

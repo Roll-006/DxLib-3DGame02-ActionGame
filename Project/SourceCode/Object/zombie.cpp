@@ -23,7 +23,7 @@ Zombie::Zombie() :
 	m_health[HealthPartKind::kLeftLeg]	= std::make_shared<Gauge>(100.0f);
 	m_health[HealthPartKind::kRightLeg]	= std::make_shared<Gauge>(100.0f);
 
-	m_modeler  = std::make_shared<Modeler>(m_transform, ModelPath.ZOMBIE_01, kBasicAngle, kBasicScale);
+	m_modeler  = std::make_shared<Modeler>(m_transform, ModelPath.ZOMBIE_01, m_basic_angle, m_basic_scale);
 	m_animator = std::make_shared<ZombieAnimator>(m_modeler, m_state);
 	SetColliderModelHandle(m_modeler->GetModelHandle());
 
@@ -31,17 +31,17 @@ Zombie::Zombie() :
 	m_attack_interval_time	= kAttackIntervalTime;
 	m_is_calc_look_dir		= true;
 
-	m_collider_creator->CreateCapsuleCollider	(this, m_modeler, kCapsuleRadius);
-	m_collider_creator->CreateLandingTrigger	(this, kLandingTriggerRadius);
-	m_collider_creator->CreateVisionTrigger		(this, m_modeler, 300, kFOV * math::kDegToRad);
+	m_collider_creator->CreateCapsuleCollider	(this, m_modeler, m_capsule_radius);
+	m_collider_creator->CreateLandingTrigger	(this, m_landing_trigger_radius);
+	m_collider_creator->CreateVisionTrigger		(this, m_modeler, m_visible_distance, m_fov * math::kDegToRad);
 	m_collider_creator->CreateVisibleTrigger	(this, m_modeler);
-	m_collider_creator->CreateHeadTrigger		(this, m_modeler, kHeadTriggerRadius);
-	m_collider_creator->CreateBodyTrigger		(this, m_modeler, kUpBodyTriggerRadius, kDownBodyTriggerRadius);
-	m_collider_creator->CreateArmTrigger		(this, m_modeler, kUpperArmTriggerRadius, kForearmTriggerRadius, kHandTriggerRadius);
-	m_collider_creator->CreateLegTrigger		(this, m_modeler, kUpLegTriggerRadius, kDownLegTriggerRadius);
+	m_collider_creator->CreateHeadTrigger		(this, m_modeler, m_hand_trigger_radius);
+	m_collider_creator->CreateBodyTrigger		(this, m_modeler, m_up_body_trigger_radius,		m_down_body_trigger_radius);
+	m_collider_creator->CreateArmTrigger		(this, m_modeler, m_upper_arm_trigger_radius,	m_forearm_trigger_radius, m_hand_trigger_radius);
+	m_collider_creator->CreateLegTrigger		(this, m_modeler, m_up_leg_trigger_radius,		m_down_leg_trigger_radius);
 
 	AddCollider(std::make_shared<Collider>(ColliderKind::kRayCast, std::make_shared<Segment>(), this));
-	AddCollider(std::make_shared<Collider>(ColliderKind::kCollisionAreaTrigger, std::make_shared<Sphere>(v3d::GetZeroV() + kCollisionAreaOffset, kCollisionAreaRadius), this));
+	AddCollider(std::make_shared<Collider>(ColliderKind::kCollisionAreaTrigger, std::make_shared<Sphere>(v3d::GetZeroV() + m_collision_area_offset, m_collision_area_radius), this));
 }
 
 Zombie::~Zombie()
@@ -322,7 +322,7 @@ void Zombie::OnRespawn(const VECTOR& pos, const VECTOR& look_dir)
 	m_collider_creator->CalcLandingTriggerPos (m_modeler, m_colliders);
 
 	const auto sphere = std::static_pointer_cast<Sphere>(GetCollider(ColliderKind::kCollisionAreaTrigger)->GetShape());
-	sphere->SetPos(pos + kCollisionAreaOffset);
+	sphere->SetPos(pos + m_collision_area_offset);
 }
 
 void Zombie::Grab()
@@ -409,12 +409,12 @@ void Zombie::TrackMove(const VECTOR& target_pos)
 void Zombie::UpdateGrabRun()
 {
 	m_move_dir_offset_speed = 0.5f;
-	m_move_speed = kRunGrabSpeed;
+	m_move_speed = m_run_grab_speed;
 }
 
 void Zombie::CalcMoveSpeed()
 {
-	m_move_speed = kWalkSpeed;
+	m_move_speed = m_walk_speed;
 }
 
 void Zombie::CalcMoveSpeedStop()
@@ -424,7 +424,7 @@ void Zombie::CalcMoveSpeedStop()
 
 void Zombie::CalcMoveSpeedRun()
 {
-	m_move_speed = kRunSpeed;
+	m_move_speed = m_run_speed;
 }
 
 void Zombie::JudgeAction()

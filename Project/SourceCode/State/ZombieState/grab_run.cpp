@@ -79,7 +79,7 @@ std::shared_ptr<IState<Zombie>> zombie_state::GrabRun::ChangeState(std::shared_p
 		return state_controller->GetState<StandStun, Zombie>();
 	}
 	// ’Í‚İ
-	if (obj->CanGrabTraget())
+	if (obj->CanGrabTarget())
 	{
 		return state_controller->GetState<Grab, Zombie>();
 	}

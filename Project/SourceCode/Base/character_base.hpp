@@ -71,4 +71,31 @@ protected:
 	float m_invincible_time;
 	float m_invincible_timer;
 	bool  m_is_invincible;
+
+	friend void from_json(const nlohmann::json& data, CharacterBase& character_base);
+	friend void to_json  (nlohmann::json& data, const CharacterBase& character_base);
 };
+
+
+#pragma region from / to JSON
+inline void from_json(const nlohmann::json& data, CharacterBase& character_base)
+{
+	from_json(data, static_cast<PhysicalObjBase&>(character_base));
+
+	data.at("invincible_time").get_to(character_base.m_invincible_time);
+}
+
+inline void to_json(nlohmann::json& data, const CharacterBase& character_base)
+{
+	nlohmann::json base_json;
+	to_json(base_json, static_cast<const PhysicalObjBase&>(character_base));
+
+	nlohmann::json derived_json =
+	{
+		{ "invincible_time", character_base.m_invincible_time }
+	};
+
+	data = base_json;
+	data.update(derived_json);
+}
+#pragma endregion
