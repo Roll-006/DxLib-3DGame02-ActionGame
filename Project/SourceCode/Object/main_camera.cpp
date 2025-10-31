@@ -7,11 +7,13 @@
 #include "../Base/enemy_base.hpp"
 
 MainCamera::MainCamera() : 
-	PhysicalObjBase				(ObjName.MAIN_CAMERA, ObjTag.CAMERA, MassKind::kHeavy),
+	PhysicalObjBase				(ObjName.MAIN_CAMERA, ObjTag.CAMERA),
 	m_aim_pos					(v3d::GetZeroV()),
 	m_collider_radius			(0.0f),
 	m_is_active_grab_collider	(false)
 {
+	mass_kind = MassKind::kHeavy;
+
 	AddCollider(std::make_shared<Collider>(ColliderKind::kRayCast,				std::make_shared<Segment>(), this));
 	AddCollider(std::make_shared<Collider>(ColliderKind::kNearVisionTrigger,	std::make_shared<Cone>(v3d::GetZeroV(), v3d::GetZeroV(), kMeleeCandidateDistance,	kMeleeCandidateFOV * math::kDegToRad), this));
 	AddCollider(std::make_shared<Collider>(ColliderKind::kFarVisionTrigger,		std::make_shared<Cone>(v3d::GetZeroV(), v3d::GetZeroV(), kMeleeTargetDistance,		kMeleeTargetFOV	   * math::kDegToRad), this));

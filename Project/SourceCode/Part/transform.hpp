@@ -76,18 +76,14 @@ private:
 #pragma region from / to JSON
 inline void from_json(const nlohmann::json& data, Transform& transform)
 {
-	data.at("transform_handle")			.get_to(transform.m_transform_handle);
-	data.at("parent_transform_handle")	.get_to(transform.m_parent_transform_handle);
-	data.at("local_matrix")				.get_to(transform.m_local_matrix);
+	data.at("local_matrix").get_to(transform.m_local_matrix);
 }
 
 inline void to_json(nlohmann::json& data, const Transform& transform)
 {
 	data = nlohmann::json
 	{
-		{ "transform_handle",			transform.m_transform_handle },
-		{ "parent_transform_handle",	transform.m_parent_transform_handle },
-		{ "local_matrix",				transform.m_local_matrix }
+		{ "local_matrix", transform.m_local_matrix }
 	};
 }
 #pragma endregion

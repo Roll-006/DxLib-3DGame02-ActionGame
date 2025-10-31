@@ -1,7 +1,7 @@
 #include "weapon_base.hpp"
 
 WeaponBase::WeaponBase(const std::string& name, const WeaponKind weapon_kind, const HolsterKind holster_kind) :
-	PhysicalObjBase			(name, ObjTag.WEAPON, MassKind::kLight),
+	PhysicalObjBase			(name, ObjTag.WEAPON/*, MassKind::kLight*/),
 	m_modeler				(nullptr),
 	m_owner_modeler			(nullptr),
 	m_owner_name			(""),

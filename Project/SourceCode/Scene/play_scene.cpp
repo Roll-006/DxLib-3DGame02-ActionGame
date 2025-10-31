@@ -21,7 +21,6 @@ PlayScene::PlayScene() :
 	m_pause_tab						(std::make_shared<PauseTab>())
 {
 	m_player		->AddToObjManager();
-	m_enemy_manager	->AddToObjManager();
 	m_ground		->AddToObjManager();
 	//m_trees			->AddToObjManager();
 
@@ -51,7 +50,6 @@ PlayScene::PlayScene() :
 PlayScene::~PlayScene()
 {
 	m_player		->RemoveToObjManager();
-	m_enemy_manager	->RemoveToObjManager();
 	m_ground		->RemoveToObjManager();
 	//m_trees			->RemoveToObjManager();
 

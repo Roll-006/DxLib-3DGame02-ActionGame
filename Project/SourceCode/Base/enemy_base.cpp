@@ -1,24 +1,24 @@
 #include "enemy_base.hpp"
 
-EnemyBase::EnemyBase(const std::string& name, const MassKind mass_level_kind) :
-	CharacterBase					(name, ObjTag.ENEMY, mass_level_kind),
+EnemyBase::EnemyBase(const std::string& name) :
+	CharacterBase					(name, ObjTag.ENEMY),
 	m_patrol_route_giver			(nullptr),
 	m_patrol_destination_pos		(v3d::GetZeroV()),
-	m_attack_interval_time			(0.0f),
+	attack_interval_time			(0.0f),
 	m_attack_interval_timer			(0.0f),
 	m_can_action					(true),
 	m_is_disallow_action_forcibly	(false),
 	m_on_collided_vision_trigger	(false),
 	m_has_obstacle_between_target	(false),
-	m_is_lost_target				(true),
-	m_enemy_handle					(-1)
+	m_is_target_in_sight			(false),
+	enemy_handle					(-1)
 {
 
 }
 
 void EnemyBase::SetAttackIntervalTime()
 {
-	m_attack_interval_timer = m_attack_interval_time;
+	m_attack_interval_timer = attack_interval_time;
 }
 
 void EnemyBase::CalcAttackIntervalTime()
@@ -47,6 +47,11 @@ void EnemyBase::ChangePatrolDestination()
 	m_move_dir.at(TimeKind::kNext) = v3d::GetNormalizedV(destination_pos_y0 - pos_y0);
 }
 
+void EnemyBase::OnDetected()
+{
+	m_is_target_in_sight = true;
+}
+
 void EnemyBase::Disappear()
 {
 	m_is_calc_look_dir = false;
@@ -60,16 +65,16 @@ void EnemyBase::OnAllowAction()
 	m_is_disallow_action_forcibly = false;
 
 	// 残りの攻撃インターバル時間が短すぎる場合は本来の時間の1/2の時間を与える
-	if (m_attack_interval_timer < m_attack_interval_time * 0.25f)
+	if (m_attack_interval_timer < attack_interval_time * 0.25f)
 	{
-		m_attack_interval_timer = m_attack_interval_time * 0.5f;
+		m_attack_interval_timer = attack_interval_time * 0.5f;
 	}
 }
 
-void EnemyBase::JudgeLostTarget()
+void EnemyBase::JudgeTargetInSight()
 {
 	if (m_on_collided_vision_trigger && !m_has_obstacle_between_target)
 	{
-		m_is_lost_target = false;
+		m_is_target_in_sight = true;
 	}
 }

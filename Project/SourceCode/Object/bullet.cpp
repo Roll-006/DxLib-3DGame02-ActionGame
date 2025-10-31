@@ -3,7 +3,7 @@
 #include "../Base/gun_base.hpp"
 
 Bullet::Bullet() :
-	PhysicalObjBase		(ObjName.BULLET, ObjTag.BULLET, MassKind::kLight),
+	PhysicalObjBase		(ObjName.BULLET, ObjTag.BULLET),
 	m_shot_owner_name	(""),
 	m_move_dir			(v3d::GetZeroV()),
 	m_prev_pos			(v3d::GetZeroV()),
@@ -13,7 +13,9 @@ Bullet::Bullet() :
 	m_range				(0.0f),
 	m_power				(0.0f)
 {
-	AddCollider(std::make_shared<Collider>(ColliderKind::kRayCast, std::make_shared<Segment>(), this));
+	mass_kind = MassKind::kLight;
+
+	AddCollider(std::make_shared<Collider>(ColliderKind::kRayCast,				std::make_shared<Segment>(), this));
 	AddCollider(std::make_shared<Collider>(ColliderKind::kCollisionAreaTrigger, std::make_shared<Sphere>(v3d::GetZeroV(), kCollisionAreaRadius), this));
 }
 

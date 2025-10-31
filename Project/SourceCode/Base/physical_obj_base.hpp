@@ -11,7 +11,7 @@
 class PhysicalObjBase abstract : public ObjBase
 {
 public:
-	PhysicalObjBase(const std::string& name, const std::string& tag, MassKind mass_level_kind);
+	PhysicalObjBase(const std::string& name, const std::string& tag);
 	virtual ~PhysicalObjBase() = default;
 
 	void DrawColliders() const;
@@ -70,11 +70,13 @@ public:
 	[[nodiscard]] VECTOR	GetVelocity()				const { return m_velocity; }
 	[[nodiscard]] VECTOR	GetMoveVelocity()			const { return m_move_velocity; }
 	[[nodiscard]] VECTOR	GetFallVelocity()			const { return m_fall_velocity; }
-	[[nodiscard]] MassKind	GetMassKind()				const { return m_mass_kind; }
+	[[nodiscard]] MassKind	GetMassKind()				const { return mass_kind; }
 	[[nodiscard]] std::shared_ptr<Collider> GetCollider(const ColliderKind kind) const;
 	[[nodiscard]] std::unordered_map<ColliderKind, std::shared_ptr<Collider>> GetColliderAll() const { return m_colliders; }
 
 protected:
+	MassKind mass_kind;
+
 	VECTOR	 m_velocity;
 	VECTOR   m_move_velocity;
 	VECTOR	 m_fall_velocity;
@@ -84,7 +86,6 @@ protected:
 
 	bool	 m_is_landing;
 	bool	 m_is_using_projection_velocity;	// velocity‚ð’n–Ê‚É’£‚è•t‚¯‚é‚©‚ð”»’è
-	MassKind m_mass_kind;
 
 	std::unordered_map<ColliderKind, std::shared_ptr<Collider>> m_colliders;
 	std::unordered_map<std::shared_ptr<Collider>, bool> m_hit_colliders;
@@ -102,15 +103,7 @@ inline void from_json(const nlohmann::json& data, PhysicalObjBase& physical_obj_
 {
 	from_json(data, static_cast<ObjBase&>(physical_obj_base));
 
-	data.at("velocity")					.get_to(physical_obj_base.m_velocity);
-	data.at("move_velocity")			.get_to(physical_obj_base.m_move_velocity);
-	data.at("fall_velocity")			.get_to(physical_obj_base.m_fall_velocity);
-	data.at("knockback_velocity")		.get_to(physical_obj_base.m_knockback_velocity);
-	data.at("knockback_speed")			.get_to(physical_obj_base.m_knockback_speed);
-	data.at("knockback_deceleration")	.get_to(physical_obj_base.m_knockback_deceleration);
-	data.at("is_landing")				.get_to(physical_obj_base.m_is_landing);
-	data.at("mass_kind")				.get_to(physical_obj_base.m_mass_kind);
-	data.at("model_handle")				.get_to(physical_obj_base.m_model_handle);
+	data.at("mass_kind").get_to(physical_obj_base.mass_kind);
 }
 
 inline void to_json(nlohmann::json& data, const PhysicalObjBase& physical_obj_base)
@@ -120,15 +113,7 @@ inline void to_json(nlohmann::json& data, const PhysicalObjBase& physical_obj_ba
 
 	nlohmann::json derived_json =
 	{
-		{ "velocity",				physical_obj_base.m_velocity },
-		{ "move_velocity",			physical_obj_base.m_move_velocity },
-		{ "fall_velocity",			physical_obj_base.m_fall_velocity },
-		{ "knockback_velocity",		physical_obj_base.m_knockback_velocity },
-		{ "knockback_speed",		physical_obj_base.m_knockback_speed },
-		{ "knockback_deceleration",	physical_obj_base.m_knockback_deceleration },
-		{ "is_landing",				physical_obj_base.m_is_landing },
-		{ "mass_kind",				physical_obj_base.m_mass_kind },
-		{ "model_handle",			physical_obj_base.m_model_handle }
+		{ "mass_kind", physical_obj_base.mass_kind },
 	};
 
 	data = base_json;

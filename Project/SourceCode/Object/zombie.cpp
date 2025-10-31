@@ -2,14 +2,35 @@
 #include "player.hpp"
 #include "../Part/zombie_state_controller.hpp"
 
-Zombie::Zombie() :
-	EnemyBase				(ObjName.ZOMBIE, MassKind::kMedium),
+Zombie::Zombie(const std::string& enemy_id) :
+	EnemyBase				(ObjName.ZOMBIE),
 	m_state					(std::make_shared<ZombieStateController>()),
 	m_can_grab_target		(false),
 	m_is_target_escaped		(false),
 	m_is_allow_stealth_kill	(true),
 	m_on_stealth_kill		(false)
 {
+	enemy_handle = stoi(enemy_id);
+
+	JSONLoader json_loader;
+	nlohmann::json data;
+	if (json_loader.Load("Data/JSON/zombie.json", data))
+	{
+		mass_kind					= data.at("mass_kind");
+		invincible_time				= data.at("invincible_time");
+		attack_interval_time		= data.at("attack_interval_time");
+		model_path					= data.at("model_path");
+		basic_angle					= data.at("basic_angle");
+		basic_scale					= data.at("basic_scale");
+		walk_speed					= data.at("walk_speed");
+		run_speed					= data.at("run_speed");
+		run_grab_speed				= data.at("run_grab_speed");
+		move_dir_offset_speed		= data.at("move_dir_offset_speed");
+		look_dir_offset_speed		= data.at("look_dir_offset_speed");
+		collider_data				= data.at("collider_data");
+		damage_over_time_start_time = data.at("damage_over_time_start_time");
+	}
+
 	m_transform->SetPos(CoordinateKind::kWorld, v3d::GetZeroV());
 	m_look_dir.at(TimeKind::kNext) = m_look_dir.at(TimeKind::kCurrent) = VGet(0.0f, 0.0f, 1.0);
 	ApplyLookDirToRot(m_look_dir.at(TimeKind::kCurrent));
@@ -23,25 +44,23 @@ Zombie::Zombie() :
 	m_health[HealthPartKind::kLeftLeg]	= std::make_shared<Gauge>(100.0f);
 	m_health[HealthPartKind::kRightLeg]	= std::make_shared<Gauge>(100.0f);
 
-	m_modeler  = std::make_shared<Modeler>(m_transform, ModelPath.ZOMBIE_01, m_basic_angle, m_basic_scale);
+	m_modeler  = std::make_shared<Modeler>(m_transform, model_path, basic_angle, basic_scale);
 	m_animator = std::make_shared<ZombieAnimator>(m_modeler, m_state);
 	SetColliderModelHandle(m_modeler->GetModelHandle());
 
-	m_invincible_time		= kInvincibleTime;
-	m_attack_interval_time	= kAttackIntervalTime;
-	m_is_calc_look_dir		= true;
+	m_is_calc_look_dir = true;
 
-	m_collider_creator->CreateCapsuleCollider	(this, m_modeler, m_capsule_radius);
-	m_collider_creator->CreateLandingTrigger	(this, m_landing_trigger_radius);
-	m_collider_creator->CreateVisionTrigger		(this, m_modeler, m_visible_distance, m_fov * math::kDegToRad);
+	m_collider_creator->CreateCapsuleCollider	(this, m_modeler, collider_data.capsule_radius);
+	m_collider_creator->CreateLandingTrigger	(this, collider_data.landing_trigger_radius);
+	m_collider_creator->CreateVisionTrigger		(this, m_modeler, collider_data.visible_distance, collider_data.visible_fov * math::kDegToRad);
 	m_collider_creator->CreateVisibleTrigger	(this, m_modeler);
-	m_collider_creator->CreateHeadTrigger		(this, m_modeler, m_hand_trigger_radius);
-	m_collider_creator->CreateBodyTrigger		(this, m_modeler, m_up_body_trigger_radius,		m_down_body_trigger_radius);
-	m_collider_creator->CreateArmTrigger		(this, m_modeler, m_upper_arm_trigger_radius,	m_forearm_trigger_radius, m_hand_trigger_radius);
-	m_collider_creator->CreateLegTrigger		(this, m_modeler, m_up_leg_trigger_radius,		m_down_leg_trigger_radius);
+	m_collider_creator->CreateHeadTrigger		(this, m_modeler, collider_data.hand_trigger_radius);
+	m_collider_creator->CreateBodyTrigger		(this, m_modeler, collider_data.up_body_trigger_radius,		collider_data.down_body_trigger_radius);
+	m_collider_creator->CreateArmTrigger		(this, m_modeler, collider_data.upper_arm_trigger_radius,	collider_data.forearm_trigger_radius, collider_data.hand_trigger_radius);
+	m_collider_creator->CreateLegTrigger		(this, m_modeler, collider_data.up_leg_trigger_radius,		collider_data.down_leg_trigger_radius);
 
 	AddCollider(std::make_shared<Collider>(ColliderKind::kRayCast, std::make_shared<Segment>(), this));
-	AddCollider(std::make_shared<Collider>(ColliderKind::kCollisionAreaTrigger, std::make_shared<Sphere>(v3d::GetZeroV() + m_collision_area_offset, m_collision_area_radius), this));
+	AddCollider(std::make_shared<Collider>(ColliderKind::kCollisionAreaTrigger, std::make_shared<Sphere>(v3d::GetZeroV() + collider_data.collision_area_offset, collider_data.collision_area_radius), this));
 }
 
 Zombie::~Zombie()
@@ -60,9 +79,9 @@ void Zombie::Update()
 
 	JudgeAction();
 	JudgeInvincible();
-	JudgeLostTarget();
+	JudgeTargetInSight();
 
-	m_look_dir_offset_speed = kLookDirOffsetSpeed;
+	m_look_dir_offset_speed = look_dir_offset_speed;
 	m_is_allow_stealth_kill = true;
 
 	m_state		->Update(std::static_pointer_cast<Zombie>(shared_from_this()));
@@ -296,7 +315,7 @@ void Zombie::OnDamage(const HealthPartKind part_kind, const float damage)
 	if (!m_health.count(part_kind)) { return; }
 
 	m_health.at(part_kind)->Decrease(damage);
-	m_invincible_timer	= m_invincible_time;
+	m_invincible_timer	= invincible_time;
 	m_is_invincible		= true;
 }
 
@@ -322,7 +341,7 @@ void Zombie::OnRespawn(const VECTOR& pos, const VECTOR& look_dir)
 	m_collider_creator->CalcLandingTriggerPos (m_modeler, m_colliders);
 
 	const auto sphere = std::static_pointer_cast<Sphere>(GetCollider(ColliderKind::kCollisionAreaTrigger)->GetShape());
-	sphere->SetPos(pos + m_collision_area_offset);
+	sphere->SetPos(pos + collider_data.collision_area_offset);
 }
 
 void Zombie::Grab()
@@ -394,7 +413,7 @@ bool Zombie::IsCrouchStun() const
 
 void Zombie::Move()
 {
-	m_move_dir_offset_speed = kMoveDirOffsetSpeed;
+	m_move_dir_offset_speed = move_dir_offset_speed;
 }
 
 void Zombie::TrackMove(const VECTOR& target_pos)
@@ -409,12 +428,12 @@ void Zombie::TrackMove(const VECTOR& target_pos)
 void Zombie::UpdateGrabRun()
 {
 	m_move_dir_offset_speed = 0.5f;
-	m_move_speed = m_run_grab_speed;
+	m_move_speed = run_grab_speed;
 }
 
 void Zombie::CalcMoveSpeed()
 {
-	m_move_speed = m_walk_speed;
+	m_move_speed = walk_speed;
 }
 
 void Zombie::CalcMoveSpeedStop()
@@ -424,7 +443,7 @@ void Zombie::CalcMoveSpeedStop()
 
 void Zombie::CalcMoveSpeedRun()
 {
-	m_move_speed = m_run_speed;
+	m_move_speed = run_speed;
 }
 
 void Zombie::JudgeAction()

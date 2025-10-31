@@ -1,12 +1,14 @@
 #include "ground.hpp"
 
 Ground::Ground() : 
-	PhysicalObjBase	(ObjName.GROUND, ObjTag.GROUND, MassKind::kStatic),
+	PhysicalObjBase	(ObjName.GROUND, ObjTag.GROUND),
 	m_modeler		(std::make_shared<Modeler>(m_transform, ModelPath.GROUND, kBasicAngle, kBasicScale))
 {	
+	mass_kind = MassKind::kStatic;
+
 	SetColliderModelHandle(m_modeler->GetModelHandle());
 
-	m_transform->SetPos (CoordinateKind::kWorld, kPos);
+	m_transform->SetPos(CoordinateKind::kWorld, kPos);
 	m_modeler->ApplyMatrix();
 
 	AddCollider(std::make_shared<Collider>(ColliderKind::kCollider, m_modeler->GetModelHandle(), this));

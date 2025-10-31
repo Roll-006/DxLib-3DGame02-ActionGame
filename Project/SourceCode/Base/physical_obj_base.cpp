@@ -1,17 +1,17 @@
 #include "physical_obj_base.hpp"
 
-PhysicalObjBase::PhysicalObjBase(const std::string& name, const std::string& tag, MassKind mass_level_kind) :
-	ObjBase						(name, tag),
-	m_velocity					(v3d::GetZeroV()),
-	m_move_velocity				(v3d::GetZeroV()),
-	m_fall_velocity				(v3d::GetZeroV()),
-	m_knockback_velocity		(v3d::GetZeroV()),
-	m_knockback_speed			(0.0f),
-	m_knockback_deceleration	(0.0f),
-	m_is_landing				(false),
+PhysicalObjBase::PhysicalObjBase(const std::string& name, const std::string& tag) :
+	ObjBase							(name, tag),
+	m_velocity						(v3d::GetZeroV()),
+	m_move_velocity					(v3d::GetZeroV()),
+	m_fall_velocity					(v3d::GetZeroV()),
+	m_knockback_velocity			(v3d::GetZeroV()),
+	m_knockback_speed				(0.0f),
+	m_knockback_deceleration		(0.0f),
+	m_is_landing					(false),
 	m_is_using_projection_velocity	(true),
-	m_mass_kind					(mass_level_kind),
-	m_model_handle				(-1)
+	mass_kind						(MassKind::kLight),
+	m_model_handle					(-1)
 {
 
 }

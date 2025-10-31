@@ -2,7 +2,7 @@
 #include "../Base/character_base.hpp"
 
 RocketBombExplosionEffect::RocketBombExplosionEffect() :
-	PhysicalObjBase				(ObjName.ROCKET_BOMB_HIT_EXPLOSION_EFFECT, ObjTag.EFFECT, MassKind::kLight),
+	PhysicalObjBase				(ObjName.ROCKET_BOMB_HIT_EXPLOSION_EFFECT, ObjTag.EFFECT),
 	m_origin_effect_handle		(HandleKeeper::GetInstance()->LoadHandle(HandleKind::kEffect, EffectPath.ROCKET_BOMB_HIT_EXPLOSION)),
 	m_playing_effect_handle		(-1),
 	m_time_scale_owner_name		(""),
@@ -16,7 +16,7 @@ RocketBombExplosionEffect::RocketBombExplosionEffect() :
 	m_play_wait_timer			(0.0f),
 	m_trigger_dead_timer		(0.0f)
 {
-	
+	mass_kind = MassKind::kLight;
 }
 
 RocketBombExplosionEffect::~RocketBombExplosionEffect()

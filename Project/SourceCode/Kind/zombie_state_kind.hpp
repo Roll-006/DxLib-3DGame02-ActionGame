@@ -24,6 +24,7 @@ namespace zombie_state
 	enum class ActionStateKind
 	{
 		kActionNull,			// NULL
+		kDetected,				// 発見
 		kRun,					// ダッシュ
 		kGrab,					// 掴み
 		kGrabRun,				// 掴みダッシュ

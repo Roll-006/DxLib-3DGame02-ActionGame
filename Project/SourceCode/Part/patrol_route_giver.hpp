@@ -10,6 +10,8 @@ class PatrolRouteGiver final
 public:
 	enum class PatrolKind
 	{
+		kNone = -1,
+
 		kLoop,	// ルートをループする(end ➡ start)
 		kBack,	// ルートを戻る(end ➡ end - 1 … start ➡ start + 1)
 		kStop,	// 終点で止まる(end ➡ end)

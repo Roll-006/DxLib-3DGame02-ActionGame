@@ -13,7 +13,7 @@
 class CharacterBase abstract : public PhysicalObjBase
 {
 public:
-	CharacterBase(const std::string& name, const std::string& tag, const MassKind mass_level_kind);
+	CharacterBase(const std::string& name, const std::string& tag);
 	virtual ~CharacterBase() = default;
 
 	void AddToObjManager()		override;
@@ -51,6 +51,8 @@ protected:
 	void JudgeInvincible();
 
 protected:
+	float invincible_time;
+
 	std::shared_ptr<Modeler>					m_modeler;
 	std::shared_ptr<AnimatorBase>				m_animator;
 	std::shared_ptr<CharacterColliderCreator>	m_collider_creator;
@@ -68,7 +70,6 @@ protected:
 
 	std::unordered_map<HealthPartKind, std::shared_ptr<Gauge>>	m_health;
 
-	float m_invincible_time;
 	float m_invincible_timer;
 	bool  m_is_invincible;
 
@@ -82,7 +83,7 @@ inline void from_json(const nlohmann::json& data, CharacterBase& character_base)
 {
 	from_json(data, static_cast<PhysicalObjBase&>(character_base));
 
-	data.at("invincible_time").get_to(character_base.m_invincible_time);
+	data.at("invincible_time").get_to(character_base.invincible_time);
 }
 
 inline void to_json(nlohmann::json& data, const CharacterBase& character_base)
@@ -92,7 +93,7 @@ inline void to_json(nlohmann::json& data, const CharacterBase& character_base)
 
 	nlohmann::json derived_json =
 	{
-		{ "invincible_time", character_base.m_invincible_time }
+		{ "invincible_time", character_base.invincible_time }
 	};
 
 	data = base_json;

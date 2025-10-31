@@ -5,7 +5,7 @@
 #include "../JSON/json_loader.hpp"
 
 Player::Player() :
-	CharacterBase(ObjName.PLAYER, ObjTag.PLAYER, MassKind::kMedium),
+	CharacterBase(ObjName.PLAYER, ObjTag.PLAYER),
 	m_state									(std::make_shared<PlayerStateController>()),
 	m_bone_pos_corrector					(std::make_shared<BonePosCorrector>()),
 	m_input_slope							(v3d::GetZeroV()),
@@ -22,6 +22,8 @@ Player::Player() :
 	m_grabber								(nullptr),
 	m_escape_gauge							(std::make_shared<Gauge>(100.0f))
 {
+	mass_kind = MassKind::kMedium;
+
 	m_health[HealthPartKind::kMain] = std::make_shared<Gauge>(2000.0f, 1500.0f);
 	m_prev_health = m_health.at(HealthPartKind::kMain)->GetCurrentValue();
 
@@ -30,7 +32,7 @@ Player::Player() :
 	m_animator = std::make_shared<PlayerAnimator>(m_modeler, m_state, m_current_held_weapon, m_current_equip_weapon[WeaponSlotKind::kMain]);
 	SetColliderModelHandle(m_modeler->GetModelHandle());
 
-	m_invincible_time = kInvincibleTime;
+	invincible_time = kInvincibleTime;
 
 	// èâä˙posÅEdirÇê›íË
 	m_look_dir[TimeKind::kCurrent] = m_look_dir[TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);
@@ -222,7 +224,7 @@ void Player::OnDamage(const HealthPartKind part_kind, const float damage)
 	if (!m_health.count(part_kind)) { return; }
 
 	m_health.at(part_kind)->Decrease(damage);
-	m_invincible_timer	= m_invincible_time;
+	m_invincible_timer	= invincible_time;
 	m_is_invincible		= true;
 
 	// í ímèàóù

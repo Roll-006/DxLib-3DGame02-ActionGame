@@ -4,34 +4,32 @@ EnemyManager::EnemyManager() :
 	m_object_pool(std::make_shared<EnemyObjectPool>())
 {
 	// ƒCƒxƒ“ƒg“o˜^
-	EventSystem::GetInstance()->Subscribe<ReleaseEvent>	(this, &EnemyManager::NotifyAllowAction);
-	EventSystem::GetInstance()->Subscribe<GrabEvent>	(this, &EnemyManager::NotifyDisallowActionForcibly);
+	EventSystem::GetInstance()->Subscribe<ReleaseEvent>			(this, &EnemyManager::NotifyAllowAction);
+	EventSystem::GetInstance()->Subscribe<GrabEvent>			(this, &EnemyManager::NotifyDisallowActionForcibly);
+	EventSystem::GetInstance()->Subscribe<OnTargetDetectedEvent>(this, &EnemyManager::NotifyDetectedTarget);
 
 	// ‰Šú‚Ì“G‚ğ¶¬
 	JSONLoader json_loader;
 	nlohmann::json data;
-	if (json_loader.Load("Data/JSON/points.json", data))
+	if (json_loader.Load("Data/JSON/init_enemies.json", data))
 	{
-		const auto pos		= data.at("position") .get<std::vector<VECTOR>>();
-		const auto dir		= data.at("direction").get<std::vector<VECTOR>>();
-		const auto count	= min(pos.size(), dir.size());
+		const auto init_enemies_size = data.at("init_enemies").size();
 
-		for (size_t i = 0; i < 1; ++i)
+		for (size_t i = 0; i < 4; ++i)
 		{
-			const auto enemy = std::static_pointer_cast<EnemyBase>(m_object_pool->GetObj(ObjName.ZOMBIE));
-
+			const auto enemy		= std::static_pointer_cast<EnemyBase>(m_object_pool->GetObj(ObjName.ZOMBIE));
+			const auto pos			= data.at("init_enemies").at(std::to_string(i)).at("position") .get<VECTOR>();
+			const auto dir			= data.at("init_enemies").at(std::to_string(i)).at("direction").get<VECTOR>();
+			const auto use_patrol	= data.at("init_enemies").at(std::to_string(i)).at("use_patrol");
+			const auto route_id		= data.at("init_enemies").at(std::to_string(i)).at("route_id");
+			const auto patrol_kind	= data.at("init_enemies").at(std::to_string(i)).at("patrol_kind");
+			
 			m_active_enemies.emplace_back(enemy);
-			enemy->OnRespawn(pos.at(i), dir.at(i));
-
-			// TODO : ‰¼
-			if (i == 0)
+			enemy->OnRespawn(pos, dir);
+			if (use_patrol)
 			{
-				enemy->CreatePatrolPos(PatrolRouteGiver::PatrolKind::kStop, "0");
+				enemy->CreatePatrolPos(patrol_kind, route_id);
 			}
-			//else if (i == 1)
-			//{
-			//	enemy->CreatePatrolPos(PatrolRouteGiver::PatrolKind::kLoop, "1");
-			//}
 		}
 	}
 }
@@ -39,8 +37,9 @@ EnemyManager::EnemyManager() :
 EnemyManager::~EnemyManager()
 {
 	// ƒCƒxƒ“ƒg‚Ì“o˜^‰ğœ
-	EventSystem::GetInstance()->Unsubscribe<ReleaseEvent>	(this, &EnemyManager::NotifyAllowAction);
-	EventSystem::GetInstance()->Unsubscribe<GrabEvent>		(this, &EnemyManager::NotifyDisallowActionForcibly);
+	EventSystem::GetInstance()->Unsubscribe<ReleaseEvent>			(this, &EnemyManager::NotifyAllowAction);
+	EventSystem::GetInstance()->Unsubscribe<GrabEvent>				(this, &EnemyManager::NotifyDisallowActionForcibly);
+	EventSystem::GetInstance()->Unsubscribe<OnTargetDetectedEvent>	(this, &EnemyManager::NotifyDetectedTarget);
 }
 
 void EnemyManager::Init()
@@ -73,22 +72,6 @@ void EnemyManager::Draw() const
 	{
 		enemy->Draw();
 	}
-}
-
-void EnemyManager::AddToObjManager()
-{
-	//for (const auto& enemy : m_active_enemies)
-	//{
-	//	enemy->AddToObjManager();
-	//}
-}
-
-void EnemyManager::RemoveToObjManager()
-{
-	//for (const auto& enemy : m_active_enemies)
-	//{
-	//	enemy->RemoveToObjManager();
-	//}
 }
 
 void EnemyManager::AttachTarget(const std::shared_ptr<CharacterBase>& target_character)
@@ -127,6 +110,23 @@ void EnemyManager::NotifyDisallowActionForcibly(const GrabEvent& event)
 		if(event.enemy_handle != enemy->GetEnemyHandle())
 		{
 			enemy->OnDisallowActionForcibly();
+		}
+	}
+}
+
+void EnemyManager::NotifyDetectedTarget(const OnTargetDetectedEvent& event)
+{
+	for (const auto& enemy : m_active_enemies)
+	{
+		if (enemy->IsTargetInSight()) { continue; }
+
+		const auto enemy_pos	= enemy->GetTransform()->GetPos(CoordinateKind::kWorld);
+		const auto distance		= VSize(enemy_pos - event.notify_pos);
+
+		// ‹——£‚ªˆê’è“à‚È‚ç”­Œ©ó‘Ô‚É‚·‚é
+		if(distance <= event.notify_distance)
+		{
+			enemy->OnDetected();
 		}
 	}
 }

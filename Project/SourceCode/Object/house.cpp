@@ -1,7 +1,7 @@
 #include "house.hpp"
 
 House::House(const std::string& house_id) :
-	PhysicalObjBase			(ObjName.HOUSE, ObjTag.BUILDING, MassKind::kStatic),
+	PhysicalObjBase			(ObjName.HOUSE, ObjTag.BUILDING),
 	m_modeler				(nullptr),
 	m_collision_modeler		(nullptr),
 	m_model_path			(""),
@@ -12,14 +12,16 @@ House::House(const std::string& house_id) :
 	m_collision_area_offset	(v3d::GetZeroV()),
 	m_collision_area_radius	(0.0f)
 {
+	mass_kind = MassKind::kStatic;
+
 	JSONLoader json_loader;
 	nlohmann::json data;
 	if (json_loader.Load("Data/JSON/houses.json", data))
 	{
 		m_model_path			= data.at("houses").at(house_id).at("model_path");
 		m_collision_model_path	= data.at("houses").at(house_id).at("collision_model_path");
-		m_pos					= data.at("houses").at(house_id).at("position")	.get<VECTOR>();
-		m_angle					= data.at("houses").at(house_id).at("angle")	.get<VECTOR>();
+		m_pos					= data.at("houses").at(house_id).at("position").get<VECTOR>();
+		m_angle					= data.at("houses").at(house_id).at("angle").get<VECTOR>();
 		m_basic_scale			= data.at("houses").at(house_id).at("basic_scale");
 		m_collision_area_offset = data.at("houses").at(house_id).at("collision_area_offset").get<VECTOR>();
 		m_collision_area_radius = data.at("houses").at(house_id).at("collision_area_radius");

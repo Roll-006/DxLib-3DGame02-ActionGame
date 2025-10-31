@@ -8,7 +8,7 @@ EnemyObjectPool::EnemyObjectPool() :
 	// ゾンビ
 	for (size_t i = 0; i < m_pool_size.at(ObjName.ZOMBIE); ++i)
 	{
-		const auto zombie = std::make_shared<Zombie>();
+		const auto zombie = std::make_shared<Zombie>(std::to_string(i));
 
 		CreateObj(zombie);
 		zombie->AddToObjManager();

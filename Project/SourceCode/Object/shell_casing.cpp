@@ -2,13 +2,15 @@
 #include "../Base/gun_base.hpp"
 
 ShellCasing::ShellCasing(const std::string& file_path) :
-	PhysicalObjBase			(ObjName.SHELL_CASING_556x45, ObjTag.SHELL_CASING, MassKind::kLight),
+	PhysicalObjBase			(ObjName.SHELL_CASING_556x45, ObjTag.SHELL_CASING),
 	m_modeler				(std::make_shared<Modeler>(m_transform, file_path, kBasicAngle, kBasicScale)),
 	m_time_scale_owner_name	(""),
 	m_move_dir				(v3d::GetZeroV()),
 	m_alive_timer			(0.0f),
 	m_move_speed			(kInitialVelocity)
 {	
+	mass_kind = MassKind::kLight;
+
 	SetColliderModelHandle(m_modeler->GetModelHandle());
 
 	AddCollider(std::make_shared<Collider>(ColliderKind::kCollider,		  std::make_shared<Sphere>(v3d::GetZeroV(), kColliderRadius),		this));

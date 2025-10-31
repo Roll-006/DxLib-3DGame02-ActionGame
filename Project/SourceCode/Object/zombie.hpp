@@ -5,13 +5,14 @@
 #include "../Interface/i_stealth_killable.hpp"
 
 #include "../Animator/zombie_animator.hpp"
+#include "../Data/zombie_collider_data.hpp"
 
 class ZombieStateController;
 
 class Zombie final : public EnemyBase, public IMeleeHittable, public IGrabber, public IStealthKillable
 {
 public:
-	Zombie();
+	Zombie(const std::string& enemy_id);
 	~Zombie() override;
 
 	void Init()						override;
@@ -33,7 +34,7 @@ public:
 	void Release()		override;
 	void OnEscape()		override;
 
-	[[nodiscard]] float GetDamageOverTimeStartTime()	const override	{ return m_damage_over_time_start_time; }
+	[[nodiscard]] float GetDamageOverTimeStartTime()	const override	{ return damage_over_time_start_time; }
 	[[nodiscard]] bool	IsTargetEscaped()				const override  { return m_is_target_escaped; }
 	#pragma endregion
 
@@ -77,64 +78,20 @@ private:
 	void JudgeAction() override;
 
 private:
-	std::string m_model_path;
+	std::string model_path;
 
-	VECTOR m_basic_angle;
-	float  m_basic_scale;
+	VECTOR basic_angle;
+	float  basic_scale;
 
-	float  m_walk_speed;
-	float  m_run_speed;
-	float  m_run_grab_speed;
-	float  m_move_dir_offset_speed;
-	float  m_look_dir_offset_speed;
+	float  walk_speed;
+	float  run_speed;
+	float  run_grab_speed;
+	float  move_dir_offset_speed;
+	float  look_dir_offset_speed;
 
-	float  m_fov;
-	float  m_visible_distance;
-	float  m_capsule_radius;
-	float  m_collision_area_radius;
-	VECTOR m_collision_area_offset;
-	float  m_landing_trigger_radius;
-	float  m_head_trigger_radius;
-	float  m_up_body_trigger_radius;
-	float  m_down_body_trigger_radius;
-	float  m_upper_arm_trigger_radius;
-	float  m_forearm_trigger_radius;
-	float  m_hand_trigger_radius;
-	float  m_up_leg_trigger_radius;
-	float  m_down_leg_trigger_radius;
+	ZombieColliderData collider_data;
 
-	float  m_damage_over_time_start_time;
-
-	//static constexpr VECTOR kBasicAngle				= { 0.0f, DX_PI_F, 0.0f };
-	//static constexpr float  kBasicScale				= 0.3f;
-	//
-	//static constexpr float kFOV						= 80.0f;
-	//static constexpr float kVisibleDistance			= 300.0f;
-	//
-	//static constexpr float kAttackIntervalTime		= 3.0f;
-	//static constexpr float kInvincibleTime			= 0.5f;
-	//
-	//static constexpr float kWalkSpeed				= 60.0f;
-	//static constexpr float kRunSpeed				= 100.0f;
-	//static constexpr float kRunGrabSpeed			= 110.0f;
-	//
-	//static constexpr float kMoveDirOffsetSpeed		= 5.0f;			// à⁄ìÆï˚å¸ÇÃï‚ê≥ë¨ìx
-	//static constexpr float kLookDirOffsetSpeed		= 3.0f;			// å©ÇÈï˚å¸ÇÃï‚ê≥äpìx
-	//
-	//static constexpr float  kCapsuleRadius			= 8.0f;
-	//static constexpr float  kCollisionAreaRadius	= 40.0f;
-	//static constexpr VECTOR kCollisionAreaOffset	= { 0.0f, 30.0f, 0.0f };
-	//static constexpr float  kLandingTriggerRadius	= 6.0f;
-	//static constexpr float  kHeadTriggerRadius		= 5.0f;
-	//static constexpr float  kUpBodyTriggerRadius	= 6.0f;
-	//static constexpr float  kDownBodyTriggerRadius	= 6.0f;
-	//static constexpr float  kUpperArmTriggerRadius	= 2.5f;
-	//static constexpr float  kForearmTriggerRadius	= 2.2f;
-	//static constexpr float  kHandTriggerRadius		= 2.0f;
-	//static constexpr float  kUpLegTriggerRadius		= 3.5f;
-	//static constexpr float  kDownLegTriggerRadius	= 2.5f;
-	//
-	//static constexpr float kDamageOverTimeStartTime = 1.0f;
+	float  damage_over_time_start_time;
 
 private:
 	std::shared_ptr<ZombieStateController>	m_state;
@@ -154,32 +111,19 @@ inline void from_json(const nlohmann::json& data, Zombie& zombie)
 {
 	from_json(data, static_cast<EnemyBase&>(zombie));
 
-	data.at("model_path")					.get_to(zombie.m_model_path);
-	data.at("basic_angle")					.get_to(zombie.m_basic_angle);
-	data.at("basic_scale")					.get_to(zombie.m_basic_scale);
+	data.at("model_path")					.get_to(zombie.model_path);
+	data.at("basic_angle")					.get_to(zombie.basic_angle);
+	data.at("basic_scale")					.get_to(zombie.basic_scale);
 
-	data.at("walk_speed")					.get_to(zombie.m_walk_speed);
-	data.at("run_speed")					.get_to(zombie.m_run_speed);
-	data.at("run_grab_speed")				.get_to(zombie.m_run_grab_speed);
+	data.at("walk_speed")					.get_to(zombie.walk_speed);
+	data.at("run_speed")					.get_to(zombie.run_speed);
+	data.at("run_grab_speed")				.get_to(zombie.run_grab_speed);
 	data.at("move_dir_offset_speed")		.get_to(zombie.m_move_dir_offset_speed);
 	data.at("look_dir_offset_speed")		.get_to(zombie.m_look_dir_offset_speed);
 
-	data.at("fov")							.get_to(zombie.m_fov);
-	data.at("visible_distance")				.get_to(zombie.m_visible_distance);
-	data.at("capsule_radius")				.get_to(zombie.m_capsule_radius);
-	data.at("collision_area_radius")		.get_to(zombie.m_collision_area_radius);
-	data.at("collision_area_offset")		.get_to(zombie.m_collision_area_offset);
-	data.at("landing_trigger_radius")		.get_to(zombie.m_landing_trigger_radius);
-	data.at("head_trigger_radius")			.get_to(zombie.m_head_trigger_radius);
-	data.at("up_body_trigger_radius")		.get_to(zombie.m_up_body_trigger_radius);
-	data.at("down_body_trigger_radius")		.get_to(zombie.m_down_body_trigger_radius);
-	data.at("upper_arm_trigger_radius")		.get_to(zombie.m_upper_arm_trigger_radius);
-	data.at("forearm_trigger_radius")		.get_to(zombie.m_forearm_trigger_radius);
-	data.at("hand_trigger_radius")			.get_to(zombie.m_hand_trigger_radius);
-	data.at("up_leg_trigger_radius")		.get_to(zombie.m_up_leg_trigger_radius);
-	data.at("down_leg_trigger_radius")		.get_to(zombie.m_down_leg_trigger_radius);
+	data.at("collider_data")				.get_to(zombie.collider_data);
 
-	data.at("damage_over_time_start_time")	.get_to(zombie.m_damage_over_time_start_time);
+	data.at("damage_over_time_start_time")	.get_to(zombie.damage_over_time_start_time);
 }
 
 inline void to_json(nlohmann::json& data, const Zombie& zombie)
@@ -189,32 +133,19 @@ inline void to_json(nlohmann::json& data, const Zombie& zombie)
 
 	nlohmann::json derived_json =
 	{
-		{ "model_path",						zombie.m_model_path },
-		{ "basic_angle",					zombie.m_basic_angle },
-		{ "basic_scale",					zombie.m_basic_scale },
+		{ "model_path",						zombie.model_path },
+		{ "basic_angle",					zombie.basic_angle },
+		{ "basic_scale",					zombie.basic_scale },
 
-		{ "walk_speed",						zombie.m_walk_speed },
-		{ "run_speed",						zombie.m_run_speed },
-		{ "run_grab_speed",					zombie.m_run_grab_speed },
+		{ "walk_speed",						zombie.walk_speed },
+		{ "run_speed",						zombie.run_speed },
+		{ "run_grab_speed",					zombie.run_grab_speed },
 		{ "move_dir_offset_speed",			zombie.m_move_dir_offset_speed },
 		{ "look_dir_offset_speed",			zombie.m_look_dir_offset_speed },
 
-		{ "fov",							zombie.m_fov },
-		{ "visible_distance",				zombie.m_visible_distance },
-		{ "capsule_radius",					zombie.m_capsule_radius },
-		{ "collision_area_radius",			zombie.m_collision_area_radius },
-		{ "collision_area_offset",			zombie.m_collision_area_offset },
-		{ "landing_trigger_radius",			zombie.m_landing_trigger_radius },
-		{ "head_trigger_radius",			zombie.m_head_trigger_radius },
-		{ "up_body_trigger_radius",			zombie.m_up_body_trigger_radius },
-		{ "down_body_trigger_radius",		zombie.m_down_body_trigger_radius },
-		{ "upper_arm_trigger_radius",		zombie.m_upper_arm_trigger_radius },
-		{ "forearm_trigger_radius",			zombie.m_forearm_trigger_radius },
-		{ "hand_trigger_radius",			zombie.m_hand_trigger_radius },
-		{ "up_leg_trigger_radius",			zombie.m_up_leg_trigger_radius },
-		{ "down_leg_trigger_radius",		zombie.m_down_leg_trigger_radius },
+		{ "collider_data",					zombie.collider_data },
 
-		{ "damage_over_time_start_time",	zombie.m_damage_over_time_start_time }
+		{ "damage_over_time_start_time",	zombie.damage_over_time_start_time }
 	};
 
 	data = base_json;

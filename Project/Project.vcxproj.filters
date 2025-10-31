@@ -424,9 +424,6 @@
     <ClCompile Include="SourceCode\State\ZombieState\run_attack.cpp">
       <Filter>SourceCode\State\ZombieState</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Part\patrol_route_supporter.cpp">
-      <Filter>SourceCode\Part</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\State\PlayerState\player_dead.cpp">
       <Filter>SourceCode\State\PlayerState</Filter>
     </ClCompile>
@@ -606,6 +603,9 @@
     </ClCompile>
     <ClCompile Include="SourceCode\Object\houses.cpp">
       <Filter>SourceCode\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\ZombieState\detected.cpp">
+      <Filter>SourceCode\State\ZombieState</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1158,9 +1158,6 @@
     <ClInclude Include="SourceCode\State\ZombieState\run_attack.hpp">
       <Filter>SourceCode\State\ZombieState</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Part\patrol_route_supporter.hpp">
-      <Filter>SourceCode\Part</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\State\PlayerState\player_dead.hpp">
       <Filter>SourceCode\State\PlayerState</Filter>
     </ClInclude>
@@ -1626,6 +1623,15 @@
     <ClInclude Include="SourceCode\Object\houses.hpp">
       <Filter>SourceCode\Object</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\Data\zombie_collider_data.hpp">
+      <Filter>SourceCode\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\on_target_detected_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\ZombieState\detected.hpp">
+      <Filter>SourceCode\State\ZombieState</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="SourceCode">
@@ -1774,13 +1780,16 @@
     <None Include="Data\JSON\font_data.json">
       <Filter>JSON</Filter>
     </None>
-    <None Include="Data\JSON\points.json">
+    <None Include="Data\JSON\init_enemies.json">
       <Filter>JSON</Filter>
     </None>
     <None Include="Data\JSON\patrol_route.json">
       <Filter>JSON</Filter>
     </None>
     <None Include="data\JSON\houses.json">
+      <Filter>JSON</Filter>
+    </None>
+    <None Include="Data\JSON\zombie.json">
       <Filter>JSON</Filter>
     </None>
   </ItemGroup>

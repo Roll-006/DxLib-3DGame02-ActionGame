@@ -20,14 +20,12 @@ public:
 	void LateUpdate();
 	void Draw() const;
 
-	void AddToObjManager();
-	void RemoveToObjManager();
-
 	void AttachTarget(const std::shared_ptr<CharacterBase>& target_character);
 	void DetachTarget();
 	
-	void NotifyAllowAction			 (const ReleaseEvent&	event);
-	void NotifyDisallowActionForcibly(const GrabEvent&		event);
+	void NotifyAllowAction			 (const ReleaseEvent&			event);
+	void NotifyDisallowActionForcibly(const GrabEvent&				event);
+	void NotifyDetectedTarget		 (const OnTargetDetectedEvent&	event);
 
 private:
 	std::shared_ptr<EnemyObjectPool>		m_object_pool;

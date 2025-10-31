@@ -3,7 +3,7 @@
 #include "../Base/gun_base.hpp"
 
 RocketBomb::RocketBomb() :
-	PhysicalObjBase			(ObjName.ROCKET_BOMB, ObjTag.BULLET, MassKind::kLight),
+	PhysicalObjBase			(ObjName.ROCKET_BOMB, ObjTag.BULLET),
 	m_modeler				(std::make_shared<Modeler>(m_transform, ModelPath.ROCKET_BOMB, kBasicAngle, kBasicScale)),
 	m_shot_owner_name		(""),
 	m_move_dir				(v3d::GetZeroV()),
@@ -14,6 +14,8 @@ RocketBomb::RocketBomb() :
 	m_range					(0.0f),
 	m_power					(0.0f)
 {
+	mass_kind = MassKind::kLight;
+
 	SetColliderModelHandle(m_modeler->GetModelHandle());
 
 	AddCollider(std::make_shared<Collider>(ColliderKind::kRayCast, std::make_shared<Segment>(), this));
