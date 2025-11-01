@@ -19,6 +19,7 @@ Zombie::Zombie(const std::string& enemy_id) :
 		mass_kind					= data.at("mass_kind");
 		invincible_time				= data.at("invincible_time");
 		attack_interval_time		= data.at("attack_interval_time");
+		detected_notify_distance	= data.at("detected_notify_distance");
 		model_path					= data.at("model_path");
 		basic_angle					= data.at("basic_angle");
 		basic_scale					= data.at("basic_scale");
@@ -342,6 +343,20 @@ void Zombie::OnRespawn(const VECTOR& pos, const VECTOR& look_dir)
 
 	const auto sphere = std::static_pointer_cast<Sphere>(GetCollider(ColliderKind::kCollisionAreaTrigger)->GetShape());
 	sphere->SetPos(pos + collider_data.collision_area_offset);
+}
+
+void Zombie::Detected()
+{
+	m_look_dir_offset_speed = 8.0f;
+	AllowCalcLookDir();
+
+	const auto target_pos			= m_state->GetTargetCharacter()->GetTransform()->GetPos(CoordinateKind::kWorld);
+	const auto target_pos_y0		= VGet(target_pos.x, 0.0f, target_pos.z);
+	const auto pos					= m_transform->GetPos(CoordinateKind::kWorld);
+	const auto pos_y0				= VGet(pos.x, 0.0f, pos.z);
+	m_look_dir.at(TimeKind::kNext)	= v3d::GetNormalizedV(target_pos_y0 - pos_y0);
+
+	m_move_dir.at(TimeKind::kCurrent) = v3d::GetZeroV();
 }
 
 void Zombie::Grab()

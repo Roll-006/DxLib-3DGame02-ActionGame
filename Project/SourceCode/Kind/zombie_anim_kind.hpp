@@ -7,6 +7,7 @@ enum class ZombieAnimKind
 
 	#pragma region 汎用
 	kIdle,
+	kDetected,
 
 	kMoveForwardWalk,
 	kMoveForwardRun,

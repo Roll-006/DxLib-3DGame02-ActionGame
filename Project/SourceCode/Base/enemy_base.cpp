@@ -11,6 +11,7 @@ EnemyBase::EnemyBase(const std::string& name) :
 	m_on_collided_vision_trigger	(false),
 	m_has_obstacle_between_target	(false),
 	m_is_target_in_sight			(false),
+	m_is_prev_target_in_sight		(false),
 	enemy_handle					(-1)
 {
 
@@ -73,6 +74,8 @@ void EnemyBase::OnAllowAction()
 
 void EnemyBase::JudgeTargetInSight()
 {
+	m_is_prev_target_in_sight = m_is_target_in_sight;
+
 	if (m_on_collided_vision_trigger && !m_has_obstacle_between_target)
 	{
 		m_is_target_in_sight = true;

@@ -51,6 +51,11 @@ std::shared_ptr<IState<Zombie>> zombie_state::ActionNull::ChangeState(std::share
 	{
 		return state_controller->GetState<StealthKilled, Zombie>();
 	}
+	// 発見
+	if (state_controller->TryDetected(obj))
+	{
+		return state_controller->GetState<Detected, Zombie>();
+	}
 	// ノックバック
 	if (state_controller->TryKnockback(obj))
 	{

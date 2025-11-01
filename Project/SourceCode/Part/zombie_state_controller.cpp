@@ -66,6 +66,7 @@ void ZombieStateController::CreateState()
 
 void ZombieStateController::AddStopStatePair()
 {
+	m_states.at(typeid(zombie_state::Detected))			->AddStopState(m_states.at(typeid(zombie_state::Move))->GetStateHandle());
 	m_states.at(typeid(zombie_state::Grab))				->AddStopState(m_states.at(typeid(zombie_state::Move))->GetStateHandle());
 	m_states.at(typeid(zombie_state::StandStun))		->AddStopState(m_states.at(typeid(zombie_state::Move))->GetStateHandle());
 	m_states.at(typeid(zombie_state::CrouchLeftStun))	->AddStopState(m_states.at(typeid(zombie_state::Move))->GetStateHandle());
@@ -297,6 +298,11 @@ bool ZombieStateController::TryMove()
 bool ZombieStateController::TryActionNullForcibly(std::shared_ptr<Zombie>& zombie)
 {
 	return !zombie->CanAction();
+}
+
+bool ZombieStateController::TryDetected(std::shared_ptr<Zombie>& zombie)
+{
+	return zombie->IsTargetInSight() && !zombie->IsPrevTargetInSight();
 }
 
 bool ZombieStateController::TryWalk(std::shared_ptr<Zombie>& zombie)

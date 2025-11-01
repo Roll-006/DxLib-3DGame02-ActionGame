@@ -27,6 +27,7 @@ public:
 	void DetachTarget() override;
 
 	void OnRespawn(const VECTOR& pos, const VECTOR& look_dir) override;
+	void Detected();
 	
 
 	#pragma region ’Í‚Ý

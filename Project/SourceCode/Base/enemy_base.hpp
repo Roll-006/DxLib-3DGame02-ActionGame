@@ -30,11 +30,16 @@ public:
 	/// @brief çsìÆÇ™ã≠êßìIÇ…í‚é~Ç≥ÇπÇÁÇÍÇÈ
 	void OnDisallowActionForcibly() { m_is_disallow_action_forcibly = true; }
 
-	[[nodiscard]] int								GetEnemyHandle()		const { return enemy_handle; }
-	[[nodiscard]] std::shared_ptr<PatrolRouteGiver> GetPatrolRouteGiver()	const { return m_patrol_route_giver; }
-	[[nodiscard]] bool								IsTargetInSight()		const { return m_is_target_in_sight; }
-	[[nodiscard]] bool								CanAttack()				const { return m_attack_interval_timer <= 0.0f; }
-	[[nodiscard]] bool								CanAction()				const { return m_can_action; }
+
+	#pragma region Getter
+	[[nodiscard]] int								GetEnemyHandle()			const { return enemy_handle; }
+	[[nodiscard]] std::shared_ptr<PatrolRouteGiver> GetPatrolRouteGiver()		const { return m_patrol_route_giver; }
+	[[nodiscard]] bool								IsTargetInSight()			const { return m_is_target_in_sight; }
+	[[nodiscard]] bool								IsPrevTargetInSight()		const { return m_is_prev_target_in_sight; }
+	[[nodiscard]] bool								CanAttack()					const { return m_attack_interval_timer <= 0.0f; }
+	[[nodiscard]] bool								CanAction()					const { return m_can_action; }
+	[[nodiscard]] float								GetDetecteNotifyDistance()	const { return detected_notify_distance; }
+	#pragma endregion
 
 protected:
 	virtual void JudgeAction() abstract;
@@ -46,6 +51,7 @@ protected:
 	std::string							route_id;
 	PatrolRouteGiver::PatrolKind		patrol_kind;
 	float								attack_interval_time;
+	float								detected_notify_distance;
 
 	std::shared_ptr<PatrolRouteGiver>	m_patrol_route_giver;
 	VECTOR								m_patrol_destination_pos;
@@ -56,8 +62,8 @@ protected:
 
 	bool  m_on_collided_vision_trigger;
 	bool  m_has_obstacle_between_target;
-	bool  m_is_lost_target;
 	bool  m_is_target_in_sight;
+	bool  m_is_prev_target_in_sight;
 
 private:
 	friend void from_json(const nlohmann::json& data, EnemyBase& enemy_base);
