@@ -59,6 +59,7 @@ protected:
 	float m_attack_interval_timer;
 	bool  m_can_action;
 	bool  m_is_disallow_action_forcibly;
+	float m_disappear_down_speed;
 
 	bool  m_on_collided_vision_trigger;
 	bool  m_has_obstacle_between_target;

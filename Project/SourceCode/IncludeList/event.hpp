@@ -23,6 +23,7 @@
 #include "../Event/on_downed_near_enemy_spotted_event.hpp"
 #include "../Event/on_downed_far_enemy_spotted_event.hpp"
 #include "../Event/on_target_detected_event.hpp"
+#include "../Event/start_disappear_enemy_event.hpp"
 #include "../Event/change_scene_event.hpp"
 #include "../Event/on_change_title_scene_event.hpp"
 #include "../Event/exit_game_event.hpp"

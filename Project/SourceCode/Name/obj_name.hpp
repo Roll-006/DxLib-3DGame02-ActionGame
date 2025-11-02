@@ -60,6 +60,7 @@ static struct ObjName
 	const std::string ROCKET_BOMB_HIT_EXPLOSION_EFFECT			= "rocket_bomb_hit_explosion_effect";
 	const std::string HIT_BULLET_LIGHT_EFFECT					= "hit_bullet_light_effect";
 	const std::string ROCKET_BOMB_SMOKE_EFFECT					= "rocket_bomb_smoke_effect";
+	const std::string DISAPPEAR_SMOKE_EFFECT					= "disappear_smoke_effect";
 	const std::string SHOT_FIRE_EFFECT							= "shot_fire_effect";
 	const std::string BLOOD_EFFECT								= "blood_effect";
 	#pragma endregion

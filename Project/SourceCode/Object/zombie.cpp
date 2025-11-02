@@ -55,7 +55,7 @@ Zombie::Zombie(const std::string& enemy_id) :
 	m_collider_creator->CreateLandingTrigger	(this, collider_data.landing_trigger_radius);
 	m_collider_creator->CreateVisionTrigger		(this, m_modeler, collider_data.visible_distance, collider_data.visible_fov * math::kDegToRad);
 	m_collider_creator->CreateVisibleTrigger	(this, m_modeler);
-	m_collider_creator->CreateHeadTrigger		(this, m_modeler, collider_data.hand_trigger_radius);
+	m_collider_creator->CreateHeadTrigger		(this, m_modeler, collider_data.head_trigger_radius);
 	m_collider_creator->CreateBodyTrigger		(this, m_modeler, collider_data.up_body_trigger_radius,		collider_data.down_body_trigger_radius);
 	m_collider_creator->CreateArmTrigger		(this, m_modeler, collider_data.upper_arm_trigger_radius,	collider_data.forearm_trigger_radius, collider_data.hand_trigger_radius);
 	m_collider_creator->CreateLegTrigger		(this, m_modeler, collider_data.up_leg_trigger_radius,		collider_data.down_leg_trigger_radius);
@@ -137,6 +137,8 @@ void Zombie::Draw() const
 	m_modeler->Draw();
 
 	DrawColliders();
+
+	printfDx("%f\n", m_move_speed);
 }
 
 void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
@@ -442,7 +444,7 @@ void Zombie::TrackMove(const VECTOR& target_pos)
 
 void Zombie::UpdateGrabRun()
 {
-	m_move_dir_offset_speed = 0.5f;
+	m_move_dir_offset_speed = 0.5f;	
 	m_move_speed = run_grab_speed;
 }
 

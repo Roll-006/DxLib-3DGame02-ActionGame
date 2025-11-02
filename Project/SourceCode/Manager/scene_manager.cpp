@@ -40,12 +40,12 @@ void SceneManager::LateUpdate()
 
 void SceneManager::DrawToShadowMap() const
 {
-	m_drawer->DrawToShadowMap(m_share_scene, m_current_scene);
+	m_drawer->DrawToShadowMap(m_current_scene);
 }
 
 void SceneManager::Draw() const
 {
-	m_drawer->Draw(m_share_scene, m_current_scene);
+	m_drawer->Draw(m_current_scene);
 }
 
 void SceneManager::ChangeScene()

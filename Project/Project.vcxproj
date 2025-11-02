@@ -404,6 +404,7 @@
     <ClInclude Include="SourceCode\Data\input_data.hpp" />
     <ClInclude Include="SourceCode\Debugger\debugger.hpp" />
     <ClInclude Include="SourceCode\Drawer\drawer.hpp" />
+    <ClInclude Include="SourceCode\Event\start_disappear_enemy_event.hpp" />
     <ClInclude Include="SourceCode\Event\on_target_detected_event.hpp" />
     <ClInclude Include="SourceCode\Event\on_stealth_kill_event.hpp" />
     <ClInclude Include="SourceCode\Event\stealth_kill_event.hpp" />

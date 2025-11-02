@@ -11,17 +11,19 @@ EffectManager::EffectManager()
 	EventSystem::GetInstance()->Subscribe<OnHitBulletEvent>			(this, &EffectManager::OutputOnHitBulletEffect);
 	EventSystem::GetInstance()->Subscribe<OnDamageEvent>			(this, &EffectManager::OutputOnDamageEffect);
 	EventSystem::GetInstance()->Subscribe<OnChangeTitleSceneEvent>	(this, &EffectManager::OutputTitleSceneEffect);
+	EventSystem::GetInstance()->Subscribe<StartDisappearEnemyEvent>	(this, &EffectManager::OutputDisappearEnemyEffect);
 }
 
 EffectManager::~EffectManager()
 {
 	// ƒCƒxƒ“ƒg‚Ì“o˜^‰ðœ
-	EventSystem::GetInstance()->Unsubscribe<WeaponShotEvent>		(this, &EffectManager::OutputWeaponShotEffect);
-	EventSystem::GetInstance()->Unsubscribe<RocketLauncherShotEvent>(this, &EffectManager::OutputRocketLauncherShotEffect);
-	EventSystem::GetInstance()->Unsubscribe<OnShotBulletEvent>		(this, &EffectManager::OutputOnShotBulletEffect);
-	EventSystem::GetInstance()->Unsubscribe<OnHitBulletEvent>		(this, &EffectManager::OutputOnHitBulletEffect);
-	EventSystem::GetInstance()->Unsubscribe<OnDamageEvent>			(this, &EffectManager::OutputOnDamageEffect);
-	EventSystem::GetInstance()->Unsubscribe<OnChangeTitleSceneEvent>(this, &EffectManager::OutputTitleSceneEffect);
+	EventSystem::GetInstance()->Unsubscribe<WeaponShotEvent>			(this, &EffectManager::OutputWeaponShotEffect);
+	EventSystem::GetInstance()->Unsubscribe<RocketLauncherShotEvent>	(this, &EffectManager::OutputRocketLauncherShotEffect);
+	EventSystem::GetInstance()->Unsubscribe<OnShotBulletEvent>			(this, &EffectManager::OutputOnShotBulletEffect);
+	EventSystem::GetInstance()->Unsubscribe<OnHitBulletEvent>			(this, &EffectManager::OutputOnHitBulletEffect);
+	EventSystem::GetInstance()->Unsubscribe<OnDamageEvent>				(this, &EffectManager::OutputOnDamageEffect);
+	EventSystem::GetInstance()->Unsubscribe<OnChangeTitleSceneEvent>	(this, &EffectManager::OutputTitleSceneEffect);
+	EventSystem::GetInstance()->Unsubscribe<StartDisappearEnemyEvent>	(this, &EffectManager::OutputDisappearEnemyEffect);
 }
 
 void EffectManager::Update()
@@ -242,6 +244,20 @@ void EffectManager::OutputTitleSceneEffect(const OnChangeTitleSceneEvent& event)
 		effect->AttachOwnerTransform(event.smoke_transform);
 		effect->AddReturnPoolTriggerHandle(event.smoke_delete_handle);
 		effect->SetOffsetScale(2.5f);
+		AddEffect(effect);
+	}
+}
+
+void EffectManager::OutputDisappearEnemyEffect(const StartDisappearEnemyEvent& event)
+{
+	const auto pool = ObjectPoolHolder::GetInstance()->GetObjectPool(ObjectPoolName.PLAY_SCENE_EFFECT_POOL);
+	std::shared_ptr<ObjBase> obj = nullptr;
+
+	obj = pool->GetObj(ObjName.DISAPPEAR_SMOKE_EFFECT);
+	if (obj)
+	{
+		const auto effect = std::static_pointer_cast<Effect>(obj);
+		effect->GetTransform()->SetPos(CoordinateKind::kWorld, event.disppear_pos);
 		AddEffect(effect);
 	}
 }

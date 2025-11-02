@@ -9,6 +9,7 @@ static struct EffekseerEffectPath
 	const std::string ROCKET_BOMB_HIT_EXPLOSION				= "Data/Effect/Explosion/hit_rocket_bomb.efk";
 	const std::string HIT_BULLET_LIGHT						= "Data/Effect/Light/on_hit_bullet.efk";
 	const std::string EXPANDING_SMOKE						= "Data/Effect/Smoke/expanding_smoke.efk";
+	const std::string DISAPPEAR_SMOKE						= "Data/Effect/Smoke/disappear_smoke.efk";
 	const std::string SHOT_FIRE								= "Data/Effect/Fire/fire.efk";
 	const std::string BLOOD									= "Data/Effect/Blood/blood.efk";
 

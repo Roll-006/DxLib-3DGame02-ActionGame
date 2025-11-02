@@ -1632,6 +1632,9 @@
     <ClInclude Include="SourceCode\State\ZombieState\detected.hpp">
       <Filter>SourceCode\State\ZombieState</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\Event\start_disappear_enemy_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="SourceCode">

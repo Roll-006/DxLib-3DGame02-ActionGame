@@ -10,7 +10,7 @@ public:
 	SpotLight(const std::string& name, const int priority, const VECTOR& pos, const VECTOR& dir, const float angle, const float attenuation_angle, const LightRangeAttenuationData& range_attenuation);
 	~SpotLight() override;
 
-	void Activate()		override { SetLightEnableHandle(m_light_handle, TRUE);  }
+	void Activate()		override { SetLightEnableHandle(m_light_handle, TRUE ); }
 	void Deactivate()	override { SetLightEnableHandle(m_light_handle, FALSE); }
 
 

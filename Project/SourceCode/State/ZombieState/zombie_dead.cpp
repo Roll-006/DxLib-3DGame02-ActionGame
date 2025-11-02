@@ -5,6 +5,7 @@ zombie_state::Dead::Dead() :
 	m_is_stop_all_state		(false),
 	m_elapsed_time_end_anim	(0.0f),
 	m_change_color_wait_time(0.0f),
+	m_is_start_disappear	(false),
 	m_current_material		()
 {
 
@@ -32,12 +33,24 @@ void zombie_state::Dead::Update(std::shared_ptr<Zombie>& obj)
 	if (obj->GetAnimator()->IsPlayEnd(AnimatorBase::BodyKind::kUpperBody))
 	{
 		m_elapsed_time_end_anim += delta_time;
-		if (m_elapsed_time_end_anim >= kReturnPoolTime)
+		if (m_elapsed_time_end_anim >= kStartDisappearTime)
 		{
-			CollisionManager::GetInstance()->RemoveCollideObj				(obj->GetObjHandle());
-			PhysicsManager  ::GetInstance()->AddIgnoreObjPhysicalBehavior	(obj->GetObjHandle());
-			PhysicsManager  ::GetInstance()->AddIgnoreObjGravity			(obj->GetObjHandle());
-		
+			if (!m_is_start_disappear)
+			{
+				CollisionManager::GetInstance()->RemoveCollideObj(obj->GetObjHandle());
+				PhysicsManager  ::GetInstance()->AddIgnoreObjPhysicalBehavior(obj->GetObjHandle());
+				PhysicsManager  ::GetInstance()->AddIgnoreObjGravity(obj->GetObjHandle());
+
+				// —£‚µ‚½‚±‚Æ‚ğ‰‰oƒJƒƒ‰‚É’Ê’m
+				const auto model_hanlde = obj->GetModeler()->GetModelHandle();
+				auto	   hips_m		= MV1GetFrameLocalWorldMatrix(model_hanlde, MV1SearchFrame(model_hanlde, BonePath.HIPS));
+				const auto hips_pos		= MGetTranslateElem(hips_m);
+				const StartDisappearEnemyEvent event{ hips_pos - VGet(0.0f, 10.0f, 0.0f) };
+				EventSystem::GetInstance()->Publish(event);
+
+				m_is_start_disappear = true;
+			}
+
 			obj->Disappear();
 		}
 	}
@@ -52,6 +65,7 @@ void zombie_state::Dead::Enter(std::shared_ptr<Zombie>& obj)
 {
 	m_elapsed_time_end_anim		= 0.0f;
 	m_change_color_wait_time	= 0.0f;
+	m_is_start_disappear		= false;
 	m_current_material			= MaterialData();
 
 	obj->RemoveCollider(ColliderKind::kCollider);

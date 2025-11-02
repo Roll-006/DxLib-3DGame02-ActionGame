@@ -8,6 +8,7 @@ EnemyBase::EnemyBase(const std::string& name) :
 	m_attack_interval_timer			(0.0f),
 	m_can_action					(true),
 	m_is_disallow_action_forcibly	(false),
+	m_disappear_down_speed			(0.0f),
 	m_on_collided_vision_trigger	(false),
 	m_has_obstacle_between_target	(false),
 	m_is_detected_target			(false),
@@ -59,7 +60,9 @@ void EnemyBase::Disappear()
 	m_is_calc_look_dir = false;
 
 	m_move_dir.at(TimeKind::kNext) = m_move_dir.at(TimeKind::kCurrent) = VGet(0.0f, -1.0f, 0.0f);
-	m_move_speed = 0.05f;
+	math::Increase(m_disappear_down_speed, 0.01f * GetDeltaTime(), 0.05f, false);
+
+	m_move_speed = m_disappear_down_speed;
 }
 
 void EnemyBase::OnAllowAction()

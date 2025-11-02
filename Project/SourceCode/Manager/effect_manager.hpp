@@ -38,6 +38,8 @@ private:
 	void OutputOnDamageEffect			(const OnDamageEvent& event);
 	/// @brief タイトルシーンに遷移した際のエフェクトを出力
 	void OutputTitleSceneEffect			(const OnChangeTitleSceneEvent& event);
+	/// @brief 敵が消える際のエフェクトを出力
+	void OutputDisappearEnemyEffect		(const StartDisappearEnemyEvent& event);
 	#pragma endregion
 
 

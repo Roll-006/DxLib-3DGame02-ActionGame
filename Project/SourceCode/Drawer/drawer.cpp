@@ -12,24 +12,21 @@ Drawer::~Drawer()
 
 }
 
-void Drawer::DrawToShadowMap(const std::shared_ptr<IScene> current_scene, const std::shared_ptr<IScene> share_scene) const
+void Drawer::DrawToShadowMap(const std::shared_ptr<IScene>& current_scene) const
 {
 	m_shadow_map->SetupDrawShadowMap();
 
-	current_scene	->DrawToShadowMap();
-	share_scene		->DrawToShadowMap();
+	current_scene->DrawToShadowMap();
 
 	m_shadow_map->EndDrawShadowMap();
 }
 
-void Drawer::Draw(const std::shared_ptr<IScene> current_scene, const std::shared_ptr<IScene> share_scene) const
+void Drawer::Draw(const std::shared_ptr<IScene>& current_scene) const
 {
 	m_screen_filter->UseFilter();
-
 	m_shadow_map->UseShadowMap();
 
-	current_scene	->Draw();
-	share_scene		->Draw();
+	current_scene->Draw();
 
 	m_shadow_map->UnuseShadowMap();
 

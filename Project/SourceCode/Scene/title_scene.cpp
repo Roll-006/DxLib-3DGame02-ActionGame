@@ -90,12 +90,6 @@ void TitleScene::Update()
 	m_title_tab			->Update();
 	m_title_character	->Update();
 
-	if (ObjManager::GetInstance()->GetObj<ObjBase>(ObjName.PLAYER))
-	{
-		int a = 0;
-	}
-
-
 	// TODO : 後に別クラス化
 
 	// 基準となるトランスフォームを設定

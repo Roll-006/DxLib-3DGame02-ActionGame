@@ -10,7 +10,8 @@ MainCamera::MainCamera() :
 	PhysicalObjBase				(ObjName.MAIN_CAMERA, ObjTag.CAMERA),
 	m_aim_pos					(v3d::GetZeroV()),
 	m_collider_radius			(0.0f),
-	m_is_active_grab_collider	(false)
+	m_is_active_grab_collider	(false),
+	m_grabbed_obj_handle		(-1)
 {
 	// ƒCƒxƒ“ƒg“o˜^
 	EventSystem::GetInstance()->Subscribe<GrabEvent>	(this, &MainCamera::CreateGrabCollider);
@@ -43,7 +44,10 @@ MainCamera::~MainCamera()
 
 void MainCamera::Init()
 {
+	m_is_active_grab_collider	= false;
+	m_grabbed_obj_handle		= -1;
 
+	RemoveCollider(ColliderKind::kCollider);
 }
 
 void MainCamera::Update()
@@ -247,6 +251,6 @@ void MainCamera::CalcGrabColliderPosAndRadius()
 	math::Increase(m_collider_radius, 80.0f * GetDeltaTime(), 300.0f, false);
 
 	const auto sphere = std::static_pointer_cast<Sphere>(GetCollider(ColliderKind::kCollider)->GetShape());
-	sphere->SetPos		(m_aim_pos);
-	sphere->SetRadius	(m_collider_radius);
+	sphere->SetPos	 (m_aim_pos);
+	sphere->SetRadius(m_collider_radius);
 }

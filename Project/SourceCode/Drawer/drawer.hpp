@@ -17,8 +17,8 @@ public:
 	Drawer();
 	~Drawer();
 
-	void DrawToShadowMap(const std::shared_ptr<IScene> current_scene, const std::shared_ptr<IScene> share_scene) const;
-	void Draw			(const std::shared_ptr<IScene> current_scene, const std::shared_ptr<IScene> share_scene) const;
+	void DrawToShadowMap(const std::shared_ptr<IScene>& current_scene) const;
+	void Draw			(const std::shared_ptr<IScene>& current_scene) const;
 
 private:
 	std::unique_ptr<ShadowMap>		m_shadow_map;

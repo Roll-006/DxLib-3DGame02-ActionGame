@@ -8,6 +8,7 @@ PlaySceneEffectObjectPool::PlaySceneEffectObjectPool() :
 	m_pool_size[ObjName.ROCKET_BOMB_HIT_EXPLOSION_EFFECT]			= kRocketBombHitExplosionPoolSize;
 	m_pool_size[ObjName.HIT_BULLET_LIGHT_EFFECT]					= kHitBulletLightPoolSize;
 	m_pool_size[ObjName.ROCKET_BOMB_SMOKE_EFFECT]					= kRocketBombSmokePoolSize;
+	m_pool_size[ObjName.DISAPPEAR_SMOKE_EFFECT]						= kDisappearSmokePoolSize;
 	m_pool_size[ObjName.SHOT_FIRE_EFFECT]							= kShotFirePoolSize;
 	m_pool_size[ObjName.BLOOD_EFFECT]								= kBloodPoolSize;
 
@@ -55,6 +56,15 @@ PlaySceneEffectObjectPool::PlaySceneEffectObjectPool() :
 		effect->AddToObjManager();
 	}
 
+	// “G‚ªÁ‚¦‚éÛ‚Ì‰Œ
+	data = { ObjName.DISAPPEAR_SMOKE_EFFECT, EffectPath.DISAPPEAR_SMOKE, 40.0f, 0.0f, false };
+	for (int i = 0; i < m_pool_size.at(data.obj_name); ++i)
+	{
+		const auto effect = std::make_shared<Effect>(data);
+		CreateObj(effect);
+		effect->AddToObjManager();
+	}
+
 	// ’eŠÛ”­Ë‚Ì‰Š
 	data = { ObjName.SHOT_FIRE_EFFECT, EffectPath.SHOT_FIRE, 60.0f, 0.0f, false };
 	for (int i = 0; i < m_pool_size.at(data.obj_name); ++i)
@@ -81,6 +91,7 @@ PlaySceneEffectObjectPool::~PlaySceneEffectObjectPool()
 	DestroyObjects(ObjName.ROCKET_BOMB_HIT_EXPLOSION_EFFECT);
 	DestroyObjects(ObjName.HIT_BULLET_LIGHT_EFFECT);
 	DestroyObjects(ObjName.ROCKET_BOMB_SMOKE_EFFECT);
+	DestroyObjects(ObjName.DISAPPEAR_SMOKE_EFFECT);
 	DestroyObjects(ObjName.SHOT_FIRE_EFFECT);
 	DestroyObjects(ObjName.BLOOD_EFFECT);
 }
