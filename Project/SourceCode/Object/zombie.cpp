@@ -137,8 +137,6 @@ void Zombie::Draw() const
 	m_modeler->Draw();
 
 	DrawColliders();
-
-	printfDx("%f\n", m_move_speed);
 }
 
 void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
