@@ -12,6 +12,11 @@ MainCamera::MainCamera() :
 	m_collider_radius			(0.0f),
 	m_is_active_grab_collider	(false)
 {
+	// ƒCƒxƒ“ƒg“o˜^
+	EventSystem::GetInstance()->Subscribe<GrabEvent>	(this, &MainCamera::CreateGrabCollider);
+	EventSystem::GetInstance()->Subscribe<OnGrabEvent>	(this, &MainCamera::CreateGrabCollider);
+	EventSystem::GetInstance()->Subscribe<ReleaseEvent>	(this, &MainCamera::DeleteGrabCollider);
+
 	mass_kind = MassKind::kHeavy;
 
 	AddCollider(std::make_shared<Collider>(ColliderKind::kRayCast,				std::make_shared<Segment>(), this));
@@ -30,7 +35,10 @@ MainCamera::MainCamera() :
 
 MainCamera::~MainCamera()
 {
-
+	// ƒCƒxƒ“ƒg‚Ì“o˜^‰ðœ
+	EventSystem::GetInstance()->Unsubscribe<GrabEvent>		(this, &MainCamera::CreateGrabCollider);
+	EventSystem::GetInstance()->Unsubscribe<OnGrabEvent>	(this, &MainCamera::CreateGrabCollider);
+	EventSystem::GetInstance()->Unsubscribe<ReleaseEvent>	(this, &MainCamera::DeleteGrabCollider);
 }
 
 void MainCamera::Init()
@@ -167,19 +175,31 @@ void MainCamera::ApplyMatrix(const MATRIX& matrix)
 
 
 #pragma region Event
-void MainCamera::CreateGrabCollider(const GrabEvent&	event)
+void MainCamera::CreateGrabCollider(const GrabEvent& event)
 {
 	m_collider_radius			= 0.0f;
 	m_is_active_grab_collider	= true;
 
 	AddCollider(std::make_shared<Collider>(ColliderKind::kCollider, std::make_shared<Sphere>(m_aim_pos, m_collider_radius), this));
+
+	PhysicsManager::GetInstance()->AddIgnorePushBackPair(GetObjHandle(), event.obj_handle);
+}
+
+void MainCamera::CreateGrabCollider(const OnGrabEvent& event)
+{
+	m_grabbed_obj_handle = event.obj_handle;
+
+	PhysicsManager::GetInstance()->AddIgnorePushBackPair(GetObjHandle(), event.obj_handle);
 }
 
 void MainCamera::DeleteGrabCollider(const ReleaseEvent& event)
 {
-	m_is_active_grab_collider	= false;
+	m_is_active_grab_collider = false;
 
 	RemoveCollider(ColliderKind::kCollider);
+
+	PhysicsManager::GetInstance()->RemoveIgnorePushBackPair(GetObjHandle(), event.obj_handle);
+	PhysicsManager::GetInstance()->RemoveIgnorePushBackPair(GetObjHandle(), m_grabbed_obj_handle);
 }
 #pragma endregion
 
@@ -224,7 +244,7 @@ void MainCamera::CalcGrabColliderPosAndRadius()
 {
 	if (!m_is_active_grab_collider) { return; }
 
-	m_collider_radius += 20.0f * GetDeltaTime();
+	math::Increase(m_collider_radius, 80.0f * GetDeltaTime(), 300.0f, false);
 
 	const auto sphere = std::static_pointer_cast<Sphere>(GetCollider(ColliderKind::kCollider)->GetShape());
 	sphere->SetPos		(m_aim_pos);

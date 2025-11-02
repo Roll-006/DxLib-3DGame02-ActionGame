@@ -10,8 +10,9 @@ EnemyBase::EnemyBase(const std::string& name) :
 	m_is_disallow_action_forcibly	(false),
 	m_on_collided_vision_trigger	(false),
 	m_has_obstacle_between_target	(false),
-	m_is_target_in_sight			(false),
-	m_is_prev_target_in_sight		(false),
+	m_is_detected_target			(false),
+	m_is_prev_detected_target		(false),
+	m_is_detection_shared			(false),
 	enemy_handle					(-1)
 {
 
@@ -50,7 +51,7 @@ void EnemyBase::ChangePatrolDestination()
 
 void EnemyBase::OnDetected()
 {
-	m_is_target_in_sight = true;
+	m_is_detection_shared = true;
 }
 
 void EnemyBase::Disappear()
@@ -65,19 +66,23 @@ void EnemyBase::OnAllowAction()
 {
 	m_is_disallow_action_forcibly = false;
 
-	// 残りの攻撃インターバル時間が短すぎる場合は本来の時間の1/2の時間を与える
-	if (m_attack_interval_timer < attack_interval_time * 0.25f)
+	// 残りの攻撃インターバル時間は分を切っている場合は最大値にする
+	if (m_attack_interval_timer < attack_interval_time * 0.5f)
 	{
-		m_attack_interval_timer = attack_interval_time * 0.5f;
+		m_attack_interval_timer = attack_interval_time;
 	}
 }
 
 void EnemyBase::JudgeTargetInSight()
 {
-	m_is_prev_target_in_sight = m_is_target_in_sight;
+	m_is_prev_detected_target = m_is_detected_target;
 
-	if (m_on_collided_vision_trigger && !m_has_obstacle_between_target)
+	// 自分自身が発見した、もしくは発見状態が共有された場合に発見したものとする
+	const auto is_detected = m_on_collided_vision_trigger && !m_has_obstacle_between_target;
+	if (is_detected || m_is_detection_shared)
 	{
-		m_is_target_in_sight = true;
+		m_is_detected_target = true;
 	}
+
+	m_has_obstacle_between_target = false;
 }

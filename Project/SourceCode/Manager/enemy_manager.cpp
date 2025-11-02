@@ -15,7 +15,7 @@ EnemyManager::EnemyManager() :
 	{
 		const auto init_enemies_size = data.at("init_enemies").size();
 
-		for (size_t i = 0; i < 1; ++i)
+		for (size_t i = 0; i < 6; ++i)
 		{
 			const auto enemy		= std::static_pointer_cast<EnemyBase>(m_object_pool->GetObj(ObjName.ZOMBIE));
 			const auto pos			= data.at("init_enemies").at(std::to_string(i)).at("position").get<VECTOR>();
@@ -118,7 +118,7 @@ void EnemyManager::NotifyDetectedTarget(const OnTargetDetectedEvent& event)
 {
 	for (const auto& enemy : m_active_enemies)
 	{
-		if (enemy->IsTargetInSight()) { continue; }
+		if (enemy->IsDetectedTarget()) { continue; }
 
 		const auto enemy_pos	= enemy->GetTransform()->GetPos(CoordinateKind::kWorld);
 		const auto distance		= VSize(enemy_pos - event.notify_pos);

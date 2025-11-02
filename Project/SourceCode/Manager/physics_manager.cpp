@@ -89,8 +89,34 @@ void PhysicsManager::RemoveIgnoreObjGravity			(const int obj_handle)
 		erase(m_ignore_gravity_obj_handle, obj_handle);
 	}
 }
+
+void PhysicsManager::AddIgnorePushBackPair(const int obj_handle1, const int obj_handle2)
+{
+	const auto target = std::make_pair(obj_handle1, obj_handle2);
+	m_ignore_push_back_pair_obj_handle.emplace_back(target);
+}
+
+void PhysicsManager::RemoveIgnorePushBackPair(const int obj_handle1, const int obj_handle2)
+{
+	const auto target = std::make_pair(obj_handle1, obj_handle2);
+	if (std::find(m_ignore_push_back_pair_obj_handle.begin(), m_ignore_push_back_pair_obj_handle.end(), target) != m_ignore_push_back_pair_obj_handle.end())
+	{
+		erase(m_ignore_push_back_pair_obj_handle, target);
+	}
+}
 #pragma endregion
 
+
+bool PhysicsManager::CanPushBack(const int obj_handle1, const int obj_handle2)
+{
+	const auto target1 = std::make_pair(obj_handle1, obj_handle2);
+	const auto target2 = std::make_pair(obj_handle2, obj_handle1);
+
+	if (std::find(m_ignore_push_back_pair_obj_handle.begin(), m_ignore_push_back_pair_obj_handle.end(), target1) != m_ignore_push_back_pair_obj_handle.end()) { return false; }
+	if (std::find(m_ignore_push_back_pair_obj_handle.begin(), m_ignore_push_back_pair_obj_handle.end(), target2) != m_ignore_push_back_pair_obj_handle.end()) { return false; }
+
+	return true;
+}
 
 void PhysicsManager::ProjectionPos(const std::shared_ptr<PhysicalObjBase> physical_obj)
 {
@@ -152,6 +178,8 @@ void PhysicsManager::ExecutePushBackPairs()
 			// 互いに静的オブジェクトであった場合は以降の処理をスキップ
 			if (obj_1->GetMassKind() == MassKind::kStatic && obj_2->GetMassKind() == MassKind::kStatic) { continue; }
 
+			if (!CanPushBack(obj_1->GetObjHandle(), obj_2->GetObjHandle())) { continue; }
+
 			// 距離が遠いオブジェクト同士は無視
 			const auto owner_collision_area		= obj_1->GetCollider(ColliderKind::kCollisionAreaTrigger);
 			const auto target_collision_area	= obj_2->GetCollider(ColliderKind::kCollisionAreaTrigger);
@@ -170,11 +198,6 @@ void PhysicsManager::ExecutePushBackPairs()
 			{
 				low_priority_obj  = obj_2;
 				high_priority_obj = obj_1;
-			}
-
-			if (low_priority_obj->GetName() == ObjName.PLAYER && high_priority_obj->GetName() == ObjName.GROUND)
-			{
-				int a = 0;
 			}
 
 			// 押し戻し処理を実行
@@ -275,10 +298,10 @@ void PhysicsManager::PushBackCapsuleAndTarget(const std::shared_ptr<PhysicalObjB
 		low_priority_obj->SetVelocity(push_backed_velocity);
 		break;
 
-	//case ShapeKind::kSphere:
-	//	push_backed_velocity = collision::PushBackCapsuleAndSphere(velocity, capsule, *static_cast<const Sphere*>(shape));
-	//	low_priority_obj->SetVelocity(push_backed_velocity);
-	//	break;
+	case ShapeKind::kSphere:
+		push_backed_velocity = collision::PushBackCapsuleAndSphere(velocity, capsule, *static_cast<const Sphere*>(shape));
+		low_priority_obj->SetVelocity(push_backed_velocity);
+		break;
 
 	case ShapeKind::kCapsule:
 		push_backed_velocity = collision::PushBackCapsuleAndCapsule(velocity, capsule, *static_cast<const Capsule*>(shape));

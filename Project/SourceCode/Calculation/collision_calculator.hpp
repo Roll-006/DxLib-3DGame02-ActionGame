@@ -253,9 +253,8 @@ namespace collision
     [[nodiscard]] VECTOR PushBackCapsuleAndSquare(const VECTOR& velocity, const Capsule& dynamic_capsule, const Square& static_square);
 
     /// @brief カプセル(移動オブジェクト)と球(固定オブジェクト)が衝突する際の有効な速度ベクトルを取得
-    /// @brief WARNING : この関数は現在衝突対象にめり込んでいないことを前提としている
     /// @return 有効な速度ベクトル
-    //[[nodiscard]] VECTOR PushBackCapsuleAndSphere(const VECTOR& velocity, const Capsule& dynamic_capsule, const Sphere& static_sphere);
+    [[nodiscard]] VECTOR PushBackCapsuleAndSphere(const VECTOR& velocity, const Capsule& dynamic_capsule, const Sphere& static_sphere);
 
     /// @brief カプセル(移動オブジェクト)とカプセル(固定オブジェクト)が衝突する際の有効な速度ベクトルを取得
     /// @brief WARNING : この関数は現在衝突対象にめり込んでいないことを前提としている

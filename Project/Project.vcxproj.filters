@@ -1772,6 +1772,9 @@
     <Filter Include="SourceCode\Animator">
       <UniqueIdentifier>{46e62084-03bc-49de-85b0-0989e7e3f1af}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Text">
+      <UniqueIdentifier>{f778bbda-5f11-4860-b7cd-f357af151c7c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\JSON\key_number.json">
@@ -1792,5 +1795,10 @@
     <None Include="Data\JSON\zombie.json">
       <Filter>JSON</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Text\bug_list.txt">
+      <Filter>Text</Filter>
+    </Text>
   </ItemGroup>
 </Project>

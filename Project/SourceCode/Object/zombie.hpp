@@ -52,7 +52,7 @@ public:
 	void DisallowStealthKill()	override { m_is_allow_stealth_kill = false; }
 
 	[[nodiscard]] bool IsAllowStealthKill()		const override	{ return m_is_allow_stealth_kill; }
-	[[nodiscard]] bool IsStealthKillerInSight()	const override	{ return IsTargetInSight(); }
+	[[nodiscard]] bool IsStealthKillerInSight()	const override	{ return IsDetectedTarget(); }
 	[[nodiscard]] bool IsStealthKilled()		const override	{ return m_on_stealth_kill; }
 	#pragma endregion
 

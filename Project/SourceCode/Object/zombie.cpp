@@ -364,7 +364,7 @@ void Zombie::Grab()
 	m_is_target_escaped = false;
 
 	// 掴んだことを演出カメラに通知
-	const GrabEvent event{ GetEnemyHandle(), m_modeler };
+	const GrabEvent event{ GetEnemyHandle(), GetObjHandle(), m_modeler };
 	EventSystem::GetInstance()->Publish(event);
 
 	// プレイヤーの掴まれた関数を呼び出す
@@ -380,7 +380,7 @@ void Zombie::Grab()
 void Zombie::Release()
 {
 	// 離したことを演出カメラに通知
-	const ReleaseEvent event{ GetEnemyHandle() };
+	const ReleaseEvent event{ GetEnemyHandle(), GetObjHandle() };
 	EventSystem::GetInstance()->Publish(event);
 
 	std::static_pointer_cast<Player>(m_state->GetTargetCharacter())->OnRelease();

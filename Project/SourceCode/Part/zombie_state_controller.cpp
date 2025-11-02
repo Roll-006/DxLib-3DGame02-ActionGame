@@ -258,7 +258,7 @@ bool ZombieStateController::TryPatrol(std::shared_ptr<Zombie>& zombie)
 
 	if (!route_giver)				{ return false; }
 	if (route_giver->IsEnd())		{ return false; }
-	if (zombie->IsTargetInSight())	{ return false; }
+	if (zombie->IsDetectedTarget())	{ return false; }
 
 	return true;
 }
@@ -269,7 +269,7 @@ bool ZombieStateController::TryTrack(std::shared_ptr<Zombie>& zombie)
 
 	if (!m_target_character) { return false; }
 
-	const auto is_in_sight = zombie->IsTargetInSight();
+	const auto is_in_sight = zombie->IsDetectedTarget();
 
 	return is_in_sight;
 }
@@ -278,7 +278,7 @@ bool ZombieStateController::TryRunAttack(std::shared_ptr<Zombie>& zombie)
 {
 	if (!m_target_character) { return false; }
 
-	const auto is_in_sight	= zombie->IsTargetInSight();
+	const auto is_in_sight	= zombie->IsDetectedTarget();
 	const auto can_attack	= zombie->CanAttack();
 
 	return is_in_sight && can_attack;
@@ -302,7 +302,7 @@ bool ZombieStateController::TryActionNullForcibly(std::shared_ptr<Zombie>& zombi
 
 bool ZombieStateController::TryDetected(std::shared_ptr<Zombie>& zombie)
 {
-	return zombie->IsTargetInSight() && !zombie->IsPrevTargetInSight();
+	return zombie->IsDetectedTarget() && !zombie->IsPrevDetectedTarget();
 }
 
 bool ZombieStateController::TryWalk(std::shared_ptr<Zombie>& zombie)
@@ -319,7 +319,7 @@ bool ZombieStateController::TryWalk(std::shared_ptr<Zombie>& zombie)
 
 bool ZombieStateController::TryRun(std::shared_ptr<Zombie>& zombie)
 {
-	if (!zombie->IsTargetInSight()) { return false; }
+	if (!zombie->IsDetectedTarget()) { return false; }
 	if (!m_target_character)		{ return false; }
 	if (m_move_state.at(TimeKind::kCurrent)->GetStateKind() != static_cast<int>(zombie_state::MoveStateKind::kMove)) { return false; }
 

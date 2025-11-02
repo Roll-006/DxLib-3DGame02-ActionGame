@@ -35,5 +35,5 @@
   "run_grab_speed": 110.0,
   "run_speed": 100.0,
   "walk_speed": 60.0,
-  "detected_notify_distance" : 500.0
+  "detected_notify_distance" : 400.0
 }

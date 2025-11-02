@@ -34,8 +34,8 @@ public:
 	#pragma region Getter
 	[[nodiscard]] int								GetEnemyHandle()			const { return enemy_handle; }
 	[[nodiscard]] std::shared_ptr<PatrolRouteGiver> GetPatrolRouteGiver()		const { return m_patrol_route_giver; }
-	[[nodiscard]] bool								IsTargetInSight()			const { return m_is_target_in_sight; }
-	[[nodiscard]] bool								IsPrevTargetInSight()		const { return m_is_prev_target_in_sight; }
+	[[nodiscard]] bool								IsDetectedTarget()			const { return m_is_detected_target; }
+	[[nodiscard]] bool								IsPrevDetectedTarget()		const { return m_is_prev_detected_target; }
 	[[nodiscard]] bool								CanAttack()					const { return m_attack_interval_timer <= 0.0f; }
 	[[nodiscard]] bool								CanAction()					const { return m_can_action; }
 	[[nodiscard]] float								GetDetecteNotifyDistance()	const { return detected_notify_distance; }
@@ -62,8 +62,9 @@ protected:
 
 	bool  m_on_collided_vision_trigger;
 	bool  m_has_obstacle_between_target;
-	bool  m_is_target_in_sight;
-	bool  m_is_prev_target_in_sight;
+	bool  m_is_detected_target;				// 発見状態
+	bool  m_is_prev_detected_target;		// 1フレーム前の発見状態
+	bool  m_is_detection_shared;			// 発見状態が共有された
 
 private:
 	friend void from_json(const nlohmann::json& data, EnemyBase& enemy_base);

@@ -1243,59 +1243,44 @@ VECTOR collision::PushBackCapsuleAndSquare  (const VECTOR& velocity, const Capsu
     return future_pos - dynamic_capsule.GetSegment().GetBeginPos();
 }
 
-//VECTOR collision::PushBackCapsuleAndSphere(const VECTOR& velocity, const Capsule& dynamic_capsule, const Sphere& static_sphere)
-//{
-//    // 未来のカプセルを取得
-//    Capsule future_capsule = dynamic_capsule;
-//    future_capsule.Move(velocity);
-//
-//    // 未来の座標と衝突しているかを判定
-//    if (!IsCollidedSphereAndCapsule(static_sphere, future_capsule))
-//    {
-//        return velocity;
-//    }
-//
-//    const auto begin            = future_capsule.GetSegment().GetBeginPos();
-//    const auto center           = static_sphere.GetPos();
-//    const auto begin_to_end     = future_capsule.GetSegment().GetEndPos() - begin;
-//    const auto begin_to_center  = center - begin;
-//
-//    // begin_to_endベクトルに対する最近点の割合
-//    auto t = VDot(begin, begin_to_end) / VDot(begin_to_end, begin_to_end);
-//    t = std::clamp(t, 0.0f, 1.0f);
-//
-//    // 球の中心とカプセル内線分との距離
-//    const auto closest_pos      = begin + t * begin_to_end;
-//    const auto distance_v       = closest_pos - center;
-//
-//    const auto squared_distance = VDot(distance_v, distance_v);
-//    const auto sum_radius       = dynamic_capsule.GetRadius() + static_sphere.GetRadius();
-//
-//    if (squared_distance < sum_radius * sum_radius)
-//    {
-//        const auto distance         = VSize(distance_v);
-//
-//        // めり込み量
-//        const auto penetration      = sum_radius - distance;
-//
-//        // めり込み方向
-//        const auto push_back_dir    = distance > math::kEpsilonLow ? distance_v * (1.0f / distance) : VGet(0.0f, 1.0f, 0.0f);
-//
-//        // めり込み量修正
-//        const auto push_back_dot    = VDot(velocity, push_back_dir);
-//        if (push_back_dot < 0.0f)
-//        {
-//            const auto correction = push_back_dir * push_back_dot;
-//            return velocity - correction;
-//        }
-//        else
-//        {
-//            return push_back_dir * penetration;
-//        }
-//    }
-//
-//    return velocity;
-//}
+VECTOR collision::PushBackCapsuleAndSphere(const VECTOR& velocity, const Capsule& dynamic_capsule, const Sphere& static_sphere)
+{
+    const auto segment          = dynamic_capsule.GetSegment();
+    const auto segment_axis     = segment.GetEndPos() - segment.GetBeginPos();
+    const auto squared_lenght   = segment.GetLength() * segment.GetLength();
+    const auto center_to_begin  = static_sphere.GetPos() - dynamic_capsule.GetSegment().GetBeginPos();
+
+    // カプセルの軸上での最近点のパラメータ t を計算 (0 ≤ t ≤ 1)
+    float t = 0.0f;
+    if (squared_lenght > 0.0f)
+    {
+        t = VDot(center_to_begin, segment_axis) / squared_lenght;
+        t = max(0.0f, min(1.0f, t)); // 0-1にクランプ
+    }
+
+    // カプセル軸上の最近点
+    const auto closest_pos = dynamic_capsule.GetSegment().GetBeginPos() + segment_axis * t;
+
+    // 最近点から球の中心へのベクトル
+    const auto delta    = static_sphere.GetPos() - closest_pos;
+    const auto distance = VSize(delta);
+
+    // 衝突判定用の半径の和
+    const auto radius_sum = dynamic_capsule.GetRadius() + static_sphere.GetRadius();
+
+    // 衝突していない場合は元の速度を返す
+    if (distance >= radius_sum) { return velocity; }
+
+    // めり込み量
+    const auto penetration = radius_sum - distance;
+
+    // 通常の押し戻し方向（球の中心からカプセルへ）
+    // 完全に重なっている場合は上方向に押し戻す
+    const auto push_dir = distance > math::kEpsilonLow ? delta * (-1.0f / distance) : VGet(0.0f, 1.0f, 0.0f);
+
+    // 既存の速度と押し戻し速度を合成して返す
+    return velocity + push_dir * penetration;
+}
 
 VECTOR collision::PushBackCapsuleAndCapsule(const VECTOR& velocity, const Capsule& dynamic_capsule, const Capsule& static_capsule)
 {
