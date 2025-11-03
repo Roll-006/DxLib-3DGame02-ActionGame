@@ -27,7 +27,7 @@ void TitleCharacterAnimator::Update()
 
 void TitleCharacterAnimator::LoadAnim()
 {
-	AddAnimHandle(static_cast<int>(TitleCharacterAnimKind::kIdle), AnimPath.ZOMBIE_IDLE_01, 0, AnimTag.NONE, 10.0f, true, true);
+	AddAnimHandle(static_cast<int>(TitleCharacterAnimKind::kIdle), ZombieAnimPath.ZOMBIE_IDLE_01, 0, AnimTag.NONE, 10.0f, true, true);
 }
 
 void TitleCharacterAnimator::ChangeAnim()

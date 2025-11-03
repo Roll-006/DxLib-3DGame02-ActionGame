@@ -160,7 +160,7 @@ void PlayScene::StartFadeIn()
 	if (!m_can_fade_in) { return; }
 
 	m_elapsed_time += GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kNoneScale);
-	if (m_elapsed_time > 15.0f)
+	if (m_elapsed_time > 20.0f)
 	{
 		const auto fader = SceneFader::GetInstance();
 		fader->StartFade(0, 120.0f);

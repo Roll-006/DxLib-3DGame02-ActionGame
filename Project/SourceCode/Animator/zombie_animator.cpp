@@ -30,28 +30,28 @@ void ZombieAnimator::Update()
 void ZombieAnimator::LoadAnim()
 {
 	// 汎用
-	AddAnimHandle(static_cast<int>(ZombieAnimKind::kIdle),							AnimPath.ZOMBIE_IDLE_01,				0, AnimTag.NONE, 20.0f,  true);
-	AddAnimHandle(static_cast<int>(ZombieAnimKind::kDetected),						AnimPath.SHOUT_ZOMBIE,					0, AnimTag.NONE, 50.0f,  false);
-	AddAnimHandle(static_cast<int>(ZombieAnimKind::kMoveForwardWalk),				AnimPath.MOVE_FORWARD_WALK,				0, AnimTag.MOVE, 55.0f,  true);
-	AddAnimHandle(static_cast<int>(ZombieAnimKind::kMoveForwardRun),				AnimPath.MOVE_FORWARD_RUN_02,			0, AnimTag.MOVE, 60.0f,  true);
-	AddAnimHandle(static_cast<int>(ZombieAnimKind::kEnterNeckBite),					AnimPath.ENTER_NECK_BITE,				0, AnimTag.NONE, 20.0f,  true, true);
-	AddAnimHandle(static_cast<int>(ZombieAnimKind::kEnterNeckBite),					AnimPath.EXIT_NECK_BITE,				0, AnimTag.NONE, 20.0f,  false);
-	AddAnimHandle(static_cast<int>(ZombieAnimKind::kStealthKilled),					AnimPath.DEAD_03,						0, AnimTag.NONE, 60.0f,  false);
-	AddAnimHandle(static_cast<int>(ZombieAnimKind::kDead),							AnimPath.DEAD_01,						0, AnimTag.NONE, 60.0f,  false);
-	AddAnimHandle(static_cast<int>(ZombieAnimKind::kCrouchDead),					AnimPath.CROUCH_DEAD,					0, AnimTag.NONE, 20.0f,  false);
-	AddAnimHandle(static_cast<int>(ZombieAnimKind::kFlyingKnockbackUp),				AnimPath.FLYING_KNOCKBACK_UP,			0, AnimTag.NONE, 35.0f,  false);
-	AddAnimHandle(static_cast<int>(ZombieAnimKind::kFlyingKnockbackDown),			AnimPath.FLYING_KNOCKBACK_DOWN,			0, AnimTag.NONE, 35.0f,	 false);
-	AddAnimHandle(static_cast<int>(ZombieAnimKind::kBackwardKnockback),				AnimPath.BACKWARD_KNOCKBACK,			0, AnimTag.NONE, 30.0f,	 false);
-	AddAnimHandle(static_cast<int>(ZombieAnimKind::kStandUp),						AnimPath.STAND_UP_ZOMBIE_01,			0, AnimTag.NONE, 35.0f,  false);
-	AddAnimHandle(static_cast<int>(ZombieAnimKind::kStandUpkStandUpStealthKill),	AnimPath.STAND_UP_ZOMBIE_02,			0, AnimTag.NONE, 35.0f,  false);
+	AddAnimHandle(static_cast<int>(ZombieAnimKind::kIdle),							ZombieAnimPath.ZOMBIE_IDLE_01,				0, AnimTag.NONE, 20.0f,  true);
+	AddAnimHandle(static_cast<int>(ZombieAnimKind::kDetected),						ZombieAnimPath.SHOUT_ZOMBIE,				0, AnimTag.NONE, 50.0f,  false);
+	AddAnimHandle(static_cast<int>(ZombieAnimKind::kMoveForwardWalk),				ZombieAnimPath.MOVE_FORWARD_WALK,			0, AnimTag.MOVE, 55.0f,  true);
+	AddAnimHandle(static_cast<int>(ZombieAnimKind::kMoveForwardRun),				ZombieAnimPath.MOVE_FORWARD_RUN_02,			0, AnimTag.MOVE, 60.0f,  true);
+	AddAnimHandle(static_cast<int>(ZombieAnimKind::kEnterNeckBite),					ZombieAnimPath.ENTER_NECK_BITE,				0, AnimTag.NONE, 20.0f,  true, true);
+	AddAnimHandle(static_cast<int>(ZombieAnimKind::kEnterNeckBite),					ZombieAnimPath.EXIT_NECK_BITE,				0, AnimTag.NONE, 20.0f,  false);
+	AddAnimHandle(static_cast<int>(ZombieAnimKind::kStealthKilled),					ZombieAnimPath.DEAD_03,						0, AnimTag.NONE, 60.0f,  false);
+	AddAnimHandle(static_cast<int>(ZombieAnimKind::kDead),							ZombieAnimPath.DEAD_01,						0, AnimTag.NONE, 60.0f,  false);
+	AddAnimHandle(static_cast<int>(ZombieAnimKind::kCrouchDead),					ZombieAnimPath.CROUCH_DEAD,					0, AnimTag.NONE, 20.0f,  false);
+	AddAnimHandle(static_cast<int>(ZombieAnimKind::kFlyingKnockbackUp),				ZombieAnimPath.FLYING_KNOCKBACK_UP,			0, AnimTag.NONE, 35.0f,  false);
+	AddAnimHandle(static_cast<int>(ZombieAnimKind::kFlyingKnockbackDown),			ZombieAnimPath.FLYING_KNOCKBACK_DOWN,		0, AnimTag.NONE, 35.0f,	 false);
+	AddAnimHandle(static_cast<int>(ZombieAnimKind::kBackwardKnockback),				ZombieAnimPath.BACKWARD_KNOCKBACK,			0, AnimTag.NONE, 30.0f,	 false);
+	AddAnimHandle(static_cast<int>(ZombieAnimKind::kStandUp),						ZombieAnimPath.STAND_UP_ZOMBIE_01,			0, AnimTag.NONE, 35.0f,  false);
+	AddAnimHandle(static_cast<int>(ZombieAnimKind::kStandUpkStandUpStealthKill),	ZombieAnimPath.STAND_UP_ZOMBIE_02,			0, AnimTag.NONE, 35.0f,  false);
 
 	// 上半身用
-	AddAnimHandle(static_cast<int>(ZombieAnimKind::kGrab),							AnimPath.GRAB,							0, AnimTag.NONE, 10.0f,  true);
-	AddAnimHandle(static_cast<int>(ZombieAnimKind::kStandStun),						AnimPath.STAND_STUN,					0, AnimTag.NONE, 2.0f,   true);
+	AddAnimHandle(static_cast<int>(ZombieAnimKind::kGrab),							ZombieAnimPath.GRAB,						0, AnimTag.NONE, 10.0f,  true);
+	AddAnimHandle(static_cast<int>(ZombieAnimKind::kStandStun),						ZombieAnimPath.STAND_STUN,					0, AnimTag.NONE, 2.0f,   true);
 
 	// 下半身用
-	AddAnimHandle(static_cast<int>(ZombieAnimKind::kCrouchLeftStun),				AnimPath.LEANING_FORWARD_CROUCH_LEFT,	0, AnimTag.MOVE, 0.0f,   true);
-	AddAnimHandle(static_cast<int>(ZombieAnimKind::kCrouchRightStun),				AnimPath.LEANING_FORWARD_CROUCH_RIGHT,	0, AnimTag.MOVE, 0.0f,   true);
+	AddAnimHandle(static_cast<int>(ZombieAnimKind::kCrouchLeftStun),				ZombieAnimPath.LEANING_FORWARD_CROUCH_LEFT,	0, AnimTag.MOVE, 0.0f,   true);
+	AddAnimHandle(static_cast<int>(ZombieAnimKind::kCrouchRightStun),				ZombieAnimPath.LEANING_FORWARD_CROUCH_RIGHT,0, AnimTag.MOVE, 0.0f,   true);
 }
 
 void ZombieAnimator::ChangeAnim()

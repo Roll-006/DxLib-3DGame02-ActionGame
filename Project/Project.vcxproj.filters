@@ -1791,6 +1791,9 @@
     <ClInclude Include="SourceCode\Animator\boss_animator.hpp">
       <Filter>SourceCode\Animator</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\Event\dead_boss_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="SourceCode">

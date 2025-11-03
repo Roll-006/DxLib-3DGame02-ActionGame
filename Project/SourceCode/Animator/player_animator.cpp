@@ -48,65 +48,65 @@ void PlayerAnimator::ActivateNearDeathAnimation(const NearDeathEvent& event)
 void PlayerAnimator::LoadAnim()
 {
 	// 汎用
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdle),						AnimPath.IDLE,							0, AnimTag.NONE, 50.0f,  true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdleInjured),				AnimPath.IDLE_INJURED,					0, AnimTag.NONE, 50.0f,  true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kDead),						AnimPath.DEAD_02,						0, AnimTag.NONE, 50.0f,  false);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdle),						SWATAnimPath.IDLE,							0, AnimTag.NONE, 50.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdleInjured),				SWATAnimPath.IDLE_INJURED,					0, AnimTag.NONE, 50.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kDead),						SWATAnimPath.DEAD_02,						0, AnimTag.NONE, 50.0f,  false);
 
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kGrabbed),					AnimPath.GRABBED,						0, AnimTag.NONE, 30.0f,  true,  true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kFrontKick),					AnimPath.FRONT_KICK,					0, AnimTag.NONE, 80.0f,  false);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kRoundhouseKick),			AnimPath.ROUNDHOUSE_KICK,				0, AnimTag.NONE, 80.0f,  false);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kEscapeKick),				AnimPath.ESCAPE_KICK,					0, AnimTag.NONE, 80.0f,  false);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kGrabbed),					SWATAnimPath.GRABBED,						0, AnimTag.NONE, 30.0f,  true,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kFrontKick),					SWATAnimPath.FRONT_KICK,					0, AnimTag.NONE, 80.0f,  false);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kRoundhouseKick),			SWATAnimPath.ROUNDHOUSE_KICK,				0, AnimTag.NONE, 80.0f,  false);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kEscapeKick),				SWATAnimPath.ESCAPE_KICK,					0, AnimTag.NONE, 80.0f,  false);
 
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kStabKnife),					AnimPath.STAB_KNIFE,					0, AnimTag.NONE, 100.0f, false);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kFirstSideSlashKnife),		AnimPath.FIRST_SIDE_SLASH_KNIFE,		0, AnimTag.NONE, 50.0f,  false);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kSecondSideSlashKnife),		AnimPath.SECOND_SIDE_SLASH_KNIFE,		0, AnimTag.NONE, 75.0f,  false);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kSpinningSlashKnife),		AnimPath.SPINNING_SLASH_KNIFE,			0, AnimTag.NONE, 50.0f,  false);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kStealthKill),				AnimPath.STEALTH_KILL,					0, AnimTag.NONE, 60.0f,  false);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kStabKnife),					SWATAnimPath.STAB_KNIFE,					0, AnimTag.NONE, 100.0f, false);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kFirstSideSlashKnife),		SWATAnimPath.FIRST_SIDE_SLASH_KNIFE,		0, AnimTag.NONE, 50.0f,  false);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kSecondSideSlashKnife),		SWATAnimPath.SECOND_SIDE_SLASH_KNIFE,		0, AnimTag.NONE, 75.0f,  false);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kSpinningSlashKnife),		SWATAnimPath.SPINNING_SLASH_KNIFE,			0, AnimTag.NONE, 50.0f,  false);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kStealthKill),				SWATAnimPath.STEALTH_KILL,					0, AnimTag.NONE, 60.0f,  false);
 
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardRun),			AnimPath.MOVE_FORWARD_RUN_01,			0, AnimTag.MOVE, 50.0f,  true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardRunInjured),		AnimPath.MOVE_FORWARD_RUN_INJURED,		0, AnimTag.MOVE, 50.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardRun),			SWATAnimPath.MOVE_FORWARD_RUN_01,			0, AnimTag.MOVE, 50.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardRunInjured),		SWATAnimPath.MOVE_FORWARD_RUN_INJURED,		0, AnimTag.MOVE, 50.0f,  true);
 
 	// 上半身用
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kAttachRifle),				AnimPath.ATTACH_RIFLE,					0, AnimTag.NONE, 20.0f,  false);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kDetachRifle),				AnimPath.DETACH_RIFLE,					0, AnimTag.NONE, 20.0f,  false);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kAttachHandgun),				AnimPath.ATTACH_HANDGUN,				0, AnimTag.NONE, 20.0f,  false);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kDetachHandgun),				AnimPath.DETACH_HANDGUN,				0, AnimTag.NONE, 20.0f,  false);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kEquipKnife),				AnimPath.EQUIP_KNIFE,					0, AnimTag.NONE, 20.0f,  true,  true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kAimKnife),					AnimPath.AIM_KNIFE,						0, AnimTag.NONE, 20.0f,  true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kParry),						AnimPath.PARRY,							0, AnimTag.NONE, 20.0f,  false);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kEquipGun),					AnimPath.EQUIP_GUN,						0, AnimTag.NONE, 20.0f,  true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kAimGun),					AnimPath.AIM_GUN,						0, AnimTag.NONE, 20.0f,  true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kReload),					AnimPath.RELOAD,						0, AnimTag.NONE, 100.0f, false);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kAttachRifle),				SWATAnimPath.ATTACH_RIFLE,					0, AnimTag.NONE, 20.0f,  false);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kDetachRifle),				SWATAnimPath.DETACH_RIFLE,					0, AnimTag.NONE, 20.0f,  false);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kAttachHandgun),				SWATAnimPath.ATTACH_HANDGUN,				0, AnimTag.NONE, 20.0f,  false);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kDetachHandgun),				SWATAnimPath.DETACH_HANDGUN,				0, AnimTag.NONE, 20.0f,  false);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kEquipKnife),				SWATAnimPath.EQUIP_KNIFE,					0, AnimTag.NONE, 20.0f,  true,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kAimKnife),					SWATAnimPath.AIM_KNIFE,						0, AnimTag.NONE, 20.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kParry),						SWATAnimPath.PARRY,							0, AnimTag.NONE, 20.0f,  false);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kEquipGun),					SWATAnimPath.EQUIP_GUN,						0, AnimTag.NONE, 20.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kAimGun),					SWATAnimPath.AIM_GUN,						0, AnimTag.NONE, 20.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kReload),					SWATAnimPath.RELOAD,						0, AnimTag.NONE, 100.0f, false);
 
 	// 下半身用
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kCrouch),					AnimPath.CROUCH,						0, AnimTag.NONE, 20.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kCrouch),					SWATAnimPath.CROUCH,						0, AnimTag.NONE, 20.0f,  true);
 
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForward),				AnimPath.MOVE_FORWARD,					0, AnimTag.MOVE, 55.0f,  true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveBackward),				AnimPath.MOVE_BACKWARD,					0, AnimTag.MOVE, 55.0f,  true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveLeft),					AnimPath.MOVE_LEFT,						0, AnimTag.MOVE, 55.0f,  true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveRight),					AnimPath.MOVE_RIGHT,					0, AnimTag.MOVE, 55.0f,  true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardLeft),			AnimPath.MOVE_FORWARD_LEFT,				0, AnimTag.MOVE, 55.0f,  true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardRight),			AnimPath.MOVE_FORWARD_RIGHT,			0, AnimTag.MOVE, 55.0f,  true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveBackwardLeft),			AnimPath.MOVE_BACKWARD_LEFT,			0, AnimTag.MOVE, 55.0f,  true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveBackwardRight),			AnimPath.MOVE_BACKWARD_RIGHT,			0, AnimTag.MOVE, 55.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForward),				SWATAnimPath.MOVE_FORWARD,					0, AnimTag.MOVE, 55.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveBackward),				SWATAnimPath.MOVE_BACKWARD,					0, AnimTag.MOVE, 55.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveLeft),					SWATAnimPath.MOVE_LEFT,						0, AnimTag.MOVE, 55.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveRight),					SWATAnimPath.MOVE_RIGHT,					0, AnimTag.MOVE, 55.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardLeft),			SWATAnimPath.MOVE_FORWARD_LEFT,				0, AnimTag.MOVE, 55.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardRight),			SWATAnimPath.MOVE_FORWARD_RIGHT,			0, AnimTag.MOVE, 55.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveBackwardLeft),			SWATAnimPath.MOVE_BACKWARD_LEFT,			0, AnimTag.MOVE, 55.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveBackwardRight),			SWATAnimPath.MOVE_BACKWARD_RIGHT,			0, AnimTag.MOVE, 55.0f,  true);
 	
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardInjured),		AnimPath.MOVE_FORWARD_INJURED,			0, AnimTag.MOVE, 50.0f,  true, true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveBackwardInjured),		AnimPath.MOVE_BACKWARD_INJURED,			0, AnimTag.MOVE, 50.0f,  true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveLeftInjured),			AnimPath.MOVE_LEFT_INJURED,				0, AnimTag.MOVE, 30.0f,  true, true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveRightInjured),			AnimPath.MOVE_RIGHT_INJURED,			0, AnimTag.MOVE, 50.0f,  true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardLeftInjured),	AnimPath.MOVE_FORWARD_LEFT_INJURED,		0, AnimTag.MOVE, 50.0f,  true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardRightInjured),	AnimPath.MOVE_FORWARD_RIGHT_INJURED,	0, AnimTag.MOVE, 50.0f,  true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveBackwardLeftInjured),	AnimPath.MOVE_BACKWARD_LEFT_INJURED,	0, AnimTag.MOVE, 30.0f,  true, true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveBackwardRightInjured),	AnimPath.MOVE_BACKWARD_RIGHT_INJURED,	0, AnimTag.MOVE, 50.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardInjured),		SWATAnimPath.MOVE_FORWARD_INJURED,			0, AnimTag.MOVE, 50.0f,  true, true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveBackwardInjured),		SWATAnimPath.MOVE_BACKWARD_INJURED,			0, AnimTag.MOVE, 50.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveLeftInjured),			SWATAnimPath.MOVE_LEFT_INJURED,				0, AnimTag.MOVE, 30.0f,  true, true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveRightInjured),			SWATAnimPath.MOVE_RIGHT_INJURED,			0, AnimTag.MOVE, 50.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardLeftInjured),	SWATAnimPath.MOVE_FORWARD_LEFT_INJURED,		0, AnimTag.MOVE, 50.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardRightInjured),	SWATAnimPath.MOVE_FORWARD_RIGHT_INJURED,	0, AnimTag.MOVE, 50.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveBackwardLeftInjured),	SWATAnimPath.MOVE_BACKWARD_LEFT_INJURED,	0, AnimTag.MOVE, 30.0f,  true, true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveBackwardRightInjured),	SWATAnimPath.MOVE_BACKWARD_RIGHT_INJURED,	0, AnimTag.MOVE, 50.0f,  true);
 
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardCrouch),			AnimPath.MOVE_FORWARD_CROUCH,			0, AnimTag.MOVE, 50.0f,  true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveBackwardCrouch),		AnimPath.MOVE_BACKWARD_CROUCH,			0, AnimTag.MOVE, 50.0f,  true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveLeftCrouch),			AnimPath.MOVE_LEFT_CROUCH,				0, AnimTag.MOVE, 50.0f,  true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveRightCrouch),			AnimPath.MOVE_RIGHT_CROUCH,				0, AnimTag.MOVE, 50.0f,  true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardLeftCrouch),		AnimPath.MOVE_FORWARD_LEFT_CROUCH,		0, AnimTag.MOVE, 50.0f,  true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardRightCrouch),	AnimPath.MOVE_FORWARD_RIGHT_CROUCH,		0, AnimTag.MOVE, 50.0f,  true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveBackwardLeftCrouch),	AnimPath.MOVE_BACKWARD_LEFT_CROUCH,		0, AnimTag.MOVE, 50.0f,  true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveBackwardRightCrouch),	AnimPath.MOVE_BACKWARD_RIGHT_CROUCH,	0, AnimTag.MOVE, 50.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardCrouch),			SWATAnimPath.MOVE_FORWARD_CROUCH,			0, AnimTag.MOVE, 50.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveBackwardCrouch),		SWATAnimPath.MOVE_BACKWARD_CROUCH,			0, AnimTag.MOVE, 50.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveLeftCrouch),			SWATAnimPath.MOVE_LEFT_CROUCH,				0, AnimTag.MOVE, 50.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveRightCrouch),			SWATAnimPath.MOVE_RIGHT_CROUCH,				0, AnimTag.MOVE, 50.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardLeftCrouch),		SWATAnimPath.MOVE_FORWARD_LEFT_CROUCH,		0, AnimTag.MOVE, 50.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardRightCrouch),	SWATAnimPath.MOVE_FORWARD_RIGHT_CROUCH,		0, AnimTag.MOVE, 50.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveBackwardLeftCrouch),	SWATAnimPath.MOVE_BACKWARD_LEFT_CROUCH,		0, AnimTag.MOVE, 50.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveBackwardRightCrouch),	SWATAnimPath.MOVE_BACKWARD_RIGHT_CROUCH,	0, AnimTag.MOVE, 50.0f,  true);
 }
 
 void PlayerAnimator::ChangeAnim()

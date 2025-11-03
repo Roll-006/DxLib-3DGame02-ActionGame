@@ -30,28 +30,28 @@ void BossAnimator::Update()
 void BossAnimator::LoadAnim()
 {
 	// 汎用
-	AddAnimHandle(static_cast<int>(BossAnimKind::kIdle),							AnimPath.ZOMBIE_IDLE_01,				0, AnimTag.NONE, 20.0f,  true);
-	AddAnimHandle(static_cast<int>(BossAnimKind::kDetected),						AnimPath.SHOUT_ZOMBIE,					0, AnimTag.NONE, 50.0f,  false);
-	AddAnimHandle(static_cast<int>(BossAnimKind::kMoveForwardWalk),				AnimPath.MOVE_FORWARD_WALK,				0, AnimTag.MOVE, 55.0f,  true);
-	AddAnimHandle(static_cast<int>(BossAnimKind::kMoveForwardRun),				AnimPath.MOVE_FORWARD_RUN_02,			0, AnimTag.MOVE, 60.0f,  true);
-	AddAnimHandle(static_cast<int>(BossAnimKind::kEnterNeckBite),					AnimPath.ENTER_NECK_BITE,				0, AnimTag.NONE, 20.0f,  true, true);
-	AddAnimHandle(static_cast<int>(BossAnimKind::kEnterNeckBite),					AnimPath.EXIT_NECK_BITE,				0, AnimTag.NONE, 20.0f,  false);
-	AddAnimHandle(static_cast<int>(BossAnimKind::kStealthKilled),					AnimPath.DEAD_03,						0, AnimTag.NONE, 60.0f,  false);
-	AddAnimHandle(static_cast<int>(BossAnimKind::kDead),							AnimPath.DEAD_01,						0, AnimTag.NONE, 60.0f,  false);
-	AddAnimHandle(static_cast<int>(BossAnimKind::kCrouchDead),					AnimPath.CROUCH_DEAD,					0, AnimTag.NONE, 20.0f,  false);
-	AddAnimHandle(static_cast<int>(BossAnimKind::kFlyingKnockbackUp),				AnimPath.FLYING_KNOCKBACK_UP,			0, AnimTag.NONE, 35.0f,  false);
-	AddAnimHandle(static_cast<int>(BossAnimKind::kFlyingKnockbackDown),			AnimPath.FLYING_KNOCKBACK_DOWN,			0, AnimTag.NONE, 35.0f,	 false);
-	AddAnimHandle(static_cast<int>(BossAnimKind::kBackwardKnockback),				AnimPath.BACKWARD_KNOCKBACK,			0, AnimTag.NONE, 30.0f,	 false);
-	AddAnimHandle(static_cast<int>(BossAnimKind::kStandUp),						AnimPath.STAND_UP_ZOMBIE_01,			0, AnimTag.NONE, 35.0f,  false);
-	AddAnimHandle(static_cast<int>(BossAnimKind::kStandUpkStandUpStealthKill),	AnimPath.STAND_UP_ZOMBIE_02,			0, AnimTag.NONE, 35.0f,  false);
+	AddAnimHandle(static_cast<int>(BossAnimKind::kIdle),						BossAnimPath.ZOMBIE_IDLE_01,				0, AnimTag.NONE, 20.0f,  true);
+	AddAnimHandle(static_cast<int>(BossAnimKind::kDetected),					BossAnimPath.SHOUT_ZOMBIE,					0, AnimTag.NONE, 50.0f,  false);
+	AddAnimHandle(static_cast<int>(BossAnimKind::kMoveForwardWalk),				BossAnimPath.MOVE_FORWARD_WALK,				0, AnimTag.MOVE, 55.0f,  true);
+	AddAnimHandle(static_cast<int>(BossAnimKind::kMoveForwardRun),				BossAnimPath.MOVE_FORWARD_RUN_02,			0, AnimTag.MOVE, 60.0f,  true);
+	AddAnimHandle(static_cast<int>(BossAnimKind::kEnterNeckBite),				BossAnimPath.ENTER_NECK_BITE,				0, AnimTag.NONE, 20.0f,  true, true);
+	AddAnimHandle(static_cast<int>(BossAnimKind::kEnterNeckBite),				BossAnimPath.EXIT_NECK_BITE,				0, AnimTag.NONE, 20.0f,  false);
+	AddAnimHandle(static_cast<int>(BossAnimKind::kStealthKilled),				BossAnimPath.DEAD_03,						0, AnimTag.NONE, 60.0f,  false);
+	AddAnimHandle(static_cast<int>(BossAnimKind::kDead),						BossAnimPath.DEAD_01,						0, AnimTag.NONE, 60.0f,  false);
+	AddAnimHandle(static_cast<int>(BossAnimKind::kCrouchDead),					BossAnimPath.CROUCH_DEAD,					0, AnimTag.NONE, 20.0f,  false);
+	AddAnimHandle(static_cast<int>(BossAnimKind::kFlyingKnockbackUp),			BossAnimPath.FLYING_KNOCKBACK_UP,			0, AnimTag.NONE, 35.0f,  false);
+	AddAnimHandle(static_cast<int>(BossAnimKind::kFlyingKnockbackDown),			BossAnimPath.FLYING_KNOCKBACK_DOWN,			0, AnimTag.NONE, 35.0f,	 false);
+	AddAnimHandle(static_cast<int>(BossAnimKind::kBackwardKnockback),			BossAnimPath.BACKWARD_KNOCKBACK,			0, AnimTag.NONE, 30.0f,	 false);
+	AddAnimHandle(static_cast<int>(BossAnimKind::kStandUp),						BossAnimPath.STAND_UP_ZOMBIE_01,			0, AnimTag.NONE, 35.0f,  false);
+	AddAnimHandle(static_cast<int>(BossAnimKind::kStandUpkStandUpStealthKill),	BossAnimPath.STAND_UP_ZOMBIE_02,			0, AnimTag.NONE, 35.0f,  false);
 
 	// 上半身用
-	AddAnimHandle(static_cast<int>(BossAnimKind::kGrab),							AnimPath.GRAB,							0, AnimTag.NONE, 10.0f,  true);
-	AddAnimHandle(static_cast<int>(BossAnimKind::kStandStun),						AnimPath.STAND_STUN,					0, AnimTag.NONE, 2.0f,   true);
+	AddAnimHandle(static_cast<int>(BossAnimKind::kGrab),						BossAnimPath.GRAB,							0, AnimTag.NONE, 10.0f,  true);
+	AddAnimHandle(static_cast<int>(BossAnimKind::kStandStun),					BossAnimPath.STAND_STUN,					0, AnimTag.NONE, 2.0f,   true);
 
 	// 下半身用
-	AddAnimHandle(static_cast<int>(BossAnimKind::kCrouchLeftStun),				AnimPath.LEANING_FORWARD_CROUCH_LEFT,	0, AnimTag.MOVE, 0.0f,   true);
-	AddAnimHandle(static_cast<int>(BossAnimKind::kCrouchRightStun),				AnimPath.LEANING_FORWARD_CROUCH_RIGHT,	0, AnimTag.MOVE, 0.0f,   true);
+	AddAnimHandle(static_cast<int>(BossAnimKind::kCrouchLeftStun),				BossAnimPath.LEANING_FORWARD_CROUCH_LEFT,	0, AnimTag.MOVE, 0.0f,   true);
+	AddAnimHandle(static_cast<int>(BossAnimKind::kCrouchRightStun),				BossAnimPath.LEANING_FORWARD_CROUCH_RIGHT,	0, AnimTag.MOVE, 0.0f,   true);
 }
 
 void BossAnimator::ChangeAnim()

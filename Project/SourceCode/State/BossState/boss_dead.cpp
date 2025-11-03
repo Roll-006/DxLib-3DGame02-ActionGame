@@ -69,6 +69,9 @@ void boss_state::Dead::Enter(std::shared_ptr<Boss>& obj)
 	m_current_material			= MaterialData();
 
 	obj->RemoveCollider(ColliderKind::kCollider);
+
+	const DeadBossEvent event{ obj->GetModeler()->GetModelHandle() };
+	EventSystem::GetInstance()->Publish(event);
 }
 
 void boss_state::Dead::Exit(std::shared_ptr<Boss>& obj)
