@@ -1,8 +1,9 @@
 #pragma once
+#include <string>
 
 /// @brief Žè‚ð—£‚µ‚½
 struct ReleaseEvent
 {
-	int enemy_handle	= -1;
-	int obj_handle		= -1;
+	std::string enemy_handle	= "";
+	int			obj_handle		= -1;
 };

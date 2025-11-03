@@ -30,6 +30,7 @@ GameTimeManager::GameTimeManager() :
 GameTimeManager::~GameTimeManager()
 {
 
+
 }
 
 void GameTimeManager::Update()

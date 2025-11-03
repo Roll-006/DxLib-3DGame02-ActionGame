@@ -25,7 +25,7 @@ void zombie_state::StealthKilled::LateUpdate(std::shared_ptr<Zombie>& obj)
 void zombie_state::StealthKilled::Enter(std::shared_ptr<Zombie>& obj)
 {
 	// ’Í‚Ü‚ê‚½‚±‚Æ‚ð‰‰oƒJƒƒ‰‚É’Ê’m
-	const OnStealthKillEvent event{ obj->GetEnemyHandle(), obj->GetModeler() };
+	const OnStealthKillEvent event{ obj->GetEnemyID(), obj->GetModeler() };
 	EventSystem::GetInstance()->Publish(event);
 }
 

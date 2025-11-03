@@ -1,17 +1,29 @@
 #pragma once
-#include "house.hpp"
+#include "../Base/obj_base.hpp"
+#include "../Part/modeler.hpp"
+#include "../Manager/obj_manager.hpp"
 
-class Houses final
+class Houses final : public ObjBase
 {
 public:
 	Houses();
-	~Houses();
+	~Houses() override;
 
-	void Init();
-	void Update();
-	void LateUpdate();
-	void Draw() const;
+	void Init()						override;
+	void Update()					override;
+	void LateUpdate()				override;
+	void Draw()				const	override;
+
+	void AddToObjManager()			override;
+	void RemoveToObjManager()		override;
+
+	[[nodiscard]] float	GetDeltaTime() const override;
+	[[nodiscard]] std::shared_ptr<Modeler> GetModeler() const { return m_modeler; }
 
 private:
-	std::vector<std::shared_ptr<House>> m_houses;
+	std::shared_ptr<Modeler> m_modeler;
+
+	static constexpr VECTOR kBasicAngle = { 0.0f, 0.0f, 0.0f };
+	static constexpr float  kBasicScale = 50.0f;
+	static constexpr VECTOR kPos		= { 0.0f, 200.0f, 0.0f };
 };

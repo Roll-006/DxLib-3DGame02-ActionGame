@@ -35,6 +35,8 @@ GameManager::GameManager():
 
 GameManager::~GameManager()
 {	
+	m_scene_manager = nullptr;
+
 	// ƒCƒxƒ“ƒg‚Ì“o˜^‰ðœ
 	EventSystem::GetInstance()->Unsubscribe<ExitGameEvent>(this, &GameManager::ExitGame);
 
@@ -43,21 +45,22 @@ GameManager::~GameManager()
 	CommandHandler			::Delete();
 	InputChecker			::Delete();
 	Debugger				::Delete();
-	EventSystem				::Delete();
-	ObjectPoolHolder		::Delete();
 	UIDrawer				::Delete();
-	TabDrawer				::Delete();
 	FontHandler				::Delete();
-	LightHolder				::Delete();
 	SceneFader				::Delete();
 
 	GameTimeManager			::Delete();
-	ObjManager				::Delete();
 	CollisionManager		::Delete();
 	PhysicsManager			::Delete();
-	CinemachineBrain		::Delete();
-	EffectManager			::Delete();
 	RifleCartridgeManager	::Delete();
+
+	CinemachineBrain		::Delete();
+	TabDrawer				::Delete();
+	LightHolder				::Delete();
+	EffectManager			::Delete();
+	ObjectPoolHolder		::Delete();
+	ObjManager				::Delete();
+	EventSystem				::Delete();
 }
 
 void GameManager::Run()

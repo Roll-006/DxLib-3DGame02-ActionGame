@@ -21,12 +21,14 @@ static struct ObjName
 	#pragma region キャラクター
 	const std::string PLAYER									= "player";
 	const std::string ZOMBIE									= "zombie";
+	const std::string BOSS										= "boss";
 	const std::string TITLE_CHARACTER							= "title_character";
 	#pragma endregion
 
 
 	#pragma region 建物
 	const std::string HOUSE										= "house";
+	const std::string HOUSES									= "houses";
 	const std::string GROUND									= "ground";
 	const std::string TREES										= "trees";
 	#pragma endregion

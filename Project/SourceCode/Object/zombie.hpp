@@ -5,14 +5,14 @@
 #include "../Interface/i_stealth_killable.hpp"
 
 #include "../Animator/zombie_animator.hpp"
-#include "../Data/zombie_collider_data.hpp"
+#include "../Data/humanoid_enemy_collider_data.hpp"
 
 class ZombieStateController;
 
 class Zombie final : public EnemyBase, public IMeleeHittable, public IGrabber, public IStealthKillable
 {
 public:
-	Zombie(const std::string& enemy_id);
+	Zombie(const std::string& id);
 	~Zombie() override;
 
 	void Init()						override;
@@ -90,7 +90,7 @@ private:
 	float  move_dir_offset_speed;
 	float  look_dir_offset_speed;
 
-	ZombieColliderData collider_data;
+	HumanoidEnemyColliderData collider_data;
 
 	float  damage_over_time_start_time;
 

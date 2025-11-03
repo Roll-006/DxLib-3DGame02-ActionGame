@@ -14,7 +14,7 @@ EnemyBase::EnemyBase(const std::string& name) :
 	m_is_detected_target			(false),
 	m_is_prev_detected_target		(false),
 	m_is_detection_shared			(false),
-	enemy_handle					(-1)
+	enemy_id						("")
 {
 
 }

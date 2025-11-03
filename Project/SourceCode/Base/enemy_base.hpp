@@ -32,7 +32,7 @@ public:
 
 
 	#pragma region Getter
-	[[nodiscard]] int								GetEnemyHandle()			const { return enemy_handle; }
+	[[nodiscard]] std::string						GetEnemyID()				const { return enemy_id; }
 	[[nodiscard]] std::shared_ptr<PatrolRouteGiver> GetPatrolRouteGiver()		const { return m_patrol_route_giver; }
 	[[nodiscard]] bool								IsDetectedTarget()			const { return m_is_detected_target; }
 	[[nodiscard]] bool								IsPrevDetectedTarget()		const { return m_is_prev_detected_target; }
@@ -46,7 +46,7 @@ protected:
 	void JudgeTargetInSight();
 
 protected:
-	int									enemy_handle;
+	std::string							enemy_id;
 	bool								use_patrol;
 	std::string							route_id;
 	PatrolRouteGiver::PatrolKind		patrol_kind;

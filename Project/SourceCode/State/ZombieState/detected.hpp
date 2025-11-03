@@ -6,7 +6,7 @@
 
 namespace zombie_state
 {
-	class Detected final : public MoveStateBase<Zombie>
+	class Detected final : public ActionStateBase<Zombie>
 	{
 	public:
 		Detected();

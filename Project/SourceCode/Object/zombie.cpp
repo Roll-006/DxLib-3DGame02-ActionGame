@@ -2,7 +2,7 @@
 #include "player.hpp"
 #include "../Part/zombie_state_controller.hpp"
 
-Zombie::Zombie(const std::string& enemy_id) :
+Zombie::Zombie(const std::string& id) :
 	EnemyBase				(ObjName.ZOMBIE),
 	m_state					(std::make_shared<ZombieStateController>()),
 	m_can_grab_target		(false),
@@ -10,7 +10,7 @@ Zombie::Zombie(const std::string& enemy_id) :
 	m_is_allow_stealth_kill	(true),
 	m_on_stealth_kill		(false)
 {
-	enemy_handle = stoi(enemy_id);
+	enemy_id = id;
 
 	JSONLoader json_loader;
 	nlohmann::json data;
@@ -364,7 +364,7 @@ void Zombie::Grab()
 	m_is_target_escaped = false;
 
 	// 掴んだことを演出カメラに通知
-	const GrabEvent event{ GetEnemyHandle(), GetObjHandle(), m_modeler };
+	const GrabEvent event{ GetEnemyID(), GetObjHandle(), m_modeler };
 	EventSystem::GetInstance()->Publish(event);
 
 	// プレイヤーの掴まれた関数を呼び出す
@@ -380,7 +380,7 @@ void Zombie::Grab()
 void Zombie::Release()
 {
 	// 離したことを演出カメラに通知
-	const ReleaseEvent event{ GetEnemyHandle(), GetObjHandle() };
+	const ReleaseEvent event{ GetEnemyID(), GetObjHandle() };
 	EventSystem::GetInstance()->Publish(event);
 
 	std::static_pointer_cast<Player>(m_state->GetTargetCharacter())->OnRelease();

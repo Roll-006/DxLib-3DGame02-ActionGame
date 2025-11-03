@@ -1,7 +1,7 @@
 #pragma once
 #include <cassert>
 
-/// @brief インスタンスの生成が1つに制限する基底クラス
+/// @brief インスタンスが1つに制限される基底クラス
 template<typename T>
 class SingleInstanceBase abstract
 {
@@ -11,17 +11,15 @@ public:
 		assert(m_instance == nullptr);
 		m_instance = static_cast<T*>(this);
 	}
-	
-	~SingleInstanceBase()
+
+	virtual ~SingleInstanceBase()
 	{
-		if (m_instance != nullptr)
-		{
-			delete m_instance;
-			m_instance = nullptr;
-		}
+		m_instance = nullptr;
 	}
 
-private:
+	static T* GetInstance() { return m_instance; }
+
+protected:
 	static T* m_instance;
 };
 

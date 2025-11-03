@@ -41,7 +41,7 @@ void Graphicer::Draw(const bool is_draw_graphic_frame) const
 	{
 		SetDrawBlendMode(m_blend_mode, m_blend_num);
 
-		DrawRotaGraph3(
+		DrawRotaGraphFast3(
 			m_center_pos.x,
 			m_center_pos.y,
 			static_cast<int>(m_origin_width * 0.5f),

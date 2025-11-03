@@ -1,7 +1,7 @@
 #include "detected.hpp"
 
 zombie_state::Detected::Detected() :
-	MoveStateBase		(static_cast<int>(zombie_state::ActionStateKind::kDetected)),
+	ActionStateBase		(static_cast<int>(zombie_state::ActionStateKind::kDetected)),
 	m_is_stop_all_state	(false)
 {
 
@@ -26,7 +26,7 @@ void zombie_state::Detected::Enter(std::shared_ptr<Zombie>& obj)
 {
 	const auto pos = obj->GetTransform()->GetPos(CoordinateKind::kWorld);
 
-	const OnTargetDetectedEvent event{ obj->GetEnemyHandle(), obj->GetDetecteNotifyDistance(), pos };
+	const OnTargetDetectedEvent event{ obj->GetEnemyID(), obj->GetDetecteNotifyDistance(), pos };
 	EventSystem::GetInstance()->Publish(event);
 }
 

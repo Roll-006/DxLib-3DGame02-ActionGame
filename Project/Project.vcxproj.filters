@@ -589,7 +589,7 @@
     <ClCompile Include="SourceCode\VirtualCamera\stealth_kill_virtual_camera_controller.cpp">
       <Filter>SourceCode\VirtualCamera</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Object\trees.cpp">
+    <ClCompile Include="SourceCode\Object\houses.cpp">
       <Filter>SourceCode\Object</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Part\patrol_route_giver.cpp">
@@ -601,11 +601,86 @@
     <ClCompile Include="SourceCode\Animator\zombie_animator.cpp">
       <Filter>SourceCode\Animator</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Object\houses.cpp">
-      <Filter>SourceCode\Object</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\State\ZombieState\detected.cpp">
       <Filter>SourceCode\State\ZombieState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Object\boss.cpp">
+      <Filter>SourceCode\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Part\boss_state_controller.cpp">
+      <Filter>SourceCode\Part</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\BossState\boss_alert.cpp">
+      <Filter>SourceCode\State\BossState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\BossState\boss_backward_knockback.cpp">
+      <Filter>SourceCode\State\BossState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\BossState\boss_close_range_attack.cpp">
+      <Filter>SourceCode\State\BossState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\BossState\boss_crouch_left_stun.cpp">
+      <Filter>SourceCode\State\BossState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\BossState\boss_crouch_right_stun.cpp">
+      <Filter>SourceCode\State\BossState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\BossState\boss_detected.cpp">
+      <Filter>SourceCode\State\BossState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\BossState\boss_investigate.cpp">
+      <Filter>SourceCode\State\BossState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\BossState\boss_knockback.cpp">
+      <Filter>SourceCode\State\BossState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\BossState\boss_long_range_attack.cpp">
+      <Filter>SourceCode\State\BossState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\BossState\boss_patrol.cpp">
+      <Filter>SourceCode\State\BossState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\BossState\boss_play_dead.cpp">
+      <Filter>SourceCode\State\BossState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\BossState\boss_run_attack.cpp">
+      <Filter>SourceCode\State\BossState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\BossState\boss_search.cpp">
+      <Filter>SourceCode\State\BossState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\BossState\boss_stand_stun.cpp">
+      <Filter>SourceCode\State\BossState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\BossState\boss_stand_up.cpp">
+      <Filter>SourceCode\State\BossState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\BossState\boss_stealth_killed.cpp">
+      <Filter>SourceCode\State\BossState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\BossState\boss_track.cpp">
+      <Filter>SourceCode\State\BossState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\BossState\boss_wait.cpp">
+      <Filter>SourceCode\State\BossState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\BossState\boss_action_null.cpp">
+      <Filter>SourceCode\State\BossState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\BossState\boss_dead.cpp">
+      <Filter>SourceCode\State\BossState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\BossState\boss_idle.cpp">
+      <Filter>SourceCode\State\BossState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\BossState\boss_move.cpp">
+      <Filter>SourceCode\State\BossState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\BossState\boss_run.cpp">
+      <Filter>SourceCode\State\BossState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Animator\boss_animator.cpp">
+      <Filter>SourceCode\Animator</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1605,7 +1680,7 @@
     <ClInclude Include="SourceCode\Event\on_stealth_kill_event.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Object\trees.hpp">
+    <ClInclude Include="SourceCode\Object\houses.hpp">
       <Filter>SourceCode\Object</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Part\patrol_route_giver.hpp">
@@ -1620,10 +1695,7 @@
     <ClInclude Include="SourceCode\Data\material_data.hpp">
       <Filter>SourceCode\Data</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Object\houses.hpp">
-      <Filter>SourceCode\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\zombie_collider_data.hpp">
+    <ClInclude Include="SourceCode\Data\humanoid_enemy_collider_data.hpp">
       <Filter>SourceCode\Data</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Event\on_target_detected_event.hpp">
@@ -1634,6 +1706,90 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Event\start_disappear_enemy_event.hpp">
       <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Object\boss.hpp">
+      <Filter>SourceCode\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Part\boss_state_controller.hpp">
+      <Filter>SourceCode\Part</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\BossState\boss_alert.hpp">
+      <Filter>SourceCode\State\BossState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\BossState\boss_backward_knockback.hpp">
+      <Filter>SourceCode\State\BossState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\BossState\boss_close_range_attack.hpp">
+      <Filter>SourceCode\State\BossState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\BossState\boss_crouch_left_stun.hpp">
+      <Filter>SourceCode\State\BossState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\BossState\boss_crouch_right_stun.hpp">
+      <Filter>SourceCode\State\BossState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\BossState\boss_detected.hpp">
+      <Filter>SourceCode\State\BossState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\BossState\boss_investigate.hpp">
+      <Filter>SourceCode\State\BossState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\BossState\boss_knockback.hpp">
+      <Filter>SourceCode\State\BossState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\BossState\boss_long_range_attack.hpp">
+      <Filter>SourceCode\State\BossState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\BossState\boss_patrol.hpp">
+      <Filter>SourceCode\State\BossState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\BossState\boss_play_dead.hpp">
+      <Filter>SourceCode\State\BossState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\BossState\boss_run_attack.hpp">
+      <Filter>SourceCode\State\BossState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\BossState\boss_search.hpp">
+      <Filter>SourceCode\State\BossState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\BossState\boss_stand_stun.hpp">
+      <Filter>SourceCode\State\BossState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\BossState\boss_stand_up.hpp">
+      <Filter>SourceCode\State\BossState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\BossState\boss_stealth_killed.hpp">
+      <Filter>SourceCode\State\BossState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\BossState\boss_track.hpp">
+      <Filter>SourceCode\State\BossState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\BossState\boss_wait.hpp">
+      <Filter>SourceCode\State\BossState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\BossState\boss_action_null.hpp">
+      <Filter>SourceCode\State\BossState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\BossState\boss_dead.hpp">
+      <Filter>SourceCode\State\BossState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\BossState\boss_idle.hpp">
+      <Filter>SourceCode\State\BossState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\BossState\boss_move.hpp">
+      <Filter>SourceCode\State\BossState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\BossState\boss_run.hpp">
+      <Filter>SourceCode\State\BossState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Kind\boss_anim_kind.hpp">
+      <Filter>SourceCode\Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Kind\boss_state_kind.hpp">
+      <Filter>SourceCode\Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Animator\boss_animator.hpp">
+      <Filter>SourceCode\Animator</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1727,9 +1883,6 @@
     <Filter Include="SourceCode\State">
       <UniqueIdentifier>{9a691bb4-740c-48d4-baec-fd67b8b9b808}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCode\State\CameraState">
-      <UniqueIdentifier>{ff495161-2f03-4c6e-a508-ddbb081ecd2c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SourceCode\State\ZombieState">
       <UniqueIdentifier>{d2ef4260-3541-4500-92a8-03e820d5ca75}</UniqueIdentifier>
     </Filter>
@@ -1778,6 +1931,12 @@
     <Filter Include="Text">
       <UniqueIdentifier>{f778bbda-5f11-4860-b7cd-f357af151c7c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SourceCode\State\EnemyState">
+      <UniqueIdentifier>{ff495161-2f03-4c6e-a508-ddbb081ecd2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCode\State\BossState">
+      <UniqueIdentifier>{d48e325b-0620-4896-9fd1-d5e4c363d5df}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\JSON\key_number.json">
@@ -1796,6 +1955,9 @@
       <Filter>JSON</Filter>
     </None>
     <None Include="Data\JSON\zombie.json">
+      <Filter>JSON</Filter>
+    </None>
+    <None Include="Data\JSON\boss.json">
       <Filter>JSON</Filter>
     </None>
   </ItemGroup>

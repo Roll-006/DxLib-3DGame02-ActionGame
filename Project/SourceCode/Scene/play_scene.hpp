@@ -5,7 +5,7 @@
 #include "../Manager/enemy_manager.hpp"
 #include "../Object/houses.hpp"
 #include "../Object/ground.hpp"
-#include "../Object/trees.hpp"
+#include "../Object/houses.hpp"
 #include "../Object/skydome.hpp"
 #include "../Part/stealth_kill_target_searcher.hpp"
 #include "../Part/melee_target_searcher.hpp"

@@ -20,9 +20,9 @@ PlayScene::PlayScene() :
 	m_game_over_tab					(std::make_shared<GameOverTab>()),
 	m_pause_tab						(std::make_shared<PauseTab>())
 {
-	m_player		->AddToObjManager();
-	m_ground		->AddToObjManager();
-	//m_trees			->AddToObjManager();
+	m_player->AddToObjManager();
+	m_ground->AddToObjManager();
+	m_houses->AddToObjManager();
 
 	m_enemy_manager->AttachTarget(m_player);
 
@@ -49,9 +49,9 @@ PlayScene::PlayScene() :
 
 PlayScene::~PlayScene()
 {
-	m_player		->RemoveToObjManager();
-	m_ground		->RemoveToObjManager();
-	//m_trees			->RemoveToObjManager();
+	m_player->RemoveToObjManager();
+	m_ground->RemoveToObjManager();
+	m_houses->RemoveToObjManager();
 
 	m_enemy_manager->DetachTarget();
 
@@ -94,9 +94,8 @@ void PlayScene::Update()
 	m_player							->Update();
 	m_enemy_manager						->Update();
 	RifleCartridgeManager::GetInstance()->Update();
-	m_houses							->Update();
 	m_ground							->Update();
-	//m_trees								->Update();
+	m_houses							->Update();
 	m_skydome							->Update();
 	m_stealth_kill_target_searcher		->Update();
 	m_melee_target_searcher				->Update();
@@ -111,9 +110,8 @@ void PlayScene::LateUpdate()
 	m_player							->LateUpdate();
 	m_enemy_manager						->LateUpdate();
 	RifleCartridgeManager::GetInstance()->LateUpdate();
-	m_houses							->LateUpdate();
 	m_ground							->LateUpdate();
-	//m_trees								->LateUpdate();
+	m_houses							->LateUpdate();
 	m_skydome							->LateUpdate();
 	m_player_ui_creator					->LateUpdate();
 }
@@ -125,9 +123,8 @@ void PlayScene::DrawToShadowMap() const
 	m_player							->Draw();
 	m_enemy_manager						->Draw();
 	RifleCartridgeManager::GetInstance()->Draw();
-	m_houses							->Draw();
 	m_ground							->Draw();
-	//m_trees								->Draw();
+	m_houses							->Draw();
 }
 
 void PlayScene::Draw() const
@@ -137,9 +134,8 @@ void PlayScene::Draw() const
 	m_player							->Draw();
 	m_enemy_manager						->Draw();
 	RifleCartridgeManager::GetInstance()->Draw();
-	m_houses							->Draw();
 	m_ground							->Draw();
-	//m_trees								->Draw();
+	m_houses							->Draw();
 	m_skydome							->Draw();
 }
 

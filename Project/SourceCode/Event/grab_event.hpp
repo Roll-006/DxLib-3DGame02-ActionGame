@@ -4,7 +4,7 @@
 /// @brief ’Í‚ñ‚¾
 struct GrabEvent
 {
-	int enemy_handle					= -1;
-	int obj_handle						= -1;
-	std::shared_ptr<Modeler> modeler	= nullptr;
+	std::string				 enemy_handle = "";
+	int						 obj_handle   = -1;
+	std::shared_ptr<Modeler> modeler	  = nullptr;
 };

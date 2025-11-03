@@ -1,54 +1,53 @@
 #include "houses.hpp"
+#include "../Manager/game_manager.hpp"
 
-Houses::Houses()
-{
-	for (size_t i = 0; i < 1; ++i)
-	{
-		m_houses.emplace_back(std::make_shared<House>(std::to_string(i)));
-	}
-
-	for (const auto& house : m_houses)
-	{
-		house->AddToObjManager();
-	}
+Houses::Houses() :
+	ObjBase	(ObjName.HOUSES, ObjTag.BUILDING),
+	m_modeler(std::make_shared<Modeler>(m_transform, "Data/Model/Building/mesh.mv1", kBasicAngle, kBasicScale))
+{	
+	m_transform->SetPos (CoordinateKind::kWorld, kPos);
+	m_modeler->ApplyMatrix();
 }
 
 Houses::~Houses()
 {
-	for (const auto& house : m_houses)
-	{
-		house->RemoveToObjManager();
-	}
+
 }
 
 void Houses::Init()
 {
-	for (const auto& house : m_houses)
-	{
-		house->Init();
-	}
+
 }
 
 void Houses::Update()
 {
-	for (const auto& house : m_houses)
-	{
-		house->Update();
-	}
+	if (!IsActive()) { return; }
 }
 
 void Houses::LateUpdate()
 {
-	for (const auto& house : m_houses)
-	{
-		house->LateUpdate();
-	}
+	if (!IsActive()) { return; }
 }
 
 void Houses::Draw() const
 {
-	for (const auto& house : m_houses)
-	{
-		house->Draw();
-	}
+	if (!IsActive()) { return; }
+
+	m_modeler->Draw();
+}
+
+void Houses::AddToObjManager()
+{
+	ObjManager::GetInstance()->AddObj(shared_from_this());
+}
+
+void Houses::RemoveToObjManager()
+{
+	ObjManager::GetInstance()->RemoveObj(GetObjHandle());
+}
+
+float Houses::GetDeltaTime() const
+{
+	const auto time_manager = GameTimeManager::GetInstance();
+	return time_manager->GetDeltaTime(TimeScaleLayerKind::kWorld);
 }

@@ -1,7 +1,7 @@
 #pragma once
 #include <DxLib.h>
 
-struct ZombieColliderData
+struct HumanoidEnemyColliderData
 {
 	float  visible_fov;
 	float  visible_distance;
@@ -22,7 +22,7 @@ struct ZombieColliderData
 
 
 #pragma region from / to JSON
-inline void from_json(const nlohmann::json& data, ZombieColliderData& zombie_collider_data)
+inline void from_json(const nlohmann::json& data, HumanoidEnemyColliderData& zombie_collider_data)
 {
 	data.at("visible_fov")				.get_to(zombie_collider_data.visible_fov);
 	data.at("visible_distance")			.get_to(zombie_collider_data.visible_distance);
@@ -41,7 +41,7 @@ inline void from_json(const nlohmann::json& data, ZombieColliderData& zombie_col
 	data.at("down_leg_trigger_radius")	.get_to(zombie_collider_data.down_leg_trigger_radius);
 }
 
-inline void to_json(nlohmann::json& data, const ZombieColliderData& zombie_collider_data)
+inline void to_json(nlohmann::json& data, const HumanoidEnemyColliderData& zombie_collider_data)
 {
 	data = nlohmann::json
 	{
