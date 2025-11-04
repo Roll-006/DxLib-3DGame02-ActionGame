@@ -113,6 +113,7 @@ std::shared_ptr<VirtualCamera> ControlVirtualCamerasController::GetHaveVirtualCa
 {
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	const auto camera = cinemachine_brain->GetVirtualCamera(name);
+	if (!camera) { return nullptr; }
 
 	if (   camera == m_rot_control_camera
 		|| camera == m_aim_control_camera)

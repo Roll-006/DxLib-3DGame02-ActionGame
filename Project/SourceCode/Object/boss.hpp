@@ -1,5 +1,6 @@
 #pragma once
 #include "../Base/enemy_base.hpp"
+#include "../Interface/i_poolable.hpp"
 #include "../Interface/i_melee_hittable.hpp"
 #include "../Interface/i_grabber.hpp"
 #include "../Interface/i_stealth_killable.hpp"
@@ -9,7 +10,7 @@
 
 class BossStateController;
 
-class Boss final : public EnemyBase, public IMeleeHittable, public IStealthKillable
+class Boss final : public EnemyBase, public IPoolable, public IMeleeHittable, public IStealthKillable
 {
 public:
 	Boss(const std::string& id);
@@ -19,6 +20,8 @@ public:
 	void Update()					override;
 	void LateUpdate()				override;
 	void Draw()				const	override;
+
+	void AllowReturnPool() { m_is_return_pool = true; }
 
 	void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) override;
 	void OnDamage(const HealthPartKind part_kind, const float damage) override;
@@ -60,8 +63,9 @@ public:
 
 
 	#pragma region Getter
-	[[nodiscard]] float									GetDeltaTime()		 const override;
-	[[nodiscard]] std::shared_ptr<BossStateController>	GetStateController() const	{ return m_state; }
+	[[nodiscard]] float									GetDeltaTime()		 const	override;
+	[[nodiscard]] std::shared_ptr<BossStateController>	GetStateController() const				{ return m_state; }
+	[[nodiscard]] bool									IsReturnPool()				override	{ return m_is_return_pool; }
 	#pragma endregion
 
 private:
@@ -86,6 +90,7 @@ private:
 private:
 	std::shared_ptr<BossStateController>	m_state;
 
+	bool m_is_return_pool;
 	bool m_is_allow_stealth_kill;
 	bool m_on_stealth_kill;
 

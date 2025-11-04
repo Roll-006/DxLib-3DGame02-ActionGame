@@ -17,7 +17,8 @@ PauseTab::PauseTab() :
 	m_warning_quit_game_tab		(std::make_shared<WarningTab>(WarningTab::WarningKind::kQuitGame))
 {
 	// ƒCƒxƒ“ƒg“o˜^
-	EventSystem::GetInstance()->Subscribe<DeadPlayerEvent>(this, &PauseTab::Deactivate);
+	EventSystem::GetInstance()->Subscribe<DeadPlayerEvent>	(this, &PauseTab::Deactivate);
+	EventSystem::GetInstance()->Subscribe<DeadBossEvent>	(this, &PauseTab::Deactivate);
 
 	TabDrawer::GetInstance()->AddTab(m_warning_restart_tab);
 	TabDrawer::GetInstance()->AddTab(m_warning_quit_game_tab);
@@ -40,6 +41,7 @@ PauseTab::~PauseTab()
 {
 	// ƒCƒxƒ“ƒg‚Ì“o˜^‰ðœ
 	EventSystem::GetInstance()->Unsubscribe<DeadPlayerEvent>(this, &PauseTab::Deactivate);
+	EventSystem::GetInstance()->Unsubscribe<DeadBossEvent>	(this, &PauseTab::Deactivate);
 
 	TabDrawer::GetInstance()->RemoveTab(m_warning_restart_tab	->GetTabHandle());
 	TabDrawer::GetInstance()->RemoveTab(m_warning_quit_game_tab	->GetTabHandle());
@@ -119,6 +121,11 @@ void PauseTab::OnDraw(const int main_screen_handle) const
 }
 
 void PauseTab::Deactivate(const DeadPlayerEvent& event)
+{
+	m_is_deactivate_forcibly = true;
+}
+
+void PauseTab::Deactivate(const DeadBossEvent& event)
 {
 	m_is_deactivate_forcibly = true;
 }

@@ -67,6 +67,7 @@ static struct ObjName
 	const std::string DEAD_BOSS_SMOKE_EFFECT					= "dead_boss_smoke_effect";
 	const std::string SHOT_FIRE_EFFECT							= "shot_fire_effect";
 	const std::string BLOOD_EFFECT								= "blood_effect";
+	const std::string DEAD_BOSS_BLOOD_EFFECT					= "dead_boss_blood_effect";
 	#pragma endregion
 
 

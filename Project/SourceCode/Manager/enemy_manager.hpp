@@ -27,6 +27,8 @@ private:
 
 	void NotifyDisallowActionForcibly(const std::string& origin_enemy_id);
 
+	void ReturnPool();
+
 private:
 	std::shared_ptr<EnemyObjectPool>		m_object_pool;
 	std::vector<std::shared_ptr<EnemyBase>> m_active_enemies;

@@ -1,5 +1,6 @@
 #pragma once
 #include "../Base/enemy_base.hpp"
+#include "../Interface/i_poolable.hpp"
 #include "../Interface/i_melee_hittable.hpp"
 #include "../Interface/i_grabber.hpp"
 #include "../Interface/i_stealth_killable.hpp"
@@ -9,7 +10,7 @@
 
 class ZombieStateController;
 
-class Zombie final : public EnemyBase, public IMeleeHittable, public IGrabber, public IStealthKillable
+class Zombie final : public EnemyBase, public IPoolable, public IMeleeHittable, public IGrabber, public IStealthKillable
 {
 public:
 	Zombie(const std::string& id);
@@ -19,6 +20,8 @@ public:
 	void Update()					override;
 	void LateUpdate()				override;
 	void Draw()				const	override;
+
+	void AllowReturnPool() { m_is_return_pool = true; }
 
 	void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) override;
 	void OnDamage(const HealthPartKind part_kind, const float damage) override;
@@ -70,37 +73,33 @@ public:
 
 
 	#pragma region Getter
-	[[nodiscard]] float										GetDeltaTime()			const override;
-	[[nodiscard]] std::shared_ptr<ZombieStateController>	GetStateController()	const	{ return m_state; }
-	[[nodiscard]] bool										CanGrabTarget()			const	{ return m_can_grab_target; }
+	[[nodiscard]] float										GetDeltaTime()		 const	override;
+	[[nodiscard]] std::shared_ptr<ZombieStateController>	GetStateController() const				{ return m_state; }
+	[[nodiscard]] bool										CanGrabTarget()		 const				{ return m_can_grab_target; }
+	[[nodiscard]] bool										IsReturnPool()				override	{ return m_is_return_pool; }
 	#pragma endregion
 
 private:
 	void JudgeAction() override;
 
 private:
-	std::string model_path;
+	std::string					model_path;
+	VECTOR						basic_angle;
+	float						basic_scale;
+	float						walk_speed;
+	float						run_speed;
+	float						run_grab_speed;
+	float						move_dir_offset_speed;
+	float						look_dir_offset_speed;
+	float						damage_over_time_start_time;
+	HumanoidEnemyColliderData	collider_data;
 
-	VECTOR basic_angle;
-	float  basic_scale;
-
-	float  walk_speed;
-	float  run_speed;
-	float  run_grab_speed;
-	float  move_dir_offset_speed;
-	float  look_dir_offset_speed;
-
-	HumanoidEnemyColliderData collider_data;
-
-	float  damage_over_time_start_time;
-
-private:
 	std::shared_ptr<ZombieStateController>	m_state;
-
-	bool m_can_grab_target;
-	bool m_is_target_escaped;
-	bool m_is_allow_stealth_kill;
-	bool m_on_stealth_kill;
+	bool									m_is_return_pool;
+	bool									m_can_grab_target;
+	bool									m_is_target_escaped;
+	bool									m_is_allow_stealth_kill;
+	bool									m_on_stealth_kill;
 
 	friend void from_json(const nlohmann::json& data, Zombie& zombie);
 	friend void to_json  (nlohmann::json& data, const Zombie& zombie);

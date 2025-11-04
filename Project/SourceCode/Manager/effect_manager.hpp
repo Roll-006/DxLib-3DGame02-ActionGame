@@ -41,11 +41,12 @@ private:
 	/// @brief 敵が消える際のエフェクトを出力
 	void OutputDisappearEnemyEffect		(const StartDisappearEnemyEvent& event);
 	/// @brief ボス死亡時のエフェクトを出力
-	void OutputDeadBossEffect			(const DeadBossEvent& event);
+	void OutputDisappearBossEffect		(const DisappearBossEvent& event);
 	#pragma endregion
 
 
 	void AddEffect(const std::shared_ptr<Effect> effect);
+	void ReturnPool();
 
 private:
 	std::unordered_map<std::string, std::vector<std::shared_ptr<ObjBase>>> m_effects;

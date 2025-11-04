@@ -24,13 +24,15 @@ namespace boss_state
 		void ChangeMaterial(const auto model_handle, const float change_speed);
 
 	private:
-		static constexpr float kStartDisappearTime	= 2.3f;
 		static constexpr float kChangeColorWaitTime = 1.3f;
+		static constexpr float kDisappearWaitTime	= 3.5f;
 
 		bool	m_is_stop_all_state;
 		float	m_elapsed_time;
 		bool	m_is_seted_time_scale;
 		float   m_change_color_wait_time;
+		float	m_disappear_wait_time;
+		bool	m_is_disappear_notified;
 
 		MaterialData m_current_material;
 

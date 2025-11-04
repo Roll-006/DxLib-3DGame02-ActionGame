@@ -91,6 +91,8 @@ void EnemyManager::LateUpdate()
 	{
 		enemy->LateUpdate();
 	}
+
+	ReturnPool();
 }
 
 void EnemyManager::Draw() const
@@ -166,6 +168,22 @@ void EnemyManager::NotifyDisallowActionForcibly(const std::string& origin_enemy_
 		if (origin_enemy_id != enemy->GetEnemyID())
 		{
 			enemy->OnDisallowActionForcibly();
+		}
+	}
+}
+
+void EnemyManager::ReturnPool()
+{
+	for (auto itr = m_active_enemies.begin(); itr != m_active_enemies.end();)
+	{
+		if (std::dynamic_pointer_cast<IPoolable>(*itr)->IsReturnPool())
+		{
+			ObjectPoolHolder::GetInstance()->GetObjectPool(ObjectPoolName.ENEMY_POOL)->ReturnObj(*itr);
+			itr = m_active_enemies.erase(itr);
+		}
+		else
+		{
+			++itr;
 		}
 	}
 }

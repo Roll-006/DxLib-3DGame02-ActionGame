@@ -22,7 +22,6 @@ public:
 	void AllowSelect()		override { m_can_select = true; }
 	void DisallowSelect()	override { m_can_select = false; }
 
-	void Activate(const DeadPlayerEvent& event);
 
 	[[nodiscard]] int  GetTabHandle()	const override	{ return m_tab_handle; }
 	[[nodiscard]] int  GetPriority()	const override	{ return m_priority; }
@@ -32,6 +31,8 @@ public:
 	[[nodiscard]] bool IsQuitGame()		const			{ return m_is_quit_game && !SceneFader::GetInstance()->IsFading(); }
 
 private:
+	void Activate(const DeadPlayerEvent& event);
+
 	void ExecuteContinue();
 	void ExecuteQuitGame();
 

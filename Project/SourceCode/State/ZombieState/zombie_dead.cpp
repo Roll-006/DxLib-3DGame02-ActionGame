@@ -30,28 +30,33 @@ void zombie_state::Dead::Update(std::shared_ptr<Zombie>& obj)
 	}
 
 	// オブジェクトを下に落として消す
-	if (obj->GetAnimator()->IsPlayEnd(AnimatorBase::BodyKind::kUpperBody))
+	m_elapsed_time_end_anim += delta_time;
+	if (obj->GetAnimator()->IsPlayEnd(AnimatorBase::BodyKind::kUpperBody) && !m_is_start_disappear)
 	{
-		m_elapsed_time_end_anim += delta_time;
-		if (m_elapsed_time_end_anim >= kStartDisappearTime)
+		if (m_elapsed_time_end_anim >= kDisappearWaitTime)
 		{
-			if (!m_is_start_disappear)
-			{
-				CollisionManager::GetInstance()->RemoveCollideObj(obj->GetObjHandle());
-				PhysicsManager  ::GetInstance()->AddIgnoreObjPhysicalBehavior(obj->GetObjHandle());
-				PhysicsManager  ::GetInstance()->AddIgnoreObjGravity(obj->GetObjHandle());
+			CollisionManager::GetInstance()->RemoveCollideObj(obj->GetObjHandle());
+			PhysicsManager  ::GetInstance()->AddIgnoreObjPhysicalBehavior(obj->GetObjHandle());
+			PhysicsManager  ::GetInstance()->AddIgnoreObjGravity(obj->GetObjHandle());
 
-				// 離したことを演出カメラに通知
-				const auto model_hanlde = obj->GetModeler()->GetModelHandle();
-				auto	   hips_m		= MV1GetFrameLocalWorldMatrix(model_hanlde, MV1SearchFrame(model_hanlde, BonePath.HIPS));
-				const auto hips_pos		= MGetTranslateElem(hips_m);
-				const StartDisappearEnemyEvent event{ hips_pos - VGet(0.0f, 10.0f, 0.0f) };
-				EventSystem::GetInstance()->Publish(event);
+			// 離したことを演出カメラに通知
+			const auto model_hanlde = obj->GetModeler()->GetModelHandle();
+			auto	   hips_m		= MV1GetFrameLocalWorldMatrix(model_hanlde, MV1SearchFrame(model_hanlde, BonePath.HIPS));
+			const auto hips_pos		= MGetTranslateElem(hips_m);
+			const StartDisappearEnemyEvent event{ hips_pos - VGet(0.0f, 10.0f, 0.0f) };
+			EventSystem::GetInstance()->Publish(event);
 
-				m_is_start_disappear = true;
-			}
+			m_is_start_disappear = true;
+		}
+	}
 
-			obj->Disappear();
+	if (m_is_start_disappear)
+	{
+		obj->Disappear();
+
+		if (m_elapsed_time_end_anim >= kReturnPoolWaitTime)
+		{
+			obj->AllowReturnPool();
 		}
 	}
 }

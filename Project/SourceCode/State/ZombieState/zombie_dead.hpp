@@ -24,8 +24,9 @@ namespace zombie_state
 		void ChangeMaterial(const auto model_handle, const float change_speed);
 
 	private:
-		static constexpr float kStartDisappearTime	= 2.3f;
+		static constexpr float kDisappearWaitTime	= 2.3f;
 		static constexpr float kChangeColorWaitTime = 0.8f;
+		static constexpr float kReturnPoolWaitTime	= 15.0f;
 
 		bool	m_is_stop_all_state;
 		float	m_elapsed_time_end_anim;	// アニメーションの再生が終了してからの時間

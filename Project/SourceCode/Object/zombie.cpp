@@ -5,6 +5,7 @@
 Zombie::Zombie(const std::string& id) :
 	EnemyBase				(ObjName.ZOMBIE),
 	m_state					(std::make_shared<ZombieStateController>()),
+	m_is_return_pool		(false),
 	m_can_grab_target		(false),
 	m_is_target_escaped		(false),
 	m_is_allow_stealth_kill	(true),
@@ -66,11 +67,13 @@ Zombie::Zombie(const std::string& id) :
 
 Zombie::~Zombie()
 {
-	m_modeler->InitMaterial();
 }
 
 void Zombie::Init()
 {
+	m_is_return_pool = false;
+
+	m_modeler->InitMaterial();
 	m_state->Init(std::static_pointer_cast<Zombie>(shared_from_this()));
 }
 

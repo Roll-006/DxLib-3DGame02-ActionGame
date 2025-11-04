@@ -1,8 +1,7 @@
 #pragma once
 #include "../Interface/i_virtual_camera_controller.hpp"
 #include "virtual_camera.hpp"
-#include "../Event/stealth_kill_event.hpp"
-#include "../Event/on_stealth_kill_event.hpp"
+#include "../Event/disappear_boss_event.hpp"
 
 class CinemachineBrain;
 
@@ -26,13 +25,21 @@ public:
 	[[nodiscard]] bool IsActive()			 const override { return m_is_active; }
 
 private:
+	void ZoomOut(const DisappearBossEvent& event);
+
 	void SetupCamera();
 
 	void CalcAimTransform();
+	void CalcFollowOffset();
 
 private:
-	static constexpr VECTOR kFollowOffset		= { 0.0f, 50.0f, -250.0f };
-	static constexpr VECTOR kTrackedObjOffset	= { 0.0f,  0.0f,    0.0f };
+	static constexpr VECTOR kFollowOffset			= { 0.0f, 50.0f, -180.0f };
+	static constexpr VECTOR kTrackedObjOffset		= { 0.0f,  0.0f,    0.0f };
+	static constexpr float  kZoomInInitialVelocity	= 3.0f;
+	static constexpr float  kZoomInDeceleration		= 5.0f;
+	static constexpr float  kZoomOutInitialVelocity = 22.0f;
+	static constexpr float  kZoomOutDeceleration	= 60.0f;
+	static constexpr float  kZoomInWaitTime			= 2.5f;
 
 private:
 	VirtualCameraControllerKind		m_virtual_camera_controller_kind;
@@ -41,6 +48,13 @@ private:
 
 	std::shared_ptr<VirtualCamera>	m_camera;
 	std::shared_ptr<Transform>		m_aim_transform;
+	VECTOR							m_follow_offset;
+	VECTOR							m_follow_offset_dir;
+
+	float							m_zoom_in_wait_time;
+	float							m_zoom_in_speed;
+	float							m_zoom_out_speed;
+	bool							m_is_zoom_out;
 
 	int								m_model_handle;
 	std::shared_ptr<Transform>		m_boss_transform;

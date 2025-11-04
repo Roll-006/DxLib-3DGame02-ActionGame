@@ -91,6 +91,7 @@ std::shared_ptr<VirtualCamera> RocketLauncherVirtualCamerasController::GetHaveVi
 {
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	const auto camera = cinemachine_brain->GetVirtualCamera(name);
+	if (!camera) { return nullptr; }
 
 	if (   camera == m_enter_rot_camera
 		|| camera == m_zoom_in_camera

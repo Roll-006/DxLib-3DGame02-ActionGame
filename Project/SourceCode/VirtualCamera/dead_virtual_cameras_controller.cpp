@@ -61,6 +61,7 @@ std::shared_ptr<VirtualCamera> DeadVirtualCamerasController::GetHaveVirtualCamer
 {
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	const auto camera = cinemachine_brain->GetVirtualCamera(name);
+	if (!camera) { return nullptr; }
 
 	if (camera == m_dead_camera)
 	{

@@ -5,7 +5,6 @@
 #include "../Manager/enemy_manager.hpp"
 #include "../Object/houses.hpp"
 #include "../Object/ground.hpp"
-#include "../Object/houses.hpp"
 #include "../Object/skydome.hpp"
 #include "../Part/stealth_kill_target_searcher.hpp"
 #include "../Part/melee_target_searcher.hpp"
@@ -13,6 +12,7 @@
 #include "../UI/ui_drawer.hpp"
 #include "../UI/player_ui_creator.hpp"
 #include "../Tab/tab_drawer.hpp"
+#include "../Tab/game_clear_tab.hpp"
 #include "../Tab/game_over_tab.hpp"
 #include "../Tab/pause_tab.hpp"
 #include "../Light/light_holder.hpp"
@@ -57,6 +57,7 @@ private:
 	std::shared_ptr<RifleCartridgeObjectPool>	m_rifle_cartridge_object_pool;
 	std::shared_ptr<PlaySceneEffectObjectPool>  m_play_scene_effect_object_pool;
 	std::shared_ptr<IUICreator>					m_player_ui_creator;
+	std::shared_ptr<GameClearTab>				m_game_clear_tab;
 	std::shared_ptr<GameOverTab>				m_game_over_tab;
 	std::shared_ptr<PauseTab>					m_pause_tab;
 };

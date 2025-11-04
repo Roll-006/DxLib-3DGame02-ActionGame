@@ -6,6 +6,8 @@ boss_state::Dead::Dead() :
 	m_elapsed_time				(0.0f),
 	m_is_seted_time_scale		(false),
 	m_change_color_wait_time	(0.0f),
+	m_disappear_wait_time		(0.0f),
+	m_is_disappear_notified		(false),
 	m_current_material			(),
 	m_dead_cameras_controller	(nullptr)
 {
@@ -20,18 +22,11 @@ boss_state::Dead::~Dead()
 void boss_state::Dead::Update(std::shared_ptr<Boss>& obj)
 {
 	const auto delta_time = obj->GetDeltaTime();
-	m_elapsed_time += delta_time;
 
 	obj->DisallowStealthKill();
 
-	// 色を黒に変化
-	m_change_color_wait_time += delta_time;
-	if (m_change_color_wait_time >= kChangeColorWaitTime)
-	{
-		ChangeMaterial(obj->GetModeler()->GetModelHandle(), 1.0f * delta_time);
-	}
-
 	// タイムスケールを変更
+	m_elapsed_time += delta_time;
 	if (m_elapsed_time > 6.5f && !m_is_seted_time_scale)
 	{
 		m_is_seted_time_scale = true;
@@ -41,6 +36,25 @@ void boss_state::Dead::Update(std::shared_ptr<Boss>& obj)
 		game_time_manager->SetTimeScale(TimeScaleLayerKind::kPlayer, 0.0f);
 		game_time_manager->SetTimeScale(TimeScaleLayerKind::kEffect, 0.0f);
 		game_time_manager->SetTimeScale(TimeScaleLayerKind::kCamera, 0.0f);
+	}
+
+	// 色を黒に変化
+	m_change_color_wait_time += delta_time;
+	if (m_change_color_wait_time >= kChangeColorWaitTime)
+	{
+		ChangeMaterial(obj->GetModeler()->GetModelHandle(), 1.0f * delta_time);
+	}
+
+	// ボスを消す
+	m_disappear_wait_time += delta_time;
+	if (m_disappear_wait_time >= kDisappearWaitTime && !m_is_disappear_notified)
+	{
+		obj->AllowReturnPool();
+
+		const DisappearBossEvent event{ obj->GetModeler()->GetModelHandle() };
+		EventSystem::GetInstance()->Publish(event);
+
+		m_is_disappear_notified = true;
 	}
 }
 
@@ -54,6 +68,8 @@ void boss_state::Dead::Enter(std::shared_ptr<Boss>& obj)
 	m_elapsed_time				= 0.0f;
 	m_is_seted_time_scale		= false;
 	m_change_color_wait_time	= 0.0f;
+	m_disappear_wait_time		= 0.0f;
+	m_is_disappear_notified		= false;
 	m_current_material			= MaterialData();
 
 	// 演出用カメラを生成
@@ -63,6 +79,7 @@ void boss_state::Dead::Enter(std::shared_ptr<Boss>& obj)
 
 	obj->RemoveCollider(ColliderKind::kCollider);
 
+	// 死亡したことを通知
 	const DeadBossEvent event{ obj->GetEnemyID(), obj->GetModeler()->GetModelHandle()};
 	EventSystem::GetInstance()->Publish(event);
 

@@ -12,7 +12,7 @@ EffectManager::EffectManager()
 	EventSystem::GetInstance()->Subscribe<OnDamageEvent>				(this, &EffectManager::OutputOnDamageEffect);
 	EventSystem::GetInstance()->Subscribe<OnChangeTitleSceneEvent>		(this, &EffectManager::OutputTitleSceneEffect);
 	EventSystem::GetInstance()->Subscribe<StartDisappearEnemyEvent>		(this, &EffectManager::OutputDisappearEnemyEffect);
-	EventSystem::GetInstance()->Subscribe<DeadBossEvent>				(this, &EffectManager::OutputDeadBossEffect);
+	EventSystem::GetInstance()->Subscribe<DisappearBossEvent>			(this, &EffectManager::OutputDisappearBossEffect);
 }
 
 EffectManager::~EffectManager()
@@ -25,7 +25,7 @@ EffectManager::~EffectManager()
 	EventSystem::GetInstance()->Unsubscribe<OnDamageEvent>				(this, &EffectManager::OutputOnDamageEffect);
 	EventSystem::GetInstance()->Unsubscribe<OnChangeTitleSceneEvent>	(this, &EffectManager::OutputTitleSceneEffect);
 	EventSystem::GetInstance()->Unsubscribe<StartDisappearEnemyEvent>	(this, &EffectManager::OutputDisappearEnemyEffect);
-	EventSystem::GetInstance()->Unsubscribe<DeadBossEvent>				(this, &EffectManager::OutputDeadBossEffect);
+	EventSystem::GetInstance()->Unsubscribe<DisappearBossEvent>			(this, &EffectManager::OutputDisappearBossEffect);
 }
 
 void EffectManager::Update()
@@ -52,23 +52,7 @@ void EffectManager::LateUpdate()
 	Effekseer_Sync3DSetting();
 	UpdateEffekseer3D();
 
-	// ÉvÅ[ÉãÇ÷ïœä∑
-	for (auto& [obj_name, objects] : m_effects)
-	{
-		auto& vec = objects;
-		for (auto itr = vec.begin(); itr != vec.end();)
-		{
-			if (std::dynamic_pointer_cast<IPoolable>(*itr)->IsReturnPool())
-			{
-				ObjectPoolHolder::GetInstance()->GetObjectPool(ObjectPoolName.PLAY_SCENE_EFFECT_POOL)->ReturnObj(*itr);
-				itr = vec.erase(itr);
-			}
-			else
-			{
-				++itr;
-			}
-		}
-	}
+	ReturnPool();
 }
 
 void EffectManager::Draw() const
@@ -264,17 +248,27 @@ void EffectManager::OutputDisappearEnemyEffect(const StartDisappearEnemyEvent& e
 	}
 }
 
-void EffectManager::OutputDeadBossEffect(const DeadBossEvent& event)
+void EffectManager::OutputDisappearBossEffect(const DisappearBossEvent& event)
 {
 	const auto pool = ObjectPoolHolder::GetInstance()->GetObjectPool(ObjectPoolName.PLAY_SCENE_EFFECT_POOL);
 	std::shared_ptr<ObjBase> obj = nullptr;
 
+	auto	   hips_m	= MV1GetFrameLocalWorldMatrix(event.model_handle, MV1SearchFrame(event.model_handle, BonePath.HIPS));
+	const auto hips_pos = MGetTranslateElem(hips_m);
+
+	// âå
 	obj = pool->GetObj(ObjName.DEAD_BOSS_SMOKE_EFFECT);
 	if (obj)
 	{
-		auto	   hips_m = MV1GetFrameLocalWorldMatrix(event.model_handle, MV1SearchFrame(event.model_handle, BonePath.HIPS));
-		const auto hips_pos = MGetTranslateElem(hips_m);
+		const auto effect = std::static_pointer_cast<Effect>(obj);
+		effect->GetTransform()->SetPos(CoordinateKind::kWorld, hips_pos);
+		AddEffect(effect);
+	}
 
+	// åå
+	obj = pool->GetObj(ObjName.DEAD_BOSS_BLOOD_EFFECT);
+	if (obj)
+	{
 		const auto effect = std::static_pointer_cast<Effect>(obj);
 		effect->GetTransform()->SetPos(CoordinateKind::kWorld, hips_pos);
 		AddEffect(effect);
@@ -288,5 +282,36 @@ void EffectManager::AddEffect(const std::shared_ptr<Effect> effect)
 	if (std::find(m_effects[effect->GetName()].begin(), m_effects[effect->GetName()].end(), effect) == m_effects[effect->GetName()].end())
 	{
 		m_effects[effect->GetName()].emplace_back(effect);
+	}
+}
+
+void EffectManager::ReturnPool()
+{
+	for (auto& [obj_name, objects] : m_effects)
+	{
+		auto& vec = objects;
+		for (auto itr = vec.begin(); itr != vec.end();)
+		{
+			if (std::dynamic_pointer_cast<IPoolable>(*itr)->IsReturnPool())
+			{
+				const auto play_scene_effect_pool  = ObjectPoolHolder::GetInstance()->GetObjectPool(ObjectPoolName.PLAY_SCENE_EFFECT_POOL );
+				const auto title_scene_effect_pool = ObjectPoolHolder::GetInstance()->GetObjectPool(ObjectPoolName.TITLE_SCENE_EFFECT_POOL);
+				
+				if (play_scene_effect_pool)
+				{
+					play_scene_effect_pool->ReturnObj(*itr);
+					itr = vec.erase(itr);
+				}
+				else if (title_scene_effect_pool)
+				{
+					title_scene_effect_pool->ReturnObj(*itr);
+					itr = vec.erase(itr);
+				}
+			}
+			else
+			{
+				++itr;
+			}
+		}
 	}
 }

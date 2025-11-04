@@ -23,6 +23,7 @@ private:
 	~RifleCartridgeManager() override;
 
 	void AddRifleCartridge(const std::shared_ptr<ObjBase>& rifle_cartridge);
+	void ReturnPool();
 
 private:
 	std::unordered_map<std::string, std::vector<std::shared_ptr<ObjBase>>> m_rifle_cartridge;

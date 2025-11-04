@@ -9,9 +9,18 @@ DeadBossVirtualCamerasController::DeadBossVirtualCamerasController(const int mod
 	m_is_active						(true),
 	m_camera						(std::make_shared<VirtualCamera>(ObjName.DEAD_BOSS_VIRTUAL_CAMERA, BlendActivationPolicyKind::kDeactivateAllCamera)),
 	m_aim_transform					(std::make_shared<Transform>()),
+	m_follow_offset					(kFollowOffset),
+	m_follow_offset_dir				(v3d::GetNormalizedV(kFollowOffset)),
+	m_zoom_in_wait_time				(0.0f),
+	m_zoom_in_speed					(kZoomInInitialVelocity),
+	m_zoom_out_speed				(kZoomOutInitialVelocity),
+	m_is_zoom_out					(false),
 	m_model_handle					(model_handle),
 	m_boss_transform				(boss_transform)
 {
+	// イベント登録
+	EventSystem::GetInstance()->Subscribe<DisappearBossEvent>(this, &DeadBossVirtualCamerasController::ZoomOut);
+
 	// パラメータ設定
 	SetupCamera();
 
@@ -24,14 +33,20 @@ DeadBossVirtualCamerasController::DeadBossVirtualCamerasController(const int mod
 
 DeadBossVirtualCamerasController::~DeadBossVirtualCamerasController()
 {
+	// イベントの登録解除
+	EventSystem::GetInstance()->Unsubscribe<DisappearBossEvent>(this, &DeadBossVirtualCamerasController::ZoomOut);
+
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	cinemachine_brain->RemoveVirtualCamera(m_camera->GetCameraHandle());
+	cinemachine_brain->SetBlendTime(1.0f);
 
 	// 操作カメラを復帰させる
 	const auto control_cameras_controller = cinemachine_brain->GetVirtualCameraController(VirtualCameraControllerKind::kControl);
-	cinemachine_brain->SetBlendTime(1.0f);
-	control_cameras_controller->Activate();
-	control_cameras_controller->GetHaveVirtualCamera(ObjName.ROT_CONTROL_VIRTUAL_CAMERA)->Activate();
+	if (control_cameras_controller)
+	{
+		control_cameras_controller->Activate();
+		control_cameras_controller->GetHaveVirtualCamera(ObjName.ROT_CONTROL_VIRTUAL_CAMERA)->Activate();
+	}
 
 	// 演出が終了したことを通知
 	const EndCutsceneEvent event{};
@@ -53,6 +68,7 @@ void DeadBossVirtualCamerasController::LateUpdate()
 	if (!IsActive()) { return; }
 
 	CalcAimTransform();
+	CalcFollowOffset();
 }
 
 VirtualCameraControllerKind DeadBossVirtualCamerasController::GetVirtualCameraControllerKind() const
@@ -64,6 +80,7 @@ std::shared_ptr<VirtualCamera> DeadBossVirtualCamerasController::GetHaveVirtualC
 {
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	const auto camera = cinemachine_brain->GetVirtualCamera(name);
+	if (!camera) { return nullptr; }
 
 	if (camera == m_camera)
 	{
@@ -78,13 +95,17 @@ std::vector<std::shared_ptr<VirtualCamera>> DeadBossVirtualCamerasController::Ge
 	return std::vector<std::shared_ptr<VirtualCamera>>{ m_camera };
 }
 
+void DeadBossVirtualCamerasController::ZoomOut(const DisappearBossEvent& event)
+{
+	m_is_zoom_out = true;
+}
 
 #pragma region カメラ設定
 void DeadBossVirtualCamerasController::SetupCamera()
 {
 	m_camera->SetPriority(50);
 	m_camera->AttachTarget(m_aim_transform);
-	m_camera->GetBody()->SetFollowOffset(kFollowOffset);
+	m_camera->GetBody()->SetFollowOffset(m_follow_offset);
 	m_camera->GetAim()->SetTrackedObjOffset(kTrackedObjOffset);
 }
 #pragma endregion
@@ -102,5 +123,32 @@ void DeadBossVirtualCamerasController::CalcAimTransform()
 	// 基準となるトランスフォームを設定
 	m_aim_transform->SetRot(CoordinateKind::kWorld, rot_m);
 	m_aim_transform->SetPos(CoordinateKind::kWorld, frame_pos);
+}
+
+void DeadBossVirtualCamerasController::CalcFollowOffset()
+{
+	const auto delta_time = m_camera->GetDeltaTime();
+
+	// ズームイン
+	m_zoom_in_wait_time += delta_time;
+	if (m_zoom_in_wait_time > kZoomInWaitTime && !m_is_zoom_out)
+	{
+		math::Decrease(m_zoom_in_speed, kZoomInDeceleration * delta_time, 0.0f);
+		if (m_zoom_in_speed > 0.0f)
+		{
+			m_follow_offset -= m_follow_offset_dir * m_zoom_in_speed;
+		}
+	}
+	// ズームアウト
+	else if(m_is_zoom_out)
+	{
+		math::Decrease(m_zoom_out_speed, kZoomOutDeceleration * delta_time, 0.0f);
+		if (m_zoom_out_speed > 0.0f)
+		{
+			m_follow_offset += m_follow_offset_dir * m_zoom_out_speed;
+		}
+	}
+
+	m_camera->GetBody()->SetFollowOffset(m_follow_offset);
 }
 #pragma endregion

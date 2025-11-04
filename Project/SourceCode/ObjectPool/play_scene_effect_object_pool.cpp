@@ -12,6 +12,7 @@ PlaySceneEffectObjectPool::PlaySceneEffectObjectPool() :
 	m_pool_size[ObjName.DEAD_BOSS_SMOKE_EFFECT]						= kDeadBossSmokePoolSize;
 	m_pool_size[ObjName.SHOT_FIRE_EFFECT]							= kShotFirePoolSize;
 	m_pool_size[ObjName.BLOOD_EFFECT]								= kBloodPoolSize;
+	m_pool_size[ObjName.DEAD_BOSS_BLOOD_EFFECT]						= kDeadBossBloodPoolSize;
 
 	// ロケットランチャーの排気口から出る光
 	EffectData data = {	ObjName.LIGHT_ROCKET_LAUNCHER_EXHAUST_VENT_EFFECT, EffectPath.LIGHT_ROCKET_LAUNCHER_EXHAUST_VENT, 60.0f, 0.0f, false };
@@ -67,7 +68,7 @@ PlaySceneEffectObjectPool::PlaySceneEffectObjectPool() :
 	}
 
 	// ボス死亡時の煙
-	data = { ObjName.DEAD_BOSS_SMOKE_EFFECT, EffectPath.DEAD_BOSS_SMOKE, 20.0f, 2.0f, false };
+	data = { ObjName.DEAD_BOSS_SMOKE_EFFECT, EffectPath.DEAD_BOSS_SMOKE, 20.0f, 0.0f, false };
 	for (int i = 0; i < m_pool_size.at(data.obj_name); ++i)
 	{
 		const auto effect = std::make_shared<Effect>(data);
@@ -92,6 +93,15 @@ PlaySceneEffectObjectPool::PlaySceneEffectObjectPool() :
 		CreateObj(effect);
 		effect->AddToObjManager();
 	}
+
+	// ボス死亡時の血
+	data = { ObjName.DEAD_BOSS_BLOOD_EFFECT, EffectPath.DEAD_BOSS_BLOOD, 50.0f, 0.0f, false };
+	for (int i = 0; i < m_pool_size.at(data.obj_name); ++i)
+	{
+		const auto effect = std::make_shared<Effect>(data);
+		CreateObj(effect);
+		effect->AddToObjManager();
+	}
 }
 
 PlaySceneEffectObjectPool::~PlaySceneEffectObjectPool()
@@ -105,4 +115,5 @@ PlaySceneEffectObjectPool::~PlaySceneEffectObjectPool()
 	DestroyObjects(ObjName.DEAD_BOSS_SMOKE_EFFECT);
 	DestroyObjects(ObjName.SHOT_FIRE_EFFECT);
 	DestroyObjects(ObjName.BLOOD_EFFECT);
+	DestroyObjects(ObjName.DEAD_BOSS_BLOOD_EFFECT);
 }

@@ -17,6 +17,7 @@ PlayScene::PlayScene() :
 	m_rifle_cartridge_object_pool	(std::make_shared<RifleCartridgeObjectPool>()),
 	m_play_scene_effect_object_pool (std::make_shared<PlaySceneEffectObjectPool>()),
 	m_player_ui_creator				(std::make_shared<PlayerUICreator>(m_player)),
+	m_game_clear_tab				(std::make_shared<GameClearTab>()),
 	m_game_over_tab					(std::make_shared<GameOverTab>()),
 	m_pause_tab						(std::make_shared<PauseTab>())
 {
@@ -43,6 +44,7 @@ PlayScene::PlayScene() :
 	const auto game_time_manager = GameTimeManager::GetInstance();
 	game_time_manager->InitTimeScale();
 
+	TabDrawer::GetInstance()->AddTab		(m_game_clear_tab);
 	TabDrawer::GetInstance()->AddTab		(m_game_over_tab);
 	TabDrawer::GetInstance()->AddTab		(m_pause_tab);
 	UIDrawer ::GetInstance()->AddUICreator	(m_player_ui_creator);
@@ -73,8 +75,9 @@ PlayScene::~PlayScene()
 	const auto light_holder = LightHolder::GetInstance();
 	light_holder->DeleteLight(LightName.MOONLIGHT);
 
-	TabDrawer::GetInstance()->RemoveTab			(m_game_over_tab->GetTabHandle());
-	TabDrawer::GetInstance()->RemoveTab			(m_pause_tab	->GetTabHandle());
+	TabDrawer::GetInstance()->RemoveTab			(m_game_clear_tab	->GetTabHandle());
+	TabDrawer::GetInstance()->RemoveTab			(m_game_over_tab	->GetTabHandle());
+	TabDrawer::GetInstance()->RemoveTab			(m_pause_tab		->GetTabHandle());
 	UIDrawer ::GetInstance()->RemoveUICreator	(m_player_ui_creator->GetName());
 }
 
@@ -106,6 +109,7 @@ void PlayScene::Update()
 	m_skydome							->Update();
 	m_stealth_kill_target_searcher		->Update();
 	m_melee_target_searcher				->Update();
+	m_game_clear_tab					->Update();
 	m_game_over_tab						->Update();
 	m_pause_tab							->Update();
 }
@@ -167,7 +171,7 @@ void PlayScene::StartFadeIn()
 	if (!m_can_fade_in) { return; }
 
 	m_elapsed_time += GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kNoneScale);
-	if (m_elapsed_time > 20.0f)
+	if (m_elapsed_time > 25.0f)
 	{
 		const auto fader = SceneFader::GetInstance();
 		fader->StartFade(0, 120.0f);

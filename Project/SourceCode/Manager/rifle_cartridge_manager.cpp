@@ -32,23 +32,7 @@ void RifleCartridgeManager::LateUpdate()
 		}
 	}
 	
-	// ƒv[ƒ‹‚Ö•ÏŠ·
-	for (auto& [obj_name, objects] : m_rifle_cartridge)
-	{
-		auto& vec = objects;
-		for (auto itr = vec.begin(); itr != vec.end();)
-		{
-			if (std::dynamic_pointer_cast<IPoolable>(*itr)->IsReturnPool())
-			{
-				ObjectPoolHolder::GetInstance()->GetObjectPool(ObjectPoolName.RIFLE_CARTRIDGE_POOL)->ReturnObj(*itr);
-				itr = vec.erase(itr);
-			}
-			else
-			{
-				++itr;
-			}
-		}
-	}
+	ReturnPool();
 }
 
 void RifleCartridgeManager::Draw() const
@@ -122,5 +106,25 @@ void RifleCartridgeManager::AddRifleCartridge(const std::shared_ptr<ObjBase>& ri
 	if (std::find(m_rifle_cartridge[rifle_cartridge->GetName()].begin(), m_rifle_cartridge[rifle_cartridge->GetName()].end(), rifle_cartridge) == m_rifle_cartridge[rifle_cartridge->GetName()].end())
 	{
 		m_rifle_cartridge[rifle_cartridge->GetName()].emplace_back(rifle_cartridge);
+	}
+}
+
+void RifleCartridgeManager::ReturnPool()
+{
+	for (auto& [obj_name, objects] : m_rifle_cartridge)
+	{
+		auto& vec = objects;
+		for (auto itr = vec.begin(); itr != vec.end();)
+		{
+			if (std::dynamic_pointer_cast<IPoolable>(*itr)->IsReturnPool())
+			{
+				ObjectPoolHolder::GetInstance()->GetObjectPool(ObjectPoolName.RIFLE_CARTRIDGE_POOL)->ReturnObj(*itr);
+				itr = vec.erase(itr);
+			}
+			else
+			{
+				++itr;
+			}
+		}
 	}
 }

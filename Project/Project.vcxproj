@@ -406,7 +406,7 @@
     <ClCompile Include="SourceCode\State\ZombieState\track.cpp" />
     <ClCompile Include="SourceCode\State\ZombieState\wait.cpp" />
     <ClCompile Include="SourceCode\State\ZombieState\zombie_move.cpp" />
-    <ClCompile Include="SourceCode\Tab\game_over_tab (2).cpp" />
+    <ClCompile Include="SourceCode\Tab\game_clear_tab.cpp" />
     <ClCompile Include="SourceCode\Tab\pause_tab.cpp" />
     <ClCompile Include="SourceCode\Tab\title_tab.cpp" />
     <ClCompile Include="SourceCode\Tab\game_over_tab.cpp" />
@@ -500,6 +500,7 @@
     <ClInclude Include="SourceCode\Data\input_data.hpp" />
     <ClInclude Include="SourceCode\Debugger\debugger.hpp" />
     <ClInclude Include="SourceCode\Drawer\drawer.hpp" />
+    <ClInclude Include="SourceCode\Event\disappear_boss_event.hpp" />
     <ClInclude Include="SourceCode\Event\dead_boss_event.hpp" />
     <ClInclude Include="SourceCode\Event\start_disappear_enemy_event.hpp" />
     <ClInclude Include="SourceCode\Event\on_target_detected_event.hpp" />
@@ -849,7 +850,7 @@
     <ClInclude Include="SourceCode\State\ZombieState\track.hpp" />
     <ClInclude Include="SourceCode\State\ZombieState\wait.hpp" />
     <ClInclude Include="SourceCode\State\ZombieState\zombie_move.hpp" />
-    <ClInclude Include="SourceCode\Tab\game_over_tab (2).hpp" />
+    <ClInclude Include="SourceCode\Tab\game_clear_tab.hpp" />
     <ClInclude Include="SourceCode\Tab\pause_tab.hpp" />
     <ClInclude Include="SourceCode\Tab\title_tab.hpp" />
     <ClInclude Include="SourceCode\Tab\game_over_tab.hpp" />

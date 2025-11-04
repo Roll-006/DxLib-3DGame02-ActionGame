@@ -38,7 +38,8 @@ void player_state::Shot::LateUpdate(std::shared_ptr<Player>& obj)
 	gun->CalcTargetPos();
 	gun->SetAimDir  (aim_dir);
 	gun->SetPosOnRay(camera->GetTransform()->GetPos(CoordinateKind::kWorld));
-	gun->OnShot();
+
+	if (obj->GetDeltaTime() > 0.0f) { gun->OnShot(); }
 	
 	// ƒŠƒRƒCƒ‹ˆ—
 	const auto camera_controller = CinemachineBrain::GetInstance()->GetVirtualCameraController(VirtualCameraControllerKind::kControl);
@@ -49,8 +50,11 @@ void player_state::Shot::Enter(std::shared_ptr<Player>& obj)
 {
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	const auto camera_controller = std::static_pointer_cast<ControlVirtualCamerasController>(cinemachine_brain->GetVirtualCameraController(VirtualCameraControllerKind::kControl));
-	camera_controller->GetHaveVirtualCamera(ObjName.ROT_CONTROL_VIRTUAL_CAMERA)->Deactivate();
-	camera_controller->GetHaveVirtualCamera(ObjName.AIM_CONTROL_VIRTUAL_CAMERA)->Activate();
+	const auto rot_camera = camera_controller->GetHaveVirtualCamera(ObjName.ROT_CONTROL_VIRTUAL_CAMERA);
+	const auto aim_camera = camera_controller->GetHaveVirtualCamera(ObjName.AIM_CONTROL_VIRTUAL_CAMERA);
+
+	if (rot_camera) { rot_camera->Deactivate(); }
+	if (aim_camera) { aim_camera->Activate(); }
 
 	obj->DetachWeapon(obj->GetCurrentEquipWeapon(WeaponSlotKind::kMain));
 	obj->HoldWeapon	 (obj->GetCurrentEquipWeapon(WeaponSlotKind::kMain));
@@ -60,8 +64,11 @@ void player_state::Shot::Exit(std::shared_ptr<Player>& obj)
 {
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	const auto camera_controller = std::static_pointer_cast<ControlVirtualCamerasController>(cinemachine_brain->GetVirtualCameraController(VirtualCameraControllerKind::kControl));
-	camera_controller->GetHaveVirtualCamera(ObjName.ROT_CONTROL_VIRTUAL_CAMERA)->Activate();
-	camera_controller->GetHaveVirtualCamera(ObjName.AIM_CONTROL_VIRTUAL_CAMERA)->Deactivate();
+	const auto rot_camera = camera_controller->GetHaveVirtualCamera(ObjName.ROT_CONTROL_VIRTUAL_CAMERA);
+	const auto aim_camera = camera_controller->GetHaveVirtualCamera(ObjName.AIM_CONTROL_VIRTUAL_CAMERA);
+
+	if (rot_camera) { rot_camera->Activate(); }
+	if (aim_camera) { aim_camera->Deactivate(); }
 
 	obj->ReleaseWeapon();
 	obj->AttachWeapon(obj->GetCurrentEquipWeapon(WeaponSlotKind::kMain));

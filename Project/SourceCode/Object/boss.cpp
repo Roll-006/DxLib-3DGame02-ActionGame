@@ -5,6 +5,7 @@
 Boss::Boss(const std::string& id) :
 	EnemyBase				(ObjName.BOSS),
 	m_state					(std::make_shared<BossStateController>()),
+	m_is_return_pool		(false),
 	m_is_allow_stealth_kill	(true),
 	m_on_stealth_kill		(false)
 {
@@ -64,11 +65,14 @@ Boss::Boss(const std::string& id) :
 
 Boss::~Boss()
 {
-	m_modeler->InitMaterial();
+
 }
 
 void Boss::Init()
 {
+	m_is_return_pool = false;
+
+	m_modeler->InitMaterial();
 	m_state->Init(std::static_pointer_cast<Boss>(shared_from_this()));
 }
 

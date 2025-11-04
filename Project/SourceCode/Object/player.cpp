@@ -184,7 +184,7 @@ void Player::Draw() const
 	const auto p = m_transform->GetPos(CoordinateKind::kWorld);
 	const auto d1 = m_move_dir.at(TimeKind::kCurrent);
 	const auto d2 = m_move_dir.at(TimeKind::kNext);
-	printfDx("%f, %f, %f\n", p.x, p.y, p.z);
+	//printfDx("%f, %f, %f\n", p.x, p.y, p.z);
 }
 
 void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)

@@ -66,8 +66,11 @@ void player_state::AimGun::Enter(std::shared_ptr<Player>& obj)
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	const auto camera_controller = std::static_pointer_cast<ControlVirtualCamerasController>(cinemachine_brain->GetVirtualCameraController(VirtualCameraControllerKind::kControl));
 	cinemachine_brain->SetBlendTime(0.3f);
-	camera_controller->GetHaveVirtualCamera(ObjName.ROT_CONTROL_VIRTUAL_CAMERA)->Deactivate();
-	camera_controller->GetHaveVirtualCamera(ObjName.AIM_CONTROL_VIRTUAL_CAMERA)->Activate();
+	const auto rot_camera = camera_controller->GetHaveVirtualCamera(ObjName.ROT_CONTROL_VIRTUAL_CAMERA);
+	const auto aim_camera = camera_controller->GetHaveVirtualCamera(ObjName.AIM_CONTROL_VIRTUAL_CAMERA);
+
+	if (rot_camera) { rot_camera->Deactivate(); }
+	if (aim_camera) { aim_camera->Activate(); }
 
 	obj->DetachWeapon(obj->GetCurrentEquipWeapon(WeaponSlotKind::kMain));
 	obj->HoldWeapon	 (obj->GetCurrentEquipWeapon(WeaponSlotKind::kMain));
@@ -85,8 +88,11 @@ void player_state::AimGun::Exit(std::shared_ptr<Player>& obj)
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	const auto camera_controller = std::static_pointer_cast<ControlVirtualCamerasController>(cinemachine_brain->GetVirtualCameraController(VirtualCameraControllerKind::kControl));
 	cinemachine_brain->SetBlendTime(0.3f);
-	camera_controller->GetHaveVirtualCamera(ObjName.ROT_CONTROL_VIRTUAL_CAMERA)->Activate();
-	camera_controller->GetHaveVirtualCamera(ObjName.AIM_CONTROL_VIRTUAL_CAMERA)->Deactivate();
+	const auto rot_camera = camera_controller->GetHaveVirtualCamera(ObjName.ROT_CONTROL_VIRTUAL_CAMERA);
+	const auto aim_camera = camera_controller->GetHaveVirtualCamera(ObjName.AIM_CONTROL_VIRTUAL_CAMERA);
+
+	if (rot_camera) { rot_camera->Activate(); }
+	if (aim_camera) { aim_camera->Deactivate(); }
 
 	obj->ReleaseWeapon();
 	obj->AttachWeapon(obj->GetCurrentEquipWeapon(WeaponSlotKind::kMain));
