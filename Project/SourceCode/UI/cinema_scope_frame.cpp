@@ -9,6 +9,7 @@ CinemaScopeFrame::CinemaScopeFrame() :
 	m_increase					(0)
 {
 	// ƒCƒxƒ“ƒg“o˜^
+	EventSystem::GetInstance()->Subscribe<DeadBossEvent>					(this, &CinemaScopeFrame::EnterFrame);
 	EventSystem::GetInstance()->Subscribe<StartRocketLauncherCutsceneEvent>	(this, &CinemaScopeFrame::EnterFrame);
 	EventSystem::GetInstance()->Subscribe<EndRocketLauncherCutsceneEvent>	(this, &CinemaScopeFrame::ExitFrame);
 }
@@ -16,8 +17,15 @@ CinemaScopeFrame::CinemaScopeFrame() :
 CinemaScopeFrame::~CinemaScopeFrame()
 {
 	// ƒCƒxƒ“ƒg‚Ì“o˜^‰ðœ
+	EventSystem::GetInstance()->Unsubscribe<DeadBossEvent>						(this, &CinemaScopeFrame::EnterFrame);
 	EventSystem::GetInstance()->Unsubscribe<StartRocketLauncherCutsceneEvent>	(this, &CinemaScopeFrame::EnterFrame);
 	EventSystem::GetInstance()->Unsubscribe<EndRocketLauncherCutsceneEvent>		(this, &CinemaScopeFrame::ExitFrame);
+}
+
+void CinemaScopeFrame::Init()
+{
+	m_thickness = 0;
+	m_increase	= 0;
 }
 
 void CinemaScopeFrame::LateUpdate()
@@ -61,6 +69,11 @@ void CinemaScopeFrame::CalcPos()
 	m_up_frame_down_right_pos	= { Window::kScreenSize.x, m_thickness };
 	m_down_frame_up_left_pos	= { 0, Window::kScreenSize.y - m_thickness };
 	m_down_frame_down_right_pos = { Window::kScreenSize.x, Window::kScreenSize.y };
+}
+
+void CinemaScopeFrame::EnterFrame(const DeadBossEvent& event)
+{
+	m_increase = kIncreaseSpeed;
 }
 
 void CinemaScopeFrame::EnterFrame(const StartRocketLauncherCutsceneEvent& event)

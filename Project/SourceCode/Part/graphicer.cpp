@@ -8,7 +8,7 @@ Graphicer::Graphicer(const std::string& file_path) :
 	m_origin_width			(0),
 	m_origin_height			(0),
 	m_blend_mode			(DX_BLENDMODE_ALPHA),
-	m_blend_num				(255),
+	m_blend_num				(UCHAR_MAX),
 	m_is_invert_horizontal	(false),
 	m_is_invert_vertical	(false)
 {
@@ -23,7 +23,7 @@ Graphicer::Graphicer(const int graphic_handle) :
 	m_origin_width			(0),
 	m_origin_height			(0),
 	m_blend_mode			(DX_BLENDMODE_ALPHA),
-	m_blend_num				(255),
+	m_blend_num				(UCHAR_MAX),
 	m_is_invert_horizontal	(false),
 	m_is_invert_vertical	(false)
 {

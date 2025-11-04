@@ -91,7 +91,7 @@ void WarningTab::ExecuteBack()
 
 void WarningTab::JudgeSelect()
 {
-	const auto is_max_blend_num = m_result_screen->GetGraphicer()->GetBlendNum() >= 255;
+	const auto is_max_blend_num = m_result_screen->GetGraphicer()->GetBlendNum() >= UCHAR_MAX;
 	const auto is_fading		= SceneFader::GetInstance()->IsFading();
 
 	m_can_select = is_max_blend_num && !is_fading ? true : false;
@@ -106,7 +106,7 @@ void WarningTab::CalcAlphaBlendNum()
 	}
 	else
 	{
-		math::Increase(m_alpha_blend_num, static_cast<int>(kFadeSpeed * delta_time), 255, false);
+		math::Increase(m_alpha_blend_num, static_cast<int>(kFadeSpeed * delta_time), UCHAR_MAX, false);
 	}
 
 	m_result_screen->GetGraphicer()->SetBlendNum(m_alpha_blend_num);
@@ -137,7 +137,7 @@ void WarningTab::CreateResultScreen()
 
 void WarningTab::BackTab()
 {
-	if (m_result_screen->GetGraphicer()->GetBlendNum() < 255) { return; }
+	if (m_result_screen->GetGraphicer()->GetBlendNum() < UCHAR_MAX) { return; }
 
 	if (CommandHandler::GetInstance()->IsExecute(CommandKind::kPause, TimeKind::kCurrent))
 	{

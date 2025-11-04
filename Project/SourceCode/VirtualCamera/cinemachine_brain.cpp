@@ -116,6 +116,7 @@ void CinemachineBrain::RemoveVirtualCamera(const int camera_handle)
 void CinemachineBrain::RemoveAllVirtualCamera()
 {
 	m_virtual_cameras.clear();
+	m_priority.clear();
 }
 
 void CinemachineBrain::RemoveVirtualCameraController(const VirtualCameraControllerKind kind)

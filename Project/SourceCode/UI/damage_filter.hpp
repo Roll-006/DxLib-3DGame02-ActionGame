@@ -10,6 +10,7 @@ public:
 	DamageFilter();
 	~DamageFilter();
 
+	void Init();
 	void LateUpdate();
 	void Draw(const int main_screen_handle) const;
 

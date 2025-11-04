@@ -2,15 +2,15 @@
 
 PhysicalObjBase::PhysicalObjBase(const std::string& name, const std::string& tag) :
 	ObjBase							(name, tag),
+	mass_kind						(MassKind::kLight),
 	m_velocity						(v3d::GetZeroV()),
 	m_move_velocity					(v3d::GetZeroV()),
 	m_fall_velocity					(v3d::GetZeroV()),
 	m_knockback_velocity			(v3d::GetZeroV()),
 	m_knockback_speed				(0.0f),
 	m_knockback_deceleration		(0.0f),
-	m_is_landing					(false),
+	m_is_landing					(true),
 	m_is_using_projection_velocity	(true),
-	mass_kind						(MassKind::kLight),
 	m_model_handle					(-1)
 {
 
@@ -18,14 +18,14 @@ PhysicalObjBase::PhysicalObjBase(const std::string& name, const std::string& tag
 
 void PhysicalObjBase::DrawColliders() const
 {
-	//for (const auto& collider : m_colliders)
-	//{
-	//	const auto shape = collider.second->GetShape();
-	//	if (shape != nullptr)
-	//	{
-	//		shape->Draw(true, 0, 0xffffff);
-	//	}
-	//}
+	for (const auto& collider : m_colliders)
+	{
+		const auto shape = collider.second->GetShape();
+		if (shape != nullptr)
+		{
+			shape->Draw(true, 0, 0xffffff);
+		}
+	}
 }
 
 void PhysicalObjBase::OnKnockback(const VECTOR& dir, const float initial_velocity, const float deceleration)

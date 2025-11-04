@@ -62,7 +62,7 @@ SubMenuSelectButton::SubMenuSelectButton(const ButtonKind button_kind, const Vec
 	// Å‰‚©‚ç‘I‘ğ‚³‚ê‚Ä‚¢‚éê‡‚Ìˆ—
 	if (is_init_selected)
 	{
-		m_current_alpha_blend_num			= 255;
+		m_current_alpha_blend_num			= UCHAR_MAX;
 		m_destination_selecting_center_pos	= v2d::ConvertVecType<int>(m_center_pos + v2d::GetNormalizedV<Vector2D<float>>(Vector2D<float>(-1.0f, -1.0f)) * kSelectingButtonDistance);
 		m_current_selecting_center_pos		= m_destination_selecting_center_pos;
 	}
@@ -131,7 +131,7 @@ void SubMenuSelectButton::CalcAlphaBlendNum()
 
 	if (m_is_active)
 	{
-		m_destination_alpha_blend_num = 255;
+		m_destination_alpha_blend_num = UCHAR_MAX;
 		math::Increase(m_current_alpha_blend_num, static_cast<int>(1000.0f * delta_time), m_destination_alpha_blend_num, false);
 	}
 	else

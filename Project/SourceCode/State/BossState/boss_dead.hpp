@@ -25,13 +25,15 @@ namespace boss_state
 
 	private:
 		static constexpr float kStartDisappearTime	= 2.3f;
-		static constexpr float kChangeColorWaitTime = 0.8f;
+		static constexpr float kChangeColorWaitTime = 1.3f;
 
 		bool	m_is_stop_all_state;
-		float	m_elapsed_time_end_anim;	// アニメーションの再生が終了してからの時間
+		float	m_elapsed_time;
+		bool	m_is_seted_time_scale;
 		float   m_change_color_wait_time;
-		bool	m_is_start_disappear;
 
 		MaterialData m_current_material;
+
+		std::shared_ptr<DeadBossVirtualCamerasController> m_dead_cameras_controller;
 	};
 }

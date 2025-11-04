@@ -12,7 +12,7 @@ EscapeIcon::EscapeIcon(std::shared_ptr<IGrabbable> grab_target) :
 	m_escape_gauge_percent		(0.0),
 	m_icon_scale				(1.0f),
 	m_scale_sin					(0.0f),
-	m_blur_circle_alpha_num		(255),
+	m_blur_circle_alpha_num		(UCHAR_MAX),
 	m_blur_circle_scale			(0.0f),
 	m_delete_wait_timer			(1.0f),
 	m_font_handle				(FontHandler::GetInstance()->GetFontHandle(FontName.EXPLANATORY_TEXT)),
@@ -146,7 +146,7 @@ void EscapeIcon::CalcBlurCircleParameter()
 	m_blur_circle_graphic->SetScale(m_blur_circle_scale);
 
 	// スケールに依存してアルファ値を計算
-	m_blur_circle_alpha_num = math::ConvertValueNewRange<float, float>(0.0f, 1.0f, 255, 80, m_blur_circle_scale);
+	m_blur_circle_alpha_num = math::ConvertValueNewRange<float, float>(0.0f, 1.0f, UCHAR_MAX, 80, m_blur_circle_scale);
 	m_blur_circle_graphic->SetBlendNum(m_blur_circle_alpha_num);
 }
 

@@ -36,6 +36,7 @@ public:
 	ZombieStateController();
 	~ZombieStateController() override;
 
+	void Init		(std::shared_ptr<Zombie> zombie) override;
 	void Update		(std::shared_ptr<Zombie> zombie) override;
 	void LateUpdate	(std::shared_ptr<Zombie> zombie) override;
 

@@ -6,8 +6,8 @@ DamageFilter::DamageFilter() :
 	m_mask_screen					(std::make_unique<ScreenCreator>(Window::kScreenSize)),
 	m_mask_creator					(std::make_unique<MaskCreator>()),
 	m_blinking_sin					(DX_PI_F),
-	m_result_screen_alpha_blend_num	(255),
-	m_max_alpha_blend_num			(255),
+	m_result_screen_alpha_blend_num	(UCHAR_MAX),
+	m_max_alpha_blend_num			(UCHAR_MAX),
 	m_is_loop_blinking				(false),
 	m_is_near_death_first_blinking	(false),
 	m_is_near_death					(false),
@@ -37,6 +37,16 @@ DamageFilter::~DamageFilter()
 	EventSystem::GetInstance()->Unsubscribe<ChangeSceneEvent>					(this, &DamageFilter::StopNearDeathBlinkind);
 	EventSystem::GetInstance()->Unsubscribe<StartRocketLauncherCutsceneEvent>	(this, &DamageFilter::ActivateCutscene);
 	EventSystem::GetInstance()->Unsubscribe<EndRocketLauncherCutsceneEvent>		(this, &DamageFilter::DeactivateCutscene);
+}
+
+void DamageFilter::Init()
+{
+	m_result_screen_alpha_blend_num = UCHAR_MAX;
+	m_max_alpha_blend_num			= UCHAR_MAX;
+	m_is_loop_blinking				= false;
+	m_is_near_death_first_blinking	= false;
+	m_is_near_death					= false;
+	m_is_active_cutscene			= false;
 }
 
 void DamageFilter::LateUpdate()
@@ -155,7 +165,7 @@ void DamageFilter::CalcResultScreenAlphaBlendNum()
 	}
 	else
 	{
-		math::Increase(m_result_screen_alpha_blend_num, static_cast<int>(700.0f * delta_time), 255, false);
+		math::Increase(m_result_screen_alpha_blend_num, static_cast<int>(700.0f * delta_time), UCHAR_MAX, false);
 	}
 
 	m_result_screen->GetGraphicer()->SetBlendNum(m_result_screen_alpha_blend_num);

@@ -14,7 +14,7 @@ public:
 
 	/// @brief 描画
 	/// @param is_draw_frame フレームを描画させるかどうか (一次元図形では効果なし)
-	/// @param alpha_blend_num 透過値 (0～255 : 0で完全透過) (一次元図形では効果なし)
+	/// @param alpha_blend_num 透過値 (0～UCHAR_MAX : 0で完全透過) (一次元図形では効果なし)
 	/// @param frame_color フレーム色
 	virtual void Draw(const bool is_draw_frame, const int alpha_blend_num, const unsigned int frame_color) const abstract;
 	

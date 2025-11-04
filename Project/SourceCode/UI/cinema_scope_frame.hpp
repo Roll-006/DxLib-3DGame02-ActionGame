@@ -8,13 +8,15 @@ public:
 	CinemaScopeFrame();
 	~CinemaScopeFrame();
 
+	void Init();
 	void LateUpdate();
 	void Draw() const;
 
+private:
+	void EnterFrame	(const DeadBossEvent&					 event);
 	void EnterFrame	(const StartRocketLauncherCutsceneEvent& event);
 	void ExitFrame	(const EndRocketLauncherCutsceneEvent&   event);
 
-private:
 	void CalcPos();
 
 private:

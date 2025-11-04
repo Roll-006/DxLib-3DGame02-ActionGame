@@ -217,7 +217,7 @@ void WeaponShortcutDrawer::UpdateAnim()
 	}
 
 	// üŒ`•âŠÔ
-	m_alpha_blend_num	= math::GetLerp(0, 255, t);
+	m_alpha_blend_num	= math::GetLerp(0, UCHAR_MAX, t);
 	m_scale				= math::GetLerp(0.5f, 1.0f, t);
 
 	m_icons_screen->GetGraphicer()->SetBlendNum(m_alpha_blend_num);

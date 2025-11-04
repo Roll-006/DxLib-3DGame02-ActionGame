@@ -2,10 +2,10 @@
 #include "../VirtualCamera/cinemachine_brain.hpp"
 
 DeadVirtualCamerasController::DeadVirtualCamerasController() :
-	m_virtual_camera_controller_kind(VirtualCameraControllerKind::kDead),
+	m_virtual_camera_controller_kind(VirtualCameraControllerKind::kDeadPlayer),
 	m_controller_handle				(HandleCreator::GetInstance()->CreateHandle()),
 	m_is_active						(true),
-	m_dead_camera					(std::make_shared<VirtualCamera>(ObjName.DEAD_VIRTUAL_CAMERA, BlendActivationPolicyKind::kDeactivateAllCamera)),
+	m_dead_camera					(std::make_shared<VirtualCamera>(ObjName.DEAD_PLAYER_VIRTUAL_CAMERA, BlendActivationPolicyKind::kDeactivateAllCamera)),
 	m_aim_transform					(std::make_shared<Transform>()),
 	m_model_handle					(-1)
 {

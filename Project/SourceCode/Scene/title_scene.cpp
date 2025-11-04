@@ -32,6 +32,7 @@ TitleScene::TitleScene() :
 	// カメラの設定
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	cinemachine_brain->RemoveAllVirtualCameraController();
+	cinemachine_brain->RemoveAllVirtualCamera();
 	cinemachine_brain->AddVirtualCamera(m_title_camera, true);
 	m_title_camera->SetPriority(0);
 	m_title_camera->AttachTarget(m_aim_transform);
@@ -41,6 +42,7 @@ TitleScene::TitleScene() :
 	aim->SetTrackedObjOffset({ -3.0f, 0.0f, 0.0f });
 
 	TabDrawer::GetInstance()->AddTab(m_title_tab);
+	UIDrawer ::GetInstance()->GetUICreator(UICreatorName.SCREEN_FILTER_CREATOR)->Init();
 
 	// タイトルシーンに入ったことを通知
 	const OnChangeTitleSceneEvent event{ m_smoke_transform, m_smoke_delete_handle };

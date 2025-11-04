@@ -207,7 +207,7 @@ void CrossHair::CalcAlphaBlendNum()
 
 	if (m_is_aiming)
 	{
-		math::Increase(m_alpha_blend_num, static_cast<int>(kAlphaBlendIncreaseSpeed * delta_time), 255, false);
+		math::Increase(m_alpha_blend_num, static_cast<int>(kAlphaBlendIncreaseSpeed * delta_time), UCHAR_MAX, false);
 	}
 	else
 	{

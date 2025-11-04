@@ -32,6 +32,7 @@ public:
 private:
 	#pragma region Event
 	void Deactivate(const DeadPlayerEvent& event);
+	void Deactivate(const DeadBossEvent&   event);
 	#pragma endregion
 
 private:

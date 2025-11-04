@@ -19,9 +19,9 @@ namespace axis
 
 	inline void Draw(const Axes& axes, const VECTOR& begin_pos, const float length)
 	{
-		DrawLine3D(begin_pos, begin_pos + axes.x_axis * length, GetColor(255,   0,   0));
-		DrawLine3D(begin_pos, begin_pos + axes.y_axis * length, GetColor(  0, 255,   0));
-		DrawLine3D(begin_pos, begin_pos + axes.z_axis * length, GetColor(  0,   0, 255));
+		DrawLine3D(begin_pos, begin_pos + axes.x_axis * length, GetColor(UCHAR_MAX,   0,   0));
+		DrawLine3D(begin_pos, begin_pos + axes.y_axis * length, GetColor(  0, UCHAR_MAX,   0));
+		DrawLine3D(begin_pos, begin_pos + axes.z_axis * length, GetColor(  0,   0, UCHAR_MAX));
 	};
 }
 

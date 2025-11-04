@@ -6,6 +6,7 @@ EnemyManager::EnemyManager() :
 	// イベント登録
 	EventSystem::GetInstance()->Subscribe<ReleaseEvent>			(this, &EnemyManager::NotifyAllowAction);
 	EventSystem::GetInstance()->Subscribe<GrabEvent>			(this, &EnemyManager::NotifyDisallowActionForcibly);
+	EventSystem::GetInstance()->Subscribe<DeadBossEvent>		(this, &EnemyManager::NotifyDisallowActionForcibly);
 	EventSystem::GetInstance()->Subscribe<OnTargetDetectedEvent>(this, &EnemyManager::NotifyDetectedTarget);
 
 	// 初期の敵を生成
@@ -51,6 +52,9 @@ EnemyManager::EnemyManager() :
 			}
 		}
 	}
+
+	const auto pool_holder = ObjectPoolHolder::GetInstance();
+	pool_holder->AddObjectPool(m_object_pool);
 }
 
 EnemyManager::~EnemyManager()
@@ -58,7 +62,11 @@ EnemyManager::~EnemyManager()
 	// イベントの登録解除
 	EventSystem::GetInstance()->Unsubscribe<ReleaseEvent>			(this, &EnemyManager::NotifyAllowAction);
 	EventSystem::GetInstance()->Unsubscribe<GrabEvent>				(this, &EnemyManager::NotifyDisallowActionForcibly);
+	EventSystem::GetInstance()->Unsubscribe<DeadBossEvent>			(this, &EnemyManager::NotifyDisallowActionForcibly);
 	EventSystem::GetInstance()->Unsubscribe<OnTargetDetectedEvent>	(this, &EnemyManager::NotifyDetectedTarget);
+
+	const auto pool_holder = ObjectPoolHolder::GetInstance();
+	pool_holder->RemoveObjectPool(m_object_pool->GetName());
 }
 
 void EnemyManager::Init()
@@ -123,14 +131,14 @@ void EnemyManager::NotifyAllowAction(const ReleaseEvent& event)
 
 void EnemyManager::NotifyDisallowActionForcibly(const GrabEvent& event)
 {
-	for (const auto& enemy : m_active_enemies)
-	{
-		// 掴んだ本人以外の敵の行動はすべて停止させる
-		if(event.enemy_handle != enemy->GetEnemyID())
-		{
-			enemy->OnDisallowActionForcibly();
-		}
-	}
+	// 掴んだ本人以外の敵の行動はすべて停止させる
+	NotifyDisallowActionForcibly(event.enemy_id);
+}
+
+void EnemyManager::NotifyDisallowActionForcibly(const DeadBossEvent& event)
+{
+	// 死亡した本人以外の敵の行動をすべて停止させる
+	NotifyDisallowActionForcibly(event.enemy_id);
 }
 
 void EnemyManager::NotifyDetectedTarget(const OnTargetDetectedEvent& event)
@@ -146,6 +154,18 @@ void EnemyManager::NotifyDetectedTarget(const OnTargetDetectedEvent& event)
 		if(distance <= event.notify_distance)
 		{
 			enemy->OnDetected();
+		}
+	}
+}
+
+void EnemyManager::NotifyDisallowActionForcibly(const std::string& origin_enemy_id)
+{
+	for (const auto& enemy : m_active_enemies)
+	{
+		// 本人以外の敵の行動をすべて停止させる
+		if (origin_enemy_id != enemy->GetEnemyID())
+		{
+			enemy->OnDisallowActionForcibly();
 		}
 	}
 }

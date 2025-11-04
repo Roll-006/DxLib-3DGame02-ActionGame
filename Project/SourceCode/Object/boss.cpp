@@ -69,7 +69,7 @@ Boss::~Boss()
 
 void Boss::Init()
 {
-
+	m_state->Init(std::static_pointer_cast<Boss>(shared_from_this()));
 }
 
 void Boss::Update()

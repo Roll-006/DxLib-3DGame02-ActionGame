@@ -9,6 +9,7 @@ class IStateController abstract
 public:
 	virtual ~IStateController() = default;
 
+	virtual void Init		(std::shared_ptr<ObjT> obj) abstract;
 	virtual void Update		(std::shared_ptr<ObjT> obj) abstract;
 	virtual void LateUpdate	(std::shared_ptr<ObjT> obj) abstract;
 

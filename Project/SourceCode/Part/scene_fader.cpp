@@ -1,7 +1,7 @@
 #include "scene_fader.hpp"
 
 SceneFader::SceneFader() : 
-	m_fader(std::make_unique<ScreenFader>(255, kFadeColor))
+	m_fader(std::make_unique<ScreenFader>(UCHAR_MAX, kFadeColor))
 {
 
 }

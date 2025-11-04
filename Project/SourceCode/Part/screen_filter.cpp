@@ -2,7 +2,7 @@
 
 ScreenFilter::ScreenFilter() : 
 	m_current_basis_filter			(nullptr),
-	m_basis_alpha_blend_num			(255),
+	m_basis_alpha_blend_num			(UCHAR_MAX),
 	m_resource_screen				(std::make_shared<ScreenCreator>(Window::kScreenSize, Window::kCenterPos, false)),
 	m_result_screen					(std::make_shared<ScreenCreator>(Window::kScreenSize, Window::kCenterPos, false)),
 	m_basis_filter_screen			(std::make_shared<ScreenCreator>(Window::kScreenSize, Window::kCenterPos)),
@@ -109,19 +109,19 @@ void ScreenFilter::SetDeathFilter(const DeadPlayerEvent& event)
 void ScreenFilter::SetNormalFilter(const OnSelectNormalFilterEvent& event)
 {
 	m_current_basis_filter = m_basis_filters.at(BasisFilterKind::kNormal);
-	m_basis_alpha_blend_num = 255;
+	m_basis_alpha_blend_num = UCHAR_MAX;
 }
 
 void ScreenFilter::SetCinematicFilter(const OnSelectCinematicFilterEvent& event)
 {
 	m_current_basis_filter = m_basis_filters.at(BasisFilterKind::kCinematic);
-	m_basis_alpha_blend_num = 255;
+	m_basis_alpha_blend_num = UCHAR_MAX;
 }
 
 void ScreenFilter::SetRetroFilter(const OnSelectRetroFilterEvent& event)
 {
 	m_current_basis_filter = m_basis_filters.at(BasisFilterKind::kRetro);
-	m_basis_alpha_blend_num = 255;
+	m_basis_alpha_blend_num = UCHAR_MAX;
 }
 #pragma endregion
 
@@ -160,7 +160,7 @@ void ScreenFilter::CreateNearDeathFilter()
 
 	const auto delta_time = GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kUI);
 	math::Increase(m_near_death_blinking_sin, kBlinkingSpeed * delta_time, DX_PI_F, false);
-	const auto blend_alpha_num = (sin(m_near_death_blinking_sin) * 0.5f + 0.5f) * 255;
+	const auto blend_alpha_num = (sin(m_near_death_blinking_sin) * 0.5f + 0.5f) * UCHAR_MAX;
 
 	// 瀕死フィルター解除判定
 	if (m_near_death_blinking_sin >= DX_PI_F)
@@ -181,7 +181,7 @@ void ScreenFilter::CreateDeathFilter()
 	if (!m_is_using_death_filter) { return; }
 
 	const auto delta_time = GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kUI);
-	math::Increase(m_death_filter_alpha_blend_num, static_cast<int>(100.0f * delta_time), 255, false);
+	math::Increase(m_death_filter_alpha_blend_num, static_cast<int>(100.0f * delta_time), UCHAR_MAX, false);
 
 	m_death_filter_screen->UseScreen();
 	m_resource_screen->Draw();

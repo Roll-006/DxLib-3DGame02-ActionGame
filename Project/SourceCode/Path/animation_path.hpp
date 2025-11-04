@@ -121,7 +121,7 @@ static struct BossAnimationPath
 	const std::string ENTER_NECK_BITE					= "Data/Animation/Boss/enter_neck_bite.mv1";
 	const std::string EXIT_NECK_BITE					= "Data/Animation/Boss/exit_neck_bite.mv1";
 
-	const std::string DEAD_01							= "Data/Animation/Boss/death_01.mv1";
+	const std::string DEAD								= "Data/Animation/Boss/death.mv1";
 	const std::string DEAD_03							= "Data/Animation/Boss/death_03.mv1";
 	const std::string CROUCH_DEAD						= "Data/Animation/Boss/crouch_death.mv1";
 	const std::string FLYING_KNOCKBACK_UP				= "Data/Animation/Boss/flying_knockback_up.mv1";

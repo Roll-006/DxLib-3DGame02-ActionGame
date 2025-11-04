@@ -44,6 +44,7 @@ public:
 	PlayerStateController();
 	~PlayerStateController() override;
 
+	void Init		(std::shared_ptr<Player> player) override;
 	void Update		(std::shared_ptr<Player> player) override;
 	void LateUpdate	(std::shared_ptr<Player> player) override;
 

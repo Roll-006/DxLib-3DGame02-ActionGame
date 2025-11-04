@@ -3,6 +3,7 @@
 #pragma region ïêäÌ
 CharacterBase::CharacterBase(const std::string& name, const std::string& tag) : 
 	PhysicalObjBase			(name, tag),
+	invincible_time			(0.0f),
 	m_modeler				(nullptr),
 	m_animator				(nullptr),
 	m_collider_creator		(std::make_shared<CharacterColliderCreator>()),
@@ -14,7 +15,6 @@ CharacterBase::CharacterBase(const std::string& name, const std::string& tag) :
 	m_look_dir_offset_speed	(0.0f),
 	m_is_calc_look_dir		(false),
 	m_current_held_weapon	(nullptr),
-	invincible_time		(0.0f),
 	m_invincible_timer		(0.0f),
 	m_is_invincible			(false)
 {

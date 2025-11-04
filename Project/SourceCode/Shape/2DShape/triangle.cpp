@@ -18,8 +18,8 @@ Triangle::Triangle(const VECTOR& pos1, const VECTOR& pos2, const VECTOR& pos3):
 	for (int i = 0; i < kVertexNum; ++i)
 	{
 		m_vertexes[i].norm	= axis::GetWorldYAxis();
-		m_vertexes[i].dif	= GetColorU8(255, 255, 255, 255);
-		m_vertexes[i].spc	= GetColorU8(255, 255, 255, 255);
+		m_vertexes[i].dif	= GetColorU8(UCHAR_MAX, UCHAR_MAX, UCHAR_MAX, UCHAR_MAX);
+		m_vertexes[i].spc	= GetColorU8(UCHAR_MAX, UCHAR_MAX, UCHAR_MAX, UCHAR_MAX);
 	}
 }
 
@@ -38,8 +38,8 @@ Triangle::Triangle() :
 	{
 		m_vertexes[i].pos		= v3d::GetZeroV();
 		m_vertexes[i].norm		= axis::GetWorldYAxis();
-		m_vertexes[i].dif		= GetColorU8(255, 255, 255, 255);
-		m_vertexes[i].spc		= GetColorU8(255, 255, 255, 255);
+		m_vertexes[i].dif		= GetColorU8(UCHAR_MAX, UCHAR_MAX, UCHAR_MAX, UCHAR_MAX);
+		m_vertexes[i].spc		= GetColorU8(UCHAR_MAX, UCHAR_MAX, UCHAR_MAX, UCHAR_MAX);
 	}
 }
 

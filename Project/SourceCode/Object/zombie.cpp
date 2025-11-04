@@ -71,7 +71,7 @@ Zombie::~Zombie()
 
 void Zombie::Init()
 {
-
+	m_state->Init(std::static_pointer_cast<Zombie>(shared_from_this()));
 }
 
 void Zombie::Update()

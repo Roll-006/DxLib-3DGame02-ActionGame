@@ -5,10 +5,6 @@
 #include "../ObjectPool/enemy_object_pool.hpp"
 #include "../JSON/json_loader.hpp"
 
-// MEMO : 「責務」
-// 掴み中は他エネミーに行動停止命令を送る
-// ターゲットの設定
-
 class EnemyManager final
 {
 public:
@@ -23,9 +19,13 @@ public:
 	void AttachTarget(const std::shared_ptr<CharacterBase>& target_character);
 	void DetachTarget();
 	
+private:
 	void NotifyAllowAction			 (const ReleaseEvent&			event);
 	void NotifyDisallowActionForcibly(const GrabEvent&				event);
+	void NotifyDisallowActionForcibly(const DeadBossEvent&			event);
 	void NotifyDetectedTarget		 (const OnTargetDetectedEvent&	event);
+
+	void NotifyDisallowActionForcibly(const std::string& origin_enemy_id);
 
 private:
 	std::shared_ptr<EnemyObjectPool>		m_object_pool;

@@ -1,12 +1,13 @@
 #include "boss_dead.hpp"
 
 boss_state::Dead::Dead() :
-	ActionStateBase			(static_cast<int>(boss_state::ActionStateKind::kDead)),
-	m_is_stop_all_state		(false),
-	m_elapsed_time_end_anim	(0.0f),
-	m_change_color_wait_time(0.0f),
-	m_is_start_disappear	(false),
-	m_current_material		()
+	ActionStateBase				(static_cast<int>(boss_state::ActionStateKind::kDead)),
+	m_is_stop_all_state			(false),
+	m_elapsed_time				(0.0f),
+	m_is_seted_time_scale		(false),
+	m_change_color_wait_time	(0.0f),
+	m_current_material			(),
+	m_dead_cameras_controller	(nullptr)
 {
 
 }
@@ -19,6 +20,7 @@ boss_state::Dead::~Dead()
 void boss_state::Dead::Update(std::shared_ptr<Boss>& obj)
 {
 	const auto delta_time = obj->GetDeltaTime();
+	m_elapsed_time += delta_time;
 
 	obj->DisallowStealthKill();
 
@@ -29,30 +31,16 @@ void boss_state::Dead::Update(std::shared_ptr<Boss>& obj)
 		ChangeMaterial(obj->GetModeler()->GetModelHandle(), 1.0f * delta_time);
 	}
 
-	// オブジェクトを下に落として消す
-	if (obj->GetAnimator()->IsPlayEnd(AnimatorBase::BodyKind::kUpperBody))
+	// タイムスケールを変更
+	if (m_elapsed_time > 6.5f && !m_is_seted_time_scale)
 	{
-		m_elapsed_time_end_anim += delta_time;
-		if (m_elapsed_time_end_anim >= kStartDisappearTime)
-		{
-			if (!m_is_start_disappear)
-			{
-				CollisionManager::GetInstance()->RemoveCollideObj(obj->GetObjHandle());
-				PhysicsManager  ::GetInstance()->AddIgnoreObjPhysicalBehavior(obj->GetObjHandle());
-				PhysicsManager  ::GetInstance()->AddIgnoreObjGravity(obj->GetObjHandle());
+		m_is_seted_time_scale = true;
 
-				// 離したことを演出カメラに通知
-				const auto model_hanlde = obj->GetModeler()->GetModelHandle();
-				auto	   hips_m		= MV1GetFrameLocalWorldMatrix(model_hanlde, MV1SearchFrame(model_hanlde, BonePath.HIPS));
-				const auto hips_pos		= MGetTranslateElem(hips_m);
-				const StartDisappearEnemyEvent event{ hips_pos - VGet(0.0f, 10.0f, 0.0f) };
-				EventSystem::GetInstance()->Publish(event);
-
-				m_is_start_disappear = true;
-			}
-
-			obj->Disappear();
-		}
+		const auto game_time_manager = GameTimeManager::GetInstance();
+		game_time_manager->SetTimeScale(TimeScaleLayerKind::kWorld,  0.0f);
+		game_time_manager->SetTimeScale(TimeScaleLayerKind::kPlayer, 0.0f);
+		game_time_manager->SetTimeScale(TimeScaleLayerKind::kEffect, 0.0f);
+		game_time_manager->SetTimeScale(TimeScaleLayerKind::kCamera, 0.0f);
 	}
 }
 
@@ -63,20 +51,31 @@ void boss_state::Dead::LateUpdate(std::shared_ptr<Boss>& obj)
 
 void boss_state::Dead::Enter(std::shared_ptr<Boss>& obj)
 {
-	m_elapsed_time_end_anim		= 0.0f;
+	m_elapsed_time				= 0.0f;
+	m_is_seted_time_scale		= false;
 	m_change_color_wait_time	= 0.0f;
-	m_is_start_disappear		= false;
 	m_current_material			= MaterialData();
+
+	// 演出用カメラを生成
+	const auto cinemachine_brain = CinemachineBrain::GetInstance();
+	m_dead_cameras_controller	 = std::make_shared<DeadBossVirtualCamerasController>(obj->GetModeler()->GetModelHandle(), obj->GetTransform());
+	cinemachine_brain->AddVirtualCameraController(m_dead_cameras_controller);
 
 	obj->RemoveCollider(ColliderKind::kCollider);
 
-	const DeadBossEvent event{ obj->GetModeler()->GetModelHandle() };
+	const DeadBossEvent event{ obj->GetEnemyID(), obj->GetModeler()->GetModelHandle()};
 	EventSystem::GetInstance()->Publish(event);
+
+	const auto game_time_manager = GameTimeManager::GetInstance();
+	game_time_manager->SetTimeScale(TimeScaleLayerKind::kPlayer, 0.0f);
 }
 
 void boss_state::Dead::Exit(std::shared_ptr<Boss>& obj)
 {
-
+	// 演出用カメラを削除
+	const auto cinemachine_brain = CinemachineBrain::GetInstance();
+	cinemachine_brain->RemoveVirtualCameraController(m_dead_cameras_controller);
+	m_dead_cameras_controller = nullptr;
 }
 
 std::shared_ptr<IState<Boss>> boss_state::Dead::ChangeState(std::shared_ptr<Boss>& obj)

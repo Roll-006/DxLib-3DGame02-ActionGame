@@ -78,7 +78,7 @@ void GameOverTab::Activate(const DeadPlayerEvent& event)
 
 void GameOverTab::ExecuteContinue()
 {
-	SceneFader::GetInstance()->StartFade(255, 200.0f);
+	SceneFader::GetInstance()->StartFade(UCHAR_MAX, 200.0f);
 
 	m_is_continue	= true;
 	m_can_select	= false;
@@ -86,7 +86,7 @@ void GameOverTab::ExecuteContinue()
 
 void GameOverTab::ExecuteQuitGame()
 {
-	SceneFader::GetInstance()->StartFade(255, 200.0f);
+	SceneFader::GetInstance()->StartFade(UCHAR_MAX, 200.0f);
 
 	m_is_quit_game	= true;
 	m_can_select	= false;
@@ -108,10 +108,10 @@ void GameOverTab::JudgeActive()
 
 void GameOverTab::CalcAlphaBlendNum()
 {
-	if (m_alpha_blend_num >= 255) { return; }
+	if (m_alpha_blend_num >= UCHAR_MAX) { return; }
 
 	const auto delta_time = GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kUI);
-	math::Increase(m_alpha_blend_num, static_cast<int>(kFadeSpeed * delta_time), 255, false);
+	math::Increase(m_alpha_blend_num, static_cast<int>(kFadeSpeed * delta_time), UCHAR_MAX, false);
 	m_result_screen->GetGraphicer()->SetBlendNum(m_alpha_blend_num);
 }
 

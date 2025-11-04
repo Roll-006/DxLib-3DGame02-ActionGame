@@ -75,7 +75,7 @@ void TitleTab::OnDraw(const int main_screen_handle) const
 
 void TitleTab::ExecuteGameStart()
 {
-	SceneFader::GetInstance()->StartFade(255, 300.0f);
+	SceneFader::GetInstance()->StartFade(UCHAR_MAX, 300.0f);
 
 	m_is_game_start = true;
 	m_can_select	= false;

@@ -319,7 +319,7 @@ void HealthGauge::CalcBlinkingAlphaBlendNum()
 	}
 
 	math::Increase(m_blinking_sin, kBlinkingSpeed * delta_time, DX_PI_F, is_loop);
-	m_blinking_alpha_blend_num = (sin(m_blinking_sin) * 0.5f + 0.5f) * 255;
+	m_blinking_alpha_blend_num = (sin(m_blinking_sin) * 0.5f + 0.5f) * UCHAR_MAX;
 
 	// 警告サークルは形状が不変であるため即座に適用
 	// HPが12.5%以下の場合のみ警告点滅を描画

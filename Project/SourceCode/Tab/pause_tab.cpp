@@ -85,7 +85,7 @@ void PauseTab::Update()
 	if (m_warning_restart_tab->IsDecide())
 	{
 		const auto fader = SceneFader::GetInstance();
-		fader->StartFade(255, 150.0f);
+		fader->StartFade(UCHAR_MAX, 150.0f);
 
 		m_is_restart = true;
 	}
@@ -97,7 +97,7 @@ void PauseTab::Update()
 	if (m_warning_quit_game_tab->IsDecide())
 	{
 		const auto fader = SceneFader::GetInstance();
-		fader->StartFade(255, 150.0f);
+		fader->StartFade(UCHAR_MAX, 150.0f);
 
 		m_is_quit_game = true;
 	}
@@ -173,7 +173,7 @@ void PauseTab::JudgeDeactivate()
 void PauseTab::JudgeSelect()
 {
 	const auto is_active_warning_tag	= m_warning_quit_game_tab->IsActive() || m_warning_restart_tab->IsActive();
-	const auto is_max_blend_num			= m_result_screen->GetGraphicer()->GetBlendNum() >= 255;
+	const auto is_max_blend_num			= m_result_screen->GetGraphicer()->GetBlendNum() >= UCHAR_MAX;
 
 	m_can_select = is_max_blend_num && !is_active_warning_tag ? true : false;
 }
@@ -187,7 +187,7 @@ void PauseTab::CalcAlphaBlendNum()
 	}
 	else
 	{
-		math::Increase(m_alpha_blend_num, static_cast<int>(kFadeSpeed * delta_time), 255, false);
+		math::Increase(m_alpha_blend_num, static_cast<int>(kFadeSpeed * delta_time), UCHAR_MAX, false);
 	}
 
 	m_result_screen->GetGraphicer()->SetBlendNum(m_alpha_blend_num);
@@ -211,7 +211,7 @@ void PauseTab::CreateResultScreen()
 
 void PauseTab::BackTab()
 {
-	if (m_result_screen->GetGraphicer()->GetBlendNum() < 255
+	if (m_result_screen->GetGraphicer()->GetBlendNum() < UCHAR_MAX
 		|| m_warning_quit_game_tab->IsActive()
 		|| m_warning_restart_tab->IsActive())
 	{

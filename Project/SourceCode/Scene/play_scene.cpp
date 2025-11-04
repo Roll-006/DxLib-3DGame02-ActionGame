@@ -30,7 +30,10 @@ PlayScene::PlayScene() :
 	pool_holder->AddObjectPool(m_rifle_cartridge_object_pool);
 	pool_holder->AddObjectPool(m_play_scene_effect_object_pool);
 
+	// ƒJƒƒ‰Ý’è
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
+	cinemachine_brain->RemoveAllVirtualCameraController();
+	cinemachine_brain->RemoveAllVirtualCamera();
 	cinemachine_brain->AddVirtualCameraController(std::make_shared<ControlVirtualCamerasController>(*m_player.get()));
 
 	// ƒ‰ƒCƒg‚ÌÝ’è
@@ -43,12 +46,16 @@ PlayScene::PlayScene() :
 	TabDrawer::GetInstance()->AddTab		(m_game_over_tab);
 	TabDrawer::GetInstance()->AddTab		(m_pause_tab);
 	UIDrawer ::GetInstance()->AddUICreator	(m_player_ui_creator);
+	UIDrawer ::GetInstance()->GetUICreator	(UICreatorName.SCREEN_FILTER_CREATOR)->Init();
 
 	Init();
 }
 
 PlayScene::~PlayScene()
 {
+	m_player->Init();
+	m_enemy_manager->Init();
+
 	m_player->RemoveToObjManager();
 	m_ground->RemoveToObjManager();
 	m_houses->RemoveToObjManager();
@@ -89,7 +96,7 @@ void PlayScene::Update()
 {
 	StartFadeIn();
 
-	if (SceneFader::GetInstance()->GetAlphaBlendNum() >= 255) { return; }
+	if (SceneFader::GetInstance()->GetAlphaBlendNum() >= UCHAR_MAX) { return; }
 
 	m_player							->Update();
 	m_enemy_manager						->Update();
@@ -105,7 +112,7 @@ void PlayScene::Update()
 
 void PlayScene::LateUpdate()
 {
-	if (SceneFader::GetInstance()->GetAlphaBlendNum() >= 255) { return; }
+	if (SceneFader::GetInstance()->GetAlphaBlendNum() >= UCHAR_MAX) { return; }
 
 	m_player							->LateUpdate();
 	m_enemy_manager						->LateUpdate();
@@ -118,7 +125,7 @@ void PlayScene::LateUpdate()
 
 void PlayScene::DrawToShadowMap() const
 {
-	if (SceneFader::GetInstance()->GetAlphaBlendNum() >= 255) { return; }
+	if (SceneFader::GetInstance()->GetAlphaBlendNum() >= UCHAR_MAX) { return; }
 
 	m_player							->Draw();
 	m_enemy_manager						->Draw();
@@ -129,7 +136,7 @@ void PlayScene::DrawToShadowMap() const
 
 void PlayScene::Draw() const
 {
-	if (SceneFader::GetInstance()->GetAlphaBlendNum() >= 255) { return; }
+	if (SceneFader::GetInstance()->GetAlphaBlendNum() >= UCHAR_MAX) { return; }
 
 	m_player							->Draw();
 	m_enemy_manager						->Draw();

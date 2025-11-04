@@ -17,7 +17,8 @@ ScreenFilterCreator::~ScreenFilterCreator()
 
 void ScreenFilterCreator::Init()
 {
-
+	m_cinema_scope_frame->Init();
+	m_damage_filter		->Init();
 }
 
 void ScreenFilterCreator::LateUpdate()

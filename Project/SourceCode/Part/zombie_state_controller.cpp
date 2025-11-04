@@ -17,6 +17,13 @@ ZombieStateController::~ZombieStateController()
 
 }
 
+void ZombieStateController::Init(std::shared_ptr<Zombie> zombie)
+{
+	m_ai_state		.at(TimeKind::kCurrent)->Exit(zombie);
+	m_move_state	.at(TimeKind::kCurrent)->Exit(zombie);
+	m_action_state	.at(TimeKind::kCurrent)->Exit(zombie);
+}
+
 void ZombieStateController::Update(std::shared_ptr<Zombie> zombie)
 {
 	ChangeState(zombie);

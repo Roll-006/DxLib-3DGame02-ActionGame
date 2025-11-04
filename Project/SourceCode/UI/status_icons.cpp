@@ -6,7 +6,7 @@ StatusIcons::StatusIcons(const std::shared_ptr<Player>& player) :
 	m_equip_weapon_icon			(std::make_shared<EquipWeaponIcon>(player->GetCurrentEquipWeapons())),
 	m_health_gauge_graphic		(std::make_shared<Graphicer>(m_health_gauge->GetScreenHandle())),
 	m_equip_weapon_icon_graphic	(std::make_shared<Graphicer>(m_equip_weapon_icon->GetScreenHandle())),
-	m_alpha_blend_num			(255),
+	m_alpha_blend_num			(UCHAR_MAX),
 	m_is_active_cutscene		(false)
 {
 	// ƒCƒxƒ“ƒg“o˜^
@@ -77,7 +77,7 @@ void StatusIcons::CalcResultScreenAlphaBlendNum()
 	}
 	else
 	{
-		math::Increase(m_alpha_blend_num, static_cast<int>(700.0f * delta_time), 255, false);
+		math::Increase(m_alpha_blend_num, static_cast<int>(700.0f * delta_time), UCHAR_MAX, false);
 	}
 
 	m_result_screen->GetGraphicer()->SetBlendNum(m_alpha_blend_num);

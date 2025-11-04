@@ -158,7 +158,7 @@ public:
 	static constexpr short			kStickMaxSlope		= SHRT_MAX;		// 傾きの最大値
 	static constexpr short			kStickMinSlope		= SHRT_MIN;		// 傾きの最小値
 	static constexpr short			kStickDeadZone		= 10000;		// スティック入力無効範囲(指定可能範囲 : -32768～32767)
-	static constexpr unsigned char	kTriggerDeadZone	= 50;			// トリガー入力無効範囲  (指定可能範囲 : 0～255)
+	static constexpr unsigned char	kTriggerDeadZone	= 50;			// トリガー入力無効範囲  (指定可能範囲 : 0～UCHAR_MAX)
 
 private:
 	static constexpr int			kMouseButtonNum		= 8;

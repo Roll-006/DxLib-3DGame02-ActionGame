@@ -432,6 +432,7 @@
     <ClCompile Include="SourceCode\VirtualCamera\cinemachine_brain.cpp" />
     <ClCompile Include="SourceCode\VirtualCamera\dead_virtual_cameras_controller.cpp" />
     <ClCompile Include="SourceCode\VirtualCamera\control_virtual_cameras_controller.cpp" />
+    <ClCompile Include="SourceCode\VirtualCamera\dead_boss_virtual_cameras_controller.cpp" />
     <ClCompile Include="SourceCode\VirtualCamera\stealth_kill_virtual_camera_controller.cpp" />
     <ClCompile Include="SourceCode\VirtualCamera\grab_virtual_camera_controller.cpp" />
     <ClCompile Include="SourceCode\VirtualCamera\rocket_launcher_virtual_cameras_controller.cpp" />
@@ -876,6 +877,7 @@
     <ClInclude Include="SourceCode\VirtualCamera\cinemachine_brain.hpp" />
     <ClInclude Include="SourceCode\VirtualCamera\dead_virtual_cameras_controller.hpp" />
     <ClInclude Include="SourceCode\VirtualCamera\control_virtual_cameras_controller.hpp" />
+    <ClInclude Include="SourceCode\VirtualCamera\dead_boss_virtual_cameras_controller.hpp" />
     <ClInclude Include="SourceCode\VirtualCamera\stealth_kill_virtual_camera_controller.hpp" />
     <ClInclude Include="SourceCode\VirtualCamera\grab_virtual_camera_controller.hpp" />
     <ClInclude Include="SourceCode\VirtualCamera\rocket_launcher_virtual_cameras_controller.hpp" />

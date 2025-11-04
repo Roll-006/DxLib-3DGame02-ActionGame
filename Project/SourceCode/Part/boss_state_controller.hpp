@@ -34,8 +34,10 @@ public:
 	BossStateController();
 	~BossStateController() override;
 
+	void Init		(std::shared_ptr<Boss> boss) override;
 	void Update		(std::shared_ptr<Boss> boss) override;
 	void LateUpdate	(std::shared_ptr<Boss> boss) override;
+
 
 	/// @brief ステートを取得
 	template<typename StateT, typename ObjT>

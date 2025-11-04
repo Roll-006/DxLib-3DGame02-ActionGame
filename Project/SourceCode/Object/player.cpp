@@ -86,7 +86,7 @@ Player::~Player()
 
 void Player::Init()
 {
-
+	m_state->Init(std::static_pointer_cast<Player>(shared_from_this()));
 }
 
 void Player::Update()
@@ -182,6 +182,8 @@ void Player::Draw() const
 	DrawColliders();
 
 	const auto p = m_transform->GetPos(CoordinateKind::kWorld);
+	const auto d1 = m_move_dir.at(TimeKind::kCurrent);
+	const auto d2 = m_move_dir.at(TimeKind::kNext);
 	printfDx("%f, %f, %f\n", p.x, p.y, p.z);
 }
 

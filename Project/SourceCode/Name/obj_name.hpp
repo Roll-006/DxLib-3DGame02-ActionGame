@@ -8,7 +8,8 @@ static struct ObjName
 	const std::string TITLE_CAMERA								= "title_camera";
 	const std::string ROT_CONTROL_VIRTUAL_CAMERA				= "rot_control_virtual_camera";
 	const std::string AIM_CONTROL_VIRTUAL_CAMERA				= "aim_control_virtual_camera";
-	const std::string DEAD_VIRTUAL_CAMERA						= "dead_virtual_camera";
+	const std::string DEAD_PLAYER_VIRTUAL_CAMERA				= "dead_player_virtual_camera";
+	const std::string DEAD_BOSS_VIRTUAL_CAMERA					= "dead_boss_virtual_camera";
 	const std::string GRAB_VIRTUAL_CAMERA						= "grab_virtual_camera";
 	const std::string STEALTH_KILL_VIRTUAL_CAMERA				= "stealth_kill_virtual_camera";
 	const std::string ROCKET_LAUNCHER_ENTER_ROT_VIRTUAL_CAMERA	= "rocket_launcher_enter_rot_virtual_camera";

@@ -51,7 +51,7 @@ MainMenuSelectButton::MainMenuSelectButton(const ButtonKind button_kind, const V
 	// Å‰‚©‚ç‘I‘ð‚³‚ê‚Ä‚¢‚éê‡‚Ìˆ—
 	if (is_init_selected)
 	{
-		m_alpha_blend_num		= 255;
+		m_alpha_blend_num		= UCHAR_MAX;
 		m_current_graphic_scale = kSelectScale;
 	}
 
@@ -84,7 +84,7 @@ void MainMenuSelectButton::Draw() const
 
 void MainMenuSelectButton::CalcAlphaBlendNum()
 {
-	m_alpha_blend_num = m_is_active ? 255 : kNonSelectAlphaBlendNum;
+	m_alpha_blend_num = m_is_active ? UCHAR_MAX : kNonSelectAlphaBlendNum;
 	m_button_screen->GetGraphicer()->SetBlendNum(m_alpha_blend_num);
 }
 

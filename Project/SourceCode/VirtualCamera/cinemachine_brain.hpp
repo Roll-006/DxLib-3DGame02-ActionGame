@@ -5,6 +5,7 @@
 
 #include "../VirtualCamera/control_virtual_cameras_controller.hpp"
 #include "../VirtualCamera/dead_virtual_cameras_controller.hpp"
+#include "../VirtualCamera/dead_boss_virtual_cameras_controller.hpp"
 #include "../VirtualCamera/rocket_launcher_virtual_cameras_controller.hpp"
 #include "../VirtualCamera/grab_virtual_camera_controller.hpp"
 

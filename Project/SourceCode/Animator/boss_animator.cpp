@@ -37,7 +37,7 @@ void BossAnimator::LoadAnim()
 	AddAnimHandle(static_cast<int>(BossAnimKind::kEnterNeckBite),				BossAnimPath.ENTER_NECK_BITE,				0, AnimTag.NONE, 20.0f,  true, true);
 	AddAnimHandle(static_cast<int>(BossAnimKind::kEnterNeckBite),				BossAnimPath.EXIT_NECK_BITE,				0, AnimTag.NONE, 20.0f,  false);
 	AddAnimHandle(static_cast<int>(BossAnimKind::kStealthKilled),				BossAnimPath.DEAD_03,						0, AnimTag.NONE, 60.0f,  false);
-	AddAnimHandle(static_cast<int>(BossAnimKind::kDead),						BossAnimPath.DEAD_01,						0, AnimTag.NONE, 60.0f,  false);
+	AddAnimHandle(static_cast<int>(BossAnimKind::kDead),						BossAnimPath.DEAD,						0, AnimTag.NONE, 60.0f,  false);
 	AddAnimHandle(static_cast<int>(BossAnimKind::kCrouchDead),					BossAnimPath.CROUCH_DEAD,					0, AnimTag.NONE, 20.0f,  false);
 	AddAnimHandle(static_cast<int>(BossAnimKind::kFlyingKnockbackUp),			BossAnimPath.FLYING_KNOCKBACK_UP,			0, AnimTag.NONE, 35.0f,  false);
 	AddAnimHandle(static_cast<int>(BossAnimKind::kFlyingKnockbackDown),			BossAnimPath.FLYING_KNOCKBACK_DOWN,			0, AnimTag.NONE, 35.0f,	 false);
@@ -132,11 +132,7 @@ void BossAnimator::CombineMoveNullWithAction()
 		break;
 
 	case boss_state::ActionStateKind::kDead:
-		if (	prev_action_state_kind != boss_state::ActionStateKind::kKnockback
-			 && prev_action_state_kind != boss_state::ActionStateKind::kStealthKilled)
-		{
-			AttachResultAnim(static_cast<int>(BossAnimKind::kDead));
-		}
+		AttachResultAnim(static_cast<int>(BossAnimKind::kDead));
 		break;
 
 	default:

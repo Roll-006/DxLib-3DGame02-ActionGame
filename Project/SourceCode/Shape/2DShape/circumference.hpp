@@ -17,7 +17,7 @@
 //	/// @brief 描画
 //	/// @param is_draw_normal_vector 法線ベクトルを描画するかどうか
 //	/// @param is_draw_frame 枠を描画させるかどうか
-//	/// @param alpha_blend_num 透過値 (0～255 : 0で完全透過)
+//	/// @param alpha_blend_num 透過値 (0～UCHAR_MAX : 0で完全透過)
 //	void Draw(bool is_draw_normal_vector, bool is_draw_frame, int vertex_num, int alpha_blend_num) const;
 //
 //	[[nodiscard]] VECTOR GetPos() const		{ return m_pos; }

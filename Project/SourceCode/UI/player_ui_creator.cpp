@@ -14,13 +14,15 @@ PlayerUICreator::PlayerUICreator(std::shared_ptr<Player>& player) :
 									player->GetWeaponShortcutSelecter()))
 {
 	// ƒCƒxƒ“ƒg“o˜^
-	EventSystem::GetInstance()->Subscribe<DeadPlayerEvent>(this, &PlayerUICreator::Deactivate);
+	EventSystem::GetInstance()->Subscribe<DeadPlayerEvent>	(this, &PlayerUICreator::Deactivate);
+	EventSystem::GetInstance()->Subscribe<DeadBossEvent>	(this, &PlayerUICreator::Deactivate);
 }
 
 PlayerUICreator::~PlayerUICreator()
 {
 	// ƒCƒxƒ“ƒg‚Ì“o˜^‰ðœ
 	EventSystem::GetInstance()->Unsubscribe<DeadPlayerEvent>(this, &PlayerUICreator::Deactivate);
+	EventSystem::GetInstance()->Unsubscribe<DeadBossEvent>	(this, &PlayerUICreator::Deactivate);
 }
 
 void PlayerUICreator::Init()
@@ -55,6 +57,11 @@ void PlayerUICreator::OnDraw(const int main_screen_handle)
 
 #pragma region Event
 void PlayerUICreator::Deactivate(const DeadPlayerEvent& event)
+{
+	m_is_active = false;
+}
+
+void PlayerUICreator::Deactivate(const DeadBossEvent& event)
 {
 	m_is_active = false;
 }

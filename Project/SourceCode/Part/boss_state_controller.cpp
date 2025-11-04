@@ -17,6 +17,13 @@ BossStateController::~BossStateController()
 
 }
 
+void BossStateController::Init(std::shared_ptr<Boss> boss)
+{
+	m_ai_state		.at(TimeKind::kCurrent)->Exit(boss);
+	m_move_state	.at(TimeKind::kCurrent)->Exit(boss);
+	m_action_state	.at(TimeKind::kCurrent)->Exit(boss);
+}
+
 void BossStateController::Update(std::shared_ptr<Boss> boss)
 {
 	ChangeState(boss);
