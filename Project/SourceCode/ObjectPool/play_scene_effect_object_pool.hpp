@@ -16,6 +16,7 @@ private:
 	static constexpr int kHitBulletLightPoolSize					= 10;
 	static constexpr int kExpandingSmokePoolSize					= 10;
 	static constexpr int kDisappearSmokePoolSize					= 10;
+	static constexpr int kDeadBossSmokePoolSize						= 1;
 	static constexpr int kShotFirePoolSize							= 10;
 	static constexpr int kBloodPoolSize								= 10;
 };

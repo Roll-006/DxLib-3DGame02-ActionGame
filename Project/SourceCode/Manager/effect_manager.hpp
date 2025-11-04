@@ -40,6 +40,8 @@ private:
 	void OutputTitleSceneEffect			(const OnChangeTitleSceneEvent& event);
 	/// @brief 敵が消える際のエフェクトを出力
 	void OutputDisappearEnemyEffect		(const StartDisappearEnemyEvent& event);
+	/// @brief ボス死亡時のエフェクトを出力
+	void OutputDeadBossEffect			(const DeadBossEvent& event);
 	#pragma endregion
 
 

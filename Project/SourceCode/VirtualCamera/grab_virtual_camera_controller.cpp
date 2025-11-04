@@ -33,13 +33,16 @@ GrabVirtualCameraController::~GrabVirtualCameraController()
 	EventSystem::GetInstance()->Unsubscribe<OnGrabEvent>	(this, &GrabVirtualCameraController::SetGrabbedModelHandle);
 
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
+	cinemachine_brain->SetBlendTime(1.0f);
 	cinemachine_brain->RemoveVirtualCamera(m_camera->GetCameraHandle());
 
 	// ‘€ìƒJƒƒ‰‚ð•œ‹A‚³‚¹‚é
 	const auto control_cameras_controller = cinemachine_brain->GetVirtualCameraController(VirtualCameraControllerKind::kControl);
-	cinemachine_brain->SetBlendTime(1.0f);
-	control_cameras_controller->Activate();
-	control_cameras_controller->GetHaveVirtualCamera(ObjName.ROT_CONTROL_VIRTUAL_CAMERA)->Activate();
+	if (control_cameras_controller)
+	{
+		control_cameras_controller->Activate();
+		control_cameras_controller->GetHaveVirtualCamera(ObjName.ROT_CONTROL_VIRTUAL_CAMERA)->Activate();
+	}
 
 	m_grabber_modeler = nullptr;
 	m_grabbed_modeler = nullptr;

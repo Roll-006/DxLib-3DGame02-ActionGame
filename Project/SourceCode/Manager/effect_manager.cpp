@@ -5,13 +5,14 @@
 EffectManager::EffectManager()
 {
 	// ƒCƒxƒ“ƒg“o˜^
-	EventSystem::GetInstance()->Subscribe<WeaponShotEvent>			(this, &EffectManager::OutputWeaponShotEffect);
-	EventSystem::GetInstance()->Subscribe<RocketLauncherShotEvent>	(this, &EffectManager::OutputRocketLauncherShotEffect);
-	EventSystem::GetInstance()->Subscribe<OnShotBulletEvent>		(this, &EffectManager::OutputOnShotBulletEffect);
-	EventSystem::GetInstance()->Subscribe<OnHitBulletEvent>			(this, &EffectManager::OutputOnHitBulletEffect);
-	EventSystem::GetInstance()->Subscribe<OnDamageEvent>			(this, &EffectManager::OutputOnDamageEffect);
-	EventSystem::GetInstance()->Subscribe<OnChangeTitleSceneEvent>	(this, &EffectManager::OutputTitleSceneEffect);
-	EventSystem::GetInstance()->Subscribe<StartDisappearEnemyEvent>	(this, &EffectManager::OutputDisappearEnemyEffect);
+	EventSystem::GetInstance()->Subscribe<WeaponShotEvent>				(this, &EffectManager::OutputWeaponShotEffect);
+	EventSystem::GetInstance()->Subscribe<RocketLauncherShotEvent>		(this, &EffectManager::OutputRocketLauncherShotEffect);
+	EventSystem::GetInstance()->Subscribe<OnShotBulletEvent>			(this, &EffectManager::OutputOnShotBulletEffect);
+	EventSystem::GetInstance()->Subscribe<OnHitBulletEvent>				(this, &EffectManager::OutputOnHitBulletEffect);
+	EventSystem::GetInstance()->Subscribe<OnDamageEvent>				(this, &EffectManager::OutputOnDamageEffect);
+	EventSystem::GetInstance()->Subscribe<OnChangeTitleSceneEvent>		(this, &EffectManager::OutputTitleSceneEffect);
+	EventSystem::GetInstance()->Subscribe<StartDisappearEnemyEvent>		(this, &EffectManager::OutputDisappearEnemyEffect);
+	EventSystem::GetInstance()->Subscribe<DeadBossEvent>				(this, &EffectManager::OutputDeadBossEffect);
 }
 
 EffectManager::~EffectManager()
@@ -24,6 +25,7 @@ EffectManager::~EffectManager()
 	EventSystem::GetInstance()->Unsubscribe<OnDamageEvent>				(this, &EffectManager::OutputOnDamageEffect);
 	EventSystem::GetInstance()->Unsubscribe<OnChangeTitleSceneEvent>	(this, &EffectManager::OutputTitleSceneEffect);
 	EventSystem::GetInstance()->Unsubscribe<StartDisappearEnemyEvent>	(this, &EffectManager::OutputDisappearEnemyEffect);
+	EventSystem::GetInstance()->Unsubscribe<DeadBossEvent>				(this, &EffectManager::OutputDeadBossEffect);
 }
 
 void EffectManager::Update()
@@ -258,6 +260,23 @@ void EffectManager::OutputDisappearEnemyEffect(const StartDisappearEnemyEvent& e
 	{
 		const auto effect = std::static_pointer_cast<Effect>(obj);
 		effect->GetTransform()->SetPos(CoordinateKind::kWorld, event.disppear_pos);
+		AddEffect(effect);
+	}
+}
+
+void EffectManager::OutputDeadBossEffect(const DeadBossEvent& event)
+{
+	const auto pool = ObjectPoolHolder::GetInstance()->GetObjectPool(ObjectPoolName.PLAY_SCENE_EFFECT_POOL);
+	std::shared_ptr<ObjBase> obj = nullptr;
+
+	obj = pool->GetObj(ObjName.DEAD_BOSS_SMOKE_EFFECT);
+	if (obj)
+	{
+		auto	   hips_m = MV1GetFrameLocalWorldMatrix(event.model_handle, MV1SearchFrame(event.model_handle, BonePath.HIPS));
+		const auto hips_pos = MGetTranslateElem(hips_m);
+
+		const auto effect = std::static_pointer_cast<Effect>(obj);
+		effect->GetTransform()->SetPos(CoordinateKind::kWorld, hips_pos);
 		AddEffect(effect);
 	}
 }
