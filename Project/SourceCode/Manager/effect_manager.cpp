@@ -259,6 +259,7 @@ void EffectManager::OutputDisappearBossEffect(const DisappearBossEvent& event)
 	// ‰Œ
 	obj = pool->GetObj(ObjName.DEAD_BOSS_SMOKE_EFFECT);
 	if (obj)
+
 	{
 		const auto effect = std::static_pointer_cast<Effect>(obj);
 		effect->GetTransform()->SetPos(CoordinateKind::kWorld, hips_pos);

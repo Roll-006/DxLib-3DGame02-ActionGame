@@ -51,7 +51,7 @@ void Bullet::Draw() const
 {
 	if (!IsActive()) { return; }
 
-	DrawColliders();
+	//DrawColliders();
 }
 
 void Bullet::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)

@@ -53,7 +53,7 @@ void ShellCasing::Draw() const
 
 	m_modeler->Draw();
 
-	DrawColliders();
+	//DrawColliders();
 }
 
 void ShellCasing::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)

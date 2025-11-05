@@ -77,7 +77,7 @@ void RocketBombExplosionEffect::Draw() const
 {
 	if (!IsActive()) { return; }
 
-	DrawColliders();
+	//DrawColliders();
 }
 
 void RocketBombExplosionEffect::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)

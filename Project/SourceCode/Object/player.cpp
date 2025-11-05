@@ -179,7 +179,7 @@ void Player::Draw() const
 		if (attach_weapon.second) { attach_weapon.second->Draw(); }
 	}
 
-	DrawColliders();
+	//DrawColliders();
 
 	const auto p = m_transform->GetPos(CoordinateKind::kWorld);
 	const auto d1 = m_move_dir.at(TimeKind::kCurrent);

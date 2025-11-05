@@ -43,7 +43,7 @@ void Knife::Draw() const
 
 	m_modeler->Draw();
 
-	DrawColliders();
+	//DrawColliders();
 }
 
 void Knife::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
