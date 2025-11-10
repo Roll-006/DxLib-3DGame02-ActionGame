@@ -36,7 +36,7 @@ Player::Player() :
 
 	// 初期pos・dirを設定
 	m_look_dir[TimeKind::kCurrent] = m_look_dir[TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);
-	m_transform->SetPos(CoordinateKind::kWorld, VGet(-146.2f, 95.0f, -756.0f));
+	m_transform->SetPos(CoordinateKind::kWorld, VGet(-146.2f, 5095.0f, -756.0f));
 	m_transform->SetRot(CoordinateKind::kWorld, m_look_dir.at(TimeKind::kCurrent));
 
 	// コライダー・トリガーを設定
@@ -184,7 +184,7 @@ void Player::Draw() const
 	const auto p = m_transform->GetPos(CoordinateKind::kWorld);
 	const auto d1 = m_move_dir.at(TimeKind::kCurrent);
 	const auto d2 = m_move_dir.at(TimeKind::kNext);
-	//printfDx("%f, %f, %f\n", p.x, p.y, p.z);
+	printfDx("%f, %f, %f\n", p.x, p.y, p.z);
 }
 
 void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)

@@ -157,7 +157,7 @@ void RocketLauncherVirtualCamerasController::CalcAimTransformForEnterRotCamera()
 		m_zoom_in_camera->Activate();
 
 		const auto cinemachine_brain = CinemachineBrain::GetInstance();
-		cinemachine_brain->SetBlendTime(0.0f);
+		cinemachine_brain->SetBlendTime(0.2f);
 	}
 
 	// 追跡するボーンから行列を取得
@@ -242,7 +242,7 @@ void RocketLauncherVirtualCamerasController::CalcAimTransformForZoomOutCamera()
 		m_follow_offset_for_exit_rot = m_follow_offset_for_zoom_out;
 
 		const auto cinemachine_brain = CinemachineBrain::GetInstance();
-		cinemachine_brain->SetBlendTime(1.0f);
+		cinemachine_brain->SetBlendTime(0.6f);
 	}
 
 	// カメラの追跡対象となるトランスフォームの情報を更新

@@ -70,7 +70,7 @@ void player_state::ShotRocketLauncher::Enter(std::shared_ptr<Player>& obj)
 	cinemachine_brain->AddVirtualCameraController(m_rocket_launcher_camera_controller);
 
 	obj->DetachWeapon(obj->GetCurrentEquipWeapon(WeaponSlotKind::kMain));
-	obj->HoldWeapon(obj->GetCurrentEquipWeapon(WeaponSlotKind::kMain));
+	obj->HoldWeapon  (obj->GetCurrentEquipWeapon(WeaponSlotKind::kMain));
 }
 
 void player_state::ShotRocketLauncher::Exit(std::shared_ptr<Player>& obj)
@@ -79,10 +79,6 @@ void player_state::ShotRocketLauncher::Exit(std::shared_ptr<Player>& obj)
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	cinemachine_brain->RemoveVirtualCameraController(m_rocket_launcher_camera_controller);
 	m_rocket_launcher_camera_controller = nullptr;
-
-	// 演出終了後にリコイル処理
-	//const auto gun = std::static_pointer_cast<GunBase>(obj->GetCurrentHeldWeapon());
-	//std::static_pointer_cast<ControlVirtualCamerasController>(camera_control)->OnRecoil(*gun.get());
 
 	obj->ReleaseWeapon();
 	obj->AttachWeapon(obj->GetCurrentEquipWeapon(WeaponSlotKind::kMain));

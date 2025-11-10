@@ -21,7 +21,7 @@ namespace player_state
 		[[nodiscard]] bool IsStopAllState() const override { return m_is_stop_all_state; }
 
 	private:
-		static constexpr float kShotWaitTime = 2.3f;	// ’eŠÛ‚ª”­ŽË‚³‚ê‚é‚Ü‚Å‚Ì‘Ò‚¿ŽžŠÔ
+		static constexpr float kShotWaitTime = 1.2f;	// ’eŠÛ‚ª”­ŽË‚³‚ê‚é‚Ü‚Å‚Ì‘Ò‚¿ŽžŠÔ
 
 		std::shared_ptr<RocketLauncherVirtualCamerasController> m_rocket_launcher_camera_controller;
 		float m_wait_timer;

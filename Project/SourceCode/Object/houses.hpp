@@ -1,9 +1,12 @@
 #pragma once
-#include "../Base/obj_base.hpp"
+#include "../Base/physical_obj_base.hpp"
+
 #include "../Part/modeler.hpp"
 #include "../Manager/obj_manager.hpp"
+#include "../Manager/collision_manager.hpp"
+#include "../Manager/physics_manager.hpp"
 
-class Houses final : public ObjBase
+class Houses final : public PhysicalObjBase
 {
 public:
 	Houses();
@@ -14,6 +17,8 @@ public:
 	void LateUpdate()				override;
 	void Draw()				const	override;
 
+	void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) override;
+
 	void AddToObjManager()			override;
 	void RemoveToObjManager()		override;
 
@@ -22,8 +27,9 @@ public:
 
 private:
 	std::shared_ptr<Modeler> m_modeler;
+	std::shared_ptr<Modeler> m_collision_modeler;
 
 	static constexpr VECTOR kBasicAngle = { 0.0f, 0.0f, 0.0f };
-	static constexpr float  kBasicScale = 50.0f;
+	static constexpr float  kBasicScale = 0.8f;
 	static constexpr VECTOR kPos		= { 0.0f, 200.0f, 0.0f };
 };
