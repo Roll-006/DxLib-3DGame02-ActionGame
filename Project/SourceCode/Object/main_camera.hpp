@@ -54,5 +54,5 @@ private:
 	VECTOR	m_aim_pos;
 	float	m_collider_radius;
 	bool	m_is_active_grab_collider;
-	bool	m_grabbed_obj_handle;
+	int		m_grabbed_obj_handle;
 };

@@ -1800,7 +1800,9 @@
     <ClInclude Include="SourceCode\VirtualCamera\dead_boss_virtual_cameras_controller.hpp">
       <Filter>SourceCode\VirtualCamera</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Event\disappear_boss_event.hpp" />
+    <ClInclude Include="SourceCode\Event\disappear_boss_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="SourceCode">

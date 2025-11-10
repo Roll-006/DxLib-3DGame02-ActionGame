@@ -63,7 +63,7 @@ void PlayerAnimator::LoadAnim()
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kSpinningSlashKnife),		SWATAnimPath.SPINNING_SLASH_KNIFE,			0, AnimTag.NONE, 50.0f,  false);
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kStealthKill),				SWATAnimPath.STEALTH_KILL,					0, AnimTag.NONE, 60.0f,  false);
 
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardRun),			SWATAnimPath.MOVE_FORWARD_RUN_01,			0, AnimTag.MOVE, 50.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardRun),			SWATAnimPath.MOVE_FORWARD_RUN_01,			0, AnimTag.MOVE, 55.0f,  true);
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardRunInjured),		SWATAnimPath.MOVE_FORWARD_RUN_INJURED,		0, AnimTag.MOVE, 50.0f,  true);
 
 	// 上半身用
