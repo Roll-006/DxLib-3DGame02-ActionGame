@@ -10,7 +10,7 @@ public:
 	~EnemyObjectPool() override;
 
 private:
-	static constexpr int kZombiePoolSize	= 20;
+	static constexpr int kZombiePoolSize	= 15;
 	static constexpr int kBossPoolSize		= 1;
 
 	int m_id_count;

@@ -25,7 +25,6 @@
 #include "../State/BossState/boss_stand_stun.hpp"
 #include "../State/BossState/boss_crouch_left_stun.hpp"
 #include "../State/BossState/boss_crouch_right_stun.hpp"
-#include "../State/BossState/boss_play_dead.hpp"
 #include "../State/BossState/boss_dead.hpp"
 
 class BossStateController final : public EnemyStateControllerBase<Boss>

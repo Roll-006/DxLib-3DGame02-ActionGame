@@ -16,7 +16,7 @@ EnemyManager::EnemyManager() :
 	{
 		// ƒ]ƒ“ƒr
 		const auto init_zombie_size = data.at("init_enemies").at("zombie").size();
-		for (size_t i = 0; i < 3; ++i)
+		for (size_t i = 0; i < init_zombie_size; ++i)
 		{
 			const auto enemy		= std::static_pointer_cast<EnemyBase>(m_object_pool->GetObj(ObjName.ZOMBIE));
 			const auto pos			= data.at("init_enemies").at("zombie").at(std::to_string(i)).at("position").get<VECTOR>();

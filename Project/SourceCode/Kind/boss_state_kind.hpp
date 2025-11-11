@@ -26,8 +26,6 @@ namespace boss_state
 		kActionNull,			// NULL
 		kDetected,				// 発見
 		kRun,					// ダッシュ
-		kGrab,					// 掴み
-		kGrabRun,				// 掴みダッシュ
 		kStealthKilled,			// ステルスキルされた
 		kKnockback,				// ノックバック
 		kBackwardKnockback,		// ノックバック(後ろ)
@@ -35,7 +33,6 @@ namespace boss_state
 		kStandStun,				// 怯み(立ち状態)
 		kCrouchLeftStun,		// 怯み(左足しゃがみ状態)
 		kCrouchRightStun,		// 怯み(右足しゃがみ状態)
-		kPlayDead,				// 死んだふり
 		kDead,					// 死亡
 	};
 }

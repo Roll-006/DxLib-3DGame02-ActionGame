@@ -640,9 +640,6 @@
     <ClCompile Include="SourceCode\State\BossState\boss_patrol.cpp">
       <Filter>SourceCode\State\BossState</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\State\BossState\boss_play_dead.cpp">
-      <Filter>SourceCode\State\BossState</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\State\BossState\boss_run_attack.cpp">
       <Filter>SourceCode\State\BossState</Filter>
     </ClCompile>
@@ -1744,9 +1741,6 @@
       <Filter>SourceCode\State\BossState</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\State\BossState\boss_patrol.hpp">
-      <Filter>SourceCode\State\BossState</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\State\BossState\boss_play_dead.hpp">
       <Filter>SourceCode\State\BossState</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\State\BossState\boss_run_attack.hpp">

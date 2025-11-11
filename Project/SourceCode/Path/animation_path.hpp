@@ -113,27 +113,21 @@ static struct ZombieAnimationPath
 static struct BossAnimationPath
 {
 	#pragma region îƒóp
-	const std::string ZOMBIE_IDLE_01					= "Data/Animation/Boss/zombie_idle_01.mv1";
-	const std::string SHOUT_ZOMBIE						= "Data/Animation/Boss/shout_zombie.mv1";
-	const std::string MOVE_FORWARD_RUN_02				= "Data/Animation/Boss/move_forward_run_02.mv1";
+	const std::string IDLE								= "Data/Animation/Boss/idle.mv1";
+	const std::string SHOUT								= "Data/Animation/Boss/shout.mv1";
+	const std::string MOVE_FORWARD_RUN					= "Data/Animation/Boss/move_forward_run.mv1";
 	const std::string MOVE_FORWARD_WALK					= "Data/Animation/Boss/move_forward_walk.mv1";
 
-	const std::string ENTER_NECK_BITE					= "Data/Animation/Boss/enter_neck_bite.mv1";
-	const std::string EXIT_NECK_BITE					= "Data/Animation/Boss/exit_neck_bite.mv1";
-
-	const std::string DEAD								= "Data/Animation/Boss/death.mv1";
-	const std::string DEAD_03							= "Data/Animation/Boss/death_03.mv1";
-	const std::string CROUCH_DEAD						= "Data/Animation/Boss/crouch_death.mv1";
-	const std::string FLYING_KNOCKBACK_UP				= "Data/Animation/Boss/flying_knockback_up.mv1";
-	const std::string FLYING_KNOCKBACK_DOWN				= "Data/Animation/Boss/flying_knockback_down.mv1";
+	const std::string DEAD_01							= "Data/Animation/Boss/death_01.mv1";
+	const std::string DEAD_02							= "Data/Animation/Boss/death_02.mv1";
+	const std::string FLYING_KNOCKBACK					= "Data/Animation/Boss/flying_knockback_down.mv1";
 	const std::string BACKWARD_KNOCKBACK				= "Data/Animation/Boss/backward_knockback.mv1";
-	const std::string STAND_UP_ZOMBIE_01				= "Data/Animation/Boss/stand_up_zombie_01.mv1";
-	const std::string STAND_UP_ZOMBIE_02				= "Data/Animation/Boss/stand_up_zombie_02.mv1";
+	const std::string STAND_UP_01						= "Data/Animation/Boss/stand_up_01.mv1";
+	const std::string STAND_UP_02						= "Data/Animation/Boss/stand_up_02.mv1";
 	#pragma endregion
 
 
 	#pragma region è„îºêgóp
-	const std::string GRAB								= "Data/Animation/Boss/move_forward_walk_zombie.mv1";
 	const std::string STAND_STUN						= "Data/Animation/Boss/move_backward_run_dizzy.mv1";
 	#pragma endregion
 

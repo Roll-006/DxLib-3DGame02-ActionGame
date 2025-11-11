@@ -12,14 +12,9 @@ enum class BossAnimKind
 	kMoveForwardWalk,
 	kMoveForwardRun,
 
-	kEnterNeckBite,
-	kExitNeckBite,
-
 	kStealthKilled,
 	kDead,
-	kCrouchDead,
-	kFlyingKnockbackUp,
-	kFlyingKnockbackDown,
+	kFlyingKnockback,
 	kBackwardKnockback,
 	kStandUp,
 	kStandUpkStandUpStealthKill,
@@ -27,7 +22,6 @@ enum class BossAnimKind
 
 
 	#pragma region 上半身用
-	kGrab,
 	kStandStun,
 	#pragma endregion
 

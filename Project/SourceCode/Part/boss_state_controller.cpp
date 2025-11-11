@@ -65,7 +65,6 @@ void BossStateController::CreateState()
 	m_states[typeid(boss_state::StandStun)]			= std::make_shared<boss_state::StandStun>();
 	m_states[typeid(boss_state::CrouchLeftStun)]	= std::make_shared<boss_state::CrouchLeftStun>();
 	m_states[typeid(boss_state::CrouchRightStun)]	= std::make_shared<boss_state::CrouchRightStun>();
-	m_states[typeid(boss_state::PlayDead)]			= std::make_shared<boss_state::PlayDead>();
 	m_states[typeid(boss_state::Dead)]				= std::make_shared<boss_state::Dead>();
 }
 
