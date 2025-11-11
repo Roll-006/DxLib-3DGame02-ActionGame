@@ -34,12 +34,12 @@ void BossAnimator::LoadAnim()
 	AddAnimHandle(static_cast<int>(BossAnimKind::kDetected),					BossAnimPath.SHOUT,							0, AnimTag.NONE, 50.0f,  false);
 	AddAnimHandle(static_cast<int>(BossAnimKind::kMoveForwardWalk),				BossAnimPath.MOVE_FORWARD_WALK,				0, AnimTag.MOVE, 55.0f,  true);
 	AddAnimHandle(static_cast<int>(BossAnimKind::kMoveForwardRun),				BossAnimPath.MOVE_FORWARD_RUN,				0, AnimTag.MOVE, 60.0f,  true);
-	AddAnimHandle(static_cast<int>(BossAnimKind::kStealthKilled),				BossAnimPath.DEAD_01,						0, AnimTag.NONE, 60.0f,  false);
-	AddAnimHandle(static_cast<int>(BossAnimKind::kDead),						BossAnimPath.DEAD_02,						0, AnimTag.NONE, 60.0f,  false);
+	AddAnimHandle(static_cast<int>(BossAnimKind::kStealthKilled),				BossAnimPath.DEAD_02,						0, AnimTag.NONE, 60.0f,  false);
+	AddAnimHandle(static_cast<int>(BossAnimKind::kDead),						BossAnimPath.DEAD_01,						0, AnimTag.NONE, 60.0f,  false);
 	AddAnimHandle(static_cast<int>(BossAnimKind::kFlyingKnockback),				BossAnimPath.FLYING_KNOCKBACK,				0, AnimTag.NONE, 35.0f,	 false);
 	AddAnimHandle(static_cast<int>(BossAnimKind::kBackwardKnockback),			BossAnimPath.BACKWARD_KNOCKBACK,			0, AnimTag.NONE, 30.0f,	 false);
-	AddAnimHandle(static_cast<int>(BossAnimKind::kStandUp),						BossAnimPath.STAND_UP_01,					0, AnimTag.NONE, 35.0f,  false);
-	AddAnimHandle(static_cast<int>(BossAnimKind::kStandUpkStandUpStealthKill),	BossAnimPath.STAND_UP_02,					0, AnimTag.NONE, 35.0f,  false);
+	AddAnimHandle(static_cast<int>(BossAnimKind::kStandUp),						BossAnimPath.STAND_UP_02,					0, AnimTag.NONE, 35.0f,  false);
+	AddAnimHandle(static_cast<int>(BossAnimKind::kStandUpkStandUpStealthKill),	BossAnimPath.STAND_UP_01,					0, AnimTag.NONE, 35.0f,  false);
 
 	// 上半身用
 	AddAnimHandle(static_cast<int>(BossAnimKind::kStandStun),					BossAnimPath.STAND_STUN,					0, AnimTag.NONE, 1.0f,   true);
@@ -120,7 +120,11 @@ void BossAnimator::CombineMoveNullWithAction()
 		break;
 
 	case boss_state::ActionStateKind::kDead:
-		AttachResultAnim(static_cast<int>(BossAnimKind::kDead));
+		if (   prev_action_state_kind != boss_state::ActionStateKind::kKnockback
+			&& prev_action_state_kind != boss_state::ActionStateKind::kStealthKilled)
+		{
+			AttachResultAnim(static_cast<int>(BossAnimKind::kDead));
+		}
 		break;
 
 	default:
