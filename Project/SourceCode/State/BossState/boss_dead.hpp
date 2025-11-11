@@ -21,21 +21,9 @@ namespace boss_state
 		[[nodiscard]] bool IsStopAllState() const override { return m_is_stop_all_state; }
 
 	private:
-		void ChangeMaterial(const auto model_handle, const float change_speed);
-
-	private:
-		static constexpr float kChangeColorWaitTime = 1.3f;
-		static constexpr float kDisappearWaitTime	= 3.5f;
-
 		bool	m_is_stop_all_state;
 		float	m_elapsed_time;
-		bool	m_is_seted_time_scale;
-		float   m_change_color_wait_time;
-		float	m_disappear_wait_time;
-		bool	m_is_disappear_notified;
 
-		MaterialData m_current_material;
-
-		std::shared_ptr<DeadBossVirtualCamerasController> m_dead_cameras_controller;
+		std::shared_ptr<GameClearVirtualCamerasController> m_dead_cameras_controller;
 	};
 }

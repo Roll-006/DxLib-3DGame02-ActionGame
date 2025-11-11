@@ -6,6 +6,7 @@ static struct SWATAnimationPath
 	#pragma region îƒóp
 	const std::string IDLE								= "Data/Animation/SWAT/idle.mv1";
 	const std::string IDLE_INJURED						= "Data/Animation/SWAT/idle_injured.mv1";
+	const std::string STAND_TO_CROUCH					= "Data/Animation/SWAT/stand_to_crouch.mv1";
 	const std::string MOVE_FORWARD_RUN_01				= "Data/Animation/SWAT/move_forward_run_01.mv1";
 	const std::string MOVE_FORWARD_RUN_INJURED			= "Data/Animation/SWAT/move_forward_run_injured.mv1";
 
@@ -37,11 +38,13 @@ static struct SWATAnimationPath
 	const std::string AIM_GUN							= "Data/Animation/SWAT/idle_aim_gun.mv1";
 	const std::string RELOAD							= "Data/Animation/SWAT/crouch_reload.mv1";
 	const std::string GRAB								= "Data/Animation/SWAT/move_forward_walk_zombie.mv1";
+	const std::string TALKING_ON_PHONE					= "Data/Animation/SWAT/talking_on_phone.mv1";
 	#pragma endregion
 
 
 	#pragma region â∫îºêgóp
 	const std::string CROUCH							= "Data/Animation/SWAT/idle_crouch_aim_gun.mv1";
+	const std::string TALKING_CROUCH					= "Data/Animation/SWAT/crouch.mv1";
 
 	const std::string MOVE_FORWARD						= "Data/Animation/SWAT/move_forward_aim_gun.mv1";
 	const std::string MOVE_BACKWARD						= "Data/Animation/SWAT/move_backward_aim_gun.mv1";

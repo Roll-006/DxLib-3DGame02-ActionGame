@@ -40,7 +40,7 @@ std::shared_ptr<IState<Player>> player_state::Move::ChangeState(std::shared_ptr<
 	if (obj->GetDeltaTime() <= 0.0f) { return nullptr; }
 
 	// IDLE
-	if (!obj->GetStateController()->TryMove())
+	if (!obj->GetStateController()->TryMove(obj))
 	{
 		return obj->GetStateController()->GetState<Idle, Player>();
 	}

@@ -50,6 +50,7 @@ void PlayerAnimator::LoadAnim()
 	// 汎用
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdle),						SWATAnimPath.IDLE,							0, AnimTag.NONE, 50.0f,  true);
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kIdleInjured),				SWATAnimPath.IDLE_INJURED,					0, AnimTag.NONE, 50.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kStandToCrouch),				SWATAnimPath.STAND_TO_CROUCH,				0, AnimTag.NONE, 50.0f,  false);
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kDead),						SWATAnimPath.DEAD_02,						0, AnimTag.NONE, 50.0f,  false);
 
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kGrabbed),					SWATAnimPath.GRABBED,						0, AnimTag.NONE, 30.0f,  true,  true);
@@ -77,9 +78,11 @@ void PlayerAnimator::LoadAnim()
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kEquipGun),					SWATAnimPath.EQUIP_GUN,						0, AnimTag.NONE, 20.0f,  true);
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kAimGun),					SWATAnimPath.AIM_GUN,						0, AnimTag.NONE, 20.0f,  true);
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kReload),					SWATAnimPath.RELOAD,						0, AnimTag.NONE, 100.0f, false);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kTalkingOnPhone),			SWATAnimPath.TALKING_ON_PHONE,				0, AnimTag.NONE, 50.0f,  true);
 
 	// 下半身用
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kCrouch),					SWATAnimPath.CROUCH,						0, AnimTag.NONE, 20.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kTalkingCrouch),				SWATAnimPath.TALKING_CROUCH,				0, AnimTag.NONE, 50.0f,  true);
 
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForward),				SWATAnimPath.MOVE_FORWARD,					0, AnimTag.MOVE, 55.0f,  true);
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveBackward),				SWATAnimPath.MOVE_BACKWARD,					0, AnimTag.MOVE, 55.0f,  true);
@@ -170,6 +173,10 @@ void PlayerAnimator::CombineMoveNullWithAction()
 
 	case player_state::ActionStateKind::kStealthKill:
 		AttachResultAnim(static_cast<int>(PlayerAnimKind::kStealthKill));
+		break;
+
+	case player_state::ActionStateKind::kVictoryPose:
+		AttachResultAnim(static_cast<int>(PlayerAnimKind::kStandToCrouch));
 		break;
 
 	default:

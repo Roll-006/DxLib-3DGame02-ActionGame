@@ -76,10 +76,13 @@ std::shared_ptr<IState<Player>> player_state::AimKnife::ChangeState(std::shared_
 		return state_controller->GetState<EquipKnife, Player>();
 	}
 	// “Ë‚«h‚·
-	if (command->IsExecute(CommandKind::kAttack, TimeKind::kCurrent)
-		|| command->IsExecute(CommandKind::kReload, TimeKind::kCurrent))
+	if (obj->CanControl())
 	{
-		return state_controller->GetState<StabKnife, Player>();
+		if (command->IsExecute(CommandKind::kAttack, TimeKind::kCurrent)
+			|| command->IsExecute(CommandKind::kReload, TimeKind::kCurrent))
+		{
+			return state_controller->GetState<StabKnife, Player>();
+		}
 	}
 
 	return nullptr;

@@ -72,7 +72,7 @@ std::shared_ptr<IState<Player>> player_state::Crouch::ChangeState(std::shared_pt
 		return state_controller->GetState<ActionNull, Player>();
 	}
 	// ダッシュ
-	if (state_controller->TryRun())
+	if (state_controller->TryRun(obj))
 	{
 		// Crouchコマンドがホールド方式で、入力中であった場合は移行を許可しない
 		if (!(command_mode == InputModeKind::kHold && command->IsExecute(CommandKind::kCrouch, TimeKind::kCurrent)))

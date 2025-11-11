@@ -4,7 +4,7 @@ enum class VirtualCameraControllerKind
 {
 	kControl,
 	kDeadPlayer,
-	kDeadBoss,
+	kGameClearCutscene,
 	kRocketLauncherCutscene,
 	kGrabCutscene,
 	kStealthKillCutscene,

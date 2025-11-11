@@ -21,10 +21,11 @@ namespace player_state
 		kFrontKick,
 		kRoundhouseKick,
 		kSuplex,
-		kEscape,		// TODO : íœŒó•âBGrabbed‚ÉˆÏ‚Ë‚é
+		kEscape,
 		kStealthKill,
 		kFinishOff,
 		kEscapeWithKnife,
+		kVictoryPose,
 	};
 
 	enum class WeaponActionStateKind

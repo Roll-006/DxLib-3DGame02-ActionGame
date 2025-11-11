@@ -63,6 +63,7 @@ void PlayerStateController::CreateState()
 	m_states[typeid(player_state::StealthKill)]			 = std::make_shared<player_state::StealthKill>();
 	m_states[typeid(player_state::FinishOff)]			 = std::make_shared<player_state::FinishOff>();
 	m_states[typeid(player_state::EscapeWithKnife)]		 = std::make_shared<player_state::EscapeWithKnife>();
+	m_states[typeid(player_state::VictoryPose)]			 = std::make_shared<player_state::VictoryPose>();
 
 	m_states[typeid(player_state::WeaponActionNull)]	 = std::make_shared<player_state::WeaponActionNull>();
 	m_states[typeid(player_state::EquipKnife)]			 = std::make_shared<player_state::EquipKnife>();
@@ -326,8 +327,10 @@ void PlayerStateController::JudgeDestinationWeaponActionState(std::shared_ptr<IS
 
 
 #pragma region Try”»’è
-bool PlayerStateController::TryMove()
+bool PlayerStateController::TryMove(std::shared_ptr<Player>& player)
 {
+	if (!player->CanControl()) { return false; }
+
 	const auto command = CommandHandler::GetInstance();
 
 	return((command->IsExecute(CommandKind::kMoveUpPlayer,		TimeKind::kCurrent)
@@ -336,8 +339,10 @@ bool PlayerStateController::TryMove()
 		 || command->IsExecute(CommandKind::kMoveRightPlayer,	TimeKind::kCurrent)));
 }
 
-bool PlayerStateController::TryRun()
+bool PlayerStateController::TryRun(std::shared_ptr<Player>& player)
 {
+	if (!player->CanControl()) { return false; }
+
 	const auto command			= CommandHandler::GetInstance();
 	const auto input			= InputChecker::GetInstance();
 	const auto move_state_kind	= static_cast<player_state::MoveStateKind>(m_move_state.at(TimeKind::kCurrent)->GetStateKind());
@@ -377,6 +382,7 @@ bool PlayerStateController::TryGrabbed(std::shared_ptr<Player>& player)
 
 bool PlayerStateController::TryFrontKick(std::shared_ptr<Player>& player)
 {
+	if (!player->CanControl())																{ return false; }
 	if (!player->GetMeleeTarget())															{ return false; }
 	if (!CommandHandler::GetInstance()->IsExecute(CommandKind::kMelee, TimeKind::kCurrent)) { return false; }
 
@@ -405,6 +411,7 @@ bool PlayerStateController::TryFrontKick(std::shared_ptr<Player>& player)
 
 bool PlayerStateController::TryRoundhouseKick(std::shared_ptr<Player>& player)
 {
+	if (!player->CanControl())																{ return false; }
 	if (!player->GetMeleeTarget())															{ return false; }
 	if (!CommandHandler::GetInstance()->IsExecute(CommandKind::kMelee, TimeKind::kCurrent)) { return false; }
 
@@ -417,6 +424,7 @@ bool PlayerStateController::TryRoundhouseKick(std::shared_ptr<Player>& player)
 
 bool PlayerStateController::TryStealthKill(std::shared_ptr<Player>& player)
 {
+	if (!player->CanControl())																	{ return false; }
 	if (!player->GetStealthKillTarget())														{ return false; }
 	if (!CommandHandler::GetInstance()->IsExecute(CommandKind::kAttack, TimeKind::kCurrent))	{ return false; }
 
@@ -436,7 +444,8 @@ bool PlayerStateController::TryEquipKnifeShortcut(std::shared_ptr<Player>& playe
 
 bool PlayerStateController::TryAimKnife(std::shared_ptr<Player>& player)
 {
-	if (!player->IsAlive()) { return false; }
+	if (!player->CanControl())	{ return false; }
+	if (!player->IsAlive())		{ return false; }
 
 	const auto command = CommandHandler::GetInstance();
 	return command->IsExecute(CommandKind::kAimKnife, TimeKind::kCurrent) && player->GetCurrentEquipWeapon(WeaponSlotKind::kSub);
@@ -444,14 +453,17 @@ bool PlayerStateController::TryAimKnife(std::shared_ptr<Player>& player)
 
 bool PlayerStateController::TryFirstSideSlashKnife(std::shared_ptr<Player>& player)
 {
-	if (!player->IsAlive()) { return false; }
+	if (!player->CanControl())	{ return false; }
+	if (!player->IsAlive())		{ return false; }
 
 	const auto command = CommandHandler::GetInstance();
 	return command->IsExecute(CommandKind::kAttack, TimeKind::kCurrent);
 }
 
-bool PlayerStateController::TrySpinningSlash()
+bool PlayerStateController::TrySpinningSlash(std::shared_ptr<Player>& player)
 {
+	if (!player->CanControl()) { return false; }
+
 	const bool is_run = m_action_state.at(TimeKind::kCurrent)->GetStateKind() == static_cast<int>(player_state::ActionStateKind::kRun);
 
 	return  is_run && CommandHandler::GetInstance()->IsExecute(CommandKind::kAttack, TimeKind::kCurrent);
@@ -459,6 +471,8 @@ bool PlayerStateController::TrySpinningSlash()
 
 bool PlayerStateController::TryEquipGun(std::shared_ptr<Player>& player)
 {
+	if (!player->CanControl()) { return false; }
+
 	return player->GetCurrentEquipWeaponKind(WeaponSlotKind::kMain) == WeaponKind::kGun
 		&& CommandHandler::GetInstance()->IsExecute(CommandKind::kAimGun, TimeKind::kCurrent);
 }
@@ -476,6 +490,8 @@ bool PlayerStateController::TryEquipGunShortcut(std::shared_ptr<Player>& player)
 
 bool PlayerStateController::TryPullTrigger(std::shared_ptr<Player>& player)
 {
+	if (!player->CanControl()) { return false; }
+
 	const auto gun = std::dynamic_pointer_cast<GunBase>(player->GetCurrentHeldWeapon());
 
 	if (gun)
@@ -496,7 +512,8 @@ bool PlayerStateController::TryPullTrigger(std::shared_ptr<Player>& player)
 
 bool PlayerStateController::TryReload(std::shared_ptr<Player>& player)
 {
-	if (!player->IsAlive()) { return false; }
+	if (!player->CanControl())	{ return false; }
+	if (!player->IsAlive())		{ return false; }
 
 	const auto gun = std::dynamic_pointer_cast<GunBase>(player->GetCurrentEquipWeapon(WeaponSlotKind::kMain));
 

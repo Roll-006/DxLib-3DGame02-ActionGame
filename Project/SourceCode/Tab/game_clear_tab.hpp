@@ -29,14 +29,14 @@ public:
 	[[nodiscard]] bool CanSelect()		const override { return m_can_select; }
 
 private:
-	void StartActivateTimer(const DisappearBossEvent& event);
+	void StartActivateTimer(const DeadBossEvent& event);
 
 	void JudgeActive();
 	void CalcAlphaBlendNum();
 	void CreateResultScreen();
 
 private:
-	static constexpr float kActiveWaitTime	= 3.0f;
+	static constexpr float kActiveWaitTime	= 4.0f;
 	static constexpr float kFadeSpeed		= 400.0f;
 
 	int	  m_tab_handle;

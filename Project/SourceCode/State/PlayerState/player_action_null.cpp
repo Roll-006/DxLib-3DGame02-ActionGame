@@ -69,12 +69,12 @@ std::shared_ptr<IState<Player>> player_state::ActionNull::ChangeState(std::share
 		return state_controller->GetState<Grabbed, Player>();
 	}
 	// ƒ_ƒbƒVƒ…
-	if (state_controller->TryRun())
+	if (state_controller->TryRun(obj))
 	{
 		return state_controller->GetState<Run, Player>();
 	}
 	// ‚µ‚á‚ª‚Ş
-	if (command->IsExecute(CommandKind::kCrouch, TimeKind::kCurrent))
+	if (obj->CanControl() && command->IsExecute(CommandKind::kCrouch, TimeKind::kCurrent))
 	{
 		return state_controller->GetState<Crouch, Player>();
 	}

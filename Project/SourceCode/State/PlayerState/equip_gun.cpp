@@ -55,7 +55,7 @@ std::shared_ptr<IState<Player>> player_state::EquipGun::ChangeState(std::shared_
 	const auto command			= CommandHandler::GetInstance();
 
 	// eƒGƒCƒ~ƒ“ƒOó‘Ô
-	if (CommandHandler::GetInstance()->IsExecute(CommandKind::kAimGun, TimeKind::kCurrent))
+	if (obj->CanControl() && CommandHandler::GetInstance()->IsExecute(CommandKind::kAimGun, TimeKind::kCurrent))
 	{	
 		if (m_possible_aim_timer >= kPossibleAimTime)
 		{
@@ -73,7 +73,7 @@ std::shared_ptr<IState<Player>> player_state::EquipGun::ChangeState(std::shared_
 		return state_controller->GetState<AimKnife, Player>();
 	}
 	// ‰ñ“]Ø‚è
-	if (state_controller->TrySpinningSlash())
+	if (state_controller->TrySpinningSlash(obj))
 	{
 		return state_controller->GetState<SpinningSlashKnife, Player>();
 	}

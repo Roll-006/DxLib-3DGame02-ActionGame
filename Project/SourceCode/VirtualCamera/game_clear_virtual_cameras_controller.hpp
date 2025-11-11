@@ -1,15 +1,14 @@
 #pragma once
 #include "../Interface/i_virtual_camera_controller.hpp"
 #include "virtual_camera.hpp"
-#include "../Event/disappear_boss_event.hpp"
 
 class CinemachineBrain;
 
-class DeadBossVirtualCamerasController final : public IVirtualCameraController
+class GameClearVirtualCamerasController final : public IVirtualCameraController
 {
 public:
-	DeadBossVirtualCamerasController(const int model_handle, const std::shared_ptr<Transform>& boss_transform);
-	~DeadBossVirtualCamerasController();
+	GameClearVirtualCamerasController(const int model_handle, const std::shared_ptr<Transform>& boss_transform);
+	~GameClearVirtualCamerasController();
 
 	void Init();
 	void Update()		override;
@@ -25,8 +24,6 @@ public:
 	[[nodiscard]] bool IsActive()			 const override { return m_is_active; }
 
 private:
-	void ZoomOut(const DisappearBossEvent& event);
-
 	void SetupCamera();
 
 	void CalcAimTransform();
@@ -35,10 +32,8 @@ private:
 private:
 	static constexpr VECTOR kFollowOffset			= { 0.0f, 50.0f, -180.0f };
 	static constexpr VECTOR kTrackedObjOffset		= { 0.0f,  0.0f,    0.0f };
-	static constexpr float  kZoomInInitialVelocity	= 3.0f;
-	static constexpr float  kZoomInDeceleration		= 5.0f;
-	static constexpr float  kZoomOutInitialVelocity = 22.0f;
-	static constexpr float  kZoomOutDeceleration	= 60.0f;
+	static constexpr float  kZoomInInitialVelocity	= 1.4f;
+	static constexpr float  kZoomInDeceleration		= 1.0f;
 	static constexpr float  kZoomInWaitTime			= 2.5f;
 
 private:
@@ -53,8 +48,6 @@ private:
 
 	float							m_zoom_in_wait_time;
 	float							m_zoom_in_speed;
-	float							m_zoom_out_speed;
-	bool							m_is_zoom_out;
 
 	int								m_model_handle;
 	std::shared_ptr<Transform>		m_boss_transform;

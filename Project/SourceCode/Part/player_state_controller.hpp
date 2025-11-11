@@ -21,6 +21,7 @@
 #include "../State/PlayerState/stealth_kill.hpp"
 #include "../State/PlayerState/finish_off.hpp"
 #include "../State/PlayerState/escape_with_knife.hpp"
+#include "../State/PlayerState/victory_pose.hpp"
 
 #include "../State/PlayerState/weapon_action_null.hpp"
 #include "../State/PlayerState/attach_weapon.hpp"
@@ -58,8 +59,8 @@ public:
 
 
 	#pragma region Try”»’è
-	[[nodiscard]] bool TryMove					();
-	[[nodiscard]] bool TryRun					();
+	[[nodiscard]] bool TryMove					(std::shared_ptr<Player>& player);
+	[[nodiscard]] bool TryRun					(std::shared_ptr<Player>& player);
 	[[nodiscard]] bool TryDead					(std::shared_ptr<Player>& player);
 	[[nodiscard]] bool TryGrabbed				(std::shared_ptr<Player>& player);
 
@@ -72,7 +73,7 @@ public:
 	[[nodiscard]] bool TryEquipKnifeShortcut	(std::shared_ptr<Player>& player);
 	[[nodiscard]] bool TryAimKnife				(std::shared_ptr<Player>& player);
 	[[nodiscard]] bool TryFirstSideSlashKnife	(std::shared_ptr<Player>& player);
-	[[nodiscard]] bool TrySpinningSlash			();
+	[[nodiscard]] bool TrySpinningSlash			(std::shared_ptr<Player>& player);
 	[[nodiscard]] bool TryEquipGun				(std::shared_ptr<Player>& player);
 	[[nodiscard]] bool TryEquipGunShortcut		(std::shared_ptr<Player>& player);
 	[[nodiscard]] bool TryPullTrigger			(std::shared_ptr<Player>& player);

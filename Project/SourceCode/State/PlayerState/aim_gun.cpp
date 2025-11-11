@@ -133,12 +133,12 @@ std::shared_ptr<IState<Player>> player_state::AimGun::ChangeState(std::shared_pt
 		}
 	}
 	// リロード
-	if (state_controller->TryReload(obj) && !camera_controller->IsRecoiling())
+	if (obj->CanControl() && state_controller->TryReload(obj) && !camera_controller->IsRecoiling())
 	{
 		return state_controller->GetState<Reload, Player>();
 	}
 	// リロード
-	if (gun->GetCurrentRemainingBulletNum() == 0)
+	if (obj->CanControl() && gun->GetCurrentRemainingBulletNum() == 0)
 	{
 		if (!command->IsExecute(CommandKind::kPullTrigger, TimeKind::kPrev) && command->IsExecute(CommandKind::kPullTrigger, TimeKind::kCurrent))
 		{

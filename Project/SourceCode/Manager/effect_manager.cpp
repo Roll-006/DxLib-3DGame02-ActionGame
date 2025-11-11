@@ -12,7 +12,6 @@ EffectManager::EffectManager()
 	EventSystem::GetInstance()->Subscribe<OnDamageEvent>				(this, &EffectManager::OutputOnDamageEffect);
 	EventSystem::GetInstance()->Subscribe<OnChangeTitleSceneEvent>		(this, &EffectManager::OutputTitleSceneEffect);
 	EventSystem::GetInstance()->Subscribe<StartDisappearEnemyEvent>		(this, &EffectManager::OutputDisappearEnemyEffect);
-	EventSystem::GetInstance()->Subscribe<DisappearBossEvent>			(this, &EffectManager::OutputDisappearBossEffect);
 }
 
 EffectManager::~EffectManager()
@@ -25,7 +24,6 @@ EffectManager::~EffectManager()
 	EventSystem::GetInstance()->Unsubscribe<OnDamageEvent>				(this, &EffectManager::OutputOnDamageEffect);
 	EventSystem::GetInstance()->Unsubscribe<OnChangeTitleSceneEvent>	(this, &EffectManager::OutputTitleSceneEffect);
 	EventSystem::GetInstance()->Unsubscribe<StartDisappearEnemyEvent>	(this, &EffectManager::OutputDisappearEnemyEffect);
-	EventSystem::GetInstance()->Unsubscribe<DisappearBossEvent>			(this, &EffectManager::OutputDisappearBossEffect);
 }
 
 void EffectManager::Update()
@@ -244,34 +242,6 @@ void EffectManager::OutputDisappearEnemyEffect(const StartDisappearEnemyEvent& e
 	{
 		const auto effect = std::static_pointer_cast<Effect>(obj);
 		effect->GetTransform()->SetPos(CoordinateKind::kWorld, event.disppear_pos);
-		AddEffect(effect);
-	}
-}
-
-void EffectManager::OutputDisappearBossEffect(const DisappearBossEvent& event)
-{
-	const auto pool = ObjectPoolHolder::GetInstance()->GetObjectPool(ObjectPoolName.PLAY_SCENE_EFFECT_POOL);
-	std::shared_ptr<ObjBase> obj = nullptr;
-
-	auto	   hips_m	= MV1GetFrameLocalWorldMatrix(event.model_handle, MV1SearchFrame(event.model_handle, BonePath.HIPS));
-	const auto hips_pos = MGetTranslateElem(hips_m);
-
-	// ‰Œ
-	obj = pool->GetObj(ObjName.DEAD_BOSS_SMOKE_EFFECT);
-	if (obj)
-
-	{
-		const auto effect = std::static_pointer_cast<Effect>(obj);
-		effect->GetTransform()->SetPos(CoordinateKind::kWorld, hips_pos);
-		AddEffect(effect);
-	}
-
-	// ŒŒ
-	obj = pool->GetObj(ObjName.DEAD_BOSS_BLOOD_EFFECT);
-	if (obj)
-	{
-		const auto effect = std::static_pointer_cast<Effect>(obj);
-		effect->GetTransform()->SetPos(CoordinateKind::kWorld, hips_pos);
 		AddEffect(effect);
 	}
 }

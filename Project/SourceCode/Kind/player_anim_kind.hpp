@@ -8,6 +8,7 @@ enum class PlayerAnimKind
 	#pragma region 汎用
 	kIdle,
 	kIdleInjured,
+	kStandToCrouch,
 	kDead,
 
 	kGrabbed,
@@ -37,11 +38,13 @@ enum class PlayerAnimKind
 	kEquipGun,
 	kAimGun,
 	kReload,
+	kTalkingOnPhone,
 	#pragma endregion
 
 
 	#pragma region 下半身用
 	kCrouch,
+	kTalkingCrouch,
 
 	kMoveForward,
 	kMoveBackward,

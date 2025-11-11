@@ -67,15 +67,15 @@ std::shared_ptr<IState<Player>> player_state::Run::ChangeState(std::shared_ptr<P
 		return state_controller->GetState<Grabbed, Player>();
 	}
 	// NULL
-	if (!state_controller->TryRun())
+	if (!state_controller->TryRun(obj))
 	{
 		return state_controller->GetState<ActionNull, Player>();
 	}
 	// しゃがむ
-	if (command->IsExecute(CommandKind::kCrouch, TimeKind::kCurrent))
+	if (obj->CanControl() && command->IsExecute(CommandKind::kCrouch, TimeKind::kCurrent))
 	{
 		// Runコマンドがホールド方式で、入力中であった場合は移行を許可しない
-		if (!(command_mode == InputModeKind::kHold && state_controller->TryRun()))
+		if (!(command_mode == InputModeKind::kHold && state_controller->TryRun(obj)))
 		{
 			return state_controller->GetState<Crouch, Player>();
 		}

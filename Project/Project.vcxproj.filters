@@ -679,8 +679,11 @@
     <ClCompile Include="SourceCode\Animator\boss_animator.cpp">
       <Filter>SourceCode\Animator</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\VirtualCamera\dead_boss_virtual_cameras_controller.cpp">
+    <ClCompile Include="SourceCode\VirtualCamera\game_clear_virtual_cameras_controller.cpp">
       <Filter>SourceCode\VirtualCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\PlayerState\victory_pose.cpp">
+      <Filter>SourceCode\State\PlayerState</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1791,11 +1794,14 @@
     <ClInclude Include="SourceCode\Event\dead_boss_event.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\VirtualCamera\dead_boss_virtual_cameras_controller.hpp">
+    <ClInclude Include="SourceCode\VirtualCamera\game_clear_virtual_cameras_controller.hpp">
       <Filter>SourceCode\VirtualCamera</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Event\disappear_boss_event.hpp">
-      <Filter>SourceCode\Event</Filter>
+    <ClInclude Include="SourceCode\Interface\i_playable_character.hpp">
+      <Filter>SourceCode\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\PlayerState\victory_pose.hpp">
+      <Filter>SourceCode\State\PlayerState</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

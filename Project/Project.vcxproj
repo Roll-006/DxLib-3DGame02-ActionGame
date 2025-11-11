@@ -357,6 +357,7 @@
     <ClCompile Include="SourceCode\State\PlayerState\crouch_turn_around.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\detach_weapon.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\attach_weapon.cpp" />
+    <ClCompile Include="SourceCode\State\PlayerState\victory_pose.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\weapon_action_null.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\escape.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\escape_with_knife.cpp" />
@@ -428,7 +429,7 @@
     <ClCompile Include="SourceCode\VirtualCamera\cinemachine_brain.cpp" />
     <ClCompile Include="SourceCode\VirtualCamera\dead_virtual_cameras_controller.cpp" />
     <ClCompile Include="SourceCode\VirtualCamera\control_virtual_cameras_controller.cpp" />
-    <ClCompile Include="SourceCode\VirtualCamera\dead_boss_virtual_cameras_controller.cpp" />
+    <ClCompile Include="SourceCode\VirtualCamera\game_clear_virtual_cameras_controller.cpp" />
     <ClCompile Include="SourceCode\VirtualCamera\stealth_kill_virtual_camera_controller.cpp" />
     <ClCompile Include="SourceCode\VirtualCamera\grab_virtual_camera_controller.cpp" />
     <ClCompile Include="SourceCode\VirtualCamera\rocket_launcher_virtual_cameras_controller.cpp" />
@@ -496,7 +497,6 @@
     <ClInclude Include="SourceCode\Data\input_data.hpp" />
     <ClInclude Include="SourceCode\Debugger\debugger.hpp" />
     <ClInclude Include="SourceCode\Drawer\drawer.hpp" />
-    <ClInclude Include="SourceCode\Event\disappear_boss_event.hpp" />
     <ClInclude Include="SourceCode\Event\dead_boss_event.hpp" />
     <ClInclude Include="SourceCode\Event\start_disappear_enemy_event.hpp" />
     <ClInclude Include="SourceCode\Event\on_target_detected_event.hpp" />
@@ -539,6 +539,7 @@
     <ClInclude Include="SourceCode\IncludeList\shape.hpp" />
     <ClInclude Include="SourceCode\IncludeList\vector.hpp" />
     <ClInclude Include="SourceCode\Input\input_checker.hpp" />
+    <ClInclude Include="SourceCode\Interface\i_playable_character.hpp" />
     <ClInclude Include="SourceCode\Interface\i_light.hpp" />
     <ClInclude Include="SourceCode\Interface\i_stealth_killable.hpp" />
     <ClInclude Include="SourceCode\Interface\i_stealth_killer.hpp" />
@@ -797,6 +798,7 @@
     <ClInclude Include="SourceCode\State\PlayerState\crouch_turn_around.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\detach_weapon.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\attach_weapon.hpp" />
+    <ClInclude Include="SourceCode\State\PlayerState\victory_pose.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\weapon_action_null.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\escape.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\escape_with_knife.hpp" />
@@ -870,7 +872,7 @@
     <ClInclude Include="SourceCode\VirtualCamera\cinemachine_brain.hpp" />
     <ClInclude Include="SourceCode\VirtualCamera\dead_virtual_cameras_controller.hpp" />
     <ClInclude Include="SourceCode\VirtualCamera\control_virtual_cameras_controller.hpp" />
-    <ClInclude Include="SourceCode\VirtualCamera\dead_boss_virtual_cameras_controller.hpp" />
+    <ClInclude Include="SourceCode\VirtualCamera\game_clear_virtual_cameras_controller.hpp" />
     <ClInclude Include="SourceCode\VirtualCamera\stealth_kill_virtual_camera_controller.hpp" />
     <ClInclude Include="SourceCode\VirtualCamera\grab_virtual_camera_controller.hpp" />
     <ClInclude Include="SourceCode\VirtualCamera\rocket_launcher_virtual_cameras_controller.hpp" />

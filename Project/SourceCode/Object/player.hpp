@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "../Base/character_base.hpp"
+#include "../Interface/i_playable_character.hpp"
 #include "../Interface/i_weapon_equippable.hpp"
 #include "../Interface/i_fireable.hpp"
 #include "../Interface/i_grabbable.hpp"
@@ -19,7 +20,7 @@
 
 class PlayerStateController;
 
-class Player final : public CharacterBase, public IWeaponEquippable, public IFireable, public IGrabbable, public IMeleeAttackable, public IStealthKiller
+class Player final : public CharacterBase, public IPlayableCharacter, public IWeaponEquippable, public IFireable, public IGrabbable, public IMeleeAttackable, public IStealthKiller
 {
 public:
 	Player();
@@ -34,6 +35,14 @@ public:
 	void OnDamage(const HealthPartKind part_kind, const float damage) override;
 
 	void SetRemainingBulletNum(const int remaining_bullet_num) override { m_current_remaining_bullet_num = remaining_bullet_num; }
+
+
+	#pragma region 操作キャラクター
+	void OnAllowControl()	 override { m_can_control = true; }
+	void OnDisallowControl() override { m_can_control = false; }
+
+	[[nodiscard]] bool CanControl() const override { return m_can_control; }
+	#pragma endregion
 
 
 	#pragma region 掴み
@@ -85,6 +94,28 @@ public:
 	#pragma endregion
 
 
+	#pragma region 武器
+	void EquipWeapon	(const std::shared_ptr<WeaponBase>& weapon, const WeaponSlotKind slot_kind)	override;
+	void UnequipWeapon	(const WeaponSlotKind slot_kind)			override;
+
+	void HoldWeapon		(const std::shared_ptr<WeaponBase>& weapon)	override;
+	void HoldWeapon		(const int obj_handle)						override;
+	void ReleaseWeapon	()											override;
+
+	void AttachWeapon	(const std::shared_ptr<WeaponBase>& weapon)	override;
+	void AttachWeapon	(const int obj_handle)						override;
+	void DetachWeapon	(const std::shared_ptr<WeaponBase>& weapon)	override;
+	void DetachWeapon	(const HolsterKind holster_kind)			override;
+
+	[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentEquipWeapon		(const WeaponSlotKind slot_kind) const override;
+	[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentHeldWeapon		()	override;
+	[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentAttachWeapon		(const HolsterKind holster_kind) const override;
+	[[nodiscard]] WeaponKind					GetCurrentEquipWeaponKind	(const WeaponSlotKind slot_kind) override;
+	[[nodiscard]] WeaponKind					GetCurrentHeldWeaponKind	()	override;
+	[[nodiscard]] WeaponKind					GetCurrentAttachWeaponKind	(const HolsterKind holster_kind) const override;
+	#pragma endregion
+
+
 	#pragma region アイテム
 	/// @brief アイテムの所持登録 
 	template<obj_concepts::ItemT ItemT>
@@ -105,28 +136,6 @@ public:
 
 		m_items[item_kind].erase(std::remove(m_items[item_kind].begin(), m_items[item_kind].end(), item), m_items[item_kind].end());
 	}
-	#pragma endregion
-
-
-	#pragma region 武器
-	void EquipWeapon	(const std::shared_ptr<WeaponBase>& weapon, const WeaponSlotKind slot_kind)	override;
-	void UnequipWeapon	(const WeaponSlotKind slot_kind)			override;
-
-	void HoldWeapon		(const std::shared_ptr<WeaponBase>& weapon)	override;
-	void HoldWeapon		(const int obj_handle)						override;
-	void ReleaseWeapon	()											override;
-
-	void AttachWeapon	(const std::shared_ptr<WeaponBase>& weapon)	override;
-	void AttachWeapon	(const int obj_handle)						override;
-	void DetachWeapon	(const std::shared_ptr<WeaponBase>& weapon)	override;
-	void DetachWeapon	(const HolsterKind holster_kind)			override;
-
-	[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentEquipWeapon		(const WeaponSlotKind slot_kind) const override;
-	[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentHeldWeapon		()	override;
-	[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentAttachWeapon		(const HolsterKind holster_kind) const override;
-	[[nodiscard]] WeaponKind					GetCurrentEquipWeaponKind	(const WeaponSlotKind slot_kind) override;
-	[[nodiscard]] WeaponKind					GetCurrentHeldWeaponKind	()	override;
-	[[nodiscard]] WeaponKind					GetCurrentAttachWeaponKind	(const HolsterKind holster_kind) const override;
 	#pragma endregion
 
 
@@ -162,6 +171,11 @@ public:
 	#pragma endregion
 
 private:
+	#pragma region Event
+	void DisallowControl(const DeadBossEvent& event);
+	#pragma endregion
+
+
 	void CalcInputSlopeFromPad();
 	void CalcInputSlopeFromCommand();
 
@@ -210,6 +224,7 @@ private:
 	std::shared_ptr<BonePosCorrector>			m_bone_pos_corrector;
 
 	VECTOR										m_input_slope;
+	bool										m_can_control;
 
 	float										m_prev_health;
 	bool										m_is_grabbed;							// 捕まれたかを判定

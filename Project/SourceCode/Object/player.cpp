@@ -9,6 +9,7 @@ Player::Player() :
 	m_state									(std::make_shared<PlayerStateController>()),
 	m_bone_pos_corrector					(std::make_shared<BonePosCorrector>()),
 	m_input_slope							(v3d::GetZeroV()),
+	m_can_control							(true),
 	m_prev_health							(0.0f),
 	m_is_grabbed							(false),
 	m_is_escape								(false),
@@ -22,6 +23,9 @@ Player::Player() :
 	m_grabber								(nullptr),
 	m_escape_gauge							(std::make_shared<Gauge>(100.0f))
 {
+	// ƒCƒxƒ“ƒg“o˜^
+	EventSystem::GetInstance()->Subscribe<DeadBossEvent>(this, &Player::DisallowControl);
+
 	mass_kind = MassKind::kMedium;
 
 	m_health[HealthPartKind::kMain] = std::make_shared<Gauge>(2000.0f, 1500.0f);
@@ -75,6 +79,9 @@ Player::Player() :
 
 Player::~Player()
 {
+	// ƒCƒxƒ“ƒg‚Ì“o˜^‰ðœ
+	EventSystem::GetInstance()->Unsubscribe<DeadBossEvent>(this, &Player::DisallowControl);
+
 	for (const auto& item : m_items)
 	{
 		for (const auto& i : item.second)
@@ -661,6 +668,14 @@ float Player::GetDeltaTime() const
 {
 	const auto time_manager = GameTimeManager::GetInstance();
 	return time_manager->GetDeltaTime(TimeScaleLayerKind::kPlayer);
+}
+#pragma endregion
+
+
+#pragma region Event
+void Player::DisallowControl(const DeadBossEvent& event)
+{
+	m_can_control = false;
 }
 #pragma endregion
 

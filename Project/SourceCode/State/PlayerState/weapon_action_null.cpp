@@ -67,7 +67,7 @@ std::shared_ptr<IState<Player>> player_state::WeaponActionNull::ChangeState(std:
 		return state_controller->GetState<AimKnife, Player>();
 	}
 	// ‰ñ“]Ø‚è
-	if (state_controller->TrySpinningSlash())
+	if (state_controller->TrySpinningSlash(obj))
 	{
 		return state_controller->GetState<SpinningSlashKnife, Player>();
 	}

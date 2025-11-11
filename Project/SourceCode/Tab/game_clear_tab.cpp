@@ -12,7 +12,7 @@ GameClearTab::GameClearTab() :
 	m_result_screen			(std::make_shared<ScreenCreator>(Window::kScreenSize, Window::kCenterPos))
 {
 	// ƒCƒxƒ“ƒg“o˜^
-	EventSystem::GetInstance()->Subscribe<DisappearBossEvent>(this, &GameClearTab::StartActivateTimer);
+	EventSystem::GetInstance()->Subscribe<DeadBossEvent>(this, &GameClearTab::StartActivateTimer);
 
 	//std::vector<Vector2D<int>> center_pos;
 	//for (int i = 0; i < 2; ++i)
@@ -32,7 +32,7 @@ GameClearTab::GameClearTab() :
 GameClearTab::~GameClearTab()
 {
 	// ƒCƒxƒ“ƒg‚Ì“o˜^‰ðœ
-	EventSystem::GetInstance()->Unsubscribe<DisappearBossEvent>(this, &GameClearTab::StartActivateTimer);
+	EventSystem::GetInstance()->Unsubscribe<DeadBossEvent>(this, &GameClearTab::StartActivateTimer);
 }
 
 void GameClearTab::Init()
@@ -61,14 +61,14 @@ void GameClearTab::OnDraw(const int main_screen_handle) const
 		button->Draw();
 	}
 
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_result_screen->GetGraphicer()->GetBlendNum());
-	DrawGraph(0, 0, main_screen_handle, TRUE);
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	//SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_result_screen->GetGraphicer()->GetBlendNum());
+	//DrawGraph(0, 0, main_screen_handle, TRUE);
+	//SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	m_result_screen->Draw();
 }
 
-void GameClearTab::StartActivateTimer(const DisappearBossEvent& event)
+void GameClearTab::StartActivateTimer(const DeadBossEvent& event)
 {
 	m_can_calc_active_time = true;
 }
@@ -99,9 +99,9 @@ void GameClearTab::CreateResultScreen()
 {
 	m_result_screen->UseScreen();
 
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 220);
-	DrawBox(0, 0, Window::kScreenSize.x, Window::kScreenSize.y, 0x000000, TRUE);
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	//SetDrawBlendMode(DX_BLENDMODE_ALPHA, 220);
+	//DrawBox(0, 0, Window::kScreenSize.x, Window::kScreenSize.y, 0x000000, TRUE);
+	//SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	//m_filter_graphic->Draw();
 
