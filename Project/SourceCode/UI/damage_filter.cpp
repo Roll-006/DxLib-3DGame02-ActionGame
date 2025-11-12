@@ -11,7 +11,7 @@ DamageFilter::DamageFilter() :
 	m_is_loop_blinking				(false),
 	m_is_near_death_first_blinking	(false),
 	m_is_near_death					(false),
-	m_is_active_cutscene			(false)
+	m_can_blinking					(true)
 {
 	// イベント登録
 	EventSystem::GetInstance()->Subscribe<OnDamageToPlayerEvent>			(this, &DamageFilter::StartDamageBlinking);
@@ -20,6 +20,7 @@ DamageFilter::DamageFilter() :
 	EventSystem::GetInstance()->Subscribe<ChangeSceneEvent>					(this, &DamageFilter::StopNearDeathBlinkind);
 	EventSystem::GetInstance()->Subscribe<StartRocketLauncherCutsceneEvent>	(this, &DamageFilter::ActivateCutscene);
 	EventSystem::GetInstance()->Subscribe<EndRocketLauncherCutsceneEvent>	(this, &DamageFilter::DeactivateCutscene);
+	EventSystem::GetInstance()->Subscribe<DeadAllEnemyEvent>				(this, &DamageFilter::Deactivate);
 
 	m_graphicer->SetCenterPos(Window::kCenterPos);
 	
@@ -37,6 +38,7 @@ DamageFilter::~DamageFilter()
 	EventSystem::GetInstance()->Unsubscribe<ChangeSceneEvent>					(this, &DamageFilter::StopNearDeathBlinkind);
 	EventSystem::GetInstance()->Unsubscribe<StartRocketLauncherCutsceneEvent>	(this, &DamageFilter::ActivateCutscene);
 	EventSystem::GetInstance()->Unsubscribe<EndRocketLauncherCutsceneEvent>		(this, &DamageFilter::DeactivateCutscene);
+	EventSystem::GetInstance()->Unsubscribe<DeadAllEnemyEvent>					(this, &DamageFilter::Deactivate);
 }
 
 void DamageFilter::Init()
@@ -46,7 +48,7 @@ void DamageFilter::Init()
 	m_is_loop_blinking				= false;
 	m_is_near_death_first_blinking	= false;
 	m_is_near_death					= false;
-	m_is_active_cutscene			= false;
+	m_can_blinking					= true;
 }
 
 void DamageFilter::LateUpdate()
@@ -97,12 +99,17 @@ void DamageFilter::Draw(const int main_screen_handle) const
 #pragma region Event
 void DamageFilter::ActivateCutscene(const StartRocketLauncherCutsceneEvent& event)
 {
-	m_is_active_cutscene = true;
+	m_can_blinking = false;
 }
 
 void DamageFilter::DeactivateCutscene(const EndRocketLauncherCutsceneEvent& event)
 {
-	m_is_active_cutscene = false;
+	m_can_blinking = true;
+}
+
+void DamageFilter::Deactivate(const DeadAllEnemyEvent& event)
+{
+	m_can_blinking = true;
 }
 
 void DamageFilter::StartDamageBlinking(const OnDamageToPlayerEvent& event)
@@ -159,13 +166,13 @@ void DamageFilter::CalcResultScreenAlphaBlendNum()
 	// TODO : マジックナンバーの削除
 	const auto delta_time = GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kUI);
 
-	if (m_is_active_cutscene)
+	if (m_can_blinking)
 	{
-		math::Decrease(m_result_screen_alpha_blend_num, static_cast<int>(700.0f * delta_time), 0);
+		math::Increase(m_result_screen_alpha_blend_num, static_cast<int>(700.0f * delta_time), UCHAR_MAX, false);
 	}
 	else
 	{
-		math::Increase(m_result_screen_alpha_blend_num, static_cast<int>(700.0f * delta_time), UCHAR_MAX, false);
+		math::Decrease(m_result_screen_alpha_blend_num, static_cast<int>(700.0f * delta_time), 0);
 	}
 
 	m_result_screen->GetGraphicer()->SetBlendNum(m_result_screen_alpha_blend_num);

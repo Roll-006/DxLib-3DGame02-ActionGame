@@ -30,23 +30,81 @@
         "use_patrol": true,
         "route_id": "0",
         "patrol_kind": 0
-      }
-    },
-    "boss": {
-      "0": {
+      },
+      "2": {
         "position": {
-          "x": -98.2,
-          "y": 179.0,
-          "z": -52.6
+          "x": 376.0,
+          "y": 165.0,
+          "z": -636.5
         },
         "direction": {
-          "x": -0.053141,
+          "x": 0.826298,
           "y": 0.0,
-          "z": -0.998587
+          "z": -0.563234
         },
         "use_patrol": false,
         "route_id": "-1",
         "patrol_kind": -1
+      },
+      "3": {
+        "position": {
+          "x": -233.3,
+          "y": 193.1,
+          "z": 132.8
+        },
+        "direction": {
+          "x": 0.022204,
+          "y": 0.0,
+          "z": 0.999753
+        },
+        "use_patrol": false,
+        "route_id": "-1",
+        "patrol_kind": -1
+      },
+      "4": {
+        "position": {
+          "x": -96.0,
+          "y": 166.3,
+          "z": -415.7
+        },
+        "direction": {
+          "x": -0.008239,
+          "y": 0.0,
+          "z": 0.999966
+        },
+        "use_patrol": true,
+        "route_id": "1",
+        "patrol_kind": 1
+      },
+      "5": {
+        "position": {
+          "x": 813.5,
+          "y": 187.3,
+          "z": -255.7
+        },
+        "direction": {
+          "x": 0.355191,
+          "y": 0.0,
+          "z": 0.934794
+        },
+        "use_patrol": false,
+        "route_id": "-1",
+        "patrol_kind": -1
+      },
+      "6": {
+        "position": {
+          "x": 140.4,
+          "y": 196.7,
+          "z": 266.8
+        },
+        "direction": {
+          "x": -0.293651,
+          "y": 0.0,
+          "z": -0.955913
+        },
+        "use_patrol": true,
+        "route_id": "2",
+        "patrol_kind": 1
       }
     }
   }

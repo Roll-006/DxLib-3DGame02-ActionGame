@@ -1,14 +1,14 @@
 #include "enemy_manager.hpp"
 
 EnemyManager::EnemyManager() :
-	m_create_count		(0),
+	m_enemy_size		(0),
 	m_dead_enemy_count	(0),
 	m_object_pool		(std::make_shared<EnemyObjectPool>())
 {
 	// ƒCƒxƒ“ƒg“o˜^
 	EventSystem::GetInstance()->Subscribe<ReleaseEvent>			(this, &EnemyManager::NotifyAllowAction);
 	EventSystem::GetInstance()->Subscribe<GrabEvent>			(this, &EnemyManager::NotifyDisallowActionForcibly);
-	EventSystem::GetInstance()->Subscribe<DeadAllEnemyEvent>		(this, &EnemyManager::NotifyDisallowActionForcibly);
+	EventSystem::GetInstance()->Subscribe<DeadAllEnemyEvent>	(this, &EnemyManager::NotifyDisallowActionForcibly);
 	EventSystem::GetInstance()->Subscribe<OnTargetDetectedEvent>(this, &EnemyManager::NotifyDetectedTarget);
 	EventSystem::GetInstance()->Subscribe<DeadEnemyEvent>		(this, &EnemyManager::CountDeadEnemy);
 
@@ -19,6 +19,7 @@ EnemyManager::EnemyManager() :
 	{
 		// ƒ]ƒ“ƒr
 		const auto init_zombie_size = data.at("init_enemies").at("zombie").size();
+		m_enemy_size += static_cast<int>(init_zombie_size);
 		for (size_t i = 0; i < init_zombie_size; ++i)
 		{
 			const auto enemy		= std::static_pointer_cast<EnemyBase>(m_object_pool->GetObj(ObjName.ZOMBIE));
@@ -34,8 +35,6 @@ EnemyManager::EnemyManager() :
 			{
 				enemy->CreatePatrolPos(patrol_kind, route_id);
 			}
-
-			++m_create_count;
 		}
 
 		//// ƒ{ƒX
@@ -169,7 +168,7 @@ void EnemyManager::NotifyDetectedTarget(const OnTargetDetectedEvent& event)
 void EnemyManager::CountDeadEnemy(const DeadEnemyEvent& event)
 {
 	++m_dead_enemy_count;
-	if (m_dead_enemy_count >= kMaxCreateEnemyNum)
+	if (m_dead_enemy_count >= m_enemy_size)
 	{
 		EventSystem::GetInstance()->Publish(DeadAllEnemyEvent());
 	}

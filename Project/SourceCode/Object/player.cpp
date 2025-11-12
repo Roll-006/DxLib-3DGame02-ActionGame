@@ -42,8 +42,8 @@ Player::Player() :
 	invincible_time = kInvincibleTime;
 
 	// 初期pos・dirを設定
-	m_look_dir[TimeKind::kCurrent] = m_look_dir[TimeKind::kNext] = VGet(-0.919710f, 0.0f, 0.392598f);
-	m_transform->SetPos(CoordinateKind::kWorld, VGet(912.7f, 184.6f, -1889.9f));
+	m_look_dir[TimeKind::kCurrent] = m_look_dir[TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);
+	m_transform->SetPos(CoordinateKind::kWorld, VGet(140.7f, 164.4f, -1498.5f));
 	m_transform->SetRot(CoordinateKind::kWorld, m_look_dir.at(TimeKind::kCurrent));
 
 	// コライダー・トリガーを設定
@@ -60,20 +60,20 @@ Player::Player() :
 	{
 		// 武器設定
 		const auto assault_rifle	= std::make_shared<AssaultRifle>();
-		const auto rocket_launcher	= std::make_shared<RocketLauncher>();
+		//const auto rocket_launcher	= std::make_shared<RocketLauncher>();
 		const auto knife			= std::make_shared<Knife>();
 		assault_rifle  ->AddToObjManager();
-		rocket_launcher->AddToObjManager();
+		//rocket_launcher->AddToObjManager();
 		m_weapon_shortcut_selecter->AttachShortcutWeapon(WeaponShortcutPosKind::kInsideLeft, assault_rifle);
-		m_weapon_shortcut_selecter->AttachShortcutWeapon(WeaponShortcutPosKind::kOutsideDown, rocket_launcher);
+		//m_weapon_shortcut_selecter->AttachShortcutWeapon(WeaponShortcutPosKind::kOutsideDown, rocket_launcher);
 		AddItem(assault_rifle);
-		AddItem(rocket_launcher);
+		//AddItem(rocket_launcher);
 		AddItem(knife);
 		EquipWeapon(assault_rifle,		WeaponSlotKind::kMain);
-		EquipWeapon(rocket_launcher,	WeaponSlotKind::kMain);
+		//EquipWeapon(rocket_launcher,	WeaponSlotKind::kMain);
 		EquipWeapon(knife,				WeaponSlotKind::kSub);
 		AttachWeapon(assault_rifle);
-		AttachWeapon(rocket_launcher);
+		//AttachWeapon(rocket_launcher);
 		AttachWeapon(knife);
 
 		m_current_remaining_bullet_num = 10000;
@@ -193,9 +193,9 @@ void Player::Draw() const
 
 	//DrawColliders();
 
-	const auto p = m_transform->GetPos(CoordinateKind::kWorld);
-	const auto d = m_look_dir.at(TimeKind::kCurrent);
-	printfDx("%.1f, %.1f, %.1f : %f, %f, %f\n", p.x, p.y, p.z, d.x, d.y, d.z);
+	//const auto p = m_transform->GetPos(CoordinateKind::kWorld);
+	//const auto d = m_look_dir.at(TimeKind::kCurrent);
+	//printfDx("%.1f, %.1f, %.1f : %f, %f, %f\n", p.x, p.y, p.z, d.x, d.y, d.z);
 }
 
 void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)

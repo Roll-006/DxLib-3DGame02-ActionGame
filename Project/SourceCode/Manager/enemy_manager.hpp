@@ -31,8 +31,7 @@ private:
 	void ReturnPool();
 
 private:
-	static constexpr int kMaxCreateEnemyNum = 2;
-	int m_create_count;
+	int m_enemy_size;
 	int m_dead_enemy_count;
 
 	std::shared_ptr<EnemyObjectPool>		m_object_pool;

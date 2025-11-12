@@ -67,21 +67,21 @@ std::shared_ptr<IState<Player>> player_state::EquipGun::ChangeState(std::shared_
 	{
 		return state_controller->GetState<Reload, Player>();
 	}
-	// ナイフエイミング状態
-	if (state_controller->TryAimKnife(obj))
-	{
-		return state_controller->GetState<AimKnife, Player>();
-	}
-	// 回転切り
-	if (state_controller->TrySpinningSlash(obj))
-	{
-		return state_controller->GetState<SpinningSlashKnife, Player>();
-	}
-	// 切り裂く(第一段階)
-	if (state_controller->TryFirstSideSlashKnife(obj))
-	{
-		return state_controller->GetState<FirstSideSlashKnife, Player>();
-	}
+	//// ナイフエイミング状態
+	//if (state_controller->TryAimKnife(obj))
+	//{
+	//	return state_controller->GetState<AimKnife, Player>();
+	//}
+	//// 回転切り
+	//if (state_controller->TrySpinningSlash(obj))
+	//{
+	//	return state_controller->GetState<SpinningSlashKnife, Player>();
+	//}
+	//// 切り裂く(第一段階)
+	//if (state_controller->TryFirstSideSlashKnife(obj))
+	//{
+	//	return state_controller->GetState<FirstSideSlashKnife, Player>();
+	//}
 
 	return nullptr;
 }

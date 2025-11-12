@@ -18,6 +18,7 @@ private:
 	#pragma region Event
 	void ActivateCutscene			(const StartRocketLauncherCutsceneEvent&	event);
 	void DeactivateCutscene			(const EndRocketLauncherCutsceneEvent&		event);
+	void Deactivate					(const DeadAllEnemyEvent&					event);
 	void StartDamageBlinking		(const OnDamageToPlayerEvent&				event);
 	void StartNearDeathBlinking		(const NearDeathEvent&						event);
 	void StartEnterNearDeathBlinking(const EnterNearDeathEvent&					event);
@@ -47,5 +48,5 @@ private:
 	bool  m_is_loop_blinking;
 	bool  m_is_near_death_first_blinking;
 	bool  m_is_near_death;
-	bool  m_is_active_cutscene;
+	bool  m_can_blinking;
 };
