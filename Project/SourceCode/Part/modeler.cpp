@@ -1,6 +1,5 @@
 #include "modeler.hpp"
 
-#pragma region コンストラクタ / デストラクタ
 Modeler::Modeler(const std::shared_ptr<Transform>& transform, const std::string& file_path, const VECTOR& basic_angle, const float basic_scale) :
 	m_model_handle	(HandleKeeper::GetInstance()->LoadHandle(HandleKind::kModel, file_path)),
 	m_opacity		(1.0f),
@@ -29,7 +28,6 @@ Modeler::~Modeler()
 		m_model_handle = -1;
 	}
 }
-#pragma endregion
 
 void Modeler::Draw() const
 {
@@ -39,7 +37,7 @@ void Modeler::Draw() const
 	MV1DrawModel(m_model_handle);
 }
 
-void Modeler::InitMaterial()
+void Modeler::InitMaterial() const
 {
 	MV1SetDifColorScale(m_model_handle, COLOR_F(1.0f, 1.0f, 1.0f, 1.0f));
 	MV1SetSpcColorScale(m_model_handle, COLOR_F(1.0f, 1.0f, 1.0f, 1.0f));

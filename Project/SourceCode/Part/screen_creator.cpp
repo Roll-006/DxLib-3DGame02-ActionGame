@@ -64,7 +64,7 @@ void ScreenCreator::SaveCamera()
 	m_prev_camera_target	= GetCameraTarget();
 }
 
-void ScreenCreator::RestoreCamera()
+void ScreenCreator::RestoreCamera() const
 {
 	// ƒJƒƒ‰î•ñ‚Ì•œŒ³
 	SetCameraNearFar					(m_prev_camera_near, m_prev_camera_far);

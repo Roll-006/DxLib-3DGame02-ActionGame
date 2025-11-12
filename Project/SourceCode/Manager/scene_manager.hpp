@@ -4,7 +4,7 @@
 #include "../Scene/share_scene.hpp"
 #include "../Scene/title_scene.hpp"
 #include "../Scene/play_scene.hpp"
-#include "../Scene/game_clear_scene.hpp"
+//#include "../Scene/game_clear_scene.hpp"
 #include "../Scene/load_scene.hpp"
 
 class SceneManager final : public SingleInstanceBase<SceneManager>

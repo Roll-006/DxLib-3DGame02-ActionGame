@@ -27,7 +27,7 @@ public:
 
 private:
 	void SaveCamera();
-	void RestoreCamera();
+	void RestoreCamera() const;
 
 private:
 	std::shared_ptr<Graphicer>	m_graphicer;

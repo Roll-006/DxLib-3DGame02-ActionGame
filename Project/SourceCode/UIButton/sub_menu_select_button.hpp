@@ -16,6 +16,7 @@ public:
 		kDecide,
 		kBack,
 		kContinue,
+		kRetry,
 		kQuitGame,
 	};
 

@@ -32,8 +32,8 @@ void TitleTab::Init()
 {
 	m_ui_selector->Init();
 
-	m_is_game_start				= false;
-	m_is_exit	= false;
+	m_is_game_start	= false;
+	m_is_exit		= false;
 }
 
 void TitleTab::Update()

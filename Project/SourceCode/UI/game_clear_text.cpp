@@ -6,7 +6,7 @@ GameClearText::GameClearText() :
 	m_font_size			(GetDrawStringWidthToHandle(m_text.c_str(), -1, m_font_handle), GetFontSizeToHandle(m_font_handle)),
 	m_alpha_blend_num	(0),
 	m_scale				(0.5f),
-	m_result_screen		(std::make_shared<ScreenCreator>(kScreenSize, Window::kCenterPos))
+	m_result_screen		(std::make_shared<ScreenCreator>(kScreenSize, kCenterPos))
 {
 
 }
@@ -21,7 +21,7 @@ void GameClearText::Init()
 
 }
 
-void GameClearText::LateUpdate()
+void GameClearText::Update()
 {
 	CreateResultScreen();
 }

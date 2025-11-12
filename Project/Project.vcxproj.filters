@@ -88,9 +88,6 @@
     <ClCompile Include="SourceCode\Part\transform.cpp">
       <Filter>SourceCode\Part</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Scene\game_clear_scene.cpp">
-      <Filter>SourceCode\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\Scene\load_scene.cpp">
       <Filter>SourceCode\Scene</Filter>
     </ClCompile>
@@ -682,9 +679,6 @@
     <ClCompile Include="SourceCode\UI\game_clear_text.cpp">
       <Filter>SourceCode\UI</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\UICreator\game_clear_ui_creator.cpp">
-      <Filter>SourceCode\UICreator</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\UICreator\player_ui_creator.cpp">
       <Filter>SourceCode\UICreator</Filter>
     </ClCompile>
@@ -830,9 +824,6 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Part\transform.hpp">
       <Filter>SourceCode\Part</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Scene\game_clear_scene.hpp">
-      <Filter>SourceCode\Scene</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Scene\load_scene.hpp">
       <Filter>SourceCode\Scene</Filter>
@@ -1808,9 +1799,6 @@
     </ClInclude>
     <ClInclude Include="SourceCode\UI\game_clear_text.hpp">
       <Filter>SourceCode\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\UICreator\game_clear_ui_creator.hpp">
-      <Filter>SourceCode\UICreator</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\UICreator\player_ui_creator.hpp">
       <Filter>SourceCode\UICreator</Filter>

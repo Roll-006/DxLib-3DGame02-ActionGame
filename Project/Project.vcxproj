@@ -237,7 +237,6 @@
     <ClCompile Include="SourceCode\Part\boss_state_controller.cpp" />
     <ClCompile Include="SourceCode\Part\zombie_state_controller.cpp" />
     <ClCompile Include="SourceCode\Random\random_generator.cpp" />
-    <ClCompile Include="SourceCode\Scene\game_clear_scene.cpp" />
     <ClCompile Include="SourceCode\Scene\load_scene.cpp" />
     <ClCompile Include="SourceCode\Scene\play_scene.cpp" />
     <ClCompile Include="SourceCode\Scene\share_scene.cpp" />
@@ -411,7 +410,6 @@
     <ClCompile Include="SourceCode\Tab\warning_tab.cpp" />
     <ClCompile Include="SourceCode\UIButton\sub_menu_select_button.cpp" />
     <ClCompile Include="SourceCode\UIButton\main_menu_select_button.cpp" />
-    <ClCompile Include="SourceCode\UICreator\game_clear_ui_creator.cpp" />
     <ClCompile Include="SourceCode\UICreator\player_ui_creator.cpp" />
     <ClCompile Include="SourceCode\UICreator\screen_filter_creator.cpp" />
     <ClCompile Include="SourceCode\UI\game_clear_text.cpp" />
@@ -681,7 +679,6 @@
     <ClInclude Include="SourceCode\Path\model_path.hpp" />
     <ClInclude Include="SourceCode\Path\ui_graphic_path.hpp" />
     <ClInclude Include="SourceCode\Random\random_generator.hpp" />
-    <ClInclude Include="SourceCode\Scene\game_clear_scene.hpp" />
     <ClInclude Include="SourceCode\Scene\load_scene.hpp" />
     <ClInclude Include="SourceCode\Scene\play_scene.hpp" />
     <ClInclude Include="SourceCode\Scene\share_scene.hpp" />
@@ -857,7 +854,6 @@
     <ClInclude Include="SourceCode\Tag\obj_tag.hpp" />
     <ClInclude Include="SourceCode\UIButton\sub_menu_select_button.hpp" />
     <ClInclude Include="SourceCode\UIButton\main_menu_select_button.hpp" />
-    <ClInclude Include="SourceCode\UICreator\game_clear_ui_creator.hpp" />
     <ClInclude Include="SourceCode\UICreator\player_ui_creator.hpp" />
     <ClInclude Include="SourceCode\UICreator\screen_filter_creator.hpp" />
     <ClInclude Include="SourceCode\UI\game_clear_text.hpp" />

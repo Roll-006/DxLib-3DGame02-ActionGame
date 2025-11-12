@@ -17,7 +17,6 @@ PlayScene::PlayScene() :
 	m_rifle_cartridge_object_pool	(std::make_shared<RifleCartridgeObjectPool>()),
 	m_play_scene_effect_object_pool (std::make_shared<PlaySceneEffectObjectPool>()),
 	m_player_ui_creator				(std::make_shared<PlayerUICreator>(m_player)),
-	m_game_clear_ui_creator			(std::make_shared<GameClearUiCreator>()),
 	m_game_clear_tab				(std::make_shared<GameClearTab>()),
 	m_game_over_tab					(std::make_shared<GameOverTab>()),
 	m_pause_tab						(std::make_shared<PauseTab>())
@@ -49,7 +48,6 @@ PlayScene::PlayScene() :
 	TabDrawer::GetInstance()->AddTab		(m_game_over_tab);
 	TabDrawer::GetInstance()->AddTab		(m_pause_tab);
 	UIDrawer ::GetInstance()->AddUICreator	(m_player_ui_creator);
-	UIDrawer ::GetInstance()->AddUICreator	(m_game_clear_ui_creator);
 	UIDrawer ::GetInstance()->GetUICreator	(UICreatorName.SCREEN_FILTER_CREATOR)->Init();
 
 	Init();
@@ -80,8 +78,7 @@ PlayScene::~PlayScene()
 	TabDrawer::GetInstance()->RemoveTab			(m_game_clear_tab	->GetTabHandle());
 	TabDrawer::GetInstance()->RemoveTab			(m_game_over_tab	->GetTabHandle());
 	TabDrawer::GetInstance()->RemoveTab			(m_pause_tab		->GetTabHandle());
-	UIDrawer ::GetInstance()->RemoveUICreator	(m_player_ui_creator	->GetName());
-	UIDrawer ::GetInstance()->RemoveUICreator	(m_game_clear_ui_creator->GetName());
+	UIDrawer ::GetInstance()->RemoveUICreator	(m_player_ui_creator->GetName());
 }
 
 void PlayScene::Init()
@@ -95,8 +92,7 @@ void PlayScene::Init()
 	cinemachine_brain->SetFar (2000.0f);
 	cinemachine_brain->SetFOV (25.0f);
 
-	m_player_ui_creator		->Init();
-	m_game_clear_ui_creator	->Init();
+	m_player_ui_creator->Init();
 }
 
 void PlayScene::Update()
@@ -129,7 +125,6 @@ void PlayScene::LateUpdate()
 	m_houses							->LateUpdate();
 	m_skydome							->LateUpdate();
 	m_player_ui_creator					->LateUpdate();
-	m_game_clear_ui_creator				->LateUpdate();
 }
 
 void PlayScene::DrawToShadowMap() const
@@ -158,19 +153,14 @@ void PlayScene::Draw() const
 std::shared_ptr<IScene> PlayScene::ChangeScene()
 {
 	// タイトル
-	if (m_game_over_tab->IsQuitGame() || m_pause_tab->IsQuitGame())
+	if (m_game_over_tab->IsQuitGame() || m_pause_tab->IsQuitGame() || m_game_clear_tab->IsQuitGame())
 	{
 		return std::make_shared<TitleScene>();
 	}
 	// ロード(プレイ)
-	if (m_game_over_tab->IsContinue() || m_pause_tab->IsRestart())
+	if (m_game_over_tab->IsContinue() || m_pause_tab->IsRestart()  || m_game_clear_tab->IsRetry())
 	{
 		return std::make_shared<LoadScene>(SceneKind::kPlay);
-	}
-	// ゲームクリア
-	if (m_game_clear_tab->IsClear())
-	{
-		return std::make_shared<GameClearScene>();
 	}
 
 	return nullptr;

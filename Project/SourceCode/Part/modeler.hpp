@@ -13,7 +13,7 @@ public:
 
 	void Draw() const;
 
-	void InitMaterial();
+	void InitMaterial() const;
 
 	/// @brief •s“§–¾“x‚ğİ’è
 	void SetOpacity(const float opacity) { m_opacity = opacity; }

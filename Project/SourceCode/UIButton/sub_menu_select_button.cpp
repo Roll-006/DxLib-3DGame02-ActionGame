@@ -50,6 +50,11 @@ SubMenuSelectButton::SubMenuSelectButton(const ButtonKind button_kind, const Vec
 		m_text = "CONTINUE";
 		break;
 
+	case ButtonKind::kRetry:
+		m_font_handle = font_handler->GetFontHandle(FontName.SUB_MENU_TEXT);
+		m_text = "RETRY";
+		break;
+
 	case ButtonKind::kQuitGame:
 		m_font_handle = font_handler->GetFontHandle(FontName.SUB_MENU_TEXT);
 		m_text = "QUIT GAME";

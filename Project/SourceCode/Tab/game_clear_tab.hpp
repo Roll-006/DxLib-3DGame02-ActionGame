@@ -5,6 +5,7 @@
 
 #include "../UIButton/sub_menu_select_button.hpp"
 #include "../Part/scene_fader.hpp"
+#include "../UI/game_clear_text.hpp"
 
 class GameClearTab final : public ITab
 {
@@ -27,34 +28,43 @@ public:
 	[[nodiscard]] int  GetPriority()	const override	{ return m_priority; }
 	[[nodiscard]] bool IsActive()		const override	{ return m_is_active; }
 	[[nodiscard]] bool CanSelect()		const override	{ return m_can_select; }
-	[[nodiscard]] bool IsClear()		const			{ return m_is_clear && !SceneFader::GetInstance()->IsFading();; }
+	[[nodiscard]] bool IsRetry()		const { return m_is_retry	  && !SceneFader::GetInstance()->IsFading(); }
+	[[nodiscard]] bool IsQuitGame()		const { return m_is_quit_game && !SceneFader::GetInstance()->IsFading(); }
 
 private:
 	void StartActivateTimer(const DeadBossEvent& event);
 
-	void JudgeActive();
-	void JudgeClear();
+	void ExecuteRetry();
+	void ExecuteQuitGame();
 
+	void JudgeActive();
+
+	void ChangeTimeScale();
 	void CalcAlphaBlendNum();
 	void CreateResultScreen();
 
 private:
-	static constexpr float kActiveWaitTime	= 4.0f;
-	static constexpr float kFadeSpeed		= 300.0f;
-	static constexpr float kClearWaitTime	= 10.0f;
+	static constexpr Vector2D<int>	kFirstButtonCenterPos	= { Window::kCenterPos.x, Window::kCenterPos.y + 80 };
+	static constexpr int			kButtonPosInterval		= 130;
+	static constexpr float			kActiveWaitTime			= 4.0f;
+	static constexpr float			kFadeSpeed				= 300.0f;
+	static constexpr float			kDrawResultWaitTime		= 10.0f;
 
-	int	  m_tab_handle;
-	int	  m_priority;
-	bool  m_is_active;
-	bool  m_can_select;
+	int		m_tab_handle;
+	int		m_priority;
+	bool	m_is_active;
+	bool	m_can_select;
+	bool	m_is_retry;
+	bool	m_is_quit_game;
 
-	float m_clear_wait_time;
-	bool  m_is_clear;
+	bool	m_can_calc_active_time;
+	float	m_active_timer;
+	int		m_alpha_blend_num;
 
-	bool  m_can_calc_active_time;
-	float m_active_timer;
-	int	  m_alpha_blend_num;
+	float	m_change_time_scale_wait_time;
+	bool	m_is_change_time_scale;
 
+	std::shared_ptr<GameClearText>	m_game_clear_text;
 	std::shared_ptr<UISelector>		m_ui_selector;
 	std::shared_ptr<ScreenCreator>	m_result_screen;
 };
