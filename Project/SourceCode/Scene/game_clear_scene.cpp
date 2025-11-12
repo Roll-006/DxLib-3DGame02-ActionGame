@@ -5,7 +5,7 @@ GameClearScene::GameClearScene() :
 	m_is_active	(true),
 	m_scene_kind(SceneKind::kGameClear)
 {
-
+	StartFadeIn();
 }
 
 GameClearScene::~GameClearScene()
@@ -35,7 +35,7 @@ void GameClearScene::DrawToShadowMap() const
 
 void GameClearScene::Draw() const
 {
-	
+
 }
 
 std::shared_ptr<IScene> GameClearScene::ChangeScene()
@@ -45,5 +45,6 @@ std::shared_ptr<IScene> GameClearScene::ChangeScene()
 
 void GameClearScene::StartFadeIn()
 {
-
+	const auto fader = SceneFader::GetInstance();
+	fader->StartFade(0, 70.0f);
 }

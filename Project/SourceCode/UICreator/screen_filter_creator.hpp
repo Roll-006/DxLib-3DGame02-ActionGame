@@ -1,8 +1,8 @@
 #pragma once
 #include "../Interface/i_ui_creator.hpp"
 
-#include "cinema_scope_frame.hpp"
-#include "damage_filter.hpp"
+#include "../UI/cinema_scope_frame.hpp"
+#include "../UI/damage_filter.hpp"
 
 // FIXME : UI‚Æ‚Í•Ê‚Ì‚½‚ß•ª—£‚Ì•K—v‚ ‚è
 

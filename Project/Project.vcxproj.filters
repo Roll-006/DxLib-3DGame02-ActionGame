@@ -154,9 +154,6 @@
     <ClCompile Include="SourceCode\VirtualCamera\virtual_camera.cpp">
       <Filter>SourceCode\VirtualCamera</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\UI\player_ui_creator.cpp">
-      <Filter>SourceCode\UI</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\Algorithm\algorithm.cpp">
       <Filter>SourceCode\Algorithm</Filter>
     </ClCompile>
@@ -330,9 +327,6 @@
     </ClCompile>
     <ClCompile Include="SourceCode\State\PlayerState\shot_rocket_launcher.cpp">
       <Filter>SourceCode\State\PlayerState</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\UI\screen_filter_creator.cpp">
-      <Filter>SourceCode\UI</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Object\non_collide_rocket_bomb.cpp">
       <Filter>SourceCode\Object</Filter>
@@ -685,6 +679,18 @@
     <ClCompile Include="SourceCode\State\PlayerState\victory_pose.cpp">
       <Filter>SourceCode\State\PlayerState</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\UI\game_clear_text.cpp">
+      <Filter>SourceCode\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\UICreator\game_clear_ui_creator.cpp">
+      <Filter>SourceCode\UICreator</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\UICreator\player_ui_creator.cpp">
+      <Filter>SourceCode\UICreator</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\UICreator\screen_filter_creator.cpp">
+      <Filter>SourceCode\UICreator</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\character_base.hpp">
@@ -890,9 +896,6 @@
     </ClInclude>
     <ClInclude Include="SourceCode\VirtualCamera\virtual_camera.hpp">
       <Filter>SourceCode\VirtualCamera</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\UI\player_ui_creator.hpp">
-      <Filter>SourceCode\UI</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Algorithm\algorithm.hpp">
       <Filter>SourceCode\Algorithm</Filter>
@@ -1115,9 +1118,6 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Data\recoil_data.hpp">
       <Filter>SourceCode\Data</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\UI\screen_filter_creator.hpp">
-      <Filter>SourceCode\UI</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Interface\i_ui_creator.hpp">
       <Filter>SourceCode\Interface</Filter>
@@ -1806,6 +1806,18 @@
     <ClInclude Include="SourceCode\Event\victory_pose_event.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\UI\game_clear_text.hpp">
+      <Filter>SourceCode\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\UICreator\game_clear_ui_creator.hpp">
+      <Filter>SourceCode\UICreator</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\UICreator\player_ui_creator.hpp">
+      <Filter>SourceCode\UICreator</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\UICreator\screen_filter_creator.hpp">
+      <Filter>SourceCode\UICreator</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="SourceCode">
@@ -1876,9 +1888,6 @@
     </Filter>
     <Filter Include="SourceCode\Random">
       <UniqueIdentifier>{d4a7cfb9-bc76-4840-bd83-b43643529fba}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCode\Scene">
-      <UniqueIdentifier>{47238515-00d6-486e-bcf4-f6f55f21cce5}</UniqueIdentifier>
     </Filter>
     <Filter Include="SourceCode\ShadowMap">
       <UniqueIdentifier>{42ae97fb-a9d7-47a3-b9b8-61b541d541e4}</UniqueIdentifier>
@@ -1952,6 +1961,12 @@
     <Filter Include="SourceCode\State\BossState">
       <UniqueIdentifier>{d48e325b-0620-4896-9fd1-d5e4c363d5df}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SourceCode\UICreator">
+      <UniqueIdentifier>{ece711ae-b4a0-4e28-a35e-6f6f1518c896}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCode\Scene">
+      <UniqueIdentifier>{47238515-00d6-486e-bcf4-f6f55f21cce5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\JSON\key_number.json">
@@ -1973,6 +1988,9 @@
       <Filter>JSON</Filter>
     </None>
     <None Include="Data\JSON\boss.json">
+      <Filter>JSON</Filter>
+    </None>
+    <None Include="Data\JSON\player.json">
       <Filter>JSON</Filter>
     </None>
   </ItemGroup>

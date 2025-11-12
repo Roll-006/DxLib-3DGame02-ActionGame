@@ -411,6 +411,10 @@
     <ClCompile Include="SourceCode\Tab\warning_tab.cpp" />
     <ClCompile Include="SourceCode\UIButton\sub_menu_select_button.cpp" />
     <ClCompile Include="SourceCode\UIButton\main_menu_select_button.cpp" />
+    <ClCompile Include="SourceCode\UICreator\game_clear_ui_creator.cpp" />
+    <ClCompile Include="SourceCode\UICreator\player_ui_creator.cpp" />
+    <ClCompile Include="SourceCode\UICreator\screen_filter_creator.cpp" />
+    <ClCompile Include="SourceCode\UI\game_clear_text.cpp" />
     <ClCompile Include="SourceCode\UI\cross_hair.cpp" />
     <ClCompile Include="SourceCode\UI\damage_filter.cpp" />
     <ClCompile Include="SourceCode\UI\cinema_scope_frame.cpp" />
@@ -418,8 +422,6 @@
     <ClCompile Include="SourceCode\UI\stealth_kill_target_icon.cpp" />
     <ClCompile Include="SourceCode\UI\melee_target_icon.cpp" />
     <ClCompile Include="SourceCode\UI\health_gauge.cpp" />
-    <ClCompile Include="SourceCode\UI\player_ui_creator.cpp" />
-    <ClCompile Include="SourceCode\UI\screen_filter_creator.cpp" />
     <ClCompile Include="SourceCode\UI\equip_weapon_icon.cpp" />
     <ClCompile Include="SourceCode\UI\status_icons.cpp" />
     <ClCompile Include="SourceCode\UI\ui_drawer.cpp" />
@@ -855,6 +857,10 @@
     <ClInclude Include="SourceCode\Tag\obj_tag.hpp" />
     <ClInclude Include="SourceCode\UIButton\sub_menu_select_button.hpp" />
     <ClInclude Include="SourceCode\UIButton\main_menu_select_button.hpp" />
+    <ClInclude Include="SourceCode\UICreator\game_clear_ui_creator.hpp" />
+    <ClInclude Include="SourceCode\UICreator\player_ui_creator.hpp" />
+    <ClInclude Include="SourceCode\UICreator\screen_filter_creator.hpp" />
+    <ClInclude Include="SourceCode\UI\game_clear_text.hpp" />
     <ClInclude Include="SourceCode\UI\cross_hair.hpp" />
     <ClInclude Include="SourceCode\UI\damage_filter.hpp" />
     <ClInclude Include="SourceCode\UI\cinema_scope_frame.hpp" />
@@ -862,8 +868,6 @@
     <ClInclude Include="SourceCode\UI\stealth_kill_target_icon.hpp" />
     <ClInclude Include="SourceCode\UI\melee_target_icon.hpp" />
     <ClInclude Include="SourceCode\UI\health_gauge.hpp" />
-    <ClInclude Include="SourceCode\UI\player_ui_creator.hpp" />
-    <ClInclude Include="SourceCode\UI\screen_filter_creator.hpp" />
     <ClInclude Include="SourceCode\UI\equip_weapon_icon.hpp" />
     <ClInclude Include="SourceCode\UI\status_icons.hpp" />
     <ClInclude Include="SourceCode\UI\ui_drawer.hpp" />
@@ -881,6 +885,7 @@
     <ClInclude Include="SourceCode\Window\window.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Data\JSON\player.json" />
     <None Include="Data\JSON\boss.json" />
     <None Include="Data\JSON\zombie.json" />
     <None Include="data\JSON\houses.json" />

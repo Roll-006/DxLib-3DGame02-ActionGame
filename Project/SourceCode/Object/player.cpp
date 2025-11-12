@@ -6,25 +6,25 @@
 
 Player::Player() :
 	CharacterBase(ObjName.PLAYER, ObjTag.PLAYER),
-	m_state									(std::make_shared<PlayerStateController>()),
-	m_bone_pos_corrector					(std::make_shared<BonePosCorrector>()),
-	m_input_slope							(v3d::GetZeroV()),
-	m_can_control							(true),
-	m_prev_health							(0.0f),
-	m_is_grabbed							(false),
-	m_is_escape								(false),
-	m_escape_start_timer					(0.0f),
-	m_can_search_stealth_kill_target		(true),
-	m_can_search_melee_target				(true),
-	m_is_victory_pose						(false),
-	m_is_count_victory_pose					(false),
-	m_victory_pose_wait_time				(0.0f),
-	m_weapon_shortcut_selecter				(std::make_shared<WeaponShortcutSelecter>()),
-	m_melee_target							(nullptr),
-	m_top_priority_downed_chara				(nullptr),
-	m_stealth_kill_target					(nullptr),
-	m_grabber								(nullptr),
-	m_escape_gauge							(std::make_shared<Gauge>(100.0f))
+	m_state							(std::make_shared<PlayerStateController>()),
+	m_bone_pos_corrector			(std::make_shared<BonePosCorrector>()),
+	m_input_slope					(v3d::GetZeroV()),
+	m_can_control					(true),
+	m_prev_health					(0.0f),
+	m_is_grabbed					(false),
+	m_is_escape						(false),
+	m_escape_start_timer			(0.0f),
+	m_can_search_stealth_kill_target(true),
+	m_can_search_melee_target		(true),
+	m_is_victory_pose				(false),
+	m_is_count_victory_pose			(false),
+	m_victory_pose_wait_time		(0.0f),
+	m_weapon_shortcut_selecter		(std::make_shared<WeaponShortcutSelecter>()),
+	m_melee_target					(nullptr),
+	m_top_priority_downed_chara		(nullptr),
+	m_stealth_kill_target			(nullptr),
+	m_grabber						(nullptr),
+	m_escape_gauge					(std::make_shared<Gauge>(100.0f))
 {
 	// イベント登録
 	EventSystem::GetInstance()->Subscribe<DeadBossEvent>(this, &Player::DeadBoss);
@@ -42,8 +42,8 @@ Player::Player() :
 	invincible_time = kInvincibleTime;
 
 	// 初期pos・dirを設定
-	m_look_dir[TimeKind::kCurrent] = m_look_dir[TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);
-	m_transform->SetPos(CoordinateKind::kWorld, VGet(-146.2f, 5095.0f, -756.0f));
+	m_look_dir[TimeKind::kCurrent] = m_look_dir[TimeKind::kNext] = VGet(-0.919710f, 0.0f, 0.392598f);
+	m_transform->SetPos(CoordinateKind::kWorld, VGet(912.7f, 184.6f, -1889.9f));
 	m_transform->SetRot(CoordinateKind::kWorld, m_look_dir.at(TimeKind::kCurrent));
 
 	// コライダー・トリガーを設定
@@ -193,9 +193,9 @@ void Player::Draw() const
 
 	//DrawColliders();
 
-	const auto p = m_transform->GetPos(CoordinateKind::kWorld);
-	const auto d = m_look_dir.at(TimeKind::kCurrent);
-	printfDx("%.1f, %.1f, %.1f : %f, %f, %f\n", p.x, p.y, p.z, d.x, d.y, d.z);
+	//const auto p = m_transform->GetPos(CoordinateKind::kWorld);
+	//const auto d = m_look_dir.at(TimeKind::kCurrent);
+	//printfDx("%.1f, %.1f, %.1f : %f, %f, %f\n", p.x, p.y, p.z, d.x, d.y, d.z);
 }
 
 void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)

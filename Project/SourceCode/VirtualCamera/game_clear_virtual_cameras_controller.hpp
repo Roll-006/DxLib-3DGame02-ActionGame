@@ -40,7 +40,7 @@ private:
 	static constexpr VECTOR kTrackedObjOffset		= { 0.0f,  0.0f,    0.0f };
 	static constexpr float  kZoomInInitialVelocity	= 1.4f;
 	static constexpr float  kZoomInDeceleration		= 1.0f;
-	static constexpr float  kZoomInWaitTime			= 2.0f;
+	static constexpr float  kZoomInWaitTime			= 0.0f;
 
 private:
 	VirtualCameraControllerKind		m_virtual_camera_controller_kind;

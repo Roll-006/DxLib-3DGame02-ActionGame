@@ -1,12 +1,12 @@
 #pragma once
 #include "../Interface/i_ui_creator.hpp"
 
-#include "melee_target_icon.hpp"
-#include "stealth_kill_target_icon.hpp"
-#include "escape_icon.hpp"
-#include "status_icons.hpp"
-#include "weapon_shortcut_drawer.hpp"
-#include "cross_hair.hpp"
+#include "../UI/melee_target_icon.hpp"
+#include "../UI/stealth_kill_target_icon.hpp"
+#include "../UI/escape_icon.hpp"
+#include "../UI/status_icons.hpp"
+#include "../UI/weapon_shortcut_drawer.hpp"
+#include "../UI/cross_hair.hpp"
 
 #include "../Part/player_state_controller.hpp"
 

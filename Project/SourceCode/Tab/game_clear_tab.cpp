@@ -6,6 +6,8 @@ GameClearTab::GameClearTab() :
 	m_is_active				(false),
 	m_can_select			(true),
 	m_can_calc_active_time	(false),
+	m_clear_wait_time		(0.0f),
+	m_is_clear				(false),
 	m_active_timer			(0.0f),
 	m_alpha_blend_num		(0),
 	m_ui_selector			(std::make_shared<UISelector>(0, true, true)),
@@ -19,10 +21,10 @@ GameClearTab::GameClearTab() :
 	//{
 	//	center_pos.emplace_back(kFirstButtonCenterPos + Vector2D<int>(0, kButtonPosInterval * i));
 	//}
-
+	//
 	//m_ui_selector->AddUIButton(std::make_shared<SubMenuSelectButton>(SubMenuSelectButton::ButtonKind::kContinue, center_pos.at(0), [this]() { ExecuteContinue(); }, true));
 	//m_ui_selector->AddUIButton(std::make_shared<SubMenuSelectButton>(SubMenuSelectButton::ButtonKind::kQuitGame, center_pos.at(1), [this]() { ExecuteQuitGame(); }, false));
-
+	//
 	//m_filter_graphic->SetCenterPos(Window::kCenterPos);
 	//m_filter_graphic->SetBlendNum(220);
 
@@ -47,6 +49,8 @@ void GameClearTab::Update()
 	if (!m_is_active) { return; }
 
 	if (m_can_select) { m_ui_selector->Update(); }
+
+	JudgeClear();
 
 	CreateResultScreen();
 	CalcAlphaBlendNum();
@@ -83,6 +87,20 @@ void GameClearTab::JudgeActive()
 	if (m_active_timer > kActiveWaitTime)
 	{
 		m_is_active = true;
+	}
+}
+
+void GameClearTab::JudgeClear()
+{
+	if (!m_is_active){ return; }
+	if (m_is_clear)	 { return; }
+	
+	const auto delta_time = GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kUI);
+	m_clear_wait_time += delta_time;
+	if (m_clear_wait_time > kClearWaitTime)
+	{
+		SceneFader::GetInstance()->StartFade(UCHAR_MAX, kFadeSpeed);
+		m_is_clear = true;
 	}
 }
 

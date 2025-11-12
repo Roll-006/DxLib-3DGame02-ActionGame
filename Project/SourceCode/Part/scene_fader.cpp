@@ -14,6 +14,8 @@ SceneFader::~SceneFader()
 void SceneFader::Update()
 {
 	m_fader->Update();
+
+	printfDx("%d\n", m_fader->GetAlphaBlendNum());
 }
 
 void SceneFader::Draw() const

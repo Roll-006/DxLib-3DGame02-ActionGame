@@ -23,26 +23,33 @@ public:
 	void DisallowSelect()	override { m_can_select = false; }
 
 
-	[[nodiscard]] int  GetTabHandle()	const override { return m_tab_handle; }
-	[[nodiscard]] int  GetPriority()	const override { return m_priority; }
-	[[nodiscard]] bool IsActive()		const override { return m_is_active; }
-	[[nodiscard]] bool CanSelect()		const override { return m_can_select; }
+	[[nodiscard]] int  GetTabHandle()	const override	{ return m_tab_handle; }
+	[[nodiscard]] int  GetPriority()	const override	{ return m_priority; }
+	[[nodiscard]] bool IsActive()		const override	{ return m_is_active; }
+	[[nodiscard]] bool CanSelect()		const override	{ return m_can_select; }
+	[[nodiscard]] bool IsClear()		const			{ return m_is_clear && !SceneFader::GetInstance()->IsFading();; }
 
 private:
 	void StartActivateTimer(const DeadBossEvent& event);
 
 	void JudgeActive();
+	void JudgeClear();
+
 	void CalcAlphaBlendNum();
 	void CreateResultScreen();
 
 private:
 	static constexpr float kActiveWaitTime	= 4.0f;
-	static constexpr float kFadeSpeed		= 400.0f;
+	static constexpr float kFadeSpeed		= 300.0f;
+	static constexpr float kClearWaitTime	= 10.0f;
 
 	int	  m_tab_handle;
 	int	  m_priority;
 	bool  m_is_active;
 	bool  m_can_select;
+
+	float m_clear_wait_time;
+	bool  m_is_clear;
 
 	bool  m_can_calc_active_time;
 	float m_active_timer;

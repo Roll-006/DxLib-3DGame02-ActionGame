@@ -32,8 +32,8 @@
     },
     "game_clear_text": {
       "font_path": "Calibri Light",
-      "size": 55,
-      "thick": 4,
+      "size": 200,
+      "thick": 10,
       "type": -1,
       "char_set": -1,
       "edge_size": -1,

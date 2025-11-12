@@ -197,30 +197,26 @@ private:
 
 	static constexpr float  kInvincibleTime						= 0.5f;
 
-	//static constexpr float kCrouchWalkSpeed						= 10.0f;
-	static constexpr float kSlowWalkSpeed						= 30.0f;
-	static constexpr float kWalkSpeed							= 70.0f;
-	static constexpr float kRunSpeed							= 125.0f;
-	static constexpr float kAcceleration						= 1.0f;					// 加速度(減速度も共通)
+	static constexpr float  kSlowWalkSpeed						= 30.0f;
+	static constexpr float  kWalkSpeed							= 70.0f;
+	static constexpr float  kRunSpeed							= 125.0f;
+	static constexpr float  kAcceleration						= 1.0f;					// 加速度(減速度も共通)
 
-	static constexpr float kMoveDirOffsetSpeed					= 5.0f;					// 移動方向の補正速度
-	static constexpr float kLookDirOffsetSpeed					= 4.0f;					// 見る方向の補正角度
-	static constexpr float kLookDirOffsetSpeedForRun			= 6.0f;					// ダッシュ時の見る方向の補正角度
-	static constexpr float kLookDirOffsetSpeedForAim			= 10.0f;					// エイミング時の見る方向を回転させる角度
-	static constexpr float kLookDirOffsetSpeedForSideSlash		= 0.5f;					// 切り裂き攻撃時の見る方向を回転させる角度
-	static constexpr float kConfirmMoveDirThresholdDistance		= 0.08f;				// 目的の移動方向に到達したと判定する閾値
+	static constexpr float  kMoveDirOffsetSpeed					= 5.0f;					// 移動方向の補正速度
+	static constexpr float  kLookDirOffsetSpeed					= 4.0f;					// 見る方向の補正角度
+	static constexpr float  kLookDirOffsetSpeedForRun			= 6.0f;					// ダッシュ時の見る方向の補正角度
+	static constexpr float  kLookDirOffsetSpeedForAim			= 10.0f;				// エイミング時の見る方向を回転させる角度
+	static constexpr float  kLookDirOffsetSpeedForSideSlash		= 0.5f;					// 切り裂き攻撃時の見る方向を回転させる角度
+	static constexpr float  kConfirmMoveDirThresholdDistance	= 0.08f;				// 目的の移動方向に到達したと判定する閾値
 
-	static constexpr int   kWalkStickSlopeLimit					= 15000;				// 歩き状態とするスティック傾きの上限
-	//static constexpr float kTurnAroundStickAngle				= 30.0f;				// 振り向きを行うスティックの入力角度
+	static constexpr int    kWalkStickSlopeLimit				= 15000;				// 歩き状態とするスティック傾きの上限
 
 	static constexpr float  kCapsuleRadius						= 8.0f;
 	static constexpr float  kCollisionAreaRadius				= 37.0f;
 	static constexpr VECTOR kCollisionAreaOffset				= { 0.0f, 26.0f, 0.0f };
 	static constexpr float  kLandingTriggerRadius				= 6.0f;
 
-	static constexpr float kCameraAimOffsetBasicSpeed			= 40.0f;
-	
-	//static constexpr float kADSSpeed							= 70.0f;				// スコープをのぞき込む速度
+	static constexpr float  kCameraAimOffsetBasicSpeed			= 40.0f;
 
 private:
 	std::shared_ptr<PlayerStateController>		m_state;

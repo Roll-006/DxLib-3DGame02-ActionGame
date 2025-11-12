@@ -1,0 +1,40 @@
+{
+  "basic_angle": {
+    "x": 0.0,
+    "y": 3.14,
+    "z": 0.0
+  },
+  "basic_scale": 0.3,
+  "position": {
+    "x": 912.7,
+    "y": 184.6,
+    "z": -1889.9
+  },
+  "direction": {
+    "x": -0.919710,
+    "y": 0.0,
+    "z": 0.392598
+  },
+  "invincible_time": 0.5,
+  "walk_speed": 70.0,
+  "run_speed": 125.0,
+  "acceleration": 1.0,
+  "move_dir_offset_speed": 5.0,
+  "look_dir_offset_speed": 4.0,
+  "look_dir_offset_speed_for_run": 6.0,
+  "look_dir_offset_speed_for_aim": 10.0,
+  "look_dir_offset_speed_for_side_slash": 0.5,
+  "confirm_move_dir_threshold_distance": 0.08,
+  "walk_stick_slope_limit": 15000,
+  "capsule_radius": 8.0,
+  "collision_area_radius": 37.0,
+  "collision_area_offset": {
+    "x": 0.0,
+    "y": 26.0,
+    "z": 0.0
+  },
+  "landing_trigger_radius": 6.0,
+  "camera_aim_offset_basic_speed": 40.0,
+  "max_health": 2000.0,
+  "current_max_health": 1500.0
+}

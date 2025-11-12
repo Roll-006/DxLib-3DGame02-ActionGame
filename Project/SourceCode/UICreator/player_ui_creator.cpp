@@ -2,7 +2,7 @@
 
 PlayerUICreator::PlayerUICreator(std::shared_ptr<Player>& player) : 
 	m_name						(UICreatorName.PLAYER_UI_CREATOR),
-	m_priority					(10),
+	m_priority					(5),
 	m_is_active					(true),
 	m_melee_target_icon			(std::make_shared<MeleeTargetIcon>(player->GetMeleeTarget(), player->GetTopPriorityDownedChara())),
 	m_stealth_kill_target_icon	(std::make_shared<StealthKillTargetIcon>(player->GetStealthKillTarget())),
