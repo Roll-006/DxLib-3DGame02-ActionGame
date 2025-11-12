@@ -27,7 +27,7 @@ Player::Player() :
 	m_escape_gauge					(std::make_shared<Gauge>(100.0f))
 {
 	// ƒCƒxƒ“ƒg“o˜^
-	EventSystem::GetInstance()->Subscribe<DeadBossEvent>(this, &Player::DeadBoss);
+	EventSystem::GetInstance()->Subscribe<DeadAllEnemyEvent>(this, &Player::DeadAllEnemy);
 
 	mass_kind = MassKind::kMedium;
 
@@ -83,7 +83,7 @@ Player::Player() :
 Player::~Player()
 {
 	// ƒCƒxƒ“ƒg‚Ì“o˜^‰ðœ
-	EventSystem::GetInstance()->Unsubscribe<DeadBossEvent>(this, &Player::DeadBoss);
+	EventSystem::GetInstance()->Unsubscribe<DeadAllEnemyEvent>(this, &Player::DeadAllEnemy);
 
 	for (const auto& item : m_items)
 	{
@@ -193,9 +193,9 @@ void Player::Draw() const
 
 	//DrawColliders();
 
-	//const auto p = m_transform->GetPos(CoordinateKind::kWorld);
-	//const auto d = m_look_dir.at(TimeKind::kCurrent);
-	//printfDx("%.1f, %.1f, %.1f : %f, %f, %f\n", p.x, p.y, p.z, d.x, d.y, d.z);
+	const auto p = m_transform->GetPos(CoordinateKind::kWorld);
+	const auto d = m_look_dir.at(TimeKind::kCurrent);
+	printfDx("%.1f, %.1f, %.1f : %f, %f, %f\n", p.x, p.y, p.z, d.x, d.y, d.z);
 }
 
 void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
@@ -678,7 +678,7 @@ float Player::GetDeltaTime() const
 
 
 #pragma region Event
-void Player::DeadBoss(const DeadBossEvent& event)
+void Player::DeadAllEnemy(const DeadAllEnemyEvent& event)
 {
 	m_can_control			= false;
 	m_is_count_victory_pose = true;

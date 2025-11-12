@@ -74,6 +74,10 @@ void zombie_state::Dead::Enter(std::shared_ptr<Zombie>& obj)
 	m_current_material			= MaterialData();
 
 	obj->RemoveCollider(ColliderKind::kCollider);
+
+	// €–S‚µ‚½‚±‚Æ‚ğ’Ê’m
+	const DeadEnemyEvent event{ obj->GetEnemyID(), obj->GetModeler()->GetModelHandle() };
+	EventSystem::GetInstance()->Publish(event);
 }
 
 void zombie_state::Dead::Exit(std::shared_ptr<Zombie>& obj)

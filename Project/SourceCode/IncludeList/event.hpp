@@ -1,6 +1,8 @@
 #pragma once
 #include "../Event/dead_player_event.hpp"
 #include "../Event/dead_boss_event.hpp"
+#include "../Event/dead_enemy_event.hpp"
+#include "../Event/dead_all_enemy_event.hpp"
 #include "../Event/victory_pose_event.hpp"
 #include "../Event/weapon_shot_event.hpp"
 #include "../Event/rocket_launcher_shot_event.hpp"

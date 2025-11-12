@@ -17,7 +17,7 @@ GameClearTab::GameClearTab() :
 	m_result_screen					(std::make_shared<ScreenCreator>(Window::kScreenSize, Window::kCenterPos))
 {
 	// ƒCƒxƒ“ƒg“o˜^
-	EventSystem::GetInstance()->Subscribe<DeadBossEvent>(this, &GameClearTab::StartActivateTimer);
+	EventSystem::GetInstance()->Subscribe<DeadAllEnemyEvent>(this, &GameClearTab::StartActivateTimer);
 
 	std::vector<Vector2D<int>> center_pos;
 	for (int i = 0; i < 2; ++i)
@@ -34,7 +34,7 @@ GameClearTab::GameClearTab() :
 GameClearTab::~GameClearTab()
 {
 	// ƒCƒxƒ“ƒg‚Ì“o˜^‰ðœ
-	EventSystem::GetInstance()->Unsubscribe<DeadBossEvent>(this, &GameClearTab::StartActivateTimer);
+	EventSystem::GetInstance()->Unsubscribe<DeadAllEnemyEvent>(this, &GameClearTab::StartActivateTimer);
 }
 
 void GameClearTab::Init()
@@ -76,7 +76,7 @@ void GameClearTab::OnDraw(const int main_screen_handle) const
 	m_game_clear_text->Draw();
 }
 
-void GameClearTab::StartActivateTimer(const DeadBossEvent& event)
+void GameClearTab::StartActivateTimer(const DeadAllEnemyEvent& event)
 {
 	m_can_calc_active_time = true;
 }

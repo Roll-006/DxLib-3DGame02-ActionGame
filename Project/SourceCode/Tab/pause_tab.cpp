@@ -18,7 +18,7 @@ PauseTab::PauseTab() :
 {
 	// ƒCƒxƒ“ƒg“o˜^
 	EventSystem::GetInstance()->Subscribe<DeadPlayerEvent>	(this, &PauseTab::Deactivate);
-	EventSystem::GetInstance()->Subscribe<DeadBossEvent>	(this, &PauseTab::Deactivate);
+	EventSystem::GetInstance()->Subscribe<DeadAllEnemyEvent>	(this, &PauseTab::Deactivate);
 
 	TabDrawer::GetInstance()->AddTab(m_warning_restart_tab);
 	TabDrawer::GetInstance()->AddTab(m_warning_quit_game_tab);
@@ -41,7 +41,7 @@ PauseTab::~PauseTab()
 {
 	// ƒCƒxƒ“ƒg‚Ì“o˜^‰ðœ
 	EventSystem::GetInstance()->Unsubscribe<DeadPlayerEvent>(this, &PauseTab::Deactivate);
-	EventSystem::GetInstance()->Unsubscribe<DeadBossEvent>	(this, &PauseTab::Deactivate);
+	EventSystem::GetInstance()->Unsubscribe<DeadAllEnemyEvent>	(this, &PauseTab::Deactivate);
 
 	TabDrawer::GetInstance()->RemoveTab(m_warning_restart_tab	->GetTabHandle());
 	TabDrawer::GetInstance()->RemoveTab(m_warning_quit_game_tab	->GetTabHandle());
@@ -125,7 +125,7 @@ void PauseTab::Deactivate(const DeadPlayerEvent& event)
 	m_is_deactivate_forcibly = true;
 }
 
-void PauseTab::Deactivate(const DeadBossEvent& event)
+void PauseTab::Deactivate(const DeadAllEnemyEvent& event)
 {
 	m_is_deactivate_forcibly = true;
 }

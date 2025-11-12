@@ -1,13 +1,16 @@
 #include "enemy_manager.hpp"
 
 EnemyManager::EnemyManager() :
-	m_object_pool(std::make_shared<EnemyObjectPool>())
+	m_create_count		(0),
+	m_dead_enemy_count	(0),
+	m_object_pool		(std::make_shared<EnemyObjectPool>())
 {
 	// ÉCÉxÉìÉgìoò^
 	EventSystem::GetInstance()->Subscribe<ReleaseEvent>			(this, &EnemyManager::NotifyAllowAction);
 	EventSystem::GetInstance()->Subscribe<GrabEvent>			(this, &EnemyManager::NotifyDisallowActionForcibly);
-	EventSystem::GetInstance()->Subscribe<DeadBossEvent>		(this, &EnemyManager::NotifyDisallowActionForcibly);
+	EventSystem::GetInstance()->Subscribe<DeadAllEnemyEvent>		(this, &EnemyManager::NotifyDisallowActionForcibly);
 	EventSystem::GetInstance()->Subscribe<OnTargetDetectedEvent>(this, &EnemyManager::NotifyDetectedTarget);
+	EventSystem::GetInstance()->Subscribe<DeadEnemyEvent>		(this, &EnemyManager::CountDeadEnemy);
 
 	// èâä˙ÇÃìGÇê∂ê¨
 	JSONLoader json_loader;
@@ -31,26 +34,28 @@ EnemyManager::EnemyManager() :
 			{
 				enemy->CreatePatrolPos(patrol_kind, route_id);
 			}
+
+			++m_create_count;
 		}
 
-		// É{ÉX
-		const auto init_boss_size = data.at("init_enemies").at("boss").size();
-		for (size_t i = 0; i < init_boss_size; ++i)
-		{
-			const auto boss			= std::static_pointer_cast<EnemyBase>(m_object_pool->GetObj(ObjName.BOSS));
-			const auto pos			= data.at("init_enemies").at("boss").at(std::to_string(i)).at("position").get<VECTOR>();
-			const auto dir			= data.at("init_enemies").at("boss").at(std::to_string(i)).at("direction").get<VECTOR>();
-			const auto use_patrol	= data.at("init_enemies").at("boss").at(std::to_string(i)).at("use_patrol");
-			const auto route_id		= data.at("init_enemies").at("boss").at(std::to_string(i)).at("route_id");
-			const auto patrol_kind	= data.at("init_enemies").at("boss").at(std::to_string(i)).at("patrol_kind");
-
-			m_active_enemies.emplace_back(boss);
-			boss->OnRespawn(pos, dir);
-			if (use_patrol)
-			{
-				boss->CreatePatrolPos(patrol_kind, route_id);
-			}
-		}
+		//// É{ÉX
+		//const auto init_boss_size = data.at("init_enemies").at("boss").size();
+		//for (size_t i = 0; i < init_boss_size; ++i)
+		//{
+		//	const auto boss			= std::static_pointer_cast<EnemyBase>(m_object_pool->GetObj(ObjName.BOSS));
+		//	const auto pos			= data.at("init_enemies").at("boss").at(std::to_string(i)).at("position").get<VECTOR>();
+		//	const auto dir			= data.at("init_enemies").at("boss").at(std::to_string(i)).at("direction").get<VECTOR>();
+		//	const auto use_patrol	= data.at("init_enemies").at("boss").at(std::to_string(i)).at("use_patrol");
+		//	const auto route_id		= data.at("init_enemies").at("boss").at(std::to_string(i)).at("route_id");
+		//	const auto patrol_kind	= data.at("init_enemies").at("boss").at(std::to_string(i)).at("patrol_kind");
+		//
+		//	m_active_enemies.emplace_back(boss);
+		//	boss->OnRespawn(pos, dir);
+		//	if (use_patrol)
+		//	{
+		//		boss->CreatePatrolPos(patrol_kind, route_id);
+		//	}
+		//}5
 	}
 
 	const auto pool_holder = ObjectPoolHolder::GetInstance();
@@ -62,8 +67,9 @@ EnemyManager::~EnemyManager()
 	// ÉCÉxÉìÉgÇÃìoò^âèú
 	EventSystem::GetInstance()->Unsubscribe<ReleaseEvent>			(this, &EnemyManager::NotifyAllowAction);
 	EventSystem::GetInstance()->Unsubscribe<GrabEvent>				(this, &EnemyManager::NotifyDisallowActionForcibly);
-	EventSystem::GetInstance()->Unsubscribe<DeadBossEvent>			(this, &EnemyManager::NotifyDisallowActionForcibly);
+	EventSystem::GetInstance()->Unsubscribe<DeadAllEnemyEvent>		(this, &EnemyManager::NotifyDisallowActionForcibly);
 	EventSystem::GetInstance()->Unsubscribe<OnTargetDetectedEvent>	(this, &EnemyManager::NotifyDetectedTarget);
+	EventSystem::GetInstance()->Unsubscribe<DeadEnemyEvent>			(this, &EnemyManager::CountDeadEnemy);
 
 	const auto pool_holder = ObjectPoolHolder::GetInstance();
 	pool_holder->RemoveObjectPool(m_object_pool->GetName());
@@ -137,10 +143,10 @@ void EnemyManager::NotifyDisallowActionForcibly(const GrabEvent& event)
 	NotifyDisallowActionForcibly(event.enemy_id);
 }
 
-void EnemyManager::NotifyDisallowActionForcibly(const DeadBossEvent& event)
+void EnemyManager::NotifyDisallowActionForcibly(const DeadAllEnemyEvent& event)
 {
 	// éÄñSÇµÇΩñ{êlà»äOÇÃìGÇÃçsìÆÇÇ∑Ç◊Çƒí‚é~Ç≥ÇπÇÈ
-	NotifyDisallowActionForcibly(event.enemy_id);
+	//NotifyDisallowActionForcibly(event.enemy_id);
 }
 
 void EnemyManager::NotifyDetectedTarget(const OnTargetDetectedEvent& event)
@@ -157,6 +163,15 @@ void EnemyManager::NotifyDetectedTarget(const OnTargetDetectedEvent& event)
 		{
 			enemy->OnDetected();
 		}
+	}
+}
+
+void EnemyManager::CountDeadEnemy(const DeadEnemyEvent& event)
+{
+	++m_dead_enemy_count;
+	if (m_dead_enemy_count >= kMaxCreateEnemyNum)
+	{
+		EventSystem::GetInstance()->Publish(DeadAllEnemyEvent());
 	}
 }
 

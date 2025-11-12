@@ -32,7 +32,7 @@ public:
 	[[nodiscard]] bool IsQuitGame()		const { return m_is_quit_game && !SceneFader::GetInstance()->IsFading(); }
 
 private:
-	void StartActivateTimer(const DeadBossEvent& event);
+	void StartActivateTimer(const DeadAllEnemyEvent& event);
 
 	void ExecuteRetry();
 	void ExecuteQuitGame();

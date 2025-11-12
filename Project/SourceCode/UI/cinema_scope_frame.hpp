@@ -13,7 +13,7 @@ public:
 	void Draw() const;
 
 private:
-	void EnterFrame	(const DeadBossEvent&					 event);
+	void EnterFrame	(const DeadAllEnemyEvent&				 event);
 	void EnterFrame	(const StartRocketLauncherCutsceneEvent& event);
 	void ExitFrame	(const EndRocketLauncherCutsceneEvent&   event);
 

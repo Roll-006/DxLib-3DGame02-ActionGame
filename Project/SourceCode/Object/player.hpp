@@ -173,7 +173,7 @@ public:
 
 private:
 	#pragma region Event
-	void DeadBoss(const DeadBossEvent& event);
+	void DeadAllEnemy(const DeadAllEnemyEvent& event);
 	#pragma endregion
 
 

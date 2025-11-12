@@ -22,14 +22,19 @@ public:
 private:
 	void NotifyAllowAction			 (const ReleaseEvent&			event);
 	void NotifyDisallowActionForcibly(const GrabEvent&				event);
-	void NotifyDisallowActionForcibly(const DeadBossEvent&			event);
+	void NotifyDisallowActionForcibly(const DeadAllEnemyEvent&		event);
 	void NotifyDetectedTarget		 (const OnTargetDetectedEvent&	event);
+	void CountDeadEnemy				 (const DeadEnemyEvent&			event);
 
 	void NotifyDisallowActionForcibly(const std::string& origin_enemy_id);
 
 	void ReturnPool();
 
 private:
+	static constexpr int kMaxCreateEnemyNum = 2;
+	int m_create_count;
+	int m_dead_enemy_count;
+
 	std::shared_ptr<EnemyObjectPool>		m_object_pool;
 	std::vector<std::shared_ptr<EnemyBase>> m_active_enemies;
 };

@@ -15,14 +15,14 @@ PlayerUICreator::PlayerUICreator(std::shared_ptr<Player>& player) :
 {
 	// ƒCƒxƒ“ƒg“o˜^
 	EventSystem::GetInstance()->Subscribe<DeadPlayerEvent>	(this, &PlayerUICreator::Deactivate);
-	EventSystem::GetInstance()->Subscribe<DeadBossEvent>	(this, &PlayerUICreator::Deactivate);
+	EventSystem::GetInstance()->Subscribe<DeadAllEnemyEvent>	(this, &PlayerUICreator::Deactivate);
 }
 
 PlayerUICreator::~PlayerUICreator()
 {
 	// ƒCƒxƒ“ƒg‚Ì“o˜^‰ðœ
 	EventSystem::GetInstance()->Unsubscribe<DeadPlayerEvent>(this, &PlayerUICreator::Deactivate);
-	EventSystem::GetInstance()->Unsubscribe<DeadBossEvent>	(this, &PlayerUICreator::Deactivate);
+	EventSystem::GetInstance()->Unsubscribe<DeadAllEnemyEvent>	(this, &PlayerUICreator::Deactivate);
 }
 
 void PlayerUICreator::Init()
@@ -61,7 +61,7 @@ void PlayerUICreator::Deactivate(const DeadPlayerEvent& event)
 	m_is_active = false;
 }
 
-void PlayerUICreator::Deactivate(const DeadBossEvent& event)
+void PlayerUICreator::Deactivate(const DeadAllEnemyEvent& event)
 {
 	m_is_active = false;
 }
