@@ -252,6 +252,19 @@ void AnimatorBase::DivideBone(const TCHAR* upper_body_end_bone)
 	}
 }
 
+int AnimatorBase::GetAnimKind(const BodyKind body_kind, const TimeKind time_kind) const
+{
+	for (auto& [body, time, data] : m_time_kind_data)
+	{
+		if (body == body_kind && time == time_kind)
+		{
+			return data.kind;
+		}
+	}
+
+	return -1;
+}
+
 void AnimatorBase::SetPlayStartTime(AnimTimeKindData* current_time_kind_data, const AnimTimeKindData& prev_time_kind_data, const BodyKind body_kind)
 {
 	if (m_anim_data.count(prev_time_kind_data.kind))

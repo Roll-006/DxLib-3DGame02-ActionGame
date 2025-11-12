@@ -1803,6 +1803,9 @@
     <ClInclude Include="SourceCode\State\PlayerState\victory_pose.hpp">
       <Filter>SourceCode\State\PlayerState</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\Event\victory_pose_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="SourceCode">

@@ -72,17 +72,17 @@ void PlayerAnimator::LoadAnim()
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kDetachRifle),				SWATAnimPath.DETACH_RIFLE,					0, AnimTag.NONE, 20.0f,  false);
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kAttachHandgun),				SWATAnimPath.ATTACH_HANDGUN,				0, AnimTag.NONE, 20.0f,  false);
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kDetachHandgun),				SWATAnimPath.DETACH_HANDGUN,				0, AnimTag.NONE, 20.0f,  false);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kEquipKnife),				SWATAnimPath.EQUIP_KNIFE,					0, AnimTag.NONE, 20.0f,  true,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kEquipKnife),				SWATAnimPath.EQUIP_KNIFE,					0, AnimTag.NONE, 20.0f,  true, true);
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kAimKnife),					SWATAnimPath.AIM_KNIFE,						0, AnimTag.NONE, 20.0f,  true);
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kParry),						SWATAnimPath.PARRY,							0, AnimTag.NONE, 20.0f,  false);
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kEquipGun),					SWATAnimPath.EQUIP_GUN,						0, AnimTag.NONE, 20.0f,  true);
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kAimGun),					SWATAnimPath.AIM_GUN,						0, AnimTag.NONE, 20.0f,  true);
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kReload),					SWATAnimPath.RELOAD,						0, AnimTag.NONE, 100.0f, false);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kTalkingOnPhone),			SWATAnimPath.TALKING_ON_PHONE,				0, AnimTag.NONE, 50.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kTalkingOnPhone),			SWATAnimPath.TALKING_ON_PHONE,				0, AnimTag.NONE, 30.0f,  true, true);
 
 	// 下半身用
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kCrouch),					SWATAnimPath.CROUCH,						0, AnimTag.NONE, 20.0f,  true);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kTalkingCrouch),				SWATAnimPath.TALKING_CROUCH,				0, AnimTag.NONE, 50.0f,  true);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kTalkingCrouch),				SWATAnimPath.TALKING_CROUCH,				0, AnimTag.NONE, 30.0f,  true, true);
 
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForward),				SWATAnimPath.MOVE_FORWARD,					0, AnimTag.MOVE, 55.0f,  true);
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveBackward),				SWATAnimPath.MOVE_BACKWARD,					0, AnimTag.MOVE, 55.0f,  true);
@@ -133,6 +133,8 @@ void PlayerAnimator::ChangeAnim()
 #pragma region 状態の合成
 void PlayerAnimator::CombineMoveNullWithAction()
 {
+	const auto current_lower_anim_kind = GetAnimKind(BodyKind::kLowerBody, TimeKind::kCurrent);
+
 	switch (static_cast<player_state::ActionStateKind>(m_state->GetActionState(TimeKind::kCurrent)->GetStateKind()))
 	{
 	case player_state::ActionStateKind::kActionNull:
@@ -176,7 +178,18 @@ void PlayerAnimator::CombineMoveNullWithAction()
 		break;
 
 	case player_state::ActionStateKind::kVictoryPose:
-		AttachResultAnim(static_cast<int>(PlayerAnimKind::kStandToCrouch));
+		if (current_lower_anim_kind == static_cast<int>(PlayerAnimKind::kStandToCrouch) || current_lower_anim_kind == static_cast<int>(PlayerAnimKind::kTalkingCrouch))
+		{
+			if (IsPlayEnd(BodyKind::kLowerBody))
+			{
+				AttachAnim(static_cast<int>(PlayerAnimKind::kTalkingCrouch),  BodyKind::kLowerBody);
+				AttachAnim(static_cast<int>(PlayerAnimKind::kTalkingOnPhone), BodyKind::kUpperBody);
+			}
+		}
+		else
+		{
+			AttachResultAnim(static_cast<int>(PlayerAnimKind::kStandToCrouch));
+		}
 		break;
 
 	default:

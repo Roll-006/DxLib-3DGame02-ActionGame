@@ -168,13 +168,16 @@ public:
 	[[nodiscard]] std::shared_ptr<WeaponShortcutSelecter>							GetWeaponShortcutSelecter	()	const			{ return m_weapon_shortcut_selecter; }
 	[[nodiscard]] float																GetMoveSpeed				()	const			{ return m_move_speed; }
 	[[nodiscard]] int																GetCurrentRemainingBulletNum()	const override	{ return m_current_remaining_bullet_num; }
+	[[nodiscard]] bool																IsVictoryPose				()	const			{ return m_is_victory_pose; }
 	#pragma endregion
 
 private:
 	#pragma region Event
-	void DisallowControl(const DeadBossEvent& event);
+	void DeadBoss(const DeadBossEvent& event);
 	#pragma endregion
 
+
+	void JudgeVictoryPose();
 
 	void CalcInputSlopeFromPad();
 	void CalcInputSlopeFromCommand();
@@ -232,6 +235,10 @@ private:
 	float										m_escape_start_timer;
 	bool										m_can_search_stealth_kill_target;
 	bool										m_can_search_melee_target;
+
+	bool										m_is_victory_pose;
+	bool										m_is_count_victory_pose;
+	float										m_victory_pose_wait_time;
 
 	std::unordered_map<ItemKind, std::vector<std::shared_ptr<IItem>>>	m_items;							// 所持しているアイテム
 	std::unordered_map<WeaponSlotKind, std::shared_ptr<WeaponBase>>		m_current_equip_weapon;				// 現在装備している武器

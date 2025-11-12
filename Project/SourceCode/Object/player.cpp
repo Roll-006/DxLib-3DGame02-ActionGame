@@ -16,6 +16,9 @@ Player::Player() :
 	m_escape_start_timer					(0.0f),
 	m_can_search_stealth_kill_target		(true),
 	m_can_search_melee_target				(true),
+	m_is_victory_pose						(false),
+	m_is_count_victory_pose					(false),
+	m_victory_pose_wait_time				(0.0f),
 	m_weapon_shortcut_selecter				(std::make_shared<WeaponShortcutSelecter>()),
 	m_melee_target							(nullptr),
 	m_top_priority_downed_chara				(nullptr),
@@ -24,7 +27,7 @@ Player::Player() :
 	m_escape_gauge							(std::make_shared<Gauge>(100.0f))
 {
 	// ƒCƒxƒ“ƒg“o˜^
-	EventSystem::GetInstance()->Subscribe<DeadBossEvent>(this, &Player::DisallowControl);
+	EventSystem::GetInstance()->Subscribe<DeadBossEvent>(this, &Player::DeadBoss);
 
 	mass_kind = MassKind::kMedium;
 
@@ -80,7 +83,7 @@ Player::Player() :
 Player::~Player()
 {
 	// ƒCƒxƒ“ƒg‚Ì“o˜^‰ðœ
-	EventSystem::GetInstance()->Unsubscribe<DeadBossEvent>(this, &Player::DisallowControl);
+	EventSystem::GetInstance()->Unsubscribe<DeadBossEvent>(this, &Player::DeadBoss);
 
 	for (const auto& item : m_items)
 	{
@@ -132,6 +135,8 @@ void Player::Update()
 	CalcMoveDir();
 	CalcLookDir();
 	CalcMoveVelocity();
+
+	JudgeVictoryPose();
 
 	m_collider_creator->CalcCapsuleColliderPos	(m_modeler, m_colliders);
 	m_collider_creator->CalcVisibleTriggerPos	(m_modeler, m_colliders);
@@ -673,12 +678,24 @@ float Player::GetDeltaTime() const
 
 
 #pragma region Event
-void Player::DisallowControl(const DeadBossEvent& event)
+void Player::DeadBoss(const DeadBossEvent& event)
 {
-	m_can_control = false;
+	m_can_control			= false;
+	m_is_count_victory_pose = true;
 }
 #pragma endregion
 
+
+void Player::JudgeVictoryPose()
+{
+	if (!m_is_count_victory_pose) { return; }
+
+	m_victory_pose_wait_time += GetDeltaTime();
+	if (m_victory_pose_wait_time > 4.5f)
+	{
+		m_is_victory_pose = true;
+	}
+}
 
 void Player::CalcInputSlopeFromPad()
 {

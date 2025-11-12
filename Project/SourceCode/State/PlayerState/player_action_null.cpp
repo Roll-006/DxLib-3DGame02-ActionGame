@@ -43,6 +43,11 @@ std::shared_ptr<IState<Player>> player_state::ActionNull::ChangeState(std::share
 	const auto state_controller = obj->GetStateController();
 	const auto command			= CommandHandler::GetInstance();
 
+	// Ÿ—˜ƒ|[ƒY
+	if (obj->IsVictoryPose())
+	{
+		return state_controller->GetState<VictoryPose, Player>();
+	}
 	// Ž€–S
 	if (state_controller->TryDead(obj))
 	{

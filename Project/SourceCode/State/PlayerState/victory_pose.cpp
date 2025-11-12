@@ -24,7 +24,8 @@ void player_state::VictoryPose::LateUpdate(std::shared_ptr<Player>& obj)
 
 void player_state::VictoryPose::Enter(std::shared_ptr<Player>& obj)
 {
-
+	const VictoryPoseEvent event{ obj->GetTransform(), obj->GetModeler() };
+	EventSystem::GetInstance()->Publish(event);
 }
 
 void player_state::VictoryPose::Exit(std::shared_ptr<Player>& obj)

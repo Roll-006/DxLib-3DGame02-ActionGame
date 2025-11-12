@@ -43,8 +43,9 @@ public:
 	/// @param upper_body_end_bone 上半身の最下層とするボーン
 	void DivideBone(const TCHAR* upper_body_end_bone = BonePath.SPINE_2);
 
-	[[nodiscard]] float GetBlendRate(const BodyKind body_kind) const { return m_blend_rate.count(body_kind) ? m_blend_rate.at(body_kind) : 0.0f; }
-	[[nodiscard]] float GetPlayRate (const BodyKind body_kind) const;
+	[[nodiscard]] int	GetAnimKind			(const BodyKind body_kind, const TimeKind time_kind) const;
+	[[nodiscard]] float GetBlendRate		(const BodyKind body_kind) const { return m_blend_rate.count(body_kind) ? m_blend_rate.at(body_kind) : 0.0f; }
+	[[nodiscard]] float GetPlayRate			(const BodyKind body_kind) const;
 
 	/// @brief 再生が終了したかを判定
 	/// @brief ループ再生されないアニメーションでのみ有効
