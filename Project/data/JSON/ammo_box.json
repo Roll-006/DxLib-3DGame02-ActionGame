@@ -1,0 +1,14 @@
+{
+  "ammo_box": {
+    "assault_rifle_ammo_box": {
+      "rifle_cartridge_box_data": {
+        "max_have_num": 100
+      }
+    },
+    "rocket_bomb_box": {
+      "rifle_cartridge_box_data": {
+        "max_have_num": 1
+      }
+    }
+  }
+}

@@ -34,14 +34,42 @@ public:
 	void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) override;
 	void OnDamage(const HealthPartKind part_kind, const float damage) override;
 
-	void SetRemainingBulletNum(const int remaining_bullet_num) override { m_current_remaining_bullet_num = remaining_bullet_num; }
 
+	#pragma region インターフェイス群
 
 	#pragma region 操作キャラクター
 	void OnAllowControl()	 override { m_can_control = true; }
 	void OnDisallowControl() override { m_can_control = false; }
 
 	[[nodiscard]] bool CanControl() const override { return m_can_control; }
+	#pragma endregion
+
+
+	#pragma region 武器
+	void EquipWeapon	(const std::shared_ptr<WeaponBase>& weapon, const WeaponSlotKind slot_kind)	override;
+	void UnequipWeapon	(const WeaponSlotKind slot_kind)			override;
+
+	void HoldWeapon		(const std::shared_ptr<WeaponBase>& weapon)	override;
+	void HoldWeapon		(const int obj_handle)						override;
+	void ReleaseWeapon	()											override;
+
+	void AttachWeapon	(const std::shared_ptr<WeaponBase>& weapon)	override;
+	void AttachWeapon	(const int obj_handle)						override;
+	void DetachWeapon	(const std::shared_ptr<WeaponBase>& weapon)	override;
+	void DetachWeapon	(const HolsterKind holster_kind)			override;
+
+	[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentEquipWeapon		(const WeaponSlotKind slot_kind) const override;
+	[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentHeldWeapon		()	override;
+	[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentAttachWeapon		(const HolsterKind holster_kind) const override;
+	[[nodiscard]] WeaponKind					GetCurrentEquipWeaponKind	(const WeaponSlotKind slot_kind) override;
+	[[nodiscard]] WeaponKind					GetCurrentHeldWeaponKind	()	override;
+	[[nodiscard]] WeaponKind					GetCurrentAttachWeaponKind	(const HolsterKind holster_kind) const override;
+	#pragma endregion
+
+
+	#pragma region 銃を撃つ者
+	void SetRemainingBulletNum(const int remaining_bullet_num) override { m_current_remaining_bullet_num = remaining_bullet_num; }
+	[[nodiscard]] int GetCurrentRemainingBulletNum() const override	{ return m_current_remaining_bullet_num; }
 	#pragma endregion
 
 
@@ -93,26 +121,6 @@ public:
 	[[nodiscard]] bool									CanSearchStealthKillTarget()	const	override	{ return m_can_search_stealth_kill_target; }
 	#pragma endregion
 
-
-	#pragma region 武器
-	void EquipWeapon	(const std::shared_ptr<WeaponBase>& weapon, const WeaponSlotKind slot_kind)	override;
-	void UnequipWeapon	(const WeaponSlotKind slot_kind)			override;
-
-	void HoldWeapon		(const std::shared_ptr<WeaponBase>& weapon)	override;
-	void HoldWeapon		(const int obj_handle)						override;
-	void ReleaseWeapon	()											override;
-
-	void AttachWeapon	(const std::shared_ptr<WeaponBase>& weapon)	override;
-	void AttachWeapon	(const int obj_handle)						override;
-	void DetachWeapon	(const std::shared_ptr<WeaponBase>& weapon)	override;
-	void DetachWeapon	(const HolsterKind holster_kind)			override;
-
-	[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentEquipWeapon		(const WeaponSlotKind slot_kind) const override;
-	[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentHeldWeapon		()	override;
-	[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentAttachWeapon		(const HolsterKind holster_kind) const override;
-	[[nodiscard]] WeaponKind					GetCurrentEquipWeaponKind	(const WeaponSlotKind slot_kind) override;
-	[[nodiscard]] WeaponKind					GetCurrentHeldWeaponKind	()	override;
-	[[nodiscard]] WeaponKind					GetCurrentAttachWeaponKind	(const HolsterKind holster_kind) const override;
 	#pragma endregion
 
 
@@ -167,7 +175,6 @@ public:
 	[[nodiscard]] std::unordered_map<WeaponSlotKind, std::shared_ptr<WeaponBase>>&	GetCurrentEquipWeapons		()					{ return m_current_equip_weapon; }
 	[[nodiscard]] std::shared_ptr<WeaponShortcutSelecter>							GetWeaponShortcutSelecter	()	const			{ return m_weapon_shortcut_selecter; }
 	[[nodiscard]] float																GetMoveSpeed				()	const			{ return m_move_speed; }
-	[[nodiscard]] int																GetCurrentRemainingBulletNum()	const override	{ return m_current_remaining_bullet_num; }
 	[[nodiscard]] bool																IsVictoryPose				()	const			{ return m_is_victory_pose; }
 	#pragma endregion
 

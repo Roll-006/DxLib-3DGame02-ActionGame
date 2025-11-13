@@ -190,7 +190,8 @@
     <ClCompile Include="SourceCode\ObjectPool\object_pool_holder.cpp" />
     <ClCompile Include="SourceCode\ObjectPool\rifle_cartridge_object_pool.cpp" />
     <ClCompile Include="SourceCode\Object\houses.cpp" />
-    <ClCompile Include="SourceCode\Object\rifle_cartridge_box.cpp" />
+    <ClCompile Include="SourceCode\Object\assault_rifle_ammo_box.cpp" />
+    <ClCompile Include="SourceCode\Object\rocket_bomb_box.cpp" />
     <ClCompile Include="SourceCode\Object\assault_rifle_magazine.cpp" />
     <ClCompile Include="SourceCode\Object\assault_rifle.cpp" />
     <ClCompile Include="SourceCode\Object\bullet.cpp" />
@@ -208,6 +209,7 @@
     <ClCompile Include="SourceCode\Object\player.cpp" />
     <ClCompile Include="SourceCode\Object\shell_casing.cpp" />
     <ClCompile Include="SourceCode\Object\skydome.cpp" />
+    <ClCompile Include="SourceCode\Part\ammo_holder.cpp" />
     <ClCompile Include="SourceCode\Part\button_graphic_getter.cpp" />
     <ClCompile Include="SourceCode\Part\patrol_route_giver.cpp" />
     <ClCompile Include="SourceCode\Part\stealth_kill_target_searcher.cpp" />
@@ -389,6 +391,7 @@
     <ClInclude Include="SourceCode\Concept\state_concepts.hpp" />
     <ClInclude Include="SourceCode\Concept\vector_concepts.hpp" />
     <ClInclude Include="SourceCode\CSV\csv_loader.hpp" />
+    <ClInclude Include="SourceCode\Data\rifle_cartridge_box_data.hpp" />
     <ClInclude Include="SourceCode\Data\humanoid_enemy_collider_data.hpp" />
     <ClInclude Include="SourceCode\Data\material_data.hpp" />
     <ClInclude Include="SourceCode\Data\light_range_attenuation_data.hpp" />
@@ -452,6 +455,7 @@
     <ClInclude Include="SourceCode\Input\input_checker.hpp" />
     <ClInclude Include="SourceCode\Interface\i_playable_character.hpp" />
     <ClInclude Include="SourceCode\Interface\i_light.hpp" />
+    <ClInclude Include="SourceCode\Interface\i_ammo_box.hpp" />
     <ClInclude Include="SourceCode\Interface\i_stealth_killable.hpp" />
     <ClInclude Include="SourceCode\Interface\i_stealth_killer.hpp" />
     <ClInclude Include="SourceCode\Interface\i_tab.hpp" />
@@ -461,7 +465,6 @@
     <ClInclude Include="SourceCode\Interface\i_grabbable.hpp" />
     <ClInclude Include="SourceCode\Interface\i_effect.hpp" />
     <ClInclude Include="SourceCode\Interface\i_enemy_ai_state.hpp" />
-    <ClInclude Include="SourceCode\Interface\i_enemy_role.hpp" />
     <ClInclude Include="SourceCode\Interface\i_loadable_ammo.hpp" />
     <ClInclude Include="SourceCode\Interface\i_control_virtual_camera.hpp" />
     <ClInclude Include="SourceCode\Interface\i_event.hpp" />
@@ -536,7 +539,8 @@
     <ClInclude Include="SourceCode\ObjectPool\object_pool_holder.hpp" />
     <ClInclude Include="SourceCode\ObjectPool\rifle_cartridge_object_pool.hpp" />
     <ClInclude Include="SourceCode\Object\houses.hpp" />
-    <ClInclude Include="SourceCode\Object\rifle_cartridge_box.hpp" />
+    <ClInclude Include="SourceCode\Object\assault_rifle_ammo_box.hpp" />
+    <ClInclude Include="SourceCode\Object\rocket_bomb_box.hpp" />
     <ClInclude Include="SourceCode\Object\assault_rifle_magazine.hpp" />
     <ClInclude Include="SourceCode\Object\assault_rifle.hpp" />
     <ClInclude Include="SourceCode\Object\bullet.hpp" />
@@ -554,6 +558,7 @@
     <ClInclude Include="SourceCode\Object\player.hpp" />
     <ClInclude Include="SourceCode\Object\shell_casing.hpp" />
     <ClInclude Include="SourceCode\Object\skydome.hpp" />
+    <ClInclude Include="SourceCode\Part\ammo_holder.hpp" />
     <ClInclude Include="SourceCode\Part\character_collider_creator.hpp" />
     <ClInclude Include="SourceCode\Part\button_graphic_getter.hpp" />
     <ClInclude Include="SourceCode\Part\patrol_route_giver.hpp" />
@@ -701,6 +706,7 @@
     <ClInclude Include="SourceCode\Window\window.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Data\JSON\ammo_box.json" />
     <None Include="Data\JSON\player.json" />
     <None Include="Data\JSON\boss.json" />
     <None Include="Data\JSON\zombie.json" />

@@ -1,6 +1,7 @@
 #pragma once
 #include "../Base/gun_base.hpp"
 #include "non_collide_rocket_bomb.hpp"
+#include "rocket_bomb_box.hpp"
 
 class RocketLauncher final : public GunBase
 {

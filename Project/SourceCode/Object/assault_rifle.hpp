@@ -1,6 +1,7 @@
 #pragma once
 #include "../Base/gun_base.hpp"
 #include "assault_rifle_magazine.hpp"
+#include "assault_rifle_ammo_box.hpp"
 
 class AssaultRifle final : public GunBase
 {
