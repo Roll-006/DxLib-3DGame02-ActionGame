@@ -6,9 +6,26 @@ RocketBombBox::RocketBombBox() :
 {
 	JSONLoader json_loader;
 	nlohmann::json data;
-	if (json_loader.Load("Data/JSON/json_loader", data))
+	if (json_loader.Load("Data/JSON/ammo_box.json", data))
 	{
 		rifle_cartridge_box_data = data.at("ammo_box").at("assault_rifle_ammo_box").at("rocket_bomb_box").get<RifleCartridgeBoxData>();
+	}
+}
+
+RocketBombBox::RocketBombBox(const int ammo_num) :
+	rifle_cartridge_box_data(),
+	m_have_num(ammo_num)
+{
+	JSONLoader json_loader;
+	nlohmann::json data;
+	if (json_loader.Load("Data/JSON/ammo_box.json", data))
+	{
+		rifle_cartridge_box_data = data.at("ammo_box").at("assault_rifle_ammo_box").at("rocket_bomb_box").get<RifleCartridgeBoxData>();
+	}
+
+	if (m_have_num > GetMaxHaveNum())
+	{
+		m_have_num = GetMaxHaveNum();
 	}
 }
 
@@ -36,7 +53,7 @@ void RocketBombBox::Synthesize(const std::shared_ptr<IAmmoBox> ammo_box)
 void RocketBombBox::SetHaveNum(const int set_num)
 {
 	m_have_num = set_num;
-	if (m_have_num >= GetMaxHaveNum())
+	if (m_have_num > GetMaxHaveNum())
 	{
 		m_have_num = GetMaxHaveNum();
 	}
@@ -45,7 +62,7 @@ void RocketBombBox::SetHaveNum(const int set_num)
 void RocketBombBox::AddHaveNum(const int add_num)
 {
 	m_have_num += add_num;
-	if (m_have_num >= GetMaxHaveNum())
+	if (m_have_num > GetMaxHaveNum())
 	{
 		m_have_num = GetMaxHaveNum();
 	}

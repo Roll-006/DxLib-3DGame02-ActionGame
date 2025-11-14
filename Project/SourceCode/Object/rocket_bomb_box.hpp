@@ -9,6 +9,7 @@ class RocketBombBox final : public IItem, public IAmmoBox
 {
 public:
 	RocketBombBox();
+	RocketBombBox(const int ammo_num);
 	~RocketBombBox() override;
 
 	void Synthesize(const std::shared_ptr<IAmmoBox> ammo_box) override;

@@ -17,14 +17,16 @@ void player_state::Reload::Update(std::shared_ptr<Player>& obj)
 {
 	obj->GetCurrentHeldWeapon()->Update();
 
-	const auto gun = std::static_pointer_cast<GunBase>(obj->GetCurrentHeldWeapon());
-	if (obj->GetAnimator()->GetPlayRate(AnimatorBase::BodyKind::kUpperBody) > 0.5f)
+	// アニメーションが一定まで進むまでリロードを許可しない
+	const auto animator		= obj->GetAnimator();
+	const auto anim_kind	= static_cast<PlayerAnimKind>(animator->GetAnimKind(AnimatorBase::BodyKind::kUpperBody, TimeKind::kCurrent));
+	const auto gun			= std::static_pointer_cast<GunBase>(obj->GetCurrentHeldWeapon());
+	if (animator->GetPlayRate(AnimatorBase::BodyKind::kUpperBody) > 0.5f && anim_kind == PlayerAnimKind::kReload)
 	{
 		if (!m_is_reloaded)
 		{
 			gun->GetMagazine()->OnReloaded();
-
-			obj->SetRemainingBulletNum(gun->OnReload(obj->GetCurrentRemainingBulletNum()));
+			obj->GetAmmoHolder()->Reload(gun);
 			m_is_reloaded = true;
 		}
 	}

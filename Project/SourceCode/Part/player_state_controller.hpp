@@ -78,6 +78,7 @@ public:
 	[[nodiscard]] bool TryEquipGunShortcut		(std::shared_ptr<Player>& player);
 	[[nodiscard]] bool TryPullTrigger			(std::shared_ptr<Player>& player);
 	[[nodiscard]] bool TryReload				(std::shared_ptr<Player>& player);
+	[[nodiscard]] bool TryPullTriggerReload		(std::shared_ptr<Player>& player);
 	#pragma endregion
 
 

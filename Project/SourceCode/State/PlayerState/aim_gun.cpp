@@ -138,12 +138,9 @@ std::shared_ptr<IState<Player>> player_state::AimGun::ChangeState(std::shared_pt
 		return state_controller->GetState<Reload, Player>();
 	}
 	// ƒŠƒ[ƒh
-	if (obj->CanControl() && gun->GetCurrentRemainingBulletNum() == 0)
+	if (state_controller->TryPullTriggerReload(obj))
 	{
-		if (!command->IsExecute(CommandKind::kPullTrigger, TimeKind::kPrev) && command->IsExecute(CommandKind::kPullTrigger, TimeKind::kCurrent))
-		{
-			return state_controller->GetState<Reload, Player>();
-		}
+		return state_controller->GetState<Reload, Player>();
 	}
 
 	return nullptr;

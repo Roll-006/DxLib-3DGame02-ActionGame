@@ -9,6 +9,7 @@ class AssaultRifleAmmoBox final : public IItem, public IAmmoBox
 {
 public:
 	AssaultRifleAmmoBox();
+	AssaultRifleAmmoBox(const int ammo_num);
 	~AssaultRifleAmmoBox() override;
 
 	void Synthesize(const std::shared_ptr<IAmmoBox> ammo_box) override;

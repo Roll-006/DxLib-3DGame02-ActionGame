@@ -35,7 +35,6 @@ public:
 	[[nodiscard]] std::shared_ptr<Modeler>	GetModeler()	 const			{ return m_modeler; }
 	[[nodiscard]] float						GetPower()		 const			{ return m_power; }
 	[[nodiscard]] std::string				GetOwnerName()	 const			{ return m_owner_name; }
-	[[nodiscard]] ItemKind					GetItemKind()	 const override	{ return m_item_kind; }
 	[[nodiscard]] WeaponKind				GetWeaponKind()	 const			{ return m_weapon_kind; }
 	[[nodiscard]] HolsterKind				GetHolsterKind() const			{ return m_holster_kind; }
 

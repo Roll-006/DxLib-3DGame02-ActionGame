@@ -67,9 +67,9 @@ Player::Player() :
 		//rocket_launcher->AddToObjManager();
 		m_weapon_shortcut_selecter->AttachShortcutWeapon(WeaponShortcutPosKind::kInsideLeft, assault_rifle);
 		//m_weapon_shortcut_selecter->AttachShortcutWeapon(WeaponShortcutPosKind::kOutsideDown, rocket_launcher);
-		AddItem(assault_rifle);
+		//AddItem(assault_rifle);
 		//AddItem(rocket_launcher);
-		AddItem(knife);
+		//AddItem(knife);
 		EquipWeapon(assault_rifle,		WeaponSlotKind::kMain);
 		//EquipWeapon(rocket_launcher,	WeaponSlotKind::kMain);
 		EquipWeapon(knife,				WeaponSlotKind::kSub);
@@ -77,7 +77,8 @@ Player::Player() :
 		//AttachWeapon(rocket_launcher);
 		AttachWeapon(knife);
 
-		m_current_remaining_bullet_num = 10000;
+		std::shared_ptr<IAmmoBox> assault_rifle_ammo_box = std::make_shared<AssaultRifleAmmoBox>(80);
+		m_ammo_holder->AddAmmo(assault_rifle_ammo_box);
 	}
 }
 

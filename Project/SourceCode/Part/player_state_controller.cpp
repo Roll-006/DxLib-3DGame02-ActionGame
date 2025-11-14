@@ -177,7 +177,7 @@ std::vector<std::shared_ptr<IState<Player>>> PlayerStateController::CreateChange
 	auto future_state = CreateFutureState(next_state);
 
 	// ã‚ÌŠK‘w‚É‚ ‚éƒXƒe[ƒg‚Ì’âŽ~ˆ—
-	for (int i = future_state.size() - 1; i >= 0; --i)
+	for (int i = static_cast<int>(future_state.size() - 1); i >= 0; --i)
 	{
 		// ’âŽ~”»’è
 		for (auto itr = check_stop_state_index.begin(); itr != check_stop_state_index.end(); )
@@ -515,11 +515,58 @@ bool PlayerStateController::TryReload(std::shared_ptr<Player>& player)
 	if (!player->CanControl())	{ return false; }
 	if (!player->IsAlive())		{ return false; }
 
-	const auto gun = std::dynamic_pointer_cast<GunBase>(player->GetCurrentEquipWeapon(WeaponSlotKind::kMain));
+	const auto gun			= std::dynamic_pointer_cast<GunBase>(player->GetCurrentEquipWeapon(WeaponSlotKind::kMain));
+	const auto ammo_holder	= player->GetAmmoHolder();
 
 	if (gun)
 	{
+		switch (gun->GetGunKind())
+		{
+		case GunKind::kSubmachineGun:
+			if (ammo_holder->GetCurrentAmmoNum(typeid(AssaultRifleAmmoBox)) <= 0) { return false; }
+			break;
+
+		case GunKind::kRocketLauncher:
+			if (ammo_holder->GetCurrentAmmoNum(typeid(RocketBombBox))		<= 0) { return false; }
+			break;
+
+		default:
+			break;
+		}
+
 		return gun->CanReload() && CommandHandler::GetInstance()->IsExecute(CommandKind::kReload, TimeKind::kCurrent);
+	}
+
+	return false;
+}
+
+bool PlayerStateController::TryPullTriggerReload(std::shared_ptr<Player>& player)
+{
+	if (!player->CanControl()) { return false; }
+
+	const auto gun = std::dynamic_pointer_cast<GunBase>(player->GetCurrentHeldWeapon());
+	if (!gun) { return false; }
+	if (gun->GetCurrentRemainingBulletNum() > 0) { return false; }
+
+	const auto command		= CommandHandler::GetInstance();
+	const auto ammo_holder	= player->GetAmmoHolder();
+	if (gun)
+	{
+		switch (gun->GetGunKind())
+		{
+		case GunKind::kSubmachineGun:
+			if (ammo_holder->GetCurrentAmmoNum(typeid(AssaultRifleAmmoBox)) <= 0) { return false; }
+			break;
+
+		case GunKind::kRocketLauncher:
+			if (ammo_holder->GetCurrentAmmoNum(typeid(RocketBombBox))		<= 0) { return false; }
+			break;
+
+		default:
+			break;
+		}
+
+		return !command->IsExecute(CommandKind::kPullTrigger, TimeKind::kPrev) && command->IsExecute(CommandKind::kPullTrigger, TimeKind::kCurrent);
 	}
 
 	return false;

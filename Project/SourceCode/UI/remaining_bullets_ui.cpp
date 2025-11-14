@@ -31,20 +31,20 @@ void RemainingBulletsUI::CreateResultScreen()
 
 	DrawStringToHandle(
 		static_cast<int>((m_result_screen->GetScreenSize().x - m_remaining_bullets_font_size.x) * 0.5f - m_remaining_bullets_font_size.x * 0.5f - kTextOffset),
-		static_cast<int>((m_result_screen->GetScreenSize().y - m_remaining_bullets_font_size.y) * 0.5f),
+		static_cast<int>((m_result_screen->GetScreenSize().y - m_remaining_bullets_font_size.y) * 0.5f - 1),
 		m_remaining_bullets_text.c_str(), m_remaining_bullets_font_color, m_remaining_bullets_font_handle);
 
 	DrawStringToHandle(
 		static_cast<int>((m_result_screen->GetScreenSize().x - m_have_ammo_font_size.x) * 0.5f + m_have_ammo_font_size.x * 0.5f + kTextOffset),
 		static_cast<int>((m_result_screen->GetScreenSize().y - m_have_ammo_font_size.y) * 0.5f),
-		m_have_ammo_text.c_str(), 0xa1a1a1, m_have_ammo_font_handle);
+		m_have_ammo_text.c_str(), kHaveAmmoColor, m_have_ammo_font_handle);
 
 	DrawLine(
-		m_result_screen->GetHalfScreenSize().x + 2,
-		static_cast<int>((m_result_screen->GetScreenSize().y - m_have_ammo_font_size.y) * 0.5f),
-		m_result_screen->GetHalfScreenSize().x - 2,
-		static_cast<int>((m_result_screen->GetScreenSize().y - m_have_ammo_font_size.y) * 0.5f + m_have_ammo_font_size.y),
-		0xa1a1a1);
+		static_cast<int>( m_result_screen->GetHalfScreenSize().x + kLineWidth * 0.5f),
+		static_cast<int>((m_result_screen->GetScreenSize().y	 - m_have_ammo_font_size.y) * 0.5f),
+		static_cast<int>( m_result_screen->GetHalfScreenSize().x - kLineWidth * 0.5f),
+		static_cast<int>((m_result_screen->GetScreenSize().y	 - m_have_ammo_font_size.y) * 0.5f + m_have_ammo_font_size.y - 1),
+		kHaveAmmoColor, kLineThickness);
 
 	m_result_screen->UnuseScreen();
 }
@@ -95,7 +95,6 @@ void RemainingBulletsUI::UpdateText()
 		else
 		{
 			m_remaining_bullets_font_color = kAmmoColor;
-		}
-		
+		}	
 	}
 }

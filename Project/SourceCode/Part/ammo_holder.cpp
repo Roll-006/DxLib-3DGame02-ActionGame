@@ -40,6 +40,53 @@ void AmmoHolder::AddAmmo(std::shared_ptr<IAmmoBox>& ammo_box)
 	}
 }
 
+void AmmoHolder::Reload(const std::shared_ptr<GunBase>& gun)
+{
+	std::stack<std::shared_ptr<IAmmoBox>>* ammo_boxes = nullptr;
+	const auto gun_kind		= gun->GetGunKind();
+	auto	   current_ammo = 0;
+
+	switch (gun_kind)
+	{
+	case GunKind::kSubmachineGun:
+		current_ammo	= GetCurrentAmmoNum(typeid(AssaultRifleAmmoBox));
+		ammo_boxes		= &m_assault_rifle_ammo_boxes;
+		break;
+
+	case GunKind::kRocketLauncher:
+		current_ammo	= GetCurrentAmmoNum(typeid(RocketBombBox));
+		ammo_boxes		= &m_rocket_bomb_boxes;
+		break;
+
+	default:
+		break;
+	}
+
+	if (!ammo_boxes) { return; }
+
+	// ‘•“U‚µ‚½•ª‚ðŒ¸‚ç‚·
+	const auto rest_ammo	= gun->OnReload(current_ammo);
+	auto	   added_ammo	= current_ammo - rest_ammo;
+	while (!ammo_boxes->empty())
+	{
+		const auto tmp_ammo_box			= ammo_boxes->top();
+		const auto current_have_ammo	= tmp_ammo_box->GetCurrentHaveNum();
+
+		// ‘•“U‚µ‚½•ª‚ðtop‚©‚çŒ¸‚ç‚µ‚Ä‚¢‚­
+		// ’e‚ªŽc‚ç‚È‚¢ê‡‚ÍŽæ‚èœ‚­
+		added_ammo -= current_have_ammo;
+		if (added_ammo >= 0)
+		{
+			ammo_boxes->pop();
+		}
+		else
+		{
+			tmp_ammo_box->SetHaveNum(-added_ammo);
+			break;
+		}
+	}
+}
+
 int AmmoHolder::GetCurrentAmmoNum(const std::type_index& type)
 {
 	std::stack<std::shared_ptr<IAmmoBox>>* ammo_boxes = nullptr;

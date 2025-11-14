@@ -68,9 +68,6 @@ public:
 
 
 	#pragma region 銃を撃つ者
-	void SetRemainingBulletNum(const int remaining_bullet_num) override { m_current_remaining_bullet_num = remaining_bullet_num; }
-	[[nodiscard]] int GetCurrentRemainingBulletNum() const override	{ return m_current_remaining_bullet_num; }
-
 	[[nodiscard]] std::shared_ptr<AmmoHolder> GetAmmoHolder() const override { return m_ammo_holder; }
 	#pragma endregion
 
@@ -126,27 +123,27 @@ public:
 	#pragma endregion
 
 
-	#pragma region アイテム
-	/// @brief アイテムの所持登録 
-	template<obj_concepts::ItemT ItemT>
-	void AddItem(const std::shared_ptr<ItemT>& item)
-	{
-		const auto item_kind = item->GetItemKind();
+	//#pragma region アイテム
+	///// @brief アイテムの所持登録 
+	//template<obj_concepts::ItemT ItemT>
+	//void AddItem(const std::shared_ptr<ItemT>& item)
+	//{
+	//	const auto item_kind = item->GetItemKind();
 
-		if (std::find(m_items[item_kind].begin(), m_items[item_kind].end(), item) == m_items[item_kind].end())
-		{
-			m_items[item_kind].emplace_back(item);
-		}
-	}
-	/// @brief アイテムの所持登録を解除
-	template<obj_concepts::ItemT ItemT>
-	void RemoveItem(const std::shared_ptr<ItemT>& item)
-	{
-		const auto item_kind = item->GetItemKind();
+	//	if (std::find(m_items[item_kind].begin(), m_items[item_kind].end(), item) == m_items[item_kind].end())
+	//	{
+	//		m_items[item_kind].emplace_back(item);
+	//	}
+	//}
+	///// @brief アイテムの所持登録を解除
+	//template<obj_concepts::ItemT ItemT>
+	//void RemoveItem(const std::shared_ptr<ItemT>& item)
+	//{
+	//	const auto item_kind = item->GetItemKind();
 
-		m_items[item_kind].erase(std::remove(m_items[item_kind].begin(), m_items[item_kind].end(), item), m_items[item_kind].end());
-	}
-	#pragma endregion
+	//	m_items[item_kind].erase(std::remove(m_items[item_kind].begin(), m_items[item_kind].end(), item), m_items[item_kind].end());
+	//}
+	//#pragma endregion
 
 
 	#pragma region State
@@ -251,7 +248,6 @@ private:
 	std::unordered_map<WeaponSlotKind, std::shared_ptr<WeaponBase>>		m_current_equip_weapon;				// 現在装備している武器
 	std::shared_ptr<WeaponBase>											m_current_held_weapon;				// 現在手に持っている武器
 	std::unordered_map<HolsterKind, std::shared_ptr<WeaponBase>>		m_attach_weapons;					// 装着している武器
-	int																	m_current_remaining_bullet_num;		// 残弾数
 	std::shared_ptr<WeaponShortcutSelecter>								m_weapon_shortcut_selecter;			// ショートカットに登録されている武器
 	std::shared_ptr<IMeleeHittable>										m_melee_target;
 	std::shared_ptr<IMeleeHittable>										m_top_priority_downed_chara;

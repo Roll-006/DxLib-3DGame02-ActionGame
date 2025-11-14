@@ -129,7 +129,7 @@ std::vector<std::shared_ptr<IState<Zombie>>> ZombieStateController::CreateChange
 	auto future_state = CreateFutureState(next_state);
 
 	// ã‚ÌŠK‘w‚É‚ ‚éƒXƒe[ƒg‚Ì’âŽ~ˆ—
-	for (int i = future_state.size() - 1; i >= 0; --i)
+	for (int i = static_cast<int>(future_state.size() - 1); i >= 0; --i)
 	{
 		// ’âŽ~”»’è
 		for (auto itr = check_stop_state_index.begin(); itr != check_stop_state_index.end(); )
