@@ -70,6 +70,8 @@ public:
 	#pragma region 銃を撃つ者
 	void SetRemainingBulletNum(const int remaining_bullet_num) override { m_current_remaining_bullet_num = remaining_bullet_num; }
 	[[nodiscard]] int GetCurrentRemainingBulletNum() const override	{ return m_current_remaining_bullet_num; }
+
+	[[nodiscard]] std::shared_ptr<AmmoHolder> GetAmmoHolder() const override { return m_ammo_holder; }
 	#pragma endregion
 
 
@@ -242,6 +244,8 @@ private:
 	bool										m_is_victory_pose;
 	bool										m_is_count_victory_pose;
 	float										m_victory_pose_wait_time;
+
+	std::shared_ptr<AmmoHolder>											m_ammo_holder;
 
 	std::unordered_map<ItemKind, std::vector<std::shared_ptr<IItem>>>	m_items;							// 所持しているアイテム
 	std::unordered_map<WeaponSlotKind, std::shared_ptr<WeaponBase>>		m_current_equip_weapon;				// 現在装備している武器

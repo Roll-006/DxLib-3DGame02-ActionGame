@@ -1,13 +1,15 @@
 #include "status_icons.hpp"
 
-StatusIcons::StatusIcons(const std::shared_ptr<Player>& player) : 
-	m_result_screen				(std::make_shared<ScreenCreator>(kScreenSize)),
-	m_health_gauge				(std::make_shared<HealthGauge>(player->GetHealth(HealthPartKind::kMain))),
-	m_equip_weapon_icon			(std::make_shared<EquipWeaponIcon>(player->GetCurrentEquipWeapons())),
-	m_health_gauge_graphic		(std::make_shared<Graphicer>(m_health_gauge->GetScreenHandle())),
-	m_equip_weapon_icon_graphic	(std::make_shared<Graphicer>(m_equip_weapon_icon->GetScreenHandle())),
-	m_alpha_blend_num			(UCHAR_MAX),
-	m_is_active_cutscene		(false)
+StatusIcons::StatusIcons(std::shared_ptr<Player>& player) : 
+	m_result_screen					(std::make_shared<ScreenCreator>(kScreenSize)),
+	m_health_gauge					(std::make_shared<HealthGauge>(player->GetHealth(HealthPartKind::kMain))),
+	m_equip_weapon_icon				(std::make_shared<EquipWeaponIcon>(player->GetCurrentEquipWeapons())),
+	m_remaining_bullets_ui			(std::make_shared<RemainingBulletsUI>(player)),
+	m_health_gauge_graphic			(std::make_shared<Graphicer>(m_health_gauge->GetScreenHandle())),
+	m_equip_weapon_icon_graphic		(std::make_shared<Graphicer>(m_equip_weapon_icon->GetScreenHandle())),
+	m_remaining_bullets_ui_graphic	(std::make_shared<Graphicer>(m_remaining_bullets_ui->GetScreenHandle())),
+	m_alpha_blend_num				(UCHAR_MAX),
+	m_is_active_cutscene			(false)
 {
 	// ƒCƒxƒ“ƒg“o˜^
 	EventSystem::GetInstance()->Subscribe<StartRocketLauncherCutsceneEvent>	(this, &StatusIcons::ActivateCutscene);
@@ -17,8 +19,9 @@ StatusIcons::StatusIcons(const std::shared_ptr<Player>& player) :
 		static_cast<int>(Window::kScreenSize.x * 0.891f), 
 		static_cast<int>(Window::kScreenSize.y * 0.81f)));
 
-	m_health_gauge_graphic		->SetCenterPos(Vector2D<int>(static_cast<int>(kScreenSize.x * 0.5f), static_cast<int>(kScreenSize.y * 0.5f)));
-	m_equip_weapon_icon_graphic	->SetCenterPos(Vector2D<int>(static_cast<int>(kScreenSize.x * 0.5f), static_cast<int>(kScreenSize.y * 0.5f)));
+	m_health_gauge_graphic			->SetCenterPos(kCenterPos);
+	m_equip_weapon_icon_graphic		->SetCenterPos(kCenterPos);
+	m_remaining_bullets_ui_graphic	->SetCenterPos(kCenterPos + Vector2D<int>(15, 40));
 }
 
 StatusIcons::~StatusIcons()
@@ -30,8 +33,9 @@ StatusIcons::~StatusIcons()
 
 void StatusIcons::LateUpdate()
 {
-	m_health_gauge		->LateUpdate();
-	m_equip_weapon_icon	->LateUpdate();
+	m_health_gauge			->LateUpdate();
+	m_equip_weapon_icon		->LateUpdate();
+	m_remaining_bullets_ui	->LateUpdate();
 
 	CalcResultScreenAlphaBlendNum();
 	CreateScreen();
@@ -60,8 +64,9 @@ void StatusIcons::CreateScreen()
 {
 	m_result_screen->UseScreen();
 
-	m_health_gauge_graphic		->Draw();
-	m_equip_weapon_icon_graphic	->Draw();
+	m_health_gauge_graphic			->Draw();
+	m_equip_weapon_icon_graphic		->Draw();
+	m_remaining_bullets_ui_graphic	->Draw();
 
 	m_result_screen->UnuseScreen();
 }

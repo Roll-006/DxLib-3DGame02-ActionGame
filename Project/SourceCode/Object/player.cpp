@@ -19,6 +19,7 @@ Player::Player() :
 	m_is_victory_pose				(false),
 	m_is_count_victory_pose			(false),
 	m_victory_pose_wait_time		(0.0f),
+	m_ammo_holder					(std::make_shared<AmmoHolder>()),
 	m_weapon_shortcut_selecter		(std::make_shared<WeaponShortcutSelecter>()),
 	m_melee_target					(nullptr),
 	m_top_priority_downed_chara		(nullptr),

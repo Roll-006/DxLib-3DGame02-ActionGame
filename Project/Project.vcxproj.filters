@@ -616,6 +616,9 @@
     <ClCompile Include="SourceCode\Part\ammo_holder.cpp">
       <Filter>SourceCode\Part</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\UI\remaining_bullets_ui.cpp">
+      <Filter>SourceCode\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\character_base.hpp">
@@ -1676,6 +1679,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Part\ammo_holder.hpp">
       <Filter>SourceCode\Part</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\UI\remaining_bullets_ui.hpp">
+      <Filter>SourceCode\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
