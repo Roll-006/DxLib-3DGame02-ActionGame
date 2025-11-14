@@ -14,6 +14,7 @@ PlayScene::PlayScene() :
 	m_skydome						(std::make_shared<Skydome>()),
 	m_stealth_kill_target_searcher	(std::make_shared<StealthKillTargetSearcher>(m_player)),
 	m_melee_target_searcher			(std::make_shared<MeleeTargetSearcher>(m_player)),
+	m_item_creator					(std::make_shared<ItemCreator>(m_player)),
 	m_rifle_cartridge_object_pool	(std::make_shared<RifleCartridgeObjectPool>()),
 	m_play_scene_effect_object_pool (std::make_shared<PlaySceneEffectObjectPool>()),
 	m_player_ui_creator				(std::make_shared<PlayerUICreator>(m_player)),
@@ -109,6 +110,7 @@ void PlayScene::Update()
 	m_skydome							->Update();
 	m_stealth_kill_target_searcher		->Update();
 	m_melee_target_searcher				->Update();
+	m_item_creator						->Update();
 	m_game_clear_tab					->Update();
 	m_game_over_tab						->Update();
 	m_pause_tab							->Update();
@@ -124,6 +126,7 @@ void PlayScene::LateUpdate()
 	m_ground							->LateUpdate();
 	m_houses							->LateUpdate();
 	m_skydome							->LateUpdate();
+	m_item_creator						->LateUpdate();
 	m_player_ui_creator					->LateUpdate();
 }
 
@@ -136,6 +139,7 @@ void PlayScene::DrawToShadowMap() const
 	RifleCartridgeManager::GetInstance()->Draw();
 	m_ground							->Draw();
 	m_houses							->Draw();
+	m_item_creator						->Draw();
 }
 
 void PlayScene::Draw() const
@@ -148,6 +152,7 @@ void PlayScene::Draw() const
 	m_ground							->Draw();
 	m_houses							->Draw();
 	m_skydome							->Draw();
+	m_item_creator						->Draw();
 }
 
 std::shared_ptr<IScene> PlayScene::ChangeScene()

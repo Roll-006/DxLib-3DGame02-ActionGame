@@ -18,7 +18,7 @@ RocketBomb::RocketBomb() :
 
 	SetColliderModelHandle(m_modeler->GetModelHandle());
 
-	AddCollider(std::make_shared<Collider>(ColliderKind::kRayCast, std::make_shared<Segment>(), this));
+	AddCollider(std::make_shared<Collider>(ColliderKind::kRay, std::make_shared<Segment>(), this));
 }
 
 RocketBomb::~RocketBomb()
@@ -63,7 +63,7 @@ void RocketBomb::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 {
 	switch (hit_collider_pair.owner_collider->GetColliderKind())
 	{
-	case ColliderKind::kRayCast:
+	case ColliderKind::kRay:
 		if (hit_collider_pair.intersection)
 		{
 			RifleCartridgeManager::GetInstance()->DeleteBullet(shared_from_this());
@@ -201,7 +201,7 @@ void RocketBomb::Move()
 void RocketBomb::CalcRayCastPos()
 {
 	// Œõü‚ÌˆÊ’u‚ğŒvZ
-	auto ray = std::dynamic_pointer_cast<Segment>(GetCollider(ColliderKind::kRayCast)->GetShape());
+	auto ray = std::dynamic_pointer_cast<Segment>(GetCollider(ColliderKind::kRay)->GetShape());
 	ray->SetBeginPos(m_prev_pos, true);
 	ray->SetEndPos(m_transform->GetPos(CoordinateKind::kWorld), true);
 }

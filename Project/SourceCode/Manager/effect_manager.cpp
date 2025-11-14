@@ -12,6 +12,7 @@ EffectManager::EffectManager()
 	EventSystem::GetInstance()->Subscribe<OnDamageEvent>				(this, &EffectManager::OutputOnDamageEffect);
 	EventSystem::GetInstance()->Subscribe<OnChangeTitleSceneEvent>		(this, &EffectManager::OutputTitleSceneEffect);
 	EventSystem::GetInstance()->Subscribe<StartDisappearEnemyEvent>		(this, &EffectManager::OutputDisappearEnemyEffect);
+	EventSystem::GetInstance()->Subscribe<DropItemEvent>				(this, &EffectManager::OutputDropItemEffect);
 }
 
 EffectManager::~EffectManager()
@@ -24,6 +25,7 @@ EffectManager::~EffectManager()
 	EventSystem::GetInstance()->Unsubscribe<OnDamageEvent>				(this, &EffectManager::OutputOnDamageEffect);
 	EventSystem::GetInstance()->Unsubscribe<OnChangeTitleSceneEvent>	(this, &EffectManager::OutputTitleSceneEffect);
 	EventSystem::GetInstance()->Unsubscribe<StartDisappearEnemyEvent>	(this, &EffectManager::OutputDisappearEnemyEffect);
+	EventSystem::GetInstance()->Unsubscribe<DropItemEvent>				(this, &EffectManager::OutputDropItemEffect);
 }
 
 void EffectManager::Update()
@@ -47,7 +49,6 @@ void EffectManager::LateUpdate()
 		}
 	}
 
-	Effekseer_Sync3DSetting();
 	UpdateEffekseer3D();
 
 	ReturnPool();
@@ -243,6 +244,40 @@ void EffectManager::OutputDisappearEnemyEffect(const StartDisappearEnemyEvent& e
 		const auto effect = std::static_pointer_cast<Effect>(obj);
 		effect->GetTransform()->SetPos(CoordinateKind::kWorld, event.disppear_pos);
 		AddEffect(effect);
+	}
+}
+
+void EffectManager::OutputDropItemEffect(const DropItemEvent& event)
+{
+	const auto pool = ObjectPoolHolder::GetInstance()->GetObjectPool(ObjectPoolName.PLAY_SCENE_EFFECT_POOL);
+	std::shared_ptr<ObjBase> obj = nullptr;
+
+	switch (event.item_kind)
+	{
+	case ItemKind::kAmmoBox:
+		obj = pool->GetObj(ObjName.ITEM_RED_EFFECT);
+		if (obj)
+		{
+			const auto effect = std::static_pointer_cast<Effect>(obj);
+			effect->AttachOwnerTransform(event.drop_transform);
+			effect->AddReturnPoolTriggerHandle(event.obj_handle);
+			AddEffect(effect);
+		}
+		break;
+
+	case ItemKind::kPotion:
+		obj = pool->GetObj(ObjName.ITEM_GREEN_EFFECT);
+		if (obj)
+		{
+			const auto effect = std::static_pointer_cast<Effect>(obj);
+			effect->AttachOwnerTransform(event.drop_transform);
+			effect->AddReturnPoolTriggerHandle(event.obj_handle);
+			AddEffect(effect);
+		}
+		break;
+
+	default:
+		break;
 	}
 }
 #pragma endregion

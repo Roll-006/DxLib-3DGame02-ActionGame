@@ -48,6 +48,8 @@ static struct ObjName
 	const std::string ROCKET_BOMB								= "rocket_bomb";
 	const std::string SHELL_CASING_556x45						= "shell_casing_556x45";
 	const std::string ASSAULT_RIFLE_MAGAZINE					= "assault_rifle_magazine";
+	const std::string AMMO_BOX_556x45							= "ammo_box_556x45";
+	const std::string AMMO_BOX_ROCKET_BOMB						= "ammo_box_rocket_bomb";
 	const std::string NON_COLLIDE_ROCKET_BOMB					= "non_collide_rocket_bomb";
 	#pragma endregion
 
@@ -67,6 +69,8 @@ static struct ObjName
 	const std::string DISAPPEAR_SMOKE_EFFECT					= "disappear_smoke_effect";
 	const std::string SHOT_FIRE_EFFECT							= "shot_fire_effect";
 	const std::string BLOOD_EFFECT								= "blood_effect";
+	const std::string ITEM_RED_EFFECT							= "item_red_effect";
+	const std::string ITEM_GREEN_EFFECT							= "item_green_effect";
 	#pragma endregion
 
 

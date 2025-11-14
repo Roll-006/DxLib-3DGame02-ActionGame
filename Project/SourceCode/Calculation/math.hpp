@@ -343,6 +343,12 @@ namespace math
 	/// @param dir 向きベクトル(この値をZ軸とする)
 	/// @param parent_axes 親とするXYZ軸
 	[[nodiscard]] Axes GetAxes(const VECTOR& dir, const Axes& parent_axes);
+	
+	/// @brief 対象のforwardをZ軸とした回転後のXYZ軸を取得する
+	/// @param origin_axes 回転前のXYZ軸
+	/// @param target_forward 回転後のZ軸
+	/// @return 回転後のXYZ軸
+	[[nodiscard]] Axes GetRotatedAxes(const Axes& origin_axes, const VECTOR& target_forward);
 	#pragma endregion
 
 

@@ -40,6 +40,8 @@ private:
 	void OutputTitleSceneEffect			(const OnChangeTitleSceneEvent& event);
 	/// @brief 敵が消える際のエフェクトを出力
 	void OutputDisappearEnemyEffect		(const StartDisappearEnemyEvent& event);
+	/// @brief アイテムがドロップした際のエフェクトを出力
+	void OutputDropItemEffect			(const DropItemEvent& event);
 	#pragma endregion
 
 

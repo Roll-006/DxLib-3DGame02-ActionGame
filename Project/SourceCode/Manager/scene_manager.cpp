@@ -35,6 +35,7 @@ void SceneManager::LateUpdate()
 	m_share_scene	->LateUpdate();
 
 	CollisionManager::GetInstance()->LateUpdate();
+	PhysicsManager	::GetInstance()->ProjectPos();
 	InputChecker	::GetInstance()->LateUpdate();
 }
 

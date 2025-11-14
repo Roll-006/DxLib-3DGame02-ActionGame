@@ -5,10 +5,13 @@ Collider::Collider(const ColliderKind kind, const std::shared_ptr<ShapeBase>& sh
 	m_kind					(kind),
 	m_shape					(shape),
 	m_model_handle			(-1),
-	m_is_closest_only_hit	(kind == ColliderKind::kRayCast		  ? true : false),
+	m_is_closest_only_hit	(false),
 	m_is_one_collision		(kind == ColliderKind::kAttackTrigger ? true : false),
 	m_owner_obj				(owner_obj)
 {
+	m_is_closest_only_hit = kind == ColliderKind::kRay
+		|| kind == ColliderKind::kProjectRay ? true : false;
+
 	JudgeValidShape();
 }
 
@@ -16,10 +19,13 @@ Collider::Collider(const ColliderKind kind, const std::shared_ptr<ShapeBase>& sh
 	m_kind					(kind),
 	m_shape					(shape),
 	m_model_handle			(-1),
-	m_is_closest_only_hit	(kind == ColliderKind::kRayCast ? is_closest_only_hit : false),
+	m_is_closest_only_hit	(false),
 	m_is_one_collision		(kind == ColliderKind::kAttackTrigger ? true : false),
 	m_owner_obj				(owner_obj)
 {
+	m_is_closest_only_hit = kind == ColliderKind::kRay
+		|| kind == ColliderKind::kProjectRay ? is_closest_only_hit : false;
+
 	JudgeValidShape();
 }
 
@@ -42,7 +48,7 @@ Collider::~Collider()
 
 void Collider::EnableAllRayCastHit()
 {
-	if (m_kind == ColliderKind::kRayCast)
+	if (m_kind == ColliderKind::kRay || m_kind == ColliderKind::kProjectRay)
 	{
 		m_is_closest_only_hit = false;
 	}
@@ -50,17 +56,37 @@ void Collider::EnableAllRayCastHit()
 
 void Collider::EnableClosestOnlyRayCastHit()
 {
-	if (m_kind == ColliderKind::kRayCast)
+	if (m_kind == ColliderKind::kRay || m_kind == ColliderKind::kProjectRay)
 	{
 		m_is_closest_only_hit = true;
 	}
 }
 
+
+#pragma region 登録 / 解除
+void Collider::AddHitTriangle(const Triangle& hit_triangle)
+{
+	m_hit_triangles.emplace_back(hit_triangle);
+}
+
+void Collider::AddHitTriangles(const std::vector<Triangle>& hit_triangles)
+{
+	m_hit_triangles.insert(m_hit_triangles.end(), hit_triangles.begin(), hit_triangles.end());
+}
+
+void Collider::RemoveHitTriangles()
+{
+	m_hit_triangles.clear();
+}
+#pragma endregion
+
+
 void Collider::JudgeValidShape()
 {
 	switch (m_kind)
 	{
-	case ColliderKind::kRayCast:
+	case ColliderKind::kRay:
+	case ColliderKind::kProjectRay:
 		assert(m_shape->GetShapeKind() == ShapeKind::kSegment);
 		break;
 

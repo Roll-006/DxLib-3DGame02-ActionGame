@@ -31,12 +31,13 @@ public:
 	/// @brief 持ち主のホルスター(武器収納位置)を追尾する
 	void TrackOwnerHolster();
 
-	[[nodiscard]] float						GetDeltaTime()	 const override;
-	[[nodiscard]] std::shared_ptr<Modeler>	GetModeler()	 const			{ return m_modeler; }
-	[[nodiscard]] float						GetPower()		 const			{ return m_power; }
-	[[nodiscard]] std::string				GetOwnerName()	 const			{ return m_owner_name; }
-	[[nodiscard]] WeaponKind				GetWeaponKind()	 const			{ return m_weapon_kind; }
-	[[nodiscard]] HolsterKind				GetHolsterKind() const			{ return m_holster_kind; }
+	[[nodiscard]] float						GetDeltaTime()		const override;
+	[[nodiscard]] ItemKind					GetItemKind()		const override	{ return ItemKind::kWeapon; }
+	[[nodiscard]] std::shared_ptr<Modeler>	GetModeler()		const			{ return m_modeler; }
+	[[nodiscard]] float						GetPower()			const			{ return m_power; }
+	[[nodiscard]] std::string				GetOwnerName()		const			{ return m_owner_name; }
+	[[nodiscard]] WeaponKind				GetWeaponKind()		const			{ return m_weapon_kind; }
+	[[nodiscard]] HolsterKind				GetHolsterKind()	const			{ return m_holster_kind; }
 
 protected:
 	/// @brief 補正値を設定
@@ -75,7 +76,6 @@ private:
 	VECTOR m_attach_offset_angle;	// ホルスターに装着されている際のオフセット角度
 	VECTOR m_attach_offset_scale;	// ホルスターに装着されている際のオフセットスケール
 
-	ItemKind	m_item_kind;
 	WeaponKind	m_weapon_kind;
 	HolsterKind m_holster_kind;
 };

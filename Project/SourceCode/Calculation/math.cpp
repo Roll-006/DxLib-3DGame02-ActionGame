@@ -687,6 +687,16 @@ Axes math::GetAxes(const VECTOR& dir, const Axes& parent_axes)
 
     return Axes(local_dir_x, local_dir_y, local_dir_z);
 }
+
+Axes math::GetRotatedAxes(const Axes& origin_axes, const VECTOR& target_forward)
+{
+    Axes axes;
+    axes.z_axis = target_forward;
+    axes.x_axis = math::GetNormalVector(origin_axes.y_axis, axes.z_axis);		// 一時的なピッチ軸回転を計算
+    axes.y_axis = math::GetNormalVector(axes.z_axis,        axes.x_axis);
+    axes.x_axis = math::GetNormalVector(axes.y_axis,        axes.z_axis);
+    return axes;
+}
 #pragma endregion
 
 

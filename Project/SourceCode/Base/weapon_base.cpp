@@ -12,7 +12,6 @@ WeaponBase::WeaponBase(const std::string& name, const WeaponKind weapon_kind, co
 	m_attach_offset_pos		(v3d::GetZeroV()),
 	m_attach_offset_angle	(v3d::GetZeroV()),
 	m_attach_offset_scale	(v3d::GetZeroV()),
-	m_item_kind				(ItemKind::kWeapon),
 	m_weapon_kind			(weapon_kind),
 	m_holster_kind			(holster_kind)
 {

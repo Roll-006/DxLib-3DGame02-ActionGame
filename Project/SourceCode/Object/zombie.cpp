@@ -61,7 +61,7 @@ Zombie::Zombie(const std::string& id) :
 	m_collider_creator->CreateArmTrigger		(this, m_modeler, collider_data.upper_arm_trigger_radius,	collider_data.forearm_trigger_radius, collider_data.hand_trigger_radius);
 	m_collider_creator->CreateLegTrigger		(this, m_modeler, collider_data.up_leg_trigger_radius,		collider_data.down_leg_trigger_radius);
 
-	AddCollider(std::make_shared<Collider>(ColliderKind::kRayCast, std::make_shared<Segment>(), this));
+	AddCollider(std::make_shared<Collider>(ColliderKind::kRay, std::make_shared<Segment>(), this));
 	AddCollider(std::make_shared<Collider>(ColliderKind::kCollisionAreaTrigger, std::make_shared<Sphere>(v3d::GetZeroV() + collider_data.collision_area_offset, collider_data.collision_area_radius), this));
 }
 
@@ -116,7 +116,7 @@ void Zombie::LateUpdate()
 	if (!IsActive()) { return; }
 
 	// TODO : å„Ç…ä÷êîâª
-	auto ray = std::static_pointer_cast<Segment>(GetCollider(ColliderKind::kRayCast)->GetShape());
+	auto ray = std::static_pointer_cast<Segment>(GetCollider(ColliderKind::kRay)->GetShape());
 	const auto target_model_handle = m_state->GetTargetCharacter()->GetModeler()->GetModelHandle();
 	auto head_m		= MV1GetFrameLocalWorldMatrix(m_modeler->GetModelHandle(), MV1SearchFrame(m_modeler->GetModelHandle(), BonePath.HEAD));
 	auto spine2_m	= MV1GetFrameLocalWorldMatrix(target_model_handle, MV1SearchFrame(target_model_handle, BonePath.SPINE_2));
@@ -130,7 +130,7 @@ void Zombie::LateUpdate()
 	m_can_grab_target				= false;
 	m_on_collided_vision_trigger	= false;
 	m_has_obstacle_between_target	= false;
-	m_is_using_projection_velocity	= true;
+	m_is_project					= true;
 }
 
 void Zombie::Draw() const
@@ -156,7 +156,7 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 		m_is_landing = true;
 		break;
 
-	case ColliderKind::kRayCast:
+	case ColliderKind::kRay:
 		if (dynamic_cast<PhysicalObjBase*>(m_state->GetTargetCharacter().get()) != target_obj)
 		{
 			m_has_obstacle_between_target = true;

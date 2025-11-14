@@ -14,5 +14,7 @@ static struct EffekseerEffectPath
 	const std::string SHOT_FIRE								= "Data/Effect/Fire/fire.efk";
 	const std::string BLOOD									= "Data/Effect/Blood/blood.efk";
 	const std::string DEAD_BOSS_BLOOD						= "Data/Effect/Blood/dead_boss_blood.efk";
+	const std::string ITEM_RED								= "Data/Effect/Light/item_light_red.efk";
+	const std::string ITEM_GREEN							= "Data/Effect/Light/item_light_green.efk";
 
 }EffectPath;

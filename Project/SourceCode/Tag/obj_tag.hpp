@@ -17,6 +17,7 @@ static struct ObjTag
 	const std::string WEAPON			= "weapon";
 	const std::string BULLET			= "bullet";
 	const std::string SHELL_CASING		= "shell_casing";
+	const std::string AMMO_BOX			= "ammo_box";
 	const std::string MAGAZINE			= "magazine";
 
 	const std::string SKYDOME			= "skydome";
