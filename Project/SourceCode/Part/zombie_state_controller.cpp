@@ -44,9 +44,7 @@ void ZombieStateController::CreateState()
 {
 	m_states[typeid(zombie_state::Wait)]				= std::make_shared<zombie_state::Wait>();
 	m_states[typeid(zombie_state::Patrol)]				= std::make_shared<zombie_state::Patrol>();
-	m_states[typeid(zombie_state::Investigate)]			= std::make_shared<zombie_state::Investigate>();
 	m_states[typeid(zombie_state::Search)]				= std::make_shared<zombie_state::Search>();
-	m_states[typeid(zombie_state::Alert)]				= std::make_shared<zombie_state::Alert>();
 	m_states[typeid(zombie_state::Track)]				= std::make_shared<zombie_state::Track>();
 	m_states[typeid(zombie_state::RunAttack)]			= std::make_shared<zombie_state::RunAttack>();
 	m_states[typeid(zombie_state::CloseRangeAttack)]	= std::make_shared<zombie_state::CloseRangeAttack>();

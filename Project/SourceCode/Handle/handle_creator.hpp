@@ -9,7 +9,7 @@ public:
 	[[nodiscard]] int CreateHandle() { return ++m_handle_create_count; }
 
 private:
-	HandleCreator() {}
+	HandleCreator() : m_handle_create_count(0) {}
 	~HandleCreator() override {}
 
 private:

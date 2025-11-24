@@ -361,16 +361,7 @@
     <ClCompile Include="SourceCode\Part\character_collider_creator.cpp">
       <Filter>SourceCode\Part</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\State\ZombieState\alert.cpp">
-      <Filter>SourceCode\State\ZombieState</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\State\ZombieState\investigate.cpp">
-      <Filter>SourceCode\State\ZombieState</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\State\ZombieState\knockback.cpp">
-      <Filter>SourceCode\State\ZombieState</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\State\ZombieState\patrol.cpp">
       <Filter>SourceCode\State\ZombieState</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\State\ZombieState\zombie_run.cpp">
@@ -621,6 +612,12 @@
     </ClCompile>
     <ClCompile Include="SourceCode\Part\item_creator.cpp">
       <Filter>SourceCode\Part</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Sound\sound_manager.cpp">
+      <Filter>SourceCode\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\ZombieState\patrol.cpp">
+      <Filter>SourceCode\State\ZombieState</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1098,16 +1095,7 @@
     <ClInclude Include="SourceCode\Base\ai_state_base.hpp">
       <Filter>SourceCode\Base</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\State\ZombieState\alert.hpp">
-      <Filter>SourceCode\State\ZombieState</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\State\ZombieState\investigate.hpp">
-      <Filter>SourceCode\State\ZombieState</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\State\ZombieState\knockback.hpp">
-      <Filter>SourceCode\State\ZombieState</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\State\ZombieState\patrol.hpp">
       <Filter>SourceCode\State\ZombieState</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\State\ZombieState\zombie_run.hpp">
@@ -1692,6 +1680,12 @@
     <ClInclude Include="SourceCode\Event\drop_item_event.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\Sound\sound_manager.hpp">
+      <Filter>SourceCode\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\ZombieState\patrol.hpp">
+      <Filter>SourceCode\State\ZombieState</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="SourceCode">
@@ -1837,6 +1831,9 @@
     </Filter>
     <Filter Include="SourceCode\Scene">
       <UniqueIdentifier>{47238515-00d6-486e-bcf4-f6f55f21cce5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCode\Sound">
+      <UniqueIdentifier>{f57eecbd-8cf1-42c8-96b4-2d96a5bf7d69}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

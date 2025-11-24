@@ -67,6 +67,7 @@ Zombie::Zombie(const std::string& id) :
 
 Zombie::~Zombie()
 {
+	m_colliders.clear();
 }
 
 void Zombie::Init()

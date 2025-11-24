@@ -4,9 +4,7 @@
 
 #include "../State/ZombieState/wait.hpp"
 #include "../State/ZombieState/patrol.hpp"
-#include "../State/ZombieState/investigate.hpp"
 #include "../State/ZombieState/search.hpp"
-#include "../State/ZombieState/alert.hpp"
 #include "../State/ZombieState/track.hpp"
 #include "../State/ZombieState/run_attack.hpp"
 #include "../State/ZombieState/close_range_attack.hpp"

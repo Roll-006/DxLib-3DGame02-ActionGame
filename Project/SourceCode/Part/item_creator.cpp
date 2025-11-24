@@ -12,8 +12,10 @@ ItemCreator::~ItemCreator()
 	// ƒCƒxƒ“ƒg‚Ì“o˜^‰ðœ
 	EventSystem::GetInstance()->Unsubscribe<DeadEnemyEvent>(this, &ItemCreator::CreateDeadEnemyItem);
 
+	const auto effect_manager = EffectManager::GetInstance();
 	for (const auto& item : m_items)
 	{
+		effect_manager->ForciblyReturnPoolEffect(item->GetObjHandle(), ObjectPoolName.PLAY_SCENE_EFFECT_POOL);
 		item->RemoveToObjManager();
 	}
 	m_items.clear();

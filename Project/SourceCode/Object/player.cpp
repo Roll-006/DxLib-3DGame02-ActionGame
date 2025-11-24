@@ -61,21 +61,24 @@ Player::Player() :
 	{
 		// •Šíİ’è
 		const auto assault_rifle	= std::make_shared<AssaultRifle>();
-		//const auto rocket_launcher	= std::make_shared<RocketLauncher>();
+		const auto rocket_launcher	= std::make_shared<RocketLauncher>();
 		const auto knife			= std::make_shared<Knife>();
 		assault_rifle  ->AddToObjManager();
-		//rocket_launcher->AddToObjManager();
+		rocket_launcher->AddToObjManager();
 		m_weapon_shortcut_selecter->AttachShortcutWeapon(WeaponShortcutPosKind::kInsideLeft, assault_rifle);
-		//m_weapon_shortcut_selecter->AttachShortcutWeapon(WeaponShortcutPosKind::kOutsideDown, rocket_launcher);
+		m_weapon_shortcut_selecter->AttachShortcutWeapon(WeaponShortcutPosKind::kOutsideDown, rocket_launcher);
 		//AddItem(assault_rifle);
 		//AddItem(rocket_launcher);
 		//AddItem(knife);
 		EquipWeapon(assault_rifle,		WeaponSlotKind::kMain);
-		//EquipWeapon(rocket_launcher,	WeaponSlotKind::kMain);
+		EquipWeapon(rocket_launcher,	WeaponSlotKind::kMain);
 		EquipWeapon(knife,				WeaponSlotKind::kSub);
 		AttachWeapon(assault_rifle);
-		//AttachWeapon(rocket_launcher);
+		AttachWeapon(rocket_launcher);
 		AttachWeapon(knife);
+
+		//std::shared_ptr<IAmmoBox> rocket_bomb_box = std::make_shared<RocketBombBox>(10);
+		//m_ammo_holder->AddAmmo(rocket_bomb_box);
 
 		std::shared_ptr<IAmmoBox> assault_rifle_ammo_box = std::make_shared<AssaultRifleAmmoBox>(80);
 		m_ammo_holder->AddAmmo(assault_rifle_ammo_box);
@@ -733,22 +736,11 @@ void Player::CalcInputSlopeFromCommand()
 	auto	   continue_input_slope		= v3d::GetZeroV();
 	
 	// Œ»İ“ü—Í‚³‚ê‚Ä‚¢‚évelocity‚ğæ“¾
-	if (command->IsExecute(CommandKind::kMoveUpPlayer,    TimeKind::kCurrent))
-	{
-		current_input_slope += forward;
-	}
-	if (command->IsExecute(CommandKind::kMoveDownPlayer,  TimeKind::kCurrent))
-	{
-		current_input_slope -= forward;
-	}
-	if (command->IsExecute(CommandKind::kMoveLeftPlayer,  TimeKind::kCurrent))
-	{
-		current_input_slope -= right;
-	}
-	if (command->IsExecute(CommandKind::kMoveRightPlayer, TimeKind::kCurrent))
-	{
-		current_input_slope += right;
-	}
+	if (command->IsExecute(CommandKind::kMoveUpPlayer,		TimeKind::kCurrent)) { current_input_slope += forward; }
+	if (command->IsExecute(CommandKind::kMoveDownPlayer,	TimeKind::kCurrent)) { current_input_slope -= forward; }
+	if (command->IsExecute(CommandKind::kMoveLeftPlayer,	TimeKind::kCurrent)) { current_input_slope -= right; }
+	if (command->IsExecute(CommandKind::kMoveRightPlayer,	TimeKind::kCurrent)) { current_input_slope += right; }
+
 	m_input_slope = v3d::GetNormalizedV(current_input_slope) * InputChecker::kStickMaxSlope;
 
 	// Œp‘±‚µ‚Ä“ü—Í‚³‚ê‚Ä‚¢‚½velocity‚ªAŒ»İ‚Ìvelocity‚Æ‹t‚ğŒü‚¢‚Ä‚¢‚½ê‡Œ»İ‚Ìvelocity‚ğk‚ß‚é

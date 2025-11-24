@@ -111,6 +111,8 @@ void TitleScene::Update()
 	CreateRotationXYZMatrix(&rot_m, 0.0f, -90.0f * math::kDegToRad, deg * math::kDegToRad);
 	m_smoke_transform->SetPos(CoordinateKind::kWorld, VGet(20, 45, 0));
 	m_smoke_transform->SetRot(CoordinateKind::kWorld, MGetRotElem(rot_m));
+
+	const auto camera = ObjManager::GetInstance()->GetObj<ObjBase>(ObjName.MAIN_CAMERA);
 }
 
 void TitleScene::LateUpdate()

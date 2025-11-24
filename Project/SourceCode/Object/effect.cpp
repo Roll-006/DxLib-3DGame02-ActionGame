@@ -19,7 +19,12 @@ Effect::Effect(const EffectData& data) :
 
 Effect::~Effect()
 {
-	// MEMO : 画像のDelete処理は行わず、ハンドル保管クラスから再利用する
+	if (m_origin_effect_handle != -1)
+	{
+		HandleKeeper::GetInstance()->DeleteHandle(HandleKind::kEffect, m_origin_effect_handle);
+		DeleteEffekseerEffect(m_origin_effect_handle);
+		m_origin_effect_handle = -1;
+	}
 }
 
 void Effect::Init()

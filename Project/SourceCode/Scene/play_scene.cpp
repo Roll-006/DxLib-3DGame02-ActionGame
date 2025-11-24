@@ -56,6 +56,8 @@ PlayScene::PlayScene() :
 
 PlayScene::~PlayScene()
 {
+	m_item_creator = nullptr;
+
 	m_player->Init();
 	m_enemy_manager->Init();
 
@@ -64,6 +66,7 @@ PlayScene::~PlayScene()
 	m_houses->RemoveToObjManager();
 
 	m_enemy_manager->DetachTarget();
+	m_enemy_manager = nullptr;
 
 	const auto pool_holder = ObjectPoolHolder::GetInstance();
 	pool_holder->RemoveObjectPool(m_rifle_cartridge_object_pool	 ->GetName());
@@ -80,6 +83,8 @@ PlayScene::~PlayScene()
 	TabDrawer::GetInstance()->RemoveTab			(m_game_over_tab	->GetTabHandle());
 	TabDrawer::GetInstance()->RemoveTab			(m_pause_tab		->GetTabHandle());
 	UIDrawer ::GetInstance()->RemoveUICreator	(m_player_ui_creator->GetName());
+
+	const auto obj = ObjManager::GetInstance()->GetObj<Zombie>(ObjName.ZOMBIE).use_count();
 }
 
 void PlayScene::Init()

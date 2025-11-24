@@ -30,7 +30,13 @@ public:
 	template<obj_concepts::ObjT ObjT>
 	[[nodiscard]] std::shared_ptr<ObjT> GetObj(const int obj_handle)
 	{
-		return m_objects.count(obj_handle) ? std::dynamic_pointer_cast<ObjT>(m_objects.at(obj_handle)) : nullptr;
+		if (!m_objects.count(obj_handle)) { return nullptr; }
+
+		auto s_ptr = m_objects.at(obj_handle).lock();
+		if (!s_ptr) { return nullptr; }
+
+		const auto obj = std::dynamic_pointer_cast<ObjT>(s_ptr);
+		return obj ? obj : nullptr;
 	}
 
 	/// @brief オブジェクトを取得
@@ -40,9 +46,13 @@ public:
 	{
 		for (const auto& obj : m_objects)
 		{
-			if (obj.second->GetName() == obj_name)
+			auto s_ptr = obj.second.lock();
+			if (!s_ptr) continue;
+
+			if (s_ptr->GetName() == obj_name)
 			{
-				return std::dynamic_pointer_cast<ObjT>(obj.second);
+				const auto obj = std::dynamic_pointer_cast<ObjT>(s_ptr);
+				return obj ? obj : nullptr;
 			}
 		}
 
@@ -57,7 +67,7 @@ private:
 	~ObjManager() override;
 
 private:
-	std::unordered_map<int, std::shared_ptr<ObjBase>> m_objects;
+	std::unordered_map<int, std::weak_ptr<ObjBase>> m_objects;
 
 	friend SingletonBase<ObjManager>;
 };

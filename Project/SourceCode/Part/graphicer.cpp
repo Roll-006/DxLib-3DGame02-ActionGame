@@ -32,7 +32,12 @@ Graphicer::Graphicer(const int graphic_handle) :
 
 Graphicer::~Graphicer()
 {
-	// MEMO : 画像のDelete処理は行わず、ハンドル保管クラスから再利用する
+	if (m_graphic_handle != -1)
+	{
+		HandleKeeper::GetInstance()->DeleteHandle(HandleKind::kGraphic, m_graphic_handle);
+		DeleteGraph(m_graphic_handle);
+		m_graphic_handle = -1;
+	}
 }
 
 void Graphicer::Draw(const bool is_draw_graphic_frame) const

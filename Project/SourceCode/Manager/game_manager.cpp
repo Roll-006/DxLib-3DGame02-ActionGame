@@ -41,7 +41,6 @@ GameManager::~GameManager()
 	EventSystem::GetInstance()->Unsubscribe<ExitGameEvent>(this, &GameManager::ExitGame);
 
 	HandleCreator			::Delete();
-	HandleKeeper			::Delete();
 	CommandHandler			::Delete();
 	InputChecker			::Delete();
 	Debugger				::Delete();
@@ -61,6 +60,7 @@ GameManager::~GameManager()
 	ObjectPoolHolder		::Delete();
 	ObjManager				::Delete();
 	EventSystem				::Delete();
+	HandleKeeper			::Delete();
 }
 
 void GameManager::Run()

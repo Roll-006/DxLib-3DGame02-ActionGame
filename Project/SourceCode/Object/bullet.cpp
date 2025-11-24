@@ -15,7 +15,7 @@ Bullet::Bullet() :
 {
 	mass_kind = MassKind::kLight;
 
-	AddCollider(std::make_shared<Collider>(ColliderKind::kRay,				std::make_shared<Segment>(), this));
+	AddCollider(std::make_shared<Collider>(ColliderKind::kRay,					std::make_shared<Segment>(), this));
 	AddCollider(std::make_shared<Collider>(ColliderKind::kCollisionAreaTrigger, std::make_shared<Sphere>(v3d::GetZeroV(), kCollisionAreaRadius), this));
 }
 

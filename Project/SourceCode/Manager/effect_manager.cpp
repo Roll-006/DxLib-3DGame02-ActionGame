@@ -77,6 +77,9 @@ void EffectManager::ForciblyReturnPoolEffect(std::shared_ptr<Effect>& effect)
 
 void EffectManager::ForciblyReturnPoolEffect(const int return_trigger_handle, const std::string& object_pool_name)
 {
+	const auto object_pool = ObjectPoolHolder::GetInstance()->GetObjectPool(object_pool_name);
+	if (!object_pool) { return; }
+
 	for (auto& [obj_name, objects] : m_effects)
 	{
 		auto& vec = objects;
@@ -86,7 +89,7 @@ void EffectManager::ForciblyReturnPoolEffect(const int return_trigger_handle, co
 			if (effect->GetReturnPoolTriggerHandle() == return_trigger_handle)
 			{
 				StopEffekseer3DEffect(effect->GetPlayingEffectHandle());
-				ObjectPoolHolder::GetInstance()->GetObjectPool(object_pool_name)->ReturnObj(*itr);
+				object_pool->ReturnObj(*itr);
 				itr = vec.erase(itr);
 			}
 			else

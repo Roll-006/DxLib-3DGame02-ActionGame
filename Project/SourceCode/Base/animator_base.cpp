@@ -25,6 +25,7 @@ AnimatorBase::~AnimatorBase()
 	{
 		if (data.second.anim_handle != -1)
 		{
+			HandleKeeper::GetInstance()->DeleteHandle(HandleKind::kAnim, data.second.anim_handle);
 			MV1DeleteModel(data.second.anim_handle);
 			data.second.anim_handle = -1;
 		}
