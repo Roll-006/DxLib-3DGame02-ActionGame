@@ -455,6 +455,7 @@
     <ClInclude Include="SourceCode\IncludeList\shape.hpp" />
     <ClInclude Include="SourceCode\IncludeList\vector.hpp" />
     <ClInclude Include="SourceCode\Input\input_checker.hpp" />
+    <ClInclude Include="SourceCode\Interface\i_item_collectable.hpp" />
     <ClInclude Include="SourceCode\Interface\i_playable_character.hpp" />
     <ClInclude Include="SourceCode\Interface\i_light.hpp" />
     <ClInclude Include="SourceCode\Interface\i_ammo_box.hpp" />

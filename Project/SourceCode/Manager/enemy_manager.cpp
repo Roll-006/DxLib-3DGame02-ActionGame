@@ -20,14 +20,14 @@ EnemyManager::EnemyManager() :
 		// ƒ]ƒ“ƒr
 		const auto init_zombie_size = data.at("init_enemies").at("zombie").size();
 		m_enemy_size += static_cast<int>(init_zombie_size);
-		for (size_t i = 0; i < 1; ++i)
+		for (size_t i = 0; i < init_zombie_size; ++i)
 		{
-			const auto enemy = std::static_pointer_cast<EnemyBase>(m_object_pool->GetObj(ObjName.ZOMBIE));
-			const auto pos = data.at("init_enemies").at("zombie").at(std::to_string(i)).at("position").get<VECTOR>();
-			const auto dir = data.at("init_enemies").at("zombie").at(std::to_string(i)).at("direction").get<VECTOR>();
-			const auto use_patrol = data.at("init_enemies").at("zombie").at(std::to_string(i)).at("use_patrol");
-			const auto route_id = data.at("init_enemies").at("zombie").at(std::to_string(i)).at("route_id");
-			const auto patrol_kind = data.at("init_enemies").at("zombie").at(std::to_string(i)).at("patrol_kind");
+			const auto enemy		= std::static_pointer_cast<EnemyBase>(m_object_pool->GetObj(ObjName.ZOMBIE));
+			const auto pos			= data.at("init_enemies").at("zombie").at(std::to_string(i)).at("position").get<VECTOR>();
+			const auto dir			= data.at("init_enemies").at("zombie").at(std::to_string(i)).at("direction").get<VECTOR>();
+			const auto use_patrol	= data.at("init_enemies").at("zombie").at(std::to_string(i)).at("use_patrol");
+			const auto route_id		= data.at("init_enemies").at("zombie").at(std::to_string(i)).at("route_id");
+			const auto patrol_kind	= data.at("init_enemies").at("zombie").at(std::to_string(i)).at("patrol_kind");
 
 			m_active_enemies.emplace_back(enemy);
 			enemy->OnRespawn(pos, dir);
@@ -51,7 +51,10 @@ EnemyManager::~EnemyManager()
 	EventSystem::GetInstance()->Unsubscribe<OnTargetDetectedEvent>	(this, &EnemyManager::NotifyDetectedTarget);
 	EventSystem::GetInstance()->Unsubscribe<DeadEnemyEvent>			(this, &EnemyManager::CountDeadEnemy);
 
-	const auto obj = ObjManager::GetInstance()->GetObj<Zombie>(ObjName.ZOMBIE).use_count();
+	for (const auto enemy : m_active_enemies)
+	{
+		m_object_pool->ReturnObj(enemy);
+	}
 
 	const auto pool_holder = ObjectPoolHolder::GetInstance();
 	pool_holder->RemoveObjectPool(m_object_pool->GetName());

@@ -1686,6 +1686,9 @@
     <ClInclude Include="SourceCode\State\ZombieState\patrol.hpp">
       <Filter>SourceCode\State\ZombieState</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\Interface\i_item_collectable.hpp">
+      <Filter>SourceCode\Interface</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="SourceCode">

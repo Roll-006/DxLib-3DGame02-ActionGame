@@ -33,7 +33,7 @@ AssaultRifle::AssaultRifle() :
 
 AssaultRifle::~AssaultRifle()
 {
-
+	std::dynamic_pointer_cast<ObjBase>(m_magazine)->RemoveToObjManager();
 }
 
 void AssaultRifle::Init()

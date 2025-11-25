@@ -83,8 +83,6 @@ PlayScene::~PlayScene()
 	TabDrawer::GetInstance()->RemoveTab			(m_game_over_tab	->GetTabHandle());
 	TabDrawer::GetInstance()->RemoveTab			(m_pause_tab		->GetTabHandle());
 	UIDrawer ::GetInstance()->RemoveUICreator	(m_player_ui_creator->GetName());
-
-	const auto obj = ObjManager::GetInstance()->GetObj<Zombie>(ObjName.ZOMBIE).use_count();
 }
 
 void PlayScene::Init()

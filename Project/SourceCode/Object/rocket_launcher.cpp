@@ -31,7 +31,7 @@ RocketLauncher::RocketLauncher() :
 
 RocketLauncher::~RocketLauncher()
 {
-
+	std::dynamic_pointer_cast<ObjBase>(m_magazine)->RemoveToObjManager();
 }
 
 void RocketLauncher::Init()

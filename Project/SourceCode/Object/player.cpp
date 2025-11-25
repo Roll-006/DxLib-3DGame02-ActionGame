@@ -67,9 +67,9 @@ Player::Player() :
 		rocket_launcher->AddToObjManager();
 		m_weapon_shortcut_selecter->AttachShortcutWeapon(WeaponShortcutPosKind::kInsideLeft, assault_rifle);
 		m_weapon_shortcut_selecter->AttachShortcutWeapon(WeaponShortcutPosKind::kOutsideDown, rocket_launcher);
-		//AddItem(assault_rifle);
-		//AddItem(rocket_launcher);
-		//AddItem(knife);
+		AddItem(assault_rifle);
+		AddItem(rocket_launcher);
+		AddItem(knife);
 		EquipWeapon(assault_rifle,		WeaponSlotKind::kMain);
 		EquipWeapon(rocket_launcher,	WeaponSlotKind::kMain);
 		EquipWeapon(knife,				WeaponSlotKind::kSub);
@@ -456,6 +456,25 @@ void Player::SetupStealthKill()
 	// 掴んだことを演出カメラに通知
 	const StealthKillEvent event{ m_modeler };
 	EventSystem::GetInstance()->Publish(event);
+}
+#pragma endregion
+
+
+#pragma region アイテム
+void Player::AddItem(const std::shared_ptr<IItem>& item)
+{
+	const auto item_kind = item->GetItemKind();
+
+	if (std::find(m_items[item_kind].begin(), m_items[item_kind].end(), item) == m_items[item_kind].end())
+	{
+		m_items[item_kind].emplace_back(item);
+	}
+}
+void Player::RemoveItem(const std::shared_ptr<IItem>& item)
+{
+	const auto item_kind = item->GetItemKind();
+
+	m_items[item_kind].erase(std::remove(m_items[item_kind].begin(), m_items[item_kind].end(), item), m_items[item_kind].end());
 }
 #pragma endregion
 

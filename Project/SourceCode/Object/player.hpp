@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "../Base/character_base.hpp"
 #include "../Interface/i_playable_character.hpp"
+#include "../Interface/i_item_collectable.hpp"
 #include "../Interface/i_weapon_equippable.hpp"
 #include "../Interface/i_fireable.hpp"
 #include "../Interface/i_grabbable.hpp"
@@ -20,7 +21,7 @@
 
 class PlayerStateController;
 
-class Player final : public CharacterBase, public IPlayableCharacter, public IWeaponEquippable, public IFireable, public IGrabbable, public IMeleeAttackable, public IStealthKiller
+class Player final : public CharacterBase, public IPlayableCharacter, public IItemCollectable, public IWeaponEquippable, public IFireable, public IGrabbable, public IMeleeAttackable, public IStealthKiller
 {
 public:
 	Player();
@@ -42,6 +43,12 @@ public:
 	void OnDisallowControl() override { m_can_control = false; }
 
 	[[nodiscard]] bool CanControl() const override { return m_can_control; }
+	#pragma endregion
+
+
+	#pragma region アイテム
+	void AddItem	(const std::shared_ptr<IItem>& item) override;
+	void RemoveItem	(const std::shared_ptr<IItem>& item) override;
 	#pragma endregion
 
 
@@ -86,8 +93,8 @@ public:
 
 
 	#pragma region メレー
-	void UpdateMelee()	 override;
-	void StopSearchMeleeTarget() override { m_can_search_melee_target = false; }
+	void UpdateMelee()				override;
+	void StopSearchMeleeTarget()	override { m_can_search_melee_target = false; }
 
 	void SetupFrontMelee()			override;
 	void SetupBackMelee	()			override;
@@ -121,29 +128,6 @@ public:
 	#pragma endregion
 
 	#pragma endregion
-
-
-	//#pragma region アイテム
-	///// @brief アイテムの所持登録 
-	//template<obj_concepts::ItemT ItemT>
-	//void AddItem(const std::shared_ptr<ItemT>& item)
-	//{
-	//	const auto item_kind = item->GetItemKind();
-
-	//	if (std::find(m_items[item_kind].begin(), m_items[item_kind].end(), item) == m_items[item_kind].end())
-	//	{
-	//		m_items[item_kind].emplace_back(item);
-	//	}
-	//}
-	///// @brief アイテムの所持登録を解除
-	//template<obj_concepts::ItemT ItemT>
-	//void RemoveItem(const std::shared_ptr<ItemT>& item)
-	//{
-	//	const auto item_kind = item->GetItemKind();
-
-	//	m_items[item_kind].erase(std::remove(m_items[item_kind].begin(), m_items[item_kind].end(), item), m_items[item_kind].end());
-	//}
-	//#pragma endregion
 
 
 	#pragma region State
