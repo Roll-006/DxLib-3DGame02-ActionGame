@@ -52,6 +52,24 @@ void CollisionManager::LateUpdate()
 				target.at(dist.first).collider->GetOwnerObj()->OnCollide(ColliderPairOneToOneData(target.at(dist.first).collider, pair.owner_collider, target.at(dist.first).intersection));
 				break;
 			}
+
+			// 最も近い三角形のみ衝突した三角形とする
+			const auto hit_triangle = pair.owner_collider->GetHitTriangles();
+			if (hit_triangle.size() > 0)
+			{
+				const auto ray = std::static_pointer_cast<Segment>(pair.owner_collider->GetShape());
+				std::vector<std::pair<int, float>> distance;
+				for (size_t i = 0; i < hit_triangle.size(); ++i)
+				{
+					distance.emplace_back(i, math::GetDistancePointToTriangle(ray->GetBeginPos(), hit_triangle.at(i)));
+				}
+				algorithm::Sort(distance, SortKind::kAscending);
+				const auto result_hit_triangle = hit_triangle.at(distance.front().first);
+
+				// 置き換え
+				pair.owner_collider->RemoveHitTriangles();
+				pair.owner_collider->AddHitTriangle(result_hit_triangle);
+			}
 		}
 		// レイキャストトリガーでない場合はすべてのコライダーと衝突判定を行う
 		else

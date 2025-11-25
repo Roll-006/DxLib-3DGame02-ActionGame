@@ -64,11 +64,15 @@ void AssaultRifleAmmoBox::Update()
 void AssaultRifleAmmoBox::LateUpdate()
 {
 	if (!IsActive()) { return; }
+
+	m_modeler->ApplyMatrix();
 }
 
 void AssaultRifleAmmoBox::Draw() const
 {
 	if (!IsActive()) { return; }
+
+	m_modeler->Draw();
 }
 
 void AssaultRifleAmmoBox::AddToObjManager()

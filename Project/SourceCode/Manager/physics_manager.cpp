@@ -63,17 +63,14 @@ void PhysicsManager::ProjectPos()
 		const auto hit_triangle = project_ray->GetHitTriangles();
 		if (hit_triangle.size() <= 0) { continue; }
 
-		// 光線の始点からの距離でソート
-		const auto future_begin_pos = *project_pos;
-		std::vector<std::pair<int, float>> distance;
-		for (size_t i = 0; i < hit_triangle.size(); ++i)
-		{
-			distance.emplace_back(i, math::GetDistancePointToTriangle(future_begin_pos, hit_triangle.at(i)));
-		}
-		algorithm::Sort(distance, SortKind::kAscending);
-
 		// 固定位置を決定
-		obj->GetTransform()->SetPos(CoordinateKind::kWorld, *project_pos);
+		const auto transform	= obj->GetTransform();
+		const auto current_axes = transform->GetAxes(CoordinateKind::kWorld);
+		const auto cross_x		= math::GetNormalVector(hit_triangle.front().GetNormalVector(), axis::GetWorldYAxis());
+		const auto cross_z		= math::GetNormalVector(hit_triangle.front().GetNormalVector(), cross_x);
+		const auto new_axes		= math::GetRotatedAxes(current_axes, cross_z);
+		transform->SetPos(CoordinateKind::kWorld, *project_pos);
+		transform->SetRot(CoordinateKind::kWorld, new_axes);
 	}
 }
 

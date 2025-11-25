@@ -64,11 +64,15 @@ void RocketBombBox::Update()
 void RocketBombBox::LateUpdate()
 {
 	if (!IsActive()) { return; }
+
+	m_modeler->ApplyMatrix();
 }
 
 void RocketBombBox::Draw() const
 {
 	if (!IsActive()) { return; }
+
+	m_modeler->Draw();
 }
 
 void RocketBombBox::AddToObjManager()

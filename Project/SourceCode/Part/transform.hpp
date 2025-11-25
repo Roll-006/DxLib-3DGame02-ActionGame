@@ -24,16 +24,17 @@ public:
 
 
 	#pragma region Setter
-	void SetMatrix	(const CoordinateKind coord_kind, const MATRIX& matrix);
-	void SetPos		(const CoordinateKind coord_kind, const VECTOR& pos);
-	void SetRot		(const CoordinateKind coord_kind, const MATRIX& rot_matrix);
+	void SetMatrix	(const CoordinateKind coord_kind, const MATRIX&		matrix);
+	void SetPos		(const CoordinateKind coord_kind, const VECTOR&		pos);
+	void SetRot		(const CoordinateKind coord_kind, const MATRIX&		rot_matrix);
 	void SetRot		(const CoordinateKind coord_kind, const Quaternion& quaternion);
+	void SetRot		(const CoordinateKind coord_kind, const Axes&		axes);
 
 	/// @brief forward‚©‚ç‰ñ“]‚ğİ’è
 	/// @biref WARNING : forward‚ªƒ[ƒ‹ƒhY²‚É•½s‚Å‚ ‚Á‚½ê‡‚Í‰ñ“]‚ª¸‚í‚ê‚é
-	void SetRot		(const CoordinateKind coord_kind, const VECTOR& forward);
-	void SetScale	(const CoordinateKind coord_kind, const VECTOR& scale);
-	void SetScale	(const CoordinateKind coord_kind, const float	scale);
+	void SetRot		(const CoordinateKind coord_kind, const VECTOR&		forward);
+	void SetScale	(const CoordinateKind coord_kind, const VECTOR&		scale);
+	void SetScale	(const CoordinateKind coord_kind, const float		scale);
 	#pragma endregion
 
 

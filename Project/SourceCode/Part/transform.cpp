@@ -179,6 +179,11 @@ void Transform::SetRot(const CoordinateKind coord_kind, const Quaternion& quater
 	SetRot(coord_kind, math::ConvertQuaternionToRotMatrix(quaternion));
 }
 
+void Transform::SetRot(const CoordinateKind coord_kind, const Axes& axes)
+{
+	SetRot(coord_kind, math::ConvertAxesToRotMatrix(axes));
+}
+
 void Transform::SetRot(const CoordinateKind coord_kind, const VECTOR& forward)
 {
 	SetRot(coord_kind, math::ConvertForwardToRotMatrix(forward));
