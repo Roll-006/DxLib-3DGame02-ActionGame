@@ -6,6 +6,7 @@ WeaponBase::WeaponBase(const std::string& name, const WeaponKind weapon_kind, co
 	m_owner_modeler			(nullptr),
 	m_owner_name			(""),
 	m_power					(0.0f),
+	m_item_effect_transform	(nullptr),
 	m_hold_offset_pos		(v3d::GetZeroV()),
 	m_hold_offset_angle		(v3d::GetZeroV()),
 	m_hold_offset_scale		(v3d::GetZeroV()),

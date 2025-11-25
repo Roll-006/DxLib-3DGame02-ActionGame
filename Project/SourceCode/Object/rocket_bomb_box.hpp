@@ -40,11 +40,13 @@ public:
 	[[nodiscard]] int		GetMaxHaveNum()		const override { return rifle_cartridge_box_data.max_have_num; }
 	[[nodiscard]] int		GetCurrentHaveNum()	const override { return m_have_num; }
 	[[nodiscard]] bool		IsMax()				const override { return rifle_cartridge_box_data.max_have_num >= m_have_num; }
+	[[nodiscard]] std::shared_ptr<Transform> GetItemTransform() const override { return m_item_effect_transform; }
 
 private:
 	RifleCartridgeBoxData		rifle_cartridge_box_data;
 
 	int							m_have_num; // Š—L”
+	std::shared_ptr<Transform>	m_item_effect_transform;
 	std::shared_ptr<Modeler>	m_modeler;
 
 	friend void from_json(const nlohmann::json& data, RocketBombBox& rocket_bomb_box);

@@ -51,26 +51,7 @@ void PhysicsManager::ProjectPos()
 {
 	for (const auto& obj : m_physical_objects)
 	{
-		if (!obj->IsActive()) { continue; }
-		if (obj->IsLanding()) { continue; }
-
-		const auto project_pos = obj->GetProjectPos();
-		if (!project_pos) { continue; }
-
-		const auto project_ray = obj->GetCollider(ColliderKind::kProjectRay);
-		if (!project_ray) { continue; }
-
-		const auto hit_triangle = project_ray->GetHitTriangles();
-		if (hit_triangle.size() <= 0) { continue; }
-
-		// ŒÅ’èˆÊ’u‚ðŒˆ’è
-		const auto transform	= obj->GetTransform();
-		const auto current_axes = transform->GetAxes(CoordinateKind::kWorld);
-		const auto cross_x		= math::GetNormalVector(hit_triangle.front().GetNormalVector(), axis::GetWorldYAxis());
-		const auto cross_z		= math::GetNormalVector(hit_triangle.front().GetNormalVector(), cross_x);
-		const auto new_axes		= math::GetRotatedAxes(current_axes, cross_z);
-		transform->SetPos(CoordinateKind::kWorld, *project_pos);
-		transform->SetRot(CoordinateKind::kWorld, new_axes);
+		obj->OnProjectPos();
 	}
 }
 

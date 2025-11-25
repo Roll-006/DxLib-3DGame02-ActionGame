@@ -4,6 +4,7 @@ AssaultRifleAmmoBox::AssaultRifleAmmoBox() :
 	PhysicalObjBase			(ObjName.AMMO_BOX_556x45, ObjTag.AMMO_BOX),
 	rifle_cartridge_box_data(),
 	m_have_num				(0),
+	m_item_effect_transform	(std::make_shared<Transform>()),
 	m_modeler				(nullptr)
 {
 	JSONLoader json_loader;
@@ -21,6 +22,7 @@ AssaultRifleAmmoBox::AssaultRifleAmmoBox(const int ammo_num) :
 	PhysicalObjBase			(ObjName.AMMO_BOX_556x45, ObjTag.AMMO_BOX),
 	rifle_cartridge_box_data(),
 	m_have_num				(ammo_num),
+	m_item_effect_transform	(std::make_shared<Transform>()),
 	m_modeler				(nullptr)
 {
 	JSONLoader json_loader;
@@ -120,7 +122,25 @@ void AssaultRifleAmmoBox::OnCollide(const ColliderPairOneToOneData& hit_collider
 
 void AssaultRifleAmmoBox::OnProjectPos()
 {
+	if (!IsActive()) { return; }
+	if (IsLanding()) { return; }
 
+	const auto project_pos = GetProjectPos();
+	if (!project_pos) { return; }
+
+	const auto hit_triangle = GetCollider(ColliderKind::kProjectRay)->GetHitTriangles();
+	if (hit_triangle.size() <= 0) { return; }
+
+	// Šp“xEˆÊ’u‚ðŒÅ’è
+	const auto transform	= GetTransform();
+	const auto current_axes = transform->GetAxes(CoordinateKind::kWorld);
+	const auto cross_x		= math::GetNormalVector(hit_triangle.front().GetNormalVector(), axis::GetWorldYAxis());
+	const auto cross_z		= math::GetNormalVector(hit_triangle.front().GetNormalVector(), cross_x);
+	const auto new_axes		= math::GetRotatedAxes(current_axes, cross_z);
+
+	m_item_effect_transform	->SetPos(CoordinateKind::kWorld, *project_pos);
+	transform				->SetPos(CoordinateKind::kWorld, *project_pos);
+	transform				->SetRot(CoordinateKind::kWorld, new_axes);
 }
 
 void AssaultRifleAmmoBox::Synthesize(const std::shared_ptr<IAmmoBox> ammo_box)
