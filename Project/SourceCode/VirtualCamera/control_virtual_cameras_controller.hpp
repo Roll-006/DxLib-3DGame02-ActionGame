@@ -40,6 +40,8 @@ private:
 	#pragma endregion
 
 
+	void InitAngle();
+
 	void SetupForRotCamera();
 	void SetupForAimCamera();
 

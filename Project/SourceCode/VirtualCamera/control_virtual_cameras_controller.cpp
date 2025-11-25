@@ -30,6 +30,8 @@ ControlVirtualCamerasController::ControlVirtualCamerasController(Player& player)
 	cinemachine_brain->SetBlendTime(1.0f);
 	cinemachine_brain->AddVirtualCamera(m_rot_control_camera, true);
 	cinemachine_brain->AddVirtualCamera(m_aim_control_camera, false);
+
+	InitAngle();
 }
 
 ControlVirtualCamerasController::~ControlVirtualCamerasController()
@@ -92,14 +94,7 @@ void ControlVirtualCamerasController::OnRecoil(const GunBase& gun)
 #pragma region Event
 void ControlVirtualCamerasController::EndGrabCutscene(const EndCutsceneEvent& event)
 {
-	// カメラをリセット
-	// TODO : 視点リセット関数を作成
-	const auto transform	= m_player.GetTransform();
-	const auto forward		= transform->GetForward(CoordinateKind::kWorld);
-	m_aim_transform->SetRot(CoordinateKind::kWorld, forward);
-
-	m_input_angle [TimeKind::kCurrent]	= m_aim_transform->GetZXYEulerAngles(CoordinateKind::kWorld);
-	m_recoil_angle[TimeKind::kCurrent]	= v3d::GetZeroV();
+	InitAngle();
 }
 #pragma endregion
 
@@ -129,6 +124,16 @@ std::vector<std::shared_ptr<VirtualCamera>> ControlVirtualCamerasController::Get
 	return std::vector<std::shared_ptr<VirtualCamera>>{m_rot_control_camera, m_aim_control_camera};
 }
 		
+void ControlVirtualCamerasController::InitAngle()
+{
+	const auto transform	= m_player.GetTransform();
+	const auto forward		= transform->GetForward(CoordinateKind::kWorld);
+	m_aim_transform->SetRot(CoordinateKind::kWorld, forward);
+
+	m_input_angle [TimeKind::kCurrent] = m_aim_transform->GetZXYEulerAngles(CoordinateKind::kWorld);
+	m_recoil_angle[TimeKind::kCurrent] = v3d::GetZeroV();
+}
+
 void ControlVirtualCamerasController::SetupForRotCamera()
 {
 	m_rot_control_camera->SetPriority(1);
