@@ -28,6 +28,7 @@ public:
 	void RemoveToObjManager()	override;
 
 	void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) override;
+	void OnProjectPos() override;
 
 	void Synthesize(const std::shared_ptr<IAmmoBox> ammo_box) override;
 

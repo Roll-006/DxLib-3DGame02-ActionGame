@@ -75,6 +75,11 @@ void ShellCasing::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	}
 }
 
+void ShellCasing::OnProjectPos()
+{
+
+}
+
 void ShellCasing::AddToObjManager()
 {
 	const auto physical_obj = std::static_pointer_cast<PhysicalObjBase>(shared_from_this());

@@ -107,6 +107,11 @@ void RocketBombExplosionEffect::OnCollide(const ColliderPairOneToOneData& hit_co
 	}
 }
 
+void RocketBombExplosionEffect::OnProjectPos()
+{
+
+}
+
 void RocketBombExplosionEffect::AddToObjManager()
 {
 	const auto physical_obj = std::dynamic_pointer_cast<PhysicalObjBase>(shared_from_this());

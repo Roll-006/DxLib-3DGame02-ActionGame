@@ -116,6 +116,11 @@ void RocketBombBox::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	}
 }
 
+void RocketBombBox::OnProjectPos()
+{
+
+}
+
 void RocketBombBox::Synthesize(const std::shared_ptr<IAmmoBox> ammo_box)
 {
 	if (IsMax()) { return; }

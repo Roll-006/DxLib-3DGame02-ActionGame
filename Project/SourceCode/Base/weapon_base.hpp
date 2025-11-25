@@ -21,6 +21,8 @@ public:
 	void AddToObjManager()		override;
 	void RemoveToObjManager()	override;
 
+	void OnProjectPos() override;
+
 	/// @brief 装備する持ち主をアタッチする
 	void AttachOwner(const std::shared_ptr<Modeler>& owner_modeler, const std::string& owner_name);
 	/// @brief 装備していた持ち主をデタッチする

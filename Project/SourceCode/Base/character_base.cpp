@@ -39,6 +39,11 @@ void CharacterBase::RemoveToObjManager()
 	ObjManager		::GetInstance()->RemoveObj		  (obj_handle);
 }
 
+void CharacterBase::OnProjectPos()
+{
+
+}
+
 void CharacterBase::CalcCorrectMoveDir()
 {
 	const auto current_pos			= m_transform->GetPos(CoordinateKind::kWorld);

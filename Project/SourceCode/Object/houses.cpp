@@ -49,11 +49,18 @@ void Houses::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 }
 
+void Houses::OnProjectPos()
+{
+
+}
+
 void Houses::AddToObjManager()
 {
+	const auto physical_obj = std::dynamic_pointer_cast<PhysicalObjBase>(shared_from_this());
+
 	ObjManager		::GetInstance()->AddObj			(shared_from_this());
-	CollisionManager::GetInstance()->AddCollideObj	(std::dynamic_pointer_cast<PhysicalObjBase>(shared_from_this()));
-	PhysicsManager	::GetInstance()->AddPhysicalObj	(std::dynamic_pointer_cast<PhysicalObjBase>(shared_from_this()));
+	CollisionManager::GetInstance()->AddCollideObj	(physical_obj);
+	PhysicsManager	::GetInstance()->AddPhysicalObj	(physical_obj);
 }
 
 void Houses::RemoveToObjManager()

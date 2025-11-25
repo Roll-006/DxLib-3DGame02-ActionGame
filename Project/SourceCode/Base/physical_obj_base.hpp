@@ -17,6 +17,7 @@ public:
 	void DrawColliders() const;
 
 	virtual void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) abstract;
+	virtual void OnProjectPos() abstract;
 
 	/// @brief ノックバックを受けた
 	/// @param dir 飛ばされる方向

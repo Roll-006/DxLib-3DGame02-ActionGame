@@ -78,6 +78,11 @@ void Bullet::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	}
 }
 
+void Bullet::OnProjectPos()
+{
+
+}
+
 void Bullet::AddToObjManager()
 {
 	const auto physical_obj = std::dynamic_pointer_cast<PhysicalObjBase>(shared_from_this());

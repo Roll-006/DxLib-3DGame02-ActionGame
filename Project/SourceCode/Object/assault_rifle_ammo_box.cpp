@@ -118,6 +118,11 @@ void AssaultRifleAmmoBox::OnCollide(const ColliderPairOneToOneData& hit_collider
 	}
 }
 
+void AssaultRifleAmmoBox::OnProjectPos()
+{
+
+}
+
 void AssaultRifleAmmoBox::Synthesize(const std::shared_ptr<IAmmoBox> ammo_box)
 {
 	if (IsMax()) { return; }

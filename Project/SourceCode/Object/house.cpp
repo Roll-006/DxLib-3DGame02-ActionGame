@@ -77,6 +77,11 @@ void House::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 }
 
+void House::OnProjectPos()
+{
+
+}
+
 void House::AddToObjManager()
 {
 	ObjManager		::GetInstance()->AddObj			(shared_from_this());
