@@ -36,6 +36,8 @@ public:
 	/// @brief 衝突した三角形の登録を解除する
 	void RemoveHitTriangles();
 
+	void SaveProjectPos();
+
 	/// @brief 重力を与える(適用させる)
 	/// @brief 物理管理クラスから適用される
 	/// @param gravity_acceleration 重力加速度 (デルタタイム適用前)
@@ -59,13 +61,14 @@ public:
 
 	/// @brief 着地判定を解除する
 	void ReleaseLanding() { m_is_landing = false; }
-	void RemoveProjectPos() { m_project_pos = std::nullopt; }
+	void RemoveProjectPos() { m_current_project_pos = std::nullopt; }
 
 	void SetColliderModelHandle(const int model_handle) { m_model_handle = model_handle; }
 	void SetVelocity(const VECTOR& velocity) { m_velocity = velocity; }
 
 	[[nodiscard]] int					GetColliderModelHandle()	const { return m_model_handle; }
-	[[nodiscard]] std::optional<VECTOR> GetProjectPos()				const { return m_project_pos; }
+	[[nodiscard]] std::optional<VECTOR> GetCurrentProjectPos()		const { return m_current_project_pos; }
+	[[nodiscard]] std::optional<VECTOR> GetPrevProjectPos()			const { return m_prev_project_pos; }
 	[[nodiscard]] float					GetKnockBackSpeed()			const { return m_knockback_speed; }
 	[[nodiscard]] VECTOR				GetVelocity()				const { return m_velocity; }
 	[[nodiscard]] VECTOR				GetMoveVelocity()			const { return m_move_velocity; }
@@ -79,7 +82,8 @@ public:
 protected:
 	MassKind mass_kind;
 
-	std::optional<VECTOR> m_project_pos;
+	std::optional<VECTOR> m_current_project_pos;
+	std::optional<VECTOR> m_prev_project_pos;
 	VECTOR	 m_velocity;
 	VECTOR   m_move_velocity;
 	VECTOR	 m_fall_velocity;

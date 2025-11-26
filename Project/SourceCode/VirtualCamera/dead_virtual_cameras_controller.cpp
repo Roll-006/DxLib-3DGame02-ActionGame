@@ -88,7 +88,7 @@ void DeadVirtualCamerasController::CalcAimTransform()
 {
 	if (m_model_handle == -1) { return; }
 
-	auto	   spine2_m		= MV1GetFrameLocalWorldMatrix(m_model_handle, MV1SearchFrame(m_model_handle, BonePath.SPINE_2));
+	auto	   spine2_m		= MV1GetFrameLocalWorldMatrix(m_model_handle, MV1SearchFrame(m_model_handle, FramePath.SPINE_2));
 	const auto spine2_pos	= MGetTranslateElem(spine2_m);
 
 	// 基準となるトランスフォームを設定

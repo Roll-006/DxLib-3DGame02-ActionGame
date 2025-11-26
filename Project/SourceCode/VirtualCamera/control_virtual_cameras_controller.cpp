@@ -303,7 +303,7 @@ void ControlVirtualCamerasController::CalcAimPos()
 	const auto modeler = m_player.GetModeler();
 	modeler->ApplyMatrix();
 
-	const TCHAR* bone_name;
+	const TCHAR* frame_name;
 	const auto state				= m_player.GetStateController();
 	const auto weapon_state_kind	= static_cast<player_state::WeaponActionStateKind>(state->GetWeaponActionState(TimeKind::kCurrent)->GetStateKind());
 
@@ -312,20 +312,20 @@ void ControlVirtualCamerasController::CalcAimPos()
 		|| weapon_state_kind == player_state::WeaponActionStateKind::kShot
 		|| weapon_state_kind == player_state::WeaponActionStateKind::kShotRocketLauncher)
 	{
-		bone_name = BonePath.NECK;
+		frame_name = FramePath.NECK;
 	}
 	else
 	{
-		bone_name = BonePath.SPINE_2;
+		frame_name = FramePath.SPINE_2;
 	}
 
 	// 追跡するボーンから行列を取得
 	const auto	model_handle		= modeler->GetModelHandle();
-	const auto	bone_index			= MV1SearchFrame(model_handle, bone_name);
-	auto		bone_world_m		= MV1GetFrameLocalWorldMatrix(model_handle, bone_index);
-	auto		aim_pos				= MGetTranslateElem(bone_world_m);
+	const auto	frame_index			= MV1SearchFrame(model_handle, frame_name);
+	auto		frame_world_m		= MV1GetFrameLocalWorldMatrix(model_handle, frame_index);
+	auto		aim_pos				= MGetTranslateElem(frame_world_m);
 
-	if (!IsTrackCameraOriginBone())
+	if (!IsTrackCameraOriginFrame())
 	{
 		// ボーンと同じ高さの位置を追跡
 		const auto player_transform = m_player.GetTransform();
@@ -438,7 +438,7 @@ void ControlVirtualCamerasController::CalcResultAngle()
 //	}
 //}
 
-bool ControlVirtualCamerasController::IsTrackCameraOriginBone() const
+bool ControlVirtualCamerasController::IsTrackCameraOriginFrame() const
 {
 	const auto state = m_player.GetStateController();
 	const auto weapon_state_kind = static_cast<player_state::WeaponActionStateKind>(state->GetWeaponActionState(TimeKind::kCurrent)->GetStateKind());

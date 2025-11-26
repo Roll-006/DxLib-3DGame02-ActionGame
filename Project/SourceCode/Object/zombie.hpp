@@ -1,16 +1,19 @@
 #pragma once
 #include "../Base/enemy_base.hpp"
 #include "../Interface/i_poolable.hpp"
+#include "../Interface/i_humanoid.hpp"
 #include "../Interface/i_melee_hittable.hpp"
 #include "../Interface/i_grabber.hpp"
 #include "../Interface/i_stealth_killable.hpp"
 
 #include "../Animator/zombie_animator.hpp"
+#include "../InverseKinematics/humanoid_foot_ik_solver.hpp"
+
 #include "../Data/humanoid_enemy_collider_data.hpp"
 
 class ZombieStateController;
 
-class Zombie final : public EnemyBase, public IPoolable, public IMeleeHittable, public IGrabber, public IStealthKillable
+class Zombie final : public EnemyBase, public IPoolable, public IHumanoid, public IMeleeHittable, public IGrabber, public IStealthKillable
 {
 public:
 	Zombie(const std::string& id);
@@ -31,6 +34,11 @@ public:
 
 	void OnRespawn(const VECTOR& pos, const VECTOR& look_dir) override;
 	void Detected();
+
+
+	#pragma region Humanoid
+	[[nodiscard]] std::shared_ptr<HumanoidFrameGetter> GetHumanoidFrame() const override { return m_humanoid_frame; }
+	#pragma endregion
 	
 
 	#pragma region ’Í‚Ý
@@ -64,6 +72,9 @@ public:
 	void Move();
 	void TrackMove(const VECTOR& target_pos);
 
+	void OnFootIK();
+	void OnCrouchIK();
+
 	void UpdateGrabRun();
 
 	void CalcMoveSpeed();
@@ -94,6 +105,10 @@ private:
 	float						damage_over_time_start_time;
 	HumanoidEnemyColliderData	collider_data;
 
+	HumanoidLegRayData						m_leg_ray_data;
+	std::shared_ptr<HumanoidFootIKSolver>	m_humanoid_foot_ik;
+	std::shared_ptr<HumanoidFrameGetter>	m_humanoid_frame;
+
 	std::shared_ptr<ZombieStateController>	m_state;
 	bool									m_is_return_pool;
 	bool									m_can_grab_target;
@@ -122,6 +137,7 @@ inline void from_json(const nlohmann::json& data, Zombie& zombie)
 	data.at("look_dir_offset_speed")		.get_to(zombie.m_look_dir_offset_speed);
 
 	data.at("collider_data")				.get_to(zombie.collider_data);
+	data.at("leg_ray_data")					.get_to(zombie.m_leg_ray_data);
 
 	data.at("damage_over_time_start_time")	.get_to(zombie.damage_over_time_start_time);
 }
@@ -144,6 +160,7 @@ inline void to_json(nlohmann::json& data, const Zombie& zombie)
 		{ "look_dir_offset_speed",			zombie.m_look_dir_offset_speed },
 
 		{ "collider_data",					zombie.collider_data },
+		{ "leg_ray_data",					zombie.m_leg_ray_data },
 
 		{ "damage_over_time_start_time",	zombie.damage_over_time_start_time }
 	};

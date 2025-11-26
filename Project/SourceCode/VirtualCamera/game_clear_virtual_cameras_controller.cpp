@@ -99,7 +99,7 @@ void GameClearVirtualCamerasController::CalcAimTranasormForVictoryPoseCamera()
 {
 	if (!m_victory_pose_camera->IsActive()) { return; }
 
-	auto	   frame_m		= MV1GetFrameLocalWorldMatrix(m_player_model_handle, MV1SearchFrame(m_player_model_handle, BonePath.HIPS));
+	auto	   frame_m		= MV1GetFrameLocalWorldMatrix(m_player_model_handle, MV1SearchFrame(m_player_model_handle, FramePath.HIPS));
 	const auto frame_pos	= MGetTranslateElem(frame_m);
 	const auto rot_m		= m_player_transform->GetRotMatrix	(CoordinateKind::kWorld) * MGetRotY(DX_PI_F);
 	const auto result_pos	= frame_pos + VGet(0.0f, -5.0f, 0.0f);

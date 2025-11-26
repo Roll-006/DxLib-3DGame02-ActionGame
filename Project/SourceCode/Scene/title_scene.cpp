@@ -96,11 +96,11 @@ void TitleScene::Update()
 
 	// 基準となるトランスフォームを設定
 	const auto model_handle = m_title_character->GetModeler()->GetModelHandle();
-	auto	   spine2_m		= MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, BonePath.SPINE_2));
+	auto	   spine2_m		= MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, FramePath.SPINE_2));
 	const auto spine2_pos	= MGetTranslateElem(spine2_m);
-	const auto spine2_axes	= math::ConvertRotMatrixToAxes(spine2_m);
-	m_aim_transform->SetPos(CoordinateKind::kWorld, spine2_pos + spine2_axes.y_axis * 13.0f);
-	m_aim_transform->SetRot(CoordinateKind::kWorld, spine2_axes.z_axis);
+	const auto spine2_axis	= math::ConvertRotMatrixToAxis(spine2_m);
+	m_aim_transform->SetPos(CoordinateKind::kWorld, spine2_pos + spine2_axis.y_axis * 13.0f);
+	m_aim_transform->SetRot(CoordinateKind::kWorld, spine2_axis.z_axis);
 
 	// エフェクト
 	const auto delta_time = GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kUI);

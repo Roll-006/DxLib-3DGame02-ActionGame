@@ -28,7 +28,7 @@ public:
 	void SetPos		(const CoordinateKind coord_kind, const VECTOR&		pos);
 	void SetRot		(const CoordinateKind coord_kind, const MATRIX&		rot_matrix);
 	void SetRot		(const CoordinateKind coord_kind, const Quaternion& quaternion);
-	void SetRot		(const CoordinateKind coord_kind, const Axes&		axes);
+	void SetRot		(const CoordinateKind coord_kind, const Axis&		axis);
 
 	/// @brief forward‚©‚ç‰ñ“]‚ğİ’è
 	/// @biref WARNING : forward‚ªƒ[ƒ‹ƒhY²‚É•½s‚Å‚ ‚Á‚½ê‡‚Í‰ñ“]‚ª¸‚í‚ê‚é
@@ -48,7 +48,7 @@ public:
 	[[nodiscard]] Quaternion GetQuaternion		(const CoordinateKind coord_kind);
 	[[nodiscard]] VECTOR	 GetScale			(const CoordinateKind coord_kind);
 	[[nodiscard]] MATRIX	 GetScaleMatrix		(const CoordinateKind coord_kind);
-	[[nodiscard]] Axes		 GetAxes			(const CoordinateKind coord_kind);
+	[[nodiscard]] Axis		 GetAxis			(const CoordinateKind coord_kind);
 	[[nodiscard]] VECTOR	 GetRight			(const CoordinateKind coord_kind);
 	[[nodiscard]] VECTOR	 GetUp				(const CoordinateKind coord_kind);
 	[[nodiscard]] VECTOR	 GetForward			(const CoordinateKind coord_kind);

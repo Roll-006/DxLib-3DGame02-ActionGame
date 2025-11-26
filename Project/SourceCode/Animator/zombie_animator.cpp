@@ -20,7 +20,7 @@ void ZombieAnimator::Init()
 
 void ZombieAnimator::Update()
 {
-	DivideBone();
+	DivideFrame();
 	ChangeAnim();
 
 	BlendAnim();

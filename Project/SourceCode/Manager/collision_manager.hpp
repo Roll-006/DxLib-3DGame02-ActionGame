@@ -12,6 +12,7 @@
 class CollisionManager final : public SingletonBase<CollisionManager>
 {
 public:
+	void Update();
 	void LateUpdate();
 	void Draw() const;
 

@@ -31,7 +31,7 @@ void PlayerAnimator::Init()
 
 void PlayerAnimator::Update()
 {
-	DivideBone();
+	DivideFrame();
 	ChangeAnim();
 
 	BlendAnim();
@@ -251,7 +251,7 @@ void PlayerAnimator::CombineMoveNullActionNullWithWeaponAction()
 		break;
 
 	case player_state::WeaponActionStateKind::kAimKnife:
-		DivideBone(BonePath.HIPS);
+		DivideFrame(FramePath.HIPS);
 		AttachAnim(idle_anim, BodyKind::kLowerBody);
 		AttachAnim(static_cast<int>(PlayerAnimKind::kAimKnife),						BodyKind::kUpperBody);
 		break;
@@ -285,7 +285,7 @@ void PlayerAnimator::CombineMoveNullActionNullWithWeaponAction()
 	case player_state::WeaponActionStateKind::kAimGun:
 	case player_state::WeaponActionStateKind::kShot:
 	case player_state::WeaponActionStateKind::kShotRocketLauncher:
-		DivideBone(BonePath.HIPS);
+		DivideFrame(FramePath.HIPS);
 		AttachAnim(idle_anim, BodyKind::kLowerBody);
 		AttachAnim(static_cast<int>(PlayerAnimKind::kAimGun),						BodyKind::kUpperBody);
 		break;
@@ -407,7 +407,7 @@ void PlayerAnimator::CombineMoveActionNullWithWeaponAction()
 		}
 		else
 		{
-			//DivideBone(BonePath.HIPS);
+			//DivideFrame(FramePath.HIPS);
 			AttachAnimEightDir(static_cast<int>(PlayerAnimKind::kMoveForward) + offset, false);
 			AttachAnim(static_cast<int>(PlayerAnimKind::kEquipKnife), BodyKind::kUpperBody);
 		}
@@ -416,7 +416,7 @@ void PlayerAnimator::CombineMoveActionNullWithWeaponAction()
 		break;
 
 	case player_state::WeaponActionStateKind::kAimKnife:
-		DivideBone(BonePath.HIPS);
+		DivideFrame(FramePath.HIPS);
 		AttachAnimEightDir(static_cast<int>(PlayerAnimKind::kMoveForward) + offset, false);
 		AttachAnim(static_cast<int>(PlayerAnimKind::kAimKnife), BodyKind::kUpperBody);
 		break;
@@ -429,7 +429,7 @@ void PlayerAnimator::CombineMoveActionNullWithWeaponAction()
 	case player_state::WeaponActionStateKind::kAimGun:
 	case player_state::WeaponActionStateKind::kShot:
 	case player_state::WeaponActionStateKind::kShotRocketLauncher:
-		DivideBone(BonePath.HIPS);
+		DivideFrame(FramePath.HIPS);
 		AttachAnimEightDir(static_cast<int>(PlayerAnimKind::kMoveForward) + offset, false);
 		AttachAnim(static_cast<int>(PlayerAnimKind::kAimGun),			BodyKind::kUpperBody);
 		break;

@@ -1,9 +1,12 @@
 #include "zombie.hpp"
+#include "../MixamoHelper/mixamo_helper.hpp"
 #include "player.hpp"
 #include "../Part/zombie_state_controller.hpp"
 
 Zombie::Zombie(const std::string& id) :
 	EnemyBase				(ObjName.ZOMBIE),
+	m_humanoid_foot_ik		(nullptr),
+	m_humanoid_frame		(std::make_shared<HumanoidFrameGetter>()),
 	m_state					(std::make_shared<ZombieStateController>()),
 	m_is_return_pool		(false),
 	m_can_grab_target		(false),
@@ -13,9 +16,8 @@ Zombie::Zombie(const std::string& id) :
 {
 	enemy_id = id;
 
-	JSONLoader json_loader;
 	nlohmann::json data;
-	if (json_loader.Load("Data/JSON/zombie.json", data))
+	if (json_loader::Load("Data/JSON/zombie.json", data))
 	{
 		mass_kind					= data.at("mass_kind");
 		invincible_time				= data.at("invincible_time");
@@ -29,7 +31,8 @@ Zombie::Zombie(const std::string& id) :
 		run_grab_speed				= data.at("run_grab_speed");
 		move_dir_offset_speed		= data.at("move_dir_offset_speed");
 		look_dir_offset_speed		= data.at("look_dir_offset_speed");
-		collider_data				= data.at("collider_data");
+		collider_data				= data.at("collider_data").get<HumanoidEnemyColliderData>();
+		m_leg_ray_data				= data.at("leg_ray_data").get<HumanoidLegRayData>();
 		damage_over_time_start_time = data.at("damage_over_time_start_time");
 	}
 
@@ -50,19 +53,22 @@ Zombie::Zombie(const std::string& id) :
 	m_animator = std::make_shared<ZombieAnimator>(m_modeler, m_state);
 	SetColliderModelHandle(m_modeler->GetModelHandle());
 
+	m_humanoid_foot_ik = std::make_shared<HumanoidFootIKSolver>(m_animator, m_modeler, m_colliders, m_leg_ray_data);
+
 	m_is_calc_look_dir = true;
 
-	m_collider_creator->CreateCapsuleCollider	(this, m_modeler, collider_data.capsule_radius);
-	m_collider_creator->CreateLandingTrigger	(this, collider_data.landing_trigger_radius);
-	m_collider_creator->CreateVisionTrigger		(this, m_modeler, collider_data.visible_distance, collider_data.visible_fov * math::kDegToRad);
-	m_collider_creator->CreateVisibleTrigger	(this, m_modeler);
-	m_collider_creator->CreateHeadTrigger		(this, m_modeler, collider_data.head_trigger_radius);
-	m_collider_creator->CreateBodyTrigger		(this, m_modeler, collider_data.up_body_trigger_radius,		collider_data.down_body_trigger_radius);
-	m_collider_creator->CreateArmTrigger		(this, m_modeler, collider_data.upper_arm_trigger_radius,	collider_data.forearm_trigger_radius, collider_data.hand_trigger_radius);
-	m_collider_creator->CreateLegTrigger		(this, m_modeler, collider_data.up_leg_trigger_radius,		collider_data.down_leg_trigger_radius);
+	m_collider_creator->CreateCapsuleCollider		(this, m_modeler, collider_data.capsule_radius);
+	m_collider_creator->CreateLandingTrigger		(this, collider_data.landing_trigger_radius);
+	m_collider_creator->CreateProjectRay			(this, collider_data.project_ray_length);
+	m_collider_creator->CreateCollisionAreaTrigger	(this, collider_data.collision_area_radius);
+	m_collider_creator->CreateVisionTrigger			(this, m_modeler, collider_data.visible_distance, collider_data.visible_fov * math::kDegToRad);
+	m_collider_creator->CreateVisibleTrigger		(this, m_modeler);
+	m_collider_creator->CreateHeadTrigger			(this, m_modeler, collider_data.head_trigger_radius);
+	m_collider_creator->CreateBodyTrigger			(this, m_modeler, collider_data.up_body_trigger_radius,		collider_data.down_body_trigger_radius);
+	m_collider_creator->CreateArmTrigger			(this, m_modeler, collider_data.upper_arm_trigger_radius,	collider_data.forearm_trigger_radius, collider_data.hand_trigger_radius);
+	m_collider_creator->CreateLegTrigger			(this, m_modeler, collider_data.up_leg_trigger_radius,		collider_data.down_leg_trigger_radius);
 
 	AddCollider(std::make_shared<Collider>(ColliderKind::kRay, std::make_shared<Segment>(), this));
-	AddCollider(std::make_shared<Collider>(ColliderKind::kCollisionAreaTrigger, std::make_shared<Sphere>(v3d::GetZeroV() + collider_data.collision_area_offset, collider_data.collision_area_radius), this));
 }
 
 Zombie::~Zombie()
@@ -75,7 +81,11 @@ void Zombie::Init()
 	m_is_return_pool = false;
 
 	m_modeler->InitMaterial();
-	m_state->Init(std::static_pointer_cast<Zombie>(shared_from_this()));
+
+	m_state				->Init(std::static_pointer_cast<Zombie>(shared_from_this()));
+	m_humanoid_foot_ik	->Init(std::dynamic_pointer_cast<IHumanoid>(shared_from_this()));
+	m_humanoid_foot_ik	->CreateFootRay		(this, std::dynamic_pointer_cast<IHumanoid>(shared_from_this()));
+	m_humanoid_foot_ik	->CreateFoeBaseRay	(this, std::dynamic_pointer_cast<IHumanoid>(shared_from_this()));
 }
 
 void Zombie::Update()
@@ -89,8 +99,9 @@ void Zombie::Update()
 	m_look_dir_offset_speed = look_dir_offset_speed;
 	m_is_allow_stealth_kill = true;
 
-	m_state		->Update(std::static_pointer_cast<Zombie>(shared_from_this()));
-	m_animator	->Update();
+	m_state				->Update(std::static_pointer_cast<Zombie>(shared_from_this()));
+	m_animator			->Update();
+	m_humanoid_foot_ik	->Update(std::dynamic_pointer_cast<IHumanoid>(shared_from_this()));
 
 	if (m_move_dir.at(TimeKind::kCurrent) != v3d::GetZeroV())
 	{
@@ -102,14 +113,6 @@ void Zombie::Update()
 	CalcMoveVelocity();
 
 	ApplyLookDirToRot(m_look_dir.at(TimeKind::kCurrent));
-
-	m_collider_creator->CalcCapsuleColliderPos	(m_modeler, m_colliders);
-	m_collider_creator->CalcVisionTriggerPos	(m_modeler, m_colliders);
-	m_collider_creator->CalcVisibleTriggerPos	(m_modeler, m_colliders);
-	m_collider_creator->CalcHeadTriggerPos		(m_modeler, m_colliders);
-	m_collider_creator->CalcBodyTriggerPos		(m_modeler, m_colliders);
-	m_collider_creator->CalcArmTriggerPos		(m_modeler, m_colliders);
-	m_collider_creator->CalcLegTriggerPos		(m_modeler, m_colliders);
 }
 
 void Zombie::LateUpdate()
@@ -119,14 +122,27 @@ void Zombie::LateUpdate()
 	// TODO : 後に関数化
 	auto ray = std::static_pointer_cast<Segment>(GetCollider(ColliderKind::kRay)->GetShape());
 	const auto target_model_handle = m_state->GetTargetCharacter()->GetModeler()->GetModelHandle();
-	auto head_m		= MV1GetFrameLocalWorldMatrix(m_modeler->GetModelHandle(), MV1SearchFrame(m_modeler->GetModelHandle(), BonePath.HEAD));
-	auto spine2_m	= MV1GetFrameLocalWorldMatrix(target_model_handle, MV1SearchFrame(target_model_handle, BonePath.SPINE_2));
+	auto head_m		= MV1GetFrameLocalWorldMatrix(m_modeler->GetModelHandle(), MV1SearchFrame(m_modeler->GetModelHandle(), FramePath.HEAD));
+	auto spine2_m	= MV1GetFrameLocalWorldMatrix(target_model_handle, MV1SearchFrame(target_model_handle, FramePath.SPINE_2));
 	const auto head_pos		= MGetTranslateElem(head_m);
 	const auto spine2_pos = MGetTranslateElem(spine2_m);
 	ray->SetBeginPos(head_pos, true);
 	ray->SetEndPos(spine2_pos, true);
 
 	m_state->LateUpdate(std::static_pointer_cast<Zombie>(shared_from_this()));
+
+	m_humanoid_foot_ik->BlendFrame(std::dynamic_pointer_cast<IHumanoid>(shared_from_this()));
+
+	m_collider_creator->CalcCapsuleColliderPos		(m_modeler, m_colliders);
+	m_collider_creator->CalcLandingTriggerPos		(m_modeler, m_colliders);
+	m_collider_creator->CalcProjectRayPos			(m_modeler, m_colliders);
+	m_collider_creator->CalcCollisionAreaTriggerPos	(m_modeler, m_colliders, collider_data.collision_area_offset);
+	m_collider_creator->CalcVisionTriggerPos		(m_modeler, m_colliders);
+	m_collider_creator->CalcVisibleTriggerPos		(m_modeler, m_colliders);
+	m_collider_creator->CalcHeadTriggerPos			(m_modeler, m_colliders);
+	m_collider_creator->CalcBodyTriggerPos			(m_modeler, m_colliders);
+	m_collider_creator->CalcArmTriggerPos			(m_modeler, m_colliders);
+	m_collider_creator->CalcLegTriggerPos			(m_modeler, m_colliders);
 
 	m_can_grab_target				= false;
 	m_on_collided_vision_trigger	= false;
@@ -140,7 +156,11 @@ void Zombie::Draw() const
 
 	m_modeler->Draw();
 
-	//DrawColliders();
+	SetUseZBuffer3D(FALSE);
+	mixamo_helper::DrawFrames(m_modeler->GetModelHandle(), true, true, true, false);
+	SetUseZBuffer3D(TRUE);
+
+	DrawColliders();
 }
 
 void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
@@ -158,10 +178,35 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 		break;
 
 	case ColliderKind::kRay:
-		if (dynamic_cast<PhysicalObjBase*>(m_state->GetTargetCharacter().get()) != target_obj)
-		{
-			m_has_obstacle_between_target = true;
-		}
+		if (dynamic_cast<PhysicalObjBase*>(m_state->GetTargetCharacter().get()) != target_obj) { m_has_obstacle_between_target = true; }
+		break;
+
+	case ColliderKind::kProjectRay:
+		if (hit_collider_pair.intersection) { m_current_project_pos = hit_collider_pair.intersection; }
+		break;
+
+	case ColliderKind::kLeftLegRay:
+		if (hit_collider_pair.intersection) { m_leg_ray_data.left_leg_cast_pos = hit_collider_pair.intersection; }
+		break;
+
+	case ColliderKind::kRightLegRay:
+		if (hit_collider_pair.intersection) { m_leg_ray_data.right_leg_cast_pos = hit_collider_pair.intersection; }
+		break;
+
+	case ColliderKind::kLeftFootRay:
+		if (hit_collider_pair.intersection) { m_leg_ray_data.left_foot_cast_pos = hit_collider_pair.intersection; }
+		break;
+
+	case ColliderKind::kRightFootRay:
+		if (hit_collider_pair.intersection) { m_leg_ray_data.right_foot_cast_pos = hit_collider_pair.intersection; }
+		break;
+
+	case ColliderKind::kLeftToeBaseRay:
+		if (hit_collider_pair.intersection) { m_leg_ray_data.left_toe_base_cast_pos = hit_collider_pair.intersection; }
+		break;
+
+	case ColliderKind::kRightToeBaseRay:
+		if (hit_collider_pair.intersection) { m_leg_ray_data.right_toe_base_cast_pos = hit_collider_pair.intersection; }
 		break;
 
 	case ColliderKind::kMiddleVisionTrigger:
@@ -341,12 +386,9 @@ void Zombie::OnRespawn(const VECTOR& pos, const VECTOR& look_dir)
 	m_look_dir.at(TimeKind::kNext) = m_look_dir.at(TimeKind::kCurrent) = v3d::GetNormalizedV(look_dir);
 	ApplyLookDirToRot(m_look_dir.at(TimeKind::kCurrent));
 
-	// コライダーの位置を修正
-	m_collider_creator->CalcCapsuleColliderPos(m_modeler, m_colliders);
-	m_collider_creator->CalcLandingTriggerPos (m_modeler, m_colliders);
-
-	const auto sphere = std::static_pointer_cast<Sphere>(GetCollider(ColliderKind::kCollisionAreaTrigger)->GetShape());
-	sphere->SetPos(pos + collider_data.collision_area_offset);
+	m_collider_creator->CalcCapsuleColliderPos	(m_modeler, m_colliders);
+	m_collider_creator->CalcLandingTriggerPos	(m_modeler, m_colliders);
+	m_collider_creator->CalcProjectRayPos		(m_modeler, m_colliders);
 }
 
 void Zombie::Detected()
@@ -442,6 +484,16 @@ void Zombie::TrackMove(const VECTOR& target_pos)
 	const auto target_pos_y0	= VGet(target_pos.x, 0.0f, target_pos.z);
 
 	m_move_dir.at(TimeKind::kNext) = v3d::GetNormalizedV(target_pos_y0 - pos_y0);
+}
+
+void Zombie::OnFootIK()
+{
+
+}
+
+void Zombie::OnCrouchIK()
+{
+
 }
 
 void Zombie::UpdateGrabRun()

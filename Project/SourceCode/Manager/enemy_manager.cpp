@@ -13,9 +13,8 @@ EnemyManager::EnemyManager() :
 	EventSystem::GetInstance()->Subscribe<DeadEnemyEvent>		(this, &EnemyManager::CountDeadEnemy);
 
 	// ‰Šú‚Ì“G‚ğ¶¬
-	JSONLoader json_loader;
 	nlohmann::json data;
-	if (json_loader.Load("Data/JSON/init_enemies.json", data))
+	if (json_loader::Load("Data/JSON/init_enemies.json", data))
 	{
 		// ƒ]ƒ“ƒr
 		const auto init_zombie_size = data.at("init_enemies").at("zombie").size();

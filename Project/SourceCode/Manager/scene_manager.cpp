@@ -24,6 +24,7 @@ void SceneManager::Update()
 	m_share_scene	->Update();
 
 	SceneFader		::GetInstance()->Update();
+	CollisionManager::GetInstance()->Update();
 	PhysicsManager	::GetInstance()->Update();
 }
 

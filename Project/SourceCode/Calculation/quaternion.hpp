@@ -10,7 +10,7 @@ struct Quaternion;
 
 namespace quat
 {
-	enum class AxesKind
+	enum class AxisKind
 	{
 		kX,
 		kY,

@@ -123,15 +123,15 @@ void GrabVirtualCameraController::CalcAimTransform()
 {
 	if (!m_grabber_modeler || !m_grabbed_modeler) { return; }
 
-	auto	   grabber_m	= MV1GetFrameLocalWorldMatrix(m_grabber_modeler->GetModelHandle(), MV1SearchFrame(m_grabber_modeler->GetModelHandle(), BonePath.HEAD_TOP_END));
-	auto	   grabbed_m	= MV1GetFrameLocalWorldMatrix(m_grabbed_modeler->GetModelHandle(), MV1SearchFrame(m_grabbed_modeler->GetModelHandle(), BonePath.HEAD_TOP_END));
+	auto	   grabber_m	= MV1GetFrameLocalWorldMatrix(m_grabber_modeler->GetModelHandle(), MV1SearchFrame(m_grabber_modeler->GetModelHandle(), FramePath.HEAD_TOP_END));
+	auto	   grabbed_m	= MV1GetFrameLocalWorldMatrix(m_grabbed_modeler->GetModelHandle(), MV1SearchFrame(m_grabbed_modeler->GetModelHandle(), FramePath.HEAD_TOP_END));
 	const auto grabber_pos	= MGetTranslateElem(grabber_m);
 	const auto grabbed_pos	= MGetTranslateElem(grabbed_m);
-	const auto grabbed_axes = math::ConvertRotMatrixToAxes(grabbed_m);
+	const auto grabbed_axis = math::ConvertRotMatrixToAxis(grabbed_m);
 
 	// 基準となるトランスフォームを設定
 	const auto center_pos	= (grabber_pos + grabbed_pos) * 0.5f;
 	m_aim_transform->SetPos(CoordinateKind::kWorld, center_pos);
-	m_aim_transform->SetRot(CoordinateKind::kWorld, grabbed_axes.x_axis);
+	m_aim_transform->SetRot(CoordinateKind::kWorld, grabbed_axis.x_axis);
 }
 #pragma endregion

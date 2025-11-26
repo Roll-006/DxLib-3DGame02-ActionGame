@@ -1,13 +1,14 @@
 #include "player.hpp"
 #include "../Command/command_handler.hpp"
 #include "../Part/player_state_controller.hpp"
+#include "../MixamoHelper/mixamo_helper.hpp"
 
 #include "../JSON/json_loader.hpp"
 
 Player::Player() :
 	CharacterBase(ObjName.PLAYER, ObjTag.PLAYER),
 	m_state							(std::make_shared<PlayerStateController>()),
-	m_bone_pos_corrector			(std::make_shared<BonePosCorrector>()),
+	m_frame_pos_corrector			(std::make_shared<FramePosCorrector>()),
 	m_input_slope					(v3d::GetZeroV()),
 	m_can_control					(true),
 	m_prev_health					(0.0f),
@@ -25,8 +26,12 @@ Player::Player() :
 	m_top_priority_downed_chara		(nullptr),
 	m_stealth_kill_target			(nullptr),
 	m_grabber						(nullptr),
-	m_escape_gauge					(std::make_shared<Gauge>(100.0f))
+	m_escape_gauge					(std::make_shared<Gauge>(100.0f)),
+	m_humanoid_foot_ik				(nullptr),
+	m_humanoid_frame				(std::make_shared<HumanoidFrameGetter>())
 {
+	// TODO : 後にJSON化
+
 	// イベント登録
 	EventSystem::GetInstance()->Subscribe<DeadAllEnemyEvent>(this, &Player::DeadAllEnemy);
 
@@ -40,6 +45,26 @@ Player::Player() :
 	m_animator = std::make_shared<PlayerAnimator>(m_modeler, m_state, m_current_held_weapon, m_current_equip_weapon[WeaponSlotKind::kMain]);
 	SetColliderModelHandle(m_modeler->GetModelHandle());
 
+	// TODO : のちに変更 仮
+	m_humanoid_foot_ik = std::make_shared<HumanoidFootIKSolver>(m_animator, m_modeler, m_colliders, m_leg_ray_data);
+	m_leg_ray_data.leg_ray_length				= 80.0f;
+	m_leg_ray_data.foot_ray_length				= 70.0f;
+	m_leg_ray_data.toe_base_ray_length			= 70.0f;
+
+	m_leg_ray_data.left_leg_ray_offset			= 40.0f;
+	m_leg_ray_data.left_foot_ray_offset			= 30.0f;
+	m_leg_ray_data.left_toe_base_ray_offset		= 30.0f;
+	m_leg_ray_data.right_leg_ray_offset			= 40.0f;
+	m_leg_ray_data.right_foot_ray_offset		= 30.0f;
+	m_leg_ray_data.right_toe_base_ray_offset	= 30.0f;
+
+	m_leg_ray_data.left_leg_offset				= 2.0f;
+	m_leg_ray_data.left_heels_offset			= 1.0f;
+	m_leg_ray_data.left_toe_offset				= 1.0f;
+	m_leg_ray_data.right_leg_offset				= 2.0f;
+	m_leg_ray_data.right_heels_offset			= 1.0f;
+	m_leg_ray_data.right_toe_offset				= 1.0f;
+
 	invincible_time = kInvincibleTime;
 
 	// 初期pos・dirを設定
@@ -48,15 +73,12 @@ Player::Player() :
 	m_transform->SetRot(CoordinateKind::kWorld, m_look_dir.at(TimeKind::kCurrent));
 
 	// コライダー・トリガーを設定
-	m_collider_creator->CreateCapsuleCollider	(this, m_modeler, kCapsuleRadius);
-	m_collider_creator->CreateLandingTrigger	(this, kLandingTriggerRadius);
-	m_collider_creator->CreateVisibleTrigger	(this, m_modeler);
+	m_collider_creator->CreateCapsuleCollider		(this, m_modeler, kCapsuleRadius);
+	m_collider_creator->CreateLandingTrigger		(this, kLandingTriggerRadius);
+	m_collider_creator->CreateProjectRay			(this, 30.0f);
+	m_collider_creator->CreateCollisionAreaTrigger	(this, kCollisionAreaRadius);
+	m_collider_creator->CreateVisibleTrigger		(this, m_modeler);
 
-	test = 0;
-
-	const auto pos = m_transform->GetPos(CoordinateKind::kWorld);
-	AddCollider(std::make_shared<Collider>(ColliderKind::kCollisionAreaTrigger, std::make_shared<Sphere>(pos + kCollisionAreaOffset, kCollisionAreaRadius), this));
-	
 	// TODO : 仮後に変更
 	{
 		// 武器設定
@@ -101,7 +123,10 @@ Player::~Player()
 
 void Player::Init()
 {
-	m_state->Init(std::static_pointer_cast<Player>(shared_from_this()));
+	m_state				->Init(std::static_pointer_cast<Player>(shared_from_this()));
+	m_humanoid_foot_ik	->Init(std::dynamic_pointer_cast<IHumanoid>(shared_from_this()));
+	m_humanoid_foot_ik	->CreateFootRay		(this, std::dynamic_pointer_cast<IHumanoid>(shared_from_this()));
+	m_humanoid_foot_ik	->CreateFoeBaseRay	(this, std::dynamic_pointer_cast<IHumanoid>(shared_from_this()));
 }
 
 void Player::Update()
@@ -133,18 +158,16 @@ void Player::Update()
 	m_can_search_stealth_kill_target	= true;
 	m_can_search_melee_target			= true;
 
-	m_weapon_shortcut_selecter->Update(std::static_pointer_cast<Player>(shared_from_this()));
-	m_state					  ->Update(std::static_pointer_cast<Player>(shared_from_this()));
-	m_animator				  ->Update();
+	m_weapon_shortcut_selecter	->Update(std::static_pointer_cast<Player>(shared_from_this()));
+	m_state						->Update(std::static_pointer_cast<Player>(shared_from_this()));
+	m_animator					->Update();
+	m_humanoid_foot_ik			->Update(std::dynamic_pointer_cast<IHumanoid>(shared_from_this()));
 
 	CalcMoveDir();
 	CalcLookDir();
 	CalcMoveVelocity();
 
 	JudgeVictoryPose();
-
-	m_collider_creator->CalcCapsuleColliderPos	(m_modeler, m_colliders);
-	m_collider_creator->CalcVisibleTriggerPos	(m_modeler, m_colliders);
 
 	ApplyLookDirToRot(m_look_dir.at(TimeKind::kCurrent));
 }
@@ -154,6 +177,8 @@ void Player::LateUpdate()
 	if (!IsActive()) { return; }
 
 	m_state->LateUpdate(std::static_pointer_cast<Player>(shared_from_this()));
+
+	m_humanoid_foot_ik->BlendFrame(std::dynamic_pointer_cast<IHumanoid>(shared_from_this()));
 
 	if (m_current_held_weapon) { m_current_held_weapon->LateUpdate(); }
 
@@ -166,6 +191,11 @@ void Player::LateUpdate()
 		}
 	}
 
+	m_collider_creator->CalcCapsuleColliderPos		(m_modeler, m_colliders);
+	m_collider_creator->CalcLandingTriggerPos		(m_modeler, m_colliders);
+	m_collider_creator->CalcCollisionAreaTriggerPos	(m_modeler, m_colliders, kCollisionAreaOffset);
+	m_collider_creator->CalcProjectRayPos			(m_modeler, m_colliders);
+	m_collider_creator->CalcVisibleTriggerPos		(m_modeler, m_colliders);
 
 	// 仮
 	//if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_SPACE) == InputState::kSingle)
@@ -174,11 +204,11 @@ void Player::LateUpdate()
 	//	
 	//	JSONLoader json_loader;
 	//	nlohmann::json data;
-	//	if (json_loader.Load("Data/JSON/patrol_route.json", data))
+	//	if (json_loader::Load("Data/JSON/patrol_route.json", data))
 	//	{
 	//		data["patrol_route"][std::to_string(2)][std::to_string(test)].emplace_back(m_transform->GetPos(CoordinateKind::kWorld));
-
-	//		json_loader.Save("Data/JSON/patrol_route.json", data);
+	//
+	//		json_loader::Save("Data/JSON/patrol_route.json", data);
 	//	}
 	//}
 }
@@ -189,6 +219,12 @@ void Player::Draw() const
 
 	m_modeler->Draw();
 
+	mixamo_helper::DrawFrames(m_modeler->GetModelHandle(), true, true, true, false);
+
+	SetUseZBuffer3D(FALSE);
+	mixamo_helper::DrawFrames(m_modeler->GetModelHandle(), true, true, true, false);
+	SetUseZBuffer3D(TRUE);
+
 	if (m_current_held_weapon) { m_current_held_weapon->Draw(); }
 
 	for (const auto& attach_weapon : m_attach_weapons)
@@ -196,7 +232,7 @@ void Player::Draw() const
 		if (attach_weapon.second) { attach_weapon.second->Draw(); }
 	}
 
-	//DrawColliders();
+	DrawColliders();
 
 	//const auto p = m_transform->GetPos(CoordinateKind::kWorld);
 	//const auto d = m_look_dir.at(TimeKind::kCurrent);
@@ -215,6 +251,34 @@ void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	{
 	case ColliderKind::kLandingTrigger:
 		m_is_landing = true;
+		break;
+
+	case ColliderKind::kProjectRay:
+		if (hit_collider_pair.intersection) { m_current_project_pos = hit_collider_pair.intersection; }
+		break;
+
+	case ColliderKind::kLeftLegRay:
+		if (hit_collider_pair.intersection) { m_leg_ray_data.left_leg_cast_pos = hit_collider_pair.intersection; }
+		break;
+
+	case ColliderKind::kRightLegRay:
+		if (hit_collider_pair.intersection) { m_leg_ray_data.right_leg_cast_pos = hit_collider_pair.intersection; }
+		break;
+
+	case ColliderKind::kLeftFootRay:
+		if (hit_collider_pair.intersection) { m_leg_ray_data.left_foot_cast_pos = hit_collider_pair.intersection; }
+		break;
+
+	case ColliderKind::kRightFootRay:
+		if (hit_collider_pair.intersection) { m_leg_ray_data.right_foot_cast_pos = hit_collider_pair.intersection; }
+		break;
+
+	case ColliderKind::kLeftToeBaseRay:
+		if (hit_collider_pair.intersection) { m_leg_ray_data.left_toe_base_cast_pos = hit_collider_pair.intersection; }
+		break;
+
+	case ColliderKind::kRightToeBaseRay:
+		if (hit_collider_pair.intersection) { m_leg_ray_data.right_toe_base_cast_pos = hit_collider_pair.intersection; }
 		break;
 		 
 	case ColliderKind::kAttackTrigger:
@@ -602,6 +666,19 @@ void Player::Move()
 	AllowCalcLookDir();
 }
 
+void Player::OnFootIK()
+{
+	m_humanoid_foot_ik->OnFootIK(std::dynamic_pointer_cast<IHumanoid>(shared_from_this()));
+}
+
+void Player::OnCrouchIK()
+{
+	const auto humanoid = std::dynamic_pointer_cast<IHumanoid>(shared_from_this());
+
+	m_humanoid_foot_ik->CalcRightLegRayPos	(humanoid);
+	m_humanoid_foot_ik->OnRightKneelCrouchIK(humanoid);
+}
+
 void Player::SetLookDirOffsetValueForAim()
 {
 	m_look_dir_offset_speed = kLookDirOffsetSpeedForAim;
@@ -630,21 +707,23 @@ void Player::CalcMoveSpeed()
 		return;
 	}
 
+	const auto delta_time = GetDeltaTime();
+
 	if (VSize(m_input_slope) <= kWalkStickSlopeLimit - InputChecker::kStickDeadZone)
 	{
 		// 速い状態から歩き状態に移行した場合、急速に減速させる
 		if (m_move_speed > kWalkSpeed) { m_move_speed = kWalkSpeed; }
 
-		math::Increase(m_move_speed, kAcceleration, kSlowWalkSpeed, false);
-		math::Decrease(m_move_speed, kAcceleration, kSlowWalkSpeed);
+		math::Increase(m_move_speed, kAcceleration * delta_time, kSlowWalkSpeed, false);
+		math::Decrease(m_move_speed, kAcceleration * delta_time, kSlowWalkSpeed);
 		return;
 	}
 
 	// 遅い状態からダッシュ状態に移行した場合、急速に加速させる
 	if (m_move_speed < kSlowWalkSpeed) { m_move_speed = kSlowWalkSpeed; }
 
-	math::Increase(m_move_speed, kAcceleration, kWalkSpeed, false);
-	math::Decrease(m_move_speed, kAcceleration, kWalkSpeed);
+	math::Increase(m_move_speed, kAcceleration * delta_time, kWalkSpeed, false);
+	math::Decrease(m_move_speed, kAcceleration * delta_time, kWalkSpeed);
 }
 
 void Player::CalcMoveSpeedStop()
@@ -660,7 +739,8 @@ void Player::CalcMoveSpeedStop()
 	// 速い状態から歩き状態に移行した場合、急速に減速させる
 	if (m_move_speed > kSlowWalkSpeed) { m_move_speed = kSlowWalkSpeed; }
 
-	math::Decrease(m_move_speed, kAcceleration, 0.0f);
+	const auto delta_time = GetDeltaTime();
+	math::Decrease(m_move_speed, kAcceleration * delta_time, 0.0f);
 }
 
 void Player::CalcMoveSpeedRun()
@@ -670,7 +750,8 @@ void Player::CalcMoveSpeedRun()
 	// 遅い状態からダッシュ状態に移行した場合、急速に加速させる
 	if (m_move_speed < kWalkSpeed) { m_move_speed = kWalkSpeed; }
 
-	math::Increase(m_move_speed, kAcceleration, kRunSpeed, false);
+	const auto delta_time = GetDeltaTime();
+	math::Increase(m_move_speed, kAcceleration * delta_time, kRunSpeed, false);
 
 	m_look_dir_offset_speed = kLookDirOffsetSpeedForRun;
 }

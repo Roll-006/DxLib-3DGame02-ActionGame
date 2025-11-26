@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "../Base/character_base.hpp"
 #include "../Interface/i_playable_character.hpp"
+#include "../Interface/i_humanoid.hpp"
 #include "../Interface/i_item_collectable.hpp"
 #include "../Interface/i_weapon_equippable.hpp"
 #include "../Interface/i_fireable.hpp"
@@ -10,18 +11,20 @@
 
 #include "../GameTime/game_time_manager.hpp"
 #include "../Event/event_system.hpp"
+
 #include "../Animator/player_animator.hpp"
+#include "../InverseKinematics/humanoid_foot_ik_solver.hpp"
 
 #include "assault_rifle.hpp"
 #include "rocket_launcher.hpp"
 #include "knife.hpp"
 #include "../Part/weapon_shortcut_selecter.hpp"
-#include "../Part/bone_pos_corrector.hpp"
+#include "../Part/frame_pos_corrector.hpp"
 #include "../Part/melee_target_searcher.hpp"
 
 class PlayerStateController;
 
-class Player final : public CharacterBase, public IPlayableCharacter, public IItemCollectable, public IWeaponEquippable, public IFireable, public IGrabbable, public IMeleeAttackable, public IStealthKiller
+class Player final : public CharacterBase, public IPlayableCharacter, public IHumanoid, public IItemCollectable, public IWeaponEquippable, public IFireable, public IGrabbable, public IMeleeAttackable, public IStealthKiller
 {
 public:
 	Player();
@@ -43,6 +46,11 @@ public:
 	void OnDisallowControl() override { m_can_control = false; }
 
 	[[nodiscard]] bool CanControl() const override { return m_can_control; }
+	#pragma endregion
+
+
+	#pragma region Humanoid
+	[[nodiscard]] std::shared_ptr<HumanoidFrameGetter> GetHumanoidFrame() const override { return m_humanoid_frame; }
 	#pragma endregion
 
 
@@ -133,6 +141,9 @@ public:
 	#pragma region State
 	void Move();
 
+	void OnFootIK();
+	void OnCrouchIK();
+
 	/// @brief エイミング時の見る方向を修正するための値を設定する
 	void SetLookDirOffsetValueForAim();
 
@@ -153,7 +164,7 @@ public:
 	#pragma region Getter
 	[[nodiscard]] float																GetDeltaTime				()	const override;
 	[[nodiscard]] std::shared_ptr<PlayerStateController>							GetStateController			()	const			{ return m_state; }
-	[[nodiscard]] std::shared_ptr<BonePosCorrector>									GetBonePosCorrector			()	const			{ return m_bone_pos_corrector; }
+	[[nodiscard]] std::shared_ptr<FramePosCorrector>									GetFramePosCorrector			()	const			{ return m_frame_pos_corrector; }
 	[[nodiscard]] std::vector<std::shared_ptr<IItem>>								GetCurrentHaveItem			(const ItemKind item_kind) const { return m_items.at(item_kind); }
 	[[nodiscard]] std::unordered_map<WeaponSlotKind, std::shared_ptr<WeaponBase>>&	GetCurrentEquipWeapons		()					{ return m_current_equip_weapon; }
 	[[nodiscard]] std::shared_ptr<WeaponShortcutSelecter>							GetWeaponShortcutSelecter	()	const			{ return m_weapon_shortcut_selecter; }
@@ -190,7 +201,7 @@ private:
 	static constexpr float  kSlowWalkSpeed						= 30.0f;
 	static constexpr float  kWalkSpeed							= 70.0f;
 	static constexpr float  kRunSpeed							= 125.0f;
-	static constexpr float  kAcceleration						= 1.0f;					// 加速度(減速度も共通)
+	static constexpr float  kAcceleration						= 100.0f;					// 加速度(減速度も共通)
 
 	static constexpr float  kMoveDirOffsetSpeed					= 5.0f;					// 移動方向の補正速度
 	static constexpr float  kLookDirOffsetSpeed					= 4.0f;					// 見る方向の補正角度
@@ -210,7 +221,7 @@ private:
 
 private:
 	std::shared_ptr<PlayerStateController>		m_state;
-	std::shared_ptr<BonePosCorrector>			m_bone_pos_corrector;
+	std::shared_ptr<FramePosCorrector>			m_frame_pos_corrector;
 
 	VECTOR										m_input_slope;
 	bool										m_can_control;
@@ -239,5 +250,7 @@ private:
 	std::shared_ptr<IGrabber>											m_grabber;
 	std::shared_ptr<Gauge>												m_escape_gauge;
 
-	int test;
+	HumanoidLegRayData													m_leg_ray_data;
+	std::shared_ptr<HumanoidFootIKSolver>								m_humanoid_foot_ik;
+	std::shared_ptr<HumanoidFrameGetter>								m_humanoid_frame;
 };

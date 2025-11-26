@@ -76,7 +76,7 @@
     <ClCompile Include="SourceCode\Object\skydome.cpp">
       <Filter>SourceCode\Object</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Part\bone_pos_corrector.cpp">
+    <ClCompile Include="SourceCode\Part\frame_pos_corrector.cpp">
       <Filter>SourceCode\Part</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Part\collider.cpp">
@@ -409,9 +409,6 @@
     <ClCompile Include="SourceCode\State\PlayerState\grabbed.cpp">
       <Filter>SourceCode\State\PlayerState</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\JSON\json_loader.cpp">
-      <Filter>SourceCode\JSON</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\VirtualCamera\grab_virtual_camera_controller.cpp">
       <Filter>SourceCode\VirtualCamera</Filter>
     </ClCompile>
@@ -619,6 +616,12 @@
     <ClCompile Include="SourceCode\State\ZombieState\patrol.cpp">
       <Filter>SourceCode\State\ZombieState</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\InverseKinematics\humanoid_foot_ik_solver.cpp">
+      <Filter>SourceCode\InverseKinematics</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\InverseKinematics\ik_solver.cpp">
+      <Filter>SourceCode\InverseKinematics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\character_base.hpp">
@@ -648,7 +651,7 @@
     <ClInclude Include="SourceCode\Base\weapon_base.hpp">
       <Filter>SourceCode\Base</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Calculation\axes.hpp">
+    <ClInclude Include="SourceCode\Calculation\axis.hpp">
       <Filter>SourceCode\Calculation</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Calculation\collision_calculator.hpp">
@@ -747,7 +750,7 @@
     <ClInclude Include="SourceCode\Object\skydome.hpp">
       <Filter>SourceCode\Object</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Part\bone_pos_corrector.hpp">
+    <ClInclude Include="SourceCode\Part\frame_pos_corrector.hpp">
       <Filter>SourceCode\Part</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Part\collider.hpp">
@@ -1164,7 +1167,7 @@
     <ClInclude Include="SourceCode\Path\animation_path.hpp">
       <Filter>SourceCode\Path</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Path\bone_path.hpp">
+    <ClInclude Include="SourceCode\Path\frame_path.hpp">
       <Filter>SourceCode\Path</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Path\effect_path.hpp">
@@ -1689,6 +1692,27 @@
     <ClInclude Include="SourceCode\Interface\i_item_collectable.hpp">
       <Filter>SourceCode\Interface</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\InverseKinematics\humanoid_foot_ik_solver.hpp">
+      <Filter>SourceCode\InverseKinematics</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\InverseKinematics\ik_solver.hpp">
+      <Filter>SourceCode\InverseKinematics</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\humanoid_leg_matrix_data.hpp">
+      <Filter>SourceCode\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\humanoid_leg_ray_data.hpp">
+      <Filter>SourceCode\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\model_frame_angle_limit_data.hpp">
+      <Filter>SourceCode\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Part\humanoid_frame_getter.hpp">
+      <Filter>SourceCode\Part</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\MixamoHelper\mixamo_helper.hpp">
+      <Filter>SourceCode\MixamoHelper</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="SourceCode">
@@ -1838,6 +1862,12 @@
     <Filter Include="SourceCode\Sound">
       <UniqueIdentifier>{f57eecbd-8cf1-42c8-96b4-2d96a5bf7d69}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SourceCode\InverseKinematics">
+      <UniqueIdentifier>{faa6203f-4b0e-4f8d-b35d-d561eb7c97ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCode\MixamoHelper">
+      <UniqueIdentifier>{3365a2e8-3ef6-478e-a95b-2d22f461656a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\JSON\key_number.json">
@@ -1865,6 +1895,12 @@
       <Filter>JSON</Filter>
     </None>
     <None Include="Data\JSON\ammo_box.json">
+      <Filter>JSON</Filter>
+    </None>
+    <None Include="Data\JSON\mixamo_frame_hierarchy.json">
+      <Filter>JSON</Filter>
+    </None>
+    <None Include="Data\JSON\model_foot_angle_limits.json">
       <Filter>JSON</Filter>
     </None>
   </ItemGroup>

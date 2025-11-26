@@ -34,7 +34,7 @@ void player_state::ShotRocketLauncher::LateUpdate(std::shared_ptr<Player>& obj)
 	const auto camera		  = ObjManager::GetInstance()->GetObj<ObjBase>(ObjName.MAIN_CAMERA);
 
 	// ƒ{[ƒ“ˆÊ’u•â³
-	obj->GetBonePosCorrector()->CorrectAimPoseBonePos(obj->GetModeler()->GetModelHandle(), roket_launcher->GetAimDir());
+	obj->GetFramePosCorrector()->CorrectAimPoseFramePos(obj->GetModeler()->GetModelHandle(), roket_launcher->GetAimDir());
 
 	obj->GetCurrentHeldWeapon()->TrackOwnerHand();
 

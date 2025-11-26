@@ -1,6 +1,6 @@
 #pragma once
 #include "../Handle/handle_keeper.hpp"
-#include "../Path/bone_path.hpp"
+#include "../Path/frame_path.hpp"
 #include "../Data/material_data.hpp"
 #include "transform.hpp"
 

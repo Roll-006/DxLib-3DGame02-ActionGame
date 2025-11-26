@@ -7,9 +7,8 @@ RocketBombBox::RocketBombBox() :
 	m_item_effect_transform	(std::make_shared<Transform>()),
 	m_modeler				(nullptr)
 {
-	JSONLoader json_loader;
 	nlohmann::json data;
-	if (json_loader.Load("Data/JSON/ammo_box.json", data))
+	if (json_loader::Load("Data/JSON/ammo_box.json", data))
 	{
 		rifle_cartridge_box_data = data.at("ammo_box").at("assault_rifle_ammo_box").at("rocket_bomb_box").get<RifleCartridgeBoxData>();
 		
@@ -25,9 +24,8 @@ RocketBombBox::RocketBombBox(const int ammo_num) :
 	m_item_effect_transform	(std::make_shared<Transform>()),
 	m_modeler				(nullptr)
 {
-	JSONLoader json_loader;
 	nlohmann::json data;
-	if (json_loader.Load("Data/JSON/ammo_box.json", data))
+	if (json_loader::Load("Data/JSON/ammo_box.json", data))
 	{
 		rifle_cartridge_box_data = data.at("ammo_box").at("assault_rifle_ammo_box").at("rocket_bomb_box").get<RifleCartridgeBoxData>();
 		
@@ -107,10 +105,7 @@ void RocketBombBox::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	switch (hit_collider_pair.owner_collider->GetColliderKind())
 	{
 	case ColliderKind::kProjectRay:
-		if (hit_collider_pair.intersection)
-		{
-			m_project_pos = hit_collider_pair.intersection;
-		}
+		if (hit_collider_pair.intersection) { m_current_project_pos = hit_collider_pair.intersection; }
 		break;
 
 	default:
@@ -123,7 +118,7 @@ void RocketBombBox::OnProjectPos()
 	if (!IsActive()) { return; }
 	if (IsLanding()) { return; }
 
-	const auto project_pos = GetProjectPos();
+	const auto project_pos = GetCurrentProjectPos();
 	if (!project_pos) { return; }
 
 	const auto hit_triangle = GetCollider(ColliderKind::kProjectRay)->GetHitTriangles();
@@ -131,14 +126,14 @@ void RocketBombBox::OnProjectPos()
 
 	// Šp“xEˆÊ’u‚ðŒÅ’è
 	const auto transform	= GetTransform();
-	const auto current_axes = transform->GetAxes(CoordinateKind::kWorld);
+	const auto current_axis = transform->GetAxis(CoordinateKind::kWorld);
 	const auto cross_x		= math::GetNormalVector(hit_triangle.front().GetNormalVector(), axis::GetWorldYAxis());
 	const auto cross_z		= math::GetNormalVector(hit_triangle.front().GetNormalVector(), cross_x);
-	const auto new_axes		= math::GetRotatedAxes(current_axes, cross_z);
+	const auto new_axis		= math::GetRotatedAxis(current_axis, cross_z);
 
 	m_item_effect_transform	->SetPos(CoordinateKind::kWorld, *project_pos);
 	transform				->SetPos(CoordinateKind::kWorld, *project_pos);
-	transform				->SetRot(CoordinateKind::kWorld, new_axes);
+	transform				->SetRot(CoordinateKind::kWorld, new_axis);
 }
 
 void RocketBombBox::Synthesize(const std::shared_ptr<IAmmoBox> ammo_box)

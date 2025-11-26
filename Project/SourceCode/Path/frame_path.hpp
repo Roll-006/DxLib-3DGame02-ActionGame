@@ -1,7 +1,7 @@
 #pragma once
 
 /// @brief Blenderを通したMixamoモデルのボーンパス
-static struct MixamoBonePath
+static struct MixamoFramePath
 {
 	const TCHAR* ARMATURE				= "Armature";
 
@@ -47,6 +47,7 @@ static struct MixamoBonePath
 	const TCHAR* LEFT_HAND_PINKY_1		= "mixamorig:LeftHandPinky1";
 	const TCHAR* LEFT_HAND_PINKY_2		= "mixamorig:LeftHandPinky2";
 	const TCHAR* LEFT_HAND_PINKY_3		= "mixamorig:LeftHandPinky3";
+	const TCHAR* LEFT_HAND_PINKY_4		= "mixamorig:LeftHandPinky4";
 	const TCHAR* LEFT_HAND_PINKY_4_END	= "mixamorig:LeftHandPinky4_end";
 
 
@@ -99,4 +100,4 @@ static struct MixamoBonePath
 	const TCHAR* RIGHT_TOE_END			= "mixamorig:RightToe_End";
 	const TCHAR* RIGHT_TOE_END_END		= "mixamorig:RightToe_End_end";
 
-}BonePath;
+}FramePath;

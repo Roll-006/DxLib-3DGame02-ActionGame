@@ -12,11 +12,20 @@ CollisionManager::~CollisionManager()
 	// ˆ—‚È‚µ
 }
 
+void CollisionManager::Update()
+{
+	for (const auto& obj : m_collide_objects)
+	{
+		obj->SaveProjectPos();
+	}
+}
+
 void CollisionManager::LateUpdate()
 {
 	for (const auto& obj : m_collide_objects)
 	{
 		obj->ReleaseLanding();
+		obj->RemoveProjectPos();
 		obj->RemoveHitTriangles();
 	}
 

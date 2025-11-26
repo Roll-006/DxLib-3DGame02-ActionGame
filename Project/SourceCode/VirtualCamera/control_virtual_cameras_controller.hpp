@@ -62,7 +62,7 @@ private:
 
 	/// @brief 無加工のボーンをカメラが追尾するかを判定
 	/// @return true : ボーンそのものをカメラが追尾, false : ボーンを同じ高さにある位置を追尾
-	[[nodiscard]] bool IsTrackCameraOriginBone() const;
+	[[nodiscard]] bool IsTrackCameraOriginFrame() const;
 
 private:
 	static constexpr VECTOR kFollowOffsetForRotCamera				= { 30.0f, 20.0f, -90.0f };

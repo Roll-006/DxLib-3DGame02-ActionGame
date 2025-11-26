@@ -48,8 +48,8 @@ void player_state::FrontKick::Update(std::shared_ptr<Player>& obj)
 		const auto model_handle = obj->GetModeler()->GetModelHandle();
 
 		// s—ñî•ñ‚ğæ“¾
-		auto right_leg_m	= MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, BonePath.RIGHT_LEG));
-		auto right_foot_m	= MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, BonePath.RIGHT_FOOT));
+		auto right_leg_m	= MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, FramePath.RIGHT_LEG));
+		auto right_foot_m	= MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, FramePath.RIGHT_FOOT));
 
 		// ˆÊ’u‚ğæ“¾
 		const auto right_leg_pos	= MGetTranslateElem(right_leg_m);

@@ -41,7 +41,7 @@ void zombie_state::Dead::Update(std::shared_ptr<Zombie>& obj)
 
 			// —£‚µ‚½‚±‚Æ‚ğ‰‰oƒJƒƒ‰‚É’Ê’m
 			const auto model_hanlde = obj->GetModeler()->GetModelHandle();
-			auto	   hips_m		= MV1GetFrameLocalWorldMatrix(model_hanlde, MV1SearchFrame(model_hanlde, BonePath.HIPS));
+			auto	   hips_m		= MV1GetFrameLocalWorldMatrix(model_hanlde, MV1SearchFrame(model_hanlde, FramePath.HIPS));
 			const auto hips_pos		= MGetTranslateElem(hips_m);
 			const StartDisappearEnemyEvent event{ hips_pos - VGet(0.0f, 10.0f, 0.0f) };
 			EventSystem::GetInstance()->Publish(event);

@@ -241,7 +241,7 @@ void RocketBombExplosionEffect::CalcTriggerPos()
 void RocketBombExplosionEffect::Attack(CharacterBase* target_character)
 {
 	const auto model_handle		= target_character->GetModeler()->GetModelHandle();
-	auto hips_m					= MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, BonePath.HIPS));
+	auto hips_m					= MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, FramePath.HIPS));
 	const auto hips_pos			= MGetTranslateElem(hips_m);
 	const auto explosion_sphere = std::static_pointer_cast<Sphere>(GetCollider(ColliderKind::kAttackTrigger)->GetShape());
 	const auto explosion_pos	= explosion_sphere->GetPos();

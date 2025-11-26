@@ -1,11 +1,11 @@
-#include "bone_pos_corrector.hpp"
+#include "frame_pos_corrector.hpp"
 
-void BonePosCorrector::CorrectAimPoseBonePos(const int model_handle, const VECTOR& aim_dir)
+void FramePosCorrector::CorrectAimPoseFramePos(const int model_handle, const VECTOR& aim_dir)
 {
 	// ボーンインデックス取得
-	const auto spine_index	= MV1SearchFrame(model_handle, BonePath.SPINE);
-	const auto spine1_index	= MV1SearchFrame(model_handle, BonePath.SPINE_1);
-	const auto spine2_index	= MV1SearchFrame(model_handle, BonePath.SPINE_2);
+	const auto spine_index	= MV1SearchFrame(model_handle, FramePath.SPINE);
+	const auto spine1_index	= MV1SearchFrame(model_handle, FramePath.SPINE_1);
+	const auto spine2_index	= MV1SearchFrame(model_handle, FramePath.SPINE_2);
 
 	// 回転量を分割
 	auto angle				= math::GetAngleBetweenTwoVector(aim_dir, axis::GetWorldYAxis()) - 90.0f * math::kDegToRad;

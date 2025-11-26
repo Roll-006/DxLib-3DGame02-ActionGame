@@ -35,7 +35,7 @@ void player_state::AimGun::LateUpdate(std::shared_ptr<Player>& obj)
 	const auto offset_dir	= (gun->GetFirstShotPos() + gun->GetAimDir() * gun->GetRange()) - gun->GetMuzzleTransform()->GetPos(CoordinateKind::kWorld);
 
 	// ƒ{[ƒ“ˆÊ’u•â³
-	obj->GetBonePosCorrector()->CorrectAimPoseBonePos(obj->GetModeler()->GetModelHandle(), aim_dir);
+	obj->GetFramePosCorrector()->CorrectAimPoseFramePos(obj->GetModeler()->GetModelHandle(), aim_dir);
 
 	obj->GetCurrentHeldWeapon()->TrackOwnerHand();
 

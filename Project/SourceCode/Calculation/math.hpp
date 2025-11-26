@@ -8,7 +8,7 @@
 
 #include "../Concept/common_concepts.hpp"
 
-#include "axes.hpp"
+#include "axis.hpp"
 #include "matrix.hpp"
 #include "quaternion.hpp"
 
@@ -73,10 +73,10 @@ namespace math
 	[[nodiscard]] Quaternion ConvertRotMatrixToQuaternion(const MATRIX& rot_matrix);
 
 	/// @brief XYZ軸から回転行列(回転順は問わない)へ変換
-	[[nodiscard]] MATRIX ConvertAxesToRotMatrix(const Axes& axes);
+	[[nodiscard]] MATRIX ConvertAxisToRotMatrix(const Axis& axis);
 
 	/// @brief XYZ軸からオイラー角へ変換
-	[[nodiscard]] VECTOR ConvertAxesToEulerAngles(const Axes& axes);
+	[[nodiscard]] VECTOR ConvertAxisToEulerAngles(const Axis& axis);
 
 	/// @brief 回転行列からオイラー角へ変換
 	/// @brief FIXME : 不具合ありな可能性あり。要検証
@@ -85,7 +85,7 @@ namespace math
 	[[nodiscard]] VECTOR ConvertZXYRotMatrixToEulerAngles(const MATRIX& rot_matrix);
 
 	/// @brief 回転行列(回転順は問わない)からXYZ軸へ変換
-	[[nodiscard]] Axes ConvertRotMatrixToAxes(const MATRIX& rot_matrix);
+	[[nodiscard]] Axis ConvertRotMatrixToAxis(const MATRIX& rot_matrix);
 
 	/// @brief オイラー角から回転行列へ変換
 	[[nodiscard]] MATRIX ConvertEulerAnglesToXYZRotMatrix(const VECTOR& angle);
@@ -189,9 +189,26 @@ namespace math
 		Transform& begin_transform,
 		Transform& end_transform,
 		const float t,
-		const bool is_interpolate_pos,
-		const bool is_interpolate_scale,
-		const bool is_interpolate_rot);
+		const bool is_interpolate_pos	= true,
+		const bool is_interpolate_scale = true,
+		const bool is_interpolate_rot	= true);
+
+	/// @brief 2つの行列を線形補間で補間
+	/// @brief 座標 : 線形補間, 回転 : 球面線形補間, スケール : 線形補間
+	/// @param begin_mat 開始地点となる行列
+	/// @param end_mat 終了地点となる行列
+	/// @param t 補間係数(0.0～1.0)
+	/// @param is_interpolate_pos 座標の補間を行うか
+	/// @param is_interpolate_scale スケールの補間を行うか
+	/// @param is_interpolate_rot 回転の補間を行うか
+	/// @return 補間結果の行列
+	[[nodiscard]] MATRIX GetLerpMatrix(
+		const MATRIX& begin_mat,
+		const MATRIX& end_mat,
+		const float t,
+		const bool is_interpolate_pos	= true,
+		const bool is_interpolate_scale = true,
+		const bool is_interpolate_rot	= true);
 
 	/// @brief 減衰後の値を取得
 	/// @param current_value 現在の値
@@ -205,9 +222,9 @@ namespace math
 	/// @param current_value 現在の値
 	/// @param target_value 目的の値
 	/// @param damping 減衰値(時定数)
-	/// @param parent_axes 基準とする軸
+	/// @param parent_axis 基準とする軸
 	/// @return 減衰後の値
-	[[nodiscard]] VECTOR GetDampedValueOnAxes(const VECTOR& current_value, const VECTOR& target_value, const VECTOR& damping, const Axes& parent_axes, const float delta_time);
+	[[nodiscard]] VECTOR GetDampedValueOnAxis(const VECTOR& current_value, const VECTOR& target_value, const VECTOR& damping, const Axis& parent_axis, const float delta_time);
 	#pragma endregion
 
 
@@ -341,14 +358,14 @@ namespace math
 
 	/// @brief XYZ軸を取得
 	/// @param dir 向きベクトル(この値をZ軸とする)
-	/// @param parent_axes 親とするXYZ軸
-	[[nodiscard]] Axes GetAxes(const VECTOR& dir, const Axes& parent_axes);
+	/// @param parent_axis 親とするXYZ軸
+	[[nodiscard]] Axis GetAxis(const VECTOR& dir, const Axis& parent_axis);
 	
 	/// @brief 対象のforwardをZ軸とした回転後のXYZ軸を取得する
-	/// @param origin_axes 回転前のXYZ軸
+	/// @param origin_axis 回転前のXYZ軸
 	/// @param target_forward 回転後のZ軸
 	/// @return 回転後のXYZ軸
-	[[nodiscard]] Axes GetRotatedAxes(const Axes& origin_axes, const VECTOR& target_forward);
+	[[nodiscard]] Axis GetRotatedAxis(const Axis& origin_axis, const VECTOR& target_forward);
 	#pragma endregion
 
 

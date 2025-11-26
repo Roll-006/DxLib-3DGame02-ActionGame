@@ -74,7 +74,7 @@ void AssaultRifleMagazine::TrackOwnerHand()
 	m_owner_modeler->ApplyMatrix();
 
 	// アタッチする部位の行列情報を取り出す
-	const auto owner_attach_frame_num = MV1SearchFrame(m_owner_modeler->GetModelHandle(), BonePath.LEFT_HAND);
+	const auto owner_attach_frame_num = MV1SearchFrame(m_owner_modeler->GetModelHandle(), FramePath.LEFT_HAND);
 	const auto owner_attach_frame_mat = MV1GetFrameLocalWorldMatrix(m_owner_modeler->GetModelHandle(), owner_attach_frame_num);
 
 	// 武器をアタッチする部位に合わせて回転し、行列を取得

@@ -3,7 +3,8 @@
 PhysicalObjBase::PhysicalObjBase(const std::string& name, const std::string& tag) :
 	ObjBase					(name, tag),
 	mass_kind				(MassKind::kLight),
-	m_project_pos			(std::nullopt),
+	m_current_project_pos	(std::nullopt),
+	m_prev_project_pos		(std::nullopt),
 	m_velocity				(v3d::GetZeroV()),
 	m_move_velocity			(v3d::GetZeroV()),
 	m_fall_velocity			(v3d::GetZeroV()),
@@ -45,6 +46,11 @@ void PhysicalObjBase::RemoveHitTriangles()
 	{
 		collider.second->RemoveHitTriangles();
 	}
+}
+
+void PhysicalObjBase::SaveProjectPos()
+{
+	m_prev_project_pos = m_current_project_pos;
 }
 
 void PhysicalObjBase::ApplyGravity(const float gravity_acceleration, const float max_gravity)

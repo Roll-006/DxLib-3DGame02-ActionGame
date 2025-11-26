@@ -55,15 +55,16 @@ void ItemCreator::Draw() const
 
 void ItemCreator::CreateDeadEnemyItem(const DeadEnemyEvent& event)
 {
-	auto	   frame_m		= MV1GetFrameLocalWorldMatrix(event.model_handle, MV1SearchFrame(event.model_handle, BonePath.HIPS));
-	const auto frame_pos	= MGetTranslateElem(frame_m);
+	auto	   hips_m	= MV1GetFrameLocalWorldMatrix(event.model_handle, MV1SearchFrame(event.model_handle, FramePath.HIPS));
+	const auto hips_pos	= MGetTranslateElem(hips_m);
 
 	// âºÇ≈íeÇã≠êßÇ≈ê∂ê¨
 	// TODO : ÇÃÇøÇ…ïœçX
 	const auto item	= std::make_shared<AssaultRifleAmmoBox>(40);
 	item->AddToObjManager();
-	item->GetTransform()->SetPos(CoordinateKind::kWorld, frame_pos);
+	item->GetTransform()	->SetPos(CoordinateKind::kWorld, hips_pos);
+	item->GetItemTransform()->SetPos(CoordinateKind::kWorld, hips_pos);
 	m_items.emplace_back(item);
 
-	EventSystem::GetInstance()->Publish(DropItemEvent(item->GetTransform(), item->GetObjHandle(), item->GetItemKind()));
+	EventSystem::GetInstance()->Publish(DropItemEvent(item->GetItemTransform(), item->GetObjHandle(), item->GetItemKind()));
 }

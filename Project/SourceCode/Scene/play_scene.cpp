@@ -22,6 +22,9 @@ PlayScene::PlayScene() :
 	m_game_over_tab					(std::make_shared<GameOverTab>()),
 	m_pause_tab						(std::make_shared<PauseTab>())
 {
+	m_player->Init();
+	m_enemy_manager->Init();
+
 	m_player->AddToObjManager();
 	m_ground->AddToObjManager();
 	m_houses->AddToObjManager();
@@ -57,9 +60,6 @@ PlayScene::PlayScene() :
 PlayScene::~PlayScene()
 {
 	m_item_creator = nullptr;
-
-	m_player->Init();
-	m_enemy_manager->Init();
 
 	m_player->RemoveToObjManager();
 	m_ground->RemoveToObjManager();

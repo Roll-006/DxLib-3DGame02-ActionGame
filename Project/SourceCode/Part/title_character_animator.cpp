@@ -18,7 +18,7 @@ void TitleCharacterAnimator::Init()
 
 void TitleCharacterAnimator::Update()
 {
-	DivideBone();
+	DivideFrame();
 	ChangeAnim();
 
 	BlendAnim();

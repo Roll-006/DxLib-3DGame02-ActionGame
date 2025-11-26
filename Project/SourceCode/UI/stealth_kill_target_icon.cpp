@@ -75,7 +75,7 @@ void StealthKillTargetIcon::CreateStealthKillIconScreen()
 	if (!m_stealth_kill_target) { return; }
 
 	const auto	model_handle = std::dynamic_pointer_cast<CharacterBase>(m_stealth_kill_target)->GetModeler()->GetModelHandle();
-	auto		spine2_m		 = MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, BonePath.SPINE_2));
+	auto		spine2_m		 = MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, FramePath.SPINE_2));
 
 	m_icon_pos = MGetTranslateElem(spine2_m) + kIconOffset;
 

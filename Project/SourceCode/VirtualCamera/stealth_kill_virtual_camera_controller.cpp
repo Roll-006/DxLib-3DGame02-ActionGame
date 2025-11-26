@@ -123,8 +123,8 @@ void StealthKillVirtualCameraController::CalcAimTransform()
 {
 	if (!m_stealth_killer_modeler || !m_stealth_killable_modeler) { return; }
 
-	auto	   killer_m		= MV1GetFrameLocalWorldMatrix(m_stealth_killer_modeler	->GetModelHandle(), MV1SearchFrame(m_stealth_killer_modeler	 ->GetModelHandle(), BonePath.HEAD_TOP_END));
-	auto	   killable_m	= MV1GetFrameLocalWorldMatrix(m_stealth_killable_modeler->GetModelHandle(), MV1SearchFrame(m_stealth_killable_modeler->GetModelHandle(), BonePath.HEAD_TOP_END));
+	auto	   killer_m		= MV1GetFrameLocalWorldMatrix(m_stealth_killer_modeler	->GetModelHandle(), MV1SearchFrame(m_stealth_killer_modeler	 ->GetModelHandle(), FramePath.HEAD_TOP_END));
+	auto	   killable_m	= MV1GetFrameLocalWorldMatrix(m_stealth_killable_modeler->GetModelHandle(), MV1SearchFrame(m_stealth_killable_modeler->GetModelHandle(), FramePath.HEAD_TOP_END));
 	const auto killer_pos	= MGetTranslateElem(killer_m);
 	const auto killable_pos	= MGetTranslateElem(killable_m);
 

@@ -4,16 +4,16 @@
 #include <DxLib.h>
 
 #include "../Kind/time_kind.hpp"
-#include "../Path/bone_path.hpp"
+#include "../Path/frame_path.hpp"
 #include "../Calculation/math.hpp"
 
-class BonePosCorrector
+class FramePosCorrector
 {
 public:
 	/// @brief 銃を構えた際のボーンの位置を修正
 	/// @param model_handle モデルハンドル
 	/// @param aim_dir 狙っている方向
-	void CorrectAimPoseBonePos(const int model_handle, const VECTOR& aim_dir);
+	void CorrectAimPoseFramePos(const int model_handle, const VECTOR& aim_dir);
 
 private:
 	static constexpr float kAimAngle			= 20.0f;

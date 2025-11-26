@@ -63,7 +63,7 @@ void WeaponBase::TrackOwnerHand()
 	m_owner_modeler->ApplyMatrix();
 
 	// アタッチする部位の行列情報を取り出す
-	const auto owner_attach_frame_num = MV1SearchFrame(m_owner_modeler->GetModelHandle(), BonePath.RIGHT_HAND);
+	const auto owner_attach_frame_num = MV1SearchFrame(m_owner_modeler->GetModelHandle(), FramePath.RIGHT_HAND);
 	const auto owner_attach_frame_mat = MV1GetFrameLocalWorldMatrix(m_owner_modeler->GetModelHandle(), owner_attach_frame_num);
 
 	// 武器をアタッチする部位に合わせて回転し、行列を取得
@@ -86,19 +86,19 @@ void WeaponBase::TrackOwnerHolster()
 	switch (m_holster_kind)
 	{
 	case HolsterKind::kKnife:
-		owner_attach_frame_num = MV1SearchFrame(m_owner_modeler->GetModelHandle(), BonePath.SPINE_2);
+		owner_attach_frame_num = MV1SearchFrame(m_owner_modeler->GetModelHandle(), FramePath.SPINE_2);
 		break;
 
 	case HolsterKind::kHandgun:
-		owner_attach_frame_num = MV1SearchFrame(m_owner_modeler->GetModelHandle(), BonePath.RIGHT_UP_LEG);
+		owner_attach_frame_num = MV1SearchFrame(m_owner_modeler->GetModelHandle(), FramePath.RIGHT_UP_LEG);
 		break;
 
 	case HolsterKind::kRifle:
-		owner_attach_frame_num = MV1SearchFrame(m_owner_modeler->GetModelHandle(), BonePath.SPINE_2);
+		owner_attach_frame_num = MV1SearchFrame(m_owner_modeler->GetModelHandle(), FramePath.SPINE_2);
 		break;
 
 	case HolsterKind::kGrenade:
-		owner_attach_frame_num = MV1SearchFrame(m_owner_modeler->GetModelHandle(), BonePath.RIGHT_UP_LEG);
+		owner_attach_frame_num = MV1SearchFrame(m_owner_modeler->GetModelHandle(), FramePath.RIGHT_UP_LEG);
 		break;
 	}
 

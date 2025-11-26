@@ -95,7 +95,7 @@ void MeleeTargetIcon::CreateMeleeIconScreen()
 	if (!m_melee_target) { return; }
 
 	const auto	model_handle = std::dynamic_pointer_cast<CharacterBase>(m_melee_target)->GetModeler()->GetModelHandle();
-	auto		head_m		 = MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, BonePath.HEAD));
+	auto		head_m		 = MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, FramePath.HEAD));
 
 	m_icon_pos = MGetTranslateElem(head_m) + kIconOffset;
 
@@ -127,7 +127,7 @@ void MeleeTargetIcon::CreateDownIconScreen()
 	if (!m_visible_downed_character) { return; }
 
 	const auto	model_handle = std::dynamic_pointer_cast<CharacterBase>(m_visible_downed_character)->GetModeler()->GetModelHandle();
-	auto		head_m = MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, BonePath.HEAD));
+	auto		head_m = MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, FramePath.HEAD));
 
 	m_icon_pos = MGetTranslateElem(head_m) + kIconOffset;
 
