@@ -31,8 +31,6 @@ void player_state::Shot::LateUpdate(std::shared_ptr<Player>& obj)
 	// ƒ{[ƒ“ˆÊ’u•â³
 	obj->GetFramePosCorrector()->CorrectAimPoseFramePos(obj->GetModeler()->GetModelHandle(), aim_dir);
 
-	obj->GetCurrentHeldWeapon()->TrackOwnerHand();
-
 	gun->CalcCrossHairPos();
 	gun->CalcCrossHairRangeShot();
 	gun->CalcTargetPos();

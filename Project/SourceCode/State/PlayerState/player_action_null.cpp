@@ -23,7 +23,7 @@ void player_state::ActionNull::Update(std::shared_ptr<Player>& obj)
 
 void player_state::ActionNull::LateUpdate(std::shared_ptr<Player>& obj)
 {
-
+	obj->OnFootIK();
 }
 
 void player_state::ActionNull::Enter(std::shared_ptr<Player>& obj)

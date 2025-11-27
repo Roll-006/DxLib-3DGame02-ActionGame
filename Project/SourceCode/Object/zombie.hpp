@@ -27,6 +27,7 @@ public:
 	void AllowReturnPool() { m_is_return_pool = true; }
 
 	void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) override;
+	void OnProjectPos() override;
 	void OnDamage(const HealthPartKind part_kind, const float damage) override;
 
 	void AttachTarget(const std::shared_ptr<CharacterBase>& target_character) override;

@@ -45,5 +45,5 @@ private:
 	std::shared_ptr<Modeler>	m_modeler;
 	std::shared_ptr<Modeler>	m_owner_modeler;
 	std::shared_ptr<Transform>  m_weapon_load_transform;
-	bool						m_on_reloading;
+	bool						m_is_reloading;
 };

@@ -23,7 +23,7 @@ RocketBombExplosionEffect::~RocketBombExplosionEffect()
 {
 	if (m_origin_effect_handle != -1)
 	{
-		HandleKeeper::GetInstance()->DeleteHandle(HandleKind::kEffect, m_origin_effect_handle);
+		HandleKeeper::GetInstance()->RemoveHandle(HandleKind::kEffect, m_origin_effect_handle);
 		DeleteEffekseerEffect(m_origin_effect_handle);
 		m_origin_effect_handle = -1;
 	}

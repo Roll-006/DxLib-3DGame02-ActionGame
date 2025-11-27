@@ -5,7 +5,7 @@ AssaultRifleMagazine::AssaultRifleMagazine(const std::shared_ptr<Transform> weap
 	m_modeler				(std::make_shared<Modeler>(m_transform, ModelPath.ASSAULT_RIFLE_MAGAZINE, kBasicAngle, kBasicScale)),
 	m_owner_modeler			(nullptr),
 	m_weapon_load_transform	(weapon_load_transform),
-	m_on_reloading			(false)
+	m_is_reloading			(false)
 {
 
 }
@@ -52,13 +52,13 @@ void AssaultRifleMagazine::RemoveToObjManager()
 
 void AssaultRifleMagazine::OnStartReload(const std::shared_ptr<Modeler>& owner_modler)
 {
-	m_on_reloading	= true;
+	m_is_reloading	= true;
 	m_owner_modeler = owner_modler;
 }
 
 void AssaultRifleMagazine::OnReloaded()
 {
-	m_on_reloading = false;
+	m_is_reloading = false;
 }
 
 float AssaultRifleMagazine::GetDeltaTime() const
@@ -68,9 +68,9 @@ float AssaultRifleMagazine::GetDeltaTime() const
 
 void AssaultRifleMagazine::TrackOwnerHand()
 {
-	if (!m_on_reloading) { return; }
+	if (!m_is_reloading)	{ return; }
+	if (!m_owner_modeler)	{ return; }
 
-	if (!m_owner_modeler) { return; }
 	m_owner_modeler->ApplyMatrix();
 
 	// アタッチする部位の行列情報を取り出す
@@ -89,7 +89,7 @@ void AssaultRifleMagazine::TrackOwnerHand()
 
 void AssaultRifleMagazine::TrackLoad()
 {
-	if (m_on_reloading) { return; }
+	if (m_is_reloading) { return; }
 
 	// 武器をアタッチする部位に合わせて回転し、行列を取得
 	const auto offset_angle_mat = math::ConvertEulerAnglesToXYZRotMatrix(kLoadOffsetAngle);

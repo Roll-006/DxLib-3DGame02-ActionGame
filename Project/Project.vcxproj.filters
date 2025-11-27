@@ -1713,6 +1713,12 @@
     <ClInclude Include="SourceCode\MixamoHelper\mixamo_helper.hpp">
       <Filter>SourceCode\MixamoHelper</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\Data\aid_axis_data.hpp">
+      <Filter>SourceCode\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Kind\axis_kind.hpp">
+      <Filter>SourceCode\Kind</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="SourceCode">

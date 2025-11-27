@@ -34,7 +34,7 @@ void player_state::Reload::Update(std::shared_ptr<Player>& obj)
 
 void player_state::Reload::LateUpdate(std::shared_ptr<Player>& obj)
 {
-	obj->GetCurrentHeldWeapon()->TrackOwnerHand();
+	
 }
 
 void player_state::Reload::Enter(std::shared_ptr<Player>& obj)

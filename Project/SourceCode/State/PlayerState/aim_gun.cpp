@@ -37,8 +37,6 @@ void player_state::AimGun::LateUpdate(std::shared_ptr<Player>& obj)
 	// ボーン位置補正
 	obj->GetFramePosCorrector()->CorrectAimPoseFramePos(obj->GetModeler()->GetModelHandle(), aim_dir);
 
-	obj->GetCurrentHeldWeapon()->TrackOwnerHand();
-
 	// 以前のステートがショット状態であった場合、拡散範囲の設定を一定時間待つ
 	const auto weapon_action_state = static_cast<player_state::WeaponActionStateKind>(obj->GetStateController()->GetWeaponActionState(TimeKind::kPrev)->GetStateKind());
 	if (weapon_action_state == player_state::WeaponActionStateKind::kShot)

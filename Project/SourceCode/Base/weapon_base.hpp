@@ -29,9 +29,9 @@ public:
 	void DetachOwner();
 
 	/// @brief 持ち主の手を追跡する
-	void TrackOwnerHand();
+	virtual void TrackOwnerHand() abstract;
 	/// @brief 持ち主のホルスター(武器収納位置)を追尾する
-	void TrackOwnerHolster();
+	virtual void TrackOwnerHolster()abstract;
 
 	[[nodiscard]] float						 GetDeltaTime()		const override;
 	[[nodiscard]] ItemKind					 GetItemKind()		const override	{ return ItemKind::kWeapon; }
@@ -72,7 +72,6 @@ protected:
 	float						m_power;
 	std::shared_ptr<Transform>	m_item_effect_transform;
 	
-private:
 	VECTOR m_hold_offset_pos;		// 手に持たれる際のオフセット座標
 	VECTOR m_hold_offset_angle;		// 手に持たれる際のオフセット角度
 	VECTOR m_hold_offset_scale;		// 手に持たれる際のオフセットスケール

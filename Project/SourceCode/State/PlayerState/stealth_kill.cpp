@@ -20,7 +20,7 @@ void player_state::StealthKill::Update(std::shared_ptr<Player>& obj)
 
 void player_state::StealthKill::LateUpdate(std::shared_ptr<Player>& obj)
 {
-	obj->GetCurrentHeldWeapon()->TrackOwnerHand();
+	obj->OnFootIK();
 }
 
 void player_state::StealthKill::Enter(std::shared_ptr<Player>& obj)

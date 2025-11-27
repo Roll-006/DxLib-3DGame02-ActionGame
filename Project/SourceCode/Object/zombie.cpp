@@ -156,10 +156,6 @@ void Zombie::Draw() const
 
 	m_modeler->Draw();
 
-	SetUseZBuffer3D(FALSE);
-	mixamo_helper::DrawFrames(m_modeler->GetModelHandle(), true, true, true, false);
-	SetUseZBuffer3D(TRUE);
-
 	DrawColliders();
 }
 
@@ -358,6 +354,11 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	default:
 		break;
 	}
+}
+
+void Zombie::OnProjectPos()
+{
+
 }
 
 void Zombie::OnDamage(const HealthPartKind part_kind, const float damage)

@@ -79,7 +79,7 @@ int HandleKeeper::ReloadHandle(const HandleKind handle_kind, const std::string& 
 	return -1;
 }
 
-void HandleKeeper::DeleteHandle(const HandleKind handle_kind, const std::string& file_path)
+void HandleKeeper::RemoveHandle(const HandleKind handle_kind, const std::string& file_path)
 {
 	for (auto itr = m_handles.begin(); itr != m_handles.end();)
 	{
@@ -94,7 +94,7 @@ void HandleKeeper::DeleteHandle(const HandleKind handle_kind, const std::string&
 	}
 }
 
-void HandleKeeper::DeleteHandle(const HandleKind handle_kind, const int handle)
+void HandleKeeper::RemoveHandle(const HandleKind handle_kind, const int handle)
 {
 	for (auto itr = m_handles.begin(); itr != m_handles.end();)
 	{

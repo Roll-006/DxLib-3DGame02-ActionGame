@@ -34,7 +34,7 @@ Graphicer::~Graphicer()
 {
 	if (m_graphic_handle != -1)
 	{
-		HandleKeeper::GetInstance()->DeleteHandle(HandleKind::kGraphic, m_graphic_handle);
+		HandleKeeper::GetInstance()->RemoveHandle(HandleKind::kGraphic, m_graphic_handle);
 		DeleteGraph(m_graphic_handle);
 		m_graphic_handle = -1;
 	}

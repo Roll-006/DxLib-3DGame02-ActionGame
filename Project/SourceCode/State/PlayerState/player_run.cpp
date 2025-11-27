@@ -20,7 +20,7 @@ void player_state::Run::Update(std::shared_ptr<Player>& obj)
 
 void player_state::Run::LateUpdate(std::shared_ptr<Player>& obj)
 {
-
+	obj->OnFootIK();
 }
 
 void player_state::Run::Enter(std::shared_ptr<Player>& obj)

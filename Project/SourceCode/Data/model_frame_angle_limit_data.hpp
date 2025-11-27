@@ -3,8 +3,9 @@
 
 struct ModelFrameAngleLimitData
 {
-	float max_angle;
-	float min_angle;
+	float max_angle		= 0.0f;
+	float min_angle		= 0.0f;
+	bool  is_limited	= false;	// §ŒÀ‚ª‚©‚©‚Á‚½
 };
 
 

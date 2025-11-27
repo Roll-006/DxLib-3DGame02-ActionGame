@@ -49,12 +49,6 @@ void RocketLauncher::Update()
 void RocketLauncher::LateUpdate()
 {
 	if (!IsActive()) { return; }
-
-	CalcTransform(m_muzzle_transform,		kMuzzleOffsetPos);
-	CalcTransform(m_load_transform,			kLoadPortOffsetPos);
-	CalcTransform(m_exhaust_vent_transform, kExhaustVentOffsetPos);
-
-	std::dynamic_pointer_cast<ObjBase>(m_magazine)->LateUpdate();
 }
 
 void RocketLauncher::Draw() const
@@ -104,4 +98,11 @@ void RocketLauncher::CalcCrossHairPos()
 void RocketLauncher::CalcTargetPos()
 {
 	m_target_pos = math::GetRandomPointInCircle(*std::static_pointer_cast<Circle>(m_cross_hair_shape));
+}
+
+void RocketLauncher::CalcTransforms()
+{
+	CalcTransform(m_muzzle_transform,		kMuzzleOffsetPos);
+	CalcTransform(m_load_transform,			kLoadPortOffsetPos);
+	CalcTransform(m_exhaust_vent_transform, kExhaustVentOffsetPos);
 }

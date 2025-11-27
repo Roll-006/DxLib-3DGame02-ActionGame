@@ -393,6 +393,7 @@
     <ClInclude Include="SourceCode\Concept\state_concepts.hpp" />
     <ClInclude Include="SourceCode\Concept\vector_concepts.hpp" />
     <ClInclude Include="SourceCode\CSV\csv_loader.hpp" />
+    <ClInclude Include="SourceCode\Data\aid_axis_data.hpp" />
     <ClInclude Include="SourceCode\Data\humanoid_leg_matrix_data.hpp" />
     <ClInclude Include="SourceCode\Data\humanoid_leg_ray_data.hpp" />
     <ClInclude Include="SourceCode\Data\model_frame_angle_limit_data.hpp" />
@@ -490,6 +491,7 @@
     <ClInclude Include="SourceCode\InverseKinematics\humanoid_foot_ik_solver.hpp" />
     <ClInclude Include="SourceCode\InverseKinematics\ik_solver.hpp" />
     <ClInclude Include="SourceCode\JSON\json_loader.hpp" />
+    <ClInclude Include="SourceCode\Kind\axis_kind.hpp" />
     <ClInclude Include="SourceCode\Kind\blend_activation_policy_kind.hpp" />
     <ClInclude Include="SourceCode\Kind\box_kind.hpp" />
     <ClInclude Include="SourceCode\Kind\camera_state_kind.hpp" />

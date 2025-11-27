@@ -36,8 +36,6 @@ void player_state::ShotRocketLauncher::LateUpdate(std::shared_ptr<Player>& obj)
 	// ƒ{[ƒ“ˆÊ’u•â³
 	obj->GetFramePosCorrector()->CorrectAimPoseFramePos(obj->GetModeler()->GetModelHandle(), roket_launcher->GetAimDir());
 
-	obj->GetCurrentHeldWeapon()->TrackOwnerHand();
-
 	roket_launcher->CalcCrossHairPos();
 	roket_launcher->CalcCrossHairRangeShot();
 	roket_launcher->CalcTargetPos();

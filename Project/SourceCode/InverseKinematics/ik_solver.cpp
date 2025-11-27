@@ -1,6 +1,9 @@
 ﻿#include "ik_solver.hpp"
 
-Axis ik_solver::GetRotatedMixamoAxis(const Axis& origin_axis, const VECTOR& target_forward, const std::optional<VECTOR>& aid_axis, const AidAxisKind axis_kind)
+Axis ik_solver::GetRotatedMixamoAxis(
+	const Axis&							origin_axis,
+	const VECTOR&						target_forward,
+	const std::optional<AidAxisData>&	aid_axis)
 {
 	// MixamoのモデルはY軸がボーンの進行方向であるため、それを前提に作成する
 	// ヨー軸回転 : Z, ピッチ軸回転 : X, ロール軸回転 : Y
@@ -8,30 +11,36 @@ Axis ik_solver::GetRotatedMixamoAxis(const Axis& origin_axis, const VECTOR& targ
 	Axis mixamo_axis;
 	mixamo_axis.y_axis = target_forward;
 
-	if (axis_kind == AidAxisKind::kRight && aid_axis)
-	{
-		mixamo_axis.x_axis = -*aid_axis;														// 一時的なピッチ軸回転を計算
-		mixamo_axis.z_axis = math::GetNormalVector(mixamo_axis.y_axis, mixamo_axis.x_axis);
-		mixamo_axis.x_axis = math::GetNormalVector(mixamo_axis.z_axis, mixamo_axis.y_axis);		// ピッチ軸回転を再計算
-		mixamo_axis.x_axis *= -1;
-	}
-	else if (axis_kind == AidAxisKind::kUp && aid_axis)
-	{
-		mixamo_axis.z_axis = *aid_axis;
-		mixamo_axis.x_axis = math::GetNormalVector(mixamo_axis.z_axis, mixamo_axis.y_axis);
-		mixamo_axis.z_axis = math::GetNormalVector(mixamo_axis.x_axis, mixamo_axis.y_axis);
-	}
-	else
+	// 補助軸なし
+	if(!aid_axis || aid_axis->kind == AxisKind::kForward)
 	{
 		mixamo_axis.x_axis = math::GetNormalVector(origin_axis.z_axis, mixamo_axis.y_axis);		// 一時的なピッチ軸回転を計算
 		mixamo_axis.z_axis = math::GetNormalVector(mixamo_axis.y_axis, mixamo_axis.x_axis);
 		mixamo_axis.x_axis = math::GetNormalVector(mixamo_axis.z_axis, mixamo_axis.y_axis);		// ピッチ軸回転を再計算
 	}
+	// 補助軸 : Left
+	else if (aid_axis->kind == AxisKind::kLeft)
+	{
+		mixamo_axis.x_axis = -aid_axis->axis;													// 一時的なピッチ軸回転を計算
+		mixamo_axis.z_axis =  math::GetNormalVector(mixamo_axis.y_axis, mixamo_axis.x_axis);
+		mixamo_axis.x_axis = -math::GetNormalVector(mixamo_axis.z_axis, mixamo_axis.y_axis);	// ピッチ軸回転を再計算
+	}
+	// 補助軸 : Up
+	else if (aid_axis->kind == AxisKind::kUp)
+	{
+		mixamo_axis.z_axis = aid_axis->axis;													// 一時的なヨー軸回転を計算
+		mixamo_axis.x_axis = math::GetNormalVector(mixamo_axis.z_axis, mixamo_axis.y_axis);
+		mixamo_axis.z_axis = math::GetNormalVector(mixamo_axis.x_axis, mixamo_axis.y_axis);		// ヨー軸回転を再計算
+	}
 	
 	return mixamo_axis;
 }
 
-void ik_solver::OneFrameIK(const int model_handle, const VECTOR& world_destination, const int frame_index, const std::optional<VECTOR>& aid_axis, const AidAxisKind axis_kind)
+void ik_solver::OneBoneIK(
+	const int							model_handle,
+	const VECTOR&						world_destination,
+	const int							frame_index,
+	const std::optional<AidAxisData>&	aid_axis)
 {
 	auto	   child_local_m			= MV1GetFrameLocalMatrix(model_handle, frame_index);
 	const auto child_local_pos			= MGetTranslateElem(child_local_m);
@@ -41,7 +50,7 @@ void ik_solver::OneFrameIK(const int model_handle, const VECTOR& world_destinati
 	// 変換後のXYZ軸を取得	
 	const auto current_axis				= math::ConvertRotMatrixToAxis(child_world_m);
 	const auto forward					= v3d::GetNormalizedV(world_destination - child_world_pos);
-	const auto target_axis				= GetRotatedMixamoAxis(current_axis, forward, aid_axis, axis_kind);
+	const auto target_axis				= GetRotatedMixamoAxis(current_axis, forward, aid_axis);
 
 	// 子のローカル回転行列を取得
 	const auto parent_world_m			= MV1GetFrameLocalWorldMatrix(model_handle, MV1GetFrameParent(model_handle, frame_index));
@@ -55,9 +64,14 @@ void ik_solver::OneFrameIK(const int model_handle, const VECTOR& world_destinati
 	MV1SetFrameUserLocalMatrix(model_handle, frame_index, child_local_m);
 }
 
-void ik_solver::TwoFrameIK(const int model_handle, const VECTOR& world_destination, const int end_frame_index, 
-	const ModelFrameAngleLimitData& begin_angle_limit, const ModelFrameAngleLimitData& middle_angle_limit,
-	const RotDirKind rot_dir_kind, const std::optional<VECTOR>& aid_axis, const AidAxisKind axis_kind)
+void ik_solver::TwoBoneIK(
+	const int							model_handle,
+	const VECTOR&						world_destination,
+	const int							end_frame_index,
+	const ModelFrameAngleLimitData&		begin_angle_limit,
+	const ModelFrameAngleLimitData&		middle_angle_limit,
+	const RotDirKind					rot_dir_kind,
+	const std::optional<AidAxisData>&	aid_axis)
 {
 	const auto end_frame_name		= MV1GetFrameName	(model_handle, end_frame_index);
 	const auto middle_frame_index	= MV1GetFrameParent	(model_handle, end_frame_index);
@@ -66,7 +80,7 @@ void ik_solver::TwoFrameIK(const int model_handle, const VECTOR& world_destinati
 	const auto begin_frame_name		= MV1GetFrameName	(model_handle, begin_frame_index);
 
 	// 起点フレームを目的位置に向ける
-	OneFrameIK(model_handle, world_destination, begin_frame_index, aid_axis, axis_kind);
+	OneBoneIK(model_handle, world_destination, begin_frame_index, aid_axis);
 
 	// 中間フレームの回転を消す
 	auto	   middle_local_m		= MV1GetFrameLocalMatrix(model_handle, middle_frame_index);
@@ -113,39 +127,4 @@ void ik_solver::TwoFrameIK(const int model_handle, const VECTOR& world_destinati
 	MV1SetFrameUserLocalMatrix(model_handle, begin_frame_index,  begin_local_m);
 	matrix::SetRot(middle_local_m, middle_result_rot_m);
 	MV1SetFrameUserLocalMatrix(model_handle, middle_frame_index, middle_local_m);
-}
-
-void ik_solver::FrameIK(const int model_handle, const VECTOR& world_destination, const TCHAR* begin_frame_name, const TCHAR* end_frame_name)
-{
-	const auto begin_frame_index	= MV1SearchFrame(model_handle, begin_frame_name);
-	const auto end_frame_index		= MV1SearchFrame(model_handle, end_frame_name);
-
-	// 起点および終点フレームの情報を取得
-	auto	   begin_local_m		= MV1GetFrameLocalMatrix(model_handle, begin_frame_index);
-	auto	   begin_world_m		= MV1GetFrameLocalWorldMatrix(model_handle, begin_frame_index);
-	const auto begin_world_pos		= MGetTranslateElem(begin_world_m);
-	auto	   end_world_m			= MV1GetFrameLocalWorldMatrix(model_handle, end_frame_index);
-	const auto end_world_pos		= MGetTranslateElem(end_world_m);
-
-	const auto current_axis			= math::ConvertRotMatrixToAxis(begin_world_m);
-
-	// 終点フレームに回転させた軸から補助行列を取得
-	const auto aid_forward			= v3d::GetNormalizedV(end_world_pos - begin_world_pos);
-	const auto aid_axis				= GetRotatedMixamoAxis(current_axis, aid_forward);
-	const auto aid_rot_m			= math::ConvertAxisToRotMatrix(aid_axis);
-
-	// 回転すべき行列を取得
-	const auto target_forward		= v3d::GetNormalizedV(world_destination - begin_world_pos);
-	const auto target_axis			= GetRotatedMixamoAxis(current_axis, target_forward);
-	const auto target_rot_m			= math::ConvertAxisToRotMatrix(target_axis);
-
-	// aid_rot_mがtarget_rot_mに回転するための回転行列を取得
-	const auto delta_rot_m			= target_rot_m * MInverse(aid_rot_m);
-
-	// 新たな回転行列を取得
-	auto new_local_rot_m			= delta_rot_m * matrix::GetRotMatrix(begin_local_m);
-
-	// 回転を上書きしてフレームに適用
-	matrix::SetRot(begin_local_m, new_local_rot_m);
-	MV1SetFrameUserLocalMatrix(model_handle, begin_frame_index, begin_local_m);
 }

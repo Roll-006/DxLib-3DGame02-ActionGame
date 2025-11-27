@@ -19,8 +19,6 @@ public:
 	void AddToObjManager()		override;
 	void RemoveToObjManager()	override;
 
-	void OnProjectPos() override;
-
 	void CalcCorrectMoveDir();
 	void AllowCalcLookDir() { m_is_calc_look_dir = true; }
 

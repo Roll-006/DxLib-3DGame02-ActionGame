@@ -9,6 +9,7 @@ public:
 	AssaultRifle();
 	~AssaultRifle() override;
 
+
 	void Init()						override;
 	void Update()					override;
 	void LateUpdate()				override;
@@ -18,9 +19,10 @@ public:
 
 	void InitCrossHairRange() override;
 	void CalcCrossHairRange(const VECTOR& owner_move_velocity) override;
-	void CalcCrossHairRangeShot() override;
-	void CalcCrossHairPos() override;
-	void CalcTargetPos() override;
+	void CalcCrossHairRangeShot()	override;
+	void CalcCrossHairPos()			override;
+	void CalcTargetPos()			override;
+	void CalcTransforms()			override;
 
 private:
 	static constexpr VECTOR kBasicAngle				= { 0.0f, 0.0f, 0.0f };

@@ -19,7 +19,7 @@ void player_state::Grabbed::Update(std::shared_ptr<Player>& obj)
 
 void player_state::Grabbed::LateUpdate(std::shared_ptr<Player>& obj)
 {
-
+	obj->OnFootIK();
 }
 
 void player_state::Grabbed::Enter(std::shared_ptr<Player>& obj)

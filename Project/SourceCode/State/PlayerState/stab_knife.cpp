@@ -29,7 +29,7 @@ void player_state::StabKnife::LateUpdate(std::shared_ptr<Player>& obj)
 	// ƒ{[ƒ“ˆÊ’u•â³
 	//obj->GetFramePosCorrector()->CorrectAimPoseFramePos(obj->GetModeler()->GetModelHandle(), aim_dir);
 
-	obj->GetCurrentHeldWeapon()->TrackOwnerHand();
+	
 }
 
 void player_state::StabKnife::Enter(std::shared_ptr<Player>& obj)

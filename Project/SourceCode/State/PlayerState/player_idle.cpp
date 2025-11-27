@@ -22,7 +22,7 @@ void player_state::Idle::Update(std::shared_ptr<Player>& obj)
 
 void player_state::Idle::LateUpdate(std::shared_ptr<Player>& obj)
 {
-	obj->OnFootIK();
+	
 }
 
 void player_state::Idle::Enter(std::shared_ptr<Player>& obj)
