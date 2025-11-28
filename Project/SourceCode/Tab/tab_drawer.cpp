@@ -12,7 +12,7 @@ TabDrawer::~TabDrawer()
 
 void TabDrawer::RemoveTab(const int tab_handle)
 {
-	if (!m_tabs.count(tab_handle)) { return; }
+	if (!m_tabs.contains(tab_handle)) { return; }
 
 	m_tabs.erase(tab_handle);
 

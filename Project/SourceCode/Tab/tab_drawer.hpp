@@ -20,7 +20,7 @@ public:
 	template<tab_concepts::TabT TabT>
 	void AddTab(const std::shared_ptr<TabT>& tab)
 	{
-		if (m_tabs.count(tab->GetTabHandle())) { return; }
+		if (m_tabs.contains(tab->GetTabHandle())) { return; }
 
 		m_tabs[tab->GetTabHandle()] = tab;
 
@@ -37,7 +37,7 @@ public:
 	/// @brief オブジェクトを非アクティブ化する(削除せずに機能を停止)
 	void Deactivate(const int tab_handle);
 
-	[[nodiscard]] std::shared_ptr<ITab> GetTab(const int tab_handle) const { return m_tabs.count(tab_handle) ? m_tabs.at(tab_handle) : nullptr; }
+	[[nodiscard]] std::shared_ptr<ITab> GetTab(const int tab_handle) const { return m_tabs.contains(tab_handle) ? m_tabs.at(tab_handle) : nullptr; }
 
 private:
 	TabDrawer();

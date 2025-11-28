@@ -235,7 +235,7 @@ private:
 	bool										m_can_search_melee_target;
 
 	bool										m_is_victory_pose;
-	bool										m_is_count_victory_pose;
+	bool										m_is_contains_victory_pose;
 	float										m_victory_pose_wait_time;
 
 	std::shared_ptr<AmmoHolder>											m_ammo_holder;

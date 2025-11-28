@@ -70,12 +70,14 @@ void WeaponShortcutDrawer::Draw(const int main_screen_handle) const
 {
 	if (m_alpha_blend_num <= 0) { return; }
 
+	// ぼかした3Dオブジェクトスクリーンにマスクをかけて描画
 	m_mask_creator->CreateMask();
 	m_mask_creator->UseMask(m_mask_screen->GetScreenHandle(), true);
 	DrawGraph(0, 0, main_screen_handle, TRUE);
 	m_mask_creator->UnuseMask();
 	m_mask_creator->DeleteMask();
 
+	// 武器のアイコンを描画
 	m_icons_screen->Draw();
 }
 
@@ -120,6 +122,7 @@ void WeaponShortcutDrawer::CreateMaskResourceIconsScreen()
 
 void WeaponShortcutDrawer::CreateMaskScreen()
 {
+	// マスクをかける図形を作成
 	m_mask_screen->UseScreen();
 	m_mask_resource_icons_screen->Draw();
 	m_mask_screen->UnuseScreen();

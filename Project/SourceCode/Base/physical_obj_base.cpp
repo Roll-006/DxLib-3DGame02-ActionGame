@@ -117,12 +117,12 @@ void PhysicalObjBase::ApplyKnockbackVelocity()
 
 std::shared_ptr<Collider> PhysicalObjBase::GetCollider(const ColliderKind kind) const
 {
-	return m_colliders.count(kind) ? m_colliders.at(kind) : nullptr;
+	return m_colliders.contains(kind) ? m_colliders.at(kind) : nullptr;
 }
 
 void PhysicalObjBase::AddCollider(const std::shared_ptr<Collider>& collider)
 {
-	if (!m_colliders.count(collider->GetColliderKind()))
+	if (!m_colliders.contains(collider->GetColliderKind()))
 	{
 		m_colliders[collider->GetColliderKind()] = collider;
 	}

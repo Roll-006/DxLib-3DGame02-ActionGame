@@ -24,7 +24,7 @@ void zombie_state::Knockback::Update(std::shared_ptr<Zombie>& obj)
 
 void zombie_state::Knockback::LateUpdate(std::shared_ptr<Zombie>& obj)
 {
-
+	obj->DisallowProjectPos();
 }
 
 void zombie_state::Knockback::Enter(std::shared_ptr<Zombie>& obj)

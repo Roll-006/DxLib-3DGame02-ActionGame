@@ -12,7 +12,7 @@ RocketBombExplosionEffect::RocketBombExplosionEffect() :
 	m_offset_angle				(v3d::GetZeroV()),
 	m_offset_scale				(VGet(kScale, kScale, kScale)),
 	m_data						(EffectData(ObjName.ROCKET_BOMB_HIT_EXPLOSION_EFFECT, EffectPath.ROCKET_BOMB_HIT_EXPLOSION, 50.0f, 0.0f, false)),
-	m_play_count				(0),
+	m_play_contains				(0),
 	m_play_wait_timer			(0.0f),
 	m_trigger_dead_timer		(0.0f)
 {
@@ -39,7 +39,7 @@ void RocketBombExplosionEffect::Init()
 	m_offset_angle					= v3d::GetZeroV();
 	m_offset_scale					= VGet(1.0f, 1.0f, 1.0f);
 
-	m_play_count					= 0;
+	m_play_contains					= 0;
 	m_play_wait_timer				= 0.0f;
 	m_trigger_dead_timer			= 0.0f;
 
@@ -170,7 +170,7 @@ bool RocketBombExplosionEffect::IsReturnPool()
 	if (m_playing_effect_handle > -1)
 	{
 		// ループ再生なしで再生が終了した場合はプールに返却
-		if (!m_data.is_loop && m_play_count > 0 && IsEffekseer3DEffectPlaying(m_playing_effect_handle) == -1)
+		if (!m_data.is_loop && m_play_contains > 0 && IsEffekseer3DEffectPlaying(m_playing_effect_handle) == -1)
 		{
 			return true;
 		}
@@ -219,7 +219,7 @@ void RocketBombExplosionEffect::PlayEffect()
 	if (IsEffekseer3DEffectPlaying(m_playing_effect_handle) == -1 && m_play_wait_timer > m_data.play_wait_time)
 	{
 		m_playing_effect_handle = PlayEffekseer3DEffect(m_origin_effect_handle);
-		++m_play_count;
+		++m_play_contains;
 	}
 }
 

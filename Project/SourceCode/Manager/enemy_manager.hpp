@@ -32,7 +32,7 @@ private:
 
 private:
 	int m_enemy_size;
-	int m_dead_enemy_count;
+	int m_dead_enemy_contains;
 
 	std::shared_ptr<EnemyObjectPool>		m_object_pool;
 	std::vector<std::shared_ptr<EnemyBase>> m_active_enemies;

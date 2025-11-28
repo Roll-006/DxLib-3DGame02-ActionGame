@@ -19,7 +19,7 @@ void zombie_state::Detected::Update(std::shared_ptr<Zombie>& obj)
 
 void zombie_state::Detected::LateUpdate(std::shared_ptr<Zombie>& obj)
 {
-
+	obj->OnFootIK();
 }
 
 void zombie_state::Detected::Enter(std::shared_ptr<Zombie>& obj)

@@ -8,7 +8,7 @@ ObjectPoolBase::ObjectPoolBase(const std::string& name) :
 
 void ObjectPoolBase::ReturnObj(const std::shared_ptr<ObjBase>& obj)
 {
-	if (!m_objects.count(obj->GetName())) { return; }
+	if (!m_objects.contains(obj->GetName())) { return; }
 
 	// 非アクティブ化して追加
 	obj->Deactivate();
@@ -20,9 +20,7 @@ void ObjectPoolBase::DestroyObjects(const std::string& obj_name)
 	while (!m_objects.at(obj_name).empty())
 	{
 		const auto obj = m_objects.at(obj_name).front();
-		auto i = obj.use_count();
 		obj->RemoveToObjManager();
-		i = obj.use_count();
 		m_objects.at(obj_name).pop();
 	}
 
@@ -31,7 +29,7 @@ void ObjectPoolBase::DestroyObjects(const std::string& obj_name)
 
 std::shared_ptr<ObjBase> ObjectPoolBase::GetObj(const std::string& obj_name)
 {
-	if (!m_objects.count(obj_name))     { return nullptr; }
+	if (!m_objects.contains(obj_name))     { return nullptr; }
 	if (m_objects.at(obj_name).empty()) { return nullptr; }
 
 	const auto obj = m_objects.at(obj_name).front();
@@ -46,14 +44,14 @@ std::shared_ptr<ObjBase> ObjectPoolBase::GetObj(const std::string& obj_name)
 
 int ObjectPoolBase::GetMaxPoolSize(const std::string& obj_name) const
 {
-	if (!m_pool_size.count(obj_name)) { return 0; }
+	if (!m_pool_size.contains(obj_name)) { return 0; }
 
 	return m_pool_size.at(obj_name);
 }
 
 int ObjectPoolBase::GetPoolSize(const std::string& obj_name) const
 {
-	if (!m_objects.count(obj_name)) { return 0; }
+	if (!m_objects.contains(obj_name)) { return 0; }
 
 	return static_cast<int>(m_objects.at(obj_name).size());
 }

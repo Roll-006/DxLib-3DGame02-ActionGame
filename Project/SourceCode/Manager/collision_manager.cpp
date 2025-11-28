@@ -1,7 +1,7 @@
 #include "collision_manager.hpp"
 
 CollisionManager::CollisionManager() :
-	m_handle_create_count(-1)
+	m_handle_create_contains(-1)
 {
 	SetIgnoreColliderPairs();
 	AddIgnoreCollider(ColliderKind::kCollisionAreaTrigger);
@@ -85,8 +85,8 @@ void CollisionManager::LateUpdate()
 		{
 			for (const auto& target : pair.target_data)
 			{
-				pair.owner_collider->GetOwnerObj()->OnCollide(ColliderPairOneToOneData(pair.owner_collider, target.collider, target.intersection));
-				target.collider->GetOwnerObj()->OnCollide(ColliderPairOneToOneData(target.collider, pair.owner_collider, target.intersection));
+				pair.owner_collider	->GetOwnerObj()->OnCollide(ColliderPairOneToOneData(pair.owner_collider, target.collider, target.intersection));
+				target.collider		->GetOwnerObj()->OnCollide(ColliderPairOneToOneData(target.collider, pair.owner_collider, target.intersection));
 			}
 		}
 	}
@@ -216,7 +216,7 @@ void CollisionManager::SetIgnoreColliderPairs()
 
 bool CollisionManager::CanCollideObjAndObj(const std::shared_ptr<PhysicalObjBase>& owner_obj, const std::shared_ptr<PhysicalObjBase>& target_obj)
 {
-	// 静的オブジェクト同士は無視(地面と家など)
+	// 静的オブジェクト同士は無視
 	if (owner_obj->GetMassKind() == MassKind::kStatic && target_obj->GetMassKind() == MassKind::kStatic) { return false; }
 
 	// 距離が遠いオブジェクト同士は無視
@@ -235,10 +235,10 @@ bool CollisionManager::CanCollideObjAndObj(const std::shared_ptr<PhysicalObjBase
 
 	// 無視リストに登録されているオブジェクトは無視
 	const ColliderData owner_data{ owner_obj->GetTag(), ColliderKind::kNone };
-	if (m_ignore_collide_collider_pairs.count(owner_data))
+	if (m_ignore_collide_collider_pairs.contains(owner_data))
 	{
 		const ColliderData target_data{ target_obj->GetTag(), ColliderKind::kNone };
-		if (m_ignore_collide_collider_pairs.at(owner_data).count(target_data))
+		if (m_ignore_collide_collider_pairs.at(owner_data).contains(target_data))
 		{
 			return false;
 		}
@@ -259,11 +259,11 @@ bool CollisionManager::CanCollideObjAndCollider(const std::shared_ptr<PhysicalOb
 
 	// 無視リストに登録されているコライダーは無視
 	const ColliderData owner_data{ owner_obj->GetTag(), ColliderKind::kNone };
-	if (m_ignore_collide_collider_pairs.count(owner_data))
+	if (m_ignore_collide_collider_pairs.contains(owner_data))
 	{
 		for (const auto& target : target_data)
 		{
-			if (m_ignore_collide_collider_pairs.at(owner_data).count(target))
+			if (m_ignore_collide_collider_pairs.at(owner_data).contains(target))
 			{
 				return false;
 			}
@@ -294,11 +294,11 @@ bool CollisionManager::CanCollideColliderAndCollider(const std::shared_ptr<Colli
 	// 無視リストに登録されているコライダーは無視
 	for (const auto& owner : owner_data)
 	{
-		if (m_ignore_collide_collider_pairs.count(owner))
+		if (m_ignore_collide_collider_pairs.contains(owner))
 		{
 			for (const auto& target : target_data)
 			{
-				if (m_ignore_collide_collider_pairs.at(owner).count(target))
+				if (m_ignore_collide_collider_pairs.at(owner).contains(target))
 				{
 					return false;
 				}
@@ -309,97 +309,71 @@ bool CollisionManager::CanCollideColliderAndCollider(const std::shared_ptr<Colli
 	return true;
 }
 
+bool CollisionManager::CanCollideCollider(const int obj_handle, const std::shared_ptr<Collider>& collider)
+{
+	// 特定のオブジェクトが持つコライダーの無視判定
+	auto itr = m_ignore_collide_colliders.find(obj_handle);
+	if (itr != m_ignore_collide_colliders.end())
+	{
+		if (itr->second.contains(collider->GetColliderKind())) { return false; }
+	}
+
+	// オブジェクトの指定がないコライダーの無視判定
+	itr = m_ignore_collide_colliders.find(-2);
+	if (itr != m_ignore_collide_colliders.end())
+	{
+		if (itr->second.contains(collider->GetColliderKind())) { return false; }
+	}
+
+	return true;
+}
+
 std::vector<ColliderPairOneToManyData> CollisionManager::CreateHitColliderPairs()
 {
 	std::vector<ColliderPairOneToManyData> collider_pairs;
 
 	for (const auto& owner_obj : m_collide_objects)
-	{
-		// 非アクティブの場合はスキップ
+	{	
 		if (!owner_obj->IsActive()) { continue; }
 
 		for (const auto& target_obj : m_collide_objects)
 		{
-			// 自身との当たり判定は避ける
-			if (owner_obj == target_obj) { continue; }
-
-			// 非アクティブの場合はスキップ
-			if (!target_obj->IsActive()) { continue; }
-
-			// 衝突不可の場合はスキップ
-			if (!CanCollideObjAndObj(owner_obj, target_obj)) { continue; }
+			// 無視判定
+			if (owner_obj == target_obj)						{ continue; }
+			if (!target_obj->IsActive())						{ continue; }
+			if (!CanCollideObjAndObj(owner_obj, target_obj))	{ continue; }
 
 			for (const auto& owner_obj_collider : owner_obj->GetColliderAll())
 			{
-				// 単独で無視リストに登録されていた場合は無視
-				auto itr = m_ignore_collide_colliders.find(owner_obj->GetObjHandle());
-				if (itr != m_ignore_collide_colliders.end())
-				{
-					if (itr->second.count(owner_obj_collider.second->GetColliderKind()))
-					{
-						continue;
-					}
-				}
-				itr = m_ignore_collide_colliders.find(-2);
-				if (itr != m_ignore_collide_colliders.end())
-				{
-					if (itr->second.count(owner_obj_collider.second->GetColliderKind()))
-					{
-						continue;
-					}
-				}
-
-				// 衝突不可の場合はスキップ
-				if (!CanCollideObjAndCollider(target_obj, owner_obj_collider.second)) { continue; }
+				// 無視判定
+				if (!CanCollideCollider			(owner_obj->GetObjHandle(), owner_obj_collider.second)) { continue; }
+				if (!CanCollideObjAndCollider	(target_obj,				owner_obj_collider.second)) { continue; }
 
 				for (const auto& target_obj_collider : target_obj->GetColliderAll())
 				{
-					// 単独で無視リストに登録されていた場合は無視
-					auto itr = m_ignore_collide_colliders.find(target_obj->GetObjHandle());
-					if (itr != m_ignore_collide_colliders.end())
-					{
-						if (itr->second.count(target_obj_collider.second->GetColliderKind()))
-						{
-							continue;
-						}
-					}
-					itr = m_ignore_collide_colliders.find(-2);
-					if (itr != m_ignore_collide_colliders.end())
-					{
-						if (itr->second.count(target_obj_collider.second->GetColliderKind()))
-						{
-							continue;
-						}
-					}
-
-					// 衝突不可の場合はスキップ
-					// TODO : 無視判定のループ回数が多いため改善を検討
-					if (!CanCollideObjAndCollider(owner_obj, target_obj_collider.second)) { continue; }
-					if (!CanCollideColliderAndCollider(owner_obj_collider.second, target_obj_collider.second)) { continue; }
-
+					// 無視判定
+					if (!CanCollideCollider				(target_obj->GetObjHandle(), target_obj_collider.second)) { continue; }
+					if (!CanCollideObjAndCollider		(owner_obj,					 target_obj_collider.second)) { continue; }
+					if (!CanCollideColliderAndCollider	(owner_obj_collider.second,  target_obj_collider.second)) { continue; }
 
 					// 衝突判定
 					std::optional<VECTOR> intersection = std::nullopt;
-					if (IsCollided(*owner_obj_collider.second, *target_obj_collider.second, intersection))
-					{
-						// 指定のオーナーのデータコンテナがまだない場合は新たに作成
-						bool is_maked = std::any_of(collider_pairs.begin(), collider_pairs.end(), [=](const ColliderPairOneToManyData& data)
-							{
-								return data.owner_collider == owner_obj_collider.second;
-							});
-						if (!is_maked)
-						{
-							collider_pairs.emplace_back(owner_obj_collider.second, std::vector<TargetColliderData>());
-						}
+					if (!IsCollided(*owner_obj_collider.second, *target_obj_collider.second, intersection)) { continue; }
 
-						// オーナーが同じデータにターゲットを追加
-						for (size_t i = 0; i < collider_pairs.size(); ++i)
-						{
-							if (collider_pairs.at(i).owner_collider == owner_obj_collider.second)
-							{
-								collider_pairs.at(i).target_data.emplace_back(TargetColliderData(target_obj_collider.second, intersection));
-							}
-						}
+					// 指定のオーナーのデータコンテナがまだない場合は新たに作成
+					bool is_maked = std::any_of(collider_pairs.begin(), collider_pairs.end(), [=](const ColliderPairOneToManyData& data)
+					{
+						return data.owner_collider == owner_obj_collider.second;
+					});
+
+					if (!is_maked) { collider_pairs.emplace_back(owner_obj_collider.second, std::vector<TargetColliderData>()); }
+
+					// オーナーが同じデータにターゲットを追加
+					for (size_t i = 0; i < collider_pairs.size(); ++i)
+					{
+						if (collider_pairs.at(i).owner_collider != owner_obj_collider.second) { continue; }
+
+						collider_pairs.at(i).target_data.emplace_back(TargetColliderData(target_obj_collider.second, intersection));
 					}
 				}
 			}

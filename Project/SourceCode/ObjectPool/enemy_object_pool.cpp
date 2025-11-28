@@ -2,7 +2,7 @@
 
 EnemyObjectPool::EnemyObjectPool() :
 	ObjectPoolBase	(ObjectPoolName.ENEMY_POOL),
-	m_id_count		(0)
+	m_id_contains		(0)
 {
 	m_pool_size[ObjName.ZOMBIE] = kZombiePoolSize;
 

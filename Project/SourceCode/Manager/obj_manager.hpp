@@ -15,7 +15,7 @@ public:
 	void AddObj(const std::shared_ptr<ObjT>& obj)
 	{
 		// 上書き不可
-		if (!m_objects.count(obj->GetObjHandle()))
+		if (!m_objects.contains(obj->GetObjHandle()))
 		{
 			m_objects[obj->GetObjHandle()] = obj;
 		}
@@ -23,14 +23,14 @@ public:
 	void RemoveObj(const int obj_handle);
 
 	/// @brief オブジェクトが存在しているかを判定
-	[[nodiscard]] bool IsExist(const int obj_handle) { return m_objects.count(obj_handle); }
+	[[nodiscard]] bool IsExist(const int obj_handle) { return m_objects.contains(obj_handle); }
 
 	/// @brief オブジェクトを取得
 	/// @param obj_handle オブジェクトハンドル
 	template<obj_concepts::ObjT ObjT>
 	[[nodiscard]] std::shared_ptr<ObjT> GetObj(const int obj_handle)
 	{
-		if (!m_objects.count(obj_handle)) { return nullptr; }
+		if (!m_objects.contains(obj_handle)) { return nullptr; }
 
 		auto s_ptr = m_objects.at(obj_handle).lock();
 		if (!s_ptr) { return nullptr; }

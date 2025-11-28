@@ -22,7 +22,7 @@ void zombie_state::GrabRun::Update(std::shared_ptr<Zombie>& obj)
 
 void zombie_state::GrabRun::LateUpdate(std::shared_ptr<Zombie>& obj)
 {
-
+	obj->OnFootIK();
 }
 
 void zombie_state::GrabRun::Enter(std::shared_ptr<Zombie>& obj)

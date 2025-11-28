@@ -9,7 +9,7 @@ CinemachineBrain::CinemachineBrain() :
 	m_blend_origin_transform		(nullptr),
 	m_blend_target_transform		(nullptr),
 	m_blend_origin_result_transform	(nullptr),
-	m_blend_result_transform		(nullptr),
+	m_blend_result_transform		(std::make_shared<Transform>()),
 	m_blend_result_aim_pos			(v3d::GetZeroV()),
 	m_blend_time					(1.0f),
 	m_blend_timer					(0.0f),
@@ -38,7 +38,7 @@ void CinemachineBrain::Update()
 	if (GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kCamera) > 0.0f)
 	{
 		// 非アクティブ化処理の遅延防止のため一度先行してトランスフォームを取得
-		SetBlendTransform();
+		SelectBlendTransform();
 
 		for (const auto& camera_controller : m_virtual_camera_controllers)
 		{
@@ -75,7 +75,7 @@ void CinemachineBrain::LateUpdate()
 
 void CinemachineBrain::SortPriority(const std::shared_ptr<VirtualCamera>& virtual_camera)
 {
-	if (m_virtual_cameras.count(virtual_camera->GetCameraHandle()))
+	if (m_virtual_cameras.contains(virtual_camera->GetCameraHandle()))
 	{
 		m_priority.emplace_back(std::make_pair(virtual_camera->GetCameraHandle(), virtual_camera->GetPriority()));
 		m_priority = algorithm::Sort(m_priority, SortKind::kDescending);
@@ -86,7 +86,7 @@ void CinemachineBrain::SortPriority(const std::shared_ptr<VirtualCamera>& virtua
 #pragma region 登録 / 解除
 void CinemachineBrain::AddVirtualCamera(const std::shared_ptr<VirtualCamera>& virtual_camera, const bool is_active)
 {
-	if (!m_virtual_cameras.count(virtual_camera->GetCameraHandle()))
+	if (!m_virtual_cameras.contains(virtual_camera->GetCameraHandle()))
 	{
 		m_virtual_cameras[virtual_camera->GetCameraHandle()] = virtual_camera;
 		SortPriority(virtual_camera);
@@ -185,7 +185,7 @@ void CinemachineBrain::SetFOV(const float camera_fov)
 #pragma region Getter
 std::shared_ptr<VirtualCamera> CinemachineBrain::GetVirtualCamera(const int camera_handle) const
 {
-	return m_virtual_cameras.count(camera_handle) ? m_virtual_cameras.at(camera_handle) : nullptr;
+	return m_virtual_cameras.contains(camera_handle) ? m_virtual_cameras.at(camera_handle) : nullptr;
 }
 
 std::shared_ptr<VirtualCamera> CinemachineBrain::GetVirtualCamera(const std::string& obj_name) const
@@ -253,7 +253,7 @@ void CinemachineBrain::DeactivateVirtualCamera(const std::shared_ptr<VirtualCame
 void CinemachineBrain::BlendVirtualCamera()
 {
 	// ブレンドの起点とターゲットを設定
-	SetBlendTransform();
+	SelectBlendTransform();
 
 	// ブレンド結果を計算
 	CalcBlendResultTransform();
@@ -283,10 +283,8 @@ void CinemachineBrain::ChangeTargetVirtualCamera(const int camera_handle)
 	}
 }
 
-void CinemachineBrain::SetBlendTransform()
+void CinemachineBrain::SelectBlendTransform()
 {
-	// FIXME : originA➡targetBのブレンド中に、originB➡targetAに切り替わった場合、到達までの時間が早くなる不具合発生中
-	
 	bool is_seted_target_transform = false;
 	bool is_seted_origin_transform = false;
 	m_origin_virtual_camera = nullptr;
@@ -332,7 +330,10 @@ void CinemachineBrain::SetBlendTransform()
 	}
 
 	// ターゲットのブレンド方針に従ってターゲット以外のカメラのアクティブ状態を制御
-	if (m_target_virtual_camera) { DeactivateVirtualCamera(m_origin_virtual_camera, m_target_virtual_camera); }
+	if (m_target_virtual_camera)
+	{
+		DeactivateVirtualCamera(m_origin_virtual_camera, m_target_virtual_camera);
+	}
 }
 
 void CinemachineBrain::CalcBlendResultTransform()
@@ -349,8 +350,8 @@ void CinemachineBrain::CalcBlendResultTransform()
 	const auto time_manager		= GameTimeManager::GetInstance();
 	math::Increase(m_blend_timer, time_manager->GetDeltaTime(TimeScaleLayerKind::kCamera), m_blend_time, false);
 	m_blend_coefficient			= m_blend_time != 0.0f ? math::GetUnitValue<float, float>(0.0f, m_blend_time, m_blend_timer) : 1.0f;
-	auto blended_transform		= math::GetLerpTransform(*m_blend_origin_transform, *m_blend_target_transform, m_blend_coefficient, true, false, true);
-	m_blend_result_transform	= std::make_shared<Transform>(blended_transform);
+	auto blended_matrix			= math::GetLerpMatrix(m_blend_origin_transform->GetMatrix(CoordinateKind::kWorld), m_blend_target_transform->GetMatrix(CoordinateKind::kWorld), m_blend_coefficient, true, false, true);
+	m_blend_result_transform->SetMatrix(CoordinateKind::kWorld, blended_matrix);
 
 	// ブレンド完了判定
 	if (m_blend_coefficient >= 1.0f)

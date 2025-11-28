@@ -50,9 +50,10 @@ private:
 	void SetIgnoreColliderPairs();
 
 	/// @brief 衝突可能かを判定
-	[[nodiscard]] bool CanCollideObjAndObj(const std::shared_ptr<PhysicalObjBase>& owner_obj, const std::shared_ptr<PhysicalObjBase>& target_obj);
-	[[nodiscard]] bool CanCollideObjAndCollider(const std::shared_ptr<PhysicalObjBase>& owner_obj, const std::shared_ptr<Collider>& target_collider);
-	[[nodiscard]] bool CanCollideColliderAndCollider(const std::shared_ptr<Collider>& owner_collider, const std::shared_ptr<Collider>& target_collider);
+	[[nodiscard]] bool CanCollideObjAndObj			(const std::shared_ptr<PhysicalObjBase>& owner_obj, const std::shared_ptr<PhysicalObjBase>& target_obj);
+	[[nodiscard]] bool CanCollideObjAndCollider		(const std::shared_ptr<PhysicalObjBase>& owner_obj, const std::shared_ptr<Collider>& target_collider);
+	[[nodiscard]] bool CanCollideColliderAndCollider(const std::shared_ptr<Collider>& owner_collider,	const std::shared_ptr<Collider>& target_collider);
+	[[nodiscard]] bool CanCollideCollider			(const int obj_handle, const std::shared_ptr<Collider>& collider);
 
 	/// @brief 衝突判定を起こしたコライダーの組み合わせを生成
 	std::vector<ColliderPairOneToManyData> CreateHitColliderPairs();
@@ -79,7 +80,7 @@ private:
 	std::vector<std::shared_ptr<PhysicalObjBase>>						m_collide_objects;					// 衝突判定を行うオブジェクト
 	std::unordered_map<int, std::unordered_set<ColliderKind>>			m_ignore_collide_colliders;			// 衝突判定を無視するコライダー
 	std::unordered_map<ColliderData, std::unordered_set<ColliderData>>	m_ignore_collide_collider_pairs;	// 衝突判定を無視するコライダーのペア
-	int m_handle_create_count;
+	int m_handle_create_contains;
 
 	friend SingletonBase<CollisionManager>;
 };

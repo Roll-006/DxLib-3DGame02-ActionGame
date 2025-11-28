@@ -190,12 +190,12 @@ InputState InputChecker::GetInputState(const InputCode& input_code)
 	bool current_is_input = false;
 
 	// prev ‚ğŒŸõ
-	if (m_input_data.count({ input_code, TimeKind::kPrev }))
+	if (m_input_data.contains({ input_code, TimeKind::kPrev }))
 	{
 		prev_is_input = m_input_data.at({ input_code, TimeKind::kPrev }).is_input;
 	}
 	// current ‚ğŒŸõ
-	if (m_input_data.count({ input_code, TimeKind::kCurrent }))
+	if (m_input_data.contains({ input_code, TimeKind::kCurrent }))
 	{
 		current_is_input = m_input_data.at({ input_code, TimeKind::kCurrent }).is_input;
 	}

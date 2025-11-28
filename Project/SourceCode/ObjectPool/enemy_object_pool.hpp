@@ -11,5 +11,5 @@ public:
 private:
 	static constexpr int kZombiePoolSize = 15;
 
-	int m_id_count;
+	int m_id_contains;
 };

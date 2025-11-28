@@ -68,8 +68,8 @@ void ik_solver::TwoBoneIK(
 	const int							model_handle,
 	const VECTOR&						world_destination,
 	const int							end_frame_index,
-	const ModelFrameAngleLimitData&		begin_angle_limit,
-	const ModelFrameAngleLimitData&		middle_angle_limit,
+	ModelFrameAngleLimitData&			begin_angle_limit,
+	ModelFrameAngleLimitData&			middle_angle_limit,
 	const RotDirKind					rot_dir_kind,
 	const std::optional<AidAxisData>&	aid_axis)
 {
@@ -107,14 +107,20 @@ void ik_solver::TwoBoneIK(
 	if (length_a + length_b < length_c || std::abs(length_a - length_b) > length_c) { return; }
 	
 	// 回転を構築するためのcos, sinを取得
-	auto	   cos_b				=  ((std::powf(length_c, 2) + std::powf(length_a, 2) - std::powf(length_b, 2)) / (2 * length_c * length_a));			// cos(π − C) = −cosCであるため符号を反転
+	auto	   cos_b				=  ((std::powf(length_c, 2) + std::powf(length_a, 2) - std::powf(length_b, 2)) / (2 * length_c * length_a));
 	auto	   cos_c				= -((std::powf(length_a, 2) + std::powf(length_b, 2) - std::powf(length_c, 2)) / (2 * length_a * length_b));
-	const auto angle_b				= std::clamp(std::acos(std::clamp(cos_b, -1.0f, 1.0f)), begin_angle_limit.min_angle,  begin_angle_limit.max_angle);		// 角度制限
-	const auto angle_c				= std::clamp(std::acos(std::clamp(cos_c, -1.0f, 1.0f)), middle_angle_limit.min_angle, middle_angle_limit.max_angle);	// 角度制限
-	cos_b							= std::cos(angle_b);		// 角度制限付きで再計算
-	cos_c							= std::cos(angle_c);		// 角度制限付きで再計算
-	const auto sin_b				= rot_dir_kind == RotDirKind::kLeft  ? -std::sin(angle_b) : std::sin(angle_b);
-	const auto sin_c				= rot_dir_kind == RotDirKind::kRight ? -std::sin(angle_c) : std::sin(angle_c);		// 実際にはsin(π - C)だが値は変わらないため操作は行わない
+	const auto origin_angle_b		= std::acos(std::clamp(cos_b, -1.0f, 1.0f));
+	const auto origin_angle_c		= std::acos(std::clamp(cos_c, -1.0f, 1.0f));
+	const auto limited_angle_b		= std::clamp(origin_angle_b, begin_angle_limit.min_angle,  begin_angle_limit.max_angle);		// 角度制限
+	const auto limited_angle_c		= std::clamp(origin_angle_c, middle_angle_limit.min_angle, middle_angle_limit.max_angle);		// 角度制限
+	cos_b							= std::cos(limited_angle_b);																	// 角度制限付きで再計算
+	cos_c							= std::cos(limited_angle_c);																	// 角度制限付きで再計算
+	const auto sin_b				= rot_dir_kind == RotDirKind::kLeft  ? -std::sin(limited_angle_b) : std::sin(limited_angle_b);
+	const auto sin_c				= rot_dir_kind == RotDirKind::kRight ? -std::sin(limited_angle_c) : std::sin(limited_angle_c);	// sinC = sin(π - C)
+
+	// 角度制限が発生したかを格納
+	begin_angle_limit.is_limited  = std::fabs(limited_angle_b - origin_angle_b) > math::kEpsilonLow;
+	middle_angle_limit.is_limited = std::fabs(limited_angle_c - origin_angle_c) > math::kEpsilonLow;
 
 	// 回転行列を構築
 	const auto begin_rot_m			= matrix::CreateXMatrix(cos_b, sin_b);

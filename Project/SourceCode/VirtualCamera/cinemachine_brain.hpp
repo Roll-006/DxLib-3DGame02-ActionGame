@@ -123,7 +123,7 @@ private:
 	void ChangeTargetVirtualCamera(const int camera_handle);
 
 	/// @brief ブレンド対象となるトランスフォームを設定
-	void SetBlendTransform();
+	void SelectBlendTransform();
 
 	/// @brief ブレンド結果行列トランスフォームを計算
 	void CalcBlendResultTransform();

@@ -24,7 +24,7 @@ void zombie_state::Run::Update(std::shared_ptr<Zombie>& obj)
 
 void zombie_state::Run::LateUpdate(std::shared_ptr<Zombie>& obj)
 {
-
+	obj->OnFootIK();
 }
 
 void zombie_state::Run::Enter(std::shared_ptr<Zombie>& obj)

@@ -22,7 +22,7 @@ void LightHolder::CreateLight(const std::shared_ptr<ILight> light)
 
 void LightHolder::DeleteLight(const int light_handle)
 {
-	if (m_lights.count(light_handle))
+	if (m_lights.contains(light_handle))
 	{
 		m_lights.at(light_handle)->Deactivate();
 		m_lights.erase(light_handle);

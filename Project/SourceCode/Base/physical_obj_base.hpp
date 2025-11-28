@@ -19,6 +19,9 @@ public:
 	virtual void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) abstract;
 	virtual void OnProjectPos() abstract;
 
+	/// @brief 座標投影を許可しない
+	void DisallowProjectPos() { m_is_project = false; }
+
 	/// @brief ノックバックを受けた
 	/// @param dir 飛ばされる方向
 	/// @param initial_velocity 初速

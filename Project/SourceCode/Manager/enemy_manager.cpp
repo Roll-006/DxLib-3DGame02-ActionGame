@@ -2,7 +2,7 @@
 
 EnemyManager::EnemyManager() :
 	m_enemy_size		(0),
-	m_dead_enemy_count	(0),
+	m_dead_enemy_contains	(0),
 	m_object_pool		(std::make_shared<EnemyObjectPool>())
 {
 	// ƒCƒxƒ“ƒg“o˜^
@@ -152,8 +152,8 @@ void EnemyManager::NotifyDetectedTarget(const OnTargetDetectedEvent& event)
 
 void EnemyManager::CountDeadEnemy(const DeadEnemyEvent& event)
 {
-	++m_dead_enemy_count;
-	if (m_dead_enemy_count >= m_enemy_size)
+	++m_dead_enemy_contains;
+	if (m_dead_enemy_contains >= m_enemy_size)
 	{
 		EventSystem::GetInstance()->Publish(DeadAllEnemyEvent());
 	}

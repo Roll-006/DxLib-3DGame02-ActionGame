@@ -57,7 +57,7 @@ private:
 	std::unordered_map<CommandKind, std::unordered_map<CommandSlotKind, InputCode>>	m_pad_codes;
 
 	std::unordered_map<CommandKind, InputModeKind>									m_input_mode;			// 入力モード
-	std::unordered_map<TimeKind, std::unordered_map<CommandKind, int>>				m_trigger_count;		// トリガー方式入力カウント
+	std::unordered_map<TimeKind, std::unordered_map<CommandKind, int>>				m_trigger_contains;		// トリガー方式入力カウント
 
 	friend SingletonBase<CommandHandler>;
 };

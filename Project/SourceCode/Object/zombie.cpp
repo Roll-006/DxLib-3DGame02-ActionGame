@@ -119,6 +119,8 @@ void Zombie::LateUpdate()
 {
 	if (!IsActive()) { return; }
 
+	m_is_project = true;
+
 	// TODO : 後に関数化
 	auto ray = std::static_pointer_cast<Segment>(GetCollider(ColliderKind::kRay)->GetShape());
 	const auto target_model_handle = m_state->GetTargetCharacter()->GetModeler()->GetModelHandle();
@@ -147,7 +149,6 @@ void Zombie::LateUpdate()
 	m_can_grab_target				= false;
 	m_on_collided_vision_trigger	= false;
 	m_has_obstacle_between_target	= false;
-	m_is_project					= true;
 }
 
 void Zombie::Draw() const
@@ -156,7 +157,7 @@ void Zombie::Draw() const
 
 	m_modeler->Draw();
 
-	DrawColliders();
+	//DrawColliders();
 }
 
 void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
@@ -358,12 +359,48 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 void Zombie::OnProjectPos()
 {
+	if (!IsActive())	{ return; }
+	if (!IsProject())	{ return; }
 
+	const auto project_pos = GetCurrentProjectPos();
+	if (!project_pos)	{ return; }
+
+	const auto project_ray = GetCollider(ColliderKind::kProjectRay);
+	if (!project_ray)	{ return; }
+
+	const auto collider = GetCollider(ColliderKind::kCollider);
+	if (!collider)		{ return; }
+
+	const auto capsule = std::dynamic_pointer_cast<Capsule>(collider->GetShape());
+	if (!capsule)		{ return; }
+
+	const auto hit_triangle = project_ray->GetHitTriangles();
+	if (hit_triangle.size() <= 0) { return; }
+
+	// 着地していた場合、以前の投影座標より下にあれば投影を許可する
+	if (IsLanding())
+	{
+		const auto prev_project_pos = GetPrevProjectPos();
+		if (prev_project_pos)
+		{
+			if ((project_pos->y - prev_project_pos->y) >= math::kEpsilonLow) { return; }
+		}
+	}
+
+	// 光線の始点からの距離
+	const auto future_begin_pos = *project_pos + axis::GetWorldYAxis() * capsule->GetRadius();
+	const auto distance = math::GetDistancePointToTriangle(future_begin_pos, hit_triangle.front());
+
+	// 固定位置を決定
+	const auto penetration = capsule->GetRadius() - distance;
+	const auto push_back_length = math::GetHypotenuseLengthIsoscelesRightTriangle(penetration);
+	const auto result_pos = *project_pos + axis::GetWorldYAxis() * push_back_length;
+	m_transform->SetPos(CoordinateKind::kWorld, result_pos);
 }
 
 void Zombie::OnDamage(const HealthPartKind part_kind, const float damage)
 {
-	if (!m_health.count(part_kind)) { return; }
+	if (!m_health.contains(part_kind)) { return; }
 
 	m_health.at(part_kind)->Decrease(damage);
 	m_invincible_timer	= invincible_time;
@@ -489,12 +526,15 @@ void Zombie::TrackMove(const VECTOR& target_pos)
 
 void Zombie::OnFootIK()
 {
-
+	m_humanoid_foot_ik->OnFootIK(std::dynamic_pointer_cast<IHumanoid>(shared_from_this()));
 }
 
 void Zombie::OnCrouchIK()
 {
+	const auto humanoid = std::dynamic_pointer_cast<IHumanoid>(shared_from_this());
 
+	m_humanoid_foot_ik->CalcRightLegRayPos	(humanoid);
+	m_humanoid_foot_ik->OnRightKneelCrouchIK(humanoid);
 }
 
 void Zombie::UpdateGrabRun()

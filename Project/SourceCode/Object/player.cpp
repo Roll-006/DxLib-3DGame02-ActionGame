@@ -18,7 +18,7 @@ Player::Player() :
 	m_can_search_stealth_kill_target(true),
 	m_can_search_melee_target		(true),
 	m_is_victory_pose				(false),
-	m_is_count_victory_pose			(false),
+	m_is_contains_victory_pose			(false),
 	m_victory_pose_wait_time		(0.0f),
 	m_ammo_holder					(std::make_shared<AmmoHolder>()),
 	m_weapon_shortcut_selecter		(std::make_shared<WeaponShortcutSelecter>()),
@@ -230,7 +230,7 @@ void Player::Draw() const
 		if (attach_weapon.second) { attach_weapon.second->Draw(); }
 	}
 
-	DrawColliders();
+	//DrawColliders();
 
 	//const auto p = m_transform->GetPos(CoordinateKind::kWorld);
 	//const auto d = m_look_dir.at(TimeKind::kCurrent);
@@ -301,19 +301,20 @@ void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 void Player::OnProjectPos()
 {
-	if (!IsActive()) { return; }
+	if (!IsActive())	{ return; }
+	if (!IsProject())	{ return; }
 
 	const auto project_pos = GetCurrentProjectPos();
-	if (!project_pos) { return; }
+	if (!project_pos)	{ return; }
 
 	const auto project_ray = GetCollider(ColliderKind::kProjectRay);
-	if (!project_ray) { return; }
+	if (!project_ray)	{ return; }
 
 	const auto collider = GetCollider(ColliderKind::kCollider);
-	if (!collider) { return; }
+	if (!collider)		{ return; }
 
 	const auto capsule = std::dynamic_pointer_cast<Capsule>(collider->GetShape());
-	if (!capsule) { return; }
+	if (!capsule)		{ return; }
 
 	const auto hit_triangle = project_ray->GetHitTriangles();
 	if (hit_triangle.size() <= 0) { return; }
@@ -356,7 +357,7 @@ void Player::OnProjectPos()
 
 void Player::OnDamage(const HealthPartKind part_kind, const float damage)
 {
-	if (!m_health.count(part_kind)) { return; }
+	if (!m_health.contains(part_kind)) { return; }
 
 	m_health.at(part_kind)->Decrease(damage);
 	m_invincible_timer	= invincible_time;
@@ -605,7 +606,7 @@ void Player::EquipWeapon(const std::shared_ptr<WeaponBase>& weapon, const Weapon
 
 void Player::UnequipWeapon(const WeaponSlotKind slot_kind)
 {
-	if (m_current_equip_weapon.count(slot_kind))
+	if (m_current_equip_weapon.contains(slot_kind))
 	{
 		m_current_equip_weapon.at(slot_kind)->DetachOwner();
 		m_current_equip_weapon.at(slot_kind) = nullptr;
@@ -658,7 +659,7 @@ void Player::AttachWeapon(const int obj_handle)
 void Player::DetachWeapon(const std::shared_ptr<WeaponBase>& weapon)
 {
 	// Ž©g‚ª‘•’…‚³‚ê‚Ä‚¢‚ê‚Î’…’E‚·‚é
-	if (m_attach_weapons.count(weapon->GetHolsterKind()))
+	if (m_attach_weapons.contains(weapon->GetHolsterKind()))
 	{
 		if (m_attach_weapons[weapon->GetHolsterKind()] == weapon)
 		{
@@ -676,7 +677,7 @@ void Player::DetachWeapon(const HolsterKind holster_kind)
 
 std::shared_ptr<WeaponBase> Player::GetCurrentEquipWeapon(const WeaponSlotKind slot_kind) const
 {
-	return m_current_equip_weapon.count(slot_kind) ? m_current_equip_weapon.at(slot_kind) : nullptr;
+	return m_current_equip_weapon.contains(slot_kind) ? m_current_equip_weapon.at(slot_kind) : nullptr;
 }
 
 std::shared_ptr<WeaponBase> Player::GetCurrentHeldWeapon()
@@ -686,12 +687,12 @@ std::shared_ptr<WeaponBase> Player::GetCurrentHeldWeapon()
 
 std::shared_ptr<WeaponBase> Player::GetCurrentAttachWeapon(const HolsterKind holster_kind) const
 {
-	return m_attach_weapons.count(holster_kind) ? m_attach_weapons.at(holster_kind) : nullptr;
+	return m_attach_weapons.contains(holster_kind) ? m_attach_weapons.at(holster_kind) : nullptr;
 }
 
 WeaponKind Player::GetCurrentEquipWeaponKind(const WeaponSlotKind slot_kind)
 {
-	return m_current_equip_weapon.count(slot_kind) ? m_current_equip_weapon.at(slot_kind)->GetWeaponKind() : WeaponKind::kNone;
+	return m_current_equip_weapon.contains(slot_kind) ? m_current_equip_weapon.at(slot_kind)->GetWeaponKind() : WeaponKind::kNone;
 }
 
 WeaponKind Player::GetCurrentHeldWeaponKind()
@@ -701,7 +702,7 @@ WeaponKind Player::GetCurrentHeldWeaponKind()
 
 WeaponKind Player::GetCurrentAttachWeaponKind(const HolsterKind holster_kind) const
 {
-	return m_attach_weapons.count(holster_kind) ? m_attach_weapons.at(holster_kind)->GetWeaponKind() : WeaponKind::kNone;
+	return m_attach_weapons.contains(holster_kind) ? m_attach_weapons.at(holster_kind)->GetWeaponKind() : WeaponKind::kNone;
 }
 #pragma endregion
 
@@ -839,14 +840,14 @@ float Player::GetDeltaTime() const
 void Player::DeadAllEnemy(const DeadAllEnemyEvent& event)
 {
 	m_can_control			= false;
-	m_is_count_victory_pose = true;
+	m_is_contains_victory_pose = true;
 }
 #pragma endregion
 
 
 void Player::JudgeVictoryPose()
 {
-	if (!m_is_count_victory_pose) { return; }
+	if (!m_is_contains_victory_pose) { return; }
 
 	m_victory_pose_wait_time += GetDeltaTime();
 	if (m_victory_pose_wait_time > 4.5f)

@@ -45,8 +45,8 @@ namespace ik_solver
 		const int							model_handle, 
 		const VECTOR&						world_destination, 
 		const int							end_frame_index, 
-		const ModelFrameAngleLimitData&		begin_angle_limit, 
-		const ModelFrameAngleLimitData&		middle_angle_limit,
+		ModelFrameAngleLimitData&			begin_angle_limit, 
+		ModelFrameAngleLimitData&			middle_angle_limit,
 		const RotDirKind					rot_dir_kind, 
 		const std::optional<AidAxisData>&	aid_axis = std::nullopt);
 }

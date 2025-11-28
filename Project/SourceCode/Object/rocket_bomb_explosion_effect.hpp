@@ -88,7 +88,7 @@ private:
 	VECTOR		m_offset_scale;
 
 	EffectData	m_data;
-	int			m_play_count;
+	int			m_play_contains;
 	float		m_play_wait_timer;				// Ä¶ŠJn‚ğ‘Ò‚ÂŠÔ‚ğŒv‘ª
 	float		m_trigger_dead_timer;
 };
