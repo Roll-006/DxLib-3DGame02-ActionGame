@@ -18,7 +18,7 @@ Player::Player() :
 	m_can_search_stealth_kill_target(true),
 	m_can_search_melee_target		(true),
 	m_is_victory_pose				(false),
-	m_is_contains_victory_pose			(false),
+	m_is_contains_victory_pose		(false),
 	m_victory_pose_wait_time		(0.0f),
 	m_ammo_holder					(std::make_shared<AmmoHolder>()),
 	m_weapon_shortcut_selecter		(std::make_shared<WeaponShortcutSelecter>()),
@@ -99,8 +99,8 @@ Player::Player() :
 		AttachWeapon(rocket_launcher);
 		AttachWeapon(knife);
 
-		//std::shared_ptr<IAmmoBox> rocket_bomb_box = std::make_shared<RocketBombBox>(10);
-		//m_ammo_holder->AddAmmo(rocket_bomb_box);
+		std::shared_ptr<IAmmoBox> rocket_bomb_box = std::make_shared<RocketBombBox>(1);
+		m_ammo_holder->AddAmmo(rocket_bomb_box);
 
 		std::shared_ptr<IAmmoBox> assault_rifle_ammo_box = std::make_shared<AssaultRifleAmmoBox>(80);
 		m_ammo_holder->AddAmmo(assault_rifle_ammo_box);

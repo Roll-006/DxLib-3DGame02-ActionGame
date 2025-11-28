@@ -392,9 +392,9 @@ void Zombie::OnProjectPos()
 	const auto distance = math::GetDistancePointToTriangle(future_begin_pos, hit_triangle.front());
 
 	// ŒÅ’èˆÊ’u‚ðŒˆ’è
-	const auto penetration = capsule->GetRadius() - distance;
+	const auto penetration		= capsule->GetRadius() - distance;
 	const auto push_back_length = math::GetHypotenuseLengthIsoscelesRightTriangle(penetration);
-	const auto result_pos = *project_pos + axis::GetWorldYAxis() * push_back_length;
+	const auto result_pos		= *project_pos + axis::GetWorldYAxis() * push_back_length;
 	m_transform->SetPos(CoordinateKind::kWorld, result_pos);
 }
 

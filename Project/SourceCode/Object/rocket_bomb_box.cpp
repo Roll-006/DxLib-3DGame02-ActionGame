@@ -10,7 +10,7 @@ RocketBombBox::RocketBombBox() :
 	nlohmann::json data;
 	if (json_loader::Load("Data/JSON/ammo_box.json", data))
 	{
-		rifle_cartridge_box_data = data.at("ammo_box").at("assault_rifle_ammo_box").at("rocket_bomb_box").get<RifleCartridgeBoxData>();
+		rifle_cartridge_box_data = data.at("ammo_box").at("rocket_bomb_box").at("rifle_cartridge_box_data").get<RifleCartridgeBoxData>();
 		
 		m_modeler = std::make_shared<Modeler>(m_transform, rifle_cartridge_box_data.model_path, rifle_cartridge_box_data.basic_angle, rifle_cartridge_box_data.basic_scale);
 		AddCollider(std::make_shared<Collider>(ColliderKind::kProjectRay, std::make_shared<Segment>(m_transform->GetPos(CoordinateKind::kWorld), -axis::GetWorldYAxis(), rifle_cartridge_box_data.project_ray_length), this));
@@ -27,7 +27,7 @@ RocketBombBox::RocketBombBox(const int ammo_num) :
 	nlohmann::json data;
 	if (json_loader::Load("Data/JSON/ammo_box.json", data))
 	{
-		rifle_cartridge_box_data = data.at("ammo_box").at("assault_rifle_ammo_box").at("rocket_bomb_box").get<RifleCartridgeBoxData>();
+		rifle_cartridge_box_data = data.at("ammo_box").at("rocket_bomb_box").at("rifle_cartridge_box_data").get<RifleCartridgeBoxData>();
 		
 		m_modeler = std::make_shared<Modeler>(m_transform, rifle_cartridge_box_data.model_path, rifle_cartridge_box_data.basic_angle, rifle_cartridge_box_data.basic_scale);
 		AddCollider(std::make_shared<Collider>(ColliderKind::kProjectRay, std::make_shared<Segment>(m_transform->GetPos(CoordinateKind::kWorld), -axis::GetWorldYAxis(), rifle_cartridge_box_data.project_ray_length), this));

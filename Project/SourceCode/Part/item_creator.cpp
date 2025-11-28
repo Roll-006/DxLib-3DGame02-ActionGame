@@ -57,14 +57,25 @@ void ItemCreator::CreateDeadEnemyItem(const DeadEnemyEvent& event)
 {
 	auto	   hips_m	= MV1GetFrameLocalWorldMatrix(event.model_handle, MV1SearchFrame(event.model_handle, FramePath.HIPS));
 	const auto hips_pos	= MGetTranslateElem(hips_m);
+	std::shared_ptr<IItem> item = nullptr;
 
 	// ‰¼‚Å’e‚ğ‹­§‚Å¶¬
-	// TODO : ‚Ì‚¿‚É•ÏX
-	const auto item	= std::make_shared<AssaultRifleAmmoBox>(40);
-	item->AddToObjManager();
-	item->GetTransform()	->SetPos(CoordinateKind::kWorld, hips_pos);
-	item->GetItemTransform()->SetPos(CoordinateKind::kWorld, hips_pos);
-	m_items.emplace_back(item);
+	
+	if (event.enemy_id == "zombie0")
+	{
+		item = std::make_shared<RocketBombBox>(1);
+	}
+	else
+	{
+		const auto num = RandomGenerator::GetInstance()->GetRandClosedOpen(10, 30);
+		item = std::make_shared<AssaultRifleAmmoBox>(num);
+	}
 
-	EventSystem::GetInstance()->Publish(DropItemEvent(item->GetItemTransform(), item->GetObjHandle(), item->GetItemKind()));
+	const auto obj = std::dynamic_pointer_cast<ObjBase>(item);
+	obj->AddToObjManager();
+	obj->GetTransform()		->SetPos(CoordinateKind::kWorld, hips_pos);
+	item->GetItemTransform()->SetPos(CoordinateKind::kWorld, hips_pos);
+	
+	m_items.emplace_back(obj);
+	EventSystem::GetInstance()->Publish(DropItemEvent(item->GetItemTransform(), obj->GetObjHandle(), item->GetItemKind()));
 }
