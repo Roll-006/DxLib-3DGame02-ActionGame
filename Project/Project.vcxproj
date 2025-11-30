@@ -415,6 +415,7 @@
     <ClInclude Include="SourceCode\Data\input_data.hpp" />
     <ClInclude Include="SourceCode\Debugger\debugger.hpp" />
     <ClInclude Include="SourceCode\Drawer\drawer.hpp" />
+    <ClInclude Include="SourceCode\Event\got_item_event.hpp" />
     <ClInclude Include="SourceCode\Event\drop_item_event.hpp" />
     <ClInclude Include="SourceCode\Event\dead_all_enemy_event.hpp" />
     <ClInclude Include="SourceCode\Event\dead_enemy_event.hpp" />

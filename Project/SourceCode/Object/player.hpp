@@ -56,20 +56,22 @@ public:
 
 
 	#pragma region アイテム
-	void StopAddAcquirableItem() override { m_can_add_acquirable_item = false; }
+	void StopAddPickupableItem() override { m_can_add_acquirable_item = false; }
+
+	void PickUpItem() override;
 
 	void AddItem	(const std::shared_ptr<IItem>& item) override;
 	void RemoveItem	(const std::shared_ptr<IItem>& item) override;
 
-	void AddGetCandidateItem(const SpottedItemEvent& event) override;
-	void RemoveGetCandidateItems() override { m_item_get_candidates.clear(); }
+	void AddPickUpCandidateItem(const SpottedItemEvent& event) override;
+	void RemovePickUpCandidateItems() override { m_item_get_candidates.clear(); }
 
-	void AddAcquirableItem(const std::shared_ptr<IItem>& item) override { m_acquirable_item = item; }
-	void RemoveAcquirableItem() override { m_acquirable_item = nullptr; }
+	void AddPickupableItem(const std::shared_ptr<IItem>& item) override { m_acquirable_item = item; }
+	void RemovePickupableItem() override { m_acquirable_item = nullptr; }
 
-	[[nodiscard]] std::shared_ptr<IItem>&		GetAcquirableItem()		override { return m_acquirable_item; }
+	[[nodiscard]] std::shared_ptr<IItem>&		GetPickupableItem()		override { return m_acquirable_item; }
 	[[nodiscard]] std::vector<SpottedObjData>&	GetCandidateItems()		override { return m_item_get_candidates; }
-	[[nodiscard]] bool							CanAddAcquirableItem()	override { return m_can_add_acquirable_item; }
+	[[nodiscard]] bool							CanAddPickupableItem()	override { return m_can_add_acquirable_item; }
 	#pragma endregion
 
 

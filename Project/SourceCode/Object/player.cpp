@@ -15,6 +15,7 @@ Player::Player() :
 	m_is_grabbed					(false),
 	m_is_escape						(false),
 	m_escape_start_timer			(0.0f),
+	m_can_add_acquirable_item		(true),
 	m_can_search_stealth_kill_target(true),
 	m_can_search_melee_target		(true),
 	m_is_victory_pose				(false),
@@ -34,7 +35,7 @@ Player::Player() :
 
 	// イベント登録
 	EventSystem::GetInstance()->Subscribe<DeadAllEnemyEvent>(this, &Player::DeadAllEnemy);
-	EventSystem::GetInstance()->Subscribe<SpottedItemEvent>	(this, &Player::AddGetCandidateItem);
+	EventSystem::GetInstance()->Subscribe<SpottedItemEvent>	(this, &Player::AddPickUpCandidateItem);
 
 	mass_kind = MassKind::kMedium;
 
@@ -112,7 +113,7 @@ Player::~Player()
 {
 	// イベントの登録解除
 	EventSystem::GetInstance()->Unsubscribe<DeadAllEnemyEvent>	(this, &Player::DeadAllEnemy);
-	EventSystem::GetInstance()->Unsubscribe<SpottedItemEvent>	(this, &Player::AddGetCandidateItem);
+	EventSystem::GetInstance()->Unsubscribe<SpottedItemEvent>	(this, &Player::AddPickUpCandidateItem);
 
 	for (const auto& item : m_items)
 	{
@@ -159,6 +160,8 @@ void Player::Update()
 	m_look_dir_offset_speed				= kLookDirOffsetSpeed;
 	m_can_search_stealth_kill_target	= true;
 	m_can_search_melee_target			= true;
+
+	PickUpItem();
 
 	m_weapon_shortcut_selecter	->Update(std::static_pointer_cast<Player>(shared_from_this()));
 	m_state						->Update(std::static_pointer_cast<Player>(shared_from_this()));
@@ -581,6 +584,22 @@ void Player::SetupStealthKill()
 
 
 #pragma region アイテム
+void Player::PickUpItem()
+{
+	if (!m_acquirable_item) { return; }
+
+	if (!CommandHandler::GetInstance()->IsExecute(CommandKind::kMelee, TimeKind::kCurrent)) { return; }
+
+	auto ammo_box = std::dynamic_pointer_cast<IAmmoBox>(m_acquirable_item);
+	if (!ammo_box) { return; }
+
+	m_ammo_holder->AddAmmo(ammo_box);
+	const auto obj = std::dynamic_pointer_cast<ObjBase>(m_acquirable_item);
+	if (!obj) { return; }
+
+	EventSystem::GetInstance()->Publish(GotItemEvent(obj->GetObjHandle()));
+}
+
 void Player::AddItem(const std::shared_ptr<IItem>& item)
 {
 	const auto item_kind = item->GetItemKind();
@@ -598,7 +617,7 @@ void Player::RemoveItem(const std::shared_ptr<IItem>& item)
 	m_items[item_kind].erase(std::remove(m_items[item_kind].begin(), m_items[item_kind].end(), item), m_items[item_kind].end());
 }
 
-void Player::AddGetCandidateItem(const SpottedItemEvent& event)
+void Player::AddPickUpCandidateItem(const SpottedItemEvent& event)
 {
 	m_item_get_candidates.emplace_back(SpottedObjData(event.target_obj_handle, event.camera_diff_angle, event.distance_to_camera));
 }

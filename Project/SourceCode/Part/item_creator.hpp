@@ -15,6 +15,8 @@ public:
 private:
 	/// @brief “G‚ª€–S‚µ‚½Û‚ÌƒAƒCƒeƒ€‚ğ¶¬
 	void CreateDeadEnemyItem(const DeadEnemyEvent& event);
+	
+	void RemoveItem(const GotItemEvent& event);
 
 private:
 	std::shared_ptr<Player> m_player;

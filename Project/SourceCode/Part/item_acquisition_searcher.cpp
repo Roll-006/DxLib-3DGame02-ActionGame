@@ -14,17 +14,17 @@ ItemAcquisitionSearcher::~ItemAcquisitionSearcher()
 void ItemAcquisitionSearcher::Update()
 {
 	// 追加が許可されてない場合はすべて削除して早期return
-	if (!m_item_collectable.lock()->CanAddAcquirableItem())
+	if (!m_item_collectable.lock()->CanAddPickupableItem())
 	{
-		m_item_collectable.lock()->RemoveGetCandidateItems();
+		m_item_collectable.lock()->RemovePickUpCandidateItems();
 		return;
 	}
 
-	m_item_collectable.lock()->RemoveAcquirableItem();
+	m_item_collectable.lock()->RemovePickupableItem();
 
 	SearchItemAcquisition();
 
-	m_item_collectable.lock()->RemoveGetCandidateItems();
+	m_item_collectable.lock()->RemovePickUpCandidateItems();
 }
 
 void ItemAcquisitionSearcher::SearchItemAcquisition()
@@ -52,7 +52,7 @@ void ItemAcquisitionSearcher::SearchItemAcquisition()
 		std::ranges::sort(distance,	{}, &SpottedObjData::distance_to_camera);
 		const auto candidate_obj = ObjManager::GetInstance()->GetObj<ObjBase>(distance.front().target_obj_handle);
 		const auto target = std::dynamic_pointer_cast<IItem>(candidate_obj);
-		m_item_collectable.lock()->AddAcquirableItem(target);
+		m_item_collectable.lock()->AddPickupableItem(target);
 		return;
 	}
 
@@ -60,5 +60,5 @@ void ItemAcquisitionSearcher::SearchItemAcquisition()
 	std::ranges::sort(angle, {}, &SpottedObjData::camera_diff_angle);
 	const auto candidate_obj = ObjManager::GetInstance()->GetObj<ObjBase>(angle.front().target_obj_handle);
 	const auto target = std::dynamic_pointer_cast<IItem>(candidate_obj);
-	m_item_collectable.lock()->AddAcquirableItem(target);
+	m_item_collectable.lock()->AddPickupableItem(target);
 }
