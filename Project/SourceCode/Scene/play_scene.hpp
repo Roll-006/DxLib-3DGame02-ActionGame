@@ -8,6 +8,7 @@
 #include "../Object/skydome.hpp"
 #include "../Part/stealth_kill_target_searcher.hpp"
 #include "../Part/melee_target_searcher.hpp"
+#include "../Part/item_acquisition_searcher.hpp"
 #include "../Part/item_creator.hpp"
 
 #include "../UI/ui_drawer.hpp"
@@ -55,6 +56,7 @@ private:
 	std::shared_ptr<Skydome>					m_skydome;
 	std::shared_ptr<StealthKillTargetSearcher>	m_stealth_kill_target_searcher;
 	std::shared_ptr<MeleeTargetSearcher>		m_melee_target_searcher;
+	std::shared_ptr<ItemAcquisitionSearcher>	m_item_acquisition_searcher;
 	std::shared_ptr<ItemCreator>				m_item_creator;
 	std::shared_ptr<RifleCartridgeObjectPool>	m_rifle_cartridge_object_pool;
 	std::shared_ptr<PlaySceneEffectObjectPool>  m_play_scene_effect_object_pool;

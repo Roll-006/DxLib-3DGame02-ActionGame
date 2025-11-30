@@ -13,7 +13,8 @@ AssaultRifleAmmoBox::AssaultRifleAmmoBox() :
 		rifle_cartridge_box_data = data.at("ammo_box").at("assault_rifle_ammo_box").at("rifle_cartridge_box_data").get<RifleCartridgeBoxData>();
 
 		m_modeler = std::make_shared<Modeler>(m_transform, rifle_cartridge_box_data.model_path, rifle_cartridge_box_data.basic_angle, rifle_cartridge_box_data.basic_scale);
-		AddCollider(std::make_shared<Collider>(ColliderKind::kProjectRay, std::make_shared<Segment>(m_transform->GetPos(CoordinateKind::kWorld), -axis::GetWorldYAxis(), rifle_cartridge_box_data.project_ray_length), this));
+		AddCollider(std::make_shared<Collider>(ColliderKind::kProjectRay,		std::make_shared<Segment>	(m_transform->GetPos(CoordinateKind::kWorld), -axis::GetWorldYAxis(), rifle_cartridge_box_data.project_ray_length), this));
+		AddCollider(std::make_shared<Collider>(ColliderKind::kVisibleTrigger,	std::make_shared<Point>		(m_transform->GetPos(CoordinateKind::kWorld)), this));
 	}
 }
 
@@ -30,7 +31,8 @@ AssaultRifleAmmoBox::AssaultRifleAmmoBox(const int ammo_num) :
 		rifle_cartridge_box_data = data.at("ammo_box").at("assault_rifle_ammo_box").at("rifle_cartridge_box_data").get<RifleCartridgeBoxData>();
 
 		m_modeler = std::make_shared<Modeler>(m_transform, rifle_cartridge_box_data.model_path, rifle_cartridge_box_data.basic_angle, rifle_cartridge_box_data.basic_scale);
-		AddCollider(std::make_shared<Collider>(ColliderKind::kProjectRay, std::make_shared<Segment>(m_transform->GetPos(CoordinateKind::kWorld), -axis::GetWorldYAxis(), rifle_cartridge_box_data.project_ray_length), this));
+		AddCollider(std::make_shared<Collider>(ColliderKind::kProjectRay,		std::make_shared<Segment>	(m_transform->GetPos(CoordinateKind::kWorld), -axis::GetWorldYAxis(), rifle_cartridge_box_data.project_ray_length), this));
+		AddCollider(std::make_shared<Collider>(ColliderKind::kVisibleTrigger,	std::make_shared<Point>		(m_transform->GetPos(CoordinateKind::kWorld)), this));
 	}
 
 	if (m_have_num > GetMaxHaveNum())
@@ -136,6 +138,10 @@ void AssaultRifleAmmoBox::OnProjectPos()
 	m_item_effect_transform	->SetPos(CoordinateKind::kWorld, *project_pos);
 	transform				->SetPos(CoordinateKind::kWorld, *project_pos);
 	transform				->SetRot(CoordinateKind::kWorld, new_axis);
+
+	// コライダーの位置更新
+	const auto pos = transform->GetPos(CoordinateKind::kWorld);
+	std::static_pointer_cast<Point>(m_colliders.at(ColliderKind::kVisibleTrigger)->GetShape())->SetPos(pos);
 }
 
 void AssaultRifleAmmoBox::Synthesize(const std::shared_ptr<IAmmoBox> ammo_box)

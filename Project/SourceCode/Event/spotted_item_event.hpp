@@ -1,6 +1,7 @@
 #pragma once
 
-struct MeleeCandidateData
+/// @brief アイテムがカメラの視界に入った
+struct SpottedItemEvent
 {
 	int	  target_obj_handle		= -1;
 	float camera_diff_angle		= 0.0f;		// カメラのforwardからの角度の差

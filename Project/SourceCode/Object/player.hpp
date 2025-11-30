@@ -56,8 +56,20 @@ public:
 
 
 	#pragma region アイテム
+	void StopAddAcquirableItem() override { m_can_add_acquirable_item = false; }
+
 	void AddItem	(const std::shared_ptr<IItem>& item) override;
 	void RemoveItem	(const std::shared_ptr<IItem>& item) override;
+
+	void AddGetCandidateItem(const SpottedItemEvent& event) override;
+	void RemoveGetCandidateItems() override { m_item_get_candidates.clear(); }
+
+	void AddAcquirableItem(const std::shared_ptr<IItem>& item) override { m_acquirable_item = item; }
+	void RemoveAcquirableItem() override { m_acquirable_item = nullptr; }
+
+	[[nodiscard]] std::shared_ptr<IItem>&		GetAcquirableItem()		override { return m_acquirable_item; }
+	[[nodiscard]] std::vector<SpottedObjData>&	GetCandidateItems()		override { return m_item_get_candidates; }
+	[[nodiscard]] bool							CanAddAcquirableItem()	override { return m_can_add_acquirable_item; }
 	#pragma endregion
 
 
@@ -231,6 +243,7 @@ private:
 	bool										m_is_grabbed;							// 捕まれたかを判定
 	bool										m_is_escape;
 	float										m_escape_start_timer;
+	bool										m_can_add_acquirable_item;
 	bool										m_can_search_stealth_kill_target;
 	bool										m_can_search_melee_target;
 
@@ -245,9 +258,14 @@ private:
 	std::shared_ptr<WeaponBase>											m_current_held_weapon;				// 現在手に持っている武器
 	std::unordered_map<HolsterKind, std::shared_ptr<WeaponBase>>		m_attach_weapons;					// 装着している武器
 	std::shared_ptr<WeaponShortcutSelecter>								m_weapon_shortcut_selecter;			// ショートカットに登録されている武器
+	
+	std::shared_ptr<IItem>												m_acquirable_item;					// 取得可能アイテム
+	std::vector<SpottedObjData>											m_item_get_candidates;				// 取得候補アイテム
+
 	std::shared_ptr<IMeleeHittable>										m_melee_target;
 	std::shared_ptr<IMeleeHittable>										m_top_priority_downed_chara;
 	std::shared_ptr<IStealthKillable>									m_stealth_kill_target;
+
 	std::shared_ptr<IGrabber>											m_grabber;
 	std::shared_ptr<Gauge>												m_escape_gauge;
 

@@ -13,7 +13,8 @@ PlayScene::PlayScene() :
 	//m_trees							(std::make_shared<Trees>()),
 	m_skydome						(std::make_shared<Skydome>()),
 	m_stealth_kill_target_searcher	(std::make_shared<StealthKillTargetSearcher>(m_player)),
-	m_melee_target_searcher			(std::make_shared<MeleeTargetSearcher>(m_player)),
+	m_melee_target_searcher			(std::make_shared<MeleeTargetSearcher>		(std::dynamic_pointer_cast<IMeleeAttackable>(m_player))),
+	m_item_acquisition_searcher		(std::make_shared<ItemAcquisitionSearcher>	(std::dynamic_pointer_cast<IItemCollectable>(m_player))),
 	m_item_creator					(std::make_shared<ItemCreator>(m_player)),
 	m_rifle_cartridge_object_pool	(std::make_shared<RifleCartridgeObjectPool>()),
 	m_play_scene_effect_object_pool (std::make_shared<PlaySceneEffectObjectPool>()),
@@ -113,6 +114,7 @@ void PlayScene::Update()
 	m_skydome							->Update();
 	m_stealth_kill_target_searcher		->Update();
 	m_melee_target_searcher				->Update();
+	m_item_acquisition_searcher			->Update();
 	m_item_creator						->Update();
 	m_game_clear_tab					->Update();
 	m_game_over_tab						->Update();

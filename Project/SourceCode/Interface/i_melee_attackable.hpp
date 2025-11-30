@@ -4,7 +4,7 @@
 #include "../Event/on_downed_far_enemy_spotted_event.hpp"
 #include "../Event/on_downed_near_enemy_spotted_event.hpp"
 
-#include "../Data/melee_candidate_data.hpp"
+#include "../Data/spotted_obj_data.hpp"
 #include "../Base/character_base.hpp"
 
 /// @brief ƒƒŒ[UŒ‚‚ğs‚¤‘¤

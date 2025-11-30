@@ -34,6 +34,7 @@ Player::Player() :
 
 	// ƒCƒxƒ“ƒg“o˜^
 	EventSystem::GetInstance()->Subscribe<DeadAllEnemyEvent>(this, &Player::DeadAllEnemy);
+	EventSystem::GetInstance()->Subscribe<SpottedItemEvent>	(this, &Player::AddGetCandidateItem);
 
 	mass_kind = MassKind::kMedium;
 
@@ -110,7 +111,8 @@ Player::Player() :
 Player::~Player()
 {
 	// ƒCƒxƒ“ƒg‚Ì“o˜^‰ðœ
-	EventSystem::GetInstance()->Unsubscribe<DeadAllEnemyEvent>(this, &Player::DeadAllEnemy);
+	EventSystem::GetInstance()->Unsubscribe<DeadAllEnemyEvent>	(this, &Player::DeadAllEnemy);
+	EventSystem::GetInstance()->Unsubscribe<SpottedItemEvent>	(this, &Player::AddGetCandidateItem);
 
 	for (const auto& item : m_items)
 	{
@@ -588,11 +590,17 @@ void Player::AddItem(const std::shared_ptr<IItem>& item)
 		m_items[item_kind].emplace_back(item);
 	}
 }
+
 void Player::RemoveItem(const std::shared_ptr<IItem>& item)
 {
 	const auto item_kind = item->GetItemKind();
 
 	m_items[item_kind].erase(std::remove(m_items[item_kind].begin(), m_items[item_kind].end(), item), m_items[item_kind].end());
+}
+
+void Player::AddGetCandidateItem(const SpottedItemEvent& event)
+{
+	m_item_get_candidates.emplace_back(SpottedObjData(event.target_obj_handle, event.camera_diff_angle, event.distance_to_camera));
 }
 #pragma endregion
 

@@ -622,6 +622,9 @@
     <ClCompile Include="SourceCode\InverseKinematics\ik_solver.cpp">
       <Filter>SourceCode\InverseKinematics</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\Part\item_acquisition_searcher.cpp">
+      <Filter>SourceCode\Part</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\character_base.hpp">
@@ -1404,7 +1407,7 @@
     <ClInclude Include="SourceCode\Interface\i_melee_hittable.hpp">
       <Filter>SourceCode\Interface</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Data\melee_candidate_data.hpp">
+    <ClInclude Include="SourceCode\Data\spotted_obj_data.hpp">
       <Filter>SourceCode\Data</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Part\melee_target_searcher.hpp">
@@ -1718,6 +1721,12 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Kind\axis_kind.hpp">
       <Filter>SourceCode\Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Part\item_acquisition_searcher.hpp">
+      <Filter>SourceCode\Part</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\spotted_item_event.hpp">
+      <Filter>SourceCode\Event</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

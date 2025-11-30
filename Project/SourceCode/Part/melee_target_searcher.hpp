@@ -1,11 +1,11 @@
 #pragma once
-#include "../Object/player.hpp"
+#include "../Interface/i_melee_attackable.hpp"
 #include "../Calculation/math.hpp"
 
 class MeleeTargetSearcher final
 {
 public:
-	MeleeTargetSearcher(std::shared_ptr<Player>& player);
+	MeleeTargetSearcher(const std::weak_ptr<IMeleeAttackable>& melee_attackable);
 	~MeleeTargetSearcher();
 
 	void Update();
@@ -23,7 +23,7 @@ private:
 private:
 	static constexpr float kPrioritySwitchAngle = 30.0f;
 
-	std::shared_ptr<Player>&		m_player;
-	std::vector<MeleeCandidateData> m_visible_downed_chara;		// ダウンしている見えている敵
-	std::vector<MeleeCandidateData> m_melee_candidate;			// メレーの候補者リスト
+	std::weak_ptr<IMeleeAttackable>	m_melee_attackable;
+	std::vector<SpottedObjData>		m_visible_downed_chara;		// ダウンしている見えている敵
+	std::vector<SpottedObjData>		m_melee_candidates;			// メレーの候補者リスト
 };

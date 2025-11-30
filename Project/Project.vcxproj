@@ -213,6 +213,7 @@
     <ClCompile Include="SourceCode\Part\ammo_holder.cpp" />
     <ClCompile Include="SourceCode\Part\button_graphic_getter.cpp" />
     <ClCompile Include="SourceCode\Part\item_creator.cpp" />
+    <ClCompile Include="SourceCode\Part\item_acquisition_searcher.cpp" />
     <ClCompile Include="SourceCode\Part\patrol_route_giver.cpp" />
     <ClCompile Include="SourceCode\Part\stealth_kill_target_searcher.cpp" />
     <ClCompile Include="SourceCode\Part\screen_fader.cpp" />
@@ -403,7 +404,7 @@
     <ClInclude Include="SourceCode\Data\light_range_attenuation_data.hpp" />
     <ClInclude Include="SourceCode\Data\font_data.hpp" />
     <ClInclude Include="SourceCode\Data\collider_data.hpp" />
-    <ClInclude Include="SourceCode\Data\melee_candidate_data.hpp" />
+    <ClInclude Include="SourceCode\Data\spotted_obj_data.hpp" />
     <ClInclude Include="SourceCode\Data\recoil_data.hpp" />
     <ClInclude Include="SourceCode\Data\animator_data.hpp" />
     <ClInclude Include="SourceCode\Data\box_data.hpp" />
@@ -417,6 +418,7 @@
     <ClInclude Include="SourceCode\Event\drop_item_event.hpp" />
     <ClInclude Include="SourceCode\Event\dead_all_enemy_event.hpp" />
     <ClInclude Include="SourceCode\Event\dead_enemy_event.hpp" />
+    <ClInclude Include="SourceCode\Event\spotted_item_event.hpp" />
     <ClInclude Include="SourceCode\Event\victory_pose_event.hpp" />
     <ClInclude Include="SourceCode\Event\dead_boss_event.hpp" />
     <ClInclude Include="SourceCode\Event\start_disappear_enemy_event.hpp" />
@@ -575,6 +577,7 @@
     <ClInclude Include="SourceCode\Part\button_graphic_getter.hpp" />
     <ClInclude Include="SourceCode\Part\humanoid_frame_getter.hpp" />
     <ClInclude Include="SourceCode\Part\item_creator.hpp" />
+    <ClInclude Include="SourceCode\Part\item_acquisition_searcher.hpp" />
     <ClInclude Include="SourceCode\Part\patrol_route_giver.hpp" />
     <ClInclude Include="SourceCode\Part\stealth_kill_target_searcher.hpp" />
     <ClInclude Include="SourceCode\Part\screen_fader.hpp" />
