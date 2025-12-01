@@ -17,6 +17,7 @@ public:
 	virtual void RemoveItem	(const std::shared_ptr<IItem>& item) abstract;
 
 	virtual void AddPickUpCandidateItem(const SpottedItemEvent& event) abstract;
+	virtual void RemovePickUpCandidateItem(const int obj_handle) abstract;
 	virtual void RemovePickUpCandidateItems() abstract;
 
 	virtual void AddPickupableItem(const std::shared_ptr<IItem>& item) abstract;

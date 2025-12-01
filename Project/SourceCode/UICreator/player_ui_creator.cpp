@@ -4,6 +4,7 @@ PlayerUICreator::PlayerUICreator(std::shared_ptr<Player>& player) :
 	m_name						(UICreatorName.PLAYER_UI_CREATOR),
 	m_priority					(5),
 	m_is_active					(true),
+	m_pickupable_item_icon		(std::make_shared<PickupableItemIcon>(player->GetPickupableItem(), player->GetCandidateItems())),
 	m_melee_target_icon			(std::make_shared<MeleeTargetIcon>(player->GetMeleeTarget(), player->GetTopPriorityDownedChara())),
 	m_stealth_kill_target_icon	(std::make_shared<StealthKillTargetIcon>(player->GetStealthKillTarget())),
 	m_escape_icon				(std::make_shared<EscapeIcon>(std::dynamic_pointer_cast<IGrabbable>(player))),
@@ -14,14 +15,14 @@ PlayerUICreator::PlayerUICreator(std::shared_ptr<Player>& player) :
 									player->GetWeaponShortcutSelecter()))
 {
 	// ƒCƒxƒ“ƒg“o˜^
-	EventSystem::GetInstance()->Subscribe<DeadPlayerEvent>	(this, &PlayerUICreator::Deactivate);
+	EventSystem::GetInstance()->Subscribe<DeadPlayerEvent>		(this, &PlayerUICreator::Deactivate);
 	EventSystem::GetInstance()->Subscribe<DeadAllEnemyEvent>	(this, &PlayerUICreator::Deactivate);
 }
 
 PlayerUICreator::~PlayerUICreator()
 {
 	// ƒCƒxƒ“ƒg‚Ì“o˜^‰ðœ
-	EventSystem::GetInstance()->Unsubscribe<DeadPlayerEvent>(this, &PlayerUICreator::Deactivate);
+	EventSystem::GetInstance()->Unsubscribe<DeadPlayerEvent>	(this, &PlayerUICreator::Deactivate);
 	EventSystem::GetInstance()->Unsubscribe<DeadAllEnemyEvent>	(this, &PlayerUICreator::Deactivate);
 }
 
@@ -34,6 +35,7 @@ void PlayerUICreator::LateUpdate()
 {
 	if (!m_is_active) { return; }
 
+	m_pickupable_item_icon		->LateUpdate();
 	m_melee_target_icon			->LateUpdate();
 	m_stealth_kill_target_icon	->LateUpdate();
 	m_escape_icon				->LateUpdate();
@@ -46,6 +48,7 @@ void PlayerUICreator::OnDraw(const int main_screen_handle)
 {
 	if (!m_is_active) { return; }
 
+	m_pickupable_item_icon		->Draw(main_screen_handle);
 	m_melee_target_icon			->Draw(main_screen_handle);
 	m_stealth_kill_target_icon	->Draw(main_screen_handle);
 	m_escape_icon				->Draw();

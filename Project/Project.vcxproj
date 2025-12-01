@@ -325,6 +325,7 @@
     <ClCompile Include="SourceCode\UIButton\main_menu_select_button.cpp" />
     <ClCompile Include="SourceCode\UICreator\player_ui_creator.cpp" />
     <ClCompile Include="SourceCode\UICreator\screen_filter_creator.cpp" />
+    <ClCompile Include="SourceCode\UI\pickupable_item_icon.cpp" />
     <ClCompile Include="SourceCode\UI\remaining_bullets_ui.cpp" />
     <ClCompile Include="SourceCode\UI\game_clear_text.cpp" />
     <ClCompile Include="SourceCode\UI\cross_hair.cpp" />
@@ -698,6 +699,7 @@
     <ClInclude Include="SourceCode\UIButton\main_menu_select_button.hpp" />
     <ClInclude Include="SourceCode\UICreator\player_ui_creator.hpp" />
     <ClInclude Include="SourceCode\UICreator\screen_filter_creator.hpp" />
+    <ClInclude Include="SourceCode\UI\pickupable_item_icon.hpp" />
     <ClInclude Include="SourceCode\UI\remaining_bullets_ui.hpp" />
     <ClInclude Include="SourceCode\UI\game_clear_text.hpp" />
     <ClInclude Include="SourceCode\UI\cross_hair.hpp" />

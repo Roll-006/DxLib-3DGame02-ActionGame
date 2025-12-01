@@ -198,6 +198,8 @@ void CollisionManager::SetIgnoreColliderPairs()
 	AddIgnoreColliderPair(landing_data, { "", ColliderKind::kAttackTrigger			});
 	AddIgnoreColliderPair(landing_data, { "", ColliderKind::kMiddleVisionTrigger	});
 	AddIgnoreColliderPair(landing_data, { "", ColliderKind::kReactionTrigger		});
+	AddIgnoreColliderPair(landing_data, { "", ColliderKind::kRay					});
+	AddIgnoreColliderPair(landing_data, { "", ColliderKind::kProjectRay				});
 
 	// 弾丸系統が無視するコライダー
 	AddIgnoreColliderPair(bullet_data, bullet_data);

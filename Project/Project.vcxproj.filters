@@ -625,6 +625,9 @@
     <ClCompile Include="SourceCode\Part\item_acquisition_searcher.cpp">
       <Filter>SourceCode\Part</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\UI\pickupable_item_icon.cpp">
+      <Filter>SourceCode\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\character_base.hpp">
@@ -1730,6 +1733,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Event\got_item_event.hpp">
       <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\UI\pickupable_item_icon.hpp">
+      <Filter>SourceCode\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

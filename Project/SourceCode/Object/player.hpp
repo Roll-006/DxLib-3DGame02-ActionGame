@@ -64,13 +64,14 @@ public:
 	void RemoveItem	(const std::shared_ptr<IItem>& item) override;
 
 	void AddPickUpCandidateItem(const SpottedItemEvent& event) override;
-	void RemovePickUpCandidateItems() override { m_item_get_candidates.clear(); }
+	void RemovePickUpCandidateItem(const int obj_handle) override;
+	void RemovePickUpCandidateItems() override { m_pick_up_candidate_items.clear(); }
 
-	void AddPickupableItem(const std::shared_ptr<IItem>& item) override { m_acquirable_item = item; }
-	void RemovePickupableItem() override { m_acquirable_item = nullptr; }
+	void AddPickupableItem(const std::shared_ptr<IItem>& item) override { m_pickupable_item = item; }
+	void RemovePickupableItem() override { m_pickupable_item = nullptr; }
 
-	[[nodiscard]] std::shared_ptr<IItem>&		GetPickupableItem()		override { return m_acquirable_item; }
-	[[nodiscard]] std::vector<SpottedObjData>&	GetCandidateItems()		override { return m_item_get_candidates; }
+	[[nodiscard]] std::shared_ptr<IItem>&		GetPickupableItem()		override { return m_pickupable_item; }
+	[[nodiscard]] std::vector<SpottedObjData>&	GetCandidateItems()		override { return m_pick_up_candidate_items; }
 	[[nodiscard]] bool							CanAddPickupableItem()	override { return m_can_add_acquirable_item; }
 	#pragma endregion
 
@@ -261,8 +262,8 @@ private:
 	std::unordered_map<HolsterKind, std::shared_ptr<WeaponBase>>		m_attach_weapons;					// 装着している武器
 	std::shared_ptr<WeaponShortcutSelecter>								m_weapon_shortcut_selecter;			// ショートカットに登録されている武器
 	
-	std::shared_ptr<IItem>												m_acquirable_item;					// 取得可能アイテム
-	std::vector<SpottedObjData>											m_item_get_candidates;				// 取得候補アイテム
+	std::shared_ptr<IItem>												m_pickupable_item;					// 取得可能アイテム
+	std::vector<SpottedObjData>											m_pick_up_candidate_items;			// 取得候補アイテム
 
 	std::shared_ptr<IMeleeHittable>										m_melee_target;
 	std::shared_ptr<IMeleeHittable>										m_top_priority_downed_chara;

@@ -58,7 +58,7 @@ void ItemCreator::Draw() const
 void ItemCreator::CreateDeadEnemyItem(const DeadEnemyEvent& event)
 {
 	auto	   hips_m	= MV1GetFrameLocalWorldMatrix(event.model_handle, MV1SearchFrame(event.model_handle, FramePath.HIPS));
-	const auto hips_pos	= MGetTranslateElem(hips_m);
+	const auto hips_pos	= MGetTranslateElem(hips_m) + VGet(0.0f, 10.0f, 0.0f);
 	std::shared_ptr<IItem> item = nullptr;
 
 	// âºÇ≈íeÇã≠êßÇ≈ê∂ê¨

@@ -586,15 +586,15 @@ void Player::SetupStealthKill()
 #pragma region ƒAƒCƒeƒ€
 void Player::PickUpItem()
 {
-	if (!m_acquirable_item) { return; }
+	if (!m_pickupable_item) { return; }
 
 	if (!CommandHandler::GetInstance()->IsExecute(CommandKind::kMelee, TimeKind::kCurrent)) { return; }
 
-	auto ammo_box = std::dynamic_pointer_cast<IAmmoBox>(m_acquirable_item);
+	auto ammo_box = std::dynamic_pointer_cast<IAmmoBox>(m_pickupable_item);
 	if (!ammo_box) { return; }
 
 	m_ammo_holder->AddAmmo(ammo_box);
-	const auto obj = std::dynamic_pointer_cast<ObjBase>(m_acquirable_item);
+	const auto obj = std::dynamic_pointer_cast<ObjBase>(m_pickupable_item);
 	if (!obj) { return; }
 
 	EventSystem::GetInstance()->Publish(GotItemEvent(obj->GetObjHandle()));
@@ -619,7 +619,22 @@ void Player::RemoveItem(const std::shared_ptr<IItem>& item)
 
 void Player::AddPickUpCandidateItem(const SpottedItemEvent& event)
 {
-	m_item_get_candidates.emplace_back(SpottedObjData(event.target_obj_handle, event.camera_diff_angle, event.distance_to_camera));
+	m_pick_up_candidate_items.emplace_back(SpottedObjData(event.target_obj_handle, event.camera_diff_angle, event.distance_to_camera));
+}
+
+void Player::RemovePickUpCandidateItem(const int obj_handle)
+{
+	for (auto itr = m_pick_up_candidate_items.begin(); itr != m_pick_up_candidate_items.end(); )
+	{
+		if (itr->target_obj_handle == obj_handle)
+		{
+			itr = m_pick_up_candidate_items.erase(itr);
+		}
+		else
+		{
+			++itr;
+		}
+	}
 }
 #pragma endregion
 
