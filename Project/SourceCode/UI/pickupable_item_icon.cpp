@@ -67,7 +67,7 @@ void PickupableItemIcon::Draw(const int main_screen_handle) const
 		m_mask_creator->DeleteMask();
 
 		DrawStringToHandle(
-			static_cast<int>(m_explanatory_text_box_blur_graphic->GetCenterPos().x - m_font_size.x * 0.5f),
+			static_cast<int>(m_explanatory_text_box_blur_graphic->GetCenterPos().x - (m_explanatory_text_box_blur_graphic->GetOriginSize().x * m_explanatory_text_box_blur_graphic->GetScale().x) * 0.5f) + kOffset,
 			static_cast<int>(m_explanatory_text_box_blur_graphic->GetCenterPos().y - m_font_size.y * 0.5f),
 			m_text.c_str(), 0xffffff, m_font_handle);
 

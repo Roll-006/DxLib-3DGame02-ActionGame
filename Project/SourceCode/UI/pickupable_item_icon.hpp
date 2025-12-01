@@ -25,11 +25,12 @@ private:
 	void CreateText();
 
 private:
-	static constexpr VECTOR			kIconOffset			= { 0.0f, 10.0f, 0.0f };
-	static constexpr float			kIconSize			= 18.0f;
-	static constexpr Vector2D<int>	kScreenSize			= { 400, 400 };
-	static constexpr Vector2D<int>	kScreenCenterPos	= { static_cast<int>(kScreenSize.x * 0.5f), static_cast<int>(kScreenSize.y * 0.5f) };
-	static constexpr Vector2D<int>	kCursorOffset		= { 0, 50 };
+	static constexpr VECTOR					kIconOffset			= { 0.0f, 10.0f, 0.0f };
+	static constexpr float					kIconSize			= 18.0f;
+	static constexpr Vector2D<int>			kScreenSize			= { 400, 400 };
+	static constexpr Vector2D<int>			kCursorOffset		= { 0, 50 };
+	static constexpr int					kOffset				= 85;
+	static constexpr Vector2D<int>			kScreenCenterPos	= { static_cast<int>(kScreenSize.x * 0.5f), static_cast<int>(kScreenSize.y * 0.5f) };
 
 	std::shared_ptr<IItem>&					m_pickupable_item;
 	std::vector<SpottedObjData>&			m_pick_up_candidate_items;
