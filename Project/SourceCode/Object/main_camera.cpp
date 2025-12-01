@@ -59,7 +59,7 @@ void MainCamera::LateUpdate()
 {
 	if (!IsActive()) { return; }
 
-	SetAim();
+	UpdatePosAndTarget(m_transform->GetForward(CoordinateKind::kWorld));
 
 	CalcRayCastPos();
 	CalcVisionTriggerPos();
@@ -85,9 +85,7 @@ void MainCamera::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	case ColliderKind::kRay:
 		if (hit_collider_pair.intersection)
 		{
-			m_transform->SetPos(CoordinateKind::kWorld, *hit_collider_pair.intersection);
-			UpAngle(*hit_collider_pair.intersection);
-			SetAim();
+			OnRayCast(*hit_collider_pair.intersection);
 		}
 		break;
 
@@ -233,21 +231,53 @@ float MainCamera::GetDeltaTime() const
 #pragma endregion
 
 
-void MainCamera::SetAim()
+void MainCamera::UpdatePosAndTarget(const VECTOR& forward)
 {
 	const VECTOR pos		= m_transform->GetPos(CoordinateKind::kWorld);
-	const VECTOR target_pos	= pos + m_transform->GetForward(CoordinateKind::kWorld);
+	const VECTOR target_pos	= pos + forward;
 
 	SetCameraPositionAndTarget_UpVecY(pos, target_pos);
 	Effekseer_Sync3DSetting();
 }
 
-void MainCamera::UpAngle(const VECTOR& intersection)
+void MainCamera::OnRayCast(const VECTOR& intersection)
 {
-	if (!m_is_active_grab_collider) { return; }
+	// 掴み時レイキャスト
+	if (m_is_active_grab_collider)
+	{
+		OnRayCastGrabCutscene(intersection);
+		return;
+	}
 
-	const auto lenght = VSize(m_aim_pos - intersection);
-	const auto ray_length = GetCollider(ColliderKind::kRay)->GetShape();
+	// 通常時レイキャスト
+	m_transform->SetPos(CoordinateKind::kWorld, intersection);
+	UpdatePosAndTarget(m_transform->GetForward(CoordinateKind::kWorld));
+}
+
+void MainCamera::OnRayCastGrabCutscene(const VECTOR& intersection)
+{
+	const auto current_lenght	= VSize(m_aim_pos - intersection);
+
+	if (current_lenght > grab_ray_length) { return; }
+
+	const auto ray				= GetCollider(ColliderKind::kRay);
+	const auto hit_triangles	= ray->GetHitTriangles();
+	auto	   up				= axis::GetWorldYAxis();
+
+	// 三角形が格納されていた場合は三角形に沿いながら上に向かうベクトルを取得
+	if (!hit_triangles.empty())
+	{
+		const auto hit_triangle = hit_triangles.front();
+		const auto normal_v		= hit_triangle.GetNormalVector();
+		const auto cross_x		= math::GetNormalVector(normal_v, up);
+		up = -math::GetNormalVector(normal_v, cross_x);
+	}
+
+	const auto pos		= intersection + up * (grab_ray_length - current_lenght);
+	const auto forward	= v3d::GetNormalizedV(m_aim_pos - m_transform->GetPos(CoordinateKind::kWorld));
+
+	m_transform->SetPos(CoordinateKind::kWorld, pos);
+	UpdatePosAndTarget(forward);
 }
 
 void MainCamera::CalcRayCastPos()

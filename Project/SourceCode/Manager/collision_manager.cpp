@@ -53,15 +53,6 @@ void CollisionManager::LateUpdate()
 				}
 			}
 
-			// 最も近いコライダーのみ判定
-			distance = algorithm::Sort(distance, SortKind::kAscending);
-			for (const auto& dist : distance)
-			{
-				pair.owner_collider->GetOwnerObj()->OnCollide(ColliderPairOneToOneData(pair.owner_collider, target.at(dist.first).collider, target.at(dist.first).intersection));
-				target.at(dist.first).collider->GetOwnerObj()->OnCollide(ColliderPairOneToOneData(target.at(dist.first).collider, pair.owner_collider, target.at(dist.first).intersection));
-				break;
-			}
-
 			// 最も近い三角形のみ衝突した三角形とする
 			const auto hit_triangle = pair.owner_collider->GetHitTriangles();
 			if (hit_triangle.size() > 0)
@@ -78,6 +69,15 @@ void CollisionManager::LateUpdate()
 				// 置き換え
 				pair.owner_collider->RemoveHitTriangles();
 				pair.owner_collider->AddHitTriangle(result_hit_triangle);
+			}
+
+			// 最も近いコライダーのみ判定
+			distance = algorithm::Sort(distance, SortKind::kAscending);
+			for (const auto& dist : distance)
+			{
+				pair.owner_collider				->GetOwnerObj()->OnCollide(ColliderPairOneToOneData(pair.owner_collider, target.at(dist.first).collider, target.at(dist.first).intersection));
+				target.at(dist.first).collider	->GetOwnerObj()->OnCollide(ColliderPairOneToOneData(target.at(dist.first).collider, pair.owner_collider, target.at(dist.first).intersection));
+				break;
 			}
 		}
 		// レイキャストトリガーでない場合はすべてのコライダーと衝突判定を行う
@@ -176,6 +176,7 @@ void CollisionManager::SetIgnoreColliderPairs()
 	const ColliderData bullet_data		{ ObjTag.BULLET,        ColliderKind::kNone				};
 	const ColliderData shell_casing_data{ ObjTag.SHELL_CASING,  ColliderKind::kNone				};
 	const ColliderData landing_data		{ "",					ColliderKind::kLandingTrigger	};
+	const ColliderData project_ray_data	{ "",					ColliderKind::kProjectRay		};
 
 	// 敵系統が無視するコライダー
 	AddIgnoreColliderPair(enemy_data, { "", ColliderKind::kHeadTrigger			});
@@ -192,15 +193,6 @@ void CollisionManager::SetIgnoreColliderPairs()
 	AddIgnoreColliderPair(enemy_data, { "", ColliderKind::kLeftDownLegTrigger	});
 	AddIgnoreColliderPair(enemy_data, { "", ColliderKind::kRightDownLegTrigger	});
 
-	// 着地判定トリガーが無視するコライダー
-	AddIgnoreColliderPair(landing_data, player_data);
-	AddIgnoreColliderPair(landing_data, enemy_data);
-	AddIgnoreColliderPair(landing_data, { "", ColliderKind::kAttackTrigger			});
-	AddIgnoreColliderPair(landing_data, { "", ColliderKind::kMiddleVisionTrigger	});
-	AddIgnoreColliderPair(landing_data, { "", ColliderKind::kReactionTrigger		});
-	AddIgnoreColliderPair(landing_data, { "", ColliderKind::kRay					});
-	AddIgnoreColliderPair(landing_data, { "", ColliderKind::kProjectRay				});
-
 	// 弾丸系統が無視するコライダー
 	AddIgnoreColliderPair(bullet_data, bullet_data);
 	AddIgnoreColliderPair(bullet_data, { "",                ColliderKind::kLandingTrigger	});
@@ -214,6 +206,19 @@ void CollisionManager::SetIgnoreColliderPairs()
 	AddIgnoreColliderPair(shell_casing_data, player_data							);
 	AddIgnoreColliderPair(shell_casing_data, enemy_data								);
 	AddIgnoreColliderPair(shell_casing_data, { "", ColliderKind::kAttackTrigger }	);
+
+	// 着地判定トリガーが無視するコライダー
+	AddIgnoreColliderPair(landing_data, player_data);
+	AddIgnoreColliderPair(landing_data, enemy_data);
+	AddIgnoreColliderPair(landing_data, { "", ColliderKind::kAttackTrigger			});
+	AddIgnoreColliderPair(landing_data, { "", ColliderKind::kMiddleVisionTrigger	});
+	AddIgnoreColliderPair(landing_data, { "", ColliderKind::kReactionTrigger		});
+	AddIgnoreColliderPair(landing_data, { "", ColliderKind::kRay					});
+	AddIgnoreColliderPair(landing_data, { "", ColliderKind::kProjectRay				});
+
+	// 投影用光線が無視するコライダー
+	AddIgnoreColliderPair(project_ray_data, player_data);
+	AddIgnoreColliderPair(project_ray_data, enemy_data);
 }
 
 bool CollisionManager::CanCollideObjAndObj(const std::shared_ptr<PhysicalObjBase>& owner_obj, const std::shared_ptr<PhysicalObjBase>& target_obj)

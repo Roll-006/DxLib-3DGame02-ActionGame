@@ -39,9 +39,13 @@ private:
 
 
 	/// @brief 見る方向を設定
-	void SetAim();
+	void UpdatePosAndTarget(const VECTOR& forward);
 
-	void UpAngle(const VECTOR& intersection);
+	/// @brief レイキャストが発生
+	void OnRayCast(const VECTOR& intersection);
+
+	/// @brief レイキャスト発生(掴み時)
+	void OnRayCastGrabCutscene(const VECTOR& intersection);
 
 	void CalcRayCastPos();
 	void CalcVisionTriggerPos();
@@ -57,4 +61,6 @@ private:
 	float	m_collider_radius;
 	bool	m_is_active_grab_collider;
 	int		m_grabbed_obj_handle;
+
+	inline static float grab_ray_length = VSize({10, 50, 0});
 };

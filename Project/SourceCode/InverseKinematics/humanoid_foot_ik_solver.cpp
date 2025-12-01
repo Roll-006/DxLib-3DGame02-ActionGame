@@ -291,7 +291,6 @@ void HumanoidFootIKSolver::DownArmature(const std::shared_ptr<IHumanoid>& humano
 		auto	   armature_pos		= MGetTranslateElem(armature_m);
 		armature_pos.y -= drop_distance;
 
-		// TODO : リファクタリング必須
 		auto transform_m = armature_m;
 		matrix::SetPos(transform_m, armature_pos);
 		const auto result_m = transform_m * MInverse(armature_m);
@@ -335,7 +334,7 @@ void HumanoidFootIKSolver::OnLeftLegIK(const std::shared_ptr<IHumanoid>& humanoi
 	if (m_ray_data.left_toe_base_cast_pos)
 	{
 		const auto hit_triangles = m_colliders.at(ColliderKind::kLeftToeBaseRay)->GetHitTriangles();
-		if (hit_triangles.size() > 0)
+		if (!hit_triangles.empty())
 		{
 			const auto normal_v		= hit_triangles.front().GetNormalVector();
 			const auto destination	= *m_ray_data.left_toe_base_cast_pos + VGet(0.0f, m_ray_data.left_toe_offset, 0.0f);
@@ -368,7 +367,7 @@ void HumanoidFootIKSolver::OnRightLegIK(const std::shared_ptr<IHumanoid>& humano
 	if (m_ray_data.right_toe_base_cast_pos)
 	{
 		const auto hit_triangles = m_colliders.at(ColliderKind::kRightToeBaseRay)->GetHitTriangles();
-		if (hit_triangles.size() > 0)
+		if (!hit_triangles.empty())
 		{
 			const auto normal_v		= hit_triangles.front().GetNormalVector();
 			const auto destination	= *m_ray_data.right_toe_base_cast_pos + VGet(0.0f, m_ray_data.right_toe_offset, 0.0f);

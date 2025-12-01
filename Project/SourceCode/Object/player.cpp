@@ -306,58 +306,59 @@ void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 void Player::OnProjectPos()
 {
-	if (!IsActive())	{ return; }
-	if (!IsProject())	{ return; }
+	//if (!IsActive())	{ return; }
+	//if (!IsProject())	{ return; }
 
-	const auto project_pos = GetCurrentProjectPos();
-	if (!project_pos)	{ return; }
+	//const auto project_pos = GetCurrentProjectPos();
+	//if (!project_pos)	{ return; }
 
-	const auto project_ray = GetCollider(ColliderKind::kProjectRay);
-	if (!project_ray)	{ return; }
+	//const auto project_ray = GetCollider(ColliderKind::kProjectRay);
+	//if (!project_ray)	{ return; }
 
-	const auto collider = GetCollider(ColliderKind::kCollider);
-	if (!collider)		{ return; }
+	//const auto collider = GetCollider(ColliderKind::kCollider);
+	//if (!collider)		{ return; }
 
-	const auto capsule = std::dynamic_pointer_cast<Capsule>(collider->GetShape());
-	if (!capsule)		{ return; }
+	//const auto capsule = std::dynamic_pointer_cast<Capsule>(collider->GetShape());
+	//if (!capsule)		{ return; }
 
-	const auto hit_triangle = project_ray->GetHitTriangles();
-	if (hit_triangle.size() <= 0) { return; }
+	//const auto hit_triangle = project_ray->GetHitTriangles();
+	//if (hit_triangle.size() <= 0) { return; }
 
-	// 着地していた場合、以前の投影座標より下にあれば投影を許可する
-	if (IsLanding())
-	{
-		const auto prev_project_pos = GetPrevProjectPos();
-		if (prev_project_pos)
-		{
-			if ((project_pos->y - prev_project_pos->y) >= math::kEpsilonLow) { return; }
-		}
-	}
+	//// 着地していた場合、以前の投影座標より下にあれば投影を許可する
+	//if (IsLanding())
+	//{
+	//	const auto prev_project_pos = GetPrevProjectPos();
+	//	if (prev_project_pos)
+	//	{
+	//		if ((project_pos->y - prev_project_pos->y) >= math::kEpsilonLow) { return; }
+	//	}
+	//}
 
-	// 光線の始点からの距離
-	const auto future_begin_pos = *project_pos + axis::GetWorldYAxis() * capsule->GetRadius();
-	const auto distance = math::GetDistancePointToTriangle(future_begin_pos, hit_triangle.front());
+	//// 光線の始点からの距離
+	//const auto future_begin_pos = *project_pos + axis::GetWorldYAxis() * capsule->GetRadius();
+	//const auto distance = math::GetDistancePointToTriangle(future_begin_pos, hit_triangle.front());
 
-	// 固定位置を決定
-	const auto penetration		= capsule->GetRadius() - distance;
-	const auto push_back_length = math::GetHypotenuseLengthIsoscelesRightTriangle(penetration);
-	const auto result_pos		= *project_pos + axis::GetWorldYAxis() * push_back_length;
-	m_transform->SetPos(CoordinateKind::kWorld, result_pos);
+	//// 固定位置を決定
+	//const auto penetration		= capsule->GetRadius() - distance;
+	//const auto push_back_length = math::GetHypotenuseLengthIsoscelesRightTriangle(penetration);
+	//const auto result_pos		= *project_pos + axis::GetWorldYAxis() * push_back_length;
+	//
+	//m_transform->SetPos(CoordinateKind::kWorld, result_pos);
 
-	if (m_current_held_weapon)
-	{
-		m_current_held_weapon->LateUpdate();
-		m_current_held_weapon->TrackOwnerHand();
-	}
+	//if (m_current_held_weapon)
+	//{
+	//	m_current_held_weapon->LateUpdate();
+	//	m_current_held_weapon->TrackOwnerHand();
+	//}
 
-	for (const auto& attach_weapon : m_attach_weapons)
-	{
-		if (attach_weapon.second)
-		{
-			attach_weapon.second->LateUpdate();
-			attach_weapon.second->TrackOwnerHolster();
-		}
-	}
+	//for (const auto& attach_weapon : m_attach_weapons)
+	//{
+	//	if (attach_weapon.second)
+	//	{
+	//		attach_weapon.second->LateUpdate();
+	//		attach_weapon.second->TrackOwnerHolster();
+	//	}
+	//}
 }
 
 void Player::OnDamage(const HealthPartKind part_kind, const float damage)
