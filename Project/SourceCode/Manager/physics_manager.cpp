@@ -41,6 +41,11 @@ void PhysicsManager::LateUpdate()
 
 	for (const auto& obj : m_physical_objects)
 	{
+		if (obj->GetName() == ObjName.MAIN_CAMERA)
+		{
+			int a = 0; 
+		}
+
 		// velocityをオブジェクトに適用
 		obj->ApplyVelocity();
 		obj->RemoveProjectPos();

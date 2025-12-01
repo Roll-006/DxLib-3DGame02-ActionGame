@@ -25,6 +25,7 @@ void ShareScene::Init()
 void ShareScene::Update()
 {
 	CinemachineBrain::GetInstance()	->Update();
+	m_main_camera					->Update();
 	EffectManager	::GetInstance()	->Update();
 }
 

@@ -20,7 +20,7 @@ MainCamera::MainCamera() :
 
 	mass_kind = MassKind::kHeavy;
 
-	AddCollider(std::make_shared<Collider>(ColliderKind::kRay,				std::make_shared<Segment>(), this));
+	AddCollider(std::make_shared<Collider>(ColliderKind::kRay,					std::make_shared<Segment>(), this));
 	AddCollider(std::make_shared<Collider>(ColliderKind::kNearVisionTrigger,	std::make_shared<Cone>(v3d::GetZeroV(), v3d::GetZeroV(), kMeleeCandidateDistance,	kMeleeCandidateFOV * math::kDegToRad), this));
 	AddCollider(std::make_shared<Collider>(ColliderKind::kFarVisionTrigger,		std::make_shared<Cone>(v3d::GetZeroV(), v3d::GetZeroV(), kMeleeTargetDistance,		kMeleeTargetFOV	   * math::kDegToRad), this));
 
@@ -86,6 +86,7 @@ void MainCamera::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 		if (hit_collider_pair.intersection)
 		{
 			m_transform->SetPos(CoordinateKind::kWorld, *hit_collider_pair.intersection);
+			UpAngle(*hit_collider_pair.intersection);
 			SetAim();
 		}
 		break;
@@ -239,6 +240,14 @@ void MainCamera::SetAim()
 
 	SetCameraPositionAndTarget_UpVecY(pos, target_pos);
 	Effekseer_Sync3DSetting();
+}
+
+void MainCamera::UpAngle(const VECTOR& intersection)
+{
+	if (!m_is_active_grab_collider) { return; }
+
+	const auto lenght = VSize(m_aim_pos - intersection);
+	const auto ray_length = GetCollider(ColliderKind::kRay)->GetShape();
 }
 
 void MainCamera::CalcRayCastPos()

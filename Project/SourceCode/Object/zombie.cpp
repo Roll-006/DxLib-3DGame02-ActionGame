@@ -229,6 +229,8 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 			OnDamage(HealthPartKind::kMain, damage);
 
+			m_is_detected_target = true;
+
 			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue()));
 		}
 		break;
@@ -241,6 +243,8 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 			OnDamage(HealthPartKind::kBody,	damage);
 			OnDamage(HealthPartKind::kMain,	damage);
+
+			m_is_detected_target = true;
 
 			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue()));
 		}
@@ -255,6 +259,8 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 			OnDamage(HealthPartKind::kLeftArm,	damage);
 			OnDamage(HealthPartKind::kMain,		damage);
 
+			m_is_detected_target = true;
+
 			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue()));
 		}
 		break;
@@ -266,6 +272,8 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 			OnDamage(HealthPartKind::kLeftArm,	damage);
 			OnDamage(HealthPartKind::kMain,		damage);
+
+			m_is_detected_target = true;
 
 			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue()));
 		}
@@ -289,6 +297,8 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 			OnDamage(HealthPartKind::kRightArm, damage);
 			OnDamage(HealthPartKind::kMain,		damage);
 
+			m_is_detected_target = true;
+
 			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue()));
 		}
 		break;
@@ -300,6 +310,8 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 			OnDamage(HealthPartKind::kRightArm, damage);
 			OnDamage(HealthPartKind::kMain,		damage);
+
+			m_is_detected_target = true;
 
 			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue()));
 		}
@@ -329,6 +341,8 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 			OnDamage(HealthPartKind::kMain, damage);
 
+			m_is_detected_target = true;
+
 			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue()));
 		}
 		break;
@@ -347,6 +361,8 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 			}
 
 			OnDamage(HealthPartKind::kMain, damage);
+
+			m_is_detected_target = true;
 
 			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue()));
 		}

@@ -1,7 +1,7 @@
 #include "window.hpp"
 
 Window::Window():
-	m_is_full_screen		(false),
+	m_is_full_screen			(true),
 	m_change_window_contains	(m_is_full_screen ? 1 : 0)
 {
 	SetWindowMode(m_is_full_screen);
