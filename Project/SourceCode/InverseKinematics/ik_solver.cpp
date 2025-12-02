@@ -1,9 +1,9 @@
 ﻿#include "ik_solver.hpp"
 
 Axis ik_solver::GetRotatedMixamoAxis(
-	const Axis&							origin_axis,
-	const VECTOR&						target_forward,
-	const std::optional<AidAxisData>&	aid_axis)
+	const Axis&								origin_axis,
+	const VECTOR&							target_forward,
+	const std::optional<AidMixamoAxisData>&	aid_axis)
 {
 	// MixamoのモデルはY軸がボーンの進行方向であるため、それを前提に作成する
 	// ヨー軸回転 : Z, ピッチ軸回転 : X, ロール軸回転 : Y
@@ -12,21 +12,21 @@ Axis ik_solver::GetRotatedMixamoAxis(
 	mixamo_axis.y_axis = target_forward;
 
 	// 補助軸なし
-	if(!aid_axis || aid_axis->kind == AxisKind::kForward)
+	if(!aid_axis || aid_axis->kind == MixamoAxisKind::kForward)
 	{
 		mixamo_axis.x_axis = math::GetNormalVector(origin_axis.z_axis, mixamo_axis.y_axis);		// 一時的なピッチ軸回転を計算
 		mixamo_axis.z_axis = math::GetNormalVector(mixamo_axis.y_axis, mixamo_axis.x_axis);
 		mixamo_axis.x_axis = math::GetNormalVector(mixamo_axis.z_axis, mixamo_axis.y_axis);		// ピッチ軸回転を再計算
 	}
 	// 補助軸 : Left
-	else if (aid_axis->kind == AxisKind::kLeft)
+	else if (aid_axis->kind == MixamoAxisKind::kLeft)
 	{
 		mixamo_axis.x_axis = -aid_axis->axis;													// 一時的なピッチ軸回転を計算
 		mixamo_axis.z_axis =  math::GetNormalVector(mixamo_axis.y_axis, mixamo_axis.x_axis);
 		mixamo_axis.x_axis = -math::GetNormalVector(mixamo_axis.z_axis, mixamo_axis.y_axis);	// ピッチ軸回転を再計算
 	}
 	// 補助軸 : Up
-	else if (aid_axis->kind == AxisKind::kUp)
+	else if (aid_axis->kind == MixamoAxisKind::kUp)
 	{
 		mixamo_axis.z_axis = aid_axis->axis;													// 一時的なヨー軸回転を計算
 		mixamo_axis.x_axis = math::GetNormalVector(mixamo_axis.z_axis, mixamo_axis.y_axis);
@@ -40,7 +40,7 @@ void ik_solver::OneBoneIK(
 	const int							model_handle,
 	const VECTOR&						world_destination,
 	const int							frame_index,
-	const std::optional<AidAxisData>&	aid_axis)
+	const std::optional<AidMixamoAxisData>&	aid_axis)
 {
 	auto	   child_local_m			= MV1GetFrameLocalMatrix(model_handle, frame_index);
 	const auto child_local_pos			= MGetTranslateElem(child_local_m);
@@ -65,13 +65,13 @@ void ik_solver::OneBoneIK(
 }
 
 void ik_solver::TwoBoneIK(
-	const int							model_handle,
-	const VECTOR&						world_destination,
-	const int							end_frame_index,
-	ModelFrameAngleLimitData&			begin_angle_limit,
-	ModelFrameAngleLimitData&			middle_angle_limit,
-	const RotDirKind					rot_dir_kind,
-	const std::optional<AidAxisData>&	aid_axis)
+	const int								model_handle,
+	const VECTOR&							world_destination,
+	const int								end_frame_index,
+	ModelFrameAngleLimitData&				begin_angle_limit,
+	ModelFrameAngleLimitData&				middle_angle_limit,
+	const RotDirKind						rot_dir_kind,
+	const std::optional<AidMixamoAxisData>&	aid_axis)
 {
 	const auto middle_frame_index	= MV1GetFrameParent	(model_handle, end_frame_index);
 	const auto begin_frame_index	= MV1GetFrameParent	(model_handle, middle_frame_index);

@@ -93,9 +93,7 @@ void ShellCasing::OnProjectPos()
 
 	// Šp“xEˆÊ’u‚ðŒÅ’è
 	const auto current_axis = m_transform->GetAxis(CoordinateKind::kWorld);
-	const auto cross_x		= math::GetNormalVector(hit_triangle.front().GetNormalVector(), axis::GetWorldYAxis());
-	const auto cross_z		= math::GetNormalVector(hit_triangle.front().GetNormalVector(), cross_x);
-	const auto new_axis		= math::GetRotatedAxis(current_axis, cross_z);
+	const auto new_axis		= math::GetUpSyncedAxis(current_axis, hit_triangle.front().GetNormalVector(), std::make_optional<AxisData>(AxisData(current_axis.z_axis, AxisKind::kForward)));
 
 	m_transform->SetPos(CoordinateKind::kWorld, *project_pos);
 	m_transform->SetRot(CoordinateKind::kWorld, new_axis);

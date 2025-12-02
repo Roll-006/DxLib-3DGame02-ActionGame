@@ -1,8 +1,8 @@
 #pragma once
 
-enum class AxisKind
+enum class MixamoAxisKind
 {
-	kRight,
+	kLeft,
 	kUp,
 	kForward,
 };

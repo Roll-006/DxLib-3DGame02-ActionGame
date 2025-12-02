@@ -1,7 +1,7 @@
 #pragma once
 #include "../Calculation/math.hpp"
 #include "../Data/model_frame_angle_limit_data.hpp"
-#include "../Data/aid_axis_data.hpp"
+#include "../Data/aid_mixamo_axis_data.hpp"
 #include "../Data/triangle_edge_data.hpp"
 #include "frame_info.hpp"
 
@@ -20,9 +20,9 @@ namespace ik_solver
 	/// @param aid_axis 補助軸(初期値 : std::nullopt)
 	/// @return 回転後のXYZ軸
 	[[nodiscard]] Axis GetRotatedMixamoAxis(
-		const Axis&							origin_axis, 
-		const VECTOR&						target_forward, 
-		const std::optional<AidAxisData>&	aid_axis = std::nullopt);
+		const Axis&								origin_axis, 
+		const VECTOR&							target_forward, 
+		const std::optional<AidMixamoAxisData>&	aid_axis = std::nullopt);
 
 	/// @brief 1つのフレーム(ボーン)に対してIK処理を適用する
 	/// @param model_handle モデルハンドル
@@ -30,10 +30,10 @@ namespace ik_solver
 	/// @param frame_index フレームのインデックス
 	/// @param aid_axis 補助軸(初期値 : std::nullopt)
 	void OneBoneIK(
-		const int							model_handle, 
-		const VECTOR&						world_destination, 
-		const int							frame_index, 
-		const std::optional<AidAxisData>&	aid_axis = std::nullopt);
+		const int								model_handle, 
+		const VECTOR&							world_destination, 
+		const int								frame_index, 
+		const std::optional<AidMixamoAxisData>&	aid_axis = std::nullopt);
 
 	/// @brief 2つのフレーム(ボーン)に対してIK処理を適用する
 	/// @param model_handle モデルハンドル
@@ -44,13 +44,13 @@ namespace ik_solver
 	/// @param rot_dir_kind 回転方向
 	/// @param aid_axis 補助軸(初期値 : std::nullopt)
 	void TwoBoneIK(
-		const int							model_handle, 
-		const VECTOR&						world_destination, 
-		const int							end_frame_index, 
-		ModelFrameAngleLimitData&			begin_angle_limit, 
-		ModelFrameAngleLimitData&			middle_angle_limit,
-		const RotDirKind					rot_dir_kind, 
-		const std::optional<AidAxisData>&	aid_axis = std::nullopt);
+		const int								model_handle, 
+		const VECTOR&							world_destination, 
+		const int								end_frame_index, 
+		ModelFrameAngleLimitData&				begin_angle_limit, 
+		ModelFrameAngleLimitData&				middle_angle_limit,
+		const RotDirKind						rot_dir_kind, 
+		const std::optional<AidMixamoAxisData>&	aid_axis = std::nullopt);
 
 	/// @brief 2ボーンIKに必要な回転行列を生成する
 	/// @param begin_rot_m 始点フレームの回転行列

@@ -724,13 +724,94 @@ Axis math::GetAxis(const VECTOR& dir, const Axis& parent_axis)
     return Axis(local_dir_x, local_dir_y, local_dir_z);
 }
 
-Axis math::GetRotatedAxis(const Axis& origin_axis, const VECTOR& target_forward, const std::optional<VECTOR>& right)
+//Axis math::GetRotatedAxis(const Axis& origin_axis, const AxisData& target_axis)
+//{
+//    auto axis = Axis();
+//
+//    switch (target_axis.kind)
+//    {
+//    case AxisKind::kRight:
+//        axis.x_axis = target_axis.axis;
+//        axis.z_axis = math::GetNormalVector(origin_axis.y_axis, axis.x_axis);
+//        axis.y_axis = math::GetNormalVector(axis.x_axis,        axis.z_axis);
+//        axis.z_axis = math::GetNormalVector(axis.y_axis,        axis.x_axis);
+//        break;
+//
+//    case AxisKind::kUp:
+//        axis.y_axis = target_axis.axis;
+//        axis.z_axis = math::GetNormalVector(origin_axis.x_axis, axis.y_axis);
+//        axis.x_axis = math::GetNormalVector(axis.z_axis,        axis.y_axis);
+//        axis.z_axis = math::GetNormalVector(axis.y_axis,        axis.x_axis);
+//        break;
+//
+//    case AxisKind::kForward:
+//        axis.z_axis = target_axis.axis;
+//        axis.x_axis = math::GetNormalVector(origin_axis.y_axis, axis.z_axis);
+//        axis.y_axis = math::GetNormalVector(axis.z_axis,        axis.x_axis);
+//        axis.x_axis = math::GetNormalVector(axis.y_axis,        axis.z_axis);
+//        break;
+//    }
+//
+//    return axis;
+//}
+
+Axis math::GetForwardSyncedAxis(const Axis& origin_axis, const VECTOR& forward, const std::optional<AxisData>& aid_axis)
 {
-    Axis axis;
-    axis.z_axis = target_forward;
-    axis.x_axis = right ? *right : math::GetNormalVector(origin_axis.y_axis, axis.z_axis);		// 一時的なピッチ軸回転を計算
-    axis.y_axis = math::GetNormalVector(axis.z_axis,        axis.x_axis);
-    axis.x_axis = math::GetNormalVector(axis.y_axis,        axis.z_axis);
+    auto axis = Axis();
+    axis.z_axis = forward;
+
+    // 補助軸なし
+    if (!aid_axis || aid_axis->kind == AxisKind::kForward)
+    {
+        axis.x_axis = math::GetNormalVector(origin_axis.y_axis, axis.z_axis);
+        axis.y_axis = math::GetNormalVector(axis.z_axis,        axis.x_axis);
+        axis.x_axis = math::GetNormalVector(axis.y_axis,        axis.z_axis);
+    }
+    // 補助軸 : Right
+    else if (aid_axis->kind == AxisKind::kRight)
+    {
+        axis.x_axis = aid_axis->axis;
+        axis.y_axis = math::GetNormalVector(axis.z_axis,        axis.x_axis);
+        axis.x_axis = math::GetNormalVector(axis.y_axis,        axis.z_axis);
+    }
+    // 補助軸 : Up
+    else if (aid_axis->kind == AxisKind::kUp)
+    {
+        axis.y_axis = aid_axis->axis;
+        axis.x_axis = math::GetNormalVector(axis.z_axis,        axis.y_axis);
+        axis.y_axis = math::GetNormalVector(axis.x_axis,        axis.z_axis);
+    }
+
+    return axis;
+}
+
+Axis math::GetUpSyncedAxis(const Axis& origin_axis, const VECTOR& up, const std::optional<AxisData>& aid_axis)
+{
+    auto axis = Axis();
+    axis.y_axis = up;
+
+    // 補助軸なし
+    if (!aid_axis || aid_axis->kind == AxisKind::kUp)
+    {
+        axis.z_axis = math::GetNormalVector(origin_axis.x_axis, axis.y_axis);
+        axis.x_axis = math::GetNormalVector(axis.z_axis,        axis.y_axis);
+        axis.z_axis = math::GetNormalVector(axis.y_axis,        axis.x_axis);
+    }
+    // 補助軸 : Right
+    else if (aid_axis->kind == AxisKind::kRight)
+    {
+        axis.x_axis = aid_axis->axis;
+        axis.z_axis = math::GetNormalVector(axis.y_axis,        axis.x_axis);
+        axis.x_axis = math::GetNormalVector(axis.y_axis,        axis.z_axis);
+    }
+    // 補助軸 : Forward
+    else if (aid_axis->kind == AxisKind::kForward)
+    {
+        axis.z_axis = aid_axis->axis;
+        axis.x_axis = math::GetNormalVector(axis.z_axis,        axis.y_axis);
+        axis.z_axis = math::GetNormalVector(axis.y_axis,        axis.x_axis);
+    }
+
     return axis;
 }
 #pragma endregion

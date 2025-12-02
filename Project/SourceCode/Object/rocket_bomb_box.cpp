@@ -131,7 +131,7 @@ void RocketBombBox::OnProjectPos()
 	const auto current_axis = transform->GetAxis(CoordinateKind::kWorld);
 	const auto cross_x		= math::GetNormalVector(hit_triangle.front().GetNormalVector(), axis::GetWorldYAxis());
 	const auto cross_z		= math::GetNormalVector(hit_triangle.front().GetNormalVector(), cross_x);
-	const auto new_axis		= math::GetRotatedAxis(current_axis, cross_z);
+	const auto new_axis		= math::GetForwardSyncedAxis(current_axis, cross_z);
 
 	m_item_effect_transform	->SetPos(CoordinateKind::kWorld, *project_pos);
 	transform				->SetPos(CoordinateKind::kWorld, *project_pos);

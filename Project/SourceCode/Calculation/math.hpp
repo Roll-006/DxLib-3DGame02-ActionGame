@@ -15,6 +15,7 @@
 #include "../Kind/time_kind.hpp"
 #include "../IncludeList/vector.hpp"
 #include "../GameTime/fps.hpp"
+#include "../Data/axis_data.hpp"
 
 class Point;
 class Line;
@@ -361,11 +362,8 @@ namespace math
 	/// @param parent_axis 親とするXYZ軸
 	[[nodiscard]] Axis GetAxis(const VECTOR& dir, const Axis& parent_axis);
 	
-	/// @brief 対象のforwardをZ軸とした回転後のXYZ軸を取得する
-	/// @param origin_axis 回転前のXYZ軸
-	/// @param target_forward 回転後のZ軸
-	/// @return 回転後のXYZ軸
-	[[nodiscard]] Axis GetRotatedAxis(const Axis& origin_axis, const VECTOR& target_forward, const std::optional<VECTOR>& right = std::nullopt);
+	[[nodiscard]] Axis GetForwardSyncedAxis	(const Axis& origin_axis, const VECTOR& forward,	const std::optional<AxisData>& aid_axis = std::nullopt);
+	[[nodiscard]] Axis GetUpSyncedAxis		(const Axis& origin_axis, const VECTOR& up,			const std::optional<AxisData>& aid_axis = std::nullopt);
 	#pragma endregion
 
 

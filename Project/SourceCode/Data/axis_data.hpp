@@ -2,8 +2,8 @@
 #include <DxLib.h>
 #include "../Kind/axis_kind.hpp"
 
-struct AidAxisData
+struct AxisData
 {
 	VECTOR		axis = {};
-	AxisKind	kind = AxisKind::kLeft;
+	AxisKind	kind = AxisKind::kRight;
 };
