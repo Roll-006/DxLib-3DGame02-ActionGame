@@ -131,6 +131,6 @@ void StealthKillVirtualCameraController::CalcAimTransform()
 	// 基準となるトランスフォームを設定
 	const auto center_pos	= (killer_pos + killable_pos) * 0.5f;
 	m_aim_transform->SetPos(CoordinateKind::kWorld, center_pos);
-	m_aim_transform->SetRot(CoordinateKind::kWorld, MGetRotElem(killer_m * MGetRotY(90.0f * math::kDegToRad)));
+	m_aim_transform->SetRot(CoordinateKind::kWorld, matrix::GetRotMatrix(killer_m * MGetRotY(90.0f * math::kDegToRad)));
 }
 #pragma endregion

@@ -33,12 +33,13 @@ private:
 	void Move();
 
 	void CalcColliderPos();
+	void CalcProjectRayPos();
 
 	[[nodiscard]] float	GetDeltaTime() const override;
 
 private:
 	static constexpr VECTOR kBasicAngle					= { 90.0f * math::kDegToRad, 0.0f, 0.0f };
-	static constexpr float  kBasicScale					= 1.5f;
+	static constexpr float  kBasicScale					= 0.4f;
 
 	static constexpr float  kDisappearTime				= 1.5f;						// Á‚¦‚é‚Ü‚Å‚ÌŠÔ
 	static constexpr VECTOR kLocalFirstMoveDir			= { 1.0f, 1.0f, 0.0f };		// ‰Šú‚ÌˆÚ“®•ûŒü
@@ -50,6 +51,7 @@ private:
 	static constexpr VECTOR kCollisionAreaOffset		= { 0.0f, 0.0f, 0.0f };
 	static constexpr float  kLandingTriggerRadius		= 0.9f;
 	static constexpr VECTOR kLandingTriggerOffsetPos	= { 0.0f, -1.5f, 0.0f };
+	static constexpr float  kRayLength					= 4.0f;
 
 private:
 	std::shared_ptr<Modeler> m_modeler;

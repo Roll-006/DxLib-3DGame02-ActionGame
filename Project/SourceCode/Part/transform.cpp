@@ -262,7 +262,7 @@ VECTOR Transform::GetPos(const CoordinateKind coord_kind)
 
 MATRIX Transform::GetRotMatrix(const CoordinateKind coord_kind)
 {
-	return MGetRotElem(GetMatrix(coord_kind));
+	return matrix::GetRotMatrix(GetMatrix(coord_kind));
 }
 
 Quaternion Transform::GetQuaternion(const CoordinateKind coord_kind)

@@ -77,7 +77,7 @@ void CrossHair::DrawGunCrossHair() const
 	switch (m_current_hold_gun_kind)
 	{
 	case GunKind::kHandgun:
-	case GunKind::kSubmachineGun:
+	case GunKind::kAssaultRifle:
 	case GunKind::kRocketLauncher:
 	case GunKind::kShotgun:
 	case GunKind::kBoltThrower:
@@ -116,7 +116,7 @@ void CrossHair::CreateGunCrossHairScreen()
 	case GunKind::kSniperRifle:
 		break;
 
-	case GunKind::kSubmachineGun:
+	case GunKind::kAssaultRifle:
 		CreateSubmachineGunCrossHairScreen();
 		break;
 

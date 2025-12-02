@@ -39,7 +39,7 @@ private:
 
 
 	/// @brief 見る方向を設定
-	void UpdatePosAndTarget(const VECTOR& forward);
+	void UpdatePosture(const VECTOR& target);
 
 	/// @brief レイキャストが発生
 	void OnRayCast(const VECTOR& intersection);

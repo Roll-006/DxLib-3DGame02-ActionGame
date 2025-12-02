@@ -109,14 +109,14 @@ void EffectManager::OutputWeaponShotEffect(const WeaponShotEvent& event)
 
 	switch (event.gun_kind)
 	{
-	case GunKind::kSubmachineGun:
+	case GunKind::kAssaultRifle:
 		obj = pool->GetObj(ObjName.SHOT_FIRE_EFFECT);
 		if (obj)
 		{
 			const auto effect = std::static_pointer_cast<Effect>(obj);
 			effect->AttachOwnerTransform(event.muzzle_transform);
 			effect->SetOffsetAngle(VGet(90.0f * math::kDegToRad, 0.0f, 0.0f));
-			effect->SetOffsetScale(2.5f);
+			effect->SetOffsetScale(1.5f);
 			AddEffect(effect);
 		}
 		break;

@@ -28,7 +28,7 @@ MATRIX math::ConvertQuaternionToRotMatrix(const Quaternion& q)
 
 Quaternion math::ConvertRotMatrixToQuaternion(const MATRIX& rot_matrix)
 {
-    MATRIX m = MTranspose(MGetRotElem(rot_matrix));
+    MATRIX m = MTranspose(matrix::GetRotMatrix(rot_matrix));
 
     // 最大成分を検索
     std::array<float, 4> e
@@ -126,7 +126,7 @@ VECTOR math::ConvertAxisToEulerAngles(const Axis& axis)
 VECTOR math::ConvertXYZRotMatrixToEulerAngles(const MATRIX& rot_matrix)
 {
     VECTOR angle = v3d::GetZeroV();
-    const MATRIX m = MGetRotElem(rot_matrix);
+    const MATRIX m = matrix::GetRotMatrix(rot_matrix);
 
     GetMatrixXYZRotation(&m, &angle.x, &angle.y, &angle.z);
 
@@ -136,7 +136,7 @@ VECTOR math::ConvertXYZRotMatrixToEulerAngles(const MATRIX& rot_matrix)
 VECTOR math::ConvertXYZRotMatrixToEulerAngles(const MATRIX& rot_matrix, bool& is_gimbal_lock)
 {
     VECTOR angle = v3d::GetZeroV();
-    const MATRIX m = MGetRotElem(rot_matrix);
+    const MATRIX m = matrix::GetRotMatrix(rot_matrix);
 
     is_gimbal_lock = GetMatrixXYZRotation(&m, &angle.x, &angle.y, &angle.z);
 
@@ -146,7 +146,7 @@ VECTOR math::ConvertXYZRotMatrixToEulerAngles(const MATRIX& rot_matrix, bool& is
 VECTOR math::ConvertZXYRotMatrixToEulerAngles(const MATRIX& rot_matrix)
 {
     VECTOR angle = v3d::GetZeroV();
-    const MATRIX m = MGetRotElem(rot_matrix);
+    const MATRIX m = matrix::GetRotMatrix(rot_matrix);
 
     GetMatrixZXYRotation(&m, &angle.x, &angle.y, &angle.z);
 
@@ -155,26 +155,26 @@ VECTOR math::ConvertZXYRotMatrixToEulerAngles(const MATRIX& rot_matrix)
 
 Axis math::ConvertRotMatrixToAxis(const MATRIX& rot_matrix)
 {
-    const MATRIX m = MGetRotElem(rot_matrix);
+    const MATRIX m = matrix::GetRotMatrix(rot_matrix);
 
-    const VECTOR scale
-    {
-        VSize(VGet(m.m[0][0], m.m[0][1], m.m[0][2])),
-        VSize(VGet(m.m[0][0], m.m[0][1], m.m[0][2])),
-        VSize(VGet(m.m[2][0], m.m[2][1], m.m[2][2]))
-    };
+    //const VECTOR scale
+    //{
+    //    VSize(VGet(m.m[0][0], m.m[0][1], m.m[0][2])),
+    //    VSize(VGet(m.m[0][0], m.m[0][1], m.m[0][2])),
+    //    VSize(VGet(m.m[2][0], m.m[2][1], m.m[2][2]))
+    //};
 
-    // スケールを打ち消す逆数
-    const VECTOR reciprocal
-    {
-        1.0f / scale.x,
-        1.0f / scale.y,
-        1.0f / scale.z
-    };
+    //// スケールを打ち消す逆数
+    //const VECTOR reciprocal
+    //{
+    //    1.0f / scale.x,
+    //    1.0f / scale.y,
+    //    1.0f / scale.z
+    //};
 
-    const VECTOR x_axis = VTransform(axis::GetWorldXAxis(), m) * reciprocal.x;
-    const VECTOR y_axis = VTransform(axis::GetWorldYAxis(), m) * reciprocal.y;
-    const VECTOR z_axis = VTransform(axis::GetWorldZAxis(), m) * reciprocal.z;
+    const VECTOR x_axis = VTransform(axis::GetWorldXAxis(), m)/* * reciprocal.x*/;
+    const VECTOR y_axis = VTransform(axis::GetWorldYAxis(), m)/* * reciprocal.y*/;
+    const VECTOR z_axis = VTransform(axis::GetWorldZAxis(), m)/* * reciprocal.z*/;
 
     return Axis(x_axis, y_axis, z_axis);
 }
@@ -183,14 +183,14 @@ MATRIX math::ConvertEulerAnglesToXYZRotMatrix(const VECTOR& angle)
 {
     MATRIX mat = MGetIdent();
     CreateRotationXYZMatrix(&mat, angle.x, angle.y, angle.z);
-    return MGetRotElem(mat);
+    return matrix::GetRotMatrix(mat);
 }
 
 MATRIX math::ConvertEulerAnglesToZXYRotMatrix(const VECTOR& angle)
 {
     MATRIX mat = MGetIdent();
     CreateRotationZXYMatrix(&mat, angle.x, angle.y, angle.z);
-    return MGetRotElem(mat);
+    return matrix::GetRotMatrix(mat);
 }
 
 MATRIX math::ConvertForwardToRotMatrix(const VECTOR& forward)
@@ -724,11 +724,11 @@ Axis math::GetAxis(const VECTOR& dir, const Axis& parent_axis)
     return Axis(local_dir_x, local_dir_y, local_dir_z);
 }
 
-Axis math::GetRotatedAxis(const Axis& origin_axis, const VECTOR& target_forward)
+Axis math::GetRotatedAxis(const Axis& origin_axis, const VECTOR& target_forward, const std::optional<VECTOR>& right)
 {
     Axis axis;
     axis.z_axis = target_forward;
-    axis.x_axis = math::GetNormalVector(origin_axis.y_axis, axis.z_axis);		// 一時的なピッチ軸回転を計算
+    axis.x_axis = right ? *right : math::GetNormalVector(origin_axis.y_axis, axis.z_axis);		// 一時的なピッチ軸回転を計算
     axis.y_axis = math::GetNormalVector(axis.z_axis,        axis.x_axis);
     axis.x_axis = math::GetNormalVector(axis.y_axis,        axis.z_axis);
     return axis;

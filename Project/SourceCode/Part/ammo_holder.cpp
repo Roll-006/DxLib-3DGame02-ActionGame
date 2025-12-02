@@ -48,7 +48,7 @@ void AmmoHolder::Reload(const std::shared_ptr<GunBase>& gun)
 
 	switch (gun_kind)
 	{
-	case GunKind::kSubmachineGun:
+	case GunKind::kAssaultRifle:
 		current_ammo	= GetCurrentAmmoNum(typeid(AssaultRifleAmmoBox));
 		ammo_boxes		= &m_assault_rifle_ammo_boxes;
 		break;

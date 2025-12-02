@@ -68,7 +68,7 @@ void ControlVirtualCamerasController::LateUpdate()
 
 	MATRIX result_m = MGetIdent();
 	CreateRotationXYZMatrix(&result_m, m_result_angle.x, m_result_angle.y, m_result_angle.z);
-	m_aim_transform->SetRot(CoordinateKind::kWorld, MGetRotElem(result_m));
+	m_aim_transform->SetRot(CoordinateKind::kWorld, matrix::GetRotMatrix(result_m));
 }
 
 void ControlVirtualCamerasController::OnRecoil(const GunBase& gun)
@@ -250,7 +250,7 @@ void ControlVirtualCamerasController::CalcOffsetFromRotCamera()
 
 		switch (gun->GetGunKind())
 		{
-		case GunKind::kSubmachineGun:
+		case GunKind::kAssaultRifle:
 			body->SetFollowOffset    (kFollowOffsetForAimCamera);
 			aim ->SetTrackedObjOffset(kTrackedObjOffsetForAimCamera);
 			break;

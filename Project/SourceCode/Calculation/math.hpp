@@ -365,7 +365,7 @@ namespace math
 	/// @param origin_axis 回転前のXYZ軸
 	/// @param target_forward 回転後のZ軸
 	/// @return 回転後のXYZ軸
-	[[nodiscard]] Axis GetRotatedAxis(const Axis& origin_axis, const VECTOR& target_forward);
+	[[nodiscard]] Axis GetRotatedAxis(const Axis& origin_axis, const VECTOR& target_forward, const std::optional<VECTOR>& right = std::nullopt);
 	#pragma endregion
 
 

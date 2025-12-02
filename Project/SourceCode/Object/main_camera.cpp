@@ -59,7 +59,7 @@ void MainCamera::LateUpdate()
 {
 	if (!IsActive()) { return; }
 
-	UpdatePosAndTarget(m_transform->GetForward(CoordinateKind::kWorld));
+	UpdatePosture(m_transform->GetPos(CoordinateKind::kWorld) + m_transform->GetForward(CoordinateKind::kWorld));
 
 	CalcRayCastPos();
 	CalcVisionTriggerPos();
@@ -231,12 +231,9 @@ float MainCamera::GetDeltaTime() const
 #pragma endregion
 
 
-void MainCamera::UpdatePosAndTarget(const VECTOR& forward)
+void MainCamera::UpdatePosture(const VECTOR& target)
 {
-	const VECTOR pos		= m_transform->GetPos(CoordinateKind::kWorld);
-	const VECTOR target_pos	= pos + forward;
-
-	SetCameraPositionAndTarget_UpVecY(pos, target_pos);
+	SetCameraPositionAndTarget_UpVecY(m_transform->GetPos(CoordinateKind::kWorld), target);
 	Effekseer_Sync3DSetting();
 }
 
@@ -251,7 +248,7 @@ void MainCamera::OnRayCast(const VECTOR& intersection)
 
 	// 通常時レイキャスト
 	m_transform->SetPos(CoordinateKind::kWorld, intersection);
-	UpdatePosAndTarget(m_transform->GetForward(CoordinateKind::kWorld));
+	UpdatePosture(m_transform->GetPos(CoordinateKind::kWorld) + m_transform->GetForward(CoordinateKind::kWorld));
 }
 
 void MainCamera::OnRayCastGrabCutscene(const VECTOR& intersection)
@@ -273,11 +270,10 @@ void MainCamera::OnRayCastGrabCutscene(const VECTOR& intersection)
 		up = -math::GetNormalVector(normal_v, cross_x);
 	}
 
-	const auto pos		= intersection + up * (grab_ray_length - current_lenght);
-	const auto forward	= v3d::GetNormalizedV(m_aim_pos - m_transform->GetPos(CoordinateKind::kWorld));
+	const auto pos = intersection + up * (grab_ray_length - current_lenght);
 
 	m_transform->SetPos(CoordinateKind::kWorld, pos);
-	UpdatePosAndTarget(forward);
+	UpdatePosture(m_aim_pos);
 }
 
 void MainCamera::CalcRayCastPos()

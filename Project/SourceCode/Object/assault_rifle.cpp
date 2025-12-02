@@ -4,7 +4,7 @@
 //		  そのため、GunKindはサブマシンガンとして扱う
 
 AssaultRifle::AssaultRifle() :
-	GunBase(ObjName.ASSAULT_RIFLE, GunKind::kSubmachineGun, HolsterKind::kRifle)
+	GunBase(ObjName.ASSAULT_RIFLE, GunKind::kAssaultRifle, HolsterKind::kRifle)
 {
 	m_magazine = std::make_shared<AssaultRifleMagazine>(m_load_transform);
 	std::dynamic_pointer_cast<ObjBase>(m_magazine)->AddToObjManager();

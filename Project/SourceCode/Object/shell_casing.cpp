@@ -13,9 +13,10 @@ ShellCasing::ShellCasing(const std::string& file_path) :
 
 	SetColliderModelHandle(m_modeler->GetModelHandle());
 
-	AddCollider(std::make_shared<Collider>(ColliderKind::kCollider,				std::make_shared<Sphere>(v3d::GetZeroV(), kColliderRadius),		this));
-	AddCollider(std::make_shared<Collider>(ColliderKind::kLandingTrigger,		std::make_shared<Sphere>(v3d::GetZeroV(), kLandingTriggerRadius), this));
-	AddCollider(std::make_shared<Collider>(ColliderKind::kCollisionAreaTrigger, std::make_shared<Sphere>(v3d::GetZeroV(), kCollisionAreaRadius), this));
+	AddCollider(std::make_shared<Collider>(ColliderKind::kProjectRay,			std::make_shared<Segment>(v3d::GetZeroV(), -axis::GetWorldYAxis(), kRayLength), this));
+	AddCollider(std::make_shared<Collider>(ColliderKind::kCollider,				std::make_shared<Sphere>(v3d::GetZeroV(), kColliderRadius),						this));
+	AddCollider(std::make_shared<Collider>(ColliderKind::kLandingTrigger,		std::make_shared<Sphere>(v3d::GetZeroV(), kLandingTriggerRadius),				this));
+	AddCollider(std::make_shared<Collider>(ColliderKind::kCollisionAreaTrigger, std::make_shared<Sphere>(v3d::GetZeroV(), kCollisionAreaRadius),				this));
 
 }
 
@@ -43,6 +44,8 @@ void ShellCasing::LateUpdate()
 	if (!IsActive()) { return; }
 
 	Move();
+	CalcProjectRayPos();
+	CalcColliderPos();
 
 	m_alive_timer += GetDeltaTime();
 }
@@ -60,13 +63,15 @@ void ShellCasing::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 {
 	switch (hit_collider_pair.owner_collider->GetColliderKind())
 	{
+	case ColliderKind::kProjectRay:
+		if (hit_collider_pair.intersection) { m_current_project_pos = hit_collider_pair.intersection; }
+		break;
+
 	case ColliderKind::kLandingTrigger:
-		// 地形の影響を受けるようにvelocityをdirに保存
-		// TODO : 自身との着地判定は避ける。のちに衝突マネージャーで管理
 		if (hit_collider_pair.target_collider->GetOwnerObj()->GetName() != ObjName.SHELL_CASING_556x45)
 		{
-			m_move_dir = v3d::GetNormalizedV(m_move_velocity);
-			m_is_landing = true;
+			m_move_dir		= v3d::GetNormalizedV(m_move_velocity);
+			m_is_landing	= true;
 		}
 		break;
 
@@ -77,7 +82,27 @@ void ShellCasing::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 void ShellCasing::OnProjectPos()
 {
+	if (!IsActive()) { return; }
+	if (IsLanding()) { return; }
 
+	const auto project_pos = GetCurrentProjectPos();
+	if (!project_pos) { return; }
+
+	const auto hit_triangle = GetCollider(ColliderKind::kProjectRay)->GetHitTriangles();
+	if (hit_triangle.size() <= 0) { return; }
+
+	// 角度・位置を固定
+	const auto current_axis = m_transform->GetAxis(CoordinateKind::kWorld);
+	const auto cross_x		= math::GetNormalVector(hit_triangle.front().GetNormalVector(), axis::GetWorldYAxis());
+	const auto cross_z		= math::GetNormalVector(hit_triangle.front().GetNormalVector(), cross_x);
+	const auto new_axis		= math::GetRotatedAxis(current_axis, cross_z);
+
+	m_transform->SetPos(CoordinateKind::kWorld, *project_pos);
+	m_transform->SetRot(CoordinateKind::kWorld, new_axis);
+
+	// コライダーの位置更新
+	const auto pos = m_transform->GetPos(CoordinateKind::kWorld);
+	CalcColliderPos();
 }
 
 void ShellCasing::AddToObjManager()
@@ -141,6 +166,16 @@ void ShellCasing::CalcColliderPos()
 	// 着地用トリガー
 	auto landing_sphere = std::static_pointer_cast<Sphere>(GetCollider(ColliderKind::kLandingTrigger)->GetShape());
 	landing_sphere->SetPos(pos + kLandingTriggerOffsetPos);
+}
+
+void ShellCasing::CalcProjectRayPos()
+{
+	const auto project_ray = GetCollider(ColliderKind::kProjectRay);
+	if (project_ray)
+	{
+		const auto segment = std::static_pointer_cast<Segment>(project_ray->GetShape());
+		segment->SetBeginPos(m_transform->GetPos(CoordinateKind::kWorld), false);
+	}
 }
 
 float ShellCasing::GetDeltaTime() const

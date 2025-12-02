@@ -93,5 +93,5 @@ void DeadVirtualCamerasController::CalcAimTransform()
 
 	// 基準となるトランスフォームを設定
 	m_aim_transform->SetPos(CoordinateKind::kWorld, spine2_pos);
-	m_aim_transform->SetRot(CoordinateKind::kWorld, MGetRotElem(spine2_m));
+	m_aim_transform->SetRot(CoordinateKind::kWorld, matrix::GetRotMatrix(spine2_m));
 }

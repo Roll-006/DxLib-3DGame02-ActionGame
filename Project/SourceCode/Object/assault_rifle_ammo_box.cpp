@@ -104,8 +104,6 @@ void AssaultRifleAmmoBox::OnCollide(const ColliderPairOneToOneData& hit_collider
 	const auto			target_tag				= target_obj->GetTag();
 	const auto			target_collider_kind	= hit_collider_pair.target_collider->GetColliderKind();
 
-	DrawLine3D(m_transform->GetPos(CoordinateKind::kWorld), m_transform->GetPos(CoordinateKind::kWorld) - axis::GetWorldYAxis() * rifle_cartridge_box_data.project_ray_length, 0xffffff);
-
 	switch (hit_collider_pair.owner_collider->GetColliderKind())
 	{
 	case ColliderKind::kProjectRay:

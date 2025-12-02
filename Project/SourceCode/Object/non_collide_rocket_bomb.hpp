@@ -33,7 +33,7 @@ private:
 
 private:
 	static constexpr VECTOR kBasicAngle			= { 0.0f, 90.0f * math::kDegToRad, 0.0f };
-	static constexpr float  kBasicScale			= 1.0f;
+	static constexpr float  kBasicScale			= 0.45f;
 
 	static constexpr VECTOR kHoldOffsetAngle	= { 0.0f, 270.0f * math::kDegToRad, 0.0f };		// 手に持たれる際のオフセット角度
 	static constexpr VECTOR kHoldOffsetPos		= { -4.0f, 8.0f, 0.0f };						// 手に持たれる際のオフセット座標

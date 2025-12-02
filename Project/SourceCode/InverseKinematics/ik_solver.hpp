@@ -2,6 +2,8 @@
 #include "../Calculation/math.hpp"
 #include "../Data/model_frame_angle_limit_data.hpp"
 #include "../Data/aid_axis_data.hpp"
+#include "../Data/triangle_edge_data.hpp"
+#include "frame_info.hpp"
 
 namespace ik_solver
 {
@@ -49,4 +51,19 @@ namespace ik_solver
 		ModelFrameAngleLimitData&			middle_angle_limit,
 		const RotDirKind					rot_dir_kind, 
 		const std::optional<AidAxisData>&	aid_axis = std::nullopt);
+
+	/// @brief 2ボーンIKに必要な回転行列を生成する
+	/// @param begin_rot_m 始点フレームの回転行列
+	/// @param middle_rot_m 中間フレームの回転行列
+	/// @param begin_angle_limit 始点フレームの角度制限
+	/// @param middle_angle_limit 中間フレームの角度制限
+	/// @param triangle_edge 三角形の辺データ
+	/// @param rot_dir_kind 回転方向
+	void CreateTwoBoneIKRotMatrix(
+		FrameData&							begin_frame,
+		FrameData&							middle_frame,
+		ModelFrameAngleLimitData&			begin_angle_limit,
+		ModelFrameAngleLimitData&			middle_angle_limit,
+		const TriangleEdgeData				triangle_edge,
+		const RotDirKind					rot_dir_kind);
 }

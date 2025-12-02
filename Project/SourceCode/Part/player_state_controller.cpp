@@ -522,7 +522,7 @@ bool PlayerStateController::TryReload(std::shared_ptr<Player>& player)
 	{
 		switch (gun->GetGunKind())
 		{
-		case GunKind::kSubmachineGun:
+		case GunKind::kAssaultRifle:
 			if (ammo_holder->GetCurrentAmmoNum(typeid(AssaultRifleAmmoBox)) <= 0) { return false; }
 			break;
 
@@ -554,7 +554,7 @@ bool PlayerStateController::TryPullTriggerReload(std::shared_ptr<Player>& player
 	{
 		switch (gun->GetGunKind())
 		{
-		case GunKind::kSubmachineGun:
+		case GunKind::kAssaultRifle:
 			if (ammo_holder->GetCurrentAmmoNum(typeid(AssaultRifleAmmoBox)) <= 0) { return false; }
 			break;
 

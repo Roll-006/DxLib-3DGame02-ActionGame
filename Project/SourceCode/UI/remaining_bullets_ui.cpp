@@ -67,7 +67,7 @@ void RemainingBulletsUI::UpdateText()
 
 		switch (gun_kind)
 		{
-		case GunKind::kSubmachineGun:
+		case GunKind::kAssaultRifle:
 			sum_ammo = ammo_holder->GetCurrentAmmoNum(typeid(AssaultRifleAmmoBox));
 			break;
 
