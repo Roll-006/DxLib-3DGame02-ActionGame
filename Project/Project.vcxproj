@@ -259,7 +259,7 @@
     <ClCompile Include="SourceCode\Shape\3DShape\ray_capsule.cpp" />
     <ClCompile Include="SourceCode\Shape\3DShape\cone.cpp" />
     <ClCompile Include="SourceCode\Shape\3DShape\sphere.cpp" />
-    <ClCompile Include="SourceCode\Sound\sound_manager.cpp" />
+    <ClCompile Include="SourceCode\Sound\sound_player.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\aim_gun.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\aim_knife.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\player_dead.cpp" />
@@ -323,8 +323,12 @@
     <ClCompile Include="SourceCode\Tab\warning_tab.cpp" />
     <ClCompile Include="SourceCode\UIButton\sub_menu_select_button.cpp" />
     <ClCompile Include="SourceCode\UIButton\main_menu_select_button.cpp" />
+    <ClCompile Include="SourceCode\UICreator\guidance_ui_creator.cpp" />
     <ClCompile Include="SourceCode\UICreator\player_ui_creator.cpp" />
     <ClCompile Include="SourceCode\UICreator\screen_filter_creator.cpp" />
+    <ClCompile Include="SourceCode\UI\guidance_ui.cpp" />
+    <ClCompile Include="SourceCode\UI\purpose_ui.cpp" />
+    <ClCompile Include="SourceCode\UI\mission_ui.cpp" />
     <ClCompile Include="SourceCode\UI\pickupable_item_icon.cpp" />
     <ClCompile Include="SourceCode\UI\remaining_bullets_ui.cpp" />
     <ClCompile Include="SourceCode\UI\game_clear_text.cpp" />
@@ -395,6 +399,7 @@
     <ClInclude Include="SourceCode\Concept\state_concepts.hpp" />
     <ClInclude Include="SourceCode\Concept\vector_concepts.hpp" />
     <ClInclude Include="SourceCode\CSV\csv_loader.hpp" />
+    <ClInclude Include="SourceCode\Data\text_data.hpp" />
     <ClInclude Include="SourceCode\Data\axis_data.hpp" />
     <ClInclude Include="SourceCode\Data\triangle_edge_data.hpp" />
     <ClInclude Include="SourceCode\Data\theta_data.hpp" />
@@ -637,7 +642,7 @@
     <ClInclude Include="SourceCode\Shape\3DShape\ray_capsule.hpp" />
     <ClInclude Include="SourceCode\Shape\3DShape\cone.hpp" />
     <ClInclude Include="SourceCode\Shape\3DShape\sphere.hpp" />
-    <ClInclude Include="SourceCode\Sound\sound_manager.hpp" />
+    <ClInclude Include="SourceCode\Sound\sound_player.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\aim_gun.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\aim_knife.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\player_dead.hpp" />
@@ -703,8 +708,12 @@
     <ClInclude Include="SourceCode\Tag\obj_tag.hpp" />
     <ClInclude Include="SourceCode\UIButton\sub_menu_select_button.hpp" />
     <ClInclude Include="SourceCode\UIButton\main_menu_select_button.hpp" />
+    <ClInclude Include="SourceCode\UICreator\guidance_ui_creator.hpp" />
     <ClInclude Include="SourceCode\UICreator\player_ui_creator.hpp" />
     <ClInclude Include="SourceCode\UICreator\screen_filter_creator.hpp" />
+    <ClInclude Include="SourceCode\UI\guidance_ui.hpp" />
+    <ClInclude Include="SourceCode\UI\purpose_ui.hpp" />
+    <ClInclude Include="SourceCode\UI\mission_ui.hpp" />
     <ClInclude Include="SourceCode\UI\pickupable_item_icon.hpp" />
     <ClInclude Include="SourceCode\UI\remaining_bullets_ui.hpp" />
     <ClInclude Include="SourceCode\UI\game_clear_text.hpp" />
@@ -737,6 +746,7 @@
     <None Include="Data\JSON\model_foot_angle_limits.json" />
     <None Include="Data\JSON\player.json" />
     <None Include="Data\JSON\boss.json" />
+    <None Include="data\JSON\sound_data.json" />
     <None Include="Data\JSON\zombie.json" />
     <None Include="data\JSON\houses.json" />
     <None Include="Data\JSON\patrol_route.json" />

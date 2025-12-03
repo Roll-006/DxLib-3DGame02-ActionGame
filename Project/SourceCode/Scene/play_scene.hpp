@@ -13,6 +13,7 @@
 
 #include "../UI/ui_drawer.hpp"
 #include "../UICreator/player_ui_creator.hpp"
+#include "../UICreator/guidance_ui_creator.hpp"
 #include "../Tab/tab_drawer.hpp"
 #include "../Tab/game_clear_tab.hpp"
 #include "../Tab/game_over_tab.hpp"
@@ -61,7 +62,7 @@ private:
 	std::shared_ptr<RifleCartridgeObjectPool>	m_rifle_cartridge_object_pool;
 	std::shared_ptr<PlaySceneEffectObjectPool>  m_play_scene_effect_object_pool;
 	std::shared_ptr<IUICreator>					m_player_ui_creator;
-	//std::shared_ptr<IUICreator>					m_game_clear_ui_creator;
+	std::shared_ptr<IUICreator>					m_guidance_ui_creator;
 	std::shared_ptr<GameClearTab>				m_game_clear_tab;
 	std::shared_ptr<GameOverTab>				m_game_over_tab;
 	std::shared_ptr<PauseTab>					m_pause_tab;

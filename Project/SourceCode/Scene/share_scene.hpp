@@ -8,6 +8,7 @@
 #include "../UI/ui_drawer.hpp"
 #include "../UICreator/screen_filter_creator.hpp"
 
+#include "../Sound/sound_player.hpp"
 #include "../VirtualCamera/cinemachine_brain.hpp"
 
 class ShareScene final : public IScene
@@ -36,6 +37,7 @@ private:
 	bool		m_is_active;
 	SceneKind	m_scene_kind;
 
-	std::shared_ptr<MainCamera>	m_main_camera;
-	std::shared_ptr<IUICreator>	m_screen_filter_creator;
+	std::shared_ptr<MainCamera>		m_main_camera;
+	std::shared_ptr<IUICreator>		m_screen_filter_creator;
+	std::shared_ptr<SoundPlayer>	m_sound_player;
 };
