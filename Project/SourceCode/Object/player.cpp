@@ -84,25 +84,22 @@ Player::Player() :
 	// TODO : âºå„Ç…ïœçX
 	{
 		// ïêäÌê›íË
-		const auto assault_rifle	= std::make_shared<AssaultRifle>();
 		const auto rocket_launcher	= std::make_shared<RocketLauncher>();
+		const auto assault_rifle	= std::make_shared<AssaultRifle>();
 		const auto knife			= std::make_shared<Knife>();
-		assault_rifle  ->AddToObjManager();
 		rocket_launcher->AddToObjManager();
-		m_weapon_shortcut_selecter->AttachShortcutWeapon(WeaponShortcutPosKind::kInsideLeft, assault_rifle);
+		assault_rifle  ->AddToObjManager();
 		m_weapon_shortcut_selecter->AttachShortcutWeapon(WeaponShortcutPosKind::kOutsideDown, rocket_launcher);
-		AddItem(assault_rifle);
+		m_weapon_shortcut_selecter->AttachShortcutWeapon(WeaponShortcutPosKind::kInsideLeft, assault_rifle);
 		AddItem(rocket_launcher);
+		AddItem(assault_rifle);
 		AddItem(knife);
-		EquipWeapon(assault_rifle,		WeaponSlotKind::kMain);
 		EquipWeapon(rocket_launcher,	WeaponSlotKind::kMain);
+		EquipWeapon(assault_rifle,		WeaponSlotKind::kMain);
 		EquipWeapon(knife,				WeaponSlotKind::kSub);
-		AttachWeapon(assault_rifle);
 		AttachWeapon(rocket_launcher);
+		AttachWeapon(assault_rifle);
 		AttachWeapon(knife);
-
-		std::shared_ptr<IAmmoBox> rocket_bomb_box = std::make_shared<RocketBombBox>(1);
-		m_ammo_holder->AddAmmo(rocket_bomb_box);
 
 		std::shared_ptr<IAmmoBox> assault_rifle_ammo_box = std::make_shared<AssaultRifleAmmoBox>(80);
 		m_ammo_holder->AddAmmo(assault_rifle_ammo_box);
