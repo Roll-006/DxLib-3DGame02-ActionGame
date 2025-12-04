@@ -6,10 +6,10 @@ SoundPool::SoundPool()
 	if (json_loader::Load("Data/JSON/sound_data.json", data))
 	{
 		const auto sound_json = data.at("sound_data");
-		for (const auto [sound_name, value] : sound_json.items())
+		for (const auto& value : sound_json)
 		{
 			auto sound = std::make_shared<Sound>(value.get<SoundData>());
-			m_sounds[sound_name].push(sound);
+			m_sounds[sound->GetSoundData().name].push(sound);
 		}
 	}
 }

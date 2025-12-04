@@ -1,4 +1,5 @@
 #include "gun_base.hpp"
+#include "../Command/command_handler.hpp"
 
 GunBase::GunBase(const std::string& name, const GunKind gun_kind, const HolsterKind holster_kind) :
 	WeaponBase						(name, WeaponKind::kGun, holster_kind),
@@ -145,9 +146,17 @@ VECTOR GunBase::GetFirstShotPos() const
 
 bool GunBase::IsShot() const
 {
-	if (m_current_remaining_bullet_num > 0 && m_shot_timer == 0.0f && m_on_pull_trigger)
+	if (m_shot_timer == 0.0f && m_on_pull_trigger)
 	{
-		return true;
+		if (m_current_remaining_bullet_num > 0)
+		{
+			return true;
+		}
+
+		if (!CommandHandler::GetInstance()->IsExecute(CommandKind::kPullTrigger, TimeKind::kPrev))
+		{
+			EventSystem::GetInstance()->Publish(EmptyAmmoEvent(m_transform->GetPos(CoordinateKind::kWorld)));
+		}
 	}
 	return false;
 }

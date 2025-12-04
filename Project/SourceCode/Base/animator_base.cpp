@@ -252,7 +252,7 @@ void AnimatorBase::PlayAnim()
 			{
 				const auto is_run = tag == AnimTag.RUN ? true : false;
 				auto left_foot_m = MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, FramePath.LEFT_FOOT));
-				EventSystem::GetInstance()->Publish(OnGroundFoot(is_run, true, MGetTranslateElem(left_foot_m)));
+				EventSystem::GetInstance()->Publish(OnGroundFootEvent(is_run, true, MGetTranslateElem(left_foot_m)));
 			}
 		}
 		else if(right_foot)
@@ -263,7 +263,7 @@ void AnimatorBase::PlayAnim()
 			{
 				const auto is_run = tag == AnimTag.RUN ? true : false;
 				auto right_foot_m = MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, FramePath.RIGHT_FOOT));
-				EventSystem::GetInstance()->Publish(OnGroundFoot(is_run, false, MGetTranslateElem(right_foot_m)));
+				EventSystem::GetInstance()->Publish(OnGroundFootEvent(is_run, false, MGetTranslateElem(right_foot_m)));
 			}
 		}
 

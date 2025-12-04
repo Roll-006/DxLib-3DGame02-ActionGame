@@ -75,7 +75,6 @@ void GameManager::Run()
 		m_scene_manager->DrawToShadowMap();
 		m_scene_manager->Draw();
 
-		//GameTimeManager::GetInstance()->Draw();
 		GameTimeManager::GetInstance()->WaitTime();
 		ScreenFlip();
 	}

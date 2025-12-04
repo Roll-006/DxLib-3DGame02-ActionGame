@@ -1794,7 +1794,7 @@
     <ClInclude Include="SourceCode\Event\drop_shell_casing.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Event\on_ground_foot.hpp">
+    <ClInclude Include="SourceCode\Event\on_ground_foot_event.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Sound\sound.hpp">
@@ -1802,6 +1802,21 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Sound\sound_pool.hpp">
       <Filter>SourceCode\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\empty_ammo_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\aim_gun_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\cocking_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\release_ammo_box_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\set_ammo_box_event.hpp">
+      <Filter>SourceCode\Event</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -12,9 +12,14 @@ public:
 
 private:
 	#pragma region Event
-	void OutputWeaponShotSound		(const WeaponShotEvent& event);
-	void OutputDropShellCasingSound	(const DropShellCasing& event);
-	void OutputOnGroundFootSound	(const OnGroundFoot&	event);
+	void OutputWeaponShotSound		(const WeaponShotEvent&		event);
+	void OutputDropShellCasingSound	(const DropShellCasing&		event);
+	void OutputOnGroundFootSound	(const OnGroundFootEvent&	event);
+	void OutputEmptyAmmoSound		(const EmptyAmmoEvent&		event);
+	void OutputAimGunSound			(const AimGunEvent&			event);
+	void OutputSetAmmoBoxSound		(const SetAmmoBoxEvent&		event);
+	void OutputReleaseAmmoBoxSound	(const ReleaseAmmoBoxEvent& event);
+	void OutputCockingSound			(const CockingEvent&		event);
 	#pragma endregion
 
 private:

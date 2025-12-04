@@ -1,14 +1,54 @@
 {
-  "sound_data": {
-    "shot_assault_rifle": {
+  "sound_data": [
+    {
       "path": "Data/Sound/shot_assault_rifle.mp3",
       "name": "shot_assault_rifle",
-      "priority":10,
+      "priority": 10,
       "volume": 255,
       "radius": 250.0,
       "is_3d_sound": true
     },
-    "drop_shell_casing": {
+    {
+      "path": "Data/Sound/empty_ammo.mp3",
+      "name": "empty_ammo",
+      "priority": 10,
+      "volume": 255,
+      "radius": 250.0,
+      "is_3d_sound": true
+    },
+    {
+      "path": "Data/Sound/aim_gun.mp3",
+      "name": "aim_gun",
+      "priority": 10,
+      "volume": 255,
+      "radius": 250.0,
+      "is_3d_sound": true
+    },
+    {
+      "path": "Data/Sound/set_ammo_box.mp3",
+      "name": "set_ammo_box",
+      "priority": 10,
+      "volume": 255,
+      "radius": 250.0,
+      "is_3d_sound": true
+    },
+    {
+      "path": "Data/Sound/release_ammo_box.mp3",
+      "name": "release_ammo_box",
+      "priority": 10,
+      "volume": 255,
+      "radius": 250.0,
+      "is_3d_sound": true
+    },
+    {
+      "path": "Data/Sound/cocking.mp3",
+      "name": "cocking",
+      "priority": 10,
+      "volume": 255,
+      "radius": 250.0,
+      "is_3d_sound": true
+    },
+    {
       "path": "Data/Sound/drop_shell_casing.mp3",
       "name": "drop_shell_casing",
       "priority": 0,
@@ -16,7 +56,7 @@
       "radius": 250.0,
       "is_3d_sound": true
     },
-    "walk_left_foot_on_lawn": {
+    {
       "path": "Data/Sound/walk_left_foot_on_lawn.m4a",
       "name": "walk_left_foot_on_lawn",
       "priority": 5,
@@ -24,7 +64,7 @@
       "radius": 250.0,
       "is_3d_sound": true
     },
-    "walk_right_foot_on_lawn": {
+    {
       "path": "Data/Sound/walk_right_foot_on_lawn.m4a",
       "name": "walk_right_foot_on_lawn",
       "priority": 5,
@@ -32,7 +72,7 @@
       "radius": 250.0,
       "is_3d_sound": true
     },
-    "run_left_foot_on_lawn": {
+    {
       "path": "Data/Sound/run_left_foot_on_lawn.m4a",
       "name": "run_left_foot_on_lawn",
       "priority": 5,
@@ -40,7 +80,7 @@
       "radius": 250.0,
       "is_3d_sound": true
     },
-    "run_right_foot_on_lawn": {
+    {
       "path": "Data/Sound/run_right_foot_on_lawn.m4a",
       "name": "run_right_foot_on_lawn",
       "priority": 5,
@@ -48,5 +88,5 @@
       "radius": 250.0,
       "is_3d_sound": true
     }
-  }
+  ]
 }

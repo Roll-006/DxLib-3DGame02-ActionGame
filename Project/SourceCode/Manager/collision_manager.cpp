@@ -206,6 +206,7 @@ void CollisionManager::SetIgnoreColliderPairs()
 	AddIgnoreColliderPair(shell_casing_data, player_data							);
 	AddIgnoreColliderPair(shell_casing_data, enemy_data								);
 	AddIgnoreColliderPair(shell_casing_data, { "", ColliderKind::kAttackTrigger }	);
+	AddIgnoreColliderPair(shell_casing_data, { "", ColliderKind::kRay			}	);
 
 	// 着地判定トリガーが無視するコライダー
 	AddIgnoreColliderPair(landing_data, player_data);

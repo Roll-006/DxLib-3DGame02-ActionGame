@@ -73,12 +73,15 @@ void player_state::AimGun::Enter(std::shared_ptr<Player>& obj)
 	obj->DetachWeapon(obj->GetCurrentEquipWeapon(WeaponSlotKind::kMain));
 	obj->HoldWeapon	 (obj->GetCurrentEquipWeapon(WeaponSlotKind::kMain));
 
-	const auto weapon_action_state = static_cast<player_state::WeaponActionStateKind>(obj->GetStateController()->GetWeaponActionState(TimeKind::kPrev)->GetStateKind());
+	const auto weapon_action_state	= static_cast<player_state::WeaponActionStateKind>(obj->GetStateController()->GetWeaponActionState(TimeKind::kPrev)->GetStateKind());
 	if (weapon_action_state != player_state::WeaponActionStateKind::kShot)
 	{
 		const auto gun = std::static_pointer_cast<GunBase>(obj->GetCurrentHeldWeapon());
 		gun->InitCrossHairRange();
+
+		EventSystem::GetInstance()->Publish(AimGunEvent(gun->GetTransform()->GetPos(CoordinateKind::kWorld)));
 	}
+
 }
 
 void player_state::AimGun::Exit(std::shared_ptr<Player>& obj)
@@ -113,6 +116,16 @@ std::shared_ptr<IState<Player>> player_state::AimGun::ChangeState(std::shared_pt
 	{
 		return state_controller->GetState<EquipGun, Player>();
 	}
+	// リロード
+	if (obj->CanControl() && state_controller->TryReload(obj) && !camera_controller->IsRecoiling())
+	{
+		return state_controller->GetState<Reload, Player>();
+	}
+	// リロード
+	if (state_controller->TryPullTriggerReload(obj))
+	{
+		return state_controller->GetState<Reload, Player>();
+	}
 	// ショット
 	if (state_controller->TryPullTrigger(obj))
 	{
@@ -129,16 +142,6 @@ std::shared_ptr<IState<Player>> player_state::AimGun::ChangeState(std::shared_pt
 				return state_controller->GetState<Shot, Player>();
 			}
 		}
-	}
-	// リロード
-	if (obj->CanControl() && state_controller->TryReload(obj) && !camera_controller->IsRecoiling())
-	{
-		return state_controller->GetState<Reload, Player>();
-	}
-	// リロード
-	if (state_controller->TryPullTriggerReload(obj))
-	{
-		return state_controller->GetState<Reload, Player>();
 	}
 
 	return nullptr;
