@@ -34,3 +34,5 @@
 #include "../Event/on_change_title_scene_event.hpp"
 #include "../Event/exit_game_event.hpp"
 #include "../Event/drop_item_event.hpp"
+#include "../Event/drop_shell_casing.hpp"
+#include "../Event/on_ground_foot.hpp"

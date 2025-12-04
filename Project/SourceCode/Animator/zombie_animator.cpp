@@ -32,8 +32,8 @@ void ZombieAnimator::LoadAnim()
 	// 汎用
 	AddAnimHandle(static_cast<int>(ZombieAnimKind::kIdle),							ZombieAnimPath.ZOMBIE_IDLE_01,				0, AnimTag.NONE, 20.0f,  true);
 	AddAnimHandle(static_cast<int>(ZombieAnimKind::kDetected),						ZombieAnimPath.SHOUT_ZOMBIE,				0, AnimTag.NONE, 50.0f,  false);
-	AddAnimHandle(static_cast<int>(ZombieAnimKind::kMoveForwardWalk),				ZombieAnimPath.MOVE_FORWARD_WALK,			0, AnimTag.MOVE, 55.0f,  true);
-	AddAnimHandle(static_cast<int>(ZombieAnimKind::kMoveForwardRun),				ZombieAnimPath.MOVE_FORWARD_RUN_02,			0, AnimTag.MOVE, 60.0f,  true);
+	AddAnimHandle(static_cast<int>(ZombieAnimKind::kMoveForwardWalk),				ZombieAnimPath.MOVE_FORWARD_WALK,			0, AnimTag.WALK, 55.0f,  true);
+	AddAnimHandle(static_cast<int>(ZombieAnimKind::kMoveForwardRun),				ZombieAnimPath.MOVE_FORWARD_RUN_02,			0, AnimTag.RUN,  60.0f,  true);
 	AddAnimHandle(static_cast<int>(ZombieAnimKind::kEnterNeckBite),					ZombieAnimPath.ENTER_NECK_BITE,				0, AnimTag.NONE, 20.0f,  true, true);
 	AddAnimHandle(static_cast<int>(ZombieAnimKind::kEnterNeckBite),					ZombieAnimPath.EXIT_NECK_BITE,				0, AnimTag.NONE, 20.0f,  false);
 	AddAnimHandle(static_cast<int>(ZombieAnimKind::kStealthKilled),					ZombieAnimPath.DEAD_03,						0, AnimTag.NONE, 60.0f,  false);
@@ -50,8 +50,8 @@ void ZombieAnimator::LoadAnim()
 	AddAnimHandle(static_cast<int>(ZombieAnimKind::kStandStun),						ZombieAnimPath.STAND_STUN,					0, AnimTag.NONE, 2.0f,   true);
 
 	// 下半身用
-	AddAnimHandle(static_cast<int>(ZombieAnimKind::kCrouchLeftStun),				ZombieAnimPath.LEANING_FORWARD_CROUCH_LEFT,	0, AnimTag.MOVE, 0.0f,   true);
-	AddAnimHandle(static_cast<int>(ZombieAnimKind::kCrouchRightStun),				ZombieAnimPath.LEANING_FORWARD_CROUCH_RIGHT,0, AnimTag.MOVE, 0.0f,   true);
+	AddAnimHandle(static_cast<int>(ZombieAnimKind::kCrouchLeftStun),				ZombieAnimPath.LEANING_FORWARD_CROUCH_LEFT,	0, AnimTag.NONE, 0.0f,   true);
+	AddAnimHandle(static_cast<int>(ZombieAnimKind::kCrouchRightStun),				ZombieAnimPath.LEANING_FORWARD_CROUCH_RIGHT,0, AnimTag.NONE, 0.0f,   true);
 }
 
 void ZombieAnimator::ChangeAnim()

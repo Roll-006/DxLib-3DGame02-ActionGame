@@ -1,7 +1,52 @@
 {
   "sound_data": {
     "shot_assault_rifle": {
-      "path": "shot_assault_rifle.mp3"
+      "path": "Data/Sound/shot_assault_rifle.mp3",
+      "name": "shot_assault_rifle",
+      "priority":10,
+      "volume": 255,
+      "radius": 250.0,
+      "is_3d_sound": true
+    },
+    "drop_shell_casing": {
+      "path": "Data/Sound/drop_shell_casing.mp3",
+      "name": "drop_shell_casing",
+      "priority": 0,
+      "volume": 150,
+      "radius": 250.0,
+      "is_3d_sound": true
+    },
+    "walk_left_foot_on_lawn": {
+      "path": "Data/Sound/walk_left_foot_on_lawn.m4a",
+      "name": "walk_left_foot_on_lawn",
+      "priority": 5,
+      "volume": 200,
+      "radius": 250.0,
+      "is_3d_sound": true
+    },
+    "walk_right_foot_on_lawn": {
+      "path": "Data/Sound/walk_right_foot_on_lawn.m4a",
+      "name": "walk_right_foot_on_lawn",
+      "priority": 5,
+      "volume": 200,
+      "radius": 250.0,
+      "is_3d_sound": true
+    },
+    "run_left_foot_on_lawn": {
+      "path": "Data/Sound/run_left_foot_on_lawn.m4a",
+      "name": "run_left_foot_on_lawn",
+      "priority": 5,
+      "volume": 200,
+      "radius": 250.0,
+      "is_3d_sound": true
+    },
+    "run_right_foot_on_lawn": {
+      "path": "Data/Sound/run_right_foot_on_lawn.m4a",
+      "name": "run_right_foot_on_lawn",
+      "priority": 5,
+      "volume": 200,
+      "radius": 250.0,
+      "is_3d_sound": true
     }
   }
 }

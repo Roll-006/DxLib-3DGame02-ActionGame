@@ -63,7 +63,7 @@ public:
 	void ApplyKnockbackVelocity();
 
 	/// @brief ’…’n”»’è‚ğ‰ğœ‚·‚é
-	void ReleaseLanding() { m_is_landing = false; }
+	void ReleaseGround() { m_is_on_ground = false; }
 	void RemoveProjectPos() { m_current_project_pos = std::nullopt; }
 
 	void SetColliderModelHandle(const int model_handle) { m_model_handle = model_handle; }
@@ -77,7 +77,7 @@ public:
 	[[nodiscard]] VECTOR				GetMoveVelocity()			const { return m_move_velocity; }
 	[[nodiscard]] VECTOR				GetFallVelocity()			const { return m_fall_velocity; }
 	[[nodiscard]] MassKind				GetMassKind()				const { return mass_kind; }
-	[[nodiscard]] bool					IsLanding()					const { return m_is_landing; }
+	[[nodiscard]] bool					IsOnGround()				const { return m_is_on_ground; }
 	[[nodiscard]] bool					IsProject()					const { return m_is_project; }
 	[[nodiscard]] std::shared_ptr<Collider> GetCollider(const ColliderKind kind) const;
 	[[nodiscard]] std::unordered_map<ColliderKind, std::shared_ptr<Collider>> GetColliderAll() const { return m_colliders; }
@@ -94,7 +94,7 @@ protected:
 	float    m_knockback_speed;
 	float	 m_knockback_deceleration;
 
-	bool	 m_is_landing;
+	bool	 m_is_on_ground;
 	bool	 m_is_project;	// ’n–Ê‚É’£‚è•t‚¯‚é‚©‚ğ”»’è
 
 	std::unordered_map<ColliderKind, std::shared_ptr<Collider>> m_colliders;

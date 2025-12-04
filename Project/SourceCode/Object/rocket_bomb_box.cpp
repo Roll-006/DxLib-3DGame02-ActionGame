@@ -118,7 +118,7 @@ void RocketBombBox::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 void RocketBombBox::OnProjectPos()
 {
 	if (!IsActive()) { return; }
-	if (IsLanding()) { return; }
+	if (IsOnGround()) { return; }
 
 	const auto project_pos = GetCurrentProjectPos();
 	if (!project_pos) { return; }

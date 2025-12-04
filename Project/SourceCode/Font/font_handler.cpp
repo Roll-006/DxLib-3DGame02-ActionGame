@@ -18,7 +18,7 @@ void FontHandler::CreateFontHandle()
 		const auto font_json = data.at("font_data");
 		for (const auto [font_name, value] : font_json.items())
 		{
-			FontData font_data = value.get<FontData>();
+			auto font_data = value.get<FontData>();
 
 			m_font_handle[font_name] = CreateFontToHandle(
 				font_data.font_path.c_str(),

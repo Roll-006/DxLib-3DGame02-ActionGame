@@ -610,9 +610,6 @@
     <ClCompile Include="SourceCode\Part\item_creator.cpp">
       <Filter>SourceCode\Part</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Sound\sound_manager.cpp">
-      <Filter>SourceCode\Sound</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\State\ZombieState\patrol.cpp">
       <Filter>SourceCode\State\ZombieState</Filter>
     </ClCompile>
@@ -627,6 +624,27 @@
     </ClCompile>
     <ClCompile Include="SourceCode\UI\pickupable_item_icon.cpp">
       <Filter>SourceCode\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Sound\sound_player.cpp">
+      <Filter>SourceCode\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\UI\guidance_ui.cpp">
+      <Filter>SourceCode\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\UI\mission_ui.cpp">
+      <Filter>SourceCode\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\UI\purpose_ui.cpp">
+      <Filter>SourceCode\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\UICreator\guidance_ui_creator.cpp">
+      <Filter>SourceCode\UICreator</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Sound\sound.cpp">
+      <Filter>SourceCode\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Sound\sound_pool.cpp">
+      <Filter>SourceCode\Sound</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1689,9 +1707,6 @@
     <ClInclude Include="SourceCode\Event\drop_item_event.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Sound\sound_manager.hpp">
-      <Filter>SourceCode\Sound</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\State\ZombieState\patrol.hpp">
       <Filter>SourceCode\State\ZombieState</Filter>
     </ClInclude>
@@ -1719,9 +1734,6 @@
     <ClInclude Include="SourceCode\MixamoHelper\mixamo_helper.hpp">
       <Filter>SourceCode\MixamoHelper</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Data\aid_axis_data.hpp">
-      <Filter>SourceCode\Data</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\Kind\axis_kind.hpp">
       <Filter>SourceCode\Kind</Filter>
     </ClInclude>
@@ -1736,6 +1748,60 @@
     </ClInclude>
     <ClInclude Include="SourceCode\UI\pickupable_item_icon.hpp">
       <Filter>SourceCode\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Sound\sound_player.hpp">
+      <Filter>SourceCode\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\aid_mixamo_axis_data.hpp">
+      <Filter>SourceCode\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\axis_data.hpp">
+      <Filter>SourceCode\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\frame_data.hpp">
+      <Filter>SourceCode\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\text_data.hpp">
+      <Filter>SourceCode\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\theta_data.hpp">
+      <Filter>SourceCode\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\triangle_edge_data.hpp">
+      <Filter>SourceCode\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\InverseKinematics\frame_info.hpp">
+      <Filter>SourceCode\InverseKinematics</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\UI\guidance_ui.hpp">
+      <Filter>SourceCode\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\UI\mission_ui.hpp">
+      <Filter>SourceCode\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\UI\purpose_ui.hpp">
+      <Filter>SourceCode\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\UICreator\guidance_ui_creator.hpp">
+      <Filter>SourceCode\UICreator</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Kind\mixamo_axis_kind.hpp">
+      <Filter>SourceCode\Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\sound_data.hpp">
+      <Filter>SourceCode\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\drop_shell_casing.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\on_ground_foot.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Sound\sound.hpp">
+      <Filter>SourceCode\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Sound\sound_pool.hpp">
+      <Filter>SourceCode\Sound</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1925,6 +1991,9 @@
       <Filter>JSON</Filter>
     </None>
     <None Include="Data\JSON\model_foot_angle_limits.json">
+      <Filter>JSON</Filter>
+    </None>
+    <None Include="data\JSON\sound_data.json">
       <Filter>JSON</Filter>
     </None>
   </ItemGroup>

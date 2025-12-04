@@ -7,7 +7,8 @@ ShellCasing::ShellCasing(const std::string& file_path) :
 	m_time_scale_owner_name	(""),
 	m_move_dir				(v3d::GetZeroV()),
 	m_alive_timer			(0.0f),
-	m_move_speed			(kInitialVelocity)
+	m_move_speed			(kInitialVelocity),
+	m_prev_on_ground		(false)
 {	
 	mass_kind = MassKind::kLight;
 
@@ -37,6 +38,13 @@ void ShellCasing::Init()
 void ShellCasing::Update()
 {
 	if (!IsActive()) { return; }
+
+	if (m_is_on_ground && !m_prev_on_ground)
+	{
+		EventSystem::GetInstance()->Publish(DropShellCasing(m_transform->GetPos(CoordinateKind::kWorld)));
+	}
+
+	m_prev_on_ground = m_is_on_ground;
 }
 
 void ShellCasing::LateUpdate()
@@ -71,7 +79,7 @@ void ShellCasing::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 		if (hit_collider_pair.target_collider->GetOwnerObj()->GetName() != ObjName.SHELL_CASING_556x45)
 		{
 			m_move_dir		= v3d::GetNormalizedV(m_move_velocity);
-			m_is_landing	= true;
+			m_is_on_ground	= true;
 		}
 		break;
 
@@ -83,7 +91,7 @@ void ShellCasing::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 void ShellCasing::OnProjectPos()
 {
 	if (!IsActive()) { return; }
-	if (IsLanding()) { return; }
+	if (IsOnGround()) { return; }
 
 	const auto project_pos = GetCurrentProjectPos();
 	if (!project_pos) { return; }

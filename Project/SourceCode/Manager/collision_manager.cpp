@@ -24,7 +24,7 @@ void CollisionManager::LateUpdate()
 {
 	for (const auto& obj : m_collide_objects)
 	{
-		obj->ReleaseLanding();
+		obj->ReleaseGround();
 		obj->RemoveProjectPos();
 		obj->RemoveHitTriangles();
 	}

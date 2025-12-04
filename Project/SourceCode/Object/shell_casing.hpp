@@ -61,4 +61,6 @@ private:
 	float  m_alive_timer;
 
 	float  m_move_speed;
+
+	bool   m_prev_on_ground;
 };

@@ -11,7 +11,7 @@ PhysicalObjBase::PhysicalObjBase(const std::string& name, const std::string& tag
 	m_knockback_velocity	(v3d::GetZeroV()),
 	m_knockback_speed		(0.0f),
 	m_knockback_deceleration(0.0f),
-	m_is_landing			(true),
+	m_is_on_ground			(true),
 	m_is_project			(true),
 	m_model_handle			(-1)
 {
@@ -56,7 +56,7 @@ void PhysicalObjBase::SaveProjectPos()
 void PhysicalObjBase::ApplyGravity(const float gravity_acceleration, const float max_gravity)
 {
 	// ínñ Ç…Ç¢ÇÈèÍçáÇÕèdóÕÇó^Ç¶Ç»Ç¢
-	if (m_is_landing)
+	if (m_is_on_ground)
 	{
 		m_fall_velocity.y = 0.0f;
 	}

@@ -171,7 +171,7 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	switch (hit_collider_pair.owner_collider->GetColliderKind())
 	{
 	case ColliderKind::kLandingTrigger:
-		m_is_landing = true;
+		m_is_on_ground = true;
 		break;
 
 	case ColliderKind::kRay:
@@ -394,7 +394,7 @@ void Zombie::OnProjectPos()
 	if (hit_triangle.size() <= 0) { return; }
 
 	// ’…’n‚µ‚Ä‚¢‚½ê‡AˆÈ‘O‚Ì“Š‰eÀ•W‚æ‚è‰º‚É‚ ‚ê‚Î“Š‰e‚ð‹–‰Â‚·‚é
-	if (IsLanding())
+	if (IsOnGround())
 	{
 		const auto prev_project_pos = GetPrevProjectPos();
 		if (prev_project_pos)

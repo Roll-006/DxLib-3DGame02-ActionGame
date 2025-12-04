@@ -8,7 +8,7 @@
 #include "../Data/animator_data.hpp"
 #include "../Tag/animation_tag.hpp"
 #include "../Name/obj_name.hpp"
-//#include "../Concept/common_concepts.hpp"
+#include "../Event/event_system.hpp"
 
 class AnimatorBase abstract
 {
@@ -48,7 +48,7 @@ public:
 	/// @return タグ(該当のタグがない場合は[""]が返る)
 	[[nodiscard]] int			GetAnimKind			(const BodyKind body_kind, const TimeKind time_kind) const;
 	[[nodiscard]] std::string	GetAnimTag			(const BodyKind body_kind, const TimeKind time_kind) const;
-	[[nodiscard]] float			GetLandingPlayRate	(const BodyKind body_kind) const;
+	[[nodiscard]] float			GetGroundPlayRate	(const BodyKind body_kind) const;
 
 	[[nodiscard]] float			GetBlendRate		(const BodyKind body_kind) const { return m_blend_rate.contains(body_kind) ? m_blend_rate.at(body_kind) : 0.0f; }
 	[[nodiscard]] float			GetPlayRate			(const BodyKind body_kind) const;
@@ -94,4 +94,6 @@ private:
 	std::unordered_map<BodyKind, std::unordered_map<std::string, int>>	m_frame_numbers;
 	std::unordered_map<BodyKind, float>									m_prev_anim_play_rate;		// 前回のアニメーションの再生率
 	std::unordered_map<BodyKind, float>									m_blend_rate;				// ブレンド率
+	bool																m_is_on_ground;
+	bool																m_prev_on_ground;
 };

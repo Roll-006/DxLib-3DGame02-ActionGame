@@ -1,8 +1,10 @@
 ﻿#include "animator_base.hpp"
 
 AnimatorBase::AnimatorBase(const std::shared_ptr<Modeler>& modeler, const std::string& obj_name) :
-	m_obj_name(obj_name),
-	m_result_modeler(modeler)
+	m_obj_name		(obj_name),
+	m_result_modeler(modeler),
+	m_is_on_ground	(false),
+	m_prev_on_ground(false)
 {
 	m_resource_modeler[BodyKind::kUpperBody] = std::make_shared<Modeler>(m_result_modeler->GetModelHandle());
 	m_resource_modeler[BodyKind::kLowerBody] = std::make_shared<Modeler>(m_result_modeler->GetModelHandle());
@@ -10,9 +12,9 @@ AnimatorBase::AnimatorBase(const std::shared_ptr<Modeler>& modeler, const std::s
 	m_blend_rate[BodyKind::kUpperBody] = 1.0f;
 	m_blend_rate[BodyKind::kLowerBody] = 1.0f;
 
-	m_time_kind_data.emplace_back(std::make_tuple(BodyKind::kUpperBody, TimeKind::kPrev, AnimTimeKindData()));
+	m_time_kind_data.emplace_back(std::make_tuple(BodyKind::kUpperBody, TimeKind::kPrev,	AnimTimeKindData()));
 	m_time_kind_data.emplace_back(std::make_tuple(BodyKind::kUpperBody, TimeKind::kCurrent, AnimTimeKindData()));
-	m_time_kind_data.emplace_back(std::make_tuple(BodyKind::kLowerBody, TimeKind::kPrev, AnimTimeKindData()));
+	m_time_kind_data.emplace_back(std::make_tuple(BodyKind::kLowerBody, TimeKind::kPrev,	AnimTimeKindData()));
 	m_time_kind_data.emplace_back(std::make_tuple(BodyKind::kLowerBody, TimeKind::kCurrent, AnimTimeKindData()));
 
 	SetupStaticFrame();
@@ -171,13 +173,13 @@ std::string AnimatorBase::GetAnimTag(const BodyKind body_kind, const TimeKind ti
 	return "";
 }
 
-float AnimatorBase::GetLandingPlayRate(const BodyKind body_kind) const
+float AnimatorBase::GetGroundPlayRate(const BodyKind body_kind) const
 {
 	for (auto& [body, time, data] : m_time_kind_data)
 	{
 		if (body == body_kind && time == TimeKind::kCurrent)
 		{
-			return m_anim_data.at(data.kind).landing_play_rate;
+			return m_anim_data.at(data.kind).ground_play_rate;
 		}
 	}
 
@@ -219,19 +221,54 @@ void AnimatorBase::PlayAnim()
 		// アニメーションが有効であった場合のみ再生
 		if (data.attach_index > -1)
 		{
-			const auto blend_rate = time_kind == TimeKind::kCurrent ? m_blend_rate.at(body_kind) : 1.0f - m_blend_rate.at(body_kind);
-			const auto is_self_blend = m_anim_data.at(data.kind).is_self_blend;
-			const auto is_loop = m_anim_data.at(data.kind).is_loop && !is_self_blend ? true : false;
-			float play_speed = m_anim_data.at(data.kind).play_speed * GetDeltaTime();
+			const auto blend_rate		= time_kind == TimeKind::kCurrent ? m_blend_rate.at(body_kind) : 1.0f - m_blend_rate.at(body_kind);
+			const auto is_self_blend	= m_anim_data.at(data.kind).is_self_blend;
+			const auto is_loop			= m_anim_data.at(data.kind).is_loop && !is_self_blend ? true : false;
+			auto	   play_speed		= m_anim_data.at(data.kind).play_speed * GetDeltaTime();
 			math::Increase(data.play_timer, play_speed, data.total_time, is_loop);
 
 			// 再生位置・ブレンド率を適用
-			MV1SetAttachAnimTime(m_resource_modeler.at(body_kind)->GetModelHandle(), data.attach_index, data.play_timer);
+			MV1SetAttachAnimTime	 (m_resource_modeler.at(body_kind)->GetModelHandle(), data.attach_index, data.play_timer);
 			MV1SetAttachAnimBlendRate(m_resource_modeler.at(body_kind)->GetModelHandle(), data.attach_index, blend_rate);
 		}
 	}
 
 	CombineAnim();
+
+	const auto tag = GetAnimTag(BodyKind::kLowerBody, TimeKind::kCurrent);
+	if (tag == AnimTag.WALK || tag == AnimTag.RUN)
+	{
+		const auto model_handle = m_result_modeler->GetModelHandle();
+		const auto play_rate	= GetPlayRate(BodyKind::kLowerBody);
+		const auto left_foot	= play_rate >= 0.5f - 0.1f && play_rate < 0.5f + 0.1f;
+		const auto right_foot	= play_rate <= 0.0f + 0.1f || play_rate > 1.0f - 0.1f;
+		m_is_on_ground = false;
+
+		if (left_foot)
+		{
+			m_is_on_ground = true;
+
+			if (!m_prev_on_ground)
+			{
+				const auto is_run = tag == AnimTag.RUN ? true : false;
+				auto left_foot_m = MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, FramePath.LEFT_FOOT));
+				EventSystem::GetInstance()->Publish(OnGroundFoot(is_run, true, MGetTranslateElem(left_foot_m)));
+			}
+		}
+		else if(right_foot)
+		{
+			m_is_on_ground = true;
+
+			if (!m_prev_on_ground)
+			{
+				const auto is_run = tag == AnimTag.RUN ? true : false;
+				auto right_foot_m = MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, FramePath.RIGHT_FOOT));
+				EventSystem::GetInstance()->Publish(OnGroundFoot(is_run, false, MGetTranslateElem(right_foot_m)));
+			}
+		}
+
+		m_prev_on_ground = m_is_on_ground;
+	}
 }
 
 void AnimatorBase::BlendAnim()
@@ -261,8 +298,8 @@ void AnimatorBase::SetupStaticFrame()
 	m_frame_numbers[BodyKind::kLowerBody] = lower_body_frame_num;
 
 	// 上半身のボーンを設定
-	const auto begin_upper_body_frame_num = MV1SearchFrame(model_handle, FramePath.LEFT_SHOULDER);
-	const auto   end_upper_body_frame_num = MV1SearchFrame(model_handle, FramePath.RIGHT_HAND_PINKY_4);
+	const auto begin_upper_body_frame_num	= MV1SearchFrame(model_handle, FramePath.LEFT_SHOULDER);
+	const auto end_upper_body_frame_num		= MV1SearchFrame(model_handle, FramePath.RIGHT_HAND_PINKY_4);
 	for (int i = begin_upper_body_frame_num; i <= end_upper_body_frame_num; ++i)
 	{
 		upper_body_frame_num[MV1GetFrameName(model_handle, i)] = i;
@@ -276,7 +313,7 @@ void AnimatorBase::DivideFrame(const TCHAR* upper_body_end_frame)
 
 	// 下半身のボーンを設定
 	const auto begin_lower_body_frame_index = MV1SearchFrame(model_handle, FramePath.HIPS);
-	const auto   end_lower_body_frame_index = MV1SearchFrame(model_handle, upper_body_end_frame) - 1;
+	const auto end_lower_body_frame_index	= MV1SearchFrame(model_handle, upper_body_end_frame) - 1;
 	for (int i = begin_lower_body_frame_index; i <= end_lower_body_frame_index; ++i)
 	{
 		m_frame_numbers[BodyKind::kLowerBody][MV1GetFrameName(model_handle, i)] = i;
@@ -285,7 +322,7 @@ void AnimatorBase::DivideFrame(const TCHAR* upper_body_end_frame)
 
 	// 上半身のボーンを設定
 	const auto begin_upper_body_frame_index = MV1SearchFrame(model_handle, upper_body_end_frame);
-	const auto   end_upper_body_frame_index = MV1SearchFrame(model_handle, FramePath.HEAD_TOP_END_END);
+	const auto end_upper_body_frame_index	= MV1SearchFrame(model_handle, FramePath.HEAD_TOP_END_END);
 	for (int i = begin_upper_body_frame_index; i <= end_upper_body_frame_index; ++i)
 	{
 		m_frame_numbers[BodyKind::kUpperBody][MV1GetFrameName(model_handle, i)] = i;

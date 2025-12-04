@@ -259,7 +259,9 @@
     <ClCompile Include="SourceCode\Shape\3DShape\ray_capsule.cpp" />
     <ClCompile Include="SourceCode\Shape\3DShape\cone.cpp" />
     <ClCompile Include="SourceCode\Shape\3DShape\sphere.cpp" />
+    <ClCompile Include="SourceCode\Sound\sound.cpp" />
     <ClCompile Include="SourceCode\Sound\sound_player.cpp" />
+    <ClCompile Include="SourceCode\Sound\sound_pool.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\aim_gun.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\aim_knife.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\player_dead.cpp" />
@@ -399,6 +401,7 @@
     <ClInclude Include="SourceCode\Concept\state_concepts.hpp" />
     <ClInclude Include="SourceCode\Concept\vector_concepts.hpp" />
     <ClInclude Include="SourceCode\CSV\csv_loader.hpp" />
+    <ClInclude Include="SourceCode\Data\sound_data.hpp" />
     <ClInclude Include="SourceCode\Data\text_data.hpp" />
     <ClInclude Include="SourceCode\Data\axis_data.hpp" />
     <ClInclude Include="SourceCode\Data\triangle_edge_data.hpp" />
@@ -425,6 +428,8 @@
     <ClInclude Include="SourceCode\Data\input_data.hpp" />
     <ClInclude Include="SourceCode\Debugger\debugger.hpp" />
     <ClInclude Include="SourceCode\Drawer\drawer.hpp" />
+    <ClInclude Include="SourceCode\Event\on_ground_foot.hpp" />
+    <ClInclude Include="SourceCode\Event\drop_shell_casing.hpp" />
     <ClInclude Include="SourceCode\Event\got_item_event.hpp" />
     <ClInclude Include="SourceCode\Event\drop_item_event.hpp" />
     <ClInclude Include="SourceCode\Event\dead_all_enemy_event.hpp" />
@@ -642,7 +647,9 @@
     <ClInclude Include="SourceCode\Shape\3DShape\ray_capsule.hpp" />
     <ClInclude Include="SourceCode\Shape\3DShape\cone.hpp" />
     <ClInclude Include="SourceCode\Shape\3DShape\sphere.hpp" />
+    <ClInclude Include="SourceCode\Sound\sound.hpp" />
     <ClInclude Include="SourceCode\Sound\sound_player.hpp" />
+    <ClInclude Include="SourceCode\Sound\sound_pool.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\aim_gun.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\aim_knife.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\player_dead.hpp" />

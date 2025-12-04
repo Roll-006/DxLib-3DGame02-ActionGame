@@ -213,8 +213,10 @@ void HumanoidFootIKSolver::BlendFrame(const std::shared_ptr<IHumanoid>& humanoid
 
 void HumanoidFootIKSolver::JudgeExecuteIK(const std::shared_ptr<IHumanoid>& humanoid)
 {
-	const auto is_current_move_anim = m_animator->GetAnimTag (AnimatorBase::BodyKind::kLowerBody, TimeKind::kCurrent) == AnimTag.MOVE;
-	const auto is_prev_move_anim	= m_animator->GetAnimTag (AnimatorBase::BodyKind::kLowerBody, TimeKind::kPrev)	  == AnimTag.MOVE;
+	const auto lower_current_tag	= m_animator->GetAnimTag(AnimatorBase::BodyKind::kLowerBody, TimeKind::kCurrent);
+	const auto lower_prev_tag		= m_animator->GetAnimTag(AnimatorBase::BodyKind::kLowerBody, TimeKind::kPrev);
+	const auto is_current_move_anim = lower_current_tag == AnimTag.WALK || lower_current_tag == AnimTag.RUN;
+	const auto is_prev_move_anim	= lower_prev_tag	== AnimTag.WALK || lower_prev_tag	 == AnimTag.RUN;
 
 	// データのシフト
 	m_can_left_foot_ik .at(TimeKind::kPrev) = m_can_left_foot_ik .at(TimeKind::kCurrent);
@@ -233,7 +235,7 @@ void HumanoidFootIKSolver::JudgeExecuteIK(const std::shared_ptr<IHumanoid>& huma
 	}
 
 	const auto play_rate			= m_animator->GetPlayRate		(AnimatorBase::BodyKind::kLowerBody);
-	const auto landing_play_rate	= m_animator->GetLandingPlayRate(AnimatorBase::BodyKind::kLowerBody) * 0.25f;
+	const auto landing_play_rate	= m_animator->GetGroundPlayRate(AnimatorBase::BodyKind::kLowerBody) * 0.25f;
 	
 	m_can_left_foot_ik .at(TimeKind::kCurrent) = play_rate >= 0.5f - landing_play_rate && play_rate < 0.5f + landing_play_rate;
 	m_can_right_foot_ik.at(TimeKind::kCurrent) = play_rate <= 0.0f + landing_play_rate || play_rate > 1.0f - landing_play_rate;

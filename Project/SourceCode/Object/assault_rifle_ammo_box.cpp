@@ -118,7 +118,7 @@ void AssaultRifleAmmoBox::OnCollide(const ColliderPairOneToOneData& hit_collider
 void AssaultRifleAmmoBox::OnProjectPos()
 {
 	if (!IsActive()) { return; }
-	if (IsLanding()) { return; }
+	if (IsOnGround()) { return; }
 
 	const auto project_pos = GetCurrentProjectPos();
 	if (!project_pos) { return; }

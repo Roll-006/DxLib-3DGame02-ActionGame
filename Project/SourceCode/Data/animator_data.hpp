@@ -19,5 +19,5 @@ struct AnimKindData
 	float		play_speed			= 0.0f;
 	bool		is_loop				= true;
 	bool		is_self_blend		= false;
-	float		landing_play_rate	= 1.0f;
+	float		ground_play_rate	= 1.0f;
 };

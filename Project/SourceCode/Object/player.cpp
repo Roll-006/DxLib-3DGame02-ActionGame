@@ -250,7 +250,7 @@ void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	switch (hit_collider_pair.owner_collider->GetColliderKind())
 	{
 	case ColliderKind::kLandingTrigger:
-		m_is_landing = true;
+		m_is_on_ground = true;
 		break;
 
 	case ColliderKind::kProjectRay:
