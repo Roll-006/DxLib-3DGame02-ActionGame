@@ -1,6 +1,7 @@
 #pragma once
 #include "../GameTime/game_time_manager.hpp"
 #include "../Event/event_system.hpp"
+#include "../Name/obj_name.hpp"
 #include "sound_pool.hpp"
 
 class SoundPlayer final
@@ -23,11 +24,14 @@ private:
 	void PlayOnGroundFootSound		(const OnGroundFootEvent&	event);
 	void PlayEmptyAmmoSound			(const EmptyAmmoEvent&		event);
 	void PlayAimGunSound			(const AimGunEvent&			event);
+	void PlayExitAimGunSound		(const ExitAimGunEvent&		event);
 	void PlaySetAmmoBoxSound		(const SetAmmoBoxEvent&		event);
 	void PlayReleaseAmmoBoxSound	(const ReleaseAmmoBoxEvent& event);
 	void PlayCockingSound			(const CockingEvent&		event);
-	void PlayHitKickSound			(const OnHitKickEvent&		event);
+	void PlayOnHitKickSound			(const OnHitKickEvent&		event);
 	void PlayPickUpItemSound		(const PickUpItemEvent&		event);
+	void PlayOnDamageSound			(const OnDamageEvent&		event);
+	void PlayOnHitBulletSound		(const OnHitBulletEvent&	event);
 	#pragma endregion
 
 private:

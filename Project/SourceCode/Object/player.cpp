@@ -101,6 +101,21 @@ Player::Player() :
 		AttachWeapon(assault_rifle);
 		AttachWeapon(knife);
 
+		std::shared_ptr<IAmmoBox> r = std::make_shared<RocketBombBox>(1);
+		m_ammo_holder->AddAmmo(r);
+
+		r = std::make_shared<RocketBombBox>(1);
+		m_ammo_holder->AddAmmo(r);
+
+		r = std::make_shared<RocketBombBox>(1);
+		m_ammo_holder->AddAmmo(r);
+
+		r = std::make_shared<RocketBombBox>(1);
+		m_ammo_holder->AddAmmo(r);
+
+		r = std::make_shared<RocketBombBox>(1);
+		m_ammo_holder->AddAmmo(r);
+
 		std::shared_ptr<IAmmoBox> assault_rifle_ammo_box = std::make_shared<AssaultRifleAmmoBox>(80);
 		m_ammo_holder->AddAmmo(assault_rifle_ammo_box);
 	}
@@ -132,11 +147,6 @@ void Player::Init()
 void Player::Update()
 {
 	if (!IsActive()) { return; }
-
-	if (CheckHitKey(KEY_INPUT_0))
-	{
-		m_health.at(HealthPartKind::kMain)->Decrease(10.0f);
-	}
 
 	NotifyHealth();
 	JudgeInvincible();

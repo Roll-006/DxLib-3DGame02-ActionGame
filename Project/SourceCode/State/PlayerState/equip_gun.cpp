@@ -39,6 +39,14 @@ void player_state::EquipGun::Enter(std::shared_ptr<Player>& obj)
 
 	obj->DetachWeapon(obj->GetCurrentEquipWeapon(WeaponSlotKind::kMain));
 	obj->HoldWeapon(obj->GetCurrentEquipWeapon(WeaponSlotKind::kMain));
+
+	// エイミング状態解除通知
+	const auto state_kind = obj->GetStateController()->GetWeaponActionState(TimeKind::kPrev)->GetStateKind();
+	if (state_kind == static_cast<int>(player_state::WeaponActionStateKind::kAimGun))
+	{
+		const auto gun = std::static_pointer_cast<GunBase>(obj->GetCurrentHeldWeapon());
+		EventSystem::GetInstance()->Publish(ExitAimGunEvent(gun->GetTransform()->GetPos(CoordinateKind::kWorld), TimeScaleLayerKind::kPlayer));
+	}
 }
 
 void player_state::EquipGun::Exit(std::shared_ptr<Player>& obj)

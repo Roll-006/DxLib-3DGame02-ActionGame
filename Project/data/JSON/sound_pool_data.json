@@ -9,6 +9,9 @@
     "aim_gun": {
       "size": 2
     },
+    "exit_aim_gun": {
+      "size": 2
+    },
     "set_ammo_box": {
       "size": 1
     },
@@ -20,6 +23,12 @@
     },
     "drop_shell_casing": {
       "size": 10
+    },
+    "shot_rocket_launcher": {
+      "size": 3
+    },
+    "explosion": {
+      "size": 3
     },
     "walk_left_foot_on_lawn": {
       "size": 5
@@ -38,6 +47,9 @@
     },
     "pick_up_item": {
       "size": 5
+    },
+    "bleed": {
+      "size": 10
     }
   }
 }

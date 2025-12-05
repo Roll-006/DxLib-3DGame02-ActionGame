@@ -42,3 +42,4 @@
 #include "../Event/set_ammo_box_event.hpp"
 #include "../Event/cocking_event.hpp"
 #include "../Event/aim_gun_event.hpp"
+#include "../Event/exit_aim_gun_event.hpp"

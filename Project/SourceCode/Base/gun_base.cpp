@@ -96,7 +96,7 @@ void GunBase::OnShot()
 	--m_current_remaining_bullet_num;
 
 	const auto time_scale = m_owner_name == ObjName.PLAYER ? TimeScaleLayerKind::kPlayer : TimeScaleLayerKind::kWorld;
-	EventSystem::GetInstance()->Publish(WeaponShotEvent(m_gun_kind, m_owner_name, m_muzzle_transform, m_ejection_port_transform, time_scale));
+	EventSystem::GetInstance()->Publish(WeaponShotEvent(m_gun_kind, m_owner_name, m_muzzle_transform, m_ejection_port_transform, TimeScaleLayerKind::kPlayer));
 }
 
 int GunBase::OnReload(const int have_bullets)

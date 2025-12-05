@@ -27,7 +27,9 @@ void Sound::Init()
 
 void Sound::Update(const float time_scale)
 {
-	SetFrequencySoundMem(sound_data.frequency * time_scale, sound_data.handle);
+	const auto scale = std::clamp(time_scale, sound_data.min_frequency_scale, sound_data.max_frequency_scale);
+
+	SetFrequencySoundMem(sound_data.frequency * scale, sound_data.handle);
 
 	time_scale <= 0.0f ? OnStopSound() : OnResumeSound();
 }

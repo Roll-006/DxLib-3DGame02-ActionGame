@@ -1824,6 +1824,9 @@
     <ClInclude Include="SourceCode\Event\on_hit_kick_event.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\Event\exit_aim_gun_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="SourceCode">

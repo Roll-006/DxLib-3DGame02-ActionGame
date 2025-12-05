@@ -6,6 +6,8 @@
       "priority": 10,
       "volume": 255,
       "radius": 250.0,
+      "max_frequency_scale": 2.0,
+      "min_frequency_scale": 0.0,
       "is_3d_sound": true,
       "time_scale_layer_kind": 1
     },
@@ -15,6 +17,8 @@
       "priority": 10,
       "volume": 255,
       "radius": 250.0,
+      "max_frequency_scale": 2.0,
+      "min_frequency_scale": 0.0,
       "is_3d_sound": true,
       "time_scale_layer_kind": 1
     },
@@ -24,6 +28,19 @@
       "priority": 10,
       "volume": 255,
       "radius": 250.0,
+      "max_frequency_scale": 2.0,
+      "min_frequency_scale": 0.0,
+      "is_3d_sound": true,
+      "time_scale_layer_kind": 1
+    },
+    {
+      "path": "Data/Sound/exit_aim_gun.mp3",
+      "name": "exit_aim_gun",
+      "priority": 10,
+      "volume": 255,
+      "radius": 250.0,
+      "max_frequency_scale": 2.0,
+      "min_frequency_scale": 0.0,
       "is_3d_sound": true,
       "time_scale_layer_kind": 1
     },
@@ -33,6 +50,8 @@
       "priority": 10,
       "volume": 255,
       "radius": 250.0,
+      "max_frequency_scale": 2.0,
+      "min_frequency_scale": 0.0,
       "is_3d_sound": true,
       "time_scale_layer_kind": 1
     },
@@ -42,6 +61,8 @@
       "priority": 10,
       "volume": 255,
       "radius": 250.0,
+      "max_frequency_scale": 2.0,
+      "min_frequency_scale": 0.0,
       "is_3d_sound": true,
       "time_scale_layer_kind": 1
     },
@@ -51,6 +72,8 @@
       "priority": 10,
       "volume": 255,
       "radius": 250.0,
+      "max_frequency_scale": 2.0,
+      "min_frequency_scale": 0.0,
       "is_3d_sound": true,
       "time_scale_layer_kind": 1
     },
@@ -60,6 +83,30 @@
       "priority": 0,
       "volume": 150,
       "radius": 250.0,
+      "max_frequency_scale": 2.0,
+      "min_frequency_scale": 0.0,
+      "is_3d_sound": true,
+      "time_scale_layer_kind": 1
+    },
+    {
+      "path": "Data/Sound/shot_rocket_launcher.mp3",
+      "name": "shot_rocket_launcher",
+      "priority": 10,
+      "volume": 255,
+      "radius": 500.0,
+      "max_frequency_scale": 2.0,
+      "min_frequency_scale": 0.1,
+      "is_3d_sound": true,
+      "time_scale_layer_kind": 1
+    },
+    {
+      "path": "Data/Sound/explosion.mp3",
+      "name": "explosion",
+      "priority": 10,
+      "volume": 255,
+      "radius": 750.0,
+      "max_frequency_scale": 2.0,
+      "min_frequency_scale": 0.0,
       "is_3d_sound": true,
       "time_scale_layer_kind": 1
     },
@@ -69,6 +116,8 @@
       "priority": 5,
       "volume": 200,
       "radius": 250.0,
+      "max_frequency_scale": 2.0,
+      "min_frequency_scale": 0.0,
       "is_3d_sound": true,
       "time_scale_layer_kind": 1
     },
@@ -78,6 +127,8 @@
       "priority": 5,
       "volume": 200,
       "radius": 250.0,
+      "max_frequency_scale": 2.0,
+      "min_frequency_scale": 0.0,
       "is_3d_sound": true,
       "time_scale_layer_kind": 1
     },
@@ -87,6 +138,8 @@
       "priority": 5,
       "volume": 200,
       "radius": 250.0,
+      "max_frequency_scale": 2.0,
+      "min_frequency_scale": 0.0,
       "is_3d_sound": true,
       "time_scale_layer_kind": 1
     },
@@ -96,6 +149,8 @@
       "priority": 5,
       "volume": 200,
       "radius": 250.0,
+      "max_frequency_scale": 2.0,
+      "min_frequency_scale": 0.0,
       "is_3d_sound": true,
       "time_scale_layer_kind": 1
     },
@@ -105,6 +160,8 @@
       "priority": 10,
       "volume": 255,
       "radius": 500.0,
+      "max_frequency_scale": 2.0,
+      "min_frequency_scale": 0.0,
       "is_3d_sound": true,
       "time_scale_layer_kind": 1
     },
@@ -114,6 +171,19 @@
       "priority": 5,
       "volume": 255,
       "radius": 250.0,
+      "max_frequency_scale": 2.0,
+      "min_frequency_scale": 0.0,
+      "is_3d_sound": true,
+      "time_scale_layer_kind": 1
+    },
+    {
+      "path": "Data/Sound/bleed.m4a",
+      "name": "bleed",
+      "priority": 10,
+      "volume": 80,
+      "radius": 250.0,
+      "max_frequency_scale": 2.0,
+      "min_frequency_scale": 0.0,
       "is_3d_sound": true,
       "time_scale_layer_kind": 1
     }

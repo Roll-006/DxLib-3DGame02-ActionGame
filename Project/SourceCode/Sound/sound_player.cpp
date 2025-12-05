@@ -9,11 +9,14 @@ SoundPlayer::SoundPlayer() :
 	EventSystem::GetInstance()->Subscribe<OnGroundFootEvent>	(this, &SoundPlayer::PlayOnGroundFootSound);
 	EventSystem::GetInstance()->Subscribe<EmptyAmmoEvent>		(this, &SoundPlayer::PlayEmptyAmmoSound);
 	EventSystem::GetInstance()->Subscribe<AimGunEvent>			(this, &SoundPlayer::PlayAimGunSound);
+	EventSystem::GetInstance()->Subscribe<ExitAimGunEvent>		(this, &SoundPlayer::PlayExitAimGunSound);
 	EventSystem::GetInstance()->Subscribe<SetAmmoBoxEvent>		(this, &SoundPlayer::PlaySetAmmoBoxSound);
 	EventSystem::GetInstance()->Subscribe<ReleaseAmmoBoxEvent>	(this, &SoundPlayer::PlayReleaseAmmoBoxSound);
 	EventSystem::GetInstance()->Subscribe<CockingEvent>			(this, &SoundPlayer::PlayCockingSound);
-	EventSystem::GetInstance()->Subscribe<OnHitKickEvent>		(this, &SoundPlayer::PlayHitKickSound);
+	EventSystem::GetInstance()->Subscribe<OnHitKickEvent>		(this, &SoundPlayer::PlayOnHitKickSound);
 	EventSystem::GetInstance()->Subscribe<PickUpItemEvent>		(this, &SoundPlayer::PlayPickUpItemSound);
+	EventSystem::GetInstance()->Subscribe<OnDamageEvent>		(this, &SoundPlayer::PlayOnDamageSound);
+	EventSystem::GetInstance()->Subscribe<OnHitBulletEvent>		(this, &SoundPlayer::PlayOnHitBulletSound);
 }
 
 SoundPlayer::~SoundPlayer()
@@ -24,11 +27,14 @@ SoundPlayer::~SoundPlayer()
 	EventSystem::GetInstance()->Unsubscribe<OnGroundFootEvent>	(this, &SoundPlayer::PlayOnGroundFootSound);
 	EventSystem::GetInstance()->Unsubscribe<EmptyAmmoEvent>		(this, &SoundPlayer::PlayEmptyAmmoSound);
 	EventSystem::GetInstance()->Unsubscribe<AimGunEvent>		(this, &SoundPlayer::PlayAimGunSound);
+	EventSystem::GetInstance()->Unsubscribe<ExitAimGunEvent>	(this, &SoundPlayer::PlayExitAimGunSound);
 	EventSystem::GetInstance()->Unsubscribe<SetAmmoBoxEvent>	(this, &SoundPlayer::PlaySetAmmoBoxSound);
 	EventSystem::GetInstance()->Unsubscribe<ReleaseAmmoBoxEvent>(this, &SoundPlayer::PlayReleaseAmmoBoxSound);
 	EventSystem::GetInstance()->Unsubscribe<CockingEvent>		(this, &SoundPlayer::PlayCockingSound);
-	EventSystem::GetInstance()->Unsubscribe<OnHitKickEvent>		(this, &SoundPlayer::PlayHitKickSound);
+	EventSystem::GetInstance()->Unsubscribe<OnHitKickEvent>		(this, &SoundPlayer::PlayOnHitKickSound);
 	EventSystem::GetInstance()->Unsubscribe<PickUpItemEvent>	(this, &SoundPlayer::PlayPickUpItemSound);
+	EventSystem::GetInstance()->Unsubscribe<OnDamageEvent>		(this, &SoundPlayer::PlayOnDamageSound);
+	EventSystem::GetInstance()->Unsubscribe<OnHitBulletEvent>	(this, &SoundPlayer::PlayOnHitBulletSound);
 }
 
 void SoundPlayer::Update()
@@ -109,10 +115,11 @@ void SoundPlayer::PlayWeaponShotSound		(const WeaponShotEvent&		event)
 	switch (event.gun_kind)
 	{
 	case GunKind::kAssaultRifle:
-		OnPlaySound("shot_assault_rifle", event.time_scale_layer_kind, event.muzzle_transform->GetPos(CoordinateKind::kWorld));
+		OnPlaySound("shot_assault_rifle",   event.time_scale_layer_kind, event.muzzle_transform->GetPos(CoordinateKind::kWorld));
 		break;
 
 	case GunKind::kRocketLauncher:
+		OnPlaySound("shot_rocket_launcher", event.time_scale_layer_kind, event.muzzle_transform->GetPos(CoordinateKind::kWorld));
 		break;
 
 	default:
@@ -149,6 +156,11 @@ void SoundPlayer::PlayAimGunSound			(const AimGunEvent&			event)
 	OnPlaySound("aim_gun", event.time_scale_layer_kind, event.pos);
 }
 
+void SoundPlayer::PlayExitAimGunSound		(const ExitAimGunEvent&		event)
+{
+	OnPlaySound("exit_aim_gun", event.time_scale_layer_kind, event.pos);
+}
+
 void SoundPlayer::PlaySetAmmoBoxSound		(const SetAmmoBoxEvent&		event)
 {
 	OnPlaySound("set_ammo_box", event.time_scale_layer_kind, event.pos);
@@ -164,7 +176,7 @@ void SoundPlayer::PlayCockingSound			(const CockingEvent&		event)
 	OnPlaySound("cocking", event.time_scale_layer_kind, event.pos);
 }
 
-void SoundPlayer::PlayHitKickSound			(const OnHitKickEvent&		event)
+void SoundPlayer::PlayOnHitKickSound		(const OnHitKickEvent&		event)
 {
 	OnPlaySound("hit_kick", event.time_scale_layer_kind, event.pos);
 }
@@ -185,6 +197,19 @@ void SoundPlayer::PlayPickUpItemSound		(const PickUpItemEvent&		event)
 
 	default:
 		break;
+	}
+}
+
+void SoundPlayer::PlayOnDamageSound			(const OnDamageEvent&		event)
+{
+	OnPlaySound("bleed", event.time_scale_layer_kind, event.hit_pos);
+}
+
+void SoundPlayer::PlayOnHitBulletSound		(const OnHitBulletEvent&	event)
+{
+	if (event.bullet_name == ObjName.ROCKET_BOMB)
+	{
+		OnPlaySound("explosion", event.time_scale_layer_kind, event.hit_pos);
 	}
 }
 #pragma endregion

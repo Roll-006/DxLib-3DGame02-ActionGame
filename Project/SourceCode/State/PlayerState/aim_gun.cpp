@@ -61,6 +61,7 @@ void player_state::AimGun::Enter(std::shared_ptr<Player>& obj)
 {
 	m_elapsed_time = 0.0f;
 
+	// カメラ設定
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	const auto camera_controller = std::static_pointer_cast<ControlVirtualCamerasController>(cinemachine_brain->GetVirtualCameraController(VirtualCameraControllerKind::kControl));
 	cinemachine_brain->SetBlendTime(0.3f);
@@ -79,13 +80,14 @@ void player_state::AimGun::Enter(std::shared_ptr<Player>& obj)
 		const auto gun = std::static_pointer_cast<GunBase>(obj->GetCurrentHeldWeapon());
 		gun->InitCrossHairRange();
 
+		// エイミング状態通知
 		EventSystem::GetInstance()->Publish(AimGunEvent(gun->GetTransform()->GetPos(CoordinateKind::kWorld), TimeScaleLayerKind::kPlayer));
 	}
-
 }
 
 void player_state::AimGun::Exit(std::shared_ptr<Player>& obj)
 {
+	// カメラ設定
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	const auto camera_controller = std::static_pointer_cast<ControlVirtualCamerasController>(cinemachine_brain->GetVirtualCameraController(VirtualCameraControllerKind::kControl));
 	cinemachine_brain->SetBlendTime(0.3f);

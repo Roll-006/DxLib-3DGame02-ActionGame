@@ -231,7 +231,7 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 			m_is_detected_target = true;
 
-			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue()));
+			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue(), TimeScaleLayerKind::kWorld));
 		}
 		break;
 
@@ -246,7 +246,7 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 			m_is_detected_target = true;
 
-			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue()));
+			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue(), TimeScaleLayerKind::kWorld));
 		}
 		break;
 
@@ -261,7 +261,7 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 			m_is_detected_target = true;
 
-			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue()));
+			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue(), TimeScaleLayerKind::kWorld));
 		}
 		break;
 
@@ -275,7 +275,7 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 			m_is_detected_target = true;
 
-			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue()));
+			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue(), TimeScaleLayerKind::kWorld));
 		}
 
 		if (target_obj == GetStateController()->GetTargetCharacter().get() && target_collider_kind == ColliderKind::kCollider)
@@ -299,7 +299,7 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 			m_is_detected_target = true;
 
-			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue()));
+			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue(), TimeScaleLayerKind::kWorld));
 		}
 		break;
 
@@ -313,7 +313,7 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 			m_is_detected_target = true;
 
-			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue()));
+			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue(), TimeScaleLayerKind::kWorld));
 		}
 
 		if (target_obj == GetStateController()->GetTargetCharacter().get() && target_collider_kind == ColliderKind::kCollider)
@@ -343,7 +343,7 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 			m_is_detected_target = true;
 
-			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue()));
+			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue(), TimeScaleLayerKind::kWorld));
 		}
 		break;
 
@@ -364,7 +364,7 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 			m_is_detected_target = true;
 
-			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue()));
+			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue(), TimeScaleLayerKind::kWorld));
 		}
 		break;
 
