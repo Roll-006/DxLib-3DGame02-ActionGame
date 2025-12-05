@@ -1,0 +1,43 @@
+{
+  "sound_pool_data": {
+    "shot_assault_rifle": {
+      "size": 10
+    },
+    "empty_ammo": {
+      "size": 2
+    },
+    "aim_gun": {
+      "size": 2
+    },
+    "set_ammo_box": {
+      "size": 1
+    },
+    "release_ammo_box": {
+      "size": 1
+    },
+    "cocking": {
+      "size": 1
+    },
+    "drop_shell_casing": {
+      "size": 10
+    },
+    "walk_left_foot_on_lawn": {
+      "size": 5
+    },
+    "walk_right_foot_on_lawn": {
+      "size": 5
+    },
+    "run_left_foot_on_lawn": {
+      "size": 5
+    },
+    "run_right_foot_on_lawn": {
+      "size": 5
+    },
+    "hit_kick": {
+      "size": 1
+    },
+    "pick_up_item": {
+      "size": 5
+    }
+  }
+}

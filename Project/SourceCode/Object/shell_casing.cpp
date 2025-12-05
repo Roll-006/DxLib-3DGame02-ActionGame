@@ -41,7 +41,8 @@ void ShellCasing::Update()
 
 	if (m_is_on_ground && !m_prev_on_ground)
 	{
-		EventSystem::GetInstance()->Publish(DropShellCasing(m_transform->GetPos(CoordinateKind::kWorld)));
+		const auto time_scale = m_time_scale_owner_name == ObjName.PLAYER ? TimeScaleLayerKind::kPlayer : TimeScaleLayerKind::kWorld;
+		EventSystem::GetInstance()->Publish(DropShellCasing(m_transform->GetPos(CoordinateKind::kWorld), time_scale));
 	}
 
 	m_prev_on_ground = m_is_on_ground;

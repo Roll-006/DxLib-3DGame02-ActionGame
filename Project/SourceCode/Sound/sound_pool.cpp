@@ -2,14 +2,23 @@
 
 SoundPool::SoundPool()
 {
-	nlohmann::json data;
-	if (json_loader::Load("Data/JSON/sound_data.json", data))
+	nlohmann::json pool_data;
+	if (json_loader::Load("Data/JSON/sound_pool_data.json", pool_data))
 	{
-		const auto sound_json = data.at("sound_data");
-		for (const auto& value : sound_json)
+		nlohmann::json sound_data;
+		if (json_loader::Load("Data/JSON/sound_data.json", sound_data))
 		{
-			auto sound = std::make_shared<Sound>(value.get<SoundData>());
-			m_sounds[sound->GetSoundData().name].push(sound);
+			const auto sound_json = sound_data.at("sound_data");
+			for (const auto& value : sound_json)
+			{
+				const auto name = value.at("name").get<std::string>();
+				const auto size = pool_data.at("sound_pool_data").at(name.c_str()).at("size").get<size_t>();
+				for (size_t i = 0; i < size; ++i)
+				{
+					auto sound = std::make_shared<Sound>(value.get<SoundData>());
+					m_sounds[sound->GetSoundData().name].push(sound);
+				}
+			}
 		}
 	}
 }

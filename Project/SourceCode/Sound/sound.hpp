@@ -1,28 +1,41 @@
 #pragma once
-#include <DxLib.h>
+#include "../Interface/i_poolable.hpp"
 #include "../Data/sound_data.hpp"
 
-class Sound final
+class Sound final : public IPoolable
 {
 public:
 	Sound(const SoundData& data);
 	~Sound();
 
 	void Init();
+	void Update(const float time_scale);
 
-	void Activate();
-	void Deactivate();
+	void Activate()		{ m_is_active = true; }
+	void Deactivate()	{ m_is_active = false; }
 
-	void OnPlaySound(std::optional<VECTOR> pos = std::nullopt);
+	/// @brief サウンドを再生する
+	/// @param pos 3D空間での再生位置(3D空間でない場合は座標指定なし)
+	void OnPlaySound(const TimeScaleLayerKind time_scale_layer, std::optional<VECTOR> pos = std::nullopt);
 
-	[[nodiscard]] bool		IsActive()		const { return m_is_active; }
-	[[nodiscard]] bool		IsPlaying()		const { return CheckSoundMem(sound_data.handle); }
-	[[nodiscard]] SoundData GetSoundData()	const { return sound_data; }
+	/// @brief サウンドの再生を停止する
+	void OnStopSound();
+
+	/// @brief サウンドの再生を再開する
+	void OnResumeSound();
+
+	[[nodiscard]] bool		IsActive()		const		{ return m_is_active; }
+	[[nodiscard]] bool		IsStopping()	const		{ return m_is_stopping; }
+	[[nodiscard]] bool		IsReturnPool()	override	{ return GetSoundCurrentTime(sound_data.handle) >= sound_data.total_time && !m_is_stopping; }
+	[[nodiscard]] SoundData GetSoundData()	const		{ return sound_data; }
 
 private:
-	SoundData sound_data;
+	SoundData	sound_data;
 
-	bool m_is_active;
+	bool		m_is_active;
+	bool		m_is_stopping;
+	LONGLONG	m_current_play_time;
+	LONGLONG	m_current_play_pos;
 
 	friend void from_json(const nlohmann::json& data, Sound& sound);
 	friend void to_json	 (nlohmann::json& data, const Sound& sound);

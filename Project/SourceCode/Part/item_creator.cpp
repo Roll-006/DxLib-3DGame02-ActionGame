@@ -5,14 +5,14 @@ ItemCreator::ItemCreator(const std::shared_ptr<Player>& player) :
 {
 	// ƒCƒxƒ“ƒg“o˜^
 	EventSystem::GetInstance()->Subscribe<DeadEnemyEvent>	(this, &ItemCreator::CreateDeadEnemyItem);
-	EventSystem::GetInstance()->Subscribe<GotItemEvent>		(this, &ItemCreator::RemoveItem);
+	EventSystem::GetInstance()->Subscribe<PickUpItemEvent>		(this, &ItemCreator::RemoveItem);
 }
 
 ItemCreator::~ItemCreator()
 {
 	// ƒCƒxƒ“ƒg‚Ì“o˜^‰ðœ
 	EventSystem::GetInstance()->Unsubscribe<DeadEnemyEvent>	(this, &ItemCreator::CreateDeadEnemyItem);
-	EventSystem::GetInstance()->Unsubscribe<GotItemEvent>	(this, &ItemCreator::RemoveItem);
+	EventSystem::GetInstance()->Unsubscribe<PickUpItemEvent>	(this, &ItemCreator::RemoveItem);
 
 	const auto effect_manager = EffectManager::GetInstance();
 	for (const auto& item : m_items)
@@ -82,7 +82,7 @@ void ItemCreator::CreateDeadEnemyItem(const DeadEnemyEvent& event)
 	EventSystem::GetInstance()->Publish(DropItemEvent(item->GetItemTransform(), obj->GetObjHandle(), item->GetItemKind()));
 }
 
-void ItemCreator::RemoveItem(const GotItemEvent& event)
+void ItemCreator::RemoveItem(const PickUpItemEvent& event)
 {
 	for (auto itr = m_items.begin(); itr != m_items.end(); )
 	{

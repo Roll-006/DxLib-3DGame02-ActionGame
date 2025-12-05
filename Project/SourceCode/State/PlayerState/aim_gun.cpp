@@ -79,7 +79,7 @@ void player_state::AimGun::Enter(std::shared_ptr<Player>& obj)
 		const auto gun = std::static_pointer_cast<GunBase>(obj->GetCurrentHeldWeapon());
 		gun->InitCrossHairRange();
 
-		EventSystem::GetInstance()->Publish(AimGunEvent(gun->GetTransform()->GetPos(CoordinateKind::kWorld)));
+		EventSystem::GetInstance()->Publish(AimGunEvent(gun->GetTransform()->GetPos(CoordinateKind::kWorld), TimeScaleLayerKind::kPlayer));
 	}
 
 }

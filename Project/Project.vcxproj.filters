@@ -1743,7 +1743,7 @@
     <ClInclude Include="SourceCode\Event\spotted_item_event.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Event\got_item_event.hpp">
+    <ClInclude Include="SourceCode\Event\pick_up_item_event.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\UI\pickupable_item_icon.hpp">
@@ -1818,6 +1818,12 @@
     <ClInclude Include="SourceCode\Event\set_ammo_box_event.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\Kind\time_scale_layer_kind.hpp">
+      <Filter>SourceCode\Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\on_hit_kick_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="SourceCode">
@@ -1876,9 +1882,6 @@
     </Filter>
     <Filter Include="SourceCode\Name">
       <UniqueIdentifier>{c3148a31-6123-4086-b761-3edd4fe5f420}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCode\Object">
-      <UniqueIdentifier>{12318b27-d5b3-41f7-b2c0-6e3e27ab8d35}</UniqueIdentifier>
     </Filter>
     <Filter Include="SourceCode\ObjectPool">
       <UniqueIdentifier>{babb64c0-15ce-4652-be32-4fda876508c4}</UniqueIdentifier>
@@ -1973,6 +1976,9 @@
     <Filter Include="SourceCode\MixamoHelper">
       <UniqueIdentifier>{3365a2e8-3ef6-478e-a95b-2d22f461656a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SourceCode\Object">
+      <UniqueIdentifier>{12318b27-d5b3-41f7-b2c0-6e3e27ab8d35}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\JSON\key_number.json">
@@ -2009,6 +2015,9 @@
       <Filter>JSON</Filter>
     </None>
     <None Include="data\JSON\sound_data.json">
+      <Filter>JSON</Filter>
+    </None>
+    <None Include="Data\JSON\sound_pool_data.json">
       <Filter>JSON</Filter>
     </None>
   </ItemGroup>

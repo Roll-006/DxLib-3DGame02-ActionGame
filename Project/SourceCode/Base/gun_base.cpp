@@ -95,8 +95,8 @@ void GunBase::OnShot()
 	RifleCartridgeManager::GetInstance()->SearchValidRifleCartidge(*this);
 	--m_current_remaining_bullet_num;
 
-	const WeaponShotEvent event{ m_gun_kind, m_owner_name, m_muzzle_transform, m_ejection_port_transform };
-	EventSystem::GetInstance()->Publish(event);
+	const auto time_scale = m_owner_name == ObjName.PLAYER ? TimeScaleLayerKind::kPlayer : TimeScaleLayerKind::kWorld;
+	EventSystem::GetInstance()->Publish(WeaponShotEvent(m_gun_kind, m_owner_name, m_muzzle_transform, m_ejection_port_transform, time_scale));
 }
 
 int GunBase::OnReload(const int have_bullets)
@@ -155,7 +155,8 @@ bool GunBase::IsShot() const
 
 		if (!CommandHandler::GetInstance()->IsExecute(CommandKind::kPullTrigger, TimeKind::kPrev))
 		{
-			EventSystem::GetInstance()->Publish(EmptyAmmoEvent(m_transform->GetPos(CoordinateKind::kWorld)));
+			const auto time_scale = m_owner_name == ObjName.PLAYER ? TimeScaleLayerKind::kPlayer : TimeScaleLayerKind::kWorld;
+			EventSystem::GetInstance()->Publish(EmptyAmmoEvent(m_transform->GetPos(CoordinateKind::kWorld), time_scale));
 		}
 	}
 	return false;

@@ -4,64 +4,112 @@ SoundPlayer::SoundPlayer() :
 	m_sound_pool(std::make_unique<SoundPool>())
 {
 	// イベント登録
-	EventSystem::GetInstance()->Subscribe<WeaponShotEvent>		(this, &SoundPlayer::OutputWeaponShotSound);
-	EventSystem::GetInstance()->Subscribe<DropShellCasing>		(this, &SoundPlayer::OutputDropShellCasingSound);
-	EventSystem::GetInstance()->Subscribe<OnGroundFootEvent>	(this, &SoundPlayer::OutputOnGroundFootSound);
-	EventSystem::GetInstance()->Subscribe<EmptyAmmoEvent>		(this, &SoundPlayer::OutputEmptyAmmoSound);
-	EventSystem::GetInstance()->Subscribe<AimGunEvent>			(this, &SoundPlayer::OutputAimGunSound);
-	EventSystem::GetInstance()->Subscribe<SetAmmoBoxEvent>		(this, &SoundPlayer::OutputSetAmmoBoxSound);
-	EventSystem::GetInstance()->Subscribe<ReleaseAmmoBoxEvent>	(this, &SoundPlayer::OutputReleaseAmmoBoxSound);
-	EventSystem::GetInstance()->Subscribe<CockingEvent>			(this, &SoundPlayer::OutputCockingSound);
+	EventSystem::GetInstance()->Subscribe<WeaponShotEvent>		(this, &SoundPlayer::PlayWeaponShotSound);
+	EventSystem::GetInstance()->Subscribe<DropShellCasing>		(this, &SoundPlayer::PlayDropShellCasingSound);
+	EventSystem::GetInstance()->Subscribe<OnGroundFootEvent>	(this, &SoundPlayer::PlayOnGroundFootSound);
+	EventSystem::GetInstance()->Subscribe<EmptyAmmoEvent>		(this, &SoundPlayer::PlayEmptyAmmoSound);
+	EventSystem::GetInstance()->Subscribe<AimGunEvent>			(this, &SoundPlayer::PlayAimGunSound);
+	EventSystem::GetInstance()->Subscribe<SetAmmoBoxEvent>		(this, &SoundPlayer::PlaySetAmmoBoxSound);
+	EventSystem::GetInstance()->Subscribe<ReleaseAmmoBoxEvent>	(this, &SoundPlayer::PlayReleaseAmmoBoxSound);
+	EventSystem::GetInstance()->Subscribe<CockingEvent>			(this, &SoundPlayer::PlayCockingSound);
+	EventSystem::GetInstance()->Subscribe<OnHitKickEvent>		(this, &SoundPlayer::PlayHitKickSound);
+	EventSystem::GetInstance()->Subscribe<PickUpItemEvent>		(this, &SoundPlayer::PlayPickUpItemSound);
 }
 
 SoundPlayer::~SoundPlayer()
 {
 	// イベント登録
-	EventSystem::GetInstance()->Unsubscribe<WeaponShotEvent>	(this, &SoundPlayer::OutputWeaponShotSound);
-	EventSystem::GetInstance()->Unsubscribe<DropShellCasing>	(this, &SoundPlayer::OutputDropShellCasingSound);
-	EventSystem::GetInstance()->Unsubscribe<OnGroundFootEvent>	(this, &SoundPlayer::OutputOnGroundFootSound);
-	EventSystem::GetInstance()->Unsubscribe<EmptyAmmoEvent>		(this, &SoundPlayer::OutputEmptyAmmoSound);
-	EventSystem::GetInstance()->Unsubscribe<AimGunEvent>		(this, &SoundPlayer::OutputAimGunSound);
-	EventSystem::GetInstance()->Unsubscribe<SetAmmoBoxEvent>	(this, &SoundPlayer::OutputSetAmmoBoxSound);
-	EventSystem::GetInstance()->Unsubscribe<ReleaseAmmoBoxEvent>(this, &SoundPlayer::OutputReleaseAmmoBoxSound);
-	EventSystem::GetInstance()->Unsubscribe<CockingEvent>		(this, &SoundPlayer::OutputCockingSound);
+	EventSystem::GetInstance()->Unsubscribe<WeaponShotEvent>	(this, &SoundPlayer::PlayWeaponShotSound);
+	EventSystem::GetInstance()->Unsubscribe<DropShellCasing>	(this, &SoundPlayer::PlayDropShellCasingSound);
+	EventSystem::GetInstance()->Unsubscribe<OnGroundFootEvent>	(this, &SoundPlayer::PlayOnGroundFootSound);
+	EventSystem::GetInstance()->Unsubscribe<EmptyAmmoEvent>		(this, &SoundPlayer::PlayEmptyAmmoSound);
+	EventSystem::GetInstance()->Unsubscribe<AimGunEvent>		(this, &SoundPlayer::PlayAimGunSound);
+	EventSystem::GetInstance()->Unsubscribe<SetAmmoBoxEvent>	(this, &SoundPlayer::PlaySetAmmoBoxSound);
+	EventSystem::GetInstance()->Unsubscribe<ReleaseAmmoBoxEvent>(this, &SoundPlayer::PlayReleaseAmmoBoxSound);
+	EventSystem::GetInstance()->Unsubscribe<CockingEvent>		(this, &SoundPlayer::PlayCockingSound);
+	EventSystem::GetInstance()->Unsubscribe<OnHitKickEvent>		(this, &SoundPlayer::PlayHitKickSound);
+	EventSystem::GetInstance()->Unsubscribe<PickUpItemEvent>	(this, &SoundPlayer::PlayPickUpItemSound);
 }
 
 void SoundPlayer::Update()
 {
 	Set3DSoundListenerPosAndFrontPos_UpVecY(GetCameraPosition(), GetCameraFrontVector());
 
+	auto remove_sounds = std::vector<std::shared_ptr<Sound>>();
+
+	const auto time_manager = GameTimeManager::GetInstance();
 	for (const auto& [name, sounds] : m_active_sounds)
 	{
 		for (const auto& sound : sounds)
 		{
-			if (sound->IsPlaying()) { continue; }
+			sound->Update(time_manager->GetTimeScale(sound->GetSoundData().time_scale_layer_kind));
 
-			m_sound_pool->ReturnSound(sound);
+			// プールに返却
+			if (sound->IsReturnPool())
+			{
+				m_sound_pool->ReturnSound(sound);
+				remove_sounds.emplace_back(sound);
+			}
+		}
+	}
+
+	RemoveSounds(remove_sounds);
+}
+
+void SoundPlayer::RemoveSounds(std::vector<std::shared_ptr<Sound>>& remove_sounds)
+{
+	for (const auto& sound : remove_sounds)
+	{
+		const auto name = sound->GetSoundData().name;
+		if (std::find(m_active_sounds.at(name).begin(), m_active_sounds.at(name).end(), sound) != m_active_sounds.at(name).end())
+		{
+			erase(m_active_sounds.at(name), sound);
 		}
 	}
 }
 
-
-#pragma region Event
-void SoundPlayer::OutputWeaponShotSound		(const WeaponShotEvent&		event)
+void SoundPlayer::OnPlaySound(const std::string& sound_name, const TimeScaleLayerKind time_scale_layer, std::optional<VECTOR> pos)
 {
-	std::shared_ptr<Sound> sound = nullptr;
+	// プールから取得して再生
+	auto sound = m_sound_pool->GetSound(sound_name);
 
-	switch (event.gun_kind)
+	// プールが空であった場合、再生中のサウンドで最も古いサウンドを再利用
+	if (!sound)
 	{
-	case GunKind::kAssaultRifle:
-		sound = m_sound_pool->GetSound("shot_assault_rifle");
+		const auto active_sound = m_active_sounds.at(sound_name).front();
+		active_sound->OnStopSound();
+		m_sound_pool->ReturnSound(active_sound);
+		if (std::find(m_active_sounds.at(sound_name).begin(), m_active_sounds.at(sound_name).end(), active_sound) != m_active_sounds.at(sound_name).end())
+		{
+			erase(m_active_sounds.at(sound_name), active_sound);
+		}
+
+		sound = m_sound_pool->GetSound(sound_name);
 		if (!sound) { return; }
-		
-		if (VSize(GetCameraPosition() - event.muzzle_transform->GetPos(CoordinateKind::kWorld)) > sound->GetSoundData().radius)
+	}
+
+	// 3D空間のサウンドで、聴こえる範囲外であれば再生しない
+	if (pos)
+	{
+		if (VSize(GetCameraPosition() - *pos) > sound->GetSoundData().radius)
 		{
 			m_sound_pool->ReturnSound(sound);
 			return;
 		}
+	}
 
-		m_active_sounds[sound->GetSoundData().name].emplace_back(sound);
-		sound->OnPlaySound(event.muzzle_transform->GetPos(CoordinateKind::kWorld));
+	m_active_sounds[sound->GetSoundData().name].emplace_back(sound);
+	sound->OnPlaySound(time_scale_layer, pos);
+}
+
+
+#pragma region Event
+void SoundPlayer::PlayWeaponShotSound		(const WeaponShotEvent&		event)
+{
+	switch (event.gun_kind)
+	{
+	case GunKind::kAssaultRifle:
+		OnPlaySound("shot_assault_rifle", event.time_scale_layer_kind, event.muzzle_transform->GetPos(CoordinateKind::kWorld));
 		break;
 
 	case GunKind::kRocketLauncher:
@@ -72,119 +120,71 @@ void SoundPlayer::OutputWeaponShotSound		(const WeaponShotEvent&		event)
 	}
 }
 
-void SoundPlayer::OutputDropShellCasingSound(const DropShellCasing&		event)
+void SoundPlayer::PlayDropShellCasingSound	(const DropShellCasing&		event)
 {
-	const auto sound = m_sound_pool->GetSound("drop_shell_casing");
-	if (!sound) { return; }
-
-	if (VSize(GetCameraPosition() - event.pos) > sound->GetSoundData().radius)
-	{
-		m_sound_pool->ReturnSound(sound);
-		return;
-	}
-
-	m_active_sounds[sound->GetSoundData().name].emplace_back(sound);
-	sound->OnPlaySound(event.pos);
+	OnPlaySound("drop_shell_casing", event.time_scale_layer_kind, event.pos);
 }
 
-void SoundPlayer::OutputOnGroundFootSound	(const OnGroundFootEvent&	event)
+void SoundPlayer::PlayOnGroundFootSound		(const OnGroundFootEvent&	event)
 {
-	auto name = "";
-
 	if (event.is_run)
 	{
-		name = event.is_left_foot ? "run_left_foot_on_lawn"  : "run_right_foot_on_lawn";
+		const auto name = event.is_left_foot ? "run_left_foot_on_lawn"  : "run_right_foot_on_lawn";
+		OnPlaySound(name, event.time_scale_layer_kind, event.pos);
 	}
 	else
 	{
-		name = event.is_left_foot ? "walk_left_foot_on_lawn" : "walk_right_foot_on_lawn";
+		const auto name = event.is_left_foot ? "walk_left_foot_on_lawn" : "walk_right_foot_on_lawn";
+		OnPlaySound(name, event.time_scale_layer_kind, event.pos);
 	}
-
-	const auto sound = m_sound_pool->GetSound(name);
-	if (!sound) { return; }
-	
-	if (VSize(GetCameraPosition() - event.pos) > sound->GetSoundData().radius)
-	{
-		m_sound_pool->ReturnSound(sound);
-		return;
-	}
-
-	m_active_sounds[sound->GetSoundData().name].emplace_back(sound);
-	sound->OnPlaySound(event.pos);
 }
 
-void SoundPlayer::OutputEmptyAmmoSound		(const EmptyAmmoEvent&		event)
+void SoundPlayer::PlayEmptyAmmoSound		(const EmptyAmmoEvent&		event)
 {
-	const auto sound = m_sound_pool->GetSound("empty_ammo");
-	if (!sound) { return; }
-
-	if (VSize(GetCameraPosition() - event.pos) > sound->GetSoundData().radius)
-	{
-		m_sound_pool->ReturnSound(sound);
-		return;
-	}
-
-	m_active_sounds[sound->GetSoundData().name].emplace_back(sound);
-	sound->OnPlaySound(event.pos);
+	OnPlaySound("empty_ammo", event.time_scale_layer_kind, event.pos);
 }
 
-void SoundPlayer::OutputAimGunSound			(const AimGunEvent&			event)
+void SoundPlayer::PlayAimGunSound			(const AimGunEvent&			event)
 {
-	const auto sound = m_sound_pool->GetSound("aim_gun");
-	if (!sound) { return; }
-
-	if (VSize(GetCameraPosition() - event.pos) > sound->GetSoundData().radius)
-	{
-		m_sound_pool->ReturnSound(sound);
-		return;
-	}
-
-	m_active_sounds[sound->GetSoundData().name].emplace_back(sound);
-	sound->OnPlaySound(event.pos);
+	OnPlaySound("aim_gun", event.time_scale_layer_kind, event.pos);
 }
 
-void SoundPlayer::OutputSetAmmoBoxSound		(const SetAmmoBoxEvent&		event)
+void SoundPlayer::PlaySetAmmoBoxSound		(const SetAmmoBoxEvent&		event)
 {
-	const auto sound = m_sound_pool->GetSound("set_ammo_box");
-	if (!sound) { return; }
-
-	if (VSize(GetCameraPosition() - event.pos) > sound->GetSoundData().radius)
-	{
-		m_sound_pool->ReturnSound(sound);
-		return;
-	}
-
-	m_active_sounds[sound->GetSoundData().name].emplace_back(sound);
-	sound->OnPlaySound(event.pos);
+	OnPlaySound("set_ammo_box", event.time_scale_layer_kind, event.pos);
 }
 
-void SoundPlayer::OutputReleaseAmmoBoxSound	(const ReleaseAmmoBoxEvent& event)
+void SoundPlayer::PlayReleaseAmmoBoxSound	(const ReleaseAmmoBoxEvent& event)
 {
-	const auto sound = m_sound_pool->GetSound("release_ammo_box");
-	if (!sound) { return; }
-
-	if (VSize(GetCameraPosition() - event.pos) > sound->GetSoundData().radius)
-	{
-		m_sound_pool->ReturnSound(sound);
-		return;
-	}
-
-	m_active_sounds[sound->GetSoundData().name].emplace_back(sound);
-	sound->OnPlaySound(event.pos);
+	OnPlaySound("release_ammo_box", event.time_scale_layer_kind, event.pos);
 }
 
-void SoundPlayer::OutputCockingSound		(const CockingEvent&		event)
+void SoundPlayer::PlayCockingSound			(const CockingEvent&		event)
 {
-	const auto sound = m_sound_pool->GetSound("cocking");
-	if (!sound) { return; }
+	OnPlaySound("cocking", event.time_scale_layer_kind, event.pos);
+}
 
-	if (VSize(GetCameraPosition() - event.pos) > sound->GetSoundData().radius)
+void SoundPlayer::PlayHitKickSound			(const OnHitKickEvent&		event)
+{
+	OnPlaySound("hit_kick", event.time_scale_layer_kind, event.pos);
+}
+
+void SoundPlayer::PlayPickUpItemSound		(const PickUpItemEvent&		event)
+{
+	switch (event.item_kind)
 	{
-		m_sound_pool->ReturnSound(sound);
-		return;
-	}
+	case ItemKind::kWeapon:
+		break;
 
-	m_active_sounds[sound->GetSoundData().name].emplace_back(sound);
-	sound->OnPlaySound(event.pos);
+	case ItemKind::kAmmoBox:
+		OnPlaySound("pick_up_item", event.time_scale_layer_kind, event.owner_pos);
+		break;
+
+	case ItemKind::kPotion:
+		break;
+
+	default:
+		break;
+	}
 }
 #pragma endregion

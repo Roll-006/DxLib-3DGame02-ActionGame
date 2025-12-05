@@ -521,6 +521,11 @@ void Player::AttackFrontMelee(CharacterBase* target)
 	time_manager->SetTimeScale(TimeScaleLayerKind::kWorld,  0.07f, 0.4f);
 	time_manager->SetTimeScale(TimeScaleLayerKind::kPlayer, 0.07f, 0.4f);
 	time_manager->SetTimeScale(TimeScaleLayerKind::kEffect, 0.07f, 0.4f);
+
+	// ’Ê’m
+	const auto model_handle = m_modeler->GetModelHandle();
+	auto	   right_foot_m = MV1GetFrameLocalWorldMatrix(model_handle, GetHumanoidFrame()->GetRightFootIndex(model_handle));
+	EventSystem::GetInstance()->Publish(OnHitKickEvent(MGetTranslateElem(right_foot_m), TimeScaleLayerKind::kPlayer));
 }
 
 void Player::AttackBackMelee(CharacterBase* target)
@@ -541,6 +546,11 @@ void Player::AttackVersatilityMelee(CharacterBase* target)
 	time_manager->SetTimeScale(TimeScaleLayerKind::kWorld,  0.07f, 0.4f);
 	time_manager->SetTimeScale(TimeScaleLayerKind::kPlayer, 0.07f, 0.4f);
 	time_manager->SetTimeScale(TimeScaleLayerKind::kEffect, 0.07f, 0.4f);
+
+	// ’Ê’m
+	const auto model_handle = m_modeler->GetModelHandle();
+	auto	   right_foot_m = MV1GetFrameLocalWorldMatrix(model_handle, GetHumanoidFrame()->GetRightFootIndex(model_handle));
+	EventSystem::GetInstance()->Publish(OnHitKickEvent(MGetTranslateElem(right_foot_m), TimeScaleLayerKind::kPlayer));
 }
 #pragma endregion
 
@@ -595,7 +605,7 @@ void Player::PickUpItem()
 	const auto obj = std::dynamic_pointer_cast<ObjBase>(m_pickupable_item);
 	if (!obj) { return; }
 
-	EventSystem::GetInstance()->Publish(GotItemEvent(obj->GetObjHandle()));
+	EventSystem::GetInstance()->Publish(PickUpItemEvent(m_pickupable_item->GetItemKind(), obj->GetObjHandle(), m_transform->GetPos(CoordinateKind::kWorld), TimeScaleLayerKind::kNoneScale));
 }
 
 void Player::AddItem(const std::shared_ptr<IItem>& item)

@@ -180,7 +180,7 @@ public:
 	#pragma region Getter
 	[[nodiscard]] float																GetDeltaTime				()	const override;
 	[[nodiscard]] std::shared_ptr<PlayerStateController>							GetStateController			()	const			{ return m_state; }
-	[[nodiscard]] std::shared_ptr<FramePosCorrector>									GetFramePosCorrector			()	const			{ return m_frame_pos_corrector; }
+	[[nodiscard]] std::shared_ptr<FramePosCorrector>								GetFramePosCorrector		()	const			{ return m_frame_pos_corrector; }
 	[[nodiscard]] std::vector<std::shared_ptr<IItem>>								GetCurrentHaveItem			(const ItemKind item_kind) const { return m_items.at(item_kind); }
 	[[nodiscard]] std::unordered_map<WeaponSlotKind, std::shared_ptr<WeaponBase>>&	GetCurrentEquipWeapons		()					{ return m_current_equip_weapon; }
 	[[nodiscard]] std::shared_ptr<WeaponShortcutSelecter>							GetWeaponShortcutSelecter	()	const			{ return m_weapon_shortcut_selecter; }

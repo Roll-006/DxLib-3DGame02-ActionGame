@@ -29,14 +29,14 @@ void player_state::Reload::Update(std::shared_ptr<Player>& obj)
 	// 弾倉を外す判定
 	if (play_rate > 0.0f && !m_is_release_ammo_box)
 	{
-		event_system->Publish(ReleaseAmmoBoxEvent(gun->GetTransform()->GetPos(CoordinateKind::kWorld)));
+		event_system->Publish(ReleaseAmmoBoxEvent(gun->GetTransform()->GetPos(CoordinateKind::kWorld), TimeScaleLayerKind::kPlayer));
 		m_is_release_ammo_box = true;
 	}
 
 	// 弾倉をセット判定
 	if (play_rate > 0.5f && !m_is_set_ammo_box)
 	{
-		event_system->Publish(SetAmmoBoxEvent(gun->GetTransform()->GetPos(CoordinateKind::kWorld)));
+		event_system->Publish(SetAmmoBoxEvent(gun->GetTransform()->GetPos(CoordinateKind::kWorld), TimeScaleLayerKind::kPlayer));
 
 		gun->GetMagazine()->OnReloaded();
 		obj->GetAmmoHolder()->Reload(gun);
@@ -46,7 +46,7 @@ void player_state::Reload::Update(std::shared_ptr<Player>& obj)
 	// コッキング判定
 	if (play_rate > 0.7f && !m_is_cocking)
 	{
-		event_system->Publish(CockingEvent(gun->GetTransform()->GetPos(CoordinateKind::kWorld)));
+		event_system->Publish(CockingEvent(gun->GetTransform()->GetPos(CoordinateKind::kWorld), TimeScaleLayerKind::kPlayer));
 		m_is_cocking = true;
 	}
 }

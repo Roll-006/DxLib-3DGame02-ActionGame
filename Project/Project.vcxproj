@@ -428,6 +428,7 @@
     <ClInclude Include="SourceCode\Data\input_data.hpp" />
     <ClInclude Include="SourceCode\Debugger\debugger.hpp" />
     <ClInclude Include="SourceCode\Drawer\drawer.hpp" />
+    <ClInclude Include="SourceCode\Event\on_hit_kick_event.hpp" />
     <ClInclude Include="SourceCode\Event\release_ammo_box_event.hpp" />
     <ClInclude Include="SourceCode\Event\set_ammo_box_event.hpp" />
     <ClInclude Include="SourceCode\Event\cocking_event.hpp" />
@@ -435,7 +436,7 @@
     <ClInclude Include="SourceCode\Event\empty_ammo_event.hpp" />
     <ClInclude Include="SourceCode\Event\on_ground_foot_event.hpp" />
     <ClInclude Include="SourceCode\Event\drop_shell_casing.hpp" />
-    <ClInclude Include="SourceCode\Event\got_item_event.hpp" />
+    <ClInclude Include="SourceCode\Event\pick_up_item_event.hpp" />
     <ClInclude Include="SourceCode\Event\drop_item_event.hpp" />
     <ClInclude Include="SourceCode\Event\dead_all_enemy_event.hpp" />
     <ClInclude Include="SourceCode\Event\dead_enemy_event.hpp" />
@@ -515,6 +516,7 @@
     <ClInclude Include="SourceCode\InverseKinematics\humanoid_foot_ik_solver.hpp" />
     <ClInclude Include="SourceCode\InverseKinematics\ik_solver.hpp" />
     <ClInclude Include="SourceCode\JSON\json_loader.hpp" />
+    <ClInclude Include="SourceCode\Kind\time_scale_layer_kind.hpp" />
     <ClInclude Include="SourceCode\Kind\axis_kind.hpp" />
     <ClInclude Include="SourceCode\Kind\mixamo_axis_kind.hpp" />
     <ClInclude Include="SourceCode\Kind\blend_activation_policy_kind.hpp" />
@@ -758,6 +760,7 @@
     <None Include="Data\JSON\model_foot_angle_limits.json" />
     <None Include="Data\JSON\player.json" />
     <None Include="Data\JSON\boss.json" />
+    <None Include="Data\JSON\sound_pool_data.json" />
     <None Include="data\JSON\sound_data.json" />
     <None Include="Data\JSON\zombie.json" />
     <None Include="data\JSON\houses.json" />

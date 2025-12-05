@@ -1,4 +1,5 @@
 #pragma once
+#include "../GameTime/game_time_manager.hpp"
 #include "../Event/event_system.hpp"
 #include "sound_pool.hpp"
 
@@ -11,15 +12,22 @@ public:
 	void Update();
 
 private:
+	void RemoveSounds(std::vector<std::shared_ptr<Sound>>& remove_sounds);
+
+	void OnPlaySound(const std::string& sound_name, const TimeScaleLayerKind time_scale_layer, std::optional<VECTOR> pos = std::nullopt);
+
+
 	#pragma region Event
-	void OutputWeaponShotSound		(const WeaponShotEvent&		event);
-	void OutputDropShellCasingSound	(const DropShellCasing&		event);
-	void OutputOnGroundFootSound	(const OnGroundFootEvent&	event);
-	void OutputEmptyAmmoSound		(const EmptyAmmoEvent&		event);
-	void OutputAimGunSound			(const AimGunEvent&			event);
-	void OutputSetAmmoBoxSound		(const SetAmmoBoxEvent&		event);
-	void OutputReleaseAmmoBoxSound	(const ReleaseAmmoBoxEvent& event);
-	void OutputCockingSound			(const CockingEvent&		event);
+	void PlayWeaponShotSound		(const WeaponShotEvent&		event);
+	void PlayDropShellCasingSound	(const DropShellCasing&		event);
+	void PlayOnGroundFootSound		(const OnGroundFootEvent&	event);
+	void PlayEmptyAmmoSound			(const EmptyAmmoEvent&		event);
+	void PlayAimGunSound			(const AimGunEvent&			event);
+	void PlaySetAmmoBoxSound		(const SetAmmoBoxEvent&		event);
+	void PlayReleaseAmmoBoxSound	(const ReleaseAmmoBoxEvent& event);
+	void PlayCockingSound			(const CockingEvent&		event);
+	void PlayHitKickSound			(const OnHitKickEvent&		event);
+	void PlayPickUpItemSound		(const PickUpItemEvent&		event);
 	#pragma endregion
 
 private:

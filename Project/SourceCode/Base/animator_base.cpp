@@ -250,9 +250,10 @@ void AnimatorBase::PlayAnim()
 
 			if (!m_prev_on_ground)
 			{
-				const auto is_run = tag == AnimTag.RUN ? true : false;
-				auto left_foot_m = MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, FramePath.LEFT_FOOT));
-				EventSystem::GetInstance()->Publish(OnGroundFootEvent(is_run, true, MGetTranslateElem(left_foot_m)));
+				const auto is_run		= tag == AnimTag.RUN ? true : false;
+				auto	   left_foot_m	= MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, FramePath.LEFT_FOOT));
+				const auto time_scale	= m_obj_name == ObjName.PLAYER ? TimeScaleLayerKind::kPlayer : TimeScaleLayerKind::kWorld;
+				EventSystem::GetInstance()->Publish(OnGroundFootEvent(is_run, true, MGetTranslateElem(left_foot_m), time_scale));
 			}
 		}
 		else if(right_foot)
@@ -261,9 +262,10 @@ void AnimatorBase::PlayAnim()
 
 			if (!m_prev_on_ground)
 			{
-				const auto is_run = tag == AnimTag.RUN ? true : false;
-				auto right_foot_m = MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, FramePath.RIGHT_FOOT));
-				EventSystem::GetInstance()->Publish(OnGroundFootEvent(is_run, false, MGetTranslateElem(right_foot_m)));
+				const auto is_run		= tag == AnimTag.RUN ? true : false;
+				auto	   right_foot_m = MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, FramePath.RIGHT_FOOT));
+				const auto time_scale	= m_obj_name == ObjName.PLAYER ? TimeScaleLayerKind::kPlayer : TimeScaleLayerKind::kWorld;
+				EventSystem::GetInstance()->Publish(OnGroundFootEvent(is_run, false, MGetTranslateElem(right_foot_m), time_scale));
 			}
 		}
 

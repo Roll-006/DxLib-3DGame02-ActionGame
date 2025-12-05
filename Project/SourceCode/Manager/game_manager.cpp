@@ -85,7 +85,7 @@ void GameManager::ExitGame(const ExitGameEvent& event)
 	m_is_exit_game = true;
 }
 
-bool GameManager::IsContinueLoop()
+bool GameManager::IsContinueLoop() const
 {
 	if (ProcessMessage()  != 0) { return false; }
 	if (ClearDrawScreen() != 0) { return false; }
