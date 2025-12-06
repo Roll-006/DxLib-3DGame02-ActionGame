@@ -197,6 +197,50 @@
       "min_frequency_scale": 0.0,
       "is_3d_sound": true,
       "time_scale_layer_kind": 1
+    },
+    {
+      "path": "Data/Sound/decision.m4a",
+      "name": "decision",
+      "priority": 10,
+      "volume": 255,
+      "radius": 0.0,
+      "max_frequency_scale": 2.0,
+      "min_frequency_scale": 0.0,
+      "is_3d_sound": false,
+      "time_scale_layer_kind": 3
+    },
+    {
+      "path": "Data/Sound/back.m4a",
+      "name": "back",
+      "priority": 10,
+      "volume": 255,
+      "radius": 0.0,
+      "max_frequency_scale": 2.0,
+      "min_frequency_scale": 0.0,
+      "is_3d_sound": false,
+      "time_scale_layer_kind": 3
+    },
+    {
+      "path": "Data/Sound/select_menu.m4a",
+      "name": "select_menu",
+      "priority": 10,
+      "volume": 200,
+      "radius": 0.0,
+      "max_frequency_scale": 2.0,
+      "min_frequency_scale": 0.0,
+      "is_3d_sound": false,
+      "time_scale_layer_kind": 3
+    },
+    {
+      "path": "Data/Sound/open_page.mp3",
+      "name": "open_page",
+      "priority": 10,
+      "volume": 255,
+      "radius": 0.0,
+      "max_frequency_scale": 2.0,
+      "min_frequency_scale": 0.0,
+      "is_3d_sound": false,
+      "time_scale_layer_kind": 3
     }
   ]
 }

@@ -87,6 +87,8 @@ void GameClearTab::ExecuteRetry()
 
 	m_is_retry		= true;
 	m_can_select	= false;
+
+	EventSystem::GetInstance()->Publish(DecisionEvent());
 }
 
 void GameClearTab::ExecuteQuitGame()
@@ -95,6 +97,8 @@ void GameClearTab::ExecuteQuitGame()
 
 	m_is_quit_game	= true;
 	m_can_select	= false;
+
+	EventSystem::GetInstance()->Publish(DecisionEvent());
 }
 
 void GameClearTab::JudgeActive()

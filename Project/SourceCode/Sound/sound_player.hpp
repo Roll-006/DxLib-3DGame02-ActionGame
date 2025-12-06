@@ -32,6 +32,10 @@ private:
 	void PlayPickUpItemSound		(const PickUpItemEvent&		event);
 	void PlayOnDamageSound			(const OnDamageEvent&		event);
 	void PlayOnHitBulletSound		(const OnHitBulletEvent&	event);
+	void PlayDecisionSound			(const DecisionEvent&		event);
+	void PlayBackSound				(const BackEvent&			event);
+	void PlaySelectMenuSound		(const SelectMenuEvent&		event);
+	void PlayOpenPageSound			(const OpenPageEvent&		event);
 	#pragma endregion
 
 private:

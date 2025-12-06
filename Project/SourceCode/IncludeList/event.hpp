@@ -43,3 +43,7 @@
 #include "../Event/cocking_event.hpp"
 #include "../Event/aim_gun_event.hpp"
 #include "../Event/exit_aim_gun_event.hpp"
+#include "../Event/decision_event.hpp"
+#include "../Event/back_event.hpp"
+#include "../Event/select_mene_event.hpp"
+#include "../Event/open_page_event.hpp"

@@ -17,6 +17,10 @@ SoundPlayer::SoundPlayer() :
 	EventSystem::GetInstance()->Subscribe<PickUpItemEvent>		(this, &SoundPlayer::PlayPickUpItemSound);
 	EventSystem::GetInstance()->Subscribe<OnDamageEvent>		(this, &SoundPlayer::PlayOnDamageSound);
 	EventSystem::GetInstance()->Subscribe<OnHitBulletEvent>		(this, &SoundPlayer::PlayOnHitBulletSound);
+	EventSystem::GetInstance()->Subscribe<DecisionEvent>		(this, &SoundPlayer::PlayDecisionSound);
+	EventSystem::GetInstance()->Subscribe<BackEvent>			(this, &SoundPlayer::PlayBackSound);
+	EventSystem::GetInstance()->Subscribe<SelectMenuEvent>		(this, &SoundPlayer::PlaySelectMenuSound);
+	EventSystem::GetInstance()->Subscribe<OpenPageEvent>		(this, &SoundPlayer::PlayOpenPageSound);
 }
 
 SoundPlayer::~SoundPlayer()
@@ -35,6 +39,10 @@ SoundPlayer::~SoundPlayer()
 	EventSystem::GetInstance()->Unsubscribe<PickUpItemEvent>	(this, &SoundPlayer::PlayPickUpItemSound);
 	EventSystem::GetInstance()->Unsubscribe<OnDamageEvent>		(this, &SoundPlayer::PlayOnDamageSound);
 	EventSystem::GetInstance()->Unsubscribe<OnHitBulletEvent>	(this, &SoundPlayer::PlayOnHitBulletSound);
+	EventSystem::GetInstance()->Unsubscribe<DecisionEvent>		(this, &SoundPlayer::PlayDecisionSound);
+	EventSystem::GetInstance()->Unsubscribe<BackEvent>			(this, &SoundPlayer::PlayBackSound);
+	EventSystem::GetInstance()->Unsubscribe<SelectMenuEvent>	(this, &SoundPlayer::PlaySelectMenuSound);
+	EventSystem::GetInstance()->Unsubscribe<OpenPageEvent>		(this, &SoundPlayer::PlayOpenPageSound);
 }
 
 void SoundPlayer::Update()
@@ -211,5 +219,25 @@ void SoundPlayer::PlayOnHitBulletSound		(const OnHitBulletEvent&	event)
 	{
 		OnPlaySound("explosion", event.time_scale_layer_kind, event.hit_pos);
 	}
+}
+
+void SoundPlayer::PlayDecisionSound			(const DecisionEvent&		event)
+{
+	OnPlaySound("decision", TimeScaleLayerKind::kUI);
+}
+
+void SoundPlayer::PlayBackSound				(const BackEvent&			event)
+{
+	OnPlaySound("back", TimeScaleLayerKind::kUI);
+}
+
+void SoundPlayer::PlaySelectMenuSound		(const SelectMenuEvent&		event)
+{
+	OnPlaySound("select_menu", TimeScaleLayerKind::kUI);
+}
+
+void SoundPlayer::PlayOpenPageSound			(const OpenPageEvent&		event)
+{
+	OnPlaySound("open_page", TimeScaleLayerKind::kUI);
 }
 #pragma endregion

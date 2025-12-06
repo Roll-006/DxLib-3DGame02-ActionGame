@@ -133,11 +133,15 @@ void PauseTab::Deactivate(const DeadAllEnemyEvent& event)
 void PauseTab::ExecuteReturnToGame()
 {
 	m_is_execute_return_to_game = true;
+
+	EventSystem::GetInstance()->Publish(DecisionEvent());
 }
 
 void PauseTab::ExecuteRestart()
 {
 	m_warning_restart_tab->Activate();
+
+	EventSystem::GetInstance()->Publish(OpenPageEvent());
 }
 
 void PauseTab::ExecuteOption()
@@ -148,6 +152,8 @@ void PauseTab::ExecuteOption()
 void PauseTab::ExecuteQuitGame()
 {
 	m_warning_quit_game_tab->Activate();
+
+	EventSystem::GetInstance()->Publish(OpenPageEvent());
 }
 
 void PauseTab::JudgeActive()
@@ -157,6 +163,8 @@ void PauseTab::JudgeActive()
 	if(!m_is_deactivate_forcibly && CommandHandler::GetInstance()->IsExecute(CommandKind::kPause, TimeKind::kCurrent))
 	{
 		m_is_active = true;
+
+		EventSystem::GetInstance()->Publish(OpenPageEvent());
 
 		const auto game_time_manager = GameTimeManager::GetInstance();
 
@@ -228,5 +236,7 @@ void PauseTab::BackTab()
 	if (CommandHandler::GetInstance()->IsExecute(CommandKind::kPause, TimeKind::kCurrent))
 	{
 		m_is_execute_return_to_game = true;
+
+		EventSystem::GetInstance()->Publish(BackEvent());
 	}
 }

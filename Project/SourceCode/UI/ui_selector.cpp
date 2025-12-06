@@ -1,4 +1,5 @@
 #include "ui_selector.hpp"
+#include "../Event/event_system.hpp"
 
 UISelector::UISelector(const int init_button_index, const bool is_first_stop_select, const bool is_loop_select) :
 	m_init_button_index		(init_button_index),
@@ -64,6 +65,9 @@ void UISelector::CalcButtonIndex()
 		increase = -1;
 	}
 
+	// データを一時的に保存
+	const auto prev_button_index = m_current_button_index;
+
 	if (increase != 0)
 	{
 		m_select_timer -= delta_time;
@@ -108,4 +112,7 @@ void UISelector::CalcButtonIndex()
 		m_select_timer	= 0.0f;
 		m_selected_stop = false;
 	}
+
+	// 入力されたら通知
+	if (prev_button_index != m_current_button_index) { EventSystem::GetInstance()->Publish(SelectMenuEvent()); }
 }

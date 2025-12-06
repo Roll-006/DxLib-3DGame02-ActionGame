@@ -53,6 +53,18 @@
     },
     "shout_zombie": {
       "size": 3
+    },
+    "decision": {
+      "size": 1
+    },
+    "back": {
+      "size": 1
+    },
+    "select_menu": {
+      "size": 3
+    },
+    "open_page": {
+      "size": 1
     }
   }
 }

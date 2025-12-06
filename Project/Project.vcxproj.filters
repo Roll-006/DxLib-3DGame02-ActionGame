@@ -1827,6 +1827,18 @@
     <ClInclude Include="SourceCode\Event\exit_aim_gun_event.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\Event\decision_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\back_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\select_mene_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\open_page_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="SourceCode">
