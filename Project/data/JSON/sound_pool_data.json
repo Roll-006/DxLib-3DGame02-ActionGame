@@ -50,6 +50,9 @@
     },
     "bleed": {
       "size": 10
+    },
+    "shout_zombie": {
+      "size": 3
     }
   }
 }

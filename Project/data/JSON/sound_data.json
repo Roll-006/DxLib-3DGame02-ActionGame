@@ -186,6 +186,17 @@
       "min_frequency_scale": 0.0,
       "is_3d_sound": true,
       "time_scale_layer_kind": 1
+    },
+    {
+      "path": "Data/Sound/shout_zombie.mp3",
+      "name": "shout_zombie",
+      "priority": 10,
+      "volume": 255,
+      "radius": 500.0,
+      "max_frequency_scale": 2.0,
+      "min_frequency_scale": 0.0,
+      "is_3d_sound": true,
+      "time_scale_layer_kind": 1
     }
   ]
 }
