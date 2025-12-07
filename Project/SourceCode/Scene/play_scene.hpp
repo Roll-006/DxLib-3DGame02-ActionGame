@@ -10,6 +10,7 @@
 #include "../Part/melee_target_searcher.hpp"
 #include "../Part/item_acquisition_searcher.hpp"
 #include "../Part/item_creator.hpp"
+#include "../Part/battle_observer.hpp"
 
 #include "../UI/ui_drawer.hpp"
 #include "../UICreator/player_ui_creator.hpp"
@@ -61,6 +62,7 @@ private:
 	std::shared_ptr<ItemCreator>				m_item_creator;
 	std::shared_ptr<RifleCartridgeObjectPool>	m_rifle_cartridge_object_pool;
 	std::shared_ptr<PlaySceneEffectObjectPool>  m_play_scene_effect_object_pool;
+	std::shared_ptr<BattleObserver>				m_battle_observer;
 	std::shared_ptr<IUICreator>					m_player_ui_creator;
 	std::shared_ptr<IUICreator>					m_guidance_ui_creator;
 	std::shared_ptr<GameClearTab>				m_game_clear_tab;

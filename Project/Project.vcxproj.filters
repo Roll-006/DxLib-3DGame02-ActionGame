@@ -646,6 +646,9 @@
     <ClCompile Include="SourceCode\Sound\sound_pool.cpp">
       <Filter>SourceCode\Sound</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\Part\battle_observer.cpp">
+      <Filter>SourceCode\Part</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\character_base.hpp">
@@ -1837,6 +1840,42 @@
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Event\open_page_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Part\battle_observer.hpp">
+      <Filter>SourceCode\Part</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\end_battle_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\start_battle_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\aim_gun_event (2).hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\aim_gun_event (3).hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\aim_gun_event (4).hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\aim_gun_event (5).hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\aim_gun_event (6).hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\aim_gun_event (7).hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\aim_gun_event (8).hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\stab_knife_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\draw_knife_event.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
   </ItemGroup>

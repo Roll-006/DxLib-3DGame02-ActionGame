@@ -47,3 +47,7 @@
 #include "../Event/back_event.hpp"
 #include "../Event/select_mene_event.hpp"
 #include "../Event/open_page_event.hpp"
+#include "../Event/start_battle_event.hpp"
+#include "../Event/end_battle_event.hpp"
+#include "../Event/stab_knife_event.hpp"
+#include "../Event/draw_knife_event.hpp"

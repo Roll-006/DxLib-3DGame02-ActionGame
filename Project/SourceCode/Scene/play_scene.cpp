@@ -18,6 +18,7 @@ PlayScene::PlayScene() :
 	m_item_creator					(std::make_shared<ItemCreator>(m_player)),
 	m_rifle_cartridge_object_pool	(std::make_shared<RifleCartridgeObjectPool>()),
 	m_play_scene_effect_object_pool (std::make_shared<PlaySceneEffectObjectPool>()),
+	m_battle_observer				(std::make_shared<BattleObserver>()),
 	m_player_ui_creator				(std::make_shared<PlayerUICreator>(m_player)),
 	m_guidance_ui_creator			(std::make_shared<GuidanceUICreator>()),
 	m_game_clear_tab				(std::make_shared<GameClearTab>()),

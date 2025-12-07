@@ -1,6 +1,8 @@
 #pragma once
 #include "../Interface/i_poolable.hpp"
 #include "../Data/sound_data.hpp"
+#include "../GameTime/game_time_manager.hpp"
+#include "../Calculation/math.hpp"
 
 class Sound final : public IPoolable
 {
@@ -24,18 +26,26 @@ public:
 	/// @brief サウンドの再生を再開する
 	void OnResumeSound();
 
+	/// @brief フェードアウトを開始する
+	/// @param fade_out_speed フェードアウト速度
+	void StartFadeOut();
+
 	[[nodiscard]] bool		IsActive()		const		{ return m_is_active; }
 	[[nodiscard]] bool		IsStopping()	const		{ return m_is_stopping; }
-	[[nodiscard]] bool		IsReturnPool()	override	{ return GetSoundCurrentTime(sound_data.handle) >= sound_data.total_time && !m_is_stopping; }
+	[[nodiscard]] bool		IsReturnPool()	override	{ return m_is_return_pool; }
 	[[nodiscard]] SoundData GetSoundData()	const		{ return sound_data; }
+
+private:
+	void FadeOut();
 
 private:
 	SoundData	sound_data;
 
 	bool		m_is_active;
 	bool		m_is_stopping;
-	LONGLONG	m_current_play_time;
-	LONGLONG	m_current_play_pos;
+	bool		m_is_fade_out;
+	bool		m_is_return_pool;
+	int			m_current_volume;
 
 	friend void from_json(const nlohmann::json& data, Sound& sound);
 	friend void to_json	 (nlohmann::json& data, const Sound& sound);

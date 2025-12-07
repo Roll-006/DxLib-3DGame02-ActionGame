@@ -211,6 +211,7 @@
     <ClCompile Include="SourceCode\Object\shell_casing.cpp" />
     <ClCompile Include="SourceCode\Object\skydome.cpp" />
     <ClCompile Include="SourceCode\Part\ammo_holder.cpp" />
+    <ClCompile Include="SourceCode\Part\battle_observer.cpp" />
     <ClCompile Include="SourceCode\Part\button_graphic_getter.cpp" />
     <ClCompile Include="SourceCode\Part\item_creator.cpp" />
     <ClCompile Include="SourceCode\Part\item_acquisition_searcher.cpp" />
@@ -428,6 +429,38 @@
     <ClInclude Include="SourceCode\Data\input_data.hpp" />
     <ClInclude Include="SourceCode\Debugger\debugger.hpp" />
     <ClInclude Include="SourceCode\Drawer\drawer.hpp" />
+    <ClInclude Include="SourceCode\Event\draw_knife_event.hpp" />
+    <ClInclude Include="SourceCode\Event\aim_gun_event (2).hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\aim_gun_event (3).hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\aim_gun_event (4).hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\aim_gun_event (5).hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\aim_gun_event (6).hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\aim_gun_event (7).hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\aim_gun_event (8).hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\stab_knife_event.hpp" />
+    <ClInclude Include="SourceCode\Event\end_battle_event.hpp" />
+    <ClInclude Include="SourceCode\Event\start_battle_event.hpp" />
     <ClInclude Include="SourceCode\Event\decision_event.hpp" />
     <ClInclude Include="SourceCode\Event\back_event.hpp" />
     <ClInclude Include="SourceCode\Event\select_mene_event.hpp" />
@@ -603,6 +636,7 @@
     <ClInclude Include="SourceCode\Object\shell_casing.hpp" />
     <ClInclude Include="SourceCode\Object\skydome.hpp" />
     <ClInclude Include="SourceCode\Part\ammo_holder.hpp" />
+    <ClInclude Include="SourceCode\Part\battle_observer.hpp" />
     <ClInclude Include="SourceCode\Part\character_collider_creator.hpp" />
     <ClInclude Include="SourceCode\Part\button_graphic_getter.hpp" />
     <ClInclude Include="SourceCode\Part\humanoid_frame_getter.hpp" />

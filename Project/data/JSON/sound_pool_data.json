@@ -1,5 +1,20 @@
 {
   "sound_pool_data": {
+    "title": {
+      "size": 1
+    },
+    "play": {
+      "size": 1
+    },
+    "battle": {
+      "size": 1
+    },
+    "game_over": {
+      "size": 1
+    },
+    "game_start": {
+      "size": 1
+    },
     "shot_assault_rifle": {
       "size": 10
     },
@@ -45,11 +60,20 @@
     "hit_kick": {
       "size": 1
     },
+    "stab_knife": {
+      "size": 1
+    },
+    "draw_knife": {
+      "size": 1
+    },
     "pick_up_item": {
       "size": 5
     },
-    "bleed": {
+    "bleed_small_quantity": {
       "size": 10
+    },
+    "bleed_large_quantity": {
+      "size": 5
     },
     "shout_zombie": {
       "size": 3
