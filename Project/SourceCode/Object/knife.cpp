@@ -6,12 +6,9 @@ Knife::Knife() :
 	m_modeler = std::make_shared<Modeler>(m_transform, ModelPath.KNIFE, kBasicAngle, kBasicScale);	
 	SetColliderModelHandle(m_modeler->GetModelHandle());
 
-	SetOffset(kHoldOffsetPos,   kHoldOffsetAngle,   kHoldOffsetScale,
-			  kAttachOffsetPos, kAttachOffsetAngle, kAttachOffsetScale);
-
 	CreateAttackTrigger(kTriggerOffsetPos, kTriggerRadius);
 
-	m_power = kPower;
+	power = kPower;
 }
 
 Knife::~Knife()

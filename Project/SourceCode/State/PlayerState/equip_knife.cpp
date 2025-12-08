@@ -47,11 +47,11 @@ std::shared_ptr<IState<Player>> player_state::EquipKnife::ChangeState(std::share
 	const auto state_controller = obj->GetStateController();
 	const auto command			= CommandHandler::GetInstance();
 
-	// ナイフエイミング状態
-	if (state_controller->TryAimKnife(obj))
-	{
-		return state_controller->GetState<AimKnife, Player>();
-	}
+	//// ナイフエイミング状態
+	//if (state_controller->TryAimKnife(obj))
+	//{
+	//	return state_controller->GetState<AimKnife, Player>();
+	//}
 	// 回転切り
 	if (state_controller->TrySpinningSlash(obj))
 	{

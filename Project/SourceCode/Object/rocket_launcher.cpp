@@ -11,13 +11,10 @@ RocketLauncher::RocketLauncher() :
 	m_modeler = std::make_shared<Modeler>(m_transform, ModelPath.ROCKET_LAUNCHER, kBasicAngle, kBasicScale);
 	SetColliderModelHandle(m_modeler->GetModelHandle());
 
-	SetOffset(kHoldOffsetPos,	kHoldOffsetAngle,	kHoldOffsetScale,
-			  kAttachOffsetPos, kAttachOffsetAngle, kAttachOffsetScale);
-
 	m_cross_hair_shape		= std::make_shared<Circle>();
 	m_scope_scale			= kScopeScale;
 	m_range					= kRange;
-	m_power					= kPower;
+	power					= kPower;
 	m_initial_velocity		= kInitialVelocity;
 	m_deceleration			= kDeceleration;
 	m_shot_interval_time	= kShotIntervalTime;

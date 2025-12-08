@@ -1,8 +1,5 @@
 #include "assault_rifle.hpp"
 
-// MEMO : 見た目上はアサルトライフルとして実装するが、挙動はバイオRE:4のサブマシンガンとする
-//		  そのため、GunKindはサブマシンガンとして扱う
-
 AssaultRifle::AssaultRifle() :
 	GunBase(ObjName.ASSAULT_RIFLE, GunKind::kAssaultRifle, HolsterKind::kRifle)
 {
@@ -12,13 +9,10 @@ AssaultRifle::AssaultRifle() :
 	m_modeler = std::make_shared<Modeler>(m_transform, ModelPath.ASSAULT_RIFLE, kBasicAngle, kBasicScale);	
 	SetColliderModelHandle(m_modeler->GetModelHandle());
 
-	SetOffset(kHoldOffsetPos,   kHoldOffsetAngle,   kHoldOffsetScale, 
-			  kAttachOffsetPos, kAttachOffsetAngle, kAttachOffsetScale);
-
 	m_cross_hair_shape			= std::make_shared<Circle>();
 	m_scope_scale				= kScopeScale;
 	m_range						= kRange;
-	m_power						= kPower;
+	power						= kPower;
 	m_initial_velocity			= kInitialVelocity;
 	m_deceleration				= kDeceleration;
 	m_shot_interval_time		= kShotIntervalTime;

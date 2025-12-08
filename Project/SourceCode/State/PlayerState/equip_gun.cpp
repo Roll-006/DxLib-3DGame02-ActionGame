@@ -80,16 +80,16 @@ std::shared_ptr<IState<Player>> player_state::EquipGun::ChangeState(std::shared_
 	//{
 	//	return state_controller->GetState<AimKnife, Player>();
 	//}
-	//// ‰ñ“]Ø‚è
-	//if (state_controller->TrySpinningSlash(obj))
-	//{
-	//	return state_controller->GetState<SpinningSlashKnife, Player>();
-	//}
-	//// Ø‚è—ô‚­(‘æˆê’iŠK)
-	//if (state_controller->TryFirstSideSlashKnife(obj))
-	//{
-	//	return state_controller->GetState<FirstSideSlashKnife, Player>();
-	//}
+	// ‰ñ“]Ø‚è
+	if (state_controller->TrySpinningSlash(obj))
+	{
+		return state_controller->GetState<SpinningSlashKnife, Player>();
+	}
+	// Ø‚è—ô‚­(‘æˆê’iŠK)
+	if (state_controller->TryFirstSideSlashKnife(obj))
+	{
+		return state_controller->GetState<FirstSideSlashKnife, Player>();
+	}
 
 	return nullptr;
 }

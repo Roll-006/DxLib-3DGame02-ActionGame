@@ -36,13 +36,13 @@ void GunBase::TrackOwnerHand()
 	const auto owner_attach_frame_mat = MV1GetFrameLocalWorldMatrix(m_owner_modeler->GetModelHandle(), owner_attach_frame_num);
 
 	// 武器をアタッチする部位に合わせて回転し、行列を取得
-	const auto offset_angle_mat = math::ConvertEulerAnglesToXYZRotMatrix(m_hold_offset_angle);
+	const auto offset_angle_mat = math::ConvertEulerAnglesToXYZRotMatrix(hold_offset_angle);
 	const auto result_mat		= offset_angle_mat * owner_attach_frame_mat;
 
 	// 情報を適用
 	m_transform->SetMatrix	(CoordinateKind::kWorld, result_mat);
-	m_transform->SetPos		(CoordinateKind::kLocal, m_transform->GetPos(CoordinateKind::kLocal) + VTransformSR(m_hold_offset_pos, result_mat));
-	m_transform->SetScale	(CoordinateKind::kWorld, m_hold_offset_scale);
+	m_transform->SetPos		(CoordinateKind::kLocal, m_transform->GetPos(CoordinateKind::kLocal) + VTransformSR(hold_offset_pos, result_mat));
+	m_transform->SetScale	(CoordinateKind::kWorld, hold_offset_scale);
 
 	CalcTransforms();
 
@@ -56,7 +56,7 @@ void GunBase::TrackOwnerHolster()
 
 	int owner_attach_frame_num = -1;
 
-	switch (m_holster_kind)
+	switch (holster_kind)
 	{
 	case HolsterKind::kKnife:
 		owner_attach_frame_num = MV1SearchFrame(m_owner_modeler->GetModelHandle(), FramePath.SPINE_2);
@@ -77,13 +77,13 @@ void GunBase::TrackOwnerHolster()
 
 	// 武器をアタッチする部位に合わせて回転し、行列を取得
 	const auto owner_attach_frame_mat = MV1GetFrameLocalWorldMatrix(m_owner_modeler->GetModelHandle(), owner_attach_frame_num);
-	const auto offset_angle_mat = math::ConvertEulerAnglesToXYZRotMatrix(m_attach_offset_angle);
+	const auto offset_angle_mat = math::ConvertEulerAnglesToXYZRotMatrix(attach_offset_angle);
 	const auto result_mat = offset_angle_mat * owner_attach_frame_mat;
 
 	// 情報を適用
 	m_transform->SetMatrix	(CoordinateKind::kWorld, result_mat);
-	m_transform->SetPos		(CoordinateKind::kLocal, m_transform->GetPos(CoordinateKind::kLocal) + VTransformSR(m_attach_offset_pos, result_mat));
-	m_transform->SetScale	(CoordinateKind::kWorld, m_attach_offset_scale);
+	m_transform->SetPos		(CoordinateKind::kLocal, m_transform->GetPos(CoordinateKind::kLocal) + VTransformSR(attach_offset_pos, result_mat));
+	m_transform->SetScale	(CoordinateKind::kWorld, attach_offset_scale);
 
 	CalcTransforms();
 

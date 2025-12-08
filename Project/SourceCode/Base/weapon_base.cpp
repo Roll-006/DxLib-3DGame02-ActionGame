@@ -5,16 +5,16 @@ WeaponBase::WeaponBase(const std::string& name, const WeaponKind weapon_kind, co
 	m_modeler				(nullptr),
 	m_owner_modeler			(nullptr),
 	m_owner_name			(""),
-	m_power					(0.0f),
+	power					(0.0f),
 	m_item_effect_transform	(nullptr),
-	m_hold_offset_pos		(v3d::GetZeroV()),
-	m_hold_offset_angle		(v3d::GetZeroV()),
-	m_hold_offset_scale		(v3d::GetZeroV()),
-	m_attach_offset_pos		(v3d::GetZeroV()),
-	m_attach_offset_angle	(v3d::GetZeroV()),
-	m_attach_offset_scale	(v3d::GetZeroV()),
-	m_weapon_kind			(weapon_kind),
-	m_holster_kind			(holster_kind)
+	hold_offset_pos		(v3d::GetZeroV()),
+	hold_offset_angle		(v3d::GetZeroV()),
+	hold_offset_scale		(v3d::GetZeroV()),
+	attach_offset_pos		(v3d::GetZeroV()),
+	attach_offset_angle	(v3d::GetZeroV()),
+	attach_offset_scale	(v3d::GetZeroV()),
+	weapon_kind			(weapon_kind),
+	holster_kind			(holster_kind)
 {
 	
 }
@@ -64,36 +64,4 @@ float WeaponBase::GetDeltaTime() const
 	return m_owner_name == ObjName.PLAYER
 		? time_manager->GetDeltaTime(TimeScaleLayerKind::kPlayer)
 		: time_manager->GetDeltaTime(TimeScaleLayerKind::kWorld);
-}
-
-void WeaponBase::SetOffset(
-	const VECTOR& hold_pos,
-	const VECTOR& hold_angle,
-	const VECTOR& hold_scale,
-	const VECTOR& attach_pos,
-	const VECTOR& attach_angle,
-	const VECTOR& attach_scale)
-{
-	m_hold_offset_pos		= hold_pos;
-	m_hold_offset_angle		= hold_angle;
-	m_hold_offset_scale		= hold_scale;
-	m_attach_offset_pos		= attach_pos;
-	m_attach_offset_angle	= attach_angle;
-	m_attach_offset_scale	= attach_scale;
-}
-
-void WeaponBase::SetOffset(
-	const VECTOR& hold_pos,
-	const VECTOR& hold_angle,
-	const float   hold_scale,
-	const VECTOR& attach_pos,
-	const VECTOR& attach_angle,
-	const float   attach_scale)
-{
-	m_hold_offset_pos		= hold_pos;
-	m_hold_offset_angle		= hold_angle;
-	m_hold_offset_scale		= VGet(hold_scale, hold_scale, hold_scale);
-	m_attach_offset_pos		= attach_pos;
-	m_attach_offset_angle	= attach_angle;
-	m_attach_offset_scale	= VGet(attach_scale, attach_scale, attach_scale);
 }
