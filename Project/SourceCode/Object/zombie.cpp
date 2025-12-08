@@ -463,9 +463,12 @@ void Zombie::Grab()
 {
 	m_is_target_escaped = false;
 
+	const auto model_handle = m_modeler->GetModelHandle();
+	auto	   head_m		= MV1GetFrameLocalWorldMatrix(model_handle, GetHumanoidFrame()->GetHeadIndex(model_handle));
+	const auto head_pos		= MGetTranslateElem(head_m);
+
 	// 掴んだことを演出カメラに通知
-	const GrabEvent event{ GetEnemyID(), GetObjHandle(), m_modeler };
-	EventSystem::GetInstance()->Publish(event);
+	EventSystem::GetInstance()->Publish(GrabEvent(GetEnemyID(), GetObjHandle(), m_modeler, head_pos));
 
 	// プレイヤーの掴まれた関数を呼び出す
 	const auto player	= std::static_pointer_cast<Player>(m_state->GetTargetCharacter());
@@ -480,8 +483,7 @@ void Zombie::Grab()
 void Zombie::Release()
 {
 	// 離したことを演出カメラに通知
-	const ReleaseEvent event{ GetEnemyID(), GetObjHandle() };
-	EventSystem::GetInstance()->Publish(event);
+	EventSystem::GetInstance()->Publish(ReleaseEvent(GetEnemyID(), GetObjHandle()));
 
 	std::static_pointer_cast<Player>(m_state->GetTargetCharacter())->OnRelease();
 }

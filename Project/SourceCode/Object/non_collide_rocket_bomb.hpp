@@ -24,6 +24,7 @@ public:
 	void TrackLoad() override;
 
 	[[nodiscard]] float	GetDeltaTime() const override;
+	[[nodiscard]] bool  IsReloading()  const override { return m_is_reloading; }
 
 private:
 	/// @brief ˆÚ“®•ûŒü‚ğp¨‚É“K—p‚·‚é

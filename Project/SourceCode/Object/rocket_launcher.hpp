@@ -30,7 +30,7 @@ private:
 	static constexpr VECTOR kBasicAngle				= { 0.0f, 90.0f * math::kDegToRad, 0.0f };
 	static constexpr float  kBasicScale				= 0.45f;
 
-	static constexpr VECTOR kHoldOffsetPos			= { -3.0f, 11.0f, -22.5f };
+	static constexpr VECTOR kHoldOffsetPos			= { -3.0f, 11.0f, -32.5f };
 	static constexpr VECTOR kHoldOffsetAngle		= { 270.0f * math::kDegToRad, 270.0f * math::kDegToRad, 0.0f };
 	static constexpr float  kHoldOffsetScale		= 1.0f;
 	static constexpr VECTOR kAttachOffsetPos		= { -17.0f, -7.0f, 0.0f };

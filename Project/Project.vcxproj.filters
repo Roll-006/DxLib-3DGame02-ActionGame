@@ -1866,10 +1866,10 @@
     <ClInclude Include="SourceCode\Event\aim_gun_event (6).hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Event\aim_gun_event (7).hpp">
+    <ClInclude Include="SourceCode\Event\exit_stun_event.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Event\aim_gun_event (8).hpp">
+    <ClInclude Include="SourceCode\Event\stun_event.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Event\stab_knife_event.hpp">

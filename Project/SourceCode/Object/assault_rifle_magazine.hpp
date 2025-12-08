@@ -24,6 +24,7 @@ public:
 	void TrackLoad() override;
 
 	[[nodiscard]] float	GetDeltaTime() const override;
+	[[nodiscard]] bool  IsReloading()  const override { return m_is_reloading; }
 
 private:
 	void TrackOwnerHand() override;

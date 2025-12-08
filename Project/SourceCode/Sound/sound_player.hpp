@@ -21,6 +21,7 @@ private:
 	/// @brief 完了した場合、サウンドはプールに変換させる
 	void OnFadeOut(const std::string& sound_name);
 
+
 	#pragma region Event
 	void PlayChangeSceneSound		(const ChangeSceneEvent&		event);
 	void PlayWeaponShotSound		(const WeaponShotEvent&			event);
@@ -45,6 +46,12 @@ private:
 	void PlayGameOverSound			(const DeadPlayerEvent&			event);
 	void PlayStabKnifeSound			(const StabKnifeEvent&			event);
 	void PlayDrawKnifeSound			(const DrawKnifeEvent&			event);
+	void PlayShoutSound				(const OnTargetDetectedEvent&	event);
+	void PlayBiteZombieSound		(const GrabEvent&				event);
+	void PlayStunZombieSound		(const StunEvent&				event);
+	
+	void StopBiteZombieSound		(const ReleaseEvent&			event);
+	void StopStunZombieSound		(const ExitStunEvent&			event);
 	#pragma endregion
 
 private:

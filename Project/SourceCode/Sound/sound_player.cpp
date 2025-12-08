@@ -27,6 +27,11 @@ SoundPlayer::SoundPlayer() :
 	EventSystem::GetInstance()->Subscribe<DeadPlayerEvent>			(this, &SoundPlayer::PlayGameOverSound);
 	EventSystem::GetInstance()->Subscribe<StabKnifeEvent>			(this, &SoundPlayer::PlayStabKnifeSound);
 	EventSystem::GetInstance()->Subscribe<DrawKnifeEvent>			(this, &SoundPlayer::PlayDrawKnifeSound);
+	EventSystem::GetInstance()->Subscribe<OnTargetDetectedEvent>	(this, &SoundPlayer::PlayShoutSound);
+	EventSystem::GetInstance()->Subscribe<GrabEvent>				(this, &SoundPlayer::PlayBiteZombieSound);
+	EventSystem::GetInstance()->Subscribe<StunEvent>				(this, &SoundPlayer::PlayStunZombieSound);
+	EventSystem::GetInstance()->Subscribe<ReleaseEvent>				(this, &SoundPlayer::StopBiteZombieSound);
+	EventSystem::GetInstance()->Subscribe<ExitStunEvent>			(this, &SoundPlayer::StopStunZombieSound);
 }
 
 SoundPlayer::~SoundPlayer()
@@ -55,11 +60,16 @@ SoundPlayer::~SoundPlayer()
 	EventSystem::GetInstance()->Unsubscribe<DeadPlayerEvent>		(this, &SoundPlayer::PlayGameOverSound);
 	EventSystem::GetInstance()->Unsubscribe<StabKnifeEvent>			(this, &SoundPlayer::PlayStabKnifeSound);
 	EventSystem::GetInstance()->Unsubscribe<DrawKnifeEvent>			(this, &SoundPlayer::PlayDrawKnifeSound);
+	EventSystem::GetInstance()->Unsubscribe<OnTargetDetectedEvent>	(this, &SoundPlayer::PlayShoutSound);
+	EventSystem::GetInstance()->Unsubscribe<GrabEvent>				(this, &SoundPlayer::PlayBiteZombieSound);
+	EventSystem::GetInstance()->Unsubscribe<StunEvent>				(this, &SoundPlayer::PlayStunZombieSound);
+	EventSystem::GetInstance()->Unsubscribe<ReleaseEvent>			(this, &SoundPlayer::StopBiteZombieSound);
+	EventSystem::GetInstance()->Unsubscribe<ExitStunEvent>			(this, &SoundPlayer::StopStunZombieSound);
 }
 
 void SoundPlayer::Update()
 {
-	Set3DSoundListenerPosAndFrontPos_UpVecY(GetCameraPosition(), GetCameraFrontVector());
+	Set3DSoundListenerPosAndFrontPosAndUpVec(GetCameraPosition(), GetCameraFrontVector(), GetCameraUpVector());
 
 	auto remove_sounds = std::vector<std::shared_ptr<Sound>>();
 
@@ -148,6 +158,7 @@ void SoundPlayer::PlayChangeSceneSound		(const ChangeSceneEvent&		event)
 		OnPlaySound("title",		TimeScaleLayerKind::kNoneScale);
 		OnFadeOut("play");
 		OnFadeOut("game_over");
+		OnFadeOut("battle");
 		break;
 
 	case SceneKind::kPlay:
@@ -155,16 +166,19 @@ void SoundPlayer::PlayChangeSceneSound		(const ChangeSceneEvent&		event)
 		OnPlaySound("play",			TimeScaleLayerKind::kNoneScale);
 		OnFadeOut("title");
 		OnFadeOut("game_over");
+		OnFadeOut("battle");
 		break;
 
 	case SceneKind::kLoad:
 		OnFadeOut("play");
 		OnFadeOut("game_over");
+		OnFadeOut("battle");
 		break;
 
 	default:
 		OnFadeOut("play");
 		OnFadeOut("game_over");
+		OnFadeOut("battle");
 		break;
 	}
 }
@@ -320,5 +334,30 @@ void SoundPlayer::PlayDrawKnifeSound		(const DrawKnifeEvent&			event)
 {
 	OnPlaySound("draw_knife", event.time_scale_layer_kind, event.pos);
 	OnPlaySound("bleed_large_quantity", event.time_scale_layer_kind, event.pos);
+}
+
+void SoundPlayer::PlayShoutSound			(const OnTargetDetectedEvent&	event)
+{
+	OnPlaySound("shout_zombie", TimeScaleLayerKind::kWorld, event.notify_pos);
+}
+
+void SoundPlayer::PlayBiteZombieSound		(const GrabEvent&				event)
+{
+	OnPlaySound("bite_zombie", TimeScaleLayerKind::kWorld, event.head_pos);
+}
+
+void SoundPlayer::PlayStunZombieSound		(const StunEvent&				event)
+{
+	OnPlaySound("stun_zombie", TimeScaleLayerKind::kWorld, event.head_pos);
+}
+
+void SoundPlayer::StopBiteZombieSound		(const ReleaseEvent&			event)
+{
+	OnFadeOut("bite_zombie");
+}
+
+void SoundPlayer::StopStunZombieSound		(const ExitStunEvent&			event)
+{
+	OnFadeOut("stun_zombie");
 }
 #pragma endregion

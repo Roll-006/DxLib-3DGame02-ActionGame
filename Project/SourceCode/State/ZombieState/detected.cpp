@@ -26,8 +26,7 @@ void zombie_state::Detected::Enter(std::shared_ptr<Zombie>& obj)
 {
 	const auto pos = obj->GetTransform()->GetPos(CoordinateKind::kWorld);
 
-	const OnTargetDetectedEvent event{ obj->GetEnemyID(), obj->GetDetecteNotifyDistance(), pos };
-	EventSystem::GetInstance()->Publish(event);
+	EventSystem::GetInstance()->Publish(OnTargetDetectedEvent(obj->GetEnemyID(), obj->GetDetecteNotifyDistance(), pos));
 }
 
 void zombie_state::Detected::Exit(std::shared_ptr<Zombie>& obj)

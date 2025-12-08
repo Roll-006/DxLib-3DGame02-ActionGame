@@ -3,7 +3,7 @@
 RocketLauncher::RocketLauncher() :
 	GunBase					(ObjName.ROCKET_LAUNCHER, GunKind::kRocketLauncher, HolsterKind::kRifle),
 	m_exhaust_vent_transform(std::make_shared<Transform>()),
-	m_is_draw_magazine		(true)
+	m_is_draw_magazine		(false)
 {
 	m_magazine = std::make_shared<NonCollildeRocketBomb>(m_load_transform);
 	std::dynamic_pointer_cast<ObjBase>(m_magazine)->AddToObjManager();
@@ -43,6 +43,8 @@ void RocketLauncher::Update()
 	if (!IsActive()) { return; }
 
 	std::dynamic_pointer_cast<ObjBase>(m_magazine)->Update();
+
+	m_is_draw_magazine = m_current_remaining_bullet_num > 0 || m_magazine->IsReloading();
 }
 
 void RocketLauncher::LateUpdate()
@@ -55,8 +57,8 @@ void RocketLauncher::Draw() const
 	if (!IsActive()) { return; }
 
 	m_modeler->Draw();
-
-	//if (m_is_draw_magazine)
+	
+	if (m_is_draw_magazine)
 	{
 		std::dynamic_pointer_cast<ObjBase>(m_magazine)->Draw();
 	}

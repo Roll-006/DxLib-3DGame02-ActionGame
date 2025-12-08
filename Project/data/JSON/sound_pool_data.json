@@ -78,6 +78,18 @@
     "shout_zombie": {
       "size": 3
     },
+    "grab_run_zombie": {
+      "size": 3
+    },
+    "idle_zombie": {
+      "size": 3
+    },
+    "bite_zombie": {
+      "size": 3
+    },
+    "stun_zombie": {
+      "size": 3
+    },
     "decision": {
       "size": 1
     },

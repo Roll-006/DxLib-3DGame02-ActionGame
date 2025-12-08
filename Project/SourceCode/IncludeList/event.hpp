@@ -51,3 +51,5 @@
 #include "../Event/end_battle_event.hpp"
 #include "../Event/stab_knife_event.hpp"
 #include "../Event/draw_knife_event.hpp"
+#include "../Event/stun_event.hpp"
+#include "../Event/exit_stun_event.hpp"
