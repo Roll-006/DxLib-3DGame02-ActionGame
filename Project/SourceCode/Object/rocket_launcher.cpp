@@ -58,10 +58,7 @@ void RocketLauncher::Draw() const
 
 	m_modeler->Draw();
 	
-	if (m_is_draw_magazine)
-	{
-		std::dynamic_pointer_cast<ObjBase>(m_magazine)->Draw();
-	}
+	if (m_is_draw_magazine) { std::dynamic_pointer_cast<ObjBase>(m_magazine)->Draw(); }
 }
 
 void RocketLauncher::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
