@@ -59,9 +59,9 @@ void PlayerAnimator::LoadAnim()
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kEscapeKick),				SWATAnimPath.ESCAPE_KICK,					0, AnimTag.NONE, 80.0f,  false);
 
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kStabKnife),					SWATAnimPath.STAB_KNIFE,					0, AnimTag.NONE, 100.0f, false);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kFirstSideSlashKnife),		SWATAnimPath.FIRST_SIDE_SLASH_KNIFE,		0, AnimTag.NONE, 50.0f,  false);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kSecondSideSlashKnife),		SWATAnimPath.SECOND_SIDE_SLASH_KNIFE,		0, AnimTag.NONE, 75.0f,  false);
-	AddAnimHandle(static_cast<int>(PlayerAnimKind::kSpinningSlashKnife),		SWATAnimPath.SPINNING_SLASH_KNIFE,			0, AnimTag.NONE, 50.0f,  false);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kFirstSideSlashKnife),		SWATAnimPath.FIRST_SIDE_SLASH_KNIFE,		0, AnimTag.NONE, 70.0f,  false);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kSecondSideSlashKnife),		SWATAnimPath.SECOND_SIDE_SLASH_KNIFE,		0, AnimTag.NONE, 88.0f,  false);
+	AddAnimHandle(static_cast<int>(PlayerAnimKind::kSpinningSlashKnife),		SWATAnimPath.SPINNING_SLASH_KNIFE,			0, AnimTag.NONE, 70.0f,  false);
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kStealthKill),				SWATAnimPath.STEALTH_KILL,					0, AnimTag.NONE, 60.0f,  false);
 
 	AddAnimHandle(static_cast<int>(PlayerAnimKind::kMoveForwardRun),			SWATAnimPath.MOVE_FORWARD_RUN_01,			0, AnimTag.MOVE, 55.0f,  true);
