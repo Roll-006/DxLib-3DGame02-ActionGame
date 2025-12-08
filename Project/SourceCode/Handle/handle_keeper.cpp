@@ -12,9 +12,7 @@ HandleKeeper::~HandleKeeper()
 
 int HandleKeeper::LoadHandle(const HandleKind handle_kind, const std::string& file_path, const float scale)
 {
-	// Šù‚Éƒ[ƒhÏ‚İ‚Ìê‡‚Í‘‹}‚Éƒnƒ“ƒhƒ‹‚ğ•Ô‚·
-	int handle = -1; //ReloadHandle(handle_kind, file_path);
-	//if (handle > -1) { return handle; };
+	int handle = -1; 
 
 	// í—Ş•Ê‚Éƒ[ƒh
 	switch (handle_kind)
@@ -81,26 +79,32 @@ int HandleKeeper::ReloadHandle(const HandleKind handle_kind, const std::string& 
 	return -1;
 }
 
-void HandleKeeper::DeleteHandle(const HandleKind handle_kind, const std::string& file_path)
+void HandleKeeper::RemoveHandle(const HandleKind handle_kind, const std::string& file_path)
 {
-	for(auto itr = m_handles.begin(); itr != m_handles.end(); ++itr)
+	for (auto itr = m_handles.begin(); itr != m_handles.end();)
 	{
-		// ˆê’v‚·‚é‚à‚Ì‚ªŒ©‚Â‚©‚ê‚Îíœ
 		if (std::get<0>(*itr) == handle_kind && std::get<1>(*itr) == file_path)
 		{
-			m_handles.erase(itr);
+			itr = m_handles.erase(itr);
+		}
+		else
+		{
+			++itr;
 		}
 	}
 }
 
-void HandleKeeper::DeleteHandle(const HandleKind handle_kind, const int handle)
+void HandleKeeper::RemoveHandle(const HandleKind handle_kind, const int handle)
 {
-	for (auto itr = m_handles.begin(); itr != m_handles.end(); ++itr)
+	for (auto itr = m_handles.begin(); itr != m_handles.end();)
 	{
-		// ˆê’v‚·‚é‚à‚Ì‚ªŒ©‚Â‚©‚ê‚Îíœ
 		if (std::get<0>(*itr) == handle_kind && std::get<2>(*itr) == handle)
 		{
-			m_handles.erase(itr);
+			itr = m_handles.erase(itr);
+		}
+		else
+		{
+			++itr;
 		}
 	}
 }

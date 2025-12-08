@@ -24,16 +24,17 @@ public:
 
 
 	#pragma region Setter
-	void SetMatrix	(const CoordinateKind coord_kind, const MATRIX& matrix);
-	void SetPos		(const CoordinateKind coord_kind, const VECTOR& pos);
-	void SetRot		(const CoordinateKind coord_kind, const MATRIX& rot_matrix);
+	void SetMatrix	(const CoordinateKind coord_kind, const MATRIX&		matrix);
+	void SetPos		(const CoordinateKind coord_kind, const VECTOR&		pos);
+	void SetRot		(const CoordinateKind coord_kind, const MATRIX&		rot_matrix);
 	void SetRot		(const CoordinateKind coord_kind, const Quaternion& quaternion);
+	void SetRot		(const CoordinateKind coord_kind, const Axis&		axis);
 
 	/// @brief forwardÇ©ÇÁâÒì]Çê›íË
 	/// @biref WARNING : forwardÇ™ÉèÅ[ÉãÉhYé≤Ç…ïΩçsÇ≈Ç†Ç¡ÇΩèÍçáÇÕâÒì]Ç™é∏ÇÌÇÍÇÈ
-	void SetRot		(const CoordinateKind coord_kind, const VECTOR& forward);
-	void SetScale	(const CoordinateKind coord_kind, const VECTOR& scale);
-	void SetScale	(const CoordinateKind coord_kind, const float	scale);
+	void SetRot		(const CoordinateKind coord_kind, const VECTOR&		forward);
+	void SetScale	(const CoordinateKind coord_kind, const VECTOR&		scale);
+	void SetScale	(const CoordinateKind coord_kind, const float		scale);
 	#pragma endregion
 
 
@@ -47,7 +48,7 @@ public:
 	[[nodiscard]] Quaternion GetQuaternion		(const CoordinateKind coord_kind);
 	[[nodiscard]] VECTOR	 GetScale			(const CoordinateKind coord_kind);
 	[[nodiscard]] MATRIX	 GetScaleMatrix		(const CoordinateKind coord_kind);
-	[[nodiscard]] Axes		 GetAxes			(const CoordinateKind coord_kind);
+	[[nodiscard]] Axis		 GetAxis			(const CoordinateKind coord_kind);
 	[[nodiscard]] VECTOR	 GetRight			(const CoordinateKind coord_kind);
 	[[nodiscard]] VECTOR	 GetUp				(const CoordinateKind coord_kind);
 	[[nodiscard]] VECTOR	 GetForward			(const CoordinateKind coord_kind);

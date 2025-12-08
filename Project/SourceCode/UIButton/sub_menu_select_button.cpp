@@ -61,8 +61,8 @@ SubMenuSelectButton::SubMenuSelectButton(const ButtonKind button_kind, const Vec
 		break;
 	}
 
-	m_font_size.x = GetDrawStringWidthToHandle(m_text.c_str(), -1, m_font_handle);
-	m_font_size.y = GetFontSizeToHandle(m_font_handle);
+	// フォントサイズを取得
+	m_font_size = { GetDrawStringWidthToHandle(m_text.c_str(), -1, m_font_handle), GetFontSizeToHandle(m_font_handle) };
 
 	// 最初から選択されている場合の処理
 	if (is_init_selected)

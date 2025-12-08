@@ -24,7 +24,7 @@ private:
 	LONGLONG	m_first_time;		// 1ƒtƒŒ[ƒ€–Ú‚ÌŒv‘ªŠÔ
 	LONGLONG	m_current_time;
 	LONGLONG	m_prev_time;
-	int			m_frame_count;
+	int			m_frame_contains;
 	float		m_average_fps;
 	float		m_delta_time;
 	float		m_elapsed_time;

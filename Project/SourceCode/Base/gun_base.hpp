@@ -14,6 +14,11 @@ public:
 	GunBase(const std::string& name, const GunKind gun_kind, const HolsterKind holster_kind);
 	virtual ~GunBase() = default;
 
+	/// @brief 持ち主の手を追跡する
+	void TrackOwnerHand() override;
+	/// @brief 持ち主のホルスター(武器収納位置)を追尾する
+	void TrackOwnerHolster()override;
+
 	/// @brief 引き金が引かれる
 	void PullTrigger()    { m_on_pull_trigger = true; }
 	/// @brief 引き金から離される
@@ -30,8 +35,9 @@ public:
 
 	/// @brief 拡散範囲を計算
 	virtual void CalcCrossHairRange(const VECTOR& owner_move_velocity) abstract;
-	virtual void CalcCrossHairRangeShot() abstract;
-	virtual void CalcCrossHairPos() abstract;
+	virtual void CalcCrossHairRangeShot()	abstract;
+	virtual void CalcCrossHairPos()			abstract;
+	virtual void CalcTransforms()			abstract;
 
 	/// @brief 射撃するターゲット座標を計算
 	virtual void CalcTargetPos() abstract;

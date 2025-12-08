@@ -12,7 +12,7 @@ RocketBombExplosionEffect::RocketBombExplosionEffect() :
 	m_offset_angle				(v3d::GetZeroV()),
 	m_offset_scale				(VGet(kScale, kScale, kScale)),
 	m_data						(EffectData(ObjName.ROCKET_BOMB_HIT_EXPLOSION_EFFECT, EffectPath.ROCKET_BOMB_HIT_EXPLOSION, 50.0f, 0.0f, false)),
-	m_play_count				(0),
+	m_play_contains				(0),
 	m_play_wait_timer			(0.0f),
 	m_trigger_dead_timer		(0.0f)
 {
@@ -21,7 +21,12 @@ RocketBombExplosionEffect::RocketBombExplosionEffect() :
 
 RocketBombExplosionEffect::~RocketBombExplosionEffect()
 {
-	// MEMO : 画像のDelete処理は行わず、ハンドル保管クラスから再利用する
+	if (m_origin_effect_handle != -1)
+	{
+		HandleKeeper::GetInstance()->RemoveHandle(HandleKind::kEffect, m_origin_effect_handle);
+		DeleteEffekseerEffect(m_origin_effect_handle);
+		m_origin_effect_handle = -1;
+	}
 }
 
 void RocketBombExplosionEffect::Init()
@@ -34,7 +39,7 @@ void RocketBombExplosionEffect::Init()
 	m_offset_angle					= v3d::GetZeroV();
 	m_offset_scale					= VGet(1.0f, 1.0f, 1.0f);
 
-	m_play_count					= 0;
+	m_play_contains					= 0;
 	m_play_wait_timer				= 0.0f;
 	m_trigger_dead_timer			= 0.0f;
 
@@ -102,6 +107,11 @@ void RocketBombExplosionEffect::OnCollide(const ColliderPairOneToOneData& hit_co
 	}
 }
 
+void RocketBombExplosionEffect::OnProjectPos()
+{
+
+}
+
 void RocketBombExplosionEffect::AddToObjManager()
 {
 	const auto physical_obj = std::dynamic_pointer_cast<PhysicalObjBase>(shared_from_this());
@@ -160,7 +170,7 @@ bool RocketBombExplosionEffect::IsReturnPool()
 	if (m_playing_effect_handle > -1)
 	{
 		// ループ再生なしで再生が終了した場合はプールに返却
-		if (!m_data.is_loop && m_play_count > 0 && IsEffekseer3DEffectPlaying(m_playing_effect_handle) == -1)
+		if (!m_data.is_loop && m_play_contains > 0 && IsEffekseer3DEffectPlaying(m_playing_effect_handle) == -1)
 		{
 			return true;
 		}
@@ -209,7 +219,7 @@ void RocketBombExplosionEffect::PlayEffect()
 	if (IsEffekseer3DEffectPlaying(m_playing_effect_handle) == -1 && m_play_wait_timer > m_data.play_wait_time)
 	{
 		m_playing_effect_handle = PlayEffekseer3DEffect(m_origin_effect_handle);
-		++m_play_count;
+		++m_play_contains;
 	}
 }
 
@@ -231,7 +241,7 @@ void RocketBombExplosionEffect::CalcTriggerPos()
 void RocketBombExplosionEffect::Attack(CharacterBase* target_character)
 {
 	const auto model_handle		= target_character->GetModeler()->GetModelHandle();
-	auto hips_m					= MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, BonePath.HIPS));
+	auto hips_m					= MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, FramePath.HIPS));
 	const auto hips_pos			= MGetTranslateElem(hips_m);
 	const auto explosion_sphere = std::static_pointer_cast<Sphere>(GetCollider(ColliderKind::kAttackTrigger)->GetShape());
 	const auto explosion_pos	= explosion_sphere->GetPos();

@@ -1,13 +1,13 @@
 #pragma once
 #include "../Handle/handle_keeper.hpp"
-#include "../Path/bone_path.hpp"
+#include "../Path/frame_path.hpp"
 #include "../Data/material_data.hpp"
 #include "transform.hpp"
 
 class Modeler final
 {
 public:
-	Modeler(const std::shared_ptr<Transform>& transform, const std::string& file_path, const VECTOR& basic_angle, const float basic_scale);
+	Modeler(const std::shared_ptr<Transform>& transform, const std::string& file_path, const VECTOR& basic_angle = v3d::GetZeroV(), const float basic_scale = 1.0f);
 	Modeler(const int model_handle);
 	~Modeler();
 

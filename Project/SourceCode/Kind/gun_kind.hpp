@@ -7,6 +7,6 @@ enum class GunKind
 	kSniperRifle,
 	kBoltThrower,
 	kMagnum,
-	kSubmachineGun,
+	kAssaultRifle,
 	kRocketLauncher,
 };

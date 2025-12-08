@@ -34,7 +34,7 @@ void zombie_state::Move::Update(std::shared_ptr<Zombie>& obj)
 
 void zombie_state::Move::LateUpdate(std::shared_ptr<Zombie>& obj)
 {
-
+	
 }
 
 void zombie_state::Move::Enter(std::shared_ptr<Zombie>& obj)

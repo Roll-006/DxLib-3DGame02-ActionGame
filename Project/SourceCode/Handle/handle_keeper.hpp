@@ -31,8 +31,8 @@ public:
 	int ReloadHnadle(const HandleKind handle_kind, const int handle);
 
 	/// @brief ƒnƒ“ƒhƒ‹‚Ì”jŠü
-	void DeleteHandle(const HandleKind handle_kind, const std::string& file_path);
-	void DeleteHandle(const HandleKind handle_kind, const int handle);
+	void RemoveHandle(const HandleKind handle_kind, const std::string& file_path);
+	void RemoveHandle(const HandleKind handle_kind, const int handle);
 
 	[[nodiscard]] int GetHandle(const HandleKind handle_kind, const std::string& file_path);
 

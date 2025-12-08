@@ -1,33 +1,41 @@
 #include "player.hpp"
 #include "../Command/command_handler.hpp"
 #include "../Part/player_state_controller.hpp"
+#include "../MixamoHelper/mixamo_helper.hpp"
 
 #include "../JSON/json_loader.hpp"
 
 Player::Player() :
 	CharacterBase(ObjName.PLAYER, ObjTag.PLAYER),
 	m_state							(std::make_shared<PlayerStateController>()),
-	m_bone_pos_corrector			(std::make_shared<BonePosCorrector>()),
+	m_frame_pos_corrector			(std::make_shared<FramePosCorrector>()),
 	m_input_slope					(v3d::GetZeroV()),
 	m_can_control					(true),
 	m_prev_health					(0.0f),
 	m_is_grabbed					(false),
 	m_is_escape						(false),
 	m_escape_start_timer			(0.0f),
+	m_can_add_acquirable_item		(true),
 	m_can_search_stealth_kill_target(true),
 	m_can_search_melee_target		(true),
 	m_is_victory_pose				(false),
-	m_is_count_victory_pose			(false),
+	m_is_contains_victory_pose		(false),
 	m_victory_pose_wait_time		(0.0f),
+	m_ammo_holder					(std::make_shared<AmmoHolder>()),
 	m_weapon_shortcut_selecter		(std::make_shared<WeaponShortcutSelecter>()),
 	m_melee_target					(nullptr),
 	m_top_priority_downed_chara		(nullptr),
 	m_stealth_kill_target			(nullptr),
 	m_grabber						(nullptr),
-	m_escape_gauge					(std::make_shared<Gauge>(100.0f))
+	m_escape_gauge					(std::make_shared<Gauge>(100.0f)),
+	m_humanoid_foot_ik				(nullptr),
+	m_humanoid_frame				(std::make_shared<HumanoidFrameGetter>())
 {
+	// TODO : 後にJSON化
+
 	// イベント登録
-	EventSystem::GetInstance()->Subscribe<DeadBossEvent>(this, &Player::DeadBoss);
+	EventSystem::GetInstance()->Subscribe<DeadAllEnemyEvent>(this, &Player::DeadAllEnemy);
+	EventSystem::GetInstance()->Subscribe<SpottedItemEvent>	(this, &Player::AddPickUpCandidateItem);
 
 	mass_kind = MassKind::kMedium;
 
@@ -39,51 +47,85 @@ Player::Player() :
 	m_animator = std::make_shared<PlayerAnimator>(m_modeler, m_state, m_current_held_weapon, m_current_equip_weapon[WeaponSlotKind::kMain]);
 	SetColliderModelHandle(m_modeler->GetModelHandle());
 
+	// TODO : のちに変更 仮
+	m_humanoid_foot_ik = std::make_shared<HumanoidFootIKSolver>(m_animator, m_modeler, m_colliders, m_leg_ray_data);
+	m_leg_ray_data.leg_ray_length				= 80.0f;
+	m_leg_ray_data.foot_ray_length				= 70.0f;
+	m_leg_ray_data.toe_base_ray_length			= 70.0f;
+
+	m_leg_ray_data.left_leg_ray_offset			= 40.0f;
+	m_leg_ray_data.left_foot_ray_offset			= 30.0f;
+	m_leg_ray_data.left_toe_base_ray_offset		= 30.0f;
+	m_leg_ray_data.right_leg_ray_offset			= 40.0f;
+	m_leg_ray_data.right_foot_ray_offset		= 30.0f;
+	m_leg_ray_data.right_toe_base_ray_offset	= 30.0f;
+
+	m_leg_ray_data.left_leg_offset				= 2.0f;
+	m_leg_ray_data.left_heels_offset			= 1.0f;
+	m_leg_ray_data.left_toe_offset				= 1.0f;
+	m_leg_ray_data.right_leg_offset				= 2.0f;
+	m_leg_ray_data.right_heels_offset			= 1.0f;
+	m_leg_ray_data.right_toe_offset				= 1.0f;
+
 	invincible_time = kInvincibleTime;
 
 	// 初期pos・dirを設定
-	m_look_dir[TimeKind::kCurrent] = m_look_dir[TimeKind::kNext] = VGet(-0.919710f, 0.0f, 0.392598f);
-	m_transform->SetPos(CoordinateKind::kWorld, VGet(912.7f, 184.6f, -1889.9f));
+	m_look_dir[TimeKind::kCurrent] = m_look_dir[TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);
+	m_transform->SetPos(CoordinateKind::kWorld, VGet(140.7f, 164.4f, -1498.5f));
 	m_transform->SetRot(CoordinateKind::kWorld, m_look_dir.at(TimeKind::kCurrent));
 
 	// コライダー・トリガーを設定
-	m_collider_creator->CreateCapsuleCollider	(this, m_modeler, kCapsuleRadius);
-	m_collider_creator->CreateLandingTrigger	(this, kLandingTriggerRadius);
-	m_collider_creator->CreateVisibleTrigger	(this, m_modeler);
+	m_collider_creator->CreateCapsuleCollider		(this, m_modeler, kCapsuleRadius);
+	m_collider_creator->CreateLandingTrigger		(this, kLandingTriggerRadius);
+	m_collider_creator->CreateProjectRay			(this, 30.0f);
+	m_collider_creator->CreateCollisionAreaTrigger	(this, kCollisionAreaRadius);
+	m_collider_creator->CreateVisibleTrigger		(this, m_modeler);
 
-	test = 0;
-
-	const auto pos = m_transform->GetPos(CoordinateKind::kWorld);
-	AddCollider(std::make_shared<Collider>(ColliderKind::kCollisionAreaTrigger, std::make_shared<Sphere>(pos + kCollisionAreaOffset, kCollisionAreaRadius), this));
-	
 	// TODO : 仮後に変更
 	{
 		// 武器設定
-		const auto assault_rifle	= std::make_shared<AssaultRifle>();
 		const auto rocket_launcher	= std::make_shared<RocketLauncher>();
+		const auto assault_rifle	= std::make_shared<AssaultRifle>();
 		const auto knife			= std::make_shared<Knife>();
-		assault_rifle  ->AddToObjManager();
 		rocket_launcher->AddToObjManager();
-		m_weapon_shortcut_selecter->AttachShortcutWeapon(WeaponShortcutPosKind::kInsideLeft, assault_rifle);
+		assault_rifle  ->AddToObjManager();
 		m_weapon_shortcut_selecter->AttachShortcutWeapon(WeaponShortcutPosKind::kOutsideDown, rocket_launcher);
-		AddItem(assault_rifle);
+		m_weapon_shortcut_selecter->AttachShortcutWeapon(WeaponShortcutPosKind::kInsideLeft, assault_rifle);
 		AddItem(rocket_launcher);
+		AddItem(assault_rifle);
 		AddItem(knife);
-		EquipWeapon(assault_rifle,		WeaponSlotKind::kMain);
 		EquipWeapon(rocket_launcher,	WeaponSlotKind::kMain);
+		EquipWeapon(assault_rifle,		WeaponSlotKind::kMain);
 		EquipWeapon(knife,				WeaponSlotKind::kSub);
-		AttachWeapon(assault_rifle);
 		AttachWeapon(rocket_launcher);
+		AttachWeapon(assault_rifle);
 		AttachWeapon(knife);
 
-		m_current_remaining_bullet_num = 10000;
+		std::shared_ptr<IAmmoBox> r = std::make_shared<RocketBombBox>(1);
+		m_ammo_holder->AddAmmo(r);
+
+		r = std::make_shared<RocketBombBox>(1);
+		m_ammo_holder->AddAmmo(r);
+
+		r = std::make_shared<RocketBombBox>(1);
+		m_ammo_holder->AddAmmo(r);
+
+		r = std::make_shared<RocketBombBox>(1);
+		m_ammo_holder->AddAmmo(r);
+
+		r = std::make_shared<RocketBombBox>(1);
+		m_ammo_holder->AddAmmo(r);
+
+		std::shared_ptr<IAmmoBox> assault_rifle_ammo_box = std::make_shared<AssaultRifleAmmoBox>(80);
+		m_ammo_holder->AddAmmo(assault_rifle_ammo_box);
 	}
 }
 
 Player::~Player()
 {
 	// イベントの登録解除
-	EventSystem::GetInstance()->Unsubscribe<DeadBossEvent>(this, &Player::DeadBoss);
+	EventSystem::GetInstance()->Unsubscribe<DeadAllEnemyEvent>	(this, &Player::DeadAllEnemy);
+	EventSystem::GetInstance()->Unsubscribe<SpottedItemEvent>	(this, &Player::AddPickUpCandidateItem);
 
 	for (const auto& item : m_items)
 	{
@@ -96,17 +138,15 @@ Player::~Player()
 
 void Player::Init()
 {
-	m_state->Init(std::static_pointer_cast<Player>(shared_from_this()));
+	m_state				->Init(std::static_pointer_cast<Player>(shared_from_this()));
+	m_humanoid_foot_ik	->Init(std::dynamic_pointer_cast<IHumanoid>(shared_from_this()));
+	m_humanoid_foot_ik	->CreateFootRay		(this, std::dynamic_pointer_cast<IHumanoid>(shared_from_this()));
+	m_humanoid_foot_ik	->CreateFoeBaseRay	(this, std::dynamic_pointer_cast<IHumanoid>(shared_from_this()));
 }
 
 void Player::Update()
 {
 	if (!IsActive()) { return; }
-
-	if (CheckHitKey(KEY_INPUT_0))
-	{
-		m_health.at(HealthPartKind::kMain)->Decrease(10.0f);
-	}
 
 	NotifyHealth();
 	JudgeInvincible();
@@ -128,18 +168,18 @@ void Player::Update()
 	m_can_search_stealth_kill_target	= true;
 	m_can_search_melee_target			= true;
 
-	m_weapon_shortcut_selecter->Update(std::static_pointer_cast<Player>(shared_from_this()));
-	m_state					  ->Update(std::static_pointer_cast<Player>(shared_from_this()));
-	m_animator				  ->Update();
+	PickUpItem();
+
+	m_weapon_shortcut_selecter	->Update(std::static_pointer_cast<Player>(shared_from_this()));
+	m_state						->Update(std::static_pointer_cast<Player>(shared_from_this()));
+	m_animator					->Update();
+	m_humanoid_foot_ik			->Update(std::dynamic_pointer_cast<IHumanoid>(shared_from_this()));
 
 	CalcMoveDir();
 	CalcLookDir();
 	CalcMoveVelocity();
 
 	JudgeVictoryPose();
-
-	m_collider_creator->CalcCapsuleColliderPos	(m_modeler, m_colliders);
-	m_collider_creator->CalcVisibleTriggerPos	(m_modeler, m_colliders);
 
 	ApplyLookDirToRot(m_look_dir.at(TimeKind::kCurrent));
 }
@@ -150,17 +190,28 @@ void Player::LateUpdate()
 
 	m_state->LateUpdate(std::static_pointer_cast<Player>(shared_from_this()));
 
-	if (m_current_held_weapon) { m_current_held_weapon->LateUpdate(); }
+	m_humanoid_foot_ik->BlendFrame(std::dynamic_pointer_cast<IHumanoid>(shared_from_this()));
+
+	if (m_current_held_weapon)
+	{
+		m_current_held_weapon->LateUpdate();
+		m_current_held_weapon->TrackOwnerHand();
+	}
 
 	for (const auto& attach_weapon : m_attach_weapons)
 	{
 		if (attach_weapon.second)
 		{
-			attach_weapon.second->TrackOwnerHolster();
 			attach_weapon.second->LateUpdate();
+			attach_weapon.second->TrackOwnerHolster();
 		}
 	}
 
+	m_collider_creator->CalcCapsuleColliderPos		(m_modeler, m_colliders);
+	m_collider_creator->CalcLandingTriggerPos		(m_modeler, m_colliders);
+	m_collider_creator->CalcCollisionAreaTriggerPos	(m_modeler, m_colliders, kCollisionAreaOffset);
+	m_collider_creator->CalcProjectRayPos			(m_modeler, m_colliders);
+	m_collider_creator->CalcVisibleTriggerPos		(m_modeler, m_colliders);
 
 	// 仮
 	//if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_SPACE) == InputState::kSingle)
@@ -169,11 +220,11 @@ void Player::LateUpdate()
 	//	
 	//	JSONLoader json_loader;
 	//	nlohmann::json data;
-	//	if (json_loader.Load("Data/JSON/patrol_route.json", data))
+	//	if (json_loader::Load("Data/JSON/patrol_route.json", data))
 	//	{
 	//		data["patrol_route"][std::to_string(2)][std::to_string(test)].emplace_back(m_transform->GetPos(CoordinateKind::kWorld));
-
-	//		json_loader.Save("Data/JSON/patrol_route.json", data);
+	//
+	//		json_loader::Save("Data/JSON/patrol_route.json", data);
 	//	}
 	//}
 }
@@ -209,7 +260,35 @@ void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	switch (hit_collider_pair.owner_collider->GetColliderKind())
 	{
 	case ColliderKind::kLandingTrigger:
-		m_is_landing = true;
+		m_is_on_ground = true;
+		break;
+
+	case ColliderKind::kProjectRay:
+		if (hit_collider_pair.intersection) { m_current_project_pos = hit_collider_pair.intersection; }
+		break;
+
+	case ColliderKind::kLeftLegRay:
+		if (hit_collider_pair.intersection) { m_leg_ray_data.left_leg_cast_pos = hit_collider_pair.intersection; }
+		break;
+
+	case ColliderKind::kRightLegRay:
+		if (hit_collider_pair.intersection) { m_leg_ray_data.right_leg_cast_pos = hit_collider_pair.intersection; }
+		break;
+
+	case ColliderKind::kLeftFootRay:
+		if (hit_collider_pair.intersection) { m_leg_ray_data.left_foot_cast_pos = hit_collider_pair.intersection; }
+		break;
+
+	case ColliderKind::kRightFootRay:
+		if (hit_collider_pair.intersection) { m_leg_ray_data.right_foot_cast_pos = hit_collider_pair.intersection; }
+		break;
+
+	case ColliderKind::kLeftToeBaseRay:
+		if (hit_collider_pair.intersection) { m_leg_ray_data.left_toe_base_cast_pos = hit_collider_pair.intersection; }
+		break;
+
+	case ColliderKind::kRightToeBaseRay:
+		if (hit_collider_pair.intersection) { m_leg_ray_data.right_toe_base_cast_pos = hit_collider_pair.intersection; }
 		break;
 		 
 	case ColliderKind::kAttackTrigger:
@@ -232,9 +311,66 @@ void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	}
 }
 
+void Player::OnProjectPos()
+{
+	//if (!IsActive())	{ return; }
+	//if (!IsProject())	{ return; }
+
+	//const auto project_pos = GetCurrentProjectPos();
+	//if (!project_pos)	{ return; }
+
+	//const auto project_ray = GetCollider(ColliderKind::kProjectRay);
+	//if (!project_ray)	{ return; }
+
+	//const auto collider = GetCollider(ColliderKind::kCollider);
+	//if (!collider)		{ return; }
+
+	//const auto capsule = std::dynamic_pointer_cast<Capsule>(collider->GetShape());
+	//if (!capsule)		{ return; }
+
+	//const auto hit_triangle = project_ray->GetHitTriangles();
+	//if (hit_triangle.size() <= 0) { return; }
+
+	//// 着地していた場合、以前の投影座標より下にあれば投影を許可する
+	//if (IsLanding())
+	//{
+	//	const auto prev_project_pos = GetPrevProjectPos();
+	//	if (prev_project_pos)
+	//	{
+	//		if ((project_pos->y - prev_project_pos->y) >= math::kEpsilonLow) { return; }
+	//	}
+	//}
+
+	//// 光線の始点からの距離
+	//const auto future_begin_pos = *project_pos + axis::GetWorldYAxis() * capsule->GetRadius();
+	//const auto distance = math::GetDistancePointToTriangle(future_begin_pos, hit_triangle.front());
+
+	//// 固定位置を決定
+	//const auto penetration		= capsule->GetRadius() - distance;
+	//const auto push_back_length = math::GetHypotenuseLengthIsoscelesRightTriangle(penetration);
+	//const auto result_pos		= *project_pos + axis::GetWorldYAxis() * push_back_length;
+	//
+	//m_transform->SetPos(CoordinateKind::kWorld, result_pos);
+
+	//if (m_current_held_weapon)
+	//{
+	//	m_current_held_weapon->LateUpdate();
+	//	m_current_held_weapon->TrackOwnerHand();
+	//}
+
+	//for (const auto& attach_weapon : m_attach_weapons)
+	//{
+	//	if (attach_weapon.second)
+	//	{
+	//		attach_weapon.second->LateUpdate();
+	//		attach_weapon.second->TrackOwnerHolster();
+	//	}
+	//}
+}
+
 void Player::OnDamage(const HealthPartKind part_kind, const float damage)
 {
-	if (!m_health.count(part_kind)) { return; }
+	if (!m_health.contains(part_kind)) { return; }
 
 	m_health.at(part_kind)->Decrease(damage);
 	m_invincible_timer	= invincible_time;
@@ -395,6 +531,11 @@ void Player::AttackFrontMelee(CharacterBase* target)
 	time_manager->SetTimeScale(TimeScaleLayerKind::kWorld,  0.07f, 0.4f);
 	time_manager->SetTimeScale(TimeScaleLayerKind::kPlayer, 0.07f, 0.4f);
 	time_manager->SetTimeScale(TimeScaleLayerKind::kEffect, 0.07f, 0.4f);
+
+	// 通知
+	const auto model_handle = m_modeler->GetModelHandle();
+	auto	   right_foot_m = MV1GetFrameLocalWorldMatrix(model_handle, GetHumanoidFrame()->GetRightFootIndex(model_handle));
+	EventSystem::GetInstance()->Publish(OnHitKickEvent(MGetTranslateElem(right_foot_m), TimeScaleLayerKind::kPlayer));
 }
 
 void Player::AttackBackMelee(CharacterBase* target)
@@ -415,6 +556,11 @@ void Player::AttackVersatilityMelee(CharacterBase* target)
 	time_manager->SetTimeScale(TimeScaleLayerKind::kWorld,  0.07f, 0.4f);
 	time_manager->SetTimeScale(TimeScaleLayerKind::kPlayer, 0.07f, 0.4f);
 	time_manager->SetTimeScale(TimeScaleLayerKind::kEffect, 0.07f, 0.4f);
+
+	// 通知
+	const auto model_handle = m_modeler->GetModelHandle();
+	auto	   right_foot_m = MV1GetFrameLocalWorldMatrix(model_handle, GetHumanoidFrame()->GetRightFootIndex(model_handle));
+	EventSystem::GetInstance()->Publish(OnHitKickEvent(MGetTranslateElem(right_foot_m), TimeScaleLayerKind::kPlayer));
 }
 #pragma endregion
 
@@ -455,6 +601,62 @@ void Player::SetupStealthKill()
 #pragma endregion
 
 
+#pragma region アイテム
+void Player::PickUpItem()
+{
+	if (!m_pickupable_item) { return; }
+
+	if (!CommandHandler::GetInstance()->IsExecute(CommandKind::kMelee, TimeKind::kCurrent)) { return; }
+
+	auto ammo_box = std::dynamic_pointer_cast<IAmmoBox>(m_pickupable_item);
+	if (!ammo_box) { return; }
+
+	m_ammo_holder->AddAmmo(ammo_box);
+	const auto obj = std::dynamic_pointer_cast<ObjBase>(m_pickupable_item);
+	if (!obj) { return; }
+
+	EventSystem::GetInstance()->Publish(PickUpItemEvent(m_pickupable_item->GetItemKind(), obj->GetObjHandle(), m_transform->GetPos(CoordinateKind::kWorld), TimeScaleLayerKind::kNoneScale));
+}
+
+void Player::AddItem(const std::shared_ptr<IItem>& item)
+{
+	const auto item_kind = item->GetItemKind();
+
+	if (std::find(m_items[item_kind].begin(), m_items[item_kind].end(), item) == m_items[item_kind].end())
+	{
+		m_items[item_kind].emplace_back(item);
+	}
+}
+
+void Player::RemoveItem(const std::shared_ptr<IItem>& item)
+{
+	const auto item_kind = item->GetItemKind();
+
+	m_items[item_kind].erase(std::remove(m_items[item_kind].begin(), m_items[item_kind].end(), item), m_items[item_kind].end());
+}
+
+void Player::AddPickUpCandidateItem(const SpottedItemEvent& event)
+{
+	m_pick_up_candidate_items.emplace_back(SpottedObjData(event.target_obj_handle, event.camera_diff_angle, event.distance_to_camera));
+}
+
+void Player::RemovePickUpCandidateItem(const int obj_handle)
+{
+	for (auto itr = m_pick_up_candidate_items.begin(); itr != m_pick_up_candidate_items.end(); )
+	{
+		if (itr->target_obj_handle == obj_handle)
+		{
+			itr = m_pick_up_candidate_items.erase(itr);
+		}
+		else
+		{
+			++itr;
+		}
+	}
+}
+#pragma endregion
+
+
 #pragma region 武器
 void Player::EquipWeapon(const std::shared_ptr<WeaponBase>& weapon, const WeaponSlotKind slot_kind)
 {
@@ -464,7 +666,7 @@ void Player::EquipWeapon(const std::shared_ptr<WeaponBase>& weapon, const Weapon
 
 void Player::UnequipWeapon(const WeaponSlotKind slot_kind)
 {
-	if (m_current_equip_weapon.count(slot_kind))
+	if (m_current_equip_weapon.contains(slot_kind))
 	{
 		m_current_equip_weapon.at(slot_kind)->DetachOwner();
 		m_current_equip_weapon.at(slot_kind) = nullptr;
@@ -517,7 +719,7 @@ void Player::AttachWeapon(const int obj_handle)
 void Player::DetachWeapon(const std::shared_ptr<WeaponBase>& weapon)
 {
 	// 自身が装着されていれば着脱する
-	if (m_attach_weapons.count(weapon->GetHolsterKind()))
+	if (m_attach_weapons.contains(weapon->GetHolsterKind()))
 	{
 		if (m_attach_weapons[weapon->GetHolsterKind()] == weapon)
 		{
@@ -535,7 +737,7 @@ void Player::DetachWeapon(const HolsterKind holster_kind)
 
 std::shared_ptr<WeaponBase> Player::GetCurrentEquipWeapon(const WeaponSlotKind slot_kind) const
 {
-	return m_current_equip_weapon.count(slot_kind) ? m_current_equip_weapon.at(slot_kind) : nullptr;
+	return m_current_equip_weapon.contains(slot_kind) ? m_current_equip_weapon.at(slot_kind) : nullptr;
 }
 
 std::shared_ptr<WeaponBase> Player::GetCurrentHeldWeapon()
@@ -545,12 +747,12 @@ std::shared_ptr<WeaponBase> Player::GetCurrentHeldWeapon()
 
 std::shared_ptr<WeaponBase> Player::GetCurrentAttachWeapon(const HolsterKind holster_kind) const
 {
-	return m_attach_weapons.count(holster_kind) ? m_attach_weapons.at(holster_kind) : nullptr;
+	return m_attach_weapons.contains(holster_kind) ? m_attach_weapons.at(holster_kind) : nullptr;
 }
 
 WeaponKind Player::GetCurrentEquipWeaponKind(const WeaponSlotKind slot_kind)
 {
-	return m_current_equip_weapon.count(slot_kind) ? m_current_equip_weapon.at(slot_kind)->GetWeaponKind() : WeaponKind::kNone;
+	return m_current_equip_weapon.contains(slot_kind) ? m_current_equip_weapon.at(slot_kind)->GetWeaponKind() : WeaponKind::kNone;
 }
 
 WeaponKind Player::GetCurrentHeldWeaponKind()
@@ -560,7 +762,7 @@ WeaponKind Player::GetCurrentHeldWeaponKind()
 
 WeaponKind Player::GetCurrentAttachWeaponKind(const HolsterKind holster_kind) const
 {
-	return m_attach_weapons.count(holster_kind) ? m_attach_weapons.at(holster_kind)->GetWeaponKind() : WeaponKind::kNone;
+	return m_attach_weapons.contains(holster_kind) ? m_attach_weapons.at(holster_kind)->GetWeaponKind() : WeaponKind::kNone;
 }
 #pragma endregion
 
@@ -576,6 +778,19 @@ void Player::Move()
 
 	CalcMoveSpeed();
 	AllowCalcLookDir();
+}
+
+void Player::OnFootIK()
+{
+	m_humanoid_foot_ik->OnFootIK(std::dynamic_pointer_cast<IHumanoid>(shared_from_this()));
+}
+
+void Player::OnCrouchIK()
+{
+	const auto humanoid = std::dynamic_pointer_cast<IHumanoid>(shared_from_this());
+
+	m_humanoid_foot_ik->CalcRightLegRayPos	(humanoid);
+	m_humanoid_foot_ik->OnRightKneelCrouchIK(humanoid);
 }
 
 void Player::SetLookDirOffsetValueForAim()
@@ -606,21 +821,23 @@ void Player::CalcMoveSpeed()
 		return;
 	}
 
+	const auto delta_time = GetDeltaTime();
+
 	if (VSize(m_input_slope) <= kWalkStickSlopeLimit - InputChecker::kStickDeadZone)
 	{
 		// 速い状態から歩き状態に移行した場合、急速に減速させる
 		if (m_move_speed > kWalkSpeed) { m_move_speed = kWalkSpeed; }
 
-		math::Increase(m_move_speed, kAcceleration, kSlowWalkSpeed, false);
-		math::Decrease(m_move_speed, kAcceleration, kSlowWalkSpeed);
+		math::Increase(m_move_speed, kAcceleration * delta_time, kSlowWalkSpeed, false);
+		math::Decrease(m_move_speed, kAcceleration * delta_time, kSlowWalkSpeed);
 		return;
 	}
 
 	// 遅い状態からダッシュ状態に移行した場合、急速に加速させる
 	if (m_move_speed < kSlowWalkSpeed) { m_move_speed = kSlowWalkSpeed; }
 
-	math::Increase(m_move_speed, kAcceleration, kWalkSpeed, false);
-	math::Decrease(m_move_speed, kAcceleration, kWalkSpeed);
+	math::Increase(m_move_speed, kAcceleration * delta_time, kWalkSpeed, false);
+	math::Decrease(m_move_speed, kAcceleration * delta_time, kWalkSpeed);
 }
 
 void Player::CalcMoveSpeedStop()
@@ -636,7 +853,8 @@ void Player::CalcMoveSpeedStop()
 	// 速い状態から歩き状態に移行した場合、急速に減速させる
 	if (m_move_speed > kSlowWalkSpeed) { m_move_speed = kSlowWalkSpeed; }
 
-	math::Decrease(m_move_speed, kAcceleration, 0.0f);
+	const auto delta_time = GetDeltaTime();
+	math::Decrease(m_move_speed, kAcceleration * delta_time, 0.0f);
 }
 
 void Player::CalcMoveSpeedRun()
@@ -646,7 +864,8 @@ void Player::CalcMoveSpeedRun()
 	// 遅い状態からダッシュ状態に移行した場合、急速に加速させる
 	if (m_move_speed < kWalkSpeed) { m_move_speed = kWalkSpeed; }
 
-	math::Increase(m_move_speed, kAcceleration, kRunSpeed, false);
+	const auto delta_time = GetDeltaTime();
+	math::Increase(m_move_speed, kAcceleration * delta_time, kRunSpeed, false);
 
 	m_look_dir_offset_speed = kLookDirOffsetSpeedForRun;
 }
@@ -678,17 +897,17 @@ float Player::GetDeltaTime() const
 
 
 #pragma region Event
-void Player::DeadBoss(const DeadBossEvent& event)
+void Player::DeadAllEnemy(const DeadAllEnemyEvent& event)
 {
 	m_can_control			= false;
-	m_is_count_victory_pose = true;
+	m_is_contains_victory_pose = true;
 }
 #pragma endregion
 
 
 void Player::JudgeVictoryPose()
 {
-	if (!m_is_count_victory_pose) { return; }
+	if (!m_is_contains_victory_pose) { return; }
 
 	m_victory_pose_wait_time += GetDeltaTime();
 	if (m_victory_pose_wait_time > 4.5f)
@@ -731,22 +950,11 @@ void Player::CalcInputSlopeFromCommand()
 	auto	   continue_input_slope		= v3d::GetZeroV();
 	
 	// 現在入力されているvelocityを取得
-	if (command->IsExecute(CommandKind::kMoveUpPlayer,    TimeKind::kCurrent))
-	{
-		current_input_slope += forward;
-	}
-	if (command->IsExecute(CommandKind::kMoveDownPlayer,  TimeKind::kCurrent))
-	{
-		current_input_slope -= forward;
-	}
-	if (command->IsExecute(CommandKind::kMoveLeftPlayer,  TimeKind::kCurrent))
-	{
-		current_input_slope -= right;
-	}
-	if (command->IsExecute(CommandKind::kMoveRightPlayer, TimeKind::kCurrent))
-	{
-		current_input_slope += right;
-	}
+	if (command->IsExecute(CommandKind::kMoveUpPlayer,		TimeKind::kCurrent)) { current_input_slope += forward; }
+	if (command->IsExecute(CommandKind::kMoveDownPlayer,	TimeKind::kCurrent)) { current_input_slope -= forward; }
+	if (command->IsExecute(CommandKind::kMoveLeftPlayer,	TimeKind::kCurrent)) { current_input_slope -= right; }
+	if (command->IsExecute(CommandKind::kMoveRightPlayer,	TimeKind::kCurrent)) { current_input_slope += right; }
+
 	m_input_slope = v3d::GetNormalizedV(current_input_slope) * InputChecker::kStickMaxSlope;
 
 	// 継続して入力されていたvelocityが、現在のvelocityと逆を向いていた場合現在のvelocityを縮める

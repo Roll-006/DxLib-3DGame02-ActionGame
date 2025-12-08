@@ -24,6 +24,7 @@ Modeler::~Modeler()
 {
 	if (m_model_handle != -1)
 	{
+		HandleKeeper::GetInstance()->RemoveHandle(HandleKind::kModel, m_model_handle);
 		MV1DeleteModel(m_model_handle);
 		m_model_handle = -1;
 	}

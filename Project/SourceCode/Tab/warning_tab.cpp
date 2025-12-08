@@ -82,11 +82,15 @@ void WarningTab::OnDraw(const int main_screen_handle) const
 void WarningTab::ExecuteDecide()
 {
 	m_is_decide = true;
+
+	EventSystem::GetInstance()->Publish(DecisionEvent());
 }
 
 void WarningTab::ExecuteBack()
 {
 	m_is_execute_back = true;
+
+	EventSystem::GetInstance()->Publish(DecisionEvent());
 }
 
 void WarningTab::JudgeSelect()
@@ -142,5 +146,7 @@ void WarningTab::BackTab()
 	if (CommandHandler::GetInstance()->IsExecute(CommandKind::kPause, TimeKind::kCurrent))
 	{
 		m_is_execute_back = true;
+
+		EventSystem::GetInstance()->Publish(BackEvent());
 	}
 }

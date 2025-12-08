@@ -12,7 +12,7 @@ UIDrawer::~UIDrawer()
 
 void UIDrawer::RemoveUICreator(const std::string& name)
 {
-	if (!m_ui_creators.count(name)) { return; }
+	if (!m_ui_creators.contains(name)) { return; }
 
 	m_ui_creators.erase(name);
 

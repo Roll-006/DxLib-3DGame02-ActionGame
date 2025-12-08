@@ -1,0 +1,74 @@
+﻿#pragma once
+#include "../Calculation/math.hpp"
+#include "../JSON/json_loader.hpp"
+
+/// @brief mixamoモデル用のヘルパー関数
+/// @brief MEMO : 配布を行うため、既存の自作関数およびクラスは使用しないものとする
+namespace mixamo_helper
+{
+	/// @brief モデルのフレームを描画する
+	/// @param model_handle モデルハンドル
+	/// @param is_draw_joint 関節を描画するかどうか (初期値 : true)
+	/// @param is_draw_frame ボーンを描画するかどうか (初期値 : true)
+	/// @param is_draw_axis 関節のXYZ軸を描画するかどうか (初期値 : true)
+	/// @param is_fill 関節及びボーンを塗りつぶすかどうか (初期値 : true)
+    inline void DrawFrames(const int model_handle, const bool is_draw_joint = true, const bool is_draw_frame = true, const bool is_draw_axis = true, const bool is_fill = true)
+	{
+		nlohmann::json data;
+        if (!json_loader::Load("Data/JSON/mixamo_frame_hierarchy.json", data)) { return; }
+		
+        // 最下層フレーム
+		const auto  hips    = data.at("Armature").at("mixamorig:Hips");
+        auto        hips_m  = MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, "mixamorig:Hips"));
+
+        // 子を辿る再帰関数を定義
+        std::function<void(const nlohmann::json&, MATRIX&)> Traverse;
+
+        Traverse = [&](const nlohmann::json& node, MATRIX& parent_matrix)
+        {
+            for (auto itr = node.begin(); itr != node.end(); ++itr)
+            {
+                const auto frame_name   = itr.key();
+                const auto frame_index  = MV1SearchFrame(model_handle, frame_name.c_str());
+                if (frame_index <= -1) { continue; }
+
+                auto       child_m      = MV1GetFrameLocalWorldMatrix(model_handle, frame_index);
+                const auto child_pos    = MGetTranslateElem(child_m);
+                const auto parent_pos   = MGetTranslateElem(parent_matrix);
+                const auto distance     = VSize(child_pos - parent_pos);
+                const auto radius       = distance * 0.2f;
+                const auto axis_length  = distance * 0.6f;
+                const auto parent_axis  = math::ConvertRotMatrixToAxis(parent_matrix);
+
+                // 関節・ボーン・XYZ軸の描画
+                if (is_draw_joint)  { DrawSphere3D(parent_pos, radius, 6, 0xffffff, 0xffffff, is_fill); }
+                if (is_draw_frame ) { DrawCone3D(child_pos, parent_pos, radius, 6, 0xffffff, 0xffffff, is_fill); }
+                if (is_draw_axis )  { axis::Draw(parent_axis, parent_pos, axis_length); }
+
+                // 子がいないため再帰しない
+                if (itr.value().empty())
+                {
+                    const auto child_axis = math::ConvertRotMatrixToAxis(child_m);
+                    
+                    // 子がいない場合、関節・XYZ軸のみ描画
+                    if (is_draw_joint) { DrawSphere3D(child_pos, radius, 6, 0xffffff, 0xffffff, is_fill); }
+                    if (is_draw_axis)  { axis::Draw(child_axis, child_pos, axis_length); }
+
+                    continue;
+                }
+
+                // 子がいるため再帰
+                Traverse(itr.value(), child_m);
+            }
+        };
+
+        Traverse(hips, hips_m);
+
+        // Armatureの描画
+        auto armature_m             = MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, "Armature"));
+        const auto armature_pos     = MGetTranslateElem(armature_m);
+        const auto armature_axis    = math::ConvertRotMatrixToAxis(armature_m);
+        axis::Draw(armature_axis, armature_pos, 5.0f);
+        DrawSphere3D(armature_pos, 1, 8, 0xffffff, 0xffffff, FALSE);
+	}
+}

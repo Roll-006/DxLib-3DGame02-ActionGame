@@ -33,11 +33,19 @@ void zombie_state::CrouchLeftStun::Enter(std::shared_ptr<Zombie>& obj)
 	m_stun_timer = 0.0f;
 
 	obj->GetHealth(HealthPartKind::kLeftLeg)->IncreaseCurrentMax();
+
+	const auto model_handle = obj->GetModeler()->GetModelHandle();
+	auto	   head_m		= MV1GetFrameLocalWorldMatrix(model_handle, obj->GetHumanoidFrame()->GetHeadIndex(model_handle));
+	const auto head_pos		= MGetTranslateElem(head_m);
+	EventSystem::GetInstance()->Publish(StunEvent(head_pos));
 }
 
 void zombie_state::CrouchLeftStun::Exit(std::shared_ptr<Zombie>& obj)
 {
-
+	const auto model_handle = obj->GetModeler()->GetModelHandle();
+	auto	   head_m		= MV1GetFrameLocalWorldMatrix(model_handle, obj->GetHumanoidFrame()->GetHeadIndex(model_handle));
+	const auto head_pos		= MGetTranslateElem(head_m);
+	EventSystem::GetInstance()->Publish(ExitStunEvent(head_pos));
 }
 
 std::shared_ptr<IState<Zombie>> zombie_state::CrouchLeftStun::ChangeState(std::shared_ptr<Zombie>& obj)

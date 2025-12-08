@@ -82,6 +82,8 @@ void GameOverTab::ExecuteContinue()
 
 	m_is_continue	= true;
 	m_can_select	= false;
+
+	EventSystem::GetInstance()->Publish(DecisionEvent());
 }
 
 void GameOverTab::ExecuteQuitGame()
@@ -90,6 +92,8 @@ void GameOverTab::ExecuteQuitGame()
 
 	m_is_quit_game	= true;
 	m_can_select	= false;
+
+	EventSystem::GetInstance()->Publish(DecisionEvent());
 }
 
 void GameOverTab::JudgeActive()

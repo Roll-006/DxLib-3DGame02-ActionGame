@@ -51,7 +51,7 @@ void WeaponShortcutSelecter::DetachShortcutWeapon(const WeaponShortcutPosKind sh
 
 std::shared_ptr<WeaponBase> WeaponShortcutSelecter::GetShortcutWeapon(const WeaponShortcutPosKind shortcut_pos_kind)
 {
-	return m_shortcut_weapons.count(shortcut_pos_kind) ? m_shortcut_weapons[shortcut_pos_kind] : nullptr;
+	return m_shortcut_weapons.contains(shortcut_pos_kind) ? m_shortcut_weapons[shortcut_pos_kind] : nullptr;
 }
 
 void WeaponShortcutSelecter::SelectWeaponByPad()

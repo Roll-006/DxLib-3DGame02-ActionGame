@@ -11,7 +11,7 @@ Effect::Effect(const EffectData& data) :
 	m_offset_angle				(v3d::GetZeroV()),
 	m_offset_scale				(VGet(1.0f, 1.0f, 1.0f)),
 	m_data						(data),
-	m_play_count				(0),
+	m_play_contains				(0),
 	m_play_wait_timer			(0.0f)
 {
 
@@ -19,7 +19,12 @@ Effect::Effect(const EffectData& data) :
 
 Effect::~Effect()
 {
-	// MEMO : 画像のDelete処理は行わず、ハンドル保管クラスから再利用する
+	if (m_origin_effect_handle != -1)
+	{
+		HandleKeeper::GetInstance()->RemoveHandle(HandleKind::kEffect, m_origin_effect_handle);
+		DeleteEffekseerEffect(m_origin_effect_handle);
+		m_origin_effect_handle = -1;
+	}
 }
 
 void Effect::Init()
@@ -32,7 +37,7 @@ void Effect::Init()
 	m_offset_angle					= v3d::GetZeroV();
 	m_offset_scale					= VGet(1.0f, 1.0f, 1.0f);
 
-	m_play_count					= 0;
+	m_play_contains					= 0;
 	m_play_wait_timer				= 0.0f;
 
 	// Effekseer上で無限生成がオンかつループ再生がtrueの場合は
@@ -117,7 +122,7 @@ bool Effect::IsReturnPool()
 	if (m_playing_effect_handle > -1)
 	{
 		// ループ再生なしで再生が終了した場合はプールに返却
-		if (!m_data.is_loop && m_play_count > 0 && IsEffekseer3DEffectPlaying(m_playing_effect_handle) == -1)
+		if (!m_data.is_loop && m_play_contains > 0 && IsEffekseer3DEffectPlaying(m_playing_effect_handle) == -1)
 		{
 			return true;
 		}
@@ -166,7 +171,7 @@ void Effect::PlayEffect()
 	if (IsEffekseer3DEffectPlaying(m_playing_effect_handle) == -1 && m_play_wait_timer > m_data.play_wait_time)
 	{
 		m_playing_effect_handle = PlayEffekseer3DEffect(m_origin_effect_handle);
-		++m_play_count;
+		++m_play_contains;
 	}
 }
 

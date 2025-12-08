@@ -3,18 +3,8 @@
 #include <unordered_map>
 
 #include "../Base/singleton_base.hpp"
+#include "../Kind/time_scale_layer_kind.hpp"
 #include "fps.hpp"
-
-enum class TimeScaleLayerKind
-{
-	kNoneScale,	// 等倍
-	kWorld,		// ゲーム全体(敵, 環境, 物理)
-	kPlayer,	// プレイヤー
-	kUI,		// UI
-	kAudio,		// サウンド
-	kEffect,	// エフェクト
-	kCamera,	// カメラ
-};
 
 class GameTimeManager final : public SingletonBase<GameTimeManager>
 {

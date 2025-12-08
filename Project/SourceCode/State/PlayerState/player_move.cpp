@@ -22,7 +22,7 @@ void player_state::Move::Update(std::shared_ptr<Player>& obj)
 
 void player_state::Move::LateUpdate(std::shared_ptr<Player>& obj)
 {
-
+	
 }
 
 void player_state::Move::Enter(std::shared_ptr<Player>& obj)

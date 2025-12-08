@@ -41,7 +41,6 @@ GameManager::~GameManager()
 	EventSystem::GetInstance()->Unsubscribe<ExitGameEvent>(this, &GameManager::ExitGame);
 
 	HandleCreator			::Delete();
-	HandleKeeper			::Delete();
 	CommandHandler			::Delete();
 	InputChecker			::Delete();
 	Debugger				::Delete();
@@ -61,6 +60,7 @@ GameManager::~GameManager()
 	ObjectPoolHolder		::Delete();
 	ObjManager				::Delete();
 	EventSystem				::Delete();
+	HandleKeeper			::Delete();
 }
 
 void GameManager::Run()
@@ -75,7 +75,6 @@ void GameManager::Run()
 		m_scene_manager->DrawToShadowMap();
 		m_scene_manager->Draw();
 
-		//GameTimeManager::GetInstance()->Draw();
 		GameTimeManager::GetInstance()->WaitTime();
 		ScreenFlip();
 	}
@@ -86,7 +85,7 @@ void GameManager::ExitGame(const ExitGameEvent& event)
 	m_is_exit_game = true;
 }
 
-bool GameManager::IsContinueLoop()
+bool GameManager::IsContinueLoop() const
 {
 	if (ProcessMessage()  != 0) { return false; }
 	if (ClearDrawScreen() != 0) { return false; }

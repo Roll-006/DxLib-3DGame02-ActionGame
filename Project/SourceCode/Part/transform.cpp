@@ -179,6 +179,11 @@ void Transform::SetRot(const CoordinateKind coord_kind, const Quaternion& quater
 	SetRot(coord_kind, math::ConvertQuaternionToRotMatrix(quaternion));
 }
 
+void Transform::SetRot(const CoordinateKind coord_kind, const Axis& axis)
+{
+	SetRot(coord_kind, math::ConvertAxisToRotMatrix(axis));
+}
+
 void Transform::SetRot(const CoordinateKind coord_kind, const VECTOR& forward)
 {
 	SetRot(coord_kind, math::ConvertForwardToRotMatrix(forward));
@@ -257,7 +262,7 @@ VECTOR Transform::GetPos(const CoordinateKind coord_kind)
 
 MATRIX Transform::GetRotMatrix(const CoordinateKind coord_kind)
 {
-	return MGetRotElem(GetMatrix(coord_kind));
+	return matrix::GetRotMatrix(GetMatrix(coord_kind));
 }
 
 Quaternion Transform::GetQuaternion(const CoordinateKind coord_kind)
@@ -283,22 +288,22 @@ MATRIX Transform::GetScaleMatrix(const CoordinateKind coord_kind)
 
 VECTOR Transform::GetRight(const CoordinateKind coord_kind)
 {
-	return GetAxes(coord_kind).x_axis;
+	return GetAxis(coord_kind).x_axis;
 }
 
 VECTOR Transform::GetUp(const CoordinateKind coord_kind)
 {
-	return GetAxes(coord_kind).y_axis;
+	return GetAxis(coord_kind).y_axis;
 }
 
 VECTOR Transform::GetForward(const CoordinateKind coord_kind)
 {
-	return GetAxes(coord_kind).z_axis;
+	return GetAxis(coord_kind).z_axis;
 }
 
-Axes Transform::GetAxes(const CoordinateKind coord_kind)
+Axis Transform::GetAxis(const CoordinateKind coord_kind)
 {
-	return math::ConvertRotMatrixToAxes(GetRotMatrix(coord_kind));
+	return math::ConvertRotMatrixToAxis(GetRotMatrix(coord_kind));
 }
 
 VECTOR Transform::GetXYZEulerAngles(const CoordinateKind coord_kind)

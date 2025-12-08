@@ -2,8 +2,8 @@
 
 CommandHandler::CommandHandler()
 {
-	m_trigger_count[TimeKind::kCurrent][CommandKind::kRun]		= 0;
-	m_trigger_count[TimeKind::kCurrent][CommandKind::kCrouch]	= 0;
+	m_trigger_contains[TimeKind::kCurrent][CommandKind::kRun]		= 0;
+	m_trigger_contains[TimeKind::kCurrent][CommandKind::kCrouch]	= 0;
 
 	// 初期設定
 	InitKeyCommand();
@@ -23,7 +23,7 @@ void CommandHandler::Update()
 	m_execute_command[TimeKind::kPrev] = m_execute_command[TimeKind::kCurrent];
 	m_execute_command[TimeKind::kCurrent].clear();
 
-	m_trigger_count[TimeKind::kPrev] = m_trigger_count[TimeKind::kCurrent];
+	m_trigger_contains[TimeKind::kPrev] = m_trigger_contains[TimeKind::kCurrent];
 
 	// 現在の入力デバイスに合わせて処理を実行
 	switch (input->GetCurrentInputDevice())
@@ -206,7 +206,7 @@ void CommandHandler::InitInputMode()
 
 void CommandHandler::InitCurrentTriggerInputCount(const CommandKind kind)
 {
-	m_trigger_count.at(TimeKind::kCurrent).at(kind) = 0;
+	m_trigger_contains.at(TimeKind::kCurrent).at(kind) = 0;
 }
 
 
@@ -218,7 +218,7 @@ InputModeKind CommandHandler::GetInputModeKind(const CommandKind kind) const
 
 int CommandHandler::GetCurrentTriggerCount(const CommandKind kind) const
 {
-	return m_trigger_count.at(TimeKind::kCurrent).at(kind);
+	return m_trigger_contains.at(TimeKind::kCurrent).at(kind);
 }
 
 InputCode CommandHandler::GetKeyInputCode(const CommandKind kind, const CommandSlotKind slot) const
@@ -272,7 +272,7 @@ bool CommandHandler::IsExecute(const CommandKind command_kind, const TimeKind ti
 
 	// トリガー方式の場合、入力カウントによって実行されたかを判定
 	case InputModeKind::kTrigger:
-		return m_trigger_count.at(time_kind).at(command_kind) % 2 == 1 ? true : false;
+		return m_trigger_contains.at(time_kind).at(command_kind) % 2 == 1 ? true : false;
 		break;
 
 	case InputModeKind::kHold:
@@ -368,7 +368,7 @@ void CommandHandler::TryExecuteCommand(const std::unordered_map<CommandKind, std
 						if (input->GetInputState(code.second) == InputState::kSingle)
 						{
 
-							++m_trigger_count[TimeKind::kCurrent][kind];
+							++m_trigger_contains[TimeKind::kCurrent][kind];
 						}
 					}
 					executed_command.emplace_back(kind);

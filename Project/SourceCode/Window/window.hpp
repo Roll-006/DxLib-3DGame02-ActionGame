@@ -29,5 +29,5 @@ public:
 
 private:
 	bool m_is_full_screen;
-	int  m_change_window_count;
+	int  m_change_window_contains;
 };

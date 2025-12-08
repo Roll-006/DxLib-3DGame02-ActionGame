@@ -44,9 +44,7 @@ void ZombieStateController::CreateState()
 {
 	m_states[typeid(zombie_state::Wait)]				= std::make_shared<zombie_state::Wait>();
 	m_states[typeid(zombie_state::Patrol)]				= std::make_shared<zombie_state::Patrol>();
-	m_states[typeid(zombie_state::Investigate)]			= std::make_shared<zombie_state::Investigate>();
 	m_states[typeid(zombie_state::Search)]				= std::make_shared<zombie_state::Search>();
-	m_states[typeid(zombie_state::Alert)]				= std::make_shared<zombie_state::Alert>();
 	m_states[typeid(zombie_state::Track)]				= std::make_shared<zombie_state::Track>();
 	m_states[typeid(zombie_state::RunAttack)]			= std::make_shared<zombie_state::RunAttack>();
 	m_states[typeid(zombie_state::CloseRangeAttack)]	= std::make_shared<zombie_state::CloseRangeAttack>();
@@ -129,7 +127,7 @@ std::vector<std::shared_ptr<IState<Zombie>>> ZombieStateController::CreateChange
 	auto future_state = CreateFutureState(next_state);
 
 	// ã‚ÌŠK‘w‚É‚ ‚éƒXƒe[ƒg‚Ì’â~ˆ—
-	for (int i = future_state.size() - 1; i >= 0; --i)
+	for (int i = static_cast<int>(future_state.size() - 1); i >= 0; --i)
 	{
 		// ’â~”»’è
 		for (auto itr = check_stop_state_index.begin(); itr != check_stop_state_index.end(); )

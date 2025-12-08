@@ -1,6 +1,8 @@
 ﻿#pragma once
 #include "../Base/character_base.hpp"
 #include "../Interface/i_playable_character.hpp"
+#include "../Interface/i_humanoid.hpp"
+#include "../Interface/i_item_collectable.hpp"
 #include "../Interface/i_weapon_equippable.hpp"
 #include "../Interface/i_fireable.hpp"
 #include "../Interface/i_grabbable.hpp"
@@ -9,18 +11,20 @@
 
 #include "../GameTime/game_time_manager.hpp"
 #include "../Event/event_system.hpp"
+
 #include "../Animator/player_animator.hpp"
+#include "../InverseKinematics/humanoid_foot_ik_solver.hpp"
 
 #include "assault_rifle.hpp"
 #include "rocket_launcher.hpp"
 #include "knife.hpp"
 #include "../Part/weapon_shortcut_selecter.hpp"
-#include "../Part/bone_pos_corrector.hpp"
+#include "../Part/frame_pos_corrector.hpp"
 #include "../Part/melee_target_searcher.hpp"
 
 class PlayerStateController;
 
-class Player final : public CharacterBase, public IPlayableCharacter, public IWeaponEquippable, public IFireable, public IGrabbable, public IMeleeAttackable, public IStealthKiller
+class Player final : public CharacterBase, public IPlayableCharacter, public IHumanoid, public IItemCollectable, public IWeaponEquippable, public IFireable, public IGrabbable, public IMeleeAttackable, public IStealthKiller
 {
 public:
 	Player();
@@ -32,16 +36,70 @@ public:
 	void Draw()				const	override;
 
 	void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) override;
+	void OnProjectPos() override;
 	void OnDamage(const HealthPartKind part_kind, const float damage) override;
 
-	void SetRemainingBulletNum(const int remaining_bullet_num) override { m_current_remaining_bullet_num = remaining_bullet_num; }
 
+	#pragma region インターフェイス群
 
 	#pragma region 操作キャラクター
 	void OnAllowControl()	 override { m_can_control = true; }
 	void OnDisallowControl() override { m_can_control = false; }
 
 	[[nodiscard]] bool CanControl() const override { return m_can_control; }
+	#pragma endregion
+
+
+	#pragma region Humanoid
+	[[nodiscard]] std::shared_ptr<HumanoidFrameGetter> GetHumanoidFrame() const override { return m_humanoid_frame; }
+	#pragma endregion
+
+
+	#pragma region アイテム
+	void StopAddPickupableItem() override { m_can_add_acquirable_item = false; }
+
+	void PickUpItem() override;
+
+	void AddItem	(const std::shared_ptr<IItem>& item) override;
+	void RemoveItem	(const std::shared_ptr<IItem>& item) override;
+
+	void AddPickUpCandidateItem(const SpottedItemEvent& event) override;
+	void RemovePickUpCandidateItem(const int obj_handle) override;
+	void RemovePickUpCandidateItems() override { m_pick_up_candidate_items.clear(); }
+
+	void AddPickupableItem(const std::shared_ptr<IItem>& item) override { m_pickupable_item = item; }
+	void RemovePickupableItem() override { m_pickupable_item = nullptr; }
+
+	[[nodiscard]] std::shared_ptr<IItem>&		GetPickupableItem()		override { return m_pickupable_item; }
+	[[nodiscard]] std::vector<SpottedObjData>&	GetCandidateItems()		override { return m_pick_up_candidate_items; }
+	[[nodiscard]] bool							CanAddPickupableItem()	override { return m_can_add_acquirable_item; }
+	#pragma endregion
+
+
+	#pragma region 武器
+	void EquipWeapon	(const std::shared_ptr<WeaponBase>& weapon, const WeaponSlotKind slot_kind)	override;
+	void UnequipWeapon	(const WeaponSlotKind slot_kind)			override;
+
+	void HoldWeapon		(const std::shared_ptr<WeaponBase>& weapon)	override;
+	void HoldWeapon		(const int obj_handle)						override;
+	void ReleaseWeapon	()											override;
+
+	void AttachWeapon	(const std::shared_ptr<WeaponBase>& weapon)	override;
+	void AttachWeapon	(const int obj_handle)						override;
+	void DetachWeapon	(const std::shared_ptr<WeaponBase>& weapon)	override;
+	void DetachWeapon	(const HolsterKind holster_kind)			override;
+
+	[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentEquipWeapon		(const WeaponSlotKind slot_kind) const override;
+	[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentHeldWeapon		()	override;
+	[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentAttachWeapon		(const HolsterKind holster_kind) const override;
+	[[nodiscard]] WeaponKind					GetCurrentEquipWeaponKind	(const WeaponSlotKind slot_kind) override;
+	[[nodiscard]] WeaponKind					GetCurrentHeldWeaponKind	()	override;
+	[[nodiscard]] WeaponKind					GetCurrentAttachWeaponKind	(const HolsterKind holster_kind) const override;
+	#pragma endregion
+
+
+	#pragma region 銃を撃つ者
+	[[nodiscard]] std::shared_ptr<AmmoHolder> GetAmmoHolder() const override { return m_ammo_holder; }
 	#pragma endregion
 
 
@@ -59,8 +117,8 @@ public:
 
 
 	#pragma region メレー
-	void UpdateMelee()	 override;
-	void StopSearchMeleeTarget() override { m_can_search_melee_target = false; }
+	void UpdateMelee()				override;
+	void StopSearchMeleeTarget()	override { m_can_search_melee_target = false; }
 
 	void SetupFrontMelee()			override;
 	void SetupBackMelee	()			override;
@@ -93,54 +151,14 @@ public:
 	[[nodiscard]] bool									CanSearchStealthKillTarget()	const	override	{ return m_can_search_stealth_kill_target; }
 	#pragma endregion
 
-
-	#pragma region 武器
-	void EquipWeapon	(const std::shared_ptr<WeaponBase>& weapon, const WeaponSlotKind slot_kind)	override;
-	void UnequipWeapon	(const WeaponSlotKind slot_kind)			override;
-
-	void HoldWeapon		(const std::shared_ptr<WeaponBase>& weapon)	override;
-	void HoldWeapon		(const int obj_handle)						override;
-	void ReleaseWeapon	()											override;
-
-	void AttachWeapon	(const std::shared_ptr<WeaponBase>& weapon)	override;
-	void AttachWeapon	(const int obj_handle)						override;
-	void DetachWeapon	(const std::shared_ptr<WeaponBase>& weapon)	override;
-	void DetachWeapon	(const HolsterKind holster_kind)			override;
-
-	[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentEquipWeapon		(const WeaponSlotKind slot_kind) const override;
-	[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentHeldWeapon		()	override;
-	[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentAttachWeapon		(const HolsterKind holster_kind) const override;
-	[[nodiscard]] WeaponKind					GetCurrentEquipWeaponKind	(const WeaponSlotKind slot_kind) override;
-	[[nodiscard]] WeaponKind					GetCurrentHeldWeaponKind	()	override;
-	[[nodiscard]] WeaponKind					GetCurrentAttachWeaponKind	(const HolsterKind holster_kind) const override;
-	#pragma endregion
-
-
-	#pragma region アイテム
-	/// @brief アイテムの所持登録 
-	template<obj_concepts::ItemT ItemT>
-	void AddItem(const std::shared_ptr<ItemT>& item)
-	{
-		const auto item_kind = item->GetItemKind();
-
-		if (std::find(m_items[item_kind].begin(), m_items[item_kind].end(), item) == m_items[item_kind].end())
-		{
-			m_items[item_kind].emplace_back(item);
-		}
-	}
-	/// @brief アイテムの所持登録を解除
-	template<obj_concepts::ItemT ItemT>
-	void RemoveItem(const std::shared_ptr<ItemT>& item)
-	{
-		const auto item_kind = item->GetItemKind();
-
-		m_items[item_kind].erase(std::remove(m_items[item_kind].begin(), m_items[item_kind].end(), item), m_items[item_kind].end());
-	}
 	#pragma endregion
 
 
 	#pragma region State
 	void Move();
+
+	void OnFootIK();
+	void OnCrouchIK();
 
 	/// @brief エイミング時の見る方向を修正するための値を設定する
 	void SetLookDirOffsetValueForAim();
@@ -162,18 +180,17 @@ public:
 	#pragma region Getter
 	[[nodiscard]] float																GetDeltaTime				()	const override;
 	[[nodiscard]] std::shared_ptr<PlayerStateController>							GetStateController			()	const			{ return m_state; }
-	[[nodiscard]] std::shared_ptr<BonePosCorrector>									GetBonePosCorrector			()	const			{ return m_bone_pos_corrector; }
+	[[nodiscard]] std::shared_ptr<FramePosCorrector>								GetFramePosCorrector		()	const			{ return m_frame_pos_corrector; }
 	[[nodiscard]] std::vector<std::shared_ptr<IItem>>								GetCurrentHaveItem			(const ItemKind item_kind) const { return m_items.at(item_kind); }
 	[[nodiscard]] std::unordered_map<WeaponSlotKind, std::shared_ptr<WeaponBase>>&	GetCurrentEquipWeapons		()					{ return m_current_equip_weapon; }
 	[[nodiscard]] std::shared_ptr<WeaponShortcutSelecter>							GetWeaponShortcutSelecter	()	const			{ return m_weapon_shortcut_selecter; }
 	[[nodiscard]] float																GetMoveSpeed				()	const			{ return m_move_speed; }
-	[[nodiscard]] int																GetCurrentRemainingBulletNum()	const override	{ return m_current_remaining_bullet_num; }
 	[[nodiscard]] bool																IsVictoryPose				()	const			{ return m_is_victory_pose; }
 	#pragma endregion
 
 private:
 	#pragma region Event
-	void DeadBoss(const DeadBossEvent& event);
+	void DeadAllEnemy(const DeadAllEnemyEvent& event);
 	#pragma endregion
 
 
@@ -200,7 +217,7 @@ private:
 	static constexpr float  kSlowWalkSpeed						= 30.0f;
 	static constexpr float  kWalkSpeed							= 70.0f;
 	static constexpr float  kRunSpeed							= 125.0f;
-	static constexpr float  kAcceleration						= 1.0f;					// 加速度(減速度も共通)
+	static constexpr float  kAcceleration						= 100.0f;					// 加速度(減速度も共通)
 
 	static constexpr float  kMoveDirOffsetSpeed					= 5.0f;					// 移動方向の補正速度
 	static constexpr float  kLookDirOffsetSpeed					= 4.0f;					// 見る方向の補正角度
@@ -220,7 +237,7 @@ private:
 
 private:
 	std::shared_ptr<PlayerStateController>		m_state;
-	std::shared_ptr<BonePosCorrector>			m_bone_pos_corrector;
+	std::shared_ptr<FramePosCorrector>			m_frame_pos_corrector;
 
 	VECTOR										m_input_slope;
 	bool										m_can_control;
@@ -229,24 +246,33 @@ private:
 	bool										m_is_grabbed;							// 捕まれたかを判定
 	bool										m_is_escape;
 	float										m_escape_start_timer;
+	bool										m_can_add_acquirable_item;
 	bool										m_can_search_stealth_kill_target;
 	bool										m_can_search_melee_target;
 
 	bool										m_is_victory_pose;
-	bool										m_is_count_victory_pose;
+	bool										m_is_contains_victory_pose;
 	float										m_victory_pose_wait_time;
+
+	std::shared_ptr<AmmoHolder>											m_ammo_holder;
 
 	std::unordered_map<ItemKind, std::vector<std::shared_ptr<IItem>>>	m_items;							// 所持しているアイテム
 	std::unordered_map<WeaponSlotKind, std::shared_ptr<WeaponBase>>		m_current_equip_weapon;				// 現在装備している武器
 	std::shared_ptr<WeaponBase>											m_current_held_weapon;				// 現在手に持っている武器
 	std::unordered_map<HolsterKind, std::shared_ptr<WeaponBase>>		m_attach_weapons;					// 装着している武器
-	int																	m_current_remaining_bullet_num;		// 残弾数
 	std::shared_ptr<WeaponShortcutSelecter>								m_weapon_shortcut_selecter;			// ショートカットに登録されている武器
+	
+	std::shared_ptr<IItem>												m_pickupable_item;					// 取得可能アイテム
+	std::vector<SpottedObjData>											m_pick_up_candidate_items;			// 取得候補アイテム
+
 	std::shared_ptr<IMeleeHittable>										m_melee_target;
 	std::shared_ptr<IMeleeHittable>										m_top_priority_downed_chara;
 	std::shared_ptr<IStealthKillable>									m_stealth_kill_target;
+
 	std::shared_ptr<IGrabber>											m_grabber;
 	std::shared_ptr<Gauge>												m_escape_gauge;
 
-	int test;
+	HumanoidLegRayData													m_leg_ray_data;
+	std::shared_ptr<HumanoidFootIKSolver>								m_humanoid_foot_ik;
+	std::shared_ptr<HumanoidFrameGetter>								m_humanoid_frame;
 };

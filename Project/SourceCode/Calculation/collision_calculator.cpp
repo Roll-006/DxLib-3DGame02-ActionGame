@@ -560,11 +560,11 @@ bool collision::IsCollidedSegmentAndModel        (const Segment&     segment,   
 
     // 距離が最も近い三角形との交点を取得
     distance = algorithm::Sort(distance, SortKind::kAscending);
-    int loop_count = 0;
+    int loop_contains = 0;
     for (const auto& dist : distance)
     {
         hit_triangles.emplace_back(triangles.at(dist.first));
-        ++loop_count;
+        ++loop_contains;
     }
 
     MV1CollResultPolyDimTerminate(hit_result);
@@ -692,11 +692,11 @@ bool collision::IsCollidedTriangleAndModel       (const Triangle&    triangle,  
 
     // 距離が最も近い三角形との交点を取得
     distance = algorithm::Sort(distance, SortKind::kAscending);
-    int loop_count = 0;
+    int loop_contains = 0;
     for (const auto& dist : distance)
     {
-        hit_triangles.at(loop_count) = triangles.at(dist.first);
-        ++loop_count;
+        hit_triangles.at(loop_contains) = triangles.at(dist.first);
+        ++loop_contains;
     }
 
     MV1CollResultPolyDimTerminate(hit_result);
@@ -821,11 +821,11 @@ bool collision::IsCollidedSphereAndModel         (const Sphere&      sphere,    
 
     // 距離が最も近い三角形との交点を取得
     distance = algorithm::Sort(distance, SortKind::kAscending);
-    int loop_count = 0;
+    int loop_contains = 0;
     for (const auto& dist : distance)
     {
-        hit_triangles.at(loop_count) = triangles.at(dist.first);
-        ++loop_count;
+        hit_triangles.at(loop_contains) = triangles.at(dist.first);
+        ++loop_contains;
     }
 
     MV1CollResultPolyDimTerminate(hit_result);
@@ -884,11 +884,11 @@ bool collision::IsCollidedCapsuleAndModel        (const Capsule&     capsule,   
 
     // 三角形を距離が近い順にソート
     distance = algorithm::Sort(distance, SortKind::kAscending);
-    int loop_count = 0;
+    int loop_contains = 0;
     for (const auto& dist : distance)
     {
-        hit_triangles.at(loop_count) = triangles.at(dist.first);
-        ++loop_count;
+        hit_triangles.at(loop_contains) = triangles.at(dist.first);
+        ++loop_contains;
     }
 
     MV1CollResultPolyDimTerminate(hit_result);

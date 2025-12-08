@@ -20,7 +20,7 @@ public:
 	template<ui_concepts::UICeratorT UICreatorT>
 	void AddUICreator(const std::shared_ptr<UICreatorT>& ui_creator)
 	{
-		if (m_ui_creators.count(ui_creator->GetName())) { return; }
+		if (m_ui_creators.contains(ui_creator->GetName())) { return; }
 
 		m_ui_creators[ui_creator->GetName()] = ui_creator;
 
@@ -37,7 +37,7 @@ public:
 	/// @brief オブジェクトを非アクティブ化する(削除せずに機能を停止)
 	void Deactivate(const std::string& name);
 
-	[[nodiscard]] std::shared_ptr<IUICreator> GetUICreator(const std::string& name) const { return m_ui_creators.count(name) ? m_ui_creators.at(name) : nullptr; }
+	[[nodiscard]] std::shared_ptr<IUICreator> GetUICreator(const std::string& name) const { return m_ui_creators.contains(name) ? m_ui_creators.at(name) : nullptr; }
 
 private:
 	UIDrawer();

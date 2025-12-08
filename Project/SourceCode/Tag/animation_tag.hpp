@@ -4,6 +4,7 @@
 static struct AnimationTag
 {
 	std::string NONE	= "none";		// –¢•ª—Ş
-	std::string MOVE	= "move";		// ˆÚ“®
+	std::string WALK	= "walk";		// •às
+	std::string RUN		= "run";		// ‘–‚é
 
 }AnimTag;

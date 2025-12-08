@@ -35,9 +35,7 @@ void player_state::AimGun::LateUpdate(std::shared_ptr<Player>& obj)
 	const auto offset_dir	= (gun->GetFirstShotPos() + gun->GetAimDir() * gun->GetRange()) - gun->GetMuzzleTransform()->GetPos(CoordinateKind::kWorld);
 
 	// ボーン位置補正
-	obj->GetBonePosCorrector()->CorrectAimPoseBonePos(obj->GetModeler()->GetModelHandle(), aim_dir);
-
-	obj->GetCurrentHeldWeapon()->TrackOwnerHand();
+	obj->GetFramePosCorrector()->CorrectAimPoseFramePos(obj->GetModeler()->GetModelHandle(), aim_dir);
 
 	// 以前のステートがショット状態であった場合、拡散範囲の設定を一定時間待つ
 	const auto weapon_action_state = static_cast<player_state::WeaponActionStateKind>(obj->GetStateController()->GetWeaponActionState(TimeKind::kPrev)->GetStateKind());
@@ -63,6 +61,7 @@ void player_state::AimGun::Enter(std::shared_ptr<Player>& obj)
 {
 	m_elapsed_time = 0.0f;
 
+	// カメラ設定
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	const auto camera_controller = std::static_pointer_cast<ControlVirtualCamerasController>(cinemachine_brain->GetVirtualCameraController(VirtualCameraControllerKind::kControl));
 	cinemachine_brain->SetBlendTime(0.3f);
@@ -75,16 +74,20 @@ void player_state::AimGun::Enter(std::shared_ptr<Player>& obj)
 	obj->DetachWeapon(obj->GetCurrentEquipWeapon(WeaponSlotKind::kMain));
 	obj->HoldWeapon	 (obj->GetCurrentEquipWeapon(WeaponSlotKind::kMain));
 
-	const auto weapon_action_state = static_cast<player_state::WeaponActionStateKind>(obj->GetStateController()->GetWeaponActionState(TimeKind::kPrev)->GetStateKind());
+	const auto weapon_action_state	= static_cast<player_state::WeaponActionStateKind>(obj->GetStateController()->GetWeaponActionState(TimeKind::kPrev)->GetStateKind());
 	if (weapon_action_state != player_state::WeaponActionStateKind::kShot)
 	{
 		const auto gun = std::static_pointer_cast<GunBase>(obj->GetCurrentHeldWeapon());
 		gun->InitCrossHairRange();
+
+		// エイミング状態通知
+		EventSystem::GetInstance()->Publish(AimGunEvent(gun->GetTransform()->GetPos(CoordinateKind::kWorld), TimeScaleLayerKind::kPlayer));
 	}
 }
 
 void player_state::AimGun::Exit(std::shared_ptr<Player>& obj)
 {
+	// カメラ設定
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	const auto camera_controller = std::static_pointer_cast<ControlVirtualCamerasController>(cinemachine_brain->GetVirtualCameraController(VirtualCameraControllerKind::kControl));
 	cinemachine_brain->SetBlendTime(0.3f);
@@ -115,6 +118,16 @@ std::shared_ptr<IState<Player>> player_state::AimGun::ChangeState(std::shared_pt
 	{
 		return state_controller->GetState<EquipGun, Player>();
 	}
+	// リロード
+	if (obj->CanControl() && state_controller->TryReload(obj) && !camera_controller->IsRecoiling())
+	{
+		return state_controller->GetState<Reload, Player>();
+	}
+	// リロード
+	if (state_controller->TryPullTriggerReload(obj))
+	{
+		return state_controller->GetState<Reload, Player>();
+	}
 	// ショット
 	if (state_controller->TryPullTrigger(obj))
 	{
@@ -130,19 +143,6 @@ std::shared_ptr<IState<Player>> player_state::AimGun::ChangeState(std::shared_pt
 			{
 				return state_controller->GetState<Shot, Player>();
 			}
-		}
-	}
-	// リロード
-	if (obj->CanControl() && state_controller->TryReload(obj) && !camera_controller->IsRecoiling())
-	{
-		return state_controller->GetState<Reload, Player>();
-	}
-	// リロード
-	if (obj->CanControl() && gun->GetCurrentRemainingBulletNum() == 0)
-	{
-		if (!command->IsExecute(CommandKind::kPullTrigger, TimeKind::kPrev) && command->IsExecute(CommandKind::kPullTrigger, TimeKind::kCurrent))
-		{
-			return state_controller->GetState<Reload, Player>();
 		}
 	}
 

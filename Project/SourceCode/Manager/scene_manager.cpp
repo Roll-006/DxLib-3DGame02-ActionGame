@@ -5,7 +5,7 @@ SceneManager::SceneManager() :
 	m_current_scene	(std::make_shared<TitleScene>()),
 	m_drawer		(std::make_unique<Drawer>())
 {
-
+	EventSystem::GetInstance()->Publish(ChangeSceneEvent(m_current_scene->GetSceneKind(), m_current_scene->GetSceneKind()));
 }
 
 SceneManager::~SceneManager()
@@ -24,6 +24,7 @@ void SceneManager::Update()
 	m_share_scene	->Update();
 
 	SceneFader		::GetInstance()->Update();
+	CollisionManager::GetInstance()->Update();
 	PhysicsManager	::GetInstance()->Update();
 }
 
@@ -35,6 +36,7 @@ void SceneManager::LateUpdate()
 	m_share_scene	->LateUpdate();
 
 	CollisionManager::GetInstance()->LateUpdate();
+	PhysicsManager	::GetInstance()->ProjectPos();
 	InputChecker	::GetInstance()->LateUpdate();
 }
 
@@ -53,8 +55,7 @@ void SceneManager::ChangeScene()
 	const auto next_scene = m_current_scene->ChangeScene();
 	if (next_scene)
 	{
-		const ChangeSceneEvent event{ m_current_scene->GetSceneKind(), next_scene->GetSceneKind() };
-		EventSystem::GetInstance()->Publish(event);
+		EventSystem::GetInstance()->Publish(ChangeSceneEvent(m_current_scene->GetSceneKind(), next_scene->GetSceneKind()));
 
 		m_current_scene = next_scene;
 		m_current_scene->Init();

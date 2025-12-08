@@ -14,9 +14,8 @@ House::House(const std::string& house_id) :
 {
 	mass_kind = MassKind::kStatic;
 
-	JSONLoader json_loader;
 	nlohmann::json data;
-	if (json_loader.Load("Data/JSON/houses.json", data))
+	if (json_loader::Load("Data/JSON/houses.json", data))
 	{
 		m_model_path			= data.at("houses").at(house_id).at("model_path");
 		m_collision_model_path	= data.at("houses").at(house_id).at("collision_model_path");
@@ -73,6 +72,11 @@ void House::Draw() const
 }
 
 void House::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
+{
+
+}
+
+void House::OnProjectPos()
 {
 
 }

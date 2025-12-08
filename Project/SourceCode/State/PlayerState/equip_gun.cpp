@@ -30,7 +30,7 @@ void player_state::EquipGun::Update(std::shared_ptr<Player>& obj)
 
 void player_state::EquipGun::LateUpdate(std::shared_ptr<Player>& obj)
 {
-	obj->GetCurrentHeldWeapon()->TrackOwnerHand();
+	
 }
 
 void player_state::EquipGun::Enter(std::shared_ptr<Player>& obj)
@@ -39,6 +39,14 @@ void player_state::EquipGun::Enter(std::shared_ptr<Player>& obj)
 
 	obj->DetachWeapon(obj->GetCurrentEquipWeapon(WeaponSlotKind::kMain));
 	obj->HoldWeapon(obj->GetCurrentEquipWeapon(WeaponSlotKind::kMain));
+
+	// エイミング状態解除通知
+	const auto state_kind = obj->GetStateController()->GetWeaponActionState(TimeKind::kPrev)->GetStateKind();
+	if (state_kind == static_cast<int>(player_state::WeaponActionStateKind::kAimGun))
+	{
+		const auto gun = std::static_pointer_cast<GunBase>(obj->GetCurrentHeldWeapon());
+		EventSystem::GetInstance()->Publish(ExitAimGunEvent(gun->GetTransform()->GetPos(CoordinateKind::kWorld), TimeScaleLayerKind::kPlayer));
+	}
 }
 
 void player_state::EquipGun::Exit(std::shared_ptr<Player>& obj)
@@ -67,21 +75,21 @@ std::shared_ptr<IState<Player>> player_state::EquipGun::ChangeState(std::shared_
 	{
 		return state_controller->GetState<Reload, Player>();
 	}
-	// ナイフエイミング状態
-	if (state_controller->TryAimKnife(obj))
-	{
-		return state_controller->GetState<AimKnife, Player>();
-	}
-	// 回転切り
-	if (state_controller->TrySpinningSlash(obj))
-	{
-		return state_controller->GetState<SpinningSlashKnife, Player>();
-	}
-	// 切り裂く(第一段階)
-	if (state_controller->TryFirstSideSlashKnife(obj))
-	{
-		return state_controller->GetState<FirstSideSlashKnife, Player>();
-	}
+	//// ナイフエイミング状態
+	//if (state_controller->TryAimKnife(obj))
+	//{
+	//	return state_controller->GetState<AimKnife, Player>();
+	//}
+	//// 回転切り
+	//if (state_controller->TrySpinningSlash(obj))
+	//{
+	//	return state_controller->GetState<SpinningSlashKnife, Player>();
+	//}
+	//// 切り裂く(第一段階)
+	//if (state_controller->TryFirstSideSlashKnife(obj))
+	//{
+	//	return state_controller->GetState<FirstSideSlashKnife, Player>();
+	//}
 
 	return nullptr;
 }

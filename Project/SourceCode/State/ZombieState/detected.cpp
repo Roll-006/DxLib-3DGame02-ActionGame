@@ -19,15 +19,14 @@ void zombie_state::Detected::Update(std::shared_ptr<Zombie>& obj)
 
 void zombie_state::Detected::LateUpdate(std::shared_ptr<Zombie>& obj)
 {
-
+	obj->OnFootIK();
 }
 
 void zombie_state::Detected::Enter(std::shared_ptr<Zombie>& obj)
 {
 	const auto pos = obj->GetTransform()->GetPos(CoordinateKind::kWorld);
 
-	const OnTargetDetectedEvent event{ obj->GetEnemyID(), obj->GetDetecteNotifyDistance(), pos };
-	EventSystem::GetInstance()->Publish(event);
+	EventSystem::GetInstance()->Publish(OnTargetDetectedEvent(obj->GetEnemyID(), obj->GetDetecteNotifyDistance(), pos));
 }
 
 void zombie_state::Detected::Exit(std::shared_ptr<Zombie>& obj)

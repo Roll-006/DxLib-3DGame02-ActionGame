@@ -8,9 +8,13 @@
 #include "../Object/skydome.hpp"
 #include "../Part/stealth_kill_target_searcher.hpp"
 #include "../Part/melee_target_searcher.hpp"
+#include "../Part/item_acquisition_searcher.hpp"
+#include "../Part/item_creator.hpp"
+#include "../Part/battle_observer.hpp"
 
 #include "../UI/ui_drawer.hpp"
 #include "../UICreator/player_ui_creator.hpp"
+#include "../UICreator/guidance_ui_creator.hpp"
 #include "../Tab/tab_drawer.hpp"
 #include "../Tab/game_clear_tab.hpp"
 #include "../Tab/game_over_tab.hpp"
@@ -54,10 +58,13 @@ private:
 	std::shared_ptr<Skydome>					m_skydome;
 	std::shared_ptr<StealthKillTargetSearcher>	m_stealth_kill_target_searcher;
 	std::shared_ptr<MeleeTargetSearcher>		m_melee_target_searcher;
+	std::shared_ptr<ItemAcquisitionSearcher>	m_item_acquisition_searcher;
+	std::shared_ptr<ItemCreator>				m_item_creator;
 	std::shared_ptr<RifleCartridgeObjectPool>	m_rifle_cartridge_object_pool;
 	std::shared_ptr<PlaySceneEffectObjectPool>  m_play_scene_effect_object_pool;
+	std::shared_ptr<BattleObserver>				m_battle_observer;
 	std::shared_ptr<IUICreator>					m_player_ui_creator;
-	//std::shared_ptr<IUICreator>					m_game_clear_ui_creator;
+	std::shared_ptr<IUICreator>					m_guidance_ui_creator;
 	std::shared_ptr<GameClearTab>				m_game_clear_tab;
 	std::shared_ptr<GameOverTab>				m_game_over_tab;
 	std::shared_ptr<PauseTab>					m_pause_tab;

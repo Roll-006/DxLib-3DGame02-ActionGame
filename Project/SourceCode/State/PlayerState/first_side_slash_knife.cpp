@@ -27,7 +27,7 @@ void player_state::FirstSideSlashKnife::Update(std::shared_ptr<Player>& obj)
 
 void player_state::FirstSideSlashKnife::LateUpdate(std::shared_ptr<Player>& obj)
 {
-	obj->GetCurrentHeldWeapon()->TrackOwnerHand();
+
 }
 
 void player_state::FirstSideSlashKnife::Enter(std::shared_ptr<Player>& obj)

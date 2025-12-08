@@ -1,17 +1,19 @@
 #include "physical_obj_base.hpp"
 
 PhysicalObjBase::PhysicalObjBase(const std::string& name, const std::string& tag) :
-	ObjBase							(name, tag),
-	mass_kind						(MassKind::kLight),
-	m_velocity						(v3d::GetZeroV()),
-	m_move_velocity					(v3d::GetZeroV()),
-	m_fall_velocity					(v3d::GetZeroV()),
-	m_knockback_velocity			(v3d::GetZeroV()),
-	m_knockback_speed				(0.0f),
-	m_knockback_deceleration		(0.0f),
-	m_is_landing					(true),
-	m_is_using_projection_velocity	(true),
-	m_model_handle					(-1)
+	ObjBase					(name, tag),
+	mass_kind				(MassKind::kLight),
+	m_current_project_pos	(std::nullopt),
+	m_prev_project_pos		(std::nullopt),
+	m_velocity				(v3d::GetZeroV()),
+	m_move_velocity			(v3d::GetZeroV()),
+	m_fall_velocity			(v3d::GetZeroV()),
+	m_knockback_velocity	(v3d::GetZeroV()),
+	m_knockback_speed		(0.0f),
+	m_knockback_deceleration(0.0f),
+	m_is_on_ground			(true),
+	m_is_project			(true),
+	m_model_handle			(-1)
 {
 
 }
@@ -30,42 +32,31 @@ void PhysicalObjBase::DrawColliders() const
 
 void PhysicalObjBase::OnKnockback(const VECTOR& dir, const float initial_velocity, const float deceleration)
 {
-	m_knockback_speed			= initial_velocity;
-	m_knockback_deceleration	= deceleration;
-	m_knockback_velocity		= dir * m_knockback_speed;
+	m_knockback_speed = initial_velocity;
+	m_knockback_deceleration = deceleration;
+	m_knockback_velocity = dir * m_knockback_speed;
 
 	// ノックバック時はvelocityの貼り付けを行わない
-	m_is_using_projection_velocity	= false;
+	m_is_project = false;
 }
 
 void PhysicalObjBase::RemoveHitTriangles()
 {
 	for (const auto& collider : m_colliders)
 	{
-		collider.second->RemoveHitTriangle();
-		collider.second->RemoveHitModelTriangle();
+		collider.second->RemoveHitTriangles();
 	}
 }
 
-void PhysicalObjBase::RemoveHitCollider()
+void PhysicalObjBase::SaveProjectPos()
 {
-	for (auto itr = m_hit_colliders.begin(); itr != m_hit_colliders.end(); )
-	{
-		if (!itr->second)
-		{
-			itr = m_hit_colliders.erase(itr);
-		}
-		else
-		{
-			++itr;
-		}
-	}
+	m_prev_project_pos = m_current_project_pos;
 }
 
 void PhysicalObjBase::ApplyGravity(const float gravity_acceleration, const float max_gravity)
 {
 	// 地面にいる場合は重力を与えない
-	if (m_is_landing)
+	if (m_is_on_ground)
 	{
 		m_fall_velocity.y = 0.0f;
 	}
@@ -91,70 +82,31 @@ void PhysicalObjBase::ApplyVelocity()
 	m_velocity = v3d::GetZeroV();
 }
 
-void PhysicalObjBase::ProjectionVelocity()
-{
-	if (!m_is_using_projection_velocity) { return; }
-
-	const auto landing_trigger = GetCollider(ColliderKind::kLandingTrigger);
-
-	if (!landing_trigger) { return; }
-	if (landing_trigger->GetHitTriangles().empty() && landing_trigger->GetHitModelTriangles().empty()) { return; }
-
-	std::vector<Triangle> all_triangles;
-	size_t all_size = 0;
-
-	// リサイズ
-	if (!landing_trigger->GetHitTriangles().empty())
-	{
-		all_size = landing_trigger->GetHitTriangles().size();
-	}
-	if (!landing_trigger->GetHitModelTriangles().empty())
-	{
-		for (const auto& [handle, triangle] : landing_trigger->GetHitModelTriangles())
-		{
-			all_size += triangle.size();
-		}
-	}
-	all_triangles.reserve(all_size);
-
-	// 合成
-	if (!landing_trigger->GetHitTriangles().empty())
-	{
-		all_triangles.insert(all_triangles.end(), landing_trigger->GetHitTriangles().begin(), landing_trigger->GetHitTriangles().end());
-	}
-	if (!landing_trigger->GetHitModelTriangles().empty())
-	{
-		for (const auto& [handle, triangle] : landing_trigger->GetHitModelTriangles())
-		{
-			all_triangles.insert(all_triangles.end(), triangle.begin(), triangle.end());
-		}
-	}
-
-	// ヒットしたポリゴンから三角形を生成
-	// 三角形との距離を取得
-	std::unordered_map<int, Triangle>	triangles;
-	std::vector<std::pair<int, float>>	distance;
-	for (size_t i = 0; i < all_triangles.size(); ++i)
-	{
-		triangles[i] = all_triangles.at(i);
-
-		const auto dist = math::GetDistanceTriangleToSphere(all_triangles.at(i), *std::dynamic_pointer_cast<Sphere>(landing_trigger->GetShape()));
-		distance.emplace_back(std::make_pair(i, dist));
-	}
-
-	// 距離が最も近い三角形との交点を取得
-	distance = algorithm::Sort(distance, SortKind::kAscending);
-	for (const auto& dist : distance)
-	{
-		// 斜面に投影
-		const auto cross_x	= math::GetNormalVector(triangles.at(dist.first).GetNormalVector(), axis::GetWorldYAxis());
-		auto base_v			= math::GetNormalVector(triangles.at(dist.first).GetNormalVector(), cross_x);
-		base_v				= v3d::GetNormalizedV(VGet(m_velocity.x, base_v.y, m_velocity.z));
-		m_velocity			= math::GetProjectionVector(m_velocity, base_v);
-
-		return;
-	}
-}
+//void PhysicalObjBase::ProjectVelocity()
+//{
+//	if (!m_is_project) { return; }
+//
+//	const auto landing_ray = GetCollider(ColliderKind::kLandingTrigger);
+//	if (!landing_ray) { return; }
+//
+//	const auto hit_triangle = landing_ray->GetHitTriangles();
+//	if (hit_triangle.empty()) { return; }
+//
+//	// 光線の始点からの距離でソート
+//	const auto segment = std::static_pointer_cast<Segment>(landing_ray->GetShape());
+//	std::vector<std::pair<int, float>> distance;
+//	for (size_t i = 0; i < hit_triangle.size(); ++i)
+//	{
+//		distance.emplace_back(i, math::GetDistancePointToTriangle(segment->GetBeginPos(), hit_triangle.at(i)));
+//	}
+//	algorithm::Sort(distance, SortKind::kAscending);
+//
+//	// 斜面に投影
+//	const auto cross_x = math::GetNormalVector(hit_triangle.at(distance.front().first).GetNormalVector(), axis::GetWorldYAxis());
+//	auto base_v = math::GetNormalVector(hit_triangle.at(distance.front().first).GetNormalVector(), cross_x);
+//	base_v = v3d::GetNormalizedV(VGet(m_velocity.x, base_v.y, m_velocity.z));
+//	m_velocity = math::GetProjectionVector(m_velocity, base_v);
+//}
 
 void PhysicalObjBase::ApplyKnockbackVelocity()
 {
@@ -165,12 +117,12 @@ void PhysicalObjBase::ApplyKnockbackVelocity()
 
 std::shared_ptr<Collider> PhysicalObjBase::GetCollider(const ColliderKind kind) const
 {
-	return m_colliders.count(kind) ? m_colliders.at(kind) : nullptr;
+	return m_colliders.contains(kind) ? m_colliders.at(kind) : nullptr;
 }
 
 void PhysicalObjBase::AddCollider(const std::shared_ptr<Collider>& collider)
 {
-	if (!m_colliders.count(collider->GetColliderKind()))
+	if (!m_colliders.contains(collider->GetColliderKind()))
 	{
 		m_colliders[collider->GetColliderKind()] = collider;
 	}

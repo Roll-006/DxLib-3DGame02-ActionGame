@@ -20,7 +20,7 @@ public:
 
 private:
 	/// @brief ƒQ[ƒ€ƒ‹[ƒv‚ğŒp‘±‚·‚é‚©‚ğ”»’è
-	[[nodiscard]] bool IsContinueLoop();
+	[[nodiscard]] bool IsContinueLoop() const;
 
 private:
 	std::unique_ptr<GameSystemSetter>	m_game_system_setter;

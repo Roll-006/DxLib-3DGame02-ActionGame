@@ -9,7 +9,7 @@ class CinemachineBrain;
 class GameClearVirtualCamerasController final : public IVirtualCameraController
 {
 public:
-	GameClearVirtualCamerasController(const int model_handle, const std::shared_ptr<Transform>& boss_transform);
+	GameClearVirtualCamerasController(const int model_handle, const std::shared_ptr<Transform>& transform);
 	~GameClearVirtualCamerasController();
 
 	void Init();
@@ -26,39 +26,23 @@ public:
 	[[nodiscard]] bool IsActive()			 const override { return m_is_active; }
 
 private:
-	void SetVictoryPoseCamera(const VictoryPoseEvent& event);
-
-	void SetupDeadBossCamera();
 	void SetupVictoryPoseCamera();
 
-	void CalcAimTransformForDeadBossCamera();
 	void CalcAimTranasormForVictoryPoseCamera();
-	void CalcFollowOffset();
 
 private:
-	static constexpr VECTOR kFollowOffset			= { 0.0f, 50.0f, -180.0f };
-	static constexpr VECTOR kTrackedObjOffset		= { 0.0f,  0.0f,    0.0f };
-	static constexpr float  kZoomInInitialVelocity	= 1.4f;
-	static constexpr float  kZoomInDeceleration		= 1.0f;
-	static constexpr float  kZoomInWaitTime			= 0.0f;
+	static constexpr VECTOR kFollowOffset			= { -25.0f, -15.0f, -70.0f };
+	static constexpr VECTOR kTrackedObjOffset		= { 0.0f,  20.0f,   0.0f };
 
 private:
 	VirtualCameraControllerKind		m_virtual_camera_controller_kind;
 	int								m_controller_handle;
 	bool							m_is_active;
 
-	std::shared_ptr<VirtualCamera>	m_dead_boss_camera;
 	std::shared_ptr<VirtualCamera>	m_victory_pose_camera;
 
 	std::shared_ptr<Transform>		m_aim_transform;
-	VECTOR							m_follow_offset;
-	VECTOR							m_follow_offset_dir;
 
-	float							m_zoom_in_wait_time;
-	float							m_zoom_in_speed;
-
-	std::shared_ptr<Modeler>		m_player_modeler;
-	int								m_boss_model_handle;
+	int								m_player_model_handle;
 	std::shared_ptr<Transform>		m_player_transform;
-	std::shared_ptr<Transform>		m_boss_transform;
 };

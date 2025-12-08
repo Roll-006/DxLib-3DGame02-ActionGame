@@ -123,14 +123,14 @@ void StealthKillVirtualCameraController::CalcAimTransform()
 {
 	if (!m_stealth_killer_modeler || !m_stealth_killable_modeler) { return; }
 
-	auto	   killer_m		= MV1GetFrameLocalWorldMatrix(m_stealth_killer_modeler	->GetModelHandle(), MV1SearchFrame(m_stealth_killer_modeler	 ->GetModelHandle(), BonePath.HEAD_TOP_END));
-	auto	   killable_m	= MV1GetFrameLocalWorldMatrix(m_stealth_killable_modeler->GetModelHandle(), MV1SearchFrame(m_stealth_killable_modeler->GetModelHandle(), BonePath.HEAD_TOP_END));
+	auto	   killer_m		= MV1GetFrameLocalWorldMatrix(m_stealth_killer_modeler	->GetModelHandle(), MV1SearchFrame(m_stealth_killer_modeler	 ->GetModelHandle(), FramePath.HEAD_TOP_END));
+	auto	   killable_m	= MV1GetFrameLocalWorldMatrix(m_stealth_killable_modeler->GetModelHandle(), MV1SearchFrame(m_stealth_killable_modeler->GetModelHandle(), FramePath.HEAD_TOP_END));
 	const auto killer_pos	= MGetTranslateElem(killer_m);
 	const auto killable_pos	= MGetTranslateElem(killable_m);
 
 	// 基準となるトランスフォームを設定
 	const auto center_pos	= (killer_pos + killable_pos) * 0.5f;
 	m_aim_transform->SetPos(CoordinateKind::kWorld, center_pos);
-	m_aim_transform->SetRot(CoordinateKind::kWorld, MGetRotElem(killer_m * MGetRotY(90.0f * math::kDegToRad)));
+	m_aim_transform->SetRot(CoordinateKind::kWorld, matrix::GetRotMatrix(killer_m * MGetRotY(90.0f * math::kDegToRad)));
 }
 #pragma endregion

@@ -3,6 +3,8 @@
 player_state::StealthKill::StealthKill() :
 	ActionStateBase					(static_cast<int>(player_state::ActionStateKind::kStealthKill)),
 	m_is_stop_all_state				(true),
+	m_is_stab						(false),
+	m_is_draw						(false),
 	m_stealth_kill_camera_controller(nullptr)
 {
 
@@ -16,15 +18,33 @@ player_state::StealthKill::~StealthKill()
 void player_state::StealthKill::Update(std::shared_ptr<Player>& obj)
 {
 	obj->UpdateStealthKill();
+
+	const auto play_rate	= obj->GetAnimator()->GetPlayRate(AnimatorBase::BodyKind::kUpperBody);
+	const auto event_system = EventSystem::GetInstance();
+
+	if (play_rate > 0.5f && !m_is_stab)
+	{
+		event_system->Publish(StabKnifeEvent(obj->GetCurrentHeldWeapon()->GetTransform()->GetPos(CoordinateKind::kWorld), TimeScaleLayerKind::kPlayer));
+		m_is_stab = true;
+	}
+
+	if (play_rate > 0.7f && !m_is_draw)
+	{
+		event_system->Publish(DrawKnifeEvent(obj->GetCurrentHeldWeapon()->GetTransform()->GetPos(CoordinateKind::kWorld), TimeScaleLayerKind::kPlayer));
+		m_is_draw = true;
+	}
 }
 
 void player_state::StealthKill::LateUpdate(std::shared_ptr<Player>& obj)
 {
-	obj->GetCurrentHeldWeapon()->TrackOwnerHand();
+	obj->OnFootIK();
 }
 
 void player_state::StealthKill::Enter(std::shared_ptr<Player>& obj)
 {
+	m_is_stab = false;
+	m_is_draw = false;
+
 	// ‰‰o—pƒJƒƒ‰‚ğ¶¬
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	m_stealth_kill_camera_controller = std::make_shared<StealthKillVirtualCameraController>();

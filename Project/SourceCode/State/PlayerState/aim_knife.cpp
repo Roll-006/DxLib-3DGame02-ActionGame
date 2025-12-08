@@ -29,9 +29,7 @@ void player_state::AimKnife::LateUpdate(std::shared_ptr<Player>& obj)
 	const auto aim_dir	= camera->GetTransform()->GetForward(CoordinateKind::kWorld);
 
 	// ƒ{[ƒ“ˆÊ’u•â³
-	obj->GetBonePosCorrector()->CorrectAimPoseBonePos(obj->GetModeler()->GetModelHandle(), aim_dir);
-
-	obj->GetCurrentHeldWeapon()->TrackOwnerHand();
+	obj->GetFramePosCorrector()->CorrectAimPoseFramePos(obj->GetModeler()->GetModelHandle(), aim_dir);
 }
 
 void player_state::AimKnife::Enter(std::shared_ptr<Player>& obj)

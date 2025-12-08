@@ -21,7 +21,10 @@ namespace player_state
 		[[nodiscard]] bool IsStopAllState() const override { return m_is_stop_all_state; }
 
 	private:
-		bool m_is_reloaded;
 		bool m_is_stop_all_state;
+
+		bool m_is_release_ammo_box;
+		bool m_is_set_ammo_box;
+		bool m_is_cocking;
 	};
 }

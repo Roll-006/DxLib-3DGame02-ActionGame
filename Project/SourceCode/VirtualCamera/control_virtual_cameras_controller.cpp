@@ -30,6 +30,8 @@ ControlVirtualCamerasController::ControlVirtualCamerasController(Player& player)
 	cinemachine_brain->SetBlendTime(1.0f);
 	cinemachine_brain->AddVirtualCamera(m_rot_control_camera, true);
 	cinemachine_brain->AddVirtualCamera(m_aim_control_camera, false);
+
+	InitAngle();
 }
 
 ControlVirtualCamerasController::~ControlVirtualCamerasController()
@@ -66,7 +68,7 @@ void ControlVirtualCamerasController::LateUpdate()
 
 	MATRIX result_m = MGetIdent();
 	CreateRotationXYZMatrix(&result_m, m_result_angle.x, m_result_angle.y, m_result_angle.z);
-	m_aim_transform->SetRot(CoordinateKind::kWorld, MGetRotElem(result_m));
+	m_aim_transform->SetRot(CoordinateKind::kWorld, matrix::GetRotMatrix(result_m));
 }
 
 void ControlVirtualCamerasController::OnRecoil(const GunBase& gun)
@@ -92,14 +94,7 @@ void ControlVirtualCamerasController::OnRecoil(const GunBase& gun)
 #pragma region Event
 void ControlVirtualCamerasController::EndGrabCutscene(const EndCutsceneEvent& event)
 {
-	// カメラをリセット
-	// TODO : 視点リセット関数を作成
-	const auto transform	= m_player.GetTransform();
-	const auto forward		= transform->GetForward(CoordinateKind::kWorld);
-	m_aim_transform->SetRot(CoordinateKind::kWorld, forward);
-
-	m_input_angle [TimeKind::kCurrent]	= m_aim_transform->GetZXYEulerAngles(CoordinateKind::kWorld);
-	m_recoil_angle[TimeKind::kCurrent]	= v3d::GetZeroV();
+	InitAngle();
 }
 #pragma endregion
 
@@ -129,6 +124,16 @@ std::vector<std::shared_ptr<VirtualCamera>> ControlVirtualCamerasController::Get
 	return std::vector<std::shared_ptr<VirtualCamera>>{m_rot_control_camera, m_aim_control_camera};
 }
 		
+void ControlVirtualCamerasController::InitAngle()
+{
+	const auto transform	= m_player.GetTransform();
+	const auto forward		= transform->GetForward(CoordinateKind::kWorld);
+	m_aim_transform->SetRot(CoordinateKind::kWorld, forward);
+
+	m_input_angle [TimeKind::kCurrent] = m_aim_transform->GetZXYEulerAngles(CoordinateKind::kWorld);
+	m_recoil_angle[TimeKind::kCurrent] = v3d::GetZeroV();
+}
+
 void ControlVirtualCamerasController::SetupForRotCamera()
 {
 	m_rot_control_camera->SetPriority(1);
@@ -245,7 +250,7 @@ void ControlVirtualCamerasController::CalcOffsetFromRotCamera()
 
 		switch (gun->GetGunKind())
 		{
-		case GunKind::kSubmachineGun:
+		case GunKind::kAssaultRifle:
 			body->SetFollowOffset    (kFollowOffsetForAimCamera);
 			aim ->SetTrackedObjOffset(kTrackedObjOffsetForAimCamera);
 			break;
@@ -298,7 +303,7 @@ void ControlVirtualCamerasController::CalcAimPos()
 	const auto modeler = m_player.GetModeler();
 	modeler->ApplyMatrix();
 
-	const TCHAR* bone_name;
+	const TCHAR* frame_name;
 	const auto state				= m_player.GetStateController();
 	const auto weapon_state_kind	= static_cast<player_state::WeaponActionStateKind>(state->GetWeaponActionState(TimeKind::kCurrent)->GetStateKind());
 
@@ -307,20 +312,20 @@ void ControlVirtualCamerasController::CalcAimPos()
 		|| weapon_state_kind == player_state::WeaponActionStateKind::kShot
 		|| weapon_state_kind == player_state::WeaponActionStateKind::kShotRocketLauncher)
 	{
-		bone_name = BonePath.NECK;
+		frame_name = FramePath.NECK;
 	}
 	else
 	{
-		bone_name = BonePath.SPINE_2;
+		frame_name = FramePath.SPINE_2;
 	}
 
 	// 追跡するボーンから行列を取得
 	const auto	model_handle		= modeler->GetModelHandle();
-	const auto	bone_index			= MV1SearchFrame(model_handle, bone_name);
-	auto		bone_world_m		= MV1GetFrameLocalWorldMatrix(model_handle, bone_index);
-	auto		aim_pos				= MGetTranslateElem(bone_world_m);
+	const auto	frame_index			= MV1SearchFrame(model_handle, frame_name);
+	auto		frame_world_m		= MV1GetFrameLocalWorldMatrix(model_handle, frame_index);
+	auto		aim_pos				= MGetTranslateElem(frame_world_m);
 
-	if (!IsTrackCameraOriginBone())
+	if (!IsTrackCameraOriginFrame())
 	{
 		// ボーンと同じ高さの位置を追跡
 		const auto player_transform = m_player.GetTransform();
@@ -433,7 +438,7 @@ void ControlVirtualCamerasController::CalcResultAngle()
 //	}
 //}
 
-bool ControlVirtualCamerasController::IsTrackCameraOriginBone() const
+bool ControlVirtualCamerasController::IsTrackCameraOriginFrame() const
 {
 	const auto state = m_player.GetStateController();
 	const auto weapon_state_kind = static_cast<player_state::WeaponActionStateKind>(state->GetWeaponActionState(TimeKind::kCurrent)->GetStateKind());

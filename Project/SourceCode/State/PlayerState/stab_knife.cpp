@@ -27,9 +27,9 @@ void player_state::StabKnife::LateUpdate(std::shared_ptr<Player>& obj)
 	//const auto aim_dir	= camera->GetTransform()->GetForward(CoordinateKind::kWorld);
 
 	// ƒ{[ƒ“ˆÊ’u•â³
-	//obj->GetBonePosCorrector()->CorrectAimPoseBonePos(obj->GetModeler()->GetModelHandle(), aim_dir);
+	//obj->GetFramePosCorrector()->CorrectAimPoseFramePos(obj->GetModeler()->GetModelHandle(), aim_dir);
 
-	obj->GetCurrentHeldWeapon()->TrackOwnerHand();
+	
 }
 
 void player_state::StabKnife::Enter(std::shared_ptr<Player>& obj)

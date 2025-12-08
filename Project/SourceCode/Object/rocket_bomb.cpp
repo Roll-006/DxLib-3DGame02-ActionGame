@@ -18,7 +18,7 @@ RocketBomb::RocketBomb() :
 
 	SetColliderModelHandle(m_modeler->GetModelHandle());
 
-	AddCollider(std::make_shared<Collider>(ColliderKind::kRayCast, std::make_shared<Segment>(), this));
+	AddCollider(std::make_shared<Collider>(ColliderKind::kRay, std::make_shared<Segment>(), this));
 }
 
 RocketBomb::~RocketBomb()
@@ -63,7 +63,7 @@ void RocketBomb::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 {
 	switch (hit_collider_pair.owner_collider->GetColliderKind())
 	{
-	case ColliderKind::kRayCast:
+	case ColliderKind::kRay:
 		if (hit_collider_pair.intersection)
 		{
 			RifleCartridgeManager::GetInstance()->DeleteBullet(shared_from_this());
@@ -71,8 +71,6 @@ void RocketBomb::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 			const OnHitBulletEvent event{ GetName(), *hit_collider_pair.intersection, m_move_dir };
 			EventSystem::GetInstance()->Publish(event);
 
-			// TODO : ロケランが着弾した際にエフェクトを強制的に削除する処理を行っているが、
-			//		　射程距離を超えた際に削除する処理は書かなくていいのか？
 			EffectManager::GetInstance()->ForciblyReturnPoolEffect(GetObjHandle(), ObjectPoolName.PLAY_SCENE_EFFECT_POOL);
 		}
 		break;
@@ -80,6 +78,11 @@ void RocketBomb::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	default:
 		break;
 	}
+}
+
+void RocketBomb::OnProjectPos()
+{
+
 }
 
 void RocketBomb::AddToObjManager()
@@ -201,7 +204,7 @@ void RocketBomb::Move()
 void RocketBomb::CalcRayCastPos()
 {
 	// 光線の位置を計算
-	auto ray = std::dynamic_pointer_cast<Segment>(GetCollider(ColliderKind::kRayCast)->GetShape());
+	auto ray = std::dynamic_pointer_cast<Segment>(GetCollider(ColliderKind::kRay)->GetShape());
 	ray->SetBeginPos(m_prev_pos, true);
 	ray->SetEndPos(m_transform->GetPos(CoordinateKind::kWorld), true);
 }

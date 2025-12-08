@@ -37,7 +37,7 @@ public:
 
 private:
 	void Deactivate(const DeadPlayerEvent&	event);
-	void Deactivate(const DeadBossEvent&	event);
+	void Deactivate(const DeadAllEnemyEvent&	event);
 
 	void ExecuteReturnToGame();
 	void ExecuteRestart();

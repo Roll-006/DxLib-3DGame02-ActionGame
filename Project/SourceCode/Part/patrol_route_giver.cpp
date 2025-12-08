@@ -12,9 +12,8 @@ PatrolRouteGiver::PatrolRouteGiver(const PatrolKind patrol_kind, const std::stri
 {
 	if (m_routes.empty())
 	{
-		JSONLoader json_loader;
 		nlohmann::json data;
-		if (json_loader.Load("Data/JSON/patrol_route.json", data))
+		if (json_loader::Load("Data/JSON/patrol_route.json", data))
 		{
 			const auto route_size = data["patrol_route"].size();
 			for (size_t i = 0; i < route_size; i++)

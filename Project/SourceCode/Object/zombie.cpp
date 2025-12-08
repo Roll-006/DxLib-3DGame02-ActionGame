@@ -1,9 +1,12 @@
 #include "zombie.hpp"
+#include "../MixamoHelper/mixamo_helper.hpp"
 #include "player.hpp"
 #include "../Part/zombie_state_controller.hpp"
 
 Zombie::Zombie(const std::string& id) :
 	EnemyBase				(ObjName.ZOMBIE),
+	m_humanoid_foot_ik		(nullptr),
+	m_humanoid_frame		(std::make_shared<HumanoidFrameGetter>()),
 	m_state					(std::make_shared<ZombieStateController>()),
 	m_is_return_pool		(false),
 	m_can_grab_target		(false),
@@ -13,9 +16,8 @@ Zombie::Zombie(const std::string& id) :
 {
 	enemy_id = id;
 
-	JSONLoader json_loader;
 	nlohmann::json data;
-	if (json_loader.Load("Data/JSON/zombie.json", data))
+	if (json_loader::Load("Data/JSON/zombie.json", data))
 	{
 		mass_kind					= data.at("mass_kind");
 		invincible_time				= data.at("invincible_time");
@@ -29,7 +31,8 @@ Zombie::Zombie(const std::string& id) :
 		run_grab_speed				= data.at("run_grab_speed");
 		move_dir_offset_speed		= data.at("move_dir_offset_speed");
 		look_dir_offset_speed		= data.at("look_dir_offset_speed");
-		collider_data				= data.at("collider_data");
+		collider_data				= data.at("collider_data").get<HumanoidEnemyColliderData>();
+		m_leg_ray_data				= data.at("leg_ray_data").get<HumanoidLegRayData>();
 		damage_over_time_start_time = data.at("damage_over_time_start_time");
 	}
 
@@ -50,23 +53,27 @@ Zombie::Zombie(const std::string& id) :
 	m_animator = std::make_shared<ZombieAnimator>(m_modeler, m_state);
 	SetColliderModelHandle(m_modeler->GetModelHandle());
 
+	m_humanoid_foot_ik = std::make_shared<HumanoidFootIKSolver>(m_animator, m_modeler, m_colliders, m_leg_ray_data);
+
 	m_is_calc_look_dir = true;
 
-	m_collider_creator->CreateCapsuleCollider	(this, m_modeler, collider_data.capsule_radius);
-	m_collider_creator->CreateLandingTrigger	(this, collider_data.landing_trigger_radius);
-	m_collider_creator->CreateVisionTrigger		(this, m_modeler, collider_data.visible_distance, collider_data.visible_fov * math::kDegToRad);
-	m_collider_creator->CreateVisibleTrigger	(this, m_modeler);
-	m_collider_creator->CreateHeadTrigger		(this, m_modeler, collider_data.head_trigger_radius);
-	m_collider_creator->CreateBodyTrigger		(this, m_modeler, collider_data.up_body_trigger_radius,		collider_data.down_body_trigger_radius);
-	m_collider_creator->CreateArmTrigger		(this, m_modeler, collider_data.upper_arm_trigger_radius,	collider_data.forearm_trigger_radius, collider_data.hand_trigger_radius);
-	m_collider_creator->CreateLegTrigger		(this, m_modeler, collider_data.up_leg_trigger_radius,		collider_data.down_leg_trigger_radius);
+	m_collider_creator->CreateCapsuleCollider		(this, m_modeler, collider_data.capsule_radius);
+	m_collider_creator->CreateLandingTrigger		(this, collider_data.landing_trigger_radius);
+	m_collider_creator->CreateProjectRay			(this, collider_data.project_ray_length);
+	m_collider_creator->CreateCollisionAreaTrigger	(this, collider_data.collision_area_radius);
+	m_collider_creator->CreateVisionTrigger			(this, m_modeler, collider_data.visible_distance, collider_data.visible_fov * math::kDegToRad);
+	m_collider_creator->CreateVisibleTrigger		(this, m_modeler);
+	m_collider_creator->CreateHeadTrigger			(this, m_modeler, collider_data.head_trigger_radius);
+	m_collider_creator->CreateBodyTrigger			(this, m_modeler, collider_data.up_body_trigger_radius,		collider_data.down_body_trigger_radius);
+	m_collider_creator->CreateArmTrigger			(this, m_modeler, collider_data.upper_arm_trigger_radius,	collider_data.forearm_trigger_radius, collider_data.hand_trigger_radius);
+	m_collider_creator->CreateLegTrigger			(this, m_modeler, collider_data.up_leg_trigger_radius,		collider_data.down_leg_trigger_radius);
 
-	AddCollider(std::make_shared<Collider>(ColliderKind::kRayCast, std::make_shared<Segment>(), this));
-	AddCollider(std::make_shared<Collider>(ColliderKind::kCollisionAreaTrigger, std::make_shared<Sphere>(v3d::GetZeroV() + collider_data.collision_area_offset, collider_data.collision_area_radius), this));
+	AddCollider(std::make_shared<Collider>(ColliderKind::kRay, std::make_shared<Segment>(), this));
 }
 
 Zombie::~Zombie()
 {
+	m_colliders.clear();
 }
 
 void Zombie::Init()
@@ -74,7 +81,11 @@ void Zombie::Init()
 	m_is_return_pool = false;
 
 	m_modeler->InitMaterial();
-	m_state->Init(std::static_pointer_cast<Zombie>(shared_from_this()));
+
+	m_state				->Init(std::static_pointer_cast<Zombie>(shared_from_this()));
+	m_humanoid_foot_ik	->Init(std::dynamic_pointer_cast<IHumanoid>(shared_from_this()));
+	m_humanoid_foot_ik	->CreateFootRay		(this, std::dynamic_pointer_cast<IHumanoid>(shared_from_this()));
+	m_humanoid_foot_ik	->CreateFoeBaseRay	(this, std::dynamic_pointer_cast<IHumanoid>(shared_from_this()));
 }
 
 void Zombie::Update()
@@ -88,8 +99,9 @@ void Zombie::Update()
 	m_look_dir_offset_speed = look_dir_offset_speed;
 	m_is_allow_stealth_kill = true;
 
-	m_state		->Update(std::static_pointer_cast<Zombie>(shared_from_this()));
-	m_animator	->Update();
+	m_state				->Update(std::static_pointer_cast<Zombie>(shared_from_this()));
+	m_animator			->Update();
+	m_humanoid_foot_ik	->Update(std::dynamic_pointer_cast<IHumanoid>(shared_from_this()));
 
 	if (m_move_dir.at(TimeKind::kCurrent) != v3d::GetZeroV())
 	{
@@ -101,25 +113,19 @@ void Zombie::Update()
 	CalcMoveVelocity();
 
 	ApplyLookDirToRot(m_look_dir.at(TimeKind::kCurrent));
-
-	m_collider_creator->CalcCapsuleColliderPos	(m_modeler, m_colliders);
-	m_collider_creator->CalcVisionTriggerPos	(m_modeler, m_colliders);
-	m_collider_creator->CalcVisibleTriggerPos	(m_modeler, m_colliders);
-	m_collider_creator->CalcHeadTriggerPos		(m_modeler, m_colliders);
-	m_collider_creator->CalcBodyTriggerPos		(m_modeler, m_colliders);
-	m_collider_creator->CalcArmTriggerPos		(m_modeler, m_colliders);
-	m_collider_creator->CalcLegTriggerPos		(m_modeler, m_colliders);
 }
 
 void Zombie::LateUpdate()
 {
 	if (!IsActive()) { return; }
 
+	m_is_project = true;
+
 	// TODO : 後に関数化
-	auto ray = std::static_pointer_cast<Segment>(GetCollider(ColliderKind::kRayCast)->GetShape());
+	auto ray = std::static_pointer_cast<Segment>(GetCollider(ColliderKind::kRay)->GetShape());
 	const auto target_model_handle = m_state->GetTargetCharacter()->GetModeler()->GetModelHandle();
-	auto head_m		= MV1GetFrameLocalWorldMatrix(m_modeler->GetModelHandle(), MV1SearchFrame(m_modeler->GetModelHandle(), BonePath.HEAD));
-	auto spine2_m	= MV1GetFrameLocalWorldMatrix(target_model_handle, MV1SearchFrame(target_model_handle, BonePath.SPINE_2));
+	auto head_m		= MV1GetFrameLocalWorldMatrix(m_modeler->GetModelHandle(), MV1SearchFrame(m_modeler->GetModelHandle(), FramePath.HEAD));
+	auto spine2_m	= MV1GetFrameLocalWorldMatrix(target_model_handle, MV1SearchFrame(target_model_handle, FramePath.SPINE_2));
 	const auto head_pos		= MGetTranslateElem(head_m);
 	const auto spine2_pos = MGetTranslateElem(spine2_m);
 	ray->SetBeginPos(head_pos, true);
@@ -127,10 +133,22 @@ void Zombie::LateUpdate()
 
 	m_state->LateUpdate(std::static_pointer_cast<Zombie>(shared_from_this()));
 
+	m_humanoid_foot_ik->BlendFrame(std::dynamic_pointer_cast<IHumanoid>(shared_from_this()));
+
+	m_collider_creator->CalcCapsuleColliderPos		(m_modeler, m_colliders);
+	m_collider_creator->CalcLandingTriggerPos		(m_modeler, m_colliders);
+	m_collider_creator->CalcProjectRayPos			(m_modeler, m_colliders);
+	m_collider_creator->CalcCollisionAreaTriggerPos	(m_modeler, m_colliders, collider_data.collision_area_offset);
+	m_collider_creator->CalcVisionTriggerPos		(m_modeler, m_colliders);
+	m_collider_creator->CalcVisibleTriggerPos		(m_modeler, m_colliders);
+	m_collider_creator->CalcHeadTriggerPos			(m_modeler, m_colliders);
+	m_collider_creator->CalcBodyTriggerPos			(m_modeler, m_colliders);
+	m_collider_creator->CalcArmTriggerPos			(m_modeler, m_colliders);
+	m_collider_creator->CalcLegTriggerPos			(m_modeler, m_colliders);
+
 	m_can_grab_target				= false;
 	m_on_collided_vision_trigger	= false;
 	m_has_obstacle_between_target	= false;
-	m_is_using_projection_velocity	= true;
 }
 
 void Zombie::Draw() const
@@ -153,14 +171,39 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	switch (hit_collider_pair.owner_collider->GetColliderKind())
 	{
 	case ColliderKind::kLandingTrigger:
-		m_is_landing = true;
+		m_is_on_ground = true;
 		break;
 
-	case ColliderKind::kRayCast:
-		if (dynamic_cast<PhysicalObjBase*>(m_state->GetTargetCharacter().get()) != target_obj)
-		{
-			m_has_obstacle_between_target = true;
-		}
+	case ColliderKind::kRay:
+		if (dynamic_cast<PhysicalObjBase*>(m_state->GetTargetCharacter().get()) != target_obj) { m_has_obstacle_between_target = true; }
+		break;
+
+	case ColliderKind::kProjectRay:
+		if (hit_collider_pair.intersection) { m_current_project_pos = hit_collider_pair.intersection; }
+		break;
+
+	case ColliderKind::kLeftLegRay:
+		if (hit_collider_pair.intersection) { m_leg_ray_data.left_leg_cast_pos = hit_collider_pair.intersection; }
+		break;
+
+	case ColliderKind::kRightLegRay:
+		if (hit_collider_pair.intersection) { m_leg_ray_data.right_leg_cast_pos = hit_collider_pair.intersection; }
+		break;
+
+	case ColliderKind::kLeftFootRay:
+		if (hit_collider_pair.intersection) { m_leg_ray_data.left_foot_cast_pos = hit_collider_pair.intersection; }
+		break;
+
+	case ColliderKind::kRightFootRay:
+		if (hit_collider_pair.intersection) { m_leg_ray_data.right_foot_cast_pos = hit_collider_pair.intersection; }
+		break;
+
+	case ColliderKind::kLeftToeBaseRay:
+		if (hit_collider_pair.intersection) { m_leg_ray_data.left_toe_base_cast_pos = hit_collider_pair.intersection; }
+		break;
+
+	case ColliderKind::kRightToeBaseRay:
+		if (hit_collider_pair.intersection) { m_leg_ray_data.right_toe_base_cast_pos = hit_collider_pair.intersection; }
 		break;
 
 	case ColliderKind::kMiddleVisionTrigger:
@@ -186,7 +229,9 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 			OnDamage(HealthPartKind::kMain, damage);
 
-			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue()));
+			m_is_detection_shared = true;
+
+			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue(), TimeScaleLayerKind::kWorld));
 		}
 		break;
 
@@ -199,7 +244,9 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 			OnDamage(HealthPartKind::kBody,	damage);
 			OnDamage(HealthPartKind::kMain,	damage);
 
-			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue()));
+			m_is_detection_shared = true;
+
+			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue(), TimeScaleLayerKind::kWorld));
 		}
 		break;
 
@@ -212,7 +259,9 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 			OnDamage(HealthPartKind::kLeftArm,	damage);
 			OnDamage(HealthPartKind::kMain,		damage);
 
-			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue()));
+			m_is_detection_shared = true;
+
+			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue(), TimeScaleLayerKind::kWorld));
 		}
 		break;
 
@@ -224,7 +273,9 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 			OnDamage(HealthPartKind::kLeftArm,	damage);
 			OnDamage(HealthPartKind::kMain,		damage);
 
-			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue()));
+			m_is_detection_shared = true;
+
+			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue(), TimeScaleLayerKind::kWorld));
 		}
 
 		if (target_obj == GetStateController()->GetTargetCharacter().get() && target_collider_kind == ColliderKind::kCollider)
@@ -246,7 +297,9 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 			OnDamage(HealthPartKind::kRightArm, damage);
 			OnDamage(HealthPartKind::kMain,		damage);
 
-			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue()));
+			m_is_detection_shared = true;
+
+			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue(), TimeScaleLayerKind::kWorld));
 		}
 		break;
 
@@ -258,7 +311,9 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 			OnDamage(HealthPartKind::kRightArm, damage);
 			OnDamage(HealthPartKind::kMain,		damage);
 
-			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue()));
+			m_is_detection_shared = true;
+
+			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue(), TimeScaleLayerKind::kWorld));
 		}
 
 		if (target_obj == GetStateController()->GetTargetCharacter().get() && target_collider_kind == ColliderKind::kCollider)
@@ -286,7 +341,9 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 			OnDamage(HealthPartKind::kMain, damage);
 
-			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue()));
+			m_is_detection_shared = true;
+
+			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue(), TimeScaleLayerKind::kWorld));
 		}
 		break;
 
@@ -305,7 +362,9 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 			OnDamage(HealthPartKind::kMain, damage);
 
-			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue()));
+			m_is_detection_shared = true;
+
+			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue(), TimeScaleLayerKind::kWorld));
 		}
 		break;
 
@@ -314,9 +373,50 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	}
 }
 
+void Zombie::OnProjectPos()
+{
+	if (!IsActive())	{ return; }
+	if (!IsProject())	{ return; }
+
+	const auto project_pos = GetCurrentProjectPos();
+	if (!project_pos)	{ return; }
+
+	const auto project_ray = GetCollider(ColliderKind::kProjectRay);
+	if (!project_ray)	{ return; }
+
+	const auto collider = GetCollider(ColliderKind::kCollider);
+	if (!collider)		{ return; }
+
+	const auto capsule = std::dynamic_pointer_cast<Capsule>(collider->GetShape());
+	if (!capsule)		{ return; }
+
+	const auto hit_triangle = project_ray->GetHitTriangles();
+	if (hit_triangle.size() <= 0) { return; }
+
+	// 着地していた場合、以前の投影座標より下にあれば投影を許可する
+	if (IsOnGround())
+	{
+		const auto prev_project_pos = GetPrevProjectPos();
+		if (prev_project_pos)
+		{
+			if ((project_pos->y - prev_project_pos->y) >= math::kEpsilonLow) { return; }
+		}
+	}
+
+	// 光線の始点からの距離
+	const auto future_begin_pos = *project_pos + axis::GetWorldYAxis() * capsule->GetRadius();
+	const auto distance = math::GetDistancePointToTriangle(future_begin_pos, hit_triangle.front());
+
+	// 固定位置を決定
+	const auto penetration		= capsule->GetRadius() - distance;
+	const auto push_back_length = math::GetHypotenuseLengthIsoscelesRightTriangle(penetration);
+	const auto result_pos		= *project_pos + axis::GetWorldYAxis() * push_back_length;
+	m_transform->SetPos(CoordinateKind::kWorld, result_pos);
+}
+
 void Zombie::OnDamage(const HealthPartKind part_kind, const float damage)
 {
-	if (!m_health.count(part_kind)) { return; }
+	if (!m_health.contains(part_kind)) { return; }
 
 	m_health.at(part_kind)->Decrease(damage);
 	m_invincible_timer	= invincible_time;
@@ -340,12 +440,9 @@ void Zombie::OnRespawn(const VECTOR& pos, const VECTOR& look_dir)
 	m_look_dir.at(TimeKind::kNext) = m_look_dir.at(TimeKind::kCurrent) = v3d::GetNormalizedV(look_dir);
 	ApplyLookDirToRot(m_look_dir.at(TimeKind::kCurrent));
 
-	// コライダーの位置を修正
-	m_collider_creator->CalcCapsuleColliderPos(m_modeler, m_colliders);
-	m_collider_creator->CalcLandingTriggerPos (m_modeler, m_colliders);
-
-	const auto sphere = std::static_pointer_cast<Sphere>(GetCollider(ColliderKind::kCollisionAreaTrigger)->GetShape());
-	sphere->SetPos(pos + collider_data.collision_area_offset);
+	m_collider_creator->CalcCapsuleColliderPos	(m_modeler, m_colliders);
+	m_collider_creator->CalcLandingTriggerPos	(m_modeler, m_colliders);
+	m_collider_creator->CalcProjectRayPos		(m_modeler, m_colliders);
 }
 
 void Zombie::Detected()
@@ -366,9 +463,12 @@ void Zombie::Grab()
 {
 	m_is_target_escaped = false;
 
+	const auto model_handle = m_modeler->GetModelHandle();
+	auto	   head_m		= MV1GetFrameLocalWorldMatrix(model_handle, GetHumanoidFrame()->GetHeadIndex(model_handle));
+	const auto head_pos		= MGetTranslateElem(head_m);
+
 	// 掴んだことを演出カメラに通知
-	const GrabEvent event{ GetEnemyID(), GetObjHandle(), m_modeler };
-	EventSystem::GetInstance()->Publish(event);
+	EventSystem::GetInstance()->Publish(GrabEvent(GetEnemyID(), GetObjHandle(), m_modeler, head_pos));
 
 	// プレイヤーの掴まれた関数を呼び出す
 	const auto player	= std::static_pointer_cast<Player>(m_state->GetTargetCharacter());
@@ -383,8 +483,7 @@ void Zombie::Grab()
 void Zombie::Release()
 {
 	// 離したことを演出カメラに通知
-	const ReleaseEvent event{ GetEnemyID(), GetObjHandle() };
-	EventSystem::GetInstance()->Publish(event);
+	EventSystem::GetInstance()->Publish(ReleaseEvent(GetEnemyID(), GetObjHandle()));
 
 	std::static_pointer_cast<Player>(m_state->GetTargetCharacter())->OnRelease();
 }
@@ -441,6 +540,19 @@ void Zombie::TrackMove(const VECTOR& target_pos)
 	const auto target_pos_y0	= VGet(target_pos.x, 0.0f, target_pos.z);
 
 	m_move_dir.at(TimeKind::kNext) = v3d::GetNormalizedV(target_pos_y0 - pos_y0);
+}
+
+void Zombie::OnFootIK()
+{
+	m_humanoid_foot_ik->OnFootIK(std::dynamic_pointer_cast<IHumanoid>(shared_from_this()));
+}
+
+void Zombie::OnCrouchIK()
+{
+	const auto humanoid = std::dynamic_pointer_cast<IHumanoid>(shared_from_this());
+
+	m_humanoid_foot_ik->CalcRightLegRayPos	(humanoid);
+	m_humanoid_foot_ik->OnRightKneelCrouchIK(humanoid);
 }
 
 void Zombie::UpdateGrabRun()

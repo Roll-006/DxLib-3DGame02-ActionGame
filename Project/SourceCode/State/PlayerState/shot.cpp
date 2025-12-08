@@ -29,9 +29,7 @@ void player_state::Shot::LateUpdate(std::shared_ptr<Player>& obj)
 	const auto aim_dir	= camera->GetTransform()->GetForward(CoordinateKind::kWorld);
 
 	// ƒ{[ƒ“ˆÊ’u•â³
-	obj->GetBonePosCorrector()->CorrectAimPoseBonePos(obj->GetModeler()->GetModelHandle(), aim_dir);
-
-	obj->GetCurrentHeldWeapon()->TrackOwnerHand();
+	obj->GetFramePosCorrector()->CorrectAimPoseFramePos(obj->GetModeler()->GetModelHandle(), aim_dir);
 
 	gun->CalcCrossHairPos();
 	gun->CalcCrossHairRangeShot();
@@ -48,10 +46,10 @@ void player_state::Shot::LateUpdate(std::shared_ptr<Player>& obj)
 
 void player_state::Shot::Enter(std::shared_ptr<Player>& obj)
 {
-	const auto cinemachine_brain = CinemachineBrain::GetInstance();
-	const auto camera_controller = std::static_pointer_cast<ControlVirtualCamerasController>(cinemachine_brain->GetVirtualCameraController(VirtualCameraControllerKind::kControl));
-	const auto rot_camera = camera_controller->GetHaveVirtualCamera(ObjName.ROT_CONTROL_VIRTUAL_CAMERA);
-	const auto aim_camera = camera_controller->GetHaveVirtualCamera(ObjName.AIM_CONTROL_VIRTUAL_CAMERA);
+	const auto cinemachine_brain	= CinemachineBrain::GetInstance();
+	const auto camera_controller	= std::static_pointer_cast<ControlVirtualCamerasController>(cinemachine_brain->GetVirtualCameraController(VirtualCameraControllerKind::kControl));
+	const auto rot_camera			= camera_controller->GetHaveVirtualCamera(ObjName.ROT_CONTROL_VIRTUAL_CAMERA);
+	const auto aim_camera			= camera_controller->GetHaveVirtualCamera(ObjName.AIM_CONTROL_VIRTUAL_CAMERA);
 
 	if (rot_camera) { rot_camera->Deactivate(); }
 	if (aim_camera) { aim_camera->Activate(); }

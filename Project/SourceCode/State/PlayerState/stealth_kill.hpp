@@ -23,6 +23,8 @@ namespace player_state
 
 	private:
 		bool m_is_stop_all_state;
+		bool m_is_stab;
+		bool m_is_draw;
 
 		std::shared_ptr<StealthKillVirtualCameraController>	m_stealth_kill_camera_controller;
 	};

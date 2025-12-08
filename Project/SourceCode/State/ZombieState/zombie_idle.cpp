@@ -19,7 +19,7 @@ void zombie_state::Idle::Update(std::shared_ptr<Zombie>& obj)
 
 void zombie_state::Idle::LateUpdate(std::shared_ptr<Zombie>& obj)
 {
-
+	
 }
 
 void zombie_state::Idle::Enter(std::shared_ptr<Zombie>& obj)

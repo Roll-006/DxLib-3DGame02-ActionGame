@@ -54,7 +54,7 @@ public:
 	requires state_concepts::StateT<StateT, ObjT>
 	[[nodiscard]] std::shared_ptr<StateT> GetState()
 	{
-		return m_states.count(typeid(StateT)) ? std::static_pointer_cast<StateT>(m_states.at(typeid(StateT))) : nullptr;
+		return m_states.contains(typeid(StateT)) ? std::static_pointer_cast<StateT>(m_states.at(typeid(StateT))) : nullptr;
 	}
 
 
@@ -78,6 +78,7 @@ public:
 	[[nodiscard]] bool TryEquipGunShortcut		(std::shared_ptr<Player>& player);
 	[[nodiscard]] bool TryPullTrigger			(std::shared_ptr<Player>& player);
 	[[nodiscard]] bool TryReload				(std::shared_ptr<Player>& player);
+	[[nodiscard]] bool TryPullTriggerReload		(std::shared_ptr<Player>& player);
 	#pragma endregion
 
 

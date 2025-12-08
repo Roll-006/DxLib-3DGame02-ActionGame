@@ -48,6 +48,11 @@ void Ground::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 }
 
+void Ground::OnProjectPos()
+{
+
+}
+
 void Ground::AddToObjManager()
 {
 	ObjManager		::GetInstance()->AddObj			(shared_from_this());

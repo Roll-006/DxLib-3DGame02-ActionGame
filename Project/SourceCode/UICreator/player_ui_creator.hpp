@@ -1,6 +1,7 @@
 #pragma once
 #include "../Interface/i_ui_creator.hpp"
 
+#include "../UI/pickupable_item_icon.hpp"
 #include "../UI/melee_target_icon.hpp"
 #include "../UI/stealth_kill_target_icon.hpp"
 #include "../UI/escape_icon.hpp"
@@ -32,14 +33,15 @@ public:
 private:
 	#pragma region Event
 	void Deactivate(const DeadPlayerEvent& event);
-	void Deactivate(const DeadBossEvent&   event);
+	void Deactivate(const DeadAllEnemyEvent&   event);
 	#pragma endregion
 
 private:
 	std::string								m_name;
 	int										m_priority;
 	bool									m_is_active;
-
+	
+	std::shared_ptr<PickupableItemIcon>		m_pickupable_item_icon;
 	std::shared_ptr<MeleeTargetIcon>		m_melee_target_icon;
 	std::shared_ptr<StealthKillTargetIcon>	m_stealth_kill_target_icon;
 	std::shared_ptr<EscapeIcon>				m_escape_icon;

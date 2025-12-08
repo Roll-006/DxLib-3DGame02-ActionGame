@@ -3,7 +3,7 @@
 RocketLauncher::RocketLauncher() :
 	GunBase					(ObjName.ROCKET_LAUNCHER, GunKind::kRocketLauncher, HolsterKind::kRifle),
 	m_exhaust_vent_transform(std::make_shared<Transform>()),
-	m_is_draw_magazine		(true)
+	m_is_draw_magazine		(false)
 {
 	m_magazine = std::make_shared<NonCollildeRocketBomb>(m_load_transform);
 	std::dynamic_pointer_cast<ObjBase>(m_magazine)->AddToObjManager();
@@ -23,15 +23,14 @@ RocketLauncher::RocketLauncher() :
 	m_shot_interval_time	= kShotIntervalTime;
 	m_recoil_data			= RecoilData(0.0f, 0.0f, 0.0f, 10.0f * math::kDegToRad, 0.3f, VGet(1.0f, 1.0f, 1.0f));
 
-	m_max_remaining_bullet_num		= kMaxRemainingBulletNum;
-	m_current_remaining_bullet_num	= m_max_remaining_bullet_num;
+	m_max_remaining_bullet_num = kMaxRemainingBulletNum;
 
 	//AddCollider(std::make_shared<Collider>(ColliderKind::kRayCast, std::make_shared<Segment>(), this));
 }
 
 RocketLauncher::~RocketLauncher()
 {
-
+	std::dynamic_pointer_cast<ObjBase>(m_magazine)->RemoveToObjManager();
 }
 
 void RocketLauncher::Init()
@@ -44,17 +43,13 @@ void RocketLauncher::Update()
 	if (!IsActive()) { return; }
 
 	std::dynamic_pointer_cast<ObjBase>(m_magazine)->Update();
+
+	m_is_draw_magazine = m_current_remaining_bullet_num > 0 || m_magazine->IsReloading();
 }
 
 void RocketLauncher::LateUpdate()
 {
 	if (!IsActive()) { return; }
-
-	CalcTransform(m_muzzle_transform,		kMuzzleOffsetPos);
-	CalcTransform(m_load_transform,			kLoadPortOffsetPos);
-	CalcTransform(m_exhaust_vent_transform, kExhaustVentOffsetPos);
-
-	std::dynamic_pointer_cast<ObjBase>(m_magazine)->LateUpdate();
 }
 
 void RocketLauncher::Draw() const
@@ -62,11 +57,8 @@ void RocketLauncher::Draw() const
 	if (!IsActive()) { return; }
 
 	m_modeler->Draw();
-
-	//if (m_is_draw_magazine)
-	{
-		std::dynamic_pointer_cast<ObjBase>(m_magazine)->Draw();
-	}
+	
+	if (m_is_draw_magazine) { std::dynamic_pointer_cast<ObjBase>(m_magazine)->Draw(); }
 }
 
 void RocketLauncher::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
@@ -104,4 +96,11 @@ void RocketLauncher::CalcCrossHairPos()
 void RocketLauncher::CalcTargetPos()
 {
 	m_target_pos = math::GetRandomPointInCircle(*std::static_pointer_cast<Circle>(m_cross_hair_shape));
+}
+
+void RocketLauncher::CalcTransforms()
+{
+	CalcTransform(m_muzzle_transform,		kMuzzleOffsetPos);
+	CalcTransform(m_load_transform,			kLoadPortOffsetPos);
+	CalcTransform(m_exhaust_vent_transform, kExhaustVentOffsetPos);
 }

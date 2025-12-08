@@ -20,13 +20,13 @@ MainCamera::MainCamera() :
 
 	mass_kind = MassKind::kHeavy;
 
-	AddCollider(std::make_shared<Collider>(ColliderKind::kRayCast,				std::make_shared<Segment>(), this));
+	AddCollider(std::make_shared<Collider>(ColliderKind::kRay,					std::make_shared<Segment>(), this));
 	AddCollider(std::make_shared<Collider>(ColliderKind::kNearVisionTrigger,	std::make_shared<Cone>(v3d::GetZeroV(), v3d::GetZeroV(), kMeleeCandidateDistance,	kMeleeCandidateFOV * math::kDegToRad), this));
 	AddCollider(std::make_shared<Collider>(ColliderKind::kFarVisionTrigger,		std::make_shared<Cone>(v3d::GetZeroV(), v3d::GetZeroV(), kMeleeTargetDistance,		kMeleeTargetFOV	   * math::kDegToRad), this));
 
 	// カメラが無視するコライダー
 	const auto collision_manager = CollisionManager::GetInstance();
-	const ColliderData ray_cast_data{ ObjTag.CAMERA, ColliderKind::kRayCast };
+	const ColliderData ray_cast_data{ ObjTag.CAMERA, ColliderKind::kRay };
 	collision_manager->AddIgnoreCollider(GetObjHandle(), ColliderKind::kCollider);
 	collision_manager->AddIgnoreColliderPair(ray_cast_data, { ObjTag.PLAYER,	ColliderKind::kNone });
 	collision_manager->AddIgnoreColliderPair(ray_cast_data, { ObjTag.ENEMY,		ColliderKind::kNone });
@@ -59,7 +59,7 @@ void MainCamera::LateUpdate()
 {
 	if (!IsActive()) { return; }
 
-	SetAim();
+	UpdatePosture(m_transform->GetPos(CoordinateKind::kWorld) + m_transform->GetForward(CoordinateKind::kWorld));
 
 	CalcRayCastPos();
 	CalcVisionTriggerPos();
@@ -82,11 +82,10 @@ void MainCamera::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 	switch (hit_collider_pair.owner_collider->GetColliderKind())
 	{
-	case ColliderKind::kRayCast:
+	case ColliderKind::kRay:
 		if (hit_collider_pair.intersection)
 		{
-			m_transform->SetPos(CoordinateKind::kWorld, *hit_collider_pair.intersection);
-			SetAim();
+			OnRayCast(*hit_collider_pair.intersection);
 		}
 		break;
 
@@ -104,8 +103,7 @@ void MainCamera::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 					const auto target_pos		= target_transform->GetPos(CoordinateKind::kWorld);
 					const auto angle			= math::GetAngleBetweenTwoVector(m_transform->GetForward(CoordinateKind::kWorld), v3d::GetNormalizedV(target_pos - owner_pos));
 
-					const OnDownedNearEnemySpottedEvent event{ target_obj->GetObjHandle(), angle, VSize(target_pos - owner_pos)};
-					EventSystem::GetInstance()->Publish(event);
+					EventSystem::GetInstance()->Publish(OnDownedNearEnemySpottedEvent(target_obj->GetObjHandle(), angle, VSize(target_pos - owner_pos)));
 				}
 			}
 
@@ -118,8 +116,19 @@ void MainCamera::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 				const auto target_pos		= target_transform->GetPos(CoordinateKind::kWorld);
 				const auto angle			= math::GetAngleBetweenTwoVector(m_transform->GetForward(CoordinateKind::kWorld), v3d::GetNormalizedV(target_pos - owner_pos));
 
-				const OnNearEnemySpottedEvent event{ target_obj->GetObjHandle(), angle, VSize(target_pos - owner_pos) };
-				EventSystem::GetInstance()->Publish(event);
+				EventSystem::GetInstance()->Publish(OnNearEnemySpottedEvent(target_obj->GetObjHandle(), angle, VSize(target_pos - owner_pos)));
+			}
+
+			// アイテムが視界に入ったことを通知
+			const auto item = dynamic_cast<IItem*>(target_obj);
+			if (item)
+			{
+				const auto owner_pos		= m_transform->GetPos(CoordinateKind::kWorld);
+				const auto target_transform = target_obj->GetTransform();
+				const auto target_pos		= target_transform->GetPos(CoordinateKind::kWorld);
+				const auto angle			= math::GetAngleBetweenTwoVector(m_transform->GetForward(CoordinateKind::kWorld), v3d::GetNormalizedV(target_pos - owner_pos));
+
+				EventSystem::GetInstance()->Publish(SpottedItemEvent(target_obj->GetObjHandle(), angle, VSize(target_pos - owner_pos)));
 			}
 		}
 		break;
@@ -148,6 +157,11 @@ void MainCamera::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	default:
 		break;
 	}
+}
+
+void MainCamera::OnProjectPos()
+{
+
 }
 
 void MainCamera::AddToObjManager()
@@ -217,18 +231,55 @@ float MainCamera::GetDeltaTime() const
 #pragma endregion
 
 
-void MainCamera::SetAim()
+void MainCamera::UpdatePosture(const VECTOR& target)
 {
-	const VECTOR pos		= m_transform->GetPos(CoordinateKind::kWorld);
-	const VECTOR target_pos	= pos + m_transform->GetForward(CoordinateKind::kWorld);
+	SetCameraPositionAndTarget_UpVecY(m_transform->GetPos(CoordinateKind::kWorld), target);
+	Effekseer_Sync3DSetting();
+}
 
-	SetCameraPositionAndTarget_UpVecY(pos, target_pos);
+void MainCamera::OnRayCast(const VECTOR& intersection)
+{
+	// 掴み時レイキャスト
+	if (m_is_active_grab_collider)
+	{
+		OnRayCastGrabCutscene(intersection);
+		return;
+	}
+
+	// 通常時レイキャスト
+	m_transform->SetPos(CoordinateKind::kWorld, intersection);
+	UpdatePosture(m_transform->GetPos(CoordinateKind::kWorld) + m_transform->GetForward(CoordinateKind::kWorld));
+}
+
+void MainCamera::OnRayCastGrabCutscene(const VECTOR& intersection)
+{
+	const auto current_lenght	= VSize(m_aim_pos - intersection);
+
+	if (current_lenght > grab_ray_length) { return; }
+
+	const auto ray				= GetCollider(ColliderKind::kRay);
+	const auto hit_triangles	= ray->GetHitTriangles();
+	auto	   up				= axis::GetWorldYAxis();
+
+	// 三角形が格納されていた場合は三角形に沿いながら上に向かうベクトルを取得
+	if (!hit_triangles.empty())
+	{
+		const auto hit_triangle = hit_triangles.front();
+		const auto normal_v		= hit_triangle.GetNormalVector();
+		const auto cross_x		= math::GetNormalVector(normal_v, up);
+		up = -math::GetNormalVector(normal_v, cross_x);
+	}
+
+	const auto pos = intersection + up * (grab_ray_length - current_lenght);
+
+	m_transform->SetPos(CoordinateKind::kWorld, pos);
+	UpdatePosture(m_aim_pos);
 }
 
 void MainCamera::CalcRayCastPos()
 {
 	// 光線の座標を計算
-	auto ray = std::static_pointer_cast<Segment>(GetCollider(ColliderKind::kRayCast)->GetShape());
+	auto ray = std::static_pointer_cast<Segment>(GetCollider(ColliderKind::kRay)->GetShape());
 	ray->SetBeginPos(m_aim_pos, true);
 	ray->SetEndPos	(m_transform->GetPos(CoordinateKind::kWorld), true);
 }

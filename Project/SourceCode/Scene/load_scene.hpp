@@ -1,5 +1,7 @@
 #pragma once
 #include "../Interface/i_scene.hpp"
+#include "../Font/font_handler.hpp"
+#include "../Calculation/vector_2d.hpp"
 
 class LoadScene final : public IScene
 {
@@ -27,4 +29,8 @@ private:
 	bool		m_is_active;
 	SceneKind	m_scene_kind;
 	SceneKind	m_next_scene_kind;
+
+	int				m_font_handle;
+	std::string		m_text;
+	Vector2D<int>	m_font_size;
 };

@@ -162,14 +162,14 @@ void RocketLauncherVirtualCamerasController::CalcAimTransformForEnterRotCamera()
 
 	// 追跡するボーンから行列を取得
 	const auto	model_handle	= m_player.GetModeler()->GetModelHandle();
-	const auto	hand_index		= MV1SearchFrame(model_handle, BonePath.RIGHT_HAND);
+	const auto	hand_index		= MV1SearchFrame(model_handle, FramePath.RIGHT_HAND);
 	auto		hand_world_m	= MV1GetFrameLocalWorldMatrix(model_handle, hand_index);
 	const auto	aim_pos			= MGetTranslateElem(hand_world_m);
 	const auto  offset_rot		= math::ConvertEulerAnglesToXYZRotMatrix(VGet(-90.0f * math::kDegToRad, -90.0f * math::kDegToRad, 0.0f));
-	auto		aim_rot			= math::ConvertEulerAnglesToXYZRotMatrix(m_rot_camera_angle) * offset_rot * MGetRotElem(hand_world_m);
+	auto		aim_rot			= math::ConvertEulerAnglesToXYZRotMatrix(m_rot_camera_angle) * offset_rot * matrix::GetRotMatrix(hand_world_m);
 
-	const auto  axes = math::ConvertRotMatrixToAxes(aim_rot);
-	axis::Draw(axes, aim_pos, 100);
+	const auto  axis = math::ConvertRotMatrixToAxis(aim_rot);
+	axis::Draw(axis, aim_pos, 100);
 
 	// カメラの追跡対象となるトランスフォームの情報を更新
 	m_rot_camera_aim_transform->SetRot(CoordinateKind::kWorld, aim_rot);
@@ -201,11 +201,11 @@ void RocketLauncherVirtualCamerasController::CalcAimTransformForZoomInCamera()
 
 	// 追跡するボーンから行列を取得
 	const auto	model_handle	= m_player.GetModeler()->GetModelHandle();
-	const auto	hand_index		= MV1SearchFrame(model_handle, BonePath.RIGHT_HAND);
+	const auto	hand_index		= MV1SearchFrame(model_handle, FramePath.RIGHT_HAND);
 	auto		hand_world_m	= MV1GetFrameLocalWorldMatrix(model_handle, hand_index);
 	const auto	aim_pos			= MGetTranslateElem(hand_world_m);
 	const auto  offset_rot		= math::ConvertEulerAnglesToXYZRotMatrix(VGet(-90.0f * math::kDegToRad, -90.0f * math::kDegToRad, 0.0f));
-	auto		aim_rot			= MGetRotY(DX_PI_F) * offset_rot * MGetRotElem(hand_world_m);
+	auto		aim_rot			= MGetRotY(DX_PI_F) * offset_rot * matrix::GetRotMatrix(hand_world_m);
 
 	// カメラの追跡対象となるトランスフォームの情報を更新
 	m_zoom_camera_aim_transform->SetRot(CoordinateKind::kWorld, aim_rot);

@@ -17,6 +17,10 @@ public:
 	void DrawColliders() const;
 
 	virtual void OnCollide(const ColliderPairOneToOneData& hit_collider_pair) abstract;
+	virtual void OnProjectPos() abstract;
+
+	/// @brief 座標投影を許可しない
+	void DisallowProjectPos() { m_is_project = false; }
 
 	/// @brief ノックバックを受けた
 	/// @param dir 飛ばされる方向
@@ -35,8 +39,7 @@ public:
 	/// @brief 衝突した三角形の登録を解除する
 	void RemoveHitTriangles();
 
-	void RemoveHitCollider();
-	//void RemoveHitCollider(const int collider_handle);
+	void SaveProjectPos();
 
 	/// @brief 重力を与える(適用させる)
 	/// @brief 物理管理クラスから適用される
@@ -55,28 +58,35 @@ public:
 	void ApplyVelocity();
 
 	/// @brief 速度ベクトルを接している面に投影する
-	void ProjectionVelocity();
+	//void ProjectVelocity();
 
 	void ApplyKnockbackVelocity();
 
 	/// @brief 着地判定を解除する
-	void ReleaseLanding() { m_is_landing = false; }
+	void ReleaseGround() { m_is_on_ground = false; }
+	void RemoveProjectPos() { m_current_project_pos = std::nullopt; }
 
 	void SetColliderModelHandle(const int model_handle) { m_model_handle = model_handle; }
 	void SetVelocity(const VECTOR& velocity) { m_velocity = velocity; }
 
-	[[nodiscard]] int		GetColliderModelHandle()	const { return m_model_handle; }
-	[[nodiscard]] float		GetKnockBackSpeed()			const { return m_knockback_speed; }
-	[[nodiscard]] VECTOR	GetVelocity()				const { return m_velocity; }
-	[[nodiscard]] VECTOR	GetMoveVelocity()			const { return m_move_velocity; }
-	[[nodiscard]] VECTOR	GetFallVelocity()			const { return m_fall_velocity; }
-	[[nodiscard]] MassKind	GetMassKind()				const { return mass_kind; }
+	[[nodiscard]] int					GetColliderModelHandle()	const { return m_model_handle; }
+	[[nodiscard]] std::optional<VECTOR> GetCurrentProjectPos()		const { return m_current_project_pos; }
+	[[nodiscard]] std::optional<VECTOR> GetPrevProjectPos()			const { return m_prev_project_pos; }
+	[[nodiscard]] float					GetKnockBackSpeed()			const { return m_knockback_speed; }
+	[[nodiscard]] VECTOR				GetVelocity()				const { return m_velocity; }
+	[[nodiscard]] VECTOR				GetMoveVelocity()			const { return m_move_velocity; }
+	[[nodiscard]] VECTOR				GetFallVelocity()			const { return m_fall_velocity; }
+	[[nodiscard]] MassKind				GetMassKind()				const { return mass_kind; }
+	[[nodiscard]] bool					IsOnGround()				const { return m_is_on_ground; }
+	[[nodiscard]] bool					IsProject()					const { return m_is_project; }
 	[[nodiscard]] std::shared_ptr<Collider> GetCollider(const ColliderKind kind) const;
 	[[nodiscard]] std::unordered_map<ColliderKind, std::shared_ptr<Collider>> GetColliderAll() const { return m_colliders; }
 
 protected:
 	MassKind mass_kind;
 
+	std::optional<VECTOR> m_current_project_pos;
+	std::optional<VECTOR> m_prev_project_pos;
 	VECTOR	 m_velocity;
 	VECTOR   m_move_velocity;
 	VECTOR	 m_fall_velocity;
@@ -84,17 +94,16 @@ protected:
 	float    m_knockback_speed;
 	float	 m_knockback_deceleration;
 
-	bool	 m_is_landing;
-	bool	 m_is_using_projection_velocity;	// velocityを地面に張り付けるかを判定
+	bool	 m_is_on_ground;
+	bool	 m_is_project;	// 地面に張り付けるかを判定
 
 	std::unordered_map<ColliderKind, std::shared_ptr<Collider>> m_colliders;
-	std::unordered_map<std::shared_ptr<Collider>, bool> m_hit_colliders;
 
 private:
 	int		m_model_handle;
 
-	friend void from_json	(const nlohmann::json& data, PhysicalObjBase& physical_obj_base);
-	friend void to_json		(nlohmann::json& data, const PhysicalObjBase& physical_obj_base);
+	friend void from_json(const nlohmann::json& data, PhysicalObjBase& physical_obj_base);
+	friend void to_json(nlohmann::json& data, const PhysicalObjBase& physical_obj_base);
 };
 
 

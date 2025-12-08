@@ -12,6 +12,7 @@ EffectManager::EffectManager()
 	EventSystem::GetInstance()->Subscribe<OnDamageEvent>				(this, &EffectManager::OutputOnDamageEffect);
 	EventSystem::GetInstance()->Subscribe<OnChangeTitleSceneEvent>		(this, &EffectManager::OutputTitleSceneEffect);
 	EventSystem::GetInstance()->Subscribe<StartDisappearEnemyEvent>		(this, &EffectManager::OutputDisappearEnemyEffect);
+	EventSystem::GetInstance()->Subscribe<DropItemEvent>				(this, &EffectManager::OutputDropItemEffect);
 }
 
 EffectManager::~EffectManager()
@@ -24,6 +25,7 @@ EffectManager::~EffectManager()
 	EventSystem::GetInstance()->Unsubscribe<OnDamageEvent>				(this, &EffectManager::OutputOnDamageEffect);
 	EventSystem::GetInstance()->Unsubscribe<OnChangeTitleSceneEvent>	(this, &EffectManager::OutputTitleSceneEffect);
 	EventSystem::GetInstance()->Unsubscribe<StartDisappearEnemyEvent>	(this, &EffectManager::OutputDisappearEnemyEffect);
+	EventSystem::GetInstance()->Unsubscribe<DropItemEvent>				(this, &EffectManager::OutputDropItemEffect);
 }
 
 void EffectManager::Update()
@@ -47,7 +49,6 @@ void EffectManager::LateUpdate()
 		}
 	}
 
-	Effekseer_Sync3DSetting();
 	UpdateEffekseer3D();
 
 	ReturnPool();
@@ -76,6 +77,9 @@ void EffectManager::ForciblyReturnPoolEffect(std::shared_ptr<Effect>& effect)
 
 void EffectManager::ForciblyReturnPoolEffect(const int return_trigger_handle, const std::string& object_pool_name)
 {
+	const auto object_pool = ObjectPoolHolder::GetInstance()->GetObjectPool(object_pool_name);
+	if (!object_pool) { return; }
+
 	for (auto& [obj_name, objects] : m_effects)
 	{
 		auto& vec = objects;
@@ -85,7 +89,7 @@ void EffectManager::ForciblyReturnPoolEffect(const int return_trigger_handle, co
 			if (effect->GetReturnPoolTriggerHandle() == return_trigger_handle)
 			{
 				StopEffekseer3DEffect(effect->GetPlayingEffectHandle());
-				ObjectPoolHolder::GetInstance()->GetObjectPool(object_pool_name)->ReturnObj(*itr);
+				object_pool->ReturnObj(*itr);
 				itr = vec.erase(itr);
 			}
 			else
@@ -105,14 +109,14 @@ void EffectManager::OutputWeaponShotEffect(const WeaponShotEvent& event)
 
 	switch (event.gun_kind)
 	{
-	case GunKind::kSubmachineGun:
+	case GunKind::kAssaultRifle:
 		obj = pool->GetObj(ObjName.SHOT_FIRE_EFFECT);
 		if (obj)
 		{
 			const auto effect = std::static_pointer_cast<Effect>(obj);
 			effect->AttachOwnerTransform(event.muzzle_transform);
 			effect->SetOffsetAngle(VGet(90.0f * math::kDegToRad, 0.0f, 0.0f));
-			effect->SetOffsetScale(2.5f);
+			effect->SetOffsetScale(1.5f);
 			AddEffect(effect);
 		}
 		break;
@@ -243,6 +247,40 @@ void EffectManager::OutputDisappearEnemyEffect(const StartDisappearEnemyEvent& e
 		const auto effect = std::static_pointer_cast<Effect>(obj);
 		effect->GetTransform()->SetPos(CoordinateKind::kWorld, event.disppear_pos);
 		AddEffect(effect);
+	}
+}
+
+void EffectManager::OutputDropItemEffect(const DropItemEvent& event)
+{
+	const auto pool = ObjectPoolHolder::GetInstance()->GetObjectPool(ObjectPoolName.PLAY_SCENE_EFFECT_POOL);
+	std::shared_ptr<ObjBase> obj = nullptr;
+
+	switch (event.item_kind)
+	{
+	case ItemKind::kAmmoBox:
+		obj = pool->GetObj(ObjName.ITEM_RED_EFFECT);
+		if (obj)
+		{
+			const auto effect = std::static_pointer_cast<Effect>(obj);
+			effect->AttachOwnerTransform(event.drop_transform);
+			effect->AddReturnPoolTriggerHandle(event.obj_handle);
+			AddEffect(effect);
+		}
+		break;
+
+	case ItemKind::kPotion:
+		obj = pool->GetObj(ObjName.ITEM_GREEN_EFFECT);
+		if (obj)
+		{
+			const auto effect = std::static_pointer_cast<Effect>(obj);
+			effect->AttachOwnerTransform(event.drop_transform);
+			effect->AddReturnPoolTriggerHandle(event.obj_handle);
+			AddEffect(effect);
+		}
+		break;
+
+	default:
+		break;
 	}
 }
 #pragma endregion

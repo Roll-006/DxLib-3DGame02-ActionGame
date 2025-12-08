@@ -88,10 +88,10 @@ void DeadVirtualCamerasController::CalcAimTransform()
 {
 	if (m_model_handle == -1) { return; }
 
-	auto	   spine2_m		= MV1GetFrameLocalWorldMatrix(m_model_handle, MV1SearchFrame(m_model_handle, BonePath.SPINE_2));
+	auto	   spine2_m		= MV1GetFrameLocalWorldMatrix(m_model_handle, MV1SearchFrame(m_model_handle, FramePath.SPINE_2));
 	const auto spine2_pos	= MGetTranslateElem(spine2_m);
 
 	// 基準となるトランスフォームを設定
 	m_aim_transform->SetPos(CoordinateKind::kWorld, spine2_pos);
-	m_aim_transform->SetRot(CoordinateKind::kWorld, MGetRotElem(spine2_m));
+	m_aim_transform->SetRot(CoordinateKind::kWorld, matrix::GetRotMatrix(spine2_m));
 }

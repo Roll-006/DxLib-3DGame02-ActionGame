@@ -11,7 +11,7 @@
 class FontHandler final : public SingletonBase<FontHandler>
 {
 public:
-	[[nodiscard]] int GetFontHandle(const std::string& font_name) const { return m_font_handle.at(font_name); }
+	[[nodiscard]] int GetFontHandle(const std::string& font_name) const { return m_font_handle.contains(font_name) ? m_font_handle.at(font_name) : -1; }
 
 private:
 	FontHandler();

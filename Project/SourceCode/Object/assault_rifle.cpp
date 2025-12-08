@@ -4,7 +4,7 @@
 //		  そのため、GunKindはサブマシンガンとして扱う
 
 AssaultRifle::AssaultRifle() :
-	GunBase(ObjName.ASSAULT_RIFLE, GunKind::kSubmachineGun, HolsterKind::kRifle)
+	GunBase(ObjName.ASSAULT_RIFLE, GunKind::kAssaultRifle, HolsterKind::kRifle)
 {
 	m_magazine = std::make_shared<AssaultRifleMagazine>(m_load_transform);
 	std::dynamic_pointer_cast<ObjBase>(m_magazine)->AddToObjManager();
@@ -33,7 +33,7 @@ AssaultRifle::AssaultRifle() :
 
 AssaultRifle::~AssaultRifle()
 {
-
+	std::dynamic_pointer_cast<ObjBase>(m_magazine)->RemoveToObjManager();
 }
 
 void AssaultRifle::Init()
@@ -51,13 +51,6 @@ void AssaultRifle::Update()
 void AssaultRifle::LateUpdate()
 {
 	if (!IsActive()) { return; }
-
-	//TrackOwnerHand();
-	CalcTransform(m_muzzle_transform,		 kMuzzleOffsetPos);
-	CalcTransform(m_ejection_port_transform, kEjectionPortOffsetPos);
-	CalcTransform(m_load_transform,			 kLoadPortOffsetPos);
-
-	std::dynamic_pointer_cast<ObjBase>(m_magazine)->LateUpdate();
 }
 
 void AssaultRifle::Draw() const
@@ -143,4 +136,11 @@ void AssaultRifle::CalcCrossHairPos()
 void AssaultRifle::CalcTargetPos()
 {
 	m_target_pos = math::GetRandomPointInCircle(*std::static_pointer_cast<Circle>(m_cross_hair_shape));
+}
+
+void AssaultRifle::CalcTransforms()
+{
+	CalcTransform(m_muzzle_transform,			kMuzzleOffsetPos);
+	CalcTransform(m_ejection_port_transform,	kEjectionPortOffsetPos);
+	CalcTransform(m_load_transform,				kLoadPortOffsetPos);
 }

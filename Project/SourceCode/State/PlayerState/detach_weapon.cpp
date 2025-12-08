@@ -19,7 +19,7 @@ void player_state::DetachWeapon::Update(std::shared_ptr<Player>& obj)
 
 void player_state::DetachWeapon::LateUpdate(std::shared_ptr<Player>& obj)
 {
-	obj->GetCurrentHeldWeapon()->TrackOwnerHand();
+	
 }
 
 void player_state::DetachWeapon::Enter(std::shared_ptr<Player>& obj)

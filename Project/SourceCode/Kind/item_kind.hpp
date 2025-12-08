@@ -2,7 +2,9 @@
 
 enum class ItemKind
 {
+	kNone = -1,
+
 	kWeapon,
-	kRifleCartridge,
+	kAmmoBox,
 	kPotion,
 };

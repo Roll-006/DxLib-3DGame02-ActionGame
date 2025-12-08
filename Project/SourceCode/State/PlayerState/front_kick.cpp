@@ -18,10 +18,13 @@ void player_state::FrontKick::Update(std::shared_ptr<Player>& obj)
 {
 	obj->UpdateMelee();
 
+	const auto animator = obj->GetAnimator();
+	const auto anim_kind = static_cast<PlayerAnimKind>(animator->GetAnimKind(AnimatorBase::BodyKind::kUpperBody, TimeKind::kCurrent));
+
 	// 攻撃判定用トリガーを追加
 	if (!m_has_trigger_created)
 	{
-		if (obj->GetAnimator()->GetPlayRate(AnimatorBase::BodyKind::kUpperBody) > 0.3f)
+		if (animator->GetPlayRate(AnimatorBase::BodyKind::kUpperBody) > 0.3f && anim_kind == PlayerAnimKind::kFrontKick)
 		{
 			obj->AddCollider(std::make_shared<Collider>(ColliderKind::kAttackTrigger, std::make_shared<Capsule>(v3d::GetZeroV(), v3d::GetZeroV(), kAttackTriggerRadius), obj.get()));
 			m_has_trigger_created = true;
@@ -31,7 +34,7 @@ void player_state::FrontKick::Update(std::shared_ptr<Player>& obj)
 	// 攻撃判定用トリガーを削除
 	if (!m_has_trigger_deleted)
 	{
-		if (obj->GetAnimator()->GetPlayRate(AnimatorBase::BodyKind::kUpperBody) > 0.8f)
+		if (animator->GetPlayRate(AnimatorBase::BodyKind::kUpperBody) > 0.8f && anim_kind == PlayerAnimKind::kFrontKick)
 		{
 			obj->RemoveCollider(ColliderKind::kAttackTrigger);
 			m_has_trigger_deleted = true;
@@ -45,8 +48,8 @@ void player_state::FrontKick::Update(std::shared_ptr<Player>& obj)
 		const auto model_handle = obj->GetModeler()->GetModelHandle();
 
 		// 行列情報を取得
-		auto right_leg_m	= MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, BonePath.RIGHT_LEG));
-		auto right_foot_m	= MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, BonePath.RIGHT_FOOT));
+		auto right_leg_m	= MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, FramePath.RIGHT_LEG));
+		auto right_foot_m	= MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, FramePath.RIGHT_FOOT));
 
 		// 位置を取得
 		const auto right_leg_pos	= MGetTranslateElem(right_leg_m);

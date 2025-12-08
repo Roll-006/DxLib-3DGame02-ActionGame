@@ -23,7 +23,7 @@ void player_state::EquipKnife::Update(std::shared_ptr<Player>& obj)
 
 void player_state::EquipKnife::LateUpdate(std::shared_ptr<Player>& obj)
 {
-	obj->GetCurrentHeldWeapon()->TrackOwnerHand();
+	
 }
 
 void player_state::EquipKnife::Enter(std::shared_ptr<Player>& obj)

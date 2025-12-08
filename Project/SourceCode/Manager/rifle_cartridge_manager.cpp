@@ -56,7 +56,7 @@ void RifleCartridgeManager::SearchValidRifleCartidge(GunBase& gun)
 	// ƒv[ƒ‹‚©‚ç’eŠÛE–òä°‚ðŽæ“¾
 	switch (gun.GetGunKind())
 	{
-	case GunKind::kSubmachineGun:
+	case GunKind::kAssaultRifle:
 		bullet_obj		= pool->GetObj(ObjName.BULLET);
 		bullet			= std::static_pointer_cast<Bullet>(bullet_obj);
 		shell_casing	= std::static_pointer_cast<ShellCasing>(pool->GetObj(ObjName.SHELL_CASING_556x45));

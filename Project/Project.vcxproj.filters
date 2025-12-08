@@ -76,7 +76,7 @@
     <ClCompile Include="SourceCode\Object\skydome.cpp">
       <Filter>SourceCode\Object</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Part\bone_pos_corrector.cpp">
+    <ClCompile Include="SourceCode\Part\frame_pos_corrector.cpp">
       <Filter>SourceCode\Part</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Part\collider.cpp">
@@ -328,9 +328,6 @@
     <ClCompile Include="SourceCode\Object\non_collide_rocket_bomb.cpp">
       <Filter>SourceCode\Object</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Object\rifle_cartridge_box.cpp">
-      <Filter>SourceCode\Object</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\Object\assault_rifle_magazine.cpp">
       <Filter>SourceCode\Object</Filter>
     </ClCompile>
@@ -364,16 +361,7 @@
     <ClCompile Include="SourceCode\Part\character_collider_creator.cpp">
       <Filter>SourceCode\Part</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\State\ZombieState\alert.cpp">
-      <Filter>SourceCode\State\ZombieState</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\State\ZombieState\investigate.cpp">
-      <Filter>SourceCode\State\ZombieState</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\State\ZombieState\knockback.cpp">
-      <Filter>SourceCode\State\ZombieState</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\State\ZombieState\patrol.cpp">
       <Filter>SourceCode\State\ZombieState</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\State\ZombieState\zombie_run.cpp">
@@ -420,9 +408,6 @@
     </ClCompile>
     <ClCompile Include="SourceCode\State\PlayerState\grabbed.cpp">
       <Filter>SourceCode\State\PlayerState</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\JSON\json_loader.cpp">
-      <Filter>SourceCode\JSON</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\VirtualCamera\grab_virtual_camera_controller.cpp">
       <Filter>SourceCode\VirtualCamera</Filter>
@@ -595,81 +580,6 @@
     <ClCompile Include="SourceCode\State\ZombieState\detected.cpp">
       <Filter>SourceCode\State\ZombieState</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Object\boss.cpp">
-      <Filter>SourceCode\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\Part\boss_state_controller.cpp">
-      <Filter>SourceCode\Part</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\State\BossState\boss_alert.cpp">
-      <Filter>SourceCode\State\BossState</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\State\BossState\boss_backward_knockback.cpp">
-      <Filter>SourceCode\State\BossState</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\State\BossState\boss_close_range_attack.cpp">
-      <Filter>SourceCode\State\BossState</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\State\BossState\boss_crouch_left_stun.cpp">
-      <Filter>SourceCode\State\BossState</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\State\BossState\boss_crouch_right_stun.cpp">
-      <Filter>SourceCode\State\BossState</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\State\BossState\boss_detected.cpp">
-      <Filter>SourceCode\State\BossState</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\State\BossState\boss_investigate.cpp">
-      <Filter>SourceCode\State\BossState</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\State\BossState\boss_knockback.cpp">
-      <Filter>SourceCode\State\BossState</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\State\BossState\boss_long_range_attack.cpp">
-      <Filter>SourceCode\State\BossState</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\State\BossState\boss_patrol.cpp">
-      <Filter>SourceCode\State\BossState</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\State\BossState\boss_run_attack.cpp">
-      <Filter>SourceCode\State\BossState</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\State\BossState\boss_search.cpp">
-      <Filter>SourceCode\State\BossState</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\State\BossState\boss_stand_stun.cpp">
-      <Filter>SourceCode\State\BossState</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\State\BossState\boss_stand_up.cpp">
-      <Filter>SourceCode\State\BossState</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\State\BossState\boss_stealth_killed.cpp">
-      <Filter>SourceCode\State\BossState</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\State\BossState\boss_track.cpp">
-      <Filter>SourceCode\State\BossState</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\State\BossState\boss_wait.cpp">
-      <Filter>SourceCode\State\BossState</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\State\BossState\boss_action_null.cpp">
-      <Filter>SourceCode\State\BossState</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\State\BossState\boss_dead.cpp">
-      <Filter>SourceCode\State\BossState</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\State\BossState\boss_idle.cpp">
-      <Filter>SourceCode\State\BossState</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\State\BossState\boss_move.cpp">
-      <Filter>SourceCode\State\BossState</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\State\BossState\boss_run.cpp">
-      <Filter>SourceCode\State\BossState</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\Animator\boss_animator.cpp">
-      <Filter>SourceCode\Animator</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\VirtualCamera\game_clear_virtual_cameras_controller.cpp">
       <Filter>SourceCode\VirtualCamera</Filter>
     </ClCompile>
@@ -684,6 +594,60 @@
     </ClCompile>
     <ClCompile Include="SourceCode\UICreator\screen_filter_creator.cpp">
       <Filter>SourceCode\UICreator</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Object\assault_rifle_ammo_box.cpp">
+      <Filter>SourceCode\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Object\rocket_bomb_box.cpp">
+      <Filter>SourceCode\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Part\ammo_holder.cpp">
+      <Filter>SourceCode\Part</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\UI\remaining_bullets_ui.cpp">
+      <Filter>SourceCode\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Part\item_creator.cpp">
+      <Filter>SourceCode\Part</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\State\ZombieState\patrol.cpp">
+      <Filter>SourceCode\State\ZombieState</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\InverseKinematics\humanoid_foot_ik_solver.cpp">
+      <Filter>SourceCode\InverseKinematics</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\InverseKinematics\ik_solver.cpp">
+      <Filter>SourceCode\InverseKinematics</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Part\item_acquisition_searcher.cpp">
+      <Filter>SourceCode\Part</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\UI\pickupable_item_icon.cpp">
+      <Filter>SourceCode\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Sound\sound_player.cpp">
+      <Filter>SourceCode\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\UI\guidance_ui.cpp">
+      <Filter>SourceCode\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\UI\mission_ui.cpp">
+      <Filter>SourceCode\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\UI\purpose_ui.cpp">
+      <Filter>SourceCode\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\UICreator\guidance_ui_creator.cpp">
+      <Filter>SourceCode\UICreator</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Sound\sound.cpp">
+      <Filter>SourceCode\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Sound\sound_pool.cpp">
+      <Filter>SourceCode\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Part\battle_observer.cpp">
+      <Filter>SourceCode\Part</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -714,7 +678,7 @@
     <ClInclude Include="SourceCode\Base\weapon_base.hpp">
       <Filter>SourceCode\Base</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Calculation\axes.hpp">
+    <ClInclude Include="SourceCode\Calculation\axis.hpp">
       <Filter>SourceCode\Calculation</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Calculation\collision_calculator.hpp">
@@ -813,7 +777,7 @@
     <ClInclude Include="SourceCode\Object\skydome.hpp">
       <Filter>SourceCode\Object</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Part\bone_pos_corrector.hpp">
+    <ClInclude Include="SourceCode\Part\frame_pos_corrector.hpp">
       <Filter>SourceCode\Part</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Part\collider.hpp">
@@ -1116,9 +1080,6 @@
     <ClInclude Include="SourceCode\Object\non_collide_rocket_bomb.hpp">
       <Filter>SourceCode\Object</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Object\rifle_cartridge_box.hpp">
-      <Filter>SourceCode\Object</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\Object\assault_rifle_magazine.hpp">
       <Filter>SourceCode\Object</Filter>
     </ClInclude>
@@ -1155,9 +1116,6 @@
     <ClInclude Include="SourceCode\Interface\i_state_controller.hpp">
       <Filter>SourceCode\Interface</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Interface\i_enemy_role.hpp">
-      <Filter>SourceCode\Interface</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\Interface\i_enemy_ai_state.hpp">
       <Filter>SourceCode\Interface</Filter>
     </ClInclude>
@@ -1167,16 +1125,7 @@
     <ClInclude Include="SourceCode\Base\ai_state_base.hpp">
       <Filter>SourceCode\Base</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\State\ZombieState\alert.hpp">
-      <Filter>SourceCode\State\ZombieState</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\State\ZombieState\investigate.hpp">
-      <Filter>SourceCode\State\ZombieState</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\State\ZombieState\knockback.hpp">
-      <Filter>SourceCode\State\ZombieState</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\State\ZombieState\patrol.hpp">
       <Filter>SourceCode\State\ZombieState</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\State\ZombieState\zombie_run.hpp">
@@ -1245,7 +1194,7 @@
     <ClInclude Include="SourceCode\Path\animation_path.hpp">
       <Filter>SourceCode\Path</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Path\bone_path.hpp">
+    <ClInclude Include="SourceCode\Path\frame_path.hpp">
       <Filter>SourceCode\Path</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Path\effect_path.hpp">
@@ -1482,7 +1431,7 @@
     <ClInclude Include="SourceCode\Interface\i_melee_hittable.hpp">
       <Filter>SourceCode\Interface</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Data\melee_candidate_data.hpp">
+    <ClInclude Include="SourceCode\Data\spotted_obj_data.hpp">
       <Filter>SourceCode\Data</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Part\melee_target_searcher.hpp">
@@ -1701,86 +1650,11 @@
     <ClInclude Include="SourceCode\Event\start_disappear_enemy_event.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Object\boss.hpp">
-      <Filter>SourceCode\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Part\boss_state_controller.hpp">
-      <Filter>SourceCode\Part</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\State\BossState\boss_alert.hpp">
-      <Filter>SourceCode\State\BossState</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\State\BossState\boss_backward_knockback.hpp">
-      <Filter>SourceCode\State\BossState</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\State\BossState\boss_close_range_attack.hpp">
-      <Filter>SourceCode\State\BossState</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\State\BossState\boss_crouch_left_stun.hpp">
-      <Filter>SourceCode\State\BossState</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\State\BossState\boss_crouch_right_stun.hpp">
-      <Filter>SourceCode\State\BossState</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\State\BossState\boss_detected.hpp">
-      <Filter>SourceCode\State\BossState</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\State\BossState\boss_investigate.hpp">
-      <Filter>SourceCode\State\BossState</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\State\BossState\boss_knockback.hpp">
-      <Filter>SourceCode\State\BossState</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\State\BossState\boss_long_range_attack.hpp">
-      <Filter>SourceCode\State\BossState</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\State\BossState\boss_patrol.hpp">
-      <Filter>SourceCode\State\BossState</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\State\BossState\boss_run_attack.hpp">
-      <Filter>SourceCode\State\BossState</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\State\BossState\boss_search.hpp">
-      <Filter>SourceCode\State\BossState</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\State\BossState\boss_stand_stun.hpp">
-      <Filter>SourceCode\State\BossState</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\State\BossState\boss_stand_up.hpp">
-      <Filter>SourceCode\State\BossState</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\State\BossState\boss_stealth_killed.hpp">
-      <Filter>SourceCode\State\BossState</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\State\BossState\boss_track.hpp">
-      <Filter>SourceCode\State\BossState</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\State\BossState\boss_wait.hpp">
-      <Filter>SourceCode\State\BossState</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\State\BossState\boss_action_null.hpp">
-      <Filter>SourceCode\State\BossState</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\State\BossState\boss_dead.hpp">
-      <Filter>SourceCode\State\BossState</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\State\BossState\boss_idle.hpp">
-      <Filter>SourceCode\State\BossState</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\State\BossState\boss_move.hpp">
-      <Filter>SourceCode\State\BossState</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\State\BossState\boss_run.hpp">
-      <Filter>SourceCode\State\BossState</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\Kind\boss_anim_kind.hpp">
       <Filter>SourceCode\Kind</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Kind\boss_state_kind.hpp">
       <Filter>SourceCode\Kind</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Animator\boss_animator.hpp">
-      <Filter>SourceCode\Animator</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Event\dead_boss_event.hpp">
       <Filter>SourceCode\Event</Filter>
@@ -1805,6 +1679,204 @@
     </ClInclude>
     <ClInclude Include="SourceCode\UICreator\screen_filter_creator.hpp">
       <Filter>SourceCode\UICreator</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\dead_all_enemy_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\dead_enemy_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Interface\i_ammo_box.hpp">
+      <Filter>SourceCode\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Object\assault_rifle_ammo_box.hpp">
+      <Filter>SourceCode\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Object\rocket_bomb_box.hpp">
+      <Filter>SourceCode\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\rifle_cartridge_box_data.hpp">
+      <Filter>SourceCode\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Part\ammo_holder.hpp">
+      <Filter>SourceCode\Part</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\UI\remaining_bullets_ui.hpp">
+      <Filter>SourceCode\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Part\item_creator.hpp">
+      <Filter>SourceCode\Part</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\drop_item_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\State\ZombieState\patrol.hpp">
+      <Filter>SourceCode\State\ZombieState</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Interface\i_item_collectable.hpp">
+      <Filter>SourceCode\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\InverseKinematics\humanoid_foot_ik_solver.hpp">
+      <Filter>SourceCode\InverseKinematics</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\InverseKinematics\ik_solver.hpp">
+      <Filter>SourceCode\InverseKinematics</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\humanoid_leg_matrix_data.hpp">
+      <Filter>SourceCode\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\humanoid_leg_ray_data.hpp">
+      <Filter>SourceCode\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\model_frame_angle_limit_data.hpp">
+      <Filter>SourceCode\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Part\humanoid_frame_getter.hpp">
+      <Filter>SourceCode\Part</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\MixamoHelper\mixamo_helper.hpp">
+      <Filter>SourceCode\MixamoHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Kind\axis_kind.hpp">
+      <Filter>SourceCode\Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Part\item_acquisition_searcher.hpp">
+      <Filter>SourceCode\Part</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\spotted_item_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\pick_up_item_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\UI\pickupable_item_icon.hpp">
+      <Filter>SourceCode\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Sound\sound_player.hpp">
+      <Filter>SourceCode\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\aid_mixamo_axis_data.hpp">
+      <Filter>SourceCode\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\axis_data.hpp">
+      <Filter>SourceCode\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\frame_data.hpp">
+      <Filter>SourceCode\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\text_data.hpp">
+      <Filter>SourceCode\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\theta_data.hpp">
+      <Filter>SourceCode\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\triangle_edge_data.hpp">
+      <Filter>SourceCode\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\InverseKinematics\frame_info.hpp">
+      <Filter>SourceCode\InverseKinematics</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\UI\guidance_ui.hpp">
+      <Filter>SourceCode\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\UI\mission_ui.hpp">
+      <Filter>SourceCode\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\UI\purpose_ui.hpp">
+      <Filter>SourceCode\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\UICreator\guidance_ui_creator.hpp">
+      <Filter>SourceCode\UICreator</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Kind\mixamo_axis_kind.hpp">
+      <Filter>SourceCode\Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\sound_data.hpp">
+      <Filter>SourceCode\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\drop_shell_casing.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\on_ground_foot_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Sound\sound.hpp">
+      <Filter>SourceCode\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Sound\sound_pool.hpp">
+      <Filter>SourceCode\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\empty_ammo_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\aim_gun_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\cocking_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\release_ammo_box_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\set_ammo_box_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Kind\time_scale_layer_kind.hpp">
+      <Filter>SourceCode\Kind</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\on_hit_kick_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\exit_aim_gun_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\decision_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\back_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\select_mene_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\open_page_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Part\battle_observer.hpp">
+      <Filter>SourceCode\Part</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\end_battle_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\start_battle_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\aim_gun_event (2).hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\aim_gun_event (3).hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\aim_gun_event (4).hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\aim_gun_event (5).hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\aim_gun_event (6).hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\exit_stun_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\stun_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\stab_knife_event.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Event\draw_knife_event.hpp">
+      <Filter>SourceCode\Event</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1864,9 +1936,6 @@
     </Filter>
     <Filter Include="SourceCode\Name">
       <UniqueIdentifier>{c3148a31-6123-4086-b761-3edd4fe5f420}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCode\Object">
-      <UniqueIdentifier>{12318b27-d5b3-41f7-b2c0-6e3e27ab8d35}</UniqueIdentifier>
     </Filter>
     <Filter Include="SourceCode\ObjectPool">
       <UniqueIdentifier>{babb64c0-15ce-4652-be32-4fda876508c4}</UniqueIdentifier>
@@ -1946,14 +2015,23 @@
     <Filter Include="SourceCode\State\EnemyState">
       <UniqueIdentifier>{ff495161-2f03-4c6e-a508-ddbb081ecd2c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCode\State\BossState">
-      <UniqueIdentifier>{d48e325b-0620-4896-9fd1-d5e4c363d5df}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SourceCode\UICreator">
       <UniqueIdentifier>{ece711ae-b4a0-4e28-a35e-6f6f1518c896}</UniqueIdentifier>
     </Filter>
     <Filter Include="SourceCode\Scene">
       <UniqueIdentifier>{47238515-00d6-486e-bcf4-f6f55f21cce5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCode\Sound">
+      <UniqueIdentifier>{f57eecbd-8cf1-42c8-96b4-2d96a5bf7d69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCode\InverseKinematics">
+      <UniqueIdentifier>{faa6203f-4b0e-4f8d-b35d-d561eb7c97ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCode\MixamoHelper">
+      <UniqueIdentifier>{3365a2e8-3ef6-478e-a95b-2d22f461656a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCode\Object">
+      <UniqueIdentifier>{12318b27-d5b3-41f7-b2c0-6e3e27ab8d35}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1979,6 +2057,21 @@
       <Filter>JSON</Filter>
     </None>
     <None Include="Data\JSON\player.json">
+      <Filter>JSON</Filter>
+    </None>
+    <None Include="Data\JSON\ammo_box.json">
+      <Filter>JSON</Filter>
+    </None>
+    <None Include="Data\JSON\mixamo_frame_hierarchy.json">
+      <Filter>JSON</Filter>
+    </None>
+    <None Include="Data\JSON\model_foot_angle_limits.json">
+      <Filter>JSON</Filter>
+    </None>
+    <None Include="data\JSON\sound_data.json">
+      <Filter>JSON</Filter>
+    </None>
+    <None Include="Data\JSON\sound_pool_data.json">
       <Filter>JSON</Filter>
     </None>
   </ItemGroup>

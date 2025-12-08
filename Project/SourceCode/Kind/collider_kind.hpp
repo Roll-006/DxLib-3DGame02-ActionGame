@@ -7,7 +7,22 @@ enum class ColliderKind
 
 	kCollider,				// コライダー(押し戻し用)
 	kMeshTrigger,			// モデルが持つメッシュをトリガーに利用
-	kRayCast,				// レイキャスト
+
+
+	#pragma region レイキャスト
+	kRay,					// 汎用光線
+	kProjectRay,			// 投影用光線
+
+	kLeftHandRay,			// 左手光線
+	kRightHandRay,			// 右手光線
+	kLeftLegRay,			// 左膝光線
+	kRightLegRay,			// 右膝光線
+	kLeftFootRay,			// 左足光線
+	kRightFootRay,			// 右足光線
+	kLeftToeBaseRay,		// 左足のつま先のベース光線
+	kRightToeBaseRay,		// 右足のつま先のベース光線	
+	#pragma endregion
+
 
 	kAttackTrigger,			// 攻撃判定用トリガー
 	kLandingTrigger,		// 着地判定用トリガー
@@ -19,6 +34,8 @@ enum class ColliderKind
 	kCollisionAreaTrigger,	// 衝突判定を許可するエリアに利用するトリガー
 	kReactionTrigger,		// リアクショントリガー
 
+
+	#pragma region 部位トリガー
 	kHeadTrigger,			// 頭部トリガー
 	kUpBodyTrigger,			// 胴体の上側トリガー
 	kDownBodyTrigger,		// 胴体の下側トリガー
@@ -32,4 +49,5 @@ enum class ColliderKind
 	kRightUpLegTrigger,		// 右脚の上側(太もも部分)トリガー
 	kLeftDownLegTrigger,	// 左脚の下側(スネ・ふくらはぎ部分)トリガー
 	kRightDownLegTrigger,	// 右脚の下側(スネ・ふくらはぎ部分)トリガー
+	#pragma endregion
 };

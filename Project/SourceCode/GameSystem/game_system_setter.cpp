@@ -20,6 +20,8 @@ void GameSystemSetter::SetUpGameSystem()
 	// äÓñ{ê›íË
 	SetGraphMode(Window::kScreenSize.x, Window::kScreenSize.y, 32);
 	ChangeWindowMode(TRUE);
+	Set3DSoundOneMetre(30.0f);
+	SetOutApplicationLogValidFlag(FALSE);
 	if (DxLib_Init() == -1) { exit(EXIT_FAILURE); }
 	SetDrawScreen(DX_SCREEN_BACK);
 	SetUseDirect3DVersion(DX_DIRECT3D_11);

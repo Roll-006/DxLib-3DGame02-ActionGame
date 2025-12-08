@@ -1,12 +1,14 @@
 #pragma once
 #include "../Base/gun_base.hpp"
 #include "assault_rifle_magazine.hpp"
+#include "assault_rifle_ammo_box.hpp"
 
 class AssaultRifle final : public GunBase
 {
 public:
 	AssaultRifle();
 	~AssaultRifle() override;
+
 
 	void Init()						override;
 	void Update()					override;
@@ -17,13 +19,14 @@ public:
 
 	void InitCrossHairRange() override;
 	void CalcCrossHairRange(const VECTOR& owner_move_velocity) override;
-	void CalcCrossHairRangeShot() override;
-	void CalcCrossHairPos() override;
-	void CalcTargetPos() override;
+	void CalcCrossHairRangeShot()	override;
+	void CalcCrossHairPos()			override;
+	void CalcTargetPos()			override;
+	void CalcTransforms()			override;
 
 private:
 	static constexpr VECTOR kBasicAngle				= { 0.0f, 0.0f, 0.0f };
-	static constexpr float  kBasicScale				= 5.2f;
+	static constexpr float  kBasicScale				= 1.5f;
 
 	static constexpr VECTOR kHoldOffsetPos			= { -3.0f, 3.0f, 23.0f };
 	static constexpr VECTOR kHoldOffsetAngle		= { 270.0f * math::kDegToRad, 270.0f * math::kDegToRad, 0.0f };
@@ -34,8 +37,8 @@ private:
 
 	static constexpr float  kPower					= 30.0f;
 
-	static constexpr VECTOR kMuzzleOffsetPos		= { 0.0f, 10.0f, 48.0f };
-	static constexpr VECTOR kEjectionPortOffsetPos  = { 2.0f, 10.0f, 0.15f };
+	static constexpr VECTOR kMuzzleOffsetPos		= { 0.0f, 3.0f, 13.0f };
+	static constexpr VECTOR kEjectionPortOffsetPos  = { 1.0f, 3.0f, 0.15f };
 	static constexpr VECTOR kLoadPortOffsetPos		= { 0.0f, -10.0f, 0.0f };
 	static constexpr float  kScopeScale				= 2.0f;
 	static constexpr float  kRange					= 2000.0f;

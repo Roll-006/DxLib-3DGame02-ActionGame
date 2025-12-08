@@ -13,14 +13,21 @@ PlayScene::PlayScene() :
 	//m_trees							(std::make_shared<Trees>()),
 	m_skydome						(std::make_shared<Skydome>()),
 	m_stealth_kill_target_searcher	(std::make_shared<StealthKillTargetSearcher>(m_player)),
-	m_melee_target_searcher			(std::make_shared<MeleeTargetSearcher>(m_player)),
+	m_melee_target_searcher			(std::make_shared<MeleeTargetSearcher>		(std::dynamic_pointer_cast<IMeleeAttackable>(m_player))),
+	m_item_acquisition_searcher		(std::make_shared<ItemAcquisitionSearcher>	(std::dynamic_pointer_cast<IItemCollectable>(m_player))),
+	m_item_creator					(std::make_shared<ItemCreator>(m_player)),
 	m_rifle_cartridge_object_pool	(std::make_shared<RifleCartridgeObjectPool>()),
 	m_play_scene_effect_object_pool (std::make_shared<PlaySceneEffectObjectPool>()),
+	m_battle_observer				(std::make_shared<BattleObserver>()),
 	m_player_ui_creator				(std::make_shared<PlayerUICreator>(m_player)),
+	m_guidance_ui_creator			(std::make_shared<GuidanceUICreator>()),
 	m_game_clear_tab				(std::make_shared<GameClearTab>()),
 	m_game_over_tab					(std::make_shared<GameOverTab>()),
 	m_pause_tab						(std::make_shared<PauseTab>())
 {
+	m_player->Init();
+	m_enemy_manager->Init();
+
 	m_player->AddToObjManager();
 	m_ground->AddToObjManager();
 	m_houses->AddToObjManager();
@@ -48,6 +55,7 @@ PlayScene::PlayScene() :
 	TabDrawer::GetInstance()->AddTab		(m_game_over_tab);
 	TabDrawer::GetInstance()->AddTab		(m_pause_tab);
 	UIDrawer ::GetInstance()->AddUICreator	(m_player_ui_creator);
+	UIDrawer ::GetInstance()->AddUICreator	(m_guidance_ui_creator);
 	UIDrawer ::GetInstance()->GetUICreator	(UICreatorName.SCREEN_FILTER_CREATOR)->Init();
 
 	Init();
@@ -55,14 +63,14 @@ PlayScene::PlayScene() :
 
 PlayScene::~PlayScene()
 {
-	m_player->Init();
-	m_enemy_manager->Init();
+	m_item_creator = nullptr;
 
 	m_player->RemoveToObjManager();
 	m_ground->RemoveToObjManager();
 	m_houses->RemoveToObjManager();
 
 	m_enemy_manager->DetachTarget();
+	m_enemy_manager = nullptr;
 
 	const auto pool_holder = ObjectPoolHolder::GetInstance();
 	pool_holder->RemoveObjectPool(m_rifle_cartridge_object_pool	 ->GetName());
@@ -75,10 +83,11 @@ PlayScene::~PlayScene()
 	const auto light_holder = LightHolder::GetInstance();
 	light_holder->DeleteLight(LightName.MOONLIGHT);
 
-	TabDrawer::GetInstance()->RemoveTab			(m_game_clear_tab	->GetTabHandle());
-	TabDrawer::GetInstance()->RemoveTab			(m_game_over_tab	->GetTabHandle());
-	TabDrawer::GetInstance()->RemoveTab			(m_pause_tab		->GetTabHandle());
-	UIDrawer ::GetInstance()->RemoveUICreator	(m_player_ui_creator->GetName());
+	TabDrawer::GetInstance()->RemoveTab			(m_game_clear_tab		->GetTabHandle());
+	TabDrawer::GetInstance()->RemoveTab			(m_game_over_tab		->GetTabHandle());
+	TabDrawer::GetInstance()->RemoveTab			(m_pause_tab			->GetTabHandle());
+	UIDrawer ::GetInstance()->RemoveUICreator	(m_player_ui_creator	->GetName());
+	UIDrawer ::GetInstance()->RemoveUICreator	(m_guidance_ui_creator	->GetName());
 }
 
 void PlayScene::Init()
@@ -92,7 +101,8 @@ void PlayScene::Init()
 	cinemachine_brain->SetFar (2000.0f);
 	cinemachine_brain->SetFOV (25.0f);
 
-	m_player_ui_creator->Init();
+	m_player_ui_creator	 ->Init();
+	m_guidance_ui_creator->Init();
 }
 
 void PlayScene::Update()
@@ -109,6 +119,8 @@ void PlayScene::Update()
 	m_skydome							->Update();
 	m_stealth_kill_target_searcher		->Update();
 	m_melee_target_searcher				->Update();
+	m_item_acquisition_searcher			->Update();
+	m_item_creator						->Update();
 	m_game_clear_tab					->Update();
 	m_game_over_tab						->Update();
 	m_pause_tab							->Update();
@@ -124,7 +136,9 @@ void PlayScene::LateUpdate()
 	m_ground							->LateUpdate();
 	m_houses							->LateUpdate();
 	m_skydome							->LateUpdate();
+	m_item_creator						->LateUpdate();
 	m_player_ui_creator					->LateUpdate();
+	m_guidance_ui_creator				->LateUpdate();
 }
 
 void PlayScene::DrawToShadowMap() const
@@ -136,6 +150,7 @@ void PlayScene::DrawToShadowMap() const
 	RifleCartridgeManager::GetInstance()->Draw();
 	m_ground							->Draw();
 	m_houses							->Draw();
+	m_item_creator						->Draw();
 }
 
 void PlayScene::Draw() const
@@ -148,6 +163,7 @@ void PlayScene::Draw() const
 	m_ground							->Draw();
 	m_houses							->Draw();
 	m_skydome							->Draw();
+	m_item_creator						->Draw();
 }
 
 std::shared_ptr<IScene> PlayScene::ChangeScene()

@@ -28,7 +28,7 @@ MATRIX math::ConvertQuaternionToRotMatrix(const Quaternion& q)
 
 Quaternion math::ConvertRotMatrixToQuaternion(const MATRIX& rot_matrix)
 {
-    MATRIX m = MTranspose(MGetRotElem(rot_matrix));
+    MATRIX m = MTranspose(matrix::GetRotMatrix(rot_matrix));
 
     // 最大成分を検索
     std::array<float, 4> e
@@ -54,27 +54,27 @@ Quaternion math::ConvertRotMatrixToQuaternion(const MATRIX& rot_matrix)
     const float mult    = 0.25f / v;
     q.at(max_index)     = v;
 
-    switch (static_cast<quat::AxesKind>(max_index))
+    switch (static_cast<quat::AxisKind>(max_index))
     {
-    case quat::AxesKind::kX:
+    case quat::AxisKind::kX:
         q.at(1) = (m.m[0][1] + m.m[1][0]) * mult;
         q.at(2) = (m.m[2][0] + m.m[0][2]) * mult;
         q.at(3) = (m.m[1][2] - m.m[2][1]) * mult;
         break;
 
-    case quat::AxesKind::kY:
+    case quat::AxisKind::kY:
         q.at(0) = (m.m[0][1] + m.m[1][0]) * mult;
         q.at(2) = (m.m[1][2] + m.m[2][1]) * mult;
         q.at(3) = (m.m[2][0] - m.m[0][2]) * mult;
         break;
 
-    case quat::AxesKind::kZ:
+    case quat::AxisKind::kZ:
         q.at(0) = (m.m[2][0] + m.m[0][2]) * mult;
         q.at(1) = (m.m[1][2] + m.m[2][1]) * mult;
         q.at(3) = (m.m[0][1] - m.m[1][0]) * mult;
         break;
 
-    case quat::AxesKind::kW:
+    case quat::AxisKind::kW:
         q.at(0) = (m.m[1][2] - m.m[2][1]) * mult;
         q.at(1) = (m.m[2][0] - m.m[0][2]) * mult;
         q.at(2) = (m.m[0][1] - m.m[1][0]) * mult;
@@ -84,26 +84,26 @@ Quaternion math::ConvertRotMatrixToQuaternion(const MATRIX& rot_matrix)
     return Quaternion(q.at(0), q.at(1), q.at(2), q.at(3));
 }
 
-MATRIX math::ConvertAxesToRotMatrix(const Axes& axes)
+MATRIX math::ConvertAxisToRotMatrix(const Axis& axis)
 {
     MATRIX mat = MGetIdent();
 
     // right
-    mat.m[0][0] = axes.x_axis.x;
-    mat.m[0][1] = axes.x_axis.y;
-    mat.m[0][2] = axes.x_axis.z;
+    mat.m[0][0] = axis.x_axis.x;
+    mat.m[0][1] = axis.x_axis.y;
+    mat.m[0][2] = axis.x_axis.z;
     mat.m[0][3] = 0.0f;
 
     // up
-    mat.m[1][0] = axes.y_axis.x;
-    mat.m[1][1] = axes.y_axis.y;
-    mat.m[1][2] = axes.y_axis.z;
+    mat.m[1][0] = axis.y_axis.x;
+    mat.m[1][1] = axis.y_axis.y;
+    mat.m[1][2] = axis.y_axis.z;
     mat.m[1][3] = 0.0f;
 
     // forward
-    mat.m[2][0] = axes.z_axis.x;
-    mat.m[2][1] = axes.z_axis.y;
-    mat.m[2][2] = axes.z_axis.z;
+    mat.m[2][0] = axis.z_axis.x;
+    mat.m[2][1] = axis.z_axis.y;
+    mat.m[2][2] = axis.z_axis.z;
     mat.m[2][3] = 0.0f;
 
     mat.m[3][0] = 0.0f;
@@ -114,11 +114,11 @@ MATRIX math::ConvertAxesToRotMatrix(const Axes& axes)
     return mat;
 }
 
-VECTOR math::ConvertAxesToEulerAngles(const Axes& axes)
+VECTOR math::ConvertAxisToEulerAngles(const Axis& axis)
 {
-    const float angle_x = GetAngleBetweenTwoVector(axis::GetWorldXAxis(), axes.x_axis);
-    const float angle_y = GetAngleBetweenTwoVector(axis::GetWorldYAxis(), axes.y_axis);
-    const float angle_z = GetAngleBetweenTwoVector(axis::GetWorldZAxis(), axes.z_axis);
+    const float angle_x = GetAngleBetweenTwoVector(axis::GetWorldXAxis(), axis.x_axis);
+    const float angle_y = GetAngleBetweenTwoVector(axis::GetWorldYAxis(), axis.y_axis);
+    const float angle_z = GetAngleBetweenTwoVector(axis::GetWorldZAxis(), axis.z_axis);
 
     return VECTOR(angle_x, angle_y, angle_z);
 }
@@ -126,7 +126,7 @@ VECTOR math::ConvertAxesToEulerAngles(const Axes& axes)
 VECTOR math::ConvertXYZRotMatrixToEulerAngles(const MATRIX& rot_matrix)
 {
     VECTOR angle = v3d::GetZeroV();
-    const MATRIX m = MGetRotElem(rot_matrix);
+    const MATRIX m = matrix::GetRotMatrix(rot_matrix);
 
     GetMatrixXYZRotation(&m, &angle.x, &angle.y, &angle.z);
 
@@ -136,7 +136,7 @@ VECTOR math::ConvertXYZRotMatrixToEulerAngles(const MATRIX& rot_matrix)
 VECTOR math::ConvertXYZRotMatrixToEulerAngles(const MATRIX& rot_matrix, bool& is_gimbal_lock)
 {
     VECTOR angle = v3d::GetZeroV();
-    const MATRIX m = MGetRotElem(rot_matrix);
+    const MATRIX m = matrix::GetRotMatrix(rot_matrix);
 
     is_gimbal_lock = GetMatrixXYZRotation(&m, &angle.x, &angle.y, &angle.z);
 
@@ -146,51 +146,51 @@ VECTOR math::ConvertXYZRotMatrixToEulerAngles(const MATRIX& rot_matrix, bool& is
 VECTOR math::ConvertZXYRotMatrixToEulerAngles(const MATRIX& rot_matrix)
 {
     VECTOR angle = v3d::GetZeroV();
-    const MATRIX m = MGetRotElem(rot_matrix);
+    const MATRIX m = matrix::GetRotMatrix(rot_matrix);
 
     GetMatrixZXYRotation(&m, &angle.x, &angle.y, &angle.z);
 
     return angle;
 }
 
-Axes math::ConvertRotMatrixToAxes(const MATRIX& rot_matrix)
+Axis math::ConvertRotMatrixToAxis(const MATRIX& rot_matrix)
 {
-    const MATRIX m = MGetRotElem(rot_matrix);
+    const MATRIX m = matrix::GetRotMatrix(rot_matrix);
 
-    const VECTOR scale
-    {
-        VSize(VGet(m.m[0][0], m.m[0][1], m.m[0][2])),
-        VSize(VGet(m.m[0][0], m.m[0][1], m.m[0][2])),
-        VSize(VGet(m.m[2][0], m.m[2][1], m.m[2][2]))
-    };
+    //const VECTOR scale
+    //{
+    //    VSize(VGet(m.m[0][0], m.m[0][1], m.m[0][2])),
+    //    VSize(VGet(m.m[0][0], m.m[0][1], m.m[0][2])),
+    //    VSize(VGet(m.m[2][0], m.m[2][1], m.m[2][2]))
+    //};
 
-    // スケールを打ち消す逆数
-    const VECTOR reciprocal
-    {
-        1.0f / scale.x,
-        1.0f / scale.y,
-        1.0f / scale.z
-    };
+    //// スケールを打ち消す逆数
+    //const VECTOR reciprocal
+    //{
+    //    1.0f / scale.x,
+    //    1.0f / scale.y,
+    //    1.0f / scale.z
+    //};
 
-    const VECTOR x_axis = VTransform(axis::GetWorldXAxis(), m) * reciprocal.x;
-    const VECTOR y_axis = VTransform(axis::GetWorldYAxis(), m) * reciprocal.y;
-    const VECTOR z_axis = VTransform(axis::GetWorldZAxis(), m) * reciprocal.z;
+    const VECTOR x_axis = VTransform(axis::GetWorldXAxis(), m)/* * reciprocal.x*/;
+    const VECTOR y_axis = VTransform(axis::GetWorldYAxis(), m)/* * reciprocal.y*/;
+    const VECTOR z_axis = VTransform(axis::GetWorldZAxis(), m)/* * reciprocal.z*/;
 
-    return Axes(x_axis, y_axis, z_axis);
+    return Axis(x_axis, y_axis, z_axis);
 }
 
 MATRIX math::ConvertEulerAnglesToXYZRotMatrix(const VECTOR& angle)
 {
     MATRIX mat = MGetIdent();
     CreateRotationXYZMatrix(&mat, angle.x, angle.y, angle.z);
-    return MGetRotElem(mat);
+    return matrix::GetRotMatrix(mat);
 }
 
 MATRIX math::ConvertEulerAnglesToZXYRotMatrix(const VECTOR& angle)
 {
     MATRIX mat = MGetIdent();
     CreateRotationZXYMatrix(&mat, angle.x, angle.y, angle.z);
-    return MGetRotElem(mat);
+    return matrix::GetRotMatrix(mat);
 }
 
 MATRIX math::ConvertForwardToRotMatrix(const VECTOR& forward)
@@ -199,7 +199,7 @@ MATRIX math::ConvertForwardToRotMatrix(const VECTOR& forward)
     const auto right        = -math::GetNormalVector(forward_n, axis::GetWorldYAxis());
     const auto up           = math::GetNormalVector(forward_n, right);
 
-    return math::ConvertAxesToRotMatrix(Axes(right, up, forward_n));
+    return math::ConvertAxisToRotMatrix(Axis(right, up, forward_n));
 }
 #pragma endregion
 
@@ -445,6 +445,42 @@ Transform& math::GetLerpTransform(
     return result_transform;
 }
 
+MATRIX math::GetLerpMatrix(const MATRIX& begin_mat, const MATRIX& end_mat, const float t, const bool is_interpolate_pos, const bool is_interpolate_scale, const bool is_interpolate_rot)
+{
+    auto begin_m    = begin_mat;
+    auto end_m      = end_mat;
+    auto result_m   = begin_mat;
+
+    // 座標補間
+    if (is_interpolate_pos)
+    {
+        const auto begin_pos    = MGetTranslateElem(begin_m);
+        const auto end_pos      = MGetTranslateElem(end_m);
+        const auto result_pos   = GetLerp(begin_pos, end_pos, t);
+        matrix::SetPos(result_m, result_pos);
+    }
+
+    // スケール補間
+    if (is_interpolate_scale)
+    {
+        const auto begin_scale  = matrix::GetScale(begin_m);
+        const auto end_scale    = matrix::GetScale(end_m);
+        const auto result_scale = GetLerp(begin_scale, end_scale, t);
+        matrix::SetScale(result_m, result_scale);
+    }
+
+    // 回転補間
+    if (is_interpolate_rot)
+    {
+        const auto begin_q      = math::ConvertRotMatrixToQuaternion(begin_m);
+        const auto end_q        = math::ConvertRotMatrixToQuaternion(end_m);
+        const auto result_rot_m = math::ConvertQuaternionToRotMatrix(GetSlerp(begin_q, end_q, t));
+        matrix::SetRot(result_m, result_rot_m);
+    }
+
+    return result_m;
+}
+
 float math::GetDampedValue(const float current_value, const float target_value, const float damping, const float delta_time)
 {
     // damping値が0に近い場合は即座に目標値に設定
@@ -473,16 +509,16 @@ VECTOR math::GetDampedValue(const VECTOR& current_value, const VECTOR& target_va
     return damped_value;
 }
 
-VECTOR math::GetDampedValueOnAxes(const VECTOR& current_value, const VECTOR& target_value, const VECTOR& damping, const Axes& parent_axes, const float delta_time)
+VECTOR math::GetDampedValueOnAxis(const VECTOR& current_value, const VECTOR& target_value, const VECTOR& damping, const Axis& parent_axis, const float delta_time)
 {
     VECTOR damped_value         = current_value;
     const auto distance         = target_value - current_value;
 
     // カメラの軸に分解（内積）
     // distanceが各軸にどれだけ含まれているかをを取得
-    const auto forward_dot      = VDot(distance, parent_axes.z_axis);
-    const auto right_dot        = VDot(distance, parent_axes.x_axis);
-    const auto up_dot           = VDot(distance, parent_axes.y_axis);
+    const auto forward_dot      = VDot(distance, parent_axis.z_axis);
+    const auto right_dot        = VDot(distance, parent_axis.x_axis);
+    const auto up_dot           = VDot(distance, parent_axis.y_axis);
 
     // 各軸の移動量に対して減衰を適用
     const auto damped_forward   = math::GetDampedValue(0.0f, forward_dot, damping.z, delta_time);
@@ -491,9 +527,9 @@ VECTOR math::GetDampedValueOnAxes(const VECTOR& current_value, const VECTOR& tar
 
     // 減衰移動ベクトルを再合成
     const VECTOR damped_move =
-        parent_axes.z_axis * damped_forward +
-        parent_axes.x_axis * damped_right +
-        parent_axes.y_axis * damped_up;
+        parent_axis.z_axis * damped_forward +
+        parent_axis.x_axis * damped_right +
+        parent_axis.y_axis * damped_up;
 
     damped_value += damped_move;
 
@@ -678,14 +714,105 @@ VECTOR math::GetYawRotVector(const VECTOR& v)
     return VGet(0.0f, GetYaw(v), 0.0f);
 }
 
-Axes math::GetAxes(const VECTOR& dir, const Axes& parent_axes)
+Axis math::GetAxis(const VECTOR& dir, const Axis& parent_axis)
 {
     // directionを基準として各軸を取得
     const VECTOR local_dir_z = v3d::GetNormalizedV(dir);
-    const VECTOR local_dir_x = math::GetNormalVector(parent_axes.y_axis, local_dir_z);
+    const VECTOR local_dir_x = math::GetNormalVector(parent_axis.y_axis, local_dir_z);
     const VECTOR local_dir_y = math::GetNormalVector(local_dir_z, local_dir_x);
 
-    return Axes(local_dir_x, local_dir_y, local_dir_z);
+    return Axis(local_dir_x, local_dir_y, local_dir_z);
+}
+
+//Axis math::GetRotatedAxis(const Axis& origin_axis, const AxisData& target_axis)
+//{
+//    auto axis = Axis();
+//
+//    switch (target_axis.kind)
+//    {
+//    case AxisKind::kRight:
+//        axis.x_axis = target_axis.axis;
+//        axis.z_axis = math::GetNormalVector(origin_axis.y_axis, axis.x_axis);
+//        axis.y_axis = math::GetNormalVector(axis.x_axis,        axis.z_axis);
+//        axis.z_axis = math::GetNormalVector(axis.y_axis,        axis.x_axis);
+//        break;
+//
+//    case AxisKind::kUp:
+//        axis.y_axis = target_axis.axis;
+//        axis.z_axis = math::GetNormalVector(origin_axis.x_axis, axis.y_axis);
+//        axis.x_axis = math::GetNormalVector(axis.z_axis,        axis.y_axis);
+//        axis.z_axis = math::GetNormalVector(axis.y_axis,        axis.x_axis);
+//        break;
+//
+//    case AxisKind::kForward:
+//        axis.z_axis = target_axis.axis;
+//        axis.x_axis = math::GetNormalVector(origin_axis.y_axis, axis.z_axis);
+//        axis.y_axis = math::GetNormalVector(axis.z_axis,        axis.x_axis);
+//        axis.x_axis = math::GetNormalVector(axis.y_axis,        axis.z_axis);
+//        break;
+//    }
+//
+//    return axis;
+//}
+
+Axis math::GetForwardSyncedAxis(const Axis& origin_axis, const VECTOR& forward, const std::optional<AxisData>& aid_axis)
+{
+    auto axis = Axis();
+    axis.z_axis = forward;
+
+    // 補助軸なし
+    if (!aid_axis || aid_axis->kind == AxisKind::kForward)
+    {
+        axis.x_axis = math::GetNormalVector(origin_axis.y_axis, axis.z_axis);
+        axis.y_axis = math::GetNormalVector(axis.z_axis,        axis.x_axis);
+        axis.x_axis = math::GetNormalVector(axis.y_axis,        axis.z_axis);
+    }
+    // 補助軸 : Right
+    else if (aid_axis->kind == AxisKind::kRight)
+    {
+        axis.x_axis = aid_axis->axis;
+        axis.y_axis = math::GetNormalVector(axis.z_axis,        axis.x_axis);
+        axis.x_axis = math::GetNormalVector(axis.y_axis,        axis.z_axis);
+    }
+    // 補助軸 : Up
+    else if (aid_axis->kind == AxisKind::kUp)
+    {
+        axis.y_axis = aid_axis->axis;
+        axis.x_axis = math::GetNormalVector(axis.z_axis,        axis.y_axis);
+        axis.y_axis = math::GetNormalVector(axis.x_axis,        axis.z_axis);
+    }
+
+    return axis;
+}
+
+Axis math::GetUpSyncedAxis(const Axis& origin_axis, const VECTOR& up, const std::optional<AxisData>& aid_axis)
+{
+    auto axis = Axis();
+    axis.y_axis = up;
+
+    // 補助軸なし
+    if (!aid_axis || aid_axis->kind == AxisKind::kUp)
+    {
+        axis.z_axis = math::GetNormalVector(origin_axis.x_axis, axis.y_axis);
+        axis.x_axis = math::GetNormalVector(axis.z_axis,        axis.y_axis);
+        axis.z_axis = math::GetNormalVector(axis.y_axis,        axis.x_axis);
+    }
+    // 補助軸 : Right
+    else if (aid_axis->kind == AxisKind::kRight)
+    {
+        axis.x_axis = aid_axis->axis;
+        axis.z_axis = math::GetNormalVector(axis.y_axis,        axis.x_axis);
+        axis.x_axis = math::GetNormalVector(axis.y_axis,        axis.z_axis);
+    }
+    // 補助軸 : Forward
+    else if (aid_axis->kind == AxisKind::kForward)
+    {
+        axis.z_axis = aid_axis->axis;
+        axis.x_axis = math::GetNormalVector(axis.z_axis,        axis.y_axis);
+        axis.z_axis = math::GetNormalVector(axis.y_axis,        axis.x_axis);
+    }
+
+    return axis;
 }
 #pragma endregion
 
