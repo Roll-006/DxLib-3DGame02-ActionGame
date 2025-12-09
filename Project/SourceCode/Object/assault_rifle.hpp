@@ -2,13 +2,13 @@
 #include "../Base/gun_base.hpp"
 #include "assault_rifle_magazine.hpp"
 #include "assault_rifle_ammo_box.hpp"
+#include "../JSON/json_loader.hpp"
 
 class AssaultRifle final : public GunBase
 {
 public:
 	AssaultRifle();
 	~AssaultRifle() override;
-
 
 	void Init()						override;
 	void Update()					override;
@@ -25,31 +25,49 @@ public:
 	void CalcTransforms()			override;
 
 private:
-	static constexpr VECTOR kBasicAngle				= { 0.0f, 0.0f, 0.0f };
-	static constexpr float  kBasicScale				= 1.5f;
+	float  cross_hair_max_radius;
+	float  cross_hair_middle_radius;
+	float  cross_hair_min_radius;
+	VECTOR muzzle_offset;
+	VECTOR ejection_port_offset;
+	VECTOR load_port_offset;
 
-	static constexpr VECTOR kHoldOffsetPos			= { -3.0f, 3.0f, 23.0f };
-	static constexpr VECTOR kHoldOffsetAngle		= { 270.0f * math::kDegToRad, 270.0f * math::kDegToRad, 0.0f };
-	static constexpr float  kHoldOffsetScale		= 1.0f;
-	static constexpr VECTOR kAttachOffsetPos		= { 15.0f, -5.0f, -5.0f };
-	static constexpr VECTOR kAttachOffsetAngle		= { 45.0f * math::kDegToRad, 270.0f * math::kDegToRad, 0.0f };
-	static constexpr float  kAttachOffsetScale		= 1.0f;
+	float  m_cross_hair_radius;
 
-	static constexpr float  kPower					= 30.0f;
-
-	static constexpr VECTOR kMuzzleOffsetPos		= { 0.0f, 3.0f, 13.0f };
-	static constexpr VECTOR kEjectionPortOffsetPos  = { 1.0f, 3.0f, 0.15f };
-	static constexpr VECTOR kLoadPortOffsetPos		= { 0.0f, -10.0f, 0.0f };
-	static constexpr float  kScopeScale				= 2.0f;
-	static constexpr float  kRange					= 2000.0f;
-	static constexpr float  kInitialVelocity		= 3000.0f;
-	static constexpr float  kDeceleration			= 0.05f;
-	static constexpr float  kShotIntervalTime		= 0.1f;
-
-	static constexpr float  kCrossHairMaxRadius		= 45.0f;		// ŠgŽU”ÍˆÍ‚Ì”¼Œa
-	static constexpr float  kCrossHairMiddleRadius	= 30.0f;		// ŠgŽU”ÍˆÍ‚Ì”¼Œa
-	static constexpr float  kCrossHairMinRadius		= 10.0f;		// ŠgŽU”ÍˆÍ‚Ì”¼Œa
-
-private:
-	float m_cross_hair_radius;
+	friend void from_json(const nlohmann::json& data, AssaultRifle& assaultRifle);
+	friend void to_json  (nlohmann::json& data, const AssaultRifle& assaultRifle);
 };
+
+
+#pragma region from / to JSON
+inline void from_json(const nlohmann::json& data, AssaultRifle& assaultRifle)
+{
+	from_json(data, static_cast<GunBase&>(assaultRifle));
+
+	data.at("cross_hair_max_radius")	.get_to(assaultRifle.cross_hair_max_radius);
+	data.at("cross_hair_middle_radius")	.get_to(assaultRifle.cross_hair_middle_radius);
+	data.at("cross_hair_min_radius")	.get_to(assaultRifle.cross_hair_min_radius);
+	data.at("muzzle_offset")			.get_to(assaultRifle.muzzle_offset);
+	data.at("ejection_port_offset")		.get_to(assaultRifle.ejection_port_offset);
+	data.at("load_port_offset")			.get_to(assaultRifle.load_port_offset);
+}
+
+inline void to_json(nlohmann::json& data, const AssaultRifle& assaultRifle)
+{
+	nlohmann::json base_json;
+	to_json(base_json, static_cast<const GunBase&>(assaultRifle));
+
+	nlohmann::json derived_json =
+	{
+		{ "cross_hair_max_radius",		assaultRifle.cross_hair_max_radius },
+		{ "cross_hair_middle_radius",	assaultRifle.cross_hair_middle_radius },
+		{ "cross_hair_min_radius",		assaultRifle.cross_hair_min_radius },
+		{ "muzzle_offset",				assaultRifle.muzzle_offset },
+		{ "ejection_port_offset",		assaultRifle.ejection_port_offset },
+		{ "load_port_offset",			assaultRifle.load_port_offset },
+	};
+
+	data = base_json;
+	data.update(derived_json);
+}
+#pragma endregion

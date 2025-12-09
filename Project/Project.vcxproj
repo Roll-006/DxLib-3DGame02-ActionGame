@@ -794,6 +794,8 @@
     <ClInclude Include="SourceCode\Window\window.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="data\JSON\gun_data.json" />
+    <None Include="data\JSON\knife_data.json" />
     <None Include="Data\JSON\ammo_box.json" />
     <None Include="Data\JSON\mixamo_frame_hierarchy.json" />
     <None Include="Data\JSON\model_foot_angle_limits.json" />

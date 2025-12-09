@@ -12,15 +12,15 @@ RocketLauncher::RocketLauncher() :
 	SetColliderModelHandle(m_modeler->GetModelHandle());
 
 	m_cross_hair_shape		= std::make_shared<Circle>();
-	m_scope_scale			= kScopeScale;
-	m_range					= kRange;
+	scope_scale			= kScopeScale;
+	range					= kRange;
 	power					= kPower;
-	m_initial_velocity		= kInitialVelocity;
-	m_deceleration			= kDeceleration;
-	m_shot_interval_time	= kShotIntervalTime;
-	m_recoil_data			= RecoilData(0.0f, 0.0f, 0.0f, 10.0f * math::kDegToRad, 0.3f, VGet(1.0f, 1.0f, 1.0f));
+	initial_velocity		= kInitialVelocity;
+	deceleration			= kDeceleration;
+	shot_interval_time	= kShotIntervalTime;
+	recoil_data			= RecoilData(0.0f, 0.0f, 0.0f, 10.0f * math::kDegToRad, 0.3f, VGet(1.0f, 1.0f, 1.0f));
 
-	m_max_remaining_bullet_num = kMaxRemainingBulletNum;
+	max_remaining_bullet_num = kMaxRemainingBulletNum;
 
 	//AddCollider(std::make_shared<Collider>(ColliderKind::kRayCast, std::make_shared<Segment>(), this));
 }
@@ -73,7 +73,7 @@ void RocketLauncher::CalcCrossHairRange(const VECTOR& owner_move_velocity)
 	// ŠgŽU”ÍˆÍ‚ðŽw’è
 	const auto circle = std::static_pointer_cast<Circle>(m_cross_hair_shape);
 
-	circle->SetRadius(kCrossHairMaxRadius);
+	circle->SetRadius(cross_hair_max_radius);
 }
 
 void RocketLauncher::CalcCrossHairRangeShot()
@@ -86,7 +86,7 @@ void RocketLauncher::CalcCrossHairPos()
 	// ŠgŽU”ÍˆÍ‚ðŽw’è
 	const auto circle = std::static_pointer_cast<Circle>(m_cross_hair_shape);
 
-	circle->SetPos(GetFirstShotPos() + m_aim_dir * kCrossHairDistance);
+	circle->SetPos(GetFirstShotPos() + m_aim_dir * cross_hair_distance);
 	circle->SetNormalVector(m_aim_dir);
 }
 

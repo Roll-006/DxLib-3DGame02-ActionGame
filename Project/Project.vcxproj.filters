@@ -2074,6 +2074,12 @@
     <None Include="Data\JSON\sound_pool_data.json">
       <Filter>JSON</Filter>
     </None>
+    <None Include="data\JSON\gun_data.json">
+      <Filter>JSON</Filter>
+    </None>
+    <None Include="data\JSON\knife_data.json">
+      <Filter>JSON</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Text\bug_list.txt">

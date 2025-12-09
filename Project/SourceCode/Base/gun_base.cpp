@@ -12,16 +12,16 @@ GunBase::GunBase(const std::string& name, const GunKind gun_kind, const HolsterK
 	m_target_pos					(v3d::GetZeroV()),
 	m_point_on_ray					(v3d::GetZeroV()),
 	m_current_remaining_bullet_num	(0),
-	m_max_remaining_bullet_num		(0),
-	m_scope_scale					(0.0f),
-	m_range							(0.0f),
-	m_initial_velocity				(0.0f),
-	m_deceleration					(0.0f),
-	m_recoil_data					(RecoilData()),
-	m_shot_interval_time			(0.0f),
+	max_remaining_bullet_num		(0),
+	scope_scale						(0.0f),
+	range							(0.0f),
+	initial_velocity				(0.0f),
+	deceleration					(0.0f),
+	recoil_data						(RecoilData()),
+	shot_interval_time				(0.0f),
 	m_shot_timer					(0.0f),
 	m_on_pull_trigger				(false),
-	m_gun_kind						(gun_kind)
+	gun_kind						(gun_kind)
 {
 
 }
@@ -96,7 +96,7 @@ void GunBase::OnShot()
 	--m_current_remaining_bullet_num;
 
 	const auto time_scale = m_owner_name == ObjName.PLAYER ? TimeScaleLayerKind::kPlayer : TimeScaleLayerKind::kWorld;
-	EventSystem::GetInstance()->Publish(WeaponShotEvent(m_gun_kind, m_owner_name, m_muzzle_transform, m_ejection_port_transform, TimeScaleLayerKind::kPlayer));
+	EventSystem::GetInstance()->Publish(WeaponShotEvent(gun_kind, m_owner_name, m_muzzle_transform, m_ejection_port_transform, TimeScaleLayerKind::kPlayer));
 }
 
 int GunBase::OnReload(const int have_bullets)
@@ -104,10 +104,10 @@ int GunBase::OnReload(const int have_bullets)
 	int remaining_bullets_num = have_bullets;
 
 	// 既に最大値の場合はリロードさせない
-	if (m_current_remaining_bullet_num >= m_max_remaining_bullet_num) { return remaining_bullets_num; }
+	if (m_current_remaining_bullet_num >= max_remaining_bullet_num) { return remaining_bullets_num; }
 
 	// 不足分の計算
-	const int shortage_num = m_max_remaining_bullet_num - m_current_remaining_bullet_num;
+	const int shortage_num = max_remaining_bullet_num - m_current_remaining_bullet_num;
 
 	// 可能な数だけリロードし、所持している弾丸を減少させる
 	if (remaining_bullets_num < shortage_num)
@@ -164,7 +164,7 @@ bool GunBase::IsShot() const
 
 bool GunBase::CanReload() const
 {
-	return m_current_remaining_bullet_num < m_max_remaining_bullet_num;
+	return m_current_remaining_bullet_num < max_remaining_bullet_num;
 }
 #pragma endregion
 
@@ -174,7 +174,7 @@ void GunBase::CalcShotTimer()
 	// TODO : 連射が可能なため後に仕様変更
 	if (m_on_pull_trigger)
 	{
-		math::Increase(m_shot_timer, GetDeltaTime(), m_shot_interval_time, true);
+		math::Increase(m_shot_timer, GetDeltaTime(), shot_interval_time, true);
 	}
 	else
 	{

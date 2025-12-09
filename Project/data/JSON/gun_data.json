@@ -1,0 +1,196 @@
+{
+  "gun_data": {
+    "assault_rifle": {
+      "transform": {
+        "pos": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+        },
+        "rot": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        }
+      },
+      "basic_angle": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "basic_scale": 1.5,
+      "mass_kind": 0,
+      "power": 30.0,
+      "hold_offset_pos": {
+        "x": -3.0,
+        "y": 3.0,
+        "z": 23.0
+      },
+      "hold_offset_angle": {
+        "x": 270.0,
+        "y": 270.0,
+        "z": 0.0
+      },
+      "hold_offset_scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "attach_offset_pos": {
+        "x": 15.0,
+        "y": -5.0,
+        "z": -5.0
+      },
+      "attach_offset_angle": {
+        "x": 45.0,
+        "y": 270.0,
+        "z": 0.0
+      },
+      "attach_offset_scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "weapon_kind": 0,
+      "holster_kind": 2,
+      "cross_hair_distance": 1500.0,
+      "max_remaining_bullet_num": 30,
+      "range": 2000.0,
+      "initial_velocity": 3000.0,
+      "deceleration": 0.05,
+      "scope_scale": 2.0,
+      "recoil_data": {
+        "max_yaw": 1.0,
+        "min_yaw": -0.3,
+        "yaw": 0.5,
+        "pitch": 0.7,
+        "recoil_time": 0.2,
+        "return_damping": {
+          "x": 0.5,
+          "y": 0.5,
+          "z": 0.5
+        }
+      },
+      "shot_interval_time": 0.1,
+      "gun_kind": 5,
+      "cross_hair_max_radius": 45.0,
+      "cross_hair_middle_radius": 30.0,
+      "cross_hair_min_radius": 10.0,
+      "muzzle_offset": {
+        "x": 0.0,
+        "y": 3.0,
+        "z": 13.0
+      },
+      "ejection_port_offset": {
+        "x": 1.0,
+        "y": 3.0,
+        "z": 0.15
+      },
+      "load_port_offset": {
+        "x": 0.0,
+        "y": -10.0,
+        "z": 0.0
+      }
+    },
+    "rocket_launcher": {
+      "transform": {
+        "pos": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+        },
+        "rot": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        }
+      },
+      "basic_angle": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "basic_scale": 1.5,
+      "mass_kind": 0,
+      "power": 30.0,
+      "hold_offset_pos": {
+        "x": -3.0,
+        "y": 3.0,
+        "z": 23.0
+      },
+      "hold_offset_angle": {
+        "x": 270.0,
+        "y": 270.0,
+        "z": 0.0
+      },
+      "hold_offset_scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "attach_offset_pos": {
+        "x": 15.0,
+        "y": -5.0,
+        "z": -5.0
+      },
+      "attach_offset_angle": {
+        "x": 45.0,
+        "y": 270.0,
+        "z": 0.0
+      },
+      "attach_offset_scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "weapon_kind": 0,
+      "holster_kind": 2,
+      "cross_hair_distance": 1500.0,
+      "max_remaining_bullet_num": 30,
+      "range": 2000.0,
+      "initial_velocity": 3000.0,
+      "deceleration": 0.05,
+      "scope_scale": 2.0,
+      "recoil_data": {
+        "max_yaw": 1.0,
+        "min_yaw": -0.3,
+        "yaw": 0.5,
+        "pitch": 0.7,
+        "recoil_time": 0.2,
+        "return_damping": {
+          "x": 0.5,
+          "y": 0.5,
+          "z": 0.5
+        }
+      },
+      "shot_interval_time": 0.1,
+      "gun_kind": 5,
+      "cross_hair_max_radius": 45.0,
+      "muzzle_offset": {
+        "x": 0.0,
+        "y": 3.0,
+        "z": 13.0
+      },
+      "exhaust_vent_offset": {
+        "x": 1.0,
+        "y": 3.0,
+        "z": 0.15
+      },
+      "load_port_offset": {
+        "x": 0.0,
+        "y": -10.0,
+        "z": 0.0
+      }
+    }
+  }
+}

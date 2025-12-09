@@ -49,6 +49,8 @@ protected:
 	std::shared_ptr<Transform>	m_item_effect_transform;
 	
 	float		power;
+	VECTOR		basic_angle;
+	float		basic_scale;
 	VECTOR		hold_offset_pos;		// 手に持たれる際のオフセット座標
 	VECTOR		hold_offset_angle;		// 手に持たれる際のオフセット角度
 	VECTOR		hold_offset_scale;		// 手に持たれる際のオフセットスケール

@@ -2,6 +2,7 @@
 #include "../Base/gun_base.hpp"
 #include "non_collide_rocket_bomb.hpp"
 #include "rocket_bomb_box.hpp"
+#include "../JSON/json_loader.hpp"
 
 class RocketLauncher final : public GunBase
 {
@@ -49,8 +50,41 @@ private:
 	static constexpr float  kDeceleration			= 0.2f;
 	static constexpr float  kShotIntervalTime		= 1.5f;
 
-	static constexpr float  kCrossHairMaxRadius		= 15.0f;		// ŠgŽU”ÍˆÍ‚Ì”¼Œa
+	static constexpr float  cross_hair_max_radius		= 15.0f;		// ŠgŽU”ÍˆÍ‚Ì”¼Œa
+
+private:
+	float  cross_hair_max_radius;
+	VECTOR muzzle_offset;
+	VECTOR exhaust_vent_offset;
+	VECTOR load_port_offset;
 
 	std::shared_ptr<Transform> m_exhaust_vent_transform;
 	bool m_is_draw_magazine;
+
+	friend void from_json(const nlohmann::json& data, RocketLauncher& rocket_launcher);
+	friend void to_json  (nlohmann::json& data, const RocketLauncher& rocket_launcher);
 };
+
+
+#pragma region from / to JSON
+inline void from_json(const nlohmann::json& data, RocketLauncher& rocket_launcher)
+{
+	from_json(data, static_cast<GunBase&>(rocket_launcher));
+
+	data.at("cross_hair_max_radius").get_to(rocket_launcher.cross_hair_max_radius);
+}
+
+inline void to_json(nlohmann::json& data, const RocketLauncher& rocket_launcher)
+{
+	nlohmann::json base_json;
+	to_json(base_json, static_cast<const GunBase&>(rocket_launcher));
+
+	nlohmann::json derived_json =
+	{
+		{ "cross_hair_max_radius", rocket_launcher.cross_hair_max_radius },
+	};
+
+	data = base_json;
+	data.update(derived_json);
+}
+#pragma endregion

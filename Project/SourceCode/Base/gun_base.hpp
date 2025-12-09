@@ -59,12 +59,12 @@ public:
 	[[nodiscard]] std::shared_ptr<Transform> GetLoadTransform()			const { return m_load_transform; }
 	[[nodiscard]] VECTOR	 GetAimDir()					const { return m_aim_dir; }
 	[[nodiscard]] VECTOR	 GetShotDir()					const;
-	[[nodiscard]] float		 GetScopeScale()				const { return m_scope_scale; }
-	[[nodiscard]] float		 GetRange()						const { return m_range; }
-	[[nodiscard]] float		 GetInitialVelocity()			const { return m_initial_velocity; }
-	[[nodiscard]] float		 GetDeceleration()				const { return m_deceleration; }
-	[[nodiscard]] RecoilData GetRecoilData()				const { return m_recoil_data; }
-	[[nodiscard]] GunKind	 GetGunKind()					const { return m_gun_kind; }
+	[[nodiscard]] float		 GetScopeScale()				const { return scope_scale; }
+	[[nodiscard]] float		 GetRange()						const { return range; }
+	[[nodiscard]] float		 GetInitialVelocity()			const { return initial_velocity; }
+	[[nodiscard]] float		 GetDeceleration()				const { return deceleration; }
+	[[nodiscard]] RecoilData GetRecoilData()				const { return recoil_data; }
+	[[nodiscard]] GunKind	 GetGunKind()					const { return gun_kind; }
 
 	/// @brief ’eŠÛ‚Ì”­ËˆÊ’u‚ğæ“¾
 	[[nodiscard]] VECTOR	 GetFirstShotPos()				const;
@@ -72,7 +72,7 @@ public:
 	/// @brief c’e”‚ğæ“¾
 	[[nodiscard]] int		 GetCurrentRemainingBulletNum()	const { return m_current_remaining_bullet_num; }
 	/// @brief Å‘å‚Ìc’e”‚ğæ“¾
-	[[nodiscard]] int		 GetMaxRemainingBulletNum()		const { return m_max_remaining_bullet_num; }
+	[[nodiscard]] int		 GetMaxRemainingBulletNum()		const { return max_remaining_bullet_num; }
 
 	[[nodiscard]] bool		 IsShot() const;
 	[[nodiscard]] bool		 CanReload() const;
@@ -82,7 +82,16 @@ protected:
 	void CalcTransform(std::shared_ptr<Transform>& transform, const VECTOR& offset);
 
 protected:
-	static constexpr float kCrossHairDistance = 1500.0f;		// ŠgU”ÍˆÍ‚ªˆÊ’u‚·‚éÀ•W‚Ü‚Å‚Ì‹——£
+	GunKind		gun_kind;						// e‚Ìí—Ş
+	float		cross_hair_distance;			// ŠgU”ÍˆÍ‚ªˆÊ’u‚·‚éÀ•W‚Ü‚Å‚Ì‹——£
+	int			max_remaining_bullet_num;		// Å‘åc’e”
+	float		range;							// Ë’ö
+	float		initial_velocity;				// ’eŠÛ‚Ì‰‘¬
+	float		deceleration;					// ’eŠÛ‚ÌŒ¸‘¬“x
+	RecoilData	recoil_data;
+
+	float		shot_interval_time;				// ’eŠÛ‚ª”­Ë‚³‚ê‚éŠÔŠÔŠu
+
 
 	std::shared_ptr<ILoadableAmmo>		m_magazine;
 
@@ -96,18 +105,49 @@ protected:
 	VECTOR		m_point_on_ray;					// ƒŒƒCƒLƒƒƒXƒg—p‚Ìü•ª‚ğŠg’£‚µ‚½’¼üã‚É‚ ‚é“_
 
 	int			m_current_remaining_bullet_num;	// Œ»İ‚Ìc’e”
-	int			m_max_remaining_bullet_num;		// Å‘åc’e”
 
-	float		m_scope_scale;					// ƒXƒR[ƒv”{—¦
-	float		m_range;						// Ë’ö
-	float		m_initial_velocity;				// ’eŠÛ‚Ì‰‘¬
-	float		m_deceleration;					// ’eŠÛ‚ÌŒ¸‘¬“x
-	RecoilData	m_recoil_data;
-
-	float		m_shot_interval_time;			// ’eŠÛ‚ª”­Ë‚³‚ê‚éŠÔŠÔŠu
+	float		scope_scale;					// ƒXƒR[ƒv”{—¦
 	float		m_shot_timer;					// ’eŠÛ‚ğŒ‚‚Â‚½‚ß‚Ìƒ^ƒCƒ}[
 	bool		m_on_pull_trigger;				// e‚Ìˆø‚«‹à‚ªˆø‚©‚ê‚Ä‚¢‚é‚©‚ğ”»’è
 
-private:
-	GunKind		m_gun_kind;						// e‚Ìí—Ş
+	friend void from_json(const nlohmann::json& data, GunBase& gun_base);
+	friend void to_json(nlohmann::json& data, const GunBase& gun_base);
 };
+
+
+#pragma region from / to JSON
+inline void from_json(const nlohmann::json& data, GunBase& gun_base)
+{
+	from_json(data, static_cast<WeaponBase&>(gun_base));
+
+	data.at("cross_hair_distance")		.get_to(gun_base.cross_hair_distance);
+	data.at("max_remaining_bullet_num")	.get_to(gun_base.max_remaining_bullet_num);
+	data.at("range")					.get_to(gun_base.range);
+	data.at("initial_velocity")			.get_to(gun_base.initial_velocity);
+	data.at("deceleration")				.get_to(gun_base.deceleration);
+	data.at("recoil_data")				.get_to(gun_base.recoil_data);
+	data.at("shot_interval_time")		.get_to(gun_base.shot_interval_time);
+	data.at("gun_kind")					.get_to(gun_base.gun_kind);
+}
+
+inline void to_json(nlohmann::json& data, const GunBase& gun_base)
+{
+	nlohmann::json base_json;
+	to_json(base_json, static_cast<const WeaponBase&>(gun_base));
+
+	nlohmann::json derived_json =
+	{
+		{ "cross_hair_distance",		gun_base.cross_hair_distance },
+		{ "max_remaining_bullet_num",	gun_base.max_remaining_bullet_num },
+		{ "range",						gun_base.range },
+		{ "initial_velocity",			gun_base.initial_velocity },
+		{ "deceleration",				gun_base.deceleration },
+		{ "recoil_data",				gun_base.recoil_data },
+		{ "shot_interval_time",			gun_base.shot_interval_time },
+		{ "gun_kind",					gun_base.gun_kind },
+	};
+
+	data = base_json;
+	data.update(derived_json);
+}
+#pragma endregion

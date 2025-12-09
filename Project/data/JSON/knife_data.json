@@ -1,0 +1,69 @@
+{
+  "knife_data": {
+    "knife": {
+      "transform": {
+        "pos": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+        },
+        "rot": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        }
+      },
+      "basic_angle": {
+        "x": 0.0,
+        "y": 270.0,
+        "z": 0.0
+      },
+      "basic_scale": 0.03,
+      "mass_kind": 0,
+      "power": 30.0,
+      "hold_offset_pos": {
+        "x": -1.0,
+        "y": -6.0,
+        "z": 13.0
+      },
+      "hold_offset_angle": {
+        "x": 0.0,
+        "y": 270.0,
+        "z": 180.0
+      },
+      "hold_offset_scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "attach_offset_pos": {
+        "x": 18.0,
+        "y": -8.0,
+        "z": 0.0
+      },
+      "attach_offset_angle": {
+        "x": 270.0,
+        "y": 90.0,
+        "z": 0.0
+      },
+      "attach_offset_scale": {
+        "x": 0.6,
+        "y": 0.6,
+        "z": 0.6
+      },
+      "weapon_kind": 1,
+      "holster_kind": 0,
+      "trigger_offset_pos": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 15.0
+      },
+      "trigger_radius": 5.0
+    }
+  }
+}

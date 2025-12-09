@@ -3,12 +3,29 @@
 Knife::Knife() : 
 	KnifeBase(ObjName.KNIFE, HolsterKind::kKnife)
 {
-	m_modeler = std::make_shared<Modeler>(m_transform, ModelPath.KNIFE, kBasicAngle, kBasicScale);	
-	SetColliderModelHandle(m_modeler->GetModelHandle());
+	nlohmann::json data;
+	if (json_loader::Load("Data/JSON/knife_data.json", data))
+	{
+		const auto knife = data.at("knife_data").at("knife");
 
-	CreateAttackTrigger(kTriggerOffsetPos, kTriggerRadius);
+		mass_kind			= knife.at("mass_kind");
+		basic_angle			= knife.at("basic_angle").get<VECTOR>() * math::kDegToRad;
+		basic_scale			= knife.at("basic_scale");
+		power				= knife.at("power");
+		hold_offset_pos		= knife.at("hold_offset_pos");
+		hold_offset_angle	= knife.at("hold_offset_angle").get<VECTOR>() * math::kDegToRad;
+		hold_offset_scale	= knife.at("hold_offset_scale");
+		attach_offset_pos	= knife.at("attach_offset_pos");
+		attach_offset_angle	= knife.at("attach_offset_angle").get<VECTOR>() * math::kDegToRad;
+		attach_offset_scale	= knife.at("attach_offset_scale");
+		weapon_kind			= knife.at("weapon_kind");
+		holster_kind		= knife.at("holster_kind");
+		trigger_offset_pos	= knife.at("trigger_offset_pos");
+		trigger_radius		= knife.at("trigger_radius");
 
-	power = kPower;
+		m_modeler = std::make_shared<Modeler>(m_transform, ModelPath.KNIFE, basic_angle, basic_scale);
+		SetColliderModelHandle(m_modeler->GetModelHandle());
+	}
 }
 
 Knife::~Knife()
@@ -30,7 +47,6 @@ void Knife::LateUpdate()
 {
 	if (!IsActive()) { return; }
 
-	//TrackOwnerHand();
 	CalcAttackTriggerPos();
 }
 
@@ -40,7 +56,7 @@ void Knife::Draw() const
 
 	m_modeler->Draw();
 
-	//DrawColliders();
+	DrawColliders();
 }
 
 void Knife::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
