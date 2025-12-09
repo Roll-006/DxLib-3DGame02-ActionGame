@@ -8,21 +8,43 @@ RocketLauncher::RocketLauncher() :
 	m_magazine = std::make_shared<NonCollildeRocketBomb>(m_load_transform);
 	std::dynamic_pointer_cast<ObjBase>(m_magazine)->AddToObjManager();
 
-	m_modeler = std::make_shared<Modeler>(m_transform, ModelPath.ROCKET_LAUNCHER, kBasicAngle, kBasicScale);
-	SetColliderModelHandle(m_modeler->GetModelHandle());
+	nlohmann::json data;
+	if (json_loader::Load("Data/JSON/gun_data.json", data))
+	{
+		const auto rocket_launcher	= data.at("gun_data").at("rocket_launcher");
+		mass_kind					= rocket_launcher.at("mass_kind");
+		basic_angle					= rocket_launcher.at("basic_angle").get<VECTOR>() * math::kDegToRad;
+		basic_scale					= rocket_launcher.at("basic_scale");
+		power						= rocket_launcher.at("power");
+		hold_offset_pos				= rocket_launcher.at("hold_offset_pos");
+		hold_offset_angle			= rocket_launcher.at("hold_offset_angle").get<VECTOR>() * math::kDegToRad;
+		hold_offset_scale			= rocket_launcher.at("hold_offset_scale");
+		attach_offset_pos			= rocket_launcher.at("attach_offset_pos");
+		attach_offset_angle			= rocket_launcher.at("attach_offset_angle").get<VECTOR>() * math::kDegToRad;
+		attach_offset_scale			= rocket_launcher.at("attach_offset_scale");
+		weapon_kind					= rocket_launcher.at("weapon_kind");
+		holster_kind				= rocket_launcher.at("holster_kind");
+		cross_hair_distance			= rocket_launcher.at("cross_hair_distance");
+		max_remaining_bullet_num	= rocket_launcher.at("max_remaining_bullet_num");
+		range						= rocket_launcher.at("range");
+		initial_velocity			= rocket_launcher.at("initial_velocity");
+		deceleration				= rocket_launcher.at("deceleration");
+		scope_scale					= rocket_launcher.at("scope_scale");
+		recoil_data					= rocket_launcher.at("recoil_data").get<RecoilData>();
+		recoil_data.yaw		*= math::kDegToRad;
+		recoil_data.pitch	*= math::kDegToRad;
+		shot_interval_time			= rocket_launcher.at("shot_interval_time");
+		gun_kind					= rocket_launcher.at("gun_kind");
+		cross_hair_max_radius		= rocket_launcher.at("cross_hair_max_radius");
+		muzzle_offset				= rocket_launcher.at("muzzle_offset");
+		exhaust_vent_offset			= rocket_launcher.at("exhaust_vent_offset");
+		load_port_offset			= rocket_launcher.at("load_port_offset");
 
-	m_cross_hair_shape		= std::make_shared<Circle>();
-	scope_scale			= kScopeScale;
-	range					= kRange;
-	power					= kPower;
-	initial_velocity		= kInitialVelocity;
-	deceleration			= kDeceleration;
-	shot_interval_time	= kShotIntervalTime;
-	recoil_data			= RecoilData(0.0f, 0.0f, 0.0f, 10.0f * math::kDegToRad, 0.3f, VGet(1.0f, 1.0f, 1.0f));
+		m_modeler = std::make_shared<Modeler>(m_transform, ModelPath.ROCKET_LAUNCHER, basic_angle, basic_scale);
+		SetColliderModelHandle(m_modeler->GetModelHandle());
+	}
 
-	max_remaining_bullet_num = kMaxRemainingBulletNum;
-
-	//AddCollider(std::make_shared<Collider>(ColliderKind::kRayCast, std::make_shared<Segment>(), this));
+	m_cross_hair_shape = std::make_shared<Circle>();
 }
 
 RocketLauncher::~RocketLauncher()
@@ -97,7 +119,7 @@ void RocketLauncher::CalcTargetPos()
 
 void RocketLauncher::CalcTransforms()
 {
-	CalcTransform(m_muzzle_transform,		kMuzzleOffsetPos);
-	CalcTransform(m_load_transform,			kLoadPortOffsetPos);
-	CalcTransform(m_exhaust_vent_transform, kExhaustVentOffsetPos);
+	CalcTransform(m_muzzle_transform,		muzzle_offset);
+	CalcTransform(m_load_transform,			load_port_offset);
+	CalcTransform(m_exhaust_vent_transform, exhaust_vent_offset);
 }

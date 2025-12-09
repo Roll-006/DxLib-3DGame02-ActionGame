@@ -84,21 +84,21 @@ Player::Player() :
 	// TODO : âºå„Ç…ïœçX
 	{
 		// ïêäÌê›íË
-		//const auto rocket_launcher	= std::make_shared<RocketLauncher>();
+		const auto rocket_launcher	= std::make_shared<RocketLauncher>();
 		const auto assault_rifle	= std::make_shared<AssaultRifle>();
 		const auto knife			= std::make_shared<Knife>();
-		//rocket_launcher->AddToObjManager();
+		rocket_launcher ->AddToObjManager();
 		assault_rifle	->AddToObjManager();
 		knife			->AddToObjManager();
-		//m_weapon_shortcut_selecter->AttachShortcutWeapon(WeaponShortcutPosKind::kOutsideDown, rocket_launcher);
-		m_weapon_shortcut_selecter->AttachShortcutWeapon(WeaponShortcutPosKind::kInsideLeft, assault_rifle);
-		//AddItem(rocket_launcher);
+		m_weapon_shortcut_selecter->AttachShortcutWeapon(WeaponShortcutPosKind::kOutsideDown, rocket_launcher);
+		m_weapon_shortcut_selecter->AttachShortcutWeapon(WeaponShortcutPosKind::kInsideLeft,  assault_rifle);
+		AddItem(rocket_launcher);
 		AddItem(assault_rifle);
 		AddItem(knife);
-		//EquipWeapon(rocket_launcher,	WeaponSlotKind::kMain);
+		EquipWeapon(rocket_launcher,	WeaponSlotKind::kMain);
 		EquipWeapon(assault_rifle,		WeaponSlotKind::kMain);
 		EquipWeapon(knife,				WeaponSlotKind::kSub);
-		//AttachWeapon(rocket_launcher);
+		AttachWeapon(rocket_launcher);
 		AttachWeapon(assault_rifle);
 		AttachWeapon(knife);
 
