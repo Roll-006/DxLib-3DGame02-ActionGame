@@ -59,6 +59,16 @@
       "edge_size": -1,
       "italic": false,
       "handle": -1
+    },
+    "mission_text": {
+      "font_path": "Yu Gothic UI",
+      "size": 150,
+      "thick": 7,
+      "type": -1,
+      "char_set": -1,
+      "edge_size": -1,
+      "italic": false,
+      "handle": -1
     }
   }
 }

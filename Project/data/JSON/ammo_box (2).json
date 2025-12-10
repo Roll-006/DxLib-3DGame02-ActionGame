@@ -1,0 +1,30 @@
+{
+  "ammo_box": {
+    "assault_rifle_ammo_box": {
+      "rifle_cartridge_box_data": {
+        "model_path": "Data/Model/Item/AmmoBox/5.56x45mm/mesh.mv1",
+        "max_have_num": 100,
+        "basic_angle": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "basic_scale": 0.7,
+        "project_ray_length": 500.0
+      }
+    },
+    "rocket_bomb_box": {
+      "rifle_cartridge_box_data": {
+        "model_path": "Data/Model/Item/Bullet/RocketBomb/mesh.mv1",
+        "max_have_num": 1,
+        "basic_angle": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "basic_scale": 0.3,
+        "project_ray_length": 500.0
+      }
+    }
+  }
+}

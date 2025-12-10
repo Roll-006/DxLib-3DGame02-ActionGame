@@ -402,6 +402,16 @@
     <ClInclude Include="SourceCode\Concept\state_concepts.hpp" />
     <ClInclude Include="SourceCode\Concept\vector_concepts.hpp" />
     <ClInclude Include="SourceCode\CSV\csv_loader.hpp" />
+    <ClInclude Include="SourceCode\Data\aid_mixamo_axis_data (10).hpp" />
+    <ClInclude Include="SourceCode\Data\aid_mixamo_axis_data (2).hpp" />
+    <ClInclude Include="SourceCode\Data\aid_mixamo_axis_data (3).hpp" />
+    <ClInclude Include="SourceCode\Data\aid_mixamo_axis_data (4).hpp" />
+    <ClInclude Include="SourceCode\Data\aid_mixamo_axis_data (5).hpp" />
+    <ClInclude Include="SourceCode\Data\aid_mixamo_axis_data (6).hpp" />
+    <ClInclude Include="SourceCode\Data\aid_mixamo_axis_data (7).hpp" />
+    <ClInclude Include="SourceCode\Data\aid_mixamo_axis_data (8).hpp" />
+    <ClInclude Include="SourceCode\Data\aid_mixamo_axis_data (9).hpp" />
+    <ClInclude Include="SourceCode\Data\mission_ui_data.hpp" />
     <ClInclude Include="SourceCode\Data\sound_data.hpp" />
     <ClInclude Include="SourceCode\Data\text_data.hpp" />
     <ClInclude Include="SourceCode\Data\axis_data.hpp" />
@@ -794,6 +804,9 @@
     <ClInclude Include="SourceCode\Window\window.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Data\JSON\ammo_box (2).json" />
+    <None Include="Data\JSON\ammo_box (3).json" />
+    <None Include="Data\JSON\text_data.json" />
     <None Include="data\JSON\gun_data.json" />
     <None Include="data\JSON\knife_data.json" />
     <None Include="Data\JSON\ammo_box.json" />

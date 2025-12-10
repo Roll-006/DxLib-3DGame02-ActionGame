@@ -1878,6 +1878,36 @@
     <ClInclude Include="SourceCode\Event\draw_knife_event.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\Data\aid_mixamo_axis_data (2).hpp">
+      <Filter>SourceCode\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\aid_mixamo_axis_data (3).hpp">
+      <Filter>SourceCode\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\aid_mixamo_axis_data (4).hpp">
+      <Filter>SourceCode\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\aid_mixamo_axis_data (5).hpp">
+      <Filter>SourceCode\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\aid_mixamo_axis_data (6).hpp">
+      <Filter>SourceCode\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\aid_mixamo_axis_data (7).hpp">
+      <Filter>SourceCode\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\aid_mixamo_axis_data (8).hpp">
+      <Filter>SourceCode\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\aid_mixamo_axis_data (9).hpp">
+      <Filter>SourceCode\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\aid_mixamo_axis_data (10).hpp">
+      <Filter>SourceCode\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\mission_ui_data.hpp">
+      <Filter>SourceCode\Data</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="SourceCode">
@@ -2078,6 +2108,15 @@
       <Filter>JSON</Filter>
     </None>
     <None Include="data\JSON\knife_data.json">
+      <Filter>JSON</Filter>
+    </None>
+    <None Include="Data\JSON\ammo_box (2).json">
+      <Filter>JSON</Filter>
+    </None>
+    <None Include="Data\JSON\ammo_box (3).json">
+      <Filter>JSON</Filter>
+    </None>
+    <None Include="Data\JSON\text_data.json">
       <Filter>JSON</Filter>
     </None>
   </ItemGroup>

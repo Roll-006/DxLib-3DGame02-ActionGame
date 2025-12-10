@@ -1,0 +1,24 @@
+{
+  "text_data": {
+    "mission": {
+      "screen_size": {
+        "x": 500,
+        "y": 300
+      },
+      "height_ratio": 0.5,
+      "text_data": {
+        "font_path": "mission_text",
+        "text": "MISSION"
+      },
+      "fade_in_speed": 100,
+      "fade_out_speed": 100,
+      "draw_wait_time": 20.0
+    },
+    "purpose": {
+
+    },
+    "guidance": {
+
+    }
+  }
+}

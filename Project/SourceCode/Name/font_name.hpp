@@ -9,5 +9,6 @@ static struct FontName
 	const std::string GAME_CLEAR_TEXT			= "game_clear_text";
 	const std::string REMAINING_BULLETS_TEXT	= "remaining_bullets_text";
 	const std::string HAVE_AMMO_NUM_TEXT		= "have_ammo_num_text";
+	const std::string MISSION_TEXT				= "mission_text";
 
 }FontName;

@@ -1,6 +1,7 @@
 #pragma once
 #include "../Interface/i_ui_creator.hpp"
-
+#include "../UI/mission_ui.hpp"
+#include "../Event/event_system.hpp"
 
 class GuidanceUICreator final : public IUICreator
 {
@@ -8,8 +9,8 @@ public:
 	GuidanceUICreator();
 	~GuidanceUICreator() override;
 
-	void Init() override;
-	void LateUpdate() override;
+	void Init()			override;
+	void LateUpdate()	override;
 	void OnDraw(const int main_screen_handle) override;
 
 	/// @brief アクティブ化する
@@ -22,7 +23,12 @@ public:
 	[[nodiscard]] bool		  IsActive()	const override { return m_is_active; }
 
 private:
+	void ActivateMissionUI(const ChangeSceneEvent& event);
+
+private:
 	std::string	m_name;
 	int			m_priority;
 	bool		m_is_active;
+
+	std::shared_ptr<MissionUI> m_mission_ui;
 };
