@@ -46,6 +46,9 @@ private:
 	void PlayGameOverSound			(const DeadPlayerEvent&			event);
 	void PlayStabKnifeSound			(const StabKnifeEvent&			event);
 	void PlayDrawKnifeSound			(const DrawKnifeEvent&			event);
+	void PlayFirstSlashSound		(const FirstSlashEvent&			event);
+	void PlaySecondSlashSound		(const SecondSlashEvent&		event);
+	void PlaySpinningSlashSound		(const SpinningSlashEvent&		event);
 	void PlayShoutSound				(const OnTargetDetectedEvent&	event);
 	void PlayBiteZombieSound		(const GrabEvent&				event);
 	void PlayStunZombieSound		(const StunEvent&				event);

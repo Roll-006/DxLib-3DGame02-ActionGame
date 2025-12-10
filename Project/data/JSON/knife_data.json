@@ -63,7 +63,7 @@
         "y": 0.0,
         "z": 8.0
       },
-      "trigger_radius": 8.0
+      "trigger_radius": 10.0
     }
   }
 }

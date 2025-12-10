@@ -27,6 +27,9 @@ SoundPlayer::SoundPlayer() :
 	EventSystem::GetInstance()->Subscribe<DeadPlayerEvent>			(this, &SoundPlayer::PlayGameOverSound);
 	EventSystem::GetInstance()->Subscribe<StabKnifeEvent>			(this, &SoundPlayer::PlayStabKnifeSound);
 	EventSystem::GetInstance()->Subscribe<DrawKnifeEvent>			(this, &SoundPlayer::PlayDrawKnifeSound);
+	EventSystem::GetInstance()->Subscribe<FirstSlashEvent>			(this, &SoundPlayer::PlayFirstSlashSound);
+	EventSystem::GetInstance()->Subscribe<SecondSlashEvent>			(this, &SoundPlayer::PlaySecondSlashSound);
+	EventSystem::GetInstance()->Subscribe<SpinningSlashEvent>		(this, &SoundPlayer::PlaySpinningSlashSound);
 	EventSystem::GetInstance()->Subscribe<OnTargetDetectedEvent>	(this, &SoundPlayer::PlayShoutSound);
 	EventSystem::GetInstance()->Subscribe<GrabEvent>				(this, &SoundPlayer::PlayBiteZombieSound);
 	EventSystem::GetInstance()->Subscribe<StunEvent>				(this, &SoundPlayer::PlayStunZombieSound);
@@ -60,6 +63,9 @@ SoundPlayer::~SoundPlayer()
 	EventSystem::GetInstance()->Unsubscribe<DeadPlayerEvent>		(this, &SoundPlayer::PlayGameOverSound);
 	EventSystem::GetInstance()->Unsubscribe<StabKnifeEvent>			(this, &SoundPlayer::PlayStabKnifeSound);
 	EventSystem::GetInstance()->Unsubscribe<DrawKnifeEvent>			(this, &SoundPlayer::PlayDrawKnifeSound);
+	EventSystem::GetInstance()->Unsubscribe<FirstSlashEvent>		(this, &SoundPlayer::PlayFirstSlashSound);
+	EventSystem::GetInstance()->Unsubscribe<SecondSlashEvent>		(this, &SoundPlayer::PlaySecondSlashSound);
+	EventSystem::GetInstance()->Unsubscribe<SpinningSlashEvent>		(this, &SoundPlayer::PlaySpinningSlashSound);
 	EventSystem::GetInstance()->Unsubscribe<OnTargetDetectedEvent>	(this, &SoundPlayer::PlayShoutSound);
 	EventSystem::GetInstance()->Unsubscribe<GrabEvent>				(this, &SoundPlayer::PlayBiteZombieSound);
 	EventSystem::GetInstance()->Unsubscribe<StunEvent>				(this, &SoundPlayer::PlayStunZombieSound);
@@ -334,6 +340,21 @@ void SoundPlayer::PlayDrawKnifeSound		(const DrawKnifeEvent&			event)
 {
 	OnPlaySound("draw_knife", event.time_scale_layer_kind, event.pos);
 	OnPlaySound("bleed_large_quantity", event.time_scale_layer_kind, event.pos);
+}
+
+void SoundPlayer::PlayFirstSlashSound(const FirstSlashEvent& event)
+{
+	OnPlaySound("first_slash_knife", TimeScaleLayerKind::kWorld, event.pos);
+}
+
+void SoundPlayer::PlaySecondSlashSound(const SecondSlashEvent& event)
+{
+	OnPlaySound("second_slash_knife", TimeScaleLayerKind::kWorld, event.pos);
+}
+
+void SoundPlayer::PlaySpinningSlashSound(const SpinningSlashEvent& event)
+{
+	OnPlaySound("spinning_slash_knife", TimeScaleLayerKind::kWorld, event.pos);
 }
 
 void SoundPlayer::PlayShoutSound			(const OnTargetDetectedEvent&	event)

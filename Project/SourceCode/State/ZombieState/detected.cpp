@@ -55,6 +55,12 @@ std::shared_ptr<IState<Zombie>> zombie_state::Detected::ChangeState(std::shared_
 	{
 		return state_controller->GetState<Knockback, Zombie>();
 	}
+	// ノックバック(後ろ)
+	if (state_controller->TryBackwardKnockback(obj))
+	{
+		obj->OnKnockback(-obj->GetCurrentLookDir(), 70.0f, 60.0f);
+		return state_controller->GetState<BackwardKnockback, Zombie>();
+	}
 
 	if (obj->GetAnimator()->IsPlayEnd(AnimatorBase::BodyKind::kUpperBody))
 	{

@@ -1863,13 +1863,13 @@
     <ClInclude Include="SourceCode\Event\aim_gun_event (3).hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Event\aim_gun_event (4).hpp">
+    <ClInclude Include="SourceCode\Event\spinning_slash_event.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Event\aim_gun_event (5).hpp">
+    <ClInclude Include="SourceCode\Event\second_slash_event.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Event\aim_gun_event (6).hpp">
+    <ClInclude Include="SourceCode\Event\first_slash_event.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Event\exit_stun_event.hpp">
@@ -2051,9 +2051,6 @@
     <Filter Include="Text">
       <UniqueIdentifier>{f778bbda-5f11-4860-b7cd-f357af151c7c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCode\State\EnemyState">
-      <UniqueIdentifier>{ff495161-2f03-4c6e-a508-ddbb081ecd2c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SourceCode\UICreator">
       <UniqueIdentifier>{ece711ae-b4a0-4e28-a35e-6f6f1518c896}</UniqueIdentifier>
     </Filter>
@@ -2119,10 +2116,10 @@
     <None Include="data\JSON\knife_data.json">
       <Filter>JSON</Filter>
     </None>
-    <None Include="Data\JSON\ammo_box (2).json">
+    <None Include="Data\JSON\a %282%29.json">
       <Filter>JSON</Filter>
     </None>
-    <None Include="Data\JSON\ammo_box (3).json">
+    <None Include="Data\JSON\a.json">
       <Filter>JSON</Filter>
     </None>
     <None Include="Data\JSON\text_data.json">

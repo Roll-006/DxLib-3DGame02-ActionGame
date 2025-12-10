@@ -66,6 +66,15 @@
     "draw_knife": {
       "size": 1
     },
+    "first_slash_knife": {
+      "size": 2
+    },
+    "second_slash_knife": {
+      "size": 2
+    },
+    "spinning_slash_knife": {
+      "size": 2
+    },
     "pick_up_item": {
       "size": 5
     },

@@ -45,7 +45,7 @@ void GameOverText::CreateResultScreen()
 {
 	// 透過・スケールの設定
 	const auto delta_time = GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kUI);
-	math::Increase(m_alpha_blend_num, static_cast<int>(30.0f * delta_time), UCHAR_MAX, false);
+	math::Increase(m_alpha_blend_num, static_cast<int>(100.0f * delta_time), UCHAR_MAX, false);
 	m_result_screen->GetGraphicer()->SetBlendNum(m_alpha_blend_num);
 
 	m_result_screen->UseScreen();

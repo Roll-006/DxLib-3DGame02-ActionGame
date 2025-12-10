@@ -20,7 +20,7 @@ void zombie_state::StandStun::Update(std::shared_ptr<Zombie>& obj)
 		m_stun_timer += obj->GetDeltaTime();
 	}
 
-	//obj->CalcAttackIntervalTime();
+	obj->DisallowDecreaseKnockBackGauge();
 }
 
 void zombie_state::StandStun::LateUpdate(std::shared_ptr<Zombie>& obj)

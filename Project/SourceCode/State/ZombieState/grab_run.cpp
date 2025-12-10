@@ -29,7 +29,7 @@ void zombie_state::GrabRun::Enter(std::shared_ptr<Zombie>& obj)
 {
 	m_track_timer = 0.0f;
 
-	obj->SetAttackIntervalTime();
+	obj->SetUpAttackIntervalTime();
 }
 
 void zombie_state::GrabRun::Exit(std::shared_ptr<Zombie>& obj)
@@ -57,6 +57,12 @@ std::shared_ptr<IState<Zombie>> zombie_state::GrabRun::ChangeState(std::shared_p
 	if (state_controller->TryKnockback(obj))
 	{
 		return state_controller->GetState<Knockback, Zombie>();
+	}
+	// ノックバック(後ろ)
+	if (state_controller->TryBackwardKnockback(obj))
+	{
+		obj->OnKnockback(-obj->GetCurrentLookDir(), 70.0f, 60.0f);
+		return state_controller->GetState<BackwardKnockback, Zombie>();
 	}
 	// 死亡
 	if (state_controller->TryDead(obj))

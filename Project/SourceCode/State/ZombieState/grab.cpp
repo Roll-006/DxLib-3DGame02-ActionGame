@@ -76,6 +76,12 @@ std::shared_ptr<IState<Zombie>> zombie_state::Grab::ChangeState(std::shared_ptr<
 	{
 		return state_controller->GetState<Knockback, Zombie>();
 	}
+	// ノックバック(後ろ)
+	if (state_controller->TryBackwardKnockback(obj))
+	{
+		obj->OnKnockback(-obj->GetCurrentLookDir(), 70.0f, 60.0f);
+		return state_controller->GetState<BackwardKnockback, Zombie>();
+	}
 	// 死亡
 	if (state_controller->TryDead(obj))
 	{

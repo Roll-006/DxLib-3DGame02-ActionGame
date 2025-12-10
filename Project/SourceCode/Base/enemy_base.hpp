@@ -11,7 +11,7 @@ public:
 	virtual void AttachTarget(const std::shared_ptr<CharacterBase>& target_character) abstract;
 	virtual void DetachTarget() abstract;
 
-	void SetAttackIntervalTime();
+	void SetUpAttackIntervalTime();
 	void CalcAttackIntervalTime();
 
 	void CreatePatrolPos(const PatrolRouteGiver::PatrolKind patrol_kind, const std::string& route_id);
@@ -30,10 +30,13 @@ public:
 	/// @brief 行動が強制的に停止させられる
 	void OnDisallowActionForcibly() { m_is_disallow_action_forcibly = true; }
 
+	void DisallowDecreaseKnockBackGauge() { m_can_decrease_knock_back_gauge = false; }
+
 
 	#pragma region Getter
 	[[nodiscard]] std::string						GetEnemyID()				const { return enemy_id; }
 	[[nodiscard]] std::shared_ptr<PatrolRouteGiver> GetPatrolRouteGiver()		const { return m_patrol_route_giver; }
+	[[nodiscard]] std::shared_ptr<Gauge>			GetKnockBackGauge()			const { return m_knock_back_gauge; }
 	[[nodiscard]] bool								IsDetectedTarget()			const { return m_is_detected_target; }
 	[[nodiscard]] bool								IsPrevDetectedTarget()		const { return m_is_prev_detected_target; }
 	[[nodiscard]] bool								CanAttack()					const { return m_attack_interval_timer <= 0.0f; }
@@ -66,6 +69,9 @@ protected:
 	bool  m_is_detected_target;				// 発見状態
 	bool  m_is_prev_detected_target;		// 1フレーム前の発見状態
 	bool  m_is_detection_shared;			// 発見状態が共有された
+
+	std::shared_ptr<Gauge> m_knock_back_gauge;
+	bool  m_can_decrease_knock_back_gauge;
 
 private:
 	friend void from_json(const nlohmann::json& data, EnemyBase& enemy_base);

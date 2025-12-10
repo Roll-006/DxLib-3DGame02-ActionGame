@@ -287,6 +287,45 @@
       "time_scale_layer_kind": 1
     },
     {
+      "path": "Data/Sound/SE/first_slash_knife.mp3",
+      "name": "first_slash_knife",
+      "priority": 10,
+      "volume": 255,
+      "radius": 300.0,
+      "fade_out_speed": 0.0,
+      "max_frequency_scale": 2.0,
+      "min_frequency_scale": 0.0,
+      "is_3d_sound": true,
+      "is_loop": false,
+      "time_scale_layer_kind": 1
+    },
+    {
+      "path": "Data/Sound/SE/second_slash_knife.mp3",
+      "name": "second_slash_knife",
+      "priority": 10,
+      "volume": 255,
+      "radius": 300.0,
+      "fade_out_speed": 0.0,
+      "max_frequency_scale": 2.0,
+      "min_frequency_scale": 0.0,
+      "is_3d_sound": true,
+      "is_loop": false,
+      "time_scale_layer_kind": 1
+    },
+    {
+      "path": "Data/Sound/SE/spinning_slash_knife.mp3",
+      "name": "spinning_slash_knife",
+      "priority": 10,
+      "volume": 255,
+      "radius": 300.0,
+      "fade_out_speed": 0.0,
+      "max_frequency_scale": 2.0,
+      "min_frequency_scale": 0.0,
+      "is_3d_sound": true,
+      "is_loop": false,
+      "time_scale_layer_kind": 1
+    },
+    {
       "path": "Data/Sound/SE/pick_up_item.mp3",
       "name": "pick_up_item",
       "priority": 5,

@@ -14,6 +14,8 @@ zombie_state::BackwardKnockback::~BackwardKnockback()
 
 void zombie_state::BackwardKnockback::Update(std::shared_ptr<Zombie>& obj)
 {
+	obj->ActivateInvincibleForcibly();
+	obj->DisallowDecreaseKnockBackGauge();
 	obj->DisallowStealthKill();
 }
 
@@ -24,7 +26,11 @@ void zombie_state::BackwardKnockback::LateUpdate(std::shared_ptr<Zombie>& obj)
 
 void zombie_state::BackwardKnockback::Enter(std::shared_ptr<Zombie>& obj)
 {
-
+	const auto knock_back_gauge = obj->GetKnockBackGauge();
+	if (!knock_back_gauge->IsAlive())
+	{
+		knock_back_gauge->IncreaseCurrentMax();
+	}
 }
 
 void zombie_state::BackwardKnockback::Exit(std::shared_ptr<Zombie>& obj)

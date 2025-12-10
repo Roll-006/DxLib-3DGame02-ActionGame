@@ -14,12 +14,14 @@ EnemyBase::EnemyBase(const std::string& name) :
 	m_is_detected_target			(false),
 	m_is_prev_detected_target		(false),
 	m_is_detection_shared			(false),
-	enemy_id						("")
+	enemy_id						(""),
+	m_knock_back_gauge				(nullptr),
+	m_can_decrease_knock_back_gauge	(true)
 {
 
 }
 
-void EnemyBase::SetAttackIntervalTime()
+void EnemyBase::SetUpAttackIntervalTime()
 {
 	m_attack_interval_timer = attack_interval_time;
 }

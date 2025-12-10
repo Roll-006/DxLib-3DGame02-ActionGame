@@ -40,6 +40,7 @@ void player_state::FirstSideSlashKnife::Update(std::shared_ptr<Player>& obj)
 			{
 				knife->AddAttackTrigger();
 				m_has_trigger_created = true;
+				EventSystem::GetInstance()->Publish(FirstSlashEvent(knife->GetTransform()->GetPos(CoordinateKind::kWorld), TimeScaleLayerKind::kPlayer));
 			}
 		}
 	}

@@ -34,6 +34,8 @@ Zombie::Zombie(const std::string& id) :
 		collider_data				= data.at("collider_data").get<HumanoidEnemyColliderData>();
 		m_leg_ray_data				= data.at("leg_ray_data").get<HumanoidLegRayData>();
 		damage_over_time_start_time = data.at("damage_over_time_start_time");
+
+		m_knock_back_gauge = std::make_shared<Gauge>(400.0f);
 	}
 
 	m_transform->SetPos(CoordinateKind::kWorld, v3d::GetZeroV());
@@ -96,8 +98,9 @@ void Zombie::Update()
 	JudgeInvincible();
 	JudgeTargetInSight();
 
-	m_look_dir_offset_speed = look_dir_offset_speed;
-	m_is_allow_stealth_kill = true;
+	m_look_dir_offset_speed			= look_dir_offset_speed;
+	m_is_allow_stealth_kill			= true;
+	m_can_decrease_knock_back_gauge = true;
 
 	m_state				->Update(std::static_pointer_cast<Zombie>(shared_from_this()));
 	m_animator			->Update();
@@ -220,6 +223,9 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 			OnDamage(HealthPartKind::kMain, damage);
 
+			//ナイフ攻撃では必ずノックバックさせる
+			m_knock_back_gauge->DecreaseZero();
+
 			m_is_detection_shared = true;
 
 			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue(), TimeScaleLayerKind::kWorld));
@@ -239,6 +245,8 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 			OnDamage(HealthPartKind::kMain, damage);
 
+			if (m_can_decrease_knock_back_gauge) { m_knock_back_gauge->Decrease(damage); }
+
 			m_is_detection_shared = true;
 
 			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue(), TimeScaleLayerKind::kWorld));
@@ -253,6 +261,7 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 			OnDamage(HealthPartKind::kBody,	damage);
 			OnDamage(HealthPartKind::kMain,	damage);
+			if (m_can_decrease_knock_back_gauge) { m_knock_back_gauge->Decrease(damage); }
 
 			m_is_detection_shared = true;
 
@@ -268,6 +277,7 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 			OnDamage(HealthPartKind::kLeftArm,	damage);
 			OnDamage(HealthPartKind::kMain,		damage);
+			if (m_can_decrease_knock_back_gauge) { m_knock_back_gauge->Decrease(damage); }
 
 			m_is_detection_shared = true;
 
@@ -282,6 +292,7 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 			OnDamage(HealthPartKind::kLeftArm,	damage);
 			OnDamage(HealthPartKind::kMain,		damage);
+			if (m_can_decrease_knock_back_gauge) { m_knock_back_gauge->Decrease(damage); }
 
 			m_is_detection_shared = true;
 
@@ -306,6 +317,7 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 			OnDamage(HealthPartKind::kRightArm, damage);
 			OnDamage(HealthPartKind::kMain,		damage);
+			if (m_can_decrease_knock_back_gauge) { m_knock_back_gauge->Decrease(damage); }
 
 			m_is_detection_shared = true;
 
@@ -320,6 +332,7 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 			OnDamage(HealthPartKind::kRightArm, damage);
 			OnDamage(HealthPartKind::kMain,		damage);
+			if (m_can_decrease_knock_back_gauge) { m_knock_back_gauge->Decrease(damage); }
 
 			m_is_detection_shared = true;
 
@@ -350,6 +363,7 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 			}
 
 			OnDamage(HealthPartKind::kMain, damage);
+			if (m_can_decrease_knock_back_gauge) { m_knock_back_gauge->Decrease(damage); }
 
 			m_is_detection_shared = true;
 
@@ -371,6 +385,7 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 			}
 
 			OnDamage(HealthPartKind::kMain, damage);
+			if (m_can_decrease_knock_back_gauge) { m_knock_back_gauge->Decrease(damage); }
 
 			m_is_detection_shared = true;
 
@@ -487,7 +502,7 @@ void Zombie::Grab()
 	player->OnGrabbed(grabber, m_transform->GetPos(CoordinateKind::kWorld), m_look_dir.at(TimeKind::kCurrent));
 	player->OnDamage (HealthPartKind::kMain, 80.0f);
 
-	SetAttackIntervalTime();
+	SetUpAttackIntervalTime();
 }
 
 void Zombie::Release()

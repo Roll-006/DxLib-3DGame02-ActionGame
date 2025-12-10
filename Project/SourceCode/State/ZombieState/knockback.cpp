@@ -20,6 +20,7 @@ void zombie_state::Knockback::Update(std::shared_ptr<Zombie>& obj)
 	}
 
 	obj->DisallowStealthKill();
+	obj->DisallowDecreaseKnockBackGauge();
 }
 
 void zombie_state::Knockback::LateUpdate(std::shared_ptr<Zombie>& obj)

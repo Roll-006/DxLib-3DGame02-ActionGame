@@ -53,3 +53,6 @@
 #include "../Event/draw_knife_event.hpp"
 #include "../Event/stun_event.hpp"
 #include "../Event/exit_stun_event.hpp"
+#include "../Event/first_slash_event.hpp"
+#include "../Event/second_slash_event.hpp"
+#include "../Event/spinning_slash_event.hpp"

@@ -355,6 +355,11 @@ bool ZombieStateController::TryKnockback(std::shared_ptr<Zombie>& zombie)
 	return zombie->GetKnockBackSpeed() > 0.0f;
 }
 
+bool ZombieStateController::TryBackwardKnockback(std::shared_ptr<Zombie>& zombie)
+{
+	return !zombie->GetKnockBackGauge()->IsAlive();
+}
+
 bool ZombieStateController::TryDead(std::shared_ptr<Zombie>& zombie)
 {
 	return zombie->GetHealth(HealthPartKind::kMain)->GetCurrentValue() <= 0.0f;
