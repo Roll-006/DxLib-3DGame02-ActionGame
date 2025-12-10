@@ -7,13 +7,13 @@ GuidanceUICreator::GuidanceUICreator() :
 	m_mission_ui(std::make_shared<MissionUI>())
 {
 	// ƒCƒxƒ“ƒg“o˜^
-	EventSystem::GetInstance()->Subscribe<ChangeSceneEvent>(this, &GuidanceUICreator::ActivateMissionUI);
+	//EventSystem::GetInstance()->Subscribe<ChangeSceneEvent>(this, &GuidanceUICreator::ActivateMissionUI);
 }
 
 GuidanceUICreator::~GuidanceUICreator()
 {
 	// ƒCƒxƒ“ƒg‚Ì“o˜^‰ðœ
-	EventSystem::GetInstance()->Unsubscribe<ChangeSceneEvent>(this, &GuidanceUICreator::ActivateMissionUI);
+	//EventSystem::GetInstance()->Unsubscribe<ChangeSceneEvent>(this, &GuidanceUICreator::ActivateMissionUI);
 }
 
 void GuidanceUICreator::Init()

@@ -1,4 +1,5 @@
 #pragma once
+#include <windows.h>
 #include <nlohmann/json.hpp>
 #include <unordered_map>
 #include <DxLib.h>

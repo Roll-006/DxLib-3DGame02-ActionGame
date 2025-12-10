@@ -25,5 +25,7 @@ namespace player_state
 
 		float m_combo_timer;
 		bool  m_is_stop_all_state;
+		bool  m_has_trigger_created;
+		bool  m_has_trigger_deleted;
 	};
 }

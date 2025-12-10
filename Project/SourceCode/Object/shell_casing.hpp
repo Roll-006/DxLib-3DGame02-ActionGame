@@ -43,8 +43,8 @@ private:
 
 	static constexpr float  kDisappearTime				= 1.5f;						// Á‚¦‚é‚Ü‚Å‚ÌŠÔ
 	static constexpr VECTOR kLocalFirstMoveDir			= { 1.0f, 1.0f, 0.0f };		// ‰Šú‚ÌˆÚ“®•ûŒü
-	static constexpr float  kInitialVelocity			= 100.0f;					// ‰‘¬
-	static constexpr float  kDeceleration				= 2.0f;						// Œ¸‘¬“x
+	static constexpr float  kInitialVelocity			= 80.0f;					// ‰‘¬
+	static constexpr float  kDeceleration				= 1.7f;						// Œ¸‘¬“x
 
 	static constexpr float  kColliderRadius				= 0.9f;
 	static constexpr float  kCollisionAreaRadius		= 6.0f;
@@ -59,8 +59,6 @@ private:
 
 	VECTOR m_move_dir;
 	float  m_alive_timer;
-
 	float  m_move_speed;
-
 	bool   m_prev_on_ground;
 };

@@ -214,6 +214,16 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 		break;
 
 	case ColliderKind::kCollider:
+		if (target_name == ObjName.KNIFE)
+		{
+			const auto damage = dynamic_cast<KnifeBase*>(target_obj)->GetPower();
+
+			OnDamage(HealthPartKind::kMain, damage);
+
+			m_is_detection_shared = true;
+
+			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue(), TimeScaleLayerKind::kWorld));
+		}
 		break;
 
 	case ColliderKind::kHeadTrigger:

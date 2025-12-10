@@ -5,6 +5,7 @@
 
 #include "../UIButton/sub_menu_select_button.hpp"
 #include "../Part/scene_fader.hpp"
+#include "../UI/game_over_text.hpp"
 
 class GameOverTab final : public ITab
 {
@@ -56,6 +57,8 @@ private:
 	bool							m_is_quit_game;
 	float							m_active_wait_timer;
 	int								m_alpha_blend_num;
+
+	std::shared_ptr<GameOverText>	m_game_over_text;
 	std::shared_ptr<UISelector>		m_ui_selector;
 	std::shared_ptr<Graphicer>		m_filter_graphic;
 	std::shared_ptr<ScreenCreator>	m_result_screen;

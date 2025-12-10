@@ -10,6 +10,7 @@ GameOverTab::GameOverTab() :
 	m_is_quit_game		(false),
 	m_active_wait_timer	(0.0f),
 	m_alpha_blend_num	(0),
+	m_game_over_text	(std::make_shared<GameOverText>()),
 	m_ui_selector		(std::make_shared<UISelector>(0, true, true)),
 	m_filter_graphic	(std::make_shared<Graphicer>(UIGraphicPath.GAME_OVER_TAB_FILTER)),
 	m_result_screen		(std::make_shared<ScreenCreator>(Window::kScreenSize, Window::kCenterPos))
@@ -41,6 +42,7 @@ GameOverTab::~GameOverTab()
 void GameOverTab::Init()
 {
 	m_ui_selector->Init();
+	m_game_over_text->Init();
 }
 
 void GameOverTab::Update()
@@ -50,6 +52,8 @@ void GameOverTab::Update()
 	if (!m_is_active) { return; }
 
 	if (m_can_select) { m_ui_selector->Update(); }
+
+	m_game_over_text->Update();
 
 	CreateResultScreen();
 	CalcAlphaBlendNum();
@@ -69,6 +73,8 @@ void GameOverTab::OnDraw(const int main_screen_handle) const
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	m_result_screen->Draw();
+
+	m_game_over_text->Draw();
 }
 
 void GameOverTab::Activate(const DeadPlayerEvent& event)

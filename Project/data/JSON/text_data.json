@@ -8,7 +8,8 @@
       "height_ratio": 0.5,
       "text_data": {
         "font_path": "mission_text",
-        "text": "MISSION"
+        "text": "MISSION",
+        "hex_color": "#ffffff"
       },
       "fade_in_speed": 100,
       "fade_out_speed": 100,
@@ -19,6 +20,18 @@
     },
     "guidance": {
 
+    },
+    "game_over": {
+      "screen_size": {
+        "x": 1500,
+        "y": 300
+      },
+      "height_ratio": 0.3,
+      "text_data": {
+        "font_path": "game_over_text",
+        "text": "GAME OVER",
+        "hex_color": "#d93b3b"
+      }
     }
   }
 }

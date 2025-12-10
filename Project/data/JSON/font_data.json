@@ -8,7 +8,8 @@
       "char_set": -1,
       "edge_size": -1,
       "italic": false,
-      "handle": -1
+      "handle": -1,
+      "is_standard_font": true
     },
     "main_menu_text": {
       "font_path": "Yu Gothic UI",
@@ -18,7 +19,8 @@
       "char_set": -1,
       "edge_size": -1,
       "italic": false,
-      "handle": -1
+      "handle": -1,
+      "is_standard_font": true
     },
     "sub_menu_text": {
       "font_path": "Calibri Light",
@@ -28,7 +30,8 @@
       "char_set": -1,
       "edge_size": -1,
       "italic": false,
-      "handle": -1
+      "handle": -1,
+      "is_standard_font": true
     },
     "game_clear_text": {
       "font_path": "Calibri Light",
@@ -38,7 +41,19 @@
       "char_set": -1,
       "edge_size": -1,
       "italic": false,
-      "handle": -1
+      "handle": -1,
+      "is_standard_font": true
+    },
+    "game_over_text": {
+      "font_path": "Calibri Light",
+      "size": 200,
+      "thick": 10,
+      "type": -1,
+      "char_set": -1,
+      "edge_size": -1,
+      "italic": false,
+      "handle": -1,
+      "is_standard_font": true
     },
     "remaining_bullets_text": {
       "font_path": "游ゴシック Medium",
@@ -48,7 +63,8 @@
       "char_set": -1,
       "edge_size": -1,
       "italic": false,
-      "handle": -1
+      "handle": -1,
+      "is_standard_font": true
     },
     "have_ammo_num_text": {
       "font_path": "游ゴシック Medium",
@@ -58,7 +74,8 @@
       "char_set": -1,
       "edge_size": -1,
       "italic": false,
-      "handle": -1
+      "handle": -1,
+      "is_standard_font": true
     },
     "mission_text": {
       "font_path": "Yu Gothic UI",
@@ -68,7 +85,8 @@
       "char_set": -1,
       "edge_size": -1,
       "italic": false,
-      "handle": -1
+      "handle": -1,
+      "is_standard_font": true
     }
   }
 }

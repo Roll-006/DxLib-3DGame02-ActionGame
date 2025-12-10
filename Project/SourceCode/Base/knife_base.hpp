@@ -12,9 +12,10 @@ public:
 	/// @brief 持ち主のホルスター(武器収納位置)を追尾する
 	void TrackOwnerHolster()override;
 
-protected:
 	void AddAttackTrigger();
 	void RemoveAttackTrigger();
+
+protected:
 	void CalcAttackTriggerPos();
 
 protected:

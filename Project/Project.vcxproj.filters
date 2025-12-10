@@ -649,6 +649,12 @@
     <ClCompile Include="SourceCode\Part\battle_observer.cpp">
       <Filter>SourceCode\Part</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\UI\game_over_text.cpp">
+      <Filter>SourceCode\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Part\color_converter.hpp">
+      <Filter>SourceCode\Part</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\character_base.hpp">
@@ -1902,11 +1908,14 @@
     <ClInclude Include="SourceCode\Data\aid_mixamo_axis_data (9).hpp">
       <Filter>SourceCode\Data</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Data\aid_mixamo_axis_data (10).hpp">
+    <ClInclude Include="SourceCode\Data\game_over_text_data.hpp">
       <Filter>SourceCode\Data</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Data\mission_ui_data.hpp">
       <Filter>SourceCode\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\UI\game_over_text.hpp">
+      <Filter>SourceCode\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
