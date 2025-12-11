@@ -2,91 +2,83 @@
   "font_data": {
     "explanatory_text": {
       "font_path": "游ゴシック Medium",
+      "true_type_font": "",
       "size": 24,
       "thick": 2,
       "type": -1,
       "char_set": -1,
       "edge_size": -1,
-      "italic": false,
-      "handle": -1,
-      "is_standard_font": true
+      "italic": false
     },
     "main_menu_text": {
-      "font_path": "Yu Gothic UI",
+      "font_path": "MASTERPLAN",
+      "true_type_font": "MASTERPLAN___.ttf",
       "size": 110,
-      "thick": 7,
+      "thick": 1,
       "type": -1,
       "char_set": -1,
       "edge_size": -1,
-      "italic": false,
-      "handle": -1,
-      "is_standard_font": true
+      "italic": false
     },
     "sub_menu_text": {
       "font_path": "Calibri Light",
+      "true_type_font": "",
       "size": 55,
       "thick": 4,
       "type": -1,
       "char_set": -1,
       "edge_size": -1,
-      "italic": false,
-      "handle": -1,
-      "is_standard_font": true
+      "italic": false
     },
     "game_clear_text": {
-      "font_path": "Calibri Light",
+      "font_path": "Data/Font/masterplan/MASTERPLAN",
+      "true_type_font": "Data/Font/masterplan/MASTERPLAN___.ttf",
       "size": 200,
       "thick": 10,
       "type": -1,
       "char_set": -1,
       "edge_size": -1,
-      "italic": false,
-      "handle": -1,
-      "is_standard_font": true
+      "italic": false
     },
     "game_over_text": {
-      "font_path": "Calibri Light",
+      "font_path": "Data/Font/masterplan/MASTERPLAN",
+      "true_type_font": "Data/Font/masterplan/MASTERPLAN___.ttf",
       "size": 200,
       "thick": 10,
       "type": -1,
       "char_set": -1,
       "edge_size": -1,
-      "italic": false,
-      "handle": -1,
-      "is_standard_font": true
+      "italic": false
     },
     "remaining_bullets_text": {
       "font_path": "游ゴシック Medium",
+      "true_type_font": "",
       "size": 33,
       "thick": 2,
       "type": -1,
       "char_set": -1,
       "edge_size": -1,
-      "italic": false,
-      "handle": -1,
-      "is_standard_font": true
+      "italic": false
     },
     "have_ammo_num_text": {
       "font_path": "游ゴシック Medium",
+      "true_type_font": "",
       "size": 24,
       "thick": 2,
       "type": -1,
       "char_set": -1,
       "edge_size": -1,
-      "italic": false,
-      "handle": -1,
-      "is_standard_font": true
+      "italic": false
     },
     "mission_text": {
-      "font_path": "Yu Gothic UI",
+      "font_path": "Data/Font/masterplan/MASTERPLAN",
+      "true_type_font": "Data/Font/masterplan/MASTERPLAN___.ttf",
       "size": 150,
       "thick": 7,
       "type": -1,
       "char_set": -1,
       "edge_size": -1,
-      "italic": false,
-      "handle": -1,
-      "is_standard_font": true
+      "italic": false
     }
   }
 }

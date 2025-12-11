@@ -40,8 +40,6 @@ void MissionUI::LateUpdate()
 	CalcAlphaBlendNum();
 	CalcWaitTime();
 	CreateScreen();
-
-	printfDx("çXêV");
 }
 
 void MissionUI::Draw() const
@@ -49,8 +47,6 @@ void MissionUI::Draw() const
 	if (!m_is_active) { return; }
 
 	m_screen->Draw();
-
-	printfDx("ï`âÊ");
 }
 
 void MissionUI::CalcAlphaBlendNum()
@@ -59,15 +55,11 @@ void MissionUI::CalcAlphaBlendNum()
 	if (m_alpha_blend_num < UCHAR_MAX && m_is_wait)
 	{
 		math::Increase(m_alpha_blend_num, static_cast<int>(mission_ui_data.fade_in_speed * delta_time), UCHAR_MAX, false);
-
-		printfDx("ëùâ¡");
 	}
 	else if (!m_is_wait)
 	{
 		math::Decrease(m_alpha_blend_num, static_cast<int>(mission_ui_data.fade_out_speed * delta_time), 0);
 		m_is_active = m_alpha_blend_num <= 0;
-
-		printfDx("å∏è≠");
 	}
 }
 
@@ -80,8 +72,6 @@ void MissionUI::CalcWaitTime()
 	{
 		m_is_wait = false;
 	}
-
-	printfDx("ë“ã@");
 }
 
 void MissionUI::CreateScreen()

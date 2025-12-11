@@ -10,7 +10,6 @@ PlayScene::PlayScene() :
 	m_enemy_manager					(std::make_shared<EnemyManager>()),
 	m_houses						(std::make_shared<Houses>()),
 	m_ground						(std::make_shared<Ground>()),
-	//m_trees							(std::make_shared<Trees>()),
 	m_skydome						(std::make_shared<Skydome>()),
 	m_stealth_kill_target_searcher	(std::make_shared<StealthKillTargetSearcher>(m_player)),
 	m_melee_target_searcher			(std::make_shared<MeleeTargetSearcher>		(std::dynamic_pointer_cast<IMeleeAttackable>(m_player))),

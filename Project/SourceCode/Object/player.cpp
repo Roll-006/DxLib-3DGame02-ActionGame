@@ -198,21 +198,6 @@ void Player::LateUpdate()
 	m_collider_creator->CalcCollisionAreaTriggerPos	(m_modeler, m_colliders, kCollisionAreaOffset);
 	m_collider_creator->CalcProjectRayPos			(m_modeler, m_colliders);
 	m_collider_creator->CalcVisibleTriggerPos		(m_modeler, m_colliders);
-
-	// ‰¼
-	//if (InputChecker::GetInstance()->GetInputState(KEY_INPUT_SPACE) == InputState::kSingle)
-	//{
-	//	++test;
-	//	
-	//	JSONLoader json_loader;
-	//	nlohmann::json data;
-	//	if (json_loader::Load("Data/JSON/patrol_route.json", data))
-	//	{
-	//		data["patrol_route"][std::to_string(2)][std::to_string(test)].emplace_back(m_transform->GetPos(CoordinateKind::kWorld));
-	//
-	//		json_loader::Save("Data/JSON/patrol_route.json", data);
-	//	}
-	//}
 }
 
 void Player::Draw() const
@@ -229,10 +214,6 @@ void Player::Draw() const
 	}
 
 	//DrawColliders();
-
-	//const auto p = m_transform->GetPos(CoordinateKind::kWorld);
-	//const auto d = m_look_dir.at(TimeKind::kCurrent);
-	//printfDx("%.1f, %.1f, %.1f : %f, %f, %f\n", p.x, p.y, p.z, d.x, d.y, d.z);
 }
 
 void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)

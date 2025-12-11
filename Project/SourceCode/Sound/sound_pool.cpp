@@ -32,11 +32,6 @@ void SoundPool::ReturnSound(const std::shared_ptr<Sound>& sound)
 {
 	if (!m_sounds.contains(sound->GetSoundData().name)) { return; }
 
-	if (sound->GetSoundData().name == "game_clear")
-	{
-		printfDx("返却\n");
-	}
-
 	// 非アクティブ化して追加
 	sound->Deactivate();
 	m_sounds[sound->GetSoundData().name].push(sound);

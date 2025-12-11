@@ -21,7 +21,10 @@ void FontHandler::CreateFontHandle()
 			auto font_data = value.get<FontData>();
 
 			// 標準フォントでない場合はフォントを追加
-			if(!font_data.is_standard_font) { AddFontResourceExA(font_data.font_path.c_str(), FR_PRIVATE, nullptr); }
+			if (font_data.true_type_font != "")
+			{
+				AddFontResourceExA(font_data.true_type_font.c_str(), FR_PRIVATE, nullptr);
+			}
 
 			m_font_handle[font_name] = CreateFontToHandle(
 				font_data.font_path.c_str(),
