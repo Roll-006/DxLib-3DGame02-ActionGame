@@ -43,6 +43,7 @@ private:
 	void PlayOpenPageSound			(const OpenPageEvent&			event);
 	void PlayBattleSound			(const StartBattleEvent&		event);
 	void PlayStageSound				(const EndBattleEvent&			event);
+	void PlayGameClearSound			(const DeadAllEnemyEvent&		event);
 	void PlayGameOverSound			(const DeadPlayerEvent&			event);
 	void PlayStabKnifeSound			(const StabKnifeEvent&			event);
 	void PlayDrawKnifeSound			(const DrawKnifeEvent&			event);

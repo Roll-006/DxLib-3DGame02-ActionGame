@@ -228,7 +228,7 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 			m_is_detection_shared = true;
 
-			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue(), TimeScaleLayerKind::kWorld));
+			EventSystem::GetInstance()->Publish(OnDamageEvent(target_obj->GetTransform()->GetPos(CoordinateKind::kWorld), damage / m_health.at(HealthPartKind::kMain)->GetMaxValue(), TimeScaleLayerKind::kWorld));
 		}
 		break;
 

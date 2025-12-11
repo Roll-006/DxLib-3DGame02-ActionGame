@@ -46,7 +46,7 @@ private:
 private:
 	static constexpr Vector2D<int>	kFirstButtonCenterPos	= { Window::kCenterPos.x, Window::kCenterPos.y + 80 };
 	static constexpr int			kButtonPosInterval		= 130;
-	static constexpr float			kActiveWaitTime			= 4.0f;
+	static constexpr float			kActiveWaitTime			= 2.0f;
 	static constexpr float			kFadeSpeed				= 300.0f;
 	static constexpr float			kDrawResultWaitTime		= 10.0f;
 

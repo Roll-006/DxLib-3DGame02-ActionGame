@@ -9,6 +9,9 @@
     "battle": {
       "size": 1
     },
+    "game_clear": {
+      "size": 1
+    },
     "game_over": {
       "size": 1
     },

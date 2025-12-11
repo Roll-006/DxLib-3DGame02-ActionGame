@@ -153,9 +153,11 @@ void EnemyManager::NotifyDetectedTarget(const OnTargetDetectedEvent& event)
 void EnemyManager::CountDeadEnemy(const DeadEnemyEvent& event)
 {
 	++m_dead_enemy_contains;
+	printfDx("€–S” : %d\n", m_dead_enemy_contains);
 	if (m_dead_enemy_contains >= m_enemy_size)
 	{
 		EventSystem::GetInstance()->Publish(DeadAllEnemyEvent());
+		printfDx("ƒQ[ƒ€I—¹\n");
 	}
 }
 

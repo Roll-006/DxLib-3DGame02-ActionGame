@@ -24,6 +24,7 @@ SoundPlayer::SoundPlayer() :
 	EventSystem::GetInstance()->Subscribe<OpenPageEvent>			(this, &SoundPlayer::PlayOpenPageSound);
 	EventSystem::GetInstance()->Subscribe<StartBattleEvent>			(this, &SoundPlayer::PlayBattleSound);
 	EventSystem::GetInstance()->Subscribe<EndBattleEvent>			(this, &SoundPlayer::PlayStageSound);
+	EventSystem::GetInstance()->Subscribe<DeadAllEnemyEvent>		(this, &SoundPlayer::PlayGameClearSound);
 	EventSystem::GetInstance()->Subscribe<DeadPlayerEvent>			(this, &SoundPlayer::PlayGameOverSound);
 	EventSystem::GetInstance()->Subscribe<StabKnifeEvent>			(this, &SoundPlayer::PlayStabKnifeSound);
 	EventSystem::GetInstance()->Subscribe<DrawKnifeEvent>			(this, &SoundPlayer::PlayDrawKnifeSound);
@@ -60,6 +61,7 @@ SoundPlayer::~SoundPlayer()
 	EventSystem::GetInstance()->Unsubscribe<OpenPageEvent>			(this, &SoundPlayer::PlayOpenPageSound);
 	EventSystem::GetInstance()->Unsubscribe<StartBattleEvent>		(this, &SoundPlayer::PlayBattleSound);
 	EventSystem::GetInstance()->Unsubscribe<EndBattleEvent>			(this, &SoundPlayer::PlayStageSound);
+	EventSystem::GetInstance()->Unsubscribe<DeadAllEnemyEvent>		(this, &SoundPlayer::PlayGameClearSound);
 	EventSystem::GetInstance()->Unsubscribe<DeadPlayerEvent>		(this, &SoundPlayer::PlayGameOverSound);
 	EventSystem::GetInstance()->Unsubscribe<StabKnifeEvent>			(this, &SoundPlayer::PlayStabKnifeSound);
 	EventSystem::GetInstance()->Unsubscribe<DrawKnifeEvent>			(this, &SoundPlayer::PlayDrawKnifeSound);
@@ -163,6 +165,7 @@ void SoundPlayer::PlayChangeSceneSound		(const ChangeSceneEvent&		event)
 	case SceneKind::kTitle:
 		OnPlaySound("title",		TimeScaleLayerKind::kNoneScale);
 		OnFadeOut("play");
+		OnFadeOut("game_clear");
 		OnFadeOut("game_over");
 		OnFadeOut("battle");
 		break;
@@ -171,18 +174,21 @@ void SoundPlayer::PlayChangeSceneSound		(const ChangeSceneEvent&		event)
 		OnPlaySound("game_start",	TimeScaleLayerKind::kNoneScale);
 		OnPlaySound("play",			TimeScaleLayerKind::kNoneScale);
 		OnFadeOut("title");
+		OnFadeOut("game_clear");
 		OnFadeOut("game_over");
 		OnFadeOut("battle");
 		break;
 
 	case SceneKind::kLoad:
 		OnFadeOut("play");
+		OnFadeOut("game_clear");
 		OnFadeOut("game_over");
 		OnFadeOut("battle");
 		break;
 
 	default:
 		OnFadeOut("play");
+		OnFadeOut("game_clear");
 		OnFadeOut("game_over");
 		OnFadeOut("battle");
 		break;
@@ -324,6 +330,13 @@ void SoundPlayer::PlayStageSound			(const EndBattleEvent&			event)
 	OnFadeOut("battle");
 }
 
+void SoundPlayer::PlayGameClearSound		(const DeadAllEnemyEvent&		event)
+{
+	OnPlaySound("game_clear", TimeScaleLayerKind::kNoneScale);
+	OnFadeOut("battle");
+	OnFadeOut("play");
+}
+
 void SoundPlayer::PlayGameOverSound			(const DeadPlayerEvent&			event)
 {
 	OnPlaySound("game_over", TimeScaleLayerKind::kNoneScale);
@@ -342,17 +355,17 @@ void SoundPlayer::PlayDrawKnifeSound		(const DrawKnifeEvent&			event)
 	OnPlaySound("bleed_large_quantity", event.time_scale_layer_kind, event.pos);
 }
 
-void SoundPlayer::PlayFirstSlashSound(const FirstSlashEvent& event)
+void SoundPlayer::PlayFirstSlashSound		(const FirstSlashEvent&			event)
 {
 	OnPlaySound("first_slash_knife", TimeScaleLayerKind::kWorld, event.pos);
 }
 
-void SoundPlayer::PlaySecondSlashSound(const SecondSlashEvent& event)
+void SoundPlayer::PlaySecondSlashSound		(const SecondSlashEvent&		event)
 {
 	OnPlaySound("second_slash_knife", TimeScaleLayerKind::kWorld, event.pos);
 }
 
-void SoundPlayer::PlaySpinningSlashSound(const SpinningSlashEvent& event)
+void SoundPlayer::PlaySpinningSlashSound	(const SpinningSlashEvent&		event)
 {
 	OnPlaySound("spinning_slash_knife", TimeScaleLayerKind::kWorld, event.pos);
 }

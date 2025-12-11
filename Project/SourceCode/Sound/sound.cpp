@@ -27,6 +27,7 @@ void Sound::Init()
 	m_is_fade_out		= false;
 	m_is_return_pool	= false;
 
+	StopSoundMem(sound_data.handle);
 	ChangeVolumeSoundMem(sound_data.volume, sound_data.handle);
 }
 

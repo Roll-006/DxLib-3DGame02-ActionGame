@@ -40,6 +40,19 @@
       "time_scale_layer_kind": 0
     },
     {
+      "path": "Data/Sound/BGM/game_clear.m4a",
+      "name": "game_clear",
+      "priority": 5,
+      "volume": 160,
+      "radius": 0.0,
+      "fade_out_speed": 150.0,
+      "max_frequency_scale": 2.0,
+      "min_frequency_scale": 0.0,
+      "is_3d_sound": false,
+      "is_loop": true,
+      "time_scale_layer_kind": 0
+    },
+    {
       "path": "Data/Sound/BGM/game_over.mp3",
       "name": "game_over",
       "priority": 5,

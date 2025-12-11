@@ -76,8 +76,7 @@ void zombie_state::Dead::Enter(std::shared_ptr<Zombie>& obj)
 	obj->RemoveCollider(ColliderKind::kCollider);
 
 	// €–S‚µ‚½‚±‚Æ‚ğ’Ê’m
-	const DeadEnemyEvent event{ obj->GetEnemyID(), obj->GetModeler()->GetModelHandle() };
-	EventSystem::GetInstance()->Publish(event);
+	EventSystem::GetInstance()->Publish(DeadEnemyEvent(obj->GetEnemyID(), obj->GetModeler()->GetModelHandle()));
 }
 
 void zombie_state::Dead::Exit(std::shared_ptr<Zombie>& obj)
