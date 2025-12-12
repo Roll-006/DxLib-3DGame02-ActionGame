@@ -125,8 +125,6 @@ void PauseTab::OnDraw(const int main_screen_handle) const
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	m_result_screen->Draw();
-
-	if (!m_warning_restart_tab->IsActive() && !m_warning_restart_tab->IsActive()) { m_button_prompt->Draw(); }
 }
 
 void PauseTab::Deactivate(const DeadPlayerEvent& event)
@@ -228,6 +226,11 @@ void PauseTab::CreateResultScreen()
 	for (const auto& button : m_ui_selector->GetUIButtons())
 	{
 		button->Draw();
+	}
+
+	if (!m_warning_restart_tab->IsActive() && !m_warning_quit_game_tab->IsActive())
+	{
+		m_button_prompt->Draw();
 	}
 
 	m_result_screen->UnuseScreen();
