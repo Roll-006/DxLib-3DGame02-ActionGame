@@ -1,4 +1,4 @@
-#include "game_system_setter.hpp"
+Ôªø#include "game_system_setter.hpp"
 
 GameSystemSetter::GameSystemSetter()
 {
@@ -17,30 +17,30 @@ GameSystemSetter::~GameSystemSetter()
 
 void GameSystemSetter::SetUpGameSystem()
 {
-	// äÓñ{ê›íË
+	// Âü∫Êú¨Ë®≠ÂÆö
+	SetOutApplicationLogValidFlag(FALSE);
 	SetGraphMode(Window::kScreenSize.x, Window::kScreenSize.y, 32);
 	ChangeWindowMode(TRUE);
 	Set3DSoundOneMetre(30.0f);
-	SetOutApplicationLogValidFlag(FALSE);
 	if (DxLib_Init() == -1) { exit(EXIT_FAILURE); }
 	SetDrawScreen(DX_SCREEN_BACK);
 	SetUseDirect3DVersion(DX_DIRECT3D_11);
-	if (Effekseer_Init(8000) == -1) { exit(EXIT_FAILURE); } // TODO : íËêîâª
+	if (Effekseer_Init(8000) == -1) { exit(EXIT_FAILURE); }
 	SetChangeScreenModeGraphicsSystemResetFlag(FALSE);
 	Effekseer_SetGraphicsDeviceLostCallbackFunctions();
 	SetMainWindowText("3DGAME");
 
-	// ZÉoÉbÉtÉ@
+	// Z„Éê„ÉÉ„Éï„Ç°
 	SetUseZBuffer3D  (TRUE);
 	SetWriteZBuffer3D(TRUE);
 
-	// ÉtÉHÉO
+	// „Éï„Ç©„Ç∞
 	SetFogEnable(TRUE);
 	SetFogMode(DX_FOGMODE_LINEAR);
 	SetFogColor(48, 49, 56);
 	SetFogStartEnd(200.f, 1700.0f);
 	SetFogDensity(0.1f);
 
-	// ÉtÉHÉìÉg
+	// „Éï„Ç©„É≥„Éà
 	SetFontUseAdjustSizeFlag(FALSE);
 }

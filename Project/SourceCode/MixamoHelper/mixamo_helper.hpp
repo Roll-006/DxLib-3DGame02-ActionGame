@@ -14,11 +14,11 @@ namespace mixamo_helper
 	/// @param is_fill 関節及びボーンを塗りつぶすかどうか (初期値 : true)
     inline void DrawFrames(const int model_handle, const bool is_draw_joint = true, const bool is_draw_frame = true, const bool is_draw_axis = true, const bool is_fill = true)
 	{
-		nlohmann::json data;
-        if (!json_loader::Load("Data/JSON/mixamo_frame_hierarchy.json", data)) { return; }
+		nlohmann::json j_data;
+        if (!json_loader::Load("Data/JSON/mixamo_frame_hierarchy.json", j_data)) { return; }
 		
         // 最下層フレーム
-		const auto  hips    = data.at("Armature").at("mixamorig:Hips");
+		const auto  hips    = j_data.at("Armature").at("mixamorig:Hips");
         auto        hips_m  = MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, "mixamorig:Hips"));
 
         // 子を辿る再帰関数を定義

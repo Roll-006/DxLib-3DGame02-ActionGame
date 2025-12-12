@@ -6,10 +6,10 @@ AssaultRifle::AssaultRifle() :
 	m_magazine = std::make_shared<AssaultRifleMagazine>(m_load_transform);
 	std::dynamic_pointer_cast<ObjBase>(m_magazine)->AddToObjManager();
 
-	nlohmann::json data;
-	if (json_loader::Load("Data/JSON/gun_data.json", data))
+	nlohmann::json j_data;
+	if (json_loader::Load("Data/JSON/gun_data.json", j_data))
 	{
-		const auto assault_rifle = data.at("gun_data").at("assault_rifle");
+		const auto assault_rifle = j_data.at("gun_data").at("assault_rifle");
 		mass_kind					= assault_rifle.at("mass_kind");
 		basic_angle					= assault_rifle.at("basic_angle").get<VECTOR>() * math::kDegToRad;
 		basic_scale					= assault_rifle.at("basic_scale");

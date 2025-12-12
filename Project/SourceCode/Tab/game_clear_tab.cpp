@@ -1,4 +1,4 @@
-#include "game_clear_tab.hpp"
+﻿#include "game_clear_tab.hpp"
 
 GameClearTab::GameClearTab() :
 	m_tab_handle					(HandleCreator::GetInstance()->CreateHandle()),
@@ -14,9 +14,10 @@ GameClearTab::GameClearTab() :
 	m_is_change_time_scale			(false),
 	m_game_clear_text				(std::make_shared<GameClearText>()),
 	m_ui_selector					(std::make_shared<UISelector>(0, true, true)),
-	m_result_screen					(std::make_shared<ScreenCreator>(Window::kScreenSize, Window::kCenterPos))
+	m_result_screen					(std::make_shared<ScreenCreator>(Window::kScreenSize, Window::kCenterPos)),
+	m_button_prompt					(std::make_shared<ButtonPrompt>("game_clear"))
 {
-	// �C�x���g�o�^
+	// イベント登録
 	EventSystem::GetInstance()->Subscribe<DeadAllEnemyEvent>(this, &GameClearTab::StartActivateTimer);
 
 	std::vector<Vector2D<int>> center_pos;
@@ -28,12 +29,15 @@ GameClearTab::GameClearTab() :
 	m_ui_selector->AddUIButton(std::make_shared<SubMenuSelectButton>(SubMenuSelectButton::ButtonKind::kRetry,	 center_pos.at(0), [this]() { ExecuteRetry();	 }, true));
 	m_ui_selector->AddUIButton(std::make_shared<SubMenuSelectButton>(SubMenuSelectButton::ButtonKind::kQuitGame, center_pos.at(1), [this]() { ExecuteQuitGame(); }, false));
 
+	m_button_prompt->AddExplanatoryText(0, "ゲームを再度プレイします");
+	m_button_prompt->AddExplanatoryText(1, "タイトルに戻ります");
+
 	CalcAlphaBlendNum();
 }
 
 GameClearTab::~GameClearTab()
 {
-	// �C�x���g�̓o�^����
+	// イベントの登録解除
 	EventSystem::GetInstance()->Unsubscribe<DeadAllEnemyEvent>(this, &GameClearTab::StartActivateTimer);
 }
 
@@ -53,6 +57,7 @@ void GameClearTab::Update()
 	if (!m_is_active) { return; }
 
 	if (m_can_select) { m_ui_selector->Update(); }
+	m_button_prompt->Update(m_ui_selector->GetCurrentButtonIndex());
 
 	m_can_select = !SceneFader::GetInstance()->IsFading() && m_is_change_time_scale;
 
@@ -71,9 +76,8 @@ void GameClearTab::OnDraw(const int main_screen_handle) const
 	DrawGraph(0, 0, main_screen_handle, TRUE);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
-	m_result_screen->Draw();
-
-	m_game_clear_text->Draw();
+	m_result_screen		->Draw();
+	m_game_clear_text	->Draw();
 }
 
 void GameClearTab::StartActivateTimer(const DeadAllEnemyEvent& event)
@@ -158,6 +162,8 @@ void GameClearTab::CreateResultScreen()
 	{
 		button->Draw();
 	}
+
+	m_button_prompt->Draw();
 
 	m_result_screen->UnuseScreen();
 }

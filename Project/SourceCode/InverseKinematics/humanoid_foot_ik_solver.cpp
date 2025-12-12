@@ -20,10 +20,10 @@ HumanoidFootIKSolver::HumanoidFootIKSolver(
 {
 	if (angle_limits.empty())
 	{
-		nlohmann::json data;
-		if (json_loader::Load("Data/JSON/model_foot_angle_limits.json", data))
+		nlohmann::json j_data;
+		if (json_loader::Load("Data/JSON/model_foot_angle_limits.json", j_data))
 		{
-			for (const auto& [frame_name, angle_limit] : data.at("humanoid").items())
+			for (const auto& [frame_name, angle_limit] : j_data.at("humanoid").items())
 			{
 				angle_limits[frame_name] = angle_limit.get<ModelFrameAngleLimitData>();
 			}

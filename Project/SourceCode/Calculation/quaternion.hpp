@@ -80,17 +80,17 @@ inline bool operator!=(const Quaternion& q1, const Quaternion& q2) { return !(q1
 
 
 #pragma region from / to JSON
-inline void from_json(const nlohmann::json& data, Quaternion& q)
+inline void from_json(const nlohmann::json& j_data, Quaternion& q)
 {
-	data.at("x").get_to(q.x);
-	data.at("y").get_to(q.y);
-	data.at("z").get_to(q.z);
-	data.at("w").get_to(q.w);
+	j_data.at("x").get_to(q.x);
+	j_data.at("y").get_to(q.y);
+	j_data.at("z").get_to(q.z);
+	j_data.at("w").get_to(q.w);
 }
 
-inline void to_json(nlohmann::json& data, const Quaternion& q)
+inline void to_json(nlohmann::json& j_data, const Quaternion& q)
 {
-	data = nlohmann::json
+	j_data = nlohmann::json
 	{
 		{ "x",	q.x },
 		{ "y",	q.y },

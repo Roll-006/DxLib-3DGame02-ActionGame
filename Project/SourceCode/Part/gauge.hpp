@@ -40,23 +40,23 @@ private:
 	float m_current_max_value;
 	float m_max_value;
 
-	friend void from_json	(const nlohmann::json& data, Gauge& gauge);
-	friend void to_json		(nlohmann::json& data, const Gauge& gauge);
+	friend void from_json	(const nlohmann::json& j_data, Gauge& gauge);
+	friend void to_json		(nlohmann::json& j_data, const Gauge& gauge);
 };
 
 
 #pragma region from / to JSON
-inline void from_json(const nlohmann::json& data, Gauge& gauge)
+inline void from_json(const nlohmann::json& j_data, Gauge& gauge)
 {
-	data.at("current_value")		.get_to(gauge.m_current_value);
-	data.at("prev_value")			.get_to(gauge.m_prev_value);
-	data.at("current_max_value")	.get_to(gauge.m_current_max_value);
-	data.at("max_value")			.get_to(gauge.m_max_value);
+	j_data.at("current_value")		.get_to(gauge.m_current_value);
+	j_data.at("prev_value")			.get_to(gauge.m_prev_value);
+	j_data.at("current_max_value")	.get_to(gauge.m_current_max_value);
+	j_data.at("max_value")			.get_to(gauge.m_max_value);
 }
 
-inline void to_json(nlohmann::json& data, const Gauge& gauge)
+inline void to_json(nlohmann::json& j_data, const Gauge& gauge)
 {
-	data = nlohmann::json
+	j_data = nlohmann::json
 	{
 		{ "current_value",		gauge.m_current_value },
 		{ "prev_value",			gauge.m_prev_value },

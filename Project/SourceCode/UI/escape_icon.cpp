@@ -157,11 +157,11 @@ void EscapeIcon::SetIconGraphic()
 	switch (InputChecker::GetInstance()->GetCurrentInputDevice())
 	{
 	case DeviceKind::kKeyboard:
-		m_button_icon_graphic = m_button_graphic_resource->GetWeaponGraphicer(command->GetKeyInputCode(CommandKind::kEscape, CommandSlotKind::kMain));
+		m_button_icon_graphic = m_button_graphic_resource->GetButtonGraphicer(command->GetKeyInputCode(CommandKind::kEscape, CommandSlotKind::kMain));
 		break;
 
 	case DeviceKind::kPad:
-		m_button_icon_graphic = m_button_graphic_resource->GetWeaponGraphicer(command->GetPadInputCode(CommandKind::kEscape, CommandSlotKind::kStatic1));
+		m_button_icon_graphic = m_button_graphic_resource->GetButtonGraphicer(command->GetPadInputCode(CommandKind::kEscape, CommandSlotKind::kStatic1));
 		break;
 	}
 

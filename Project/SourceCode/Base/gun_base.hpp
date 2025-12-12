@@ -110,27 +110,27 @@ protected:
 	float		m_shot_timer;					// ’eŠÛ‚ğŒ‚‚Â‚½‚ß‚Ìƒ^ƒCƒ}[
 	bool		m_on_pull_trigger;				// e‚Ìˆø‚«‹à‚ªˆø‚©‚ê‚Ä‚¢‚é‚©‚ğ”»’è
 
-	friend void from_json(const nlohmann::json& data, GunBase& gun_base);
-	friend void to_json(nlohmann::json& data, const GunBase& gun_base);
+	friend void from_json(const nlohmann::json& j_data, GunBase& gun_base);
+	friend void to_json(nlohmann::json& j_data, const GunBase& gun_base);
 };
 
 
 #pragma region from / to JSON
-inline void from_json(const nlohmann::json& data, GunBase& gun_base)
+inline void from_json(const nlohmann::json& j_data, GunBase& gun_base)
 {
-	from_json(data, static_cast<WeaponBase&>(gun_base));
+	from_json(j_data, static_cast<WeaponBase&>(gun_base));
 
-	data.at("cross_hair_distance")		.get_to(gun_base.cross_hair_distance);
-	data.at("max_remaining_bullet_num")	.get_to(gun_base.max_remaining_bullet_num);
-	data.at("range")					.get_to(gun_base.range);
-	data.at("initial_velocity")			.get_to(gun_base.initial_velocity);
-	data.at("deceleration")				.get_to(gun_base.deceleration);
-	data.at("recoil_data")				.get_to(gun_base.recoil_data);
-	data.at("shot_interval_time")		.get_to(gun_base.shot_interval_time);
-	data.at("gun_kind")					.get_to(gun_base.gun_kind);
+	j_data.at("cross_hair_distance")		.get_to(gun_base.cross_hair_distance);
+	j_data.at("max_remaining_bullet_num")	.get_to(gun_base.max_remaining_bullet_num);
+	j_data.at("range")					.get_to(gun_base.range);
+	j_data.at("initial_velocity")			.get_to(gun_base.initial_velocity);
+	j_data.at("deceleration")				.get_to(gun_base.deceleration);
+	j_data.at("recoil_data")				.get_to(gun_base.recoil_data);
+	j_data.at("shot_interval_time")		.get_to(gun_base.shot_interval_time);
+	j_data.at("gun_kind")					.get_to(gun_base.gun_kind);
 }
 
-inline void to_json(nlohmann::json& data, const GunBase& gun_base)
+inline void to_json(nlohmann::json& j_data, const GunBase& gun_base)
 {
 	nlohmann::json base_json;
 	to_json(base_json, static_cast<const WeaponBase&>(gun_base));
@@ -147,7 +147,7 @@ inline void to_json(nlohmann::json& data, const GunBase& gun_base)
 		{ "gun_kind",					gun_base.gun_kind },
 	};
 
-	data = base_json;
-	data.update(derived_json);
+	j_data = base_json;
+	j_data.update(derived_json);
 }
 #pragma endregion

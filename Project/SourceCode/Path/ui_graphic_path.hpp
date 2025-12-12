@@ -37,7 +37,9 @@ static struct UIGraphicPath
 
 	#pragma region ƒ{ƒ^ƒ“
 	const std::string KEY_F								= "Data/Graphic/UI/Button/Key/F.png";
+	const std::string KEY_SPACE							= "Data/Graphic/UI/Button/Key/SPACE.png";
 	const std::string PAD_A								= "Data/Graphic/UI/Button/Pad/A.png";
+	const std::string PAD_B								= "Data/Graphic/UI/Button/Pad/B.png";
 	const std::string PAD_RT							= "Data/Graphic/UI/Button/Pad/RT.png";
 	const std::string MOUSE_NONE						= "Data/Graphic/UI/Button/Mouse/none.png";
 	const std::string MOUSE_LEFT						= "Data/Graphic/UI/Button/Mouse/left.png";

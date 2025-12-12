@@ -3,10 +3,10 @@
 Knife::Knife() : 
 	KnifeBase(ObjName.KNIFE, HolsterKind::kKnife)
 {
-	nlohmann::json data;
-	if (json_loader::Load("Data/JSON/knife_data.json", data))
+	nlohmann::json j_data;
+	if (json_loader::Load("Data/JSON/knife_data.json", j_data))
 	{
-		const auto knife = data.at("knife_data").at("knife");
+		const auto knife = j_data.at("knife_data").at("knife");
 
 		mass_kind			= knife.at("mass_kind");
 		basic_angle			= knife.at("basic_angle").get<VECTOR>() * math::kDegToRad;

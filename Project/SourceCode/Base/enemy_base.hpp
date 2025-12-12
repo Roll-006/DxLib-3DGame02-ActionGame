@@ -74,23 +74,23 @@ protected:
 	bool  m_can_decrease_knock_back_gauge;
 
 private:
-	friend void from_json(const nlohmann::json& data, EnemyBase& enemy_base);
-	friend void to_json  (nlohmann::json& data, const EnemyBase& enemy_base);
+	friend void from_json(const nlohmann::json& j_data, EnemyBase& enemy_base);
+	friend void to_json  (nlohmann::json& j_data, const EnemyBase& enemy_base);
 };
 
 
 #pragma region from / to JSON
-inline void from_json(const nlohmann::json& data, EnemyBase& enemy_base)
+inline void from_json(const nlohmann::json& j_data, EnemyBase& enemy_base)
 {
-	from_json(data, static_cast<CharacterBase&>(enemy_base));
+	from_json(j_data, static_cast<CharacterBase&>(enemy_base));
 
-	data.at("use_patrol")			.get_to(enemy_base.use_patrol);
-	data.at("route_id")				.get_to(enemy_base.route_id);
-	data.at("patrol_kind")			.get_to(enemy_base.patrol_kind);
-	data.at("attack_interval_time")	.get_to(enemy_base.attack_interval_time);
+	j_data.at("use_patrol")			.get_to(enemy_base.use_patrol);
+	j_data.at("route_id")				.get_to(enemy_base.route_id);
+	j_data.at("patrol_kind")			.get_to(enemy_base.patrol_kind);
+	j_data.at("attack_interval_time")	.get_to(enemy_base.attack_interval_time);
 }
 
-inline void to_json(nlohmann::json& data, const EnemyBase& enemy_base)
+inline void to_json(nlohmann::json& j_data, const EnemyBase& enemy_base)
 {
 	nlohmann::json base_json;
 	to_json(base_json, static_cast<const CharacterBase&>(enemy_base));
@@ -103,7 +103,7 @@ inline void to_json(nlohmann::json& data, const EnemyBase& enemy_base)
 		{ "attack_interval_time",	enemy_base.attack_interval_time },
 	};
 
-	data = base_json;
-	data.update(derived_json);
+	j_data = base_json;
+	j_data.update(derived_json);
 }
 #pragma endregion

@@ -1,4 +1,4 @@
-#include "pause_tab.hpp"
+﻿#include "pause_tab.hpp"
 
 PauseTab::PauseTab() :
 	m_tab_handle				(HandleCreator::GetInstance()->CreateHandle()),
@@ -14,11 +14,12 @@ PauseTab::PauseTab() :
 	m_ui_selector				(std::make_shared<UISelector>(0, true, true)),
 	m_result_screen				(std::make_shared<ScreenCreator>(Window::kScreenSize, Window::kCenterPos)),
 	m_warning_restart_tab		(std::make_shared<WarningTab>(WarningTab::WarningKind::kRestart)),
-	m_warning_quit_game_tab		(std::make_shared<WarningTab>(WarningTab::WarningKind::kQuitGame))
+	m_warning_quit_game_tab		(std::make_shared<WarningTab>(WarningTab::WarningKind::kQuitGame)),
+	m_button_prompt				(std::make_shared<ButtonPrompt>("pause"))
 {
-	// �C�x���g�o�^
+	// イベント登録
 	EventSystem::GetInstance()->Subscribe<DeadPlayerEvent>	(this, &PauseTab::Deactivate);
-	EventSystem::GetInstance()->Subscribe<DeadAllEnemyEvent>	(this, &PauseTab::Deactivate);
+	EventSystem::GetInstance()->Subscribe<DeadAllEnemyEvent>(this, &PauseTab::Deactivate);
 
 	TabDrawer::GetInstance()->AddTab(m_warning_restart_tab);
 	TabDrawer::GetInstance()->AddTab(m_warning_quit_game_tab);
@@ -34,13 +35,18 @@ PauseTab::PauseTab() :
 	m_ui_selector->AddUIButton(std::make_shared<MainMenuSelectButton>(MainMenuSelectButton::ButtonKind::kOption,		center_pos.at(2), [this]() { ExecuteOption(); },		false));
 	m_ui_selector->AddUIButton(std::make_shared<MainMenuSelectButton>(MainMenuSelectButton::ButtonKind::kQuitGame,		center_pos.at(3), [this]() { ExecuteQuitGame();	},		false));
 
+	m_button_prompt->AddExplanatoryText(0, "ゲームに戻ります");
+	m_button_prompt->AddExplanatoryText(1, "ゲームを最初から始めます");
+	m_button_prompt->AddExplanatoryText(2, "ゲームの各種設定を行います");
+	m_button_prompt->AddExplanatoryText(3, "タイトルに戻ります");
+
 	CalcAlphaBlendNum();
 }
 
 PauseTab::~PauseTab()
 {
-	// �C�x���g�̓o�^����
-	EventSystem::GetInstance()->Unsubscribe<DeadPlayerEvent>(this, &PauseTab::Deactivate);
+	// イベントの登録解除
+	EventSystem::GetInstance()->Unsubscribe<DeadPlayerEvent>	(this, &PauseTab::Deactivate);
 	EventSystem::GetInstance()->Unsubscribe<DeadAllEnemyEvent>	(this, &PauseTab::Deactivate);
 
 	TabDrawer::GetInstance()->RemoveTab(m_warning_restart_tab	->GetTabHandle());
@@ -83,6 +89,7 @@ void PauseTab::Update()
 
 	m_warning_restart_tab	->Update();
 	m_warning_quit_game_tab	->Update();
+	m_button_prompt->Update(m_ui_selector->GetCurrentButtonIndex());
 
 	if (m_warning_restart_tab->IsDecide())
 	{
@@ -118,6 +125,8 @@ void PauseTab::OnDraw(const int main_screen_handle) const
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	m_result_screen->Draw();
+
+	if (!m_warning_restart_tab->IsActive() && !m_warning_restart_tab->IsActive()) { m_button_prompt->Draw(); }
 }
 
 void PauseTab::Deactivate(const DeadPlayerEvent& event)
@@ -228,12 +237,14 @@ void PauseTab::BackTab()
 {
 	if (m_result_screen->GetGraphicer()->GetBlendNum() < UCHAR_MAX
 		|| m_warning_quit_game_tab->IsActive()
-		|| m_warning_restart_tab->IsActive())
+		|| m_warning_restart_tab  ->IsActive())
 	{
 		return;
 	}
 
-	if (CommandHandler::GetInstance()->IsExecute(CommandKind::kPause, TimeKind::kCurrent))
+	const auto command = CommandHandler::GetInstance();
+	if (   command->IsExecute(CommandKind::kPause, TimeKind::kCurrent)
+		|| command->IsExecute(CommandKind::kBack,  TimeKind::kCurrent))
 	{
 		m_is_execute_return_to_game = true;
 

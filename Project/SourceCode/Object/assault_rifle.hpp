@@ -34,25 +34,25 @@ private:
 
 	float  m_cross_hair_radius;
 
-	friend void from_json(const nlohmann::json& data, AssaultRifle& assaultRifle);
-	friend void to_json  (nlohmann::json& data, const AssaultRifle& assaultRifle);
+	friend void from_json(const nlohmann::json& j_data, AssaultRifle& assaultRifle);
+	friend void to_json  (nlohmann::json& j_data, const AssaultRifle& assaultRifle);
 };
 
 
 #pragma region from / to JSON
-inline void from_json(const nlohmann::json& data, AssaultRifle& assaultRifle)
+inline void from_json(const nlohmann::json& j_data, AssaultRifle& assaultRifle)
 {
-	from_json(data, static_cast<GunBase&>(assaultRifle));
+	from_json(j_data, static_cast<GunBase&>(assaultRifle));
 
-	data.at("cross_hair_max_radius")	.get_to(assaultRifle.cross_hair_max_radius);
-	data.at("cross_hair_middle_radius")	.get_to(assaultRifle.cross_hair_middle_radius);
-	data.at("cross_hair_min_radius")	.get_to(assaultRifle.cross_hair_min_radius);
-	data.at("muzzle_offset")			.get_to(assaultRifle.muzzle_offset);
-	data.at("ejection_port_offset")		.get_to(assaultRifle.ejection_port_offset);
-	data.at("load_port_offset")			.get_to(assaultRifle.load_port_offset);
+	j_data.at("cross_hair_max_radius")	.get_to(assaultRifle.cross_hair_max_radius);
+	j_data.at("cross_hair_middle_radius")	.get_to(assaultRifle.cross_hair_middle_radius);
+	j_data.at("cross_hair_min_radius")	.get_to(assaultRifle.cross_hair_min_radius);
+	j_data.at("muzzle_offset")			.get_to(assaultRifle.muzzle_offset);
+	j_data.at("ejection_port_offset")		.get_to(assaultRifle.ejection_port_offset);
+	j_data.at("load_port_offset")			.get_to(assaultRifle.load_port_offset);
 }
 
-inline void to_json(nlohmann::json& data, const AssaultRifle& assaultRifle)
+inline void to_json(nlohmann::json& j_data, const AssaultRifle& assaultRifle)
 {
 	nlohmann::json base_json;
 	to_json(base_json, static_cast<const GunBase&>(assaultRifle));
@@ -67,7 +67,7 @@ inline void to_json(nlohmann::json& data, const AssaultRifle& assaultRifle)
 		{ "load_port_offset",			assaultRifle.load_port_offset },
 	};
 
-	data = base_json;
-	data.update(derived_json);
+	j_data = base_json;
+	j_data.update(derived_json);
 }
 #pragma endregion

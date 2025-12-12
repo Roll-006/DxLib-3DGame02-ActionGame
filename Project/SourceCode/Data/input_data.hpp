@@ -58,11 +58,11 @@ namespace std
     template <>
     struct hash<InputData>
     {
-        std::size_t operator()(const InputData& data) const noexcept
+        std::size_t operator()(const InputData& j_data) const noexcept
         {
             // 適当なハッシュ結合
-            std::size_t h1 = std::hash<bool>{}(data.is_input);
-            std::size_t h2 = std::hash<float>{}(data.input_time);
+            std::size_t h1 = std::hash<bool>{}(j_data.is_input);
+            std::size_t h2 = std::hash<float>{}(j_data.input_time);
 
             // 結合方法：XORとシフト
             return h1 ^ (h2 << 1);

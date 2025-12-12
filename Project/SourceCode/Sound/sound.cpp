@@ -1,12 +1,12 @@
 #include "sound.hpp"
 
-Sound::Sound(const SoundData& data) : 
-	sound_data			(data),
+Sound::Sound(const SoundData& j_data) : 
+	sound_data			(j_data),
 	m_is_active			(false),
 	m_is_stopping		(true),
 	m_is_fade_out		(false),
 	m_is_return_pool	(false),
-	m_current_volume	(data.volume)
+	m_current_volume	(j_data.volume)
 {
 	SetCreate3DSoundFlag(sound_data.is_3d_sound);
 	sound_data.handle		= LoadSoundMem			(sound_data.path.c_str());

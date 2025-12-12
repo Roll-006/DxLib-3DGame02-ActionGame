@@ -27,16 +27,16 @@ namespace axis
 
 
 #pragma region from / to JSON
-inline void from_json(const nlohmann::json& data, Axis& axis)
+inline void from_json(const nlohmann::json& j_data, Axis& axis)
 {
-	data.at("x_axis").get_to(axis.x_axis);
-	data.at("y_axis").get_to(axis.y_axis);
-	data.at("z_axis").get_to(axis.z_axis);
+	j_data.at("x_axis").get_to(axis.x_axis);
+	j_data.at("y_axis").get_to(axis.y_axis);
+	j_data.at("z_axis").get_to(axis.z_axis);
 }
 
-inline void to_json(nlohmann::json& data, const Axis& axis)
+inline void to_json(nlohmann::json& j_data, const Axis& axis)
 {
-	data = nlohmann::json
+	j_data = nlohmann::json
 	{
 		{ "x_axis",	axis.x_axis },
 		{ "y_axis",	axis.y_axis },

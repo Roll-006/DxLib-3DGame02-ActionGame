@@ -69,20 +69,20 @@ private:
 
 	std::shared_ptr<Transform> m_parent_transform;
 
-	friend void from_json(const nlohmann::json& data, Transform& transform);
-	friend void to_json(nlohmann::json& data, const Transform& transform);
+	friend void from_json(const nlohmann::json& j_data, Transform& transform);
+	friend void to_json(nlohmann::json& j_data, const Transform& transform);
 };
 
 
 #pragma region from / to JSON
-inline void from_json(const nlohmann::json& data, Transform& transform)
+inline void from_json(const nlohmann::json& j_data, Transform& transform)
 {
-	data.at("local_matrix").get_to(transform.m_local_matrix);
+	j_data.at("local_matrix").get_to(transform.m_local_matrix);
 }
 
-inline void to_json(nlohmann::json& data, const Transform& transform)
+inline void to_json(nlohmann::json& j_data, const Transform& transform)
 {
-	data = nlohmann::json
+	j_data = nlohmann::json
 	{
 		{ "local_matrix", transform.m_local_matrix }
 	};

@@ -84,13 +84,13 @@ void StealthKillTargetIcon::CreateStealthKillIconScreen()
 	switch (InputChecker::GetInstance()->GetCurrentInputDevice())
 	{
 	case DeviceKind::kKeyboard:
-		m_button_icon_graphic = m_button_graphic_resource->GetWeaponGraphicer(command->GetKeyInputCode(CommandKind::kAttack, CommandSlotKind::kMain));
+		m_button_icon_graphic = m_button_graphic_resource->GetButtonGraphicer(command->GetKeyInputCode(CommandKind::kAttack, CommandSlotKind::kMain));
 		m_button_icon_graphic->SetCenterPos(kScreenCenterPos + kGraphicOffset);
 		m_button_icon_graphic->SetScale(0.18f);
 		break;
 
 	case DeviceKind::kPad:
-		m_button_icon_graphic = m_button_graphic_resource->GetWeaponGraphicer(command->GetPadInputCode(CommandKind::kAttack, CommandSlotKind::kStatic1));
+		m_button_icon_graphic = m_button_graphic_resource->GetButtonGraphicer(command->GetPadInputCode(CommandKind::kAttack, CommandSlotKind::kStatic1));
 		m_button_icon_graphic->SetCenterPos(kScreenCenterPos + kGraphicOffset);
 		m_button_icon_graphic->SetScale(0.13f);
 		break;

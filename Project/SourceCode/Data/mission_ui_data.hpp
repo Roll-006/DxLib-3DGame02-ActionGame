@@ -16,19 +16,19 @@ struct MissionUIData final
 
 
 #pragma region from / to JSON
-inline void from_json(const nlohmann::json& data, MissionUIData& mission_ui_data)
+inline void from_json(const nlohmann::json& j_data, MissionUIData& mission_ui_data)
 {
-	data.at("screen_size")		.get_to(mission_ui_data.screen_size);
-	data.at("height_ratio")		.get_to(mission_ui_data.height_ratio);
-	data.at("text_data")		.get_to(mission_ui_data.text_data);
-	data.at("fade_in_speed")	.get_to(mission_ui_data.fade_in_speed);
-	data.at("fade_out_speed")	.get_to(mission_ui_data.fade_out_speed);
-	data.at("draw_wait_time")	.get_to(mission_ui_data.draw_wait_time);
+	j_data.at("screen_size")		.get_to(mission_ui_data.screen_size);
+	j_data.at("height_ratio")		.get_to(mission_ui_data.height_ratio);
+	j_data.at("text_data")		.get_to(mission_ui_data.text_data);
+	j_data.at("fade_in_speed")	.get_to(mission_ui_data.fade_in_speed);
+	j_data.at("fade_out_speed")	.get_to(mission_ui_data.fade_out_speed);
+	j_data.at("draw_wait_time")	.get_to(mission_ui_data.draw_wait_time);
 }
 
-inline void to_json(nlohmann::json& data, const MissionUIData& mission_ui_data)
+inline void to_json(nlohmann::json& j_data, const MissionUIData& mission_ui_data)
 {
-	data = nlohmann::json
+	j_data = nlohmann::json
 	{
 		{ "screen_size",		mission_ui_data.screen_size },
 		{ "height_ratio",		mission_ui_data.height_ratio },

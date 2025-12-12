@@ -1,4 +1,4 @@
-#include "font_handler.hpp"
+ï»¿#include "font_handler.hpp"
 
 FontHandler::FontHandler()
 {
@@ -12,15 +12,15 @@ FontHandler::~FontHandler()
 
 void FontHandler::CreateFontHandle()
 {
-	nlohmann::json data;
-	if (json_loader::Load("Data/JSON/font_data.json", data))
+	nlohmann::json j_data;
+	if (json_loader::Load("Data/JSON/font_data.json", j_data))
 	{
-		const auto font_json = data.at("font_data");
+		const auto font_json = j_data.at("font_data");
 		for (const auto [font_name, value] : font_json.items())
 		{
 			auto font_data = value.get<FontData>();
 
-			// •W€ƒtƒHƒ“ƒg‚Å‚È‚¢ê‡‚ÍƒtƒHƒ“ƒg‚ğ’Ç‰Á
+			// æ¨™æº–ãƒ•ã‚©ãƒ³ãƒˆã§ãªã„å ´åˆã¯ãƒ•ã‚©ãƒ³ãƒˆã‚’è¿½åŠ 
 			if (font_data.true_type_font != "")
 			{
 				AddFontResourceExA(font_data.true_type_font.c_str(), FR_PRIVATE, nullptr);

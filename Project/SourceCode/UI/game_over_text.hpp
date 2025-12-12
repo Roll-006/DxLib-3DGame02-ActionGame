@@ -25,20 +25,20 @@ private:
 	float							m_scale;
 	std::shared_ptr<ScreenCreator>	m_result_screen;
 
-	friend void from_json(const nlohmann::json& data, GameOverText& game_over_text);
-	friend void to_json  (nlohmann::json& data, const GameOverText& game_over_text);
+	friend void from_json(const nlohmann::json& j_data, GameOverText& game_over_text);
+	friend void to_json  (nlohmann::json& j_data, const GameOverText& game_over_text);
 };
 
 
 #pragma region from / to JSON
-inline void from_json(const nlohmann::json& data, GameOverText& game_over_text)
+inline void from_json(const nlohmann::json& j_data, GameOverText& game_over_text)
 {
-	data.at("game_over_text_data").get_to(game_over_text.game_over_text_data);
+	j_data.at("game_over_text_data").get_to(game_over_text.game_over_text_data);
 }
 
-inline void to_json(nlohmann::json& data, const GameOverText& game_over_text)
+inline void to_json(nlohmann::json& j_data, const GameOverText& game_over_text)
 {
-	data = nlohmann::json
+	j_data = nlohmann::json
 	{
 		{ "game_over_text_data", game_over_text.game_over_text_data },
 	};

@@ -61,28 +61,28 @@ private:
 
 	BlendActivationPolicyKind		m_blend_activation_policy_kind;		// ブレンド時のアクティブ処理の方針
 
-	friend void from_json	(const nlohmann::json& data, VirtualCamera& virtual_camera);
-	friend void to_json		(nlohmann::json& data, const VirtualCamera& virtual_camera);
+	friend void from_json	(const nlohmann::json& j_data, VirtualCamera& virtual_camera);
+	friend void to_json		(nlohmann::json& j_data, const VirtualCamera& virtual_camera);
 };
 
 
 #pragma region from / to JSON
-inline void from_json(const nlohmann::json& data, VirtualCamera& virtual_camera)
+inline void from_json(const nlohmann::json& j_data, VirtualCamera& virtual_camera)
 {
-	data.at("name")							.get_to(virtual_camera.m_name);
-	data.at("camera_handle")				.get_to(virtual_camera.m_camera_handle);
-	data.at("priority")						.get_to(virtual_camera.m_priority);
-	data.at("is_active")					.get_to(virtual_camera.m_is_active);
-	data.at("transform")					.get_to(*virtual_camera.m_transform.get());
-	data.at("body")							.get_to(*virtual_camera.m_body.get());
-	data.at("aim")							.get_to(*virtual_camera.m_aim.get());
-	data.at("target_transform")				.get_to(*virtual_camera.m_target_transform.get());
-	data.at("blend_activation_policy_kind")	.get_to(virtual_camera.m_blend_activation_policy_kind);
+	j_data.at("name")							.get_to(virtual_camera.m_name);
+	j_data.at("camera_handle")				.get_to(virtual_camera.m_camera_handle);
+	j_data.at("priority")						.get_to(virtual_camera.m_priority);
+	j_data.at("is_active")					.get_to(virtual_camera.m_is_active);
+	j_data.at("transform")					.get_to(*virtual_camera.m_transform.get());
+	j_data.at("body")							.get_to(*virtual_camera.m_body.get());
+	j_data.at("aim")							.get_to(*virtual_camera.m_aim.get());
+	j_data.at("target_transform")				.get_to(*virtual_camera.m_target_transform.get());
+	j_data.at("blend_activation_policy_kind")	.get_to(virtual_camera.m_blend_activation_policy_kind);
 }
 
-inline void to_json(nlohmann::json& data, const VirtualCamera& virtual_camera)
+inline void to_json(nlohmann::json& j_data, const VirtualCamera& virtual_camera)
 {
-	data = nlohmann::json
+	j_data = nlohmann::json
 	{
 		{"name",							virtual_camera.m_name},
 		{"camera_handle",					virtual_camera.m_camera_handle},

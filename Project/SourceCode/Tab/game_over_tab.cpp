@@ -1,4 +1,4 @@
-#include "game_over_tab.hpp"
+ï»¿#include "game_over_tab.hpp"
 
 GameOverTab::GameOverTab() : 
 	m_tab_handle		(HandleCreator::GetInstance()->CreateHandle()),
@@ -13,9 +13,10 @@ GameOverTab::GameOverTab() :
 	m_game_over_text	(std::make_shared<GameOverText>()),
 	m_ui_selector		(std::make_shared<UISelector>(0, true, true)),
 	m_filter_graphic	(std::make_shared<Graphicer>(UIGraphicPath.GAME_OVER_TAB_FILTER)),
-	m_result_screen		(std::make_shared<ScreenCreator>(Window::kScreenSize, Window::kCenterPos))
+	m_result_screen		(std::make_shared<ScreenCreator>(Window::kScreenSize, Window::kCenterPos)),
+	m_button_prompt		(std::make_shared<ButtonPrompt>("game_over"))
 {
-	// ƒCƒxƒ“ƒg“o˜^
+	// ã‚¤ãƒ™ãƒ³ãƒˆç™»éŒ²
 	EventSystem::GetInstance()->Subscribe<DeadPlayerEvent>(this, &GameOverTab::Activate);
 
 	std::vector<Vector2D<int>> center_pos;
@@ -27,6 +28,9 @@ GameOverTab::GameOverTab() :
 	m_ui_selector->AddUIButton(std::make_shared<SubMenuSelectButton>(SubMenuSelectButton::ButtonKind::kContinue, center_pos.at(0), [this]() { ExecuteContinue(); }, true));
 	m_ui_selector->AddUIButton(std::make_shared<SubMenuSelectButton>(SubMenuSelectButton::ButtonKind::kQuitGame, center_pos.at(1), [this]() { ExecuteQuitGame(); }, false));
 
+	m_button_prompt->AddExplanatoryText(0, "ã‚²ãƒ¼ãƒ ã‚’ç¶šã‘ã¾ã™");
+	m_button_prompt->AddExplanatoryText(1, "ã‚¿ã‚¤ãƒˆãƒ«ã«æˆ»ã‚Šã¾ã™");
+
 	m_filter_graphic->SetCenterPos(Window::kCenterPos);
 	m_filter_graphic->SetBlendNum(220);
 
@@ -35,7 +39,7 @@ GameOverTab::GameOverTab() :
 
 GameOverTab::~GameOverTab()
 {
-	// ƒCƒxƒ“ƒg‚Ì“o˜^‰ðœ
+	// ã‚¤ãƒ™ãƒ³ãƒˆã®ç™»éŒ²è§£é™¤
 	EventSystem::GetInstance()->Unsubscribe<DeadPlayerEvent>(this, &GameOverTab::Activate);
 }
 
@@ -52,6 +56,7 @@ void GameOverTab::Update()
 	if (!m_is_active) { return; }
 
 	if (m_can_select) { m_ui_selector->Update(); }
+	m_button_prompt->Update(m_ui_selector->GetCurrentButtonIndex());
 
 	m_game_over_text->Update();
 
@@ -72,8 +77,7 @@ void GameOverTab::OnDraw(const int main_screen_handle) const
 	DrawGraph(0, 0, main_screen_handle, TRUE);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
-	m_result_screen->Draw();
-
+	m_result_screen	->Draw();
 	m_game_over_text->Draw();
 }
 
@@ -107,7 +111,7 @@ void GameOverTab::JudgeActive()
 	if (m_is_active)			{ return; }
 	if (!m_can_calc_wait_time)	{ return; }
 
-	// ƒvƒŒƒCƒ„[‚ÌŽ€–S’Ê’m‚ðŽó‚¯Žæ‚Á‚Ä‚©‚çˆê’èŽžŠÔŒã‚ÉƒAƒNƒeƒBƒu‰»
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æ­»äº¡é€šçŸ¥ã‚’å—ã‘å–ã£ã¦ã‹ã‚‰ä¸€å®šæ™‚é–“å¾Œã«ã‚¢ã‚¯ãƒ†ã‚£ãƒ–åŒ–
 	const auto delta_time = GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kUI);
 	m_active_wait_timer += delta_time;
 	if (m_active_wait_timer > kActiveWaitTime)
@@ -139,6 +143,8 @@ void GameOverTab::CreateResultScreen()
 	{
 		button->Draw();
 	}
+
+	m_button_prompt->Draw();
 
 	m_result_screen->UnuseScreen();
 }

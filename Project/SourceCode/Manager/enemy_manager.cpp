@@ -13,20 +13,20 @@ EnemyManager::EnemyManager() :
 	EventSystem::GetInstance()->Subscribe<DeadEnemyEvent>		(this, &EnemyManager::CountDeadEnemy);
 
 	// ‰Šú‚Ì“G‚ğ¶¬
-	nlohmann::json data;
-	if (json_loader::Load("Data/JSON/init_enemies.json", data))
+	nlohmann::json j_data;
+	if (json_loader::Load("Data/JSON/init_enemies.json", j_data))
 	{
 		// ƒ]ƒ“ƒr
-		const auto init_zombie_size = data.at("init_enemies").at("zombie").size();
+		const auto init_zombie_size = j_data.at("init_enemies").at("zombie").size();
 		m_enemy_size += static_cast<int>(init_zombie_size);
 		for (size_t i = 0; i < init_zombie_size; ++i)
 		{
 			const auto enemy		= std::static_pointer_cast<EnemyBase>(m_object_pool->GetObj(ObjName.ZOMBIE));
-			const auto pos			= data.at("init_enemies").at("zombie").at(std::to_string(i)).at("position").get<VECTOR>();
-			const auto dir			= data.at("init_enemies").at("zombie").at(std::to_string(i)).at("direction").get<VECTOR>();
-			const auto use_patrol	= data.at("init_enemies").at("zombie").at(std::to_string(i)).at("use_patrol");
-			const auto route_id		= data.at("init_enemies").at("zombie").at(std::to_string(i)).at("route_id");
-			const auto patrol_kind	= data.at("init_enemies").at("zombie").at(std::to_string(i)).at("patrol_kind");
+			const auto pos			= j_data.at("init_enemies").at("zombie").at(std::to_string(i)).at("position").get<VECTOR>();
+			const auto dir			= j_data.at("init_enemies").at("zombie").at(std::to_string(i)).at("direction").get<VECTOR>();
+			const auto use_patrol	= j_data.at("init_enemies").at("zombie").at(std::to_string(i)).at("use_patrol");
+			const auto route_id		= j_data.at("init_enemies").at("zombie").at(std::to_string(i)).at("route_id");
+			const auto patrol_kind	= j_data.at("init_enemies").at("zombie").at(std::to_string(i)).at("patrol_kind");
 
 			m_active_enemies.emplace_back(enemy);
 			enemy->OnRespawn(pos, dir);

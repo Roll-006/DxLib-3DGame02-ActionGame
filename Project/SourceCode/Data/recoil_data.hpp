@@ -14,19 +14,19 @@ struct RecoilData
 
 
 #pragma region from / to JSON
-inline void from_json(const nlohmann::json& data, RecoilData& recoil_data)
+inline void from_json(const nlohmann::json& j_data, RecoilData& recoil_data)
 {
-	data.at("max_yaw")			.get_to(recoil_data.max_yaw);
-	data.at("min_yaw")			.get_to(recoil_data.min_yaw);
-	data.at("yaw")				.get_to(recoil_data.yaw);
-	data.at("pitch")			.get_to(recoil_data.pitch);
-	data.at("recoil_time")		.get_to(recoil_data.recoil_time);
-	data.at("return_damping")	.get_to(recoil_data.return_damping);
+	j_data.at("max_yaw")			.get_to(recoil_data.max_yaw);
+	j_data.at("min_yaw")			.get_to(recoil_data.min_yaw);
+	j_data.at("yaw")				.get_to(recoil_data.yaw);
+	j_data.at("pitch")			.get_to(recoil_data.pitch);
+	j_data.at("recoil_time")		.get_to(recoil_data.recoil_time);
+	j_data.at("return_damping")	.get_to(recoil_data.return_damping);
 }
 
-inline void to_json(nlohmann::json& data, const RecoilData& recoil_data)
+inline void to_json(nlohmann::json& j_data, const RecoilData& recoil_data)
 {
-	data = nlohmann::json
+	j_data = nlohmann::json
 	{
 		{ "max_yaw",		recoil_data.max_yaw },
 		{ "min_yaw",		recoil_data.min_yaw },

@@ -49,20 +49,20 @@ private:
 	std::shared_ptr<Transform>	m_item_effect_transform;
 	std::shared_ptr<Modeler>	m_modeler;
 
-	friend void from_json(const nlohmann::json& data, RocketBombBox& rocket_bomb_box);
-	friend void to_json	 (nlohmann::json& data, const RocketBombBox& rocket_bomb_box);
+	friend void from_json(const nlohmann::json& j_data, RocketBombBox& rocket_bomb_box);
+	friend void to_json	 (nlohmann::json& j_data, const RocketBombBox& rocket_bomb_box);
 };
 
 
 #pragma region from / to JSON
-inline void from_json(const nlohmann::json& data, RocketBombBox& rocket_bomb_box)
+inline void from_json(const nlohmann::json& j_data, RocketBombBox& rocket_bomb_box)
 {
-	data.at("rifle_cartridge_box_data").get_to(rocket_bomb_box.rifle_cartridge_box_data);
+	j_data.at("rifle_cartridge_box_data").get_to(rocket_bomb_box.rifle_cartridge_box_data);
 }
 
-inline void to_json(nlohmann::json& data, const RocketBombBox& rocket_bomb_box)
+inline void to_json(nlohmann::json& j_data, const RocketBombBox& rocket_bomb_box)
 {
-	data = nlohmann::json
+	j_data = nlohmann::json
 	{
 		{ "rifle_cartridge_box_data", rocket_bomb_box.rifle_cartridge_box_data },
 	};

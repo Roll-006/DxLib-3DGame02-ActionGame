@@ -1,28 +1,28 @@
-#pragma once
+ï»¿#pragma once
 #include <string>
 #include <fstream>
 #include <nlohmann/json.hpp>
 
 namespace json_loader
 {
-    /// @brief JSONƒf[ƒ^‚ğŠO•”ƒtƒ@ƒCƒ‹‚É•Û‘¶‚·‚é
-    /// @brief ƒtƒ@ƒCƒ‹‚ª‚È‚¢ê‡‚Í©“®“I‚Éì¬‚³‚ê‚é
-    /// @param file_path JSONƒtƒ@ƒCƒ‹ƒpƒX
-    /// @param data •Û‘¶‚·‚éJSONƒf[ƒ^
-    /// @return true : •Û‘¶¬Œ÷, false : •Û‘¶¸”s
-    inline bool Save(const std::string_view& file_path, const nlohmann::json& data)
+    /// @brief JSONãƒ‡ãƒ¼ã‚¿ã‚’å¤–éƒ¨ãƒ•ã‚¡ã‚¤ãƒ«ã«ä¿å­˜ã™ã‚‹
+    /// @brief ãƒ•ã‚¡ã‚¤ãƒ«ãŒãªã„å ´åˆã¯è‡ªå‹•çš„ã«ä½œæˆã•ã‚Œã‚‹
+    /// @param file_path JSONãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹
+    /// @param j_data ä¿å­˜ã™ã‚‹JSONãƒ‡ãƒ¼ã‚¿
+    /// @return true : ä¿å­˜æˆåŠŸ, false : ä¿å­˜å¤±æ•—
+    inline bool Save(const std::string_view& file_path, const nlohmann::json& j_data)
     {
-        // ‘‚«‚İ—pƒtƒ@ƒCƒ‹‚ğã‘‚«w’è‚Å“WŠJ
-        // ƒtƒ@ƒCƒ‹‚ª‚È‚¢ê‡©“®ì¬
+        // æ›¸ãè¾¼ã¿ç”¨ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä¸Šæ›¸ãæŒ‡å®šã§å±•é–‹
+        // ãƒ•ã‚¡ã‚¤ãƒ«ãŒãªã„å ´åˆè‡ªå‹•ä½œæˆ
         std::ofstream ofs(std::string(file_path), std::ios::out);
 
-        // “WŠJ‚É¸”s
+        // å±•é–‹ã«å¤±æ•—
         if (!ofs) { return false; }
 
         try
         {
-            // ‘‚«‚İ
-            ofs << data.dump(4);
+            // æ›¸ãè¾¼ã¿
+            ofs << j_data.dump(4);
         }
         catch (...)
         {
@@ -32,23 +32,23 @@ namespace json_loader
         return true;
     }
 
-    /// @brief ŠO•”ƒtƒ@ƒCƒ‹‚©‚çJSONƒf[ƒ^‚ğ“Ç‚İ‚Ş
-    /// @param file_path JSONƒtƒ@ƒCƒ‹ƒpƒX
-    /// @param data “Ç‚İ‚ŞJSONƒf[ƒ^
-    /// @return true : “Ç‚İ‚İ¬Œ÷, false : “Ç‚İ‚İ¸”s
-    [[nodiscard]] inline bool Load(const std::string_view& file_path, nlohmann::json& data)
+    /// @brief å¤–éƒ¨ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰JSONãƒ‡ãƒ¼ã‚¿ã‚’èª­ã¿è¾¼ã‚€
+    /// @param file_path JSONãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹
+    /// @param j_data èª­ã¿è¾¼ã‚€JSONãƒ‡ãƒ¼ã‚¿
+    /// @return true : èª­ã¿è¾¼ã¿æˆåŠŸ, false : èª­ã¿è¾¼ã¿å¤±æ•—
+    [[nodiscard]] inline bool Load(const std::string_view& file_path, nlohmann::json& j_data)
     {
-        // “Ç‚İ‚İ—pƒtƒ@ƒCƒ‹‚ğ“WŠJ
+        // èª­ã¿è¾¼ã¿ç”¨ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å±•é–‹
         std::string path = std::string(file_path);
         std::ifstream ifs(path);
 
-        // “WŠJ‚É¸”s
+        // å±•é–‹ã«å¤±æ•—
         if (!ifs) return false;
 
         try
         {
-            // “Ç‚İ‚İ
-            ifs >> data;
+            // èª­ã¿è¾¼ã¿
+            ifs >> j_data;
         }
         catch (...)
         {

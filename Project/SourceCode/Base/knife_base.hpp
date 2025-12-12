@@ -22,21 +22,21 @@ protected:
 	VECTOR trigger_offset_pos;
 	float  trigger_radius;
 
-	friend void from_json(const nlohmann::json& data, KnifeBase& knife_base);
-	friend void to_json  (nlohmann::json& data, const KnifeBase& knife_base);
+	friend void from_json(const nlohmann::json& j_data, KnifeBase& knife_base);
+	friend void to_json  (nlohmann::json& j_data, const KnifeBase& knife_base);
 };
 
 
 #pragma region from / to JSON
-inline void from_json(const nlohmann::json& data, KnifeBase& knife_base)
+inline void from_json(const nlohmann::json& j_data, KnifeBase& knife_base)
 {
-	from_json(data, static_cast<WeaponBase&>(knife_base));
+	from_json(j_data, static_cast<WeaponBase&>(knife_base));
 
-	data.at("trigger_offset_pos")	.get_to(knife_base.trigger_offset_pos);
-	data.at("trigger_radius")		.get_to(knife_base.trigger_radius);
+	j_data.at("trigger_offset_pos")	.get_to(knife_base.trigger_offset_pos);
+	j_data.at("trigger_radius")		.get_to(knife_base.trigger_radius);
 }
 
-inline void to_json(nlohmann::json& data, const KnifeBase& knife_base)
+inline void to_json(nlohmann::json& j_data, const KnifeBase& knife_base)
 {
 	nlohmann::json base_json;
 	to_json(base_json, static_cast<const WeaponBase&>(knife_base));
@@ -47,7 +47,7 @@ inline void to_json(nlohmann::json& data, const KnifeBase& knife_base)
 		{ "trigger_radius",		knife_base.trigger_radius },
 	};
 
-	data = base_json;
-	data.update(derived_json);
+	j_data = base_json;
+	j_data.update(derived_json);
 }
 #pragma endregion

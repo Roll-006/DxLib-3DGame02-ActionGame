@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <vector>
 #include "../Base/ui_button_base.hpp"
 #include "../Base/ui_slider_base.hpp"
@@ -15,6 +15,7 @@ public:
 	void AddUIButton(const std::shared_ptr<IUIElement> ui_button);
 
 	[[nodiscard]] std::vector<std::shared_ptr<IUIElement>> GetUIButtons() const { return m_ui_buttons; }
+	[[nodiscard]] int GetCurrentButtonIndex() const { return m_current_button_index; }
 
 private:
 	void CalcButtonIndex();
@@ -28,7 +29,7 @@ private:
 	int   m_init_button_index;
 	int   m_current_button_index;
 	float m_select_timer;
-	bool  m_is_first_stop_select;	// Å‰‚Ì‘I‘ğ‚Éˆêu’â~‚·‚é‚©‚ğ”»’è
+	bool  m_is_first_stop_select;	// æœ€åˆã®é¸æŠæ™‚ã«ä¸€ç¬åœæ­¢ã™ã‚‹ã‹ã‚’åˆ¤å®š
 	bool  m_selected_stop;
-	bool  m_is_loop_select;			// ’·‰Ÿ‚µ‚Åƒ‹[ƒv‘I‘ğ‚·‚é‚©‚ğ”»’è
+	bool  m_is_loop_select;			// é•·æŠ¼ã—ã§ãƒ«ãƒ¼ãƒ—é¸æŠã™ã‚‹ã‹ã‚’åˆ¤å®š
 };

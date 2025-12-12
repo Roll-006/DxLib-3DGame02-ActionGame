@@ -40,26 +40,26 @@ private:
 	VECTOR						m_collision_area_offset;
 	float						m_collision_area_radius;
 
-	friend void from_json(const nlohmann::json& data, House& house);
-	friend void to_json  (nlohmann::json& data, const House& house);
+	friend void from_json(const nlohmann::json& j_data, House& house);
+	friend void to_json  (nlohmann::json& j_data, const House& house);
 };
 
 
 #pragma region from / to JSON
-inline void from_json(const nlohmann::json& data, House& house)
+inline void from_json(const nlohmann::json& j_data, House& house)
 {
-	from_json(data, static_cast<PhysicalObjBase&>(house));
+	from_json(j_data, static_cast<PhysicalObjBase&>(house));
 
-	data.at("model_path")			.get_to(house.m_model_path);
-	data.at("collision_model_path")	.get_to(house.m_collision_model_path);
-	data.at("position")				.get_to(house.m_pos);
-	data.at("angle")				.get_to(house.m_angle);
-	data.at("basic_scale")			.get_to(house.m_basic_scale);
-	data.at("collision_area_offset").get_to(house.m_collision_area_offset);
-	data.at("collision_area_radius").get_to(house.m_collision_area_radius);
+	j_data.at("model_path")			.get_to(house.m_model_path);
+	j_data.at("collision_model_path")	.get_to(house.m_collision_model_path);
+	j_data.at("position")				.get_to(house.m_pos);
+	j_data.at("angle")				.get_to(house.m_angle);
+	j_data.at("basic_scale")			.get_to(house.m_basic_scale);
+	j_data.at("collision_area_offset").get_to(house.m_collision_area_offset);
+	j_data.at("collision_area_radius").get_to(house.m_collision_area_radius);
 }
 
-inline void to_json(nlohmann::json& data, const House& house)
+inline void to_json(nlohmann::json& j_data, const House& house)
 {
 	nlohmann::json base_json;
 	to_json(base_json, static_cast<const PhysicalObjBase&>(house));
@@ -75,7 +75,7 @@ inline void to_json(nlohmann::json& data, const House& house)
 		{ "collision_area_radius",	house.m_collision_area_radius }
 	};
 
-	data = base_json;
-	data.update(derived_json);
+	j_data = base_json;
+	j_data.update(derived_json);
 }
 #pragma endregion

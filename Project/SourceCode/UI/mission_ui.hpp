@@ -31,20 +31,20 @@ private:
 	bool							m_is_active;
 	bool							m_is_wait;
 
-	friend void from_json(const nlohmann::json& data, MissionUI& mission_ui);
-	friend void to_json  (nlohmann::json& data, const MissionUI& mission_ui);
+	friend void from_json(const nlohmann::json& j_data, MissionUI& mission_ui);
+	friend void to_json  (nlohmann::json& j_data, const MissionUI& mission_ui);
 };
 
 
 #pragma region from / to JSON
-inline void from_json(const nlohmann::json& data, MissionUI& mission_ui)
+inline void from_json(const nlohmann::json& j_data, MissionUI& mission_ui)
 {
-	data.at("mission_ui_data").get_to(mission_ui.mission_ui_data);
+	j_data.at("mission_ui_data").get_to(mission_ui.mission_ui_data);
 }
 
-inline void to_json(nlohmann::json& data, const MissionUI& mission_ui)
+inline void to_json(nlohmann::json& j_data, const MissionUI& mission_ui)
 {
-	data = nlohmann::json
+	j_data = nlohmann::json
 	{
 		{ "mission_ui_data", mission_ui.mission_ui_data },
 	};

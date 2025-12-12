@@ -106,9 +106,8 @@ void CommandHandler::InitPadCommand()
 	m_pad_codes.clear();
 
 	// TODO : Œã‚ÉJson‰»
-	AddInputCode(CommandKind::kSelectUp,					CommandSlotKind::kStatic1,	pad::ButtonKind	::kUp);
-	AddInputCode(CommandKind::kBack,						CommandSlotKind::kStatic1,	pad::ButtonKind	::kB);
 	AddInputCode(CommandKind::kDecide,						CommandSlotKind::kStatic1,	pad::ButtonKind	::kA);
+	AddInputCode(CommandKind::kBack,						CommandSlotKind::kStatic1,	pad::ButtonKind	::kB);
 	AddInputCode(CommandKind::kSelectUp,					CommandSlotKind::kStatic1,	pad::ButtonKind	::kUp);
 	AddInputCode(CommandKind::kSelectUp,					CommandSlotKind::kStatic2,	pad::StickKind	::kLSUp);
 	AddInputCode(CommandKind::kSelectDown,					CommandSlotKind::kStatic1,	pad::ButtonKind	::kDown);

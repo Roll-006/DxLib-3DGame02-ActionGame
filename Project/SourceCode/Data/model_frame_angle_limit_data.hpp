@@ -10,15 +10,15 @@ struct ModelFrameAngleLimitData
 
 
 #pragma region from / to JSON
-inline void from_json(const nlohmann::json& data, ModelFrameAngleLimitData& model_frame_angle_limit_data)
+inline void from_json(const nlohmann::json& j_data, ModelFrameAngleLimitData& model_frame_angle_limit_data)
 {
-	data.at("max_angle").get_to(model_frame_angle_limit_data.max_angle);
-	data.at("min_angle").get_to(model_frame_angle_limit_data.min_angle);
+	j_data.at("max_angle").get_to(model_frame_angle_limit_data.max_angle);
+	j_data.at("min_angle").get_to(model_frame_angle_limit_data.min_angle);
 }
 
-inline void to_json(nlohmann::json& data, const ModelFrameAngleLimitData& model_frame_angle_limit_data)
+inline void to_json(nlohmann::json& j_data, const ModelFrameAngleLimitData& model_frame_angle_limit_data)
 {
-	data = nlohmann::json
+	j_data = nlohmann::json
 	{
 		{ "max_angle",	model_frame_angle_limit_data.max_angle },
 		{ "min_angle",	model_frame_angle_limit_data.min_angle },

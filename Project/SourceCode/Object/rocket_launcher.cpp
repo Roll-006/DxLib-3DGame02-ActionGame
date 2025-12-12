@@ -8,10 +8,10 @@ RocketLauncher::RocketLauncher() :
 	m_magazine = std::make_shared<NonCollildeRocketBomb>(m_load_transform);
 	std::dynamic_pointer_cast<ObjBase>(m_magazine)->AddToObjManager();
 
-	nlohmann::json data;
-	if (json_loader::Load("Data/JSON/gun_data.json", data))
+	nlohmann::json j_data;
+	if (json_loader::Load("Data/JSON/gun_data.json", j_data))
 	{
-		const auto rocket_launcher	= data.at("gun_data").at("rocket_launcher");
+		const auto rocket_launcher	= j_data.at("gun_data").at("rocket_launcher");
 		mass_kind					= rocket_launcher.at("mass_kind");
 		basic_angle					= rocket_launcher.at("basic_angle").get<VECTOR>() * math::kDegToRad;
 		basic_scale					= rocket_launcher.at("basic_scale");

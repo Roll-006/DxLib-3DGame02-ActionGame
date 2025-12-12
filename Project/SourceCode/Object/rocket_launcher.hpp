@@ -36,20 +36,20 @@ private:
 	std::shared_ptr<Transform> m_exhaust_vent_transform;
 	bool m_is_draw_magazine;
 
-	friend void from_json(const nlohmann::json& data, RocketLauncher& rocket_launcher);
-	friend void to_json  (nlohmann::json& data, const RocketLauncher& rocket_launcher);
+	friend void from_json(const nlohmann::json& j_data, RocketLauncher& rocket_launcher);
+	friend void to_json  (nlohmann::json& j_data, const RocketLauncher& rocket_launcher);
 };
 
 
 #pragma region from / to JSON
-inline void from_json(const nlohmann::json& data, RocketLauncher& rocket_launcher)
+inline void from_json(const nlohmann::json& j_data, RocketLauncher& rocket_launcher)
 {
-	from_json(data, static_cast<GunBase&>(rocket_launcher));
+	from_json(j_data, static_cast<GunBase&>(rocket_launcher));
 
-	data.at("cross_hair_max_radius").get_to(rocket_launcher.cross_hair_max_radius);
+	j_data.at("cross_hair_max_radius").get_to(rocket_launcher.cross_hair_max_radius);
 }
 
-inline void to_json(nlohmann::json& data, const RocketLauncher& rocket_launcher)
+inline void to_json(nlohmann::json& j_data, const RocketLauncher& rocket_launcher)
 {
 	nlohmann::json base_json;
 	to_json(base_json, static_cast<const GunBase&>(rocket_launcher));
@@ -59,7 +59,7 @@ inline void to_json(nlohmann::json& data, const RocketLauncher& rocket_launcher)
 		{ "cross_hair_max_radius", rocket_launcher.cross_hair_max_radius },
 	};
 
-	data = base_json;
-	data.update(derived_json);
+	j_data = base_json;
+	j_data.update(derived_json);
 }
 #pragma endregion

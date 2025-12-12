@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../Interface/i_tab.hpp"
 
 #include "../Event/event_system.hpp"
@@ -48,4 +48,6 @@ private:
 	bool							m_is_exit;
 	std::shared_ptr<UISelector>		m_ui_selector;
 	std::shared_ptr<WarningTab>		m_warning_exit_tab;
+
+	std::shared_ptr<ButtonPrompt>	m_button_prompt;
 };

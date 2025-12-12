@@ -38,22 +38,22 @@ private:
 
 	std::shared_ptr<Transform> m_transform;
 
-	friend void from_json(const nlohmann::json& data, Modeler& modeler);
-	friend void to_json  (nlohmann::json& data, const Modeler& modeler);
+	friend void from_json(const nlohmann::json& j_data, Modeler& modeler);
+	friend void to_json  (nlohmann::json& j_data, const Modeler& modeler);
 };
 
 
 #pragma region from / to JSON
-inline void from_json(const nlohmann::json& data, Modeler& modeler)
+inline void from_json(const nlohmann::json& j_data, Modeler& modeler)
 {
-	data.at("opacity")		.get_to(modeler.m_opacity);
-	data.at("basic_angle")	.get_to(modeler.m_basic_angle);
-	data.at("basic_scale")	.get_to(modeler.m_basic_scale);
+	j_data.at("opacity")		.get_to(modeler.m_opacity);
+	j_data.at("basic_angle")	.get_to(modeler.m_basic_angle);
+	j_data.at("basic_scale")	.get_to(modeler.m_basic_scale);
 }
 
-inline void to_json(nlohmann::json& data, const Modeler& modeler)
+inline void to_json(nlohmann::json& j_data, const Modeler& modeler)
 {
-	data = nlohmann::json
+	j_data = nlohmann::json
 	{
 		{ "opacity",		modeler.m_opacity },
 		{ "basic_angle",	modeler.m_basic_angle },

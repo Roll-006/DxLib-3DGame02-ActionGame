@@ -102,20 +102,20 @@ protected:
 private:
 	int		m_model_handle;
 
-	friend void from_json(const nlohmann::json& data, PhysicalObjBase& physical_obj_base);
-	friend void to_json(nlohmann::json& data, const PhysicalObjBase& physical_obj_base);
+	friend void from_json(const nlohmann::json& j_data, PhysicalObjBase& physical_obj_base);
+	friend void to_json(nlohmann::json& j_data, const PhysicalObjBase& physical_obj_base);
 };
 
 
 #pragma region from / to JSON
-inline void from_json(const nlohmann::json& data, PhysicalObjBase& physical_obj_base)
+inline void from_json(const nlohmann::json& j_data, PhysicalObjBase& physical_obj_base)
 {
-	from_json(data, static_cast<ObjBase&>(physical_obj_base));
+	from_json(j_data, static_cast<ObjBase&>(physical_obj_base));
 
-	data.at("mass_kind").get_to(physical_obj_base.mass_kind);
+	j_data.at("mass_kind").get_to(physical_obj_base.mass_kind);
 }
 
-inline void to_json(nlohmann::json& data, const PhysicalObjBase& physical_obj_base)
+inline void to_json(nlohmann::json& j_data, const PhysicalObjBase& physical_obj_base)
 {
 	nlohmann::json base_json;
 	to_json(base_json, static_cast<const ObjBase&>(physical_obj_base));
@@ -125,7 +125,7 @@ inline void to_json(nlohmann::json& data, const PhysicalObjBase& physical_obj_ba
 		{ "mass_kind", physical_obj_base.mass_kind },
 	};
 
-	data = base_json;
-	data.update(derived_json);
+	j_data = base_json;
+	j_data.update(derived_json);
 }
 #pragma endregion

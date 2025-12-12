@@ -369,9 +369,9 @@ std::vector<ColliderPairOneToManyData> CollisionManager::CreateHitColliderPairs(
 					if (!IsCollided(*owner_obj_collider.second, *target_obj_collider.second, intersection)) { continue; }
 
 					// 指定のオーナーのデータコンテナがまだない場合は新たに作成
-					bool is_maked = std::any_of(collider_pairs.begin(), collider_pairs.end(), [=](const ColliderPairOneToManyData& data)
+					bool is_maked = std::any_of(collider_pairs.begin(), collider_pairs.end(), [=](const ColliderPairOneToManyData& j_data)
 					{
-						return data.owner_collider == owner_obj_collider.second;
+						return j_data.owner_collider == owner_obj_collider.second;
 					});
 
 					if (!is_maked) { collider_pairs.emplace_back(owner_obj_collider.second, std::vector<TargetColliderData>()); }

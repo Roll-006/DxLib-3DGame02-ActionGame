@@ -1,8 +1,8 @@
 #include "effect.hpp"
 
-Effect::Effect(const EffectData& data) :
-	ObjBase						(data.obj_name, ObjTag.EFFECT),
-	m_origin_effect_handle		(HandleKeeper::GetInstance()->LoadHandle(HandleKind::kEffect, data.file_path)),
+Effect::Effect(const EffectData& j_data) :
+	ObjBase						(j_data.obj_name, ObjTag.EFFECT),
+	m_origin_effect_handle		(HandleKeeper::GetInstance()->LoadHandle(HandleKind::kEffect, j_data.file_path)),
 	m_playing_effect_handle		(-1),
 	m_time_scale_owner_name		(""),
 	m_owner_transform			(nullptr),
@@ -10,7 +10,7 @@ Effect::Effect(const EffectData& data) :
 	m_offset_pos				(v3d::GetZeroV()),
 	m_offset_angle				(v3d::GetZeroV()),
 	m_offset_scale				(VGet(1.0f, 1.0f, 1.0f)),
-	m_data						(data),
+	m_data						(j_data),
 	m_play_contains				(0),
 	m_play_wait_timer			(0.0f)
 {

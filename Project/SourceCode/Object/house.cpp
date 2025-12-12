@@ -14,16 +14,16 @@ House::House(const std::string& house_id) :
 {
 	mass_kind = MassKind::kStatic;
 
-	nlohmann::json data;
-	if (json_loader::Load("Data/JSON/houses.json", data))
+	nlohmann::json j_data;
+	if (json_loader::Load("Data/JSON/houses.json", j_data))
 	{
-		m_model_path			= data.at("houses").at(house_id).at("model_path");
-		m_collision_model_path	= data.at("houses").at(house_id).at("collision_model_path");
-		m_pos					= data.at("houses").at(house_id).at("position").get<VECTOR>();
-		m_angle					= data.at("houses").at(house_id).at("angle").get<VECTOR>();
-		m_basic_scale			= data.at("houses").at(house_id).at("basic_scale");
-		m_collision_area_offset = data.at("houses").at(house_id).at("collision_area_offset").get<VECTOR>();
-		m_collision_area_radius = data.at("houses").at(house_id).at("collision_area_radius");
+		m_model_path			= j_data.at("houses").at(house_id).at("model_path");
+		m_collision_model_path	= j_data.at("houses").at(house_id).at("collision_model_path");
+		m_pos					= j_data.at("houses").at(house_id).at("position").get<VECTOR>();
+		m_angle					= j_data.at("houses").at(house_id).at("angle").get<VECTOR>();
+		m_basic_scale			= j_data.at("houses").at(house_id).at("basic_scale");
+		m_collision_area_offset = j_data.at("houses").at(house_id).at("collision_area_offset").get<VECTOR>();
+		m_collision_area_radius = j_data.at("houses").at(house_id).at("collision_area_radius");
 	}
 
 	m_modeler			= std::make_shared<Modeler>(m_transform, m_model_path,			 v3d::GetZeroV(), m_basic_scale);

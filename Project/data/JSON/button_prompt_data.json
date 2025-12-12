@@ -1,0 +1,195 @@
+﻿{
+  "button_prompt_data": {
+    "warning": {
+      "screen_size": {
+        "x": 800,
+        "y": 100
+      },
+      "height_ratio": 0.9,
+      "graphic_scale": 0.17,
+      "offset": 50,
+      "single_button_prompt_data": [
+        {
+          "text_data": {
+            "font_path": "explanatory_text",
+            "text": "決定",
+            "hex_color": "#ffffff",
+            "offset": {
+              "x": 0,
+              "y": 0
+            }
+          },
+          "command_kind": 0,
+          "command_slot_kind": 2
+        },
+        {
+          "text_data": {
+            "font_path": "explanatory_text",
+            "text": "キャンセル",
+            "hex_color": "#ffffff",
+            "offset": {
+              "x": 0,
+              "y": 0
+            }
+          },
+          "command_kind": 1,
+          "command_slot_kind": 2
+        }
+      ],
+      "text_data": {
+        "font_path": "explanatory_text",
+        "text": "",
+        "hex_color": "#ffffff",
+        "offset": {
+          "x": 0,
+          "y": 0
+        }
+      }
+    },
+    "title": {
+      "screen_size": {
+        "x": 800,
+        "y": 100
+      },
+      "height_ratio": 0.9,
+      "graphic_scale": 0.17,
+      "offset": 50,
+      "single_button_prompt_data": [
+        {
+          "text_data": {
+            "font_path": "explanatory_text",
+            "text": "決定",
+            "hex_color": "#ffffff",
+            "offset": {
+              "x": 0,
+              "y": 0
+            }
+          },
+          "command_kind": 0,
+          "command_slot_kind": 2
+        }
+      ],
+      "text_data": {
+        "font_path": "explanatory_text",
+        "text": "",
+        "hex_color": "#ffffff",
+        "offset": {
+          "x": 0,
+          "y": -50
+        }
+      }
+    },
+    "pause": {
+      "screen_size": {
+        "x": 800,
+        "y": 100
+      },
+      "height_ratio": 0.9,
+      "graphic_scale": 0.17,
+      "offset": 50,
+      "single_button_prompt_data": [
+        {
+          "text_data": {
+            "font_path": "explanatory_text",
+            "text": "決定",
+            "hex_color": "#ffffff",
+            "offset": {
+              "x": 0,
+              "y": 0
+            }
+          },
+          "command_kind": 0,
+          "command_slot_kind": 2
+        },
+        {
+          "text_data": {
+            "font_path": "explanatory_text",
+            "text": "閉じる",
+            "hex_color": "#ffffff",
+            "offset": {
+              "x": 0,
+              "y": 0
+            }
+          },
+          "command_kind": 1,
+          "command_slot_kind": 2
+        }
+      ],
+      "text_data": {
+        "font_path": "explanatory_text",
+        "text": "",
+        "hex_color": "#ffffff",
+        "offset": {
+          "x": 0,
+          "y": -50
+        }
+      }
+    },
+    "game_clear": {
+      "screen_size": {
+        "x": 800,
+        "y": 100
+      },
+      "height_ratio": 0.9,
+      "graphic_scale": 0.17,
+      "offset": 50,
+      "single_button_prompt_data": [
+        {
+          "text_data": {
+            "font_path": "explanatory_text",
+            "text": "決定",
+            "hex_color": "#ffffff",
+            "offset": {
+              "x": 0,
+              "y": 0
+            }
+          },
+          "command_kind": 0,
+          "command_slot_kind": 2
+        }
+      ],
+      "text_data": {
+        "font_path": "explanatory_text",
+        "text": "",
+        "hex_color": "#ffffff",
+        "offset": {
+          "x": 0,
+          "y": -50
+        }
+      }
+    },
+    "game_over": {
+      "screen_size": {
+        "x": 800,
+        "y": 100
+      },
+      "height_ratio": 0.9,
+      "graphic_scale": 0.17,
+      "offset": 50,
+      "single_button_prompt_data": [
+        {
+          "text_data": {
+            "font_path": "explanatory_text",
+            "text": "決定",
+            "hex_color": "#ffffff",
+            "offset": {
+              "x": 0,
+              "y": 0
+            }
+          },
+          "command_kind": 0,
+          "command_slot_kind": 2
+        }
+      ],
+      "text_data": {
+        "font_path": "explanatory_text",
+        "text": "",
+        "hex_color": "#ffffff",
+        "offset": {
+          "x": 0,
+          "y": -50
+        }
+      }
+    }
+  }
+}

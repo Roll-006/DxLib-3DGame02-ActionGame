@@ -1,4 +1,4 @@
-#include "sub_menu_select_button.hpp"
+ï»¿#include "sub_menu_select_button.hpp"
 
 SubMenuSelectButton::SubMenuSelectButton(const ButtonKind button_kind, const Vector2D<int>& center_pos, const std::function<void()> exeute_function, const bool	is_init_selected) :
 	UIButtonBase						(exeute_function),
@@ -19,14 +19,14 @@ SubMenuSelectButton::SubMenuSelectButton(const ButtonKind button_kind, const Vec
 	m_applied_mask_screen				(std::make_shared<ScreenCreator>(m_button_frame_dark_graphic->GetOriginSize(), m_selecting_button_screen->GetHalfScreenSize())),
 	m_selecting_button_basic_screen		(std::make_shared<ScreenCreator>(m_button_frame_dark_graphic->GetOriginSize()))
 {
-	// ‰æ‘œ‚ğƒXƒNƒŠ[ƒ“‚É•ÏŠ·
+	// ç”»åƒã‚’ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã«å¤‰æ›
 	m_selecting_button_basic_screen->UseScreen();
 	const auto selecting_button_graphic = std::make_shared<Graphicer>(UIGraphicPath.SUB_MENU_SELECTING_BUTTON);
 	selecting_button_graphic->SetCenterPos(m_selecting_button_basic_screen->GetHalfScreenSize());
 	selecting_button_graphic->Draw();
 	m_selecting_button_basic_screen->UnuseScreen();
 
-	// ’†SÀ•W‚ğİ’è
+	// ä¸­å¿ƒåº§æ¨™ã‚’è¨­å®š
 	m_button_frame_dark_graphic ->SetCenterPos(center_pos);
 	m_button_frame_light_graphic->SetCenterPos(m_selecting_button_screen->GetHalfScreenSize());
 	m_selecting_button_movie	->GetResultGraphicer()->SetCenterPos(m_selecting_button_basic_screen->GetHalfScreenSize());
@@ -37,12 +37,12 @@ SubMenuSelectButton::SubMenuSelectButton(const ButtonKind button_kind, const Vec
 	{
 	case ButtonKind::kDecide:
 		m_font_handle = font_handler->GetFontHandle(FontName.EXPLANATORY_TEXT);
-		m_text = "‚Í‚¢";
+		m_text = "ã¯ã„";
 		break;
 
 	case ButtonKind::kBack:
 		m_font_handle = font_handler->GetFontHandle(FontName.EXPLANATORY_TEXT);
-		m_text = "‚¢‚¢‚¦";
+		m_text = "ã„ã„ãˆ";
 		break;
 
 	case ButtonKind::kContinue:
@@ -61,14 +61,14 @@ SubMenuSelectButton::SubMenuSelectButton(const ButtonKind button_kind, const Vec
 		break;
 	}
 
-	// ƒtƒHƒ“ƒgƒTƒCƒY‚ğæ“¾
+	// ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚ºã‚’å–å¾—
 	m_font_size = { GetDrawStringWidthToHandle(m_text.c_str(), -1, m_font_handle), GetFontSizeToHandle(m_font_handle) };
 
-	// Å‰‚©‚ç‘I‘ğ‚³‚ê‚Ä‚¢‚éê‡‚Ìˆ—
+	// æœ€åˆã‹ã‚‰é¸æŠã•ã‚Œã¦ã„ã‚‹å ´åˆã®å‡¦ç†
 	if (is_init_selected)
 	{
 		m_current_alpha_blend_num			= UCHAR_MAX;
-		m_destination_selecting_center_pos	= v2d::ConvertVecType<int>(m_center_pos + v2d::GetNormalizedV<Vector2D<float>>(Vector2D<float>(-1.0f, -1.0f)) * kSelectingButtonDistance);
+		m_destination_selecting_center_pos	= m_center_pos + v2d::GetNormalizedV<Vector2D<float>>(Vector2D<float>(-1.0f, -1.0f)) * kSelectingButtonDistance;
 		m_current_selecting_center_pos		= m_destination_selecting_center_pos;
 	}
 
@@ -107,7 +107,7 @@ void SubMenuSelectButton::Draw() const
 
 void SubMenuSelectButton::CreateSelectingGraphicScreen()
 {
-	// “®‰æ‚Éƒ}ƒXƒN‚ğ“K—p
+	// å‹•ç”»ã«ãƒã‚¹ã‚¯ã‚’é©ç”¨
 	m_applied_mask_screen->UseScreen();
 	m_mask_creator->CreateMask();
 	m_mask_creator->UseMask(m_selecting_button_basic_screen->GetScreenHandle(), true);
@@ -116,7 +116,7 @@ void SubMenuSelectButton::CreateSelectingGraphicScreen()
 	m_mask_creator->DeleteMask();
 	m_applied_mask_screen->UnuseScreen();
 
-	// ‘I‘ğ‚µ‚½Û‚É•‚‚«ã‚ª‚é‰æ‘œEƒeƒLƒXƒg‚ğˆê–‡‚Ì‰æ‘œ‚ÉŒ‹‡
+	// é¸æŠã—ãŸéš›ã«æµ®ãä¸ŠãŒã‚‹ç”»åƒãƒ»ãƒ†ã‚­ã‚¹ãƒˆã‚’ä¸€æšã®ç”»åƒã«çµåˆ
 	m_selecting_button_screen->UseScreen();
 
 	m_applied_mask_screen		->Draw();
@@ -155,7 +155,7 @@ void SubMenuSelectButton::CalcSelectingButtonPos()
 
 	if (m_is_active)
 	{
-		m_destination_selecting_center_pos = v2d::ConvertVecType<int>(m_center_pos + v2d::GetNormalizedV<Vector2D<float>>(Vector2D<float>(-1.0f, -1.0f)) * kSelectingButtonDistance);
+		m_destination_selecting_center_pos = m_center_pos + v2d::GetNormalizedV<Vector2D<float>>(Vector2D<float>(-1.0f, -1.0f)) * kSelectingButtonDistance;
 	}
 	else
 	{

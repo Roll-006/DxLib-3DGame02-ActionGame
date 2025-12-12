@@ -9,7 +9,11 @@
       "text_data": {
         "font_path": "mission_text",
         "text": "MISSION",
-        "hex_color": "#ffffff"
+        "hex_color": "#ffffff",
+        "offset": {
+          "x": 0,
+          "y": 0
+        }
       },
       "fade_in_speed": 100,
       "fade_out_speed": 100,
@@ -30,7 +34,11 @@
       "text_data": {
         "font_path": "game_over_text",
         "text": "GAME OVER",
-        "hex_color": "#d93b3b"
+        "hex_color": "#d93b3b",
+        "offset": {
+          "x": 0,
+          "y": 0
+        }
       }
     }
   }

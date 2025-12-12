@@ -1,18 +1,20 @@
-#include "graphicer.hpp"
+﻿#include "graphicer.hpp"
 
 Graphicer::Graphicer(const std::string& file_path) : 
 	m_graphic_handle		(HandleKeeper::GetInstance()->LoadHandle(HandleKind::kGraphic, file_path)),
 	m_center_pos			(v2d::GetZeroV<Vector2D<int>>()),
 	m_scale					(1.0f, 1.0f),
 	m_angle					(0.0f),
-	m_origin_width			(0),
-	m_origin_height			(0),
+	m_origin_size			(),
+	m_size					(),
 	m_blend_mode			(DX_BLENDMODE_ALPHA),
 	m_blend_num				(UCHAR_MAX),
 	m_is_invert_horizontal	(false),
 	m_is_invert_vertical	(false)
 {
-	GetGraphSize(m_graphic_handle, &m_origin_width, &m_origin_height);
+	int width, height;
+	GetGraphSize(m_graphic_handle, &width, &height);
+	m_origin_size = m_size = { width, height };
 }
 
 Graphicer::Graphicer(const int graphic_handle) : 
@@ -20,14 +22,16 @@ Graphicer::Graphicer(const int graphic_handle) :
 	m_center_pos			(v2d::GetZeroV<Vector2D<int>>()),
 	m_scale					(1.0f, 1.0f),
 	m_angle					(0.0f),
-	m_origin_width			(0),
-	m_origin_height			(0),
+	m_origin_size			(),
+	m_size					(),
 	m_blend_mode			(DX_BLENDMODE_ALPHA),
 	m_blend_num				(UCHAR_MAX),
 	m_is_invert_horizontal	(false),
 	m_is_invert_vertical	(false)
 {
-	GetGraphSize(m_graphic_handle, &m_origin_width, &m_origin_height);
+	int width, height;
+	GetGraphSize(m_graphic_handle, &width, &height);
+	m_origin_size = m_size = { width, height };
 }
 
 Graphicer::~Graphicer()
@@ -49,8 +53,8 @@ void Graphicer::Draw(const bool is_draw_graphic_frame) const
 		DrawRotaGraphFast3(
 			m_center_pos.x,
 			m_center_pos.y,
-			static_cast<int>(m_origin_width * 0.5f),
-			static_cast<int>(m_origin_height * 0.5f),
+			static_cast<int>(m_origin_size.x * 0.5f),
+			static_cast<int>(m_origin_size.y * 0.5f),
 			static_cast<double>(m_scale.x),
 			static_cast<double>(m_scale.y),
 			m_angle,
@@ -65,10 +69,22 @@ void Graphicer::Draw(const bool is_draw_graphic_frame) const
 	if (is_draw_graphic_frame)
 	{
 		DrawBox(
-			static_cast<int>(m_center_pos.x - m_origin_width  * 0.5f * m_scale.x),
-			static_cast<int>(m_center_pos.y - m_origin_height * 0.5f * m_scale.y),
-			static_cast<int>(m_center_pos.x + m_origin_width  * 0.5f * m_scale.x),
-			static_cast<int>(m_center_pos.y + m_origin_height * 0.5f * m_scale.y),
+			static_cast<int>(m_center_pos.x - m_size.x * 0.5f),
+			static_cast<int>(m_center_pos.y - m_size.y * 0.5f),
+			static_cast<int>(m_center_pos.x + m_size.x * 0.5f),
+			static_cast<int>(m_center_pos.y + m_size.y * 0.5f),
 			0xff0000, FALSE);
 	}
+}
+
+void Graphicer::SetScale(const Vector2D<float>& scale)
+{
+	m_scale = scale;
+	m_size = m_origin_size * m_scale;
+}
+
+void Graphicer::SetScale(const float scale)
+{
+	m_scale = { scale, scale };
+	m_size = m_origin_size * m_scale;
 }

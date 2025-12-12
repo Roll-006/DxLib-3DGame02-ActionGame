@@ -39,23 +39,23 @@ namespace v3d
 #pragma region from / to JSON
 namespace DxLib
 {
-	inline void from_json(const nlohmann::json& data, VECTOR& vector)
+	inline void from_json(const nlohmann::json& j_data, VECTOR& vector)
 	{
-		data.at("x").get_to(vector.x);
-		data.at("y").get_to(vector.y);
-		data.at("z").get_to(vector.z);
+		j_data.at("x").get_to(vector.x);
+		j_data.at("y").get_to(vector.y);
+		j_data.at("z").get_to(vector.z);
 	}
 
-	inline void from_json(const nlohmann::json& data, VECTOR_D& vector)
+	inline void from_json(const nlohmann::json& j_data, VECTOR_D& vector)
 	{
-		data.at("x").get_to(vector.x);
-		data.at("y").get_to(vector.y);
-		data.at("z").get_to(vector.z);
+		j_data.at("x").get_to(vector.x);
+		j_data.at("y").get_to(vector.y);
+		j_data.at("z").get_to(vector.z);
 	}
 
-	inline void to_json(nlohmann::json& data, const VECTOR& vector)
+	inline void to_json(nlohmann::json& j_data, const VECTOR& vector)
 	{
-		data = nlohmann::json
+		j_data = nlohmann::json
 		{
 			{ "x",	vector.x },
 			{ "y",	vector.y },
@@ -63,9 +63,9 @@ namespace DxLib
 		};
 	}
 
-	inline void to_json(nlohmann::json& data, const VECTOR_D& vector)
+	inline void to_json(nlohmann::json& j_data, const VECTOR_D& vector)
 	{
-		data = nlohmann::json
+		j_data = nlohmann::json
 		{
 			{ "x",	vector.x },
 			{ "y",	vector.y },

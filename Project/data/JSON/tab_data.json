@@ -1,0 +1,54 @@
+﻿{
+  "tab_data": {
+    "warning": {
+      "priority": 10,
+      "warning_text_data": {
+        "font_path": "explanatory_text",
+        "text": "",
+        "hex_color": "#ffffff",
+        "offset": {
+          "x": 0,
+          "y": -100
+        }
+      },
+      "first_button_center_offset": {
+        "x": 0,
+        "y": 50
+      },
+      "warning_icon_offset": {
+        "x": 0,
+        "y": -200
+      },
+      "warning_icon_scale": 0.1,
+      "button_pos_interval": 130,
+      "fade_speed": 600.0,
+      "alpha_blend_num": 220,
+      "restart_text": "ゲームをやり直しますか？",
+      "quit_game_text": "ゲームを終了しますか？",
+      "exit_text": "ゲームを終了しますか？",
+      "decide_text_data": {
+        "font_path": "explanatory_text",
+        "text": "決定",
+        "hex_color": "#ffffff",
+        "offset": {
+          "x": 0,
+          "y": 0
+        }
+      },
+      "back_text_data": {
+        "font_path": "explanatory_text",
+        "text": "キャンセル",
+        "hex_color": "#ffffff",
+        "offset": {
+          "x": 0,
+          "y": 0
+        }
+      },
+      "button_prompt_screen_size": {
+        "x": 800,
+        "y": 100
+      },
+      "height_ratio": 0.9
+    }
+  }
+}

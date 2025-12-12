@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../Interface/i_tab.hpp"
 #include "../Event/event_system.hpp"
 #include "../UI/ui_selector.hpp"
@@ -6,6 +6,7 @@
 #include "../UIButton/sub_menu_select_button.hpp"
 #include "../Part/scene_fader.hpp"
 #include "../UI/game_over_text.hpp"
+#include "../UI/button_prompt.hpp"
 
 class GameOverTab final : public ITab
 {
@@ -62,4 +63,6 @@ private:
 	std::shared_ptr<UISelector>		m_ui_selector;
 	std::shared_ptr<Graphicer>		m_filter_graphic;
 	std::shared_ptr<ScreenCreator>	m_result_screen;
+
+	std::shared_ptr<ButtonPrompt>	m_button_prompt;
 };

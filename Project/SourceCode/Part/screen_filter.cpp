@@ -1,4 +1,4 @@
-#include "screen_filter.hpp"
+ï»¿#include "screen_filter.hpp"
 
 ScreenFilter::ScreenFilter() : 
 	m_current_basis_filter			(nullptr),
@@ -14,7 +14,7 @@ ScreenFilter::ScreenFilter() :
 	m_near_death_blinking_sin		(0.0f),
 	m_death_filter_alpha_blend_num	(0)
 {
-	// ƒCƒxƒ“ƒg“o˜^
+	// ã‚¤ãƒ™ãƒ³ãƒˆç™»éŒ²
 	EventSystem::GetInstance()->Subscribe<ChangeSceneEvent>				(this, &ScreenFilter::Init);
 	EventSystem::GetInstance()->Subscribe<EnterNearDeathEvent>			(this, &ScreenFilter::SetNearDeathFilter);
 	EventSystem::GetInstance()->Subscribe<DeadPlayerEvent>				(this, &ScreenFilter::SetDeathFilter);
@@ -22,7 +22,7 @@ ScreenFilter::ScreenFilter() :
 	EventSystem::GetInstance()->Subscribe<OnSelectCinematicFilterEvent>	(this, &ScreenFilter::SetCinematicFilter);
 	EventSystem::GetInstance()->Subscribe<OnSelectRetroFilterEvent>		(this, &ScreenFilter::SetRetroFilter);
 
-	// Šî‘bƒtƒBƒ‹ƒ^[“o˜^
+	// åŸºç¤Žãƒ•ã‚£ãƒ«ã‚¿ãƒ¼ç™»éŒ²
 	m_basis_filters[BasisFilterKind::kNormal]	 = [this]() { UseNormalFilter();	};
 	m_basis_filters[BasisFilterKind::kCinematic] = [this]() { UseCinematicFilter();	};
 	m_basis_filters[BasisFilterKind::kRetro]	 = [this]() { UseRetroFilter();		};
@@ -31,7 +31,7 @@ ScreenFilter::ScreenFilter() :
 
 ScreenFilter::~ScreenFilter()
 {
-	// ƒCƒxƒ“ƒg‚Ì“o˜^‰ðœ
+	// ã‚¤ãƒ™ãƒ³ãƒˆã®ç™»éŒ²è§£é™¤
 	EventSystem::GetInstance()->Unsubscribe<ChangeSceneEvent>				(this, &ScreenFilter::Init);
 	EventSystem::GetInstance()->Unsubscribe<EnterNearDeathEvent>			(this, &ScreenFilter::SetNearDeathFilter);
 	EventSystem::GetInstance()->Unsubscribe<DeadPlayerEvent>				(this, &ScreenFilter::SetDeathFilter);
@@ -128,7 +128,7 @@ void ScreenFilter::SetRetroFilter(const OnSelectRetroFilterEvent& event)
 
 void ScreenFilter::UseNormalFilter()
 {
-	// TODO : ‰¼Bƒ‰ƒCƒgˆ—I—¹Œã‚É’²®‚ÅƒtƒBƒ‹ƒ^[‚ðŒˆ‚ß‚é
+	// TODO : ä»®ã€‚ãƒ©ã‚¤ãƒˆå‡¦ç†çµ‚äº†å¾Œã«èª¿æ•´ã§ãƒ•ã‚£ãƒ«ã‚¿ãƒ¼ã‚’æ±ºã‚ã‚‹
 	m_current_basis_filter = nullptr;
 }
 
@@ -160,9 +160,9 @@ void ScreenFilter::CreateNearDeathFilter()
 
 	const auto delta_time = GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kUI);
 	math::Increase(m_near_death_blinking_sin, kBlinkingSpeed * delta_time, DX_PI_F, false);
-	const auto blend_alpha_num = (sin(m_near_death_blinking_sin) * 0.5f + 0.5f) * UCHAR_MAX;
+	const auto blend_alpha_num = static_cast<int>((sin(m_near_death_blinking_sin) * 0.5f + 0.5f) * UCHAR_MAX);
 
-	// •mŽ€ƒtƒBƒ‹ƒ^[‰ðœ”»’è
+	// ç€•æ­»ãƒ•ã‚£ãƒ«ã‚¿ãƒ¼è§£é™¤åˆ¤å®š
 	if (m_near_death_blinking_sin >= DX_PI_F)
 	{
 		m_is_using_near_death_filter = false;

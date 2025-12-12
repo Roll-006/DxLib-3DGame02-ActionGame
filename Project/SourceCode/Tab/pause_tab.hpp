@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "../Interface/i_tab.hpp"
 
 #include "../Event/event_system.hpp"
@@ -51,8 +51,8 @@ private:
 	void CalcAlphaBlendNum();
 	void CreateResultScreen();
 
-	/// @brief ƒ^ƒu‚ğ•Â‚¶‚é
-	/// @brief UIƒ{ƒ^ƒ“‚©‚ç‚Å‚Í‚È‚­ƒ^ƒu‚ğŠJ‚­ƒRƒ}ƒ“ƒh‚©‚ç•Â‚¶‚é
+	/// @brief ã‚¿ãƒ–ã‚’é–‰ã˜ã‚‹
+	/// @brief UIãƒœã‚¿ãƒ³ã‹ã‚‰ã§ã¯ãªãã‚¿ãƒ–ã‚’é–‹ãã‚³ãƒãƒ³ãƒ‰ã‹ã‚‰é–‰ã˜ã‚‹
 	void BackTab();
 
 private:
@@ -60,21 +60,22 @@ private:
 	static constexpr int			kButtonPosInterval		= 110;
 	static constexpr float			kFadeSpeed = 600.0f;
 
-	int								m_tab_handle;
-	int								m_priority;
-	bool							m_is_active;
-	bool							m_is_deactivate_forcibly;
-	bool							m_can_select;
-	bool							m_is_execute_return_to_game;
-	bool							m_is_restart;
-	bool							m_is_option;
-	bool							m_is_quit_game;
-	int								m_alpha_blend_num;
-	std::shared_ptr<UISelector>		m_ui_selector;
-	std::shared_ptr<ScreenCreator>	m_result_screen;
+	int												m_tab_handle;
+	int												m_priority;
+	bool											m_is_active;
+	bool											m_is_deactivate_forcibly;
+	bool											m_can_select;
+	bool											m_is_execute_return_to_game;
+	bool											m_is_restart;
+	bool											m_is_option;
+	bool											m_is_quit_game;
+	int												m_alpha_blend_num;
+	std::shared_ptr<UISelector>						m_ui_selector;
+	std::shared_ptr<ScreenCreator>					m_result_screen;
 
 	std::unordered_map<TimeScaleLayerKind, float>	m_prev_time_scale;
-	//std::shared_ptr<WarningQuitGameTab>				m_warning_quit_game_tab;
 	std::shared_ptr<WarningTab>						m_warning_restart_tab;
 	std::shared_ptr<WarningTab>						m_warning_quit_game_tab;
+
+	std::shared_ptr<ButtonPrompt>					m_button_prompt;
 };

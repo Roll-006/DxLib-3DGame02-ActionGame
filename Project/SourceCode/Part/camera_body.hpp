@@ -64,26 +64,26 @@ private:
 
 	bool   m_is_track;				// í«îˆÇçsÇ§Ç©ÇîªíË
 
-	friend void from_json	(const nlohmann::json& data, CameraBody& body);
-	friend void to_json		(nlohmann::json& data, const CameraBody& body);
+	friend void from_json	(const nlohmann::json& j_data, CameraBody& body);
+	friend void to_json		(nlohmann::json& j_data, const CameraBody& body);
 };
 
 
 #pragma region from / to JSON
-inline void from_json(const nlohmann::json& data, CameraBody& body)
+inline void from_json(const nlohmann::json& j_data, CameraBody& body)
 {
-	data.at("owner_transform")	.get_to(*body.m_owner_transform.get());
-	data.at("target_transform")	.get_to(*body.m_target_transform.get());
-	data.at("destination_pos")	.get_to(body.m_destination_pos);
-	data.at("current_pos")		.get_to(body.m_current_pos);
-	data.at("follow_offset")	.get_to(body.m_follow_offset);
-	data.at("damping")			.get_to(body.m_damping);
-	data.at("is_track")			.get_to(body.m_is_track);
+	j_data.at("owner_transform")	.get_to(*body.m_owner_transform.get());
+	j_data.at("target_transform")	.get_to(*body.m_target_transform.get());
+	j_data.at("destination_pos")	.get_to(body.m_destination_pos);
+	j_data.at("current_pos")		.get_to(body.m_current_pos);
+	j_data.at("follow_offset")	.get_to(body.m_follow_offset);
+	j_data.at("damping")			.get_to(body.m_damping);
+	j_data.at("is_track")			.get_to(body.m_is_track);
 }
 
-inline void to_json(nlohmann::json& data, const CameraBody& body)
+inline void to_json(nlohmann::json& j_data, const CameraBody& body)
 {
-	data = nlohmann::json
+	j_data = nlohmann::json
 	{
 		{ "owner_transform",	*body.m_owner_transform.get() },
 		{ "target_transform",	*body.m_target_transform.get() },

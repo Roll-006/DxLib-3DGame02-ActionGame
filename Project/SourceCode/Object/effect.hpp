@@ -9,7 +9,7 @@
 class Effect final : public ObjBase, public IEffect, public IPoolable
 {
 public:
-	Effect(const EffectData& data);
+	Effect(const EffectData& j_data);
 	~Effect() override;
 
 	void Init()						override;

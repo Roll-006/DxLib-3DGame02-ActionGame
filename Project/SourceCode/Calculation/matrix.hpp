@@ -157,9 +157,9 @@ namespace matrix
 #pragma region from / to JSON
 namespace DxLib
 {
-	inline void from_json(const nlohmann::json& data, MATRIX& mat)
+	inline void from_json(const nlohmann::json& j_data, MATRIX& mat)
 	{
-		auto m = data.get<std::array<std::array<float, 4>, 4>>();
+		auto m = j_data.get<std::array<std::array<float, 4>, 4>>();
 		for (int i = 0; i < 4; ++i)
 		{
 			for (int j = 0; j < 4; ++j)
@@ -169,7 +169,7 @@ namespace DxLib
 		}
 	}
 
-	inline void to_json(nlohmann::json& data, const MATRIX& mat)
+	inline void to_json(nlohmann::json& j_data, const MATRIX& mat)
 	{
 		std::array<std::array<float, 4>, 4> m{};
 		for (int i = 0; i < 4; ++i)
@@ -180,7 +180,7 @@ namespace DxLib
 			}
 		}
 
-		data = mat;
+		j_data = mat;
 	}
 }
 #pragma endregion

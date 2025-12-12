@@ -1,4 +1,4 @@
-#include "input_checker.hpp"
+ï»¿#include "input_checker.hpp"
 #include "../Command/command_handler.hpp"
 
 InputChecker::InputChecker():
@@ -36,7 +36,7 @@ InputChecker::InputChecker():
 
 InputChecker::~InputChecker()
 {
-	// ˆ—‚È‚µ
+	// å‡¦ç†ãªã—
 }
 
 void InputChecker::Update()
@@ -165,7 +165,7 @@ float InputChecker::GetInputTime(const InputCode& input_code, const TimeKind tim
 
 InputState InputChecker::GetInputState(const InputCode& input_code)
 {
-	// ƒL[“ü—Í‚Ìê‡‚ÍDxLibŠù‘¶ŠÖ”‚ğg—p‚·‚é
+	// ã‚­ãƒ¼å…¥åŠ›ã®å ´åˆã¯DxLibæ—¢å­˜é–¢æ•°ã‚’ä½¿ç”¨ã™ã‚‹
 	if (input_code.kind == InputKind::kKey)
 	{
 		if (m_key_input[input_code.code] == 0)
@@ -189,18 +189,18 @@ InputState InputChecker::GetInputState(const InputCode& input_code)
 	bool prev_is_input	  = false;
 	bool current_is_input = false;
 
-	// prev ‚ğŒŸõ
+	// prev ã‚’æ¤œç´¢
 	if (m_input_data.contains({ input_code, TimeKind::kPrev }))
 	{
 		prev_is_input = m_input_data.at({ input_code, TimeKind::kPrev }).is_input;
 	}
-	// current ‚ğŒŸõ
+	// current ã‚’æ¤œç´¢
 	if (m_input_data.contains({ input_code, TimeKind::kCurrent }))
 	{
 		current_is_input = m_input_data.at({ input_code, TimeKind::kCurrent }).is_input;
 	}
 
-	// ó‘Ô‚ğ”»’è
+	// çŠ¶æ…‹ã‚’åˆ¤å®š
 	if (current_is_input)
 	{
 		return prev_is_input ? InputState::kHold : InputState::kSingle;
@@ -212,7 +212,7 @@ void InputChecker::AddInputData(const InputKind kind, const int input_code_num)
 {
 	for (int i = 0; i < input_code_num; ++i)
 	{
-		// ’†g‚Í‹ó‚Å’Ç‰Á
+		// ä¸­èº«ã¯ç©ºã§è¿½åŠ 
 		m_input_data[{ InputCode(kind, i), TimeKind::kPrev	  }] = InputData();
 		m_input_data[{ InputCode(kind, i), TimeKind::kCurrent }] = InputData();
 	}
@@ -226,25 +226,25 @@ void InputChecker::CalcMouseDir()
 void InputChecker::CalcMouseVelocity()
 {
 	const Vector2D<int> distance = m_mouse_data.at(TimeKind::kCurrent).pos - m_mouse_data.at(TimeKind::kPrev).pos;
-	m_mouse_data.at(TimeKind::kCurrent).velocity = v2d::ConvertVecType<float>(distance);
+	m_mouse_data.at(TimeKind::kCurrent).velocity = distance;
 }
 
 void InputChecker::CountInputTimeAll()
 {
 	const auto delta_time = GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kNoneScale);
 
-	for (auto& [key, data] : m_input_data)
+	for (auto& [key, j_data] : m_input_data)
 	{
-		// ‰ß‹ƒtƒŒ[ƒ€‚ÍƒXƒLƒbƒv
+		// éå»ãƒ•ãƒ¬ãƒ¼ãƒ ã¯ã‚¹ã‚­ãƒƒãƒ—
 		if (key.second == TimeKind::kPrev) { continue; }
 
-		if (data.is_input)
+		if (j_data.is_input)
 		{
-			data.input_time += delta_time;
+			j_data.input_time += delta_time;
 		}
 		else
 		{
-			data.input_time = 0.0f;
+			j_data.input_time = 0.0f;
 		}
 	}
 }
@@ -253,38 +253,38 @@ void InputChecker::CheckInputAll()
 {
 	GetHitKeyStateAllEx(m_key_input);
 
-	for (auto& [key, data] : m_input_data)
+	for (auto& [key, j_data] : m_input_data)
 	{
 		if (key.second != TimeKind::kCurrent) { continue; }
 
 		switch (key.first.kind)
 		{
 		case InputKind::kKey:
-			data.is_input = IsInput(key.first.code) ? true : false;
+			j_data.is_input = IsInput(key.first.code) ? true : false;
 			break;
 
 		case InputKind::kMouseButton:
-			data.is_input = IsInput(static_cast<mouse::ButtonKind>(key.first.code))		? true : false;
+			j_data.is_input = IsInput(static_cast<mouse::ButtonKind>(key.first.code))		? true : false;
 			break;
 
 		case InputKind::kMouseWheel:
-			data.is_input = IsInput(static_cast<mouse::WheelKind>(key.first.code))		? true : false;
+			j_data.is_input = IsInput(static_cast<mouse::WheelKind>(key.first.code))		? true : false;
 			break;
 
 		case InputKind::kMouseSlide:
-			data.is_input = IsInput(static_cast<mouse::SlideDirKind>(key.first.code))	? true : false;
+			j_data.is_input = IsInput(static_cast<mouse::SlideDirKind>(key.first.code))	? true : false;
 			break;
 
 		case InputKind::kPadButton:
-			data.is_input = IsInput(static_cast<pad::ButtonKind>(key.first.code))		? true : false;
+			j_data.is_input = IsInput(static_cast<pad::ButtonKind>(key.first.code))		? true : false;
 			break;
 
 		case InputKind::kPadTrigger:
-			data.is_input = IsInput(static_cast<pad::TriggerKind>(key.first.code))		? true : false;
+			j_data.is_input = IsInput(static_cast<pad::TriggerKind>(key.first.code))		? true : false;
 			break;
 
 		case InputKind::kPadStick:
-			data.is_input = IsInput(static_cast<pad::StickKind>(key.first.code))		? true : false;
+			j_data.is_input = IsInput(static_cast<pad::StickKind>(key.first.code))		? true : false;
 			break;
 		}
 	}
@@ -292,26 +292,26 @@ void InputChecker::CheckInputAll()
 
 void InputChecker::ShiftDataCureentToPrev()
 {
-	// ƒ}ƒEƒX“ü—Í‚Í‚»‚Ì‚Ü‚ÜƒVƒtƒg
+	// ãƒã‚¦ã‚¹å…¥åŠ›ã¯ãã®ã¾ã¾ã‚·ãƒ•ãƒˆ
 	m_mouse_data.at(TimeKind::kPrev) = m_mouse_data.at(TimeKind::kCurrent);
 
-	// ƒL[ƒ{[ƒh / ƒpƒbƒh“ü—Í‚ÌƒVƒtƒg
-	for (auto& [key, data] : m_input_data)
+	// ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ / ãƒ‘ãƒƒãƒ‰å…¥åŠ›ã®ã‚·ãƒ•ãƒˆ
+	for (auto& [key, j_data] : m_input_data)
 	{
 		if (key.second != TimeKind::kCurrent) continue;
 
-		// Prev ‘¤‚ğ’¼ÚQÆ‚µ‚ÄƒRƒs[
-		m_input_data.at({ key.first, TimeKind::kPrev }) = data;
+		// Prev å´ã‚’ç›´æ¥å‚ç…§ã—ã¦ã‚³ãƒ”ãƒ¼
+		m_input_data.at({ key.first, TimeKind::kPrev }) = j_data;
 	}
 }
 
 void InputChecker::DetectCurrentInputDevice()
 {
-	for (const auto& [key, data] : m_input_data)
+	for (const auto& [key, j_data] : m_input_data)
 	{
-		// ¡ƒtƒŒ[ƒ€‚Ì“ü—Í‚¾‚¯Œ©‚é
+		// ä»Šãƒ•ãƒ¬ãƒ¼ãƒ ã®å…¥åŠ›ã ã‘è¦‹ã‚‹
 		if (key.second != TimeKind::kCurrent)	{ continue; }
-		if (!data.is_input)						{ continue; }
+		if (!j_data.is_input)						{ continue; }
 
 		switch (key.first.kind)
 		{

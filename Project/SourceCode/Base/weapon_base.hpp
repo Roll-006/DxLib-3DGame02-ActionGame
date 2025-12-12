@@ -60,28 +60,28 @@ protected:
 	WeaponKind	weapon_kind;
 	HolsterKind holster_kind;
 
-	friend void from_json(const nlohmann::json& data, WeaponBase& weapon_base);
-	friend void to_json	 (nlohmann::json& data, const WeaponBase& weapon_base);
+	friend void from_json(const nlohmann::json& j_data, WeaponBase& weapon_base);
+	friend void to_json	 (nlohmann::json& j_data, const WeaponBase& weapon_base);
 };
 
 
 #pragma region from / to JSON
-inline void from_json(const nlohmann::json& data, WeaponBase& weapon_base)
+inline void from_json(const nlohmann::json& j_data, WeaponBase& weapon_base)
 {
-	from_json(data, static_cast<PhysicalObjBase&>(weapon_base));
+	from_json(j_data, static_cast<PhysicalObjBase&>(weapon_base));
 
-	data.at("power")				.get_to(weapon_base.power);
-	data.at("hold_offset_pos")		.get_to(weapon_base.hold_offset_pos);
-	data.at("hold_offset_angle")	.get_to(weapon_base.hold_offset_angle);
-	data.at("hold_offset_scale")	.get_to(weapon_base.hold_offset_scale);
-	data.at("attach_offset_pos")	.get_to(weapon_base.attach_offset_pos);
-	data.at("attach_offset_angle")	.get_to(weapon_base.attach_offset_angle);
-	data.at("attach_offset_scale")	.get_to(weapon_base.attach_offset_scale);
-	data.at("weapon_kind")			.get_to(weapon_base.weapon_kind);
-	data.at("holster_kind")			.get_to(weapon_base.holster_kind);
+	j_data.at("power")				.get_to(weapon_base.power);
+	j_data.at("hold_offset_pos")		.get_to(weapon_base.hold_offset_pos);
+	j_data.at("hold_offset_angle")	.get_to(weapon_base.hold_offset_angle);
+	j_data.at("hold_offset_scale")	.get_to(weapon_base.hold_offset_scale);
+	j_data.at("attach_offset_pos")	.get_to(weapon_base.attach_offset_pos);
+	j_data.at("attach_offset_angle")	.get_to(weapon_base.attach_offset_angle);
+	j_data.at("attach_offset_scale")	.get_to(weapon_base.attach_offset_scale);
+	j_data.at("weapon_kind")			.get_to(weapon_base.weapon_kind);
+	j_data.at("holster_kind")			.get_to(weapon_base.holster_kind);
 }
 
-inline void to_json(nlohmann::json& data, const WeaponBase& weapon_base)
+inline void to_json(nlohmann::json& j_data, const WeaponBase& weapon_base)
 {
 	nlohmann::json base_json;
 	to_json(base_json, static_cast<const PhysicalObjBase&>(weapon_base));
@@ -99,7 +99,7 @@ inline void to_json(nlohmann::json& data, const WeaponBase& weapon_base)
 		{ "holster_kind",			weapon_base.holster_kind },
 	};
 
-	data = base_json;
-	data.update(derived_json);
+	j_data = base_json;
+	j_data.update(derived_json);
 }
 #pragma endregion

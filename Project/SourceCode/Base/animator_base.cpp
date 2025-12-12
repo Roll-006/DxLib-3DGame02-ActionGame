@@ -23,12 +23,12 @@ AnimatorBase::AnimatorBase(const std::shared_ptr<Modeler>& modeler, const std::s
 
 AnimatorBase::~AnimatorBase()
 {
-	for (auto& data : m_anim_data)
+	for (auto& j_data : m_anim_data)
 	{
-		if (data.second.anim_handle != -1)
+		if (j_data.second.anim_handle != -1)
 		{
-			MV1DeleteModel(data.second.anim_handle);
-			data.second.anim_handle = -1;
+			MV1DeleteModel(j_data.second.anim_handle);
+			j_data.second.anim_handle = -1;
 		}
 	}
 
@@ -57,26 +57,26 @@ void AnimatorBase::AttachAnim(const int next_kind, const BodyKind body_kind)
 	AnimTimeKindData*	current_time_data		= nullptr;
 	bool				is_seted_prev_data		= false;
 	bool				is_seted_current_data	= false;
-	for (auto& [body, time, data] : m_time_kind_data)
+	for (auto& [body, time, j_data] : m_time_kind_data)
 	{
 		if (body == body_kind)
 		{
-			if (time == TimeKind::kPrev)	{ prev_time_data	= data;  is_seted_prev_data		= true; }
-			if (time == TimeKind::kCurrent) { current_time_data = &data; is_seted_current_data	= true; }
+			if (time == TimeKind::kPrev)	{ prev_time_data	= j_data;  is_seted_prev_data		= true; }
+			if (time == TimeKind::kCurrent) { current_time_data = &j_data; is_seted_current_data	= true; }
 		}
 
 		if (is_seted_prev_data && is_seted_current_data) { break; }
 	}
 
 	// データをシフト(Current ➡ Prev)
-	for (auto& [body, time, data] : m_time_kind_data)
+	for (auto& [body, time, j_data] : m_time_kind_data)
 	{
 		if (body == body_kind && time == TimeKind::kPrev)
 		{
 			if (current_time_data)
 			{
-				data = *current_time_data;
-				prev_time_data = data;
+				j_data = *current_time_data;
+				prev_time_data = j_data;
 				break;
 			}
 		}
@@ -105,18 +105,18 @@ void AnimatorBase::AttachResultAnim(const int next_kind)
 	// 下半身アニメーションの再生位置を引き継ぐ
 	float				lower_play_timer = 0.0f;
 	AnimTimeKindData* upper_body_data = nullptr;
-	for (auto& [body_kind, time_kind, data] : m_time_kind_data)
+	for (auto& [body_kind, time_kind, j_data] : m_time_kind_data)
 	{
 		if (time_kind == TimeKind::kCurrent)
 		{
 			switch (body_kind)
 			{
 			case BodyKind::kUpperBody:
-				upper_body_data = &data;
+				upper_body_data = &j_data;
 				break;
 
 			case BodyKind::kLowerBody:
-				lower_play_timer = data.play_timer;
+				lower_play_timer = j_data.play_timer;
 				break;
 			}
 		}
@@ -126,12 +126,12 @@ void AnimatorBase::AttachResultAnim(const int next_kind)
 
 void AnimatorBase::DetachAnim(const TimeKind time_kind, const BodyKind body_kind)
 {
-	for (auto& [body, time, data] : m_time_kind_data)
+	for (auto& [body, time, j_data] : m_time_kind_data)
 	{
-		if (body == body_kind && time == time_kind && data.attach_index > -1)
+		if (body == body_kind && time == time_kind && j_data.attach_index > -1)
 		{
-			MV1DetachAnim(m_resource_modeler.at(body_kind)->GetModelHandle(), data.attach_index);
-			data.attach_index = -1;
+			MV1DetachAnim(m_resource_modeler.at(body_kind)->GetModelHandle(), j_data.attach_index);
+			j_data.attach_index = -1;
 			return;
 		}
 	}
@@ -141,11 +141,11 @@ void AnimatorBase::DetachAnim(const TimeKind time_kind, const BodyKind body_kind
 #pragma region Getter
 int AnimatorBase::GetAnimKind(const BodyKind body_kind, const TimeKind time_kind) const
 {
-	for (auto& [body, time, data] : m_time_kind_data)
+	for (auto& [body, time, j_data] : m_time_kind_data)
 	{
 		if (body == body_kind && time == time_kind)
 		{
-			return data.kind;
+			return j_data.kind;
 		}
 	}
 
@@ -154,18 +154,18 @@ int AnimatorBase::GetAnimKind(const BodyKind body_kind, const TimeKind time_kind
 
 std::string AnimatorBase::GetAnimTag(const BodyKind body_kind, const TimeKind time_kind) const
 {
-	for (auto& [body, time, data] : m_time_kind_data)
+	for (auto& [body, time, j_data] : m_time_kind_data)
 	{
 		if (body == body_kind && time == time_kind)
 		{
 			// Prevのデータがまだ追加されていない場合はCurrentのデータを採用する
 			if (time == TimeKind::kPrev)
 			{
-				return m_anim_data.contains(data.kind) ? m_anim_data.at(data.kind).tag : GetAnimTag(body_kind, TimeKind::kCurrent);
+				return m_anim_data.contains(j_data.kind) ? m_anim_data.at(j_data.kind).tag : GetAnimTag(body_kind, TimeKind::kCurrent);
 			}
 			else
 			{
-				return m_anim_data.contains(data.kind) ? m_anim_data.at(data.kind).tag : "";
+				return m_anim_data.contains(j_data.kind) ? m_anim_data.at(j_data.kind).tag : "";
 			}
 		}
 	}
@@ -175,11 +175,11 @@ std::string AnimatorBase::GetAnimTag(const BodyKind body_kind, const TimeKind ti
 
 float AnimatorBase::GetGroundPlayRate(const BodyKind body_kind) const
 {
-	for (auto& [body, time, data] : m_time_kind_data)
+	for (auto& [body, time, j_data] : m_time_kind_data)
 	{
 		if (body == body_kind && time == TimeKind::kCurrent)
 		{
-			return m_anim_data.at(data.kind).ground_play_rate;
+			return m_anim_data.at(j_data.kind).ground_play_rate;
 		}
 	}
 
@@ -188,11 +188,11 @@ float AnimatorBase::GetGroundPlayRate(const BodyKind body_kind) const
 
 float AnimatorBase::GetPlayRate(const BodyKind body_kind) const
 {
-	for (auto& [body, time, data] : m_time_kind_data)
+	for (auto& [body, time, j_data] : m_time_kind_data)
 	{
 		if (body == body_kind && time == TimeKind::kCurrent)
 		{
-			return data.play_timer / data.total_time;
+			return j_data.play_timer / j_data.total_time;
 		}
 	}
 
@@ -201,11 +201,11 @@ float AnimatorBase::GetPlayRate(const BodyKind body_kind) const
 
 bool AnimatorBase::IsPlayEnd(const BodyKind body_kind) const
 {
-	for (auto& [body, time, data] : m_time_kind_data)
+	for (auto& [body, time, j_data] : m_time_kind_data)
 	{
 		if (body == body_kind && time == TimeKind::kCurrent)
 		{
-			return data.play_timer == data.total_time;
+			return j_data.play_timer == j_data.total_time;
 		}
 	}
 
@@ -216,20 +216,20 @@ bool AnimatorBase::IsPlayEnd(const BodyKind body_kind) const
 
 void AnimatorBase::PlayAnim()
 {
-	for (auto& [body_kind, time_kind, data] : m_time_kind_data)
+	for (auto& [body_kind, time_kind, j_data] : m_time_kind_data)
 	{
 		// アニメーションが有効であった場合のみ再生
-		if (data.attach_index > -1)
+		if (j_data.attach_index > -1)
 		{
 			const auto blend_rate		= time_kind == TimeKind::kCurrent ? m_blend_rate.at(body_kind) : 1.0f - m_blend_rate.at(body_kind);
-			const auto is_self_blend	= m_anim_data.at(data.kind).is_self_blend;
-			const auto is_loop			= m_anim_data.at(data.kind).is_loop && !is_self_blend ? true : false;
-			auto	   play_speed		= m_anim_data.at(data.kind).play_speed * GetDeltaTime();
-			math::Increase(data.play_timer, play_speed, data.total_time, is_loop);
+			const auto is_self_blend	= m_anim_data.at(j_data.kind).is_self_blend;
+			const auto is_loop			= m_anim_data.at(j_data.kind).is_loop && !is_self_blend ? true : false;
+			auto	   play_speed		= m_anim_data.at(j_data.kind).play_speed * GetDeltaTime();
+			math::Increase(j_data.play_timer, play_speed, j_data.total_time, is_loop);
 
 			// 再生位置・ブレンド率を適用
-			MV1SetAttachAnimTime	 (m_resource_modeler.at(body_kind)->GetModelHandle(), data.attach_index, data.play_timer);
-			MV1SetAttachAnimBlendRate(m_resource_modeler.at(body_kind)->GetModelHandle(), data.attach_index, blend_rate);
+			MV1SetAttachAnimTime	 (m_resource_modeler.at(body_kind)->GetModelHandle(), j_data.attach_index, j_data.play_timer);
+			MV1SetAttachAnimBlendRate(m_resource_modeler.at(body_kind)->GetModelHandle(), j_data.attach_index, blend_rate);
 		}
 	}
 
@@ -398,9 +398,9 @@ bool AnimatorBase::CanAttachAnim(const int next_kind, const BodyKind body_kind)
 
 	// 現在のアニメーションと同じであった場合はアタッチを許可しない	
 	const bool is_same = false;
-	for (const auto& [body, time, data] : m_time_kind_data)
+	for (const auto& [body, time, j_data] : m_time_kind_data)
 	{
-		if (body == body_kind && time == TimeKind::kCurrent && data.kind == next_kind)
+		if (body == body_kind && time == TimeKind::kCurrent && j_data.kind == next_kind)
 		{
 			if (!(m_anim_data.at(next_kind).is_self_blend && IsPlayEnd(body_kind)))
 			{

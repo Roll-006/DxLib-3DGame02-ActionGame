@@ -7,10 +7,10 @@ template <typename EventDataT>
 struct Event : public IEvent
 {
 	EventKind	event_kind;
-	EventDataT	data;
+	EventDataT	j_data;
 
-	Event(const EventKind event_kind, EventDataT data) : 
-		event_kind(event_kind), data(data){ }
+	Event(const EventKind event_kind, EventDataT j_data) : 
+		event_kind(event_kind), j_data(j_data){ }
 
 	[[nodiscard]] std::type_index GetType() const override { return std::type_index(typeid(EventDataT)); }
 };

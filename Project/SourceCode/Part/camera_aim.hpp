@@ -91,32 +91,32 @@ private:
 
 	bool			m_is_track;					// ’Ç”ö‚ğs‚¤‚©‚ğ”»’è
 
-	friend void from_json	(const nlohmann::json& data, CameraAim& aim);
-	friend void to_json		(nlohmann::json& data, const CameraAim& aim);
+	friend void from_json	(const nlohmann::json& j_data, CameraAim& aim);
+	friend void to_json		(nlohmann::json& j_data, const CameraAim& aim);
 };
 
 
 #pragma region from / to JSON
-inline void from_json(const nlohmann::json& data, CameraAim& aim)
+inline void from_json(const nlohmann::json& j_data, CameraAim& aim)
 {
-	data.at("owner_transform")		.get_to(*aim.m_owner_transform.get());
-	data.at("target_transform")		.get_to(*aim.m_target_transform.get());
-	data.at("rot_matrix")			.get_to(aim.m_rot_matrix);
-	data.at("destination_aim_pos")	.get_to(aim.m_destination_aim_pos);
-	data.at("current_aim_pos")		.get_to(aim.m_current_aim_pos);
-	data.at("tracked_obj_offset")	.get_to(aim.m_tracked_obj_offset);
-	data.at("horizontal_damping")	.get_to(aim.m_horizontal_damping);
-	data.at("vertical_damping")		.get_to(aim.m_vertical_damping);
-	data.at("screen")				.get_to(aim.m_screen);
-	data.at("dead_zone")			.get_to(aim.m_dead_zone);
-	data.at("soft_zone")			.get_to(aim.m_soft_zone);
-	data.at("bias")					.get_to(aim.m_bias);
-	data.at("is_track")				.get_to(aim.m_is_track);
+	j_data.at("owner_transform")		.get_to(*aim.m_owner_transform.get());
+	j_data.at("target_transform")		.get_to(*aim.m_target_transform.get());
+	j_data.at("rot_matrix")			.get_to(aim.m_rot_matrix);
+	j_data.at("destination_aim_pos")	.get_to(aim.m_destination_aim_pos);
+	j_data.at("current_aim_pos")		.get_to(aim.m_current_aim_pos);
+	j_data.at("tracked_obj_offset")	.get_to(aim.m_tracked_obj_offset);
+	j_data.at("horizontal_damping")	.get_to(aim.m_horizontal_damping);
+	j_data.at("vertical_damping")		.get_to(aim.m_vertical_damping);
+	j_data.at("screen")				.get_to(aim.m_screen);
+	j_data.at("dead_zone")			.get_to(aim.m_dead_zone);
+	j_data.at("soft_zone")			.get_to(aim.m_soft_zone);
+	j_data.at("bias")					.get_to(aim.m_bias);
+	j_data.at("is_track")				.get_to(aim.m_is_track);
 }
 
-inline void to_json(nlohmann::json& data, const CameraAim& aim)
+inline void to_json(nlohmann::json& j_data, const CameraAim& aim)
 {
-	data = nlohmann::json
+	j_data = nlohmann::json
 	{
 		{ "owner_transform",		*aim.m_owner_transform.get() },
 		{ "target_transform",		*aim.m_target_transform.get() },

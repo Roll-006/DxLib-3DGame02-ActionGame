@@ -7,7 +7,7 @@
 class Sound final : public IPoolable
 {
 public:
-	Sound(const SoundData& data);
+	Sound(const SoundData& j_data);
 	~Sound();
 
 	void Init();
@@ -47,20 +47,20 @@ private:
 	bool		m_is_return_pool;
 	int			m_current_volume;
 
-	friend void from_json(const nlohmann::json& data, Sound& sound);
-	friend void to_json	 (nlohmann::json& data, const Sound& sound);
+	friend void from_json(const nlohmann::json& j_data, Sound& sound);
+	friend void to_json	 (nlohmann::json& j_data, const Sound& sound);
 };
 
 
 #pragma region from / to JSON
-inline void from_json(const nlohmann::json& data, Sound& sound)
+inline void from_json(const nlohmann::json& j_data, Sound& sound)
 {
-	data.at("sound_data").get_to(sound.sound_data);
+	j_data.at("sound_data").get_to(sound.sound_data);
 }
 
-inline void to_json(nlohmann::json& data, const Sound& sound)
+inline void to_json(nlohmann::json& j_data, const Sound& sound)
 {
-	data = nlohmann::json
+	j_data = nlohmann::json
 	{
 		{ "sound_data", sound.sound_data },
 	};

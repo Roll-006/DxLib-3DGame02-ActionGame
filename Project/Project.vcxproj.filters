@@ -652,8 +652,11 @@
     <ClCompile Include="SourceCode\UI\game_over_text.cpp">
       <Filter>SourceCode\UI</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Part\color_converter.hpp">
+    <ClCompile Include="SourceCode\Part\type_converter.hpp">
       <Filter>SourceCode\Part</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\UI\button_prompt.cpp">
+      <Filter>SourceCode\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1899,13 +1902,10 @@
     <ClInclude Include="SourceCode\Data\aid_mixamo_axis_data (6).hpp">
       <Filter>SourceCode\Data</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Data\aid_mixamo_axis_data (7).hpp">
+    <ClInclude Include="SourceCode\Data\single_button_prompt_data.hpp">
       <Filter>SourceCode\Data</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Data\aid_mixamo_axis_data (8).hpp">
-      <Filter>SourceCode\Data</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\aid_mixamo_axis_data (9).hpp">
+    <ClInclude Include="SourceCode\Data\button_prompt_data.hpp">
       <Filter>SourceCode\Data</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Data\game_over_text_data.hpp">
@@ -1915,6 +1915,12 @@
       <Filter>SourceCode\Data</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\UI\game_over_text.hpp">
+      <Filter>SourceCode\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\warning_tab_data.hpp">
+      <Filter>SourceCode\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\UI\button_prompt.hpp">
       <Filter>SourceCode\UI</Filter>
     </ClInclude>
   </ItemGroup>
@@ -2116,13 +2122,13 @@
     <None Include="data\JSON\knife_data.json">
       <Filter>JSON</Filter>
     </None>
-    <None Include="Data\JSON\a %282%29.json">
-      <Filter>JSON</Filter>
-    </None>
-    <None Include="Data\JSON\a.json">
+    <None Include="Data\JSON\button_prompt_data.json">
       <Filter>JSON</Filter>
     </None>
     <None Include="Data\JSON\text_data.json">
+      <Filter>JSON</Filter>
+    </None>
+    <None Include="Data\JSON\tab_data.json">
       <Filter>JSON</Filter>
     </None>
   </ItemGroup>

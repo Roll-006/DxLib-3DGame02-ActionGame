@@ -25,24 +25,24 @@ struct SoundData
 
 
 #pragma region from / to JSON
-inline void from_json(const nlohmann::json& data, SoundData& sound_data)
+inline void from_json(const nlohmann::json& j_data, SoundData& sound_data)
 {
-	data.at("path")					.get_to(sound_data.path);
-	data.at("name")					.get_to(sound_data.name);
-	data.at("priority")				.get_to(sound_data.priority);
-	data.at("volume")				.get_to(sound_data.volume);
-	data.at("radius")				.get_to(sound_data.radius);
-	data.at("fade_out_speed")		.get_to(sound_data.fade_out_speed);
-	data.at("max_frequency_scale")	.get_to(sound_data.max_frequency_scale);
-	data.at("min_frequency_scale")	.get_to(sound_data.min_frequency_scale);
-	data.at("is_3d_sound")			.get_to(sound_data.is_3d_sound);
-	data.at("is_loop")				.get_to(sound_data.is_loop);
-	data.at("time_scale_layer_kind").get_to(sound_data.time_scale_layer_kind);
+	j_data.at("path")					.get_to(sound_data.path);
+	j_data.at("name")					.get_to(sound_data.name);
+	j_data.at("priority")				.get_to(sound_data.priority);
+	j_data.at("volume")				.get_to(sound_data.volume);
+	j_data.at("radius")				.get_to(sound_data.radius);
+	j_data.at("fade_out_speed")		.get_to(sound_data.fade_out_speed);
+	j_data.at("max_frequency_scale")	.get_to(sound_data.max_frequency_scale);
+	j_data.at("min_frequency_scale")	.get_to(sound_data.min_frequency_scale);
+	j_data.at("is_3d_sound")			.get_to(sound_data.is_3d_sound);
+	j_data.at("is_loop")				.get_to(sound_data.is_loop);
+	j_data.at("time_scale_layer_kind").get_to(sound_data.time_scale_layer_kind);
 }
 
-inline void to_json(nlohmann::json& data, const SoundData& sound_data)
+inline void to_json(nlohmann::json& j_data, const SoundData& sound_data)
 {
-	data = nlohmann::json
+	j_data = nlohmann::json
 	{
 		{ "path",					sound_data.path },
 		{ "name",					sound_data.name },

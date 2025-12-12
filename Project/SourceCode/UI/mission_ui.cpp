@@ -9,10 +9,10 @@ MissionUI::MissionUI() :
 	m_is_active			(false),
 	m_is_wait			(true)
 {
-	nlohmann::json data;
-	if (json_loader::Load("Data/JSON/text_data.json", data))
+	nlohmann::json j_data;
+	if (json_loader::Load("Data/JSON/text_data.json", j_data))
 	{
-		mission_ui_data = data.at("text_data").at("mission").get<MissionUIData>();
+		mission_ui_data = j_data.at("text_data").at("mission").get<MissionUIData>();
 
 		mission_ui_data.text_data.font_handle	= FontHandler::GetInstance()->GetFontHandle(mission_ui_data.text_data.font_path);
 		mission_ui_data.text_data.font_size		= { GetDrawStringWidthToHandle(mission_ui_data.text_data.text.c_str(), -1, mission_ui_data.text_data.font_handle), GetFontSizeToHandle(mission_ui_data.text_data.font_handle) };

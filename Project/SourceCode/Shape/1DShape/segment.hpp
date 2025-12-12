@@ -48,27 +48,27 @@ private:
 	VECTOR m_dir;
 	float  m_length;
 
-	friend void from_json	(const nlohmann::json& data, Segment& segment);
-	friend void to_json		(nlohmann::json& data, const Segment& segment);
+	friend void from_json	(const nlohmann::json& j_data, Segment& segment);
+	friend void to_json		(nlohmann::json& j_data, const Segment& segment);
 };
 
 
 //#pragma region from / to JSON
-//inline void from_json(const nlohmann::json& data, Segment& segment)
+//inline void from_json(const nlohmann::json& j_data, Segment& segment)
 //{
-//	to_json(data, static_cast<const ShapeBase&>(segment));
+//	to_json(j_data, static_cast<const ShapeBase&>(segment));
 //
-//	data.at("begin_pos").get_to(segment.m_begin_pos);
-//	data.at("end_pos")	.get_to(segment.m_end_pos);
-//	data.at("dir")		.get_to(segment.m_dir);
-//	data.at("length")	.get_to(segment.m_length);
+//	j_data.at("begin_pos").get_to(segment.m_begin_pos);
+//	j_data.at("end_pos")	.get_to(segment.m_end_pos);
+//	j_data.at("dir")		.get_to(segment.m_dir);
+//	j_data.at("length")	.get_to(segment.m_length);
 //}
 //
-//inline void to_json(nlohmann::json& data, const Segment& segment)
+//inline void to_json(nlohmann::json& j_data, const Segment& segment)
 //{
-//	from_json(data, static_cast<ShapeBase&>(segment));
+//	from_json(j_data, static_cast<ShapeBase&>(segment));
 //
-//	data = nlohmann::json
+//	j_data = nlohmann::json
 //	{
 //		{ "begin_pos",	segment.m_begin_pos },
 //		{ "end_pos",	segment.m_end_pos },

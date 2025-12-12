@@ -16,24 +16,24 @@ Zombie::Zombie(const std::string& id) :
 {
 	enemy_id = id;
 
-	nlohmann::json data;
-	if (json_loader::Load("Data/JSON/zombie.json", data))
+	nlohmann::json j_data;
+	if (json_loader::Load("Data/JSON/zombie.json", j_data))
 	{
-		mass_kind					= data.at("mass_kind");
-		invincible_time				= data.at("invincible_time");
-		attack_interval_time		= data.at("attack_interval_time");
-		detected_notify_distance	= data.at("detected_notify_distance");
-		model_path					= data.at("model_path");
-		basic_angle					= data.at("basic_angle");
-		basic_scale					= data.at("basic_scale");
-		walk_speed					= data.at("walk_speed");
-		run_speed					= data.at("run_speed");
-		run_grab_speed				= data.at("run_grab_speed");
-		move_dir_offset_speed		= data.at("move_dir_offset_speed");
-		look_dir_offset_speed		= data.at("look_dir_offset_speed");
-		collider_data				= data.at("collider_data").get<HumanoidEnemyColliderData>();
-		m_leg_ray_data				= data.at("leg_ray_data").get<HumanoidLegRayData>();
-		damage_over_time_start_time = data.at("damage_over_time_start_time");
+		mass_kind					= j_data.at("mass_kind");
+		invincible_time				= j_data.at("invincible_time");
+		attack_interval_time		= j_data.at("attack_interval_time");
+		detected_notify_distance	= j_data.at("detected_notify_distance");
+		model_path					= j_data.at("model_path");
+		basic_angle					= j_data.at("basic_angle");
+		basic_scale					= j_data.at("basic_scale");
+		walk_speed					= j_data.at("walk_speed");
+		run_speed					= j_data.at("run_speed");
+		run_grab_speed				= j_data.at("run_grab_speed");
+		move_dir_offset_speed		= j_data.at("move_dir_offset_speed");
+		look_dir_offset_speed		= j_data.at("look_dir_offset_speed");
+		collider_data				= j_data.at("collider_data").get<HumanoidEnemyColliderData>();
+		m_leg_ray_data				= j_data.at("leg_ray_data").get<HumanoidLegRayData>();
+		damage_over_time_start_time = j_data.at("damage_over_time_start_time");
 
 		m_knock_back_gauge = std::make_shared<Gauge>(400.0f);
 	}

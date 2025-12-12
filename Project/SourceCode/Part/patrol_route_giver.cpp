@@ -12,16 +12,16 @@ PatrolRouteGiver::PatrolRouteGiver(const PatrolKind patrol_kind, const std::stri
 {
 	if (m_routes.empty())
 	{
-		nlohmann::json data;
-		if (json_loader::Load("Data/JSON/patrol_route.json", data))
+		nlohmann::json j_data;
+		if (json_loader::Load("Data/JSON/patrol_route.json", j_data))
 		{
-			const auto route_size = data["patrol_route"].size();
+			const auto route_size = j_data["patrol_route"].size();
 			for (size_t i = 0; i < route_size; i++)
 			{
-				const auto step_size = data["patrol_route"][std::to_string(i)].size();
+				const auto step_size = j_data["patrol_route"][std::to_string(i)].size();
 				for (size_t j = 0; j < step_size; ++j)
 				{
-					const auto pos = data["patrol_route"][std::to_string(i)][std::to_string(j)].get<VECTOR>();
+					const auto pos = j_data["patrol_route"][std::to_string(i)][std::to_string(j)].get<VECTOR>();
 					m_routes[std::to_string(i)][j] = pos;
 				}
 			}

@@ -25,10 +25,10 @@ namespace std
     template<>
     struct hash<ColliderData>
     {
-        std::size_t operator()(const ColliderData& data) const noexcept
+        std::size_t operator()(const ColliderData& j_data) const noexcept
         {
-            std::size_t h1 = std::hash<std::string>()(data.owner_tag);
-            std::size_t h2 = std::hash<int>()(static_cast<int>(data.kind));
+            std::size_t h1 = std::hash<std::string>()(j_data.owner_tag);
+            std::size_t h2 = std::hash<int>()(static_cast<int>(j_data.kind));
             return h1 ^ (h2 << 1);
         }
     };

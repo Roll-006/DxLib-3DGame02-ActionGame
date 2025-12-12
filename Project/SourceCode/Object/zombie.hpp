@@ -117,33 +117,33 @@ private:
 	bool									m_is_allow_stealth_kill;
 	bool									m_on_stealth_kill;
 
-	friend void from_json(const nlohmann::json& data, Zombie& zombie);
-	friend void to_json  (nlohmann::json& data, const Zombie& zombie);
+	friend void from_json(const nlohmann::json& j_data, Zombie& zombie);
+	friend void to_json  (nlohmann::json& j_data, const Zombie& zombie);
 };
 
 
 #pragma region from / to JSON
-inline void from_json(const nlohmann::json& data, Zombie& zombie)
+inline void from_json(const nlohmann::json& j_data, Zombie& zombie)
 {
-	from_json(data, static_cast<EnemyBase&>(zombie));
+	from_json(j_data, static_cast<EnemyBase&>(zombie));
 
-	data.at("model_path")					.get_to(zombie.model_path);
-	data.at("basic_angle")					.get_to(zombie.basic_angle);
-	data.at("basic_scale")					.get_to(zombie.basic_scale);
+	j_data.at("model_path")					.get_to(zombie.model_path);
+	j_data.at("basic_angle")					.get_to(zombie.basic_angle);
+	j_data.at("basic_scale")					.get_to(zombie.basic_scale);
 
-	data.at("walk_speed")					.get_to(zombie.walk_speed);
-	data.at("run_speed")					.get_to(zombie.run_speed);
-	data.at("run_grab_speed")				.get_to(zombie.run_grab_speed);
-	data.at("move_dir_offset_speed")		.get_to(zombie.m_move_dir_offset_speed);
-	data.at("look_dir_offset_speed")		.get_to(zombie.m_look_dir_offset_speed);
+	j_data.at("walk_speed")					.get_to(zombie.walk_speed);
+	j_data.at("run_speed")					.get_to(zombie.run_speed);
+	j_data.at("run_grab_speed")				.get_to(zombie.run_grab_speed);
+	j_data.at("move_dir_offset_speed")		.get_to(zombie.m_move_dir_offset_speed);
+	j_data.at("look_dir_offset_speed")		.get_to(zombie.m_look_dir_offset_speed);
 
-	data.at("collider_data")				.get_to(zombie.collider_data);
-	data.at("leg_ray_data")					.get_to(zombie.m_leg_ray_data);
+	j_data.at("collider_data")				.get_to(zombie.collider_data);
+	j_data.at("leg_ray_data")					.get_to(zombie.m_leg_ray_data);
 
-	data.at("damage_over_time_start_time")	.get_to(zombie.damage_over_time_start_time);
+	j_data.at("damage_over_time_start_time")	.get_to(zombie.damage_over_time_start_time);
 }
 
-inline void to_json(nlohmann::json& data, const Zombie& zombie)
+inline void to_json(nlohmann::json& j_data, const Zombie& zombie)
 {
 	nlohmann::json base_json;
 	to_json(base_json, static_cast<const EnemyBase&>(zombie));
@@ -166,7 +166,7 @@ inline void to_json(nlohmann::json& data, const Zombie& zombie)
 		{ "damage_over_time_start_time",	zombie.damage_over_time_start_time }
 	};
 
-	data = base_json;
-	data.update(derived_json);
+	j_data = base_json;
+	j_data.update(derived_json);
 }
 #pragma endregion
