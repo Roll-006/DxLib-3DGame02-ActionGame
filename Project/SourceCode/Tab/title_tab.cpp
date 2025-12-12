@@ -18,12 +18,12 @@ TitleTab::TitleTab() :
 	}
 
 	m_ui_selector->AddUIButton(std::make_shared<MainMenuSelectButton>(MainMenuSelectButton::ButtonKind::kStartGame, center_pos.at(0), [this]() { ExecuteGameStart(); }, true));
-	m_ui_selector->AddUIButton(std::make_shared<MainMenuSelectButton>(MainMenuSelectButton::ButtonKind::kOption,	center_pos.at(1), [this]() { ExecuteOption(); },	false));
-	m_ui_selector->AddUIButton(std::make_shared<MainMenuSelectButton>(MainMenuSelectButton::ButtonKind::kExit,		center_pos.at(2), [this]() { ExecuteExit();	},		false));
+	//m_ui_selector->AddUIButton(std::make_shared<MainMenuSelectButton>(MainMenuSelectButton::ButtonKind::kOption,	center_pos.at(1), [this]() { ExecuteOption(); },	false));
+	m_ui_selector->AddUIButton(std::make_shared<MainMenuSelectButton>(MainMenuSelectButton::ButtonKind::kExit,		center_pos.at(1), [this]() { ExecuteExit();	},		false));
 
 	m_button_prompt->AddExplanatoryText(0, "ゲームを開始します");
-	m_button_prompt->AddExplanatoryText(1, "ゲームの各種設定を行います");
-	m_button_prompt->AddExplanatoryText(2, "ゲームを終了します");
+	//m_button_prompt->AddExplanatoryText(1, "ゲームの各種設定を行います");
+	m_button_prompt->AddExplanatoryText(1, "ゲームを終了します");
 
 	TabDrawer::GetInstance()->AddTab(m_warning_exit_tab);
 }

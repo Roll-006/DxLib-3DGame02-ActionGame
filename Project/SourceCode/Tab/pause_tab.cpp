@@ -32,13 +32,13 @@ PauseTab::PauseTab() :
 
 	m_ui_selector->AddUIButton(std::make_shared<MainMenuSelectButton>(MainMenuSelectButton::ButtonKind::kReturnToGame,	center_pos.at(0), [this]() { ExecuteReturnToGame(); },	true));
 	m_ui_selector->AddUIButton(std::make_shared<MainMenuSelectButton>(MainMenuSelectButton::ButtonKind::kRestart,		center_pos.at(1), [this]() { ExecuteRestart(); },		false));
-	m_ui_selector->AddUIButton(std::make_shared<MainMenuSelectButton>(MainMenuSelectButton::ButtonKind::kOption,		center_pos.at(2), [this]() { ExecuteOption(); },		false));
-	m_ui_selector->AddUIButton(std::make_shared<MainMenuSelectButton>(MainMenuSelectButton::ButtonKind::kQuitGame,		center_pos.at(3), [this]() { ExecuteQuitGame();	},		false));
+	//m_ui_selector->AddUIButton(std::make_shared<MainMenuSelectButton>(MainMenuSelectButton::ButtonKind::kOption,		center_pos.at(2), [this]() { ExecuteOption(); },		false));
+	m_ui_selector->AddUIButton(std::make_shared<MainMenuSelectButton>(MainMenuSelectButton::ButtonKind::kQuitGame,		center_pos.at(2), [this]() { ExecuteQuitGame();	},		false));
 
 	m_button_prompt->AddExplanatoryText(0, "ゲームに戻ります");
 	m_button_prompt->AddExplanatoryText(1, "ゲームを最初から始めます");
-	m_button_prompt->AddExplanatoryText(2, "ゲームの各種設定を行います");
-	m_button_prompt->AddExplanatoryText(3, "タイトルに戻ります");
+	//m_button_prompt->AddExplanatoryText(2, "ゲームの各種設定を行います");
+	m_button_prompt->AddExplanatoryText(2, "タイトルに戻ります");
 
 	CalcAlphaBlendNum();
 }

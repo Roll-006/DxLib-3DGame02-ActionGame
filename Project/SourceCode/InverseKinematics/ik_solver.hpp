@@ -1,7 +1,6 @@
-#pragma once
+ï»¿#pragma once
 #include "../Calculation/math.hpp"
 #include "../Data/model_frame_angle_limit_data.hpp"
-#include "../Data/aid_mixamo_axis_data.hpp"
 #include "../Data/triangle_edge_data.hpp"
 #include "frame_info.hpp"
 
@@ -13,57 +12,52 @@ namespace ik_solver
 		kRight,
 	};
 
-	/// @brief forward‚ğw’è‚µ‚½‰ñ“]Œã‚ÌXYZ²‚ğæ“¾‚·‚é
-	/// @brief MEMO : Mixamoƒ‚ƒfƒ‹‚Ì²‚É‡‚í‚¹‚½²\¬
-	/// @param origin_axis ‰ñ“]‘O‚ÌXYZ²
-	/// @param target_forward ‰ñ“]Œã‚ÌY²
-	/// @param aid_axis •â•²(‰Šú’l : std::nullopt)
-	/// @return ‰ñ“]Œã‚ÌXYZ²
-	[[nodiscard]] Axis GetRotatedMixamoAxis(
-		const Axis&								origin_axis, 
-		const VECTOR&							target_forward, 
-		const std::optional<AidMixamoAxisData>&	aid_axis = std::nullopt);
+	/// @brief mixamoXYZè»¸ã‹ã‚‰XYZè»¸ã¸å¤‰æ›ã™ã‚‹
+	[[nodiscard]] Axis ConvertMixamoAxisToAxis(const Axis& mixamo_axis);
 
-	/// @brief 1‚Â‚ÌƒtƒŒ[ƒ€(ƒ{[ƒ“)‚É‘Î‚µ‚ÄIKˆ—‚ğ“K—p‚·‚é
-	/// @param model_handle ƒ‚ƒfƒ‹ƒnƒ“ƒhƒ‹
-	/// @param world_destination –Ú“I’n“_(ƒ[ƒ‹ƒhÀ•W)
-	/// @param frame_index ƒtƒŒ[ƒ€‚ÌƒCƒ“ƒfƒbƒNƒX
-	/// @param aid_axis •â•²(‰Šú’l : std::nullopt)
+	/// @brief forwardã‚’æŒ‡å®šã—ãŸå›è»¢å¾Œã®è»¸ã‚’å–å¾—ã™ã‚‹
+	[[nodiscard]] Axis GetForwardSyncedMixamoAxis(const Axis& origin_mixamo_axis, const VECTOR& forward, const std::optional<AxisData>& aid_axis = std::nullopt);
+
+	/// @brief 1ã¤ã®ãƒ•ãƒ¬ãƒ¼ãƒ (ãƒœãƒ¼ãƒ³)ã«å¯¾ã—ã¦IKå‡¦ç†ã‚’é©ç”¨ã™ã‚‹
+	/// @param model_handle ãƒ¢ãƒ‡ãƒ«ãƒãƒ³ãƒ‰ãƒ«
+	/// @param world_destination ç›®çš„åœ°ç‚¹(ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™)
+	/// @param frame_index ãƒ•ãƒ¬ãƒ¼ãƒ ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
+	/// @param aid_axis è£œåŠ©è»¸(åˆæœŸå€¤ : std::nullopt)
 	void OneBoneIK(
-		const int								model_handle, 
-		const VECTOR&							world_destination, 
-		const int								frame_index, 
-		const std::optional<AidMixamoAxisData>&	aid_axis = std::nullopt);
+		const int						model_handle,
+		const VECTOR&					world_destination,
+		const int						frame_index,
+		const std::optional<AxisData>&	aid_axis = std::nullopt);
 
-	/// @brief 2‚Â‚ÌƒtƒŒ[ƒ€(ƒ{[ƒ“)‚É‘Î‚µ‚ÄIKˆ—‚ğ“K—p‚·‚é
-	/// @param model_handle ƒ‚ƒfƒ‹ƒnƒ“ƒhƒ‹
-	/// @param world_destination –Ú“I’n“_(ƒ[ƒ‹ƒhÀ•W)
-	/// @param end_frame_index I“_ƒtƒŒ[ƒ€‚ÌƒCƒ“ƒfƒbƒNƒX
-	/// @param begin_angle_limit n“_ƒtƒŒ[ƒ€‚ÌŠp“x§ŒÀ
-	/// @param middle_angle_limit ’†ŠÔƒtƒŒ[ƒ€‚ÌŠp“x§ŒÀ
-	/// @param rot_dir_kind ‰ñ“]•ûŒü
-	/// @param aid_axis •â•²(‰Šú’l : std::nullopt)
+	/// @brief 2ã¤ã®ãƒ•ãƒ¬ãƒ¼ãƒ (ãƒœãƒ¼ãƒ³)ã«å¯¾ã—ã¦IKå‡¦ç†ã‚’é©ç”¨ã™ã‚‹
+	/// @param model_handle ãƒ¢ãƒ‡ãƒ«ãƒãƒ³ãƒ‰ãƒ«
+	/// @param world_destination ç›®çš„åœ°ç‚¹(ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™)
+	/// @param end_frame_index çµ‚ç‚¹ãƒ•ãƒ¬ãƒ¼ãƒ ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
+	/// @param begin_angle_limit å§‹ç‚¹ãƒ•ãƒ¬ãƒ¼ãƒ ã®è§’åº¦åˆ¶é™
+	/// @param middle_angle_limit ä¸­é–“ãƒ•ãƒ¬ãƒ¼ãƒ ã®è§’åº¦åˆ¶é™
+	/// @param rot_dir_kind å›è»¢æ–¹å‘
+	/// @param aid_axis è£œåŠ©è»¸(åˆæœŸå€¤ : std::nullopt)
 	void TwoBoneIK(
-		const int								model_handle, 
-		const VECTOR&							world_destination, 
-		const int								end_frame_index, 
-		ModelFrameAngleLimitData&				begin_angle_limit, 
-		ModelFrameAngleLimitData&				middle_angle_limit,
-		const RotDirKind						rot_dir_kind, 
-		const std::optional<AidMixamoAxisData>&	aid_axis = std::nullopt);
+		const int						model_handle,
+		const VECTOR&					world_destination,
+		const int						end_frame_index,
+		ModelFrameAngleLimitData&		begin_angle_limit,
+		ModelFrameAngleLimitData&		middle_angle_limit,
+		const RotDirKind				rot_dir_kind,
+		const std::optional<AxisData>&	aid_axis = std::nullopt);
 
-	/// @brief 2ƒ{[ƒ“IK‚É•K—v‚È‰ñ“]s—ñ‚ğ¶¬‚·‚é
-	/// @param begin_rot_m n“_ƒtƒŒ[ƒ€‚Ì‰ñ“]s—ñ
-	/// @param middle_rot_m ’†ŠÔƒtƒŒ[ƒ€‚Ì‰ñ“]s—ñ
-	/// @param begin_angle_limit n“_ƒtƒŒ[ƒ€‚ÌŠp“x§ŒÀ
-	/// @param middle_angle_limit ’†ŠÔƒtƒŒ[ƒ€‚ÌŠp“x§ŒÀ
-	/// @param triangle_edge OŠpŒ`‚Ì•Óƒf[ƒ^
-	/// @param rot_dir_kind ‰ñ“]•ûŒü
+	/// @brief 2ãƒœãƒ¼ãƒ³IKã«å¿…è¦ãªå›è»¢è¡Œåˆ—ã‚’ç”Ÿæˆã™ã‚‹
+	/// @param begin_rot_m å§‹ç‚¹ãƒ•ãƒ¬ãƒ¼ãƒ ã®å›è»¢è¡Œåˆ—
+	/// @param middle_rot_m ä¸­é–“ãƒ•ãƒ¬ãƒ¼ãƒ ã®å›è»¢è¡Œåˆ—
+	/// @param begin_angle_limit å§‹ç‚¹ãƒ•ãƒ¬ãƒ¼ãƒ ã®è§’åº¦åˆ¶é™
+	/// @param middle_angle_limit ä¸­é–“ãƒ•ãƒ¬ãƒ¼ãƒ ã®è§’åº¦åˆ¶é™
+	/// @param triangle_edge ä¸‰è§’å½¢ã®è¾ºãƒ‡ãƒ¼ã‚¿
+	/// @param rot_dir_kind å›è»¢æ–¹å‘
 	void CreateTwoBoneIKRotMatrix(
-		FrameData&							begin_frame,
-		FrameData&							middle_frame,
-		ModelFrameAngleLimitData&			begin_angle_limit,
-		ModelFrameAngleLimitData&			middle_angle_limit,
-		const TriangleEdgeData				triangle_edge,
-		const RotDirKind					rot_dir_kind);
+		FrameData&					begin_frame,
+		FrameData&					middle_frame,
+		ModelFrameAngleLimitData&	begin_angle_limit,
+		ModelFrameAngleLimitData&	middle_angle_limit,
+		const TriangleEdgeData		triangle_edge,
+		const RotDirKind			rot_dir_kind);
 }

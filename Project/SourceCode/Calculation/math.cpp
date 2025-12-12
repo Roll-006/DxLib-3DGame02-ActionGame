@@ -757,29 +757,26 @@ Axis math::GetAxis(const VECTOR& dir, const Axis& parent_axis)
 
 Axis math::GetForwardSyncedAxis(const Axis& origin_axis, const VECTOR& forward, const std::optional<AxisData>& aid_axis)
 {
-    auto axis = Axis();
-    axis.z_axis = forward;
+    auto axis = Axis({}, {}, forward);
 
-    // 補助軸なし
+    // 補助軸なし (forwardの場合は目的方向と一致するため補助軸とみなさない)
     if (!aid_axis || aid_axis->kind == AxisKind::kForward)
     {
         axis.x_axis = math::GetNormalVector(origin_axis.y_axis, axis.z_axis);
-        axis.y_axis = math::GetNormalVector(axis.z_axis,        axis.x_axis);
-        axis.x_axis = math::GetNormalVector(axis.y_axis,        axis.z_axis);
+        axis.y_axis = math::GetNormalVector(axis.z_axis, axis.x_axis);
+        axis.x_axis = math::GetNormalVector(axis.y_axis, axis.z_axis);
     }
     // 補助軸 : Right
     else if (aid_axis->kind == AxisKind::kRight)
     {
-        axis.x_axis = aid_axis->axis;
-        axis.y_axis = math::GetNormalVector(axis.z_axis,        axis.x_axis);
-        axis.x_axis = math::GetNormalVector(axis.y_axis,        axis.z_axis);
+        axis.y_axis = math::GetNormalVector(axis.z_axis, aid_axis->axis);
+        axis.x_axis = math::GetNormalVector(axis.y_axis, axis.z_axis);
     }
     // 補助軸 : Up
     else if (aid_axis->kind == AxisKind::kUp)
     {
-        axis.y_axis = aid_axis->axis;
-        axis.x_axis = math::GetNormalVector(axis.z_axis,        axis.y_axis);
-        axis.y_axis = math::GetNormalVector(axis.x_axis,        axis.z_axis);
+        axis.x_axis = math::GetNormalVector(aid_axis->axis, axis.z_axis);
+        axis.y_axis = math::GetNormalVector(axis.z_axis,    axis.x_axis);
     }
 
     return axis;
@@ -787,8 +784,7 @@ Axis math::GetForwardSyncedAxis(const Axis& origin_axis, const VECTOR& forward, 
 
 Axis math::GetUpSyncedAxis(const Axis& origin_axis, const VECTOR& up, const std::optional<AxisData>& aid_axis)
 {
-    auto axis = Axis();
-    axis.y_axis = up;
+    auto axis = Axis({}, up, {});
 
     // 補助軸なし
     if (!aid_axis || aid_axis->kind == AxisKind::kUp)

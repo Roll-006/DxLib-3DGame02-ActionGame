@@ -1,4 +1,4 @@
-#include "title_scene.hpp"
+ï»¿#include "title_scene.hpp"
 #include "../Manager/scene_manager.hpp"
 
 TitleScene::TitleScene() : 
@@ -14,22 +14,22 @@ TitleScene::TitleScene() :
 	m_sin							(90.0f * math::kDegToRad),
 	m_smoke_delete_handle			(HandleCreator::GetInstance()->CreateHandle())
 {
-	// ƒ}ƒl[ƒWƒƒ[“o˜^
+	// ãƒžãƒãƒ¼ã‚¸ãƒ£ãƒ¼ç™»éŒ²
 	m_title_character->AddToObjManager();
 
 	const auto pool_holder = ObjectPoolHolder::GetInstance();
 	pool_holder->AddObjectPool(m_title_scene_effect_object_pool);
 
-	// ƒ‰ƒCƒg‚ÌÝ’è
+	// ãƒ©ã‚¤ãƒˆã®è¨­å®š
 	const auto light_holder			= LightHolder::GetInstance();
-	const auto pos					= VGet(-2.6f, 45.0f, -13.f);
+	const auto pos					= VGet(-2.6f, 46.0f, -13.f);
 	const auto dir					= v3d::GetNormalizedV(VGet(0.0f, 1.5f, 1.0f));
-	const auto angle				= 45.0f * math::kDegToRad;
-	const auto attenuation_angle	= 30.0f * math::kDegToRad;
+	const auto angle				= 40.0f * math::kDegToRad;
+	const auto attenuation_angle	= 17.0f * math::kDegToRad;
 	const auto range_attenuation	= LightRangeAttenuationData(100.0f, 0.2f, 0.001f, 0.000001f);
 	light_holder->CreateLight(std::make_shared<SpotLight>(LightName.TITLE_LIGHT, 0, pos, dir, angle, attenuation_angle, range_attenuation));
 
-	// ƒJƒƒ‰‚ÌÝ’è
+	// ã‚«ãƒ¡ãƒ©ã®è¨­å®š
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	cinemachine_brain->RemoveAllVirtualCameraController();
 	cinemachine_brain->RemoveAllVirtualCamera();
@@ -44,7 +44,7 @@ TitleScene::TitleScene() :
 	TabDrawer::GetInstance()->AddTab(m_title_tab);
 	UIDrawer ::GetInstance()->GetUICreator(UICreatorName.SCREEN_FILTER_CREATOR)->Init();
 
-	// ƒ^ƒCƒgƒ‹ƒV[ƒ“‚É“ü‚Á‚½‚±‚Æ‚ð’Ê’m
+	// ã‚¿ã‚¤ãƒˆãƒ«ã‚·ãƒ¼ãƒ³ã«å…¥ã£ãŸã“ã¨ã‚’é€šçŸ¥
 	const OnChangeTitleSceneEvent event{ m_smoke_transform, m_smoke_delete_handle };
 	EventSystem::GetInstance()->Publish(event);
 
@@ -59,19 +59,19 @@ TitleScene::~TitleScene()
 {
 	m_title_character->RemoveToObjManager();
 
-	// ƒGƒtƒFƒNƒg‚Ì“o˜^‚ð‰ðœ
+	// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®ç™»éŒ²ã‚’è§£é™¤
 	EffectManager::GetInstance()->ForciblyReturnPoolEffect(m_smoke_delete_handle, ObjectPoolName.TITLE_SCENE_EFFECT_POOL);
 	const auto pool_holder = ObjectPoolHolder::GetInstance();
 	pool_holder->RemoveObjectPool(m_title_scene_effect_object_pool->GetName());
 
-	// ƒ‰ƒCƒg‚Ìíœ
+	// ãƒ©ã‚¤ãƒˆã®å‰Šé™¤
 	const auto light_holder = LightHolder::GetInstance();
 	light_holder->DeleteLight(LightName.TITLE_LIGHT);
 
-	// ƒ^ƒu‚Ì“o˜^‚ð‰ðœ
+	// ã‚¿ãƒ–ã®ç™»éŒ²ã‚’è§£é™¤
 	TabDrawer::GetInstance()->RemoveTab(m_title_tab->GetTabHandle());
 
-	// ƒJƒƒ‰‚Ì“o˜^‚ð‰ðœ
+	// ã‚«ãƒ¡ãƒ©ã®ç™»éŒ²ã‚’è§£é™¤
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	cinemachine_brain->SetBlendTime(1.0f);
 	cinemachine_brain->RemoveVirtualCamera(m_title_camera->GetCameraHandle());
@@ -79,7 +79,7 @@ TitleScene::~TitleScene()
 
 void TitleScene::Init()
 {
-	// ƒ^ƒu‚Ì“o˜^
+	// ã‚¿ãƒ–ã®ç™»éŒ²
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	cinemachine_brain->SetBlendTime(0.0f);
 	cinemachine_brain->SetNear(1.0f);
@@ -92,9 +92,9 @@ void TitleScene::Update()
 	m_title_tab			->Update();
 	m_title_character	->Update();
 
-	// TODO : Œã‚É•ÊƒNƒ‰ƒX‰»
+	// TODO : å¾Œã«åˆ¥ã‚¯ãƒ©ã‚¹åŒ–
 
-	// Šî€‚Æ‚È‚éƒgƒ‰ƒ“ƒXƒtƒH[ƒ€‚ðÝ’è
+	// åŸºæº–ã¨ãªã‚‹ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ ã‚’è¨­å®š
 	const auto model_handle = m_title_character->GetModeler()->GetModelHandle();
 	auto	   spine2_m		= MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, FramePath.SPINE_2));
 	const auto spine2_pos	= MGetTranslateElem(spine2_m);
@@ -102,7 +102,7 @@ void TitleScene::Update()
 	m_aim_transform->SetPos(CoordinateKind::kWorld, spine2_pos + spine2_axis.y_axis * 13.0f);
 	m_aim_transform->SetRot(CoordinateKind::kWorld, spine2_axis.z_axis);
 
-	// ƒGƒtƒFƒNƒg
+	// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆ
 	const auto delta_time = GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kUI);
 	math::Increase(m_sin, 0.5f * delta_time, DX_PI_F, true);
 	const auto num = sin(m_sin);
@@ -132,7 +132,7 @@ std::shared_ptr<IScene> TitleScene::ChangeScene()
 {
 	const auto fader = SceneFader::GetInstance();
 
-	// ƒ[ƒh(ƒvƒŒƒC)
+	// ãƒ­ãƒ¼ãƒ‰(ãƒ—ãƒ¬ã‚¤)
 	if (m_title_tab->IsGameStart())
 	{
 		return std::make_shared<LoadScene>(SceneKind::kPlay);

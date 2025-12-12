@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "../JSON/json_loader.hpp"
 
 #include "ik_solver.hpp"
@@ -14,45 +14,45 @@ class HumanoidFootIKSolver final
 {
 public:
 	HumanoidFootIKSolver(
-		const std::shared_ptr<AnimatorBase>& animator, 
-		const std::shared_ptr<Modeler>& modeler, 
-		std::unordered_map<ColliderKind, std::shared_ptr<Collider>>& colliders, 
+		const std::shared_ptr<AnimatorBase>& animator,
+		const std::shared_ptr<Modeler>& modeler,
+		std::unordered_map<ColliderKind, std::shared_ptr<Collider>>& colliders,
 		HumanoidLegRayData& ray_data);
 	~HumanoidFootIKSolver();
 
-	void Init	(const std::shared_ptr<IHumanoid>& humanoid);
-	void Update	(const std::shared_ptr<IHumanoid>& humanoid);
+	void Init(const std::shared_ptr<IHumanoid>& humanoid);
+	void Update(const std::shared_ptr<IHumanoid>& humanoid);
 
 
-	#pragma region ƒRƒ‰ƒCƒ_[
+	#pragma region ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
 	void CreateRightLegRay	(PhysicalObjBase* physical_obj, const std::shared_ptr<IHumanoid>& humanoid);
 	void CreateFootRay		(PhysicalObjBase* physical_obj, const std::shared_ptr<IHumanoid>& humanoid);
 	void CreateFoeBaseRay	(PhysicalObjBase* physical_obj, const std::shared_ptr<IHumanoid>& humanoid);
 
-	void DeleteRightLegRay	(PhysicalObjBase* physical_obj);
+	void DeleteRightLegRay(PhysicalObjBase* physical_obj);
 
-	void CalcRightLegRayPos	(const std::shared_ptr<IHumanoid>& humanoid);
+	void CalcRightLegRayPos(const std::shared_ptr<IHumanoid>& humanoid);
 	#pragma endregion
 
-	/// @brief FootIK‚Ìˆ—‚ğ“K—p‚·‚é
-	void OnFootIK				(const std::shared_ptr<IHumanoid>& humanoid);
-	/// @brief ‰E•G‚ğ’n–Ê‚É‚Â‚¯‚é‚µ‚á‚ª‚İƒAƒjƒ[ƒVƒ‡ƒ“‚ÉIKˆ—‚ğ“K—p‚·‚é
-	void OnRightKneelCrouchIK	(const std::shared_ptr<IHumanoid>& humanoid);
+	/// @brief FootIKã®å‡¦ç†ã‚’é©ç”¨ã™ã‚‹
+	void OnFootIK(const std::shared_ptr<IHumanoid>& humanoid);
+	/// @brief å³è†ã‚’åœ°é¢ã«ã¤ã‘ã‚‹ã—ã‚ƒãŒã¿ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã«IKå‡¦ç†ã‚’é©ç”¨ã™ã‚‹
+	void OnRightKneelCrouchIK(const std::shared_ptr<IHumanoid>& humanoid);
 
-	/// @brief ƒtƒŒ[ƒ€s—ñ‚ÌƒuƒŒƒ“ƒh‚ğs‚¤
-	/// @brief IKˆ—“K—pŒã‚ÉŒÄ‚Ño‚·•K—v‚ ‚è
+	/// @brief ãƒ•ãƒ¬ãƒ¼ãƒ è¡Œåˆ—ã®ãƒ–ãƒ¬ãƒ³ãƒ‰ã‚’è¡Œã†
+	/// @brief IKå‡¦ç†é©ç”¨å¾Œã«å‘¼ã³å‡ºã™å¿…è¦ã‚ã‚Š
 	void BlendFrame(const std::shared_ptr<IHumanoid>& humanoid);
 
 private:
-	void JudgeExecuteIK		(const std::shared_ptr<IHumanoid>& humanoid);
+	void JudgeExecuteIK(const std::shared_ptr<IHumanoid>& humanoid);
 
-	void CalcToeBaseOffset	(const std::shared_ptr<IHumanoid>& humanoid);
-	void DownArmature		(const std::shared_ptr<IHumanoid>& humanoid);
-	void UpHips				(const std::shared_ptr<IHumanoid>& humanoid);
+	void CalcToeBaseOffset(const std::shared_ptr<IHumanoid>& humanoid);
+	void DownArmature(const std::shared_ptr<IHumanoid>& humanoid);
+	void UpHips(const std::shared_ptr<IHumanoid>& humanoid);
 
-	void OnLeftLegIK		(const std::shared_ptr<IHumanoid>& humanoid);
-	void OnRightLegIK		(const std::shared_ptr<IHumanoid>& humanoid);
-	void OnRightKneelIK		(const std::shared_ptr<IHumanoid>& humanoid);
+	void OnLeftLegIK	(const std::shared_ptr<IHumanoid>& humanoid);
+	void OnRightLegIK	(const std::shared_ptr<IHumanoid>& humanoid);
+	void OnRightKneelIK	(const std::shared_ptr<IHumanoid>& humanoid);
 
 	void ChagneArmatureOriginMatrix	(const std::shared_ptr<IHumanoid>& humanoid);
 	void ChangeLeftLegOriginMatrix	(const std::shared_ptr<IHumanoid>& humanoid);
@@ -60,8 +60,8 @@ private:
 
 private:
 	static std::unordered_map<std::string, ModelFrameAngleLimitData> angle_limits;
-	float armature_blend_time	= 0.25f;	// ‰¼@‚Ì‚¿‚É’è”‰»
-	float leg_blend_time		= 0.5f;	// ‰¼@‚Ì‚¿‚É’è”‰»
+	float armature_blend_time	= 0.25f;	// ä»®ã€€ã®ã¡ã«å®šæ•°åŒ–
+	float leg_blend_time		= 0.5f;		// ä»®ã€€ã®ã¡ã«å®šæ•°åŒ–
 
 	std::shared_ptr<AnimatorBase>									m_animator;
 	std::shared_ptr<Modeler>										m_modeler;
