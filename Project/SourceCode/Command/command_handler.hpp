@@ -29,8 +29,7 @@ public:
 	[[nodiscard]] int			GetCurrentTriggerCount	(const CommandKind kind) const;
 	[[nodiscard]] std::unordered_map<CommandKind, std::unordered_map<CommandSlotKind, InputCode>> GetKeyInputCodes() const { return m_key_codes; }
 	[[nodiscard]] std::unordered_map<CommandKind, std::unordered_map<CommandSlotKind, InputCode>> GetPadInputCodes() const { return m_pad_codes; }
-	[[nodiscard]] InputCode		GetKeyInputCode			(const CommandKind kind, const CommandSlotKind slot) const;
-	[[nodiscard]] InputCode		GetPadInputCode			(const CommandKind kind, const CommandSlotKind slot) const;
+	[[nodiscard]] InputCode		GetInputCode			(const DeviceKind device_kind, const CommandKind kind, const CommandSlotKind slot) const;
 
 	/// @brief 指定のコマンドが実行状況を判定
 	/// @brief command_kind 判定するコマンド

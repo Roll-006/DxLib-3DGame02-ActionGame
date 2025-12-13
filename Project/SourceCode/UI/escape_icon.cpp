@@ -153,18 +153,10 @@ void EscapeIcon::CalcBlurCircleParameter()
 void EscapeIcon::SetIconGraphic()
 {
 	// 入力デバイスおよびキー割り当てに対応した画像を取得
-	const auto command = CommandHandler::GetInstance();
-	switch (InputChecker::GetInstance()->GetCurrentInputDevice())
-	{
-	case DeviceKind::kKeyboard:
-		m_button_icon_graphic = m_button_graphic_resource->GetButtonGraphicer(command->GetKeyInputCode(CommandKind::kEscape, CommandSlotKind::kMain));
-		break;
+	const auto command	= CommandHandler::GetInstance();
+	const auto device	= InputChecker::GetInstance()->GetCurrentInputDevice();
 
-	case DeviceKind::kPad:
-		m_button_icon_graphic = m_button_graphic_resource->GetButtonGraphicer(command->GetPadInputCode(CommandKind::kEscape, CommandSlotKind::kStatic1));
-		break;
-	}
-
+	m_button_icon_graphic = m_button_graphic_resource->GetButtonGraphicer(command->GetInputCode(device, CommandKind::kEscape, CommandSlotKind::kMain));
 	m_button_icon_graphic->SetCenterPos(Window::kCenterPos);
 	m_button_icon_graphic->SetScale(0.22f * m_icon_scale);
 }

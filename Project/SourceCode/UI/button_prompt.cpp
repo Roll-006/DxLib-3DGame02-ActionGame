@@ -16,10 +16,10 @@ ButtonPrompt::ButtonPrompt(const std::string& prompt_name) :
 		const auto font_handler = FontHandler::GetInstance();
 		for (auto& single_button_prompt : data.single_button_prompt_data)
 		{
-			single_button_prompt.text_data.text = type_converter::ConvertUTF8ToShiftJIS(single_button_prompt.text_data.text);
-			single_button_prompt.text_data.font_handle = font_handler->GetFontHandle(single_button_prompt.text_data.font_path);
-			single_button_prompt.text_data.u_int_color = type_converter::ConvertHEXToUINT(single_button_prompt.text_data.hex_color);
-			single_button_prompt.text_data.font_size = { GetDrawStringWidthToHandle(single_button_prompt.text_data.text.c_str(), -1, single_button_prompt.text_data.font_handle), GetFontSizeToHandle(single_button_prompt.text_data.font_handle) };
+			single_button_prompt.text_data.text			= type_converter::ConvertUTF8ToShiftJIS(single_button_prompt.text_data.text);
+			single_button_prompt.text_data.font_handle	= font_handler->GetFontHandle(single_button_prompt.text_data.font_path);
+			single_button_prompt.text_data.u_int_color	= type_converter::ConvertHEXToUINT(single_button_prompt.text_data.hex_color);
+			single_button_prompt.text_data.font_size	= { GetDrawStringWidthToHandle(single_button_prompt.text_data.text.c_str(), -1, single_button_prompt.text_data.font_handle), GetFontSizeToHandle(single_button_prompt.text_data.font_handle) };
 		}
 
 		m_result_screen = std::make_shared<ScreenCreator>(data.screen_size, Vector2D<int>(Window::kCenterPos.x, static_cast<int>(Window::kScreenSize.y * data.height_ratio)));
@@ -28,6 +28,7 @@ ButtonPrompt::ButtonPrompt(const std::string& prompt_name) :
 		data.text_data.u_int_color	= type_converter::ConvertHEXToUINT(data.text_data.hex_color);		
 	}
 
+	UpdateInputCode();
 	UpdateGraphics();
 	CalcLeftPos();
 	CreateResultScreen();
@@ -43,10 +44,11 @@ void ButtonPrompt::Update(const int current_button_index)
 	m_prev_device_kind		= m_current_device_kind;
 	m_current_device_kind	= InputChecker::GetInstance()->GetCurrentInputDevice();
 
+	UpdateInputCode();
 	UpdateExplanatoryText(current_button_index);
 
-	// 入力デバイスが変化した場合のみ描画データを変更
-	if (m_prev_device_kind != m_current_device_kind)
+	// 入力デバイスや選択ボタンに変化があった場合のみスクリーンの内容を更新
+	if (CanCreateRresultScreen())
 	{
 		UpdateGraphics();
 		CalcLeftPos();
@@ -71,6 +73,14 @@ void ButtonPrompt::AddExplanatoryText(const int button_index, const std::string&
 	m_explanatory_texts[button_index] = explanatory;
 }
 
+bool ButtonPrompt::CanCreateRresultScreen() const
+{
+	const auto is_change_device = m_prev_device_kind != m_current_device_kind;
+	const auto is_change_code	= m_prev_input_code  != m_current_input_code;
+
+	return is_change_device || is_change_code;
+}
+
 void ButtonPrompt::CreateResultScreen()
 {
 	m_result_screen->UseScreen();
@@ -82,6 +92,7 @@ void ButtonPrompt::CreateResultScreen()
 		m_button_graphic.at(count)->SetCenterPos({ offset + m_button_graphic.at(count)->GetHalfSize().x, m_result_screen->GetHalfScreenSize().y });
 		m_button_graphic.at(count)->Draw();
 
+		// 現在のテキストを左に描画される画像サイズ分ずらす
 		offset += m_button_graphic.at(count)->GetSize().x;
 		
 		DrawStringToHandle(
@@ -91,13 +102,31 @@ void ButtonPrompt::CreateResultScreen()
 			text.text_data.u_int_color,
 			text.text_data.font_handle);
 
-		// 次のテキストは前のテキストのサイズ分ずれるため最後に加算
+		// 次の画像・テキストは現在のテキスト + オフセット分ずらす
 		offset += text.text_data.font_size.x + data.offset;
 
 		++count;
 	}
 
 	m_result_screen->UnuseScreen();
+}
+
+void ButtonPrompt::UpdateInputCode()
+{
+	m_prev_input_code = m_current_input_code;
+	m_current_input_code.clear();
+
+	// 入力デバイスおよびキー割り当てに対応した入力コードを取得
+	const auto command = CommandHandler::GetInstance();
+	for (const auto& single_button_prompt : data.single_button_prompt_data)
+	{
+		const auto input_code = command->GetInputCode(
+			m_current_device_kind, 
+			single_button_prompt.command_kind, 
+			single_button_prompt.command_slot_kind);
+		
+		m_current_input_code.emplace_back(input_code);
+	}
 }
 
 void ButtonPrompt::UpdateExplanatoryText(const int current_button_index)
@@ -114,31 +143,13 @@ void ButtonPrompt::UpdateExplanatoryText(const int current_button_index)
 
 void ButtonPrompt::UpdateGraphics()
 {
+	// 画像を設定
 	m_button_graphic.clear();
-
-	// 入力デバイスおよびキー割り当てに対応した画像を取得
-	const auto command = CommandHandler::GetInstance();
-	switch (InputChecker::GetInstance()->GetCurrentInputDevice())
+	for (const auto& code : m_current_input_code)
 	{
-	case DeviceKind::kKeyboard:
-		for (const auto& single_button_prompt : data.single_button_prompt_data)
-		{
-			m_button_graphic.emplace_back(m_button_graphic_getter->GetButtonGraphicer(command->GetKeyInputCode(single_button_prompt.command_kind, single_button_prompt.command_slot_kind)));
-		}
-		break;
-
-	case DeviceKind::kPad:
-		for (const auto& single_button_prompt : data.single_button_prompt_data)
-		{
-			m_button_graphic.emplace_back(m_button_graphic_getter->GetButtonGraphicer(command->GetPadInputCode(single_button_prompt.command_kind, single_button_prompt.command_slot_kind)));
-		}
-		break;
-	}
-
-	// スケールを設定
-	for (auto& graphic : m_button_graphic)
-	{
+		const auto graphic = m_button_graphic_getter->GetButtonGraphicer(code);
 		graphic->SetScale(data.graphic_scale);
+		m_button_graphic.emplace_back(graphic);
 	}
 }
 
@@ -151,7 +162,8 @@ void ButtonPrompt::CalcLeftPos()
 	// 最初の画像以外はオフセット幅を同時に加算
 	for (const auto& text : data.single_button_prompt_data)
 	{
-		total_width += count != 0 ? data.offset + text.text_data.font_size.x : text.text_data.font_size.x;
+		const auto text_width = text.text_data.font_size.x;
+		total_width += count != 0 ? data.offset + text_width : text_width;
 		total_width += m_button_graphic.at(count)->GetSize().x;
 
 		++count;

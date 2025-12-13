@@ -220,14 +220,18 @@ int CommandHandler::GetCurrentTriggerCount(const CommandKind kind) const
 	return m_trigger_contains.at(TimeKind::kCurrent).at(kind);
 }
 
-InputCode CommandHandler::GetKeyInputCode(const CommandKind kind, const CommandSlotKind slot) const
+InputCode CommandHandler::GetInputCode(const DeviceKind device_kind, const CommandKind kind, const CommandSlotKind slot) const
 {
-	return m_key_codes.at(kind).at(slot);
-}
+	switch (device_kind)
+	{
+	case DeviceKind::kKeyboard:
+		return m_key_codes.at(kind).at(slot);
+		break;
 
-InputCode CommandHandler::GetPadInputCode(const CommandKind kind, const CommandSlotKind slot) const
-{
-	return m_pad_codes.at(kind).at(slot);
+	case DeviceKind::kPad:
+		return m_pad_codes.at(kind).at(slot);
+		break;
+	}
 }
 
 bool CommandHandler::IsExecute(const CommandKind command_kind, const TimeKind time_kind)
@@ -315,7 +319,7 @@ void CommandHandler::RemoveInputCode(const CommandKind kind, const CommandSlotKi
 {
 	const auto input = InputChecker::GetInstance();
 	const auto code  = input->ConvertInputTemplateToInputCode(input_code);
-	std::unordered_map<CommandKind, std::unordered_set<InputCode>>* codes = nullptr;
+	std::unordered_map<CommandKind, std::unordered_map<CommandSlotKind, InputCode>>* codes = nullptr;
 
 	switch (input->GetInputKind(input_code))
 	{
@@ -334,13 +338,26 @@ void CommandHandler::RemoveInputCode(const CommandKind kind, const CommandSlotKi
 	}
 
 	// íœ
-	auto itr = codes->find(kind);
-	if (itr != codes->end())
+	auto command_itr = codes->find(kind);
+	if (command_itr != codes->end())
 	{
-		itr->second.erase(code);
-		if (itr->second.empty())
+		auto& slot_map = command_itr->second;
+
+		for (auto slot_itr = slot_map.begin(); slot_itr != slot_map.end(); )
 		{
-			codes->erase(itr);
+			if (slot_itr->second == code)
+			{
+				slot_itr = slot_map.erase(slot_itr);
+			}
+			else
+			{
+				++slot_itr;
+			}
+		}
+
+		if (slot_map.empty())
+		{
+			codes->erase(command_itr);
 		}
 	}
 }

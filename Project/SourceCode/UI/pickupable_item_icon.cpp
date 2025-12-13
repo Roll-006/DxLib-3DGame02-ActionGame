@@ -117,17 +117,18 @@ void PickupableItemIcon::CreatePickupableItemIconScreen()
 	m_icon_pos = obj->GetTransform()->GetPos(CoordinateKind::kWorld) + kIconOffset;
 
 	// 入力デバイスおよびキー割り当てに対応した画像を取得
-	const auto command = CommandHandler::GetInstance();
-	switch (InputChecker::GetInstance()->GetCurrentInputDevice())
+	const auto command	= CommandHandler::GetInstance();
+	const auto device	= InputChecker::GetInstance()->GetCurrentInputDevice();
+	switch (device)
 	{
 	case DeviceKind::kKeyboard:
-		m_button_icon_graphic = m_button_graphic_resource->GetButtonGraphicer(command->GetKeyInputCode(CommandKind::kMelee, CommandSlotKind::kMain));
+		m_button_icon_graphic = m_button_graphic_resource->GetButtonGraphicer(command->GetInputCode(device, CommandKind::kMelee, CommandSlotKind::kMain));
 		m_button_icon_graphic->SetCenterPos(kScreenCenterPos);
 		m_button_icon_graphic->SetScale(0.175f);
 		break;
 
 	case DeviceKind::kPad:
-		m_button_icon_graphic = m_button_graphic_resource->GetButtonGraphicer(command->GetPadInputCode(CommandKind::kMelee, CommandSlotKind::kStatic1));
+		m_button_icon_graphic = m_button_graphic_resource->GetButtonGraphicer(command->GetInputCode(device, CommandKind::kMelee, CommandSlotKind::kStatic1));
 		m_button_icon_graphic->SetCenterPos(kScreenCenterPos);
 		m_button_icon_graphic->SetScale(0.175f);
 		break;
