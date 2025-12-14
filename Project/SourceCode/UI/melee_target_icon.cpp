@@ -1,4 +1,4 @@
-#include "melee_target_icon.hpp"
+ï»¿#include "melee_target_icon.hpp"
 
 #include "../Base/character_base.hpp"
 #include "../Command/command_handler.hpp"
@@ -19,7 +19,7 @@ MeleeTargetIcon::MeleeTargetIcon(std::shared_ptr<IMeleeHittable>& melee_target, 
 	m_icon_pos							(v3d::GetZeroV()),
 	m_icon_size							(0.0f),
 	m_font_handle						(FontHandler::GetInstance()->GetFontHandle(FontName.EXPLANATORY_TEXT)),
-	m_text								("ƒƒŒ["),
+	m_text								("ãƒ¡ãƒ¬ãƒ¼"),
 	m_font_size							(Vector2D<int>(GetDrawStringWidthToHandle(m_text.c_str(), -1, m_font_handle), GetFontSizeToHandle(m_font_handle)))
 {
 	m_melee_cursor_graphic->SetCenterPos(kScreenCenterPos + kCursorOffset);
@@ -77,11 +77,11 @@ void MeleeTargetIcon::CalcResultScreenCenterPos()
 	const auto camera_pos	= GetCameraPosition();
 	const auto distance		= VSize(m_icon_pos - camera_pos);
 
-	// DrawBillboard3DŠÖ”‚Í‹——£‚É‰‚¶‚Ä•`‰æƒTƒCƒY‚ª•ÏX‚³‚ê‚é‚½‚ß
-	// ‹——£‚É‰‚¶‚ÄŠg‘å‚·‚é
+	// DrawBillboard3Dé–¢æ•°ã¯è·é›¢ã«å¿œã˜ã¦æç”»ã‚µã‚¤ã‚ºãŒå¤‰æ›´ã•ã‚Œã‚‹ãŸã‚
+	// è·é›¢ã«å¿œã˜ã¦æ‹¡å¤§ã™ã‚‹
 	m_icon_size = kIconSize * distance * 0.01f;
 
-	// 3DÀ•W‚ğƒXƒNƒŠ[ƒ“ã‚É•ÏŠ·‚µ“K—p
+	// 3Dåº§æ¨™ã‚’ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ä¸Šã«å¤‰æ›ã—é©ç”¨
 	const auto screen_pos_v3d = ConvWorldPosToScreenPos(m_icon_pos);
 	const auto screen_pos_v2d = Vector2D<int>(screen_pos_v3d.x, screen_pos_v3d.y);
 	m_melee_icon_screen->GetGraphicer()->SetCenterPos(screen_pos_v2d);
@@ -99,24 +99,23 @@ void MeleeTargetIcon::CreateMeleeIconScreen()
 
 	m_icon_pos = MGetTranslateElem(head_m) + kIconOffset;
 
-	// “ü—ÍƒfƒoƒCƒX‚¨‚æ‚ÑƒL[Š„‚è“–‚Ä‚É‘Î‰‚µ‚½‰æ‘œ‚ğæ“¾
-	// TODO : ƒŠƒtƒ@ƒNƒ^ƒŠƒ“ƒO‰Â”\ (—Dæ“x : ’á)
+	// å…¥åŠ›ãƒ‡ãƒã‚¤ã‚¹ãŠã‚ˆã³ã‚­ãƒ¼å‰²ã‚Šå½“ã¦ã«å¯¾å¿œã—ãŸç”»åƒã‚’å–å¾—
+	// TODO : ãƒªãƒ•ã‚¡ã‚¯ã‚¿ãƒªãƒ³ã‚°å¯èƒ½ (å„ªå…ˆåº¦ : ä½)
 	const auto command	= CommandHandler::GetInstance();
 	const auto device	= InputChecker::GetInstance()->GetCurrentInputDevice();
 	switch (device)
 	{
 	case DeviceKind::kKeyboard:
 		m_button_icon_graphic = m_button_graphic_resource->GetButtonGraphicer(command->GetInputCode(device, CommandKind::kMelee, CommandSlotKind::kMain));
-		m_button_icon_graphic->SetCenterPos(kScreenCenterPos);
-		m_button_icon_graphic->SetScale(0.2f);
 		break;
 
 	case DeviceKind::kPad:
 		m_button_icon_graphic = m_button_graphic_resource->GetButtonGraphicer(command->GetInputCode(device, CommandKind::kMelee, CommandSlotKind::kStatic1));
-		m_button_icon_graphic->SetCenterPos(kScreenCenterPos);
-		m_button_icon_graphic->SetScale(0.2f);
 		break;
 	}
+
+	m_button_icon_graphic->SetCenterPos(kScreenCenterPos);
+	m_button_icon_graphic->SetScale(0.2f);
 
 	m_melee_icon_screen->UseScreen();
 	m_button_icon_graphic ->Draw();

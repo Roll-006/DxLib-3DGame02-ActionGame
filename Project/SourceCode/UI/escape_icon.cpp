@@ -156,7 +156,17 @@ void EscapeIcon::SetIconGraphic()
 	const auto command	= CommandHandler::GetInstance();
 	const auto device	= InputChecker::GetInstance()->GetCurrentInputDevice();
 
-	m_button_icon_graphic = m_button_graphic_resource->GetButtonGraphicer(command->GetInputCode(device, CommandKind::kEscape, CommandSlotKind::kMain));
+	switch (device)
+	{
+	case DeviceKind::kKeyboard:
+		m_button_icon_graphic = m_button_graphic_resource->GetButtonGraphicer(command->GetInputCode(device, CommandKind::kEscape, CommandSlotKind::kMain));
+		break;
+
+	case DeviceKind::kPad:
+		m_button_icon_graphic = m_button_graphic_resource->GetButtonGraphicer(command->GetInputCode(device, CommandKind::kEscape, CommandSlotKind::kStatic1));
+		break;
+	}
+
 	m_button_icon_graphic->SetCenterPos(Window::kCenterPos);
 	m_button_icon_graphic->SetScale(0.22f * m_icon_scale);
 }

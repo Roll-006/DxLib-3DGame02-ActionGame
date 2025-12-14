@@ -1,4 +1,4 @@
-#include "player.hpp"
+ï»¿#include "player.hpp"
 #include "../Command/command_handler.hpp"
 #include "../Part/player_state_controller.hpp"
 #include "../MixamoHelper/mixamo_helper.hpp"
@@ -31,9 +31,9 @@ Player::Player() :
 	m_humanoid_foot_ik				(nullptr),
 	m_humanoid_frame				(std::make_shared<HumanoidFrameGetter>())
 {
-	// TODO : Œã‚ÉJSON‰»
+	// TODO : å¾Œã«JSONåŒ–
 
-	// ƒCƒxƒ“ƒg“o˜^
+	// ã‚¤ãƒ™ãƒ³ãƒˆç™»éŒ²
 	EventSystem::GetInstance()->Subscribe<DeadAllEnemyEvent>(this, &Player::DeadAllEnemy);
 	EventSystem::GetInstance()->Subscribe<SpottedItemEvent>	(this, &Player::AddPickUpCandidateItem);
 
@@ -42,12 +42,12 @@ Player::Player() :
 	m_health[HealthPartKind::kMain] = std::make_shared<Gauge>(2000.0f, 1500.0f);
 	m_prev_health = m_health.at(HealthPartKind::kMain)->GetCurrentValue();
 
-	// ƒ‚ƒfƒ‹EƒAƒjƒ[ƒVƒ‡ƒ“‚ğİ’è
+	// ãƒ¢ãƒ‡ãƒ«ãƒ»ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’è¨­å®š
 	m_modeler  = std::make_shared<Modeler>(m_transform, ModelPath.SWAT_02, kBasicAngle, kBasicScale);
 	m_animator = std::make_shared<PlayerAnimator>(m_modeler, m_state, m_current_held_weapon, m_current_equip_weapon[WeaponSlotKind::kMain]);
 	SetColliderModelHandle(m_modeler->GetModelHandle());
 
-	// TODO : ‚Ì‚¿‚É•ÏX ‰¼
+	// TODO : ã®ã¡ã«JSONåŒ–
 	m_humanoid_foot_ik = std::make_shared<HumanoidFootIKSolver>(m_animator, m_modeler, m_colliders, m_leg_ray_data);
 	m_leg_ray_data.leg_ray_length				= 80.0f;
 	m_leg_ray_data.foot_ray_length				= 70.0f;
@@ -69,21 +69,21 @@ Player::Player() :
 
 	invincible_time = kInvincibleTime;
 
-	// ‰ŠúposEdir‚ğİ’è
+	// åˆæœŸposãƒ»dirã‚’è¨­å®š
 	m_look_dir[TimeKind::kCurrent] = m_look_dir[TimeKind::kNext] = VGet(0.0f, 0.0f, 1.0f);
 	m_transform->SetPos(CoordinateKind::kWorld, VGet(140.7f, 164.4f, -1498.5f));
 	m_transform->SetRot(CoordinateKind::kWorld, m_look_dir.at(TimeKind::kCurrent));
 
-	// ƒRƒ‰ƒCƒ_[EƒgƒŠƒK[‚ğİ’è
+	// ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ãƒ»ãƒˆãƒªã‚¬ãƒ¼ã‚’è¨­å®š
 	m_collider_creator->CreateCapsuleCollider		(this, m_modeler, kCapsuleRadius);
 	m_collider_creator->CreateLandingTrigger		(this, kLandingTriggerRadius);
 	m_collider_creator->CreateProjectRay			(this, 30.0f);
 	m_collider_creator->CreateCollisionAreaTrigger	(this, kCollisionAreaRadius);
 	m_collider_creator->CreateVisibleTrigger		(this, m_modeler);
 
-	// TODO : ‰¼Œã‚É•ÏX
+	// TODO : ä»®å¾Œã«å¤‰æ›´
 	{
-		// •Šíİ’è
+		// æ­¦å™¨è¨­å®š
 		const auto rocket_launcher	= std::make_shared<RocketLauncher>();
 		const auto assault_rifle	= std::make_shared<AssaultRifle>();
 		const auto knife			= std::make_shared<Knife>();
@@ -109,7 +109,7 @@ Player::Player() :
 
 Player::~Player()
 {
-	// ƒCƒxƒ“ƒg‚Ì“o˜^‰ğœ
+	// ã‚¤ãƒ™ãƒ³ãƒˆã®ç™»éŒ²è§£é™¤
 	EventSystem::GetInstance()->Unsubscribe<DeadAllEnemyEvent>	(this, &Player::DeadAllEnemy);
 	EventSystem::GetInstance()->Unsubscribe<SpottedItemEvent>	(this, &Player::AddPickUpCandidateItem);
 
@@ -298,7 +298,7 @@ void Player::OnProjectPos()
 	//const auto hit_triangle = project_ray->GetHitTriangles();
 	//if (hit_triangle.size() <= 0) { return; }
 
-	//// ’…’n‚µ‚Ä‚¢‚½ê‡AˆÈ‘O‚Ì“Š‰eÀ•W‚æ‚è‰º‚É‚ ‚ê‚Î“Š‰e‚ğ‹–‰Â‚·‚é
+	//// ç€åœ°ã—ã¦ã„ãŸå ´åˆã€ä»¥å‰ã®æŠ•å½±åº§æ¨™ã‚ˆã‚Šä¸‹ã«ã‚ã‚Œã°æŠ•å½±ã‚’è¨±å¯ã™ã‚‹
 	//if (IsLanding())
 	//{
 	//	const auto prev_project_pos = GetPrevProjectPos();
@@ -308,11 +308,11 @@ void Player::OnProjectPos()
 	//	}
 	//}
 
-	//// Œõü‚Ìn“_‚©‚ç‚Ì‹——£
+	//// å…‰ç·šã®å§‹ç‚¹ã‹ã‚‰ã®è·é›¢
 	//const auto future_begin_pos = *project_pos + axis::GetWorldYAxis() * capsule->GetRadius();
 	//const auto distance = math::GetDistancePointToTriangle(future_begin_pos, hit_triangle.front());
 
-	//// ŒÅ’èˆÊ’u‚ğŒˆ’è
+	//// å›ºå®šä½ç½®ã‚’æ±ºå®š
 	//const auto penetration		= capsule->GetRadius() - distance;
 	//const auto push_back_length = math::GetHypotenuseLengthIsoscelesRightTriangle(penetration);
 	//const auto result_pos		= *project_pos + axis::GetWorldYAxis() * push_back_length;
@@ -343,17 +343,17 @@ void Player::OnDamage(const HealthPartKind part_kind, const float damage)
 	m_invincible_timer	= invincible_time;
 	m_is_invincible		= true;
 
-	// ’Ê’mˆ—
+	// é€šçŸ¥å‡¦ç†
 	if (part_kind == HealthPartKind::kMain)
 	{
-		// ƒ_ƒ[ƒW’Ê’m
+		// ãƒ€ãƒ¡ãƒ¼ã‚¸é€šçŸ¥
 		const OnDamageToPlayerEvent event{ damage, damage / m_health.at(part_kind)->GetMaxValue() };
 		EventSystem::GetInstance()->Publish(event);
 	}
 }
 
 
-#pragma region ’Í‚İ
+#pragma region æ´ã¿
 void Player::UpdateGrabbed()
 {
 	m_move_speed = 20.0f;
@@ -385,13 +385,13 @@ void Player::UpdateGrabbed()
 			break;
 		}
 
-		// “ü—Í‚³‚ê‚½‚©‚Âƒfƒ‹ƒ^ƒ^ƒCƒ€‚ª—LŒø‚Èê‡‚Ì‚İ’l‚ğ‘‰Á
+		// å…¥åŠ›ã•ã‚ŒãŸã‹ã¤ãƒ‡ãƒ«ã‚¿ã‚¿ã‚¤ãƒ ãŒæœ‰åŠ¹ãªå ´åˆã®ã¿å€¤ã‚’å¢—åŠ 
 		if (delta_time > 0.0f && command->IsExecute(CommandKind::kEscape, TimeKind::kCurrent))
 		{
 			m_escape_gauge->Increase(increase);
 		}
 
-		// ’Eo
+		// è„±å‡º
 		if (m_escape_gauge->IsMax())
 		{
 			m_grabber->OnEscape();
@@ -426,7 +426,7 @@ bool Player::CanEscape() const
 #pragma endregion
 
 
-#pragma region ƒƒŒ[
+#pragma region ãƒ¡ãƒ¬ãƒ¼
 void Player::UpdateMelee()
 {
 	m_move_speed			= 40.0f;
@@ -435,7 +435,7 @@ void Player::UpdateMelee()
 	AllowCalcLookDir();
 	CalcCorrectMoveDir();
 
-	// ‹­§“I‚É–³“Gó‘Ô‚É‚·‚é
+	// å¼·åˆ¶çš„ã«ç„¡æ•µçŠ¶æ…‹ã«ã™ã‚‹
 	ActivateInvincibleForcibly();
 }
 
@@ -499,7 +499,7 @@ void Player::AttackFrontMelee(CharacterBase* target)
 	time_manager->SetTimeScale(TimeScaleLayerKind::kPlayer, 0.07f, 0.4f);
 	time_manager->SetTimeScale(TimeScaleLayerKind::kEffect, 0.07f, 0.4f);
 
-	// ’Ê’m
+	// é€šçŸ¥
 	const auto model_handle = m_modeler->GetModelHandle();
 	auto	   right_foot_m = MV1GetFrameLocalWorldMatrix(model_handle, GetHumanoidFrame()->GetRightFootIndex(model_handle));
 	EventSystem::GetInstance()->Publish(OnHitKickEvent(MGetTranslateElem(right_foot_m), TimeScaleLayerKind::kPlayer));
@@ -524,7 +524,7 @@ void Player::AttackVersatilityMelee(CharacterBase* target)
 	time_manager->SetTimeScale(TimeScaleLayerKind::kPlayer, 0.07f, 0.4f);
 	time_manager->SetTimeScale(TimeScaleLayerKind::kEffect, 0.07f, 0.4f);
 
-	// ’Ê’m
+	// é€šçŸ¥
 	const auto model_handle = m_modeler->GetModelHandle();
 	auto	   right_foot_m = MV1GetFrameLocalWorldMatrix(model_handle, GetHumanoidFrame()->GetRightFootIndex(model_handle));
 	EventSystem::GetInstance()->Publish(OnHitKickEvent(MGetTranslateElem(right_foot_m), TimeScaleLayerKind::kPlayer));
@@ -532,7 +532,7 @@ void Player::AttackVersatilityMelee(CharacterBase* target)
 #pragma endregion
 
 
-#pragma region ƒXƒeƒ‹ƒXƒLƒ‹
+#pragma region ã‚¹ãƒ†ãƒ«ã‚¹ã‚­ãƒ«
 void Player::UpdateStealthKill()
 {
 	m_move_speed			= 60.0f;
@@ -541,7 +541,7 @@ void Player::UpdateStealthKill()
 	AllowCalcLookDir();
 	CalcCorrectMoveDir();
 
-	// ‹­§“I‚É–³“Gó‘Ô‚É‚·‚é
+	// å¼·åˆ¶çš„ã«ç„¡æ•µçŠ¶æ…‹ã«ã™ã‚‹
 	ActivateInvincibleForcibly();
 
 	DetachWeapon(GetCurrentEquipWeapon(WeaponSlotKind::kSub));
@@ -561,14 +561,14 @@ void Player::SetupStealthKill()
 	m_stealth_kill_target->OnStealthKill();
 	target_character->OnDamage(HealthPartKind::kMain, 2000.0f);
 
-	// ’Í‚ñ‚¾‚±‚Æ‚ğ‰‰oƒJƒƒ‰‚É’Ê’m
+	// æ´ã‚“ã ã“ã¨ã‚’æ¼”å‡ºã‚«ãƒ¡ãƒ©ã«é€šçŸ¥
 	const StealthKillEvent event{ m_modeler };
 	EventSystem::GetInstance()->Publish(event);
 }
 #pragma endregion
 
 
-#pragma region ƒAƒCƒeƒ€
+#pragma region ã‚¢ã‚¤ãƒ†ãƒ 
 void Player::PickUpItem()
 {
 	if (!m_pickupable_item) { return; }
@@ -624,7 +624,7 @@ void Player::RemovePickUpCandidateItem(const int obj_handle)
 #pragma endregion
 
 
-#pragma region •Ší
+#pragma region æ­¦å™¨
 void Player::EquipWeapon(const std::shared_ptr<WeaponBase>& weapon, const WeaponSlotKind slot_kind)
 {
 	m_current_equip_weapon[slot_kind] = weapon;
@@ -685,7 +685,7 @@ void Player::AttachWeapon(const int obj_handle)
 
 void Player::DetachWeapon(const std::shared_ptr<WeaponBase>& weapon)
 {
-	// ©g‚ª‘•’…‚³‚ê‚Ä‚¢‚ê‚Î’…’E‚·‚é
+	// è‡ªèº«ãŒè£…ç€ã•ã‚Œã¦ã„ã‚Œã°ç€è„±ã™ã‚‹
 	if (m_attach_weapons.contains(weapon->GetHolsterKind()))
 	{
 		if (m_attach_weapons[weapon->GetHolsterKind()] == weapon)
@@ -792,7 +792,7 @@ void Player::CalcMoveSpeed()
 
 	if (VSize(m_input_slope) <= kWalkStickSlopeLimit - InputChecker::kStickDeadZone)
 	{
-		// ‘¬‚¢ó‘Ô‚©‚ç•à‚«ó‘Ô‚ÉˆÚs‚µ‚½ê‡A‹}‘¬‚ÉŒ¸‘¬‚³‚¹‚é
+		// é€Ÿã„çŠ¶æ…‹ã‹ã‚‰æ­©ãçŠ¶æ…‹ã«ç§»è¡Œã—ãŸå ´åˆã€æ€¥é€Ÿã«æ¸›é€Ÿã•ã›ã‚‹
 		if (m_move_speed > kWalkSpeed) { m_move_speed = kWalkSpeed; }
 
 		math::Increase(m_move_speed, kAcceleration * delta_time, kSlowWalkSpeed, false);
@@ -800,7 +800,7 @@ void Player::CalcMoveSpeed()
 		return;
 	}
 
-	// ’x‚¢ó‘Ô‚©‚çƒ_ƒbƒVƒ…ó‘Ô‚ÉˆÚs‚µ‚½ê‡A‹}‘¬‚É‰Á‘¬‚³‚¹‚é
+	// é…ã„çŠ¶æ…‹ã‹ã‚‰ãƒ€ãƒƒã‚·ãƒ¥çŠ¶æ…‹ã«ç§»è¡Œã—ãŸå ´åˆã€æ€¥é€Ÿã«åŠ é€Ÿã•ã›ã‚‹
 	if (m_move_speed < kSlowWalkSpeed) { m_move_speed = kSlowWalkSpeed; }
 
 	math::Increase(m_move_speed, kAcceleration * delta_time, kWalkSpeed, false);
@@ -817,7 +817,7 @@ void Player::CalcMoveSpeedStop()
 		return;
 	}
 
-	// ‘¬‚¢ó‘Ô‚©‚ç•à‚«ó‘Ô‚ÉˆÚs‚µ‚½ê‡A‹}‘¬‚ÉŒ¸‘¬‚³‚¹‚é
+	// é€Ÿã„çŠ¶æ…‹ã‹ã‚‰æ­©ãçŠ¶æ…‹ã«ç§»è¡Œã—ãŸå ´åˆã€æ€¥é€Ÿã«æ¸›é€Ÿã•ã›ã‚‹
 	if (m_move_speed > kSlowWalkSpeed) { m_move_speed = kSlowWalkSpeed; }
 
 	const auto delta_time = GetDeltaTime();
@@ -828,7 +828,7 @@ void Player::CalcMoveSpeedRun()
 {
 	if (m_state->GetMoveState(TimeKind::kCurrent)->GetStateKind() == static_cast<int>(player_state::MoveStateKind::kIdle)) { return; }
 
-	// ’x‚¢ó‘Ô‚©‚çƒ_ƒbƒVƒ…ó‘Ô‚ÉˆÚs‚µ‚½ê‡A‹}‘¬‚É‰Á‘¬‚³‚¹‚é
+	// é…ã„çŠ¶æ…‹ã‹ã‚‰ãƒ€ãƒƒã‚·ãƒ¥çŠ¶æ…‹ã«ç§»è¡Œã—ãŸå ´åˆã€æ€¥é€Ÿã«åŠ é€Ÿã•ã›ã‚‹
 	if (m_move_speed < kWalkSpeed) { m_move_speed = kWalkSpeed; }
 
 	const auto delta_time = GetDeltaTime();
@@ -890,14 +890,14 @@ void Player::CalcInputSlopeFromPad()
 	const auto forward	= GetMoveForward();
 	const auto right	= GetMoveRight();
 
-	// Še•ûŒü‚Ìƒpƒ‰ƒ[ƒ^[‚ğæ“¾
+	// å„æ–¹å‘ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãƒ¼ã‚’å–å¾—
 	const auto input			= InputChecker::GetInstance();
 	const auto forward_param	= input->GetInputParameter(pad::StickKind::kLSUp);
 	const auto backward_param	= input->GetInputParameter(pad::StickKind::kLSDown);
 	const auto left_param		= input->GetInputParameter(pad::StickKind::kLSLeft);
 	const auto right_param		= input->GetInputParameter(pad::StickKind::kLSRight);
 
-	// “ü—Í’l‚ğæ“¾
+	// å…¥åŠ›å€¤ã‚’å–å¾—
 	if (forward_param)	{ m_input_slope += forward * (forward_param	 - InputChecker::kStickDeadZone); }
 	if (backward_param) { m_input_slope += forward * (backward_param + InputChecker::kStickDeadZone); }
 	if (left_param)		{ m_input_slope += right   * (left_param	 + InputChecker::kStickDeadZone); }
@@ -916,7 +916,7 @@ void Player::CalcInputSlopeFromCommand()
 	auto	   current_input_slope		= v3d::GetZeroV();
 	auto	   continue_input_slope		= v3d::GetZeroV();
 	
-	// Œ»İ“ü—Í‚³‚ê‚Ä‚¢‚évelocity‚ğæ“¾
+	// ç¾åœ¨å…¥åŠ›ã•ã‚Œã¦ã„ã‚‹velocityã‚’å–å¾—
 	if (command->IsExecute(CommandKind::kMoveUpPlayer,		TimeKind::kCurrent)) { current_input_slope += forward; }
 	if (command->IsExecute(CommandKind::kMoveDownPlayer,	TimeKind::kCurrent)) { current_input_slope -= forward; }
 	if (command->IsExecute(CommandKind::kMoveLeftPlayer,	TimeKind::kCurrent)) { current_input_slope -= right; }
@@ -924,7 +924,7 @@ void Player::CalcInputSlopeFromCommand()
 
 	m_input_slope = v3d::GetNormalizedV(current_input_slope) * InputChecker::kStickMaxSlope;
 
-	// Œp‘±‚µ‚Ä“ü—Í‚³‚ê‚Ä‚¢‚½velocity‚ªAŒ»İ‚Ìvelocity‚Æ‹t‚ğŒü‚¢‚Ä‚¢‚½ê‡Œ»İ‚Ìvelocity‚ğk‚ß‚é
+	// ç¶™ç¶šã—ã¦å…¥åŠ›ã•ã‚Œã¦ã„ãŸvelocityãŒã€ç¾åœ¨ã®velocityã¨é€†ã‚’å‘ã„ã¦ã„ãŸå ´åˆç¾åœ¨ã®velocityã‚’ç¸®ã‚ã‚‹
 	if (std::abs(math::GetAngleBetweenTwoVector(m_input_slope, continue_input_slope) - DX_PI_F) < math::kEpsilonLow)
 	{
 		m_input_slope += continue_input_slope;
@@ -935,11 +935,11 @@ void Player::CalcInputSlopeFromCommand()
 
 void Player::NotifyHealth()
 {
-	// •m€ó‘Ô’Ê’m
+	// ç€•æ­»çŠ¶æ…‹é€šçŸ¥
 	const auto parcent = (m_health.at(HealthPartKind::kMain)->GetMaxValue() / 270.0f) * 45;
 	if (m_health.at(HealthPartKind::kMain)->GetCurrentValue() < parcent)
 	{
-		// •m€ó‘Ô“Ë“ü’Ê’m
+		// ç€•æ­»çŠ¶æ…‹çªå…¥é€šçŸ¥
 		if (m_prev_health >= parcent)
 		{
 			const EnterNearDeathEvent event{};
@@ -955,7 +955,7 @@ void Player::NotifyHealth()
 
 VECTOR Player::GetMoveForward()
 {
-	// MEMO : cinemachine brain‚ğ‰î‚·‚é‚æ‚èDxLibŠù‘¶‚ÌŠÖ”‚ğg—p‚µ‚½‚Ù‚¤‚ªæ“¾‚ª‘‚¢
+	// MEMO : cinemachine brainã‚’ä»‹ã™ã‚‹ã‚ˆã‚ŠDxLibæ—¢å­˜ã®é–¢æ•°ã‚’ä½¿ç”¨ã—ãŸã»ã†ãŒå–å¾—ãŒæ—©ã„
 	auto forward = GetCameraFrontVector();
 	forward.y = 0.0f;
 

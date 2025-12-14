@@ -123,16 +123,15 @@ void PickupableItemIcon::CreatePickupableItemIconScreen()
 	{
 	case DeviceKind::kKeyboard:
 		m_button_icon_graphic = m_button_graphic_resource->GetButtonGraphicer(command->GetInputCode(device, CommandKind::kMelee, CommandSlotKind::kMain));
-		m_button_icon_graphic->SetCenterPos(kScreenCenterPos);
-		m_button_icon_graphic->SetScale(0.175f);
 		break;
 
 	case DeviceKind::kPad:
 		m_button_icon_graphic = m_button_graphic_resource->GetButtonGraphicer(command->GetInputCode(device, CommandKind::kMelee, CommandSlotKind::kStatic1));
-		m_button_icon_graphic->SetCenterPos(kScreenCenterPos);
-		m_button_icon_graphic->SetScale(0.175f);
 		break;
 	}
+
+	m_button_icon_graphic->SetCenterPos(kScreenCenterPos);
+	m_button_icon_graphic->SetScale(0.175f);
 
 	m_pickupable_icon_screen	->UseScreen();
 	m_button_icon_graphic		->Draw();

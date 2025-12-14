@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../../Base/action_state_base.hpp"
 
 #include "../../Object/player.hpp"
@@ -21,7 +21,7 @@ namespace player_state
 		[[nodiscard]] bool IsStopAllState() const override { return m_is_stop_all_state; }
 
 	private:
-		static constexpr float kAttackTriggerRadius = 17.0f;
+		static constexpr float kAttackTriggerRadius = 19.0f;
 
 		bool m_is_stop_all_state;
 		bool m_has_trigger_created;

@@ -1,4 +1,4 @@
-#include "stealth_kill_target_icon.hpp"
+ï»¿#include "stealth_kill_target_icon.hpp"
 
 #include "../Base/character_base.hpp"
 #include "../Command/command_handler.hpp"
@@ -58,11 +58,11 @@ void StealthKillTargetIcon::CalcResultScreenCenterPos()
 	const auto camera_pos	= GetCameraPosition();
 	const auto distance		= VSize(m_icon_pos - camera_pos);
 
-	// DrawBillboard3DŠÖ”‚Í‹——£‚É‰‚¶‚Ä•`‰æƒTƒCƒY‚ª•ÏX‚³‚ê‚é‚½‚ß
-	// ‹——£‚É‰‚¶‚ÄŠg‘å‚·‚é
+	// DrawBillboard3Dé–¢æ•°ã¯è·é›¢ã«å¿œã˜ã¦æç”»ã‚µã‚¤ã‚ºãŒå¤‰æ›´ã•ã‚Œã‚‹ãŸã‚
+	// è·é›¢ã«å¿œã˜ã¦æ‹¡å¤§ã™ã‚‹
 	m_icon_size = kIconSize * distance * 0.01f;
 
-	// 3DÀ•W‚ğƒXƒNƒŠ[ƒ“ã‚É•ÏŠ·‚µ“K—p
+	// 3Dåº§æ¨™ã‚’ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ä¸Šã«å¤‰æ›ã—é©ç”¨
 	const auto screen_pos_v3d = ConvWorldPosToScreenPos(m_icon_pos);
 	const auto screen_pos_v2d = Vector2D<int>(screen_pos_v3d.x, screen_pos_v3d.y);
 	m_stealth_kill_icon_screen->GetGraphicer()->SetCenterPos(screen_pos_v2d);
@@ -79,23 +79,23 @@ void StealthKillTargetIcon::CreateStealthKillIconScreen()
 
 	m_icon_pos = MGetTranslateElem(spine2_m) + kIconOffset;
 
-	// “ü—ÍƒfƒoƒCƒX‚¨‚æ‚ÑƒL[Š„‚è“–‚Ä‚É‘Î‰‚µ‚½‰æ‘œ‚ğæ“¾
+	// å…¥åŠ›ãƒ‡ãƒã‚¤ã‚¹ãŠã‚ˆã³ã‚­ãƒ¼å‰²ã‚Šå½“ã¦ã«å¯¾å¿œã—ãŸç”»åƒã‚’å–å¾—
 	const auto command	= CommandHandler::GetInstance();
 	const auto device	= InputChecker::GetInstance()->GetCurrentInputDevice();
 	switch (device)
 	{
 	case DeviceKind::kKeyboard:
 		m_button_icon_graphic = m_button_graphic_resource->GetButtonGraphicer(command->GetInputCode(device, CommandKind::kAttack, CommandSlotKind::kMain));
-		m_button_icon_graphic->SetCenterPos(kScreenCenterPos + kGraphicOffset);
 		m_button_icon_graphic->SetScale(0.18f);
 		break;
 
 	case DeviceKind::kPad:
 		m_button_icon_graphic = m_button_graphic_resource->GetButtonGraphicer(command->GetInputCode(device, CommandKind::kAttack, CommandSlotKind::kStatic1));
-		m_button_icon_graphic->SetCenterPos(kScreenCenterPos + kGraphicOffset);
 		m_button_icon_graphic->SetScale(0.13f);
 		break;
 	}
+
+	m_button_icon_graphic->SetCenterPos(kScreenCenterPos + kGraphicOffset);
 
 	m_stealth_kill_icon_screen->UseScreen();
 	m_button_icon_graphic->Draw();

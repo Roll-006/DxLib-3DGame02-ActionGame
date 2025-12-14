@@ -1,4 +1,4 @@
-#include "zombie_state_controller.hpp"
+ï»¿#include "zombie_state_controller.hpp"
 
 ZombieStateController::ZombieStateController()
 {
@@ -6,7 +6,7 @@ ZombieStateController::ZombieStateController()
 	AddCheckStopState();
 	AddStopStatePair();
 
-	// ‰ŠúƒXƒe[ƒg
+	// åˆæœŸã‚¹ãƒ†ãƒ¼ãƒˆ
 	m_ai_state	  [TimeKind::kPrev] = m_ai_state	[TimeKind::kCurrent] = GetState<zombie_state::Wait,		  Zombie>();
 	m_move_state  [TimeKind::kPrev] = m_move_state	[TimeKind::kCurrent] = GetState<zombie_state::Idle,		  Zombie>();
 	m_action_state[TimeKind::kPrev] = m_action_state[TimeKind::kCurrent] = GetState<zombie_state::ActionNull, Zombie>();
@@ -115,7 +115,7 @@ void ZombieStateController::ChangeState(std::shared_ptr<Zombie>& zombie)
 
 std::vector<std::shared_ptr<IState<Zombie>>> ZombieStateController::CreateChangeState(std::shared_ptr<Zombie>& zombie)
 {
-	// Ÿ•ÏX—\’è‚ÌƒXƒe[ƒg
+	// æ¬¡å¤‰æ›´äºˆå®šã®ã‚¹ãƒ†ãƒ¼ãƒˆ
 	std::vector<std::shared_ptr<IState<Zombie>>> next_state
 	{
 		m_ai_state		.at(TimeKind::kCurrent)->ChangeState(zombie),
@@ -126,15 +126,15 @@ std::vector<std::shared_ptr<IState<Zombie>>> ZombieStateController::CreateChange
 	std::vector<int> check_stop_state_index;
 	auto future_state = CreateFutureState(next_state);
 
-	// ã‚ÌŠK‘w‚É‚ ‚éƒXƒe[ƒg‚Ì’â~ˆ—
+	// ä¸Šã®éšå±¤ã«ã‚ã‚‹ã‚¹ãƒ†ãƒ¼ãƒˆã®åœæ­¢å‡¦ç†
 	for (int i = static_cast<int>(future_state.size() - 1); i >= 0; --i)
 	{
-		// ’â~”»’è
+		// åœæ­¢åˆ¤å®š
 		for (auto itr = check_stop_state_index.begin(); itr != check_stop_state_index.end(); )
 		{
 			if (future_state.at(i)->IsStop(future_state.at(*itr)->GetStateHandle()) || future_state.at(i)->IsStopAllState())
 			{
-				// ƒXƒe[ƒg‚ğ’â~‚³‚¹–¢—ˆ‚ÌƒXƒe[ƒg‚É”½‰f
+				// ã‚¹ãƒ†ãƒ¼ãƒˆã‚’åœæ­¢ã•ã›æœªæ¥ã®ã‚¹ãƒ†ãƒ¼ãƒˆã«åæ˜ 
 				StopState(future_state, future_state.at(*itr));
 
 				itr = check_stop_state_index.erase(itr);
@@ -145,22 +145,22 @@ std::vector<std::shared_ptr<IState<Zombie>>> ZombieStateController::CreateChange
 			}
 		}
 
-		// ©g‚ª’â~‚³‚ê‚é‘ÎÛ‚©‚ğ”»’è
+		// è‡ªèº«ãŒåœæ­¢ã•ã‚Œã‚‹å¯¾è±¡ã‹ã‚’åˆ¤å®š
 		if (std::find(m_check_stop_state_handles.begin(), m_check_stop_state_handles.end(), future_state.at(i)->GetStateHandle()) != m_check_stop_state_handles.end())
 		{
 			check_stop_state_index.emplace_back(i);
 		}
 	}
 
-	// ‰º‚ÌŠK‘w‚É‚ ‚éƒXƒe[ƒg‚Ì’â~ˆ—
+	// ä¸‹ã®éšå±¤ã«ã‚ã‚‹ã‚¹ãƒ†ãƒ¼ãƒˆã®åœæ­¢å‡¦ç†
 	for (size_t i = 0; i < future_state.size(); ++i)
 	{
-		// ’â~”»’è
+		// åœæ­¢åˆ¤å®š
 		for (auto itr = check_stop_state_index.begin(); itr != check_stop_state_index.end(); )
 		{
 			if (future_state.at(i)->IsStop(future_state.at(*itr)->GetStateHandle()) || future_state.at(i)->IsStopAllState())
 			{
-				// ƒXƒe[ƒg‚ğ’â~‚³‚¹–¢—ˆ‚ÌƒXƒe[ƒg‚É”½‰f
+				// ã‚¹ãƒ†ãƒ¼ãƒˆã‚’åœæ­¢ã•ã›æœªæ¥ã®ã‚¹ãƒ†ãƒ¼ãƒˆã«åæ˜ 
 				StopState(future_state, future_state.at(*itr));
 
 				itr = check_stop_state_index.erase(itr);
@@ -172,8 +172,8 @@ std::vector<std::shared_ptr<IState<Zombie>>> ZombieStateController::CreateChange
 		}
 	}
 
-	// •ÏX‚ª‚ ‚Á‚½ƒXƒe[ƒg‚Ì‚İ‚ğæ“¾
-	// •ÏX‚ª‚È‚¢ê‡‚Ínullptr
+	// å¤‰æ›´ãŒã‚ã£ãŸã‚¹ãƒ†ãƒ¼ãƒˆã®ã¿ã‚’å–å¾—
+	// å¤‰æ›´ãŒãªã„å ´åˆã¯nullptr
 	return std::vector<std::shared_ptr<IState<Zombie>>>
 	{
 		future_state.at(0) == m_ai_state	.at(TimeKind::kCurrent) ? nullptr : future_state.at(0),
@@ -184,7 +184,7 @@ std::vector<std::shared_ptr<IState<Zombie>>> ZombieStateController::CreateChange
 
 std::vector<std::shared_ptr<IState<Zombie>>> ZombieStateController::CreateFutureState(const std::vector<std::shared_ptr<IState<Zombie>>>& next_state)
 {
-	// •ÏX‚ª‚ ‚Á‚½ƒXƒe[ƒg‚Í’u‚«Š·‚¦‚é
+	// å¤‰æ›´ãŒã‚ã£ãŸã‚¹ãƒ†ãƒ¼ãƒˆã¯ç½®ãæ›ãˆã‚‹
 	return std::vector<std::shared_ptr<IState<Zombie>>>
 	{
 		next_state.at(0) == nullptr ? m_ai_state	.at(TimeKind::kCurrent) : next_state.at(0),
@@ -251,7 +251,7 @@ void ZombieStateController::JudgeDestinationActionState(std::shared_ptr<IState<Z
 }
 
 
-#pragma region Try”»’è
+#pragma region Tryåˆ¤å®š
 bool ZombieStateController::TryWaitForcibly(std::shared_ptr<Zombie>& zombie)
 {
 	return !zombie->CanAction();
@@ -270,8 +270,6 @@ bool ZombieStateController::TryPatrol(std::shared_ptr<Zombie>& zombie)
 
 bool ZombieStateController::TryTrack(std::shared_ptr<Zombie>& zombie)
 {
-	// TODO : Œã‚É‰¹‚È‚Ç‚Ì”»’è‚àŠÜ‚ß‚é
-
 	if (!m_target_character) { return false; }
 
 	const auto is_in_sight = zombie->IsDetectedTarget();
@@ -332,7 +330,7 @@ bool ZombieStateController::TryRun(std::shared_ptr<Zombie>& zombie)
 	const auto target_pos	= m_target_character->GetTransform()->GetPos(CoordinateKind::kWorld);
 	const auto distance		= VSize(pos - target_pos);
 
-	// TODO : Œã‚É’è”‰»
+	// TODO : å¾Œã«å®šæ•°åŒ–
 	return distance > 160.0f;
 }
 
