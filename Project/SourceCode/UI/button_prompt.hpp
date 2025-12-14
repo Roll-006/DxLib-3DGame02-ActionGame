@@ -18,13 +18,15 @@ public:
 	void AddExplanatoryText(const int button_index, const std::string& explanatory);
 
 private:
-	[[nodiscard]] bool CanCreateRresultScreen() const;
+	[[nodiscard]] bool CanUpdateRresultScreen() const;
 
 	void CreateResultScreen();
+
+	void UpdateDeviceKind();
 	void UpdateInputCode();
-	void UpdateExplanatoryText(const int current_button_index);
+	void UpdateUIButtonExplanatoryText(const int current_button_index);
 	void UpdateGraphics();
-	void CalcLeftPos();
+	void CalcLeftmostPos();
 
 private:
 	ButtonPromptData data;
@@ -37,8 +39,8 @@ private:
 	std::vector<std::shared_ptr<Graphicer>>	m_button_graphic;
 	std::shared_ptr<ScreenCreator>			m_result_screen;
 	std::shared_ptr<ButtonGraphicGetter>	m_button_graphic_getter;
-	int										m_left_pos;
+	int										m_leftmost_pos;
 
 	int										m_prev_button_index;
-	std::unordered_map<int, std::string>	m_explanatory_texts;		// key : セレクトインデックス, value : 説明文
+	std::unordered_map<int, std::string>	m_ui_button_explanatory_texts;		// key : セレクトインデックス, value : 説明文
 };

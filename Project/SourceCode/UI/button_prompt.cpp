@@ -30,7 +30,7 @@ ButtonPrompt::ButtonPrompt(const std::string& prompt_name) :
 
 	UpdateInputCode();
 	UpdateGraphics();
-	CalcLeftPos();
+	CalcLeftmostPos();
 	CreateResultScreen();
 }
 
@@ -41,17 +41,15 @@ ButtonPrompt::~ButtonPrompt()
 
 void ButtonPrompt::Update(const int current_button_index)
 {
-	m_prev_device_kind		= m_current_device_kind;
-	m_current_device_kind	= InputChecker::GetInstance()->GetCurrentInputDevice();
-
+	UpdateDeviceKind();
 	UpdateInputCode();
-	UpdateExplanatoryText(current_button_index);
+	UpdateUIButtonExplanatoryText(current_button_index);
 
-	// 入力デバイスや選択ボタンに変化があった場合のみスクリーンの内容を更新
-	if (CanCreateRresultScreen())
+	// 描画内容に変化があった場合のみスクリーン内容を更新
+	if (CanUpdateRresultScreen())
 	{
 		UpdateGraphics();
-		CalcLeftPos();
+		CalcLeftmostPos();
 		CreateResultScreen();
 	}
 }
@@ -70,13 +68,13 @@ void ButtonPrompt::Draw() const
 
 void ButtonPrompt::AddExplanatoryText(const int button_index, const std::string& explanatory)
 {
-	m_explanatory_texts[button_index] = explanatory;
+	m_ui_button_explanatory_texts[button_index] = explanatory;
 }
 
-bool ButtonPrompt::CanCreateRresultScreen() const
+bool ButtonPrompt::CanUpdateRresultScreen() const
 {
-	const auto is_change_device = m_prev_device_kind != m_current_device_kind;
-	const auto is_change_code	= m_prev_input_code  != m_current_input_code;
+	const auto is_change_device = m_prev_device_kind != m_current_device_kind;	// 入力デバイスに変更があった
+	const auto is_change_code	= m_prev_input_code  != m_current_input_code;	// 入力コードに変更があった
 
 	return is_change_device || is_change_code;
 }
@@ -85,7 +83,7 @@ void ButtonPrompt::CreateResultScreen()
 {
 	m_result_screen->UseScreen();
 
-	auto offset = m_left_pos;
+	auto offset = m_leftmost_pos;
 	auto count  = 0;
 	for (const auto& text : data.single_button_prompt_data)
 	{
@@ -111,6 +109,12 @@ void ButtonPrompt::CreateResultScreen()
 	m_result_screen->UnuseScreen();
 }
 
+void ButtonPrompt::UpdateDeviceKind()
+{
+	m_prev_device_kind		= m_current_device_kind;
+	m_current_device_kind	= InputChecker::GetInstance()->GetCurrentInputDevice();
+}
+
 void ButtonPrompt::UpdateInputCode()
 {
 	m_prev_input_code = m_current_input_code;
@@ -129,12 +133,12 @@ void ButtonPrompt::UpdateInputCode()
 	}
 }
 
-void ButtonPrompt::UpdateExplanatoryText(const int current_button_index)
+void ButtonPrompt::UpdateUIButtonExplanatoryText(const int current_button_index)
 {
 	// 現在選択されているボタンUIに対応する説明文を取得し設定
 	if (current_button_index != m_prev_button_index)
 	{
-		data.text_data.text			= m_explanatory_texts.contains(current_button_index) ? m_explanatory_texts.at(current_button_index) : "";
+		data.text_data.text			= m_ui_button_explanatory_texts.contains(current_button_index) ? m_ui_button_explanatory_texts.at(current_button_index) : "";
 		data.text_data.font_size	= { GetDrawStringWidthToHandle(data.text_data.text.c_str(), -1, data.text_data.font_handle), GetFontSizeToHandle(data.text_data.font_handle) };
 	}
 
@@ -153,7 +157,7 @@ void ButtonPrompt::UpdateGraphics()
 	}
 }
 
-void ButtonPrompt::CalcLeftPos()
+void ButtonPrompt::CalcLeftmostPos()
 {
 	auto count			= 0;
 	auto total_width	= 0;
@@ -169,5 +173,5 @@ void ButtonPrompt::CalcLeftPos()
 		++count;
 	}
 
-	m_left_pos = (m_result_screen->GetScreenSize().x - total_width) * 0.5f;
+	m_leftmost_pos = (m_result_screen->GetScreenSize().x - total_width) * 0.5f;
 }
