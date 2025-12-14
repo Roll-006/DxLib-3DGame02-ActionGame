@@ -1,32 +1,31 @@
-#pragma once
+ï»¿#pragma once
 #include <memory>
 #include <vector>
-#include "../Concept/state_concepts.hpp"
+#include "i_state.hpp"
 
-template<obj_concepts::ObjT ObjT>
 class IStateController abstract
 {
 public:
 	virtual ~IStateController() = default;
 
-	virtual void Init		(std::shared_ptr<ObjT> obj) abstract;
-	virtual void Update		(std::shared_ptr<ObjT> obj) abstract;
-	virtual void LateUpdate	(std::shared_ptr<ObjT> obj) abstract;
+	virtual void Init()			abstract;
+	virtual void Update()		abstract;
+	virtual void LateUpdate()	abstract;
 
 protected:
 	virtual void CreateState()			abstract;
 	virtual void AddStopStatePair()		abstract;
 	virtual void AddCheckStopState()	abstract;
 
-	/// @brief ƒXƒe[ƒg‚ğ•ÏX
-	virtual void ChangeState(std::shared_ptr<ObjT>& obj) abstract;
+	/// @brief ã‚¹ãƒ†ãƒ¼ãƒˆã‚’å¤‰æ›´
+	virtual void ChangeState() abstract;
 
-	/// @brief •ÏX‚·‚éƒXƒe[ƒg‚ğ¶¬
-	[[nodiscard]] virtual std::vector<std::shared_ptr<IState<ObjT>>> CreateChangeState(std::shared_ptr<ObjT>& obj) abstract;
+	/// @brief å¤‰æ›´ã™ã‚‹ã‚¹ãƒ†ãƒ¼ãƒˆã‚’ç”Ÿæˆ
+	[[nodiscard]] virtual std::vector<int> CreateChangeState() abstract;
 
-	/// @brief –¢—ˆ‚ÌƒXƒe[ƒg\¬‚ğ¶¬
-	[[nodiscard]] virtual std::vector<std::shared_ptr<IState<ObjT>>> CreateFutureState(const std::vector<std::shared_ptr<IState<ObjT>>>& next_state) abstract;
+	/// @brief æœªæ¥ã®ã‚¹ãƒ†ãƒ¼ãƒˆæ§‹æˆã‚’ç”Ÿæˆ
+	[[nodiscard]] virtual std::vector<int> CreateFutureState(const std::vector<int>& next_state) abstract;
 
-	/// @brief ƒXƒe[ƒg‚Ì’â~ˆ—
-	virtual void StopState(std::vector<std::shared_ptr<IState<ObjT>>>& future_state, const std::shared_ptr<IState<ObjT>>& stop_state) abstract;
+	/// @brief ã‚¹ãƒ†ãƒ¼ãƒˆã®åœæ­¢å‡¦ç†
+	virtual void StopState(std::vector<int>& future_state, const std::shared_ptr<IState>& stop_state) abstract;
 };

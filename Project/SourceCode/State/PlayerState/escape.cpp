@@ -1,8 +1,9 @@
-#include "escape.hpp"
+﻿#include "escape.hpp"
 
-player_state::Escape::Escape() :
+player_state::Escape::Escape(Player& player) :
 	ActionStateBase		(static_cast<int>(player_state::ActionStateKind::kEscape)),
-	m_is_stop_all_state	(true)
+	m_is_stop_all_state	(true),
+	m_player			(player)
 {
 
 }
@@ -12,27 +13,27 @@ player_state::Escape::~Escape()
 
 }
 
-void player_state::Escape::Update(std::shared_ptr<Player>& obj)
+void player_state::Escape::Update()
 {
 	obj->ActivateInvincibleForcibly();
 }
 
-void player_state::Escape::LateUpdate(std::shared_ptr<Player>& obj)
+void player_state::Escape::LateUpdate()
 {
 
 }
 
-void player_state::Escape::Enter(std::shared_ptr<Player>& obj)
+void player_state::Escape::Enter()
 {
 	
 }
 
-void player_state::Escape::Exit(std::shared_ptr<Player>& obj)
+void player_state::Escape::Exit()
 {
 
 }
 
-std::shared_ptr<IState<Player>> player_state::Escape::ChangeState(std::shared_ptr<Player>& obj)
+int player_state::Escape::GetNextStateKind()
 {
 	if (obj->GetDeltaTime() <= 0.0f) { return nullptr; }
 

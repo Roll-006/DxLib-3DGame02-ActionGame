@@ -1,9 +1,10 @@
-#include "equip_gun.hpp"
+ï»¿#include "equip_gun.hpp"
 
-player_state::EquipGun::EquipGun() :
+player_state::EquipGun::EquipGun(Player& player) :
 	WeaponActionStateBase	(static_cast<int>(player_state::WeaponActionStateKind::kEquipGun)),
 	m_possible_aim_timer	(0.0f),
-	m_is_stop_all_state		(false)
+	m_is_stop_all_state		(false),
+	m_player				(player)
 {
 
 }
@@ -13,7 +14,7 @@ player_state::EquipGun::~EquipGun()
 
 }
 
-void player_state::EquipGun::Update(std::shared_ptr<Player>& obj)
+void player_state::EquipGun::Update()
 {
 	if (CommandHandler::GetInstance()->IsExecute(CommandKind::kAimGun, TimeKind::kCurrent))
 	{
@@ -28,19 +29,19 @@ void player_state::EquipGun::Update(std::shared_ptr<Player>& obj)
 	obj->GetCurrentHeldWeapon()->Update();
 }
 
-void player_state::EquipGun::LateUpdate(std::shared_ptr<Player>& obj)
+void player_state::EquipGun::LateUpdate()
 {
 	
 }
 
-void player_state::EquipGun::Enter(std::shared_ptr<Player>& obj)
+void player_state::EquipGun::Enter()
 {
 	m_possible_aim_timer = 0.0f;
 
 	obj->DetachWeapon(obj->GetCurrentEquipWeapon(WeaponSlotKind::kMain));
 	obj->HoldWeapon(obj->GetCurrentEquipWeapon(WeaponSlotKind::kMain));
 
-	// ƒGƒCƒ~ƒ“ƒOó‘Ô‰ðœ’Ê’m
+	// ã‚¨ã‚¤ãƒŸãƒ³ã‚°çŠ¶æ…‹è§£é™¤é€šçŸ¥
 	const auto state_kind = obj->GetStateController()->GetWeaponActionState(TimeKind::kPrev)->GetStateKind();
 	if (state_kind == static_cast<int>(player_state::WeaponActionStateKind::kAimGun))
 	{
@@ -49,20 +50,20 @@ void player_state::EquipGun::Enter(std::shared_ptr<Player>& obj)
 	}
 }
 
-void player_state::EquipGun::Exit(std::shared_ptr<Player>& obj)
+void player_state::EquipGun::Exit()
 {
 	obj->ReleaseWeapon();
 	obj->AttachWeapon(obj->GetCurrentEquipWeapon(WeaponSlotKind::kMain));
 }
 
-std::shared_ptr<IState<Player>> player_state::EquipGun::ChangeState(std::shared_ptr<Player>& obj)
+int player_state::EquipGun::GetNextStateKind()
 {
 	if (obj->GetDeltaTime() <= 0.0f) { return nullptr; }
 
 	const auto state_controller = obj->GetStateController();
 	const auto command			= CommandHandler::GetInstance();
 
-	// eƒGƒCƒ~ƒ“ƒOó‘Ô
+	// éŠƒã‚¨ã‚¤ãƒŸãƒ³ã‚°çŠ¶æ…‹
 	if (obj->CanControl() && CommandHandler::GetInstance()->IsExecute(CommandKind::kAimGun, TimeKind::kCurrent))
 	{	
 		if (m_possible_aim_timer >= kPossibleAimTime)
@@ -70,22 +71,22 @@ std::shared_ptr<IState<Player>> player_state::EquipGun::ChangeState(std::shared_
 			return state_controller->GetState<AimGun, Player>();
 		}
 	}
-	// ƒŠƒ[ƒh
+	// ãƒªãƒ­ãƒ¼ãƒ‰
 	if (state_controller->TryReload(obj))
 	{
 		return state_controller->GetState<Reload, Player>();
 	}
-	//// ƒiƒCƒtƒGƒCƒ~ƒ“ƒOó‘Ô
+	//// ãƒŠã‚¤ãƒ•ã‚¨ã‚¤ãƒŸãƒ³ã‚°çŠ¶æ…‹
 	//if (state_controller->TryAimKnife(obj))
 	//{
 	//	return state_controller->GetState<AimKnife, Player>();
 	//}
-	// ‰ñ“]Ø‚è
+	// å›žè»¢åˆ‡ã‚Š
 	if (state_controller->TrySpinningSlash(obj))
 	{
 		return state_controller->GetState<SpinningSlashKnife, Player>();
 	}
-	// Ø‚è—ô‚­(‘æˆê’iŠK)
+	// åˆ‡ã‚Šè£‚ã(ç¬¬ä¸€æ®µéšŽ)
 	if (state_controller->TryFirstSideSlashKnife(obj))
 	{
 		return state_controller->GetState<FirstSideSlashKnife, Player>();

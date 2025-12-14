@@ -1,8 +1,9 @@
-#include "shot.hpp"
+ï»¿#include "shot.hpp"
 
-player_state::Shot::Shot() :
+player_state::Shot::Shot(Player& player) :
 	WeaponActionStateBase	(static_cast<int>(player_state::WeaponActionStateKind::kShot)),
-	m_is_stop_all_state		(false)
+	m_is_stop_all_state		(false),
+	m_player				(player)
 {
 
 }
@@ -12,7 +13,7 @@ player_state::Shot::~Shot()
 
 }
 
-void player_state::Shot::Update(std::shared_ptr<Player>& obj)
+void player_state::Shot::Update()
 {
 	obj->StopSearchStealthKillTarget();
 	obj->StopSearchMeleeTarget();
@@ -22,13 +23,13 @@ void player_state::Shot::Update(std::shared_ptr<Player>& obj)
 	gun->CalcShotTimer();
 }
 
-void player_state::Shot::LateUpdate(std::shared_ptr<Player>& obj)
+void player_state::Shot::LateUpdate()
 {
 	const auto gun		= std::static_pointer_cast<GunBase>(obj->GetCurrentHeldWeapon());
 	const auto camera	= ObjManager::GetInstance()->GetObj<ObjBase>(ObjName.MAIN_CAMERA);
 	const auto aim_dir	= camera->GetTransform()->GetForward(CoordinateKind::kWorld);
 
-	// ƒ{[ƒ“ˆÊ’u•â³
+	// ãƒœãƒ¼ãƒ³ä½ç½®è£œæ­£
 	obj->GetFramePosCorrector()->CorrectAimPoseFramePos(obj->GetModeler()->GetModelHandle(), aim_dir);
 
 	gun->CalcCrossHairPos();
@@ -39,12 +40,12 @@ void player_state::Shot::LateUpdate(std::shared_ptr<Player>& obj)
 
 	if (obj->GetDeltaTime() > 0.0f) { gun->OnShot(); }
 	
-	// ƒŠƒRƒCƒ‹ˆ—
+	// ãƒªã‚³ã‚¤ãƒ«å‡¦ç†
 	const auto camera_controller = CinemachineBrain::GetInstance()->GetVirtualCameraController(VirtualCameraControllerKind::kControl);
 	std::static_pointer_cast<ControlVirtualCamerasController>(camera_controller)->OnRecoil(*gun.get());
 }
 
-void player_state::Shot::Enter(std::shared_ptr<Player>& obj)
+void player_state::Shot::Enter()
 {
 	const auto cinemachine_brain	= CinemachineBrain::GetInstance();
 	const auto camera_controller	= std::static_pointer_cast<ControlVirtualCamerasController>(cinemachine_brain->GetVirtualCameraController(VirtualCameraControllerKind::kControl));
@@ -58,7 +59,7 @@ void player_state::Shot::Enter(std::shared_ptr<Player>& obj)
 	obj->HoldWeapon	 (obj->GetCurrentEquipWeapon(WeaponSlotKind::kMain));
 }
 
-void player_state::Shot::Exit(std::shared_ptr<Player>& obj)
+void player_state::Shot::Exit()
 {
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	const auto camera_controller = std::static_pointer_cast<ControlVirtualCamerasController>(cinemachine_brain->GetVirtualCameraController(VirtualCameraControllerKind::kControl));
@@ -72,12 +73,12 @@ void player_state::Shot::Exit(std::shared_ptr<Player>& obj)
 	obj->AttachWeapon(obj->GetCurrentEquipWeapon(WeaponSlotKind::kMain));
 }
 
-std::shared_ptr<IState<Player>> player_state::Shot::ChangeState(std::shared_ptr<Player>& obj)
+int player_state::Shot::GetNextStateKind()
 {
 	if (obj->GetDeltaTime() <= 0.0f) { return nullptr; }
 
 	const auto state_controller = obj->GetStateController();
 
-	// eƒGƒCƒ~ƒ“ƒOó‘Ô
+	// éŠƒã‚¨ã‚¤ãƒŸãƒ³ã‚°çŠ¶æ…‹
 	return state_controller->GetState<AimGun, Player>();
 }

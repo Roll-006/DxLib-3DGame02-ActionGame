@@ -1,9 +1,10 @@
-#include "victory_pose.hpp"
+ï»¿#include "victory_pose.hpp"
 
-player_state::VictoryPose::VictoryPose() :
+player_state::VictoryPose::VictoryPose(Player& player) :
 	ActionStateBase		(static_cast<int>(player_state::ActionStateKind::kVictoryPose)),
 	m_is_stop_all_state	(true),
-	m_camera_controller	(nullptr)
+	m_camera_controller	(nullptr),
+	m_player			(player)
 {
 
 }
@@ -13,37 +14,37 @@ player_state::VictoryPose::~VictoryPose()
 
 }
 
-void player_state::VictoryPose::Update(std::shared_ptr<Player>& obj)
+void player_state::VictoryPose::Update()
 {
 	
 }
 
-void player_state::VictoryPose::LateUpdate(std::shared_ptr<Player>& obj)
+void player_state::VictoryPose::LateUpdate()
 {
 
 }
 
-void player_state::VictoryPose::Enter(std::shared_ptr<Player>& obj)
+void player_state::VictoryPose::Enter()
 {
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
-	m_camera_controller = std::make_shared<GameClearVirtualCamerasController>(obj->GetModeler()->GetModelHandle(), obj->GetTransform());
+	m_camera_controller = std::make_shared<GameClearVirtualCamerasController>(m_player.GetModeler()->GetModelHandle(), m_player.GetTransform());
 	cinemachine_brain->AddVirtualCameraController(m_camera_controller);
 
-	const VictoryPoseEvent event{ obj->GetTransform(), obj->GetModeler() };
+	const VictoryPoseEvent event{ m_player.GetTransform(), m_player.GetModeler() };
 	EventSystem::GetInstance()->Publish(event);
 }
 
-void player_state::VictoryPose::Exit(std::shared_ptr<Player>& obj)
+void player_state::VictoryPose::Exit()
 {
-	// ‰‰o—pƒJƒƒ‰‚ðíœ
+	// æ¼”å‡ºç”¨ã‚«ãƒ¡ãƒ©ã‚’å‰Šé™¤
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	cinemachine_brain->RemoveVirtualCameraController(m_camera_controller);
 	m_camera_controller = nullptr;
 }
 
-std::shared_ptr<IState<Player>> player_state::VictoryPose::ChangeState(std::shared_ptr<Player>& obj)
+int player_state::VictoryPose::GetNextStateKind()
 {
-	if (obj->GetDeltaTime() <= 0.0f) { return nullptr; }
+	if (m_player.GetDeltaTime() <= 0.0f) { return static_cast<int>(player_state::ActionStateKind::kNone); }
 
-	return nullptr;
+	return static_cast<int>(player_state::ActionStateKind::kNone);
 }

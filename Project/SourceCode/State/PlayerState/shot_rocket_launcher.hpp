@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "../../Base/weapon_action_state_base.hpp"
 
 #include "../../Object/player.hpp"
@@ -6,26 +6,27 @@
 
 namespace player_state
 {
-	class ShotRocketLauncher final : public WeaponActionStateBase<Player>
+	class ShotRocketLauncher final : public WeaponActionStateBase
 	{
 	public:
-		ShotRocketLauncher();
+		ShotRocketLauncher(Player& player);
 		~ShotRocketLauncher() override;
 
-		void Update		(std::shared_ptr<Player>& obj) override;
-		void LateUpdate	(std::shared_ptr<Player>& obj) override;
-		void Enter		(std::shared_ptr<Player>& obj) override;
-		void Exit		(std::shared_ptr<Player>& obj) override;
+		void Update() override;
+		void LateUpdate() override;
+		void Enter() override;
+		void Exit() override;
 
-		[[nodiscard]] std::shared_ptr<IState<Player>> ChangeState(std::shared_ptr<Player>& obj) override;
+		[[nodiscard]] int GetNextStateKind() override;
 		[[nodiscard]] bool IsStopAllState() const override { return m_is_stop_all_state; }
 
 	private:
-		static constexpr float kShotWaitTime = 1.2f;	// ’eŠÛ‚ª”­Ë‚³‚ê‚é‚Ü‚Å‚Ì‘Ò‚¿ŠÔ
+		static constexpr float kShotWaitTime = 1.2f;	// å¼¾ä¸¸ãŒç™ºå°„ã•ã‚Œã‚‹ã¾ã§ã®å¾…ã¡æ™‚é–“
 
 		std::shared_ptr<RocketLauncherVirtualCamerasController> m_rocket_launcher_camera_controller;
 		float m_wait_timer;
 		bool  m_was_shot;
 		bool  m_is_stop_all_state;
+		Player& m_player;
 	};
 }

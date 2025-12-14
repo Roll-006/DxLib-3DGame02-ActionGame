@@ -1,10 +1,9 @@
-#pragma once
+ï»¿#pragma once
 #include <vector>
 #include "../Interface/i_state.hpp"
 #include "../Handle/handle_creator.hpp"
 
-template<obj_concepts::ObjT ObjT>
-class ActionStateBase abstract : public IState<ObjT>
+class ActionStateBase abstract : public IState
 {
 public:
 	ActionStateBase(const int state_kind) :
@@ -14,13 +13,13 @@ public:
 	
 	virtual ~ActionStateBase() = default;
 
-	/// @brief ’â~‚³‚¹‚éƒXƒe[ƒg‚ğ’Ç‰Á‚·‚é
-	/// @param state_handle ƒXƒe[ƒgƒnƒ“ƒhƒ‹
+	/// @brief åœæ­¢ã•ã›ã‚‹ã‚¹ãƒ†ãƒ¼ãƒˆã‚’è¿½åŠ ã™ã‚‹
+	/// @param state_handle ã‚¹ãƒ†ãƒ¼ãƒˆãƒãƒ³ãƒ‰ãƒ«
 	void AddStopState(const int state_handle) override { m_stop_states.emplace_back(state_handle); }
 
-	[[nodiscard]] int  GetStateKind()	const override { return m_state_kind; }
-	[[nodiscard]] int  GetStateHandle() const override { return m_state_handle; }
-	[[nodiscard]] bool IsStop(const int state_handle) const override { return std::find(m_stop_states.begin(), m_stop_states.end(), state_handle) != m_stop_states.end(); }
+	[[nodiscard]] int  GetStateKind()					const override { return m_state_kind; }
+	[[nodiscard]] int  GetStateHandle()					const override { return m_state_handle; }
+	[[nodiscard]] bool IsStop(const int state_handle)	const override { return std::find(m_stop_states.begin(), m_stop_states.end(), state_handle) != m_stop_states.end(); }
 
 protected:
 	std::vector<int> m_stop_states;

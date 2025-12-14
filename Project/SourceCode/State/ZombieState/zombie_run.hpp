@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../../Base/action_state_base.hpp"
 
 #include "../../Object/zombie.hpp"
@@ -8,7 +8,7 @@ class Zombie;
 
 namespace zombie_state
 {
-	class Run final : public ActionStateBase<Zombie>
+	class Run final : public ActionStateBase
 	{
 	public:
 		Run();

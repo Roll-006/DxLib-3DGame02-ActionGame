@@ -1,8 +1,9 @@
-#include "crouch_turn_around.hpp"
+ï»¿#include "crouch_turn_around.hpp"
 
-player_state::CrouchTurnAround::CrouchTurnAround() :
+player_state::CrouchTurnAround::CrouchTurnAround(Player& player) :
 	ActionStateBase		(static_cast<int>(player_state::ActionStateKind::kCrouchTurnAround)),
-	m_is_stop_all_state	(false)
+	m_is_stop_all_state	(false),
+	m_player			(player)
 {
 
 }
@@ -12,53 +13,53 @@ player_state::CrouchTurnAround::~CrouchTurnAround()
 
 }
 
-void player_state::CrouchTurnAround::Update(std::shared_ptr<Player>& obj)
+void player_state::CrouchTurnAround::Update()
 {
 
 }
 
-void player_state::CrouchTurnAround::LateUpdate(std::shared_ptr<Player>& obj)
+void player_state::CrouchTurnAround::LateUpdate()
 {
 
 }
 
-void player_state::CrouchTurnAround::Enter(std::shared_ptr<Player>& obj)
+void player_state::CrouchTurnAround::Enter()
 {
 
 }
 
-void player_state::CrouchTurnAround::Exit(std::shared_ptr<Player>& obj)
+void player_state::CrouchTurnAround::Exit()
 {
 
 }
 
-std::shared_ptr<IState<Player>> player_state::CrouchTurnAround::ChangeState(std::shared_ptr<Player>& obj)
+int player_state::CrouchTurnAround::GetNextStateKind()
 {
 	if (obj->GetDeltaTime() <= 0.0f) { return nullptr; }
 
 	const auto state_controller = obj->GetStateController();
 
-	// Ž€–S
+	// æ­»äº¡
 	if (state_controller->TryDead(obj))
 	{
 		return state_controller->GetState<Dead, Player>();
 	}
-	// ƒƒŒ[(³–ÊR‚è)
+	// ãƒ¡ãƒ¬ãƒ¼(æ­£é¢è¹´ã‚Š)
 	if (state_controller->TryFrontKick(obj))
 	{
 		return state_controller->GetState<FrontKick, Player>();
 	}
-	// ƒƒŒ[(‰ñ‚µR‚è)
+	// ãƒ¡ãƒ¬ãƒ¼(å›žã—è¹´ã‚Š)
 	if (state_controller->TryRoundhouseKick(obj))
 	{
 		return state_controller->GetState<RoundhouseKick, Player>();
 	}
-	// ƒXƒeƒ‹ƒXƒLƒ‹
+	// ã‚¹ãƒ†ãƒ«ã‚¹ã‚­ãƒ«
 	if (state_controller->TryStealthKill(obj))
 	{
 		return state_controller->GetState<StealthKill, Player>();
 	}
-	// •ß‚Ü‚ê‚é
+	// æ•ã¾ã‚Œã‚‹
 	if (state_controller->TryGrabbed(obj))
 	{
 		return state_controller->GetState<Grabbed, Player>();

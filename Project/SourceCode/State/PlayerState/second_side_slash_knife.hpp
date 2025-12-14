@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "../../Base/weapon_action_state_base.hpp"
 
 #include "../../Object/player.hpp"
@@ -6,26 +6,27 @@
 
 namespace player_state
 {
-	class SecondSideSlashKnife final : public WeaponActionStateBase<Player>
+	class SecondSideSlashKnife final : public WeaponActionStateBase
 	{
 	public:
-		SecondSideSlashKnife();
+		SecondSideSlashKnife(Player& player);
 		~SecondSideSlashKnife() override;
 
-		void Update		(std::shared_ptr<Player>& obj) override;
-		void LateUpdate	(std::shared_ptr<Player>& obj) override;
-		void Enter		(std::shared_ptr<Player>& obj) override;
-		void Exit		(std::shared_ptr<Player>& obj) override;
+		void Update() override;
+		void LateUpdate() override;
+		void Enter() override;
+		void Exit() override;
 
-		[[nodiscard]] std::shared_ptr<IState<Player>> ChangeState(std::shared_ptr<Player>& obj) override;
+		[[nodiscard]] int GetNextStateKind() override;
 		[[nodiscard]] bool IsStopAllState() const override { return m_is_stop_all_state; }
 
 	private:
-		static constexpr float kComboValidTime = 0.7f;	// ˆê’iŠK–Ú‚ÌUŒ‚‚ª—LŒø‚É‚È‚éŠÔ
+		static constexpr float kComboValidTime = 0.7f;	// ä¸€æ®µéšç›®ã®æ”»æ’ƒãŒæœ‰åŠ¹ã«ãªã‚‹æ™‚é–“
 
 		float m_combo_timer;
 		bool  m_is_stop_all_state;
 		bool  m_has_trigger_created;
 		bool  m_has_trigger_deleted;
+		Player& m_player;
 	};
 }

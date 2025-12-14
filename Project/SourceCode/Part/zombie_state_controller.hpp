@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "../Base/enemy_state_controller_base.hpp"
 #include "../Kind/zombie_state_kind.hpp"
 
@@ -38,16 +38,8 @@ public:
 	void Update		(std::shared_ptr<Zombie> zombie) override;
 	void LateUpdate	(std::shared_ptr<Zombie> zombie) override;
 
-	/// @brief ƒXƒe[ƒg‚ğæ“¾
-	template<typename StateT, typename ObjT>
-	requires state_concepts::StateT<StateT, ObjT>
-	[[nodiscard]] std::shared_ptr<StateT> GetState()
-	{
-		return m_states.contains(typeid(StateT)) ? std::static_pointer_cast<StateT>(m_states.at(typeid(StateT))) : nullptr;
-	}
 
-
-	#pragma region Try”»’è
+	#pragma region Tryåˆ¤å®š
 	[[nodiscard]] bool TryWaitForcibly		(std::shared_ptr<Zombie>& zombie);
 	[[nodiscard]] bool TryPatrol			(std::shared_ptr<Zombie>& zombie);
 	[[nodiscard]] bool TryTrack				(std::shared_ptr<Zombie>& zombie);
@@ -69,9 +61,9 @@ public:
 
 
 	#pragma region Getter
-	[[nodiscard]] std::shared_ptr<AIStateBase<Zombie>>		GetAIState		(const TimeKind time_kind)	const { return m_ai_state.at(time_kind); }
-	[[nodiscard]] std::shared_ptr<MoveStateBase<Zombie>>	GetMoveState	(const TimeKind time_kind)	const { return m_move_state.at(time_kind); }
-	[[nodiscard]] std::shared_ptr<ActionStateBase<Zombie>>	GetActionState	(const TimeKind time_kind)	const { return m_action_state.at(time_kind); }
+	[[nodiscard]] std::shared_ptr<AIStateBase>		GetAIState		(const TimeKind time_kind)	const { return m_ai_state.at(time_kind); }
+	[[nodiscard]] std::shared_ptr<MoveStateBase>	GetMoveState	(const TimeKind time_kind)	const { return m_move_state.at(time_kind); }
+	[[nodiscard]] std::shared_ptr<ActionStateBase>	GetActionState	(const TimeKind time_kind)	const { return m_action_state.at(time_kind); }
 	#pragma endregion
 
 private:
@@ -79,16 +71,16 @@ private:
 	void AddStopStatePair()		override;
 	void AddCheckStopState()	override;
 
-	/// @brief ƒXƒe[ƒg‚ğ•ÏX
+	/// @brief ã‚¹ãƒ†ãƒ¼ãƒˆã‚’å¤‰æ›´
 	void ChangeState(std::shared_ptr<Zombie>& zombie) override;
 
-	/// @brief •ÏX‚·‚éƒXƒe[ƒg‚ğ¶¬
+	/// @brief å¤‰æ›´ã™ã‚‹ã‚¹ãƒ†ãƒ¼ãƒˆã‚’ç”Ÿæˆ
 	[[nodiscard]] std::vector<std::shared_ptr<IState<Zombie>>> CreateChangeState(std::shared_ptr<Zombie>& zombie) override;
 
-	/// @brief –¢—ˆ‚ÌƒXƒe[ƒg\¬‚ğ¶¬
+	/// @brief æœªæ¥ã®ã‚¹ãƒ†ãƒ¼ãƒˆæ§‹æˆã‚’ç”Ÿæˆ
 	[[nodiscard]] std::vector<std::shared_ptr<IState<Zombie>>> CreateFutureState(const std::vector<std::shared_ptr<IState<Zombie>>>& next_state) override;
 	
-	/// @brief ƒXƒe[ƒg‚Ì’â~ˆ—
+	/// @brief ã‚¹ãƒ†ãƒ¼ãƒˆã®åœæ­¢å‡¦ç†
 	void StopState(std::vector<std::shared_ptr<IState<Zombie>>>& future_state, const std::shared_ptr<IState<Zombie>>& stop_state) override;
 
 	void JudgeDestinationAIState	(std::shared_ptr<IState<Zombie>>& stop_state);
@@ -96,11 +88,11 @@ private:
 	void JudgeDestinationActionState(std::shared_ptr<IState<Zombie>>& stop_state);
 
 private:
-	std::unordered_map<std::type_index, std::shared_ptr<IState<Zombie>>>			m_states;						// ŠeƒXƒe[ƒg
-	std::vector<int>																m_check_stop_state_handles;		// ƒXƒe[ƒg‚Ì’â~
+	std::unordered_map<std::type_index, std::shared_ptr<IState<Zombie>>>			m_states;						// å„ã‚¹ãƒ†ãƒ¼ãƒˆ
+	std::vector<int>																m_check_stop_state_handles;		// ã‚¹ãƒ†ãƒ¼ãƒˆã®åœæ­¢
 
-	std::unordered_map<TimeKind, std::shared_ptr<AIStateBase<Zombie>>>				m_ai_state;						// AIƒXƒe[ƒg
-	std::unordered_map<TimeKind, std::shared_ptr<MoveStateBase<Zombie>>>			m_move_state;					// ˆÚ“®ƒXƒe[ƒg
-	std::unordered_map<TimeKind, std::shared_ptr<ActionStateBase<Zombie>>>			m_action_state;					// s“®ƒXƒe[ƒg
-	//std::unordered_map<TimeKind, std::shared_ptr<WeaponActionStateBase<Player>>>	m_weapon_action_state;			// •Ší‚ÉŠÖ‚·‚éƒXƒe[ƒg
+	std::unordered_map<TimeKind, std::shared_ptr<AIStateBase>>				m_ai_state;						// AIã‚¹ãƒ†ãƒ¼ãƒˆ
+	std::unordered_map<TimeKind, std::shared_ptr<MoveStateBase>>			m_move_state;					// ç§»å‹•ã‚¹ãƒ†ãƒ¼ãƒˆ
+	std::unordered_map<TimeKind, std::shared_ptr<ActionStateBase>>			m_action_state;					// è¡Œå‹•ã‚¹ãƒ†ãƒ¼ãƒˆ
+	//std::unordered_map<TimeKind, std::shared_ptr<WeaponActionStateBase>>	m_weapon_action_state;			// æ­¦å™¨ã«é–¢ã™ã‚‹ã‚¹ãƒ†ãƒ¼ãƒˆ
 };

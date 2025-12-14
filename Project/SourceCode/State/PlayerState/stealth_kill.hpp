@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../../Base/action_state_base.hpp"
 
 #include "../../Object/player.hpp"
@@ -7,18 +7,18 @@
 
 namespace player_state
 {
-	class StealthKill final : public ActionStateBase<Player>
+	class StealthKill final : public ActionStateBase
 	{
 	public:
-		StealthKill();
+		StealthKill(Player& player);
 		~StealthKill() override;
 
-		void Update		(std::shared_ptr<Player>& obj) override;
-		void LateUpdate	(std::shared_ptr<Player>& obj) override;
-		void Enter		(std::shared_ptr<Player>& obj) override;
-		void Exit		(std::shared_ptr<Player>& obj) override;
+		void Update() override;
+		void LateUpdate() override;
+		void Enter() override;
+		void Exit() override;
 
-		[[nodiscard]] std::shared_ptr<IState<Player>> ChangeState(std::shared_ptr<Player>& obj) override;
+		[[nodiscard]] int GetNextStateKind() override;
 		[[nodiscard]] bool IsStopAllState() const override { return m_is_stop_all_state; }
 
 	private:
@@ -27,5 +27,6 @@ namespace player_state
 		bool m_is_draw;
 
 		std::shared_ptr<StealthKillVirtualCameraController>	m_stealth_kill_camera_controller;
+		Player& m_player;
 	};
 }

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "../../Base/action_state_base.hpp"
 
 #include "../../Object/zombie.hpp"
@@ -6,7 +6,7 @@
 
 namespace zombie_state
 {
-	class Dead final : public ActionStateBase<Zombie>
+	class Dead final : public ActionStateBase
 	{
 	public:
 		Dead();
@@ -29,7 +29,7 @@ namespace zombie_state
 		static constexpr float kReturnPoolWaitTime	= 15.0f;
 
 		bool	m_is_stop_all_state;
-		float	m_elapsed_time_end_anim;	// ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌÄ¶‚ªI—¹‚µ‚Ä‚©‚ç‚ÌŠÔ
+		float	m_elapsed_time_end_anim;	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®å†ç”ŸãŒçµ‚äº†ã—ã¦ã‹ã‚‰ã®æ™‚é–“
 		float   m_change_color_wait_time;
 		bool	m_is_start_disappear;
 

@@ -1,8 +1,9 @@
-#include "crouch.hpp"
+ï»¿#include "crouch.hpp"
 
-player_state::Crouch::Crouch() :
+player_state::Crouch::Crouch(Player& player) :
 	ActionStateBase		(static_cast<int>(player_state::ActionStateKind::kCrouch)),
-	m_is_stop_all_state	(false)
+	m_is_stop_all_state	(false),
+	m_player			(player)
 {
 
 }
@@ -12,28 +13,28 @@ player_state::Crouch::~Crouch()
 
 }
 
-void player_state::Crouch::Update(std::shared_ptr<Player>& obj)
+void player_state::Crouch::Update()
 {
 	//obj->CalcMoveSpeedCrouch();
 	obj->DirOfCameraForward();
 }
 
-void player_state::Crouch::LateUpdate(std::shared_ptr<Player>& obj)
+void player_state::Crouch::LateUpdate()
 {
 
 }
 
-void player_state::Crouch::Enter(std::shared_ptr<Player>& obj)
+void player_state::Crouch::Enter()
 {
 
 }
 
-void player_state::Crouch::Exit(std::shared_ptr<Player>& obj)
+void player_state::Crouch::Exit()
 {
 	CommandHandler::GetInstance()->InitCurrentTriggerInputCount(CommandKind::kCrouch);
 }
 
-std::shared_ptr<IState<Player>> player_state::Crouch::ChangeState(std::shared_ptr<Player>& obj)
+int player_state::Crouch::GetNextStateKind()
 {
 	if (obj->GetDeltaTime() <= 0.0f) { return nullptr; }
 
@@ -41,27 +42,27 @@ std::shared_ptr<IState<Player>> player_state::Crouch::ChangeState(std::shared_pt
 	const auto command			= CommandHandler::GetInstance();
 	const auto command_mode		= command->GetInstance()->GetInputModeKind(CommandKind::kCrouch);
 
-	// Ž€–S
+	// æ­»äº¡
 	if (state_controller->TryDead(obj))
 	{
 		return state_controller->GetState<Dead, Player>();
 	}
-	// ƒƒŒ[(³–ÊR‚è)
+	// ãƒ¡ãƒ¬ãƒ¼(æ­£é¢è¹´ã‚Š)
 	if (state_controller->TryFrontKick(obj))
 	{
 		return state_controller->GetState<FrontKick, Player>();
 	}
-	// ƒƒŒ[(‰ñ‚µR‚è)
+	// ãƒ¡ãƒ¬ãƒ¼(å›žã—è¹´ã‚Š)
 	if (state_controller->TryRoundhouseKick(obj))
 	{
 		return state_controller->GetState<RoundhouseKick, Player>();
 	}
-	// ƒXƒeƒ‹ƒXƒLƒ‹
+	// ã‚¹ãƒ†ãƒ«ã‚¹ã‚­ãƒ«
 	if (state_controller->TryStealthKill(obj))
 	{
 		return state_controller->GetState<StealthKill, Player>();
 	}
-	// •ß‚Ü‚ê‚é
+	// æ•ã¾ã‚Œã‚‹
 	if (state_controller->TryGrabbed(obj))
 	{
 		return state_controller->GetState<Grabbed, Player>();
@@ -71,10 +72,10 @@ std::shared_ptr<IState<Player>> player_state::Crouch::ChangeState(std::shared_pt
 	{
 		return state_controller->GetState<ActionNull, Player>();
 	}
-	// ƒ_ƒbƒVƒ…
+	// ãƒ€ãƒƒã‚·ãƒ¥
 	if (state_controller->TryRun(obj))
 	{
-		// CrouchƒRƒ}ƒ“ƒh‚ªƒz[ƒ‹ƒh•ûŽ®‚ÅA“ü—Í’†‚Å‚ ‚Á‚½ê‡‚ÍˆÚs‚ð‹–‰Â‚µ‚È‚¢
+		// Crouchã‚³ãƒžãƒ³ãƒ‰ãŒãƒ›ãƒ¼ãƒ«ãƒ‰æ–¹å¼ã§ã€å…¥åŠ›ä¸­ã§ã‚ã£ãŸå ´åˆã¯ç§»è¡Œã‚’è¨±å¯ã—ãªã„
 		if (!(command_mode == InputModeKind::kHold && command->IsExecute(CommandKind::kCrouch, TimeKind::kCurrent)))
 		{
 			return state_controller->GetState<Run, Player>();

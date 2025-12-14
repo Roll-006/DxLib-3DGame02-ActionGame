@@ -1,10 +1,11 @@
-#include "front_kick.hpp"
+ï»¿#include "front_kick.hpp"
 
-player_state::FrontKick::FrontKick() :
+player_state::FrontKick::FrontKick(Player& player) :
 	ActionStateBase			(static_cast<int>(player_state::ActionStateKind::kFrontKick)),
 	m_is_stop_all_state		(true),
 	m_has_trigger_created	(false),
-	m_has_trigger_deleted	(false)
+	m_has_trigger_deleted	(false),
+	m_player				(player)
 {
 
 }
@@ -14,14 +15,14 @@ player_state::FrontKick::~FrontKick()
 
 }
 
-void player_state::FrontKick::Update(std::shared_ptr<Player>& obj)
+void player_state::FrontKick::Update()
 {
 	obj->UpdateMelee();
 
 	const auto animator = obj->GetAnimator();
 	const auto anim_kind = static_cast<PlayerAnimKind>(animator->GetAnimKind(AnimatorBase::BodyKind::kUpperBody, TimeKind::kCurrent));
 
-	// UŒ‚”»’è—pƒgƒŠƒK[‚ğ’Ç‰Á
+	// æ”»æ’ƒåˆ¤å®šç”¨ãƒˆãƒªã‚¬ãƒ¼ã‚’è¿½åŠ 
 	if (!m_has_trigger_created)
 	{
 		if (animator->GetPlayRate(AnimatorBase::BodyKind::kUpperBody) > 0.3f && anim_kind == PlayerAnimKind::kFrontKick)
@@ -31,7 +32,7 @@ void player_state::FrontKick::Update(std::shared_ptr<Player>& obj)
 		}
 	}
 
-	// UŒ‚”»’è—pƒgƒŠƒK[‚ğíœ
+	// æ”»æ’ƒåˆ¤å®šç”¨ãƒˆãƒªã‚¬ãƒ¼ã‚’å‰Šé™¤
 	if (!m_has_trigger_deleted)
 	{
 		if (animator->GetPlayRate(AnimatorBase::BodyKind::kUpperBody) > 0.8f && anim_kind == PlayerAnimKind::kFrontKick)
@@ -41,21 +42,21 @@ void player_state::FrontKick::Update(std::shared_ptr<Player>& obj)
 		}
 	}
 
-	// À•WŒvZ
+	// åº§æ¨™è¨ˆç®—
 	if (m_has_trigger_created && !m_has_trigger_deleted)
 	{
 		obj->GetModeler()->ApplyMatrix();
 		const auto model_handle = obj->GetModeler()->GetModelHandle();
 
-		// s—ñî•ñ‚ğæ“¾
+		// è¡Œåˆ—æƒ…å ±ã‚’å–å¾—
 		auto right_leg_m	= MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, FramePath.RIGHT_LEG));
 		auto right_foot_m	= MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, FramePath.RIGHT_FOOT));
 
-		// ˆÊ’u‚ğæ“¾
+		// ä½ç½®ã‚’å–å¾—
 		const auto right_leg_pos	= MGetTranslateElem(right_leg_m);
 		const auto right_foot_pos	= MGetTranslateElem(right_foot_m);
 
-		// ˆÊ’u‚ğ“K—p
+		// ä½ç½®ã‚’é©ç”¨
 		const auto capsule = std::static_pointer_cast<Capsule>(obj->GetCollider(ColliderKind::kAttackTrigger)->GetShape());
 
 		capsule->SetSegmentBeginPos	(right_leg_pos,  true);
@@ -63,12 +64,12 @@ void player_state::FrontKick::Update(std::shared_ptr<Player>& obj)
 	}
 }
 
-void player_state::FrontKick::LateUpdate(std::shared_ptr<Player>& obj)
+void player_state::FrontKick::LateUpdate()
 {
 
 }
 
-void player_state::FrontKick::Enter(std::shared_ptr<Player>& obj)
+void player_state::FrontKick::Enter()
 {
 	m_has_trigger_created = false;
 	m_has_trigger_deleted = false;
@@ -76,12 +77,12 @@ void player_state::FrontKick::Enter(std::shared_ptr<Player>& obj)
 	obj->SetupFrontMelee();
 }
 
-void player_state::FrontKick::Exit(std::shared_ptr<Player>& obj)
+void player_state::FrontKick::Exit()
 {
 
 }
 
-std::shared_ptr<IState<Player>> player_state::FrontKick::ChangeState(std::shared_ptr<Player>& obj)
+int player_state::FrontKick::GetNextStateKind()
 {
 	if (obj->GetDeltaTime() <= 0.0f) { return nullptr; }
 

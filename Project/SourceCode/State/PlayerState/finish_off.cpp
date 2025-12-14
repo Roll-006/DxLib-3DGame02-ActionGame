@@ -1,8 +1,9 @@
-#include "finish_off.hpp"
+﻿#include "finish_off.hpp"
 
-player_state::FinishOff::FinishOff() :
+player_state::FinishOff::FinishOff(Player& player) :
 	ActionStateBase		(static_cast<int>(player_state::ActionStateKind::kFinishOff)),
-	m_is_stop_all_state	(false)
+	m_is_stop_all_state	(false),
+	m_player			(player)
 {
 
 }
@@ -12,27 +13,27 @@ player_state::FinishOff::~FinishOff()
 
 }
 
-void player_state::FinishOff::Update(std::shared_ptr<Player>& obj)
+void player_state::FinishOff::Update()
 {
 
 }
 
-void player_state::FinishOff::LateUpdate(std::shared_ptr<Player>& obj)
+void player_state::FinishOff::LateUpdate()
 {
 
 }
 
-void player_state::FinishOff::Enter(std::shared_ptr<Player>& obj)
+void player_state::FinishOff::Enter()
 {
 
 }
 
-void player_state::FinishOff::Exit(std::shared_ptr<Player>& obj)
+void player_state::FinishOff::Exit()
 {
 
 }
 
-std::shared_ptr<IState<Player>> player_state::FinishOff::ChangeState(std::shared_ptr<Player>& obj)
+int player_state::FinishOff::GetNextStateKind()
 {
 	if (obj->GetDeltaTime() <= 0.0f) { return nullptr; }
 

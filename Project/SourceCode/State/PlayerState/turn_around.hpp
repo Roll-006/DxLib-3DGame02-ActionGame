@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../../Base/action_state_base.hpp"
 
 #include "../../Object/player.hpp"
@@ -6,21 +6,22 @@
 
 namespace player_state
 {
-	class TurnAround final : public ActionStateBase<Player>
+	class TurnAround final : public ActionStateBase
 	{
 	public:
-		TurnAround();
+		TurnAround(Player& player);
 		~TurnAround() override;
 
-		void Update		(std::shared_ptr<Player>& obj) override;
-		void LateUpdate	(std::shared_ptr<Player>& obj) override;
-		void Enter		(std::shared_ptr<Player>& obj) override;
-		void Exit		(std::shared_ptr<Player>& obj) override;
+		void Update() override;
+		void LateUpdate() override;
+		void Enter() override;
+		void Exit() override;
 
-		[[nodiscard]] std::shared_ptr<IState<Player>> ChangeState(std::shared_ptr<Player>& obj) override;
+		[[nodiscard]] int GetNextStateKind() override;
 		[[nodiscard]] bool IsStopAllState() const override { return m_is_stop_all_state; }
 
 	private:
 		bool m_is_stop_all_state;
+		Player& m_player;
 	};
 }

@@ -1,11 +1,12 @@
-#include "stealth_kill.hpp"
+ï»¿#include "stealth_kill.hpp"
 
-player_state::StealthKill::StealthKill() :
+player_state::StealthKill::StealthKill(Player& player) :
 	ActionStateBase					(static_cast<int>(player_state::ActionStateKind::kStealthKill)),
 	m_is_stop_all_state				(true),
 	m_is_stab						(false),
 	m_is_draw						(false),
-	m_stealth_kill_camera_controller(nullptr)
+	m_stealth_kill_camera_controller(nullptr),
+	m_player						(player)
 {
 
 }
@@ -15,7 +16,7 @@ player_state::StealthKill::~StealthKill()
 
 }
 
-void player_state::StealthKill::Update(std::shared_ptr<Player>& obj)
+void player_state::StealthKill::Update()
 {
 	obj->UpdateStealthKill();
 
@@ -35,17 +36,17 @@ void player_state::StealthKill::Update(std::shared_ptr<Player>& obj)
 	}
 }
 
-void player_state::StealthKill::LateUpdate(std::shared_ptr<Player>& obj)
+void player_state::StealthKill::LateUpdate()
 {
 	obj->OnFootIK();
 }
 
-void player_state::StealthKill::Enter(std::shared_ptr<Player>& obj)
+void player_state::StealthKill::Enter()
 {
 	m_is_stab = false;
 	m_is_draw = false;
 
-	// ‰‰o—pƒJƒƒ‰‚ğ¶¬
+	// æ¼”å‡ºç”¨ã‚«ãƒ¡ãƒ©ã‚’ç”Ÿæˆ
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	m_stealth_kill_camera_controller = std::make_shared<StealthKillVirtualCameraController>();
 	cinemachine_brain->AddVirtualCameraController(m_stealth_kill_camera_controller);
@@ -53,9 +54,9 @@ void player_state::StealthKill::Enter(std::shared_ptr<Player>& obj)
 	obj->SetupStealthKill();
 }
 
-void player_state::StealthKill::Exit(std::shared_ptr<Player>& obj)
+void player_state::StealthKill::Exit()
 {
-	// ‰‰o—pƒJƒƒ‰‚ğíœ
+	// æ¼”å‡ºç”¨ã‚«ãƒ¡ãƒ©ã‚’å‰Šé™¤
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	cinemachine_brain->RemoveVirtualCameraController(m_stealth_kill_camera_controller);
 	m_stealth_kill_camera_controller = nullptr;
@@ -64,7 +65,7 @@ void player_state::StealthKill::Exit(std::shared_ptr<Player>& obj)
 	obj->AttachWeapon(obj->GetCurrentEquipWeapon(WeaponSlotKind::kSub));
 }
 
-std::shared_ptr<IState<Player>> player_state::StealthKill::ChangeState(std::shared_ptr<Player>& obj)
+int player_state::StealthKill::GetNextStateKind()
 {
 	if (obj->GetDeltaTime() <= 0.0f) { return nullptr; }
 

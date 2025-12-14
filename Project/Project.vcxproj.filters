@@ -957,9 +957,6 @@
     <ClInclude Include="SourceCode\State\PlayerState\turn_around.hpp">
       <Filter>SourceCode\State\PlayerState</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Concept\state_concepts.hpp">
-      <Filter>SourceCode\Concept</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\Part\player_state_controller.hpp">
       <Filter>SourceCode\Part</Filter>
     </ClInclude>

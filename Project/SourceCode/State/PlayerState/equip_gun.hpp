@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "../../Base/weapon_action_state_base.hpp"
 
 #include "../../Object/player.hpp"
@@ -6,24 +6,25 @@
 
 namespace player_state
 {
-	class EquipGun final : public WeaponActionStateBase<Player>
+	class EquipGun final : public WeaponActionStateBase
 	{
 	public:
-		EquipGun();
+		EquipGun(Player& player);
 		~EquipGun() override;
 
-		void Update		(std::shared_ptr<Player>& obj) override;
-		void LateUpdate	(std::shared_ptr<Player>& obj) override;
-		void Enter		(std::shared_ptr<Player>& obj) override;
-		void Exit		(std::shared_ptr<Player>& obj) override;
+		void Update() override;
+		void LateUpdate() override;
+		void Enter() override;
+		void Exit() override;
 
-		[[nodiscard]] std::shared_ptr<IState<Player>> ChangeState(std::shared_ptr<Player>& obj) override;
+		[[nodiscard]] int GetNextStateKind() override;
 		[[nodiscard]] bool IsStopAllState() const override { return m_is_stop_all_state; }
 
 	private:
-		static constexpr float kPossibleAimTime = 0.05f;		// ƒGƒCƒ~ƒ“ƒOó‘Ô‚Ö‚ÌˆÚs‚ğ‹–‰Â‚·‚é‚Ü‚Å‚ÌŠÔ
+		static constexpr float kPossibleAimTime = 0.05f;		// ã‚¨ã‚¤ãƒŸãƒ³ã‚°çŠ¶æ…‹ã¸ã®ç§»è¡Œã‚’è¨±å¯ã™ã‚‹ã¾ã§ã®æ™‚é–“
 
 		float m_possible_aim_timer;
 		bool  m_is_stop_all_state;
+		Player& m_player;
 	};
 }

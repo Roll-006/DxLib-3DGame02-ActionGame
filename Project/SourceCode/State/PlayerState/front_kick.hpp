@@ -6,18 +6,18 @@
 
 namespace player_state
 {
-	class FrontKick final : public ActionStateBase<Player>
+	class FrontKick final : public ActionStateBase
 	{
 	public:
-		FrontKick();
+		FrontKick(Player& player);
 		~FrontKick() override;
 
-		void Update		(std::shared_ptr<Player>& obj) override;
-		void LateUpdate	(std::shared_ptr<Player>& obj) override;
-		void Enter		(std::shared_ptr<Player>& obj) override;
-		void Exit		(std::shared_ptr<Player>& obj) override;
+		void Update() override;
+		void LateUpdate() override;
+		void Enter() override;
+		void Exit() override;
 
-		[[nodiscard]] std::shared_ptr<IState<Player>> ChangeState(std::shared_ptr<Player>& obj) override;
+		[[nodiscard]] int GetNextStateKind() override;
 		[[nodiscard]] bool IsStopAllState() const override { return m_is_stop_all_state; }
 
 	private:
@@ -26,5 +26,6 @@ namespace player_state
 		bool m_is_stop_all_state;
 		bool m_has_trigger_created;
 		bool m_has_trigger_deleted;
+		Player& m_player;
 	};
 }

@@ -1,11 +1,12 @@
-#include "reload.hpp"
+ï»¿#include "reload.hpp"
 
-player_state::Reload::Reload() :
+player_state::Reload::Reload(Player& player) :
 	WeaponActionStateBase	(static_cast<int>(player_state::WeaponActionStateKind::kReload)),
 	m_is_stop_all_state		(false),
 	m_is_release_ammo_box	(false),
 	m_is_set_ammo_box		(false),
-	m_is_cocking			(false)
+	m_is_cocking			(false),
+	m_player				(player)
 {
 
 }
@@ -15,25 +16,25 @@ player_state::Reload::~Reload()
 
 }
 
-void player_state::Reload::Update(std::shared_ptr<Player>& obj)
+void player_state::Reload::Update()
 {
 	obj->GetCurrentHeldWeapon()->Update();
 
-	// ƒAƒjƒ[ƒVƒ‡ƒ“‚ªˆê’è‚Ü‚Åi‚Þ‚Ü‚ÅƒŠƒ[ƒh‚ð‹–‰Â‚µ‚È‚¢
+	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒä¸€å®šã¾ã§é€²ã‚€ã¾ã§ãƒªãƒ­ãƒ¼ãƒ‰ã‚’è¨±å¯ã—ãªã„
 	const auto animator		= obj->GetAnimator();
 	const auto anim_kind	= static_cast<PlayerAnimKind>(animator->GetAnimKind(AnimatorBase::BodyKind::kUpperBody, TimeKind::kCurrent));
 	const auto gun			= std::static_pointer_cast<GunBase>(obj->GetCurrentHeldWeapon());
 	const auto play_rate	= animator->GetPlayRate(AnimatorBase::BodyKind::kUpperBody);
 	const auto event_system = EventSystem::GetInstance();
 
-	// ’e‘q‚ðŠO‚·”»’è
+	// å¼¾å€‰ã‚’å¤–ã™åˆ¤å®š
 	if (play_rate > 0.0f && !m_is_release_ammo_box)
 	{
 		event_system->Publish(ReleaseAmmoBoxEvent(gun->GetTransform()->GetPos(CoordinateKind::kWorld), TimeScaleLayerKind::kPlayer));
 		m_is_release_ammo_box = true;
 	}
 
-	// ’e‘q‚ðƒZƒbƒg”»’è
+	// å¼¾å€‰ã‚’ã‚»ãƒƒãƒˆåˆ¤å®š
 	if (play_rate > 0.5f && !m_is_set_ammo_box)
 	{
 		event_system->Publish(SetAmmoBoxEvent(gun->GetTransform()->GetPos(CoordinateKind::kWorld), TimeScaleLayerKind::kPlayer));
@@ -43,7 +44,7 @@ void player_state::Reload::Update(std::shared_ptr<Player>& obj)
 		m_is_set_ammo_box = true;
 	}
 
-	// ƒRƒbƒLƒ“ƒO”»’è
+	// ã‚³ãƒƒã‚­ãƒ³ã‚°åˆ¤å®š
 	if (play_rate > 0.7f && !m_is_cocking)
 	{
 		event_system->Publish(CockingEvent(gun->GetTransform()->GetPos(CoordinateKind::kWorld), TimeScaleLayerKind::kPlayer));
@@ -51,12 +52,12 @@ void player_state::Reload::Update(std::shared_ptr<Player>& obj)
 	}
 }
 
-void player_state::Reload::LateUpdate(std::shared_ptr<Player>& obj)
+void player_state::Reload::LateUpdate()
 {
 	
 }
 
-void player_state::Reload::Enter(std::shared_ptr<Player>& obj)
+void player_state::Reload::Enter()
 {
 	m_is_release_ammo_box	= false;
 	m_is_set_ammo_box		= false;
@@ -69,32 +70,32 @@ void player_state::Reload::Enter(std::shared_ptr<Player>& obj)
 	gun->GetMagazine()->OnStartReload(obj->GetModeler());
 }
 
-void player_state::Reload::Exit(std::shared_ptr<Player>& obj)
+void player_state::Reload::Exit()
 {
 	obj->ReleaseWeapon();
 	obj->AttachWeapon(obj->GetCurrentEquipWeapon(WeaponSlotKind::kMain));
 }
 
-std::shared_ptr<IState<Player>> player_state::Reload::ChangeState(std::shared_ptr<Player>& obj)
+int player_state::Reload::GetNextStateKind()
 {
 	if (obj->GetDeltaTime() <= 0.0f) { return nullptr; }
 
 	const auto state_controller = obj->GetStateController();
 	const auto command			= CommandHandler::GetInstance();
 	
-	// eƒGƒCƒ~ƒ“ƒOó‘Ô
+	// éŠƒã‚¨ã‚¤ãƒŸãƒ³ã‚°çŠ¶æ…‹
 	if (obj->CanControl()
 		&& obj->GetAnimator()->IsPlayEnd(AnimatorBase::BodyKind::kUpperBody)
 		&& command->IsExecute(CommandKind::kAimGun, TimeKind::kCurrent))
 	{
 		return state_controller->GetState<AimGun, Player>();
 	}
-	//// e‘•”õó‘Ô
+	//// éŠƒè£…å‚™çŠ¶æ…‹
 	//if (state_controller->TryEquipGunShortcut(obj))
 	//{
 	//	return state_controller->GetState<EquipGun, Player>();
 	//}
-	// e‘•”õó‘Ô
+	// éŠƒè£…å‚™çŠ¶æ…‹
 	if (obj->GetAnimator()->IsPlayEnd(AnimatorBase::BodyKind::kUpperBody))
 	{
 		return state_controller->GetState<EquipGun, Player>();

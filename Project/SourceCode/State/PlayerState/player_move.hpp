@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "../../Base/move_state_base.hpp"
 
 #include "../../Object/player.hpp"
@@ -7,22 +7,23 @@
 
 namespace player_state
 {
-	class Move final : public MoveStateBase<Player>
+	class Move final : public MoveStateBase
 	{
 	public:
-		Move();
+		Move(Player& player);
 		~Move() override;
 
-		void Update		(std::shared_ptr<Player>& obj) override;
-		void LateUpdate	(std::shared_ptr<Player>& obj) override;
-		void Enter		(std::shared_ptr<Player>& obj) override;
-		void Exit		(std::shared_ptr<Player>& obj) override;
+		void Update() override;
+		void LateUpdate() override;
+		void Enter() override;
+		void Exit() override;
 
-		[[nodiscard]] std::shared_ptr<IState<Player>> ChangeState(std::shared_ptr<Player>& obj) override;
+		[[nodiscard]] int GetNextStateKind() override;
 		[[nodiscard]] bool IsStopAllState() const override { return m_is_stop_all_state; }
 
 	private:
-		bool m_is_first_move_frame;		// ˆÚ“®‚ğŠJn‚µ‚ÄÅ‰‚ÌƒtƒŒ[ƒ€‚Å‚ ‚é‚©‚ğ”»’è
+		bool m_is_first_move_frame;		// ç§»å‹•ã‚’é–‹å§‹ã—ã¦æœ€åˆã®ãƒ•ãƒ¬ãƒ¼ãƒ ã§ã‚ã‚‹ã‹ã‚’åˆ¤å®š
 		bool m_is_stop_all_state;
+		Player& m_player;
 	};
 }

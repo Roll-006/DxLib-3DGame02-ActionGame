@@ -1,8 +1,11 @@
+Ôªø#include "../../Object/player.hpp"
+#include "../../Part/player_state_controller.hpp"
 #include "weapon_action_null.hpp"
 
-player_state::WeaponActionNull::WeaponActionNull() :
+player_state::WeaponActionNull::WeaponActionNull(Player& player) :
 	WeaponActionStateBase	(static_cast<int>(player_state::WeaponActionStateKind::kWeaponActionNull)),
-	m_is_stop_all_state		(false)
+	m_is_stop_all_state		(false),
+	m_player				(player)
 {
 
 }
@@ -12,70 +15,70 @@ player_state::WeaponActionNull::~WeaponActionNull()
 
 }
 
-void player_state::WeaponActionNull::Update(std::shared_ptr<Player>& obj)
+void player_state::WeaponActionNull::Update()
 {
 	
 }
 
-void player_state::WeaponActionNull::LateUpdate(std::shared_ptr<Player>& obj)
+void player_state::WeaponActionNull::LateUpdate()
 {
 
 }
 
-void player_state::WeaponActionNull::Enter(std::shared_ptr<Player>& obj)
+void player_state::WeaponActionNull::Enter()
 {
-	if (obj->GetCurrentHeldWeapon())
+	if (m_player.GetCurrentHeldWeapon())
 	{
-		obj->ReleaseWeapon();
+		m_player.ReleaseWeapon();
 	}
 }
 
-void player_state::WeaponActionNull::Exit(std::shared_ptr<Player>& obj)
+void player_state::WeaponActionNull::Exit()
 {
 	
 }
 
-std::shared_ptr<IState<Player>> player_state::WeaponActionNull::ChangeState(std::shared_ptr<Player>& obj)
+int player_state::WeaponActionNull::GetNextStateKind()
 {
-	if (obj->GetDeltaTime() <= 0.0f) { return nullptr; }
+	if (m_player.GetDeltaTime() <= 0.0f) { return static_cast<int>(player_state::ActionStateKind::kNone); }
 
-	const auto state_controller = obj->GetStateController();
+	const auto state_controller = m_player.GetStateController();
 
-	// èeëïîıèÛë‘
-	if (state_controller->TryEquipGunShortcut(obj))
+	// ÈäÉË£ÖÂÇôÁä∂ÊÖã
+	if (state_controller->TryEquipGunShortcut())
 	{
-		return state_controller->GetState<EquipGun, Player>();
+		return static_cast<int>(player_state::WeaponActionStateKind::kEquipGun);
 	}
-	// èeëïîıèÛë‘
-	if (state_controller->TryEquipGun(obj))
+	// ÈäÉË£ÖÂÇôÁä∂ÊÖã
+	else if (state_controller->TryEquipGun())
 	{
-		return state_controller->GetState<EquipGun, Player>();
+		return static_cast<int>(player_state::WeaponActionStateKind::kEquipGun);
 	}
-	// ÉäÉçÅ[Éh
-	if (state_controller->TryReload(obj))
+	// „É™„É≠„Éº„Éâ
+	else if (state_controller->TryReload())
 	{
-		return state_controller->GetState<Reload, Player>();
+		return static_cast<int>(player_state::WeaponActionStateKind::kReload);
 	}
-	// ÉiÉCÉtëïîıèÛë‘
-	if (static_cast<player_state::ActionStateKind>(state_controller->GetActionState(TimeKind::kPrev)->GetStateKind()) == player_state::ActionStateKind::kStealthKill)
+	// „Éä„Ç§„ÉïË£ÖÂÇôÁä∂ÊÖã
+	else if (state_controller->GetActionStateKind(TimeKind::kPrev) == player_state::ActionStateKind::kStealthKill)
 	{
-		return state_controller->GetState<EquipKnife, Player>();
+		return static_cast<int>(player_state::WeaponActionStateKind::kEquipKnife);
 	}
-	//// ÉiÉCÉtÉGÉCÉ~ÉìÉOèÛë‘
+	//// „Éä„Ç§„Éï„Ç®„Ç§„Éü„É≥„Ç∞Áä∂ÊÖã
 	//if (state_controller->TryAimKnife(obj))
 	//{
 	//	return state_controller->GetState<AimKnife, Player>();
 	//}
-	// âÒì]êÿÇË
-	if (state_controller->TrySpinningSlash(obj))
+	// ÂõûËª¢Âàá„Çä
+	else if (state_controller->TrySpinningSlash())
 	{
-		return state_controller->GetState<SpinningSlashKnife, Player>();
+		return static_cast<int>(player_state::WeaponActionStateKind::kSpinningSlashKnife);
 	}
-	// êÿÇËóÙÇ≠(ëÊàÍíiäK)
-	if (state_controller->TryFirstSideSlashKnife(obj))
+	// Âàá„ÇäË£Ç„Åè(Á¨¨‰∏ÄÊÆµÈöé)
+	else if (state_controller->TryFirstSideSlashKnife())
 	{
-		return state_controller->GetState<FirstSideSlashKnife, Player>();
+		return static_cast<int>(player_state::WeaponActionStateKind::kFirstSideSlashKnife);
 	}
 
-	return nullptr;
+	return static_cast<int>(player_state::ActionStateKind::kNone);
 }

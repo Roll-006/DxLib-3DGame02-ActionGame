@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../../Base/weapon_action_state_base.hpp"
 
 #include "../../Object/player.hpp"
@@ -6,18 +6,18 @@
 
 namespace player_state
 {
-	class Reload final : public WeaponActionStateBase<Player>
+	class Reload final : public WeaponActionStateBase
 	{
 	public:
-		Reload();
+		Reload(Player& player);
 		~Reload() override;
 
-		void Update		(std::shared_ptr<Player>& obj) override;
-		void LateUpdate	(std::shared_ptr<Player>& obj) override;
-		void Enter		(std::shared_ptr<Player>& obj) override;
-		void Exit		(std::shared_ptr<Player>& obj) override;
+		void Update() override;
+		void LateUpdate() override;
+		void Enter() override;
+		void Exit() override;
 
-		[[nodiscard]] std::shared_ptr<IState<Player>> ChangeState(std::shared_ptr<Player>& obj) override;
+		[[nodiscard]] int GetNextStateKind() override;
 		[[nodiscard]] bool IsStopAllState() const override { return m_is_stop_all_state; }
 
 	private:
@@ -26,5 +26,6 @@ namespace player_state
 		bool m_is_release_ammo_box;
 		bool m_is_set_ammo_box;
 		bool m_is_cocking;
+		Player& m_player;
 	};
 }

@@ -91,7 +91,7 @@ void ZombieStateController::ChangeState(std::shared_ptr<Zombie>& zombie)
 	if (change_state.at(0))
 	{
 		m_ai_state.at(TimeKind::kPrev)			= m_ai_state.at(TimeKind::kCurrent);
-		m_ai_state.at(TimeKind::kCurrent)		= std::static_pointer_cast<AIStateBase<Zombie>>(change_state.at(0));
+		m_ai_state.at(TimeKind::kCurrent)		= std::static_pointer_cast<AIStateBase>(change_state.at(0));
 		m_ai_state.at(TimeKind::kPrev)			->Exit(zombie);
 		m_ai_state.at(TimeKind::kCurrent)		->Enter(zombie);
 	}
@@ -99,7 +99,7 @@ void ZombieStateController::ChangeState(std::shared_ptr<Zombie>& zombie)
 	if (change_state.at(1))
 	{
 		m_move_state.at(TimeKind::kPrev)		= m_move_state.at(TimeKind::kCurrent);
-		m_move_state.at(TimeKind::kCurrent)		= std::static_pointer_cast<MoveStateBase<Zombie>>(change_state.at(1));
+		m_move_state.at(TimeKind::kCurrent)		= std::static_pointer_cast<MoveStateBase>(change_state.at(1));
 		m_move_state.at(TimeKind::kPrev)		->Exit(zombie);
 		m_move_state.at(TimeKind::kCurrent)		->Enter(zombie);
 	}
@@ -107,7 +107,7 @@ void ZombieStateController::ChangeState(std::shared_ptr<Zombie>& zombie)
 	if (change_state.at(2))
 	{
 		m_action_state.at(TimeKind::kPrev)		= m_action_state.at(TimeKind::kCurrent);
-		m_action_state.at(TimeKind::kCurrent)	= std::static_pointer_cast<ActionStateBase<Zombie>>(change_state.at(2));
+		m_action_state.at(TimeKind::kCurrent)	= std::static_pointer_cast<ActionStateBase>(change_state.at(2));
 		m_action_state.at(TimeKind::kPrev)		->Exit(zombie);
 		m_action_state.at(TimeKind::kCurrent)	->Enter(zombie);
 	}

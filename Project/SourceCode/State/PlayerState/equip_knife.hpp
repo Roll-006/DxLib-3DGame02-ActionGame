@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "../../Base/weapon_action_state_base.hpp"
 
 #include "../../Object/player.hpp"
@@ -6,24 +6,25 @@
 
 namespace player_state
 {
-	class EquipKnife final : public WeaponActionStateBase<Player>
+	class EquipKnife final : public WeaponActionStateBase
 	{
 	public:
-		EquipKnife();
+		EquipKnife(Player& player);
 		~EquipKnife() override;
 
-		void Update		(std::shared_ptr<Player>& obj) override;
-		void LateUpdate	(std::shared_ptr<Player>& obj) override;
-		void Enter		(std::shared_ptr<Player>& obj) override;
-		void Exit		(std::shared_ptr<Player>& obj) override;
+		void Update() override;
+		void LateUpdate() override;
+		void Enter() override;
+		void Exit() override;
 
-		[[nodiscard]] std::shared_ptr<IState<Player>> ChangeState(std::shared_ptr<Player>& obj) override;
+		[[nodiscard]] int GetNextStateKind() override;
 		[[nodiscard]] bool IsStopAllState() const override { return m_is_stop_all_state; }
 
 	private:
-		static constexpr float kReleaseKinfeForciblyTime = 5.0f;	// ƒiƒCƒt‚ğè‚É‚Á‚½ó‘Ô‚ğ‹­§“I‚É‰ğœ‚·‚é‚Ü‚Å‚ÌŠÔ
+		static constexpr float kReleaseKinfeForciblyTime = 5.0f;	// ãƒŠã‚¤ãƒ•ã‚’æ‰‹ã«æŒã£ãŸçŠ¶æ…‹ã‚’å¼·åˆ¶çš„ã«è§£é™¤ã™ã‚‹ã¾ã§ã®æ™‚é–“
 
 		float m_elapsed_time;
 		bool  m_is_stop_all_state;
+		Player& m_player;
 	};
 }

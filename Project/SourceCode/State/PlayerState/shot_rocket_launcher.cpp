@@ -1,11 +1,12 @@
-#include "shot_rocket_launcher.hpp"
+ï»¿#include "shot_rocket_launcher.hpp"
 
-player_state::ShotRocketLauncher::ShotRocketLauncher() :
+player_state::ShotRocketLauncher::ShotRocketLauncher(Player& player) :
 	WeaponActionStateBase				(static_cast<int>(player_state::WeaponActionStateKind::kShotRocketLauncher)),
 	m_rocket_launcher_camera_controller	(nullptr),
 	m_wait_timer						(0.0f),
 	m_was_shot							(false),
-	m_is_stop_all_state					(false)
+	m_is_stop_all_state					(false),
+	m_player							(player)
 {
 	
 }
@@ -15,7 +16,7 @@ player_state::ShotRocketLauncher::~ShotRocketLauncher()
 
 }
 
-void player_state::ShotRocketLauncher::Update(std::shared_ptr<Player>& obj)
+void player_state::ShotRocketLauncher::Update()
 {
 	m_wait_timer += GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kCamera);
 
@@ -28,12 +29,12 @@ void player_state::ShotRocketLauncher::Update(std::shared_ptr<Player>& obj)
 	gun->CalcShotTimer();
 }
 
-void player_state::ShotRocketLauncher::LateUpdate(std::shared_ptr<Player>& obj)
+void player_state::ShotRocketLauncher::LateUpdate()
 {
 	const auto roket_launcher = std::static_pointer_cast<RocketLauncher>(obj->GetCurrentHeldWeapon());
 	const auto camera		  = ObjManager::GetInstance()->GetObj<ObjBase>(ObjName.MAIN_CAMERA);
 
-	// ƒ{[ƒ“ˆÊ’u•â³
+	// ãƒœãƒ¼ãƒ³ä½ç½®è£œæ­£
 	obj->GetFramePosCorrector()->CorrectAimPoseFramePos(obj->GetModeler()->GetModelHandle(), roket_launcher->GetAimDir());
 
 	roket_launcher->CalcCrossHairPos();
@@ -42,12 +43,12 @@ void player_state::ShotRocketLauncher::LateUpdate(std::shared_ptr<Player>& obj)
 	roket_launcher->SetAimDir  (roket_launcher->GetAimDir());
 	roket_launcher->SetPosOnRay(camera->GetTransform()->GetPos(CoordinateKind::kWorld));
 
-	// ƒVƒ‡ƒbƒg
+	// ã‚·ãƒ§ãƒƒãƒˆ
 	if (m_wait_timer > kShotWaitTime && !m_was_shot)
 	{
 		roket_launcher->OnShot();
 		
-		// ’Ê’m
+		// é€šçŸ¥
 		const RocketLauncherShotEvent event{ roket_launcher->GetOwnerName(), roket_launcher->GetExhaustVentTransform() };
 		EventSystem::GetInstance()->Publish(event);
 
@@ -55,13 +56,13 @@ void player_state::ShotRocketLauncher::LateUpdate(std::shared_ptr<Player>& obj)
 	}
 }
 
-void player_state::ShotRocketLauncher::Enter(std::shared_ptr<Player>& obj)
+void player_state::ShotRocketLauncher::Enter()
 {
 	m_wait_timer = 0.0f;
 	m_was_shot	 = false;
 
-	// ‰‰o—pƒJƒƒ‰‚ğ¶¬
-	// MEMO : ‚±‚Ì’iŠK‚Å‘€ìƒJƒƒ‰‚Ìƒgƒ‰ƒ“ƒXƒtƒH[ƒ€î•ñ‚ªíœ
+	// æ¼”å‡ºç”¨ã‚«ãƒ¡ãƒ©ã‚’ç”Ÿæˆ
+	// MEMO : ã“ã®æ®µéšã§æ“ä½œã‚«ãƒ¡ãƒ©ã®ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ æƒ…å ±ãŒå‰Šé™¤
 
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	m_rocket_launcher_camera_controller = std::make_shared<RocketLauncherVirtualCamerasController>(*obj.get());
@@ -71,9 +72,9 @@ void player_state::ShotRocketLauncher::Enter(std::shared_ptr<Player>& obj)
 	obj->HoldWeapon  (obj->GetCurrentEquipWeapon(WeaponSlotKind::kMain));
 }
 
-void player_state::ShotRocketLauncher::Exit(std::shared_ptr<Player>& obj)
+void player_state::ShotRocketLauncher::Exit()
 {
-	// ‰‰o—pƒJƒƒ‰‚ğíœ
+	// æ¼”å‡ºç”¨ã‚«ãƒ¡ãƒ©ã‚’å‰Šé™¤
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	cinemachine_brain->RemoveVirtualCameraController(m_rocket_launcher_camera_controller);
 	m_rocket_launcher_camera_controller = nullptr;
@@ -82,13 +83,13 @@ void player_state::ShotRocketLauncher::Exit(std::shared_ptr<Player>& obj)
 	obj->AttachWeapon(obj->GetCurrentEquipWeapon(WeaponSlotKind::kMain));
 }
 
-std::shared_ptr<IState<Player>> player_state::ShotRocketLauncher::ChangeState(std::shared_ptr<Player>& obj)
+int player_state::ShotRocketLauncher::GetNextStateKind()
 {
 	if (obj->GetDeltaTime() <= 0.0f) { return nullptr; }
 
 	const auto state_controller = obj->GetStateController();
 
-	// eƒGƒCƒ~ƒ“ƒOó‘Ô
+	// éŠƒã‚¨ã‚¤ãƒŸãƒ³ã‚°çŠ¶æ…‹
 	if (m_rocket_launcher_camera_controller->IsEndExitRot())
 	{
 		return state_controller->GetState<AimGun, Player>();

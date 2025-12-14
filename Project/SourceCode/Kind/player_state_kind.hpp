@@ -1,22 +1,25 @@
-#pragma once
+﻿#pragma once
 
 namespace player_state
 {
 	enum class MoveStateKind
 	{
+		kNone = -1,
+
 		kIdle,
 		kMove,
 	};
 
 	enum class ActionStateKind
 	{
+		kNone = -1,
+
 		kActionNull,
 		kCrouch,
 		kRun,
 		kTurnAround,
 		kCrouchTurnAround,
 		kDead,
-
 		kGrabbed,
 		kFrontKick,
 		kRoundhouseKick,
@@ -30,6 +33,8 @@ namespace player_state
 
 	enum class WeaponActionStateKind
 	{
+		kNone = -1,
+
 		kWeaponActionNull,
 		kAttachWeapon,
 		kDetachWeapon,

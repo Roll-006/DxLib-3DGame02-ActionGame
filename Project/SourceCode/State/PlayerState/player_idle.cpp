@@ -1,9 +1,10 @@
-#include "player_idle.hpp"
+ï»¿#include "player_idle.hpp"
 
-player_state::Idle::Idle() : 
+player_state::Idle::Idle(Player& player) :
 	MoveStateBase		(static_cast<int>(player_state::MoveStateKind::kIdle)),
 	m_non_move_time		(0.0f),
-	m_is_stop_all_state	(false)
+	m_is_stop_all_state	(false),
+	m_player			(player)
 {
 
 }
@@ -13,33 +14,33 @@ player_state::Idle::~Idle()
 
 }
 
-void player_state::Idle::Update(std::shared_ptr<Player>& obj)
+void player_state::Idle::Update()
 {
 	obj->CalcMoveSpeedStop();
 
 	//m_non_move_time += FPS::GetDeltaTime();
 }
 
-void player_state::Idle::LateUpdate(std::shared_ptr<Player>& obj)
+void player_state::Idle::LateUpdate()
 {
 	
 }
 
-void player_state::Idle::Enter(std::shared_ptr<Player>& obj)
+void player_state::Idle::Enter()
 {
 	//m_non_move_time = 0.0f;
 }
 
-void player_state::Idle::Exit(std::shared_ptr<Player>& obj)
+void player_state::Idle::Exit()
 {
 	
 }
 
-std::shared_ptr<IState<Player>> player_state::Idle::ChangeState(std::shared_ptr<Player>& obj)
+int player_state::Idle::GetNextStateKind()
 {
 	if (obj->GetDeltaTime() <= 0.0f) { return nullptr; }
 
-	// “ü—Í‚ª‚ ‚Á‚½ê‡AMove‚ÖˆÚs
+	// å…¥åŠ›ãŒã‚ã£ãŸå ´åˆã€Moveã¸ç§»è¡Œ
 	if (obj->GetStateController()->TryMove(obj))
 	{
 		return obj->GetStateController()->GetState<Move, Player>();

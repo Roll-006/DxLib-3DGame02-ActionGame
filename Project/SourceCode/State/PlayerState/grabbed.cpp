@@ -1,8 +1,9 @@
-#include "grabbed.hpp"
+ï»¿#include "grabbed.hpp"
 
-player_state::Grabbed::Grabbed() :
+player_state::Grabbed::Grabbed(Player& player) :
 	ActionStateBase		(static_cast<int>(player_state::ActionStateKind::kGrabbed)),
-	m_is_stop_all_state	(true)
+	m_is_stop_all_state	(true),
+	m_player			(player)
 {
 
 }
@@ -12,40 +13,40 @@ player_state::Grabbed::~Grabbed()
 
 }
 
-void player_state::Grabbed::Update(std::shared_ptr<Player>& obj)
+void player_state::Grabbed::Update()
 {
 	obj->UpdateGrabbed();
 }
 
-void player_state::Grabbed::LateUpdate(std::shared_ptr<Player>& obj)
+void player_state::Grabbed::LateUpdate()
 {
 	obj->OnFootIK();
 }
 
-void player_state::Grabbed::Enter(std::shared_ptr<Player>& obj)
+void player_state::Grabbed::Enter()
 {
-	// ’Í‚Ü‚ê‚½‚±‚Æ‚ð‰‰oƒJƒƒ‰‚É’Ê’m
+	// æŽ´ã¾ã‚ŒãŸã“ã¨ã‚’æ¼”å‡ºã‚«ãƒ¡ãƒ©ã«é€šçŸ¥
 	const OnGrabEvent event{ obj->GetModeler(), obj->GetObjHandle() };
 	EventSystem::GetInstance()->Publish(event);
 }
 
-void player_state::Grabbed::Exit(std::shared_ptr<Player>& obj)
+void player_state::Grabbed::Exit()
 {
 
 }
 
-std::shared_ptr<IState<Player>> player_state::Grabbed::ChangeState(std::shared_ptr<Player>& obj)
+int player_state::Grabbed::GetNextStateKind()
 {
 	if (obj->GetDeltaTime() <= 0.0f) { return nullptr; }
 
 	const auto state_controller = obj->GetStateController();
 
-	// Ž€–S
+	// æ­»äº¡
 	if (state_controller->TryDead(obj))
 	{
 		return state_controller->GetState<Dead, Player>();
 	}
-	// ’Eo
+	// è„±å‡º
 	if (obj->IsEscape())
 	{
 		return state_controller->GetState<Escape, Player>();

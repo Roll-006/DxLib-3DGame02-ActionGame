@@ -1,9 +1,10 @@
-#include "aim_gun.hpp"
+ï»¿#include "aim_gun.hpp"
 
-player_state::AimGun::AimGun() :
+player_state::AimGun::AimGun(Player& player) :
 	WeaponActionStateBase	(static_cast<int>(player_state::WeaponActionStateKind::kAimGun)),
 	m_is_stop_all_state		(false),
-	m_elapsed_time			(0.0f)
+	m_elapsed_time			(0.0f),
+	m_player				(player)
 {
 	m_stop_states.emplace_back();
 }
@@ -13,7 +14,7 @@ player_state::AimGun::~AimGun()
 
 }
 
-void player_state::AimGun::Update(std::shared_ptr<Player>& obj)
+void player_state::AimGun::Update()
 {
 	m_elapsed_time += obj->GetDeltaTime();
 
@@ -27,17 +28,17 @@ void player_state::AimGun::Update(std::shared_ptr<Player>& obj)
 	gun->CalcShotTimer();
 }
 
-void player_state::AimGun::LateUpdate(std::shared_ptr<Player>& obj)
+void player_state::AimGun::LateUpdate()
 {
 	const auto gun			= std::static_pointer_cast<GunBase>(obj->GetCurrentHeldWeapon());
 	const auto camera		= ObjManager::GetInstance()->GetObj<ObjBase>(ObjName.MAIN_CAMERA);
 	const auto aim_dir		= camera->GetTransform()->GetForward(CoordinateKind::kWorld);
 	const auto offset_dir	= (gun->GetFirstShotPos() + gun->GetAimDir() * gun->GetRange()) - gun->GetMuzzleTransform()->GetPos(CoordinateKind::kWorld);
 
-	// ƒ{[ƒ“ˆÊ’u•â³
+	// ãƒœãƒ¼ãƒ³ä½ç½®è£œæ­£
 	obj->GetFramePosCorrector()->CorrectAimPoseFramePos(obj->GetModeler()->GetModelHandle(), aim_dir);
 
-	// ˆÈ‘O‚ÌƒXƒe[ƒg‚ªƒVƒ‡ƒbƒgó‘Ô‚Å‚ ‚Á‚½ê‡AŠgU”ÍˆÍ‚Ìİ’è‚ğˆê’èŠÔ‘Ò‚Â
+	// ä»¥å‰ã®ã‚¹ãƒ†ãƒ¼ãƒˆãŒã‚·ãƒ§ãƒƒãƒˆçŠ¶æ…‹ã§ã‚ã£ãŸå ´åˆã€æ‹¡æ•£ç¯„å›²ã®è¨­å®šã‚’ä¸€å®šæ™‚é–“å¾…ã¤
 	const auto weapon_action_state = static_cast<player_state::WeaponActionStateKind>(obj->GetStateController()->GetWeaponActionState(TimeKind::kPrev)->GetStateKind());
 	if (weapon_action_state == player_state::WeaponActionStateKind::kShot)
 	{
@@ -57,11 +58,11 @@ void player_state::AimGun::LateUpdate(std::shared_ptr<Player>& obj)
 	gun->SetPosOnRay(camera->GetTransform()->GetPos(CoordinateKind::kWorld));
 }
 
-void player_state::AimGun::Enter(std::shared_ptr<Player>& obj)
+void player_state::AimGun::Enter()
 {
 	m_elapsed_time = 0.0f;
 
-	// ƒJƒƒ‰İ’è
+	// ã‚«ãƒ¡ãƒ©è¨­å®š
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	const auto camera_controller = std::static_pointer_cast<ControlVirtualCamerasController>(cinemachine_brain->GetVirtualCameraController(VirtualCameraControllerKind::kControl));
 	cinemachine_brain->SetBlendTime(0.3f);
@@ -80,14 +81,14 @@ void player_state::AimGun::Enter(std::shared_ptr<Player>& obj)
 		const auto gun = std::static_pointer_cast<GunBase>(obj->GetCurrentHeldWeapon());
 		gun->InitCrossHairRange();
 
-		// ƒGƒCƒ~ƒ“ƒOó‘Ô’Ê’m
+		// ã‚¨ã‚¤ãƒŸãƒ³ã‚°çŠ¶æ…‹é€šçŸ¥
 		EventSystem::GetInstance()->Publish(AimGunEvent(gun->GetTransform()->GetPos(CoordinateKind::kWorld), TimeScaleLayerKind::kPlayer));
 	}
 }
 
-void player_state::AimGun::Exit(std::shared_ptr<Player>& obj)
+void player_state::AimGun::Exit()
 {
-	// ƒJƒƒ‰İ’è
+	// ã‚«ãƒ¡ãƒ©è¨­å®š
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	const auto camera_controller = std::static_pointer_cast<ControlVirtualCamerasController>(cinemachine_brain->GetVirtualCameraController(VirtualCameraControllerKind::kControl));
 	cinemachine_brain->SetBlendTime(0.3f);
@@ -101,7 +102,7 @@ void player_state::AimGun::Exit(std::shared_ptr<Player>& obj)
 	obj->AttachWeapon(obj->GetCurrentEquipWeapon(WeaponSlotKind::kMain));
 }
 
-std::shared_ptr<IState<Player>> player_state::AimGun::ChangeState(std::shared_ptr<Player>& obj)
+int player_state::AimGun::GetNextStateKind()
 {
 	if (obj->GetDeltaTime() <= 0.0f) { return nullptr; }
 
@@ -113,32 +114,32 @@ std::shared_ptr<IState<Player>> player_state::AimGun::ChangeState(std::shared_pt
 
 	//DrawFormatString(0, 100, 0xffffff, "%d", camera_controller->IsReachedRecoilPeak());
 
-	// e‘•”õó‘Ô
+	// éŠƒè£…å‚™çŠ¶æ…‹
 	if (!command->IsExecute(CommandKind::kAimGun, TimeKind::kCurrent) && camera_controller->IsReachedRecoilPeak())
 	{
 		return state_controller->GetState<EquipGun, Player>();
 	}
-	// ƒŠƒ[ƒh
+	// ãƒªãƒ­ãƒ¼ãƒ‰
 	if (obj->CanControl() && state_controller->TryReload(obj) && !camera_controller->IsRecoiling())
 	{
 		return state_controller->GetState<Reload, Player>();
 	}
-	// ƒŠƒ[ƒh
+	// ãƒªãƒ­ãƒ¼ãƒ‰
 	if (state_controller->TryPullTriggerReload(obj))
 	{
 		return state_controller->GetState<Reload, Player>();
 	}
-	// ƒVƒ‡ƒbƒg
+	// ã‚·ãƒ§ãƒƒãƒˆ
 	if (state_controller->TryPullTrigger(obj))
 	{
 		if (gun->IsShot() && obj->GetAnimator()->GetBlendRate(AnimatorBase::BodyKind::kUpperBody) >= 1.0f)
 		{
-			// ƒƒPƒbƒgƒ‰ƒ“ƒ`ƒƒ[ƒVƒ‡ƒbƒg(•KE‹Z)
+			// ãƒ­ã‚±ãƒƒãƒˆãƒ©ãƒ³ãƒãƒ£ãƒ¼ã‚·ãƒ§ãƒƒãƒˆ(å¿…æ®ºæŠ€)
 			if (gun->GetGunKind() == GunKind::kRocketLauncher)
 			{
 				return state_controller->GetState<ShotRocketLauncher, Player>();
 			}
-			// ’ÊíƒVƒ‡ƒbƒg
+			// é€šå¸¸ã‚·ãƒ§ãƒƒãƒˆ
 			else
 			{
 				return state_controller->GetState<Shot, Player>();

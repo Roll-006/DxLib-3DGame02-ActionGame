@@ -1,7 +1,7 @@
-#include "weapon_shortcut_drawer.hpp"
+ï»¿#include "weapon_shortcut_drawer.hpp"
 
 WeaponShortcutDrawer::WeaponShortcutDrawer(
-	std::unordered_map<TimeKind, std::shared_ptr<WeaponActionStateBase<Player>>>& state,
+	std::unordered_map<TimeKind, std::shared_ptr<WeaponActionStateBase>>& state,
 	const std::shared_ptr<WeaponShortcutSelecter>& weapon_shortcut_selecter) :
 	m_state						(state),
 	m_weapon_shortcut_selecter	(weapon_shortcut_selecter),
@@ -40,7 +40,7 @@ void WeaponShortcutDrawer::LateUpdate()
 	m_current_select_shortcut	= m_weapon_shortcut_selecter->GetCurrentSelectShortcut();
 	m_current_center_pos		= m_center_pos.at(m_current_select_shortcut);
 
-	// •`‰æ‚·‚é‰æ‘œ‚ğƒAƒ^ƒbƒ`
+	// æç”»ã™ã‚‹ç”»åƒã‚’ã‚¢ã‚¿ãƒƒãƒ
 	for (const auto& icon : m_weapon_shortcut_icons)
 	{
 		const auto weapon = m_weapon_shortcut_selecter->GetShortcutWeapon(icon.first);
@@ -70,14 +70,14 @@ void WeaponShortcutDrawer::Draw(const int main_screen_handle) const
 {
 	if (m_alpha_blend_num <= 0) { return; }
 
-	// ‚Ú‚©‚µ‚½3DƒIƒuƒWƒFƒNƒgƒXƒNƒŠ[ƒ“‚Éƒ}ƒXƒN‚ğ‚©‚¯‚Ä•`‰æ
+	// ã¼ã‹ã—ãŸ3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã«ãƒã‚¹ã‚¯ã‚’ã‹ã‘ã¦æç”»
 	m_mask_creator->CreateMask();
 	m_mask_creator->UseMask(m_mask_screen->GetScreenHandle(), true);
 	DrawGraph(0, 0, main_screen_handle, TRUE);
 	m_mask_creator->UnuseMask();
 	m_mask_creator->DeleteMask();
 
-	// •Ší‚ÌƒAƒCƒRƒ“‚ğ•`‰æ
+	// æ­¦å™¨ã®ã‚¢ã‚¤ã‚³ãƒ³ã‚’æç”»
 	m_icons_screen->Draw();
 }
 
@@ -122,7 +122,7 @@ void WeaponShortcutDrawer::CreateMaskResourceIconsScreen()
 
 void WeaponShortcutDrawer::CreateMaskScreen()
 {
-	// ƒ}ƒXƒN‚ğ‚©‚¯‚é}Œ`‚ğì¬
+	// ãƒã‚¹ã‚¯ã‚’ã‹ã‘ã‚‹å›³å½¢ã‚’ä½œæˆ
 	m_mask_screen->UseScreen();
 	m_mask_resource_icons_screen->Draw();
 	m_mask_screen->UnuseScreen();
@@ -130,7 +130,7 @@ void WeaponShortcutDrawer::CreateMaskScreen()
 
 void WeaponShortcutDrawer::CreateShortcutIcon()
 {
-	// WARNING : WeaponShortcutPosKind‚Ì’è‹`‡‚ÉˆË‘¶‚µ‚Ä‚¢‚é
+	// WARNING : WeaponShortcutPosKindã®å®šç¾©é †ã«ä¾å­˜ã—ã¦ã„ã‚‹
 	for (int i = 0; i < 8; ++i)
 	{
 		Vector2D<int> center_pos = kCenterPos;
@@ -207,7 +207,7 @@ void WeaponShortcutDrawer::UpdateAnim()
 		}
 	}
 
-	// ŒW”‚ğæ“¾
+	// ä¿‚æ•°ã‚’å–å¾—
 	if (m_is_selected)
 	{
 		math::Increase(m_enter_scale_timer, delta_time, kEnterAnimTime, false);
@@ -219,7 +219,7 @@ void WeaponShortcutDrawer::UpdateAnim()
 		t = math::GetUnitValue<float, float>(0.0f, kExitAnimTime, m_exit_scale_timer);
 	}
 
-	// üŒ`•âŠÔ
+	// ç·šå½¢è£œé–“
 	m_alpha_blend_num	= math::GetLerp(0, UCHAR_MAX, t);
 	m_scale				= math::GetLerp(0.5f, 1.0f, t);
 

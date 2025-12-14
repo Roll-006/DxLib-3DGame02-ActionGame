@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "weapon_shortcut_icon.hpp"
 #include "../Part/screen_creator.hpp"
 #include "../Part/mask_creator.hpp"
@@ -12,7 +12,7 @@ class WeaponShortcutDrawer final
 {
 public:
 	WeaponShortcutDrawer(
-		std::unordered_map<TimeKind, std::shared_ptr<WeaponActionStateBase<Player>>>& state,
+		std::unordered_map<TimeKind, std::shared_ptr<WeaponActionStateBase>>& state,
 		const std::shared_ptr<WeaponShortcutSelecter>& weapon_shortcut_selecter);
 
 	~WeaponShortcutDrawer();
@@ -41,7 +41,7 @@ private:
 	static constexpr float			kDrawEndTime		= 2.0f;
 
 private:
-	std::unordered_map<TimeKind, std::shared_ptr<WeaponActionStateBase<Player>>>&	m_state;
+	std::unordered_map<TimeKind, std::shared_ptr<WeaponActionStateBase>>&	m_state;
 	std::shared_ptr<WeaponShortcutSelecter>											m_weapon_shortcut_selecter;
 
 	std::unordered_map<WeaponShortcutPosKind, std::shared_ptr<WeaponShortcutIcon>>	m_weapon_shortcut_icons;

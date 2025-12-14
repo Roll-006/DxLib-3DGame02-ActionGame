@@ -1,8 +1,9 @@
-#include "aim_knife.hpp"
+ï»¿#include "aim_knife.hpp"
 
-player_state::AimKnife::AimKnife() :
+player_state::AimKnife::AimKnife(Player& player) :
 	WeaponActionStateBase	(static_cast<int>(player_state::WeaponActionStateKind::kAimKnife)),
-	m_is_stop_all_state		(false)
+	m_is_stop_all_state		(false),
+	m_player				(player)
 {
 
 }
@@ -12,7 +13,7 @@ player_state::AimKnife::~AimKnife()
 
 }
 
-void player_state::AimKnife::Update(std::shared_ptr<Player>& obj)
+void player_state::AimKnife::Update()
 {
 	obj->StopSearchStealthKillTarget();
 	obj->StopSearchMeleeTarget();
@@ -23,16 +24,16 @@ void player_state::AimKnife::Update(std::shared_ptr<Player>& obj)
 	obj->GetCurrentHeldWeapon()->Update();
 }
 
-void player_state::AimKnife::LateUpdate(std::shared_ptr<Player>& obj)
+void player_state::AimKnife::LateUpdate()
 {
 	const auto camera	= ObjManager::GetInstance()->GetObj<ObjBase>(ObjName.MAIN_CAMERA);
 	const auto aim_dir	= camera->GetTransform()->GetForward(CoordinateKind::kWorld);
 
-	// ƒ{[ƒ“ˆÊ’u•â³
+	// ãƒœãƒ¼ãƒ³ä½ç½®è£œæ­£
 	obj->GetFramePosCorrector()->CorrectAimPoseFramePos(obj->GetModeler()->GetModelHandle(), aim_dir);
 }
 
-void player_state::AimKnife::Enter(std::shared_ptr<Player>& obj)
+void player_state::AimKnife::Enter()
 {
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	const auto camera_controller = std::static_pointer_cast<ControlVirtualCamerasController>(cinemachine_brain->GetVirtualCameraController(VirtualCameraControllerKind::kControl));
@@ -43,7 +44,7 @@ void player_state::AimKnife::Enter(std::shared_ptr<Player>& obj)
 	obj->HoldWeapon(obj->GetCurrentEquipWeapon(WeaponSlotKind::kSub));
 }
 
-void player_state::AimKnife::Exit(std::shared_ptr<Player>& obj)
+void player_state::AimKnife::Exit()
 {
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	const auto camera_controller = std::static_pointer_cast<ControlVirtualCamerasController>(cinemachine_brain->GetVirtualCameraController(VirtualCameraControllerKind::kControl));
@@ -55,7 +56,7 @@ void player_state::AimKnife::Exit(std::shared_ptr<Player>& obj)
 	obj->AttachWeapon(obj->GetCurrentEquipWeapon(WeaponSlotKind::kSub));
 }
 
-std::shared_ptr<IState<Player>> player_state::AimKnife::ChangeState(std::shared_ptr<Player>& obj)
+int player_state::AimKnife::GetNextStateKind()
 {
 	if (obj->GetDeltaTime() <= 0.0f) { return nullptr; }
 
@@ -63,17 +64,17 @@ std::shared_ptr<IState<Player>> player_state::AimKnife::ChangeState(std::shared_
 	const auto command			= CommandHandler::GetInstance();
 	const auto weapon_kind		= obj->GetCurrentHeldWeaponKind();
 
-	// e‘•”õó‘Ô
+	// éŠƒè£…å‚™çŠ¶æ…‹
 	if (weapon_kind == WeaponKind::kGun)
 	{
 		return state_controller->GetState<EquipGun, Player>();
 	}
-	// ƒiƒCƒt‘•”õó‘Ô
+	// ãƒŠã‚¤ãƒ•è£…å‚™çŠ¶æ…‹
 	if (!command->IsExecute(CommandKind::kAimKnife, TimeKind::kCurrent))
 	{
 		return state_controller->GetState<EquipKnife, Player>();
 	}
-	// “Ë‚«Žh‚·
+	// çªãåˆºã™
 	if (obj->CanControl())
 	{
 		if (command->IsExecute(CommandKind::kAttack, TimeKind::kCurrent)

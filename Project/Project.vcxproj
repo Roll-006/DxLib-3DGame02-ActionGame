@@ -402,7 +402,6 @@
     <ClInclude Include="SourceCode\Concept\input_concepts.hpp" />
     <ClInclude Include="SourceCode\Concept\scene_concepts.hpp" />
     <ClInclude Include="SourceCode\Concept\obj_concepts.hpp" />
-    <ClInclude Include="SourceCode\Concept\state_concepts.hpp" />
     <ClInclude Include="SourceCode\Concept\vector_concepts.hpp" />
     <ClInclude Include="SourceCode\CSV\csv_loader.hpp" />
     <ClInclude Include="SourceCode\Data\game_over_text_data.hpp" />

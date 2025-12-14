@@ -1,8 +1,9 @@
-#include "player_action_null.hpp"
+ï»¿#include "player_action_null.hpp"
 
-player_state::ActionNull::ActionNull() : 
+player_state::ActionNull::ActionNull(Player& player) :
 	ActionStateBase		(static_cast<int>(player_state::ActionStateKind::kActionNull)),
-	m_is_stop_all_state	(false)
+	m_is_stop_all_state	(false),
+	m_player			(player)
 {
 
 }
@@ -12,7 +13,7 @@ player_state::ActionNull::~ActionNull()
 
 }
 
-void player_state::ActionNull::Update(std::shared_ptr<Player>& obj)
+void player_state::ActionNull::Update()
 {
 	const auto state_controller = obj->GetStateController();
 	if (state_controller->GetMoveState(TimeKind::kCurrent)->GetStateKind() == static_cast<int>(player_state::MoveStateKind::kMove))
@@ -21,64 +22,64 @@ void player_state::ActionNull::Update(std::shared_ptr<Player>& obj)
 	}
 }
 
-void player_state::ActionNull::LateUpdate(std::shared_ptr<Player>& obj)
+void player_state::ActionNull::LateUpdate()
 {
 	obj->OnFootIK();
 }
 
-void player_state::ActionNull::Enter(std::shared_ptr<Player>& obj)
+void player_state::ActionNull::Enter()
 {
 
 }
 
-void player_state::ActionNull::Exit(std::shared_ptr<Player>& obj)
+void player_state::ActionNull::Exit()
 {
 
 }
 
-std::shared_ptr<IState<Player>> player_state::ActionNull::ChangeState(std::shared_ptr<Player>& obj)
+int player_state::ActionNull::GetNextStateKind()
 {
 	if (obj->GetDeltaTime() <= 0.0f) { return nullptr; }
 
 	const auto state_controller = obj->GetStateController();
 	const auto command			= CommandHandler::GetInstance();
 
-	// Ÿ—˜ƒ|[ƒY
+	// å‹åˆ©ãƒãƒ¼ã‚º
 	if (obj->IsVictoryPose())
 	{
 		return state_controller->GetState<VictoryPose, Player>();
 	}
-	// Ž€–S
+	// æ­»äº¡
 	if (state_controller->TryDead(obj))
 	{
 		return state_controller->GetState<Dead, Player>();
 	}
-	// ƒƒŒ[(³–ÊR‚è)
+	// ãƒ¡ãƒ¬ãƒ¼(æ­£é¢è¹´ã‚Š)
 	if (state_controller->TryFrontKick(obj))
 	{
 		return state_controller->GetState<FrontKick, Player>();
 	}
-	// ƒƒŒ[(‰ñ‚µR‚è)
+	// ãƒ¡ãƒ¬ãƒ¼(å›žã—è¹´ã‚Š)
 	if (state_controller->TryRoundhouseKick(obj))
 	{
 		return state_controller->GetState<RoundhouseKick, Player>();
 	}
-	// ƒXƒeƒ‹ƒXƒLƒ‹
+	// ã‚¹ãƒ†ãƒ«ã‚¹ã‚­ãƒ«
 	if (state_controller->TryStealthKill(obj))
 	{
 		return state_controller->GetState<StealthKill, Player>();
 	}
-	// •ß‚Ü‚ê‚é
+	// æ•ã¾ã‚Œã‚‹
 	if (state_controller->TryGrabbed(obj))
 	{
 		return state_controller->GetState<Grabbed, Player>();
 	}
-	// ƒ_ƒbƒVƒ…
+	// ãƒ€ãƒƒã‚·ãƒ¥
 	if (state_controller->TryRun(obj))
 	{
 		return state_controller->GetState<Run, Player>();
 	}
-	// ‚µ‚á‚ª‚Þ
+	// ã—ã‚ƒãŒã‚€
 	if (obj->CanControl() && command->IsExecute(CommandKind::kCrouch, TimeKind::kCurrent))
 	{
 		return state_controller->GetState<Crouch, Player>();

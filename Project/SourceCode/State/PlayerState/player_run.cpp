@@ -1,8 +1,9 @@
-#include "player_run.hpp"
+ï»¿#include "player_run.hpp"
 
-player_state::Run::Run() :
+player_state::Run::Run(Player& player) :
 	ActionStateBase		(static_cast<int>(player_state::ActionStateKind::kRun)),
-	m_is_stop_all_state	(false)
+	m_is_stop_all_state	(false),
+	m_player			(player)
 {
 
 }
@@ -12,28 +13,28 @@ player_state::Run::~Run()
 
 }
 
-void player_state::Run::Update(std::shared_ptr<Player>& obj)
+void player_state::Run::Update()
 {
 	obj->CalcMoveSpeedRun();
 	obj->DirOfMovement();
 }
 
-void player_state::Run::LateUpdate(std::shared_ptr<Player>& obj)
+void player_state::Run::LateUpdate()
 {
 	obj->OnFootIK();
 }
 
-void player_state::Run::Enter(std::shared_ptr<Player>& obj)
+void player_state::Run::Enter()
 {
 
 }
 
-void player_state::Run::Exit(std::shared_ptr<Player>& obj)
+void player_state::Run::Exit()
 {
 	CommandHandler::GetInstance()->InitCurrentTriggerInputCount(CommandKind::kRun);
 }
 
-std::shared_ptr<IState<Player>> player_state::Run::ChangeState(std::shared_ptr<Player>& obj)
+int player_state::Run::GetNextStateKind()
 {
 	if (obj->GetDeltaTime() <= 0.0f) { return nullptr; }
 
@@ -41,27 +42,27 @@ std::shared_ptr<IState<Player>> player_state::Run::ChangeState(std::shared_ptr<P
 	const auto command			= CommandHandler::GetInstance();
 	const auto command_mode		= command->GetInstance()->GetInputModeKind(CommandKind::kRun);
 
-	// Ž€–S
+	// æ­»äº¡
 	if (state_controller->TryDead(obj))
 	{
 		return state_controller->GetState<Dead, Player>();
 	}
-	// ƒƒŒ[(³–ÊR‚è)
+	// ãƒ¡ãƒ¬ãƒ¼(æ­£é¢è¹´ã‚Š)
 	if (state_controller->TryFrontKick(obj))
 	{
 		return state_controller->GetState<FrontKick, Player>();
 	}
-	// ƒƒŒ[(‰ñ‚µR‚è)
+	// ãƒ¡ãƒ¬ãƒ¼(å›žã—è¹´ã‚Š)
 	if (state_controller->TryRoundhouseKick(obj))
 	{
 		return state_controller->GetState<RoundhouseKick, Player>();
 	}
-	// ƒXƒeƒ‹ƒXƒLƒ‹
+	// ã‚¹ãƒ†ãƒ«ã‚¹ã‚­ãƒ«
 	if (state_controller->TryStealthKill(obj))
 	{
 		return state_controller->GetState<StealthKill, Player>();
 	}
-	// •ß‚Ü‚ê‚é
+	// æ•ã¾ã‚Œã‚‹
 	if (state_controller->TryGrabbed(obj))
 	{
 		return state_controller->GetState<Grabbed, Player>();
@@ -71,10 +72,10 @@ std::shared_ptr<IState<Player>> player_state::Run::ChangeState(std::shared_ptr<P
 	{
 		return state_controller->GetState<ActionNull, Player>();
 	}
-	// ‚µ‚á‚ª‚Þ
+	// ã—ã‚ƒãŒã‚€
 	if (obj->CanControl() && command->IsExecute(CommandKind::kCrouch, TimeKind::kCurrent))
 	{
-		// RunƒRƒ}ƒ“ƒh‚ªƒz[ƒ‹ƒh•ûŽ®‚ÅA“ü—Í’†‚Å‚ ‚Á‚½ê‡‚ÍˆÚs‚ð‹–‰Â‚µ‚È‚¢
+		// Runã‚³ãƒžãƒ³ãƒ‰ãŒãƒ›ãƒ¼ãƒ«ãƒ‰æ–¹å¼ã§ã€å…¥åŠ›ä¸­ã§ã‚ã£ãŸå ´åˆã¯ç§»è¡Œã‚’è¨±å¯ã—ãªã„
 		if (!(command_mode == InputModeKind::kHold && state_controller->TryRun(obj)))
 		{
 			return state_controller->GetState<Crouch, Player>();

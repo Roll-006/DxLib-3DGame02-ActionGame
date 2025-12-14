@@ -1,11 +1,12 @@
-#include "second_side_slash_knife.hpp"
+ï»¿#include "second_side_slash_knife.hpp"
 
-player_state::SecondSideSlashKnife::SecondSideSlashKnife() :
+player_state::SecondSideSlashKnife::SecondSideSlashKnife(Player& player) :
 	WeaponActionStateBase	(static_cast<int>(player_state::WeaponActionStateKind::kSecondSideSlashKnife)),
 	m_combo_timer			(0.0f),
 	m_is_stop_all_state		(false),
 	m_has_trigger_created	(false),
-	m_has_trigger_deleted	(false)
+	m_has_trigger_deleted	(false),
+	m_player				(player)
 {
 
 }
@@ -15,7 +16,7 @@ player_state::SecondSideSlashKnife::~SecondSideSlashKnife()
 
 }
 
-void player_state::SecondSideSlashKnife::Update(std::shared_ptr<Player>& obj)
+void player_state::SecondSideSlashKnife::Update()
 {
 	const auto time_manager = GameTimeManager::GetInstance();
 	m_combo_timer += time_manager->GetDeltaTime(TimeScaleLayerKind::kWorld);
@@ -30,7 +31,7 @@ void player_state::SecondSideSlashKnife::Update(std::shared_ptr<Player>& obj)
 	obj->GetCurrentHeldWeapon()->Update();
 	obj->SideSlashKnifeOffsetMove();
 
-	// UŒ‚”»’è—pƒgƒŠƒK[‚ð¶¬
+	// æ”»æ’ƒåˆ¤å®šç”¨ãƒˆãƒªã‚¬ãƒ¼ã‚’ç”Ÿæˆ
 	if (!m_has_trigger_created)
 	{
 		if (play_rate > 0.3f && anim_kind == PlayerAnimKind::kSecondSideSlashKnife)
@@ -45,7 +46,7 @@ void player_state::SecondSideSlashKnife::Update(std::shared_ptr<Player>& obj)
 		}
 	}
 
-	// UŒ‚”»’è—pƒgƒŠƒK[‚ðíœ
+	// æ”»æ’ƒåˆ¤å®šç”¨ãƒˆãƒªã‚¬ãƒ¼ã‚’å‰Šé™¤
 	if (!m_has_trigger_deleted)
 	{
 		if (play_rate > 0.8f && anim_kind == PlayerAnimKind::kSecondSideSlashKnife)
@@ -60,12 +61,12 @@ void player_state::SecondSideSlashKnife::Update(std::shared_ptr<Player>& obj)
 	}
 }
 
-void player_state::SecondSideSlashKnife::LateUpdate(std::shared_ptr<Player>& obj)
+void player_state::SecondSideSlashKnife::LateUpdate()
 {
 
 }
 
-void player_state::SecondSideSlashKnife::Enter(std::shared_ptr<Player>& obj)
+void player_state::SecondSideSlashKnife::Enter()
 {
 	m_combo_timer			= 0.0f;
 	m_has_trigger_created	= false;
@@ -75,25 +76,25 @@ void player_state::SecondSideSlashKnife::Enter(std::shared_ptr<Player>& obj)
 	obj->HoldWeapon(obj->GetCurrentEquipWeapon(WeaponSlotKind::kSub));
 }
 
-void player_state::SecondSideSlashKnife::Exit(std::shared_ptr<Player>& obj)
+void player_state::SecondSideSlashKnife::Exit()
 {
 	obj->ReleaseWeapon();
 	obj->AttachWeapon(obj->GetCurrentEquipWeapon(WeaponSlotKind::kSub));
 }
 
-std::shared_ptr<IState<Player>> player_state::SecondSideSlashKnife::ChangeState(std::shared_ptr<Player>& obj)
+int player_state::SecondSideSlashKnife::GetNextStateKind()
 {
 	if (obj->GetDeltaTime() <= 0.0f) { return nullptr; }
 
 	const auto state_controller = obj->GetStateController();
 	const auto command = CommandHandler::GetInstance();
 
-	// Ø‚è—ô‚­(‘æˆê’iŠK)
+	// åˆ‡ã‚Šè£‚ã(ç¬¬ä¸€æ®µéšŽ)
 	if (m_combo_timer > kComboValidTime && state_controller->TryFirstSideSlashKnife(obj))
 	{
 		return state_controller->GetState<FirstSideSlashKnife, Player>();
 	}
-	// ƒiƒCƒt‘•”õó‘Ô
+	// ãƒŠã‚¤ãƒ•è£…å‚™çŠ¶æ…‹
 	if (obj->GetAnimator()->IsPlayEnd(AnimatorBase::BodyKind::kUpperBody))
 	{
 		return state_controller->GetState<EquipKnife, Player>();

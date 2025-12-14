@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "../../Base/action_state_base.hpp"
 
 #include "../../Object/zombie.hpp"
@@ -8,7 +8,7 @@
 
 namespace zombie_state
 {
-	class Grab final : public ActionStateBase<Zombie>
+	class Grab final : public ActionStateBase
 	{
 	public:
 		Grab();
@@ -26,7 +26,7 @@ namespace zombie_state
 		void DamageOverTime(std::shared_ptr<Zombie>& obj);
 
 	private:
-		static constexpr float kDamageOverTimeStartTime = 1.0f;		// Œp‘±ƒ_ƒ[ƒW‚ªŠJn‚·‚é‚Ü‚Å‚ÌŠÔ
+		static constexpr float kDamageOverTimeStartTime = 1.0f;		// ç¶™ç¶šãƒ€ãƒ¡ãƒ¼ã‚¸ãŒé–‹å§‹ã™ã‚‹ã¾ã§ã®æ™‚é–“
 		static constexpr float kDamageIntervalTime		= 0.8f;
 		static constexpr float kMaxGrabTime				= 6.6f;
 

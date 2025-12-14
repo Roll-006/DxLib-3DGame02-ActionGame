@@ -1,4 +1,4 @@
-#include "player_state_controller.hpp"
+ï»¿#include "player_state_controller.hpp"
 #include "../Interface/i_melee_hittable.hpp"
 
 PlayerStateController::PlayerStateController() : 
@@ -8,7 +8,7 @@ PlayerStateController::PlayerStateController() :
 	AddCheckStopState();
 	AddStopStatePair();
 
-	// ‰ŠúƒXƒe[ƒg
+	// åˆæœŸã‚¹ãƒ†ãƒ¼ãƒˆ
 	m_move_state		 [TimeKind::kPrev] = m_move_state		  [TimeKind::kCurrent] = GetState<player_state::Idle,				Player>();
 	m_action_state		 [TimeKind::kPrev] = m_action_state		  [TimeKind::kCurrent] = GetState<player_state::ActionNull,			Player>();
 	m_weapon_action_state[TimeKind::kPrev] = m_weapon_action_state[TimeKind::kCurrent] = GetState<player_state::WeaponActionNull,	Player>();
@@ -21,27 +21,27 @@ PlayerStateController::~PlayerStateController()
 	m_weapon_action_state[TimeKind::kPrev] = m_weapon_action_state[TimeKind::kCurrent] = nullptr;
 }
 
-void PlayerStateController::Init(std::shared_ptr<Player> player)
+void PlayerStateController::Init()
 {
-	m_move_state			.at(TimeKind::kCurrent)->Exit(player);
-	m_action_state			.at(TimeKind::kCurrent)->Exit(player);
-	m_weapon_action_state	.at(TimeKind::kCurrent)->Exit(player);
+	m_move_state			.at(TimeKind::kCurrent)->Exit();
+	m_action_state			.at(TimeKind::kCurrent)->Exit();
+	m_weapon_action_state	.at(TimeKind::kCurrent)->Exit();
 }
 
-void PlayerStateController::Update(std::shared_ptr<Player> player)
+void PlayerStateController::Update()
 {
-	ChangeState(player);
+	ChangeState();
 
-	m_move_state			.at(TimeKind::kCurrent)->Update(player);
-	m_action_state			.at(TimeKind::kCurrent)->Update(player);
-	m_weapon_action_state	.at(TimeKind::kCurrent)->Update(player);
+	m_move_state			.at(TimeKind::kCurrent)->Update();
+	m_action_state			.at(TimeKind::kCurrent)->Update();
+	m_weapon_action_state	.at(TimeKind::kCurrent)->Update();
 }
 
-void PlayerStateController::LateUpdate(std::shared_ptr<Player> player)
+void PlayerStateController::LateUpdate()
 {
-	m_move_state			.at(TimeKind::kCurrent)->LateUpdate(player);
-	m_action_state			.at(TimeKind::kCurrent)->LateUpdate(player);
-	m_weapon_action_state	.at(TimeKind::kCurrent)->LateUpdate(player);
+	m_move_state			.at(TimeKind::kCurrent)->LateUpdate();
+	m_action_state			.at(TimeKind::kCurrent)->LateUpdate();
+	m_weapon_action_state	.at(TimeKind::kCurrent)->LateUpdate();
 }
 
 void PlayerStateController::CreateState()
@@ -83,10 +83,6 @@ void PlayerStateController::CreateState()
 void PlayerStateController::AddStopStatePair()
 {
 	m_states.at(typeid(player_state::Dead))					->AddStopState(m_states.at(typeid(player_state::Move))					->GetStateHandle());
-	//m_states.at(typeid(player_state::StealthKill))			->AddStopState(m_states.at(typeid(player_state::Move))					->GetStateHandle());
-	//m_states.at(typeid(player_state::StealthKill))			->AddStopState(m_states.at(typeid(player_state::FirstSideSlashKnife))					->GetStateHandle());
-	//m_states.at(typeid(player_state::StealthKill))			->AddStopState(m_states.at(typeid(player_state::SecondSideSlashKnife))					->GetStateHandle());
-	//m_states.at(typeid(player_state::StealthKill))			->AddStopState(m_states.at(typeid(player_state::SpinningSlashKnife))					->GetStateHandle());
 
 	m_states.at(typeid(player_state::AimKnife))				->AddStopState(m_states.at(typeid(player_state::Crouch))				->GetStateHandle());
 	m_states.at(typeid(player_state::AimKnife))				->AddStopState(m_states.at(typeid(player_state::Run))					->GetStateHandle());
@@ -134,14 +130,14 @@ void PlayerStateController::AddCheckStopState()
 	m_check_stop_state_handles.emplace_back(m_states.at(typeid(player_state::Reload))				->GetStateHandle());
 }
 
-void PlayerStateController::ChangeState(std::shared_ptr<Player>& player)
+void PlayerStateController::ChangeState()
 {
 	const auto change_state = CreateChangeState(player);
 
 	if (change_state.at(0))
 	{
 		m_move_state			.at(TimeKind::kPrev)	= m_move_state.at(TimeKind::kCurrent);
-		m_move_state			.at(TimeKind::kCurrent)	= std::static_pointer_cast<MoveStateBase<Player>>(change_state.at(0));
+		m_move_state			.at(TimeKind::kCurrent)	= std::static_pointer_cast<MoveStateBase>(change_state.at(0));
 		m_move_state			.at(TimeKind::kPrev)	->Exit (player);
 		m_move_state			.at(TimeKind::kCurrent)	->Enter(player);
 	}
@@ -149,7 +145,7 @@ void PlayerStateController::ChangeState(std::shared_ptr<Player>& player)
 	if (change_state.at(1))
 	{
 		m_action_state			.at(TimeKind::kPrev)	= m_action_state.at(TimeKind::kCurrent);
-		m_action_state			.at(TimeKind::kCurrent) = std::static_pointer_cast<ActionStateBase<Player>>(change_state.at(1));
+		m_action_state			.at(TimeKind::kCurrent) = std::static_pointer_cast<ActionStateBase>(change_state.at(1));
 		m_action_state			.at(TimeKind::kPrev)	->Exit (player);
 		m_action_state			.at(TimeKind::kCurrent) ->Enter(player);
 	}
@@ -157,7 +153,7 @@ void PlayerStateController::ChangeState(std::shared_ptr<Player>& player)
 	if (change_state.at(2))
 	{
 		m_weapon_action_state	.at(TimeKind::kPrev)	= m_weapon_action_state.at(TimeKind::kCurrent);
-		m_weapon_action_state	.at(TimeKind::kCurrent) = std::static_pointer_cast<WeaponActionStateBase<Player>>(change_state.at(2));
+		m_weapon_action_state	.at(TimeKind::kCurrent) = std::static_pointer_cast<WeaponActionStateBase>(change_state.at(2));
 		m_weapon_action_state	.at(TimeKind::kPrev)	->Exit (player);
 		m_weapon_action_state	.at(TimeKind::kCurrent) ->Enter(player);
 	}
@@ -165,7 +161,7 @@ void PlayerStateController::ChangeState(std::shared_ptr<Player>& player)
 
 std::vector<std::shared_ptr<IState<Player>>> PlayerStateController::CreateChangeState(std::shared_ptr<Player>& player)
 {
-	// Ÿ•ÏX—\’è‚ÌƒXƒe[ƒg
+	// æ¬¡å¤‰æ›´äºˆå®šã®ã‚¹ãƒ†ãƒ¼ãƒˆ
 	std::vector<std::shared_ptr<IState<Player>>> next_state
 	{
 		m_move_state		 .at(TimeKind::kCurrent)->ChangeState(player),
@@ -176,15 +172,15 @@ std::vector<std::shared_ptr<IState<Player>>> PlayerStateController::CreateChange
 	std::vector<int> check_stop_state_index;
 	auto future_state = CreateFutureState(next_state);
 
-	// ã‚ÌŠK‘w‚É‚ ‚éƒXƒe[ƒg‚Ì’â~ˆ—
+	// ä¸Šã®éšå±¤ã«ã‚ã‚‹ã‚¹ãƒ†ãƒ¼ãƒˆã®åœæ­¢å‡¦ç†
 	for (int i = static_cast<int>(future_state.size() - 1); i >= 0; --i)
 	{
-		// ’â~”»’è
+		// åœæ­¢åˆ¤å®š
 		for (auto itr = check_stop_state_index.begin(); itr != check_stop_state_index.end(); )
 		{
 			if (future_state.at(i)->IsStop(future_state.at(*itr)->GetStateHandle()) || future_state.at(i)->IsStopAllState())
 			{
-				// ƒXƒe[ƒg‚ğ’â~‚³‚¹–¢—ˆ‚ÌƒXƒe[ƒg‚É”½‰f
+				// ã‚¹ãƒ†ãƒ¼ãƒˆã‚’åœæ­¢ã•ã›æœªæ¥ã®ã‚¹ãƒ†ãƒ¼ãƒˆã«åæ˜ 
 				StopState(future_state, future_state.at(*itr));
 
 				itr = check_stop_state_index.erase(itr);
@@ -195,22 +191,22 @@ std::vector<std::shared_ptr<IState<Player>>> PlayerStateController::CreateChange
 			}
 		}
 
-		// ©g‚ª’â~‚³‚ê‚é‘ÎÛ‚©‚ğ”»’è
+		// è‡ªèº«ãŒåœæ­¢ã•ã‚Œã‚‹å¯¾è±¡ã‹ã‚’åˆ¤å®š
 		if (std::find(m_check_stop_state_handles.begin(), m_check_stop_state_handles.end(), future_state.at(i)->GetStateHandle()) != m_check_stop_state_handles.end())
 		{
 			check_stop_state_index.emplace_back(i);
 		}
 	}
 
-	// ‰º‚ÌŠK‘w‚É‚ ‚éƒXƒe[ƒg‚Ì’â~ˆ—
+	// ä¸‹ã®éšå±¤ã«ã‚ã‚‹ã‚¹ãƒ†ãƒ¼ãƒˆã®åœæ­¢å‡¦ç†
 	for (size_t i = 0; i < future_state.size(); ++i)
 	{
-		// ’â~”»’è
+		// åœæ­¢åˆ¤å®š
 		for (auto itr = check_stop_state_index.begin(); itr != check_stop_state_index.end(); )
 		{
 			if (future_state.at(i)->IsStop(future_state.at(*itr)->GetStateHandle()) || future_state.at(i)->IsStopAllState())
 			{
-				// ƒXƒe[ƒg‚ğ’â~‚³‚¹–¢—ˆ‚ÌƒXƒe[ƒg‚É”½‰f
+				// ã‚¹ãƒ†ãƒ¼ãƒˆã‚’åœæ­¢ã•ã›æœªæ¥ã®ã‚¹ãƒ†ãƒ¼ãƒˆã«åæ˜ 
 				StopState(future_state, future_state.at(*itr));
 
 				itr = check_stop_state_index.erase(itr);
@@ -222,8 +218,8 @@ std::vector<std::shared_ptr<IState<Player>>> PlayerStateController::CreateChange
 		}
 	}
 
-	// •ÏX‚ª‚ ‚Á‚½ƒXƒe[ƒg‚Ì‚İ‚ğæ“¾
-	// •ÏX‚ª‚È‚¢ê‡‚Ínullptr
+	// å¤‰æ›´ãŒã‚ã£ãŸã‚¹ãƒ†ãƒ¼ãƒˆã®ã¿ã‚’å–å¾—
+	// å¤‰æ›´ãŒãªã„å ´åˆã¯nullptr
 	return std::vector<std::shared_ptr<IState<Player>>>
 	{
 		future_state.at(0) == m_move_state			.at(TimeKind::kCurrent) ? nullptr : future_state.at(0),
@@ -234,7 +230,7 @@ std::vector<std::shared_ptr<IState<Player>>> PlayerStateController::CreateChange
 
 std::vector<std::shared_ptr<IState<Player>>> PlayerStateController::CreateFutureState(const std::vector<std::shared_ptr<IState<Player>>>& next_state)
 {
-	// •ÏX‚ª‚ ‚Á‚½ƒXƒe[ƒg‚Í’u‚«Š·‚¦‚é
+	// å¤‰æ›´ãŒã‚ã£ãŸã‚¹ãƒ†ãƒ¼ãƒˆã¯ç½®ãæ›ãˆã‚‹
 	return std::vector<std::shared_ptr<IState<Player>>>
 	{
 		next_state.at(0) == nullptr ? m_move_state			.at(TimeKind::kCurrent) : next_state.at(0),
@@ -326,7 +322,7 @@ void PlayerStateController::JudgeDestinationWeaponActionState(std::shared_ptr<IS
 }
 
 
-#pragma region Try”»’è
+#pragma region Tryåˆ¤å®š
 bool PlayerStateController::TryMove(std::shared_ptr<Player>& player)
 {
 	if (!player->CanControl()) { return false; }
@@ -354,16 +350,16 @@ bool PlayerStateController::TryRun(std::shared_ptr<Player>& player)
 			return true;
 		}
 	}
-	// IDLE‚Å‚ ‚Á‚½ê‡AŸƒtƒŒ[ƒ€‚Ì‚½‚ß‚ÉƒgƒŠƒK[ƒJƒEƒ“ƒg‚ğ‘‚â‚µ‚Ä‚¨‚­
+	// IDLEã§ã‚ã£ãŸå ´åˆã€æ¬¡ãƒ•ãƒ¬ãƒ¼ãƒ ã®ãŸã‚ã«ãƒˆãƒªã‚¬ãƒ¼ã‚«ã‚¦ãƒ³ãƒˆã‚’å¢—ã‚„ã—ã¦ãŠã
 	else
 	{
-		// Œ»İ‚Ì“ü—Í•û®‚ğ•Û‘¶‚·‚é
+		// ç¾åœ¨ã®å…¥åŠ›æ–¹å¼ã‚’ä¿å­˜ã™ã‚‹
 		const bool is_trigger = command->GetInputModeKind(CommandKind::kRun) == InputModeKind::kTrigger ? true : false;
 
-		// “ü—Íƒ‚[ƒh‚ğ‹­§“I‚Éƒz[ƒ‹ƒh•û®‚É•ÏX
+		// å…¥åŠ›ãƒ¢ãƒ¼ãƒ‰ã‚’å¼·åˆ¶çš„ã«ãƒ›ãƒ¼ãƒ«ãƒ‰æ–¹å¼ã«å¤‰æ›´
 		command->SetInputMode(CommandKind::kRun, InputModeKind::kHold);
 
-		// ‚à‚Æ‚à‚ÆƒgƒŠƒK[•û®‚Å‚ ‚ê‚ÎŒ³‚É–ß‚·
+		// ã‚‚ã¨ã‚‚ã¨ãƒˆãƒªã‚¬ãƒ¼æ–¹å¼ã§ã‚ã‚Œã°å…ƒã«æˆ»ã™
 		if (is_trigger) { command->SetInputMode(CommandKind::kRun, InputModeKind::kTrigger); }
 	}
 
@@ -386,26 +382,26 @@ bool PlayerStateController::TryFrontKick(std::shared_ptr<Player>& player)
 	if (!player->GetMeleeTarget())															{ return false; }
 	if (!CommandHandler::GetInstance()->IsExecute(CommandKind::kMelee, TimeKind::kCurrent)) { return false; }
 
-	// ƒ^[ƒQƒbƒg‚ğƒƒŒ[‘ÎÛ‚Æ‚È‚éƒCƒ“ƒ^[ƒtƒFƒCƒX‚É•ÏX
+	// ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’ãƒ¡ãƒ¬ãƒ¼å¯¾è±¡ã¨ãªã‚‹ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹ã«å¤‰æ›´
 	const auto melee_target		= player->GetMeleeTarget();
 	const auto target_obj		= std::dynamic_pointer_cast<ObjBase>(player->GetMeleeTarget());
 
-	// ‹¯‚İ’†(‚µ‚á‚ª‚İ)‚Å‚È‚¢ê‡‚Í‘JˆÚ‚ğ‹–‰Â‚µ‚È‚¢
+	// æ€¯ã¿ä¸­(ã—ã‚ƒãŒã¿)ã§ãªã„å ´åˆã¯é·ç§»ã‚’è¨±å¯ã—ãªã„
 	if (!melee_target->IsCrouchStun()) { return false; }
 
-	// ƒvƒŒƒCƒ„[‚ªƒ^[ƒQƒbƒg‚Ì‘O•û‚É‚¢‚È‚¢ê‡‚Í‘JˆÚ‚ğ‹–‰Â‚µ‚È‚¢
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®å‰æ–¹ã«ã„ãªã„å ´åˆã¯é·ç§»ã‚’è¨±å¯ã—ãªã„
 	const auto target_forward = target_obj->GetTransform()->GetForward(CoordinateKind::kWorld);
 	auto dir = player->GetTransform()->GetPos(CoordinateKind::kWorld) - target_obj->GetTransform()->GetPos(CoordinateKind::kWorld);
 	dir.y = 0.0f;
 	dir = v3d::GetNormalizedV(dir);
 	if (math::GetAngleBetweenTwoVector(target_forward, dir) > 45.0f * math::kDegToRad) { return false; }
 
-	// ƒvƒŒƒCƒ„[‚Ì“ü—Í‚É‘¦À‚É‘Î‰‚Å‚«‚é‚æ‚¤‚Émove_dir‚ğŠî€‚É‚È‚·Šp‚ğæ“¾
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å…¥åŠ›ã«å³åº§ã«å¯¾å¿œã§ãã‚‹ã‚ˆã†ã«move_dirã‚’åŸºæº–ã«ãªã™è§’ã‚’å–å¾—
 	const auto player_move_dir	= player->GetCurrentMoveDir();
 	const auto player_dir		= player_move_dir != v3d::GetZeroV() ? player_move_dir : player->GetCurrentLookDir();
 	const auto forward_angle	= math::GetAngleBetweenTwoVector(target_forward, player_dir);
 
-	// ³–Ê‚©‚çR‚Á‚½ê‡‚ÉƒXƒe[ƒg‚ğ‘JˆÚ
+	// æ­£é¢ã‹ã‚‰è¹´ã£ãŸå ´åˆã«ã‚¹ãƒ†ãƒ¼ãƒˆã‚’é·ç§»
 	return forward_angle >= 135.0f * math::kDegToRad;
 }
 
@@ -415,7 +411,7 @@ bool PlayerStateController::TryRoundhouseKick(std::shared_ptr<Player>& player)
 	if (!player->GetMeleeTarget())															{ return false; }
 	if (!CommandHandler::GetInstance()->IsExecute(CommandKind::kMelee, TimeKind::kCurrent)) { return false; }
 
-	// ƒ^[ƒQƒbƒg‚ğƒƒŒ[‘ÎÛ‚Æ‚È‚éƒCƒ“ƒ^[ƒtƒFƒCƒX‚É•ÏX
+	// ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’ãƒ¡ãƒ¬ãƒ¼å¯¾è±¡ã¨ãªã‚‹ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹ã«å¤‰æ›´
 	const auto melee_target = player->GetMeleeTarget();
 	const auto target_obj	= std::dynamic_pointer_cast<ObjBase>(player->GetMeleeTarget());
 	
