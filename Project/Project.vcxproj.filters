@@ -172,9 +172,6 @@
     <ClCompile Include="SourceCode\Shape\3DShape\ray_capsule.cpp">
       <Filter>SourceCode\Shape\3DShape</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Algorithm\a_star.cpp">
-      <Filter>SourceCode\Algorithm</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\Part\graphicer.cpp">
       <Filter>SourceCode\Part</Filter>
     </ClCompile>
@@ -881,9 +878,6 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Shape\3DShape\ray_capsule.hpp">
       <Filter>SourceCode\Shape\3DShape</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Algorithm\a_star.hpp">
-      <Filter>SourceCode\Algorithm</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Part\graphicer.hpp">
       <Filter>SourceCode\Part</Filter>
@@ -1860,12 +1854,6 @@
     <ClInclude Include="SourceCode\Event\start_battle_event.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Event\aim_gun_event (2).hpp">
-      <Filter>SourceCode\Event</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Event\aim_gun_event (3).hpp">
-      <Filter>SourceCode\Event</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\Event\spinning_slash_event.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
@@ -1886,21 +1874,6 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Event\draw_knife_event.hpp">
       <Filter>SourceCode\Event</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\aid_mixamo_axis_data (2).hpp">
-      <Filter>SourceCode\Data</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\aid_mixamo_axis_data (3).hpp">
-      <Filter>SourceCode\Data</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\aid_mixamo_axis_data (4).hpp">
-      <Filter>SourceCode\Data</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\aid_mixamo_axis_data (5).hpp">
-      <Filter>SourceCode\Data</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Data\aid_mixamo_axis_data (6).hpp">
-      <Filter>SourceCode\Data</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Data\single_button_prompt_data.hpp">
       <Filter>SourceCode\Data</Filter>
@@ -2054,9 +2027,6 @@
     <Filter Include="SourceCode\Animator">
       <UniqueIdentifier>{46e62084-03bc-49de-85b0-0989e7e3f1af}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Text">
-      <UniqueIdentifier>{f778bbda-5f11-4860-b7cd-f357af151c7c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SourceCode\UICreator">
       <UniqueIdentifier>{ece711ae-b4a0-4e28-a35e-6f6f1518c896}</UniqueIdentifier>
     </Filter>
@@ -2131,10 +2101,5 @@
     <None Include="Data\JSON\tab_data.json">
       <Filter>JSON</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="Text\bug_list.txt">
-      <Filter>Text</Filter>
-    </Text>
   </ItemGroup>
 </Project>
