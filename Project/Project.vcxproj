@@ -142,7 +142,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="SourceCode\Algorithm\algorithm.cpp" />
-    <ClCompile Include="SourceCode\Algorithm\a_star.cpp" />
     <ClCompile Include="SourceCode\Animator\player_animator.cpp" />
     <ClCompile Include="SourceCode\Animator\zombie_animator.cpp" />
     <ClCompile Include="SourceCode\Base\animator_base.cpp" />
@@ -363,7 +362,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Algorithm\algorithm.hpp" />
-    <ClInclude Include="SourceCode\Algorithm\a_star.hpp" />
     <ClInclude Include="SourceCode\Animator\player_animator.hpp" />
     <ClInclude Include="SourceCode\Animator\zombie_animator.hpp" />
     <ClInclude Include="SourceCode\Base\action_state_base.hpp" />
@@ -406,11 +404,6 @@
     <ClInclude Include="SourceCode\Concept\vector_concepts.hpp" />
     <ClInclude Include="SourceCode\CSV\csv_loader.hpp" />
     <ClInclude Include="SourceCode\Data\game_over_text_data.hpp" />
-    <ClInclude Include="SourceCode\Data\aid_mixamo_axis_data (2).hpp" />
-    <ClInclude Include="SourceCode\Data\aid_mixamo_axis_data (3).hpp" />
-    <ClInclude Include="SourceCode\Data\aid_mixamo_axis_data (4).hpp" />
-    <ClInclude Include="SourceCode\Data\aid_mixamo_axis_data (5).hpp" />
-    <ClInclude Include="SourceCode\Data\aid_mixamo_axis_data (6).hpp" />
     <ClInclude Include="SourceCode\Data\single_button_prompt_data.hpp" />
     <ClInclude Include="SourceCode\Data\button_prompt_data.hpp" />
     <ClInclude Include="SourceCode\Data\warning_tab_data.hpp" />
@@ -443,14 +436,6 @@
     <ClInclude Include="SourceCode\Debugger\debugger.hpp" />
     <ClInclude Include="SourceCode\Drawer\drawer.hpp" />
     <ClInclude Include="SourceCode\Event\draw_knife_event.hpp" />
-    <ClInclude Include="SourceCode\Event\aim_gun_event (2).hpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Event\aim_gun_event (3).hpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClInclude>
     <ClInclude Include="SourceCode\Event\spinning_slash_event.hpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>

@@ -20,6 +20,8 @@ TitleScene::TitleScene() :
 	const auto pool_holder = ObjectPoolHolder::GetInstance();
 	pool_holder->AddObjectPool(m_title_scene_effect_object_pool);
 
+	// TODO : JSON化
+	
 	// ライトの設定
 	const auto light_holder			= LightHolder::GetInstance();
 	const auto pos					= VGet(-2.6f, 46.0f, -13.f);
@@ -79,7 +81,7 @@ TitleScene::~TitleScene()
 
 void TitleScene::Init()
 {
-	// タブの登録
+	// TODO : リファクタリング
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	cinemachine_brain->SetBlendTime(0.0f);
 	cinemachine_brain->SetNear(1.0f);

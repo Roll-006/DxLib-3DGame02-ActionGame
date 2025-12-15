@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../Interface/i_scene.hpp"
 
 #include "../Object/player.hpp"
@@ -48,7 +48,7 @@ private:
 private:
 	bool		m_is_active;
 	SceneKind	m_scene_kind;
-	float		m_elapsed_time;
+	int			m_loop_count;
 	bool		m_can_fade_in;
 
 	std::shared_ptr<Player>						m_player;

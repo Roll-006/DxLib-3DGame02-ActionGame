@@ -1,10 +1,10 @@
-#include "play_scene.hpp"
+ï»¿#include "play_scene.hpp"
 #include "../Manager/scene_manager.hpp"
 
 PlayScene::PlayScene() :
 	m_is_active						(true),
 	m_scene_kind					(SceneKind::kPlay),
-	m_elapsed_time					(0.0f),
+	m_loop_count					(0),
 	m_can_fade_in					(true),
 	m_player						(std::make_shared<Player>()),
 	m_enemy_manager					(std::make_shared<EnemyManager>()),
@@ -37,13 +37,13 @@ PlayScene::PlayScene() :
 	pool_holder->AddObjectPool(m_rifle_cartridge_object_pool);
 	pool_holder->AddObjectPool(m_play_scene_effect_object_pool);
 
-	// ƒJƒƒ‰Ý’è
+	// ã‚«ãƒ¡ãƒ©è¨­å®š
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	cinemachine_brain->RemoveAllVirtualCameraController();
 	cinemachine_brain->RemoveAllVirtualCamera();
 	cinemachine_brain->AddVirtualCameraController(std::make_shared<ControlVirtualCamerasController>(*m_player.get()));
 
-	// ƒ‰ƒCƒg‚ÌÝ’è
+	// ãƒ©ã‚¤ãƒˆã®è¨­å®š
 	const auto light_holder = LightHolder::GetInstance();
 	light_holder->CreateLight(std::make_shared<DirectionalLight>(LightName.MOONLIGHT, 0, v3d::GetNormalizedV(VGet(0.5f, -0.5f, 0.5f))));
 
@@ -78,7 +78,7 @@ PlayScene::~PlayScene()
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	cinemachine_brain->RemoveVirtualCameraController(VirtualCameraControllerKind::kControl);
 
-	// ƒ‰ƒCƒg‚Ìíœ
+	// ãƒ©ã‚¤ãƒˆã®å‰Šé™¤
 	const auto light_holder = LightHolder::GetInstance();
 	light_holder->DeleteLight(LightName.MOONLIGHT);
 
@@ -94,7 +94,8 @@ void PlayScene::Init()
 	const auto game_time_manager = GameTimeManager::GetInstance();
 	game_time_manager->InitTimeScale();
 
-	// ƒJƒƒ‰‰Šú‰»
+	// ã‚«ãƒ¡ãƒ©åˆæœŸåŒ–
+	// TODO : ãƒªãƒ•ã‚¡ã‚¯ã‚¿ãƒªãƒ³ã‚°
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
 	cinemachine_brain->SetNear(10.0f);
 	cinemachine_brain->SetFar (2000.0f);
@@ -167,12 +168,12 @@ void PlayScene::Draw() const
 
 std::shared_ptr<IScene> PlayScene::ChangeScene()
 {
-	// ƒ^ƒCƒgƒ‹
+	// ã‚¿ã‚¤ãƒˆãƒ«
 	if (m_game_over_tab->IsQuitGame() || m_pause_tab->IsQuitGame() || m_game_clear_tab->IsQuitGame())
 	{
 		return std::make_shared<TitleScene>();
 	}
-	// ƒ[ƒh(ƒvƒŒƒC)
+	// ãƒ­ãƒ¼ãƒ‰(ãƒ—ãƒ¬ã‚¤)
 	if (m_game_over_tab->IsContinue() || m_pause_tab->IsRestart()  || m_game_clear_tab->IsRetry())
 	{
 		return std::make_shared<LoadScene>(SceneKind::kPlay);
@@ -185,8 +186,9 @@ void PlayScene::StartFadeIn()
 {
 	if (!m_can_fade_in) { return; }
 
-	m_elapsed_time += GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kNoneScale);
-	if (m_elapsed_time > 25.0f)
+	// TODO : ä»®
+	++m_loop_count;
+	if (m_loop_count > 5)
 	{
 		const auto fader = SceneFader::GetInstance();
 		fader->StartFade(0, 120.0f);
