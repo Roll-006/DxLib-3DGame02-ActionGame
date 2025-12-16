@@ -21,6 +21,7 @@ void zombie_state::CrouchRightStun::Update(std::shared_ptr<Zombie>& obj)
 	}
 
 	obj->DisallowDecreaseKnockBackGauge();
+	obj->AllowCalcLookDir();
 }
 
 void zombie_state::CrouchRightStun::LateUpdate(std::shared_ptr<Zombie>& obj)
@@ -38,6 +39,9 @@ void zombie_state::CrouchRightStun::Enter(std::shared_ptr<Zombie>& obj)
 	auto	   head_m		= MV1GetFrameLocalWorldMatrix(model_handle, obj->GetHumanoidFrame()->GetHeadIndex(model_handle));
 	const auto head_pos		= MGetTranslateElem(head_m);
 	EventSystem::GetInstance()->Publish(StunEvent(head_pos));
+
+	// Œ‚‚½‚ê‚½”½“®‚Å‰ñ“]‚³‚¹‚é
+	obj->OnRotate(30.0f * math::kDegToRad, RotDirKind::kRight);
 }
 
 void zombie_state::CrouchRightStun::Exit(std::shared_ptr<Zombie>& obj)

@@ -106,11 +106,6 @@ void Zombie::Update()
 	m_animator			->Update();
 	m_humanoid_foot_ik	->Update(std::dynamic_pointer_cast<IHumanoid>(shared_from_this()));
 
-	if (m_move_dir.at(TimeKind::kCurrent) != v3d::GetZeroV())
-	{
-		m_look_dir.at(TimeKind::kNext) = m_move_dir.at(TimeKind::kCurrent);
-	}
-
 	CalcMoveDir();
 	CalcLookDir();
 	CalcMoveVelocity();
@@ -556,6 +551,11 @@ bool Zombie::IsCrouchStun() const
 void Zombie::Move()
 {
 	m_move_dir_offset_speed = move_dir_offset_speed;
+
+	if (m_move_dir.at(TimeKind::kCurrent) != v3d::GetZeroV())
+	{
+		m_look_dir.at(TimeKind::kNext) = m_move_dir.at(TimeKind::kCurrent);
+	}
 }
 
 void Zombie::TrackMove(const VECTOR& target_pos)

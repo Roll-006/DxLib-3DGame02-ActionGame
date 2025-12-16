@@ -552,6 +552,7 @@
     <ClInclude Include="SourceCode\InverseKinematics\humanoid_foot_ik_solver.hpp" />
     <ClInclude Include="SourceCode\InverseKinematics\ik_solver.hpp" />
     <ClInclude Include="SourceCode\JSON\json_loader.hpp" />
+    <ClInclude Include="SourceCode\Kind\rot_dir_kind.hpp" />
     <ClInclude Include="SourceCode\Kind\time_scale_layer_kind.hpp" />
     <ClInclude Include="SourceCode\Kind\axis_kind.hpp" />
     <ClInclude Include="SourceCode\Kind\mixamo_axis_kind.hpp" />

@@ -1896,6 +1896,9 @@
     <ClInclude Include="SourceCode\UI\button_prompt.hpp">
       <Filter>SourceCode\UI</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\Kind\rot_dir_kind.hpp">
+      <Filter>SourceCode\Kind</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="SourceCode">

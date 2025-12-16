@@ -52,6 +52,13 @@ void EnemyBase::ChangePatrolDestination()
 	m_move_dir.at(TimeKind::kNext) = v3d::GetNormalizedV(destination_pos_y0 - pos_y0);
 }
 
+void EnemyBase::OnRotate(const float angle, const RotDirKind rot_dir_kind)
+{
+	const auto up			= m_transform->GetUp(CoordinateKind::kWorld);
+	const auto result_angle = rot_dir_kind == RotDirKind::kLeft ? -angle : angle;
+	m_look_dir.at(TimeKind::kNext) = math::GetRotatedPos(m_look_dir.at(TimeKind::kCurrent), quat::CreateQuaternion(up, result_angle));
+}
+
 void EnemyBase::OnDetected()
 {
 	m_is_detection_shared = true;

@@ -1,5 +1,6 @@
 #pragma once
 
+/// @brief プールに格納されるオブジェクト
 class IPoolable abstract
 {
 public:

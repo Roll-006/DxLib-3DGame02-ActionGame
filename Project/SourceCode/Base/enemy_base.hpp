@@ -1,6 +1,7 @@
 #pragma once
 #include "character_base.hpp"
 #include "../Part/patrol_route_giver.hpp"
+#include "../Kind/rot_dir_kind.hpp"
 
 class EnemyBase abstract : public CharacterBase
 {
@@ -19,6 +20,11 @@ public:
 
 	/// @brief ƒŠƒXƒ|[ƒ“‚³‚¹‚ç‚ê‚é
 	virtual void OnRespawn(const VECTOR& pos, const VECTOR& look_dir) abstract;
+
+	/// @brief Forward‚ª‰ñ“]‚³‚¹‚ç‚ê‚é
+	/// @param angle ‰ñ“]‚·‚éŠp“x (ƒ‰ƒWƒAƒ“)
+	/// @param rot_dir_kind ‰ñ“]•ûŒü
+	void OnRotate(const float angle, const RotDirKind rot_dir_kind);
 
 	void OnDetected();
 	void Disappear();

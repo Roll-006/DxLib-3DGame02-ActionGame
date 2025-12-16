@@ -2,16 +2,11 @@
 #include "../Calculation/math.hpp"
 #include "../Data/model_frame_angle_limit_data.hpp"
 #include "../Data/triangle_edge_data.hpp"
+#include "../Kind/rot_dir_kind.hpp"
 #include "frame_info.hpp"
 
 namespace ik_solver
 {
-	enum class RotDirKind
-	{
-		kLeft,
-		kRight,
-	};
-
 	/// @brief mixamoXYZ軸からXYZ軸へ変換する
 	[[nodiscard]] Axis ConvertMixamoAxisToAxis(const Axis& mixamo_axis);
 

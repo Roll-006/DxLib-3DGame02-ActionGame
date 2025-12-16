@@ -329,7 +329,7 @@ void HumanoidFootIKSolver::OnLeftLegIK(const std::shared_ptr<IHumanoid>& humanoi
 			humanoid->GetHumanoidFrame()->GetLeftFootIndex(model_handle),
 			angle_limits.at(MV1GetFrameName(model_handle, humanoid->GetHumanoidFrame()->GetLeftUpLegIndex(model_handle))),
 			angle_limits.at(MV1GetFrameName(model_handle, humanoid->GetHumanoidFrame()->GetLeftLegIndex	 (model_handle))),
-			ik_solver::RotDirKind::kLeft, std::make_optional<AxisData>( aid_axis.x_axis, AxisKind::kRight));
+			RotDirKind::kLeft, std::make_optional<AxisData>( aid_axis.x_axis, AxisKind::kRight));
 	}
 
 	// 左のつま先が地面に沿うように回転
@@ -363,7 +363,7 @@ void HumanoidFootIKSolver::OnRightLegIK(const std::shared_ptr<IHumanoid>& humano
 			humanoid->GetHumanoidFrame()->GetRightFootIndex(model_handle),
 			angle_limits.at(MV1GetFrameName(model_handle, humanoid->GetHumanoidFrame()->GetRightUpLegIndex	(model_handle))),
 			angle_limits.at(MV1GetFrameName(model_handle, humanoid->GetHumanoidFrame()->GetRightLegIndex	(model_handle))),
-			ik_solver::RotDirKind::kLeft, std::make_optional<AxisData>( aid_axis.x_axis, AxisKind::kRight ));
+			RotDirKind::kLeft, std::make_optional<AxisData>( aid_axis.x_axis, AxisKind::kRight ));
 	}
 
 	// 右のつま先が地面に沿うように回転
