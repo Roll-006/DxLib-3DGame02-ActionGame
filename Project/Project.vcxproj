@@ -168,6 +168,7 @@
     <ClCompile Include="SourceCode\GameTime\game_time_manager.cpp" />
     <ClCompile Include="SourceCode\Handle\handle_keeper.cpp" />
     <ClCompile Include="SourceCode\Input\input_checker.cpp" />
+    <ClCompile Include="SourceCode\InverseKinematics\humanoid_arm_ik_solver.cpp" />
     <ClCompile Include="SourceCode\InverseKinematics\humanoid_foot_ik_solver.cpp" />
     <ClCompile Include="SourceCode\InverseKinematics\ik_solver.cpp" />
     <ClCompile Include="SourceCode\Light\spot_light.cpp" />
@@ -404,6 +405,8 @@
     <ClInclude Include="SourceCode\Concept\vector_concepts.hpp" />
     <ClInclude Include="SourceCode\CSV\csv_loader.hpp" />
     <ClInclude Include="SourceCode\Data\game_over_text_data.hpp" />
+    <ClInclude Include="SourceCode\Data\humanoid_arm_matrix_data.hpp" />
+    <ClInclude Include="SourceCode\Data\humanoid_arm_ray_data.hpp" />
     <ClInclude Include="SourceCode\Data\single_button_prompt_data.hpp" />
     <ClInclude Include="SourceCode\Data\button_prompt_data.hpp" />
     <ClInclude Include="SourceCode\Data\warning_tab_data.hpp" />
@@ -549,6 +552,7 @@
     <ClInclude Include="SourceCode\Interface\i_virtual_camera_controller.hpp" />
     <ClInclude Include="SourceCode\Interface\i_ui_creator.hpp" />
     <ClInclude Include="SourceCode\InverseKinematics\frame_info.hpp" />
+    <ClInclude Include="SourceCode\InverseKinematics\humanoid_arm_ik_solver.hpp" />
     <ClInclude Include="SourceCode\InverseKinematics\humanoid_foot_ik_solver.hpp" />
     <ClInclude Include="SourceCode\InverseKinematics\ik_solver.hpp" />
     <ClInclude Include="SourceCode\JSON\json_loader.hpp" />
@@ -796,6 +800,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\JSON\button_prompt_data.json" />
+    <None Include="Data\JSON\model_arm_angle_limits.json" />
     <None Include="Data\JSON\tab_data.json" />
     <None Include="Data\JSON\text_data.json" />
     <None Include="data\JSON\gun_data.json" />

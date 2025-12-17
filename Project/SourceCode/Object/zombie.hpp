@@ -1,4 +1,4 @@
-#pragma once
+Ôªø#pragma once
 #include "../Base/enemy_base.hpp"
 #include "../Interface/i_poolable.hpp"
 #include "../Interface/i_humanoid.hpp"
@@ -7,6 +7,7 @@
 #include "../Interface/i_stealth_killable.hpp"
 
 #include "../Animator/zombie_animator.hpp"
+#include "../InverseKinematics/humanoid_arm_ik_solver.hpp"
 #include "../InverseKinematics/humanoid_foot_ik_solver.hpp"
 
 #include "../Data/humanoid_enemy_collider_data.hpp"
@@ -42,7 +43,7 @@ public:
 	#pragma endregion
 	
 
-	#pragma region íÕÇ›
+	#pragma region Êé¥„Åø
 	void Grab()			override;
 	void Release()		override;
 	void OnEscape()		override;
@@ -52,13 +53,13 @@ public:
 	#pragma endregion
 
 
-	#pragma region ÉÅÉåÅ[
+	#pragma region „É°„É¨„Éº
 	[[nodiscard]] bool  IsStandStun()  const override;
 	[[nodiscard]] bool  IsCrouchStun() const override;
 	#pragma endregion
 
 
-	#pragma region ÉXÉeÉãÉXÉLÉã
+	#pragma region „Çπ„ÉÜ„É´„Çπ„Ç≠„É´
 	void OnStealthKill()		override;
 	void ExitStealthKilled()	override;
 	void DisallowStealthKill()	override { m_is_allow_stealth_kill = false; }
@@ -74,7 +75,8 @@ public:
 	void TrackMove(const VECTOR& target_pos);
 
 	void OnFootIK();
-	void OnCrouchIK();
+	void OnLeftCrouchIK();
+	void OnRightCrouchIK();
 
 	void UpdateGrabRun();
 
@@ -85,10 +87,12 @@ public:
 
 
 	#pragma region Getter
-	[[nodiscard]] float										GetDeltaTime()		 const	override;
-	[[nodiscard]] std::shared_ptr<ZombieStateController>	GetStateController() const				{ return m_state; }
-	[[nodiscard]] bool										CanGrabTarget()		 const				{ return m_can_grab_target; }
+	[[nodiscard]] float										GetDeltaTime()				const	override;
+	[[nodiscard]] std::shared_ptr<ZombieStateController>	GetStateController()		const		{ return m_state; }
+	[[nodiscard]] bool										CanGrabTarget()				const		{ return m_can_grab_target; }
 	[[nodiscard]] bool										IsReturnPool()				override	{ return m_is_return_pool; }
+	[[nodiscard]] std::shared_ptr<HumanoidArmIKSolver>		GetHumanoidArmIKSolver()	const		{ return m_humanoid_arm_ik; }
+	[[nodiscard]] std::shared_ptr<HumanoidFootIKSolver>		GetHumanoidFootIKSolver()	const		{ return m_humanoid_foot_ik; }
 	#pragma endregion
 
 private:
@@ -106,7 +110,9 @@ private:
 	float						damage_over_time_start_time;
 	HumanoidEnemyColliderData	collider_data;
 
+	HumanoidArmRayData						m_arm_ray_data;
 	HumanoidLegRayData						m_leg_ray_data;
+	std::shared_ptr<HumanoidArmIKSolver>	m_humanoid_arm_ik;
 	std::shared_ptr<HumanoidFootIKSolver>	m_humanoid_foot_ik;
 	std::shared_ptr<HumanoidFrameGetter>	m_humanoid_frame;
 

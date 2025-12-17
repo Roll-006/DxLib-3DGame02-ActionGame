@@ -749,7 +749,7 @@ void Player::Move()
 
 void Player::OnFootIK()
 {
-	m_humanoid_foot_ik->OnFootIK(std::dynamic_pointer_cast<IHumanoid>(shared_from_this()));
+	m_humanoid_foot_ik->ApplyFootIK(std::dynamic_pointer_cast<IHumanoid>(shared_from_this()));
 }
 
 void Player::OnCrouchIK()
@@ -757,7 +757,7 @@ void Player::OnCrouchIK()
 	const auto humanoid = std::dynamic_pointer_cast<IHumanoid>(shared_from_this());
 
 	m_humanoid_foot_ik->CalcRightLegRayPos	(humanoid);
-	m_humanoid_foot_ik->OnRightKneelCrouchIK(humanoid);
+	m_humanoid_foot_ik->ApplyRightKneelCrouchIK(humanoid);
 }
 
 void Player::SetLookDirOffsetValueForAim()

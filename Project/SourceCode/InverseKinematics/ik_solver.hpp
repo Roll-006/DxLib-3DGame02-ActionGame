@@ -2,11 +2,16 @@
 #include "../Calculation/math.hpp"
 #include "../Data/model_frame_angle_limit_data.hpp"
 #include "../Data/triangle_edge_data.hpp"
-#include "../Kind/rot_dir_kind.hpp"
 #include "frame_info.hpp"
 
 namespace ik_solver
 {
+	enum class RotDirKind
+	{
+		kLeft,
+		kRight,
+	};
+
 	/// @brief mixamoXYZ軸からXYZ軸へ変換する
 	[[nodiscard]] Axis ConvertMixamoAxisToAxis(const Axis& mixamo_axis);
 
@@ -39,6 +44,7 @@ namespace ik_solver
 		ModelFrameAngleLimitData&		begin_angle_limit,
 		ModelFrameAngleLimitData&		middle_angle_limit,
 		const RotDirKind				rot_dir_kind,
+		const bool						is_rotate_x_axis,
 		const std::optional<AxisData>&	aid_axis = std::nullopt);
 
 	/// @brief 2ボーンIKに必要な回転行列を生成する
@@ -49,10 +55,11 @@ namespace ik_solver
 	/// @param triangle_edge 三角形の辺データ
 	/// @param rot_dir_kind 回転方向
 	void CreateTwoBoneIKRotMatrix(
-		FrameData&					begin_frame,
-		FrameData&					middle_frame,
+		FrameData&					begin_bone,
+		FrameData&					middle_bone,
 		ModelFrameAngleLimitData&	begin_angle_limit,
 		ModelFrameAngleLimitData&	middle_angle_limit,
 		const TriangleEdgeData		triangle_edge,
-		const RotDirKind			rot_dir_kind);
+		const RotDirKind			rot_dir_kind,
+		const bool					is_rotate_x_axis);
 }

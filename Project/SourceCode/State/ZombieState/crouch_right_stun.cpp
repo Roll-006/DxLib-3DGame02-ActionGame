@@ -1,4 +1,4 @@
-#include "crouch_right_stun.hpp"
+ï»¿#include "crouch_right_stun.hpp"
 
 zombie_state::CrouchRightStun::CrouchRightStun() :
 	ActionStateBase		(static_cast<int>(zombie_state::ActionStateKind::kCrouchRightStun)),
@@ -26,7 +26,7 @@ void zombie_state::CrouchRightStun::Update(std::shared_ptr<Zombie>& obj)
 
 void zombie_state::CrouchRightStun::LateUpdate(std::shared_ptr<Zombie>& obj)
 {
-
+	obj->OnRightCrouchIK();
 }
 
 void zombie_state::CrouchRightStun::Enter(std::shared_ptr<Zombie>& obj)
@@ -40,8 +40,12 @@ void zombie_state::CrouchRightStun::Enter(std::shared_ptr<Zombie>& obj)
 	const auto head_pos		= MGetTranslateElem(head_m);
 	EventSystem::GetInstance()->Publish(StunEvent(head_pos));
 
-	// Œ‚‚½‚ê‚½”½“®‚Å‰ñ“]‚³‚¹‚é
+	// æ’ƒãŸã‚ŒãŸåå‹•ã§å›žè»¢ã•ã›ã‚‹
 	obj->OnRotate(30.0f * math::kDegToRad, RotDirKind::kRight);
+
+	const auto humanoid = std::dynamic_pointer_cast<IHumanoid>(obj);
+	obj->GetHumanoidFootIKSolver()->CreateRightLegRay (obj.get(), humanoid);
+	obj->GetHumanoidArmIKSolver ()->CreateRightHandRay(obj.get(), humanoid);
 }
 
 void zombie_state::CrouchRightStun::Exit(std::shared_ptr<Zombie>& obj)
@@ -50,6 +54,10 @@ void zombie_state::CrouchRightStun::Exit(std::shared_ptr<Zombie>& obj)
 	auto	   head_m		= MV1GetFrameLocalWorldMatrix(model_handle, obj->GetHumanoidFrame()->GetHeadIndex(model_handle));
 	const auto head_pos		= MGetTranslateElem(head_m);
 	EventSystem::GetInstance()->Publish(ExitStunEvent(head_pos));
+
+	const auto humanoid = std::dynamic_pointer_cast<IHumanoid>(obj);
+	obj->GetHumanoidFootIKSolver()->DeleteRightLegRay (obj.get());
+	obj->GetHumanoidArmIKSolver ()->DeleteRightHandRay(obj.get());
 }
 
 std::shared_ptr<IState<Zombie>> zombie_state::CrouchRightStun::ChangeState(std::shared_ptr<Zombie>& obj)
@@ -58,17 +66,17 @@ std::shared_ptr<IState<Zombie>> zombie_state::CrouchRightStun::ChangeState(std::
 
 	const auto state_controller = obj->GetStateController();
 
-	// ƒXƒeƒ‹ƒXƒLƒ‹‚³‚ê‚½
+	// ã‚¹ãƒ†ãƒ«ã‚¹ã‚­ãƒ«ã•ã‚ŒãŸ
 	if (state_controller->TryStealthKilled(obj))
 	{
 		return state_controller->GetState<StealthKilled, Zombie>();
 	}
-	// ƒmƒbƒNƒoƒbƒN
+	// ãƒŽãƒƒã‚¯ãƒãƒƒã‚¯
 	if (state_controller->TryKnockback(obj))
 	{
 		return state_controller->GetState<Knockback, Zombie>();
 	}
-	// Ž€–S
+	// æ­»äº¡
 	if (state_controller->TryDead(obj))
 	{
 		return state_controller->GetState<Dead, Zombie>();

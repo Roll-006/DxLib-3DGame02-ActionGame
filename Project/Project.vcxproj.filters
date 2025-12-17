@@ -655,6 +655,9 @@
     <ClCompile Include="SourceCode\UI\button_prompt.cpp">
       <Filter>SourceCode\UI</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\InverseKinematics\humanoid_arm_ik_solver.cpp">
+      <Filter>SourceCode\InverseKinematics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\character_base.hpp">
@@ -1899,6 +1902,15 @@
     <ClInclude Include="SourceCode\Kind\rot_dir_kind.hpp">
       <Filter>SourceCode\Kind</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\InverseKinematics\humanoid_arm_ik_solver.hpp">
+      <Filter>SourceCode\InverseKinematics</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\humanoid_arm_matrix_data.hpp">
+      <Filter>SourceCode\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Data\humanoid_arm_ray_data.hpp">
+      <Filter>SourceCode\Data</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="SourceCode">
@@ -2102,6 +2114,9 @@
       <Filter>JSON</Filter>
     </None>
     <None Include="Data\JSON\tab_data.json">
+      <Filter>JSON</Filter>
+    </None>
+    <None Include="Data\JSON\model_arm_angle_limits.json">
       <Filter>JSON</Filter>
     </None>
   </ItemGroup>

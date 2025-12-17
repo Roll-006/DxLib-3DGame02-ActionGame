@@ -33,7 +33,7 @@ enum class ZombieAnimKind
 
 
 	#pragma region 下半身用
-	kCrouchLeftStun,
-	kCrouchRightStun,
+	kLeftCrouch,
+	kRightCrouch,
 	#pragma endregion
 };

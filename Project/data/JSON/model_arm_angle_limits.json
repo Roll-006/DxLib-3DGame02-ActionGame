@@ -1,0 +1,36 @@
+﻿{
+  "humanoid": {
+    "mixamorig:LeftShoulder": {
+      "max_angle": 180.0,
+      "min_angle": 0.0
+    },
+    "mixamorig:LeftArm": {
+      "max_angle": 140.0,
+      "min_angle": 0.0
+    },
+    "mixamorig:LeftForeArm": {
+      "max_angle": 180.0,
+      "min_angle": 0.0
+    },
+    "mixamorig:LeftHand": {
+      "max_angle": 180.0,
+      "min_angle": 0.0
+    },
+    "mixamorig:RightShoulder": {
+      "max_angle": 180.0,
+      "min_angle": 0.0
+    },
+    "mixamorig:RightArm": {
+      "max_angle": 140.0,
+      "min_angle": 0.0
+    },
+    "mixamorig:RightForeArm": {
+      "max_angle": 180.0,
+      "min_angle": 0.0
+    },
+    "mixamorig:RightHand": {
+      "max_angle": 180.0,
+      "min_angle": 0.0
+    }
+  }
+}

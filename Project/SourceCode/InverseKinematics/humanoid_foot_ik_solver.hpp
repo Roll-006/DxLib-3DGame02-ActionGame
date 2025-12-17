@@ -14,54 +14,68 @@ class HumanoidFootIKSolver final
 {
 public:
 	HumanoidFootIKSolver(
-		const std::shared_ptr<AnimatorBase>& animator,
-		const std::shared_ptr<Modeler>& modeler,
-		std::unordered_map<ColliderKind, std::shared_ptr<Collider>>& colliders,
+		const std::shared_ptr<AnimatorBase>& animator, 
+		const std::shared_ptr<Modeler>& modeler, 
+		std::unordered_map<ColliderKind, std::shared_ptr<Collider>>& colliders, 
 		HumanoidLegRayData& ray_data);
 	~HumanoidFootIKSolver();
 
-	void Init(const std::shared_ptr<IHumanoid>& humanoid);
-	void Update(const std::shared_ptr<IHumanoid>& humanoid);
+	void Init	(const std::shared_ptr<IHumanoid>& humanoid);
+	void Update	(const std::shared_ptr<IHumanoid>& humanoid);
 
 
 	#pragma region コライダー
+	void CreateLeftLegRay	(PhysicalObjBase* physical_obj, const std::shared_ptr<IHumanoid>& humanoid);
 	void CreateRightLegRay	(PhysicalObjBase* physical_obj, const std::shared_ptr<IHumanoid>& humanoid);
 	void CreateFootRay		(PhysicalObjBase* physical_obj, const std::shared_ptr<IHumanoid>& humanoid);
 	void CreateFoeBaseRay	(PhysicalObjBase* physical_obj, const std::shared_ptr<IHumanoid>& humanoid);
 
-	void DeleteRightLegRay(PhysicalObjBase* physical_obj);
+	void DeleteLeftLegRay	(PhysicalObjBase* physical_obj);
+	void DeleteRightLegRay	(PhysicalObjBase* physical_obj);
 
-	void CalcRightLegRayPos(const std::shared_ptr<IHumanoid>& humanoid);
+	void CalcLeftLegRayPos	(const std::shared_ptr<IHumanoid>& humanoid);
+	void CalcRightLegRayPos	(const std::shared_ptr<IHumanoid>& humanoid);
 	#pragma endregion
 
 	/// @brief FootIKの処理を適用する
-	void OnFootIK(const std::shared_ptr<IHumanoid>& humanoid);
+	void ApplyFootIK			(const std::shared_ptr<IHumanoid>& humanoid);
+
+	/// @brief 左膝を地面につけるしゃがみアニメーションにIK処理を適用する
+	void ApplyLeftKneelCrouchIK	(const std::shared_ptr<IHumanoid>& humanoid);
+
 	/// @brief 右膝を地面につけるしゃがみアニメーションにIK処理を適用する
-	void OnRightKneelCrouchIK(const std::shared_ptr<IHumanoid>& humanoid);
+	void ApplyRightKneelCrouchIK(const std::shared_ptr<IHumanoid>& humanoid);
 
 	/// @brief フレーム行列のブレンドを行う
 	/// @brief IK処理適用後に呼び出す必要あり
 	void BlendFrame(const std::shared_ptr<IHumanoid>& humanoid);
 
 private:
-	void JudgeExecuteIK(const std::shared_ptr<IHumanoid>& humanoid);
+	void JudgeExecuteIK		(const std::shared_ptr<IHumanoid>& humanoid);
 
-	void CalcToeBaseOffset(const std::shared_ptr<IHumanoid>& humanoid);
-	void DownArmature(const std::shared_ptr<IHumanoid>& humanoid);
-	void UpHips(const std::shared_ptr<IHumanoid>& humanoid);
+	void CalcToeBaseOffset	(const std::shared_ptr<IHumanoid>& humanoid);
+	void DownArmature		(const std::shared_ptr<IHumanoid>& humanoid);
+	void UpHips				(const std::shared_ptr<IHumanoid>& humanoid);
 
-	void OnLeftLegIK	(const std::shared_ptr<IHumanoid>& humanoid);
-	void OnRightLegIK	(const std::shared_ptr<IHumanoid>& humanoid);
-	void OnRightKneelIK	(const std::shared_ptr<IHumanoid>& humanoid);
 
+	#pragma region IK処理
+	void ApplyLeftLegIK		(const std::shared_ptr<IHumanoid>& humanoid);
+	void ApplyRightLegIK	(const std::shared_ptr<IHumanoid>& humanoid);
+	void ApplyLeftKneelIK	(const std::shared_ptr<IHumanoid>& humanoid);
+	void ApplyRightKneelIK	(const std::shared_ptr<IHumanoid>& humanoid);
+	#pragma endregion
+
+
+	#pragma region ブレンドの起点を変更
 	void ChagneArmatureOriginMatrix	(const std::shared_ptr<IHumanoid>& humanoid);
 	void ChangeLeftLegOriginMatrix	(const std::shared_ptr<IHumanoid>& humanoid);
 	void ChangeRightLegOriginMatrix	(const std::shared_ptr<IHumanoid>& humanoid);
+	#pragma endregion
 
 private:
 	static std::unordered_map<std::string, ModelFrameAngleLimitData> angle_limits;
 	float armature_blend_time	= 0.25f;	// 仮　のちに定数化
-	float leg_blend_time		= 0.5f;		// 仮　のちに定数化
+	float leg_blend_time		= 0.5f;	// 仮　のちに定数化
 
 	std::shared_ptr<AnimatorBase>									m_animator;
 	std::shared_ptr<Modeler>										m_modeler;

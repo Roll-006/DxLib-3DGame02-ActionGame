@@ -1,9 +1,9 @@
-#pragma once
+Ôªø#pragma once
 #include <string>
 
 static struct SWATAnimationPath
 {
-	#pragma region îƒóp
+	#pragma region Ê±éÁî®
 	const std::string IDLE								= "Data/Animation/SWAT/idle.mv1";
 	const std::string IDLE_INJURED						= "Data/Animation/SWAT/idle_injured.mv1";
 	const std::string STAND_TO_CROUCH					= "Data/Animation/SWAT/stand_to_crouch.mv1";
@@ -26,7 +26,7 @@ static struct SWATAnimationPath
 	#pragma endregion
 
 
-	#pragma region è„îºêgóp
+	#pragma region ‰∏äÂçäË∫´Áî®
 	const std::string ATTACH_RIFLE						= "Data/Animation/SWAT/attach_rifle.mv1";
 	const std::string DETACH_RIFLE						= "Data/Animation/SWAT/detach_rifle.mv1";
 	const std::string ATTACH_HANDGUN					= "Data/Animation/SWAT/attach_handgun.mv1";
@@ -42,7 +42,7 @@ static struct SWATAnimationPath
 	#pragma endregion
 
 
-	#pragma region â∫îºêgóp
+	#pragma region ‰∏ãÂçäË∫´Áî®
 	const std::string CROUCH							= "Data/Animation/SWAT/idle_crouch_aim_gun.mv1";
 	const std::string TALKING_CROUCH					= "Data/Animation/SWAT/crouch.mv1";
 
@@ -79,7 +79,7 @@ static struct SWATAnimationPath
 
 static struct ZombieAnimationPath
 {
-	#pragma region îƒóp
+	#pragma region Ê±éÁî®
 	const std::string ZOMBIE_IDLE_01					= "Data/Animation/Zombie/zombie_idle_01.mv1";
 	const std::string SHOUT_ZOMBIE						= "Data/Animation/Zombie/shout_zombie.mv1";
 	const std::string MOVE_FORWARD_RUN_02				= "Data/Animation/Zombie/move_forward_run_02.mv1";
@@ -96,48 +96,21 @@ static struct ZombieAnimationPath
 	const std::string BACKWARD_KNOCKBACK				= "Data/Animation/Zombie/backward_knockback.mv1";
 	const std::string STAND_UP_ZOMBIE_01				= "Data/Animation/Zombie/stand_up_zombie_01.mv1";
 	const std::string STAND_UP_ZOMBIE_02				= "Data/Animation/Zombie/stand_up_zombie_02.mv1";
+
+	const std::string LEFT_CROUCH						= "Data/Animation/Zombie/left_crouch.mv1";
+	const std::string RIGHT_CROUCH						= "Data/Animation/Zombie/right_crouch.mv1";
 	#pragma endregion
 
 
-	#pragma region è„îºêgóp
+	#pragma region ‰∏äÂçäË∫´Áî®
 	const std::string GRAB								= "Data/Animation/Zombie/move_forward_walk_zombie.mv1";
 	const std::string STAND_STUN						= "Data/Animation/Zombie/move_backward_run_dizzy.mv1";
 	#pragma endregion
 
 
-	#pragma region â∫îºêgóp
+	#pragma region ‰∏ãÂçäË∫´Áî®
 	const std::string LEANING_FORWARD_CROUCH_LEFT		= "Data/Animation/Zombie/idle_leaning_forward_crouch_left.mv1";
 	const std::string LEANING_FORWARD_CROUCH_RIGHT		= "Data/Animation/Zombie/idle_leaning_forward_crouch_right.mv1";
 	#pragma endregion
 
 }ZombieAnimPath;
-
-
-static struct BossAnimationPath
-{
-	#pragma region îƒóp
-	const std::string IDLE								= "Data/Animation/Boss/idle.mv1";
-	const std::string SHOUT								= "Data/Animation/Boss/shout.mv1";
-	const std::string MOVE_FORWARD_RUN					= "Data/Animation/Boss/move_forward_run.mv1";
-	const std::string MOVE_FORWARD_WALK					= "Data/Animation/Boss/move_forward_walk.mv1";
-
-	const std::string DEAD_01							= "Data/Animation/Boss/death_01.mv1";
-	const std::string DEAD_02							= "Data/Animation/Boss/death_02.mv1";
-	const std::string FLYING_KNOCKBACK					= "Data/Animation/Boss/flying_knockback_down.mv1";
-	const std::string BACKWARD_KNOCKBACK				= "Data/Animation/Boss/backward_knockback.mv1";
-	const std::string STAND_UP_01						= "Data/Animation/Boss/stand_up_01.mv1";
-	const std::string STAND_UP_02						= "Data/Animation/Boss/stand_up_02.mv1";
-	#pragma endregion
-
-
-	#pragma region è„îºêgóp
-	const std::string STAND_STUN						= "Data/Animation/Boss/move_backward_run_dizzy.mv1";
-	#pragma endregion
-
-
-	#pragma region â∫îºêgóp
-	const std::string LEANING_FORWARD_CROUCH_LEFT		= "Data/Animation/Boss/idle_leaning_forward_crouch_left.mv1";
-	const std::string LEANING_FORWARD_CROUCH_RIGHT		= "Data/Animation/Boss/idle_leaning_forward_crouch_right.mv1";
-	#pragma endregion
-
-}BossAnimPath;
