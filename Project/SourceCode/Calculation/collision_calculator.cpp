@@ -1078,57 +1078,62 @@ VECTOR collision::PushBackSphereAndModel    (const VECTOR& velocity, const Spher
 
 VECTOR collision::PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsule& dynamic_capsule, const Triangle& static_triangle)
 {
+    // 仮定義
+    const auto become_difficult_angle = 20.0f * math::kDegToRad;
+    const auto max_slope_angle = 45.0f * math::kDegToRad;
+
     // 未来のカプセルを取得
     auto future_capsule = dynamic_capsule;
     future_capsule.Move(velocity);
 
     // 未来の座標と衝突しているかを判定
-    if (!IsCollidedTriangleAndCapsule(static_triangle, future_capsule))
-    {
-        return velocity;
-    }
+    if (!IsCollidedTriangleAndCapsule(static_triangle, future_capsule)) { return velocity; }
 
     // 三角形の平面を定義
     const auto plane = Plane(static_triangle.GetCentroid(), static_triangle.GetNormalVector());
 
+    // 坂の角度を取得し、スムーズに登れる坂かを判定
+    const auto slope_angle = math::GetAngleBetweenTwoVector(static_triangle.GetNormalVector(), axis::GetWorldYAxis());
+    const auto can_smoothly_move = slope_angle < become_difficult_angle || slope_angle >= 90.0f * math::kDegToRad;
+
     // カプセルの線分の両端点を取得
-    const auto current_begin_pos            = dynamic_capsule.GetSegment().GetBeginPos();
-    const auto current_end_pos              = dynamic_capsule.GetSegment().GetEndPos();
-    const auto future_begin_pos             = future_capsule .GetSegment().GetBeginPos();
-    const auto future_end_pos               = future_capsule .GetSegment().GetEndPos();
+    const auto current_begin_pos = dynamic_capsule.GetSegment().GetBeginPos();
+    const auto current_end_pos = dynamic_capsule.GetSegment().GetEndPos();
+    const auto future_begin_pos = future_capsule.GetSegment().GetBeginPos();
+    const auto future_end_pos = future_capsule.GetSegment().GetEndPos();
 
     // 各点から平面への距離を計算
-    auto       plane_to_begin_pos_distance  = math::GetDistancePointToPlane(future_begin_pos, plane);
-    auto       plane_to_end_pos_distance    = math::GetDistancePointToPlane(future_end_pos,   plane);
-    const auto is_begin_pos_ahead_of_plane  = math::IsPointAheadOfPlane(future_begin_pos, plane);
-    const auto is_end_pos_ahead_of_plane    = math::IsPointAheadOfPlane(future_end_pos, plane);
+    auto       plane_to_begin_pos_distance = math::GetDistancePointToPlane(future_begin_pos, plane);
+    auto       plane_to_end_pos_distance = math::GetDistancePointToPlane(future_end_pos, plane);
+    const auto is_begin_pos_ahead_of_plane = math::IsPointAheadOfPlane(future_begin_pos, plane);
+    const auto is_end_pos_ahead_of_plane = math::IsPointAheadOfPlane(future_end_pos, plane);
 
     // 始点と終点のどちらを基準にするかを判定
-    float penetration_depth         = 0.0f;
-    float result_penetration_depth  = 0.0f;
+    auto penetration_depth = 0.0f;
+    auto result_penetration_depth = 0.0f;
     if (is_begin_pos_ahead_of_plane && is_end_pos_ahead_of_plane)
     {
-        penetration_depth           = min(plane_to_begin_pos_distance, plane_to_end_pos_distance);
-        result_penetration_depth    = dynamic_capsule.GetRadius() - penetration_depth;
+        penetration_depth = min(plane_to_begin_pos_distance, plane_to_end_pos_distance);
+        result_penetration_depth = dynamic_capsule.GetRadius() - penetration_depth;
     }
     else if (!is_begin_pos_ahead_of_plane && !is_end_pos_ahead_of_plane)
     {
-        penetration_depth           = max(plane_to_begin_pos_distance, plane_to_end_pos_distance);
-        result_penetration_depth    = dynamic_capsule.GetRadius() + penetration_depth;
+        penetration_depth = max(plane_to_begin_pos_distance, plane_to_end_pos_distance);
+        result_penetration_depth = dynamic_capsule.GetRadius() + penetration_depth;
     }
     else if (is_begin_pos_ahead_of_plane && !is_end_pos_ahead_of_plane)
     {
-        penetration_depth           = plane_to_end_pos_distance;
-        result_penetration_depth    = dynamic_capsule.GetRadius() + penetration_depth;
+        penetration_depth = plane_to_end_pos_distance;
+        result_penetration_depth = dynamic_capsule.GetRadius() + penetration_depth;
     }
     else
     {
-        penetration_depth           = plane_to_begin_pos_distance;
-        result_penetration_depth    = dynamic_capsule.GetRadius() + penetration_depth;
+        penetration_depth = plane_to_begin_pos_distance;
+        result_penetration_depth = dynamic_capsule.GetRadius() + penetration_depth;
     }
 
     // 始点と終点のどちらが近かったかを判定
-    const auto is_closest_begin_pos = result_penetration_depth == plane_to_begin_pos_distance ? true : false;
+    //const auto is_closest_begin_pos = result_penetration_depth == plane_to_begin_pos_distance;
 
     // 貫通していない場合は元のvelocityを返す
     if (result_penetration_depth <= 0.0f)
@@ -1136,79 +1141,83 @@ VECTOR collision::PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsu
         return velocity;
     }
 
-    // 移動方向と平面法線の関係を確認
-    const auto move_dir = v3d::GetNormalizedV(velocity);
-    const auto dot = VDot(move_dir, plane.GetNormalVector());
+    auto result_velocity = v3d::GetZeroV();
 
-    // 平面に向かって移動していない場合は処理しない
-    if (dot >= 0.0f)
+    // スムーズに登れる角度であった場合、壁ずりで移動させる
+    if (can_smoothly_move)
     {
-        return velocity;
-    }
+        // 移動方向と平面法線の関係を確認
+        const auto move_dir = v3d::GetNormalizedV(velocity);
+        const auto dot = VDot(move_dir, plane.GetNormalVector());
 
-    // 押し戻し距離を計算（法線方向への最小移動距離）
-    const auto push_back_distance   = result_penetration_depth / abs(dot);
-    const auto push_back_vector     = move_dir * push_back_distance;
+        // 平面に向かって移動していない場合は処理しない
+        if (dot >= 0.0f) { return velocity; }
 
-    // 押し戻し後の有効な移動ベクトル
-    const auto valid_velocity       = velocity - push_back_vector;
+        // 押し戻し距離を計算（法線方向への最小移動距離）
+        const auto push_back_distance = result_penetration_depth / abs(dot);
+        const auto push_back_vector = move_dir * push_back_distance;
 
-    // 壁滑り処理
-    // 押し戻されたベクトルを平面に投影して滑りベクトルを作成
-    const auto slide_vector         = push_back_vector - plane.GetNormalVector() * VDot(push_back_vector, plane.GetNormalVector());
+        // 押し戻し後の有効な移動ベクトル
+        const auto valid_velocity = velocity - push_back_vector;
 
-    // 最終的な移動ベクトル = 有効な移動 + 滑り移動
-    auto result_velocity            = valid_velocity + slide_vector;
-    const auto additional_pushback  = plane.GetNormalVector() * (dynamic_capsule.GetRadius() * 0.01f); // 1%のマージン
+        // 壁滑り処理
+        // 押し戻されたベクトルを平面に投影して滑りベクトルを作成
+        const auto slide_vector = push_back_vector - plane.GetNormalVector() * VDot(push_back_vector, plane.GetNormalVector());
 
-    // 結果の検証：最終位置で衝突が解消されているか確認
-    auto result_capsule             = dynamic_capsule;
-    result_capsule.Move(result_velocity);
+        // 最終的な移動ベクトル = 有効な移動 + 滑り移動
+        result_velocity = valid_velocity + slide_vector;
+        const auto additional_pushback = plane.GetNormalVector() * (dynamic_capsule.GetRadius() * 0.01f); // 1%のマージン
 
-    for (int i = 0; i < 3; ++i)
-    {
-        // まだ衝突している場合は追加の調整
-        if (IsCollidedTriangleAndCapsule(static_triangle, result_capsule))
+        // 結果の検証：最終位置で衝突が解消されているか確認
+        auto result_capsule = dynamic_capsule;
+        result_capsule.Move(result_velocity);
+
+        for (int i = 0; i < 3; ++i)
         {
-            result_velocity += additional_pushback;
-            result_capsule.Move(result_velocity);
-            continue;
+            // まだ衝突している場合は追加の調整
+            if (IsCollidedTriangleAndCapsule(static_triangle, result_capsule))
+            {
+                result_velocity += additional_pushback;
+                result_capsule.Move(result_velocity);
+                continue;
+            }
+            break;
         }
-        break;
     }
+    // 登るのが困難な角度の場合は、「三角形の法線～ワールドX軸に対して平行」の範囲内の方向に押し戻す
+    // 押し戻す方向は三角形の角度が上がるほどワールドX軸に向かう
+    else
+    {
+        // 平面の法線を、ワールドX軸に対して水平にする
+        auto horizontal_v = plane.GetNormalVector();
+        horizontal_v.y = 0.0f;
+        horizontal_v = v3d::GetNormalizedV(horizontal_v);
 
-    ////平面に近い点を三角形がある平面上に投影し三角形に含まれていない場合、カプセルを沈める
-    //const auto p = is_closest_begin_pos ? result_capsule.GetSegment().GetBeginPos() : result_capsule.GetSegment().GetEndPos();
-    //if (!math::IsProjectedPointInTriangle(p, static_triangle))
-    //{
-    //    // MEMO : 「tmp」と名前が付いた変数はその場で破棄され使用用途はない
-    //    float tmp_t1, tmp_t2;
-    //    VECTOR tmp_h, closest_pos_on_edge1, closest_pos_on_edge2, closest_pos_on_edge3;
-    //    std::vector<std::pair<VECTOR, float>> closest_pos;
-    //
-    //    // 各辺上のカプセルに最も近い座標を取得
-    //    const auto distance1 = math::GetDistanceSegmentToSegment(result_capsule.GetSegment(), static_triangle.GetEdge(0), tmp_h, closest_pos_on_edge1, tmp_t1, tmp_t2);
-    //    const auto distance2 = math::GetDistanceSegmentToSegment(result_capsule.GetSegment(), static_triangle.GetEdge(1), tmp_h, closest_pos_on_edge2, tmp_t1, tmp_t2);
-    //    const auto distance3 = math::GetDistanceSegmentToSegment(result_capsule.GetSegment(), static_triangle.GetEdge(2), tmp_h, closest_pos_on_edge3, tmp_t1, tmp_t2);
-    //    closest_pos.emplace_back(std::make_pair(closest_pos_on_edge1, distance1));
-    //    closest_pos.emplace_back(std::make_pair(closest_pos_on_edge2, distance2));
-    //    closest_pos.emplace_back(std::make_pair(closest_pos_on_edge3, distance3));
-    //    closest_pos = algorithm::Sort(closest_pos, SortKind::kAscending);
-    //
-    //    const auto segment = Segment(closest_pos.at(0).first, static_triangle.GetNormalVector(), dynamic_capsule.GetSegment().GetLength());
-    //
-    //    std::optional<VECTOR> intersection = std::nullopt;
-    //    const auto tmp_is_hit = IsCollidedSegmentAndCapsule(segment, result_capsule, intersection);
-    //
-    //    if (intersection)
-    //    {
-    //        DrawSphere3D(*intersection, 0.5f, 8, 0xffffff, 0xffffff, TRUE);
-    //        DrawLine3D(segment.GetBeginPos(), segment.GetEndPos(), 0xffffff);
-    //
-    //        const auto offset = VSize(*intersection - segment.GetBeginPos());
-    //        result_velocity -= static_triangle.GetNormalVector() * offset;
-    //    }
-    //}
+        // 押し戻す方向を取得
+        const auto angle_range = math::GetAngleBetweenTwoVector(plane.GetNormalVector(), horizontal_v);
+        auto  push_back_angle = -math::ConvertValueNewRange<float, float>(become_difficult_angle, max_slope_angle, -angle_range, 0.0f, slope_angle);
+        if (slope_angle >= max_slope_angle) { push_back_angle = 0.0f; }
+        const auto cross_x = math::GetNormalVector(plane.GetNormalVector(), axis::GetWorldYAxis());
+        const auto push_back_dir = math::GetRotatedPos(horizontal_v, quat::CreateQuaternion(cross_x, push_back_angle));
+
+        // 押し戻しベクトルの長さを取得
+        const VECTOR cross_y = math::GetNormalVector(plane.GetNormalVector(), cross_x);
+
+        const auto p = dynamic_capsule.GetSegment().GetEndPos();
+        DrawLine3D(p, p + cross_x * 100, 0xffffff);
+        DrawLine3D(p, p + cross_y * 100, 0xffffff);
+        DrawLine3D(p, p + push_back_dir * 100, 0xff0000);
+
+        const float  angle1 = math::GetAngleBetweenTwoVector(cross_y, horizontal_v);
+        const float  angle2 = 90.0f * math::kDegToRad - angle1;
+        const float  angle3 = push_back_angle - angle2;
+        const float  back_length = cos(angle3) / plane_to_begin_pos_distance;
+        const float  front_length = cos(angle3) / dynamic_capsule.GetRadius();
+
+        // 本来の到達地点を取得
+        const auto new_future_pos = future_begin_pos + push_back_dir * (back_length + front_length);
+        result_velocity = new_future_pos - dynamic_capsule.GetSegment().GetBeginPos();
+    }
 
     return result_velocity;
 }

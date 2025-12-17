@@ -1,4 +1,4 @@
-#include "physical_obj_base.hpp"
+ï»¿#include "physical_obj_base.hpp"
 
 PhysicalObjBase::PhysicalObjBase(const std::string& name, const std::string& tag) :
 	ObjBase					(name, tag),
@@ -36,7 +36,7 @@ void PhysicalObjBase::OnKnockback(const VECTOR& dir, const float initial_velocit
 	m_knockback_deceleration = deceleration;
 	m_knockback_velocity = dir * m_knockback_speed;
 
-	// ƒmƒbƒNƒoƒbƒN‚Ívelocity‚Ì“\‚è•t‚¯‚ğs‚í‚È‚¢
+	// ãƒãƒƒã‚¯ãƒãƒƒã‚¯æ™‚ã¯velocityã®è²¼ã‚Šä»˜ã‘ã‚’è¡Œã‚ãªã„
 	m_is_project = false;
 }
 
@@ -55,7 +55,7 @@ void PhysicalObjBase::SaveProjectPos()
 
 void PhysicalObjBase::ApplyGravity(const float gravity_acceleration, const float max_gravity)
 {
-	// ’n–Ê‚É‚¢‚éê‡‚Íd—Í‚ğ—^‚¦‚È‚¢
+	// åœ°é¢ã«ã„ã‚‹å ´åˆã¯é‡åŠ›ã‚’ä¸ãˆãªã„
 	if (m_is_on_ground)
 	{
 		m_fall_velocity.y = 0.0f;
@@ -92,7 +92,7 @@ void PhysicalObjBase::ApplyVelocity()
 //	const auto hit_triangle = landing_ray->GetHitTriangles();
 //	if (hit_triangle.empty()) { return; }
 //
-//	// Œõü‚Ìn“_‚©‚ç‚Ì‹——£‚Åƒ\[ƒg
+//	// å…‰ç·šã®å§‹ç‚¹ã‹ã‚‰ã®è·é›¢ã§ã‚½ãƒ¼ãƒˆ
 //	const auto segment = std::static_pointer_cast<Segment>(landing_ray->GetShape());
 //	std::vector<std::pair<int, float>> distance;
 //	for (size_t i = 0; i < hit_triangle.size(); ++i)
@@ -101,7 +101,7 @@ void PhysicalObjBase::ApplyVelocity()
 //	}
 //	algorithm::Sort(distance, SortKind::kAscending);
 //
-//	// Î–Ê‚É“Š‰e
+//	// æ–œé¢ã«æŠ•å½±
 //	const auto cross_x = math::GetNormalVector(hit_triangle.at(distance.front().first).GetNormalVector(), axis::GetWorldYAxis());
 //	auto base_v = math::GetNormalVector(hit_triangle.at(distance.front().first).GetNormalVector(), cross_x);
 //	base_v = v3d::GetNormalizedV(VGet(m_velocity.x, base_v.y, m_velocity.z));

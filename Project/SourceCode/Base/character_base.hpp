@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "physical_obj_base.hpp"
 
 #include "../Interface/i_state_controller.hpp"
@@ -22,9 +22,9 @@ public:
 	void CalcCorrectMoveDir();
 	void AllowCalcLookDir() { m_is_calc_look_dir = true; }
 
-	/// @brief ‹­§“I‚É–³“Gó‘Ô‚É‚·‚é
+	/// @brief å¼·åˆ¶çš„ã«ç„¡æ•µçŠ¶æ…‹ã«ã™ã‚‹
 	void ActivateInvincibleForcibly()	{ m_is_invincible = true; }
-	/// @brief ‹­§“I‚É–³“Gó‘Ô‚ğ‰ğœ‚·‚é
+	/// @brief å¼·åˆ¶çš„ã«ç„¡æ•µçŠ¶æ…‹ã‚’è§£é™¤ã™ã‚‹
 	void DeactivateInvincibleForcibly() { m_is_invincible = false; }
 
 	virtual void OnDamage(const HealthPartKind part_kind, const float damage) abstract;
@@ -32,6 +32,7 @@ public:
 	#pragma region Getter
 	[[nodiscard]] bool							IsInvincible()		const				{ return m_is_invincible; }
 	[[nodiscard]] bool							IsAlive()			const				{ return m_health.at(HealthPartKind::kMain)->IsAlive(); }
+	[[nodiscard]] bool							IsGoUpHill(const Triangle& hit_triangle) const;
 	[[nodiscard]] std::shared_ptr<Modeler>		GetModeler()		const				{ return m_modeler; }
 	[[nodiscard]] std::shared_ptr<AnimatorBase>	GetAnimator()		const				{ return m_animator; }
 	[[nodiscard]] VECTOR						GetCurrentMoveDir()	const				{ return m_move_dir.at(TimeKind::kCurrent); }
@@ -42,7 +43,7 @@ public:
 	#pragma endregion
 
 protected:
-	/// @brief Œ©‚Ä‚¢‚é•ûŒü‚ğ‰ñ“]‚É“K—p‚·‚é
+	/// @brief è¦‹ã¦ã„ã‚‹æ–¹å‘ã‚’å›è»¢ã«é©ç”¨ã™ã‚‹
 	void ApplyLookDirToRot(const VECTOR& look_dir);
 
 	void CalcMoveDir();
@@ -58,16 +59,16 @@ protected:
 	std::shared_ptr<AnimatorBase>				m_animator;
 	std::shared_ptr<CharacterColliderCreator>	m_collider_creator;
 
-	std::unordered_map<TimeKind, VECTOR>		m_move_dir;					// ˆÚ“®•ûŒü(WARNING : ’·‚³‚Í0`1‚Ì”ÍˆÍ‚ğæ‚é)
-	std::unordered_map<TimeKind, VECTOR>		m_look_dir;					// Œü‚¢‚Ä‚¢‚é•ûŒü
-	VECTOR										m_destination_pos;			// •â³æÀ•W
+	std::unordered_map<TimeKind, VECTOR>		m_move_dir;					// ç§»å‹•æ–¹å‘(WARNING : é•·ã•ã¯0ï½1ã®ç¯„å›²ã‚’å–ã‚‹)
+	std::unordered_map<TimeKind, VECTOR>		m_look_dir;					// å‘ã„ã¦ã„ã‚‹æ–¹å‘
+	VECTOR										m_destination_pos;			// è£œæ­£å…ˆåº§æ¨™
 	float										m_move_speed;
-	float										m_move_dir_offset_speed;	// ˆÚ“®•ûŒü‚ğ•â³‚·‚é‘¬“x
-	float										m_look_dir_offset_speed;	// Œ©‚é•ûŒü‚Ì•â³‘¬“x
+	float										m_move_dir_offset_speed;	// ç§»å‹•æ–¹å‘ã‚’è£œæ­£ã™ã‚‹é€Ÿåº¦
+	float										m_look_dir_offset_speed;	// è¦‹ã‚‹æ–¹å‘ã®è£œæ­£é€Ÿåº¦
 	bool										m_is_calc_look_dir;
 
-	std::shared_ptr<WeaponBase>											m_current_held_weapon;	// Œ»İè‚É‚Á‚Ä‚¢‚é•Ší
-	std::unordered_map<HolsterKind, std::shared_ptr<WeaponBase>>		m_attach_weapons;		// ‘•’…‚µ‚Ä‚¢‚é•Ší
+	std::shared_ptr<WeaponBase>											m_current_held_weapon;	// ç¾åœ¨æ‰‹ã«æŒã£ã¦ã„ã‚‹æ­¦å™¨
+	std::unordered_map<HolsterKind, std::shared_ptr<WeaponBase>>		m_attach_weapons;		// è£…ç€ã—ã¦ã„ã‚‹æ­¦å™¨
 
 	std::unordered_map<HealthPartKind, std::shared_ptr<Gauge>>	m_health;
 

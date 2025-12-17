@@ -421,15 +421,8 @@ void Zombie::OnProjectPos()
 	const auto hit_triangle = project_ray->GetHitTriangles();
 	if (hit_triangle.size() <= 0) { return; }
 
-	// 着地していた場合、以前の投影座標より下にあれば投影を許可する
-	if (IsOnGround())
-	{
-		const auto prev_project_pos = GetPrevProjectPos();
-		if (prev_project_pos)
-		{
-			if ((project_pos->y - prev_project_pos->y) >= math::kEpsilonLow) { return; }
-		}
-	}
+	// 坂に向かっている場合は投影を許可しない
+	if (IsGoUpHill(hit_triangle.front())) { return; }
 
 	// 光線の始点からの距離
 	const auto future_begin_pos = *project_pos + axis::GetWorldYAxis() * capsule->GetRadius();

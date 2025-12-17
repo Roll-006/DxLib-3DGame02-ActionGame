@@ -1,6 +1,6 @@
-#include "character_base.hpp"
+ï»¿#include "character_base.hpp"
 
-#pragma region •Ší
+#pragma region æ­¦å™¨
 CharacterBase::CharacterBase(const std::string& name, const std::string& tag) : 
 	PhysicalObjBase			(name, tag),
 	invincible_time			(0.0f),
@@ -55,6 +55,20 @@ void CharacterBase::CalcCorrectMoveDir()
 	}
 }
 
+bool CharacterBase::IsGoUpHill(const Triangle& hit_triangle) const
+{
+	// æ³•ç·šã®yã‚’æ¶ˆã—é£›ã°ã™
+	auto horizontal_v = hit_triangle.GetNormalVector();
+	horizontal_v.y = 0.0f;
+	horizontal_v = v3d::GetNormalizedV(horizontal_v);
+
+	// ç§»å‹•æ–¹å‘ã¨ã®è§’åº¦ã®å·®ã‚’å–å¾—
+	const auto angle = math::GetAngleBetweenTwoVector(m_move_dir.at(TimeKind::kCurrent), horizontal_v);
+
+	// è§’åº¦ã®å·®ãŒ90åº¦ã‚ˆã‚Šå¤§ãã„å ´åˆã¯ä¸Šã‚Šå‚ã«å‘ã‹ã£ã¦ã„ã‚‹
+	return angle * math::kRadToDeg > 90.0f;
+}
+
 void CharacterBase::ApplyLookDirToRot(const VECTOR& look_dir)
 {
 	m_transform->SetRot  (CoordinateKind::kWorld, look_dir);
@@ -62,7 +76,7 @@ void CharacterBase::ApplyLookDirToRot(const VECTOR& look_dir)
 
 void CharacterBase::CalcMoveDir()
 {
-	// Œ»İ‚Ìdir‚ğ–Ú“I‚Æ‚·‚édir‚É‹ß‚Ã‚¯‚Ä‚¢‚­
+	// ç¾åœ¨ã®dirã‚’ç›®çš„ã¨ã™ã‚‹dirã«è¿‘ã¥ã‘ã¦ã„ã
 	m_move_dir.at(TimeKind::kCurrent) = math::GetApproachedVector(
 		m_move_dir.at(TimeKind::kCurrent),
 		m_move_dir.at(TimeKind::kNext),
@@ -73,21 +87,21 @@ void CharacterBase::CalcLookDir()
 {
 	if (!m_is_calc_look_dir) { return; }
 
-	// ƒˆ[Šp‰ñ“]‚ğæ“¾‚µA-ƒÎ`ƒÎ‚Å’l‚ğŠÇ—‚·‚é
+	// ãƒ¨ãƒ¼è§’å›è»¢ã‚’å–å¾—ã—ã€-Ï€ï½Ï€ã§å€¤ã‚’ç®¡ç†ã™ã‚‹
 	const auto current_yaw	= math::GetYawRotVector(m_look_dir.at(TimeKind::kCurrent));
 	const auto next_yaw		= math::GetYawRotVector(m_look_dir.at(TimeKind::kNext));
 	auto	   distance		= next_yaw - current_yaw;
 	distance.y = math::ConnectMinusValueToValue(distance.y, DX_PI_F);
 
-	// ƒJƒƒ‰‚ğŠî€‚É‚µ‚Ä‰E‘¤‚Å‚ ‚Á‚½ê‡‚Í”½“]
+	// ã‚«ãƒ¡ãƒ©ã‚’åŸºæº–ã«ã—ã¦å³å´ã§ã‚ã£ãŸå ´åˆã¯åè»¢
 	if (distance.y > 0) { m_look_dir_offset_speed *= -1; }
 
-	// ‰ñ“]‚ğ“K—p
+	// å›è»¢ã‚’é©ç”¨
 	const auto look_dir_offset_speed = -m_look_dir_offset_speed * GetDeltaTime();
 	const auto rot_q = quat::CreateQuaternion(axis::GetWorldYAxis(), look_dir_offset_speed);
 	m_look_dir.at(TimeKind::kCurrent) = math::GetRotatedPos(m_look_dir.at(TimeKind::kCurrent), rot_q);
 
-	// I—¹”»’è
+	// çµ‚äº†åˆ¤å®š
 	const auto angle = math::GetYawBetweenTwoVector(m_look_dir.at(TimeKind::kNext), m_look_dir.at(TimeKind::kCurrent));
 	const auto dynamic_threshold = std::abs(look_dir_offset_speed * math::kStopThreshold);
 	if (angle < dynamic_threshold)
