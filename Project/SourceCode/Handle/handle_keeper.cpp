@@ -22,6 +22,10 @@ int HandleKeeper::LoadHandle(const HandleKind handle_kind, const std::string& fi
 		break;
 
 	case HandleKind::kModel:
+		handle = ReloadHandle(handle_kind, file_path);
+		if (handle == -1) { handle = MV1LoadModel(file_path.c_str()); }
+		break;
+
 	case HandleKind::kAnim:
 		handle = MV1LoadModel(file_path.c_str());
 		break;
