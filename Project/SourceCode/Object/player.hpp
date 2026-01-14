@@ -12,8 +12,8 @@
 #include "../GameTime/game_time_manager.hpp"
 #include "../Event/event_system.hpp"
 
-#include "../Animator/player_animator.hpp"
 #include "../InverseKinematics/humanoid_foot_ik_solver.hpp"
+#include "../State/PlayerState/player_state.hpp"
 
 #include "assault_rifle.hpp"
 #include "rocket_launcher.hpp"
@@ -22,9 +22,16 @@
 #include "../Part/frame_pos_corrector.hpp"
 #include "../Part/melee_target_searcher.hpp"
 
-class PlayerStateController;
-
-class Player final : public CharacterBase, public IPlayableCharacter, public IHumanoid, public IItemCollectable, public IWeaponEquippable, public IFireable, public IGrabbable, public IMeleeAttackable, public IStealthKiller
+class Player final : 
+	public CharacterBase, 
+	public IPlayableCharacter, 
+	public IHumanoid, 
+	public IItemCollectable, 
+	public IWeaponEquippable, 
+	public IFireable, 
+	public IGrabbable, 
+	public IMeleeAttackable, 
+	public IStealthKiller
 {
 public:
 	Player();
@@ -46,12 +53,12 @@ public:
 	void OnAllowControl()	 override { m_can_control = true; }
 	void OnDisallowControl() override { m_can_control = false; }
 
-	[[nodiscard]] bool CanControl() const override { return m_can_control; }
+	[[nodiscard]] const bool CanControl() const override { return m_can_control; }
 	#pragma endregion
 
 
 	#pragma region Humanoid
-	[[nodiscard]] std::shared_ptr<HumanoidFrameGetter> GetHumanoidFrame() const override { return m_humanoid_frame; }
+	[[nodiscard]] const std::shared_ptr<const HumanoidFrameGetter> GetHumanoidFrame() const override { return m_humanoid_frame; }
 	#pragma endregion
 
 
@@ -70,9 +77,9 @@ public:
 	void AddPickupableItem(const std::shared_ptr<IItem>& item) override { m_pickupable_item = item; }
 	void RemovePickupableItem() override { m_pickupable_item = nullptr; }
 
-	[[nodiscard]] std::shared_ptr<IItem>&		GetPickupableItem()		override { return m_pickupable_item; }
-	[[nodiscard]] std::vector<SpottedObjData>&	GetCandidateItems()		override { return m_pick_up_candidate_items; }
-	[[nodiscard]] bool							CanAddPickupableItem()	override { return m_can_add_acquirable_item; }
+	[[nodiscard]] std::shared_ptr<IItem>&				GetPickupableItem()		override { return m_pickupable_item; }
+	[[nodiscard]] const std::vector<SpottedObjData>&	GetCandidateItems()		override { return m_pick_up_candidate_items; }
+	[[nodiscard]] const bool							CanAddPickupableItem()	override { return m_can_add_acquirable_item; }
 	#pragma endregion
 
 
@@ -89,17 +96,17 @@ public:
 	void DetachWeapon	(const std::shared_ptr<WeaponBase>& weapon)	override;
 	void DetachWeapon	(const HolsterKind holster_kind)			override;
 
-	[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentEquipWeapon		(const WeaponSlotKind slot_kind) const override;
-	[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentHeldWeapon		()	override;
-	[[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentAttachWeapon		(const HolsterKind holster_kind) const override;
-	[[nodiscard]] WeaponKind					GetCurrentEquipWeaponKind	(const WeaponSlotKind slot_kind) override;
-	[[nodiscard]] WeaponKind					GetCurrentHeldWeaponKind	()	override;
-	[[nodiscard]] WeaponKind					GetCurrentAttachWeaponKind	(const HolsterKind holster_kind) const override;
+	[[nodiscard]] const std::shared_ptr<WeaponBase>	GetCurrentEquipWeapon		(const WeaponSlotKind slot_kind) const override;
+	[[nodiscard]] const std::shared_ptr<WeaponBase>	GetCurrentHeldWeapon		()	override;
+	[[nodiscard]] const std::shared_ptr<WeaponBase>	GetCurrentAttachWeapon		(const HolsterKind holster_kind) const override;
+	[[nodiscard]] const WeaponKind					GetCurrentEquipWeaponKind	(const WeaponSlotKind slot_kind) override;
+	[[nodiscard]] const WeaponKind					GetCurrentHeldWeaponKind	()	override;
+	[[nodiscard]] const WeaponKind					GetCurrentAttachWeaponKind	(const HolsterKind holster_kind) const override;
 	#pragma endregion
 
 
 	#pragma region 銃を撃つ者
-	[[nodiscard]] std::shared_ptr<AmmoHolder> GetAmmoHolder() const override { return m_ammo_holder; }
+	[[nodiscard]] const std::shared_ptr<AmmoHolder> GetAmmoHolder() const override { return m_ammo_holder; }
 	#pragma endregion
 
 
@@ -108,11 +115,11 @@ public:
 	void OnGrabbed(const std::shared_ptr<IGrabber> grabber, const VECTOR& brabber_pos, const VECTOR& brabber_dir) override;
 	void OnRelease() override;
 
-	[[nodiscard]] std::shared_ptr<IGrabber> GetGrabber()		const override	{ return m_grabber; }
-	[[nodiscard]] std::shared_ptr<Gauge>	GetEscapeGauge()	const override	{ return m_escape_gauge; }
-	[[nodiscard]] bool						CanEscape()			const override;
-	[[nodiscard]] bool						IsGrabbed()			const override	{ return m_is_grabbed; }
-	[[nodiscard]] bool						IsEscape()			const override	{ return m_is_escape; }
+	[[nodiscard]] const std::shared_ptr<const IGrabber>	GetGrabber()		const override	{ return m_grabber; }
+	[[nodiscard]] const std::shared_ptr<const Gauge>	GetEscapeGauge()	const override	{ return m_escape_gauge; }
+	[[nodiscard]] const bool							CanEscape()			const override;
+	[[nodiscard]] const bool							IsGrabbed()			const override	{ return m_is_grabbed; }
+	[[nodiscard]] const bool							IsEscape()			const override	{ return m_is_escape; }
 	#pragma endregion
 
 
@@ -135,7 +142,7 @@ public:
 
 	[[nodiscard]] std::shared_ptr<IMeleeHittable>&	GetMeleeTarget()					override	{ return m_melee_target; }
 	[[nodiscard]] std::shared_ptr<IMeleeHittable>&	GetTopPriorityDownedChara()			override	{ return m_top_priority_downed_chara; }
-	[[nodiscard]] bool								CanSearchMeleeTarget()		const	override	{ return m_can_search_melee_target; }
+	[[nodiscard]] const bool						CanSearchMeleeTarget()		const	override	{ return m_can_search_melee_target; }
 	#pragma endregion
 
 
@@ -147,8 +154,8 @@ public:
 	void AddStealthKillTarget(const std::shared_ptr<IStealthKillable>& stealth_kill_target) override { m_stealth_kill_target = stealth_kill_target; }
 	void RemoveStealthKillTarget() override { m_stealth_kill_target = nullptr; }
 
-	[[nodiscard]] std::shared_ptr<IStealthKillable>&	GetStealthKillTarget()					override	{ return m_stealth_kill_target; }
-	[[nodiscard]] bool									CanSearchStealthKillTarget()	const	override	{ return m_can_search_stealth_kill_target; }
+	[[nodiscard]] std::shared_ptr<IStealthKillable>& GetStealthKillTarget() override { return m_stealth_kill_target; }
+	[[nodiscard]] const bool CanSearchStealthKillTarget() const	override { return m_can_search_stealth_kill_target; }
 	#pragma endregion
 
 	#pragma endregion
@@ -178,14 +185,14 @@ public:
 
 
 	#pragma region Getter
-	[[nodiscard]] float																GetDeltaTime				()	const override;
-	[[nodiscard]] std::shared_ptr<PlayerStateController>							GetStateController			()	const			{ return m_state; }
-	[[nodiscard]] std::shared_ptr<FramePosCorrector>								GetFramePosCorrector		()	const			{ return m_frame_pos_corrector; }
-	[[nodiscard]] std::vector<std::shared_ptr<IItem>>								GetCurrentHaveItem			(const ItemKind item_kind) const { return m_items.at(item_kind); }
-	[[nodiscard]] std::unordered_map<WeaponSlotKind, std::shared_ptr<WeaponBase>>&	GetCurrentEquipWeapons		()					{ return m_current_equip_weapon; }
-	[[nodiscard]] std::shared_ptr<WeaponShortcutSelecter>							GetWeaponShortcutSelecter	()	const			{ return m_weapon_shortcut_selecter; }
-	[[nodiscard]] float																GetMoveSpeed				()	const			{ return m_move_speed; }
-	[[nodiscard]] bool																IsVictoryPose				()	const			{ return m_is_victory_pose; }
+	[[nodiscard]] const float																	GetDeltaTime				()	const override;
+	[[nodiscard]] const std::shared_ptr<const player_state::State>								GetState					()	const			{ return m_state; }
+	[[nodiscard]] const std::shared_ptr<const FramePosCorrector>								GetFramePosCorrector		()	const			{ return m_frame_pos_corrector; }
+	[[nodiscard]] const std::vector<std::shared_ptr<IItem>>										GetCurrentHaveItem			(const ItemKind item_kind) const { return m_items.at(item_kind); }
+	[[nodiscard]] const std::unordered_map<WeaponSlotKind, std::shared_ptr<WeaponBase>>&		GetCurrentEquipWeapons		()					{ return m_current_equip_weapon; }
+	[[nodiscard]] const std::shared_ptr<const WeaponShortcutSelecter>							GetWeaponShortcutSelecter	()	const			{ return m_weapon_shortcut_selecter; }
+	[[nodiscard]] const float																	GetMoveSpeed				()	const			{ return m_move_speed; }
+	[[nodiscard]] const bool																	IsVictoryPose				()	const			{ return m_is_victory_pose; }
 	#pragma endregion
 
 private:
@@ -236,7 +243,7 @@ private:
 	static constexpr float  kCameraAimOffsetBasicSpeed			= 40.0f;
 
 private:
-	std::shared_ptr<PlayerStateController>		m_state;
+	std::shared_ptr<player_state::State>		m_state;
 	std::shared_ptr<FramePosCorrector>			m_frame_pos_corrector;
 
 	VECTOR										m_input_slope;
@@ -272,7 +279,7 @@ private:
 	std::shared_ptr<IGrabber>											m_grabber;
 	std::shared_ptr<Gauge>												m_escape_gauge;
 
-	HumanoidLegRayData													m_leg_ray_data;
-	std::shared_ptr<HumanoidFootIKSolver>								m_humanoid_foot_ik;
+	//HumanoidLegRayData													m_leg_ray_data;
+	//std::shared_ptr<HumanoidFootIKSolver>								m_humanoid_foot_ik;
 	std::shared_ptr<HumanoidFrameGetter>								m_humanoid_frame;
 };

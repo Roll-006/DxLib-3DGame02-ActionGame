@@ -7,7 +7,7 @@
 class MissionUI final
 {
 public:
-	MissionUI();
+	MissionUI(const std::string& json_name);
 	~MissionUI();
 
 	void Init();
@@ -18,18 +18,20 @@ public:
 
 private:
 	void CalcAlphaBlendNum();
-	void CalcWaitTime();
-	void CreateScreen();
+	void CalcBlendWaitTime();
+	void CalcDrawTime();
+	void CreateResultScreen();
 
 private:
-	MissionUIData					mission_ui_data;
+	MissionUIData					data;
 
-	std::shared_ptr<ScreenCreator>	m_screen;
-	Vector2D<int>					m_text_center_pos;
+	std::shared_ptr<ScreenCreator>	m_result_screen;
 	int								m_alpha_blend_num;
-	float							m_wait_timer;
+	float							m_blend_wait_timer;
+	float							m_draw_timer;
 	bool							m_is_active;
-	bool							m_is_wait;
+	bool							m_is_wait_blend;
+	bool							m_is_fade_out;
 
 	friend void from_json(const nlohmann::json& j_data, MissionUI& mission_ui);
 	friend void to_json  (nlohmann::json& j_data, const MissionUI& mission_ui);
@@ -39,14 +41,14 @@ private:
 #pragma region from / to JSON
 inline void from_json(const nlohmann::json& j_data, MissionUI& mission_ui)
 {
-	j_data.at("mission_ui_data").get_to(mission_ui.mission_ui_data);
+	j_data.at("mission_ui_data").get_to(mission_ui.data);
 }
 
 inline void to_json(nlohmann::json& j_data, const MissionUI& mission_ui)
 {
 	j_data = nlohmann::json
 	{
-		{ "mission_ui_data", mission_ui.mission_ui_data },
+		{ "mission_ui_data", mission_ui.data },
 	};
 }
 #pragma endregion

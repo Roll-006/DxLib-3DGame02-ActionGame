@@ -1,6 +1,7 @@
 ﻿#include "game_clear_tab.hpp"
 
 GameClearTab::GameClearTab() :
+	data							(GameClearTabData()),
 	m_tab_handle					(HandleCreator::GetInstance()->CreateHandle()),
 	m_priority						(0),
 	m_is_active						(false),
@@ -15,22 +16,41 @@ GameClearTab::GameClearTab() :
 	m_game_clear_text				(std::make_shared<GameClearText>()),
 	m_ui_selector					(std::make_shared<UISelector>(0, true, true)),
 	m_result_screen					(std::make_shared<ScreenCreator>(Window::kScreenSize, Window::kCenterPos)),
-	m_button_prompt					(std::make_shared<ButtonPrompt>("game_clear"))
+	m_button_prompt					(nullptr)
 {
+	nlohmann::json j_data;
+	if (json_loader::Load("Data/JSON/tab_data.json", j_data))
+	{
+		data = j_data.at("tab_data").at("game_clear").get<GameClearTabData>();
+	}
+
 	// イベント登録
 	EventSystem::GetInstance()->Subscribe<DeadAllEnemyEvent>(this, &GameClearTab::StartActivateTimer);
 
+	// ボタンの構築
 	std::vector<Vector2D<int>> center_pos;
-	for (int i = 0; i < 2; ++i)
+	for (size_t i = 0; i < data.text_data.size(); ++i)
 	{
-		center_pos.emplace_back(kFirstButtonCenterPos + Vector2D<int>(0, kButtonPosInterval * i));
-	}
-	
-	m_ui_selector->AddUIButton(std::make_shared<SubMenuSelectButton>(SubMenuSelectButton::ButtonKind::kRetry,	 center_pos.at(0), [this]() { ExecuteRetry();	 }, true));
-	m_ui_selector->AddUIButton(std::make_shared<SubMenuSelectButton>(SubMenuSelectButton::ButtonKind::kQuitGame, center_pos.at(1), [this]() { ExecuteQuitGame(); }, false));
+		text::CreateText(data.text_data.at(i));
+		center_pos.emplace_back(Window::kCenterPos + data.first_button_center_offset + Vector2D<int>(0, data.button_pos_interval * i));
 
-	m_button_prompt->AddExplanatoryText(0, "ゲームを再度プレイします");
-	m_button_prompt->AddExplanatoryText(1, "タイトルに戻ります");
+		if (i == 0)
+		{
+			m_ui_selector->AddUIButton(std::make_shared<SubMenuSelectButton>(data.text_data.at(i), center_pos.at(i), [this]() { ExecuteRetry(); }, true));
+		}
+		else if (i == 1)
+		{
+			m_ui_selector->AddUIButton(std::make_shared<SubMenuSelectButton>(data.text_data.at(i), center_pos.at(i), [this]() { ExecuteQuitGame(); }, false));
+		}
+	}
+
+	// テキストの構築
+	m_button_prompt = std::make_shared<ButtonPrompt>(data.button_prompt_name);
+	for (size_t i = 0; i < data.explanatory_text_data.size(); ++i)
+	{
+		text::CreateText(data.explanatory_text_data.at(i));
+		m_button_prompt->AddExplanatoryText(i, data.explanatory_text_data.at(i).text);
+	}
 
 	CalcAlphaBlendNum();
 }
@@ -87,7 +107,7 @@ void GameClearTab::StartActivateTimer(const DeadAllEnemyEvent& event)
 
 void GameClearTab::ExecuteRetry()
 {
-	SceneFader::GetInstance()->StartFade(UCHAR_MAX, 200.0f);
+	SceneFader::GetInstance()->StartFade(UCHAR_MAX, data.scene_fade_speed);
 
 	m_is_retry		= true;
 	m_can_select	= false;
@@ -97,7 +117,7 @@ void GameClearTab::ExecuteRetry()
 
 void GameClearTab::ExecuteQuitGame()
 {
-	SceneFader::GetInstance()->StartFade(UCHAR_MAX, 200.0f);
+	SceneFader::GetInstance()->StartFade(UCHAR_MAX, data.scene_fade_speed);
 
 	m_is_quit_game	= true;
 	m_can_select	= false;
@@ -112,7 +132,7 @@ void GameClearTab::JudgeActive()
 
 	const auto delta_time = GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kUI);
 	m_active_timer += delta_time;
-	if (m_active_timer > kActiveWaitTime)
+	if (m_active_timer > data.active_wait_time)
 	{
 		m_is_active = true;
 	}
@@ -127,7 +147,7 @@ void GameClearTab::ChangeTimeScale()
 	const auto delta_time			= game_time_manager->GetDeltaTime(TimeScaleLayerKind::kUI);
 
 	m_change_time_scale_wait_time += delta_time;
-	if (m_change_time_scale_wait_time > kDrawResultWaitTime)
+	if (m_change_time_scale_wait_time > data.draw_result_wait_time)
 	{
 		m_is_change_time_scale = true;
 		game_time_manager->SetTimeScale(TimeScaleLayerKind::kWorld,  0.0f);
@@ -141,10 +161,10 @@ void GameClearTab::CalcAlphaBlendNum()
 {
 	if (m_alpha_blend_num >= UCHAR_MAX) { return; }
 
-	if (m_change_time_scale_wait_time > kDrawResultWaitTime)
+	if (m_change_time_scale_wait_time > data.draw_result_wait_time)
 	{
 		const auto delta_time = GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kUI);
-		math::Increase(m_alpha_blend_num, static_cast<int>(kFadeSpeed * delta_time), UCHAR_MAX, false);
+		math::Increase(m_alpha_blend_num, static_cast<int>(data.screen_fade_speed * delta_time), UCHAR_MAX, false);
 	}
 
 	m_result_screen->GetGraphicer()->SetBlendNum(m_alpha_blend_num);
@@ -154,7 +174,7 @@ void GameClearTab::CreateResultScreen()
 {
 	m_result_screen->UseScreen();
 
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 170);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, data.background_alpha_blend_num);
 	DrawBox(0, 0, Window::kScreenSize.x, Window::kScreenSize.y, 0x000000, TRUE);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 

@@ -1,49 +1,30 @@
-#pragma once
+﻿#pragma once
 
-namespace player_state
+enum class PlayerStateKind
 {
-	enum class MoveStateKind
-	{
-		kIdle,
-		kMove,
-	};
+	kNone = -1,
 
-	enum class ActionStateKind
-	{
-		kActionNull,
-		kCrouch,
-		kRun,
-		kTurnAround,
-		kCrouchTurnAround,
-		kDead,
+	kIdle,
+	kDead,
 
-		kGrabbed,
-		kFrontKick,
-		kRoundhouseKick,
-		kSuplex,
-		kEscape,
-		kStealthKill,
-		kFinishOff,
-		kEscapeWithKnife,
-		kVictoryPose,
-	};
+	kAttachWeapon,
+	kDetachWeapon,
+	kAimGun,
+	kAimKnife,
+	kEquipGun,
+	kEquipKnife,
+	kReload,
+	kShot,
+	kShotRocketLauncher,
 
-	enum class WeaponActionStateKind
-	{
-		kWeaponActionNull,
-		kAttachWeapon,
-		kDetachWeapon,
-		kEquipKnife,
-		kAimKnife,
-		kStabKnife,
-		kFirstSideSlashKnife,
-		kSecondSideSlashKnife,
-		kSpinningSlashKnife,
-		kParry,
-		kEquipGun,
-		kAimGun,
-		kShot,
-		kShotRocketLauncher,
-		kReload,
-	};
-}
+	kFirstSideSlashKnife,
+	kSecondSideSlashKnife,
+	kSpinningSlashKnife,
+	kFrontKick,
+	kRoundhouseKick,
+
+	kEscape,
+	kGrabbed,
+	kStealthKill,
+	kVictoryPose,
+};

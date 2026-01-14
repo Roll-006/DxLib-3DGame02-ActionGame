@@ -69,18 +69,18 @@ public:
 	void SetColliderModelHandle(const int model_handle) { m_model_handle = model_handle; }
 	void SetVelocity(const VECTOR& velocity) { m_velocity = velocity; }
 
-	[[nodiscard]] int					GetColliderModelHandle()	const { return m_model_handle; }
-	[[nodiscard]] std::optional<VECTOR> GetCurrentProjectPos()		const { return m_current_project_pos; }
-	[[nodiscard]] std::optional<VECTOR> GetPrevProjectPos()			const { return m_prev_project_pos; }
-	[[nodiscard]] float					GetKnockBackSpeed()			const { return m_knockback_speed; }
-	[[nodiscard]] VECTOR				GetVelocity()				const { return m_velocity; }
-	[[nodiscard]] VECTOR				GetMoveVelocity()			const { return m_move_velocity; }
-	[[nodiscard]] VECTOR				GetFallVelocity()			const { return m_fall_velocity; }
-	[[nodiscard]] MassKind				GetMassKind()				const { return mass_kind; }
-	[[nodiscard]] bool					IsOnGround()				const { return m_is_on_ground; }
-	[[nodiscard]] bool					IsProject()					const { return m_is_project; }
-	[[nodiscard]] std::shared_ptr<Collider> GetCollider(const ColliderKind kind) const;
-	[[nodiscard]] std::unordered_map<ColliderKind, std::shared_ptr<Collider>> GetColliderAll() const { return m_colliders; }
+	[[nodiscard]] const int						GetColliderModelHandle()	const { return m_model_handle; }
+	[[nodiscard]] const std::optional<VECTOR>	GetCurrentProjectPos()		const { return m_current_project_pos; }
+	[[nodiscard]] const std::optional<VECTOR>	GetPrevProjectPos()			const { return m_prev_project_pos; }
+	[[nodiscard]] const float					GetKnockBackSpeed()			const { return m_knockback_speed; }
+	[[nodiscard]] const VECTOR					GetVelocity()				const { return m_velocity; }
+	[[nodiscard]] const VECTOR					GetMoveVelocity()			const { return m_move_velocity; }
+	[[nodiscard]] const VECTOR					GetFallVelocity()			const { return m_fall_velocity; }
+	[[nodiscard]] const MassKind				GetMassKind()				const { return mass_kind; }
+	[[nodiscard]] const bool					IsOnGround()				const { return m_is_on_ground; }
+	[[nodiscard]] const bool					IsProject()					const { return m_is_project; }
+	[[nodiscard]] const std::shared_ptr<const Collider> GetCollider(const ColliderKind kind) const;
+	[[nodiscard]] const std::unordered_map<ColliderKind, std::shared_ptr<Collider>> GetColliderAll() const { return m_colliders; }
 
 protected:
 	MassKind mass_kind;

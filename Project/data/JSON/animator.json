@@ -1,0 +1,742 @@
+﻿{
+  "animator": {
+    "title_character": {
+      "anim_data": {
+        "0": {
+          "index": 0,
+          "path": "Data/Animation/Zombie/zombie_idle_01.mv1",
+          "tag": "none",
+          "play_speed": 10.0,
+          "is_loop": true,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        }
+      },
+      "blend_speed": 3.0,
+      "notify_ground_range": 0.2,
+      "time_scale_layer_kind": 1
+    },
+    "player": {
+      "anim_data": {
+        "0": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/idle.mv1",
+          "tag": "none",
+          "play_speed": 50.0,
+          "is_loop": true,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "1": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/idle_injured.mv1",
+          "tag": "none",
+          "play_speed": 50.0,
+          "is_loop": true,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "2": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/stand_to_crouch.mv1",
+          "tag": "none",
+          "play_speed": 50.0,
+          "is_loop": false,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "3": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/death_02.mv1",
+          "tag": "none",
+          "play_speed": 50.0,
+          "is_loop": false,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+
+        "4": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/grabbed.mv1",
+          "tag": "none",
+          "play_speed": 30.0,
+          "is_loop": true,
+          "is_self_blend": true,
+          "ground_play_rate": 1.0
+        },
+        "5": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/front_kick_01.mv1",
+          "tag": "none",
+          "play_speed": 80.0,
+          "is_loop": false,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "6": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/roundhouse_kick.mv1",
+          "tag": "none",
+          "play_speed": 80.0,
+          "is_loop": false,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "7": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/front_kick_02.mv1",
+          "tag": "none",
+          "play_speed": 80.0,
+          "is_loop": false,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+
+        "8": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/stab_knife.mv1",
+          "tag": "none",
+          "play_speed": 100.0,
+          "is_loop": false,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "9": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/side_slash_knife_left_to_right.mv1",
+          "tag": "none",
+          "play_speed": 70.0,
+          "is_loop": false,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "10": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/side_slash_knife_right_to_left.mv1",
+          "tag": "none",
+          "play_speed": 88.0,
+          "is_loop": false,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "11": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/spinning_slash_knife.mv1",
+          "tag": "none",
+          "play_speed": 70.0,
+          "is_loop": false,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "12": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/stealth_kill.mv1",
+          "tag": "none",
+          "play_speed": 60.0,
+          "is_loop": false,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+
+        "13": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/move_forward_run_01.mv1",
+          "tag": "run",
+          "play_speed": 55.0,
+          "is_loop": true,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "14": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/move_forward_run_injured.mv1",
+          "tag": "run",
+          "play_speed": 50.0,
+          "is_loop": true,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+
+        "15": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/attach_rifle.mv1",
+          "tag": "none",
+          "play_speed": 20.0,
+          "is_loop": false,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "16": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/detach_rifle.mv1",
+          "tag": "none",
+          "play_speed": 20.0,
+          "is_loop": false,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "17": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/attach_handgun.mv1",
+          "tag": "none",
+          "play_speed": 20.0,
+          "is_loop": false,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "18": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/detach_handgun.mv1",
+          "tag": "none",
+          "play_speed": 20.0,
+          "is_loop": false,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "19": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/idle_equip_knife.mv1",
+          "tag": "none",
+          "play_speed": 20.0,
+          "is_loop": true,
+          "is_self_blend": true,
+          "ground_play_rate": 1.0
+        },
+        "20": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/aim_knife.mv1",
+          "tag": "none",
+          "play_speed": 20.0,
+          "is_loop": true,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "21": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/.mv1",
+          "tag": "none",
+          "play_speed": 20.0,
+          "is_loop": false,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "22": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/idle_equip_gun.mv1",
+          "tag": "none",
+          "play_speed": 20.0,
+          "is_loop": true,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "23": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/idle_aim_gun.mv1",
+          "tag": "none",
+          "play_speed": 20.0,
+          "is_loop": true,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "24": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/crouch_reload.mv1",
+          "tag": "none",
+          "play_speed": 100.0,
+          "is_loop": false,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "25": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/talking_on_phone.mv1",
+          "tag": "none",
+          "play_speed": 30.0,
+          "is_loop": true,
+          "is_self_blend": true,
+          "ground_play_rate": 1.0
+        },
+
+        "26": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/idle_crouch_aim_gun.mv1",
+          "tag": "none",
+          "play_speed": 20.0,
+          "is_loop": true,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "27": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/crouch.mv1",
+          "tag": "none",
+          "play_speed": 30.0,
+          "is_loop": true,
+          "is_self_blend": true,
+          "ground_play_rate": 1.0
+        },
+        "28": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/move_forward_aim_gun.mv1",
+          "tag": "walk",
+          "play_speed": 55.0,
+          "is_loop": true,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "29": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/move_backward_aim_gun.mv1",
+          "tag": "walk",
+          "play_speed": 55.0,
+          "is_loop": true,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "30": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/move_left_aim_gun.mv1",
+          "tag": "walk",
+          "play_speed": 55.0,
+          "is_loop": true,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "31": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/move_right_aim_gun.mv1",
+          "tag": "walk",
+          "play_speed": 55.0,
+          "is_loop": true,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "32": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/move_forward_left_aim_gun.mv1",
+          "tag": "walk",
+          "play_speed": 55.0,
+          "is_loop": true,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "33": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/move_forward_right_aim_gun.mv1",
+          "tag": "walk",
+          "play_speed": 55.0,
+          "is_loop": true,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "34": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/move_backward_left_aim_gun.mv1",
+          "tag": "walk",
+          "play_speed": 55.0,
+          "is_loop": true,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "35": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/move_backward_right_aim_gun.mv1",
+          "tag": "walk",
+          "play_speed": 55.0,
+          "is_loop": true,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "36": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/move_forward_injured.mv1",
+          "tag": "walk",
+          "play_speed": 50.0,
+          "is_loop": true,
+          "is_self_blend": true,
+          "ground_play_rate": 1.0
+        },
+        "37": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/move_backward_injured.mv1",
+          "tag": "walk",
+          "play_speed": 50.0,
+          "is_loop": true,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "38": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/move_left_injured.mv1",
+          "tag": "walk",
+          "play_speed": 30.0,
+          "is_loop": true,
+          "is_self_blend": true,
+          "ground_play_rate": 1.0
+        },
+        "39": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/move_right_injured.mv1",
+          "tag": "walk",
+          "play_speed": 50.0,
+          "is_loop": true,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "40": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/move_forward_left_injured.mv1",
+          "tag": "walk",
+          "play_speed": 50.0,
+          "is_loop": true,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "41": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/move_forward_right_injured.mv1",
+          "tag": "walk",
+          "play_speed": 50.0,
+          "is_loop": true,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "42": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/move_backward_left_injured.mv1",
+          "tag": "walk",
+          "play_speed": 30.0,
+          "is_loop": true,
+          "is_self_blend": true,
+          "ground_play_rate": 1.0
+        },
+        "43": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/move_backward_right_injured.mv1",
+          "tag": "walk",
+          "play_speed": 50.0,
+          "is_loop": true,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+
+        "44": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/move_forward_crouch_aim_gun.mv1",
+          "tag": "walk",
+          "play_speed": 50.0,
+          "is_loop": true,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "45": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/move_backward_crouch_aim_gun.mv1",
+          "tag": "walk",
+          "play_speed": 50.0,
+          "is_loop": true,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "46": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/move_left_crouch_aim_gun.mv1",
+          "tag": "walk",
+          "play_speed": 50.0,
+          "is_loop": true,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "47": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/move_right_crouch_aim_gun.mv1",
+          "tag": "walk",
+          "play_speed": 50.0,
+          "is_loop": true,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "48": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/move_forward_left_crouch_aim_gun.mv1",
+          "tag": "walk",
+          "play_speed": 50.0,
+          "is_loop": true,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "49": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/move_forward_right_crouch_aim_gun.mv1",
+          "tag": "walk",
+          "play_speed": 50.0,
+          "is_loop": true,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "50": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/move_backward_left_crouch_aim_gun.mv1",
+          "tag": "walk",
+          "play_speed": 50.0,
+          "is_loop": true,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "51": {
+          "index": 0,
+          "path": "Data/Animation/SWAT/move_backward_right_crouch_aim_gun.mv1",
+          "tag": "walk",
+          "play_speed": 50.0,
+          "is_loop": true,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        }
+      },
+      "blend_speed": 3.0,
+      "notify_ground_range": 0.2,
+      "time_scale_layer_kind": 2
+    },
+    "zombie": {
+      "anim_data": {
+        "0": {
+          "index": 0,
+          "path": "Data/Animation/Zombie/zombie_idle_01.mv1",
+          "tag": "none",
+          "play_speed": 20.0,
+          "is_loop": true,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "1": {
+          "index": 0,
+          "path": "Data/Animation/Zombie/shout_zombie.mv1",
+          "tag": "none",
+          "play_speed": 50.0,
+          "is_loop": false,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "2": {
+          "index": 0,
+          "path": "Data/Animation/Zombie/move_forward_walk.mv1",
+          "tag": "walk",
+          "play_speed": 55.0,
+          "is_loop": true,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "3": {
+          "index": 0,
+          "path": "Data/Animation/Zombie/move_forward_run_02.mv1",
+          "tag": "run",
+          "play_speed": 60.0,
+          "is_loop": true,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "4": {
+          "index": 0,
+          "path": "Data/Animation/Zombie/enter_neck_bite.mv1",
+          "tag": "none",
+          "play_speed": 20.0,
+          "is_loop": true,
+          "is_self_blend": true,
+          "ground_play_rate": 1.0
+        },
+        "5": {
+          "index": 0,
+          "path": "Data/Animation/Zombie/exit_neck_bite.mv1",
+          "tag": "none",
+          "play_speed": 20.0,
+          "is_loop": false,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "6": {
+          "index": 0,
+          "path": "Data/Animation/Zombie/death_03.mv1",
+          "tag": "none",
+          "play_speed": 60.0,
+          "is_loop": false,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "7": {
+          "index": 0,
+          "path": "Data/Animation/Zombie/death_01.mv1",
+          "tag": "none",
+          "play_speed": 60.0,
+          "is_loop": false,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "8": {
+          "index": 0,
+          "path": "Data/Animation/Zombie/crouch_death.mv1",
+          "tag": "none",
+          "play_speed": 20.0,
+          "is_loop": false,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "9": {
+          "index": 0,
+          "path": "Data/Animation/Zombie/flying_knockback_up.mv1",
+          "tag": "none",
+          "play_speed": 35.0,
+          "is_loop": false,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "10": {
+          "index": 0,
+          "path": "Data/Animation/Zombie/flying_knockback_down.mv1",
+          "tag": "none",
+          "play_speed": 35.0,
+          "is_loop": false,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "11": {
+          "index": 0,
+          "path": "Data/Animation/Zombie/backward_knockback.mv1",
+          "tag": "none",
+          "play_speed": 30.0,
+          "is_loop": false,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "12": {
+          "index": 0,
+          "path": "Data/Animation/Zombie/stand_up_zombie_01.mv1",
+          "tag": "none",
+          "play_speed": 35.0,
+          "is_loop": false,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "13": {
+          "index": 0,
+          "path": "Data/Animation/Zombie/stand_up_zombie_02.mv1",
+          "tag": "none",
+          "play_speed": 35.0,
+          "is_loop": false,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "14": {
+          "index": 0,
+          "path": "Data/Animation/Zombie/move_forward_walk_zombie.mv1",
+          "tag": "none",
+          "play_speed": 10.0,
+          "is_loop": true,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "15": {
+          "index": 0,
+          "path": "Data/Animation/Zombie/move_backward_run_dizzy.mv1",
+          "tag": "none",
+          "play_speed": 2.0,
+          "is_loop": true,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "16": {
+          "index": 0,
+          "path": "Data/Animation/Zombie/left_crouch.mv1",
+          "tag": "none",
+          "play_speed": 50.0,
+          "is_loop": true,
+          "is_self_blend": true,
+          "ground_play_rate": 1.0
+        },
+        "17": {
+          "index": 0,
+          "path": "Data/Animation/Zombie/right_crouch.mv1",
+          "tag": "none",
+          "play_speed": 50.0,
+          "is_loop": true,
+          "is_self_blend": true,
+          "ground_play_rate": 1.0
+        },
+        "18": {
+          "index": 0,
+          "path": "Data/Animation/Zombie/move_forward_walk.mv1",
+          "tag": "walk",
+          "play_speed": 55.0,
+          "is_loop": true,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "19": {
+          "index": 0,
+          "path": "Data/Animation/Zombie/move_backward_aim_gun.mv1",
+          "tag": "walk",
+          "play_speed": 55.0,
+          "is_loop": true,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "20": {
+          "index": 0,
+          "path": "Data/Animation/Zombie/move_left_aim_gun.mv1",
+          "tag": "walk",
+          "play_speed": 55.0,
+          "is_loop": true,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "21": {
+          "index": 0,
+          "path": "Data/Animation/Zombie/move_right_aim_gun.mv1",
+          "tag": "walk",
+          "play_speed": 55.0,
+          "is_loop": true,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "22": {
+          "index": 0,
+          "path": "Data/Animation/Zombie/move_forward_left_aim_gun.mv1",
+          "tag": "walk",
+          "play_speed": 55.0,
+          "is_loop": true,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "23": {
+          "index": 0,
+          "path": "Data/Animation/Zombie/move_forward_right_aim_gun.mv1",
+          "tag": "walk",
+          "play_speed": 55.0,
+          "is_loop": true,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "24": {
+          "index": 0,
+          "path": "Data/Animation/Zombie/move_backward_left_aim_gun.mv1",
+          "tag": "walk",
+          "play_speed": 55.0,
+          "is_loop": true,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        },
+        "25": {
+          "index": 0,
+          "path": "Data/Animation/Zombie/move_backward_right_aim_gun.mv1",
+          "tag": "walk",
+          "play_speed": 55.0,
+          "is_loop": true,
+          "is_self_blend": false,
+          "ground_play_rate": 1.0
+        }
+      },
+      "blend_speed": 3.0,
+      "notify_ground_range": 0.2,
+      "time_scale_layer_kind": 1
+    }
+  }
+}

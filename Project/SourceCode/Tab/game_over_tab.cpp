@@ -8,31 +8,52 @@ GameOverTab::GameOverTab() :
 	m_can_calc_wait_time(false),
 	m_is_continue		(false),
 	m_is_quit_game		(false),
-	m_active_wait_timer	(0.0f),
+	m_blend_wait_timer	(0.0f),
 	m_alpha_blend_num	(0),
 	m_game_over_text	(std::make_shared<GameOverText>()),
 	m_ui_selector		(std::make_shared<UISelector>(0, true, true)),
-	m_filter_graphic	(std::make_shared<Graphicer>(UIGraphicPath.GAME_OVER_TAB_FILTER)),
+	m_filter_graphic	(nullptr),
 	m_result_screen		(std::make_shared<ScreenCreator>(Window::kScreenSize, Window::kCenterPos)),
-	m_button_prompt		(std::make_shared<ButtonPrompt>("game_over"))
+	m_button_prompt		(nullptr)
 {
+	nlohmann::json j_data;
+	if (json_loader::Load("Data/JSON/tab_data.json", j_data))
+	{
+		data = j_data.at("tab_data").at("game_over").get<GameOverTabData>();
+	}
+
 	// イベント登録
 	EventSystem::GetInstance()->Subscribe<DeadPlayerEvent>(this, &GameOverTab::Activate);
 
+	m_filter_graphic = std::make_shared<Graphicer>(data.filter_graphic_path);
+
+	// ボタンの構築
 	std::vector<Vector2D<int>> center_pos;
-	for (int i = 0; i < 2; ++i)
+	for (size_t i = 0; i < data.text_data.size(); ++i)
 	{
-		center_pos.emplace_back(kFirstButtonCenterPos + Vector2D<int>(0, kButtonPosInterval * i));
+		text::CreateText(data.text_data.at(i));
+		center_pos.emplace_back(Window::kCenterPos + data.first_button_center_offset + Vector2D<int>(0, data.button_pos_interval * i));
+	
+		if (i == 0)
+		{
+			m_ui_selector->AddUIButton(std::make_shared<SubMenuSelectButton>(data.text_data.at(i), center_pos.at(i), [this]() { ExecuteContinue(); }, true));
+		}
+		else if (i == 1)
+		{
+			m_ui_selector->AddUIButton(std::make_shared<SubMenuSelectButton>(data.text_data.at(i), center_pos.at(i), [this]() { ExecuteQuitGame(); }, false));
+		}
 	}
 
-	m_ui_selector->AddUIButton(std::make_shared<SubMenuSelectButton>(SubMenuSelectButton::ButtonKind::kContinue, center_pos.at(0), [this]() { ExecuteContinue(); }, true));
-	m_ui_selector->AddUIButton(std::make_shared<SubMenuSelectButton>(SubMenuSelectButton::ButtonKind::kQuitGame, center_pos.at(1), [this]() { ExecuteQuitGame(); }, false));
-
-	m_button_prompt->AddExplanatoryText(0, "ゲームを続けます");
-	m_button_prompt->AddExplanatoryText(1, "タイトルに戻ります");
+	// テキストの構築
+	m_button_prompt = std::make_shared<ButtonPrompt>(data.button_prompt_name);
+	for (size_t i = 0; i < data.explanatory_text_data.size(); ++i)
+	{
+		text::CreateText(data.explanatory_text_data.at(i));
+		m_button_prompt->AddExplanatoryText(i, data.explanatory_text_data.at(i).text);
+	}
 
 	m_filter_graphic->SetCenterPos(Window::kCenterPos);
-	m_filter_graphic->SetBlendNum(220);
+	m_filter_graphic->SetBlendNum(data.background_alpha_blend_num);
 
 	CalcAlphaBlendNum();
 }
@@ -88,7 +109,7 @@ void GameOverTab::Activate(const DeadPlayerEvent& event)
 
 void GameOverTab::ExecuteContinue()
 {
-	SceneFader::GetInstance()->StartFade(UCHAR_MAX, 200.0f);
+	SceneFader::GetInstance()->StartFade(UCHAR_MAX, data.scene_fade_speed);
 
 	m_is_continue	= true;
 	m_can_select	= false;
@@ -98,7 +119,7 @@ void GameOverTab::ExecuteContinue()
 
 void GameOverTab::ExecuteQuitGame()
 {
-	SceneFader::GetInstance()->StartFade(UCHAR_MAX, 200.0f);
+	SceneFader::GetInstance()->StartFade(UCHAR_MAX, data.scene_fade_speed);
 
 	m_is_quit_game	= true;
 	m_can_select	= false;
@@ -113,8 +134,8 @@ void GameOverTab::JudgeActive()
 
 	// プレイヤーの死亡通知を受け取ってから一定時間後にアクティブ化
 	const auto delta_time = GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kUI);
-	m_active_wait_timer += delta_time;
-	if (m_active_wait_timer > kActiveWaitTime)
+	m_blend_wait_timer += delta_time;
+	if (m_blend_wait_timer > data.active_wait_time)
 	{
 		m_is_active = true;
 	}
@@ -125,7 +146,7 @@ void GameOverTab::CalcAlphaBlendNum()
 	if (m_alpha_blend_num >= UCHAR_MAX) { return; }
 
 	const auto delta_time = GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kUI);
-	math::Increase(m_alpha_blend_num, static_cast<int>(kFadeSpeed * delta_time), UCHAR_MAX, false);
+	math::Increase(m_alpha_blend_num, static_cast<int>(data.screen_fade_speed * delta_time), UCHAR_MAX, false);
 	m_result_screen->GetGraphicer()->SetBlendNum(m_alpha_blend_num);
 }
 
@@ -133,7 +154,7 @@ void GameOverTab::CreateResultScreen()
 {
 	m_result_screen->UseScreen();
 
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 220);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, data.background_alpha_blend_num);
 	DrawBox(0, 0, Window::kScreenSize.x, Window::kScreenSize.y, 0x000000, TRUE);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 

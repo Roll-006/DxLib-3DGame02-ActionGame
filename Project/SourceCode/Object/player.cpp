@@ -1,13 +1,12 @@
-﻿#include "player.hpp"
+﻿#include "../JSON/json_loader.hpp"
 #include "../Command/command_handler.hpp"
-#include "../Part/player_state_controller.hpp"
 #include "../MixamoHelper/mixamo_helper.hpp"
-
-#include "../JSON/json_loader.hpp"
+#include "../Kind/player_state_kind.hpp"
+#include "player.hpp"
 
 Player::Player() :
 	CharacterBase(ObjName.PLAYER, ObjTag.PLAYER),
-	m_state							(std::make_shared<PlayerStateController>()),
+	m_state							(nullptr),
 	m_frame_pos_corrector			(std::make_shared<FramePosCorrector>()),
 	m_input_slope					(v3d::GetZeroV()),
 	m_can_control					(true),
@@ -23,12 +22,14 @@ Player::Player() :
 	m_victory_pose_wait_time		(0.0f),
 	m_ammo_holder					(std::make_shared<AmmoHolder>()),
 	m_weapon_shortcut_selecter		(std::make_shared<WeaponShortcutSelecter>()),
+	m_pickupable_item				(nullptr),
+	m_pick_up_candidate_items		({}),
 	m_melee_target					(nullptr),
 	m_top_priority_downed_chara		(nullptr),
 	m_stealth_kill_target			(nullptr),
 	m_grabber						(nullptr),
 	m_escape_gauge					(std::make_shared<Gauge>(100.0f)),
-	m_humanoid_foot_ik				(nullptr),
+	//m_humanoid_foot_ik				(nullptr),
 	m_humanoid_frame				(std::make_shared<HumanoidFrameGetter>())
 {
 	// TODO : 後にJSON化
@@ -44,28 +45,30 @@ Player::Player() :
 
 	// モデル・アニメーションを設定
 	m_modeler  = std::make_shared<Modeler>(m_transform, ModelPath.SWAT_02, kBasicAngle, kBasicScale);
-	m_animator = std::make_shared<PlayerAnimator>(m_modeler, m_state, m_current_held_weapon, m_current_equip_weapon[WeaponSlotKind::kMain]);
+	m_animator = std::make_shared<Animator>(m_modeler, "player");
 	SetColliderModelHandle(m_modeler->GetModelHandle());
 
-	// TODO : のちにJSON化
-	m_humanoid_foot_ik = std::make_shared<HumanoidFootIKSolver>(m_animator, m_modeler, m_colliders, m_leg_ray_data);
-	m_leg_ray_data.leg_ray_length				= 80.0f;
-	m_leg_ray_data.foot_ray_length				= 70.0f;
-	m_leg_ray_data.toe_base_ray_length			= 70.0f;
+	m_state = std::make_shared<player_state::State>(*this, m_animator);
 
-	m_leg_ray_data.left_leg_ray_offset			= 40.0f;
-	m_leg_ray_data.left_foot_ray_offset			= 30.0f;
-	m_leg_ray_data.left_toe_base_ray_offset		= 30.0f;
-	m_leg_ray_data.right_leg_ray_offset			= 40.0f;
-	m_leg_ray_data.right_foot_ray_offset		= 30.0f;
-	m_leg_ray_data.right_toe_base_ray_offset	= 30.0f;
+	//// TODO : のちにJSON化
+	//m_humanoid_foot_ik = std::make_shared<HumanoidFootIKSolver>(m_animator, m_modeler, m_colliders, m_leg_ray_data);
+	//m_leg_ray_data.leg_ray_length				= 80.0f;
+	//m_leg_ray_data.foot_ray_length				= 70.0f;
+	//m_leg_ray_data.toe_base_ray_length			= 70.0f;
 
-	m_leg_ray_data.left_leg_offset				= 2.0f;
-	m_leg_ray_data.left_heels_offset			= 1.0f;
-	m_leg_ray_data.left_toe_offset				= 1.0f;
-	m_leg_ray_data.right_leg_offset				= 2.0f;
-	m_leg_ray_data.right_heels_offset			= 1.0f;
-	m_leg_ray_data.right_toe_offset				= 1.0f;
+	//m_leg_ray_data.left_leg_ray_offset			= 40.0f;
+	//m_leg_ray_data.left_foot_ray_offset			= 30.0f;
+	//m_leg_ray_data.left_toe_base_ray_offset		= 30.0f;
+	//m_leg_ray_data.right_leg_ray_offset			= 40.0f;
+	//m_leg_ray_data.right_foot_ray_offset		= 30.0f;
+	//m_leg_ray_data.right_toe_base_ray_offset	= 30.0f;
+
+	//m_leg_ray_data.left_leg_offset				= 2.0f;
+	//m_leg_ray_data.left_heels_offset			= 1.0f;
+	//m_leg_ray_data.left_toe_offset				= 1.0f;
+	//m_leg_ray_data.right_leg_offset				= 2.0f;
+	//m_leg_ray_data.right_heels_offset			= 1.0f;
+	//m_leg_ray_data.right_toe_offset				= 1.0f;
 
 	invincible_time = kInvincibleTime;
 
@@ -124,10 +127,10 @@ Player::~Player()
 
 void Player::Init()
 {
-	m_state				->Init(std::static_pointer_cast<Player>(shared_from_this()));
-	m_humanoid_foot_ik	->Init(std::dynamic_pointer_cast<IHumanoid>(shared_from_this()));
-	m_humanoid_foot_ik	->CreateFootRay		(this, std::dynamic_pointer_cast<IHumanoid>(shared_from_this()));
-	m_humanoid_foot_ik	->CreateFoeBaseRay	(this, std::dynamic_pointer_cast<IHumanoid>(shared_from_this()));
+	//m_state				->Init();
+	//m_humanoid_foot_ik	->Init(std::dynamic_pointer_cast<IHumanoid>(shared_from_this()));
+	//m_humanoid_foot_ik	->CreateFootRay		(this, std::dynamic_pointer_cast<IHumanoid>(shared_from_this()));
+	//m_humanoid_foot_ik	->CreateFoeBaseRay	(this, std::dynamic_pointer_cast<IHumanoid>(shared_from_this()));
 }
 
 void Player::Update()
@@ -157,26 +160,22 @@ void Player::Update()
 	PickUpItem();
 
 	m_weapon_shortcut_selecter	->Update(std::static_pointer_cast<Player>(shared_from_this()));
-	m_state						->Update(std::static_pointer_cast<Player>(shared_from_this()));
+	m_state						->Update();
 	m_animator					->Update();
-	m_humanoid_foot_ik			->Update(std::dynamic_pointer_cast<IHumanoid>(shared_from_this()));
+	//m_humanoid_foot_ik			->Update(std::dynamic_pointer_cast<IHumanoid>(shared_from_this()));
 
-	CalcMoveDir();
-	CalcLookDir();
-	CalcMoveVelocity();
+	UpdateLocomotion();
 
 	JudgeVictoryPose();
-
-	ApplyLookDirToRot(m_look_dir.at(TimeKind::kCurrent));
 }
 
 void Player::LateUpdate()
 {
 	if (!IsActive()) { return; }
 
-	m_state->LateUpdate(std::static_pointer_cast<Player>(shared_from_this()));
+	m_state->LateUpdate();
 
-	m_humanoid_foot_ik->BlendFrame(std::dynamic_pointer_cast<IHumanoid>(shared_from_this()));
+	//m_humanoid_foot_ik->BlendFrame(std::dynamic_pointer_cast<IHumanoid>(shared_from_this()));
 
 	if (m_current_held_weapon)
 	{
@@ -213,6 +212,11 @@ void Player::Draw() const
 		if (attach_weapon.second) { attach_weapon.second->Draw(); }
 	}
 
+	//const auto p = m_transform->GetPos(CoordinateKind::kWorld);
+	//printfDx("%f, %f, %f\n", p.x, p.y, p.z);
+
+	//printfDx("player : %d\n", m_stealth_kill_target != nullptr);
+
 	//DrawColliders();
 }
 
@@ -222,7 +226,7 @@ void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	const auto			target_name				= target_obj->GetName();
 	const auto			target_tag				= target_obj->GetTag();
 	const auto			target_collider_kind	= hit_collider_pair.target_collider->GetColliderKind();
-	const auto			action_state_kind		= static_cast<player_state::ActionStateKind>(m_state->GetActionState(TimeKind::kCurrent)->GetStateKind());
+	const auto			state_kind				= m_state->GetCurrentStateKind();
 
 	switch (hit_collider_pair.owner_collider->GetColliderKind())
 	{
@@ -235,38 +239,38 @@ void Player::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 		break;
 
 	case ColliderKind::kLeftLegRay:
-		if (hit_collider_pair.intersection) { m_leg_ray_data.left_leg_cast_pos = hit_collider_pair.intersection; }
+		//if (hit_collider_pair.intersection) { m_leg_ray_data.left_leg_cast_pos = hit_collider_pair.intersection; }
 		break;
 
 	case ColliderKind::kRightLegRay:
-		if (hit_collider_pair.intersection) { m_leg_ray_data.right_leg_cast_pos = hit_collider_pair.intersection; }
+		//if (hit_collider_pair.intersection) { m_leg_ray_data.right_leg_cast_pos = hit_collider_pair.intersection; }
 		break;
 
 	case ColliderKind::kLeftFootRay:
-		if (hit_collider_pair.intersection) { m_leg_ray_data.left_foot_cast_pos = hit_collider_pair.intersection; }
+		//if (hit_collider_pair.intersection) { m_leg_ray_data.left_foot_cast_pos = hit_collider_pair.intersection; }
 		break;
 
 	case ColliderKind::kRightFootRay:
-		if (hit_collider_pair.intersection) { m_leg_ray_data.right_foot_cast_pos = hit_collider_pair.intersection; }
+		//if (hit_collider_pair.intersection) { m_leg_ray_data.right_foot_cast_pos = hit_collider_pair.intersection; }
 		break;
 
 	case ColliderKind::kLeftToeBaseRay:
-		if (hit_collider_pair.intersection) { m_leg_ray_data.left_toe_base_cast_pos = hit_collider_pair.intersection; }
+		//if (hit_collider_pair.intersection) { m_leg_ray_data.left_toe_base_cast_pos = hit_collider_pair.intersection; }
 		break;
 
 	case ColliderKind::kRightToeBaseRay:
-		if (hit_collider_pair.intersection) { m_leg_ray_data.right_toe_base_cast_pos = hit_collider_pair.intersection; }
+		//if (hit_collider_pair.intersection) { m_leg_ray_data.right_toe_base_cast_pos = hit_collider_pair.intersection; }
 		break;
 		 
 	case ColliderKind::kAttackTrigger:
 		if (target_tag == ObjTag.ENEMY && target_collider_kind == ColliderKind::kCollider)
 		{
 			const auto character = dynamic_cast<CharacterBase*>(target_obj);
-			if (action_state_kind == player_state::ActionStateKind::kFrontKick)
+			if (state_kind == PlayerStateKind::kFrontKick)
 			{
 				AttackFrontMelee(character);
 			}
-			else if (action_state_kind == player_state::ActionStateKind::kRoundhouseKick)
+			else if (state_kind == PlayerStateKind::kRoundhouseKick)
 			{
 				AttackVersatilityMelee(character);
 			}
@@ -419,7 +423,7 @@ void Player::OnRelease()
 	m_grabber		= nullptr;
 }
 
-bool Player::CanEscape() const
+const bool Player::CanEscape() const
 {
 	return m_grabber ? m_escape_start_timer >= m_grabber->GetDamageOverTimeStartTime() : false;
 }
@@ -502,7 +506,7 @@ void Player::AttackFrontMelee(CharacterBase* target)
 	// 通知
 	const auto model_handle = m_modeler->GetModelHandle();
 	auto	   right_foot_m = MV1GetFrameLocalWorldMatrix(model_handle, GetHumanoidFrame()->GetRightFootIndex(model_handle));
-	EventSystem::GetInstance()->Publish(OnHitKickEvent(MGetTranslateElem(right_foot_m), TimeScaleLayerKind::kPlayer));
+	EventSystem::GetInstance()->Publish(OnHitKickEvent(matrix::GetPos(right_foot_m), TimeScaleLayerKind::kPlayer));
 }
 
 void Player::AttackBackMelee(CharacterBase* target)
@@ -527,7 +531,7 @@ void Player::AttackVersatilityMelee(CharacterBase* target)
 	// 通知
 	const auto model_handle = m_modeler->GetModelHandle();
 	auto	   right_foot_m = MV1GetFrameLocalWorldMatrix(model_handle, GetHumanoidFrame()->GetRightFootIndex(model_handle));
-	EventSystem::GetInstance()->Publish(OnHitKickEvent(MGetTranslateElem(right_foot_m), TimeScaleLayerKind::kPlayer));
+	EventSystem::GetInstance()->Publish(OnHitKickEvent(matrix::GetPos(right_foot_m), TimeScaleLayerKind::kPlayer));
 }
 #pragma endregion
 
@@ -648,7 +652,7 @@ void Player::HoldWeapon(const std::shared_ptr<WeaponBase>& weapon)
 
 void Player::HoldWeapon(const int obj_handle)
 {
-	auto weapon = ObjManager::GetInstance()->GetObj<WeaponBase>(obj_handle);
+	auto weapon = ObjAccessor::GetInstance()->GetObj<WeaponBase>(obj_handle);
 
 	if (weapon)
 	{
@@ -674,7 +678,7 @@ void Player::AttachWeapon(const std::shared_ptr<WeaponBase>& weapon)
 
 void Player::AttachWeapon(const int obj_handle)
 {
-	auto weapon = ObjManager::GetInstance()->GetObj<WeaponBase>(obj_handle);
+	auto weapon = ObjAccessor::GetInstance()->GetObj<WeaponBase>(obj_handle);
 
 	if (weapon)
 	{
@@ -702,32 +706,32 @@ void Player::DetachWeapon(const HolsterKind holster_kind)
 	m_attach_weapons.erase(holster_kind);
 }
 
-std::shared_ptr<WeaponBase> Player::GetCurrentEquipWeapon(const WeaponSlotKind slot_kind) const
+const std::shared_ptr<WeaponBase> Player::GetCurrentEquipWeapon(const WeaponSlotKind slot_kind) const
 {
 	return m_current_equip_weapon.contains(slot_kind) ? m_current_equip_weapon.at(slot_kind) : nullptr;
 }
 
-std::shared_ptr<WeaponBase> Player::GetCurrentHeldWeapon()
+const std::shared_ptr<WeaponBase> Player::GetCurrentHeldWeapon()
 {
 	return m_current_held_weapon;
 }
 
-std::shared_ptr<WeaponBase> Player::GetCurrentAttachWeapon(const HolsterKind holster_kind) const
+const std::shared_ptr<WeaponBase> Player::GetCurrentAttachWeapon(const HolsterKind holster_kind) const
 {
 	return m_attach_weapons.contains(holster_kind) ? m_attach_weapons.at(holster_kind) : nullptr;
 }
 
-WeaponKind Player::GetCurrentEquipWeaponKind(const WeaponSlotKind slot_kind)
+const WeaponKind Player::GetCurrentEquipWeaponKind(const WeaponSlotKind slot_kind)
 {
 	return m_current_equip_weapon.contains(slot_kind) ? m_current_equip_weapon.at(slot_kind)->GetWeaponKind() : WeaponKind::kNone;
 }
 
-WeaponKind Player::GetCurrentHeldWeaponKind()
+const WeaponKind Player::GetCurrentHeldWeaponKind()
 {
 	return m_current_held_weapon ? m_current_held_weapon->GetWeaponKind() : WeaponKind::kNone;
 }
 
-WeaponKind Player::GetCurrentAttachWeaponKind(const HolsterKind holster_kind) const
+const WeaponKind Player::GetCurrentAttachWeaponKind(const HolsterKind holster_kind) const
 {
 	return m_attach_weapons.contains(holster_kind) ? m_attach_weapons.at(holster_kind)->GetWeaponKind() : WeaponKind::kNone;
 }
@@ -743,21 +747,20 @@ void Player::Move()
 	CalcInputSlopeFromPad();
 	CalcInputSlopeFromCommand();
 
-	CalcMoveSpeed();
 	AllowCalcLookDir();
 }
 
 void Player::OnFootIK()
 {
-	m_humanoid_foot_ik->ApplyFootIK(std::dynamic_pointer_cast<IHumanoid>(shared_from_this()));
+	//m_humanoid_foot_ik->ApplyFootIK(std::dynamic_pointer_cast<IHumanoid>(shared_from_this()));
 }
 
 void Player::OnCrouchIK()
 {
 	const auto humanoid = std::dynamic_pointer_cast<IHumanoid>(shared_from_this());
 
-	m_humanoid_foot_ik->CalcRightLegRayPos	(humanoid);
-	m_humanoid_foot_ik->ApplyRightKneelCrouchIK(humanoid);
+	//m_humanoid_foot_ik->CalcRightLegRayPos	(humanoid);
+	//m_humanoid_foot_ik->ApplyRightKneelCrouchIK(humanoid);
 }
 
 void Player::SetLookDirOffsetValueForAim()
@@ -780,14 +783,6 @@ void Player::DirOfCameraForward()
 
 void Player::CalcMoveSpeed()
 {
-	const auto current_action_state_kind = static_cast<player_state::ActionStateKind>(m_state->GetActionState(TimeKind::kCurrent)->GetStateKind());
-
-	if (   current_action_state_kind != player_state::ActionStateKind::kActionNull
-		&& current_action_state_kind != player_state::ActionStateKind::kCrouch)
-	{
-		return;
-	}
-
 	const auto delta_time = GetDeltaTime();
 
 	if (VSize(m_input_slope) <= kWalkStickSlopeLimit - InputChecker::kStickDeadZone)
@@ -809,11 +804,12 @@ void Player::CalcMoveSpeed()
 
 void Player::CalcMoveSpeedStop()
 {
-	const auto state = static_cast<player_state::WeaponActionStateKind>(m_state->GetWeaponActionState(TimeKind::kCurrent)->GetStateKind());
+	const auto state_kind = m_state->GetCurrentStateKind();
 
-	if (   state == player_state::WeaponActionStateKind::kFirstSideSlashKnife
-		|| state == player_state::WeaponActionStateKind::kSecondSideSlashKnife
-		|| state == player_state::WeaponActionStateKind::kSpinningSlashKnife) {
+	if (   state_kind == PlayerStateKind::kFirstSideSlashKnife
+		|| state_kind == PlayerStateKind::kSecondSideSlashKnife
+		|| state_kind == PlayerStateKind::kSpinningSlashKnife)
+	{
 		return;
 	}
 
@@ -826,8 +822,6 @@ void Player::CalcMoveSpeedStop()
 
 void Player::CalcMoveSpeedRun()
 {
-	if (m_state->GetMoveState(TimeKind::kCurrent)->GetStateKind() == static_cast<int>(player_state::MoveStateKind::kIdle)) { return; }
-
 	// 遅い状態からダッシュ状態に移行した場合、急速に加速させる
 	if (m_move_speed < kWalkSpeed) { m_move_speed = kWalkSpeed; }
 
@@ -855,7 +849,7 @@ void Player::SpinningSlashKnifeOffsetMove()
 
 
 #pragma region Getter
-float Player::GetDeltaTime() const
+const float Player::GetDeltaTime() const
 {
 	const auto time_manager = GameTimeManager::GetInstance();
 	return time_manager->GetDeltaTime(TimeScaleLayerKind::kPlayer);
@@ -925,7 +919,7 @@ void Player::CalcInputSlopeFromCommand()
 	m_input_slope = v3d::GetNormalizedV(current_input_slope) * InputChecker::kStickMaxSlope;
 
 	// 継続して入力されていたvelocityが、現在のvelocityと逆を向いていた場合現在のvelocityを縮める
-	if (std::abs(math::GetAngleBetweenTwoVector(m_input_slope, continue_input_slope) - DX_PI_F) < math::kEpsilonLow)
+	if (std::abs(math::GetAngleBetweenTwoVectors(m_input_slope, continue_input_slope) - DX_PI_F) < math::kEpsilonLow)
 	{
 		m_input_slope += continue_input_slope;
 	}

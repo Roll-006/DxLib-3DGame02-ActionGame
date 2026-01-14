@@ -1,7 +1,8 @@
 #include "sound_player.hpp"
 
 SoundPlayer::SoundPlayer() : 
-	m_sound_pool(std::make_unique<SoundPool>())
+	m_sound_pool			(std::make_unique<SoundPool>()),
+	m_sound_volume_settings	(std::make_shared<SoundVolumeSettings>())
 {
 	// イベント登録
 	EventSystem::GetInstance()->Subscribe<ChangeSceneEvent>			(this, &SoundPlayer::PlayChangeSceneSound);
@@ -77,10 +78,13 @@ SoundPlayer::~SoundPlayer()
 
 void SoundPlayer::Update()
 {
+	// リスナーを設定
 	Set3DSoundListenerPosAndFrontPosAndUpVec(GetCameraPosition(), GetCameraFrontVector(), GetCameraUpVector());
 
-	auto remove_sounds = std::vector<std::shared_ptr<Sound>>();
+	// サウンドの設定
+	m_sound_volume_settings->Update();
 
+	auto remove_sounds = std::vector<std::shared_ptr<Sound>>();
 	const auto time_manager = GameTimeManager::GetInstance();
 	for (const auto& [name, sounds] : m_active_sounds)
 	{

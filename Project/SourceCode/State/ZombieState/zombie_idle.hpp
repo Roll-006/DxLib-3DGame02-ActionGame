@@ -1,26 +1,24 @@
-#pragma once
-#include "../../Base/move_state_base.hpp"
+﻿#pragma once
+#include "../../Base/zombie_state_base.hpp"
 
-#include "../../Object/zombie.hpp"
-#include "../../Part/zombie_state_controller.hpp"
+class Animator;
 
 namespace zombie_state
 {
-	class Idle final : public MoveStateBase<Zombie>
+	class Idle final : public ZombieStateBase
 	{
 	public:
-		Idle();
-		~Idle() override;
+		Idle(Zombie& zombie, zombie_state::State& state, const std::shared_ptr<Animator>& animator);
+		~Idle();
 
-		void Update		(std::shared_ptr<Zombie>& obj) override;
-		void LateUpdate	(std::shared_ptr<Zombie>& obj) override;
-		void Enter		(std::shared_ptr<Zombie>& obj) override;
-		void Exit		(std::shared_ptr<Zombie>& obj) override;
+		void Update()		override;
+		void LateUpdate()	override;
+		void Enter()		override;
+		void Exit()			override;
 
-		[[nodiscard]] std::shared_ptr<IState<Zombie>> ChangeState(std::shared_ptr<Zombie>& obj) override;
-		[[nodiscard]] bool IsStopAllState() const override { return m_is_stop_all_state; }
+		[[nodiscard]] const ZombieStateKind GetNextStateKind() override;
 
 	private:
-		bool m_is_stop_all_state;
+
 	};
 }

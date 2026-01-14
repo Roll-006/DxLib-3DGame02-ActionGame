@@ -1,10 +1,23 @@
-﻿#include "humanoid_arm_ik_solver.hpp"
+﻿#include "../JSON/json_loader.hpp"
+#include "ik_solver.hpp"
+#include "frame_info.hpp"
+#include "../Interface/i_humanoid.hpp"
+#include "../Base/physical_obj_base.hpp"
+#include "../Animator/animator.hpp"
+#include "../Part/collider.hpp"
+#include "../Data/humanoid_arm_ray_data.hpp"
+#include "../Data/model_frame_angle_limit_data.hpp"
+#include "humanoid_arm_ik_solver.hpp"
 
 std::unordered_map<std::string, ModelFrameAngleLimitData> HumanoidArmIKSolver::angle_limits = {};
 
 HumanoidArmIKSolver::HumanoidArmIKSolver(
-	const std::shared_ptr<AnimatorBase>& animator, const std::shared_ptr<Modeler>& modeler, 
-	std::unordered_map<ColliderKind, std::shared_ptr<Collider>>& colliders, HumanoidArmRayData& ray_data) :
+	IHumanoid& humanoid,
+	const std::shared_ptr<Animator>& animator, 
+	const std::shared_ptr<Modeler>& modeler, 
+	std::unordered_map<ColliderKind, std::shared_ptr<Collider>>& colliders, 
+	HumanoidArmRayData& ray_data) :
+	m_humanoid				(humanoid),
 	m_animator				(animator),
 	m_modeler				(modeler),
 	m_colliders				(colliders),
@@ -34,13 +47,13 @@ HumanoidArmIKSolver::~HumanoidArmIKSolver()
 
 }
 
-void HumanoidArmIKSolver::Init(const std::shared_ptr<IHumanoid>& humanoid)
+void HumanoidArmIKSolver::Init()
 {
-	ChangeLeftArmOriginMatrix	(humanoid);
-	ChangeRightArmOriginMatrix	(humanoid);
+	ChangeLeftArmOriginMatrix();
+	ChangeRightArmOriginMatrix();
 }
 
-void HumanoidArmIKSolver::Update(const std::shared_ptr<IHumanoid>& humanoid)
+void HumanoidArmIKSolver::Update()
 {
 	m_left_ik_kind .at(TimeKind::kPrev) = m_left_ik_kind .at(TimeKind::kCurrent);
 	m_right_ik_kind.at(TimeKind::kPrev) = m_right_ik_kind.at(TimeKind::kCurrent);
@@ -51,66 +64,66 @@ void HumanoidArmIKSolver::Update(const std::shared_ptr<IHumanoid>& humanoid)
 
 
 #pragma region コライダー
-void HumanoidArmIKSolver::CreateLeftHandRay(PhysicalObjBase* physical_obj, const std::shared_ptr<IHumanoid>& humanoid)
+void HumanoidArmIKSolver::CreateLeftHandRay(PhysicalObjBase* physical_obj) const
 {
 	const auto model_handle		= m_modeler->GetModelHandle();
 
-	auto	   left_hand_m		= MV1GetFrameLocalWorldMatrix(m_modeler->GetModelHandle(), humanoid->GetHumanoidFrame()->GetLeftHandIndex(model_handle));
-	const auto left_hand_pos	= MGetTranslateElem(left_hand_m);
+	auto	   left_hand_m		= MV1GetFrameLocalWorldMatrix(m_modeler->GetModelHandle(), m_humanoid.GetHumanoidFrame()->GetLeftHandIndex(model_handle));
+	const auto left_hand_pos	= matrix::GetPos(left_hand_m);
 	physical_obj->AddCollider(std::make_shared<Collider>(ColliderKind::kLeftHandRay, std::make_shared<Segment>(left_hand_pos + VGet(0.0f, m_ray_data.left_hand_ray_offset, 0.0f), -axis::GetWorldYAxis(), m_ray_data.hand_ray_length), physical_obj));
 }
 
-void HumanoidArmIKSolver::CreateRightHandRay(PhysicalObjBase* physical_obj, const std::shared_ptr<IHumanoid>& humanoid)
+void HumanoidArmIKSolver::CreateRightHandRay(PhysicalObjBase* physical_obj) const
 {
 	const auto model_handle		= m_modeler->GetModelHandle();
 
-	auto	   right_hand_m		= MV1GetFrameLocalWorldMatrix(m_modeler->GetModelHandle(), humanoid->GetHumanoidFrame()->GetRightHandIndex(model_handle));
-	const auto right_hand_pos	= MGetTranslateElem(right_hand_m);
+	auto	   right_hand_m		= MV1GetFrameLocalWorldMatrix(m_modeler->GetModelHandle(), m_humanoid.GetHumanoidFrame()->GetRightHandIndex(model_handle));
+	const auto right_hand_pos	= matrix::GetPos(right_hand_m);
 	physical_obj->AddCollider(std::make_shared<Collider>(ColliderKind::kRightHandRay, std::make_shared<Segment>(right_hand_pos + VGet(0.0f, m_ray_data.right_hand_ray_offset, 0.0f), -axis::GetWorldYAxis(), m_ray_data.hand_ray_length), physical_obj));
 }
 
-void HumanoidArmIKSolver::DeleteLeftHandRay(PhysicalObjBase* physical_obj)
+void HumanoidArmIKSolver::DeleteLeftHandRay(PhysicalObjBase* physical_obj) const
 {
 	physical_obj->RemoveCollider(ColliderKind::kLeftHandRay);
 }
 
-void HumanoidArmIKSolver::DeleteRightHandRay(PhysicalObjBase* physical_obj)
+void HumanoidArmIKSolver::DeleteRightHandRay(PhysicalObjBase* physical_obj) const
 {
 	physical_obj->RemoveCollider(ColliderKind::kRightHandRay);
 }
 
-void HumanoidArmIKSolver::CalcLeftHandRayPos(const std::shared_ptr<IHumanoid>& humanoid)
+void HumanoidArmIKSolver::CalcLeftHandRayPos() const
 {
 	const auto model_handle			= m_modeler->GetModelHandle();
 
 	const auto left_hand_segment	= std::static_pointer_cast<Segment>(m_colliders.at(ColliderKind::kLeftHandRay)->GetShape());
-	auto	   left_hand_m			= MV1GetFrameLocalWorldMatrix(m_modeler->GetModelHandle(), humanoid->GetHumanoidFrame()->GetLeftHandIndex(model_handle));
-	const auto left_hand_pos		= MGetTranslateElem(left_hand_m);
+	auto	   left_hand_m			= MV1GetFrameLocalWorldMatrix(m_modeler->GetModelHandle(), m_humanoid.GetHumanoidFrame()->GetLeftHandIndex(model_handle));
+	const auto left_hand_pos		= matrix::GetPos(left_hand_m);
 	left_hand_segment->SetBeginPos(left_hand_pos + VGet(0.0f, m_ray_data.left_hand_ray_offset, 0.0f), false);
 }
 
-void HumanoidArmIKSolver::CalcRightHandRayPos(const std::shared_ptr<IHumanoid>& humanoid)
+void HumanoidArmIKSolver::CalcRightHandRayPos() const
 {
 	const auto model_handle			= m_modeler->GetModelHandle();
 
 	const auto right_hand_segment	= std::static_pointer_cast<Segment>(m_colliders.at(ColliderKind::kRightHandRay)->GetShape());
-	auto	   right_hand_m			= MV1GetFrameLocalWorldMatrix(m_modeler->GetModelHandle(), humanoid->GetHumanoidFrame()->GetRightHandIndex(model_handle));
-	const auto right_hand_pos		= MGetTranslateElem(right_hand_m);
+	auto	   right_hand_m			= MV1GetFrameLocalWorldMatrix(m_modeler->GetModelHandle(), m_humanoid.GetHumanoidFrame()->GetRightHandIndex(model_handle));
+	const auto right_hand_pos		= matrix::GetPos(right_hand_m);
 	right_hand_segment->SetBeginPos(right_hand_pos + VGet(0.0f, m_ray_data.right_hand_ray_offset, 0.0f), false);
 }
 #pragma endregion
 
 
-void HumanoidArmIKSolver::ApplyLeftKneelCrouchIK (const std::shared_ptr<IHumanoid>& humanoid)
+void HumanoidArmIKSolver::ApplyLeftKneelCrouchIK ()
 {
 	// 左手手IK処理
-	const auto left_arm_result = ApplyLeftArmIKOnGround(humanoid);
+	const auto left_arm_result = ApplyLeftArmIKOnGround();
 
 	// 左手手が膝に到達しなかった場合、目標地点を太ももに変更して再計算
 	switch (left_arm_result)
 	{
 	case ResultKind::kFailure:
-		ApplyLeftHandIKOnThigh(humanoid);
+		ApplyLeftHandIKOnThigh();
 		break;
 
 	default:
@@ -120,17 +133,17 @@ void HumanoidArmIKSolver::ApplyLeftKneelCrouchIK (const std::shared_ptr<IHumanoi
 	// ブレンドの起点行列を設定する
 	if (m_left_ik_kind.at(TimeKind::kCurrent) != m_left_ik_kind.at(TimeKind::kPrev))
 	{
-		ChangeLeftArmOriginMatrix(humanoid, true);
+		ChangeLeftArmOriginMatrix(true);
 	}
 
 	// 右手IK処理
-	const auto right_arm_result = ApplyRightHandIKOnKnees(humanoid);
+	const auto right_arm_result = ApplyRightHandIKOnKnees();
 
 	switch (right_arm_result)
 	{
 		// 右手が膝に到達しなかった場合、目標地点を太ももに変更して再計算
 	case ResultKind::kFailure:
-		ApplyRightHandIKOnThigh(humanoid);
+		ApplyRightHandIKOnThigh();
 		break;
 
 	default:
@@ -140,7 +153,7 @@ void HumanoidArmIKSolver::ApplyLeftKneelCrouchIK (const std::shared_ptr<IHumanoi
 	// ブレンドの起点行列を設定する
 	if (m_right_ik_kind.at(TimeKind::kCurrent) != m_right_ik_kind.at(TimeKind::kPrev))
 	{
-		ChangeRightArmOriginMatrix(humanoid, true);
+		ChangeRightArmOriginMatrix(true);
 	}
 
 	m_ray_data.left_hand_cast_pos		= std::nullopt;
@@ -149,16 +162,16 @@ void HumanoidArmIKSolver::ApplyLeftKneelCrouchIK (const std::shared_ptr<IHumanoi
 	m_ray_data.right_hand_hit_triangle	= std::nullopt;
 }
 
-void HumanoidArmIKSolver::ApplyRightKneelCrouchIK(const std::shared_ptr<IHumanoid>& humanoid)
+void HumanoidArmIKSolver::ApplyRightKneelCrouchIK()
 {
 	// 左手IK処理
-	const auto left_arm_result = ApplyLeftHandIKOnKnees(humanoid);
+	const auto left_arm_result = ApplyLeftHandIKOnKnees();
 
 	switch (left_arm_result)
 	{
 	// 左手が膝に到達しなかった場合、目標地点を太ももに変更して再計算
 	case ResultKind::kFailure:
-		ApplyLeftHandIKOnThigh(humanoid);
+		ApplyLeftHandIKOnThigh();
 		break;
 
 	default:
@@ -168,17 +181,17 @@ void HumanoidArmIKSolver::ApplyRightKneelCrouchIK(const std::shared_ptr<IHumanoi
 	// ブレンドの起点行列を設定する
 	if (m_left_ik_kind.at(TimeKind::kCurrent) != m_left_ik_kind.at(TimeKind::kPrev))
 	{
-		ChangeLeftArmOriginMatrix(humanoid, true);
+		ChangeLeftArmOriginMatrix(true);
 	}
 
 	// 右手IK処理
-	const auto right_arm_result = ApplyRightArmIKOnGround(humanoid);
+	const auto right_arm_result = ApplyRightArmIKOnGround();
 
 	// 右手が膝に到達しなかった場合、目標地点を太ももに変更して再計算
 	switch (right_arm_result)
 	{
 	case ResultKind::kFailure:
-		ApplyRightHandIKOnThigh(humanoid);
+		ApplyRightHandIKOnThigh();
 		break;
 
 	default:
@@ -188,7 +201,7 @@ void HumanoidArmIKSolver::ApplyRightKneelCrouchIK(const std::shared_ptr<IHumanoi
 	// ブレンドの起点行列を設定する
 	if (m_right_ik_kind.at(TimeKind::kCurrent) != m_right_ik_kind.at(TimeKind::kPrev))
 	{
-		ChangeRightArmOriginMatrix(humanoid, true);
+		ChangeRightArmOriginMatrix(true);
 	}
 
 	m_ray_data.left_hand_cast_pos		= std::nullopt;
@@ -197,10 +210,10 @@ void HumanoidArmIKSolver::ApplyRightKneelCrouchIK(const std::shared_ptr<IHumanoi
 	m_ray_data.right_hand_hit_triangle	= std::nullopt;
 }
 
-void HumanoidArmIKSolver::BlendFrame(const std::shared_ptr<IHumanoid>& humanoid)
+void HumanoidArmIKSolver::BlendFrame()
 {
 	const auto model_handle		= m_modeler->GetModelHandle();
-	const auto humanoid_frame	= humanoid->GetHumanoidFrame();
+	const auto humanoid_frame	= m_humanoid.GetHumanoidFrame();
 
 	// 補間係数tを取得
 	const auto delta_time = GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kNoneScale);
@@ -230,25 +243,25 @@ void HumanoidArmIKSolver::BlendFrame(const std::shared_ptr<IHumanoid>& humanoid)
 
 
 #pragma region IK処理
-HumanoidArmIKSolver::ResultKind HumanoidArmIKSolver::ApplyLeftHandIKOnKnees	(const std::shared_ptr<IHumanoid>& humanoid)
+const HumanoidArmIKSolver::ResultKind HumanoidArmIKSolver::ApplyLeftHandIKOnKnees	()
 {
 	m_left_ik_kind.at(TimeKind::kCurrent) = IKKind::kHandOnKnees;
 
 	const auto model_handle				= m_modeler->GetModelHandle();
-	const auto humanoid_frame			= humanoid->GetHumanoidFrame();
+	const auto humanoid_frame			= m_humanoid.GetHumanoidFrame();
 	auto	   left_arm_limit			= angle_limits.at(MV1GetFrameName(model_handle, humanoid_frame->GetLeftArmIndex		(model_handle)));
 	auto	   left_fore_arm_limit		= angle_limits.at(MV1GetFrameName(model_handle, humanoid_frame->GetLeftForeArmIndex	(model_handle)));
 
 	// 行列情報を取得
 	auto	   left_leg_world_m			= MV1GetFrameLocalWorldMatrix(model_handle, humanoid_frame->GetLeftLegIndex(model_handle));
-	const auto left_leg_world_pos		= MGetTranslateElem(left_leg_world_m);
+	const auto left_leg_world_pos		= matrix::GetPos(left_leg_world_m);
 	const auto left_leg_world_axis		= math::ConvertRotMatrixToAxis(left_leg_world_m);
 	auto	   left_fore_arm_world_m	= MV1GetFrameLocalWorldMatrix(model_handle, humanoid_frame->GetLeftForeArmIndex(model_handle));
 	const auto left_fore_arm_world_axis	= math::ConvertRotMatrixToAxis(left_fore_arm_world_m);
 	auto	   left_shoulder_frame		= frame_info::GetFrameInfo(model_handle, humanoid_frame->GetLeftShoulderIndex(model_handle));
 	const auto left_shoulder_world_axis = math::ConvertRotMatrixToAxis(left_shoulder_frame.world_rot_m);
 	auto	   left_hand_world_m		= MV1GetFrameLocalWorldMatrix(model_handle, humanoid_frame->GetLeftHandIndex(model_handle));
-	const auto left_hand_world_pos		= MGetTranslateElem(left_hand_world_m);
+	const auto left_hand_world_pos		= matrix::GetPos(left_hand_world_m);
 
 	// 左腕IK処理
 	ik_solver::TwoBoneIK(
@@ -276,25 +289,25 @@ HumanoidArmIKSolver::ResultKind HumanoidArmIKSolver::ApplyLeftHandIKOnKnees	(con
 	return ResultKind::kSuccess;
 }
 
-HumanoidArmIKSolver::ResultKind HumanoidArmIKSolver::ApplyRightHandIKOnKnees(const std::shared_ptr<IHumanoid>& humanoid)
+const HumanoidArmIKSolver::ResultKind HumanoidArmIKSolver::ApplyRightHandIKOnKnees()
 {
 	m_right_ik_kind.at(TimeKind::kCurrent) = IKKind::kHandOnKnees;
 
 	const auto model_handle					= m_modeler->GetModelHandle();
-	const auto humanoid_frame				= humanoid->GetHumanoidFrame();
+	const auto humanoid_frame				= m_humanoid.GetHumanoidFrame();
 	auto	   right_arm_limit				= angle_limits.at(MV1GetFrameName(model_handle, humanoid_frame->GetRightArmIndex		(model_handle)));
 	auto	   right_fore_arm_limit			= angle_limits.at(MV1GetFrameName(model_handle, humanoid_frame->GetRightForeArmIndex	(model_handle)));
 
 	// 行列情報を取得
 	auto	   right_leg_world_m			= MV1GetFrameLocalWorldMatrix(model_handle, humanoid_frame->GetRightLegIndex(model_handle));
-	const auto right_leg_world_pos			= MGetTranslateElem(right_leg_world_m);
+	const auto right_leg_world_pos			= matrix::GetPos(right_leg_world_m);
 	const auto right_leg_world_axis			= math::ConvertRotMatrixToAxis(right_leg_world_m);
 	auto	   right_fore_arm_world_m		= MV1GetFrameLocalWorldMatrix(model_handle, humanoid_frame->GetRightForeArmIndex(model_handle));
 	const auto right_fore_arm_world_axis	= math::ConvertRotMatrixToAxis(right_fore_arm_world_m);
 	auto	   right_shoulder_frame			= frame_info::GetFrameInfo(model_handle, humanoid_frame->GetRightShoulderIndex(model_handle));
 	const auto right_shoulder_world_axis	= math::ConvertRotMatrixToAxis(right_shoulder_frame.world_rot_m);
 	auto	   right_hand_world_m			= MV1GetFrameLocalWorldMatrix(model_handle, humanoid_frame->GetRightHandIndex(model_handle));
-	const auto right_hand_world_pos			= MGetTranslateElem(right_hand_world_m);
+	const auto right_hand_world_pos			= matrix::GetPos(right_hand_world_m);
 
 	// 左腕IK処理
 	ik_solver::TwoBoneIK(
@@ -322,12 +335,12 @@ HumanoidArmIKSolver::ResultKind HumanoidArmIKSolver::ApplyRightHandIKOnKnees(con
 	return ResultKind::kSuccess;
 }
 
-HumanoidArmIKSolver::ResultKind HumanoidArmIKSolver::ApplyLeftHandIKOnThigh	(const std::shared_ptr<IHumanoid>& humanoid)
+const HumanoidArmIKSolver::ResultKind HumanoidArmIKSolver::ApplyLeftHandIKOnThigh	()
 {
 	m_left_ik_kind.at(TimeKind::kCurrent) = IKKind::kHandOnThigh;
 
 	const auto model_handle				= m_modeler->GetModelHandle();
-	const auto humanoid_frame			= humanoid->GetHumanoidFrame();
+	const auto humanoid_frame			= m_humanoid.GetHumanoidFrame();
 
 	// 行列情報を取得
 	auto	   left_up_leg_frame		= frame_info::GetFrameInfo(model_handle, humanoid_frame->GetLeftUpLegIndex(model_handle));
@@ -365,12 +378,12 @@ HumanoidArmIKSolver::ResultKind HumanoidArmIKSolver::ApplyLeftHandIKOnThigh	(con
 	return ResultKind::kSuccess;
 }
 
-HumanoidArmIKSolver::ResultKind HumanoidArmIKSolver::ApplyRightHandIKOnThigh(const std::shared_ptr<IHumanoid>& humanoid)
+const HumanoidArmIKSolver::ResultKind HumanoidArmIKSolver::ApplyRightHandIKOnThigh()
 {
 	m_right_ik_kind.at(TimeKind::kCurrent)	= IKKind::kHandOnThigh;
 
 	const auto model_handle					= m_modeler->GetModelHandle();
-	const auto humanoid_frame				= humanoid->GetHumanoidFrame();
+	const auto humanoid_frame				= m_humanoid.GetHumanoidFrame();
 
 	// 行列情報を取得
 	auto	   right_up_leg_frame			= frame_info::GetFrameInfo(model_handle, humanoid_frame->GetRightUpLegIndex(model_handle));
@@ -408,12 +421,12 @@ HumanoidArmIKSolver::ResultKind HumanoidArmIKSolver::ApplyRightHandIKOnThigh(con
 	return ResultKind::kSuccess;
 }
 
-HumanoidArmIKSolver::ResultKind HumanoidArmIKSolver::ApplyLeftArmIKOnGround	(const std::shared_ptr<IHumanoid>& humanoid)
+const HumanoidArmIKSolver::ResultKind HumanoidArmIKSolver::ApplyLeftArmIKOnGround()
 {
 	m_left_ik_kind.at(TimeKind::kCurrent) = IKKind::kHandOnGround;
 
 	const auto model_handle				= m_modeler->GetModelHandle();
-	const auto humanoid_frame			= humanoid->GetHumanoidFrame();
+	const auto humanoid_frame			= m_humanoid.GetHumanoidFrame();
 
 	// 行列情報を取得
 	auto	   spine2_world_m			= MV1GetFrameLocalWorldMatrix(model_handle, humanoid_frame->GetSpine2Index(model_handle));
@@ -421,9 +434,7 @@ HumanoidArmIKSolver::ResultKind HumanoidArmIKSolver::ApplyLeftArmIKOnGround	(con
 	auto	   left_fore_arm_world_m	= MV1GetFrameLocalWorldMatrix(model_handle, humanoid_frame->GetSpine2Index(model_handle));
 	const auto left_fore_arm_world_axis = math::ConvertRotMatrixToAxis(left_fore_arm_world_m);
 	auto	   left_hand_world_m		= MV1GetFrameLocalWorldMatrix(model_handle, humanoid_frame->GetLeftHandIndex(model_handle));
-	const auto left_hand_world_pos		= MGetTranslateElem(left_hand_world_m);
-	//auto	   left_hand_middle4_world_m	= MV1GetFrameLocalWorldMatrix(model_handle, humanoid_frame->GetLeftHandMiddle4Index(model_handle));
-	//const auto left_hand_middle4_world_pos	= MGetTranslateElem(left_hand_middle4_world_m);
+	const auto left_hand_world_pos		= matrix::GetPos(left_hand_world_m);
 
 	if (m_ray_data.left_hand_cast_pos)
 	{
@@ -457,12 +468,12 @@ HumanoidArmIKSolver::ResultKind HumanoidArmIKSolver::ApplyLeftArmIKOnGround	(con
 	return ResultKind::kSuccess;
 }
 
-HumanoidArmIKSolver::ResultKind HumanoidArmIKSolver::ApplyRightArmIKOnGround(const std::shared_ptr<IHumanoid>& humanoid)
+const HumanoidArmIKSolver::ResultKind HumanoidArmIKSolver::ApplyRightArmIKOnGround()
 {
 	m_right_ik_kind.at(TimeKind::kCurrent)	= IKKind::kHandOnGround;
 
 	const auto model_handle					= m_modeler->GetModelHandle();
-	const auto humanoid_frame				= humanoid->GetHumanoidFrame();
+	const auto humanoid_frame				= m_humanoid.GetHumanoidFrame();
 
 	// 行列情報を取得
 	auto	   spine2_world_m				= MV1GetFrameLocalWorldMatrix(model_handle, humanoid_frame->GetSpine2Index(model_handle));
@@ -470,9 +481,9 @@ HumanoidArmIKSolver::ResultKind HumanoidArmIKSolver::ApplyRightArmIKOnGround(con
 	auto	   right_fore_arm_world_m		= MV1GetFrameLocalWorldMatrix(model_handle, humanoid_frame->GetSpine2Index(model_handle));
 	const auto right_fore_arm_world_axis	= math::ConvertRotMatrixToAxis(right_fore_arm_world_m);
 	auto	   right_hand_world_m			= MV1GetFrameLocalWorldMatrix(model_handle, humanoid_frame->GetRightHandIndex(model_handle));
-	const auto right_hand_world_pos			= MGetTranslateElem(right_hand_world_m);
+	const auto right_hand_world_pos			= matrix::GetPos(right_hand_world_m);
 	//auto	   right_hand_middle4_world_m	= MV1GetFrameLocalWorldMatrix(model_handle, humanoid_frame->GetRightHandMiddle4Index(model_handle));
-	//const auto right_hand_middle4_world_pos	= MGetTranslateElem(right_hand_middle4_world_m);
+	//const auto right_hand_middle4_world_pos	= matrix::GetPos(right_hand_middle4_world_m);
 
 	if (m_ray_data.right_hand_cast_pos)
 	{
@@ -509,10 +520,10 @@ HumanoidArmIKSolver::ResultKind HumanoidArmIKSolver::ApplyRightArmIKOnGround(con
 
 
 #pragma region ブレンドの起点を変更
-void HumanoidArmIKSolver::ChangeLeftArmOriginMatrix (const std::shared_ptr<IHumanoid>& humanoid, const bool is_set_result_m)
+void HumanoidArmIKSolver::ChangeLeftArmOriginMatrix (const bool is_set_result_m)
 {
 	const auto model_handle					= m_modeler->GetModelHandle();
-	const auto humanoid_frame				= humanoid->GetHumanoidFrame();
+	const auto humanoid_frame				= m_humanoid.GetHumanoidFrame();
 
 	m_origin_arm_matrices.left_arm			= is_set_result_m ? m_result_arm_matrices.left_arm			: MV1GetFrameLocalMatrix(model_handle, humanoid_frame->GetLeftArmIndex		(model_handle));
 	m_origin_arm_matrices.left_fore_arm		= is_set_result_m ? m_result_arm_matrices.left_fore_arm		: MV1GetFrameLocalMatrix(model_handle, humanoid_frame->GetLeftForeArmIndex	(model_handle));
@@ -521,10 +532,10 @@ void HumanoidArmIKSolver::ChangeLeftArmOriginMatrix (const std::shared_ptr<IHuma
 	m_left_arm_blend_timer = 0.0f;
 }
 
-void HumanoidArmIKSolver::ChangeRightArmOriginMatrix(const std::shared_ptr<IHumanoid>& humanoid, const bool is_set_result_m)
+void HumanoidArmIKSolver::ChangeRightArmOriginMatrix(const bool is_set_result_m)
 {
 	const auto model_handle					= m_modeler->GetModelHandle();
-	const auto humanoid_frame				= humanoid->GetHumanoidFrame();
+	const auto humanoid_frame				= m_humanoid.GetHumanoidFrame();
 
 	m_origin_arm_matrices.right_arm			= is_set_result_m ? m_result_arm_matrices.right_arm			: MV1GetFrameLocalMatrix(model_handle, humanoid_frame->GetRightArmIndex		(model_handle));
 	m_origin_arm_matrices.right_fore_arm	= is_set_result_m ? m_result_arm_matrices.right_fore_arm	: MV1GetFrameLocalMatrix(model_handle, humanoid_frame->GetRightForeArmIndex	(model_handle));

@@ -30,11 +30,11 @@ public:
 
 
 	#pragma region Getter
-	virtual [[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentEquipWeapon		(const WeaponSlotKind slot_kind) const abstract;
-	virtual [[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentHeldWeapon		() abstract;
-	virtual [[nodiscard]] std::shared_ptr<WeaponBase>	GetCurrentAttachWeapon		(const HolsterKind holster_kind) const abstract;
-	virtual [[nodiscard]] WeaponKind					GetCurrentEquipWeaponKind	(const WeaponSlotKind slot_kind) abstract;
-	virtual [[nodiscard]] WeaponKind					GetCurrentHeldWeaponKind	() abstract;
-	virtual [[nodiscard]] WeaponKind					GetCurrentAttachWeaponKind	(const HolsterKind holster_kind) const abstract;
+	virtual [[nodiscard]] const std::shared_ptr<WeaponBase> GetCurrentEquipWeapon(const WeaponSlotKind slot_kind) const abstract;
+	virtual [[nodiscard]] const std::shared_ptr<WeaponBase> GetCurrentHeldWeapon() abstract;
+	virtual [[nodiscard]] const std::shared_ptr<WeaponBase> GetCurrentAttachWeapon(const HolsterKind holster_kind) const abstract;
+	virtual [[nodiscard]] const WeaponKind GetCurrentEquipWeaponKind(const WeaponSlotKind slot_kind) abstract;
+	virtual [[nodiscard]] const WeaponKind GetCurrentHeldWeaponKind() abstract;
+	virtual [[nodiscard]] const WeaponKind GetCurrentAttachWeaponKind(const HolsterKind holster_kind) const abstract;
 	#pragma endregion
 };

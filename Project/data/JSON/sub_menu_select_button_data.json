@@ -1,0 +1,15 @@
+﻿{
+  "sub_menu_select_button_data": {
+    "fade_in_speed": 1000,
+    "fade_out_speed": 600,
+    "non_select_alpha_blend_num": 100,
+    "non_select_scale": 0.8,
+    "select_scale": 1.0,
+    "selecting_button_distance": 10,
+    "move_speed": 500,
+    "dark_frame_graphic_path": "Data/Graphic/UI/Button/Frame/frame_dark.png",
+    "light_frame_graphic_path": "Data/Graphic/UI/Button/Frame/frame_light.png",
+    "selecting_graphic_path": "Data/Graphic/UI/Button/Frame/selecting_button.png",
+    "selecting_movie_path": "Data/Movie/sub_menu_select_button_smoke.mp4"
+  }
+}

@@ -7,6 +7,7 @@
 #include "../Part/scene_fader.hpp"
 #include "../UI/game_clear_text.hpp"
 #include "../UI/button_prompt.hpp"
+#include "../Data/game_clear_tab_data.hpp"
 
 class GameClearTab final : public ITab
 {
@@ -45,25 +46,21 @@ private:
 	void CreateResultScreen();
 
 private:
-	static constexpr Vector2D<int>	kFirstButtonCenterPos	= { Window::kCenterPos.x, Window::kCenterPos.y + 80 };
-	static constexpr int			kButtonPosInterval		= 130;
-	static constexpr float			kActiveWaitTime			= 2.0f;
-	static constexpr float			kFadeSpeed				= 300.0f;
-	static constexpr float			kDrawResultWaitTime		= 10.0f;
+	GameClearTabData				data;
 
-	int		m_tab_handle;
-	int		m_priority;
-	bool	m_is_active;
-	bool	m_can_select;
-	bool	m_is_retry;
-	bool	m_is_quit_game;
+	int								m_tab_handle;
+	int								m_priority;
+	bool							m_is_active;
+	bool							m_can_select;
+	bool							m_is_retry;
+	bool							m_is_quit_game;
 
-	bool	m_can_calc_active_time;
-	float	m_active_timer;
-	int		m_alpha_blend_num;
+	bool							m_can_calc_active_time;
+	float							m_active_timer;
+	int								m_alpha_blend_num;
 
-	float	m_change_time_scale_wait_time;
-	bool	m_is_change_time_scale;
+	float							m_change_time_scale_wait_time;
+	bool							m_is_change_time_scale;
 
 	std::shared_ptr<GameClearText>	m_game_clear_text;
 	std::shared_ptr<UISelector>		m_ui_selector;

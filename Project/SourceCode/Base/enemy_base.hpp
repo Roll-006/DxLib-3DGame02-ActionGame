@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "character_base.hpp"
 #include "../Part/patrol_route_giver.hpp"
 #include "../Kind/rot_dir_kind.hpp"
@@ -18,36 +18,45 @@ public:
 	void CreatePatrolPos(const PatrolRouteGiver::PatrolKind patrol_kind, const std::string& route_id);
 	void ChangePatrolDestination();
 
-	/// @brief ƒŠƒXƒ|[ƒ“‚³‚¹‚ç‚ê‚é
+	/// @brief ãƒªã‚¹ãƒãƒ¼ãƒ³ã•ã›ã‚‰ã‚Œã‚‹
 	virtual void OnRespawn(const VECTOR& pos, const VECTOR& look_dir) abstract;
 
-	/// @brief Forward‚ª‰ñ“]‚³‚¹‚ç‚ê‚é
-	/// @param angle ‰ñ“]‚·‚éŠp“x (ƒ‰ƒWƒAƒ“)
-	/// @param rot_dir_kind ‰ñ“]•ûŒü
+	/// @brief ForwardãŒå›è»¢ã•ã›ã‚‰ã‚Œã‚‹
+	/// @param angle å›è»¢ã™ã‚‹è§’åº¦ (ãƒ©ã‚¸ã‚¢ãƒ³)
+	/// @param rot_dir_kind å›è»¢æ–¹å‘
 	void OnRotate(const float angle, const RotDirKind rot_dir_kind);
+
+	/// @brief ç§»å‹•velocityã‚’è£œæ­£ã™ã‚‹
+	void CorrectMoveVelocity(const VECTOR& target_pos);
+
+	/// @brief è¦‹ã¦ã„ã‚‹æ–¹å‘ã‚’ç§»å‹•æ–¹å‘ã¨åŒæœŸã•ã›ã‚‹
+	void SyncMoveDirWithLookDir();
+
+	/// @brief ä½“ã‚’ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã«å‘ã‘ã‚‹
+	void LookAtTarget(const VECTOR& target_pos);
 
 	void OnDetected();
 	void Disappear();
 
-	/// @brief s“®‚ğ‹N‚±‚·‚ğ‹–‰Â‚³‚ê‚é
-	/// @brief ‚Ü‚½A“¯‚ÉUŒ‚ƒCƒ“ƒ^[ƒoƒ‹ŠÔ‚ª1/4–¢–‚Ìê‡A
-	/// @brief 1/2‚ÌŠÔ‚ª•t—^‚³‚ê‚é
+	/// @brief è¡Œå‹•ã‚’èµ·ã“ã™ã‚’è¨±å¯ã•ã‚Œã‚‹
+	/// @brief ã¾ãŸã€åŒæ™‚ã«æ”»æ’ƒã‚¤ãƒ³ã‚¿ãƒ¼ãƒãƒ«æ™‚é–“ãŒ1/4æœªæº€ã®å ´åˆã€
+	/// @brief 1/2ã®æ™‚é–“ãŒä»˜ä¸ã•ã‚Œã‚‹
 	void OnAllowAction();
-	/// @brief s“®‚ª‹­§“I‚É’â~‚³‚¹‚ç‚ê‚é
+	/// @brief è¡Œå‹•ãŒå¼·åˆ¶çš„ã«åœæ­¢ã•ã›ã‚‰ã‚Œã‚‹
 	void OnDisallowActionForcibly() { m_is_disallow_action_forcibly = true; }
 
 	void DisallowDecreaseKnockBackGauge() { m_can_decrease_knock_back_gauge = false; }
 
 
 	#pragma region Getter
-	[[nodiscard]] std::string						GetEnemyID()				const { return enemy_id; }
-	[[nodiscard]] std::shared_ptr<PatrolRouteGiver> GetPatrolRouteGiver()		const { return m_patrol_route_giver; }
-	[[nodiscard]] std::shared_ptr<Gauge>			GetKnockBackGauge()			const { return m_knock_back_gauge; }
-	[[nodiscard]] bool								IsDetectedTarget()			const { return m_is_detected_target; }
-	[[nodiscard]] bool								IsPrevDetectedTarget()		const { return m_is_prev_detected_target; }
-	[[nodiscard]] bool								CanAttack()					const { return m_attack_interval_timer <= 0.0f; }
-	[[nodiscard]] bool								CanAction()					const { return m_can_action; }
-	[[nodiscard]] float								GetDetecteNotifyDistance()	const { return detected_notify_distance; }
+	[[nodiscard]] const std::string								GetEnemyID()				const { return enemy_id; }
+	[[nodiscard]] const std::shared_ptr<const PatrolRouteGiver>	GetPatrolRouteGiver()		const { return m_patrol_route_giver; }
+	[[nodiscard]] const std::shared_ptr<Gauge>					GetKnockBackGauge()			const { return m_knock_back_gauge; }
+	[[nodiscard]] const bool									IsDetectedTarget()			const { return m_is_detected_target; }
+	[[nodiscard]] const bool									IsPrevDetectedTarget()		const { return m_is_prev_detected_target; }
+	[[nodiscard]] const bool									CanAttack()					const { return m_attack_interval_timer <= 0.0f; }
+	[[nodiscard]] const bool									CanAction()					const { return m_can_action; }
+	[[nodiscard]] const float									GetDetecteNotifyDistance()	const { return detected_notify_distance; }
 	#pragma endregion
 
 protected:
@@ -65,6 +74,7 @@ protected:
 	std::shared_ptr<PatrolRouteGiver>	m_patrol_route_giver;
 	VECTOR								m_patrol_destination_pos;
 
+	bool  m_is_stop;
 	float m_attack_interval_timer;
 	bool  m_can_action;
 	bool  m_is_disallow_action_forcibly;
@@ -72,9 +82,9 @@ protected:
 
 	bool  m_on_collided_vision_trigger;
 	bool  m_has_obstacle_between_target;
-	bool  m_is_detected_target;				// ”­Œ©ó‘Ô
-	bool  m_is_prev_detected_target;		// 1ƒtƒŒ[ƒ€‘O‚Ì”­Œ©ó‘Ô
-	bool  m_is_detection_shared;			// ”­Œ©ó‘Ô‚ª‹¤—L‚³‚ê‚½
+	bool  m_is_detected_target;				// ç™ºè¦‹çŠ¶æ…‹
+	bool  m_is_prev_detected_target;		// 1ãƒ•ãƒ¬ãƒ¼ãƒ å‰ã®ç™ºè¦‹çŠ¶æ…‹
+	bool  m_is_detection_shared;			// ç™ºè¦‹çŠ¶æ…‹ãŒå…±æœ‰ã•ã‚ŒãŸ
 
 	std::shared_ptr<Gauge> m_knock_back_gauge;
 	bool  m_can_decrease_knock_back_gauge;

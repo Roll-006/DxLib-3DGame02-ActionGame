@@ -1,4 +1,4 @@
-#include "ground.hpp"
+﻿#include "ground.hpp"
 
 Ground::Ground() : 
 	PhysicalObjBase	(ObjName.GROUND, ObjTag.GROUND),
@@ -55,7 +55,7 @@ void Ground::OnProjectPos()
 
 void Ground::AddToObjManager()
 {
-	ObjManager		::GetInstance()->AddObj			(shared_from_this());
+	ObjAccessor		::GetInstance()->AddObj			(shared_from_this());
 	CollisionManager::GetInstance()->AddCollideObj	(std::dynamic_pointer_cast<PhysicalObjBase>(shared_from_this()));
 	PhysicsManager	::GetInstance()->AddPhysicalObj	(std::dynamic_pointer_cast<PhysicalObjBase>(shared_from_this()));
 }
@@ -66,10 +66,10 @@ void Ground::RemoveToObjManager()
 
 	CollisionManager::GetInstance()->RemoveCollideObj (obj_handle);
 	PhysicsManager	::GetInstance()->RemovePhysicalObj(obj_handle);
-	ObjManager		::GetInstance()->RemoveObj		  (obj_handle);
+	ObjAccessor		::GetInstance()->RemoveObj		  (obj_handle);
 }
 
-float Ground::GetDeltaTime() const
+const float Ground::GetDeltaTime() const
 {
 	const auto time_manager = GameTimeManager::GetInstance();
 	return time_manager->GetDeltaTime(TimeScaleLayerKind::kWorld);

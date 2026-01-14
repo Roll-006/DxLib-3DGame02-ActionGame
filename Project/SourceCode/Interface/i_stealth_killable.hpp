@@ -11,7 +11,7 @@ public:
 
 	virtual void DisallowStealthKill() abstract;
 
-	[[nodiscard]] virtual bool IsAllowStealthKill()		const abstract;
-	[[nodiscard]] virtual bool IsStealthKillerInSight() const abstract;
-	[[nodiscard]] virtual bool IsStealthKilled()		const abstract;
+	[[nodiscard]] virtual const bool IsAllowStealthKill()		const abstract;
+	[[nodiscard]] virtual const bool IsStealthKillerInSight()	const abstract;
+	[[nodiscard]] virtual const bool IsStealthKilled()			const abstract;
 };

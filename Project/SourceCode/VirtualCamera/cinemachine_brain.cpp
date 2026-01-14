@@ -261,7 +261,7 @@ void CinemachineBrain::BlendVirtualCamera()
 
 	// メインカメラへ適用
 	if (!m_blend_result_transform) { m_blend_result_transform = std::make_shared<Transform>(); }
-	auto result_m = m_blend_result_transform->GetMatrix(CoordinateKind::kWorld);
+	const auto result_m = m_blend_result_transform->GetMatrix(CoordinateKind::kWorld);
 	m_main_camera->ApplyMatrix(result_m);
 }
 

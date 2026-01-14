@@ -19,9 +19,9 @@ struct InputData
 
 struct MouseData
 {
-	Vector2D<int>   pos				= v2d::GetZeroV<Vector2D<int>>();
-	Vector2D<float> dir				= v2d::GetZeroV<Vector2D<float>>();
-	Vector2D<float> velocity		= v2d::GetZeroV<Vector2D<float>>();
+	Vector2D<int>   pos				= v2d::GetZeroV<int>();
+	Vector2D<float> dir				= v2d::GetZeroV<float>();
+	Vector2D<float> velocity		= v2d::GetZeroV<float>();
 	int				wheel_rotation	= 0;
 };
 

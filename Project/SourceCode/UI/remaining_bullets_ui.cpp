@@ -5,11 +5,11 @@ RemainingBulletsUI::RemainingBulletsUI(std::shared_ptr<Player>& player) :
 	m_result_screen					(std::make_shared<ScreenCreator>(kScreenSize)),
 	m_remaining_bullets_font_handle	(FontHandler::GetInstance()->GetFontHandle(FontName.REMAINING_BULLETS_TEXT)),
 	m_remaining_bullets_text		(""),
-	m_remaining_bullets_font_size	(v2d::GetZeroV<Vector2D<int>>()),
+	m_remaining_bullets_font_size	(v2d::GetZeroV<int>()),
 	m_remaining_bullets_font_color	(kAmmoColor),
 	m_have_ammo_font_handle			(FontHandler::GetInstance()->GetFontHandle(FontName.HAVE_AMMO_NUM_TEXT)),
 	m_have_ammo_text				(""),
-	m_have_ammo_font_size			(v2d::GetZeroV<Vector2D<int>>())
+	m_have_ammo_font_size			(v2d::GetZeroV<int>())
 {
 
 }

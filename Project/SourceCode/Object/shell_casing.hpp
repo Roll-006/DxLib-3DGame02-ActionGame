@@ -26,7 +26,7 @@ public:
 	/// @brief ñÚ‰∞ÇîrèoÇ∑ÇÈ
 	void Eject(GunBase& gun);
 
-	[[nodiscard]] bool IsReturnPool() override;
+	[[nodiscard]] const bool IsReturnPool() override;
 	[[nodiscard]] std::shared_ptr<Modeler> GetModeler() const { return m_modeler; }
 
 private:
@@ -35,7 +35,7 @@ private:
 	void CalcColliderPos();
 	void CalcProjectRayPos();
 
-	[[nodiscard]] float	GetDeltaTime() const override;
+	[[nodiscard]] const float GetDeltaTime() const override;
 
 private:
 	static constexpr VECTOR kBasicAngle					= { 90.0f * math::kDegToRad, 0.0f, 0.0f };

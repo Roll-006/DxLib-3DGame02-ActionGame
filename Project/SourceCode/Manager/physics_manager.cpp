@@ -1,20 +1,20 @@
-#include "physics_manager.hpp"
+ï»¿#include "physics_manager.hpp"
 
 PhysicsManager::PhysicsManager()
 {
-	// ˆ—‚È‚µ
+	// å‡¦ç†ãªã—
 }
 
 PhysicsManager::~PhysicsManager()
 {
-	// ˆ—‚È‚µ
+	// å‡¦ç†ãªã—
 }
 
 void PhysicsManager::Update()
 {
 	for (const auto& obj : m_physical_objects)
 	{
-		// d—Íˆ—‚ª‹–‰Â‚³‚ê‚Ä‚¢‚éê‡‚Ì‚İd—Í‚ğ—^‚¦‚é
+		// é‡åŠ›å‡¦ç†ãŒè¨±å¯ã•ã‚Œã¦ã„ã‚‹å ´åˆã®ã¿é‡åŠ›ã‚’ä¸ãˆã‚‹
 		if (IsApplyGravity(obj) && obj->IsActive())
 		{
 			obj->ApplyKnockbackVelocity();
@@ -31,12 +31,12 @@ void PhysicsManager::LateUpdate()
 		{
 			obj->AddFallVelocity();
 
-			// velocity‚ª•‚‚©‚È‚¢‚æ‚¤’£‚è•t‚¯‚é
+			// velocityãŒæµ®ã‹ãªã„ã‚ˆã†å¼µã‚Šä»˜ã‘ã‚‹
 			//obj->ProjectVelocity();
 		}
 	}
 
-	// ‰Ÿ‚µ–ß‚µ(—LŒø‚È‘¬“xƒxƒNƒgƒ‹‚ğæ“¾)
+	// æŠ¼ã—æˆ»ã—(æœ‰åŠ¹ãªé€Ÿåº¦ãƒ™ã‚¯ãƒˆãƒ«ã‚’å–å¾—)
 	ExecutePushBackPairs();
 
 	for (const auto& obj : m_physical_objects)
@@ -46,7 +46,7 @@ void PhysicsManager::LateUpdate()
 			int a = 0; 
 		}
 
-		// velocity‚ğƒIƒuƒWƒFƒNƒg‚É“K—p
+		// velocityã‚’ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«é©ç”¨
 		obj->ApplyVelocity();
 		obj->RemoveProjectPos();
 	}
@@ -61,10 +61,10 @@ void PhysicsManager::ProjectPos()
 }
 
 
-#pragma region “o˜^E‰ğœ
+#pragma region ç™»éŒ²ãƒ»è§£é™¤
 void PhysicsManager::RemovePhysicalObj(const int obj_handle)
 {
-	const auto physical_obj = ObjManager::GetInstance()->GetObj<PhysicalObjBase>(obj_handle);
+	const auto physical_obj = ObjAccessor::GetInstance()->GetObj<PhysicalObjBase>(obj_handle);
 
 	if (std::find(m_physical_objects.begin(), m_physical_objects.end(), physical_obj) != m_physical_objects.end())
 	{
@@ -134,35 +134,35 @@ bool PhysicsManager::CanPushBack(const int obj_handle1, const int obj_handle2)
 
 void PhysicsManager::ExecutePushBackPairs()
 {
-	// ƒIƒuƒWƒFƒNƒg‚ª‚ÂƒRƒ‰ƒCƒ_[A‚à‚µ‚­‚ÍƒƒbƒVƒ…‚Ì‰Ÿ‚µ–ß‚µˆ—‚ğs‚¤
-	// TODO : Œã‚ÉŒy—Ê‰»
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒæŒã¤ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã€ã‚‚ã—ãã¯ãƒ¡ãƒƒã‚·ãƒ¥ã®æŠ¼ã—æˆ»ã—å‡¦ç†ã‚’è¡Œã†
+	// TODO : å¾Œã«è»½é‡åŒ–
 	for (const auto& obj_1 : m_physical_objects)
 	{
-		// ”ñƒAƒNƒeƒBƒu‚Å‚ ‚ê‚Î“K—p‚µ‚È‚¢
+		// éã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã§ã‚ã‚Œã°é©ç”¨ã—ãªã„
 		if (!obj_1->IsActive()) { continue; }
 
-		// Õ“Ë‚ª‹–‰Â‚³‚ê‚Ä‚¢‚È‚¢ê‡‚ÍˆÈ~‚Ìˆ—‚ğƒXƒLƒbƒv
+		// è¡çªãŒè¨±å¯ã•ã‚Œã¦ã„ãªã„å ´åˆã¯ä»¥é™ã®å‡¦ç†ã‚’ã‚¹ã‚­ãƒƒãƒ—
 		if (!IsApplyPhysicalBehavior(obj_1)) { continue; }
 		if (obj_1->GetCollider(ColliderKind::kCollider) == nullptr) { continue; }
 
 		for (const auto& obj_2 : m_physical_objects)
 		{
-			// ©g‚Æ‚Ì“–‚½‚è”»’è‚Í”ğ‚¯‚é
+			// è‡ªèº«ã¨ã®å½“ãŸã‚Šåˆ¤å®šã¯é¿ã‘ã‚‹
 			if (obj_1 == obj_2) { continue; }
 
-			// ”ñƒAƒNƒeƒBƒu‚Å‚ ‚ê‚Î“K—p‚µ‚È‚¢
+			// éã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã§ã‚ã‚Œã°é©ç”¨ã—ãªã„
 			if (!obj_2->IsActive()) { continue; }
 
-			// Õ“Ë‚ª‹–‰Â‚³‚ê‚Ä‚¢‚È‚¢ê‡‚ÍˆÈ~‚Ìˆ—‚ğƒXƒLƒbƒv
+			// è¡çªãŒè¨±å¯ã•ã‚Œã¦ã„ãªã„å ´åˆã¯ä»¥é™ã®å‡¦ç†ã‚’ã‚¹ã‚­ãƒƒãƒ—
 			if (!IsApplyPhysicalBehavior(obj_2)) { continue; }
 			if (obj_2->GetCollider(ColliderKind::kCollider) == nullptr) { continue; }
 
-			// Œİ‚¢‚ÉÃ“IƒIƒuƒWƒFƒNƒg‚Å‚ ‚Á‚½ê‡‚ÍˆÈ~‚Ìˆ—‚ğƒXƒLƒbƒv
+			// äº’ã„ã«é™çš„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã§ã‚ã£ãŸå ´åˆã¯ä»¥é™ã®å‡¦ç†ã‚’ã‚¹ã‚­ãƒƒãƒ—
 			if (obj_1->GetMassKind() == MassKind::kStatic && obj_2->GetMassKind() == MassKind::kStatic) { continue; }
 
 			if (!CanPushBack(obj_1->GetObjHandle(), obj_2->GetObjHandle())) { continue; }
 
-			// ‹——£‚ª‰“‚¢ƒIƒuƒWƒFƒNƒg“¯m‚Í–³‹
+			// è·é›¢ãŒé ã„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒå£«ã¯ç„¡è¦–
 			const auto owner_collision_area = obj_1->GetCollider(ColliderKind::kCollisionAreaTrigger);
 			const auto target_collision_area = obj_2->GetCollider(ColliderKind::kCollisionAreaTrigger);
 			if (owner_collision_area && target_collision_area)
@@ -173,7 +173,7 @@ void PhysicsManager::ExecutePushBackPairs()
 				if (math::GetDistanceSphereToSphere(*sphere1.get(), *sphere2.get()) > kIgnoreDistance) { continue; }
 			}
 
-			// ¿—Ê‚ğl—¶‚µ‚Ä‰Ÿ‚µ–ß‚³‚ê‚é‘¤‚ğ”»’è
+			// è³ªé‡ã‚’è€ƒæ…®ã—ã¦æŠ¼ã—æˆ»ã•ã‚Œã‚‹å´ã‚’åˆ¤å®š
 			std::shared_ptr<PhysicalObjBase> low_priority_obj = obj_1;
 			std::shared_ptr<PhysicalObjBase> high_priority_obj = obj_2;
 			if (low_priority_obj->GetMassKind() > high_priority_obj->GetMassKind())
@@ -182,19 +182,19 @@ void PhysicsManager::ExecutePushBackPairs()
 				high_priority_obj = obj_1;
 			}
 
-			// ‰Ÿ‚µ–ß‚µˆ—‚ğÀs
+			// æŠ¼ã—æˆ»ã—å‡¦ç†ã‚’å®Ÿè¡Œ
 			PushBack(low_priority_obj, high_priority_obj);
 		}
 	}
 }
 
 
-#pragma region ‰Ÿ‚µ–ß‚µ
+#pragma region æŠ¼ã—æˆ»ã—
 void PhysicsManager::PushBack(const std::shared_ptr<PhysicalObjBase>& low_priority_obj, const std::shared_ptr<PhysicalObjBase>& high_priority_obj)
 {
 	const auto* shape = low_priority_obj->GetCollider(ColliderKind::kCollider)->GetShape().get();
 
-	// }Œ`‚Ì“o˜^‚ª‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Íƒ‚ƒfƒ‹‚Å‰Ÿ‚µ–ß‚µ‚ğs‚¤
+	// å›³å½¢ã®ç™»éŒ²ãŒã•ã‚Œã¦ã„ãªã„å ´åˆã¯ãƒ¢ãƒ‡ãƒ«ã§æŠ¼ã—æˆ»ã—ã‚’è¡Œã†
 	if (shape == nullptr)
 	{
 		return;
@@ -213,11 +213,12 @@ void PhysicsManager::PushBack(const std::shared_ptr<PhysicalObjBase>& low_priori
 
 void PhysicsManager::PushBackTriangleAndTarget(const std::shared_ptr<PhysicalObjBase>& low_priority_obj, const std::shared_ptr<PhysicalObjBase>& high_priority_obj)
 {
-	const auto* shape = high_priority_obj->GetCollider(ColliderKind::kCollider)->GetShape().get();
-	const auto  velocity = low_priority_obj->GetVelocity();
-	const auto  triangle = *std::dynamic_pointer_cast<Triangle>(low_priority_obj->GetCollider(ColliderKind::kCollider)->GetShape());
+	const auto* shape					= high_priority_obj->GetCollider(ColliderKind::kCollider)->GetShape().get();
+	const auto  velocity				= low_priority_obj->GetVelocity();
+	const auto  triangle				= *std::dynamic_pointer_cast<Triangle>(low_priority_obj->GetCollider(ColliderKind::kCollider)->GetShape());
+	auto	    push_backed_velocity	= v3d::GetZeroV();
 
-	// }Œ`‚Ì“o˜^‚ª‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Íƒ‚ƒfƒ‹‚Å‰Ÿ‚µ–ß‚µ‚ğs‚¤
+	// å›³å½¢ã®ç™»éŒ²ãŒã•ã‚Œã¦ã„ãªã„å ´åˆã¯ãƒ¢ãƒ‡ãƒ«ã§æŠ¼ã—æˆ»ã—ã‚’è¡Œã†
 	if (shape == nullptr)
 	{
 		return;
@@ -226,7 +227,7 @@ void PhysicsManager::PushBackTriangleAndTarget(const std::shared_ptr<PhysicalObj
 	switch (shape->GetShapeKind())
 	{
 	case ShapeKind::kCapsule:
-		const auto push_backed_velocity = collision::PushBackCapsuleAndTriangle(velocity, *static_cast<const Capsule*>(shape), triangle);
+		push_backed_velocity = collision::PushBackCapsuleAndTriangle(velocity, *static_cast<const Capsule*>(shape), triangle);
 		low_priority_obj->SetVelocity(push_backed_velocity);
 		break;
 
@@ -241,7 +242,7 @@ void PhysicsManager::PushBackSphereAndTarget(const std::shared_ptr<PhysicalObjBa
 	const auto  velocity = low_priority_obj->GetVelocity();
 	const auto  sphere = *std::dynamic_pointer_cast<Sphere>(low_priority_obj->GetCollider(ColliderKind::kCollider)->GetShape());
 
-	// }Œ`‚Ì“o˜^‚ª‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Íƒ‚ƒfƒ‹‚Å‰Ÿ‚µ–ß‚µ‚ğs‚¤
+	// å›³å½¢ã®ç™»éŒ²ãŒã•ã‚Œã¦ã„ãªã„å ´åˆã¯ãƒ¢ãƒ‡ãƒ«ã§æŠ¼ã—æˆ»ã—ã‚’è¡Œã†
 	if (shape == nullptr)
 	{
 		const auto model_handle = high_priority_obj->GetColliderModelHandle();
@@ -264,7 +265,7 @@ void PhysicsManager::PushBackCapsuleAndTarget(const std::shared_ptr<PhysicalObjB
 	const auto  capsule = *std::dynamic_pointer_cast<Capsule>(low_priority_obj->GetCollider(ColliderKind::kCollider)->GetShape());
 	auto push_backed_velocity = v3d::GetZeroV();
 
-	// }Œ`‚Ì“o˜^‚ª‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Íƒ‚ƒfƒ‹‚Å‰Ÿ‚µ–ß‚µ‚ğs‚¤
+	// å›³å½¢ã®ç™»éŒ²ãŒã•ã‚Œã¦ã„ãªã„å ´åˆã¯ãƒ¢ãƒ‡ãƒ«ã§æŠ¼ã—æˆ»ã—ã‚’è¡Œã†
 	if (shape == nullptr)
 	{
 		const auto model_handle = high_priority_obj->GetColliderModelHandle();

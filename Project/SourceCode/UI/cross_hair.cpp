@@ -1,5 +1,5 @@
+#include "../Kind/player_state_kind.hpp"
 #include "cross_hair.hpp"
-#include "../Part/player_state_controller.hpp"
 
 CrossHair::CrossHair(std::shared_ptr<Player>& player) : 
 	m_player					(player),
@@ -22,13 +22,12 @@ CrossHair::~CrossHair()
 
 void CrossHair::LateUpdate()
 {
-	const auto weapon_action_state	= static_cast<player_state::WeaponActionStateKind>(m_player->GetStateController()->GetWeaponActionState(TimeKind::kCurrent)->GetStateKind());
-	const auto is_aiming_gun		= weapon_action_state == player_state::WeaponActionStateKind::kAimGun;
-	const auto is_aiming_knife		= weapon_action_state == player_state::WeaponActionStateKind::kAimKnife;
-	const auto is_shot				= weapon_action_state == player_state::WeaponActionStateKind::kShot;
-	const auto is_stab_knife		= weapon_action_state == player_state::WeaponActionStateKind::kStabKnife;
+	const auto state_kind			= m_player->GetState()->GetCurrentStateKind();
+	const auto is_aiming_gun		= state_kind == PlayerStateKind::kAimGun;
+	const auto is_aiming_knife		= state_kind == PlayerStateKind::kAimKnife;
+	const auto is_shot				= state_kind == PlayerStateKind::kShot;
 
-	m_is_aiming					= is_aiming_gun || is_aiming_knife || is_shot || is_stab_knife;
+	m_is_aiming					= is_aiming_gun || is_aiming_knife || is_shot;
 	m_current_hold_weapon_kind	= m_player->GetCurrentHeldWeaponKind();
 
 	switch (m_current_hold_weapon_kind)

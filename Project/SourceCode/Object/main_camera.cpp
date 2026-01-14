@@ -1,4 +1,4 @@
-#include "main_camera.hpp"
+ï»¿#include "main_camera.hpp"
 
 #include "../VirtualCamera/cinemachine_brain.hpp"
 #include "../Command/command_handler.hpp"
@@ -13,7 +13,7 @@ MainCamera::MainCamera() :
 	m_is_active_grab_collider	(false),
 	m_grabbed_obj_handle		(-1)
 {
-	// ƒCƒxƒ“ƒg“o˜^
+	// ã‚¤ãƒ™ãƒ³ãƒˆç™»éŒ²
 	EventSystem::GetInstance()->Subscribe<GrabEvent>	(this, &MainCamera::CreateGrabCollider);
 	EventSystem::GetInstance()->Subscribe<OnGrabEvent>	(this, &MainCamera::CreateGrabCollider);
 	EventSystem::GetInstance()->Subscribe<ReleaseEvent>	(this, &MainCamera::DeleteGrabCollider);
@@ -24,7 +24,7 @@ MainCamera::MainCamera() :
 	AddCollider(std::make_shared<Collider>(ColliderKind::kNearVisionTrigger,	std::make_shared<Cone>(v3d::GetZeroV(), v3d::GetZeroV(), kMeleeCandidateDistance,	kMeleeCandidateFOV * math::kDegToRad), this));
 	AddCollider(std::make_shared<Collider>(ColliderKind::kFarVisionTrigger,		std::make_shared<Cone>(v3d::GetZeroV(), v3d::GetZeroV(), kMeleeTargetDistance,		kMeleeTargetFOV	   * math::kDegToRad), this));
 
-	// ƒJƒƒ‰‚ª–³‹‚·‚éƒRƒ‰ƒCƒ_[
+	// ã‚«ãƒ¡ãƒ©ãŒç„¡è¦–ã™ã‚‹ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
 	const auto collision_manager = CollisionManager::GetInstance();
 	const ColliderData ray_cast_data{ ObjTag.CAMERA, ColliderKind::kRay };
 	collision_manager->AddIgnoreCollider(GetObjHandle(), ColliderKind::kCollider);
@@ -36,7 +36,7 @@ MainCamera::MainCamera() :
 
 MainCamera::~MainCamera()
 {
-	// ƒCƒxƒ“ƒg‚Ì“o˜^‰ğœ
+	// ã‚¤ãƒ™ãƒ³ãƒˆã®ç™»éŒ²è§£é™¤
 	EventSystem::GetInstance()->Unsubscribe<GrabEvent>		(this, &MainCamera::CreateGrabCollider);
 	EventSystem::GetInstance()->Unsubscribe<OnGrabEvent>	(this, &MainCamera::CreateGrabCollider);
 	EventSystem::GetInstance()->Unsubscribe<ReleaseEvent>	(this, &MainCamera::DeleteGrabCollider);
@@ -92,7 +92,7 @@ void MainCamera::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	case ColliderKind::kNearVisionTrigger:
 		if (target_collider_kind == ColliderKind::kVisibleTrigger)
 		{
-			// ƒƒŒ[‰Â”\‚Èó‘Ô‚ÌƒLƒƒƒ‰ƒNƒ^[‚ª‹ŠE”»’èƒgƒŠƒK[“à‚É“ü‚Á‚½‚±‚Æ‚ğ’Ê’m
+			// ãƒ¡ãƒ¬ãƒ¼å¯èƒ½ãªçŠ¶æ…‹ã®ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãŒè¦–ç•Œåˆ¤å®šãƒˆãƒªã‚¬ãƒ¼å†…ã«å…¥ã£ãŸã“ã¨ã‚’é€šçŸ¥
 			const auto melee_hittable = dynamic_cast<IMeleeHittable*>(target_obj);
 			if (melee_hittable)
 			{
@@ -101,32 +101,32 @@ void MainCamera::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 					const auto owner_pos		= m_transform->GetPos(CoordinateKind::kWorld);
 					const auto target_transform = target_obj->GetTransform();
 					const auto target_pos		= target_transform->GetPos(CoordinateKind::kWorld);
-					const auto angle			= math::GetAngleBetweenTwoVector(m_transform->GetForward(CoordinateKind::kWorld), v3d::GetNormalizedV(target_pos - owner_pos));
+					const auto angle			= math::GetAngleBetweenTwoVectors(m_transform->GetForward(CoordinateKind::kWorld), v3d::GetNormalizedV(target_pos - owner_pos));
 
 					EventSystem::GetInstance()->Publish(OnDownedNearEnemySpottedEvent(target_obj->GetObjHandle(), angle, VSize(target_pos - owner_pos)));
 				}
 			}
 
-			// ƒXƒeƒ‹ƒXƒLƒ‹‰Â”\‚ÈƒLƒƒƒ‰ƒNƒ^[‚ª‹ŠE”»’èƒgƒŠƒK[“à‚É“ü‚Á‚½‚±‚Æ‚ğ’Ê’m
+			// ã‚¹ãƒ†ãƒ«ã‚¹ã‚­ãƒ«å¯èƒ½ãªã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãŒè¦–ç•Œåˆ¤å®šãƒˆãƒªã‚¬ãƒ¼å†…ã«å…¥ã£ãŸã“ã¨ã‚’é€šçŸ¥
 			const auto stealth_killable = dynamic_cast<IStealthKillable*>(target_obj);
 			if (stealth_killable)
 			{
 				const auto owner_pos		= m_transform->GetPos(CoordinateKind::kWorld);
 				const auto target_transform = target_obj->GetTransform();
 				const auto target_pos		= target_transform->GetPos(CoordinateKind::kWorld);
-				const auto angle			= math::GetAngleBetweenTwoVector(m_transform->GetForward(CoordinateKind::kWorld), v3d::GetNormalizedV(target_pos - owner_pos));
+				const auto angle			= math::GetAngleBetweenTwoVectors(m_transform->GetForward(CoordinateKind::kWorld), v3d::GetNormalizedV(target_pos - owner_pos));
 
 				EventSystem::GetInstance()->Publish(OnNearEnemySpottedEvent(target_obj->GetObjHandle(), angle, VSize(target_pos - owner_pos)));
 			}
 
-			// ƒAƒCƒeƒ€‚ª‹ŠE‚É“ü‚Á‚½‚±‚Æ‚ğ’Ê’m
+			// ã‚¢ã‚¤ãƒ†ãƒ ãŒè¦–ç•Œã«å…¥ã£ãŸã“ã¨ã‚’é€šçŸ¥
 			const auto item = dynamic_cast<IItem*>(target_obj);
 			if (item)
 			{
 				const auto owner_pos		= m_transform->GetPos(CoordinateKind::kWorld);
 				const auto target_transform = target_obj->GetTransform();
 				const auto target_pos		= target_transform->GetPos(CoordinateKind::kWorld);
-				const auto angle			= math::GetAngleBetweenTwoVector(m_transform->GetForward(CoordinateKind::kWorld), v3d::GetNormalizedV(target_pos - owner_pos));
+				const auto angle			= math::GetAngleBetweenTwoVectors(m_transform->GetForward(CoordinateKind::kWorld), v3d::GetNormalizedV(target_pos - owner_pos));
 
 				EventSystem::GetInstance()->Publish(SpottedItemEvent(target_obj->GetObjHandle(), angle, VSize(target_pos - owner_pos)));
 			}
@@ -136,7 +136,7 @@ void MainCamera::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	case ColliderKind::kFarVisionTrigger:
 		if (target_collider_kind == ColliderKind::kVisibleTrigger)
 		{
-			// ƒƒŒ[‰Â”\‚Èó‘Ô‚ÌƒLƒƒƒ‰ƒNƒ^[‚ª‹ŠE”»’èƒgƒŠƒK[“à‚É“ü‚Á‚½‚±‚Æ‚ğ’Ê’m
+			// ãƒ¡ãƒ¬ãƒ¼å¯èƒ½ãªçŠ¶æ…‹ã®ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãŒè¦–ç•Œåˆ¤å®šãƒˆãƒªã‚¬ãƒ¼å†…ã«å…¥ã£ãŸã“ã¨ã‚’é€šçŸ¥
 			const auto melee_hittable = dynamic_cast<IMeleeHittable*>(target_obj);
 			if (melee_hittable)
 			{
@@ -145,7 +145,7 @@ void MainCamera::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 					const auto owner_pos		= m_transform->GetPos(CoordinateKind::kWorld);
 					const auto target_transform = target_obj->GetTransform();
 					const auto target_pos		= target_transform->GetPos(CoordinateKind::kWorld);
-					const auto angle			= math::GetAngleBetweenTwoVector(m_transform->GetForward(CoordinateKind::kWorld), v3d::GetNormalizedV(target_pos - owner_pos));
+					const auto angle			= math::GetAngleBetweenTwoVectors(m_transform->GetForward(CoordinateKind::kWorld), v3d::GetNormalizedV(target_pos - owner_pos));
 
 					const OnDownedFarEnemySpottedEvent event{ target_obj->GetObjHandle(), angle, VSize(target_pos - owner_pos) };
 					EventSystem::GetInstance()->Publish(event);
@@ -168,7 +168,7 @@ void MainCamera::AddToObjManager()
 {
 	const auto physical_obj = std::dynamic_pointer_cast<PhysicalObjBase>(shared_from_this());
 
-	ObjManager		::GetInstance()->AddObj				(shared_from_this());
+	ObjAccessor		::GetInstance()->AddObj				(shared_from_this());
 	CollisionManager::GetInstance()->AddCollideObj		(physical_obj);
 	PhysicsManager	::GetInstance()->AddPhysicalObj		(physical_obj);
 	PhysicsManager	::GetInstance()->AddIgnoreObjGravity(GetObjHandle());
@@ -183,7 +183,7 @@ void MainCamera::RemoveToObjManager()
 	PhysicsManager	::GetInstance()->RemoveIgnoreObjGravity	(obj_handle);
 	PhysicsManager	::GetInstance()->RemovePhysicalObj		(obj_handle);
 	CollisionManager::GetInstance()->RemoveCollideObj		(obj_handle);
-	ObjManager		::GetInstance()->RemoveObj				(obj_handle);
+	ObjAccessor		::GetInstance()->RemoveObj				(obj_handle);
 }
 
 void MainCamera::ApplyMatrix(const MATRIX& matrix)
@@ -223,7 +223,7 @@ void MainCamera::DeleteGrabCollider(const ReleaseEvent& event)
 
 
 #pragma region Getter
-float MainCamera::GetDeltaTime() const
+const float MainCamera::GetDeltaTime() const
 {
 	const auto time_manager = GameTimeManager::GetInstance();
 	return time_manager->GetDeltaTime(TimeScaleLayerKind::kCamera);
@@ -239,14 +239,14 @@ void MainCamera::UpdatePosture(const VECTOR& target)
 
 void MainCamera::OnRayCast(const VECTOR& intersection)
 {
-	// ’Í‚İƒŒƒCƒLƒƒƒXƒg
+	// æ´ã¿æ™‚ãƒ¬ã‚¤ã‚­ãƒ£ã‚¹ãƒˆ
 	if (m_is_active_grab_collider)
 	{
 		OnRayCastGrabCutscene(intersection);
 		return;
 	}
 
-	// ’ÊíƒŒƒCƒLƒƒƒXƒg
+	// é€šå¸¸æ™‚ãƒ¬ã‚¤ã‚­ãƒ£ã‚¹ãƒˆ
 	m_transform->SetPos(CoordinateKind::kWorld, intersection);
 	UpdatePosture(m_transform->GetPos(CoordinateKind::kWorld) + m_transform->GetForward(CoordinateKind::kWorld));
 }
@@ -261,7 +261,7 @@ void MainCamera::OnRayCastGrabCutscene(const VECTOR& intersection)
 	const auto hit_triangles	= ray->GetHitTriangles();
 	auto	   up				= axis::GetWorldYAxis();
 
-	// OŠpŒ`‚ªŠi”[‚³‚ê‚Ä‚¢‚½ê‡‚ÍOŠpŒ`‚É‰ˆ‚¢‚È‚ª‚çã‚ÉŒü‚©‚¤ƒxƒNƒgƒ‹‚ğæ“¾
+	// ä¸‰è§’å½¢ãŒæ ¼ç´ã•ã‚Œã¦ã„ãŸå ´åˆã¯ä¸‰è§’å½¢ã«æ²¿ã„ãªãŒã‚‰ä¸Šã«å‘ã‹ã†ãƒ™ã‚¯ãƒˆãƒ«ã‚’å–å¾—
 	if (!hit_triangles.empty())
 	{
 		const auto hit_triangle = hit_triangles.front();
@@ -278,7 +278,7 @@ void MainCamera::OnRayCastGrabCutscene(const VECTOR& intersection)
 
 void MainCamera::CalcRayCastPos()
 {
-	// Œõü‚ÌÀ•W‚ğŒvZ
+	// å…‰ç·šã®åº§æ¨™ã‚’è¨ˆç®—
 	auto ray = std::static_pointer_cast<Segment>(GetCollider(ColliderKind::kRay)->GetShape());
 	ray->SetBeginPos(m_aim_pos, true);
 	ray->SetEndPos	(m_transform->GetPos(CoordinateKind::kWorld), true);

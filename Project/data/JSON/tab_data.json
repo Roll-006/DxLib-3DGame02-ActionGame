@@ -2,15 +2,6 @@
   "tab_data": {
     "warning": {
       "priority": 10,
-      "warning_text_data": {
-        "font_path": "explanatory_text",
-        "text": "",
-        "hex_color": "#ffffff",
-        "offset": {
-          "x": 0,
-          "y": -100
-        }
-      },
       "first_button_center_offset": {
         "x": 0,
         "y": 50
@@ -23,32 +14,308 @@
       "button_pos_interval": 130,
       "fade_speed": 600.0,
       "alpha_blend_num": 220,
-      "restart_text": "ゲームをやり直しますか？",
-      "quit_game_text": "ゲームを終了しますか？",
-      "exit_text": "ゲームを終了しますか？",
-      "decide_text_data": {
-        "font_path": "explanatory_text",
-        "text": "決定",
-        "hex_color": "#ffffff",
-        "offset": {
-          "x": 0,
-          "y": 0
+      "explanatory_text_data": [
+        {
+          "font_path": "explanatory_text",
+          "text": "決定",
+          "hex_color": "#ffffff",
+          "offset": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "font_path": "explanatory_text",
+          "text": "キャンセル",
+          "hex_color": "#ffffff",
+          "offset": {
+            "x": 0,
+            "y": 0
+          }
         }
-      },
-      "back_text_data": {
-        "font_path": "explanatory_text",
-        "text": "キャンセル",
-        "hex_color": "#ffffff",
-        "offset": {
-          "x": 0,
-          "y": 0
+      ],
+      "text_data": [
+        {
+          "font_path": "explanatory_text",
+          "text": "はい",
+          "hex_color": "#ffffff",
+          "offset": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "font_path": "explanatory_text",
+          "text": "いいえ",
+          "hex_color": "#ffffff",
+          "offset": {
+            "x": 0,
+            "y": 0
+          }
         }
-      },
+      ],
       "button_prompt_screen_size": {
         "x": 800,
         "y": 100
       },
-      "height_ratio": 0.9
+      "height_ratio": 0.9,
+      "warning_graphic_icon_path": "Data/Graphic/UI/Common/warning_icon.png",
+      "button_prompt_name": "warning"
+    },
+    "title": {
+      "priority": 0,
+      "warning_text_data": {
+        "font_path": "explanatory_text",
+        "text": "ゲームを終了しますか？",
+        "hex_color": "#ffffff",
+        "offset": {
+          "x": 0,
+          "y": -100
+        }
+      },
+      "explanatory_text_data": [
+        {
+          "font_path": "explanatory_text",
+          "text": "ゲームを開始します",
+          "hex_color": "#ffffff",
+          "offset": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "font_path": "explanatory_text",
+          "text": "ゲームを終了します",
+          "hex_color": "#ffffff",
+          "offset": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      ],
+      "text_data": [
+        {
+          "font_path": "main_menu_text",
+          "text": "START GAME",
+          "hex_color": "#ffffff",
+          "offset": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "font_path": "main_menu_text",
+          "text": "EXIT",
+          "hex_color": "#ffffff",
+          "offset": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      ],
+      "first_button_center_offset": {
+        "x": 440,
+        "y": 300
+      },
+      "button_pos_interval": 110,
+      "fade_speed": 300.0,
+      "button_prompt_name": "title"
+    },
+    "pause": {
+      "priority": 0,
+      "warning_restart_text_data": {
+        "font_path": "explanatory_text",
+        "text": "ゲームをやり直しますか？",
+        "hex_color": "#ffffff",
+        "offset": {
+          "x": 0,
+          "y": -100
+        }
+      },
+      "warning_quit_game_text_data": {
+        "font_path": "explanatory_text",
+        "text": "ゲームを終了しますか？",
+        "hex_color": "#ffffff",
+        "offset": {
+          "x": 0,
+          "y": -100
+        }
+      },
+      "explanatory_text_data": [
+        {
+          "font_path": "explanatory_text",
+          "text": "ゲームに戻ります",
+          "hex_color": "#ffffff",
+          "offset": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "font_path": "explanatory_text",
+          "text": "ゲームを最初から始めます",
+          "hex_color": "#ffffff",
+          "offset": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "font_path": "explanatory_text",
+          "text": "タイトルに戻ります",
+          "hex_color": "#ffffff",
+          "offset": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      ],
+      "text_data": [
+        {
+          "font_path": "main_menu_text",
+          "text": "RETURN TO GAME",
+          "hex_color": "#ffffff",
+          "offset": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "font_path": "main_menu_text",
+          "text": "RESTART",
+          "hex_color": "#ffffff",
+          "offset": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "font_path": "main_menu_text",
+          "text": "QUIT GAME",
+          "hex_color": "#ffffff",
+          "offset": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      ],
+      "first_button_center_offset": {
+        "x": 440,
+        "y": 300
+      },
+      "button_pos_interval": 110,
+      "fade_speed": 600.0,
+      "background_alpha_blend_num": 180,
+      "button_prompt_name": "pause"
+    },
+    "game_over": {
+      "priority": 0,
+      "explanatory_text_data": [
+        {
+          "font_path": "explanatory_text",
+          "text": "ゲームを続けます",
+          "hex_color": "#ffffff",
+          "offset": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "font_path": "explanatory_text",
+          "text": "タイトルに戻ります",
+          "hex_color": "#ffffff",
+          "offset": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      ],
+      "text_data": [
+        {
+          "font_path": "sub_menu_text",
+          "text": "CONTINUE",
+          "hex_color": "#ffffff",
+          "offset": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "font_path": "sub_menu_text",
+          "text": "QUIT GAME",
+          "hex_color": "#ffffff",
+          "offset": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      ],
+      "first_button_center_offset": {
+        "x": 0,
+        "y": 50
+      },
+      "button_pos_interval": 130,
+      "active_wait_time": 6.0,
+      "scene_fade_speed": 200.0,
+      "screen_fade_speed": 400.0,
+      "filter_graphic_path": "Data/Graphic/UI/Filter/game_over_tab_filter.png",
+      "filter_alpha_blend_num": 220,
+      "background_alpha_blend_num": 220,
+      "button_prompt_name": "game_over"
+    },
+    "game_clear": {
+      "priority": 0,
+      "explanatory_text_data": [
+        {
+          "font_path": "explanatory_text",
+          "text": "ゲームを再度プレイします",
+          "hex_color": "#ffffff",
+          "offset": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "font_path": "explanatory_text",
+          "text": "タイトルに戻ります",
+          "hex_color": "#ffffff",
+          "offset": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      ],
+      "text_data": [
+        {
+          "font_path": "sub_menu_text",
+          "text": "RETRY",
+          "hex_color": "#ffffff",
+          "offset": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "font_path": "sub_menu_text",
+          "text": "QUIT GAME",
+          "hex_color": "#ffffff",
+          "offset": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      ],
+      "first_button_center_offset": {
+        "x": 0,
+        "y": 80
+      },
+      "button_pos_interval": 130,
+      "active_wait_time": 2.0,
+      "draw_result_wait_time": 10.0,
+      "scene_fade_speed": 200.0,
+      "screen_fade_speed": 300.0,
+      "background_alpha_blend_num": 170,
+      "button_prompt_name": "game_clear"
     }
   }
 }

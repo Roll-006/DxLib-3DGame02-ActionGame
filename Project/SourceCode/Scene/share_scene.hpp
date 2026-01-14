@@ -37,7 +37,7 @@ private:
 	bool		m_is_active;
 	SceneKind	m_scene_kind;
 
-	std::shared_ptr<MainCamera>		m_main_camera;
-	std::shared_ptr<IUICreator>		m_screen_filter_creator;
-	std::shared_ptr<SoundPlayer>	m_sound_player;
+	std::shared_ptr<MainCamera>				m_main_camera;
+	std::shared_ptr<IUICreator>				m_screen_filter_creator;
+	std::shared_ptr<SoundPlayer>			m_sound_player;
 };

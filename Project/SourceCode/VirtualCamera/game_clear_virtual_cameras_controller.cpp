@@ -1,4 +1,4 @@
-#include "game_clear_virtual_cameras_controller.hpp"
+ï»¿#include "game_clear_virtual_cameras_controller.hpp"
 
 #include "../VirtualCamera/cinemachine_brain.hpp"
 #include "../Object/player.hpp"
@@ -12,7 +12,7 @@ GameClearVirtualCamerasController::GameClearVirtualCamerasController(const int m
 	m_player_model_handle			(model_handle),
 	m_player_transform				(transform)
 {
-	// ƒpƒ‰ƒ[ƒ^Ý’è
+	// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿è¨­å®š
 	SetupVictoryPoseCamera();
 
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
@@ -28,7 +28,7 @@ GameClearVirtualCamerasController::~GameClearVirtualCamerasController()
 	cinemachine_brain->RemoveVirtualCamera(m_victory_pose_camera->GetCameraHandle());
 	cinemachine_brain->SetBlendTime(1.0f);
 
-	// ‘€ìƒJƒƒ‰‚ð•œ‹A‚³‚¹‚é
+	// æ“ä½œã‚«ãƒ¡ãƒ©ã‚’å¾©å¸°ã•ã›ã‚‹
 	const auto control_cameras_controller = cinemachine_brain->GetVirtualCameraController(VirtualCameraControllerKind::kControl);
 	if (control_cameras_controller)
 	{
@@ -36,7 +36,7 @@ GameClearVirtualCamerasController::~GameClearVirtualCamerasController()
 		control_cameras_controller->GetHaveVirtualCamera(ObjName.ROT_CONTROL_VIRTUAL_CAMERA)->Activate();
 	}
 
-	// ‰‰o‚ªI—¹‚µ‚½‚±‚Æ‚ð’Ê’m
+	// æ¼”å‡ºãŒçµ‚äº†ã—ãŸã“ã¨ã‚’é€šçŸ¥
 	const EndCutsceneEvent event{};
 	EventSystem::GetInstance()->Publish(event);
 }
@@ -83,7 +83,7 @@ std::vector<std::shared_ptr<VirtualCamera>> GameClearVirtualCamerasController::G
 }
 
 
-#pragma region ƒJƒƒ‰Ý’è
+#pragma region ã‚«ãƒ¡ãƒ©è¨­å®š
 void GameClearVirtualCamerasController::SetupVictoryPoseCamera()
 {
 	m_victory_pose_camera->SetPriority(51);
@@ -94,13 +94,13 @@ void GameClearVirtualCamerasController::SetupVictoryPoseCamera()
 #pragma endregion
 
 
-#pragma region ‹N“_ƒgƒ‰ƒ“ƒXƒtƒH[ƒ€‚ÌŒvŽZ
+#pragma region èµ·ç‚¹ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ ã®è¨ˆç®—
 void GameClearVirtualCamerasController::CalcAimTranasormForVictoryPoseCamera()
 {
 	if (!m_victory_pose_camera->IsActive()) { return; }
 
 	auto	   frame_m		= MV1GetFrameLocalWorldMatrix(m_player_model_handle, MV1SearchFrame(m_player_model_handle, FramePath.HIPS));
-	const auto frame_pos	= MGetTranslateElem(frame_m);
+	const auto frame_pos	= matrix::GetPos(frame_m);
 	const auto rot_m		= m_player_transform->GetRotMatrix	(CoordinateKind::kWorld) * MGetRotY(DX_PI_F);
 	const auto result_pos	= frame_pos + VGet(0.0f, -5.0f, 0.0f);
 

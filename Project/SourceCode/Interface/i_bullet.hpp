@@ -9,8 +9,8 @@ public:
 
 	virtual void OnShot(GunBase& gun) abstract;
 
-	[[nodiscard]] virtual float			GetPower()			const abstract;
-	[[nodiscard]] virtual std::string	GetShotOwnerName()	const abstract;
+	[[nodiscard]] virtual const float		GetPower()			const abstract;
+	[[nodiscard]] virtual const std::string	GetShotOwnerName()	const abstract;
 
 protected:
 	virtual void CalcRayCastPos() abstract;

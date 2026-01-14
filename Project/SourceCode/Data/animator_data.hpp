@@ -1,5 +1,6 @@
-#pragma once
+ï»¿#pragma once
 #include <string>
+#include <nlohmann/json.hpp>
 
 struct AnimTimeKindData
 {
@@ -9,11 +10,14 @@ struct AnimTimeKindData
 	float total_time		= 0.0f;
 };
 
-/// @brief ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌŒÂX‚Ìƒf[ƒ^
-/// @brief is_self_blend ©•ª©g‚ÅƒuƒŒƒ“ƒh‚ğs‚¤‚©‚ğ”»’è(Å‰‚ÆÅŒã‚ªƒ‹[ƒv‚µ‚Ä‚¢‚È‚¢ƒAƒjƒ[ƒVƒ‡ƒ“‚Åg—p)
+
+/// @brief ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®å€‹ã€…ã®ãƒ‡ãƒ¼ã‚¿
+/// @brief is_self_blend è‡ªåˆ†è‡ªèº«ã§ãƒ–ãƒ¬ãƒ³ãƒ‰ã‚’è¡Œã†ã‹ã‚’åˆ¤å®š(æœ€åˆã¨æœ€å¾ŒãŒãƒ«ãƒ¼ãƒ—ã—ã¦ã„ãªã„ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã§ä½¿ç”¨)
 struct AnimKindData
 {
 	int			anim_handle			= -1;
+	
+	std::string path				= "";
 	int			index				= 0;
 	std::string tag					= "";
 	float		play_speed			= 0.0f;
@@ -21,3 +25,31 @@ struct AnimKindData
 	bool		is_self_blend		= false;
 	float		ground_play_rate	= 1.0f;
 };
+
+
+#pragma region from / to JSON
+inline void from_json(const nlohmann::json& j_data, AnimKindData& animator_data)
+{
+	j_data.at("path")				.get_to(animator_data.path);
+	j_data.at("index")				.get_to(animator_data.index);
+	j_data.at("tag")				.get_to(animator_data.tag);
+	j_data.at("play_speed")			.get_to(animator_data.play_speed);
+	j_data.at("is_loop")			.get_to(animator_data.is_loop);
+	j_data.at("is_self_blend")		.get_to(animator_data.is_self_blend);
+	j_data.at("ground_play_rate")	.get_to(animator_data.ground_play_rate);
+}
+
+inline void to_json(nlohmann::json& j_data, const AnimKindData& animator_data)
+{
+	j_data = nlohmann::json
+	{
+		{ "path",				animator_data.path },
+		{ "index",				animator_data.index },
+		{ "tag",				animator_data.tag },
+		{ "play_speed",			animator_data.play_speed },
+		{ "is_loop",			animator_data.is_loop },
+		{ "is_self_blend",		animator_data.is_self_blend },
+		{ "ground_play_rate",	animator_data.ground_play_rate },
+	};
+}
+#pragma endregion

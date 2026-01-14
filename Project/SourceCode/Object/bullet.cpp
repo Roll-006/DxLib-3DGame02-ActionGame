@@ -1,4 +1,4 @@
-#include "bullet.hpp"
+ï»¿#include "bullet.hpp"
 #include "../Manager/rifle_cartridge_manager.hpp"
 #include "../Base/gun_base.hpp"
 
@@ -35,7 +35,7 @@ void Bullet::Update()
 {
 	if (!IsActive()) { return; }
 
-	// ˆÊ’uî•ñ‚ğƒVƒtƒg
+	// ä½ç½®æƒ…å ±ã‚’ã‚·ãƒ•ãƒˆ
 	m_prev_pos = m_transform->GetPos(CoordinateKind::kWorld);
 }
 
@@ -87,7 +87,7 @@ void Bullet::AddToObjManager()
 {
 	const auto physical_obj = std::dynamic_pointer_cast<PhysicalObjBase>(shared_from_this());
 
-	ObjManager		::GetInstance()->AddObj			(shared_from_this());
+	ObjAccessor		::GetInstance()->AddObj			(shared_from_this());
 	CollisionManager::GetInstance()->AddCollideObj	(physical_obj);
 	PhysicsManager	::GetInstance()->AddPhysicalObj	(physical_obj);
 }
@@ -98,7 +98,7 @@ void Bullet::RemoveToObjManager()
 
 	CollisionManager::GetInstance()->RemoveCollideObj (obj_handle);
 	PhysicsManager	::GetInstance()->RemovePhysicalObj(obj_handle);
-	ObjManager		::GetInstance()->RemoveObj		  (obj_handle);
+	ObjAccessor		::GetInstance()->RemoveObj		  (obj_handle);
 }
 
 void Bullet::OnShot(GunBase& gun)
@@ -116,7 +116,7 @@ void Bullet::OnShot(GunBase& gun)
 
 	CalcRayCastPos();
 
-	// Õ“Ë”»’è‚ğ‹–‰Â‚·‚éƒGƒŠƒA‚É—˜—p‚·‚éƒgƒŠƒK[
+	// è¡çªåˆ¤å®šã‚’è¨±å¯ã™ã‚‹ã‚¨ãƒªã‚¢ã«åˆ©ç”¨ã™ã‚‹ãƒˆãƒªã‚¬ãƒ¼
 	auto collision_area_sphere = std::static_pointer_cast<Sphere>(GetCollider(ColliderKind::kCollisionAreaTrigger)->GetShape());
 	collision_area_sphere->SetPos(m_first_pos);
 
@@ -124,7 +124,7 @@ void Bullet::OnShot(GunBase& gun)
 	EventSystem::GetInstance()->Publish(event);
 }
 
-float Bullet::GetDeltaTime() const
+const float Bullet::GetDeltaTime() const
 {
 	const auto time_manager = GameTimeManager::GetInstance();
 
@@ -133,12 +133,12 @@ float Bullet::GetDeltaTime() const
 		: time_manager->GetDeltaTime(TimeScaleLayerKind::kWorld);
 }
 
-bool Bullet::IsReturnPool()
+const bool Bullet::IsReturnPool()
 {
 	float distance = VSize(m_transform->GetPos(CoordinateKind::kWorld) - m_first_pos);
 
-	// Ë’ö”ÍˆÍ‚ğ’´‚¦‚½ê‡‚Í’eŠÛ‚ğƒv[ƒ‹‚É•Ô‹p
-	return distance > m_range ? true : false;
+	// å°„ç¨‹ç¯„å›²ã‚’è¶…ãˆãŸå ´åˆã¯å¼¾ä¸¸ã‚’ãƒ—ãƒ¼ãƒ«ã«è¿”å´
+	return distance > m_range;
 }
 
 void Bullet::Move()
@@ -150,7 +150,7 @@ void Bullet::Move()
 
 void Bullet::CalcRayCastPos()
 {
-	// Œõü‚ÌˆÊ’u‚ğŒvZ
+	// å…‰ç·šã®ä½ç½®ã‚’è¨ˆç®—
 	auto ray = std::dynamic_pointer_cast<Segment>(GetCollider(ColliderKind::kRay)->GetShape());
 	ray->SetBeginPos(m_prev_pos, true);
 	ray->SetEndPos	(m_transform->GetPos(CoordinateKind::kWorld), true);

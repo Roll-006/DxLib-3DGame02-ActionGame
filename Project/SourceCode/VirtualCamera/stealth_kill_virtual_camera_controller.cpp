@@ -1,4 +1,4 @@
-#include "stealth_kill_virtual_camera_controller.hpp"
+ï»¿#include "stealth_kill_virtual_camera_controller.hpp"
 
 #include "../VirtualCamera/cinemachine_brain.hpp"
 #include "../Object/player.hpp"
@@ -12,11 +12,11 @@ StealthKillVirtualCameraController::StealthKillVirtualCameraController() :
 	m_camera			(std::make_shared<VirtualCamera>(ObjName.STEALTH_KILL_VIRTUAL_CAMERA, BlendActivationPolicyKind::kDeactivateAllCamera)),
 	m_aim_transform		(std::make_shared<Transform>())
 {
-	// ƒCƒxƒ“ƒg“o˜^
+	// ã‚¤ãƒ™ãƒ³ãƒˆç™»éŒ²
 	EventSystem::GetInstance()->Subscribe<StealthKillEvent>		(this, &StealthKillVirtualCameraController::SetStealthKillerModelHandle);
 	EventSystem::GetInstance()->Subscribe<OnStealthKillEvent>	(this, &StealthKillVirtualCameraController::SetStealthKillableModelHandle);
 
-	// ƒpƒ‰ƒ[ƒ^Ý’è
+	// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿è¨­å®š
 	SetupCamera();
 
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
@@ -28,7 +28,7 @@ StealthKillVirtualCameraController::StealthKillVirtualCameraController() :
 
 StealthKillVirtualCameraController::~StealthKillVirtualCameraController()
 {
-	// ƒCƒxƒ“ƒg‚Ì“o˜^‰ðœ
+	// ã‚¤ãƒ™ãƒ³ãƒˆã®ç™»éŒ²è§£é™¤
 	EventSystem::GetInstance()->Unsubscribe<StealthKillEvent>	(this, &StealthKillVirtualCameraController::SetStealthKillerModelHandle);
 	EventSystem::GetInstance()->Unsubscribe<OnStealthKillEvent>	(this, &StealthKillVirtualCameraController::SetStealthKillableModelHandle);
 
@@ -36,7 +36,7 @@ StealthKillVirtualCameraController::~StealthKillVirtualCameraController()
 	cinemachine_brain->SetBlendTime(1.0f);
 	cinemachine_brain->RemoveVirtualCamera(m_camera->GetCameraHandle());
 
-	// ‘€ìƒJƒƒ‰‚ð•œ‹A‚³‚¹‚é
+	// æ“ä½œã‚«ãƒ¡ãƒ©ã‚’å¾©å¸°ã•ã›ã‚‹
 	const auto control_cameras_controller = cinemachine_brain->GetVirtualCameraController(VirtualCameraControllerKind::kControl);
 	if (control_cameras_controller)
 	{
@@ -47,7 +47,7 @@ StealthKillVirtualCameraController::~StealthKillVirtualCameraController()
 	m_stealth_killer_modeler	= nullptr;
 	m_stealth_killable_modeler	= nullptr;
 
-	// ‰‰o‚ªI—¹‚µ‚½‚±‚Æ‚ð’Ê’m
+	// æ¼”å‡ºãŒçµ‚äº†ã—ãŸã“ã¨ã‚’é€šçŸ¥
 	const EndCutsceneEvent event{};
 	EventSystem::GetInstance()->Publish(event);
 }
@@ -107,7 +107,7 @@ void StealthKillVirtualCameraController::SetStealthKillableModelHandle(const OnS
 #pragma endregion
 
 
-#pragma region ƒJƒƒ‰Ý’è
+#pragma region ã‚«ãƒ¡ãƒ©è¨­å®š
 void StealthKillVirtualCameraController::SetupCamera()
 {
 	m_camera->SetPriority(10);
@@ -118,17 +118,17 @@ void StealthKillVirtualCameraController::SetupCamera()
 #pragma endregion
 
 
-#pragma region ‹N“_ƒgƒ‰ƒ“ƒXƒtƒH[ƒ€‚ÌŒvŽZ
+#pragma region èµ·ç‚¹ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ ã®è¨ˆç®—
 void StealthKillVirtualCameraController::CalcAimTransform()
 {
 	if (!m_stealth_killer_modeler || !m_stealth_killable_modeler) { return; }
 
 	auto	   killer_m		= MV1GetFrameLocalWorldMatrix(m_stealth_killer_modeler	->GetModelHandle(), MV1SearchFrame(m_stealth_killer_modeler	 ->GetModelHandle(), FramePath.HEAD_TOP_END));
 	auto	   killable_m	= MV1GetFrameLocalWorldMatrix(m_stealth_killable_modeler->GetModelHandle(), MV1SearchFrame(m_stealth_killable_modeler->GetModelHandle(), FramePath.HEAD_TOP_END));
-	const auto killer_pos	= MGetTranslateElem(killer_m);
-	const auto killable_pos	= MGetTranslateElem(killable_m);
+	const auto killer_pos	= matrix::GetPos(killer_m);
+	const auto killable_pos	= matrix::GetPos(killable_m);
 
-	// Šî€‚Æ‚È‚éƒgƒ‰ƒ“ƒXƒtƒH[ƒ€‚ðÝ’è
+	// åŸºæº–ã¨ãªã‚‹ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ ã‚’è¨­å®š
 	const auto center_pos	= (killer_pos + killable_pos) * 0.5f;
 	m_aim_transform->SetPos(CoordinateKind::kWorld, center_pos);
 	m_aim_transform->SetRot(CoordinateKind::kWorld, matrix::GetRotMatrix(killer_m * MGetRotY(90.0f * math::kDegToRad)));

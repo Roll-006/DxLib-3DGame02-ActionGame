@@ -1,4 +1,4 @@
-#include "effect.hpp"
+ï»¿#include "effect.hpp"
 
 Effect::Effect(const EffectData& j_data) :
 	ObjBase						(j_data.obj_name, ObjTag.EFFECT),
@@ -40,8 +40,8 @@ void Effect::Init()
 	m_play_contains					= 0;
 	m_play_wait_timer				= 0.0f;
 
-	// Effekseerã‚Å–³ŒÀ¶¬‚ªƒIƒ“‚©‚Âƒ‹[ƒvÄ¶‚ªtrue‚Ìê‡‚Í
-	// ƒv[ƒ‹‚©‚çŽæ‚èo‚³‚ê‚½’iŠK‚ÅÄ¶‚·‚é
+	// Effekseerä¸Šã§ç„¡é™ç”ŸæˆãŒã‚ªãƒ³ã‹ã¤ãƒ«ãƒ¼ãƒ—å†ç”ŸãŒtrueã®å ´åˆã¯
+	// ãƒ—ãƒ¼ãƒ«ã‹ã‚‰å–ã‚Šå‡ºã•ã‚ŒãŸæ®µéšŽã§å†ç”Ÿã™ã‚‹
 	if (m_playing_effect_handle == -1 && m_data.is_loop)
 	{
 		m_playing_effect_handle = PlayEffekseer3DEffect(m_origin_effect_handle);
@@ -72,12 +72,12 @@ void Effect::Draw() const
 
 void Effect::AddToObjManager()
 {
-	ObjManager::GetInstance()->AddObj(shared_from_this());
+	ObjAccessor::GetInstance()->AddObj(shared_from_this());
 }
 
 void Effect::RemoveToObjManager()
 {
-	ObjManager::GetInstance()->RemoveObj(GetObjHandle());
+	ObjAccessor::GetInstance()->RemoveObj(GetObjHandle());
 }
 
 
@@ -94,7 +94,7 @@ void Effect::DetachOwnerTransform()
 #pragma endregion
 
 
-#pragma region “o˜^ / íœ
+#pragma region ç™»éŒ² / å‰Šé™¤
 void Effect::AddTimeScaleOwner(const std::string& owner_name)
 {
 	m_time_scale_owner_name = owner_name;
@@ -117,11 +117,11 @@ void Effect::RemoveReturnPoolTriggerHandle()
 #pragma endregion
 
 
-bool Effect::IsReturnPool()
+const bool Effect::IsReturnPool()
 {
 	if (m_playing_effect_handle > -1)
 	{
-		// ƒ‹[ƒvÄ¶‚È‚µ‚ÅÄ¶‚ªI—¹‚µ‚½ê‡‚Íƒv[ƒ‹‚É•Ô‹p
+		// ãƒ«ãƒ¼ãƒ—å†ç”Ÿãªã—ã§å†ç”ŸãŒçµ‚äº†ã—ãŸå ´åˆã¯ãƒ—ãƒ¼ãƒ«ã«è¿”å´
 		if (!m_data.is_loop && m_play_contains > 0 && IsEffekseer3DEffectPlaying(m_playing_effect_handle) == -1)
 		{
 			return true;
@@ -140,14 +140,14 @@ void Effect::ApplyMatrix() const
 			m_transform->SetMatrix(CoordinateKind::kWorld, m_owner_transform->GetMatrix(CoordinateKind::kWorld));
 		}
 
-		// ƒIƒtƒZƒbƒg’l‚Ì“K—p
+		// ã‚ªãƒ•ã‚»ãƒƒãƒˆå€¤ã®é©ç”¨
 		const auto scale_m		= MGetScale(m_offset_scale);
 		const auto rot_m		= math::ConvertEulerAnglesToXYZRotMatrix(m_offset_angle);
 		const auto pos_m		= MGetTranslate(m_offset_pos);
 		const auto offset_m		= scale_m * rot_m * pos_m;
 		m_transform->SetMatrix	(CoordinateKind::kWorld, offset_m * m_transform->GetMatrix(CoordinateKind::kWorld));
 
-		// î•ñ‚ÌŽæ“¾
+		// æƒ…å ±ã®å–å¾—
 		const auto pos			= m_transform->GetPos(CoordinateKind::kWorld);
 		const auto angle		= math::ConvertZXYRotMatrixToEulerAngles(m_transform->GetRotMatrix(CoordinateKind::kWorld));
 		const auto scale		= m_transform->GetScale(CoordinateKind::kWorld);
@@ -175,7 +175,7 @@ void Effect::PlayEffect()
 	}
 }
 
-float Effect::GetDeltaTime() const
+const float Effect::GetDeltaTime() const
 {
 	const auto time_manager = GameTimeManager::GetInstance();
 

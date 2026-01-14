@@ -1,0 +1,11 @@
+﻿{
+  "main_menu_select_button_data": {
+    "fade_in_speed": 5.0,
+    "fade_out_speed": 3.0,
+    "screen_width": 720,
+    "screen_height_offset": 20,
+    "non_select_alpha_blend_num": 100,
+    "non_select_scale": 0.8,
+    "select_scale": 1.0
+  }
+}

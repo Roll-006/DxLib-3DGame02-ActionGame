@@ -7,5 +7,5 @@ class IHumanoid abstract
 public:
 	virtual ~IHumanoid() = default;
 
-	[[nodiscard]] virtual std::shared_ptr<HumanoidFrameGetter> GetHumanoidFrame() const abstract;
+	[[nodiscard]] virtual const std::shared_ptr<const HumanoidFrameGetter> GetHumanoidFrame() const abstract;
 };

@@ -1,5 +1,6 @@
 #pragma once
 #include "../Event/event_system.hpp"
+#include "../Sound/sound_volume_settings.hpp"
 #include "../Name/obj_name.hpp"
 #include "sound_pool.hpp"
 
@@ -59,6 +60,7 @@ private:
 	#pragma endregion
 
 private:
-	std::unique_ptr<SoundPool> m_sound_pool;
-	std::unordered_map<std::string, std::vector<std::shared_ptr<Sound>>> m_active_sounds;
+	std::unique_ptr<SoundPool>												m_sound_pool;
+	std::unordered_map<std::string, std::vector<std::shared_ptr<Sound>>>	m_active_sounds;
+	std::shared_ptr<SoundVolumeSettings>									m_sound_volume_settings;
 };

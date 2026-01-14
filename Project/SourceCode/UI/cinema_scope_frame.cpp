@@ -1,10 +1,10 @@
 #include "cinema_scope_frame.hpp"
 
 CinemaScopeFrame::CinemaScopeFrame() : 
-	m_up_frame_up_left_pos		(v2d::GetZeroV<Vector2D<int>>()),
-	m_up_frame_down_right_pos	(v2d::GetZeroV<Vector2D<int>>()),
-	m_down_frame_up_left_pos	(v2d::GetZeroV<Vector2D<int>>()),
-	m_down_frame_down_right_pos	(v2d::GetZeroV<Vector2D<int>>()),
+	m_up_frame_up_left_pos		(v2d::GetZeroV<int>()),
+	m_up_frame_down_right_pos	(v2d::GetZeroV<int>()),
+	m_down_frame_up_left_pos	(v2d::GetZeroV<int>()),
+	m_down_frame_down_right_pos	(v2d::GetZeroV<int>()),
 	m_thickness					(0),
 	m_increase					(0)
 {

@@ -1,8 +1,12 @@
+﻿#include "../../Object/zombie.hpp"
+#include "../../Kind/zombie_anim_kind.hpp"
+#include "../../Animator/animator.hpp"
+#include "../../Kind/zombie_state_kind.hpp"
+#include "zombie_state.hpp"
 #include "zombie_idle.hpp"
 
-zombie_state::Idle::Idle() :
-	MoveStateBase		(static_cast<int>(zombie_state::MoveStateKind::kMoveNull)),
-	m_is_stop_all_state	(false)
+zombie_state::Idle::Idle(Zombie& zombie, zombie_state::State& state, const std::shared_ptr<Animator>& animator) :
+	ZombieStateBase(zombie, state, animator, ZombieStateKind::kIdle)
 {
 
 }
@@ -12,37 +16,93 @@ zombie_state::Idle::~Idle()
 
 }
 
-void zombie_state::Idle::Update(std::shared_ptr<Zombie>& obj)
+void zombie_state::Idle::Update()
 {
-	obj->CalcMoveSpeedStop();
+	m_zombie.CalcMoveSpeedStop();
+	m_zombie.InitMoveOffset();
+
+	m_zombie.UpdateLocomotion();
+
+	m_animator->AttachResultAnim(static_cast<int>(ZombieAnimKind::kIdle));
 }
 
-void zombie_state::Idle::LateUpdate(std::shared_ptr<Zombie>& obj)
+void zombie_state::Idle::LateUpdate()
 {
-	
+	m_zombie.OnFootIK();
 }
 
-void zombie_state::Idle::Enter(std::shared_ptr<Zombie>& obj)
+void zombie_state::Idle::Enter()
+{
+	m_animator->AttachResultAnim(static_cast<int>(ZombieAnimKind::kIdle));
+}
+
+void zombie_state::Idle::Exit()
 {
 
 }
 
-void zombie_state::Idle::Exit(std::shared_ptr<Zombie>& obj)
+const ZombieStateKind zombie_state::Idle::GetNextStateKind()
 {
-
-}
-
-std::shared_ptr<IState<Zombie>> zombie_state::Idle::ChangeState(std::shared_ptr<Zombie>& obj)
-{
-	if (obj->GetDeltaTime() <= 0.0f) { return nullptr; }
-
-	const auto state_controller = obj->GetStateController();
-
-	// �ړ�
-	if (state_controller->TryMove())
+	if (m_zombie.GetDeltaTime() <= 0.0f)
 	{
-		return state_controller->GetState<Move, Zombie>();
+		return ZombieStateKind::kNone;
+	}
+	// 強制待機
+	else if (m_state.TryWaitForcibly())
+	{
+		return ZombieStateKind::kNone;
+	}
+	// 発見
+	else if (m_state.TryDetected())
+	{
+		return ZombieStateKind::kDetected;
+	}
+	// 巡回
+	else if (m_state.TryPatrol())
+	{
+		return ZombieStateKind::kPatrol;
+	}
+	// 追跡
+	else if (m_state.TryTrack())
+	{
+		return ZombieStateKind::kTrack;
+	}
+	// ステルスキル
+	else if (m_state.TryStealthKilled())
+	{
+		return ZombieStateKind::kStealthKilled;
+	}
+	// 死亡
+	if (m_state.TryDead())
+	{
+		return ZombieStateKind::kDead;
+	}
+	// 左足ダウン
+	else if (m_state.TryLeftCrouchStun())
+	{
+		return ZombieStateKind::kCrouchLeftStun;
+	}
+	// 右足ダウン
+	else if (m_state.TryRightCrouchStun())
+	{
+		return ZombieStateKind::kCrouchRightStun;
+	}
+	// 立ちダウン
+	else if (m_state.TryStandStun())
+	{
+		return ZombieStateKind::kStandStun;
+	}
+	// ノックバック
+	else if (m_state.TryKnockback())
+	{
+		return ZombieStateKind::kKnockback;
+	}
+	// ノックバック（後ろ）
+	else if (m_state.TryBackwardKnockback())
+	{
+		m_zombie.OnKnockback(-m_zombie.GetLookDir(TimeKind::kCurrent), 70.0f, 60.0f);
+		return ZombieStateKind::kBackwardKnockback;
 	}
 
-	return nullptr;
+	return ZombieStateKind::kNone;
 }

@@ -275,7 +275,7 @@ bool CommandHandler::IsExecute(const CommandKind command_kind, const TimeKind ti
 
 	// トリガー方式の場合、入力カウントによって実行されたかを判定
 	case InputModeKind::kTrigger:
-		return m_trigger_contains.at(time_kind).at(command_kind) % 2 == 1 ? true : false;
+		return m_trigger_contains.at(time_kind).at(command_kind) % 2 == 1;
 		break;
 
 	case InputModeKind::kHold:

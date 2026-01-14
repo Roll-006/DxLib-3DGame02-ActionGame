@@ -18,6 +18,7 @@ GameSystemSetter::~GameSystemSetter()
 void GameSystemSetter::SetUpGameSystem()
 {
 	// 基本設定
+	SetUseCharCodeFormat(DX_CHARCODEFORMAT_UTF8);
 	SetOutApplicationLogValidFlag(FALSE);
 	SetGraphMode(Window::kScreenSize.x, Window::kScreenSize.y, 32);
 	ChangeWindowMode(TRUE);

@@ -4,17 +4,14 @@
 #include "../Part/mask_creator.hpp"
 
 #include "../Object/player.hpp"
-#include "../Base/weapon_action_state_base.hpp"
+#include "../State/PlayerState/player_state.hpp"
 #include "../Kind/player_state_kind.hpp"
 #include "../Part/weapon_graphic_getter.hpp"
 
 class WeaponShortcutDrawer final
 {
 public:
-	WeaponShortcutDrawer(
-		std::unordered_map<TimeKind, std::shared_ptr<WeaponActionStateBase<Player>>>& state,
-		const std::shared_ptr<WeaponShortcutSelecter>& weapon_shortcut_selecter);
-
+	WeaponShortcutDrawer(const std::shared_ptr<const player_state::State>& state, const std::shared_ptr<const WeaponShortcutSelecter>& weapon_shortcut_selecter);
 	~WeaponShortcutDrawer();
 
 	void LateUpdate();
@@ -41,8 +38,8 @@ private:
 	static constexpr float			kDrawEndTime		= 2.0f;
 
 private:
-	std::unordered_map<TimeKind, std::shared_ptr<WeaponActionStateBase<Player>>>&	m_state;
-	std::shared_ptr<WeaponShortcutSelecter>											m_weapon_shortcut_selecter;
+	const std::shared_ptr<const player_state::State>								m_state;
+	const std::shared_ptr<const WeaponShortcutSelecter>								m_weapon_shortcut_selecter;
 
 	std::unordered_map<WeaponShortcutPosKind, std::shared_ptr<WeaponShortcutIcon>>	m_weapon_shortcut_icons;
 	std::shared_ptr<WeaponGraphicGetter>											m_weapon_graphic;

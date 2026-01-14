@@ -1,8 +1,8 @@
-#pragma once
+ï»¿#pragma once
 #include <memory>
 #include "i_stealth_killable.hpp"
 
-/// @brief ƒXƒeƒ‹ƒXƒLƒ‹‚ğs‚¤‘¤
+/// @brief ã‚¹ãƒ†ãƒ«ã‚¹ã‚­ãƒ«ã‚’è¡Œã†å´
 class IStealthKiller abstract
 {
 public:
@@ -18,5 +18,5 @@ public:
 	virtual void RemoveStealthKillTarget() abstract;
 
 	[[nodiscard]] virtual std::shared_ptr<IStealthKillable>& GetStealthKillTarget() abstract;
-	[[nodiscard]] virtual bool CanSearchStealthKillTarget() const abstract;
+	[[nodiscard]] virtual const bool CanSearchStealthKillTarget() const abstract;
 };

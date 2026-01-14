@@ -1,10 +1,10 @@
-#pragma once
+ï»¿#pragma once
 #include "../Name/obj_name.hpp"
 #include "../Tag/obj_tag.hpp"
 
 #include "../Part/transform.hpp"
 
-class ObjManager;
+class ObjAccessor;
 
 class ObjBase abstract : public std::enable_shared_from_this<ObjBase>
 {
@@ -17,31 +17,31 @@ public:
 	virtual void LateUpdate()				abstract;
 	virtual void Draw()				const	abstract;
 
-	/// @brief Šeƒ}ƒl[ƒWƒƒ[‚É©g‚ğ“o˜^‚·‚é
+	/// @brief å„ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ã«è‡ªèº«ã‚’ç™»éŒ²ã™ã‚‹
 	virtual void AddToObjManager()			abstract;
 	virtual void RemoveToObjManager()		abstract;
 
-	/// @brief ƒIƒuƒWƒFƒNƒg‚ğƒAƒNƒeƒBƒu‰»‚·‚é
+	/// @brief ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ã‚¢ã‚¯ãƒ†ã‚£ãƒ–åŒ–ã™ã‚‹
 	void Activate()   { m_is_active = true; }
-	/// @brief ƒIƒuƒWƒFƒNƒg‚ğ”ñƒAƒNƒeƒBƒu‰»‚·‚é(íœ‚¹‚¸‚É‹@”\‚ğ’â~)
+	/// @brief ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’éã‚¢ã‚¯ãƒ†ã‚£ãƒ–åŒ–ã™ã‚‹(å‰Šé™¤ã›ãšã«æ©Ÿèƒ½ã‚’åœæ­¢)
 	void Deactivate() { m_is_active = false; }
 
 
 	#pragma region Getter
-	[[nodiscard]] virtual float				 GetDeltaTime() const abstract;
-	[[nodiscard]] std::shared_ptr<Transform> GetTransform()			{ return m_transform; }
-	[[nodiscard]] std::string				 GetName()		const	{ return m_name; }
-	[[nodiscard]] std::string				 GetTag()		const	{ return m_tag; }
-	[[nodiscard]] int						 GetObjHandle()	const	{ return m_obj_handle; }
-	[[nodiscard]] bool						 IsActive()		const	{ return m_is_active; }
+	[[nodiscard]] const virtual float				GetDeltaTime()	const abstract;
+	[[nodiscard]] const std::shared_ptr<Transform>	GetTransform()	const	{ return m_transform; }
+	[[nodiscard]] const std::string					GetName()		const	{ return m_name; }
+	[[nodiscard]] const std::string					GetTag()		const	{ return m_tag; }
+	[[nodiscard]] const int							GetObjHandle()	const	{ return m_obj_handle; }
+	[[nodiscard]] const bool						IsActive()		const	{ return m_is_active; }
 	#pragma endregion
 
 protected:
 	std::shared_ptr<Transform> m_transform;
 
 private:
-	std::string m_name;		// ƒIƒuƒWƒFƒNƒg‚Ì–¼‘O
-	std::string m_tag;		// ƒIƒuƒWƒFƒNƒg‚Ì•ª—Ş
+	std::string m_name;		// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®åå‰
+	std::string m_tag;		// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®åˆ†é¡
 
 	bool m_is_active;
 	int  m_obj_handle;

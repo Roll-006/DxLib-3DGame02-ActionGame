@@ -30,10 +30,10 @@ public:
 	/// @param fade_out_speed フェードアウト速度
 	void StartFadeOut();
 
-	[[nodiscard]] bool		IsActive()		const		{ return m_is_active; }
-	[[nodiscard]] bool		IsStopping()	const		{ return m_is_stopping; }
-	[[nodiscard]] bool		IsReturnPool()	override	{ return m_is_return_pool; }
-	[[nodiscard]] SoundData GetSoundData()	const		{ return sound_data; }
+	[[nodiscard]] const bool		IsActive()		const		{ return m_is_active; }
+	[[nodiscard]] const bool		IsStopping()	const		{ return m_is_stopping; }
+	[[nodiscard]] const bool		IsReturnPool()	override	{ return m_is_return_pool; }
+	[[nodiscard]] const SoundData	GetSoundData()	const		{ return sound_data; }
 
 private:
 	void FadeOut();

@@ -35,7 +35,7 @@ void StealthKillTargetSearcher::SearchTarget()
 	for (auto itr = m_stealth_kill_candidate.begin(); itr != m_stealth_kill_candidate.end(); )
 	{
 		// 候補者をインターフェイスに変更
-		const auto candidate_obj	= ObjManager::GetInstance()->GetObj<ObjBase>(itr->target_obj_handle);
+		const auto candidate_obj	= ObjAccessor::GetInstance()->GetObj<ObjBase>(itr->target_obj_handle);
 		const auto stealth_killable = std::dynamic_pointer_cast<IStealthKillable>(candidate_obj);
 
 		// ステルスキルが許可されていない場合は除外
@@ -46,7 +46,7 @@ void StealthKillTargetSearcher::SearchTarget()
 		}
 
 		// メレー対象かつ背後にいる場合は残す
-		if (std::dynamic_pointer_cast<ObjBase>(m_player->GetMeleeTarget()) == candidate_obj)
+		if (std::dynamic_pointer_cast<const ObjBase>(m_player->GetMeleeTarget()) == candidate_obj)
 		{
 			const auto candidate_transform	= candidate_obj->GetTransform();
 			const auto target_forward		= candidate_transform->GetForward(CoordinateKind::kWorld);
@@ -54,7 +54,7 @@ void StealthKillTargetSearcher::SearchTarget()
 			dir.y = 0.0f;
 			dir = v3d::GetNormalizedV(dir);
 
-			if (math::GetAngleBetweenTwoVector(target_forward, dir) >= 135.0f * math::kDegToRad)
+			if (math::GetAngleBetweenTwoVectors(target_forward, dir) >= 135.0f * math::kDegToRad)
 			{
 				++itr;
 				continue;
@@ -97,7 +97,7 @@ void StealthKillTargetSearcher::SearchTarget()
 	if (!distance.empty())
 	{
 		std::ranges::sort(distance, {}, &StealthKillCandidateData::distance_to_camera);
-		const auto candidate_obj = ObjManager::GetInstance()->GetObj<ObjBase>(distance.front().target_obj_handle);
+		const auto candidate_obj = ObjAccessor::GetInstance()->GetObj<ObjBase>(distance.front().target_obj_handle);
 		const auto stealth_killable = std::dynamic_pointer_cast<IStealthKillable>(candidate_obj);
 		m_player->AddStealthKillTarget(stealth_killable);
 		return;
@@ -105,7 +105,7 @@ void StealthKillTargetSearcher::SearchTarget()
 
 	// 角度でソート
 	std::ranges::sort(angle, {}, &StealthKillCandidateData::camera_diff_angle);
-	const auto candidate_obj = ObjManager::GetInstance()->GetObj<ObjBase>(angle.front().target_obj_handle);
+	const auto candidate_obj = ObjAccessor::GetInstance()->GetObj<ObjBase>(angle.front().target_obj_handle);
 	const auto stealth_killable = std::dynamic_pointer_cast<IStealthKillable>(candidate_obj);
 	m_player->AddStealthKillTarget(stealth_killable);
 }

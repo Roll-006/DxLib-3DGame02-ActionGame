@@ -1,8 +1,8 @@
-#pragma once
+ï»¿#pragma once
 #include "../Base/obj_base.hpp"
 #include "../Interface/i_loadable_ammo.hpp"
 
-#include "../Manager/obj_manager.hpp"
+#include "../Accessor/obj_accessor.hpp"
 #include "../GameTime/game_time_manager.hpp"
 
 class NonCollildeRocketBomb final : public ObjBase, public ILoadableAmmo
@@ -23,11 +23,11 @@ public:
 	void OnReloaded() override;
 	void TrackLoad() override;
 
-	[[nodiscard]] float	GetDeltaTime() const override;
-	[[nodiscard]] bool  IsReloading()  const override { return m_is_reloading; }
+	[[nodiscard]] const float GetDeltaTime() const override;
+	[[nodiscard]] const bool  IsReloading()  const override { return m_is_reloading; }
 
 private:
-	/// @brief ˆÚ“®•ûŒü‚ğp¨‚É“K—p‚·‚é
+	/// @brief ç§»å‹•æ–¹å‘ã‚’å§¿å‹¢ã«é©ç”¨ã™ã‚‹
 	void ApplyMoveDirToRot();
 
 	void TrackOwnerHand() override;
@@ -36,12 +36,12 @@ private:
 	static constexpr VECTOR kBasicAngle			= { 0.0f, 90.0f * math::kDegToRad, 0.0f };
 	static constexpr float  kBasicScale			= 0.45f;
 
-	static constexpr VECTOR kHoldOffsetAngle	= { 0.0f, 270.0f * math::kDegToRad, 0.0f };		// è‚É‚½‚ê‚éÛ‚ÌƒIƒtƒZƒbƒgŠp“x
-	static constexpr VECTOR kHoldOffsetPos		= { -4.0f, 8.0f, 0.0f };						// è‚É‚½‚ê‚éÛ‚ÌƒIƒtƒZƒbƒgÀ•W
-	static constexpr float  kHoldOffsetScale	= 1.0f;											// è‚É‚½‚ê‚éÛ‚ÌƒIƒtƒZƒbƒgƒXƒP[ƒ‹
-	static constexpr VECTOR kLoadOffsetPos		= { 0.0f, 0.0f, -15.0f };						// ‘•“UˆÊ’u‚ÌƒIƒtƒZƒbƒgÀ•W
-	static constexpr VECTOR kLoadOffsetAngle	= { 0.0f, 0.0f, 0.0f };							// ‘•“UˆÊ’u‚ÌƒIƒtƒZƒbƒgŠp“x
-	static constexpr float  kLoadOffsetScale	= 1.0f;											// ‘•“UˆÊ’u‚ÌƒIƒtƒZƒbƒgƒXƒP[ƒ‹
+	static constexpr VECTOR kHoldOffsetAngle	= { 0.0f, 270.0f * math::kDegToRad, 0.0f };		// æ‰‹ã«æŒãŸã‚Œã‚‹éš›ã®ã‚ªãƒ•ã‚»ãƒƒãƒˆè§’åº¦
+	static constexpr VECTOR kHoldOffsetPos		= { -4.0f, 8.0f, 0.0f };						// æ‰‹ã«æŒãŸã‚Œã‚‹éš›ã®ã‚ªãƒ•ã‚»ãƒƒãƒˆåº§æ¨™
+	static constexpr float  kHoldOffsetScale	= 1.0f;											// æ‰‹ã«æŒãŸã‚Œã‚‹éš›ã®ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚¹ã‚±ãƒ¼ãƒ«
+	static constexpr VECTOR kLoadOffsetPos		= { 0.0f, 0.0f, -15.0f };						// è£…å¡«ä½ç½®ã®ã‚ªãƒ•ã‚»ãƒƒãƒˆåº§æ¨™
+	static constexpr VECTOR kLoadOffsetAngle	= { 0.0f, 0.0f, 0.0f };							// è£…å¡«ä½ç½®ã®ã‚ªãƒ•ã‚»ãƒƒãƒˆè§’åº¦
+	static constexpr float  kLoadOffsetScale	= 1.0f;											// è£…å¡«ä½ç½®ã®ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚¹ã‚±ãƒ¼ãƒ«
 
 	std::shared_ptr<Modeler>	m_modeler;
 	std::shared_ptr<Modeler>	m_owner_modeler;

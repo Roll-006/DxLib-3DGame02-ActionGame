@@ -13,15 +13,7 @@
 class WarningTab final : public ITab
 {
 public:
-	enum class WarningKind
-	{
-		kRestart,
-		kQuitGame,
-		kExit,
-	};
-
-public:
-	WarningTab(const WarningKind kind);
+	WarningTab(const TextData& text_data);
 	~WarningTab() override;
 
 	void Init()			override;
@@ -57,6 +49,7 @@ private:
 private:
 	WarningTabData							data;
 
+	TextData								m_text_data;
 	int										m_tab_handle;
 	bool									m_is_active;
 	bool									m_can_select;

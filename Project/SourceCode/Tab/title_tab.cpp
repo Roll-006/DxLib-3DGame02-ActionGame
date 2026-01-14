@@ -1,6 +1,7 @@
 ﻿#include "title_tab.hpp"
 
 TitleTab::TitleTab() :
+	data				(TitleTabData()),
 	m_tab_handle		(HandleCreator::GetInstance()->CreateHandle()),
 	m_priority			(0),
 	m_is_active			(true),
@@ -8,22 +9,44 @@ TitleTab::TitleTab() :
 	m_is_game_start		(false),
 	m_is_exit			(false),
 	m_ui_selector		(std::make_shared<UISelector>(0, true, true)),
-	m_warning_exit_tab	(std::make_shared<WarningTab>(WarningTab::WarningKind::kExit)),
-	m_button_prompt		(std::make_shared<ButtonPrompt>("title"))
+	m_warning_exit_tab	(nullptr),
+	m_button_prompt		(nullptr)
 {
-	std::vector<Vector2D<int>> center_pos;
-	for (int i = 0; i < 3; ++i)
+	nlohmann::json j_data;
+	if (json_loader::Load("Data/JSON/tab_data.json", j_data))
 	{
-		center_pos.emplace_back(kFirstButtonCenterPos + Vector2D<int>(0, kButtonPosInterval * i));
+		data = j_data.at("tab_data").at("title").get<TitleTabData>();
 	}
 
-	m_ui_selector->AddUIButton(std::make_shared<MainMenuSelectButton>(MainMenuSelectButton::ButtonKind::kStartGame, center_pos.at(0), [this]() { ExecuteGameStart(); }, true));
-	//m_ui_selector->AddUIButton(std::make_shared<MainMenuSelectButton>(MainMenuSelectButton::ButtonKind::kOption,	center_pos.at(1), [this]() { ExecuteOption(); },	false));
-	m_ui_selector->AddUIButton(std::make_shared<MainMenuSelectButton>(MainMenuSelectButton::ButtonKind::kExit,		center_pos.at(1), [this]() { ExecuteExit();	},		false));
+	text::CreateText(data.warning_text_data);
 
-	m_button_prompt->AddExplanatoryText(0, "ゲームを開始します");
-	//m_button_prompt->AddExplanatoryText(1, "ゲームの各種設定を行います");
-	m_button_prompt->AddExplanatoryText(1, "ゲームを終了します");
+	m_warning_exit_tab	= std::make_shared<WarningTab>(data.warning_text_data);
+	m_button_prompt		= std::make_shared<ButtonPrompt>(data.button_prompt_name);
+
+	// ボタンプロンプト・テキストの構築
+	for (size_t i = 0; i < data.explanatory_text_data.size(); ++i)
+	{
+		text::CreateText(data.explanatory_text_data.at(i));
+		m_button_prompt->AddExplanatoryText(static_cast<int>(i), data.explanatory_text_data.at(i).text);
+	}
+
+	// UIボタン・テキストの構築
+	std::vector<Vector2D<int>> center_pos;
+	for (size_t i = 0; i < data.text_data.size(); ++i)
+	{
+		text::CreateText(data.text_data.at(i));
+
+		center_pos.emplace_back(data.first_button_center_offset + Vector2D<int>(0, data.button_pos_interval * i));
+		
+		if (i == 0)
+		{
+			m_ui_selector->AddUIButton(std::make_shared<MainMenuSelectButton>(data.text_data.at(i), center_pos.at(i), [this]() { ExecuteGameStart(); }, true));
+		}
+		else if (i == 1)
+		{
+			m_ui_selector->AddUIButton(std::make_shared<MainMenuSelectButton>(data.text_data.at(i), center_pos.at(i), [this]() { ExecuteExit();	}, false));
+		}
+	}
 
 	TabDrawer::GetInstance()->AddTab(m_warning_exit_tab);
 }
@@ -83,7 +106,7 @@ void TitleTab::OnDraw(const int main_screen_handle) const
 
 void TitleTab::ExecuteGameStart()
 {
-	SceneFader::GetInstance()->StartFade(UCHAR_MAX, 300.0f);
+	SceneFader::GetInstance()->StartFade(UCHAR_MAX, data.fade_speed);
 
 	m_is_game_start = true;
 	m_can_select	= false;

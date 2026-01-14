@@ -9,6 +9,7 @@
 
 #include "tab_drawer.hpp"
 #include "warning_tab.hpp"
+#include "../Data/pause_tab_data.hpp"
 
 class PauseTab final : public ITab
 {
@@ -56,9 +57,7 @@ private:
 	void BackTab();
 
 private:
-	static constexpr Vector2D<int>	kFirstButtonCenterPos	= { 440, 300 };
-	static constexpr int			kButtonPosInterval		= 110;
-	static constexpr float			kFadeSpeed = 600.0f;
+	PauseTabData									data;
 
 	int												m_tab_handle;
 	int												m_priority;

@@ -16,7 +16,7 @@ public:
 	void AttachShortcutWeapon(const WeaponShortcutPosKind pos_kind, const std::shared_ptr<WeaponBase>& weapon);
 	void DetachShortcutWeapon(const WeaponShortcutPosKind pos_kind);
 
-	[[nodiscard]] std::shared_ptr<WeaponBase>	GetShortcutWeapon(const WeaponShortcutPosKind shortcut_pos_kind);
+	[[nodiscard]] std::shared_ptr<WeaponBase>	GetShortcutWeapon(const WeaponShortcutPosKind shortcut_pos_kind) const;
 	[[nodiscard]] WeaponShortcutPosKind			GetCurrentSelectShortcut()	const { return m_current_select_shortcut; }
 	[[nodiscard]] bool							isSelecting()				const { return m_is_selecting; }
 	

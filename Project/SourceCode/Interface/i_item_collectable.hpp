@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <memory>
 #include "i_item.hpp"
 #include "../Event/spotted_item_event.hpp"
@@ -23,7 +23,7 @@ public:
 	virtual void AddPickupableItem(const std::shared_ptr<IItem>& item) abstract;
 	virtual void RemovePickupableItem() abstract;
 
-	[[nodiscard]] virtual std::shared_ptr<IItem>&		GetPickupableItem()		abstract;
-	[[nodiscard]] virtual std::vector<SpottedObjData>&	GetCandidateItems()		abstract;
-	[[nodiscard]] virtual bool							CanAddPickupableItem()	abstract;
+	[[nodiscard]] virtual std::shared_ptr<IItem>&				GetPickupableItem()		abstract;
+	[[nodiscard]] virtual const std::vector<SpottedObjData>&	GetCandidateItems()		abstract;
+	[[nodiscard]] virtual const bool							CanAddPickupableItem()	abstract;
 };

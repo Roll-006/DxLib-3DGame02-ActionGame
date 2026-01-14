@@ -9,7 +9,7 @@
 class EquipWeaponIcon final
 {
 public:
-	EquipWeaponIcon(std::unordered_map<WeaponSlotKind, std::shared_ptr<WeaponBase>>& equip_weapons);
+	EquipWeaponIcon(const std::unordered_map<WeaponSlotKind, std::shared_ptr<WeaponBase>>& equip_weapons);
 	~EquipWeaponIcon();
 
 	void LateUpdate();
@@ -25,7 +25,7 @@ private:
 	static constexpr Vector2D<int>	kCenterPos			= { static_cast<int>(kScreenSize.x * 0.5f), static_cast<int>(kScreenSize.y * 0.5f) };
 	static constexpr Vector2D<int>	kSubWeaponDrawPos	= { static_cast<int>(kScreenSize.x * 0.3f), static_cast<int>(kScreenSize.y * 0.2f) };
 
-	std::unordered_map<WeaponSlotKind, std::shared_ptr<WeaponBase>>& m_equip_weapons;
+	const std::unordered_map<WeaponSlotKind, std::shared_ptr<WeaponBase>>& m_equip_weapons;
 	std::shared_ptr<WeaponGraphicGetter>	m_weapon_graphic;
 	std::shared_ptr<Graphicer>				m_main_weapon_graphic;
 	std::shared_ptr<Graphicer>				m_sub_weapon_graphic;

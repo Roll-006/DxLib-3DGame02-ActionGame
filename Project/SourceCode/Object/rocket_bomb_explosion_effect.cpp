@@ -1,4 +1,4 @@
-#include "rocket_bomb_explosion_effect.hpp"
+ï»¿#include "rocket_bomb_explosion_effect.hpp"
 #include "../Base/character_base.hpp"
 
 RocketBombExplosionEffect::RocketBombExplosionEffect() :
@@ -45,8 +45,8 @@ void RocketBombExplosionEffect::Init()
 
 	AddCollider(std::make_shared<Collider>(ColliderKind::kAttackTrigger, std::make_shared<Sphere>(v3d::GetZeroV(), kHitRadius), this));
 
-	// Effekseerã‚Å–³ŒÀ¶¬‚ªƒIƒ“‚©‚Âƒ‹[ƒvÄ¶‚ªtrue‚Ìê‡‚Í
-	// ƒv[ƒ‹‚©‚çæ‚èo‚³‚ê‚½’iŠK‚ÅÄ¶‚·‚é
+	// Effekseerä¸Šã§ç„¡é™ç”ŸæˆãŒã‚ªãƒ³ã‹ã¤ãƒ«ãƒ¼ãƒ—å†ç”ŸãŒtrueã®å ´åˆã¯
+	// ãƒ—ãƒ¼ãƒ«ã‹ã‚‰å–ã‚Šå‡ºã•ã‚ŒãŸæ®µéšã§å†ç”Ÿã™ã‚‹
 	if (m_playing_effect_handle == -1 && m_data.is_loop)
 	{
 		m_playing_effect_handle = PlayEffekseer3DEffect(m_origin_effect_handle);
@@ -116,7 +116,7 @@ void RocketBombExplosionEffect::AddToObjManager()
 {
 	const auto physical_obj = std::dynamic_pointer_cast<PhysicalObjBase>(shared_from_this());
 
-	ObjManager		::GetInstance()->AddObj		  (shared_from_this());
+	ObjAccessor		::GetInstance()->AddObj		  (shared_from_this());
 	CollisionManager::GetInstance()->AddCollideObj(physical_obj);
 }
 
@@ -125,7 +125,7 @@ void RocketBombExplosionEffect::RemoveToObjManager()
 	const auto obj_handle = GetObjHandle();
 
 	CollisionManager::GetInstance()->RemoveCollideObj(obj_handle);
-	ObjManager		::GetInstance()->RemoveObj		 (obj_handle);
+	ObjAccessor		::GetInstance()->RemoveObj		 (obj_handle);
 }
 
 
@@ -142,7 +142,7 @@ void RocketBombExplosionEffect::DetachOwnerTransform()
 #pragma endregion
 
 
-#pragma region “o˜^ / íœ
+#pragma region ç™»éŒ² / å‰Šé™¤
 void RocketBombExplosionEffect::AddTimeScaleOwner(const std::string& owner_name)
 {
 	m_time_scale_owner_name = owner_name;
@@ -165,11 +165,11 @@ void RocketBombExplosionEffect::RemoveReturnPoolTriggerHandle()
 #pragma endregion
 
 
-bool RocketBombExplosionEffect::IsReturnPool()
+const bool RocketBombExplosionEffect::IsReturnPool()
 {
 	if (m_playing_effect_handle > -1)
 	{
-		// ƒ‹[ƒvÄ¶‚È‚µ‚ÅÄ¶‚ªI—¹‚µ‚½ê‡‚Íƒv[ƒ‹‚É•Ô‹p
+		// ãƒ«ãƒ¼ãƒ—å†ç”Ÿãªã—ã§å†ç”ŸãŒçµ‚äº†ã—ãŸå ´åˆã¯ãƒ—ãƒ¼ãƒ«ã«è¿”å´
 		if (!m_data.is_loop && m_play_contains > 0 && IsEffekseer3DEffectPlaying(m_playing_effect_handle) == -1)
 		{
 			return true;
@@ -188,14 +188,14 @@ void RocketBombExplosionEffect::ApplyMatrix() const
 			m_transform->SetMatrix(CoordinateKind::kWorld, m_owner_transform->GetMatrix(CoordinateKind::kWorld));
 		}
 
-		// ƒIƒtƒZƒbƒg’l‚Ì“K—p
+		// ã‚ªãƒ•ã‚»ãƒƒãƒˆå€¤ã®é©ç”¨
 		const auto scale_m		= MGetScale(m_offset_scale);
 		const auto rot_m		= math::ConvertEulerAnglesToXYZRotMatrix(m_offset_angle);
 		const auto pos_m		= MGetTranslate(m_offset_pos);
 		const auto offset_m		= scale_m * rot_m * pos_m;
 		m_transform->SetMatrix	(CoordinateKind::kWorld, offset_m * m_transform->GetMatrix(CoordinateKind::kWorld));
 
-		// î•ñ‚Ìæ“¾
+		// æƒ…å ±ã®å–å¾—
 		const auto pos			= m_transform->GetPos(CoordinateKind::kWorld);
 		const auto angle		= math::ConvertZXYRotMatrixToEulerAngles(m_transform->GetRotMatrix(CoordinateKind::kWorld));
 		const auto scale		= m_transform->GetScale(CoordinateKind::kWorld);
@@ -242,7 +242,7 @@ void RocketBombExplosionEffect::Attack(CharacterBase* target_character)
 {
 	const auto model_handle		= target_character->GetModeler()->GetModelHandle();
 	auto hips_m					= MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, FramePath.HIPS));
-	const auto hips_pos			= MGetTranslateElem(hips_m);
+	const auto hips_pos			= matrix::GetPos(hips_m);
 	const auto explosion_sphere = std::static_pointer_cast<Sphere>(GetCollider(ColliderKind::kAttackTrigger)->GetShape());
 	const auto explosion_pos	= explosion_sphere->GetPos();
 	const auto distance			= hips_pos - explosion_pos;
@@ -256,7 +256,7 @@ void RocketBombExplosionEffect::Attack(CharacterBase* target_character)
 	target_character->OnDamage(HealthPartKind::kMain, 5000.0f);
 }
 
-float RocketBombExplosionEffect::GetDeltaTime() const
+const float RocketBombExplosionEffect::GetDeltaTime() const
 {
 	const auto time_manager = GameTimeManager::GetInstance();
 

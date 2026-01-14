@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include <DxLib.h>
 #include "../Calculation/math.hpp"
 #include "../Data/model_frame_angle_limit_data.hpp"
 #include "../Data/triangle_edge_data.hpp"
@@ -13,10 +14,10 @@ namespace ik_solver
 	};
 
 	/// @brief mixamoXYZ軸からXYZ軸へ変換する
-	[[nodiscard]] Axis ConvertMixamoAxisToAxis(const Axis& mixamo_axis);
+	[[nodiscard]] const Axis ConvertMixamoAxisToAxis(const Axis& mixamo_axis);
 
 	/// @brief forwardを指定した回転後の軸を取得する
-	[[nodiscard]] Axis GetForwardSyncedMixamoAxis(const Axis& origin_mixamo_axis, const VECTOR& forward, const std::optional<AxisData>& aid_axis = std::nullopt);
+	[[nodiscard]] const Axis GetForwardSyncedMixamoAxis(const Axis& origin_mixamo_axis, const VECTOR& forward, const std::optional<AxisData>& aid_axis = std::nullopt);
 
 	/// @brief 1つのフレーム(ボーン)に対してIK処理を適用する
 	/// @param model_handle モデルハンドル
@@ -59,7 +60,7 @@ namespace ik_solver
 		FrameData&					middle_bone,
 		ModelFrameAngleLimitData&	begin_angle_limit,
 		ModelFrameAngleLimitData&	middle_angle_limit,
-		const TriangleEdgeData		triangle_edge,
+		const TriangleEdgeData&		triangle_edge,
 		const RotDirKind			rot_dir_kind,
 		const bool					is_rotate_x_axis);
 }

@@ -1,58 +1,38 @@
 #include "main_menu_select_button.hpp"
 
-MainMenuSelectButton::MainMenuSelectButton(const ButtonKind button_kind, const Vector2D<int>& center_pos, const std::function<void()> exeute_function, const bool is_init_selected) :
+MainMenuSelectButton::MainMenuSelectButton(const TextData& text_data, const Vector2D<int>& center_pos, const std::function<void()> exeute_function, const bool is_init_selected) :
 	UIButtonBase				(exeute_function),
-	m_button_kind				(button_kind),
-	m_alpha_blend_num			(kNonSelectAlphaBlendNum),
-	m_current_graphic_scale		(kNonSelectScale),
-	m_destination_graphic_scale	(kNonSelectScale),
+	data						(MainMenuSelectButtonData()),
+	m_text_data					(text_data),
+	m_alpha_blend_num			(UCHAR_MAX),
+	m_current_graphic_scale		(0.0f),
+	m_destination_graphic_scale	(0.0f),
 	m_button_screen				(nullptr)
 {
-	const auto  font_handle		= FontHandler::GetInstance()->GetFontHandle(FontName.MAIN_MENU_TEXT);
-	const auto  font_height		= GetFontSizeToHandle(font_handle);
-	const auto  screen_height	= font_height + kScreenHeightOffset;
-	std::string text			= "";
-
-	switch (m_button_kind)
+	nlohmann::json j_data;
+	if (json_loader::Load("Data/JSON/main_menu_select_button_data.json", j_data))
 	{
-	case ButtonKind::kStartGame:
-		text = "START GAME";
-		break;
-
-	case ButtonKind::kReturnToGame:
-		text = "RETURN TO GAME";
-		break;
-
-	case ButtonKind::kRestart:
-		text = "RESTART";
-		break;
-
-	case ButtonKind::kOption:
-		text = "OPTION";
-		break;
-
-	case ButtonKind::kQuitGame:
-		text = "QUIT GAME";
-		break;
-
-	case ButtonKind::kExit:
-		text = "EXIT";
-		break;
+		data = j_data.at("main_menu_select_button_data").get<MainMenuSelectButtonData>();
 	}
 
-	m_button_screen = std::make_shared<ScreenCreator>(Vector2D<int>(kScreenWidth, screen_height), center_pos);
+	m_alpha_blend_num			= data.non_select_alpha_blend_num;
+	m_current_graphic_scale		= m_destination_graphic_scale = data.non_select_scale;
+
+	// É{É^ÉìÇÃâÊëúÇê∂ê¨
+	const auto screen_height = m_text_data.size.y + data.screen_height_offset;
+	m_button_screen = std::make_shared<ScreenCreator>(Vector2D<int>(data.screen_width, screen_height), center_pos);
 	m_button_screen->UseScreen();
 	DrawStringToHandle(
-		kScreenHeightOffset,
-		static_cast<int>((screen_height - font_height) * 0.5f),
-		text.c_str(), 0xffffff, font_handle);
+		data.screen_height_offset,
+		static_cast<int>((screen_height - m_text_data.size.y) * 0.5f),
+		m_text_data.text.c_str(), m_text_data.u_int_color, m_text_data.font_handle);
 	m_button_screen->UnuseScreen();
 
 	// ç≈èâÇ©ÇÁëIëÇ≥ÇÍÇƒÇ¢ÇÈèÍçáÇÃèàóù
 	if (is_init_selected)
 	{
 		m_alpha_blend_num		= UCHAR_MAX;
-		m_current_graphic_scale = kSelectScale;
+		m_current_graphic_scale = data.select_scale;
 	}
 
 	CalcAlphaBlendNum();
@@ -84,7 +64,7 @@ void MainMenuSelectButton::Draw() const
 
 void MainMenuSelectButton::CalcAlphaBlendNum()
 {
-	m_alpha_blend_num = m_is_active ? UCHAR_MAX : kNonSelectAlphaBlendNum;
+	m_alpha_blend_num = m_is_active ? UCHAR_MAX : data.non_select_alpha_blend_num;
 	m_button_screen->GetGraphicer()->SetBlendNum(m_alpha_blend_num);
 }
 
@@ -94,13 +74,13 @@ void MainMenuSelectButton::CalcGraphicScale()
 
 	if (m_is_active)
 	{
-		m_destination_graphic_scale = kSelectScale;
-		math::Increase(m_current_graphic_scale, kScaleChangeSpeed * delta_time, m_destination_graphic_scale, false);
+		m_destination_graphic_scale = data.select_scale;
+		math::Increase(m_current_graphic_scale, data.fade_in_speed  * delta_time, m_destination_graphic_scale, false);
 	}
 	else
 	{
-		m_destination_graphic_scale = kNonSelectScale;
-		math::Decrease(m_current_graphic_scale, 3.0f * delta_time, m_destination_graphic_scale);
+		m_destination_graphic_scale = data.non_select_scale;
+		math::Decrease(m_current_graphic_scale, data.fade_out_speed * delta_time, m_destination_graphic_scale);
 	}
 
 	m_button_screen->GetGraphicer()->SetScale(m_current_graphic_scale);

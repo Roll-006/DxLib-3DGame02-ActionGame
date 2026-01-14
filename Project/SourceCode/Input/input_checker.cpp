@@ -260,7 +260,7 @@ void InputChecker::CheckInputAll()
 		switch (key.first.kind)
 		{
 		case InputKind::kKey:
-			j_data.is_input = IsInput(key.first.code) ? true : false;
+			j_data.is_input = IsInput(key.first.code);
 			break;
 
 		case InputKind::kMouseButton:

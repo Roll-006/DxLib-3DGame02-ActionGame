@@ -1,4 +1,4 @@
-#include "houses.hpp"
+﻿#include "houses.hpp"
 #include "../Manager/game_manager.hpp"
 
 Houses::Houses() :
@@ -58,7 +58,7 @@ void Houses::AddToObjManager()
 {
 	const auto physical_obj = std::dynamic_pointer_cast<PhysicalObjBase>(shared_from_this());
 
-	ObjManager		::GetInstance()->AddObj			(shared_from_this());
+	ObjAccessor		::GetInstance()->AddObj			(shared_from_this());
 	CollisionManager::GetInstance()->AddCollideObj	(physical_obj);
 	PhysicsManager	::GetInstance()->AddPhysicalObj	(physical_obj);
 }
@@ -69,10 +69,10 @@ void Houses::RemoveToObjManager()
 
 	CollisionManager::GetInstance()->RemoveCollideObj	(obj_handle);
 	PhysicsManager	::GetInstance()->RemovePhysicalObj	(obj_handle);
-	ObjManager		::GetInstance()->RemoveObj			(obj_handle);
+	ObjAccessor		::GetInstance()->RemoveObj			(obj_handle);
 }
 
-float Houses::GetDeltaTime() const
+const float Houses::GetDeltaTime() const
 {
 	const auto time_manager = GameTimeManager::GetInstance();
 	return time_manager->GetDeltaTime(TimeScaleLayerKind::kWorld);

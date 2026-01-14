@@ -1,4 +1,4 @@
-#include "rocket_launcher_virtual_cameras_controller.hpp"
+ï»¿#include "rocket_launcher_virtual_cameras_controller.hpp"
 #include "../VirtualCamera/cinemachine_brain.hpp"
 #include "../UI/ui_drawer.hpp"
 #include "../Object/player.hpp"
@@ -23,7 +23,7 @@ RocketLauncherVirtualCamerasController::RocketLauncherVirtualCamerasController(P
 	m_zoom_out_timer				(0.0f),
 	m_test_timer					(0.0f)
 {
-	// ƒpƒ‰ƒ[ƒ^İ’è
+	// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿è¨­å®š
 	SetupForEnterRotCamera();
 	SetupForZoomInCamera();
 	SetupForZoomOutCamera();
@@ -39,7 +39,7 @@ RocketLauncherVirtualCamerasController::RocketLauncherVirtualCamerasController(P
 	cinemachine_brain->AddVirtualCamera(m_zoom_out_camera,	false);
 	cinemachine_brain->AddVirtualCamera(m_exit_rot_camera,	false);
 
-	// ‰‰oŠJn’Ê’m
+	// æ¼”å‡ºé–‹å§‹é€šçŸ¥
 	const StartRocketLauncherCutsceneEvent event{};
 	EventSystem::GetInstance()->Publish(event);
 
@@ -48,7 +48,7 @@ RocketLauncherVirtualCamerasController::RocketLauncherVirtualCamerasController(P
 	time_manager->SetTimeScale(TimeScaleLayerKind::kPlayer,	0.005f);
 	time_manager->SetTimeScale(TimeScaleLayerKind::kEffect,	0.0f);
 
-	// MEMO : ‚±‚Ì’iŠK‚Å‚Í‘€ìƒJƒƒ‰‚Ìƒgƒ‰ƒ“ƒXƒtƒH[ƒ€‚Ì’l‚Í¶‘¶
+	// MEMO : ã“ã®æ®µéšã§ã¯æ“ä½œã‚«ãƒ¡ãƒ©ã®ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ ã®å€¤ã¯ç”Ÿå­˜
 }
 
 RocketLauncherVirtualCamerasController::~RocketLauncherVirtualCamerasController()
@@ -110,7 +110,7 @@ std::vector<std::shared_ptr<VirtualCamera>> RocketLauncherVirtualCamerasControll
 }
 
 
-#pragma region ƒJƒƒ‰İ’è
+#pragma region ã‚«ãƒ¡ãƒ©è¨­å®š
 void RocketLauncherVirtualCamerasController::SetupForEnterRotCamera()
 {
 	m_enter_rot_camera->SetPriority(10);
@@ -145,12 +145,12 @@ void RocketLauncherVirtualCamerasController::SetupForExitRotCamera()
 #pragma endregion
 
 
-#pragma region ‹N“_ƒgƒ‰ƒ“ƒXƒtƒH[ƒ€‚ÌŒvZ
+#pragma region èµ·ç‚¹ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ ã®è¨ˆç®—
 void RocketLauncherVirtualCamerasController::CalcAimTransformForEnterRotCamera()
 {
 	if (!m_enter_rot_camera->IsActive()) { return; }
 
-	// ƒY[ƒ€ƒCƒ“‚ÖˆÚs
+	// ã‚ºãƒ¼ãƒ ã‚¤ãƒ³ã¸ç§»è¡Œ
 	if (m_rot_camera_angle.y == -DX_PI_F)
 	{
 		m_enter_rot_camera->Deactivate();
@@ -160,22 +160,22 @@ void RocketLauncherVirtualCamerasController::CalcAimTransformForEnterRotCamera()
 		cinemachine_brain->SetBlendTime(0.2f);
 	}
 
-	// ’ÇÕ‚·‚éƒ{[ƒ“‚©‚çs—ñ‚ğæ“¾
+	// è¿½è·¡ã™ã‚‹ãƒœãƒ¼ãƒ³ã‹ã‚‰è¡Œåˆ—ã‚’å–å¾—
 	const auto	model_handle	= m_player.GetModeler()->GetModelHandle();
 	const auto	hand_index		= MV1SearchFrame(model_handle, FramePath.RIGHT_HAND);
 	auto		hand_world_m	= MV1GetFrameLocalWorldMatrix(model_handle, hand_index);
-	const auto	aim_pos			= MGetTranslateElem(hand_world_m);
+	const auto	aim_pos			= matrix::GetPos(hand_world_m);
 	const auto  offset_rot		= math::ConvertEulerAnglesToXYZRotMatrix(VGet(-90.0f * math::kDegToRad, -90.0f * math::kDegToRad, 0.0f));
 	auto		aim_rot			= math::ConvertEulerAnglesToXYZRotMatrix(m_rot_camera_angle) * offset_rot * matrix::GetRotMatrix(hand_world_m);
 
 	const auto  axis = math::ConvertRotMatrixToAxis(aim_rot);
 	axis::Draw(axis, aim_pos, 100);
 
-	// ƒJƒƒ‰‚Ì’ÇÕ‘ÎÛ‚Æ‚È‚éƒgƒ‰ƒ“ƒXƒtƒH[ƒ€‚Ìî•ñ‚ğXV
+	// ã‚«ãƒ¡ãƒ©ã®è¿½è·¡å¯¾è±¡ã¨ãªã‚‹ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ ã®æƒ…å ±ã‚’æ›´æ–°
 	m_rot_camera_aim_transform->SetRot(CoordinateKind::kWorld, aim_rot);
 	m_rot_camera_aim_transform->SetPos(CoordinateKind::kWorld, aim_pos);
 
-	// ‰ñ“]—Ê‚ğŒvZ
+	// å›è»¢é‡ã‚’è¨ˆç®—
 	const float acc = kEnterRotAcceleration * m_enter_rot_camera->GetDeltaTime();
 	math::Decrease(m_rot_camera_angle.y, acc, -DX_PI_F);
 }
@@ -187,7 +187,7 @@ void RocketLauncherVirtualCamerasController::CalcAimTransformForZoomInCamera()
 	const float delta_time = m_zoom_in_camera->GetDeltaTime();
 	m_zoom_in_wait_timer += delta_time;
 
-	// ƒY[ƒ€ƒAƒEƒg‚ÖˆÚs
+	// ã‚ºãƒ¼ãƒ ã‚¢ã‚¦ãƒˆã¸ç§»è¡Œ
 	if (std::abs(m_follow_offset_for_zoom_in.z - kDestinationFollowOffsetForZoomInCamera.z) < 1.0f)
 	{
 		m_zoom_in_camera->Deactivate();
@@ -199,19 +199,19 @@ void RocketLauncherVirtualCamerasController::CalcAimTransformForZoomInCamera()
 		cinemachine_brain->SetBlendTime(2.0f);
 	}
 
-	// ’ÇÕ‚·‚éƒ{[ƒ“‚©‚çs—ñ‚ğæ“¾
+	// è¿½è·¡ã™ã‚‹ãƒœãƒ¼ãƒ³ã‹ã‚‰è¡Œåˆ—ã‚’å–å¾—
 	const auto	model_handle	= m_player.GetModeler()->GetModelHandle();
 	const auto	hand_index		= MV1SearchFrame(model_handle, FramePath.RIGHT_HAND);
 	auto		hand_world_m	= MV1GetFrameLocalWorldMatrix(model_handle, hand_index);
-	const auto	aim_pos			= MGetTranslateElem(hand_world_m);
+	const auto	aim_pos			= matrix::GetPos(hand_world_m);
 	const auto  offset_rot		= math::ConvertEulerAnglesToXYZRotMatrix(VGet(-90.0f * math::kDegToRad, -90.0f * math::kDegToRad, 0.0f));
 	auto		aim_rot			= MGetRotY(DX_PI_F) * offset_rot * matrix::GetRotMatrix(hand_world_m);
 
-	// ƒJƒƒ‰‚Ì’ÇÕ‘ÎÛ‚Æ‚È‚éƒgƒ‰ƒ“ƒXƒtƒH[ƒ€‚Ìî•ñ‚ğXV
+	// ã‚«ãƒ¡ãƒ©ã®è¿½è·¡å¯¾è±¡ã¨ãªã‚‹ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ ã®æƒ…å ±ã‚’æ›´æ–°
 	m_zoom_camera_aim_transform->SetRot(CoordinateKind::kWorld, aim_rot);
 	m_zoom_camera_aim_transform->SetPos(CoordinateKind::kWorld, aim_pos);
 
-	// ƒIƒtƒZƒbƒg’l‚ğXV
+	// ã‚ªãƒ•ã‚»ãƒƒãƒˆå€¤ã‚’æ›´æ–°
 	if (m_zoom_in_wait_timer > 0.2f)
 	{
 		m_follow_offset_for_zoom_in.z = math::GetDampedValue(m_follow_offset_for_zoom_in.z, kDestinationFollowOffsetForZoomInCamera.z, kZoomInDamping, delta_time);
@@ -223,7 +223,7 @@ void RocketLauncherVirtualCamerasController::CalcAimTransformForZoomOutCamera()
 {
 	if (!m_zoom_out_camera->IsActive()) { return; }
 
-	// ‰‰o’†‚É’eŠÛ‚ªÁ¸‚µ‚½ê‡‚Í‘¦À‚É‰‰o‚ğ’†~
+	// æ¼”å‡ºä¸­ã«å¼¾ä¸¸ãŒæ¶ˆå¤±ã—ãŸå ´åˆã¯å³åº§ã«æ¼”å‡ºã‚’ä¸­æ­¢
 	if (!m_rocket_bomb->IsActive())
 	{
 		Exit();
@@ -233,7 +233,7 @@ void RocketLauncherVirtualCamerasController::CalcAimTransformForZoomOutCamera()
 	m_zoom_out_timer += m_zoom_out_camera->GetDeltaTime();
 	m_test_timer	 += m_zoom_out_camera->GetDeltaTime();
 
-	// •œ‹A‰ñ“]ƒJƒƒ‰‚ÖˆÚs
+	// å¾©å¸°å›è»¢ã‚«ãƒ¡ãƒ©ã¸ç§»è¡Œ
 	if (m_zoom_out_timer >= kZoomOutTime)
 	{
 		m_zoom_out_camera->Deactivate();
@@ -245,7 +245,7 @@ void RocketLauncherVirtualCamerasController::CalcAimTransformForZoomOutCamera()
 		cinemachine_brain->SetBlendTime(0.6f);
 	}
 
-	// ƒJƒƒ‰‚Ì’ÇÕ‘ÎÛ‚Æ‚È‚éƒgƒ‰ƒ“ƒXƒtƒH[ƒ€‚Ìî•ñ‚ğXV
+	// ã‚«ãƒ¡ãƒ©ã®è¿½è·¡å¯¾è±¡ã¨ãªã‚‹ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ ã®æƒ…å ±ã‚’æ›´æ–°
 	const auto tarnsform = m_rocket_bomb->GetTransform();
 	auto aim_rot = math::ConvertEulerAnglesToXYZRotMatrix(m_rot_camera_angle) * tarnsform->GetRotMatrix(CoordinateKind::kWorld);
 	m_zoom_camera_aim_transform->SetRot(CoordinateKind::kWorld, aim_rot);
@@ -253,8 +253,8 @@ void RocketLauncherVirtualCamerasController::CalcAimTransformForZoomOutCamera()
 
 	if (m_test_timer > 1.0f)
 	{
-		// ƒIƒtƒZƒbƒg’l‚ğXV
-		// ‘Š‘Î“I‚É‚ÍƒY[ƒ€ƒAƒEƒg‚Æ‚µ‚ÄˆÚ“®‚·‚é‚ªA’eŠÛ‚ğŠî€‚Æ‚µ‚½ê‡ƒY[ƒ€ƒCƒ“‚Æ‚µ‚ÄˆÚ“®‚³‚¹‚é
+		// ã‚ªãƒ•ã‚»ãƒƒãƒˆå€¤ã‚’æ›´æ–°
+		// ç›¸å¯¾çš„ã«ã¯ã‚ºãƒ¼ãƒ ã‚¢ã‚¦ãƒˆã¨ã—ã¦ç§»å‹•ã™ã‚‹ãŒã€å¼¾ä¸¸ã‚’åŸºæº–ã¨ã—ãŸå ´åˆã‚ºãƒ¼ãƒ ã‚¤ãƒ³ã¨ã—ã¦ç§»å‹•ã•ã›ã‚‹
 		m_follow_offset_for_zoom_out.z += kZoomOutSpeed;
 	}
 
@@ -265,24 +265,24 @@ void RocketLauncherVirtualCamerasController::CalcAimTransformForExitRotCamera()
 {
 	if (!m_exit_rot_camera->IsActive()) { return; }
 
-	// ‰‰o’†‚É’eŠÛ‚ªÁ¸‚µ‚½ê‡‚Í‘¦À‚É‰‰o‚ğ’†~
+	// æ¼”å‡ºä¸­ã«å¼¾ä¸¸ãŒæ¶ˆå¤±ã—ãŸå ´åˆã¯å³åº§ã«æ¼”å‡ºã‚’ä¸­æ­¢
 	if (!m_rocket_bomb->IsActive())
 	{
 		Exit();
 		return;
 	}
 
-	// ƒJƒƒ‰‚Ì’ÇÕ‘ÎÛ‚Æ‚È‚éƒgƒ‰ƒ“ƒXƒtƒH[ƒ€‚Ìî•ñ‚ğXV
+	// ã‚«ãƒ¡ãƒ©ã®è¿½è·¡å¯¾è±¡ã¨ãªã‚‹ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ ã®æƒ…å ±ã‚’æ›´æ–°
 	const auto tarnsform = m_rocket_bomb->GetTransform();
 	auto aim_rot = math::ConvertEulerAnglesToXYZRotMatrix(m_rot_camera_angle) * tarnsform->GetRotMatrix(CoordinateKind::kWorld);
 	m_rot_camera_aim_transform->SetRot(CoordinateKind::kWorld, aim_rot);
 	m_rot_camera_aim_transform->SetPos(CoordinateKind::kWorld, tarnsform->GetPos(CoordinateKind::kWorld));
 
-	// ‰ñ“]—Ê‚ğŒvZ
+	// å›è»¢é‡ã‚’è¨ˆç®—
 	const float acc = kExitRotAcceleration * m_exit_rot_camera->GetDeltaTime();
 	math::Decrease(m_rot_camera_angle.y, acc, -DX_TWO_PI_F);
 
-	// ƒIƒtƒZƒbƒg’l‚ğŒvZ
+	// ã‚ªãƒ•ã‚»ãƒƒãƒˆå€¤ã‚’è¨ˆç®—
 	m_follow_offset_for_exit_rot.z -= kExitRotLeaveSpeed * m_exit_rot_camera->GetDeltaTime();
 	m_exit_rot_camera->GetBody()->SetFollowOffset(m_follow_offset_for_exit_rot);
 
@@ -296,7 +296,7 @@ void RocketLauncherVirtualCamerasController::CalcAimTransformForExitRotCamera()
 
 void RocketLauncherVirtualCamerasController::Exit()
 {
-	// ’Ê’m
+	// é€šçŸ¥
 	const EndRocketLauncherCutsceneEvent event{};
 	EventSystem::GetInstance()->Publish(event);
 
@@ -311,7 +311,7 @@ void RocketLauncherVirtualCamerasController::Exit()
 	m_zoom_out_camera ->Deactivate();
 	m_exit_rot_camera ->Deactivate();
 
-	// ‘€ìƒJƒƒ‰‚Ì•œ‹A
+	// æ“ä½œã‚«ãƒ¡ãƒ©ã®å¾©å¸°
 	const auto control_cameras_controller = cinemachine_brain->GetVirtualCameraController(VirtualCameraControllerKind::kControl);
 	control_cameras_controller->Activate();
 	control_cameras_controller->GetHaveVirtualCamera(ObjName.ROT_CONTROL_VIRTUAL_CAMERA)->Activate();

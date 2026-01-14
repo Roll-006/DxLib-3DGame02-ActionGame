@@ -12,7 +12,7 @@ public:
 	virtual void SetHaveNum(const int set_num) abstract;
 	virtual void AddHaveNum(const int add_num) abstract;
 
-	[[nodiscard]] virtual int	GetMaxHaveNum()		const abstract;
-	[[nodiscard]] virtual int	GetCurrentHaveNum()	const abstract;
-	[[nodiscard]] virtual bool	IsMax()				const abstract;
+	[[nodiscard]] virtual const int		GetMaxHaveNum()		const abstract;
+	[[nodiscard]] virtual const int		GetCurrentHaveNum()	const abstract;
+	[[nodiscard]] virtual const bool	IsMax()				const abstract;
 };

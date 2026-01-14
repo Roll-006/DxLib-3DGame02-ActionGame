@@ -1,4 +1,4 @@
-#include "dead_virtual_cameras_controller.hpp"
+ï»¿#include "dead_virtual_cameras_controller.hpp"
 #include "../VirtualCamera/cinemachine_brain.hpp"
 
 DeadVirtualCamerasController::DeadVirtualCamerasController() :
@@ -9,10 +9,10 @@ DeadVirtualCamerasController::DeadVirtualCamerasController() :
 	m_aim_transform					(std::make_shared<Transform>()),
 	m_model_handle					(-1)
 {
-	// ƒCƒxƒ“ƒg“o˜^
+	// ã‚¤ãƒ™ãƒ³ãƒˆç™»éŒ²
 	EventSystem::GetInstance()->Subscribe<DeadPlayerEvent>(this, &DeadVirtualCamerasController::ActiveDeadCamera);
 
-	// ƒpƒ‰ƒ[ƒ^Ý’è
+	// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿è¨­å®š
 	SetupCamera();
 
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
@@ -22,7 +22,7 @@ DeadVirtualCamerasController::DeadVirtualCamerasController() :
 
 DeadVirtualCamerasController::~DeadVirtualCamerasController()
 {
-	// ƒCƒxƒ“ƒg‚Ì“o˜^‰ðœ
+	// ã‚¤ãƒ™ãƒ³ãƒˆã®ç™»éŒ²è§£é™¤
 	EventSystem::GetInstance()->Unsubscribe<DeadPlayerEvent>(this, &DeadVirtualCamerasController::ActiveDeadCamera);
 
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
@@ -89,9 +89,9 @@ void DeadVirtualCamerasController::CalcAimTransform()
 	if (m_model_handle == -1) { return; }
 
 	auto	   spine2_m		= MV1GetFrameLocalWorldMatrix(m_model_handle, MV1SearchFrame(m_model_handle, FramePath.SPINE_2));
-	const auto spine2_pos	= MGetTranslateElem(spine2_m);
+	const auto spine2_pos	= matrix::GetPos(spine2_m);
 
-	// Šî€‚Æ‚È‚éƒgƒ‰ƒ“ƒXƒtƒH[ƒ€‚ðÝ’è
+	// åŸºæº–ã¨ãªã‚‹ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ ã‚’è¨­å®š
 	m_aim_transform->SetPos(CoordinateKind::kWorld, spine2_pos);
 	m_aim_transform->SetRot(CoordinateKind::kWorld, matrix::GetRotMatrix(spine2_m));
 }

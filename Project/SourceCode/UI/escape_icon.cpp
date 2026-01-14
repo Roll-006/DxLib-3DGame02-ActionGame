@@ -1,36 +1,53 @@
 ﻿#include "escape_icon.hpp"
 #include "../Command/command_handler.hpp"
+#include "../Font/text.hpp"
 
-EscapeIcon::EscapeIcon(std::shared_ptr<IGrabbable> grab_target) :
+EscapeIcon::EscapeIcon(const std::shared_ptr<IGrabbable>& grab_target) :
+	data						(EscapeIconData()),
 	m_grab_target				(grab_target),
 	m_current_input_mode_kind	(InputModeKind::kSingle),
-	m_basis_circle_screen		(std::make_shared<ScreenCreator>(kScreenSize)),
-	m_escape_circle_screen		(std::make_shared<ScreenCreator>(kScreenSize)),
+	m_basis_circle_screen		(nullptr),
+	m_escape_circle_screen		(nullptr),
 	m_button_graphic_resource	(std::make_shared<ButtonGraphicGetter>()),
 	m_button_icon_graphic		(nullptr),
-	m_blur_circle_graphic		(std::make_shared<Graphicer>(UIGraphicPath.CIRCLE_BLUR_WHITE)),
+	m_blur_circle_graphic		(nullptr),
 	m_escape_gauge_percent		(0.0),
 	m_icon_scale				(1.0f),
 	m_scale_sin					(0.0f),
 	m_blur_circle_alpha_num		(UCHAR_MAX),
 	m_blur_circle_scale			(0.0f),
-	m_delete_wait_timer			(1.0f),
-	m_font_handle				(FontHandler::GetInstance()->GetFontHandle(FontName.EXPLANATORY_TEXT)),
-	m_escape_text				("脱出"),
-	m_hold_text					("HOLD"),
-	m_escape_font_size			(Vector2D<int>(GetDrawStringWidthToHandle(m_escape_text.c_str(), -1, m_font_handle), GetFontSizeToHandle(m_font_handle))),
-	m_hold_font_size			(Vector2D<int>(GetDrawStringWidthToHandle(m_hold_text  .c_str(), -1, m_font_handle), GetFontSizeToHandle(m_font_handle)))
+	m_delete_wait_timer			(1.0f)
 {
+	nlohmann::json j_data;
+	if (json_loader::Load("Data/JSON/escape_icon_data.json", j_data))
+	{
+		data = j_data.at("escape_icon_data").get<EscapeIconData>();
+	}
+
+	// カラータイプ変換
+	data.base_gauge_u_int_color		= type_converter::ConvertHEXToUINT(data.base_gauge_hex_color);
+	data.escape_gauge_u_int_color	= type_converter::ConvertHEXToUINT(data.escape_gauge_hex_color);
+
+	// テキスト構築
+	text::CreateText(data.escape_text_data);
+	text::CreateText(data.hold_text_data);
+
+	m_screen_center_pos = data.screen_size * 0.5f;
+
+	// スクリーン生成
+	m_basis_circle_screen = std::make_shared<ScreenCreator>(data.screen_size);
 	m_basis_circle_screen->UseScreen();
-	DrawCircle(kScreenCenterPos.x, kScreenCenterPos.y, kGaugeRadius, kBaseGaugeColor, TRUE, kGaugeThickness);
+	DrawCircle(m_screen_center_pos.x, m_screen_center_pos.y, data.gauge_radius, data.base_gauge_u_int_color, TRUE, data.gauge_thickness);
 	m_basis_circle_screen->UnuseScreen();
 
+	m_escape_circle_screen = std::make_shared<ScreenCreator>(data.screen_size);
 	m_escape_circle_screen->UseScreen();
-	DrawCircle(kScreenCenterPos.x, kScreenCenterPos.y, kGaugeRadius, kEscapeGaugeColor, TRUE, kGaugeThickness);
+	DrawCircle(m_screen_center_pos.x, m_screen_center_pos.y, data.gauge_radius, data.escape_gauge_u_int_color, TRUE, data.gauge_thickness);
 	m_escape_circle_screen->UnuseScreen();
 
+	// 画像生成
+	m_blur_circle_graphic = std::make_shared<Graphicer>(data.blur_circle_graphic_path);
 	m_blur_circle_graphic->SetCenterPos(Window::kCenterPos);
-	
 }
 
 EscapeIcon::~EscapeIcon()
@@ -81,17 +98,17 @@ void EscapeIcon::Draw() const
 
 	// 脱出テキスト
 	DrawStringToHandle(
-		static_cast<int>((Window::kScreenSize.x - m_escape_font_size.x) * 0.5f) + kEscapeTextOffset.x,
-		static_cast<int>((Window::kScreenSize.y - m_escape_font_size.y) * 0.5f) + kEscapeTextOffset.y,
-		m_escape_text.c_str(), 0xffffff, m_font_handle);
+		static_cast<int>((Window::kScreenSize.x - data.escape_text_data.size.x) * 0.5f) + data.escape_text_offset.x,
+		static_cast<int>((Window::kScreenSize.y - data.escape_text_data.size.y) * 0.5f) + data.escape_text_offset.y,
+		data.escape_text_data.text.c_str(), data.escape_text_data.u_int_color, data.escape_text_data.font_handle);
 
 	// HOLDテキスト
 	if (m_current_input_mode_kind == InputModeKind::kHold)
 	{
 		DrawStringToHandle(
-			static_cast<int>((Window::kScreenSize.x - m_hold_font_size.x) * 0.5f) + kHoldTextOffset.x,
-			static_cast<int>((Window::kScreenSize.y - m_hold_font_size.y) * 0.5f) + kHoldTextOffset.y,
-			m_hold_text.c_str(), 0xffffff, m_font_handle);
+			static_cast<int>((Window::kScreenSize.x - data.hold_text_data.size.x) * 0.5f) + data.hold_text_offset.x,
+			static_cast<int>((Window::kScreenSize.y - data.hold_text_data.size.y) * 0.5f) + data.hold_text_offset.y,
+			data.hold_text_data.text.c_str(), data.hold_text_data.u_int_color, data.hold_text_data.font_handle);
 	}
 }
 

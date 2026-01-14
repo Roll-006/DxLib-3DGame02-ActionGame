@@ -10,9 +10,9 @@ CameraAim::CameraAim(const std::shared_ptr<Transform>& owner_transform) :
 	m_horizontal_damping	(0.0f),
 	m_vertical_damping		(0.0f),
 	m_screen				(0.5f, 0.5f),
-	m_dead_zone				(v2d::GetZeroV<Vector2D<float>>()),
-	m_soft_zone				(v2d::GetZeroV<Vector2D<float>>()),
-	m_bias					(v2d::GetZeroV<Vector2D<float>>()),
+	m_dead_zone				(v2d::GetZeroV<float>()),
+	m_soft_zone				(v2d::GetZeroV<float>()),
+	m_bias					(v2d::GetZeroV<float>()),
 	m_is_track				(false)
 {
 

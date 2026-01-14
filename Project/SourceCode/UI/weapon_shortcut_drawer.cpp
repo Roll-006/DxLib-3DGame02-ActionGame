@@ -1,8 +1,6 @@
 #include "weapon_shortcut_drawer.hpp"
 
-WeaponShortcutDrawer::WeaponShortcutDrawer(
-	std::unordered_map<TimeKind, std::shared_ptr<WeaponActionStateBase<Player>>>& state,
-	const std::shared_ptr<WeaponShortcutSelecter>& weapon_shortcut_selecter) :
+WeaponShortcutDrawer::WeaponShortcutDrawer(const std::shared_ptr<const player_state::State>& state, const std::shared_ptr<const WeaponShortcutSelecter>& weapon_shortcut_selecter) :
 	m_state						(state),
 	m_weapon_shortcut_selecter	(weapon_shortcut_selecter),
 	m_weapon_graphic			(std::make_shared<WeaponGraphicGetter>()),
@@ -49,8 +47,7 @@ void WeaponShortcutDrawer::LateUpdate()
 		icon.second->AttachGraphic(m_weapon_graphic->GetWeaponGraphicer(weapon->GetName()));
 	}
 
-	const auto state = m_state.at(TimeKind::kCurrent);
-	if (state->GetStateKind() == static_cast<int>(player_state::WeaponActionStateKind::kAimGun))
+	if (m_state->GetCurrentStateKind() == PlayerStateKind::kAimGun)
 	{
 		m_end_draw_time = 0.5f;
 	}

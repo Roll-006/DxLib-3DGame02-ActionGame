@@ -7,6 +7,7 @@
 #include "../Part/scene_fader.hpp"
 #include "../UI/game_over_text.hpp"
 #include "../UI/button_prompt.hpp"
+#include "../Data/game_over_tab_data.hpp"
 
 class GameOverTab final : public ITab
 {
@@ -43,10 +44,7 @@ private:
 	void CreateResultScreen();
 
 private:
-	static constexpr Vector2D<int>	kFirstButtonCenterPos	= { Window::kCenterPos.x, Window::kCenterPos.y + 50 };
-	static constexpr int			kButtonPosInterval		= 130;
-	static constexpr float			kActiveWaitTime			= 6.0f;
-	static constexpr float			kFadeSpeed				= 400.0f;
+	GameOverTabData					data;
 
 	int								m_tab_handle;
 	int								m_priority;
@@ -56,7 +54,7 @@ private:
 	bool							m_can_calc_wait_time;
 	bool							m_is_continue;
 	bool							m_is_quit_game;
-	float							m_active_wait_timer;
+	float							m_blend_wait_timer;
 	int								m_alpha_blend_num;
 
 	std::shared_ptr<GameOverText>	m_game_over_text;

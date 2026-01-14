@@ -1093,7 +1093,7 @@ VECTOR collision::PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsu
     const auto plane = Plane(static_triangle.GetCentroid(), static_triangle.GetNormalVector());
 
     // 坂の角度を取得し、スムーズに登れる坂かを判定
-    const auto slope_angle = math::GetAngleBetweenTwoVector(static_triangle.GetNormalVector(), axis::GetWorldYAxis());
+    const auto slope_angle = math::GetAngleBetweenTwoVectors(static_triangle.GetNormalVector(), axis::GetWorldYAxis());
     const auto can_smoothly_move = slope_angle < become_difficult_angle || slope_angle >= 90.0f * math::kDegToRad;
 
     // カプセルの線分の両端点を取得
@@ -1194,7 +1194,7 @@ VECTOR collision::PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsu
         horizontal_v = v3d::GetNormalizedV(horizontal_v);
 
         // 押し戻す方向を取得
-        const auto angle_range = math::GetAngleBetweenTwoVector(plane.GetNormalVector(), horizontal_v);
+        const auto angle_range = math::GetAngleBetweenTwoVectors(plane.GetNormalVector(), horizontal_v);
         auto  push_back_angle = -math::ConvertValueNewRange<float, float>(become_difficult_angle, max_slope_angle, -angle_range, 0.0f, slope_angle);
         if (slope_angle >= max_slope_angle) { push_back_angle = 0.0f; }
         const auto cross_x = math::GetNormalVector(plane.GetNormalVector(), axis::GetWorldYAxis());
@@ -1208,7 +1208,7 @@ VECTOR collision::PushBackCapsuleAndTriangle(const VECTOR& velocity, const Capsu
         DrawLine3D(p, p + cross_y * 100, 0xffffff);
         DrawLine3D(p, p + push_back_dir * 100, 0xff0000);
 
-        const float  angle1 = math::GetAngleBetweenTwoVector(cross_y, horizontal_v);
+        const float  angle1 = math::GetAngleBetweenTwoVectors(cross_y, horizontal_v);
         const float  angle2 = 90.0f * math::kDegToRad - angle1;
         const float  angle3 = push_back_angle - angle2;
         const float  back_length = cos(angle3) / plane_to_begin_pos_distance;
@@ -1387,7 +1387,7 @@ VECTOR collision::PushBackCapsuleAndModel   (const VECTOR& velocity, const Capsu
 
         triangles[i] = triangle;
         current_distance.emplace_back(std::make_pair(i, math::GetDistanceTriangleToCapsule(triangle, dynamic_capsule)));
-        current_angle   .emplace_back(std::make_pair(i, math::GetAngleBetweenTwoVector(v3d::GetNormalizedV(velocity), triangle.GetNormalVector())));
+        current_angle   .emplace_back(std::make_pair(i, math::GetAngleBetweenTwoVectors(v3d::GetNormalizedV(velocity), triangle.GetNormalVector())));
     }
 
     // 距離が近い順に押し戻す

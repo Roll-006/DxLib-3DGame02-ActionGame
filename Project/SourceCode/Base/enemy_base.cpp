@@ -1,10 +1,10 @@
-#include "enemy_base.hpp"
+ï»¿#include "enemy_base.hpp"
 
 EnemyBase::EnemyBase(const std::string& name) :
 	CharacterBase					(name, ObjTag.ENEMY),
 	m_patrol_route_giver			(nullptr),
 	m_patrol_destination_pos		(v3d::GetZeroV()),
-	attack_interval_time			(0.0f),
+	m_is_stop						(false),
 	m_attack_interval_timer			(0.0f),
 	m_can_action					(true),
 	m_is_disallow_action_forcibly	(false),
@@ -43,20 +43,50 @@ void EnemyBase::ChangePatrolDestination()
 	const auto pos = m_transform->GetPos(CoordinateKind::kWorld);
 	m_patrol_route_giver->ChangeDestination(m_patrol_destination_pos, pos);
 
-	// ’ÇÕ‚ªI—¹‚µ‚½ê‡‚ÍˆÚ“®‚³‚¹‚È‚¢
+	// è¿½è·¡ãŒçµ‚äº†ã—ãŸå ´åˆã¯ç§»å‹•ã•ã›ãªã„
 	if (m_patrol_route_giver->IsEnd()) { return; }
 
 	const auto pos_y0				= VGet(pos.x, 0.0f, pos.z);
 	const auto destination_pos_y0	= VGet(m_patrol_destination_pos.x, 0.0f, m_patrol_destination_pos.z);
 	
-	m_move_dir.at(TimeKind::kNext) = v3d::GetNormalizedV(destination_pos_y0 - pos_y0);
+	m_move_dir.at(TimeKind::kNext)  = v3d::GetNormalizedV(destination_pos_y0 - pos_y0);
 }
 
 void EnemyBase::OnRotate(const float angle, const RotDirKind rot_dir_kind)
 {
 	const auto up			= m_transform->GetUp(CoordinateKind::kWorld);
 	const auto result_angle = rot_dir_kind == RotDirKind::kLeft ? -angle : angle;
+
 	m_look_dir.at(TimeKind::kNext) = math::GetRotatedPos(m_look_dir.at(TimeKind::kCurrent), quat::CreateQuaternion(up, result_angle));
+}
+
+void EnemyBase::CorrectMoveVelocity(const VECTOR& target_pos)
+{
+	const auto pos		= m_transform->GetPos(CoordinateKind::kWorld);
+	const auto dir		= v3d::GetNormalizedV(target_pos - pos);
+	const auto distance = VSize(target_pos - pos);
+
+	if (distance < 80.0f)
+	{
+		m_move_offset += -dir * 50.0f;
+	}
+}
+
+void EnemyBase::SyncMoveDirWithLookDir()
+{
+	if (m_move_dir.at(TimeKind::kCurrent) != v3d::GetZeroV())
+	{
+		m_look_dir.at(TimeKind::kNext) = m_move_dir.at(TimeKind::kCurrent);
+	}
+}
+
+void EnemyBase::LookAtTarget(const VECTOR& target_pos)
+{
+	const auto pos				= m_transform->GetPos(CoordinateKind::kWorld);
+	const auto pos_y0			= VGet(pos.x, 0.0f, pos.z);
+	const auto target_pos_y0	= VGet(target_pos.x, 0.0f, target_pos.z);
+
+	m_look_dir.at(TimeKind::kNext) = v3d::GetNormalizedV(target_pos_y0 - pos_y0);
 }
 
 void EnemyBase::OnDetected()
@@ -78,7 +108,7 @@ void EnemyBase::OnAllowAction()
 {
 	m_is_disallow_action_forcibly = false;
 
-	// c‚è‚ÌUŒ‚ƒCƒ“ƒ^[ƒoƒ‹ŠÔ‚Í•ª‚ğØ‚Á‚Ä‚¢‚éê‡‚ÍÅ‘å’l‚É‚·‚é
+	// æ®‹ã‚Šã®æ”»æ’ƒã‚¤ãƒ³ã‚¿ãƒ¼ãƒãƒ«æ™‚é–“ã¯åˆ†ã‚’åˆ‡ã£ã¦ã„ã‚‹å ´åˆã¯æœ€å¤§å€¤ã«ã™ã‚‹
 	if (m_attack_interval_timer < attack_interval_time * 0.5f)
 	{
 		m_attack_interval_timer = attack_interval_time;
@@ -89,7 +119,7 @@ void EnemyBase::JudgeTargetInSight()
 {
 	m_is_prev_detected_target = m_is_detected_target;
 
-	// ©•ª©g‚ª”­Œ©‚µ‚½A‚à‚µ‚­‚Í”­Œ©ó‘Ô‚ª‹¤—L‚³‚ê‚½ê‡‚É”­Œ©‚µ‚½‚à‚Ì‚Æ‚·‚é
+	// è‡ªåˆ†è‡ªèº«ãŒç™ºè¦‹ã—ãŸã€ã‚‚ã—ãã¯ç™ºè¦‹çŠ¶æ…‹ãŒå…±æœ‰ã•ã‚ŒãŸå ´åˆã«ç™ºè¦‹ã—ãŸã‚‚ã®ã¨ã™ã‚‹
 	const auto is_detected = m_on_collided_vision_trigger && !m_has_obstacle_between_target;
 	if (is_detected || m_is_detection_shared)
 	{

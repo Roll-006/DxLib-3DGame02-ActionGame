@@ -6,7 +6,7 @@
 struct TextData
 {
 	int				font_handle = -1;
-	Vector2D<int>	font_size	= {};
+	Vector2D<int>	size		= {};
 	unsigned int	u_int_color = 0xffffff;
 
 	std::string		font_path	= "";
@@ -19,10 +19,10 @@ struct TextData
 #pragma region from / to JSON
 inline void from_json(const nlohmann::json& j_data, TextData& text_data)
 {
-	j_data.at("font_path").get_to(text_data.font_path);
+	j_data.at("font_path")	.get_to(text_data.font_path);
 	j_data.at("text")		.get_to(text_data.text);
-	j_data.at("hex_color").get_to(text_data.hex_color);
-	j_data.at("offset")	.get_to(text_data.offset);
+	j_data.at("hex_color")	.get_to(text_data.hex_color);
+	j_data.at("offset")		.get_to(text_data.offset);
 }
 
 inline void to_json(nlohmann::json& j_data, const TextData& text_data)

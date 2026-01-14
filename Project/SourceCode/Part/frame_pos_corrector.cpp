@@ -1,14 +1,14 @@
-#include "frame_pos_corrector.hpp"
+ï»¿#include "frame_pos_corrector.hpp"
 
-void FramePosCorrector::CorrectAimPoseFramePos(const int model_handle, const VECTOR& aim_dir)
+void FramePosCorrector::CorrectAimPoseFramePos(const int model_handle, const VECTOR& aim_dir) const
 {
-	// ƒ{[ƒ“ƒCƒ“ƒfƒbƒNƒXæ“¾
+	// ãƒœãƒ¼ãƒ³ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹å–å¾—
 	const auto spine_index	= MV1SearchFrame(model_handle, FramePath.SPINE);
 	const auto spine1_index	= MV1SearchFrame(model_handle, FramePath.SPINE_1);
 	const auto spine2_index	= MV1SearchFrame(model_handle, FramePath.SPINE_2);
 
-	// ‰ñ“]—Ê‚ğ•ªŠ„
-	auto angle				= math::GetAngleBetweenTwoVector(aim_dir, axis::GetWorldYAxis()) - 90.0f * math::kDegToRad;
+	// å›è»¢é‡ã‚’åˆ†å‰²
+	auto angle				= math::GetAngleBetweenTwoVectors(aim_dir, axis::GetWorldYAxis()) - 90.0f * math::kDegToRad;
 	angle					+= kAimOffsetAngle * math::kDegToRad;
 	const auto spine_angle	= angle * kAimSpineAngleRate;
 	const auto spine1_angle	= angle * kAimSpine1AngleRate;
@@ -19,17 +19,17 @@ void FramePosCorrector::CorrectAimPoseFramePos(const int model_handle, const VEC
 	const auto angle3 = spine1_angle	* math::kRadToDeg;
 	const auto angle4 = spine2_angle	* math::kRadToDeg;
 
-	// ƒ[ƒJƒ‹s—ñ‚ğæ“¾
+	// ãƒ­ãƒ¼ã‚«ãƒ«è¡Œåˆ—ã‚’å–å¾—
 	auto spine_local_m	= MV1GetFrameLocalMatrix(model_handle, spine_index);
 	auto spine1_local_m	= MV1GetFrameLocalMatrix(model_handle, spine1_index);
 	auto spine2_local_m	= MV1GetFrameLocalMatrix(model_handle, spine2_index);
 
-	// À•W‚ğ•ÛŠÇ
-	const auto spine_pos	= MGetTranslateElem(spine_local_m);
-	const auto spine1_pos	= MGetTranslateElem(spine1_local_m);
-	const auto spine2_pos	= MGetTranslateElem(spine2_local_m);
+	// åº§æ¨™ã‚’ä¿ç®¡
+	const auto spine_pos	= matrix::GetPos(spine_local_m);
+	const auto spine1_pos	= matrix::GetPos(spine1_local_m);
+	const auto spine2_pos	= matrix::GetPos(spine2_local_m);
 
-	// “K—p
+	// é©ç”¨
 	auto result_spine_local_m	= math::ConvertEulerAnglesToZXYRotMatrix(VGet(-spine_angle, kAimAngle * math::kDegToRad, -spine_angle));
 	matrix::SetPos(result_spine_local_m, spine_pos);
 	MV1SetFrameUserLocalMatrix(model_handle, spine_index,  result_spine_local_m);

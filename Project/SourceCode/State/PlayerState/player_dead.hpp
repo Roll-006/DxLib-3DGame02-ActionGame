@@ -1,30 +1,28 @@
-#pragma once
-#include "../../Base/action_state_base.hpp"
+﻿#pragma once
+#include "../../Base/player_state_base.hpp"
 
-#include "../../Object/player.hpp"
-#include "../../Part/player_state_controller.hpp"
+class Animator;
 
 namespace player_state
 {
-	class Dead final : public ActionStateBase<Player>
+	class Dead final : public PlayerStateBase
 	{
 	public:
-		Dead();
-		~Dead() override;
+		Dead(Player& player, player_state::State& state, const std::shared_ptr<Animator>& animator);
+		~Dead();
 
-		void Update		(std::shared_ptr<Player>& obj) override;
-		void LateUpdate	(std::shared_ptr<Player>& obj) override;
-		void Enter		(std::shared_ptr<Player>& obj) override;
-		void Exit		(std::shared_ptr<Player>& obj) override;
+		void Update()		override;
+		void LateUpdate()	override;
+		void Enter()		override;
+		void Exit()			override;
 
-		[[nodiscard]] std::shared_ptr<IState<Player>> ChangeState(std::shared_ptr<Player>& obj) override;
-		[[nodiscard]] bool IsStopAllState() const override { return m_is_stop_all_state; }
+		[[nodiscard]] const PlayerStateKind GetNextStateKind() override;
 
 	private:
-		bool	m_is_stop_all_state;
-
-		float	m_elapsed_time;
-		bool	m_is_seted_time_scale;
-		std::shared_ptr<DeadVirtualCamerasController>	m_dead_cameras_controller;
+		bool m_is_stop_all_state;
+		float m_elapsed_time;
+		bool m_is_seted_time_scale;
+		std::shared_ptr<DeadVirtualCamerasController> m_dead_cameras_controller;
 	};
 }
+

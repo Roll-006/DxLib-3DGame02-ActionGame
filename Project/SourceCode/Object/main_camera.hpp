@@ -27,7 +27,7 @@ public:
 
 
 	#pragma region Getter
-	[[nodiscard]] float	GetDeltaTime()  const override;
+	[[nodiscard]] const float	GetDeltaTime()  const override;
 	#pragma endregion
 
 private:

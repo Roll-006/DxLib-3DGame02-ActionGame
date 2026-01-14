@@ -1,27 +1,24 @@
-#pragma once
-#include "../../Base/move_state_base.hpp"
+﻿#pragma once
+#include "../../Base/player_state_base.hpp"
 
-#include "../../Object/player.hpp"
-#include "../../Part/player_state_controller.hpp"
+class Animator;
 
 namespace player_state
 {
-	class Idle final : public MoveStateBase<Player>
+	class Idle final : public PlayerStateBase
 	{
 	public:
-		Idle();
-		~Idle() override;
+		Idle(Player& player, player_state::State& state, const std::shared_ptr<Animator>& animator);
+		~Idle();
 
-		void Update		(std::shared_ptr<Player>& obj) override;
-		void LateUpdate	(std::shared_ptr<Player>& obj) override;
-		void Enter		(std::shared_ptr<Player>& obj) override;
-		void Exit		(std::shared_ptr<Player>& obj) override;
+		void Update()		override;
+		void LateUpdate()	override;
+		void Enter()		override;
+		void Exit()			override;
 
-		[[nodiscard]] std::shared_ptr<IState<Player>> ChangeState(std::shared_ptr<Player>& obj) override;
-		[[nodiscard]] bool IsStopAllState() const override { return m_is_stop_all_state; }
+		[[nodiscard]] const PlayerStateKind GetNextStateKind() override;
 
 	private:
 		float m_non_move_time;
-		bool  m_is_stop_all_state;
 	};
 }

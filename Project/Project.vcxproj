@@ -77,6 +77,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -92,6 +93,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -107,7 +109,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>Library;Library/Dxlib_h;Library/EffekseerForDXLib;Library/DxlibHelper_h;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Library;Library/Dxlib_h;Library/EffekseerForDXLib;</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <ObjectFileName>$(IntDir)</ObjectFileName>
@@ -115,7 +117,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>Library;Library/Dxlib_h;Library/EffekseerForDXLib;Library/DxlibHelper_h;</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>Library;Library/Dxlib_h;Library/EffekseerForDXLib;</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -141,10 +143,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="SourceCode\Accessor\obj_accessor.cpp" />
+    <ClCompile Include="SourceCode\AI\zombie_ai.cpp" />
     <ClCompile Include="SourceCode\Algorithm\algorithm.cpp" />
-    <ClCompile Include="SourceCode\Animator\player_animator.cpp" />
-    <ClCompile Include="SourceCode\Animator\zombie_animator.cpp" />
-    <ClCompile Include="SourceCode\Base\animator_base.cpp" />
+    <ClCompile Include="SourceCode\Animator\animator.cpp" />
     <ClCompile Include="SourceCode\Base\character_base.cpp" />
     <ClCompile Include="SourceCode\Base\enemy_base.cpp" />
     <ClCompile Include="SourceCode\Base\gun_base.cpp" />
@@ -152,10 +154,12 @@
     <ClCompile Include="SourceCode\Base\object_pool_base.cpp" />
     <ClCompile Include="SourceCode\Base\obj_base.cpp" />
     <ClCompile Include="SourceCode\Base\physical_obj_base.cpp" />
+    <ClCompile Include="SourceCode\Base\player_state_base.cpp" />
     <ClCompile Include="SourceCode\Base\tab_base.cpp" />
     <ClCompile Include="SourceCode\Base\ui_button_base.cpp" />
     <ClCompile Include="SourceCode\Base\ui_slider_base.cpp" />
     <ClCompile Include="SourceCode\Base\weapon_base.cpp" />
+    <ClCompile Include="SourceCode\Base\zombie_state_base.cpp" />
     <ClCompile Include="SourceCode\Calculation\collision_calculator.cpp" />
     <ClCompile Include="SourceCode\Calculation\math.cpp" />
     <ClCompile Include="SourceCode\Calculation\quaternion.cpp" />
@@ -180,7 +184,6 @@
     <ClCompile Include="SourceCode\Manager\effect_manager.cpp" />
     <ClCompile Include="SourceCode\Manager\enemy_manager.cpp" />
     <ClCompile Include="SourceCode\Manager\game_manager.cpp" />
-    <ClCompile Include="SourceCode\Manager\obj_manager.cpp" />
     <ClCompile Include="SourceCode\Manager\physics_manager.cpp" />
     <ClCompile Include="SourceCode\Manager\rifle_cartridge_manager.cpp" />
     <ClCompile Include="SourceCode\Manager\scene_manager.cpp" />
@@ -238,8 +241,6 @@
     <ClCompile Include="SourceCode\Part\screen_filter.cpp" />
     <ClCompile Include="SourceCode\Part\transform.cpp" />
     <ClCompile Include="SourceCode\Part\weapon_shortcut_selecter.cpp" />
-    <ClCompile Include="SourceCode\Part\title_character_animator.cpp" />
-    <ClCompile Include="SourceCode\Part\zombie_state_controller.cpp" />
     <ClCompile Include="SourceCode\Random\random_generator.cpp" />
     <ClCompile Include="SourceCode\Scene\load_scene.cpp" />
     <ClCompile Include="SourceCode\Scene\play_scene.cpp" />
@@ -262,63 +263,45 @@
     <ClCompile Include="SourceCode\Shape\3DShape\cone.cpp" />
     <ClCompile Include="SourceCode\Shape\3DShape\sphere.cpp" />
     <ClCompile Include="SourceCode\Sound\sound.cpp" />
+    <ClCompile Include="SourceCode\Sound\sound_volume_settings.cpp" />
     <ClCompile Include="SourceCode\Sound\sound_player.cpp" />
     <ClCompile Include="SourceCode\Sound\sound_pool.cpp" />
-    <ClCompile Include="SourceCode\State\PlayerState\aim_gun.cpp" />
-    <ClCompile Include="SourceCode\State\PlayerState\aim_knife.cpp" />
+    <ClCompile Include="SourceCode\State\PlayerState\player_aim_gun.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\player_dead.cpp" />
-    <ClCompile Include="SourceCode\State\PlayerState\grabbed.cpp" />
-    <ClCompile Include="SourceCode\State\PlayerState\shot_rocket_launcher.cpp" />
-    <ClCompile Include="SourceCode\State\PlayerState\spinning_slash_knife.cpp" />
-    <ClCompile Include="SourceCode\State\PlayerState\first_side_slash_knife.cpp" />
-    <ClCompile Include="SourceCode\State\PlayerState\second_side_slash_knife.cpp" />
-    <ClCompile Include="SourceCode\State\PlayerState\crouch_turn_around.cpp" />
-    <ClCompile Include="SourceCode\State\PlayerState\detach_weapon.cpp" />
-    <ClCompile Include="SourceCode\State\PlayerState\attach_weapon.cpp" />
-    <ClCompile Include="SourceCode\State\PlayerState\victory_pose.cpp" />
-    <ClCompile Include="SourceCode\State\PlayerState\weapon_action_null.cpp" />
-    <ClCompile Include="SourceCode\State\PlayerState\escape.cpp" />
-    <ClCompile Include="SourceCode\State\PlayerState\escape_with_knife.cpp" />
-    <ClCompile Include="SourceCode\State\PlayerState\player_action_null.cpp" />
-    <ClCompile Include="SourceCode\State\PlayerState\finish_off.cpp" />
-    <ClCompile Include="SourceCode\State\PlayerState\front_kick.cpp" />
-    <ClCompile Include="SourceCode\State\PlayerState\equip_gun.cpp" />
+    <ClCompile Include="SourceCode\State\PlayerState\player_grabbed.cpp" />
+    <ClCompile Include="SourceCode\State\PlayerState\player_shot_rocket_launcher.cpp" />
+    <ClCompile Include="SourceCode\State\PlayerState\player_spinning_slash_knife.cpp" />
+    <ClCompile Include="SourceCode\State\PlayerState\player_first_side_slash_knife.cpp" />
+    <ClCompile Include="SourceCode\State\PlayerState\player_second_side_slash_knife.cpp" />
+    <ClCompile Include="SourceCode\State\PlayerState\player_detach_weapon.cpp" />
+    <ClCompile Include="SourceCode\State\PlayerState\player_attach_weapon.cpp" />
+    <ClCompile Include="SourceCode\State\PlayerState\player_victory_pose.cpp" />
+    <ClCompile Include="SourceCode\State\PlayerState\player_escape.cpp" />
+    <ClCompile Include="SourceCode\State\PlayerState\player_front_kick.cpp" />
+    <ClCompile Include="SourceCode\State\PlayerState\player_equip_gun.cpp" />
     <ClCompile Include="SourceCode\State\PlayerState\player_idle.cpp" />
-    <ClCompile Include="SourceCode\State\PlayerState\equip_knife.cpp" />
-    <ClCompile Include="SourceCode\State\PlayerState\player_move.cpp" />
-    <ClCompile Include="SourceCode\State\PlayerState\parry.cpp" />
-    <ClCompile Include="SourceCode\State\PlayerState\reload.cpp" />
-    <ClCompile Include="SourceCode\State\PlayerState\roundhouse_kick.cpp" />
-    <ClCompile Include="SourceCode\State\PlayerState\player_run.cpp" />
-    <ClCompile Include="SourceCode\State\PlayerState\shot.cpp" />
-    <ClCompile Include="SourceCode\State\PlayerState\crouch.cpp" />
-    <ClCompile Include="SourceCode\State\PlayerState\stab_knife.cpp" />
-    <ClCompile Include="SourceCode\State\PlayerState\stealth_kill.cpp" />
-    <ClCompile Include="SourceCode\State\PlayerState\suplex.cpp" />
-    <ClCompile Include="SourceCode\State\PlayerState\turn_around.cpp" />
-    <ClCompile Include="SourceCode\State\ZombieState\close_range_attack.cpp" />
-    <ClCompile Include="SourceCode\State\ZombieState\crouch_right_stun.cpp" />
-    <ClCompile Include="SourceCode\State\ZombieState\backward_knockback.cpp" />
-    <ClCompile Include="SourceCode\State\ZombieState\grab_run.cpp" />
-    <ClCompile Include="SourceCode\State\ZombieState\patrol.cpp" />
-    <ClCompile Include="SourceCode\State\ZombieState\stealth_killed.cpp" />
-    <ClCompile Include="SourceCode\State\ZombieState\stand_up.cpp" />
-    <ClCompile Include="SourceCode\State\ZombieState\long_range_attack.cpp" />
-    <ClCompile Include="SourceCode\State\ZombieState\run_attack.cpp" />
+    <ClCompile Include="SourceCode\State\PlayerState\player_equip_knife.cpp" />
+    <ClCompile Include="SourceCode\State\PlayerState\player_reload.cpp" />
+    <ClCompile Include="SourceCode\State\PlayerState\player_roundhouse_kick.cpp" />
+    <ClCompile Include="SourceCode\State\PlayerState\player_shot.cpp" />
+    <ClCompile Include="SourceCode\State\PlayerState\player_stealth_kill.cpp" />
+    <ClCompile Include="SourceCode\State\PlayerState\player_state.cpp" />
+    <ClCompile Include="SourceCode\State\ZombieState\zombie_crouch_right_stun.cpp" />
+    <ClCompile Include="SourceCode\State\ZombieState\zombie_backward_knockback.cpp" />
+    <ClCompile Include="SourceCode\State\ZombieState\zombie_grab_run.cpp" />
+    <ClCompile Include="SourceCode\State\ZombieState\zombie_patrol.cpp" />
+    <ClCompile Include="SourceCode\State\ZombieState\zombie_stealth_killed.cpp" />
+    <ClCompile Include="SourceCode\State\ZombieState\zombie_stand_up.cpp" />
     <ClCompile Include="SourceCode\State\ZombieState\zombie_idle.cpp" />
-    <ClCompile Include="SourceCode\State\ZombieState\crouch_left_stun.cpp" />
+    <ClCompile Include="SourceCode\State\ZombieState\zombie_crouch_left_stun.cpp" />
     <ClCompile Include="SourceCode\State\ZombieState\zombie_dead.cpp" />
-    <ClCompile Include="SourceCode\State\ZombieState\knockback.cpp" />
-    <ClCompile Include="SourceCode\State\ZombieState\play_dead.cpp" />
-    <ClCompile Include="SourceCode\State\ZombieState\grab.cpp" />
-    <ClCompile Include="SourceCode\State\ZombieState\detected.cpp" />
-    <ClCompile Include="SourceCode\State\ZombieState\zombie_run.cpp" />
-    <ClCompile Include="SourceCode\State\ZombieState\search.cpp" />
-    <ClCompile Include="SourceCode\State\ZombieState\stand_stun.cpp" />
-    <ClCompile Include="SourceCode\State\ZombieState\zombie_action_null.cpp" />
-    <ClCompile Include="SourceCode\State\ZombieState\track.cpp" />
-    <ClCompile Include="SourceCode\State\ZombieState\wait.cpp" />
-    <ClCompile Include="SourceCode\State\ZombieState\zombie_move.cpp" />
+    <ClCompile Include="SourceCode\State\ZombieState\zombie_knockback.cpp" />
+    <ClCompile Include="SourceCode\State\ZombieState\zombie_grab.cpp" />
+    <ClCompile Include="SourceCode\State\ZombieState\zombie_detected.cpp" />
+    <ClCompile Include="SourceCode\State\ZombieState\zombie_search.cpp" />
+    <ClCompile Include="SourceCode\State\ZombieState\zombie_stand_stun.cpp" />
+    <ClCompile Include="SourceCode\State\ZombieState\zombie_track.cpp" />
+    <ClCompile Include="SourceCode\State\ZombieState\zombie_state.cpp" />
     <ClCompile Include="SourceCode\Tab\game_clear_tab.cpp" />
     <ClCompile Include="SourceCode\Tab\pause_tab.cpp" />
     <ClCompile Include="SourceCode\Tab\title_tab.cpp" />
@@ -362,19 +345,15 @@
     <ClCompile Include="SourceCode\Window\window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="SourceCode\Accessor\obj_accessor.hpp" />
+    <ClInclude Include="SourceCode\AI\zombie_ai.hpp" />
     <ClInclude Include="SourceCode\Algorithm\algorithm.hpp" />
-    <ClInclude Include="SourceCode\Animator\player_animator.hpp" />
-    <ClInclude Include="SourceCode\Animator\zombie_animator.hpp" />
-    <ClInclude Include="SourceCode\Base\action_state_base.hpp" />
-    <ClInclude Include="SourceCode\Base\ai_state_base.hpp" />
-    <ClInclude Include="SourceCode\Base\enemy_state_controller_base.hpp" />
+    <ClInclude Include="SourceCode\Animator\animator.hpp" />
     <ClInclude Include="SourceCode\Base\enemy_base.hpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="SourceCode\Base\knife_base.hpp" />
-    <ClInclude Include="SourceCode\Base\move_state_base.hpp" />
-    <ClInclude Include="SourceCode\Base\animator_base.hpp" />
     <ClInclude Include="SourceCode\Base\character_base.hpp" />
     <ClInclude Include="SourceCode\Base\gun_base.hpp" />
     <ClInclude Include="SourceCode\Base\object_pool_base.hpp" />
@@ -386,8 +365,9 @@
     <ClInclude Include="SourceCode\Base\tab_base.hpp" />
     <ClInclude Include="SourceCode\Base\ui_button_base.hpp" />
     <ClInclude Include="SourceCode\Base\ui_slider_base.hpp" />
-    <ClInclude Include="SourceCode\Base\weapon_action_state_base.hpp" />
+    <ClInclude Include="SourceCode\Base\player_state_base.hpp" />
     <ClInclude Include="SourceCode\Base\weapon_base.hpp" />
+    <ClInclude Include="SourceCode\Base\zombie_state_base.hpp" />
     <ClInclude Include="SourceCode\Calculation\axis.hpp" />
     <ClInclude Include="SourceCode\Calculation\collision_calculator.hpp" />
     <ClInclude Include="SourceCode\Calculation\common_operator.hpp" />
@@ -404,11 +384,23 @@
     <ClInclude Include="SourceCode\Concept\state_concepts.hpp" />
     <ClInclude Include="SourceCode\Concept\vector_concepts.hpp" />
     <ClInclude Include="SourceCode\CSV\csv_loader.hpp" />
+    <ClInclude Include="SourceCode\Data\escape_icon_data.hpp" />
+    <ClInclude Include="SourceCode\Data\melee_target_icon_data.hpp" />
+    <ClInclude Include="SourceCode\Data\pickupable_item_icon_data.hpp" />
     <ClInclude Include="SourceCode\Data\game_over_text_data.hpp" />
     <ClInclude Include="SourceCode\Data\humanoid_arm_matrix_data.hpp" />
     <ClInclude Include="SourceCode\Data\humanoid_arm_ray_data.hpp" />
+    <ClInclude Include="SourceCode\Data\guidance_ui_data.hpp" />
+    <ClInclude Include="SourceCode\Data\game_over_tab_data.hpp" />
+    <ClInclude Include="SourceCode\Data\sub_menu_select_button_data.hpp" />
+    <ClInclude Include="SourceCode\Data\title_tab_data.hpp" />
+    <ClInclude Include="SourceCode\Data\pause_tab_data.hpp" />
+    <ClInclude Include="SourceCode\Data\game_clear_tab_data.hpp" />
+    <ClInclude Include="SourceCode\Data\main_menu_select_button_data.hpp" />
+    <ClInclude Include="SourceCode\Data\purpose_ui_data.hpp" />
     <ClInclude Include="SourceCode\Data\single_button_prompt_data.hpp" />
     <ClInclude Include="SourceCode\Data\button_prompt_data.hpp" />
+    <ClInclude Include="SourceCode\Data\sound_volume_data.hpp" />
     <ClInclude Include="SourceCode\Data\warning_tab_data.hpp" />
     <ClInclude Include="SourceCode\Data\mission_ui_data.hpp" />
     <ClInclude Include="SourceCode\Data\sound_data.hpp" />
@@ -436,6 +428,7 @@
     <ClInclude Include="SourceCode\Data\control_virtual_camera_data.hpp" />
     <ClInclude Include="SourceCode\Data\effect_data.hpp" />
     <ClInclude Include="SourceCode\Data\input_data.hpp" />
+    <ClInclude Include="SourceCode\Data\zombie_data.hpp" />
     <ClInclude Include="SourceCode\Debugger\debugger.hpp" />
     <ClInclude Include="SourceCode\Drawer\drawer.hpp" />
     <ClInclude Include="SourceCode\Event\draw_knife_event.hpp" />
@@ -513,6 +506,7 @@
     <ClInclude Include="SourceCode\Event\start_rocket_launcher_cutscene_event.hpp" />
     <ClInclude Include="SourceCode\Event\weapon_shot_event.hpp" />
     <ClInclude Include="SourceCode\Font\font_handler.hpp" />
+    <ClInclude Include="SourceCode\Font\text.hpp" />
     <ClInclude Include="SourceCode\GameSystem\game_system_setter.hpp" />
     <ClInclude Include="SourceCode\GameTime\fps.hpp" />
     <ClInclude Include="SourceCode\GameTime\game_time_manager.hpp" />
@@ -547,8 +541,6 @@
     <ClInclude Include="SourceCode\Interface\i_poolable.hpp" />
     <ClInclude Include="SourceCode\Interface\i_fireable.hpp" />
     <ClInclude Include="SourceCode\Interface\i_scene.hpp" />
-    <ClInclude Include="SourceCode\Interface\i_state.hpp" />
-    <ClInclude Include="SourceCode\Interface\i_state_controller.hpp" />
     <ClInclude Include="SourceCode\Interface\i_virtual_camera_controller.hpp" />
     <ClInclude Include="SourceCode\Interface\i_ui_creator.hpp" />
     <ClInclude Include="SourceCode\InverseKinematics\frame_info.hpp" />
@@ -557,6 +549,7 @@
     <ClInclude Include="SourceCode\InverseKinematics\ik_solver.hpp" />
     <ClInclude Include="SourceCode\JSON\json_loader.hpp" />
     <ClInclude Include="SourceCode\Kind\rot_dir_kind.hpp" />
+    <ClInclude Include="SourceCode\Kind\sound_kind.hpp" />
     <ClInclude Include="SourceCode\Kind\time_scale_layer_kind.hpp" />
     <ClInclude Include="SourceCode\Kind\axis_kind.hpp" />
     <ClInclude Include="SourceCode\Kind\mixamo_axis_kind.hpp" />
@@ -602,7 +595,6 @@
     <ClInclude Include="SourceCode\Manager\effect_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\enemy_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\game_manager.hpp" />
-    <ClInclude Include="SourceCode\Manager\obj_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\physics_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\rifle_cartridge_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\scene_manager.hpp" />
@@ -667,8 +659,6 @@
     <ClInclude Include="SourceCode\Part\screen_filter.hpp" />
     <ClInclude Include="SourceCode\Part\transform.hpp" />
     <ClInclude Include="SourceCode\Part\weapon_shortcut_selecter.hpp" />
-    <ClInclude Include="SourceCode\Part\title_character_animator.hpp" />
-    <ClInclude Include="SourceCode\Part\zombie_state_controller.hpp" />
     <ClInclude Include="SourceCode\Path\animation_path.hpp" />
     <ClInclude Include="SourceCode\Path\frame_path.hpp" />
     <ClInclude Include="SourceCode\Path\effect_path.hpp" />
@@ -697,63 +687,45 @@
     <ClInclude Include="SourceCode\Shape\3DShape\cone.hpp" />
     <ClInclude Include="SourceCode\Shape\3DShape\sphere.hpp" />
     <ClInclude Include="SourceCode\Sound\sound.hpp" />
+    <ClInclude Include="SourceCode\Sound\sound_volume_settings.hpp" />
     <ClInclude Include="SourceCode\Sound\sound_player.hpp" />
     <ClInclude Include="SourceCode\Sound\sound_pool.hpp" />
-    <ClInclude Include="SourceCode\State\PlayerState\aim_gun.hpp" />
-    <ClInclude Include="SourceCode\State\PlayerState\aim_knife.hpp" />
+    <ClInclude Include="SourceCode\State\PlayerState\player_aim_gun.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\player_dead.hpp" />
-    <ClInclude Include="SourceCode\State\PlayerState\grabbed.hpp" />
-    <ClInclude Include="SourceCode\State\PlayerState\shot_rocket_launcher.hpp" />
-    <ClInclude Include="SourceCode\State\PlayerState\spinning_slash_knife.hpp" />
-    <ClInclude Include="SourceCode\State\PlayerState\first_side_slash_knife.hpp" />
-    <ClInclude Include="SourceCode\State\PlayerState\second_side_slash_knife.hpp" />
-    <ClInclude Include="SourceCode\State\PlayerState\crouch_turn_around.hpp" />
-    <ClInclude Include="SourceCode\State\PlayerState\detach_weapon.hpp" />
-    <ClInclude Include="SourceCode\State\PlayerState\attach_weapon.hpp" />
-    <ClInclude Include="SourceCode\State\PlayerState\victory_pose.hpp" />
-    <ClInclude Include="SourceCode\State\PlayerState\weapon_action_null.hpp" />
-    <ClInclude Include="SourceCode\State\PlayerState\escape.hpp" />
-    <ClInclude Include="SourceCode\State\PlayerState\escape_with_knife.hpp" />
-    <ClInclude Include="SourceCode\State\PlayerState\player_action_null.hpp" />
-    <ClInclude Include="SourceCode\State\PlayerState\finish_off.hpp" />
-    <ClInclude Include="SourceCode\State\PlayerState\front_kick.hpp" />
-    <ClInclude Include="SourceCode\State\PlayerState\equip_gun.hpp" />
+    <ClInclude Include="SourceCode\State\PlayerState\player_grabbed.hpp" />
+    <ClInclude Include="SourceCode\State\PlayerState\player_shot_rocket_launcher.hpp" />
+    <ClInclude Include="SourceCode\State\PlayerState\player_spinning_slash_knife.hpp" />
+    <ClInclude Include="SourceCode\State\PlayerState\player_first_side_slash_knife.hpp" />
+    <ClInclude Include="SourceCode\State\PlayerState\player_second_side_slash_knife.hpp" />
+    <ClInclude Include="SourceCode\State\PlayerState\player_detach_weapon.hpp" />
+    <ClInclude Include="SourceCode\State\PlayerState\player_attach_weapon.hpp" />
+    <ClInclude Include="SourceCode\State\PlayerState\player_victory_pose.hpp" />
+    <ClInclude Include="SourceCode\State\PlayerState\player_escape.hpp" />
+    <ClInclude Include="SourceCode\State\PlayerState\player_front_kick.hpp" />
+    <ClInclude Include="SourceCode\State\PlayerState\player_equip_gun.hpp" />
     <ClInclude Include="SourceCode\State\PlayerState\player_idle.hpp" />
-    <ClInclude Include="SourceCode\State\PlayerState\equip_knife.hpp" />
-    <ClInclude Include="SourceCode\State\PlayerState\player_move.hpp" />
-    <ClInclude Include="SourceCode\State\PlayerState\parry.hpp" />
-    <ClInclude Include="SourceCode\State\PlayerState\reload.hpp" />
-    <ClInclude Include="SourceCode\State\PlayerState\roundhouse_kick.hpp" />
-    <ClInclude Include="SourceCode\State\PlayerState\player_run.hpp" />
-    <ClInclude Include="SourceCode\State\PlayerState\shot.hpp" />
-    <ClInclude Include="SourceCode\State\PlayerState\crouch.hpp" />
-    <ClInclude Include="SourceCode\State\PlayerState\stab_knife.hpp" />
-    <ClInclude Include="SourceCode\State\PlayerState\stealth_kill.hpp" />
-    <ClInclude Include="SourceCode\State\PlayerState\suplex.hpp" />
-    <ClInclude Include="SourceCode\State\PlayerState\turn_around.hpp" />
-    <ClInclude Include="SourceCode\State\ZombieState\close_range_attack.hpp" />
-    <ClInclude Include="SourceCode\State\ZombieState\crouch_right_stun.hpp" />
-    <ClInclude Include="SourceCode\State\ZombieState\backward_knockback.hpp" />
-    <ClInclude Include="SourceCode\State\ZombieState\grab_run.hpp" />
-    <ClInclude Include="SourceCode\State\ZombieState\patrol.hpp" />
-    <ClInclude Include="SourceCode\State\ZombieState\stealth_killed.hpp" />
-    <ClInclude Include="SourceCode\State\ZombieState\stand_up.hpp" />
-    <ClInclude Include="SourceCode\State\ZombieState\long_range_attack.hpp" />
-    <ClInclude Include="SourceCode\State\ZombieState\run_attack.hpp" />
+    <ClInclude Include="SourceCode\State\PlayerState\player_equip_knife.hpp" />
+    <ClInclude Include="SourceCode\State\PlayerState\player_reload.hpp" />
+    <ClInclude Include="SourceCode\State\PlayerState\player_roundhouse_kick.hpp" />
+    <ClInclude Include="SourceCode\State\PlayerState\player_shot.hpp" />
+    <ClInclude Include="SourceCode\State\PlayerState\player_stealth_kill.hpp" />
+    <ClInclude Include="SourceCode\State\PlayerState\player_state.hpp" />
+    <ClInclude Include="SourceCode\State\ZombieState\zombie_crouch_right_stun.hpp" />
+    <ClInclude Include="SourceCode\State\ZombieState\zombie_backward_knockback.hpp" />
+    <ClInclude Include="SourceCode\State\ZombieState\zombie_grab_run.hpp" />
+    <ClInclude Include="SourceCode\State\ZombieState\zombie_patrol.hpp" />
+    <ClInclude Include="SourceCode\State\ZombieState\zombie_stealth_killed.hpp" />
+    <ClInclude Include="SourceCode\State\ZombieState\zombie_stand_up.hpp" />
     <ClInclude Include="SourceCode\State\ZombieState\zombie_idle.hpp" />
-    <ClInclude Include="SourceCode\State\ZombieState\crouch_left_stun.hpp" />
+    <ClInclude Include="SourceCode\State\ZombieState\zombie_crouch_left_stun.hpp" />
     <ClInclude Include="SourceCode\State\ZombieState\zombie_dead.hpp" />
-    <ClInclude Include="SourceCode\State\ZombieState\knockback.hpp" />
-    <ClInclude Include="SourceCode\State\ZombieState\play_dead.hpp" />
-    <ClInclude Include="SourceCode\State\ZombieState\detected.hpp" />
-    <ClInclude Include="SourceCode\State\ZombieState\zombie_run.hpp" />
-    <ClInclude Include="SourceCode\State\ZombieState\search.hpp" />
-    <ClInclude Include="SourceCode\State\ZombieState\stand_stun.hpp" />
-    <ClInclude Include="SourceCode\State\ZombieState\grab.hpp" />
-    <ClInclude Include="SourceCode\State\ZombieState\zombie_action_null.hpp" />
-    <ClInclude Include="SourceCode\State\ZombieState\track.hpp" />
-    <ClInclude Include="SourceCode\State\ZombieState\wait.hpp" />
-    <ClInclude Include="SourceCode\State\ZombieState\zombie_move.hpp" />
+    <ClInclude Include="SourceCode\State\ZombieState\zombie_knockback.hpp" />
+    <ClInclude Include="SourceCode\State\ZombieState\zombie_detected.hpp" />
+    <ClInclude Include="SourceCode\State\ZombieState\zombie_search.hpp" />
+    <ClInclude Include="SourceCode\State\ZombieState\zombie_stand_stun.hpp" />
+    <ClInclude Include="SourceCode\State\ZombieState\zombie_grab.hpp" />
+    <ClInclude Include="SourceCode\State\ZombieState\zombie_track.hpp" />
+    <ClInclude Include="SourceCode\State\ZombieState\zombie_state.hpp" />
     <ClInclude Include="SourceCode\Tab\game_clear_tab.hpp" />
     <ClInclude Include="SourceCode\Tab\pause_tab.hpp" />
     <ClInclude Include="SourceCode\Tab\title_tab.hpp" />
@@ -799,10 +771,20 @@
     <ClInclude Include="SourceCode\Window\window.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Data\JSON\animator.json" />
     <None Include="Data\JSON\button_prompt_data.json" />
-    <None Include="Data\JSON\model_arm_angle_limits.json" />
-    <None Include="Data\JSON\tab_data.json" />
+    <None Include="Data\JSON\escape_icon_data.json" />
+    <None Include="Data\JSON\guidance_data.json" />
+    <None Include="Data\JSON\melee_target_icon_data.json" />
+    <None Include="Data\JSON\pickupable_item_icon_data.json" />
+    <None Include="Data\JSON\sub_menu_select_button_data.json" />
+    <None Include="Data\JSON\main_menu_select_button_data.json" />
     <None Include="Data\JSON\text_data.json" />
+    <None Include="Data\JSON\model_arm_angle_limits.json" />
+    <None Include="Data\JSON\purpose_data.json" />
+    <None Include="Data\JSON\sound_volume.json" />
+    <None Include="Data\JSON\tab_data.json" />
+    <None Include="Data\JSON\mission_data.json" />
     <None Include="data\JSON\gun_data.json" />
     <None Include="data\JSON\knife_data.json" />
     <None Include="Data\JSON\ammo_box.json" />

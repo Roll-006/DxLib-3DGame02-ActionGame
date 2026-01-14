@@ -8,5 +8,5 @@ public:
 	virtual void OnAllowControl()	 abstract;
 	virtual void OnDisallowControl() abstract;
 
-	[[nodiscard]] virtual bool CanControl() const abstract;
+	[[nodiscard]] virtual const bool CanControl() const abstract;
 };

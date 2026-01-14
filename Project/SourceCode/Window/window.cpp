@@ -34,7 +34,7 @@ void Window::SetWindowMode()
 	if (is_change)
 	{
 		++m_change_window_contains;
-		m_is_full_screen = m_change_window_contains % 2 == 0 ? true : false;
+		m_is_full_screen = m_change_window_contains % 2 == 0;
 		ChangeWindowMode(m_is_full_screen ? FALSE : TRUE);
 	}
 }

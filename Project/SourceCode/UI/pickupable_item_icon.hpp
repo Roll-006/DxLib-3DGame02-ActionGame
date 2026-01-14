@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <memory>
 #include <vector>
 
@@ -9,11 +9,12 @@
 #include "../Part/screen_creator.hpp"
 #include "../Part/mask_creator.hpp"
 #include "../Font/font_handler.hpp"
+#include "../Data/pickupable_item_icon_data.hpp"
 
 class PickupableItemIcon final
 {
 public:
-	PickupableItemIcon(std::shared_ptr<IItem>& pickupable_item, std::vector<SpottedObjData>& pick_up_candidate_items);
+	PickupableItemIcon(std::shared_ptr<IItem>& pickupable_item, const std::vector<SpottedObjData>& pick_up_candidate_items);
 	~PickupableItemIcon();
 
 	void LateUpdate();
@@ -25,15 +26,10 @@ private:
 	void CreateText();
 
 private:
-	static constexpr VECTOR					kIconOffset			= { 0.0f, 10.0f, 0.0f };
-	static constexpr float					kIconSize			= 18.0f;
-	static constexpr Vector2D<int>			kScreenSize			= { 400, 400 };
-	static constexpr Vector2D<int>			kCursorOffset		= { 0, 50 };
-	static constexpr int					kOffset				= 85;
-	static constexpr Vector2D<int>			kScreenCenterPos	= { static_cast<int>(kScreenSize.x * 0.5f), static_cast<int>(kScreenSize.y * 0.5f) };
+	PickupableItemIconData					data;
 
 	std::shared_ptr<IItem>&					m_pickupable_item;
-	std::vector<SpottedObjData>&			m_pick_up_candidate_items;
+	const std::vector<SpottedObjData>&		m_pick_up_candidate_items;
 
 	std::shared_ptr<ButtonGraphicGetter>	m_button_graphic_resource;
 	std::shared_ptr<Graphicer>				m_button_icon_graphic;
@@ -47,10 +43,7 @@ private:
 	std::shared_ptr<ScreenCreator>			m_explanatory_text_screen;
 	std::shared_ptr<MaskCreator>			m_mask_creator;
 
+	Vector2D<int>							m_screen_center_pos;
 	VECTOR									m_icon_pos;
 	float									m_icon_size;
-
-	int										m_font_handle;
-	std::string								m_text;
-	Vector2D<int>							m_font_size;
 };

@@ -1,10 +1,23 @@
-﻿#include "humanoid_foot_ik_solver.hpp"
+﻿#include "../JSON/json_loader.hpp"
+#include "ik_solver.hpp"
+#include "frame_info.hpp"
+#include "../Interface/i_humanoid.hpp"
+#include "../Base/physical_obj_base.hpp"
+#include "../Animator/animator.hpp"
+#include "../Part/collider.hpp"
+#include "../Data/humanoid_leg_ray_data.hpp"
+#include "../Data/model_frame_angle_limit_data.hpp"
+#include "humanoid_foot_ik_solver.hpp"
 
 std::unordered_map<std::string, ModelFrameAngleLimitData> HumanoidFootIKSolver::angle_limits = {};
 
 HumanoidFootIKSolver::HumanoidFootIKSolver(
-	const std::shared_ptr<AnimatorBase>& animator, const std::shared_ptr<Modeler>& modeler, 
-	std::unordered_map<ColliderKind, std::shared_ptr<Collider>>& colliders, HumanoidLegRayData& ray_data) :
+	IHumanoid& humanoid, 
+	const std::shared_ptr<Animator>& animator, 
+	const std::shared_ptr<Modeler>& modeler,
+	std::unordered_map<ColliderKind, std::shared_ptr<Collider>>& colliders, 
+	HumanoidLegRayData& ray_data) :
+	m_humanoid				(humanoid),
 	m_animator				(animator),
 	m_modeler				(modeler),
 	m_colliders				(colliders),
@@ -36,138 +49,138 @@ HumanoidFootIKSolver::~HumanoidFootIKSolver()
 
 }
 
-void HumanoidFootIKSolver::Init(const std::shared_ptr<IHumanoid>& humanoid)
+void HumanoidFootIKSolver::Init()
 {
-	ChagneArmatureOriginMatrix	(humanoid);
-	ChangeLeftLegOriginMatrix	(humanoid);
-	ChangeRightLegOriginMatrix	(humanoid);
+	ChagneArmatureOriginMatrix();
+	ChangeLeftLegOriginMatrix();
+	ChangeRightLegOriginMatrix();
 }
 
-void HumanoidFootIKSolver::Update(const std::shared_ptr<IHumanoid>& humanoid)
+void HumanoidFootIKSolver::Update()
 {
 	// Armatureの位置を初期化
 	const auto model_handle			= m_modeler->GetModelHandle();
-	const auto armature_index		= humanoid->GetHumanoidFrame()->GetArmatureIndex(model_handle);
+	const auto armature_index		= m_humanoid.GetHumanoidFrame()->GetArmatureIndex(model_handle);
 	auto	   armature_m			= MV1GetFrameLocalMatrix(model_handle, armature_index);
 	matrix::SetPos(armature_m, v3d::GetZeroV());
 	MV1SetFrameUserLocalMatrix(model_handle, armature_index, armature_m);
 
 	// 左足の光線位置を更新
 	const auto left_foot_segment		= std::static_pointer_cast<Segment>(m_colliders.at(ColliderKind::kLeftFootRay)->GetShape());
-	auto	   left_foot_m				= MV1GetFrameLocalWorldMatrix(m_modeler->GetModelHandle(), humanoid->GetHumanoidFrame()->GetLeftFootIndex(model_handle));
-	const auto left_foot_pos			= MGetTranslateElem(left_foot_m);
+	auto	   left_foot_m				= MV1GetFrameLocalWorldMatrix(m_modeler->GetModelHandle(), m_humanoid.GetHumanoidFrame()->GetLeftFootIndex(model_handle));
+	const auto left_foot_pos			= matrix::GetPos(left_foot_m);
 	left_foot_segment->SetBeginPos(left_foot_pos + VGet(0.0f, m_ray_data.left_foot_ray_offset, 0.0f), false);
 
 	// 右足の光線位置を更新
 	const auto right_foot_segment		= std::static_pointer_cast<Segment>(m_colliders.at(ColliderKind::kRightFootRay)->GetShape());
-	auto	   right_foot_m				= MV1GetFrameLocalWorldMatrix(m_modeler->GetModelHandle(), humanoid->GetHumanoidFrame()->GetRightFootIndex(model_handle));
-	const auto right_foot_pos			= MGetTranslateElem(right_foot_m);
+	auto	   right_foot_m				= MV1GetFrameLocalWorldMatrix(m_modeler->GetModelHandle(), m_humanoid.GetHumanoidFrame()->GetRightFootIndex(model_handle));
+	const auto right_foot_pos			= matrix::GetPos(right_foot_m);
 	right_foot_segment->SetBeginPos(right_foot_pos + VGet(0.0f, m_ray_data.right_foot_ray_offset, 0.0f), false);
 
 	// 左足のつま先のベースの光線位置を更新
 	const auto left_toe_base_segment	= std::static_pointer_cast<Segment>(m_colliders.at(ColliderKind::kLeftToeBaseRay)->GetShape());
-	auto	   left_toe_base_m			= MV1GetFrameLocalWorldMatrix(m_modeler->GetModelHandle(), humanoid->GetHumanoidFrame()->GetLeftToeBaseIndex(model_handle));
-	const auto left_toe_base_pos		= MGetTranslateElem(left_toe_base_m);
+	auto	   left_toe_base_m			= MV1GetFrameLocalWorldMatrix(m_modeler->GetModelHandle(), m_humanoid.GetHumanoidFrame()->GetLeftToeBaseIndex(model_handle));
+	const auto left_toe_base_pos		= matrix::GetPos(left_toe_base_m);
 	left_toe_base_segment->SetBeginPos(left_toe_base_pos + VGet(0.0f, m_ray_data.left_toe_base_ray_offset, 0.0f), false);
 
 	// 右足のつま先のベースの光線位置を更新
 	const auto right_toe_base_segment	= std::static_pointer_cast<Segment>(m_colliders.at(ColliderKind::kRightToeBaseRay)->GetShape());
-	auto	   right_toe_base_m			= MV1GetFrameLocalWorldMatrix(m_modeler->GetModelHandle(), humanoid->GetHumanoidFrame()->GetRightToeBaseIndex(model_handle));
-	const auto right_toe_base_pos		= MGetTranslateElem(right_toe_base_m);
+	auto	   right_toe_base_m			= MV1GetFrameLocalWorldMatrix(m_modeler->GetModelHandle(), m_humanoid.GetHumanoidFrame()->GetRightToeBaseIndex(model_handle));
+	const auto right_toe_base_pos		= matrix::GetPos(right_toe_base_m);
 	right_toe_base_segment->SetBeginPos(right_toe_base_pos + VGet(0.0f, m_ray_data.right_toe_base_ray_offset, 0.0f), false);
 }
 
 
 #pragma region コライダー
-void HumanoidFootIKSolver::CreateLeftLegRay(PhysicalObjBase* physical_obj, const std::shared_ptr<IHumanoid>& humanoid)
+void HumanoidFootIKSolver::CreateLeftLegRay(PhysicalObjBase* physical_obj) const
 {
 	const auto model_handle = m_modeler->GetModelHandle();
 
 	// 右足の光線を生成
-	auto	   left_leg_m = MV1GetFrameLocalWorldMatrix(m_modeler->GetModelHandle(), humanoid->GetHumanoidFrame()->GetLeftLegIndex(model_handle));
-	const auto left_leg_pos = MGetTranslateElem(left_leg_m);
+	auto	   left_leg_m = MV1GetFrameLocalWorldMatrix(m_modeler->GetModelHandle(), m_humanoid.GetHumanoidFrame()->GetLeftLegIndex(model_handle));
+	const auto left_leg_pos = matrix::GetPos(left_leg_m);
 	physical_obj->AddCollider(std::make_shared<Collider>(ColliderKind::kLeftLegRay, std::make_shared<Segment>(left_leg_pos + VGet(0.0f, m_ray_data.left_leg_ray_offset, 0.0f), -axis::GetWorldYAxis(), m_ray_data.leg_ray_length), physical_obj));
 }
 
-void HumanoidFootIKSolver::CreateRightLegRay(PhysicalObjBase* physical_obj, const std::shared_ptr<IHumanoid>& humanoid)
+void HumanoidFootIKSolver::CreateRightLegRay(PhysicalObjBase* physical_obj) const
 {
 	const auto model_handle = m_modeler->GetModelHandle();
 
 	// 右足の光線を生成
-	auto	   right_leg_m			= MV1GetFrameLocalWorldMatrix(m_modeler->GetModelHandle(), humanoid->GetHumanoidFrame()->GetRightLegIndex(model_handle));
-	const auto right_leg_pos		= MGetTranslateElem(right_leg_m);
+	auto	   right_leg_m			= MV1GetFrameLocalWorldMatrix(m_modeler->GetModelHandle(), m_humanoid.GetHumanoidFrame()->GetRightLegIndex(model_handle));
+	const auto right_leg_pos		= matrix::GetPos(right_leg_m);
 	physical_obj->AddCollider(std::make_shared<Collider>(ColliderKind::kRightLegRay, std::make_shared<Segment>(right_leg_pos + VGet(0.0f, m_ray_data.right_leg_ray_offset, 0.0f), -axis::GetWorldYAxis(), m_ray_data.leg_ray_length), physical_obj));
 }
 
-void HumanoidFootIKSolver::CreateFootRay(PhysicalObjBase* physical_obj, const std::shared_ptr<IHumanoid>& humanoid)
+void HumanoidFootIKSolver::CreateFootRay(PhysicalObjBase* physical_obj) const
 {
 	const auto model_handle = m_modeler->GetModelHandle();
 
 	// 左足の光線を生成
-	auto	   left_foot_m			= MV1GetFrameLocalWorldMatrix(m_modeler->GetModelHandle(), humanoid->GetHumanoidFrame()->GetLeftFootIndex(model_handle));
-	const auto left_foot_pos		= MGetTranslateElem(left_foot_m);
+	auto	   left_foot_m			= MV1GetFrameLocalWorldMatrix(m_modeler->GetModelHandle(), m_humanoid.GetHumanoidFrame()->GetLeftFootIndex(model_handle));
+	const auto left_foot_pos		= matrix::GetPos(left_foot_m);
 	physical_obj->AddCollider(std::make_shared<Collider>(ColliderKind::kLeftFootRay, std::make_shared<Segment>(left_foot_pos + VGet(0.0f, m_ray_data.left_foot_ray_offset, 0.0f), -axis::GetWorldYAxis(), m_ray_data.foot_ray_length), physical_obj));
 
 	// 右足の光線を生成
-	auto	   right_foot_m			= MV1GetFrameLocalWorldMatrix(m_modeler->GetModelHandle(), humanoid->GetHumanoidFrame()->GetRightFootIndex(model_handle));
-	const auto right_foot_pos		= MGetTranslateElem(right_foot_m);
+	auto	   right_foot_m			= MV1GetFrameLocalWorldMatrix(m_modeler->GetModelHandle(), m_humanoid.GetHumanoidFrame()->GetRightFootIndex(model_handle));
+	const auto right_foot_pos		= matrix::GetPos(right_foot_m);
 	physical_obj->AddCollider(std::make_shared<Collider>(ColliderKind::kRightFootRay, std::make_shared<Segment>(right_foot_pos + VGet(0.0f, m_ray_data.right_foot_ray_offset, 0.0f), -axis::GetWorldYAxis(), m_ray_data.foot_ray_length), physical_obj));
 }
 
-void HumanoidFootIKSolver::CreateFoeBaseRay(PhysicalObjBase* physical_obj, const std::shared_ptr<IHumanoid>& humanoid)
+void HumanoidFootIKSolver::CreateFoeBaseRay(PhysicalObjBase* physical_obj) const
 {
 	const auto model_handle = m_modeler->GetModelHandle();
 
 	// 左足の光線を生成
-	auto	   left_foe_base_m		= MV1GetFrameLocalWorldMatrix(m_modeler->GetModelHandle(), humanoid->GetHumanoidFrame()->GetLeftToeBaseIndex(model_handle));
-	const auto left_foe_base_pos	= MGetTranslateElem(left_foe_base_m);
+	auto	   left_foe_base_m		= MV1GetFrameLocalWorldMatrix(m_modeler->GetModelHandle(), m_humanoid.GetHumanoidFrame()->GetLeftToeBaseIndex(model_handle));
+	const auto left_foe_base_pos	= matrix::GetPos(left_foe_base_m);
 	physical_obj->AddCollider(std::make_shared<Collider>(ColliderKind::kLeftToeBaseRay, std::make_shared<Segment>(left_foe_base_pos + VGet(0.0f, m_ray_data.left_toe_base_ray_offset, 0.0f), -axis::GetWorldYAxis(), m_ray_data.toe_base_ray_length), physical_obj));
 
 	// 右足の光線を生成
-	auto	   right_foe_base_m		= MV1GetFrameLocalWorldMatrix(m_modeler->GetModelHandle(), humanoid->GetHumanoidFrame()->GetRightToeBaseIndex(model_handle));
-	const auto right_foe_base_pos	= MGetTranslateElem(right_foe_base_m);
+	auto	   right_foe_base_m		= MV1GetFrameLocalWorldMatrix(m_modeler->GetModelHandle(), m_humanoid.GetHumanoidFrame()->GetRightToeBaseIndex(model_handle));
+	const auto right_foe_base_pos	= matrix::GetPos(right_foe_base_m);
 	physical_obj->AddCollider(std::make_shared<Collider>(ColliderKind::kRightToeBaseRay, std::make_shared<Segment>(right_foe_base_pos + VGet(0.0f, m_ray_data.right_toe_base_ray_offset, 0.0f), -axis::GetWorldYAxis(), m_ray_data.toe_base_ray_length), physical_obj));
 }
 
-void HumanoidFootIKSolver::DeleteLeftLegRay(PhysicalObjBase* physical_obj)
+void HumanoidFootIKSolver::DeleteLeftLegRay(PhysicalObjBase* physical_obj) const
 {
 	physical_obj->RemoveCollider(ColliderKind::kLeftLegRay);
 }
 
-void HumanoidFootIKSolver::DeleteRightLegRay(PhysicalObjBase* physical_obj)
+void HumanoidFootIKSolver::DeleteRightLegRay(PhysicalObjBase* physical_obj) const
 {
 	physical_obj->RemoveCollider(ColliderKind::kRightLegRay);
 }
 
-void HumanoidFootIKSolver::CalcLeftLegRayPos(const std::shared_ptr<IHumanoid>& humanoid)
+void HumanoidFootIKSolver::CalcLeftLegRayPos() const
 {
 	const auto model_handle			= m_modeler->GetModelHandle();
 
 	const auto left_leg_segment		= std::static_pointer_cast<Segment>(m_colliders.at(ColliderKind::kLeftLegRay)->GetShape());
-	auto	   left_leg_m			= MV1GetFrameLocalWorldMatrix(m_modeler->GetModelHandle(), humanoid->GetHumanoidFrame()->GetLeftLegIndex(model_handle));
-	const auto left_leg_pos			= MGetTranslateElem(left_leg_m);
+	auto	   left_leg_m			= MV1GetFrameLocalWorldMatrix(m_modeler->GetModelHandle(), m_humanoid.GetHumanoidFrame()->GetLeftLegIndex(model_handle));
+	const auto left_leg_pos			= matrix::GetPos(left_leg_m);
 	left_leg_segment->SetBeginPos(left_leg_pos + VGet(0.0f, m_ray_data.left_leg_ray_offset, 0.0f), false);
 }
 
-void HumanoidFootIKSolver::CalcRightLegRayPos(const std::shared_ptr<IHumanoid>& humanoid)
+void HumanoidFootIKSolver::CalcRightLegRayPos() const
 {
 	const auto model_handle			= m_modeler->GetModelHandle();
 
 	const auto right_leg_segment	= std::static_pointer_cast<Segment>(m_colliders.at(ColliderKind::kRightLegRay)->GetShape());
-	auto	   right_leg_m			= MV1GetFrameLocalWorldMatrix(m_modeler->GetModelHandle(), humanoid->GetHumanoidFrame()->GetRightLegIndex(model_handle));
-	const auto right_leg_pos		= MGetTranslateElem(right_leg_m);
+	auto	   right_leg_m			= MV1GetFrameLocalWorldMatrix(m_modeler->GetModelHandle(), m_humanoid.GetHumanoidFrame()->GetRightLegIndex(model_handle));
+	const auto right_leg_pos		= matrix::GetPos(right_leg_m);
 	right_leg_segment->SetBeginPos(right_leg_pos + VGet(0.0f, m_ray_data.right_leg_ray_offset, 0.0f), false);
 }
 #pragma endregion
 
 
-void HumanoidFootIKSolver::ApplyFootIK(const std::shared_ptr<IHumanoid>& humanoid)
+void HumanoidFootIKSolver::ApplyFootIK()
 {
-	JudgeExecuteIK		(humanoid);
-	CalcToeBaseOffset	(humanoid);
-	DownArmature		(humanoid);
-	ApplyLeftLegIK			(humanoid);
-	ApplyRightLegIK		(humanoid);
+	JudgeExecuteIK();
+	CalcToeBaseOffset();
+	DownArmature();
+	ApplyLeftLegIK();
+	ApplyRightLegIK();
 
 	m_ray_data.left_foot_cast_pos		= std::nullopt;
 	m_ray_data.left_toe_base_cast_pos	= std::nullopt;
@@ -175,12 +188,12 @@ void HumanoidFootIKSolver::ApplyFootIK(const std::shared_ptr<IHumanoid>& humanoi
 	m_ray_data.right_toe_base_cast_pos	= std::nullopt;
 }
 
-void HumanoidFootIKSolver::ApplyLeftKneelCrouchIK(const std::shared_ptr<IHumanoid>& humanoid)
+void HumanoidFootIKSolver::ApplyLeftKneelCrouchIK()
 {
-	JudgeExecuteIK		(humanoid);
-	CalcToeBaseOffset	(humanoid);
-	ApplyRightLegIK		(humanoid);
-	ApplyLeftKneelIK	(humanoid);
+	JudgeExecuteIK();
+	CalcToeBaseOffset();
+	ApplyRightLegIK();
+	ApplyLeftKneelIK();
 
 	m_ray_data.left_leg_cast_pos		= std::nullopt;
 	m_ray_data.left_foot_cast_pos		= std::nullopt;
@@ -190,12 +203,12 @@ void HumanoidFootIKSolver::ApplyLeftKneelCrouchIK(const std::shared_ptr<IHumanoi
 	m_ray_data.right_toe_base_cast_pos	= std::nullopt;
 }
 
-void HumanoidFootIKSolver::ApplyRightKneelCrouchIK(const std::shared_ptr<IHumanoid>& humanoid)
+void HumanoidFootIKSolver::ApplyRightKneelCrouchIK()
 {
-	JudgeExecuteIK		(humanoid);
-	CalcToeBaseOffset	(humanoid);
-	ApplyLeftLegIK		(humanoid);
-	ApplyRightKneelIK	(humanoid);
+	JudgeExecuteIK();
+	CalcToeBaseOffset();
+	ApplyLeftLegIK();
+	ApplyRightKneelIK();
 
 	m_ray_data.left_leg_cast_pos		= std::nullopt;
 	m_ray_data.left_foot_cast_pos		= std::nullopt;
@@ -205,10 +218,10 @@ void HumanoidFootIKSolver::ApplyRightKneelCrouchIK(const std::shared_ptr<IHumano
 	m_ray_data.right_toe_base_cast_pos	= std::nullopt;
 }
 
-void HumanoidFootIKSolver::BlendFrame(const std::shared_ptr<IHumanoid>& humanoid)
+void HumanoidFootIKSolver::BlendFrame()
 {
 	const auto model_handle		= m_modeler->GetModelHandle();
-	const auto humanoid_frame	= humanoid->GetHumanoidFrame();
+	const auto humanoid_frame	= m_humanoid.GetHumanoidFrame();
 
 	// 補間係数tを取得
 	const auto delta_time = GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kNoneScale);
@@ -252,10 +265,10 @@ void HumanoidFootIKSolver::BlendFrame(const std::shared_ptr<IHumanoid>& humanoid
 	MV1SetFrameUserLocalMatrix(model_handle, humanoid_frame->GetRightToeEndIndex	(model_handle),result_right_toe_end_m);
 }
 
-void HumanoidFootIKSolver::JudgeExecuteIK(const std::shared_ptr<IHumanoid>& humanoid)
+void HumanoidFootIKSolver::JudgeExecuteIK()
 {
-	const auto lower_current_tag	= m_animator->GetAnimTag(AnimatorBase::BodyKind::kLowerBody, TimeKind::kCurrent);
-	const auto lower_prev_tag		= m_animator->GetAnimTag(AnimatorBase::BodyKind::kLowerBody, TimeKind::kPrev);
+	const auto lower_current_tag	= m_animator->GetAnimTag(Animator::BodyKind::kLowerBody, TimeKind::kCurrent);
+	const auto lower_prev_tag		= m_animator->GetAnimTag(Animator::BodyKind::kLowerBody, TimeKind::kPrev);
 	const auto is_current_move_anim = lower_current_tag == AnimTag.WALK || lower_current_tag == AnimTag.RUN;
 	const auto is_prev_move_anim	= lower_prev_tag	== AnimTag.WALK || lower_prev_tag	 == AnimTag.RUN;
 
@@ -269,42 +282,42 @@ void HumanoidFootIKSolver::JudgeExecuteIK(const std::shared_ptr<IHumanoid>& huma
 		m_can_right_foot_ik.at(TimeKind::kCurrent)	= true;
 
 		// ブレンドの起点行列を設定
-		if(!m_can_left_foot_ik .at(TimeKind::kPrev)) { ChangeLeftLegOriginMatrix (humanoid); }
-		if(!m_can_right_foot_ik.at(TimeKind::kPrev)) { ChangeRightLegOriginMatrix(humanoid); }
+		if(!m_can_left_foot_ik .at(TimeKind::kPrev)) { ChangeLeftLegOriginMatrix (); }
+		if(!m_can_right_foot_ik.at(TimeKind::kPrev)) { ChangeRightLegOriginMatrix(); }
 
 		return;
 	}
 
-	const auto play_rate		 = m_animator->GetPlayRate		(AnimatorBase::BodyKind::kLowerBody);
-	const auto landing_play_rate = m_animator->GetGroundPlayRate(AnimatorBase::BodyKind::kLowerBody) * 0.25f;
+	const auto play_rate		 = m_animator->GetPlayRate		(Animator::BodyKind::kLowerBody);
+	const auto landing_play_rate = m_animator->GetGroundPlayRate(Animator::BodyKind::kLowerBody) * 0.25f;
 	
 	m_can_left_foot_ik .at(TimeKind::kCurrent) = play_rate >= 0.5f - landing_play_rate && play_rate < 0.5f + landing_play_rate;
 	m_can_right_foot_ik.at(TimeKind::kCurrent) = play_rate <= 0.0f + landing_play_rate || play_rate > 1.0f - landing_play_rate;
 }
 
-void HumanoidFootIKSolver::CalcToeBaseOffset(const std::shared_ptr<IHumanoid>& humanoid)
+void HumanoidFootIKSolver::CalcToeBaseOffset()
 {
 	if (!m_can_left_foot_ik.at(TimeKind::kCurrent) && !m_can_right_foot_ik.at(TimeKind::kCurrent)) { return; }
 
 	const auto model_handle			= m_modeler->GetModelHandle();
-	const auto humanoid_frame		= humanoid->GetHumanoidFrame();
+	const auto humanoid_frame		= m_humanoid.GetHumanoidFrame();
 
 	// 左足のオフセット値を設定
 	auto	   left_foot_m			= MV1GetFrameLocalWorldMatrix(model_handle, humanoid_frame->GetLeftFootIndex(model_handle));
-	const auto left_foot_pos		= MGetTranslateElem(left_foot_m);
+	const auto left_foot_pos		= matrix::GetPos(left_foot_m);
 	auto	   left_toe_base_m		= MV1GetFrameLocalWorldMatrix(model_handle, humanoid_frame->GetLeftToeBaseIndex(model_handle));
-	const auto left_toe_base_pos	= MGetTranslateElem(left_toe_base_m);
+	const auto left_toe_base_pos	= matrix::GetPos(left_toe_base_m);
 	m_left_toe_base_offset			= std::abs(left_toe_base_pos.y - left_foot_pos.y) + m_ray_data.left_heels_offset;
 
 	// 右足のオフセット値を設定
 	auto	   right_foot_m			= MV1GetFrameLocalWorldMatrix(model_handle, humanoid_frame->GetRightFootIndex(model_handle));
-	const auto right_foot_pos		= MGetTranslateElem(right_foot_m);
+	const auto right_foot_pos		= matrix::GetPos(right_foot_m);
 	auto	   right_toe_base_m		= MV1GetFrameLocalWorldMatrix(model_handle, humanoid_frame->GetRightToeBaseIndex(model_handle));
-	const auto right_toe_base_pos	= MGetTranslateElem(right_toe_base_m);
+	const auto right_toe_base_pos	= matrix::GetPos(right_toe_base_m);
 	m_right_toe_base_offset			= std::abs(right_toe_base_pos.y - right_foot_pos.y) + m_ray_data.right_heels_offset;
 }
 
-void HumanoidFootIKSolver::DownArmature(const std::shared_ptr<IHumanoid>& humanoid)
+void HumanoidFootIKSolver::DownArmature()
 {
 	if (!m_can_left_foot_ik.at(TimeKind::kCurrent) && !m_can_right_foot_ik.at(TimeKind::kCurrent))	{ return; }
 	if (!m_ray_data.left_foot_cast_pos && !m_ray_data.right_foot_cast_pos)						{ return; }
@@ -330,9 +343,9 @@ void HumanoidFootIKSolver::DownArmature(const std::shared_ptr<IHumanoid>& humano
 
 		// Armatureを落とす
 		const auto model_handle		= m_modeler->GetModelHandle();
-		const auto armature_index	= humanoid->GetHumanoidFrame()->GetArmatureIndex(model_handle);
+		const auto armature_index	= m_humanoid.GetHumanoidFrame()->GetArmatureIndex(model_handle);
 		auto	   armature_m		= MV1GetFrameLocalWorldMatrix(model_handle, armature_index);
-		auto	   armature_pos		= MGetTranslateElem(armature_m);
+		auto	   armature_pos		= matrix::GetPos(armature_m);
 		armature_pos.y -= drop_distance;
 
 		// TODO : リファクタリング必須
@@ -343,14 +356,14 @@ void HumanoidFootIKSolver::DownArmature(const std::shared_ptr<IHumanoid>& humano
 		// Armatureのブレンドの起点を設定
 		if (!m_can_left_foot_ik.at(TimeKind::kPrev) || !m_can_right_foot_ik.at(TimeKind::kPrev))
 		{
-			ChagneArmatureOriginMatrix(humanoid);
+			ChagneArmatureOriginMatrix();
 		}
 
 		MV1SetFrameUserLocalMatrix(model_handle, armature_index, result_m);
 	}
 }
 
-void HumanoidFootIKSolver::UpHips(const std::shared_ptr<IHumanoid>& humanoid)
+void HumanoidFootIKSolver::UpHips()
 {
 	if (!m_can_left_foot_ik.at(TimeKind::kCurrent) && !m_can_right_foot_ik.at(TimeKind::kCurrent))	{ return; }
 	if (!m_ray_data.left_foot_cast_pos && !m_ray_data.right_foot_cast_pos)							{ return; }
@@ -358,7 +371,7 @@ void HumanoidFootIKSolver::UpHips(const std::shared_ptr<IHumanoid>& humanoid)
 
 
 #pragma region IK処理
-void HumanoidFootIKSolver::ApplyLeftLegIK	(const std::shared_ptr<IHumanoid>& humanoid)
+void HumanoidFootIKSolver::ApplyLeftLegIK()
 {
 	if (!m_can_left_foot_ik.at(TimeKind::kCurrent)) { return; }
 
@@ -367,13 +380,13 @@ void HumanoidFootIKSolver::ApplyLeftLegIK	(const std::shared_ptr<IHumanoid>& hum
 	// 左足IK処理
 	if (m_ray_data.left_foot_cast_pos)
 	{
-		const auto aid_axis = math::ConvertRotMatrixToAxis(MV1GetFrameLocalWorldMatrix(model_handle, humanoid->GetHumanoidFrame()->GetHipsIndex(model_handle)));
+		const auto aid_axis = math::ConvertRotMatrixToAxis(MV1GetFrameLocalWorldMatrix(model_handle, m_humanoid.GetHumanoidFrame()->GetHipsIndex(model_handle)));
 
 		ik_solver::TwoBoneIK(
 			model_handle, *m_ray_data.left_foot_cast_pos + VGet(0.0f, m_left_toe_base_offset, 0.0f),
-			humanoid->GetHumanoidFrame()->GetLeftFootIndex(model_handle),
-			angle_limits.at(MV1GetFrameName(model_handle, humanoid->GetHumanoidFrame()->GetLeftUpLegIndex(model_handle))),
-			angle_limits.at(MV1GetFrameName(model_handle, humanoid->GetHumanoidFrame()->GetLeftLegIndex	(model_handle))),
+			m_humanoid.GetHumanoidFrame()->GetLeftFootIndex(model_handle),
+			angle_limits.at(MV1GetFrameName(model_handle, m_humanoid.GetHumanoidFrame()->GetLeftUpLegIndex(model_handle))),
+			angle_limits.at(MV1GetFrameName(model_handle, m_humanoid.GetHumanoidFrame()->GetLeftLegIndex	(model_handle))),
 			ik_solver::RotDirKind::kLeft, true, std::make_optional<AxisData>(aid_axis.x_axis, AxisKind::kRight));
 	}
 
@@ -386,13 +399,13 @@ void HumanoidFootIKSolver::ApplyLeftLegIK	(const std::shared_ptr<IHumanoid>& hum
 			const auto normal_v		= hit_triangles.front().GetNormalVector();
 			const auto destination	= *m_ray_data.left_toe_base_cast_pos + VGet(0.0f, m_ray_data.left_toe_offset, 0.0f);
 
-			ik_solver::OneBoneIK(model_handle, destination, humanoid->GetHumanoidFrame()->GetLeftFootIndex(model_handle), 
+			ik_solver::OneBoneIK(model_handle, destination, m_humanoid.GetHumanoidFrame()->GetLeftFootIndex(model_handle), 
 				std::make_optional<AxisData>(-normal_v, AxisKind::kUp));
 		}
 	}
 }
 
-void HumanoidFootIKSolver::ApplyRightLegIK	(const std::shared_ptr<IHumanoid>& humanoid)
+void HumanoidFootIKSolver::ApplyRightLegIK()
 {
 	if (!m_can_right_foot_ik.at(TimeKind::kCurrent)) { return; }
 
@@ -401,13 +414,13 @@ void HumanoidFootIKSolver::ApplyRightLegIK	(const std::shared_ptr<IHumanoid>& hu
 	// 右足IK処理
 	if (m_ray_data.right_foot_cast_pos)
 	{
-		const auto aid_axis = math::ConvertRotMatrixToAxis(MV1GetFrameLocalWorldMatrix(model_handle, humanoid->GetHumanoidFrame()->GetHipsIndex(model_handle)));
+		const auto aid_axis = math::ConvertRotMatrixToAxis(MV1GetFrameLocalWorldMatrix(model_handle, m_humanoid.GetHumanoidFrame()->GetHipsIndex(model_handle)));
 
 		ik_solver::TwoBoneIK(
 			model_handle, *m_ray_data.right_foot_cast_pos + VGet(0.0f, m_right_toe_base_offset, 0.0f),
-			humanoid->GetHumanoidFrame()->GetRightFootIndex(model_handle),
-			angle_limits.at(MV1GetFrameName(model_handle, humanoid->GetHumanoidFrame()->GetRightUpLegIndex	(model_handle))),
-			angle_limits.at(MV1GetFrameName(model_handle, humanoid->GetHumanoidFrame()->GetRightLegIndex	(model_handle))),
+			m_humanoid.GetHumanoidFrame()->GetRightFootIndex(model_handle),
+			angle_limits.at(MV1GetFrameName(model_handle, m_humanoid.GetHumanoidFrame()->GetRightUpLegIndex	(model_handle))),
+			angle_limits.at(MV1GetFrameName(model_handle, m_humanoid.GetHumanoidFrame()->GetRightLegIndex	(model_handle))),
 			ik_solver::RotDirKind::kLeft, true, std::make_optional<AxisData>(aid_axis.x_axis, AxisKind::kRight));
 	}
 
@@ -420,13 +433,13 @@ void HumanoidFootIKSolver::ApplyRightLegIK	(const std::shared_ptr<IHumanoid>& hu
 			const auto normal_v		= hit_triangles.front().GetNormalVector();
 			const auto destination	= *m_ray_data.right_toe_base_cast_pos + VGet(0.0f, m_ray_data.right_toe_offset, 0.0f);
 
-			ik_solver::OneBoneIK(model_handle, destination, humanoid->GetHumanoidFrame()->GetRightFootIndex(model_handle), 
+			ik_solver::OneBoneIK(model_handle, destination, m_humanoid.GetHumanoidFrame()->GetRightFootIndex(model_handle), 
 				std::make_optional<AxisData>(-normal_v, AxisKind::kUp));
 		}
 	}
 }
 
-void HumanoidFootIKSolver::ApplyLeftKneelIK	(const std::shared_ptr<IHumanoid>& humanoid)
+void HumanoidFootIKSolver::ApplyLeftKneelIK()
 {
 	if (!m_can_left_foot_ik.at(TimeKind::kCurrent)) { return; }
 
@@ -436,28 +449,28 @@ void HumanoidFootIKSolver::ApplyLeftKneelIK	(const std::shared_ptr<IHumanoid>& h
 	if (m_ray_data.left_leg_cast_pos)
 	{
 		const auto destination	= *m_ray_data.left_leg_cast_pos + VGet(0.0f, m_ray_data.left_leg_offset, 0.0f);
-		const auto aid_axis		= -math::ConvertRotMatrixToAxis(MV1GetFrameLocalWorldMatrix(model_handle, humanoid->GetHumanoidFrame()->GetHipsIndex(model_handle))).x_axis;
+		const auto aid_axis		= -math::ConvertRotMatrixToAxis(MV1GetFrameLocalWorldMatrix(model_handle, m_humanoid.GetHumanoidFrame()->GetHipsIndex(model_handle))).x_axis;
 
-		ik_solver::OneBoneIK(model_handle, destination, humanoid->GetHumanoidFrame()->GetLeftUpLegIndex(model_handle),
+		ik_solver::OneBoneIK(model_handle, destination, m_humanoid.GetHumanoidFrame()->GetLeftUpLegIndex(model_handle),
 			std::make_optional<AxisData>(-aid_axis, AxisKind::kRight));
 	}
 
 	// 右足IK処理
 	if (m_ray_data.left_foot_cast_pos)
 	{
-		auto	   left_foot_m		= MV1GetFrameLocalWorldMatrix(model_handle, humanoid->GetHumanoidFrame()->GetLeftFootIndex(model_handle));
-		const auto left_foot_pos	= MGetTranslateElem(left_foot_m);
-		auto	   left_toe_end_m	= MV1GetFrameLocalWorldMatrix(model_handle, humanoid->GetHumanoidFrame()->GetLeftToeEndIndex(model_handle));
-		const auto left_toe_end_pos = MGetTranslateElem(left_toe_end_m);
+		auto	   left_foot_m		= MV1GetFrameLocalWorldMatrix(model_handle, m_humanoid.GetHumanoidFrame()->GetLeftFootIndex(model_handle));
+		const auto left_foot_pos	= matrix::GetPos(left_foot_m);
+		auto	   left_toe_end_m	= MV1GetFrameLocalWorldMatrix(model_handle, m_humanoid.GetHumanoidFrame()->GetLeftToeEndIndex(model_handle));
+		const auto left_toe_end_pos = matrix::GetPos(left_toe_end_m);
 		const auto destination		= *m_ray_data.left_foot_cast_pos + VGet(0.0f, std::abs(left_foot_pos.y - left_toe_end_pos.y), 0.0f);
-		const auto aid_axis			= math::ConvertRotMatrixToAxis(MV1GetFrameLocalWorldMatrix(model_handle, humanoid->GetHumanoidFrame()->GetLeftUpLegIndex(model_handle))).x_axis;
+		const auto aid_axis			= math::ConvertRotMatrixToAxis(MV1GetFrameLocalWorldMatrix(model_handle, m_humanoid.GetHumanoidFrame()->GetLeftUpLegIndex(model_handle))).x_axis;
 
-		ik_solver::OneBoneIK(model_handle, destination, humanoid->GetHumanoidFrame()->GetLeftLegIndex(model_handle),
+		ik_solver::OneBoneIK(model_handle, destination, m_humanoid.GetHumanoidFrame()->GetLeftLegIndex(model_handle),
 			std::make_optional<AxisData>(-aid_axis, AxisKind::kRight));
 	}
 }
 
-void HumanoidFootIKSolver::ApplyRightKneelIK(const std::shared_ptr<IHumanoid>& humanoid)
+void HumanoidFootIKSolver::ApplyRightKneelIK()
 {
 	if (!m_can_right_foot_ik.at(TimeKind::kCurrent)) { return; }
 
@@ -467,23 +480,23 @@ void HumanoidFootIKSolver::ApplyRightKneelIK(const std::shared_ptr<IHumanoid>& h
 	if (m_ray_data.right_leg_cast_pos)
 	{
 		const auto destination	= *m_ray_data.right_leg_cast_pos + VGet(0.0f, m_ray_data.right_leg_offset, 0.0f);
-		const auto aid_axis		= -math::ConvertRotMatrixToAxis(MV1GetFrameLocalWorldMatrix(model_handle, humanoid->GetHumanoidFrame()->GetHipsIndex(model_handle))).x_axis;
+		const auto aid_axis		= -math::ConvertRotMatrixToAxis(MV1GetFrameLocalWorldMatrix(model_handle, m_humanoid.GetHumanoidFrame()->GetHipsIndex(model_handle))).x_axis;
 
-		ik_solver::OneBoneIK(model_handle, destination, humanoid->GetHumanoidFrame()->GetRightUpLegIndex(model_handle), 
+		ik_solver::OneBoneIK(model_handle, destination, m_humanoid.GetHumanoidFrame()->GetRightUpLegIndex(model_handle), 
 			std::make_optional<AxisData>(-aid_axis, AxisKind::kRight));
 	}
 
 	// 右足IK処理
 	if (m_ray_data.right_foot_cast_pos)
 	{
-		auto	   right_foot_m			= MV1GetFrameLocalWorldMatrix(model_handle, humanoid->GetHumanoidFrame()->GetRightFootIndex(model_handle));
-		const auto right_foot_pos		= MGetTranslateElem(right_foot_m);
-		auto	   right_toe_end_m		= MV1GetFrameLocalWorldMatrix(model_handle, humanoid->GetHumanoidFrame()->GetRightToeEndIndex(model_handle));
-		const auto right_toe_end_pos	= MGetTranslateElem(right_toe_end_m);
+		auto	   right_foot_m			= MV1GetFrameLocalWorldMatrix(model_handle, m_humanoid.GetHumanoidFrame()->GetRightFootIndex(model_handle));
+		const auto right_foot_pos		= matrix::GetPos(right_foot_m);
+		auto	   right_toe_end_m		= MV1GetFrameLocalWorldMatrix(model_handle, m_humanoid.GetHumanoidFrame()->GetRightToeEndIndex(model_handle));
+		const auto right_toe_end_pos	= matrix::GetPos(right_toe_end_m);
 		const auto destination			= *m_ray_data.right_foot_cast_pos + VGet(0.0f, std::abs(right_foot_pos.y - right_toe_end_pos.y), 0.0f);
-		const auto aid_axis				= math::ConvertRotMatrixToAxis(MV1GetFrameLocalWorldMatrix(model_handle, humanoid->GetHumanoidFrame()->GetRightUpLegIndex(model_handle))).x_axis;
+		const auto aid_axis				= math::ConvertRotMatrixToAxis(MV1GetFrameLocalWorldMatrix(model_handle, m_humanoid.GetHumanoidFrame()->GetRightUpLegIndex(model_handle))).x_axis;
 
-		ik_solver::OneBoneIK(model_handle, destination, humanoid->GetHumanoidFrame()->GetRightLegIndex(model_handle), 
+		ik_solver::OneBoneIK(model_handle, destination, m_humanoid.GetHumanoidFrame()->GetRightLegIndex(model_handle), 
 			std::make_optional<AxisData>(-aid_axis, AxisKind::kRight));
 	}
 }
@@ -491,38 +504,38 @@ void HumanoidFootIKSolver::ApplyRightKneelIK(const std::shared_ptr<IHumanoid>& h
 
 
 #pragma region ブレンドの起点を変更
-void HumanoidFootIKSolver::ChagneArmatureOriginMatrix	(const std::shared_ptr<IHumanoid>& humanoid)
+void HumanoidFootIKSolver::ChagneArmatureOriginMatrix()
 {
 	const auto model_handle = m_modeler->GetModelHandle();
 
-	m_origin_leg_matrices.armature			= MV1GetFrameLocalMatrix(model_handle, humanoid->GetHumanoidFrame()->GetArmatureIndex(model_handle));
-	m_origin_leg_matrices.hips				= MV1GetFrameLocalMatrix(model_handle, humanoid->GetHumanoidFrame()->GetHipsIndex	(model_handle));
+	m_origin_leg_matrices.armature			= MV1GetFrameLocalMatrix(model_handle, m_humanoid.GetHumanoidFrame()->GetArmatureIndex(model_handle));
+	m_origin_leg_matrices.hips				= MV1GetFrameLocalMatrix(model_handle, m_humanoid.GetHumanoidFrame()->GetHipsIndex	(model_handle));
 
 	m_armature_blend_timer = 0.0f;
 }
 
-void HumanoidFootIKSolver::ChangeLeftLegOriginMatrix	(const std::shared_ptr<IHumanoid>& humanoid)
+void HumanoidFootIKSolver::ChangeLeftLegOriginMatrix	()
 {
 	const auto model_handle = m_modeler->GetModelHandle();
 
-	m_origin_leg_matrices.left_up_leg		= MV1GetFrameLocalMatrix(model_handle, humanoid->GetHumanoidFrame()->GetLeftUpLegIndex	(model_handle));
-	m_origin_leg_matrices.left_leg			= MV1GetFrameLocalMatrix(model_handle, humanoid->GetHumanoidFrame()->GetLeftLegIndex		(model_handle));
-	m_origin_leg_matrices.left_foot			= MV1GetFrameLocalMatrix(model_handle, humanoid->GetHumanoidFrame()->GetLeftFootIndex	(model_handle));
-	m_origin_leg_matrices.left_toe_base		= MV1GetFrameLocalMatrix(model_handle, humanoid->GetHumanoidFrame()->GetLeftToeBaseIndex	(model_handle));
-	m_origin_leg_matrices.left_toe_end		= MV1GetFrameLocalMatrix(model_handle, humanoid->GetHumanoidFrame()->GetLeftToeEndIndex	(model_handle));
+	m_origin_leg_matrices.left_up_leg		= MV1GetFrameLocalMatrix(model_handle, m_humanoid.GetHumanoidFrame()->GetLeftUpLegIndex	(model_handle));
+	m_origin_leg_matrices.left_leg			= MV1GetFrameLocalMatrix(model_handle, m_humanoid.GetHumanoidFrame()->GetLeftLegIndex		(model_handle));
+	m_origin_leg_matrices.left_foot			= MV1GetFrameLocalMatrix(model_handle, m_humanoid.GetHumanoidFrame()->GetLeftFootIndex	(model_handle));
+	m_origin_leg_matrices.left_toe_base		= MV1GetFrameLocalMatrix(model_handle, m_humanoid.GetHumanoidFrame()->GetLeftToeBaseIndex	(model_handle));
+	m_origin_leg_matrices.left_toe_end		= MV1GetFrameLocalMatrix(model_handle, m_humanoid.GetHumanoidFrame()->GetLeftToeEndIndex	(model_handle));
 
 	m_left_leg_blend_timer = 0.0f;
 }
 
-void HumanoidFootIKSolver::ChangeRightLegOriginMatrix	(const std::shared_ptr<IHumanoid>& humanoid)
+void HumanoidFootIKSolver::ChangeRightLegOriginMatrix	()
 {
 	const auto model_handle = m_modeler->GetModelHandle();
 
-	m_origin_leg_matrices.right_up_leg		= MV1GetFrameLocalMatrix(model_handle, humanoid->GetHumanoidFrame()->GetRightUpLegIndex	(model_handle));
-	m_origin_leg_matrices.right_leg			= MV1GetFrameLocalMatrix(model_handle, humanoid->GetHumanoidFrame()->GetRightLegIndex	(model_handle));
-	m_origin_leg_matrices.right_foot		= MV1GetFrameLocalMatrix(model_handle, humanoid->GetHumanoidFrame()->GetRightFootIndex	(model_handle));
-	m_origin_leg_matrices.right_toe_base	= MV1GetFrameLocalMatrix(model_handle, humanoid->GetHumanoidFrame()->GetRightToeBaseIndex(model_handle));
-	m_origin_leg_matrices.right_toe_end		= MV1GetFrameLocalMatrix(model_handle, humanoid->GetHumanoidFrame()->GetRightToeEndIndex	(model_handle));
+	m_origin_leg_matrices.right_up_leg		= MV1GetFrameLocalMatrix(model_handle, m_humanoid.GetHumanoidFrame()->GetRightUpLegIndex	(model_handle));
+	m_origin_leg_matrices.right_leg			= MV1GetFrameLocalMatrix(model_handle, m_humanoid.GetHumanoidFrame()->GetRightLegIndex	(model_handle));
+	m_origin_leg_matrices.right_foot		= MV1GetFrameLocalMatrix(model_handle, m_humanoid.GetHumanoidFrame()->GetRightFootIndex	(model_handle));
+	m_origin_leg_matrices.right_toe_base	= MV1GetFrameLocalMatrix(model_handle, m_humanoid.GetHumanoidFrame()->GetRightToeBaseIndex(model_handle));
+	m_origin_leg_matrices.right_toe_end		= MV1GetFrameLocalMatrix(model_handle, m_humanoid.GetHumanoidFrame()->GetRightToeEndIndex	(model_handle));
 
 	m_right_leg_blend_timer = 0.0f;
 }

@@ -1,4 +1,4 @@
-#include "rocket_bomb_box.hpp"
+ï»¿#include "rocket_bomb_box.hpp"
 
 RocketBombBox::RocketBombBox() : 
 	PhysicalObjBase			(ObjName.AMMO_BOX_ROCKET_BOMB, ObjTag.AMMO_BOX),
@@ -81,7 +81,7 @@ void RocketBombBox::AddToObjManager()
 {
 	const auto physical_obj = std::dynamic_pointer_cast<PhysicalObjBase>(shared_from_this());
 
-	ObjManager		::GetInstance()->AddObj				(shared_from_this());
+	ObjAccessor		::GetInstance()->AddObj				(shared_from_this());
 	CollisionManager::GetInstance()->AddCollideObj		(physical_obj);
 	PhysicsManager	::GetInstance()->AddPhysicalObj		(physical_obj);
 	PhysicsManager	::GetInstance()->AddIgnoreObjGravity(GetObjHandle());
@@ -94,7 +94,7 @@ void RocketBombBox::RemoveToObjManager()
 	CollisionManager::GetInstance()->RemoveCollideObj		(obj_handle);
 	PhysicsManager	::GetInstance()->RemovePhysicalObj		(obj_handle);
 	PhysicsManager	::GetInstance()->RemoveIgnoreObjGravity	(obj_handle);
-	ObjManager		::GetInstance()->RemoveObj				(obj_handle);
+	ObjAccessor		::GetInstance()->RemoveObj				(obj_handle);
 }
 
 void RocketBombBox::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
@@ -126,7 +126,7 @@ void RocketBombBox::OnProjectPos()
 	const auto hit_triangle = GetCollider(ColliderKind::kProjectRay)->GetHitTriangles();
 	if (hit_triangle.size() <= 0) { return; }
 
-	// Šp“xEˆÊ’u‚ðŒÅ’è
+	// è§’åº¦ãƒ»ä½ç½®ã‚’å›ºå®š
 	const auto transform	= GetTransform();
 	const auto current_axis = transform->GetAxis(CoordinateKind::kWorld);
 	const auto cross_x		= math::GetNormalVector(hit_triangle.front().GetNormalVector(), axis::GetWorldYAxis());
@@ -137,7 +137,7 @@ void RocketBombBox::OnProjectPos()
 	transform				->SetPos(CoordinateKind::kWorld, *project_pos);
 	transform				->SetRot(CoordinateKind::kWorld, new_axis);
 
-	// ƒRƒ‰ƒCƒ_[‚ÌˆÊ’uXV
+	// ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®ä½ç½®æ›´æ–°
 	const auto pos = transform->GetPos(CoordinateKind::kWorld);
 	std::static_pointer_cast<Point>(m_colliders.at(ColliderKind::kVisibleTrigger)->GetShape())->SetPos(pos);
 }
@@ -146,9 +146,9 @@ void RocketBombBox::Synthesize(const std::shared_ptr<IAmmoBox> ammo_box)
 {
 	if (IsMax()) { return; }
 
-	const auto partner_num	= ammo_box->GetCurrentHaveNum();	// Œ»Ý‚Ì‘ŠŽè‚Ì”
-	const auto margin_num	= GetMaxHaveNum() - m_have_num;		// ‹ó‚«—e—Ê
-	const auto sub_num		= partner_num - margin_num;			// ‚ ‚Ó‚ê‚½”
+	const auto partner_num	= ammo_box->GetCurrentHaveNum();	// ç¾åœ¨ã®ç›¸æ‰‹ã®æ•°
+	const auto margin_num	= GetMaxHaveNum() - m_have_num;		// ç©ºãå®¹é‡
+	const auto sub_num		= partner_num - margin_num;			// ã‚ãµã‚ŒãŸæ•°
 
 	AddHaveNum(partner_num);
 
@@ -176,7 +176,7 @@ void RocketBombBox::AddHaveNum(const int add_num)
 	}
 }
 
-float RocketBombBox::GetDeltaTime() const
+const float RocketBombBox::GetDeltaTime() const
 {
 	const auto time_manager = GameTimeManager::GetInstance();
 	return time_manager->GetDeltaTime(TimeScaleLayerKind::kWorld);

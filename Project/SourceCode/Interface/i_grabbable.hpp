@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <DxLib.h>
 #include <memory>
 
@@ -15,9 +15,9 @@ public:
 	virtual void OnGrabbed(const std::shared_ptr<IGrabber> grabber, const VECTOR& brabber_pos, const VECTOR& brabber_dir) abstract;
 	virtual void OnRelease() abstract;
 
-	[[nodiscard]] virtual std::shared_ptr<IGrabber> GetGrabber()		const abstract;
-	[[nodiscard]] virtual std::shared_ptr<Gauge>	GetEscapeGauge()	const abstract;
-	[[nodiscard]] virtual bool						CanEscape()			const abstract;
-	[[nodiscard]] virtual bool						IsEscape()			const abstract;
-	[[nodiscard]] virtual bool						IsGrabbed()			const abstract;
+	[[nodiscard]] virtual const std::shared_ptr<const IGrabber>	GetGrabber()		const abstract;
+	[[nodiscard]] virtual const std::shared_ptr<const Gauge>	GetEscapeGauge()	const abstract;
+	[[nodiscard]] virtual const bool						CanEscape()			const abstract;
+	[[nodiscard]] virtual const bool						IsEscape()			const abstract;
+	[[nodiscard]] virtual const bool						IsGrabbed()			const abstract;
 };

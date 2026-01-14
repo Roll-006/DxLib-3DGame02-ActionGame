@@ -8,7 +8,7 @@
 class HealthGauge final
 {
 public:
-	HealthGauge(std::shared_ptr<Gauge>& health);
+	HealthGauge(const std::shared_ptr<Gauge>& health);
 	~HealthGauge();
 
 	void LateUpdate();
@@ -56,7 +56,7 @@ private:
 	static constexpr float			kBlinkingSpeed				= 6.0f;
 
 private:
-	std::shared_ptr<Gauge>&			m_health;
+	std::shared_ptr<Gauge>			m_health;
 
 	std::shared_ptr<Graphicer>		m_current_health_gauge_graphic;
 	std::shared_ptr<Graphicer>		m_gauge_particle_graphic;

@@ -1,5 +1,5 @@
-#include "transform.hpp"
-#include "../Manager/obj_manager.hpp"
+ï»¿#include "transform.hpp"
+#include "../Accessor/obj_accessor.hpp"
 #include "../Handle/handle_creator.hpp"
 
 Transform::Transform() :
@@ -10,7 +10,7 @@ Transform::Transform() :
 	m_world_matrix				(MGetIdent()),
 	m_parent_transform			(nullptr)
 {
-	// ˆ—‚È‚µ
+	// å‡¦ç†ãªã—
 }
 
 Transform::Transform(Transform& transform) :
@@ -43,7 +43,7 @@ Transform::Transform(Transform* transform) :
 
 Transform::~Transform()
 {
-	// ˆ—‚È‚µ
+	// å‡¦ç†ãªã—
 }
 
 void Transform::Move(const CoordinateKind coord_kind, const VECTOR& velocity)
@@ -55,13 +55,13 @@ void Transform::Move(const CoordinateKind coord_kind, const VECTOR& velocity)
 #pragma region Attach / Detach
 void Transform::AttachParent(const std::shared_ptr<Transform>& parent_transform)
 {
-	// e‚ª‚¢‚È‚¢ê‡‚Ì‚İƒAƒ^ƒbƒ`
+	// è¦ªãŒã„ãªã„å ´åˆã®ã¿ã‚¢ã‚¿ãƒƒãƒ
 	if (m_parent_transform) { return; }
 
 	m_parent_transform			= parent_transform;
 	m_parent_transform_handle	= m_parent_transform->GetTransformHandle();
 
-	// ƒ[ƒ‹ƒhÀ•W‚ğ•Û‚µ‚½‚Ü‚Üƒ[ƒJƒ‹À•W‚É•ÏŠ·
+	// ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã‚’ä¿æŒã—ãŸã¾ã¾ãƒ­ãƒ¼ã‚«ãƒ«åº§æ¨™ã«å¤‰æ›
 	const MATRIX world_mat = m_world_matrix;
 	m_local_matrix = world_mat * MInverse(m_parent_transform->GetMatrix(CoordinateKind::kWorld));
 
@@ -70,10 +70,10 @@ void Transform::AttachParent(const std::shared_ptr<Transform>& parent_transform)
 
 void Transform::AttachParent(const std::string& parent_obj_name)
 {
-	// e‚ª‚¢‚È‚¢ê‡‚Ì‚İƒAƒ^ƒbƒ`
+	// è¦ªãŒã„ãªã„å ´åˆã®ã¿ã‚¢ã‚¿ãƒƒãƒ
 	if (m_parent_transform) { return; }
 
-	const auto parent_obj		= ObjManager::GetInstance()->GetObj<ObjBase>(parent_obj_name);
+	const auto parent_obj		= ObjAccessor::GetInstance()->GetObj<ObjBase>(parent_obj_name);
 	const auto parent_transform = parent_obj->GetTransform();
 
 	AttachParent(parent_transform);
@@ -81,15 +81,15 @@ void Transform::AttachParent(const std::string& parent_obj_name)
 
 void Transform::DetachParent()
 {
-	// e‚ª‚¢‚éê‡‚Ì‚İƒfƒ^ƒbƒ`
+	// è¦ªãŒã„ã‚‹å ´åˆã®ã¿ãƒ‡ã‚¿ãƒƒãƒ
 	if (!m_parent_transform) { return; }
 
-	// ƒ[ƒ‹ƒhÀ•W‚ğ•Û
+	// ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã‚’ä¿æŒ
 	m_local_matrix		= m_world_matrix;
 	m_parent_transform	= nullptr;
 	m_parent_transform_handle = -1;
 
-	// ƒ[ƒ‹ƒhÀ•W‚Í•Ï‚í‚ç‚È‚¢‚Ì‚Ådirtyƒtƒ‰ƒO‚Í—§‚Ä‚È‚¢
+	// ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã¯å¤‰ã‚ã‚‰ãªã„ã®ã§dirtyãƒ•ãƒ©ã‚°ã¯ç«‹ã¦ãªã„
 }
 #pragma endregion
 
@@ -105,10 +105,10 @@ void Transform::SetMatrix(const CoordinateKind coord_kind, const MATRIX& matrix)
 		break;
 
 	case CoordinateKind::kWorld:
-		// ƒ[ƒ‹ƒhs—ñ‚ğŒvZ
+		// ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã‚’è¨ˆç®—
 		m_world_matrix = matrix;
 
-		// ƒ[ƒJƒ‹s—ñ‚ğŒvZ
+		// ãƒ­ãƒ¼ã‚«ãƒ«è¡Œåˆ—ã‚’è¨ˆç®—
 		if (m_parent_transform)
 		{
 			m_local_matrix = m_world_matrix * MInverse(m_parent_transform->GetMatrix(CoordinateKind::kWorld));
@@ -131,10 +131,10 @@ void Transform::SetPos(const CoordinateKind coord_kind, const VECTOR& pos)
 		break;
 
 	case CoordinateKind::kWorld:
-		// ƒ[ƒ‹ƒhs—ñ‚ğŒvZ
+		// ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã‚’è¨ˆç®—
 		matrix::SetPos(m_world_matrix, pos);
 
-		// ƒ[ƒJƒ‹s—ñ‚ğŒvZ
+		// ãƒ­ãƒ¼ã‚«ãƒ«è¡Œåˆ—ã‚’è¨ˆç®—
 		if (m_parent_transform)
 		{
 			const VECTOR parent_pos = m_parent_transform->GetPos(CoordinateKind::kWorld);
@@ -158,10 +158,10 @@ void Transform::SetRot(const CoordinateKind coord_kind, const MATRIX& rot_matrix
 		break;
 
 	case CoordinateKind::kWorld:
-		// ƒ[ƒ‹ƒhs—ñ‚ğŒvZ
+		// ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã‚’è¨ˆç®—
 		m_world_matrix = rot_matrix * MInverse(GetRotMatrix(CoordinateKind::kWorld)) * m_world_matrix;
 
-		// ƒ[ƒJƒ‹s—ñ‚ğŒvZ
+		// ãƒ­ãƒ¼ã‚«ãƒ«è¡Œåˆ—ã‚’è¨ˆç®—
 		if (m_parent_transform)
 		{
 			m_local_matrix = m_world_matrix * MInverse(m_parent_transform->GetMatrix(CoordinateKind::kWorld));
@@ -204,10 +204,10 @@ void Transform::SetScale(const CoordinateKind coord_kind, const VECTOR& scale)
 		break;
 
 	case CoordinateKind::kWorld:
-		// ƒ[ƒ‹ƒhs—ñ‚ğŒvZ
+		// ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã‚’è¨ˆç®—
 		m_world_matrix = result_m;
 
-		// ƒ[ƒJƒ‹s—ñ‚ğŒvZ
+		// ãƒ­ãƒ¼ã‚«ãƒ«è¡Œåˆ—ã‚’è¨ˆç®—
 		if (m_parent_transform)
 		{
 			m_local_matrix = m_world_matrix * MInverse(m_parent_transform->GetMatrix(CoordinateKind::kWorld));
@@ -236,7 +236,7 @@ MATRIX Transform::GetMatrix(const CoordinateKind coord_kind)
 		return m_local_matrix;
 
 	case CoordinateKind::kWorld:
-		// ƒLƒƒƒbƒVƒ…‚ªŒÃ‚¢ê‡‚ÍÄŒvZ
+		// ã‚­ãƒ£ãƒƒã‚·ãƒ¥ãŒå¤ã„å ´åˆã¯å†è¨ˆç®—
 		if (m_is_dirty_world_matrix)
 		{
 			if (m_parent_transform)

@@ -8,6 +8,7 @@
 
 #include "tab_drawer.hpp"
 #include "warning_tab.hpp"
+#include "../Data/title_tab_data.hpp"
 
 class TitleTab final : public ITab
 {
@@ -37,8 +38,7 @@ private:
 	void ExecuteExit();
 
 private:
-	static constexpr Vector2D<int>	kFirstButtonCenterPos	= { 440, 300 };
-	static constexpr int			kButtonPosInterval		= 110;
+	TitleTabData					data;
 
 	int								m_tab_handle;
 	int								m_priority;

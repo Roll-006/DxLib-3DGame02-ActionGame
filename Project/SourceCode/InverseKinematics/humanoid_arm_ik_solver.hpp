@@ -1,13 +1,12 @@
 ﻿#pragma once
-#include "../JSON/json_loader.hpp"
-#include "ik_solver.hpp"
-
-#include "../Interface/i_humanoid.hpp"
-#include "../Base/physical_obj_base.hpp"
-#include "../Base/animator_base.hpp"
-#include "../Part/collider.hpp"
-#include "../Data/humanoid_arm_ray_data.hpp"
 #include "../Data/humanoid_arm_matrix_data.hpp"
+
+class IHumanoid;
+class Animator;
+class Modeler;
+class PhysicalObjBase;
+struct HumanoidArmRayData;
+struct ModelFrameAngleLimitData;
 
 class HumanoidArmIKSolver final
 {
@@ -31,65 +30,67 @@ public:
 
 public:
 	HumanoidArmIKSolver(
-		const std::shared_ptr<AnimatorBase>& animator, 
+		IHumanoid& humanoid,
+		const std::shared_ptr<Animator>& animator, 
 		const std::shared_ptr<Modeler>& modeler, 
 		std::unordered_map<ColliderKind, std::shared_ptr<Collider>>& colliders, 
 		HumanoidArmRayData& ray_data);
 	~HumanoidArmIKSolver();
 
-	void Init	(const std::shared_ptr<IHumanoid>& humanoid);
-	void Update	(const std::shared_ptr<IHumanoid>& humanoid);
+	void Init	();
+	void Update	();
 
 
 	#pragma region コライダー
-	void CreateLeftHandRay	(PhysicalObjBase* physical_obj, const std::shared_ptr<IHumanoid>& humanoid);
-	void CreateRightHandRay	(PhysicalObjBase* physical_obj, const std::shared_ptr<IHumanoid>& humanoid);
-	void DeleteLeftHandRay	(PhysicalObjBase* physical_obj);
-	void DeleteRightHandRay	(PhysicalObjBase* physical_obj);
+	void CreateLeftHandRay	(PhysicalObjBase* physical_obj) const;
+	void CreateRightHandRay	(PhysicalObjBase* physical_obj) const;
+	void DeleteLeftHandRay	(PhysicalObjBase* physical_obj) const;
+	void DeleteRightHandRay	(PhysicalObjBase* physical_obj) const;
 
-	void CalcLeftHandRayPos	(const std::shared_ptr<IHumanoid>& humanoid);
-	void CalcRightHandRayPos(const std::shared_ptr<IHumanoid>& humanoid);
+	void CalcLeftHandRayPos	() const;
+	void CalcRightHandRayPos() const;
 	#pragma endregion
 
 
 	/// @brief 左膝を地面につけるしゃがみアニメーションにIK処理を適用する
-	void ApplyLeftKneelCrouchIK	(const std::shared_ptr<IHumanoid>& humanoid);
+	void ApplyLeftKneelCrouchIK();
 	/// @brief 右膝を地面につけるしゃがみアニメーションにIK処理を適用する
-	void ApplyRightKneelCrouchIK(const std::shared_ptr<IHumanoid>& humanoid);
+	void ApplyRightKneelCrouchIK();
 
 	/// @brief フレーム行列のブレンドを行う
 	/// @brief IK処理適用後に呼び出す必要あり
-	void BlendFrame(const std::shared_ptr<IHumanoid>& humanoid);
+	void BlendFrame();
 
 private:
 	#pragma region IK処理
 	/// @brief 左膝の上に左手を置くIK処理
-	ResultKind ApplyLeftHandIKOnKnees	(const std::shared_ptr<IHumanoid>& humanoid);
+	const ResultKind ApplyLeftHandIKOnKnees();
 	/// @brief 右膝の上に右手を置くIK処理
-	ResultKind ApplyRightHandIKOnKnees	(const std::shared_ptr<IHumanoid>& humanoid);
+	const ResultKind ApplyRightHandIKOnKnees();
 
 	/// @brief 左太ももの上に左手を置くIK処理
-	ResultKind ApplyLeftHandIKOnThigh	(const std::shared_ptr<IHumanoid>& humanoid);
+	const ResultKind ApplyLeftHandIKOnThigh();
 	/// @brief 右太ももの上に右手を置くIK処理
-	ResultKind ApplyRightHandIKOnThigh	(const std::shared_ptr<IHumanoid>& humanoid);
+	const ResultKind ApplyRightHandIKOnThigh();
 
 	/// @brief 地面に左手を置くIK処理
-	ResultKind ApplyLeftArmIKOnGround	(const std::shared_ptr<IHumanoid>& humanoid);
+	const ResultKind ApplyLeftArmIKOnGround();
 	/// @brief 地面に右手を置くIK処理
-	ResultKind ApplyRightArmIKOnGround	(const std::shared_ptr<IHumanoid>& humanoid);
+	const ResultKind ApplyRightArmIKOnGround();
 	#pragma endregion
 
 
 	#pragma region ブレンドの起点を変更
-	void ChangeLeftArmOriginMatrix	(const std::shared_ptr<IHumanoid>& humanoid, const bool is_set_result_m = false);
-	void ChangeRightArmOriginMatrix	(const std::shared_ptr<IHumanoid>& humanoid, const bool is_set_result_m = false);
+	void ChangeLeftArmOriginMatrix	(const bool is_set_result_m = false);
+	void ChangeRightArmOriginMatrix	(const bool is_set_result_m = false);
 	#pragma endregion
 
 private:
 	static std::unordered_map<std::string, ModelFrameAngleLimitData> angle_limits;
 	float arm_blend_time		= 0.25f;	// 仮　のちに定数化
 
-	std::shared_ptr<AnimatorBase>									m_animator;
+	IHumanoid&														m_humanoid;
+	std::shared_ptr<Animator>										m_animator;
 	std::shared_ptr<Modeler>										m_modeler;
 	std::unordered_map<ColliderKind, std::shared_ptr<Collider>>&	m_colliders;
 	HumanoidArmRayData&												m_ray_data;

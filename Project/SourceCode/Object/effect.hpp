@@ -1,10 +1,10 @@
-#pragma once
+ï»¿#pragma once
 #include "../Base/obj_base.hpp"
 #include "../Interface/i_effect.hpp"
 #include "../Interface/i_poolable.hpp"
 
 #include "../GameTime/game_time_manager.hpp"
-#include "../Manager/obj_manager.hpp"
+#include "../Accessor/obj_accessor.hpp"
 
 class Effect final : public ObjBase, public IEffect, public IPoolable
 {
@@ -27,12 +27,12 @@ public:
 	#pragma endregion
 
 
-	#pragma region “o˜^ / íœ
+	#pragma region ç™»éŒ² / å‰Šé™¤
 	void AddTimeScaleOwner(const std::string& owner_name) override;
 	void RemoveTimeScaleOwner() override;
 
-	/// @brief ‹­§“I‚Éƒv[ƒ‹‚É•Ô‹p‚³‚¹‚é‚½‚ß‚Ìƒnƒ“ƒhƒ‹‚ğ’Ç‰Á‚·‚é
-	/// @brief å‚ÉƒI[ƒi[‚Æ‚µ‚ÄƒAƒ^ƒbƒ`‚µ‚½ƒgƒ‰ƒ“ƒXƒtƒH[ƒ€‚ÌƒIƒuƒWƒFƒNƒgƒnƒ“ƒhƒ‹‚ğ’Ç‰Á‚·‚é
+	/// @brief å¼·åˆ¶çš„ã«ãƒ—ãƒ¼ãƒ«ã«è¿”å´ã•ã›ã‚‹ãŸã‚ã®ãƒãƒ³ãƒ‰ãƒ«ã‚’è¿½åŠ ã™ã‚‹
+	/// @brief ä¸»ã«ã‚ªãƒ¼ãƒŠãƒ¼ã¨ã—ã¦ã‚¢ã‚¿ãƒƒãƒã—ãŸãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãƒãƒ³ãƒ‰ãƒ«ã‚’è¿½åŠ ã™ã‚‹
 	void AddReturnPoolTriggerHandle(const int return_trigger_handle) override;
 	void RemoveReturnPoolTriggerHandle() override;
 	#pragma endregion
@@ -47,10 +47,10 @@ public:
 
 
 	#pragma region Getter
-	[[nodiscard]] int	GetOriginEffectHandle()		 const override { return m_origin_effect_handle; }
-	[[nodiscard]] int	GetPlayingEffectHandle()	 const override { return m_playing_effect_handle; }
-	[[nodiscard]] int   GetReturnPoolTriggerHandle() const override { return m_return_pool_trigger_handle; }
-	[[nodiscard]] bool	IsReturnPool() override;
+	[[nodiscard]] const int		GetOriginEffectHandle()		 const override { return m_origin_effect_handle; }
+	[[nodiscard]] const int		GetPlayingEffectHandle()	 const override { return m_playing_effect_handle; }
+	[[nodiscard]] const int		GetReturnPoolTriggerHandle() const override { return m_return_pool_trigger_handle; }
+	[[nodiscard]] const bool	IsReturnPool() override;
 	#pragma endregion
 
 private:
@@ -59,13 +59,13 @@ private:
 
 	void PlayEffect() override;
 
-	[[nodiscard]] float	GetDeltaTime() const override;
+	[[nodiscard]] const float GetDeltaTime() const override;
 
 private:
-	int			m_origin_effect_handle;			// ƒGƒtƒFƒNƒgƒnƒ“ƒhƒ‹
-	int			m_playing_effect_handle;		// Ä¶’†‚ÌƒGƒtƒFƒNƒgƒnƒ“ƒhƒ‹
+	int			m_origin_effect_handle;			// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒãƒ³ãƒ‰ãƒ«
+	int			m_playing_effect_handle;		// å†ç”Ÿä¸­ã®ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒãƒ³ãƒ‰ãƒ«
 
-	int			m_return_pool_trigger_handle;	// ƒGƒtƒFƒNƒg‚ğ‹­§“I‚Éƒv[ƒ‹‚É•Ô‹p‚·‚é‚½‚ß‚ÌƒgƒŠƒK[‚Æ‚·‚éƒnƒ“ƒhƒ‹
+	int			m_return_pool_trigger_handle;	// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã‚’å¼·åˆ¶çš„ã«ãƒ—ãƒ¼ãƒ«ã«è¿”å´ã™ã‚‹ãŸã‚ã®ãƒˆãƒªã‚¬ãƒ¼ã¨ã™ã‚‹ãƒãƒ³ãƒ‰ãƒ«
 	std::string m_time_scale_owner_name;
 	std::shared_ptr<Transform> m_owner_transform;
 
@@ -75,5 +75,5 @@ private:
 
 	EffectData	m_data;
 	int			m_play_contains;
-	float		m_play_wait_timer;				// Ä¶ŠJn‚ğ‘Ò‚ÂŠÔ‚ğŒv‘ª
+	float		m_play_wait_timer;				// å†ç”Ÿé–‹å§‹ã‚’å¾…ã¤æ™‚é–“ã‚’è¨ˆæ¸¬
 };

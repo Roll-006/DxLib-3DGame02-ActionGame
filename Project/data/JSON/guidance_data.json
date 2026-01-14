@@ -1,0 +1,27 @@
+﻿{
+  "guidance_data": {
+    "move": {
+      "screen_size": {
+        "x": 500,
+        "y": 300
+      },
+      "width_ratio": 0.8,
+      "height_ratio": 0.8,
+      "text_data": {
+        "font_path": "explanatory_text",
+        "text": "全てのゾンビを倒せ",
+        "hex_color": "#ffffff",
+        "offset": {
+          "x": 0,
+          "y": 0
+        }
+      },
+      "fade_in_speed": 200,
+      "fade_out_speed": 200,
+      "blend_wait_time": 10.0,
+      "draw_time": 4.0,
+      "basic_shape_alpha_blend_scale": 0.6,
+      "basic_graphic_path": "Data/Graphic/UI/Purpose/square_black.png"
+    }
+  }
+}

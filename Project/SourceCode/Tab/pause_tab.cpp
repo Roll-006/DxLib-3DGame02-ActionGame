@@ -1,6 +1,7 @@
 ﻿#include "pause_tab.hpp"
 
 PauseTab::PauseTab() :
+	data						(PauseTabData()),
 	m_tab_handle				(HandleCreator::GetInstance()->CreateHandle()),
 	m_priority					(0),
 	m_is_active					(false),
@@ -13,32 +14,57 @@ PauseTab::PauseTab() :
 	m_alpha_blend_num			(0),
 	m_ui_selector				(std::make_shared<UISelector>(0, true, true)),
 	m_result_screen				(std::make_shared<ScreenCreator>(Window::kScreenSize, Window::kCenterPos)),
-	m_warning_restart_tab		(std::make_shared<WarningTab>(WarningTab::WarningKind::kRestart)),
-	m_warning_quit_game_tab		(std::make_shared<WarningTab>(WarningTab::WarningKind::kQuitGame)),
-	m_button_prompt				(std::make_shared<ButtonPrompt>("pause"))
+	m_warning_restart_tab		(nullptr),
+	m_warning_quit_game_tab		(nullptr),
+	m_button_prompt				(nullptr)
 {
+	nlohmann::json j_data;
+	if (json_loader::Load("Data/JSON/tab_data.json", j_data))
+	{
+		data = j_data.at("tab_data").at("pause").get<PauseTabData>();
+	}
+
 	// イベント登録
 	EventSystem::GetInstance()->Subscribe<DeadPlayerEvent>	(this, &PauseTab::Deactivate);
 	EventSystem::GetInstance()->Subscribe<DeadAllEnemyEvent>(this, &PauseTab::Deactivate);
 
+	text::CreateText(data.warning_restart_text_data);
+	text::CreateText(data.warning_quit_game_text_data);
+
+	m_warning_restart_tab	= std::make_shared<WarningTab>(data.warning_restart_text_data);
+	m_warning_quit_game_tab = std::make_shared<WarningTab>(data.warning_quit_game_text_data);
+
 	TabDrawer::GetInstance()->AddTab(m_warning_restart_tab);
 	TabDrawer::GetInstance()->AddTab(m_warning_quit_game_tab);
 
-	std::vector<Vector2D<int>> center_pos;
-	for (int i = 0; i < 4; ++i)
+	// UIプロンプト・テキストの構築
+	m_button_prompt = std::make_shared<ButtonPrompt>(data.button_prompt_name);
+	for (size_t i = 0; i < data.explanatory_text_data.size(); ++i)
 	{
-		center_pos.emplace_back(kFirstButtonCenterPos + Vector2D<int>(0, kButtonPosInterval * i));
+		text::CreateText(data.explanatory_text_data.at(i));
+		m_button_prompt->AddExplanatoryText(i, data.explanatory_text_data.at(i).text);
 	}
 
-	m_ui_selector->AddUIButton(std::make_shared<MainMenuSelectButton>(MainMenuSelectButton::ButtonKind::kReturnToGame,	center_pos.at(0), [this]() { ExecuteReturnToGame(); },	true));
-	m_ui_selector->AddUIButton(std::make_shared<MainMenuSelectButton>(MainMenuSelectButton::ButtonKind::kRestart,		center_pos.at(1), [this]() { ExecuteRestart(); },		false));
-	//m_ui_selector->AddUIButton(std::make_shared<MainMenuSelectButton>(MainMenuSelectButton::ButtonKind::kOption,		center_pos.at(2), [this]() { ExecuteOption(); },		false));
-	m_ui_selector->AddUIButton(std::make_shared<MainMenuSelectButton>(MainMenuSelectButton::ButtonKind::kQuitGame,		center_pos.at(2), [this]() { ExecuteQuitGame();	},		false));
+	// UIボタン・テキストの構築
+	std::vector<Vector2D<int>> center_pos;
+	for (size_t i = 0; i < data.text_data.size(); ++i)
+	{
+		text::CreateText(data.text_data.at(i));
+		center_pos.emplace_back(data.first_button_center_offset + Vector2D<int>(0, data.button_pos_interval * i));
 
-	m_button_prompt->AddExplanatoryText(0, "ゲームに戻ります");
-	m_button_prompt->AddExplanatoryText(1, "ゲームを最初から始めます");
-	//m_button_prompt->AddExplanatoryText(2, "ゲームの各種設定を行います");
-	m_button_prompt->AddExplanatoryText(2, "タイトルに戻ります");
+		if (i == 0)
+		{
+			m_ui_selector->AddUIButton(std::make_shared<MainMenuSelectButton>(data.text_data.at(i), center_pos.at(i), [this]() { ExecuteReturnToGame(); }, true));
+		}
+		else if (i == 1)
+		{
+			m_ui_selector->AddUIButton(std::make_shared<MainMenuSelectButton>(data.text_data.at(i), center_pos.at(i), [this]() { ExecuteRestart(); }, false));
+		}
+		else if (i == 2)
+		{
+			m_ui_selector->AddUIButton(std::make_shared<MainMenuSelectButton>(data.text_data.at(i), center_pos.at(i), [this]() { ExecuteQuitGame(); }, false));
+		}
+	}
 
 	CalcAlphaBlendNum();
 }
@@ -197,7 +223,7 @@ void PauseTab::JudgeSelect()
 	const auto is_active_warning_tag	= m_warning_quit_game_tab->IsActive() || m_warning_restart_tab->IsActive();
 	const auto is_max_blend_num			= m_result_screen->GetGraphicer()->GetBlendNum() >= UCHAR_MAX;
 
-	m_can_select = is_max_blend_num && !is_active_warning_tag ? true : false;
+	m_can_select = is_max_blend_num && !is_active_warning_tag;
 }
 
 void PauseTab::CalcAlphaBlendNum()
@@ -205,11 +231,11 @@ void PauseTab::CalcAlphaBlendNum()
 	const auto delta_time = GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kUI);
 	if (m_is_execute_return_to_game)
 	{
-		math::Decrease(m_alpha_blend_num, static_cast<int>(kFadeSpeed * delta_time), 0);
+		math::Decrease(m_alpha_blend_num, static_cast<int>(data.fade_speed * delta_time), 0);
 	}
 	else
 	{
-		math::Increase(m_alpha_blend_num, static_cast<int>(kFadeSpeed * delta_time), UCHAR_MAX, false);
+		math::Increase(m_alpha_blend_num, static_cast<int>(data.fade_speed * delta_time), UCHAR_MAX, false);
 	}
 
 	m_result_screen->GetGraphicer()->SetBlendNum(m_alpha_blend_num);
@@ -219,7 +245,7 @@ void PauseTab::CreateResultScreen()
 {
 	m_result_screen->UseScreen();
 
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 180);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, data.background_alpha_blend_num);
 	DrawBox(0, 0, Window::kScreenSize.x, Window::kScreenSize.y, 0x000000, TRUE);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 

@@ -7,6 +7,6 @@ class IItem abstract
 public:
 	virtual ~IItem() = default;
 
-	[[nodiscard]] virtual std::shared_ptr<Transform> GetItemTransform() const abstract;
-	[[nodiscard]] virtual ItemKind GetItemKind() const abstract;
+	[[nodiscard]] virtual const std::shared_ptr<Transform> GetItemTransform() const abstract;
+	[[nodiscard]] virtual const ItemKind GetItemKind() const abstract;
 };

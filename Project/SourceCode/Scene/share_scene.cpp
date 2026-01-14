@@ -2,11 +2,11 @@
 #include "../Manager/scene_manager.hpp"
 
 ShareScene::ShareScene() : 
-	m_is_active						(true),
-	m_scene_kind					(SceneKind::kShare),
-	m_main_camera					(std::make_shared<MainCamera>()),
-	m_screen_filter_creator			(std::make_shared<ScreenFilterCreator>()),
-	m_sound_player					(std::make_shared<SoundPlayer>())
+	m_is_active				(true),
+	m_scene_kind			(SceneKind::kShare),
+	m_main_camera			(std::make_shared<MainCamera>()),
+	m_screen_filter_creator	(std::make_shared<ScreenFilterCreator>()),
+	m_sound_player			(std::make_shared<SoundPlayer>())
 {
 	m_main_camera->AddToObjManager();
 

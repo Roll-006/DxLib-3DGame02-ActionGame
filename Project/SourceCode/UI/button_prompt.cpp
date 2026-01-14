@@ -1,4 +1,5 @@
 ﻿#include "button_prompt.hpp"
+#include "../Font/text.hpp"
 
 ButtonPrompt::ButtonPrompt(const std::string& prompt_name) :
 	m_prev_device_kind		(DeviceKind::kKeyboard),
@@ -11,22 +12,17 @@ ButtonPrompt::ButtonPrompt(const std::string& prompt_name) :
 	if (json_loader::Load("Data/JSON/button_prompt_data.json", j_data))
 	{
 		data = j_data.at("button_prompt_data").at(prompt_name).get<ButtonPromptData>();
-
-		// テキストを生成
-		const auto font_handler = FontHandler::GetInstance();
-		for (auto& single_button_prompt : data.single_button_prompt_data)
-		{
-			single_button_prompt.text_data.text			= type_converter::ConvertUTF8ToShiftJIS(single_button_prompt.text_data.text);
-			single_button_prompt.text_data.font_handle	= font_handler->GetFontHandle(single_button_prompt.text_data.font_path);
-			single_button_prompt.text_data.u_int_color	= type_converter::ConvertHEXToUINT(single_button_prompt.text_data.hex_color);
-			single_button_prompt.text_data.font_size	= { GetDrawStringWidthToHandle(single_button_prompt.text_data.text.c_str(), -1, single_button_prompt.text_data.font_handle), GetFontSizeToHandle(single_button_prompt.text_data.font_handle) };
-		}
-
-		m_result_screen = std::make_shared<ScreenCreator>(data.screen_size, Vector2D<int>(Window::kCenterPos.x, static_cast<int>(Window::kScreenSize.y * data.height_ratio)));
-
-		data.text_data.font_handle	= font_handler->GetFontHandle(data.text_data.font_path);
-		data.text_data.u_int_color	= type_converter::ConvertHEXToUINT(data.text_data.hex_color);		
 	}
+
+	// テキストを生成
+	for (auto& single_button_prompt : data.single_button_prompt_data)
+	{
+		text::CreateText(single_button_prompt.text_data);
+	}
+
+	m_result_screen = std::make_shared<ScreenCreator>(data.screen_size, Vector2D<int>(Window::kCenterPos.x, static_cast<int>(Window::kScreenSize.y * data.height_ratio)));
+
+	text::CreateText(data.text_data);
 
 	UpdateInputCode();
 	UpdateGraphics();
@@ -59,8 +55,8 @@ void ButtonPrompt::Draw() const
 	m_result_screen->Draw();
 
 	DrawStringToHandle(
-		static_cast<int>(m_result_screen->GetGraphicer()->GetCenterPos().x - data.text_data.font_size.x * 0.5f + data.text_data.offset.x),
-		static_cast<int>(m_result_screen->GetGraphicer()->GetCenterPos().y - data.text_data.font_size.y * 0.5f + data.text_data.offset.y),
+		static_cast<int>(m_result_screen->GetGraphicer()->GetCenterPos().x - data.text_data.size.x * 0.5f + data.text_data.offset.x),
+		static_cast<int>(m_result_screen->GetGraphicer()->GetCenterPos().y - data.text_data.size.y * 0.5f + data.text_data.offset.y),
 		data.text_data.text.c_str(),
 		data.text_data.u_int_color,
 		data.text_data.font_handle);
@@ -95,13 +91,13 @@ void ButtonPrompt::CreateResultScreen()
 		
 		DrawStringToHandle(
 			static_cast<int>(offset),
-			static_cast<int>((m_result_screen->GetScreenSize().y - text.text_data.font_size.y) * 0.5f),
+			static_cast<int>((m_result_screen->GetScreenSize().y - text.text_data.size.y) * 0.5f),
 			text.text_data.text.c_str(),
 			text.text_data.u_int_color,
 			text.text_data.font_handle);
 
 		// 次の画像・テキストは現在のテキスト + オフセット分ずらす
-		offset += text.text_data.font_size.x + data.offset;
+		offset += text.text_data.size.x + data.offset;
 
 		++count;
 	}
@@ -138,8 +134,8 @@ void ButtonPrompt::UpdateUIButtonExplanatoryText(const int current_button_index)
 	// 現在選択されているボタンUIに対応する説明文を取得し設定
 	if (current_button_index != m_prev_button_index)
 	{
-		data.text_data.text			= m_ui_button_explanatory_texts.contains(current_button_index) ? m_ui_button_explanatory_texts.at(current_button_index) : "";
-		data.text_data.font_size	= { GetDrawStringWidthToHandle(data.text_data.text.c_str(), -1, data.text_data.font_handle), GetFontSizeToHandle(data.text_data.font_handle) };
+		data.text_data.text	= m_ui_button_explanatory_texts.contains(current_button_index) ? m_ui_button_explanatory_texts.at(current_button_index) : "";
+		data.text_data.size	= { GetDrawStringWidthToHandle(data.text_data.text.c_str(), -1, data.text_data.font_handle), GetFontSizeToHandle(data.text_data.font_handle) };
 	}
 
 	m_prev_button_index = current_button_index;
@@ -166,7 +162,7 @@ void ButtonPrompt::CalcLeftmostPos()
 	// 最初の画像以外はオフセット幅を同時に加算
 	for (const auto& text : data.single_button_prompt_data)
 	{
-		const auto text_width = text.text_data.font_size.x;
+		const auto text_width = text.text_data.size.x;
 		total_width += count != 0 ? data.offset + text_width : text_width;
 		total_width += m_button_graphic.at(count)->GetSize().x;
 

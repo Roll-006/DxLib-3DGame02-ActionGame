@@ -1,11 +1,10 @@
 ﻿#pragma once
 #include "physical_obj_base.hpp"
 
-#include "../Interface/i_state_controller.hpp"
 #include "../Part/character_collider_creator.hpp"
 #include "../Part/gauge.hpp"
 #include "../Part/modeler.hpp"
-#include "animator_base.hpp"
+#include "../Animator/animator.hpp"
 
 #include "gun_base.hpp"
 #include "../Kind/health_part_kind.hpp"
@@ -19,6 +18,9 @@ public:
 	void AddToObjManager()		override;
 	void RemoveToObjManager()	override;
 
+	void UpdateLocomotion();
+
+	void InitMoveOffset();
 	void CalcCorrectMoveDir();
 	void AllowCalcLookDir() { m_is_calc_look_dir = true; }
 
@@ -30,37 +32,38 @@ public:
 	virtual void OnDamage(const HealthPartKind part_kind, const float damage) abstract;
 
 	#pragma region Getter
-	[[nodiscard]] bool							IsInvincible()		const				{ return m_is_invincible; }
-	[[nodiscard]] bool							IsAlive()			const				{ return m_health.at(HealthPartKind::kMain)->IsAlive(); }
-	[[nodiscard]] bool							IsGoUpHill(const Triangle& hit_triangle) const;
-	[[nodiscard]] std::shared_ptr<Modeler>		GetModeler()		const				{ return m_modeler; }
-	[[nodiscard]] std::shared_ptr<AnimatorBase>	GetAnimator()		const				{ return m_animator; }
-	[[nodiscard]] VECTOR						GetCurrentMoveDir()	const				{ return m_move_dir.at(TimeKind::kCurrent); }
-	[[nodiscard]] VECTOR						GetCurrentLookDir()	const				{ return m_look_dir.at(TimeKind::kCurrent); }
-	[[nodiscard]] VECTOR						GetNextLookDir()	const				{ return m_look_dir.at(TimeKind::kNext); }
-	[[nodiscard]]
-	[[nodiscard]] std::shared_ptr<Gauge>&		GetHealth(const HealthPartKind kind)	{ return m_health.at(kind); }
+	[[nodiscard]] const bool								IsInvincible()		const				{ return m_is_invincible; }
+	[[nodiscard]] const bool								IsAlive()			const				{ return m_health.at(HealthPartKind::kMain)->IsAlive(); }
+	[[nodiscard]] const bool								IsGoUpHill(const Triangle& hit_triangle) const;
+	[[nodiscard]] const std::shared_ptr<Modeler>			GetModeler()		const				{ return m_modeler; }
+	[[nodiscard]] const std::shared_ptr<const Animator>		GetAnimator()		const				{ return m_animator; }
+	[[nodiscard]] const VECTOR								GetMoveDir(const TimeKind kind)	const	{ return m_move_dir.at(kind); }
+	[[nodiscard]] const VECTOR								GetLookDir(const TimeKind kind)	const	{ return m_look_dir.at(kind); }
+	[[nodiscard]] const VECTOR								GetMoveVelocity()	const				{ return m_move_velocity; }
+	[[nodiscard]] const std::shared_ptr<Gauge>				GetHealth(const HealthPartKind kind)	{ return m_health.at(kind); }
 	#pragma endregion
 
 protected:
-	/// @brief 見ている方向を回転に適用する
-	void ApplyLookDirToRot(const VECTOR& look_dir);
+	void JudgeInvincible();
 
+	/// @brief 見ている方向を回転に適用する
+	void ApplyLookDirToRot();
+
+private:
 	void CalcMoveDir();
 	void CalcLookDir();
 	void CalcMoveVelocity();
-
-	void JudgeInvincible();
 
 protected:
 	float invincible_time;
 
 	std::shared_ptr<Modeler>					m_modeler;
-	std::shared_ptr<AnimatorBase>				m_animator;
+	std::shared_ptr<Animator>					m_animator;
 	std::shared_ptr<CharacterColliderCreator>	m_collider_creator;
 
 	std::unordered_map<TimeKind, VECTOR>		m_move_dir;					// 移動方向(WARNING : 長さは0～1の範囲を取る)
 	std::unordered_map<TimeKind, VECTOR>		m_look_dir;					// 向いている方向
+	VECTOR										m_move_offset;				// 移動velocityを補正
 	VECTOR										m_destination_pos;			// 補正先座標
 	float										m_move_speed;
 	float										m_move_dir_offset_speed;	// 移動方向を補正する速度

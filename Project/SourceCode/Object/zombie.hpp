@@ -6,13 +6,15 @@
 #include "../Interface/i_grabber.hpp"
 #include "../Interface/i_stealth_killable.hpp"
 
-#include "../Animator/zombie_animator.hpp"
 #include "../InverseKinematics/humanoid_arm_ik_solver.hpp"
 #include "../InverseKinematics/humanoid_foot_ik_solver.hpp"
 
-#include "../Data/humanoid_enemy_collider_data.hpp"
+#include "../Data/zombie_data.hpp"
+#include "../State/ZombieState/zombie_state.hpp"
+#include "../AI/zombie_ai.hpp"
 
-class ZombieStateController;
+#include "../Data/humanoid_arm_ray_data.hpp"
+#include "../Data/humanoid_leg_ray_data.hpp"
 
 class Zombie final : public EnemyBase, public IPoolable, public IHumanoid, public IMeleeHittable, public IGrabber, public IStealthKillable
 {
@@ -39,7 +41,7 @@ public:
 
 
 	#pragma region Humanoid
-	[[nodiscard]] std::shared_ptr<HumanoidFrameGetter> GetHumanoidFrame() const override { return m_humanoid_frame; }
+	[[nodiscard]] const std::shared_ptr<const HumanoidFrameGetter> GetHumanoidFrame() const override { return m_humanoid_frame; }
 	#pragma endregion
 	
 
@@ -48,14 +50,14 @@ public:
 	void Release()		override;
 	void OnEscape()		override;
 
-	[[nodiscard]] float GetDamageOverTimeStartTime()	const override	{ return damage_over_time_start_time; }
-	[[nodiscard]] bool	IsTargetEscaped()				const override  { return m_is_target_escaped; }
+	[[nodiscard]] const float	GetDamageOverTimeStartTime()	const override	{ return data.damage_over_time_start_time; }
+	[[nodiscard]] const bool	IsTargetEscaped()				const override  { return m_is_target_escaped; }
 	#pragma endregion
 
 
 	#pragma region メレー
-	[[nodiscard]] bool  IsStandStun()  const override;
-	[[nodiscard]] bool  IsCrouchStun() const override;
+	[[nodiscard]] const bool IsStandStun()  const override;
+	[[nodiscard]] const bool IsCrouchStun() const override;
 	#pragma endregion
 
 
@@ -64,15 +66,14 @@ public:
 	void ExitStealthKilled()	override;
 	void DisallowStealthKill()	override { m_is_allow_stealth_kill = false; }
 
-	[[nodiscard]] bool IsAllowStealthKill()		const override	{ return m_is_allow_stealth_kill; }
-	[[nodiscard]] bool IsStealthKillerInSight()	const override	{ return IsDetectedTarget(); }
-	[[nodiscard]] bool IsStealthKilled()		const override	{ return m_on_stealth_kill; }
+	[[nodiscard]] const bool IsAllowStealthKill()		const override	{ return m_is_allow_stealth_kill; }
+	[[nodiscard]] const bool IsStealthKillerInSight()	const override	{ return IsDetectedTarget(); }
+	[[nodiscard]] const bool IsStealthKilled()			const override	{ return m_on_stealth_kill; }
 	#pragma endregion
 
 
 	#pragma region State
-	void Move();
-	void TrackMove(const VECTOR& target_pos);
+	void TrackMove(const VECTOR& target_pos, const bool is_distance_limit);
 
 	void OnFootIK();
 	void OnLeftCrouchIK();
@@ -87,28 +88,19 @@ public:
 
 
 	#pragma region Getter
-	[[nodiscard]] float										GetDeltaTime()				const	override;
-	[[nodiscard]] std::shared_ptr<ZombieStateController>	GetStateController()		const		{ return m_state; }
-	[[nodiscard]] bool										CanGrabTarget()				const		{ return m_can_grab_target; }
-	[[nodiscard]] bool										IsReturnPool()				override	{ return m_is_return_pool; }
-	[[nodiscard]] std::shared_ptr<HumanoidArmIKSolver>		GetHumanoidArmIKSolver()	const		{ return m_humanoid_arm_ik; }
-	[[nodiscard]] std::shared_ptr<HumanoidFootIKSolver>		GetHumanoidFootIKSolver()	const		{ return m_humanoid_foot_ik; }
+	[[nodiscard]] const float										GetDeltaTime()				const	override;
+	[[nodiscard]] const std::shared_ptr<CharacterBase>				GetTarget()					const	{ return m_ai->GetTarget(); }
+	[[nodiscard]] const bool										CanGrabTarget()				const	{ return m_can_grab_target; }
+	[[nodiscard]] const bool										IsReturnPool() override				{ return m_is_return_pool; }
+	[[nodiscard]] const std::shared_ptr<const HumanoidArmIKSolver>	GetHumanoidArmIKSolver()	const	{ return m_humanoid_arm_ik; }
+	[[nodiscard]] const std::shared_ptr<const HumanoidFootIKSolver>	GetHumanoidFootIKSolver()	const	{ return m_humanoid_foot_ik; }
 	#pragma endregion
 
 private:
 	void JudgeAction() override;
 
 private:
-	std::string					model_path;
-	VECTOR						basic_angle;
-	float						basic_scale;
-	float						walk_speed;
-	float						run_speed;
-	float						run_grab_speed;
-	float						move_dir_offset_speed;
-	float						look_dir_offset_speed;
-	float						damage_over_time_start_time;
-	HumanoidEnemyColliderData	collider_data;
+	ZombieData data;
 
 	HumanoidArmRayData						m_arm_ray_data;
 	HumanoidLegRayData						m_leg_ray_data;
@@ -116,12 +108,15 @@ private:
 	std::shared_ptr<HumanoidFootIKSolver>	m_humanoid_foot_ik;
 	std::shared_ptr<HumanoidFrameGetter>	m_humanoid_frame;
 
-	std::shared_ptr<ZombieStateController>	m_state;
+	std::shared_ptr<zombie_state::State>	m_state;
+	std::shared_ptr<ZombieAI>				m_ai;
 	bool									m_is_return_pool;
 	bool									m_can_grab_target;
 	bool									m_is_target_escaped;
 	bool									m_is_allow_stealth_kill;
 	bool									m_on_stealth_kill;
+	bool									m_is_forward_walk;
+	bool									m_is_backward_walk;
 
 	friend void from_json(const nlohmann::json& j_data, Zombie& zombie);
 	friend void to_json  (nlohmann::json& j_data, const Zombie& zombie);
@@ -133,20 +128,9 @@ inline void from_json(const nlohmann::json& j_data, Zombie& zombie)
 {
 	from_json(j_data, static_cast<EnemyBase&>(zombie));
 
-	j_data.at("model_path")					.get_to(zombie.model_path);
-	j_data.at("basic_angle")					.get_to(zombie.basic_angle);
-	j_data.at("basic_scale")					.get_to(zombie.basic_scale);
-
-	j_data.at("walk_speed")					.get_to(zombie.walk_speed);
-	j_data.at("run_speed")					.get_to(zombie.run_speed);
-	j_data.at("run_grab_speed")				.get_to(zombie.run_grab_speed);
-	j_data.at("move_dir_offset_speed")		.get_to(zombie.m_move_dir_offset_speed);
-	j_data.at("look_dir_offset_speed")		.get_to(zombie.m_look_dir_offset_speed);
-
-	j_data.at("collider_data")				.get_to(zombie.collider_data);
-	j_data.at("leg_ray_data")					.get_to(zombie.m_leg_ray_data);
-
-	j_data.at("damage_over_time_start_time")	.get_to(zombie.damage_over_time_start_time);
+	j_data.at("data")			.get_to(zombie.data);
+	j_data.at("arm_ray_data")	.get_to(zombie.m_arm_ray_data);
+	j_data.at("leg_ray_data")	.get_to(zombie.m_leg_ray_data);
 }
 
 inline void to_json(nlohmann::json& j_data, const Zombie& zombie)
@@ -156,20 +140,9 @@ inline void to_json(nlohmann::json& j_data, const Zombie& zombie)
 
 	nlohmann::json derived_json =
 	{
-		{ "model_path",						zombie.model_path },
-		{ "basic_angle",					zombie.basic_angle },
-		{ "basic_scale",					zombie.basic_scale },
-
-		{ "walk_speed",						zombie.walk_speed },
-		{ "run_speed",						zombie.run_speed },
-		{ "run_grab_speed",					zombie.run_grab_speed },
-		{ "move_dir_offset_speed",			zombie.m_move_dir_offset_speed },
-		{ "look_dir_offset_speed",			zombie.m_look_dir_offset_speed },
-
-		{ "collider_data",					zombie.collider_data },
-		{ "leg_ray_data",					zombie.m_leg_ray_data },
-
-		{ "damage_over_time_start_time",	zombie.damage_over_time_start_time }
+		{ "data",			zombie.data },
+		{ "arm_ray_data",	zombie.m_arm_ray_data },
+		{ "leg_ray_data",	zombie.m_leg_ray_data },
 	};
 
 	j_data = base_json;

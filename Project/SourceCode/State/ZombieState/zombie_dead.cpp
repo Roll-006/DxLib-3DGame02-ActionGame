@@ -1,8 +1,13 @@
+ï»¿#include "../../Object/zombie.hpp"
+#include "../../Kind/zombie_anim_kind.hpp"
+#include "../../Animator/animator.hpp"
+#include "../../Kind/zombie_state_kind.hpp"
+#include "../../Data/material_data.hpp"
+#include "zombie_state.hpp"
 #include "zombie_dead.hpp"
 
-zombie_state::Dead::Dead() :
-	ActionStateBase			(static_cast<int>(zombie_state::ActionStateKind::kDead)),
-	m_is_stop_all_state		(false),
+zombie_state::Dead::Dead(Zombie& zombie, zombie_state::State& state, const std::shared_ptr<Animator>& animator) :
+	ZombieStateBase(zombie, state, animator, ZombieStateKind::kIdle),
 	m_elapsed_time_end_anim	(0.0f),
 	m_change_color_wait_time(0.0f),
 	m_is_start_disappear	(false),
@@ -16,33 +21,36 @@ zombie_state::Dead::~Dead()
 
 }
 
-void zombie_state::Dead::Update(std::shared_ptr<Zombie>& obj)
+void zombie_state::Dead::Update()
 {
-	const auto delta_time = obj->GetDeltaTime();
+	m_zombie.CalcMoveSpeedStop();
+	m_zombie.InitMoveOffset();
 
-	obj->DisallowStealthKill();
+	const auto delta_time = m_zombie.GetDeltaTime();
 
-	// F‚ð•‚É•Ï‰»
+	m_zombie.DisallowStealthKill();
+
+	// è‰²ã‚’é»’ã«å¤‰åŒ–
 	m_change_color_wait_time += delta_time;
 	if (m_change_color_wait_time >= kChangeColorWaitTime)
 	{
-		ChangeMaterial(obj->GetModeler()->GetModelHandle(), 1.0f * delta_time);
+		ChangeMaterial(m_zombie.GetModeler()->GetModelHandle(), 1.0f * delta_time);
 	}
 
-	// ƒIƒuƒWƒFƒNƒg‚ð‰º‚É—Ž‚Æ‚µ‚ÄÁ‚·
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ä¸‹ã«è½ã¨ã—ã¦æ¶ˆã™
 	m_elapsed_time_end_anim += delta_time;
-	if (obj->GetAnimator()->IsPlayEnd(AnimatorBase::BodyKind::kUpperBody) && !m_is_start_disappear)
+	if (m_zombie.GetAnimator()->IsPlayEnd(Animator::BodyKind::kUpperBody) && !m_is_start_disappear)
 	{
 		if (m_elapsed_time_end_anim >= kDisappearWaitTime)
 		{
-			CollisionManager::GetInstance()->RemoveCollideObj(obj->GetObjHandle());
-			PhysicsManager  ::GetInstance()->AddIgnoreObjPhysicalBehavior(obj->GetObjHandle());
-			PhysicsManager  ::GetInstance()->AddIgnoreObjGravity(obj->GetObjHandle());
+			CollisionManager::GetInstance()->RemoveCollideObj(m_zombie.GetObjHandle());
+			PhysicsManager  ::GetInstance()->AddIgnoreObjPhysicalBehavior(m_zombie.GetObjHandle());
+			PhysicsManager  ::GetInstance()->AddIgnoreObjGravity(m_zombie.GetObjHandle());
 
-			// —£‚µ‚½‚±‚Æ‚ð‰‰oƒJƒƒ‰‚É’Ê’m
-			const auto model_hanlde = obj->GetModeler()->GetModelHandle();
+			// é›¢ã—ãŸã“ã¨ã‚’æ¼”å‡ºã‚«ãƒ¡ãƒ©ã«é€šçŸ¥
+			const auto model_hanlde = m_zombie.GetModeler()->GetModelHandle();
 			auto	   hips_m		= MV1GetFrameLocalWorldMatrix(model_hanlde, MV1SearchFrame(model_hanlde, FramePath.HIPS));
-			const auto hips_pos		= MGetTranslateElem(hips_m);
+			const auto hips_pos		= matrix::GetPos(hips_m);
 			const StartDisappearEnemyEvent event{ hips_pos - VGet(0.0f, 10.0f, 0.0f) };
 			EventSystem::GetInstance()->Publish(event);
 
@@ -52,43 +60,49 @@ void zombie_state::Dead::Update(std::shared_ptr<Zombie>& obj)
 
 	if (m_is_start_disappear)
 	{
-		obj->Disappear();
+		m_zombie.Disappear();
 
 		if (m_elapsed_time_end_anim >= kReturnPoolWaitTime)
 		{
-			obj->AllowReturnPool();
+			m_zombie.AllowReturnPool();
 		}
+	}
+
+	m_zombie.UpdateLocomotion();
+
+	const auto prev_state_kind = m_state.GetPrevStateKind();
+	if (prev_state_kind != ZombieStateKind::kKnockback && prev_state_kind != ZombieStateKind::kStealthKilled)
+	{
+		m_animator->AttachResultAnim(static_cast<int>(ZombieAnimKind::kDead));
 	}
 }
 
-void zombie_state::Dead::LateUpdate(std::shared_ptr<Zombie>& obj)
+void zombie_state::Dead::LateUpdate()
 {
 
 }
 
-void zombie_state::Dead::Enter(std::shared_ptr<Zombie>& obj)
+void zombie_state::Dead::Enter()
 {
 	m_elapsed_time_end_anim		= 0.0f;
 	m_change_color_wait_time	= 0.0f;
 	m_is_start_disappear		= false;
 	m_current_material			= MaterialData();
 
-	obj->RemoveCollider(ColliderKind::kCollider);
+	m_zombie.RemoveCollider(ColliderKind::kCollider);
 
-	// Ž€–S‚µ‚½‚±‚Æ‚ð’Ê’m
-	EventSystem::GetInstance()->Publish(DeadEnemyEvent(obj->GetEnemyID(), obj->GetModeler()->GetModelHandle()));
+	// æ­»äº¡ã—ãŸã“ã¨ã‚’é€šçŸ¥
+	EventSystem::GetInstance()->Publish(DeadEnemyEvent(m_zombie.GetEnemyID(), m_zombie.GetModeler()->GetModelHandle()));
 }
 
-void zombie_state::Dead::Exit(std::shared_ptr<Zombie>& obj)
+void zombie_state::Dead::Exit()
 {
 
 }
 
-std::shared_ptr<IState<Zombie>> zombie_state::Dead::ChangeState(std::shared_ptr<Zombie>& obj)
+const ZombieStateKind zombie_state::Dead::GetNextStateKind()
 {
-	if (obj->GetDeltaTime() <= 0.0f) { return nullptr; }
-
-	return nullptr;
+	return ZombieStateKind::kNone;
 }
 
 void zombie_state::Dead::ChangeMaterial(const auto model_handle, const float change_speed)

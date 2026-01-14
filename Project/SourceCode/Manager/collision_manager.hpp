@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <unordered_set>
 
 #include "../Base/singleton_base.hpp"
@@ -6,7 +6,7 @@
 
 #include "../Data/collider_data.hpp"
 
-#include "../Manager/obj_manager.hpp"
+#include "../Accessor/obj_accessor.hpp"
 #include "../Calculation/collision_calculator.hpp"
 
 class CollisionManager final : public SingletonBase<CollisionManager>
@@ -17,27 +17,27 @@ public:
 	void Draw() const;
 
 
-	#pragma region “o˜^E‰ğœ
-	/// @brief Õ“Ë”»’è‚ğs‚¤ƒIƒuƒWƒFƒNƒg‚ğ’Ç‰Á
+	#pragma region ç™»éŒ²ãƒ»è§£é™¤
+	/// @brief è¡çªåˆ¤å®šã‚’è¡Œã†ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¿½åŠ 
 	void AddCollideObj(const std::shared_ptr<PhysicalObjBase>& collide_obj);
-	/// @brief Õ“Ë”»’è‚ğs‚¤ƒIƒuƒWƒFƒNƒg‚©‚çœŠO
+	/// @brief è¡çªåˆ¤å®šã‚’è¡Œã†ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‹ã‚‰é™¤å¤–
 	void RemoveCollideObj(const int obj_handle);
 
-	/// @brief Õ“Ë”»’è‚ğ–³‹‚·‚éƒRƒ‰ƒCƒ_[‚ğ’Ç‰Á
+	/// @brief è¡çªåˆ¤å®šã‚’ç„¡è¦–ã™ã‚‹ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã‚’è¿½åŠ 
 	void AddIgnoreCollider(const int obj_handle, const ColliderKind kind);
 	void AddIgnoreCollider(const ColliderKind kind);
-	/// @brief Õ“Ë”»’è‚ğ–³‹‚·‚éƒRƒ‰ƒCƒ_[‚©‚çœŠO
+	/// @brief è¡çªåˆ¤å®šã‚’ç„¡è¦–ã™ã‚‹ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã‹ã‚‰é™¤å¤–
 	void RemoveIgnoreCollider(const int obj_handle, const ColliderKind kind);
 	void RemoveIgnoreCollider(const ColliderKind kind);
 
-	/// @brief Õ“Ë”»’è‚ğ–³‹‚·‚éƒRƒ‰ƒCƒ_[‚ÌƒyƒA‚ğ’Ç‰Á
-	/// @brief Eowner_tag‚É[""]‚ğw’è‚·‚é‚Æw’è‚È‚µ‚Å“o˜^
-	/// @brief EColliderKind‚É[kNone]‚ğw’è‚·‚é‚Æw’è‚È‚µ‚Å“o˜^
-	/// @brief Eowner_tag‚ÆColliderKind‚ª‚Ç‚¿‚ç‚àw’è‚È‚µ‚Ìê‡AAddIgnoreColliderŠÖ”‚ğg—p‚·‚é‚±‚Æ‚Æ‚·‚é
-	/// @brief —á) ’…’nƒgƒŠƒK[‚ÆUŒ‚”»’è—pƒgƒŠƒK[‚Ì”»’è‚ğ–³‹‚µ‚½‚¢ê‡A
-	/// @brief [ColliderData("", ColliderKind::kLandingTrigger), ColliderData("", ColliderKind::kAttackTrigger)]‚Æ‚·‚é
+	/// @brief è¡çªåˆ¤å®šã‚’ç„¡è¦–ã™ã‚‹ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®ãƒšã‚¢ã‚’è¿½åŠ 
+	/// @brief ãƒ»owner_tagã«[""]ã‚’æŒ‡å®šã™ã‚‹ã¨æŒ‡å®šãªã—ã§ç™»éŒ²
+	/// @brief ãƒ»ColliderKindã«[kNone]ã‚’æŒ‡å®šã™ã‚‹ã¨æŒ‡å®šãªã—ã§ç™»éŒ²
+	/// @brief ãƒ»owner_tagã¨ColliderKindãŒã©ã¡ã‚‰ã‚‚æŒ‡å®šãªã—ã®å ´åˆã€AddIgnoreCollideré–¢æ•°ã‚’ä½¿ç”¨ã™ã‚‹ã“ã¨ã¨ã™ã‚‹
+	/// @brief ä¾‹) ç€åœ°ãƒˆãƒªã‚¬ãƒ¼ã¨æ”»æ’ƒåˆ¤å®šç”¨ãƒˆãƒªã‚¬ãƒ¼ã®åˆ¤å®šã‚’ç„¡è¦–ã—ãŸã„å ´åˆã€
+	/// @brief [ColliderData("", ColliderKind::kLandingTrigger), ColliderData("", ColliderKind::kAttackTrigger)]ã¨ã™ã‚‹
 	void AddIgnoreColliderPair(const ColliderData& owner_collider_data, const ColliderData& target_collider_data);
-	/// @brief Õ“Ë”»’è‚ğ–³‹‚·‚éƒRƒ‰ƒCƒ_[‚ÌƒyƒA‚©‚çœŠO
+	/// @brief è¡çªåˆ¤å®šã‚’ç„¡è¦–ã™ã‚‹ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®ãƒšã‚¢ã‹ã‚‰é™¤å¤–
 	void RemoveIgnoreColliderPair(const ColliderData& owner_collider_data, const ColliderData& target_collider_data);
 	#pragma endregion
 
@@ -45,21 +45,21 @@ private:
 	CollisionManager();
 	~CollisionManager() override;
 
-	/// @brief Õ“Ë”»’è‚ğ–³‹‚·‚éƒyƒA‚ğİ’è‚·‚é
-	/// @brief ”Ä—p«‚ª‚‚¢ƒyƒA‚ğƒ}ƒl[ƒWƒƒ[‘¤‚Å’Ç‰Á‚·‚é
+	/// @brief è¡çªåˆ¤å®šã‚’ç„¡è¦–ã™ã‚‹ãƒšã‚¢ã‚’è¨­å®šã™ã‚‹
+	/// @brief æ±ç”¨æ€§ãŒé«˜ã„ãƒšã‚¢ã‚’ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼å´ã§è¿½åŠ ã™ã‚‹
 	void SetIgnoreColliderPairs();
 
-	/// @brief Õ“Ë‰Â”\‚©‚ğ”»’è
+	/// @brief è¡çªå¯èƒ½ã‹ã‚’åˆ¤å®š
 	[[nodiscard]] bool CanCollideObjAndObj			(const std::shared_ptr<PhysicalObjBase>& owner_obj, const std::shared_ptr<PhysicalObjBase>& target_obj);
 	[[nodiscard]] bool CanCollideObjAndCollider		(const std::shared_ptr<PhysicalObjBase>& owner_obj, const std::shared_ptr<Collider>& target_collider);
 	[[nodiscard]] bool CanCollideColliderAndCollider(const std::shared_ptr<Collider>& owner_collider,	const std::shared_ptr<Collider>& target_collider);
 	[[nodiscard]] bool CanCollideCollider			(const int obj_handle, const std::shared_ptr<Collider>& collider);
 
-	/// @brief Õ“Ë”»’è‚ğ‹N‚±‚µ‚½ƒRƒ‰ƒCƒ_[‚Ì‘g‚İ‡‚í‚¹‚ğ¶¬
+	/// @brief è¡çªåˆ¤å®šã‚’èµ·ã“ã—ãŸã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®çµ„ã¿åˆã‚ã›ã‚’ç”Ÿæˆ
 	std::vector<ColliderPairOneToManyData> CreateHitColliderPairs();
 
 
-	#pragma region Õ“Ë”»’è
+	#pragma region è¡çªåˆ¤å®š
 	bool IsCollided					(Collider& owner_collider,		 Collider& target_collider, std::optional<VECTOR>& intersection);
 	bool IsCollidedPointAndTarget	(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection);
 	bool IsCollidedLineAndTarget	(Collider& owner_collider, const Collider& target_collider, std::optional<VECTOR>& intersection);
@@ -77,9 +77,9 @@ private:
 private:
 	static constexpr float kIgnoreDistance = 200.0f;
 
-	std::vector<std::shared_ptr<PhysicalObjBase>>						m_collide_objects;					// Õ“Ë”»’è‚ğs‚¤ƒIƒuƒWƒFƒNƒg
-	std::unordered_map<int, std::unordered_set<ColliderKind>>			m_ignore_collide_colliders;			// Õ“Ë”»’è‚ğ–³‹‚·‚éƒRƒ‰ƒCƒ_[
-	std::unordered_map<ColliderData, std::unordered_set<ColliderData>>	m_ignore_collide_collider_pairs;	// Õ“Ë”»’è‚ğ–³‹‚·‚éƒRƒ‰ƒCƒ_[‚ÌƒyƒA
+	std::vector<std::shared_ptr<PhysicalObjBase>>						m_collide_objects;					// è¡çªåˆ¤å®šã‚’è¡Œã†ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	std::unordered_map<int, std::unordered_set<ColliderKind>>			m_ignore_collide_colliders;			// è¡çªåˆ¤å®šã‚’ç„¡è¦–ã™ã‚‹ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
+	std::unordered_map<ColliderData, std::unordered_set<ColliderData>>	m_ignore_collide_collider_pairs;	// è¡çªåˆ¤å®šã‚’ç„¡è¦–ã™ã‚‹ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®ãƒšã‚¢
 	int m_handle_create_contains;
 
 	friend SingletonBase<CollisionManager>;

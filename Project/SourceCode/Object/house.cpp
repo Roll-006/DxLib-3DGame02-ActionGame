@@ -1,4 +1,4 @@
-#include "house.hpp"
+ï»¿#include "house.hpp"
 
 House::House(const std::string& house_id) :
 	PhysicalObjBase			(ObjName.HOUSE, ObjTag.BUILDING),
@@ -39,7 +39,7 @@ House::House(const std::string& house_id) :
 	AddCollider(std::make_shared<Collider>(ColliderKind::kCollisionAreaTrigger, std::make_shared<Sphere>(m_pos + m_collision_area_offset, m_collision_area_radius), this));
 	AddCollider(std::make_shared<Collider>(ColliderKind::kCollider,				m_collision_modeler->GetModelHandle(), this));
 
-	// ‰¼‚Åƒf[ƒ^‚ð‘‚«ž‚Þ
+	// ä»®ã§ãƒ‡ãƒ¼ã‚¿ã‚’æ›¸ãè¾¼ã‚€
 }
 
 House::~House()
@@ -83,7 +83,7 @@ void House::OnProjectPos()
 
 void House::AddToObjManager()
 {
-	ObjManager		::GetInstance()->AddObj			(shared_from_this());
+	ObjAccessor		::GetInstance()->AddObj			(shared_from_this());
 	CollisionManager::GetInstance()->AddCollideObj	(std::dynamic_pointer_cast<PhysicalObjBase>(shared_from_this()));
 	PhysicsManager	::GetInstance()->AddPhysicalObj	(std::dynamic_pointer_cast<PhysicalObjBase>(shared_from_this()));
 }
@@ -94,10 +94,10 @@ void House::RemoveToObjManager()
 
 	CollisionManager::GetInstance()->RemoveCollideObj (obj_handle);
 	PhysicsManager	::GetInstance()->RemovePhysicalObj(obj_handle);
-	ObjManager		::GetInstance()->RemoveObj		  (obj_handle);
+	ObjAccessor		::GetInstance()->RemoveObj		  (obj_handle);
 }
 
-float House::GetDeltaTime() const
+const float House::GetDeltaTime() const
 {
 	const auto time_manager = GameTimeManager::GetInstance();
 	return time_manager->GetDeltaTime(TimeScaleLayerKind::kWorld);

@@ -1,22 +1,22 @@
-#include "enemy_manager.hpp"
+ï»¿#include "enemy_manager.hpp"
 
 EnemyManager::EnemyManager() :
-	m_enemy_size		(0),
+	m_enemy_size			(0),
 	m_dead_enemy_contains	(0),
-	m_object_pool		(std::make_shared<EnemyObjectPool>())
+	m_object_pool			(std::make_shared<EnemyObjectPool>())
 {
-	// ƒCƒxƒ“ƒg“o˜^
+	// ã‚¤ãƒ™ãƒ³ãƒˆç™»éŒ²
 	EventSystem::GetInstance()->Subscribe<ReleaseEvent>			(this, &EnemyManager::NotifyAllowAction);
 	EventSystem::GetInstance()->Subscribe<GrabEvent>			(this, &EnemyManager::NotifyDisallowActionForcibly);
-	EventSystem::GetInstance()->Subscribe<DeadAllEnemyEvent>	(this, &EnemyManager::NotifyDisallowActionForcibly);
+	//EventSystem::GetInstance()->Subscribe<DeadAllEnemyEvent>	(this, &EnemyManager::NotifyDisallowActionForcibly);
 	EventSystem::GetInstance()->Subscribe<OnTargetDetectedEvent>(this, &EnemyManager::NotifyDetectedTarget);
 	EventSystem::GetInstance()->Subscribe<DeadEnemyEvent>		(this, &EnemyManager::CountDeadEnemy);
 
-	// ‰Šú‚Ì“G‚ğ¶¬
+	// åˆæœŸã®æ•µã‚’ç”Ÿæˆ
 	nlohmann::json j_data;
 	if (json_loader::Load("Data/JSON/init_enemies.json", j_data))
 	{
-		// ƒ]ƒ“ƒr
+		// ã‚¾ãƒ³ãƒ“
 		const auto init_zombie_size = j_data.at("init_enemies").at("zombie").size();
 		m_enemy_size += static_cast<int>(init_zombie_size);
 		for (size_t i = 0; i < init_zombie_size; ++i)
@@ -43,10 +43,10 @@ EnemyManager::EnemyManager() :
 
 EnemyManager::~EnemyManager()
 {
-	// ƒCƒxƒ“ƒg‚Ì“o˜^‰ğœ
+	// ã‚¤ãƒ™ãƒ³ãƒˆã®ç™»éŒ²è§£é™¤
 	EventSystem::GetInstance()->Unsubscribe<ReleaseEvent>			(this, &EnemyManager::NotifyAllowAction);
 	EventSystem::GetInstance()->Unsubscribe<GrabEvent>				(this, &EnemyManager::NotifyDisallowActionForcibly);
-	EventSystem::GetInstance()->Unsubscribe<DeadAllEnemyEvent>		(this, &EnemyManager::NotifyDisallowActionForcibly);
+	//EventSystem::GetInstance()->Unsubscribe<DeadAllEnemyEvent>		(this, &EnemyManager::NotifyDisallowActionForcibly);
 	EventSystem::GetInstance()->Unsubscribe<OnTargetDetectedEvent>	(this, &EnemyManager::NotifyDetectedTarget);
 	EventSystem::GetInstance()->Unsubscribe<DeadEnemyEvent>			(this, &EnemyManager::CountDeadEnemy);
 
@@ -69,9 +69,18 @@ void EnemyManager::Init()
 
 void EnemyManager::Update()
 {
-	for (const auto& enemy : m_active_enemies)
+	for (const auto& owner_enemy : m_active_enemies)
 	{
-		enemy->Update();
+		//owner_enemy->InitMoveOffset();
+
+		//for (const auto& target_enemy : m_active_enemies)
+		//{
+		//	if (owner_enemy == target_enemy) { continue; }
+
+		//	owner_enemy->CorrectMoveVelocity(target_enemy->GetTransform()->GetPos(CoordinateKind::kWorld));
+		//}
+
+		owner_enemy->Update();
 	}
 }
 
@@ -113,7 +122,7 @@ void EnemyManager::NotifyAllowAction(const ReleaseEvent& event)
 {
 	for (const auto& enemy : m_active_enemies)
 	{
-		// —£‚µ‚½–{lˆÈŠO‚Ì“G‚Ìs“®‚ğ‚·‚×‚Ä•œ‹A‚³‚¹‚é
+		// é›¢ã—ãŸæœ¬äººä»¥å¤–ã®æ•µã®è¡Œå‹•ã‚’ã™ã¹ã¦å¾©å¸°ã•ã›ã‚‹
 		if (event.enemy_handle != enemy->GetEnemyID())
 		{
 			enemy->OnAllowAction();
@@ -123,15 +132,15 @@ void EnemyManager::NotifyAllowAction(const ReleaseEvent& event)
 
 void EnemyManager::NotifyDisallowActionForcibly(const GrabEvent& event)
 {
-	// ’Í‚ñ‚¾–{lˆÈŠO‚Ì“G‚Ìs“®‚Í‚·‚×‚Ä’â~‚³‚¹‚é
+	// æ´ã‚“ã æœ¬äººä»¥å¤–ã®æ•µã®è¡Œå‹•ã¯ã™ã¹ã¦åœæ­¢ã•ã›ã‚‹
 	NotifyDisallowActionForcibly(event.enemy_id);
 }
 
-void EnemyManager::NotifyDisallowActionForcibly(const DeadAllEnemyEvent& event)
-{
-	// €–S‚µ‚½–{lˆÈŠO‚Ì“G‚Ìs“®‚ğ‚·‚×‚Ä’â~‚³‚¹‚é
-	//NotifyDisallowActionForcibly(event.enemy_id);
-}
+//void EnemyManager::NotifyDisallowActionForcibly(const DeadAllEnemyEvent& event)
+//{
+//	// æ­»äº¡ã—ãŸæœ¬äººä»¥å¤–ã®æ•µã®è¡Œå‹•ã‚’ã™ã¹ã¦åœæ­¢ã•ã›ã‚‹
+//	NotifyDisallowActionForcibly(event.enemy_id);
+//}
 
 void EnemyManager::NotifyDetectedTarget(const OnTargetDetectedEvent& event)
 {
@@ -142,7 +151,7 @@ void EnemyManager::NotifyDetectedTarget(const OnTargetDetectedEvent& event)
 		const auto enemy_pos	= enemy->GetTransform()->GetPos(CoordinateKind::kWorld);
 		const auto distance		= VSize(enemy_pos - event.notify_pos);
 
-		// ‹——£‚ªˆê’è“à‚È‚ç”­Œ©ó‘Ô‚É‚·‚é
+		// è·é›¢ãŒä¸€å®šå†…ãªã‚‰ç™ºè¦‹çŠ¶æ…‹ã«ã™ã‚‹
 		if(distance <= event.notify_distance)
 		{
 			enemy->OnDetected();
@@ -163,7 +172,7 @@ void EnemyManager::NotifyDisallowActionForcibly(const std::string& origin_enemy_
 {
 	for (const auto& enemy : m_active_enemies)
 	{
-		// –{lˆÈŠO‚Ì“G‚Ìs“®‚ğ‚·‚×‚Ä’â~‚³‚¹‚é
+		// æœ¬äººä»¥å¤–ã®æ•µã®è¡Œå‹•ã‚’ã™ã¹ã¦åœæ­¢ã•ã›ã‚‹
 		if (origin_enemy_id != enemy->GetEnemyID())
 		{
 			enemy->OnDisallowActionForcibly();

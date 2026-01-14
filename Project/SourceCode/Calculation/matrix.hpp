@@ -1,8 +1,8 @@
-#pragma once
+ï»¿#pragma once
 #include <nlohmann/json.hpp>
 #include <DxLib.h>
 
-inline MATRIX operator+ (const MATRIX& mat1, const MATRIX& mat2) { return MAdd(mat1, mat2); }
+inline MATRIX operator+ (const MATRIX& mat1, const MATRIX& mat2) { return MAdd (mat1, mat2); }
 inline MATRIX operator* (const MATRIX& mat1, const MATRIX& mat2) { return MMult(mat1, mat2); }
 
 inline MATRIX operator* (const MATRIX& mat, const float scale) { return MScale(mat, scale); }
@@ -32,7 +32,7 @@ inline bool operator!=(const MATRIX& mat1, const MATRIX& mat2) { return !(mat1 =
 
 namespace matrix
 {
-	/// @brief X²‰ñ“](ƒsƒbƒ`²‰ñ“])‚ğcosƒÆAsinƒÆ‚©‚ç¶¬
+	/// @brief Xè»¸å›è»¢(ãƒ”ãƒƒãƒè»¸å›è»¢)ã‚’cosÎ¸ã€sinÎ¸ã‹ã‚‰ç”Ÿæˆ
 	[[nodiscard]] inline MATRIX CreateXMatrix(const float cos_theta, const float sin_theta)
 	{
 		auto mat = MGetIdent();
@@ -43,7 +43,7 @@ namespace matrix
 		return mat;
 	}
 
-	/// @brief Y²‰ñ“](ƒˆ[²‰ñ“])‚ğcosƒÆAsinƒÆ‚©‚ç¶¬
+	/// @brief Yè»¸å›è»¢(ãƒ¨ãƒ¼è»¸å›è»¢)ã‚’cosÎ¸ã€sinÎ¸ã‹ã‚‰ç”Ÿæˆ
 	[[nodiscard]] inline MATRIX CreateYMatrix(const float cos_theta, const float sin_theta)
 	{
 		auto mat = MGetIdent();
@@ -54,7 +54,7 @@ namespace matrix
 		return mat;
 	}
 
-	/// @brief Z²‰ñ“](ƒ[ƒ‹²‰ñ“])‚ğcosƒÆAsinƒÆ‚©‚ç¶¬
+	/// @brief Zè»¸å›è»¢(ãƒ­ãƒ¼ãƒ«è»¸å›è»¢)ã‚’cosÎ¸ã€sinÎ¸ã‹ã‚‰ç”Ÿæˆ
 	[[nodiscard]] inline MATRIX CreateZMatrix(const float cos_theta, const float sin_theta)
 	{
 		auto mat = MGetIdent();
@@ -65,7 +65,13 @@ namespace matrix
 		return mat;
 	}
 
-	/// @brief s—ñ‚ÌƒXƒP[ƒ‹‚ğæ“¾
+	/// @brief è¡Œåˆ—ã®åº§æ¨™æˆåˆ†ã‚’å–å¾—
+	[[nodiscard]] inline VECTOR GetPos(const MATRIX& mat)
+	{
+		return { mat.m[3][0], mat.m[3][1], mat.m[3][2] };
+	}
+
+	/// @brief è¡Œåˆ—ã®ã‚¹ã‚±ãƒ¼ãƒ«ã‚’å–å¾—
 	[[nodiscard]] inline VECTOR GetScale(const MATRIX& mat)
 	{
 		const auto scale_x = VGet(mat.m[0][0], mat.m[0][1], mat.m[0][2]);
@@ -96,7 +102,7 @@ namespace matrix
 
 	inline void SetScale(MATRIX& mat, const VECTOR& scale)
 	{
-		// ²‚ğ³‹K‰»‚µ‚ÄƒXƒP[ƒ‹‚ğŠ|‚¯‚é
+		// è»¸ã‚’æ­£è¦åŒ–ã—ã¦ã‚¹ã‚±ãƒ¼ãƒ«ã‚’æ›ã‘ã‚‹
 		const auto current_scale = GetScale(mat);
 
 		if (current_scale.x != 0.0f)
@@ -121,7 +127,7 @@ namespace matrix
 		}
 	}
 
-	/// @brief ‰ñ“]¬•ª‚ğİ’è(Œ³‚ÌƒXƒP[ƒ‹¬•ª‚Í•Û‚Â)
+	/// @brief å›è»¢æˆåˆ†ã‚’è¨­å®š(å…ƒã®ã‚¹ã‚±ãƒ¼ãƒ«æˆåˆ†ã¯ä¿ã¤)
 	inline void SetRot(MATRIX& mat, const MATRIX& rot_mat)
 	{
 		const auto scale = GetScale(mat);

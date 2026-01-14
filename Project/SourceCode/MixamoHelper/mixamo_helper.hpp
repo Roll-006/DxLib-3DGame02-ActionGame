@@ -33,8 +33,8 @@ namespace mixamo_helper
                 if (frame_index <= -1) { continue; }
 
                 auto       child_m      = MV1GetFrameLocalWorldMatrix(model_handle, frame_index);
-                const auto child_pos    = MGetTranslateElem(child_m);
-                const auto parent_pos   = MGetTranslateElem(parent_matrix);
+                const auto child_pos    = matrix::GetPos(child_m);
+                const auto parent_pos   = matrix::GetPos(parent_matrix);
                 const auto distance     = VSize(child_pos - parent_pos);
                 const auto radius       = distance * 0.2f;
                 const auto axis_length  = distance * 0.6f;
@@ -66,7 +66,7 @@ namespace mixamo_helper
 
         // Armatureの描画
         auto armature_m             = MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, "Armature"));
-        const auto armature_pos     = MGetTranslateElem(armature_m);
+        const auto armature_pos     = matrix::GetPos(armature_m);
         const auto armature_axis    = math::ConvertRotMatrixToAxis(armature_m);
         axis::Draw(armature_axis, armature_pos, 5.0f);
         DrawSphere3D(armature_pos, 1, 8, 0xffffff, 0xffffff, FALSE);

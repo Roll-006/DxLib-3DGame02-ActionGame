@@ -1,4 +1,4 @@
-#include "game_manager.hpp"
+ï»¿#include "game_manager.hpp"
 
 GameManager::GameManager():
 	m_game_system_setter(std::make_unique<GameSystemSetter>()),
@@ -20,7 +20,7 @@ GameManager::GameManager():
 	SceneFader				::Generate();
 
 	GameTimeManager			::Generate();
-	ObjManager				::Generate();
+	ObjAccessor				::Generate();
 	CollisionManager		::Generate();
 	PhysicsManager			::Generate();
 	CinemachineBrain		::Generate();
@@ -29,7 +29,7 @@ GameManager::GameManager():
 
 	m_scene_manager = std::make_unique<SceneManager>();
 
-	// ƒCƒxƒ“ƒg“o˜^
+	// ã‚¤ãƒ™ãƒ³ãƒˆç™»éŒ²
 	EventSystem::GetInstance()->Subscribe<ExitGameEvent>(this, &GameManager::ExitGame);
 }
 
@@ -37,7 +37,7 @@ GameManager::~GameManager()
 {	
 	m_scene_manager = nullptr;
 
-	// ƒCƒxƒ“ƒg‚Ì“o˜^‰ðœ
+	// ã‚¤ãƒ™ãƒ³ãƒˆã®ç™»éŒ²è§£é™¤
 	EventSystem::GetInstance()->Unsubscribe<ExitGameEvent>(this, &GameManager::ExitGame);
 
 	HandleCreator			::Delete();
@@ -58,7 +58,7 @@ GameManager::~GameManager()
 	LightHolder				::Delete();
 	EffectManager			::Delete();
 	ObjectPoolHolder		::Delete();
-	ObjManager				::Delete();
+	ObjAccessor				::Delete();
 	EventSystem				::Delete();
 	HandleKeeper			::Delete();
 }

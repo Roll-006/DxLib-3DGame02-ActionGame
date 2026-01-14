@@ -1,0 +1,10 @@
+{
+  "sound_volume": {
+    "master_volume": 100,
+    "volume": {
+      "0": 100,
+      "1": 100
+    },
+    "max_volume": 1.0
+  }
+}

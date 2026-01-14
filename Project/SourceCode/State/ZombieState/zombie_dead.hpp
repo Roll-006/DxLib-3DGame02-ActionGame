@@ -1,24 +1,23 @@
-#pragma once
-#include "../../Base/action_state_base.hpp"
+ï»¿#pragma once
+#include "../../Base/zombie_state_base.hpp"
 
-#include "../../Object/zombie.hpp"
-#include "../../Part/zombie_state_controller.hpp"
+class Animator;
+struct MaterialData;
 
 namespace zombie_state
 {
-	class Dead final : public ActionStateBase<Zombie>
+	class Dead final : public ZombieStateBase
 	{
 	public:
-		Dead();
-		~Dead() override;
+		Dead(Zombie& zombie, zombie_state::State& state, const std::shared_ptr<Animator>& animator);
+		~Dead();
 
-		void Update		(std::shared_ptr<Zombie>& obj) override;
-		void LateUpdate	(std::shared_ptr<Zombie>& obj) override;
-		void Enter		(std::shared_ptr<Zombie>& obj) override;
-		void Exit		(std::shared_ptr<Zombie>& obj) override;
+		void Update()		override;
+		void LateUpdate()	override;
+		void Enter()		override;
+		void Exit()			override;
 
-		[[nodiscard]] std::shared_ptr<IState<Zombie>> ChangeState(std::shared_ptr<Zombie>& obj) override;
-		[[nodiscard]] bool IsStopAllState() const override { return m_is_stop_all_state; }
+		[[nodiscard]] const ZombieStateKind GetNextStateKind() override;
 
 	private:
 		void ChangeMaterial(const auto model_handle, const float change_speed);
@@ -28,8 +27,7 @@ namespace zombie_state
 		static constexpr float kChangeColorWaitTime = 0.8f;
 		static constexpr float kReturnPoolWaitTime	= 15.0f;
 
-		bool	m_is_stop_all_state;
-		float	m_elapsed_time_end_anim;	// ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌÄ¶‚ªI—¹‚µ‚Ä‚©‚ç‚ÌŠÔ
+		float	m_elapsed_time_end_anim;	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®å†ç”ŸãŒçµ‚äº†ã—ã¦ã‹ã‚‰ã®æ™‚é–“
 		float   m_change_color_wait_time;
 		bool	m_is_start_disappear;
 

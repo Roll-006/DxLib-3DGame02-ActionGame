@@ -6,6 +6,6 @@ class IMeleeHittable abstract
 public:
 	virtual ~IMeleeHittable() = default;
 
-	virtual [[nodiscard]] bool IsStandStun()  const abstract;
-	virtual [[nodiscard]] bool IsCrouchStun() const abstract;
+	virtual [[nodiscard]] const bool IsStandStun()  const abstract;
+	virtual [[nodiscard]] const bool IsCrouchStun() const abstract;
 };

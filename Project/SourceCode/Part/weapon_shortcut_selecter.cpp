@@ -1,8 +1,7 @@
-#include "weapon_shortcut_selecter.hpp"
-
 #include "../Object/player.hpp"
-#include "../Part/player_state_controller.hpp"
+#include "../Kind/player_state_kind.hpp"
 #include "../Command/command_handler.hpp"
+#include "weapon_shortcut_selecter.hpp"
 
 WeaponShortcutSelecter::WeaponShortcutSelecter() : 
 	m_current_select_shortcut	(WeaponShortcutPosKind::kInsideUp),
@@ -21,12 +20,10 @@ void WeaponShortcutSelecter::Update(const std::shared_ptr<Player>& player)
 	if (!player->CanControl())			{ return; }
 	if (player->GetDeltaTime() == 0.0f) { return; }
 
-	const auto state_controller		= player->GetStateController();
-	const auto weapon_action_state	= state_controller->GetWeaponActionState(TimeKind::kCurrent);
-	const auto action_state			= state_controller->GetActionState(TimeKind::kCurrent);
+	const auto state_kind = player->GetState()->GetCurrentStateKind();
 
-	if (   weapon_action_state	->GetStateKind() == static_cast<int>(player_state::WeaponActionStateKind::kShotRocketLauncher)
-		|| action_state			->GetStateKind() == static_cast<int>(player_state::ActionStateKind		::kDead))
+	if (   state_kind == PlayerStateKind::kShotRocketLauncher
+		|| state_kind == PlayerStateKind::kDead)
 	{
 		return;
 	}
@@ -49,9 +46,9 @@ void WeaponShortcutSelecter::DetachShortcutWeapon(const WeaponShortcutPosKind sh
 	m_shortcut_weapons[shortcut_pos_kind] = nullptr;
 }
 
-std::shared_ptr<WeaponBase> WeaponShortcutSelecter::GetShortcutWeapon(const WeaponShortcutPosKind shortcut_pos_kind)
+std::shared_ptr<WeaponBase> WeaponShortcutSelecter::GetShortcutWeapon(const WeaponShortcutPosKind shortcut_pos_kind) const
 {
-	return m_shortcut_weapons.contains(shortcut_pos_kind) ? m_shortcut_weapons[shortcut_pos_kind] : nullptr;
+	return m_shortcut_weapons.contains(shortcut_pos_kind) ? m_shortcut_weapons.at(shortcut_pos_kind) : nullptr;
 }
 
 void WeaponShortcutSelecter::SelectWeaponByPad()
@@ -67,7 +64,7 @@ void WeaponShortcutSelecter::SelectWeaponByPad()
 			const auto is_inside			= current_shortcut_num < 4;
 			const auto increase_value		= is_inside ? 4 : -4;
 			const auto offset				= is_inside ? 0 :  4;
-			const auto is_select_same_dir	= current_shortcut_num == i + offset ? true : false;
+			const auto is_select_same_dir	= current_shortcut_num == i + offset;
 
 			// Šù‚É“ü—Í‚µ‚½•ûŒü‚É‚¢‚½ê‡‚Í“à‘¤ / ŠO‘¤‚ÌØ‚è‘Ö‚¦‚ðs‚¤
 			if (is_select_same_dir)

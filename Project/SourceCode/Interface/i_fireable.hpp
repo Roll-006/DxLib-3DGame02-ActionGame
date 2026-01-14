@@ -6,5 +6,5 @@ class IFireable abstract
 public:
 	virtual ~IFireable() = default;
 
-	[[nodiscard]] virtual std::shared_ptr<AmmoHolder> GetAmmoHolder() const abstract;
+	[[nodiscard]] virtual const std::shared_ptr<AmmoHolder> GetAmmoHolder() const abstract;
 };

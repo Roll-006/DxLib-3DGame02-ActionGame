@@ -1,9 +1,9 @@
-#pragma once
+ï»¿#pragma once
 #include "../Base/physical_obj_base.hpp"
 #include "../Interface/i_poolable.hpp"
 #include "../Interface/i_bullet.hpp"
 
-#include "../Manager/obj_manager.hpp"
+#include "../Accessor/obj_accessor.hpp"
 #include "../Manager/collision_manager.hpp"
 #include "../Manager/physics_manager.hpp"
 
@@ -24,13 +24,13 @@ public:
 	void AddToObjManager()			override;
 	void RemoveToObjManager()		override;
 	
-	/// @brief ’eŠÛ‚ª”­Ë‚³‚ê‚½
+	/// @brief å¼¾ä¸¸ãŒç™ºå°„ã•ã‚ŒãŸ
 	void OnShot(GunBase& gun) override;
 
-	[[nodiscard]] float			GetDeltaTime()		const	override;
-	[[nodiscard]] float			GetPower()			const	override { return m_power; }
-	[[nodiscard]] std::string	GetShotOwnerName()	const	override { return m_shot_owner_name; }
-	[[nodiscard]] bool			IsReturnPool()				override;
+	[[nodiscard]] const float		GetDeltaTime()		const	override;
+	[[nodiscard]] const float		GetPower()			const	override { return m_power; }
+	[[nodiscard]] const std::string	GetShotOwnerName()	const	override { return m_shot_owner_name; }
+	[[nodiscard]] const bool		IsReturnPool()				override;
 
 private:
 	void Move();
@@ -43,9 +43,9 @@ private:
 
 	VECTOR m_move_dir;
 	VECTOR m_prev_pos;
-	VECTOR m_first_pos;		// ‰Šú”­ËˆÊ’u
-	float  m_move_speed;	// ˆÚ“®‘¬“x
-	float  m_deceleration;	// Œ¸‘¬“x
-	float  m_range;			// Ë’ö
+	VECTOR m_first_pos;		// åˆæœŸç™ºå°„ä½ç½®
+	float  m_move_speed;	// ç§»å‹•é€Ÿåº¦
+	float  m_deceleration;	// æ¸›é€Ÿåº¦
+	float  m_range;			// å°„ç¨‹
 	float  m_power;
 };

@@ -1,8 +1,8 @@
-#pragma once
+ï»¿#pragma once
 #include "../Base/singleton_base.hpp"
 #include "../Base/physical_obj_base.hpp"
 
-#include "../Manager/obj_manager.hpp"
+#include "../Accessor/obj_accessor.hpp"
 #include "../Calculation/collision_calculator.hpp"
 
 class PhysicsManager final : public SingletonBase<PhysicsManager>
@@ -14,12 +14,12 @@ public:
 	void ProjectPos();
 
 
-	#pragma region “o˜^E‰ğœ
-	/// @brief •¨—“I‹““®‚ğs‚¤ƒIƒuƒWƒFƒNƒg‚ğ’Ç‰Á
+	#pragma region ç™»éŒ²ãƒ»è§£é™¤
+	/// @brief ç‰©ç†çš„æŒ™å‹•ã‚’è¡Œã†ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¿½åŠ 
 	template<obj_concepts::PhysicalObjT PhysicalObjT>
 	void AddPhysicalObj(const std::shared_ptr<PhysicalObjT>& physical_obj)
 	{
-		// ã‘‚«•s‰Â
+		// ä¸Šæ›¸ãä¸å¯
 		if (std::find(m_physical_objects.begin(), m_physical_objects.end(), physical_obj) == m_physical_objects.end())
 		{
 			m_physical_objects.emplace_back(physical_obj);
@@ -27,15 +27,15 @@ public:
 	}
 	void RemovePhysicalObj(const int obj_handle);
 
-	/// @brief •¨—“I‚È‹““®‘S”Ê‚ğ–³‹‚·‚éƒIƒuƒWƒFƒNƒg‚ğ’Ç‰Á
+	/// @brief ç‰©ç†çš„ãªæŒ™å‹•å…¨èˆ¬ã‚’ç„¡è¦–ã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¿½åŠ 
 	void AddIgnoreObjPhysicalBehavior(const int obj_handle);
 	void RemoveIgnoreObjPhysicalBehavior(const int obj_handle);
 
-	/// @brief d—Í‚Ì‰e‹¿‚ğ–³‹‚·‚éƒIƒuƒWƒFƒNƒg‚ğ’Ç‰Á
+	/// @brief é‡åŠ›ã®å½±éŸ¿ã‚’ç„¡è¦–ã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¿½åŠ 
 	void AddIgnoreObjGravity(const int obj_handle);
 	void RemoveIgnoreObjGravity(const int obj_handle);
 
-	/// @brief ‰Ÿ‚µ–ß‚µ‚ğ–³‹‚·‚éƒIƒuƒWƒFƒNƒg‚ÌƒyƒA‚ğ’Ç‰Á
+	/// @brief æŠ¼ã—æˆ»ã—ã‚’ç„¡è¦–ã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒšã‚¢ã‚’è¿½åŠ 
 	void AddIgnorePushBackPair(const int obj_handle1, const int obj_handle2);
 	void RemoveIgnorePushBackPair(const int obj_handle1, const int obj_handle2);
 	#pragma endregion
@@ -44,11 +44,11 @@ private:
 	PhysicsManager();
 	~PhysicsManager() override;
 
-	/// @brief ‚·‚×‚Ä‚ÌƒIƒuƒWƒFƒNƒg‚Ì‰Ÿ‚µ–ß‚µˆ—‚ğs‚¤
+	/// @brief ã™ã¹ã¦ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æŠ¼ã—æˆ»ã—å‡¦ç†ã‚’è¡Œã†
 	void ExecutePushBackPairs();
 
 
-	#pragma region ‰Ÿ‚µ–ß‚µ
+	#pragma region æŠ¼ã—æˆ»ã—
 	void PushBack					(const std::shared_ptr<PhysicalObjBase>& low_priority_obj, const std::shared_ptr<PhysicalObjBase>& high_priority_obj);
 	void PushBackTriangleAndTarget	(const std::shared_ptr<PhysicalObjBase>& low_priority_obj, const std::shared_ptr<PhysicalObjBase>& high_priority_obj);
 	void PushBackSphereAndTarget	(const std::shared_ptr<PhysicalObjBase>& low_priority_obj, const std::shared_ptr<PhysicalObjBase>& high_priority_obj);
@@ -56,23 +56,23 @@ private:
 	#pragma endregion
 
 
-	/// @brief •¨—“I‚È‹““®‚ğ“K—p‚·‚é‚©‚ğ”»’è‚·‚é
+	/// @brief ç‰©ç†çš„ãªæŒ™å‹•ã‚’é©ç”¨ã™ã‚‹ã‹ã‚’åˆ¤å®šã™ã‚‹
 	[[nodiscard]] bool IsApplyPhysicalBehavior(const std::shared_ptr<PhysicalObjBase>& physical_obj) const
 	{
 		const auto itr = std::find(m_ignore_physical_behavior_obj_handle.begin(), m_ignore_physical_behavior_obj_handle.end(), physical_obj->GetObjHandle());
 
-		// –³‹‚·‚éƒŠƒXƒg‚É“o˜^‚³‚ê‚Ä‚¢‚ê‚Î“K—p‚µ‚È‚¢
+		// ç„¡è¦–ã™ã‚‹ãƒªã‚¹ãƒˆã«ç™»éŒ²ã•ã‚Œã¦ã„ã‚Œã°é©ç”¨ã—ãªã„
 		if (itr != m_ignore_physical_behavior_obj_handle.end()) { return false; }
 
 		return true;
 	}
 
-	/// @brief d—Í‚ğ“K—p‚·‚é‚©‚ğ”»’è‚·‚é
+	/// @brief é‡åŠ›ã‚’é©ç”¨ã™ã‚‹ã‹ã‚’åˆ¤å®šã™ã‚‹
 	[[nodiscard]] bool IsApplyGravity(const std::shared_ptr<PhysicalObjBase>& physical_obj) const
 	{
 		const auto itr = std::find(m_ignore_gravity_obj_handle.begin(), m_ignore_gravity_obj_handle.end(), physical_obj->GetObjHandle());
 
-		// –³‹ƒŠƒXƒg‚É“o˜^‚³‚ê‚Ä‚¢‚éA‚à‚µ‚­‚ÍÃ“IƒIƒuƒWƒFƒNƒg‚Å‚ ‚Á‚½ê‡‚Íd—Í‚ğ“K—p‚³‚¹‚È‚¢
+		// ç„¡è¦–ãƒªã‚¹ãƒˆã«ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã€ã‚‚ã—ãã¯é™çš„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã§ã‚ã£ãŸå ´åˆã¯é‡åŠ›ã‚’é©ç”¨ã•ã›ãªã„
 		if (itr != m_ignore_gravity_obj_handle.end() || physical_obj->GetMassKind() == MassKind::kStatic) { return false; }
 
 		return true;
@@ -81,13 +81,13 @@ private:
 	[[nodiscard]] bool CanPushBack(const int obj_handle1, const int obj_handle2);
 
 private:
-	static constexpr float kGravityAcceleration = 180.0f;	// d—Í‰Á‘¬“x(ƒfƒ‹ƒ^ƒ^ƒCƒ€“K—p‘O)
-	static constexpr float kMaxGravity			= 140.0f;	// Å‘åd—Í(ƒfƒ‹ƒ^ƒ^ƒCƒ€“K—pŒã‚ÌÅ‘å’l)
+	static constexpr float kGravityAcceleration = 180.0f;	// é‡åŠ›åŠ é€Ÿåº¦(ãƒ‡ãƒ«ã‚¿ã‚¿ã‚¤ãƒ é©ç”¨å‰)
+	static constexpr float kMaxGravity			= 140.0f;	// æœ€å¤§é‡åŠ›(ãƒ‡ãƒ«ã‚¿ã‚¿ã‚¤ãƒ é©ç”¨å¾Œã®æœ€å¤§å€¤)
 	static constexpr float kIgnoreDistance		= 100.0f;
 
-	std::vector<std::shared_ptr<PhysicalObjBase>> m_physical_objects;				// •¨—“I‹““®‚ğs‚¤ƒIƒuƒWƒFƒNƒg
-	std::vector<int>					m_ignore_physical_behavior_obj_handle;		// •¨—“I‚È‹““®‘S”Ê‚ğ–³‹‚·‚éƒIƒuƒWƒFƒNƒg
-	std::vector<int>					m_ignore_gravity_obj_handle;				// d—Í‚Ì‰e‹¿‚ğ–³‹‚·‚éƒIƒuƒWƒFƒNƒg
+	std::vector<std::shared_ptr<PhysicalObjBase>> m_physical_objects;				// ç‰©ç†çš„æŒ™å‹•ã‚’è¡Œã†ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	std::vector<int>					m_ignore_physical_behavior_obj_handle;		// ç‰©ç†çš„ãªæŒ™å‹•å…¨èˆ¬ã‚’ç„¡è¦–ã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	std::vector<int>					m_ignore_gravity_obj_handle;				// é‡åŠ›ã®å½±éŸ¿ã‚’ç„¡è¦–ã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	std::vector<std::pair<int, int>>	m_ignore_push_back_pair_obj_handle;
 
 	friend SingletonBase<PhysicsManager>;

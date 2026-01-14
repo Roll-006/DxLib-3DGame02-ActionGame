@@ -1,0 +1,39 @@
+﻿{
+  "escape_icon_data": {
+    "screen_size": {
+      "x": 256,
+      "y": 256
+    },
+    "gauge_radius": 40,
+    "gauge_thickness": 11,
+    "base_gauge_color": "#363636",
+    "escape_gauge_color": "#e32d2d",
+    "escape_text_offset": {
+      "x": 100,
+      "y": 0
+    },
+    "hold_text_offset": {
+      "x": 0,
+      "y": -90
+    },
+    "escape_text_data": {
+      "font_path": "explanatory_text",
+      "text": "脱出",
+      "hex_color": "#ffffff",
+      "offset": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    "hold_text_data": {
+      "font_path": "explanatory_text",
+      "text": "HOLD",
+      "hex_color": "#ffffff",
+      "offset": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    "blur_circle_graphic_path": "Data/Graphic/UI/Common/circle_blur_white.png"
+  }
+}

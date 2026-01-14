@@ -74,10 +74,10 @@ void StealthKillTargetIcon::CreateStealthKillIconScreen()
 {
 	if (!m_stealth_kill_target) { return; }
 
-	const auto	model_handle = std::dynamic_pointer_cast<CharacterBase>(m_stealth_kill_target)->GetModeler()->GetModelHandle();
+	const auto	model_handle = std::dynamic_pointer_cast<const CharacterBase>(m_stealth_kill_target)->GetModeler()->GetModelHandle();
 	auto		spine2_m		 = MV1GetFrameLocalWorldMatrix(model_handle, MV1SearchFrame(model_handle, FramePath.SPINE_2));
 
-	m_icon_pos = MGetTranslateElem(spine2_m) + kIconOffset;
+	m_icon_pos = matrix::GetPos(spine2_m) + kIconOffset;
 
 	// 入力デバイスおよびキー割り当てに対応した画像を取得
 	const auto command	= CommandHandler::GetInstance();

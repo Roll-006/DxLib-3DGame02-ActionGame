@@ -18,7 +18,7 @@ private:
 	void CreateResultScreen();
 
 private:
-	GameOverTextData				game_over_text_data;
+	GameOverTextData				data;
 
 	Vector2D<int>					m_text_center_pos;
 	int								m_alpha_blend_num;
@@ -33,14 +33,14 @@ private:
 #pragma region from / to JSON
 inline void from_json(const nlohmann::json& j_data, GameOverText& game_over_text)
 {
-	j_data.at("game_over_text_data").get_to(game_over_text.game_over_text_data);
+	j_data.at("game_over_text_data").get_to(game_over_text.data);
 }
 
 inline void to_json(nlohmann::json& j_data, const GameOverText& game_over_text)
 {
 	j_data = nlohmann::json
 	{
-		{ "game_over_text_data", game_over_text.game_over_text_data },
+		{ "game_over_text_data", game_over_text.data },
 	};
 }
 #pragma endregion

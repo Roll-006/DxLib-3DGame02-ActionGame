@@ -1,11 +1,11 @@
 ﻿#include "ik_solver.hpp"
 
-Axis ik_solver::ConvertMixamoAxisToAxis(const Axis& mixamo_axis)
+const Axis ik_solver::ConvertMixamoAxisToAxis(const Axis& mixamo_axis)
 {
 	return { -mixamo_axis.x_axis, mixamo_axis.z_axis, mixamo_axis.y_axis };
 }
 
-Axis ik_solver::GetForwardSyncedMixamoAxis(const Axis& origin_mixamo_axis, const VECTOR& forward, const std::optional<AxisData>& aid_axis)
+const Axis ik_solver::GetForwardSyncedMixamoAxis(const Axis& origin_mixamo_axis, const VECTOR& forward, const std::optional<AxisData>& aid_axis)
 {
 	const auto synced_axis = math::GetForwardSyncedAxis(ConvertMixamoAxisToAxis(origin_mixamo_axis), forward, aid_axis);
 	return ConvertMixamoAxisToAxis(synced_axis);
@@ -18,9 +18,9 @@ void ik_solver::OneBoneIK(
 	const std::optional<AxisData>&	aid_axis)
 {
 	auto	   child_local_m			= MV1GetFrameLocalMatrix(model_handle, frame_index);
-	const auto child_local_pos			= MGetTranslateElem(child_local_m);
+	const auto child_local_pos			= matrix::GetPos(child_local_m);
 	auto	   child_world_m			= MV1GetFrameLocalWorldMatrix(model_handle, frame_index);
-	const auto child_world_pos			= MGetTranslateElem(child_world_m);
+	const auto child_world_pos			= matrix::GetPos(child_world_m);
 
 	// 変換後のXYZ軸を取得	
 	const auto current_axis				= math::ConvertRotMatrixToAxis(child_world_m);
@@ -93,7 +93,7 @@ void ik_solver::CreateTwoBoneIKRotMatrix(
 	FrameData&					middle_bone,
 	ModelFrameAngleLimitData&	begin_angle_limit,
 	ModelFrameAngleLimitData&	middle_angle_limit,
-	const TriangleEdgeData		triangle_edge,
+	const TriangleEdgeData&		triangle_edge,
 	const RotDirKind			rot_dir_kind,
 	const bool					is_rotate_x_axis)
 {

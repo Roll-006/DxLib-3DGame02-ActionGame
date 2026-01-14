@@ -3,6 +3,7 @@
 #include "../Base/ui_slider_base.hpp"
 
 #include "../Handle/handle_creator.hpp"
+#include "../Font/text.hpp"
 
 class ITab abstract
 {

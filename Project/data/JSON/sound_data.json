@@ -11,6 +11,7 @@
       "min_frequency_scale": 0.0,
       "is_3d_sound": false,
       "is_loop": true,
+      "sound_kind": 2,
       "time_scale_layer_kind": 0
     },
     {
@@ -24,6 +25,7 @@
       "min_frequency_scale": 0.0,
       "is_3d_sound": false,
       "is_loop": true,
+      "sound_kind": 2,
       "time_scale_layer_kind": 0
     },
     {
@@ -37,6 +39,7 @@
       "min_frequency_scale": 0.0,
       "is_3d_sound": false,
       "is_loop": true,
+      "sound_kind": 2,
       "time_scale_layer_kind": 0
     },
     {
@@ -50,6 +53,7 @@
       "min_frequency_scale": 0.0,
       "is_3d_sound": false,
       "is_loop": true,
+      "sound_kind": 2,
       "time_scale_layer_kind": 0
     },
     {
@@ -63,6 +67,7 @@
       "min_frequency_scale": 0.0,
       "is_3d_sound": false,
       "is_loop": true,
+      "sound_kind": 2,
       "time_scale_layer_kind": 0
     },
     {
@@ -76,6 +81,7 @@
       "min_frequency_scale": 0.0,
       "is_3d_sound": false,
       "is_loop": false,
+      "sound_kind": 1,
       "time_scale_layer_kind": 0
     },
     {
@@ -89,6 +95,7 @@
       "min_frequency_scale": 0.0,
       "is_3d_sound": true,
       "is_loop": false,
+      "sound_kind": 1,
       "time_scale_layer_kind": 1
     },
     {
@@ -102,6 +109,7 @@
       "min_frequency_scale": 0.0,
       "is_3d_sound": true,
       "is_loop": false,
+      "sound_kind": 1,
       "time_scale_layer_kind": 1
     },
     {
@@ -115,6 +123,7 @@
       "min_frequency_scale": 0.0,
       "is_3d_sound": true,
       "is_loop": false,
+      "sound_kind": 1,
       "time_scale_layer_kind": 1
     },
     {
@@ -128,6 +137,7 @@
       "min_frequency_scale": 0.0,
       "is_3d_sound": true,
       "is_loop": false,
+      "sound_kind": 1,
       "time_scale_layer_kind": 1
     },
     {
@@ -141,6 +151,7 @@
       "min_frequency_scale": 0.0,
       "is_3d_sound": true,
       "is_loop": false,
+      "sound_kind": 1,
       "time_scale_layer_kind": 1
     },
     {
@@ -154,6 +165,7 @@
       "min_frequency_scale": 0.0,
       "is_3d_sound": true,
       "is_loop": false,
+      "sound_kind": 1,
       "time_scale_layer_kind": 1
     },
     {
@@ -167,6 +179,7 @@
       "min_frequency_scale": 0.0,
       "is_3d_sound": true,
       "is_loop": false,
+      "sound_kind": 1,
       "time_scale_layer_kind": 1
     },
     {
@@ -180,6 +193,7 @@
       "min_frequency_scale": 0.0,
       "is_3d_sound": true,
       "is_loop": false,
+      "sound_kind": 1,
       "time_scale_layer_kind": 1
     },
     {
@@ -193,6 +207,7 @@
       "min_frequency_scale": 0.1,
       "is_3d_sound": true,
       "is_loop": false,
+      "sound_kind": 1,
       "time_scale_layer_kind": 1
     },
     {
@@ -206,6 +221,7 @@
       "min_frequency_scale": 0.0,
       "is_3d_sound": true,
       "is_loop": false,
+      "sound_kind": 1,
       "time_scale_layer_kind": 1
     },
     {
@@ -219,6 +235,7 @@
       "min_frequency_scale": 0.0,
       "is_3d_sound": true,
       "is_loop": false,
+      "sound_kind": 1,
       "time_scale_layer_kind": 1
     },
     {
@@ -232,6 +249,7 @@
       "min_frequency_scale": 0.0,
       "is_3d_sound": true,
       "is_loop": false,
+      "sound_kind": 1,
       "time_scale_layer_kind": 1
     },
     {
@@ -245,6 +263,7 @@
       "min_frequency_scale": 0.0,
       "is_3d_sound": true,
       "is_loop": false,
+      "sound_kind": 1,
       "time_scale_layer_kind": 1
     },
     {
@@ -258,6 +277,7 @@
       "min_frequency_scale": 0.0,
       "is_3d_sound": true,
       "is_loop": false,
+      "sound_kind": 1,
       "time_scale_layer_kind": 1
     },
     {
@@ -271,6 +291,7 @@
       "min_frequency_scale": 0.0,
       "is_3d_sound": true,
       "is_loop": false,
+      "sound_kind": 1,
       "time_scale_layer_kind": 1
     },
     {
@@ -284,6 +305,7 @@
       "min_frequency_scale": 0.0,
       "is_3d_sound": true,
       "is_loop": false,
+      "sound_kind": 1,
       "time_scale_layer_kind": 1
     },
     {
@@ -297,6 +319,7 @@
       "min_frequency_scale": 0.0,
       "is_3d_sound": true,
       "is_loop": false,
+      "sound_kind": 1,
       "time_scale_layer_kind": 1
     },
     {
@@ -310,6 +333,7 @@
       "min_frequency_scale": 0.0,
       "is_3d_sound": true,
       "is_loop": false,
+      "sound_kind": 1,
       "time_scale_layer_kind": 1
     },
     {
@@ -323,6 +347,7 @@
       "min_frequency_scale": 0.0,
       "is_3d_sound": true,
       "is_loop": false,
+      "sound_kind": 1,
       "time_scale_layer_kind": 1
     },
     {
@@ -336,6 +361,7 @@
       "min_frequency_scale": 0.0,
       "is_3d_sound": true,
       "is_loop": false,
+      "sound_kind": 1,
       "time_scale_layer_kind": 1
     },
     {
@@ -349,6 +375,7 @@
       "min_frequency_scale": 0.0,
       "is_3d_sound": true,
       "is_loop": false,
+      "sound_kind": 1,
       "time_scale_layer_kind": 1
     },
     {
@@ -362,6 +389,7 @@
       "min_frequency_scale": 0.0,
       "is_3d_sound": true,
       "is_loop": false,
+      "sound_kind": 1,
       "time_scale_layer_kind": 1
     },
     {
@@ -375,6 +403,7 @@
       "min_frequency_scale": 0.0,
       "is_3d_sound": true,
       "is_loop": false,
+      "sound_kind": 1,
       "time_scale_layer_kind": 1
     },
     {
@@ -388,6 +417,7 @@
       "min_frequency_scale": 0.0,
       "is_3d_sound": true,
       "is_loop": false,
+      "sound_kind": 1,
       "time_scale_layer_kind": 1
     },
     {
@@ -401,6 +431,7 @@
       "min_frequency_scale": 0.0,
       "is_3d_sound": true,
       "is_loop": false,
+      "sound_kind": 1,
       "time_scale_layer_kind": 1
     },
     {
@@ -414,6 +445,7 @@
       "min_frequency_scale": 0.0,
       "is_3d_sound": true,
       "is_loop": false,
+      "sound_kind": 1,
       "time_scale_layer_kind": 1
     },
     {
@@ -427,6 +459,7 @@
       "min_frequency_scale": 0.0,
       "is_3d_sound": true,
       "is_loop": true,
+      "sound_kind": 1,
       "time_scale_layer_kind": 1
     },
     {
@@ -440,6 +473,7 @@
       "min_frequency_scale": 0.0,
       "is_3d_sound": true,
       "is_loop": true,
+      "sound_kind": 1,
       "time_scale_layer_kind": 1
     },
     {
@@ -453,6 +487,7 @@
       "min_frequency_scale": 0.0,
       "is_3d_sound": false,
       "is_loop": false,
+      "sound_kind": 1,
       "time_scale_layer_kind": 3
     },
     {
@@ -466,6 +501,7 @@
       "min_frequency_scale": 0.0,
       "is_3d_sound": false,
       "is_loop": false,
+      "sound_kind": 1,
       "time_scale_layer_kind": 3
     },
     {
@@ -479,6 +515,7 @@
       "min_frequency_scale": 0.0,
       "is_3d_sound": false,
       "is_loop": false,
+      "sound_kind": 1,
       "time_scale_layer_kind": 3
     },
     {
@@ -492,6 +529,7 @@
       "min_frequency_scale": 0.0,
       "is_3d_sound": false,
       "is_loop": false,
+      "sound_kind": 1,
       "time_scale_layer_kind": 3
     }
   ]

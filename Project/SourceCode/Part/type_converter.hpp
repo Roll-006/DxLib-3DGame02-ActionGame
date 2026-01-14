@@ -52,7 +52,7 @@ namespace type_converter
 		if (!MultiByteToWideChar(CP_UTF8, 0, utf_8.c_str(), -1, &utf_16[0], utf_16_length)) { return utf_8; }
 
 		// UTF-16 ➡ Shift-JIS
-		int s_jis_length = WideCharToMultiByte(CP_ACP, 0, utf_16.c_str(), -1, nullptr, 0, nullptr, nullptr);
+		const auto s_jis_length = WideCharToMultiByte(CP_ACP, 0, utf_16.c_str(), -1, nullptr, 0, nullptr, nullptr);
 		if (s_jis_length == 0) return {};
 
 		// 終端は除外

@@ -1,6 +1,6 @@
 #include "equip_weapon_icon.hpp"
 
-EquipWeaponIcon::EquipWeaponIcon(std::unordered_map<WeaponSlotKind, std::shared_ptr<WeaponBase>>& equip_weapons) : 
+EquipWeaponIcon::EquipWeaponIcon(const std::unordered_map<WeaponSlotKind, std::shared_ptr<WeaponBase>>& equip_weapons) : 
 	m_equip_weapons			(equip_weapons),
 	m_weapon_graphic		(std::make_shared<WeaponGraphicGetter>()),
 	m_main_weapon_graphic	(nullptr),

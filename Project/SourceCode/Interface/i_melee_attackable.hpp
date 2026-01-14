@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "i_melee_hittable.hpp"
 
 #include "../Event/on_downed_far_enemy_spotted_event.hpp"
@@ -7,7 +7,7 @@
 #include "../Data/spotted_obj_data.hpp"
 #include "../Base/character_base.hpp"
 
-/// @brief ƒƒŒ[UŒ‚‚ğs‚¤‘¤
+/// @brief ãƒ¡ãƒ¬ãƒ¼æ”»æ’ƒã‚’è¡Œã†å´
 class IMeleeAttackable abstract
 {
 public:
@@ -17,11 +17,11 @@ public:
 
 	virtual void StopSearchMeleeTarget() abstract;
 
-	/// @brief ‘ÎÛ‚Ì‘O•û‚Ås‚¤ƒƒŒ[‚ğÀs‚·‚é
+	/// @brief å¯¾è±¡ã®å‰æ–¹ã§è¡Œã†ãƒ¡ãƒ¬ãƒ¼ã‚’å®Ÿè¡Œã™ã‚‹
 	virtual void SetupFrontMelee()			abstract;
-	/// @brief ‘ÎÛ‚ÌŒã•û‚Ås‚¤ƒƒŒ[‚ğÀs‚·‚é
+	/// @brief å¯¾è±¡ã®å¾Œæ–¹ã§è¡Œã†ãƒ¡ãƒ¬ãƒ¼ã‚’å®Ÿè¡Œã™ã‚‹
 	virtual void SetupBackMelee()			abstract;
-	/// @brief ‘ÎÛ‚É‘Î‚µ‚Ä‚Ç‚ÌˆÊ’u‚©‚ç‚Å‚às‚¦‚éƒƒŒ[‚ğÀs‚·‚é
+	/// @brief å¯¾è±¡ã«å¯¾ã—ã¦ã©ã®ä½ç½®ã‹ã‚‰ã§ã‚‚è¡Œãˆã‚‹ãƒ¡ãƒ¬ãƒ¼ã‚’å®Ÿè¡Œã™ã‚‹
 	virtual void SetupVersatilityMelee()	abstract;
 
 	virtual void AttackFrontMelee		(CharacterBase* target) abstract;
@@ -35,5 +35,5 @@ public:
 	
 	[[nodiscard]] virtual std::shared_ptr<IMeleeHittable>&	GetTopPriorityDownedChara()		abstract;
 	[[nodiscard]] virtual std::shared_ptr<IMeleeHittable>&	GetMeleeTarget()				abstract;
-	[[nodiscard]] virtual bool								CanSearchMeleeTarget() const	abstract;
+	[[nodiscard]] virtual const bool						CanSearchMeleeTarget() const	abstract;
 };

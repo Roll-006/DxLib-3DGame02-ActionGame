@@ -1,9 +1,9 @@
-#pragma once
+﻿#pragma once
 #include "../Base/physical_obj_base.hpp"
 
 #include "../Part/modeler.hpp"
 
-#include "../Manager/obj_manager.hpp"
+#include "../Accessor/obj_accessor.hpp"
 #include "../Manager/collision_manager.hpp"
 #include "../Manager/physics_manager.hpp"
 
@@ -24,8 +24,8 @@ public:
 	void AddToObjManager()			override;
 	void RemoveToObjManager()		override;
 
-	[[nodiscard]] float	GetDeltaTime() const override;
-	[[nodiscard]] std::shared_ptr<Modeler> GetModeler() const { return m_modeler; }
+	[[nodiscard]] const float GetDeltaTime() const override;
+	[[nodiscard]] const std::shared_ptr<const Modeler> GetModeler() const { return m_modeler; }
 
 private:
 	std::shared_ptr<Modeler> m_modeler;

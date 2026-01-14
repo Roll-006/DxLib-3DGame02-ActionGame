@@ -1,4 +1,4 @@
-#include "rocket_bomb.hpp"
+ï»¿#include "rocket_bomb.hpp"
 #include "../Manager/rifle_cartridge_manager.hpp"
 #include "../Base/gun_base.hpp"
 
@@ -39,7 +39,7 @@ void RocketBomb::Update()
 {
 	if (!IsActive()) { return; }
 
-	// ˆÊ’uî•ñ‚ğƒVƒtƒg
+	// ä½ç½®æƒ…å ±ã‚’ã‚·ãƒ•ãƒˆ
 	m_prev_pos = m_transform->GetPos(CoordinateKind::kWorld);
 }
 
@@ -89,7 +89,7 @@ void RocketBomb::AddToObjManager()
 {
 	const auto physical_obj = std::dynamic_pointer_cast<PhysicalObjBase>(shared_from_this());
 
-	ObjManager		::GetInstance()->AddObj			(shared_from_this());
+	ObjAccessor		::GetInstance()->AddObj			(shared_from_this());
 	CollisionManager::GetInstance()->AddCollideObj	(physical_obj);
 	PhysicsManager	::GetInstance()->AddPhysicalObj	(physical_obj);
 }
@@ -100,7 +100,7 @@ void RocketBomb::RemoveToObjManager()
 
 	CollisionManager::GetInstance()->RemoveCollideObj (obj_handle);
 	PhysicsManager	::GetInstance()->RemovePhysicalObj(obj_handle);
-	ObjManager		::GetInstance()->RemoveObj		  (obj_handle);
+	ObjAccessor		::GetInstance()->RemoveObj		  (obj_handle);
 }
 
 void RocketBomb::OnShot(GunBase& gun)
@@ -123,10 +123,10 @@ void RocketBomb::OnShot(GunBase& gun)
 	const OnShotBulletEvent event{ GetName(), gun.GetOwnerName(), GetObjHandle(), m_transform };
 	EventSystem::GetInstance()->Publish(event);
 
-	// •KE‹Zê—pƒJƒƒ‰‚Éƒgƒ‰ƒ“ƒXƒtƒH[ƒ€î•ñ‚ğİ’è
-	// ƒvƒŒƒCƒ„[‚ªŒ‚‚Á‚½ê‡‚Ì‚İİ’è
-	// TODO : ‘€ìƒLƒƒƒ‰ƒNƒ^[—pƒCƒ“ƒ^[ƒtƒFƒCƒX‚ğŒp³‚µ‚½‚à‚Ì‚É‚Ì‚İ”½‰‚µ‚·ƒVƒXƒeƒ€‚Ì‚Ù‚¤‚ª—Ç‚¢‰Â”\«‚ ‚è
-	// MEMO : ƒvƒŒƒCƒ„[‚ªˆêl‚Ìê‡‚É‚µ‚©‘Î‰‚µ‚Ä‚¢‚È‚¢
+	// å¿…æ®ºæŠ€å°‚ç”¨ã‚«ãƒ¡ãƒ©ã«ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ æƒ…å ±ã‚’è¨­å®š
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒæ’ƒã£ãŸå ´åˆã®ã¿è¨­å®š
+	// TODO : æ“ä½œã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ç”¨ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹ã‚’ç¶™æ‰¿ã—ãŸã‚‚ã®ã«ã®ã¿åå¿œã—ã™ã‚·ã‚¹ãƒ†ãƒ ã®ã»ã†ãŒè‰¯ã„å¯èƒ½æ€§ã‚ã‚Š
+	// MEMO : ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒä¸€äººã®å ´åˆã«ã—ã‹å¯¾å¿œã—ã¦ã„ãªã„
 	if (m_shot_owner_name == ObjName.PLAYER)
 	{
 		const auto cinemachine_brain = CinemachineBrain::GetInstance();
@@ -138,7 +138,7 @@ void RocketBomb::OnShot(GunBase& gun)
 	}
 }
 
-float RocketBomb::GetDeltaTime() const
+const float RocketBomb::GetDeltaTime() const
 {
 	const auto time_manager = GameTimeManager::GetInstance();
 
@@ -147,12 +147,12 @@ float RocketBomb::GetDeltaTime() const
 		: time_manager->GetDeltaTime(TimeScaleLayerKind::kWorld);
 }
 
-bool RocketBomb::IsReturnPool()
+const bool RocketBomb::IsReturnPool()
 {
 	float distance = VSize(m_transform->GetPos(CoordinateKind::kWorld) - m_first_pos);
 
-	// Ë’ö”ÍˆÍ‚ğ’´‚¦‚½ê‡‚Í’eŠÛ‚ğƒv[ƒ‹‚É•Ô‹p
-	return distance > m_range ? true : false;
+	// å°„ç¨‹ç¯„å›²ã‚’è¶…ãˆãŸå ´åˆã¯å¼¾ä¸¸ã‚’ãƒ—ãƒ¼ãƒ«ã«è¿”å´
+	return distance > m_range;
 }
 
 void RocketBomb::ApplyMoveDirToRot()
@@ -176,14 +176,14 @@ void RocketBomb::Move()
 {
 	math::Decrease(m_move_speed, m_deceleration, 0.0f);
 
-	// ƒƒPƒbƒg’e‚ªƒƒPƒbƒgƒ‰ƒ“ƒ`ƒƒ[‚©‚ç”ro‚³‚ê‚é‚Ü‚Å‚Í’¼i
+	// ãƒ­ã‚±ãƒƒãƒˆå¼¾ãŒãƒ­ã‚±ãƒƒãƒˆãƒ©ãƒ³ãƒãƒ£ãƒ¼ã‹ã‚‰æ’å‡ºã•ã‚Œã‚‹ã¾ã§ã¯ç›´é€²
 	if (m_go_straight_timer < kGoStraightTime)
 	{
 		m_go_straight_timer += GetDeltaTime();
 
 		m_move_velocity = m_move_dir * m_move_speed;
 	}
-	// ”ro‚³‚ê‚½‚ç‰æ–Ê’†‰›‚©‚çŒ‚‚½‚ê‚½Û‚Ì‹O“¹‚É‹ß‚Ã‚¯‚é
+	// æ’å‡ºã•ã‚ŒãŸã‚‰ç”»é¢ä¸­å¤®ã‹ã‚‰æ’ƒãŸã‚ŒãŸéš›ã®è»Œé“ã«è¿‘ã¥ã‘ã‚‹
 	else if (m_blend_timer < kBlendTime)
 	{
 		m_blend_timer += GetDeltaTime();
@@ -192,7 +192,7 @@ void RocketBomb::Move()
 		const auto current_dir	= math::GetLerp(m_move_dir, m_destination_dir, t);
 		m_move_velocity = current_dir * m_move_speed;
 	}
-	// ‰æ–Ê’†‰›‚©‚çŒ‚‚½‚ê‚½Û‚Ì‹O“¹‚ÅˆÚ“®
+	// ç”»é¢ä¸­å¤®ã‹ã‚‰æ’ƒãŸã‚ŒãŸéš›ã®è»Œé“ã§ç§»å‹•
 	else
 	{
 		m_move_velocity = m_destination_dir * m_move_speed;
@@ -203,7 +203,7 @@ void RocketBomb::Move()
 
 void RocketBomb::CalcRayCastPos()
 {
-	// Œõü‚ÌˆÊ’u‚ğŒvZ
+	// å…‰ç·šã®ä½ç½®ã‚’è¨ˆç®—
 	auto ray = std::dynamic_pointer_cast<Segment>(GetCollider(ColliderKind::kRay)->GetShape());
 	ray->SetBeginPos(m_prev_pos, true);
 	ray->SetEndPos(m_transform->GetPos(CoordinateKind::kWorld), true);

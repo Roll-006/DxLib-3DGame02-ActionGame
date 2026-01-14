@@ -3,7 +3,7 @@
 // MEMO : パラメーターでゲージサイズや太さの変更を可能にするために
 //		　スクリーン生成およびマスクを使用しゲージを生成する
 
-HealthGauge::HealthGauge(std::shared_ptr<Gauge>& health) : 
+HealthGauge::HealthGauge(const std::shared_ptr<Gauge>& health) : 
 	m_health									(health),
 	m_current_health_gauge_graphic				(std::make_shared<Graphicer>(UIGraphicPath.CURRENT_HEALTH_GAUGE)),
 	m_gauge_particle_graphic					(std::make_shared<Graphicer>(UIGraphicPath.HEALTH_GAUGE_PARTICLE)),

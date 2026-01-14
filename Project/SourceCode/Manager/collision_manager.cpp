@@ -1,4 +1,4 @@
-#include "collision_manager.hpp"
+ï»¿#include "collision_manager.hpp"
 
 CollisionManager::CollisionManager() :
 	m_handle_create_contains(-1)
@@ -9,7 +9,7 @@ CollisionManager::CollisionManager() :
 
 CollisionManager::~CollisionManager()
 {
-	// ˆ—‚È‚µ
+	// å‡¦ç†ãªã—
 }
 
 void CollisionManager::Update()
@@ -31,15 +31,15 @@ void CollisionManager::LateUpdate()
 
 	const auto collider_pairs = CreateHitColliderPairs();
 
-	// Õ“Ë‚µ‚½ƒRƒ‰ƒCƒ_[‚ÌƒI[ƒi[ƒIƒuƒWƒFƒNƒg‚Ìˆ—‚ğÀs
+	// è¡çªã—ãŸã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®ã‚ªãƒ¼ãƒŠãƒ¼ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å‡¦ç†ã‚’å®Ÿè¡Œ
 	for (const auto& pair : collider_pairs)
 	{
-		// ƒŒƒCƒLƒƒƒXƒgƒgƒŠƒK[‚Ìê‡‚ÍÅ‰‚ÉÕ“Ë‚µ‚½ƒRƒ‰ƒCƒ_[‚Ì‚İÕ“Ë‚µ‚½‚à‚Ì‚Æ‚·‚é
+		// ãƒ¬ã‚¤ã‚­ãƒ£ã‚¹ãƒˆãƒˆãƒªã‚¬ãƒ¼ã®å ´åˆã¯æœ€åˆã«è¡çªã—ãŸã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®ã¿è¡çªã—ãŸã‚‚ã®ã¨ã™ã‚‹
 		const auto owner_collider_kind = pair.owner_collider->GetColliderKind();
 		const auto is_ray = owner_collider_kind == ColliderKind::kRay || owner_collider_kind == ColliderKind::kProjectRay;
 		if (is_ray && pair.owner_collider->IsClosestOnlyHit())
 		{
-			// ƒRƒ‰ƒCƒ_[‚Æ‚Ì‹——£‚ğæ“¾
+			// ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã¨ã®è·é›¢ã‚’å–å¾—
 			std::unordered_map<int, TargetColliderData> target;
 			std::vector<std::pair<int, float>>			distance;
 			for (size_t i = 0; i < pair.target_data.size(); ++i)
@@ -53,7 +53,7 @@ void CollisionManager::LateUpdate()
 				}
 			}
 
-			// Å‚à‹ß‚¢OŠpŒ`‚Ì‚İÕ“Ë‚µ‚½OŠpŒ`‚Æ‚·‚é
+			// æœ€ã‚‚è¿‘ã„ä¸‰è§’å½¢ã®ã¿è¡çªã—ãŸä¸‰è§’å½¢ã¨ã™ã‚‹
 			const auto hit_triangle = pair.owner_collider->GetHitTriangles();
 			if (hit_triangle.size() > 0)
 			{
@@ -66,12 +66,12 @@ void CollisionManager::LateUpdate()
 				algorithm::Sort(distance, SortKind::kAscending);
 				const auto result_hit_triangle = hit_triangle.at(distance.front().first);
 
-				// ’u‚«Š·‚¦
+				// ç½®ãæ›ãˆ
 				pair.owner_collider->RemoveHitTriangles();
 				pair.owner_collider->AddHitTriangle(result_hit_triangle);
 			}
 
-			// Å‚à‹ß‚¢ƒRƒ‰ƒCƒ_[‚Ì‚İ”»’è
+			// æœ€ã‚‚è¿‘ã„ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®ã¿åˆ¤å®š
 			distance = algorithm::Sort(distance, SortKind::kAscending);
 			for (const auto& dist : distance)
 			{
@@ -80,7 +80,7 @@ void CollisionManager::LateUpdate()
 				break;
 			}
 		}
-		// ƒŒƒCƒLƒƒƒXƒgƒgƒŠƒK[‚Å‚È‚¢ê‡‚Í‚·‚×‚Ä‚ÌƒRƒ‰ƒCƒ_[‚ÆÕ“Ë”»’è‚ğs‚¤
+		// ãƒ¬ã‚¤ã‚­ãƒ£ã‚¹ãƒˆãƒˆãƒªã‚¬ãƒ¼ã§ãªã„å ´åˆã¯ã™ã¹ã¦ã®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã¨è¡çªåˆ¤å®šã‚’è¡Œã†
 		else
 		{
 			for (const auto& target : pair.target_data)
@@ -101,7 +101,7 @@ void CollisionManager::Draw() const
 }
 
 
-#pragma region “o˜^E‰ğœ
+#pragma region ç™»éŒ²ãƒ»è§£é™¤
 void CollisionManager::AddCollideObj(const std::shared_ptr<PhysicalObjBase>& collide_obj)
 {
 	if (std::find(m_collide_objects.begin(), m_collide_objects.end(), collide_obj) == m_collide_objects.end())
@@ -112,7 +112,7 @@ void CollisionManager::AddCollideObj(const std::shared_ptr<PhysicalObjBase>& col
 
 void CollisionManager::RemoveCollideObj(const int obj_handle)
 {
-	const auto physical_obj = ObjManager::GetInstance()->GetObj<PhysicalObjBase>(obj_handle);
+	const auto physical_obj = ObjAccessor::GetInstance()->GetObj<PhysicalObjBase>(obj_handle);
 
 	if (std::find(m_collide_objects.begin(), m_collide_objects.end(), physical_obj) != m_collide_objects.end())
 	{
@@ -127,7 +127,7 @@ void CollisionManager::AddIgnoreCollider(const int obj_handle, const ColliderKin
 
 void CollisionManager::AddIgnoreCollider(const ColliderKind kind)
 {
-	// w’è‚È‚µ‚Í-2‚Å’Ç‰Á‚³‚¹‚é
+	// æŒ‡å®šãªã—ã¯-2ã§è¿½åŠ ã•ã›ã‚‹
 	AddIgnoreCollider(-2, kind);
 }
 
@@ -142,7 +142,7 @@ void CollisionManager::RemoveIgnoreCollider(const int obj_handle, const Collider
 
 void CollisionManager::RemoveIgnoreCollider(const ColliderKind kind)
 {
-	// w’è‚È‚µ‚Í-2‚Å’Ç‰Á‚³‚¹‚é
+	// æŒ‡å®šãªã—ã¯-2ã§è¿½åŠ ã•ã›ã‚‹
 	RemoveIgnoreCollider(-2, kind);
 }
 
@@ -178,7 +178,7 @@ void CollisionManager::SetIgnoreColliderPairs()
 	const ColliderData landing_data		{ "",					ColliderKind::kLandingTrigger	};
 	const ColliderData project_ray_data	{ "",					ColliderKind::kProjectRay		};
 
-	// “GŒn“‚ª–³‹‚·‚éƒRƒ‰ƒCƒ_[
+	// æ•µç³»çµ±ãŒç„¡è¦–ã™ã‚‹ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
 	AddIgnoreColliderPair(enemy_data, { "", ColliderKind::kHeadTrigger			});
 	AddIgnoreColliderPair(enemy_data, { "", ColliderKind::kUpBodyTrigger		});
 	AddIgnoreColliderPair(enemy_data, { "", ColliderKind::kDownBodyTrigger		});
@@ -193,7 +193,7 @@ void CollisionManager::SetIgnoreColliderPairs()
 	AddIgnoreColliderPair(enemy_data, { "", ColliderKind::kLeftDownLegTrigger	});
 	AddIgnoreColliderPair(enemy_data, { "", ColliderKind::kRightDownLegTrigger	});
 
-	// ’eŠÛŒn“‚ª–³‹‚·‚éƒRƒ‰ƒCƒ_[
+	// å¼¾ä¸¸ç³»çµ±ãŒç„¡è¦–ã™ã‚‹ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
 	AddIgnoreColliderPair(bullet_data, bullet_data);
 	AddIgnoreColliderPair(bullet_data, { "",                ColliderKind::kLandingTrigger	});
 	AddIgnoreColliderPair(bullet_data, { "",                ColliderKind::kAttackTrigger	});
@@ -201,14 +201,14 @@ void CollisionManager::SetIgnoreColliderPairs()
 	AddIgnoreColliderPair(bullet_data, { ObjTag.PLAYER,		ColliderKind::kCollider			});
 	AddIgnoreColliderPair(bullet_data, { ObjTag.ENEMY,      ColliderKind::kCollider			});
 
-	// –òä°Œn“‚ª–³‹‚·‚éƒRƒ‰ƒCƒ_[
+	// è–¬è¢ç³»çµ±ãŒç„¡è¦–ã™ã‚‹ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
 	AddIgnoreColliderPair(shell_casing_data, shell_casing_data						);
 	AddIgnoreColliderPair(shell_casing_data, player_data							);
 	AddIgnoreColliderPair(shell_casing_data, enemy_data								);
 	AddIgnoreColliderPair(shell_casing_data, { "", ColliderKind::kAttackTrigger }	);
 	AddIgnoreColliderPair(shell_casing_data, { "", ColliderKind::kRay			}	);
 
-	// ’…’n”»’èƒgƒŠƒK[‚ª–³‹‚·‚éƒRƒ‰ƒCƒ_[
+	// ç€åœ°åˆ¤å®šãƒˆãƒªã‚¬ãƒ¼ãŒç„¡è¦–ã™ã‚‹ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
 	AddIgnoreColliderPair(landing_data, player_data);
 	AddIgnoreColliderPair(landing_data, enemy_data);
 	AddIgnoreColliderPair(landing_data, { "", ColliderKind::kAttackTrigger			});
@@ -217,17 +217,17 @@ void CollisionManager::SetIgnoreColliderPairs()
 	AddIgnoreColliderPair(landing_data, { "", ColliderKind::kRay					});
 	AddIgnoreColliderPair(landing_data, { "", ColliderKind::kProjectRay				});
 
-	// “Š‰e—pŒõü‚ª–³‹‚·‚éƒRƒ‰ƒCƒ_[
+	// æŠ•å½±ç”¨å…‰ç·šãŒç„¡è¦–ã™ã‚‹ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
 	AddIgnoreColliderPair(project_ray_data, player_data);
 	AddIgnoreColliderPair(project_ray_data, enemy_data);
 }
 
 bool CollisionManager::CanCollideObjAndObj(const std::shared_ptr<PhysicalObjBase>& owner_obj, const std::shared_ptr<PhysicalObjBase>& target_obj)
 {
-	// Ã“IƒIƒuƒWƒFƒNƒg“¯m‚Í–³‹
+	// é™çš„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒå£«ã¯ç„¡è¦–
 	if (owner_obj->GetMassKind() == MassKind::kStatic && target_obj->GetMassKind() == MassKind::kStatic) { return false; }
 
-	// ‹——£‚ª‰“‚¢ƒIƒuƒWƒFƒNƒg“¯m‚Í–³‹
+	// è·é›¢ãŒé ã„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒå£«ã¯ç„¡è¦–
 	const auto owner_collision_area = owner_obj->GetCollider(ColliderKind::kCollisionAreaTrigger);
 	const auto target_collision_area = target_obj->GetCollider(ColliderKind::kCollisionAreaTrigger);
 	if (owner_collision_area && target_collision_area)
@@ -241,7 +241,7 @@ bool CollisionManager::CanCollideObjAndObj(const std::shared_ptr<PhysicalObjBase
 		}
 	}
 
-	// –³‹ƒŠƒXƒg‚É“o˜^‚³‚ê‚Ä‚¢‚éƒIƒuƒWƒFƒNƒg‚Í–³‹
+	// ç„¡è¦–ãƒªã‚¹ãƒˆã«ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¯ç„¡è¦–
 	const ColliderData owner_data{ owner_obj->GetTag(), ColliderKind::kNone };
 	if (m_ignore_collide_collider_pairs.contains(owner_data))
 	{
@@ -265,7 +265,7 @@ bool CollisionManager::CanCollideObjAndCollider(const std::shared_ptr<PhysicalOb
 		{ "",				    target_collider->GetColliderKind() }
 	};
 
-	// –³‹ƒŠƒXƒg‚É“o˜^‚³‚ê‚Ä‚¢‚éƒRƒ‰ƒCƒ_[‚Í–³‹
+	// ç„¡è¦–ãƒªã‚¹ãƒˆã«ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã¯ç„¡è¦–
 	const ColliderData owner_data{ owner_obj->GetTag(), ColliderKind::kNone };
 	if (m_ignore_collide_collider_pairs.contains(owner_data))
 	{
@@ -283,7 +283,7 @@ bool CollisionManager::CanCollideObjAndCollider(const std::shared_ptr<PhysicalOb
 
 bool CollisionManager::CanCollideColliderAndCollider(const std::shared_ptr<Collider>& owner_collider, const std::shared_ptr<Collider>& target_collider)
 {
-	// –³‹ƒŠƒXƒg‚É“o˜^‚³‚ê‚Ä‚¢‚éƒIƒuƒWƒFƒNƒg‚Í–³‹
+	// ç„¡è¦–ãƒªã‚¹ãƒˆã«ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¯ç„¡è¦–
 	const auto owner_obj = owner_collider->GetOwnerObj();
 	const auto target_obj = target_collider->GetOwnerObj();
 
@@ -299,7 +299,7 @@ bool CollisionManager::CanCollideColliderAndCollider(const std::shared_ptr<Colli
 		{ "",				    target_collider->GetColliderKind() }
 	};
 
-	// –³‹ƒŠƒXƒg‚É“o˜^‚³‚ê‚Ä‚¢‚éƒRƒ‰ƒCƒ_[‚Í–³‹
+	// ç„¡è¦–ãƒªã‚¹ãƒˆã«ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã¯ç„¡è¦–
 	for (const auto& owner : owner_data)
 	{
 		if (m_ignore_collide_collider_pairs.contains(owner))
@@ -319,14 +319,14 @@ bool CollisionManager::CanCollideColliderAndCollider(const std::shared_ptr<Colli
 
 bool CollisionManager::CanCollideCollider(const int obj_handle, const std::shared_ptr<Collider>& collider)
 {
-	// “Á’è‚ÌƒIƒuƒWƒFƒNƒg‚ª‚ÂƒRƒ‰ƒCƒ_[‚Ì–³‹”»’è
+	// ç‰¹å®šã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒæŒã¤ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®ç„¡è¦–åˆ¤å®š
 	auto itr = m_ignore_collide_colliders.find(obj_handle);
 	if (itr != m_ignore_collide_colliders.end())
 	{
 		if (itr->second.contains(collider->GetColliderKind())) { return false; }
 	}
 
-	// ƒIƒuƒWƒFƒNƒg‚Ìw’è‚ª‚È‚¢ƒRƒ‰ƒCƒ_[‚Ì–³‹”»’è
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æŒ‡å®šãŒãªã„ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®ç„¡è¦–åˆ¤å®š
 	itr = m_ignore_collide_colliders.find(-2);
 	if (itr != m_ignore_collide_colliders.end())
 	{
@@ -346,29 +346,29 @@ std::vector<ColliderPairOneToManyData> CollisionManager::CreateHitColliderPairs(
 
 		for (const auto& target_obj : m_collide_objects)
 		{
-			// –³‹”»’è
+			// ç„¡è¦–åˆ¤å®š
 			if (owner_obj == target_obj)						{ continue; }
 			if (!target_obj->IsActive())						{ continue; }
 			if (!CanCollideObjAndObj(owner_obj, target_obj))	{ continue; }
 
 			for (const auto& owner_obj_collider : owner_obj->GetColliderAll())
 			{
-				// –³‹”»’è
+				// ç„¡è¦–åˆ¤å®š
 				if (!CanCollideCollider			(owner_obj->GetObjHandle(), owner_obj_collider.second)) { continue; }
 				if (!CanCollideObjAndCollider	(target_obj,				owner_obj_collider.second)) { continue; }
 
 				for (const auto& target_obj_collider : target_obj->GetColliderAll())
 				{
-					// –³‹”»’è
+					// ç„¡è¦–åˆ¤å®š
 					if (!CanCollideCollider				(target_obj->GetObjHandle(), target_obj_collider.second)) { continue; }
 					if (!CanCollideObjAndCollider		(owner_obj,					 target_obj_collider.second)) { continue; }
 					if (!CanCollideColliderAndCollider	(owner_obj_collider.second,  target_obj_collider.second)) { continue; }
 
-					// Õ“Ë”»’è
+					// è¡çªåˆ¤å®š
 					std::optional<VECTOR> intersection = std::nullopt;
 					if (!IsCollided(*owner_obj_collider.second, *target_obj_collider.second, intersection)) { continue; }
 
-					// w’è‚ÌƒI[ƒi[‚Ìƒf[ƒ^ƒRƒ“ƒeƒi‚ª‚Ü‚¾‚È‚¢ê‡‚ÍV‚½‚Éì¬
+					// æŒ‡å®šã®ã‚ªãƒ¼ãƒŠãƒ¼ã®ãƒ‡ãƒ¼ã‚¿ã‚³ãƒ³ãƒ†ãƒŠãŒã¾ã ãªã„å ´åˆã¯æ–°ãŸã«ä½œæˆ
 					bool is_maked = std::any_of(collider_pairs.begin(), collider_pairs.end(), [=](const ColliderPairOneToManyData& j_data)
 					{
 						return j_data.owner_collider == owner_obj_collider.second;
@@ -376,7 +376,7 @@ std::vector<ColliderPairOneToManyData> CollisionManager::CreateHitColliderPairs(
 
 					if (!is_maked) { collider_pairs.emplace_back(owner_obj_collider.second, std::vector<TargetColliderData>()); }
 
-					// ƒI[ƒi[‚ª“¯‚¶ƒf[ƒ^‚Éƒ^[ƒQƒbƒg‚ğ’Ç‰Á
+					// ã‚ªãƒ¼ãƒŠãƒ¼ãŒåŒã˜ãƒ‡ãƒ¼ã‚¿ã«ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’è¿½åŠ 
 					for (size_t i = 0; i < collider_pairs.size(); ++i)
 					{
 						if (collider_pairs.at(i).owner_collider != owner_obj_collider.second) { continue; }
@@ -392,16 +392,16 @@ std::vector<ColliderPairOneToManyData> CollisionManager::CreateHitColliderPairs(
 }
 
 
-#pragma region Õ“Ë”»’è
+#pragma region è¡çªåˆ¤å®š
 bool CollisionManager::IsCollided(Collider& owner_collider, Collider& target_collider, std::optional<VECTOR>& intersection)
 {
-	// ‚¨Œİ‚¢‚Ì‘g‚İ‡‚í‚¹‚ğ‚·ŠÖ”
+	// ãŠäº’ã„ã®çµ„ã¿åˆã‚ã›ã‚’è©¦ã™é–¢æ•°
 	auto IsCollided = [&](Collider& owner, Collider& target, bool& is_succeed_confirmation)
 	{
 		const auto shape = owner.GetShape();
 		is_succeed_confirmation = true;
 
-		// }Œ`‚Ì“o˜^‚ª‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Íƒ‚ƒfƒ‹‚Å”»’è‚ğs‚¤
+		// å›³å½¢ã®ç™»éŒ²ãŒã•ã‚Œã¦ã„ãªã„å ´åˆã¯ãƒ¢ãƒ‡ãƒ«ã§åˆ¤å®šã‚’è¡Œã†
 		if (shape == nullptr)
 		{
 			return IsCollidedModelAndTarget(owner, target, intersection);
@@ -431,7 +431,7 @@ bool CollisionManager::IsCollided(Collider& owner_collider, Collider& target_col
 	bool is_succeed_confirmation	= false;
 	const bool is_collided			= IsCollided(owner_collider, target_collider, is_succeed_confirmation);
 
-	// ÄŒŸõ‚·‚é‚©
+	// å†æ¤œç´¢ã™ã‚‹ã‹
 	if (is_succeed_confirmation)
 	{
 		return is_collided;
@@ -449,7 +449,7 @@ bool CollisionManager::IsCollidedPointAndTarget(Collider& owner_collider, const 
 	const auto target_shape = target_collider.GetShape();
 	const auto owner_shape = *std::static_pointer_cast<Point>(owner_collider.GetShape());
 
-	// }Œ`‚Ì“o˜^‚ª‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Íƒ‚ƒfƒ‹‚Å”»’è‚ğs‚¤
+	// å›³å½¢ã®ç™»éŒ²ãŒã•ã‚Œã¦ã„ãªã„å ´åˆã¯ãƒ¢ãƒ‡ãƒ«ã§åˆ¤å®šã‚’è¡Œã†
 	if (target_shape == nullptr)
 	{
 		return false;
@@ -493,7 +493,7 @@ bool CollisionManager::IsCollidedLineAndTarget(Collider& owner_collider, const C
 	const auto target_shape = target_collider.GetShape();
 	const auto owner_shape = *std::static_pointer_cast<Line>(owner_collider.GetShape());
 
-	// }Œ`‚Ì“o˜^‚ª‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Íƒ‚ƒfƒ‹‚Å”»’è‚ğs‚¤
+	// å›³å½¢ã®ç™»éŒ²ãŒã•ã‚Œã¦ã„ãªã„å ´åˆã¯ãƒ¢ãƒ‡ãƒ«ã§åˆ¤å®šã‚’è¡Œã†
 	if (target_shape == nullptr)
 	{
 		return false;
@@ -519,7 +519,7 @@ bool CollisionManager::IsCollidedSegmentAndTarget(Collider& owner_collider, cons
 	const auto target_shape = target_collider.GetShape();
 	const auto owner_shape = *std::static_pointer_cast<Segment>(owner_collider.GetShape());
 
-	// }Œ`‚Ì“o˜^‚ª‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Íƒ‚ƒfƒ‹‚Å”»’è‚ğs‚¤
+	// å›³å½¢ã®ç™»éŒ²ãŒã•ã‚Œã¦ã„ãªã„å ´åˆã¯ãƒ¢ãƒ‡ãƒ«ã§åˆ¤å®šã‚’è¡Œã†
 	if (target_shape == nullptr)
 	{
 		std::vector<Triangle> hit_triangles;
@@ -565,7 +565,7 @@ bool CollisionManager::IsCollidedPlaneAndTarget(Collider& owner_collider, const 
 	const auto target_shape = target_collider.GetShape();
 	const auto owner_shape = *std::static_pointer_cast<Plane>(owner_collider.GetShape());
 
-	// }Œ`‚Ì“o˜^‚ª‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Íƒ‚ƒfƒ‹‚Å”»’è‚ğs‚¤
+	// å›³å½¢ã®ç™»éŒ²ãŒã•ã‚Œã¦ã„ãªã„å ´åˆã¯ãƒ¢ãƒ‡ãƒ«ã§åˆ¤å®šã‚’è¡Œã†
 	if (target_shape == nullptr)
 	{
 		return false;
@@ -588,13 +588,13 @@ bool CollisionManager::IsCollidedTriangleAndTarget(Collider& owner_collider, con
 	const auto target_shape = target_collider.GetShape();
 	const auto owner_shape = *std::static_pointer_cast<Triangle>(owner_collider.GetShape());
 
-	// }Œ`‚Ì“o˜^‚ª‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Íƒ‚ƒfƒ‹‚Å”»’è‚ğs‚¤
+	// å›³å½¢ã®ç™»éŒ²ãŒã•ã‚Œã¦ã„ãªã„å ´åˆã¯ãƒ¢ãƒ‡ãƒ«ã§åˆ¤å®šã‚’è¡Œã†
 	if (target_shape == nullptr)
 	{
 		std::vector<Triangle> hit_triangles;
 		const bool is_hit = collision::IsCollidedTriangleAndModel(owner_shape, target_collider.GetModelHandle(), intersection, hit_triangles);
 
-		//// Õ“Ë‘ÎÛ‚ªƒRƒ‰ƒCƒ_[‚Å‚ ‚Á‚½ê‡‚ÍOŠpŒ`î•ñ‚ğ’Ç‰Á‚·‚é
+		//// è¡çªå¯¾è±¡ãŒã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã§ã‚ã£ãŸå ´åˆã¯ä¸‰è§’å½¢æƒ…å ±ã‚’è¿½åŠ ã™ã‚‹
 		//if (is_hit && target_collider.GetColliderKind() == ColliderKind::kCollider)
 		//{
 		//	owner_collider.AddHitTriangles(hit_triangles);
@@ -620,7 +620,7 @@ bool CollisionManager::IsCollidedSquareAndTarget(Collider& owner_collider, const
 	const auto target_shape = target_collider.GetShape();
 	const auto owner_shape = *std::static_pointer_cast<Square>(owner_collider.GetShape());
 
-	// }Œ`‚Ì“o˜^‚ª‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Íƒ‚ƒfƒ‹‚Å”»’è‚ğs‚¤
+	// å›³å½¢ã®ç™»éŒ²ãŒã•ã‚Œã¦ã„ãªã„å ´åˆã¯ãƒ¢ãƒ‡ãƒ«ã§åˆ¤å®šã‚’è¡Œã†
 	if (target_shape == nullptr)
 	{
 		return false;
@@ -655,12 +655,12 @@ bool CollisionManager::IsCollidedSphereAndTarget(Collider& owner_collider, const
 	bool	   is_hit = false;
 	std::vector<Triangle> hit_triangles;
 
-	// }Œ`‚Ì“o˜^‚ª‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Íƒ‚ƒfƒ‹‚Å”»’è‚ğs‚¤
+	// å›³å½¢ã®ç™»éŒ²ãŒã•ã‚Œã¦ã„ãªã„å ´åˆã¯ãƒ¢ãƒ‡ãƒ«ã§åˆ¤å®šã‚’è¡Œã†
 	if (target_shape == nullptr)
 	{
 		is_hit = collision::IsCollidedSphereAndModel(owner_shape, target_collider.GetModelHandle(), intersection, hit_triangles);
 
-		//// Õ“Ë‘ÎÛ‚ªƒRƒ‰ƒCƒ_[‚Å‚ ‚Á‚½ê‡‚ÍOŠpŒ`î•ñ‚ğ’Ç‰Á‚·‚é
+		//// è¡çªå¯¾è±¡ãŒã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã§ã‚ã£ãŸå ´åˆã¯ä¸‰è§’å½¢æƒ…å ±ã‚’è¿½åŠ ã™ã‚‹
 		//if (is_hit && target_collider.GetColliderKind() == ColliderKind::kCollider)
 		//{
 		//	owner_collider.AddHitTriangles(hit_triangles);
@@ -674,7 +674,7 @@ bool CollisionManager::IsCollidedSphereAndTarget(Collider& owner_collider, const
 	case ShapeKind::kTriangle:
 		is_hit = collision::IsCollidedTriangleAndSphere(*std::static_pointer_cast<Triangle>(target_shape), owner_shape, intersection);
 
-		//// Õ“Ë‘ÎÛ‚ªƒRƒ‰ƒCƒ_[‚Å‚ ‚Á‚½ê‡‚ÍOŠpŒ`î•ñ‚ğ’Ç‰Á‚·‚é
+		//// è¡çªå¯¾è±¡ãŒã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã§ã‚ã£ãŸå ´åˆã¯ä¸‰è§’å½¢æƒ…å ±ã‚’è¿½åŠ ã™ã‚‹
 		//if (is_hit && target_collider.GetColliderKind() == ColliderKind::kCollider)
 		//{
 		//	owner_collider.AddHitTriangles(hit_triangles);
@@ -699,13 +699,13 @@ bool CollisionManager::IsCollidedCapsuleAndTarget(Collider& owner_collider, cons
 	const auto target_shape = target_collider.GetShape();
 	const auto owner_shape = *std::static_pointer_cast<Capsule>(owner_collider.GetShape());
 
-	// }Œ`‚Ì“o˜^‚ª‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Íƒ‚ƒfƒ‹‚Å”»’è‚ğs‚¤
+	// å›³å½¢ã®ç™»éŒ²ãŒã•ã‚Œã¦ã„ãªã„å ´åˆã¯ãƒ¢ãƒ‡ãƒ«ã§åˆ¤å®šã‚’è¡Œã†
 	if (target_shape == nullptr)
 	{
 		std::vector<Triangle> hit_triangles;
 		const bool is_hit = collision::IsCollidedCapsuleAndModel(owner_shape, target_collider.GetModelHandle());
 
-		//// Õ“Ë‘ÎÛ‚ªƒRƒ‰ƒCƒ_[‚Å‚ ‚Á‚½ê‡‚ÍOŠpŒ`î•ñ‚ğ’Ç‰Á‚·‚é
+		//// è¡çªå¯¾è±¡ãŒã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã§ã‚ã£ãŸå ´åˆã¯ä¸‰è§’å½¢æƒ…å ±ã‚’è¿½åŠ ã™ã‚‹
 		//if (is_hit && target_collider.GetColliderKind() == ColliderKind::kCollider)
 		//{
 		//	owner_collider.AddHitTriangles(hit_triangles);

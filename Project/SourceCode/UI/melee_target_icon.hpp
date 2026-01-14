@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <memory>
 
 #include "../Interface/i_melee_hittable.hpp"
@@ -6,6 +6,7 @@
 #include "../Part/screen_creator.hpp"
 #include "../Part/mask_creator.hpp"
 #include "../Font/font_handler.hpp"
+#include "../Data/melee_target_icon_data.hpp"
 
 class MeleeTargetIcon final
 {
@@ -22,11 +23,7 @@ private:
 	void CreateDownIconScreen();
 
 private:
-	static constexpr VECTOR			kIconOffset			= { 0.0f, 10.0f, 0.0f };
-	static constexpr float			kIconSize			= 18.0f;
-	static constexpr Vector2D<int>	kScreenSize			= { 400, 400 };
-	static constexpr Vector2D<int>	kScreenCenterPos	= { static_cast<int>(kScreenSize.x * 0.5f), static_cast<int>(kScreenSize.y * 0.5f) };
-	static constexpr Vector2D<int>	kCursorOffset		= { 0, 60 };
+	MeleeTargetIconData						data;
 
 	std::shared_ptr<IMeleeHittable>&		m_melee_target;
 	std::shared_ptr<IMeleeHittable>&		m_visible_downed_character;
@@ -42,10 +39,7 @@ private:
 	std::shared_ptr<ScreenCreator>			m_explanatory_text_screen;
 	std::shared_ptr<MaskCreator>			m_mask_creator;
 
+	Vector2D<int>							m_screen_center_pos;
 	VECTOR									m_icon_pos;
 	float									m_icon_size;
-
-	int										m_font_handle;
-	std::string								m_text;
-	Vector2D<int>							m_font_size;
 };

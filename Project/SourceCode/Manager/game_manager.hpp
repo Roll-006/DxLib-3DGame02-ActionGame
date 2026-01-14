@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "../GameSystem/game_system_setter.hpp"
 #include "../GameTime/game_time_manager.hpp"
 #include "../Window/window.hpp"
@@ -6,7 +6,7 @@
 #include "../Font/font_handler.hpp"
 
 #include "scene_manager.hpp"
-#include "obj_manager.hpp"
+#include "../Accessor/obj_accessor.hpp"
 
 class GameManager final : public SingleInstanceBase<GameManager>
 {
@@ -19,7 +19,7 @@ public:
 	void ExitGame(const ExitGameEvent& event);
 
 private:
-	/// @brief ƒQ[ƒ€ƒ‹[ƒv‚ğŒp‘±‚·‚é‚©‚ğ”»’è
+	/// @brief ã‚²ãƒ¼ãƒ ãƒ«ãƒ¼ãƒ—ã‚’ç¶™ç¶šã™ã‚‹ã‹ã‚’åˆ¤å®š
 	[[nodiscard]] bool IsContinueLoop() const;
 
 private:

@@ -1,4 +1,4 @@
-#include "grab_virtual_camera_controller.hpp"
+ï»¿#include "grab_virtual_camera_controller.hpp"
 
 #include "../VirtualCamera/cinemachine_brain.hpp"
 #include "../Object/player.hpp"
@@ -12,11 +12,11 @@ GrabVirtualCameraController::GrabVirtualCameraController() :
 	m_camera			(std::make_shared<VirtualCamera>(ObjName.GRAB_VIRTUAL_CAMERA, BlendActivationPolicyKind::kDeactivateAllCamera)),
 	m_aim_transform		(std::make_shared<Transform>())
 {
-	// ƒCƒxƒ“ƒg“o˜^
+	// ã‚¤ãƒ™ãƒ³ãƒˆç™»éŒ²
 	EventSystem::GetInstance()->Subscribe<GrabEvent>	(this, &GrabVirtualCameraController::SetGrabberModelHandle);
 	EventSystem::GetInstance()->Subscribe<OnGrabEvent>	(this, &GrabVirtualCameraController::SetGrabbedModelHandle);
 
-	// ƒpƒ‰ƒ[ƒ^Ý’è
+	// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿è¨­å®š
 	SetupCamera();
 
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
@@ -28,7 +28,7 @@ GrabVirtualCameraController::GrabVirtualCameraController() :
 
 GrabVirtualCameraController::~GrabVirtualCameraController()
 {
-	// ƒCƒxƒ“ƒg‚Ì“o˜^‰ðœ
+	// ã‚¤ãƒ™ãƒ³ãƒˆã®ç™»éŒ²è§£é™¤
 	EventSystem::GetInstance()->Unsubscribe<GrabEvent>		(this, &GrabVirtualCameraController::SetGrabberModelHandle);
 	EventSystem::GetInstance()->Unsubscribe<OnGrabEvent>	(this, &GrabVirtualCameraController::SetGrabbedModelHandle);
 
@@ -36,7 +36,7 @@ GrabVirtualCameraController::~GrabVirtualCameraController()
 	cinemachine_brain->SetBlendTime(1.0f);
 	cinemachine_brain->RemoveVirtualCamera(m_camera->GetCameraHandle());
 
-	// ‘€ìƒJƒƒ‰‚ð•œ‹A‚³‚¹‚é
+	// æ“ä½œã‚«ãƒ¡ãƒ©ã‚’å¾©å¸°ã•ã›ã‚‹
 	const auto control_cameras_controller = cinemachine_brain->GetVirtualCameraController(VirtualCameraControllerKind::kControl);
 	if (control_cameras_controller)
 	{
@@ -47,7 +47,7 @@ GrabVirtualCameraController::~GrabVirtualCameraController()
 	m_grabber_modeler = nullptr;
 	m_grabbed_modeler = nullptr;
 
-	// ‰‰o‚ªI—¹‚µ‚½‚±‚Æ‚ð’Ê’m
+	// æ¼”å‡ºãŒçµ‚äº†ã—ãŸã“ã¨ã‚’é€šçŸ¥
 	const EndCutsceneEvent event{};
 	EventSystem::GetInstance()->Publish(event);
 }
@@ -107,7 +107,7 @@ void GrabVirtualCameraController::SetGrabbedModelHandle(const OnGrabEvent& event
 #pragma endregion
 
 
-#pragma region ƒJƒƒ‰Ý’è
+#pragma region ã‚«ãƒ¡ãƒ©è¨­å®š
 void GrabVirtualCameraController::SetupCamera()
 {
 	m_camera->SetPriority(10);
@@ -118,18 +118,18 @@ void GrabVirtualCameraController::SetupCamera()
 #pragma endregion
 
 
-#pragma region ‹N“_ƒgƒ‰ƒ“ƒXƒtƒH[ƒ€‚ÌŒvŽZ
+#pragma region èµ·ç‚¹ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ ã®è¨ˆç®—
 void GrabVirtualCameraController::CalcAimTransform()
 {
 	if (!m_grabber_modeler || !m_grabbed_modeler) { return; }
 
 	auto	   grabber_m	= MV1GetFrameLocalWorldMatrix(m_grabber_modeler->GetModelHandle(), MV1SearchFrame(m_grabber_modeler->GetModelHandle(), FramePath.HEAD_TOP_END));
 	auto	   grabbed_m	= MV1GetFrameLocalWorldMatrix(m_grabbed_modeler->GetModelHandle(), MV1SearchFrame(m_grabbed_modeler->GetModelHandle(), FramePath.HEAD_TOP_END));
-	const auto grabber_pos	= MGetTranslateElem(grabber_m);
-	const auto grabbed_pos	= MGetTranslateElem(grabbed_m);
+	const auto grabber_pos	= matrix::GetPos(grabber_m);
+	const auto grabbed_pos	= matrix::GetPos(grabbed_m);
 	const auto grabbed_axis = math::ConvertRotMatrixToAxis(grabbed_m);
 
-	// Šî€‚Æ‚È‚éƒgƒ‰ƒ“ƒXƒtƒH[ƒ€‚ðÝ’è
+	// åŸºæº–ã¨ãªã‚‹ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ ã‚’è¨­å®š
 	const auto center_pos	= (grabber_pos + grabbed_pos) * 0.5f;
 	m_aim_transform->SetPos(CoordinateKind::kWorld, center_pos);
 	m_aim_transform->SetRot(CoordinateKind::kWorld, grabbed_axis.x_axis);

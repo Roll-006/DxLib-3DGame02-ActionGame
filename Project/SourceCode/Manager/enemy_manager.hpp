@@ -22,7 +22,7 @@ public:
 private:
 	void NotifyAllowAction			 (const ReleaseEvent&			event);
 	void NotifyDisallowActionForcibly(const GrabEvent&				event);
-	void NotifyDisallowActionForcibly(const DeadAllEnemyEvent&		event);
+	//void NotifyDisallowActionForcibly(const DeadAllEnemyEvent&		event);
 	void NotifyDetectedTarget		 (const OnTargetDetectedEvent&	event);
 	void CountDeadEnemy				 (const DeadEnemyEvent&			event);
 

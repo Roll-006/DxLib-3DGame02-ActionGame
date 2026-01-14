@@ -35,5 +35,14 @@ enum class ZombieAnimKind
 	#pragma region 下半身用
 	kLeftCrouch,
 	kRightCrouch,
+
+	kMoveForward,
+	kMoveBackward,
+	kMoveLeft,
+	kMoveRight,
+	kMoveForwardLeft,
+	kMoveForwardRight,
+	kMoveBackwardLeft,
+	kMoveBackwardRight,
 	#pragma endregion
 };

@@ -67,7 +67,7 @@ void MeleeTargetSearcher::SearchMeleeTarget()
 	if (!distance.empty())
 	{
 		std::ranges::sort(distance,	{}, &SpottedObjData::distance_to_camera);
-		const auto candidate_obj = ObjManager::GetInstance()->GetObj<ObjBase>(distance.front().target_obj_handle);
+		const auto candidate_obj = ObjAccessor::GetInstance()->GetObj<ObjBase>(distance.front().target_obj_handle);
 		const auto melee_target = std::dynamic_pointer_cast<IMeleeHittable>(candidate_obj);
 		m_melee_attackable.lock()->AddMeleeTarget(melee_target);
 		return;
@@ -75,7 +75,7 @@ void MeleeTargetSearcher::SearchMeleeTarget()
 
 	// 角度でソート
 	std::ranges::sort(angle, {}, &SpottedObjData::camera_diff_angle);
-	const auto candidate_obj = ObjManager::GetInstance()->GetObj<ObjBase>(angle.front().target_obj_handle);
+	const auto candidate_obj = ObjAccessor::GetInstance()->GetObj<ObjBase>(angle.front().target_obj_handle);
 	const auto melee_target = std::dynamic_pointer_cast<IMeleeHittable>(candidate_obj);
 	m_melee_attackable.lock()->AddMeleeTarget(melee_target);
 }
@@ -106,7 +106,7 @@ void MeleeTargetSearcher::SearchTopPriorityDownedChara()
 	if (!distance.empty())
 	{
 		std::ranges::sort(distance, {}, &SpottedObjData::distance_to_camera);
-		const auto candidate_obj = ObjManager::GetInstance()->GetObj<ObjBase>(distance.front().target_obj_handle);
+		const auto candidate_obj = ObjAccessor::GetInstance()->GetObj<ObjBase>(distance.front().target_obj_handle);
 		const auto downed_chara = std::dynamic_pointer_cast<IMeleeHittable>(candidate_obj);
 		m_melee_attackable.lock()->AddTopPriorityDownedChara(downed_chara);
 		return;
@@ -114,7 +114,7 @@ void MeleeTargetSearcher::SearchTopPriorityDownedChara()
 
 	// 角度でソート
 	std::ranges::sort(angle, {}, &SpottedObjData::camera_diff_angle);
-	const auto candidate_obj = ObjManager::GetInstance()->GetObj<ObjBase>(angle.front().target_obj_handle);
+	const auto candidate_obj = ObjAccessor::GetInstance()->GetObj<ObjBase>(angle.front().target_obj_handle);
 	const auto downed_chara = std::dynamic_pointer_cast<IMeleeHittable>(candidate_obj);
 	m_melee_attackable.lock()->AddTopPriorityDownedChara(downed_chara);
 }

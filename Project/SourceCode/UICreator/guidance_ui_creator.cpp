@@ -1,19 +1,20 @@
-#include "guidance_ui_creator.hpp"
+ï»¿#include "guidance_ui_creator.hpp"
 
 GuidanceUICreator::GuidanceUICreator() :
 	m_name		(UICreatorName.GUIDANCE_UI_CREATOR),
 	m_priority	(10),
 	m_is_active	(true),
-	m_mission_ui(std::make_shared<MissionUI>())
+	m_mission_ui(std::make_shared<MissionUI>("mission")),
+	m_purpose_ui(std::make_shared<PurposeUI>("purpose_01"))
 {
-	// ƒCƒxƒ“ƒg“o˜^
-	//EventSystem::GetInstance()->Subscribe<ChangeSceneEvent>(this, &GuidanceUICreator::ActivateMissionUI);
+	// ã‚¤ãƒ™ãƒ³ãƒˆç™»éŒ²
+	EventSystem::GetInstance()->Subscribe<ChangeSceneEvent>(this, &GuidanceUICreator::ActivateMissionUI);
 }
 
 GuidanceUICreator::~GuidanceUICreator()
 {
-	// ƒCƒxƒ“ƒg‚Ì“o˜^‰ðœ
-	//EventSystem::GetInstance()->Unsubscribe<ChangeSceneEvent>(this, &GuidanceUICreator::ActivateMissionUI);
+	// ã‚¤ãƒ™ãƒ³ãƒˆã®ç™»éŒ²è§£é™¤
+	EventSystem::GetInstance()->Unsubscribe<ChangeSceneEvent>(this, &GuidanceUICreator::ActivateMissionUI);
 }
 
 void GuidanceUICreator::Init()
@@ -21,6 +22,7 @@ void GuidanceUICreator::Init()
 	m_is_active = true;
 
 	m_mission_ui->Init();
+	m_purpose_ui->Init();
 }
 
 void GuidanceUICreator::LateUpdate()
@@ -28,6 +30,7 @@ void GuidanceUICreator::LateUpdate()
 	if (!m_is_active) { return; }
 
 	m_mission_ui->LateUpdate();
+	m_purpose_ui->LateUpdate();
 }
 
 void GuidanceUICreator::OnDraw(const int main_screen_handle)
@@ -35,6 +38,7 @@ void GuidanceUICreator::OnDraw(const int main_screen_handle)
 	if (!m_is_active) { return; }
 
 	m_mission_ui->Draw();
+	m_purpose_ui->Draw(main_screen_handle);
 }
 
 void GuidanceUICreator::ActivateMissionUI(const ChangeSceneEvent& event)
@@ -43,6 +47,7 @@ void GuidanceUICreator::ActivateMissionUI(const ChangeSceneEvent& event)
 	{
 	case SceneKind::kPlay:
 		m_mission_ui->Activate();
+		m_purpose_ui->Activate();
 		break;
 
 	default:

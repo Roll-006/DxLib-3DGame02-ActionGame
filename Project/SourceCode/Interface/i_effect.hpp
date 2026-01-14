@@ -35,9 +35,9 @@ public:
 
 
 	#pragma region Getter
-	[[nodiscard]] virtual int GetOriginEffectHandle()		const abstract;
-	[[nodiscard]] virtual int GetPlayingEffectHandle()		const abstract;
-	[[nodiscard]] virtual int GetReturnPoolTriggerHandle()	const abstract;
+	[[nodiscard]] const virtual int GetOriginEffectHandle()			const abstract;
+	[[nodiscard]] const virtual int GetPlayingEffectHandle()		const abstract;
+	[[nodiscard]] const virtual int GetReturnPoolTriggerHandle()	const abstract;
 	#pragma endregion
 
 protected:

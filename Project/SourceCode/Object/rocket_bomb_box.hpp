@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "../Base/physical_obj_base.hpp"
 #include "../Interface/i_item.hpp"
 #include "../Interface/i_ammo_box.hpp"
@@ -7,7 +7,7 @@
 #include "../JSON/json_loader.hpp"
 #include "../Part/modeler.hpp"
 
-#include "../Manager/obj_manager.hpp"
+#include "../Accessor/obj_accessor.hpp"
 #include "../Manager/collision_manager.hpp"
 #include "../Manager/physics_manager.hpp"
 
@@ -23,7 +23,7 @@ public:
 	void LateUpdate()	override;
 	void Draw()	const	override;
 
-	/// @brief Šeƒ}ƒl[ƒWƒƒ[‚É©g‚ğ“o˜^‚·‚é
+	/// @brief å„ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ã«è‡ªèº«ã‚’ç™»éŒ²ã™ã‚‹
 	void AddToObjManager()		override;
 	void RemoveToObjManager()	override;
 
@@ -35,17 +35,17 @@ public:
 	void SetHaveNum(const int set_num) override;
 	void AddHaveNum(const int add_num) override;
 
-	[[nodiscard]] float		GetDeltaTime()		const override;
-	[[nodiscard]] ItemKind	GetItemKind()		const override { return ItemKind::kAmmoBox; }
-	[[nodiscard]] int		GetMaxHaveNum()		const override { return rifle_cartridge_box_data.max_have_num; }
-	[[nodiscard]] int		GetCurrentHaveNum()	const override { return m_have_num; }
-	[[nodiscard]] bool		IsMax()				const override { return rifle_cartridge_box_data.max_have_num >= m_have_num; }
-	[[nodiscard]] std::shared_ptr<Transform> GetItemTransform() const override { return m_item_effect_transform; }
+	[[nodiscard]] const float		GetDeltaTime()		const override;
+	[[nodiscard]] const ItemKind	GetItemKind()		const override { return ItemKind::kAmmoBox; }
+	[[nodiscard]] const int			GetMaxHaveNum()		const override { return rifle_cartridge_box_data.max_have_num; }
+	[[nodiscard]] const int			GetCurrentHaveNum()	const override { return m_have_num; }
+	[[nodiscard]] const bool		IsMax()				const override { return rifle_cartridge_box_data.max_have_num >= m_have_num; }
+	[[nodiscard]] const std::shared_ptr<Transform> GetItemTransform() const override { return m_item_effect_transform; }
 
 private:
 	RifleCartridgeBoxData		rifle_cartridge_box_data;
 
-	int							m_have_num; // Š—L”
+	int							m_have_num; // æ‰€æœ‰æ•°
 	std::shared_ptr<Transform>	m_item_effect_transform;
 	std::shared_ptr<Modeler>	m_modeler;
 

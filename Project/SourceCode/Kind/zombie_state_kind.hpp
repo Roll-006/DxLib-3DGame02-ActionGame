@@ -1,41 +1,22 @@
-#pragma once
+ï»¿#pragma once
 
-namespace zombie_state
+enum class ZombieStateKind
 {
-	enum class AIStateKind
-	{
-		kWait,					// ‘Ò‹@
-		kPatrol,				// „‰ñ(“Á’è‚Ìƒ‹[ƒg‚ğˆÚ“®‚·‚é)
-		kInvestigate,			// ’²¸(‘ÎÛ‚ğŒ©¸‚Á‚½êŠ‚ğ’²¸‚·‚é)
-		kSearch,				// ‘{õ(’²¸‚Å‘ÎÛ‚ğ”­Œ©‚Å‚«‚È‚©‚Á‚½ÛA‚³‚ç‚ÉL”ÍˆÍ‚ğ‘{õ‚·‚é)
-		kAlert,					// Œx‰ú(‰¹‚â‹C”z‚ÉŒx‰ú‚µ‚Äü‚è‚ğŒ©“n‚·)
-		kTrack,					// ’ÇÕ(‘ÎÛ‚ğ’Ç”ö‚·‚é)
-		kRunAttack,				// ƒ_ƒbƒVƒ…UŒ‚
-		kCloseRangeAttack,		// ‹ßÚUŒ‚
-		kLongRangeAttack,		// ‰“‹——£UŒ‚
-	};
+	kNone = -1,
 
-	enum class MoveStateKind
-	{
-		kMoveNull,
-		kMove,
-	};
-
-	enum class ActionStateKind
-	{
-		kActionNull,			// NULL
-		kDetected,				// ”­Œ©
-		kRun,					// ƒ_ƒbƒVƒ…
-		kGrab,					// ’Í‚İ
-		kGrabRun,				// ’Í‚İƒ_ƒbƒVƒ…
-		kStealthKilled,			// ƒXƒeƒ‹ƒXƒLƒ‹‚³‚ê‚½
-		kKnockback,				// ƒmƒbƒNƒoƒbƒN
-		kBackwardKnockback,		// ƒmƒbƒNƒoƒbƒN(Œã‚ë)
-		kStandUp,				// —§‚¿ã‚ª‚é
-		kStandStun,				// ‹¯‚İ(—§‚¿ó‘Ô)
-		kCrouchLeftStun,		// ‹¯‚İ(¶‘«‚µ‚á‚ª‚İó‘Ô)
-		kCrouchRightStun,		// ‹¯‚İ(‰E‘«‚µ‚á‚ª‚İó‘Ô)
-		kPlayDead,				// €‚ñ‚¾‚Ó‚è
-		kDead,					// €–S
-	};
-}
+	kIdle,					// IDLE
+	kDead,					// æ­»äº¡
+	kPatrol,				// å·¡å›
+	kTrack,					// è¿½è·¡
+	kSearch,				// æœç´¢
+	kStandUp,				// ç«‹ã¡ä¸ŠãŒã‚‹
+	kStandStun,				// æ€¯ã¿(ç«‹ã¡çŠ¶æ…‹)
+	kCrouchLeftStun,		// æ€¯ã¿(å·¦è¶³ã—ã‚ƒãŒã¿çŠ¶æ…‹)
+	kCrouchRightStun,		// æ€¯ã¿(å³è¶³ã—ã‚ƒãŒã¿çŠ¶æ…‹)
+	kStealthKilled,			// ã‚¹ãƒ†ãƒ«ã‚¹ã‚­ãƒ«ã•ã‚ŒãŸ
+	kDetected,				// ç™ºè¦‹
+	kGrab,					// æ´ã¿
+	kGrabRun,				// æ´ã¿ãƒ€ãƒƒã‚·ãƒ¥
+	kKnockback,				// ãƒãƒƒã‚¯ãƒãƒƒã‚¯
+	kBackwardKnockback,		// ãƒãƒƒã‚¯ãƒãƒƒã‚¯(å¾Œã‚)
+};

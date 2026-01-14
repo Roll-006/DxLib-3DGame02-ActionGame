@@ -12,7 +12,7 @@ public:
 	virtual void OnReloaded() abstract;
 	virtual void TrackLoad() abstract;
 
-	[[nodiscard]] virtual bool IsReloading() const abstract;
+	[[nodiscard]] virtual const bool IsReloading() const abstract;
 
 protected:
 	virtual void TrackOwnerHand() abstract;

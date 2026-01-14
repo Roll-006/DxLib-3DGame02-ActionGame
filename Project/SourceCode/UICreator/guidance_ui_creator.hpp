@@ -1,6 +1,7 @@
 #pragma once
 #include "../Interface/i_ui_creator.hpp"
 #include "../UI/mission_ui.hpp"
+#include "../UI/purpose_ui.hpp"
 #include "../Event/event_system.hpp"
 
 class GuidanceUICreator final : public IUICreator
@@ -31,4 +32,5 @@ private:
 	bool		m_is_active;
 
 	std::shared_ptr<MissionUI> m_mission_ui;
+	std::shared_ptr<PurposeUI> m_purpose_ui;
 };

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "physical_obj_base.hpp"
 #include "../Interface/i_item.hpp"
 
@@ -7,7 +7,7 @@
 #include "../Kind/weapon_kind.hpp"
 #include "../Kind/holster_kind.hpp"
 
-#include "../Manager/obj_manager.hpp"
+#include "../Accessor/obj_accessor.hpp"
 #include "../Manager/collision_manager.hpp"
 #include "../Manager/physics_manager.hpp"
 #include "../Manager/effect_manager.hpp"
@@ -23,40 +23,40 @@ public:
 
 	void OnProjectPos() override;
 
-	/// @brief ‘•”õ‚·‚é‚¿å‚ğƒAƒ^ƒbƒ`‚·‚é
+	/// @brief è£…å‚™ã™ã‚‹æŒã¡ä¸»ã‚’ã‚¢ã‚¿ãƒƒãƒã™ã‚‹
 	void AttachOwner(const std::shared_ptr<Modeler>& owner_modeler, const std::string& owner_name);
-	/// @brief ‘•”õ‚µ‚Ä‚¢‚½‚¿å‚ğƒfƒ^ƒbƒ`‚·‚é
+	/// @brief è£…å‚™ã—ã¦ã„ãŸæŒã¡ä¸»ã‚’ãƒ‡ã‚¿ãƒƒãƒã™ã‚‹
 	void DetachOwner();
 
-	/// @brief ‚¿å‚Ìè‚ğ’ÇÕ‚·‚é
+	/// @brief æŒã¡ä¸»ã®æ‰‹ã‚’è¿½è·¡ã™ã‚‹
 	virtual void TrackOwnerHand() abstract;
-	/// @brief ‚¿å‚Ìƒzƒ‹ƒXƒ^[(•Šíû”[ˆÊ’u)‚ğ’Ç”ö‚·‚é
+	/// @brief æŒã¡ä¸»ã®ãƒ›ãƒ«ã‚¹ã‚¿ãƒ¼(æ­¦å™¨åç´ä½ç½®)ã‚’è¿½å°¾ã™ã‚‹
 	virtual void TrackOwnerHolster()abstract;
 
-	[[nodiscard]] float						 GetDeltaTime()		const override;
-	[[nodiscard]] ItemKind					 GetItemKind()		const override	{ return ItemKind::kWeapon; }
-	[[nodiscard]] std::shared_ptr<Modeler>	 GetModeler()		const			{ return m_modeler; }
-	[[nodiscard]] float						 GetPower()			const			{ return power; }
-	[[nodiscard]] std::string				 GetOwnerName()		const			{ return m_owner_name; }
-	[[nodiscard]] WeaponKind				 GetWeaponKind()	const			{ return weapon_kind; }
-	[[nodiscard]] HolsterKind				 GetHolsterKind()	const			{ return holster_kind; }
-	[[nodiscard]] std::shared_ptr<Transform> GetItemTransform() const override	{ return m_item_effect_transform; }
+	[[nodiscard]] const float						GetDeltaTime()		const override;
+	[[nodiscard]] const ItemKind					GetItemKind()		const override	{ return ItemKind::kWeapon; }
+	[[nodiscard]] const std::shared_ptr<const Modeler>	GetModeler()		const			{ return m_modeler; }
+	[[nodiscard]] const float							GetPower()			const			{ return power; }
+	[[nodiscard]] const std::string					GetOwnerName()		const			{ return m_owner_name; }
+	[[nodiscard]] const WeaponKind					GetWeaponKind()		const			{ return weapon_kind; }
+	[[nodiscard]] const HolsterKind					GetHolsterKind()	const			{ return holster_kind; }
+	[[nodiscard]] const std::shared_ptr<Transform>	GetItemTransform()	const override	{ return m_item_effect_transform; }
 
 protected:
 	std::shared_ptr<Modeler>	m_modeler;
-	std::shared_ptr<Modeler>	m_owner_modeler;	// •Ší‚Ì‚¿å‚Å‚ ‚éƒIƒuƒWƒFƒNƒg‚Ìƒ‚ƒfƒ‰[
+	std::shared_ptr<Modeler>	m_owner_modeler;	// æ­¦å™¨ã®æŒã¡ä¸»ã§ã‚ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒ¢ãƒ‡ãƒ©ãƒ¼
 	std::string					m_owner_name;
 	std::shared_ptr<Transform>	m_item_effect_transform;
 	
 	float		power;
 	VECTOR		basic_angle;
 	float		basic_scale;
-	VECTOR		hold_offset_pos;		// è‚É‚½‚ê‚éÛ‚ÌƒIƒtƒZƒbƒgÀ•W
-	VECTOR		hold_offset_angle;		// è‚É‚½‚ê‚éÛ‚ÌƒIƒtƒZƒbƒgŠp“x
-	VECTOR		hold_offset_scale;		// è‚É‚½‚ê‚éÛ‚ÌƒIƒtƒZƒbƒgƒXƒP[ƒ‹
-	VECTOR		attach_offset_pos;		// ƒzƒ‹ƒXƒ^[‚É‘•’…‚³‚ê‚Ä‚¢‚éÛ‚ÌƒIƒtƒZƒbƒgÀ•W
-	VECTOR		attach_offset_angle;	// ƒzƒ‹ƒXƒ^[‚É‘•’…‚³‚ê‚Ä‚¢‚éÛ‚ÌƒIƒtƒZƒbƒgŠp“x
-	VECTOR		attach_offset_scale;	// ƒzƒ‹ƒXƒ^[‚É‘•’…‚³‚ê‚Ä‚¢‚éÛ‚ÌƒIƒtƒZƒbƒgƒXƒP[ƒ‹
+	VECTOR		hold_offset_pos;		// æ‰‹ã«æŒãŸã‚Œã‚‹éš›ã®ã‚ªãƒ•ã‚»ãƒƒãƒˆåº§æ¨™
+	VECTOR		hold_offset_angle;		// æ‰‹ã«æŒãŸã‚Œã‚‹éš›ã®ã‚ªãƒ•ã‚»ãƒƒãƒˆè§’åº¦
+	VECTOR		hold_offset_scale;		// æ‰‹ã«æŒãŸã‚Œã‚‹éš›ã®ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚¹ã‚±ãƒ¼ãƒ«
+	VECTOR		attach_offset_pos;		// ãƒ›ãƒ«ã‚¹ã‚¿ãƒ¼ã«è£…ç€ã•ã‚Œã¦ã„ã‚‹éš›ã®ã‚ªãƒ•ã‚»ãƒƒãƒˆåº§æ¨™
+	VECTOR		attach_offset_angle;	// ãƒ›ãƒ«ã‚¹ã‚¿ãƒ¼ã«è£…ç€ã•ã‚Œã¦ã„ã‚‹éš›ã®ã‚ªãƒ•ã‚»ãƒƒãƒˆè§’åº¦
+	VECTOR		attach_offset_scale;	// ãƒ›ãƒ«ã‚¹ã‚¿ãƒ¼ã«è£…ç€ã•ã‚Œã¦ã„ã‚‹éš›ã®ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚¹ã‚±ãƒ¼ãƒ«
 	WeaponKind	weapon_kind;
 	HolsterKind holster_kind;
 

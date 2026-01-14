@@ -1,4 +1,4 @@
-#include "shell_casing.hpp"
+ï»¿#include "shell_casing.hpp"
 #include "../Base/gun_base.hpp"
 
 ShellCasing::ShellCasing(const std::string& file_path) :
@@ -100,14 +100,14 @@ void ShellCasing::OnProjectPos()
 	const auto hit_triangle = GetCollider(ColliderKind::kProjectRay)->GetHitTriangles();
 	if (hit_triangle.size() <= 0) { return; }
 
-	// Šp“xEˆÊ’u‚ğŒÅ’è
+	// è§’åº¦ãƒ»ä½ç½®ã‚’å›ºå®š
 	const auto current_axis = m_transform->GetAxis(CoordinateKind::kWorld);
 	const auto new_axis		= math::GetUpSyncedAxis(current_axis, hit_triangle.front().GetNormalVector(), std::make_optional<AxisData>(AxisData(current_axis.z_axis, AxisKind::kForward)));
 
 	m_transform->SetPos(CoordinateKind::kWorld, *project_pos);
 	m_transform->SetRot(CoordinateKind::kWorld, new_axis);
 
-	// ƒRƒ‰ƒCƒ_[‚ÌˆÊ’uXV
+	// ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®ä½ç½®æ›´æ–°
 	const auto pos = m_transform->GetPos(CoordinateKind::kWorld);
 	CalcColliderPos();
 }
@@ -116,7 +116,7 @@ void ShellCasing::AddToObjManager()
 {
 	const auto physical_obj = std::static_pointer_cast<PhysicalObjBase>(shared_from_this());
 
-	ObjManager		::GetInstance()->AddObj			(shared_from_this());
+	ObjAccessor		::GetInstance()->AddObj			(shared_from_this());
 	CollisionManager::GetInstance()->AddCollideObj	(physical_obj);
 	PhysicsManager	::GetInstance()->AddPhysicalObj	(physical_obj);
 }
@@ -127,7 +127,7 @@ void ShellCasing::RemoveToObjManager()
 
 	CollisionManager::GetInstance()->RemoveCollideObj (obj_handle);
 	PhysicsManager	::GetInstance()->RemovePhysicalObj(obj_handle);
-	ObjManager		::GetInstance()->RemoveObj		  (obj_handle);
+	ObjAccessor		::GetInstance()->RemoveObj		  (obj_handle);
 }
 
 void ShellCasing::Eject(GunBase& gun)
@@ -137,17 +137,17 @@ void ShellCasing::Eject(GunBase& gun)
 	m_transform->SetPos(CoordinateKind::kWorld, gun.GetEjectionPortTransform()->GetPos(CoordinateKind::kWorld));
 	m_transform->SetRot(CoordinateKind::kWorld, gun.GetTransform()->GetRotMatrix(CoordinateKind::kWorld));
 
-	// e‚ğŠî€‚ÉˆÚ“®•ûŒü‚ğİ’è
+	// éŠƒã‚’åŸºæº–ã«ç§»å‹•æ–¹å‘ã‚’è¨­å®š
 	const auto gun_rot = gun.GetTransform()->GetRotMatrix(CoordinateKind::kWorld);
 	m_move_dir = VTransform(v3d::GetNormalizedV(kLocalFirstMoveDir), gun_rot);
 
-	// ƒRƒ‰ƒCƒ_[‚ğİ’è
+	// ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã‚’è¨­å®š
 	CalcColliderPos();
 }
 
-bool ShellCasing::IsReturnPool()
+const bool ShellCasing::IsReturnPool()
 {
-	return m_alive_timer > kDisappearTime ? true : false;
+	return m_alive_timer > kDisappearTime;
 }
 
 void ShellCasing::Move()
@@ -162,15 +162,15 @@ void ShellCasing::CalcColliderPos()
 {
 	const auto pos = m_transform->GetPos(CoordinateKind::kWorld);
 
-	// ‰Ÿ‚µ–ß‚µ—pƒRƒ‰ƒCƒ_[
+	// æŠ¼ã—æˆ»ã—ç”¨ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
 	auto collider_sphere = std::static_pointer_cast<Sphere>(GetCollider(ColliderKind::kCollider)->GetShape());
 	collider_sphere->SetPos(pos);
 
-	// Õ“Ë”»’è‚ğ‹–‰Â‚·‚éƒGƒŠƒA‚É—˜—p‚·‚éƒgƒŠƒK[
+	// è¡çªåˆ¤å®šã‚’è¨±å¯ã™ã‚‹ã‚¨ãƒªã‚¢ã«åˆ©ç”¨ã™ã‚‹ãƒˆãƒªã‚¬ãƒ¼
 	auto collision_area_sphere = std::static_pointer_cast<Sphere>(GetCollider(ColliderKind::kCollisionAreaTrigger)->GetShape());
 	collision_area_sphere->SetPos(pos);
 
-	// ’…’n—pƒgƒŠƒK[
+	// ç€åœ°ç”¨ãƒˆãƒªã‚¬ãƒ¼
 	auto landing_sphere = std::static_pointer_cast<Sphere>(GetCollider(ColliderKind::kLandingTrigger)->GetShape());
 	landing_sphere->SetPos(pos + kLandingTriggerOffsetPos);
 }
@@ -185,7 +185,7 @@ void ShellCasing::CalcProjectRayPos()
 	}
 }
 
-float ShellCasing::GetDeltaTime() const
+const float ShellCasing::GetDeltaTime() const
 {
 	const auto time_manager = GameTimeManager::GetInstance();
 

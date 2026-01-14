@@ -80,7 +80,7 @@
     "mission_text": {
       "font_path": "MASTERPLAN",
       "true_type_font": "Data/Font/masterplan/MASTERPLAN___.ttf",
-      "size": 150,
+      "size": 100,
       "thick": 1,
       "type": -1,
       "char_set": -1,

@@ -1,0 +1,45 @@
+﻿{
+  "melee_target_icon_data": {
+    "icon_offset": {
+      "x": 0.0,
+      "y": 10.0,
+      "z": 0.0
+    },
+    "icon_size": 18.0,
+    "screen_size": {
+      "x": 400,
+      "y": 400
+    },
+    "cursor_offset": {
+      "x": 0,
+      "y": 60
+    },
+    "text_data": {
+      "font_path": "explanatory_text",
+      "text": "メレー",
+      "hex_color": "#ffffff",
+      "offset": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    "melee_cursor_graphic_scale": 0.2,
+    "down_cursor_graphic_scale": 0.2,
+    "mask_graphic_scale": 0.7,
+    "button_icon_graphic_scale": 0.2,
+    "explanatory_text_box_blur_graphic_scale": 0.7,
+    "mask_graphic_offset": {
+      "x": 110,
+      "y": 0
+    },
+    "explanatory_text_box_blur_graphic_offset": {
+      "x": 110,
+      "y": 0
+    },
+    "icon_size_ratio": 0.01,
+    "melee_cursor_graphic_path": "Data/Graphic/UI/Cursor/cursor_01.png",
+    "down_cursor_graphic_path": "Data/Graphic/UI/Cursor/cursor_02.png",
+    "explanatory_text_box_blur_graphic_path": "Data/Graphic/UI/Melee/explanatory_text_box_blur.png",
+    "mask_graphic_path": "Data/Graphic/UI/Melee/explanatory_text_box.png"
+  }
+}

@@ -1,4 +1,4 @@
-#include "non_collide_rocket_bomb.hpp"
+ï»¿#include "non_collide_rocket_bomb.hpp"
 
 NonCollildeRocketBomb::NonCollildeRocketBomb(const std::shared_ptr<Transform> weapon_load_transform) :
 	ObjBase					(ObjName.NON_COLLIDE_ROCKET_BOMB, ObjTag.MAGAZINE),
@@ -43,12 +43,12 @@ void NonCollildeRocketBomb::Draw() const
 
 void NonCollildeRocketBomb::AddToObjManager()
 {
-	ObjManager::GetInstance()->AddObj(shared_from_this());
+	ObjAccessor::GetInstance()->AddObj(shared_from_this());
 }
 
 void NonCollildeRocketBomb::RemoveToObjManager()
 {
-	ObjManager::GetInstance()->RemoveObj(GetObjHandle());
+	ObjAccessor::GetInstance()->RemoveObj(GetObjHandle());
 }
 
 void NonCollildeRocketBomb::OnStartReload(const std::shared_ptr<Modeler>& owner_modler)
@@ -62,7 +62,7 @@ void NonCollildeRocketBomb::OnReloaded()
 	m_is_reloading	= false;
 }
 
-float NonCollildeRocketBomb::GetDeltaTime() const
+const float NonCollildeRocketBomb::GetDeltaTime() const
 {
 	return GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kWorld);
 }
@@ -79,15 +79,15 @@ void NonCollildeRocketBomb::TrackOwnerHand()
 
 	m_owner_modeler->ApplyMatrix();
 
-	// ƒAƒ^ƒbƒ`‚·‚é•”ˆÊ‚Ìs—ñî•ñ‚ðŽæ‚èo‚·
+	// ã‚¢ã‚¿ãƒƒãƒã™ã‚‹éƒ¨ä½ã®è¡Œåˆ—æƒ…å ±ã‚’å–ã‚Šå‡ºã™
 	const auto owner_attach_frame_num = MV1SearchFrame(m_owner_modeler->GetModelHandle(), FramePath.LEFT_HAND);
 	const auto owner_attach_frame_mat = MV1GetFrameLocalWorldMatrix(m_owner_modeler->GetModelHandle(), owner_attach_frame_num);
 
-	// •Ší‚ðƒAƒ^ƒbƒ`‚·‚é•”ˆÊ‚É‡‚í‚¹‚Ä‰ñ“]‚µAs—ñ‚ðŽæ“¾
+	// æ­¦å™¨ã‚’ã‚¢ã‚¿ãƒƒãƒã™ã‚‹éƒ¨ä½ã«åˆã‚ã›ã¦å›žè»¢ã—ã€è¡Œåˆ—ã‚’å–å¾—
 	const auto offset_angle_mat = math::ConvertEulerAnglesToXYZRotMatrix(kHoldOffsetAngle);
 	const auto result_mat		= offset_angle_mat * owner_attach_frame_mat;
 
-	// î•ñ‚ð“K—p
+	// æƒ…å ±ã‚’é©ç”¨
 	m_transform->SetMatrix	(CoordinateKind::kWorld, result_mat);
 	m_transform->SetPos		(CoordinateKind::kLocal, m_transform->GetPos(CoordinateKind::kLocal) + VTransformSR(kHoldOffsetPos, result_mat));
 	m_transform->SetScale	(CoordinateKind::kWorld, kHoldOffsetScale);
@@ -97,11 +97,11 @@ void NonCollildeRocketBomb::TrackLoad()
 {
 	if (m_is_reloading) { return; }
 
-	// •Ší‚ðƒAƒ^ƒbƒ`‚·‚é•”ˆÊ‚É‡‚í‚¹‚Ä‰ñ“]‚µAs—ñ‚ðŽæ“¾
+	// æ­¦å™¨ã‚’ã‚¢ã‚¿ãƒƒãƒã™ã‚‹éƒ¨ä½ã«åˆã‚ã›ã¦å›žè»¢ã—ã€è¡Œåˆ—ã‚’å–å¾—
 	const auto offset_angle_mat = math::ConvertEulerAnglesToXYZRotMatrix(kLoadOffsetAngle);
 	const auto result_mat		= offset_angle_mat * m_weapon_load_transform->GetMatrix(CoordinateKind::kWorld);
 
-	// î•ñ‚ð“K—p
+	// æƒ…å ±ã‚’é©ç”¨
 	m_transform->SetMatrix	(CoordinateKind::kWorld, result_mat);
 	m_transform->SetPos		(CoordinateKind::kLocal, m_transform->GetPos(CoordinateKind::kLocal) + VTransformSR(kLoadOffsetPos, result_mat));
 	m_transform->SetScale	(CoordinateKind::kWorld, kLoadOffsetScale);

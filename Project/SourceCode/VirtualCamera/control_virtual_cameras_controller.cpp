@@ -1,8 +1,8 @@
-#include "control_virtual_cameras_controller.hpp"
-
-#include "../VirtualCamera/cinemachine_brain.hpp"
+ï»¿#include "../VirtualCamera/cinemachine_brain.hpp"
+#include "../Command/command_handler.hpp"
 #include "../Object/player.hpp"
-#include "../Part/player_state_controller.hpp"
+#include "../Kind/player_state_kind.hpp"
+#include "control_virtual_cameras_controller.hpp"
 
 ControlVirtualCamerasController::ControlVirtualCamerasController(Player& player) :
 	m_virtual_camera_controller_kind(VirtualCameraControllerKind::kControl),
@@ -19,10 +19,10 @@ ControlVirtualCamerasController::ControlVirtualCamerasController(Player& player)
 	m_is_recoiling					(false),
 	m_is_reached_recoil_peak		(true)
 {
-	// ƒCƒxƒ“ƒg“o˜^
+	// ã‚¤ãƒ™ãƒ³ãƒˆç™»éŒ²
 	EventSystem::GetInstance()->Subscribe<EndCutsceneEvent>(this, &ControlVirtualCamerasController::EndGrabCutscene);
 
-	// ƒpƒ‰ƒ[ƒ^İ’è
+	// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿è¨­å®š
 	SetupForRotCamera();
 	SetupForAimCamera();
 	
@@ -36,7 +36,7 @@ ControlVirtualCamerasController::ControlVirtualCamerasController(Player& player)
 
 ControlVirtualCamerasController::~ControlVirtualCamerasController()
 {
-	// ƒCƒxƒ“ƒg‚Ì“o˜^‰ğœ
+	// ã‚¤ãƒ™ãƒ³ãƒˆã®ç™»éŒ²è§£é™¤
 	EventSystem::GetInstance()->Unsubscribe<EndCutsceneEvent>(this, &ControlVirtualCamerasController::EndGrabCutscene);
 
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
@@ -81,7 +81,7 @@ void ControlVirtualCamerasController::OnRecoil(const GunBase& gun)
 
 	m_input_angle[TimeKind::kCurrent] = m_result_angle;
 
-	// ƒŠƒRƒCƒ‹’l‚Ìæ“¾
+	// ãƒªã‚³ã‚¤ãƒ«å€¤ã®å–å¾—
 	float recoil_pitch			= 1.0f;
 	float recoil_yaw			= rand_gen->GetRandClosedOpen(m_recoil_data.min_yaw, m_recoil_data.max_yaw);
 	recoil_pitch				*= m_recoil_data.pitch;
@@ -181,14 +181,14 @@ void ControlVirtualCamerasController::CalcMoveDirFromPad()
 	if (m_move_dir != v3d::GetZeroV()) { return; }
 	if (InputChecker::GetInstance()->GetCurrentInputDevice() != DeviceKind::kPad) { return; }
 
-	// Še•ûŒü‚Ìƒpƒ‰ƒ[ƒ^[‚ğæ“¾
+	// å„æ–¹å‘ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãƒ¼ã‚’å–å¾—
 	const auto input = InputChecker::GetInstance();
 	const auto up_param		= input->GetInputParameter(pad::StickKind::kRSUp);
 	const auto down_param	= input->GetInputParameter(pad::StickKind::kRSDown);
 	const auto left_param	= input->GetInputParameter(pad::StickKind::kRSLeft);
 	const auto right_param	= input->GetInputParameter(pad::StickKind::kRSRight);
 
-	// ‘¬“xƒxƒNƒgƒ‹E“ü—Í”»’è‚ğæ“¾
+	// é€Ÿåº¦ãƒ™ã‚¯ãƒˆãƒ«ãƒ»å…¥åŠ›åˆ¤å®šã‚’å–å¾—
 	if (up_param)	 { m_velocity.x = -math::GetUnitValue<int, float>(InputChecker::kStickDeadZone,  InputChecker::kStickMaxSlope,  up_param);	  }
 	if (down_param)  { m_velocity.x =  math::GetUnitValue<int, float>(InputChecker::kStickDeadZone, -InputChecker::kStickMinSlope, -down_param);  }
 	if (left_param)  { m_velocity.y = -math::GetUnitValue<int, float>(InputChecker::kStickDeadZone, -InputChecker::kStickMinSlope, -left_param);  }
@@ -204,7 +204,7 @@ void ControlVirtualCamerasController::CalcMoveDirFromMouse()
 	if (m_move_dir != v3d::GetZeroV()) { return; }
 	if (InputChecker::GetInstance()->GetCurrentInputDevice() != DeviceKind::kKeyboard) { return; }
 
-	// ˆÚ“®‘¬“x‚ğæ“¾
+	// ç§»å‹•é€Ÿåº¦ã‚’å–å¾—
 	Vector2D<float> velocity_2d = InputChecker::GetInstance()->GetMouseVelocity(TimeKind::kCurrent);
 	m_velocity = VGet(velocity_2d.y, velocity_2d.x, 0.0f) * kMoveSpeedWithMouse;
 
@@ -218,11 +218,11 @@ void ControlVirtualCamerasController::CalcMoveDirFromCommand()
 	const auto input	= InputChecker	::GetInstance();
 	const auto command	= CommandHandler::GetInstance();
 
-	// ƒpƒbƒhEƒ}ƒEƒX‚Ì“ü—Í‚Í—áŠO“I‚ÉƒRƒ}ƒ“ƒh“ü—Í‚Ì“®‚«‚ğ“K—p‚µ‚È‚¢
+	// ãƒ‘ãƒƒãƒ‰ãƒ»ãƒã‚¦ã‚¹ã®å…¥åŠ›ã¯ä¾‹å¤–çš„ã«ã‚³ãƒãƒ³ãƒ‰å…¥åŠ›ã®å‹•ãã‚’é©ç”¨ã—ãªã„
 	for (int i = 0; i < 4; ++i) { if (input->IsInput(static_cast<mouse::SlideDirKind>(i)))	{ return; } }
 	for (int i = 0; i < 8; ++i) { if (input->IsInput(static_cast<pad::StickKind>(i)))		{ return; } }
 
-	// ƒRƒ}ƒ“ƒhƒpƒ^[ƒ“‚Å“ü—Í‚³‚ê‚½ê‡‚Ì‘¬“xE•ûŒü‚ğæ“¾
+	// ã‚³ãƒãƒ³ãƒ‰ãƒ‘ã‚¿ãƒ¼ãƒ³ã§å…¥åŠ›ã•ã‚ŒãŸå ´åˆã®é€Ÿåº¦ãƒ»æ–¹å‘ã‚’å–å¾—
 	if (command->IsExecute(CommandKind::kMoveUpCamera,		TimeKind::kCurrent)) { m_move_dir.x = -1; }
 	if (command->IsExecute(CommandKind::kMoveDownCamera,	TimeKind::kCurrent)) { m_move_dir.x =  1; }
 	if (command->IsExecute(CommandKind::kMoveLeftCamera,	TimeKind::kCurrent)) { m_move_dir.y = -1; }
@@ -237,16 +237,15 @@ void ControlVirtualCamerasController::CalcMoveDirFromCommand()
 
 void ControlVirtualCamerasController::CalcOffsetFromRotCamera()
 {
-	const auto state				= m_player.GetStateController();
-	const auto weapon_state_kind	= static_cast<player_state::WeaponActionStateKind>(state->GetWeaponActionState(TimeKind::kCurrent)->GetStateKind());
-	const auto gun					= std::static_pointer_cast<GunBase>(m_player.GetCurrentHeldWeapon());
-	const auto body					= m_aim_control_camera->GetBody();
-	const auto aim					= m_aim_control_camera->GetAim();
+	const auto state_kind	= m_player.GetState()->GetCurrentStateKind();
+	const auto gun			= std::static_pointer_cast<GunBase>(m_player.GetCurrentHeldWeapon());
+	const auto body			= m_aim_control_camera->GetBody();
+	const auto aim			= m_aim_control_camera->GetAim();
 
-	switch (weapon_state_kind)
+	switch (state_kind)
 	{
-	case player_state::WeaponActionStateKind::kAimGun:
-	case player_state::WeaponActionStateKind::kShot:
+	case PlayerStateKind::kAimGun:
+	case PlayerStateKind::kShot:
 
 		switch (gun->GetGunKind())
 		{
@@ -266,8 +265,7 @@ void ControlVirtualCamerasController::CalcOffsetFromRotCamera()
 
 		break;
 
-	case player_state::WeaponActionStateKind::kAimKnife:
-	case player_state::WeaponActionStateKind::kStabKnife:
+	case PlayerStateKind::kAimKnife:
   		body->SetFollowOffset    (kFollowOffsetForAimCameraKnife);
 		aim ->SetTrackedObjOffset(kTrackedObjOffsetForAimCameraKnife);
 		break;
@@ -279,17 +277,16 @@ void ControlVirtualCamerasController::CalcOffsetFromRotCamera()
 
 void ControlVirtualCamerasController::CalcOffsetFromAimCamera()
 {
-	const auto state				= m_player.GetStateController();
-	const auto action_state_kind	= static_cast<player_state::ActionStateKind>(state->GetActionState(TimeKind::kCurrent)->GetStateKind());;
-	const auto body					= m_rot_control_camera->GetBody();
-	const auto aim					= m_rot_control_camera->GetAim();
+	const auto state_kind	= m_player.GetState()->GetCurrentStateKind(); 
+	const auto body			= m_rot_control_camera->GetBody();
+	const auto aim			= m_rot_control_camera->GetAim();
 
-	switch (action_state_kind)
+	switch (state_kind)
 	{
-	case player_state::ActionStateKind::kCrouch:
-		body->SetFollowOffset    (kFollowOffsetForRotCameraCrouch);
-		aim ->SetTrackedObjOffset(kTrackedObjOffsetForRotCameraCrouch);
-		break;
+	//case PlayerStateKind::kCrouch:
+	//	body->SetFollowOffset    (kFollowOffsetForRotCameraCrouch);
+	//	aim ->SetTrackedObjOffset(kTrackedObjOffsetForRotCameraCrouch);
+	//	break;
 
 	default:
 		body->SetFollowOffset    (kFollowOffsetForRotCamera);
@@ -304,13 +301,12 @@ void ControlVirtualCamerasController::CalcAimPos()
 	modeler->ApplyMatrix();
 
 	const TCHAR* frame_name;
-	const auto state				= m_player.GetStateController();
-	const auto weapon_state_kind	= static_cast<player_state::WeaponActionStateKind>(state->GetWeaponActionState(TimeKind::kCurrent)->GetStateKind());
+	const auto	 state_kind = m_player.GetState()->GetCurrentStateKind();
 
-	// ó‘Ô‚É‚æ‚Á‚Ä’ÇÕ‚·‚éƒ{[ƒ“‚ğ•ÏX
-	if (   weapon_state_kind == player_state::WeaponActionStateKind::kAimGun
-		|| weapon_state_kind == player_state::WeaponActionStateKind::kShot
-		|| weapon_state_kind == player_state::WeaponActionStateKind::kShotRocketLauncher)
+	// çŠ¶æ…‹ã«ã‚ˆã£ã¦è¿½è·¡ã™ã‚‹ãƒœãƒ¼ãƒ³ã‚’å¤‰æ›´
+	if (   state_kind == PlayerStateKind::kAimGun
+		|| state_kind == PlayerStateKind::kShot
+		|| state_kind == PlayerStateKind::kShotRocketLauncher)
 	{
 		frame_name = FramePath.NECK;
 	}
@@ -319,15 +315,15 @@ void ControlVirtualCamerasController::CalcAimPos()
 		frame_name = FramePath.SPINE_2;
 	}
 
-	// ’ÇÕ‚·‚éƒ{[ƒ“‚©‚çs—ñ‚ğæ“¾
+	// è¿½è·¡ã™ã‚‹ãƒœãƒ¼ãƒ³ã‹ã‚‰è¡Œåˆ—ã‚’å–å¾—
 	const auto	model_handle		= modeler->GetModelHandle();
 	const auto	frame_index			= MV1SearchFrame(model_handle, frame_name);
 	auto		frame_world_m		= MV1GetFrameLocalWorldMatrix(model_handle, frame_index);
-	auto		aim_pos				= MGetTranslateElem(frame_world_m);
+	auto		aim_pos				= matrix::GetPos(frame_world_m);
 
 	if (!IsTrackCameraOriginFrame())
 	{
-		// ƒ{[ƒ“‚Æ“¯‚¶‚‚³‚ÌˆÊ’u‚ğ’ÇÕ
+		// ãƒœãƒ¼ãƒ³ã¨åŒã˜é«˜ã•ã®ä½ç½®ã‚’è¿½è·¡
 		const auto player_transform = m_player.GetTransform();
 		const auto begin_pos		= player_transform->GetPos(CoordinateKind::kWorld);
 		const auto distance			= begin_pos - aim_pos;
@@ -344,7 +340,7 @@ void ControlVirtualCamerasController::CalcInputAngle()
 	const auto time_manager = GameTimeManager::GetInstance();
 	m_velocity *= time_manager->GetDeltaTime(TimeScaleLayerKind::kCamera);
 
-	// Šp“x‚ğæ“¾
+	// è§’åº¦ã‚’å–å¾—
 	const auto command = CommandHandler::GetInstance();
 	if (command->IsExecute(CommandKind::kMoveUpCamera,		TimeKind::kCurrent)) { m_input_angle[TimeKind::kCurrent].x += m_velocity.x; }
 	if (command->IsExecute(CommandKind::kMoveDownCamera,	TimeKind::kCurrent)) { m_input_angle[TimeKind::kCurrent].x += m_velocity.x; }
@@ -353,7 +349,7 @@ void ControlVirtualCamerasController::CalcInputAngle()
 
 	m_input_angle[TimeKind::kCurrent].y = math::ConnectMinusValueToValue(m_input_angle[TimeKind::kCurrent].y, DX_PI_F);
 
-	// Šp“x§ŒÀ
+	// è§’åº¦åˆ¶é™
 	if (m_input_angle[TimeKind::kCurrent].x < kMinVerticalInputAngle * math::kDegToRad) { m_input_angle[TimeKind::kCurrent].x = kMinVerticalInputAngle * math::kDegToRad; }
 	if (m_input_angle[TimeKind::kCurrent].x > kMaxVerticalInputAngle * math::kDegToRad) { m_input_angle[TimeKind::kCurrent].x = kMaxVerticalInputAngle * math::kDegToRad; }
 }
@@ -364,32 +360,32 @@ void ControlVirtualCamerasController::CalcRecoilAngle()
 
 	const auto delta_time = GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kCamera);
 
-	// ƒŠƒRƒCƒ‹ˆ—
+	// ãƒªã‚³ã‚¤ãƒ«å‡¦ç†
 	if (!m_is_reached_recoil_peak)
 	{
 		m_recoil_timer += delta_time;
 		const auto t = math::GetUnitValue<float, float>(0.0f, m_recoil_data.recoil_time, m_recoil_timer);
 		m_recoil_angle[TimeKind::kCurrent] = math::GetLerp(v3d::GetZeroV(), m_recoil_angle[TimeKind::kNext], t);
 
-		// •œ‹A‚ÖˆÚs
+		// å¾©å¸°ã¸ç§»è¡Œ
 		if (t >= 1.0f)
 		{
 			m_is_reached_recoil_peak = true;
 			m_recoil_angle[TimeKind::kNext] = v3d::GetZeroV();
 		}
 	}
-	// Å‚’n“_‚É“’B‚µ‚½ê‡AŒ³‚ÌˆÊ’u‚Ö•œ‹A‚³‚¹‚é
+	// æœ€é«˜åœ°ç‚¹ã«åˆ°é”ã—ãŸå ´åˆã€å…ƒã®ä½ç½®ã¸å¾©å¸°ã•ã›ã‚‹
 	else
 	{
-		const auto weapon_action_state = m_player.GetStateController()->GetWeaponActionState(TimeKind::kCurrent)->GetStateKind();
-		
-		// eƒGƒCƒ~ƒ“ƒOó‘Ô‚Å‚Ì‚İ•œ‹A‚ğ‹–‰Â‚·‚é
-		if (weapon_action_state == static_cast<int>(player_state::WeaponActionStateKind::kAimGun))
+		const auto state_kind = m_player.GetState()->GetCurrentStateKind();
+
+		// éŠƒã‚¨ã‚¤ãƒŸãƒ³ã‚°çŠ¶æ…‹ã§ã®ã¿å¾©å¸°ã‚’è¨±å¯ã™ã‚‹
+		if (state_kind == PlayerStateKind::kAimGun)
 		{
 			m_recoil_angle[TimeKind::kCurrent] = math::GetDampedValue(
 				m_recoil_angle[TimeKind::kCurrent], m_recoil_angle[TimeKind::kNext], m_recoil_data.return_damping, delta_time);
 			
-			// I—¹”»’è
+			// çµ‚äº†åˆ¤å®š
 			if (VSize(m_recoil_angle[TimeKind::kCurrent]) < kRecoilEndThreshold)
 			{
 				m_recoil_angle[TimeKind::kCurrent] = m_recoil_angle[TimeKind::kNext];
@@ -417,7 +413,7 @@ void ControlVirtualCamerasController::CalcResultAngle()
 //	distance_v.y		= math::ConnectMinusPiToPi(distance_v.y);
 //	VECTOR dir			= v3d::GetNormalizedV(distance_v);
 //
-//	// ‰EE¶‰ñ‚è‚©‚çÅ’ZŒo˜H‚ğæ“¾‚µA‰ñ“]•ûŒü‚É”½‰f
+//	// å³ãƒ»å·¦å›ã‚Šã‹ã‚‰æœ€çŸ­çµŒè·¯ã‚’å–å¾—ã—ã€å›è»¢æ–¹å‘ã«åæ˜ 
 //	float distance = VSize(distance_v);
 //	const float shortest = min(distance, DX_TWO_PI_F - distance);
 //	if (distance != shortest)
@@ -425,11 +421,11 @@ void ControlVirtualCamerasController::CalcResultAngle()
 //		dir.y *= -1;
 //	}
 //
-//	// –Ú“I’n‚É‰“‚¢‚Ù‚Ç‘¬‚­ˆÚ“®‚³‚¹‚é
+//	// ç›®çš„åœ°ã«é ã„ã»ã©é€Ÿãç§»å‹•ã•ã›ã‚‹
 //	const auto time_manager = GameTimeManager::GetInstance();
 //	m_input_angle[TimeKind::kCurrent] += dir * distance * m_init_angle_speed * time_manager->GetDeltaTime(TimeScaleLayerKind::kCamera);
 //
-//	// I—¹”»’è
+//	// çµ‚äº†åˆ¤å®š
 //	distance = VSize(m_data.input_angle[TimeKind::kNext] - m_data.input_angle[TimeKind::kCurrent]);
 //	if (distance < m_data.init_end_threshold)
 //	{
@@ -440,11 +436,9 @@ void ControlVirtualCamerasController::CalcResultAngle()
 
 bool ControlVirtualCamerasController::IsTrackCameraOriginFrame() const
 {
-	const auto state = m_player.GetStateController();
-	const auto weapon_state_kind = static_cast<player_state::WeaponActionStateKind>(state->GetWeaponActionState(TimeKind::kCurrent)->GetStateKind());
+	const auto state_kind = m_player.GetState()->GetCurrentStateKind();
 
-	return(weapon_state_kind == player_state::WeaponActionStateKind::kFirstSideSlashKnife
-		|| weapon_state_kind == player_state::WeaponActionStateKind::kSecondSideSlashKnife
-		|| weapon_state_kind == player_state::WeaponActionStateKind::kSpinningSlashKnife
-		|| weapon_state_kind == player_state::WeaponActionStateKind::kStabKnife);
+	return(state_kind == PlayerStateKind::kFirstSideSlashKnife
+		|| state_kind == PlayerStateKind::kSecondSideSlashKnife
+		|| state_kind == PlayerStateKind::kSpinningSlashKnife);
 }

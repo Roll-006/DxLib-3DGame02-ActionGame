@@ -18,8 +18,8 @@ public:
 	void AddToObjManager()			override;
 	void RemoveToObjManager()		override;
 
-	[[nodiscard]] float	GetDeltaTime() const override;
-	[[nodiscard]] std::shared_ptr<Modeler> GetModeler() { return m_modeler; }
+	[[nodiscard]] const float GetDeltaTime() const override;
+	[[nodiscard]] const std::shared_ptr<const Modeler> GetModeler() { return m_modeler; }
 	
 private:
 	static constexpr VECTOR kBasicAngle = { 0.0f, DX_PI_F, 0.0f };

@@ -1,16 +1,16 @@
-#include "item_creator.hpp"
+ï»¿#include "item_creator.hpp"
 
 ItemCreator::ItemCreator(const std::shared_ptr<Player>& player) :
 	m_player(player)
 {
-	// ƒCƒxƒ“ƒg“o˜^
+	// ã‚¤ãƒ™ãƒ³ãƒˆç™»éŒ²
 	EventSystem::GetInstance()->Subscribe<DeadEnemyEvent>	(this, &ItemCreator::CreateDeadEnemyItem);
 	EventSystem::GetInstance()->Subscribe<PickUpItemEvent>		(this, &ItemCreator::RemoveItem);
 }
 
 ItemCreator::~ItemCreator()
 {
-	// ƒCƒxƒ“ƒg‚Ì“o˜^‰ğœ
+	// ã‚¤ãƒ™ãƒ³ãƒˆã®ç™»éŒ²è§£é™¤
 	EventSystem::GetInstance()->Unsubscribe<DeadEnemyEvent>	(this, &ItemCreator::CreateDeadEnemyItem);
 	EventSystem::GetInstance()->Unsubscribe<PickUpItemEvent>	(this, &ItemCreator::RemoveItem);
 
@@ -58,10 +58,10 @@ void ItemCreator::Draw() const
 void ItemCreator::CreateDeadEnemyItem(const DeadEnemyEvent& event)
 {
 	auto	   hips_m	= MV1GetFrameLocalWorldMatrix(event.model_handle, MV1SearchFrame(event.model_handle, FramePath.HIPS));
-	const auto hips_pos	= MGetTranslateElem(hips_m) + VGet(0.0f, 10.0f, 0.0f);
+	const auto hips_pos	= matrix::GetPos(hips_m) + VGet(0.0f, 10.0f, 0.0f);
 	std::shared_ptr<IItem> item = nullptr;
 
-	// ‰¼‚Å’e‚ğ‹­§‚Å¶¬
+	// ä»®ã§å¼¾ã‚’å¼·åˆ¶ã§ç”Ÿæˆ
 	
 	if (event.enemy_id == "zombie0")
 	{

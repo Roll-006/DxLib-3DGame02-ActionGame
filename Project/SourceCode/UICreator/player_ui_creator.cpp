@@ -10,9 +10,7 @@ PlayerUICreator::PlayerUICreator(std::shared_ptr<Player>& player) :
 	m_escape_icon				(std::make_shared<EscapeIcon>(std::dynamic_pointer_cast<IGrabbable>(player))),
 	m_status_icons				(std::make_shared<StatusIcons>(player)),
 	m_cross_hair				(std::make_shared<CrossHair>(player)),
-	m_weapon_shortcut			(std::make_shared<WeaponShortcutDrawer>(
-									player->GetStateController()->GetWeaponActionState(),
-									player->GetWeaponShortcutSelecter()))
+	m_weapon_shortcut			(std::make_shared<WeaponShortcutDrawer>(player->GetState(), player->GetWeaponShortcutSelecter()))
 {
 	// ƒCƒxƒ“ƒg“o˜^
 	EventSystem::GetInstance()->Subscribe<DeadPlayerEvent>		(this, &PlayerUICreator::Deactivate);

@@ -1,9 +1,9 @@
-#pragma once
+﻿#pragma once
 #include "../Interface/i_item_collectable.hpp"
 #include "../Calculation/math.hpp"
 #include "../Event/event_system.hpp"
 
-#include "../Manager/obj_manager.hpp"
+#include "../Accessor/obj_accessor.hpp"
 
 class ItemAcquisitionSearcher final
 {

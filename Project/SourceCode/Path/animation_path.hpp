@@ -107,10 +107,4 @@ static struct ZombieAnimationPath
 	const std::string STAND_STUN						= "Data/Animation/Zombie/move_backward_run_dizzy.mv1";
 	#pragma endregion
 
-
-	#pragma region 下半身用
-	const std::string LEANING_FORWARD_CROUCH_LEFT		= "Data/Animation/Zombie/idle_leaning_forward_crouch_left.mv1";
-	const std::string LEANING_FORWARD_CROUCH_RIGHT		= "Data/Animation/Zombie/idle_leaning_forward_crouch_right.mv1";
-	#pragma endregion
-
 }ZombieAnimPath;

@@ -2,7 +2,7 @@
 
 Graphicer::Graphicer(const std::string& file_path) : 
 	m_graphic_handle		(HandleKeeper::GetInstance()->LoadHandle(HandleKind::kGraphic, file_path)),
-	m_center_pos			(v2d::GetZeroV<Vector2D<int>>()),
+	m_center_pos			(v2d::GetZeroV<int>()),
 	m_scale					(1.0f, 1.0f),
 	m_angle					(0.0f),
 	m_origin_size			(),
@@ -19,7 +19,7 @@ Graphicer::Graphicer(const std::string& file_path) :
 
 Graphicer::Graphicer(const int graphic_handle) : 
 	m_graphic_handle		(graphic_handle),
-	m_center_pos			(v2d::GetZeroV<Vector2D<int>>()),
+	m_center_pos			(v2d::GetZeroV<int>()),
 	m_scale					(1.0f, 1.0f),
 	m_angle					(0.0f),
 	m_origin_size			(),

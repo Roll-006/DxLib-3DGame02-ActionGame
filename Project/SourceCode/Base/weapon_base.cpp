@@ -1,4 +1,4 @@
-#include "weapon_base.hpp"
+ï»¿#include "weapon_base.hpp"
 
 WeaponBase::WeaponBase(const std::string& name, const WeaponKind weapon_kind, const HolsterKind holster_kind) :
 	PhysicalObjBase			(name, ObjTag.WEAPON/*, MassKind::kLight*/),
@@ -21,7 +21,7 @@ WeaponBase::WeaponBase(const std::string& name, const WeaponKind weapon_kind, co
 
 void WeaponBase::AddToObjManager()
 {
-	ObjManager		::GetInstance()->AddObj			(shared_from_this());
+	ObjAccessor		::GetInstance()->AddObj			(shared_from_this());
 	CollisionManager::GetInstance()->AddCollideObj	(std::dynamic_pointer_cast<PhysicalObjBase>(shared_from_this()));
 }
 
@@ -30,7 +30,7 @@ void WeaponBase::RemoveToObjManager()
 	const auto obj_handle = GetObjHandle();
 
 	CollisionManager::GetInstance()->RemoveCollideObj(obj_handle);
-	ObjManager		::GetInstance()->RemoveObj		 (obj_handle);
+	ObjAccessor		::GetInstance()->RemoveObj		 (obj_handle);
 }
 
 void WeaponBase::OnProjectPos()
@@ -38,7 +38,7 @@ void WeaponBase::OnProjectPos()
 
 }
 
-/// @brief ‘•”õ‚·‚é‚¿å‚ğƒAƒ^ƒbƒ`‚·‚é
+/// @brief è£…å‚™ã™ã‚‹æŒã¡ä¸»ã‚’ã‚¢ã‚¿ãƒƒãƒã™ã‚‹
 void WeaponBase::AttachOwner(const std::shared_ptr<Modeler>& owner_modeler, const std::string& owner_name)
 {
 	if (!m_owner_modeler)
@@ -47,7 +47,7 @@ void WeaponBase::AttachOwner(const std::shared_ptr<Modeler>& owner_modeler, cons
 		m_owner_name	= owner_name;
 	}
 }
-/// @brief ‘•”õ‚µ‚Ä‚¢‚½‚¿å‚ğƒfƒ^ƒbƒ`‚·‚é
+/// @brief è£…å‚™ã—ã¦ã„ãŸæŒã¡ä¸»ã‚’ãƒ‡ã‚¿ãƒƒãƒã™ã‚‹
 void WeaponBase::DetachOwner()
 {
 	if (m_owner_modeler)
@@ -57,7 +57,7 @@ void WeaponBase::DetachOwner()
 	}
 }
 
-float WeaponBase::GetDeltaTime() const
+const float WeaponBase::GetDeltaTime() const
 {
 	const auto time_manager = GameTimeManager::GetInstance();
 

@@ -1,4 +1,4 @@
-#include "scene_manager.hpp"
+ï»¿#include "scene_manager.hpp"
 
 SceneManager::SceneManager() : 
 	m_share_scene	(std::make_shared<ShareScene>()),
@@ -10,7 +10,7 @@ SceneManager::SceneManager() :
 
 SceneManager::~SceneManager()
 {
-	// ˆ—‚È‚µ
+	// å‡¦ç†ãªã—
 }
 
 void SceneManager::Update()

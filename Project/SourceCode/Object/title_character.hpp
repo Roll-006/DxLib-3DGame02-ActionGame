@@ -1,7 +1,6 @@
 #pragma once
 #include "../Base/obj_base.hpp"
-
-#include "../Part/title_character_animator.hpp"
+#include "../Animator/animator.hpp"
 
 class TitleCharacter final : public ObjBase
 {
@@ -19,8 +18,8 @@ public:
 
 
 	#pragma region Getter
-	[[nodiscard]] float						GetDeltaTime()	const override;
-	[[nodiscard]] std::shared_ptr<Modeler>	GetModeler()	const { return m_modeler; }
+	[[nodiscard]] const  float						GetDeltaTime()	const override;
+	[[nodiscard]] const std::shared_ptr<const Modeler>	GetModeler()	const { return m_modeler; }
 	#pragma endregion
 
 private:
@@ -28,6 +27,6 @@ private:
 	static constexpr float  kBasicScale = 0.31f;
 
 private:
-	std::shared_ptr<Modeler>				m_modeler;
-	std::shared_ptr<TitleCharacterAnimator> m_animator;
+	std::shared_ptr<Modeler>	m_modeler;
+	std::shared_ptr<Animator>	m_animator;
 };

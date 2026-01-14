@@ -39,6 +39,4 @@ private:
 	float						m_prev_camera_near;
 	float						m_prev_camera_far;
 	float						m_prev_camera_fov;
-
-	bool a;
 };

@@ -1,0 +1,24 @@
+﻿{
+  "mission_data": {
+    "mission": {
+      "screen_size": {
+        "x": 500,
+        "y": 300
+      },
+      "height_ratio": 0.2,
+      "text_data": {
+        "font_path": "mission_text",
+        "text": "MISSION",
+        "hex_color": "#ffffff",
+        "offset": {
+          "x": 0,
+          "y": 0
+        }
+      },
+      "fade_in_speed": 200,
+      "fade_out_speed": 200,
+      "blend_wait_time": 4.0,
+      "draw_time": 2.0
+    }
+  }
+}
