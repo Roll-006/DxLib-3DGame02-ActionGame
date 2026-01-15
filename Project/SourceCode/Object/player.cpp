@@ -411,7 +411,7 @@ void Player::OnGrabbed(const std::shared_ptr<IGrabber> grabber, const VECTOR& br
 	m_grabber		= grabber;
 
 	m_look_dir.at(TimeKind::kNext) = -brabber_dir;
-	m_destination_pos = brabber_pos + brabber_dir * 17.0f;
+	m_destination_pos = brabber_pos + brabber_dir * 19.0f;
 
 	m_escape_start_timer = 0.0f;
 	m_escape_gauge->DecreaseZero();

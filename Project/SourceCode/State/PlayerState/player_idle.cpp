@@ -74,7 +74,6 @@ const PlayerStateKind player_state::Idle::GetNextStateKind()
 	{
 		return PlayerStateKind::kGrabbed;
 	}
-
 	// 銃装備状態
 	else if (m_state.TryEquipGunShortcut())
 	{

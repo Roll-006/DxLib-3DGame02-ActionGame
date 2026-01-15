@@ -81,6 +81,12 @@ void player_state::SecondSideSlashKnife::Enter()
 
 void player_state::SecondSideSlashKnife::Exit()
 {
+    // 強制的にコライダーを削除
+    if (auto knife = std::dynamic_pointer_cast<KnifeBase>(m_player.GetCurrentHeldWeapon()))
+    {
+        knife->RemoveAttackTrigger();
+    }
+
     m_player.ReleaseWeapon();
     m_player.AttachWeapon(m_player.GetCurrentEquipWeapon(WeaponSlotKind::kSub));
 }
@@ -100,6 +106,11 @@ const PlayerStateKind player_state::SecondSideSlashKnife::GetNextStateKind()
     if (m_animator->IsPlayEnd(Animator::BodyKind::kUpperBody))
     {
         return PlayerStateKind::kEquipKnife;
+    }
+    // 捕まれる
+    else if (m_state.TryGrabbed())
+    {
+        return PlayerStateKind::kGrabbed;
     }
 
     return PlayerStateKind::kNone;
