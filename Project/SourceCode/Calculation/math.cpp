@@ -1040,6 +1040,7 @@ const float math::GetDistancePointToLine          (const VECTOR&      point,    
 
     if (VDot(dir, dir) > 0.0f)
     {
+        // 点を直線方向に投影
         t = VDot(dir, (point - line.GetPos())) / VDot(dir, dir);
     }
 
@@ -1060,7 +1061,6 @@ const float math::GetDistancePointToSegment       (const VECTOR&      point,    
     //        点が線分の端点から伸びる垂線の外側にある ➡ 端点までの距離を求める
 
     const Line line(segment.GetBeginPos(), segment.GetDir());
-    const auto distance = GetDistancePointToLine(point, line, h, t);
 
     const auto begin_to_point = segment.GetBeginPos() - point;
     const auto begin_to_end   = segment.GetBeginPos() - segment.GetEndPos();
@@ -1074,7 +1074,7 @@ const float math::GetDistancePointToSegment       (const VECTOR&      point,    
     if (!math::IsAcuteAngle(end_to_point, end_to_begin)) { return VSize(end_to_point); }
 
     // 内側であった場合
-    return distance;
+    return GetDistancePointToLine(point, line, h, t);
 }
 
 const float math::GetDistancePointToPlane         (const VECTOR&      point,      const Plane&    plane)
