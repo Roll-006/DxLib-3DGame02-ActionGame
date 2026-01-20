@@ -2,6 +2,7 @@
 #include "../Base/knife_base.hpp"
 #include "../Kind/zombie_state_kind.hpp"
 #include "../MixamoHelper/mixamo_helper.hpp"
+#include "../InverseKinematics/frame_info.hpp"
 #include "zombie.hpp"
 
 Zombie::Zombie(const std::string& id) :
@@ -17,7 +18,8 @@ Zombie::Zombie(const std::string& id) :
 	m_is_allow_stealth_kill	(true),
 	m_on_stealth_kill		(false),
 	m_is_forward_walk		(false),
-	m_is_backward_walk		(false)
+	m_is_backward_walk		(false),
+	m_push_bone_velocity	(v3d::GetZeroV())
 {
 	enemy_id = id;
 
@@ -128,10 +130,16 @@ void Zombie::LateUpdate()
 
 	m_state->LateUpdate();
 
-	const auto humanoid = std::dynamic_pointer_cast<IHumanoid>(shared_from_this());
+	// IK処理
+	if (m_push_bone_velocity != v3d::GetZeroV())
+	{
+		OnHitReactionLeftHand(m_push_bone_velocity);
+	}
+	m_push_bone_velocity = v3d::GetZeroV();
 	m_humanoid_foot_ik->BlendFrame();
 	m_humanoid_arm_ik ->BlendFrame();
 
+	// コライダー更新処理
 	m_collider_creator->CalcCapsuleColliderPos		(m_modeler, m_colliders);
 	m_collider_creator->CalcLandingTriggerPos		(m_modeler, m_colliders);
 	m_collider_creator->CalcProjectRayPos			(m_modeler, m_colliders);
@@ -143,6 +151,7 @@ void Zombie::LateUpdate()
 	m_collider_creator->CalcArmTriggerPos			(m_modeler, m_colliders);
 	m_collider_creator->CalcLegTriggerPos			(m_modeler, m_colliders);
 
+	// フラグ更新
 	m_can_grab_target				= false;
 	m_on_collided_vision_trigger	= false;
 	m_has_obstacle_between_target	= false;
@@ -269,13 +278,16 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	case ColliderKind::kLeftForearmTrigger:
 		if (target_name == ObjName.BULLET)
 		{
-			const auto damage = dynamic_cast<Bullet*>(target_obj)->GetPower();
+			const auto bullet = dynamic_cast<Bullet*>(target_obj);
+			const auto damage = bullet->GetPower();
 
 			OnDamage(HealthPartKind::kLeftArm,	damage);
 			OnDamage(HealthPartKind::kMain,		damage);
 			if (m_can_decrease_knock_back_gauge) { m_knock_back_gauge->Decrease(damage); }
 
 			m_is_detection_shared = true;
+
+			m_push_bone_velocity = bullet->GetVelocity() * 0.2f;
 
 			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue(), TimeScaleLayerKind::kWorld));
 		}
@@ -284,13 +296,16 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	case ColliderKind::kLeftHandTrigger:
 		if (target_name == ObjName.BULLET)
 		{
-			const auto damage = dynamic_cast<Bullet*>(target_obj)->GetPower();
+			const auto bullet = dynamic_cast<Bullet*>(target_obj);
+			const auto damage = bullet->GetPower();
 
 			OnDamage(HealthPartKind::kLeftArm,	damage);
 			OnDamage(HealthPartKind::kMain,		damage);
 			if (m_can_decrease_knock_back_gauge) { m_knock_back_gauge->Decrease(damage); }
 
 			m_is_detection_shared = true;
+
+			m_push_bone_velocity = bullet->GetVelocity() * 0.2f;
 
 			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue(), TimeScaleLayerKind::kWorld));
 		}
@@ -643,3 +658,12 @@ void Zombie::JudgeAction()
 	const auto is_alive_target = m_ai->GetTarget()->GetHealth(HealthPartKind::kMain)->IsAlive();
 	m_can_action = is_alive_target && !m_is_disallow_action_forcibly;
 }
+
+void Zombie::OnHitReactionLeftHand(const VECTOR& push_bone_velocity)
+{
+	const auto model_handle = m_modeler->GetModelHandle();
+	const auto frame		= frame_info::GetFrameInfo(model_handle, m_humanoid_frame->GetLeftHandIndex(model_handle));
+
+	m_humanoid_arm_ik->ApplyLeftArmIK(frame.world_pos + push_bone_velocity, HumanoidArmIKSolver::IKKind::kHitReaction);
+}
+

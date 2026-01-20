@@ -99,6 +99,8 @@ public:
 private:
 	void JudgeAction() override;
 
+	void OnHitReactionLeftHand(const VECTOR& push_bone_velocity);
+
 private:
 	ZombieData data;
 
@@ -117,6 +119,8 @@ private:
 	bool									m_on_stealth_kill;
 	bool									m_is_forward_walk;
 	bool									m_is_backward_walk;
+
+	VECTOR									m_push_bone_velocity;
 
 	friend void from_json(const nlohmann::json& j_data, Zombie& zombie);
 	friend void to_json  (nlohmann::json& j_data, const Zombie& zombie);

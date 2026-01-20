@@ -31,8 +31,8 @@ inline bool operator!=(const v3d_concepts::ValidT auto& v1, const v3d_concepts::
 
 namespace v3d
 {
-    [[nodiscard]] inline VECTOR GetZeroV()                      { return VGet(0.0f, 0.0f, 0.0f); }
-    [[nodiscard]] inline VECTOR GetNormalizedV(const VECTOR& v) { return VSize(v) != 0.0f ? VNorm(v) : v; }
+    [[nodiscard]] inline const VECTOR GetZeroV()                      { return VGet(0.0f, 0.0f, 0.0f); }
+    [[nodiscard]] inline const VECTOR GetNormalizedV(const VECTOR& v) { return VSize(v) != 0.0f ? VNorm(v) : v; }
 }
 
 

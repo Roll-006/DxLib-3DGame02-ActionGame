@@ -15,6 +15,7 @@ public:
 	{
 		kNone = -1,
 
+		kHitReaction,		// ヒットリアクションIK
 		kHandOnKnees,		// 膝に手を置くIK
 		kForeArmOnKnees,	// 膝に肘を置くIK
 		kHandOnThigh,		// ふとももに手を置くIK
@@ -35,6 +36,7 @@ public:
 		const std::shared_ptr<Modeler>& modeler, 
 		std::unordered_map<ColliderKind, std::shared_ptr<Collider>>& colliders, 
 		HumanoidArmRayData& ray_data);
+
 	~HumanoidArmIKSolver();
 
 	void Init	();
@@ -52,10 +54,21 @@ public:
 	#pragma endregion
 
 
+	#pragma region IK処理
+	/// @brief 左腕IK処理
+	/// @brief この関数はIK処理の目的位置を手動で設定する関数です
+	void ApplyLeftArmIK (const VECTOR& target_pos, const IKKind ik_kind);
+
+	/// @brief 左腕IK処理
+	/// @brief この関数はIK処理の目的位置を手動で設定する関数です
+	void ApplyRightArmIK(const VECTOR& target_pos, const IKKind ik_kind);
+
 	/// @brief 左膝を地面につけるしゃがみアニメーションにIK処理を適用する
 	void ApplyLeftKneelCrouchIK();
 	/// @brief 右膝を地面につけるしゃがみアニメーションにIK処理を適用する
 	void ApplyRightKneelCrouchIK();
+	#pragma endregion
+
 
 	/// @brief フレーム行列のブレンドを行う
 	/// @brief IK処理適用後に呼び出す必要あり
