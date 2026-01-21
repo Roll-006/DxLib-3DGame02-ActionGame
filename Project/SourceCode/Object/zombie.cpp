@@ -19,7 +19,13 @@ Zombie::Zombie(const std::string& id) :
 	m_on_stealth_kill		(false),
 	m_is_forward_walk		(false),
 	m_is_backward_walk		(false),
-	m_push_bone_velocity	(v3d::GetZeroV())
+	m_push_bone_velocity	{ 
+		{RoughBodyKind::kHead,		v3d::GetZeroV()},
+		{RoughBodyKind::kBody,		v3d::GetZeroV()},
+		{RoughBodyKind::kLeftArm,	v3d::GetZeroV()},
+		{RoughBodyKind::kRightArm,	v3d::GetZeroV()},
+		{RoughBodyKind::kLeftLeg,	v3d::GetZeroV()},
+		{RoughBodyKind::kRightLeg,	v3d::GetZeroV()}}
 {
 	enemy_id = id;
 
@@ -131,11 +137,7 @@ void Zombie::LateUpdate()
 	m_state->LateUpdate();
 
 	// IK処理
-	if (m_push_bone_velocity != v3d::GetZeroV())
-	{
-		OnHitReactionLeftHand(m_push_bone_velocity);
-	}
-	m_push_bone_velocity = v3d::GetZeroV();
+	OnHitBoneReaction();
 	m_humanoid_foot_ik->BlendFrame();
 	m_humanoid_arm_ik ->BlendFrame();
 
@@ -161,7 +163,9 @@ void Zombie::Draw() const
 {
 	if (!IsActive()) { return; }
 
-	m_modeler->Draw();
+	//m_modeler->Draw();
+
+	mixamo_helper::DrawFrames(m_modeler->GetModelHandle(), true, true, true, false);
 
 	//DrawColliders();
 }
@@ -287,7 +291,9 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 			m_is_detection_shared = true;
 
-			m_push_bone_velocity = bullet->GetVelocity() * 0.2f;
+			const auto push_speed	= VSize(bullet->GetVelocity());
+			const auto push_dir		= v3d::GetNormalizedV(bullet->GetVelocity()) + axis::GetWorldYAxis();
+			m_push_bone_velocity[RoughBodyKind::kLeftArm] = push_dir * push_speed * 0.006f;
 
 			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue(), TimeScaleLayerKind::kWorld));
 		}
@@ -305,7 +311,9 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 
 			m_is_detection_shared = true;
 
-			m_push_bone_velocity = bullet->GetVelocity() * 0.2f;
+			const auto push_speed	= VSize(bullet->GetVelocity());
+			const auto push_dir		= v3d::GetNormalizedV(bullet->GetVelocity()) + axis::GetWorldYAxis();
+			m_push_bone_velocity[RoughBodyKind::kLeftArm] = push_dir * push_speed * 0.006f;
 
 			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue(), TimeScaleLayerKind::kWorld));
 		}
@@ -324,13 +332,18 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	case ColliderKind::kRightForearmTrigger:
 		if (target_name == ObjName.BULLET)
 		{
-			const auto damage = dynamic_cast<Bullet*>(target_obj)->GetPower();
+			const auto bullet = dynamic_cast<Bullet*>(target_obj);
+			const auto damage = bullet->GetPower();
 
 			OnDamage(HealthPartKind::kRightArm, damage);
 			OnDamage(HealthPartKind::kMain,		damage);
 			if (m_can_decrease_knock_back_gauge) { m_knock_back_gauge->Decrease(damage); }
 
 			m_is_detection_shared = true;
+
+			const auto push_speed	= VSize(bullet->GetVelocity());
+			const auto push_dir		= v3d::GetNormalizedV(bullet->GetVelocity()) + axis::GetWorldYAxis();
+			m_push_bone_velocity[RoughBodyKind::kRightArm] = push_dir * push_speed * 0.006f;
 
 			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue(), TimeScaleLayerKind::kWorld));
 		}
@@ -339,13 +352,18 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 	case ColliderKind::kRightHandTrigger:
 		if (target_name == ObjName.BULLET)
 		{
-			const auto damage = dynamic_cast<Bullet*>(target_obj)->GetPower();
+			const auto bullet = dynamic_cast<Bullet*>(target_obj);
+			const auto damage = bullet->GetPower();
 
 			OnDamage(HealthPartKind::kRightArm, damage);
 			OnDamage(HealthPartKind::kMain,		damage);
 			if (m_can_decrease_knock_back_gauge) { m_knock_back_gauge->Decrease(damage); }
 
 			m_is_detection_shared = true;
+
+			const auto push_speed	= VSize(bullet->GetVelocity());
+			const auto push_dir		= v3d::GetNormalizedV(bullet->GetVelocity()) + axis::GetWorldYAxis();
+			m_push_bone_velocity[RoughBodyKind::kRightArm] = push_dir * push_speed * 0.006f;
 
 			EventSystem::GetInstance()->Publish(OnDamageEvent(*hit_collider_pair.intersection, damage / m_health.at(HealthPartKind::kMain)->GetMaxValue(), TimeScaleLayerKind::kWorld));
 		}
@@ -659,11 +677,44 @@ void Zombie::JudgeAction()
 	m_can_action = is_alive_target && !m_is_disallow_action_forcibly;
 }
 
-void Zombie::OnHitReactionLeftHand(const VECTOR& push_bone_velocity)
+void Zombie::OnHitBoneReaction()
 {
-	const auto model_handle = m_modeler->GetModelHandle();
-	const auto frame		= frame_info::GetFrameInfo(model_handle, m_humanoid_frame->GetLeftHandIndex(model_handle));
+	auto model_handle	= -1;
+	auto frame_data		= FrameData();
 
-	m_humanoid_arm_ik->ApplyLeftArmIK(frame.world_pos + push_bone_velocity, HumanoidArmIKSolver::IKKind::kHitReaction);
+	for (auto& velocity : m_push_bone_velocity)
+	{
+		// IK適用処理
+		if (velocity.second != v3d::GetZeroV())
+		{
+			switch (velocity.first)
+			{
+			case RoughBodyKind::kHead:
+				break;
+
+			case RoughBodyKind::kBody:
+				break;
+
+			case RoughBodyKind::kLeftArm:
+				model_handle = m_modeler->GetModelHandle();
+				frame_data = frame_info::GetFrameInfo(model_handle, m_humanoid_frame->GetLeftHandIndex(model_handle));
+				m_humanoid_arm_ik->ApplyLeftArmIK(frame_data.world_pos + velocity.second, HumanoidArmIKSolver::IKKind::kHitReaction);
+				break;
+
+			case RoughBodyKind::kRightArm:
+				model_handle = m_modeler->GetModelHandle();
+				frame_data = frame_info::GetFrameInfo(model_handle, m_humanoid_frame->GetRightHandIndex(model_handle));
+				m_humanoid_arm_ik->ApplyRightArmIK(frame_data.world_pos + velocity.second, HumanoidArmIKSolver::IKKind::kHitReaction);
+				break;
+
+			case RoughBodyKind::kLeftLeg:
+				break;
+
+			case RoughBodyKind::kRightLeg:
+				break;
+			}
+		}
+
+		velocity.second = math::GetApproachedVector(velocity.second, v3d::GetZeroV(), 30.0f * GetDeltaTime());
+	}
 }
-

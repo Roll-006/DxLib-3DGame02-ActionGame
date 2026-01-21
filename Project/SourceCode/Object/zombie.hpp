@@ -8,6 +8,7 @@
 
 #include "../InverseKinematics/humanoid_arm_ik_solver.hpp"
 #include "../InverseKinematics/humanoid_foot_ik_solver.hpp"
+#include "../Kind/rough_body_kind.hpp"
 
 #include "../Data/zombie_data.hpp"
 #include "../State/ZombieState/zombie_state.hpp"
@@ -99,28 +100,28 @@ public:
 private:
 	void JudgeAction() override;
 
-	void OnHitReactionLeftHand(const VECTOR& push_bone_velocity);
+	void OnHitBoneReaction();
 
 private:
 	ZombieData data;
 
-	HumanoidArmRayData						m_arm_ray_data;
-	HumanoidLegRayData						m_leg_ray_data;
-	std::shared_ptr<HumanoidArmIKSolver>	m_humanoid_arm_ik;
-	std::shared_ptr<HumanoidFootIKSolver>	m_humanoid_foot_ik;
-	std::shared_ptr<HumanoidFrameGetter>	m_humanoid_frame;
+	HumanoidArmRayData							m_arm_ray_data;
+	HumanoidLegRayData							m_leg_ray_data;
+	std::shared_ptr<HumanoidArmIKSolver>		m_humanoid_arm_ik;
+	std::shared_ptr<HumanoidFootIKSolver>		m_humanoid_foot_ik;
+	std::shared_ptr<HumanoidFrameGetter>		m_humanoid_frame;
 
-	std::shared_ptr<zombie_state::State>	m_state;
-	std::shared_ptr<ZombieAI>				m_ai;
-	bool									m_is_return_pool;
-	bool									m_can_grab_target;
-	bool									m_is_target_escaped;
-	bool									m_is_allow_stealth_kill;
-	bool									m_on_stealth_kill;
-	bool									m_is_forward_walk;
-	bool									m_is_backward_walk;
+	std::shared_ptr<zombie_state::State>		m_state;
+	std::shared_ptr<ZombieAI>					m_ai;
+	bool										m_is_return_pool;
+	bool										m_can_grab_target;
+	bool										m_is_target_escaped;
+	bool										m_is_allow_stealth_kill;
+	bool										m_on_stealth_kill;
+	bool										m_is_forward_walk;
+	bool										m_is_backward_walk;
 
-	VECTOR									m_push_bone_velocity;
+	std::unordered_map<RoughBodyKind, VECTOR>	m_push_bone_velocity;
 
 	friend void from_json(const nlohmann::json& j_data, Zombie& zombie);
 	friend void to_json  (nlohmann::json& j_data, const Zombie& zombie);

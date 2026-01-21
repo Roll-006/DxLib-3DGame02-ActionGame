@@ -173,6 +173,12 @@
     <ClCompile Include="SourceCode\Handle\handle_keeper.cpp" />
     <ClCompile Include="SourceCode\Input\input_checker.cpp" />
     <ClCompile Include="SourceCode\InverseKinematics\humanoid_arm_ik_solver.cpp" />
+    <ClCompile Include="SourceCode\InverseKinematics\humanoid_body_ik_solver.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="SourceCode\InverseKinematics\humanoid_foot_ik_solver.cpp" />
     <ClCompile Include="SourceCode\InverseKinematics\ik_solver.cpp" />
     <ClCompile Include="SourceCode\Light\spot_light.cpp" />
@@ -545,6 +551,12 @@
     <ClInclude Include="SourceCode\Interface\i_ui_creator.hpp" />
     <ClInclude Include="SourceCode\InverseKinematics\frame_info.hpp" />
     <ClInclude Include="SourceCode\InverseKinematics\humanoid_arm_ik_solver.hpp" />
+    <ClInclude Include="SourceCode\InverseKinematics\humanoid_body_ik_solver.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="SourceCode\InverseKinematics\humanoid_foot_ik_solver.hpp" />
     <ClInclude Include="SourceCode\InverseKinematics\ik_solver.hpp" />
     <ClInclude Include="SourceCode\JSON\json_loader.hpp" />

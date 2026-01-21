@@ -452,18 +452,18 @@ namespace math
 
 	#pragma region 最短距離
 	/// @brief 点と直線の最短距離を取得
-	[[nodiscard]] const float GetDistancePointToLine			(const VECTOR&		point,		const Line&		line);
-	[[nodiscard]] const float GetDistancePointToLine			(const VECTOR&		point,		const Line&		line,		VECTOR& h, float& t);
+	[[nodiscard]] const float GetDistancePointToLine		(const VECTOR&		point,		const Line&		line);
+	[[nodiscard]] const float GetDistancePointToLine		(const VECTOR&		point,		const Line&		line,		VECTOR& h, float& t);
 
 	/// @brief 点と線分の最短距離を取得
 	[[nodiscard]] const float GetDistancePointToSegment		(const VECTOR&		point,		const Segment&	segment);
 	[[nodiscard]] const float GetDistancePointToSegment		(const VECTOR&		point,		const Segment&	segment,	VECTOR& h, float& t);
 
 	/// @brief 点と平面(無限に広がる面)の最短距離を取得
-	[[nodiscard]] const float GetDistancePointToPlane			(const VECTOR&		point,		const Plane&	plane);
+	[[nodiscard]] const float GetDistancePointToPlane		(const VECTOR&		point,		const Plane&	plane);
 
 	/// @brief 点と三角形の最短距離を取得
-	[[nodiscard]] const float GetDistancePointToTriangle		(const VECTOR&		point,		const Triangle& triangle);
+	[[nodiscard]] const float GetDistancePointToTriangle	(const VECTOR&		point,		const Triangle& triangle);
 
 	/// @brief 点と四角形の最短距離を取得
 	[[nodiscard]] const float GetDistancePointToSquare		(const VECTOR&		point,		const Square&	square);
@@ -472,9 +472,9 @@ namespace math
 	[[nodiscard]] const float GetDistanceLineToLine			(const Line&		line1,		const Line&		line2);
 	[[nodiscard]] const float GetDistanceLineToLine			(const Line&		line1,		const Line&		line2,		VECTOR& h1, VECTOR& h2, float& t1, float& t2);
 
-	/// @brief 線分と線分の最短距離を取得
-	[[nodiscard]] const float GetDistanceSegmentToSegment		(const Segment&		segment1,	const Segment&	segment2);
-	[[nodiscard]] const float GetDistanceSegmentToSegment		(const Segment&		segment1,	const Segment&	segment2,	VECTOR& h1, VECTOR& h2, float& t1, float& t2);
+	/// @brief 線分と線分の最短距離を取得	
+	[[nodiscard]] const float GetDistanceSegmentToSegment	(const Segment&		segment1,	const Segment&	segment2);
+	[[nodiscard]] const float GetDistanceSegmentToSegment	(const Segment&		segment1,	const Segment&	segment2,	VECTOR& h1, VECTOR& h2, float& t1, float& t2);
 
 	/// @brief 線分と平面(無限に広がる面)の最短距離を取得
 	[[nodiscard]] const float GetDistanceSegmentToPlane		(const Segment&		segment,	const Plane&	plane);
@@ -483,7 +483,7 @@ namespace math
 	[[nodiscard]] const float GetDistanceSegmentToTriangle	(const Segment&		segment,	const Triangle& triangle);
 
 	/// @brief 線分と四角形の最短距離を取得
-	[[nodiscard]] const float GetDistanceSegmentToSquare		(const Segment&		segment,	const Square&	square);
+	[[nodiscard]] const float GetDistanceSegmentToSquare	(const Segment&		segment,	const Square&	square);
 
 	/// @brief 平面とカプセルの最短距離を取得
 	[[nodiscard]] const float GetDistancePlaneToCapsule		(const Plane&		plane,		const Capsule&	capsule);
@@ -492,10 +492,10 @@ namespace math
 	[[nodiscard]] const float GetDistanceTriangleToTriangle	(const Triangle&	triangle1,	const Triangle& triangle2);
 
 	/// @brief 三角形と四角形の最短距離を取得
-	[[nodiscard]] const float GetDistanceTriangleToSquare		(const Triangle&	triangle,	const Square&	square);
+	[[nodiscard]] const float GetDistanceTriangleToSquare	(const Triangle&	triangle,	const Square&	square);
 
 	/// @brief 三角形と球の最短距離を取得
-	[[nodiscard]] const float GetDistanceTriangleToSphere     (const Triangle&    triangle,   const Sphere&   sphere);
+	[[nodiscard]] const float GetDistanceTriangleToSphere    (const Triangle&    triangle,   const Sphere&   sphere);
 
 	/// @brief 三角形とカプセルの最短距離を取得
 	[[nodiscard]] const float GetDistanceTriangleToCapsule	(const Triangle&	triangle,	const Capsule&	capsule);
@@ -504,7 +504,7 @@ namespace math
 	[[nodiscard]] const float GetDistanceSquareToSquare		(const Square&		square1,	const Square&	square2);
 
 	/// @brief 四角形とカプセルの最短距離を取得
-	[[nodiscard]] const float GetDistanceSquareToCapsule		(const Square&		square,		const Capsule&	capsule);
+	[[nodiscard]] const float GetDistanceSquareToCapsule	(const Square&		square,		const Capsule&	capsule);
 
 	/// @brief 球と球の最短距離を取得
 	[[nodiscard]] const float GetDistanceSphereToSphere		(const Sphere&		sphere1,	const Sphere&	sphere2);
