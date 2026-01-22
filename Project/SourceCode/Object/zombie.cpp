@@ -168,9 +168,9 @@ void Zombie::Draw() const
 {
 	if (!IsActive()) { return; }
 
-	//m_modeler->Draw();
+	m_modeler->Draw();
 
-	mixamo_helper::DrawFrames(m_modeler->GetModelHandle(), true, true, true, false);
+	//mixamo_helper::DrawFrames(m_modeler->GetModelHandle(), true, true, true, false);
 
 	//DrawColliders();
 }
@@ -708,27 +708,46 @@ void Zombie::OnHitBoneReaction()
 			switch (velocity.first)
 			{
 			case RoughBodyKind::kHead:
-				model_handle	= m_modeler->GetModelHandle();
-				frame_data		= frame_info::GetFrameInfo(model_handle, m_humanoid_frame->GetNeckIndex(model_handle));
-				m_humanoid_body_ik->ApplyBodyIK(frame_data.world_pos + velocity.second, m_humanoid_frame->GetNeckIndex(model_handle), HumanoidBodyIKSolver::IKKind::kHitReaction);
-				if (velocity.second == v3d::GetZeroV()) { m_humanoid_body_ik->ChangeOriginMatrix(true); }
+				if (velocity.second == v3d::GetZeroV())
+				{
+					m_humanoid_body_ik->ChangeOriginMatrix(true);
+				}
+				else
+				{
+					model_handle = m_modeler->GetModelHandle();
+					frame_data = frame_info::GetFrameInfo(model_handle, m_humanoid_frame->GetNeckIndex(model_handle));
+					m_humanoid_body_ik->ApplyBodyOneIK(frame_data.world_pos + velocity.second * 0.1f, m_humanoid_frame->GetNeckIndex(model_handle), HumanoidBodyIKSolver::IKKind::kHitReaction);
+					m_humanoid_body_ik->ApplyBodyTowIK(frame_data.world_pos + velocity.second,		  m_humanoid_frame->GetNeckIndex(model_handle), HumanoidBodyIKSolver::IKKind::kHitReaction);
+				}
 				break;
 
 			case RoughBodyKind::kBody:
 				break;
 
 			case RoughBodyKind::kLeftArm:
-				model_handle	= m_modeler->GetModelHandle();
-				frame_data		= frame_info::GetFrameInfo(model_handle, m_humanoid_frame->GetLeftHandIndex(model_handle));
-				m_humanoid_arm_ik->ApplyLeftArmIK(frame_data.world_pos + velocity.second, HumanoidArmIKSolver::IKKind::kHitReaction);
-				if (velocity.second == v3d::GetZeroV()) { m_humanoid_arm_ik->ChangeLeftArmOriginMatrix(true); }
+				if (velocity.second == v3d::GetZeroV())
+				{
+					m_humanoid_arm_ik->ChangeLeftArmOriginMatrix(true);
+				}
+				else
+				{
+					model_handle = m_modeler->GetModelHandle();
+					frame_data = frame_info::GetFrameInfo(model_handle, m_humanoid_frame->GetLeftHandIndex(model_handle));
+					m_humanoid_arm_ik->ApplyLeftArmIK(frame_data.world_pos + velocity.second, HumanoidArmIKSolver::IKKind::kHitReaction);
+				}
 				break;
 
 			case RoughBodyKind::kRightArm:
-				model_handle	= m_modeler->GetModelHandle();
-				frame_data		= frame_info::GetFrameInfo(model_handle, m_humanoid_frame->GetRightHandIndex(model_handle));
-				m_humanoid_arm_ik->ApplyRightArmIK(frame_data.world_pos + velocity.second, HumanoidArmIKSolver::IKKind::kHitReaction);
-				if (velocity.second == v3d::GetZeroV()) { m_humanoid_arm_ik->ChangeRightArmOriginMatrix(true); }
+				if (velocity.second == v3d::GetZeroV())
+				{
+					m_humanoid_arm_ik->ChangeRightArmOriginMatrix(true);
+				}
+				else
+				{
+					model_handle = m_modeler->GetModelHandle();
+					frame_data = frame_info::GetFrameInfo(model_handle, m_humanoid_frame->GetRightHandIndex(model_handle));
+					m_humanoid_arm_ik->ApplyRightArmIK(frame_data.world_pos + velocity.second, HumanoidArmIKSolver::IKKind::kHitReaction);
+				}
 				break;
 
 			case RoughBodyKind::kLeftLeg:

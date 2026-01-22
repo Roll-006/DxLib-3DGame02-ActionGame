@@ -39,7 +39,11 @@ public:
 	#pragma region IK処理
 	/// @brief 胴体IK処理
 	/// @brief この関数はIK処理の目的位置を手動で設定する関数です
-	void ApplyBodyIK(const VECTOR& target_pos, const int frame_end_index, const IKKind ik_kind);
+	void ApplyBodyOneIK(const VECTOR& target_pos, const int frame_index, const IKKind ik_kind);
+
+	/// @brief 胴体IK処理
+	/// @brief この関数はIK処理の目的位置を手動で設定する関数です
+	void ApplyBodyTowIK(const VECTOR& target_pos, const int frame_end_index, const IKKind ik_kind);
 	#pragma endregion
 
 

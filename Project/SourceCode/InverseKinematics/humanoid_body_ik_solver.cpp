@@ -84,7 +84,20 @@ void HumanoidBodyIKSolver::BlendFrame()
 
 
 #pragma region IK処理
-void HumanoidBodyIKSolver::ApplyBodyIK(const VECTOR& target_pos, const int frame_end_index, const HumanoidBodyIKSolver::IKKind ik_kind)
+void HumanoidBodyIKSolver::ApplyBodyOneIK(const VECTOR& target_pos, const int frame_index, const IKKind ik_kind)
+{
+	m_ik_kind.at(TimeKind::kCurrent) = ik_kind;
+
+	const auto model_handle		= m_modeler->GetModelHandle();
+	const auto humanoid_frame	= m_humanoid.GetHumanoidFrame();
+
+	const auto hips_frame		= frame_info::GetFrameInfo(model_handle, humanoid_frame->GetHipsIndex(model_handle));
+	const auto hips_world_axis	= math::ConvertRotMatrixToAxis(hips_frame.world_rot_m);
+
+	ik_solver::OneBoneIK(model_handle, target_pos, frame_index, std::make_optional<AxisData>(-hips_world_axis.x_axis, AxisKind::kRight));
+}
+
+void HumanoidBodyIKSolver::ApplyBodyTowIK(const VECTOR& target_pos, const int frame_end_index, const HumanoidBodyIKSolver::IKKind ik_kind)
 {
 	m_ik_kind.at(TimeKind::kCurrent) = ik_kind;
 
@@ -102,7 +115,7 @@ void HumanoidBodyIKSolver::ApplyBodyIK(const VECTOR& target_pos, const int frame
 		ChangeOriginMatrix(true);
 	}
 
-	// 左腕IK処理
+	// 胴体IK処理
 	ik_solver::TwoBoneIK(
 		model_handle, target_pos, frame_end_index,
 		begin_angle_limit, middle_angle_limit,
