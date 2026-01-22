@@ -501,7 +501,7 @@
       "anim_data": {
         "0": {
           "index": 0,
-          "path": "Data/Animation/Zombie/zombie_idle_01.mv1",
+          "path": "Data/Animation/Zombie/idle.mv1",
           "tag": "none",
           "play_speed": 20.0,
           "is_loop": true,

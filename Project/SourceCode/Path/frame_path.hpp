@@ -14,6 +14,8 @@ static struct MixamoFramePath
 	const TCHAR* HEAD					= "mixamorig:Head";
 	const TCHAR* HEAD_TOP_END			= "mixamorig:HeadTop_End";
 	const TCHAR* HEAD_TOP_END_END		= "mixamorig:HeadTop_End_end";
+	const TCHAR* LEFT_EYE				= "mixamorig:LeftEye";
+	const TCHAR* RIGHT_EYE				= "mixamorig:RightEye";
 
 
 	const TCHAR* LEFT_SHOULDER			= "mixamorig:LeftShoulder";

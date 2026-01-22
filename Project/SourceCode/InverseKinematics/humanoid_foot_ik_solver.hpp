@@ -46,9 +46,16 @@ public:
 	/// @brief 右膝を地面につけるしゃがみアニメーションにIK処理を適用する
 	void ApplyRightKneelCrouchIK();
 
+
+	#pragma region ブレンドの起点を変更
+	void ChagneArmatureOriginMatrix();
+	void ChangeLeftLegOriginMatrix();
+	void ChangeRightLegOriginMatrix();
+
 	/// @brief フレーム行列のブレンドを行う
 	/// @brief IK処理適用後に呼び出す必要あり
 	void BlendFrame();
+	#pragma endregion
 
 private:
 	void JudgeExecuteIK();
@@ -63,13 +70,6 @@ private:
 	void ApplyRightLegIK();
 	void ApplyLeftKneelIK();
 	void ApplyRightKneelIK();
-	#pragma endregion
-
-
-	#pragma region ブレンドの起点を変更
-	void ChagneArmatureOriginMatrix();
-	void ChangeLeftLegOriginMatrix();
-	void ChangeRightLegOriginMatrix();
 	#pragma endregion
 
 private:

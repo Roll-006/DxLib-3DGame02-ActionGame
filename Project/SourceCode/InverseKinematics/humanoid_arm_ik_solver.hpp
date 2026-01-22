@@ -70,9 +70,14 @@ public:
 	#pragma endregion
 
 
+	#pragma region ブレンド
+	void ChangeLeftArmOriginMatrix	(const bool is_set_result_m = false);
+	void ChangeRightArmOriginMatrix	(const bool is_set_result_m = false);
+
 	/// @brief フレーム行列のブレンドを行う
 	/// @brief IK処理適用後に呼び出す必要あり
 	void BlendFrame();
+	#pragma endregion
 
 private:
 	#pragma region IK処理
@@ -90,12 +95,6 @@ private:
 	const ResultKind ApplyLeftArmIKOnGround();
 	/// @brief 地面に右手を置くIK処理
 	const ResultKind ApplyRightArmIKOnGround();
-	#pragma endregion
-
-
-	#pragma region ブレンドの起点を変更
-	void ChangeLeftArmOriginMatrix	(const bool is_set_result_m = false);
-	void ChangeRightArmOriginMatrix	(const bool is_set_result_m = false);
 	#pragma endregion
 
 private:

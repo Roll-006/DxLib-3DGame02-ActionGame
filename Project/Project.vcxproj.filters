@@ -1827,6 +1827,9 @@
     <ClInclude Include="SourceCode\InverseKinematics\humanoid_body_ik_solver.hpp">
       <Filter>SourceCode\InverseKinematics</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\Data\humanoid_body_matrix_data.hpp">
+      <Filter>SourceCode\Data</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="SourceCode">

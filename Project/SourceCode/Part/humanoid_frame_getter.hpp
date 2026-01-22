@@ -16,6 +16,8 @@ public:
 	[[nodiscard]] int GetNeckIndex				(const int model_handle) const { return MV1SearchFrame(model_handle, FramePath.NECK); }
 	[[nodiscard]] int GetHeadIndex				(const int model_handle) const { return MV1SearchFrame(model_handle, FramePath.HEAD); }
 	[[nodiscard]] int GetHeadTopEndIndex		(const int model_handle) const { return MV1SearchFrame(model_handle, FramePath.HEAD_TOP_END); }
+	[[nodiscard]] int GetLeftEyeIndex			(const int model_handle) const { return MV1SearchFrame(model_handle, FramePath.LEFT_EYE); }
+	[[nodiscard]] int GetRightEyeIndex			(const int model_handle) const { return MV1SearchFrame(model_handle, FramePath.RIGHT_EYE); }
 	
 
 	[[nodiscard]] int GetLeftShoulderIndex		(const int model_handle) const { return MV1SearchFrame(model_handle, FramePath.LEFT_SHOULDER); }

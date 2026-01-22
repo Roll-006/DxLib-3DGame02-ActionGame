@@ -8,6 +8,7 @@
 
 #include "../InverseKinematics/humanoid_arm_ik_solver.hpp"
 #include "../InverseKinematics/humanoid_foot_ik_solver.hpp"
+#include "../InverseKinematics/humanoid_body_ik_solver.hpp"
 #include "../Kind/rough_body_kind.hpp"
 
 #include "../Data/zombie_data.hpp"
@@ -109,6 +110,7 @@ private:
 	HumanoidLegRayData							m_leg_ray_data;
 	std::shared_ptr<HumanoidArmIKSolver>		m_humanoid_arm_ik;
 	std::shared_ptr<HumanoidFootIKSolver>		m_humanoid_foot_ik;
+	std::shared_ptr<HumanoidBodyIKSolver>		m_humanoid_body_ik;
 	std::shared_ptr<HumanoidFrameGetter>		m_humanoid_frame;
 
 	std::shared_ptr<zombie_state::State>		m_state;

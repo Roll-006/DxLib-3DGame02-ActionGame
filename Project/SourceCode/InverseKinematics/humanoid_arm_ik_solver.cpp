@@ -156,8 +156,8 @@ void HumanoidArmIKSolver::ApplyLeftArmIK(const VECTOR& target_pos, const IKKind 
 	auto	   left_arm_limit			= angle_limits.at(MV1GetFrameName(model_handle, humanoid_frame->GetLeftArmIndex(model_handle)));
 	auto	   left_fore_arm_limit		= angle_limits.at(MV1GetFrameName(model_handle, humanoid_frame->GetLeftForeArmIndex(model_handle)));
 
-	const auto spine2_frame				= frame_info::GetFrameInfo(model_handle, humanoid_frame->GetLeftArmIndex(model_handle));
-	const auto spine2_world_axis		= math::ConvertRotMatrixToAxis(spine2_frame.world_rot_m);
+	const auto left_shoulder_frame		= frame_info::GetFrameInfo(model_handle, humanoid_frame->GetLeftShoulderIndex(model_handle));
+	const auto left_shoulder_world_axis	= math::ConvertRotMatrixToAxis(left_shoulder_frame.world_rot_m);
 
 	// ブレンドの起点行列を設定する
 	if (m_left_ik_kind.at(TimeKind::kCurrent) != m_left_ik_kind.at(TimeKind::kPrev))
@@ -170,7 +170,7 @@ void HumanoidArmIKSolver::ApplyLeftArmIK(const VECTOR& target_pos, const IKKind 
 		model_handle, target_pos,
 		humanoid_frame->GetLeftHandIndex(model_handle),
 		left_arm_limit, left_fore_arm_limit,
-		ik_solver::RotDirKind::kLeft, false, std::make_optional<AxisData>(spine2_world_axis.z_axis, AxisKind::kRight));
+		ik_solver::RotDirKind::kLeft, false, std::make_optional<AxisData>(-left_shoulder_world_axis.x_axis, AxisKind::kRight));
 
 	// 左手の回転を削除
 	auto left_hand_local_m = MV1GetFrameLocalMatrix(model_handle, humanoid_frame->GetLeftHandIndex(model_handle));
@@ -182,13 +182,13 @@ void HumanoidArmIKSolver::ApplyRightArmIK(const VECTOR& target_pos, const IKKind
 {
 	m_right_ik_kind.at(TimeKind::kCurrent) = ik_kind;
 
-	const auto model_handle			= m_modeler->GetModelHandle();
-	const auto humanoid_frame		= m_humanoid.GetHumanoidFrame();
-	auto	   right_arm_limit		= angle_limits.at(MV1GetFrameName(model_handle, humanoid_frame->GetRightArmIndex(model_handle)));
-	auto	   right_fore_arm_limit = angle_limits.at(MV1GetFrameName(model_handle, humanoid_frame->GetRightForeArmIndex(model_handle)));
+	const auto model_handle					= m_modeler->GetModelHandle();
+	const auto humanoid_frame				= m_humanoid.GetHumanoidFrame();
+	auto	   right_arm_limit				= angle_limits.at(MV1GetFrameName(model_handle, humanoid_frame->GetRightArmIndex(model_handle)));
+	auto	   right_fore_arm_limit			= angle_limits.at(MV1GetFrameName(model_handle, humanoid_frame->GetRightForeArmIndex(model_handle)));
 
-	const auto spine2_frame			= frame_info::GetFrameInfo(model_handle, humanoid_frame->GetRightArmIndex(model_handle));
-	const auto spine2_world_axis	= math::ConvertRotMatrixToAxis(spine2_frame.world_rot_m);
+	const auto right_shoulder_frame			= frame_info::GetFrameInfo(model_handle, humanoid_frame->GetRightShoulderIndex(model_handle));
+	const auto right_shoulder_world_axis	= math::ConvertRotMatrixToAxis(right_shoulder_frame.world_rot_m);
 
 	// ブレンドの起点行列を設定する
 	if (m_right_ik_kind.at(TimeKind::kCurrent) != m_right_ik_kind.at(TimeKind::kPrev))
@@ -201,7 +201,7 @@ void HumanoidArmIKSolver::ApplyRightArmIK(const VECTOR& target_pos, const IKKind
 		model_handle, target_pos,
 		humanoid_frame->GetRightHandIndex(model_handle),
 		right_arm_limit, right_fore_arm_limit,
-		ik_solver::RotDirKind::kRight, false, std::make_optional<AxisData>(-spine2_world_axis.z_axis, AxisKind::kRight));
+		ik_solver::RotDirKind::kRight, false, std::make_optional<AxisData>(-right_shoulder_world_axis.x_axis, AxisKind::kRight));
 
 	// 左手の回転を削除
 	auto right_hand_local_m = MV1GetFrameLocalMatrix(model_handle, humanoid_frame->GetRightHandIndex(model_handle));
