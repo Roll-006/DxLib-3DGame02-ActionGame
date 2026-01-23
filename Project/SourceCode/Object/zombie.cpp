@@ -168,9 +168,9 @@ void Zombie::Draw() const
 {
 	if (!IsActive()) { return; }
 
-	m_modeler->Draw();
+	//m_modeler->Draw();
 
-	//mixamo_helper::DrawFrames(m_modeler->GetModelHandle(), true, true, true, false);
+	mixamo_helper::DrawFrames(m_modeler->GetModelHandle(), true, true, true, false);
 
 	//DrawColliders();
 }
