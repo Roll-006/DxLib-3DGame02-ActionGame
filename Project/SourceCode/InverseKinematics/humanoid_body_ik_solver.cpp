@@ -119,7 +119,7 @@ void HumanoidBodyIKSolver::ApplyBodyTowIK(const VECTOR& target_pos, const int fr
 	ik_solver::TwoBoneIK(
 		model_handle, target_pos, frame_end_index,
 		begin_angle_limit, middle_angle_limit,
-		ik_solver::RotDirKind::kRight, false, std::make_optional<AxisData>(-hips_world_axis.x_axis, AxisKind::kRight));
+		ik_solver::RotDirKind::kRight, true, std::make_optional<AxisData>(-hips_world_axis.x_axis, AxisKind::kRight));
 }
 #pragma endregion
 
