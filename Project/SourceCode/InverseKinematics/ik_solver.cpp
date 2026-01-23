@@ -82,10 +82,10 @@ void ik_solver::TwoBoneIK(
 	CreateTwoBoneIKRotMatrix(begin_frame, middle_frame, begin_angle_limit, middle_angle_limit, triangle_edge, rot_dir_kind, is_rotate_x_axis);
 
 	// 回転を適用
-	matrix::SetRot(begin_frame.local_m, begin_frame.local_rot_m);
-	MV1SetFrameUserLocalMatrix(model_handle, begin_frame_index, begin_frame.local_m);
-	matrix::SetRot(middle_local_m, middle_frame.local_rot_m);
-	MV1SetFrameUserLocalMatrix(model_handle, middle_frame_index, middle_local_m);
+	matrix::SetRot(begin_frame.local_m,  begin_frame.local_rot_m);
+	MV1SetFrameUserLocalMatrix(model_handle, begin_frame_index,  begin_frame.local_m);
+	matrix::SetRot(middle_frame.local_m, middle_frame.local_rot_m);
+	MV1SetFrameUserLocalMatrix(model_handle, middle_frame_index, middle_frame.local_m);
 }
 
 void ik_solver::CreateTwoBoneIKRotMatrix(
@@ -104,13 +104,13 @@ void ik_solver::CreateTwoBoneIKRotMatrix(
 	const auto origin_angle_c		= std::acos(std::clamp(cos_c, -1.0f, 1.0f));
 	const auto limited_angle_b		= std::clamp(origin_angle_b, begin_angle_limit .min_angle * math::kDegToRad, begin_angle_limit .max_angle * math::kDegToRad);		// 角度制限
 	const auto limited_angle_c		= std::clamp(origin_angle_c, middle_angle_limit.min_angle * math::kDegToRad, middle_angle_limit.max_angle * math::kDegToRad);		// 角度制限
-	cos_b							= std::cos(limited_angle_b);																	// 角度制限付きで再計算
-	cos_c							= std::cos(limited_angle_c);																	// 角度制限付きで再計算
+	cos_b							= std::cos(limited_angle_b);																										// 角度制限付きで再計算
+	cos_c							= std::cos(limited_angle_c);																										// 角度制限付きで再計算
 	const auto sin_b				= rot_dir_kind == RotDirKind::kLeft  ? -std::sin(limited_angle_b) : std::sin(limited_angle_b);
-	const auto sin_c				= rot_dir_kind == RotDirKind::kRight ? -std::sin(limited_angle_c) : std::sin(limited_angle_c);	// sinC = sin(π - C)
+	const auto sin_c				= rot_dir_kind == RotDirKind::kRight ? -std::sin(limited_angle_c) : std::sin(limited_angle_c);										// sinC = sin(π - C)
 
 	// 角度制限が発生したかを格納
-	begin_angle_limit.is_limited	= std::abs(limited_angle_b - origin_angle_b) > math::kEpsilonLow;
+	begin_angle_limit .is_limited	= std::abs(limited_angle_b - origin_angle_b) > math::kEpsilonLow;
 	middle_angle_limit.is_limited	= std::abs(limited_angle_c - origin_angle_c) > math::kEpsilonLow;
 
 	// 回転行列を構築
@@ -118,4 +118,6 @@ void ik_solver::CreateTwoBoneIKRotMatrix(
 	const auto middle_rot			= is_rotate_x_axis ? matrix::CreateXMatrix(cos_c, sin_c) : matrix::CreateZMatrix(cos_c, sin_c);
 	begin_bone .local_rot_m			= begin_rot  * matrix::GetRotMatrix(begin_bone .local_m);
 	middle_bone.local_rot_m			= middle_rot * matrix::GetRotMatrix(middle_bone.local_m);
+
+	// TODO : 始点に回転制限がかかっていない問題が発生中。OneBoneIKで無制限に開店したボーンの回転を打ち消して、再度回転させる。
 }

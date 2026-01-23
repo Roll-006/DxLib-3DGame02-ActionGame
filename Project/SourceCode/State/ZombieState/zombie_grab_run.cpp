@@ -71,6 +71,7 @@ const ZombieStateKind zombie_state::GrabRun::GetNextStateKind()
 		return ZombieStateKind::kIdle;
 	}
 	// 掴み
+	// TODO : メレー中に掴めるのはカメラがバグる可能性あり
 	else if (m_zombie.CanGrabTarget())
 	{
 		return ZombieStateKind::kGrab;
