@@ -25,10 +25,10 @@ void zombie_state::Dead::Update()
 {
 	m_zombie.CalcMoveSpeedStop();
 	m_zombie.InitMoveOffset();
+	m_zombie.DisallowStealthKill();
+	m_zombie.DisallowDisperseEnemy();
 
 	const auto delta_time = m_zombie.GetDeltaTime();
-
-	m_zombie.DisallowStealthKill();
 
 	// 色を黒に変化
 	m_change_color_wait_time += delta_time;

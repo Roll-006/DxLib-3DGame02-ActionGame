@@ -574,8 +574,8 @@ const VECTOR math::GetRotatedPos(const VECTOR& pos, const Quaternion& rotate_q)
 	// 参考URL : [ https://zenn.dev/mebiusbox/books/132b654aa02124/viewer/2966c7 ]
 
 	const Quaternion q_pos(pos.x, pos.y, pos.z, 0.0f);
-	const auto n_rotate_q   = quat::GetNormalizedQuaternion(rotate_q);
-	const auto totated_q    = n_rotate_q * q_pos * quat::GetInverseQuaternion(n_rotate_q);
+	const auto normalized_rotate_q = quat::GetNormalizedQuaternion(rotate_q);
+	const auto totated_q = normalized_rotate_q * q_pos * quat::GetInverseQuaternion(normalized_rotate_q);
 
 	return VGet(totated_q.x, totated_q.y, totated_q.z);
 }
@@ -599,37 +599,6 @@ const Axis math::GetAxis(const VECTOR& dir, const Axis& parent_axis)
 
     return { local_dir_x, local_dir_y, local_dir_z };
 }
-
-//Axis math::GetRotatedAxis(const Axis& origin_axis, const AxisData& target_axis)
-//{
-//    auto axis = Axis();
-//
-//    switch (target_axis.kind)
-//    {
-//    case AxisKind::kRight:
-//        axis.x_axis = target_axis.axis;
-//        axis.z_axis = math::GetNormalVector(origin_axis.y_axis, axis.x_axis);
-//        axis.y_axis = math::GetNormalVector(axis.x_axis,        axis.z_axis);
-//        axis.z_axis = math::GetNormalVector(axis.y_axis,        axis.x_axis);
-//        break;
-//
-//    case AxisKind::kUp:
-//        axis.y_axis = target_axis.axis;
-//        axis.z_axis = math::GetNormalVector(origin_axis.x_axis, axis.y_axis);
-//        axis.x_axis = math::GetNormalVector(axis.z_axis,        axis.y_axis);
-//        axis.z_axis = math::GetNormalVector(axis.y_axis,        axis.x_axis);
-//        break;
-//
-//    case AxisKind::kForward:
-//        axis.z_axis = target_axis.axis;
-//        axis.x_axis = math::GetNormalVector(origin_axis.y_axis, axis.z_axis);
-//        axis.y_axis = math::GetNormalVector(axis.z_axis,        axis.x_axis);
-//        axis.x_axis = math::GetNormalVector(axis.y_axis,        axis.z_axis);
-//        break;
-//    }
-//
-//    return axis;
-//}
 
 const Axis math::GetForwardSyncedAxis(const Axis& origin_axis, const VECTOR& forward, const std::optional<AxisData>& aid_axis)
 {

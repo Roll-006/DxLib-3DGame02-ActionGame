@@ -47,6 +47,9 @@ public:
 
 	void DisallowDecreaseKnockBackGauge() { m_can_decrease_knock_back_gauge = false; }
 
+	/// @brief 敵同士の分散を許可しない
+	void DisallowDisperseEnemy() { m_is_disperse_enemy = false; }
+
 
 	#pragma region Getter
 	[[nodiscard]] const std::string								GetEnemyID()				const { return enemy_id; }
@@ -56,11 +59,17 @@ public:
 	[[nodiscard]] const bool									IsPrevDetectedTarget()		const { return m_is_prev_detected_target; }
 	[[nodiscard]] const bool									CanAttack()					const { return m_attack_interval_timer <= 0.0f; }
 	[[nodiscard]] const bool									CanAction()					const { return m_can_action; }
+	[[nodiscard]] const bool									IsDisperseEnemy()			const { return m_is_disperse_enemy; }
 	[[nodiscard]] const float									GetDetecteNotifyDistance()	const { return detected_notify_distance; }
 	#pragma endregion
 
 protected:
 	virtual void JudgeAction() abstract;
+
+	/// @brief 敵同士で分散するかを判定
+	virtual void JudgeDisperseEnemy() abstract;
+
+	/// @brief ターゲットを発見したかを判定する
 	void JudgeTargetInSight();
 
 protected:
@@ -85,6 +94,7 @@ protected:
 	bool  m_is_detected_target;				// 発見状態
 	bool  m_is_prev_detected_target;		// 1フレーム前の発見状態
 	bool  m_is_detection_shared;			// 発見状態が共有された
+	bool  m_is_disperse_enemy;				// 敵同士が分散する
 
 	std::shared_ptr<Gauge> m_knock_back_gauge;
 	bool  m_can_decrease_knock_back_gauge;

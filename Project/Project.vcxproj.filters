@@ -1916,9 +1916,6 @@
     <Filter Include="SourceCode\State">
       <UniqueIdentifier>{9a691bb4-740c-48d4-baec-fd67b8b9b808}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCode\State\ZombieState">
-      <UniqueIdentifier>{d2ef4260-3541-4500-92a8-03e820d5ca75}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SourceCode\Tag">
       <UniqueIdentifier>{cd4f92e3-b298-4e4a-9752-61379ba99845}</UniqueIdentifier>
     </Filter>
@@ -1984,6 +1981,9 @@
     </Filter>
     <Filter Include="SourceCode\AI">
       <UniqueIdentifier>{98add409-e51b-4fae-b48c-0cde8bda14cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCode\State\ZombieState">
+      <UniqueIdentifier>{d2ef4260-3541-4500-92a8-03e820d5ca75}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

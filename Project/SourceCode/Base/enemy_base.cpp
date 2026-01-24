@@ -2,6 +2,7 @@
 
 EnemyBase::EnemyBase(const std::string& name) :
 	CharacterBase					(name, ObjTag.ENEMY),
+	enemy_id						(""),
 	m_patrol_route_giver			(nullptr),
 	m_patrol_destination_pos		(v3d::GetZeroV()),
 	m_is_stop						(false),
@@ -14,7 +15,7 @@ EnemyBase::EnemyBase(const std::string& name) :
 	m_is_detected_target			(false),
 	m_is_prev_detected_target		(false),
 	m_is_detection_shared			(false),
-	enemy_id						(""),
+	m_is_disperse_enemy				(false),
 	m_knock_back_gauge				(nullptr),
 	m_can_decrease_knock_back_gauge	(true)
 {

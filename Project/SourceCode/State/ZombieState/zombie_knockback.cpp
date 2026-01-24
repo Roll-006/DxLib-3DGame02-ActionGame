@@ -26,6 +26,7 @@ void zombie_state::Knockback::Update()
 	m_zombie.CalcMoveSpeedStop();
 	m_zombie.DisallowStealthKill();
 	m_zombie.DisallowDecreaseKnockBackGauge();
+	m_zombie.DisallowDisperseEnemy();
 
 	m_zombie.UpdateLocomotion();
 

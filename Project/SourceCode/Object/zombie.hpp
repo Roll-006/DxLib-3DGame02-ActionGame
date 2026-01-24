@@ -15,19 +15,16 @@
 #include "../State/ZombieState/zombie_state.hpp"
 #include "../AI/zombie_ai.hpp"
 
-#include "../Data/humanoid_arm_ray_data.hpp"
-#include "../Data/humanoid_leg_ray_data.hpp"
-
 class Zombie final : public EnemyBase, public IPoolable, public IHumanoid, public IMeleeHittable, public IGrabber, public IStealthKillable
 {
 public:
 	Zombie(const std::string& id);
 	~Zombie() override;
 
-	void Init()						override;
-	void Update()					override;
-	void LateUpdate()				override;
-	void Draw()				const	override;
+	void Init()			override;
+	void Update()		override;
+	void LateUpdate()	override;
+	void Draw()	const	override;
 
 	void AllowReturnPool() { m_is_return_pool = true; }
 
@@ -101,13 +98,14 @@ public:
 private:
 	void JudgeAction() override;
 
+	void JudgeDisperseEnemy() override;
+
+	/// @brief ボーン制御によるヒットリアクション
 	void OnHitBoneReaction();
 
 private:
 	ZombieData data;
 
-	HumanoidArmRayData							m_arm_ray_data;
-	HumanoidLegRayData							m_leg_ray_data;
 	std::shared_ptr<HumanoidArmIKSolver>		m_humanoid_arm_ik;
 	std::shared_ptr<HumanoidFootIKSolver>		m_humanoid_foot_ik;
 	std::shared_ptr<HumanoidBodyIKSolver>		m_humanoid_body_ik;
@@ -135,9 +133,7 @@ inline void from_json(const nlohmann::json& j_data, Zombie& zombie)
 {
 	from_json(j_data, static_cast<EnemyBase&>(zombie));
 
-	j_data.at("data")			.get_to(zombie.data);
-	j_data.at("arm_ray_data")	.get_to(zombie.m_arm_ray_data);
-	j_data.at("leg_ray_data")	.get_to(zombie.m_leg_ray_data);
+	j_data.at("data").get_to(zombie.data);
 }
 
 inline void to_json(nlohmann::json& j_data, const Zombie& zombie)
@@ -147,9 +143,7 @@ inline void to_json(nlohmann::json& j_data, const Zombie& zombie)
 
 	nlohmann::json derived_json =
 	{
-		{ "data",			zombie.data },
-		{ "arm_ray_data",	zombie.m_arm_ray_data },
-		{ "leg_ray_data",	zombie.m_leg_ray_data },
+		{ "data", zombie.data },
 	};
 
 	j_data = base_json;

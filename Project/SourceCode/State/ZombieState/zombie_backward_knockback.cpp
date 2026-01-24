@@ -23,6 +23,7 @@ void zombie_state::BackwardKnockback::Update()
 	m_zombie.ActivateInvincibleForcibly();
 	m_zombie.DisallowDecreaseKnockBackGauge();
 	m_zombie.DisallowStealthKill();
+	m_zombie.DisallowDisperseEnemy();
 
 	m_zombie.UpdateLocomotion();
 

@@ -71,14 +71,16 @@ void EnemyManager::Update()
 {
 	for (const auto& owner_enemy : m_active_enemies)
 	{
-		//owner_enemy->InitMoveOffset();
+		owner_enemy->InitMoveOffset();
 
-		//for (const auto& target_enemy : m_active_enemies)
-		//{
-		//	if (owner_enemy == target_enemy) { continue; }
+		for (const auto& target_enemy : m_active_enemies)
+		{
+			if (owner_enemy == target_enemy)		{ continue; }
+			if (!owner_enemy ->IsDisperseEnemy())	{ continue; }
+			if (!target_enemy->IsDisperseEnemy())	{ continue; }
 
-		//	owner_enemy->CorrectMoveVelocity(target_enemy->GetTransform()->GetPos(CoordinateKind::kWorld));
-		//}
+			owner_enemy->CorrectMoveVelocity(target_enemy->GetTransform()->GetPos(CoordinateKind::kWorld));
+		}
 
 		owner_enemy->Update();
 	}

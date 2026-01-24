@@ -38,12 +38,9 @@ Zombie::Zombie(const std::string& id) :
 		attack_interval_time		= j_data.at("attack_interval_time");
 		detected_notify_distance	= j_data.at("detected_notify_distance");
 		data						= j_data.at("data").get<ZombieData>();
-		m_arm_ray_data				= j_data.at("arm_ray_data").get<HumanoidArmRayData>();
-		m_leg_ray_data				= j_data.at("leg_ray_data").get<HumanoidLegRayData>();
-
-		m_knock_back_gauge = std::make_shared<Gauge>(400.0f);
 	}
 
+	m_knock_back_gauge = std::make_shared<Gauge>(400.0f);
 	m_transform->SetPos(CoordinateKind::kWorld, v3d::GetZeroV());
 	m_look_dir.at(TimeKind::kNext) = m_look_dir.at(TimeKind::kCurrent) = VGet(0.0f, 0.0f, 1.0);
 	ApplyLookDirToRot();
@@ -63,8 +60,8 @@ Zombie::Zombie(const std::string& id) :
 
 	m_state = std::make_shared<zombie_state::State>(*this, m_animator);
 
-	m_humanoid_arm_ik	= std::make_shared<HumanoidArmIKSolver> (*this, m_animator, m_modeler, m_colliders, m_arm_ray_data);
-	m_humanoid_foot_ik	= std::make_shared<HumanoidFootIKSolver>(*this, m_animator, m_modeler, m_colliders, m_leg_ray_data);
+	m_humanoid_arm_ik	= std::make_shared<HumanoidArmIKSolver> (*this, m_animator, m_modeler, m_colliders, data.arm_ray_data);
+	m_humanoid_foot_ik	= std::make_shared<HumanoidFootIKSolver>(*this, m_animator, m_modeler, m_colliders, data.leg_ray_data);
 	m_humanoid_body_ik	= std::make_shared<HumanoidBodyIKSolver>(*this, m_animator, m_modeler);
 
 	m_is_calc_look_dir = true;
@@ -106,15 +103,18 @@ void Zombie::Update()
 {
 	if (!IsActive()) { return; }
 
+	// 各判定処理
 	JudgeAction();
 	JudgeInvincible();
 	JudgeTargetInSight();
+	JudgeDisperseEnemy();
 
 	m_look_dir_offset_speed			= data.look_dir_offset_speed;
 	m_move_dir_offset_speed			= data.move_dir_offset_speed;
 	m_is_allow_stealth_kill			= true;
 	m_can_decrease_knock_back_gauge = true;
 
+	// 各更新処理
 	m_state				->Update();
 	m_animator			->Update();
 	m_humanoid_foot_ik	->Update();
@@ -198,27 +198,27 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 		break;
 
 	case ColliderKind::kLeftLegRay:
-		if (hit_collider_pair.intersection) { m_leg_ray_data.left_leg_cast_pos = hit_collider_pair.intersection; }
+		if (hit_collider_pair.intersection) { data.leg_ray_data.left_leg_cast_pos = hit_collider_pair.intersection; }
 		break;
 
 	case ColliderKind::kRightLegRay:
-		if (hit_collider_pair.intersection) { m_leg_ray_data.right_leg_cast_pos = hit_collider_pair.intersection; }
+		if (hit_collider_pair.intersection) { data.leg_ray_data.right_leg_cast_pos = hit_collider_pair.intersection; }
 		break;
 
 	case ColliderKind::kLeftFootRay:
-		if (hit_collider_pair.intersection) { m_leg_ray_data.left_foot_cast_pos = hit_collider_pair.intersection; }
+		if (hit_collider_pair.intersection) { data.leg_ray_data.left_foot_cast_pos = hit_collider_pair.intersection; }
 		break;
 
 	case ColliderKind::kRightFootRay:
-		if (hit_collider_pair.intersection) { m_leg_ray_data.right_foot_cast_pos = hit_collider_pair.intersection; }
+		if (hit_collider_pair.intersection) { data.leg_ray_data.right_foot_cast_pos = hit_collider_pair.intersection; }
 		break;
 
 	case ColliderKind::kLeftToeBaseRay:
-		if (hit_collider_pair.intersection) { m_leg_ray_data.left_toe_base_cast_pos = hit_collider_pair.intersection; }
+		if (hit_collider_pair.intersection) { data.leg_ray_data.left_toe_base_cast_pos = hit_collider_pair.intersection; }
 		break;
 
 	case ColliderKind::kRightToeBaseRay:
-		if (hit_collider_pair.intersection) { m_leg_ray_data.right_toe_base_cast_pos = hit_collider_pair.intersection; }
+		if (hit_collider_pair.intersection) { data.leg_ray_data.right_toe_base_cast_pos = hit_collider_pair.intersection; }
 		break;
 
 	case ColliderKind::kMiddleVisionTrigger:
@@ -723,6 +723,16 @@ void Zombie::JudgeAction()
 {
 	const auto is_alive_target = m_ai->GetTarget()->GetHealth(HealthPartKind::kMain)->IsAlive();
 	m_can_action = is_alive_target && !m_is_disallow_action_forcibly;
+}
+
+void Zombie::JudgeDisperseEnemy()
+{
+	const auto target = m_ai->GetTarget();
+	if (target)
+	{
+		const auto distance = VSize(target->GetTransform()->GetPos(CoordinateKind::kWorld) - m_transform->GetPos(CoordinateKind::kWorld));
+		m_is_disperse_enemy = distance <= data.disperse_distance;
+	}
 }
 
 void Zombie::OnHitBoneReaction()
