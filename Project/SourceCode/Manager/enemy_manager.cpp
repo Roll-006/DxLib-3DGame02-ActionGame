@@ -138,12 +138,6 @@ void EnemyManager::NotifyDisallowActionForcibly(const GrabEvent& event)
 	NotifyDisallowActionForcibly(event.enemy_id);
 }
 
-//void EnemyManager::NotifyDisallowActionForcibly(const DeadAllEnemyEvent& event)
-//{
-//	// 死亡した本人以外の敵の行動をすべて停止させる
-//	NotifyDisallowActionForcibly(event.enemy_id);
-//}
-
 void EnemyManager::NotifyDetectedTarget(const OnTargetDetectedEvent& event)
 {
 	for (const auto& enemy : m_active_enemies)

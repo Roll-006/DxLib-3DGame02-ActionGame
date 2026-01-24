@@ -262,8 +262,10 @@ void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
 			m_is_detection_shared = true;
 
 			// ボーンリアクションvelocityを設定
+			const auto model_handle		= m_modeler->GetModelHandle();
+			const auto neck_up			= math::ConvertRotMatrixToAxis(MV1GetFrameLocalWorldMatrix(model_handle, m_humanoid_frame->GetNeckIndex(model_handle))).y_axis;
 			const auto push_speed		= VSize(bullet->GetVelocity());
-			const auto head_push_dir	= v3d::GetNormalizedV(bullet->GetVelocity())  + axis::GetWorldYAxis();
+			const auto head_push_dir	= v3d::GetNormalizedV(bullet->GetVelocity())  + neck_up;
 			const auto arm_push_dir		= v3d::GetNormalizedV(-bullet->GetVelocity()) + axis::GetWorldYAxis();
 			m_push_bone_velocity[RoughBodyKind::kHead]		= head_push_dir * push_speed * 0.004f;
 			m_push_bone_velocity[RoughBodyKind::kLeftArm]	= arm_push_dir  * push_speed * 0.002f;
