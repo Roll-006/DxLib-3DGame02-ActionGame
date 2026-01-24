@@ -39,8 +39,8 @@ public:
 
 	~HumanoidArmIKSolver();
 
-	void Init	();
-	void Update	();
+	void Init();
+	void Update();
 
 
 	#pragma region コライダー
@@ -58,7 +58,6 @@ public:
 	/// @brief 左腕IK処理
 	/// @brief この関数はIK処理の目的位置を手動で設定する関数です
 	void ApplyLeftArmIK (const VECTOR& target_pos, const IKKind ik_kind);
-
 	/// @brief 左腕IK処理
 	/// @brief この関数はIK処理の目的位置を手動で設定する関数です
 	void ApplyRightArmIK(const VECTOR& target_pos, const IKKind ik_kind);

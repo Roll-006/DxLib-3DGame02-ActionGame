@@ -51,6 +51,25 @@ void HumanoidBodyIKSolver::Update()
 	m_ik_kind.at(TimeKind::kCurrent)	= IKKind::kNone;
 }
 
+
+#pragma region ブレンド
+void HumanoidBodyIKSolver::ChangeOriginMatrix(const bool is_set_result_m)
+{
+	const auto model_handle	  = m_modeler->GetModelHandle();
+	const auto humanoid_frame = m_humanoid.GetHumanoidFrame();
+
+	m_origin_body_matrices.spine		= is_set_result_m ? m_result_body_matrices.spine		: MV1GetFrameLocalMatrix(model_handle, humanoid_frame->GetSpineIndex		(model_handle));
+	m_origin_body_matrices.spine1		= is_set_result_m ? m_result_body_matrices.spine1		: MV1GetFrameLocalMatrix(model_handle, humanoid_frame->GetSpine1Index		(model_handle));
+	m_origin_body_matrices.spine2		= is_set_result_m ? m_result_body_matrices.spine2		: MV1GetFrameLocalMatrix(model_handle, humanoid_frame->GetSpine2Index		(model_handle));
+	m_origin_body_matrices.neck			= is_set_result_m ? m_result_body_matrices.neck			: MV1GetFrameLocalMatrix(model_handle, humanoid_frame->GetNeckIndex			(model_handle));
+	m_origin_body_matrices.head			= is_set_result_m ? m_result_body_matrices.head			: MV1GetFrameLocalMatrix(model_handle, humanoid_frame->GetHeadIndex			(model_handle));
+	m_origin_body_matrices.head_top_end = is_set_result_m ? m_result_body_matrices.head_top_end : MV1GetFrameLocalMatrix(model_handle, humanoid_frame->GetHeadTopEndIndex	(model_handle));
+	m_origin_body_matrices.left_eye		= is_set_result_m ? m_result_body_matrices.left_eye		: MV1GetFrameLocalMatrix(model_handle, humanoid_frame->GetLeftEyeIndex		(model_handle));
+	m_origin_body_matrices.right_eye	= is_set_result_m ? m_result_body_matrices.right_eye	: MV1GetFrameLocalMatrix(model_handle, humanoid_frame->GetRightEyeIndex		(model_handle));
+
+	m_blend_timer = 0.0f;
+}
+
 void HumanoidBodyIKSolver::BlendFrame()
 {
 	const auto model_handle		= m_modeler->GetModelHandle();
@@ -81,10 +100,11 @@ void HumanoidBodyIKSolver::BlendFrame()
 	MV1SetFrameUserLocalMatrix(model_handle, humanoid_frame->GetLeftEyeIndex	(model_handle), m_result_body_matrices.left_eye);
 	MV1SetFrameUserLocalMatrix(model_handle, humanoid_frame->GetRightEyeIndex	(model_handle), m_result_body_matrices.right_eye);
 }
+#pragma endregion
 
 
 #pragma region IK処理
-void HumanoidBodyIKSolver::ApplyBodyOneIK(const VECTOR& target_pos, const int frame_index, const IKKind ik_kind)
+void HumanoidBodyIKSolver::ApplyBodyOneIK(const VECTOR& target_pos, const int frame_index,	   const HumanoidBodyIKSolver::IKKind ik_kind)
 {
 	m_ik_kind.at(TimeKind::kCurrent) = ik_kind;
 
@@ -120,25 +140,5 @@ void HumanoidBodyIKSolver::ApplyBodyTowIK(const VECTOR& target_pos, const int fr
 		model_handle, target_pos, frame_end_index,
 		begin_angle_limit, middle_angle_limit,
 		ik_solver::RotDirKind::kRight, true, std::make_optional<AxisData>(-hips_world_axis.x_axis, AxisKind::kRight));
-}
-#pragma endregion
-
-
-#pragma region ブレンドの起点を変更
-void HumanoidBodyIKSolver::ChangeOriginMatrix(const bool is_set_result_m)
-{
-	const auto model_handle	  = m_modeler->GetModelHandle();
-	const auto humanoid_frame = m_humanoid.GetHumanoidFrame();
-
-	m_origin_body_matrices.spine		= is_set_result_m ? m_result_body_matrices.spine		: MV1GetFrameLocalMatrix(model_handle, humanoid_frame->GetSpineIndex		(model_handle));
-	m_origin_body_matrices.spine1		= is_set_result_m ? m_result_body_matrices.spine1		: MV1GetFrameLocalMatrix(model_handle, humanoid_frame->GetSpine1Index		(model_handle));
-	m_origin_body_matrices.spine2		= is_set_result_m ? m_result_body_matrices.spine2		: MV1GetFrameLocalMatrix(model_handle, humanoid_frame->GetSpine2Index		(model_handle));
-	m_origin_body_matrices.neck			= is_set_result_m ? m_result_body_matrices.neck			: MV1GetFrameLocalMatrix(model_handle, humanoid_frame->GetNeckIndex			(model_handle));
-	m_origin_body_matrices.head			= is_set_result_m ? m_result_body_matrices.head			: MV1GetFrameLocalMatrix(model_handle, humanoid_frame->GetHeadIndex			(model_handle));
-	m_origin_body_matrices.head_top_end = is_set_result_m ? m_result_body_matrices.head_top_end : MV1GetFrameLocalMatrix(model_handle, humanoid_frame->GetHeadTopEndIndex	(model_handle));
-	m_origin_body_matrices.left_eye		= is_set_result_m ? m_result_body_matrices.left_eye		: MV1GetFrameLocalMatrix(model_handle, humanoid_frame->GetLeftEyeIndex		(model_handle));
-	m_origin_body_matrices.right_eye	= is_set_result_m ? m_result_body_matrices.right_eye	: MV1GetFrameLocalMatrix(model_handle, humanoid_frame->GetRightEyeIndex		(model_handle));
-
-	m_blend_timer = 0.0f;
 }
 #pragma endregion

@@ -114,6 +114,31 @@ void HumanoidArmIKSolver::CalcRightHandRayPos() const
 #pragma endregion
 
 
+#pragma region ブレンド
+void HumanoidArmIKSolver::ChangeLeftArmOriginMatrix (const bool is_set_result_m)
+{
+	const auto model_handle					= m_modeler->GetModelHandle();
+	const auto humanoid_frame				= m_humanoid.GetHumanoidFrame();
+
+	m_origin_arm_matrices.left_arm			= is_set_result_m ? m_result_arm_matrices.left_arm			: MV1GetFrameLocalMatrix(model_handle, humanoid_frame->GetLeftArmIndex		(model_handle));
+	m_origin_arm_matrices.left_fore_arm		= is_set_result_m ? m_result_arm_matrices.left_fore_arm		: MV1GetFrameLocalMatrix(model_handle, humanoid_frame->GetLeftForeArmIndex	(model_handle));
+	m_origin_arm_matrices.left_hand			= is_set_result_m ? m_result_arm_matrices.left_hand			: MV1GetFrameLocalMatrix(model_handle, humanoid_frame->GetLeftHandIndex		(model_handle));
+
+	m_left_arm_blend_timer = 0.0f;
+}
+
+void HumanoidArmIKSolver::ChangeRightArmOriginMatrix(const bool is_set_result_m)
+{
+	const auto model_handle					= m_modeler->GetModelHandle();
+	const auto humanoid_frame				= m_humanoid.GetHumanoidFrame();
+
+	m_origin_arm_matrices.right_arm			= is_set_result_m ? m_result_arm_matrices.right_arm			: MV1GetFrameLocalMatrix(model_handle, humanoid_frame->GetRightArmIndex		(model_handle));
+	m_origin_arm_matrices.right_fore_arm	= is_set_result_m ? m_result_arm_matrices.right_fore_arm	: MV1GetFrameLocalMatrix(model_handle, humanoid_frame->GetRightForeArmIndex	(model_handle));
+	m_origin_arm_matrices.right_hand		= is_set_result_m ? m_result_arm_matrices.right_hand		: MV1GetFrameLocalMatrix(model_handle, humanoid_frame->GetRightHandIndex	(model_handle));
+
+	m_right_arm_blend_timer = 0.0f;
+}
+
 void HumanoidArmIKSolver::BlendFrame()
 {
 	const auto model_handle		= m_modeler->GetModelHandle();
@@ -144,6 +169,7 @@ void HumanoidArmIKSolver::BlendFrame()
 	MV1SetFrameUserLocalMatrix(model_handle, humanoid_frame->GetRightForeArmIndex	(model_handle), m_result_arm_matrices.right_fore_arm);
 	MV1SetFrameUserLocalMatrix(model_handle, humanoid_frame->GetRightHandIndex		(model_handle), m_result_arm_matrices.right_hand);
 }
+#pragma endregion
 
 
 #pragma region IK処理
@@ -577,32 +603,5 @@ const HumanoidArmIKSolver::ResultKind HumanoidArmIKSolver::ApplyRightArmIKOnGrou
 	}
 
 	return ResultKind::kSuccess;
-}
-#pragma endregion
-
-
-#pragma region ブレンドの起点を変更
-void HumanoidArmIKSolver::ChangeLeftArmOriginMatrix (const bool is_set_result_m)
-{
-	const auto model_handle					= m_modeler->GetModelHandle();
-	const auto humanoid_frame				= m_humanoid.GetHumanoidFrame();
-
-	m_origin_arm_matrices.left_arm			= is_set_result_m ? m_result_arm_matrices.left_arm			: MV1GetFrameLocalMatrix(model_handle, humanoid_frame->GetLeftArmIndex		(model_handle));
-	m_origin_arm_matrices.left_fore_arm		= is_set_result_m ? m_result_arm_matrices.left_fore_arm		: MV1GetFrameLocalMatrix(model_handle, humanoid_frame->GetLeftForeArmIndex	(model_handle));
-	m_origin_arm_matrices.left_hand			= is_set_result_m ? m_result_arm_matrices.left_hand			: MV1GetFrameLocalMatrix(model_handle, humanoid_frame->GetLeftHandIndex		(model_handle));
-
-	m_left_arm_blend_timer = 0.0f;
-}
-
-void HumanoidArmIKSolver::ChangeRightArmOriginMatrix(const bool is_set_result_m)
-{
-	const auto model_handle					= m_modeler->GetModelHandle();
-	const auto humanoid_frame				= m_humanoid.GetHumanoidFrame();
-
-	m_origin_arm_matrices.right_arm			= is_set_result_m ? m_result_arm_matrices.right_arm			: MV1GetFrameLocalMatrix(model_handle, humanoid_frame->GetRightArmIndex		(model_handle));
-	m_origin_arm_matrices.right_fore_arm	= is_set_result_m ? m_result_arm_matrices.right_fore_arm	: MV1GetFrameLocalMatrix(model_handle, humanoid_frame->GetRightForeArmIndex	(model_handle));
-	m_origin_arm_matrices.right_hand		= is_set_result_m ? m_result_arm_matrices.right_hand		: MV1GetFrameLocalMatrix(model_handle, humanoid_frame->GetRightHandIndex	(model_handle));
-
-	m_right_arm_blend_timer = 0.0f;
 }
 #pragma endregion

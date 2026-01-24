@@ -11,6 +11,15 @@ struct ModelFrameAngleLimitData;
 class HumanoidFootIKSolver final
 {
 public:
+	enum class IKKind
+	{
+		kNone = -1,
+
+		kHitReaction,		// ヒットリアクションIK
+		kOnGround,			// 地面に設置させるIK
+	};
+
+public:
 	HumanoidFootIKSolver(
 		IHumanoid& humanoid,
 		const std::shared_ptr<Animator>& animator, 
@@ -20,8 +29,8 @@ public:
 
 	~HumanoidFootIKSolver();
 
-	void Init	();
-	void Update	();
+	void Init();
+	void Update();
 
 
 	#pragma region コライダー
@@ -37,20 +46,29 @@ public:
 	void CalcRightLegRayPos() const;
 	#pragma endregion
 
+
+	#pragma region IK処理
+	/// @brief 左脚IK処理
+	/// @brief この関数はIK処理の目的位置を手動で設定する関数です
+	void ApplyLeftFootIK (const VECTOR& target_pos, const int frame_end_index, const IKKind ik_kind);
+	/// @brief 左脚IK処理
+	/// @brief この関数はIK処理の目的位置を手動で設定する関数です
+	void ApplyRightFootIK(const VECTOR& target_pos, const int frame_end_index, const IKKind ik_kind);
+
 	/// @brief FootIKの処理を適用する
 	void ApplyFootIK();
 
 	/// @brief 左膝を地面につけるしゃがみアニメーションにIK処理を適用する
 	void ApplyLeftKneelCrouchIK();
-
 	/// @brief 右膝を地面につけるしゃがみアニメーションにIK処理を適用する
 	void ApplyRightKneelCrouchIK();
+	#pragma endregion
 
 
-	#pragma region ブレンドの起点を変更
-	void ChagneArmatureOriginMatrix();
-	void ChangeLeftLegOriginMatrix();
-	void ChangeRightLegOriginMatrix();
+	#pragma region ブレンド
+	void ChagneArmatureOriginMatrix	(const bool is_set_result_m = false);
+	void ChangeLeftLegOriginMatrix	(const bool is_set_result_m = false);
+	void ChangeRightLegOriginMatrix	(const bool is_set_result_m = false);
 
 	/// @brief フレーム行列のブレンドを行う
 	/// @brief IK処理適用後に呼び出す必要あり
@@ -58,13 +76,6 @@ public:
 	#pragma endregion
 
 private:
-	void JudgeExecuteIK();
-
-	void CalcToeBaseOffset();
-	void DownArmature();
-	void UpHips();
-
-
 	#pragma region IK処理
 	void ApplyLeftLegIK	();
 	void ApplyRightLegIK();
@@ -72,10 +83,17 @@ private:
 	void ApplyRightKneelIK();
 	#pragma endregion
 
+
+	void JudgeExecuteIK();
+
+	void CalcToeBaseOffset();
+	void DownArmature();
+	void UpHips();
+
 private:
 	static std::unordered_map<std::string, ModelFrameAngleLimitData> angle_limits;
 	float armature_blend_time	= 0.25f;	// 仮　のちに定数化
-	float leg_blend_time		= 0.5f;	// 仮　のちに定数化
+	float leg_blend_time		= 0.3f;	// 仮　のちに定数化
 
 	IHumanoid&														m_humanoid;
 	std::shared_ptr<Animator>										m_animator;
@@ -90,8 +108,12 @@ private:
 	float															m_right_toe_base_offset;
 
 	HumanoidLegMatrixData											m_origin_leg_matrices;
+	HumanoidLegMatrixData											m_result_leg_matrices;
 
 	float															m_armature_blend_timer;
 	float															m_left_leg_blend_timer;
 	float															m_right_leg_blend_timer;
+
+	std::unordered_map<TimeKind, IKKind>							m_left_ik_kind;
+	std::unordered_map<TimeKind, IKKind>							m_right_ik_kind;
 };
