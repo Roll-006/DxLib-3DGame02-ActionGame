@@ -2,12 +2,13 @@
 
 Window::Window():
 	m_is_full_screen		(true),
-	m_change_window_contains(m_is_full_screen ? 1 : 0)
+	m_change_window_count	(m_is_full_screen ? 1 : 0)
 {
-	//#ifdef _DEBUG
-	m_is_full_screen = false;
-	m_change_window_contains = 0;
-	//#endif
+	#ifdef _DEBUG
+	m_is_full_screen		= false;
+	m_change_window_count	
+		= 0;
+	#endif
 
 	SetWindowMode(m_is_full_screen);
 }
@@ -33,15 +34,15 @@ void Window::SetWindowMode()
 
 	if (is_change)
 	{
-		++m_change_window_contains;
-		m_is_full_screen = m_change_window_contains % 2 == 0;
+		++m_change_window_count;
+		m_is_full_screen = m_change_window_count % 2 == 0;
 		ChangeWindowMode(m_is_full_screen ? FALSE : TRUE);
 	}
 }
 
 void Window::SetWindowMode(const bool is_full_screen)
 {
-	++m_change_window_contains;
+	++m_change_window_count;
 	m_is_full_screen = is_full_screen;
 	ChangeWindowMode(m_is_full_screen ? FALSE : TRUE);
 }
