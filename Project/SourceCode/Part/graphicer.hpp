@@ -21,7 +21,7 @@ public:
 	void SetInvertHorizontal(const bool is_invert_horizontal)	{ m_is_invert_horizontal	= is_invert_horizontal; }
 	void SetInvertVertical	(const bool is_invert_vertical)		{ m_is_invert_vertical		= is_invert_vertical; }
 
-	[[nodiscard]] int				GetGraphicHandle()		const { return m_graphic_handle; }
+	[[nodiscard]] const int			GetGraphicHandle()		const { return m_graphic_handle; }
 	[[nodiscard]] Vector2D<int>		GetCenterPos()			const { return m_center_pos; }
 	[[nodiscard]] Vector2D<float>	GetScale()				const { return m_scale; }
 	[[nodiscard]] float				GetAngle()				const { return m_angle; }

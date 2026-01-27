@@ -1,6 +1,6 @@
 #include "movie_player.hpp"
 
-MoviePlayer::MoviePlayer(const std::string& file_path, const BackColorKind back_color_kind, const bool is_loop) :
+MoviePlayer::MoviePlayer(const std::string& file_path, const bool is_loop, const BackColorKind back_color_kind) :
 	m_back_color_kind	(back_color_kind),
 	m_movie_graphic		(nullptr),
 	m_result_screen		(nullptr),
@@ -11,7 +11,7 @@ MoviePlayer::MoviePlayer(const std::string& file_path, const BackColorKind back_
 	m_movie_graphic->SetCenterPos(m_result_screen->GetHalfScreenSize());
 }
 
-MoviePlayer::MoviePlayer(const int movie_handle, const BackColorKind back_color_kind, const bool is_loop) :
+MoviePlayer::MoviePlayer(const int movie_handle, const bool is_loop, const BackColorKind back_color_kind) :
 	m_back_color_kind	(back_color_kind),
 	m_movie_graphic		(nullptr),
 	m_result_screen		(nullptr),
@@ -34,10 +34,8 @@ void MoviePlayer::Play(const bool is_draw_graphic_frame) const
 
 void MoviePlayer::CreateMovieScreen() const
 {
-	const auto play_type = m_is_loop ? DX_PLAYTYPE_LOOP : DX_PLAYTYPE_NORMAL;
-
 	m_result_screen->UseScreen();
-	PlayMovieToGraph(m_movie_graphic->GetGraphicHandle(), play_type);
+	PlayMovieToGraph(m_movie_graphic->GetGraphicHandle(), m_is_loop ? DX_PLAYTYPE_LOOP : DX_PLAYTYPE_NORMAL);
 	m_movie_graphic->Draw();
 	m_result_screen->UnuseScreen();
 }

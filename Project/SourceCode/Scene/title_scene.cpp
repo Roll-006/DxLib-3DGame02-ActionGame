@@ -3,6 +3,8 @@
 
 TitleScene::TitleScene() : 
 	m_is_active						(true),
+	m_is_start_process				(false),
+	m_loop_count					(0),
 	m_scene_kind					(SceneKind::kTitle),
 	m_title_character				(std::make_shared<TitleCharacter>()),
 	m_title_tab						(std::make_shared<TitleTab>()),
@@ -12,7 +14,9 @@ TitleScene::TitleScene() :
 	m_aim_transform					(std::make_shared<Transform>()),
 	m_smoke_transform				(std::make_shared<Transform>()),
 	m_sin							(90.0f * math::kDegToRad),
-	m_smoke_delete_handle			(HandleCreator::GetInstance()->CreateHandle())
+	m_smoke_delete_handle			(HandleCreator::GetInstance()->CreateHandle()),
+	m_elapsed_time					(0.0f),
+	m_started_fade					(false)
 {
 	// マネージャー登録
 	m_title_character->AddToObjManager();
@@ -53,7 +57,6 @@ TitleScene::TitleScene() :
 	const auto game_time_manager = GameTimeManager::GetInstance();
 	game_time_manager->InitTimeScale();
 
-	StartFadeIn();
 	Init();
 }
 
@@ -91,8 +94,17 @@ void TitleScene::Init()
 
 void TitleScene::Update()
 {
+	StartFadeIn();
+
+	m_is_start_process = SceneFader::GetInstance()->GetAlphaBlendNum() < UCHAR_MAX;
+	if (!m_is_start_process) { return; }
+
+	const auto game_time_manager = GameTimeManager::GetInstance();
+	m_elapsed_time += game_time_manager->GetDeltaTime(TimeScaleLayerKind::kNoneScale);
+
 	m_title_tab			->Update();
 	m_title_character	->Update();
+
 
 	// TODO : 後に別クラス化
 
@@ -105,7 +117,7 @@ void TitleScene::Update()
 	m_aim_transform->SetRot(CoordinateKind::kWorld, spine2_axis.z_axis);
 
 	// エフェクト
-	const auto delta_time = GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kUI);
+	const auto delta_time = game_time_manager->GetDeltaTime(TimeScaleLayerKind::kUI);
 	math::Increase(m_sin, 0.5f * delta_time, DX_PI_F, true);
 	const auto num = sin(m_sin);
 	const auto deg = math::ConvertValueNewRange<float, float>(0.0f, 1.0f, -60.0f, -30.0f, num);
@@ -117,27 +129,37 @@ void TitleScene::Update()
 
 void TitleScene::LateUpdate()
 {
-
+	if (!m_is_start_process) { return; }
 }
 
 void TitleScene::DrawToShadowMap() const
 {
+	if (!m_is_start_process) { return; }
+
 	m_title_character->Draw();
 }
 
 void TitleScene::Draw() const
 {
+	if (!m_is_start_process) { return; }
+
 	m_title_character->Draw();
 }
 
 std::shared_ptr<IScene> TitleScene::ChangeScene()
 {
-	const auto fader = SceneFader::GetInstance();
+	const auto is_change = IsChangeDemoScene();
+	printfDx("タイトル : is_change = &d\n", is_change);
 
 	// ロード(プレイ)
 	if (m_title_tab->IsGameStart())
 	{
 		return std::make_shared<LoadScene>(SceneKind::kPlay);
+	}
+	// デモ画面
+	else if (is_change)
+	{
+		return std::make_shared<DemoScene>();
 	}
 
 	return nullptr;
@@ -145,6 +167,29 @@ std::shared_ptr<IScene> TitleScene::ChangeScene()
 
 void TitleScene::StartFadeIn()
 {
+	++m_loop_count;
+	if (m_loop_count == 5)
+	{
+		const auto fader = SceneFader::GetInstance();
+		fader->StartFade(0, 70.0f);
+	}
+
+	printfDx("タイトル : loop_count = %d\n", m_loop_count);
+}
+
+const bool TitleScene::IsChangeDemoScene()
+{
+	if (!m_is_start_process) { return false; }
+
 	const auto fader = SceneFader::GetInstance();
-	fader->StartFade(0, 70.0f);
+
+	// フェード開始
+	if (m_elapsed_time > 10.0f && !m_started_fade)
+	{
+		m_started_fade = true;
+		fader->StartFade(UCHAR_MAX, 80.0f);
+	}
+
+	// フェード終了判定
+	return fader->GetAlphaBlendNum() >= UCHAR_MAX;
 }

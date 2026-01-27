@@ -6,6 +6,7 @@
 #include "../Scene/play_scene.hpp"
 //#include "../Scene/game_clear_scene.hpp"
 #include "../Scene/load_scene.hpp"
+#include "../Scene/demo_scene.hpp"
 
 class SceneManager final : public SingleInstanceBase<SceneManager>
 {

@@ -604,6 +604,9 @@
     <ClCompile Include="SourceCode\InverseKinematics\humanoid_body_ik_solver.cpp">
       <Filter>SourceCode\InverseKinematics</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\Scene\demo_scene.cpp">
+      <Filter>SourceCode\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\character_base.hpp">
@@ -1829,6 +1832,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Data\humanoid_body_matrix_data.hpp">
       <Filter>SourceCode\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Scene\demo_scene.hpp">
+      <Filter>SourceCode\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -25,7 +25,7 @@ SubMenuSelectButton::SubMenuSelectButton(const TextData& text_data, const Vector
 
 	m_button_frame_dark_graphic		= std::make_shared<Graphicer>(data.dark_frame_graphic_path);
 	m_button_frame_light_graphic	= std::make_shared<Graphicer>(data.light_frame_graphic_path);
-	m_selecting_button_movie		= std::make_shared<MoviePlayer>(data.selecting_movie_path, MoviePlayer::BackColorKind::kBlack, true);
+	m_selecting_button_movie		= std::make_shared<MoviePlayer>(data.selecting_movie_path);
 	m_selecting_button_screen		= std::make_shared<ScreenCreator>(m_button_frame_dark_graphic->GetOriginSize(), center_pos);
 	m_applied_mask_screen			= std::make_shared<ScreenCreator>(m_button_frame_dark_graphic->GetOriginSize(), m_selecting_button_screen->GetHalfScreenSize());
 	m_selecting_button_basic_screen = std::make_shared<ScreenCreator>(m_button_frame_dark_graphic->GetOriginSize());

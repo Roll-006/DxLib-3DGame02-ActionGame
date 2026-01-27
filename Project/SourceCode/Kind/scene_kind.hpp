@@ -9,4 +9,5 @@ enum class SceneKind
 	kPlay,
 	kGameClear,
 	kLoad,
+	kDemo,
 };

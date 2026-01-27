@@ -30,9 +30,12 @@ public:
 
 private:
 	void StartFadeIn() override;
+	[[nodiscard]] const bool IsChangeDemoScene();
 
 private:
 	bool		m_is_active;
+	bool		m_is_start_process;
+	int			m_loop_count;
 	SceneKind	m_scene_kind;
 
 	std::shared_ptr<TitleCharacter>				m_title_character;
@@ -45,4 +48,6 @@ private:
 	std::shared_ptr<Transform>					m_smoke_transform;
 	float										m_sin;
 	int											m_smoke_delete_handle;
+	float										m_elapsed_time;
+	bool										m_started_fade;
 };
