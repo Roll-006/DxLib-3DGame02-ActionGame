@@ -109,7 +109,7 @@ void PlayScene::Update()
 {
 	StartFadeIn();
 
-	m_is_start_process = SceneFader::GetInstance()->GetAlphaBlendNum() <= 0;
+	m_is_start_process = SceneFader::GetInstance()->GetAlphaBlendNum() < UCHAR_MAX;
 	if (!m_is_start_process) { return; }
 
 	m_player							->Update();

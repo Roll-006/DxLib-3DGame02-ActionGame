@@ -51,11 +51,8 @@ void DemoScene::Draw() const
 
 std::shared_ptr<IScene> DemoScene::ChangeScene()
 {
-	const auto is_change = IsChangeTitleScene();
-	printfDx("デモ : is_change = &d\n", is_change);
-
 	// タイトル
-	if (is_change)
+	if (IsChangeTitleScene())
 	{
 		return std::make_shared<TitleScene>();
 	}
@@ -71,8 +68,6 @@ void DemoScene::StartFadeIn()
 		const auto fader = SceneFader::GetInstance();
 		fader->StartFade(0, 100.0f);
 	}
-
-	printfDx("デモ : loop_count = %d\n", m_loop_count);
 }
 
 const bool DemoScene::IsChangeTitleScene()
@@ -82,7 +77,7 @@ const bool DemoScene::IsChangeTitleScene()
 	const auto fader = SceneFader::GetInstance();
 
 	// フェード開始
-	if (m_demo_movie->IsStop() > 3.0f && !m_started_fade)
+	if (m_demo_movie->IsStop() && !m_started_fade)
 	{
 		m_started_fade = true;
 		fader->StartFade(UCHAR_MAX, 110.0f);

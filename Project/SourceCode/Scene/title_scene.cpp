@@ -148,16 +148,13 @@ void TitleScene::Draw() const
 
 std::shared_ptr<IScene> TitleScene::ChangeScene()
 {
-	const auto is_change = IsChangeDemoScene();
-	printfDx("タイトル : is_change = &d\n", is_change);
-
 	// ロード(プレイ)
 	if (m_title_tab->IsGameStart())
 	{
 		return std::make_shared<LoadScene>(SceneKind::kPlay);
 	}
 	// デモ画面
-	else if (is_change)
+	else if (IsChangeDemoScene())
 	{
 		return std::make_shared<DemoScene>();
 	}
@@ -173,8 +170,6 @@ void TitleScene::StartFadeIn()
 		const auto fader = SceneFader::GetInstance();
 		fader->StartFade(0, 70.0f);
 	}
-
-	printfDx("タイトル : loop_count = %d\n", m_loop_count);
 }
 
 const bool TitleScene::IsChangeDemoScene()
