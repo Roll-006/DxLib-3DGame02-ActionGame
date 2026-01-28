@@ -344,8 +344,8 @@ void Player::OnDamage(const HealthPartKind part_kind, const float damage)
 	if (!m_health.contains(part_kind)) { return; }
 
 	m_health.at(part_kind)->Decrease(damage);
-	m_invincible_timer	= invincible_time;
-	m_is_invincible		= true;
+	m_invincible_timer = invincible_time;
+	m_is_invincible	   = true;
 
 	// 通知処理
 	if (part_kind == HealthPartKind::kMain)
@@ -936,12 +936,10 @@ void Player::NotifyHealth()
 		// 瀕死状態突入通知
 		if (m_prev_health >= parcent)
 		{
-			const EnterNearDeathEvent event{};
-			EventSystem::GetInstance()->Publish(event);
+			EventSystem::GetInstance()->Publish(EnterNearDeathEvent());
 		}
 
-		const NearDeathEvent event{};
-		EventSystem::GetInstance()->Publish(event);
+		EventSystem::GetInstance()->Publish(NearDeathEvent());
 	}
 
 	m_prev_health = m_health.at(HealthPartKind::kMain)->GetCurrentValue();

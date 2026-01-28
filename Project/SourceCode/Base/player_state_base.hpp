@@ -16,7 +16,7 @@ public:
 	virtual void Enter()		abstract;
 	virtual void Exit()			abstract;
 
-	[[nodiscard]] const PlayerStateKind GetStateKind() const { return m_state_kind; }
+	[[nodiscard]] const PlayerStateKind	GetStateKind() const { return m_state_kind; }
 	[[nodiscard]] virtual const PlayerStateKind GetNextStateKind() abstract;
 	[[nodiscard]] const bool IsCrouch() const { return m_is_crouch; }
 	[[nodiscard]] const bool IsRun()	const { return m_is_run; }
@@ -41,23 +41,21 @@ private:
 	void UpdateRun();
 	#pragma endregion
 
-
-	void AttachAnim(const std::function<void()>& lower_body_anim_function, const std::unordered_map<Animator::BodyKind, PlayerAnimKind>& anim_kind);
-
 protected:
-	Player&						m_player;
-	player_state::State&		m_state;
-	std::shared_ptr<Animator>	m_animator;
-	PlayerStateKind				m_state_kind;
-	std::unordered_map<Animator::BodyKind, PlayerAnimKind> m_basic_anim_kind;
-	std::unordered_map<Animator::BodyKind, PlayerAnimKind> m_walk_forward_anim_kind;
-	std::unordered_map<Animator::BodyKind, PlayerAnimKind> m_run_forward_anim_kind;
-	std::unordered_map<Animator::BodyKind, PlayerAnimKind> m_crouch_walk_forward_anim_kind;
-	std::unordered_map<Animator::BodyKind, PlayerAnimKind> m_crouch_anim_kind;
+	Player&													m_player;
+	player_state::State&									m_state;
+	std::shared_ptr<Animator>								m_animator;
+	PlayerStateKind											m_state_kind;
+	std::unordered_map<Animator::BodyKind, PlayerAnimKind>	m_basic_anim_kind;
+	std::unordered_map<Animator::BodyKind, PlayerAnimKind>	m_walk_forward_anim_kind;
+	std::unordered_map<Animator::BodyKind, PlayerAnimKind>	m_run_forward_anim_kind;
+	std::unordered_map<Animator::BodyKind, PlayerAnimKind>	m_crouch_walk_forward_anim_kind;
+	std::unordered_map<Animator::BodyKind, PlayerAnimKind>	m_crouch_anim_kind;
 
 private:
 	bool m_is_crouch;
 	bool m_is_run;
 	bool m_prev_crouch;
 	bool m_prev_run;
+	bool m_is_;
 };
