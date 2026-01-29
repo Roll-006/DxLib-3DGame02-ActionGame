@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "../Interface/i_poolable.hpp"
 #include "../Data/sound_data.hpp"
 #include "../GameTime/game_time_manager.hpp"
@@ -16,18 +16,18 @@ public:
 	void Activate()		{ m_is_active = true; }
 	void Deactivate()	{ m_is_active = false; }
 
-	/// @brief ƒTƒEƒ“ƒh‚ğÄ¶‚·‚é
-	/// @param pos 3D‹óŠÔ‚Å‚ÌÄ¶ˆÊ’u(3D‹óŠÔ‚Å‚È‚¢ê‡‚ÍÀ•Ww’è‚È‚µ)
+	/// @brief ã‚µã‚¦ãƒ³ãƒ‰ã‚’å†ç”Ÿã™ã‚‹
+	/// @param pos 3Dç©ºé–“ã§ã®å†ç”Ÿä½ç½®(3Dç©ºé–“ã§ãªã„å ´åˆã¯åº§æ¨™æŒ‡å®šãªã—)
 	void OnPlaySound(const TimeScaleLayerKind time_scale_layer, std::optional<VECTOR> pos = std::nullopt);
 
-	/// @brief ƒTƒEƒ“ƒh‚ÌÄ¶‚ğ’â~‚·‚é
+	/// @brief ã‚µã‚¦ãƒ³ãƒ‰ã®å†ç”Ÿã‚’åœæ­¢ã™ã‚‹
 	void OnStopSound();
 
-	/// @brief ƒTƒEƒ“ƒh‚ÌÄ¶‚ğÄŠJ‚·‚é
+	/// @brief ã‚µã‚¦ãƒ³ãƒ‰ã®å†ç”Ÿã‚’å†é–‹ã™ã‚‹
 	void OnResumeSound();
 
-	/// @brief ƒtƒF[ƒhƒAƒEƒg‚ğŠJn‚·‚é
-	/// @param fade_out_speed ƒtƒF[ƒhƒAƒEƒg‘¬“x
+	/// @brief ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¢ã‚¦ãƒˆã‚’é–‹å§‹ã™ã‚‹
+	/// @param fade_out_speed ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¢ã‚¦ãƒˆé€Ÿåº¦
 	void StartFadeOut();
 
 	[[nodiscard]] const bool		IsActive()		const		{ return m_is_active; }

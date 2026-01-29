@@ -5,8 +5,8 @@ DemoScene::DemoScene() :
 	m_is_active			(true),
 	m_is_start_process	(false),
 	m_loop_count		(0),
-	m_scene_kind		(SceneKind::kTitle),
-	m_demo_movie		(std::make_shared<MoviePlayer>("Data/Movie/test.mp4", false)),
+	m_scene_kind		(SceneKind::kDemo),
+	m_demo_movie		(std::make_shared<MoviePlayer>("Data/Movie/test_movie.mp4", false)),
 	m_started_fade		(false)
 {
 

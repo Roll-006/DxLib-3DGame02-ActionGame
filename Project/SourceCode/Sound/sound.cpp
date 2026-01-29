@@ -1,4 +1,4 @@
-#include "sound.hpp"
+ï»¿#include "sound.hpp"
 
 Sound::Sound(const SoundData& j_data) : 
 	sound_data			(j_data),
@@ -33,13 +33,13 @@ void Sound::Init()
 
 void Sound::Update(const float time_scale)
 {
-	// ü”g”‚ğƒ^ƒCƒ€ƒXƒP[ƒ‹‚©‚ç•ÏX
+	// å‘¨æ³¢æ•°ã‚’ã‚¿ã‚¤ãƒ ã‚¹ã‚±ãƒ¼ãƒ«ã‹ã‚‰å¤‰æ›´
 	const auto scale = std::clamp(time_scale, sound_data.min_frequency_scale, sound_data.max_frequency_scale);
 	SetFrequencySoundMem(sound_data.frequency * scale, sound_data.handle);
 
 	FadeOut();
 
-	// ’â~EÄŠJˆ—
+	// åœæ­¢ãƒ»å†é–‹å‡¦ç†
 	time_scale <= 0.0f ? OnStopSound() : OnResumeSound();
 
 	if (!m_is_return_pool) { m_is_return_pool = GetSoundCurrentTime(sound_data.handle) >= sound_data.total_time && !m_is_stopping; }
@@ -78,6 +78,8 @@ void Sound::OnResumeSound()
 
 void Sound::StartFadeOut()
 {
+	if (!m_is_active) { return; }
+
 	m_is_fade_out = true;
 }
 
@@ -90,6 +92,6 @@ void Sound::FadeOut()
 
 	ChangeVolumeSoundMem(m_current_volume, sound_data.handle);
 
-	// ‰¹—Ê‚ª0‚É‚È‚Á‚½‚çƒv[ƒ‹‚Ö•ÏŠ·‚·‚é
+	// éŸ³é‡ãŒ0ã«ãªã£ãŸã‚‰ãƒ—ãƒ¼ãƒ«ã¸å¤‰æ›ã™ã‚‹
 	m_is_return_pool = m_current_volume <= 0;
 }
