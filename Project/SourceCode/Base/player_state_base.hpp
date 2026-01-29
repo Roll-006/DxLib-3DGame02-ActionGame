@@ -46,16 +46,20 @@ protected:
 	player_state::State&									m_state;
 	std::shared_ptr<Animator>								m_animator;
 	PlayerStateKind											m_state_kind;
+
 	std::unordered_map<Animator::BodyKind, PlayerAnimKind>	m_basic_anim_kind;
 	std::unordered_map<Animator::BodyKind, PlayerAnimKind>	m_walk_forward_anim_kind;
 	std::unordered_map<Animator::BodyKind, PlayerAnimKind>	m_run_forward_anim_kind;
 	std::unordered_map<Animator::BodyKind, PlayerAnimKind>	m_crouch_walk_forward_anim_kind;
 	std::unordered_map<Animator::BodyKind, PlayerAnimKind>	m_crouch_anim_kind;
 
+	std::unordered_map<Animator::BodyKind, PlayerAnimKind>	m_basic_injured_anim_kind;
+	std::unordered_map<Animator::BodyKind, PlayerAnimKind>	m_walk_forward_injured_anim_kind;
+	std::unordered_map<Animator::BodyKind, PlayerAnimKind>	m_run_forward_injured_anim_kind;
+
 private:
 	bool m_is_crouch;
 	bool m_is_run;
 	bool m_prev_crouch;
 	bool m_prev_run;
-	bool m_is_;
 };

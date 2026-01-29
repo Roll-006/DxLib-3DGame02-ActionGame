@@ -16,6 +16,9 @@ player_state::Reload::Reload(Player& player, player_state::State& state, const s
 	m_basic_anim_kind				.at(Animator::BodyKind::kUpperBody) = PlayerAnimKind::kReload;
 	m_walk_forward_anim_kind		.at(Animator::BodyKind::kUpperBody) = PlayerAnimKind::kReload;
 	m_run_forward_anim_kind			.at(Animator::BodyKind::kUpperBody) = PlayerAnimKind::kReload;
+	m_basic_injured_anim_kind		.at(Animator::BodyKind::kUpperBody) = PlayerAnimKind::kReload;
+	m_walk_forward_injured_anim_kind.at(Animator::BodyKind::kUpperBody) = PlayerAnimKind::kReload;
+	m_run_forward_injured_anim_kind	.at(Animator::BodyKind::kUpperBody) = PlayerAnimKind::kReload;
 	m_crouch_walk_forward_anim_kind	.at(Animator::BodyKind::kUpperBody) = PlayerAnimKind::kReload;
 	m_crouch_anim_kind				.at(Animator::BodyKind::kUpperBody) = PlayerAnimKind::kReload;
 }

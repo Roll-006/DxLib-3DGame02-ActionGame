@@ -11,6 +11,9 @@ player_state::Shot::Shot(Player& player, State& state, const std::shared_ptr<Ani
     m_basic_anim_kind               .at(Animator::BodyKind::kUpperBody) = PlayerAnimKind::kAimGun;
     m_walk_forward_anim_kind        .at(Animator::BodyKind::kUpperBody) = PlayerAnimKind::kAimGun;
     m_run_forward_anim_kind         .at(Animator::BodyKind::kUpperBody) = PlayerAnimKind::kAimGun;
+    m_basic_injured_anim_kind       .at(Animator::BodyKind::kUpperBody) = PlayerAnimKind::kAimGun;
+    m_walk_forward_injured_anim_kind.at(Animator::BodyKind::kUpperBody) = PlayerAnimKind::kAimGun;
+    m_run_forward_injured_anim_kind .at(Animator::BodyKind::kUpperBody) = PlayerAnimKind::kAimGun;
     m_crouch_walk_forward_anim_kind .at(Animator::BodyKind::kUpperBody) = PlayerAnimKind::kAimGun;
     m_crouch_anim_kind              .at(Animator::BodyKind::kUpperBody) = PlayerAnimKind::kAimGun;
 }

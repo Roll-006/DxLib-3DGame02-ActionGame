@@ -11,16 +11,20 @@ PlayerStateBase::PlayerStateBase(Player& player, player_state::State& state, con
 	m_state							(state),
 	m_animator						(animator),
 	m_state_kind					(state_kind),
-	m_basic_anim_kind				{ {Animator::BodyKind::kLowerBody, PlayerAnimKind::kIdle},				 {Animator::BodyKind::kUpperBody, PlayerAnimKind::kIdle} },
-	m_walk_forward_anim_kind		{ {Animator::BodyKind::kLowerBody, PlayerAnimKind::kMoveForward},		 {Animator::BodyKind::kUpperBody, PlayerAnimKind::kMoveForward} },
-	m_run_forward_anim_kind			{ {Animator::BodyKind::kLowerBody, PlayerAnimKind::kMoveForwardRun},     {Animator::BodyKind::kUpperBody, PlayerAnimKind::kMoveForwardRun} },
-	m_crouch_walk_forward_anim_kind	{ {Animator::BodyKind::kLowerBody, PlayerAnimKind::kMoveForwardCrouch},	 {Animator::BodyKind::kUpperBody, PlayerAnimKind::kMoveForwardCrouch} },
-	m_crouch_anim_kind				{ {Animator::BodyKind::kLowerBody, PlayerAnimKind::kCrouch},			 {Animator::BodyKind::kUpperBody, PlayerAnimKind::kCrouch} },
+	m_basic_anim_kind				{ {Animator::BodyKind::kLowerBody, PlayerAnimKind::kIdle},					{Animator::BodyKind::kUpperBody, PlayerAnimKind::kIdle} },
+	m_walk_forward_anim_kind		{ {Animator::BodyKind::kLowerBody, PlayerAnimKind::kMoveForward},			{Animator::BodyKind::kUpperBody, PlayerAnimKind::kMoveForward} },
+	m_run_forward_anim_kind			{ {Animator::BodyKind::kLowerBody, PlayerAnimKind::kMoveForwardRun},		{Animator::BodyKind::kUpperBody, PlayerAnimKind::kMoveForwardRun} },
+	m_crouch_walk_forward_anim_kind	{ {Animator::BodyKind::kLowerBody, PlayerAnimKind::kMoveForwardCrouch},		{Animator::BodyKind::kUpperBody, PlayerAnimKind::kMoveForwardCrouch} },
+	m_crouch_anim_kind				{ {Animator::BodyKind::kLowerBody, PlayerAnimKind::kCrouch},				{Animator::BodyKind::kUpperBody, PlayerAnimKind::kCrouch} },
+	m_basic_injured_anim_kind		{ {Animator::BodyKind::kLowerBody, PlayerAnimKind::kIdleInjured},			{Animator::BodyKind::kUpperBody, PlayerAnimKind::kIdleInjured} },
+	m_walk_forward_injured_anim_kind{ {Animator::BodyKind::kLowerBody, PlayerAnimKind::kMoveForwardInjured},	{Animator::BodyKind::kUpperBody, PlayerAnimKind::kMoveForwardInjured} },
+	m_run_forward_injured_anim_kind	{ {Animator::BodyKind::kLowerBody, PlayerAnimKind::kMoveForwardRunInjured},	{Animator::BodyKind::kUpperBody, PlayerAnimKind::kMoveForwardRunInjured} },
 	m_is_crouch						(false),
 	m_is_run						(false),
 	m_prev_crouch					(false),
 	m_prev_run						(false)
 {
+
 }
 
 PlayerStateBase::~PlayerStateBase()
@@ -43,8 +47,10 @@ void PlayerStateBase::Move()
 		const auto is_move_right	= command->IsExecute(CommandKind::kMoveRightPlayer, TimeKind::kCurrent);
 
 		// アニメーションアタッチ
-		m_animator->AttachAnimEightDir(static_cast<int>(m_walk_forward_anim_kind.at(Animator::BodyKind::kLowerBody)), is_move_forward, is_move_backward, is_move_left, is_move_right, false);
-		m_animator->AttachAnim		  (static_cast<int>(m_walk_forward_anim_kind.at(Animator::BodyKind::kUpperBody)), Animator::BodyKind::kUpperBody);
+		const auto lower_anim_kind = m_player.IsNearDeath() ? m_walk_forward_injured_anim_kind.at(Animator::BodyKind::kLowerBody) : m_walk_forward_anim_kind.at(Animator::BodyKind::kLowerBody);
+		const auto upper_anim_kind = m_player.IsNearDeath() ? m_walk_forward_injured_anim_kind.at(Animator::BodyKind::kUpperBody) : m_walk_forward_anim_kind.at(Animator::BodyKind::kUpperBody);
+		m_animator->AttachAnimEightDir(static_cast<int>(lower_anim_kind), is_move_forward, is_move_backward, is_move_left, is_move_right, false);
+		m_animator->AttachAnim		  (static_cast<int>(upper_anim_kind), Animator::BodyKind::kUpperBody);
 	}
 	else
 	{
@@ -53,12 +59,15 @@ void PlayerStateBase::Move()
 		// アニメーションアタッチ
 		if (m_basic_anim_kind.at(Animator::BodyKind::kLowerBody) == m_basic_anim_kind.at(Animator::BodyKind::kUpperBody))
 		{
-			m_animator->AttachResultAnim(static_cast<int>(m_basic_anim_kind.at(Animator::BodyKind::kLowerBody)));
+			const auto anim_kind = m_player.IsNearDeath() ? m_basic_injured_anim_kind.at(Animator::BodyKind::kLowerBody) : m_basic_anim_kind.at(Animator::BodyKind::kLowerBody);
+			m_animator->AttachResultAnim(static_cast<int>(anim_kind));
 		}
 		else
 		{
-			m_animator->AttachAnim(static_cast<int>(m_basic_anim_kind.at(Animator::BodyKind::kLowerBody)), Animator::BodyKind::kLowerBody);
-			m_animator->AttachAnim(static_cast<int>(m_basic_anim_kind.at(Animator::BodyKind::kUpperBody)), Animator::BodyKind::kUpperBody);
+			const auto lower_anim_kind = m_player.IsNearDeath() ? m_basic_injured_anim_kind.at(Animator::BodyKind::kLowerBody) : m_basic_anim_kind.at(Animator::BodyKind::kLowerBody);
+			const auto upper_anim_kind = m_player.IsNearDeath() ? m_basic_injured_anim_kind.at(Animator::BodyKind::kUpperBody) : m_basic_anim_kind.at(Animator::BodyKind::kUpperBody);
+			m_animator->AttachAnim(static_cast<int>(lower_anim_kind), Animator::BodyKind::kLowerBody);
+			m_animator->AttachAnim(static_cast<int>(upper_anim_kind), Animator::BodyKind::kUpperBody);
 		}
 	}
 
@@ -81,6 +90,7 @@ void PlayerStateBase::BasicMove()
 		const auto is_move_left		= command->IsExecute(CommandKind::kMoveLeftPlayer,	TimeKind::kCurrent);
 		const auto is_move_right	= command->IsExecute(CommandKind::kMoveRightPlayer, TimeKind::kCurrent);
 
+		// ダッシュ
 		if (TryRun())
 		{
 			m_is_run = true;
@@ -90,14 +100,18 @@ void PlayerStateBase::BasicMove()
 			// アニメーションアタッチ
 			if (m_run_forward_anim_kind.at(Animator::BodyKind::kLowerBody) == m_run_forward_anim_kind.at(Animator::BodyKind::kUpperBody))
 			{
-				m_animator->AttachResultAnim(static_cast<int>(m_run_forward_anim_kind.at(Animator::BodyKind::kLowerBody)));
+				const auto anim_kind = m_player.IsNearDeath() ? m_run_forward_injured_anim_kind.at(Animator::BodyKind::kLowerBody) : m_run_forward_anim_kind.at(Animator::BodyKind::kLowerBody);
+				m_animator->AttachResultAnim(static_cast<int>(anim_kind));
 			}
 			else
 			{
-				m_animator->AttachAnim(static_cast<int>(m_run_forward_anim_kind.at(Animator::BodyKind::kLowerBody)), Animator::BodyKind::kLowerBody);
-				m_animator->AttachAnim(static_cast<int>(m_run_forward_anim_kind.at(Animator::BodyKind::kUpperBody)), Animator::BodyKind::kUpperBody);
+				const auto lower_anim_kind = m_player.IsNearDeath() ? m_run_forward_injured_anim_kind.at(Animator::BodyKind::kLowerBody) : m_run_forward_anim_kind.at(Animator::BodyKind::kLowerBody);
+				const auto upper_anim_kind = m_player.IsNearDeath() ? m_run_forward_injured_anim_kind.at(Animator::BodyKind::kUpperBody) : m_run_forward_anim_kind.at(Animator::BodyKind::kUpperBody);
+				m_animator->AttachAnim(static_cast<int>(lower_anim_kind), Animator::BodyKind::kLowerBody);
+				m_animator->AttachAnim(static_cast<int>(upper_anim_kind), Animator::BodyKind::kUpperBody);
 			}
 		}
+		// しゃがみ (移動)
 		else if (TryCrouch())
 		{
 			m_is_crouch = true;
@@ -109,16 +123,20 @@ void PlayerStateBase::BasicMove()
 			m_animator->AttachAnimEightDir(static_cast<int>(m_crouch_walk_forward_anim_kind.at(Animator::BodyKind::kLowerBody)), is_move_forward, is_move_backward, is_move_left, is_move_right, false);
 			m_animator->AttachAnim		  (static_cast<int>(m_crouch_walk_forward_anim_kind.at(Animator::BodyKind::kUpperBody)), Animator::BodyKind::kUpperBody);
 		}
+		// 歩き
 		else
 		{
 			m_player.CalcMoveSpeed();
 			m_player.DirOfCameraForward();
 
 			// アニメーションアタッチ
-			m_animator->AttachAnimEightDir(static_cast<int>(m_walk_forward_anim_kind.at(Animator::BodyKind::kLowerBody)), is_move_forward, is_move_backward, is_move_left, is_move_right, false);
-			m_animator->AttachAnim		  (static_cast<int>(m_walk_forward_anim_kind.at(Animator::BodyKind::kUpperBody)), Animator::BodyKind::kUpperBody);
+			const auto lower_anim_kind = m_player.IsNearDeath() ? m_walk_forward_injured_anim_kind.at(Animator::BodyKind::kLowerBody) : m_walk_forward_anim_kind.at(Animator::BodyKind::kLowerBody);
+			const auto upper_anim_kind = m_player.IsNearDeath() ? m_walk_forward_injured_anim_kind.at(Animator::BodyKind::kUpperBody) : m_walk_forward_anim_kind.at(Animator::BodyKind::kUpperBody);
+			m_animator->AttachAnimEightDir(static_cast<int>(lower_anim_kind), is_move_forward, is_move_backward, is_move_left, is_move_right, false);
+			m_animator->AttachAnim		  (static_cast<int>(upper_anim_kind), Animator::BodyKind::kUpperBody);
 		}
 	}
+	// しゃがみ
 	else if (TryCrouch())
 	{
 		m_is_crouch = true;
@@ -137,6 +155,7 @@ void PlayerStateBase::BasicMove()
 			m_animator->AttachAnim(static_cast<int>(m_crouch_anim_kind.at(Animator::BodyKind::kUpperBody)), Animator::BodyKind::kUpperBody);
 		}
 	}
+	// IDLE
 	else
 	{
 		m_player.CalcMoveSpeedStop();
@@ -144,12 +163,15 @@ void PlayerStateBase::BasicMove()
 		// アニメーションアタッチ
 		if (m_basic_anim_kind.at(Animator::BodyKind::kLowerBody) == m_basic_anim_kind.at(Animator::BodyKind::kUpperBody))
 		{
-			m_animator->AttachResultAnim(static_cast<int>(m_basic_anim_kind.at(Animator::BodyKind::kLowerBody)));
+			const auto anim_kind = m_player.IsNearDeath() ? m_basic_injured_anim_kind.at(Animator::BodyKind::kLowerBody) : m_basic_anim_kind.at(Animator::BodyKind::kLowerBody);
+			m_animator->AttachResultAnim(static_cast<int>(anim_kind));
 		}
 		else
 		{
-			m_animator->AttachAnim(static_cast<int>(m_basic_anim_kind.at(Animator::BodyKind::kLowerBody)), Animator::BodyKind::kLowerBody);
-			m_animator->AttachAnim(static_cast<int>(m_basic_anim_kind.at(Animator::BodyKind::kUpperBody)), Animator::BodyKind::kUpperBody);
+			const auto lower_anim_kind = m_player.IsNearDeath() ? m_basic_injured_anim_kind.at(Animator::BodyKind::kLowerBody) : m_basic_anim_kind.at(Animator::BodyKind::kLowerBody);
+			const auto upper_anim_kind = m_player.IsNearDeath() ? m_basic_injured_anim_kind.at(Animator::BodyKind::kUpperBody) : m_basic_anim_kind.at(Animator::BodyKind::kUpperBody);
+			m_animator->AttachAnim(static_cast<int>(lower_anim_kind), Animator::BodyKind::kLowerBody);
+			m_animator->AttachAnim(static_cast<int>(upper_anim_kind), Animator::BodyKind::kUpperBody);
 		}
 	}
 

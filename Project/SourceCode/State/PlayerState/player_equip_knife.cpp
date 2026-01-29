@@ -10,6 +10,8 @@ player_state::EquipKnife::EquipKnife(Player& player, player_state::State& state,
 {
 	m_basic_anim_kind				.at(Animator::BodyKind::kUpperBody) = PlayerAnimKind::kEquipKnife;
 	m_walk_forward_anim_kind		.at(Animator::BodyKind::kUpperBody) = PlayerAnimKind::kEquipKnife;
+	m_basic_injured_anim_kind		.at(Animator::BodyKind::kUpperBody) = PlayerAnimKind::kEquipKnife;
+	m_walk_forward_injured_anim_kind.at(Animator::BodyKind::kUpperBody) = PlayerAnimKind::kEquipKnife;
 	m_crouch_walk_forward_anim_kind	.at(Animator::BodyKind::kUpperBody) = PlayerAnimKind::kEquipKnife;
 	m_crouch_anim_kind				.at(Animator::BodyKind::kUpperBody) = PlayerAnimKind::kEquipKnife;
 }

@@ -13,6 +13,7 @@ Player::Player() :
 	m_prev_health					(0.0f),
 	m_is_grabbed					(false),
 	m_is_escape						(false),
+	m_is_near_death					(false),
 	m_escape_start_timer			(0.0f),
 	m_can_add_acquirable_item		(true),
 	m_can_search_stealth_kill_target(true),
@@ -929,15 +930,14 @@ void Player::CalcInputSlopeFromCommand()
 
 void Player::NotifyHealth()
 {
-	// 瀕死状態通知
 	const auto parcent = (m_health.at(HealthPartKind::kMain)->GetMaxValue() / 270.0f) * 45;
-	if (m_health.at(HealthPartKind::kMain)->GetCurrentValue() < parcent)
+	m_is_near_death = m_health.at(HealthPartKind::kMain)->GetCurrentValue() < parcent;
+
+	// 瀕死状態通知
+	if (m_is_near_death)
 	{
 		// 瀕死状態突入通知
-		if (m_prev_health >= parcent)
-		{
-			EventSystem::GetInstance()->Publish(EnterNearDeathEvent());
-		}
+		if (m_prev_health >= parcent) { EventSystem::GetInstance()->Publish(EnterNearDeathEvent()); }
 
 		EventSystem::GetInstance()->Publish(NearDeathEvent());
 	}

@@ -14,6 +14,9 @@ player_state::EquipGun::EquipGun(Player& player, player_state::State& state, con
 	m_basic_anim_kind				.at(Animator::BodyKind::kUpperBody) = PlayerAnimKind::kEquipGun;
 	m_walk_forward_anim_kind		.at(Animator::BodyKind::kUpperBody) = PlayerAnimKind::kEquipGun;
 	m_run_forward_anim_kind			.at(Animator::BodyKind::kUpperBody) = PlayerAnimKind::kEquipGun;
+	m_basic_injured_anim_kind		.at(Animator::BodyKind::kUpperBody) = PlayerAnimKind::kEquipGun;
+	m_walk_forward_injured_anim_kind.at(Animator::BodyKind::kUpperBody) = PlayerAnimKind::kEquipGun;
+	m_run_forward_injured_anim_kind	.at(Animator::BodyKind::kUpperBody) = PlayerAnimKind::kEquipGun;
 	m_crouch_walk_forward_anim_kind	.at(Animator::BodyKind::kUpperBody) = PlayerAnimKind::kEquipGun;
 	m_crouch_anim_kind				.at(Animator::BodyKind::kUpperBody) = PlayerAnimKind::kEquipGun;
 }

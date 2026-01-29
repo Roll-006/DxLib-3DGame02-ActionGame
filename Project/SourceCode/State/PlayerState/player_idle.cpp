@@ -11,6 +11,7 @@ player_state::Idle::Idle(Player& player, player_state::State& state, const std::
 	m_non_move_time(0.0f)
 {
 	m_walk_forward_anim_kind		.at(Animator::BodyKind::kUpperBody) = PlayerAnimKind::kIdle;
+	m_walk_forward_injured_anim_kind.at(Animator::BodyKind::kUpperBody) = PlayerAnimKind::kIdle;
 	m_crouch_walk_forward_anim_kind	.at(Animator::BodyKind::kUpperBody) = PlayerAnimKind::kIdle;
 	m_crouch_anim_kind				.at(Animator::BodyKind::kUpperBody) = PlayerAnimKind::kIdle;
 }

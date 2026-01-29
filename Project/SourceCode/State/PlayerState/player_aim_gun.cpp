@@ -13,6 +13,9 @@ player_state::AimGun::AimGun(Player& player, player_state::State& state, const s
 	m_basic_anim_kind				.at(Animator::BodyKind::kUpperBody) = PlayerAnimKind::kAimGun;
 	m_walk_forward_anim_kind		.at(Animator::BodyKind::kUpperBody) = PlayerAnimKind::kAimGun;
 	m_run_forward_anim_kind			.at(Animator::BodyKind::kUpperBody) = PlayerAnimKind::kAimGun;
+	m_basic_injured_anim_kind		.at(Animator::BodyKind::kUpperBody) = PlayerAnimKind::kAimGun;
+	m_walk_forward_injured_anim_kind.at(Animator::BodyKind::kUpperBody) = PlayerAnimKind::kAimGun;
+	m_run_forward_injured_anim_kind	.at(Animator::BodyKind::kUpperBody) = PlayerAnimKind::kAimGun;
 	m_crouch_walk_forward_anim_kind	.at(Animator::BodyKind::kUpperBody) = PlayerAnimKind::kAimGun;
 	m_crouch_anim_kind				.at(Animator::BodyKind::kUpperBody) = PlayerAnimKind::kAimGun;
 }

@@ -185,14 +185,15 @@ public:
 
 
 	#pragma region Getter
-	[[nodiscard]] const float																	GetDeltaTime				()	const override;
-	[[nodiscard]] const std::shared_ptr<const player_state::State>								GetState					()	const			{ return m_state; }
-	[[nodiscard]] const std::shared_ptr<const FramePosCorrector>								GetFramePosCorrector		()	const			{ return m_frame_pos_corrector; }
-	[[nodiscard]] const std::vector<std::shared_ptr<IItem>>										GetCurrentHaveItem			(const ItemKind item_kind) const { return m_items.at(item_kind); }
-	[[nodiscard]] const std::unordered_map<WeaponSlotKind, std::shared_ptr<WeaponBase>>&		GetCurrentEquipWeapons		()					{ return m_current_equip_weapon; }
-	[[nodiscard]] const std::shared_ptr<const WeaponShortcutSelecter>							GetWeaponShortcutSelecter	()	const			{ return m_weapon_shortcut_selecter; }
-	[[nodiscard]] const float																	GetMoveSpeed				()	const			{ return m_move_speed; }
-	[[nodiscard]] const bool																	IsVictoryPose				()	const			{ return m_is_victory_pose; }
+	[[nodiscard]] const float																	GetDeltaTime()									const override;
+	[[nodiscard]] const std::shared_ptr<const player_state::State>								GetState()										const	{ return m_state; }
+	[[nodiscard]] const std::shared_ptr<const FramePosCorrector>								GetFramePosCorrector()							const	{ return m_frame_pos_corrector; }
+	[[nodiscard]] const std::vector<std::shared_ptr<IItem>>										GetCurrentHaveItem(const ItemKind item_kind)	const	{ return m_items.at(item_kind); }
+	[[nodiscard]] const std::unordered_map<WeaponSlotKind, std::shared_ptr<WeaponBase>>&		GetCurrentEquipWeapons()								{ return m_current_equip_weapon; }
+	[[nodiscard]] const std::shared_ptr<const WeaponShortcutSelecter>							GetWeaponShortcutSelecter()						const	{ return m_weapon_shortcut_selecter; }
+	[[nodiscard]] const float																	GetMoveSpeed()									const	{ return m_move_speed; }
+	[[nodiscard]] const bool																	IsVictoryPose()									const	{ return m_is_victory_pose; }
+	[[nodiscard]] const bool																	IsNearDeath()									const	{ return m_is_near_death; }
 	#pragma endregion
 
 private:
@@ -252,6 +253,7 @@ private:
 	float										m_prev_health;
 	bool										m_is_grabbed;							// 捕まれたかを判定
 	bool										m_is_escape;
+	bool										m_is_near_death;
 	float										m_escape_start_timer;
 	bool										m_can_add_acquirable_item;
 	bool										m_can_search_stealth_kill_target;
