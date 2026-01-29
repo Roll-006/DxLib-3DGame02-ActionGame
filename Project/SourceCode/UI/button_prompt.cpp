@@ -67,7 +67,7 @@ void ButtonPrompt::AddExplanatoryText(const int button_index, const std::string&
 	m_ui_button_explanatory_texts[button_index] = explanatory;
 }
 
-bool ButtonPrompt::CanUpdateRresultScreen() const
+const bool ButtonPrompt::CanUpdateRresultScreen() const
 {
 	const auto is_change_device = m_prev_device_kind != m_current_device_kind;	// 入力デバイスに変更があった
 	const auto is_change_code	= m_prev_input_code  != m_current_input_code;	// 入力コードに変更があった

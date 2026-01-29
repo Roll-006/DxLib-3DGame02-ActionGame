@@ -18,7 +18,7 @@ public:
 	void AddExplanatoryText(const int button_index, const std::string& explanatory);
 
 private:
-	[[nodiscard]] bool CanUpdateRresultScreen() const;
+	[[nodiscard]] const bool CanUpdateRresultScreen() const;
 
 	void CreateResultScreen();
 

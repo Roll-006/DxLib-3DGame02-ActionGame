@@ -9,7 +9,7 @@
       "height_ratio": 0.8,
       "text_data": {
         "font_path": "explanatory_text",
-        "text": "全てのゾンビを倒せ",
+        "text": "移動",
         "hex_color": "#ffffff",
         "offset": {
           "x": 0,
