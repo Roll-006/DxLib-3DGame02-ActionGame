@@ -1,57 +1,75 @@
-//#pragma once
-//#include "../JSON/json_loader.hpp"
-//#include "../Data/guidance_ui_data.hpp"
-//#include "../GameTime/game_time_manager.hpp"
-//#include "../Calculation/math.hpp"
-//
-//class GuidanceUI final
-//{
-//public:
-//	GuidanceUI(const std::string& json_name);
-//	~GuidanceUI();
-//
-//	void Init();
-//	void LateUpdate();
-//	void Draw(const int main_screen_handle) const;
-//
-//	void Activate() { m_is_active = true; }
-//
-//private:
-//	void CalcAlphaBlendNum();
-//	void CalcBlendWaitTime();
-//	void CalcDrawTime();
-//	void CreateResultScreen();
-//
-//private:
-//	GuidanceUIData					data;
-//
-//	std::shared_ptr<ScreenCreator>	m_result_screen;
-//	std::shared_ptr<ScreenCreator>	m_mask_screen;
-//	std::shared_ptr<MaskCreator>	m_mask_creator;
-//	std::shared_ptr<Graphicer>		m_basic_shape_graphic;
-//	int								m_alpha_blend_num;
-//	float							m_blend_wait_timer;
-//	float							m_draw_timer;
-//	bool							m_is_active;
-//	bool							m_is_wait_blend;
-//	bool							m_is_fade_out;
-//
-//	friend void from_json(const nlohmann::json& j_data, GuidanceUI& guidance_ui);
-//	friend void to_json(nlohmann::json& j_data, const GuidanceUI& guidance_ui);
-//};
-//
-//
-//#pragma region from / to JSON
-//inline void from_json(const nlohmann::json& j_data, GuidanceUI& guidance_ui)
-//{
-//	j_data.at("guidance_ui_data").get_to(guidance_ui.data);
-//}
-//
-//inline void to_json(nlohmann::json& j_data, const GuidanceUI& guidance_ui)
-//{
-//	j_data = nlohmann::json
-//	{
-//		{ "guidance_ui_data", guidance_ui.data },
-//	};
-//}
-//#pragma endregion
+﻿#pragma once
+#include "../JSON/json_loader.hpp"
+#include "../Data/guidance_ui_data.hpp"
+#include "../GameTime/game_time_manager.hpp"
+#include "../Calculation/math.hpp"
+#include "../Command/command_handler.hpp"
+#include "../Font/text.hpp"
+#include "../Part/button_graphic_getter.hpp"
+
+class GuidanceUI final
+{
+public:
+	GuidanceUI(const std::string& json_name);
+	~GuidanceUI();
+
+	void Init();
+	void LateUpdate();
+	void Draw(const int main_screen_handle) const;
+
+	void Activate() { m_is_active = true; }
+
+private:
+	void CalcAlphaBlendNum();
+	void CalcBlendWaitTime();
+	void CalcDrawTime();
+	void CreateResultScreen();
+
+	void UpdateDeviceKind();
+	void UpdateInputCode();
+	void UpdateGraphics();
+	void CalcLeftmostPos();
+
+	[[nodiscard]] const bool CanUpdateRresultScreen() const;
+
+private:
+	GuidanceUIData							data;
+
+	DeviceKind								m_prev_device_kind;			// 以前の入力デバイス
+	DeviceKind								m_current_device_kind;		// 現在の入力デバイス
+	std::vector<InputCode>					m_prev_input_code;			// 以前の入力コード
+	std::vector<InputCode>					m_current_input_code;		// 現在の入力コード
+
+	std::shared_ptr<ScreenCreator>			m_result_screen;
+	std::shared_ptr<ScreenCreator>			m_mask_screen;
+	std::shared_ptr<MaskCreator>			m_mask_creator;
+	std::shared_ptr<Graphicer>				m_basic_shape_graphic;
+	std::vector<std::shared_ptr<Graphicer>> m_input_graphic;
+	std::shared_ptr<ButtonGraphicGetter>	m_button_graphic_getter;
+
+	int										m_alpha_blend_num;
+	float									m_blend_wait_timer;
+	float									m_draw_timer;
+	bool									m_is_active;
+	bool									m_is_wait_blend;
+	bool									m_is_fade_out;
+
+	friend void from_json(const nlohmann::json& j_data, GuidanceUI& guidance_ui);
+	friend void to_json(nlohmann::json& j_data, const GuidanceUI& guidance_ui);
+};
+
+
+#pragma region from / to JSON
+inline void from_json(const nlohmann::json& j_data, GuidanceUI& guidance_ui)
+{
+	j_data.at("guidance_ui_data").get_to(guidance_ui.data);
+}
+
+inline void to_json(nlohmann::json& j_data, const GuidanceUI& guidance_ui)
+{
+	j_data = nlohmann::json
+	{
+		{ "guidance_ui_data", guidance_ui.data },
+	};
+}
+#pragma endregion
