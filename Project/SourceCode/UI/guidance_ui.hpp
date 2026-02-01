@@ -28,7 +28,6 @@ private:
 	void UpdateDeviceKind();
 	void UpdateInputCode();
 	void UpdateGraphics();
-	void CalcLeftmostPos();
 
 	[[nodiscard]] const bool CanUpdateRresultScreen() const;
 

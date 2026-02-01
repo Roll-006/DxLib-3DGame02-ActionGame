@@ -44,7 +44,6 @@ GuidanceUI::GuidanceUI(const std::string& json_name) :
 
 	UpdateInputCode();
 	UpdateGraphics();
-	CalcLeftmostPos();
 	CreateResultScreen();
 }
 
@@ -76,7 +75,6 @@ void GuidanceUI::LateUpdate()
 	if (CanUpdateRresultScreen())
 	{
 		UpdateGraphics();
-		CalcLeftmostPos();
 		CreateResultScreen();
 	}
 }
@@ -146,28 +144,28 @@ void GuidanceUI::CreateResultScreen()
 {
 	m_result_screen->UseScreen();
 
-	//auto offset = m_leftmost_pos;
-	//auto count = 0;
-	//for (const auto& text : data.single_button_prompt_data)
-	//{
-	//	m_button_graphic.at(count)->SetCenterPos({ offset + m_button_graphic.at(count)->GetHalfSize().x, m_result_screen->GetHalfScreenSize().y });
-	//	m_button_graphic.at(count)->Draw();
+	auto offset = 0;
+	auto count  = 0;
+	for (const auto& text : data.single_button_prompt_data)
+	{
+		m_input_graphic.at(count)->SetCenterPos({ offset + m_input_graphic.at(count)->GetHalfSize().x, m_result_screen->GetHalfScreenSize().y });
+		m_input_graphic.at(count)->Draw();
 
-	//	// 現在のテキストを左に描画される画像サイズ分ずらす
-	//	offset += m_button_graphic.at(count)->GetSize().x;
+		// 現在のテキストを左に描画される画像サイズ分ずらす
+		offset += m_input_graphic.at(count)->GetSize().x;
 
-	//	DrawStringToHandle(
-	//		static_cast<int>(offset),
-	//		static_cast<int>((m_result_screen->GetScreenSize().y - text.text_data.size.y) * 0.5f),
-	//		text.text_data.text.c_str(),
-	//		text.text_data.u_int_color,
-	//		text.text_data.font_handle);
+		DrawStringToHandle(
+			static_cast<int>(offset),
+			static_cast<int>((m_result_screen->GetScreenSize().y - text.text_data.size.y) * 0.5f),
+			text.text_data.text.c_str(),
+			text.text_data.u_int_color,
+			text.text_data.font_handle);
 
-	//	// 次の画像・テキストは現在のテキスト + オフセット分ずらす
-	//	offset += text.text_data.size.x + data.offset;
+		// 次の画像・テキストは現在のテキスト + オフセット分ずらす
+		offset += text.text_data.size.x + data.offset;
 
-	//	++count;
-	//}
+		++count;
+	}
 
 	m_result_screen->UnuseScreen();
 }
@@ -208,15 +206,10 @@ void GuidanceUI::UpdateGraphics()
 	}
 }
 
-void GuidanceUI::CalcLeftmostPos()
-{
-
-}
-
 const bool GuidanceUI::CanUpdateRresultScreen() const
 {
 	const auto is_change_device = m_prev_device_kind != m_current_device_kind;	// 入力デバイスに変更があった
-	const auto is_change_code	= m_prev_input_code != m_current_input_code;	// 入力コードに変更があった
+	const auto is_change_code	= m_prev_input_code  != m_current_input_code;	// 入力コードに変更があった
 
 	return is_change_device || is_change_code;
 }

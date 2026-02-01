@@ -10,6 +10,7 @@ struct GuidanceUIData final
 	Vector2D<int>						screen_size						= {};
 	float								width_ratio						= 0.0f;
 	float								height_ratio					= 0.0f;
+	int									offset							= 0;
 	std::vector<SingleButtonPromptData>	single_button_prompt_data		= {};
 	std::vector<std::string>			input_graphic_path				= {};			// 入力するキー・ボタンの画像のパス
 	float								input_graphic_scale				= 1.0f;
@@ -28,6 +29,7 @@ inline void from_json(const nlohmann::json& j_data, GuidanceUIData& guidance_ui_
 	j_data.at("screen_size")					.get_to(guidance_ui_data.screen_size);
 	j_data.at("width_ratio")					.get_to(guidance_ui_data.width_ratio);
 	j_data.at("height_ratio")					.get_to(guidance_ui_data.height_ratio);
+	j_data.at("offset")							.get_to(guidance_ui_data.offset);
 	j_data.at("single_button_prompt_data")		.get_to(guidance_ui_data.single_button_prompt_data);
 	j_data.at("input_graphic_path")				.get_to(guidance_ui_data.input_graphic_path);
 	j_data.at("input_graphic_scale")			.get_to(guidance_ui_data.input_graphic_scale);
@@ -46,6 +48,7 @@ inline void to_json(nlohmann::json& j_data, const GuidanceUIData& guidance_ui_da
 		{ "screen_size",					guidance_ui_data.screen_size },
 		{ "width_ratio",					guidance_ui_data.width_ratio },
 		{ "height_ratio",					guidance_ui_data.height_ratio },
+		{ "offset",							guidance_ui_data.offset },
 		{ "single_button_prompt_data",		guidance_ui_data.single_button_prompt_data },
 		{ "input_graphic_path",				guidance_ui_data.input_graphic_path },
 		{ "input_graphic_scale",			guidance_ui_data.input_graphic_scale },
