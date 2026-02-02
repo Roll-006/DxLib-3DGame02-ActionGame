@@ -12,7 +12,6 @@ struct GuidanceUIData final
 	float								height_ratio					= 0.0f;
 	int									offset							= 0;
 	std::vector<SingleButtonPromptData>	single_button_prompt_data		= {};
-	std::vector<std::string>			input_graphic_path				= {};			// 入力するキー・ボタンの画像のパス
 	float								input_graphic_scale				= 1.0f;
 	float								fade_in_speed					= 0.0f;
 	float								fade_out_speed					= 0.0f;
@@ -31,7 +30,6 @@ inline void from_json(const nlohmann::json& j_data, GuidanceUIData& guidance_ui_
 	j_data.at("height_ratio")					.get_to(guidance_ui_data.height_ratio);
 	j_data.at("offset")							.get_to(guidance_ui_data.offset);
 	j_data.at("single_button_prompt_data")		.get_to(guidance_ui_data.single_button_prompt_data);
-	j_data.at("input_graphic_path")				.get_to(guidance_ui_data.input_graphic_path);
 	j_data.at("input_graphic_scale")			.get_to(guidance_ui_data.input_graphic_scale);
 	j_data.at("fade_in_speed")					.get_to(guidance_ui_data.fade_in_speed);
 	j_data.at("fade_out_speed")					.get_to(guidance_ui_data.fade_out_speed);
@@ -50,7 +48,6 @@ inline void to_json(nlohmann::json& j_data, const GuidanceUIData& guidance_ui_da
 		{ "height_ratio",					guidance_ui_data.height_ratio },
 		{ "offset",							guidance_ui_data.offset },
 		{ "single_button_prompt_data",		guidance_ui_data.single_button_prompt_data },
-		{ "input_graphic_path",				guidance_ui_data.input_graphic_path },
 		{ "input_graphic_scale",			guidance_ui_data.input_graphic_scale },
 		{ "fade_in_speed",					guidance_ui_data.fade_in_speed },
 		{ "fade_out_speed",					guidance_ui_data.fade_out_speed },

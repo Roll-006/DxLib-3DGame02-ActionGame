@@ -22,20 +22,14 @@ GuidanceUI::GuidanceUI(const std::string& json_name) :
 		data = j_data.at("guidance_data").at(json_name.c_str()).get<GuidanceUIData>();
 	}
 
-	// 画像を生成
-	for (const auto& path : data.input_graphic_path)
-	{
-		m_input_graphic.emplace_back(std::make_shared<Graphicer>(path));
-	}
-
 	// テキストを生成
 	for (auto& single_button_prompt : data.single_button_prompt_data)
 	{
 		text::CreateText(single_button_prompt.text_data);
 	}
 
-	m_result_screen				= std::make_shared<ScreenCreator>(data.screen_size, Vector2D<int>(Window::kScreenSize.x * data.width_ratio, Window::kScreenSize.y * data.height_ratio));
-	m_basic_shape_graphic		= std::make_shared<Graphicer>(data.basic_graphic_path);
+	m_result_screen			= std::make_shared<ScreenCreator>(data.screen_size, Vector2D<int>(Window::kScreenSize.x * data.width_ratio, Window::kScreenSize.y * data.height_ratio));
+	m_basic_shape_graphic	= std::make_shared<Graphicer>(data.basic_graphic_path);
 	m_basic_shape_graphic->SetCenterPos(m_result_screen->GetGraphicer()->GetCenterPos());
 
 	m_mask_screen->UseScreen();

@@ -43,9 +43,6 @@
     <ClCompile Include="SourceCode\Manager\scene_manager.cpp">
       <Filter>SourceCode\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Manager\weapon_manager.cpp">
-      <Filter>SourceCode\Manager</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\Object\assault_rifle.cpp">
       <Filter>SourceCode\Object</Filter>
     </ClCompile>
@@ -604,6 +601,12 @@
     <ClCompile Include="SourceCode\InverseKinematics\humanoid_body_ik_solver.cpp">
       <Filter>SourceCode\InverseKinematics</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\UI\guidance_ui_holder.cpp">
+      <Filter>SourceCode\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Accessor\manager_accessor.cpp">
+      <Filter>SourceCode\Accessor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\character_base.hpp">
@@ -625,9 +628,6 @@
       <Filter>SourceCode\Base</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Base\shape_base.hpp">
-      <Filter>SourceCode\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Base\singleton_base.hpp">
       <Filter>SourceCode\Base</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Base\weapon_base.hpp">
@@ -697,9 +697,6 @@
       <Filter>SourceCode\Manager</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Manager\scene_manager.hpp">
-      <Filter>SourceCode\Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Manager\weapon_manager.hpp">
       <Filter>SourceCode\Manager</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Object\assault_rifle.hpp">
@@ -1829,6 +1826,15 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Data\humanoid_body_matrix_data.hpp">
       <Filter>SourceCode\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\UI\guidance_ui_holder.hpp">
+      <Filter>SourceCode\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Accessor\manager_accessor.hpp">
+      <Filter>SourceCode\Accessor</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Interface\singleton_base.hpp">
+      <Filter>SourceCode\Base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

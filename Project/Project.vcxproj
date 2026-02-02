@@ -143,6 +143,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="SourceCode\Accessor\manager_accessor.cpp" />
     <ClCompile Include="SourceCode\Accessor\obj_accessor.cpp" />
     <ClCompile Include="SourceCode\AI\zombie_ai.cpp" />
     <ClCompile Include="SourceCode\Algorithm\algorithm.cpp" />
@@ -193,7 +194,6 @@
     <ClCompile Include="SourceCode\Manager\physics_manager.cpp" />
     <ClCompile Include="SourceCode\Manager\rifle_cartridge_manager.cpp" />
     <ClCompile Include="SourceCode\Manager\scene_manager.cpp" />
-    <ClCompile Include="SourceCode\Manager\weapon_manager.cpp" />
     <ClCompile Include="SourceCode\ObjectPool\enemy_object_pool.cpp" />
     <ClCompile Include="SourceCode\ObjectPool\title_scene_effect_object_pool.cpp" />
     <ClCompile Include="SourceCode\ObjectPool\play_scene_effect_object_pool.cpp" />
@@ -322,6 +322,7 @@
     <ClCompile Include="SourceCode\UI\button_prompt.cpp" />
     <ClCompile Include="SourceCode\UI\game_over_text.cpp" />
     <ClCompile Include="SourceCode\UI\guidance_ui.cpp" />
+    <ClCompile Include="SourceCode\UI\guidance_ui_holder.cpp" />
     <ClCompile Include="SourceCode\UI\purpose_ui.cpp" />
     <ClCompile Include="SourceCode\UI\mission_ui.cpp" />
     <ClCompile Include="SourceCode\UI\pickupable_item_icon.cpp" />
@@ -351,6 +352,7 @@
     <ClCompile Include="SourceCode\Window\window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="SourceCode\Accessor\manager_accessor.hpp" />
     <ClInclude Include="SourceCode\Accessor\obj_accessor.hpp" />
     <ClInclude Include="SourceCode\AI\zombie_ai.hpp" />
     <ClInclude Include="SourceCode\Algorithm\algorithm.hpp" />
@@ -367,7 +369,6 @@
     <ClInclude Include="SourceCode\Base\single_instance_base.hpp" />
     <ClInclude Include="SourceCode\Base\physical_obj_base.hpp" />
     <ClInclude Include="SourceCode\Base\shape_base.hpp" />
-    <ClInclude Include="SourceCode\Base\singleton_base.hpp" />
     <ClInclude Include="SourceCode\Base\tab_base.hpp" />
     <ClInclude Include="SourceCode\Base\ui_button_base.hpp" />
     <ClInclude Include="SourceCode\Base\ui_slider_base.hpp" />
@@ -550,6 +551,7 @@
     <ClInclude Include="SourceCode\Interface\i_scene.hpp" />
     <ClInclude Include="SourceCode\Interface\i_virtual_camera_controller.hpp" />
     <ClInclude Include="SourceCode\Interface\i_ui_creator.hpp" />
+    <ClInclude Include="SourceCode\Interface\singleton_base.hpp" />
     <ClInclude Include="SourceCode\InverseKinematics\frame_info.hpp" />
     <ClInclude Include="SourceCode\InverseKinematics\humanoid_arm_ik_solver.hpp" />
     <ClInclude Include="SourceCode\InverseKinematics\humanoid_body_ik_solver.hpp">
@@ -611,7 +613,6 @@
     <ClInclude Include="SourceCode\Manager\physics_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\rifle_cartridge_manager.hpp" />
     <ClInclude Include="SourceCode\Manager\scene_manager.hpp" />
-    <ClInclude Include="SourceCode\Manager\weapon_manager.hpp" />
     <ClInclude Include="SourceCode\MixamoHelper\mixamo_helper.hpp" />
     <ClInclude Include="SourceCode\Name\light_name.hpp" />
     <ClInclude Include="SourceCode\Name\font_name.hpp" />
@@ -755,6 +756,7 @@
     <ClInclude Include="SourceCode\UI\button_prompt.hpp" />
     <ClInclude Include="SourceCode\UI\game_over_text.hpp" />
     <ClInclude Include="SourceCode\UI\guidance_ui.hpp" />
+    <ClInclude Include="SourceCode\UI\guidance_ui_holder.hpp" />
     <ClInclude Include="SourceCode\UI\purpose_ui.hpp" />
     <ClInclude Include="SourceCode\UI\mission_ui.hpp" />
     <ClInclude Include="SourceCode\UI\pickupable_item_icon.hpp" />
