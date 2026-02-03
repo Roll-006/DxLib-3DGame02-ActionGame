@@ -13,7 +13,7 @@ public:
 	virtual void Activate() 	abstract;
 	virtual void Deactivate()	abstract;
 
-	[[nodiscard]] virtual std::string GetName()		const abstract;
-	[[nodiscard]] virtual int		  GetPriority() const abstract;
-	[[nodiscard]] virtual bool		  IsActive()	const abstract;
+	[[nodiscard]] virtual const std::string		GetName()		const abstract;
+	[[nodiscard]] virtual const int				GetPriority()	const abstract;
+	[[nodiscard]] virtual const bool			IsActive()		const abstract;
 };

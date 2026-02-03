@@ -1,4 +1,5 @@
 ﻿#include "guidance_ui.hpp"
+#include "../Font/text.hpp"
 
 GuidanceUI::GuidanceUI(const std::string& json_name) :
 	data					(GuidanceUIData()),

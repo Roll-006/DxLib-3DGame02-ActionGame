@@ -4,7 +4,6 @@
 #include "../GameTime/game_time_manager.hpp"
 #include "../Calculation/math.hpp"
 #include "../Command/command_handler.hpp"
-#include "../Font/text.hpp"
 #include "../Part/button_graphic_getter.hpp"
 
 class GuidanceUI final
@@ -18,6 +17,8 @@ public:
 	void Draw(const int main_screen_handle) const;
 
 	void Activate() { m_is_active = true; }
+
+	[[nodiscard]] const bool IsActive() const { return m_is_active; }
 
 private:
 	void CalcAlphaBlendNum();

@@ -17,8 +17,8 @@ public:
 	PlayerUICreator(std::shared_ptr<Player>& player);
 	~PlayerUICreator()	override;
 
-	void Init() override;
-	void LateUpdate() override;
+	void Init()			override;
+	void LateUpdate()	override;
 	void OnDraw(const int main_screen_handle) override;
 
 	/// @brief アクティブ化する
@@ -26,9 +26,9 @@ public:
 	/// @brief 非アクティブ化する(削除せずに機能を停止)
 	void Deactivate()	override { m_is_active = false; }
 
-	[[nodiscard]] std::string GetName()		const override { return m_name; }
-	[[nodiscard]] int		  GetPriority() const override { return m_priority; }
-	[[nodiscard]] bool		  IsActive()	const override { return m_is_active; }
+	[[nodiscard]] const std::string GetName()		const override { return m_name; }
+	[[nodiscard]] const int			GetPriority()	const override { return m_priority; }
+	[[nodiscard]] const bool		IsActive()		const override { return m_is_active; }
 
 private:
 	#pragma region Event
