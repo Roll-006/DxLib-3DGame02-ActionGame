@@ -20,10 +20,7 @@ GuidanceUI::GuidanceUI(const std::string& json_name) :
 	nlohmann::json j_data;
 	if (json_loader::Load("Data/JSON/guidance_data.json", j_data))
 	{
-		if (j_data.at("guidance_data").contains(json_name.c_str()))
-		{
-			data = j_data.at("guidance_data").at(json_name.c_str()).get<GuidanceUIData>();
-		}
+		data = j_data.at("guidance_data").at(json_name.c_str()).get<GuidanceUIData>();
 	}
 
 	// テキストを生成
