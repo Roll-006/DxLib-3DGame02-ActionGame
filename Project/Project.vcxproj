@@ -322,7 +322,7 @@
     <ClCompile Include="SourceCode\UI\button_prompt.cpp" />
     <ClCompile Include="SourceCode\UI\game_over_text.cpp" />
     <ClCompile Include="SourceCode\UI\guidance_ui.cpp" />
-    <ClCompile Include="SourceCode\UI\guidance_ui_holder.cpp" />
+    <ClCompile Include="SourceCode\UI\guidance_ui_activator.cpp" />
     <ClCompile Include="SourceCode\UI\purpose_ui.cpp" />
     <ClCompile Include="SourceCode\UI\mission_ui.cpp" />
     <ClCompile Include="SourceCode\UI\pickupable_item_icon.cpp" />
@@ -756,7 +756,7 @@
     <ClInclude Include="SourceCode\UI\button_prompt.hpp" />
     <ClInclude Include="SourceCode\UI\game_over_text.hpp" />
     <ClInclude Include="SourceCode\UI\guidance_ui.hpp" />
-    <ClInclude Include="SourceCode\UI\guidance_ui_holder.hpp" />
+    <ClInclude Include="SourceCode\UI\guidance_ui_activator.hpp" />
     <ClInclude Include="SourceCode\UI\purpose_ui.hpp" />
     <ClInclude Include="SourceCode\UI\mission_ui.hpp" />
     <ClInclude Include="SourceCode\UI\pickupable_item_icon.hpp" />

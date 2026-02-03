@@ -601,7 +601,7 @@
     <ClCompile Include="SourceCode\InverseKinematics\humanoid_body_ik_solver.cpp">
       <Filter>SourceCode\InverseKinematics</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\UI\guidance_ui_holder.cpp">
+    <ClCompile Include="SourceCode\UI\guidance_ui_activator.cpp">
       <Filter>SourceCode\UI</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Accessor\manager_accessor.cpp">
@@ -1827,7 +1827,7 @@
     <ClInclude Include="SourceCode\Data\humanoid_body_matrix_data.hpp">
       <Filter>SourceCode\Data</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\UI\guidance_ui_holder.hpp">
+    <ClInclude Include="SourceCode\UI\guidance_ui_activator.hpp">
       <Filter>SourceCode\UI</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Accessor\manager_accessor.hpp">

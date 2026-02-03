@@ -42,7 +42,7 @@ PauseTab::PauseTab() :
 	for (size_t i = 0; i < data.explanatory_text_data.size(); ++i)
 	{
 		text::CreateText(data.explanatory_text_data.at(i));
-		m_button_prompt->AddExplanatoryText(i, data.explanatory_text_data.at(i).text);
+		m_button_prompt->AddExplanatoryText(static_cast<int>(i), data.explanatory_text_data.at(i).text);
 	}
 
 	// UIボタン・テキストの構築

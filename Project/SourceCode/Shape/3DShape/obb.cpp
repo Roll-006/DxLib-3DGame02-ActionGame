@@ -1,4 +1,4 @@
-#include "obb.hpp"
+ï»¿#include "obb.hpp"
 
 OBB::OBB(const VECTOR& pos, const VECTOR& dir, const VECTOR& length):
 	ShapeBase	(ShapeKind::kOBB),
@@ -16,12 +16,12 @@ OBB::OBB() :
 	m_dir		(v3d::GetZeroV()),
 	m_length	(v3d::GetZeroV())
 {
-	// ˆ—‚È‚µ
+	// å‡¦ç†ãªã—
 }
 
 OBB::~OBB()
 {
-	// ˆ—‚È‚µ
+	// å‡¦ç†ãªã—
 }
 
 void OBB::Draw(const bool is_draw_frame, const int alpha_blend_num, const unsigned int frame_color) const
@@ -98,17 +98,18 @@ const Segment& OBB::GetEdge(const box::EdgeKind edge_kind) const
 	default:
 		break;
 	}
+
 	return Segment();
 }
 
 void OBB::CalcVertexPos()
 {
-	// ©g‚ğŠî€‚Æ‚µ‚½Še²‚ÌŒü‚«‚ğæ“¾
+	// è‡ªèº«ã‚’åŸºæº–ã¨ã—ãŸå„è»¸ã®å‘ãã‚’å–å¾—
 	const VECTOR dir_z =  m_dir;
 	const VECTOR dir_y =  math::GetNormalVector(dir_z);
 	const VECTOR dir_x = -math::GetNormalVector(dir_z, dir_y);
 
-	// Še’¸“_‚ÌÀ•W‚ğæ“¾
+	// å„é ‚ç‚¹ã®åº§æ¨™ã‚’å–å¾—
 	m_box.vertexes.at(static_cast<int>(box::VertexKind::kBottomRightBack))  = m_pos - dir_z	* m_length.z * 0.5f;
 	m_box.vertexes.at(static_cast<int>(box::VertexKind::kBottomRightBack))  += dir_x        * m_length.x * 0.5f;
 	m_box.vertexes.at(static_cast<int>(box::VertexKind::kBottomRightBack))  -= dir_y        * m_length.y * 0.5f;
@@ -123,7 +124,7 @@ void OBB::CalcVertexPos()
 
 void OBB::CalcSquarePos()
 {
-	// Še–Ê‚ÌÀ•W‚ğæ“¾
+	// å„é¢ã®åº§æ¨™ã‚’å–å¾—
 	m_box.squares.at(static_cast<int>(box::SquareKind::kFront)) = Square(
 		m_box.vertexes.at(static_cast<int>(box::VertexKind::kBottomLeftFront)),
 		m_box.vertexes.at(static_cast<int>(box::VertexKind::kTopLeftFront)),

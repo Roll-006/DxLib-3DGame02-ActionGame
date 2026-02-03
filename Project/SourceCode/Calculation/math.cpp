@@ -44,7 +44,7 @@ const Quaternion math::ConvertRotMatrixToQuaternion(const MATRIX& rot_matrix)
     {
         if (e.at(i) > e.at(max_index))
         {
-            max_index = i;
+            max_index = static_cast<unsigned int>(i);
         }
     }
 

@@ -20,7 +20,10 @@ GuidanceUI::GuidanceUI(const std::string& json_name) :
 	nlohmann::json j_data;
 	if (json_loader::Load("Data/JSON/guidance_data.json", j_data))
 	{
-		data = j_data.at("guidance_data").at(json_name.c_str()).get<GuidanceUIData>();
+		if (j_data.at("guidance_data").contains(json_name.c_str()))
+		{
+			data = j_data.at("guidance_data").at(json_name.c_str()).get<GuidanceUIData>();
+		}
 	}
 
 	// テキストを生成
@@ -29,7 +32,7 @@ GuidanceUI::GuidanceUI(const std::string& json_name) :
 		text::CreateText(single_button_prompt.text_data);
 	}
 
-	m_result_screen			= std::make_shared<ScreenCreator>(data.screen_size, Vector2D<int>(Window::kScreenSize.x * data.width_ratio, Window::kScreenSize.y * data.height_ratio));
+	m_result_screen			= std::make_shared<ScreenCreator>(data.screen_size, v2d::Cast<int>(Window::kScreenSize * data.screen_pos_ratio));
 	m_basic_shape_graphic	= std::make_shared<Graphicer>(data.basic_graphic_path);
 	m_basic_shape_graphic->SetCenterPos(m_result_screen->GetGraphicer()->GetCenterPos());
 
@@ -76,8 +79,8 @@ void GuidanceUI::LateUpdate()
 
 void GuidanceUI::Draw(const int main_screen_handle) const
 {
-	if (!m_is_active) { return; }
-	if (m_is_wait_blend) { return; }
+	if (!m_is_active)		{ return; }
+	if (m_is_wait_blend)	{ return; }
 
 	m_mask_creator->CreateMask();
 	m_mask_creator->UseMask(m_mask_screen->GetScreenHandle(), true);

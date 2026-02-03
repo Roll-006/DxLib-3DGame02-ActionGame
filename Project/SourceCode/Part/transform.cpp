@@ -252,6 +252,8 @@ MATRIX Transform::GetMatrix(const CoordinateKind coord_kind)
 
 		return m_world_matrix;
 	}
+
+	return MGetIdent();
 }
 
 VECTOR Transform::GetPos(const CoordinateKind coord_kind)

@@ -1,22 +1,30 @@
 ﻿#pragma once
 #include <queue>
 #include "guidance_ui.hpp"
+#include "../Event/event_system.hpp"
 
 /*
 ・UIの待機時間は、自身より前に描画するものがあるかないかで変化させる
 */
 
-class GuidanceUIHolder final
+class GuidanceUIActivator final
 {
 public:
-	GuidanceUIHolder();
-	~GuidanceUIHolder();
+	GuidanceUIActivator();
+	~GuidanceUIActivator();
 
 	void LateUpdate();
-	void Draw(const int main_screen_handle) const;
+
+	// FIXME : 簡易的にGetさせる
+	[[nodiscard]] const std::shared_ptr<const GuidanceUI> GetActiveGaidanceUI() const { return m_active_ui; }
 
 private:
 	void Activate(const std::string& ui_name);
+
+
+	#pragma region Event
+	void ActivateOnSceneChange(const ChangeSceneEvent& event);
+	#pragma endregion
 
 private:
 	std::unordered_map<std::string, std::shared_ptr<GuidanceUI>>	m_stock_ui;		// すべてのガイダンスUI

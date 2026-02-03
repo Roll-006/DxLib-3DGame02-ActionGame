@@ -46,10 +46,10 @@ void CollisionManager::LateUpdate()
 			{
 				if (pair.target_data.at(i).intersection)
 				{
-					target[i] = TargetColliderData(pair.target_data.at(i).collider, pair.target_data.at(i).intersection);
+					target[static_cast<int>(i)] = TargetColliderData(pair.target_data.at(i).collider, pair.target_data.at(i).intersection);
 
 					const auto dist = VSize(*pair.target_data.at(i).intersection - std::static_pointer_cast<Segment>(pair.owner_collider->GetShape())->GetBeginPos());
-					distance.emplace_back(std::make_pair(i, dist));
+					distance.emplace_back(std::make_pair(static_cast<int>(i), dist));
 				}
 			}
 
@@ -61,9 +61,9 @@ void CollisionManager::LateUpdate()
 				std::vector<std::pair<int, float>> distance;
 				for (size_t i = 0; i < hit_triangle.size(); ++i)
 				{
-					distance.emplace_back(i, math::GetDistancePointToTriangle(ray->GetBeginPos(), hit_triangle.at(i)));
+					distance.emplace_back(static_cast<int>(i), math::GetDistancePointToTriangle(ray->GetBeginPos(), hit_triangle.at(i)));
 				}
-				algorithm::Sort(distance, SortKind::kAscending);
+				distance = algorithm::Sort(distance, SortKind::kAscending);
 				const auto result_hit_triangle = hit_triangle.at(distance.front().first);
 
 				// 置き換え

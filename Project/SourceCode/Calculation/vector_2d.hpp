@@ -52,6 +52,9 @@ inline const bool operator!=(const Vector2D<T>& v1,		const Vector2D<U>& v2)		{ r
 
 namespace v2d
 {
+	template<common_concepts::ArithmeticT ToT, common_concepts::ArithmeticT FromT>
+	[[nodiscard]] inline const Vector2D<ToT> Cast(const Vector2D<FromT>& v) { return { static_cast<ToT>(v.x), static_cast<ToT>(v.y) }; }
+
 	/// @brief ベクトルのサイズ(長さ)を取得
 	template<common_concepts::ArithmeticT U>
 	[[nodiscard]] inline const float GetSize(const Vector2D<U>& v) { return sqrtf(v.x * v.x + v.y * v.y); }

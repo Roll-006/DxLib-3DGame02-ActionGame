@@ -1,4 +1,4 @@
-#include "square.hpp"
+ï»¿#include "square.hpp"
 
 Square::Square(const VECTOR& pos1, const VECTOR& pos2, const VECTOR& pos3, const VECTOR& pos4):
 	ShapeBase	(ShapeKind::kSquare),
@@ -73,7 +73,7 @@ void Square::LoadTexture(const std::string& file_path,
 
 void Square::LoadTexture(const std::string& file_path, const TextureDirKind texture_dir)
 {
-	// ³–Ê‚ÉŒü‚©‚Á‚Ä’£‚è•t‚¯‚éê‡‚ğ‰Šú’l‚Æ‚·‚é
+	// æ­£é¢ã«å‘ã‹ã£ã¦å¼µã‚Šä»˜ã‘ã‚‹å ´åˆã‚’åˆæœŸå€¤ã¨ã™ã‚‹
 	std::array<float, 8> texture_pos{
 		1.0f, 1.0f,
 		1.0f, 0.0f,
@@ -130,5 +130,6 @@ const Segment& Square::GetEdge(const int index) const
 	default:
 		break;
 	}
+
 	return Segment();
 }

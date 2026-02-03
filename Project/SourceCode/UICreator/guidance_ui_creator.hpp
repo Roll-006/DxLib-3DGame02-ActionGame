@@ -1,9 +1,9 @@
-#pragma once
+﻿#pragma once
 #include "../Interface/i_ui_creator.hpp"
 #include "../UI/mission_ui.hpp"
 #include "../UI/purpose_ui.hpp"
 #include "../Event/event_system.hpp"
-#include "../UI/guidance_ui_holder.hpp"
+#include "../UI/guidance_ui_activator.hpp"
 
 class GuidanceUICreator final : public IUICreator
 {
@@ -30,7 +30,8 @@ private:
 	int			m_priority;
 	bool		m_is_active;
 
-	std::shared_ptr<MissionUI>			m_mission_ui;
-	std::shared_ptr<PurposeUI>			m_purpose_ui;
-	std::shared_ptr<GuidanceUIHolder>	m_guidance_ui_holder;
+	std::shared_ptr<MissionUI>				m_mission_ui;
+	std::shared_ptr<PurposeUI>				m_purpose_ui;
+	//std::shared_ptr<GuidanceUI>				m_active_guidance_ui;
+	std::shared_ptr<GuidanceUIActivator>	m_guidance_ui_activator;
 };

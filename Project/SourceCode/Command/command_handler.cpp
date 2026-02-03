@@ -1,11 +1,11 @@
-#include "command_handler.hpp"
+ï»¿#include "command_handler.hpp"
 
 CommandHandler::CommandHandler()
 {
 	m_trigger_contains[TimeKind::kCurrent][CommandKind::kRun]		= 0;
 	m_trigger_contains[TimeKind::kCurrent][CommandKind::kCrouch]	= 0;
 
-	// ‰ŠúÝ’è
+	// åˆæœŸè¨­å®š
 	InitKeyCommand();
 	InitPadCommand();
 	InitInputMode();
@@ -25,7 +25,7 @@ void CommandHandler::Update()
 
 	m_trigger_contains[TimeKind::kPrev] = m_trigger_contains[TimeKind::kCurrent];
 
-	// Œ»Ý‚Ì“ü—ÍƒfƒoƒCƒX‚É‡‚í‚¹‚Äˆ—‚ðŽÀs
+	// ç¾åœ¨ã®å…¥åŠ›ãƒ‡ãƒã‚¤ã‚¹ã«åˆã‚ã›ã¦å‡¦ç†ã‚’å®Ÿè¡Œ
 	switch (input->GetCurrentInputDevice())
 	{
 	case DeviceKind::kKeyboard:
@@ -42,7 +42,7 @@ void CommandHandler::InitKeyCommand()
 {
 	m_key_codes.clear();
 
-	// TODO : Œã‚ÉJson‰»
+	// TODO : å¾Œã«JsonåŒ–
 	AddInputCode(CommandKind::kDecide,						CommandSlotKind::kStatic1,	KEY_INPUT_SPACE);
 	AddInputCode(CommandKind::kDecide,						CommandSlotKind::kStatic2,	KEY_INPUT_RETURN);
 	AddInputCode(CommandKind::kBack,						CommandSlotKind::kStatic1,	mouse::ButtonKind::kRight);
@@ -105,7 +105,7 @@ void CommandHandler::InitPadCommand()
 {
 	m_pad_codes.clear();
 
-	// TODO : Œã‚ÉJson‰»
+	// TODO : å¾Œã«JsonåŒ–
 	AddInputCode(CommandKind::kDecide,						CommandSlotKind::kStatic1,	pad::ButtonKind	::kA);
 	AddInputCode(CommandKind::kBack,						CommandSlotKind::kStatic1,	pad::ButtonKind	::kB);
 	AddInputCode(CommandKind::kSelectUp,					CommandSlotKind::kStatic1,	pad::ButtonKind	::kUp);
@@ -232,6 +232,8 @@ InputCode CommandHandler::GetInputCode(const DeviceKind device_kind, const Comma
 		return m_pad_codes.at(kind).at(slot);
 		break;
 	}
+
+	return InputCode();
 }
 
 bool CommandHandler::IsExecute(const CommandKind command_kind, const TimeKind time_kind)
@@ -273,7 +275,7 @@ bool CommandHandler::IsExecute(const CommandKind command_kind, const TimeKind ti
 		}	
 		break;
 
-	// ƒgƒŠƒK[•ûŽ®‚Ìê‡A“ü—ÍƒJƒEƒ“ƒg‚É‚æ‚Á‚ÄŽÀs‚³‚ê‚½‚©‚ð”»’è
+	// ãƒˆãƒªã‚¬ãƒ¼æ–¹å¼ã®å ´åˆã€å…¥åŠ›ã‚«ã‚¦ãƒ³ãƒˆã«ã‚ˆã£ã¦å®Ÿè¡Œã•ã‚ŒãŸã‹ã‚’åˆ¤å®š
 	case InputModeKind::kTrigger:
 		return m_trigger_contains.at(time_kind).at(command_kind) % 2 == 1;
 		break;
@@ -310,7 +312,7 @@ void CommandHandler::AddInputCode(const CommandKind kind, const CommandSlotKind 
 		break;
 	}
 
-	// V‹Kƒf[ƒ^‚Ì‚Ý’Ç‰Á‚·‚é
+	// æ–°è¦ãƒ‡ãƒ¼ã‚¿ã®ã¿è¿½åŠ ã™ã‚‹
 	auto& set = (*codes)[kind];
 	set.insert({ slot, code });
 }
@@ -337,7 +339,7 @@ void CommandHandler::RemoveInputCode(const CommandKind kind, const CommandSlotKi
 		break;
 	}
 
-	// íœ
+	// å‰Šé™¤
 	auto command_itr = codes->find(kind);
 	if (command_itr != codes->end())
 	{
@@ -366,7 +368,7 @@ void CommandHandler::TryExecuteCommand(const std::unordered_map<CommandKind, std
 {
 	const auto input = InputChecker::GetInstance();
 
-	// “ü—Í‚³‚ê‚½î•ñ‚ð•Û‘¶
+	// å…¥åŠ›ã•ã‚ŒãŸæƒ…å ±ã‚’ä¿å­˜
 	std::vector<CommandKind> executed_command;
 
 	for (const auto& [kind, input_codes] : codes)
@@ -375,10 +377,10 @@ void CommandHandler::TryExecuteCommand(const std::unordered_map<CommandKind, std
 		{
 			if (input->IsInput(code.second))
 			{
-				// “ü—Í‚³‚ê‚Ä‚¢‚È‚¢ƒRƒ}ƒ“ƒh‚Ì‚ÝŠi”[
+				// å…¥åŠ›ã•ã‚Œã¦ã„ãªã„ã‚³ãƒžãƒ³ãƒ‰ã®ã¿æ ¼ç´
 				if (std::find(executed_command.begin(), executed_command.end(), kind) == executed_command.end())
 				{
-					// “ÁŽêƒRƒ}ƒ“ƒh‚ÌƒgƒŠƒK[•ûŽ®‚Å‚ ‚Á‚½ê‡A“ü—Í‰ñ”‚ðƒJƒEƒ“ƒg
+					// ç‰¹æ®Šã‚³ãƒžãƒ³ãƒ‰ã®ãƒˆãƒªã‚¬ãƒ¼æ–¹å¼ã§ã‚ã£ãŸå ´åˆã€å…¥åŠ›å›žæ•°ã‚’ã‚«ã‚¦ãƒ³ãƒˆ
 					if (m_input_mode.at(kind) == InputModeKind::kTrigger)
 					{
 						if (input->GetInputState(code.second) == InputState::kSingle)
