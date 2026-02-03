@@ -8,5 +8,5 @@ public:
 	~GuidanceUIHolder();
 
 private:
-
+	std::vector<std::shared_ptr<GuidanceUI>> m_guidance_ui;
 };
