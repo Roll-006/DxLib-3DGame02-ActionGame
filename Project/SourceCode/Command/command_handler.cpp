@@ -75,14 +75,14 @@ void CommandHandler::InitKeyCommand()
 	AddInputCode(CommandKind::kCrouch,						CommandSlotKind::kMain,		KEY_INPUT_E);
 	AddInputCode(CommandKind::kQuickTurn,					CommandSlotKind::kMain,		KEY_INPUT_Q);
 
-	AddInputCode(CommandKind::kMoveUpCamera,				CommandSlotKind::kMain,		KEY_INPUT_UP);
-	AddInputCode(CommandKind::kMoveUpCamera,				CommandSlotKind::kStatic1,	mouse::SlideDirKind::kUp);
-	AddInputCode(CommandKind::kMoveDownCamera,				CommandSlotKind::kMain,		KEY_INPUT_DOWN);
-	AddInputCode(CommandKind::kMoveDownCamera,				CommandSlotKind::kStatic1,	mouse::SlideDirKind::kDown);
-	AddInputCode(CommandKind::kMoveLeftCamera,				CommandSlotKind::kMain,		KEY_INPUT_LEFT);
-	AddInputCode(CommandKind::kMoveLeftCamera,				CommandSlotKind::kStatic1,	mouse::SlideDirKind::kLeft);
-	AddInputCode(CommandKind::kMoveRightCamera,				CommandSlotKind::kMain,		KEY_INPUT_RIGHT);
-	AddInputCode(CommandKind::kMoveRightCamera,				CommandSlotKind::kStatic1,	mouse::SlideDirKind::kRight);
+	AddInputCode(CommandKind::kMoveUpCamera,				CommandSlotKind::kMain,		mouse::SlideDirKind::kUp);
+	AddInputCode(CommandKind::kMoveUpCamera,				CommandSlotKind::kStatic1,	KEY_INPUT_UP);
+	AddInputCode(CommandKind::kMoveDownCamera,				CommandSlotKind::kMain,		mouse::SlideDirKind::kDown);
+	AddInputCode(CommandKind::kMoveDownCamera,				CommandSlotKind::kStatic1,	KEY_INPUT_DOWN);
+	AddInputCode(CommandKind::kMoveLeftCamera,				CommandSlotKind::kMain,		mouse::SlideDirKind::kLeft);
+	AddInputCode(CommandKind::kMoveLeftCamera,				CommandSlotKind::kStatic1,	KEY_INPUT_LEFT);
+	AddInputCode(CommandKind::kMoveRightCamera,				CommandSlotKind::kMain,		mouse::SlideDirKind::kRight);
+	AddInputCode(CommandKind::kMoveRightCamera,				CommandSlotKind::kStatic1,	KEY_INPUT_RIGHT);
 
 	AddInputCode(CommandKind::kSelectWeaponInsideLeft,		CommandSlotKind::kMain,		KEY_INPUT_2);
 	AddInputCode(CommandKind::kSelectWeaponInsideUp,		CommandSlotKind::kMain,		KEY_INPUT_1);
@@ -127,19 +127,19 @@ void CommandHandler::InitPadCommand()
 	AddInputCode(CommandKind::kEscape,						CommandSlotKind::kStatic1,	pad::ButtonKind	::kA);
 	AddInputCode(CommandKind::kReload,						CommandSlotKind::kStatic1,	pad::ButtonKind	::kX);
 	AddInputCode(CommandKind::kScope,						CommandSlotKind::kStatic1,	pad::ButtonKind	::kLSPush);
-	AddInputCode(CommandKind::kMoveUpPlayer,				CommandSlotKind::kStatic1,	pad::StickKind	::kLSUp);
-	AddInputCode(CommandKind::kMoveDownPlayer,				CommandSlotKind::kStatic1,	pad::StickKind	::kLSDown);
-	AddInputCode(CommandKind::kMoveLeftPlayer,				CommandSlotKind::kStatic1,	pad::StickKind	::kLSLeft);
-	AddInputCode(CommandKind::kMoveRightPlayer,				CommandSlotKind::kStatic1,	pad::StickKind	::kLSRight);
+	AddInputCode(CommandKind::kMoveUpPlayer,				CommandSlotKind::kMain,		pad::StickKind	::kLSUp);
+	AddInputCode(CommandKind::kMoveDownPlayer,				CommandSlotKind::kMain,		pad::StickKind	::kLSDown);
+	AddInputCode(CommandKind::kMoveLeftPlayer,				CommandSlotKind::kMain,		pad::StickKind	::kLSLeft);
+	AddInputCode(CommandKind::kMoveRightPlayer,				CommandSlotKind::kMain,		pad::StickKind	::kLSRight);
 	AddInputCode(CommandKind::kRun,							CommandSlotKind::kStatic1,	pad::ButtonKind	::kLSPush);
 	AddInputCode(CommandKind::kRun,							CommandSlotKind::kStatic1,	pad::ButtonKind	::kRB);
 	AddInputCode(CommandKind::kCrouch,						CommandSlotKind::kStatic1,	pad::ButtonKind	::kB);
 	AddInputCode(CommandKind::kQuickTurn,					CommandSlotKind::kStatic1,	pad::ButtonKind	::kRB);
 
-	AddInputCode(CommandKind::kMoveUpCamera,				CommandSlotKind::kStatic1,	pad::StickKind	::kRSUp);
-	AddInputCode(CommandKind::kMoveDownCamera,				CommandSlotKind::kStatic1,	pad::StickKind	::kRSDown);
-	AddInputCode(CommandKind::kMoveLeftCamera,				CommandSlotKind::kStatic1,	pad::StickKind	::kRSLeft);
-	AddInputCode(CommandKind::kMoveRightCamera,				CommandSlotKind::kStatic1,	pad::StickKind	::kRSRight);
+	AddInputCode(CommandKind::kMoveUpCamera,				CommandSlotKind::kMain,		pad::StickKind	::kRSUp);
+	AddInputCode(CommandKind::kMoveDownCamera,				CommandSlotKind::kMain,		pad::StickKind	::kRSDown);
+	AddInputCode(CommandKind::kMoveLeftCamera,				CommandSlotKind::kMain,		pad::StickKind	::kRSLeft);
+	AddInputCode(CommandKind::kMoveRightCamera,				CommandSlotKind::kMain,		pad::StickKind	::kRSRight);
 	AddInputCode(CommandKind::kInitAim,						CommandSlotKind::kStatic1,	pad::ButtonKind	::kRB);
 
 	AddInputCode(CommandKind::kSelectWeaponLeft,			CommandSlotKind::kStatic1,	pad::ButtonKind	::kLeft);

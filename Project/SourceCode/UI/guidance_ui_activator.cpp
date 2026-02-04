@@ -3,7 +3,8 @@
 GuidanceUIActivator::GuidanceUIActivator() :
 	m_active_ui(nullptr)
 {
-	m_stock_ui["move"] = std::make_shared<GuidanceUI>("move");
+	m_stock_ui["move"]		= std::make_shared<GuidanceUI>("move");
+	m_stock_ui["camera"]	= std::make_shared<GuidanceUI>("camera");
 
 	// イベント登録
 	EventSystem::GetInstance()->Subscribe<ChangeSceneEvent>(this, &GuidanceUIActivator::ActivateOnSceneChange);
@@ -62,6 +63,7 @@ void GuidanceUIActivator::ActivateOnSceneChange(const ChangeSceneEvent& event)
 	{
 	case SceneKind::kPlay:
 		Activate("move");
+		Activate("camera");
 		break;
 
 	default:

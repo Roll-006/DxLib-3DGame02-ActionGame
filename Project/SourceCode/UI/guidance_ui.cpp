@@ -186,16 +186,11 @@ void GuidanceUI::UpdateInputCode()
 		std::vector<InputCode> child;
 		child.emplace_back(command->GetInputCode(m_current_device_kind, single_button_prompt.command_kind, single_button_prompt.command_slot_kind));
 		
-		switch (single_button_prompt.command_kind)
+		if(single_button_prompt.command_kind == CommandKind::kMoveUpPlayer && m_current_device_kind == DeviceKind::kKeyboard)
 		{
-		case CommandKind::kMoveUpPlayer:
 			child.emplace_back(command->GetInputCode(m_current_device_kind, CommandKind::kMoveLeftPlayer,	single_button_prompt.command_slot_kind));
 			child.emplace_back(command->GetInputCode(m_current_device_kind, CommandKind::kMoveDownPlayer,	single_button_prompt.command_slot_kind));
 			child.emplace_back(command->GetInputCode(m_current_device_kind, CommandKind::kMoveRightPlayer,	single_button_prompt.command_slot_kind));
-			break;
-
-		default:
-			break;
 		}
 
 		m_current_input_code.emplace_back(child);
