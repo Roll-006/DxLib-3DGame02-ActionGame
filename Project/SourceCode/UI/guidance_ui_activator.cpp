@@ -1,19 +1,24 @@
 ﻿#include "guidance_ui_activator.hpp"
 
 GuidanceUIActivator::GuidanceUIActivator() :
-	m_active_ui(nullptr)
+	m_active_ui	(nullptr),
+	m_was_active{ {"move", false}, {"camera", false}, {"shot", false}, {"reload", false} }
 {
 	m_stock_ui["move"]		= std::make_shared<GuidanceUI>("move");
 	m_stock_ui["camera"]	= std::make_shared<GuidanceUI>("camera");
+	m_stock_ui["shot"]		= std::make_shared<GuidanceUI>("shot");
+	m_stock_ui["reload"]	= std::make_shared<GuidanceUI>("reload");
 
 	// イベント登録
-	EventSystem::GetInstance()->Subscribe<ChangeSceneEvent>(this, &GuidanceUIActivator::ActivateOnSceneChange);
+	EventSystem::GetInstance()->Subscribe<ChangeSceneEvent>		(this, &GuidanceUIActivator::ActivateOnSceneChange);
+	EventSystem::GetInstance()->Subscribe<OnMagazineEmpty>		(this, &GuidanceUIActivator::ActivateOnMagazineEmpty);
 }
 
 GuidanceUIActivator::~GuidanceUIActivator()
 {
 	// イベントの登録解除
-	EventSystem::GetInstance()->Unsubscribe<ChangeSceneEvent>(this, &GuidanceUIActivator::ActivateOnSceneChange);
+	EventSystem::GetInstance()->Unsubscribe<ChangeSceneEvent>	(this, &GuidanceUIActivator::ActivateOnSceneChange);
+	EventSystem::GetInstance()->Unsubscribe<OnMagazineEmpty>	(this, &GuidanceUIActivator::ActivateOnMagazineEmpty);
 }
 
 void GuidanceUIActivator::LateUpdate()
@@ -57,17 +62,41 @@ void GuidanceUIActivator::Activate(const std::string& ui_name)
 
 
 #pragma region Event
-void GuidanceUIActivator::ActivateOnSceneChange(const ChangeSceneEvent& event)
+void GuidanceUIActivator::ActivateOnSceneChange		(const ChangeSceneEvent&	event)
 {
 	switch (event.next_scene_kind)
 	{
 	case SceneKind::kPlay:
-		Activate("move");
-		Activate("camera");
+		if (!m_was_active.at("move"))
+		{
+			m_was_active.at("move") = true;
+			Activate("move");
+		}
+
+		if (!m_was_active.at("camera"))
+		{
+			m_was_active.at("camera") = true;
+			Activate("camera");
+		}
+
+		if (!m_was_active.at("shot"))
+		{
+			m_was_active.at("shot") = true;
+			Activate("shot");
+		}
 		break;
 
 	default:
 		break;
+	}
+}
+
+void GuidanceUIActivator::ActivateOnMagazineEmpty	(const OnMagazineEmpty&		event)
+{
+	if (!m_was_active.at("reload"))
+	{
+		m_was_active.at("reload") = true;
+		Activate("reload");
 	}
 }
 #pragma endregion

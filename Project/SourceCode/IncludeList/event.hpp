@@ -56,3 +56,4 @@
 #include "../Event/first_slash_event.hpp"
 #include "../Event/second_slash_event.hpp"
 #include "../Event/spinning_slash_event.hpp"
+#include "../Event/on_magazine_empty.hpp"

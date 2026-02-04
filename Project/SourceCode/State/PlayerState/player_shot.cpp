@@ -54,7 +54,17 @@ void player_state::Shot::LateUpdate()
         gun->SetAimDir(aim_dir);
         gun->SetPosOnRay(camera->GetTransform()->GetPos(CoordinateKind::kWorld));
 
-        if (m_player.GetDeltaTime() > 0.0f) { gun->OnShot(); }
+        // 弾丸の発射
+        if (m_player.GetDeltaTime() > 0.0f)
+        {
+            gun->OnShot();
+
+            // マガジンが空になった場合、通知を送信する
+            if (gun->GetCurrentRemainingBulletNum() <= 0)
+            {
+                EventSystem::GetInstance()->Publish(OnMagazineEmpty());
+            }
+        }
 
         // リコイル処理
         const auto camera_controller = CinemachineBrain::GetInstance()->GetVirtualCameraController(VirtualCameraControllerKind::kControl);

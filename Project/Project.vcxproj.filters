@@ -1836,6 +1836,9 @@
     <ClInclude Include="SourceCode\Interface\singleton_base.hpp">
       <Filter>SourceCode\Base</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\Event\on_magazine_empty.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="SourceCode">

@@ -119,16 +119,7 @@ void MeleeTargetIcon::CreateMeleeIconScreen()
 	// TODO : リファクタリング可能 (優先度 : 低)
 	const auto command	= CommandHandler::GetInstance();
 	const auto device	= InputChecker::GetInstance()->GetCurrentInputDevice();
-	switch (device)
-	{
-	case DeviceKind::kKeyboard:
-		m_button_icon_graphic = m_button_graphic_resource->GetButtonGraphicer(command->GetInputCode(device, CommandKind::kMelee, CommandSlotKind::kMain));
-		break;
-
-	case DeviceKind::kPad:
-		m_button_icon_graphic = m_button_graphic_resource->GetButtonGraphicer(command->GetInputCode(device, CommandKind::kMelee, CommandSlotKind::kStatic1));
-		break;
-	}
+	m_button_icon_graphic = m_button_graphic_resource->GetButtonGraphicer(command->GetInputCode(device, CommandKind::kMelee, CommandSlotKind::kMain));
 
 	m_button_icon_graphic->SetCenterPos(m_screen_center_pos);
 	m_button_icon_graphic->SetScale(data.button_icon_graphic_scale);

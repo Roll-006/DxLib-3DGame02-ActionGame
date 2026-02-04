@@ -80,17 +80,16 @@ void StealthKillTargetIcon::CreateStealthKillIconScreen()
 	m_icon_pos = matrix::GetPos(spine2_m) + kIconOffset;
 
 	// 入力デバイスおよびキー割り当てに対応した画像を取得
-	const auto command	= CommandHandler::GetInstance();
-	const auto device	= InputChecker::GetInstance()->GetCurrentInputDevice();
+	const auto command		= CommandHandler::GetInstance();
+	const auto device		= InputChecker::GetInstance()->GetCurrentInputDevice();
+	m_button_icon_graphic	= m_button_graphic_resource->GetButtonGraphicer(command->GetInputCode(device, CommandKind::kAttack, CommandSlotKind::kMain));
 	switch (device)
 	{
 	case DeviceKind::kKeyboard:
-		m_button_icon_graphic = m_button_graphic_resource->GetButtonGraphicer(command->GetInputCode(device, CommandKind::kAttack, CommandSlotKind::kMain));
 		m_button_icon_graphic->SetScale(0.18f);
 		break;
 
 	case DeviceKind::kPad:
-		m_button_icon_graphic = m_button_graphic_resource->GetButtonGraphicer(command->GetInputCode(device, CommandKind::kAttack, CommandSlotKind::kStatic1));
 		m_button_icon_graphic->SetScale(0.13f);
 		break;
 	}

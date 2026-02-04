@@ -20,7 +20,7 @@
             }
           },
           "command_kind": 0,
-          "command_slot_kind": 2
+          "command_slot_kind": 0
         },
         {
           "text_data": {
@@ -33,7 +33,7 @@
             }
           },
           "command_kind": 1,
-          "command_slot_kind": 2
+          "command_slot_kind": 0
         }
       ],
       "text_data": {
@@ -66,7 +66,7 @@
             }
           },
           "command_kind": 0,
-          "command_slot_kind": 2
+          "command_slot_kind": 0
         }
       ],
       "text_data": {
@@ -99,7 +99,7 @@
             }
           },
           "command_kind": 0,
-          "command_slot_kind": 2
+          "command_slot_kind": 0
         },
         {
           "text_data": {
@@ -112,7 +112,7 @@
             }
           },
           "command_kind": 1,
-          "command_slot_kind": 2
+          "command_slot_kind": 0
         }
       ],
       "text_data": {
@@ -145,7 +145,7 @@
             }
           },
           "command_kind": 0,
-          "command_slot_kind": 2
+          "command_slot_kind": 0
         }
       ],
       "text_data": {
@@ -178,7 +178,7 @@
             }
           },
           "command_kind": 0,
-          "command_slot_kind": 2
+          "command_slot_kind": 0
         }
       ],
       "text_data": {

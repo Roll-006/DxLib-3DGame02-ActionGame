@@ -20,8 +20,9 @@ ButtonGraphicGetter::ButtonGraphicGetter()
 	
 	m_input_graphics[InputCode(InputKind::kPadButton,	static_cast<int>(pad::ButtonKind::kA))]			= std::make_shared<Graphicer>(UIGraphicPath.PAD_A);
 	m_input_graphics[InputCode(InputKind::kPadButton,	static_cast<int>(pad::ButtonKind::kB))]			= std::make_shared<Graphicer>(UIGraphicPath.PAD_B);
-	
-	m_input_graphics[InputCode(InputKind::kPadTrigger,	static_cast<int>(pad::TriggerKind::kRT))]		= std::make_shared<Graphicer>(UIGraphicPath.PAD_RT);
+
+	m_input_graphics[InputCode(InputKind::kPadTrigger,	static_cast<int>(pad::TriggerKind::kRT))]		= std::make_shared<Graphicer>("Data/Graphic/UI/Button/Pad/RT.png");
+	m_input_graphics[InputCode(InputKind::kPadTrigger,	static_cast<int>(pad::TriggerKind::kLT))]		= std::make_shared<Graphicer>("Data/Graphic/UI/Button/Pad/LT.png");
 	
 	m_input_graphics[InputCode(InputKind::kPadStick,	static_cast<int>(pad::StickKind::kLSUp))]		= std::make_shared<Graphicer>("Data/Graphic/UI/Button/Pad/LS.png");
 	m_input_graphics[InputCode(InputKind::kPadStick,	static_cast<int>(pad::StickKind::kLSLeft))]		= std::make_shared<Graphicer>("Data/Graphic/UI/Button/Pad/LS.png");

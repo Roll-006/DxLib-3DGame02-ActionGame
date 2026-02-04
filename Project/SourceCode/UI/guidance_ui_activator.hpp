@@ -23,11 +23,14 @@ private:
 
 
 	#pragma region Event
-	void ActivateOnSceneChange(const ChangeSceneEvent& event);
+	void ActivateOnSceneChange	(const ChangeSceneEvent&	event);
+	void ActivateOnMagazineEmpty(const OnMagazineEmpty&		event);
 	#pragma endregion
 
 private:
 	std::unordered_map<std::string, std::shared_ptr<GuidanceUI>>	m_stock_ui;		// すべてのガイダンスUI
 	std::queue<std::shared_ptr<GuidanceUI>>							m_wait_ui;		// アクティブ状態を待っているUI
 	std::shared_ptr<GuidanceUI>										m_active_ui;	// アクティブ化されているUI
+
+	std::unordered_map<std::string, bool>							m_was_active;
 };

@@ -67,7 +67,6 @@ enum class CommandSlotKind
 {
 	kMain,		// メインスロット
 	kSub,		// サブスロット
-	kStatic1,	// 固定スロット1(ユーザーからの変更は受け付けない)
-	kStatic2,	// 固定スロット2(ユーザーからの変更は受け付けない)
-	kStatic3,	// 固定スロット2(ユーザーからの変更は受け付けない)
+	kSpare1,	// 予備スロット1
+	kSpare2,	// 予備スロット2
 };
