@@ -84,8 +84,8 @@ void player_state::AimGun::Enter()
 	m_player.DetachWeapon(m_player.GetCurrentEquipWeapon(WeaponSlotKind::kMain));
 	m_player.HoldWeapon  (m_player.GetCurrentEquipWeapon(WeaponSlotKind::kMain));
 
-	const auto state_kind = m_state.GetCurrentStateKind();
-	if (state_kind != PlayerStateKind::kShot)
+	const auto prev_state_kind = m_state.GetPrevStateKind();
+	if (prev_state_kind != PlayerStateKind::kShot)
 	{
 		const auto gun = std::static_pointer_cast<GunBase>(m_player.GetCurrentHeldWeapon());
 		gun->InitCrossHairRange();
