@@ -33,7 +33,7 @@ void GuidanceUICreator::LateUpdate()
 
 	m_mission_ui			->LateUpdate();
 	m_purpose_ui			->LateUpdate();
-	m_guidance_ui_activator	->LateUpdate();
+	//m_guidance_ui_activator	->LateUpdate();
 }
 
 void GuidanceUICreator::OnDraw(const int main_screen_handle)
@@ -43,12 +43,12 @@ void GuidanceUICreator::OnDraw(const int main_screen_handle)
 	m_mission_ui->Draw();
 	m_purpose_ui->Draw(main_screen_handle);
 
-	// FIXME : 仮
-	const auto active_guidance_ui = m_guidance_ui_activator->GetActiveGaidanceUI();
-	if (active_guidance_ui)
-	{
-		active_guidance_ui->Draw(main_screen_handle);
-	}
+	//// FIXME : 仮
+	//const auto active_guidance_ui = m_guidance_ui_activator->GetActiveGaidanceUI();
+	//if (active_guidance_ui)
+	//{
+	//	active_guidance_ui->Draw(main_screen_handle);
+	//}
 
 	//if (m_active_guidance_ui)
 	//{
