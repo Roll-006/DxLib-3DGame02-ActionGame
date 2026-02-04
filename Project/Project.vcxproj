@@ -391,6 +391,7 @@
     <ClInclude Include="SourceCode\Concept\state_concepts.hpp" />
     <ClInclude Include="SourceCode\Concept\vector_concepts.hpp" />
     <ClInclude Include="SourceCode\CSV\csv_loader.hpp" />
+    <ClInclude Include="SourceCode\Data\zombie_type_data.hpp" />
     <ClInclude Include="SourceCode\Data\escape_icon_data.hpp" />
     <ClInclude Include="SourceCode\Data\humanoid_body_matrix_data.hpp" />
     <ClInclude Include="SourceCode\Data\melee_target_icon_data.hpp" />
@@ -787,6 +788,7 @@
     <ClInclude Include="SourceCode\Window\window.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Data\JSON\zombie_type_data.json" />
     <None Include="Data\JSON\animator.json" />
     <None Include="Data\JSON\button_prompt_data.json" />
     <None Include="Data\JSON\escape_icon_data.json" />
@@ -810,7 +812,7 @@
     <None Include="Data\JSON\boss.json" />
     <None Include="Data\JSON\sound_pool_data.json" />
     <None Include="data\JSON\sound_data.json" />
-    <None Include="Data\JSON\zombie.json" />
+    <None Include="Data\JSON\zombie_data.json" />
     <None Include="data\JSON\houses.json" />
     <None Include="Data\JSON\patrol_route.json" />
     <None Include="Data\JSON\font_data.json" />

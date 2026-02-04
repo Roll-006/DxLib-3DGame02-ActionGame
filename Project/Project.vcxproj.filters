@@ -1839,6 +1839,9 @@
     <ClInclude Include="SourceCode\Event\on_magazine_empty.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\Data\zombie_type_data.hpp">
+      <Filter>SourceCode\Data</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="SourceCode">
@@ -2011,7 +2014,7 @@
     <None Include="data\JSON\houses.json">
       <Filter>JSON</Filter>
     </None>
-    <None Include="Data\JSON\zombie.json">
+    <None Include="Data\JSON\zombie_data.json">
       <Filter>JSON</Filter>
     </None>
     <None Include="Data\JSON\boss.json">
@@ -2081,6 +2084,9 @@
       <Filter>JSON</Filter>
     </None>
     <None Include="Data\JSON\pickupable_item_icon_data.json">
+      <Filter>JSON</Filter>
+    </None>
+    <None Include="Data\JSON\zombie_type_data.json">
       <Filter>JSON</Filter>
     </None>
   </ItemGroup>

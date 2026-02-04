@@ -12,13 +12,14 @@
 #include "../Kind/rough_body_kind.hpp"
 
 #include "../Data/zombie_data.hpp"
+#include "../Data/zombie_type_data.hpp"
 #include "../State/ZombieState/zombie_state.hpp"
 #include "../AI/zombie_ai.hpp"
 
 class Zombie final : public EnemyBase, public IPoolable, public IHumanoid, public IMeleeHittable, public IGrabber, public IStealthKillable
 {
 public:
-	Zombie(const std::string& id);
+	Zombie(const std::string& id, const std::string& zombie_type);
 	~Zombie() override;
 
 	void Init()			override;
@@ -49,7 +50,7 @@ public:
 	void Release()		override;
 	void OnEscape()		override;
 
-	[[nodiscard]] const float	GetDamageOverTimeStartTime()	const override	{ return data.damage_over_time_start_time; }
+	[[nodiscard]] const float	GetDamageOverTimeStartTime()	const override	{ return zombie_data.damage_over_time_start_time; }
 	[[nodiscard]] const bool	IsTargetEscaped()				const override  { return m_is_target_escaped; }
 	#pragma endregion
 
@@ -104,8 +105,9 @@ private:
 	void OnHitBoneReaction();
 
 private:
-	ZombieData data;
-
+	ZombieData		zombie_data;
+	ZombieTypeData	zombie_type_data;
+	
 	std::shared_ptr<HumanoidArmIKSolver>		m_humanoid_arm_ik;
 	std::shared_ptr<HumanoidFootIKSolver>		m_humanoid_foot_ik;
 	std::shared_ptr<HumanoidBodyIKSolver>		m_humanoid_body_ik;
@@ -133,7 +135,7 @@ inline void from_json(const nlohmann::json& j_data, Zombie& zombie)
 {
 	from_json(j_data, static_cast<EnemyBase&>(zombie));
 
-	j_data.at("data").get_to(zombie.data);
+	j_data.at("zombie_data").get_to(zombie.zombie_data);
 }
 
 inline void to_json(nlohmann::json& j_data, const Zombie& zombie)
@@ -143,7 +145,7 @@ inline void to_json(nlohmann::json& j_data, const Zombie& zombie)
 
 	nlohmann::json derived_json =
 	{
-		{ "data", zombie.data },
+		{ "zombie_data", zombie.zombie_data },
 	};
 
 	j_data = base_json;
