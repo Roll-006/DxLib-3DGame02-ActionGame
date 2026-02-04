@@ -139,15 +139,18 @@ void GuidanceUI::CreateResultScreen()
 {
 	m_result_screen->UseScreen();
 
-	auto offset = 0;
+	auto offset = data.leftmost_pos;
 	auto count  = 0;
 	for (const auto& text : data.single_button_prompt_data)
 	{
-		m_input_graphic.at(count)->SetCenterPos({ offset + m_input_graphic.at(count)->GetHalfSize().x, m_result_screen->GetHalfScreenSize().y });
-		m_input_graphic.at(count)->Draw();
+		for (const auto& graphic : m_input_graphic.at(count))
+		{
+			graphic->SetCenterPos({ offset + graphic->GetHalfSize().x, m_result_screen->GetHalfScreenSize().y });
+			graphic->Draw();
 
-		// 現在のテキストを左に描画される画像サイズ分ずらす
-		offset += m_input_graphic.at(count)->GetSize().x;
+			// 現在のテキストを左に描画される画像サイズ分ずらす
+			offset += graphic->GetSize().x;
+		}
 
 		DrawStringToHandle(
 			static_cast<int>(offset),
@@ -180,12 +183,22 @@ void GuidanceUI::UpdateInputCode()
 	const auto command = CommandHandler::GetInstance();
 	for (const auto& single_button_prompt : data.single_button_prompt_data)
 	{
-		const auto input_code = command->GetInputCode(
-			m_current_device_kind,
-			single_button_prompt.command_kind,
-			single_button_prompt.command_slot_kind);
+		std::vector<InputCode> child;
+		child.emplace_back(command->GetInputCode(m_current_device_kind, single_button_prompt.command_kind, single_button_prompt.command_slot_kind));
+		
+		switch (single_button_prompt.command_kind)
+		{
+		case CommandKind::kMoveUpPlayer:
+			child.emplace_back(command->GetInputCode(m_current_device_kind, CommandKind::kMoveLeftPlayer,	single_button_prompt.command_slot_kind));
+			child.emplace_back(command->GetInputCode(m_current_device_kind, CommandKind::kMoveDownPlayer,	single_button_prompt.command_slot_kind));
+			child.emplace_back(command->GetInputCode(m_current_device_kind, CommandKind::kMoveRightPlayer,	single_button_prompt.command_slot_kind));
+			break;
 
-		m_current_input_code.emplace_back(input_code);
+		default:
+			break;
+		}
+
+		m_current_input_code.emplace_back(child);
 	}
 }
 
@@ -193,11 +206,18 @@ void GuidanceUI::UpdateGraphics()
 {
 	// 画像を設定
 	m_input_graphic.clear();
-	for (const auto& code : m_current_input_code)
+	for (const auto& parent_code : m_current_input_code)
 	{
-		const auto graphic = m_button_graphic_getter->GetButtonGraphicer(code);
-		graphic->SetScale(data.input_graphic_scale);
-		m_input_graphic.emplace_back(graphic);
+		std::vector<std::shared_ptr<Graphicer>> graphicr;
+
+		for (const auto& child_code : parent_code)
+		{
+			const auto graphic = m_button_graphic_getter->GetButtonGraphicer(child_code);
+			graphic->SetScale(data.input_graphic_scale);
+			graphicr.emplace_back(graphic);
+		}
+
+		m_input_graphic.emplace_back(graphicr);
 	}
 }
 

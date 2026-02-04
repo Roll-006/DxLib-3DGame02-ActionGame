@@ -17,7 +17,7 @@
       },
       "fade_in_speed": 200,
       "fade_out_speed": 200,
-      "blend_wait_time": 9.0,
+      "blend_wait_time": 7.0,
       "draw_time": 4.0,
       "basic_shape_alpha_blend_scale": 0.4,
       "basic_graphic_path": "Data/Graphic/UI/Purpose/square_black.png"

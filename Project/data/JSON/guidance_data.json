@@ -6,10 +6,11 @@
         "y": 300
       },
       "screen_pos_ratio": {
-        "x": 0.5,
+        "x": 0.75,
         "y": 0.5
       },
       "offset": 0,
+      "leftmost_pos": 40,
       "single_button_prompt_data": [
         {
           "text_data": {
@@ -21,15 +22,15 @@
               "y": 0
             }
           },
-          "command_kind": 0,
-          "command_slot_kind": 2
+          "command_kind": 16,
+          "command_slot_kind": 0
         }
       ],
       "input_graphic_scale": 0.17,
       "fade_in_speed": 200,
       "fade_out_speed": 200,
-      "blend_wait_time": 0.0,
-      "draw_time": 10.0,
+      "blend_wait_time": 13.0,
+      "draw_time": 5.0,
       "basic_shape_alpha_blend_scale": 0.4,
       "basic_graphic_path": "Data/Graphic/UI/Purpose/square_black.png"
     }

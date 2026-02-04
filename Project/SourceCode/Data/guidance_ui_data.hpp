@@ -10,6 +10,7 @@ struct GuidanceUIData final
 	Vector2D<int>						screen_size						= {};
 	Vector2D<float>						screen_pos_ratio				= {};
 	int									offset							= 0;
+	int									leftmost_pos					= 0;
 	std::vector<SingleButtonPromptData>	single_button_prompt_data		= {};
 	float								input_graphic_scale				= 1.0f;
 	float								fade_in_speed					= 0.0f;
@@ -27,6 +28,7 @@ inline void from_json(const nlohmann::json& j_data, GuidanceUIData& guidance_ui_
 	j_data.at("screen_size")					.get_to(guidance_ui_data.screen_size);
 	j_data.at("screen_pos_ratio")				.get_to(guidance_ui_data.screen_pos_ratio);
 	j_data.at("offset")							.get_to(guidance_ui_data.offset);
+	j_data.at("leftmost_pos")					.get_to(guidance_ui_data.leftmost_pos);
 	j_data.at("single_button_prompt_data")		.get_to(guidance_ui_data.single_button_prompt_data);
 	j_data.at("input_graphic_scale")			.get_to(guidance_ui_data.input_graphic_scale);
 	j_data.at("fade_in_speed")					.get_to(guidance_ui_data.fade_in_speed);
@@ -44,6 +46,7 @@ inline void to_json(nlohmann::json& j_data, const GuidanceUIData& guidance_ui_da
 		{ "screen_size",					guidance_ui_data.screen_size },
 		{ "screen_pos_ratio",				guidance_ui_data.screen_pos_ratio },
 		{ "offset",							guidance_ui_data.offset },
+		{ "leftmost_pos",					guidance_ui_data.leftmost_pos },
 		{ "single_button_prompt_data",		guidance_ui_data.single_button_prompt_data },
 		{ "input_graphic_scale",			guidance_ui_data.input_graphic_scale },
 		{ "fade_in_speed",					guidance_ui_data.fade_in_speed },
