@@ -254,6 +254,7 @@ const bool GuidanceUI::UniqueUpdateInputCode(std::vector<InputCode>& input_code,
 const bool GuidanceUI::UniqueUpdateGraphics(const std::vector<InputCode>& input_code, std::vector<std::shared_ptr<Graphicer>>& graphicer)
 {
 	std::shared_ptr<Graphicer> graphic = nullptr;
+
 	// 左右方向キー特有処理
 	if (input_code == std::vector<InputCode>{
 		{ InputKind::kPadButton, XINPUT_BUTTON_DPAD_LEFT },
@@ -281,6 +282,7 @@ const bool GuidanceUI::UniqueUpdateGraphics(const std::vector<InputCode>& input_
 	if (graphic)
 	{
 		graphic->SetScale(data.input_graphic_scale);
+		graphicer.emplace_back(graphic);
 		return true;
 	}
 	
