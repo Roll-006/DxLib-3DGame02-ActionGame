@@ -2,20 +2,20 @@
   "guidance_data": {
     "move": {
       "screen_size": {
-        "x": 500,
-        "y": 300
+        "x": 600,
+        "y": 100
       },
       "screen_pos_ratio": {
         "x": 0.75,
         "y": 0.5
       },
       "offset": 0,
-      "leftmost_pos": 40,
+      "leftmost_pos": 30,
       "single_button_prompt_data": [
         {
           "text_data": {
             "font_path": "explanatory_text",
-            "text": "移動",
+            "text": "歩く",
             "hex_color": "#ffffff",
             "offset": {
               "x": 0,
@@ -30,21 +30,55 @@
       "fade_in_speed": 200,
       "fade_out_speed": 200,
       "blend_wait_time": 13.0,
-      "draw_time": 5.0,
+      "draw_time": 4.0,
       "basic_shape_alpha_blend_scale": 0.4,
-      "basic_graphic_path": "Data/Graphic/UI/Purpose/square_black.png"
+      "basic_graphic_path": "Data/Graphic/UI/Guidance/square_black.png"
     },
-    "camera": {
+    "run": {
       "screen_size": {
-        "x": 500,
-        "y": 300
+        "x": 600,
+        "y": 100
       },
       "screen_pos_ratio": {
         "x": 0.75,
         "y": 0.5
       },
       "offset": 0,
-      "leftmost_pos": 40,
+      "leftmost_pos": 30,
+      "single_button_prompt_data": [
+        {
+          "text_data": {
+            "font_path": "explanatory_text",
+            "text": "走る",
+            "hex_color": "#ffffff",
+            "offset": {
+              "x": 0,
+              "y": 0
+            }
+          },
+          "command_kind": 20,
+          "command_slot_kind": 0
+        }
+      ],
+      "input_graphic_scale": 0.17,
+      "fade_in_speed": 200,
+      "fade_out_speed": 200,
+      "blend_wait_time": 0.0,
+      "draw_time": 4.0,
+      "basic_shape_alpha_blend_scale": 0.4,
+      "basic_graphic_path": "Data/Graphic/UI/Guidance/square_black.png"
+    },
+    "camera": {
+      "screen_size": {
+        "x": 600,
+        "y": 100
+      },
+      "screen_pos_ratio": {
+        "x": 0.75,
+        "y": 0.5
+      },
+      "offset": 0,
+      "leftmost_pos": 30,
       "single_button_prompt_data": [
         {
           "text_data": {
@@ -64,21 +98,21 @@
       "fade_in_speed": 200,
       "fade_out_speed": 200,
       "blend_wait_time": 0.0,
-      "draw_time": 5.0,
+      "draw_time": 4.0,
       "basic_shape_alpha_blend_scale": 0.4,
-      "basic_graphic_path": "Data/Graphic/UI/Purpose/square_black.png"
+      "basic_graphic_path": "Data/Graphic/UI/Guidance/square_black.png"
     },
     "shot": {
       "screen_size": {
-        "x": 500,
-        "y": 300
+        "x": 600,
+        "y": 100
       },
       "screen_pos_ratio": {
         "x": 0.75,
         "y": 0.5
       },
       "offset": 0,
-      "leftmost_pos": 40,
+      "leftmost_pos": 30,
       "single_button_prompt_data": [
         {
           "text_data": {
@@ -111,21 +145,21 @@
       "fade_in_speed": 200,
       "fade_out_speed": 200,
       "blend_wait_time": 0.0,
-      "draw_time": 5.0,
+      "draw_time": 4.0,
       "basic_shape_alpha_blend_scale": 0.4,
-      "basic_graphic_path": "Data/Graphic/UI/Purpose/square_black.png"
+      "basic_graphic_path": "Data/Graphic/UI/Guidance/square_black.png"
     },
     "reload": {
       "screen_size": {
-        "x": 500,
-        "y": 300
+        "x": 600,
+        "y": 100
       },
       "screen_pos_ratio": {
         "x": 0.75,
         "y": 0.5
       },
       "offset": 0,
-      "leftmost_pos": 40,
+      "leftmost_pos": 30,
       "single_button_prompt_data": [
         {
           "text_data": {
@@ -145,9 +179,9 @@
       "fade_in_speed": 200,
       "fade_out_speed": 200,
       "blend_wait_time": 0.0,
-      "draw_time": 5.0,
+      "draw_time": 4.0,
       "basic_shape_alpha_blend_scale": 0.4,
-      "basic_graphic_path": "Data/Graphic/UI/Purpose/square_black.png"
+      "basic_graphic_path": "Data/Graphic/UI/Guidance/square_black.png"
     }
   }
 }

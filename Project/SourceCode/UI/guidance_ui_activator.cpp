@@ -2,9 +2,10 @@
 
 GuidanceUIActivator::GuidanceUIActivator() :
 	m_active_ui	(nullptr),
-	m_was_active{ {"move", false}, {"camera", false}, {"shot", false}, {"reload", false} }
+	m_was_active{ {"move", false}, {"run", false}, {"camera", false}, {"shot", false}, {"reload", false} }
 {
 	m_stock_ui["move"]		= std::make_shared<GuidanceUI>("move");
+	m_stock_ui["run"]		= std::make_shared<GuidanceUI>("run");
 	m_stock_ui["camera"]	= std::make_shared<GuidanceUI>("camera");
 	m_stock_ui["shot"]		= std::make_shared<GuidanceUI>("shot");
 	m_stock_ui["reload"]	= std::make_shared<GuidanceUI>("reload");
@@ -71,6 +72,12 @@ void GuidanceUIActivator::ActivateOnSceneChange		(const ChangeSceneEvent&	event)
 		{
 			m_was_active.at("move") = true;
 			Activate("move");
+		}
+
+		if (!m_was_active.at("run"))
+		{
+			m_was_active.at("run") = true;
+			Activate("run");
 		}
 
 		if (!m_was_active.at("camera"))
