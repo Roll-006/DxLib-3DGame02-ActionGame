@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../Event/dead_player_event.hpp"
 #include "../Event/dead_boss_event.hpp"
 #include "../Event/dead_enemy_event.hpp"
@@ -57,3 +57,4 @@
 #include "../Event/second_slash_event.hpp"
 #include "../Event/spinning_slash_event.hpp"
 #include "../Event/on_magazine_empty.hpp"
+#include "../Event/on_get_rocket_bomb.hpp"

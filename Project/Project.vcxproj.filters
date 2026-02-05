@@ -1842,6 +1842,9 @@
     <ClInclude Include="SourceCode\Data\zombie_type_data.hpp">
       <Filter>SourceCode\Data</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\Event\on_get_rocket_bomb.hpp">
+      <Filter>SourceCode\Event</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="SourceCode">

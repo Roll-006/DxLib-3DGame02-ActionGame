@@ -120,9 +120,10 @@ void ButtonPrompt::UpdateInputCode()
 	const auto command = CommandHandler::GetInstance();
 	for (const auto& single_button_prompt : data.single_button_prompt_data)
 	{
+		const auto command_kind = m_current_device_kind == DeviceKind::kKeyboard ? single_button_prompt.key_command_kind : single_button_prompt.pad_command_kind;
 		const auto input_code = command->GetInputCode(
 			m_current_device_kind, 
-			single_button_prompt.command_kind, 
+			command_kind,
 			single_button_prompt.command_slot_kind);
 		
 		m_current_input_code.emplace_back(input_code);

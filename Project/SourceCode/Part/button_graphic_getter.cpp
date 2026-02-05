@@ -16,6 +16,9 @@ ButtonGraphicGetter::ButtonGraphicGetter()
 	m_input_graphics[InputCode(InputKind::kMouseButton,	static_cast<int>(mouse::ButtonKind::kMiddle))]	= std::make_shared<Graphicer>(UIGraphicPath.MOUSE_MIDDLE);
 	m_input_graphics[InputCode(InputKind::kMouseButton,	static_cast<int>(mouse::ButtonKind::kRight))]	= std::make_shared<Graphicer>(UIGraphicPath.MOUSE_RIGHT);
 	
+	m_input_graphics[InputCode(InputKind::kMouseWheel,	static_cast<int>(mouse::WheelKind::kUp))]		= std::make_shared<Graphicer>("Data/Graphic/UI/Button/Mouse/wheel_up.png");
+	m_input_graphics[InputCode(InputKind::kMouseWheel,	static_cast<int>(mouse::WheelKind::kDown))]		= std::make_shared<Graphicer>("Data/Graphic/UI/Button/Mouse/wheel_down.png");
+	
 	m_input_graphics[InputCode(InputKind::kMouseSlide,	static_cast<int>(mouse::SlideDirKind::kUp))]	= std::make_shared<Graphicer>("Data/Graphic/UI/Button/Mouse/none.png");
 	m_input_graphics[InputCode(InputKind::kMouseSlide,	static_cast<int>(mouse::SlideDirKind::kLeft))]	= std::make_shared<Graphicer>("Data/Graphic/UI/Button/Mouse/none.png");
 	m_input_graphics[InputCode(InputKind::kMouseSlide,	static_cast<int>(mouse::SlideDirKind::kDown))]	= std::make_shared<Graphicer>("Data/Graphic/UI/Button/Mouse/none.png");

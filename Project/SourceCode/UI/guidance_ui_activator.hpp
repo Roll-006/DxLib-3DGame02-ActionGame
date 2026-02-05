@@ -25,6 +25,7 @@ private:
 	#pragma region Event
 	void ActivateOnSceneChange	(const ChangeSceneEvent&	event);
 	void ActivateOnMagazineEmpty(const OnMagazineEmpty&		event);
+	void ActivateOnGetRocketBomb(const OnGetRocketBomb&		event);
 	#pragma endregion
 
 private:

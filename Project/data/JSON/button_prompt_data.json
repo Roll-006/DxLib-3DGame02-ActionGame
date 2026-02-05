@@ -19,7 +19,8 @@
               "y": 0
             }
           },
-          "command_kind": 0,
+          "key_command_kind": 0,
+          "pad_command_kind": 0,
           "command_slot_kind": 0
         },
         {
@@ -32,7 +33,8 @@
               "y": 0
             }
           },
-          "command_kind": 1,
+          "key_command_kind": 1,
+          "pad_command_kind": 1,
           "command_slot_kind": 0
         }
       ],
@@ -65,7 +67,8 @@
               "y": 0
             }
           },
-          "command_kind": 0,
+          "key_command_kind": 0,
+          "pad_command_kind": 0,
           "command_slot_kind": 0
         }
       ],
@@ -98,7 +101,8 @@
               "y": 0
             }
           },
-          "command_kind": 0,
+          "key_command_kind": 0,
+          "pad_command_kind": 0,
           "command_slot_kind": 0
         },
         {
@@ -111,7 +115,8 @@
               "y": 0
             }
           },
-          "command_kind": 1,
+          "key_command_kind": 1,
+          "pad_command_kind": 1,
           "command_slot_kind": 0
         }
       ],
@@ -144,7 +149,8 @@
               "y": 0
             }
           },
-          "command_kind": 0,
+          "key_command_kind": 0,
+          "pad_command_kind": 0,
           "command_slot_kind": 0
         }
       ],
@@ -177,7 +183,8 @@
               "y": 0
             }
           },
-          "command_kind": 0,
+          "key_command_kind": 0,
+          "pad_command_kind": 0,
           "command_slot_kind": 0
         }
       ],

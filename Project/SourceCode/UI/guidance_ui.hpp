@@ -30,6 +30,12 @@ private:
 	void UpdateInputCode();
 	void UpdateGraphics();
 
+	/// @brief 固有の処理を持つ入力コードの更新
+	/// @return true : 固有な処理が行われた, false : 行われなかった
+	[[nodiscard]] const bool UniqueUpdateInputCode(std::vector<InputCode>& input_code, const SingleButtonPromptData& prompt_data, const CommandKind command_kind);
+
+	[[nodiscard]] const bool UniqueUpdateGraphics(const std::vector<InputCode>& input_code, std::vector<std::shared_ptr<Graphicer>>& graphicer);
+
 	[[nodiscard]] const bool CanUpdateRresultScreen() const;
 
 private:

@@ -183,14 +183,13 @@ void GuidanceUI::UpdateInputCode()
 	const auto command = CommandHandler::GetInstance();
 	for (const auto& single_button_prompt : data.single_button_prompt_data)
 	{
+		const auto command_kind = m_current_device_kind == DeviceKind::kKeyboard ? single_button_prompt.key_command_kind : single_button_prompt.pad_command_kind;
+
 		std::vector<InputCode> child;
-		child.emplace_back(command->GetInputCode(m_current_device_kind, single_button_prompt.command_kind, single_button_prompt.command_slot_kind));
 		
-		if(single_button_prompt.command_kind == CommandKind::kMoveUpPlayer && m_current_device_kind == DeviceKind::kKeyboard)
+		if (!UniqueUpdateInputCode(child, single_button_prompt, command_kind))
 		{
-			child.emplace_back(command->GetInputCode(m_current_device_kind, CommandKind::kMoveLeftPlayer,	single_button_prompt.command_slot_kind));
-			child.emplace_back(command->GetInputCode(m_current_device_kind, CommandKind::kMoveDownPlayer,	single_button_prompt.command_slot_kind));
-			child.emplace_back(command->GetInputCode(m_current_device_kind, CommandKind::kMoveRightPlayer,	single_button_prompt.command_slot_kind));
+			child.emplace_back(command->GetInputCode(m_current_device_kind, command_kind, single_button_prompt.command_slot_kind));
 		}
 
 		m_current_input_code.emplace_back(child);
@@ -203,17 +202,89 @@ void GuidanceUI::UpdateGraphics()
 	m_input_graphic.clear();
 	for (const auto& parent_code : m_current_input_code)
 	{
-		std::vector<std::shared_ptr<Graphicer>> graphicr;
+		std::vector<std::shared_ptr<Graphicer>> graphicer = {};
 
-		for (const auto& child_code : parent_code)
+		if (!UniqueUpdateGraphics(parent_code, graphicer))
 		{
-			const auto graphic = m_button_graphic_getter->GetButtonGraphicer(child_code);
-			graphic->SetScale(data.input_graphic_scale);
-			graphicr.emplace_back(graphic);
+			for (const auto& child_code : parent_code)
+			{
+				auto graphic = m_button_graphic_getter->GetButtonGraphicer(child_code);
+				graphic->SetScale(data.input_graphic_scale);
+				graphicer.emplace_back(graphic);
+			}
 		}
 
-		m_input_graphic.emplace_back(graphicr);
+		m_input_graphic.emplace_back(graphicer);
 	}
+}
+
+const bool GuidanceUI::UniqueUpdateInputCode(std::vector<InputCode>& input_code, const SingleButtonPromptData& prompt_data, const CommandKind command_kind)
+{
+	const auto command = CommandHandler::GetInstance();
+
+	// 歩き(キーボード)特有処理
+	if (command_kind == CommandKind::kMoveUpPlayer && m_current_device_kind == DeviceKind::kKeyboard)
+	{
+		input_code.emplace_back(command->GetInputCode(m_current_device_kind, command_kind, prompt_data.command_slot_kind));
+		input_code.emplace_back(command->GetInputCode(m_current_device_kind, CommandKind::kMoveLeftPlayer, prompt_data.command_slot_kind));
+		input_code.emplace_back(command->GetInputCode(m_current_device_kind, CommandKind::kMoveDownPlayer, prompt_data.command_slot_kind));
+		input_code.emplace_back(command->GetInputCode(m_current_device_kind, CommandKind::kMoveRightPlayer, prompt_data.command_slot_kind));
+		return true;
+	}
+	// 武器切り替え(キーボード)特有処理
+	else if (command_kind == CommandKind::kSelectWeaponRotateLeft && m_current_device_kind == DeviceKind::kKeyboard)
+	{
+		input_code.emplace_back(command->GetInputCode(m_current_device_kind, command_kind, prompt_data.command_slot_kind));
+		input_code.emplace_back(command->GetInputCode(m_current_device_kind, CommandKind::kSelectWeaponRotateRight, prompt_data.command_slot_kind));
+		return true;
+	}
+	// 武器切り替え(パッド)特有処理
+	else if (command_kind == CommandKind::kSelectWeaponUp && m_current_device_kind == DeviceKind::kPad)
+	{
+		input_code.emplace_back(command->GetInputCode(m_current_device_kind, command_kind, prompt_data.command_slot_kind));
+		input_code.emplace_back(command->GetInputCode(m_current_device_kind, CommandKind::kSelectWeaponLeft,	prompt_data.command_slot_kind));
+		input_code.emplace_back(command->GetInputCode(m_current_device_kind, CommandKind::kSelectWeaponDown,	prompt_data.command_slot_kind));
+		input_code.emplace_back(command->GetInputCode(m_current_device_kind, CommandKind::kSelectWeaponRight,	prompt_data.command_slot_kind));
+		return true;
+	}
+
+	return false;
+}
+
+const bool GuidanceUI::UniqueUpdateGraphics(const std::vector<InputCode>& input_code, std::vector<std::shared_ptr<Graphicer>>& graphicer)
+{
+	std::shared_ptr<Graphicer> graphic = nullptr;
+	// 左右方向キー特有処理
+	if (input_code == std::vector<InputCode>{
+		{ InputKind::kPadButton, XINPUT_BUTTON_DPAD_LEFT },
+		{ InputKind::kPadButton, XINPUT_BUTTON_DPAD_RIGHT }})
+	{
+		graphic = std::make_shared<Graphicer>("Data/Graphic/UI/Button/Pad/direction_key_left_and_right.png");
+	}
+	// 上下方向キー特有処理
+	else if (input_code == std::vector<InputCode>{
+		{ InputKind::kPadButton, XINPUT_BUTTON_DPAD_UP },
+		{ InputKind::kPadButton, XINPUT_BUTTON_DPAD_DOWN }})
+	{
+		graphic = std::make_shared<Graphicer>("Data/Graphic/UI/Button/Pad/direction_key_up_and_down.png");
+	}
+	// 全方向キー特有処理
+	else if (input_code == std::vector<InputCode>{
+		{ InputKind::kPadButton, XINPUT_BUTTON_DPAD_UP },
+		{ InputKind::kPadButton, XINPUT_BUTTON_DPAD_LEFT },
+		{ InputKind::kPadButton, XINPUT_BUTTON_DPAD_DOWN },
+		{ InputKind::kPadButton, XINPUT_BUTTON_DPAD_RIGHT }})
+	{
+		graphic = std::make_shared<Graphicer>("Data/Graphic/UI/Button/Pad/direction_key_all_direction.png");
+	}
+
+	if (graphic)
+	{
+		graphic->SetScale(data.input_graphic_scale);
+		return true;
+	}
+	
+	return false;
 }
 
 const bool GuidanceUI::CanUpdateRresultScreen() const

@@ -2,17 +2,25 @@
 
 GuidanceUIActivator::GuidanceUIActivator() :
 	m_active_ui	(nullptr),
-	m_was_active{ {"move", false}, {"run", false}, {"camera", false}, {"shot", false}, {"reload", false} }
+	m_was_active{ 
+		{"move",			false}, 
+		{"run",				false}, 
+		{"camera",			false}, 
+		{"shot",			false}, 
+		{"reload",			false},
+		{"change_weapon",	false}}
 {
-	m_stock_ui["move"]		= std::make_shared<GuidanceUI>("move");
-	m_stock_ui["run"]		= std::make_shared<GuidanceUI>("run");
-	m_stock_ui["camera"]	= std::make_shared<GuidanceUI>("camera");
-	m_stock_ui["shot"]		= std::make_shared<GuidanceUI>("shot");
-	m_stock_ui["reload"]	= std::make_shared<GuidanceUI>("reload");
+	m_stock_ui["move"]			= std::make_shared<GuidanceUI>("move");
+	m_stock_ui["run"]			= std::make_shared<GuidanceUI>("run");
+	m_stock_ui["camera"]		= std::make_shared<GuidanceUI>("camera");
+	m_stock_ui["shot"]			= std::make_shared<GuidanceUI>("shot");
+	m_stock_ui["reload"]		= std::make_shared<GuidanceUI>("reload");
+	m_stock_ui["change_weapon"]	= std::make_shared<GuidanceUI>("change_weapon");
 
 	// イベント登録
 	EventSystem::GetInstance()->Subscribe<ChangeSceneEvent>		(this, &GuidanceUIActivator::ActivateOnSceneChange);
 	EventSystem::GetInstance()->Subscribe<OnMagazineEmpty>		(this, &GuidanceUIActivator::ActivateOnMagazineEmpty);
+	EventSystem::GetInstance()->Subscribe<OnGetRocketBomb>		(this, &GuidanceUIActivator::ActivateOnGetRocketBomb);
 }
 
 GuidanceUIActivator::~GuidanceUIActivator()
@@ -20,6 +28,7 @@ GuidanceUIActivator::~GuidanceUIActivator()
 	// イベントの登録解除
 	EventSystem::GetInstance()->Unsubscribe<ChangeSceneEvent>	(this, &GuidanceUIActivator::ActivateOnSceneChange);
 	EventSystem::GetInstance()->Unsubscribe<OnMagazineEmpty>	(this, &GuidanceUIActivator::ActivateOnMagazineEmpty);
+	EventSystem::GetInstance()->Unsubscribe<OnGetRocketBomb>	(this, &GuidanceUIActivator::ActivateOnGetRocketBomb);
 }
 
 void GuidanceUIActivator::LateUpdate()
@@ -104,6 +113,15 @@ void GuidanceUIActivator::ActivateOnMagazineEmpty	(const OnMagazineEmpty&		event
 	{
 		m_was_active.at("reload") = true;
 		Activate("reload");
+	}
+}
+
+void GuidanceUIActivator::ActivateOnGetRocketBomb	(const OnGetRocketBomb&		event)
+{
+	if (!m_was_active.at("change_weapon"))
+	{
+		m_was_active.at("change_weapon") = true;
+		Activate("change_weapon");
 	}
 }
 #pragma endregion

@@ -94,8 +94,8 @@ Player::Player() :
 		rocket_launcher ->AddToObjManager();
 		assault_rifle	->AddToObjManager();
 		knife			->AddToObjManager();
-		m_weapon_shortcut_selecter->AttachShortcutWeapon(WeaponShortcutPosKind::kOutsideDown, rocket_launcher);
-		m_weapon_shortcut_selecter->AttachShortcutWeapon(WeaponShortcutPosKind::kInsideLeft,  assault_rifle);
+		m_weapon_shortcut_selecter->AttachShortcutWeapon(WeaponShortcutPosKind::kInsideDown, rocket_launcher);
+		m_weapon_shortcut_selecter->AttachShortcutWeapon(WeaponShortcutPosKind::kInsideLeft, assault_rifle);
 		AddItem(rocket_launcher);
 		AddItem(assault_rifle);
 		AddItem(knife);
@@ -587,7 +587,15 @@ void Player::PickUpItem()
 	const auto obj = std::dynamic_pointer_cast<ObjBase>(m_pickupable_item);
 	if (!obj) { return; }
 
-	EventSystem::GetInstance()->Publish(PickUpItemEvent(m_pickupable_item->GetItemKind(), obj->GetObjHandle(), m_transform->GetPos(CoordinateKind::kWorld), TimeScaleLayerKind::kNoneScale));
+	// 取得したことを通知
+	const auto event_system = EventSystem::GetInstance();
+	event_system->Publish(PickUpItemEvent(m_pickupable_item->GetItemKind(), obj->GetObjHandle(), m_transform->GetPos(CoordinateKind::kWorld), TimeScaleLayerKind::kNoneScale));
+
+	// ロケット弾を取得したことを通知
+	if (obj->GetName() == ObjName.AMMO_BOX_ROCKET_BOMB)
+	{
+		event_system->Publish(OnGetRocketBomb());
+	}
 }
 
 void Player::AddItem(const std::shared_ptr<IItem>& item)

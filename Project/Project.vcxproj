@@ -440,6 +440,7 @@
     <ClInclude Include="SourceCode\Data\zombie_data.hpp" />
     <ClInclude Include="SourceCode\Debugger\debugger.hpp" />
     <ClInclude Include="SourceCode\Drawer\drawer.hpp" />
+    <ClInclude Include="SourceCode\Event\on_get_rocket_bomb.hpp" />
     <ClInclude Include="SourceCode\Event\on_magazine_empty.hpp" />
     <ClInclude Include="SourceCode\Event\draw_knife_event.hpp" />
     <ClInclude Include="SourceCode\Event\spinning_slash_event.hpp">
