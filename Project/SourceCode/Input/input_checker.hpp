@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <vector>
 #include <unordered_map>
 #include <tuple>
@@ -38,17 +38,17 @@ struct KeyEquality
 	}
 };
 
-/// @brief –ğŠ„ : “ü—ÍƒfƒoƒCƒX‚ÌŒŸo, “ü—Íó‘Ô‚Ìæ“¾, “ü—ÍŠÔ‚ÌŒv‘ª
+/// @brief å½¹å‰² : å…¥åŠ›ãƒ‡ãƒã‚¤ã‚¹ã®æ¤œå‡º, å…¥åŠ›çŠ¶æ…‹ã®å–å¾—, å…¥åŠ›æ™‚é–“ã®è¨ˆæ¸¬
 class InputChecker final : public SingletonBase<InputChecker>
 {
 public:
 	void Update();
 	void LateUpdate();
 
-	/// @brief ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ğ‰æ–Ê’†‰›‚ÉŒÅ’è‚·‚é‚©‚ğİ’è
+	/// @brief ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã‚’ç”»é¢ä¸­å¤®ã«å›ºå®šã™ã‚‹ã‹ã‚’è¨­å®š
 	void SetCursorToCenter(const bool is_lock) { m_is_lock_mouse_pos = is_lock; }
 
-	/// @brief “ü—Íƒeƒ“ƒvƒŒ[ƒg’l‚©‚ç“ü—ÍƒR[ƒh‚Ö•ÏŠ·
+	/// @brief å…¥åŠ›ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆå€¤ã‹ã‚‰å…¥åŠ›ã‚³ãƒ¼ãƒ‰ã¸å¤‰æ›
 	template<input_concepts::InputT InputT>
 	[[nodiscard]] InputCode ConvertInputTemplateToInputCode(const InputT& input_t)
 	{
@@ -63,15 +63,15 @@ public:
 		return InputCode();
 	}
 
-	#pragma region ƒ}ƒEƒXî•ñ
+	#pragma region ãƒã‚¦ã‚¹æƒ…å ±
 	[[nodiscard]] Vector2D<int>   GetMousePos	   (const TimeKind time_kind) const { return m_mouse_data.at(time_kind).pos; }
 	[[nodiscard]] Vector2D<float> GetMouseDir	   (const TimeKind time_kind) const { return m_mouse_data.at(time_kind).dir; }
 	[[nodiscard]] Vector2D<float> GetMouseVelocity (const TimeKind time_kind) const { return m_mouse_data.at(time_kind).velocity; }
 	#pragma endregion
 
 
-	/// @brief “ü—Í”»’è
-	/// @brief ƒL[“ü—ÍˆÈŠO‚Íenum class‚Ì’è‹`‚ğg—p‚·‚é•K—v‚ ‚è
+	/// @brief å…¥åŠ›åˆ¤å®š
+	/// @brief ã‚­ãƒ¼å…¥åŠ›ä»¥å¤–ã¯enum classã®å®šç¾©ã‚’ä½¿ç”¨ã™ã‚‹å¿…è¦ã‚ã‚Š
 	template<input_concepts::InputT InputT>
 	[[nodiscard]] bool IsInput(const InputT&	input_code)
 	{
@@ -79,8 +79,8 @@ public:
 	}
 	[[nodiscard]] bool IsInput(const InputCode& input_code);
 
-	/// @brief “ü—Íƒpƒ‰ƒ[ƒ^‚ğæ“¾
-	/// @brief ƒL[“ü—ÍˆÈŠO‚Íenum class‚Ì’è‹`‚ğg—p‚·‚é•K—v‚ ‚è
+	/// @brief å…¥åŠ›ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’å–å¾—
+	/// @brief ã‚­ãƒ¼å…¥åŠ›ä»¥å¤–ã¯enum classã®å®šç¾©ã‚’ä½¿ç”¨ã™ã‚‹å¿…è¦ã‚ã‚Š
 	template<input_concepts::ParameterT InputT>
 	[[nodiscard]] int GetInputParameter(const InputT&	 input_code)
 	{
@@ -88,8 +88,8 @@ public:
 	}
 	[[nodiscard]] int GetInputParameter(const InputCode& input_code) const;
 
-	/// @brief “ü—ÍŠÔ‚ğæ“¾
-	/// @brief ƒL[“ü—ÍˆÈŠO‚Íenum class‚Ì’è‹`‚ğg—p‚·‚é•K—v‚ ‚è
+	/// @brief å…¥åŠ›æ™‚é–“ã‚’å–å¾—
+	/// @brief ã‚­ãƒ¼å…¥åŠ›ä»¥å¤–ã¯enum classã®å®šç¾©ã‚’ä½¿ç”¨ã™ã‚‹å¿…è¦ã‚ã‚Š
 	template<input_concepts::InputT InputT>
 	[[nodiscard]] float GetInputTime(const InputT&    input_code, const TimeKind time_kind)
 	{
@@ -97,8 +97,8 @@ public:
 	}
 	[[nodiscard]] float GetInputTime(const InputCode& input_code, const TimeKind time_kind);
 
-	/// @brief “ü—Íó‘Ô‚ğæ“¾
-	/// @brief ƒL[“ü—ÍˆÈŠO‚Íenum class‚Ì’è‹`‚ğg—p‚·‚é•K—v‚ ‚è
+	/// @brief å…¥åŠ›çŠ¶æ…‹ã‚’å–å¾—
+	/// @brief ã‚­ãƒ¼å…¥åŠ›ä»¥å¤–ã¯enum classã®å®šç¾©ã‚’ä½¿ç”¨ã™ã‚‹å¿…è¦ã‚ã‚Š
 	template<input_concepts::InputT InputT>
 	[[nodiscard]] InputState GetInputState(const InputT&    input_code)
 	{
@@ -106,7 +106,7 @@ public:
 	}
 	[[nodiscard]] InputState GetInputState(const InputCode& input_code);
 
-	/// @brief “ü—Íƒeƒ“ƒvƒŒ[ƒg’l‚©‚ç“ü—Í‚Ìí—Ş‚ğæ“¾
+	/// @brief å…¥åŠ›ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆå€¤ã‹ã‚‰å…¥åŠ›ã®ç¨®é¡ã‚’å–å¾—
 	template<input_concepts::InputT InputT>
 	[[nodiscard]] InputKind GetInputKind(const InputT& input_code)
 	{
@@ -121,8 +121,8 @@ public:
 		return InputKind::kKey;
 	}
 
-	/// @brief Œ»İ‚Ì“ü—ÍƒfƒoƒCƒX‚ğæ“¾	
-	/// @brief ƒL[ƒ{[ƒh‚Æƒpƒbƒh—¼•û‚ª“ü—Í‚³‚ê‚½ê‡‚ÍƒL[ƒ{[ƒh‚ğ—Dæ
+	/// @brief ç¾åœ¨ã®å…¥åŠ›ãƒ‡ãƒã‚¤ã‚¹ã‚’å–å¾—	
+	/// @brief ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ã¨ãƒ‘ãƒƒãƒ‰ä¸¡æ–¹ãŒå…¥åŠ›ã•ã‚ŒãŸå ´åˆã¯ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ã‚’å„ªå…ˆ
 	[[nodiscard]] DeviceKind GetCurrentInputDevice() const { return m_current_device; }
 
 private:
@@ -131,34 +131,34 @@ private:
 
 	void UpdateMouse();
 
-	/// @brief ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ğ‰æ–Ê’†‰›‚ÉŒÅ’è‚·‚é
+	/// @brief ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã‚’ç”»é¢ä¸­å¤®ã«å›ºå®šã™ã‚‹
 	void LockCursor();
 
-	/// @brief “ü—Íî•ñ‚Ì’Ç‰Á
-	/// @param kind “ü—Í‚Ìí—Ş
-	/// @param input_code_num kind‚ª‚Â“ü—ÍƒR[ƒh”
+	/// @brief å…¥åŠ›æƒ…å ±ã®è¿½åŠ 
+	/// @param kind å…¥åŠ›ã®ç¨®é¡
+	/// @param input_code_num kindãŒæŒã¤å…¥åŠ›ã‚³ãƒ¼ãƒ‰æ•°
 	void AddInputData(const InputKind kind, const int input_code_num);
 
 	void CalcMouseDir();
 	void CalcMouseVelocity();
 
-	/// @brief ‚·‚×‚Ä‚Ì“ü—ÍŠÔ‚ğŒv‘ª‚·‚é
+	/// @brief ã™ã¹ã¦ã®å…¥åŠ›æ™‚é–“ã‚’è¨ˆæ¸¬ã™ã‚‹
 	void CountInputTimeAll();
 
-	/// @brief ‚·‚×‚Ä‚Ì“ü—Í”»’è‚ğs‚¤
+	/// @brief ã™ã¹ã¦ã®å…¥åŠ›åˆ¤å®šã‚’è¡Œã†
 	void CheckInputAll();
 
-	/// @brief “ü—Íƒf[ƒ^‚ğˆÚs‚·‚é
+	/// @brief å…¥åŠ›ãƒ‡ãƒ¼ã‚¿ã‚’ç§»è¡Œã™ã‚‹
 	void ShiftDataCureentToPrev();
 
-	/// @brief Œ»İ‚Ì“ü—ÍƒfƒoƒCƒX‚ğŒŸo
+	/// @brief ç¾åœ¨ã®å…¥åŠ›ãƒ‡ãƒã‚¤ã‚¹ã‚’æ¤œå‡º
 	void DetectCurrentInputDevice();
 
 public:
-	static constexpr short			kStickMaxSlope		= SHRT_MAX;		// ŒX‚«‚ÌÅ‘å’l
-	static constexpr short			kStickMinSlope		= SHRT_MIN;		// ŒX‚«‚ÌÅ¬’l
-	static constexpr short			kStickDeadZone		= 10000;		// ƒXƒeƒBƒbƒN“ü—Í–³Œø”ÍˆÍ(w’è‰Â”\”ÍˆÍ : -32768`32767)
-	static constexpr unsigned char	kTriggerDeadZone	= 50;			// ƒgƒŠƒK[“ü—Í–³Œø”ÍˆÍ  (w’è‰Â”\”ÍˆÍ : 0`UCHAR_MAX)
+	static constexpr short			kStickMaxSlope		= SHRT_MAX;		// å‚¾ãã®æœ€å¤§å€¤
+	static constexpr short			kStickMinSlope		= SHRT_MIN;		// å‚¾ãã®æœ€å°å€¤
+	static constexpr short			kStickDeadZone		= 10000;		// ã‚¹ãƒ†ã‚£ãƒƒã‚¯å…¥åŠ›ç„¡åŠ¹ç¯„å›²(æŒ‡å®šå¯èƒ½ç¯„å›² : -32768ï½32767)
+	static constexpr unsigned char	kTriggerDeadZone	= 50;			// ãƒˆãƒªã‚¬ãƒ¼å…¥åŠ›ç„¡åŠ¹ç¯„å›²  (æŒ‡å®šå¯èƒ½ç¯„å›² : 0ï½UCHAR_MAX)
 
 private:
 	static constexpr int			kMouseButtonNum		= 8;
@@ -168,10 +168,11 @@ private:
 	static constexpr int			kPadTriggerNum		= 2;
 	static constexpr int			kPadStickNum		= 8;
 
-	XINPUT_STATE					m_xinput;	// TODO : •¡”ƒRƒ“ƒgƒ[ƒ‰[‚É‘Î‰‚Å‚«‚é‚æ‚¤Œã‚ÉƒRƒ“ƒeƒi‰»
+	XINPUT_STATE					m_xinput;	// TODO : è¤‡æ•°ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ã«å¯¾å¿œã§ãã‚‹ã‚ˆã†å¾Œã«ã‚³ãƒ³ãƒ†ãƒŠåŒ–
 	DeviceKind						m_current_device;
 	bool							m_is_lock_mouse_pos;
 	int								m_key_input[256];
+	float							m_input_timer;
 
 	std::unordered_map<InputKey, InputValue, KeyHash, KeyEquality> m_input_data;
 	std::unordered_map<TimeKind, MouseData> m_mouse_data;

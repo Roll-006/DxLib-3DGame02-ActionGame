@@ -248,6 +248,7 @@
     <ClCompile Include="SourceCode\Part\transform.cpp" />
     <ClCompile Include="SourceCode\Part\weapon_shortcut_selecter.cpp" />
     <ClCompile Include="SourceCode\Random\random_generator.cpp" />
+    <ClCompile Include="SourceCode\Scene\demo_scene.cpp" />
     <ClCompile Include="SourceCode\Scene\load_scene.cpp" />
     <ClCompile Include="SourceCode\Scene\play_scene.cpp" />
     <ClCompile Include="SourceCode\Scene\share_scene.cpp" />
@@ -683,6 +684,7 @@
     <ClInclude Include="SourceCode\Path\model_path.hpp" />
     <ClInclude Include="SourceCode\Path\ui_graphic_path.hpp" />
     <ClInclude Include="SourceCode\Random\random_generator.hpp" />
+    <ClInclude Include="SourceCode\Scene\demo_scene.hpp" />
     <ClInclude Include="SourceCode\Scene\load_scene.hpp" />
     <ClInclude Include="SourceCode\Scene\play_scene.hpp" />
     <ClInclude Include="SourceCode\Scene\share_scene.hpp" />
@@ -789,6 +791,7 @@
     <ClInclude Include="SourceCode\Window\window.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Data\JSON\demo_scene_data.json" />
     <None Include="Data\JSON\zombie_type_data.json" />
     <None Include="Data\JSON\animator.json" />
     <None Include="Data\JSON\button_prompt_data.json" />

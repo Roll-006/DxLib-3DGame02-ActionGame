@@ -26,11 +26,12 @@ public:
 	void AllowSelect()		override { m_can_select = true; }
 	void DisallowSelect()	override { m_can_select = false; }
 
-	[[nodiscard]] int  GetTabHandle()	const override	{ return m_tab_handle; }
-	[[nodiscard]] int  GetPriority()	const override	{ return m_priority; }
-	[[nodiscard]] bool IsActive()		const override	{ return m_is_active; }
-	[[nodiscard]] bool CanSelect()		const override	{ return m_can_select; }
-	[[nodiscard]] bool IsGameStart()	const			{ return m_is_game_start && !SceneFader::GetInstance()->IsFading(); }
+	[[nodiscard]] int  GetTabHandle()		const override	{ return m_tab_handle; }
+	[[nodiscard]] int  GetPriority()		const override	{ return m_priority; }
+	[[nodiscard]] bool IsActive()			const override	{ return m_is_active; }
+	[[nodiscard]] bool CanSelect()			const override	{ return m_can_select; }
+	[[nodiscard]] bool IsGameStart()		const			{ return m_is_game_start && !SceneFader::GetInstance()->IsFading(); }
+	[[nodiscard]] bool IsActiveWarningTab() const			{ return m_warning_exit_tab->IsActive(); }
 
 private:
 	void ExecuteGameStart();

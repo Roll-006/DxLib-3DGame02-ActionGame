@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../Path/movie_path.hpp"
 #include "../Part/graphicer.hpp"
 #include "../Part/screen_creator.hpp"
@@ -15,8 +15,8 @@ public:
 	};
 
 public:
-	MoviePlayer(const std::string& file_path,	const BackColorKind back_color_kind, const bool is_loop);
-	MoviePlayer(const int movie_handle,			const BackColorKind back_color_kind, const bool is_loop);
+	MoviePlayer(const std::string& file_path,	const bool is_loop = true, const BackColorKind back_color_kind = BackColorKind::kBlack);
+	MoviePlayer(const int movie_handle,			const bool is_loop = true, const BackColorKind back_color_kind = BackColorKind::kBlack);
 	~MoviePlayer();
 
 	void CreateMovieScreen() const;
@@ -25,6 +25,7 @@ public:
 	[[nodiscard]] std::shared_ptr<Graphicer>	 GetResourceMovieGraphicer() const { return m_movie_graphic; }
 	[[nodiscard]] std::shared_ptr<Graphicer>	 GetResultGraphicer()		 const { return m_result_screen->GetGraphicer(); }
 	[[nodiscard]] std::shared_ptr<ScreenCreator> GetResultScreen()			 const { return m_result_screen; }
+	[[nodiscard]] const bool                     IsStop()                    const { return GetMovieStateToGraph(m_movie_graphic->GetGraphicHandle()) == 0; }
 
 private:
 	BackColorKind					m_back_color_kind;

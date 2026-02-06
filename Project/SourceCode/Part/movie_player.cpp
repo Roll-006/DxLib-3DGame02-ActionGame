@@ -1,24 +1,24 @@
-#include "movie_player.hpp"
+﻿#include "movie_player.hpp"
 
-MoviePlayer::MoviePlayer(const std::string& file_path, const BackColorKind back_color_kind, const bool is_loop) :
+MoviePlayer::MoviePlayer(const std::string& file_path, const bool is_loop, const BackColorKind back_color_kind) :
 	m_back_color_kind	(back_color_kind),
 	m_movie_graphic		(nullptr),
 	m_result_screen		(nullptr),
 	m_is_loop			(is_loop)
 {
 	m_movie_graphic	= std::make_shared<Graphicer>(file_path);
-	m_result_screen	= std::make_shared<ScreenCreator>(m_movie_graphic->GetOriginSize());
+	m_result_screen	= std::make_shared<ScreenCreator>(m_movie_graphic->GetOriginSize(), Window::kCenterPos);
 	m_movie_graphic->SetCenterPos(m_result_screen->GetHalfScreenSize());
 }
 
-MoviePlayer::MoviePlayer(const int movie_handle, const BackColorKind back_color_kind, const bool is_loop) :
+MoviePlayer::MoviePlayer(const int movie_handle, const bool is_loop, const BackColorKind back_color_kind) :
 	m_back_color_kind	(back_color_kind),
 	m_movie_graphic		(nullptr),
 	m_result_screen		(nullptr),
 	m_is_loop			(is_loop)
 {
 	m_movie_graphic	= std::make_shared<Graphicer>(movie_handle);
-	m_result_screen	= std::make_shared<ScreenCreator>(m_movie_graphic->GetOriginSize());
+	m_result_screen	= std::make_shared<ScreenCreator>(m_movie_graphic->GetOriginSize(), Window::kCenterPos);
 	m_movie_graphic->SetCenterPos(m_result_screen->GetHalfScreenSize());
 }
 

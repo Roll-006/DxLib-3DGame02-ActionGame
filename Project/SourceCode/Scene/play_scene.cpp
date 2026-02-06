@@ -3,9 +3,9 @@
 
 PlayScene::PlayScene() :
 	m_is_active						(true),
-	m_scene_kind					(SceneKind::kPlay),
+	m_is_start_process				(false),
 	m_loop_count					(0),
-	m_can_fade_in					(true),
+	m_scene_kind					(SceneKind::kPlay),
 	m_player						(std::make_shared<Player>()),
 	m_enemy_manager					(std::make_shared<EnemyManager>()),
 	m_houses						(std::make_shared<Houses>()),
@@ -109,7 +109,8 @@ void PlayScene::Update()
 {
 	StartFadeIn();
 
-	if (SceneFader::GetInstance()->GetAlphaBlendNum() >= UCHAR_MAX) { return; }
+	m_is_start_process = SceneFader::GetInstance()->GetAlphaBlendNum() < UCHAR_MAX;
+	if (!m_is_start_process) { return; }
 
 	m_player							->Update();
 	m_enemy_manager						->Update();
@@ -128,7 +129,7 @@ void PlayScene::Update()
 
 void PlayScene::LateUpdate()
 {
-	if (SceneFader::GetInstance()->GetAlphaBlendNum() >= UCHAR_MAX) { return; }
+	if (!m_is_start_process) { return; }
 
 	m_player							->LateUpdate();
 	m_enemy_manager						->LateUpdate();
@@ -143,7 +144,7 @@ void PlayScene::LateUpdate()
 
 void PlayScene::DrawToShadowMap() const
 {
-	if (SceneFader::GetInstance()->GetAlphaBlendNum() >= UCHAR_MAX) { return; }
+	if (!m_is_start_process) { return; }
 
 	m_player							->Draw();
 	m_enemy_manager						->Draw();
@@ -155,7 +156,7 @@ void PlayScene::DrawToShadowMap() const
 
 void PlayScene::Draw() const
 {
-	if (SceneFader::GetInstance()->GetAlphaBlendNum() >= UCHAR_MAX) { return; }
+	if (!m_is_start_process) { return; }
 
 	m_player							->Draw();
 	m_enemy_manager						->Draw();
@@ -184,14 +185,11 @@ std::shared_ptr<IScene> PlayScene::ChangeScene()
 
 void PlayScene::StartFadeIn()
 {
-	if (!m_can_fade_in) { return; }
-
 	// TODO : 仮
 	++m_loop_count;
 	if (m_loop_count > 5)
 	{
 		const auto fader = SceneFader::GetInstance();
 		fader->StartFade(0, 120.0f);
-		m_can_fade_in = false;
 	}
 }

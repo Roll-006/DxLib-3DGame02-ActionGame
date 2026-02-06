@@ -1,0 +1,92 @@
+﻿#include "demo_scene.hpp"
+#include "../Manager/scene_manager.hpp"
+
+DemoScene::DemoScene() : 
+	m_is_active			(true),
+	m_is_start_process	(false),
+	m_loop_count		(0),
+	m_scene_kind		(SceneKind::kDemo),
+	m_demo_movie		(std::make_shared<MoviePlayer>("Data/Movie/play_movie.mp4", false)),
+	m_started_fade		(false)
+{
+	//nlohmann::json j_data;
+	//if (json_loader::Load("Data/JSON/demo_scene_data.json", j_data))
+	//{
+	//	cj_data.at("demo_scene_data").get<SingleButtonPromptData>();
+	//}
+}
+
+DemoScene::~DemoScene()
+{
+
+}
+
+void DemoScene::Init()
+{
+
+}
+
+void DemoScene::Update()
+{
+	StartFadeIn();
+
+	m_is_start_process = SceneFader::GetInstance()->GetAlphaBlendNum() < UCHAR_MAX;
+	if (!m_is_start_process) { return; }
+
+	m_demo_movie->CreateMovieScreen();
+}
+
+void DemoScene::LateUpdate()
+{
+	if (!m_is_start_process) { return; }
+}
+
+void DemoScene::DrawToShadowMap() const
+{
+	if (!m_is_start_process) { return; }
+}
+
+void DemoScene::Draw() const
+{
+	if (!m_is_start_process) { return; }
+
+	m_demo_movie->Play();
+}
+
+std::shared_ptr<IScene> DemoScene::ChangeScene()
+{
+	// タイトル
+	if (IsChangeTitleScene())
+	{
+		return std::make_shared<TitleScene>();
+	}
+
+	return nullptr;
+}
+
+void DemoScene::StartFadeIn()
+{
+	++m_loop_count;
+	if (m_loop_count == 5)
+	{
+		const auto fader = SceneFader::GetInstance();
+		fader->StartFade(0, 100.0f);
+	}
+}
+
+const bool DemoScene::IsChangeTitleScene()
+{
+	if (!m_is_start_process) { return false; }
+
+	const auto fader = SceneFader::GetInstance();
+
+	// フェード開始
+	if ((m_demo_movie->IsStop() && !m_started_fade) || CommandHandler::GetInstance()->IsExecute(CommandKind::kDecide, TimeKind::kCurrent))
+	{
+		m_started_fade = true;
+		fader->StartFade(UCHAR_MAX, 300.0f);
+	}
+
+	// フェード終了判定
+	return fader->GetAlphaBlendNum() >= UCHAR_MAX;
+}

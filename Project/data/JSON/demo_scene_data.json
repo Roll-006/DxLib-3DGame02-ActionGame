@@ -1,0 +1,20 @@
+﻿{
+  "demo_scene_data": {
+    "single_button_prompt_data": [
+      {
+        "text_data": {
+          "font_path": "explanatory_text",
+          "text": "タイトルに戻る",
+          "hex_color": "#ffffff",
+          "offset": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "key_command_kind": 0,
+        "pad_command_kind": 0,
+        "command_slot_kind": 0
+      }
+    ]
+  }
+}

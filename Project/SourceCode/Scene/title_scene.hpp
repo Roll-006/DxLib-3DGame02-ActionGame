@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../Interface/i_scene.hpp"
 
 #include "../Object/title_character.hpp"
@@ -30,19 +30,24 @@ public:
 
 private:
 	void StartFadeIn() override;
+	[[nodiscard]] const bool IsChangeDemoScene();
 
 private:
 	bool		m_is_active;
+	bool		m_is_start_process;
+	int			m_loop_count;
 	SceneKind	m_scene_kind;
 
 	std::shared_ptr<TitleCharacter>				m_title_character;
 	std::shared_ptr<TitleTab>					m_title_tab;
 	std::shared_ptr<TitleSceneEffectObjectPool>	m_title_scene_effect_object_pool;
 
-	// TODO : �̂��ɕʃN���X�ֈڍs
+	// TODO : のちに別クラスへ移行
 	std::shared_ptr<VirtualCamera>				m_title_camera;
 	std::shared_ptr<Transform>					m_aim_transform;
 	std::shared_ptr<Transform>					m_smoke_transform;
 	float										m_sin;
 	int											m_smoke_delete_handle;
+	float										m_change_demo_timer;
+	bool										m_started_fade;
 };

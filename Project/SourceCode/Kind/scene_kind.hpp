@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 enum class SceneKind
 {
@@ -9,4 +9,5 @@ enum class SceneKind
 	kPlay,
 	kGameClear,
 	kLoad,
+	kDemo,
 };

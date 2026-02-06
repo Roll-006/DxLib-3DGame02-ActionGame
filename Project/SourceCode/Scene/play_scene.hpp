@@ -47,9 +47,9 @@ private:
 
 private:
 	bool		m_is_active;
-	SceneKind	m_scene_kind;
+	bool		m_is_start_process;
 	int			m_loop_count;
-	bool		m_can_fade_in;
+	SceneKind	m_scene_kind;
 
 	std::shared_ptr<Player>						m_player;
 	std::shared_ptr<EnemyManager>				m_enemy_manager;

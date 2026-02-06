@@ -5,7 +5,8 @@ InputChecker::InputChecker():
 	m_xinput				(-1),
 	m_current_device		(DeviceKind::kKeyboard),
 	m_is_lock_mouse_pos		(true),
-	m_key_input				(0)
+	m_key_input				(0),
+	m_input_timer			(0.0f)
 {	
 	SetUseDirectInputFlag(TRUE);
 	SetMouseDispFlag(FALSE);
@@ -233,18 +234,18 @@ void InputChecker::CountInputTimeAll()
 {
 	const auto delta_time = GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kNoneScale);
 
-	for (auto& [key, j_data] : m_input_data)
+	for (auto& [key, data] : m_input_data)
 	{
 		// 過去フレームはスキップ
 		if (key.second == TimeKind::kPrev) { continue; }
 
-		if (j_data.is_input)
+		if (data.is_input)
 		{
-			j_data.input_time += delta_time;
+			data.input_time += delta_time;
 		}
 		else
 		{
-			j_data.input_time = 0.0f;
+			data.input_time = 0.0f;
 		}
 	}
 }
@@ -253,38 +254,38 @@ void InputChecker::CheckInputAll()
 {
 	GetHitKeyStateAllEx(m_key_input);
 
-	for (auto& [key, j_data] : m_input_data)
+	for (auto& [key, data] : m_input_data)
 	{
 		if (key.second != TimeKind::kCurrent) { continue; }
 
 		switch (key.first.kind)
 		{
 		case InputKind::kKey:
-			j_data.is_input = IsInput(key.first.code);
+			data.is_input = IsInput(key.first.code);
 			break;
 
 		case InputKind::kMouseButton:
-			j_data.is_input = IsInput(static_cast<mouse::ButtonKind>(key.first.code))		? true : false;
+			data.is_input = IsInput(static_cast<mouse::ButtonKind>(key.first.code))		? true : false;
 			break;
 
 		case InputKind::kMouseWheel:
-			j_data.is_input = IsInput(static_cast<mouse::WheelKind>(key.first.code))		? true : false;
+			data.is_input = IsInput(static_cast<mouse::WheelKind>(key.first.code))		? true : false;
 			break;
 
 		case InputKind::kMouseSlide:
-			j_data.is_input = IsInput(static_cast<mouse::SlideDirKind>(key.first.code))	? true : false;
+			data.is_input = IsInput(static_cast<mouse::SlideDirKind>(key.first.code))	? true : false;
 			break;
 
 		case InputKind::kPadButton:
-			j_data.is_input = IsInput(static_cast<pad::ButtonKind>(key.first.code))		? true : false;
+			data.is_input = IsInput(static_cast<pad::ButtonKind>(key.first.code))		? true : false;
 			break;
 
 		case InputKind::kPadTrigger:
-			j_data.is_input = IsInput(static_cast<pad::TriggerKind>(key.first.code))		? true : false;
+			data.is_input = IsInput(static_cast<pad::TriggerKind>(key.first.code))		? true : false;
 			break;
 
 		case InputKind::kPadStick:
-			j_data.is_input = IsInput(static_cast<pad::StickKind>(key.first.code))		? true : false;
+			data.is_input = IsInput(static_cast<pad::StickKind>(key.first.code))		? true : false;
 			break;
 		}
 	}
@@ -307,11 +308,11 @@ void InputChecker::ShiftDataCureentToPrev()
 
 void InputChecker::DetectCurrentInputDevice()
 {
-	for (const auto& [key, j_data] : m_input_data)
+	for (const auto& [key, data] : m_input_data)
 	{
 		// 今フレームの入力だけ見る
 		if (key.second != TimeKind::kCurrent)	{ continue; }
-		if (!j_data.is_input)						{ continue; }
+		if (!data.is_input)						{ continue; }
 
 		switch (key.first.kind)
 		{

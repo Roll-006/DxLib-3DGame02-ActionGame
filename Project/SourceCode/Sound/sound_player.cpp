@@ -1,10 +1,10 @@
-#include "sound_player.hpp"
+ï»¿#include "sound_player.hpp"
 
 SoundPlayer::SoundPlayer() : 
 	m_sound_pool			(std::make_unique<SoundPool>()),
 	m_sound_volume_settings	(std::make_shared<SoundVolumeSettings>())
 {
-	// ƒCƒxƒ“ƒg“o˜^
+	// ã‚¤ãƒ™ãƒ³ãƒˆç™»éŒ²
 	EventSystem::GetInstance()->Subscribe<ChangeSceneEvent>			(this, &SoundPlayer::PlayChangeSceneSound);
 	EventSystem::GetInstance()->Subscribe<WeaponShotEvent>			(this, &SoundPlayer::PlayWeaponShotSound);
 	EventSystem::GetInstance()->Subscribe<DropShellCasing>			(this, &SoundPlayer::PlayDropShellCasingSound);
@@ -41,7 +41,7 @@ SoundPlayer::SoundPlayer() :
 
 SoundPlayer::~SoundPlayer()
 {
-	// ƒCƒxƒ“ƒg“o˜^
+	// ã‚¤ãƒ™ãƒ³ãƒˆç™»éŒ²
 	EventSystem::GetInstance()->Unsubscribe<ChangeSceneEvent>		(this, &SoundPlayer::PlayChangeSceneSound);
 	EventSystem::GetInstance()->Unsubscribe<WeaponShotEvent>		(this, &SoundPlayer::PlayWeaponShotSound);
 	EventSystem::GetInstance()->Unsubscribe<DropShellCasing>		(this, &SoundPlayer::PlayDropShellCasingSound);
@@ -78,10 +78,10 @@ SoundPlayer::~SoundPlayer()
 
 void SoundPlayer::Update()
 {
-	// ƒŠƒXƒi[‚ðÝ’è
+	// ãƒªã‚¹ãƒŠãƒ¼ã‚’è¨­å®š
 	Set3DSoundListenerPosAndFrontPosAndUpVec(GetCameraPosition(), GetCameraFrontVector(), GetCameraUpVector());
 
-	// ƒTƒEƒ“ƒh‚ÌÝ’è
+	// ã‚µã‚¦ãƒ³ãƒ‰ã®è¨­å®š
 	m_sound_volume_settings->Update();
 
 	auto remove_sounds = std::vector<std::shared_ptr<Sound>>();
@@ -92,7 +92,7 @@ void SoundPlayer::Update()
 		{
 			sound->Update(time_manager->GetTimeScale(sound->GetSoundData().time_scale_layer_kind));
 
-			// ƒv[ƒ‹‚É•Ô‹p
+			// ãƒ—ãƒ¼ãƒ«ã«è¿”å´
 			if (sound->IsReturnPool())
 			{
 				m_sound_pool->ReturnSound(sound);
@@ -118,10 +118,10 @@ void SoundPlayer::RemoveSounds(std::vector<std::shared_ptr<Sound>>& remove_sound
 
 void SoundPlayer::OnPlaySound(const std::string& sound_name, const TimeScaleLayerKind time_scale_layer, std::optional<VECTOR> pos)
 {
-	// ƒv[ƒ‹‚©‚çŽæ“¾‚µ‚ÄÄ¶
+	// ãƒ—ãƒ¼ãƒ«ã‹ã‚‰å–å¾—ã—ã¦å†ç”Ÿ
 	auto sound = m_sound_pool->GetSound(sound_name);
 
-	// ƒv[ƒ‹‚ª‹ó‚Å‚ ‚Á‚½ê‡AÄ¶’†‚ÌƒTƒEƒ“ƒh‚ÅÅ‚àŒÃ‚¢ƒTƒEƒ“ƒh‚ðÄ—˜—p
+	// ãƒ—ãƒ¼ãƒ«ãŒç©ºã§ã‚ã£ãŸå ´åˆã€å†ç”Ÿä¸­ã®ã‚µã‚¦ãƒ³ãƒ‰ã§æœ€ã‚‚å¤ã„ã‚µã‚¦ãƒ³ãƒ‰ã‚’å†åˆ©ç”¨
 	if (!sound)
 	{
 		const auto active_sound = m_active_sounds.at(sound_name).front();
@@ -136,7 +136,7 @@ void SoundPlayer::OnPlaySound(const std::string& sound_name, const TimeScaleLaye
 		if (!sound) { return; }
 	}
 
-	// 3D‹óŠÔ‚ÌƒTƒEƒ“ƒh‚ÅA’®‚±‚¦‚é”ÍˆÍŠO‚Å‚ ‚ê‚ÎÄ¶‚µ‚È‚¢
+	// 3Dç©ºé–“ã®ã‚µã‚¦ãƒ³ãƒ‰ã§ã€è´ã“ãˆã‚‹ç¯„å›²å¤–ã§ã‚ã‚Œã°å†ç”Ÿã—ãªã„
 	if (pos)
 	{
 		if (VSize(GetCameraPosition() - *pos) > sound->GetSoundData().radius)
@@ -184,6 +184,14 @@ void SoundPlayer::PlayChangeSceneSound		(const ChangeSceneEvent&		event)
 		break;
 
 	case SceneKind::kLoad:
+		OnFadeOut("play");
+		OnFadeOut("game_clear");
+		OnFadeOut("game_over");
+		OnFadeOut("battle");
+		break;
+
+	case SceneKind::kDemo:
+		OnFadeOut("title");
 		OnFadeOut("play");
 		OnFadeOut("game_clear");
 		OnFadeOut("game_over");
