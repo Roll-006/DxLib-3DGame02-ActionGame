@@ -505,16 +505,19 @@ void Zombie::OnProjectPos()
 	if (hit_triangle.size() <= 0) { return; }
 
 	// 坂に向かっている場合は投影を許可しない
-	if (IsGoUpHill(hit_triangle.front())) { return; }
+	const auto triangle = hit_triangle.front();
+	if (IsGoUpHill(triangle)) { return; }
 
-	// 光線の始点からの距離
-	const auto future_begin_pos = *project_pos + axis::GetWorldYAxis() * capsule->GetRadius();
-	const auto distance = math::GetDistancePointToTriangle(future_begin_pos, hit_triangle.front());
+	// 移動後カプセルの三角形のZ軸とWorldY軸とでなす角θと、
+	// カプセルの半径から三角形の斜辺rを取得し、移動量を決定する
+	const auto cross_x		= math::GetNormalVector(triangle.GetNormalVector(), axis::GetWorldYAxis());
+	const auto cross_z		= math::GetNormalVector(triangle.GetNormalVector(), cross_x);
+	const auto angle		= math::GetAngleBetweenTwoVectors(cross_z, axis::GetWorldYAxis());
+	const auto sin			= std::sin(angle);
+	const auto r			= sin / capsule->GetRadius();
+	const auto distance		= VSize(*project_pos - capsule->GetSegment().GetBeginPos());
+	const auto result_pos	= capsule->GetSegment().GetBeginPos() - axis::GetWorldYAxis() * (distance - r);
 
-	// 固定位置を決定
-	const auto penetration		= capsule->GetRadius() - distance;
-	const auto push_back_length = math::GetHypotenuseLengthIsoscelesRightTriangle(penetration);
-	const auto result_pos		= *project_pos + axis::GetWorldYAxis() * push_back_length;
 	m_transform->SetPos(CoordinateKind::kWorld, result_pos);
 }
 
