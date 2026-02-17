@@ -5,6 +5,7 @@ PlayScene::PlayScene() :
 	m_is_active						(true),
 	m_is_start_process				(false),
 	m_loop_count					(0),
+	m_can_fade_in					(true),
 	m_scene_kind					(SceneKind::kPlay),
 	m_player						(std::make_shared<Player>()),
 	m_enemy_manager					(std::make_shared<EnemyManager>()),
@@ -185,11 +186,15 @@ std::shared_ptr<IScene> PlayScene::ChangeScene()
 
 void PlayScene::StartFadeIn()
 {
+	if (!m_can_fade_in) { return; }
+
 	// TODO : 仮
 	++m_loop_count;
 	if (m_loop_count > 5)
 	{
 		const auto fader = SceneFader::GetInstance();
 		fader->StartFade(0, 120.0f);
+
+		m_can_fade_in = false;
 	}
 }
