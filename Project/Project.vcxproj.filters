@@ -607,6 +607,9 @@
     <ClCompile Include="SourceCode\Accessor\manager_accessor.cpp">
       <Filter>SourceCode\Accessor</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\Scene\demo_scene.cpp">
+      <Filter>SourceCode\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\Base\character_base.hpp">
@@ -1845,6 +1848,9 @@
     <ClInclude Include="SourceCode\Event\on_get_rocket_bomb.hpp">
       <Filter>SourceCode\Event</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\Scene\demo_scene.hpp">
+      <Filter>SourceCode\Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="SourceCode">
@@ -2091,6 +2097,9 @@
     </None>
     <None Include="Data\JSON\zombie_type_data.json">
       <Filter>JSON</Filter>
+    </None>
+    <None Include="Data\JSON\demo_scene_data.json">
+      <Filter>SourceCode\Data</Filter>
     </None>
   </ItemGroup>
 </Project>

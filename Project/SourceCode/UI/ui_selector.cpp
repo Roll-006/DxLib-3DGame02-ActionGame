@@ -50,7 +50,7 @@ void UISelector::CalcButtonIndex()
 {
 	const auto delta_time	= GameTimeManager::GetInstance()->GetDeltaTime(TimeScaleLayerKind::kUI);
 	const auto command		= CommandHandler ::GetInstance();
-	int increase = 0;
+	auto increase = 0;
 
 	const auto is_prev_input = 
 		   command->IsExecute(CommandKind::kSelectDown, TimeKind::kPrev)

@@ -69,7 +69,7 @@ void ItemCreator::CreateDeadEnemyItem(const DeadEnemyEvent& event)
 	}
 	else
 	{
-		const auto num = RandomGenerator::GetInstance()->GetRandClosedOpen(10, 30);
+		const auto num = RandomGenerator::GetInstance()->GetRandClosedOpen(20, 40);
 		item = std::make_shared<AssaultRifleAmmoBox>(num);
 	}
 
