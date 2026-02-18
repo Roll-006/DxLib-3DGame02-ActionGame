@@ -123,7 +123,10 @@ bool zombie_state::State::TryRunAttack()
 
 bool zombie_state::State::TryDetected()
 {
-	return m_zombie.IsDetectedTarget() && !m_zombie.IsPrevDetectedTarget();
+	if (!m_zombie.IsDetectedTarget())		{ return false; }
+	if (m_zombie.IsPrevDetectedTarget())	{ return false; }
+
+	return true;
 }
 
 bool zombie_state::State::TryWalk()

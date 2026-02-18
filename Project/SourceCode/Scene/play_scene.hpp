@@ -53,7 +53,6 @@ private:
 	SceneKind	m_scene_kind;
 
 	std::shared_ptr<Player>						m_player;
-	std::shared_ptr<EnemyManager>				m_enemy_manager;
 	std::shared_ptr<Houses>						m_houses;
 	std::shared_ptr<Ground>						m_ground;
 	std::shared_ptr<Skydome>					m_skydome;

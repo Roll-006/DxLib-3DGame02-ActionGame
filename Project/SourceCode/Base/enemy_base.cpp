@@ -1,4 +1,5 @@
 ﻿#include "enemy_base.hpp"
+#include "../Manager/enemy_manager.hpp"
 
 EnemyBase::EnemyBase(const std::string& name) :
 	CharacterBase					(name, ObjTag.ENEMY),
@@ -122,7 +123,7 @@ void EnemyBase::JudgeTargetInSight()
 
 	// 自分自身が発見した、もしくは発見状態が共有された場合に発見したものとする
 	const auto is_detected = m_on_collided_vision_trigger && !m_has_obstacle_between_target;
-	if (is_detected || m_is_detection_shared)
+	if ((is_detected || m_is_detection_shared)/* && EnemyManager::GetInstance()->CanDetected()*/)
 	{
 		m_is_detected_target = true;
 	}

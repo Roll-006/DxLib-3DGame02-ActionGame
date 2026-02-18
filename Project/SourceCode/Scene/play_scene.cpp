@@ -8,7 +8,6 @@ PlayScene::PlayScene() :
 	m_can_fade_in					(true),
 	m_scene_kind					(SceneKind::kPlay),
 	m_player						(std::make_shared<Player>()),
-	m_enemy_manager					(std::make_shared<EnemyManager>()),
 	m_houses						(std::make_shared<Houses>()),
 	m_ground						(std::make_shared<Ground>()),
 	m_skydome						(std::make_shared<Skydome>()),
@@ -25,14 +24,17 @@ PlayScene::PlayScene() :
 	m_game_over_tab					(std::make_shared<GameOverTab>()),
 	m_pause_tab						(std::make_shared<PauseTab>())
 {
+	EnemyManager::Generate();
+	const auto enemy_manager =EnemyManager::GetInstance();
+
 	m_player->Init();
-	m_enemy_manager->Init();
+	enemy_manager->Init();
 
 	m_player->AddToObjManager();
 	m_ground->AddToObjManager();
 	m_houses->AddToObjManager();
 
-	m_enemy_manager->AttachTarget(m_player);
+	enemy_manager->AttachTarget(m_player);
 
 	const auto pool_holder = ObjectPoolHolder::GetInstance();
 	pool_holder->AddObjectPool(m_rifle_cartridge_object_pool);
@@ -69,8 +71,7 @@ PlayScene::~PlayScene()
 	m_ground->RemoveToObjManager();
 	m_houses->RemoveToObjManager();
 
-	m_enemy_manager->DetachTarget();
-	m_enemy_manager = nullptr;
+	EnemyManager::Delete();
 
 	const auto pool_holder = ObjectPoolHolder::GetInstance();
 	pool_holder->RemoveObjectPool(m_rifle_cartridge_object_pool	 ->GetName());
@@ -115,8 +116,10 @@ void PlayScene::Update()
 	m_is_start_process = SceneFader::GetInstance()->GetAlphaBlendNum() < UCHAR_MAX;
 	if (!m_is_start_process) { return; }
 
+	const auto enemy_manager = EnemyManager::GetInstance();
+
 	m_player							->Update();
-	m_enemy_manager						->Update();
+	enemy_manager						->Update();
 	RifleCartridgeManager::GetInstance()->Update();
 	m_ground							->Update();
 	m_houses							->Update();
@@ -134,8 +137,10 @@ void PlayScene::LateUpdate()
 {
 	if (!m_is_start_process) { return; }
 
+	const auto enemy_manager = EnemyManager::GetInstance();
+
 	m_player							->LateUpdate();
-	m_enemy_manager						->LateUpdate();
+	enemy_manager						->LateUpdate();
 	RifleCartridgeManager::GetInstance()->LateUpdate();
 	m_ground							->LateUpdate();
 	m_houses							->LateUpdate();
@@ -149,8 +154,10 @@ void PlayScene::DrawToShadowMap() const
 {
 	if (!m_is_start_process) { return; }
 
+	const auto enemy_manager = EnemyManager::GetInstance();
+
 	m_player							->Draw();
-	m_enemy_manager						->Draw();
+	enemy_manager						->Draw();
 	RifleCartridgeManager::GetInstance()->Draw();
 	m_ground							->Draw();
 	m_houses							->Draw();
@@ -161,8 +168,10 @@ void PlayScene::Draw() const
 {
 	if (!m_is_start_process) { return; }
 
+	const auto enemy_manager = EnemyManager::GetInstance();
+
 	m_player							->Draw();
-	m_enemy_manager						->Draw();
+	enemy_manager						->Draw();
 	RifleCartridgeManager::GetInstance()->Draw();
 	m_ground							->Draw();
 	m_houses							->Draw();

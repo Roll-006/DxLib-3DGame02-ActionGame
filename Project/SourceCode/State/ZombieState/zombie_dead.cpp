@@ -7,7 +7,7 @@
 #include "zombie_dead.hpp"
 
 zombie_state::Dead::Dead(Zombie& zombie, zombie_state::State& state, const std::shared_ptr<Animator>& animator) :
-	ZombieStateBase(zombie, state, animator, ZombieStateKind::kIdle),
+	ZombieStateBase			(zombie, state, animator, ZombieStateKind::kIdle),
 	m_elapsed_time_end_anim	(0.0f),
 	m_change_color_wait_time(0.0f),
 	m_is_start_disappear	(false),

@@ -2,7 +2,8 @@
 
 EnemyManager::EnemyManager() :
 	m_enemy_size			(0),
-	m_dead_enemy_contains	(0),
+	m_dead_enemy_count		(0),
+	m_detected_enemy_count	(0),
 	m_object_pool			(std::make_shared<EnemyObjectPool>())
 {
 	// イベント登録
@@ -50,6 +51,8 @@ EnemyManager::~EnemyManager()
 	EventSystem::GetInstance()->Unsubscribe<OnTargetDetectedEvent>	(this, &EnemyManager::NotifyDetectedTarget);
 	EventSystem::GetInstance()->Unsubscribe<DeadEnemyEvent>			(this, &EnemyManager::CountDeadEnemy);
 
+	DetachTarget();
+
 	for (const auto enemy : m_active_enemies)
 	{
 		m_object_pool->ReturnObj(enemy);
@@ -84,6 +87,8 @@ void EnemyManager::Update()
 
 		owner_enemy->Update();
 	}
+
+	//printfDx("%d\n", m_detected_enemy_count);
 }
 
 void EnemyManager::LateUpdate()
@@ -140,9 +145,12 @@ void EnemyManager::NotifyDisallowActionForcibly(const GrabEvent& event)
 
 void EnemyManager::NotifyDetectedTarget(const OnTargetDetectedEvent& event)
 {
+	++m_detected_enemy_count;
+
 	for (const auto& enemy : m_active_enemies)
 	{
-		if (enemy->IsDetectedTarget()) { continue; }
+		if (enemy->IsDetectedTarget())	{ continue; }
+		//if (!CanDetected())				{ return; }
 
 		const auto enemy_pos	= enemy->GetTransform()->GetPos(CoordinateKind::kWorld);
 		const auto distance		= VSize(enemy_pos - event.notify_pos);
@@ -151,14 +159,16 @@ void EnemyManager::NotifyDetectedTarget(const OnTargetDetectedEvent& event)
 		if(distance <= event.notify_distance)
 		{
 			enemy->OnDetected();
+			++m_detected_enemy_count;
 		}
 	}
 }
 
 void EnemyManager::CountDeadEnemy(const DeadEnemyEvent& event)
 {
-	++m_dead_enemy_contains;
-	if (m_dead_enemy_contains >= m_enemy_size)
+	++m_dead_enemy_count;
+	--m_detected_enemy_count;
+	if (m_dead_enemy_count >= m_enemy_size)
 	{
 		EventSystem::GetInstance()->Publish(DeadAllEnemyEvent());
 	}

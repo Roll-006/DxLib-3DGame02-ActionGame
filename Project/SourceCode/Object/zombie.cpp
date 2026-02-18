@@ -177,10 +177,6 @@ void Zombie::Draw() const
 	if (!IsActive()) { return; }
 
 	m_modeler->Draw();
-
-	//mixamo_helper::DrawFrames(m_modeler->GetModelHandle(), true, true, true, false);
-
-	//DrawColliders();
 }
 
 void Zombie::OnCollide(const ColliderPairOneToOneData& hit_collider_pair)
