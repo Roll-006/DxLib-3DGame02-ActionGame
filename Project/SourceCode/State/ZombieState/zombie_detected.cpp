@@ -51,22 +51,18 @@ const ZombieStateKind zombie_state::Detected::GetNextStateKind()
 	{
 		return ZombieStateKind::kNone;
 	}
-	else if (!m_animator->IsPlayEnd(Animator::BodyKind::kUpperBody))
-	{
-		return ZombieStateKind::kNone;
-	}
 	// 巡回
-	else if (m_state.TryPatrol())
+	else if (m_animator->IsPlayEnd(Animator::BodyKind::kUpperBody) && m_state.TryPatrol())
 	{
 		return ZombieStateKind::kPatrol;
 	}
 	// 追跡
-	else if (m_state.TryTrack())
+	else if (m_animator->IsPlayEnd(Animator::BodyKind::kUpperBody) && m_state.TryTrack())
 	{
 		return ZombieStateKind::kTrack;
 	}
 	// 強制待機
-	else if (m_state.TryWaitForcibly())
+	else if (m_animator->IsPlayEnd(Animator::BodyKind::kUpperBody) && m_state.TryWaitForcibly())
 	{
 		return ZombieStateKind::kIdle;
 	}
@@ -87,7 +83,7 @@ const ZombieStateKind zombie_state::Detected::GetNextStateKind()
 		return ZombieStateKind::kBackwardKnockback;
 	}
 	// 死亡
-	if (m_state.TryDead())
+	else if (m_state.TryDead())
 	{
 		return ZombieStateKind::kDead;
 	}
