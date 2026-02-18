@@ -50,7 +50,7 @@ zombie_state::State::State(Zombie& zombie, const std::shared_ptr<Animator>& anim
 
 zombie_state::State::~State()
 {
-
+	m_current_state->Exit();
 }
 
 void zombie_state::State::Update()

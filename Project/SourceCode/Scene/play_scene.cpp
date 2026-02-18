@@ -76,8 +76,10 @@ PlayScene::~PlayScene()
 	pool_holder->RemoveObjectPool(m_rifle_cartridge_object_pool	 ->GetName());
 	pool_holder->RemoveObjectPool(m_play_scene_effect_object_pool->GetName());
 
+	// カメラ設定
 	const auto cinemachine_brain = CinemachineBrain::GetInstance();
-	cinemachine_brain->RemoveVirtualCameraController(VirtualCameraControllerKind::kControl);
+	cinemachine_brain->RemoveAllVirtualCameraController();
+	cinemachine_brain->RemoveAllVirtualCamera();
 
 	// ライトの削除
 	const auto light_holder = LightHolder::GetInstance();
@@ -190,7 +192,7 @@ void PlayScene::StartFadeIn()
 
 	// TODO : 仮
 	++m_loop_count;
-	if (m_loop_count > 5)
+	if (m_loop_count > 10)
 	{
 		const auto fader = SceneFader::GetInstance();
 		fader->StartFade(0, 120.0f);

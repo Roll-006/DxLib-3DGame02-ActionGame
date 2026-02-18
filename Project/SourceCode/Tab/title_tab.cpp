@@ -124,5 +124,5 @@ void TitleTab::ExecuteExit()
 	//m_is_exit		= true;
 	//m_can_select	= false;
 	
-	EventSystem::GetInstance()->Publish(DecisionEvent());
+	//EventSystem::GetInstance()->Publish(DecisionEvent());
 }
