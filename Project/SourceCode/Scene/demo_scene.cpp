@@ -9,6 +9,8 @@ DemoScene::DemoScene() :
 	m_demo_movie		(std::make_shared<MoviePlayer>("Data/Movie/play_movie.mp4", false)),
 	m_started_fade		(false)
 {
+	m_demo_movie->GetResultGraphicer()->SetScale(1.5f);
+
 	//nlohmann::json j_data;
 	//if (json_loader::Load("Data/JSON/demo_scene_data.json", j_data))
 	//{
